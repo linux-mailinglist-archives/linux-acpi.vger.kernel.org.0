@@ -2,440 +2,334 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4DBD37BFCF
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 May 2021 16:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF29B37C07C
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 May 2021 16:43:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230284AbhELOXB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 May 2021 10:23:01 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:49750 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230481AbhELOXB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 May 2021 10:23:01 -0400
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 2.0.5)
- id 0f034e882855a2b4; Wed, 12 May 2021 16:21:48 +0200
-Received: from kreacher.localnet (89-64-81-242.dynamic.chello.pl [89.64.81.242])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 8B9FE6695ED;
-        Wed, 12 May 2021 16:21:47 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux PM <linux-pm@vger.kernel.org>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>, Chen Yu <yu.c.chen@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Zhang Rui <rui.zhang@intel.com>
-Subject: [PATCH 2/2] cpufreq: intel_pstate: hybrid: CPU-specific scaling factor
-Date:   Wed, 12 May 2021 16:19:30 +0200
-Message-ID: <2790305.e9J7NaK4W3@kreacher>
-In-Reply-To: <2212930.ElGaqSPkdT@kreacher>
-References: <2212930.ElGaqSPkdT@kreacher>
+        id S230364AbhELOoQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 May 2021 10:44:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:60861 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231389AbhELOoI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 May 2021 10:44:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1620830580;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=xbWuYq5zi+eeDi1d00UV1AvdKce40omohu1ov/4G4CU=;
+        b=hrJ/s6tUqTYirawDm+ZL/OcLrZomPMGaMRO1oeByqLQG4kFyI8oBhMj6SERF7/E855ehwZ
+        JT+6Bu2Pv2r2Nn4du4IYCLj7mkXBF5AWhtNxPOxtoYxl3E31nApaXA+q6u5cq9kS6ivCfG
+        CJFGgavLAsBBgbcCFtCLoBYYkpl8wt4=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-10-TsBYd6wnOCOCj8MEVWOeTw-1; Wed, 12 May 2021 10:42:57 -0400
+X-MC-Unique: TsBYd6wnOCOCj8MEVWOeTw-1
+Received: by mail-ed1-f70.google.com with SMTP id i17-20020a50fc110000b0290387c230e257so12966632edr.0
+        for <linux-acpi@vger.kernel.org>; Wed, 12 May 2021 07:42:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=xbWuYq5zi+eeDi1d00UV1AvdKce40omohu1ov/4G4CU=;
+        b=lANdKgqdfdpiue/61uuTx09X2gr4sNuxTmOfYC4BfcKzh3r31hkWwqwy2dlgkPP6nI
+         8q1KiasAy804HpsNK6OauEvb+E23UxrvxBxpiCGch1JMlbHmmBhHAKcMxLexFEJlcoXi
+         gJ1FngTNKsw2d4aQvrU1sUImIrMaOEATgBlxVCxWNb8jxpcZ7z5ARQ3GO9XrsQWx8STb
+         hpfp+L2njvr4oUxuESQD2XeknezpPAX2L69lkDw4Nw5uig0MhKH9Uo0qLunVNWgkapxJ
+         S8sJ0rAZ1x4k0ByNWklIybGSAw7xrRspYodKoWEm7GjxuZxUm/c1XkiHluhe0D5w7H9R
+         WbOg==
+X-Gm-Message-State: AOAM53243Jg04bfACne+tQ5Y4t22jXvxlio8pHTRrW3QX7gaVKkPFy6D
+        GgCURZIW97NinQJej3LWL8G9r8jbX7A9/T9qWgBEMoSbDUQW46O+3Sz2t8GtrS8ghjryRvy1PGJ
+        SWzLJOk6SsWAONY+B3FdYdg==
+X-Received: by 2002:aa7:dc4e:: with SMTP id g14mr44133879edu.11.1620830576246;
+        Wed, 12 May 2021 07:42:56 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyLxGkMScRYQCsZQuUjXKw9RJ3uwL+AF0f5L1Pq3pEMV4KysznrGSKmTsqLHVgEqBTJIx364Q==
+X-Received: by 2002:aa7:dc4e:: with SMTP id g14mr44133857edu.11.1620830576048;
+        Wed, 12 May 2021 07:42:56 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id s2sm17929135edu.89.2021.05.12.07.42.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 May 2021 07:42:55 -0700 (PDT)
+Subject: Re: [PATCH 1/1] platform/x86: intel_int0002_vgpio: Only call
+ enable_irq_wake() when using s2idle
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Mark Gross <mgross@linux.intel.com>,
+        Andy Shevchenko <andy@infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Maxim Mikityanskiy <maxtram95@gmail.com>
+References: <20210512125523.55215-1-hdegoede@redhat.com>
+ <20210512125523.55215-2-hdegoede@redhat.com>
+ <CAHp75VehYx5Bn_dJ1vps1N-aEX2vF3AKUS0xMwBK=o6ZyFJxVQ@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <371a4752-f0dc-92b8-443c-d66a00a34bed@redhat.com>
+Date:   Wed, 12 May 2021 16:42:54 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 89.64.81.242
-X-CLIENT-HOSTNAME: 89-64-81-242.dynamic.chello.pl
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdehvddgjedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvjeelgffhiedukedtleekkedvudfggefhgfegjefgueekjeelvefggfdvledutdenucfkphepkeelrdeigedrkedurddvgedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdeigedrkedurddvgedvpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhgvnhdrsghrohifnhesihhnthgvlhdrtghomhdprhgtphhtthhopeihuhdrtgdrtghhvghnsehinhhtvghlrdgt
- ohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
+In-Reply-To: <CAHp75VehYx5Bn_dJ1vps1N-aEX2vF3AKUS0xMwBK=o6ZyFJxVQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi,
 
-The scaling factor between HWP performance levels and CPU frequency
-may be different for different types of CPUs in a hybrid processor
-and in general the HWP performance levels need not correspond to
-"P-states" representing values that would be written to
-MSR_IA32_PERF_CTL if HWP was disabled.
+On 5/12/21 3:20 PM, Andy Shevchenko wrote:
+> On Wed, May 12, 2021 at 3:55 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> Commit 871f1f2bcb01 ("platform/x86: intel_int0002_vgpio: Only implement
+>> irq_set_wake on Bay Trail") stopped passing irq_set_wake requests on to
+>> the parents IRQ because this was breaking suspend (causing immediate
+>> wakeups) on an Asus E202SA.
+>>
+>> This workaround for the Asus E202SA is causing wakeup by USB keyboard to
+>> not work on other devices with Airmont CPU cores such as the Medion Akoya
+>> E1239T. In hindsight the problem with the Asus E202SA has nothing to do
+>> with Silvermont vs Airmont CPU cores, so the differentiation between the
+>> 2 types of CPU cores introduced by the previous fix is wrong.
+>>
+>> The real issue at hand is s2idle vs S3 suspend where the suspend is
+>> mostly handled by firmware. The parent IRQ for the INT0002 device is shared
+>> with the ACPI SCI and the real problem is that the INT0002 code should not
+>> be messing with the wakeup settings of that IRQ when suspend/resume is
+>> being handled by the firmware.
+>>
+>> Note that on systems which support both s2idle and S3 suspend, which
+>> suspend method to use can be changed at runtime.
+>>
+>> This patch fixes both the Asus E202SA spurious wakeups issue as well as
+>> the wakeup by USB keyboard not working on the Medion Akoya E1239T issue.
+>>
+>> These are both fixed by replacing the old workaround with delaying the
+>> enable_irq_wake(parent_irq) call till system-suspend time and protecting
+>> it with a !pm_suspend_via_firmware() check so that we still do not call
+>> it on devices using firmware-based (S3) suspend such as the Asus E202SA.
+> 
+>> Note rather then adding #ifdef CONFIG_PM_SLEEP, this commit simply adds
+>> a "depends on PM_SLEEP" to the Kconfig since this drivers whole purpose
+>> is to deal with wakeup events, so using it without CONFIG_PM_SLEEP makes
+>> no sense.
+> 
+> I like the new approach.
+> One remark (or two :) is to the PM SLEEP thingy. Can we add a separate
+> line for "depends on", so it will be easier to maintain in case we
+> need to amend it somehow?
 
-However, the policy limits control in cpufreq is defined in terms
-of CPU frequency, so it is necessary to map the frequency limits set
-through that interface to HWP performance levels with reasonable
-accuracy and the behavior of that interface on hybrid processors
-has to be compatible with its behavior on non-hybrid ones.
+The depends on is already using && and I prefer to keep it that way
+over splitting it into 3 separate depends on lines.
 
-To address this problem, use the observations that (1) on hybrid
-processors the sysfs interface can operate by mapping frequency
-to "P-states" and translating those "P-states" to specific HWP
-performance levels of the given CPU and (2) the scaling factor
-between the MSR_IA32_PERF_CTL "P-states" and CPU frequency can be
-regarded as a known value.  Moreover, the mapping between the
-HWP performance levels and CPU frequency can be assumed to be
-linear and such that HWP performance level 0 correspond to the
-frequency value of 0, so it is only necessary to know the
-frequency corresponding to one specific HWP performance level
-to compute the scaling factor applicable to all of them.
+> Another one is to amend a helpline to
+> reflect that the driver is dealing solely with wake events (I haven't
+> checked the current text, so it might be already enforced).
 
-One possibility is to take the nominal performance value from CPPC,
-if available, and use cpu_khz as the corresponding frequency.  If
-the CPPC capabilities interface is not there or the nominal
-performance value provided by it is out of range, though, something
-else needs to be done.
+The helptext already begins with this:
 
-Namely, the guaranteed performance level either from CPPC or from
-MSR_HWP_CAPABILITIES can be used instead, but the corresponding
-frequency needs to be determined.  That can be done by computing the
-product of the (known) scaling factor between the MSR_IA32_PERF_CTL
-P-states and CPU frequency (the PERF_CTL scaling factor) and the
-P-state value referred to as the "TDP ratio".
+"Some peripherals on Bay Trail and Cherry Trail platforms signal a
+Power Management Event (PME) to the Power Management Controller (PMC)
+to wakeup the system."
 
-If the HWP-to-frequency scaling factor value obtained in one of the
-ways above turns out to be euqal to the PERF_CTL scaling factor, it
-can be assumed that the number of HWP performance levels is equal to
-the number of P-states and the given CPU can be handled as though
-this was not a hybrid processor.
+Which IMHO makes it pretty clear this is all about wake events.
 
-Otherwise, one more adjustment may still need to be made, because the
-HWP-to-frequency scaling factor computed so far may not be accurate
-enough (e.g. because the CPPC information does not match the exact
-behavior of the processor).  Specifically, in that case the frequency
-corresponding to the highest HWP performance value from
-MSR_HWP_CAPABILITIES (computed as the product of that value and the
-HWP-to-frequency scaling factor) cannot exceed the frequency that
-corresponds to the maximum 1-core turbo P-state value from
-MSR_TURBO_RATIO_LIMIT (computed as the procuct of that value and the
-PERF_CTL scaling factor) and the HWP-to-frequency scaling factor may
-need to be adjusted accordingly.
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/cpufreq/intel_pstate.c |  233 ++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 210 insertions(+), 23 deletions(-)
+Thank you.
 
-Index: linux-pm/drivers/cpufreq/intel_pstate.c
-===================================================================
---- linux-pm.orig/drivers/cpufreq/intel_pstate.c
-+++ linux-pm/drivers/cpufreq/intel_pstate.c
-@@ -121,9 +121,10 @@ struct sample {
-  * @max_pstate_physical:This is physical Max P state for a processor
-  *			This can be higher than the max_pstate which can
-  *			be limited by platform thermal design power limits
-- * @scaling:		Scaling factor to  convert frequency to cpufreq
-- *			frequency units
-+ * @perf_ctl_scaling:	PERF_CTL P-state to frequency scaling factor
-+ * @scaling:		Scaling factor between performance and frequency
-  * @turbo_pstate:	Max Turbo P state possible for this platform
-+ * @min_freq:		@min_pstate frequency in cpufreq units
-  * @max_freq:		@max_pstate frequency in cpufreq units
-  * @turbo_freq:		@turbo_pstate frequency in cpufreq units
-  *
-@@ -134,8 +135,10 @@ struct pstate_data {
- 	int	min_pstate;
- 	int	max_pstate;
- 	int	max_pstate_physical;
-+	int	perf_ctl_scaling;
- 	int	scaling;
- 	int	turbo_pstate;
-+	unsigned int min_freq;
- 	unsigned int max_freq;
- 	unsigned int turbo_freq;
- };
-@@ -489,6 +492,149 @@ static int intel_pstate_get_cppc_gurante
- }
- #endif /* CONFIG_ACPI_CPPC_LIB */
- 
-+static bool intel_pstate_cppc_perf_valid(u32 perf, struct cppc_perf_caps *caps)
-+{
-+	return perf && perf <= caps->highest_perf && perf >= caps->lowest_perf;
-+}
-+
-+static bool intel_pstate_cppc_perf_caps(struct cpudata *cpu,
-+					struct cppc_perf_caps *caps)
-+{
-+	if (cppc_get_perf_caps(cpu->cpu, caps))
-+		return false;
-+
-+	return caps->highest_perf && caps->lowest_perf <= caps->highest_perf;
-+}
-+
-+static void intel_pstate_hybrid_hwp_perf_ctl_parity(struct cpudata *cpu)
-+{
-+	pr_debug("CPU%d: Using PERF_CTL scaling for HWP\n", cpu->cpu);
-+
-+	cpu->pstate.scaling = cpu->pstate.perf_ctl_scaling;
-+}
-+
-+/**
-+ * intel_pstate_hybrid_hwp_calibrate - Calibrate HWP performance levels.
-+ * @cpu: Target CPU.
-+ *
-+ * On hybrid processors, HWP may expose more performance levels than there are
-+ * P-states accessible through the PERF_CTL interface.  If that happens, the
-+ * scaling factor between HWP performance levels and CPU frequency will be less
-+ * than the scaling factor between P-state values and CPU frequency.
-+ *
-+ * In that case, the scaling factor between HWP performance levels and CPU
-+ * frequency needs to be determined which can be done with the help of the
-+ * observation that certain HWP performance levels should correspond to certain
-+ * P-states, like for example the HWP highest performance should correspond
-+ * to the maximum turbo P-state of the CPU.
-+ */
-+static void intel_pstate_hybrid_hwp_calibrate(struct cpudata *cpu)
-+{
-+	struct cppc_perf_caps caps;
-+	int perf_ctl_max_phys = cpu->pstate.max_pstate_physical;
-+	int perf_ctl_scaling = cpu->pstate.perf_ctl_scaling;
-+	int perf_ctl_turbo = pstate_funcs.get_turbo();
-+	int turbo_freq = perf_ctl_turbo * perf_ctl_scaling;
-+	int perf_ctl_max = pstate_funcs.get_max();
-+	int max_freq = perf_ctl_max * perf_ctl_scaling;
-+	int scaling = INT_MAX;
-+	int freq;
-+
-+	pr_debug("CPU%d: perf_ctl_max_phys = %d\n", cpu->cpu, perf_ctl_max_phys);
-+	pr_debug("CPU%d: perf_ctl_max = %d\n", cpu->cpu, perf_ctl_max);
-+	pr_debug("CPU%d: perf_ctl_turbo = %d\n", cpu->cpu, perf_ctl_turbo);
-+	pr_debug("CPU%d: perf_ctl_scaling = %d\n", cpu->cpu, perf_ctl_scaling);
-+
-+	pr_debug("CPU%d: HWP_CAP guaranteed = %d\n", cpu->cpu, cpu->pstate.max_pstate);
-+	pr_debug("CPU%d: HWP_CAP highest = %d\n", cpu->cpu, cpu->pstate.turbo_pstate);
-+
-+	if (intel_pstate_cppc_perf_caps(cpu, &caps)) {
-+		if (intel_pstate_cppc_perf_valid(caps.nominal_perf, &caps)) {
-+			pr_debug("CPU%d: Using CPPC nominal\n", cpu->cpu);
-+
-+			/*
-+			 * If the CPPC nominal performance is valid, it can be
-+			 * assumed to correspond to cpu_khz.
-+			 */
-+			if (caps.nominal_perf == perf_ctl_max_phys) {
-+				intel_pstate_hybrid_hwp_perf_ctl_parity(cpu);
-+				return;
-+			}
-+			scaling = DIV_ROUND_UP(cpu_khz, caps.nominal_perf);
-+		} else if (intel_pstate_cppc_perf_valid(caps.guaranteed_perf, &caps)) {
-+			pr_debug("CPU%d: Using CPPC guaranteed\n", cpu->cpu);
-+
-+			/*
-+			 * If the CPPC guaranteed performance is valid, it can
-+			 * be assumed to correspond to max_freq.
-+			 */
-+			if (caps.guaranteed_perf == perf_ctl_max) {
-+				intel_pstate_hybrid_hwp_perf_ctl_parity(cpu);
-+				return;
-+			}
-+			scaling = DIV_ROUND_UP(max_freq, caps.guaranteed_perf);
-+		}
-+	}
-+	/*
-+	 * If using the CPPC data to compute the HWP-to-frequency scaling factor
-+	 * doesn't work, use the HWP_CAP gauranteed perf for this purpose with
-+	 * the assumption that it corresponds to max_freq.
-+	 */
-+	if (scaling > perf_ctl_scaling) {
-+		pr_debug("CPU%d: Using HWP_CAP guaranteed\n", cpu->cpu);
-+
-+		if (cpu->pstate.max_pstate == perf_ctl_max) {
-+			intel_pstate_hybrid_hwp_perf_ctl_parity(cpu);
-+			return;
-+		}
-+		scaling = DIV_ROUND_UP(max_freq, cpu->pstate.max_pstate);
-+		if (scaling > perf_ctl_scaling) {
-+			/*
-+			 * This should not happen, because it would mean that
-+			 * the number of HWP perf levels was less than the
-+			 * number of P-states, so use the PERF_CTL scaling in
-+			 * that case.
-+			 */
-+			pr_debug("CPU%d: scaling (%d) out of range\n", cpu->cpu,
-+				scaling);
-+
-+			intel_pstate_hybrid_hwp_perf_ctl_parity(cpu);
-+			return;
-+		}
-+	}
-+
-+	/*
-+	 * If the product of the HWP performance scaling factor obtained above
-+	 * and the HWP_CAP highest performance is greater than the maximum turbo
-+	 * frequency corresponding to the pstate_funcs.get_turbo() return value,
-+	 * the scaling factor is too high, so recompute it so that the HWP_CAP
-+	 * highest performance corresponds to the maximum turbo frequency.
-+	 */
-+	if (turbo_freq < cpu->pstate.turbo_pstate * scaling) {
-+		pr_debug("CPU%d: scaling too high (%d)\n", cpu->cpu, scaling);
-+
-+		cpu->pstate.turbo_freq = turbo_freq;
-+		scaling = DIV_ROUND_UP(turbo_freq, cpu->pstate.turbo_pstate);
-+	}
-+
-+	cpu->pstate.scaling = scaling;
-+
-+	pr_debug("CPU%d: HWP-to-frequency scaling factor: %d\n", cpu->cpu, scaling);
-+
-+	cpu->pstate.max_freq = rounddown(cpu->pstate.max_pstate * scaling,
-+					 perf_ctl_scaling);
-+
-+	freq = perf_ctl_max_phys * perf_ctl_scaling;
-+	cpu->pstate.max_pstate_physical = DIV_ROUND_UP(freq, scaling);
-+
-+	cpu->pstate.min_freq = cpu->pstate.min_pstate * perf_ctl_scaling;
-+	/*
-+	 * Cast the min P-state value retrieved via pstate_funcs.get_min() to
-+	 * the effective range of HWP performance levels.
-+	 */
-+	cpu->pstate.min_pstate = DIV_ROUND_UP(cpu->pstate.min_freq, scaling);
-+}
-+
- static inline void update_turbo_state(void)
- {
- 	u64 misc_en;
-@@ -795,19 +941,22 @@ cpufreq_freq_attr_rw(energy_performance_
- 
- static ssize_t show_base_frequency(struct cpufreq_policy *policy, char *buf)
- {
--	struct cpudata *cpu;
--	u64 cap;
--	int ratio;
-+	struct cpudata *cpu = all_cpu_data[policy->cpu];
-+	int ratio, freq;
- 
- 	ratio = intel_pstate_get_cppc_guranteed(policy->cpu);
- 	if (ratio <= 0) {
-+		u64 cap;
-+
- 		rdmsrl_on_cpu(policy->cpu, MSR_HWP_CAPABILITIES, &cap);
- 		ratio = HWP_GUARANTEED_PERF(cap);
- 	}
- 
--	cpu = all_cpu_data[policy->cpu];
-+	freq = ratio * cpu->pstate.scaling;
-+	if (cpu->pstate.scaling != cpu->pstate.perf_ctl_scaling)
-+		freq = rounddown(freq, cpu->pstate.perf_ctl_scaling);
- 
--	return sprintf(buf, "%d\n", ratio * cpu->pstate.scaling);
-+	return sprintf(buf, "%d\n", freq);
- }
- 
- cpufreq_freq_attr_ro(base_frequency);
-@@ -831,9 +980,20 @@ static void __intel_pstate_get_hwp_cap(s
- 
- static void intel_pstate_get_hwp_cap(struct cpudata *cpu)
- {
-+	int scaling = cpu->pstate.scaling;
-+
- 	__intel_pstate_get_hwp_cap(cpu);
--	cpu->pstate.max_freq = cpu->pstate.max_pstate * cpu->pstate.scaling;
--	cpu->pstate.turbo_freq = cpu->pstate.turbo_pstate * cpu->pstate.scaling;
-+
-+	cpu->pstate.max_freq = cpu->pstate.max_pstate * scaling;
-+	cpu->pstate.turbo_freq = cpu->pstate.turbo_pstate * scaling;
-+	if (scaling != cpu->pstate.perf_ctl_scaling) {
-+		int perf_ctl_scaling = cpu->pstate.perf_ctl_scaling;
-+
-+		cpu->pstate.max_freq = rounddown(cpu->pstate.max_freq,
-+						 perf_ctl_scaling);
-+		cpu->pstate.turbo_freq = rounddown(cpu->pstate.turbo_freq,
-+						   perf_ctl_scaling);
-+	}
- }
- 
- static void intel_pstate_hwp_set(unsigned int cpu)
-@@ -1724,19 +1884,33 @@ static void intel_pstate_max_within_limi
- 
- static void intel_pstate_get_cpu_pstates(struct cpudata *cpu)
- {
-+	bool hybrid_cpu = boot_cpu_has(X86_FEATURE_HYBRID_CPU);
-+	int perf_ctl_max_phys = pstate_funcs.get_max_physical();
-+	int perf_ctl_scaling = hybrid_cpu ? cpu_khz / perf_ctl_max_phys :
-+					    pstate_funcs.get_scaling();
-+
- 	cpu->pstate.min_pstate = pstate_funcs.get_min();
--	cpu->pstate.max_pstate_physical = pstate_funcs.get_max_physical();
--	cpu->pstate.scaling = pstate_funcs.get_scaling();
-+	cpu->pstate.max_pstate_physical = perf_ctl_max_phys;
-+	cpu->pstate.perf_ctl_scaling = perf_ctl_scaling;
- 
- 	if (hwp_active && !hwp_mode_bdw) {
- 		__intel_pstate_get_hwp_cap(cpu);
-+
-+		if (hybrid_cpu)
-+			intel_pstate_hybrid_hwp_calibrate(cpu);
-+		else
-+			cpu->pstate.scaling = perf_ctl_scaling;
- 	} else {
-+		cpu->pstate.scaling = perf_ctl_scaling;
- 		cpu->pstate.max_pstate = pstate_funcs.get_max();
- 		cpu->pstate.turbo_pstate = pstate_funcs.get_turbo();
- 	}
- 
--	cpu->pstate.max_freq = cpu->pstate.max_pstate * cpu->pstate.scaling;
--	cpu->pstate.turbo_freq = cpu->pstate.turbo_pstate * cpu->pstate.scaling;
-+	if (cpu->pstate.scaling == perf_ctl_scaling) {
-+		cpu->pstate.min_freq = cpu->pstate.min_pstate * perf_ctl_scaling;
-+		cpu->pstate.max_freq = cpu->pstate.max_pstate * perf_ctl_scaling;
-+		cpu->pstate.turbo_freq = cpu->pstate.turbo_pstate * perf_ctl_scaling;
-+	}
- 
- 	if (pstate_funcs.get_aperf_mperf_shift)
- 		cpu->aperf_mperf_shift = pstate_funcs.get_aperf_mperf_shift();
-@@ -2206,23 +2380,34 @@ static void intel_pstate_update_perf_lim
- 					    unsigned int policy_min,
- 					    unsigned int policy_max)
- {
--	int scaling = cpu->pstate.scaling;
-+	int perf_ctl_scaling = cpu->pstate.perf_ctl_scaling;
- 	int32_t max_policy_perf, min_policy_perf;
- 
-+	max_policy_perf = policy_max / perf_ctl_scaling;
-+	if (policy_max == policy_min) {
-+		min_policy_perf = max_policy_perf;
-+	} else {
-+		min_policy_perf = policy_min / perf_ctl_scaling;
-+		min_policy_perf = clamp_t(int32_t, min_policy_perf,
-+					  0, max_policy_perf);
-+	}
-+
- 	/*
- 	 * HWP needs some special consideration, because HWP_REQUEST uses
- 	 * abstract values to represent performance rather than pure ratios.
- 	 */
--	if (hwp_active)
-+	if (hwp_active) {
- 		intel_pstate_get_hwp_cap(cpu);
- 
--	max_policy_perf = policy_max / scaling;
--	if (policy_max == policy_min) {
--		min_policy_perf = max_policy_perf;
--	} else {
--		min_policy_perf = policy_min / scaling;
--		min_policy_perf = clamp_t(int32_t, min_policy_perf,
--					  0, max_policy_perf);
-+		if (cpu->pstate.scaling != perf_ctl_scaling) {
-+			int scaling = cpu->pstate.scaling;
-+			int freq;
-+
-+			freq = max_policy_perf * perf_ctl_scaling;
-+			max_policy_perf = DIV_ROUND_UP(freq, scaling);
-+			freq = min_policy_perf * perf_ctl_scaling;
-+			min_policy_perf = DIV_ROUND_UP(freq, scaling);
-+		}
- 	}
- 
- 	pr_debug("cpu:%d min_policy_perf:%d max_policy_perf:%d\n",
-@@ -2416,7 +2601,7 @@ static int __intel_pstate_cpu_init(struc
- 	cpu->min_perf_ratio = 0;
- 
- 	/* cpuinfo and default policy values */
--	policy->cpuinfo.min_freq = cpu->pstate.min_pstate * cpu->pstate.scaling;
-+	policy->cpuinfo.min_freq = cpu->pstate.min_freq;
- 	update_turbo_state();
- 	global.turbo_disabled_mf = global.turbo_disabled;
- 	policy->cpuinfo.max_freq = global.turbo_disabled ?
-@@ -3146,6 +3331,8 @@ hwp_cpu_matched:
- 		}
- 
- 		pr_info("HWP enabled\n");
-+	} else if (boot_cpu_has(X86_FEATURE_HYBRID_CPU)) {
-+		pr_warn("Problematic setup: Hybrid processor with disabled HWP\n");
- 	}
- 
- 	return 0;
+Regards,
+
+Hans
 
 
+> 
+>> Cc: Maxim Mikityanskiy <maxtram95@gmail.com>
+>> Fixes: 871f1f2bcb01 ("platform/x86: intel_int0002_vgpio: Only implement irq_set_wake on Bay Trail")
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>  drivers/platform/x86/Kconfig               |  2 +-
+>>  drivers/platform/x86/intel_int0002_vgpio.c | 80 +++++++++++++++-------
+>>  2 files changed, 57 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
+>> index 4b67e74a747b..c2f608d5f1b7 100644
+>> --- a/drivers/platform/x86/Kconfig
+>> +++ b/drivers/platform/x86/Kconfig
+>> @@ -713,7 +713,7 @@ config INTEL_HID_EVENT
+>>
+>>  config INTEL_INT0002_VGPIO
+>>         tristate "Intel ACPI INT0002 Virtual GPIO driver"
+>> -       depends on GPIOLIB && ACPI
+>> +       depends on GPIOLIB && ACPI && PM_SLEEP
+>>         select GPIOLIB_IRQCHIP
+>>         help
+>>           Some peripherals on Bay Trail and Cherry Trail platforms signal a
+>> diff --git a/drivers/platform/x86/intel_int0002_vgpio.c b/drivers/platform/x86/intel_int0002_vgpio.c
+>> index 289c6655d425..569342aa8926 100644
+>> --- a/drivers/platform/x86/intel_int0002_vgpio.c
+>> +++ b/drivers/platform/x86/intel_int0002_vgpio.c
+>> @@ -51,6 +51,12 @@
+>>  #define GPE0A_STS_PORT                 0x420
+>>  #define GPE0A_EN_PORT                  0x428
+>>
+>> +struct int0002_data {
+>> +       struct gpio_chip chip;
+>> +       int parent_irq;
+>> +       int wake_enable_count;
+>> +};
+>> +
+>>  /*
+>>   * As this is not a real GPIO at all, but just a hack to model an event in
+>>   * ACPI the get / set functions are dummy functions.
+>> @@ -98,14 +104,16 @@ static void int0002_irq_mask(struct irq_data *data)
+>>  static int int0002_irq_set_wake(struct irq_data *data, unsigned int on)
+>>  {
+>>         struct gpio_chip *chip = irq_data_get_irq_chip_data(data);
+>> -       struct platform_device *pdev = to_platform_device(chip->parent);
+>> -       int irq = platform_get_irq(pdev, 0);
+>> +       struct int0002_data *int0002 = container_of(chip, struct int0002_data, chip);
+>>
+>> -       /* Propagate to parent irq */
+>> +       /*
+>> +        * Applying of the wakeup flag to our parent IRQ is delayed till system
+>> +        * suspend, because we only want to do this when using s2idle.
+>> +        */
+>>         if (on)
+>> -               enable_irq_wake(irq);
+>> +               int0002->wake_enable_count++;
+>>         else
+>> -               disable_irq_wake(irq);
+>> +               int0002->wake_enable_count--;
+>>
+>>         return 0;
+>>  }
+>> @@ -135,7 +143,7 @@ static bool int0002_check_wake(void *data)
+>>         return (gpe_sts_reg & GPE0A_PME_B0_STS_BIT);
+>>  }
+>>
+>> -static struct irq_chip int0002_byt_irqchip = {
+>> +static struct irq_chip int0002_irqchip = {
+>>         .name                   = DRV_NAME,
+>>         .irq_ack                = int0002_irq_ack,
+>>         .irq_mask               = int0002_irq_mask,
+>> @@ -143,21 +151,9 @@ static struct irq_chip int0002_byt_irqchip = {
+>>         .irq_set_wake           = int0002_irq_set_wake,
+>>  };
+>>
+>> -static struct irq_chip int0002_cht_irqchip = {
+>> -       .name                   = DRV_NAME,
+>> -       .irq_ack                = int0002_irq_ack,
+>> -       .irq_mask               = int0002_irq_mask,
+>> -       .irq_unmask             = int0002_irq_unmask,
+>> -       /*
+>> -        * No set_wake, on CHT the IRQ is typically shared with the ACPI SCI
+>> -        * and we don't want to mess with the ACPI SCI irq settings.
+>> -        */
+>> -       .flags                  = IRQCHIP_SKIP_SET_WAKE,
+>> -};
+>> -
+>>  static const struct x86_cpu_id int0002_cpu_ids[] = {
+>> -       X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT,     &int0002_byt_irqchip),
+>> -       X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT,        &int0002_cht_irqchip),
+>> +       X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT, NULL),
+>> +       X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT, NULL),
+>>         {}
+>>  };
+>>
+>> @@ -172,8 +168,9 @@ static int int0002_probe(struct platform_device *pdev)
+>>  {
+>>         struct device *dev = &pdev->dev;
+>>         const struct x86_cpu_id *cpu_id;
+>> -       struct gpio_chip *chip;
+>> +       struct int0002_data *int0002;
+>>         struct gpio_irq_chip *girq;
+>> +       struct gpio_chip *chip;
+>>         int irq, ret;
+>>
+>>         /* Menlow has a different INT0002 device? <sigh> */
+>> @@ -185,10 +182,13 @@ static int int0002_probe(struct platform_device *pdev)
+>>         if (irq < 0)
+>>                 return irq;
+>>
+>> -       chip = devm_kzalloc(dev, sizeof(*chip), GFP_KERNEL);
+>> -       if (!chip)
+>> +       int0002 = devm_kzalloc(dev, sizeof(*int0002), GFP_KERNEL);
+>> +       if (!int0002)
+>>                 return -ENOMEM;
+>>
+>> +       int0002->parent_irq = irq;
+>> +
+>> +       chip = &int0002->chip;
+>>         chip->label = DRV_NAME;
+>>         chip->parent = dev;
+>>         chip->owner = THIS_MODULE;
+>> @@ -214,7 +214,7 @@ static int int0002_probe(struct platform_device *pdev)
+>>         }
+>>
+>>         girq = &chip->irq;
+>> -       girq->chip = (struct irq_chip *)cpu_id->driver_data;
+>> +       girq->chip = &int0002_irqchip;
+>>         /* This let us handle the parent IRQ in the driver */
+>>         girq->parent_handler = NULL;
+>>         girq->num_parents = 0;
+>> @@ -230,6 +230,7 @@ static int int0002_probe(struct platform_device *pdev)
+>>
+>>         acpi_register_wakeup_handler(irq, int0002_check_wake, NULL);
+>>         device_init_wakeup(dev, true);
+>> +       dev_set_drvdata(dev, int0002);
+>>         return 0;
+>>  }
+>>
+>> @@ -240,6 +241,36 @@ static int int0002_remove(struct platform_device *pdev)
+>>         return 0;
+>>  }
+>>
+>> +static int int0002_suspend(struct device *dev)
+>> +{
+>> +       struct int0002_data *int0002 = dev_get_drvdata(dev);
+>> +
+>> +       /*
+>> +        * The INT0002 parent IRQ is often shared with the ACPI GPE IRQ, don't
+>> +        * muck with it when firmware based suspend is used, otherwise we may
+>> +        * cause spurious wakeups from firmware managed suspend.
+>> +        */
+>> +       if (!pm_suspend_via_firmware() && int0002->wake_enable_count)
+>> +               enable_irq_wake(int0002->parent_irq);
+>> +
+>> +       return 0;
+>> +}
+>> +
+>> +static int int0002_resume(struct device *dev)
+>> +{
+>> +       struct int0002_data *int0002 = dev_get_drvdata(dev);
+>> +
+>> +       if (!pm_suspend_via_firmware() && int0002->wake_enable_count)
+>> +               disable_irq_wake(int0002->parent_irq);
+>> +
+>> +       return 0;
+>> +}
+>> +
+>> +static const struct dev_pm_ops int0002_pm_ops = {
+>> +       .suspend = int0002_suspend,
+>> +       .resume = int0002_resume,
+>> +};
+>> +
+>>  static const struct acpi_device_id int0002_acpi_ids[] = {
+>>         { "INT0002", 0 },
+>>         { },
+>> @@ -250,6 +281,7 @@ static struct platform_driver int0002_driver = {
+>>         .driver = {
+>>                 .name                   = DRV_NAME,
+>>                 .acpi_match_table       = int0002_acpi_ids,
+>> +               .pm                     = &int0002_pm_ops,
+>>         },
+>>         .probe  = int0002_probe,
+>>         .remove = int0002_remove,
+>> --
+>> 2.31.1
+>>
+> 
+> 
 
