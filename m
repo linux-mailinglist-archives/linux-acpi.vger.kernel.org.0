@@ -2,89 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43CC537BD3E
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 May 2021 14:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD8BE37BD7D
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 May 2021 14:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233368AbhELMxi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 May 2021 08:53:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52514 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231462AbhELMxI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 12 May 2021 08:53:08 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C7D7B61447;
-        Wed, 12 May 2021 12:51:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620823907;
-        bh=vwTUqn36ML6ajAEdHAKpanFk2OUa6HzYgc1kX05aesA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B9DZiHtdV0i2aL3Kh/usGL9MH5RqPeivQDpZK30m6Gqzr4qIHzSnAPQ/KJnH/A8e6
-         6hld0QS90gWmvDN8+KWL+ZpKuIbTWKMX/QlSgKhyFnPY2fYeNE2mZOC2SREGr7nuLx
-         TZk+6QtJFV7RVFQS6RDkMKR3NbXibAPwt0CgS5JKWtsZi4yxKxjEoM7eo52l/3CrRv
-         Z9lvVu7tC09h6t5rocfXPG8Plf1RBFOCirc6ILs8OtnqBFP5MTRLxRGuRsul+Ya62K
-         GoF+uEAamAuLvfBSe724xjgP1+FoeaKX/QyVvOBt6kPqmnnDuzlZKXIAOvkbCNZAJv
-         +1tb9gLH6de1Q==
-Received: by mail.kernel.org with local (Exim 4.94.2)
-        (envelope-from <mchehab@kernel.org>)
-        id 1lgoL3-0018nr-SF; Wed, 12 May 2021 14:51:45 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 38/40] docs: firmware-guide: acpi: dsd: graph.rst: Use ASCII subset instead of UTF-8 alternate symbols
-Date:   Wed, 12 May 2021 14:50:42 +0200
-Message-Id: <afeeee8d52dac14c8e86e326b8fcee300dcb0d59.1620823573.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <cover.1620823573.git.mchehab+huawei@kernel.org>
-References: <cover.1620823573.git.mchehab+huawei@kernel.org>
+        id S231557AbhELM5w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 May 2021 08:57:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:28607 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232218AbhELM4h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 May 2021 08:56:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1620824129;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Tc8mQDAbJHENH7lcv2Ene1EyzKbcts8k9beVWkDL3jU=;
+        b=VSZpmxaxYqCWKJaiGe+QiWbqM2teI1T1EN+WVdINStRF299RAHhi4r95mnfiteGzhkY0Cz
+        ZCpZ2bZoHubKsOKck+mf4JnrR+2yoYIEPrOk2Avl4DlZxkE8EIrjoPUvtZPZ5uByVk0RnB
+        jG64gzhkK/6YXu8yHvV1ENbxE9NsQGM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-578-a0r2CM30NsKyocm2T4IYUg-1; Wed, 12 May 2021 08:55:27 -0400
+X-MC-Unique: a0r2CM30NsKyocm2T4IYUg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DCEED107ACC7;
+        Wed, 12 May 2021 12:55:25 +0000 (UTC)
+Received: from x1.localdomain (ovpn-112-30.ams2.redhat.com [10.36.112.30])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id CA04861094;
+        Wed, 12 May 2021 12:55:24 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Mark Gross <mgross@linux.intel.com>,
+        Andy Shevchenko <andy@infradead.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: [PATCH 0/1] platform/x86: intel_int0002_vgpio: Only call enable_irq_wake() when using s2idle
+Date:   Wed, 12 May 2021 14:55:22 +0200
+Message-Id: <20210512125523.55215-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The conversion tools used during DocBook/LaTeX/Markdown->ReST conversion
-and some automatic rules which exists on certain text editors like
-LibreOffice turned ASCII characters into some UTF-8 alternatives that
-are better displayed on html and PDF.
+Hi All,
 
-While it is OK to use UTF-8 characters in Linux, it is better to
-use the ASCII subset instead of using an UTF-8 equivalent character
-as it makes life easier for tools like grep, and are easier to edit
-with the some commonly used text/source code editors.
+This is a rewrite of a patch which I wrote a while ago:
+https://www.spinics.net/lists/kernel/msg3474327.html
 
-Also, Sphinx already do such conversion automatically outside literal blocks:
-   https://docutils.sourceforge.io/docs/user/smartquotes.html
+The old version got nacked because it was changing behavior based on whether
+s2idle or s3 suspend was used at probe-time, while this can be changed at
+run-time.
 
-So, replace the occurences of the following UTF-8 characters:
+This new version instead delays calling enable_irq_wake() until the drivers'
+suspend call-back is called, at which point we know for sure which type of
+suspend is being used (for this suspend/resume cycle), thus addressing the
+problem with the old version.
 
-	- U+00a0 (' '): NO-BREAK SPACE
+Regards,
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/firmware-guide/acpi/dsd/graph.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hans
 
-diff --git a/Documentation/firmware-guide/acpi/dsd/graph.rst b/Documentation/firmware-guide/acpi/dsd/graph.rst
-index 7072db801aeb..954b99ec6b77 100644
---- a/Documentation/firmware-guide/acpi/dsd/graph.rst
-+++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
-@@ -159,7 +159,7 @@ References
- 
- [2] Devicetree. https://www.devicetree.org, referenced 2016-10-03.
- 
--[3] Documentation/devicetree/bindings/graph.txt
-+[3] Documentation/devicetree/bindings/graph.txt
- 
- [4] Device Properties UUID For _DSD.
-     https://www.uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf,
+
+Hans de Goede (1):
+  platform/x86: intel_int0002_vgpio: Only call enable_irq_wake() when
+    using s2idle
+
+ drivers/platform/x86/Kconfig               |  2 +-
+ drivers/platform/x86/intel_int0002_vgpio.c | 80 +++++++++++++++-------
+ 2 files changed, 57 insertions(+), 25 deletions(-)
+
 -- 
-2.30.2
+2.31.1
 
