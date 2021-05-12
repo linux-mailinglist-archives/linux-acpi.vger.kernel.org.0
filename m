@@ -2,148 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AB7237EE80
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 May 2021 00:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E3537EE88
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 May 2021 00:59:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239529AbhELVv6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 May 2021 17:51:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60912 "EHLO
+        id S239841AbhELVwJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 May 2021 17:52:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1388844AbhELUqA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 May 2021 16:46:00 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A97BC06138A
-        for <linux-acpi@vger.kernel.org>; Wed, 12 May 2021 13:44:47 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id x5so24938515wrv.13
-        for <linux-acpi@vger.kernel.org>; Wed, 12 May 2021 13:44:47 -0700 (PDT)
+        with ESMTP id S1388846AbhELUqB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 May 2021 16:46:01 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2CEBC06138B
+        for <linux-acpi@vger.kernel.org>; Wed, 12 May 2021 13:44:48 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id b11-20020a7bc24b0000b0290148da0694ffso370311wmj.2
+        for <linux-acpi@vger.kernel.org>; Wed, 12 May 2021 13:44:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=to:cc:from:subject:message-id:date:user-agent:mime-version
          :content-language:content-transfer-encoding;
-        bh=y0JwxUTKQTGgfTmHi2QNuckl7Wl7GTxaemnVYe6JZxg=;
-        b=IFdVBkgrhe+QPxuXT+6L65m572tATK9h3WC+SUMj6aDsAFjQa7zWvFFXk7nRJWsVZ6
-         o6dxwoxH9IFAHUIFvbce5X2p6xpnavWbAk12QYaxlOq4nPUY3wFmrT313Yns7UFdoITW
-         Gaqc+X9jHDezqpFz2HFOVsEjMIEUjIV7dn5JX4wzQUAecwLjGd0CpIF6McJ2dmr6k+EE
-         bSTDHbpdWkftslr+5KVNmdMfAFcfLjtdZ8btY28SCH1iwTfwPDh2aFqIBJqC93ynUWWD
-         4UTKofReKANZ/oVJpE7GzxPWBVtHOGuCsBjf9aXTSKgNSswq3wDspVhLHSJSlJEyfyck
-         ZQug==
+        bh=+yb83sAXPzhXv25RIUQaT67tLnlk20Moze94tCtifKk=;
+        b=eMh1fBXPQjpGJvFgUR5akHtI87x67BrY2ZkN37Dto4dJPLHAC+BtqYVZhjkJJJCW1/
+         pwcMbuNVv4qzj52mSxzTln2pakSbAqFd4m/ULBzTiMCij+Qv2bXB8TFMvM2JaTdHXolD
+         eQTRSKKmirhn0G/C/uI15AZtetbZ2F3hcuKfR9M1Lv1pmrYbuuvAvD6BJkuTO8rCBnNB
+         PmBlA/fPw0jVYPk54zVO51XkilxPhNuDenlqbkUKIr+/pueQuOaxbq3BH8aKQ5EeylGO
+         lT0iFU1b0ihIhHcuDKk/9pK8beYNsPCQDGU2sn05TUSJGCON7ziaVs54KAWnnqDqiDI1
+         QW6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
          :mime-version:content-language:content-transfer-encoding;
-        bh=y0JwxUTKQTGgfTmHi2QNuckl7Wl7GTxaemnVYe6JZxg=;
-        b=WCPCahLSzMyKfjfYxSvYlOQzwY93OtG+KyPsrYEaDCdOud7p6sBqLm4SMrFLzpujRV
-         VQCRuvAa48hB4rmnpvNlSoMBx0L9+dK6NQtNQ/PDoDGvvP+SbYM1tHl1tcEYAGyM2uLz
-         R7iRpCgCRI1/nu6dbG7sq4QC5pQwEomzonH/1mZs4bmuiI7JRWNfnBCQVNjUWgTg0Iw7
-         UFNbyR9IPZuaA4FvAW2qyMM3xajN1jMqKKjUH8++UroajwM9cOK+XEawfbQOlClKqm+2
-         9TVn/4Oq+JJWYE272OTRQ/woh8Bih0DFDkjy3g60D2CkREYPOjuT81pBGJTyYVsPvUfY
-         cvmw==
-X-Gm-Message-State: AOAM530u80DAZ8+GTF4YGEBRwxF/YUi1nCdlCo8+oFyWGVtaWbZAN7SI
-        GnZ1AL+krgHQrvJgQZI157LNO8N3HbtMqw==
-X-Google-Smtp-Source: ABdhPJx9CSSD8eGfhR020+0ZEGyUJgMmneCU7c9dhHqJokWzA+OyDLRFTGnpigaNweKKvrnHug711A==
-X-Received: by 2002:a5d:54c2:: with SMTP id x2mr46245575wrv.278.1620852286066;
-        Wed, 12 May 2021 13:44:46 -0700 (PDT)
+        bh=+yb83sAXPzhXv25RIUQaT67tLnlk20Moze94tCtifKk=;
+        b=nXg3XnxCfN16SZWrOKhAvKjSbA3mMx1V71u1AycvkirYBncns81Ngum47J+qL6zTfo
+         B5i9sHoijpiL0mgDda1sZSF1WBqlaJPIZbNiynJVGjnY3SG71rUPO62+GWYBtHqfIq2k
+         JN/Me3Ji203NOM5rvVF33ov2pcQvcoTlB1eY+wLP8UaVHf9Ny9ffRZFU1HQsp47Owi27
+         NfYN5L2hg49b/BUnlvV2WNGJp5pg8tP5+tv9Facduvxyku6wWl6/F/pux8WESQ7+5Odc
+         N35KHmL2+EP0MZtIIU0AWNNvnt2ib0ekAV38tsqtvuKD6WjYCsxIBmKb9JD+vo4AVXhD
+         6Jqg==
+X-Gm-Message-State: AOAM533aJ+lFVybedG1uUFRWsIwQGHDPU5ySg8wvtHWi3Bnn+hc0Tbd9
+        ddSvNgaz/RvnJyyO+E/y9sZA6XSciXvhSw==
+X-Google-Smtp-Source: ABdhPJzEmKM/SZfw422Sj09XE5dODp8Hmo9spKydIupG++DZUnTEl/8LgD89htCwUb4m9cRSH2Ypig==
+X-Received: by 2002:a05:600c:4eca:: with SMTP id g10mr303541wmq.180.1620852287346;
+        Wed, 12 May 2021 13:44:47 -0700 (PDT)
 Received: from ?IPv6:2003:ea:8f38:4600:acaa:d921:6cbb:e380? (p200300ea8f384600acaad9216cbbe380.dip0.t-ipconnect.de. [2003:ea:8f38:4600:acaa:d921:6cbb:e380])
-        by smtp.googlemail.com with ESMTPSA id c187sm7113149wmf.23.2021.05.12.13.44.45
+        by smtp.googlemail.com with ESMTPSA id g19sm587780wme.48.2021.05.12.13.44.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 May 2021 13:44:45 -0700 (PDT)
+        Wed, 12 May 2021 13:44:47 -0700 (PDT)
 To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 Cc:     linux-acpi@vger.kernel.org
 From:   Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH] pnp: Remove pnp_alloc
-Message-ID: <2c94aae5-2dd5-0046-bacb-c09770bf5d82@gmail.com>
-Date:   Wed, 12 May 2021 22:36:12 +0200
+Subject: [PATCH] pnp: Switch to dev_dbg
+Message-ID: <31c6013e-1acd-4d2f-f0d6-baec208ff292@gmail.com>
+Date:   Wed, 12 May 2021 22:44:41 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Kernel will complain anyway if it runs out of memory. Therefore we
-don't need the error message in pnp_alloc() and hence can remove it
-and use kzalloc() directly.
+Debug output in dmesg log may confuse users. Therefore let's restrict
+debug output to cases where DEBUG is defined or dynamic debug output
+is enabled for the respective code piece.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- drivers/pnp/base.h      |  1 -
- drivers/pnp/card.c      |  2 +-
- drivers/pnp/core.c      | 12 ------------
- drivers/pnp/interface.c |  4 ++--
- 4 files changed, 3 insertions(+), 16 deletions(-)
+ drivers/pnp/core.c     | 5 ++---
+ drivers/pnp/resource.c | 2 +-
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pnp/base.h b/drivers/pnp/base.h
-index cdcfa39cf..e74a0f6a3 100644
---- a/drivers/pnp/base.h
-+++ b/drivers/pnp/base.h
-@@ -6,7 +6,6 @@
- 
- extern struct mutex pnp_lock;
- extern const struct attribute_group *pnp_dev_groups[];
--void *pnp_alloc(long size);
- 
- int pnp_register_protocol(struct pnp_protocol *protocol);
- void pnp_unregister_protocol(struct pnp_protocol *protocol);
-diff --git a/drivers/pnp/card.c b/drivers/pnp/card.c
-index c2464ee08..2430c14f4 100644
---- a/drivers/pnp/card.c
-+++ b/drivers/pnp/card.c
-@@ -80,7 +80,7 @@ static int card_probe(struct pnp_card *card, struct pnp_card_driver *drv)
- 	if (!id)
- 		return 0;
- 
--	clink = pnp_alloc(sizeof(*clink));
-+	clink = kzalloc(sizeof(*clink), GFP_KERNEL);
- 	if (!clink)
- 		return 0;
- 	clink->card = card;
 diff --git a/drivers/pnp/core.c b/drivers/pnp/core.c
-index a50ab002e..ccdfbf397 100644
+index ccdfbf397..4df5aa6a3 100644
 --- a/drivers/pnp/core.c
 +++ b/drivers/pnp/core.c
-@@ -31,18 +31,6 @@ DEFINE_MUTEX(pnp_lock);
- int pnp_platform_devices;
- EXPORT_SYMBOL(pnp_platform_devices);
+@@ -215,9 +215,8 @@ int pnp_add_device(struct pnp_dev *dev)
+ 	for (id = dev->id; id; id = id->next)
+ 		len += scnprintf(buf + len, sizeof(buf) - len, " %s", id->id);
  
--void *pnp_alloc(long size)
--{
--	void *result;
--
--	result = kzalloc(size, GFP_KERNEL);
--	if (!result) {
--		printk(KERN_ERR "pnp: Out of Memory\n");
--		return NULL;
--	}
--	return result;
--}
--
- static void pnp_remove_protocol(struct pnp_protocol *protocol)
- {
- 	mutex_lock(&pnp_lock);
-diff --git a/drivers/pnp/interface.c b/drivers/pnp/interface.c
-index 602c46893..44efcdb87 100644
---- a/drivers/pnp/interface.c
-+++ b/drivers/pnp/interface.c
-@@ -214,7 +214,7 @@ static ssize_t options_show(struct device *dmdev, struct device_attribute *attr,
- 	int ret, dep = 0, set = 0;
- 	char *indent;
+-	dev_printk(KERN_DEBUG, &dev->dev, "%s device, IDs%s (%s)\n",
+-		   dev->protocol->name, buf,
+-		   dev->active ? "active" : "disabled");
++	dev_dbg(&dev->dev, "%s device, IDs%s (%s)\n", dev->protocol->name, buf,
++		dev->active ? "active" : "disabled");
+ 	return 0;
+ }
  
--	buffer = pnp_alloc(sizeof(pnp_info_buffer_t));
-+	buffer = kzalloc(sizeof(*buffer), GFP_KERNEL);
- 	if (!buffer)
- 		return -ENOMEM;
+diff --git a/drivers/pnp/resource.c b/drivers/pnp/resource.c
+index 70d4ba957..2fa0f7d55 100644
+--- a/drivers/pnp/resource.c
++++ b/drivers/pnp/resource.c
+@@ -540,7 +540,7 @@ struct pnp_resource *pnp_add_irq_resource(struct pnp_dev *dev, int irq,
+ 	res->start = irq;
+ 	res->end = irq;
  
-@@ -257,7 +257,7 @@ static ssize_t resources_show(struct device *dmdev,
- 	if (!dev)
- 		return -EINVAL;
- 
--	buffer = pnp_alloc(sizeof(pnp_info_buffer_t));
-+	buffer = kzalloc(sizeof(*buffer), GFP_KERNEL);
- 	if (!buffer)
- 		return -ENOMEM;
+-	dev_printk(KERN_DEBUG, &dev->dev, "%pR\n", res);
++	dev_dbg(&dev->dev, "%pR\n", res);
+ 	return pnp_res;
+ }
  
 -- 
 2.31.1
