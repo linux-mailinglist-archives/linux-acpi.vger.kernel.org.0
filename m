@@ -2,106 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67E3537EE88
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 May 2021 00:59:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2928E37EE8C
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 May 2021 00:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239841AbhELVwJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 May 2021 17:52:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32844 "EHLO
+        id S240182AbhELVwV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 May 2021 17:52:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1388846AbhELUqB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 May 2021 16:46:01 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2CEBC06138B
-        for <linux-acpi@vger.kernel.org>; Wed, 12 May 2021 13:44:48 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id b11-20020a7bc24b0000b0290148da0694ffso370311wmj.2
-        for <linux-acpi@vger.kernel.org>; Wed, 12 May 2021 13:44:48 -0700 (PDT)
+        with ESMTP id S1390310AbhELVFw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 May 2021 17:05:52 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72C8C061574;
+        Wed, 12 May 2021 14:04:42 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id p20so7373781ljj.8;
+        Wed, 12 May 2021 14:04:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=+yb83sAXPzhXv25RIUQaT67tLnlk20Moze94tCtifKk=;
-        b=eMh1fBXPQjpGJvFgUR5akHtI87x67BrY2ZkN37Dto4dJPLHAC+BtqYVZhjkJJJCW1/
-         pwcMbuNVv4qzj52mSxzTln2pakSbAqFd4m/ULBzTiMCij+Qv2bXB8TFMvM2JaTdHXolD
-         eQTRSKKmirhn0G/C/uI15AZtetbZ2F3hcuKfR9M1Lv1pmrYbuuvAvD6BJkuTO8rCBnNB
-         PmBlA/fPw0jVYPk54zVO51XkilxPhNuDenlqbkUKIr+/pueQuOaxbq3BH8aKQ5EeylGO
-         lT0iFU1b0ihIhHcuDKk/9pK8beYNsPCQDGU2sn05TUSJGCON7ziaVs54KAWnnqDqiDI1
-         QW6w==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xvsZIkVWsK5u6BrUMxfQ72wY7XR0DrZQLiaTA4JvD7g=;
+        b=XHhvInoouIKbOo2bJOSXvuUedIlnJfLZlRWxJ9dD1qlsVtYSPTKFghcMprKwkHb/83
+         RBbcM8rIOShgwC7Ya+8qEMsJNfjbacZZt1X5/O+o6nakLGEP55UhFgbX+7z+gMFreBJf
+         GMdTdh/itOlJw1JY2VOdpS1s16Ykl3XBHdzp2ZM9s6EUPGJtuhIDQ4c766pIK7ZtKG0y
+         zGc5DiaoDCw03iYF37ImONEebTfiL5LA7IlrYXktWK+1cE8NUOdPXxbNvzuZCE4OBjQH
+         t7eGmtGDP0vueSTP4pfltb56+wvvmyn5UJDaaPX8oG/IbGuAZM7ivzPitAy+ZlWT9JA6
+         PrCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=+yb83sAXPzhXv25RIUQaT67tLnlk20Moze94tCtifKk=;
-        b=nXg3XnxCfN16SZWrOKhAvKjSbA3mMx1V71u1AycvkirYBncns81Ngum47J+qL6zTfo
-         B5i9sHoijpiL0mgDda1sZSF1WBqlaJPIZbNiynJVGjnY3SG71rUPO62+GWYBtHqfIq2k
-         JN/Me3Ji203NOM5rvVF33ov2pcQvcoTlB1eY+wLP8UaVHf9Ny9ffRZFU1HQsp47Owi27
-         NfYN5L2hg49b/BUnlvV2WNGJp5pg8tP5+tv9Facduvxyku6wWl6/F/pux8WESQ7+5Odc
-         N35KHmL2+EP0MZtIIU0AWNNvnt2ib0ekAV38tsqtvuKD6WjYCsxIBmKb9JD+vo4AVXhD
-         6Jqg==
-X-Gm-Message-State: AOAM533aJ+lFVybedG1uUFRWsIwQGHDPU5ySg8wvtHWi3Bnn+hc0Tbd9
-        ddSvNgaz/RvnJyyO+E/y9sZA6XSciXvhSw==
-X-Google-Smtp-Source: ABdhPJzEmKM/SZfw422Sj09XE5dODp8Hmo9spKydIupG++DZUnTEl/8LgD89htCwUb4m9cRSH2Ypig==
-X-Received: by 2002:a05:600c:4eca:: with SMTP id g10mr303541wmq.180.1620852287346;
-        Wed, 12 May 2021 13:44:47 -0700 (PDT)
-Received: from ?IPv6:2003:ea:8f38:4600:acaa:d921:6cbb:e380? (p200300ea8f384600acaad9216cbbe380.dip0.t-ipconnect.de. [2003:ea:8f38:4600:acaa:d921:6cbb:e380])
-        by smtp.googlemail.com with ESMTPSA id g19sm587780wme.48.2021.05.12.13.44.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 May 2021 13:44:47 -0700 (PDT)
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     linux-acpi@vger.kernel.org
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH] pnp: Switch to dev_dbg
-Message-ID: <31c6013e-1acd-4d2f-f0d6-baec208ff292@gmail.com>
-Date:   Wed, 12 May 2021 22:44:41 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xvsZIkVWsK5u6BrUMxfQ72wY7XR0DrZQLiaTA4JvD7g=;
+        b=WjVxDLMVqcy0N6Vyfif4k598Ou5R2JVA8bDtenqBReLLiau4ZMlUSIPkKa5sDAMZxX
+         my8kty61RJhNNL37Z/vLXOl4k4UZ9Xdbz6zH/KuiJ2E0g6bme96Kg2AA3rELKqmckj2m
+         WCVKSW6btbNn5F2GO5bQ1/a+u72R9a43VOFmyc8yobKffDEJlRNygy/FtZf0pwh/cPDi
+         wl7UFVE8nhqtr4llwtMo07RrmEG57GnKeUp4hbOLLQg/IrVkobHzsyg/pSAPXx3JDUwR
+         9vZXV94OKOG5siybIar3zpA+urag6qdvZ7uwvaaY8TkHlLve6882E4GptGBqyMfFpn5U
+         roVQ==
+X-Gm-Message-State: AOAM530BTvleDFdtjfML5tbI3jliPejkTGiX9/YpHthu8MLn4pLvrXUh
+        aKauksAZSxKI4AgsLTEeHDM=
+X-Google-Smtp-Source: ABdhPJzRZnR8Ei6cnCgoy9dRd7O62EfPYJkfJK6rRlFqhhcFWHai6oGeIxpnmmPZ786vMFzr+qUtFw==
+X-Received: by 2002:a2e:8646:: with SMTP id i6mr30471091ljj.391.1620853481256;
+        Wed, 12 May 2021 14:04:41 -0700 (PDT)
+Received: from xws.localdomain ([37.58.58.229])
+        by smtp.gmail.com with ESMTPSA id q65sm141755ljb.34.2021.05.12.14.04.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 May 2021 14:04:40 -0700 (PDT)
+From:   Maximilian Luz <luzmaximilian@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-serial@vger.kernel.org, stable@vger.kernel.org,
+        Sachi King <nakato@nakato.io>
+Subject: [PATCH] serial: 8250_dw: Add device HID for new AMD UART controller
+Date:   Wed, 12 May 2021 23:04:13 +0200
+Message-Id: <20210512210413.1982933-1-luzmaximilian@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Debug output in dmesg log may confuse users. Therefore let's restrict
-debug output to cases where DEBUG is defined or dynamic debug output
-is enabled for the respective code piece.
+Add device HID AMDI0022 to the AMD UART controller driver match table
+and create a platform device for it. This controller can be found on
+Microsoft Surface Laptop 4 devices and seems similar enough that we can
+just copy the existing AMDI0020 entries.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: <stable@vger.kernel.org> # 5.10+
+Tested-by: Sachi King <nakato@nakato.io>
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
 ---
- drivers/pnp/core.c     | 5 ++---
- drivers/pnp/resource.c | 2 +-
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/acpi/acpi_apd.c           | 1 +
+ drivers/tty/serial/8250/8250_dw.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/pnp/core.c b/drivers/pnp/core.c
-index ccdfbf397..4df5aa6a3 100644
---- a/drivers/pnp/core.c
-+++ b/drivers/pnp/core.c
-@@ -215,9 +215,8 @@ int pnp_add_device(struct pnp_dev *dev)
- 	for (id = dev->id; id; id = id->next)
- 		len += scnprintf(buf + len, sizeof(buf) - len, " %s", id->id);
- 
--	dev_printk(KERN_DEBUG, &dev->dev, "%s device, IDs%s (%s)\n",
--		   dev->protocol->name, buf,
--		   dev->active ? "active" : "disabled");
-+	dev_dbg(&dev->dev, "%s device, IDs%s (%s)\n", dev->protocol->name, buf,
-+		dev->active ? "active" : "disabled");
- 	return 0;
- }
- 
-diff --git a/drivers/pnp/resource.c b/drivers/pnp/resource.c
-index 70d4ba957..2fa0f7d55 100644
---- a/drivers/pnp/resource.c
-+++ b/drivers/pnp/resource.c
-@@ -540,7 +540,7 @@ struct pnp_resource *pnp_add_irq_resource(struct pnp_dev *dev, int irq,
- 	res->start = irq;
- 	res->end = irq;
- 
--	dev_printk(KERN_DEBUG, &dev->dev, "%pR\n", res);
-+	dev_dbg(&dev->dev, "%pR\n", res);
- 	return pnp_res;
- }
- 
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 0ec5b3f69112..6e02448d15d9 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -226,6 +226,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
+ 	{ "AMDI0010", APD_ADDR(wt_i2c_desc) },
+ 	{ "AMD0020", APD_ADDR(cz_uart_desc) },
+ 	{ "AMDI0020", APD_ADDR(cz_uart_desc) },
++	{ "AMDI0022", APD_ADDR(cz_uart_desc) },
+ 	{ "AMD0030", },
+ 	{ "AMD0040", APD_ADDR(fch_misc_desc)},
+ 	{ "HYGO0010", APD_ADDR(wt_i2c_desc) },
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index 9e204f9b799a..a3a0154da567 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -714,6 +714,7 @@ static const struct acpi_device_id dw8250_acpi_match[] = {
+ 	{ "APMC0D08", 0},
+ 	{ "AMD0020", 0 },
+ 	{ "AMDI0020", 0 },
++	{ "AMDI0022", 0 },
+ 	{ "BRCM2032", 0 },
+ 	{ "HISI0031", 0 },
+ 	{ },
 -- 
 2.31.1
 
