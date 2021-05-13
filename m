@@ -2,366 +2,199 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8FFC37F861
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 May 2021 15:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B837E37F8FE
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 May 2021 15:46:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232807AbhEMNGu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 May 2021 09:06:50 -0400
-Received: from mail-bn7nam10on2073.outbound.protection.outlook.com ([40.107.92.73]:7963
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229466AbhEMNGt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 13 May 2021 09:06:49 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HAlkvz7H9e7ilSrT8kN5wZuP6vHxgRK7v4yShnMhLmfir6Ngcg0UuZBU3ZxjNEPGOuY8FFiUbmiwe0PFSK1/q6bTM2D01UR6gQYxpC2VSFGMW+7rgiN8AXEV8Sk+SXdk09nqgwVNnIkhb8HU0JJK47Ne9DeGH7uFBSUKmWnfisyMO54phHlyVOdfuCnJ5RPRbYa9AomObxyE4ARdnBvuFZlcANvB/fW1JgnipNABrK2EGzt0kIhHoKEzTExMlmTScv0yNM0iSx4zcwRHdwPo9z0EJA8YPMK5sAMkA7Isk+q01mn6Ih2EoPJFFzz6RujlXnflyB13rzcDIRaM25+Z1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=76Zq61P0Ebyj7qQQak1CGWtIh36GYEZVGC2iMqGhMSM=;
- b=m/EEb9zVIK9TEAQDBw3QqvmAugPFLoKyXEoMoocNnHVaSynwvxc+nfPTUuU9UHhGEbzxLAgeFxn1+hCF+uNtp4X1Bg3fKzfDMfq7/CL9Yy3pjNb8Nq99Dqcg1O+aimpEML3P0i+dnCoobbp1iEbolVd/cwjMPBpZcX7lb/P21eBWHi6yObt8LUsGxo6cKuWmeCgyPUW6URgAma7qH2Wwz1r5fBeDd//f96BkaBRj2/3VUi4ZBQ0kSP1fWu+cvmop0hVM1/XcWg8It23dcihHxV/O8twFM7r9XANdMW7xZBezvlCbFe7VPpbFK+y52e4QvOqja/NS8RsGi1rluoa6ZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.112.34) smtp.rcpttodomain=rjwysocki.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=76Zq61P0Ebyj7qQQak1CGWtIh36GYEZVGC2iMqGhMSM=;
- b=UkvEQesVv1d88fVhrlfbVcHG9tJ8mvHt4qBzmVJqsW5/IuL7LHNFILm7njC8dMFv3cVZRFz/ipp7ZVI9pq75s0euJJFpniqSTFD9ff5H/0i0ZN0Q3OiAGelJwrqc2WN7jXvi501rVLppauBn+ZjWYdXTSxqmmC9iCWW0GnNmrtd0xCxy2w5NZyAchxd0tmVROmi8Ew71gWNWdjA7FvFi01rZMscM8omxB92aVEZxQETj0QdrQAjBcdL8S0dNToLfofHoMPhOEm5X7TL2CGxh/F5vrqc9nOg6v5EWwH/8mI4qZ0rkXSST1/TBs1gJes1IOJlDcTl8U12Rs7mW7PPrrg==
-Received: from MWHPR11CA0011.namprd11.prod.outlook.com (2603:10b6:301:1::21)
- by CH2PR12MB3832.namprd12.prod.outlook.com (2603:10b6:610:24::29) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.25; Thu, 13 May
- 2021 13:05:37 +0000
-Received: from CO1NAM11FT003.eop-nam11.prod.protection.outlook.com
- (2603:10b6:301:1:cafe::8) by MWHPR11CA0011.outlook.office365.com
- (2603:10b6:301:1::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.25 via Frontend
- Transport; Thu, 13 May 2021 13:05:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.112.34)
- smtp.mailfrom=nvidia.com; rjwysocki.net; dkim=none (message not signed)
- header.d=none;rjwysocki.net; dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.112.34 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.112.34; helo=mail.nvidia.com;
-Received: from mail.nvidia.com (216.228.112.34) by
- CO1NAM11FT003.mail.protection.outlook.com (10.13.175.93) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.4129.25 via Frontend Transport; Thu, 13 May 2021 13:05:36 +0000
-Received: from [10.25.74.214] (172.20.145.6) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 13 May
- 2021 13:05:33 +0000
-Subject: Re: [PATCH V3 2/2] PCI: Add MCFG quirks for Tegra194 host controllers
-To:     Qu Wenruo <quwenruo.btrfs@gmx.com>, <bhelgaas@google.com>,
-        <lorenzo.pieralisi@arm.com>, <rjw@rjwysocki.net>,
-        <lenb@kernel.org>, <andrew.murray@arm.com>, <treding@nvidia.com>,
-        <jonathanh@nvidia.com>
-CC:     <linux-tegra@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kthota@nvidia.com>, <mmaddireddy@nvidia.com>, <sagar.tv@gmail.com>
-References: <20200106082709.14370-1-vidyas@nvidia.com>
- <20200110191500.9538-1-vidyas@nvidia.com>
- <20200110191500.9538-3-vidyas@nvidia.com>
- <bba8c172-bade-d6fe-d167-3fbc2c917c93@gmx.com>
-From:   Vidya Sagar <vidyas@nvidia.com>
-Message-ID: <babcdd00-0ff5-838a-f8e6-612d2264c2cb@nvidia.com>
-Date:   Thu, 13 May 2021 18:35:30 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+        id S234114AbhEMNrc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 May 2021 09:47:32 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:2661 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231159AbhEMNrc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 May 2021 09:47:32 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FgtDQ6dQ2zmVcB;
+        Thu, 13 May 2021 21:44:06 +0800 (CST)
+Received: from A2006125610.china.huawei.com (10.47.81.63) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.498.0; Thu, 13 May 2021 21:46:10 +0800
+From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+To:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
+CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
+        <joro@8bytes.org>, <robin.murphy@arm.com>,
+        <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
+        <steven.price@arm.com>, <Sami.Mujawar@arm.com>,
+        <jon@solid-run.com>, <eric.auger@redhat.com>,
+        <yangyicong@huawei.com>
+Subject: [PATCH v4 0/8] ACPI/IORT: Support for IORT RMR node
+Date:   Thu, 13 May 2021 14:45:42 +0100
+Message-ID: <20210513134550.2117-1-shameerali.kolothum.thodi@huawei.com>
+X-Mailer: git-send-email 2.12.0.windows.1
 MIME-Version: 1.0
-In-Reply-To: <bba8c172-bade-d6fe-d167-3fbc2c917c93@gmx.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [172.20.145.6]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2720ee07-fc73-4433-839f-08d9160fcd06
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3832:
-X-Microsoft-Antispam-PRVS: <CH2PR12MB383258BFC331A82C3E5C1655B8519@CH2PR12MB3832.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: nlQ+PJqmDKcFuKSU1qmbxA/9bpuKrap+1e4oj12eQY9YghSgKPCTymVyKdgUiax/dS/ajgwmjpYB6gRK+uNNgLtL13sAbDoyaY2kxYTaLGD0ynPtkLOq5HULTRJBKESWKr/U6FANy/3vVsbxKmp0JJRoo80jS0M7R/8BkVdruvRAQIcZBiODXk5Nbp4dGqCvqjNCb/E2X0zyswmjGzUEhC5nsjBhvpDYIZQ5PakBHrxry1YbMjfxdiTUjq+K1mGXQY/kWbG2IJMRR1louhv8akv8SA5BLcIycbpy7LzHCno9BP6E+93nBhRwprLh+SOOH4Lujb5NiSptGIUH2HoY7fWK/0CGEE0qKHSku9UzyzVcxiUqQpUoPuoVJPY4+RjyXq3j88cR9HwEuV7E3BmNP8mRgf2JL7UMa2ngE2S3rbZQxFNqI+ukbM7fMg8Owk+uQT1h/NO1iB7UBymsXXhZfVTfBwcHA2nQervK6Gxosu7/4d3JowsczJxdfyrMCPZVMF6aSlwoRhvKdT+SMAD8QzCuyEeZpRFyG0xoYL0/WnHeUR6Q8yNgU1H4bCNu+/0dasmIp5k4CBLqxtPZLJT57vvXuHbAHm7Ggzdbw+9pgLYlv4U7NKgFEcOpCY/8ABOn0syzen8I+KLXqNvX18v0zr9nj3mzP2tIryXu5DZxxsAgc4rZl6vmrP9KDthPIy6I
-X-Forefront-Antispam-Report: CIP:216.228.112.34;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:schybrid03.nvidia.com;CAT:NONE;SFS:(4636009)(396003)(376002)(39860400002)(136003)(346002)(36840700001)(46966006)(82740400003)(36860700001)(16526019)(47076005)(186003)(5660300002)(54906003)(86362001)(36756003)(7416002)(82310400003)(36906005)(16576012)(31696002)(336012)(478600001)(110136005)(316002)(7636003)(53546011)(83380400001)(2906002)(8936002)(8676002)(6636002)(426003)(31686004)(70586007)(356005)(70206006)(4326008)(2616005)(26005)(43740500002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2021 13:05:36.8313
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2720ee07-fc73-4433-839f-08d9160fcd06
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.112.34];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT003.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB3832
+X-Originating-IP: [10.47.81.63]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi,
 
+v3 -->v4
+-Included the SMMUv2 SMR bypass install changes suggested by
+ Steve(patch #7)
+-As per Robin's comments, RMR reserve implementation is now
+ more generic  (patch #8) and dropped v3 patches 8 and 10.
+-Rebase to 5.13-rc1 
 
-On 5/13/2021 3:10 PM, Qu Wenruo wrote:
-> External email: Use caution opening links or attachments
-> 
-> 
-> On 2020/1/11 上午3:15, Vidya Sagar wrote:
->> The PCIe controller in Tegra194 SoC is not completely ECAM-compliant.
->> With the current hardware design limitations in place, ECAM can be 
->> enabled
->> only for one controller (C5 controller to be precise) with bus numbers
->> starting from 160 instead of 0. A different approach is taken to avoid 
->> this
->> abnormal way of enabling ECAM for just one controller but to enable
->> configuration space access for all the other controllers. In this 
->> approach,
->> ops are added through MCFG quirk mechanism which access the configuration
->> spaces by dynamically programming iATU (internal AddressTranslation Unit)
->> to generate respective configuration accesses just like the way it is
->> done in DesignWare core sub-system.
->>
->> Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
->> Reported-by: kbuild test robot <lkp@intel.com>
-> 
-> Hi Vidya,
-> 
-> Mind to update the patch so that guys can test booting tegra194 boards
-> using ACPI with PCIE enabled?
-The latest version of this patch is merged and is available in linux-next.
+The whole series is available here,
+https://github.com/hisilicon/kernel-dev/tree/private-v5.13-rc1-rmr-v4-ext
 
-> 
-> I tried to backport this to current kernel, there are some simple
-> conflicts like pci_ecam_ops now are definied with const.
-> 
-> But "PCIE_ATU_REGION_INDEX0" is not definited anywhere, not even in the
-> first patch, thus unable to compile at all.
-> 
-> 
-> I have already tried to boot the Xavier AGX using device tree (5.12-rc8
-> kernel), although I can boot it from PCIE NVME using upstream device
-> tree, but there seems to be something wrong, as just trying to push
-> kernel git to the fs on NVME can lead to random crash.
-> 
-> Thus if we can test booting using ACPI with PCIE, maybe we can find if
-> it's really the upstream device tree causing the problem.
-> 
-> Thanks,
-> Qu
->> ---
->> V3:
->> * Removed MCFG address hardcoding in pci_mcfg.c file
->> * Started using 'dbi_base' for accessing root port's own config space
->> * and using 'config_base' for accessing config space of downstream 
->> hierarchy
->>
->> V2:
->> * Fixed build issues reported by kbuild test bot
->>
->>   drivers/acpi/pci_mcfg.c                    |   7 ++
->>   drivers/pci/controller/dwc/Kconfig         |   3 +-
->>   drivers/pci/controller/dwc/Makefile        |   2 +-
->>   drivers/pci/controller/dwc/pcie-tegra194.c | 102 +++++++++++++++++++++
->>   include/linux/pci-ecam.h                   |   1 +
->>   5 files changed, 113 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
->> index 6b347d9920cc..707181408173 100644
->> --- a/drivers/acpi/pci_mcfg.c
->> +++ b/drivers/acpi/pci_mcfg.c
->> @@ -116,6 +116,13 @@ static struct mcfg_fixup mcfg_quirks[] = {
->>       THUNDER_ECAM_QUIRK(2, 12),
->>       THUNDER_ECAM_QUIRK(2, 13),
->>
->> +     { "NVIDIA", "TEGRA194", 1, 0, MCFG_BUS_ANY, &tegra194_pcie_ops},
->> +     { "NVIDIA", "TEGRA194", 1, 1, MCFG_BUS_ANY, &tegra194_pcie_ops},
->> +     { "NVIDIA", "TEGRA194", 1, 2, MCFG_BUS_ANY, &tegra194_pcie_ops},
->> +     { "NVIDIA", "TEGRA194", 1, 3, MCFG_BUS_ANY, &tegra194_pcie_ops},
->> +     { "NVIDIA", "TEGRA194", 1, 4, MCFG_BUS_ANY, &tegra194_pcie_ops},
->> +     { "NVIDIA", "TEGRA194", 1, 5, MCFG_BUS_ANY, &tegra194_pcie_ops},
->> +
->>   #define XGENE_V1_ECAM_MCFG(rev, seg) \
->>       {"APM   ", "XGENE   ", rev, seg, MCFG_BUS_ANY, \
->>               &xgene_v1_pcie_ecam_ops }
->> diff --git a/drivers/pci/controller/dwc/Kconfig 
->> b/drivers/pci/controller/dwc/Kconfig
->> index 0830dfcfa43a..f5b9e75aceed 100644
->> --- a/drivers/pci/controller/dwc/Kconfig
->> +++ b/drivers/pci/controller/dwc/Kconfig
->> @@ -255,7 +255,8 @@ config PCIE_TEGRA194
->>       select PHY_TEGRA194_P2U
->>       help
->>         Say Y here if you want support for DesignWare core based PCIe 
->> host
->> -       controller found in NVIDIA Tegra194 SoC.
->> +       controller found in NVIDIA Tegra194 SoC. ACPI platforms with 
->> Tegra194
->> +       don't need to enable this.
->>
->>   config PCIE_UNIPHIER
->>       bool "Socionext UniPhier PCIe controllers"
->> diff --git a/drivers/pci/controller/dwc/Makefile 
->> b/drivers/pci/controller/dwc/Makefile
->> index 8a637cfcf6e9..76a6c52b8500 100644
->> --- a/drivers/pci/controller/dwc/Makefile
->> +++ b/drivers/pci/controller/dwc/Makefile
->> @@ -17,7 +17,6 @@ obj-$(CONFIG_PCIE_INTEL_GW) += pcie-intel-gw.o
->>   obj-$(CONFIG_PCIE_KIRIN) += pcie-kirin.o
->>   obj-$(CONFIG_PCIE_HISI_STB) += pcie-histb.o
->>   obj-$(CONFIG_PCI_MESON) += pci-meson.o
->> -obj-$(CONFIG_PCIE_TEGRA194) += pcie-tegra194.o
->>   obj-$(CONFIG_PCIE_UNIPHIER) += pcie-uniphier.o
->>
->>   # The following drivers are for devices that use the generic ACPI
->> @@ -33,4 +32,5 @@ obj-$(CONFIG_PCIE_UNIPHIER) += pcie-uniphier.o
->>   ifdef CONFIG_PCI
->>   obj-$(CONFIG_ARM64) += pcie-al.o
->>   obj-$(CONFIG_ARM64) += pcie-hisi.o
->> +obj-$(CONFIG_ARM64) += pcie-tegra194.o
->>   endif
->> diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c 
->> b/drivers/pci/controller/dwc/pcie-tegra194.c
->> index cbe95f0ea0ca..660f55caa8be 100644
->> --- a/drivers/pci/controller/dwc/pcie-tegra194.c
->> +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
->> @@ -21,6 +21,8 @@
->>   #include <linux/of_irq.h>
->>   #include <linux/of_pci.h>
->>   #include <linux/pci.h>
->> +#include <linux/pci-acpi.h>
->> +#include <linux/pci-ecam.h>
->>   #include <linux/phy/phy.h>
->>   #include <linux/pinctrl/consumer.h>
->>   #include <linux/platform_device.h>
->> @@ -285,6 +287,103 @@ struct tegra_pcie_dw {
->>       struct dentry *debugfs;
->>   };
->>
->> +#if defined(CONFIG_ACPI) && defined(CONFIG_PCI_QUIRKS)
->> +struct tegra194_pcie_acpi  {
->> +     void __iomem *config_base;
->> +     void __iomem *iatu_base;
->> +     void __iomem *dbi_base;
->> +};
->> +
->> +static int tegra194_acpi_init(struct pci_config_window *cfg)
->> +{
->> +     struct device *dev = cfg->parent;
->> +     struct tegra194_pcie_acpi *pcie;
->> +
->> +     pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
->> +     if (!pcie)
->> +             return -ENOMEM;
->> +
->> +     pcie->config_base = cfg->win;
->> +     pcie->iatu_base = cfg->win + SZ_256K;
->> +     pcie->dbi_base = cfg->win + SZ_512K;
->> +     cfg->priv = pcie;
->> +
->> +     return 0;
->> +}
->> +
->> +static inline void atu_reg_write(struct tegra194_pcie_acpi *pcie, int 
->> index,
->> +                              u32 val, u32 reg)
->> +{
->> +     u32 offset = PCIE_GET_ATU_OUTB_UNR_REG_OFFSET(index);
->> +
->> +     writel(val, pcie->iatu_base + offset + reg);
->> +}
->> +
->> +static void program_outbound_atu(struct tegra194_pcie_acpi *pcie, int 
->> index,
->> +                              int type, u64 cpu_addr, u64 pci_addr, 
->> u64 size)
->> +{
->> +     atu_reg_write(pcie, index, lower_32_bits(cpu_addr),
->> +                   PCIE_ATU_LOWER_BASE);
->> +     atu_reg_write(pcie, index, upper_32_bits(cpu_addr),
->> +                   PCIE_ATU_UPPER_BASE);
->> +     atu_reg_write(pcie, index, lower_32_bits(pci_addr),
->> +                   PCIE_ATU_LOWER_TARGET);
->> +     atu_reg_write(pcie, index, lower_32_bits(cpu_addr + size - 1),
->> +                   PCIE_ATU_LIMIT);
->> +     atu_reg_write(pcie, index, upper_32_bits(pci_addr),
->> +                   PCIE_ATU_UPPER_TARGET);
->> +     atu_reg_write(pcie, index, type, PCIE_ATU_CR1);
->> +     atu_reg_write(pcie, index, PCIE_ATU_ENABLE, PCIE_ATU_CR2);
->> +}
->> +
->> +static void __iomem *tegra194_map_bus(struct pci_bus *bus,
->> +                                   unsigned int devfn, int where)
->> +{
->> +     struct pci_config_window *cfg = bus->sysdata;
->> +     struct tegra194_pcie_acpi *pcie = cfg->priv;
->> +     u32 busdev;
->> +     int type;
->> +
->> +     if (bus->number < cfg->busr.start || bus->number > cfg->busr.end)
->> +             return NULL;
->> +
->> +     if (bus->number == cfg->busr.start) {
->> +             if (PCI_SLOT(devfn) == 0)
->> +                     return pcie->dbi_base + where;
->> +             else
->> +                     return NULL;
->> +     }
->> +
->> +     busdev = PCIE_ATU_BUS(bus->number) | 
->> PCIE_ATU_DEV(PCI_SLOT(devfn)) |
->> +              PCIE_ATU_FUNC(PCI_FUNC(devfn));
->> +
->> +     if (bus->parent->number == cfg->busr.start) {
->> +             if (PCI_SLOT(devfn) == 0)
->> +                     type = PCIE_ATU_TYPE_CFG0;
->> +             else
->> +                     return NULL;
->> +     } else {
->> +             type = PCIE_ATU_TYPE_CFG1;
->> +     }
->> +
->> +     program_outbound_atu(pcie, PCIE_ATU_REGION_INDEX0, type,
->> +                          cfg->res.start, busdev, SZ_256K);
->> +     return (void __iomem *)(pcie->config_base + where);
->> +}
->> +
->> +struct pci_ecam_ops tegra194_pcie_ops = {
->> +     .bus_shift      = 20,
->> +     .init           = tegra194_acpi_init,
->> +     .pci_ops        = {
->> +             .map_bus        = tegra194_map_bus,
->> +             .read           = pci_generic_config_read,
->> +             .write          = pci_generic_config_write,
->> +     }
->> +};
->> +#endif /* defined(CONFIG_ACPI) && defined(CONFIG_PCI_QUIRKS) */
->> +
->> +#ifdef CONFIG_PCIE_TEGRA194
->> +
->>   static inline struct tegra_pcie_dw *to_tegra_pcie(struct dw_pcie *pci)
->>   {
->>       return container_of(pci, struct tegra_pcie_dw, pci);
->> @@ -1728,3 +1827,6 @@ MODULE_DEVICE_TABLE(of, tegra_pcie_dw_of_match);
->>   MODULE_AUTHOR("Vidya Sagar <vidyas@nvidia.com>");
->>   MODULE_DESCRIPTION("NVIDIA PCIe host controller driver");
->>   MODULE_LICENSE("GPL v2");
->> +
->> +#endif /* CONFIG_PCIE_TEGRA194 */
->> +
->> diff --git a/include/linux/pci-ecam.h b/include/linux/pci-ecam.h
->> index a73164c85e78..6156140dcbb6 100644
->> --- a/include/linux/pci-ecam.h
->> +++ b/include/linux/pci-ecam.h
->> @@ -57,6 +57,7 @@ extern struct pci_ecam_ops pci_thunder_ecam_ops; /* 
->> Cavium ThunderX 1.x */
->>   extern struct pci_ecam_ops xgene_v1_pcie_ecam_ops; /* APM X-Gene 
->> PCIe v1 */
->>   extern struct pci_ecam_ops xgene_v2_pcie_ecam_ops; /* APM X-Gene 
->> PCIe v2.x */
->>   extern struct pci_ecam_ops al_pcie_ops; /* Amazon Annapurna Labs 
->> PCIe */
->> +extern struct pci_ecam_ops tegra194_pcie_ops; /* Tegra194 PCIe */
->>   #endif
->>
->>   #ifdef CONFIG_PCI_HOST_COMMON
->>
+RFC v2 --> v3
+ -Dropped RFC tag as the ACPICA header changes are now ready to be
+  part of 5.13[0]. But this series still has a dependency on that patch.
+ -Added IORT E.b related changes(node flags, _DSM function 5 checks for
+  PCIe).
+ -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
+  discussion here[1].
+ -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!) 
+
+Sanity tested on a HiSilicon D06. Further testing and feedback is greatly
+appreciated.
+
+https://github.com/hisilicon/kernel-dev/tree/private-v5.12-rc8-rmr-v3
+
+Thanks,
+Shameer
+
+[0] https://lore.kernel.org/linux-acpi/20210406213028.718796-22-erik.kaneda@intel.com/
+[1] https://op-lists.linaro.org/pipermail/linaro-open-discussions/2021-April/000150.html
+
+RFC v1 --> v2:
+ - Added a generic interface for IOMMU drivers to retrieve all the 
+   RMR info associated with a given IOMMU.
+ - SMMUv3 driver gets the RMR list during probe() and installs
+   bypass STEs for all the SIDs in the RMR list. This is to keep
+   the ongoing traffic alive(if any) during SMMUv3 reset. This is
+   based on the suggestions received for v1 to take care of the
+   EFI framebuffer use case. Only sanity tested for now.
+ - During the probe/attach device, SMMUv3 driver reserves any
+   RMR region associated with the device such that there is a unity
+   mapping for them in SMMU.
+---    
+
+From RFC v1:
+-------------
+The series adds support to IORT RMR nodes specified in IORT
+Revision E -ARM DEN 0049E[0]. RMR nodes are used to describe memory
+ranges that are used by endpoints and require a unity mapping
+in SMMU.
+
+We have faced issues with 3408iMR RAID controller cards which
+fail to boot when SMMU is enabled. This is because these controllers
+make use of host memory for various caching related purposes and when
+SMMU is enabled the iMR firmware fails to access these memory regions
+as there is no mapping for them. IORT RMR provides a way for UEFI to
+describe and report these memory regions so that the kernel can make
+a unity mapping for these in SMMU.
+
+Tests:
+
+With a UEFI, that reports the RMR for the dev,
+....
+[16F0h 5872   1]                         Type : 06
+[16F1h 5873   2]                       Length : 007C
+[16F3h 5875   1]                     Revision : 00
+[1038h 0056   2]                     Reserved : 00000000
+[1038h 0056   2]                   Identifier : 00000000
+[16F8h 5880   4]                Mapping Count : 00000001
+[16FCh 5884   4]               Mapping Offset : 00000040
+
+[1700h 5888   4]    Number of RMR Descriptors : 00000002
+[1704h 5892   4]        RMR Descriptor Offset : 00000018
+
+[1708h 5896   8]          Base Address of RMR : 0000E6400000
+[1710h 5904   8]                Length of RMR : 000000100000
+[1718h 5912   4]                     Reserved : 00000000
+
+[171Ch 5916   8]          Base Address of RMR : 0000000027B00000
+[1724h 5924   8]                Length of RMR : 0000000000C00000
+[172Ch 5932   4]                     Reserved : 00000000
+
+[1730h 5936   4]                   Input base : 00000000
+[1734h 5940   4]                     ID Count : 00000001
+[1738h 5944   4]                  Output Base : 00000003
+[173Ch 5948   4]             Output Reference : 00000064
+[1740h 5952   4]        Flags (decoded below) : 00000001
+                               Single Mapping : 1
+...
+
+Without the series the RAID controller initialization fails as
+below,
+
+...
+[   12.631117] megaraid_sas 0000:03:00.0: FW supports sync cache        : Yes   
+[   12.637360] megaraid_sas 0000:03:00.0: megasas_disable_intr_fusion is called outbound_intr_mask:0x40000009                                                   
+[   18.776377] megaraid_sas 0000:03:00.0: Init cmd return status FAILED for SCSI host 0                                                                         
+[   23.019383] megaraid_sas 0000:03:00.0: Waiting for FW to come to ready state 
+[  106.684281] megaraid_sas 0000:03:00.0: FW in FAULT state, Fault code:0x10000 subcode:0x0 func:megasas_transition_to_ready                                    
+[  106.695186] megaraid_sas 0000:03:00.0: System Register set:                  
+[  106.889787] megaraid_sas 0000:03:00.0: Failed to transition controller to ready for scsi0.                                                                   
+[  106.910475] megaraid_sas 0000:03:00.0: Failed from megasas_init_fw 6407      
+estuary:/$
+
+With the series, now the kernel has direct mapping for the dev as
+below,
+
+estuary:/$ cat /sys/kernel/iommu_groups/0/reserved_regions                      
+0x0000000008000000 0x00000000080fffff msi                                       
+0x0000000027b00000 0x00000000286fffff direct                                    
+0x00000000e6400000 0x00000000e64fffff direct                                    
+estuary:/$
+
+....
+[   12.254318] megaraid_sas 0000:03:00.0: megasas_disable_intr_fusion is called outbound_intr_mask:0x40000009                                                   
+[   12.739089] megaraid_sas 0000:03:00.0: FW provided supportMaxExtLDs: 0      max_lds: 32                                                                      
+[   12.746628] megaraid_sas 0000:03:00.0: controller type       : iMR(0MB)      
+[   12.752694] megaraid_sas 0000:03:00.0: Online Controller Reset(OCR)  : Enabled                                                                               
+[   12.759798] megaraid_sas 0000:03:00.0: Secure JBOD support   : Yes           
+[   12.765778] megaraid_sas 0000:03:00.0: NVMe passthru support : Yes           
+[   12.771931] megaraid_sas 0000:03:00.0: FW provided TM TaskAbort/Reset timeou: 6 secs/60 secs                                                                 
+[   12.780503] megaraid_sas 0000:03:00.0: JBOD sequence map support     : Yes   
+[   12.787000] megaraid_sas 0000:03:00.0: PCI Lane Margining support    : No    
+[   12.819179] megaraid_sas 0000:03:00.0: NVME page size        : (4096)        
+[   12.825672] megaraid_sas 0000:03:00.0: megasas_enable_intr_fusion is called outbound_intr_mask:0x40000000                                                    
+[   12.835199] megaraid_sas 0000:03:00.0: INIT adapter done                     
+[   12.873932] megaraid_sas 0000:03:00.0: pci id                : (0x1000)/(0x0017)/(0x19e5)/(0xd213)                                                           
+[   12.881644] megaraid_sas 0000:03:00.0: unevenspan support    : no            
+[   12.887451] megaraid_sas 0000:03:00.0: firmware crash dump   : no            
+[   12.893344] megaraid_sas 0000:03:00.0: JBOD sequence map     : enabled       
+
+RAID controller init is now success and can detect the drives
+attached as well.
+
+Jon Nettleton (1):
+  iommu/arm-smmu: Get associated RMR info and install bypass SMR
+
+Shameer Kolothum (7):
+  ACPI/IORT: Add support for RMR node parsing
+  iommu/dma: Introduce generic helper to retrieve RMR info
+  ACPI/IORT: Add a helper to retrieve RMR memory regions
+  iommu/arm-smmu-v3: Introduce strtab init helper
+  iommu/arm-smmu-v3: Add bypass flag to arm_smmu_write_strtab_ent()
+  iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
+  iommu/dma: Reserve any RMR regions associated with a dev
+
+ drivers/acpi/arm64/iort.c                   | 144 +++++++++++++++++++-
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  69 +++++++---
+ drivers/iommu/arm/arm-smmu/arm-smmu.c       |  64 +++++++++
+ drivers/iommu/dma-iommu.c                   | 102 +++++++++++++-
+ include/linux/acpi_iort.h                   |   7 +
+ include/linux/dma-iommu.h                   |  10 ++
+ include/linux/iommu.h                       |  19 +++
+ 7 files changed, 392 insertions(+), 23 deletions(-)
+
+-- 
+2.17.1
+
