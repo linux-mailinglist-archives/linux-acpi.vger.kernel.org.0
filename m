@@ -2,131 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4846338104D
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 May 2021 21:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 820203811D3
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 May 2021 22:29:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233888AbhENTKF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 May 2021 15:10:05 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:57016 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231302AbhENTKF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 May 2021 15:10:05 -0400
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 2.0.5)
- id c477499158a19fbb; Fri, 14 May 2021 21:08:52 +0200
-Received: from kreacher.localnet (89-64-80-69.dynamic.chello.pl [89.64.80.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 9599D66969F;
-        Fri, 14 May 2021 21:08:51 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Zhang Rui <rui.zhang@intel.com>
-Subject: [PATCH] ACPI: PM / fan: Put fan device IDs into separate header file
-Date:   Fri, 14 May 2021 21:08:51 +0200
-Message-ID: <11763292.O9o76ZdvQC@kreacher>
+        id S230384AbhENUa6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 May 2021 16:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48666 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230394AbhENUa4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 May 2021 16:30:56 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4881C06175F
+        for <linux-acpi@vger.kernel.org>; Fri, 14 May 2021 13:29:44 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id r11so11989985edt.13
+        for <linux-acpi@vger.kernel.org>; Fri, 14 May 2021 13:29:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5yLL40jnp/JyochnQZGNB1kpm63b4ANhjiGt5dp8TwM=;
+        b=EgFraUSBIbTQFFJbEIeB6T/26SFYGJlZBeS4e/DmQRBg6Jw2BQ37gymJBPeVX1ynng
+         gLsbaKnm39XSGjgjcsOBrClWV9P2towyHWblzwNVlQ5dSUJxsf/jrcHUhk9MXKI9aUnP
+         JOOFtbsCLXmzDvH70ekrNT7i7O87hx19FvLtC/dcHBQ4UON2Po//U6OZQha99KSVmVys
+         Bs4ECRfRkRaYYKC/8sjpwUGc6BxWndaakM2RlpCKAkf12+Kms37etfKiOLo1r5Rv08Rn
+         DeKNSXZj3Px380vwYPhSzVfDA0eI75tyQygSFJHLeyGRqV0WVM8ygu1y5XhhD22agMYF
+         J05w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5yLL40jnp/JyochnQZGNB1kpm63b4ANhjiGt5dp8TwM=;
+        b=Dc2LmYVuT005ROU9fDBEH+47RSZC1ZvdaZR2LHlFZJDY0gIb46cJZxbUfWoZF4wYRr
+         krr6UE4CrWVF5noRKB9AEJEWJLtHa87cTiIsyVtMT2DXhDed6S9xhq0VUqNHzodWOUeC
+         /Lx1uZ0NqRRQZN0SzPr3wmeOXBuMKEkYa7KNJojBuLZfOmhupQ9lgEaU8MM7rBqP96EE
+         AtxzmxqBpFc6MyJZbEmIbr5rZq4pyzPBJ/ZkoT8keEQ/um4WcoDpzFXcsQr435b+nCAh
+         fLSaO8gGN9MDaqZL2HAZbNh52IAT7Fw3QQz6QEmhj9KlYJL6q5CjEuOL2vwNbzhYx6ks
+         i5PQ==
+X-Gm-Message-State: AOAM530XOi+aY8y3kOSnaLA/98d7U2FHHsf2tzfoFdiEDbzVfKv4gIMS
+        FqsjXUtx3PK51werIneO3nb2RTSd8UM6orCuDVh8gA==
+X-Google-Smtp-Source: ABdhPJwjzR90EU3j4VM/TAeOVfah6Sp56DGhezKrSqeaGKYeBzA45aUC74juyu0klKi5Wj1G+W3dP6rGWk4obKEa6RE=
+X-Received: by 2002:a05:6402:128f:: with SMTP id w15mr12334574edv.354.1621024183325;
+ Fri, 14 May 2021 13:29:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <162096970332.1865304.10280028741091576940.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <162096973052.1865304.12885652112595883151.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20210514101700.00004fbc@Huawei.com>
+In-Reply-To: <20210514101700.00004fbc@Huawei.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Fri, 14 May 2021 13:29:32 -0700
+Message-ID: <CAPcyv4jodAKZjAPQf6Q87o3JQ2sSJLmCTS1PdQ_oKyCRuVJqEg@mail.gmail.com>
+Subject: Re: [PATCH v4 5/8] cxl/acpi: Introduce ACPI0017 driver and cxl_root
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     linux-cxl@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 89.64.80.69
-X-CLIENT-HOSTNAME: 89-64-80-69.dynamic.chello.pl
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdehkedggedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepkeelrdeigedrkedtrdeileenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrieegrdektddrieelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=2 Fuz1=2 Fuz2=2
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Fri, May 14, 2021 at 2:19 AM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Thu, 13 May 2021 22:22:10 -0700
+> Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> > While CXL builds upon the PCI software model for dynamic enumeration and
+> > control, a static platform component is required to bootstrap the CXL
+> > memory layout. In addition to identifying the host bridges ACPI is
+> > responsible for enumerating the CXL memory space that can be addressed
+> > by decoders. This is similar to the requirement for ACPI to publish
+> > resources reported by _CRS for PCI host bridges.
+> >
+> > Introduce the cxl_root object as an abstract "port" into the CXL.mem
+> > address space described by HDM decoders identified by the ACPI
+> > CEDT.CHBS.
+> >
+> > For now just establish the initial boilerplate and sysfs attributes, to
+> > be followed by enumeration of the ports within the host bridge.
+> >
+> > Note the allocation of CXL core device objects is split into separate
+> > alloc and add steps in order to separate the alloc error path (kfree())
+> > from the device add error path (put_device()).
+> >
+> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>
+> A few really minor editorial things in the docs that need tidying up.
 
-The ACPI fan device IDs are shared between the fan driver and the
-device power management code.  The former is modular, so it needs
-to include the table of device IDs for module autoloading and the
-latter needs that list to avoid attaching the generic ACPI PM domain
-to fan devices (which doesn't make sense) possibly before the fan
-driver module is loaded.
+Sure, I'm going to see if b4 can follow a v5 reply to just this one
+patch, or otherwise hack it to support that flow so I don't need to
+resend the full series.
 
-Unfortunately, that requires the list of fan device IDs to be
-updated in two places which is prone to mistakes, so put it into
-a symbol definition in a separate header file so there is only one
-copy of it in case it needs to be updated again in the future.
+> With that done
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> I'll make the bold assumption that this is going to get applied
+> before the DOE series and base that on top of this one.
 
-Fixes: b9ea0bae260f ("ACPI: PM: Avoid attaching ACPI PM domain to certain devices")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/device_pm.c |    6 ++----
- drivers/acpi/fan.c       |    7 +++----
- drivers/acpi/fan.h       |   13 +++++++++++++
- 3 files changed, 18 insertions(+), 8 deletions(-)
+Yes, the plan is to make the 'next' branch of:
 
-Index: linux-pm/drivers/acpi/device_pm.c
-===================================================================
---- linux-pm.orig/drivers/acpi/device_pm.c
-+++ linux-pm/drivers/acpi/device_pm.c
-@@ -20,6 +20,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/suspend.h>
- 
-+#include "fan.h"
- #include "internal.h"
- 
- /**
-@@ -1310,10 +1311,7 @@ int acpi_dev_pm_attach(struct device *de
- 	 * with the generic ACPI PM domain.
- 	 */
- 	static const struct acpi_device_id special_pm_ids[] = {
--		{"PNP0C0B", }, /* Generic ACPI fan */
--		{"INT3404", }, /* Fan */
--		{"INTC1044", }, /* Fan for Tiger Lake generation */
--		{"INTC1048", }, /* Fan for Alder Lake generation */
-+		ACPI_FAN_DEVICE_IDS,
- 		{}
- 	};
- 	struct acpi_device *adev = ACPI_COMPANION(dev);
-Index: linux-pm/drivers/acpi/fan.c
-===================================================================
---- linux-pm.orig/drivers/acpi/fan.c
-+++ linux-pm/drivers/acpi/fan.c
-@@ -16,6 +16,8 @@
- #include <linux/platform_device.h>
- #include <linux/sort.h>
- 
-+#include "fan.h"
-+
- MODULE_AUTHOR("Paul Diefenbaugh");
- MODULE_DESCRIPTION("ACPI Fan Driver");
- MODULE_LICENSE("GPL");
-@@ -24,10 +26,7 @@ static int acpi_fan_probe(struct platfor
- static int acpi_fan_remove(struct platform_device *pdev);
- 
- static const struct acpi_device_id fan_device_ids[] = {
--	{"PNP0C0B", 0},
--	{"INT3404", 0},
--	{"INTC1044", 0},
--	{"INTC1048", 0},
-+	ACPI_FAN_DEVICE_IDS,
- 	{"", 0},
- };
- MODULE_DEVICE_TABLE(acpi, fan_device_ids);
-Index: linux-pm/drivers/acpi/fan.h
-===================================================================
---- /dev/null
-+++ linux-pm/drivers/acpi/fan.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+/*
-+ * ACPI fan device IDs are shared between the fan driver and the device power
-+ * management code.
-+ *
-+ * Add new device IDs before the generic ACPI fan one.
-+ */
-+#define ACPI_FAN_DEVICE_IDS	\
-+	{"INT3404", }, /* Fan */ \
-+	{"INTC1044", }, /* Fan for Tiger Lake generation */ \
-+	{"INTC1048", }, /* Fan for Alder Lake generation */ \
-+	{"PNP0C0B", } /* Generic ACPI fan */
+git://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git
 
+...the stable non-rebasing development branch for contributions. bf gntcbttttt
 
+>
+> Thanks,
+>
+> Jonathan
+>
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-cxl |   78 +++++++
+> >  drivers/cxl/Kconfig                     |   14 +
+> >  drivers/cxl/Makefile                    |    2
+> >  drivers/cxl/acpi.c                      |   39 +++
+> >  drivers/cxl/core.c                      |  360 +++++++++++++++++++++++++++++++
+> >  drivers/cxl/cxl.h                       |   65 ++++++
+> >  6 files changed, 558 insertions(+)
+> >  create mode 100644 drivers/cxl/acpi.c
+> >
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
+> > index 2fe7490ad6a8..d21469e2bf8b 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-cxl
+> > +++ b/Documentation/ABI/testing/sysfs-bus-cxl
+> > @@ -24,3 +24,81 @@ Description:
+> >               (RO) "Persistent Only Capacity" as bytes. Represents the
+> >               identically named field in the Identify Memory Device Output
+> >               Payload in the CXL-2.0 specification.
+> > +
+> > +What:           /sys/bus/cxl/devices/address_spaceX/start
+> > +Date:           May, 2021
+> > +KernelVersion:  v5.14
+> > +Contact:        linux-cxl@vger.kernel.org
+> > +Description:
+>
+> I'm not that fussy about this, but others may comment on wrapping lines around 70 chars
+> whereas can at least go to 80 for docs.
 
+Sure I can reflow.
+
+>
+> > +             (RO) System-physical base address for an address range
+> > +             that supports CXL.mem targets. A CXL address space can
+> > +             be optionally populated with endpoints that decode that
+> > +             range, similar to how devices behind a PCI bridge can
+> > +             decode a portion of the bridge's secondary bus address
+> > +             space.
+> > +
+> > +What:           /sys/bus/cxl/devices/address_spaceX/end
+> > +Date:           May, 2021
+> > +KernelVersion:  v5.14
+> > +Contact:        linux-cxl@vger.kernel.org
+> > +Description:
+> > +             (RO) System-physical end address for an address range
+> > +             that supports CXL.mem targets. A CXL address space can
+> > +             be optionally populated with endpoints that decode that
+> > +             range, similar to how devices behind a PCI bridge can
+> > +             decode a portion of the bridge's secondary bus address
+> > +             space.
+> > +
+> > +What:                /sys/bus/cxl/devices/address_spaceX/supports_ram
+>
+> Inconsistent tabs vs spaces.
+
+ok.
