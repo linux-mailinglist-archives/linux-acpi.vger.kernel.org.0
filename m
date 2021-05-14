@@ -2,99 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FCF6380FDA
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 May 2021 20:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4846338104D
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 May 2021 21:08:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230125AbhENSig (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 May 2021 14:38:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51666 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229952AbhENSig (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 May 2021 14:38:36 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2165C061574
-        for <linux-acpi@vger.kernel.org>; Fri, 14 May 2021 11:37:24 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id a25so11603483edr.12
-        for <linux-acpi@vger.kernel.org>; Fri, 14 May 2021 11:37:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=02LxdjsgVQUzSiAH2KRvI2SnT3V/EPoHS2xbtXtqU2g=;
-        b=Nq4AIGmDxvCN38wn3yZRBD67IcSVsSt7TWWB1P+liR27OwjbgoNhOrIPmOghWAyPIW
-         QpL9JNaYyc7DE/Xjw/pKb6909dUYUvrjXLGLc4kEBQPdoihaaZbpxBLEZcfKmQZtIivA
-         DrU0GVGlHtS/byT8pa8wmHMFRuwCWEOWGfHtB2u0vmBB2jwa8f/jzshVRNYD6PJPoISC
-         zvgx38/qoY6SVync+Te4uR2jYgeF3CnSLLpq1nN+CYyXQeb6BQiJOs+085Ks9pUa3qFJ
-         qVxyxFm3jX1IXk2JcCS7CsInTPVgN4CnRD2z2rQPhdToCCxYQ8qD+FvUnp9WOgYrDpOf
-         mnJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=02LxdjsgVQUzSiAH2KRvI2SnT3V/EPoHS2xbtXtqU2g=;
-        b=OdKI5v8Nc9j5NqIwuhHXc1UJpNmMOriuEmcqLXsn4BACiRkTRDUFVNHks6FyZuvW6f
-         f6HrZJo3o7lzw1xTVFjdkEWThRC7TJXDPFrNJJyyqIKhIFoXpBiqwTxSIFU00HlA5vvi
-         41/HnYljfHrc4vFaLfWrgtKt7z842ZHQ0nRM1YEXJzetyCBPCppq252RbHEk7H33PGxu
-         s4iFzHewiI1PleLwmNILGdizoaXc1PXn3PPdJfCrfR5L+hmUIWqS5BCuqu828i5SQgXe
-         PJnM9uUZ1EerQaV6mFb9Un8glvH7uhVFAQQc8+uJSoIxhYkpah8njUpAZdTQGM+NZt8Q
-         cgzg==
-X-Gm-Message-State: AOAM533bp48QBqdQGY9UpOaH6Lo1acpXm+Spz6mEFJRoI9maL0KqF0oz
-        1nHMllCCHPVeoA2CDmSY33v3h89mUqtP7dOcCs+Pwg==
-X-Google-Smtp-Source: ABdhPJz8vCIzsAYA1fh7/O9J0MXCNdSlpbUWm6Al/0crTgIeWRfdboiI2YKdirtbIUuWaRdWfeKglSMA8J5lJq0OmmA=
-X-Received: by 2002:a05:6402:13c3:: with SMTP id a3mr21131702edx.18.1621017443439;
- Fri, 14 May 2021 11:37:23 -0700 (PDT)
+        id S233888AbhENTKF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 May 2021 15:10:05 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:57016 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231302AbhENTKF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 May 2021 15:10:05 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 2.0.5)
+ id c477499158a19fbb; Fri, 14 May 2021 21:08:52 +0200
+Received: from kreacher.localnet (89-64-80-69.dynamic.chello.pl [89.64.80.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 9599D66969F;
+        Fri, 14 May 2021 21:08:51 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Zhang Rui <rui.zhang@intel.com>
+Subject: [PATCH] ACPI: PM / fan: Put fan device IDs into separate header file
+Date:   Fri, 14 May 2021 21:08:51 +0200
+Message-ID: <11763292.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-References: <20210419165451.2176200-1-Jonathan.Cameron@huawei.com>
- <20210419165451.2176200-3-Jonathan.Cameron@huawei.com> <20210506215934.GJ1904484@iweiny-DESK2.sc.intel.com>
- <20210511175006.00007861@Huawei.com> <CAPcyv4j=uww+85b4AbWmoPNPry_+JLEpEnuywpdC8PonXmRmEg@mail.gmail.com>
- <20210514094755.00002081@Huawei.com>
-In-Reply-To: <20210514094755.00002081@Huawei.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 14 May 2021 11:37:12 -0700
-Message-ID: <CAPcyv4h_qSZq+sTAOTKDNsO3xPmq=65j8oO1iw0WdVFj8+XrOA@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 2/4] PCI/doe: Add Data Object Exchange support
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Ira Weiny <ira.weiny@intel.com>, linux-cxl@vger.kernel.org,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Schofield, Alison" <alison.schofield@intel.com>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        Linuxarm <linuxarm@huawei.com>, Fangjian <f.fangjian@huawei.com>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 89.64.80.69
+X-CLIENT-HOSTNAME: 89-64-80-69.dynamic.chello.pl
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrvdehkedggedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepkeelrdeigedrkedtrdeileenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrieegrdektddrieelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=2 Fuz1=2 Fuz2=2
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 14, 2021 at 1:50 AM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
-[..]
-> > If it simplifies the kernel implementation to assume single
-> > kernel-initiator then I think that's more than enough reason to block
-> > out userspace, and/or provide userspace a method to get into the
-> > kernel's queue for service.
->
-> This last suggestion makes sense to me. Let's provide a 'right' way
-> to access the DOE from user space. I like the idea if it being possible
-> to run CXL compliance tests from userspace whilst the driver is loaded.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Ah, and I like your observation that once the kernel provides a
-"right" way to access DOE then userspace direct-access of DOE is
-indeed a "you get to keep the pieces" event like any other unwanted
-userspace config-write.
+The ACPI fan device IDs are shared between the fan driver and the
+device power management code.  The former is modular, so it needs
+to include the table of device IDs for module autoloading and the
+latter needs that list to avoid attaching the generic ACPI PM domain
+to fan devices (which doesn't make sense) possibly before the fan
+driver module is loaded.
 
-> Bjorn, given this would be a generic PCI thing, any preference for what
-> this interface might look like?   /dev/pcidoe[xxxxxx].i with ioctls similar
-> to those for the BAR based CXL mailboxes?
+Unfortunately, that requires the list of fan device IDs to be
+updated in two places which is prone to mistakes, so put it into
+a symbol definition in a separate header file so there is only one
+copy of it in case it needs to be updated again in the future.
 
-(warning, anti-ioctl bias incoming...)
+Fixes: b9ea0bae260f ("ACPI: PM: Avoid attaching ACPI PM domain to certain devices")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/device_pm.c |    6 ++----
+ drivers/acpi/fan.c       |    7 +++----
+ drivers/acpi/fan.h       |   13 +++++++++++++
+ 3 files changed, 18 insertions(+), 8 deletions(-)
 
-Hmm, DOE has an enumeration capability, could the DOE driver use a
-scheme to have a sysfs bin_attr per discovered object type? This would
-make it simliar to the pci-vpd sysfs interface.
+Index: linux-pm/drivers/acpi/device_pm.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/device_pm.c
++++ linux-pm/drivers/acpi/device_pm.c
+@@ -20,6 +20,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/suspend.h>
+ 
++#include "fan.h"
+ #include "internal.h"
+ 
+ /**
+@@ -1310,10 +1311,7 @@ int acpi_dev_pm_attach(struct device *de
+ 	 * with the generic ACPI PM domain.
+ 	 */
+ 	static const struct acpi_device_id special_pm_ids[] = {
+-		{"PNP0C0B", }, /* Generic ACPI fan */
+-		{"INT3404", }, /* Fan */
+-		{"INTC1044", }, /* Fan for Tiger Lake generation */
+-		{"INTC1048", }, /* Fan for Alder Lake generation */
++		ACPI_FAN_DEVICE_IDS,
+ 		{}
+ 	};
+ 	struct acpi_device *adev = ACPI_COMPANION(dev);
+Index: linux-pm/drivers/acpi/fan.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/fan.c
++++ linux-pm/drivers/acpi/fan.c
+@@ -16,6 +16,8 @@
+ #include <linux/platform_device.h>
+ #include <linux/sort.h>
+ 
++#include "fan.h"
++
+ MODULE_AUTHOR("Paul Diefenbaugh");
+ MODULE_DESCRIPTION("ACPI Fan Driver");
+ MODULE_LICENSE("GPL");
+@@ -24,10 +26,7 @@ static int acpi_fan_probe(struct platfor
+ static int acpi_fan_remove(struct platform_device *pdev);
+ 
+ static const struct acpi_device_id fan_device_ids[] = {
+-	{"PNP0C0B", 0},
+-	{"INT3404", 0},
+-	{"INTC1044", 0},
+-	{"INTC1048", 0},
++	ACPI_FAN_DEVICE_IDS,
+ 	{"", 0},
+ };
+ MODULE_DEVICE_TABLE(acpi, fan_device_ids);
+Index: linux-pm/drivers/acpi/fan.h
+===================================================================
+--- /dev/null
++++ linux-pm/drivers/acpi/fan.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++/*
++ * ACPI fan device IDs are shared between the fan driver and the device power
++ * management code.
++ *
++ * Add new device IDs before the generic ACPI fan one.
++ */
++#define ACPI_FAN_DEVICE_IDS	\
++	{"INT3404", }, /* Fan */ \
++	{"INTC1044", }, /* Fan for Tiger Lake generation */ \
++	{"INTC1048", }, /* Fan for Alder Lake generation */ \
++	{"PNP0C0B", } /* Generic ACPI fan */
 
-Then the kernel could cache objects like CDAT that don't change
-outside of some invalidation event.
+
+
