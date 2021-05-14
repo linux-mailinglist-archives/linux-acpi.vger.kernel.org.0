@@ -2,192 +2,219 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E2838050A
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 May 2021 10:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1A9A380580
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 May 2021 10:50:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233449AbhENIWk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 May 2021 04:22:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45708 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233416AbhENIWk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 May 2021 04:22:40 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C728061408;
-        Fri, 14 May 2021 08:21:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620980488;
-        bh=gH2wh+Hc0GOhQOIRbo/h4JAX62sDUeKs2tmsR+5ILos=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=e4qbUbfx0hxY+yj5rwe10X7fv77kQb6ZtXwJRT57564V2F/AP6l30KEqmfnQ8Z9/m
-         GbE6KTSFaLVgK/IALz8lgNCCJI09Wv6ypJxw7X8+NYsSH+qLTaA3rBVUJFbnXj6RkO
-         OLP+toeaBJ59mDypgIfhUX1EfHY2OFa2Ex63sriWaBCbSg8WSO+y0qdrgc5mMfEUKi
-         zoIKuKJCbIWchz7V1P1kNvQQPYr/hVEIXMXwl9v4IpEIdTp9mOKu3ZsGi5lbDjocf7
-         LN9AhGRwhMXdDuYb3SF+qI1QUoGfgKM56pIxwAOv5jsDOpM5r9sAA4fr4BFVLy6RmQ
-         IhAi7M7Jw2dRw==
-Date:   Fri, 14 May 2021 10:21:18 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     David Woodhouse <dwmw2@infradead.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Mali DP Maintainers <malidp@foss.arm.com>,
-        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        intel-wired-lan@lists.osuosl.org, keyrings@vger.kernel.org,
-        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-sgx@vger.kernel.org, linux-usb@vger.kernel.org,
-        mjpeg-users@lists.sourceforge.net, netdev@vger.kernel.org,
-        rcu@vger.kernel.org
-Subject: Re: [PATCH v2 00/40] Use ASCII subset instead of UTF-8 alternate
- symbols
-Message-ID: <20210514102118.1b71bec3@coco.lan>
-In-Reply-To: <d2fed242fbe200706b8d23a53512f0311d900297.camel@infradead.org>
-References: <cover.1620823573.git.mchehab+huawei@kernel.org>
-        <d2fed242fbe200706b8d23a53512f0311d900297.camel@infradead.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+        id S233757AbhENIvO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 May 2021 04:51:14 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3687 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231174AbhENIvB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 May 2021 04:51:01 -0400
+Received: from dggems706-chm.china.huawei.com (unknown [172.30.72.60])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FhMbF3HJsz1BMPj;
+        Fri, 14 May 2021 16:47:05 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ dggems706-chm.china.huawei.com (10.3.19.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 14 May 2021 16:49:45 +0800
+Received: from localhost (10.52.120.239) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2176.2; Fri, 14 May
+ 2021 09:49:42 +0100
+Date:   Fri, 14 May 2021 09:47:55 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+CC:     Ira Weiny <ira.weiny@intel.com>, <linux-cxl@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        "Lorenzo Pieralisi" <lorenzo.pieralisi@arm.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Schofield, Alison" <alison.schofield@intel.com>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        Linuxarm <linuxarm@huawei.com>, Fangjian <f.fangjian@huawei.com>
+Subject: Re: [RFC PATCH v3 2/4] PCI/doe: Add Data Object Exchange support
+Message-ID: <20210514094755.00002081@Huawei.com>
+In-Reply-To: <CAPcyv4j=uww+85b4AbWmoPNPry_+JLEpEnuywpdC8PonXmRmEg@mail.gmail.com>
+References: <20210419165451.2176200-1-Jonathan.Cameron@huawei.com>
+        <20210419165451.2176200-3-Jonathan.Cameron@huawei.com>
+        <20210506215934.GJ1904484@iweiny-DESK2.sc.intel.com>
+        <20210511175006.00007861@Huawei.com>
+        <CAPcyv4j=uww+85b4AbWmoPNPry_+JLEpEnuywpdC8PonXmRmEg@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.120.239]
+X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Em Wed, 12 May 2021 18:07:04 +0100
-David Woodhouse <dwmw2@infradead.org> escreveu:
+On Thu, 13 May 2021 14:20:38 -0700
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-> On Wed, 2021-05-12 at 14:50 +0200, Mauro Carvalho Chehab wrote:
-> > Such conversion tools - plus some text editor like LibreOffice  or simi=
-lar  - have
-> > a set of rules that turns some typed ASCII characters into UTF-8 altern=
-atives,
-> > for instance converting commas into curly commas and adding non-breakab=
-le
-> > spaces. All of those are meant to produce better results when the text =
-is
-> > displayed in HTML or PDF formats. =20
->=20
-> And don't we render our documentation into HTML or PDF formats?=20
+> On Tue, May 11, 2021 at 9:52 AM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Thu, 6 May 2021 14:59:34 -0700
+> > Ira Weiny <ira.weiny@intel.com> wrote:
+> >  
+> > > On Tue, Apr 20, 2021 at 12:54:49AM +0800, Jonathan Cameron wrote:  
+> > > > +
+> > > > +static int pci_doe_send_req(struct pci_doe *doe, struct pci_doe_exchange *ex)
+> > > > +{
+> > > > +   struct pci_dev *pdev = doe->pdev;
+> > > > +   u32 val;
+> > > > +   int i;
+> > > > +
+> > > > +   /*
+> > > > +    * Check the DOE busy bit is not set. If it is set, this could indicate
+> > > > +    * someone other than Linux (e.g. firmware) is using the mailbox. Note
+> > > > +    * it is expected that firmware and OS will negotiate access rights via
+> > > > +    * an, as yet to be defined method.
+> > > > +    */
+> > > > +   pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
+> > > > +   if (FIELD_GET(PCI_DOE_STATUS_BUSY, val))
+> > > > +           return -EBUSY;  
+> > >
+> > > In discussion with Dan we believe that user space could also be issuing
+> > > commands and would potentially cause us to be locked out.
+> > >
+> > > We agree that firmware should be out of the way here and if it is blocking
+> > > the OS there is not much we can do about it.
+> > >
+> > > However, if user space is using the mailbox we need to synchronize with them
+> > > via pci_cfg_access_[try]lock().  This should avoid this EBUSY condition.  
+> >
+> > Hi Ira, thanks for taking a look.
+> >
+> > So the question here is whether we can ever safely work with a
+> > userspace that is accessing the DOE.  I think the answer is no we can't.
+> >
+> > We'd have no way of knowing that userspace left the DOE in a clean state
+> > without resetting every time we want to use it (which can take 1 second)
+> > or doing significant sanity checking (can we tell if something is
+> > in flight?).  Note that if userspace and kernel were talking different
+> > protocols nothing sensible could be done to prevent them receiving each
+> > other's answers (unless you can rely on userspace holding the lock until
+> > it is done - which you can't as who trusts userspace?)  
+> 
+> There is no ability for userpsace to lock out the kernel, only kernel
+> locking out userspace.
 
-Yes.
+Hi Dan,
 
-> Are
-> some of those non-breaking spaces not actually *useful* for their
-> intended purpose?
+Got it. Writing userspace to code with arbitrary kernel
+breakage of exchanges userspace initialized is going to be nasty. 
 
-No.
+> 
+> > You could do
+> > something horrible like back off after peeking at the protocol to see
+> > if it might be yours, but even that only works assuming the two are
+> > trying to talk different protocols (talking the same protocol isn't allowed
+> > but no way to enforce that using just pci_cfg_access_lock()).  
+> 
+> Wait why isn't pci_cfg_access_lock() sufficient? The userspace DOE
+> transfer is halted, the kernel validates the state of DOE, does it's
+> work and releases the lock.
 
-The thing is: non-breaking space can cause a lot of problems.
+It's that 'validate the state of the DOE' which is the problem.  I 'think'
+the only way to do that is to issue an abort every time and I'm really
+not liking the fact that adds a potential 1 second sleep to every
+DOE access from the kernel.  There is no other way of knowing there is
+no exchange already in flight that might come back and bite you even
+after you think you have a clean state + I think you might be able to
+construct cases where even inspecting the data isn't enough to tell.
+If we are safe with today's protocols, there is no guarantee we will be
+in future. If the DOE design had incorporated such a flag or counter of
+exchanges in flight, then this might have been a workable approach. 
 
-We even had to disable Sphinx usage of non-breaking space for
-PDF outputs, as this was causing bad LaTeX/PDF outputs.
+> 
+> > I can't see a way to tell that the DOE might not have responded to an
+> > earlier request.  DOE busy indicates the write mailbox register cannot
+> > receive data at the moment.  If it's set then there is a message in
+> > flight, but if it is not set there might still be a message in flight.
+> > Busy only indicates if the write mailbox register can sink a request
+> > which doesn't in general tell us anything about the underlying state.
+> >
+> > So if userspace sent a request then quit.  Kernel driver would have
+> > no way of knowing if the next response was due to the request it sent
+> > or some earlier one (other than matching IDs)  Note you aren't allowed
+> > to have multiple requests for a single protocol in flight at the same
+> > time.  With just a lock you would have no way of preventing this.
+> >
+> > So we are back to every request the kernel sent having to be proceeded
+> > by an abort and potentially a 1 second delay whilst some chunk of the
+> > device firmware reboots.
+> >
+> > This came up in dicussion when Dan proposed the patch
+> > [PATCH] PCI: Allow drivers to claim exclusive access to config regions
+> > https://lore.kernel.org/linux-pci/161663543465.1867664.5674061943008380442.stgit@dwillia2-desk3.amr.corp.intel.com/
+> > Summarizing outcome of that thread.
+> >
+> > 1) Reads of DOE registers are always safe, so we shouldn't stop lspci
+> > and similar accessing config space.
+> > 2) You are on your own if any userspace writes to pci config space.
+> > There are loads of ways it can break the system so it doesn't make much
+> > sense to protect against one more.  
+> 
+> I'm not quite as enthusiastic about Greg's assertion that "we're
+> already broken why not allow more breakage" as he was also the one
+> supportive of /dev/mem restrictions in the face of obvious collisions.
+> I'll circle back and say as much to Greg. My mistake was not realizing
+> the write dependency in the protocol, so the pushback was warranted
+> that the kernel does not need to block out all access.
+> 
+> Given that /dev/mem is optionally disabled for userspace access
+> outside of kernel-lockdown scenarios, I think it is reasonable to have
+> the kernel disable config writes to a register block and the request
+> of a driver.
+> 
+> Consider that userspace can certainly trash the system by writing to
+> the BAR registers, for example, but a non-malicious userspace has no
+> reason to do that. Unfortunately DOE has some utility for a
+> non-malicious userspace to access so there is a rationale to figure
+> out a cooperation scheme.
 
-See, commit: 3b4c963243b1 ("docs: conf.py: adjust the LaTeX document output=
-")
+I agree with a cooperation scheme, but I think that should take the
+form of a proper interface rather than a one sided lock out.
+It may well make sense to tighten access to PCI config space anyway but
+I think that's a discussion that should be separate from this feature.
 
-The afore mentioned patch disables Sphinx default behavior of
-using NON-BREAKABLE SPACE on literal blocks and strings, using this
-special setting: "parsedliteralwraps=3Dtrue".
+> 
+> >
+> > If there is a reason to provide a userspace interface to a DOE for a
+> > device with a driver attached, then I would agree with Dan's suggestion
+> > to use a proper driver for it.
+> >
+> > Dan briefly mentioned that temporary blocking might be needed. I'm guessing
+> > that was to try and let userspace safely use the DOE.
+> >
+> > The driver would work fine ignoring busy entirely and would perhaps be
+> > less confusing as a result.  We reset the DOE at startup anyway and that
+> > would clear existing busy.  Any future times busy is set would have no
+> > impact on the flow.  
+> 
+> If it simplifies the kernel implementation to assume single
+> kernel-initiator then I think that's more than enough reason to block
+> out userspace, and/or provide userspace a method to get into the
+> kernel's queue for service.
 
-When NON-BREAKABLE SPACE were used on PDF outputs, several parts of=20
-the media uAPI docs were violating the document margins by far,
-causing texts to be truncated.
+This last suggestion makes sense to me. Let's provide a 'right' way
+to access the DOE from user space. I like the idea if it being possible
+to run CXL compliance tests from userspace whilst the driver is loaded.
 
-So, please **don't add NON-BREAKABLE SPACE**, unless you test
-(and keep testing it from time to time) if outputs on all
-formats are properly supporting it on different Sphinx versions.
-
--
-
-Also, most of those came from conversion tools, together with other
-eccentricities, like the usage of U+FEFF (BOM) character at the
-start of some documents. The remaining ones seem to came from=20
-cut-and-paste.
-
-For instance,  bibliographic references (there are a couple of
-those on media) sometimes have NON-BREAKABLE SPACE. I'm pretty
-sure that those came from cut-and-pasting the document titles
-from their names at the original PDF documents or web pages that
-are referenced.
-
-> > While it is perfectly fine to use UTF-8 characters in Linux, and specia=
-lly at
-> > the documentation,  it is better to  stick to the ASCII subset  on such
-> > particular case,  due to a couple of reasons:
-> >=20
-> > 1. it makes life easier for tools like grep; =20
->=20
-> Barely, as noted, because of things like line feeds.
-
-You can use grep with "-z" to seek for multi-line strings(*), Like:
-
-	$ grep -Pzl 'grace period started,\s*then' $(find Documentation/ -type f)
-	Documentation/RCU/Design/Data-Structures/Data-Structures.rst
-
-(*) Unfortunately, while "git grep" also has a "-z" flag, it
-    seems that this is (currently?) broken with regards of handling multili=
-nes:
-
-	$ git grep -Pzl 'grace period started,\s*then'
-	$
-
-> > 2. they easier to edit with the some commonly used text/source
-> >    code editors. =20
->=20
-> That is nonsense. Any but the most broken and/or anachronistic
-> environments and editors will be just fine.
-
-Not really.
-
-I do use a lot of UTF-8 here, as I type texts in Portuguese, but I rely
-on the US-intl keyboard settings, that allow me to type as "'a" for =C3=A1.
-However, there's no shortcut for non-Latin UTF-codes, as far as I know.
-
-So, if would need to type a curly comma on the text editors I normally=20
-use for development (vim, nano, kate), I would need to cut-and-paste
-it from somewhere[1].
-
-[1] If I have a table with UTF-8 codes handy, I could type the UTF-8=20
-    number manually... However, it seems that this is currently broken=20
-    at least on Fedora 33 (with Mate Desktop and US intl keyboard with=20
-    dead keys).
-
-    Here, <CTRL><SHIFT>U is not working. No idea why. I haven't=20
-    test it for *years*, as I din't see any reason why I would
-    need to type UTF-8 characters by numbers until we started
-    this thread.
-=20
-In practice, on the very rare cases where I needed to write
-non-Latin utf-8 chars (maybe once in a year or so, Like when I
-would need to use a Greek letter or some weird symbol), there changes
-are high that I wouldn't remember its UTF-8 code.
-
-So, If I need to spend time to seek for an specific symbol, after
-finding it, I just cut-and-paste it.
-
-But even in the best case scenario where I know the UTF-8 and
-<CTRL><SHIFT>U works, if I wanted to use, for instance, a curly
-comma, the keystroke sequence would be:
-
-	<CTRL><SHIFT>U201csome string<CTRL><SHIFT>U201d
-
-That's a lot harder than typing and has a higher chances of
-mistakenly add a wrong symbol than just typing:
-
-	"some string"
-
-Knowing that both will produce *exactly* the same output, why
-should I bother doing it the hard way?
-
--
-
-Now, I'm not arguing that you can't use whatever UTF-8 symbol you
-want on your docs. I'm just saying that, now that the conversion=20
-is over and a lot of documents ended getting some UTF-8 characters
-by accident, it is time for a cleanup.
+Bjorn, given this would be a generic PCI thing, any preference for what
+this interface might look like?   /dev/pcidoe[xxxxxx].i with ioctls similar
+to those for the BAR based CXL mailboxes?
 
 Thanks,
-Mauro
+
+Jonathan
+
