@@ -2,177 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 672E73809C6
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 May 2021 14:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47B94380A3B
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 May 2021 15:13:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233661AbhENMmv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 May 2021 08:42:51 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:2983 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232812AbhENMmq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 May 2021 08:42:46 -0400
-Received: from dggems704-chm.china.huawei.com (unknown [172.30.72.58])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FhSlC5Wh1zmVZh;
-        Fri, 14 May 2021 20:39:19 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggems704-chm.china.huawei.com (10.3.19.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Fri, 14 May 2021 20:41:31 +0800
-Received: from localhost (10.52.120.239) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2176.2; Fri, 14 May
- 2021 13:41:29 +0100
-Date:   Fri, 14 May 2021 13:39:42 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+        id S229469AbhENNOs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 May 2021 09:14:48 -0400
+Received: from mga14.intel.com ([192.55.52.115]:48750 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232217AbhENNOs (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 May 2021 09:14:48 -0400
+IronPort-SDR: NQSmRFaHJxAXGGHu9X1BhVkN8n3ZwIU/WwUz6HVRtf7gtR0+i5nYYo83Vqnr/S+YUGIWa+NF9f
+ NDfO21nCImFA==
+X-IronPort-AV: E=McAfee;i="6200,9189,9983"; a="199865020"
+X-IronPort-AV: E=Sophos;i="5.82,299,1613462400"; 
+   d="scan'208";a="199865020"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2021 06:13:32 -0700
+IronPort-SDR: 74l511Rb9o5gDukdPDL6bOeNbq6KgQcj3lP8iDQqaTWrXmxK5XUlenpjvEJBgSBvCJ8LpyEenR
+ NV3AelhCj7QA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,299,1613462400"; 
+   d="scan'208";a="538806639"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 14 May 2021 06:13:28 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 14 May 2021 16:13:28 +0300
+Date:   Fri, 14 May 2021 16:13:28 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
 To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-CC:     Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>, <linux-cxl@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        "Bjorn Helgaas" <helgaas@kernel.org>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        "Chris Browy" <cbrowy@avery-design.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Schofield, Alison" <alison.schofield@intel.com>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        Linuxarm <linuxarm@huawei.com>, Fangjian <f.fangjian@huawei.com>
-Subject: Re: [RFC PATCH v3 2/4] PCI/doe: Add Data Object Exchange support
-Message-ID: <20210514133942.00002358@Huawei.com>
-In-Reply-To: <20210514111538.GA16218@lpieralisi>
-References: <20210419165451.2176200-1-Jonathan.Cameron@huawei.com>
-        <20210419165451.2176200-3-Jonathan.Cameron@huawei.com>
-        <20210506215934.GJ1904484@iweiny-DESK2.sc.intel.com>
-        <20210511175006.00007861@Huawei.com>
-        <CAPcyv4j=uww+85b4AbWmoPNPry_+JLEpEnuywpdC8PonXmRmEg@mail.gmail.com>
-        <20210514094755.00002081@Huawei.com>
-        <20210514111538.GA16218@lpieralisi>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+Cc:     Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Eric Auger <eric.auger@redhat.com>,
+        Will Deacon <will@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPI/IORT: Handle device properties with software node
+ API
+Message-ID: <YJ53eBRGXtabyT5K@kuha.fi.intel.com>
+References: <20210511125528.18525-1-heikki.krogerus@linux.intel.com>
+ <20210514103912.GA16131@lpieralisi>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.120.239]
-X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210514103912.GA16131@lpieralisi>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 14 May 2021 12:15:38 +0100
-Lorenzo Pieralisi <lorenzo.pieralisi@arm.com> wrote:
-
-> On Fri, May 14, 2021 at 09:47:55AM +0100, Jonathan Cameron wrote:
-> > On Thu, 13 May 2021 14:20:38 -0700
-> > Dan Williams <dan.j.williams@intel.com> wrote:
-> >   
-> > > On Tue, May 11, 2021 at 9:52 AM Jonathan Cameron
-> > > <Jonathan.Cameron@huawei.com> wrote:  
-> > > >
-> > > > On Thu, 6 May 2021 14:59:34 -0700
-> > > > Ira Weiny <ira.weiny@intel.com> wrote:
-> > > >    
-> > > > > On Tue, Apr 20, 2021 at 12:54:49AM +0800, Jonathan Cameron wrote:    
-> > > > > > +
-> > > > > > +static int pci_doe_send_req(struct pci_doe *doe, struct pci_doe_exchange *ex)
-> > > > > > +{
-> > > > > > +   struct pci_dev *pdev = doe->pdev;
-> > > > > > +   u32 val;
-> > > > > > +   int i;
-> > > > > > +
-> > > > > > +   /*
-> > > > > > +    * Check the DOE busy bit is not set. If it is set, this could indicate
-> > > > > > +    * someone other than Linux (e.g. firmware) is using the mailbox. Note
-> > > > > > +    * it is expected that firmware and OS will negotiate access rights via
-> > > > > > +    * an, as yet to be defined method.
-> > > > > > +    */
-> > > > > > +   pci_read_config_dword(pdev, doe->cap + PCI_DOE_STATUS, &val);
-> > > > > > +   if (FIELD_GET(PCI_DOE_STATUS_BUSY, val))
-> > > > > > +           return -EBUSY;    
-> > > > >
-> > > > > In discussion with Dan we believe that user space could also be issuing
-> > > > > commands and would potentially cause us to be locked out.
-> > > > >
-> > > > > We agree that firmware should be out of the way here and if it is blocking
-> > > > > the OS there is not much we can do about it.
-> > > > >
-> > > > > However, if user space is using the mailbox we need to synchronize with them
-> > > > > via pci_cfg_access_[try]lock().  This should avoid this EBUSY condition.    
-> > > >
-> > > > Hi Ira, thanks for taking a look.
-> > > >
-> > > > So the question here is whether we can ever safely work with a
-> > > > userspace that is accessing the DOE.  I think the answer is no we can't.
-> > > >
-> > > > We'd have no way of knowing that userspace left the DOE in a clean state
-> > > > without resetting every time we want to use it (which can take 1 second)
-> > > > or doing significant sanity checking (can we tell if something is
-> > > > in flight?).  Note that if userspace and kernel were talking different
-> > > > protocols nothing sensible could be done to prevent them receiving each
-> > > > other's answers (unless you can rely on userspace holding the lock until
-> > > > it is done - which you can't as who trusts userspace?)    
-> > > 
-> > > There is no ability for userpsace to lock out the kernel, only kernel
-> > > locking out userspace.  
+On Fri, May 14, 2021 at 11:39:12AM +0100, Lorenzo Pieralisi wrote:
+> On Tue, May 11, 2021 at 03:55:28PM +0300, Heikki Krogerus wrote:
+> > The older device property API is going to be removed.
+> > Replacing the device_add_properties() call with software
+> > node API equivalent device_create_managed_software_node().
 > > 
-> > Hi Dan,
+> > Fixes: 434b73e61cc6 ("iommu/arm-smmu-v3: Use device properties for pasid-num-bits")
+> 
+> Is this really fixing anything ? I am not sure I understand what you
+> would like to achieve with this tag.
+
+Right now it's not possible to simply remove the old API because some
+of the maintainers want to take care of the conversion themselves, but
+at the same time I also do not want to see any new releases of the
+kernel that introduce more users for it. That's why it's a fix.
+
+
+> > Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> > ---
+> >  drivers/acpi/arm64/iort.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> With the above comment clarified:
+> 
+> Acked-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> 
+> > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> > index 3912a1f6058e5..e34937e11186a 100644
+> > --- a/drivers/acpi/arm64/iort.c
+> > +++ b/drivers/acpi/arm64/iort.c
+> > @@ -976,7 +976,7 @@ static void iort_named_component_init(struct device *dev,
+> >  				      FIELD_GET(ACPI_IORT_NC_PASID_BITS,
+> >  						nc->node_flags));
+> >  
+> > -	if (device_add_properties(dev, props))
+> > +	if (device_create_managed_software_node(dev, props, NULL))
+> >  		dev_warn(dev, "Could not add device properties\n");
+> >  }
+> >  
+> > -- 
+> > 2.30.2
 > > 
-> > Got it. Writing userspace to code with arbitrary kernel
-> > breakage of exchanges userspace initialized is going to be nasty. 
-> >   
-> > >   
-> > > > You could do
-> > > > something horrible like back off after peeking at the protocol to see
-> > > > if it might be yours, but even that only works assuming the two are
-> > > > trying to talk different protocols (talking the same protocol isn't allowed
-> > > > but no way to enforce that using just pci_cfg_access_lock()).    
-> > > 
-> > > Wait why isn't pci_cfg_access_lock() sufficient? The userspace DOE
-> > > transfer is halted, the kernel validates the state of DOE, does it's
-> > > work and releases the lock.  
-> > 
-> > It's that 'validate the state of the DOE' which is the problem.  I 'think'
-> > the only way to do that is to issue an abort every time and I'm really
-> > not liking the fact that adds a potential 1 second sleep to every
-> > DOE access from the kernel.  
-> 
-> IIUC an abort would mean game over for *every* transaction in flight,
-> not sure that's the best way of preventing userspace from mingling
-> but as you mentioned I don't think there is a way around it with the
-> current protocol.
-> 
-> I don't see how a lock would solve this issue either - how would it ?
 
-It would only work if symmetric (can be locked by userspace or kernel space)
-and userspace was well behaved.
+thanks,
 
-> 
-> Basically you have to stop userspace from issuing requests for the
-> duration of a request/response (per-protocol) session, right ?
-
-Yes, but also stop the kernel from issuing requests for the duration of
-a userspace request/response.  Imagine userspace issues a request for
-a particular part of CDAT then kernel issues it's own request for a different
-part of CDAT. Unless we can ensure the userspace request / response pair
-is done, then there is no way for the kernel to verify that the response
-it gets is to the request it made.  You could do some protocol specific
-validation but that is horrible and you might need to read a bunch of
-additional records to do it (checksum).
-
-As currently implemented, I'm not allowing concurrent exchanges from
-different protocols because it is very fiddly to do (handling the busy flag)
-and I'm not convinced there is a real usecase.  Whilst in theory you can
-have lots of protocols on one DOE, the protocols defined so far have had
-a bunch or restrictions that mean at most you can currently collocate 2
-protocols only.  If it turns out to be necessary at some future time, then
-we can look at adding it.
-
-I think the right way to do this is to put a proper interface in place
-to expose the functionality to userspace via a path where mediation can
-be easily handled.
-
-Jonathan
-
-
-> 
-> Lorenzo
-
+-- 
+heikki
