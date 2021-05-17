@@ -2,105 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 274D6383076
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 May 2021 16:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04D3938313B
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 May 2021 16:35:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236267AbhEQO1e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 May 2021 10:27:34 -0400
-Received: from mail-ot1-f45.google.com ([209.85.210.45]:47076 "EHLO
-        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239122AbhEQOZd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 May 2021 10:25:33 -0400
-Received: by mail-ot1-f45.google.com with SMTP id d3-20020a9d29030000b029027e8019067fso5648028otb.13;
-        Mon, 17 May 2021 07:24:16 -0700 (PDT)
+        id S239204AbhEQOgA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 May 2021 10:36:00 -0400
+Received: from mail-oo1-f54.google.com ([209.85.161.54]:34548 "EHLO
+        mail-oo1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240240AbhEQOdh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 May 2021 10:33:37 -0400
+Received: by mail-oo1-f54.google.com with SMTP id i8-20020a4aa1080000b0290201edd785e7so1511624ool.1;
+        Mon, 17 May 2021 07:32:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=l+6ryiKHsnOZrkZjGxnuHvx4Cycm+dsFfU/WqN/dQEA=;
-        b=ExG201ldsdxHPBKjiupK/lb24wVlqnpATJaaniyIlgTnsIvbVbX+WAIeNzFRO6utGF
-         Douvp1lnVg8QsodNDqQVfCGCJtFGz5W8CvKZU5FA1zWiddwZZ9YJYs1nuBw3Y0mkq0LZ
-         uG/XZXaSxlo+Ycp4XHZph5lT0ylFs02cUPHIktD1FKhqQoxYAD0i0QFzpZPCsrVdRc6W
-         rdL+SF1poIoRFFN1GMvYUsnZlf3ogvvE8Lwi2EJ5uJxgc0cp+X4CU+cpmJabmsZFIw4q
-         gvzgr6EO2+GcZ5Fva22ahXyyVxNeBZxOydPGha7CAPDrYAbJE0ZAERo4kt7LGozFLxSX
-         DRpA==
-X-Gm-Message-State: AOAM530S95Gxk6czFg0v1S/7WdXrWzTjSnC0mbxaYYD9Voh+NSttwaRk
-        mZOsS+qLVxb+C+lF1vzSKpVfuEBVIYS6lyX11qw=
-X-Google-Smtp-Source: ABdhPJzxG5TWpGfsd01iDYNp7QK+JpVulbNbYKyCwUqf7AhUIBtBMSdVYtxBNvtsdVuzQ18H4nEY9TmFKY51v58O8lE=
-X-Received: by 2002:a9d:3bcb:: with SMTP id k69mr52530163otc.206.1621261456311;
- Mon, 17 May 2021 07:24:16 -0700 (PDT)
+        bh=LHI3b3DrW2T0MjQQgWMyWbXQ9GdigCHzYjyvIDoNZoE=;
+        b=glWsi7FJfzqrZvFPxQu14ljEsitaWe+jhb2bnf3Jai5F6unWF7tbr90jITGUBAsEq7
+         YvZmmzObSHywR9rBBLKDiv0OGJ6sMtikrrbr7udTLQplSDex2UCfzBFOyB04O/C0KsSO
+         OkgQniR97vL57wCiLdz3TsHfnu5CA3BgJXd2GgPfUomniDvAlSYl8bfrqToAEf1NBs1K
+         g9UzsxtVHR0KAZHmM81YzaYf0+QSxr/3a/QOWsKPqpRS9ElY6YucJyd8lIllOUPNYeIR
+         sAIYwgtJxA+nvtWOFgIErQn4xmKMEZXdWbYYHbaTgPP0dvEP9fZxx4gLN7gpkNT+ZNAV
+         h7nQ==
+X-Gm-Message-State: AOAM531/QfYdLIuiMzzHti6udCifI61+BtsmXjGaUVha6n9Chli2Y9vU
+        CBJ8WQHD6XSCqO7n4m0CnL07S1NFOvNGwvH9Kq63aADDF7Y=
+X-Google-Smtp-Source: ABdhPJzc2rxdxykvDgrq3LVlJMEuFAxBWrDmPrG65KUkzFceqYTVJUcH5pWimARkvOV2h+mTLPy6p+bZesk1kDkitDE=
+X-Received: by 2002:a4a:ab83:: with SMTP id m3mr186799oon.2.1621261935224;
+ Mon, 17 May 2021 07:32:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210505132032.601097-1-alexander.deucher@amd.com>
-In-Reply-To: <20210505132032.601097-1-alexander.deucher@amd.com>
+References: <20210511063835.7794-1-jhp@endlessos.org>
+In-Reply-To: <20210511063835.7794-1-jhp@endlessos.org>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 17 May 2021 16:24:05 +0200
-Message-ID: <CAJZ5v0i5QDQbxYtkrqrQzPpc08Gvr1Jngb4ZC8VOPhphPs5pcQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: s2idle: Add missing LPS0 functions for AMD
-To:     Alex Deucher <alexander.deucher@amd.com>
-Cc:     amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+Date:   Mon, 17 May 2021 16:32:04 +0200
+Message-ID: <CAJZ5v0hsNSpL+1ero_+pzz97Xz4UCwjBv7swg+3CAne7_OUKkQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / EC: Fix media keys not working problem on more
+ Asus laptops
+To:     Jian-Hong Pan <jhp@endlessos.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
+        Chris Chiu <chris.chiu@canonical.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Prike Liang <Prike.Liang@amd.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Marcin Bachry <hegel666@gmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
+        linux@endlessos.org, Chris Chiu <chiu@endlessm.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 5, 2021 at 3:21 PM Alex Deucher <alexander.deucher@amd.com> wrote:
+On Tue, May 11, 2021 at 8:40 AM Jian-Hong Pan <jhp@endlessos.org> wrote:
 >
-> These are supposedly not required for AMD platforms,
-> but at least some HP laptops seem to require it to
-> properly turn off the keyboard backlight.
+> From: Chris Chiu <chiu@endlessm.com>
 >
-> Based on a patch from Marcin Bachry <hegel666@gmail.com>.
+> More ASUS laptops have the _GPE define in the DSDT table with a
+> different value than the _GPE number in the ECDT.
 >
-> Bug: https://gitlab.freedesktop.org/drm/amd/-/issues/1230
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Marcin Bachry <hegel666@gmail.com>
-> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> This is causing media keys not working on ASUS X505BA/BP, X542BA/BP
+>
+> Add model info to the quirks list.
+>
+> Signed-off-by: Chris Chiu <chiu@endlessm.com>
+> Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
 > ---
+>  drivers/acpi/ec.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 >
-> Resend with updated subject.
->
->  drivers/acpi/x86/s2idle.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index 2b69536cdccb..2d7ddb8a8cb6 100644
-> --- a/drivers/acpi/x86/s2idle.c
-> +++ b/drivers/acpi/x86/s2idle.c
-> @@ -42,6 +42,8 @@ static const struct acpi_device_id lps0_device_ids[] = {
->
->  /* AMD */
->  #define ACPI_LPS0_DSM_UUID_AMD      "e3f32452-febc-43ce-9039-932122d37721"
-> +#define ACPI_LPS0_ENTRY_AMD         2
-> +#define ACPI_LPS0_EXIT_AMD          3
->  #define ACPI_LPS0_SCREEN_OFF_AMD    4
->  #define ACPI_LPS0_SCREEN_ON_AMD     5
->
-> @@ -408,6 +410,7 @@ int acpi_s2idle_prepare_late(void)
->
->         if (acpi_s2idle_vendor_amd()) {
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF_AMD);
-> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD);
->         } else {
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
-> @@ -422,6 +425,7 @@ void acpi_s2idle_restore_early(void)
->                 return;
->
->         if (acpi_s2idle_vendor_amd()) {
-> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_AMD);
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON_AMD);
->         } else {
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
+> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+> index 13565629ce0a..e8c5da2b964a 100644
+> --- a/drivers/acpi/ec.c
+> +++ b/drivers/acpi/ec.c
+> @@ -1846,6 +1846,22 @@ static const struct dmi_system_id ec_dmi_table[] __initconst = {
+>         DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+>         DMI_MATCH(DMI_PRODUCT_NAME, "GL702VMK"),}, NULL},
+>         {
+> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BA", {
+> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +       DMI_MATCH(DMI_PRODUCT_NAME, "X505BA"),}, NULL},
+> +       {
+> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BP", {
+> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +       DMI_MATCH(DMI_PRODUCT_NAME, "X505BP"),}, NULL},
+> +       {
+> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BA", {
+> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +       DMI_MATCH(DMI_PRODUCT_NAME, "X542BA"),}, NULL},
+> +       {
+> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BP", {
+> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +       DMI_MATCH(DMI_PRODUCT_NAME, "X542BP"),}, NULL},
+> +       {
+>         ec_honor_ecdt_gpe, "ASUS X550VXK", {
+>         DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+>         DMI_MATCH(DMI_PRODUCT_NAME, "X550VXK"),}, NULL},
 > --
 
-Applied as 5.14 material, thanks!
+Applied as 5.14 material under a different subject ("ACPI: EC: Make
+more Asus laptops use ECDT _GPE"), thanks!
