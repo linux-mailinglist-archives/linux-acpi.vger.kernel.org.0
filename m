@@ -2,104 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2587E382AE8
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 May 2021 13:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FAAD382B78
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 May 2021 13:51:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236716AbhEQL0O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 May 2021 07:26:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35794 "EHLO mail.kernel.org"
+        id S236167AbhEQLwU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 May 2021 07:52:20 -0400
+Received: from 8bytes.org ([81.169.241.247]:39402 "EHLO theia.8bytes.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236707AbhEQL0N (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 17 May 2021 07:26:13 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E8DE86100C;
-        Mon, 17 May 2021 11:24:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621250697;
-        bh=IqUZ0sNLzRXtoD/YFOpvkpCv7NFriIwqrV0nk+tQFjA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SjZiucxTGgskw3bZqxU8hkRIDqvLkRPDUPXGysGlCLAY4qMHHwLFDNWf7GzwMPeSy
-         k6gBtne3rZl4OWw9EJiAKpC90ICt4wmL+dOW1/wtHGSzFBwlIEB7lPhufz0SGrH9U0
-         8BeoyWN0zwaq92smlvSCsJzkysY0ZKum/rQEXJAZuksdPKz9UCm2b6rTTMrYAXAHuw
-         m5K5R4IDiLhuXBms1/YwUa6BMqBAHs9uv2Ndu7DwgV1+6w7DgEDLXe2pUPRnLtE+Wd
-         GExQHVUHQydYOYDz+zZFmQU4ywGdNTNfxU1WppJsq+V8siRV5m9U5SOv7k7mbiC129
-         mEKSngo0SzESg==
-Date:   Mon, 17 May 2021 13:24:46 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     David Woodhouse <dwmw2@infradead.org>
-Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Corentin Labbe <clabbe@baylibre.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Jean Delvare <jdelvare@suse.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Leo Yan <leo.yan@linaro.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Thorsten Leemhuis <linux@leemhuis.info>,
-        alsa-devel@alsa-project.org, coresight@lists.linaro.org,
-        intel-wired-lan@lists.osuosl.org, kvm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ext4@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-usb@vger.kernel.org, mjpeg-users@lists.sourceforge.net,
-        netdev@vger.kernel.org, rcu@vger.kernel.org
-Subject: Re: [PATCH v3 00/16] Replace some bad characters on documents
-Message-ID: <20210517132446.7edba98f@coco.lan>
-In-Reply-To: <30cd6dd9d1049d56b629c92a5f385b84c026b445.camel@infradead.org>
-References: <cover.1621159997.git.mchehab+huawei@kernel.org>
-        <30cd6dd9d1049d56b629c92a5f385b84c026b445.camel@infradead.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+        id S229982AbhEQLwU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 17 May 2021 07:52:20 -0400
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+        id 92F9C2E7; Mon, 17 May 2021 13:51:02 +0200 (CEST)
+Date:   Mon, 17 May 2021 13:51:01 +0200
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc:     rjw@rjwysocki.net, lenb@kernel.org, mst@redhat.com,
+        will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
+        dwmw2@infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, eric.auger@redhat.com,
+        sebastien.boeuf@intel.com, robin.murphy@arm.com,
+        kevin.tian@intel.com, lorenzo.pieralisi@arm.com,
+        guohanjun@huawei.com, sudeep.holla@arm.com
+Subject: Re: [PATCH v2 0/6] Add support for ACPI VIOT
+Message-ID: <YKJYpZUddMLM+A1M@8bytes.org>
+References: <20210423113836.3974972-1-jean-philippe@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210423113836.3974972-1-jean-philippe@linaro.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Em Mon, 17 May 2021 11:48:04 +0100
-David Woodhouse <dwmw2@infradead.org> escreveu:
+Hi Jean-Philippe,
 
-> On Sun, 2021-05-16 at 12:18 +0200, Mauro Carvalho Chehab wrote:
-> > The conversion tools used during DocBook/LaTeX/html/Markdown->ReST=20
-> > conversion and some cut-and-pasted text contain some characters that
-> > aren't easily reachable on standard keyboards and/or could cause=20
-> > troubles when parsed by the documentation build system. =20
->=20
-> Better.
->=20
-> But you still don't say *why* it matters whether given characters are
-> trivial to reach with standard keyboard layouts, or specify *what*
-> 'troubles' the offending characters cause.
+On Fri, Apr 23, 2021 at 01:38:31PM +0200, Jean-Philippe Brucker wrote:
+> Jean-Philippe Brucker (6):
+>   ACPI: arm64: Move DMA setup operations out of IORT
+>   ACPI: Move IOMMU setup code out of IORT
+>   ACPI: Add driver for the VIOT table
+>   iommu/dma: Pass address limit rather than size to
+>     iommu_setup_dma_ops()
+>   iommu/dma: Simplify calls to iommu_setup_dma_ops()
+>   iommu/virtio: Enable x86 support
 
-See the patches in the series. The reason for each particular case
-is there on each patch, like on this one:
+This looks good to me, I think this all can go through the IOMMU tree?
+In this case I will apply them once the ACPI parts have the Acks
+maintainers ack.
 
-	[PATCH v3 13/16] docs: sound: kernel-api: writing-an-alsa-driver.rst: repl=
-ace some characters
+Regards,
 
-	The conversion tools used during DocBook/LaTeX/html/Markdown->ReST
-	conversion and some cut-and-pasted text contain some characters that
-	aren't easily reachable on standard keyboards and/or could cause
-	troubles when parsed by the documentation build system.
-	=20
-	Replace the occurences of the following characters:
-=09
-		- U+00a0 ('=C2=A0'): NO-BREAK SPACE
-		  as it can cause lines being truncated on PDF output
-
-	Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-
-
-Thanks,
-Mauro
+	Joerg
