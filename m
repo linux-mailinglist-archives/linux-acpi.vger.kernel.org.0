@@ -2,105 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFDB63831FC
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 May 2021 16:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 935F43832F0
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 May 2021 16:55:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240649AbhEQOnq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 May 2021 10:43:46 -0400
-Received: from mail-oi1-f176.google.com ([209.85.167.176]:33670 "EHLO
-        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240240AbhEQOll (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 May 2021 10:41:41 -0400
-Received: by mail-oi1-f176.google.com with SMTP id b25so6737797oic.0;
-        Mon, 17 May 2021 07:40:24 -0700 (PDT)
+        id S240308AbhEQOwn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 May 2021 10:52:43 -0400
+Received: from mail-oo1-f51.google.com ([209.85.161.51]:42791 "EHLO
+        mail-oo1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241301AbhEQOum (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 May 2021 10:50:42 -0400
+Received: by mail-oo1-f51.google.com with SMTP id v13-20020a4ac00d0000b029020b43b918eeso1517914oop.9;
+        Mon, 17 May 2021 07:49:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=nCTj6HgOq3kiS9EgLLQMGC5yw5m63tUFyLTYwxvC2gM=;
-        b=tg/ev4ENmNbgBm7WLLIgJQAgYOEEE34Iq87uZnaHd5fTOKyuLCp9B66vK7EDa1NSWq
-         lmKNHPMNinEzFgv5aRNLhcDylxPRaIBQR8lz03Nl91ca2XAwdNZCaF4gKvFp2b7SkuIp
-         YyLMvIURBsmc1iSy02o3Qi4yjuYoGP8ObZ2B5idkRur3QcGboQTMUyp2/KodKkOCGA5M
-         f7tRre17n2c4m1+ZuTENGJnoIRa7xL6ZJz1Vj1B4nLcXnlHy2dDLOs3OZ9XVwvKYj62y
-         HTYYsfaDgIArSWj8rF4/TFQGow8AgXjIMrKUevLvhXxOjDcVqvvdgsw/aeSiWNzmm10g
-         GH9w==
-X-Gm-Message-State: AOAM530j/9xREABeNu2QAtTjiPB36w/hJI2KBlVMgTp7HP63+O2EpaaO
-        dQQahwqFcuC9Uudw3PEFwJDsY8S826Hp2eMxIlc=
-X-Google-Smtp-Source: ABdhPJwQ2qgBZtQf/GnZT0PoBoRySutc7ORD6yx1CUs52aGO/rZAy/KrZNJkaPf5W8Dy093AtfDOuOqLknHJKlQByhs=
-X-Received: by 2002:aca:380a:: with SMTP id f10mr109907oia.157.1621262424289;
- Mon, 17 May 2021 07:40:24 -0700 (PDT)
+        bh=He+qVgUj6KmNb1BGjrbB0Gl63WV0jKVgGssDWDzSwlg=;
+        b=lv04GtrJVnx1tnGbc9q1GoskNBgxH34FIyTrv9OdzCIXiL+6UMjpsEHs22ecF3TkA6
+         uhZNaBsjQKb5rERcbNJh4jtMXCGnHUTNnsekQYyq8d72LUccC29xz0q6plYf/IOioBUT
+         hsfJdkdFwDBqGDW+y/9XbvskGlF6PWDgrqpBJk4yRbH6Zmlkt3jKodXeP5K2es+cNm2l
+         pfYmfi5nPkwbcn1d8KMbiayGJ0HligD3sVwU0ZkTw467lV2BDOy4vZzb9sxM7Wr6jv2e
+         Uh2kJryzihapcC51l/o4a/hwlLG7rkQ8CfKGqscFTVPa4+nlIrU4nitzwlG9YbberTIl
+         sw7g==
+X-Gm-Message-State: AOAM533Kr+Vo6t86eShRphjurqG19kOqQEBrSjpsinI1XKQoVCw1gne7
+        iQ5RdFN87FHppDLGVfjqa/F7CmRJnpAZC25TnE1cdeFe
+X-Google-Smtp-Source: ABdhPJzle0JCLdOfG5zyvu1FOGayw2+umxep8vskH1QiHjZ34VMsXM7C500k/wzWoP9cwYQSShgPIdsoRqx46E4J0dk=
+X-Received: by 2002:a4a:ab83:: with SMTP id m3mr251394oon.2.1621262966086;
+ Mon, 17 May 2021 07:49:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210511063835.7794-1-jhp@endlessos.org> <CAJZ5v0hsNSpL+1ero_+pzz97Xz4UCwjBv7swg+3CAne7_OUKkQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hsNSpL+1ero_+pzz97Xz4UCwjBv7swg+3CAne7_OUKkQ@mail.gmail.com>
+References: <20210428193901.rqs64di4g2svpaeg@ubuntu>
+In-Reply-To: <20210428193901.rqs64di4g2svpaeg@ubuntu>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 17 May 2021 16:40:13 +0200
-Message-ID: <CAJZ5v0iU15F42yGm5etxmMLsDwC=u7p1eT6EoVADnJnV8+S4VA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI / EC: Fix media keys not working problem on more
- Asus laptops
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Jian-Hong Pan <jhp@endlessos.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Chris Chiu <chris.chiu@canonical.com>,
+Date:   Mon, 17 May 2021 16:49:15 +0200
+Message-ID: <CAJZ5v0iCG7WT_hpvJ006_TpVjAeY-SB7z76c2Y5Payu215nk+g@mail.gmail.com>
+Subject: Re: [PATCH v2] drivers: pnp: proc.c: Removed unnecessary variables
+To:     Anupama K Patil <anupamakpatil123@gmail.com>
+Cc:     Jaroslav Kysela <perex@perex.cz>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux@endlessos.org
+        B K Karthik <bkkarthik@pesu.pes.edu>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 17, 2021 at 4:32 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Wed, Apr 28, 2021 at 9:39 PM Anupama K Patil
+<anupamakpatil123@gmail.com> wrote:
 >
-> On Tue, May 11, 2021 at 8:40 AM Jian-Hong Pan <jhp@endlessos.org> wrote:
-> >
-> > From: Chris Chiu <chiu@endlessm.com>
-> >
-> > More ASUS laptops have the _GPE define in the DSDT table with a
-> > different value than the _GPE number in the ECDT.
-> >
-> > This is causing media keys not working on ASUS X505BA/BP, X542BA/BP
-> >
-> > Add model info to the quirks list.
-> >
-> > Signed-off-by: Chris Chiu <chiu@endlessm.com>
-> > Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
-> > ---
-> >  drivers/acpi/ec.c | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> >
-> > diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> > index 13565629ce0a..e8c5da2b964a 100644
-> > --- a/drivers/acpi/ec.c
-> > +++ b/drivers/acpi/ec.c
-> > @@ -1846,6 +1846,22 @@ static const struct dmi_system_id ec_dmi_table[] __initconst = {
-> >         DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> >         DMI_MATCH(DMI_PRODUCT_NAME, "GL702VMK"),}, NULL},
-> >         {
-> > +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BA", {
-> > +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> > +       DMI_MATCH(DMI_PRODUCT_NAME, "X505BA"),}, NULL},
-> > +       {
-> > +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BP", {
-> > +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> > +       DMI_MATCH(DMI_PRODUCT_NAME, "X505BP"),}, NULL},
-> > +       {
-> > +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BA", {
-> > +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> > +       DMI_MATCH(DMI_PRODUCT_NAME, "X542BA"),}, NULL},
-> > +       {
-> > +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BP", {
-> > +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> > +       DMI_MATCH(DMI_PRODUCT_NAME, "X542BP"),}, NULL},
-> > +       {
-> >         ec_honor_ecdt_gpe, "ASUS X550VXK", {
-> >         DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> >         DMI_MATCH(DMI_PRODUCT_NAME, "X550VXK"),}, NULL},
-> > --
+> de, e are two variables of the type 'struct proc_dir_entry'
+> which can be removed to save memory. This also fixes a coding style
+> issue reported by checkpatch where we are suggested to make assignment
+> outside the if statement.
 >
-> Applied as 5.14 material under a different subject ("ACPI: EC: Make
-> more Asus laptops use ECDT _GPE"), thanks!
+> Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+> Signed-off-by: Anupama K Patil <anupamakpatil123@gmail.com>
+> ---
+> v2: Added Reviewed-by: tag
+>
+>  drivers/pnp/isapnp/proc.c | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
+> index 785a796430fa..1ae458c02656 100644
+> --- a/drivers/pnp/isapnp/proc.c
+> +++ b/drivers/pnp/isapnp/proc.c
+> @@ -57,21 +57,20 @@ static const struct proc_ops isapnp_proc_bus_proc_ops = {
+>  static int isapnp_proc_attach_device(struct pnp_dev *dev)
+>  {
+>         struct pnp_card *bus = dev->card;
+> -       struct proc_dir_entry *de, *e;
+>         char name[16];
+>
+> -       if (!(de = bus->procdir)) {
+> +       if (!bus->procdir) {
+>                 sprintf(name, "%02x", bus->number);
+> -               de = bus->procdir = proc_mkdir(name, isapnp_proc_bus_dir);
+> -               if (!de)
+> +               bus->procdir = proc_mkdir(name, isapnp_proc_bus_dir);
+> +               if (!bus->procdir)
+>                         return -ENOMEM;
+>         }
+>         sprintf(name, "%02x", dev->number);
+> -       e = dev->procent = proc_create_data(name, S_IFREG | S_IRUGO, de,
+> +       dev->procent = proc_create_data(name, S_IFREG | S_IRUGO, bus->procdir,
+>                                             &isapnp_proc_bus_proc_ops, dev);
+> -       if (!e)
+> +       if (!dev->procent)
+>                 return -ENOMEM;
+> -       proc_set_size(e, 256);
+> +       proc_set_size(dev->procent, 256);
+>         return 0;
+>  }
+>
+> --
 
-And dropped, because the chiu@endlessm.com email address is bouncing.
-
-Please resend with a valid email address in the From: field, thanks!
+Applied as 5.14 material with edits in the subject and changelog, thanks!
