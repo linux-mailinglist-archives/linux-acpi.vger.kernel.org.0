@@ -2,115 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FA3C386C94
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 May 2021 23:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 251CC386D9C
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 May 2021 01:22:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245493AbhEQVtZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 May 2021 17:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55258 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230508AbhEQVtX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 May 2021 17:49:23 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 998EFC061573;
-        Mon, 17 May 2021 14:48:06 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id t4so3923036plc.6;
-        Mon, 17 May 2021 14:48:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JMkvV6BdFFXMjoCPNmiDQhek94rpMVEncluqG5MRowE=;
-        b=odxstFZqYrucY4FAfwODmpJzT6jRu7CDGlVwp/MPxyAZ5p9mR28hLz1AkSgOslTZeH
-         EIDdzCusL/6HN6ufV+7hRqOUVJ33NqiOFxdJNrVI/7sRKrD4q0nalj3luYUxyM4Q5uxm
-         ZDugFjJPLXqNtbvB39cv3zngXvS9ERO4hylEjckcNaovm1kD8GuMQsNVRaOWRVnXx5fX
-         zqJgd6EM3XSGhHt60if0R4V/1ed5kazBt1Icnb3dGk6d/tmS1dM1ZSlXx1v0LFprjblB
-         DFwBVIUHdqP2N4bekTtJjXd8PkealEG31X2Lsh3wAx74Z7tAwi7gCIT1RL8YVytRlGS/
-         6oyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JMkvV6BdFFXMjoCPNmiDQhek94rpMVEncluqG5MRowE=;
-        b=eucsUs/s3y5lLuc7tn27WclB/joGVHWRqXCkfMZQNU7eKDivZ9YHK2Z2IjiuwZC7Rb
-         68X9gdZK5f3JCrm9RE8uK4lWY2zqjqEQjHyEs92BgVELkByxArJvc6Ace+Ip8CCov9VC
-         A7eqodnA+FFZz5VYkdK56nabkc4vR8FgICA5y0T+rQJT2dAQIx7oUDtRnb6O93Eijbuu
-         Fe8aNX2pBZNaIwj83Zt5Vj70KwHBt+2JIMZi3+FTJ2nkgPNYFOxo25YWA2efaCOWEIiG
-         F0K5//k8MsRS9T10Y0IClMCxBqn3olu518RYMRHpoSBGmfY5LXyIslxS74s59FLyqse+
-         Ihhw==
-X-Gm-Message-State: AOAM530BgE1f9pQf6OFd8uc70Nw76CVVYPltsNxMRfCubjqS/glQAFcc
-        6aTEFqA2QEs8IJ5a5TfqpO+l0HW6IomteKXjyoA=
-X-Google-Smtp-Source: ABdhPJzVb2Ly6gYRoFRDwWBuQTVhXViFr9CR8JTQUS5JsuSaXSK84r6AwxbxCyo6EbuMLLARNKHhdo+ukDZYWYSa8L0=
-X-Received: by 2002:a17:902:264:b029:eb:3d3a:a09c with SMTP id
- 91-20020a1709020264b02900eb3d3aa09cmr622880plc.0.1621288086211; Mon, 17 May
- 2021 14:48:06 -0700 (PDT)
+        id S235096AbhEQXXp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 May 2021 19:23:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54038 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231318AbhEQXXp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 17 May 2021 19:23:45 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9AEC761285;
+        Mon, 17 May 2021 23:22:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621293748;
+        bh=EPBxny1NVj/4hJ03KGf6BRDXyG2HMfX26b5gVD5p4Ak=;
+        h=Date:From:To:Cc:Subject:From;
+        b=RZqtnAjWXB6D8uxmTNZFPHf/DF6al8mVzBBZ1w8ilO18QPJmEg+X8FuciOtJT4YDP
+         aY2AuH5MHSvP/EQyKvEHiy3o/d837niQOfH/P/ChQDToKJFag9Ui2MqO1uQwSaIJdA
+         Iof4/1i7RnMI2E9nwgfrJ9lv25VHZlS7t9Pj7c7cIh4FanMkoXGOuNq830s0KrYWrs
+         pnsbP/nEGC6Nr2e1/YReMmDVD9ru0zIU4/uF1y6a2q1/e7zVA5w9cc+HZz2z6rxjnd
+         3TKeuYKn1mY8mwn4ZGFl+xY4+3StA5zf9utKLRsXCDLrEAPzzC6gV1pwolU1py11AZ
+         2N4Dz9/LeXlcw==
+Date:   Mon, 17 May 2021 18:23:12 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH][next] ACPI: Fix fall-through warning for Clang
+Message-ID: <20210517232312.GA43474@embeddedor>
 MIME-Version: 1.0
-References: <20210222130735.1313443-1-djrscally@gmail.com> <20210222130735.1313443-6-djrscally@gmail.com>
- <CAHp75Vd2Dc2Poq7VNRXRT-0VjkYdEFY2WKpz8fWpAQViQRO4jA@mail.gmail.com> <0241df24-11cb-fd3b-12a5-f98dea55fac5@gmail.com>
-In-Reply-To: <0241df24-11cb-fd3b-12a5-f98dea55fac5@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 18 May 2021 00:47:50 +0300
-Message-ID: <CAHp75VdQ-BYs2MhKA0g+e5No6qP1-BpPBv5L9091yX9c51ZxKw@mail.gmail.com>
-Subject: Re: [PATCH v3 5/6] platform/x86: Add intel_skl_int3472 driver
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Tomasz Figa <tfiga@chromium.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Rajmohan Mani <rajmohan.mani@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        kieran.bingham+renesas@ideasonboard.com,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        =?UTF-8?Q?Fabian_W=C3=BCthrich?= <me@fabwu.ch>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, May 18, 2021 at 12:43 AM Daniel Scally <djrscally@gmail.com> wrote:
->
-> Hi Andy
->
-> On 22/02/2021 14:58, Andy Shevchenko wrote
-> >> +#include <linux/clk-provider.h>
-> >
-> > This is definitely not for *.h. (Not all C files needed this)
-> >
-> >> +#include <linux/gpio/machine.h>
-> >
-> > Ditto.
-> >
-> >> +#include <linux/regulator/driver.h>
-> >> +#include <linux/regulator/machine.h>
-> >
-> > Ditto.
->
-> Bit more delayed than I wanted to be, but I'm just finishing off the v4
-> of this. For these includes, I'm using the actual structs from them
-> rather than pointers, so removing these would mean moving the definition
-> of struct int3472_discrete_device into one of the source files; you're
-> happy with that?
+In preparation to enable -Wimplicit-fallthrough for Clang, fix a
+fallthrough warning by simply dropping the empty default case at
+the bottom.
 
-Either way, please send a v4 and we start over from a fresh view.
+This contributes to the ongoing efforts to globally enable
+-Wimplicit-fallthrough for Clang.
 
-Thanks!
+Link: https://github.com/KSPP/linux/issues/115
+Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+Link: https://lore.kernel.org/lkml/CAJZ5v0hLYWKX__oZdcCY0D20pNqpw8SkiTPOCNOtpqe--QLp4Q@mail.gmail.com/
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ drivers/acpi/sbshc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
+diff --git a/drivers/acpi/sbshc.c b/drivers/acpi/sbshc.c
+index 53c2862c4c75..5c021c3b81d9 100644
+--- a/drivers/acpi/sbshc.c
++++ b/drivers/acpi/sbshc.c
+@@ -231,7 +231,6 @@ static int smbus_alarm(void *context)
+ 		case ACPI_SBS_BATTERY:
+ 			acpi_os_execute(OSL_NOTIFY_HANDLER,
+ 					acpi_smbus_callback, hc);
+-		default:;
+ 	}
+ 	mutex_unlock(&hc->lock);
+ 	return 0;
 -- 
-With Best Regards,
-Andy Shevchenko
+2.27.0
+
