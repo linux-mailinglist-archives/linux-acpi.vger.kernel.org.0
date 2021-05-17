@@ -2,98 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 935F43832F0
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 May 2021 16:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB96F38337D
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 May 2021 17:00:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240308AbhEQOwn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 May 2021 10:52:43 -0400
-Received: from mail-oo1-f51.google.com ([209.85.161.51]:42791 "EHLO
-        mail-oo1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241301AbhEQOum (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 May 2021 10:50:42 -0400
-Received: by mail-oo1-f51.google.com with SMTP id v13-20020a4ac00d0000b029020b43b918eeso1517914oop.9;
-        Mon, 17 May 2021 07:49:26 -0700 (PDT)
+        id S240728AbhEQO6j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 May 2021 10:58:39 -0400
+Received: from mail-oi1-f177.google.com ([209.85.167.177]:43584 "EHLO
+        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242020AbhEQO4j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 May 2021 10:56:39 -0400
+Received: by mail-oi1-f177.google.com with SMTP id j75so6701684oih.10
+        for <linux-acpi@vger.kernel.org>; Mon, 17 May 2021 07:55:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=He+qVgUj6KmNb1BGjrbB0Gl63WV0jKVgGssDWDzSwlg=;
-        b=lv04GtrJVnx1tnGbc9q1GoskNBgxH34FIyTrv9OdzCIXiL+6UMjpsEHs22ecF3TkA6
-         uhZNaBsjQKb5rERcbNJh4jtMXCGnHUTNnsekQYyq8d72LUccC29xz0q6plYf/IOioBUT
-         hsfJdkdFwDBqGDW+y/9XbvskGlF6PWDgrqpBJk4yRbH6Zmlkt3jKodXeP5K2es+cNm2l
-         pfYmfi5nPkwbcn1d8KMbiayGJ0HligD3sVwU0ZkTw467lV2BDOy4vZzb9sxM7Wr6jv2e
-         Uh2kJryzihapcC51l/o4a/hwlLG7rkQ8CfKGqscFTVPa4+nlIrU4nitzwlG9YbberTIl
-         sw7g==
-X-Gm-Message-State: AOAM533Kr+Vo6t86eShRphjurqG19kOqQEBrSjpsinI1XKQoVCw1gne7
-        iQ5RdFN87FHppDLGVfjqa/F7CmRJnpAZC25TnE1cdeFe
-X-Google-Smtp-Source: ABdhPJzle0JCLdOfG5zyvu1FOGayw2+umxep8vskH1QiHjZ34VMsXM7C500k/wzWoP9cwYQSShgPIdsoRqx46E4J0dk=
-X-Received: by 2002:a4a:ab83:: with SMTP id m3mr251394oon.2.1621262966086;
- Mon, 17 May 2021 07:49:26 -0700 (PDT)
+        bh=gXpQytpzWg8xvjan3Elb6dc+ZGlZ19M8HZX9QyM+Dsc=;
+        b=M2iJnSlLUZGct0lDmMj1bvfdPvTkRu5ZBFlEnwEFKmMTWDiOWve+h3EPfporKEaQRY
+         I9R/JPUAxFArGQQTSDfPYGW2e7YqqULTAI1PU4NCD2BWjzTTZjPA4GVFiDX53qSOA5F/
+         te8/rF+FOTV35ak0N/eJrQJTuAcKN+TVFTue+L3jzNCS4UseVrQKkO1EQDxotBSaoieG
+         zB9DDj/a8+IO2PLsKd/6A/LsQttLa5hCko6EzA+iKtF/I3qtkZ0KaHBQephGsSo49vjd
+         SV9mOJnRt5MbnMS7QJyqtcwxDr82SUdoFYWfqd7bIfxPu6CUIDUZvuRdNcqbHElsu+z5
+         0Zow==
+X-Gm-Message-State: AOAM5312ySwjdDJqRvKtGSPiMZ2QwdZhULGPBavE47AY7m01JIWBUdBl
+        taZecUiEtFCC2OijsNDTiM9x0XrhMhCFH9mEmiU=
+X-Google-Smtp-Source: ABdhPJwTLJcijh5XF+trA+k3DtKBtTqMKDgIJAfB+vWMz7WiYCzzTQTZjnEbwfyhtp487wtdvc2RqoHSQ3MZvRYMQ2I=
+X-Received: by 2002:a05:6808:90d:: with SMTP id w13mr136815oih.71.1621263322657;
+ Mon, 17 May 2021 07:55:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210428193901.rqs64di4g2svpaeg@ubuntu>
-In-Reply-To: <20210428193901.rqs64di4g2svpaeg@ubuntu>
+References: <2c94aae5-2dd5-0046-bacb-c09770bf5d82@gmail.com>
+In-Reply-To: <2c94aae5-2dd5-0046-bacb-c09770bf5d82@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 17 May 2021 16:49:15 +0200
-Message-ID: <CAJZ5v0iCG7WT_hpvJ006_TpVjAeY-SB7z76c2Y5Payu215nk+g@mail.gmail.com>
-Subject: Re: [PATCH v2] drivers: pnp: proc.c: Removed unnecessary variables
-To:     Anupama K Patil <anupamakpatil123@gmail.com>
-Cc:     Jaroslav Kysela <perex@perex.cz>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        B K Karthik <bkkarthik@pesu.pes.edu>
+Date:   Mon, 17 May 2021 16:55:11 +0200
+Message-ID: <CAJZ5v0i_v70Siq_RYoxsu2bsks4bL2gsAuHOHGv5pOUFsFJ9jA@mail.gmail.com>
+Subject: Re: [PATCH] pnp: Remove pnp_alloc
+To:     Heiner Kallweit <hkallweit1@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Apr 28, 2021 at 9:39 PM Anupama K Patil
-<anupamakpatil123@gmail.com> wrote:
+On Thu, May 13, 2021 at 12:25 AM Heiner Kallweit <hkallweit1@gmail.com> wrote:
 >
-> de, e are two variables of the type 'struct proc_dir_entry'
-> which can be removed to save memory. This also fixes a coding style
-> issue reported by checkpatch where we are suggested to make assignment
-> outside the if statement.
+> Kernel will complain anyway if it runs out of memory. Therefore we
+> don't need the error message in pnp_alloc() and hence can remove it
+> and use kzalloc() directly.
 >
-> Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-> Signed-off-by: Anupama K Patil <anupamakpatil123@gmail.com>
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 > ---
-> v2: Added Reviewed-by: tag
+>  drivers/pnp/base.h      |  1 -
+>  drivers/pnp/card.c      |  2 +-
+>  drivers/pnp/core.c      | 12 ------------
+>  drivers/pnp/interface.c |  4 ++--
+>  4 files changed, 3 insertions(+), 16 deletions(-)
 >
->  drivers/pnp/isapnp/proc.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
+> diff --git a/drivers/pnp/base.h b/drivers/pnp/base.h
+> index cdcfa39cf..e74a0f6a3 100644
+> --- a/drivers/pnp/base.h
+> +++ b/drivers/pnp/base.h
+> @@ -6,7 +6,6 @@
 >
-> diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
-> index 785a796430fa..1ae458c02656 100644
-> --- a/drivers/pnp/isapnp/proc.c
-> +++ b/drivers/pnp/isapnp/proc.c
-> @@ -57,21 +57,20 @@ static const struct proc_ops isapnp_proc_bus_proc_ops = {
->  static int isapnp_proc_attach_device(struct pnp_dev *dev)
+>  extern struct mutex pnp_lock;
+>  extern const struct attribute_group *pnp_dev_groups[];
+> -void *pnp_alloc(long size);
+>
+>  int pnp_register_protocol(struct pnp_protocol *protocol);
+>  void pnp_unregister_protocol(struct pnp_protocol *protocol);
+> diff --git a/drivers/pnp/card.c b/drivers/pnp/card.c
+> index c2464ee08..2430c14f4 100644
+> --- a/drivers/pnp/card.c
+> +++ b/drivers/pnp/card.c
+> @@ -80,7 +80,7 @@ static int card_probe(struct pnp_card *card, struct pnp_card_driver *drv)
+>         if (!id)
+>                 return 0;
+>
+> -       clink = pnp_alloc(sizeof(*clink));
+> +       clink = kzalloc(sizeof(*clink), GFP_KERNEL);
+>         if (!clink)
+>                 return 0;
+>         clink->card = card;
+> diff --git a/drivers/pnp/core.c b/drivers/pnp/core.c
+> index a50ab002e..ccdfbf397 100644
+> --- a/drivers/pnp/core.c
+> +++ b/drivers/pnp/core.c
+> @@ -31,18 +31,6 @@ DEFINE_MUTEX(pnp_lock);
+>  int pnp_platform_devices;
+>  EXPORT_SYMBOL(pnp_platform_devices);
+>
+> -void *pnp_alloc(long size)
+> -{
+> -       void *result;
+> -
+> -       result = kzalloc(size, GFP_KERNEL);
+> -       if (!result) {
+> -               printk(KERN_ERR "pnp: Out of Memory\n");
+> -               return NULL;
+> -       }
+> -       return result;
+> -}
+> -
+>  static void pnp_remove_protocol(struct pnp_protocol *protocol)
 >  {
->         struct pnp_card *bus = dev->card;
-> -       struct proc_dir_entry *de, *e;
->         char name[16];
+>         mutex_lock(&pnp_lock);
+> diff --git a/drivers/pnp/interface.c b/drivers/pnp/interface.c
+> index 602c46893..44efcdb87 100644
+> --- a/drivers/pnp/interface.c
+> +++ b/drivers/pnp/interface.c
+> @@ -214,7 +214,7 @@ static ssize_t options_show(struct device *dmdev, struct device_attribute *attr,
+>         int ret, dep = 0, set = 0;
+>         char *indent;
 >
-> -       if (!(de = bus->procdir)) {
-> +       if (!bus->procdir) {
->                 sprintf(name, "%02x", bus->number);
-> -               de = bus->procdir = proc_mkdir(name, isapnp_proc_bus_dir);
-> -               if (!de)
-> +               bus->procdir = proc_mkdir(name, isapnp_proc_bus_dir);
-> +               if (!bus->procdir)
->                         return -ENOMEM;
->         }
->         sprintf(name, "%02x", dev->number);
-> -       e = dev->procent = proc_create_data(name, S_IFREG | S_IRUGO, de,
-> +       dev->procent = proc_create_data(name, S_IFREG | S_IRUGO, bus->procdir,
->                                             &isapnp_proc_bus_proc_ops, dev);
-> -       if (!e)
-> +       if (!dev->procent)
+> -       buffer = pnp_alloc(sizeof(pnp_info_buffer_t));
+> +       buffer = kzalloc(sizeof(*buffer), GFP_KERNEL);
+>         if (!buffer)
 >                 return -ENOMEM;
-> -       proc_set_size(e, 256);
-> +       proc_set_size(dev->procent, 256);
->         return 0;
->  }
+>
+> @@ -257,7 +257,7 @@ static ssize_t resources_show(struct device *dmdev,
+>         if (!dev)
+>                 return -EINVAL;
+>
+> -       buffer = pnp_alloc(sizeof(pnp_info_buffer_t));
+> +       buffer = kzalloc(sizeof(*buffer), GFP_KERNEL);
+>         if (!buffer)
+>                 return -ENOMEM;
 >
 > --
 
