@@ -2,137 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 029A0386FC8
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 May 2021 04:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EEAB387050
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 May 2021 05:42:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346195AbhERCDp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 May 2021 22:03:45 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:4723 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346187AbhERCDo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 May 2021 22:03:44 -0400
-Received: from dggems706-chm.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FkfLT3FNKzmhq5;
-        Tue, 18 May 2021 09:58:57 +0800 (CST)
-Received: from dggeme756-chm.china.huawei.com (10.3.19.102) by
- dggems706-chm.china.huawei.com (10.3.19.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Tue, 18 May 2021 10:02:25 +0800
-Received: from [127.0.0.1] (10.40.193.166) by dggeme756-chm.china.huawei.com
- (10.3.19.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 18
- May 2021 10:02:25 +0800
-Subject: Re: [PATCH] ACPICA: fix a memleak issue related to ACPI/GPIO
-To:     "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "hoan@os.amperecomputing.com" <hoan@os.amperecomputing.com>,
-        "fancer.lancer@gmail.com" <fancer.lancer@gmail.com>
-References: <1620790207-128605-1-git-send-email-chenxiang66@hisilicon.com>
- <MWHPR11MB159982431E024C6212960C0CF02D9@MWHPR11MB1599.namprd11.prod.outlook.com>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linuxarm@huawei.com" <linuxarm@huawei.com>
-From:   "chenxiang (M)" <chenxiang66@hisilicon.com>
-Message-ID: <5a8fcc49-5559-0e99-4dd9-1821b7ade1ea@hisilicon.com>
-Date:   Tue, 18 May 2021 10:02:24 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S243301AbhERDnC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 May 2021 23:43:02 -0400
+Received: from mga11.intel.com ([192.55.52.93]:44199 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1346297AbhERDnB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 17 May 2021 23:43:01 -0400
+IronPort-SDR: 72j0DbcF5kV8ovqZSC5BSog3kQgAqoulMDFtzGihkzlKGaG6GlX+cTurYnVidsd2r+QnLKz4uK
+ lLNHcGmyRROA==
+X-IronPort-AV: E=McAfee;i="6200,9189,9987"; a="197535485"
+X-IronPort-AV: E=Sophos;i="5.82,309,1613462400"; 
+   d="scan'208";a="197535485"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2021 20:41:28 -0700
+IronPort-SDR: F4bch374bs5ASg4VRU8F+0ew/1K/h07FCOHF4obGMfUC+uAHtkc8OF9hrLK7s/GTMlwNa5Bqgj
+ Gvlg1F6mZjHA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,309,1613462400"; 
+   d="scan'208";a="472724222"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.21])
+  by orsmga001.jf.intel.com with ESMTP; 17 May 2021 20:41:28 -0700
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH v2] ACPI: DPTF: Add new PCH FIVR methods
+Date:   Mon, 17 May 2021 20:41:19 -0700
+Message-Id: <20210518034119.2116555-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <MWHPR11MB159982431E024C6212960C0CF02D9@MWHPR11MB1599.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.40.193.166]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggeme756-chm.china.huawei.com (10.3.19.102)
-X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Erik,
+Some additional information is required for updating PCH FIVR values
+upon WiFi channel changes.
 
+New attributes added to the existing sysfs:
+fivr_switching_freq_mhz	: Get the FIVR switching control frequency
+			  using ACPI method GFCS. Refer to the
+			  documentation for the equation.
+fivr_switching_fault_status: Read the FIVR switching frequency control
+			fault status. Uses ACPI method GFFS
 
-在 2021/5/18 2:54, Kaneda, Erik 写道:
->
->> -----Original Message-----
->> From: chenxiang <chenxiang66@hisilicon.com>
->> Sent: Tuesday, May 11, 2021 8:30 PM
->> To: Moore, Robert <robert.moore@intel.com>; Kaneda, Erik
->> <erik.kaneda@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>;
->> hoan@os.amperecomputing.com; fancer.lancer@gmail.com
->> Cc: linux-acpi@vger.kernel.org; linux-gpio@vger.kernel.org;
->> linuxarm@huawei.com; Xiang Chen <chenxiang66@hisilicon.com>
->> Subject: [PATCH] ACPICA: fix a memleak issue related to ACPI/GPIO
->>
->> From: Xiang Chen <chenxiang66@hisilicon.com>
->>
->> There is a memleak reported as follows:
->>
->> unreferenced object 0xffff00208ff85a00 (size 128):
->>    comm "swapper/0", pid 1, jiffies 4294892588 (age 887.572s)
->>    hex dump (first 32 bytes):
->>      00 00 00 00 02 00 00 00 08 5a f8 8f 20 00 ff ff  .........Z.. ...
->>      08 5a f8 8f 20 00 ff ff 00 00 00 00 00 00 00 00  .Z.. ...........
->> backtrace:
->>      [<00000000bc25bad8>] slab_post_alloc_hook+0x80/0x2e0
->>      [<000000008d547074>] kmem_cache_alloc+0x194/0x2c0
->>      [<00000000b08da9ad>] acpi_os_create_semaphore+0x3c/0x78
->>      [<0000000024816c0a>] acpi_ev_install_space_handler+0x214/0x274
->>      [<00000000d93a5ac2>] acpi_install_address_space_handler+0x64/0xb0
->>      [<0000000098c37a45>] acpi_gpiochip_add+0x130/0x348
->>      [<00000000c1cf4b42>] gpiochip_add_data_with_key+0x79c/0xdd0
->>      [<000000005ce539e9>] devm_gpiochip_add_data_with_key+0x30/0x90
->>      [<00000000a3038b8d>] dwapb_gpio_probe+0x3e4/0x7e8
->>      [<0000000047a03eba>] platform_probe+0x68/0xe0
->>      [<00000000dc15c501>] really_probe+0x17c/0x4a0
->>      [<00000000aa1f123d>] driver_probe_device+0x68/0xd0
->>      [<00000000d97646e0>] device_driver_attach+0x74/0x80
->>      [<0000000073d5b3e5>] __driver_attach+0x8c/0xe0
->>      [<00000000ff60d118>] bus_for_each_dev+0x7c/0xd8
->>      [<00000000b018393d>] driver_attach+0x24/0x30
->>
->> It requires to delete the handler object in function
->> acpi_remove_address_space_handler() but it just up the sem with function
->> acpi_os_release_mutex(), so use acpi_os_delete_mutex() instead of
->> acpi_os_release_mutex() in function
->> acpi_remove_address_space_handler().
->>
->> Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
->> ---
->>   drivers/acpi/acpica/evxfregn.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
->> index b1ff0a8..4db0bec 100644
->> --- a/drivers/acpi/acpica/evxfregn.c
->> +++ b/drivers/acpi/acpica/evxfregn.c
->> @@ -201,7 +201,7 @@ acpi_remove_address_space_handler(acpi_handle
->> device,
->>
->>   			/* Now we can delete the handler object */
->>
-> Hi Xiang,
->   
->> -			acpi_os_release_mutex(handler_obj-
->>> address_space.
->> +			acpi_os_delete_mutex(handler_obj->address_space.
->>   					      context_mutex);
-> Thanks for this suggestion! Instead of acpi_os_delete_mutex, could you try using acpi_ut_remove_reference instead?
-> I believe this will is a safer option. Please test this and see if it fixes the memory leak.
+ssc_clock_info : Presents SSC (spread spectrum clock) information for EMI
+(Electro magnetic interference) control. Use ACPI method GEMI. Refer
+to the description of GEMI method below.
 
-But there is already acpi_ut_remove_reference(handler_obj) behind it.
+GFFS
+This ACPI method is used to read the FIVR switching frequency control
+fault status.
+Bits	Description
+[0:0]	Fault status when set to 1
+[31:1]	Reserved
 
->
-> Thanks,
-> Erik
->
->>   			acpi_ut_remove_reference(handler_obj);
->>   			goto unlock_and_exit;
->> --
->> 2.8.1
->
-> .
->
+GFCS
+This ACPI method is used to read the FIVR switching control
+frequency.
+Bits	Description
+[11:0]	Actual Frequency = value * XTAL_FREQ / 128
+[31:12]	Reserved
 
+GEMI
+This ACPI method is used to read the programmed register value for EMI
+(Electro magnetic interference) control.
+
+Bits	Description
+[7:0]	Sets clock spectrum spread percentage:
+	0x00=0.2% , 0x3F=10%
+	1 LSB = 0.1% increase in spread (for
+	settings 0x01 thru 0x1C)
+	1 LSB = 0.2% increase in spread (for
+	settings 0x1E thru 0x3F)
+[8]	When set to 1, enables spread
+	spectrum clock
+[9]	0: Triangle mode. FFC frequency
+	walks around the Fcenter in a linear
+	fashion
+	1: Random walk mode. FFC frequency
+	changes randomly within the SSC
+	(Spread spectrum clock) range
+[10]	0: No white noise. 1: Add white noise
+	to spread waveform
+[11]	When 1, future writes are ignored.
+
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+---
+v2
+	Update documentation for fivr_switching_freq_mhz
+
+ Documentation/ABI/testing/sysfs-platform-dptf | 42 +++++++++++++++++++
+ drivers/acpi/dptf/dptf_pch_fivr.c             |  9 ++++
+ 2 files changed, 51 insertions(+)
+
+diff --git a/Documentation/ABI/testing/sysfs-platform-dptf b/Documentation/ABI/testing/sysfs-platform-dptf
+index 141834342a4d..fe62f024eb93 100644
+--- a/Documentation/ABI/testing/sysfs-platform-dptf
++++ b/Documentation/ABI/testing/sysfs-platform-dptf
+@@ -111,3 +111,45 @@ Contact:	linux-acpi@vger.kernel.org
+ Description:
+ 		(RW) The PCH FIVR (Fully Integrated Voltage Regulator) switching frequency in MHz,
+ 		when FIVR clock is 38.4MHz.
++
++What:		/sys/bus/platform/devices/INTC1045:00/pch_fivr_switch_frequency/fivr_switching_freq_mhz
++Date:		June, 2021
++KernelVersion:	v5.14
++Contact:	linux-acpi@vger.kernel.org
++Description:
++		(RO) Get the FIVR switching control frequency in MHz after applying equation
++		"fivr_switching_freq_mhz * XTAL_FREQ / 128". Here XTAL_FREQ is Crystal Oscillator frequency
++		in MHz, which is product specific.
++
++What:		/sys/bus/platform/devices/INTC1045:00/pch_fivr_switch_frequency/fivr_switching_fault_status
++Date:		June, 2021
++KernelVersion:	v5.14
++Contact:	linux-acpi@vger.kernel.org
++Description:
++		(RO) Read the FIVR switching frequency control fault status.
++
++What:		/sys/bus/platform/devices/INTC1045:00/pch_fivr_switch_frequency/ssc_clock_info
++Date:		June, 2021
++KernelVersion:	v5.14
++Contact:	linux-acpi@vger.kernel.org
++Description:
++		(RO) Presents SSC (spread spectrum clock) information for EMI
++		(Electro magnetic interference) control. This is a bit mask.
++		Bits	Description
++		[7:0]	Sets clock spectrum spread percentage:
++			0x00=0.2% , 0x3F=10%
++			1 LSB = 0.1% increase in spread (for
++			settings 0x01 thru 0x1C)
++			1 LSB = 0.2% increase in spread (for
++			settings 0x1E thru 0x3F)
++		[8]	When set to 1, enables spread
++			spectrum clock
++		[9]	0: Triangle mode. FFC frequency
++			walks around the Fcenter in a linear
++			fashion
++			1: Random walk mode. FFC frequency
++			changes randomly within the SSC
++			(Spread spectrum clock) range
++		[10]	0: No white noise. 1: Add white noise
++			to spread waveform
++		[11]	When 1, future writes are ignored.
+diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
+index 5fca18296bf6..22c4ae0401ef 100644
+--- a/drivers/acpi/dptf/dptf_pch_fivr.c
++++ b/drivers/acpi/dptf/dptf_pch_fivr.c
+@@ -55,15 +55,24 @@ static ssize_t name##_store(struct device *dev,\
+ 
+ PCH_FIVR_SHOW(freq_mhz_low_clock, GFC0)
+ PCH_FIVR_SHOW(freq_mhz_high_clock, GFC1)
++PCH_FIVR_SHOW(ssc_clock_info, GEMI)
++PCH_FIVR_SHOW(fivr_switching_freq_mhz, GFCS)
++PCH_FIVR_SHOW(fivr_switching_fault_status, GFFS)
+ PCH_FIVR_STORE(freq_mhz_low_clock, RFC0)
+ PCH_FIVR_STORE(freq_mhz_high_clock, RFC1)
+ 
+ static DEVICE_ATTR_RW(freq_mhz_low_clock);
+ static DEVICE_ATTR_RW(freq_mhz_high_clock);
++static DEVICE_ATTR_RO(ssc_clock_info);
++static DEVICE_ATTR_RO(fivr_switching_freq_mhz);
++static DEVICE_ATTR_RO(fivr_switching_fault_status);
+ 
+ static struct attribute *fivr_attrs[] = {
+ 	&dev_attr_freq_mhz_low_clock.attr,
+ 	&dev_attr_freq_mhz_high_clock.attr,
++	&dev_attr_ssc_clock_info.attr,
++	&dev_attr_fivr_switching_freq_mhz.attr,
++	&dev_attr_fivr_switching_fault_status.attr,
+ 	NULL
+ };
+ 
+-- 
+2.27.0
 
