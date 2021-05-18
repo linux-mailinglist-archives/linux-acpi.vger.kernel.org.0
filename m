@@ -2,159 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D32D3870DE
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 May 2021 07:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E980A387466
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 May 2021 10:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241428AbhEREmr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 May 2021 00:42:47 -0400
-Received: from mga02.intel.com ([134.134.136.20]:25772 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240448AbhEREmr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 18 May 2021 00:42:47 -0400
-IronPort-SDR: UfKxbzVAyuEw50Ag48THspEgCKmFv0TNoj5zacMJmuUfJWLiJhButu/rfQNLRj8REpdrr44Xy/
- ovwUywrtNqeA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9987"; a="187749771"
-X-IronPort-AV: E=Sophos;i="5.82,309,1613462400"; 
-   d="scan'208";a="187749771"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2021 21:41:29 -0700
-IronPort-SDR: U4Ywl62HX0GACMt3r3RFII/TGHbmuB9iQ5EL2nQcPjtMpuDQifwxJ8A/WYRo8N/slVWu5Fq1gx
- 9uFpXSazVeLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,309,1613462400"; 
-   d="scan'208";a="611825884"
-Received: from lkp-server01.sh.intel.com (HELO ddd90b05c979) ([10.239.97.150])
-  by orsmga005.jf.intel.com with ESMTP; 17 May 2021 21:41:27 -0700
-Received: from kbuild by ddd90b05c979 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lirXq-00022X-VK; Tue, 18 May 2021 04:41:26 +0000
-Date:   Tue, 18 May 2021 12:40:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 31696a0a4ca5a5b29bf3fd87a936e27a89bbc9c8
-Message-ID: <60a3454f.K408xwHHS6yZ04uf%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1346606AbhERIu6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 May 2021 04:50:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33628 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241701AbhERIu6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 May 2021 04:50:58 -0400
+Received: from theia.8bytes.org (8bytes.org [IPv6:2a01:238:4383:600:38bc:a715:4b6d:a889])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C80C061573
+        for <linux-acpi@vger.kernel.org>; Tue, 18 May 2021 01:49:40 -0700 (PDT)
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+        id 76BDB2FA; Tue, 18 May 2021 10:49:38 +0200 (CEST)
+Date:   Tue, 18 May 2021 10:49:37 +0200
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linuxarm@huawei.com,
+        lorenzo.pieralisi@arm.com, robin.murphy@arm.com,
+        wanghuiqiang@huawei.com, guohanjun@huawei.com,
+        steven.price@arm.com, Sami.Mujawar@arm.com, jon@solid-run.com,
+        eric.auger@redhat.com, yangyicong@huawei.com
+Subject: Re: [PATCH v4 2/8] iommu/dma: Introduce generic helper to retrieve
+ RMR info
+Message-ID: <YKN/ocoHvOdbH43j@8bytes.org>
+References: <20210513134550.2117-1-shameerali.kolothum.thodi@huawei.com>
+ <20210513134550.2117-3-shameerali.kolothum.thodi@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20210513134550.2117-3-shameerali.kolothum.thodi@huawei.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 31696a0a4ca5a5b29bf3fd87a936e27a89bbc9c8  Merge branch 'acpi-x86' into bleeding-edge
+On Thu, May 13, 2021 at 02:45:44PM +0100, Shameer Kolothum wrote:
+> +/**
+> + * struct iommu_rmr - Reserved Memory Region details per IOMMU
+> + * @list: Linked list pointers to hold RMR region info
+> + * @base_address: base address of Reserved Memory Region
+> + * @length: length of memory region
+> + * @sid: associated stream id
+> + * @flags: flags that apply to the RMR node
+> + */
+> +struct iommu_rmr {
+> +	struct list_head	list;
+> +	phys_addr_t		base_address;
+> +	u64			length;
+> +	u32			sid;
+> +	u32			flags;
+> +};
+> +
+> +/* RMR Remap permitted */
+> +#define IOMMU_RMR_REMAP_PERMITTED	(1 << 0)
+> +
 
-elapsed time: 723m
+This struct has lots of overlap with 'struct iommu_resv_region'. Any
+reason the existing struct can't be used here?
 
-configs tested: 96
-configs skipped: 2
+Regards,
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+	Joerg
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-um                           x86_64_defconfig
-powerpc                     pseries_defconfig
-powerpc                     taishan_defconfig
-arm                          pxa910_defconfig
-sh                          urquell_defconfig
-powerpc                      arches_defconfig
-mips                    maltaup_xpa_defconfig
-sh                             shx3_defconfig
-powerpc                        cell_defconfig
-mips                     decstation_defconfig
-mips                       lemote2f_defconfig
-sh                          rsk7201_defconfig
-arm                            lart_defconfig
-mips                          malta_defconfig
-m68k                       m5275evb_defconfig
-powerpc                     tqm8548_defconfig
-sh                          lboxre2_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a003-20210517
-i386                 randconfig-a001-20210517
-i386                 randconfig-a004-20210517
-i386                 randconfig-a005-20210517
-i386                 randconfig-a002-20210517
-i386                 randconfig-a006-20210517
-x86_64               randconfig-a012-20210517
-x86_64               randconfig-a015-20210517
-x86_64               randconfig-a011-20210517
-x86_64               randconfig-a013-20210517
-x86_64               randconfig-a016-20210517
-x86_64               randconfig-a014-20210517
-i386                 randconfig-a016-20210517
-i386                 randconfig-a014-20210517
-i386                 randconfig-a011-20210517
-i386                 randconfig-a012-20210517
-i386                 randconfig-a015-20210517
-i386                 randconfig-a013-20210517
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a004-20210517
-x86_64               randconfig-a003-20210517
-x86_64               randconfig-a001-20210517
-x86_64               randconfig-a005-20210517
-x86_64               randconfig-a002-20210517
-x86_64               randconfig-a006-20210517
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
