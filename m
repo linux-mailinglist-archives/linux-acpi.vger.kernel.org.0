@@ -2,138 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCBB43897C0
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 22:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC1238987F
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 23:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230000AbhESUVc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 May 2021 16:21:32 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:4687 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbhESUVa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 16:21:30 -0400
-Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FlkgP1Pp9z16QCB;
-        Thu, 20 May 2021 04:17:21 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 20 May 2021 04:20:06 +0800
-Received: from localhost (10.52.121.81) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 19 May
- 2021 21:20:04 +0100
-Date:   Wed, 19 May 2021 21:18:18 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-CC:     Ira Weiny <ira.weiny@intel.com>, <linux-cxl@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        "Lorenzo Pieralisi" <lorenzo.pieralisi@arm.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Schofield, Alison" <alison.schofield@intel.com>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        Linuxarm <linuxarm@huawei.com>, Fangjian <f.fangjian@huawei.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [RFC PATCH v3 2/4] PCI/doe: Add Data Object Exchange support
-Message-ID: <20210519211818.00002acf@Huawei.com>
-In-Reply-To: <CAPcyv4ii3KC6MBBxJrnCUCm_JGS7ugL+JTFUu9QTBnPUhQFtfQ@mail.gmail.com>
-References: <20210419165451.2176200-1-Jonathan.Cameron@huawei.com>
-        <20210419165451.2176200-3-Jonathan.Cameron@huawei.com>
-        <20210506215934.GJ1904484@iweiny-DESK2.sc.intel.com>
-        <20210511175006.00007861@Huawei.com>
-        <CAPcyv4j=uww+85b4AbWmoPNPry_+JLEpEnuywpdC8PonXmRmEg@mail.gmail.com>
-        <20210514094755.00002081@Huawei.com>
-        <CAPcyv4h_qSZq+sTAOTKDNsO3xPmq=65j8oO1iw0WdVFj8+XrOA@mail.gmail.com>
-        <20210517094045.00004d58@Huawei.com>
-        <CAPcyv4iQcV_U1qmQhXKM0RG9v-sAEPwtTxnv=P86yJrCH25k+w@mail.gmail.com>
-        <20210518110403.000013e6@Huawei.com>
-        <CAPcyv4g3JPtAHzemKdQiM44ZkZ_0u+U-UJ5mfeU3fKzRWuaDyQ@mail.gmail.com>
-        <20210519161156.00003bf9@Huawei.com>
-        <CAPcyv4j_oEWG1NG1wYryVt3-Gx8q2WwzP7_xhchsDARDR0zBEA@mail.gmail.com>
-        <20210519172052.00002124@Huawei.com>
-        <20210519173352.000026fe@Huawei.com>
-        <CAPcyv4gUy0nNh-3y2wWVwM4AtO4F8OOJCtWz_ZH7Eu0H=oymuw@mail.gmail.com>
-        <20210519180057.00002ac3@Huawei.com>
-        <CAPcyv4ii3KC6MBBxJrnCUCm_JGS7ugL+JTFUu9QTBnPUhQFtfQ@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S229632AbhESVUl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 17:20:41 -0400
+Received: from fgw23-7.mail.saunalahti.fi ([62.142.5.84]:29298 "EHLO
+        fgw23-7.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229507AbhESVUl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 May 2021 17:20:41 -0400
+X-Greylist: delayed 963 seconds by postgrey-1.27 at vger.kernel.org; Wed, 19 May 2021 17:20:40 EDT
+Received: from localhost (88-115-248-186.elisa-laajakaista.fi [88.115.248.186])
+        by fgw23.mail.saunalahti.fi (Halon) with ESMTP
+        id a0466097-b8e5-11eb-8ccd-005056bdfda7;
+        Thu, 20 May 2021 00:03:15 +0300 (EEST)
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, devel@acpica.org
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Yong Zhi <yong.zhi@intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Tianshu Qiu <tian.shu.qiu@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Subject: [PATCH v1 1/1] ACPI: utils: Fix reference counting in for_each_acpi_dev_match()
+Date:   Thu, 20 May 2021 00:02:53 +0300
+Message-Id: <20210519210253.3578025-1-andy.shevchenko@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.121.81]
-X-ClientProxiedBy: lhreml730-chm.china.huawei.com (10.201.108.81) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 19 May 2021 12:20:17 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
+Currently it's possible to iterate over the dangling pointer in case the device
+suddenly disappears. This may happen becase callers put it at the end of a loop.
 
-> On Wed, May 19, 2021 at 10:03 AM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> [..]
-> > > > "The DOE Busy bit can be used to indicate that the DOE responder is
-> > > >  temporarily unable to accept a data object. It is necessary for a
-> > > >  DOE requester to ensure that individual data object transfers are
-> > > >  completed, and that a request/response contract is completed, for
-> > > >  example using a mutex mechanism to block other conflicting traffic
-> > > >  for cases where such conflicts are possible."  
-> > >
-> > > I read that as the specification mandating my proposal to disallow
-> > > multi-initiator access. My only mistake was making the exclusion apply
-> > > to reads and not limiting it to the minimum of config write exclusion.  
-> >
-> > Key thing is even that isn't enough.   The mutex isn't about stopping
-> > temporary access, it's about ensuring "request/response contract is completed".
-> > So you would need userspace to be able to take a lock to stop the kernel
-> > from using the DOE whilst it completes it's request/response pair and
-> > userspace to guarantee it doesn't do anything stupid.  
-> 
-> A userspace lockout of the kernel is not needed if userspace is
-> outright forbidden from corrupting the kernel's state machine. I.e.
-> kernel enforced full disable of user initiated config-write to DOE
-> registers, not the ephemeral pci_cfg_access_lock() proposal.
+Instead, let's move that call inside acpi_dev_get_next_match_dev().
 
-That would work but I thought was ruled out as an approach.
-@Bjorn would this be acceptable?
+Fixes: 803abec64ef9 ("media: ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver")
+Fixes: bf263f64e804 ("media: ACPI / bus: Add acpi_dev_get_next_match_dev() and helper macro")
+Cc: Daniel Scally <djrscally@gmail.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+---
+ drivers/acpi/utils.c                       | 5 +----
+ drivers/media/pci/intel/ipu3/cio2-bridge.c | 8 +++-----
+ include/acpi/acpi_bus.h                    | 5 -----
+ 3 files changed, 4 insertions(+), 14 deletions(-)
 
-> 
-> > Easiest way to do that is provide proper interfaces that allows the
-> > kernel to fully mediate the access + don't support direct userspace access
-> > for normal operation. (treat it the same as an other config space write)  
-> 
-> Again, it's the parenthetical at issue. I struggle to see this as just
-> another errant / unwanted config-write when there is legitimate reason
-> for userspace to expect that touching the DOE is not destructive to
-> device operation as opposed to writes to other critical registers.
-
-True for specific protocols (CDAT). I'm fairly sure, with IDE you can take down
-the link encryption to the device, potentially (worst case?) resulting a memory
-access failure and a machine reboot or corruption of persistent memory.
-
-> Where the kernel's legitimate-access and userspace's legitimate-access
-> to a resource collide, the kernel provides a mediation interface that
-> precludes conflicts. Otherwise, I don't understand why the kernel is
-> going through the trouble of /dev/mem and pci-mmap restrictions if it
-> is not supposed to be concerned about userspace corrupting driver
-> state.
-
-The short answer is that lock requirement, in the above note, rules
-out safe direct userspace use of the DOE (unless we can tell the kernel
-is not going to ever use it).  Mediation must be done. Even if we safely
-protect the kernel side via aborts, userspace transactions can be
-interrupted in a fashion that is invisible to userspace (beyond maybe
-a timeout if the userspace code is hardened against this). So there is no
-legitimate use that is not fully mediated by the kernel. So ioctl
-or defined per protocol interfaces are the way forwards.
-
-Perhaps that's putting it rather strongly :)
-
-Jonathan
-
-
+diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+index 3b54b8fd7396..ccfc484dbffd 100644
+--- a/drivers/acpi/utils.c
++++ b/drivers/acpi/utils.c
+@@ -846,10 +846,6 @@ EXPORT_SYMBOL(acpi_dev_present);
+  * Return the next match of ACPI device if another matching device was present
+  * at the moment of invocation, or NULL otherwise.
+  *
+- * FIXME: The function does not tolerate the sudden disappearance of @adev, e.g.
+- * in the case of a hotplug event. That said, the caller should ensure that
+- * this will never happen.
+- *
+  * The caller is responsible for invoking acpi_dev_put() on the returned device.
+  *
+  * See additional information in acpi_dev_present() as well.
+@@ -866,6 +862,7 @@ acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const cha
+ 	match.hrv = hrv;
+ 
+ 	dev = bus_find_device(&acpi_bus_type, start, &match, acpi_dev_match_cb);
++	acpi_dev_put(adev);
+ 	return dev ? to_acpi_device(dev) : NULL;
+ }
+ EXPORT_SYMBOL(acpi_dev_get_next_match_dev);
+diff --git a/drivers/media/pci/intel/ipu3/cio2-bridge.c b/drivers/media/pci/intel/ipu3/cio2-bridge.c
+index e8511787c1e4..477417261b6e 100644
+--- a/drivers/media/pci/intel/ipu3/cio2-bridge.c
++++ b/drivers/media/pci/intel/ipu3/cio2-bridge.c
+@@ -178,13 +178,11 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
+ 
+ 		if (bridge->n_sensors >= CIO2_NUM_PORTS) {
+ 			dev_err(&cio2->dev, "Exceeded available CIO2 ports\n");
+-			cio2_bridge_unregister_sensors(bridge);
+ 			ret = -EINVAL;
+-			goto err_out;
++			goto err_put_adev;
+ 		}
+ 
+ 		sensor = &bridge->sensors[bridge->n_sensors];
+-		sensor->adev = adev;
+ 		strscpy(sensor->name, cfg->hid, sizeof(sensor->name));
+ 
+ 		ret = cio2_bridge_read_acpi_buffer(adev, "SSDB",
+@@ -214,6 +212,7 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
+ 			goto err_free_swnodes;
+ 		}
+ 
++		sensor->adev = acpi_dev_get(adev);
+ 		adev->fwnode.secondary = fwnode;
+ 
+ 		dev_info(&cio2->dev, "Found supported sensor %s\n",
+@@ -227,8 +226,7 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
+ err_free_swnodes:
+ 	software_node_unregister_nodes(sensor->swnodes);
+ err_put_adev:
+-	acpi_dev_put(sensor->adev);
+-err_out:
++	acpi_dev_put(adev);
+ 	return ret;
+ }
+ 
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 3a82faac5767..bff6a11bb21f 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -698,11 +698,6 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv);
+  * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
+  *
+  * The caller is responsible for invoking acpi_dev_put() on the returned device.
+- *
+- * FIXME: Due to above requirement there is a window that may invalidate @adev
+- * and next iteration will use a dangling pointer, e.g. in the case of a
+- * hotplug event. That said, the caller should ensure that this will never
+- * happen.
+  */
+ #define for_each_acpi_dev_match(adev, hid, uid, hrv)			\
+ 	for (adev = acpi_dev_get_first_match_dev(hid, uid, hrv);	\
+-- 
+2.31.1
 
