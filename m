@@ -2,119 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED67388B5D
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 12:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1BDD388C13
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 12:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233957AbhESKMN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 May 2021 06:12:13 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53684 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347159AbhESKMM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 06:12:12 -0400
-Received: from mail-ot1-f70.google.com ([209.85.210.70])
-        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <chris.chiu@canonical.com>)
-        id 1ljJAC-0000Ul-Dr
-        for linux-acpi@vger.kernel.org; Wed, 19 May 2021 10:10:52 +0000
-Received: by mail-ot1-f70.google.com with SMTP id x2-20020a9d62820000b02902e4ff743c4cso8569301otk.8
-        for <linux-acpi@vger.kernel.org>; Wed, 19 May 2021 03:10:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bh7oN3YWxMGW4HDhFAH8x43fpamYV6QbQivhB+lZzsI=;
-        b=boIarynAkkgV2ArNPz9n0nyRqoUzFuodcoYJ7ivSl22742muSbzFg3WJqk62w7gffo
-         oEf53/KwuEqYk/3hKz8drzqWewrorDXDNfbI3NbuCtLNeN5DMUoFnpDGRaF3rynpjl/s
-         sBOM5qrXDOSEbz4gFej3Q1xfth2IKkH9V7FQ8gARpgdXBbGsVEbZJPeFoezICYA/eYRa
-         gHF9GGanIrrfpl/vwx9Zmg+YXrXu5mcKpGMrbrNoDQHEMMFt7W7uvW223lS9qSOxLL9f
-         rAeleHNwBchwS6xmx8eSSI6EBsatTICF5esPJDXtx11QbkGUkb3+IYVS3u+6TTst+oxH
-         FgZA==
-X-Gm-Message-State: AOAM5318LjzDAyQ2PpxGhSbs1vA1tKWCZE9mLkM4E1m341xeO82JQcZD
-        keL6qzFkyZk4fnlP7NBrmbJV+lVmXmI/U8KjaSnv8rMph5aKVgc4D/G52lPmOWjo9pFrVSdtdO/
-        icHUI9b/0D+mLr04C2l2kLukLs4bTlOae4+IZYjdsQNeAv1B1lRGLVjg=
-X-Received: by 2002:aca:4e8c:: with SMTP id c134mr5247742oib.169.1621419051467;
-        Wed, 19 May 2021 03:10:51 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyAsQQxJ/sqF/yN04GIbPc/pOhiPLIyAg+/QOWHOWonVtIfu5NSnQDd3L2BH3zVgTYCV2HwGrfT8xOpWgfMLXE=
-X-Received: by 2002:aca:4e8c:: with SMTP id c134mr5247731oib.169.1621419051315;
- Wed, 19 May 2021 03:10:51 -0700 (PDT)
+        id S236460AbhESKwy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 06:52:54 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:4750 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231625AbhESKwy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 06:52:54 -0400
+Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.59])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FlV2V4vGxzpfZc;
+        Wed, 19 May 2021 18:48:02 +0800 (CST)
+Received: from dggeme756-chm.china.huawei.com (10.3.19.102) by
+ dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Wed, 19 May 2021 18:51:25 +0800
+Received: from [127.0.0.1] (10.40.193.166) by dggeme756-chm.china.huawei.com
+ (10.3.19.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 19
+ May 2021 18:51:25 +0800
+Subject: Re: [PATCH] ACPICA: fix a memleak issue related to ACPI/GPIO
+To:     "Kaneda, Erik" <erik.kaneda@intel.com>,
+        "Moore, Robert" <robert.moore@intel.com>,
+        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+        "hoan@os.amperecomputing.com" <hoan@os.amperecomputing.com>,
+        "fancer.lancer@gmail.com" <fancer.lancer@gmail.com>
+References: <1620790207-128605-1-git-send-email-chenxiang66@hisilicon.com>
+ <MWHPR11MB159982431E024C6212960C0CF02D9@MWHPR11MB1599.namprd11.prod.outlook.com>
+ <5a8fcc49-5559-0e99-4dd9-1821b7ade1ea@hisilicon.com>
+ <MWHPR11MB1599FBA0B63433B58DC955F4F02C9@MWHPR11MB1599.namprd11.prod.outlook.com>
+CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linuxarm@huawei.com" <linuxarm@huawei.com>
+From:   "chenxiang (M)" <chenxiang66@hisilicon.com>
+Message-ID: <dc3d2eef-be90-42d5-b352-98ba7b517be0@hisilicon.com>
+Date:   Wed, 19 May 2021 18:51:24 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-References: <CAJZ5v0iU15F42yGm5etxmMLsDwC=u7p1eT6EoVADnJnV8+S4VA@mail.gmail.com>
- <20210519030655.2197-1-jhp@endlessos.org> <CAJZ5v0hn6p6_vgb+F1WzLDTB1n-4BchGW4bbY7CS6pswTAc=nA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hn6p6_vgb+F1WzLDTB1n-4BchGW4bbY7CS6pswTAc=nA@mail.gmail.com>
-From:   Chris Chiu <chris.chiu@canonical.com>
-Date:   Wed, 19 May 2021 18:10:40 +0800
-Message-ID: <CABTNMG12HADeXoWe+25kYKQPcY8KV0GCDx+75GVAVATQ1pZYTA@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: EC: Make more Asus laptops use ECDT _GPE
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Jian-Hong Pan <jhp@endlessos.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux@endlessos.org, Chris Chiu <chiu@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <MWHPR11MB1599FBA0B63433B58DC955F4F02C9@MWHPR11MB1599.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.40.193.166]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggeme756-chm.china.huawei.com (10.3.19.102)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 19, 2021 at 5:53 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Wed, May 19, 2021 at 5:11 AM Jian-Hong Pan <jhp@endlessos.org> wrote:
-> >
-> > From: Chris Chiu <chris.chiu@canonical.com>
-> >
-> > More ASUS laptops have the _GPE define in the DSDT table with a
-> > different value than the _GPE number in the ECDT.
-> >
-> > This is causing media keys not working on ASUS X505BA/BP, X542BA/BP
-> >
-> > Add model info to the quirks list.
-> >
-> > Signed-off-by: Chris Chiu <chiu@endlessm.com>
->
-> This has to match the From address.
->
-> Chris, can the e-mail address in the S-o-b be changed?
->
+Hi Erik,
 
-Sure. I've updated the .mailmap. Jian-Hong, could you help fix the
-S-o-b? Thanks.
 
-Chris
+在 2021/5/19 5:35, Kaneda, Erik 写道:
+>
+>> -----Original Message-----
+>> From: chenxiang (M) <chenxiang66@hisilicon.com>
+>> Sent: Monday, May 17, 2021 7:02 PM
+>> To: Kaneda, Erik <erik.kaneda@intel.com>; Moore, Robert
+>> <robert.moore@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>;
+>> hoan@os.amperecomputing.com; fancer.lancer@gmail.com
+>> Cc: linux-acpi@vger.kernel.org; linux-gpio@vger.kernel.org;
+>> linuxarm@huawei.com
+>> Subject: Re: [PATCH] ACPICA: fix a memleak issue related to ACPI/GPIO
+>>
+>> Hi Erik,
+>>
+>>
+>> 在 2021/5/18 2:54, Kaneda, Erik 写道:
+>>>> -----Original Message-----
+>>>> From: chenxiang <chenxiang66@hisilicon.com>
+>>>> Sent: Tuesday, May 11, 2021 8:30 PM
+>>>> To: Moore, Robert <robert.moore@intel.com>; Kaneda, Erik
+>>>> <erik.kaneda@intel.com>; Wysocki, Rafael J
+>> <rafael.j.wysocki@intel.com>;
+>>>> hoan@os.amperecomputing.com; fancer.lancer@gmail.com
+>>>> Cc: linux-acpi@vger.kernel.org; linux-gpio@vger.kernel.org;
+>>>> linuxarm@huawei.com; Xiang Chen <chenxiang66@hisilicon.com>
+>>>> Subject: [PATCH] ACPICA: fix a memleak issue related to ACPI/GPIO
+>>>>
+>>>> From: Xiang Chen <chenxiang66@hisilicon.com>
+>>>>
+>>>> There is a memleak reported as follows:
+>>>>
+>>>> unreferenced object 0xffff00208ff85a00 (size 128):
+>>>>     comm "swapper/0", pid 1, jiffies 4294892588 (age 887.572s)
+>>>>     hex dump (first 32 bytes):
+>>>>       00 00 00 00 02 00 00 00 08 5a f8 8f 20 00 ff ff  .........Z.. ...
+>>>>       08 5a f8 8f 20 00 ff ff 00 00 00 00 00 00 00 00  .Z.. ...........
+>>>> backtrace:
+>>>>       [<00000000bc25bad8>] slab_post_alloc_hook+0x80/0x2e0
+>>>>       [<000000008d547074>] kmem_cache_alloc+0x194/0x2c0
+>>>>       [<00000000b08da9ad>] acpi_os_create_semaphore+0x3c/0x78
+>>>>       [<0000000024816c0a>] acpi_ev_install_space_handler+0x214/0x274
+>>>>       [<00000000d93a5ac2>] acpi_install_address_space_handler+0x64/0xb0
+>>>>       [<0000000098c37a45>] acpi_gpiochip_add+0x130/0x348
+>>>>       [<00000000c1cf4b42>] gpiochip_add_data_with_key+0x79c/0xdd0
+>>>>       [<000000005ce539e9>]
+>> devm_gpiochip_add_data_with_key+0x30/0x90
+>>>>       [<00000000a3038b8d>] dwapb_gpio_probe+0x3e4/0x7e8
+>>>>       [<0000000047a03eba>] platform_probe+0x68/0xe0
+>>>>       [<00000000dc15c501>] really_probe+0x17c/0x4a0
+>>>>       [<00000000aa1f123d>] driver_probe_device+0x68/0xd0
+>>>>       [<00000000d97646e0>] device_driver_attach+0x74/0x80
+>>>>       [<0000000073d5b3e5>] __driver_attach+0x8c/0xe0
+>>>>       [<00000000ff60d118>] bus_for_each_dev+0x7c/0xd8
+>>>>       [<00000000b018393d>] driver_attach+0x24/0x30
+>>>>
+>>>> It requires to delete the handler object in function
+>>>> acpi_remove_address_space_handler() but it just up the sem with
+>> function
+>>>> acpi_os_release_mutex(), so use acpi_os_delete_mutex() instead of
+>>>> acpi_os_release_mutex() in function
+>>>> acpi_remove_address_space_handler().
+>>>>
+>>>> Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+>>>> ---
+>>>>    drivers/acpi/acpica/evxfregn.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/acpi/acpica/evxfregn.c
+>> b/drivers/acpi/acpica/evxfregn.c
+>>>> index b1ff0a8..4db0bec 100644
+>>>> --- a/drivers/acpi/acpica/evxfregn.c
+>>>> +++ b/drivers/acpi/acpica/evxfregn.c
+>>>> @@ -201,7 +201,7 @@
+>> acpi_remove_address_space_handler(acpi_handle
+>>>> device,
+>>>>
+>>>>    			/* Now we can delete the handler object */
+>>>>
+>>> Hi Xiang,
+>>>
+>>>> -			acpi_os_release_mutex(handler_obj-
+>>>>> address_space.
+>>>> +			acpi_os_delete_mutex(handler_obj->address_space.
+>>>>    					      context_mutex);
+>>> Thanks for this suggestion! Instead of acpi_os_delete_mutex, could you try
+>> using acpi_ut_remove_reference instead?
+>>> I believe this will is a safer option. Please test this and see if it fixes the
+>> memory leak.
+>>
+> Hi,
+>
+>> But there is already acpi_ut_remove_reference(handler_obj) behind it.
+> The delete mutex could result in unexpected behavior because it's not always the case that acpi_ut_remove_reference will clean up the object. This function cleans up the object if the reference count is 0 so we should add the delete mutex during the deletion instead.
+>
+> Could you try this code to see if it fixes the leak?
 
-> > Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
-> > ---
-> > v2: Edit the author information with valid email address
-> >
-> >  drivers/acpi/ec.c | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> >
-> > diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> > index 13565629ce0a..e8c5da2b964a 100644
-> > --- a/drivers/acpi/ec.c
-> > +++ b/drivers/acpi/ec.c
-> > @@ -1846,6 +1846,22 @@ static const struct dmi_system_id ec_dmi_table[] __initconst = {
-> >         DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> >         DMI_MATCH(DMI_PRODUCT_NAME, "GL702VMK"),}, NULL},
-> >         {
-> > +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BA", {
-> > +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> > +       DMI_MATCH(DMI_PRODUCT_NAME, "X505BA"),}, NULL},
-> > +       {
-> > +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BP", {
-> > +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> > +       DMI_MATCH(DMI_PRODUCT_NAME, "X505BP"),}, NULL},
-> > +       {
-> > +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BA", {
-> > +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> > +       DMI_MATCH(DMI_PRODUCT_NAME, "X542BA"),}, NULL},
-> > +       {
-> > +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BP", {
-> > +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> > +       DMI_MATCH(DMI_PRODUCT_NAME, "X542BP"),}, NULL},
-> > +       {
-> >         ec_honor_ecdt_gpe, "ASUS X550VXK", {
-> >         DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> >         DMI_MATCH(DMI_PRODUCT_NAME, "X550VXK"),}, NULL},
-> > --
-> > 2.31.1
-> >
+I have tested the change, and it fixes the leak, and so please feel free 
+to add:
+Tested-by: Xiang Chen <chenxiang66@hisilicon.com>
+
+>
+> diff --git a/drivers/acpi/acpica/utdelete.c b/drivers/acpi/acpica/utdelete.c
+> index 624a26794d55..e5ba9795ec69 100644
+> --- a/drivers/acpi/acpica/utdelete.c
+> +++ b/drivers/acpi/acpica/utdelete.c
+> @@ -285,6 +285,14 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
+>                  }
+>                  break;
+>
+> +       case ACPI_TYPE_LOCAL_ADDRESS_HANDLER:
+> +
+> +               ACPI_DEBUG_PRINT((ACPI_DB_ALLOCATIONS,
+> +                                 "***** Address handler %p\n", object));
+> +
+> +               acpi_os_delete_mutex(object->address_space.context_mutex);
+> +               break;
+> +
+>          default:
+>
+>                  break;
+>
+>>> Thanks,
+>>> Erik
+>>>
+>>>>    			acpi_ut_remove_reference(handler_obj);
+>>>>    			goto unlock_and_exit;
+>>>> --
+>>>> 2.8.1
+>>> .
+>>>
+
+
