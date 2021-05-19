@@ -2,114 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43DDE388521
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 05:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D358388949
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 10:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237753AbhESDNI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 May 2021 23:13:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56994 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237719AbhESDNI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 May 2021 23:13:08 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46247C06175F
-        for <linux-acpi@vger.kernel.org>; Tue, 18 May 2021 20:11:49 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d16so8882366pfn.12
-        for <linux-acpi@vger.kernel.org>; Tue, 18 May 2021 20:11:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=7K64pRj8ZX1/Io9KSFtbDGYG+Ub4qBkvcfx5Mnlfq8o=;
-        b=lK5SztMqVOowpYqMlYj54+++wA5kjcYGPDMeqtSJgPg7WX3uzxVwsvAHxPsKQxTY6z
-         XEtwe34Ug3Skmz10H7IhGtx3zCdUsGwqAjyIW9v4Zp2QaDIr3RYUqEAvPgmczyLb8lXD
-         qzQA7B7GBb/h2ExjIPV7KqjVhiPO5KMr7mowI6dnrLrP0+yTjs97SlHCPAc185AistZJ
-         eidFCoTJfQmd8uEgPNRlXO3+uzaMGEydfVNrSWt4USeYQM+bXNNrMgMY4EdiHBO3OMK2
-         3V6G4waxl+Er35hoTpBJqTJEYVl3UmddRpGf+4ELcM9Al3hlFE3+YJOZ4e6CsKXw181q
-         BBWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=7K64pRj8ZX1/Io9KSFtbDGYG+Ub4qBkvcfx5Mnlfq8o=;
-        b=SbOM/GEGvSLHgH2i99y33qfmni2r81LPHGo+sWlEr/CWldqUmZTauZQInOfvoCLsRT
-         w7XWIjzL1Nu3JytpBkT18rAMs92ec7qPG1zcKOp6VoQYJgxPTJJ5t4e/1I+aypubQUxV
-         UMkgayJtYwwoJ9n9yVfL/w+QbQv3euT3UVbgJekbw1o6b8zWaj7MbpABGs8yj0obpQmV
-         eyeivypa8BXyUrawEVGXPdMjk/sWMwu7RVsiofWRKVxz0JfyvtdKL7TgFtXAv2oN364E
-         kWKXQqUVyMsNM8VaJFNNwv1LxbGk80Wn3Ve6e4jt6DLdUBLPfqSFPXD+a9id8beJTbFk
-         YH7g==
-X-Gm-Message-State: AOAM533iR1HFvqHd5ipV9o1wurf4Kme08ghcTt6cJEyF+p54DxH9XN94
-        3aOpSDEw3MXHl1WiBOjdhDakbA==
-X-Google-Smtp-Source: ABdhPJwKOzSmk8vB8qmgE1rMmGXqfMfPmCGUuhvd9ch5cfsIZqWEAEL7xgKu7E9zVCmkJTbY1KPj5g==
-X-Received: by 2002:a62:a517:0:b029:2dc:9daf:5e91 with SMTP id v23-20020a62a5170000b02902dc9daf5e91mr8457957pfm.39.1621393908595;
-        Tue, 18 May 2021 20:11:48 -0700 (PDT)
-Received: from starnight.localdomain (123-204-46-122.static.seed.net.tw. [123.204.46.122])
-        by smtp.googlemail.com with ESMTPSA id np1sm2898662pjb.13.2021.05.18.20.11.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 May 2021 20:11:48 -0700 (PDT)
-From:   Jian-Hong Pan <jhp@endlessos.org>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@endlessos.org,
-        Chris Chiu <chris.chiu@canonical.com>,
-        Chris Chiu <chiu@endlessm.com>,
-        Jian-Hong Pan <jhp@endlessos.org>
-Subject: [PATCH v2] ACPI: EC: Make more Asus laptops use ECDT _GPE
-Date:   Wed, 19 May 2021 11:06:56 +0800
-Message-Id: <20210519030655.2197-1-jhp@endlessos.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <CAJZ5v0iU15F42yGm5etxmMLsDwC=u7p1eT6EoVADnJnV8+S4VA@mail.gmail.com>
-References: <CAJZ5v0iU15F42yGm5etxmMLsDwC=u7p1eT6EoVADnJnV8+S4VA@mail.gmail.com>
+        id S244633AbhESIXM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 04:23:12 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:3038 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241235AbhESIXL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 04:23:11 -0400
+Received: from dggems706-chm.china.huawei.com (unknown [172.30.72.59])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FlQlB6DTzzmXG3;
+        Wed, 19 May 2021 16:19:34 +0800 (CST)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ dggems706-chm.china.huawei.com (10.3.19.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Wed, 19 May 2021 16:21:50 +0800
+Received: from [10.47.24.60] (10.47.24.60) by lhreml724-chm.china.huawei.com
+ (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2176.2; Wed, 19 May
+ 2021 09:21:48 +0100
+Subject: Re: [bug report] Memory leak from acpi_ev_install_space_handler()
+To:     "Kaneda, Erik" <erik.kaneda@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        chenxiang <chenxiang66@hisilicon.com>
+References: <845f6ef8-d2a7-e491-8405-9526e4ba277a@huawei.com>
+ <CAJZ5v0gRm+jsd1KtLtSgT=4pc9oab=EtW=zqBuKjHLJ=ZcUkiA@mail.gmail.com>
+ <752f16ed-29e3-840e-dc53-6fed24d73861@huawei.com>
+ <MWHPR11MB1599342DCB12AEA5B7DD0D54F02C9@MWHPR11MB1599.namprd11.prod.outlook.com>
+From:   John Garry <john.garry@huawei.com>
+Message-ID: <3ab18796-f8b5-9498-a31a-5dfd21059ebb@huawei.com>
+Date:   Wed, 19 May 2021 09:20:45 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <MWHPR11MB1599342DCB12AEA5B7DD0D54F02C9@MWHPR11MB1599.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.24.60]
+X-ClientProxiedBy: lhreml705-chm.china.huawei.com (10.201.108.54) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Chris Chiu <chris.chiu@canonical.com>
+On 18/05/2021 22:48, Kaneda, Erik wrote:
+> Hi John,
+> 
+>> I don't mind looking further if requested.
+> Someone else reported this as well. 
 
-More ASUS laptops have the _GPE define in the DSDT table with a
-different value than the _GPE number in the ECDT.
+I noticed. By chance, it was my close colleague Xiang Chen.
 
-This is causing media keys not working on ASUS X505BA/BP, X542BA/BP
+Could you try the patch below? I think it might help fix this issue..
 
-Add model info to the quirks list.
+It looks like the same problem, and you provided the same solution, so 
+we can look to test it.
 
-Signed-off-by: Chris Chiu <chiu@endlessm.com>
-Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
----
-v2: Edit the author information with valid email address
+Thanks
 
- drivers/acpi/ec.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 13565629ce0a..e8c5da2b964a 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1846,6 +1846,22 @@ static const struct dmi_system_id ec_dmi_table[] __initconst = {
- 	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 	DMI_MATCH(DMI_PRODUCT_NAME, "GL702VMK"),}, NULL},
- 	{
-+	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BA", {
-+	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+	DMI_MATCH(DMI_PRODUCT_NAME, "X505BA"),}, NULL},
-+	{
-+	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BP", {
-+	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+	DMI_MATCH(DMI_PRODUCT_NAME, "X505BP"),}, NULL},
-+	{
-+	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BA", {
-+	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+	DMI_MATCH(DMI_PRODUCT_NAME, "X542BA"),}, NULL},
-+	{
-+	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BP", {
-+	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+	DMI_MATCH(DMI_PRODUCT_NAME, "X542BP"),}, NULL},
-+	{
- 	ec_honor_ecdt_gpe, "ASUS X550VXK", {
- 	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 	DMI_MATCH(DMI_PRODUCT_NAME, "X550VXK"),}, NULL},
--- 
-2.31.1
+> 
+> Thanks,
+> Erik
+> 
+> diff --git a/drivers/acpi/acpica/utdelete.c b/drivers/acpi/acpica/utdelete.c
+> index 624a26794d55..e5ba9795ec69 100644
+> --- a/drivers/acpi/acpica/utdelete.c
+> +++ b/drivers/acpi/acpica/utdelete.c
+> @@ -285,6 +285,14 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
+>                  }
+>                  break;
+> 
+> +       case ACPI_TYPE_LOCAL_ADDRESS_HANDLER:
+> +
+> +               ACPI_DEBUG_PRINT((ACPI_DB_ALLOCATIONS,
+> +                                 "***** Address handler %p\n", object));
+> +
+> +               acpi_os_delete_mutex(object->address_space.context_mutex);
+> +               break;
+> +
+>          default:
+> 
+>                  break;
+> 
 
