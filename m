@@ -2,31 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A2E389004
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 16:12:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 878A7388FFD
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 16:12:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241214AbhESOOE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 May 2021 10:14:04 -0400
-Received: from mga14.intel.com ([192.55.52.115]:32007 "EHLO mga14.intel.com"
+        id S1347060AbhESOOD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 10:14:03 -0400
+Received: from mga17.intel.com ([192.55.52.151]:2931 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242465AbhESOOC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S242155AbhESOOC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Wed, 19 May 2021 10:14:02 -0400
-IronPort-SDR: JHHAK1CmXWMzrLoRrDJDqarhNZRu7DDEGIfc7ogZ/vOT282bCGHAykeoG79wPd/JrOUXRYQp8A
- cqWKccOLpMhw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9988"; a="200677108"
+IronPort-SDR: FHPOMwBcA1IaDOsDKO+Fe8di4XeaLE/pl9+WjEvAdhRcE2E+SwHwIbbcxSs7ByxFADllIcNptN
+ QSVxC37pf3cw==
+X-IronPort-AV: E=McAfee;i="6200,9189,9988"; a="181262846"
 X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
-   d="scan'208";a="200677108"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2021 07:12:41 -0700
-IronPort-SDR: KLAV25xHLEkS/lUn939eTI1CTeQz3cgLeY2kT2IWEfCvJyo9lGm3aYJZFbu9GehRtNVfXOUTAT
- I0cJP4oYedGA==
+   d="scan'208";a="181262846"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2021 07:12:41 -0700
+IronPort-SDR: Ar50fbapodIp7ooujhcBYNXIdEmayHiAeMdu89kOg861npqKS+aSato3O02cYKJubKz+EQGPia
+ 66yShqLMPavg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
-   d="scan'208";a="467184407"
+   d="scan'208";a="474589579"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by FMSMGA003.fm.intel.com with ESMTP; 19 May 2021 07:12:37 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 19 May 2021 07:12:38 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id 6BFA4543; Wed, 19 May 2021 17:12:59 +0300 (EEST)
+        id 7774155A; Wed, 19 May 2021 17:12:59 +0300 (EEST)
 From:   Mika Westerberg <mika.westerberg@linux.intel.com>
 To:     linux-usb@vger.kernel.org
 Cc:     Yehezkel Bernat <YehezkelShB@gmail.com>,
@@ -41,9 +41,9 @@ Cc:     Yehezkel Bernat <YehezkelShB@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jonathan Corbet <corbet@lwn.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 2/9] thunderbolt: Add USB4 port devices
-Date:   Wed, 19 May 2021 17:12:52 +0300
-Message-Id: <20210519141259.84839-3-mika.westerberg@linux.intel.com>
+Subject: [PATCH 3/9] thunderbolt: Add support for ACPI _DSM to power on/off retimers
+Date:   Wed, 19 May 2021 17:12:53 +0300
+Message-Id: <20210519141259.84839-4-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210519141259.84839-1-mika.westerberg@linux.intel.com>
 References: <20210519141259.84839-1-mika.westerberg@linux.intel.com>
@@ -53,409 +53,325 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Create devices for each USB4 port. This is needed when we add retimer
-access when there is no device connected but may be useful for other
-purposes too following what USB subsystem does. This exports a single
-attribute "link" that shows the type of the USB4 link (or "none" if
-there is no cable connected).
+From: Rajmohan Mani <rajmohan.mani@intel.com>
 
+Typically retimers can be accessed only when the USB4 link is up (e.g
+there is a cable connected). However, sometimes it is useful to be able
+to access retimers even if there is nothing connected to the USB4 port.
+For instance we may still want to be able to upgrade the retimer NVM
+firmware even if the user does not have any USB4 devices. This is
+something that USB4 spec leaves to implementers.
+
+In case of ACPI based systems, we can support this by providing a
+special _DSM method under each USB4 port. This _DSM can be used to turn
+on power to on-board retimers (and cycle it through different modes so
+that the sideband becomes usable).
+
+This patch adds support for this _DSM and makes the functionality
+available to the rest of the driver through tb_acpi_power_[on|off]_retimers().
+
+Signed-off-by: Rajmohan Mani <rajmohan.mani@intel.com>
+Co-developed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- .../ABI/testing/sysfs-bus-thunderbolt         |   7 ++
- drivers/thunderbolt/Makefile                  |   2 +-
- drivers/thunderbolt/retimer.c                 |  15 ++-
- drivers/thunderbolt/switch.c                  |  17 ++-
- drivers/thunderbolt/tb.h                      |  30 +++++
- drivers/thunderbolt/usb4.c                    |  54 +++++++++
- drivers/thunderbolt/usb4_port.c               | 112 ++++++++++++++++++
- 7 files changed, 229 insertions(+), 8 deletions(-)
- create mode 100644 drivers/thunderbolt/usb4_port.c
+ drivers/thunderbolt/acpi.c   | 206 +++++++++++++++++++++++++++++++++++
+ drivers/thunderbolt/domain.c |   9 +-
+ drivers/thunderbolt/tb.h     |  13 +++
+ 3 files changed, 225 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-thunderbolt b/Documentation/ABI/testing/sysfs-bus-thunderbolt
-index 05afeee05538..3537ba1ba892 100644
---- a/Documentation/ABI/testing/sysfs-bus-thunderbolt
-+++ b/Documentation/ABI/testing/sysfs-bus-thunderbolt
-@@ -290,6 +290,13 @@ Contact:	thunderbolt-software@lists.01.org
- Description:	This contains XDomain service specific settings as
- 		bitmask. Format: %x
- 
-+What:		/sys/bus/thunderbolt/devices/usb4_portX/link
-+Date:		Sep 2021
-+KernelVersion:	v5.14
-+Contact:	Mika Westerberg <mika.westerberg@linux.intel.com>
-+Description:	Returns the current link mode. Possible values are
-+		"usb4", "tbt" and "none".
-+
- What:		/sys/bus/thunderbolt/devices/<device>:<port>.<index>/device
- Date:		Oct 2020
- KernelVersion:	v5.9
-diff --git a/drivers/thunderbolt/Makefile b/drivers/thunderbolt/Makefile
-index 7aa48f6c41d9..da19d7987d00 100644
---- a/drivers/thunderbolt/Makefile
-+++ b/drivers/thunderbolt/Makefile
-@@ -2,7 +2,7 @@
- obj-${CONFIG_USB4} := thunderbolt.o
- thunderbolt-objs := nhi.o nhi_ops.o ctl.o tb.o switch.o cap.o path.o tunnel.o eeprom.o
- thunderbolt-objs += domain.o dma_port.o icm.o property.o xdomain.o lc.o tmu.o usb4.o
--thunderbolt-objs += nvm.o retimer.o quirks.o
-+thunderbolt-objs += usb4_port.o nvm.o retimer.o quirks.o
- 
- thunderbolt-${CONFIG_ACPI} += acpi.o
- thunderbolt-$(CONFIG_DEBUG_FS) += debugfs.o
-diff --git a/drivers/thunderbolt/retimer.c b/drivers/thunderbolt/retimer.c
-index c44fad2b9fbb..2e5188fb1150 100644
---- a/drivers/thunderbolt/retimer.c
-+++ b/drivers/thunderbolt/retimer.c
-@@ -283,11 +283,13 @@ struct device_type tb_retimer_type = {
- 
- static int tb_retimer_add(struct tb_port *port, u8 index, u32 auth_status)
- {
-+	struct usb4_port *usb4;
- 	struct tb_retimer *rt;
- 	u32 vendor, device;
- 	int ret;
- 
--	if (!port->cap_usb4)
-+	usb4 = port->usb4;
-+	if (!usb4)
- 		return -EINVAL;
- 
- 	ret = usb4_port_retimer_read(port, index, USB4_SB_VENDOR_ID, &vendor,
-@@ -331,7 +333,7 @@ static int tb_retimer_add(struct tb_port *port, u8 index, u32 auth_status)
- 	rt->port = port;
- 	rt->tb = port->sw->tb;
- 
--	rt->dev.parent = &port->sw->dev;
-+	rt->dev.parent = &usb4->dev;
- 	rt->dev.bus = &tb_bus_type;
- 	rt->dev.type = &tb_retimer_type;
- 	dev_set_name(&rt->dev, "%s:%u.%u", dev_name(&port->sw->dev),
-@@ -389,7 +391,7 @@ static struct tb_retimer *tb_port_find_retimer(struct tb_port *port, u8 index)
- 	struct tb_retimer_lookup lookup = { .port = port, .index = index };
- 	struct device *dev;
- 
--	dev = device_find_child(&port->sw->dev, &lookup, retimer_match);
-+	dev = device_find_child(&port->usb4->dev, &lookup, retimer_match);
- 	if (dev)
- 		return tb_to_retimer(dev);
- 
-@@ -479,7 +481,10 @@ static int remove_retimer(struct device *dev, void *data)
-  */
- void tb_retimer_remove_all(struct tb_port *port)
- {
--	if (port->cap_usb4)
--		device_for_each_child_reverse(&port->sw->dev, port,
-+	struct usb4_port *usb4;
-+
-+	usb4 = port->usb4;
-+	if (usb4)
-+		device_for_each_child_reverse(&usb4->dev, port,
- 					      remove_retimer);
+diff --git a/drivers/thunderbolt/acpi.c b/drivers/thunderbolt/acpi.c
+index 35fa17f7e599..b67e72d5644b 100644
+--- a/drivers/thunderbolt/acpi.c
++++ b/drivers/thunderbolt/acpi.c
+@@ -180,3 +180,209 @@ bool tb_acpi_is_xdomain_allowed(void)
+ 		return osc_sb_native_usb4_control & OSC_USB_XDOMAIN;
+ 	return true;
  }
-diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
-index e015dc93a916..7303c61a891a 100644
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -2741,11 +2741,16 @@ int tb_switch_add(struct tb_switch *sw)
- 				 sw->device_name);
- 	}
- 
-+	ret = usb4_switch_add_ports(sw);
-+	if (ret) {
-+		dev_err(&sw->dev, "failed to add USB4 ports\n");
-+		goto err_del;
++
++/* UUID for retimer _DSM: e0053122-795b-4122-8a5e-57be1d26acb3 */
++static const guid_t retimer_dsm_guid =
++	GUID_INIT(0xe0053122, 0x795b, 0x4122,
++		  0x8a, 0x5e, 0x57, 0xbe, 0x1d, 0x26, 0xac, 0xb3);
++
++#define RETIMER_DSM_QUERY_ONLINE_STATE	1
++#define RETIMER_DSM_SET_ONLINE_STATE	2
++
++static int tb_acpi_retimer_set_power(struct tb_port *port, bool power)
++{
++	struct usb4_port *usb4 = port->usb4;
++	union acpi_object argv4[2];
++	struct acpi_device *adev;
++	union acpi_object *obj;
++	int ret;
++
++	if (!usb4->can_offline)
++		return 0;
++
++	adev = ACPI_COMPANION(&usb4->dev);
++	if (WARN_ON(!adev))
++		return 0;
++
++	/* Check if we are already powered on (and in correct mode) */
++	obj = acpi_evaluate_dsm_typed(adev->handle, &retimer_dsm_guid, 1,
++				      RETIMER_DSM_QUERY_ONLINE_STATE, NULL,
++				      ACPI_TYPE_INTEGER);
++	if (!obj) {
++		tb_port_warn(port, "ACPI: query online _DSM failed\n");
++		return -EIO;
 +	}
 +
- 	ret = tb_switch_nvm_add(sw);
- 	if (ret) {
- 		dev_err(&sw->dev, "failed to add NVM devices\n");
--		device_del(&sw->dev);
--		return ret;
-+		goto err_ports;
- 	}
- 
- 	/*
-@@ -2766,6 +2771,13 @@ int tb_switch_add(struct tb_switch *sw)
- 
- 	tb_switch_debugfs_init(sw);
- 	return 0;
++	ret = obj->integer.value;
++	ACPI_FREE(obj);
 +
-+err_ports:
-+	usb4_switch_remove_ports(sw);
-+err_del:
-+	device_del(&sw->dev);
++	if (power == ret)
++		return 0;
 +
-+	return ret;
- }
- 
- /**
-@@ -2805,6 +2817,7 @@ void tb_switch_remove(struct tb_switch *sw)
- 		tb_plug_events_active(sw, false);
- 
- 	tb_switch_nvm_remove(sw);
-+	usb4_switch_remove_ports(sw);
- 
- 	if (tb_route(sw))
- 		dev_info(&sw->dev, "device disconnected\n");
-diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
-index 89e38aeea52b..948e7601428f 100644
---- a/drivers/thunderbolt/tb.h
-+++ b/drivers/thunderbolt/tb.h
-@@ -202,6 +202,7 @@ struct tb_switch {
-  * @cap_tmu: Offset of the adapter specific TMU capability (%0 if not present)
-  * @cap_adap: Offset of the adapter specific capability (%0 if not present)
-  * @cap_usb4: Offset to the USB4 port capability (%0 if not present)
-+ * @usb4: Pointer to the USB4 port structure (only if @cap_usb4 is != %0)
-  * @port: Port number on switch
-  * @disabled: Disabled by eeprom or enabled but not implemented
-  * @bonded: true if the port is bonded (two lanes combined as one)
-@@ -228,6 +229,7 @@ struct tb_port {
- 	int cap_tmu;
- 	int cap_adap;
- 	int cap_usb4;
-+	struct usb4_port *usb4;
- 	u8 port;
- 	bool disabled;
- 	bool bonded;
-@@ -241,6 +243,16 @@ struct tb_port {
- 	unsigned int dma_credits;
- };
- 
-+/**
-+ * struct usb4_port - USB4 port device
-+ * @dev: Device for the port
-+ * @port: Pointer to the lane 0 adapter
-+ */
-+struct usb4_port {
-+	struct device dev;
-+	struct tb_port *port;
-+};
++	tb_port_dbg(port, "ACPI: calling _DSM to power %s retimers\n",
++		    power ? "on" : "off");
 +
- /**
-  * tb_retimer: Thunderbolt retimer
-  * @dev: Device for the retimer
-@@ -645,6 +657,7 @@ struct tb *tb_probe(struct tb_nhi *nhi);
- extern struct device_type tb_domain_type;
- extern struct device_type tb_retimer_type;
- extern struct device_type tb_switch_type;
-+extern struct device_type usb4_port_device_type;
- 
- int tb_domain_init(void);
- void tb_domain_exit(void);
-@@ -1038,6 +1051,8 @@ struct tb_port *usb4_switch_map_pcie_down(struct tb_switch *sw,
- 					  const struct tb_port *port);
- struct tb_port *usb4_switch_map_usb3_down(struct tb_switch *sw,
- 					  const struct tb_port *port);
-+int usb4_switch_add_ports(struct tb_switch *sw);
-+void usb4_switch_remove_ports(struct tb_switch *sw);
- 
- int usb4_port_unlock(struct tb_port *port);
- int usb4_port_configure(struct tb_port *port);
-@@ -1070,6 +1085,21 @@ int usb4_usb3_port_allocate_bandwidth(struct tb_port *port, int *upstream_bw,
- int usb4_usb3_port_release_bandwidth(struct tb_port *port, int *upstream_bw,
- 				     int *downstream_bw);
- 
-+static inline bool tb_is_usb4_port_device(const struct device *dev)
-+{
-+	return dev->type == &usb4_port_device_type;
++	argv4[0].type = ACPI_TYPE_PACKAGE;
++	argv4[0].package.count = 1;
++	argv4[0].package.elements = &argv4[1];
++	argv4[1].integer.type = ACPI_TYPE_INTEGER;
++	argv4[1].integer.value = power;
++
++	obj = acpi_evaluate_dsm_typed(adev->handle, &retimer_dsm_guid, 1,
++				      RETIMER_DSM_SET_ONLINE_STATE, argv4,
++				      ACPI_TYPE_INTEGER);
++	if (!obj) {
++		tb_port_warn(port,
++			     "ACPI: set online state _DSM evaluation failed\n");
++		return -EIO;
++	}
++
++	ret = obj->integer.value;
++	ACPI_FREE(obj);
++
++	if (ret >= 0) {
++		if (power)
++			return ret == 1 ? 0 : -EBUSY;
++		return 0;
++	}
++
++	tb_port_warn(port, "ACPI: set online state _DSM failed with error %d\n", ret);
++	return -EIO;
 +}
 +
-+static inline struct usb4_port *tb_to_usb4_port_device(struct device *dev)
++/**
++ * tb_acpi_power_on_retimers() - Call platform to power on retimers
++ * @port: USB4 port
++ *
++ * Calls platform to turn on power to all retimers behind this USB4
++ * port. After this function returns successfully the caller can
++ * continue with the normal retimer flows (as specified in the USB4
++ * spec). Note if this returns %-EBUSY it means the type-C port is in
++ * non-USB4/TBT mode (there is non-USB4/TBT device connected).
++ *
++ * This should only be called if the USB4/TBT link is not up.
++ *
++ * Returns %0 on success.
++ */
++int tb_acpi_power_on_retimers(struct tb_port *port)
 +{
-+	if (tb_is_usb4_port_device(dev))
-+		return container_of(dev, struct usb4_port, dev);
++	return tb_acpi_retimer_set_power(port, true);
++}
++
++/**
++ * tb_acpi_power_off_retimers() - Call platform to power off retimers
++ * @port: USB4 port
++ *
++ * This is the opposite of tb_acpi_power_on_retimers(). After returning
++ * successfully the normal operations with the @port can continue.
++ *
++ * Returns %0 on success.
++ */
++int tb_acpi_power_off_retimers(struct tb_port *port)
++{
++	return tb_acpi_retimer_set_power(port, false);
++}
++
++static bool tb_acpi_bus_match(struct device *dev)
++{
++	return tb_is_switch(dev) || tb_is_usb4_port_device(dev);
++}
++
++static struct acpi_device *tb_acpi_find_port(struct acpi_device *adev,
++					     const struct tb_port *port)
++{
++	struct acpi_device *port_adev;
++
++	if (!adev)
++		return NULL;
++
++	/*
++	 * Device routers exists under the downstream facing USB4 port
++	 * of the parent router. Their _ADR is always 0.
++	 */
++	list_for_each_entry(port_adev, &adev->children, node) {
++		if (acpi_device_adr(port_adev) == port->port)
++			return port_adev;
++	}
++
 +	return NULL;
 +}
 +
-+struct usb4_port *usb4_port_device_add(struct tb_port *port);
-+void usb4_port_device_remove(struct usb4_port *usb4);
-+
- /* Keep link controller awake during update */
- #define QUIRK_FORCE_POWER_LINK_CONTROLLER		BIT(0)
- 
-diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
-index 94cc25cc6388..1f82af35328e 100644
---- a/drivers/thunderbolt/usb4.c
-+++ b/drivers/thunderbolt/usb4.c
-@@ -985,6 +985,60 @@ struct tb_port *usb4_switch_map_usb3_down(struct tb_switch *sw,
- 	return NULL;
- }
- 
-+/**
-+ * usb4_switch_add_ports() - Add USB4 ports for this router
-+ * @sw: USB4 router
-+ *
-+ * For USB4 router finds all USB4 ports and registers devices for each.
-+ * Can be called to any router.
-+ *
-+ * Return %0 in case of success and negative errno in case of failure.
-+ */
-+int usb4_switch_add_ports(struct tb_switch *sw)
++static struct acpi_device *tb_acpi_switch_find_companion(struct tb_switch *sw)
 +{
-+	struct tb_port *port;
++	struct acpi_device *adev = NULL;
++	struct tb_switch *parent_sw;
 +
-+	if (tb_switch_is_icm(sw) || !tb_switch_is_usb4(sw))
-+		return 0;
++	parent_sw = tb_switch_parent(sw);
++	if (parent_sw) {
++		struct tb_port *port = tb_port_at(tb_route(sw), parent_sw);
++		struct acpi_device *port_adev;
 +
-+	tb_switch_for_each_port(sw, port) {
-+		struct usb4_port *usb4;
++		port_adev = tb_acpi_find_port(ACPI_COMPANION(&parent_sw->dev), port);
++		if (port_adev)
++			adev = acpi_find_child_device(port_adev, 0, false);
++	} else {
++		struct tb_nhi *nhi = sw->tb->nhi;
++		struct acpi_device *parent_adev;
 +
-+		if (!tb_port_is_null(port))
-+			continue;
-+		if (!port->cap_usb4)
-+			continue;
-+
-+		usb4 = usb4_port_device_add(port);
-+		if (IS_ERR(usb4)) {
-+			usb4_switch_remove_ports(sw);
-+			return PTR_ERR(usb4);
-+		}
-+
-+		port->usb4 = usb4;
++		parent_adev = ACPI_COMPANION(&nhi->pdev->dev);
++		if (parent_adev)
++			adev = acpi_find_child_device(parent_adev, 0, false);
 +	}
 +
-+	return 0;
++	return adev;
 +}
 +
-+/**
-+ * usb4_switch_remove_ports() - Removes USB4 ports from this router
-+ * @sw: USB4 router
-+ *
-+ * Unregisters previously registered USB4 ports.
-+ */
-+void usb4_switch_remove_ports(struct tb_switch *sw)
++static struct acpi_device *tb_acpi_find_companion(struct device *dev)
 +{
-+	struct tb_port *port;
-+
-+	tb_switch_for_each_port(sw, port) {
-+		if (port->usb4) {
-+			usb4_port_device_remove(port->usb4);
-+			port->usb4 = NULL;
-+		}
-+	}
++	/*
++	 * The Thunderbolt/USB4 hierarchy looks like following:
++	 *
++	 * Device (NHI)
++	 *   Device (HR)		// Host router _ADR == 0
++	 *      Device (DFP0)		// Downstream port _ADR == lane 0 adapter
++	 *        Device (DR)		// Device router _ADR == 0
++	 *          Device (UFP)	// Upstream port _ADR == lane 0 adapter
++	 *      Device (DFP1)		// Downstream port _ADR == lane 0 adapter number
++	 *
++	 * At the moment we bind the host router to the corresponding
++	 * Linux device.
++	 */
++	if (tb_is_switch(dev))
++		return tb_acpi_switch_find_companion(tb_to_switch(dev));
++	else if (tb_is_usb4_port_device(dev))
++		return tb_acpi_find_port(ACPI_COMPANION(dev->parent),
++					 tb_to_usb4_port_device(dev)->port);
++	return NULL;
 +}
 +
- /**
-  * usb4_port_unlock() - Unlock USB4 downstream port
-  * @port: USB4 port to unlock
-diff --git a/drivers/thunderbolt/usb4_port.c b/drivers/thunderbolt/usb4_port.c
-new file mode 100644
-index 000000000000..520bbfd7bf33
---- /dev/null
-+++ b/drivers/thunderbolt/usb4_port.c
-@@ -0,0 +1,112 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * USB4 port device
-+ *
-+ * Copyright (C) 2021, Intel Corporation
-+ * Author: Mika Westerberg <mika.westerberg@linux.intel.com>
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/pm_runtime.h>
-+
-+#include "tb.h"
-+
-+static ssize_t link_show(struct device *dev, struct device_attribute *attr,
-+			 char *buf)
++static void tb_acpi_setup(struct device *dev)
 +{
++	struct acpi_device *adev = ACPI_COMPANION(dev);
 +	struct usb4_port *usb4 = tb_to_usb4_port_device(dev);
-+	struct tb_port *port = usb4->port;
-+	struct tb *tb = port->sw->tb;
-+	const char *link;
 +
-+	if (mutex_lock_interruptible(&tb->lock))
-+		return -ERESTARTSYS;
++	if (!adev || !usb4)
++		return;
 +
-+	if (tb_is_upstream_port(port))
-+		link = port->sw->link_usb4 ? "usb4" : "tbt";
-+	else if (tb_port_has_remote(port))
-+		link = port->remote->sw->link_usb4 ? "usb4" : "tbt";
-+	else
-+		link = "none";
-+
-+	mutex_unlock(&tb->lock);
-+
-+	return sysfs_emit(buf, "%s\n", link);
++	if (acpi_check_dsm(adev->handle, &retimer_dsm_guid, 1,
++			   BIT(RETIMER_DSM_QUERY_ONLINE_STATE) |
++			   BIT(RETIMER_DSM_SET_ONLINE_STATE)))
++		usb4->can_offline = true;
 +}
-+static DEVICE_ATTR_RO(link);
 +
-+static struct attribute *common_attrs[] = {
-+	&dev_attr_link.attr,
-+	NULL
++static struct acpi_bus_type tb_acpi_bus = {
++	.name = "thunderbolt",
++	.match = tb_acpi_bus_match,
++	.find_companion = tb_acpi_find_companion,
++	.setup = tb_acpi_setup,
 +};
 +
-+static const struct attribute_group common_group = {
-+	.attrs = common_attrs,
-+};
-+
-+static const struct attribute_group *usb4_port_device_groups[] = {
-+	&common_group,
-+	NULL
-+};
-+
-+static void usb4_port_device_release(struct device *dev)
++int tb_acpi_init(void)
 +{
-+	struct usb4_port *usb4 = container_of(dev, struct usb4_port, dev);
-+
-+	kfree(usb4);
++	return register_acpi_bus_type(&tb_acpi_bus);
 +}
 +
-+struct device_type usb4_port_device_type = {
-+	.name = "usb4_port",
-+	.groups = usb4_port_device_groups,
-+	.release = usb4_port_device_release,
-+};
-+
-+/**
-+ * usb4_port_device_add() - Add USB4 port device
-+ * @port: Lane 0 adapter port to add the USB4 port
-+ *
-+ * Creates and registers a USB4 port device for @port. Returns the new
-+ * USB4 port device pointer or ERR_PTR() in case of error.
-+ */
-+struct usb4_port *usb4_port_device_add(struct tb_port *port)
++void tb_acpi_exit(void)
 +{
-+	struct usb4_port *usb4;
-+	int ret;
-+
-+	usb4 = kzalloc(sizeof(*usb4), GFP_KERNEL);
-+	if (!usb4)
-+		return ERR_PTR(-ENOMEM);
-+
-+	usb4->port = port;
-+	usb4->dev.type = &usb4_port_device_type;
-+	usb4->dev.parent = &port->sw->dev;
-+	dev_set_name(&usb4->dev, "usb4_port%d", port->port);
-+
-+	ret = device_register(&usb4->dev);
-+	if (ret) {
-+		put_device(&usb4->dev);
-+		return ERR_PTR(ret);
-+	}
-+
-+	pm_runtime_no_callbacks(&usb4->dev);
-+	pm_runtime_set_active(&usb4->dev);
-+	pm_runtime_enable(&usb4->dev);
-+	pm_runtime_set_autosuspend_delay(&usb4->dev, TB_AUTOSUSPEND_DELAY);
-+	pm_runtime_mark_last_busy(&usb4->dev);
-+	pm_runtime_use_autosuspend(&usb4->dev);
-+
-+	return usb4;
++	unregister_acpi_bus_type(&tb_acpi_bus);
 +}
+diff --git a/drivers/thunderbolt/domain.c b/drivers/thunderbolt/domain.c
+index 98f4056f89ff..a062befcb3b2 100644
+--- a/drivers/thunderbolt/domain.c
++++ b/drivers/thunderbolt/domain.c
+@@ -881,11 +881,12 @@ int tb_domain_init(void)
+ 	int ret;
+ 
+ 	tb_test_init();
+-
+ 	tb_debugfs_init();
++	tb_acpi_init();
 +
-+/**
-+ * usb4_port_device_remove() - Removes USB4 port device
-+ * @usb4: USB4 port device
-+ *
-+ * Unregisters the USB4 port device from the system. The device will be
-+ * released when the last reference is dropped.
-+ */
-+void usb4_port_device_remove(struct usb4_port *usb4)
-+{
-+	device_unregister(&usb4->dev);
-+}
+ 	ret = tb_xdomain_init();
+ 	if (ret)
+-		goto err_debugfs;
++		goto err_acpi;
+ 	ret = bus_register(&tb_bus_type);
+ 	if (ret)
+ 		goto err_xdomain;
+@@ -894,7 +895,8 @@ int tb_domain_init(void)
+ 
+ err_xdomain:
+ 	tb_xdomain_exit();
+-err_debugfs:
++err_acpi:
++	tb_acpi_exit();
+ 	tb_debugfs_exit();
+ 	tb_test_exit();
+ 
+@@ -907,6 +909,7 @@ void tb_domain_exit(void)
+ 	ida_destroy(&tb_domain_ida);
+ 	tb_nvm_exit();
+ 	tb_xdomain_exit();
++	tb_acpi_exit();
+ 	tb_debugfs_exit();
+ 	tb_test_exit();
+ }
+diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
+index 948e7601428f..c5704f495afa 100644
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -247,10 +247,13 @@ struct tb_port {
+  * struct usb4_port - USB4 port device
+  * @dev: Device for the port
+  * @port: Pointer to the lane 0 adapter
++ * @can_offline: Does the port have necessary platform support to moved
++ *		 it into offline mode and back
+  */
+ struct usb4_port {
+ 	struct device dev;
+ 	struct tb_port *port;
++	bool can_offline;
+ };
+ 
+ /**
+@@ -1113,6 +1116,11 @@ bool tb_acpi_may_tunnel_usb3(void);
+ bool tb_acpi_may_tunnel_dp(void);
+ bool tb_acpi_may_tunnel_pcie(void);
+ bool tb_acpi_is_xdomain_allowed(void);
++
++int tb_acpi_init(void);
++void tb_acpi_exit(void);
++int tb_acpi_power_on_retimers(struct tb_port *port);
++int tb_acpi_power_off_retimers(struct tb_port *port);
+ #else
+ static inline void tb_acpi_add_links(struct tb_nhi *nhi) { }
+ 
+@@ -1121,6 +1129,11 @@ static inline bool tb_acpi_may_tunnel_usb3(void) { return true; }
+ static inline bool tb_acpi_may_tunnel_dp(void) { return true; }
+ static inline bool tb_acpi_may_tunnel_pcie(void) { return true; }
+ static inline bool tb_acpi_is_xdomain_allowed(void) { return true; }
++
++static inline int tb_acpi_init(void) { return 0; }
++static inline void tb_acpi_exit(void) { }
++static inline int tb_acpi_power_on_retimers(struct tb_port *port) { return 0; }
++static inline int tb_acpi_power_off_retimers(struct tb_port *port) { return 0; }
+ #endif
+ 
+ #ifdef CONFIG_DEBUG_FS
 -- 
 2.30.2
 
