@@ -2,115 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D2AF389683
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 21:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91BE638972D
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 22:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229535AbhESTVu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 May 2021 15:21:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51406 "EHLO
+        id S232477AbhESUCc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 16:02:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231926AbhESTVt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 15:21:49 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845C8C061760
-        for <linux-acpi@vger.kernel.org>; Wed, 19 May 2021 12:20:29 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id k14so18108470eji.2
-        for <linux-acpi@vger.kernel.org>; Wed, 19 May 2021 12:20:29 -0700 (PDT)
+        with ESMTP id S232437AbhESUCc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 16:02:32 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C4BC061761
+        for <linux-acpi@vger.kernel.org>; Wed, 19 May 2021 13:01:11 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id o5so7756407edc.5
+        for <linux-acpi@vger.kernel.org>; Wed, 19 May 2021 13:01:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=yZTVmwpnlwJk3q+dqnl1uoJR23ZTrquT34/lklTUmQM=;
-        b=oa95qayqJeznuxVvd7slQCeIUqrYjiIZts2NsfJaYIVvuK6xYGVwhshMMF6JMFdxK9
-         dPWrKavPKXSO1qJWw1dwqcIvlrazCPnvTCAienQE0n6+2JO2c7QU50HU0qVQXHeBT3W1
-         RN5uIXr6+Pyybomrr/CigZmjB6LCqt4JiU+A82of7XwBql99QOlTQu9dqPMRy3OGGWMi
-         +Mfy8/wP+UdHimuz3gJG9JUXlw55bAX64wL/RFxhzyZ5E7rnkDtk6pbm9cCGpBrh/6fP
-         hRH5wbXxFNFwAIUl0p7GbAUDzjnziuLTYDHFxrO6/Yo0DM8AeohT3TNJ1U/w5gxQRoYQ
-         63yg==
+        bh=OlxoSwTyBGcIB+AvV2WfDn1g1Sf/3pWsJB/YRZB8SB8=;
+        b=1dh0Q+cxVbEWRDmbm9CbH3FmdqIYJe8AQBGdaFSXXRTRAU50YTKYucb5bSElHQPTK1
+         Lv7Cc8hcGY8Leks6KtL54P+GEsSL7ZzHs9Ys03+8y7Uo6LGzaBH5et1EMJpA6MqboF7d
+         dzbjjXf0OOlXr3SgohVT+LZCuju7dgik6T+NVkiwR70FiBTjiTMyz6gW86PcTkuD2EIM
+         SUYq4mZmDjcOp/FALakgTnus6G9wyiTUGTq7mi1Hq+k1Z6akiGnqyz6b58BCCLoRnfRV
+         qsfACgNRDDs2QVQDf+3Tj3FfouX4mQcV45NPfvFPUl3SuhuIeA92MXc+/xVPADipFOwb
+         W8og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=yZTVmwpnlwJk3q+dqnl1uoJR23ZTrquT34/lklTUmQM=;
-        b=rQFLJmOH9b5OdkVpox1jRH6WHtXqqGTz9kzKZhOhgvBBEjbAHzcW5JRj1conYY7n4t
-         rsVX0HTgZ3BLMTlJZfMMCJzTAZhl/l3shkl7mWhP3vo/kdh6WwvFcd+UqST3b9uycx/i
-         6DlnX27Ptpqwdep5GzkjgLQLtlCH/xlShzniyMAfchkobfVkpeJEPQwrVJuEVEh/5pTF
-         W0iw8DNtZsS/Fvc3fPt700aSy4jLbswDWm0nfy+LHw/USHO9gRlnba6nhiOI1h7Vjyzm
-         8Gui+gp182vRMfFTyr9cUIqMQQotoUEH+EG+dP+RcQMqI6Eg2rE9GkyvkGoEnR5gBEcd
-         /OjQ==
-X-Gm-Message-State: AOAM531Yc9aVEKZklblS9d9C9TKM+xwm7ZrgQySHgDHh2OxvHRrC9rb0
-        +6kCUFWKavMZgXdfZfsVnWheO2roMcXDB2NdSd7HUg==
-X-Google-Smtp-Source: ABdhPJwqOQrlCZg0awAR1a1BUWi3Y4xD0KvYxlxX0nXEhyIT8srkTX+UW1Arz5DDuf25QNzn3NZm4fmbgtr6+/UcLE4=
-X-Received: by 2002:a17:906:110d:: with SMTP id h13mr697747eja.45.1621452028040;
- Wed, 19 May 2021 12:20:28 -0700 (PDT)
+        bh=OlxoSwTyBGcIB+AvV2WfDn1g1Sf/3pWsJB/YRZB8SB8=;
+        b=OMrsvtnfXtUuFr5ik6LSNhOCV1zaDtn6D3kKuhF5W2N+qmaV93z6YLFylvlU+6d+oJ
+         kM7La0vJlwjiW7VDBX34rYFofiKPmJDSafm1yb0I0pUp3ZSeshT8HSxs+27SUzjHlt4Z
+         eDm+453QGfEq3RZcbyUcRJPpXgBBiKcYOeK1lwf2Icg2eG9TEK4thZQKa5eyx5JSOcUn
+         noFdqPQM7hBZ25yZ7s/e6szg5VWl4wYmWy/esn8qToFwpNZEy3q91Y13pr9QTGm5P6G4
+         bQGo2bQQhsLISmDXrTw+Kpa9uLo7wRo5AMllZGRfVfIQCHQlPpkybF5z/PDcbzhFYmDx
+         0AUw==
+X-Gm-Message-State: AOAM5316xh29rG8hBTejvx6uBxmIYFsFxfJcdAJjFmwOjMob/sJlkt2y
+        SoWfv/1Gq9SZixNsbPUHTArzAtEkI5dJsac+c7pBkQ==
+X-Google-Smtp-Source: ABdhPJwBYagjUpaXpLq5SIcAJYpu2toyEqzEY8kfw4+9XLQVZ7jpoX+ib07aWV6cm4nAhKDYGUb4FOrk3VOFKfJnE30=
+X-Received: by 2002:a05:6402:128f:: with SMTP id w15mr808464edv.354.1621454470538;
+ Wed, 19 May 2021 13:01:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210419165451.2176200-1-Jonathan.Cameron@huawei.com>
- <20210419165451.2176200-3-Jonathan.Cameron@huawei.com> <20210506215934.GJ1904484@iweiny-DESK2.sc.intel.com>
- <20210511175006.00007861@Huawei.com> <CAPcyv4j=uww+85b4AbWmoPNPry_+JLEpEnuywpdC8PonXmRmEg@mail.gmail.com>
- <20210514094755.00002081@Huawei.com> <CAPcyv4h_qSZq+sTAOTKDNsO3xPmq=65j8oO1iw0WdVFj8+XrOA@mail.gmail.com>
- <20210517094045.00004d58@Huawei.com> <CAPcyv4iQcV_U1qmQhXKM0RG9v-sAEPwtTxnv=P86yJrCH25k+w@mail.gmail.com>
- <20210518110403.000013e6@Huawei.com> <CAPcyv4g3JPtAHzemKdQiM44ZkZ_0u+U-UJ5mfeU3fKzRWuaDyQ@mail.gmail.com>
- <20210519161156.00003bf9@Huawei.com> <CAPcyv4j_oEWG1NG1wYryVt3-Gx8q2WwzP7_xhchsDARDR0zBEA@mail.gmail.com>
- <20210519172052.00002124@Huawei.com> <20210519173352.000026fe@Huawei.com>
- <CAPcyv4gUy0nNh-3y2wWVwM4AtO4F8OOJCtWz_ZH7Eu0H=oymuw@mail.gmail.com> <20210519180057.00002ac3@Huawei.com>
-In-Reply-To: <20210519180057.00002ac3@Huawei.com>
+References: <20210415232610.603273-3-ben.widawsky@intel.com> <20210415232750.604112-1-ben.widawsky@intel.com>
+In-Reply-To: <20210415232750.604112-1-ben.widawsky@intel.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 19 May 2021 12:20:17 -0700
-Message-ID: <CAPcyv4ii3KC6MBBxJrnCUCm_JGS7ugL+JTFUu9QTBnPUhQFtfQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 2/4] PCI/doe: Add Data Object Exchange support
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Ira Weiny <ira.weiny@intel.com>, linux-cxl@vger.kernel.org,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Chris Browy <cbrowy@avery-design.com>,
+Date:   Wed, 19 May 2021 13:01:00 -0700
+Message-ID: <CAPcyv4jRm5Xw650GPUWOjAJ8sDQfOZ3yq2gMpVGho39eawLXrg@mail.gmail.com>
+Subject: Re: [PATCH 3/3] cxl/mem: Demarcate vendor specific capability IDs
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     linux-cxl@vger.kernel.org, Linux PCI <linux-pci@vger.kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Schofield, Alison" <alison.schofield@intel.com>,
+        "Weiny, Ira" <ira.weiny@intel.com>,
         Vishal L Verma <vishal.l.verma@intel.com>,
-        Linuxarm <linuxarm@huawei.com>, Fangjian <f.fangjian@huawei.com>,
-        Greg KH <gregkh@linuxfoundation.org>
+        "Schofield, Alison" <alison.schofield@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 19, 2021 at 10:03 AM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
-[..]
-> > > "The DOE Busy bit can be used to indicate that the DOE responder is
-> > >  temporarily unable to accept a data object. It is necessary for a
-> > >  DOE requester to ensure that individual data object transfers are
-> > >  completed, and that a request/response contract is completed, for
-> > >  example using a mutex mechanism to block other conflicting traffic
-> > >  for cases where such conflicts are possible."
-> >
-> > I read that as the specification mandating my proposal to disallow
-> > multi-initiator access. My only mistake was making the exclusion apply
-> > to reads and not limiting it to the minimum of config write exclusion.
+On Thu, Apr 15, 2021 at 4:27 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
 >
-> Key thing is even that isn't enough.   The mutex isn't about stopping
-> temporary access, it's about ensuring "request/response contract is completed".
-> So you would need userspace to be able to take a lock to stop the kernel
-> from using the DOE whilst it completes it's request/response pair and
-> userspace to guarantee it doesn't do anything stupid.
+> Vendor capabilities occupy 0x8000 to 0xFFFF according to CXL 2.0 spec
+> 8.2.8.2.1 CXL Device Capabilities. While they are not defined by the
+> spec, they are allowed and not "unknown". Call this detail out in the
+> logs to let users easily distinguish the difference.
+>
+> v2: Should be greater than or equal to (Ben)
+>
+> Fixes: 8adaf747c9f0b ("cxl/mem: Find device capabilities")
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> ---
+>  drivers/cxl/mem.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> index c05617b0ba4b..28c7c29567b3 100644
+> --- a/drivers/cxl/mem.c
+> +++ b/drivers/cxl/mem.c
+> @@ -939,7 +939,10 @@ static int cxl_mem_setup_regs(struct cxl_mem *cxlm)
+>                         cxlm->memdev_regs = register_block;
+>                         break;
+>                 default:
+> -                       dev_dbg(dev, "Unknown cap ID: %x (0x%x)\n", cap_id, offset);
+> +                       if (cap_id >= 0x8000)
+> +                               dev_dbg(dev, "Vendor cap ID: %x (0x%x)\n", cap_id, offset);
+> +                       else
+> +                               dev_dbg(dev, "Unknown cap ID: %x (0x%x)\n", cap_id, offset);
 
-A userspace lockout of the kernel is not needed if userspace is
-outright forbidden from corrupting the kernel's state machine. I.e.
-kernel enforced full disable of user initiated config-write to DOE
-registers, not the ephemeral pci_cfg_access_lock() proposal.
+This wants the same %#x fixup that Vishal noted on patch2 [1], and I
+think it would be useful to clarify that the second number is indeed
+an offset: "Unknown cap_id: %#x offset: %#x\n"
 
-> Easiest way to do that is provide proper interfaces that allows the
-> kernel to fully mediate the access + don't support direct userspace access
-> for normal operation. (treat it the same as an other config space write)
-
-Again, it's the parenthetical at issue. I struggle to see this as just
-another errant / unwanted config-write when there is legitimate reason
-for userspace to expect that touching the DOE is not destructive to
-device operation as opposed to writes to other critical registers.
-Where the kernel's legitimate-access and userspace's legitimate-access
-to a resource collide, the kernel provides a mediation interface that
-precludes conflicts. Otherwise, I don't understand why the kernel is
-going through the trouble of /dev/mem and pci-mmap restrictions if it
-is not supposed to be concerned about userspace corrupting driver
-state.
+[1]: http://lore.kernel.org/r/40063fe52fcaa066a42d352b13128b6762277542.camel@intel.com
