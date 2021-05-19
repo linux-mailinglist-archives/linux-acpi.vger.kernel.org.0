@@ -2,31 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6576389007
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 16:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA36838900B
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 16:12:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242465AbhESOOJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 May 2021 10:14:09 -0400
-Received: from mga06.intel.com ([134.134.136.31]:44091 "EHLO mga06.intel.com"
+        id S240362AbhESOOK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 10:14:10 -0400
+Received: from mga06.intel.com ([134.134.136.31]:44083 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1347116AbhESOOE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 19 May 2021 10:14:04 -0400
-IronPort-SDR: t8TwEIXxIvNMHuMbL6HbIn1TRnMYpGT1BPivoN7pG6loUfk5yLSgl8rP5LmlIjBm+JYFPFCT5h
- 2mlHC3jAdaiQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9988"; a="262212441"
+        id S1347137AbhESOOH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 May 2021 10:14:07 -0400
+IronPort-SDR: Mn0fK9FSWKZSqFphqtXIYGFLxkJZD5MXfIB5QD+od9bPyY9IPsIWgTdBbu3PWKBzjiacMUedMr
+ l0rlMqo370jQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9988"; a="262212444"
 X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
-   d="scan'208";a="262212441"
+   d="scan'208";a="262212444"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
   by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2021 07:12:45 -0700
-IronPort-SDR: qwgYwJ55Dy6j5oqu5C77pEbBaMNVAYZSKVFGZtjNLYGd7+tpFtO3FwFcxw88qnCWHVDtzYZGDm
- OWHJyta9/EXg==
+IronPort-SDR: 5Tk8rI7+8PDVU7+GLdA9xSnhjYipPOnTcuwRb3NyaJ44pYbwTrZYcT4TEXJY+2gUAJdHTlMvAH
+ If6ppvmaEiFQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
-   d="scan'208";a="394421818"
+   d="scan'208";a="394421820"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 19 May 2021 07:12:41 -0700
+  by orsmga003.jf.intel.com with ESMTP; 19 May 2021 07:12:42 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id B26DE702; Wed, 19 May 2021 17:12:59 +0300 (EEST)
+        id BDA80836; Wed, 19 May 2021 17:12:59 +0300 (EEST)
 From:   Mika Westerberg <mika.westerberg@linux.intel.com>
 To:     linux-usb@vger.kernel.org
 Cc:     Yehezkel Bernat <YehezkelShB@gmail.com>,
@@ -41,9 +41,9 @@ Cc:     Yehezkel Bernat <YehezkelShB@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jonathan Corbet <corbet@lwn.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 8/9] thunderbolt: Add WRITE_ONLY and AUTHENTICATE_ONLY NVM operations for retimers
-Date:   Wed, 19 May 2021 17:12:58 +0300
-Message-Id: <20210519141259.84839-9-mika.westerberg@linux.intel.com>
+Subject: [PATCH 9/9] thunderbolt: Check for NVM authentication status after the operation started
+Date:   Wed, 19 May 2021 17:12:59 +0300
+Message-Id: <20210519141259.84839-10-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210519141259.84839-1-mika.westerberg@linux.intel.com>
 References: <20210519141259.84839-1-mika.westerberg@linux.intel.com>
@@ -53,164 +53,53 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rajmohan Mani <rajmohan.mani@intel.com>
+If the NVM authentication fails immediately, like if the firmware
+detects that the image is not valid for some reason, better to read the
+status once and if set to non-zero fail the operation accordingly.
 
-The same way we support these two operations for USB4 routers we can
-extend the retimer NVM operations to support retimers also.
-
-Signed-off-by: Rajmohan Mani <rajmohan.mani@intel.com>
-Co-developed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- .../ABI/testing/sysfs-bus-thunderbolt         |  2 +-
- drivers/thunderbolt/retimer.c                 | 51 ++++++++++++++-----
- drivers/thunderbolt/tb.h                      |  2 +
- drivers/thunderbolt/usb4.c                    | 15 +++++-
- 4 files changed, 53 insertions(+), 17 deletions(-)
+ drivers/thunderbolt/retimer.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-thunderbolt b/Documentation/ABI/testing/sysfs-bus-thunderbolt
-index da580b504c87..95c21d6c9a84 100644
---- a/Documentation/ABI/testing/sysfs-bus-thunderbolt
-+++ b/Documentation/ABI/testing/sysfs-bus-thunderbolt
-@@ -221,7 +221,7 @@ Description:	When new NVM image is written to the non-active NVM
- 		  and flush it to the storage area.
- 		- Writing "3" will authenticate the image that is
- 		  currently written in the storage area. This is only
--		  supported with USB4 devices.
-+		  supported with USB4 devices and retimers.
- 
- 		When read holds status of the last authentication
- 		operation if an error occurred during the process. This
 diff --git a/drivers/thunderbolt/retimer.c b/drivers/thunderbolt/retimer.c
-index 05af0feefe84..3aa790aa6500 100644
+index 3aa790aa6500..722694052f4a 100644
 --- a/drivers/thunderbolt/retimer.c
 +++ b/drivers/thunderbolt/retimer.c
-@@ -103,6 +103,7 @@ static int tb_retimer_nvm_validate_and_write(struct tb_retimer *rt)
- 	unsigned int image_size, hdr_size;
- 	const u8 *buf = rt->nvm->buf;
- 	u16 ds_size, device;
-+	int ret;
+@@ -151,6 +151,7 @@ static int tb_retimer_nvm_validate_and_write(struct tb_retimer *rt)
  
- 	image_size = rt->nvm->buf_data_size;
- 	if (image_size < NVM_MIN_SIZE || image_size > NVM_MAX_SIZE)
-@@ -140,8 +141,25 @@ static int tb_retimer_nvm_validate_and_write(struct tb_retimer *rt)
- 	buf += hdr_size;
- 	image_size -= hdr_size;
+ static int tb_retimer_nvm_authenticate(struct tb_retimer *rt, bool auth_only)
+ {
++	u32 status;
+ 	int ret;
  
--	return usb4_port_retimer_nvm_write(rt->port, rt->index, 0, buf,
--					   image_size);
-+	ret = usb4_port_retimer_nvm_write(rt->port, rt->index, 0, buf,
-+					 image_size);
-+	if (!ret)
-+		rt->nvm->flushed = true;
+ 	if (auth_only) {
+@@ -159,7 +160,24 @@ static int tb_retimer_nvm_authenticate(struct tb_retimer *rt, bool auth_only)
+ 			return ret;
+ 	}
+ 
+-	return usb4_port_retimer_nvm_authenticate(rt->port, rt->index);
++	ret = usb4_port_retimer_nvm_authenticate(rt->port, rt->index);
++	if (ret)
++		return ret;
 +
-+	return ret;
-+}
++	usleep_range(100, 150);
 +
-+static int tb_retimer_nvm_authenticate(struct tb_retimer *rt, bool auth_only)
-+{
-+	int ret;
-+
-+	if (auth_only) {
-+		ret = usb4_port_retimer_nvm_set_offset(rt->port, rt->index, 0);
-+		if (ret)
-+			return ret;
++	/*
++	 * Check the status now if we still can access the retimer. It
++	 * is expected that the below fails.
++	 */
++	ret = usb4_port_retimer_nvm_authenticate_status(rt->port, rt->index,
++							&status);
++	if (!ret) {
++		rt->auth_status = status;
++		return status ? -EINVAL : 0;
 +	}
 +
-+	return usb4_port_retimer_nvm_authenticate(rt->port, rt->index);
++	return 0;
  }
  
  static ssize_t device_show(struct device *dev, struct device_attribute *attr,
-@@ -176,8 +194,7 @@ static ssize_t nvm_authenticate_store(struct device *dev,
- 	struct device_attribute *attr, const char *buf, size_t count)
- {
- 	struct tb_retimer *rt = tb_to_retimer(dev);
--	bool val;
--	int ret;
-+	int val, ret;
- 
- 	pm_runtime_get_sync(&rt->dev);
- 
-@@ -191,7 +208,7 @@ static ssize_t nvm_authenticate_store(struct device *dev,
- 		goto exit_unlock;
- 	}
- 
--	ret = kstrtobool(buf, &val);
-+	ret = kstrtoint(buf, 10, &val);
- 	if (ret)
- 		goto exit_unlock;
- 
-@@ -199,16 +216,22 @@ static ssize_t nvm_authenticate_store(struct device *dev,
- 	rt->auth_status = 0;
- 
- 	if (val) {
--		if (!rt->nvm->buf) {
--			ret = -EINVAL;
--			goto exit_unlock;
-+		if (val == AUTHENTICATE_ONLY) {
-+			ret = tb_retimer_nvm_authenticate(rt, true);
-+		} else {
-+			if (!rt->nvm->flushed) {
-+				if (!rt->nvm->buf) {
-+					ret = -EINVAL;
-+					goto exit_unlock;
-+				}
-+
-+				ret = tb_retimer_nvm_validate_and_write(rt);
-+				if (ret || val == WRITE_ONLY)
-+					goto exit_unlock;
-+			}
-+			if (val == WRITE_AND_AUTHENTICATE)
-+				ret = tb_retimer_nvm_authenticate(rt, false);
- 		}
--
--		ret = tb_retimer_nvm_validate_and_write(rt);
--		if (ret)
--			goto exit_unlock;
--
--		ret = usb4_port_retimer_nvm_authenticate(rt->port, rt->index);
- 	}
- 
- exit_unlock:
-diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
-index 53f6bb85b178..725104c83e3d 100644
---- a/drivers/thunderbolt/tb.h
-+++ b/drivers/thunderbolt/tb.h
-@@ -1082,6 +1082,8 @@ int usb4_port_retimer_write(struct tb_port *port, u8 index, u8 reg,
- 			    const void *buf, u8 size);
- int usb4_port_retimer_is_last(struct tb_port *port, u8 index);
- int usb4_port_retimer_nvm_sector_size(struct tb_port *port, u8 index);
-+int usb4_port_retimer_nvm_set_offset(struct tb_port *port, u8 index,
-+				     unsigned int address);
- int usb4_port_retimer_nvm_write(struct tb_port *port, u8 index,
- 				unsigned int address, const void *buf,
- 				size_t size);
-diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
-index 76d7335aa440..ceddbe7e9f93 100644
---- a/drivers/thunderbolt/usb4.c
-+++ b/drivers/thunderbolt/usb4.c
-@@ -1513,8 +1513,19 @@ int usb4_port_retimer_nvm_sector_size(struct tb_port *port, u8 index)
- 	return ret ? ret : metadata & USB4_NVM_SECTOR_SIZE_MASK;
- }
- 
--static int usb4_port_retimer_nvm_set_offset(struct tb_port *port, u8 index,
--					    unsigned int address)
-+/**
-+ * usb4_port_retimer_nvm_set_offset() - Set NVM write offset
-+ * @port: USB4 port
-+ * @index: Retimer index
-+ * @address: Start offset
-+ *
-+ * Exlicitly sets NVM write offset. Normally when writing to NVM this is
-+ * done automatically by usb4_port_retimer_nvm_write().
-+ *
-+ * Returns %0 in success and negative errno if there was a failure.
-+ */
-+int usb4_port_retimer_nvm_set_offset(struct tb_port *port, u8 index,
-+				     unsigned int address)
- {
- 	u32 metadata, dwaddress;
- 	int ret;
 -- 
 2.30.2
 
