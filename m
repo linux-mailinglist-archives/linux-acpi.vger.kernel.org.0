@@ -2,33 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B7AF3892AA
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 17:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76AD73892CB
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 17:40:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354777AbhESPbo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 May 2021 11:31:44 -0400
-Received: from mga01.intel.com ([192.55.52.88]:22147 "EHLO mga01.intel.com"
+        id S1354802AbhESPld (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 11:41:33 -0400
+Received: from mga11.intel.com ([192.55.52.93]:42760 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241083AbhESPbo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 19 May 2021 11:31:44 -0400
-IronPort-SDR: 7QuuiZSy2Trh3of1EKP9+TDVh772cOG+PZylyucNdz7Qsx4rkB6YaxdC5OxGgy00Ou24mVdUWH
- YRU/ZSQjaDjQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9989"; a="222068955"
+        id S242076AbhESPlc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 May 2021 11:41:32 -0400
+IronPort-SDR: HOekXzJLbMXUw/cUBNER1ZAveAK9A+JiAGTW5HjlDNGKcYfExtnqplqI/A9/EoMLGu4YuijbzR
+ LAlj/LzCeX1g==
+X-IronPort-AV: E=McAfee;i="6200,9189,9989"; a="197914733"
 X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
-   d="scan'208";a="222068955"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2021 08:30:11 -0700
-IronPort-SDR: ALVE6Rv5gB9wpV+4XScMyA9YoypI1Y5R3ktOfj8lvSOFO81ItQmwGrhJntXpbowBlwx9xkKCld
- UJ24sU/KoR0Q==
-X-ExtLoop1: 1
+   d="scan'208";a="197914733"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2021 08:40:12 -0700
+IronPort-SDR: hdHUBcmAZyGroYrFUpCWMQzeJrrtmtt09zuAHumPfuwzCLzOFzrCCojKx3swDRCELjcgz12Rdu
+ 04a0oB3Tf2Ag==
 X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
-   d="scan'208";a="542680262"
-Received: from kuha.fi.intel.com ([10.237.72.162])
-  by fmsmga001.fm.intel.com with SMTP; 19 May 2021 08:30:07 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 19 May 2021 18:30:06 +0300
-Date:   Wed, 19 May 2021 18:30:06 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+   d="scan'208";a="411782499"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2021 08:40:07 -0700
+Received: by lahna (sSMTP sendmail emulation); Wed, 19 May 2021 18:40:05 +0300
+Date:   Wed, 19 May 2021 18:40:05 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Cc:     linux-usb@vger.kernel.org, Yehezkel Bernat <YehezkelShB@gmail.com>,
         Michael Jamet <michael.jamet@intel.com>,
         Andreas Noever <andreas.noever@gmail.com>,
@@ -41,7 +40,7 @@ Cc:     linux-usb@vger.kernel.org, Yehezkel Bernat <YehezkelShB@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jonathan Corbet <corbet@lwn.net>
 Subject: Re: [PATCH 2/9] thunderbolt: Add USB4 port devices
-Message-ID: <YKUu/hPbl6lsdtEI@kuha.fi.intel.com>
+Message-ID: <20210519154005.GV291593@lahna.fi.intel.com>
 References: <20210519141259.84839-1-mika.westerberg@linux.intel.com>
  <20210519141259.84839-3-mika.westerberg@linux.intel.com>
  <YKUrZ0b4UObhtV9k@kuha.fi.intel.com>
@@ -49,9 +48,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <YKUrZ0b4UObhtV9k@kuha.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
+
+Hi Heikki,
 
 On Wed, May 19, 2021 at 06:14:47PM +0300, Heikki Krogerus wrote:
 > On Wed, May 19, 2021 at 05:12:52PM +0300, Mika Westerberg wrote:
@@ -136,7 +138,17 @@ On Wed, May 19, 2021 at 06:14:47PM +0300, Heikki Krogerus wrote:
 > 
 >         return 0;
 > }
-> 
+
+I have to say I might be missing some new additions to fwnode front but
+the acpi_bus_type is used to match the ACPI nodes to usb4_ports and also
+to routers. I see that this one may work for the former but not sure
+about the latter.
+
+I guess we could do similar for routers too in switch.c.
+
+However, I would like to keep ACPI specific code in acpi.c if possible
+but if this is the preferred way then no problem doing what you say :)
+
 > > +/**
 > > + * usb4_port_device_add() - Add USB4 port device
 > > + * @port: Lane 0 adapter port to add the USB4 port
@@ -171,12 +183,24 @@ On Wed, May 19, 2021 at 06:14:47PM +0300, Heikki Krogerus wrote:
 >         }
 > 
 > Or maybe I'm missing something?
-
-Ah, the node hierarchy is much more complex than I though.
-
-Sorry for the noise.
-
-thanks,
-
--- 
-heikki
+> 
+> > +	ret = device_register(&usb4->dev);
+> > +	if (ret) {
+> > +		put_device(&usb4->dev);
+> > +		return ERR_PTR(ret);
+> > +	}
+> > +
+> > +	pm_runtime_no_callbacks(&usb4->dev);
+> > +	pm_runtime_set_active(&usb4->dev);
+> > +	pm_runtime_enable(&usb4->dev);
+> > +	pm_runtime_set_autosuspend_delay(&usb4->dev, TB_AUTOSUSPEND_DELAY);
+> > +	pm_runtime_mark_last_busy(&usb4->dev);
+> > +	pm_runtime_use_autosuspend(&usb4->dev);
+> > +
+> > +	return usb4;
+> > +}
+> 
+> thanks,
+> 
+> -- 
+> heikki
