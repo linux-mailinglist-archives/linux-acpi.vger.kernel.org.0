@@ -2,188 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1BDD388C13
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 12:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12892388D36
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 13:48:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236460AbhESKwy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 May 2021 06:52:54 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:4750 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231625AbhESKwy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 06:52:54 -0400
-Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FlV2V4vGxzpfZc;
-        Wed, 19 May 2021 18:48:02 +0800 (CST)
-Received: from dggeme756-chm.china.huawei.com (10.3.19.102) by
- dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Wed, 19 May 2021 18:51:25 +0800
-Received: from [127.0.0.1] (10.40.193.166) by dggeme756-chm.china.huawei.com
- (10.3.19.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 19
- May 2021 18:51:25 +0800
-Subject: Re: [PATCH] ACPICA: fix a memleak issue related to ACPI/GPIO
-To:     "Kaneda, Erik" <erik.kaneda@intel.com>,
-        "Moore, Robert" <robert.moore@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "hoan@os.amperecomputing.com" <hoan@os.amperecomputing.com>,
-        "fancer.lancer@gmail.com" <fancer.lancer@gmail.com>
-References: <1620790207-128605-1-git-send-email-chenxiang66@hisilicon.com>
- <MWHPR11MB159982431E024C6212960C0CF02D9@MWHPR11MB1599.namprd11.prod.outlook.com>
- <5a8fcc49-5559-0e99-4dd9-1821b7ade1ea@hisilicon.com>
- <MWHPR11MB1599FBA0B63433B58DC955F4F02C9@MWHPR11MB1599.namprd11.prod.outlook.com>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "linuxarm@huawei.com" <linuxarm@huawei.com>
-From:   "chenxiang (M)" <chenxiang66@hisilicon.com>
-Message-ID: <dc3d2eef-be90-42d5-b352-98ba7b517be0@hisilicon.com>
-Date:   Wed, 19 May 2021 18:51:24 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S1345903AbhESLtl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 07:49:41 -0400
+Received: from foss.arm.com ([217.140.110.172]:34502 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S245123AbhESLti (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 May 2021 07:49:38 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09267101E;
+        Wed, 19 May 2021 04:48:19 -0700 (PDT)
+Received: from [10.57.66.179] (unknown [10.57.66.179])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 077393F719;
+        Wed, 19 May 2021 04:48:16 -0700 (PDT)
+Subject: Re: [PATCH v4 2/8] iommu/dma: Introduce generic helper to retrieve
+ RMR info
+To:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+        Joerg Roedel <joro@8bytes.org>
+Cc:     "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        "steven.price@arm.com" <steven.price@arm.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        "jon@solid-run.com" <jon@solid-run.com>,
+        "eric.auger@redhat.com" <eric.auger@redhat.com>,
+        yangyicong <yangyicong@huawei.com>
+References: <20210513134550.2117-1-shameerali.kolothum.thodi@huawei.com>
+ <20210513134550.2117-3-shameerali.kolothum.thodi@huawei.com>
+ <YKN/ocoHvOdbH43j@8bytes.org> <503068eb5f184639a75d7d1ef929b4c6@huawei.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <4047b1ef-5f6e-c3b8-e701-1cfa68acfd69@arm.com>
+Date:   Wed, 19 May 2021 12:48:11 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <MWHPR11MB1599FBA0B63433B58DC955F4F02C9@MWHPR11MB1599.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.40.193.166]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggeme756-chm.china.huawei.com (10.3.19.102)
-X-CFilter-Loop: Reflected
+In-Reply-To: <503068eb5f184639a75d7d1ef929b4c6@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Erik,
-
-
-在 2021/5/19 5:35, Kaneda, Erik 写道:
->
+On 2021-05-19 10:30, Shameerali Kolothum Thodi wrote:
+> 
+> 
 >> -----Original Message-----
->> From: chenxiang (M) <chenxiang66@hisilicon.com>
->> Sent: Monday, May 17, 2021 7:02 PM
->> To: Kaneda, Erik <erik.kaneda@intel.com>; Moore, Robert
->> <robert.moore@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>;
->> hoan@os.amperecomputing.com; fancer.lancer@gmail.com
->> Cc: linux-acpi@vger.kernel.org; linux-gpio@vger.kernel.org;
->> linuxarm@huawei.com
->> Subject: Re: [PATCH] ACPICA: fix a memleak issue related to ACPI/GPIO
+>> From: Joerg Roedel [mailto:joro@8bytes.org]
+>> Sent: 18 May 2021 09:50
+>> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+>> Cc: linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+>> iommu@lists.linux-foundation.org; Linuxarm <linuxarm@huawei.com>;
+>> lorenzo.pieralisi@arm.com; robin.murphy@arm.com; wanghuiqiang
+>> <wanghuiqiang@huawei.com>; Guohanjun (Hanjun Guo)
+>> <guohanjun@huawei.com>; steven.price@arm.com; Sami.Mujawar@arm.com;
+>> jon@solid-run.com; eric.auger@redhat.com; yangyicong
+>> <yangyicong@huawei.com>
+>> Subject: Re: [PATCH v4 2/8] iommu/dma: Introduce generic helper to retrieve
+>> RMR info
 >>
->> Hi Erik,
+>> On Thu, May 13, 2021 at 02:45:44PM +0100, Shameer Kolothum wrote:
+>>> +/**
+>>> + * struct iommu_rmr - Reserved Memory Region details per IOMMU
+>>> + * @list: Linked list pointers to hold RMR region info
+>>> + * @base_address: base address of Reserved Memory Region
+>>> + * @length: length of memory region
+>>> + * @sid: associated stream id
+>>> + * @flags: flags that apply to the RMR node
+>>> + */
+>>> +struct iommu_rmr {
+>>> +	struct list_head	list;
+>>> +	phys_addr_t		base_address;
+>>> +	u64			length;
+>>> +	u32			sid;
+>>> +	u32			flags;
+>>> +};
+>>> +
+>>> +/* RMR Remap permitted */
+>>> +#define IOMMU_RMR_REMAP_PERMITTED	(1 << 0)
+>>> +
 >>
+>> This struct has lots of overlap with 'struct iommu_resv_region'. Any
+>> reason the existing struct can't be used here?
 >>
->> 在 2021/5/18 2:54, Kaneda, Erik 写道:
->>>> -----Original Message-----
->>>> From: chenxiang <chenxiang66@hisilicon.com>
->>>> Sent: Tuesday, May 11, 2021 8:30 PM
->>>> To: Moore, Robert <robert.moore@intel.com>; Kaneda, Erik
->>>> <erik.kaneda@intel.com>; Wysocki, Rafael J
->> <rafael.j.wysocki@intel.com>;
->>>> hoan@os.amperecomputing.com; fancer.lancer@gmail.com
->>>> Cc: linux-acpi@vger.kernel.org; linux-gpio@vger.kernel.org;
->>>> linuxarm@huawei.com; Xiang Chen <chenxiang66@hisilicon.com>
->>>> Subject: [PATCH] ACPICA: fix a memleak issue related to ACPI/GPIO
->>>>
->>>> From: Xiang Chen <chenxiang66@hisilicon.com>
->>>>
->>>> There is a memleak reported as follows:
->>>>
->>>> unreferenced object 0xffff00208ff85a00 (size 128):
->>>>     comm "swapper/0", pid 1, jiffies 4294892588 (age 887.572s)
->>>>     hex dump (first 32 bytes):
->>>>       00 00 00 00 02 00 00 00 08 5a f8 8f 20 00 ff ff  .........Z.. ...
->>>>       08 5a f8 8f 20 00 ff ff 00 00 00 00 00 00 00 00  .Z.. ...........
->>>> backtrace:
->>>>       [<00000000bc25bad8>] slab_post_alloc_hook+0x80/0x2e0
->>>>       [<000000008d547074>] kmem_cache_alloc+0x194/0x2c0
->>>>       [<00000000b08da9ad>] acpi_os_create_semaphore+0x3c/0x78
->>>>       [<0000000024816c0a>] acpi_ev_install_space_handler+0x214/0x274
->>>>       [<00000000d93a5ac2>] acpi_install_address_space_handler+0x64/0xb0
->>>>       [<0000000098c37a45>] acpi_gpiochip_add+0x130/0x348
->>>>       [<00000000c1cf4b42>] gpiochip_add_data_with_key+0x79c/0xdd0
->>>>       [<000000005ce539e9>]
->> devm_gpiochip_add_data_with_key+0x30/0x90
->>>>       [<00000000a3038b8d>] dwapb_gpio_probe+0x3e4/0x7e8
->>>>       [<0000000047a03eba>] platform_probe+0x68/0xe0
->>>>       [<00000000dc15c501>] really_probe+0x17c/0x4a0
->>>>       [<00000000aa1f123d>] driver_probe_device+0x68/0xd0
->>>>       [<00000000d97646e0>] device_driver_attach+0x74/0x80
->>>>       [<0000000073d5b3e5>] __driver_attach+0x8c/0xe0
->>>>       [<00000000ff60d118>] bus_for_each_dev+0x7c/0xd8
->>>>       [<00000000b018393d>] driver_attach+0x24/0x30
->>>>
->>>> It requires to delete the handler object in function
->>>> acpi_remove_address_space_handler() but it just up the sem with
->> function
->>>> acpi_os_release_mutex(), so use acpi_os_delete_mutex() instead of
->>>> acpi_os_release_mutex() in function
->>>> acpi_remove_address_space_handler().
->>>>
->>>> Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
->>>> ---
->>>>    drivers/acpi/acpica/evxfregn.c | 2 +-
->>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/acpi/acpica/evxfregn.c
->> b/drivers/acpi/acpica/evxfregn.c
->>>> index b1ff0a8..4db0bec 100644
->>>> --- a/drivers/acpi/acpica/evxfregn.c
->>>> +++ b/drivers/acpi/acpica/evxfregn.c
->>>> @@ -201,7 +201,7 @@
->> acpi_remove_address_space_handler(acpi_handle
->>>> device,
->>>>
->>>>    			/* Now we can delete the handler object */
->>>>
->>> Hi Xiang,
->>>
->>>> -			acpi_os_release_mutex(handler_obj-
->>>>> address_space.
->>>> +			acpi_os_delete_mutex(handler_obj->address_space.
->>>>    					      context_mutex);
->>> Thanks for this suggestion! Instead of acpi_os_delete_mutex, could you try
->> using acpi_ut_remove_reference instead?
->>> I believe this will is a safer option. Please test this and see if it fixes the
->> memory leak.
->>
-> Hi,
->
->> But there is already acpi_ut_remove_reference(handler_obj) behind it.
-> The delete mutex could result in unexpected behavior because it's not always the case that acpi_ut_remove_reference will clean up the object. This function cleans up the object if the reference count is 0 so we should add the delete mutex during the deletion instead.
->
-> Could you try this code to see if it fixes the leak?
+> 
+> Hmm..main reason is "sid". RMRs are associated with stream ids and
+> that is used to install bypass STEs/SMRs in SMMU drivers and also to check
+> whether a dev has any RMR regions associated with it.
+> 
+> I think we could add sid/dev_id to 'struct iommu_resv_region', and modify
+> iommu_alloc_resv_region() accordingly. That can get rid of the above struct
+> and iommu_dma_alloc_rmr() fn. Not sure this will complicate things as
+> the dev_id is only valid for RMR reservation region cases.
+> 
+> Please let me know your thoughts.
 
-I have tested the change, and it fixes the leak, and so please feel free 
-to add:
-Tested-by: Xiang Chen <chenxiang66@hisilicon.com>
+Maybe add a union for FW-specific data to struct resv_region, so that it 
+could eventually subsume AMD's struct unity_map_entry and Intel's struct 
+dmar_rmrr_unit as well? They're essentially doing the same dance.
 
->
-> diff --git a/drivers/acpi/acpica/utdelete.c b/drivers/acpi/acpica/utdelete.c
-> index 624a26794d55..e5ba9795ec69 100644
-> --- a/drivers/acpi/acpica/utdelete.c
-> +++ b/drivers/acpi/acpica/utdelete.c
-> @@ -285,6 +285,14 @@ static void acpi_ut_delete_internal_obj(union acpi_operand_object *object)
->                  }
->                  break;
->
-> +       case ACPI_TYPE_LOCAL_ADDRESS_HANDLER:
-> +
-> +               ACPI_DEBUG_PRINT((ACPI_DB_ALLOCATIONS,
-> +                                 "***** Address handler %p\n", object));
-> +
-> +               acpi_os_delete_mutex(object->address_space.context_mutex);
-> +               break;
-> +
->          default:
->
->                  break;
->
->>> Thanks,
->>> Erik
->>>
->>>>    			acpi_ut_remove_reference(handler_obj);
->>>>    			goto unlock_and_exit;
->>>> --
->>>> 2.8.1
->>> .
->>>
+We might still have to create copies of the firmware-allocated entries 
+to actually assign to domains (certainly where one entry covers multiple 
+devices), but kmemdup() is still a lot neater than various translations 
+from private formats.
 
-
+Robin.
