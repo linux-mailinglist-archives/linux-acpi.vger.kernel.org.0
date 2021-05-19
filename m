@@ -2,108 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0592388B24
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 11:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79D53388B35
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 11:53:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240010AbhESJwv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 May 2021 05:52:51 -0400
-Received: from foss.arm.com ([217.140.110.172]:56882 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345273AbhESJwt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 19 May 2021 05:52:49 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5E216101E;
-        Wed, 19 May 2021 02:51:30 -0700 (PDT)
-Received: from localhost (unknown [10.1.195.40])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F1E0F3F719;
-        Wed, 19 May 2021 02:51:29 -0700 (PDT)
-Date:   Wed, 19 May 2021 10:51:28 +0100
-From:   Ionela Voinescu <ionela.voinescu@arm.com>
-To:     Valentin Schneider <valentin.schneider@arm.com>
-Cc:     Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Giovanni Gherdovich <ggherdovich@suse.cz>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 0/3] arch_topology, ACPI: populate cpu capacity from CPPC
-Message-ID: <20210519095128.GC21501@arm.com>
-References: <20210514095339.12979-1-ionela.voinescu@arm.com>
- <87fsyk190c.mognet@arm.com>
+        id S1346867AbhESJzO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 05:55:14 -0400
+Received: from mail-oi1-f170.google.com ([209.85.167.170]:39693 "EHLO
+        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245745AbhESJzO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 05:55:14 -0400
+Received: by mail-oi1-f170.google.com with SMTP id y76so3328460oia.6;
+        Wed, 19 May 2021 02:53:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=g+DyMtUq0y9DzdbwtcafdWksxpvx1+4Y3Ho4YYiKmrQ=;
+        b=BFLTb5J+ft6OfKaHc5Y8zfVplKKFKbuYGgnxcGR7AcinhrckJIqzKJ365PTbsOkMju
+         3AEas2m1wlrTfmB6aJgWWx55WiKKDiWQAoryrdGWm5PlH2ocRoYnf5RJMZinvBEIldIx
+         Ato1rWFKitvLQ2KzqOmLe5E78N30ibFJzgTvi33iD5SWUGZ9UpoCzcjbSjZ0E5S36g+W
+         WC6ih7z1atnu63gdHfUO9o08eKEV5jiDUk30Sq3XGhzWjxlSSN0fowMqFYSl5SnZAgOp
+         3Tvf3ZKMNxGMPWDfU2xP/0K8tDnyL7mjtJYU4orbkZom0qDHVc2JSHpNr+LI1wvOeYzb
+         bQug==
+X-Gm-Message-State: AOAM530bTn1DnI4Q4WIFeF5fUYLJn/QD3KrE6zP2fnpmObrvR2ntqfgK
+        WPQuFeqdlEZJnaQ0LAJBw8leOu/T9WClgmL5edE=
+X-Google-Smtp-Source: ABdhPJyj0miVGbThLEUKj90LyKoKmk/mAuEwP6b5nd7j5F0G58MJFxgt9P0Z7DGb0sEswTYPaGoAIOMvkMTH/hNPdxM=
+X-Received: by 2002:aca:4ec5:: with SMTP id c188mr7216076oib.69.1621418034541;
+ Wed, 19 May 2021 02:53:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87fsyk190c.mognet@arm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <CAJZ5v0iU15F42yGm5etxmMLsDwC=u7p1eT6EoVADnJnV8+S4VA@mail.gmail.com>
+ <20210519030655.2197-1-jhp@endlessos.org>
+In-Reply-To: <20210519030655.2197-1-jhp@endlessos.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 19 May 2021 11:53:43 +0200
+Message-ID: <CAJZ5v0hn6p6_vgb+F1WzLDTB1n-4BchGW4bbY7CS6pswTAc=nA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: EC: Make more Asus laptops use ECDT _GPE
+To:     Jian-Hong Pan <jhp@endlessos.org>,
+        Chris Chiu <chris.chiu@canonical.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux@endlessos.org, Chris Chiu <chiu@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Valentin,
+On Wed, May 19, 2021 at 5:11 AM Jian-Hong Pan <jhp@endlessos.org> wrote:
+>
+> From: Chris Chiu <chris.chiu@canonical.com>
+>
+> More ASUS laptops have the _GPE define in the DSDT table with a
+> different value than the _GPE number in the ECDT.
+>
+> This is causing media keys not working on ASUS X505BA/BP, X542BA/BP
+>
+> Add model info to the quirks list.
+>
+> Signed-off-by: Chris Chiu <chiu@endlessm.com>
 
-On Tuesday 18 May 2021 at 14:12:03 (+0100), Valentin Schneider wrote:
-> Hi,
-> 
-> On 14/05/21 10:53, Ionela Voinescu wrote:
-> > Hi all,
-> >
-> > These are a few trivial patches to populate cpu capacity information
-> > using performance information from ACPI's CPPC.
-> >
-> > I've tied this functionality to the existing function
-> > init_freq_invariance_cppc() called in acpi_cppc_processor_probe().
-> > This function is renamed to a more generic arch_init_invariance_cppc().
-> >
-> > The patches have been build tested on x86 and more thoroughly tested on
-> > Juno R2 (arm64), which uses the new functionality, with the following
-> > results:
-> >
-> >
-> > root@ubuntu:~# dmesg | grep cpu_capacity
-> > [    2.157494] init_cpu_capacity_cppc: CPU0 cpu_capacity=38300 (raw).
-> > [    2.163699] init_cpu_capacity_cppc: CPU1 cpu_capacity=38300 (raw).
-> > [    2.169899] init_cpu_capacity_cppc: CPU2 cpu_capacity=38300 (raw).
-> > [    2.176098] init_cpu_capacity_cppc: CPU3 cpu_capacity=38300 (raw).
-> > [    2.182296] init_cpu_capacity_cppc: CPU4 cpu_capacity=102400 (raw).
-> > [    2.188581] init_cpu_capacity_cppc: CPU5 cpu_capacity=102400 (raw).
-> > [    2.194867] cpu_capacity: capacity_scale=102400
-> > [    2.199409] cpu_capacity: CPU0 cpu_capacity=383
-> > [    2.203952] cpu_capacity: CPU1 cpu_capacity=383
-> > [    2.208495] cpu_capacity: CPU2 cpu_capacity=383
-> > [    2.213037] cpu_capacity: CPU3 cpu_capacity=383
-> > [    2.217580] cpu_capacity: CPU4 cpu_capacity=1024
-> > [    2.222209] cpu_capacity: CPU5 cpu_capacity=1024
-> > [    2.226886] init_cpu_capacity_cppc: cpu_capacity initialization done
-> >
-> > root@ubuntu:~# tail -n +1 /sys/devices/system/cpu/cpu*/cpu_capacity
-> > ==> /sys/devices/system/cpu/cpu0/cpu_capacity <==
-> > 383
-> > ==> /sys/devices/system/cpu/cpu1/cpu_capacity <==
-> > 383
-> > ==> /sys/devices/system/cpu/cpu2/cpu_capacity <==
-> > 383
-> > ==> /sys/devices/system/cpu/cpu3/cpu_capacity <==
-> > 383
-> > ==> /sys/devices/system/cpu/cpu4/cpu_capacity <==
-> > 1024
-> > ==> /sys/devices/system/cpu/cpu5/cpu_capacity <==
-> > 1024
-> >
-> > All works as expected even if ACPI processor support is built as a
-> > module.
-> >
-> 
-> Tested on my Ampere eMAG; this all seems to work fine except for some
-> scheduler debug stuff that gets confused; see
-> 
->   http://lore.kernel.org/r/20210518130725.3563132-1-valentin.schneider@arm.com
-> 
-> With that in mind:
-> Tested-by: Valentin Schneider <valentin.schneider@arm.com>
+This has to match the From address.
 
-Many thanks for testing and fixing the debugfs problem. I'll take a look
-over your patch.
+Chris, can the e-mail address in the S-o-b be changed?
 
-Ionela.
+> Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+> ---
+> v2: Edit the author information with valid email address
+>
+>  drivers/acpi/ec.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>
+> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+> index 13565629ce0a..e8c5da2b964a 100644
+> --- a/drivers/acpi/ec.c
+> +++ b/drivers/acpi/ec.c
+> @@ -1846,6 +1846,22 @@ static const struct dmi_system_id ec_dmi_table[] __initconst = {
+>         DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+>         DMI_MATCH(DMI_PRODUCT_NAME, "GL702VMK"),}, NULL},
+>         {
+> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BA", {
+> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +       DMI_MATCH(DMI_PRODUCT_NAME, "X505BA"),}, NULL},
+> +       {
+> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BP", {
+> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +       DMI_MATCH(DMI_PRODUCT_NAME, "X505BP"),}, NULL},
+> +       {
+> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BA", {
+> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +       DMI_MATCH(DMI_PRODUCT_NAME, "X542BA"),}, NULL},
+> +       {
+> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BP", {
+> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +       DMI_MATCH(DMI_PRODUCT_NAME, "X542BP"),}, NULL},
+> +       {
+>         ec_honor_ecdt_gpe, "ASUS X550VXK", {
+>         DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+>         DMI_MATCH(DMI_PRODUCT_NAME, "X550VXK"),}, NULL},
+> --
+> 2.31.1
+>
