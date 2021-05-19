@@ -2,215 +2,191 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C2B5389254
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 17:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DF02389258
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 May 2021 17:14:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242976AbhESPPH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 May 2021 11:15:07 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:4685 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233577AbhESPPH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 11:15:07 -0400
-Received: from dggems706-chm.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Flbst4yqpz1BPHc;
-        Wed, 19 May 2021 23:10:58 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggems706-chm.china.huawei.com (10.3.19.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 19 May 2021 23:13:44 +0800
-Received: from localhost (10.52.121.81) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 19 May
- 2021 16:13:41 +0100
-Date:   Wed, 19 May 2021 16:11:56 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-CC:     Ira Weiny <ira.weiny@intel.com>, <linux-cxl@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        "Lorenzo Pieralisi" <lorenzo.pieralisi@arm.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Chris Browy <cbrowy@avery-design.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Schofield, Alison" <alison.schofield@intel.com>,
-        Vishal L Verma <vishal.l.verma@intel.com>,
-        Linuxarm <linuxarm@huawei.com>, Fangjian <f.fangjian@huawei.com>,
-        Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [RFC PATCH v3 2/4] PCI/doe: Add Data Object Exchange support
-Message-ID: <20210519161156.00003bf9@Huawei.com>
-In-Reply-To: <CAPcyv4g3JPtAHzemKdQiM44ZkZ_0u+U-UJ5mfeU3fKzRWuaDyQ@mail.gmail.com>
-References: <20210419165451.2176200-1-Jonathan.Cameron@huawei.com>
-        <20210419165451.2176200-3-Jonathan.Cameron@huawei.com>
-        <20210506215934.GJ1904484@iweiny-DESK2.sc.intel.com>
-        <20210511175006.00007861@Huawei.com>
-        <CAPcyv4j=uww+85b4AbWmoPNPry_+JLEpEnuywpdC8PonXmRmEg@mail.gmail.com>
-        <20210514094755.00002081@Huawei.com>
-        <CAPcyv4h_qSZq+sTAOTKDNsO3xPmq=65j8oO1iw0WdVFj8+XrOA@mail.gmail.com>
-        <20210517094045.00004d58@Huawei.com>
-        <CAPcyv4iQcV_U1qmQhXKM0RG9v-sAEPwtTxnv=P86yJrCH25k+w@mail.gmail.com>
-        <20210518110403.000013e6@Huawei.com>
-        <CAPcyv4g3JPtAHzemKdQiM44ZkZ_0u+U-UJ5mfeU3fKzRWuaDyQ@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S233577AbhESPQN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 11:16:13 -0400
+Received: from mga07.intel.com ([134.134.136.100]:9233 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231823AbhESPQN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 19 May 2021 11:16:13 -0400
+IronPort-SDR: kkIlW0bV0396rn6ANvfyA8bVoVVHi62e60m2YiCNsFy1OCKEINPHS34bhH8wuszw9ok7V9782K
+ xR/ydeJfzW/g==
+X-IronPort-AV: E=McAfee;i="6200,9189,9989"; a="264915694"
+X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
+   d="scan'208";a="264915694"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2021 08:14:52 -0700
+IronPort-SDR: 5AMFMnRYfhCdHT3AOE0rxIaGzSu17wCrw5oS+0VCZY8282OzA+jXlwmxgb3xYpv66GIY0SZd+F
+ mTKmtLWb7TPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
+   d="scan'208";a="542675574"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 19 May 2021 08:14:48 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 19 May 2021 18:14:47 +0300
+Date:   Wed, 19 May 2021 18:14:47 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     linux-usb@vger.kernel.org, Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi@vger.kernel.org,
+        Casey G Bowman <casey.g.bowman@intel.com>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        Christian Kellner <ckellner@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH 2/9] thunderbolt: Add USB4 port devices
+Message-ID: <YKUrZ0b4UObhtV9k@kuha.fi.intel.com>
+References: <20210519141259.84839-1-mika.westerberg@linux.intel.com>
+ <20210519141259.84839-3-mika.westerberg@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.121.81]
-X-ClientProxiedBy: lhreml730-chm.china.huawei.com (10.201.108.81) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210519141259.84839-3-mika.westerberg@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 19 May 2021 07:18:28 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
+On Wed, May 19, 2021 at 05:12:52PM +0300, Mika Westerberg wrote:
+> Create devices for each USB4 port. This is needed when we add retimer
+> access when there is no device connected but may be useful for other
+> purposes too following what USB subsystem does. This exports a single
+> attribute "link" that shows the type of the USB4 link (or "none" if
+> there is no cable connected).
 
-> On Tue, May 18, 2021 at 3:06 AM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > On Mon, 17 May 2021 10:21:14 -0700
-> > Dan Williams <dan.j.williams@intel.com> wrote:
-> >  
-> > > On Mon, May 17, 2021 at 1:42 AM Jonathan Cameron
-> > > <Jonathan.Cameron@huawei.com> wrote:  
-> > > >
-> > > > On Fri, 14 May 2021 11:37:12 -0700
-> > > > Dan Williams <dan.j.williams@intel.com> wrote:
-> > > >  
-> > > > > On Fri, May 14, 2021 at 1:50 AM Jonathan Cameron
-> > > > > <Jonathan.Cameron@huawei.com> wrote:
-> > > > > [..]  
-> > > > > > > If it simplifies the kernel implementation to assume single
-> > > > > > > kernel-initiator then I think that's more than enough reason to block
-> > > > > > > out userspace, and/or provide userspace a method to get into the
-> > > > > > > kernel's queue for service.  
-> > > > > >
-> > > > > > This last suggestion makes sense to me. Let's provide a 'right' way
-> > > > > > to access the DOE from user space. I like the idea if it being possible
-> > > > > > to run CXL compliance tests from userspace whilst the driver is loaded.  
-> > > > >
-> > > > > Ah, and I like your observation that once the kernel provides a
-> > > > > "right" way to access DOE then userspace direct-access of DOE is
-> > > > > indeed a "you get to keep the pieces" event like any other unwanted
-> > > > > userspace config-write.
-> > > > >  
-> > > > > > Bjorn, given this would be a generic PCI thing, any preference for what
-> > > > > > this interface might look like?   /dev/pcidoe[xxxxxx].i with ioctls similar
-> > > > > > to those for the BAR based CXL mailboxes?  
-> > > > >
-> > > > > (warning, anti-ioctl bias incoming...)  
-> > > >
-> > > > I feel very similar about ioctls - my immediate thought was to shove this in
-> > > > debugfs, but that feels the wrong choice if we are trying to persuade people
-> > > > to use it instead of writing code that directly accesses the config space.
-> > > >  
-> > > > >
-> > > > > Hmm, DOE has an enumeration capability, could the DOE driver use a
-> > > > > scheme to have a sysfs bin_attr per discovered object type? This would
-> > > > > make it simliar to the pci-vpd sysfs interface.  
-> > > >
-> > > > We can discover the protocols, but anything beyond that is protocol
-> > > > specific.  I don't think there is a enough info available by any standards
-> > > > defined method. Also part of the reason to allow a safe userspace interface
-> > > > would be to provide a generic interface for vendor protocols and things like
-> > > > CXL compliance tests where we will almost certainly never provide a more
-> > > > specific kernel interface.
-> > > >
-> > > > Whilst sysfs would work for CDAT, some protocols are challenge response rather
-> > > > than simple read back and that really doesn't fit well for sysfs model.
-> > > > If we get other protocols that are simple data read back, then I would
-> > > > advocate giving them a simple sysfs interface much like proposed for CDAT
-> > > > as it will always be simpler to use + self describing.
-> > > >
-> > > > On a lesser note it might be helpful to provide sysfs attrs for
-> > > > what protocols are supported.  The alternative is to let userspace run
-> > > > the discovery protocol. Perhaps we can do this as a later phase.
-> > > >  
-> > > > >
-> > > > > Then the kernel could cache objects like CDAT that don't change
-> > > > > outside of some invalidation event.  
-> > > >
-> > > > It's been a while since I last saw any conversation on sysfs bin_attrs
-> > > > but mostly I thought the feeling was pretty strongly against them for anything
-> > > > but a few niche usecases.
-> > > >
-> > > > Feels to me like it would break most of the usual rules in a way vpd does
-> > > > not (IIRC VPD is supposed to be a simple in the sense that if you write a value
-> > > > to a writable part, you will read back the same value).
-> > > >
-> > > > +CC Greg who is a fount of knowledge in this area (and regularly + correctly
-> > > > screams at the ways I try to abuse sysfs :)  Note I don't think Dan was
-> > > > suggesting implementing response / request directly, but I think that is
-> > > > all we could do given DOE protocols can be vendor specific and the standard
-> > > > discovery protocol doesn't let us know the fine grained support (what commands
-> > > > within a given protocol).  
-> > >
-> > > I'm not all that interested in supporting vendor defined DOE
-> > > shenanigans. There's more than enough published DOE protocols that the
-> > > kernel could limit its support to the known set. This is similar to
-> > > how ACPI DSMs are not generically supported, but when they appear in a
-> > > published specification the kernel may then grow the support. The
-> > > supported protocols could be limited to: CDAT, PCIe IDE, CXL
-> > > Compliance, etc...
-> > >
-> > > Vendor specific DOE is in the same class as unfettered /dev/mem
-> > > access, first you need to disable the kernel's integrity and
-> > > confidentiality protections, and then you can do whatever you want. If
-> > > a vendor wants a DOE protocol supported in the "trusted" set they can
-> > > simply publish the specification and send the proper support patches.  
-> >
-> > Fair enough, though the interface should be root only, so a vendor shooting
-> > themselves in the foot this way would be no different to using pcitools
-> > to access the device directly (we are just providing safety from concurrency
-> > point of view).
-> >
-> > Anyway, I can see two options for how to do this.
-> >
-> > 1) Per protocol interface. Would not be generic, as these work in entirely
-> >    different ways (some are simple read back of tables, some require complex
-> >    cycles of operations in the right order with data flowing in both directions)
-> > 2) White list those protocols we are going to let through a generic interface
-> >    Not including CXL compliance for instance as that has nasty side effects!
-> >
-> > If we want to enable userspace DOE access, I prefer option 2.
-> >
-> > Note that I wasn't that keen on a userspace interface in the first place as
-> > in my view these should all be handled in kernel.
-> > Ultimately we should have case 1 if userspace access make sense.
-> > However, if we do this we shouldn't pretend we are providing userspace
-> > access to the DOE at all.  We are providing interfaces to things that just
-> > happen to be implemented using DOE under the hood.
-> >
-> > I have a prototype of a trivial ioctl based interface. I'll send it out
-> > as an RFC later this week.  Might add a white list, depending on where
-> > this discussion goes.
-> >  
-> 
-> I'd say let's do this in typical Linux fashion and not solve future
-> problems before they need to be solved. I.e. start small and build
-> incrementally. To me that looks like a sysfs interface to convey a
-> cached copy of a CDAT with an internal interface for a driver to
-> trigger invalidations and re-reads on the next access. This would
-> assume that userspace may have left the DOE in an indeterminate state
-> and an abort cycle may be needed. A 1 second delay for the rare case
-> where a collision is detected seems reasonable for just CDAT
-> retrieval.
+<snip>
 
-The problem is you can not detect a collision. Hence it's a reset every
-time you use the DOE from in the kernel. Personally I think that this
-is fixing a problem that doesn't exist. Userspace should not access
-the DOE when a driver is loaded in exactly the same way it shouldn't
-be writing to anywhere else in config space under normal circumstances.
-I really don't see this as special. If we think it is special then
-we should provide a safe interface.
+> +/*
+> + * USB4 port device
+> + *
+> + * Copyright (C) 2021, Intel Corporation
+> + * Author: Mika Westerberg <mika.westerberg@linux.intel.com>
+> + */
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/pm_runtime.h>
+> +
+> +#include "tb.h"
+> +
+> +static ssize_t link_show(struct device *dev, struct device_attribute *attr,
+> +			 char *buf)
+> +{
+> +	struct usb4_port *usb4 = tb_to_usb4_port_device(dev);
+> +	struct tb_port *port = usb4->port;
+> +	struct tb *tb = port->sw->tb;
+> +	const char *link;
+> +
+> +	if (mutex_lock_interruptible(&tb->lock))
+> +		return -ERESTARTSYS;
+> +
+> +	if (tb_is_upstream_port(port))
+> +		link = port->sw->link_usb4 ? "usb4" : "tbt";
+> +	else if (tb_port_has_remote(port))
+> +		link = port->remote->sw->link_usb4 ? "usb4" : "tbt";
+> +	else
+> +		link = "none";
+> +
+> +	mutex_unlock(&tb->lock);
+> +
+> +	return sysfs_emit(buf, "%s\n", link);
+> +}
+> +static DEVICE_ATTR_RO(link);
+> +
+> +static struct attribute *common_attrs[] = {
+> +	&dev_attr_link.attr,
+> +	NULL
+> +};
+> +
+> +static const struct attribute_group common_group = {
+> +	.attrs = common_attrs,
+> +};
+> +
+> +static const struct attribute_group *usb4_port_device_groups[] = {
+> +	&common_group,
+> +	NULL
+> +};
+> +
+> +static void usb4_port_device_release(struct device *dev)
+> +{
+> +	struct usb4_port *usb4 = container_of(dev, struct usb4_port, dev);
+> +
+> +	kfree(usb4);
+> +}
+> +
+> +struct device_type usb4_port_device_type = {
+> +	.name = "usb4_port",
+> +	.groups = usb4_port_device_groups,
+> +	.release = usb4_port_device_release,
+> +};
 
-Given it's nearly done, I might send out the ioctl proposal and
-we can can just decide to leave it unmerged for now, pending real
-usecases being established.
+I noticed that in the next patch you add acpi_bus_type for these
+ports, but is that really necessary? Why not just:
 
-Jonathan
+int usb4_port_fwnode_match(struct tb_port *port, struct fwnode_handle *fwnode)
+{
+        if (is_acpi_device_node(fwnode))
+                return acpi_device_adr(to_acpi_device_node(fwnode)) == port->port;
 
+        return 0;
+}
 
+> +/**
+> + * usb4_port_device_add() - Add USB4 port device
+> + * @port: Lane 0 adapter port to add the USB4 port
+> + *
+> + * Creates and registers a USB4 port device for @port. Returns the new
+> + * USB4 port device pointer or ERR_PTR() in case of error.
+> + */
+> +struct usb4_port *usb4_port_device_add(struct tb_port *port)
+> +{
 
+        struct fwnode_handle *child;
 
+> +	struct usb4_port *usb4;
+> +	int ret;
+> +
+> +	usb4 = kzalloc(sizeof(*usb4), GFP_KERNEL);
+> +	if (!usb4)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	usb4->port = port;
+> +	usb4->dev.type = &usb4_port_device_type;
+> +	usb4->dev.parent = &port->sw->dev;
+> +	dev_set_name(&usb4->dev, "usb4_port%d", port->port);
+
+and then here something like this (feel free to improve this part):
+
+        device_for_each_child_node(&port->sw->dev, child) {
+                if (usb4_port_fwnode_match(port, child)) {
+                        usb4->dev.fwnode = child;
+                        break;
+                }
+        }
+
+Or maybe I'm missing something?
+
+> +	ret = device_register(&usb4->dev);
+> +	if (ret) {
+> +		put_device(&usb4->dev);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	pm_runtime_no_callbacks(&usb4->dev);
+> +	pm_runtime_set_active(&usb4->dev);
+> +	pm_runtime_enable(&usb4->dev);
+> +	pm_runtime_set_autosuspend_delay(&usb4->dev, TB_AUTOSUSPEND_DELAY);
+> +	pm_runtime_mark_last_busy(&usb4->dev);
+> +	pm_runtime_use_autosuspend(&usb4->dev);
+> +
+> +	return usb4;
+> +}
+
+thanks,
+
+-- 
+heikki
