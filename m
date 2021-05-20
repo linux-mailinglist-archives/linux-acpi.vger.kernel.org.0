@@ -2,47 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBD24389A18
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 May 2021 01:51:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22AFB389A5E
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 May 2021 02:16:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230053AbhESXxJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 May 2021 19:53:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56638 "EHLO
+        id S229525AbhETASB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 May 2021 20:18:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229556AbhESXxI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 19:53:08 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E00C061760
-        for <linux-acpi@vger.kernel.org>; Wed, 19 May 2021 16:51:48 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id lz27so22415032ejb.11
-        for <linux-acpi@vger.kernel.org>; Wed, 19 May 2021 16:51:48 -0700 (PDT)
+        with ESMTP id S229808AbhETASB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 May 2021 20:18:01 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959BDC061760
+        for <linux-acpi@vger.kernel.org>; Wed, 19 May 2021 17:16:40 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id lg14so22487615ejb.9
+        for <linux-acpi@vger.kernel.org>; Wed, 19 May 2021 17:16:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LVoBMaI0GwGtaYoKzmIr4922Id3E65a6BTx3LFwZWRk=;
-        b=ReJ1N3XK2j0uu0sd75SJlG4JrRwVcqiVWKKAm6uHfUSmLas6m3qmqn0w1/1hVKQA1L
-         AdYJNSfVnHxInu48wHMa0+V+xu8wExeljZY297Kd/tRzEY3J/C+z3jNUdAYzUVPFjO2F
-         PFD3qjLT1Uz3XsU78atT6FQaDct5hSQwmy1gDHGKbZgf4Hzr+KVdQjRJSabipL12N5y1
-         sDentQn5/UquLp1ZbxaRxPJXutOtww8gYnYOqcj0GPmWB4Q4HR+/9PdBjBUBh1aXped1
-         pJ7p4ev5yeM33ljgmn9SBmcl69JorvsAnCUE51ICNF+cCGU17HuXhf/iXQZm7uB1CZxS
-         pOCg==
+        bh=wHpPGTix+cKXCrGrbhMazXmP7v5I8Y6OBdgMIdDgvhA=;
+        b=ddjXPOWYeIZbeFYwXcEC63OBolv0Le7Y/3f+AeeQyEff3Km9EwYGmtXpnyXGiu9igM
+         qZK4wsjYojvgPZwHnLDwlZdlcYGTx79Yv6+bNOsDF8HJjnvQmFeUrmzYRiMk2zbaCfGt
+         Cj7CkkD7egpsojx0Ws3boCrt5Tu6dPWB1vwcOaZ7sIGvUabHoWmRKp/wDwMKGvGiP4eH
+         XhHuG9p11+NGXvnzMVC09P1bD9vZFYnaEuwYgkhz1ln6BuHwvZyIEOqK/LXMe80QBs/l
+         MMHrxXy5RNRS6NmHjZ8ctfYyaaoanU3PUTiBtZrXhBcBZAjtATUiWR2bYi51vmgt+Pfq
+         T8dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LVoBMaI0GwGtaYoKzmIr4922Id3E65a6BTx3LFwZWRk=;
-        b=a+hemA6C8oD2QG0/FeZcibo5BuA6Pm/27NKhI/ca2+jt0DcIipUOLGJmjq+h0JEdk8
-         OtXy9YJnCTiOlGFzdTXJJiMUHsFvCqlMQiMaPyKjOYKFQRMIViKD0HIOjTcPDSuJe1IW
-         hpYvY/WS5Nepv5pdXq0H80k5f1u8SJSdv+RiBDw7t61va1pU2TJjAoZaTNX3ZtJEBdBZ
-         JPFn3cdj6bTuoP7Wa0h+FYmAYQFmESMeNoT9NcS70z6ssi7X59eOWthSVUoMNW5tGJ+s
-         FTt6Fx5aBOQctKJ88ASsDQ6dcA9R7LqCBjSsae+Pg496ENtDBKpfTLBxicKyVPEMZKm1
-         4vzw==
-X-Gm-Message-State: AOAM530Zt27LPbS4BKF5W7FzajIWw49Viu4ksPTHmr0y2nZ3Tq//vf8W
-        q8U3+n3/4WSM4HP77yTorHXtFrZGHdoCkhZpZm3PmA==
-X-Google-Smtp-Source: ABdhPJx8ix2K1zcTT1uwJnnqS4H4ljqDrqiR5i5DDmY5S8ZVeMmy2N9u/STSoeX+SRfH/K/NJX8MQSaVyGX/N02Y22M=
-X-Received: by 2002:a17:906:d285:: with SMTP id ay5mr1687691ejb.418.1621468306605;
- Wed, 19 May 2021 16:51:46 -0700 (PDT)
+        bh=wHpPGTix+cKXCrGrbhMazXmP7v5I8Y6OBdgMIdDgvhA=;
+        b=hz2xMaSi106eZ1AvzobLxV8nG7BTBmZ+dPtGLdH2DKWihHW7f6af/nCBZkKMYw+26z
+         HB0qGJkkv3YjmngaAg3afseCdhiXa9HNJtj6TzYJhUYZFIdQ+GmMgNP+sg6qcSsQGUHk
+         VsQpVvoPErrCbm6MCF0d9h7J6DbrIPGzCEWxkNUAil+tmj/7uL9EUKmYc1TArLJIA3A+
+         o6DSm4IhkJ5IH4TDJCs22XAtncdtFcBhyN5F52zdyaHusIg7DrZZm/Ic6lR9FRgB3fbL
+         NiPMFE0hP5R3IM/nJd7o8+tsqPb4hYKzrLHxiSzCQDDoAj68ycHL7YPAE/8aKoAviWsS
+         OOew==
+X-Gm-Message-State: AOAM530QryB2C91EAoyfgKo+DWteH68RVGj3bx1FSgVgn1GWX5++aRwx
+        b8s4jUZdt7xfVclrknBj7fpGJhxT0X8SJo7nUe7O9g==
+X-Google-Smtp-Source: ABdhPJy13CyIvUgU0c4/iO5zJrtRsiJO2AdHbEsxqevLYm6s6ozZg/gRZOmI+Nik0P9z467XnR9IsNRPOcsBJjK2qHg=
+X-Received: by 2002:a17:906:1d56:: with SMTP id o22mr1755770ejh.264.1621469799143;
+ Wed, 19 May 2021 17:16:39 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210419165451.2176200-1-Jonathan.Cameron@huawei.com>
  <20210419165451.2176200-3-Jonathan.Cameron@huawei.com> <20210506215934.GJ1904484@iweiny-DESK2.sc.intel.com>
@@ -54,11 +54,11 @@ References: <20210419165451.2176200-1-Jonathan.Cameron@huawei.com>
  <20210519172052.00002124@Huawei.com> <20210519173352.000026fe@Huawei.com>
  <CAPcyv4gUy0nNh-3y2wWVwM4AtO4F8OOJCtWz_ZH7Eu0H=oymuw@mail.gmail.com>
  <20210519180057.00002ac3@Huawei.com> <CAPcyv4ii3KC6MBBxJrnCUCm_JGS7ugL+JTFUu9QTBnPUhQFtfQ@mail.gmail.com>
- <20210519211818.00002acf@Huawei.com>
-In-Reply-To: <20210519211818.00002acf@Huawei.com>
+ <20210519211818.00002acf@Huawei.com> <CAPcyv4hCCqEPzGKh4hyjHEBE3jDn9iTA_WUOZMFptHKrX-2J_A@mail.gmail.com>
+In-Reply-To: <CAPcyv4hCCqEPzGKh4hyjHEBE3jDn9iTA_WUOZMFptHKrX-2J_A@mail.gmail.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 19 May 2021 16:51:36 -0700
-Message-ID: <CAPcyv4hCCqEPzGKh4hyjHEBE3jDn9iTA_WUOZMFptHKrX-2J_A@mail.gmail.com>
+Date:   Wed, 19 May 2021 17:16:28 -0700
+Message-ID: <CAPcyv4hRcdw1N2b1WsVOLqDwZQSt6o=fQsn=VPtA5gpJFY-Qgw@mail.gmail.com>
 Subject: Re: [RFC PATCH v3 2/4] PCI/doe: Add Data Object Exchange support
 To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc:     Ira Weiny <ira.weiny@intel.com>, linux-cxl@vger.kernel.org,
@@ -77,110 +77,19 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, May 19, 2021 at 1:20 PM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+On Wed, May 19, 2021 at 4:51 PM Dan Williams <dan.j.williams@intel.com> wrote:
+[..]
+> > The short answer is that lock requirement, in the above note, rules
+> > out safe direct userspace use of the DOE (unless we can tell the kernel
+> > is not going to ever use it).
 >
-> On Wed, 19 May 2021 12:20:17 -0700
-> Dan Williams <dan.j.williams@intel.com> wrote:
->
-> > On Wed, May 19, 2021 at 10:03 AM Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com> wrote:
-> > [..]
-> > > > > "The DOE Busy bit can be used to indicate that the DOE responder is
-> > > > >  temporarily unable to accept a data object. It is necessary for a
-> > > > >  DOE requester to ensure that individual data object transfers are
-> > > > >  completed, and that a request/response contract is completed, for
-> > > > >  example using a mutex mechanism to block other conflicting traffic
-> > > > >  for cases where such conflicts are possible."
-> > > >
-> > > > I read that as the specification mandating my proposal to disallow
-> > > > multi-initiator access. My only mistake was making the exclusion apply
-> > > > to reads and not limiting it to the minimum of config write exclusion.
-> > >
-> > > Key thing is even that isn't enough.   The mutex isn't about stopping
-> > > temporary access, it's about ensuring "request/response contract is completed".
-> > > So you would need userspace to be able to take a lock to stop the kernel
-> > > from using the DOE whilst it completes it's request/response pair and
-> > > userspace to guarantee it doesn't do anything stupid.
-> >
-> > A userspace lockout of the kernel is not needed if userspace is
-> > outright forbidden from corrupting the kernel's state machine. I.e.
-> > kernel enforced full disable of user initiated config-write to DOE
-> > registers, not the ephemeral pci_cfg_access_lock() proposal.
->
-> That would work but I thought was ruled out as an approach.
-> @Bjorn would this be acceptable?
+> Linux has the mitigation for that situation defined already. It's the
+> mechanism for /dev/mem and pci-mmap exclusion: disable the driver to
+> enable unfettered userspace access (modulo kernel-lockdown is
+> disabled).
 >
 
-It sounded like Bjorn needed more convincing:
-
-    "I don't know how hard we should work to protect against that."
-
-...and I'm advocating that yes, DOE config-writes are in a different
-class than other critical register writes, and that class is analogous
-to what Linux does for driver managed MMIO exclusion.
-
-> >
-> > > Easiest way to do that is provide proper interfaces that allows the
-> > > kernel to fully mediate the access + don't support direct userspace access
-> > > for normal operation. (treat it the same as an other config space write)
-> >
-> > Again, it's the parenthetical at issue. I struggle to see this as just
-> > another errant / unwanted config-write when there is legitimate reason
-> > for userspace to expect that touching the DOE is not destructive to
-> > device operation as opposed to writes to other critical registers.
->
-> True for specific protocols (CDAT). I'm fairly sure, with IDE you can take down
-> the link encryption to the device, potentially (worst case?) resulting a memory
-> access failure and a machine reboot or corruption of persistent memory.
-
-No, that does not sound right. My reading of the PCI IDE spec
-highlights a few exclusions that apply here:
-
-1/ A DOE instance that implements the CMA/SPDM protocol will support
-"no other data object protocol(s)".
-
-2/ An SPDM session once established arranges for "requests that are
-received through a different secure [SPDM] session must be discarded
-by the Responder, and must not result in a response"
-
->
-> > Where the kernel's legitimate-access and userspace's legitimate-access
-> > to a resource collide, the kernel provides a mediation interface that
-> > precludes conflicts. Otherwise, I don't understand why the kernel is
-> > going through the trouble of /dev/mem and pci-mmap restrictions if it
-> > is not supposed to be concerned about userspace corrupting driver
-> > state.
->
-> The short answer is that lock requirement, in the above note, rules
-> out safe direct userspace use of the DOE (unless we can tell the kernel
-> is not going to ever use it).
-
-Linux has the mitigation for that situation defined already. It's the
-mechanism for /dev/mem and pci-mmap exclusion: disable the driver to
-enable unfettered userspace access (modulo kernel-lockdown is
-disabled).
-
-> Mediation must be done. Even if we safely
-> protect the kernel side via aborts, userspace transactions can be
-> interrupted in a fashion that is invisible to userspace (beyond maybe
-> a timeout if the userspace code is hardened against this).
-
-Right, ephemeral per-transaction lockout is more complicated to handle
-than coarse lockout bounded to driver attach lifetime.
-
-> So there is no
-> legitimate use that is not fully mediated by the kernel. So ioctl
-> or defined per protocol interfaces are the way forwards.
-
-Agree, and Linux has historically tried to wrap specific protocols
-around capabilities like this rather than defining raw passthroughs.
-I.e. I'm equating DOE enabling policy to ACPI DSM enabling policy. So
-per-protocol enabling is my expectation regardless of sysfs or ioctl.
-In fact. for SPDM and IDE key establishment that is probably neither
-ioctl nor sysfs, but instead a cooperation with the Linux keys api.
-
-> Perhaps that's putting it rather strongly :)
-
-No major disagreement on the big picture... just quibbling with
-details at this point.
+Note that when I say "driver" here, it need not necessarily be the
+cxl_pci driver for the memory expander. For example, DOE functionality
+could be handled by an aux-bus device+driver where that can be
+unloaded without taking down the rest of the CXL driver.
