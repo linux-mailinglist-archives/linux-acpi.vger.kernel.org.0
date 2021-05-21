@@ -2,100 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3BA038CBEB
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 19:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BC3E38CE1D
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 21:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230446AbhEURUJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 May 2021 13:20:09 -0400
-Received: from mail-oi1-f178.google.com ([209.85.167.178]:35435 "EHLO
-        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230218AbhEURUI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 May 2021 13:20:08 -0400
-Received: by mail-oi1-f178.google.com with SMTP id v22so20328429oic.2;
-        Fri, 21 May 2021 10:18:45 -0700 (PDT)
+        id S238035AbhEUT07 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 May 2021 15:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52384 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238069AbhEUT0x (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 May 2021 15:26:53 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61CB5C0613ED;
+        Fri, 21 May 2021 12:25:27 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id y14so20000433wrm.13;
+        Fri, 21 May 2021 12:25:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=fvwuU0+MYSgCo2emo2mby8YwzIh20quN69i/jewcdqk=;
+        b=uXhcuBR1rBX6+MjsTw0TttQu0s+mWQ+TkbkdxdvMgpVoTsU5jWPM4XDOWSAGyBZAM+
+         +mGE+1jHobO7W5yTECWFblJoy+3WfO4YzExgPDTPW0OHZGSZIHDmHD8KwW9GxFOdhVWZ
+         V0YIVPm3xtpYmmCvjGyF7NsG8LnSvGLqfd42R3GjSMxy2d8u3y4CtyHvuOcVpFy65Qnt
+         KZfwVM87W/hrfMctwAu8iji4Aj2RnDCzLPU4Pi3JiAW/JDgwCCU1KD7EYBECc3abuDWY
+         XSKfiKyOTkNTTZ9wlXY+6ENtOi6sjDk3eM/ZhxHWO3QhXGlVGsyBB1hc/eLuvIzMAUv8
+         9JFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sSelCdkeL6UMwaqXqXmyfBVh5HqO0dvhdB+UkPnarMA=;
-        b=rp1uyl2iFgA0iDoK9er1EN3pKteHplZtkEvAvHDBq9cPiSXmNzm+LJJGlloXLd/AgT
-         5oqYkLcCqgtx8YZ0QJqmMnynWdoEueXoaN8AK/sbAg9BBQRc+LyawUI+EGYpew98wBoa
-         8jLc1/nNIwt9HQq5gWwc+zXWTt6miqSNRQ9WR/cbt9Z7ngCCV4vLGBvyBvsLPYZ5d7aS
-         +fQU8hSgrRbb/qYL+47A/YK+LMUMOndVI3yRy5UIaxTfRdJ1gXAD8GPTcAk9tWfYb1F4
-         hXMEObKwjZqKaQjzMvEeu0PyiFRso1bXYLFgOGVUfkzTnux02Z6tmR4Xa8+R55YPA5WH
-         mebA==
-X-Gm-Message-State: AOAM531JvI0UJq1uyqpxcTbK2fDXpV9i+o31OqYIvNxArWIqktT140qE
-        Ti7GpE6qsTvxFJ/+3m7rzxc3ear030QO0YFWMms=
-X-Google-Smtp-Source: ABdhPJzdRyjOsjiF7+aESA08qwmPjxDpeGYGENTw7cvWtCdyDUe8sbQBzqMx1Notao120+saRQEGH58JK0oxsBfE37k=
-X-Received: by 2002:aca:1910:: with SMTP id l16mr2823747oii.69.1621617525180;
- Fri, 21 May 2021 10:18:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <CABTNMG12HADeXoWe+25kYKQPcY8KV0GCDx+75GVAVATQ1pZYTA@mail.gmail.com>
- <20210520030949.2471-1-jhp@endlessos.org>
-In-Reply-To: <20210520030949.2471-1-jhp@endlessos.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 21 May 2021 19:18:34 +0200
-Message-ID: <CAJZ5v0h3j+t3URKdM=WidytiAWx0N8jL6JnED11r4BCH5vDOHw@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: EC: Make more Asus laptops use ECDT _GPE
-To:     Jian-Hong Pan <jhp@endlessos.org>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=fvwuU0+MYSgCo2emo2mby8YwzIh20quN69i/jewcdqk=;
+        b=t/btbDa6seYaJTqPFM/VYPKfPxzGF2UcijqgvfQSB9pW6W/ar6WNTw3dK8pyqyFSqa
+         ZEPaTMc/P5uUraO98mOvrU9ca905EYgUJlieqLkSY0+n5L/0Ek3S6ED5RAezHwCQOJvD
+         zKUnr2Vc6p2FIxD+RBExQv3/ZYbZbGCbseNsKDRJezUtLdPlqZI+1HhAJ4Ss9d70U+hT
+         iCy4LZR889BCrnNizPGAjgCS2xb/MJmxEV/+oF4jWYJs/zE7OdLt1hOM7Xx3aVMrY56L
+         w/KqBYTEANrJalhdRoNjFLJlGckFvzJMQw0ZF0XamdcGbFBYWZDN17coKI7Smhak04Ym
+         kjwQ==
+X-Gm-Message-State: AOAM531nW0WC7Hk2KYp0kxcK3V7301AXp1FFYbTv9zcMgfx1JLx5hMjt
+        zyMW9/beneJGioHAwPqJWNM=
+X-Google-Smtp-Source: ABdhPJzk0TMRNGjlrE+WNMAkhVgrZq75o/VspCW4P5mv6PHAMeJDLibI7fK/d+i0DIafevp/iQ/fKA==
+X-Received: by 2002:adf:fdce:: with SMTP id i14mr10800827wrs.303.1621625125977;
+        Fri, 21 May 2021 12:25:25 -0700 (PDT)
+Received: from [192.168.1.211] ([91.110.20.117])
+        by smtp.gmail.com with ESMTPSA id r2sm3233190wrv.39.2021.05.21.12.25.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 May 2021 12:25:25 -0700 (PDT)
+Subject: Re: [PATCH v4 2/8] ACPI: scan: Add function to fetch dependent of
+ acpi device
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux@endlessos.org, Chris Chiu <chris.chiu@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham@ideasonboard.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+References: <20210520140928.3252671-1-djrscally@gmail.com>
+ <20210520140928.3252671-3-djrscally@gmail.com>
+ <CAJZ5v0hoDswjr+7r4uf6jZvV3t+-UDtEA0V7A_MvdT_34XrbJA@mail.gmail.com>
+ <CAJZ5v0hdSi4BcZvhkyrtcBQqRL8CHtOtwUeYW7EnWL2zvKhDZw@mail.gmail.com>
+From:   Daniel Scally <djrscally@gmail.com>
+Message-ID: <f92cf223-9cd4-9ea5-0152-d3a3d012cc31@gmail.com>
+Date:   Fri, 21 May 2021 20:25:24 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+MIME-Version: 1.0
+In-Reply-To: <CAJZ5v0hdSi4BcZvhkyrtcBQqRL8CHtOtwUeYW7EnWL2zvKhDZw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 20, 2021 at 5:13 AM Jian-Hong Pan <jhp@endlessos.org> wrote:
->
-> From: Chris Chiu <chris.chiu@canonical.com>
->
-> More ASUS laptops have the _GPE define in the DSDT table with a
-> different value than the _GPE number in the ECDT.
->
-> This is causing media keys not working on ASUS X505BA/BP, X542BA/BP
->
-> Add model info to the quirks list.
->
-> Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-> Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
-> ---
-> v2: Edit the author information with valid email address
->
-> v3: Edit Chris' S-o-b with current valid email address
->
->  drivers/acpi/ec.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->
-> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> index 13565629ce0a..e8c5da2b964a 100644
-> --- a/drivers/acpi/ec.c
-> +++ b/drivers/acpi/ec.c
-> @@ -1846,6 +1846,22 @@ static const struct dmi_system_id ec_dmi_table[] __initconst = {
->         DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
->         DMI_MATCH(DMI_PRODUCT_NAME, "GL702VMK"),}, NULL},
->         {
-> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BA", {
-> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> +       DMI_MATCH(DMI_PRODUCT_NAME, "X505BA"),}, NULL},
-> +       {
-> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BP", {
-> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> +       DMI_MATCH(DMI_PRODUCT_NAME, "X505BP"),}, NULL},
-> +       {
-> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BA", {
-> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> +       DMI_MATCH(DMI_PRODUCT_NAME, "X542BA"),}, NULL},
-> +       {
-> +       ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BP", {
-> +       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> +       DMI_MATCH(DMI_PRODUCT_NAME, "X542BP"),}, NULL},
-> +       {
->         ec_honor_ecdt_gpe, "ASUS X550VXK", {
->         DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
->         DMI_MATCH(DMI_PRODUCT_NAME, "X550VXK"),}, NULL},
-> --
+Hi Rafael
 
-Applied as 5.14 material, thanks!
+On 20/05/2021 19:55, Rafael J. Wysocki wrote:
+> On Thu, May 20, 2021 at 8:33 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>> On Thu, May 20, 2021 at 4:11 PM Daniel Scally <djrscally@gmail.com> wrote:
+>>> In some ACPI tables we encounter, devices use the _DEP method to assert
+>>> a dependence on other ACPI devices as opposed to the OpRegions that the
+>>> specification intends. We need to be able to find those devices "from"
+>>> the dependee, so add a callback and a wrapper to walk over the
+>>> acpi_dep_list and return the dependent ACPI device.
+>>>
+>>> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>>> Signed-off-by: Daniel Scally <djrscally@gmail.com>
+>>> ---
+>>> Changes since v3:
+>>>
+>>>         Both new functions were renamed.
+>>>
+>>>  drivers/acpi/scan.c     | 38 ++++++++++++++++++++++++++++++++++++++
+>>>  include/acpi/acpi_bus.h |  1 +
+>>>  2 files changed, 39 insertions(+)
+>>>
+>>> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+>>> index 195635c3462b..1a76fbdfa669 100644
+>>> --- a/drivers/acpi/scan.c
+>>> +++ b/drivers/acpi/scan.c
+>>> @@ -2105,6 +2105,21 @@ static void acpi_bus_attach(struct acpi_device *device, bool first_pass)
+>>>                 device->handler->hotplug.notify_online(device);
+>>>  }
+>>>
+>>> +static int acpi_return_dep_dev(struct acpi_dep_data *dep, void *data)
+>> What about calling this acpi_get_first_consumer_cb()?
+> Or acpi_dev_get_first_consumer_dev_cb() if you want to be super-precise?
+
+
+Sure; fine by me, and same for the other function
+
