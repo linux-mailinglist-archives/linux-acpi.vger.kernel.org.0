@@ -2,458 +2,223 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB97338C756
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 15:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CE5838C78B
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 15:12:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbhEUNBd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 May 2021 09:01:33 -0400
-Received: from mga07.intel.com ([134.134.136.100]:7668 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229571AbhEUNBc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 21 May 2021 09:01:32 -0400
-IronPort-SDR: uvQI6JwshaS7IUVDOFYEnJEhUHlx3zLvm+Kccb84a7gGoDuErZXyGIT2Z39U+Z5TQ2S3QnSLxL
- /1EzCQPMzgDA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9990"; a="265384859"
-X-IronPort-AV: E=Sophos;i="5.82,319,1613462400"; 
-   d="scan'208";a="265384859"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2021 06:00:04 -0700
-IronPort-SDR: 9uZZgidSCHewBqHjNgygfVBZ6R1rM61TLx3shjT1QxSKgxjrdh5JW+3sGiF2V+sR5LWdy1N19W
- /aIHGDNWIF2Q==
-X-IronPort-AV: E=Sophos;i="5.82,319,1613462400"; 
-   d="scan'208";a="545377946"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2021 05:59:58 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lk4ks-00DiAb-Ko; Fri, 21 May 2021 15:59:54 +0300
-Date:   Fri, 21 May 2021 15:59:54 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-i2c@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        devel@acpica.org, Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        laurent.pinchart@ideasonboard.com, kieran.bingham@ideasonboard.com
-Subject: Re: [PATCH v4 1/8] ACPI: scan: Extend acpi_walk_dep_device_list()
-Message-ID: <YKeuymElxGT7Fe7q@smile.fi.intel.com>
-References: <20210520140928.3252671-1-djrscally@gmail.com>
- <20210520140928.3252671-2-djrscally@gmail.com>
+        id S230137AbhEUNOC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 May 2021 09:14:02 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5658 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232959AbhEUNOA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 May 2021 09:14:00 -0400
+Received: from dggems703-chm.china.huawei.com (unknown [172.30.72.60])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Fmn550v4Zz1BPTG;
+        Fri, 21 May 2021 21:09:45 +0800 (CST)
+Received: from dggpeml500023.china.huawei.com (7.185.36.114) by
+ dggems703-chm.china.huawei.com (10.3.19.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 21 May 2021 21:12:32 +0800
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ dggpeml500023.china.huawei.com (7.185.36.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 21 May 2021 21:12:31 +0800
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2176.012; Fri, 21 May 2021 14:12:29 +0100
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Steven Price <steven.price@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
+CC:     Linuxarm <linuxarm@huawei.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        "robin.murphy@arm.com" <robin.murphy@arm.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        "jon@solid-run.com" <jon@solid-run.com>,
+        "eric.auger@redhat.com" <eric.auger@redhat.com>,
+        yangyicong <yangyicong@huawei.com>
+Subject: RE: [PATCH v4 0/8] ACPI/IORT: Support for IORT RMR node
+Thread-Topic: [PATCH v4 0/8] ACPI/IORT: Support for IORT RMR node
+Thread-Index: AQHXR/5a0f630+i5BkSLBldW1E3+o6rt4F+AgAAUiXA=
+Date:   Fri, 21 May 2021 13:12:29 +0000
+Message-ID: <8cc82d3fbebe4d1d8131cc32aaa51cb8@huawei.com>
+References: <20210513134550.2117-1-shameerali.kolothum.thodi@huawei.com>
+ <fcb7bec5-f9ea-1785-64fa-af673ce64053@arm.com>
+In-Reply-To: <fcb7bec5-f9ea-1785-64fa-af673ce64053@arm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.93.2]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210520140928.3252671-2-djrscally@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, May 20, 2021 at 03:09:21PM +0100, Daniel Scally wrote:
-> The acpi_walk_dep_device_list() is not as generalisable as its name
-> implies, serving only to decrement the dependency count for each
-> dependent device of the input. Extend the function to instead accept
-> a callback which can be applied to all the dependencies in acpi_dep_list.
-> Replace all existing calls to the function with calls to a wrapper, passing
-> a callback that applies the same dependency reduction.
-
-Good for me as well.
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-> Signed-off-by: Daniel Scally <djrscally@gmail.com>
-> ---
-> changes since v3:
-> 
-> 	- Most of the functions got renamed
-> 	- acpi_dev_get_dependent_dev() was altered to take a struct acpi_device
-> 	This had some repurcussions in the other files, mostly switching from
-> 	ACPI_HANDLE() to ACPI_COMPANION().
-> 	- acpi_walk_dep_device_list() was altered to check the return value of
-> 	the callback on each iteration of the loop, to allow for error handling
-> 	of the callbacks or breaking the loop early to save time. Andy, Wolfram,
-> 	I thought this change was significant enough to drop your R-b and Ack.
-> 
->  drivers/acpi/ec.c                             |  2 +-
->  drivers/acpi/pmic/intel_pmic_chtdc_ti.c       |  2 +-
->  drivers/acpi/scan.c                           | 69 ++++++++++++++-----
->  drivers/gpio/gpiolib-acpi.c                   | 10 +--
->  drivers/i2c/i2c-core-acpi.c                   |  8 +--
->  drivers/platform/surface/aggregator/core.c    |  6 +-
->  drivers/platform/surface/surface3_power.c     | 22 +++---
->  .../platform/surface/surface_acpi_notify.c    |  7 +-
->  include/acpi/acpi_bus.h                       |  7 ++
->  include/linux/acpi.h                          |  4 +-
->  10 files changed, 90 insertions(+), 47 deletions(-)
-> 
-> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> index 13565629ce0a..3f7680a007a3 100644
-> --- a/drivers/acpi/ec.c
-> +++ b/drivers/acpi/ec.c
-> @@ -1627,7 +1627,7 @@ static int acpi_ec_add(struct acpi_device *device)
->  	WARN(!ret, "Could not request EC cmd io port 0x%lx", ec->command_addr);
->  
->  	/* Reprobe devices depending on the EC */
-> -	acpi_walk_dep_device_list(ec->handle);
-> +	acpi_dev_clear_dependencies(device);
->  
->  	acpi_handle_debug(ec->handle, "enumerated.\n");
->  	return 0;
-> diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> index a5101b07611a..fef7831d0d63 100644
-> --- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> +++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-> @@ -117,7 +117,7 @@ static int chtdc_ti_pmic_opregion_probe(struct platform_device *pdev)
->  		return err;
->  
->  	/* Re-enumerate devices depending on PMIC */
-> -	acpi_walk_dep_device_list(ACPI_HANDLE(pdev->dev.parent));
-> +	acpi_dev_clear_dependencies(ACPI_COMPANION(pdev->dev.parent));
->  	return 0;
->  }
->  
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 453eff8ec8c3..195635c3462b 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -47,12 +47,6 @@ static DEFINE_MUTEX(acpi_hp_context_lock);
->   */
->  static u64 spcr_uart_addr;
->  
-> -struct acpi_dep_data {
-> -	struct list_head node;
-> -	acpi_handle supplier;
-> -	acpi_handle consumer;
-> -};
-> -
->  void acpi_scan_lock_acquire(void)
->  {
->  	mutex_lock(&acpi_scan_lock);
-> @@ -2111,30 +2105,69 @@ static void acpi_bus_attach(struct acpi_device *device, bool first_pass)
->  		device->handler->hotplug.notify_online(device);
->  }
->  
-> -void acpi_walk_dep_device_list(acpi_handle handle)
-> +static int acpi_scan_clear_dep(struct acpi_dep_data *dep, void *data)
->  {
-> -	struct acpi_dep_data *dep, *tmp;
->  	struct acpi_device *adev;
->  
-> +	acpi_bus_get_device(dep->consumer, &adev);
-> +
-> +	if (adev) {
-> +		adev->dep_unmet--;
-> +		if (!adev->dep_unmet)
-> +			acpi_bus_attach(adev, true);
-> +	}
-> +
-> +	list_del(&dep->node);
-> +	kfree(dep);
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * acpi_walk_dep_device_list - Apply a callback to every entry in acpi_dep_list
-> + * @handle:	The ACPI handle of the supplier device
-> + * @callback:	Pointer to the callback function to apply
-> + * @data:	Pointer to some data to pass to the callback
-> + *
-> + * The return value of the callback determines this function's behaviour. If 0
-> + * is returned we continue to iterate over acpi_dep_list. If a positive value
-> + * is returned then the loop is broken but this function returns 0. If a
-> + * negative value is returned by the callback then the loop is broken and that
-> + * value is returned as the final error.
-> + */
-> +int acpi_walk_dep_device_list(acpi_handle handle,
-> +			      int (*callback)(struct acpi_dep_data *, void *),
-> +			      void *data)
-> +{
-> +	struct acpi_dep_data *dep, *tmp;
-> +	int ret;
-> +
->  	mutex_lock(&acpi_dep_list_lock);
->  	list_for_each_entry_safe(dep, tmp, &acpi_dep_list, node) {
->  		if (dep->supplier == handle) {
-> -			acpi_bus_get_device(dep->consumer, &adev);
-> -
-> -			if (adev) {
-> -				adev->dep_unmet--;
-> -				if (!adev->dep_unmet)
-> -					acpi_bus_attach(adev, true);
-> -			}
-> -
-> -			list_del(&dep->node);
-> -			kfree(dep);
-> +			ret = callback(dep, data);
-> +			if (ret)
-> +				break;
->  		}
->  	}
->  	mutex_unlock(&acpi_dep_list_lock);
-> +
-> +	return ret > 0 ? 0 : ret;
->  }
->  EXPORT_SYMBOL_GPL(acpi_walk_dep_device_list);
->  
-> +/**
-> + * acpi_dev_clear_dependencies - Inform consumers that the device is now active
-> + * @supplier: Pointer to the supplier &struct acpi_device
-> + *
-> + * Clear dependencies on the given device.
-> + */
-> +void acpi_dev_clear_dependencies(struct acpi_device *supplier)
-> +{
-> +	acpi_walk_dep_device_list(supplier->handle, acpi_scan_clear_dep, NULL);
-> +}
-> +EXPORT_SYMBOL_GPL(acpi_dev_clear_dependencies);
-> +
->  /**
->   * acpi_bus_scan - Add ACPI device node objects in a given namespace scope.
->   * @handle: Root of the namespace scope to scan.
-> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-> index 3ef22a3c104d..5b4111e4be3f 100644
-> --- a/drivers/gpio/gpiolib-acpi.c
-> +++ b/drivers/gpio/gpiolib-acpi.c
-> @@ -1233,14 +1233,14 @@ static void acpi_gpiochip_scan_gpios(struct acpi_gpio_chip *achip)
->  void acpi_gpiochip_add(struct gpio_chip *chip)
->  {
->  	struct acpi_gpio_chip *acpi_gpio;
-> -	acpi_handle handle;
-> +	struct acpi_device *adev;
->  	acpi_status status;
->  
->  	if (!chip || !chip->parent)
->  		return;
->  
-> -	handle = ACPI_HANDLE(chip->parent);
-> -	if (!handle)
-> +	adev = ACPI_COMPANION(chip->parent);
-> +	if (!adev)
->  		return;
->  
->  	acpi_gpio = kzalloc(sizeof(*acpi_gpio), GFP_KERNEL);
-> @@ -1254,7 +1254,7 @@ void acpi_gpiochip_add(struct gpio_chip *chip)
->  	INIT_LIST_HEAD(&acpi_gpio->events);
->  	INIT_LIST_HEAD(&acpi_gpio->deferred_req_irqs_list_entry);
->  
-> -	status = acpi_attach_data(handle, acpi_gpio_chip_dh, acpi_gpio);
-> +	status = acpi_attach_data(adev->handle, acpi_gpio_chip_dh, acpi_gpio);
->  	if (ACPI_FAILURE(status)) {
->  		dev_err(chip->parent, "Failed to attach ACPI GPIO chip\n");
->  		kfree(acpi_gpio);
-> @@ -1263,7 +1263,7 @@ void acpi_gpiochip_add(struct gpio_chip *chip)
->  
->  	acpi_gpiochip_request_regions(acpi_gpio);
->  	acpi_gpiochip_scan_gpios(acpi_gpio);
-> -	acpi_walk_dep_device_list(handle);
-> +	acpi_dev_clear_dependencies(adev);
->  }
->  
->  void acpi_gpiochip_remove(struct gpio_chip *chip)
-> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> index 8ceaa88dd78f..6f0aa0ed3241 100644
-> --- a/drivers/i2c/i2c-core-acpi.c
-> +++ b/drivers/i2c/i2c-core-acpi.c
-> @@ -259,8 +259,8 @@ static acpi_status i2c_acpi_add_device(acpi_handle handle, u32 level,
->   */
->  void i2c_acpi_register_devices(struct i2c_adapter *adap)
->  {
-> +	struct acpi_device *adev;
->  	acpi_status status;
-> -	acpi_handle handle;
->  
->  	if (!has_acpi_companion(&adap->dev))
->  		return;
-> @@ -275,11 +275,11 @@ void i2c_acpi_register_devices(struct i2c_adapter *adap)
->  	if (!adap->dev.parent)
->  		return;
->  
-> -	handle = ACPI_HANDLE(adap->dev.parent);
-> -	if (!handle)
-> +	adev = ACPI_COMPANION(adap->dev.parent);
-> +	if (!adev)
->  		return;
->  
-> -	acpi_walk_dep_device_list(handle);
-> +	acpi_dev_clear_dependencies(adev);
->  }
->  
->  static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
-> diff --git a/drivers/platform/surface/aggregator/core.c b/drivers/platform/surface/aggregator/core.c
-> index 8dc2c267bcd6..517f774a6e60 100644
-> --- a/drivers/platform/surface/aggregator/core.c
-> +++ b/drivers/platform/surface/aggregator/core.c
-> @@ -621,8 +621,8 @@ static const struct acpi_gpio_mapping ssam_acpi_gpios[] = {
->  
->  static int ssam_serial_hub_probe(struct serdev_device *serdev)
->  {
-> +	struct acpi_device *ssh = ACPI_COMPANION(&serdev->dev);
->  	struct ssam_controller *ctrl;
-> -	acpi_handle *ssh = ACPI_HANDLE(&serdev->dev);
->  	acpi_status astatus;
->  	int status;
->  
-> @@ -652,7 +652,7 @@ static int ssam_serial_hub_probe(struct serdev_device *serdev)
->  	if (status)
->  		goto err_devopen;
->  
-> -	astatus = ssam_serdev_setup_via_acpi(ssh, serdev);
-> +	astatus = ssam_serdev_setup_via_acpi(ssh->handle, serdev);
->  	if (ACPI_FAILURE(astatus)) {
->  		status = -ENXIO;
->  		goto err_devinit;
-> @@ -706,7 +706,7 @@ static int ssam_serial_hub_probe(struct serdev_device *serdev)
->  	 *       For now let's thus default power/wakeup to false.
->  	 */
->  	device_set_wakeup_capable(&serdev->dev, true);
-> -	acpi_walk_dep_device_list(ssh);
-> +	acpi_dev_clear_dependencies(ssh);
->  
->  	return 0;
->  
-> diff --git a/drivers/platform/surface/surface3_power.c b/drivers/platform/surface/surface3_power.c
-> index cc4f9cba6856..dea82aa1abd4 100644
-> --- a/drivers/platform/surface/surface3_power.c
-> +++ b/drivers/platform/surface/surface3_power.c
-> @@ -446,12 +446,12 @@ mshw0011_space_handler(u32 function, acpi_physical_address command,
->  
->  static int mshw0011_install_space_handler(struct i2c_client *client)
->  {
-> -	acpi_handle handle;
-> +	struct acpi_device *adev;
->  	struct mshw0011_handler_data *data;
->  	acpi_status status;
->  
-> -	handle = ACPI_HANDLE(&client->dev);
-> -	if (!handle)
-> +	adev = ACPI_COMPANION(&client->dev);
-> +	if (!adev)
->  		return -ENODEV;
->  
->  	data = kzalloc(sizeof(struct mshw0011_handler_data),
-> @@ -460,25 +460,25 @@ static int mshw0011_install_space_handler(struct i2c_client *client)
->  		return -ENOMEM;
->  
->  	data->client = client;
-> -	status = acpi_bus_attach_private_data(handle, (void *)data);
-> +	status = acpi_bus_attach_private_data(adev->handle, (void *)data);
->  	if (ACPI_FAILURE(status)) {
->  		kfree(data);
->  		return -ENOMEM;
->  	}
->  
-> -	status = acpi_install_address_space_handler(handle,
-> -				ACPI_ADR_SPACE_GSBUS,
-> -				&mshw0011_space_handler,
-> -				NULL,
-> -				data);
-> +	status = acpi_install_address_space_handler(adev->handle,
-> +						    ACPI_ADR_SPACE_GSBUS,
-> +						    &mshw0011_space_handler,
-> +						    NULL,
-> +						    data);
->  	if (ACPI_FAILURE(status)) {
->  		dev_err(&client->dev, "Error installing i2c space handler\n");
-> -		acpi_bus_detach_private_data(handle);
-> +		acpi_bus_detach_private_data(adev->handle);
->  		kfree(data);
->  		return -ENOMEM;
->  	}
->  
-> -	acpi_walk_dep_device_list(handle);
-> +	acpi_dev_clear_dependencies(adev);
->  	return 0;
->  }
->  
-> diff --git a/drivers/platform/surface/surface_acpi_notify.c b/drivers/platform/surface/surface_acpi_notify.c
-> index ef9c1f8e8336..8339988d95c1 100644
-> --- a/drivers/platform/surface/surface_acpi_notify.c
-> +++ b/drivers/platform/surface/surface_acpi_notify.c
-> @@ -798,7 +798,7 @@ static int san_consumer_links_setup(struct platform_device *pdev)
->  
->  static int san_probe(struct platform_device *pdev)
->  {
-> -	acpi_handle san = ACPI_HANDLE(&pdev->dev);
-> +	struct acpi_device *san = ACPI_COMPANION(&pdev->dev);
->  	struct ssam_controller *ctrl;
->  	struct san_data *data;
->  	acpi_status astatus;
-> @@ -821,7 +821,8 @@ static int san_probe(struct platform_device *pdev)
->  
->  	platform_set_drvdata(pdev, data);
->  
-> -	astatus = acpi_install_address_space_handler(san, ACPI_ADR_SPACE_GSBUS,
-> +	astatus = acpi_install_address_space_handler(san->handle,
-> +						     ACPI_ADR_SPACE_GSBUS,
->  						     &san_opreg_handler, NULL,
->  						     &data->info);
->  	if (ACPI_FAILURE(astatus))
-> @@ -835,7 +836,7 @@ static int san_probe(struct platform_device *pdev)
->  	if (status)
->  		goto err_install_dev;
->  
-> -	acpi_walk_dep_device_list(san);
-> +	acpi_dev_clear_dependencies(san);
->  	return 0;
->  
->  err_install_dev:
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 3a82faac5767..0b2c4f170f4d 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -280,6 +280,12 @@ struct acpi_device_power {
->  	struct acpi_device_power_state states[ACPI_D_STATE_COUNT];	/* Power states (D0-D3Cold) */
->  };
->  
-> +struct acpi_dep_data {
-> +	struct list_head node;
-> +	acpi_handle supplier;
-> +	acpi_handle consumer;
-> +};
-> +
->  /* Performance Management */
->  
->  struct acpi_device_perf_flags {
-> @@ -685,6 +691,7 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
->  
->  bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2);
->  
-> +void acpi_dev_clear_dependencies(struct acpi_device *supplier);
->  struct acpi_device *
->  acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const char *uid, s64 hrv);
->  struct acpi_device *
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index c60745f657e9..170b9bebdb2b 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -666,7 +666,9 @@ extern bool acpi_driver_match_device(struct device *dev,
->  				     const struct device_driver *drv);
->  int acpi_device_uevent_modalias(struct device *, struct kobj_uevent_env *);
->  int acpi_device_modalias(struct device *, char *, int);
-> -void acpi_walk_dep_device_list(acpi_handle handle);
-> +int acpi_walk_dep_device_list(acpi_handle handle,
-> +			      int (*callback)(struct acpi_dep_data *, void *),
-> +			      void *data);
->  
->  struct platform_device *acpi_create_platform_device(struct acpi_device *,
->  						    struct property_entry *);
-> -- 
-> 2.25.1
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU3RldmVuIFByaWNlIFtt
+YWlsdG86c3RldmVuLnByaWNlQGFybS5jb21dDQo+IFNlbnQ6IDIxIE1heSAyMDIxIDEzOjU1DQo+
+IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpIDxzaGFtZWVyYWxpLmtvbG90aHVtLnRob2Rp
+QGh1YXdlaS5jb20+Ow0KPiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IGxp
+bnV4LWFjcGlAdmdlci5rZXJuZWwub3JnOw0KPiBpb21tdUBsaXN0cy5saW51eC1mb3VuZGF0aW9u
+Lm9yZw0KPiBDYzogTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+OyBsb3JlbnpvLnBpZXJh
+bGlzaUBhcm0uY29tOw0KPiBqb3JvQDhieXRlcy5vcmc7IHJvYmluLm11cnBoeUBhcm0uY29tOyB3
+YW5naHVpcWlhbmcNCj4gPHdhbmdodWlxaWFuZ0BodWF3ZWkuY29tPjsgR3VvaGFuanVuIChIYW5q
+dW4gR3VvKQ0KPiA8Z3VvaGFuanVuQGh1YXdlaS5jb20+OyBTYW1pLk11amF3YXJAYXJtLmNvbTsg
+am9uQHNvbGlkLXJ1bi5jb207DQo+IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgeWFuZ3lpY29uZyA8
+eWFuZ3lpY29uZ0BodWF3ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHY0IDAvOF0gQUNQ
+SS9JT1JUOiBTdXBwb3J0IGZvciBJT1JUIFJNUiBub2RlDQo+IA0KPiBPbiAxMy8wNS8yMDIxIDE0
+OjQ1LCBTaGFtZWVyIEtvbG90aHVtIHdyb3RlOg0KPiA+IEhpLA0KPiA+DQo+ID4gdjMgLS0+djQN
+Cj4gPiAtSW5jbHVkZWQgdGhlIFNNTVV2MiBTTVIgYnlwYXNzIGluc3RhbGwgY2hhbmdlcyBzdWdn
+ZXN0ZWQgYnkNCj4gPiAgU3RldmUocGF0Y2ggIzcpDQo+ID4gLUFzIHBlciBSb2JpbidzIGNvbW1l
+bnRzLCBSTVIgcmVzZXJ2ZSBpbXBsZW1lbnRhdGlvbsKgaXMgbm93DQo+ID4gIG1vcmUgZ2VuZXJp
+YyAgKHBhdGNoICM4KSBhbmQgZHJvcHBlZCB2MyBwYXRjaGVzIDggYW5kIDEwLg0KPiA+IC1SZWJh
+c2UgdG8gNS4xMy1yYzENCj4gPg0KPiA+IFRoZSB3aG9sZSBzZXJpZXMgaXMgYXZhaWxhYmxlIGhl
+cmUsDQo+ID4gaHR0cHM6Ly9naXRodWIuY29tL2hpc2lsaWNvbi9rZXJuZWwtZGV2L3RyZWUvcHJp
+dmF0ZS12NS4xMy1yYzEtcm1yLXY0LWV4dA0KPiA+DQo+ID4gUkZDIHYyIC0tPiB2Mw0KPiA+ICAt
+RHJvcHBlZCBSRkMgdGFnIGFzIHRoZSBBQ1BJQ0EgaGVhZGVyIGNoYW5nZXMgYXJlIG5vdyByZWFk
+eSB0byBiZQ0KPiA+ICAgcGFydCBvZiA1LjEzWzBdLiBCdXQgdGhpcyBzZXJpZXMgc3RpbGwgaGFz
+IGEgZGVwZW5kZW5jeSBvbiB0aGF0IHBhdGNoLg0KPiA+ICAtQWRkZWQgSU9SVCBFLmIgcmVsYXRl
+ZCBjaGFuZ2VzKG5vZGUgZmxhZ3MsIF9EU00gZnVuY3Rpb24gNSBjaGVja3MgZm9yDQo+ID4gICBQ
+Q0llKS4NCj4gPiAgLUNoYW5nZWQgUk1SIHRvIHN0cmVhbSBpZCBtYXBwaW5nIGZyb20gTTpOIHRv
+IE06MSBhcyBwZXIgdGhlIHNwZWMgYW5kDQo+ID4gICBkaXNjdXNzaW9uIGhlcmVbMV0uDQo+ID4g
+IC1MYXN0IHR3byBwYXRjaGVzIGFkZCBzdXBwb3J0IGZvciBTTU1VdjIoVGhhbmtzIHRvIEpvbiBO
+ZXR0bGV0b24hKQ0KPiA+DQo+ID4gU2FuaXR5IHRlc3RlZCBvbiBhIEhpU2lsaWNvbiBEMDYuIEZ1
+cnRoZXIgdGVzdGluZyBhbmQgZmVlZGJhY2sgaXMgZ3JlYXRseQ0KPiA+IGFwcHJlY2lhdGVkLg0K
+PiANCj4gV2l0aCB0aGUgdXBkYXRlZCBTTU1VdjIgc3VwcG9ydCB0aGlzIHdvcmtzIGZpbmUgb24g
+bXkgSnVubyB3aXRoIEVGSUZCDQo+IChhbmQgY29ycmVzcG9uZGluZyBwYXRjaGVzIHRvIHRoZSBm
+aXJtd2FyZSB0byBleHBvc2UgdGhlIEFDUEkgdGFibGVzKS4NCj4gRmVlbCBmcmVlIHRvIGFkZA0K
+PiANCj4gVGVzdGVkLWJ5OiBTdGV2ZW4gUHJpY2UgPHN0ZXZlbi5wcmljZUBhcm0uY29tPg0KDQpU
+aGFua3MgU3RldmUuIEkgYW0gaW4gdGhlIHByb2Nlc3Mgb2YgaW5jb3Jwb3JhdGluZyB0aGUgY29t
+bWVudHMgZnJvbSBKb2VyZy9Sb2Jpbg0KdG8gcmV1c2UgdGhlIHN0cnVjdCBpb21tdV9yZXN2X3Jl
+Z2lvbi4gSSB3aWxsIHBvc3QgYSB2NSBzb29uIHdpdGggdGhhdCBhbmQgYSBjb3VwbGUNCm9mIG90
+aGVyIG1pbm9yIGZpeGVzLg0KDQpUaGFua3MsDQpTaGFtZWVyDQoNCg0KPiBUaGFua3MsDQo+IA0K
+PiBTdGV2ZQ0KPiANCj4gPiBodHRwczovL2dpdGh1Yi5jb20vaGlzaWxpY29uL2tlcm5lbC1kZXYv
+dHJlZS9wcml2YXRlLXY1LjEyLXJjOC1ybXItdjMNCj4gPg0KPiA+IFRoYW5rcywNCj4gPiBTaGFt
+ZWVyDQo+ID4NCj4gPiBbMF0NCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtYWNwaS8y
+MDIxMDQwNjIxMzAyOC43MTg3OTYtMjItZXJpay5rYW5lZGFAaQ0KPiBudGVsLmNvbS8NCj4gPiBb
+MV0NCj4gaHR0cHM6Ly9vcC1saXN0cy5saW5hcm8ub3JnL3BpcGVybWFpbC9saW5hcm8tb3Blbi1k
+aXNjdXNzaW9ucy8yMDIxLUFwcmlsLzAwMDE1DQo+IDAuaHRtbA0KPiA+DQo+ID4gUkZDIHYxIC0t
+PiB2MjoNCj4gPiDCoC0gQWRkZWQgYSBnZW5lcmljIGludGVyZmFjZSBmb3IgSU9NTVUgZHJpdmVy
+cyB0byByZXRyaWV2ZSBhbGwgdGhlDQo+ID4gwqAgwqBSTVIgaW5mbyBhc3NvY2lhdGVkIHdpdGgg
+YSBnaXZlbiBJT01NVS4NCj4gPiDCoC0gU01NVXYzIGRyaXZlciBnZXRzIHRoZSBSTVIgbGlzdCBk
+dXJpbmcgcHJvYmUoKSBhbmQgaW5zdGFsbHMNCj4gPiDCoMKgIGJ5cGFzcyBTVEVzIGZvciBhbGwg
+dGhlIFNJRHMgaW4gdGhlIFJNUiBsaXN0LiBUaGlzIGlzIHRvIGtlZXANCj4gPiAgwqAgdGhlIG9u
+Z29pbmcgdHJhZmZpYyBhbGl2ZShpZiBhbnkpIGR1cmluZyBTTU1VdjMgcmVzZXQuIFRoaXMgaXMN
+Cj4gPiAgICBiYXNlZCBvbiB0aGUgc3VnZ2VzdGlvbnMgcmVjZWl2ZWQgZm9yIHYxIHRvIHRha2Ug
+Y2FyZSBvZiB0aGUNCj4gPiAgICBFRkkgZnJhbWVidWZmZXIgdXNlIGNhc2UuIE9ubHkgc2FuaXR5
+IHRlc3RlZCBmb3Igbm93Lg0KPiA+IMKgLSBEdXJpbmcgdGhlIHByb2JlL2F0dGFjaCBkZXZpY2Us
+IFNNTVV2MyBkcml2ZXIgcmVzZXJ2ZXMgYW55DQo+ID4gwqAgwqBSTVIgcmVnaW9uIGFzc29jaWF0
+ZWQgd2l0aCB0aGUgZGV2aWNlIHN1Y2ggdGhhdCB0aGVyZSBpcyBhIHVuaXR5DQo+ID4gwqAgwqBt
+YXBwaW5nIGZvciB0aGVtIGluIFNNTVUuDQo+ID4gLS0tDQo+ID4NCj4gPiBGcm9tIFJGQyB2MToN
+Cj4gPiAtLS0tLS0tLS0tLS0tDQo+ID4gVGhlIHNlcmllcyBhZGRzIHN1cHBvcnQgdG8gSU9SVCBS
+TVIgbm9kZXMgc3BlY2lmaWVkIGluIElPUlQNCj4gPiBSZXZpc2lvbiBFIC1BUk0gREVOIDAwNDlF
+WzBdLiBSTVIgbm9kZXMgYXJlIHVzZWQgdG8gZGVzY3JpYmUgbWVtb3J5DQo+ID4gcmFuZ2VzIHRo
+YXQgYXJlIHVzZWQgYnkgZW5kcG9pbnRzIGFuZCByZXF1aXJlIGEgdW5pdHkgbWFwcGluZw0KPiA+
+IGluIFNNTVUuDQo+ID4NCj4gPiBXZSBoYXZlIGZhY2VkIGlzc3VlcyB3aXRoIDM0MDhpTVIgUkFJ
+RCBjb250cm9sbGVyIGNhcmRzIHdoaWNoDQo+ID4gZmFpbCB0byBib290IHdoZW4gU01NVSBpcyBl
+bmFibGVkLiBUaGlzIGlzIGJlY2F1c2UgdGhlc2UgY29udHJvbGxlcnMNCj4gPiBtYWtlIHVzZSBv
+ZiBob3N0IG1lbW9yeSBmb3IgdmFyaW91cyBjYWNoaW5nIHJlbGF0ZWQgcHVycG9zZXMgYW5kIHdo
+ZW4NCj4gPiBTTU1VIGlzIGVuYWJsZWQgdGhlIGlNUiBmaXJtd2FyZSBmYWlscyB0byBhY2Nlc3Mg
+dGhlc2UgbWVtb3J5IHJlZ2lvbnMNCj4gPiBhcyB0aGVyZSBpcyBubyBtYXBwaW5nIGZvciB0aGVt
+LiBJT1JUIFJNUiBwcm92aWRlcyBhIHdheSBmb3IgVUVGSSB0bw0KPiA+IGRlc2NyaWJlIGFuZCBy
+ZXBvcnQgdGhlc2UgbWVtb3J5IHJlZ2lvbnMgc28gdGhhdCB0aGUga2VybmVsIGNhbiBtYWtlDQo+
+ID4gYSB1bml0eSBtYXBwaW5nIGZvciB0aGVzZSBpbiBTTU1VLg0KPiA+DQo+ID4gVGVzdHM6DQo+
+ID4NCj4gPiBXaXRoIGEgVUVGSSwgdGhhdCByZXBvcnRzIHRoZSBSTVIgZm9yIHRoZSBkZXYsDQo+
+ID4gLi4uLg0KPiA+IFsxNkYwaCA1ODcyICAgMV0gICAgICAgICAgICAgICAgICAgICAgICAgVHlw
+ZSA6IDA2DQo+ID4gWzE2RjFoIDU4NzMgICAyXSAgICAgICAgICAgICAgICAgICAgICAgTGVuZ3Ro
+IDogMDA3Qw0KPiA+IFsxNkYzaCA1ODc1ICAgMV0gICAgICAgICAgICAgICAgICAgICBSZXZpc2lv
+biA6IDAwDQo+ID4gWzEwMzhoIDAwNTYgICAyXSAgICAgICAgICAgICAgICAgICAgIFJlc2VydmVk
+IDogMDAwMDAwMDANCj4gPiBbMTAzOGggMDA1NiAgIDJdICAgICAgICAgICAgICAgICAgIElkZW50
+aWZpZXIgOiAwMDAwMDAwMA0KPiA+IFsxNkY4aCA1ODgwICAgNF0gICAgICAgICAgICAgICAgTWFw
+cGluZyBDb3VudCA6IDAwMDAwMDAxDQo+ID4gWzE2RkNoIDU4ODQgICA0XSAgICAgICAgICAgICAg
+IE1hcHBpbmcgT2Zmc2V0IDogMDAwMDAwNDANCj4gPg0KPiA+IFsxNzAwaCA1ODg4ICAgNF0gICAg
+TnVtYmVyIG9mIFJNUiBEZXNjcmlwdG9ycyA6IDAwMDAwMDAyDQo+ID4gWzE3MDRoIDU4OTIgICA0
+XSAgICAgICAgUk1SIERlc2NyaXB0b3IgT2Zmc2V0IDogMDAwMDAwMTgNCj4gPg0KPiA+IFsxNzA4
+aCA1ODk2ICAgOF0gICAgICAgICAgQmFzZSBBZGRyZXNzIG9mIFJNUiA6IDAwMDBFNjQwMDAwMA0K
+PiA+IFsxNzEwaCA1OTA0ICAgOF0gICAgICAgICAgICAgICAgTGVuZ3RoIG9mIFJNUiA6IDAwMDAw
+MDEwMDAwMA0KPiA+IFsxNzE4aCA1OTEyICAgNF0gICAgICAgICAgICAgICAgICAgICBSZXNlcnZl
+ZCA6IDAwMDAwMDAwDQo+ID4NCj4gPiBbMTcxQ2ggNTkxNiAgIDhdICAgICAgICAgIEJhc2UgQWRk
+cmVzcyBvZiBSTVIgOiAwMDAwMDAwMDI3QjAwMDAwDQo+ID4gWzE3MjRoIDU5MjQgICA4XSAgICAg
+ICAgICAgICAgICBMZW5ndGggb2YgUk1SIDogMDAwMDAwMDAwMEMwMDAwMA0KPiA+IFsxNzJDaCA1
+OTMyICAgNF0gICAgICAgICAgICAgICAgICAgICBSZXNlcnZlZCA6IDAwMDAwMDAwDQo+ID4NCj4g
+PiBbMTczMGggNTkzNiAgIDRdICAgICAgICAgICAgICAgICAgIElucHV0IGJhc2UgOiAwMDAwMDAw
+MA0KPiA+IFsxNzM0aCA1OTQwICAgNF0gICAgICAgICAgICAgICAgICAgICBJRCBDb3VudCA6IDAw
+MDAwMDAxDQo+ID4gWzE3MzhoIDU5NDQgICA0XSAgICAgICAgICAgICAgICAgIE91dHB1dCBCYXNl
+IDogMDAwMDAwMDMNCj4gPiBbMTczQ2ggNTk0OCAgIDRdICAgICAgICAgICAgIE91dHB1dCBSZWZl
+cmVuY2UgOiAwMDAwMDA2NA0KPiA+IFsxNzQwaCA1OTUyICAgNF0gICAgICAgIEZsYWdzIChkZWNv
+ZGVkIGJlbG93KSA6IDAwMDAwMDAxDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IFNpbmdsZSBNYXBwaW5nIDogMQ0KPiA+IC4uLg0KPiA+DQo+ID4gV2l0aG91dCB0aGUgc2VyaWVz
+IHRoZSBSQUlEIGNvbnRyb2xsZXIgaW5pdGlhbGl6YXRpb24gZmFpbHMgYXMNCj4gPiBiZWxvdywN
+Cj4gPg0KPiA+IC4uLg0KPiA+IFsgICAxMi42MzExMTddIG1lZ2FyYWlkX3NhcyAwMDAwOjAzOjAw
+LjA6IEZXIHN1cHBvcnRzIHN5bmMNCj4gY2FjaGUgICAgICAgIDogWWVzDQo+ID4gWyAgIDEyLjYz
+NzM2MF0gbWVnYXJhaWRfc2FzIDAwMDA6MDM6MDAuMDogbWVnYXNhc19kaXNhYmxlX2ludHJfZnVz
+aW9uIGlzDQo+IGNhbGxlZCBvdXRib3VuZF9pbnRyX21hc2s6MHg0MDAwMDAwOQ0KPiA+IFsgICAx
+OC43NzYzNzddIG1lZ2FyYWlkX3NhcyAwMDAwOjAzOjAwLjA6IEluaXQgY21kIHJldHVybiBzdGF0
+dXMgRkFJTEVEDQo+IGZvciBTQ1NJIGhvc3QgMA0KPiA+IFsgICAyMy4wMTkzODNdIG1lZ2FyYWlk
+X3NhcyAwMDAwOjAzOjAwLjA6IFdhaXRpbmcgZm9yIEZXIHRvIGNvbWUgdG8NCj4gcmVhZHkgc3Rh
+dGUNCj4gPiBbICAxMDYuNjg0MjgxXSBtZWdhcmFpZF9zYXMgMDAwMDowMzowMC4wOiBGVyBpbiBG
+QVVMVCBzdGF0ZSwgRmF1bHQNCj4gY29kZToweDEwMDAwIHN1YmNvZGU6MHgwIGZ1bmM6bWVnYXNh
+c190cmFuc2l0aW9uX3RvX3JlYWR5DQo+ID4gWyAgMTA2LjY5NTE4Nl0gbWVnYXJhaWRfc2FzIDAw
+MDA6MDM6MDAuMDogU3lzdGVtIFJlZ2lzdGVyIHNldDoNCj4gPiBbICAxMDYuODg5Nzg3XSBtZWdh
+cmFpZF9zYXMgMDAwMDowMzowMC4wOiBGYWlsZWQgdG8gdHJhbnNpdGlvbiBjb250cm9sbGVyDQo+
+IHRvIHJlYWR5IGZvciBzY3NpMC4NCj4gPiBbICAxMDYuOTEwNDc1XSBtZWdhcmFpZF9zYXMgMDAw
+MDowMzowMC4wOiBGYWlsZWQgZnJvbSBtZWdhc2FzX2luaXRfZncNCj4gNjQwNw0KPiA+IGVzdHVh
+cnk6LyQNCj4gPg0KPiA+IFdpdGggdGhlIHNlcmllcywgbm93IHRoZSBrZXJuZWwgaGFzIGRpcmVj
+dCBtYXBwaW5nIGZvciB0aGUgZGV2IGFzDQo+ID4gYmVsb3csDQo+ID4NCj4gPiBlc3R1YXJ5Oi8k
+IGNhdCAvc3lzL2tlcm5lbC9pb21tdV9ncm91cHMvMC9yZXNlcnZlZF9yZWdpb25zDQo+ID4gMHgw
+MDAwMDAwMDA4MDAwMDAwIDB4MDAwMDAwMDAwODBmZmZmZiBtc2kNCj4gPiAweDAwMDAwMDAwMjdi
+MDAwMDAgMHgwMDAwMDAwMDI4NmZmZmZmIGRpcmVjdA0KPiA+IDB4MDAwMDAwMDBlNjQwMDAwMCAw
+eDAwMDAwMDAwZTY0ZmZmZmYgZGlyZWN0DQo+ID4gZXN0dWFyeTovJA0KPiA+DQo+ID4gLi4uLg0K
+PiA+IFsgICAxMi4yNTQzMThdIG1lZ2FyYWlkX3NhcyAwMDAwOjAzOjAwLjA6IG1lZ2FzYXNfZGlz
+YWJsZV9pbnRyX2Z1c2lvbiBpcw0KPiBjYWxsZWQgb3V0Ym91bmRfaW50cl9tYXNrOjB4NDAwMDAw
+MDkNCj4gPiBbICAgMTIuNzM5MDg5XSBtZWdhcmFpZF9zYXMgMDAwMDowMzowMC4wOiBGVyBwcm92
+aWRlZA0KPiBzdXBwb3J0TWF4RXh0TERzOiAwICAgICAgbWF4X2xkczogMzINCj4gPiBbICAgMTIu
+NzQ2NjI4XSBtZWdhcmFpZF9zYXMgMDAwMDowMzowMC4wOiBjb250cm9sbGVyIHR5cGUgICAgICAg
+Og0KPiBpTVIoME1CKQ0KPiA+IFsgICAxMi43NTI2OTRdIG1lZ2FyYWlkX3NhcyAwMDAwOjAzOjAw
+LjA6IE9ubGluZSBDb250cm9sbGVyIFJlc2V0KE9DUikgIDoNCj4gRW5hYmxlZA0KPiA+IFsgICAx
+Mi43NTk3OThdIG1lZ2FyYWlkX3NhcyAwMDAwOjAzOjAwLjA6IFNlY3VyZSBKQk9EIHN1cHBvcnQg
+ICA6IFllcw0KPiA+IFsgICAxMi43NjU3NzhdIG1lZ2FyYWlkX3NhcyAwMDAwOjAzOjAwLjA6IE5W
+TWUgcGFzc3RocnUgc3VwcG9ydCA6IFllcw0KPiA+IFsgICAxMi43NzE5MzFdIG1lZ2FyYWlkX3Nh
+cyAwMDAwOjAzOjAwLjA6IEZXIHByb3ZpZGVkIFRNDQo+IFRhc2tBYm9ydC9SZXNldCB0aW1lb3U6
+IDYgc2Vjcy82MCBzZWNzDQo+ID4gWyAgIDEyLjc4MDUwM10gbWVnYXJhaWRfc2FzIDAwMDA6MDM6
+MDAuMDogSkJPRCBzZXF1ZW5jZSBtYXANCj4gc3VwcG9ydCAgICAgOiBZZXMNCj4gPiBbICAgMTIu
+Nzg3MDAwXSBtZWdhcmFpZF9zYXMgMDAwMDowMzowMC4wOiBQQ0kgTGFuZSBNYXJnaW5pbmcNCj4g
+c3VwcG9ydCAgICA6IE5vDQo+ID4gWyAgIDEyLjgxOTE3OV0gbWVnYXJhaWRfc2FzIDAwMDA6MDM6
+MDAuMDogTlZNRSBwYWdlIHNpemUgICAgICAgIDoNCj4gKDQwOTYpDQo+ID4gWyAgIDEyLjgyNTY3
+Ml0gbWVnYXJhaWRfc2FzIDAwMDA6MDM6MDAuMDogbWVnYXNhc19lbmFibGVfaW50cl9mdXNpb24g
+aXMNCj4gY2FsbGVkIG91dGJvdW5kX2ludHJfbWFzazoweDQwMDAwMDAwDQo+ID4gWyAgIDEyLjgz
+NTE5OV0gbWVnYXJhaWRfc2FzIDAwMDA6MDM6MDAuMDogSU5JVCBhZGFwdGVyIGRvbmUNCj4gPiBb
+ICAgMTIuODczOTMyXSBtZWdhcmFpZF9zYXMgMDAwMDowMzowMC4wOiBwY2kgaWQgICAgICAgICAg
+ICAgICAgOg0KPiAoMHgxMDAwKS8oMHgwMDE3KS8oMHgxOWU1KS8oMHhkMjEzKQ0KPiA+IFsgICAx
+Mi44ODE2NDRdIG1lZ2FyYWlkX3NhcyAwMDAwOjAzOjAwLjA6IHVuZXZlbnNwYW4gc3VwcG9ydCAg
+ICA6IG5vDQo+ID4gWyAgIDEyLjg4NzQ1MV0gbWVnYXJhaWRfc2FzIDAwMDA6MDM6MDAuMDogZmly
+bXdhcmUgY3Jhc2ggZHVtcCAgIDogbm8NCj4gPiBbICAgMTIuODkzMzQ0XSBtZWdhcmFpZF9zYXMg
+MDAwMDowMzowMC4wOiBKQk9EIHNlcXVlbmNlIG1hcCAgICAgOg0KPiBlbmFibGVkDQo+ID4NCj4g
+PiBSQUlEIGNvbnRyb2xsZXIgaW5pdCBpcyBub3cgc3VjY2VzcyBhbmQgY2FuIGRldGVjdCB0aGUg
+ZHJpdmVzDQo+ID4gYXR0YWNoZWQgYXMgd2VsbC4NCj4gPg0KPiA+IEpvbiBOZXR0bGV0b24gKDEp
+Og0KPiA+ICAgaW9tbXUvYXJtLXNtbXU6IEdldCBhc3NvY2lhdGVkIFJNUiBpbmZvIGFuZCBpbnN0
+YWxsIGJ5cGFzcyBTTVINCj4gPg0KPiA+IFNoYW1lZXIgS29sb3RodW0gKDcpOg0KPiA+ICAgQUNQ
+SS9JT1JUOiBBZGQgc3VwcG9ydCBmb3IgUk1SIG5vZGUgcGFyc2luZw0KPiA+ICAgaW9tbXUvZG1h
+OiBJbnRyb2R1Y2UgZ2VuZXJpYyBoZWxwZXIgdG8gcmV0cmlldmUgUk1SIGluZm8NCj4gPiAgIEFD
+UEkvSU9SVDogQWRkIGEgaGVscGVyIHRvIHJldHJpZXZlIFJNUiBtZW1vcnkgcmVnaW9ucw0KPiA+
+ICAgaW9tbXUvYXJtLXNtbXUtdjM6IEludHJvZHVjZSBzdHJ0YWIgaW5pdCBoZWxwZXINCj4gPiAg
+IGlvbW11L2FybS1zbW11LXYzOiBBZGQgYnlwYXNzIGZsYWcgdG/CoGFybV9zbW11X3dyaXRlX3N0
+cnRhYl9lbnQoKQ0KPiA+ICAgaW9tbXUvYXJtLXNtbXUtdjM6IEdldCBhc3NvY2lhdGVkIFJNUiBp
+bmZvIGFuZCBpbnN0YWxsIGJ5cGFzcyBTVEUNCj4gPiAgIGlvbW11L2RtYTogUmVzZXJ2ZSBhbnkg
+Uk1SIHJlZ2lvbnMgYXNzb2NpYXRlZCB3aXRoIGEgZGV2DQo+ID4NCj4gPiAgZHJpdmVycy9hY3Bp
+L2FybTY0L2lvcnQuYyAgICAgICAgICAgICAgICAgICB8IDE0NA0KPiArKysrKysrKysrKysrKysr
+KysrLQ0KPiA+ICBkcml2ZXJzL2lvbW11L2FybS9hcm0tc21tdS12My9hcm0tc21tdS12My5jIHwg
+IDY5ICsrKysrKystLS0NCj4gPiAgZHJpdmVycy9pb21tdS9hcm0vYXJtLXNtbXUvYXJtLXNtbXUu
+YyAgICAgICB8ICA2NCArKysrKysrKysNCj4gPiAgZHJpdmVycy9pb21tdS9kbWEtaW9tbXUuYyAg
+ICAgICAgICAgICAgICAgICB8IDEwMiArKysrKysrKysrKysrLQ0KPiA+ICBpbmNsdWRlL2xpbnV4
+L2FjcGlfaW9ydC5oICAgICAgICAgICAgICAgICAgIHwgICA3ICsNCj4gPiAgaW5jbHVkZS9saW51
+eC9kbWEtaW9tbXUuaCAgICAgICAgICAgICAgICAgICB8ICAxMCArKw0KPiA+ICBpbmNsdWRlL2xp
+bnV4L2lvbW11LmggICAgICAgICAgICAgICAgICAgICAgIHwgIDE5ICsrKw0KPiA+ICA3IGZpbGVz
+IGNoYW5nZWQsIDM5MiBpbnNlcnRpb25zKCspLCAyMyBkZWxldGlvbnMoLSkNCj4gPg0KDQo=
