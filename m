@@ -2,87 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B13938CB7C
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 19:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22AAC38CB83
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 19:06:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237826AbhEURDP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 May 2021 13:03:15 -0400
-Received: from mail-oi1-f174.google.com ([209.85.167.174]:41947 "EHLO
-        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233990AbhEURDP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 May 2021 13:03:15 -0400
-Received: by mail-oi1-f174.google.com with SMTP id c3so20241652oic.8;
-        Fri, 21 May 2021 10:01:51 -0700 (PDT)
+        id S234936AbhEURHY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 May 2021 13:07:24 -0400
+Received: from mail-ot1-f53.google.com ([209.85.210.53]:40712 "EHLO
+        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233990AbhEURHY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 May 2021 13:07:24 -0400
+Received: by mail-ot1-f53.google.com with SMTP id 80-20020a9d08560000b0290333e9d2b247so8086847oty.7;
+        Fri, 21 May 2021 10:05:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9C98G11I159xCAmRmPZJx0v65Ewxd+8YGwIKf62AnL4=;
-        b=AEHvmvP6+GGdRgG60nX66nJZ3r3LjON+tw1d3TwWzWtBI/uPNoOz3Z8J6hA6sTZ9A0
-         nJZjEW28LJr2Kp3EzsWgY6ML8swxn4NyMtan97uyo4648ILrmjVSbi05EbUtu2zyKjZl
-         jki5Zr4RQv5/uyJge2fP1w5LUrvNiFU21SN94MUNh/L41aQpkV/Q6Tyqb8nroqrEW/JS
-         S/m3fCe/Ue7x0T7SjKO7PIWEgBpJRX9MTBKtb/jApkXmFbSrMqcbqCX8UrzBxLyJSpq4
-         bTBcy2yGpL63sbmH2ElAGIsAkkyrKiHzt3ePlvWl3eQzZawILKosNauvLizyLPk7S0zR
-         J2xQ==
-X-Gm-Message-State: AOAM530E6Duky7HNspw7CjR9aTR/UGF789Snig1wG60oDILFSJQxxC9I
-        eftwGuO4TrMmZUQ9557PgNAh6av66iBTObhGb/5GEHv5
-X-Google-Smtp-Source: ABdhPJyIAQ3s/2NL/yasB6QVU69t2XaJ1Xwd7HHq1NFq2LpppSDPpm0ujp8Y/arMxWgzAtoBN4Pv6rmuXXu4ON9KHxc=
-X-Received: by 2002:aca:4758:: with SMTP id u85mr2907446oia.71.1621616511532;
- Fri, 21 May 2021 10:01:51 -0700 (PDT)
+        bh=VhGZ7NI9ZeLvK46YxnKVRZc/2Rywq66p60+gUbU2hm0=;
+        b=LI3Ci57yN6m3XY+/dp1HHXYDIKeswQ9b/5EODViU6DhjUE7St72cUh4LiZHD4+dg7t
+         1l3COT5qjI3+sWsEcfKl9kYerfSZFqeH4/1nRjGEX97RH0r/6DyGAvZeTAf7e4dQaVAo
+         10WU3DNDvaQiH5fR9h6rCN+YE4U8U1Mjr7XNzTcG07wBBi0alXWHPgb2B7a9LZqPW+7Z
+         b86jDTa+aCmuzxr1twR5m+JqIdB97AVe0WotborAqoBkq/nwVkBiPCEKw3L550kjwu6V
+         QwpWTSZYUohgi5I3+L8cduKaGcmoEVwFVhT8ElqsvDdwcrW3wBZHHqFxqZnAGV8B6lM+
+         MtQA==
+X-Gm-Message-State: AOAM5333Y7HBunQrGOTVtP3rXajFcAkgluTBeObLmqg2LslbfaGZOWrB
+        EybtFaCyTkF1fSdG3W2gDacNrScqxFHdlymSNYM=
+X-Google-Smtp-Source: ABdhPJxQPk6S3dm3u0ToWhctkV6q8gSUbtc+5SXPBvA7ZPeyeHTNSjtUcqKtH7hajH4ufwToKT4eIYY8gWFt7IYAzCc=
+X-Received: by 2002:a9d:3bcb:: with SMTP id k69mr9576270otc.206.1621616759559;
+ Fri, 21 May 2021 10:05:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210514153414.847902-1-jonathanh@nvidia.com>
-In-Reply-To: <20210514153414.847902-1-jonathanh@nvidia.com>
+References: <20210517232312.GA43474@embeddedor>
+In-Reply-To: <20210517232312.GA43474@embeddedor>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 21 May 2021 19:01:40 +0200
-Message-ID: <CAJZ5v0han6dvOrEciq4CTqvsED76B33WzZ_naCr92QuOH_40Ng@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: Don't warn if ACPI is disabled
-To:     Jon Hunter <jonathanh@nvidia.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+Date:   Fri, 21 May 2021 19:05:48 +0200
+Message-ID: <CAJZ5v0ivxriijonzQP=8Z-ctHaFMYw4ro4DGMeBcExLv1RDnEw@mail.gmail.com>
+Subject: Re: [PATCH][next] ACPI: Fix fall-through warning for Clang
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
+        linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 14, 2021 at 5:34 PM Jon Hunter <jonathanh@nvidia.com> wrote:
+On Tue, May 18, 2021 at 1:22 AM Gustavo A. R. Silva
+<gustavoars@kernel.org> wrote:
 >
-> If ACPI is not enabled but support for ACPI and APEI is enabled in the
-> kernel, then the following warning is seen on boot ...
+> In preparation to enable -Wimplicit-fallthrough for Clang, fix a
+> fallthrough warning by simply dropping the empty default case at
+> the bottom.
 >
->  WARNING KERN EINJ: ACPI disabled.
+> This contributes to the ongoing efforts to globally enable
+> -Wimplicit-fallthrough for Clang.
 >
-> For ARM64 platforms, the 'acpi_disabled' variable is true by default
-> and hence, the above is often seen on ARM64. Given that it can be
-> normal for ACPI to be disabled, make this an informational print rather
-> that a warning.
->
-> Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+> Link: https://github.com/KSPP/linux/issues/115
+> Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+> Link: https://lore.kernel.org/lkml/CAJZ5v0hLYWKX__oZdcCY0D20pNqpw8SkiTPOCNOtpqe--QLp4Q@mail.gmail.com/
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 > ---
-> Please note that the motivation for this change is to filter out
-> any warnings that might not be actual issues. We have some automated
-> tests that we run to catch warnings and errors and although we could
-> add this to a list of non critical warnings, it is preferred to make
-> this an informational print.
+>  drivers/acpi/sbshc.c | 1 -
+>  1 file changed, 1 deletion(-)
 >
->  drivers/acpi/apei/einj.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-> index 328e8aeece6c..2882450c443e 100644
-> --- a/drivers/acpi/apei/einj.c
-> +++ b/drivers/acpi/apei/einj.c
-> @@ -673,7 +673,7 @@ static int __init einj_init(void)
->         struct apei_exec_context ctx;
->
->         if (acpi_disabled) {
-> -               pr_warn("ACPI disabled.\n");
-> +               pr_info("ACPI disabled.\n");
->                 return -ENODEV;
+> diff --git a/drivers/acpi/sbshc.c b/drivers/acpi/sbshc.c
+> index 53c2862c4c75..5c021c3b81d9 100644
+> --- a/drivers/acpi/sbshc.c
+> +++ b/drivers/acpi/sbshc.c
+> @@ -231,7 +231,6 @@ static int smbus_alarm(void *context)
+>                 case ACPI_SBS_BATTERY:
+>                         acpi_os_execute(OSL_NOTIFY_HANDLER,
+>                                         acpi_smbus_callback, hc);
+> -               default:;
 >         }
->
+>         mutex_unlock(&hc->lock);
+>         return 0;
 > --
 
 Applied as 5.14 material, thanks!
