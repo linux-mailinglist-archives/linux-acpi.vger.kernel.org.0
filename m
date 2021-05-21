@@ -2,66 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BA9A38CB38
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 18:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B13938CB7C
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 19:01:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235247AbhEUQno (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 May 2021 12:43:44 -0400
-Received: from mail-ot1-f42.google.com ([209.85.210.42]:37704 "EHLO
-        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233011AbhEUQno (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 May 2021 12:43:44 -0400
-Received: by mail-ot1-f42.google.com with SMTP id v19-20020a0568301413b0290304f00e3d88so18571234otp.4
-        for <linux-acpi@vger.kernel.org>; Fri, 21 May 2021 09:42:21 -0700 (PDT)
+        id S237826AbhEURDP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 May 2021 13:03:15 -0400
+Received: from mail-oi1-f174.google.com ([209.85.167.174]:41947 "EHLO
+        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233990AbhEURDP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 May 2021 13:03:15 -0400
+Received: by mail-oi1-f174.google.com with SMTP id c3so20241652oic.8;
+        Fri, 21 May 2021 10:01:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3uXCrfwflbJMKyoizw7GA0q9AX1L5xvF35SZVzuv9E4=;
-        b=JTvBr34auCRdLKDbp7IeZLAx7RAWCtCtJGrSXtGdIC2CqaUJkAlm0cfmhjWjXCNUct
-         /R1MxGkBbhW69vmpM+UHz81EjUZaYVl5VTA+c+4RcSXIPi1fvye/t03BrrwmdHFTfVN9
-         97aEBfsL7XoKOaKTyKQmus9hgHy3F2iSy5Aie7WstAkq8T1miHVxsS0xuVdwAuKFfgr+
-         1/NoPj+qYqZFJRPsK6beGmPckuPuh0geiMT03sLy+tlvsSZwfokZ7kzqCcX+KD3Bq+Oy
-         OtTTdpZ2hClM/k/KQL5O7FV4Uuxc0uhlu7ULddzcCTuUVjrlTNndZvbntg8Oa3qXerPy
-         oLWw==
-X-Gm-Message-State: AOAM533bTqOO2XSsofdsKM66Tme3EmQZDYOtK9FzDzyNpiNM8OTT4NEk
-        TvYVWMR5Uo8LKb6bR6vSbV0eN9HTbwcAi/PQE8g=
-X-Google-Smtp-Source: ABdhPJxMRGdanl17OARb7DCS+ZzT5O3FDRmB93dTJ9tk7kP4k3enbgZYDKI5OAoTefUFUucCuw/QaF5cCRW+/jQ33L4=
-X-Received: by 2002:a9d:6c46:: with SMTP id g6mr8963159otq.260.1621615340788;
- Fri, 21 May 2021 09:42:20 -0700 (PDT)
+        bh=9C98G11I159xCAmRmPZJx0v65Ewxd+8YGwIKf62AnL4=;
+        b=AEHvmvP6+GGdRgG60nX66nJZ3r3LjON+tw1d3TwWzWtBI/uPNoOz3Z8J6hA6sTZ9A0
+         nJZjEW28LJr2Kp3EzsWgY6ML8swxn4NyMtan97uyo4648ILrmjVSbi05EbUtu2zyKjZl
+         jki5Zr4RQv5/uyJge2fP1w5LUrvNiFU21SN94MUNh/L41aQpkV/Q6Tyqb8nroqrEW/JS
+         S/m3fCe/Ue7x0T7SjKO7PIWEgBpJRX9MTBKtb/jApkXmFbSrMqcbqCX8UrzBxLyJSpq4
+         bTBcy2yGpL63sbmH2ElAGIsAkkyrKiHzt3ePlvWl3eQzZawILKosNauvLizyLPk7S0zR
+         J2xQ==
+X-Gm-Message-State: AOAM530E6Duky7HNspw7CjR9aTR/UGF789Snig1wG60oDILFSJQxxC9I
+        eftwGuO4TrMmZUQ9557PgNAh6av66iBTObhGb/5GEHv5
+X-Google-Smtp-Source: ABdhPJyIAQ3s/2NL/yasB6QVU69t2XaJ1Xwd7HHq1NFq2LpppSDPpm0ujp8Y/arMxWgzAtoBN4Pv6rmuXXu4ON9KHxc=
+X-Received: by 2002:aca:4758:: with SMTP id u85mr2907446oia.71.1621616511532;
+ Fri, 21 May 2021 10:01:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210423113836.3974972-1-jean-philippe@linaro.org> <20210423113836.3974972-3-jean-philippe@linaro.org>
-In-Reply-To: <20210423113836.3974972-3-jean-philippe@linaro.org>
+References: <20210514153414.847902-1-jonathanh@nvidia.com>
+In-Reply-To: <20210514153414.847902-1-jonathanh@nvidia.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 21 May 2021 18:42:09 +0200
-Message-ID: <CAJZ5v0j=vqv3aJb_eitOVtpxgU3j5_j5hKPzyTEeHxfo_5MXdQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] ACPI: Move IOMMU setup code out of IORT
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        David Woodhouse <dwmw2@infradead.org>,
+Date:   Fri, 21 May 2021 19:01:40 +0200
+Message-ID: <CAJZ5v0han6dvOrEciq4CTqvsED76B33WzZ_naCr92QuOH_40Ng@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: Don't warn if ACPI is disabled
+To:     Jon Hunter <jonathanh@nvidia.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:AMD IOMMU (AMD-VI)" <iommu@lists.linux-foundation.org>,
-        virtualization@lists.linux-foundation.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Eric Auger <eric.auger@redhat.com>, sebastien.boeuf@intel.com,
-        Robin Murphy <robin.murphy@arm.com>, kevin.tian@intel.com,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Apr 23, 2021 at 1:57 PM Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
+On Fri, May 14, 2021 at 5:34 PM Jon Hunter <jonathanh@nvidia.com> wrote:
 >
-> Some of the IOMMU setup code in IORT is fairly generic and can be reused
-> by VIOT. Extract it from IORT.
+> If ACPI is not enabled but support for ACPI and APEI is enabled in the
+> kernel, then the following warning is seen on boot ...
+>
+>  WARNING KERN EINJ: ACPI disabled.
+>
+> For ARM64 platforms, the 'acpi_disabled' variable is true by default
+> and hence, the above is often seen on ARM64. Given that it can be
+> normal for ACPI to be disabled, make this an informational print rather
+> that a warning.
+>
+> Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+> ---
+> Please note that the motivation for this change is to filter out
+> any warnings that might not be actual issues. We have some automated
+> tests that we run to catch warnings and errors and although we could
+> add this to a list of non critical warnings, it is preferred to make
+> this an informational print.
+>
+>  drivers/acpi/apei/einj.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+> index 328e8aeece6c..2882450c443e 100644
+> --- a/drivers/acpi/apei/einj.c
+> +++ b/drivers/acpi/apei/einj.c
+> @@ -673,7 +673,7 @@ static int __init einj_init(void)
+>         struct apei_exec_context ctx;
+>
+>         if (acpi_disabled) {
+> -               pr_warn("ACPI disabled.\n");
+> +               pr_info("ACPI disabled.\n");
+>                 return -ENODEV;
+>         }
+>
+> --
 
-Except that iort_iommu_configure_id() is not really generic AFAICS.
+Applied as 5.14 material, thanks!
