@@ -2,155 +2,144 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43CD438B8F7
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 May 2021 23:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC4DA38C634
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 14:05:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230153AbhETVbW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 May 2021 17:31:22 -0400
-Received: from mga05.intel.com ([192.55.52.43]:58916 "EHLO mga05.intel.com"
+        id S234160AbhEUMHJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 May 2021 08:07:09 -0400
+Received: from mga18.intel.com ([134.134.136.126]:17519 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230146AbhETVbW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 May 2021 17:31:22 -0400
-IronPort-SDR: AFGR07yVlOPhprIkwDyUzOSZN44IZ7y8Kl7Re4Si8HyxnbMN5c1tgzwq3uUWKMO9JyDFx3/N0e
- uo9Z3yE2+pSw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9990"; a="286874974"
-X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
-   d="scan'208";a="286874974"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2021 14:29:59 -0700
-IronPort-SDR: ZiQfpTc4Xd8/VVRq09t21Ofjk5TBre0u+LyF/RUujFwgDVpbqdhXlwekh5MTB/TJrUpNmIoUsw
- pNQmQCO0J3AA==
-X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
-   d="scan'208";a="395853393"
-Received: from santoshi-mobl1.amr.corp.intel.com (HELO bwidawsk-mobl5.local) ([10.252.133.11])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2021 14:29:59 -0700
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     linux-cxl@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        ira.weiny@intel.com, vishal.l.verma@intel.com,
-        alison.schofield@intel.com, dan.j.williams@intel.com,
-        linux-kernel@vger.kernel.org, Ben Widawsky <ben.widawsky@intel.com>
-Subject: [PATCH v2 4/7] cxl/mem: Get rid of @cxlm.base
-Date:   Thu, 20 May 2021 14:29:53 -0700
-Message-Id: <20210520212953.1181695-1-ben.widawsky@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210413161726.tz7rg46krrekk3lp@intel.com>
-References: <20210413161726.tz7rg46krrekk3lp@intel.com>
+        id S229507AbhEUMHH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 21 May 2021 08:07:07 -0400
+IronPort-SDR: uBklas3PM9l57jdxKDTbyjcLj+tnLq3CJQHGya7DZ7+AplbceUfCPEbvd5cNa5C9szZDZ+R2p6
+ XYztJLVwCh/Q==
+X-IronPort-AV: E=McAfee;i="6200,9189,9990"; a="188866420"
+X-IronPort-AV: E=Sophos;i="5.82,319,1613462400"; 
+   d="scan'208";a="188866420"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2021 05:05:44 -0700
+IronPort-SDR: skltu30wB3m4YBEmmxugcZS/7efbrFzfmy7vEJWDiA5Ulgds4Dh/57hl0FKBNHSYjOP8j45TdU
+ cNmQBuSDYeMA==
+X-IronPort-AV: E=Sophos;i="5.82,319,1613462400"; 
+   d="scan'208";a="545366534"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2021 05:05:39 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1lk3uJ-00Dhdw-St; Fri, 21 May 2021 15:05:35 +0300
+Date:   Fri, 21 May 2021 15:05:35 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        devel@acpica.org, Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        laurent.pinchart@ideasonboard.com, kieran.bingham@ideasonboard.com
+Subject: Re: [PATCH v4 6/8] gpiolib: acpi: Add acpi_gpio_get_io_resource()
+Message-ID: <YKeiD8LawbyhnDZn@smile.fi.intel.com>
+References: <20210520140928.3252671-1-djrscally@gmail.com>
+ <20210520140928.3252671-7-djrscally@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210520140928.3252671-7-djrscally@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-@cxlm.base only existed to support holding the base found in the
-register block mapping code, and pass it along to the register setup
-code. Now that the register setup function has all logic around managing
-the registers, from DVSEC to iomapping up to populating our CXL specific
-information, it is easy to turn the @base values into local variables
-and remove them from our device driver state.
+On Thu, May 20, 2021 at 03:09:26PM +0100, Daniel Scally wrote:
+> Add a function to verify that a given acpi_resource represents an IO
+> type GPIO resource, and return it if so.
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
----
- drivers/cxl/mem.h |  2 --
- drivers/cxl/pci.c | 24 +++++++++++-------------
- 2 files changed, 11 insertions(+), 15 deletions(-)
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-diff --git a/drivers/cxl/mem.h b/drivers/cxl/mem.h
-index 23fc40dde27e..13868ff7cadf 100644
---- a/drivers/cxl/mem.h
-+++ b/drivers/cxl/mem.h
-@@ -49,7 +49,6 @@ struct cxl_memdev {
- /**
-  * struct cxl_mem - A CXL memory device
-  * @pdev: The PCI device associated with this CXL device.
-- * @base: IO mappings to the device's MMIO
-  * @cxlmd: Logical memory device chardev / interface
-  * @regs: Parsed register blocks
-  * @payload_size: Size of space for payload
-@@ -64,7 +63,6 @@ struct cxl_memdev {
-  */
- struct cxl_mem {
- 	struct pci_dev *pdev;
--	void __iomem *base;
- 	struct cxl_memdev *cxlmd;
- 
- 	struct cxl_regs regs;
-diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
-index 285a898a0867..d47258e51563 100644
---- a/drivers/cxl/pci.c
-+++ b/drivers/cxl/pci.c
-@@ -941,11 +941,10 @@ static struct cxl_mem *cxl_mem_create(struct pci_dev *pdev)
- 	return cxlm;
- }
- 
--static int cxl_mem_map_regblock(struct cxl_mem *cxlm, u32 reg_lo, u32 reg_hi)
-+static void __iomem *cxl_mem_map_regblock(struct cxl_mem *cxlm, u32 reg_lo, u32 reg_hi)
- {
- 	struct pci_dev *pdev = cxlm->pdev;
- 	struct device *dev = &pdev->dev;
--	void __iomem *regs;
- 	u64 offset;
- 	u8 bar;
- 	int rc;
-@@ -957,20 +956,18 @@ static int cxl_mem_map_regblock(struct cxl_mem *cxlm, u32 reg_lo, u32 reg_hi)
- 	if (pci_resource_len(pdev, bar) < offset) {
- 		dev_err(dev, "BAR%d: %pr: too small (offset: %#llx)\n", bar,
- 			&pdev->resource[bar], (unsigned long long)offset);
--		return -ENXIO;
-+		return IOMEM_ERR_PTR(-ENXIO);
- 	}
- 
- 	rc = pcim_iomap_regions(pdev, BIT(bar), pci_name(pdev));
- 	if (rc) {
- 		dev_err(dev, "failed to map registers\n");
--		return rc;
-+		return IOMEM_ERR_PTR(rc);
- 	}
--	regs = pcim_iomap_table(pdev)[bar];
--
--	cxlm->base = regs + offset;
- 
- 	dev_dbg(dev, "Mapped CXL Memory Device resource\n");
--	return 0;
-+
-+	return pcim_iomap_table(pdev)[bar] + offset;
- }
- 
- static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
-@@ -1012,7 +1009,8 @@ static int cxl_mem_setup_regs(struct cxl_mem *cxlm)
- 	struct pci_dev *pdev = cxlm->pdev;
- 	struct device *dev = &pdev->dev;
- 	u32 regloc_size, regblocks;
--	int rc, regloc, i;
-+	void __iomem *base;
-+	int regloc, i;
- 
- 	regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC_OFFSET);
- 	if (!regloc) {
-@@ -1038,9 +1036,9 @@ static int cxl_mem_setup_regs(struct cxl_mem *cxlm)
- 		reg_type = FIELD_GET(CXL_REGLOC_RBI_MASK, reg_lo);
- 
- 		if (reg_type == CXL_REGLOC_RBI_MEMDEV) {
--			rc = cxl_mem_map_regblock(cxlm, reg_lo, reg_hi);
--			if (rc)
--				return rc;
-+			base = cxl_mem_map_regblock(cxlm, reg_lo, reg_hi);
-+			if (IS_ERR(base))
-+				return PTR_ERR(base);
- 			break;
- 		}
- 	}
-@@ -1050,7 +1048,7 @@ static int cxl_mem_setup_regs(struct cxl_mem *cxlm)
- 		return -ENXIO;
- 	}
- 
--	cxl_setup_device_regs(dev, cxlm->base, &regs->device_regs);
-+	cxl_setup_device_regs(dev, base, &regs->device_regs);
- 
- 	if (!regs->status || !regs->mbox || !regs->memdev) {
- 		dev_err(dev, "registers not found: %s%s%s\n",
+> Signed-off-by: Daniel Scally <djrscally@gmail.com>
+> ---
+> Changes since v3:
+> 	- Patch introduced
+> 
+>  drivers/gpio/gpiolib-acpi.c | 23 +++++++++++++++++++++++
+>  include/linux/acpi.h        |  7 +++++++
+>  2 files changed, 30 insertions(+)
+> 
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index 684ddb35d83b..9887bb684575 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -196,6 +196,29 @@ bool acpi_gpio_get_irq_resource(struct acpi_resource *ares,
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_gpio_get_irq_resource);
+>  
+> +/**
+> + * acpi_gpio_get_io_resource - Fetch details of an ACPI resource if it is a GPIO
+> + *			       I/O resource or return False if not.
+> + * @ares:	Pointer to the ACPI resource to fetch
+> + * @agpio:	Pointer to a &struct acpi_resource_gpio to store the output pointer
+> + */
+> +bool acpi_gpio_get_io_resource(struct acpi_resource *ares,
+> +			       struct acpi_resource_gpio **agpio)
+> +{
+> +	struct acpi_resource_gpio *gpio;
+> +
+> +	if (ares->type != ACPI_RESOURCE_TYPE_GPIO)
+> +		return false;
+> +
+> +	gpio = &ares->data.gpio;
+> +	if (gpio->connection_type != ACPI_RESOURCE_GPIO_TYPE_IO)
+> +		return false;
+> +
+> +	*agpio = gpio;
+> +	return true;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_gpio_get_io_resource);
+> +
+>  static void acpi_gpiochip_request_irq(struct acpi_gpio_chip *acpi_gpio,
+>  				      struct acpi_gpio_event *event)
+>  {
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 170b9bebdb2b..e8ba7063c000 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1098,6 +1098,8 @@ void __acpi_handle_debug(struct _ddebug *descriptor, acpi_handle handle, const c
+>  #if defined(CONFIG_ACPI) && defined(CONFIG_GPIOLIB)
+>  bool acpi_gpio_get_irq_resource(struct acpi_resource *ares,
+>  				struct acpi_resource_gpio **agpio);
+> +bool acpi_gpio_get_io_resource(struct acpi_resource *ares,
+> +			       struct acpi_resource_gpio **agpio);
+>  int acpi_dev_gpio_irq_get_by(struct acpi_device *adev, const char *name, int index);
+>  #else
+>  static inline bool acpi_gpio_get_irq_resource(struct acpi_resource *ares,
+> @@ -1105,6 +1107,11 @@ static inline bool acpi_gpio_get_irq_resource(struct acpi_resource *ares,
+>  {
+>  	return false;
+>  }
+> +static inline bool acpi_gpio_get_io_resource(struct acpi_resource *ares,
+> +					     struct acpi_resource_gpio **agpio)
+> +{
+> +	return false;
+> +}
+>  static inline int acpi_dev_gpio_irq_get_by(struct acpi_device *adev,
+>  					   const char *name, int index)
+>  {
+> -- 
+> 2.25.1
+> 
+
 -- 
-2.31.1
+With Best Regards,
+Andy Shevchenko
+
 
