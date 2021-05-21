@@ -2,209 +2,487 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A11938C737
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 14:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3B3B38C746
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 May 2021 14:58:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232094AbhEUM5V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 May 2021 08:57:21 -0400
-Received: from foss.arm.com ([217.140.110.172]:46640 "EHLO foss.arm.com"
+        id S233928AbhEUM7U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 May 2021 08:59:20 -0400
+Received: from mga09.intel.com ([134.134.136.24]:11447 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232627AbhEUM4u (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 21 May 2021 08:56:50 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C73411B3;
-        Fri, 21 May 2021 05:55:26 -0700 (PDT)
-Received: from [192.168.1.179] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4729E3F719;
-        Fri, 21 May 2021 05:55:24 -0700 (PDT)
-Subject: Re: [PATCH v4 0/8] ACPI/IORT: Support for IORT RMR node
-To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org
-Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
-        robin.murphy@arm.com, wanghuiqiang@huawei.com,
-        guohanjun@huawei.com, Sami.Mujawar@arm.com, jon@solid-run.com,
-        eric.auger@redhat.com, yangyicong@huawei.com
-References: <20210513134550.2117-1-shameerali.kolothum.thodi@huawei.com>
-From:   Steven Price <steven.price@arm.com>
-Message-ID: <fcb7bec5-f9ea-1785-64fa-af673ce64053@arm.com>
-Date:   Fri, 21 May 2021 13:55:23 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S232256AbhEUM7K (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 21 May 2021 08:59:10 -0400
+IronPort-SDR: Ebv/aroCptOrbvMCfv315JuDJ/7zO/Bgn2QoMusyW+iz5jMy+sTS2ClpMW0j7UZDxbM1J+usuU
+ SaXKHOHvXQVw==
+X-IronPort-AV: E=McAfee;i="6200,9189,9990"; a="201511267"
+X-IronPort-AV: E=Sophos;i="5.82,319,1613462400"; 
+   d="scan'208";a="201511267"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2021 05:57:46 -0700
+IronPort-SDR: crRHv+VXHHm3QxRly6SLfRhQ3QkM3+nfkHjkuY2hto5E8N0LKoj2ndH9iwhhbJqqh+MFAy8IcS
+ Pm48BhooAG0w==
+X-IronPort-AV: E=Sophos;i="5.82,319,1613462400"; 
+   d="scan'208";a="395309749"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2021 05:57:40 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1lk4ie-00Di9Q-OH; Fri, 21 May 2021 15:57:36 +0300
+Date:   Fri, 21 May 2021 15:57:36 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        devel@acpica.org, Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        laurent.pinchart@ideasonboard.com, kieran.bingham@ideasonboard.com
+Subject: Re: [PATCH v4 7/8] platform/x86: Add intel_skl_int3472 driver
+Message-ID: <YKeuQM/O9+jDZFpb@smile.fi.intel.com>
+References: <20210520140928.3252671-1-djrscally@gmail.com>
+ <20210520140928.3252671-8-djrscally@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20210513134550.2117-1-shameerali.kolothum.thodi@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210520140928.3252671-8-djrscally@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 13/05/2021 14:45, Shameer Kolothum wrote:
-> Hi,
+On Thu, May 20, 2021 at 03:09:27PM +0100, Daniel Scally wrote:
+> ACPI devices with _HID INT3472 are currently matched to the tps68470
+> driver, however this does not cover all situations in which that _HID
+> occurs. We've encountered three possibilities:
 > 
-> v3 -->v4
-> -Included the SMMUv2 SMR bypass install changes suggested by
->  Steve(patch #7)
-> -As per Robin's comments, RMR reserve implementation is now
->  more generic  (patch #8) and dropped v3 patches 8 and 10.
-> -Rebase to 5.13-rc1 
+> 1. On Chrome OS devices, an ACPI device with _HID INT3472 (representing
+> a physical TPS68470 device) that requires a GPIO and OpRegion driver
+> 2. On devices designed for Windows, an ACPI device with _HID INT3472
+> (again representing a physical TPS68470 device) which requires GPIO,
+> Clock and Regulator drivers.
+> 3. On other devices designed for Windows, an ACPI device with _HID
+> INT3472 which does **not** represent a physical TPS68470, and is instead
+> used as a dummy device to group some system GPIO lines which are meant
+> to be consumed by the sensor that is dependent on this entry.
 > 
-> The whole series is available here,
-> https://github.com/hisilicon/kernel-dev/tree/private-v5.13-rc1-rmr-v4-ext
-> 
-> RFC v2 --> v3
->  -Dropped RFC tag as the ACPICA header changes are now ready to be
->   part of 5.13[0]. But this series still has a dependency on that patch.
->  -Added IORT E.b related changes(node flags, _DSM function 5 checks for
->   PCIe).
->  -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
->   discussion here[1].
->  -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!) 
-> 
-> Sanity tested on a HiSilicon D06. Further testing and feedback is greatly
-> appreciated.
+> This commit adds a new module, registering a platform driver to deal
+> with the 3rd scenario plus an i2c driver to deal with #1 and #2, by
+> querying the CLDB buffer found against INT3472 entries to determine
+> which is most appropriate.
 
-With the updated SMMUv2 support this works fine on my Juno with EFIFB
-(and corresponding patches to the firmware to expose the ACPI tables).
-Feel free to add
+...
 
-Tested-by: Steven Price <steven.price@arm.com>
+>  create mode 100644 drivers/platform/x86/intel-int3472/Kconfig
+>  create mode 100644 drivers/platform/x86/intel-int3472/Makefile
+>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_clk_and_regulator.c
+>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_common.c
+>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_common.h
+>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_discrete.c
+>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_tps68470.c
 
-Thanks,
+I would rather see this under .../intel/int3472/ but this we may do later on.
 
-Steve
+...
 
-> https://github.com/hisilicon/kernel-dev/tree/private-v5.12-rc8-rmr-v3
-> 
-> Thanks,
-> Shameer
-> 
-> [0] https://lore.kernel.org/linux-acpi/20210406213028.718796-22-erik.kaneda@intel.com/
-> [1] https://op-lists.linaro.org/pipermail/linaro-open-discussions/2021-April/000150.html
-> 
-> RFC v1 --> v2:
->  - Added a generic interface for IOMMU drivers to retrieve all the 
->    RMR info associated with a given IOMMU.
->  - SMMUv3 driver gets the RMR list during probe() and installs
->    bypass STEs for all the SIDs in the RMR list. This is to keep
->    the ongoing traffic alive(if any) during SMMUv3 reset. This is
->    based on the suggestions received for v1 to take care of the
->    EFI framebuffer use case. Only sanity tested for now.
->  - During the probe/attach device, SMMUv3 driver reserves any
->    RMR region associated with the device such that there is a unity
->    mapping for them in SMMU.
-> ---    
-> 
-> From RFC v1:
-> -------------
-> The series adds support to IORT RMR nodes specified in IORT
-> Revision E -ARM DEN 0049E[0]. RMR nodes are used to describe memory
-> ranges that are used by endpoints and require a unity mapping
-> in SMMU.
-> 
-> We have faced issues with 3408iMR RAID controller cards which
-> fail to boot when SMMU is enabled. This is because these controllers
-> make use of host memory for various caching related purposes and when
-> SMMU is enabled the iMR firmware fails to access these memory regions
-> as there is no mapping for them. IORT RMR provides a way for UEFI to
-> describe and report these memory regions so that the kernel can make
-> a unity mapping for these in SMMU.
-> 
-> Tests:
-> 
-> With a UEFI, that reports the RMR for the dev,
-> ....
-> [16F0h 5872   1]                         Type : 06
-> [16F1h 5873   2]                       Length : 007C
-> [16F3h 5875   1]                     Revision : 00
-> [1038h 0056   2]                     Reserved : 00000000
-> [1038h 0056   2]                   Identifier : 00000000
-> [16F8h 5880   4]                Mapping Count : 00000001
-> [16FCh 5884   4]               Mapping Offset : 00000040
-> 
-> [1700h 5888   4]    Number of RMR Descriptors : 00000002
-> [1704h 5892   4]        RMR Descriptor Offset : 00000018
-> 
-> [1708h 5896   8]          Base Address of RMR : 0000E6400000
-> [1710h 5904   8]                Length of RMR : 000000100000
-> [1718h 5912   4]                     Reserved : 00000000
-> 
-> [171Ch 5916   8]          Base Address of RMR : 0000000027B00000
-> [1724h 5924   8]                Length of RMR : 0000000000C00000
-> [172Ch 5932   4]                     Reserved : 00000000
-> 
-> [1730h 5936   4]                   Input base : 00000000
-> [1734h 5940   4]                     ID Count : 00000001
-> [1738h 5944   4]                  Output Base : 00000003
-> [173Ch 5948   4]             Output Reference : 00000064
-> [1740h 5952   4]        Flags (decoded below) : 00000001
->                                Single Mapping : 1
-> ...
-> 
-> Without the series the RAID controller initialization fails as
-> below,
-> 
-> ...
-> [   12.631117] megaraid_sas 0000:03:00.0: FW supports sync cache        : Yes   
-> [   12.637360] megaraid_sas 0000:03:00.0: megasas_disable_intr_fusion is called outbound_intr_mask:0x40000009                                                   
-> [   18.776377] megaraid_sas 0000:03:00.0: Init cmd return status FAILED for SCSI host 0                                                                         
-> [   23.019383] megaraid_sas 0000:03:00.0: Waiting for FW to come to ready state 
-> [  106.684281] megaraid_sas 0000:03:00.0: FW in FAULT state, Fault code:0x10000 subcode:0x0 func:megasas_transition_to_ready                                    
-> [  106.695186] megaraid_sas 0000:03:00.0: System Register set:                  
-> [  106.889787] megaraid_sas 0000:03:00.0: Failed to transition controller to ready for scsi0.                                                                   
-> [  106.910475] megaraid_sas 0000:03:00.0: Failed from megasas_init_fw 6407      
-> estuary:/$
-> 
-> With the series, now the kernel has direct mapping for the dev as
-> below,
-> 
-> estuary:/$ cat /sys/kernel/iommu_groups/0/reserved_regions                      
-> 0x0000000008000000 0x00000000080fffff msi                                       
-> 0x0000000027b00000 0x00000000286fffff direct                                    
-> 0x00000000e6400000 0x00000000e64fffff direct                                    
-> estuary:/$
-> 
-> ....
-> [   12.254318] megaraid_sas 0000:03:00.0: megasas_disable_intr_fusion is called outbound_intr_mask:0x40000009                                                   
-> [   12.739089] megaraid_sas 0000:03:00.0: FW provided supportMaxExtLDs: 0      max_lds: 32                                                                      
-> [   12.746628] megaraid_sas 0000:03:00.0: controller type       : iMR(0MB)      
-> [   12.752694] megaraid_sas 0000:03:00.0: Online Controller Reset(OCR)  : Enabled                                                                               
-> [   12.759798] megaraid_sas 0000:03:00.0: Secure JBOD support   : Yes           
-> [   12.765778] megaraid_sas 0000:03:00.0: NVMe passthru support : Yes           
-> [   12.771931] megaraid_sas 0000:03:00.0: FW provided TM TaskAbort/Reset timeou: 6 secs/60 secs                                                                 
-> [   12.780503] megaraid_sas 0000:03:00.0: JBOD sequence map support     : Yes   
-> [   12.787000] megaraid_sas 0000:03:00.0: PCI Lane Margining support    : No    
-> [   12.819179] megaraid_sas 0000:03:00.0: NVME page size        : (4096)        
-> [   12.825672] megaraid_sas 0000:03:00.0: megasas_enable_intr_fusion is called outbound_intr_mask:0x40000000                                                    
-> [   12.835199] megaraid_sas 0000:03:00.0: INIT adapter done                     
-> [   12.873932] megaraid_sas 0000:03:00.0: pci id                : (0x1000)/(0x0017)/(0x19e5)/(0xd213)                                                           
-> [   12.881644] megaraid_sas 0000:03:00.0: unevenspan support    : no            
-> [   12.887451] megaraid_sas 0000:03:00.0: firmware crash dump   : no            
-> [   12.893344] megaraid_sas 0000:03:00.0: JBOD sequence map     : enabled       
-> 
-> RAID controller init is now success and can detect the drives
-> attached as well.
-> 
-> Jon Nettleton (1):
->   iommu/arm-smmu: Get associated RMR info and install bypass SMR
-> 
-> Shameer Kolothum (7):
->   ACPI/IORT: Add support for RMR node parsing
->   iommu/dma: Introduce generic helper to retrieve RMR info
->   ACPI/IORT: Add a helper to retrieve RMR memory regions
->   iommu/arm-smmu-v3: Introduce strtab init helper
->   iommu/arm-smmu-v3: Add bypass flag to arm_smmu_write_strtab_ent()
->   iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
->   iommu/dma: Reserve any RMR regions associated with a dev
-> 
->  drivers/acpi/arm64/iort.c                   | 144 +++++++++++++++++++-
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  69 +++++++---
->  drivers/iommu/arm/arm-smmu/arm-smmu.c       |  64 +++++++++
->  drivers/iommu/dma-iommu.c                   | 102 +++++++++++++-
->  include/linux/acpi_iort.h                   |   7 +
->  include/linux/dma-iommu.h                   |  10 ++
->  include/linux/iommu.h                       |  19 +++
->  7 files changed, 392 insertions(+), 23 deletions(-)
-> 
+> +INTEL SKYLAKE INT3472 ACPI DEVICE DRIVER
+> +M:	Daniel Scally <djrscally@gmail.com>
+> +S:	Maintained
+> +F:	drivers/platform/x86/intel-int3472/intel_skl_int3472_*
+
+F:	drivers/platform/x86/intel-int3472/
+
+Should be sufficient.
+
+...
+
+> +	help
+> +	  This driver adds support for the INT3472 ACPI devices found on some
+> +	  Intel SkyLake devices.
+
+I would rephrase this
+
+"This driver adds power controller support for the Intel SkyCam devices found
+on the Intel SkyLake platforms."
+
+(Technically speaking this IP is in the entire CPU family, but may be switched
+ off)
+
+It's also possible to google for better text based on what Windows says about
+it.
+
+> +	  The INT3472 is an Intel camera power controller, a logical device
+> +	  found on some Skylake-based systems that can map to different
+
+"The INT3472 is a camera power controller, a logical device found on some Intel
+Skylake-based systems that can map to different..."
+
+> +	  hardware devices depending on the platform. On machines
+> +	  designed for Chrome OS, it maps to a TPS68470 camera PMIC. On
+> +	  machines designed for Windows, it maps to either a TP68470
+> +	  camera PMIC, a uP6641Q sensor PMIC, or a set of discrete GPIOs
+> +	  and power gates.
+> +
+> +	  If your device was designed for Chrome OS, this driver will provide
+> +	  an ACPI OpRegion, which must be available before any of the devices
+> +	  using it are probed. For this reason, you should select Y if your
+> +	  device was designed for ChromeOS. For the same reason the
+> +	  I2C_DESIGNWARE_PLATFORM option must be set to Y too.
+> +
+> +	  Say Y or M here if you have a SkyLake device designed for use
+> +	  with Windows or ChromeOS. Say N here if you are not sure.
+> +
+> +	  The module will be named "intel-skl-int3472"
+
+Period missed.
+
+...
+
+> +/*
+> + * The regulators have to have .ops to be valid, but the only ops we actually
+> + * support are .enable and .disable which are handled via .ena_gpiod. Pass an
+> + * empty struct to clear the check without lying about capabilities.
+> + */
+> +static const struct regulator_ops int3472_gpio_regulator_ops;
+
+Hmm... Can you use 'reg-fixed-voltage' platform device instead?
+
+One example, although gone from upstream, but available in the tree, I can
+point to is this:
+
+  git log -p -- arch/x86/platform/intel-mid/device_libs/platform_bcm43xx.c
+
+It uses constant structures, but I think you may dynamically generate the
+necessary ones.
+
+...
+
+> +static int skl_int3472_clk_prepare(struct clk_hw *hw)
+> +{
+> +	struct int3472_gpio_clock *clk = to_int3472_clk(hw);
+> +
+> +	gpiod_set_value(clk->ena_gpio, 1);
+> +	gpiod_set_value(clk->led_gpio, 1);
+> +
+> +	return 0;
+> +}
+> +
+> +static void skl_int3472_clk_unprepare(struct clk_hw *hw)
+> +{
+> +	struct int3472_gpio_clock *clk = to_int3472_clk(hw);
+> +
+> +	gpiod_set_value(clk->ena_gpio, 0);
+> +	gpiod_set_value(clk->led_gpio, 0);
+> +}
+> +
+> +static int skl_int3472_clk_enable(struct clk_hw *hw)
+> +{
+> +	/*
+> +	 * We're just turning a GPIO on to enable the clock, which operation
+> +	 * has the potential to sleep. Given .enable() cannot sleep, but
+> +	 * .prepare() can, we toggle the GPIO in .prepare() instead. Thus,
+> +	 * nothing to do here.
+> +	 */
+
+It's a nice comment, but you are using non-sleeping GPIO value setters. Perhaps
+you need to replace them with gpiod_set_value_cansleep()?
+
+> +	return 0;
+> +}
+
+...
+
+> +static unsigned int skl_int3472_get_clk_frequency(struct int3472_discrete_device *int3472)
+> +{
+> +	union acpi_object *obj;
+> +	unsigned int freq;
+> +
+> +	obj = skl_int3472_get_acpi_buffer(int3472->sensor, "SSDB");
+> +	if (IS_ERR(obj))
+> +		return 0; /* report rate as 0 on error */
+> +
+> +	if (obj->buffer.length < CIO2_SENSOR_SSDB_MCLKSPEED_OFFSET + sizeof(u32)) {
+> +		dev_err(int3472->dev, "The buffer is too small\n");
+
+> +		goto out_free_buff;
+
+First of all, freq will be uninitialized here.
+
+I'm wondering if you can simple drop the goto and replace it with direct steps, i.e.
+	kfree(obj);
+	return 0;
+
+> +	}
+> +
+> +	freq = *(u32 *)(obj->buffer.pointer + CIO2_SENSOR_SSDB_MCLKSPEED_OFFSET);
+> +
+> +out_free_buff:
+> +	kfree(obj);
+> +	return freq;
+> +}
+
+...
+
+> +int skl_int3472_register_clock(struct int3472_discrete_device *int3472)
+> +{
+> +	struct clk_init_data init = {
+> +		.ops = &skl_int3472_clock_ops,
+> +		.flags = CLK_GET_RATE_NOCACHE,
+> +	};
+
+> +	int ret = 0;
+
+I would not assign it here. See below.
+
+> +	init.name = kasprintf(GFP_KERNEL, "%s-clk",
+> +			      acpi_dev_name(int3472->adev));
+> +	if (!init.name)
+> +		return -ENOMEM;
+> +
+> +	int3472->clock.frequency = skl_int3472_get_clk_frequency(int3472);
+> +
+> +	int3472->clock.clk_hw.init = &init;
+> +	int3472->clock.clk = clk_register(&int3472->adev->dev,
+> +					  &int3472->clock.clk_hw);
+> +	if (IS_ERR(int3472->clock.clk)) {
+> +		ret = PTR_ERR(int3472->clock.clk);
+> +		goto out_free_init_name;
+> +	}
+> +
+> +	int3472->clock.cl = clkdev_create(int3472->clock.clk, NULL,
+> +					  int3472->sensor_name);
+> +	if (!int3472->clock.cl) {
+> +		ret = -ENOMEM;
+> +		goto err_unregister_clk;
+> +	}
+
+> +	goto out_free_init_name;
+
+Better pattern is
+
+	kfree(init.name);
+	return 0;
+
+directly here.
+
+> +err_unregister_clk:
+> +	clk_unregister(int3472->clock.clk);
+> +out_free_init_name:
+> +	kfree(init.name);
+> +
+> +	return ret;
+> +}
+
+...
+
+> +union acpi_object *skl_int3472_get_acpi_buffer(struct acpi_device *adev,
+> +					       char *id)
+
+One line?
+
+...
+
+> +int skl_int3472_fill_cldb(struct acpi_device *adev, struct int3472_cldb *cldb)
+> +{
+> +	union acpi_object *obj;
+
+> +	int ret = 0;
+
+I would assign it closer to the real use, see below.
+
+> +	obj = skl_int3472_get_acpi_buffer(adev, "CLDB");
+> +	if (IS_ERR(obj))
+> +		return PTR_ERR(obj);
+> +
+> +	if (obj->buffer.length > sizeof(*cldb)) {
+> +		acpi_handle_err(adev->handle, "The CLDB buffer is too large\n");
+> +		ret = -EINVAL;
+> +		goto out_free_obj;
+> +	}
+> +
+> +	memcpy(cldb, obj->buffer.pointer, obj->buffer.length);
+
+ret = 0;
+
+> +out_free_obj:
+> +	kfree(obj);
+> +	return ret;
+> +}
+
+...
+
+> +union acpi_object *skl_int3472_get_acpi_buffer(struct acpi_device *adev,
+> +					       char *id);
+
+One line?
+
+...
+
+> +static const struct int3472_sensor_config *
+> +skl_int3472_get_sensor_module_config(struct int3472_discrete_device *int3472)
+> +{
+> +	const struct int3472_sensor_config *ret;
+> +	union acpi_object *obj;
+> +	unsigned int i;
+> +
+> +	obj = acpi_evaluate_dsm_typed(int3472->sensor->handle,
+> +				      &cio2_sensor_module_guid, 0x00,
+> +				      0x01, NULL, ACPI_TYPE_STRING);
+> +
+> +	if (!obj) {
+> +		dev_err(int3472->dev,
+> +			"Failed to get sensor module string from _DSM\n");
+> +		return ERR_PTR(-ENODEV);
+> +	}
+> +
+> +	if (obj->string.type != ACPI_TYPE_STRING) {
+> +		dev_err(int3472->dev,
+> +			"Sensor _DSM returned a non-string value\n");
+> +		ret = ERR_PTR(-EINVAL);
+> +		goto out_free_obj;
+> +	}
+
+> +	ret = ERR_PTR(-EINVAL);
+> +	for (i = 0; i < ARRAY_SIZE(int3472_sensor_configs); i++) {
+> +		if (!strcmp(int3472_sensor_configs[i].sensor_module_name,
+> +			    obj->string.pointer)) {
+> +			ret = &int3472_sensor_configs[i];
+> +			break;
+> +		}
+> +	}
+
+Can be refactored like this:
+
+	for (i = 0; i < ARRAY_SIZE(int3472_sensor_configs); i++) {
+		if (!strcmp(int3472_sensor_configs[i].sensor_module_name,
+			    obj->string.pointer))
+			break;
+	}
+
+	ACPI_FREE(obj);
+
+	if (i >= ARRAY_SIZE(int3472_sensor_configs))
+		return ERR_PTR(-EINVAL);
+
+	return &int3472_sensor_configs[i];
+
+> +out_free_obj:
+> +	ACPI_FREE(obj);
+> +	return ret;
+
+And this moved to the one user above.
+
+> +}
+
+...
+
+> +		dev_err(int3472->dev, "Invalid GPIO type 0x%02x for clock\n",
+> +			type);
+
+One line?
+
+...
+
+> + * Return:
+> + * * 0		- When all resources found are handled properly.
+
+Positive number ... ?
+
+> + * * -EINVAL	- If the resource is not a GPIO IO resource
+> + * * -ENODEV	- If the resource has no corresponding _DSM entry
+> + * * -Other	- Errors propagated from one of the sub-functions.
+
+...
+
+> +	if (!acpi_gpio_get_io_resource(ares, &agpio))
+> +		return 1; /* Deliberately positive so parsing continues */
+
+Move it to description above?
+
+...
+
+> +	/*
+> +	 * n_gpios + 2 because the index of this _DSM function is 1-based and
+> +	 * the first function is just a count.
+> +	 */
+> +	obj = acpi_evaluate_dsm_typed(int3472->adev->handle,
+> +				      &int3472_gpio_guid, 0x00,
+> +				      int3472->n_gpios + 2,
+> +				      NULL, ACPI_TYPE_INTEGER);
+
+can we rename n_gpios -> ngpios?
+
+...
+
+> +	if (int3472->clock.ena_gpio) {
+> +		ret = skl_int3472_register_clock(int3472);
+> +		if (ret)
+> +			goto out_free_res_list;
+> +	} else {
+
+Hmm... Have I got it correctly that we can't have ena_gpio && led_gpio together?
+
+> +		if (int3472->clock.led_gpio)
+> +			dev_warn(int3472->dev,
+> +				 "No clk GPIO. The privacy LED won't work\n");
+> +	}
+
+...
+
+> +		dev_err(&client->dev, "Failed to create regmap: %ld\n",
+> +			PTR_ERR(regmap));
+
+One line?
+
+...
+
+> +	ret = skl_int3472_fill_cldb(adev, &cldb);
+> +	if (!ret && cldb.control_logic_type != 2) {
+> +		dev_err(&client->dev, "Unsupported control logic type %u\n",
+> +			cldb.control_logic_type);
+> +		return -EINVAL;
+> +	}
+
+> +	if (ret)
+> +		ret = devm_mfd_add_devices(&client->dev, PLATFORM_DEVID_NONE,
+
+This I don't like. Since we get a returned variable with different meaning, can
+we use a specific variable name for it? On top of that, I would rather see
+something like this:
+
+	whatever = skl_...(...);
+	switch (whatever) {
+	case WHATEVER_ONE_CASE:
+		if (cldb.control_logic_type != 2) {
+			dev_err(&client->dev, "Unsupported control logic type %u\n",
+				cldb.control_logic_type);
+			return -EINVAL;
+		}
+		cells_data = tps68470_win;
+		cells_size = ARRAY_SIZE(tps68470_win);
+		break;
+	case WHATEVER_ANOTHER_CASE:
+		...
+		break;
+	default:
+		...Oops...
+		break; // or return -ERRNO
+	}
+
+	return devm_mfd_add_devices(&client->dev, PLATFORM_DEVID_NONE,
+				    cells_data, cells_size, NULL, 0, NULL);
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
