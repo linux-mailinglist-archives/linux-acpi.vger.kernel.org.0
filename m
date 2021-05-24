@@ -2,87 +2,214 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF3E738E8CA
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 May 2021 16:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4975B38ECBB
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 May 2021 17:21:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232882AbhEXOfa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 May 2021 10:35:30 -0400
-Received: from mail-oi1-f174.google.com ([209.85.167.174]:36404 "EHLO
-        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232662AbhEXOfa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 May 2021 10:35:30 -0400
-Received: by mail-oi1-f174.google.com with SMTP id t24so11720728oiw.3;
-        Mon, 24 May 2021 07:34:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DIQFsFAcuT6ezcc/lSj+Ubd3KgT48ueLGhHc3ywPu98=;
-        b=LLomuOFbkgpfhQ9zKze2u0D3Hti6/9ZMdLLCI+U2O4Ny3Z4WWk3IlhqDznPQKiJn1k
-         6pgVYsP7q27AdtdGjFl0B2vFJLnB/zPiTclYdmFHOdCFkoLkIUC69REZqyXvetGgW/aP
-         jQh2eJDWRkjfVPGG2lrshU8gpLOfCa0eujidyZaWsbVWr+7RJS9GpCysRni6oo8mR/JK
-         Ru3E6neryFBhVS8L+Rty/hPfN/kZOdsv/4ZlPhQwSXbB1UveqVL9+xs4naIIfGrAhU+6
-         YXF/1WG1YBoUlBc5bi+iCwPlnP8lFQMSxAbhL3IeuE7ukO4eWB5udaXqlcE3a8qBTMFj
-         yJDg==
-X-Gm-Message-State: AOAM533S0dXxU1C09h8FVBLA7UdBSkW7X7pkKqQeeUrdzmmUwjLx/GCT
-        bPUrLhKwnvm781I/DTP2q0T8y3Y23GWk9Jr7dYE=
-X-Google-Smtp-Source: ABdhPJxLYWYIr1dHL5IvKWcX5gy28IJjtUtHR22kN8XQzyQ4zVA6C24pJNV4vzR5FyP2pmGBmiWYwB9Lnyn1cwQX3Js=
-X-Received: by 2002:aca:380a:: with SMTP id f10mr11399113oia.157.1621866842300;
- Mon, 24 May 2021 07:34:02 -0700 (PDT)
+        id S234077AbhEXPWi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 May 2021 11:22:38 -0400
+Received: from foss.arm.com ([217.140.110.172]:43500 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235226AbhEXPUX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 24 May 2021 11:20:23 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3374CED1;
+        Mon, 24 May 2021 08:18:54 -0700 (PDT)
+Received: from [192.168.1.179] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4D85A3F73B;
+        Mon, 24 May 2021 08:18:52 -0700 (PDT)
+Subject: Re: [PATCH v5 0/8] ACPI/IORT: Support for IORT RMR node
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+Cc:     linuxarm@huawei.com, lorenzo.pieralisi@arm.com, joro@8bytes.org,
+        robin.murphy@arm.com, wanghuiqiang@huawei.com,
+        guohanjun@huawei.com, Sami.Mujawar@arm.com, jon@solid-run.com,
+        eric.auger@redhat.com, yangyicong@huawei.com
+References: <20210524110222.2212-1-shameerali.kolothum.thodi@huawei.com>
+From:   Steven Price <steven.price@arm.com>
+Message-ID: <2372ccf7-0a13-304c-be24-6429d0981b3d@arm.com>
+Date:   Mon, 24 May 2021 16:18:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-References: <20210524120832.1580247-1-liushixin2@huawei.com>
-In-Reply-To: <20210524120832.1580247-1-liushixin2@huawei.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 24 May 2021 16:33:46 +0200
-Message-ID: <CAJZ5v0gZYupB2w4oU1QGvE5aohcyPXk=BJVRvSrApGzp=sXkMQ@mail.gmail.com>
-Subject: Re: [PATCH -next] ACPI: LPSS: Replaced simple_strtol() with kstrtol()
-To:     Liu Shixin <liushixin2@huawei.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210524110222.2212-1-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, May 24, 2021 at 1:35 PM Liu Shixin <liushixin2@huawei.com> wrote:
->
-> The simple_strtol() function is deprecated in some situation since
-> it does not check for the range overflow. Use kstrtol() instead.
->
-> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-> ---
->  drivers/acpi/acpi_lpss.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-> index ca742f16a507..1b46e00cad3a 100644
-> --- a/drivers/acpi/acpi_lpss.c
-> +++ b/drivers/acpi/acpi_lpss.c
-> @@ -186,13 +186,12 @@ static void byt_i2c_setup(struct lpss_private_data *pdata)
->         long uid = 0;
->
->         /* Expected to always be true, but better safe then sorry */
-> -       if (uid_str)
-> -               uid = simple_strtol(uid_str, NULL, 10);
-> -
-> -       /* Detect I2C bus shared with PUNIT and ignore its d3 status */
-> -       status = acpi_evaluate_integer(handle, "_SEM", NULL, &shared_host);
-> -       if (ACPI_SUCCESS(status) && shared_host && uid)
-> -               pmc_atom_d3_mask &= ~(BIT_LPSS2_F1_I2C1 << (uid - 1));
-> +       if (uid_str && !kstrtol(uid_str, 10, &uid)) {
-> +               /* Detect I2C bus shared with PUNIT and ignore its d3 status */
-> +               status = acpi_evaluate_integer(handle, "_SEM", NULL, &shared_host);
-> +               if (ACPI_SUCCESS(status) && shared_host && uid)
-> +                       pmc_atom_d3_mask &= ~(BIT_LPSS2_F1_I2C1 << (uid - 1));
-> +       }
+On 24/05/2021 12:02, Shameer Kolothum wrote:
+> Hi,
+> 
+> v4 --> v5
+>  -Added a fw_data union to struct iommu_resv_region and removed
+>   struct iommu_rmr (Based on comments from Joerg/Robin).
+>  -Added iommu_put_rmrs() to release mem.
+>  -Thanks to Steve for verifying v4 on SMMUv2, but not added the
+>   Tested-by yet because of the above changes.
 
-This is not a simple replacement.
+I've retested with this series (Juno with SMMU in front of display
+controller and EFI framebuffer), and it still works, so:
 
-Why are you making the other changes?
+Tested-by: Steven Price <steven.price@arm.com>
 
->
->         lpss_deassert_reset(pdata);
->
-> --
+Thanks,
+
+Steve
+
+> 
+> v3 -->v4
+> -Included the SMMUv2 SMR bypass install changes suggested by
+>  Steve(patch #7)
+> -As per Robin's comments, RMR reserve implementation is now
+>  more generic  (patch #8) and dropped v3 patches 8 and 10.
+> -Rebase to 5.13-rc1 
+> 
+> RFC v2 --> v3
+>  -Dropped RFC tag as the ACPICA header changes are now ready to be
+>   part of 5.13[0]. But this series still has a dependency on that patch.
+>  -Added IORT E.b related changes(node flags, _DSM function 5 checks for
+>   PCIe).
+>  -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
+>   discussion here[1].
+>  -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!) 
+> 
+> Sanity tested on a HiSilicon D06. Further testing and feedback is greatly
+> appreciated.
+> 
+> The whole series can be found here,
+> https://github.com/hisilicon/kernel-dev/tree/private-v5.12-rc8-rmr-v3
+> 
+> Thanks,
+> Shameer
+> 
+> [0] https://lore.kernel.org/linux-acpi/20210406213028.718796-22-erik.kaneda@intel.com/
+> [1] https://op-lists.linaro.org/pipermail/linaro-open-discussions/2021-April/000150.html
+> 
+> RFC v1 --> v2:
+>  - Added a generic interface for IOMMU drivers to retrieve all the 
+>    RMR info associated with a given IOMMU.
+>  - SMMUv3 driver gets the RMR list during probe() and installs
+>    bypass STEs for all the SIDs in the RMR list. This is to keep
+>    the ongoing traffic alive(if any) during SMMUv3 reset. This is
+>    based on the suggestions received for v1 to take care of the
+>    EFI framebuffer use case. Only sanity tested for now.
+>  - During the probe/attach device, SMMUv3 driver reserves any
+>    RMR region associated with the device such that there is a unity
+>    mapping for them in SMMU.
+> ---    
+> 
+> From RFC v1:
+> -------------
+> The series adds support to IORT RMR nodes specified in IORT
+> Revision E -ARM DEN 0049E[0]. RMR nodes are used to describe memory
+> ranges that are used by endpoints and require a unity mapping
+> in SMMU.
+> 
+> We have faced issues with 3408iMR RAID controller cards which
+> fail to boot when SMMU is enabled. This is because these controllers
+> make use of host memory for various caching related purposes and when
+> SMMU is enabled the iMR firmware fails to access these memory regions
+> as there is no mapping for them. IORT RMR provides a way for UEFI to
+> describe and report these memory regions so that the kernel can make
+> a unity mapping for these in SMMU.
+> 
+> Tests:
+> 
+> With a UEFI, that reports the RMR for the dev,
+> ....
+> [16F0h 5872   1]                         Type : 06
+> [16F1h 5873   2]                       Length : 007C
+> [16F3h 5875   1]                     Revision : 00
+> [1038h 0056   2]                     Reserved : 00000000
+> [1038h 0056   2]                   Identifier : 00000000
+> [16F8h 5880   4]                Mapping Count : 00000001
+> [16FCh 5884   4]               Mapping Offset : 00000040
+> 
+> [1700h 5888   4]    Number of RMR Descriptors : 00000002
+> [1704h 5892   4]        RMR Descriptor Offset : 00000018
+> 
+> [1708h 5896   8]          Base Address of RMR : 0000E6400000
+> [1710h 5904   8]                Length of RMR : 000000100000
+> [1718h 5912   4]                     Reserved : 00000000
+> 
+> [171Ch 5916   8]          Base Address of RMR : 0000000027B00000
+> [1724h 5924   8]                Length of RMR : 0000000000C00000
+> [172Ch 5932   4]                     Reserved : 00000000
+> 
+> [1730h 5936   4]                   Input base : 00000000
+> [1734h 5940   4]                     ID Count : 00000001
+> [1738h 5944   4]                  Output Base : 00000003
+> [173Ch 5948   4]             Output Reference : 00000064
+> [1740h 5952   4]        Flags (decoded below) : 00000001
+>                                Single Mapping : 1
+> ...
+> 
+> Without the series the RAID controller initialization fails as
+> below,
+> 
+> ...
+> [   12.631117] megaraid_sas 0000:03:00.0: FW supports sync cache        : Yes   
+> [   12.637360] megaraid_sas 0000:03:00.0: megasas_disable_intr_fusion is called outbound_intr_mask:0x40000009                                                   
+> [   18.776377] megaraid_sas 0000:03:00.0: Init cmd return status FAILED for SCSI host 0                                                                         
+> [   23.019383] megaraid_sas 0000:03:00.0: Waiting for FW to come to ready state 
+> [  106.684281] megaraid_sas 0000:03:00.0: FW in FAULT state, Fault code:0x10000 subcode:0x0 func:megasas_transition_to_ready                                    
+> [  106.695186] megaraid_sas 0000:03:00.0: System Register set:                  
+> [  106.889787] megaraid_sas 0000:03:00.0: Failed to transition controller to ready for scsi0.                                                                   
+> [  106.910475] megaraid_sas 0000:03:00.0: Failed from megasas_init_fw 6407      
+> estuary:/$
+> 
+> With the series, now the kernel has direct mapping for the dev as
+> below,
+> 
+> estuary:/$ cat /sys/kernel/iommu_groups/0/reserved_regions                      
+> 0x0000000008000000 0x00000000080fffff msi                                       
+> 0x0000000027b00000 0x00000000286fffff direct                                    
+> 0x00000000e6400000 0x00000000e64fffff direct                                    
+> estuary:/$
+> 
+> ....
+> [   12.254318] megaraid_sas 0000:03:00.0: megasas_disable_intr_fusion is called outbound_intr_mask:0x40000009                                                   
+> [   12.739089] megaraid_sas 0000:03:00.0: FW provided supportMaxExtLDs: 0      max_lds: 32                                                                      
+> [   12.746628] megaraid_sas 0000:03:00.0: controller type       : iMR(0MB)      
+> [   12.752694] megaraid_sas 0000:03:00.0: Online Controller Reset(OCR)  : Enabled                                                                               
+> [   12.759798] megaraid_sas 0000:03:00.0: Secure JBOD support   : Yes           
+> [   12.765778] megaraid_sas 0000:03:00.0: NVMe passthru support : Yes           
+> [   12.771931] megaraid_sas 0000:03:00.0: FW provided TM TaskAbort/Reset timeou: 6 secs/60 secs                                                                 
+> [   12.780503] megaraid_sas 0000:03:00.0: JBOD sequence map support     : Yes   
+> [   12.787000] megaraid_sas 0000:03:00.0: PCI Lane Margining support    : No    
+> [   12.819179] megaraid_sas 0000:03:00.0: NVME page size        : (4096)        
+> [   12.825672] megaraid_sas 0000:03:00.0: megasas_enable_intr_fusion is called outbound_intr_mask:0x40000000                                                    
+> [   12.835199] megaraid_sas 0000:03:00.0: INIT adapter done                     
+> [   12.873932] megaraid_sas 0000:03:00.0: pci id                : (0x1000)/(0x0017)/(0x19e5)/(0xd213)                                                           
+> [   12.881644] megaraid_sas 0000:03:00.0: unevenspan support    : no            
+> [   12.887451] megaraid_sas 0000:03:00.0: firmware crash dump   : no            
+> [   12.893344] megaraid_sas 0000:03:00.0: JBOD sequence map     : enabled       
+> 
+> RAID controller init is now success and can detect the drives
+> attached as well.
+> 
+> Jon Nettleton (1):
+>   iommu/arm-smmu: Get associated RMR info and install bypass SMR
+> 
+> Shameer Kolothum (7):
+>   ACPI/IORT: Add support for RMR node parsing
+>   iommu/dma: Introduce generic helper to retrieve RMR info
+>   ACPI/IORT: Add a helper to retrieve RMR memory regions
+>   iommu/arm-smmu-v3: Introduce strtab init helper
+>   iommu/arm-smmu-v3: Add bypass flag to arm_smmu_write_strtab_ent()
+>   iommu/arm-smmu-v3: Get associated RMR info and install
+>   iommu/dma: Reserve any RMR regions associated with a dev
+> 
+>  drivers/acpi/arm64/iort.c                   | 154 +++++++++++++++++++-
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  72 ++++++---
+>  drivers/iommu/arm/arm-smmu/arm-smmu.c       |  65 +++++++++
+>  drivers/iommu/dma-iommu.c                   |  89 ++++++++++-
+>  include/linux/acpi_iort.h                   |   7 +
+>  include/linux/dma-iommu.h                   |  13 ++
+>  include/linux/iommu.h                       |  10 ++
+>  7 files changed, 387 insertions(+), 23 deletions(-)
+> 
+
