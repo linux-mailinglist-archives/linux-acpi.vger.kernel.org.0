@@ -2,96 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E4C39145F
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 May 2021 12:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 710D439177D
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 May 2021 14:36:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233621AbhEZKG6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 May 2021 06:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57528 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233264AbhEZKG5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 May 2021 06:06:57 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 928EDC061574
-        for <linux-acpi@vger.kernel.org>; Wed, 26 May 2021 03:05:26 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id t15so634703edr.11
-        for <linux-acpi@vger.kernel.org>; Wed, 26 May 2021 03:05:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=wN1QhgZSLh/Q1cWPqcMwfOkLFO+D9Okqk24H5LLAjws=;
-        b=nPXeq6WiNxgg6lSxeUnm2xUIASnDhmktguH8A6hssAjEktOyNSvFrXb7nk9Jwtb+NO
-         yFRlCwYbpgu1I3XfvONpplYhusGl1LZzYH8skxO3FMlur4Ub99+Y+fFTNkOsTrN5w38z
-         OVf9eYTP/FPPU3gd8SPWnmbwhEmLy2lOF0pC3GW4VrVUrahiv7yYM6zET6w7Z3my6L0S
-         cHNhcGsinerK+PASVPV7OHMOudUBIlgvybDpP7ziWJzNizZCFYD1ZSZ3if2EX1bSR+BK
-         ZxzluxhQR+3Vc6n46FiKg0ibO/Yga0tgQunYLwLIIwStAZJn5nD7INiwGK+RxyPP0Qb4
-         pUgA==
+        id S233577AbhEZMiY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 May 2021 08:38:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:24236 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233598AbhEZMiR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 26 May 2021 08:38:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1622032602;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vo3CFjgMiVFpDxJLQuQQeOIXjZuz9Jnetz8hQXS67No=;
+        b=Yy2iOPvOQPOuCUbADZ8BLSpoEZ1Ylrystpzutw1Uo21w8pb2cksBGqBEKTViFzJY02VbV9
+        L0wpJD5S4mDh9UiDSfyY0EJR8m5jc5od2nvETuqdaUrkFYMZtxxN721SWcBZwqqElpZLiF
+        ELcONW10UgPJmYy1NhStOoxG2gVJYE4=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-319-G45qEhYiP8me3eF63zSgBA-1; Wed, 26 May 2021 08:36:40 -0400
+X-MC-Unique: G45qEhYiP8me3eF63zSgBA-1
+Received: by mail-ed1-f69.google.com with SMTP id c21-20020a0564021015b029038c3f08ce5aso487731edu.18
+        for <linux-acpi@vger.kernel.org>; Wed, 26 May 2021 05:36:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=wN1QhgZSLh/Q1cWPqcMwfOkLFO+D9Okqk24H5LLAjws=;
-        b=Ibruxtwk+n61/xpQlUiYDu6B/8uLC0z+uRiL2v8WBrERR1u7gG47kSgqNqBWmEjWAp
-         qtNYVLcS5PWcd9tsoSHuxtQNGudFK5rebIuJF+SbocN3iPRQRYFdgt8ARL+X/5Ir23r5
-         jkpgua0wYOc7mQg5oRxLYyUJJ8OstAQfmEX+YV1w1f6ypc5EbtWLlvPRqRKI9g+2yrPN
-         GprdtnyWRJxguElxqqTNLznhYBJTzPToALwC99cQT7NuYLKz7f3Fopmp4be1x3JNsiEZ
-         bAi1ofy9r/mBOnFHamMRuQuReWp9uIihTYVhtGmRjZjuiBK9HK92ua+hO0XckzR8FIKr
-         hqcQ==
-X-Gm-Message-State: AOAM531NYOXoOBAOtBTuGO+/Cr/LQHqjcK3ZAhc+vqPayYyaBCDd04+6
-        Ah59TNtJ1q+NrCUNSEgWRSfGTg==
-X-Google-Smtp-Source: ABdhPJwLqgT0dI13/qQ6yT3UWt2a30pzQv780qX8pFwjZ6m2oIQpbMs47aFTz509ycnSHGVFoSWOMw==
-X-Received: by 2002:a50:bf0f:: with SMTP id f15mr34885274edk.205.1622023525169;
-        Wed, 26 May 2021 03:05:25 -0700 (PDT)
-Received: from myrica (adsl-84-226-106-126.adslplus.ch. [84.226.106.126])
-        by smtp.gmail.com with ESMTPSA id k22sm10054730ejz.108.2021.05.26.03.05.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 May 2021 03:05:24 -0700 (PDT)
-Date:   Wed, 26 May 2021 12:05:06 +0200
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:AMD IOMMU (AMD-VI)" <iommu@lists.linux-foundation.org>,
-        virtualization@lists.linux-foundation.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Eric Auger <eric.auger@redhat.com>, sebastien.boeuf@intel.com,
-        Robin Murphy <robin.murphy@arm.com>, kevin.tian@intel.com,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [PATCH v2 2/6] ACPI: Move IOMMU setup code out of IORT
-Message-ID: <YK4dUpIS5LJmAU2s@myrica>
-References: <20210423113836.3974972-1-jean-philippe@linaro.org>
- <20210423113836.3974972-3-jean-philippe@linaro.org>
- <CAJZ5v0j=vqv3aJb_eitOVtpxgU3j5_j5hKPzyTEeHxfo_5MXdQ@mail.gmail.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=vo3CFjgMiVFpDxJLQuQQeOIXjZuz9Jnetz8hQXS67No=;
+        b=IfiI2DHZC4NlmfLbdguiS58kL9wAn2fWVipgMO7J8Qo564E/tpHNW+Wv8fejvPZ6tl
+         Vhwgmgrf6d12fK3ENFYfFib5sH+LTMt8B93wF2Ax/6TxhQeIjkWIyBjQ9jKyTHLf3xTy
+         0/R8sqxLDGaTay3Aszt+/KnAsOubreG6Y4SQwCBv6ASDtZMo2LNgjEWGjBvZeRTly/PA
+         LbragJ5oq5xkAwz3wznz5q1LSA1tUS2yZNKKguE28B0ltoNUj/S18CJB47bTZkli7cvA
+         +UHnZPHFbPyWnVi5ICQpOu7dZwOuPGam5GOSYArMQ1ZFFHEll7HgAl0mynIwNQs2R8tF
+         0MJA==
+X-Gm-Message-State: AOAM530E6Chsfn2UBHOLBMemUoop4siHQzueB4v907yoyyK2crbBG0T9
+        /N7kXcTUnpvhw/sPa8i5+g/98zfufWSoRF9Rhg7pTPM/VLNCC16IEdxsO6H5LvA1HE5RHbomZeU
+        p3U125Ja+KLwasDv15zk6CA==
+X-Received: by 2002:a17:906:351a:: with SMTP id r26mr2036976eja.389.1622032599354;
+        Wed, 26 May 2021 05:36:39 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzCzSG2YLjcyhKgm8r3o/LZqPgFxUK6ylJOFe2YCzql+M/THNIC19JLVSjVDkUJ82LC9sNhuQ==
+X-Received: by 2002:a17:906:351a:: with SMTP id r26mr2036951eja.389.1622032599157;
+        Wed, 26 May 2021 05:36:39 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id y15sm284014ejc.48.2021.05.26.05.36.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 May 2021 05:36:38 -0700 (PDT)
+Subject: Re: [PATCH v4 0/8] Introduce intel_skl_int3472 module
+To:     Daniel Scally <djrscally@gmail.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-i2c@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        devel@acpica.org
+Cc:     Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        laurent.pinchart@ideasonboard.com, kieran.bingham@ideasonboard.com
+References: <20210520140928.3252671-1-djrscally@gmail.com>
+ <f2d8e74f-f33b-2489-1b90-b11bf7465d19@redhat.com>
+ <f4664310-0975-335d-8dc3-95726f53ab67@gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <d7b7b2ba-d941-7df3-38e6-32dbbba7a36f@redhat.com>
+Date:   Wed, 26 May 2021 14:36:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0j=vqv3aJb_eitOVtpxgU3j5_j5hKPzyTEeHxfo_5MXdQ@mail.gmail.com>
+In-Reply-To: <f4664310-0975-335d-8dc3-95726f53ab67@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, May 21, 2021 at 06:42:09PM +0200, Rafael J. Wysocki wrote:
-> On Fri, Apr 23, 2021 at 1:57 PM Jean-Philippe Brucker
-> <jean-philippe@linaro.org> wrote:
-> >
-> > Some of the IOMMU setup code in IORT is fairly generic and can be reused
-> > by VIOT. Extract it from IORT.
+Hi,
+
+On 5/26/21 1:03 AM, Daniel Scally wrote:
+
+<snip>
+
+>> 3/8 and 5/8 seem to be nice cleanups, but not really necessary. IMHO it
+>> would be best to park these cleanups for later and for 3/8 add the following
+>> where necessary for now:
+>>
+>> /* FIXME drop this once the I2C_DEV_NAME_FORMAT macro has been added to include/linux/i2c.h */
+>> #ifndef I2C_DEV_NAME_FORMAT
+>> #define I2C_DEV_NAME_FORMAT		"i2c-%s"
+>> #endif
+>>
+>> This is not the prettiest but it reduces all the subsys cross-deps and things
+>> like this have been done before for similar reasons.
+>>
+>> Likewise it would be good if you can add if (foo) as condition before any
+>> clkdev_drop(foo) calls in this patch-set and then merge
+>> 5/8 "clkdev: Make clkdev_drop() null aware" independently of this and then
+>> once both are in Linux tree follow-up with a cleanup patch dropping the if (foo)
+>> guards.
 > 
-> Except that iort_iommu_configure_id() is not really generic AFAICS.
+> 
+> This is fine by me if people are happy for it to go in like that; I'll
+> just fix it up later.
 
-I'll clarify the commit message: the parts of iort_iommu_configure_id()
-that set up the IOMMU infrastructure can be extracted and reused by VIOT.
-The rest of the function, that iterates over the IORT subtables, is
-specific to the driver.
+I don't expect anyone to object against these 2 small fixes going in later,
+if you can drop these 2 for v5 that would greatly help with untangling all the
+subsys dependencies. Then I can just merge an ACPI + a gpiolib-acpi immutable
+branch and then merge the big drivers/platform/x86 patch.
 
-Thanks,
-Jean
+Regards,
+
+Hans
+
