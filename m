@@ -2,61 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97F58393587
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 May 2021 20:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9933393725
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 May 2021 22:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235838AbhE0SnX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 May 2021 14:43:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45216 "EHLO mail.kernel.org"
+        id S235739AbhE0U2K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 May 2021 16:28:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43056 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229902AbhE0SnX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 27 May 2021 14:43:23 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 428EF613AC;
-        Thu, 27 May 2021 18:41:50 +0000 (UTC)
+        id S235524AbhE0U2J (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 27 May 2021 16:28:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8A7A061360;
+        Thu, 27 May 2021 20:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622140910;
-        bh=LORWVZlLu83pAyB/QRvy+Br0rns+Q9Ogm4QW+K6dg2w=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=qzq0BleLoS362e+2rNNFwbRPURs/WQyam2FA6TCHyJmx/C5l+O+gc7o4gFBGpBsXr
-         366fzuKhxFXpgElDPQFUWoZL/LpnrMsoBEtVq7HDYYLV3NjpU9UOKbrusOXJhWZqHv
-         BweHZCijU8qIF57E7OoE9uf48qVKfZUcoSngLOuTyGFIZMOYFqpfpTj1DyVeukmKCn
-         8JmkWDJ/HV31GVaCXoUb0jq/TCeWMBxFQ9jBrW5YI0TZNQTNpNNyO9m/Qr+bRItdd1
-         40+fTd1I+A52ZZWL+154h/pVou6vT3QgvFbZIj+C2atZbq6vdtZliTvKNnb0ARzeT+
-         gzxRcDzHGEkTA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 310AC60A4F;
-        Thu, 27 May 2021 18:41:50 +0000 (UTC)
-Subject: Re: [GIT PULL] ACPI fix for v5.13-rc4
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0i1WebaCZL3q-6rQOexMnYXacD6KTnO1ONcxN1Li01LSg@mail.gmail.com>
-References: <CAJZ5v0i1WebaCZL3q-6rQOexMnYXacD6KTnO1ONcxN1Li01LSg@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-pm.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0i1WebaCZL3q-6rQOexMnYXacD6KTnO1ONcxN1Li01LSg@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.13-rc4
-X-PR-Tracked-Commit-Id: 9b7ff25d129df7c4f61e08382993e1988d56f6a7
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 3224374f7eb08fbb36d3963895da20ff274b8e6a
-Message-Id: <162214091014.4321.9952958885965277813.pr-tracker-bot@kernel.org>
-Date:   Thu, 27 May 2021 18:41:50 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        s=k20201202; t=1622147196;
+        bh=cy1zdvQCkbyF8cbGtaUW+3spYF3RmL4ltiIOEIZGXTs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LRpAz+Zy10IieHd0zOw9oMrAFqOFjHdkQ6rnJvVonE+xMbFBybp6MaAj2gQXI1IdH
+         wEgPAZhR9pK2rKbl6aj/DAEug8PiyLXkjLp1WbIeQkKXB2zPcjGzYItapkH7Ke3sf+
+         LFSiC79CS4PLUPwsR9Mj1THEJaJkcUZzN4Rh4O9ZOd+9wz2hPirbanP8youDZtvMEy
+         TlEqbF574UBIrMurNf0tAOCp1W6YPs/IIusOsurS7ldudHPWe/9GfmmQQLkZ7tbdVt
+         O9YfBRJv4ZCaEoEtiGJzyFaBwW+yKq7NyV2vMzV50qjH/MpGw4OkXplZgTCQT23JLD
+         wN75hpiRFkqZg==
+Date:   Thu, 27 May 2021 22:26:33 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-staging@lists.linux.dev,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v1 1/6] i2c: acpi: Export i2c_acpi_find_client_by_adev()
+ for users
+Message-ID: <YLAAedlB6UaJQh0X@kunai>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-staging@lists.linux.dev,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20210526124322.48915-1-andriy.shevchenko@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="YkSC1hApOCzGjIKM"
+Content-Disposition: inline
+In-Reply-To: <20210526124322.48915-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Thu, 27 May 2021 20:32:16 +0200:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.13-rc4
+--YkSC1hApOCzGjIKM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/3224374f7eb08fbb36d3963895da20ff274b8e6a
+On Wed, May 26, 2021 at 03:43:17PM +0300, Andy Shevchenko wrote:
+> There is at least one user that will gain from the
+> i2c_acpi_find_client_by_adev() being exported.
 
-Thank you!
+No objections per se. But as the user is in staging, I want to ask if
+the use there is really a solution we would also accept outside of
+staging? Or is it a hack?
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+
+--YkSC1hApOCzGjIKM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmCwAHkACgkQFA3kzBSg
+KbZ39Q//Xi/xhfYvz+yPnbg09qxKQMLjTghIum8+MBovB6wG5KO3xJquun3lgwi2
+91cLMUs4vccepTNqhLc9E2aTpEj7vXT+TXXdi5lquG7A5UyRRXtLjdUUpocgQkK2
+c7XgdaghXzIHL2WQg/D69kWuCeqjDI2zKwozAUHj/xlq1VYH3G9t+JQjdCT2Mxr8
+cxLfc3CMIGALlPUY7KWJs4D094vladvWSenCpsQMMLbkJVXEGfBGbnvntrOEhNqZ
+w6WCapfG80/xPcVesMaQSRAkyTLIVwea/d0njRwmb3vd9GjhAtpc+2EHGJL16y0Y
+WAywSlzqXFHg50laA7nnV8nGUBPOwztSI000Lpry/jWqeG2sGKkwer0vl6701+84
+YBP7n1e3Fed/tNwlP5Ge38MAZg7q9tyhWn+PZmjccu3OPz0I/ITmQ3u3xjvVPyGp
+1VtJ8kH124M6l7VsnaQVv1iA827+rPQVmZ6DWtuRFDNjuhtuLgnAf726hS9ZW3U6
+tuR+BQDqM+Gno64KiErYiIEal5YVveCV3H5nub70hvVGKTsi2/Wpu5It3isQUppv
+puv31INxtAA0lqivGAwNAQ9JyIYWH32Yktfl7MQGfR8WkKiDcgG0o9krHDXhTXWK
+BAFQOOKvzTAmth8WGRktwJo2Pf3vQ6Yd6bb0yaNR9zIJbfV2hKM=
+=CIL7
+-----END PGP SIGNATURE-----
+
+--YkSC1hApOCzGjIKM--
