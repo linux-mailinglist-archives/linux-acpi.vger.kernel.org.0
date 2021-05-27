@@ -2,217 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0956C3927A5
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 May 2021 08:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5BB7392AD2
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 May 2021 11:32:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbhE0GdJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 May 2021 02:33:09 -0400
-Received: from mga07.intel.com ([134.134.136.100]:8529 "EHLO mga07.intel.com"
+        id S235823AbhE0Jdl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 May 2021 05:33:41 -0400
+Received: from foss.arm.com ([217.140.110.172]:54734 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229740AbhE0GdH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 27 May 2021 02:33:07 -0400
-IronPort-SDR: 2VEHxTv/xFz7Tcz0kMlywJoMuX2epjy+5G5PKDLqfkPrnKln4ewxLk4gjqmqt4u6yDwjrjJGEg
- y6V1/DZRdK3g==
-X-IronPort-AV: E=McAfee;i="6200,9189,9996"; a="266552002"
-X-IronPort-AV: E=Sophos;i="5.82,334,1613462400"; 
-   d="scan'208";a="266552002"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2021 23:31:32 -0700
-IronPort-SDR: X238zpK0wHrC9HweNTPfAMRhI04GfUrzQQmMKhEiLxBu3rIu3TD4xvn9X4p5Eap4aGm0AMQNMA
- eiypcEar/VUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,334,1613462400"; 
-   d="scan'208";a="547557085"
-Received: from lkp-server02.sh.intel.com (HELO 1ec8406c5392) ([10.239.97.151])
-  by fmsmga001.fm.intel.com with ESMTP; 26 May 2021 23:31:30 -0700
-Received: from kbuild by 1ec8406c5392 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lm9YH-0002bk-Vd; Thu, 27 May 2021 06:31:29 +0000
-Date:   Thu, 27 May 2021 14:31:03 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- b2864f8ca01d373c62bbfe71fa01695b039edbbf
-Message-ID: <60af3ca7.Oyc3dIv/Nv1FFwF5%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S235820AbhE0Jdk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 27 May 2021 05:33:40 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 66FED13A1;
+        Thu, 27 May 2021 02:32:07 -0700 (PDT)
+Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 13B963F73D;
+        Thu, 27 May 2021 02:32:05 -0700 (PDT)
+Date:   Thu, 27 May 2021 10:32:00 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Maximilian Luz <luzmaximilian@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] Revert "arm64: PCI: Exclude ACPI "consumer"
+ resources from host bridge windows"
+Message-ID: <20210527093200.GA16444@lpieralisi>
+References: <20210510234020.1330087-1-luzmaximilian@gmail.com>
+ <20210526205836.GA20320@willie-the-truck>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20210526205836.GA20320@willie-the-truck>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: b2864f8ca01d373c62bbfe71fa01695b039edbbf  Merge branch 'pm-cpufreq' into linux-next
+On Wed, May 26, 2021 at 09:58:36PM +0100, Will Deacon wrote:
+> On Tue, May 11, 2021 at 01:40:20AM +0200, Maximilian Luz wrote:
+> > The Microsoft Surface Pro X has host bridges defined as
+> > 
+> >     Name (_HID, EisaId ("PNP0A08") /* PCI Express Bus */)  // _HID: Hardware ID
+> >     Name (_CID, EisaId ("PNP0A03") /* PCI Bus */)  // _CID: Compatible ID
+> > 
+> >     Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+> >     {
+> >         Name (RBUF, ResourceTemplate ()
+> >         {
+> >             Memory32Fixed (ReadWrite,
+> >                 0x60200000,         // Address Base
+> >                 0x01DF0000,         // Address Length
+> >                 )
+> >             WordBusNumber (ResourceProducer, MinFixed, MaxFixed, PosDecode,
+> >                 0x0000,             // Granularity
+> >                 0x0000,             // Range Minimum
+> >                 0x0001,             // Range Maximum
+> >                 0x0000,             // Translation Offset
+> >                 0x0002,             // Length
+> >                 ,, )
+> >         })
+> >         Return (RBUF) /* \_SB_.PCI0._CRS.RBUF */
+> >     }
+> > 
+> > meaning that the memory resources aren't (explicitly) defined as
+> > "producers", i.e. host bridge windows.
+> > 
+> > Commit 8fd4391ee717 ("arm64: PCI: Exclude ACPI "consumer" resources from
+> > host bridge windows") introduced a check that removes such resources,
+> > causing BAR allocation failures later on:
+> > 
+> >     [ 0.150731] pci 0002:00:00.0: BAR 14: no space for [mem size 0x00100000]
+> >     [ 0.150744] pci 0002:00:00.0: BAR 14: failed to assign [mem size 0x00100000]
+> >     [ 0.150758] pci 0002:01:00.0: BAR 0: no space for [mem size 0x00004000 64bit]
+> >     [ 0.150769] pci 0002:01:00.0: BAR 0: failed to assign [mem size 0x00004000 64bit]
+> > 
+> > This eventually prevents the PCIe NVME drive from being accessible.
+> > 
+> > On x86 we already skip the check for producer/window due to some history
+> > with negligent firmware. It seems that Microsoft is intent on continuing
+> > that history on their ARM devices, so let's drop that check here too.
+> > 
+> > Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+> > ---
+> > 
+> > Please note: I am not sure if this is the right way to fix that, e.g. I
+> > don't know if any additional checks like on IA64 or x86 might be
+> > required instead, or if this might break things on other devices. So
+> > please consider this more as a bug report rather than a fix.
+> > 
+> > Apologies for the re-send, I seem to have unintentionally added a blank
+> > line before the subject.
+> > 
+> > ---
+> >  arch/arm64/kernel/pci.c | 14 --------------
+> >  1 file changed, 14 deletions(-)
+> 
+> Adding Lorenzo to cc, as he'll have a much better idea about this than me.
+> 
+> This is:
+> 
+> https://lore.kernel.org/r/20210510234020.1330087-1-luzmaximilian@gmail.com
 
-elapsed time: 725m
+Sigh. We can't apply this patch since it would trigger regressions on
+other platforms (IIUC the root complex registers would end up in the
+host bridge memory windows).
 
-configs tested: 154
-configs skipped: 2
+I am not keen on reverting commit 8fd4391ee717 because it does the
+right thing.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I think this requires a quirk and immediate reporting to Microsoft.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-m68k                         amcore_defconfig
-mips                        jmr3927_defconfig
-powerpc                      ppc44x_defconfig
-mips                        nlm_xlp_defconfig
-powerpc                  iss476-smp_defconfig
-powerpc                  mpc866_ads_defconfig
-xtensa                         virt_defconfig
-arm                          ep93xx_defconfig
-s390                                defconfig
-sh                           se7705_defconfig
-powerpc                       maple_defconfig
-arc                 nsimosci_hs_smp_defconfig
-arm                             ezx_defconfig
-arm                              alldefconfig
-powerpc                    sam440ep_defconfig
-sh                        edosk7760_defconfig
-arm                          iop32x_defconfig
-arm                         lpc32xx_defconfig
-arm                          ixp4xx_defconfig
-sh                          lboxre2_defconfig
-sh                          sdk7780_defconfig
-mips                      malta_kvm_defconfig
-arm                         palmz72_defconfig
-mips                       bmips_be_defconfig
-arm                           sunxi_defconfig
-powerpc                     tqm8560_defconfig
-powerpc                     skiroot_defconfig
-powerpc                 mpc8313_rdb_defconfig
-arc                     nsimosci_hs_defconfig
-mips                         tb0287_defconfig
-arm64                            alldefconfig
-mips                        bcm47xx_defconfig
-h8300                               defconfig
-sh                     sh7710voipgw_defconfig
-mips                           ip22_defconfig
-powerpc                    amigaone_defconfig
-mips                    maltaup_xpa_defconfig
-mips                        maltaup_defconfig
-arm                        realview_defconfig
-mips                         mpc30x_defconfig
-arm                          collie_defconfig
-m68k                        stmark2_defconfig
-powerpc                   lite5200b_defconfig
-powerpc                mpc7448_hpc2_defconfig
-powerpc                     tqm8548_defconfig
-arm                        multi_v5_defconfig
-mips                            e55_defconfig
-mips                        omega2p_defconfig
-arm                        mini2440_defconfig
-arm                          badge4_defconfig
-ia64                             alldefconfig
-powerpc                 mpc836x_mds_defconfig
-arm                      jornada720_defconfig
-powerpc                      mgcoge_defconfig
-openrisc                            defconfig
-mips                     loongson1c_defconfig
-m68k                             allmodconfig
-nios2                         3c120_defconfig
-sh                          kfr2r09_defconfig
-arc                      axs103_smp_defconfig
-arm                        cerfcube_defconfig
-mips                           ci20_defconfig
-xtensa                  cadence_csp_defconfig
-arm                       omap2plus_defconfig
-arc                    vdk_hs38_smp_defconfig
-powerpc                     mpc83xx_defconfig
-microblaze                          defconfig
-arm                            qcom_defconfig
-arm                       cns3420vb_defconfig
-arc                        nsim_700_defconfig
-mips                        nlm_xlr_defconfig
-mips                         rt305x_defconfig
-arm                        mvebu_v5_defconfig
-powerpc                      bamboo_defconfig
-sparc64                          alldefconfig
-mips                      maltaaprp_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a005-20210526
-x86_64               randconfig-a001-20210526
-x86_64               randconfig-a006-20210526
-x86_64               randconfig-a003-20210526
-x86_64               randconfig-a004-20210526
-x86_64               randconfig-a002-20210526
-i386                 randconfig-a001-20210526
-i386                 randconfig-a002-20210526
-i386                 randconfig-a005-20210526
-i386                 randconfig-a004-20210526
-i386                 randconfig-a003-20210526
-i386                 randconfig-a006-20210526
-i386                 randconfig-a011-20210526
-i386                 randconfig-a016-20210526
-i386                 randconfig-a015-20210526
-i386                 randconfig-a012-20210526
-i386                 randconfig-a014-20210526
-i386                 randconfig-a013-20210526
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allyesconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+Bjorn, what are your thoughts on this ?
 
-clang tested configs:
-x86_64               randconfig-b001-20210526
-x86_64               randconfig-a013-20210526
-x86_64               randconfig-a012-20210526
-x86_64               randconfig-a014-20210526
-x86_64               randconfig-a016-20210526
-x86_64               randconfig-a015-20210526
-x86_64               randconfig-a011-20210526
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Thanks,
+Lorenzo
