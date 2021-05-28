@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B6D339458A
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 May 2021 18:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9A1239458B
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 May 2021 18:03:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233040AbhE1QEU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 May 2021 12:04:20 -0400
-Received: from mail-bn1nam07on2071.outbound.protection.outlook.com ([40.107.212.71]:31205
-        "EHLO NAM02-BN1-obe.outbound.protection.outlook.com"
+        id S231183AbhE1QEe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 May 2021 12:04:34 -0400
+Received: from mail-mw2nam10on2085.outbound.protection.outlook.com ([40.107.94.85]:19627
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229608AbhE1QEQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 28 May 2021 12:04:16 -0400
+        id S229608AbhE1QEd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 28 May 2021 12:04:33 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WaE1lqP/D89rh74b6hwC0m85o09y6TQf+We5vt7f3X1F378DVQRkcM76t9vb1nTsadSqOchwvvNukAYzK9HHt2aJcfx8XV2x8oSMGrIKL3mfn9Fr/SYpvtBkj10xTkTdhJju2guCLLMlovJN6tkuJsoKYnIWmC9eS75t4W3IzAFNeVGLpbOt6hCbTivtz2gOecf1oaSfWzcBZJK5aD1u9A4qUByuXJg1NpPaVFW+6jU3Dcbr292BngogFMxeIYnL8p7IAaDiOjLF47uhwKc0JzZ4ZCNoOTGyzMi0uYECw6P1/67Oor6zWC9eQR6qhKdmjkX5wUlXzlk+lXiYcVEoJA==
+ b=nVqlfZKC4ZtTfJMO5hFB24fjzG/Es31TCpks7ttKV5fDFLyYpMoLcVVNExAcIJZTqT4z6tzgTIz9E+XGiqHHEr7NUH9Te6qTUCzz9T/sHozW8JcXa6OMpZfsCkgHfVtew/A39R2linZiQk1CmKcdxqi73HfUheHFw80V+flq6PX1okOb3fXZtnPT7HOiXKKa5xLQ2tk02PewDY1t2fKEnBbZ3K4bcz+HjIX0KrUDHAusDG788D6Aa6/Ao0Owo2nX5/dbxfvA09b/MPOO+ILTKPAejQ1/QQRouNByJdWvF6f7lJG9QDpzOSBWYxCkIC3ErOn0G9eIHj2e+WdpHA4rvg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AXpKy8pT5Bx8wKuxpeXDWexX/6t0wJQJvf2oJNghKOw=;
- b=CtgbR98ChLhOvhzisqUUJYhZiiL3YL9wXksnx90qjoE/1S8sskzP28zxPJgmBxdNv/UI/fAjkgw68KMYNrh8yzdPVt8w9JBOX4ewHCoqZv4qsVa5m7u/wvBMrPaEVFuy+cNTRuHP/+Bu1wVlbopwDsVWqhWMCEx71xEzAHmY5QIszv65j66Gd8aKZGDQeccT2ul1Exxe6nXjXOV1mnflxDa9U0ugin8FLSRw0knEonoK6lNE6M+lVym5MX6VTnlRrx9FMr3d9qguCNWlTbQv0NzZhrNsb8FpHuFKgXTKSemQvONKSnciiHfYIb3Jj3j3sl5xgEacpGN8mWPGhnaecQ==
+ bh=S2/drGdHYQf93hCDzStqeWiblY5i4h2Q8o+pCCw4iQc=;
+ b=LFxmZ8IMf6u0cmy78xk+LFc6cmQ7oVdMycmsiJWq/+icHWhf+ugDC/+6uuYT/WKh97iMRxO0zGmrYBzD8dFk9idamRo0Cm6UJ5Zi0++tINDfnNmxu69ayW8PBzipf9S5t3udUK05uDqU/ebDdgGwZ1IGlTJA63OaBlo5XO65YYXh69y1wcOhbHRIwVbtwFzvQD1T+fTD+Kkh33ikhVq9f9pi41r1wKhoi3OCHfuREbfoCNNR/bCivzJy4CnbGDxeGX4XGtdOxI/T288LrtO5NSMZCl/t9FOgQvWfl2V8rrcymRk9DdghweMRQZcFBYXFb2DDHb3yPosLhaaVMy5tzA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AXpKy8pT5Bx8wKuxpeXDWexX/6t0wJQJvf2oJNghKOw=;
- b=rYPoEkDcAbm6Fx31TcjyH33N96Zkidznms8FMMVoEU9MP05oBQp+yG/3h6fAdEBEvbVIVHu3KB9r/hAQIUXPmgsvpJ3UQzJ1ByG2CMYsmqMn1zs0IqTLVn1hXIlMPe7jjvoCqG+85VipgdGFC3Ax3E0SFOsxaICG57AlR4IewFk=
+ bh=S2/drGdHYQf93hCDzStqeWiblY5i4h2Q8o+pCCw4iQc=;
+ b=XC0iX1et0fOzZMTHKtL/pgZB9SnrT3fSkVLJK5x2xgn/ceLVwhSAM60aKXEPA3yB2HPcOt7nZ6MmDizSzbIeCijBa+0hn1ahKqTYloHHq5J2aA7IcRFbx8v/2rck3XrWp79Z2NWk7IPhp+D8c/O8OHDGUD9CLaOKRRgUTo6fxEY=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from BYAPR12MB2693.namprd12.prod.outlook.com (2603:10b6:a03:6a::33)
- by BY5PR12MB4902.namprd12.prod.outlook.com (2603:10b6:a03:1dd::9) with
+ by BYAPR12MB3558.namprd12.prod.outlook.com (2603:10b6:a03:aa::31) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4173.21; Fri, 28 May
- 2021 16:02:39 +0000
+ 2021 16:02:57 +0000
 Received: from BYAPR12MB2693.namprd12.prod.outlook.com
  ([fe80::c0c3:7247:a767:f5b6]) by BYAPR12MB2693.namprd12.prod.outlook.com
  ([fe80::c0c3:7247:a767:f5b6%3]) with mapi id 15.20.4150.032; Fri, 28 May 2021
- 16:02:39 +0000
+ 16:02:57 +0000
 From:   Mario Limonciello <mario.limonciello@amd.com>
 To:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
         Christoph Hellwig <hch@lst.de>,
@@ -46,137 +46,186 @@ Cc:     linux-nvme@lists.infradead.org (open list:NVM EXPRESS DRIVER),
         linux-acpi@vger.kernel.org, rrangel@chromium.org,
         david.e.box@linux.intel.com, Shyam-sundar.S-k@amd.com,
         Alexander.Deucher@amd.com, prike.liang@amd.com,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Liang Prike <Prike.Liang@amd.com>
-Subject: [PATCH v3 1/2] nvme: Look for StorageD3Enable on companion ACPI device instead
-Date:   Fri, 28 May 2021 11:02:34 -0500
-Message-Id: <20210528160234.9402-1-mario.limonciello@amd.com>
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v3 2/2] acpi: Move check for _DSD StorageD3Enable property to acpi
+Date:   Fri, 28 May 2021 11:02:53 -0500
+Message-Id: <20210528160253.9492-1-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.25.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [76.251.167.31]
-X-ClientProxiedBy: SN4PR0501CA0155.namprd05.prod.outlook.com
- (2603:10b6:803:2c::33) To BYAPR12MB2693.namprd12.prod.outlook.com
+X-ClientProxiedBy: SN1PR12CA0101.namprd12.prod.outlook.com
+ (2603:10b6:802:21::36) To BYAPR12MB2693.namprd12.prod.outlook.com
  (2603:10b6:a03:6a::33)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from AUS-LX-MLIMONCI.amd.com (76.251.167.31) by SN4PR0501CA0155.namprd05.prod.outlook.com (2603:10b6:803:2c::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.9 via Frontend Transport; Fri, 28 May 2021 16:02:37 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (76.251.167.31) by SN1PR12CA0101.namprd12.prod.outlook.com (2603:10b6:802:21::36) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4173.20 via Frontend Transport; Fri, 28 May 2021 16:02:56 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ca08f4a9-7884-4a22-bd40-08d921f20434
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4902:
+X-MS-Office365-Filtering-Correlation-Id: f7930ee9-d7c4-4575-5b24-08d921f20f14
+X-MS-TrafficTypeDiagnostic: BYAPR12MB3558:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BY5PR12MB4902B190985620BDE6426E70E2229@BY5PR12MB4902.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-Microsoft-Antispam-PRVS: <BYAPR12MB3558A7A47203A67C33AEB466E2229@BYAPR12MB3558.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: MPC/7ZZ9W1tcv1j0pIahSgU8NOXDbwtQ7Y//3sxEVh+ddPIoIeD/2ss8yRanVwdO6hRegF7GhWuuy1yZi72LdU9Zcx3LIvQeDbtqTOdS3uLtFI7lo+3GPnokxEDk4SuhuHzKvKDfXPfXt34ObTwUUuxCVrH1StMpf+S8jxaiehr13kTlsHrVpL6y32oH/c7vPtFiuzmc2a9l5VVtPIQwZ/9yuF2HsZrfHuKa+fFhH2toGiowYXAvErgVuYjHZf2SjgOMD4RQ5nMo22U+nQOLSzNaCf+2cobgof0duvmScf2em433yzMb2vlUEfToaQUQjdzbhNxrN/GqOeDqCh5FGXjpaxXtkOxEltLV8BvIai7aZasPvq68FYS4HJrDpLHaUnjV5QmUf4R447dKEPvPwqIC9HZuELC/nCRRDam9UwdCaCk1ds2RGFzhJSecKzPCZAKVMIbvC0Pd+PsPw5onseQ2eetD3GIeIjJGfIViUUhA2mEBXiU724RtU6inyZvjeED7lhx5EWdrYn9Aa5sNOYa7+mAEYHD23hJceCSiEHp5k0VwhO5zpFP27+qwXZI5U53EQ6LPROj50vF3yo3z/ByucTRiyjRvHyTloszgRs/znun+YThlY7UuUEL46PHN9n0sSJLJxaUVnRqAZAQ1LmBRT6M3wu/hJw6gnhCo6fg/zQ8y37btvMFkntyZOn6CdaU7ECi19OGl9uUVDf77CGPuCZCBPikubDttE83Ybms+OaR8kbFhcpQt3RnOLoa893BOvrR95OWGCMxiHgM9lYsYBr2RFOxpR17XpT6DohZCgepgoGDNaZ18uDoq1t2D
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2693.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(376002)(366004)(346002)(396003)(2906002)(110136005)(86362001)(186003)(5660300002)(16526019)(26005)(316002)(54906003)(966005)(2616005)(1076003)(6486002)(956004)(44832011)(66556008)(478600001)(83380400001)(38100700002)(38350700002)(66476007)(66946007)(8936002)(4326008)(6666004)(8676002)(7696005)(52116002)(36756003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?er6tmKshT0muZMa/qIIltqB4HaShC9LYYlZQJ+yPdYVWoU9wKK/3kGSJ8Cj1?=
- =?us-ascii?Q?rtT2bb1Pr8OLnW0MTAfzbgNphbIuSv003ZJpbP78kkzBMd/rkOvn+3nhboIb?=
- =?us-ascii?Q?iko4Ex/3Ft6e+qoS5bxmW/v3K5/C1lUEWYvQlyP2Roerz3MwHzCKDMUxGlwZ?=
- =?us-ascii?Q?R+E0xN8/ZXuc+8n8STrtC6b6/aQOgK5Wsez9nVgVS6I8crCbZtahM7XDUos6?=
- =?us-ascii?Q?+j/V93bI6MBvU8Oagt3EV4Tgde3uW5BsqMimIspM/gUmHwr2GBzit9MbJoeT?=
- =?us-ascii?Q?6EKj3hdr2hrkXzxRHxSjBVPUUacD/eT/jL9XW0vMiURNToD8nzGSr+1im3QL?=
- =?us-ascii?Q?6cvEcjnrF0D8MzZOTfGi+rm7K9OxUuzmSrahvCGgIK6lw+w80kNh8cFllLgr?=
- =?us-ascii?Q?bXMmhVVdD3mkFUjD6eO7TBOVhZ2k6frnMEemzHO2WAggIHx8J642MJaTWved?=
- =?us-ascii?Q?gqYuSlwLohQltQ7YcXwhWs+gzilO5qmTEcApJRb+njPKyNaRAnL0J8Uer7Ec?=
- =?us-ascii?Q?aBYunoyeGOJ8nEMnUTRPyznsuObjTZq7r98CR30LUgb8TRqtR+mkcsrk3pzw?=
- =?us-ascii?Q?6BvSTj1CCQ4ofuFjBLGoUk8PrI/AwUa/kcGolspc0fwNCDW6fhnlWmtQe5IJ?=
- =?us-ascii?Q?hmssy5a6JXqo+QaJ2AzANzGdsyvkGStnk3JbVSYKKzU4DyIlEK97lpnYpKcJ?=
- =?us-ascii?Q?wnRPnVGQLgr3gWA71c0Wd88cHF1JlblGVxfKWgaXjNfHCd8IW+zYERTkXQ/c?=
- =?us-ascii?Q?Niu4OeOs+G5iXq+KYzX5+hRFAvAzSebNtFSEJcD01ocLSTCXG89uV+qDYKw6?=
- =?us-ascii?Q?EirSFBMuIcgHe0oC9sZUrk1kWGKHoZogq7fLG4Md09tbQXKjKz09o4IKNZKX?=
- =?us-ascii?Q?W0I8FZ9qiXHbnW+W40MvTcLKJgMIDkpLCdvr2C4y9Z9oz4KcC0QHyhS/I822?=
- =?us-ascii?Q?4SHZ9+mDxg5J93VjJM+ZhyrVVuu0TozgQmhbJnH2eL2qH4QGx3cd8MWbR1x2?=
- =?us-ascii?Q?KiYgpPi8FTPAfz+pIkbWFNgY6Bk/LKKTwXKxu+Gj0IGcthcmyJ/hqpUO16di?=
- =?us-ascii?Q?psnHBUIFHo5ZgpbKRZ1bkrEaCiT5COTvbSuxaM9igJQbz3TpzLslf0Ul7BtP?=
- =?us-ascii?Q?6UOhiRY8eH6dJKY1wSyZo4cP19FXiCg8LdpesZx8Sh/yivGXQx3gK6cesqDe?=
- =?us-ascii?Q?Ssogni1Z1gxoiR9EN9/7OY12LYotLnBWLbIM4zy6/ypIOXeSWlBZ4moa87dp?=
- =?us-ascii?Q?k8cynbSAQ+9QHR26vvx3orifztLbgq6Yh58vixTfD+d0D9tE2vxDfHPDQUwy?=
- =?us-ascii?Q?MyQeI83VVkhRI1/OhVQk+dSg?=
+X-Microsoft-Antispam-Message-Info: xMSeKNMzSSrC3zIpL4MTTSbZlZI31Dut/axycWFUDecthSwV4cLD+889abvA4NaKcrhkk6F4nL+aurdcmz7xeigf7BtNPsju3269OcDbt/a4UisKSXkbBjHXNVTsx15m2KKRIDAf2CeBOGrDx+DcFC0wGOcb05X44Vl0KyhoY9TJGcDhE+FRhz2qToxN3K2NEzB4vm+iIeEeN2nbG3H9O31iwnThZJuH+hZ7XOgtegUVad7kYjZZOsojMWYlUHZO2pcfn2R3hrKyUJamXoeq9WTnIDbAYxY+qs3UIAOVHKeZHML5S+JyNq3DErQPfNmmCotqK38TKcWN8flgBT6CgTPD2Qi/lyIOA67A9gj23FfiBURyrdS6cX4M/ONPTosi+eQVIhd5AOShW7Z9WGlK9CkHB7khKFobBHfK/igxTMjCbJp3ctVIpyUgWjn2a5wD3AmQnFSJvZfTlkir69DMtQ1dnTlxDFG8wHGSwJUV5mkywvzh0ArZS+AxQQiZAjoa/7DLe3SwjKQ9jmkvW3565hCEayAW4JoO12sFE6yz5jqzO0DQg5qqjD4wMAPTH1ul3KpZhEX9ajZIozuDHOfhCKCOVnmgq91bKpr4X37A8QHONBCyCKSf8aAqfyauvLogPzJjlaDJtwRXdtV5A1/pcXuZ+MQ2qgttXUOO+B/y4vs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2693.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(396003)(346002)(366004)(376002)(186003)(16526019)(8676002)(44832011)(26005)(38350700002)(36756003)(52116002)(8936002)(38100700002)(6666004)(86362001)(7696005)(66556008)(2616005)(956004)(2906002)(478600001)(83380400001)(66946007)(316002)(66476007)(4326008)(110136005)(5660300002)(1076003)(6486002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?jOzQ2O0YcfhEsmCpmidpOPQ8JKpeWG6SckQE6ojzPwCJ4jRRSygrB4tM0jzx?=
+ =?us-ascii?Q?qwBYZn8ohwtzuaFOi2ZiowSxJGo8YHMxKpkyqs6QDvmRwB2T0cH1lt1Na1A+?=
+ =?us-ascii?Q?SBt1SktwqXSW+uuPZu1qoee3lW61v2nmSU3OoMPvo1GJnkwjtteeqT63MELn?=
+ =?us-ascii?Q?TE2p4iYCGn0qeEGHioR9cD7y0LmAfeHpKLNsNkUFh+rfCIaG4CE8CDwyGrZA?=
+ =?us-ascii?Q?fjxZbo24H5axW+Lv0kX8ehmQXsLI8uH8FY11F/0a68Ub9AutrpMRf4KL8JnU?=
+ =?us-ascii?Q?v3dtrx0HJZiZEGr2V2lsC+OT85fHX8WmUz6HFqVaZUfi2ob6Ay+DonrfwhCv?=
+ =?us-ascii?Q?iBwmGoltwnh57SYPfFXyVcmZq3ehx0Ls6rp79uhIcW4oiW5WvOeLYmDAw52D?=
+ =?us-ascii?Q?JU+zHPC2ESQB6u769S5XTU+kDnP8snwNCpfN6d6aS+vhaKC/+mFlQtJ/jlNm?=
+ =?us-ascii?Q?XrSP/JL2+u+wBNmFJfMUc3VfoLjI02UVlh4BFEILjw6mpPJvpV913TTiwmsE?=
+ =?us-ascii?Q?iaIae2Zt6TzCTsWhaHZUREG5jZiW2P1+pwItzx5QI1E16k4pqtvQuZTbZ08S?=
+ =?us-ascii?Q?HnVheKGYcBHmwqW97p3XQyZYjcH/n+fWs2G1gRzbvQuPENsTUGbHtyfaWVXC?=
+ =?us-ascii?Q?Iw2hx0gMeApl8ti8rk6XqFvfcjTE6ZHM5vUVCdlwUxYUE+/B7JNAmAw2UDkH?=
+ =?us-ascii?Q?pp8tTfHURjj26II2R6+oY4OO/3bUCZFjQOp66W/kc7HeFpqmEDNLRzeLTb+o?=
+ =?us-ascii?Q?I/5gJK4BxLIQ8Nqo503dP3Z/NKWX/tbjVhH5Y8N5HPUelU+YB1lmtoeIqVJG?=
+ =?us-ascii?Q?VtZDquHotgFHlcD329sgb+yrWy1071sZcye5ysqikHPoD5aaexOrK04DTSoN?=
+ =?us-ascii?Q?GoWlBwsijFRtExZDK7vhqzLLnPsamWS0V+USC0qrwno2vFToei2MD9DydgRy?=
+ =?us-ascii?Q?XrpUbyejcXTrv8s7SClLv2M0PAf6100OcoI4qJJzyYA0hsFk3upki7cMI5oo?=
+ =?us-ascii?Q?RSUS6Bt+RDEHt3WV3E/yuZRaLPk15a8mP9V8aDj2sc5iQqbD4KOI1i19G+dI?=
+ =?us-ascii?Q?vVq6ib/VzhnLdnsjnynhd7vBOaMyc1Yu7fdDFpl86BHRmAy5fkK1+hpK0Ow5?=
+ =?us-ascii?Q?KFiNCu8I2Q7VExBTsVkSwYtgeDYxxIdY8BA2uIdq2fvKm9ZZOzqI74o596Ny?=
+ =?us-ascii?Q?NVh3YKXlDCtZvvQfWPBHR5mCv07J3xHofDONoX5AhfUdrPdi6kiN60syrLnT?=
+ =?us-ascii?Q?72sqIYgk38gom8NmmBZS2j0gWHUDcWVhzxigRizbQC9xLjCeSjgtCoNU1i5r?=
+ =?us-ascii?Q?DU2mjojWrR6bDTckDainLmcY?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca08f4a9-7884-4a22-bd40-08d921f20434
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7930ee9-d7c4-4575-5b24-08d921f20f14
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2693.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2021 16:02:38.7362
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2021 16:02:56.9799
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IGBFBIqjWmV8r7pOq51ncTabM5wkl0o4Rv/3UOjn2ClpAklGxfi+XhE1ZPFmFQx0bB6n9/TYdukQBt3TA/lA+w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4902
+X-MS-Exchange-CrossTenant-UserPrincipalName: Wuc/2eXOtqctCNXNkUv5sIQak4LBZjO7YAIB+PlzUqVY7rm4qJIeV46o2ykjojHwLc2wV3rHdklxT/6zLeuhZw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3558
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The documentation around the StorageD3Enable property hints that it
-should be made on the PCI device.  This is where newer AMD systems set
-the property and it's required for S0i3 support.
+Although first implemented for NVME, this check may be usable by
+other drivers as well.
 
-So rather than look for nodes of the root port only present on Intel
-systems, switch to the companion ACPI device for all systems.
-David Box from Intel indicated this should work on Intel as well.
-
-Link: https://lore.kernel.org/linux-nvme/YK6gmAWqaRmvpJXb@google.com/T/#m900552229fa455867ee29c33b854845fce80ba70
-Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-Suggested-by: Liang Prike <Prike.Liang@amd.com>
-Acked-by: Raul E Rangel <rrangel@chromium.org>
+Suggested-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/nvme/host/pci.c | 24 +-----------------------
- 1 file changed, 1 insertion(+), 23 deletions(-)
+ drivers/acpi/device_pm.c | 24 ++++++++++++++++++++++++
+ drivers/nvme/host/pci.c  | 28 +---------------------------
+ include/linux/acpi.h     |  5 +++++
+ 3 files changed, 30 insertions(+), 27 deletions(-)
 
-Changes from v1->v2:
- * Drop the old PXSX/PEGP logic instead of supplement to it
- * Add references to other discussions on this topic
 Changes from v2->v3:
- * Initialize variable at beginning of function
+ * New patch suggested by Keith on the mailing list.
+ * Rebase on variable initialization optimization in first patch
+ * Add kernel doc to his patch
 
+diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+index d260bc1f3e6e..b959fa54f478 100644
+--- a/drivers/acpi/device_pm.c
++++ b/drivers/acpi/device_pm.c
+@@ -1340,4 +1340,28 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+ 	return 1;
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
++
++/**
++ * acpi_storage_d3 - Check if a storage device should use D3.
++ * @dev: Device to check
++ *
++ * Look for a _DSD property specifying that the storage device
++ * should use D3 to support deep platform power savings during
++ * suspend-to-idle.
++ *
++ */
++bool acpi_storage_d3(struct device *dev)
++{
++	struct acpi_device *adev = ACPI_COMPANION(dev);
++	u8 val;
++
++	if (!adev)
++		return false;
++	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
++			&val))
++		return false;
++	return val == 1;
++}
++EXPORT_SYMBOL_GPL(acpi_storage_d3);
++
+ #endif /* CONFIG_PM */
 diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index a29b170701fc..3aa7245a505f 100644
+index 3aa7245a505f..8fbc4c87a0d8 100644
 --- a/drivers/nvme/host/pci.c
 +++ b/drivers/nvme/host/pci.c
-@@ -2831,10 +2831,7 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
- #ifdef CONFIG_ACPI
- static bool nvme_acpi_storage_d3(struct pci_dev *dev)
- {
--	struct acpi_device *adev;
--	struct pci_dev *root;
--	acpi_handle handle;
--	acpi_status status;
-+	struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
- 	u8 val;
+@@ -2828,32 +2828,6 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
+ 	return 0;
+ }
  
- 	/*
-@@ -2842,28 +2839,9 @@ static bool nvme_acpi_storage_d3(struct pci_dev *dev)
- 	 * must use D3 to support deep platform power savings during
- 	 * suspend-to-idle.
- 	 */
--	root = pcie_find_root_port(dev);
--	if (!root)
--		return false;
- 
--	adev = ACPI_COMPANION(&root->dev);
- 	if (!adev)
- 		return false;
+-#ifdef CONFIG_ACPI
+-static bool nvme_acpi_storage_d3(struct pci_dev *dev)
+-{
+-	struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
+-	u8 val;
 -
 -	/*
--	 * The property is defined in the PXSX device for South complex ports
--	 * and in the PEGP device for North complex ports.
+-	 * Look for _DSD property specifying that the storage device on the port
+-	 * must use D3 to support deep platform power savings during
+-	 * suspend-to-idle.
 -	 */
--	status = acpi_get_handle(adev->handle, "PXSX", &handle);
--	if (ACPI_FAILURE(status)) {
--		status = acpi_get_handle(adev->handle, "PEGP", &handle);
--		if (ACPI_FAILURE(status))
--			return false;
--	}
 -
--	if (acpi_bus_get_device(handle, &adev))
+-	if (!adev)
 -		return false;
+-	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+-			&val))
+-		return false;
+-	return val == 1;
+-}
+-#else
+-static inline bool nvme_acpi_storage_d3(struct pci_dev *dev)
+-{
+-	return false;
+-}
+-#endif /* CONFIG_ACPI */
 -
- 	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
- 			&val))
- 		return false;
+ static void nvme_async_probe(void *data, async_cookie_t cookie)
+ {
+ 	struct nvme_dev *dev = data;
+@@ -2903,7 +2877,7 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	quirks |= check_vendor_combination_bug(pdev);
+ 
+-	if (!noacpi && nvme_acpi_storage_d3(pdev)) {
++	if (!noacpi && acpi_storage_d3(&pdev->dev)) {
+ 		/*
+ 		 * Some systems use a bios work around to ask for D3 on
+ 		 * platforms that support kernel managed suspend.
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index c60745f657e9..dd0dafd21e33 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -1004,6 +1004,7 @@ int acpi_dev_resume(struct device *dev);
+ int acpi_subsys_runtime_suspend(struct device *dev);
+ int acpi_subsys_runtime_resume(struct device *dev);
+ int acpi_dev_pm_attach(struct device *dev, bool power_on);
++bool acpi_storage_d3(struct device *dev);
+ #else
+ static inline int acpi_subsys_runtime_suspend(struct device *dev) { return 0; }
+ static inline int acpi_subsys_runtime_resume(struct device *dev) { return 0; }
+@@ -1011,6 +1012,10 @@ static inline int acpi_dev_pm_attach(struct device *dev, bool power_on)
+ {
+ 	return 0;
+ }
++static inline bool acpi_storage_d3(struct device *dev)
++{
++	return false;
++}
+ #endif
+ 
+ #if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
 -- 
 2.25.1
 
