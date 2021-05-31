@@ -2,64 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB57A395ABA
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 May 2021 14:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E057C39644C
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 May 2021 17:52:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231492AbhEaMlh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 May 2021 08:41:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47746 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231327AbhEaMlg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 May 2021 08:41:36 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A109DC061574;
-        Mon, 31 May 2021 05:39:55 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id b17so13388550ede.0;
-        Mon, 31 May 2021 05:39:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:mime-version:content-transfer-encoding
-         :content-description:subject:to:from:date:reply-to;
-        bh=0b+RuiQoyEiCtXoor62bBGfumNTUO/BbXP6ZI1Era6U=;
-        b=p1sJBkLEwqLoQGK5FtasmPMu0bz/tuz9D+u8IufCFdk9Qu669tNwwD8TGTOlcLxt00
-         pvYdSSw+4gq+QofMP8PBX0Am6RUf/XEt4z/IiAQoqM738hAT6uLeZupkGevcFZH/xCJi
-         2HyRFCTn5PGmpG+YXrwis3XFi99Fs+Cbxj0uborq0AglioY2kBeAyYXHUT+zKzEjjZPd
-         JGtlIsiy3LxR1+SEdZfCXlOIA6JhdiGrDetKOKi5e9dDUu4BUsd5Hzax84AnAVrpvbF1
-         QuImrmrGBAsPtLvtw1k85gfXJ/awsZ4DhVtG/51VrIeF4we0s5DFRyJrofG+9SrV0H3L
-         erWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:mime-version
-         :content-transfer-encoding:content-description:subject:to:from:date
-         :reply-to;
-        bh=0b+RuiQoyEiCtXoor62bBGfumNTUO/BbXP6ZI1Era6U=;
-        b=AO/dLNdKc6vSG1X37Y80YHsi5CU48G7zlnVzkjkAkVO35+SnRJdSUofII4ZK9aa4pa
-         ZT2z3A9U+wzWD9ACW19NnWodEuYCe6CymrMnVgknfIIF4mPazVkIzBjLJc7T2n7rsGHZ
-         fzqYKgLl073rv9ICQLHUsC5XT184gq+JSPcWP4MM+uk5lyrXwsTkJHHsVzaVSO2ANDNR
-         a7vs7oI6WjRjibHRUTHIXV81ge/Oc/8YrOgEl64Cl9Mf2tUIpdG+QcnEFMmu590+jD/r
-         ke1SEi7uG5b9j8qk9iRvfZYaD8wj5c6T5sxxdaCdjR/J9nJM769mBGkHcTt2VDgGzPGk
-         IMag==
-X-Gm-Message-State: AOAM532foHeQr9izax02+3mtW6kVQpdnCDW53a9nBIhS/nym6dOn9LGG
-        LOBZ7QGKK8RAkqQJt5nnTJsiZBqyYhI=
-X-Google-Smtp-Source: ABdhPJx9AvbMYx+3dc9z4U3hBVl4jiABaPKa43+9iW9o8Y9TeDuzRgkzgGmKuEqQEeIIIa8FuxWAjA==
-X-Received: by 2002:aa7:dc17:: with SMTP id b23mr25001665edu.359.1622464794327;
-        Mon, 31 May 2021 05:39:54 -0700 (PDT)
-Received: from [10.5.50.90] ([196.170.43.166])
-        by smtp.gmail.com with ESMTPSA id k7sm4332682edq.80.2021.05.31.05.39.50
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Mon, 31 May 2021 05:39:53 -0700 (PDT)
-Message-ID: <60b4d919.1c69fb81.80335.5e76@mx.google.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        id S232114AbhEaPxv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 May 2021 11:53:51 -0400
+Received: from mga01.intel.com ([192.55.52.88]:52281 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232093AbhEaPvc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 31 May 2021 11:51:32 -0400
+IronPort-SDR: p26e1Z5f3/ELd9EJxyt+5dYTsqAU3hJoIMs0g3iVMR5h2WYyN34l8N/2ky3TBE1WrQz6gSG+Ls
+ NreJ9VpaeGQA==
+X-IronPort-AV: E=McAfee;i="6200,9189,10001"; a="224646671"
+X-IronPort-AV: E=Sophos;i="5.83,237,1616482800"; 
+   d="scan'208";a="224646671"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2021 08:43:45 -0700
+IronPort-SDR: bUacGGLAouai1owasPOOdITRHZvnpmAWCdt0EG9QdG3Pxa5gRgBAyu2awMYUX+yPHWJZhg5l8x
+ v35RkekfrXYQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,237,1616482800"; 
+   d="scan'208";a="632598639"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga006.fm.intel.com with ESMTP; 31 May 2021 08:43:43 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 1D45AC5; Mon, 31 May 2021 18:44:05 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Flavio Suligoi <f.suligoi@asem.it>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH v1 1/5] docs: firmware-guide: ACPI: Add a PWM example
+Date:   Mon, 31 May 2021 18:43:47 +0300
+Message-Id: <20210531154351.53614-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Hey!
-To:     Recipients <sultat655@gmail.com>
-From:   "Mr Jamie George" <sultat655@gmail.com>
-Date:   Mon, 31 May 2021 12:39:43 +0000
-Reply-To: jmgrge@gmail.com
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Can i talk to you?
+When PWM support for ACPI has been added into the kernel, it missed
+the documentation update. Hence update documentation here.
+
+Fixes: 4a6ef8e37c4d ("pwm: Add support referencing PWMs from ACPI")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ .../firmware-guide/acpi/enumeration.rst       | 32 +++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+diff --git a/Documentation/firmware-guide/acpi/enumeration.rst b/Documentation/firmware-guide/acpi/enumeration.rst
+index 9f0d5c854fa4..0813508b45b0 100644
+--- a/Documentation/firmware-guide/acpi/enumeration.rst
++++ b/Documentation/firmware-guide/acpi/enumeration.rst
+@@ -258,6 +258,38 @@ input driver::
+ 		.id_table	= mpu3050_ids,
+ 	};
+ 
++Reference to PWM device
++=======================
++
++Sometimes a device can be a consumer of PWM channel. Obviously OS would like
++to know which one. To provide this mapping the special property has been
++introduced, i.e.::
++
++    Device (DEV)
++    {
++        Name (_DSD, Package ()
++        {
++            ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
++            Package () {
++                Package () { "compatible", Package () { "pwm-leds" } },
++                Package () { "label", "alarm-led" },
++                Package () { "pwms",
++                    Package () {
++                        "\\_SB.PCI0.PWM",  // <PWM device reference>
++                        0,                 // <PWM index>
++                        600000,            // <PWM period>
++                        0,                 // <PWM flags>
++                    }
++                }
++            }
++
++        })
++        ...
++
++In the above example the PWM-based LED driver references to the PWM channel 0
++of \_SB.PCI0.PWM device with initial period setting equal to 600 us (note that
++value is given in nanoseconds).
++
+ GPIO support
+ ============
+ 
+-- 
+2.30.2
+
