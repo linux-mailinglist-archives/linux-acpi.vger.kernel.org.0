@@ -2,93 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFCC23983F0
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jun 2021 10:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 867273984E7
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jun 2021 11:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230112AbhFBIRl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Jun 2021 04:17:41 -0400
-Received: from szxga08-in.huawei.com ([45.249.212.255]:3343 "EHLO
+        id S231151AbhFBJIV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Jun 2021 05:08:21 -0400
+Received: from szxga08-in.huawei.com ([45.249.212.255]:3347 "EHLO
         szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229818AbhFBIRk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Jun 2021 04:17:40 -0400
-Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Fw1v61L6bz19SLV;
-        Wed,  2 Jun 2021 16:11:14 +0800 (CST)
-Received: from dggpemm500006.china.huawei.com (7.185.36.236) by
+        with ESMTP id S231154AbhFBJIS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Jun 2021 05:08:18 -0400
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Fw31T4qpdz19Shh;
+        Wed,  2 Jun 2021 17:01:49 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
  dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 2 Jun 2021 16:15:56 +0800
-Received: from thunder-town.china.huawei.com (10.174.177.72) by
- dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
+ 15.1.2176.2; Wed, 2 Jun 2021 17:05:41 +0800
+Received: from linux-ibm.site (10.175.102.37) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 2 Jun 2021 16:15:55 +0800
-From:   Zhen Lei <thunder.leizhen@huawei.com>
-To:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi <linux-acpi@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH 1/1] PNP: use DEVICE_ATTR_RO macro
-Date:   Wed, 2 Jun 2021 16:15:46 +0800
-Message-ID: <20210602081546.11170-1-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
+ 15.1.2176.2; Wed, 2 Jun 2021 17:05:41 +0800
+From:   Hanjun Guo <guohanjun@huawei.com>
+To:     <linux-acpi@vger.kernel.org>
+CC:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>
+Subject: [PATCH 00/18] ACPI: Further cleanups for message printing
+Date:   Wed, 2 Jun 2021 16:54:22 +0800
+Message-ID: <1622624080-56025-1-git-send-email-guohanjun@huawei.com>
+X-Mailer: git-send-email 1.7.12.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.174.177.72]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500006.china.huawei.com (7.185.36.236)
+Content-Type: text/plain
+X-Originating-IP: [10.175.102.37]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Use DEVICE_ATTR_RO macro helper instead of plain DEVICE_ATTR, which makes
-the code a bit shorter and easier to read.
+After the message printing cleanups to decouple with ACPICA, the message
+printing in ACPI subsystem still have the room for improvement. For now
+we use both PREFIX "ACPI: " and pr_*() macros for message print in ACPI
+subsystem, they are misused in follwing ways:
 
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
----
- drivers/pnp/card.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ - Duplicated prefix. For example in sysfs.c we have pr_fmt() but we
+   still use pr_err(PREFIX ...), which is worng;
 
-diff --git a/drivers/pnp/card.c b/drivers/pnp/card.c
-index 2430c14f472d26a..d40ed8621571b0a 100644
---- a/drivers/pnp/card.c
-+++ b/drivers/pnp/card.c
-@@ -181,8 +181,8 @@ struct pnp_card *pnp_alloc_card(struct pnp_protocol *protocol, int id, char *pnp
- 	return card;
- }
- 
--static ssize_t pnp_show_card_name(struct device *dmdev,
--				  struct device_attribute *attr, char *buf)
-+static ssize_t name_show(struct device *dmdev,
-+			 struct device_attribute *attr, char *buf)
- {
- 	char *str = buf;
- 	struct pnp_card *card = to_pnp_card(dmdev);
-@@ -191,10 +191,10 @@ static ssize_t pnp_show_card_name(struct device *dmdev,
- 	return (str - buf);
- }
- 
--static DEVICE_ATTR(name, S_IRUGO, pnp_show_card_name, NULL);
-+static DEVICE_ATTR_RO(name);
- 
--static ssize_t pnp_show_card_ids(struct device *dmdev,
--				 struct device_attribute *attr, char *buf)
-+static ssize_t card_id_show(struct device *dmdev,
-+			    struct device_attribute *attr, char *buf)
- {
- 	char *str = buf;
- 	struct pnp_card *card = to_pnp_card(dmdev);
-@@ -207,7 +207,7 @@ static ssize_t pnp_show_card_ids(struct device *dmdev,
- 	return (str - buf);
- }
- 
--static DEVICE_ATTR(card_id, S_IRUGO, pnp_show_card_ids, NULL);
-+static DEVICE_ATTR_RO(card_id);
- 
- static int pnp_interface_attach_card(struct pnp_card *card)
- {
+ - Using pr_*() macros without pr_fmt(), but some pr_*() calls added
+   the PREFIX and some didn't in the same file;
+
+ - Mixed use of printk(PREFIX) and pr_*() macros in one driver but
+   don't have the same prefix for message printing.
+
+All the above will confuse people, sometimes leads to write some wrong
+message printing code, so just use pr_fmt() and pr_*() macros to generate
+a unified format string, and remove the using of PREFIX "ACPI: " in ACPI
+drivers, finally remove PREFIX "ACPI: " definition in the internal.h,
+which prevent further misuse of the PREFIX.
+
+Also remove some in-house DBG code which is not useful, replace with
+pr_debug() instead.
+
+Hanjun Guo (18):
+  ACPI: cmos_rtc: Using pr_fmt() and remove PREFIX
+  ACPI: blacklist: Unify the message printing
+  ACPI: bus: Use pr_*() macros to replace printk()
+  ACPI: event: Use pr_*() macros to replace printk()
+  ACPI: glue: Clean up the printing messages
+  ACPI: nvs: Unify the message printing
+  ACPI: osl: Remove the duplicated PREFIX for message printing
+  ACPI: pci_root: Unify the message printing
+  ACPI: processor_thermal: Remove unused PREFIX for printing
+  ACPI: processor_perflib: Cleanup print messages
+  ACPI: processor_throttling: Cleanup the printing messages
+  ACPI: reboot: Unify the message printing
+  ACPI: sysfs: Cleanup message printing
+  ACPI: sbshc: Unify the message printing
+  ACPI: scan: Unify the log message printing
+  ACPI: sbs: Unify the message printing
+  ACPI: sleep: Unify the message printing
+  ACPI: Remove the macro PREFIX "ACPI: "
+
+ drivers/acpi/acpi_cmos_rtc.c        |  6 ++--
+ drivers/acpi/blacklist.c            |  9 +++---
+ drivers/acpi/bus.c                  |  4 +--
+ drivers/acpi/event.c                |  6 ++--
+ drivers/acpi/glue.c                 | 29 ++++++------------
+ drivers/acpi/internal.h             |  2 --
+ drivers/acpi/nvs.c                  |  8 +++--
+ drivers/acpi/osl.c                  |  4 +--
+ drivers/acpi/pci_root.c             |  4 ++-
+ drivers/acpi/processor_perflib.c    | 38 +++++++++++------------
+ drivers/acpi/processor_thermal.c    |  2 --
+ drivers/acpi/processor_throttling.c | 60 ++++++++++++++++---------------------
+ drivers/acpi/reboot.c               |  4 ++-
+ drivers/acpi/sbs.c                  | 12 ++++----
+ drivers/acpi/sbshc.c                |  8 ++---
+ drivers/acpi/scan.c                 | 11 +++----
+ drivers/acpi/sleep.c                | 18 +++++------
+ drivers/acpi/sysfs.c                |  8 ++---
+ 18 files changed, 109 insertions(+), 124 deletions(-)
+
 -- 
-2.26.0.106.g9fadedd
-
+1.7.12.4
 
