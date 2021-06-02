@@ -2,20 +2,20 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E3D113984ED
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jun 2021 11:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 968833984F6
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jun 2021 11:07:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231210AbhFBJI0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Jun 2021 05:08:26 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:3510 "EHLO
+        id S231365AbhFBJIo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Jun 2021 05:08:44 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:2958 "EHLO
         szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231243AbhFBJIX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Jun 2021 05:08:23 -0400
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Fw33v2tDfzYrmX;
-        Wed,  2 Jun 2021 17:03:55 +0800 (CST)
+        with ESMTP id S231416AbhFBJIl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Jun 2021 05:08:41 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Fw33w3LHJz694X;
+        Wed,  2 Jun 2021 17:03:56 +0800 (CST)
 Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2176.2; Wed, 2 Jun 2021 17:05:46 +0800
 Received: from linux-ibm.site (10.175.102.37) by
@@ -26,9 +26,9 @@ From:   Hanjun Guo <guohanjun@huawei.com>
 To:     <linux-acpi@vger.kernel.org>
 CC:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Hanjun Guo <guohanjun@huawei.com>
-Subject: [PATCH 16/18] ACPI: sbs: Unify the message printing
-Date:   Wed, 2 Jun 2021 16:54:38 +0800
-Message-ID: <1622624080-56025-17-git-send-email-guohanjun@huawei.com>
+Subject: [PATCH 17/18] ACPI: sleep: Unify the message printing
+Date:   Wed, 2 Jun 2021 16:54:39 +0800
+Message-ID: <1622624080-56025-18-git-send-email-guohanjun@huawei.com>
 X-Mailer: git-send-email 1.7.12.4
 In-Reply-To: <1622624080-56025-1-git-send-email-guohanjun@huawei.com>
 References: <1622624080-56025-1-git-send-email-guohanjun@huawei.com>
@@ -42,69 +42,93 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Using pr_fmt() and pr_*() macros to unify the message printing.
-
-While at it, fix the obvious coding style issue when scanning
-the code.
+Intoduce pr_fmt() and use pr_*() macros to replace printk(), also
+remove all the PREFIX for pr_*() calls to generate a unified format
+string for prefix.
 
 Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
 ---
- drivers/acpi/sbs.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/acpi/sleep.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index 3b0b6dd..4938010 100644
---- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -7,6 +7,8 @@
-  *  Copyright (c) 2005 Rich Townsend <rhdt@bartol.udel.edu>
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index df38657..7560c99 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -8,6 +8,8 @@
+  * Copyright (c) 2003 Open Source Development Lab
   */
  
 +#define pr_fmt(fmt) "ACPI: " fmt
 +
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/module.h>
-@@ -23,8 +25,6 @@
- 
- #include "sbshc.h"
- 
--#define PREFIX "ACPI: "
--
- #define ACPI_SBS_CLASS			"sbs"
- #define ACPI_AC_CLASS			"ac_adapter"
- #define ACPI_SBS_DEVICE_NAME		"Smart Battery System"
-@@ -544,7 +544,7 @@ static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- 		goto end;
- 	battery->have_sysfs_alarm = 1;
-       end:
--	printk(KERN_INFO PREFIX "%s [%s]: Battery Slot [%s] (battery %s)\n",
-+	pr_info("%s [%s]: Battery Slot [%s] (battery %s)\n",
- 	       ACPI_SBS_DEVICE_NAME, acpi_device_bid(sbs->device),
- 	       battery->name, battery->present ? "present" : "absent");
- 	return result;
-@@ -577,10 +577,10 @@ static int acpi_charger_add(struct acpi_sbs *sbs)
- 		result = PTR_ERR(sbs->charger);
- 		sbs->charger = NULL;
+ #include <linux/delay.h>
+ #include <linux/irq.h>
+ #include <linux/dmi.h>
+@@ -41,7 +43,7 @@ static void acpi_sleep_tts_switch(u32 acpi_state)
+ 		 * OS can't evaluate the _TTS object correctly. Some warning
+ 		 * message will be printed. But it won't break anything.
+ 		 */
+-		printk(KERN_NOTICE "Failure in evaluating _TTS object\n");
++		pr_notice("Failure in evaluating _TTS object\n");
  	}
--	printk(KERN_INFO PREFIX "%s [%s]: AC Adapter [%s] (%s)\n",
-+	pr_info("%s [%s]: AC Adapter [%s] (%s)\n",
- 	       ACPI_SBS_DEVICE_NAME, acpi_device_bid(sbs->device),
- 	       ACPI_AC_DIR_NAME, sbs->charger_present ? "on-line" : "off-line");
--      end:
-+end:
- 	return result;
  }
  
-@@ -658,7 +658,7 @@ static int acpi_sbs_add(struct acpi_device *device)
- 		acpi_battery_add(sbs, 0);
+@@ -73,8 +75,7 @@ static int acpi_sleep_prepare(u32 acpi_state)
+ 	}
+ 	ACPI_FLUSH_CPU_CACHE();
+ #endif
+-	printk(KERN_INFO PREFIX "Preparing to enter system sleep state S%d\n",
+-		acpi_state);
++	pr_info("Preparing to enter system sleep state S%d\n", acpi_state);
+ 	acpi_enable_wakeup_devices(acpi_state);
+ 	acpi_enter_sleep_state_prep(acpi_state);
+ 	return 0;
+@@ -459,8 +460,7 @@ static void acpi_pm_finish(void)
+ 	if (acpi_state == ACPI_STATE_S0)
+ 		return;
  
- 	acpi_smbus_register_callback(sbs->hc, acpi_sbs_callback, sbs);
--      end:
-+end:
- 	if (result)
- 		acpi_sbs_remove(device);
- 	return result;
+-	printk(KERN_INFO PREFIX "Waking up from system sleep state S%d\n",
+-		acpi_state);
++	pr_info("Waking up from system sleep state S%d\n", acpi_state);
+ 	acpi_disable_wakeup_devices(acpi_state);
+ 	acpi_leave_sleep_state(acpi_state);
+ 
+@@ -581,7 +581,7 @@ static int acpi_suspend_enter(suspend_state_t pm_state)
+ 		error = acpi_suspend_lowlevel();
+ 		if (error)
+ 			return error;
+-		pr_info(PREFIX "Low-level resume complete\n");
++		pr_info("Low-level resume complete\n");
+ 		pm_set_resume_via_firmware();
+ 		break;
+ 	}
+@@ -921,7 +921,7 @@ static void acpi_hibernation_leave(void)
+ 	acpi_leave_sleep_state_prep(ACPI_STATE_S4);
+ 	/* Check the hardware signature */
+ 	if (facs && s4_hardware_signature != facs->hardware_signature)
+-		pr_crit("ACPI: Hardware changed while hibernated, success doubtful!\n");
++		pr_crit("Hardware changed while hibernated, success doubtful!\n");
+ 	/* Restore the NVS memory area */
+ 	suspend_nvs_restore();
+ 	/* Allow EC transactions to happen. */
+@@ -1029,7 +1029,7 @@ static void acpi_power_off_prepare(void)
+ static void acpi_power_off(void)
+ {
+ 	/* acpi_sleep_prepare(ACPI_STATE_S5) should have already been called */
+-	printk(KERN_DEBUG "%s called\n", __func__);
++	pr_debug("%s called\n", __func__);
+ 	local_irq_disable();
+ 	acpi_enter_sleep_state(ACPI_STATE_S5);
+ }
+@@ -1061,7 +1061,7 @@ int __init acpi_sleep_init(void)
+ 		if (sleep_states[i])
+ 			pos += sprintf(pos, " S%d", i);
+ 	}
+-	pr_info(PREFIX "(supports%s)\n", supported);
++	pr_info("(supports%s)\n", supported);
+ 
+ 	/*
+ 	 * Register the tts_notifier to reboot notifier list so that the _TTS
 -- 
 1.7.12.4
 
