@@ -2,74 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECD613991BC
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jun 2021 19:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE74A3993A3
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jun 2021 21:36:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbhFBRef (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Jun 2021 13:34:35 -0400
-Received: from mail-oi1-f170.google.com ([209.85.167.170]:43744 "EHLO
-        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230251AbhFBRee (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Jun 2021 13:34:34 -0400
-Received: by mail-oi1-f170.google.com with SMTP id x196so3017554oif.10;
-        Wed, 02 Jun 2021 10:32:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=RY7O7u2Oyi97lukEthyEStZ/2IoTJtOOho5cKJky/aA=;
-        b=iMeUVCCNePTkJp1FWYpX+xSsbnLhrEDsXNmvGL1ApmIb53COnOJQBQY2nCvgjpC005
-         Olof0XdiRKsNB/9IFghAam4DJyFYcvbRM+j16B8Cu0b8yY43uiPZVN3FEcda6oUFakL0
-         wm5w+ppGxOZ4zzKX+Vn9OqJWqlPDV+W2qLz6BYfDa+36DQ/As8HE+hWDCtUuOAQRCxhc
-         KsHdRLcE+S/0AihDZdW5jKGm29h6zjw0H44Lw8KmniHvbXw1nRjBWW+O7hr7nE1ud6Vx
-         mvkb7HoxDwTGq22HTIXxYozIfBJHZY4mV3xOgXIj9gfT4OPv2Mwme5v74njdsnxwRJV8
-         uapg==
-X-Gm-Message-State: AOAM530/7w3wXZgvdjT0scKP4cE9K/6rDb5pm76QEVdoJTxcrvnvmkde
-        9Gwe75BZfY8rZdWxS+D8nFUP3EKR2IUBv7MrnQH4+rgnpqM=
-X-Google-Smtp-Source: ABdhPJw26p+rXGV5H3AebvAZG4D/DeA5t1pKT/+hjmL2KBaSYIwSY5PztzEh6qErrFdaoHPT0mcaXPnrBtn3HpdxMcE=
-X-Received: by 2002:aca:b406:: with SMTP id d6mr14684243oif.71.1622655170820;
- Wed, 02 Jun 2021 10:32:50 -0700 (PDT)
-MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 2 Jun 2021 19:32:39 +0200
-Message-ID: <CAJZ5v0hCofs+k5a-U=xcEwBTtTmGweAU1OkhJRmNu9TBuoJzrg@mail.gmail.com>
-Subject: [GIT PULL] ACPI fix for v5.13-rc5
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        id S229792AbhFBTiN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Jun 2021 15:38:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40834 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229489AbhFBTiL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 2 Jun 2021 15:38:11 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 8D9B761400;
+        Wed,  2 Jun 2021 19:36:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622662588;
+        bh=2CZVdQKp9rvkxeNcNmuJvAIg1NXIgsQf7TJFE75Y5mA=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=Jh9GI1+5eWK4Sphs1lTAyBOXNj1Tm9WIO3F5TieBsQElXRhSPvA5SJ49vZMJZqKFy
+         K1cBmgnW5v4RVQ5UTTeE1Qc+1rm0woIS4myNtK62UnTWu0Azfh6t0JBc+PKUfoNBA7
+         k9rkOwvZAbL2JOyF5H3873pazA2qWMKb6vxqjjlULbn7BWbvXI2AKjOeALr02AyD9f
+         Kh/ZRUbV4hRxU8p3lhsExkbnrXqYKwCf4lRtErJ+SbLN3rAst892FEbZMzEFdsbcz7
+         gF4RNOo4uo3n1QIQUF+U3n2mdUD7mt9BgBhujRKI71C9W2TuNb432GXtaBKWGgu+Zh
+         OhZrjmTFy8PIQ==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 86294609EA;
+        Wed,  2 Jun 2021 19:36:28 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fix for v5.13-rc5
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0hCofs+k5a-U=xcEwBTtTmGweAU1OkhJRmNu9TBuoJzrg@mail.gmail.com>
+References: <CAJZ5v0hCofs+k5a-U=xcEwBTtTmGweAU1OkhJRmNu9TBuoJzrg@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0hCofs+k5a-U=xcEwBTtTmGweAU1OkhJRmNu9TBuoJzrg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.13-rc5
+X-PR-Tracked-Commit-Id: e4dfe108371214500ee10c2cf19268f53acaa803
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 0372b6dd6cfef9db032e0ed83a6ddfb84d9920dc
+Message-Id: <162266258854.13029.1397927351250872510.pr-tracker-bot@kernel.org>
+Date:   Wed, 02 Jun 2021 19:36:28 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Wed, 2 Jun 2021 19:32:39 +0200:
 
-Please pull from the tag
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.13-rc5
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.13-rc5
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/0372b6dd6cfef9db032e0ed83a6ddfb84d9920dc
 
-with top-most commit e4dfe108371214500ee10c2cf19268f53acaa803
+Thank you!
 
- ACPICA: Clean up context mutex during object deletion
-
-on top of commit 8124c8a6b35386f73523d27eacb71b5364a68c4c
-
- Linux 5.13-rc4
-
-to receive an ACPI fix for 5.13-rc5.
-
-Fix a mutex object memory leak in ACPICA occurring during object
-deletion that was introduced in 5.12-rc1 (Erik Kaneda).
-
-Thanks!
-
-
----------------
-
-Erik Kaneda (1):
-      ACPICA: Clean up context mutex during object deletion
-
----------------
-
- drivers/acpi/acpica/utdelete.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
