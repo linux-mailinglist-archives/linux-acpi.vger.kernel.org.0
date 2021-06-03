@@ -2,108 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E8FE39A878
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jun 2021 19:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A248A39A924
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jun 2021 19:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233267AbhFCRP7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Jun 2021 13:15:59 -0400
-Received: from mail-wr1-f41.google.com ([209.85.221.41]:45679 "EHLO
-        mail-wr1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233268AbhFCROE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Jun 2021 13:14:04 -0400
-Received: by mail-wr1-f41.google.com with SMTP id z8so6578618wrp.12
-        for <linux-acpi@vger.kernel.org>; Thu, 03 Jun 2021 10:12:04 -0700 (PDT)
+        id S230351AbhFCR2s (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Jun 2021 13:28:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:39152 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230075AbhFCR2r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Jun 2021 13:28:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1622741222;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=KIoyaerrgKJKW1OKnBtuGaFHoyJoX4cev0N65O5od8Y=;
+        b=AKPuhPMtexur/XjkKQwsSpRM7pxRCM3niOdEHTSVd0mTm5hDCMHYfEeIS4bNHJlhctrgO1
+        Cro+2PKFCm8Uxn6K8snT7nUAScqhRcCtMzp0hAGvy6g1U37206WMXGnQZDNRexBGfzdk+T
+        IKq4gmHU4k9X4GTKULSjuKTB0sxCddc=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-439-j97WrizZMeS9Yj9u9_bE6w-1; Thu, 03 Jun 2021 13:27:01 -0400
+X-MC-Unique: j97WrizZMeS9Yj9u9_bE6w-1
+Received: by mail-ej1-f71.google.com with SMTP id b8-20020a170906d108b02903fa10388224so2217372ejz.18
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Jun 2021 10:27:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=eTjd03y8TglinzqMGJIZSRr/9URvtjInPh0BcY13G+A=;
-        b=WAxZiPnsjuq//CH74fMuCOVEQhD05UkkjHeFJX9hz56/StO3WRQGBK4xJ/3ZnXbq3C
-         R3G2st+gNPrnpdDLMvyHlJLlPO4YaLGQZ9GTCg9W6QscPAlrnHibI+5YFugkxkhFqhBF
-         8btBBpQucPeTSMGVWyOIDQN/leA7UJh3J0UMKqA6jCq96PYbMrcqdvm097cpx0W3U3pF
-         a1ClxbMcL00gYlUgab6BP37XuIg7XfOJoraZw/8fQTeIyL0QDvpMPsLKP0S7u8N0JXn3
-         paR9FaIP/QS4Y7ppjP4ioifWnSX+3pPf03bNRXZWjz/+J9/pZ3+FycqObBLOYSyumYZz
-         qmBg==
-X-Gm-Message-State: AOAM531+kjlykqqkqu5MauJOqd1tYpf4LxI3FIy4oyGY4EllOxT5YX4b
-        IZOKp25J2udzA9Iu6p9xqWQ=
-X-Google-Smtp-Source: ABdhPJy+aEMYLnucqADPTV4X7gNRDJeJA/lbF7xl/47a7W08zsp7Nuo1xFWSO1YbuVngOGn4WqkKKQ==
-X-Received: by 2002:a05:6000:233:: with SMTP id l19mr65690wrz.34.1622740323389;
-        Thu, 03 Jun 2021 10:12:03 -0700 (PDT)
-Received: from workstation.lan ([95.155.85.46])
-        by smtp.gmail.com with ESMTPSA id r5sm1790945wmh.18.2021.06.03.10.12.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Jun 2021 10:12:02 -0700 (PDT)
-From:   =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>, Len Brown <lenb@kernel.org>,
-        Lance Ortiz <lance.ortiz@hp.com>,
-        Joe Perches <joe@perches.com>, linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: sysfs: Fix a buffer overrun problem with description_show()
-Date:   Thu,  3 Jun 2021 17:12:01 +0000
-Message-Id: <20210603171201.801071-1-kw@linux.com>
-X-Mailer: git-send-email 2.31.1
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=KIoyaerrgKJKW1OKnBtuGaFHoyJoX4cev0N65O5od8Y=;
+        b=JNP7GaW2PEY+3Q9eqXNaMpIW2QVgG7bzHeuvEudovdjXRbz8x9Av6rdcVoEak5lkoW
+         3IGv6jTbvuH3P1fr9K4akLuxwKXlnrdP4R9yVgEsaLTBq05ePBlr/9A7hYCVCHHmwhYK
+         jSwsqirk/kIqqFhXda0thx1DDXj6X1Au86TdtbDk0d+XRrTId3nfrtsu4CC4t2aE2/cz
+         SQS9rWd1hGjE4PkCUFySF+USnd1mmtRF06PJEeXUcZiCP7dUR44Ep5yLJ/QgecTNXACI
+         MbFD9KMFAArXIgBIc1RjToyRKd7M5PnoMJpplT2yuCwQEEx4wFzEzjrqAGergc9nvrG+
+         CjGw==
+X-Gm-Message-State: AOAM5327zqsmwyp0AIrhyLSYtv69PZSPEND2WGBhT7hgdlRq3WzMPiGl
+        R5QZveL5RyOq/+DyAzb3bpAK+N6RAAT6Bpd9kMdroJF3QGhu2u7Tw0x5Qs0oLLp1OIYCLfujXjt
+        th4jmtPxXc9l/44I5tHi700f8ObYDWdzvVPl7ciaELmwaOAeFLbxA9+148xnvQH8tSyojTRbNDg
+        ==
+X-Received: by 2002:a17:906:f849:: with SMTP id ks9mr425729ejb.402.1622741220190;
+        Thu, 03 Jun 2021 10:27:00 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyhW2l9Xa70Rj3EqzN+1G4QRoG+YiZzcPYsY+C/Y+gg6odfgYCOeN/drc0mqWUmh8+FLvgWCw==
+X-Received: by 2002:a17:906:f849:: with SMTP id ks9mr425712ejb.402.1622741219939;
+        Thu, 03 Jun 2021 10:26:59 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id l8sm2050324edt.69.2021.06.03.10.26.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Jun 2021 10:26:59 -0700 (PDT)
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi <linux-acpi@vger.kernel.org>
+From:   Hans de Goede <hdegoede@redhat.com>
+Subject: Some SSDT tables are not loading with kernel >= 5.12
+Message-ID: <f634a05a-e3a9-93ab-4b87-d41f5ee083a5@redhat.com>
+Date:   Thu, 3 Jun 2021 19:26:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently, a device description can be obtained using ACPI, if the _STR
-method exists for a particular device, and then exposed to the userspace
-via a sysfs object as a string value.
+Hi Rafael,
 
-If the _STR method is available for a given device then the data
-(usually a Unicode string) is read and stored in a buffer (of the
-ACPI_TYPE_BUFFER type) with a pointer to said buffer cached in the
-struct acpi_device_pnp for later access.
+I've been helping some users with trying to get to the bottom of some
+new ACPI errors with kernel 5.12, see:
 
-The description_show() function is responsible for exposing the device
-description to the userspace via a corresponding sysfs object and
-internally calls the utf16s_to_utf8s() function with a pointer to the
-buffer that contains the Unicode string so that it can be converted from
-UTF16 encoding to UTF8 and thus allowing for the value to be safely
-stored and later displayed.
+https://bugzilla.kernel.org/show_bug.cgi?id=213023
 
-When invoking the utf16s_to_utf8s() function, the description_show()
-function also sets a limit of the data that can be saved into a provided
-buffer as a result of the character conversion to be a total of
-PAGE_SIZE, and upon completion, the utf16s_to_utf8s() function returns
-an integer value denoting the number of bytes that have been written
-into the provided buffer.
+After looking at dmesg output; and after editing the dmesg output
+a bit so that I could do diff -u on it, the following stands out:
 
-Following the execution of the utf16s_to_utf8s() a newline character
-will be added at the end of the resulting buffer so that when the value
-is read in the userspace through the sysfs object then it would include
-newline making it more accessible when working with the sysfs file
-system in the shell, etc.  Normally, this wouldn't be a problem, but if
-the function utf16s_to_utf8s() happens to return the number of bytes
-written to be precisely PAGE_SIZE, then we would overrun the buffer and
-write the newline character outside the allotted space which can have
-undefined consequences or result in a failure.
+--- dmesg_5.10.38-1-lts	2021-06-03 16:29:41.372922210 +0200
++++ dmesg_linux-5.12.5-arch1-1	2021-06-03 16:30:01.013031634 +0200
+@@ -92,7 +92,7 @@
+ ACPI: IRQ9 used by override.
+ Using ACPI (MADT) for SMP configuration information
+ ACPI: HPET id: 0x8086a201 base: 0xfed00000
+-ACPI: Core revision 20200925
++ACPI: Core revision 20210105
+ PM: Registering ACPI NVS region [mem 0x7156c000-0x7156cfff] (4096 bytes)
+ PM: Registering ACPI NVS region [mem 0x8a88f000-0x8af7efff] (7274496 bytes)
+ ACPI FADT declares the system doesn't support PCIe ASPM, so disable it
+@@ -113,10 +113,6 @@
+ ACPI: Dynamic OEM Table Load:
+ ACPI: SSDT 0xFFFF... 0003FF (v02 PmRef  Cpu0Cst  00003001 INTL 20160527)
+ ACPI: Dynamic OEM Table Load:
+-ACPI: SSDT 0xFFFF... 0000BA (v02 PmRef  Cpu0Hwp  00003000 INTL 20160527)
+-ACPI: Dynamic OEM Table Load:
+-ACPI: SSDT 0xFFFF... 000628 (v02 PmRef  HwpLvt   00003000 INTL 20160527)
+-ACPI: Dynamic OEM Table Load:
+ ACPI: SSDT 0xFFFF... 000D14 (v02 PmRef  ApIst    00003000 INTL 20160527)
+ ACPI: Dynamic OEM Table Load:
+ ACPI: SSDT 0xFFFF... 000317 (v02 PmRef  ApHwp    00003000 INTL 20160527)
 
-To fix this buffer overrun, ensure that there always is enough space
-left for the newline character to be safely appended.
+Note how for some reason the kernel is no longer loading the Cpu0Hwp and
+HwpLvt SSDT-s ?
 
-Fixes: d1efe3c324ea ("ACPI: Add new sysfs interface to export device description")
-Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
----
- drivers/acpi/device_sysfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Do you have any ideas what might be causing this ?
 
-diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-index fa2c1c93072c..a393e0e09381 100644
---- a/drivers/acpi/device_sysfs.c
-+++ b/drivers/acpi/device_sysfs.c
-@@ -448,7 +448,7 @@ static ssize_t description_show(struct device *dev,
- 		(wchar_t *)acpi_dev->pnp.str_obj->buffer.pointer,
- 		acpi_dev->pnp.str_obj->buffer.length,
- 		UTF16_LITTLE_ENDIAN, buf,
--		PAGE_SIZE);
-+		PAGE_SIZE - 1);
- 
- 	buf[result++] = '\n';
- 
--- 
-2.31.1
+Regards,
+
+Hans
 
