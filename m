@@ -2,237 +2,199 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D6439ABFC
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jun 2021 22:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E47BE39AE01
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jun 2021 00:29:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229953AbhFCUwe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Jun 2021 16:52:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44498 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229927AbhFCUwd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 3 Jun 2021 16:52:33 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 87E34613BF;
-        Thu,  3 Jun 2021 20:50:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622753448;
-        bh=XhynFkzdeD9GRXeKMAwdZQeHQ/caSAVlAZxGaEI0kEw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=pXdpBl14RR3CzXBgDuMFtWvEg9uVo9699udJRyf11QxcTgFnn23FHahdUhKnXm+5Z
-         rear6rNrQ4ilCGDUxjXMFsRsx7PKYpy+RyCrc5n3rtAv/QernJL8CTMHBUkoNp639X
-         iuH8CGjcZ53vmsJc/ClgdcVL46RmV042SweTdOXXywlwr5kZCGoNgyhp+aUpiFBPeM
-         Z0dk2MJdI++4uOT+wKnu+nqiTHfupLi8QsuE8Xq7NnxKKF5iLYNXP9ZXZrG48dV/sP
-         bJwlQlnFEE53UuAzmNw9aQADB7E5Uw0q4IzJ0D2yqXYoVieZMPCP3BTicwvwyzGW0N
-         M7s8/wbt3K+BQ==
-Date:   Thu, 3 Jun 2021 15:50:47 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Joerg Roedel <joro@8bytes.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>, rjw@rjwysocki.net,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        jroedel@suse.de
-Subject: Re: [PATCH] PCI/APCI: Move acpi_pci_osc_support() check to
- negotiation phase
-Message-ID: <20210603205047.GA2135380@bjorn-Precision-5520>
+        id S230239AbhFCWav (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Jun 2021 18:30:51 -0400
+Received: from mail-il1-f182.google.com ([209.85.166.182]:42856 "EHLO
+        mail-il1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230083AbhFCWav (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Jun 2021 18:30:51 -0400
+Received: by mail-il1-f182.google.com with SMTP id a8so5906802ilv.9
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Jun 2021 15:28:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=EYQbcvibiQg/DnUam+wLaSOQ2UV3ZafOtj4rPommSME=;
+        b=eONCVyJG8reQysQ4HqQPn9JbnCwm9R7Mi3NhkPGLL6ItUR1Ov5MqfX4dG4+ncwb8Ge
+         rzh7THXy3i1zBca3kiJxC2exppTDkk5034+bLFlDBTTqi4Dr/kCD/WQ9/GnUKKipi9af
+         9nqMvBaMbcjx1O+Q2okxWyQdYxHvmNj5NSfGU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=EYQbcvibiQg/DnUam+wLaSOQ2UV3ZafOtj4rPommSME=;
+        b=WSILIiTf8ctoPtPBszXPEoTWAFHXRtXwiVoX8tPbGGKoGhpDgHG/MRxv2YsRyr1/3A
+         N+3zTnIRsa3FOrRk5mht+LKgkNatSG/pCwJPDanX26YU+F53bgUcB2Gc7emxgwnCXIUI
+         2D4HvhhOQvHp6lZ/LrSZtcTNnJuuIRaU12K1faHNonMEdGMuH+qRkA2HZgFQeMYi3jFw
+         sxVvkCEO0BI9qqFCDWprgfk0uvZuQ39LzjByYxJohu3O6DxZsxNaI7UaZckmoHK3RL74
+         YCzMapKhtr5Av6NX0jW/65Qnhf3E957MZz05d2CCTAOm2bJbE+ifn5qNNqKFmUa7y2vL
+         +3OA==
+X-Gm-Message-State: AOAM533hrbt9/qcDpBizVIXX8MhM207ZYVdDqWiDH8DCYIpG/Q0oDTcL
+        DJcJBjWDa/58CimrIkfijKoxiA==
+X-Google-Smtp-Source: ABdhPJy2cCbn6S+OVOgxep7zZ4X+W9504GaOSMvrUiXR2300RkJaKnIP7U+IUGkRNuwwA7/yX/MVCA==
+X-Received: by 2002:a92:2a0a:: with SMTP id r10mr1317896ile.274.1622759271677;
+        Thu, 03 Jun 2021 15:27:51 -0700 (PDT)
+Received: from google.com (h184-60-195-141.arvdco.broadband.dynamic.tds.net. [184.60.195.141])
+        by smtp.gmail.com with ESMTPSA id z14sm2492618ilb.48.2021.06.03.15.27.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Jun 2021 15:27:51 -0700 (PDT)
+Date:   Thu, 3 Jun 2021 16:27:49 -0600
+From:   Raul E Rangel <rrangel@chromium.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
+        linux-acpi@vger.kernel.org, david.e.box@linux.intel.com,
+        Shyam-sundar.S-k@amd.com, Alexander.Deucher@amd.com,
+        prike.liang@amd.com
+Subject: Re: [PATCH v4] acpi: Move check for _DSD StorageD3Enable property to
+ acpi
+Message-ID: <YLlXZcp6ne7hcXNM@google.com>
+References: <20210603190753.5084-1-mario.limonciello@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210603124814.19654-1-joro@8bytes.org>
+In-Reply-To: <20210603190753.5084-1-mario.limonciello@amd.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 03, 2021 at 02:48:14PM +0200, Joerg Roedel wrote:
-> From: Joerg Roedel <jroedel@suse.de>
-
-I like this patch a lot and I plan to apply it because you've managed
-to simplify the nasty _OSC path a little bit.  But I'm confused about
-the justification.
-
-> The acpi_pci_osc_support() does an _OSC query with _OSC supported set
-> to what the OS supports but a zero _OSC control value. This is
-> problematic on some platforms where the firmware allows to configure
-> whether DPC is under OS or Firmware control.
->
-> When DPC is configured to be under OS control these platforms will
-> issue a warning in the firmware log that the OS does not support DPC.
-
-My understanding is that DPC is under platform control until the OS
-requests it via _OSC(Request, Control & OSC_PCI_EXPRESS_DPC_CONTROL)
-and the platform grants it.  And after the OS is granted control of
-DPC, it must preserve OSC_PCI_EXPRESS_DPC_CONTROL in all subsequent
-_OSC calls (i.e., there is no way for the OS to relinquish DPC
-control).
-
-So what does it mean for "DPC to be under OS control, but the OS does
-_OSC(Query, Control=0)"?  That doesn't sound like a legal sequence:
-the OS has already been granted DPC control, but it failed to preserve
-OSC_PCI_EXPRESS_DPC_CONTROL?
-
-If instead you mean that the OS has *not* been granted DPC control,
-but does _OSC(Query, SUPPORT=x, CONTROL=0), I think that means the OS
-is telling the platform what it supports but not requesting anything.
-That sounds legal to me, so if firmware complains about it, I would
-say it's a firmware problem.
-
-> Avoid an _OSC query with _OSC control set to zero by moving the
-> supported check into the acpi_pci_osc_control_set() path. This is
-> still early enough to fail as nothing before that depends on the
-> results of acpi_pci_osc_support().
+On Thu, Jun 03, 2021 at 02:07:53PM -0500, Mario Limonciello wrote:
+> Although first implemented for NVME, this check may be usable by
+> other drivers as well. Microsoft's specification explicitly mentions
+> that is may be usable by SATA and AHCI devices.  Google also indicates
+> that they have used this with SDHCI in a downstream kernel tree that
+> a user can plug a storage device into.
 > 
-> As a result the acpi_pci_osc_support() function can be removed and
-> acpi_pci_query_osc() be simplified because it no longer called with a
-> NULL pointer for *control.
-
-So I think we should do this, but not because it avoids a firmware
-warning, which looks like a firmware bug to me.  We should do it just
-because it simplifies this ugly code.
-
-But please help me out if I'm misunderstanding something above.  I'm
-never confident that I really understand _OSC.
-
-> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+> Link: Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
+> Suggested-by: Keith Busch <kbusch@kernel.org>
+> CC: rrangel@chromium.org
+> CC: david.e.box@linux.intel.com
+> CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
+> CC: Alexander Deucher <Alexander.Deucher@amd.com>
+> CC: Rafael J. Wysocki <rjw@rjwysocki.net>
+> CC: Prike Liang <prike.liang@amd.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->  drivers/acpi/pci_root.c | 50 ++++++++++++++++-------------------------
->  1 file changed, 19 insertions(+), 31 deletions(-)
+>  drivers/acpi/device_pm.c | 25 +++++++++++++++++++++++++
+>  drivers/nvme/host/pci.c  | 28 +---------------------------
+>  include/linux/acpi.h     |  5 +++++
+>  3 files changed, 31 insertions(+), 27 deletions(-)
 > 
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index dcd593766a64..530ecf4970b1 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -199,16 +199,11 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
->  
->  	support &= OSC_PCI_SUPPORT_MASKS;
->  	support |= root->osc_support_set;
-> +	*control &= OSC_PCI_CONTROL_MASKS;
-
-Unrelated to *this* patch, but I don't understand the point of
-OSC_PCI_SUPPORT_MASKS and OSC_PCI_CONTROL_MASKS.  These are all
-internal static functions and it looks like pointless work to apply
-masks here and in acpi_pci_osc_control_set().
-
-I'm happy to make this change, but if you do it, please make it a
-separate patch for bisection purposes.
-
->  	capbuf[OSC_QUERY_DWORD] = OSC_QUERY_ENABLE;
->  	capbuf[OSC_SUPPORT_DWORD] = support;
-> -	if (control) {
-> -		*control &= OSC_PCI_CONTROL_MASKS;
-> -		capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
-> -	} else {
-> -		/* Run _OSC query only with existing controls. */
-> -		capbuf[OSC_CONTROL_DWORD] = root->osc_control_set;
-> -	}
-> +	capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
->  
->  	status = acpi_pci_run_osc(root->device->handle, capbuf, &result);
->  	if (ACPI_SUCCESS(status)) {
-
-We can also drop the "if (control)" check inside the ACPI_SUCCESS()
-block, can't we?
-
-> @@ -219,11 +214,6 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
->  	return status;
+> Changes from v3->v4
+>  * Rebase on nvme-5.14 (w/ patch 1/2 from v3 of series accepted)
+>  * Adjust commit message per Christoph's suggestions
+>  * Adjust documentation per Christoph's suggestions
+> 
+> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> index d260bc1f3e6e..1edb68d00b8e 100644
+> --- a/drivers/acpi/device_pm.c
+> +++ b/drivers/acpi/device_pm.c
+> @@ -1340,4 +1340,29 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+>  	return 1;
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
+> +
+> +/**
+> + * acpi_storage_d3 - Check if a storage device should use D3.
+> + * @dev: Device to check
+> + *
+> + * Returns %true if @dev should be put into D3 when the ->suspend method is
+> + * called, else %false.  The name of this function is somewhat misleading
+> + * as it has nothing to do with storage except for the name of the ACPI
+> + * property.  On some platforms resume will not work if this hint is ignored.
+> + *
+> + */
+> +bool acpi_storage_d3(struct device *dev)
+> +{
+> +	struct acpi_device *adev = ACPI_COMPANION(dev);
+> +	u8 val;
+> +
+> +	if (!adev)
+> +		return false;
+> +	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+> +			&val))
+> +		return false;
+> +	return val == 1;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_storage_d3);
+> +
+>  #endif /* CONFIG_PM */
+> diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+> index 3aa7245a505f..8fbc4c87a0d8 100644
+> --- a/drivers/nvme/host/pci.c
+> +++ b/drivers/nvme/host/pci.c
+> @@ -2828,32 +2828,6 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
+>  	return 0;
 >  }
 >  
-> -static acpi_status acpi_pci_osc_support(struct acpi_pci_root *root, u32 flags)
+> -#ifdef CONFIG_ACPI
+> -static bool nvme_acpi_storage_d3(struct pci_dev *dev)
 > -{
-> -	return acpi_pci_query_osc(root, flags, NULL);
+> -	struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
+> -	u8 val;
+> -
+> -	/*
+> -	 * Look for _DSD property specifying that the storage device on the port
+> -	 * must use D3 to support deep platform power savings during
+> -	 * suspend-to-idle.
+> -	 */
+> -
+> -	if (!adev)
+> -		return false;
+> -	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+> -			&val))
+> -		return false;
+> -	return val == 1;
 > -}
+> -#else
+> -static inline bool nvme_acpi_storage_d3(struct pci_dev *dev)
+> -{
+> -	return false;
+> -}
+> -#endif /* CONFIG_ACPI */
 > -
->  struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
+>  static void nvme_async_probe(void *data, async_cookie_t cookie)
 >  {
->  	struct acpi_pci_root *root;
-> @@ -346,7 +336,8 @@ EXPORT_SYMBOL_GPL(acpi_get_pci_dev);
->   * _OSC bits the BIOS has granted control of, but its contents are meaningless
->   * on failure.
->   **/
-> -static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 req)
-> +static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32
-> +					    *mask, u32 req, u32 support)
->  {
->  	struct acpi_pci_root *root;
->  	acpi_status status;
-> @@ -370,7 +361,7 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 r
+>  	struct nvme_dev *dev = data;
+> @@ -2903,7 +2877,7 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 >  
->  	/* Need to check the available controls bits before requesting them. */
->  	while (*mask) {
-> -		status = acpi_pci_query_osc(root, root->osc_support_set, mask);
-> +		status = acpi_pci_query_osc(root, support, mask);
->  		if (ACPI_FAILURE(status))
->  			return status;
->  		if (ctrl == *mask)
-> @@ -433,18 +424,6 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->  		support |= OSC_PCI_EDR_SUPPORT;
+>  	quirks |= check_vendor_combination_bug(pdev);
 >  
->  	decode_osc_support(root, "OS supports", support);
-> -	status = acpi_pci_osc_support(root, support);
-> -	if (ACPI_FAILURE(status)) {
-> -		*no_aspm = 1;
-> -
-> -		/* _OSC is optional for PCI host bridges */
-> -		if ((status == AE_NOT_FOUND) && !is_pcie)
-> -			return;
-> -
-> -		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
-> -			 acpi_format_exception(status));
-> -		return;
-> -	}
->  
->  	if (pcie_ports_disabled) {
->  		dev_info(&device->dev, "PCIe port services disabled; not requesting _OSC control\n");
-
-Also not related to this patch, but it seems pointless to compute and
-decode "support" above when we're not going to use _OSC at all.  I
-think the "pcie_ports_disabled" test should be the very first thing in
-this function (I'm assuming the "pcie_ports=compat" command line
-argument *should* apply even on x86_apple_machine, which it doesn't
-today).
-
-Again, I'm happy to do this if it makes sense to you.
-
-> @@ -483,7 +462,8 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->  
->  	requested = control;
->  	status = acpi_pci_osc_control_set(handle, &control,
-> -					  OSC_PCI_EXPRESS_CAPABILITY_CONTROL);
-> +					  OSC_PCI_EXPRESS_CAPABILITY_CONTROL,
-> +					  support);
->  	if (ACPI_SUCCESS(status)) {
->  		decode_osc_control(root, "OS now controls", control);
->  		if (acpi_gbl_FADT.boot_flags & ACPI_FADT_NO_ASPM) {
-> @@ -496,10 +476,8 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->  			*no_aspm = 1;
->  		}
->  	} else {
-> -		decode_osc_control(root, "OS requested", requested);
-> -		decode_osc_control(root, "platform willing to grant", control);
-> -		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
-> -			acpi_format_exception(status));
-> +		/* Platform wants to control PCIe features */
-
-Or _OSC just failed because of an OS or firmware defect ;)
-
-> +		root->osc_support_set = 0;
->  
+> -	if (!noacpi && nvme_acpi_storage_d3(pdev)) {
+> +	if (!noacpi && acpi_storage_d3(&pdev->dev)) {
 >  		/*
->  		 * We want to disable ASPM here, but aspm_disabled
-> @@ -509,6 +487,16 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->  		 * root scan.
->  		 */
->  		*no_aspm = 1;
-> +
-> +		/* _OSC is optional for PCI host bridges */
-> +		if ((status == AE_NOT_FOUND) && !is_pcie)
-> +			return;
-> +
-> +		decode_osc_control(root, "OS requested", requested);
-> +		decode_osc_control(root, "platform willing to grant", control);
-> +		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
-> +			acpi_format_exception(status));
-> +
->  	}
+>  		 * Some systems use a bios work around to ask for D3 on
+>  		 * platforms that support kernel managed suspend.
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index c60745f657e9..dd0dafd21e33 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1004,6 +1004,7 @@ int acpi_dev_resume(struct device *dev);
+>  int acpi_subsys_runtime_suspend(struct device *dev);
+>  int acpi_subsys_runtime_resume(struct device *dev);
+>  int acpi_dev_pm_attach(struct device *dev, bool power_on);
+> +bool acpi_storage_d3(struct device *dev);
+>  #else
+>  static inline int acpi_subsys_runtime_suspend(struct device *dev) { return 0; }
+>  static inline int acpi_subsys_runtime_resume(struct device *dev) { return 0; }
+> @@ -1011,6 +1012,10 @@ static inline int acpi_dev_pm_attach(struct device *dev, bool power_on)
+>  {
+>  	return 0;
 >  }
+> +static inline bool acpi_storage_d3(struct device *dev)
+> +{
+> +	return false;
+> +}
+>  #endif
 >  
-> -- 
-> 2.31.1
-> 
+>  #if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
+
+Tested on an AMD Chromebook and it still works.
+
+Reviewed-by: Raul E Rangel <rrangel@chromium.org>
