@@ -2,98 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29F7D399614
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jun 2021 00:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C994F399758
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jun 2021 03:02:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229724AbhFBWvW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Jun 2021 18:51:22 -0400
-Received: from mga06.intel.com ([134.134.136.31]:62530 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229626AbhFBWvW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Jun 2021 18:51:22 -0400
-IronPort-SDR: bQIJYUnEKFyURljBJDtKcmSXY4SJ7d8Hp226/kIMFK8PTa5AUD5WLKODO6kLLjFcw70f+ZyeOg
- 1Ynkj7RG5KMw==
-X-IronPort-AV: E=McAfee;i="6200,9189,10003"; a="265091482"
-X-IronPort-AV: E=Sophos;i="5.83,244,1616482800"; 
-   d="scan'208";a="265091482"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2021 15:49:38 -0700
-IronPort-SDR: rNhRJ2xo3kwM6tir1AvW30tn821t94TXT/k67tvk6iBd4TKBBjiPLnOAEMSE//6PnvqJPmLXi/
- hNpA4scfFnuQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,244,1616482800"; 
-   d="scan'208";a="438573895"
-Received: from linux.intel.com ([10.54.29.200])
-  by orsmga007.jf.intel.com with ESMTP; 02 Jun 2021 15:49:38 -0700
-Received: from debox1-desk1.jf.intel.com (debox1-desk1.jf.intel.com [10.54.75.174])
-        by linux.intel.com (Postfix) with ESMTP id 792825805A1;
-        Wed,  2 Jun 2021 15:49:38 -0700 (PDT)
-Message-ID: <7ff9423dc806f1354e51dbb69dea9b70dd8c6eea.camel@linux.intel.com>
-Subject: Re: [PATCH v3 1/2] nvme: Look for StorageD3Enable on companion ACPI
- device instead
-From:   "David E. Box" <david.e.box@linux.intel.com>
-Reply-To: david.e.box@linux.intel.com
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Christoph Hellwig <hch@lst.de>
-Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "rrangel@chromium.org" <rrangel@chromium.org>,
-        "Shyam-sundar.S-k@amd.com" <Shyam-sundar.S-k@amd.com>,
-        "Alexander.Deucher@amd.com" <Alexander.Deucher@amd.com>,
-        "prike.liang@amd.com" <prike.liang@amd.com>,
-        "Derrick, Jonathan" <jonathan.derrick@intel.com>,
-        "N, Shyjumon" <shyjumon.n@intel.com>
-Date:   Wed, 02 Jun 2021 15:49:38 -0700
-In-Reply-To: <474a58bf-dcc9-48a8-c5ce-fb79f2b76a79@amd.com>
-References: <20210528160234.9402-1-mario.limonciello@amd.com>
-         <20210531064655.GA1417@lst.de>
-         <PH0PR11MB4853EBD21B8D89AC8138308F9E3E9@PH0PR11MB4853.namprd11.prod.outlook.com>
-         <474a58bf-dcc9-48a8-c5ce-fb79f2b76a79@amd.com>
-Organization: David E. Box
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S229611AbhFCBDv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Jun 2021 21:03:51 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:2969 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229541AbhFCBDv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Jun 2021 21:03:51 -0400
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4FwSG03Xtsz6tmc;
+        Thu,  3 Jun 2021 08:59:04 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Thu, 3 Jun 2021 09:02:02 +0800
+Received: from [10.174.179.71] (10.174.179.71) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Thu, 3 Jun 2021 09:02:02 +0800
+Subject: Re: [PATCH v2] ACPI: FPDT: Add the missed acpi_put_table() in
+ acpi_init_fpdt()
+To:     Jing Xiangfeng <jingxiangfeng@huawei.com>, <rjw@rjwysocki.net>,
+        <lenb@kernel.org>, <rui.zhang@intel.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20210602115812.109900-1-jingxiangfeng@huawei.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <bef2506e-7f65-199d-92b4-45314701523d@huawei.com>
+Date:   Thu, 3 Jun 2021 09:02:01 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210602115812.109900-1-jingxiangfeng@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.71]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mario,
-
-The patch works for systems that worked on the current implementation.
-Thanks.
-
-Reviewed-by: David E. Box <david.e.box@linux.intel.com>
-
-On Tue, 2021-06-01 at 10:15 -0500, Limonciello, Mario wrote:
-> > 
-> > I think we need to wait for the confirmation from David.  This looks
-> > good, but I'd like to see testing.  I also wonder how many of the
-> > simple suspend quirks we can drop with this.
+On 2021/6/2 19:58, Jing Xiangfeng wrote:
+> acpi_init_fpdt() misses to call acpi_put_table() in an error path. Add
+> the missed function call to fix it.
 > 
-> David, do you think you can get this soonish or are you similarly 
-> blocked like Shyjumon by remote work restrictions?  As this is causing 
-> see this series land for 5.14.  If you can't get to it in time, I would
-> prefer that we switch this patch back to how it was conservatively done
-> in v1 for 5.14 (and redo 2/2 on top of that):
-> https://lore.kernel.org/linux-nvme/20210527113751.GB17266@lst.de/T/#t
+> Fixes: d1eb86e59be0 ("ACPI: tables: introduce support for FPDT table")
+> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
+> Acked-by: Zhang Rui <rui.zhang@intel.com>
+> ---
+> v1 -> v2:
+> - Collect Acked-by tag by Zhang Rui.
+> - retitle the subject as suggested by Hanjun Guo.
+> ---
+>   drivers/acpi/acpi_fpdt.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> and let you get back to the list when you can to optimize it "later".
-> 
-> > 
-> > Shyjumon and Jon, can you retests the platforms quirked in
-> > 1fae37accfc5 ("nvme/pci: Add sleep quirk for Samsung and Toshiba
-> > drives") with this fix?
-> > 
-> > Shyjumon>> Yes, I do agree we need to test this also. However the
-> > boards where which I had these issues are not in my remote access now
-> > (as the work frequency on this boards are less and also due to Covid
-> > situation),
-> >                          It might  take some time for me to test. I
-> > will update as soon as I can.
-> > 
+> diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
+> index a89a806a7a2a..4ee2ad234e3d 100644
+> --- a/drivers/acpi/acpi_fpdt.c
+> +++ b/drivers/acpi/acpi_fpdt.c
+> @@ -240,8 +240,10 @@ static int __init acpi_init_fpdt(void)
+>   		return 0;
+>   
+>   	fpdt_kobj = kobject_create_and_add("fpdt", acpi_kobj);
+> -	if (!fpdt_kobj)
+> +	if (!fpdt_kobj) {
+> +		acpi_put_table(header);
+>   		return -ENOMEM;
+> +	}
+>   
+>   	while (offset < header->length) {
+>   		subtable = (void *)header + offset;
 
-
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
