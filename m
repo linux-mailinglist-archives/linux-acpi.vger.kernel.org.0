@@ -2,175 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACB9239A165
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jun 2021 14:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E8FE39A878
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jun 2021 19:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229822AbhFCMuF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Jun 2021 08:50:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49688 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229801AbhFCMuF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Jun 2021 08:50:05 -0400
-Received: from theia.8bytes.org (8bytes.org [IPv6:2a01:238:4383:600:38bc:a715:4b6d:a889])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 580C8C06174A;
-        Thu,  3 Jun 2021 05:48:20 -0700 (PDT)
-Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        by theia.8bytes.org (Postfix) with ESMTPSA id 8A3CD15C;
-        Thu,  3 Jun 2021 14:48:17 +0200 (CEST)
-From:   Joerg Roedel <joro@8bytes.org>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     rjw@rjwysocki.net, Len Brown <lenb@kernel.org>,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
-        jroedel@suse.de
-Subject: [PATCH] PCI/APCI: Move acpi_pci_osc_support() check to negotiation phase
-Date:   Thu,  3 Jun 2021 14:48:14 +0200
-Message-Id: <20210603124814.19654-1-joro@8bytes.org>
+        id S233267AbhFCRP7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Jun 2021 13:15:59 -0400
+Received: from mail-wr1-f41.google.com ([209.85.221.41]:45679 "EHLO
+        mail-wr1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233268AbhFCROE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Jun 2021 13:14:04 -0400
+Received: by mail-wr1-f41.google.com with SMTP id z8so6578618wrp.12
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Jun 2021 10:12:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eTjd03y8TglinzqMGJIZSRr/9URvtjInPh0BcY13G+A=;
+        b=WAxZiPnsjuq//CH74fMuCOVEQhD05UkkjHeFJX9hz56/StO3WRQGBK4xJ/3ZnXbq3C
+         R3G2st+gNPrnpdDLMvyHlJLlPO4YaLGQZ9GTCg9W6QscPAlrnHibI+5YFugkxkhFqhBF
+         8btBBpQucPeTSMGVWyOIDQN/leA7UJh3J0UMKqA6jCq96PYbMrcqdvm097cpx0W3U3pF
+         a1ClxbMcL00gYlUgab6BP37XuIg7XfOJoraZw/8fQTeIyL0QDvpMPsLKP0S7u8N0JXn3
+         paR9FaIP/QS4Y7ppjP4ioifWnSX+3pPf03bNRXZWjz/+J9/pZ3+FycqObBLOYSyumYZz
+         qmBg==
+X-Gm-Message-State: AOAM531+kjlykqqkqu5MauJOqd1tYpf4LxI3FIy4oyGY4EllOxT5YX4b
+        IZOKp25J2udzA9Iu6p9xqWQ=
+X-Google-Smtp-Source: ABdhPJy+aEMYLnucqADPTV4X7gNRDJeJA/lbF7xl/47a7W08zsp7Nuo1xFWSO1YbuVngOGn4WqkKKQ==
+X-Received: by 2002:a05:6000:233:: with SMTP id l19mr65690wrz.34.1622740323389;
+        Thu, 03 Jun 2021 10:12:03 -0700 (PDT)
+Received: from workstation.lan ([95.155.85.46])
+        by smtp.gmail.com with ESMTPSA id r5sm1790945wmh.18.2021.06.03.10.12.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Jun 2021 10:12:02 -0700 (PDT)
+From:   =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>, Len Brown <lenb@kernel.org>,
+        Lance Ortiz <lance.ortiz@hp.com>,
+        Joe Perches <joe@perches.com>, linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: sysfs: Fix a buffer overrun problem with description_show()
+Date:   Thu,  3 Jun 2021 17:12:01 +0000
+Message-Id: <20210603171201.801071-1-kw@linux.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Joerg Roedel <jroedel@suse.de>
+Currently, a device description can be obtained using ACPI, if the _STR
+method exists for a particular device, and then exposed to the userspace
+via a sysfs object as a string value.
 
-The acpi_pci_osc_support() does an _OSC query with _OSC supported set
-to what the OS supports but a zero _OSC control value. This is
-problematic on some platforms where the firmware allows to configure
-whether DPC is under OS or Firmware control.
+If the _STR method is available for a given device then the data
+(usually a Unicode string) is read and stored in a buffer (of the
+ACPI_TYPE_BUFFER type) with a pointer to said buffer cached in the
+struct acpi_device_pnp for later access.
 
-When DPC is configured to be under OS control these platforms will
-issue a warning in the firmware log that the OS does not support DPC.
+The description_show() function is responsible for exposing the device
+description to the userspace via a corresponding sysfs object and
+internally calls the utf16s_to_utf8s() function with a pointer to the
+buffer that contains the Unicode string so that it can be converted from
+UTF16 encoding to UTF8 and thus allowing for the value to be safely
+stored and later displayed.
 
-Avoid an _OSC query with _OSC control set to zero by moving the
-supported check into the acpi_pci_osc_control_set() path. This is
-still early enough to fail as nothing before that depends on the
-results of acpi_pci_osc_support().
+When invoking the utf16s_to_utf8s() function, the description_show()
+function also sets a limit of the data that can be saved into a provided
+buffer as a result of the character conversion to be a total of
+PAGE_SIZE, and upon completion, the utf16s_to_utf8s() function returns
+an integer value denoting the number of bytes that have been written
+into the provided buffer.
 
-As a result the acpi_pci_osc_support() function can be removed and
-acpi_pci_query_osc() be simplified because it no longer called with a
-NULL pointer for *control.
+Following the execution of the utf16s_to_utf8s() a newline character
+will be added at the end of the resulting buffer so that when the value
+is read in the userspace through the sysfs object then it would include
+newline making it more accessible when working with the sysfs file
+system in the shell, etc.  Normally, this wouldn't be a problem, but if
+the function utf16s_to_utf8s() happens to return the number of bytes
+written to be precisely PAGE_SIZE, then we would overrun the buffer and
+write the newline character outside the allotted space which can have
+undefined consequences or result in a failure.
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+To fix this buffer overrun, ensure that there always is enough space
+left for the newline character to be safely appended.
+
+Fixes: d1efe3c324ea ("ACPI: Add new sysfs interface to export device description")
+Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
 ---
- drivers/acpi/pci_root.c | 50 ++++++++++++++++-------------------------
- 1 file changed, 19 insertions(+), 31 deletions(-)
+ drivers/acpi/device_sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-index dcd593766a64..530ecf4970b1 100644
---- a/drivers/acpi/pci_root.c
-+++ b/drivers/acpi/pci_root.c
-@@ -199,16 +199,11 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
+diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+index fa2c1c93072c..a393e0e09381 100644
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -448,7 +448,7 @@ static ssize_t description_show(struct device *dev,
+ 		(wchar_t *)acpi_dev->pnp.str_obj->buffer.pointer,
+ 		acpi_dev->pnp.str_obj->buffer.length,
+ 		UTF16_LITTLE_ENDIAN, buf,
+-		PAGE_SIZE);
++		PAGE_SIZE - 1);
  
- 	support &= OSC_PCI_SUPPORT_MASKS;
- 	support |= root->osc_support_set;
-+	*control &= OSC_PCI_CONTROL_MASKS;
- 
- 	capbuf[OSC_QUERY_DWORD] = OSC_QUERY_ENABLE;
- 	capbuf[OSC_SUPPORT_DWORD] = support;
--	if (control) {
--		*control &= OSC_PCI_CONTROL_MASKS;
--		capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
--	} else {
--		/* Run _OSC query only with existing controls. */
--		capbuf[OSC_CONTROL_DWORD] = root->osc_control_set;
--	}
-+	capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
- 
- 	status = acpi_pci_run_osc(root->device->handle, capbuf, &result);
- 	if (ACPI_SUCCESS(status)) {
-@@ -219,11 +214,6 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
- 	return status;
- }
- 
--static acpi_status acpi_pci_osc_support(struct acpi_pci_root *root, u32 flags)
--{
--	return acpi_pci_query_osc(root, flags, NULL);
--}
--
- struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
- {
- 	struct acpi_pci_root *root;
-@@ -346,7 +336,8 @@ EXPORT_SYMBOL_GPL(acpi_get_pci_dev);
-  * _OSC bits the BIOS has granted control of, but its contents are meaningless
-  * on failure.
-  **/
--static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 req)
-+static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32
-+					    *mask, u32 req, u32 support)
- {
- 	struct acpi_pci_root *root;
- 	acpi_status status;
-@@ -370,7 +361,7 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 r
- 
- 	/* Need to check the available controls bits before requesting them. */
- 	while (*mask) {
--		status = acpi_pci_query_osc(root, root->osc_support_set, mask);
-+		status = acpi_pci_query_osc(root, support, mask);
- 		if (ACPI_FAILURE(status))
- 			return status;
- 		if (ctrl == *mask)
-@@ -433,18 +424,6 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
- 		support |= OSC_PCI_EDR_SUPPORT;
- 
- 	decode_osc_support(root, "OS supports", support);
--	status = acpi_pci_osc_support(root, support);
--	if (ACPI_FAILURE(status)) {
--		*no_aspm = 1;
--
--		/* _OSC is optional for PCI host bridges */
--		if ((status == AE_NOT_FOUND) && !is_pcie)
--			return;
--
--		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
--			 acpi_format_exception(status));
--		return;
--	}
- 
- 	if (pcie_ports_disabled) {
- 		dev_info(&device->dev, "PCIe port services disabled; not requesting _OSC control\n");
-@@ -483,7 +462,8 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
- 
- 	requested = control;
- 	status = acpi_pci_osc_control_set(handle, &control,
--					  OSC_PCI_EXPRESS_CAPABILITY_CONTROL);
-+					  OSC_PCI_EXPRESS_CAPABILITY_CONTROL,
-+					  support);
- 	if (ACPI_SUCCESS(status)) {
- 		decode_osc_control(root, "OS now controls", control);
- 		if (acpi_gbl_FADT.boot_flags & ACPI_FADT_NO_ASPM) {
-@@ -496,10 +476,8 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
- 			*no_aspm = 1;
- 		}
- 	} else {
--		decode_osc_control(root, "OS requested", requested);
--		decode_osc_control(root, "platform willing to grant", control);
--		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
--			acpi_format_exception(status));
-+		/* Platform wants to control PCIe features */
-+		root->osc_support_set = 0;
- 
- 		/*
- 		 * We want to disable ASPM here, but aspm_disabled
-@@ -509,6 +487,16 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
- 		 * root scan.
- 		 */
- 		*no_aspm = 1;
-+
-+		/* _OSC is optional for PCI host bridges */
-+		if ((status == AE_NOT_FOUND) && !is_pcie)
-+			return;
-+
-+		decode_osc_control(root, "OS requested", requested);
-+		decode_osc_control(root, "platform willing to grant", control);
-+		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
-+			acpi_format_exception(status));
-+
- 	}
- }
+ 	buf[result++] = '\n';
  
 -- 
 2.31.1
