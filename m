@@ -2,83 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DBC203997D2
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jun 2021 04:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3703B399800
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jun 2021 04:24:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbhFCCCp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Jun 2021 22:02:45 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187]:3041 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbhFCCCp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Jun 2021 22:02:45 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4FwTWz4SWYzWr7k;
-        Thu,  3 Jun 2021 09:56:15 +0800 (CST)
-Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 3 Jun 2021 10:00:54 +0800
-Received: from [10.174.179.71] (10.174.179.71) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 3 Jun 2021 10:00:54 +0800
-Subject: Re: [PATCH] acpi/arm64: Mark next_platform_timer as __init
-To:     Kees Cook <keescook@chromium.org>
-CC:     Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20210602214645.695597-1-keescook@chromium.org>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <e0381edd-92d3-ef3c-b643-f50f962416bc@huawei.com>
-Date:   Thu, 3 Jun 2021 10:00:53 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-MIME-Version: 1.0
-In-Reply-To: <20210602214645.695597-1-keescook@chromium.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.71]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500002.china.huawei.com (7.185.36.229)
-X-CFilter-Loop: Reflected
+        id S229611AbhFCCZs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Jun 2021 22:25:48 -0400
+Received: from mga04.intel.com ([192.55.52.120]:27733 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229568AbhFCCZr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 2 Jun 2021 22:25:47 -0400
+IronPort-SDR: CzJohndd7QaxK8n3lhUc1p0ViPwK3dWg1dAtg8I+hXMj7MX3qLK/tnsVGAiHKr2T5XzvkpQrxI
+ FdswmsRPSwJQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,10003"; a="202088924"
+X-IronPort-AV: E=Sophos;i="5.83,244,1616482800"; 
+   d="scan'208";a="202088924"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2021 19:24:04 -0700
+IronPort-SDR: aIZOKToExNYR7hZjdoY0X95KYcPF1JRLwrAgB5/CanGt3xcgE+DagP5U3MKWrCzmPNFpOVuxRO
+ rEJcyUzoR13w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,244,1616482800"; 
+   d="scan'208";a="479980898"
+Received: from power-sh.sh.intel.com ([10.239.48.130])
+  by orsmga001.jf.intel.com with ESMTP; 02 Jun 2021 19:24:02 -0700
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     rjw@rjwysocki.net, guohanjun@huawei.com, rui.zhang@intel.com
+Subject: [PATCH] Revert "ACPI: sleep: Put the FACS table after using it"
+Date:   Thu,  3 Jun 2021 10:34:14 +0800
+Message-Id: <20210603023414.2389-1-rui.zhang@intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021/6/3 5:46, Kees Cook wrote:
-> Fix section mismatch warning:
-> 
-> WARNING: modpost: vmlinux.o(.text.unlikely+0x95ac): Section mismatch in reference from the function next_platform_timer() to the variable .init.data:acpi_gtdt_desc
-> The function next_platform_timer() references
-> the variable __initdata acpi_gtdt_desc.
-> This is often because next_platform_timer lacks a __initdata
-> annotation or the annotation of acpi_gtdt_desc is wrong.
-> 
-> Suggested-by: Hanjun Guo <guohanjun@huawei.com>
-> Link: https://lore.kernel.org/linux-acpi/20200508152653.157663-1-wangkefeng.wang@huawei.com/
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->   drivers/acpi/arm64/gtdt.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-> index 0a0a982f9c28..c3ad42470a7c 100644
-> --- a/drivers/acpi/arm64/gtdt.c
-> +++ b/drivers/acpi/arm64/gtdt.c
-> @@ -36,7 +36,7 @@ struct acpi_gtdt_descriptor {
->   
->   static struct acpi_gtdt_descriptor acpi_gtdt_desc __initdata;
->   
-> -static inline void *next_platform_timer(void *platform_timer)
-> +static __init void *next_platform_timer(void *platform_timer)
->   {
->   	struct acpi_gtdt_header *gh = platform_timer;
+Commit 95722237cb2a ("ACPI: sleep: Put the FACS table after using it")
+puts the FACS table during initialization.
+But the hardware signature bits in the FACS table need to be accessed,
+after every hibernation, to compare with the original hardware signature.
 
-Thanks for the fix,
+So there is no reason to release the FACS table mapping after
+initialization.
 
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+This reverts commit 95722237cb2ae4f7b73471058cdb19e8f4057c93.
+
+An alternative solution is to use acpi_gbl_FACS variable instead, which
+is mapped by the ACPICA core and never released.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=212277
+Reported-by: Stephan Hohe <sth.dev@tejp.de>
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+---
+ drivers/acpi/sleep.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index df386571da98..3bb2adef8490 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -1009,10 +1009,8 @@ static void acpi_sleep_hibernate_setup(void)
+ 		return;
+ 
+ 	acpi_get_table(ACPI_SIG_FACS, 1, (struct acpi_table_header **)&facs);
+-	if (facs) {
++	if (facs)
+ 		s4_hardware_signature = facs->hardware_signature;
+-		acpi_put_table((struct acpi_table_header *)facs);
+-	}
+ }
+ #else /* !CONFIG_HIBERNATION */
+ static inline void acpi_sleep_hibernate_setup(void) {}
+-- 
+2.17.1
+
