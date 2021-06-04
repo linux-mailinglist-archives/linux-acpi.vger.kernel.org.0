@@ -2,38 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFC8539C31D
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Jun 2021 00:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 430BF39C31E
+	for <lists+linux-acpi@lfdr.de>; Sat,  5 Jun 2021 00:01:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230227AbhFDWCs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Jun 2021 18:02:48 -0400
-Received: from mga06.intel.com ([134.134.136.31]:62965 "EHLO mga06.intel.com"
+        id S231470AbhFDWCt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Jun 2021 18:02:49 -0400
+Received: from mga06.intel.com ([134.134.136.31]:62960 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231199AbhFDWCq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S231263AbhFDWCq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Fri, 4 Jun 2021 18:02:46 -0400
-IronPort-SDR: QbM7DMNjnnRDWjm0SCgsWaz3QmwV86uFrqE8XuwiEr7pTlnlqJHHj9kgQP0RFk5Qcg/QTIgVDA
- GGOj06flFM5g==
-X-IronPort-AV: E=McAfee;i="6200,9189,10005"; a="265539943"
+IronPort-SDR: Wn3RmQ1gXCwazYajhypgJO5in4yFJANQ3SXPvY3exfVlvNV+zLS374bT5Bd8NooKvtRK0/l6o5
+ YCOx4YhY3x9g==
+X-IronPort-AV: E=McAfee;i="6200,9189,10005"; a="265539944"
 X-IronPort-AV: E=Sophos;i="5.83,249,1616482800"; 
-   d="scan'208";a="265539943"
+   d="scan'208";a="265539944"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
   by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2021 15:00:55 -0700
-IronPort-SDR: ejh6YQ5phmyKeAhM94xK0Sppxm4OQNweM3Mb4vyK3NFnSXE/2w6jP6k6LO78LdDtNsTyrhsh+c
- 8KEKHM4SKK6g==
+IronPort-SDR: Yn2kWrOV5eRMLid3o+am3Yh0VU4a8EmYQgOVx2kDAs3DjpHDU7+X4cZhkf3ZhlVBvcH+9PodtV
+ fPTPzJ3yWeGg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.83,249,1616482800"; 
-   d="scan'208";a="634146703"
+   d="scan'208";a="634146707"
 Received: from sibelius.jf.intel.com ([10.54.75.166])
   by fmsmga006.fm.intel.com with ESMTP; 04 Jun 2021 15:00:55 -0700
 From:   Erik Kaneda <erik.kaneda@intel.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Cc:     Erik Kaneda <erik.kaneda@intel.com>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        Bob Moore <robert.moore@intel.com>
-Subject: [PATCH 03/14] ACPICA: Fix memory leak caused by _CID repair function
-Date:   Fri,  4 Jun 2021 14:25:57 -0700
-Message-Id: <20210604212608.2604267-4-erik.kaneda@intel.com>
+Cc:     Bob Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
+Subject: [PATCH 04/14] ACPICA: iASL: Finish support for the IVRS ACPI table
+Date:   Fri,  4 Jun 2021 14:25:58 -0700
+Message-Id: <20210604212608.2604267-5-erik.kaneda@intel.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210604212608.2604267-1-erik.kaneda@intel.com>
 References: <20210604212608.2604267-1-erik.kaneda@intel.com>
@@ -43,47 +42,39 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ACPICA commit 180cb53963aa876c782a6f52cc155d951b26051a
+From: Bob Moore <robert.moore@intel.com>
 
-According to the ACPI spec, _CID returns a package containing
-hardware ID's. Each element of an ASL package contains a reference
-count from the parent package as well as the element itself.
+1) Add compiler support for IVRS.
+2) Update disassembler support for IVRS.
+3) Add a new utility, ut_is_id_integer to determine if a HID/CID is
+   an integer or a string.
 
-Name (TEST, Package() {
-    "String object" // this package element has a reference count of 2
-})
+ACPICA commit 7eb0b770cb0efcf089cb217b5f8bafc0c6395a3d
 
-A memory leak was caused in the _CID repair function because it did
-not decrement the reference count created by the package. Fix the
-memory leak by calling acpi_ut_remove_reference on _CID package elements
-that represent a hardware ID (_HID).
-
-Link: https://github.com/acpica/acpica/commit/180cb539
-Tested-by: Shawn Guo <shawn.guo@linaro.org>
-Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
+Link: https://github.com/acpica/acpica/commit/7eb0b770
 Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
 ---
- drivers/acpi/acpica/nsrepair2.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/acpi/actbl2.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
-index 14b71b41e845..38e10ab976e6 100644
---- a/drivers/acpi/acpica/nsrepair2.c
-+++ b/drivers/acpi/acpica/nsrepair2.c
-@@ -379,6 +379,13 @@ acpi_ns_repair_CID(struct acpi_evaluate_info *info,
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index d8fec67e4c8c..42c78fecca7c 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -447,6 +447,12 @@ struct acpi_ivrs_device_hid {
+ 	u8 uid_length;
+ };
  
- 			(*element_ptr)->common.reference_count =
- 			    original_ref_count;
++/* Values for uid_type above */
 +
-+			/*
-+			 * The original_element holds a reference from the package object
-+			 * that represents _HID. Since a new element was created by _HID,
-+			 * remove the reference from the _CID package.
-+			 */
-+			acpi_ut_remove_reference(original_element);
- 		}
++#define ACPI_IVRS_UID_NOT_PRESENT   0
++#define ACPI_IVRS_UID_IS_INTEGER    1
++#define ACPI_IVRS_UID_IS_STRING     2
++
+ /* 0x20, 0x21, 0x22: I/O Virtualization Memory Definition Block (IVMD) */
  
- 		element_ptr++;
+ struct acpi_ivrs_memory {
 -- 
 2.29.2
 
