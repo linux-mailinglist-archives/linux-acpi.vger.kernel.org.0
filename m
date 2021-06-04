@@ -2,38 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A66B839C31B
+	by mail.lfdr.de (Postfix) with ESMTP id 2D6C239C319
 	for <lists+linux-acpi@lfdr.de>; Sat,  5 Jun 2021 00:01:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231553AbhFDWCs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Jun 2021 18:02:48 -0400
-Received: from mga12.intel.com ([192.55.52.136]:18462 "EHLO mga12.intel.com"
+        id S231363AbhFDWCr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Jun 2021 18:02:47 -0400
+Received: from mga18.intel.com ([134.134.136.126]:48296 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230227AbhFDWCq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 4 Jun 2021 18:02:46 -0400
-IronPort-SDR: L3Vsm1csd8puZh/1SVesvympWctxl0Gc+SsXkaPtWtlOtrL7PDnXhcjBiVKcLurtRugREAMxLu
- p3+QzRAQwzmw==
-X-IronPort-AV: E=McAfee;i="6200,9189,10005"; a="184060106"
+        id S231365AbhFDWCp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 4 Jun 2021 18:02:45 -0400
+IronPort-SDR: bE8WDwFpX0r5r6sjDbsgI1HjfXYVe+LPFZlVBva+aTsPlprc+WIxGIqeiW+T6LSqaysrhQj24e
+ HtrXkDReg8iw==
+X-IronPort-AV: E=McAfee;i="6200,9189,10005"; a="191710783"
 X-IronPort-AV: E=Sophos;i="5.83,249,1616482800"; 
-   d="scan'208";a="184060106"
+   d="scan'208";a="191710783"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2021 15:00:56 -0700
-IronPort-SDR: kOih0kN7SZ1MsEBc4gYDG5iTUl/Wt7zzFxdug2r5RsrNk+ydFx79Ds9N6HBsX4B1CDZ9f9F1g+
- XV5aVbDJnTew==
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2021 15:00:57 -0700
+IronPort-SDR: I5EgzBdSvLjsDfC8v9s+0VCjT5y2S000r96OtNZOA+swvHRwbpM2k0WWSnGVV6VoeXzavGgWgB
+ cpmajbNHPWXg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.83,249,1616482800"; 
-   d="scan'208";a="634146728"
+   d="scan'208";a="634146734"
 Received: from sibelius.jf.intel.com ([10.54.75.166])
   by fmsmga006.fm.intel.com with ESMTP; 04 Jun 2021 15:00:56 -0700
 From:   Erik Kaneda <erik.kaneda@intel.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Cc:     Alison Schofield <alison.schofield@intel.com>,
-        Bob Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH 10/14] ACPICA: Add defines for the CXL Host Bridge Structure (CHBS)
-Date:   Fri,  4 Jun 2021 14:26:04 -0700
-Message-Id: <20210604212608.2604267-11-erik.kaneda@intel.com>
+Cc:     Erik Kaneda <erik.kaneda@intel.com>,
+        Bob Moore <robert.moore@intel.com>
+Subject: [PATCH 12/14] ACPICA: iASL: add disassembler support for PRMT
+Date:   Fri,  4 Jun 2021 14:26:06 -0700
+Message-Id: <20210604212608.2604267-13-erik.kaneda@intel.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210604212608.2604267-1-erik.kaneda@intel.com>
 References: <20210604212608.2604267-1-erik.kaneda@intel.com>
@@ -43,42 +42,71 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Alison Schofield <alison.schofield@intel.com>
+ACPICA commit f70e7593e37c9e29f19be8ad3ef93f3f34799368
 
-ACPICA commit 5ace82441a34f8d45725f12f6bd2677e79c186a6
-
-CXL 2.0 defines length and version field values for the CHBS.
-Include them in the ACPI CEDT table definition.
-
-Link: https://github.com/acpica/acpica/commit/5ace8244
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
+Link: https://github.com/acpica/acpica/commit/f70e7593
 Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
 ---
- include/acpi/actbl1.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/acpi/actbl2.h | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-index ce59903c2695..8532f56a51d6 100644
---- a/include/acpi/actbl1.h
-+++ b/include/acpi/actbl1.h
-@@ -330,6 +330,16 @@ enum acpi_cedt_type {
- 	ACPI_CEDT_TYPE_RESERVED = 1
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index 68a607961b2f..05b086d4d94a 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -40,6 +40,7 @@
+ #define ACPI_SIG_PHAT           "PHAT"	/* Platform Health Assessment Table */
+ #define ACPI_SIG_PMTT           "PMTT"	/* Platform Memory Topology Table */
+ #define ACPI_SIG_PPTT           "PPTT"	/* Processor Properties Topology Table */
++#define ACPI_SIG_PRMT           "PRMT"	/* Platform Runtime Mechanism Table */
+ #define ACPI_SIG_RASF           "RASF"	/* RAS Feature table */
+ #define ACPI_SIG_RGRT           "RGRT"	/* Regulatory Graphics Resource Table */
+ #define ACPI_SIG_SBST           "SBST"	/* Smart Battery Specification Table */
+@@ -1710,6 +1711,43 @@ struct acpi_pptt_id {
+ 	u16 spin_rev;
  };
  
-+/* Values for version field above */
++/*******************************************************************************
++ *
++ * PRMT - Platform Runtime Mechanism Table
++ *        Version 1
++ *
++ ******************************************************************************/
 +
-+#define ACPI_CEDT_CHBS_VERSION_CXL11    (0)
-+#define ACPI_CEDT_CHBS_VERSION_CXL20    (1)
++struct acpi_table_prmt {
++	struct acpi_table_header header;	/* Common ACPI table header */
++};
 +
-+/* Values for length field above */
++struct acpi_table_prmt_header {
++	u8 platform_guid[16];
++	u32 module_info_offset;
++	u32 module_info_count;
++};
 +
-+#define ACPI_CEDT_CHBS_LENGTH_CXL11     (0x2000)
-+#define ACPI_CEDT_CHBS_LENGTH_CXL20     (0x10000)
++struct acpi_prmt_module_info {
++	u16 revision;
++	u16 length;
++	u8 module_guid[16];
++	u16 major_rev;
++	u16 minor_rev;
++	u16 handler_info_count;
++	u32 handler_info_offset;
++	u64 mmio_list_pointer;
++};
 +
- /*
-  * CEDT subtables
-  */
++struct acpi_prmt_handler_info {
++	u16 revision;
++	u16 length;
++	u8 handler_guid[16];
++	u64 handler_address;
++	u64 static_data_buffer_address;
++	u64 acpi_param_buffer_address;
++};
++
+ /*******************************************************************************
+  *
+  * RASF - RAS Feature Table (ACPI 5.0)
 -- 
 2.29.2
 
