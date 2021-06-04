@@ -2,128 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE9A439C31C
+	by mail.lfdr.de (Postfix) with ESMTP id EFC8539C31D
 	for <lists+linux-acpi@lfdr.de>; Sat,  5 Jun 2021 00:01:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231393AbhFDWCr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Jun 2021 18:02:47 -0400
-Received: from mga06.intel.com ([134.134.136.31]:62958 "EHLO mga06.intel.com"
+        id S230227AbhFDWCs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Jun 2021 18:02:48 -0400
+Received: from mga06.intel.com ([134.134.136.31]:62965 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229668AbhFDWCq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S231199AbhFDWCq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Fri, 4 Jun 2021 18:02:46 -0400
-IronPort-SDR: 9OYUXyZr08mXW+KNkPm/qeb/fIrJCjuUtyUfkYvop0o9xlGItezlZmM4Hvjgs+weS4KF4feRCR
- ESKzVGzUlAlw==
-X-IronPort-AV: E=McAfee;i="6200,9189,10005"; a="265539942"
+IronPort-SDR: QbM7DMNjnnRDWjm0SCgsWaz3QmwV86uFrqE8XuwiEr7pTlnlqJHHj9kgQP0RFk5Qcg/QTIgVDA
+ GGOj06flFM5g==
+X-IronPort-AV: E=McAfee;i="6200,9189,10005"; a="265539943"
 X-IronPort-AV: E=Sophos;i="5.83,249,1616482800"; 
-   d="scan'208";a="265539942"
+   d="scan'208";a="265539943"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
   by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2021 15:00:55 -0700
-IronPort-SDR: zYE8vwRpRP1S2AC+tI7d0Vt6ZvPIsvxEVzQuNDc/GzWXfcK/vg0eueSlDk5tp3jk2FboliuWTj
- qJCSLbNY3MTQ==
+IronPort-SDR: ejh6YQ5phmyKeAhM94xK0Sppxm4OQNweM3Mb4vyK3NFnSXE/2w6jP6k6LO78LdDtNsTyrhsh+c
+ 8KEKHM4SKK6g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.83,249,1616482800"; 
-   d="scan'208";a="634146700"
+   d="scan'208";a="634146703"
 Received: from sibelius.jf.intel.com ([10.54.75.166])
   by fmsmga006.fm.intel.com with ESMTP; 04 Jun 2021 15:00:55 -0700
 From:   Erik Kaneda <erik.kaneda@intel.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Cc:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 02/14] ACPICA: Add SVKL table headers
-Date:   Fri,  4 Jun 2021 14:25:56 -0700
-Message-Id: <20210604212608.2604267-3-erik.kaneda@intel.com>
+Cc:     Erik Kaneda <erik.kaneda@intel.com>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Bob Moore <robert.moore@intel.com>
+Subject: [PATCH 03/14] ACPICA: Fix memory leak caused by _CID repair function
+Date:   Fri,  4 Jun 2021 14:25:57 -0700
+Message-Id: <20210604212608.2604267-4-erik.kaneda@intel.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210604212608.2604267-1-erik.kaneda@intel.com>
 References: <20210604212608.2604267-1-erik.kaneda@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+ACPICA commit 180cb53963aa876c782a6f52cc155d951b26051a
 
-ACPICA commit b5e6bcf69dbb9877481992d5ce86008cfb94f5b8
+According to the ACPI spec, _CID returns a package containing
+hardware ID's. Each element of an ASL package contains a reference
+count from the parent package as well as the element itself.
 
-SVKL (Storage Volume Key Location Table) is used by BIOS/Firmware
-to share storage volume encryption key's with OS. It will be used
-by userspace to decrypt and mount encrypted drives.
+Name (TEST, Package() {
+    "String object" // this package element has a reference count of 2
+})
 
-So add SVKL table signature and add it to known signatures array
-support SVKL.
+A memory leak was caused in the _CID repair function because it did
+not decrement the reference count created by the package. Fix the
+memory leak by calling acpi_ut_remove_reference on _CID package elements
+that represent a hardware ID (_HID).
 
-You can find details about the SVKL table in TDX specfication
-titled "Guest-Host-Communication Interface (GHCI) for Intel
-Trust Domain Extensions (Intel® TDX)", sec 4.4 and in ACPI
-specification r6.4, sec 5.2.6.
-
-https://software.intel.com/content/dam/develop/external/us/en/documents/intel-tdx-guest-hypervisor-communication-interface.pdf
-
-Cc: Robert Moore <robert.moore@intel.com>
-Cc: Erik Kaneda <erik.kaneda@intel.com>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Link: https://github.com/acpica/acpica/commit/b5e6bcf6
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
+Link: https://github.com/acpica/acpica/commit/180cb539
+Tested-by: Shawn Guo <shawn.guo@linaro.org>
 Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
 ---
- include/acpi/actbl2.h | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/acpi/acpica/nsrepair2.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index 3b6f45a2edc8..d8fec67e4c8c 100644
---- a/include/acpi/actbl2.h
-+++ b/include/acpi/actbl2.h
-@@ -44,6 +44,7 @@
- #define ACPI_SIG_SDEI           "SDEI"	/* Software Delegated Exception Interface Table */
- #define ACPI_SIG_SDEV           "SDEV"	/* Secure Devices table */
- #define ACPI_SIG_NHLT           "NHLT"	/* Non-HDAudio Link Table */
-+#define ACPI_SIG_SVKL           "SVKL"	/* Storage Volume Key Location Table */
+diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
+index 14b71b41e845..38e10ab976e6 100644
+--- a/drivers/acpi/acpica/nsrepair2.c
++++ b/drivers/acpi/acpica/nsrepair2.c
+@@ -379,6 +379,13 @@ acpi_ns_repair_CID(struct acpi_evaluate_info *info,
  
- /*
-  * All tables must be byte-packed to match the ACPI specification, since
-@@ -1913,6 +1914,35 @@ struct acpi_sdev_pcie_path {
- 	u8 function;
- };
+ 			(*element_ptr)->common.reference_count =
+ 			    original_ref_count;
++
++			/*
++			 * The original_element holds a reference from the package object
++			 * that represents _HID. Since a new element was created by _HID,
++			 * remove the reference from the _CID package.
++			 */
++			acpi_ut_remove_reference(original_element);
+ 		}
  
-+/*******************************************************************************
-+ *
-+ * SVKL - Storage Volume Key Location Table (ACPI 6.4)
-+ *        Version 1
-+ *
-+ ******************************************************************************/
-+
-+struct acpi_table_svkl {
-+	struct acpi_table_header header;	/* Common ACPI table header */
-+	u32 count;
-+};
-+
-+struct acpi_svkl_header {
-+	u16 type;
-+	u16 format;
-+	u32 size;
-+	u64 address;
-+};
-+
-+enum acpi_svkl_type {
-+	ACPI_SVKL_TYPE_MAIN_STORAGE = 0,
-+	ACPI_SVKL_TYPE_RESERVED = 1	/* 1 and greater are reserved */
-+};
-+
-+enum acpi_svkl_format {
-+	ACPI_SVKL_FORMAT_RAW_BINARY = 0,
-+	ACPI_SVKL_FORMAT_RESERVED = 1	/* 1 and greater are reserved */
-+};
-+
- /* Reset to default packing */
- 
- #pragma pack()
+ 		element_ptr++;
 -- 
 2.29.2
 
