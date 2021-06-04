@@ -2,91 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C566539BD55
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jun 2021 18:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C2A339BD97
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jun 2021 18:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229931AbhFDQik (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Jun 2021 12:38:40 -0400
-Received: from mga05.intel.com ([192.55.52.43]:60819 "EHLO mga05.intel.com"
+        id S230139AbhFDQup (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Jun 2021 12:50:45 -0400
+Received: from mga07.intel.com ([134.134.136.100]:64998 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229809AbhFDQik (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 4 Jun 2021 12:38:40 -0400
-IronPort-SDR: qPJD40rLB22i+Lfl0qSS2U1AXk+j56jsMz/eD0MU0ZvvaVSPJUrWVTtyUOPLGQLt0TJOhhNZEL
- Ki3MhKs92fbA==
-X-IronPort-AV: E=McAfee;i="6200,9189,10005"; a="289955087"
+        id S229690AbhFDQup (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 4 Jun 2021 12:50:45 -0400
+IronPort-SDR: bVgKiHNIO7K9UpYg5QcnG5CHVjHfmn0H2sZ8dSZWuJTLXkQ1otwn7lE6KlanPWhLWNSHK/YYNU
+ w+n496gDkGQQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,10005"; a="268190871"
 X-IronPort-AV: E=Sophos;i="5.83,248,1616482800"; 
-   d="scan'208";a="289955087"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2021 09:36:52 -0700
-IronPort-SDR: nXdsqksLSufLonxtv7iROUq2XGweccqvieHF3js/nc5MXB779J8NPN1zUwLSR+0X7ipP4a6kkT
- HgLldwhDEn2g==
+   d="scan'208";a="268190871"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2021 09:48:57 -0700
+IronPort-SDR: 9wOlInoqYA751mr8le012/TypXkupO6akfjIziX+RfVvml843oacg8MmH07/bH657qTNtYtTLz
+ a//8QdSiohsw==
 X-IronPort-AV: E=Sophos;i="5.83,248,1616482800"; 
-   d="scan'208";a="401009895"
+   d="scan'208";a="551217750"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2021 09:36:49 -0700
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2021 09:48:55 -0700
 Received: from andy by smile with local (Exim 4.94)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lpCoQ-00HGWp-Hr; Fri, 04 Jun 2021 19:36:46 +0300
-Date:   Fri, 4 Jun 2021 19:36:46 +0300
+        id 1lpD09-00HGfZ-3C; Fri, 04 Jun 2021 19:48:53 +0300
+Date:   Fri, 4 Jun 2021 19:48:53 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, kbuild-all@lists.01.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] device property: Unify access to of_node
-Message-ID: <YLpWnjLaxuJOYOHg@smile.fi.intel.com>
-References: <20210604131343.62016-1-andriy.shevchenko@linux.intel.com>
- <202106050011.Ex8ymli1-lkp@intel.com>
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v2 1/2] ACPI: bus: Constify stubs for CONFIG_ACPI=n case
+Message-ID: <YLpZdRKsj4UZbfgN@smile.fi.intel.com>
+References: <20210604163433.12707-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <202106050011.Ex8ymli1-lkp@intel.com>
+In-Reply-To: <20210604163433.12707-1-andriy.shevchenko@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jun 05, 2021 at 12:14:45AM +0800, kernel test robot wrote:
-> Hi Andy,
-> 
-> I love your patch! Perhaps something to improve:
-> 
-> [auto build test WARNING on next-20210604]
-> [cannot apply to driver-core/driver-core-testing linux/master linus/master v5.13-rc4 v5.13-rc3 v5.13-rc2 v5.13-rc4]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
-> 
-> url:    https://github.com/0day-ci/linux/commits/Andy-Shevchenko/device-property-Unify-access-to-of_node/20210604-211443
-> base:    ccc252d2e818f6a479441119ad453c3ce7c7c461
-> config: sparc64-randconfig-s032-20210604 (attached as .config)
-> compiler: sparc64-linux-gcc (GCC) 9.3.0
-> reproduce:
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # apt-get install sparse
->         # sparse version: v0.6.3-341-g8af24329-dirty
->         # https://github.com/0day-ci/linux/commit/dfc2a97acf9b5c5ba11d180bf411721f723a9042
->         git remote add linux-review https://github.com/0day-ci/linux
->         git fetch --no-tags linux-review Andy-Shevchenko/device-property-Unify-access-to-of_node/20210604-211443
->         git checkout dfc2a97acf9b5c5ba11d180bf411721f723a9042
->         # save the attached .config to linux build tree
->         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' W=1 ARCH=sparc64 
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
+On Fri, Jun 04, 2021 at 07:34:32PM +0300, Andy Shevchenko wrote:
+> There is a few stubs that left untouched during constification of
+> the fwnode related APIs. Constify three more stubs here.
 
-Oh là là, just in time when I sent v2...
-I'll look at this :-)
-
-> sparse warnings: (new ones prefixed by >>)
-> >> drivers/base/property.c:875:55: sparse: sparse: incorrect type in argument 1 (different modifiers) @@     expected struct fwnode_handle *fwnode @@     got struct fwnode_handle const *fwnode @@
->    drivers/base/property.c:875:55: sparse:     expected struct fwnode_handle *fwnode
->    drivers/base/property.c:875:55: sparse:     got struct fwnode_handle const *fwnode
->    drivers/base/property.c:890:62: sparse: sparse: incorrect type in argument 1 (different modifiers) @@     expected struct fwnode_handle *fwnode @@     got struct fwnode_handle const *fwnode @@
->    drivers/base/property.c:890:62: sparse:     expected struct fwnode_handle *fwnode
->    drivers/base/property.c:890:62: sparse:     got struct fwnode_handle const *fwnode
+Kbuild bot found another non-const APIs in use which requires an additional
+change. I'll send v3 soon. Please, ignore this one.
 
 -- 
 With Best Regards,
