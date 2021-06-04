@@ -2,172 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B6CC39BAD0
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jun 2021 16:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 874AB39BAF3
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jun 2021 16:33:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230234AbhFDOUw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Jun 2021 10:20:52 -0400
-Received: from foss.arm.com ([217.140.110.172]:40180 "EHLO foss.arm.com"
+        id S229850AbhFDOfh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Jun 2021 10:35:37 -0400
+Received: from mga01.intel.com ([192.55.52.88]:36371 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230124AbhFDOUv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 4 Jun 2021 10:20:51 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0D3372B;
-        Fri,  4 Jun 2021 07:19:05 -0700 (PDT)
-Received: from [192.168.0.14] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20A173F774;
-        Fri,  4 Jun 2021 07:19:02 -0700 (PDT)
-Subject: Re: [PATCH v5] ACPI / APEI: fix the regression of synchronous
- external aborts occur in user-mode
-To:     Xiaofei Tan <tanxiaofei@huawei.com>, rafael@kernel.org,
-        rjw@rjwysocki.net, lenb@kernel.org, tony.luck@intel.com,
-        bp@alien8.de, akpm@linux-foundation.org, jroedel@suse.de,
-        peterz@infradead.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxarm@huawei.com
-References: <1607602177-1507-1-git-send-email-tanxiaofei@huawei.com>
-From:   James Morse <james.morse@arm.com>
-Message-ID: <d57d786c-f9cb-46ba-78d0-3675666272f2@arm.com>
-Date:   Fri, 4 Jun 2021 15:19:01 +0100
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        id S229656AbhFDOfg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 4 Jun 2021 10:35:36 -0400
+IronPort-SDR: l4GthF+N7GUXvWb9BEmDR15xCfg3+y2DRjcdAEu7l/fgs2JxmsWFWGit5yYJsEeultpjivvPU6
+ ucYlF0U/D3mA==
+X-IronPort-AV: E=McAfee;i="6200,9189,10005"; a="225615156"
+X-IronPort-AV: E=Sophos;i="5.83,248,1616482800"; 
+   d="scan'208";a="225615156"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2021 07:33:44 -0700
+IronPort-SDR: mq6gBWZXAkj+GkSNW2GLCunv1BTwmnrvqqRhVtECGFhXGTKpqrg9+OAUO6w5YXI5orW/ATSukf
+ Udc7NXwh5WjA==
+X-IronPort-AV: E=Sophos;i="5.83,248,1616482800"; 
+   d="scan'208";a="483928034"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2021 07:33:39 -0700
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1lpAtE-00HFAa-C2; Fri, 04 Jun 2021 17:33:36 +0300
+Date:   Fri, 4 Jun 2021 17:33:36 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, devel@acpica.org,
+        Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        laurent.pinchart@ideasonboard.com, kieran.bingham@ideasonboard.com
+Subject: Re: [PATCH v5 4/6] gpiolib: acpi: Add acpi_gpio_get_io_resource()
+Message-ID: <YLo5wFds5JdE82P/@smile.fi.intel.com>
+References: <20210603224007.120560-1-djrscally@gmail.com>
+ <20210603224007.120560-5-djrscally@gmail.com>
+ <YLokNQCJ7WXKZepR@smile.fi.intel.com>
+ <ca51ab71-9cdd-0d00-959f-9e1b2df3588c@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1607602177-1507-1-git-send-email-tanxiaofei@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ca51ab71-9cdd-0d00-959f-9e1b2df3588c@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Xiaofei Tan,
+On Fri, Jun 04, 2021 at 03:09:43PM +0100, Daniel Scally wrote:
+> On 04/06/2021 14:01, Andy Shevchenko wrote:
+> > On Thu, Jun 03, 2021 at 11:40:05PM +0100, Daniel Scally wrote:
+> >> Add a function to verify that a given acpi_resource represents an IO
+> >> type GPIO resource, and return it if so.
+> > I would rephrase this to something like:
+> >
+> > "Add a function to verify that a given ACPI resource represents a GpioIo() type
+> > of resource, and return it if so."
+> >
+> > I can amend when applying to my branch.
+> >
+> That wording is perfectly fine by me
 
-Sorry for the delayed response,
-this still applies and builds to v5.13-rc4.
+These two patches (with mentioned amendments) pushed to my review and testing
+queue, thanks!
 
-On 10/12/2020 12:09, Xiaofei Tan wrote:
-> After the commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
-> synchronise with APEI's irq work") applied, do_sea() return directly
-> for user-mode if apei_claim_sea() handled any error record. Therefore,
-> each error record reported by the user-mode SEA must be effectively
-> processed in APEI GHES driver.
+I'll send PR next week to all stakeholders.
 
-If you describe it the other way round, it would be clearer what the problem here is.
-Something like:
-| Before commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea() synchronise
-| with APEI's irq work"), do_sea() would unconditionally signal the affected task
-| from the arch code. Since that change, the GHES driver sends the signals,.
-| This exposes a problem as errors the GHES driver doesn't understand are silently
-| ignored.
-
-
-> Currently, GHES driver only processes Memory Error Section.(Ignore PCIe
-> Error Section, as it has nothing to do with SEA).
-
-(you're starting to confuse me! - I went and checked before I realised you were talking to
-me, not describing the code...)
-
-> It is not enough. > Because ARM Processor Error could also be used for SEA in some hardware
-> platforms, such as Kunpeng9xx series. We can't ask them to switch to
-> use Memory Error Section for two reasons:
-> 1)The server was delivered to customers, and it will introduce
-> compatibility issue.
-> 2)It make sense to use ARM Processor Error Section. Because either
-> cache or memory errors could generate SEA when consumed by a processor.
-
-I think you just need to say:
-| Existing firmware on Kunpeng9xx systems reports cache errors with the 'ARM Processor
-| Error' CPER records.
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Could you add something about why the silent-ignore is a problem? Do the errors get taken
-again? Does user-space get stuck in this loop?
-
-
-> Do memory failure handling for ARM Processor Error Section just like
-> for Memory Error Section.
-
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index fce7ade..0893968 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-
-> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-> +{
-> +	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-> +	struct cper_arm_err_info *err_info;
-> +	bool queued = false;
-> +	int sec_sev, i;
-> +
-> +	log_arm_hw_error(err);
-> +
-> +	sec_sev = ghes_severity(gdata->error_severity);
-> +	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
-> +		return false;
-> +
-> +	err_info = (struct cper_arm_err_info *) (err + 1);
-> +	for (i = 0; i < err->err_info_num; i++, err_info++) {
-
-err_info has a version and a length, so its expected to be made bigger at some point.
-It would be better to use the length instead of 'err_info++', or at least to break out of
-the loop if a length > sizeof(*err_info) is seen.
-
-With that:
-Reviewed-by: James Morse <james.morse@arm.com>
-
-
-The following nits would make this easier to read:
-
-> +		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
-> +		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
-
-> +		/*
-> +		 * The field (err_info->error_info & BIT(26)) is fixed to set to
-> +		 * 1 in some old firmware of HiSilicon Kunpeng920. We assume that
-> +		 * firmware won't mix corrected errors in an uncorrected section,
-> +		 * and don't filter out 'corrected' error here.
-> +		 */
-(Nothing reads err_info->error_info, I guess this is a warning to the next person to touch
-this)
-
-
-> +		if (!is_cache || !has_pa) {
-> +			pr_warn_ratelimited(FW_WARN GHES_PFX
-> +			"Unhandled processor error type %s\n",
-> +			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
-> +			cper_proc_error_type_strs[err_info->type] : "unknown error");
-> +			continue;
-
-This is hard to read. The convention is to indent the extra lines to the relevant '('.
-e.g.:
-|			pr_warn_ratelimited(FW_WARN GHES_PFX
-|					    "Unhandled processor error type %s\n",
-
-You could make it shorter by working out the error_type string earlier
-e.g.:
-|		char *error_type = "unknown_error";
-|			
-|		if  (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs)
-|			error_type = cper_proc_error_type_strs[err_info->type];
-
-
-> +		}
-
-> +		if (ghes_do_memory_failure(err_info->physical_fault_addr, 0))
-> +			queued = true;
-
-| if (it_returned_true())
-| 	queued = true;
-
-Looks funny, and if you moved this earlier, your pr_warn_ratelimted() would have an extra
-level of indentation to play with.
-i.e.:
-|		if (is_cache && has_pa) {
-|			queued = ghes_do_memory_failure(err_info->physical_fault_addr, 0);
-|			continue;
-|		}
-
-
-Thanks,
-
-James
