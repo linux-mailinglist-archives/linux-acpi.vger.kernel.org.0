@@ -2,235 +2,201 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E81D339C6EC
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Jun 2021 10:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F3C339C871
+	for <lists+linux-acpi@lfdr.de>; Sat,  5 Jun 2021 15:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229978AbhFEJBW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 5 Jun 2021 05:01:22 -0400
-Received: from szxga03-in.huawei.com ([45.249.212.189]:4366 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229864AbhFEJBV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Jun 2021 05:01:21 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Fxtl364jHz68Zc;
-        Sat,  5 Jun 2021 16:55:43 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Sat, 5 Jun 2021 16:59:31 +0800
-Received: from [127.0.0.1] (10.40.192.162) by dggpemm500001.china.huawei.com
- (7.185.36.107) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Sat, 5 Jun 2021
- 16:59:31 +0800
-From:   Xiaofei Tan <tanxiaofei@huawei.com>
-Subject: Re: [PATCH v5] ACPI / APEI: fix the regression of synchronous
- external aborts occur in user-mode
-To:     James Morse <james.morse@arm.com>, <rafael@kernel.org>,
-        <rjw@rjwysocki.net>, <lenb@kernel.org>, <tony.luck@intel.com>,
-        <bp@alien8.de>, <akpm@linux-foundation.org>, <jroedel@suse.de>,
-        <peterz@infradead.org>
-References: <1607602177-1507-1-git-send-email-tanxiaofei@huawei.com>
- <d57d786c-f9cb-46ba-78d0-3675666272f2@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linuxarm@huawei.com>
-Message-ID: <5b444714-aa45-517f-9595-fd5889d3c342@huawei.com>
-Date:   Sat, 5 Jun 2021 16:59:30 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+        id S230245AbhFENUa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 5 Jun 2021 09:20:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35038 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230050AbhFENU0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 5 Jun 2021 09:20:26 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8B7676140C;
+        Sat,  5 Jun 2021 13:18:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622899117;
+        bh=oJLjhT+Bdkuogp9lcH0/DqQMHssScmlrFluWHGdXmSs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=KfRX9ZYH+GSgzlTzpxjctPEmvJkfTKXl+Y+RucBzSz4WBnbvAWthrJ/curB8ax41d
+         0RamzCUbuHW+hNvsvxFRNLKpwhOj6yb5j+G4AvESC4L/Ra8OFvHySvf0In/pjnoYho
+         eY0513uUzhTlAd81LYiZhM6d2eqjTpr7yOp0/3DCmJ+GuyAF6WqO8Qm1KuhLNbxF9b
+         yJTI8f1KZmiDb5cy+VNqUfelbe5X2IHFBMjmYFqyjzC6dFH+JcvuqE43jlUMhFuRed
+         3tc3s4M5VtPfikIOxkkQLqaG0CgwsjLGBqPIdOsXSEfmrN3+1RgsbpsRRxwHBsB0s5
+         0vEzE1EocfgEA==
+Received: by mail.kernel.org with local (Exim 4.94.2)
+        (envelope-from <mchehab@kernel.org>)
+        id 1lpWCB-008GEU-71; Sat, 05 Jun 2021 15:18:35 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     "Jonathan Corbet" <corbet@lwn.net>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        coresight@lists.linaro.org, devicetree@vger.kernel.org,
+        kunit-dev@googlegroups.com, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-security-module@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH 00/34] docs: avoid using ReST :doc:`foo` tag
+Date:   Sat,  5 Jun 2021 15:17:59 +0200
+Message-Id: <cover.1622898327.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <d57d786c-f9cb-46ba-78d0-3675666272f2@arm.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.40.192.162]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi James,
+As discussed at:
+	https://lore.kernel.org/linux-doc/871r9k6rmy.fsf@meer.lwn.net/
 
-On 2021/6/4 22:19, James Morse wrote:
-> Hi Xiaofei Tan,
->
-> Sorry for the delayed response,
+It is better to avoid using :doc:`foo` to refer to Documentation/foo.rst, as the
+automarkup.py extension should handle it automatically, on most cases.
 
-It's okay.
+There are a couple of exceptions to this rule:
 
-> this still applies and builds to v5.13-rc4.
+1. when :doc:  tag is used to point to a kernel-doc DOC: markup;
+2. when it is used with a named tag, e. g. :doc:`some name <foo>`;
 
-Yes, that's why i hadn't resend it.
+It should also be noticed that automarkup.py has currently an issue:
+if one use a markup like:
 
->
-> On 10/12/2020 12:09, Xiaofei Tan wrote:
->> After the commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
->> synchronise with APEI's irq work") applied, do_sea() return directly
->> for user-mode if apei_claim_sea() handled any error record. Therefore,
->> each error record reported by the user-mode SEA must be effectively
->> processed in APEI GHES driver.
->
-> If you describe it the other way round, it would be clearer what the problem here is.
-> Something like:
-> | Before commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea() synchronise
-> | with APEI's irq work"), do_sea() would unconditionally signal the affected task
-> | from the arch code. Since that change, the GHES driver sends the signals,.
-> | This exposes a problem as errors the GHES driver doesn't understand are silently
-> | ignored.
->
+	Documentation/dev-tools/kunit/api/test.rst
+	  - documents all of the standard testing API excluding mocking
+	    or mocking related features.
 
-Yes, it's clearer. Only one little change to the last sentence.
-Change to:
-This exposes a problem as errors the GHES driver doesn't understand
-or doesn't handle effectively are silently ignored.
+or, even:
 
->
->> Currently, GHES driver only processes Memory Error Section.(Ignore PCIe
->> Error Section, as it has nothing to do with SEA).
->
-> (you're starting to confuse me! - I went and checked before I realised you were talking to
-> me, not describing the code...)
->
->> It is not enough. > Because ARM Processor Error could also be used for SEA in some hardware
->> platforms, such as Kunpeng9xx series. We can't ask them to switch to
->> use Memory Error Section for two reasons:
->> 1)The server was delivered to customers, and it will introduce
->> compatibility issue.
->> 2)It make sense to use ARM Processor Error Section. Because either
->> cache or memory errors could generate SEA when consumed by a processor.
->
-> I think you just need to say:
-> | Existing firmware on Kunpeng9xx systems reports cache errors with the 'ARM Processor
-> | Error' CPER records.
->
+	Documentation/dev-tools/kunit/api/test.rst
+	    documents all of the standard testing API excluding mocking
+	    or mocking related features.
+	
+The automarkup.py will simply ignore it. Not sure why. This patch series
+avoid the above patterns (which is present only on 4 files), but it would be
+nice to have a followup patch fixing the issue at automarkup.py.
 
-OK
+On this series:
 
->
-> Could you add something about why the silent-ignore is a problem?
+Patch 1 manually adjust the references inside driver-api/pm/devices.rst,
+as there it uses :file:`foo` to refer to some Documentation/ files;
 
-OK
+Patch 2 converts a table at Documentation/dev-tools/kunit/api/index.rst
+into a list, carefully avoiding the 
 
-> Do the errors get taken again?Does user-space get stuck in this loop?
+Patch 3 converts the cross-references at the media documentation, also
+avoiding the automarkup.py bug;
 
-Yes, the process will repeat endlessly.
+Patches 4-34 convert the other occurrences via a replace script. They were
+manually edited, in order to honour 80-columns where possible.
 
->
->
->> Do memory failure handling for ARM Processor Error Section just like
->> for Memory Error Section.
->
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index fce7ade..0893968 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->
->> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
->> +{
->> +	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
->> +	struct cper_arm_err_info *err_info;
->> +	bool queued = false;
->> +	int sec_sev, i;
->> +
->> +	log_arm_hw_error(err);
->> +
->> +	sec_sev = ghes_severity(gdata->error_severity);
->> +	if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
->> +		return false;
->> +
->> +	err_info = (struct cper_arm_err_info *) (err + 1);
->> +	for (i = 0; i < err->err_info_num; i++, err_info++) {
->
-> err_info has a version and a length, so its expected to be made bigger at some point.
+I did a diff between the Sphinx 2.4.4 output before and after this patch
+series in order to double-check that all converted Documentation/ 
+references will produce <a href=<foo>.rst>foo title</a> tags.
 
+Mauro Carvalho Chehab (34):
+  docs: devices.rst: better reference documentation docs
+  docs: dev-tools: kunit: don't use a table for docs name
+  media: docs: */media/index.rst: don't use ReST doc:`foo`
+  media: userspace-api: avoid using ReST :doc:`foo` markup
+  media: driver-api: drivers: avoid using ReST :doc:`foo` markup
+  media: admin-guide: avoid using ReST :doc:`foo` markup
+  docs: admin-guide: pm: avoid using ReSt :doc:`foo` markup
+  docs: admin-guide: hw-vuln: avoid using ReST :doc:`foo` markup
+  docs: admin-guide: sysctl: avoid using ReST :doc:`foo` markup
+  docs: block: biodoc.rst: avoid using ReSt :doc:`foo` markup
+  docs: bpf: bpf_lsm.rst: avoid using ReSt :doc:`foo` markup
+  docs: core-api: avoid using ReSt :doc:`foo` markup
+  docs: dev-tools: testing-overview.rst: avoid using ReSt :doc:`foo`
+    markup
+  docs: dev-tools: kunit: avoid using ReST :doc:`foo` markup
+  docs: devicetree: bindings: submitting-patches.rst: avoid using ReSt
+    :doc:`foo` markup
+  docs: doc-guide: avoid using ReSt :doc:`foo` markup
+  docs: driver-api: avoid using ReSt :doc:`foo` markup
+  docs: driver-api: gpio: using-gpio.rst: avoid using ReSt :doc:`foo`
+    markup
+  docs: driver-api: surface_aggregator: avoid using ReSt :doc:`foo`
+    markup
+  docs: driver-api: usb: avoid using ReSt :doc:`foo` markup
+  docs: firmware-guide: acpi: avoid using ReSt :doc:`foo` markup
+  docs: hwmon: adm1177.rst: avoid using ReSt :doc:`foo` markup
+  docs: i2c: avoid using ReSt :doc:`foo` markup
+  docs: kernel-hacking: hacking.rst: avoid using ReSt :doc:`foo` markup
+  docs: networking: devlink: avoid using ReSt :doc:`foo` markup
+  docs: PCI: endpoint: pci-endpoint-cfs.rst: avoid using ReSt :doc:`foo`
+    markup
+  docs: PCI: pci.rst: avoid using ReSt :doc:`foo` markup
+  docs: process: submitting-patches.rst: avoid using ReSt :doc:`foo`
+    markup
+  docs: security: landlock.rst: avoid using ReSt :doc:`foo` markup
+  docs: trace: coresight: coresight.rst: avoid using ReSt :doc:`foo`
+    markup
+  docs: trace: ftrace.rst: avoid using ReSt :doc:`foo` markup
+  docs: userspace-api: landlock.rst: avoid using ReSt :doc:`foo` markup
+  docs: virt: kvm: s390-pv-boot.rst: avoid using ReSt :doc:`foo` markup
+  docs: x86: avoid using ReSt :doc:`foo` markup
 
-Yes, but the table "ARM Processor Error Section" fixed the length of
-processor error information structure to fixed 32 bytes. Then the
-description of the UEFI spec need to update.
+ .../PCI/endpoint/pci-endpoint-cfs.rst         |  2 +-
+ Documentation/PCI/pci.rst                     |  6 +--
+ .../special-register-buffer-data-sampling.rst |  3 +-
+ Documentation/admin-guide/media/bt8xx.rst     | 15 ++++----
+ Documentation/admin-guide/media/bttv.rst      | 21 ++++++-----
+ Documentation/admin-guide/media/index.rst     | 12 +++---
+ Documentation/admin-guide/media/saa7134.rst   |  3 +-
+ Documentation/admin-guide/pm/intel_idle.rst   | 16 +++++---
+ Documentation/admin-guide/pm/intel_pstate.rst |  9 +++--
+ Documentation/admin-guide/sysctl/abi.rst      |  2 +-
+ Documentation/admin-guide/sysctl/kernel.rst   | 37 ++++++++++---------
+ Documentation/block/biodoc.rst                |  2 +-
+ Documentation/bpf/bpf_lsm.rst                 | 13 ++++---
+ .../core-api/bus-virt-phys-mapping.rst        |  2 +-
+ Documentation/core-api/dma-api.rst            |  5 ++-
+ Documentation/core-api/dma-isa-lpc.rst        |  2 +-
+ Documentation/core-api/index.rst              |  4 +-
+ Documentation/dev-tools/kunit/api/index.rst   |  8 ++--
+ Documentation/dev-tools/kunit/faq.rst         |  2 +-
+ Documentation/dev-tools/kunit/index.rst       | 14 +++----
+ Documentation/dev-tools/kunit/start.rst       |  6 +--
+ Documentation/dev-tools/kunit/tips.rst        |  5 ++-
+ Documentation/dev-tools/kunit/usage.rst       |  8 ++--
+ Documentation/dev-tools/testing-overview.rst  | 16 ++++----
+ .../bindings/submitting-patches.rst           | 11 +++---
+ Documentation/doc-guide/contributing.rst      |  8 ++--
+ Documentation/driver-api/gpio/using-gpio.rst  |  4 +-
+ Documentation/driver-api/ioctl.rst            |  2 +-
+ .../driver-api/media/drivers/bttv-devel.rst   |  2 +-
+ Documentation/driver-api/media/index.rst      | 10 +++--
+ Documentation/driver-api/pm/devices.rst       |  8 ++--
+ .../surface_aggregator/clients/index.rst      |  3 +-
+ .../surface_aggregator/internal.rst           | 15 ++++----
+ .../surface_aggregator/overview.rst           |  6 ++-
+ Documentation/driver-api/usb/dma.rst          |  6 +--
+ .../acpi/dsd/data-node-references.rst         |  3 +-
+ .../firmware-guide/acpi/dsd/graph.rst         |  2 +-
+ .../firmware-guide/acpi/enumeration.rst       |  7 ++--
+ Documentation/hwmon/adm1177.rst               |  3 +-
+ Documentation/i2c/instantiating-devices.rst   |  2 +-
+ Documentation/i2c/old-module-parameters.rst   |  3 +-
+ Documentation/i2c/smbus-protocol.rst          |  4 +-
+ Documentation/kernel-hacking/hacking.rst      |  4 +-
+ .../networking/devlink/devlink-region.rst     |  2 +-
+ .../networking/devlink/devlink-trap.rst       |  4 +-
+ Documentation/process/submitting-patches.rst  | 32 ++++++++--------
+ Documentation/security/landlock.rst           |  3 +-
+ Documentation/trace/coresight/coresight.rst   |  8 ++--
+ Documentation/trace/ftrace.rst                |  2 +-
+ Documentation/userspace-api/landlock.rst      | 11 +++---
+ .../userspace-api/media/glossary.rst          |  2 +-
+ Documentation/userspace-api/media/index.rst   | 12 +++---
+ Documentation/virt/kvm/s390-pv-boot.rst       |  2 +-
+ Documentation/x86/boot.rst                    |  4 +-
+ Documentation/x86/mtrr.rst                    |  2 +-
+ 55 files changed, 217 insertions(+), 183 deletions(-)
 
-> It would be better to use the length instead of 'err_info++', or at least to break out of
-> the loop if a length > sizeof(*err_info) is seen.
->
+-- 
+2.31.1
 
-OK. Maybe check length != sizeof(*err_info) is better. I will add this.
-
-	if (err_info->length != sizeof(struct cper_arm_err_info)) {
-		pr_warn_ratelimited(FW_WARN GHES_PFX
-				    "Error info length %d is invalid\n",
-				    err_info->length);
-		break;
-	}
-
-> With that:
-> Reviewed-by: James Morse <james.morse@arm.com>
->
->
-> The following nits would make this easier to read:
->
->> +		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
->> +		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
->
->> +		/*
->> +		 * The field (err_info->error_info & BIT(26)) is fixed to set to
->> +		 * 1 in some old firmware of HiSilicon Kunpeng920. We assume that
->> +		 * firmware won't mix corrected errors in an uncorrected section,
->> +		 * and don't filter out 'corrected' error here.
->> +		 */
-> (Nothing reads err_info->error_info, I guess this is a warning to the next person to touch
-> this)
->
-
-Yes
-
->
->> +		if (!is_cache || !has_pa) {
->> +			pr_warn_ratelimited(FW_WARN GHES_PFX
->> +			"Unhandled processor error type %s\n",
->> +			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
->> +			cper_proc_error_type_strs[err_info->type] : "unknown error");
->> +			continue;
->
-> This is hard to read. The convention is to indent the extra lines to the relevant '('.
-> e.g.:
-> |			pr_warn_ratelimited(FW_WARN GHES_PFX
-> |					    "Unhandled processor error type %s\n",
->
-> You could make it shorter by working out the error_type string earlier
-> e.g.:
-> |		char *error_type = "unknown_error";
-> |			
-> |		if  (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs)
-> |			error_type = cper_proc_error_type_strs[err_info->type];
->
-
-OK, I will do this change.
-
-
->
->> +		}
->
->> +		if (ghes_do_memory_failure(err_info->physical_fault_addr, 0))
->> +			queued = true;
->
-> | if (it_returned_true())
-> | 	queued = true;
->
-> Looks funny, and if you moved this earlier, your pr_warn_ratelimted() would have an extra
-> level of indentation to play with.
-> i.e.:
-> |		if (is_cache && has_pa) {
-> |			queued = ghes_do_memory_failure(err_info->physical_fault_addr, 0);
-> |			continue;
-> |		}
->
-
-Right.
-
->
-> Thanks,
->
-> James
->
-> .
->
 
