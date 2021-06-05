@@ -2,132 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B53139CA9F
-	for <lists+linux-acpi@lfdr.de>; Sat,  5 Jun 2021 21:08:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4535739CB9E
+	for <lists+linux-acpi@lfdr.de>; Sun,  6 Jun 2021 01:08:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229998AbhFETKe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 5 Jun 2021 15:10:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50012 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229994AbhFETKd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 5 Jun 2021 15:10:33 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C76CD61073;
-        Sat,  5 Jun 2021 19:08:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622920125;
-        bh=tTJEbMfaqLm+MQIdZ6b17P+wEJbY3/9z+X1SQ27izYw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JkQm3FNW5iQVYmgT/Gt9sN9r1LoTem2cqXUl0EjU+fiv82NY1pLAYU3Bw6unpEki9
-         JXsjuSgQIFHSyh38wM93iu29TbJXvLcRhJNrLaI3uPlTWuv27IKsdkFioKL4INshFP
-         X6wWHZCeoF+O8iMlmhkcXx84GYrwHdtLzik9jQie2+N1FEL3MtfoR0dRqJZtRSpa3B
-         75ZFgP9ntAFhWGSiwsFlzS8kJV4vdjx4gNxci+2IKGEj7omJo8VOW1W/h4rNmExnEf
-         Cyd+38BTHzfhwZ6TVmr+dpfprstE/6hddhXmgX9dnEe4dYMoT8QPViKF/MrmqKI8pR
-         fNqEWypa3GLOg==
-Date:   Sat, 5 Jun 2021 21:08:36 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     "=?UTF-8?B?TsOtY29sYXM=?= F. R. A. Prado" <n@nfraprado.net>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        coresight@lists.linaro.org, devicetree@vger.kernel.org,
-        kunit-dev@googlegroups.com, kvm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-security-module@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH 00/34] docs: avoid using ReST :doc:`foo` tag
-Message-ID: <20210605210836.540577d4@coco.lan>
-In-Reply-To: <20210605151109.axm3wzbcstsyxczp@notapiano>
-References: <cover.1622898327.git.mchehab+huawei@kernel.org>
-        <20210605151109.axm3wzbcstsyxczp@notapiano>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+        id S230029AbhFEXJx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 5 Jun 2021 19:09:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49442 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230010AbhFEXJw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Jun 2021 19:09:52 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BA5C061766;
+        Sat,  5 Jun 2021 16:08:04 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id f17so7541328wmf.2;
+        Sat, 05 Jun 2021 16:08:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=XWQOeDNetl8UqnHPJUQjjvOHA7LNu8Ic6TyUbdOorqs=;
+        b=oUDh7JiDO9mrLvD61KvsDx0GFNTAXwpE+Ch5LrxM86ifXgveP3JG94hrc+fldZUAQC
+         hJfu8LGpFHLffvN2fHZA1toSHHzPlFRw+SKq45jrBI+1v3wLXp0reM9l4G4ZzxLua1qP
+         81hyKfbsyFcMRgWnE/bJr0fTa9c3Ze3/Fczg0tg9KBh42O5baQ55OG0K3u88NS85OQbq
+         wYEXupbbKfQWHEgcyiCZxq3ZXYFs9/D1TPHOg4JZ5iGplwLhDNshek6FAh3sahfe9eNH
+         11SUZIenfH+NWWoPScGa/+ht1jysI0nkOv7MvIypdzxrrK2vPY+7P3+QhOR+yl8WVU1z
+         OV1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=XWQOeDNetl8UqnHPJUQjjvOHA7LNu8Ic6TyUbdOorqs=;
+        b=BHU2FOK2b0anLKxhK11ents7rTWAoZe1JouggSTEIiQWWPdtMy66sXa7ooAtPNpqtT
+         iARxRQ4JkXzjTkb2C4ADtdrb/wHzOQhmaRIKpuwT92UgB1Aa3DWYTn52tpVWUI61pAvD
+         zO+e/Qgkd/p30Cm/qm8baTGDBhg2KhKQ8tQpverlO/po4aKdFkFvphTGpQHi1i+tjSg2
+         1eNs4TKekenFDGedcgq886CyzfoOEoSE+yt/QaXQXeO0vFqtVv1xOHxNHycS2P6EOcW0
+         koF72Gq3JH2lzitviXzfvdU8zV7xfgE6mZdDxaNlLDapEMH9boom2LoeCe/V1LOPqZMK
+         pQhQ==
+X-Gm-Message-State: AOAM5323r4Q69MpNYkn6w3/CtECQiTUcGJ9q8Jw/NgEoKDNLzLtHOFY6
+        jdBIE2Al/yqwms5ZqpiBG6c=
+X-Google-Smtp-Source: ABdhPJw6+lZPeYszBUn8aMQkKy6foGfI99/ILAywZKofFSvRh4OwezEb5re6agR0nLf9aArqwNBvEg==
+X-Received: by 2002:a1c:b783:: with SMTP id h125mr10019551wmf.182.1622934478325;
+        Sat, 05 Jun 2021 16:07:58 -0700 (PDT)
+Received: from [192.168.1.211] ([2.29.20.84])
+        by smtp.gmail.com with ESMTPSA id q11sm9561009wmq.1.2021.06.05.16.07.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 05 Jun 2021 16:07:57 -0700 (PDT)
+Subject: Re: [PATCH v5 5/6] platform/x86: Add intel_skl_int3472 driver
+To:     kernel test robot <lkp@intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org
+Cc:     kbuild-all@lists.01.org
+References: <20210603224007.120560-6-djrscally@gmail.com>
+ <202106040951.xabRueHQ-lkp@intel.com>
+From:   Daniel Scally <djrscally@gmail.com>
+Message-ID: <68dcb60a-be0b-9bb6-b661-03a629e52f70@gmail.com>
+Date:   Sun, 6 Jun 2021 00:07:56 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <202106040951.xabRueHQ-lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Em Sat, 5 Jun 2021 12:11:09 -0300
-N=C3=ADcolas F. R. A. Prado <n@nfraprado.net> escreveu:
+Ah - forgot to make the function static, let me sent another of this patch.
 
-> Hi Mauro,
->=20
-> On Sat, Jun 05, 2021 at 03:17:59PM +0200, Mauro Carvalho Chehab wrote:
-> > As discussed at:
-> > 	https://lore.kernel.org/linux-doc/871r9k6rmy.fsf@meer.lwn.net/
-> >=20
-> > It is better to avoid using :doc:`foo` to refer to Documentation/foo.rs=
-t, as the
-> > automarkup.py extension should handle it automatically, on most cases.
-> >=20
-> > There are a couple of exceptions to this rule:
-> >=20
-> > 1. when :doc:  tag is used to point to a kernel-doc DOC: markup;
-> > 2. when it is used with a named tag, e. g. :doc:`some name <foo>`;
-> >=20
-> > It should also be noticed that automarkup.py has currently an issue:
-> > if one use a markup like:
-> >=20
-> > 	Documentation/dev-tools/kunit/api/test.rst
-> > 	  - documents all of the standard testing API excluding mocking
-> > 	    or mocking related features.
-> >=20
-> > or, even:
-> >=20
-> > 	Documentation/dev-tools/kunit/api/test.rst
-> > 	    documents all of the standard testing API excluding mocking
-> > 	    or mocking related features.
-> > =09
-> > The automarkup.py will simply ignore it. Not sure why. This patch series
-> > avoid the above patterns (which is present only on 4 files), but it wou=
-ld be
-> > nice to have a followup patch fixing the issue at automarkup.py. =20
->=20
-> What I think is happening here is that we're using rST's syntax for defin=
-ition
-> lists [1]. automarkup.py ignores literal nodes, and perhaps a definition =
-is
-> considered a literal by Sphinx. Adding a blank line after the Documentati=
-on/...
-> or removing the additional indentation makes it work, like you did in your
-> 2nd and 3rd patch, since then it's not a definition anymore, although the=
-n the
-> visual output is different as well.
-
-A literal has a different output. I think that this is not the case, but I=
-=20
-didn't check the python code from docutils/Sphinx.
-=20
-> I'm not sure this is something we need to fix. Does it make sense to use
-> definition lists for links like that? If it does, I guess one option woul=
-d be to
-> whitelist definition lists so they aren't ignored by automarkup, but I fe=
-el
-> this could get ugly really quickly.
-
-Yes, we should avoid handling literal blocks, as this can be a nightmare.
-
-> FWIW note that it's also possible to use relative paths to docs with auto=
-markup.
-
-Not sure if you meant to say using something like ../driver-api/foo.rst.
-If so, relative paths are a problem, as it will pass unnoticed by this scri=
-pt:
-
-	./scripts/documentation-file-ref-check
-
-which is meant to warn when a file is moved to be elsewhere. Ok, it
-could be taught to use "../" to identify paths, but I suspect that this
-could lead to false positives, like here:
-
-	Documentation/usb/gadget-testing.rst:  # ln -s ../../uncompressed/u
-	Documentation/usb/gadget-testing.rst:  # cd ../../class/fs
-	Documentation/usb/gadget-testing.rst:  # ln -s ../../header/h
-
-If you meant, instead, :doc:`../foo`, this series address those too.
-
-Regards,
-Mauro
+On 04/06/2021 02:31, kernel test robot wrote:
+> Hi Daniel,
+>
+> I love your patch! Perhaps something to improve:
+>
+> [auto build test WARNING on pm/linux-next]
+> [also build test WARNING on lee-mfd/for-mfd-next linus/master v5.13-rc4 next-20210603]
+> [cannot apply to gpio/for-next]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+>
+> url:    https://github.com/0day-ci/linux/commits/Daniel-Scally/Introduce-intel_skl_int3472-module/20210604-064345
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+> config: x86_64-allyesconfig (attached as .config)
+> compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
+> reproduce (this is a W=1 build):
+>         # https://github.com/0day-ci/linux/commit/3edcad8c200f211063a35d125e9fd350a2efeb40
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review Daniel-Scally/Introduce-intel_skl_int3472-module/20210604-064345
+>         git checkout 3edcad8c200f211063a35d125e9fd350a2efeb40
+>         # save the attached .config to linux build tree
+>         make W=1 ARCH=x86_64 
+>
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+>
+> All warnings (new ones prefixed by >>):
+>
+>>> drivers/platform/x86/intel-int3472/intel_skl_int3472_tps68470.c:76:5: warning: no previous prototype for 'skl_int3472_tps68470_calc_type' [-Wmissing-prototypes]
+>       76 | int skl_int3472_tps68470_calc_type(struct acpi_device *adev)
+>          |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+>
+> vim +/skl_int3472_tps68470_calc_type +76 drivers/platform/x86/intel-int3472/intel_skl_int3472_tps68470.c
+>
+>     52	
+>     53	/** skl_int3472_tps68470_calc_type: Check what platform a device is designed for
+>     54	 * @adev: A pointer to a &struct acpi_device
+>     55	 *
+>     56	 * Check CLDB buffer against the PMIC's adev. If present, then we check
+>     57	 * the value of control_logic_type field and follow one of the
+>     58	 * following scenarios:
+>     59	 *
+>     60	 *	1. No CLDB - likely ACPI tables designed for ChromeOS. We
+>     61	 *	create platform devices for the GPIOs and OpRegion drivers.
+>     62	 *
+>     63	 *	2. CLDB, with control_logic_type = 2 - probably ACPI tables
+>     64	 *	made for Windows 2-in-1 platforms. Register pdevs for GPIO,
+>     65	 *	Clock and Regulator drivers to bind to.
+>     66	 *
+>     67	 *	3. Any other value in control_logic_type, we should never have
+>     68	 *	gotten to this point; fail probe and return.
+>     69	 *
+>     70	 * Return:
+>     71	 * * 1		Device intended for ChromeOS
+>     72	 * * 2		Device intended for Windows
+>     73	 * * -EINVAL	Where @adev has an object named CLDB but it does not conform to
+>     74	 *		our expectations
+>     75	 */
+>   > 76	int skl_int3472_tps68470_calc_type(struct acpi_device *adev)
+>     77	{
+>     78		struct int3472_cldb cldb = { 0 };
+>     79		int ret;
+>     80	
+>     81		/*
+>     82		 * A CLDB buffer that exists, but which does not match our expectations
+>     83		 * should trigger an error so we don't blindly continue.
+>     84		 */
+>     85		ret = skl_int3472_fill_cldb(adev, &cldb);
+>     86		if (ret && ret != -ENODEV)
+>     87			return ret;
+>     88	
+>     89		if (ret)
+>     90			return DESIGNED_FOR_CHROMEOS;
+>     91	
+>     92		if (cldb.control_logic_type != 2)
+>     93			return -EINVAL;
+>     94	
+>     95		return DESIGNED_FOR_WINDOWS;
+>     96	}
+>     97	
+>
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
