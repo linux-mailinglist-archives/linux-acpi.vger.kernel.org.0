@@ -2,163 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4535739CB9E
-	for <lists+linux-acpi@lfdr.de>; Sun,  6 Jun 2021 01:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 872A539CD90
+	for <lists+linux-acpi@lfdr.de>; Sun,  6 Jun 2021 08:04:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230029AbhFEXJx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 5 Jun 2021 19:09:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230010AbhFEXJw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 5 Jun 2021 19:09:52 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BA5C061766;
-        Sat,  5 Jun 2021 16:08:04 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id f17so7541328wmf.2;
-        Sat, 05 Jun 2021 16:08:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=XWQOeDNetl8UqnHPJUQjjvOHA7LNu8Ic6TyUbdOorqs=;
-        b=oUDh7JiDO9mrLvD61KvsDx0GFNTAXwpE+Ch5LrxM86ifXgveP3JG94hrc+fldZUAQC
-         hJfu8LGpFHLffvN2fHZA1toSHHzPlFRw+SKq45jrBI+1v3wLXp0reM9l4G4ZzxLua1qP
-         81hyKfbsyFcMRgWnE/bJr0fTa9c3Ze3/Fczg0tg9KBh42O5baQ55OG0K3u88NS85OQbq
-         wYEXupbbKfQWHEgcyiCZxq3ZXYFs9/D1TPHOg4JZ5iGplwLhDNshek6FAh3sahfe9eNH
-         11SUZIenfH+NWWoPScGa/+ht1jysI0nkOv7MvIypdzxrrK2vPY+7P3+QhOR+yl8WVU1z
-         OV1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=XWQOeDNetl8UqnHPJUQjjvOHA7LNu8Ic6TyUbdOorqs=;
-        b=BHU2FOK2b0anLKxhK11ents7rTWAoZe1JouggSTEIiQWWPdtMy66sXa7ooAtPNpqtT
-         iARxRQ4JkXzjTkb2C4ADtdrb/wHzOQhmaRIKpuwT92UgB1Aa3DWYTn52tpVWUI61pAvD
-         zO+e/Qgkd/p30Cm/qm8baTGDBhg2KhKQ8tQpverlO/po4aKdFkFvphTGpQHi1i+tjSg2
-         1eNs4TKekenFDGedcgq886CyzfoOEoSE+yt/QaXQXeO0vFqtVv1xOHxNHycS2P6EOcW0
-         koF72Gq3JH2lzitviXzfvdU8zV7xfgE6mZdDxaNlLDapEMH9boom2LoeCe/V1LOPqZMK
-         pQhQ==
-X-Gm-Message-State: AOAM5323r4Q69MpNYkn6w3/CtECQiTUcGJ9q8Jw/NgEoKDNLzLtHOFY6
-        jdBIE2Al/yqwms5ZqpiBG6c=
-X-Google-Smtp-Source: ABdhPJw6+lZPeYszBUn8aMQkKy6foGfI99/ILAywZKofFSvRh4OwezEb5re6agR0nLf9aArqwNBvEg==
-X-Received: by 2002:a1c:b783:: with SMTP id h125mr10019551wmf.182.1622934478325;
-        Sat, 05 Jun 2021 16:07:58 -0700 (PDT)
-Received: from [192.168.1.211] ([2.29.20.84])
-        by smtp.gmail.com with ESMTPSA id q11sm9561009wmq.1.2021.06.05.16.07.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Jun 2021 16:07:57 -0700 (PDT)
-Subject: Re: [PATCH v5 5/6] platform/x86: Add intel_skl_int3472 driver
-To:     kernel test robot <lkp@intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org
-Cc:     kbuild-all@lists.01.org
-References: <20210603224007.120560-6-djrscally@gmail.com>
- <202106040951.xabRueHQ-lkp@intel.com>
-From:   Daniel Scally <djrscally@gmail.com>
-Message-ID: <68dcb60a-be0b-9bb6-b661-03a629e52f70@gmail.com>
-Date:   Sun, 6 Jun 2021 00:07:56 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S230003AbhFFGGp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 6 Jun 2021 02:06:45 -0400
+Received: from mga17.intel.com ([192.55.52.151]:45974 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229504AbhFFGGo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 6 Jun 2021 02:06:44 -0400
+IronPort-SDR: 3o66JognwwV769u8l1aKT2bXSqOtzSYzs7es0G5ohSkdMdb6+RGnDapGbo7E1565OjkI9eYKc7
+ ZaFF1foQl7zQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,10006"; a="184852986"
+X-IronPort-AV: E=Sophos;i="5.83,252,1616482800"; 
+   d="scan'208";a="184852986"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2021 23:04:55 -0700
+IronPort-SDR: 1LN/NvijEUDEsEzvi/DxSTtqgRrjVRYfKr0VuUkRWmLPWcfE0KcR5LEDYTSKYcO2g4mP/Pm9yO
+ NbqDZxOcPH3A==
+X-IronPort-AV: E=Sophos;i="5.83,252,1616482800"; 
+   d="scan'208";a="439664652"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2021 23:04:53 -0700
+Subject: [PATCH v5 0/6] CXL port and decoder enumeration
+From:   Dan Williams <dan.j.williams@intel.com>
+To:     linux-cxl@vger.kernel.org
+Cc:     Ben Widawsky <ben.widawsky@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Date:   Sat, 05 Jun 2021 23:04:53 -0700
+Message-ID: <162295949351.1109360.10329014558746500142.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-In-Reply-To: <202106040951.xabRueHQ-lkp@intel.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Ah - forgot to make the function static, let me sent another of this patch.
+Changes since v4 [1]:
+- Rework the object model to better account for downstream ports and
+  enumerate decode capabilities.
+- Include the definition of CFMWS
+- Reference CFMWS in the changelogs and implementation
+- Drop mention of pcie_portdriver for CXL switch enumeration. This will
+  be handled by CXL path validation when an endpoint wants to contribute
+  to a memory region.
 
-On 04/06/2021 02:31, kernel test robot wrote:
-> Hi Daniel,
->
-> I love your patch! Perhaps something to improve:
->
-> [auto build test WARNING on pm/linux-next]
-> [also build test WARNING on lee-mfd/for-mfd-next linus/master v5.13-rc4 next-20210603]
-> [cannot apply to gpio/for-next]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
->
-> url:    https://github.com/0day-ci/linux/commits/Daniel-Scally/Introduce-intel_skl_int3472-module/20210604-064345
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-> config: x86_64-allyesconfig (attached as .config)
-> compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
-> reproduce (this is a W=1 build):
->         # https://github.com/0day-ci/linux/commit/3edcad8c200f211063a35d125e9fd350a2efeb40
->         git remote add linux-review https://github.com/0day-ci/linux
->         git fetch --no-tags linux-review Daniel-Scally/Introduce-intel_skl_int3472-module/20210604-064345
->         git checkout 3edcad8c200f211063a35d125e9fd350a2efeb40
->         # save the attached .config to linux build tree
->         make W=1 ARCH=x86_64 
->
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
->
-> All warnings (new ones prefixed by >>):
->
->>> drivers/platform/x86/intel-int3472/intel_skl_int3472_tps68470.c:76:5: warning: no previous prototype for 'skl_int3472_tps68470_calc_type' [-Wmissing-prototypes]
->       76 | int skl_int3472_tps68470_calc_type(struct acpi_device *adev)
->          |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->
->
-> vim +/skl_int3472_tps68470_calc_type +76 drivers/platform/x86/intel-int3472/intel_skl_int3472_tps68470.c
->
->     52	
->     53	/** skl_int3472_tps68470_calc_type: Check what platform a device is designed for
->     54	 * @adev: A pointer to a &struct acpi_device
->     55	 *
->     56	 * Check CLDB buffer against the PMIC's adev. If present, then we check
->     57	 * the value of control_logic_type field and follow one of the
->     58	 * following scenarios:
->     59	 *
->     60	 *	1. No CLDB - likely ACPI tables designed for ChromeOS. We
->     61	 *	create platform devices for the GPIOs and OpRegion drivers.
->     62	 *
->     63	 *	2. CLDB, with control_logic_type = 2 - probably ACPI tables
->     64	 *	made for Windows 2-in-1 platforms. Register pdevs for GPIO,
->     65	 *	Clock and Regulator drivers to bind to.
->     66	 *
->     67	 *	3. Any other value in control_logic_type, we should never have
->     68	 *	gotten to this point; fail probe and return.
->     69	 *
->     70	 * Return:
->     71	 * * 1		Device intended for ChromeOS
->     72	 * * 2		Device intended for Windows
->     73	 * * -EINVAL	Where @adev has an object named CLDB but it does not conform to
->     74	 *		our expectations
->     75	 */
->   > 76	int skl_int3472_tps68470_calc_type(struct acpi_device *adev)
->     77	{
->     78		struct int3472_cldb cldb = { 0 };
->     79		int ret;
->     80	
->     81		/*
->     82		 * A CLDB buffer that exists, but which does not match our expectations
->     83		 * should trigger an error so we don't blindly continue.
->     84		 */
->     85		ret = skl_int3472_fill_cldb(adev, &cldb);
->     86		if (ret && ret != -ENODEV)
->     87			return ret;
->     88	
->     89		if (ret)
->     90			return DESIGNED_FOR_CHROMEOS;
->     91	
->     92		if (cldb.control_logic_type != 2)
->     93			return -EINVAL;
->     94	
->     95		return DESIGNED_FOR_WINDOWS;
->     96	}
->     97	
->
-> ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+[1]: http://lore.kernel.org/r/162096970332.1865304.10280028741091576940.stgit@dwillia2-desk3.amr.corp.intel.com
+
+---
+
+The recently published CXL Fixed Memory Window Structure (CFMWS)
+extension to the CXL Early Discovery Table (CEDT) provides a platform
+firmware mechanism to enumerate CXL memory resources. The table data
+indicates which CXL memory ranges were configured by platform BIOS, and
+which address ranges are available to support hot plug and dynamic
+provisioning of CXL memory regions.
+
+CXL Port Topology:
+
+The enumeration starts with the ACPI0017 driver registering a 'struct
+cxl_port' object to establish the top of a port topology. It then
+scans the ACPI bus looking for CXL Host Bridges (ACPI0016 instances). A
+cxl_port represents one or more decoder resources between a 'uport'
+(upstream port) and one or more 'dport' (downstream port) instances.
+System software must not assume that 'struct cxl_port' device names will
+be static from one boot to the next. It will generally be the case that
+the root cxl_port starts at id '0' and the host bridges are enumerated
+in the same order starting at id '1', but that is not guaranteed.
+
+A 'uport' is a device that implements a decode. It can either be a
+platform firmware device like ACPI0017 where the decode is described by
+an ACPI data-structure, or a PCIe switch where the upstream port of the
+switch implements a CXL DVSEC pointing to component registers with the
+HDM decoder capability (see CXL 2.0 section 8.2.5.12 CXL HDM Decoder
+Capability Structure).
+
+Once a uport and its corresponding dport instances are collected into a
+cxl_port the actual decode resources are then modeled as cxl_decode
+objects that are children of their parent cxl_port. The 'decode' object
+has a 1:1 relationship with ether CFMWS entries at the root level, or
+hardware HDM decoder register instances in a PCIe device's CXL component
+register space at any level of a CXL switch hierarchy. In addition to
+the interleave geometry and address range a decode object conveys the
+target list (targeted dports) in interleave order. The dport id in a
+target list is either its ACPI _UID for Host Bridge targets, or the
+"port number" field from the link capabilities register in the PCIe
+"Express" capability [2].
+
+Here is a tree(1) topology of QEMU emulating a single-ported
+host-bridge:
+
+    /sys/bus/cxl/devices/root0
+    ├── devtype
+    ├── dport0 -> ../LNXSYSTM:00/LNXSYBUS:00/ACPI0016:00
+    ├── port1
+    │   ├── decoder1.0
+    │   │   ├── devtype
+    │   │   ├── end
+    │   │   ├── locked
+    │   │   ├── start
+    │   │   ├── subsystem -> ../../../../bus/cxl
+    │   │   ├── target_list
+    │   │   ├── target_type
+    │   │   └── uevent
+    │   ├── devtype
+    │   ├── dport0 -> ../../pci0000:34/0000:34:00.0
+    │   ├── subsystem -> ../../../bus/cxl
+    │   ├── uevent
+    │   └── uport -> ../../LNXSYSTM:00/LNXSYBUS:00/ACPI0016:00
+    ├── subsystem -> ../../bus/cxl
+    ├── uevent
+    └── uport -> ../platform/ACPI0017:00
+
+
+* The root port is singleton only by convention. A given uport device
+  like ACPI0017 could create a root level port per CFMWS entry. This
+  patch set chooses to implement 1 port at the root level and list all
+  CFMWS decode entries under that port regardless of which dport host
+  bridges are targeted.
+
+[2]: CXL 2.0 8.2.5.12.8 CXL HDM Decoder 0 Target List Low Register
+     (Offset 24h) ...The Target Port Identifier for a given Downstream Port
+     is reported via Port Number field in Link Capabilities Register. (See
+     PCI Express Base Specification).
+
+---
+
+Dan Williams (6):
+      cxl/acpi: Local definition of ACPICA infrastructure
+      cxl/acpi: Introduce cxl_root, the root of a cxl_port topology
+      cxl/Kconfig: Default drivers to CONFIG_CXL_BUS
+      cxl/acpi: Add downstream port data to cxl_port instances
+      cxl/acpi: Enumerate host bridge root ports
+      cxl/acpi: Introduce cxl_decoder objects
+
+
+ Documentation/ABI/testing/sysfs-bus-cxl |   94 ++++++
+ drivers/cxl/Kconfig                     |   17 +
+ drivers/cxl/Makefile                    |    2 
+ drivers/cxl/acpi.c                      |  193 ++++++++++++
+ drivers/cxl/acpi.h                      |   48 +++
+ drivers/cxl/core.c                      |  514 +++++++++++++++++++++++++++++++
+ drivers/cxl/cxl.h                       |   92 ++++++
+ 7 files changed, 960 insertions(+)
+ create mode 100644 drivers/cxl/acpi.c
+ create mode 100644 drivers/cxl/acpi.h
+
+base-commit: 605a5e41db7d8c930fb80115686991c4c1d08ee4
