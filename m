@@ -2,202 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 837FD39D1BB
-	for <lists+linux-acpi@lfdr.de>; Sun,  6 Jun 2021 23:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A03D39D20F
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 00:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230353AbhFFVrY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 6 Jun 2021 17:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59248 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230403AbhFFVrW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Jun 2021 17:47:22 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8297C061766
-        for <linux-acpi@vger.kernel.org>; Sun,  6 Jun 2021 14:45:32 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1lq0aF-0005Yf-3o; Sun, 06 Jun 2021 23:45:27 +0200
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1lq0aD-0005oY-Jc; Sun, 06 Jun 2021 23:45:25 +0200
-Date:   Sun, 6 Jun 2021 23:45:12 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Flavio Suligoi <f.suligoi@asem.it>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v2 7/7] pwm: core: Simplify some devm_*pwm*() functions
-Message-ID: <20210606214512.36ntagggat7wbhvh@pengutronix.de>
-References: <20210531194947.10770-1-andriy.shevchenko@linux.intel.com>
- <20210531194947.10770-7-andriy.shevchenko@linux.intel.com>
+        id S231169AbhFFWzL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 6 Jun 2021 18:55:11 -0400
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:53791 "EHLO
+        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230368AbhFFWzK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 6 Jun 2021 18:55:10 -0400
+Received: (Authenticated sender: n@nfraprado.net)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 861051BF203;
+        Sun,  6 Jun 2021 22:53:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nfraprado.net;
+        s=gm1; t=1623019997;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LEITmbgA+ypfFiT6sDRv13/uCob4oKC9Sq9src0AzZE=;
+        b=chA+i0RmfXwj/WF8vUQcsG8LWn2bONkphlI9FxGByy3xXZzQ3/zHKFPGJxmKXuKUW335J7
+        jYK4CRJ9+UN7xZA7RoqojnjXZW+0cqiNSJEER76idFul1Hmyyid+LU7eBwqw4Yf6VUnAAy
+        EO/oCOnOkrJSrla2lWMUer63YFPTS6rPVGC6R5VJrg9wTSN5B9e0Ariq05tQnFO7ePJjQo
+        bl4pkIEG3/A5X1Ubh0QT5mRcrGJQ8WehYjr1NfQyPqrYiwulB4ynbpB9vRe3MCb4L15B0r
+        jLNt083VPjq8mnz5SK6VyymWvFVmHAPrKBJPANhNFdLyuGqe1sYaP2/+H+QnUQ==
+Date:   Sun, 6 Jun 2021 19:52:25 -0300
+From:   =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <n@nfraprado.net>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        coresight@lists.linaro.org, devicetree@vger.kernel.org,
+        kunit-dev@googlegroups.com, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-security-module@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH 00/34] docs: avoid using ReST :doc:`foo` tag
+Message-ID: <20210606225225.fz4dsyz6im4bqena@notapiano>
+References: <cover.1622898327.git.mchehab+huawei@kernel.org>
+ <20210605151109.axm3wzbcstsyxczp@notapiano>
+ <20210605210836.540577d4@coco.lan>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="p3seyr7qu6fpltut"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20210531194947.10770-7-andriy.shevchenko@linux.intel.com>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210605210836.540577d4@coco.lan>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Sat, Jun 05, 2021 at 09:08:36PM +0200, Mauro Carvalho Chehab wrote:
+> Em Sat, 5 Jun 2021 12:11:09 -0300
+> Nícolas F. R. A. Prado <n@nfraprado.net> escreveu:
+> 
+> > Hi Mauro,
+> > 
+> > On Sat, Jun 05, 2021 at 03:17:59PM +0200, Mauro Carvalho Chehab wrote:
+> > > As discussed at:
+> > > 	https://lore.kernel.org/linux-doc/871r9k6rmy.fsf@meer.lwn.net/
+> > > 
+> > > It is better to avoid using :doc:`foo` to refer to Documentation/foo.rst, as the
+> > > automarkup.py extension should handle it automatically, on most cases.
+> > > 
+> > > There are a couple of exceptions to this rule:
+> > > 
+> > > 1. when :doc:  tag is used to point to a kernel-doc DOC: markup;
+> > > 2. when it is used with a named tag, e. g. :doc:`some name <foo>`;
+> > > 
+> > > It should also be noticed that automarkup.py has currently an issue:
+> > > if one use a markup like:
+> > > 
+> > > 	Documentation/dev-tools/kunit/api/test.rst
+> > > 	  - documents all of the standard testing API excluding mocking
+> > > 	    or mocking related features.
+> > > 
+> > > or, even:
+> > > 
+> > > 	Documentation/dev-tools/kunit/api/test.rst
+> > > 	    documents all of the standard testing API excluding mocking
+> > > 	    or mocking related features.
+> > > 	
+> > > The automarkup.py will simply ignore it. Not sure why. This patch series
+> > > avoid the above patterns (which is present only on 4 files), but it would be
+> > > nice to have a followup patch fixing the issue at automarkup.py.  
+> > 
+> > What I think is happening here is that we're using rST's syntax for definition
+> > lists [1]. automarkup.py ignores literal nodes, and perhaps a definition is
+> > considered a literal by Sphinx. Adding a blank line after the Documentation/...
+> > or removing the additional indentation makes it work, like you did in your
+> > 2nd and 3rd patch, since then it's not a definition anymore, although then the
+> > visual output is different as well.
+> 
+> A literal has a different output. I think that this is not the case, but I 
+> didn't check the python code from docutils/Sphinx.
 
---p3seyr7qu6fpltut
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Okay, I went in deeper to understand the issue and indeed it wasn't what I
+thought. The reason definitions are ignored by automarkup.py is because the main
+loop iterates only over nodes that are of type paragraph:
 
-Hello Andy,
+    for para in doctree.traverse(nodes.paragraph):
+        for node in para.traverse(nodes.Text):
+            if not isinstance(node.parent, nodes.literal):
+                node.parent.replace(node, markup_refs(name, app, node))
 
-On Mon, May 31, 2021 at 10:49:47PM +0300, Andy Shevchenko wrote:
-> Use devm_add_action_or_reset() instead of devres_alloc() and
-> devres_add(), which works the same. This will simplify the
-> code. There is no functional changes.
->=20
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> v2: new patch
->  drivers/pwm/core.c | 60 +++++++++++++++++++---------------------------
->  1 file changed, 25 insertions(+), 35 deletions(-)
->=20
-> diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-> index 6d4410bd9793..9f643414676b 100644
-> --- a/drivers/pwm/core.c
-> +++ b/drivers/pwm/core.c
-> @@ -1059,9 +1059,9 @@ void pwm_put(struct pwm_device *pwm)
->  }
->  EXPORT_SYMBOL_GPL(pwm_put);
-> =20
-> -static void devm_pwm_release(struct device *dev, void *res)
-> +static void devm_pwm_release(void *pwm)
->  {
-> -	pwm_put(*(struct pwm_device **)res);
-> +	pwm_put(pwm);
->  }
-> =20
->  /**
-> @@ -1077,19 +1077,16 @@ static void devm_pwm_release(struct device *dev, =
-void *res)
->   */
->  struct pwm_device *devm_pwm_get(struct device *dev, const char *con_id)
->  {
-> -	struct pwm_device **ptr, *pwm;
-> -
-> -	ptr =3D devres_alloc(devm_pwm_release, sizeof(*ptr), GFP_KERNEL);
-> -	if (!ptr)
-> -		return ERR_PTR(-ENOMEM);
-> +	struct pwm_device *pwm;
-> +	int ret;
-> =20
->  	pwm =3D pwm_get(dev, con_id);
-> -	if (!IS_ERR(pwm)) {
-> -		*ptr =3D pwm;
-> -		devres_add(dev, ptr);
-> -	} else {
-> -		devres_free(ptr);
-> -	}
-> +	if (IS_ERR(pwm))
-> +		return pwm;
-> +
-> +	ret =3D devm_add_action_or_reset(dev, devm_pwm_release, pwm);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> =20
->  	return pwm;
->  }
-> @@ -1110,19 +1107,16 @@ EXPORT_SYMBOL_GPL(devm_pwm_get);
->  struct pwm_device *devm_of_pwm_get(struct device *dev, struct device_nod=
-e *np,
->  				   const char *con_id)
->  {
-> -	struct pwm_device **ptr, *pwm;
-> -
-> -	ptr =3D devres_alloc(devm_pwm_release, sizeof(*ptr), GFP_KERNEL);
-> -	if (!ptr)
-> -		return ERR_PTR(-ENOMEM);
-> +	struct pwm_device *pwm;
-> +	int ret;
-> =20
->  	pwm =3D of_pwm_get(dev, np, con_id);
-> -	if (!IS_ERR(pwm)) {
-> -		*ptr =3D pwm;
-> -		devres_add(dev, ptr);
-> -	} else {
-> -		devres_free(ptr);
-> -	}
-> +	if (IS_ERR(pwm))
-> +		return pwm;
-> +
-> +	ret =3D devm_add_action_or_reset(dev, devm_pwm_release, pwm);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> =20
->  	return pwm;
->  }
-> @@ -1144,23 +1138,19 @@ struct pwm_device *devm_fwnode_pwm_get(struct dev=
-ice *dev,
->  				       struct fwnode_handle *fwnode,
->  				       const char *con_id)
->  {
-> -	struct pwm_device **ptr, *pwm =3D ERR_PTR(-ENODEV);
-> -
-> -	ptr =3D devres_alloc(devm_pwm_release, sizeof(*ptr), GFP_KERNEL);
-> -	if (!ptr)
-> -		return ERR_PTR(-ENOMEM);
-> +	struct pwm_device *pwm =3D ERR_PTR(-ENODEV);
-> +	int ret;
-> =20
->  	if (is_of_node(fwnode))
->  		pwm =3D of_pwm_get(dev, to_of_node(fwnode), con_id);
->  	else if (is_acpi_node(fwnode))
->  		pwm =3D acpi_pwm_get(fwnode);
-> +	if (IS_ERR(pwm))
-> +		return pwm;
-> =20
-> -	if (!IS_ERR(pwm)) {
-> -		*ptr =3D pwm;
-> -		devres_add(dev, ptr);
-> -	} else {
-> -		devres_free(ptr);
-> -	}
-> +	ret =3D devm_add_action_or_reset(dev, devm_pwm_release, pwm);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> =20
+And inspecting the HTML output from your example, the definition name is inside
+a <dt> tag, and it doesn't have a <p> inside. So in summary, automarkup.py will
+only work on elements which are inside a <p> in the output.
 
-Another nice one:
+Only applying the automarkup inside paragraphs seems like a good decision (which
+covers text in lists and tables as well), so unless there are other types of
+elements without paragraphs where automarkup should work, I think we should just
+avoid using definition lists pointing to documents like that.
 
-Reviewed-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+>  
+> > I'm not sure this is something we need to fix. Does it make sense to use
+> > definition lists for links like that? If it does, I guess one option would be to
+> > whitelist definition lists so they aren't ignored by automarkup, but I feel
+> > this could get ugly really quickly.
+> 
+> Yes, we should avoid handling literal blocks, as this can be a nightmare.
+> 
+> > FWIW note that it's also possible to use relative paths to docs with automarkup.
+> 
+> Not sure if you meant to say using something like ../driver-api/foo.rst.
+> If so, relative paths are a problem, as it will pass unnoticed by this script:
+> 
+> 	./scripts/documentation-file-ref-check
+> 
+> which is meant to warn when a file is moved to be elsewhere. Ok, it
+> could be taught to use "../" to identify paths, but I suspect that this
+> could lead to false positives, like here:
+> 
+> 	Documentation/usb/gadget-testing.rst:  # ln -s ../../uncompressed/u
+> 	Documentation/usb/gadget-testing.rst:  # cd ../../class/fs
+> 	Documentation/usb/gadget-testing.rst:  # ln -s ../../header/h
 
-Thanks
-Uwe
+Yes, that's what I meant. 
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Ok, that makes sense. Although after automarkup.py starts printing warnings on
+missing references to files (which is a patch I still need to resend), it would
+work out-of-the-box with relative paths. automarkup wouldn't face that false
+positives issue since it ignores literal blocks, which isn't as easy for a
+standalone script. But that's still in the future, we can discuss what to do
+then after it is implemented, so full paths seem better for now.
 
---p3seyr7qu6fpltut
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Nícolas
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmC9QeMACgkQwfwUeK3K
-7AnunwgAj+fZK1hM1Jp8n2rLPPJU3E/yhcn7MkQT3xzlqXC1Wygu6WtAcuPB3Tjs
-yi0fhP6DWsmzN4ndnmLIolx8lESkoVZbxyJtPbn+5XfwjHLTZfHcxMNiJEx3w1jD
-xW6lT1bR343OwzDvWDvVIpn5myF8jiQLoNtdPxUxMRu9KzPOnkb8Pj2WYXIfPCMK
-R3iwd48RBicjUMN26eqB2Mvm8j8GJlDM4Jg1NFGVfC4h+EsMibf7qby0S4turi0b
-m5Oe2KQeo4oJKIAPJMWqHqDyzTAfqRC2hrDHNwj/H8QAQvDIBYsF6Irmuia54ZLv
-cUbVR34IIOBkRSZlgiLo35I0So5DKg==
-=w/dp
------END PGP SIGNATURE-----
-
---p3seyr7qu6fpltut--
+> 
+> If you meant, instead, :doc:`../foo`, this series address those too.
+> 
+> Regards,
+> Mauro
