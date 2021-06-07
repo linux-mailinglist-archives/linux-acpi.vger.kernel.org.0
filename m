@@ -2,157 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF3E39DFA6
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 16:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02D4739E000
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 17:11:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231497AbhFGOzG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 10:55:06 -0400
-Received: from mail-oi1-f171.google.com ([209.85.167.171]:40491 "EHLO
-        mail-oi1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231501AbhFGOzA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 10:55:00 -0400
-Received: by mail-oi1-f171.google.com with SMTP id r17so8056084oic.7;
-        Mon, 07 Jun 2021 07:52:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vFKKKRb67LGq4j/7jOKF7wGRXnfTmyHqm4pxSTe6iqE=;
-        b=mBQdOWvRwOxHF6ABeBC4ZKP8EUTILSIqM85QZ+mB8CMCIdkVn6x5IxwPArAI9GEkNU
-         YmgnT6mFBLVbNQQav2zxaqWW3MhRh4yC/XZHDRYVARmnS4iKsJQzyijuhUeJTQZVow40
-         aDVedgN1gWvzsZIOfTfSYsbRaOueegEQWQJFwaparxXeg9M3mlHBA7YAJe1FJti6rpC3
-         eL8fPXCb7X1xNOaRmsVAXCjaV4zb31UwJs+3bxCp/6PSxTyjg66ii5tGBlg+Hbuu4txX
-         slEPoBpDdSlj2H73XuL5l6CLaRrjhCrVArW2wkhPgYADr6Yh58K9HsMN9G7fSq5iCtUe
-         gicw==
-X-Gm-Message-State: AOAM532t9y+AIl1t/wVdl/bph5kFR+1RheBvz5FnlHpAC09YpkyV+BJK
-        q/E0pbcq32t48TOH+ao5yhHr/09n5vGdXFKdTuc=
-X-Google-Smtp-Source: ABdhPJwuRWOyfnhsiiN2oAZTElAD/OIy6HNxvm4F6pIar5hcDOtjzrcZfAXKJpjv2/tbxAHYxWHt/mSVGktoFLA+unc=
-X-Received: by 2002:aca:b406:: with SMTP id d6mr11602849oif.71.1623077574350;
- Mon, 07 Jun 2021 07:52:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210603224007.120560-1-djrscally@gmail.com> <20210603224007.120560-3-djrscally@gmail.com>
-In-Reply-To: <20210603224007.120560-3-djrscally@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Jun 2021 16:52:43 +0200
-Message-ID: <CAJZ5v0j8pLo3pjuByYxJue9mr4TOGieYTHm8tghNQgk+LphL=w@mail.gmail.com>
-Subject: Re: [PATCH v5 2/6] ACPI: scan: Add function to fetch dependent of
- acpi device
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Len Brown <lenb@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        id S230220AbhFGPNm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 11:13:42 -0400
+Received: from mga04.intel.com ([192.55.52.120]:63736 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230237AbhFGPNm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 7 Jun 2021 11:13:42 -0400
+IronPort-SDR: uMy17Eh0fopsb346D8+pW+frfGALShcXAoBGxQKh2s6sYAXBNrKLkh9gV3l9jhj3mkYjbm8jNj
+ TF8aHGM0wK8g==
+X-IronPort-AV: E=McAfee;i="6200,9189,10008"; a="202779581"
+X-IronPort-AV: E=Sophos;i="5.83,255,1616482800"; 
+   d="scan'208";a="202779581"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2021 08:11:49 -0700
+IronPort-SDR: Y+RITeYsFEf7KoldDvil/YWXAWmTpD2zYXUyN7wOO0g4gJnFltxSL5XOPkKuY9uAjCHyyZbDQO
+ R5iJYFZ9Uw7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,255,1616482800"; 
+   d="scan'208";a="440081873"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 07 Jun 2021 08:11:46 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 524F3C5; Mon,  7 Jun 2021 18:12:10 +0300 (EEST)
+Date:   Mon, 7 Jun 2021 18:12:10 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Linux GPIO <linux-gpio@vger.kernel.org>,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Mark Gross <mgross@linux.intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham@ideasonboard.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [GIT PULL] intel-gpio for 5.14-1
+Message-ID: <YL43SrZ8N8H+ZHE9@black.fi.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 4, 2021 at 12:41 AM Daniel Scally <djrscally@gmail.com> wrote:
->
-> In some ACPI tables we encounter, devices use the _DEP method to assert
-> a dependence on other ACPI devices as opposed to the OpRegions that the
-> specification intends. We need to be able to find those devices "from"
-> the dependee, so add a callback and a wrapper to walk over the
-> acpi_dep_list and return the dependent ACPI device.
->
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Daniel Scally <djrscally@gmail.com>
-> ---
-> Changes since v5:
->
->         - Functions renamed
->
->  drivers/acpi/scan.c     | 35 +++++++++++++++++++++++++++++++++++
->  include/acpi/acpi_bus.h |  1 +
->  2 files changed, 36 insertions(+)
->
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 195635c3462b..9af64c34e286 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -2105,6 +2105,20 @@ static void acpi_bus_attach(struct acpi_device *device, bool first_pass)
->                 device->handler->hotplug.notify_online(device);
->  }
->
-> +static int acpi_dev_get_first_consumer_dev_cb(struct acpi_dep_data *dep, void *data)
-> +{
-> +       struct acpi_device *adev;
-> +
-> +       adev = acpi_bus_get_acpi_device(dep->consumer);
-> +       if (!adev)
-> +               /* If we don't find an adev then we want to continue parsing */
-> +               return 0;
-> +
-> +       *(struct acpi_device **)data = adev;
-> +
-> +       return 1;
-> +}
-> +
->  static int acpi_scan_clear_dep(struct acpi_dep_data *dep, void *data)
->  {
->         struct acpi_device *adev;
-> @@ -2168,6 +2182,27 @@ void acpi_dev_clear_dependencies(struct acpi_device *supplier)
->  }
->  EXPORT_SYMBOL_GPL(acpi_dev_clear_dependencies);
->
-> +/**
-> + * acpi_dev_get_first_consumer_dev - Return ACPI device dependent on @supplier
-> + * @supplier: Pointer to the dependee device
-> + *
-> + * Returns the first &struct acpi_device which declares itself dependent on
-> + * @supplier via the _DEP buffer, parsed from the acpi_dep_list.
-> + *
-> + * The caller is responsible for putting the reference to adev when it is no
-> + * longer needed.
-> + */
-> +struct acpi_device *acpi_dev_get_first_consumer_dev(struct acpi_device *supplier)
-> +{
-> +       struct acpi_device *adev = NULL;
-> +
-> +       acpi_walk_dep_device_list(supplier->handle,
-> +                                 acpi_dev_get_first_consumer_dev_cb, &adev);
-> +
-> +       return adev;
-> +}
-> +EXPORT_SYMBOL_GPL(acpi_dev_get_first_consumer_dev);
-> +
->  /**
->   * acpi_bus_scan - Add ACPI device node objects in a given namespace scope.
->   * @handle: Root of the namespace scope to scan.
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 0b2c4f170f4d..4bed30e61c5b 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -692,6 +692,7 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
->  bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2);
->
->  void acpi_dev_clear_dependencies(struct acpi_device *supplier);
-> +struct acpi_device *acpi_dev_get_first_consumer_dev(struct acpi_device *supplier);
->  struct acpi_device *
->  acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const char *uid, s64 hrv);
->  struct acpi_device *
-> --
+Hi Linux GPIO and TWIMC maintainers,
 
-Applied as 5.14 material along the [1/6].
+This is GPIO material for v5.14 cycle. It contains some stuff that other
+subsystems may take due to dependencies. Consider this tag immutable.
 
-I'll expose a branch containing the 2 patches to pull from later this week.
+Thanks,
 
-Thanks!
+With Best Regards,
+Andy Shevchenko
+
+The following changes since commit 6efb943b8616ec53a5e444193dccf1af9ad627b5:
+
+  Linux 5.13-rc1 (2021-05-09 14:17:44 -0700)
+
+are available in the Git repository at:
+
+  git@gitolite.kernel.org:pub/scm/linux/kernel/git/andy/linux-gpio-intel.git tags/intel-gpio-v5.14-1
+
+for you to fetch changes up to 043d7f09bf614809c10c4acbf0695ef731958300:
+
+  gpiolib: acpi: Add acpi_gpio_get_io_resource() (2021-06-04 16:24:19 +0300)
+
+----------------------------------------------------------------
+intel-gpio for v5.14-1
+
+* Export two functions from GPIO ACPI for wider use
+* Clean up Whiskey Cove and Crystal Cove GPIO drivers
+
+The following is an automated git shortlog grouped by driver:
+
+crystalcove:
+ -  remove platform_set_drvdata() + cleanup probe
+
+gpiolib:
+ -  acpi: Add acpi_gpio_get_io_resource()
+ -  acpi: Introduce acpi_get_and_request_gpiod() helper
+
+wcove:
+ -  Split error handling for CTRL and IRQ registers
+ -  Unify style of to_reg() with to_ireg()
+ -  Use IRQ hardware number getter instead of direct access
+
+----------------------------------------------------------------
+Alexandru Ardelean (1):
+      gpio: crystalcove: remove platform_set_drvdata() + cleanup probe
+
+Andy Shevchenko (3):
+      gpio: wcove: Use IRQ hardware number getter instead of direct access
+      gpio: wcove: Unify style of to_reg() with to_ireg()
+      gpio: wcove: Split error handling for CTRL and IRQ registers
+
+Daniel Scally (2):
+      gpiolib: acpi: Introduce acpi_get_and_request_gpiod() helper
+      gpiolib: acpi: Add acpi_gpio_get_io_resource()
+
+ drivers/gpio/gpio-crystalcove.c | 10 +-------
+ drivers/gpio/gpio-wcove.c       | 39 +++++++++++++++----------------
+ drivers/gpio/gpiolib-acpi.c     | 51 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/acpi.h            |  7 ++++++
+ include/linux/gpio/consumer.h   |  2 ++
+ 5 files changed, 80 insertions(+), 29 deletions(-)
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
