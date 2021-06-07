@@ -2,14 +2,14 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B8FE39E7D6
+	by mail.lfdr.de (Postfix) with ESMTP id 839F539E7D8
 	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 21:55:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231589AbhFGT51 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 15:57:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:37797 "EHLO
+        id S231577AbhFGT53 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 15:57:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:32417 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231577AbhFGT50 (ORCPT
+        by vger.kernel.org with ESMTP id S231582AbhFGT50 (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 15:57:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
         s=mimecast20190719; t=1623095734;
@@ -17,22 +17,22 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Fc+iKS9+ANFB6y1dZFMDW1G21rBUMRkywsva5h/mmrk=;
-        b=d2jqychICLXwfmhIlNdPGjQttvwL1EG8jcDWA1D9NBklbXzDup1kfiBXKCqr2THcEGTYcq
-        CNS68F/ML6KzkbzdxLb/7cI2TrWD+bKukL6OuFDKuYOwsouM3tjh00EhiwbuJPnWrgShOX
-        KAUJxWXNZ4rmi8M+d0WjU2qVVXKuzDY=
+        bh=c+4paKvG6GrNLwTw/zPYhocAQ6n+M9UGJdGP/M6kJg4=;
+        b=OifDbZqfpf2VGwyEibLxmzkdmOHgmmH1nAROmaN2DH3SkZwWr+XTOgvFoK+xpAN2pF7VyC
+        JUBIgs/5V39UwdN3t4MRB2/B1A/rnfOso/CkxRnZ45uuzj12bUnR3+CuPT2oFqdP9s5Jwa
+        hty+CnDrNid0Rk0kwNvYdn6nHR6pRfA=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-270-lI1-N8yyPdK7mZjPkzUA4A-1; Mon, 07 Jun 2021 15:55:30 -0400
-X-MC-Unique: lI1-N8yyPdK7mZjPkzUA4A-1
+ us-mta-262-a3uJRSwFNpiiVXo8BS2GAA-1; Mon, 07 Jun 2021 15:55:33 -0400
+X-MC-Unique: a3uJRSwFNpiiVXo8BS2GAA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B4B8810074A6;
-        Mon,  7 Jun 2021 19:55:26 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4060210074C0;
+        Mon,  7 Jun 2021 19:55:31 +0000 (UTC)
 Received: from t480s.redhat.com (ovpn-112-9.ams2.redhat.com [10.36.112.9])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6C7381002D71;
-        Mon,  7 Jun 2021 19:55:14 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0BE8310013C1;
+        Mon,  7 Jun 2021 19:55:26 +0000 (UTC)
 From:   David Hildenbrand <david@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     David Hildenbrand <david@redhat.com>,
@@ -55,20 +55,10 @@ Cc:     David Hildenbrand <david@redhat.com>,
         Len Brown <lenb@kernel.org>,
         Pavel Tatashin <pasha.tatashin@soleen.com>,
         virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Nathan Lynch <nathanl@linux.ibm.com>,
-        Laurent Dufour <ldufour@linux.ibm.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Scott Cheloha <cheloha@linux.ibm.com>,
-        Anton Blanchard <anton@ozlabs.org>,
-        linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev
-Subject: [PATCH v1 05/12] mm/memory_hotplug: remove nid parameter from remove_memory() and friends
-Date:   Mon,  7 Jun 2021 21:54:23 +0200
-Message-Id: <20210607195430.48228-6-david@redhat.com>
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v1 06/12] drivers/base/memory: "memory groups" to logically group memory blocks
+Date:   Mon,  7 Jun 2021 21:54:24 +0200
+Message-Id: <20210607195430.48228-7-david@redhat.com>
 In-Reply-To: <20210607195430.48228-1-david@redhat.com>
 References: <20210607195430.48228-1-david@redhat.com>
 MIME-Version: 1.0
@@ -78,259 +68,347 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There is only a single user remaining. We can simply try to offline all
-online nodes - which is fast, because we usually span pages and can skip
-such nodes right away.
+In our "auto-movable" memory onlining policy, we want to make decisions
+across memory blocks of a single memory device. Examples of memory devices
+include ACPI memory devices (in the simplest case a single DIMM) a
+virtio-mem. For now, we don't have a connection between a single memory
+block device and the real memory device. Each memory device consists of
+1..X memory block devices.
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Laurent Dufour <ldufour@linux.ibm.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Scott Cheloha <cheloha@linux.ibm.com>
-Cc: Anton Blanchard <anton@ozlabs.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-acpi@vger.kernel.org
-Cc: nvdimm@lists.linux.dev
+Let's logically group memory blocks belonging to the same memory device
+in "memory groups". Memory groups can span multiple physical ranges and a
+memory group itself does not contain any information regarding physical
+ranges, only properties (e.g., "max_pages") necessary for improved memory
+onlining.
+
+Introduce two memory group types:
+
+1) Static memory group: E.g., a single ACPI memory device, consisting of
+   1..X memory resources. A memory group consists of 1..Y memory blocks.
+   The whole group is added/removed in one go. If any part cannot get
+   offlined, the whole group cannot be removed.
+
+2) Dynamic memory group: E.g., a single virtio-mem device. Memory is
+   dynamically added/removed in a fixed granularity, called a "unit",
+   consisting of 1..X memory blocks. A unit is added/removed in one go.
+   If any part of a unit cannot get offlined, the whole unit cannot be
+   removed.
+
+In case of 1) we usually want either all memory managed by ZONE_MOVABLE
+or none. In case of 2) we usually want to have as many units as possible
+managed by ZONE_MOVABLE. We want a single unit to be of the same type.
+
+For now, memory groups are an internal concept that is not exposed to
+user space; we might want to change that in the future, though.
+
+add_memory() users can specify a mgid instead of a nid when passing
+the MHP_NID_IS_MGID flag.
+
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- .../platforms/pseries/hotplug-memory.c        |  9 ++++-----
- drivers/acpi/acpi_memhotplug.c                |  7 +------
- drivers/dax/kmem.c                            |  3 +--
- drivers/virtio/virtio_mem.c                   |  4 ++--
- include/linux/memory_hotplug.h                | 10 +++++-----
- mm/memory_hotplug.c                           | 20 +++++++++----------
- 6 files changed, 23 insertions(+), 30 deletions(-)
+ drivers/base/memory.c          | 102 +++++++++++++++++++++++++++++++--
+ include/linux/memory.h         |  46 ++++++++++++++-
+ include/linux/memory_hotplug.h |   6 +-
+ mm/memory_hotplug.c            |  11 +++-
+ 4 files changed, 158 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 8377f1f7c78e..4a9232ddbefe 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -286,7 +286,7 @@ static int pseries_remove_memblock(unsigned long base, unsigned long memblock_si
+diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+index 427323620ce8..00c58a6632a6 100644
+--- a/drivers/base/memory.c
++++ b/drivers/base/memory.c
+@@ -82,6 +82,11 @@ static struct bus_type memory_subsys = {
+  */
+ static DEFINE_XARRAY(memory_blocks);
+ 
++/*
++ * Memory groups, indexed by memory group identification (mgid).
++ */
++static DEFINE_XARRAY_FLAGS(memory_groups, XA_FLAGS_ALLOC);
++
+ static BLOCKING_NOTIFIER_HEAD(memory_chain);
+ 
+ int register_memory_notifier(struct notifier_block *nb)
+@@ -634,7 +639,8 @@ int register_memory(struct memory_block *memory)
+ }
+ 
+ static int init_memory_block(unsigned long block_id, unsigned long state,
+-			     unsigned long nr_vmemmap_pages)
++			     unsigned long nr_vmemmap_pages,
++			     struct memory_group *group)
  {
- 	unsigned long block_sz, start_pfn;
- 	int sections_per_block;
--	int i, nid;
-+	int i;
+ 	struct memory_block *mem;
+ 	int ret = 0;
+@@ -653,6 +659,11 @@ static int init_memory_block(unsigned long block_id, unsigned long state,
+ 	mem->nid = NUMA_NO_NODE;
+ 	mem->nr_vmemmap_pages = nr_vmemmap_pages;
  
- 	start_pfn = base >> PAGE_SHIFT;
++	if (group) {
++		mem->group = group;
++		refcount_inc(&group->refcount);
++	}
++
+ 	ret = register_memory(mem);
  
-@@ -297,10 +297,9 @@ static int pseries_remove_memblock(unsigned long base, unsigned long memblock_si
+ 	return ret;
+@@ -671,7 +682,7 @@ static int add_memory_block(unsigned long base_section_nr)
+ 	if (section_count == 0)
+ 		return 0;
+ 	return init_memory_block(memory_block_id(base_section_nr),
+-				 MEM_ONLINE, 0);
++				 MEM_ONLINE, 0,  NULL);
+ }
  
- 	block_sz = pseries_memory_block_size();
- 	sections_per_block = block_sz / MIN_MEMORY_BLOCK_SIZE;
--	nid = memory_add_physaddr_to_nid(base);
+ static void unregister_memory(struct memory_block *memory)
+@@ -681,6 +692,11 @@ static void unregister_memory(struct memory_block *memory)
  
- 	for (i = 0; i < sections_per_block; i++) {
--		__remove_memory(nid, base, MIN_MEMORY_BLOCK_SIZE);
-+		__remove_memory(base, MIN_MEMORY_BLOCK_SIZE);
- 		base += MIN_MEMORY_BLOCK_SIZE;
- 	}
+ 	WARN_ON(xa_erase(&memory_blocks, memory->dev.id) == NULL);
  
-@@ -386,7 +385,7 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
- 
- 	block_sz = pseries_memory_block_size();
- 
--	__remove_memory(mem_block->nid, lmb->base_addr, block_sz);
-+	__remove_memory(lmb->base_addr, block_sz);
- 	put_device(&mem_block->dev);
- 
- 	/* Update memory regions for memory remove */
-@@ -638,7 +637,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
- 
- 	rc = dlpar_online_lmb(lmb);
- 	if (rc) {
--		__remove_memory(nid, lmb->base_addr, block_sz);
-+		__remove_memory(lmb->base_addr, block_sz);
- 		invalidate_lmb_associativity_index(lmb);
- 	} else {
- 		lmb->flags |= DRCONF_MEM_ASSIGNED;
-diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-index 8cc195c4c861..1d01d9414c40 100644
---- a/drivers/acpi/acpi_memhotplug.c
-+++ b/drivers/acpi/acpi_memhotplug.c
-@@ -239,19 +239,14 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
- 
- static void acpi_memory_remove_memory(struct acpi_memory_device *mem_device)
++	if (memory->group) {
++		refcount_dec(&memory->group->refcount);
++		memory->group = NULL;
++	}
++
+ 	/* drop the ref. we got via find_memory_block() */
+ 	put_device(&memory->dev);
+ 	device_unregister(&memory->dev);
+@@ -694,7 +710,8 @@ static void unregister_memory(struct memory_block *memory)
+  * Called under device_hotplug_lock.
+  */
+ int create_memory_block_devices(unsigned long start, unsigned long size,
+-				unsigned long vmemmap_pages)
++				unsigned long vmemmap_pages,
++				struct memory_group *group)
  {
--	acpi_handle handle = mem_device->device->handle;
- 	struct acpi_memory_info *info, *n;
--	int nid = acpi_get_node(handle);
+ 	const unsigned long start_block_id = pfn_to_block_id(PFN_DOWN(start));
+ 	unsigned long end_block_id = pfn_to_block_id(PFN_DOWN(start + size));
+@@ -707,7 +724,8 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
+ 		return -EINVAL;
  
- 	list_for_each_entry_safe(info, n, &mem_device->res_list, list) {
- 		if (!info->enabled)
- 			continue;
- 
--		if (nid == NUMA_NO_NODE)
--			nid = memory_add_physaddr_to_nid(info->start_addr);
--
- 		acpi_unbind_memory_blocks(info);
--		__remove_memory(nid, info->start_addr, info->length);
-+		__remove_memory(info->start_addr, info->length);
- 		list_del(&info->list);
- 		kfree(info);
+ 	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
+-		ret = init_memory_block(block_id, MEM_OFFLINE, vmemmap_pages);
++		ret = init_memory_block(block_id, MEM_OFFLINE, vmemmap_pages,
++					group);
+ 		if (ret)
+ 			break;
  	}
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index ac231cc36359..99e0f60c4c26 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -156,8 +156,7 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
- 		if (rc)
- 			continue;
+@@ -891,3 +909,79 @@ int for_each_memory_block(void *arg, walk_memory_blocks_func_t func)
+ 	return bus_for_each_dev(&memory_subsys, NULL, &cb_data,
+ 				for_each_memory_block_cb);
+ }
++
++static int register_memory_group(struct memory_group group)
++{
++	struct memory_group *new_group;
++	uint32_t mgid;
++	int ret;
++
++	if (!node_possible(group.nid))
++		return -EINVAL;
++
++	new_group = kzalloc(sizeof(group), GFP_KERNEL);
++	if (!new_group)
++		return -ENOMEM;
++	*new_group = group;
++	refcount_set(&new_group->refcount, 1);
++
++	ret = xa_alloc(&memory_groups, &mgid, new_group, xa_limit_31b,
++		       GFP_KERNEL);
++	if (ret)
++		kfree(new_group);
++	return ret ? ret : mgid;
++}
++
++int register_static_memory_group(int nid, unsigned long max_pages)
++{
++	struct memory_group group = {
++		.nid = nid,
++		.s = {
++			.max_pages = max_pages,
++		},
++	};
++
++	if (!max_pages)
++		return -EINVAL;
++	return register_memory_group(group);
++}
++EXPORT_SYMBOL_GPL(register_static_memory_group);
++
++int register_dynamic_memory_group(int nid, unsigned long unit_pages)
++{
++	struct memory_group group = {
++		.nid = nid,
++		.is_dynamic = true,
++		.d = {
++			.unit_pages = unit_pages,
++		},
++	};
++
++	if (!unit_pages || !is_power_of_2(unit_pages) ||
++	    unit_pages < PHYS_PFN(memory_block_size_bytes()))
++		return -EINVAL;
++	return register_memory_group(group);
++}
++EXPORT_SYMBOL_GPL(register_dynamic_memory_group);
++
++int unregister_memory_group(int mgid)
++{
++	struct memory_group *group;
++
++	if (mgid < 0)
++		return -EINVAL;
++
++	group = xa_load(&memory_groups, mgid);
++	if (!group || refcount_read(&group->refcount) > 1)
++		return -EINVAL;
++
++	xa_erase(&memory_groups, mgid);
++	kfree(group);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(unregister_memory_group);
++
++struct memory_group *get_memory_group(int mgid)
++{
++	return xa_load(&memory_groups, mgid);
++}
+diff --git a/include/linux/memory.h b/include/linux/memory.h
+index 97e92e8b556a..6e20a6174fe5 100644
+--- a/include/linux/memory.h
++++ b/include/linux/memory.h
+@@ -23,6 +23,42 @@
  
--		rc = remove_memory(dev_dax->target_node, range.start,
--				range_len(&range));
-+		rc = remove_memory(range.start, range_len(&range));
- 		if (rc == 0) {
- 			release_resource(data->res[i]);
- 			kfree(data->res[i]);
-diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-index 10ec60d81e84..e327fb878143 100644
---- a/drivers/virtio/virtio_mem.c
-+++ b/drivers/virtio/virtio_mem.c
-@@ -673,7 +673,7 @@ static int virtio_mem_remove_memory(struct virtio_mem *vm, uint64_t addr,
+ #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
  
- 	dev_dbg(&vm->vdev->dev, "removing memory: 0x%llx - 0x%llx\n", addr,
- 		addr + size - 1);
--	rc = remove_memory(vm->nid, addr, size);
-+	rc = remove_memory(addr, size);
- 	if (!rc) {
- 		atomic64_sub(size, &vm->offline_size);
- 		/*
-@@ -728,7 +728,7 @@ static int virtio_mem_offline_and_remove_memory(struct virtio_mem *vm,
- 		"offlining and removing memory: 0x%llx - 0x%llx\n", addr,
- 		addr + size - 1);
++struct memory_group {
++	/* Nid the whole group belongs to. */
++	int nid;
++	/* References from memory blocks + 1. */
++	refcount_t refcount;
++	/*
++	 * Memory group type: static vs. dynamic.
++	 *
++	 * Static: All memory in the group belongs to a single unit, such as,
++	 * a DIMM. All memory belonging to the group will be added in
++	 * one go and removed in one go -- it's static.
++	 *
++	 * Dynamic: Memory within the group is added/removed dynamically in
++	 * units of the specified granularity of at least one memory block.
++	 */
++	bool is_dynamic;
++
++	union {
++		struct {
++			/*
++			 * Maximum number of pages we'll have in this static
++			 * memory group.
++			 */
++			unsigned long max_pages;
++		} s;
++		struct {
++			/*
++			 * Unit in pages in which memory is added/removed in
++			 * this dynamic memory group. This granularity defines
++			 * the alignment of a unit in physical address space.
++			 */
++			unsigned long unit_pages;
++		} d;
++	};
++};
++
+ struct memory_block {
+ 	unsigned long start_section_nr;
+ 	unsigned long state;		/* serialized by the dev->lock */
+@@ -34,6 +70,7 @@ struct memory_block {
+ 	 * lay at the beginning of the memory block.
+ 	 */
+ 	unsigned long nr_vmemmap_pages;
++	struct memory_group *group;	/* group (if any) for this block */
+ };
  
--	rc = offline_and_remove_memory(vm->nid, addr, size);
-+	rc = offline_and_remove_memory(addr, size);
- 	if (!rc) {
- 		atomic64_sub(size, &vm->offline_size);
- 		/*
+ int arch_get_memory_phys_device(unsigned long start_pfn);
+@@ -86,7 +123,8 @@ static inline int memory_notify(unsigned long val, void *v)
+ extern int register_memory_notifier(struct notifier_block *nb);
+ extern void unregister_memory_notifier(struct notifier_block *nb);
+ int create_memory_block_devices(unsigned long start, unsigned long size,
+-				unsigned long vmemmap_pages);
++				unsigned long vmemmap_pages,
++				struct memory_group *group);
+ void remove_memory_block_devices(unsigned long start, unsigned long size);
+ extern void memory_dev_init(void);
+ extern int memory_notify(unsigned long val, void *v);
+@@ -95,6 +133,12 @@ typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
+ extern int walk_memory_blocks(unsigned long start, unsigned long size,
+ 			      void *arg, walk_memory_blocks_func_t func);
+ extern int for_each_memory_block(void *arg, walk_memory_blocks_func_t func);
++
++extern int register_static_memory_group(int nid, unsigned long max_pages);
++extern int register_dynamic_memory_group(int nid, unsigned long unit_pages);
++extern int unregister_memory_group(int mgid);
++struct memory_group *get_memory_group(int mgid);
++
+ #define CONFIG_MEM_BLOCK_SIZE	(PAGES_PER_SECTION<<PAGE_SHIFT)
+ #endif /* CONFIG_MEMORY_HOTPLUG_SPARSE */
+ 
 diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index 1d8d09c029c9..84f05435e2ae 100644
+index 84f05435e2ae..5c910dc2526a 100644
 --- a/include/linux/memory_hotplug.h
 +++ b/include/linux/memory_hotplug.h
-@@ -319,9 +319,9 @@ static inline void pgdat_resize_init(struct pglist_data *pgdat) {}
+@@ -54,7 +54,6 @@ typedef int __bitwise mhp_t;
+  * might be stale, or the resource might have changed.
+  */
+ #define MHP_MERGE_RESOURCE	((__force mhp_t)BIT(0))
+-
+ /*
+  * We want memmap (struct page array) to be self contained.
+  * To do so, we will use the beginning of the hot-added range to build
+@@ -62,6 +61,11 @@ typedef int __bitwise mhp_t;
+  * Only selected architectures support it with SPARSE_VMEMMAP.
+  */
+ #define MHP_MEMMAP_ON_MEMORY   ((__force mhp_t)BIT(1))
++/*
++ * The nid field specifies a memory group identifier (mgid) instead. The memory
++ * group implies the nid.
++ */
++#define MHP_NID_IS_MGID		((__force mhp_t)BIT(2))
  
- extern void try_offline_node(int nid);
- extern int offline_pages(unsigned long start_pfn, unsigned long nr_pages);
--extern int remove_memory(int nid, u64 start, u64 size);
--extern void __remove_memory(int nid, u64 start, u64 size);
--extern int offline_and_remove_memory(int nid, u64 start, u64 size);
-+extern int remove_memory(u64 start, u64 size);
-+extern void __remove_memory(u64 start, u64 size);
-+extern int offline_and_remove_memory(u64 start, u64 size);
- 
- #else
- static inline void try_offline_node(int nid) {}
-@@ -331,12 +331,12 @@ static inline int offline_pages(unsigned long start_pfn, unsigned long nr_pages)
- 	return -EINVAL;
- }
- 
--static inline int remove_memory(int nid, u64 start, u64 size)
-+static inline int remove_memory(u64 start, u64 size)
- {
- 	return -EBUSY;
- }
- 
--static inline void __remove_memory(int nid, u64 start, u64 size) {}
-+static inline void __remove_memory(u64 start, u64 size) {}
- #endif /* CONFIG_MEMORY_HOTREMOVE */
- 
- extern void set_zone_contiguous(struct zone *zone);
+ /*
+  * Extended parameters for memory hotplug:
 diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index f9be66bbd847..9cae42636f3e 100644
+index 9cae42636f3e..4e039c82e7b6 100644
 --- a/mm/memory_hotplug.c
 +++ b/mm/memory_hotplug.c
-@@ -2157,9 +2157,9 @@ void try_offline_node(int nid)
- }
- EXPORT_SYMBOL(try_offline_node);
- 
--static int __ref try_remove_memory(int nid, u64 start, u64 size)
-+static int __ref try_remove_memory(u64 start, u64 size)
+@@ -1384,6 +1384,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
  {
--	int rc = 0;
-+	int rc = 0, nid;
+ 	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
  	struct vmem_altmap mhp_altmap = {};
- 	struct vmem_altmap *altmap = NULL;
- 	unsigned long nr_vmemmap_pages;
-@@ -2220,7 +2220,8 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
++	struct memory_group *group = NULL;
+ 	u64 start, size;
+ 	bool new_node = false;
+ 	int ret;
+@@ -1395,6 +1396,13 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 	if (ret)
+ 		return ret;
  
- 	release_mem_region_adjustable(start, size);
++	if (mhp_flags & MHP_NID_IS_MGID) {
++		group = get_memory_group(nid);
++		if (!group)
++			return -EINVAL;
++		nid = group->nid;
++	}
++
+ 	if (!node_possible(nid)) {
+ 		WARN(1, "node %d was absent from the node_possible_map\n", nid);
+ 		return -EINVAL;
+@@ -1429,7 +1437,8 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 		goto error;
  
--	try_offline_node(nid);
-+	for_each_online_node(nid)
-+		try_offline_node(nid);
- 
- 	mem_hotplug_done();
- 	return 0;
-@@ -2228,7 +2229,6 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
- 
- /**
-  * remove_memory
-- * @nid: the node ID
-  * @start: physical address of the region to remove
-  * @size: size of the region to remove
-  *
-@@ -2236,14 +2236,14 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
-  * and online/offline operations before this call, as required by
-  * try_offline_node().
-  */
--void __remove_memory(int nid, u64 start, u64 size)
-+void __remove_memory(u64 start, u64 size)
- {
- 
- 	/*
- 	 * trigger BUG() if some memory is not offlined prior to calling this
- 	 * function
- 	 */
--	if (try_remove_memory(nid, start, size))
-+	if (try_remove_memory(start, size))
- 		BUG();
- }
- 
-@@ -2251,12 +2251,12 @@ void __remove_memory(int nid, u64 start, u64 size)
-  * Remove memory if every memory block is offline, otherwise return -EBUSY is
-  * some memory is not offline
-  */
--int remove_memory(int nid, u64 start, u64 size)
-+int remove_memory(u64 start, u64 size)
- {
- 	int rc;
- 
- 	lock_device_hotplug();
--	rc  = try_remove_memory(nid, start, size);
-+	rc = try_remove_memory(start, size);
- 	unlock_device_hotplug();
- 
- 	return rc;
-@@ -2316,7 +2316,7 @@ static int try_reonline_memory_block(struct memory_block *mem, void *arg)
-  * unplugged all memory (so it's no longer in use) and want to offline + remove
-  * that memory.
-  */
--int offline_and_remove_memory(int nid, u64 start, u64 size)
-+int offline_and_remove_memory(u64 start, u64 size)
- {
- 	const unsigned long mb_count = size / memory_block_size_bytes();
- 	uint8_t *online_types, *tmp;
-@@ -2352,7 +2352,7 @@ int offline_and_remove_memory(int nid, u64 start, u64 size)
- 	 * This cannot fail as it cannot get onlined in the meantime.
- 	 */
- 	if (!rc) {
--		rc = try_remove_memory(nid, start, size);
-+		rc = try_remove_memory(start, size);
- 		if (rc)
- 			pr_err("%s: Failed to remove memory: %d", __func__, rc);
- 	}
+ 	/* create memory block devices after memory was added */
+-	ret = create_memory_block_devices(start, size, mhp_altmap.alloc);
++	ret = create_memory_block_devices(start, size, mhp_altmap.alloc,
++					  group);
+ 	if (ret) {
+ 		arch_remove_memory(start, size, NULL);
+ 		goto error;
 -- 
 2.31.1
 
