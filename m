@@ -2,220 +2,277 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D31339E75B
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 21:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC66E39E7C3
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 21:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230311AbhFGTUw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 15:20:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:26841 "EHLO
+        id S230425AbhFGT4j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 15:56:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:60541 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231465AbhFGTUw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 15:20:52 -0400
+        by vger.kernel.org with ESMTP id S230351AbhFGT4i (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 15:56:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1623093540;
+        s=mimecast20190719; t=1623095686;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+jeXXdLZfxBmcspDEtdU9VRwCLq0REvvI5zeo9PjVPI=;
-        b=MX7wPPw+vo8LuvXqQr7fG0TZaKA+mzmi3WhoOEAdO5g3S0TbvhfQM1as8wP52lFgKtuQtx
-        6kZUuuHw0InWHx1cn4H8ObgMHWR92sEgopsBg63Lu4kyW+kUgywZYo1QlO9Gl/zsKxgf6o
-        riUJ+oKYbN9rZJ6Cwlgaw0wlgrChNyM=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-403-M1IfGE-wPKmrcjZkM96-Cg-1; Mon, 07 Jun 2021 15:18:59 -0400
-X-MC-Unique: M1IfGE-wPKmrcjZkM96-Cg-1
-Received: by mail-ed1-f69.google.com with SMTP id u21-20020aa7d5550000b02903937d876df1so3014037edr.20
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Jun 2021 12:18:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=+jeXXdLZfxBmcspDEtdU9VRwCLq0REvvI5zeo9PjVPI=;
-        b=rHCpMGkLblRBDr8FocXXy3krXfhPXC6uveKjl5H3voUpFl7FqBagJHrDPS0qER3wom
-         eurv1g7kBHnQPiugX8TahZK/ifNoVEdZeaNFZmqIEwgMO5JLTQgNBsFoq/xhgBw8ESoL
-         Ji05gNgSFvJjPCQRC0F4gVO4Nox1nASectrNgj7u3PDwOKsJSZn/xlbrwABsRqgzPrnM
-         1+SfCQhpTz3CIgHN5zZa7D/uY5REo7IgRm1di2otBA1oyBHV/WSV8b86IdY7kvetoXPr
-         z1+XPC+By6m3rH1fpTRfoKLz0yTuijqoLxg0igrN5pfqnkSc3DMoJViYNrZdUCrz6Uh8
-         Gnww==
-X-Gm-Message-State: AOAM533WKqcIOjESIgDNYhzDUgyH9TYvR69kWF1VS4XVXCQYsMylQ19z
-        s+OEf/HK4tJUfTVHjILFJ1uOKRsA9K6vY1v+AzR358ph0L4jqEqrOU8JdpDi8HTUKq5/bWgfLv9
-        +elM/ccAv36GOzsRReLEOCddK2YdmXQlCp/5FpFNF9hYSY74iLb3zADOTG0OZ68tEMkqJ1qIVbQ
-        ==
-X-Received: by 2002:a17:906:365a:: with SMTP id r26mr19564417ejb.340.1623093537962;
-        Mon, 07 Jun 2021 12:18:57 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyPw6b92ShiawifsL+lLEavzzPSrxpXvgaiRL0kldVZMvXs+lcWdv86jqh20Mr9a8wMNa/qzw==
-X-Received: by 2002:a17:906:365a:: with SMTP id r26mr19564390ejb.340.1623093537655;
-        Mon, 07 Jun 2021 12:18:57 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id y10sm1816432edc.66.2021.06.07.12.18.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Jun 2021 12:18:57 -0700 (PDT)
-Subject: Re: Some SSDT tables are not loading with kernel >= 5.12
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mario Limonciello <mario.limonciello@outlook.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi <linux-acpi@vger.kernel.org>
-References: <f634a05a-e3a9-93ab-4b87-d41f5ee083a5@redhat.com>
- <93d783c4-4468-023b-193e-3fc6eca35445@redhat.com>
- <a3c05e2f-af1c-ef19-4c9a-6b5b82d2da6d@redhat.com>
- <CAJZ5v0hYnEes7SDqwSqTGKQf4Qebr=gmj_qSQOPWKQzPdpAwrw@mail.gmail.com>
- <FR1PR80MB5051E91269FD36681BB357A7E1389@FR1PR80MB5051.lamprd80.prod.outlook.com>
- <YL5EjVDYLPhRKMIA@lahna.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <209a230c-a7a6-7a8e-0515-97fb534d7401@redhat.com>
-Date:   Mon, 7 Jun 2021 21:18:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=E+GWkoi5o/3+tnBcPnBYmV0MPLfSi0TMmWvZba2R+/E=;
+        b=jJpBmiB3tiIcIQD6YqWkdrzbh9Ycaz4wvRFqt9a03Z/Jsntb+UsFSgg+WCb666TMPJKPpY
+        kuzUS3nmkrQXoEYnOmsqnC+WxupPtgMoe0hK7Tmesg07TpiVsA9Z7aRDlr5eFNT1E6ON0c
+        VuWhXxLAoKH/UTzR9Jy4XXO07bBF9to=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-416-Ep-RTuDENbWGYztZUkA75g-1; Mon, 07 Jun 2021 15:54:45 -0400
+X-MC-Unique: Ep-RTuDENbWGYztZUkA75g-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E39CA2D0;
+        Mon,  7 Jun 2021 19:54:42 +0000 (UTC)
+Received: from t480s.redhat.com (ovpn-112-9.ams2.redhat.com [10.36.112.9])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 07D7410013C1;
+        Mon,  7 Jun 2021 19:54:30 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Marek Kedzierski <mkedzier@redhat.com>,
+        Hui Zhu <teawater@gmail.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v1 00/12] mm/memory_hotplug: "auto-movable" online policy and memory groups
+Date:   Mon,  7 Jun 2021 21:54:18 +0200
+Message-Id: <20210607195430.48228-1-david@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <YL5EjVDYLPhRKMIA@lahna.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 6/7/21 6:08 PM, Mika Westerberg wrote:
-> Hi,
-> 
-> Tried now on ADL-P and TGL systems and the _OSC still works properly.
-> 
-> Thanks Hans for fixing!
-> 
-> Feel free to add my Tested-by.
+this series aims at improving in-kernel auto-online support. It tackles the
+fundamental problems that:
 
-Thank you for testing, unfortunately so far from the comments here:
+ 1) We can create zone imbalances when onlining all memory blindly to
+    ZONE_MOVABLE, in the worst case crashing the system. We have to know
+    upfront how much memory we are going to hotplug such that we can
+    safely enable auto-onlining of all hotplugged memory to ZONE_MOVABLE
+    via "online_movable". This is far from practical and only applicable in
+    limited setups -- like inside VMs under the RHV/oVirt hypervisor which
+    will never hotplug more than 3 times the boot memory (and the
+    limitation is only in place due to the Linux limitation).
 
-https://bugzilla.kernel.org/show_bug.cgi?id=213023
+ 2) We see more setups that implement dynamic VM resizing, hot(un)plugging
+    memory to resize VM memory. In these setups, we might hotplug a lot of
+    memory, but it might happen in various small steps in both directions
+    (e.g., 2 GiB -> 8 GiB -> 4 GiB -> 16 GiB ...). virtio-mem is the
+    primary driver of this upstream right now, performing such dynamic
+    resizing NUMA-aware via multiple virtio-mem devices.
 
-it seems that my patch does not help resolve the issues caused
-by commit 719e1f561afb ("ACPI: Execute platform _OSC also with query
-bit clear"), where as reverting that commit does resolve them :|
+    Onlining all hotplugged memory to ZONE_NORMAL means we basically have
+    no hotunplug guarantees. Onlining all to ZONE_MOVABLE means we can
+    easily run into zone imbalances when growing a VM. We want a mixture,
+    and we want as much memory as reasonable/configured in ZONE_MOVABLE.
 
-Does anyone have any other ideas how to fix this ?
+ 3) Memory devices consist of 1..X memory block devices, however, the
+    kernel doesn't really track the relationship. Consequently, also user
+    space has no idea. We want to make per-device decisions. As one
+    example, for memory hotunplug it doesn't make sense to use a mixture of
+    zones within a single DIMM: we want all MOVABLE if possible, otherwise
+    all !MOVABLE, because any !MOVABLE part will easily block the DIMM from
+    getting hotunplugged. As another example, virtio-mem operates on
+    individual units that span 1..X memory blocks. Similar to a DIMM, we
+    want a unit to either be all MOVABLE or !MOVABLE. Further, we want
+    as much memory of a virtio-mem device to be MOVABLE as possible.
 
-Regards,
+ 4) We want memory onlining to be done right from the kernel while adding
+    memory; for example, this is reqired for fast memory hotplug for
+    drivers that add individual memory blocks, like virito-mem. We want a
+    way to configure a policy in the kernel and avoid implementing advanced
+    policies in user space.
 
-Hans
+The auto-onlining support we have in the kernel is not sufficient. All we
+have is a) online everything movable (online_movable) b) online everything
+!movable (online_kernel) c) keep zones contiguous (online). This series
+allows configuring c) to mean instead "online movable if possible according
+to the coniguration, driven by a maximum MOVABLE:KERNEL ratio" -- a new
+onlining policy.
+
+This series does 3 things:
+
+  1) Introduces the "auto-movable" online policy that initially operates on
+     individual memory blocks only. It uses a maximum MOVABLE:KERNEL ratio
+     to make a decision whether a memory block will be onlined to
+     ZONE_MOVABLE or not. However, in the basic form, hotplugged KERNEL
+     memory does not allow for more MOVABLE memory (details in the
+     patches). CMA memory is treated like MOVABLE memory.
+
+  2) Introduces static (e.g., DIMM) and dynamic (e.g., virtio-mem) memory
+     groups and uses group information to make decisions in the
+     "auto-movable" online policy accross memory blocks of a single memory
+     device (modeled as memory group).
+
+  3) Maximizes ZONE_MOVABLE memory within dynamic memory groups, by
+     allowing ZONE_NORMAL memory within a dynamic memory group to allow for
+     more ZONE_MOVABLE memory within the same memory group. The target use
+     case is dynamic VM resizing using virtio-mem.
+
+I remember that the basic idea of using a ratio to implement a policy in
+the kernel was once mentioned by Vitaly Kuznetsov, but I might be wrong
+(I lost the pointer to that discussion).
+
+For me, the main use case is using it along with virtio-mem (and
+DIMMs / ppc64 dlpar where necessary) for dynamic resizing of VMs,
+increasing the amount of memory we can hotunplug reliably again if we
+might eventually hotplug a lot of memory to a VM.
 
 
+The target usage will be:
+
+  1) Linux boots with "mhp_default_online_type=offline"
+
+  2) User space (e.g., systemd unit) configures memory onlining (according
+     to a config file and system properties), for example:
+     * Setting memory_hotplug.online_policy=auto-movable
+     * Setting memory_hotplug.auto_movable_ratio=301
+     * Setting memory_hotplug.auto_movable_numa_aware=true
+
+  3) User space enabled auto onlining via "echo online >
+     /sys/devices/system/memory/auto_online_blocks"
+
+  4) User space triggers manual onlining of all already-offline memory
+     blocks (go over offline memory blocks and set them to "online")
 
 
+For DIMMs, hotplugging 4 GiB DIMMs to a 4 GiB VM with a configured ratio of
+301% results in the following layout:
+	Memory block 1-15:    DMA32   (early)
+	Memory block 32-47:   Normal  (early)
+	Memory block 48-79:   Movable (DIMM 0)
+	Memory block 80-111:  Movable (DIMM 1)
+	Memory block 112-143: Movable (DIMM 2)
+	Memory block 144-275: Normal  (DIMM 3)
+	Memory block 176-207: Normal  (DIMM 4)
+	... all Normal
+	(-> hotplugged Normal memory does not allow for more Movable memory)
 
-> 
-> On Mon, Jun 07, 2021 at 01:01:59PM +0000, Mario Limonciello wrote:
->>    Mika,
->>
->>    Can you have a try and make sure this modification still works properly
->>    on the series in the hardware we originally did it for?
->>      __________________________________________________________________
->>
->>    From: Rafael J. Wysocki <rafael@kernel.org>
->>    Sent: Monday, June 7, 2021 6:13:21 AM
->>    To: Hans de Goede <hdegoede@redhat.com>
->>    Cc: Rafael J . Wysocki <rjw@rjwysocki.net>; Mario Limonciello
->>    <mario.limonciello@outlook.com>; linux-acpi
->>    <linux-acpi@vger.kernel.org>
->>    Subject: Re: Some SSDT tables are not loading with kernel >= 5.12
->>
->>    On Mon, Jun 7, 2021 at 12:05 PM Hans de Goede <hdegoede@redhat.com>
->>    wrote:
->>    >
->>    > HI,
->>    >
->>    > On 6/7/21 11:43 AM, Hans de Goede wrote:
->>    > > Hi,
->>    > >
->>    > > On 6/3/21 7:26 PM, Hans de Goede wrote:
->>    > >> Hi Rafael,
->>    > >>
->>    > >> I've been helping some users with trying to get to the bottom of
->>    some
->>    > >> new ACPI errors with kernel 5.12, see:
->>    > >>
->>    > >> [1]https://bugzilla.kernel.org/show_bug.cgi?id=213023
->>    > >>
->>    > >> After looking at dmesg output; and after editing the dmesg output
->>    > >> a bit so that I could do diff -u on it, the following stands out:
->>    > >>
->>    > >> --- dmesg_5.10.38-1-lts      2021-06-03 16:29:41.372922210 +0200
->>    > >> +++ dmesg_linux-5.12.5-arch1-1       2021-06-03 16:30:01.013031634
->>    +0200
->>    > >> @@ -92,7 +92,7 @@
->>    > >>  ACPI: IRQ9 used by override.
->>    > >>  Using ACPI (MADT) for SMP configuration information
->>    > >>  ACPI: HPET id: 0x8086a201 base: 0xfed00000
->>    > >> -ACPI: Core revision 20200925
->>    > >> +ACPI: Core revision 20210105
->>    > >>  PM: Registering ACPI NVS region [mem 0x7156c000-0x7156cfff] (4096
->>    bytes)
->>    > >>  PM: Registering ACPI NVS region [mem 0x8a88f000-0x8af7efff]
->>    (7274496 bytes)
->>    > >>  ACPI FADT declares the system doesn't support PCIe ASPM, so
->>    disable it
->>    > >> @@ -113,10 +113,6 @@
->>    > >>  ACPI: Dynamic OEM Table Load:
->>    > >>  ACPI: SSDT 0xFFFF... 0003FF (v02 PmRef  Cpu0Cst  00003001 INTL
->>    20160527)
->>    > >>  ACPI: Dynamic OEM Table Load:
->>    > >> -ACPI: SSDT 0xFFFF... 0000BA (v02 PmRef  Cpu0Hwp  00003000 INTL
->>    20160527)
->>    > >> -ACPI: Dynamic OEM Table Load:
->>    > >> -ACPI: SSDT 0xFFFF... 000628 (v02 PmRef  HwpLvt   00003000 INTL
->>    20160527)
->>    > >> -ACPI: Dynamic OEM Table Load:
->>    > >>  ACPI: SSDT 0xFFFF... 000D14 (v02 PmRef  ApIst    00003000 INTL
->>    20160527)
->>    > >>  ACPI: Dynamic OEM Table Load:
->>    > >>  ACPI: SSDT 0xFFFF... 000317 (v02 PmRef  ApHwp    00003000 INTL
->>    20160527)
->>    > >>
->>    > >> Note how for some reason the kernel is no longer loading the
->>    Cpu0Hwp and
->>    > >> HwpLvt SSDT-s ?
->>    > >>
->>    > >> Do you have any ideas what might be causing this ?
->>    > >
->>    > > Good news, a very similar bug is being tracked here:
->>    > >
->>    > > [2]https://bugzilla.redhat.com/show_bug.cgi?id=1963717
->>    > >
->>    > > And one of the reporters there has done a git bisect and has found
->>    the commit which is causing the problem for them:
->>    > >
->>    > > """
->>    > > git-bisect points to 719e1f561afbe020ed175825a9bd25ed62ed1697 :
->>    > > "ACPI: Execute platform _OSC also with query bit clear".
->>    > >
->>    > > Tested 5.12.9 kernel with the commit reverted, and confirmed that
->>    the error
->>    > > messages are gone. (I had to revert
->>    > > 5a6a2c0f0f43676df27632d657a3f18b151a7ef8 for dependency too.)
->>    > >
->>    > > It also brings back the /sys/devices/system/cpu/cpu0/acpi_cppc
->>    which is absent
->>    > > in the stable 5.12.x
->>    > >
->>    > > Hope this helps
->>    > > """
->>    >
->>    > I've taken a quick look at commit 719e1f561afb ("ACPI: Execute
->>    platform _OSC also with query bit clear") and I think I may have found
->>    the problem.
->>    >
->>    > I've attached a patch which I think may fix this (and I've asked the
->>    reporters of the bugs to test this).
->>    Thank you, the patch looks reasonable to me.
->>    It looks like commit 719e1f561afb went a bit too far.
->>
->> References
->>
->>    1. https://bugzilla.kernel.org/show_bug.cgi?id=213023
->>    2. https://bugzilla.redhat.com/show_bug.cgi?id=1963717
-> 
+For virtio-mem, using a simple, single virtio-mem device with a 4 GiB VM
+will result in the following layout:
+	Memory block 1-15:    DMA32   (early)
+	Memory block 32-47:   Normal  (early)
+	Memory block 48-143:  Movable (virtio-mem, first 12 GiB)
+	Memory block 144:     Normal  (virtio-mem, next 128 MiB)
+	Memory block 145-147: Movable (virtio-mem, next 384 MiB)
+	Memory block 148:     Normal  (virtio-mem, next 128 MiB)
+	Memory block 149-151: Movable (virtio-mem, next 384 MiB)
+	... Normal/Movable mixture as above
+	(-> hotplugged Normal memory allows for more Movable memory within
+	    the same device)
+
+Which gives us maximum flexibility when dynamically growing/shrinking a
+VM in smaller steps. When shrinking, virtio-mem will prioritize unplug of
+MOVABLE memory with [1] sent last week, such that we won't accidentially
+trigger zone imbalances in more complicated setups that involve multiple
+virtio-mem devices.
+
+
+I'll update the memory-hotplug.rst documentation separately, once the
+overhaul is done. For now I decided to use module parameters that can be
+changed at runtime and not add new sysfs files for configuration. Easier
+and cleaner IMHO -- especially, temporarily overwritable via the cmdline.
+
+Future work:
+- Use a single static memory group for dax/kmem
+- Sense upfront for DIMMs (and dax/kmem) which pieces can actually be added
+  and won't actually contribute to the static memory group size
+- Use memory groups for ppc64 dlpar
+- More tunables. For example, a way to configure to keep some memory
+  default offline (s390x standby memory, dax/kmem)
+- Indicate to user space that MOVABLE might be a bad idea -- especially
+  relevant when memory ballooning without support for balloon compaction
+  is active.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Marek Kedzierski <mkedzier@redhat.com>
+Cc: Hui Zhu <teawater@gmail.com>
+Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: virtualization@lists.linux-foundation.org
+Cc: linux-mm@kvack.org
+Cc: linux-acpi@vger.kernel.org
+
+[1] https://lkml.kernel.org/r/20210602185720.31821-1-david@redhat.com
+
+David Hildenbrand (12):
+  mm/memory_hotplug: use "unsigned long" for PFN in zone_for_pfn_range()
+  mm: track present early pages per zone
+  mm/memory_hotplug: introduce "auto-movable" online policy
+  mm/memory_hotplug: remove nid parameter from arch_remove_memory()
+  mm/memory_hotplug: remove nid parameter from remove_memory() and
+    friends
+  drivers/base/memory: "memory groups" to logically group memory blocks
+  mm/memory_hotplug: track present pages in memory groups
+  ACPI: memhotplug: memory resources cannot be enabled yet
+  ACPI: memhotplug: use a single static memory group for a single memory
+    device
+  virtio-mem: use a single dynamic memory group for a single virtio-mem
+    device
+  mm/memory_hotplug: memory group aware "auto-movable" online policy
+  mm/memory_hotplug: improved dynamic memory group aware "auto-movable"
+    online policy
+
+ arch/arm64/mm/mmu.c                           |   3 +-
+ arch/ia64/mm/init.c                           |   3 +-
+ arch/powerpc/mm/mem.c                         |   3 +-
+ .../platforms/pseries/hotplug-memory.c        |   9 +-
+ arch/s390/mm/init.c                           |   3 +-
+ arch/sh/mm/init.c                             |   3 +-
+ arch/x86/mm/init_32.c                         |   3 +-
+ arch/x86/mm/init_64.c                         |   3 +-
+ drivers/acpi/acpi_memhotplug.c                |  46 ++-
+ drivers/base/memory.c                         | 163 +++++++--
+ drivers/dax/kmem.c                            |   3 +-
+ drivers/virtio/virtio_mem.c                   |  26 +-
+ include/linux/memory.h                        |  53 ++-
+ include/linux/memory_hotplug.h                |  35 +-
+ include/linux/mmzone.h                        |   7 +
+ mm/memory_hotplug.c                           | 346 +++++++++++++++++-
+ mm/memremap.c                                 |   5 +-
+ mm/page_alloc.c                               |   3 +
+ 18 files changed, 618 insertions(+), 99 deletions(-)
+
+
+base-commit: 614124bea77e452aa6df7a8714e8bc820b489922
+-- 
+2.31.1
 
