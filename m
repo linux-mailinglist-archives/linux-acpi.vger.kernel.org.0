@@ -2,161 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F347839DEF5
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 16:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF3E39DFA6
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 16:54:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230266AbhFGOlm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 10:41:42 -0400
-Received: from mail-oi1-f172.google.com ([209.85.167.172]:43602 "EHLO
-        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbhFGOlm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 10:41:42 -0400
-Received: by mail-oi1-f172.google.com with SMTP id x196so17856133oif.10
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Jun 2021 07:39:37 -0700 (PDT)
+        id S231497AbhFGOzG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 10:55:06 -0400
+Received: from mail-oi1-f171.google.com ([209.85.167.171]:40491 "EHLO
+        mail-oi1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231501AbhFGOzA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 10:55:00 -0400
+Received: by mail-oi1-f171.google.com with SMTP id r17so8056084oic.7;
+        Mon, 07 Jun 2021 07:52:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=l7a14rpcAIDQKHi45PdwrQP7pOJuz2pmW2YKVutjVaU=;
-        b=eK2FDkPlcOiXjKGp0bMugEdHvdKo75RIuJE9Cv6NrmnTS7fm0LG2JJKIhMHLnAsa9m
-         L9LmCRXJa6SYw84JqPuhiSEHsRfp5ubclPhOQ1fiwQVdJawH7ydpbtjfgKHPWRPevd6g
-         MmFjG9HmAsB74j3WsO0Ta9qBWq0nUffbLkwzGIAJP5ybbd8DhEgRc4N+SAezokEisqFx
-         yde1DQUsfRWqMAClpoxIeum9tkCEYBoICTKYKWqDJPy6iUN1HjrLxIahfqnuGigylugw
-         2XpquXKJL+w8kOMTzaJHDgJfMWC1Nn6/+o2r8TstmyPEitChkWbmgSOADVZIVpPifpir
-         CAcA==
-X-Gm-Message-State: AOAM531b0yZMVS6wAmbF/l4ZX5Zg5OmGZ+oi96KEzK6KXcrBzrmEVzN7
-        EiC6sG1qZZykzBJ1iEkLGF7LaG0i802AJ7OdcT8=
-X-Google-Smtp-Source: ABdhPJy0WC7qMbNYOvNH9vpw+qGf7mgy9n6UTfUfHj8GaZfxHpxb1wUJ0vUU65w2Yx6S2TxGOXLSYNEnLJteCUuYUbA=
-X-Received: by 2002:aca:b406:: with SMTP id d6mr11564478oif.71.1623076777341;
- Mon, 07 Jun 2021 07:39:37 -0700 (PDT)
+        bh=vFKKKRb67LGq4j/7jOKF7wGRXnfTmyHqm4pxSTe6iqE=;
+        b=mBQdOWvRwOxHF6ABeBC4ZKP8EUTILSIqM85QZ+mB8CMCIdkVn6x5IxwPArAI9GEkNU
+         YmgnT6mFBLVbNQQav2zxaqWW3MhRh4yC/XZHDRYVARmnS4iKsJQzyijuhUeJTQZVow40
+         aDVedgN1gWvzsZIOfTfSYsbRaOueegEQWQJFwaparxXeg9M3mlHBA7YAJe1FJti6rpC3
+         eL8fPXCb7X1xNOaRmsVAXCjaV4zb31UwJs+3bxCp/6PSxTyjg66ii5tGBlg+Hbuu4txX
+         slEPoBpDdSlj2H73XuL5l6CLaRrjhCrVArW2wkhPgYADr6Yh58K9HsMN9G7fSq5iCtUe
+         gicw==
+X-Gm-Message-State: AOAM532t9y+AIl1t/wVdl/bph5kFR+1RheBvz5FnlHpAC09YpkyV+BJK
+        q/E0pbcq32t48TOH+ao5yhHr/09n5vGdXFKdTuc=
+X-Google-Smtp-Source: ABdhPJwuRWOyfnhsiiN2oAZTElAD/OIy6HNxvm4F6pIar5hcDOtjzrcZfAXKJpjv2/tbxAHYxWHt/mSVGktoFLA+unc=
+X-Received: by 2002:aca:b406:: with SMTP id d6mr11602849oif.71.1623077574350;
+ Mon, 07 Jun 2021 07:52:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210604165403.2317-1-mario.limonciello@amd.com> <20210604165403.2317-2-mario.limonciello@amd.com>
-In-Reply-To: <20210604165403.2317-2-mario.limonciello@amd.com>
+References: <20210603224007.120560-1-djrscally@gmail.com> <20210603224007.120560-3-djrscally@gmail.com>
+In-Reply-To: <20210603224007.120560-3-djrscally@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Jun 2021 16:39:26 +0200
-Message-ID: <CAJZ5v0g5KCkE4eRSjKZgX14Nm3FNKQmfzsCYzfigD-M-uT5QJA@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] acpi: PM: Add quirks for AMD Renoir/Lucienne CPUs
- to force the D3 hint
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
+Date:   Mon, 7 Jun 2021 16:52:43 +0200
+Message-ID: <CAJZ5v0j8pLo3pjuByYxJue9mr4TOGieYTHm8tghNQgk+LphL=w@mail.gmail.com>
+Subject: Re: [PATCH v5 2/6] ACPI: scan: Add function to fetch dependent of
+ acpi device
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        rrangel@chromium.org, David Box <david.e.box@linux.intel.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Alex Deucher <Alexander.Deucher@amd.com>,
-        Prike Liang <prike.liang@amd.com>,
-        Julian Sikorski <belegdol@gmail.com>
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham@ideasonboard.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 4, 2021 at 6:54 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Fri, Jun 4, 2021 at 12:41 AM Daniel Scally <djrscally@gmail.com> wrote:
 >
-> AMD systems from Renoir and Lucienne require that the NVME controller
-> is put into D3 over a Modern Standby / suspend-to-idle
-> cycle.  This is "typically" accomplished using the `StorageD3Enable`
-> property in the _DSD, but this property was introduced after many
-> of these systems launched and most OEM systems don't have it in
-> their BIOS.
+> In some ACPI tables we encounter, devices use the _DEP method to assert
+> a dependence on other ACPI devices as opposed to the OpRegions that the
+> specification intends. We need to be able to find those devices "from"
+> the dependee, so add a callback and a wrapper to walk over the
+> acpi_dep_list and return the dependent ACPI device.
 >
-> On AMD Renoir without these drives going into D3 over suspend-to-idle
-> the resume will fail with the NVME controller being reset and a trace
-> like this in the kernel logs:
-> ```
-> [   83.556118] nvme nvme0: I/O 161 QID 2 timeout, aborting
-> [   83.556178] nvme nvme0: I/O 162 QID 2 timeout, aborting
-> [   83.556187] nvme nvme0: I/O 163 QID 2 timeout, aborting
-> [   83.556196] nvme nvme0: I/O 164 QID 2 timeout, aborting
-> [   95.332114] nvme nvme0: I/O 25 QID 0 timeout, reset controller
-> [   95.332843] nvme nvme0: Abort status: 0x371
-> [   95.332852] nvme nvme0: Abort status: 0x371
-> [   95.332856] nvme nvme0: Abort status: 0x371
-> [   95.332859] nvme nvme0: Abort status: 0x371
-> [   95.332909] PM: dpm_run_callback(): pci_pm_resume+0x0/0xe0 returns -16
-> [   95.332936] nvme 0000:03:00.0: PM: failed to resume async: error -16
-> ```
->
-> The Microsoft documentation for StorageD3Enable mentioned that Windows has
-> a hardcoded allowlist for D3 support, which was used for these platforms.
-> Introduce quirks to hardcode them for Linux as well.
->
-> As this property is now "standardized", OEM systems using AMD Cezanne and
-> newer APU's have adopted this property, and quirks like this should not be
-> necessary.
->
-> CC: Julian Sikorski <belegdol@gmail.com>
-> CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
-> CC: Alexander Deucher <Alexander.Deucher@amd.com>
-> CC: Rafael J. Wysocki <rjw@rjwysocki.net>
-> CC: Prike Liang <prike.liang@amd.com>
-> Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Daniel Scally <djrscally@gmail.com>
 > ---
->  drivers/acpi/device_pm.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+> Changes since v5:
 >
-> Changes from v4->v5:
->  * Add this patch back in as it's been made apparent that the
->    system needs to be hardcoded for these.
->    Changes:
->    - Drop Cezanne - it's now covered by StorageD3Enable
->    - Rebase ontop of acpi_storage_d3 outside of NVME
+>         - Functions renamed
 >
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index 1edb68d00b8e..8fd2a15bf478 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -20,6 +20,10 @@
->  #include <linux/pm_runtime.h>
->  #include <linux/suspend.h>
+>  drivers/acpi/scan.c     | 35 +++++++++++++++++++++++++++++++++++
+>  include/acpi/acpi_bus.h |  1 +
+>  2 files changed, 36 insertions(+)
 >
-> +#ifdef CONFIG_X86
-> +#include <asm/cpu_device_id.h>
-> +#endif
-
-This is a generic file, not x86 (or any other arch-specific)
-#ifdeffery in it, please.
-
-There is the x86/ subdir under drivers/acpi/ for x86-specific stuff.
-
-> +
->  #include "internal.h"
->
->  /**
-> @@ -1341,6 +1345,15 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 195635c3462b..9af64c34e286 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -2105,6 +2105,20 @@ static void acpi_bus_attach(struct acpi_device *device, bool first_pass)
+>                 device->handler->hotplug.notify_online(device);
 >  }
->  EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
 >
+> +static int acpi_dev_get_first_consumer_dev_cb(struct acpi_dep_data *dep, void *data)
+> +{
+> +       struct acpi_device *adev;
 > +
-> +#ifdef CONFIG_X86
-> +static const struct x86_cpu_id storage_d3_cpu_ids[] = {
-> +       X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),  /* Renoir */
-> +       X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL), /* Lucienne */
-> +       {}
-> +};
-> +#endif
+> +       adev = acpi_bus_get_acpi_device(dep->consumer);
+> +       if (!adev)
+> +               /* If we don't find an adev then we want to continue parsing */
+> +               return 0;
+> +
+> +       *(struct acpi_device **)data = adev;
+> +
+> +       return 1;
+> +}
+> +
+>  static int acpi_scan_clear_dep(struct acpi_dep_data *dep, void *data)
+>  {
+>         struct acpi_device *adev;
+> @@ -2168,6 +2182,27 @@ void acpi_dev_clear_dependencies(struct acpi_device *supplier)
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_dev_clear_dependencies);
+>
+> +/**
+> + * acpi_dev_get_first_consumer_dev - Return ACPI device dependent on @supplier
+> + * @supplier: Pointer to the dependee device
+> + *
+> + * Returns the first &struct acpi_device which declares itself dependent on
+> + * @supplier via the _DEP buffer, parsed from the acpi_dep_list.
+> + *
+> + * The caller is responsible for putting the reference to adev when it is no
+> + * longer needed.
+> + */
+> +struct acpi_device *acpi_dev_get_first_consumer_dev(struct acpi_device *supplier)
+> +{
+> +       struct acpi_device *adev = NULL;
+> +
+> +       acpi_walk_dep_device_list(supplier->handle,
+> +                                 acpi_dev_get_first_consumer_dev_cb, &adev);
+> +
+> +       return adev;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_dev_get_first_consumer_dev);
 > +
 >  /**
->   * acpi_storage_d3 - Check if a storage device should use D3.
->   * @dev: Device to check
-> @@ -1356,6 +1369,12 @@ bool acpi_storage_d3(struct device *dev)
->         struct acpi_device *adev = ACPI_COMPANION(dev);
->         u8 val;
+>   * acpi_bus_scan - Add ACPI device node objects in a given namespace scope.
+>   * @handle: Root of the namespace scope to scan.
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index 0b2c4f170f4d..4bed30e61c5b 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -692,6 +692,7 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
+>  bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const char *uid2);
 >
-> +#ifdef CONFIG_X86
-> +       /* Devices requiring D3, but from before StorageD3Enable was "standardized" */
-> +       if (x86_match_cpu(storage_d3_cpu_ids))
-> +               return true;
-> +#endif
-> +
->         if (!adev)
->                 return false;
->         if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+>  void acpi_dev_clear_dependencies(struct acpi_device *supplier);
+> +struct acpi_device *acpi_dev_get_first_consumer_dev(struct acpi_device *supplier);
+>  struct acpi_device *
+>  acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const char *uid, s64 hrv);
+>  struct acpi_device *
 > --
-> 2.25.1
->
+
+Applied as 5.14 material along the [1/6].
+
+I'll expose a branch containing the 2 patches to pull from later this week.
+
+Thanks!
