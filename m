@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CF2739DEEB
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 16:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F347839DEF5
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 16:39:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230330AbhFGOiv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 10:38:51 -0400
-Received: from mail-oi1-f173.google.com ([209.85.167.173]:36424 "EHLO
-        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230333AbhFGOiu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 10:38:50 -0400
-Received: by mail-oi1-f173.google.com with SMTP id a21so18275351oiw.3
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Jun 2021 07:36:46 -0700 (PDT)
+        id S230266AbhFGOlm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 10:41:42 -0400
+Received: from mail-oi1-f172.google.com ([209.85.167.172]:43602 "EHLO
+        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230242AbhFGOlm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 10:41:42 -0400
+Received: by mail-oi1-f172.google.com with SMTP id x196so17856133oif.10
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Jun 2021 07:39:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=BGnBmGjVJO7dExTR9Aq7lDjQTstrtJ/XYm4hMbstlbY=;
-        b=moksoq12pNy+I1Ak1t13eRdIvLla/ALC1rparjtN9Onh95dtlG1ZokXMsUHn6VCHII
-         qKoasphxmMKXQ5BTKFuAZQ1tkwEbhdvpT6xEZi6UZTtpwZMvhiNR8BUEbgiC2XbVR+Je
-         KQNKwIl5C1pseFHAQgK1EFkvmex4XxLPv7GwqMdKAesfHAsUNxIDZktKIhw2l8EcBX2p
-         LxUiLw1wCJkd+WJUD6O63pjqLl+u1j4cWCzrZSxZ26ji4Xt/rJhAI1N/v275KTy4yYob
-         IEl1j5TSJFO9CiyJ4Ee47woOodSyrRrKp704d4WoHM8lc2GptzHXyeh4a0lbR2BmdB/8
-         LDDw==
-X-Gm-Message-State: AOAM533dUZJ8X2ZdGZXRJ1E/mPeRy8Pdtic0ZQ6AhuKGcgDvI/7dpVrE
-        ION8B0sM5iJm/TWmno2AC2CNIYCAifMrdncg6jY=
-X-Google-Smtp-Source: ABdhPJxB/kooTPoIoUjKiHNHSnVHPgjZf/KLnjPVAh8REreEBuCJ2hDeVY1y0dzbUUMKK+/yeMm+R8QXRtwO8HKex8s=
-X-Received: by 2002:aca:b406:: with SMTP id d6mr11556247oif.71.1623076606050;
- Mon, 07 Jun 2021 07:36:46 -0700 (PDT)
+        bh=l7a14rpcAIDQKHi45PdwrQP7pOJuz2pmW2YKVutjVaU=;
+        b=eK2FDkPlcOiXjKGp0bMugEdHvdKo75RIuJE9Cv6NrmnTS7fm0LG2JJKIhMHLnAsa9m
+         L9LmCRXJa6SYw84JqPuhiSEHsRfp5ubclPhOQ1fiwQVdJawH7ydpbtjfgKHPWRPevd6g
+         MmFjG9HmAsB74j3WsO0Ta9qBWq0nUffbLkwzGIAJP5ybbd8DhEgRc4N+SAezokEisqFx
+         yde1DQUsfRWqMAClpoxIeum9tkCEYBoICTKYKWqDJPy6iUN1HjrLxIahfqnuGigylugw
+         2XpquXKJL+w8kOMTzaJHDgJfMWC1Nn6/+o2r8TstmyPEitChkWbmgSOADVZIVpPifpir
+         CAcA==
+X-Gm-Message-State: AOAM531b0yZMVS6wAmbF/l4ZX5Zg5OmGZ+oi96KEzK6KXcrBzrmEVzN7
+        EiC6sG1qZZykzBJ1iEkLGF7LaG0i802AJ7OdcT8=
+X-Google-Smtp-Source: ABdhPJy0WC7qMbNYOvNH9vpw+qGf7mgy9n6UTfUfHj8GaZfxHpxb1wUJ0vUU65w2Yx6S2TxGOXLSYNEnLJteCUuYUbA=
+X-Received: by 2002:aca:b406:: with SMTP id d6mr11564478oif.71.1623076777341;
+ Mon, 07 Jun 2021 07:39:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210604165403.2317-1-mario.limonciello@amd.com>
-In-Reply-To: <20210604165403.2317-1-mario.limonciello@amd.com>
+References: <20210604165403.2317-1-mario.limonciello@amd.com> <20210604165403.2317-2-mario.limonciello@amd.com>
+In-Reply-To: <20210604165403.2317-2-mario.limonciello@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Jun 2021 16:36:35 +0200
-Message-ID: <CAJZ5v0iKDwttHxFSB5tTMgyaOcvM40oq474BzwE9mfX28n+BJQ@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] acpi: PM: Move check for _DSD StorageD3Enable
- property to acpi
+Date:   Mon, 7 Jun 2021 16:39:26 +0200
+Message-ID: <CAJZ5v0g5KCkE4eRSjKZgX14Nm3FNKQmfzsCYzfigD-M-uT5QJA@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] acpi: PM: Add quirks for AMD Renoir/Lucienne CPUs
+ to force the D3 hint
 To:     Mario Limonciello <mario.limonciello@amd.com>
 Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
         Christoph Hellwig <hch@lst.de>,
@@ -47,7 +47,8 @@ Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
         rrangel@chromium.org, David Box <david.e.box@linux.intel.com>,
         Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
         Alex Deucher <Alexander.Deucher@amd.com>,
-        Prike Liang <prike.liang@amd.com>
+        Prike Liang <prike.liang@amd.com>,
+        Julian Sikorski <belegdol@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
@@ -56,135 +57,106 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Fri, Jun 4, 2021 at 6:54 PM Mario Limonciello
 <mario.limonciello@amd.com> wrote:
 >
-> Although first implemented for NVME, this check may be usable by
-> other drivers as well. Microsoft's specification explicitly mentions
-> that is may be usable by SATA and AHCI devices.  Google also indicates
-> that they have used this with SDHCI in a downstream kernel tree that
-> a user can plug a storage device into.
+> AMD systems from Renoir and Lucienne require that the NVME controller
+> is put into D3 over a Modern Standby / suspend-to-idle
+> cycle.  This is "typically" accomplished using the `StorageD3Enable`
+> property in the _DSD, but this property was introduced after many
+> of these systems launched and most OEM systems don't have it in
+> their BIOS.
 >
-> Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-> Suggested-by: Keith Busch <kbusch@kernel.org>
+> On AMD Renoir without these drives going into D3 over suspend-to-idle
+> the resume will fail with the NVME controller being reset and a trace
+> like this in the kernel logs:
+> ```
+> [   83.556118] nvme nvme0: I/O 161 QID 2 timeout, aborting
+> [   83.556178] nvme nvme0: I/O 162 QID 2 timeout, aborting
+> [   83.556187] nvme nvme0: I/O 163 QID 2 timeout, aborting
+> [   83.556196] nvme nvme0: I/O 164 QID 2 timeout, aborting
+> [   95.332114] nvme nvme0: I/O 25 QID 0 timeout, reset controller
+> [   95.332843] nvme nvme0: Abort status: 0x371
+> [   95.332852] nvme nvme0: Abort status: 0x371
+> [   95.332856] nvme nvme0: Abort status: 0x371
+> [   95.332859] nvme nvme0: Abort status: 0x371
+> [   95.332909] PM: dpm_run_callback(): pci_pm_resume+0x0/0xe0 returns -16
+> [   95.332936] nvme 0000:03:00.0: PM: failed to resume async: error -16
+> ```
+>
+> The Microsoft documentation for StorageD3Enable mentioned that Windows has
+> a hardcoded allowlist for D3 support, which was used for these platforms.
+> Introduce quirks to hardcode them for Linux as well.
+>
+> As this property is now "standardized", OEM systems using AMD Cezanne and
+> newer APU's have adopted this property, and quirks like this should not be
+> necessary.
+>
+> CC: Julian Sikorski <belegdol@gmail.com>
 > CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
 > CC: Alexander Deucher <Alexander.Deucher@amd.com>
 > CC: Rafael J. Wysocki <rjw@rjwysocki.net>
 > CC: Prike Liang <prike.liang@amd.com>
+> Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
 > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-
-You've received some tags on the v4, can you please resend it with the
-tags added?
-
 > ---
->  drivers/acpi/device_pm.c | 25 +++++++++++++++++++++++++
->  drivers/nvme/host/pci.c  | 28 +---------------------------
->  include/linux/acpi.h     |  5 +++++
->  3 files changed, 31 insertions(+), 27 deletions(-)
+>  drivers/acpi/device_pm.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 >
 > Changes from v4->v5:
->  * Correct extra "Link:" word in commit message
+>  * Add this patch back in as it's been made apparent that the
+>    system needs to be hardcoded for these.
+>    Changes:
+>    - Drop Cezanne - it's now covered by StorageD3Enable
+>    - Rebase ontop of acpi_storage_d3 outside of NVME
 >
 > diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index d260bc1f3e6e..1edb68d00b8e 100644
+> index 1edb68d00b8e..8fd2a15bf478 100644
 > --- a/drivers/acpi/device_pm.c
 > +++ b/drivers/acpi/device_pm.c
-> @@ -1340,4 +1340,29 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
->         return 1;
+> @@ -20,6 +20,10 @@
+>  #include <linux/pm_runtime.h>
+>  #include <linux/suspend.h>
+>
+> +#ifdef CONFIG_X86
+> +#include <asm/cpu_device_id.h>
+> +#endif
+
+This is a generic file, not x86 (or any other arch-specific)
+#ifdeffery in it, please.
+
+There is the x86/ subdir under drivers/acpi/ for x86-specific stuff.
+
+> +
+>  #include "internal.h"
+>
+>  /**
+> @@ -1341,6 +1345,15 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
 >  }
 >  EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
+>
 > +
-> +/**
-> + * acpi_storage_d3 - Check if a storage device should use D3.
-> + * @dev: Device to check
-> + *
-> + * Returns %true if @dev should be put into D3 when the ->suspend method is
-> + * called, else %false.  The name of this function is somewhat misleading
-> + * as it has nothing to do with storage except for the name of the ACPI
-> + * property.  On some platforms resume will not work if this hint is ignored.
-> + *
-> + */
-> +bool acpi_storage_d3(struct device *dev)
-> +{
-> +       struct acpi_device *adev = ACPI_COMPANION(dev);
-> +       u8 val;
+> +#ifdef CONFIG_X86
+> +static const struct x86_cpu_id storage_d3_cpu_ids[] = {
+> +       X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),  /* Renoir */
+> +       X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL), /* Lucienne */
+> +       {}
+> +};
+> +#endif
 > +
-> +       if (!adev)
-> +               return false;
-> +       if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
-> +                       &val))
-> +               return false;
-> +       return val == 1;
-> +}
-> +EXPORT_SYMBOL_GPL(acpi_storage_d3);
+>  /**
+>   * acpi_storage_d3 - Check if a storage device should use D3.
+>   * @dev: Device to check
+> @@ -1356,6 +1369,12 @@ bool acpi_storage_d3(struct device *dev)
+>         struct acpi_device *adev = ACPI_COMPANION(dev);
+>         u8 val;
+>
+> +#ifdef CONFIG_X86
+> +       /* Devices requiring D3, but from before StorageD3Enable was "standardized" */
+> +       if (x86_match_cpu(storage_d3_cpu_ids))
+> +               return true;
+> +#endif
 > +
->  #endif /* CONFIG_PM */
-> diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-> index 3aa7245a505f..8fbc4c87a0d8 100644
-> --- a/drivers/nvme/host/pci.c
-> +++ b/drivers/nvme/host/pci.c
-> @@ -2828,32 +2828,6 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
->         return 0;
->  }
->
-> -#ifdef CONFIG_ACPI
-> -static bool nvme_acpi_storage_d3(struct pci_dev *dev)
-> -{
-> -       struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
-> -       u8 val;
-> -
-> -       /*
-> -        * Look for _DSD property specifying that the storage device on the port
-> -        * must use D3 to support deep platform power savings during
-> -        * suspend-to-idle.
-> -        */
-> -
-> -       if (!adev)
-> -               return false;
-> -       if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
-> -                       &val))
-> -               return false;
-> -       return val == 1;
-> -}
-> -#else
-> -static inline bool nvme_acpi_storage_d3(struct pci_dev *dev)
-> -{
-> -       return false;
-> -}
-> -#endif /* CONFIG_ACPI */
-> -
->  static void nvme_async_probe(void *data, async_cookie_t cookie)
->  {
->         struct nvme_dev *dev = data;
-> @@ -2903,7 +2877,7 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->
->         quirks |= check_vendor_combination_bug(pdev);
->
-> -       if (!noacpi && nvme_acpi_storage_d3(pdev)) {
-> +       if (!noacpi && acpi_storage_d3(&pdev->dev)) {
->                 /*
->                  * Some systems use a bios work around to ask for D3 on
->                  * platforms that support kernel managed suspend.
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index c60745f657e9..dd0dafd21e33 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1004,6 +1004,7 @@ int acpi_dev_resume(struct device *dev);
->  int acpi_subsys_runtime_suspend(struct device *dev);
->  int acpi_subsys_runtime_resume(struct device *dev);
->  int acpi_dev_pm_attach(struct device *dev, bool power_on);
-> +bool acpi_storage_d3(struct device *dev);
->  #else
->  static inline int acpi_subsys_runtime_suspend(struct device *dev) { return 0; }
->  static inline int acpi_subsys_runtime_resume(struct device *dev) { return 0; }
-> @@ -1011,6 +1012,10 @@ static inline int acpi_dev_pm_attach(struct device *dev, bool power_on)
->  {
->         return 0;
->  }
-> +static inline bool acpi_storage_d3(struct device *dev)
-> +{
-> +       return false;
-> +}
->  #endif
->
->  #if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
+>         if (!adev)
+>                 return false;
+>         if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
 > --
 > 2.25.1
 >
