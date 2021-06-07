@@ -2,67 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 512C339DE7E
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 16:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D948B39DE87
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 16:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230233AbhFGOTr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 10:19:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42128 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230197AbhFGOTp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Jun 2021 10:19:45 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A24C761130;
-        Mon,  7 Jun 2021 14:17:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623075473;
-        bh=L/IcAmlfla3G6jqxEY2OT9sBai4M7rEkPnSNSRR930Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pp0Mmj/UapJ4mrUgFZgd3pKjSq1mLFQzXvDWyCijXdrHgS7IrfkUVLtxTuyXRcfvR
-         YLe+/lfEOpkQzMIm0B1iw2A7uj9CEnpr3CTp5Cx5DFy8sGCOEP/jVE775bEQxZd9kg
-         E4nxsZkBVTB0KF3k76q+Jg2CvjEu0CmLfdlpCIaqbb0qUbXFr+zLV4tmaf6474wTpm
-         2mWCpDLPMnO1VcCC4t4a68gZnUMisbV/vQvLRf/Ln+tBgZLao1zMR9TrkPy+m8UAJ9
-         qdf+pj5emT3NafmqdeYnAZGKw8vNdETJnq0X4iDVsqWtVAtfrQL7Eao1mNMd9h3Ebu
-         700rTX7AbRZ7g==
-Date:   Mon, 7 Jun 2021 23:17:47 +0900
-From:   Keith Busch <kbusch@kernel.org>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Jens Axboe <axboe@fb.com>, Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
-        linux-acpi@vger.kernel.org, rrangel@chromium.org,
-        david.e.box@linux.intel.com, Shyam-sundar.S-k@amd.com,
-        Alexander.Deucher@amd.com, prike.liang@amd.com
-Subject: Re: [PATCH v4] acpi: Move check for _DSD StorageD3Enable property to
- acpi
-Message-ID: <20210607141747.GA21631@redsun51.ssa.fujisawa.hgst.com>
-References: <20210603190753.5084-1-mario.limonciello@amd.com>
+        id S230203AbhFGOUi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 10:20:38 -0400
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:37382 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230200AbhFGOUi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 10:20:38 -0400
+Received: by mail-oi1-f178.google.com with SMTP id h9so18193489oih.4;
+        Mon, 07 Jun 2021 07:18:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/W7QdJ0pNKu0G/Jpr2lieRQ3nvMKxgUynmwjevp+ExI=;
+        b=B4K564OmTQ76uYv5bry7DEzBZCUHKhFWVHwfulEEsK/DZv8ZcJYVTEyJnaX6Co+xIs
+         N7IcPngg5aoXaPQdCA5lA51Z68q2MAq6hRm63FQwxrwvv021V+1ELu9xBEj6m1ncTlDf
+         aRuAfgSJ9u4Z+afA1Usq177eEVGGgkgm8T04LgjCJa14bM5YAzmVJnbC5ymiixWMVhpc
+         BfeuPKsNDbzWkB0Q+qiOD20WhL11s5mCdVEP4eVAvQjw2hX56YuCY5VgUskYDifeh5ms
+         PfKjOD511Ivo6x67kyFE+hn6Iaat4/LUcLGpKS8sN3Zg9a6u9sR6S6BXAxLr0qNC3IrP
+         tsnw==
+X-Gm-Message-State: AOAM533jP80N8T4TlkpqPGyoBWtna5c3t1iSP/rykbBr01cvJKj8r6zo
+        h7P0R8vZSQuKxD7hBZMBAdtqGRbQoiqHFf8HZYY=
+X-Google-Smtp-Source: ABdhPJzQcPXgwSWDIINee1uuV2GdJwUb+l9kfRCPT+VK2CGWo9I64V3iQzsV6dUCNEoDQwIhOvFNMFszxvyBDLFmK90=
+X-Received: by 2002:aca:650d:: with SMTP id m13mr3373519oim.157.1623075526875;
+ Mon, 07 Jun 2021 07:18:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210603190753.5084-1-mario.limonciello@amd.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <20210603205047.GA2135380@bjorn-Precision-5520>
+ <20210604170938.GA2218177@bjorn-Precision-5520> <CAJZ5v0iDxpYxz3_8RrWSJkM7cf=xS298agXcULm3EqRC++GD2g@mail.gmail.com>
+ <YL4pq0oJyZfSWeTV@suse.de>
+In-Reply-To: <YL4pq0oJyZfSWeTV@suse.de>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 7 Jun 2021 16:18:35 +0200
+Message-ID: <CAJZ5v0iR-iar8BGwM7QgFEkqeRkZ=qn1PrKW0yxrERjDViUjaA@mail.gmail.com>
+Subject: Re: [PATCH] PCI/APCI: Move acpi_pci_osc_support() check to
+ negotiation phase
+To:     Joerg Roedel <jroedel@suse.de>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 03, 2021 at 02:07:53PM -0500, Mario Limonciello wrote:
-> Although first implemented for NVME, this check may be usable by
-> other drivers as well. Microsoft's specification explicitly mentions
-> that is may be usable by SATA and AHCI devices.  Google also indicates
-> that they have used this with SDHCI in a downstream kernel tree that
-> a user can plug a storage device into.
-> 
-> Link: Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-> Suggested-by: Keith Busch <kbusch@kernel.org>
-> CC: rrangel@chromium.org
-> CC: david.e.box@linux.intel.com
-> CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
-> CC: Alexander Deucher <Alexander.Deucher@amd.com>
-> CC: Rafael J. Wysocki <rjw@rjwysocki.net>
-> CC: Prike Liang <prike.liang@amd.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+On Mon, Jun 7, 2021 at 4:14 PM Joerg Roedel <jroedel@suse.de> wrote:
+>
+> On Mon, Jun 07, 2021 at 02:56:24PM +0200, Rafael J. Wysocki wrote:
+> > On Fri, Jun 4, 2021 at 7:09 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > >  If either "pcie_ports_disabled" or Linux doesn't support everything in
+> > > ACPI_PCIE_REQ_SUPPORT, we will never evaluate _OSC at all, so
+> > > the platform won't know that Linux has OSC_PCI_SEGMENT_GROUPS_SUPPORT,
+> > > OSC_PCI_HPX_TYPE_3_SUPPORT, OSC_PCI_EXT_CONFIG_SUPPORT, etc.
+> >
+> > Right.
+>
+> Thanks Bjorn and Rafael. So I think the important thing to do is to
+> issue at least one _OSC call even when Linux is not trying to take
+> control of anything.
+>
+> I look into a clean way to do this and get the kernel messages right.
+> One thing to change is probably only calculating 'control' if
+> !pcie_ports_disabled in negotiate_os_control().
 
-Looks good.
-
-Reviewed-by: Keith Busch <kbusch@kernel.org>
+Please also see
+https://lore.kernel.org/linux-acpi/93d783c4-4468-023b-193e-3fc6eca35445@redhat.com/
+for possible clashes etc.
