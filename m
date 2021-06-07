@@ -2,114 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02D4739E000
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 17:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D524139E111
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 17:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230220AbhFGPNm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 11:13:42 -0400
-Received: from mga04.intel.com ([192.55.52.120]:63736 "EHLO mga04.intel.com"
+        id S230395AbhFGPpt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 11:45:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52820 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230237AbhFGPNm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Jun 2021 11:13:42 -0400
-IronPort-SDR: uMy17Eh0fopsb346D8+pW+frfGALShcXAoBGxQKh2s6sYAXBNrKLkh9gV3l9jhj3mkYjbm8jNj
- TF8aHGM0wK8g==
-X-IronPort-AV: E=McAfee;i="6200,9189,10008"; a="202779581"
-X-IronPort-AV: E=Sophos;i="5.83,255,1616482800"; 
-   d="scan'208";a="202779581"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2021 08:11:49 -0700
-IronPort-SDR: Y+RITeYsFEf7KoldDvil/YWXAWmTpD2zYXUyN7wOO0g4gJnFltxSL5XOPkKuY9uAjCHyyZbDQO
- R5iJYFZ9Uw7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,255,1616482800"; 
-   d="scan'208";a="440081873"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 07 Jun 2021 08:11:46 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 524F3C5; Mon,  7 Jun 2021 18:12:10 +0300 (EEST)
-Date:   Mon, 7 Jun 2021 18:12:10 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Linux GPIO <linux-gpio@vger.kernel.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [GIT PULL] intel-gpio for 5.14-1
-Message-ID: <YL43SrZ8N8H+ZHE9@black.fi.intel.com>
+        id S230350AbhFGPpt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 7 Jun 2021 11:45:49 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8FCC761029;
+        Mon,  7 Jun 2021 15:43:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623080637;
+        bh=embE+av5DCb18g6eagqQwnFEILspD+IVcIITWOKcWRM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=Haof8aH+QNGg8uw/Her4PB5ur4jRXFKM9TpwE6Xl64hFzgPmA6sghWyvxcZbifk2T
+         utGtL9q0ftz5VLpcOCs9WH/F1KbkvE11Nwjndl+eiBIol8RGauDPqdgw0rC0AdJlAb
+         JTYpdfblkZq6rWCuKyMREkkIQzx6iZXBKtOu47o/emzgWNm0SnBMBCDjhqgcirvLne
+         msrTxfpzg2zhDTyw3pX6Xz46bfECCVklDy3wIQAQhkpS21Ve+gRAl2Lm6pJbvytVUi
+         BWrOk6sX8yicVTUg8CcyPIz+K4FT6tc6dwG4Kcdtqe4AcYUaQOttAfo4ih9koGcvL8
+         4ZiL6wAZq0dFw==
+Date:   Mon, 7 Jun 2021 10:43:56 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Joerg Roedel <jroedel@suse.de>
+Cc:     Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, rjw@rjwysocki.net,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] PCI/APCI: Move acpi_pci_osc_support() check to
+ negotiation phase
+Message-ID: <20210607154356.GA2492093@bjorn-Precision-5520>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <YL4o1pJyIm74Lwz3@suse.de>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linux GPIO and TWIMC maintainers,
+On Mon, Jun 07, 2021 at 04:10:30PM +0200, Joerg Roedel wrote:
+> Hi Bjorn,
+> 
+> On Thu, Jun 03, 2021 at 03:50:47PM -0500, Bjorn Helgaas wrote:
+> > On Thu, Jun 03, 2021 at 02:48:14PM +0200, Joerg Roedel wrote:
+> 
+> > If instead you mean that the OS has *not* been granted DPC control,
+> > but does _OSC(Query, SUPPORT=x, CONTROL=0), I think that means the OS
+> > is telling the platform what it supports but not requesting anything.
+> > That sounds legal to me, so if firmware complains about it, I would
+> > say it's a firmware problem.
+> 
+> I think it depends on how you look at it. The machine I was working with
+> has a BIOS setting where one can configure that DPC is controlled by the
+> OS. When it is configured that way, then the BIOS will issue an error
+> when an _OSC query is made with control set to 0. This is because it
+> indicates to the BIOS that the OS does not take control over DPC and
+> thus that the OS does not support it. The BIOS will issue a warning into
+> its log and when the Linux later takes control the warning is already
+> there.
 
-This is GPIO material for v5.14 cycle. It contains some stuff that other
-subsystems may take due to dependencies. Consider this tag immutable.
+I think that BIOS setting is misguided.  _OSC is designed around the
+assumption that features in the Control field start out being
+controlled by the platform, and they stay that way until the OS
+requests control of a feature and the platform grants it.
 
-Thanks,
+It makes no sense to me to configure the BIOS in advance to say "the
+OS controls DPC."  The BIOS has no control over what the OS will do,
+and it can't behave as though the OS controls DPC until the OS
+actually requests that.
 
-With Best Regards,
-Andy Shevchenko
+I also think the warning is overly aggressive.  _OSC is clearly
+designed to be evaluated multiple times, and the OS is allowed to
+request control of more features each time (ACPI v6.3, sec 6.2.11.1.1,
+6.2.11.1.3).
 
-The following changes since commit 6efb943b8616ec53a5e444193dccf1af9ad627b5:
-
-  Linux 5.13-rc1 (2021-05-09 14:17:44 -0700)
-
-are available in the Git repository at:
-
-  git@gitolite.kernel.org:pub/scm/linux/kernel/git/andy/linux-gpio-intel.git tags/intel-gpio-v5.14-1
-
-for you to fetch changes up to 043d7f09bf614809c10c4acbf0695ef731958300:
-
-  gpiolib: acpi: Add acpi_gpio_get_io_resource() (2021-06-04 16:24:19 +0300)
-
-----------------------------------------------------------------
-intel-gpio for v5.14-1
-
-* Export two functions from GPIO ACPI for wider use
-* Clean up Whiskey Cove and Crystal Cove GPIO drivers
-
-The following is an automated git shortlog grouped by driver:
-
-crystalcove:
- -  remove platform_set_drvdata() + cleanup probe
-
-gpiolib:
- -  acpi: Add acpi_gpio_get_io_resource()
- -  acpi: Introduce acpi_get_and_request_gpiod() helper
-
-wcove:
- -  Split error handling for CTRL and IRQ registers
- -  Unify style of to_reg() with to_ireg()
- -  Use IRQ hardware number getter instead of direct access
-
-----------------------------------------------------------------
-Alexandru Ardelean (1):
-      gpio: crystalcove: remove platform_set_drvdata() + cleanup probe
-
-Andy Shevchenko (3):
-      gpio: wcove: Use IRQ hardware number getter instead of direct access
-      gpio: wcove: Unify style of to_reg() with to_ireg()
-      gpio: wcove: Split error handling for CTRL and IRQ registers
-
-Daniel Scally (2):
-      gpiolib: acpi: Introduce acpi_get_and_request_gpiod() helper
-      gpiolib: acpi: Add acpi_gpio_get_io_resource()
-
- drivers/gpio/gpio-crystalcove.c | 10 +-------
- drivers/gpio/gpio-wcove.c       | 39 +++++++++++++++----------------
- drivers/gpio/gpiolib-acpi.c     | 51 +++++++++++++++++++++++++++++++++++++++++
- include/linux/acpi.h            |  7 ++++++
- include/linux/gpio/consumer.h   |  2 ++
- 5 files changed, 80 insertions(+), 29 deletions(-)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Bjorn
