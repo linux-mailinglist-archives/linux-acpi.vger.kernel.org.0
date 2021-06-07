@@ -2,87 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64E9339DD41
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 15:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BEAF39DDD1
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 15:38:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230197AbhFGNEq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 09:04:46 -0400
-Received: from mail-ot1-f53.google.com ([209.85.210.53]:34527 "EHLO
-        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230239AbhFGNEq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 09:04:46 -0400
-Received: by mail-ot1-f53.google.com with SMTP id v27-20020a056830091bb02903cd67d40070so13520465ott.1
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Jun 2021 06:02:55 -0700 (PDT)
+        id S230211AbhFGNkm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 09:40:42 -0400
+Received: from mail-oo1-f50.google.com ([209.85.161.50]:46676 "EHLO
+        mail-oo1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230198AbhFGNkl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 09:40:41 -0400
+Received: by mail-oo1-f50.google.com with SMTP id x22-20020a4a62160000b0290245cf6b7feeso4124857ooc.13
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Jun 2021 06:38:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=2LkOFh0NYFTWf48EskxVUzCNHUSV+WWTwemPr5U1hWo=;
-        b=ijITa7Tg7v8hkKDBG3Fn/mZQIzuY7FHLKqynZOcIXaXHf7EqmuJTxb94TjnDhWotpI
-         w+MG8dyq1jiGOAftjDg4qX9Wvyg+A+aqoiQI+1ovNB8P41RA6g2Z0imdB+zT/BXe0AJ0
-         qSO4R9I2fpbfJnHuHhcQi0xZUPsOWA6Qs5NmIupsrjdhM7jV92zLat7dcAYBPuWsSksG
-         ArgSOo4uXz3Q54Ic3A90z3zJ7ccuD0bt2fIda0Sx2v0DJ05KrKMCQPh7g7A4UHJRonIl
-         3Qxdtfs14gJyQbSN7mJsw35GlAIz32pI0TwXyhaLvcLGqQ0kxAsLld1IXmFl8T4rbuKC
-         1SBg==
-X-Gm-Message-State: AOAM533vkK3F8z+VeNad/RIEvYqHw1kKsNNVRxeF3zZAWwiPQ7JMCiOs
-        Un9XvsHmEOQumk7ywI2atXbVt4A2evU8EKH7xDY=
-X-Google-Smtp-Source: ABdhPJyQljXNGt+jk9j+PUO2T254Mq8d3l4kl63LC1MofS/VYQSpOsdOC0nVfORdcHh4AEH/ggAs/L+LzZtiUmuRy6w=
-X-Received: by 2002:a9d:3e53:: with SMTP id h19mr13508602otg.260.1623070974820;
- Mon, 07 Jun 2021 06:02:54 -0700 (PDT)
+        bh=Rtf5a3m3DqjSP8tE8wnOI8xpyZU8RQ9zVh+Pu3w+6zE=;
+        b=ZdDKgAdGOJ+uX4DKG57eWEU6VXlmwHFtsvf/wcHeoxr4Ayyr+KoMjcu08go0YR2o2K
+         w6GVSwr0xUlkA4vO3ckpr/L+kuxJnk5NexeYzT2B788fcsHrlYao/vuzyGzlht/5jMnK
+         GFRXuBntkAgPJpZ4YglDVuu8sphpk3nMH6o3amUJs9OoT5rQ7dc/R7tfd/a1XVYifL/a
+         cq/oRKkIilUF3BkYmU+U0AU+Nv/bPUv6Cnrvoy+f3n2LbaPInHFh/RxS3Uo6LNhJVWUV
+         Ux/wB4OJrnfPeaCt32Ae9Mxul2OU6RJwxrduKJNdqqmBfnSbQd0iPCT6h4HCLWyqQ5A1
+         nOjg==
+X-Gm-Message-State: AOAM530zLhDjZ+XhlKeWrJZndzVDVRs6YMJHzYrNIDUWBW1s4NQ76wwD
+        /Jk6bS6og7nFROIxFxLScRGA+bVHuwdPua5oMyf4i43B
+X-Google-Smtp-Source: ABdhPJyMhBWu/Y0lbAQzo9RW33T/33owd+7OS2E9DzBeHCdcfdvyAg331cbqCVr4JvOWYDPOnw5OrMB1OzNMn7PEHp4=
+X-Received: by 2002:a4a:9bcb:: with SMTP id b11mr13392034ook.44.1623073130394;
+ Mon, 07 Jun 2021 06:38:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210603023414.2389-1-rui.zhang@intel.com>
-In-Reply-To: <20210603023414.2389-1-rui.zhang@intel.com>
+References: <1622624080-56025-1-git-send-email-guohanjun@huawei.com>
+In-Reply-To: <1622624080-56025-1-git-send-email-guohanjun@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Jun 2021 15:02:43 +0200
-Message-ID: <CAJZ5v0g=S8su+sEqWwQqViyB9ppngWJDn6f=-ONH6bgz6sOYQA@mail.gmail.com>
-Subject: Re: [PATCH] Revert "ACPI: sleep: Put the FACS table after using it"
-To:     Zhang Rui <rui.zhang@intel.com>
+Date:   Mon, 7 Jun 2021 15:38:39 +0200
+Message-ID: <CAJZ5v0h2_iObnzxWUqgobK6OSOzQF6bo-Ypd5Gw8SWBsVsQuhw@mail.gmail.com>
+Subject: Re: [PATCH 00/18] ACPI: Further cleanups for message printing
+To:     Hanjun Guo <guohanjun@huawei.com>
 Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Hanjun Guo <guohanjun@huawei.com>
+        "Rafael J. Wysocki" <rafael@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 3, 2021 at 4:24 AM Zhang Rui <rui.zhang@intel.com> wrote:
+On Wed, Jun 2, 2021 at 11:06 AM Hanjun Guo <guohanjun@huawei.com> wrote:
 >
-> Commit 95722237cb2a ("ACPI: sleep: Put the FACS table after using it")
-> puts the FACS table during initialization.
-> But the hardware signature bits in the FACS table need to be accessed,
-> after every hibernation, to compare with the original hardware signature.
+> After the message printing cleanups to decouple with ACPICA, the message
+> printing in ACPI subsystem still have the room for improvement. For now
+> we use both PREFIX "ACPI: " and pr_*() macros for message print in ACPI
+> subsystem, they are misused in follwing ways:
 >
-> So there is no reason to release the FACS table mapping after
-> initialization.
+>  - Duplicated prefix. For example in sysfs.c we have pr_fmt() but we
+>    still use pr_err(PREFIX ...), which is worng;
 >
-> This reverts commit 95722237cb2ae4f7b73471058cdb19e8f4057c93.
+>  - Using pr_*() macros without pr_fmt(), but some pr_*() calls added
+>    the PREFIX and some didn't in the same file;
 >
-> An alternative solution is to use acpi_gbl_FACS variable instead, which
-> is mapped by the ACPICA core and never released.
+>  - Mixed use of printk(PREFIX) and pr_*() macros in one driver but
+>    don't have the same prefix for message printing.
 >
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=212277
-> Reported-by: Stephan Hohe <sth.dev@tejp.de>
-> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-> ---
->  drivers/acpi/sleep.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+> All the above will confuse people, sometimes leads to write some wrong
+> message printing code, so just use pr_fmt() and pr_*() macros to generate
+> a unified format string, and remove the using of PREFIX "ACPI: " in ACPI
+> drivers, finally remove PREFIX "ACPI: " definition in the internal.h,
+> which prevent further misuse of the PREFIX.
 >
-> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> index df386571da98..3bb2adef8490 100644
-> --- a/drivers/acpi/sleep.c
-> +++ b/drivers/acpi/sleep.c
-> @@ -1009,10 +1009,8 @@ static void acpi_sleep_hibernate_setup(void)
->                 return;
+> Also remove some in-house DBG code which is not useful, replace with
+> pr_debug() instead.
 >
->         acpi_get_table(ACPI_SIG_FACS, 1, (struct acpi_table_header **)&facs);
-> -       if (facs) {
-> +       if (facs)
->                 s4_hardware_signature = facs->hardware_signature;
-> -               acpi_put_table((struct acpi_table_header *)facs);
-> -       }
->  }
->  #else /* !CONFIG_HIBERNATION */
->  static inline void acpi_sleep_hibernate_setup(void) {}
-> --
+> Hanjun Guo (18):
+>   ACPI: cmos_rtc: Using pr_fmt() and remove PREFIX
+>   ACPI: blacklist: Unify the message printing
+>   ACPI: bus: Use pr_*() macros to replace printk()
+>   ACPI: event: Use pr_*() macros to replace printk()
+>   ACPI: glue: Clean up the printing messages
+>   ACPI: nvs: Unify the message printing
+>   ACPI: osl: Remove the duplicated PREFIX for message printing
+>   ACPI: pci_root: Unify the message printing
+>   ACPI: processor_thermal: Remove unused PREFIX for printing
+>   ACPI: processor_perflib: Cleanup print messages
+>   ACPI: processor_throttling: Cleanup the printing messages
+>   ACPI: reboot: Unify the message printing
+>   ACPI: sysfs: Cleanup message printing
+>   ACPI: sbshc: Unify the message printing
+>   ACPI: scan: Unify the log message printing
+>   ACPI: sbs: Unify the message printing
+>   ACPI: sleep: Unify the message printing
+>   ACPI: Remove the macro PREFIX "ACPI: "
 
-Applied as 5.13-rc material (with CC-stable), thanks!
+Whole series applied as 5.14 material, thanks!
