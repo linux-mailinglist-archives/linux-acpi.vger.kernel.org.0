@@ -2,197 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77C1D39DD07
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 14:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F1B39DD11
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 14:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230269AbhFGMz1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 08:55:27 -0400
-Received: from mail-oi1-f173.google.com ([209.85.167.173]:39629 "EHLO
-        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230261AbhFGMz0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 08:55:26 -0400
-Received: by mail-oi1-f173.google.com with SMTP id m137so14021231oig.6
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Jun 2021 05:53:35 -0700 (PDT)
+        id S230329AbhFGM63 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 08:58:29 -0400
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:38543 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230213AbhFGM61 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 08:58:27 -0400
+Received: by mail-ot1-f54.google.com with SMTP id j11-20020a9d738b0000b02903ea3c02ded8so2977319otk.5;
+        Mon, 07 Jun 2021 05:56:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=UJbb0wgONzKu6GOCNY92/rs+FfpsCbB7IddM4Al1SgU=;
-        b=UCwZMFZ4qcCsCglbBp0xk4I9jhNEeKNHZPRnoVjjDg3+vruAKEE0euK3dIhnotgJMg
-         yjGp/e018+koKvtFlk+j8rk2BC/OBHdpjpOcKbdBbwpUoozscwTeFDSjlK65UfMwAK9y
-         3d1qbSZ+tU18JTS+2lNnNwLzT5QBh+HGnykKa+C1gbBiENC3QQ7eYFwamU+9ll9pPJWZ
-         Sbb02VwWGgAt2uQIegk4YEIQtKBnntVDgC652yecqZcty/QEQeN/8uPI5fEMyzzkyu63
-         Nf6ubyN1cluKiOVm3wszcfJTv9C32DSIuoeM/plDOOX8rEDQT+om396y6zKFwyJflOPy
-         vmWw==
-X-Gm-Message-State: AOAM530jU5zHdpD9OE5o4VbBJlzzxtlXEtM7o5e/1/XRfWslFwlCzLL7
-        DgKzwm8/7t77NV2YMjOh37QnVA6e28b/WWM0KLo=
-X-Google-Smtp-Source: ABdhPJywaXK6YUCVA3bLWmnpzW2BajWBXA2vWUnK0Z5R0D7fqxT9XN/AkxnBQ4DBNS61nhJar33gtOu6WmCUTqZU71M=
-X-Received: by 2002:aca:650d:: with SMTP id m13mr3080478oim.157.1623070415240;
- Mon, 07 Jun 2021 05:53:35 -0700 (PDT)
+        bh=/DkD40e1ud2+Lz0j9WJ/X3IfNp4wJD7XrnysEWFbAiw=;
+        b=gIQscirmBhtRIZJzNZEw0DsdLolrtsOY1fvd2Juwsj+vm1A5vTd4Te2WMZSrr33prS
+         hgO8hw2SgU0Z+uhfjp9xOqJCbDWZR6My3s9w/QLJbBrIZAw/BEp2Dy5yoO6QcGpCZLM9
+         gPsjCQgZEF8vJ4Z3WvXr8EMc9TPPXYzbdAy1q9eh1FTs0XaK70osuaHvbQx5oI8sm1J0
+         Dv8zKsbrzDLTrmu1K1Q0YQjz9i4grxZ3O5Yzv1nuCck/fFPfjddYFGObW9OzZwepUPTq
+         YQ9jerME8zD/eG+J92rNpkTX6qL7Yc0sIvHruDrOPEUGmjKd6JE8olfEO8ijQPBO3iGO
+         esfQ==
+X-Gm-Message-State: AOAM5330KOPYSC3faTD2DFKh/RMjeUthuHq/MJxfZAB+P9SCxPqgDbgK
+        c5XVL+1Iv0qiZDG+kDCk1oW/67i/+wnn6l1XmhE=
+X-Google-Smtp-Source: ABdhPJwE9Lrt+4ka8G8lR7rGMbn/DVUAEq32u4i2XbXDqLWhuOCbBO4k7oPfPNtyW93en1oGmqPhiMq18xNrgXJxURo=
+X-Received: by 2002:a9d:6c4d:: with SMTP id g13mr10418092otq.321.1623070596029;
+ Mon, 07 Jun 2021 05:56:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210603190753.5084-1-mario.limonciello@amd.com>
-In-Reply-To: <20210603190753.5084-1-mario.limonciello@amd.com>
+References: <20210603205047.GA2135380@bjorn-Precision-5520> <20210604170938.GA2218177@bjorn-Precision-5520>
+In-Reply-To: <20210604170938.GA2218177@bjorn-Precision-5520>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Jun 2021 14:53:24 +0200
-Message-ID: <CAJZ5v0hH_XuMucyYef=Cq-WNWt2aiVWmV5v-tm77AZ+R7HZFxg@mail.gmail.com>
-Subject: Re: [PATCH v4] acpi: Move check for _DSD StorageD3Enable property to acpi
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
+Date:   Mon, 7 Jun 2021 14:56:24 +0200
+Message-ID: <CAJZ5v0iDxpYxz3_8RrWSJkM7cf=xS298agXcULm3EqRC++GD2g@mail.gmail.com>
+Subject: Re: [PATCH] PCI/APCI: Move acpi_pci_osc_support() check to
+ negotiation phase
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        rrangel@chromium.org, David Box <david.e.box@linux.intel.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Alex Deucher <Alexander.Deucher@amd.com>,
-        Prike Liang <prike.liang@amd.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Joerg Roedel <jroedel@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 3, 2021 at 9:08 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Fri, Jun 4, 2021 at 7:09 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
 >
-> Although first implemented for NVME, this check may be usable by
-> other drivers as well. Microsoft's specification explicitly mentions
-> that is may be usable by SATA and AHCI devices.  Google also indicates
-> that they have used this with SDHCI in a downstream kernel tree that
-> a user can plug a storage device into.
+> On Thu, Jun 03, 2021 at 03:50:47PM -0500, Bjorn Helgaas wrote:
+> > On Thu, Jun 03, 2021 at 02:48:14PM +0200, Joerg Roedel wrote:
+> > > From: Joerg Roedel <jroedel@suse.de>
+> > > ...
+>
+> > > -static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 req)
+> > > +static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32
+> > > +                                       *mask, u32 req, u32 support)
+> > >  {
+> > >     struct acpi_pci_root *root;
+> > >     acpi_status status;
+> > > @@ -370,7 +361,7 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 r
+> > >
+> > >     /* Need to check the available controls bits before requesting them. */
+> > >     while (*mask) {
+> > > -           status = acpi_pci_query_osc(root, root->osc_support_set, mask);
+> > > +           status = acpi_pci_query_osc(root, support, mask);
+> > >             if (ACPI_FAILURE(status))
+> > >                     return status;
+> > >             if (ctrl == *mask)
+> > > @@ -433,18 +424,6 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
+> > >             support |= OSC_PCI_EDR_SUPPORT;
+> > >
+> > >     decode_osc_support(root, "OS supports", support);
+> > > -   status = acpi_pci_osc_support(root, support);
+> > > -   if (ACPI_FAILURE(status)) {
+> > > -           *no_aspm = 1;
+> > > -
+> > > -           /* _OSC is optional for PCI host bridges */
+> > > -           if ((status == AE_NOT_FOUND) && !is_pcie)
+> > > -                   return;
+> > > -
+> > > -           dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
+> > > -                    acpi_format_exception(status));
+> > > -           return;
+> > > -   }
+> > >
+> > >     if (pcie_ports_disabled) {
+> > >             dev_info(&device->dev, "PCIe port services disabled; not requesting _OSC control\n");
+> >
+> > Also not related to this patch, but it seems pointless to compute and
+> > decode "support" above when we're not going to use _OSC at all.  I
+> > think the "pcie_ports_disabled" test should be the very first thing in
+> > this function (I'm assuming the "pcie_ports=compat" command line
+> > argument *should* apply even on x86_apple_machine, which it doesn't
+> > today).
+>
+> I think I was wrong about this.  Even when "pcie_ports_disabled", the
+> current code *does* evaluate "_OSC(Query, SUPPORT=x, CONTROL=0)",
+> i.e., it tells the platform what Linux supports, but doesn't request
+> control of anything.
+>
+> I think the platform may rely on this knowledge of what the OS
+> supports.  For example, if we tell the platform that Linux has
+> OSC_PCI_EXT_CONFIG_SUPPORT, that may change the behavior of ASL that
+> accesses config space.
+>
+> So I don't think it's safe to move this test to the beginning of the
+> function as I proposed.
+>
+> For the same reason, I'm not sure that it's safe to remove
+> acpi_pci_osc_support() as in this patch.
 
-Please spell ACPI in capitals in the subject.
+No, it isn't AFAICS.
 
-Otherwise
+[I was about to comment on this, but you were faster.]
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>  If either "pcie_ports_disabled" or Linux doesn't support everything in
+> ACPI_PCIE_REQ_SUPPORT, we will never evaluate _OSC at all, so
+> the platform won't know that Linux has OSC_PCI_SEGMENT_GROUPS_SUPPORT,
+> OSC_PCI_HPX_TYPE_3_SUPPORT, OSC_PCI_EXT_CONFIG_SUPPORT, etc.
 
-or please let me know if you want me to take this patch (in which case
-I'll need ACKs from the PCI and NVMe side).
-
-> Link: Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-> Suggested-by: Keith Busch <kbusch@kernel.org>
-> CC: rrangel@chromium.org
-> CC: david.e.box@linux.intel.com
-> CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
-> CC: Alexander Deucher <Alexander.Deucher@amd.com>
-> CC: Rafael J. Wysocki <rjw@rjwysocki.net>
-> CC: Prike Liang <prike.liang@amd.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/acpi/device_pm.c | 25 +++++++++++++++++++++++++
->  drivers/nvme/host/pci.c  | 28 +---------------------------
->  include/linux/acpi.h     |  5 +++++
->  3 files changed, 31 insertions(+), 27 deletions(-)
->
-> Changes from v3->v4
->  * Rebase on nvme-5.14 (w/ patch 1/2 from v3 of series accepted)
->  * Adjust commit message per Christoph's suggestions
->  * Adjust documentation per Christoph's suggestions
->
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index d260bc1f3e6e..1edb68d00b8e 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -1340,4 +1340,29 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
->         return 1;
->  }
->  EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
-> +
-> +/**
-> + * acpi_storage_d3 - Check if a storage device should use D3.
-> + * @dev: Device to check
-> + *
-> + * Returns %true if @dev should be put into D3 when the ->suspend method is
-> + * called, else %false.  The name of this function is somewhat misleading
-> + * as it has nothing to do with storage except for the name of the ACPI
-> + * property.  On some platforms resume will not work if this hint is ignored.
-> + *
-> + */
-> +bool acpi_storage_d3(struct device *dev)
-> +{
-> +       struct acpi_device *adev = ACPI_COMPANION(dev);
-> +       u8 val;
-> +
-> +       if (!adev)
-> +               return false;
-> +       if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
-> +                       &val))
-> +               return false;
-> +       return val == 1;
-> +}
-> +EXPORT_SYMBOL_GPL(acpi_storage_d3);
-> +
->  #endif /* CONFIG_PM */
-> diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-> index 3aa7245a505f..8fbc4c87a0d8 100644
-> --- a/drivers/nvme/host/pci.c
-> +++ b/drivers/nvme/host/pci.c
-> @@ -2828,32 +2828,6 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
->         return 0;
->  }
->
-> -#ifdef CONFIG_ACPI
-> -static bool nvme_acpi_storage_d3(struct pci_dev *dev)
-> -{
-> -       struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
-> -       u8 val;
-> -
-> -       /*
-> -        * Look for _DSD property specifying that the storage device on the port
-> -        * must use D3 to support deep platform power savings during
-> -        * suspend-to-idle.
-> -        */
-> -
-> -       if (!adev)
-> -               return false;
-> -       if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
-> -                       &val))
-> -               return false;
-> -       return val == 1;
-> -}
-> -#else
-> -static inline bool nvme_acpi_storage_d3(struct pci_dev *dev)
-> -{
-> -       return false;
-> -}
-> -#endif /* CONFIG_ACPI */
-> -
->  static void nvme_async_probe(void *data, async_cookie_t cookie)
->  {
->         struct nvme_dev *dev = data;
-> @@ -2903,7 +2877,7 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->
->         quirks |= check_vendor_combination_bug(pdev);
->
-> -       if (!noacpi && nvme_acpi_storage_d3(pdev)) {
-> +       if (!noacpi && acpi_storage_d3(&pdev->dev)) {
->                 /*
->                  * Some systems use a bios work around to ask for D3 on
->                  * platforms that support kernel managed suspend.
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index c60745f657e9..dd0dafd21e33 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1004,6 +1004,7 @@ int acpi_dev_resume(struct device *dev);
->  int acpi_subsys_runtime_suspend(struct device *dev);
->  int acpi_subsys_runtime_resume(struct device *dev);
->  int acpi_dev_pm_attach(struct device *dev, bool power_on);
-> +bool acpi_storage_d3(struct device *dev);
->  #else
->  static inline int acpi_subsys_runtime_suspend(struct device *dev) { return 0; }
->  static inline int acpi_subsys_runtime_resume(struct device *dev) { return 0; }
-> @@ -1011,6 +1012,10 @@ static inline int acpi_dev_pm_attach(struct device *dev, bool power_on)
->  {
->         return 0;
->  }
-> +static inline bool acpi_storage_d3(struct device *dev)
-> +{
-> +       return false;
-> +}
->  #endif
->
->  #if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
-> --
-> 2.25.1
->
+Right.
