@@ -2,122 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3C2B39DE5D
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 16:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF0639DE64
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 16:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230198AbhFGOMZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 10:12:25 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28]:55782 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230193AbhFGOMY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 10:12:24 -0400
-Received: from imap.suse.de (imap-alt.suse-dmz.suse.de [192.168.254.47])
-        (using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 98F7F21AA0;
-        Mon,  7 Jun 2021 14:10:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1623075032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=yrrcDqwAUjI/Du1NgfJql1DxePl50i9q1z/v2S1/PjU=;
-        b=yd+IGWFeVIzcWkH4CvAPf2cEyuzXDp4clwAPfcyvHi5LZW0PkbrpaSM/pPgQxXqShourjH
-        UROju8kpwC5ucMYaLkUCY16/GW36p5+QtGgQJ3SvnGxXk95zvdcCIBZpiP76Y6L4pH08Zy
-        ub2ZVCxIJeIxdDUCHfkshUbg7QOi2ts=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1623075032;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=yrrcDqwAUjI/Du1NgfJql1DxePl50i9q1z/v2S1/PjU=;
-        b=5GCOfx0xyGHUY6Wh7ScIDhdgMv3eermx6Z1Jcx5JoRoC2w2vDh0jZ+4IOeymqA40G8FnJW
-        TBxe0jyqUYPAakAQ==
-Received: from imap3-int (imap-alt.suse-dmz.suse.de [192.168.254.47])
-        by imap.suse.de (Postfix) with ESMTP id 4A7D8118DD;
-        Mon,  7 Jun 2021 14:10:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1623075032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=yrrcDqwAUjI/Du1NgfJql1DxePl50i9q1z/v2S1/PjU=;
-        b=yd+IGWFeVIzcWkH4CvAPf2cEyuzXDp4clwAPfcyvHi5LZW0PkbrpaSM/pPgQxXqShourjH
-        UROju8kpwC5ucMYaLkUCY16/GW36p5+QtGgQJ3SvnGxXk95zvdcCIBZpiP76Y6L4pH08Zy
-        ub2ZVCxIJeIxdDUCHfkshUbg7QOi2ts=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1623075032;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=yrrcDqwAUjI/Du1NgfJql1DxePl50i9q1z/v2S1/PjU=;
-        b=5GCOfx0xyGHUY6Wh7ScIDhdgMv3eermx6Z1Jcx5JoRoC2w2vDh0jZ+4IOeymqA40G8FnJW
-        TBxe0jyqUYPAakAQ==
-Received: from director2.suse.de ([192.168.254.72])
-        by imap3-int with ESMTPSA
-        id lofQD9govmCrOwAALh3uQQ
-        (envelope-from <jroedel@suse.de>); Mon, 07 Jun 2021 14:10:32 +0000
-Date:   Mon, 7 Jun 2021 16:10:30 +0200
-From:   Joerg Roedel <jroedel@suse.de>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, rjw@rjwysocki.net,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PCI/APCI: Move acpi_pci_osc_support() check to
- negotiation phase
-Message-ID: <YL4o1pJyIm74Lwz3@suse.de>
-References: <20210603124814.19654-1-joro@8bytes.org>
- <20210603205047.GA2135380@bjorn-Precision-5520>
+        id S230255AbhFGONZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 10:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49092 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230193AbhFGONZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 10:13:25 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D34D6C061787
+        for <linux-acpi@vger.kernel.org>; Mon,  7 Jun 2021 07:11:33 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lqFyS-0004K4-3e; Mon, 07 Jun 2021 16:11:28 +0200
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lqFyH-0003VO-7M; Mon, 07 Jun 2021 16:11:17 +0200
+Date:   Mon, 7 Jun 2021 16:11:17 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Flavio Suligoi <f.suligoi@asem.it>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Lee Jones <lee.jones@linaro.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v2 2/7] pwm: core: Always require PWM flags to be provided
+Message-ID: <20210607141117.24bvqiafy4cndoj4@pengutronix.de>
+References: <20210531194947.10770-1-andriy.shevchenko@linux.intel.com>
+ <20210531194947.10770-2-andriy.shevchenko@linux.intel.com>
+ <20210606213054.bmqgs5hehbowa62d@pengutronix.de>
+ <YL3grTQ00lFCXyCp@smile.fi.intel.com>
+ <20210607095324.yaiu5lzb5zgoejpa@pengutronix.de>
+ <YL3xuJyAcbPLW7yG@smile.fi.intel.com>
+ <YL3zDUWsY9mUW0eQ@smile.fi.intel.com>
+ <YL4HrZTb+fmW4UTf@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="zdgor72n6fpmyvqy"
 Content-Disposition: inline
-In-Reply-To: <20210603205047.GA2135380@bjorn-Precision-5520>
+In-Reply-To: <YL4HrZTb+fmW4UTf@smile.fi.intel.com>
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bjorn,
 
-On Thu, Jun 03, 2021 at 03:50:47PM -0500, Bjorn Helgaas wrote:
-> On Thu, Jun 03, 2021 at 02:48:14PM +0200, Joerg Roedel wrote:
+--zdgor72n6fpmyvqy
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> If instead you mean that the OS has *not* been granted DPC control,
-> but does _OSC(Query, SUPPORT=x, CONTROL=0), I think that means the OS
-> is telling the platform what it supports but not requesting anything.
-> That sounds legal to me, so if firmware complains about it, I would
-> say it's a firmware problem.
+Hello Andy,
 
-I think it depends on how you look at it. The machine I was working with
-has a BIOS setting where one can configure that DPC is controlled by the
-OS. When it is configured that way, then the BIOS will issue an error
-when an _OSC query is made with control set to 0. This is because it
-indicates to the BIOS that the OS does not take control over DPC and
-thus that the OS does not support it. The BIOS will issue a warning into
-its log and when the Linux later takes control the warning is already
-there.
+On Mon, Jun 07, 2021 at 02:49:01PM +0300, Andy Shevchenko wrote:
+> On Mon, Jun 07, 2021 at 01:21:01PM +0300, Andy Shevchenko wrote:
+> > On Mon, Jun 07, 2021 at 01:15:20PM +0300, Andy Shevchenko wrote:
+> > > On Mon, Jun 07, 2021 at 11:53:24AM +0200, Uwe Kleine-K=F6nig wrote:
+> > > > On Mon, Jun 07, 2021 at 12:02:37PM +0300, Andy Shevchenko wrote:
+> > > > > On Sun, Jun 06, 2021 at 11:30:54PM +0200, Uwe Kleine-K=F6nig wrot=
+e:
+> > > > > > On Mon, May 31, 2021 at 10:49:42PM +0300, Andy Shevchenko wrote:
+> > > > > > > It makes little sense to make PWM flags optional since in case
+> > > > > > > of multi-channel consumer the flags can be optional only for
+> > > > > > > the last listed channel.
+> > > > > >=20
+> > > > > > I think the same holds true for dt references.
+> > > > >=20
+> > > > > Can you elaborate this? I haven't got what you are talking about,=
+ not a DT
+> > > > > expert here.
+> > > >=20
+> > > > Ah no, I mixed that up. While the function that parses the phandle =
+is
+> > > > flexible, for each pwm controller the number of arguments is fixed,=
+ so
+> > > >=20
+> > > > 	pwms =3D <&pwm1 100000 &pwm2 100000 &pwm3 1000000>;
+> > > >=20
+> > > > cannot be interpreted as 3-argument references to two PWMs. This is
+> > > > different to ACPI (I guess, not an ACPI expert here :-) because &pw=
+m1
+> > > > "knows" if it needs 1 or 2 additional parameters (#pwm-cells).
+> > >=20
+> > > It's not about ACPI, it's about "the ACPI glue layer in Linux kernel".
+> > > Used API is a part of it and it does allow only two cases, either NUL=
+L entry
+> > > (by having 0 as an argument) or full-length supplied tuple (in case o=
+f PWM it's
+> > > 3, so, means 4 parameters.
+> > >=20
+> > > Let's consider examples:
+> > >=20
+> > > (0, 0, x3, y3, z3, t3) // NULL, NULL, PWM3
+> > > (x1, y1, z1, t1, 0, x3, y3, z3, t3) // PWM1, NULL, PWM3
+> > >=20
+> > > So, making last parameter "flexible" will work only for the last tupl=
+e in the
+> > > array.
+> > >=20
+> > > Read this [1] for further information.
+> > >=20
+> > > [1]: https://elixir.bootlin.com/linux/latest/source/drivers/acpi/prop=
+erty.c#L629
+> >=20
+> > Hmm... I have read the actual implementation and it seems it's possible=
+ to have
+> > flexible array, so this patch needs to be reconsidered.
+>=20
+> I was thinking more about it and what we have here is positional-dependent
+> arguments. Either way we might end up in the same situation (when we need=
+ to
+> parse arguments based on their positions, rather than always have them be=
+ing
+> present). So, while I won't change documentation example (to be more stri=
+cter
+> there), I will drop this change.
+>=20
+> Also, the PWM initial state doesn't include duty cycle. Any explanations =
+why is
+> that?
 
-> But please help me out if I'm misunderstanding something above.  I'm
-> never confident that I really understand _OSC.
+This isn't technically the initial state. It's a hint to the consumer
+which period to pick. The duty-cycle is usually variable, but if I
+designed the binding today I would not include the period in the pwm
+handle. But to discuss this is moot---the binding is as it is.
 
-I am also not an _OSC expert, but you an Rafael already provided good
-feedback on the necessity of at least one _OSC call, even when Linux
-does not want to take control.
+Best regards
+Uwe
 
-> Unrelated to *this* patch, but I don't understand the point of
-> OSC_PCI_SUPPORT_MASKS and OSC_PCI_CONTROL_MASKS.  These are all
-> internal static functions and it looks like pointless work to apply
-> masks here and in acpi_pci_osc_control_set().
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-Okay, I will add a separate patch removing thos after this change.
+--zdgor72n6fpmyvqy
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> >  	status = acpi_pci_run_osc(root->device->handle, capbuf, &result);
-> >  	if (ACPI_SUCCESS(status)) {
-> 
-> We can also drop the "if (control)" check inside the ACPI_SUCCESS()
-> block, can't we?
+-----BEGIN PGP SIGNATURE-----
 
-Right, fixed that up.
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmC+KQEACgkQwfwUeK3K
+7AmoCgf7BALxWbL2VI8+acrc4CorcueM4VAe+cJtBXASfcqn/W4hS39ZwYumlJpX
+EGyOfnnV73WcPqD63fUTAtKvdoTAuXQd/7ziOw4AzQZmx1UaX/tXtvSgJ5Nx8Pq1
+U22dLPoIHLw8oTrWx0s58iz9a9fSGjUufUf/ZqAVlDToDSKKvvWrDTn5IYp3OwFk
+kTh9+MRaqMoS8tR+IMwU4VGngj4aZMzytgguuDCxKGRP8OB5HWoj/yxRuCNbmvMM
+EbLVzs+VE/nRCNA/smqzpTiG6KX2vywcHgyRbgqCRy5COvAO/sZj4tHEyAORCBFW
+hUPFmkPha4xmcoS/UVZYqLzd0EH3VA==
+=AzX/
+-----END PGP SIGNATURE-----
 
-Regards,
-
-	Joerg
-
+--zdgor72n6fpmyvqy--
