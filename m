@@ -2,90 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E70B139DC24
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 14:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EAB339DC32
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 14:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230194AbhFGMZL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 7 Jun 2021 08:25:11 -0400
-Received: from mail-oi1-f179.google.com ([209.85.167.179]:34502 "EHLO
-        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230173AbhFGMZK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 08:25:10 -0400
-Received: by mail-oi1-f179.google.com with SMTP id u11so17832902oiv.1
-        for <linux-acpi@vger.kernel.org>; Mon, 07 Jun 2021 05:23:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=cCw6LqVcomzEqqujdFHiNyHGkT82MjMLx4Phtx56qGI=;
-        b=UBdT364KT0CB8BX5EtVijgCG7WwteeIStQIyPyiCf//HfMftiVT1a79Pe/kEiVUxKt
-         ZknTt6eXVLrIgnE0AbSYjMqBLmfq2lmV0nZg1sZmgLdQgO7kJBa0WTqYD3iv7PxiRejo
-         6YWL/QgQhUDtOg4VF4LlXtghy6EMHPjG/IZmJZu7S1pCYS5MberwXCx529LGFm1MX5CS
-         svrRJqb+vZ4tL2wm00eSnWNeYe9LZmDHbr1YWjvAU3a+PJamg52wimJim1U6agsR0L4d
-         NxAEjoCs3dt89IEm4Pm/5kYLxUQE+jAfxjqYl8mtdK5n8OX2yj/IhnAh9N/jj0+Ognv9
-         HIHw==
-X-Gm-Message-State: AOAM531bDwxy1KUSRZ40eGx7+xl9sxztRMrg2MjEAHc3f5jFeiToMhDr
-        BztkPN9VKdYADlK5D52H64SevO/q/2WXoHchcijdnhRn
-X-Google-Smtp-Source: ABdhPJxo8eq8JPJ0aeJUiac43GpdBhblif6QMQufDMgFBTybbdctDzge5xjkUpQbynvTxPgCrtm2Ul/umUGxDH6+Z9Q=
-X-Received: by 2002:aca:1910:: with SMTP id l16mr10545300oii.69.1623068584483;
- Mon, 07 Jun 2021 05:23:04 -0700 (PDT)
+        id S230272AbhFGM0i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 08:26:38 -0400
+Received: from mga05.intel.com ([192.55.52.43]:65295 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230241AbhFGM0h (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 7 Jun 2021 08:26:37 -0400
+IronPort-SDR: X4Ty/k9GcdKKeuQeXCic1iwvTKQj0ijcz/FTjRE/8WW9Bv5NJRR0YhvBeFH3YBXE22d2X2G3SR
+ h39Qz9OWsHTw==
+X-IronPort-AV: E=McAfee;i="6200,9189,10007"; a="290236963"
+X-IronPort-AV: E=Sophos;i="5.83,255,1616482800"; 
+   d="scan'208";a="290236963"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2021 05:24:46 -0700
+IronPort-SDR: nivNo8rv/nlBVVlwLvcRKyP83Q92lUN4ObKZF+jVMGqQn5BAHf4q6eZOyywJAUrg1QloO6QcOR
+ fjcwYge4K/Eg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,255,1616482800"; 
+   d="scan'208";a="481505770"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga001.jf.intel.com with ESMTP; 07 Jun 2021 05:24:42 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id BDE10C5; Mon,  7 Jun 2021 15:25:05 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Flavio Suligoi <f.suligoi@asem.it>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Jonathan Corbet <corbet@lwn.net>, Lee Jones <lee.jones@linaro.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Subject: [PATCH v3 1/6] docs: firmware-guide: ACPI: Add a PWM example
+Date:   Mon,  7 Jun 2021 15:24:53 +0300
+Message-Id: <20210607122458.40073-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20210604212608.2604267-1-erik.kaneda@intel.com>
-In-Reply-To: <20210604212608.2604267-1-erik.kaneda@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Jun 2021 14:22:53 +0200
-Message-ID: <CAJZ5v0h8fG1LJo0a+EWC3T2nOaLC3zXR5uSU2gHrrOgK=j7PrQ@mail.gmail.com>
-Subject: Re: [PATCH 00/14] ACPICA version 20210604
-To:     Erik Kaneda <erik.kaneda@intel.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jun 5, 2021 at 12:00 AM Erik Kaneda <erik.kaneda@intel.com> wrote:
->
-> This series contains the linux-ized patch set of ACPICA version
-> 20210604. The patch mostly contains additional structures for ACPI
-> tables. In addition, this patch set contains ACPICA support for
-> a new OperationRegion subtype called PlatformRtMechanism (for PRM).
-> As far as ACPICA is concerned, this subtype will hand off a buffer to a
-> handler registered by the OS.
->
-> Other than that, I will be leaving Intel and this will be my last
-> ACPICA release. With that said, Rafael will take over this role for
-> the timebeing. If you have any ACPICA related questions, I will be
-> around for a few more days so please feel free to reach out.
+When PWM support for ACPI has been added into the kernel, it missed
+the documentation update. Hence update documentation here.
 
-Many thanks for the great work you've done on the ACPICA front Erik,
-and good luck with your future endeavours!
+Fixes: 4a6ef8e37c4d ("pwm: Add support referencing PWMs from ACPI")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v3: despite flags being optional, don't alter it in the documentation
+v2: updated example to use 600 ms instead of 600 us (looks saner)
+ .../firmware-guide/acpi/enumeration.rst       | 32 +++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-> Alison Schofield (2):
->   ACPICA: Add defines for the CXL Host Bridge Structure (CHBS)
->   ACPICA: Add the CFMWS structure definition to the CEDT table
->
-> Bob Moore (5):
->   ACPICA: iASL: Finish support for the IVRS ACPI table
->   ACPICA: iASL: Add support for the SVKL table
->   ACPICA: iASL Table Compiler: Add full support for RGRT ACPI table
->   ACPICA: iASL: Add support for the BDAT ACPI table
->   ACPICA: Update version to 20210604 Version 20210604.
->
-> Erik Kaneda (3):
->   ACPICA: Fix memory leak caused by _CID repair function
->   ACPICA: iASL: add disassembler support for PRMT
->   ACPICA: Add support for PlatformRtMechanism OperationRegion handler
->
-> Fabian Wüthrich (1):
->   ACPICA: Add _PLD panel positions
->
-> Kuppuswamy Sathyanarayanan (2):
->   ACPICA: ACPI 6.4: MADT: add Multiprocessor Wakeup Mailbox Structure
->   ACPICA: Add SVKL table headers
->
-> Wei Ming Chen (1):
->   ACPICA: Use ACPI_FALLTHROUGH
+diff --git a/Documentation/firmware-guide/acpi/enumeration.rst b/Documentation/firmware-guide/acpi/enumeration.rst
+index 9f0d5c854fa4..f588663ba906 100644
+--- a/Documentation/firmware-guide/acpi/enumeration.rst
++++ b/Documentation/firmware-guide/acpi/enumeration.rst
+@@ -258,6 +258,38 @@ input driver::
+ 		.id_table	= mpu3050_ids,
+ 	};
+ 
++Reference to PWM device
++=======================
++
++Sometimes a device can be a consumer of PWM channel. Obviously OS would like
++to know which one. To provide this mapping the special property has been
++introduced, i.e.::
++
++    Device (DEV)
++    {
++        Name (_DSD, Package ()
++        {
++            ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
++            Package () {
++                Package () { "compatible", Package () { "pwm-leds" } },
++                Package () { "label", "alarm-led" },
++                Package () { "pwms",
++                    Package () {
++                        "\\_SB.PCI0.PWM",  // <PWM device reference>
++                        0,                 // <PWM index>
++                        600000000,         // <PWM period>
++                        0,                 // <PWM flags>
++                    }
++                }
++            }
++
++        })
++        ...
++
++In the above example the PWM-based LED driver references to the PWM channel 0
++of \_SB.PCI0.PWM device with initial period setting equal to 600 ms (note that
++value is given in nanoseconds).
++
+ GPIO support
+ ============
+ 
+-- 
+2.30.2
 
-The entire series has been applied as 5.14 material, thanks!
