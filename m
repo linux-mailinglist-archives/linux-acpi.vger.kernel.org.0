@@ -2,84 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E77839DE38
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 15:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3C2B39DE5D
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 16:10:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230209AbhFGOBi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 10:01:38 -0400
-Received: from mail-oi1-f172.google.com ([209.85.167.172]:38716 "EHLO
-        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230197AbhFGOBh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 10:01:37 -0400
-Received: by mail-oi1-f172.google.com with SMTP id z3so18117860oib.5;
-        Mon, 07 Jun 2021 06:59:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=x+uI8v6TgyaDRAyaByB3PO1eB0jYuXCz1UUA6CHTHYo=;
-        b=RpTWvA0Zdpry51YGZbBrlQN2nZ4I5m8GNZYKTIF2RPQm2Fsic9N04EQmt+DlKZOD4y
-         ZZMO2BqDyjlHnPVBQgRQTFs1HoO3h4oFam+S15pf8jMclbAlL0NerE/ZYE55vNVL9K5G
-         Olkrvtlpczx4TKpuIHqRSu/efoa1oBUpaJsDStizdQM8S5/ggb8UvOT7633YGKxl36sc
-         0sNMdRtIgN2tpivykdVb0BfA25GBqC+Z2FCMcggTVuRg7Z+OAs0vcQ0AcDKWjEdFf+q1
-         SKqRA2ASrLoMJj5VejVH0TRm43xy3G28JMKxUG70g3yvvvcCLLCjhWS1t6SyRyjn9CUw
-         0Ejg==
-X-Gm-Message-State: AOAM533P0WHuk275ebtiorxzA7sxgDG34frOVnVHUagCjhrEo7zOqx6c
-        Gj1YxfhYRKHTL0tJygJyyz6ZCPNW1z3NzEmlLCE=
-X-Google-Smtp-Source: ABdhPJyYG0QeGVV/1+HEbLBWgrR5xnDa9VeHxx2UTpsWxMGL/7bxtUFBMzNjM2xC2dgqcSdncOeinCwNdexnrApzSJc=
-X-Received: by 2002:aca:1910:: with SMTP id l16mr10834366oii.69.1623074373748;
- Mon, 07 Jun 2021 06:59:33 -0700 (PDT)
+        id S230198AbhFGOMZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 10:12:25 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28]:55782 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230193AbhFGOMY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 10:12:24 -0400
+Received: from imap.suse.de (imap-alt.suse-dmz.suse.de [192.168.254.47])
+        (using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 98F7F21AA0;
+        Mon,  7 Jun 2021 14:10:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1623075032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=yrrcDqwAUjI/Du1NgfJql1DxePl50i9q1z/v2S1/PjU=;
+        b=yd+IGWFeVIzcWkH4CvAPf2cEyuzXDp4clwAPfcyvHi5LZW0PkbrpaSM/pPgQxXqShourjH
+        UROju8kpwC5ucMYaLkUCY16/GW36p5+QtGgQJ3SvnGxXk95zvdcCIBZpiP76Y6L4pH08Zy
+        ub2ZVCxIJeIxdDUCHfkshUbg7QOi2ts=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1623075032;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=yrrcDqwAUjI/Du1NgfJql1DxePl50i9q1z/v2S1/PjU=;
+        b=5GCOfx0xyGHUY6Wh7ScIDhdgMv3eermx6Z1Jcx5JoRoC2w2vDh0jZ+4IOeymqA40G8FnJW
+        TBxe0jyqUYPAakAQ==
+Received: from imap3-int (imap-alt.suse-dmz.suse.de [192.168.254.47])
+        by imap.suse.de (Postfix) with ESMTP id 4A7D8118DD;
+        Mon,  7 Jun 2021 14:10:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1623075032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=yrrcDqwAUjI/Du1NgfJql1DxePl50i9q1z/v2S1/PjU=;
+        b=yd+IGWFeVIzcWkH4CvAPf2cEyuzXDp4clwAPfcyvHi5LZW0PkbrpaSM/pPgQxXqShourjH
+        UROju8kpwC5ucMYaLkUCY16/GW36p5+QtGgQJ3SvnGxXk95zvdcCIBZpiP76Y6L4pH08Zy
+        ub2ZVCxIJeIxdDUCHfkshUbg7QOi2ts=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1623075032;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=yrrcDqwAUjI/Du1NgfJql1DxePl50i9q1z/v2S1/PjU=;
+        b=5GCOfx0xyGHUY6Wh7ScIDhdgMv3eermx6Z1Jcx5JoRoC2w2vDh0jZ+4IOeymqA40G8FnJW
+        TBxe0jyqUYPAakAQ==
+Received: from director2.suse.de ([192.168.254.72])
+        by imap3-int with ESMTPSA
+        id lofQD9govmCrOwAALh3uQQ
+        (envelope-from <jroedel@suse.de>); Mon, 07 Jun 2021 14:10:32 +0000
+Date:   Mon, 7 Jun 2021 16:10:30 +0200
+From:   Joerg Roedel <jroedel@suse.de>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, rjw@rjwysocki.net,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] PCI/APCI: Move acpi_pci_osc_support() check to
+ negotiation phase
+Message-ID: <YL4o1pJyIm74Lwz3@suse.de>
+References: <20210603124814.19654-1-joro@8bytes.org>
+ <20210603205047.GA2135380@bjorn-Precision-5520>
 MIME-Version: 1.0
-References: <20210602115812.109900-1-jingxiangfeng@huawei.com>
-In-Reply-To: <20210602115812.109900-1-jingxiangfeng@huawei.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Jun 2021 15:59:22 +0200
-Message-ID: <CAJZ5v0hDaDUy68OqTvD4vQix0cWw4KA9Nn3c6pVia2LgnVnUOw@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: FPDT: Add the missed acpi_put_table() in acpi_init_fpdt()
-To:     Jing Xiangfeng <jingxiangfeng@huawei.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        "Zhang, Rui" <rui.zhang@intel.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210603205047.GA2135380@bjorn-Precision-5520>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 2, 2021 at 1:44 PM Jing Xiangfeng <jingxiangfeng@huawei.com> wrote:
->
-> acpi_init_fpdt() misses to call acpi_put_table() in an error path. Add
-> the missed function call to fix it.
->
-> Fixes: d1eb86e59be0 ("ACPI: tables: introduce support for FPDT table")
-> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
-> Acked-by: Zhang Rui <rui.zhang@intel.com>
-> ---
-> v1 -> v2:
-> - Collect Acked-by tag by Zhang Rui.
-> - retitle the subject as suggested by Hanjun Guo.
-> ---
->  drivers/acpi/acpi_fpdt.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
-> index a89a806a7a2a..4ee2ad234e3d 100644
-> --- a/drivers/acpi/acpi_fpdt.c
-> +++ b/drivers/acpi/acpi_fpdt.c
-> @@ -240,8 +240,10 @@ static int __init acpi_init_fpdt(void)
->                 return 0;
->
->         fpdt_kobj = kobject_create_and_add("fpdt", acpi_kobj);
-> -       if (!fpdt_kobj)
-> +       if (!fpdt_kobj) {
-> +               acpi_put_table(header);
->                 return -ENOMEM;
-> +       }
->
->         while (offset < header->length) {
->                 subtable = (void *)header + offset;
-> --
+Hi Bjorn,
 
-Applied as 5.14 material with some edits in the subject and changelog, thanks!
+On Thu, Jun 03, 2021 at 03:50:47PM -0500, Bjorn Helgaas wrote:
+> On Thu, Jun 03, 2021 at 02:48:14PM +0200, Joerg Roedel wrote:
+
+> If instead you mean that the OS has *not* been granted DPC control,
+> but does _OSC(Query, SUPPORT=x, CONTROL=0), I think that means the OS
+> is telling the platform what it supports but not requesting anything.
+> That sounds legal to me, so if firmware complains about it, I would
+> say it's a firmware problem.
+
+I think it depends on how you look at it. The machine I was working with
+has a BIOS setting where one can configure that DPC is controlled by the
+OS. When it is configured that way, then the BIOS will issue an error
+when an _OSC query is made with control set to 0. This is because it
+indicates to the BIOS that the OS does not take control over DPC and
+thus that the OS does not support it. The BIOS will issue a warning into
+its log and when the Linux later takes control the warning is already
+there.
+
+> But please help me out if I'm misunderstanding something above.  I'm
+> never confident that I really understand _OSC.
+
+I am also not an _OSC expert, but you an Rafael already provided good
+feedback on the necessity of at least one _OSC call, even when Linux
+does not want to take control.
+
+> Unrelated to *this* patch, but I don't understand the point of
+> OSC_PCI_SUPPORT_MASKS and OSC_PCI_CONTROL_MASKS.  These are all
+> internal static functions and it looks like pointless work to apply
+> masks here and in acpi_pci_osc_control_set().
+
+Okay, I will add a separate patch removing thos after this change.
+
+> >  	status = acpi_pci_run_osc(root->device->handle, capbuf, &result);
+> >  	if (ACPI_SUCCESS(status)) {
+> 
+> We can also drop the "if (control)" check inside the ACPI_SUCCESS()
+> block, can't we?
+
+Right, fixed that up.
+
+Regards,
+
+	Joerg
+
