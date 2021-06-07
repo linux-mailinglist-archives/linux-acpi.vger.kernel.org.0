@@ -2,159 +2,197 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8813439DCDA
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 14:45:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77C1D39DD07
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 14:53:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230306AbhFGMrh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 08:47:37 -0400
-Received: from mail-ot1-f51.google.com ([209.85.210.51]:37864 "EHLO
-        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230286AbhFGMrg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 08:47:36 -0400
-Received: by mail-ot1-f51.google.com with SMTP id v19-20020a0568301413b0290304f00e3d88so16532581otp.4;
-        Mon, 07 Jun 2021 05:45:45 -0700 (PDT)
+        id S230269AbhFGMz1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 08:55:27 -0400
+Received: from mail-oi1-f173.google.com ([209.85.167.173]:39629 "EHLO
+        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230261AbhFGMz0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 08:55:26 -0400
+Received: by mail-oi1-f173.google.com with SMTP id m137so14021231oig.6
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Jun 2021 05:53:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Ne/p4NOGCwVSG6gGyVyzO7r+FfStromPMY+PxpPNydI=;
-        b=O2Rob0cgSz/Jho0ELC9k4oJPMkqhTMMqhTQEmuyFZMQUgcXeD29eCIayPGPEGQtUmg
-         Kyl0RR+hSR1LDD7FggVckr7MFSmBOxdjXLhga0B/a6AFU6sjLpVwhwj2YvX/ZP/yFsK2
-         Jb7y5iYF9wIFbz7h/rUMXbdl5bwHDQd8z40ANCDGyu/VdvhaF5sea8UXJFivcTOM3ho6
-         9Eo80+SzPZGdz8R2Cba4OfUq1Ism5NBGOUzQW2rz3diGe53IR2NBMgyp1g8sJfDqOI1B
-         76QM+r7412H4fs5xucqyzriUxnlxh4zBHcz4PIxN4hPnooWJPt1I6Twctlc4NEmbY6Mu
-         x5fA==
-X-Gm-Message-State: AOAM533/Zm5XhQprvQfcP9f2pQ/Wa4qHYd+sq6fGF2YVXK6KAD+oIRJ3
-        ycAxIiFMT5g+VCN2HFm6JEZi8XTrGPJBklNfw9k=
-X-Google-Smtp-Source: ABdhPJy+PE0k4m3sO4C/+M2oB5Dp8/vHSk6ur8aGkSkM/rVZq77o5QtmrOm/ZEAzeGQHKTEXMYlTP/dDBrFFSjW8XnE=
-X-Received: by 2002:a9d:3e53:: with SMTP id h19mr13451517otg.260.1623069943825;
- Mon, 07 Jun 2021 05:45:43 -0700 (PDT)
+        bh=UJbb0wgONzKu6GOCNY92/rs+FfpsCbB7IddM4Al1SgU=;
+        b=UCwZMFZ4qcCsCglbBp0xk4I9jhNEeKNHZPRnoVjjDg3+vruAKEE0euK3dIhnotgJMg
+         yjGp/e018+koKvtFlk+j8rk2BC/OBHdpjpOcKbdBbwpUoozscwTeFDSjlK65UfMwAK9y
+         3d1qbSZ+tU18JTS+2lNnNwLzT5QBh+HGnykKa+C1gbBiENC3QQ7eYFwamU+9ll9pPJWZ
+         Sbb02VwWGgAt2uQIegk4YEIQtKBnntVDgC652yecqZcty/QEQeN/8uPI5fEMyzzkyu63
+         Nf6ubyN1cluKiOVm3wszcfJTv9C32DSIuoeM/plDOOX8rEDQT+om396y6zKFwyJflOPy
+         vmWw==
+X-Gm-Message-State: AOAM530jU5zHdpD9OE5o4VbBJlzzxtlXEtM7o5e/1/XRfWslFwlCzLL7
+        DgKzwm8/7t77NV2YMjOh37QnVA6e28b/WWM0KLo=
+X-Google-Smtp-Source: ABdhPJywaXK6YUCVA3bLWmnpzW2BajWBXA2vWUnK0Z5R0D7fqxT9XN/AkxnBQ4DBNS61nhJar33gtOu6WmCUTqZU71M=
+X-Received: by 2002:aca:650d:: with SMTP id m13mr3080478oim.157.1623070415240;
+ Mon, 07 Jun 2021 05:53:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210604165047.13243-1-andriy.shevchenko@linux.intel.com> <20210604165047.13243-3-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20210604165047.13243-3-andriy.shevchenko@linux.intel.com>
+References: <20210603190753.5084-1-mario.limonciello@amd.com>
+In-Reply-To: <20210603190753.5084-1-mario.limonciello@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Jun 2021 14:45:32 +0200
-Message-ID: <CAJZ5v0hk8BiDt5e_P=KXkj3datr_WTCUe7k2u_TkFUPjWm79Aw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] device property: Unify access to of_node
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Date:   Mon, 7 Jun 2021 14:53:24 +0200
+Message-ID: <CAJZ5v0hH_XuMucyYef=Cq-WNWt2aiVWmV5v-tm77AZ+R7HZFxg@mail.gmail.com>
+Subject: Re: [PATCH v4] acpi: Move check for _DSD StorageD3Enable property to acpi
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
+        rrangel@chromium.org, David Box <david.e.box@linux.intel.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Alex Deucher <Alexander.Deucher@amd.com>,
+        Prike Liang <prike.liang@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 4, 2021 at 6:50 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Thu, Jun 3, 2021 at 9:08 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 >
-> Historically we have a few variants how we access dev->fwnode
-> and dev->of_node. Some of the functions during development
-> gained different versions of the getters. Unify access to of_node
-> and as a side change slightly refactor ACPI specific branches.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> v3: no changes
-> v2: no changes
->  drivers/base/property.c  | 29 +++++++++++++----------------
->  include/linux/property.h |  2 +-
->  2 files changed, 14 insertions(+), 17 deletions(-)
->
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index c26370aacdc6..d0874f6c29bb 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -759,13 +759,8 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_available_child_node);
->  struct fwnode_handle *device_get_next_child_node(struct device *dev,
->                                                  struct fwnode_handle *child)
->  {
-> -       struct acpi_device *adev = ACPI_COMPANION(dev);
-> -       struct fwnode_handle *fwnode = NULL, *next;
-> -
-> -       if (dev->of_node)
-> -               fwnode = of_fwnode_handle(dev->of_node);
-> -       else if (adev)
-> -               fwnode = acpi_fwnode_handle(adev);
-> +       const struct fwnode_handle *fwnode = dev_fwnode(dev);
-> +       struct fwnode_handle *next;
->
->         /* Try to find a child in primary fwnode */
->         next = fwnode_get_next_child_node(fwnode, child);
-> @@ -868,28 +863,31 @@ EXPORT_SYMBOL_GPL(device_get_child_node_count);
->
->  bool device_dma_supported(struct device *dev)
->  {
-> +       const struct fwnode_handle *fwnode = dev_fwnode(dev);
-> +
->         /* For DT, this is always supported.
->          * For ACPI, this depends on CCA, which
->          * is determined by the acpi_dma_supported().
->          */
-> -       if (IS_ENABLED(CONFIG_OF) && dev->of_node)
-> +       if (is_of_node(fwnode))
->                 return true;
->
-> -       return acpi_dma_supported(ACPI_COMPANION(dev));
-> +       return acpi_dma_supported(to_acpi_device_node(fwnode));
->  }
->  EXPORT_SYMBOL_GPL(device_dma_supported);
->
->  enum dev_dma_attr device_get_dma_attr(struct device *dev)
->  {
-> +       const struct fwnode_handle *fwnode = dev_fwnode(dev);
->         enum dev_dma_attr attr = DEV_DMA_NOT_SUPPORTED;
->
-> -       if (IS_ENABLED(CONFIG_OF) && dev->of_node) {
-> -               if (of_dma_is_coherent(dev->of_node))
-> +       if (is_of_node(fwnode)) {
-> +               if (of_dma_is_coherent(to_of_node(fwnode)))
->                         attr = DEV_DMA_COHERENT;
->                 else
->                         attr = DEV_DMA_NON_COHERENT;
->         } else
-> -               attr = acpi_get_dma_attr(ACPI_COMPANION(dev));
-> +               attr = acpi_get_dma_attr(to_acpi_device_node(fwnode));
->
->         return attr;
->  }
-> @@ -1007,14 +1005,13 @@ EXPORT_SYMBOL(device_get_mac_address);
->   * Returns Linux IRQ number on success. Other values are determined
->   * accordingly to acpi_/of_ irq_get() operation.
->   */
-> -int fwnode_irq_get(struct fwnode_handle *fwnode, unsigned int index)
-> +int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
->  {
-> -       struct device_node *of_node = to_of_node(fwnode);
->         struct resource res;
->         int ret;
->
-> -       if (IS_ENABLED(CONFIG_OF) && of_node)
-> -               return of_irq_get(of_node, index);
-> +       if (is_of_node(fwnode))
-> +               return of_irq_get(to_of_node(fwnode), index);
->
->         ret = acpi_irq_get(ACPI_HANDLE_FWNODE(fwnode), index, &res);
->         if (ret)
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 0d876316e61d..073e680c35e2 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -119,7 +119,7 @@ struct fwnode_handle *device_get_named_child_node(struct device *dev,
->  struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
->  void fwnode_handle_put(struct fwnode_handle *fwnode);
->
-> -int fwnode_irq_get(struct fwnode_handle *fwnode, unsigned int index);
-> +int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
->
->  unsigned int device_get_child_node_count(struct device *dev);
->
-> --
+> Although first implemented for NVME, this check may be usable by
+> other drivers as well. Microsoft's specification explicitly mentions
+> that is may be usable by SATA and AHCI devices.  Google also indicates
+> that they have used this with SDHCI in a downstream kernel tree that
+> a user can plug a storage device into.
 
-Applied as 5.14 material along with the [1-2/3], thanks!
+Please spell ACPI in capitals in the subject.
+
+Otherwise
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+or please let me know if you want me to take this patch (in which case
+I'll need ACKs from the PCI and NVMe side).
+
+> Link: Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
+> Suggested-by: Keith Busch <kbusch@kernel.org>
+> CC: rrangel@chromium.org
+> CC: david.e.box@linux.intel.com
+> CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
+> CC: Alexander Deucher <Alexander.Deucher@amd.com>
+> CC: Rafael J. Wysocki <rjw@rjwysocki.net>
+> CC: Prike Liang <prike.liang@amd.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/acpi/device_pm.c | 25 +++++++++++++++++++++++++
+>  drivers/nvme/host/pci.c  | 28 +---------------------------
+>  include/linux/acpi.h     |  5 +++++
+>  3 files changed, 31 insertions(+), 27 deletions(-)
+>
+> Changes from v3->v4
+>  * Rebase on nvme-5.14 (w/ patch 1/2 from v3 of series accepted)
+>  * Adjust commit message per Christoph's suggestions
+>  * Adjust documentation per Christoph's suggestions
+>
+> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> index d260bc1f3e6e..1edb68d00b8e 100644
+> --- a/drivers/acpi/device_pm.c
+> +++ b/drivers/acpi/device_pm.c
+> @@ -1340,4 +1340,29 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+>         return 1;
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
+> +
+> +/**
+> + * acpi_storage_d3 - Check if a storage device should use D3.
+> + * @dev: Device to check
+> + *
+> + * Returns %true if @dev should be put into D3 when the ->suspend method is
+> + * called, else %false.  The name of this function is somewhat misleading
+> + * as it has nothing to do with storage except for the name of the ACPI
+> + * property.  On some platforms resume will not work if this hint is ignored.
+> + *
+> + */
+> +bool acpi_storage_d3(struct device *dev)
+> +{
+> +       struct acpi_device *adev = ACPI_COMPANION(dev);
+> +       u8 val;
+> +
+> +       if (!adev)
+> +               return false;
+> +       if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+> +                       &val))
+> +               return false;
+> +       return val == 1;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_storage_d3);
+> +
+>  #endif /* CONFIG_PM */
+> diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+> index 3aa7245a505f..8fbc4c87a0d8 100644
+> --- a/drivers/nvme/host/pci.c
+> +++ b/drivers/nvme/host/pci.c
+> @@ -2828,32 +2828,6 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
+>         return 0;
+>  }
+>
+> -#ifdef CONFIG_ACPI
+> -static bool nvme_acpi_storage_d3(struct pci_dev *dev)
+> -{
+> -       struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
+> -       u8 val;
+> -
+> -       /*
+> -        * Look for _DSD property specifying that the storage device on the port
+> -        * must use D3 to support deep platform power savings during
+> -        * suspend-to-idle.
+> -        */
+> -
+> -       if (!adev)
+> -               return false;
+> -       if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+> -                       &val))
+> -               return false;
+> -       return val == 1;
+> -}
+> -#else
+> -static inline bool nvme_acpi_storage_d3(struct pci_dev *dev)
+> -{
+> -       return false;
+> -}
+> -#endif /* CONFIG_ACPI */
+> -
+>  static void nvme_async_probe(void *data, async_cookie_t cookie)
+>  {
+>         struct nvme_dev *dev = data;
+> @@ -2903,7 +2877,7 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>
+>         quirks |= check_vendor_combination_bug(pdev);
+>
+> -       if (!noacpi && nvme_acpi_storage_d3(pdev)) {
+> +       if (!noacpi && acpi_storage_d3(&pdev->dev)) {
+>                 /*
+>                  * Some systems use a bios work around to ask for D3 on
+>                  * platforms that support kernel managed suspend.
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index c60745f657e9..dd0dafd21e33 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1004,6 +1004,7 @@ int acpi_dev_resume(struct device *dev);
+>  int acpi_subsys_runtime_suspend(struct device *dev);
+>  int acpi_subsys_runtime_resume(struct device *dev);
+>  int acpi_dev_pm_attach(struct device *dev, bool power_on);
+> +bool acpi_storage_d3(struct device *dev);
+>  #else
+>  static inline int acpi_subsys_runtime_suspend(struct device *dev) { return 0; }
+>  static inline int acpi_subsys_runtime_resume(struct device *dev) { return 0; }
+> @@ -1011,6 +1012,10 @@ static inline int acpi_dev_pm_attach(struct device *dev, bool power_on)
+>  {
+>         return 0;
+>  }
+> +static inline bool acpi_storage_d3(struct device *dev)
+> +{
+> +       return false;
+> +}
+>  #endif
+>
+>  #if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
+> --
+> 2.25.1
+>
