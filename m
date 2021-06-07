@@ -2,117 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7264F39DBB9
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 13:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E70B139DC24
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 14:23:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230237AbhFGLu6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 07:50:58 -0400
-Received: from mga06.intel.com ([134.134.136.31]:47165 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231283AbhFGLu6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 7 Jun 2021 07:50:58 -0400
-IronPort-SDR: wZgmnU9c3Jj/iwFIBNdjyA+3lOM3UpCHFqxlCpz1zYn9eGyXqJ8azfV6rzO1FA+xKYrPZ3jihU
- 9T+V2xp9Lrow==
-X-IronPort-AV: E=McAfee;i="6200,9189,10007"; a="265761217"
-X-IronPort-AV: E=Sophos;i="5.83,255,1616482800"; 
-   d="scan'208";a="265761217"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2021 04:49:06 -0700
-IronPort-SDR: u17BKXvx/hUR46TzWYEH1/SrBnug8cLVNtgUOpARTkwSnngROQ/OLo6pqeQujI435LdHyJ1dTj
- ScM475RMOI1A==
-X-IronPort-AV: E=Sophos;i="5.83,255,1616482800"; 
-   d="scan'208";a="484747647"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2021 04:49:03 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lqDkb-000FDV-3n; Mon, 07 Jun 2021 14:49:01 +0300
-Date:   Mon, 7 Jun 2021 14:49:01 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Flavio Suligoi <f.suligoi@asem.it>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v2 2/7] pwm: core: Always require PWM flags to be provided
-Message-ID: <YL4HrZTb+fmW4UTf@smile.fi.intel.com>
-References: <20210531194947.10770-1-andriy.shevchenko@linux.intel.com>
- <20210531194947.10770-2-andriy.shevchenko@linux.intel.com>
- <20210606213054.bmqgs5hehbowa62d@pengutronix.de>
- <YL3grTQ00lFCXyCp@smile.fi.intel.com>
- <20210607095324.yaiu5lzb5zgoejpa@pengutronix.de>
- <YL3xuJyAcbPLW7yG@smile.fi.intel.com>
- <YL3zDUWsY9mUW0eQ@smile.fi.intel.com>
+        id S230194AbhFGMZL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 7 Jun 2021 08:25:11 -0400
+Received: from mail-oi1-f179.google.com ([209.85.167.179]:34502 "EHLO
+        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230173AbhFGMZK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 08:25:10 -0400
+Received: by mail-oi1-f179.google.com with SMTP id u11so17832902oiv.1
+        for <linux-acpi@vger.kernel.org>; Mon, 07 Jun 2021 05:23:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=cCw6LqVcomzEqqujdFHiNyHGkT82MjMLx4Phtx56qGI=;
+        b=UBdT364KT0CB8BX5EtVijgCG7WwteeIStQIyPyiCf//HfMftiVT1a79Pe/kEiVUxKt
+         ZknTt6eXVLrIgnE0AbSYjMqBLmfq2lmV0nZg1sZmgLdQgO7kJBa0WTqYD3iv7PxiRejo
+         6YWL/QgQhUDtOg4VF4LlXtghy6EMHPjG/IZmJZu7S1pCYS5MberwXCx529LGFm1MX5CS
+         svrRJqb+vZ4tL2wm00eSnWNeYe9LZmDHbr1YWjvAU3a+PJamg52wimJim1U6agsR0L4d
+         NxAEjoCs3dt89IEm4Pm/5kYLxUQE+jAfxjqYl8mtdK5n8OX2yj/IhnAh9N/jj0+Ognv9
+         HIHw==
+X-Gm-Message-State: AOAM531bDwxy1KUSRZ40eGx7+xl9sxztRMrg2MjEAHc3f5jFeiToMhDr
+        BztkPN9VKdYADlK5D52H64SevO/q/2WXoHchcijdnhRn
+X-Google-Smtp-Source: ABdhPJxo8eq8JPJ0aeJUiac43GpdBhblif6QMQufDMgFBTybbdctDzge5xjkUpQbynvTxPgCrtm2Ul/umUGxDH6+Z9Q=
+X-Received: by 2002:aca:1910:: with SMTP id l16mr10545300oii.69.1623068584483;
+ Mon, 07 Jun 2021 05:23:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YL3zDUWsY9mUW0eQ@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20210604212608.2604267-1-erik.kaneda@intel.com>
+In-Reply-To: <20210604212608.2604267-1-erik.kaneda@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 7 Jun 2021 14:22:53 +0200
+Message-ID: <CAJZ5v0h8fG1LJo0a+EWC3T2nOaLC3zXR5uSU2gHrrOgK=j7PrQ@mail.gmail.com>
+Subject: Re: [PATCH 00/14] ACPICA version 20210604
+To:     Erik Kaneda <erik.kaneda@intel.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 07, 2021 at 01:21:01PM +0300, Andy Shevchenko wrote:
-> On Mon, Jun 07, 2021 at 01:15:20PM +0300, Andy Shevchenko wrote:
-> > On Mon, Jun 07, 2021 at 11:53:24AM +0200, Uwe Kleine-König wrote:
-> > > On Mon, Jun 07, 2021 at 12:02:37PM +0300, Andy Shevchenko wrote:
-> > > > On Sun, Jun 06, 2021 at 11:30:54PM +0200, Uwe Kleine-König wrote:
-> > > > > On Mon, May 31, 2021 at 10:49:42PM +0300, Andy Shevchenko wrote:
-> > > > > > It makes little sense to make PWM flags optional since in case
-> > > > > > of multi-channel consumer the flags can be optional only for
-> > > > > > the last listed channel.
-> > > > > 
-> > > > > I think the same holds true for dt references.
-> > > > 
-> > > > Can you elaborate this? I haven't got what you are talking about, not a DT
-> > > > expert here.
-> > > 
-> > > Ah no, I mixed that up. While the function that parses the phandle is
-> > > flexible, for each pwm controller the number of arguments is fixed, so
-> > > 
-> > > 	pwms = <&pwm1 100000 &pwm2 100000 &pwm3 1000000>;
-> > > 
-> > > cannot be interpreted as 3-argument references to two PWMs. This is
-> > > different to ACPI (I guess, not an ACPI expert here :-) because &pwm1
-> > > "knows" if it needs 1 or 2 additional parameters (#pwm-cells).
-> > 
-> > It's not about ACPI, it's about "the ACPI glue layer in Linux kernel".
-> > Used API is a part of it and it does allow only two cases, either NULL entry
-> > (by having 0 as an argument) or full-length supplied tuple (in case of PWM it's
-> > 3, so, means 4 parameters.
-> > 
-> > Let's consider examples:
-> > 
-> > (0, 0, x3, y3, z3, t3) // NULL, NULL, PWM3
-> > (x1, y1, z1, t1, 0, x3, y3, z3, t3) // PWM1, NULL, PWM3
-> > 
-> > So, making last parameter "flexible" will work only for the last tuple in the
-> > array.
-> > 
-> > Read this [1] for further information.
-> > 
-> > [1]: https://elixir.bootlin.com/linux/latest/source/drivers/acpi/property.c#L629
-> 
-> Hmm... I have read the actual implementation and it seems it's possible to have
-> flexible array, so this patch needs to be reconsidered.
+On Sat, Jun 5, 2021 at 12:00 AM Erik Kaneda <erik.kaneda@intel.com> wrote:
+>
+> This series contains the linux-ized patch set of ACPICA version
+> 20210604. The patch mostly contains additional structures for ACPI
+> tables. In addition, this patch set contains ACPICA support for
+> a new OperationRegion subtype called PlatformRtMechanism (for PRM).
+> As far as ACPICA is concerned, this subtype will hand off a buffer to a
+> handler registered by the OS.
+>
+> Other than that, I will be leaving Intel and this will be my last
+> ACPICA release. With that said, Rafael will take over this role for
+> the timebeing. If you have any ACPICA related questions, I will be
+> around for a few more days so please feel free to reach out.
 
-I was thinking more about it and what we have here is positional-dependent
-arguments. Either way we might end up in the same situation (when we need to
-parse arguments based on their positions, rather than always have them being
-present). So, while I won't change documentation example (to be more stricter
-there), I will drop this change.
+Many thanks for the great work you've done on the ACPICA front Erik,
+and good luck with your future endeavours!
 
-Also, the PWM initial state doesn't include duty cycle. Any explanations why is
-that?
+> Alison Schofield (2):
+>   ACPICA: Add defines for the CXL Host Bridge Structure (CHBS)
+>   ACPICA: Add the CFMWS structure definition to the CEDT table
+>
+> Bob Moore (5):
+>   ACPICA: iASL: Finish support for the IVRS ACPI table
+>   ACPICA: iASL: Add support for the SVKL table
+>   ACPICA: iASL Table Compiler: Add full support for RGRT ACPI table
+>   ACPICA: iASL: Add support for the BDAT ACPI table
+>   ACPICA: Update version to 20210604 Version 20210604.
+>
+> Erik Kaneda (3):
+>   ACPICA: Fix memory leak caused by _CID repair function
+>   ACPICA: iASL: add disassembler support for PRMT
+>   ACPICA: Add support for PlatformRtMechanism OperationRegion handler
+>
+> Fabian WÃ¼thrich (1):
+>   ACPICA: Add _PLD panel positions
+>
+> Kuppuswamy Sathyanarayanan (2):
+>   ACPICA: ACPI 6.4: MADT: add Multiprocessor Wakeup Mailbox Structure
+>   ACPICA: Add SVKL table headers
+>
+> Wei Ming Chen (1):
+>   ACPICA: Use ACPI_FALLTHROUGH
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+The entire series has been applied as 5.14 material, thanks!
