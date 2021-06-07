@@ -2,142 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2B3B39DCA8
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 14:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8813439DCDA
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Jun 2021 14:45:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230377AbhFGMks (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 7 Jun 2021 08:40:48 -0400
-Received: from mail-oi1-f169.google.com ([209.85.167.169]:42903 "EHLO
-        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230173AbhFGMks (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 08:40:48 -0400
-Received: by mail-oi1-f169.google.com with SMTP id v142so17431513oie.9;
-        Mon, 07 Jun 2021 05:38:57 -0700 (PDT)
+        id S230306AbhFGMrh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 7 Jun 2021 08:47:37 -0400
+Received: from mail-ot1-f51.google.com ([209.85.210.51]:37864 "EHLO
+        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230286AbhFGMrg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 7 Jun 2021 08:47:36 -0400
+Received: by mail-ot1-f51.google.com with SMTP id v19-20020a0568301413b0290304f00e3d88so16532581otp.4;
+        Mon, 07 Jun 2021 05:45:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=BtfBKhSIgrMbklkSEqUXIVw+9PSaocndOPsfs57pBrg=;
-        b=D5cGmo1h/808qW+9QGljx/IHtH3jhwAR9pe/dggshNn6V2xmHQHnCi/oF40saGImwq
-         Ww+lfs0LWoTvxmYWenFrLq9WAdBrPlL4txNnGjyYxioiZmIoG4I7xgFwIBIMHGnBT6x7
-         pvFs3NgbB34/ETTkG1n2RGqLZ1oJUvwsKcOZh5aN51NNzCYbPScdkMyEsWG3KBl42/y4
-         sIsz+lBcz4ynpZiUNaxieuubQyr+MabfOje8WauTPl5X7wErPBiLk7F3uJFa83Q1TRN+
-         0Yk7ZXvaGiQrZaQK+wc1sX9Zu1gPLxgzm9So8FztjHPtxPHwJlJdJg2OnCVzrdksOyVW
-         eRmg==
-X-Gm-Message-State: AOAM533gxm7rqa6UvQoypxMP+WUMa0fFq2Z+rfh3/xAU/arcp7MskZE7
-        kB/LEXdGDnS6jGlT+QqsHtcUyQqj9JMVw3qPv3Q=
-X-Google-Smtp-Source: ABdhPJzlt3b6sqN2DBSPSm7jJv8sukwRnmWDdtIqUNnxpduRN7SvDItcbm+AtfXYs1ipy0GEiB1VkCUptRMcbaCeu9o=
-X-Received: by 2002:aca:650d:: with SMTP id m13mr3041451oim.157.1623069536950;
- Mon, 07 Jun 2021 05:38:56 -0700 (PDT)
+        bh=Ne/p4NOGCwVSG6gGyVyzO7r+FfStromPMY+PxpPNydI=;
+        b=O2Rob0cgSz/Jho0ELC9k4oJPMkqhTMMqhTQEmuyFZMQUgcXeD29eCIayPGPEGQtUmg
+         Kyl0RR+hSR1LDD7FggVckr7MFSmBOxdjXLhga0B/a6AFU6sjLpVwhwj2YvX/ZP/yFsK2
+         Jb7y5iYF9wIFbz7h/rUMXbdl5bwHDQd8z40ANCDGyu/VdvhaF5sea8UXJFivcTOM3ho6
+         9Eo80+SzPZGdz8R2Cba4OfUq1Ism5NBGOUzQW2rz3diGe53IR2NBMgyp1g8sJfDqOI1B
+         76QM+r7412H4fs5xucqyzriUxnlxh4zBHcz4PIxN4hPnooWJPt1I6Twctlc4NEmbY6Mu
+         x5fA==
+X-Gm-Message-State: AOAM533/Zm5XhQprvQfcP9f2pQ/Wa4qHYd+sq6fGF2YVXK6KAD+oIRJ3
+        ycAxIiFMT5g+VCN2HFm6JEZi8XTrGPJBklNfw9k=
+X-Google-Smtp-Source: ABdhPJy+PE0k4m3sO4C/+M2oB5Dp8/vHSk6ur8aGkSkM/rVZq77o5QtmrOm/ZEAzeGQHKTEXMYlTP/dDBrFFSjW8XnE=
+X-Received: by 2002:a9d:3e53:: with SMTP id h19mr13451517otg.260.1623069943825;
+ Mon, 07 Jun 2021 05:45:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210607122458.40073-1-andriy.shevchenko@linux.intel.com> <20210607122458.40073-3-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20210607122458.40073-3-andriy.shevchenko@linux.intel.com>
+References: <20210604165047.13243-1-andriy.shevchenko@linux.intel.com> <20210604165047.13243-3-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210604165047.13243-3-andriy.shevchenko@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Jun 2021 14:38:46 +0200
-Message-ID: <CAJZ5v0hEHkpoyc9-fYrZ8A79B0XRd4_RUB2wcRcq1kMKXnb7Jw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/6] pwm: core: Reuse fwnode_to_pwmchip() in ACPI case
+Date:   Mon, 7 Jun 2021 14:45:32 +0200
+Message-ID: <CAJZ5v0hk8BiDt5e_P=KXkj3datr_WTCUe7k2u_TkFUPjWm79Aw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] device property: Unify access to of_node
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Flavio Suligoi <f.suligoi@asem.it>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Lee Jones <lee.jones@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 7, 2021 at 2:24 PM Andy Shevchenko
+On Fri, Jun 4, 2021 at 6:50 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> In ACPI case we may use matching by fwnode as provided via
-> fwnode_to_pwmchip(). This makes device_to_pwmchip() not needed
-> anymore.
+> Historically we have a few variants how we access dev->fwnode
+> and dev->of_node. Some of the functions during development
+> gained different versions of the getters. Unify access to of_node
+> and as a side change slightly refactor ACPI specific branches.
 >
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
 > ---
-> v3: rebased on the tree without dropped patch 2/7
-> v2: no change
->  drivers/pwm/core.c | 31 +------------------------------
->  1 file changed, 1 insertion(+), 30 deletions(-)
+> v3: no changes
+> v2: no changes
+>  drivers/base/property.c  | 29 +++++++++++++----------------
+>  include/linux/property.h |  2 +-
+>  2 files changed, 14 insertions(+), 17 deletions(-)
 >
-> diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-> index f26da1a6a376..c63626c5266c 100644
-> --- a/drivers/pwm/core.c
-> +++ b/drivers/pwm/core.c
-> @@ -820,28 +820,6 @@ struct pwm_device *of_pwm_get(struct device *dev, struct device_node *np,
->  }
->  EXPORT_SYMBOL_GPL(of_pwm_get);
->
-> -#if IS_ENABLED(CONFIG_ACPI)
-> -static struct pwm_chip *device_to_pwmchip(struct device *dev)
-> -{
-> -       struct pwm_chip *chip;
-> -
-> -       mutex_lock(&pwm_lock);
-> -
-> -       list_for_each_entry(chip, &pwm_chips, list) {
-> -               struct acpi_device *adev = ACPI_COMPANION(chip->dev);
-> -
-> -               if ((chip->dev == dev) || (adev && &adev->dev == dev)) {
-> -                       mutex_unlock(&pwm_lock);
-> -                       return chip;
-> -               }
-> -       }
-> -
-> -       mutex_unlock(&pwm_lock);
-> -
-> -       return ERR_PTR(-EPROBE_DEFER);
-> -}
-> -#endif
-> -
->  /**
->   * acpi_pwm_get() - request a PWM via parsing "pwms" property in ACPI
->   * @fwnode: firmware node to get the "pwm" property from
-> @@ -862,9 +840,7 @@ static struct pwm_chip *device_to_pwmchip(struct device *dev)
->  static struct pwm_device *acpi_pwm_get(struct fwnode_handle *fwnode)
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index c26370aacdc6..d0874f6c29bb 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -759,13 +759,8 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_available_child_node);
+>  struct fwnode_handle *device_get_next_child_node(struct device *dev,
+>                                                  struct fwnode_handle *child)
 >  {
->         struct pwm_device *pwm = ERR_PTR(-ENODEV);
-> -#if IS_ENABLED(CONFIG_ACPI)
->         struct fwnode_reference_args args;
-> -       struct acpi_device *acpi;
->         struct pwm_chip *chip;
+> -       struct acpi_device *adev = ACPI_COMPANION(dev);
+> -       struct fwnode_handle *fwnode = NULL, *next;
+> -
+> -       if (dev->of_node)
+> -               fwnode = of_fwnode_handle(dev->of_node);
+> -       else if (adev)
+> -               fwnode = acpi_fwnode_handle(adev);
+> +       const struct fwnode_handle *fwnode = dev_fwnode(dev);
+> +       struct fwnode_handle *next;
+>
+>         /* Try to find a child in primary fwnode */
+>         next = fwnode_get_next_child_node(fwnode, child);
+> @@ -868,28 +863,31 @@ EXPORT_SYMBOL_GPL(device_get_child_node_count);
+>
+>  bool device_dma_supported(struct device *dev)
+>  {
+> +       const struct fwnode_handle *fwnode = dev_fwnode(dev);
+> +
+>         /* For DT, this is always supported.
+>          * For ACPI, this depends on CCA, which
+>          * is determined by the acpi_dma_supported().
+>          */
+> -       if (IS_ENABLED(CONFIG_OF) && dev->of_node)
+> +       if (is_of_node(fwnode))
+>                 return true;
+>
+> -       return acpi_dma_supported(ACPI_COMPANION(dev));
+> +       return acpi_dma_supported(to_acpi_device_node(fwnode));
+>  }
+>  EXPORT_SYMBOL_GPL(device_dma_supported);
+>
+>  enum dev_dma_attr device_get_dma_attr(struct device *dev)
+>  {
+> +       const struct fwnode_handle *fwnode = dev_fwnode(dev);
+>         enum dev_dma_attr attr = DEV_DMA_NOT_SUPPORTED;
+>
+> -       if (IS_ENABLED(CONFIG_OF) && dev->of_node) {
+> -               if (of_dma_is_coherent(dev->of_node))
+> +       if (is_of_node(fwnode)) {
+> +               if (of_dma_is_coherent(to_of_node(fwnode)))
+>                         attr = DEV_DMA_COHERENT;
+>                 else
+>                         attr = DEV_DMA_NON_COHERENT;
+>         } else
+> -               attr = acpi_get_dma_attr(ACPI_COMPANION(dev));
+> +               attr = acpi_get_dma_attr(to_acpi_device_node(fwnode));
+>
+>         return attr;
+>  }
+> @@ -1007,14 +1005,13 @@ EXPORT_SYMBOL(device_get_mac_address);
+>   * Returns Linux IRQ number on success. Other values are determined
+>   * accordingly to acpi_/of_ irq_get() operation.
+>   */
+> -int fwnode_irq_get(struct fwnode_handle *fwnode, unsigned int index)
+> +int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+>  {
+> -       struct device_node *of_node = to_of_node(fwnode);
+>         struct resource res;
 >         int ret;
 >
-> @@ -874,14 +850,10 @@ static struct pwm_device *acpi_pwm_get(struct fwnode_handle *fwnode)
->         if (ret < 0)
->                 return ERR_PTR(ret);
+> -       if (IS_ENABLED(CONFIG_OF) && of_node)
+> -               return of_irq_get(of_node, index);
+> +       if (is_of_node(fwnode))
+> +               return of_irq_get(to_of_node(fwnode), index);
 >
-> -       acpi = to_acpi_device_node(args.fwnode);
-> -       if (!acpi)
-> -               return ERR_PTR(-EINVAL);
-> -
->         if (args.nargs < 2)
->                 return ERR_PTR(-EPROTO);
+>         ret = acpi_irq_get(ACPI_HANDLE_FWNODE(fwnode), index, &res);
+>         if (ret)
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 0d876316e61d..073e680c35e2 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -119,7 +119,7 @@ struct fwnode_handle *device_get_named_child_node(struct device *dev,
+>  struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+>  void fwnode_handle_put(struct fwnode_handle *fwnode);
 >
-> -       chip = device_to_pwmchip(&acpi->dev);
-> +       chip = fwnode_to_pwmchip(args.fwnode);
->         if (IS_ERR(chip))
->                 return ERR_CAST(chip);
+> -int fwnode_irq_get(struct fwnode_handle *fwnode, unsigned int index);
+> +int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
 >
-> @@ -894,7 +866,6 @@ static struct pwm_device *acpi_pwm_get(struct fwnode_handle *fwnode)
+>  unsigned int device_get_child_node_count(struct device *dev);
 >
->         if (args.nargs > 2 && args.args[2] & PWM_POLARITY_INVERTED)
->                 pwm->args.polarity = PWM_POLARITY_INVERSED;
-> -#endif
->
->         return pwm;
->  }
 > --
-> 2.30.2
->
+
+Applied as 5.14 material along with the [1-2/3], thanks!
