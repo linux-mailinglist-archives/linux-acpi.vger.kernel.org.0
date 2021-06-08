@@ -2,206 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E787439FC44
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 18:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 252F039FCA2
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 18:37:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231663AbhFHQWf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 12:22:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56076 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbhFHQWf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 12:22:35 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74D31C061574
-        for <linux-acpi@vger.kernel.org>; Tue,  8 Jun 2021 09:20:26 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id i94so17190345wri.4
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Jun 2021 09:20:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=T00FNpH7loMoqEtu1eWkUwRL9Kx0HIFZ6Q16qohE+J4=;
-        b=HRZtPkdQMgKsoj0cPRM68ogG0mMmoH7ag19wxbhzjdW5YKTZEzrIk4akAiv8oS9QDS
-         iHwHC9YruyRIKFthp5KNROuavoBGpuhJv7OkiaTg8t5ZcVK4dNC5Os5hgffWYEDId5Hx
-         EtUDio58Sr+cKs0CBMf79P0wIvBmREi5fhp6SkaV/zyw/3tAHcQwYCIWW9NRbZdMkO6r
-         cy2QNVX6lWOZXd82Zh+xQyfKInh4LQaY2zxWXnhB9jqfmB9v2Hfo7DbgMCqz8ohURgOx
-         9oTKXkpOPLnPfp52Vbtl8Vr6Ffgmbm1aR9uO96IoFGzzGa1DKxehsE+75ZnfKCsH/Pp0
-         9Ksg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=T00FNpH7loMoqEtu1eWkUwRL9Kx0HIFZ6Q16qohE+J4=;
-        b=F4EcnEJIEua01SIe56+7aDwjQEUdqjN0+K64SB3DQ9uGmbhVtbUdZ22++wgbsxhV5w
-         Ujf51ZEet5T+Bgp/9It0Ay5+4vjKLTI/jlVyOUpy5FiW3MyGRBCwTIyscsqivY8DfS+/
-         oNUio8LDGzDFGPV5KnsiWm1J1rsmq5DQocd02qGLPDrN1320WfSXXTfTzS7dZjE33QcB
-         XAK2yFGMvfVR6zEqsYvxQGvHppbbigQg7vNKIE/NKLAzLxB9r5Kq5jRHAuYxCgf6cWaA
-         X9mkG6UkgKNUKe0jdRVl/2atf7KWS/UOFHg9LqVT+tl6zSaWR6nWNJhkgHuuXjUxKTIE
-         +Shg==
-X-Gm-Message-State: AOAM530+AQ3zXVqRuXIEs1GEHC2dIdp8HxVJjhGWwqtzvBoTAcRbJaJH
-        6y5zX3eBjLlxuqTs+3CRtFA=
-X-Google-Smtp-Source: ABdhPJyIdlws1mfTZDVOyk7oQVbCvi9swbRfOVqsI9H4/EQPATyt1/mTBwmS6f3gPjcBQlUffcOIfw==
-X-Received: by 2002:adf:e404:: with SMTP id g4mr23226889wrm.414.1623169225059;
-        Tue, 08 Jun 2021 09:20:25 -0700 (PDT)
-Received: from ?IPv6:2a02:908:1984:a6c0::f8b0? ([2a02:908:1984:a6c0::f8b0])
-        by smtp.gmail.com with ESMTPSA id v7sm23989440wrf.82.2021.06.08.09.20.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Jun 2021 09:20:24 -0700 (PDT)
-Subject: Re: [PATCH v7 2/2] ACPI: Add quirks for AMD Renoir/Lucienne CPUs to
- force the D3 hint
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>
-Cc:     "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
-        linux-acpi@vger.kernel.org, rrangel@chromium.org,
-        david.e.box@linux.intel.com, Shyam-sundar.S-k@amd.com,
-        Nehal-bakulchandra.Shah@amd.com, Alexander.Deucher@amd.com,
-        prike.liang@amd.com
-References: <20210608154255.8693-1-mario.limonciello@amd.com>
- <20210608154255.8693-2-mario.limonciello@amd.com>
-From:   Julian Sikorski <belegdol@gmail.com>
-Message-ID: <0825a2d6-be28-3a4d-54b3-c45cc18fbab9@gmail.com>
-Date:   Tue, 8 Jun 2021 18:20:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S232131AbhFHQjm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 12:39:42 -0400
+Received: from mga14.intel.com ([192.55.52.115]:64004 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231877AbhFHQjm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 8 Jun 2021 12:39:42 -0400
+IronPort-SDR: yjM6sY0wV1hy8wEWAoVf6I+hy885Cj2IvIgW0JoAufkNe/GqmsHDbsxMi15U2NO5YWbYboYuLT
+ zdwPBE675eaw==
+X-IronPort-AV: E=McAfee;i="6200,9189,10009"; a="204697719"
+X-IronPort-AV: E=Sophos;i="5.83,258,1616482800"; 
+   d="scan'208";a="204697719"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2021 09:37:48 -0700
+IronPort-SDR: gPsmq0Zw4oVW/ZXcW1bpkGkRdhN6/Jl/KAl7gIrV+ViJLpPN7rjzUSl0ppWViuHv6K3Rxme4cG
+ wak63vxbb+Cg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,258,1616482800"; 
+   d="scan'208";a="635126279"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga006.fm.intel.com with ESMTP; 08 Jun 2021 09:37:46 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id A7C8AB9; Tue,  8 Jun 2021 19:38:10 +0300 (EEST)
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Mario Limonciello <mario.limonciello@outlook.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: Pass the same capabilities to the _OSC regardless of the query flag
+Date:   Tue,  8 Jun 2021 19:38:10 +0300
+Message-Id: <20210608163810.18071-1-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <YL+Gqh9dT06SBLCx@lahna.fi.intel.com>
+References: <YL+Gqh9dT06SBLCx@lahna.fi.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210608154255.8693-2-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-W dniu 08.06.2021 o 17:42, Mario Limonciello pisze:
-> AMD systems from Renoir and Lucienne require that the NVME controller
-> is put into D3 over a Modern Standby / suspend-to-idle
-> cycle.  This is "typically" accomplished using the `StorageD3Enable`
-> property in the _DSD, but this property was introduced after many
-> of these systems launched and most OEM systems don't have it in
-> their BIOS.
-> 
-> On AMD Renoir without these drives going into D3 over suspend-to-idle
-> the resume will fail with the NVME controller being reset and a trace
-> like this in the kernel logs:
-> ```
-> [   83.556118] nvme nvme0: I/O 161 QID 2 timeout, aborting
-> [   83.556178] nvme nvme0: I/O 162 QID 2 timeout, aborting
-> [   83.556187] nvme nvme0: I/O 163 QID 2 timeout, aborting
-> [   83.556196] nvme nvme0: I/O 164 QID 2 timeout, aborting
-> [   95.332114] nvme nvme0: I/O 25 QID 0 timeout, reset controller
-> [   95.332843] nvme nvme0: Abort status: 0x371
-> [   95.332852] nvme nvme0: Abort status: 0x371
-> [   95.332856] nvme nvme0: Abort status: 0x371
-> [   95.332859] nvme nvme0: Abort status: 0x371
-> [   95.332909] PM: dpm_run_callback(): pci_pm_resume+0x0/0xe0 returns -16
-> [   95.332936] nvme 0000:03:00.0: PM: failed to resume async: error -16
-> ```
-> 
-> The Microsoft documentation for StorageD3Enable mentioned that Windows has
-> a hardcoded allowlist for D3 support, which was used for these platforms.
-> Introduce quirks to hardcode them for Linux as well.
-> 
-> As this property is now "standardized", OEM systems using AMD Cezanne and
-> newer APU's have adopted this property, and quirks like this should not be
-> necessary.
-> 
-> CC: Julian Sikorski <belegdol@gmail.com>
-> CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
-> CC: Alexander Deucher <Alexander.Deucher@amd.com>
-> CC: Rafael J. Wysocki <rjw@rjwysocki.net>
-> CC: Prike Liang <prike.liang@amd.com>
-> Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->   drivers/acpi/device_pm.c |  3 +++
->   drivers/acpi/internal.h  |  9 +++++++++
->   drivers/acpi/x86/utils.c | 25 +++++++++++++++++++++++++
->   3 files changed, 37 insertions(+)
-> 
-> Changes from v4->v5:
->   * Add this patch back in as it's been made apparent that the
->     system needs to be hardcoded for these.
->     Changes:
->     - Drop Cezanne - it's now covered by StorageD3Enable
->     - Rebase ontop of acpi_storage_d3 outside of NVME
-> Changes from v5->v6:
->   * Move the quirk check into drivers/acpi/x86/ as suggested by
->     Rafael.
-> Changes from v6->v7:
->   * Move header location
->   * Optimization of force function
-> 
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index c45f2d76b67e..31e0025a913e 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -1356,6 +1356,9 @@ bool acpi_storage_d3(struct device *dev)
->   	struct acpi_device *adev = ACPI_COMPANION(dev);
->   	u8 val;
->   
-> +	if (force_storage_d3())
-> +		return true;
-> +
->   	if (!adev)
->   		return false;
->   	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
-> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-> index f973bbe90e5e..e29ec463bb07 100644
-> --- a/drivers/acpi/internal.h
-> +++ b/drivers/acpi/internal.h
-> @@ -236,6 +236,15 @@ static inline int suspend_nvs_save(void) { return 0; }
->   static inline void suspend_nvs_restore(void) {}
->   #endif
->   
-> +#ifdef CONFIG_X86
-> +bool force_storage_d3(void);
-> +#else
-> +static inline bool force_storage_d3(void)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->   /*--------------------------------------------------------------------------
->   				Device properties
->     -------------------------------------------------------------------------- */
-> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-> index bdc1ba00aee9..5298bb4d81fe 100644
-> --- a/drivers/acpi/x86/utils.c
-> +++ b/drivers/acpi/x86/utils.c
-> @@ -135,3 +135,28 @@ bool acpi_device_always_present(struct acpi_device *adev)
->   
->   	return ret;
->   }
-> +
-> +/*
-> + * AMD systems from Renoir and Lucienne *require* that the NVME controller
-> + * is put into D3 over a Modern Standby / suspend-to-idle cycle.
-> + *
-> + * This is "typically" accomplished using the `StorageD3Enable`
-> + * property in the _DSD that is checked via the `acpi_storage_d3` function
-> + * but this property was introduced after many of these systems launched
-> + * and most OEM systems don't have it in their BIOS.
-> + *
-> + * The Microsoft documentation for StorageD3Enable mentioned that Windows has
-> + * a hardcoded allowlist for D3 support, which was used for these platforms.
-> + *
-> + * This allows quirking on Linux in a similar fashion.
-> + */
-> +const struct x86_cpu_id storage_d3_cpu_ids[] = {
-> +	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
-> +	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
-> +	{}
-> +};
-> +
-> +bool force_storage_d3(void)
-> +{
-> +	return x86_match_cpu(storage_d3_cpu_ids);
-> +}
-> 
+Commit 719e1f561afb ("ACPI: Execute platform _OSC also with query bit
+clear") makes acpi_bus_osc_negotiate_platform_control() not only query
+the platforms capabilities but it also commits the result back to the
+firmware to report which capabilities are supported by the OS back to
+the firmware
 
-Tested-by: Julian Sikorski <belegdol@gmail.com>
+On certain systems the BIOS loads SSDT tables dynamically based on the
+capabilities the OS claims to support. However, on these systems the
+_OSC actually clears some of the bits (under certain conditions) so what
+happens is that now when we call the _OSC twice the second time we pass
+the cleared values and that results errors like below to appear on the
+system log:
+
+  ACPI BIOS Error (bug): Could not resolve symbol [\_PR.PR00._CPC], AE_NOT_FOUND (20210105/psargs-330)
+  ACPI Error: Aborting method \_PR.PR01._CPC due to previous error (AE_NOT_FOUND) (20210105/psparse-529)
+
+In addition the ACPI 6.4 spec says following [1]:
+
+  If the OS declares support of a feature in the Support Field in one
+  call to _OSC, then it must preserve the set state of that bit
+  (declaring support for that feature) in all subsequent calls.
+
+Based on the above we can fix the issue by passing the same set of
+capabilities to the platform wide _OSC in both calls regardless of the
+query flag.
+
+While there drop the context.ret.length check which was wrong to begin
+with (as the length is number of bytes not elements). This is already
+checked in acpi_run_osc() that also returns an error in that case.
+
+[1] https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#sequence-of-osc-calls
+
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213023
+BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1963717
+Fixes: 719e1f561afb ("ACPI: Execute platform _OSC also with query bit clear")
+Cc: Mario Limonciello <mario.limonciello@outlook.com>
+cc: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+ drivers/acpi/bus.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index be7da23fad76..61e8c02595ac 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -336,26 +336,19 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+ 		return;
+ 	}
+ 
+-	/*
+-	 * Now run _OSC again with query flag clear and with the caps
+-	 * supported by both the OS and the platform.
+-	 */
++	/* Now run _OSC again with query flag clear */
+ 	capbuf[OSC_QUERY_DWORD] = 0;
+-	capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
+-	kfree(context.ret.pointer);
+ 
+ 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+ 		return;
+ 
+ 	capbuf_ret = context.ret.pointer;
+-	if (context.ret.length > OSC_SUPPORT_DWORD) {
+-		osc_sb_apei_support_acked =
+-			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
+-		osc_pc_lpi_support_confirmed =
+-			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
+-		osc_sb_native_usb4_support_confirmed =
+-			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
+-	}
++	osc_sb_apei_support_acked =
++		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
++	osc_pc_lpi_support_confirmed =
++		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
++	osc_sb_native_usb4_support_confirmed =
++		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
+ 
+ 	kfree(context.ret.pointer);
+ }
+-- 
+2.30.2
+
