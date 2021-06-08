@@ -2,165 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8915F39F652
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 14:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B13939F6A9
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 14:30:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232528AbhFHMWp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 08:22:45 -0400
-Received: from mail-ot1-f51.google.com ([209.85.210.51]:43755 "EHLO
-        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232246AbhFHMWo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 08:22:44 -0400
-Received: by mail-ot1-f51.google.com with SMTP id i12-20020a05683033ecb02903346fa0f74dso20060003otu.10;
-        Tue, 08 Jun 2021 05:20:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=aBvx0tMqvnsqasRMwdIjV828Q4KMfEaGuv9isdIMh6w=;
-        b=AfriIGXHJdqcAM38Gv6UrSnFkVhDOaztKwBGacdZwnam3vJ8mSUStbcLynOlF6rCYG
-         Bt1Ck+vueKHFANZQ+NNh92WbOYKVC4zyd+U8m8X2xCgNc1XIq1oGlLvR5WTV3rvd1s9a
-         rT5SRFYJi/9e1ntWO4Brn/sugqgzykiI4TRQjP+Ot5388mITcuoItUeKeQ/GhNiehcOF
-         1cId7F8t2qfVkPLq0kwi1mOzQgdwjv9iv7XjHGhYI+AVa/g7gNkegAIvct4bwIvWMw8P
-         +KKmag6s0aK/laagl3SXQBIGjGdfqezwqnu82c6bjZVs0IxtN/ZsR0ci8TrUb4hzNAl1
-         OOag==
-X-Gm-Message-State: AOAM530r7JzBSDbX+lF7PFtF/eFilSI9VyCS2TSZdLuP91wCRKOgcMLQ
-        hl9A0bgl0Oy1NHF86tNTyjyb5GRGEdVNUiPtGsg=
-X-Google-Smtp-Source: ABdhPJxH/dWUiK6LlZLSUta/Ys0v09YjScxWXuTxxpG59lqd7H1n1RYtnEYQbcCaesHEWVw7jYVneuift9/T5XVCqBA=
-X-Received: by 2002:a9d:63cd:: with SMTP id e13mr18583145otl.206.1623154851653;
- Tue, 08 Jun 2021 05:20:51 -0700 (PDT)
+        id S232622AbhFHMcq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 08:32:46 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:60730 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232624AbhFHMcn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 08:32:43 -0400
+Received: from [123.112.67.167] (helo=[192.168.0.107])
+        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <hui.wang@canonical.com>)
+        id 1lqasY-0005wK-QD; Tue, 08 Jun 2021 12:30:47 +0000
+Subject: Re: [PATCH] ACPI : don't always override the acpi irq
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        manuelkrause@netscape.net
+References: <20210608045632.8832-1-hui.wang@canonical.com>
+ <CAJZ5v0inJMEAEDx4WGd4FNp3kYHGA4Pe-UkfpYTUQupKT0-A+Q@mail.gmail.com>
+From:   Hui Wang <hui.wang@canonical.com>
+Message-ID: <c28751fe-0f66-2c2e-c416-a998df8b75f2@canonical.com>
+Date:   Tue, 8 Jun 2021 20:30:39 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-References: <20210607195430.48228-1-david@redhat.com> <20210607195430.48228-10-david@redhat.com>
-In-Reply-To: <20210607195430.48228-10-david@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Jun 2021 14:20:40 +0200
-Message-ID: <CAJZ5v0is=8897cneU7VwfV-HRpqAk=CU0833xyyxKjDZfJPHMw@mail.gmail.com>
-Subject: Re: [PATCH v1 09/12] ACPI: memhotplug: use a single static memory
- group for a single memory device
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Marek Kedzierski <mkedzier@redhat.com>,
-        Hui Zhu <teawater@gmail.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        virtualization@lists.linux-foundation.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAJZ5v0inJMEAEDx4WGd4FNp3kYHGA4Pe-UkfpYTUQupKT0-A+Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 7, 2021 at 9:55 PM David Hildenbrand <david@redhat.com> wrote:
->
-> Let's group all memory we add for a single memory device - we want a
-> single node for that (which also seems to be the sane thing to do).
->
-> We won't care for now about memory that was already added to the system
-> (e.g., via e820) -- usually *all* memory of a memory device was already
-> added and we'll fail acpi_memory_enable_device().
->
-> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 6/8/21 7:50 PM, Rafael J. Wysocki wrote:
+> On Tue, Jun 8, 2021 at 6:56 AM Hui Wang <hui.wang@canonical.com> wrote:
+>> The laptop keyboard doesn't work on many MEDION notebooks, but the
+>> keyboard works well under Windows and Unix.
+>>
+>> Through debugging, we found this log in the dmesg:
+>> ACPI: IRQ 1 override to edge, high
+>> pnp 00:03: Plug and Play ACPI device, IDs PNP0303 (active)
+>>
+>> And we checked the IRQ definition in the DSDT, it is:
+>>      IRQ (Level, ActiveLow, Exclusive, )
+>>          {1}
+>>
+>> So the BIOS defines the keyboard irq to Level_Low, but the linux
+>> kernel override it to Edge_High. If let the linux kernel skip the irq
+>> override, the keyboard will work normally.
+>>
+>>  From the existing comment in the acpi_dev_get_irqresource(), the
+>> override function only needs to be called when BIOS defines IRQ() or
+>> IRQNoFlags, and according to page 419 and 420 of the
+>> ACPI_6_3_final_Jan30.pdf, if IRQ() is empty or defines IRQNoFlags,
+> Say "Section ... of ACPI 6.3" instead of referring directly to a PDF file.
+>
+> And if you refer to ACPI 6.4 instead, you may use a Link tag to point
+> to the relevant section in the HTML format of the spec.
+OK, go it.
+>> the IRQ is High true, edge sensitive and non-shareable. The linux
+>> ACPI driver (acpi_rs_set_irq[] in rsirq.c) also assumes so.
+>>
+>> So here add a function to check 4 conditions, if all of them are true,
+>> call override function. otherwise, it means IRQ descriptior in the
+>> BIOS is not legacy or is not empty.
+>>
+>> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
+>> BugLink: http://bugs.launchpad.net/bugs/1909814
+>> Reported-and-tested-by: Manuel Krause <manuelkrause@netscape.net>
+>> Signed-off-by: Hui Wang <hui.wang@canonical.com>
+>> ---
+>>   drivers/acpi/resource.c | 13 ++++++++++++-
+>>   1 file changed, 12 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+>> index ee78a210c606..d346aa24ffd6 100644
+>> --- a/drivers/acpi/resource.c
+>> +++ b/drivers/acpi/resource.c
+>> @@ -380,6 +380,16 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
+>>   }
+>>   EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
+>>
+>> +static bool acpi_dev_irq_empty_or_noflags(bool legacy, u8 triggering, u8 polarity,
+>> +                                         u8 shareable)
+>> +{
+>> +       if (legacy && (triggering == ACPI_EDGE_SENSITIVE) &&
+>> +           (polarity == ACPI_ACTIVE_HIGH) && (shareable == ACPI_EXCLUSIVE))
+>> +               return true;
+>> +       else
+>> +               return false;
+> Because the function returns bool, you can do
+>
+>    return legacy && triggering == ACPI_EDGE_SENSITIVE && polarity ==
+> ACPI_ACTIVE_HIGH && shareable == ACPI_EXCLUSIVE;
+>
+> Also I'm not sure why a new function is needed for this at all, as the
+> check can be done in-line below just fine.
+>
+> Moreover, as it stands, the only purpose of the "legacy" argument of
+> acpi_dev_get_irqresource() is whether or not to do the override, so
+> the triggering/polarity/shareable check can be used to determine the
+> value of "legacy" when calling that function from
+> acpi_dev_resource_interrupt() in the ACPI_RESOURCE_TYPE_IRQ case.
 
-> ---
->  drivers/acpi/acpi_memhotplug.c | 35 +++++++++++++++++++++++++++++-----
->  1 file changed, 30 insertions(+), 5 deletions(-)
+Got it, will do a change like that.
+
+Thanks.
+
 >
-> diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-> index eb4faf7c5cad..0c7b062c0e5d 100644
-> --- a/drivers/acpi/acpi_memhotplug.c
-> +++ b/drivers/acpi/acpi_memhotplug.c
-> @@ -54,6 +54,7 @@ struct acpi_memory_info {
->  struct acpi_memory_device {
->         struct acpi_device *device;
->         struct list_head res_list;
-> +       int mgid;
->  };
->
->  static acpi_status
-> @@ -171,10 +172,31 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
->         acpi_handle handle = mem_device->device->handle;
->         int result, num_enabled = 0;
->         struct acpi_memory_info *info;
-> -       mhp_t mhp_flags = MHP_NONE;
-> -       int node;
-> +       mhp_t mhp_flags = MHP_NID_IS_MGID;
-> +       u64 total_length = 0;
-> +       int node, mgid;
->
->         node = acpi_get_node(handle);
-> +
-> +       list_for_each_entry(info, &mem_device->res_list, list) {
-> +               if (!info->length)
-> +                       continue;
-> +               /* We want a single node for the whole memory group */
-> +               if (node < 0)
-> +                       node = memory_add_physaddr_to_nid(info->start_addr);
-> +               total_length += info->length;
-> +       }
-> +
-> +       if (!total_length) {
-> +               dev_err(&mem_device->device->dev, "device is empty\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       mgid = register_static_memory_group(node, PFN_UP(total_length));
-> +       if (mgid < 0)
-> +               return mgid;
-> +       mem_device->mgid = mgid;
-> +
->         /*
->          * Tell the VM there is more memory here...
->          * Note: Assume that this function returns zero on success
-> @@ -188,12 +210,10 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
->                  */
->                 if (!info->length)
->                         continue;
-> -               if (node < 0)
-> -                       node = memory_add_physaddr_to_nid(info->start_addr);
->
->                 if (mhp_supports_memmap_on_memory(info->length))
->                         mhp_flags |= MHP_MEMMAP_ON_MEMORY;
-> -               result = __add_memory(node, info->start_addr, info->length,
-> +               result = __add_memory(mgid, info->start_addr, info->length,
->                                       mhp_flags);
->
->                 /*
-> @@ -253,6 +273,10 @@ static void acpi_memory_device_free(struct acpi_memory_device *mem_device)
->         if (!mem_device)
->                 return;
->
-> +       /* In case we succeeded adding *some* memory, unregistering fails. */
-> +       if (mem_device->mgid >= 0)
-> +               unregister_memory_group(mem_device->mgid);
-> +
->         acpi_memory_free_device_resources(mem_device);
->         mem_device->device->driver_data = NULL;
->         kfree(mem_device);
-> @@ -273,6 +297,7 @@ static int acpi_memory_device_add(struct acpi_device *device,
->
->         INIT_LIST_HEAD(&mem_device->res_list);
->         mem_device->device = device;
-> +       mem_device->mgid = -1;
->         sprintf(acpi_device_name(device), "%s", ACPI_MEMORY_DEVICE_NAME);
->         sprintf(acpi_device_class(device), "%s", ACPI_MEMORY_DEVICE_CLASS);
->         device->driver_data = mem_device;
-> --
-> 2.31.1
->
+>> +}
+>> +
+>>   static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+>>                                       u8 triggering, u8 polarity, u8 shareable,
+>>                                       bool legacy)
+>> @@ -401,7 +411,8 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+>>           * using extended IRQ descriptors we take the IRQ configuration
+>>           * from _CRS directly.
+>>           */
+>> -       if (legacy && !acpi_get_override_irq(gsi, &t, &p)) {
+>> +       if (acpi_dev_irq_empty_or_noflags(legacy, triggering, polarity, shareable)
+>> +           && !acpi_get_override_irq(gsi, &t, &p)) {
+>>                  u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
+>>                  u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
+>>
+>> --
