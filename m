@@ -2,105 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E50A139FAAA
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 17:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D34A39FAC9
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 17:33:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231572AbhFHP3h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 11:29:37 -0400
-Received: from mail-oi1-f169.google.com ([209.85.167.169]:35375 "EHLO
-        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231253AbhFHP3g (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 11:29:36 -0400
-Received: by mail-oi1-f169.google.com with SMTP id v22so21918412oic.2
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Jun 2021 08:27:43 -0700 (PDT)
+        id S232123AbhFHPfb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 11:35:31 -0400
+Received: from mail-oi1-f182.google.com ([209.85.167.182]:46706 "EHLO
+        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231165AbhFHPfb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 11:35:31 -0400
+Received: by mail-oi1-f182.google.com with SMTP id c13so16355531oib.13
+        for <linux-acpi@vger.kernel.org>; Tue, 08 Jun 2021 08:33:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HNwqdF6FkF+jEphsav1OW8cGD9Z3o0y9RutUW9W683k=;
-        b=nAHCul9o2WOflGZ+9cLkKBgJSj4Tnyu3/2X3CVw1b5RoerbD+iMId/I6WJ7RMXdZiG
-         vsgqizH8KieMXQvJS9wsCmTyxrtYO6j2BPFU31cJj0I6yLTLmw9gcZiL0ZkOL0FlQLYd
-         yO3Dy74XKVG5CGSLsfPqm9faw8Et0ZEkpGAbgcHkRXqqWlIxOkVLpEYBCJ960eBWNk9R
-         OKccY9B+7UIUmXsvaR9SwLHb3cBE9AVzC/xRD1EizI1VTB43Ri75YtrNDg86zUFSV3Wr
-         OFklkR8NhE8Ao9v0mNYYYFMCeUUqWvmVH0ovMzE6VLBl9CLszv5N5UpGJnD+8PNfTG9K
-         uj4w==
-X-Gm-Message-State: AOAM531cleY0h1KHxmzkTdCj5NufULsarFqtVOypOjtLGr0xcguM+7Sv
-        GoNmiEiWC5ewJ42plXQWiMEY2jZDRDFy82HAdn0=
-X-Google-Smtp-Source: ABdhPJw77ZfVxI0LUmBlUzwfJDe5Gk5EiRp2mgYf1qRMoU0+3AGGWi6PwFORKPY+Iw1IzD/mf56Jnwn6i9dg404tClo=
-X-Received: by 2002:aca:650d:: with SMTP id m13mr3242674oim.157.1623166063480;
- Tue, 08 Jun 2021 08:27:43 -0700 (PDT)
+        bh=YJN35sA8oiOBg7KCovp5JQeiORtqOg6k54cAUrPLtG4=;
+        b=A35NB4iLSxYJ7aAkl2TM0CWj5MiiMDbIcluEPA3axo8+zH1k2GylMyBiBBuzQsmh9A
+         o7xuoBfABq6Y0hkRUgDqQCWeVGFA2J2/Pz9noxmizPRQlzaB0vTepQt611KRcWCwVgQ3
+         6KWYay0z453a489apI5WOI/urboOPuc2GeW6XuSy4JPhbG40zwjRGqKxSN7kKzYWUQZ5
+         Jk/NZUKVr6NxZlkJiu6ZlPbK7t9EsvgrAu7iuev/JdydLNoFjlB/2JKz1v099LQOFXph
+         xBHDyU1IA31WC4Xbs7aZ0kkbgLiy5XC8mr5qRV4BhLpUydEHcPJLJIf/N2rqzIVpoDjq
+         Gg8Q==
+X-Gm-Message-State: AOAM532aJjsSfHR/yhOefqfbHyy80U5FIL2cUyDWXkMvtSfxpacqNgPC
+        1jRelYxdNT0UaXEtXltKyVPevP+o/N8vluA09L8=
+X-Google-Smtp-Source: ABdhPJzRuyWDI5+sdTCtvHi3RELfHcyPsG7Fwr/BRp/O2MAk04nmgxLKMLMj3rj7/BC6BMgIqYH9/rKQkjXL0FQXcQ4=
+X-Received: by 2002:aca:b406:: with SMTP id d6mr3252568oif.71.1623166418251;
+ Tue, 08 Jun 2021 08:33:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210607173156.5548-1-mario.limonciello@amd.com>
- <20210608053546.GA14116@lst.de> <CAJZ5v0gMgwJ9kq_mo_dYoTUAqQzhXmrgp9wnY4TRPU1pJp=TyQ@mail.gmail.com>
- <556a22c7-58af-b9d4-d50c-25d7d16bd344@amd.com>
-In-Reply-To: <556a22c7-58af-b9d4-d50c-25d7d16bd344@amd.com>
+References: <20210608140701.17938-1-hui.wang@canonical.com>
+In-Reply-To: <20210608140701.17938-1-hui.wang@canonical.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Jun 2021 17:27:32 +0200
-Message-ID: <CAJZ5v0jwjSruQ1OYNyuJ=3UJA5LJW1-fGSw3Jy8jhRFfXasTuQ@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] ACPI: Move check for _DSD StorageD3Enable property
- to acpi
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        rrangel@chromium.org, David Box <david.e.box@linux.intel.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Nehal-bakulchandra.Shah@amd.com,
-        Alex Deucher <Alexander.Deucher@amd.com>,
-        Prike Liang <prike.liang@amd.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Date:   Tue, 8 Jun 2021 17:33:27 +0200
+Message-ID: <CAJZ5v0iMpaAZTcb9=sYHqLQbEjGoEYduAiUnXg05fc5yvVVDoA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI : don't always override the acpi irq
+To:     Hui Wang <hui.wang@canonical.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        manuelkrause@netscape.net
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 8, 2021 at 4:18 PM Limonciello, Mario
-<mario.limonciello@amd.com> wrote:
+On Tue, Jun 8, 2021 at 4:07 PM Hui Wang <hui.wang@canonical.com> wrote:
 >
-> On 6/8/2021 06:20, Rafael J. Wysocki wrote:
-> > On Tue, Jun 8, 2021 at 7:35 AM Christoph Hellwig <hch@lst.de> wrote:
-> >>
-> >> On Mon, Jun 07, 2021 at 12:31:55PM -0500, Mario Limonciello wrote:
-> >>> +/**
-> >>> + * acpi_storage_d3 - Check if a storage device should use D3.
-> >
-> > Let's be specific about what D3 means here in the first place and
-> > that's D3hot AFAICS.
-> >
-> > And the comment should be something like "Check whether or not to use
-> > D3hot in the suspend path".
+> The laptop keyboard doesn't work on many MEDION notebooks, but the
+> keyboard works well under Windows and Unix.
 >
-> Actually it can be D3hot or D3cold.  Microsoft's documentation doesn't
-> indicate it's D3hot.  On the AMD platforms that prompted some of these
-> changes it's D3cold.
-
-So say "D3" in the one-line description above and "D3hot or D3cold (if
-supported)" in the more detailed comment below.
-
-> >
-> >>> + * @dev: Device to check
-> >>> + *
-> >>> + * Returns %true if @dev should be put into D3 when the ->suspend method is
-> >>> + * called, else %false.  The name of this function is somewhat misleading
-> >>> + * as it has nothing to do with storage except for the name of the ACPI
-> >>> + * property.  On some platforms resume will not work if this hint is ignored.
-> >
-> > I would write it this way:
-> >
-> > "Return %true if the platform firmware wants @dev to be programmed
-> > into D3hot in the suspend path, or %false when there is no specific
-> > preference. On some platforms, if this hint is ignored, @dev may
-> > remain unresponsive after suspending the platform as a whole."
-> >
-> > And I'm not sure if it is necessary to mention "storage" in this comment at all.
-> >
+> Through debugging, we found this log in the dmesg:
+> ACPI: IRQ 1 override to edge, high
+> pnp 00:03: Plug and Play ACPI device, IDs PNP0303 (active)
 >
-> Is your thought here in not mentioning "storage" that this symbol may be
-> overloaded in the future to look at more than just the StorageD3Enable
-> property and used for other things too?
+> And we checked the IRQ definition in the DSDT, it is:
+>     IRQ (Level, ActiveLow, Exclusive, )
+>         {1}
+>
+> So the BIOS defines the keyboard irq to Level_Low, but the linux
+> kernel override it to Edge_High. If let the linux kernel skip the irq
+> override, the keyboard will work normally.
+>
+> From the existing comment in the acpi_dev_get_irqresource(), the
+> override function only needs to be called when BIOS defines IRQ() or
+> IRQNoFlags, and according to the Section 6.4.2.1 of ACPI 6.4 spec [1],
+> if IRQ() is empty or defines IRQNoFlags, the IRQ is High true, edge
+> sensitive and non-shareable. The linux ACPI driver (acpi_rs_set_irq[]
+> in rsirq.c) also assumes so.
+>
+> Here check 3 conditions to decide if the legacy is true or not, if it
+> is true, it means the IRQ() is empty or defines IRQNoFlags and need to
+> call irq_override().
+>
+> Link: https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#irq-descriptor # [1]
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
+> BugLink: http://bugs.launchpad.net/bugs/1909814
+> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Reported-and-tested-by: Manuel Krause <manuelkrause@netscape.net>
+> Signed-off-by: Hui Wang <hui.wang@canonical.com>
+> ---
+>  drivers/acpi/resource.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index ee78a210c606..5e4341ca6790 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -447,6 +447,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+>  {
+>         struct acpi_resource_irq *irq;
+>         struct acpi_resource_extended_irq *ext_irq;
+> +       bool irq_legacy;
+>
+>         switch (ares->type) {
+>         case ACPI_RESOURCE_TYPE_IRQ:
+> @@ -459,9 +460,13 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+>                         irqresource_disabled(res, 0);
+>                         return false;
+>                 }
+> +
+> +               irq_legacy = (irq->triggering == ACPI_EDGE_SENSITIVE && irq->polarity ==
+> +                             ACPI_ACTIVE_HIGH && irq->shareable == ACPI_EXCLUSIVE);
 
-Well, the property itself is not about storage any more anyway.
+Now it would make sense to use a wrapper function for this:
+
+static bool irq_is_legacy(struct acpi_resource_irq *irq)
+{
+        return irq->triggering == ACPI_EDGE_SENSITIVE &&
+                irq->polarity == ACPI_ACTIVE_HIGH &&
+                irq->shareable == ACPI_EXCLUSIVE;
+}
+
+> +
+>                 acpi_dev_get_irqresource(res, irq->interrupts[index],
+>                                          irq->triggering, irq->polarity,
+> -                                        irq->shareable, true);
+> +                                        irq->shareable, irq_legacy);
+
++                                        irq->shareable, irq_is_legacy(irq));
+
+>                 break;
+>         case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
+>                 ext_irq = &ares->data.extended_irq;
+> --
