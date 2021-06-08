@@ -2,79 +2,193 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A47539F554
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 13:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C6E339F569
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 13:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232158AbhFHLom (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 07:44:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39534 "EHLO mail.kernel.org"
+        id S231768AbhFHLq5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 07:46:57 -0400
+Received: from mga06.intel.com ([134.134.136.31]:7106 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232156AbhFHLol (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 8 Jun 2021 07:44:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 31B7061354;
-        Tue,  8 Jun 2021 11:42:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623152569;
-        bh=k9u4oLtqZFZqMQL5RbX/43JiWGWq0vXU6dFMnuHjNoo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h39WeBtDyBSnnyS/KwdvKIPeiku1C6zXw7LmVal2HB5v0KgjR7LYJPAto245v4w83
-         W9mGsRstf8WFhBnWoV6kJ1quWeQX23mNBjCvqMG1Iofg5z8LVtIWPGTm688mbFQP+N
-         uRoFyYS5dNBUzRhvhL380PCYnHLnwMMLFENGABvXecoxBPGP2UtukuNStVcek0oFvO
-         DV9L5fgy93xFwlVCMAg/9KK/Y9XhNC1ydbAqA72XU3Tr+TCuX6LaDZbXF0pT/dCnJy
-         JdTgS6+0RyWe4iTM+Ny6NzHac3JQo3qP54Ur3WTWo8O0MKuytlKVim4DWt4aB7cfKf
-         oh4CYOEKQogMg==
-From:   Will Deacon <will@kernel.org>
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>, joro@8bytes.org
-Cc:     catalin.marinas@arm.com, kernel-team@android.com,
-        Will Deacon <will@kernel.org>, robh+dt@kernel.org,
-        linux-acpi@vger.kernel.org, sudeep.holla@arm.com,
-        robin.murphy@arm.com, guohanjun@huawei.com,
-        devicetree@vger.kernel.org, iommu@lists.linux-foundation.org,
-        zhangfei.gao@linaro.org, wangzhou1@hisilicon.com,
-        Jonathan.Cameron@huawei.com, lorenzo.pieralisi@arm.com,
-        linux-arm-kernel@lists.infradead.org, eric.auger@redhat.com,
-        rjw@rjwysocki.net, lenb@kernel.org
-Subject: Re: [PATCH v15 0/3] iommu/arm-smmu-v3: Add stall support
-Date:   Tue,  8 Jun 2021 12:42:34 +0100
-Message-Id: <162314710744.3707892.6632600736379822229.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210526161927.24268-1-jean-philippe@linaro.org>
-References: <20210526161927.24268-1-jean-philippe@linaro.org>
+        id S230190AbhFHLq4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 8 Jun 2021 07:46:56 -0400
+IronPort-SDR: lDNG5bpd95285+z04ivn0UJqFiSrB4bu5q4EUxrnYZ0KfX+q4Z3ZyC6ET8hk08xsSqtQlFUJq+
+ FPySbtR7AukQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,10008"; a="265978143"
+X-IronPort-AV: E=Sophos;i="5.83,257,1616482800"; 
+   d="scan'208";a="265978143"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2021 04:45:03 -0700
+IronPort-SDR: jAtMKuhg+I9WV3IGFWVu2zEGJz6QQ2Xl9o9ELt6peQQj7LJUeaV4MvXmHSOByi1kJS3hG8wnM/
+ cC+cHxBm9x7w==
+X-IronPort-AV: E=Sophos;i="5.83,257,1616482800"; 
+   d="scan'208";a="449491593"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2021 04:45:00 -0700
+Received: by lahna (sSMTP sendmail emulation); Tue, 08 Jun 2021 14:44:58 +0300
+Date:   Tue, 8 Jun 2021 14:44:58 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Mario Limonciello <mario.limonciello@outlook.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi <linux-acpi@vger.kernel.org>
+Subject: Re: Some SSDT tables are not loading with kernel >= 5.12
+Message-ID: <YL9YOlLosVeYfuuu@lahna.fi.intel.com>
+References: <f634a05a-e3a9-93ab-4b87-d41f5ee083a5@redhat.com>
+ <93d783c4-4468-023b-193e-3fc6eca35445@redhat.com>
+ <a3c05e2f-af1c-ef19-4c9a-6b5b82d2da6d@redhat.com>
+ <CAJZ5v0hYnEes7SDqwSqTGKQf4Qebr=gmj_qSQOPWKQzPdpAwrw@mail.gmail.com>
+ <FR1PR80MB5051E91269FD36681BB357A7E1389@FR1PR80MB5051.lamprd80.prod.outlook.com>
+ <YL5EjVDYLPhRKMIA@lahna.fi.intel.com>
+ <209a230c-a7a6-7a8e-0515-97fb534d7401@redhat.com>
+ <0f733402-ae3b-b4e7-13c4-e6161f9c7e81@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0f733402-ae3b-b4e7-13c4-e6161f9c7e81@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 26 May 2021 18:19:25 +0200, Jean-Philippe Brucker wrote:
-> Add stall support for SMMUv3, enabling I/O page faults and SVA for
-> compatible devices. No change since last version [1], but I'd still like
-> this to be considered for upstream, because there exists hardware and
-> applications.
+Hi,
+
+On Tue, Jun 08, 2021 at 11:50:15AM +0200, Hans de Goede wrote:
+> Hi,
 > 
-> Stall is implemented by the Kunpeng 920 processor for its compression
-> and crypto accelerators, with which I tested the SVA infrastructure.
-> Using the userspace accelerator API [2], a program can obtain a queue
-> from one of these devices and submit compression or encryption work
-> within the program's address space. UADK [3] provides a library to do
-> this, and there is an openssl plugin [4] to use it.
+> On 6/7/21 9:18 PM, Hans de Goede wrote:
+> > Hi,
+> > 
+> > On 6/7/21 6:08 PM, Mika Westerberg wrote:
+> >> Hi,
+> >>
+> >> Tried now on ADL-P and TGL systems and the _OSC still works properly.
+> >>
+> >> Thanks Hans for fixing!
+> >>
+> >> Feel free to add my Tested-by.
+> > 
+> > Thank you for testing, unfortunately so far from the comments here:
+> > 
+> > https://bugzilla.kernel.org/show_bug.cgi?id=213023
+> > 
+> > it seems that my patch does not help resolve the issues caused
+> > by commit 719e1f561afb ("ACPI: Execute platform _OSC also with query
+> > bit clear"), where as reverting that commit does resolve them :|
+> > 
+> > Does anyone have any other ideas how to fix this ?
 > 
-> [...]
+> The reporter who has done the bisect has commented out the new/second
+> _OSC call and that fixes things for them. So I've written a new fix
+> (attached), note just as before this is untested ATM.
+> 
+> Mika, if you can test this one (it replaces the previous one)
+> on machines with native USB4 support to check those don't regress then
+> that would be great.
 
-Applied to will (for-joerg/arm-smmu/updates), thanks!
+I can test it sure, but first let's try to understand what the problem is :)
 
-[1/3] dt-bindings: document stall property for IOMMU masters
-      https://git.kernel.org/will/c/ed1d08b9d0c9
-[2/3] ACPI/IORT: Enable stall support for platform devices
-      https://git.kernel.org/will/c/6522b1e0c78f
-[3/3] iommu/arm-smmu-v3: Add stall support for platform devices
-      https://git.kernel.org/will/c/395ad89d11fd
+> I've asked the various reporters from the 2 bugzilla's for this to also
+> test this new patch. I'll let you know how that goes.
 
-Cheers,
--- 
-Will
+The _OSC on at least one of the affected platforms look like this:
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+    If ((Arg0 == ToUUID ("0811b06e-4a27-44f9-8d60-3cbbc22e7b48") /* Platform-wide Capabilities */))
+    {
+	If ((Arg1 == One))
+	{
+	    OSCP = CAP0 /* \_SB_._OSC.CAP0 */
+	    If ((CAP0 & 0x04))
+	    {
+		OSCO = 0x04
+		If (((SGMD & 0x0F) != 0x02))
+		{
+		    If ((RTD3 == Zero))
+		    {
+			CAP0 &= 0x3B
+			STS0 |= 0x10
+		    }
+		}
+	    }
+	}
+	Else
+	{
+	    STS0 &= 0xFFFFFF00
+	    STS0 |= 0x0A
+	}
+    }
+    Else
+    {
+	STS0 &= 0xFFFFFF00
+	STS0 |= 0x06
+    }
+
+Probably it is fine to call it several times but the issue is with the mask
+that it does:
+
+    CAP0 &= 0x3B
+
+This clears out the upper bits. I think this is actually a BIOS bug as it ends
+up clearing OSC_SB_PCLPI_SUPPORT which is probably not intented, and that seems
+to cause skipping of the LPI tables or something like that.
+
+The alternative is to pass the original caps to the second _OSC call. I think
+this is safe too. While looking at the code, I found a couple of other issues
+that should be fixed with the below hack patch.
+
+What do you think about this approach?
+
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index be7da23fad76..80ff81bb668b 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -290,7 +290,7 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+ 	struct acpi_osc_context context = {
+ 		.uuid_str = sb_uuid_str,
+ 		.rev = 1,
+-		.cap.length = 8,
++		.cap.length = sizeof(capbuf),
+ 		.cap.pointer = capbuf,
+ 	};
+ 	acpi_handle handle;
+@@ -330,32 +330,21 @@ static void acpi_bus_osc_negotiate_platform_control(void)
+ 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+ 		return;
+ 
+-	capbuf_ret = context.ret.pointer;
+-	if (context.ret.length <= OSC_SUPPORT_DWORD) {
+-		kfree(context.ret.pointer);
+-		return;
+-	}
++	kfree(context.ret.pointer);
+ 
+-	/*
+-	 * Now run _OSC again with query flag clear and with the caps
+-	 * supported by both the OS and the platform.
+-	 */
++	/* Now run _OSC again with query flag clear */
+ 	capbuf[OSC_QUERY_DWORD] = 0;
+-	capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
+-	kfree(context.ret.pointer);
+ 
+ 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
+ 		return;
+ 
+ 	capbuf_ret = context.ret.pointer;
+-	if (context.ret.length > OSC_SUPPORT_DWORD) {
+-		osc_sb_apei_support_acked =
+-			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
+-		osc_pc_lpi_support_confirmed =
+-			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
+-		osc_sb_native_usb4_support_confirmed =
+-			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
+-	}
++	osc_sb_apei_support_acked =
++		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
++	osc_pc_lpi_support_confirmed =
++		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
++	osc_sb_native_usb4_support_confirmed =
++		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
+ 
+ 	kfree(context.ret.pointer);
+ }
