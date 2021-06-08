@@ -2,44 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 758D039F4D3
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 13:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F047039F4EE
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 13:28:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231239AbhFHLXA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 07:23:00 -0400
-Received: from mail-oi1-f181.google.com ([209.85.167.181]:33599 "EHLO
-        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231438AbhFHLXA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 07:23:00 -0400
-Received: by mail-oi1-f181.google.com with SMTP id t140so15924893oih.0
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Jun 2021 04:20:55 -0700 (PDT)
+        id S231890AbhFHLaD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 07:30:03 -0400
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:39614 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231661AbhFHLaC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 07:30:02 -0400
+Received: by mail-ot1-f44.google.com with SMTP id 5-20020a9d01050000b02903c700c45721so18880120otu.6
+        for <linux-acpi@vger.kernel.org>; Tue, 08 Jun 2021 04:28:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3kRxbCWG2OXZOSOQYjN+wij24NaIQIZS7qE5IBc04fg=;
-        b=TcBi62i7p9Lh95OlbZxLoI27DWb5tUGWx+1bRnvmyt3g7EVFXkwzsdLgUeGrccvjCM
-         7BcZX0qpYREPT96rIsDtLu3IZEwVPgibHERv7eYIs7JC6XNenDVnd5jn1zPPFOkqMpyY
-         DC/qilcIWz/9pDVh0wwhxJpYEgMajHV0/gy+1B+tXwgjayoJXpcDCHvS11cb7PJ/WLvA
-         jkOyL8t3a466JWtN65rar8U6cdwJRjLEpwWrTT3vTdtxbn94nrdkD4fk4QfVR667Z5bl
-         DH3zBDqkcTeK1kXfPSuWUtS0mor2THkcO3izglz5S+rKOmsLad8Rj7oJCqmN0d0dc9tm
-         gK3A==
-X-Gm-Message-State: AOAM5338kxKCv5Hl6C4tx2ivaeqfPB5q+UQAZZm9cb2NQP+KCJgjyRFS
-        5z2plKicl0oqAPLk7gqMipHaWs9izOo59r5JJS8=
-X-Google-Smtp-Source: ABdhPJzj+2qh6aoDiTJMWsDt+F99NabZ7WwOKqMPzK2YQB8EtAKcx+tMAiNZbi4uFRLXKo/sM5gmy+NMfihYiFhThGY=
-X-Received: by 2002:aca:1910:: with SMTP id l16mr2324517oii.69.1623151254329;
- Tue, 08 Jun 2021 04:20:54 -0700 (PDT)
+        bh=ZDQ2BSSl67ck1vvYJoFh/3g0MHC3Vf+JuWnQHiL10v0=;
+        b=rYSrI1kJ6bXsSFU4ODIxt/qT85ksOSsbjGSBidFaxkqRovD1UTe3C6Y3o+8iBHaO1I
+         X2FaJ4UK9dH5d6YI9gIYjbMYIRjoKSAinnCMxHAmynM+CTtLtKywl23ldV+f/yAm94Ra
+         x8CYNz0TPEEVmrTL/IZu5jMO2dsroLKZXubu2gfWLQSuDr+zkETKk+b9sesCPl1AQdol
+         vif0/8P9ODBBp5Lax+jvohsqy8R/PIivJ+JIh/giZhR74KEgvM7wN2SJoGve2aQg/kTr
+         buv2f7N5ceqXphlabPwNbJutIWqOblct05Wbr2ZtClmRrkgKbGES20mmmn1YXbBPLuwm
+         4Bpw==
+X-Gm-Message-State: AOAM531FI9DSZYurKltLoLGz25EJhSDA7kyMVmGTqfoCdghcqfGPqh/i
+        a0N+mOgDOm9fGA1IH9v3XKyagC2RJG4UapelKHw=
+X-Google-Smtp-Source: ABdhPJyJL1GNbZ9W6xaADH/uQ7Km9hFPsTEVOT9RuVOEnq6m8rIEqK2Sfeme2svgp3BjgLELVBJa2VxBtHgknPPzIpI=
+X-Received: by 2002:a9d:6c4d:: with SMTP id g13mr14527986otq.321.1623151689185;
+ Tue, 08 Jun 2021 04:28:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210607173156.5548-1-mario.limonciello@amd.com> <20210608053546.GA14116@lst.de>
-In-Reply-To: <20210608053546.GA14116@lst.de>
+References: <20210607173156.5548-1-mario.limonciello@amd.com> <20210607173156.5548-2-mario.limonciello@amd.com>
+In-Reply-To: <20210607173156.5548-2-mario.limonciello@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Jun 2021 13:20:43 +0200
-Message-ID: <CAJZ5v0gMgwJ9kq_mo_dYoTUAqQzhXmrgp9wnY4TRPU1pJp=TyQ@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] ACPI: Move check for _DSD StorageD3Enable property
- to acpi
-To:     Christoph Hellwig <hch@lst.de>,
-        Mario Limonciello <mario.limonciello@amd.com>
+Date:   Tue, 8 Jun 2021 13:27:58 +0200
+Message-ID: <CAJZ5v0jFop-M6dT18+eDDgUepFY=CxjHWjfYf6nxrk5B64=vwQ@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] ACPI: Add quirks for AMD Renoir/Lucienne CPUs to
+ force the D3 hint
+To:     Mario Limonciello <mario.limonciello@amd.com>
 Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
         Sagi Grimberg <sagi@grimberg.me>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
@@ -49,68 +49,151 @@ Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
         Nehal-bakulchandra.Shah@amd.com,
         Alex Deucher <Alexander.Deucher@amd.com>,
         Prike Liang <prike.liang@amd.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+        Julian Sikorski <belegdol@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 8, 2021 at 7:35 AM Christoph Hellwig <hch@lst.de> wrote:
+On Mon, Jun 7, 2021 at 7:32 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 >
-> On Mon, Jun 07, 2021 at 12:31:55PM -0500, Mario Limonciello wrote:
-> > +/**
-> > + * acpi_storage_d3 - Check if a storage device should use D3.
-
-Let's be specific about what D3 means here in the first place and
-that's D3hot AFAICS.
-
-And the comment should be something like "Check whether or not to use
-D3hot in the suspend path".
-
-> > + * @dev: Device to check
-> > + *
-> > + * Returns %true if @dev should be put into D3 when the ->suspend method is
-> > + * called, else %false.  The name of this function is somewhat misleading
-> > + * as it has nothing to do with storage except for the name of the ACPI
-> > + * property.  On some platforms resume will not work if this hint is ignored.
-
-I would write it this way:
-
-"Return %true if the platform firmware wants @dev to be programmed
-into D3hot in the suspend path, or %false when there is no specific
-preference. On some platforms, if this hint is ignored, @dev may
-remain unresponsive after suspending the platform as a whole."
-
-And I'm not sure if it is necessary to mention "storage" in this comment at all.
-
-> > + *
-> > + */
+> AMD systems from Renoir and Lucienne require that the NVME controller
+> is put into D3 over a Modern Standby / suspend-to-idle
+> cycle.  This is "typically" accomplished using the `StorageD3Enable`
+> property in the _DSD, but this property was introduced after many
+> of these systems launched and most OEM systems don't have it in
+> their BIOS.
 >
-> I still do not like this comment.  There is nothing about only using this
-> for storage devices.  It is specific to a PCIe slot, and if I plug
-> something that is not a storage device into it the same restrictions
-> still apply.
+> On AMD Renoir without these drives going into D3 over suspend-to-idle
+> the resume will fail with the NVME controller being reset and a trace
+> like this in the kernel logs:
+> ```
+> [   83.556118] nvme nvme0: I/O 161 QID 2 timeout, aborting
+> [   83.556178] nvme nvme0: I/O 162 QID 2 timeout, aborting
+> [   83.556187] nvme nvme0: I/O 163 QID 2 timeout, aborting
+> [   83.556196] nvme nvme0: I/O 164 QID 2 timeout, aborting
+> [   95.332114] nvme nvme0: I/O 25 QID 0 timeout, reset controller
+> [   95.332843] nvme nvme0: Abort status: 0x371
+> [   95.332852] nvme nvme0: Abort status: 0x371
+> [   95.332856] nvme nvme0: Abort status: 0x371
+> [   95.332859] nvme nvme0: Abort status: 0x371
+> [   95.332909] PM: dpm_run_callback(): pci_pm_resume+0x0/0xe0 returns -16
+> [   95.332936] nvme 0000:03:00.0: PM: failed to resume async: error -16
+> ```
+>
+> The Microsoft documentation for StorageD3Enable mentioned that Windows has
+> a hardcoded allowlist for D3 support, which was used for these platforms.
+> Introduce quirks to hardcode them for Linux as well.
+>
+> As this property is now "standardized", OEM systems using AMD Cezanne and
+> newer APU's have adopted this property, and quirks like this should not be
+> necessary.
+>
+> CC: Julian Sikorski <belegdol@gmail.com>
+> CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
+> CC: Alexander Deucher <Alexander.Deucher@amd.com>
+> CC: Rafael J. Wysocki <rjw@rjwysocki.net>
+> CC: Prike Liang <prike.liang@amd.com>
+> Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/acpi/device_pm.c |  3 +++
+>  drivers/acpi/x86/utils.c | 27 +++++++++++++++++++++++++++
+>  include/acpi/acpi_bus.h  |  5 +++++
+>  3 files changed, 35 insertions(+)
+>
+> Changes from v4->v5:
+>  * Add this patch back in as it's been made apparent that the
+>    system needs to be hardcoded for these.
+>    Changes:
+>    - Drop Cezanne - it's now covered by StorageD3Enable
+>    - Rebase ontop of acpi_storage_d3 outside of NVME
+> Changes from v5->v6:
+>  * Move the quirk check into drivers/acpi/x86/ as suggested by
+>    Rafael.
+>
+> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> index 1edb68d00b8e..985c17384192 100644
+> --- a/drivers/acpi/device_pm.c
+> +++ b/drivers/acpi/device_pm.c
+> @@ -1356,6 +1356,9 @@ bool acpi_storage_d3(struct device *dev)
+>         struct acpi_device *adev = ACPI_COMPANION(dev);
+>         u8 val;
+>
+> +       if (force_storage_d3())
+> +               return true;
+> +
+>         if (!adev)
+>                 return false;
+>         if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+> index bdc1ba00aee9..2b8d5b3c876f 100644
+> --- a/drivers/acpi/x86/utils.c
+> +++ b/drivers/acpi/x86/utils.c
+> @@ -135,3 +135,30 @@ bool acpi_device_always_present(struct acpi_device *adev)
+>
+>         return ret;
+>  }
+> +
+> +/*
+> + * AMD systems from Renoir and Lucienne *require* that the NVME controller
+> + * is put into D3 over a Modern Standby / suspend-to-idle cycle.
+> + *
+> + * This is "typically" accomplished using the `StorageD3Enable`
+> + * property in the _DSD that is checked via the `acpi_storage_d3` function
+> + * but this property was introduced after many of these systems launched
+> + * and most OEM systems don't have it in their BIOS.
+> + *
+> + * The Microsoft documentation for StorageD3Enable mentioned that Windows has
+> + * a hardcoded allowlist for D3 support, which was used for these platforms.
+> + *
+> + * This allows quirking on Linux in a similar fashion.
+> + */
+> +const struct x86_cpu_id storage_d3_cpu_ids[] = {
+> +       X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),  /* Renoir */
+> +       X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL), /* Lucienne */
+> +       {}
+> +};
+> +
+> +bool force_storage_d3(void)
+> +{
+> +       if (x86_match_cpu(storage_d3_cpu_ids))
+> +               return true;
+> +       return false;
 
-Originally, it was about storage devices IIUC (and that's why the
-property name is what it is).
+Well, what about doing
 
-IIRC PCIe link management was broken in some NVMe drives and putting
-them into D3hot would allow the link to go down later and it would
-never go up again.  So you-know-who decided to avoid using D3hot for
-all NVMe drives and they were generally characterized as "storage".
-Alas, that turned out to break other things depending on the devices
-being put into D3hot (like PS_ON) so the property was invented to
-allow OEMs to mark the configurations including the devices that
-actually worked (and Linux was/is on the receiving end). And
-originally the property applied to the endpoint device under the root
-port it was present for (my personal opinion about this doesn't really
-matter, so let me avoid wasting time on expressing it).
+  return x86_match_cpu(storage_d3_cpu_ids);
 
-Now, it evidently has been re-purposed to mark PCIe root ports that
-require devices under them to be put into D3hot in the suspend path
-(and it now means any device under the root port with this property,
-at least in some cases).
+instead?
 
-> Also no need for the empty-ish line at the end.
+> +}
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index 3a82faac5767..9b0ddbae5617 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -607,11 +607,16 @@ int acpi_disable_wakeup_device_power(struct acpi_device *dev);
+>
+>  #ifdef CONFIG_X86
+>  bool acpi_device_always_present(struct acpi_device *adev);
+> +bool force_storage_d3(void);
 
-Right.
+This doesn't need to go into acpi_bus.h, because it will only be used
+in device_pm.c.
+
+You may as well put it into drivers/acpi/internal.h.
+
+>  #else
+>  static inline bool acpi_device_always_present(struct acpi_device *adev)
+>  {
+>         return false;
+>  }
+> +static inline bool force_storage_d3(void)
+> +{
+> +       return false;
+> +}
+>  #endif
+>
+>  #ifdef CONFIG_PM
+> --
