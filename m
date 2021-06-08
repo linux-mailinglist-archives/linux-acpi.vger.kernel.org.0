@@ -2,193 +2,377 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C6E339F569
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 13:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 659B139F58B
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 13:49:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231768AbhFHLq5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 07:46:57 -0400
-Received: from mga06.intel.com ([134.134.136.31]:7106 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230190AbhFHLq4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 8 Jun 2021 07:46:56 -0400
-IronPort-SDR: lDNG5bpd95285+z04ivn0UJqFiSrB4bu5q4EUxrnYZ0KfX+q4Z3ZyC6ET8hk08xsSqtQlFUJq+
- FPySbtR7AukQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,10008"; a="265978143"
-X-IronPort-AV: E=Sophos;i="5.83,257,1616482800"; 
-   d="scan'208";a="265978143"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2021 04:45:03 -0700
-IronPort-SDR: jAtMKuhg+I9WV3IGFWVu2zEGJz6QQ2Xl9o9ELt6peQQj7LJUeaV4MvXmHSOByi1kJS3hG8wnM/
- cC+cHxBm9x7w==
-X-IronPort-AV: E=Sophos;i="5.83,257,1616482800"; 
-   d="scan'208";a="449491593"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2021 04:45:00 -0700
-Received: by lahna (sSMTP sendmail emulation); Tue, 08 Jun 2021 14:44:58 +0300
-Date:   Tue, 8 Jun 2021 14:44:58 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mario Limonciello <mario.limonciello@outlook.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi <linux-acpi@vger.kernel.org>
-Subject: Re: Some SSDT tables are not loading with kernel >= 5.12
-Message-ID: <YL9YOlLosVeYfuuu@lahna.fi.intel.com>
-References: <f634a05a-e3a9-93ab-4b87-d41f5ee083a5@redhat.com>
- <93d783c4-4468-023b-193e-3fc6eca35445@redhat.com>
- <a3c05e2f-af1c-ef19-4c9a-6b5b82d2da6d@redhat.com>
- <CAJZ5v0hYnEes7SDqwSqTGKQf4Qebr=gmj_qSQOPWKQzPdpAwrw@mail.gmail.com>
- <FR1PR80MB5051E91269FD36681BB357A7E1389@FR1PR80MB5051.lamprd80.prod.outlook.com>
- <YL5EjVDYLPhRKMIA@lahna.fi.intel.com>
- <209a230c-a7a6-7a8e-0515-97fb534d7401@redhat.com>
- <0f733402-ae3b-b4e7-13c4-e6161f9c7e81@redhat.com>
+        id S232086AbhFHLvH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 07:51:07 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3167 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232032AbhFHLvH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 07:51:07 -0400
+Received: from fraeml704-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Fzp992Vgfz6G82c;
+        Tue,  8 Jun 2021 19:36:29 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml704-chm.china.huawei.com (10.206.15.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2176.2; Tue, 8 Jun 2021 13:49:12 +0200
+Received: from localhost (10.52.125.197) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 8 Jun 2021
+ 12:49:11 +0100
+Date:   Tue, 8 Jun 2021 12:49:10 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+CC:     <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v5 4/6] cxl/acpi: Add downstream port data to cxl_port
+ instances
+Message-ID: <20210608124910.0000329e@Huawei.com>
+In-Reply-To: <162295951736.1109360.12642726343803988356.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <162295949351.1109360.10329014558746500142.stgit@dwillia2-desk3.amr.corp.intel.com>
+        <162295951736.1109360.12642726343803988356.stgit@dwillia2-desk3.amr.corp.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0f733402-ae3b-b4e7-13c4-e6161f9c7e81@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.125.197]
+X-ClientProxiedBy: lhreml722-chm.china.huawei.com (10.201.108.73) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Sat, 5 Jun 2021 23:05:17 -0700
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-On Tue, Jun 08, 2021 at 11:50:15AM +0200, Hans de Goede wrote:
-> Hi,
+> In preparation for infrastructure that enumerates and configures the CXL
+> decode mechanism of an upstream port to its downstream ports, add a
+> representation for a CXL downstream port.
 > 
-> On 6/7/21 9:18 PM, Hans de Goede wrote:
-> > Hi,
-> > 
-> > On 6/7/21 6:08 PM, Mika Westerberg wrote:
-> >> Hi,
-> >>
-> >> Tried now on ADL-P and TGL systems and the _OSC still works properly.
-> >>
-> >> Thanks Hans for fixing!
-> >>
-> >> Feel free to add my Tested-by.
-> > 
-> > Thank you for testing, unfortunately so far from the comments here:
-> > 
-> > https://bugzilla.kernel.org/show_bug.cgi?id=213023
-> > 
-> > it seems that my patch does not help resolve the issues caused
-> > by commit 719e1f561afb ("ACPI: Execute platform _OSC also with query
-> > bit clear"), where as reverting that commit does resolve them :|
-> > 
-> > Does anyone have any other ideas how to fix this ?
+> On ACPI systems the top-most logical downstream ports in the hierarchy
+> are the host bridges (ACPI0016 devices) that decode the memory windows
+> described by the CXL Early Discovery Table Fixed Memory Window
+> Structures (CEDT.CFMWS).
 > 
-> The reporter who has done the bisect has commented out the new/second
-> _OSC call and that fixes things for them. So I've written a new fix
-> (attached), note just as before this is untested ATM.
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  Documentation/ABI/testing/sysfs-bus-cxl |   13 ++++
+>  drivers/cxl/acpi.c                      |   44 ++++++++++++++
+>  drivers/cxl/core.c                      |   95 ++++++++++++++++++++++++++++++-
+>  drivers/cxl/cxl.h                       |   21 +++++++
+>  4 files changed, 169 insertions(+), 4 deletions(-)
 > 
-> Mika, if you can test this one (it replaces the previous one)
-> on machines with native USB4 support to check those don't regress then
-> that would be great.
+> diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
+> index fb996ced7629..0cb31b7ad17b 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-cxl
+> +++ b/Documentation/ABI/testing/sysfs-bus-cxl
+> @@ -35,3 +35,16 @@ Description:
+>  		CXL component registers. The 'uport' symlink connects the CXL
+>  		portX object to the device that published the CXL port
+>  		capability.
+> +
+> +What:		/sys/bus/cxl/devices/portX/dportY
+> +Date:		June, 2021
+> +KernelVersion:	v5.14
+> +Contact:	linux-cxl@vger.kernel.org
+> +Description:
+> +		CXL port objects are enumerated from either a platform firmware
+> +		device (ACPI0017 and ACPI0016) or PCIe switch upstream port with
+> +		CXL component registers. The 'dportY' symlink identifies one or
+> +		more downstream ports that the upstream port may target in its
+> +		decode of CXL memory resources.  The 'Y' integer reflects the
+> +		hardware port unique-id used in the hardware decoder target
+> +		list.
+> diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+> index 556d25ab6966..0ae7464b603d 100644
+> --- a/drivers/cxl/acpi.c
+> +++ b/drivers/cxl/acpi.c
+> @@ -5,19 +5,61 @@
+>  #include <linux/device.h>
+>  #include <linux/kernel.h>
+>  #include <linux/acpi.h>
+> +#include <linux/pci.h>
 
-I can test it sure, but first let's try to understand what the problem is :)
+Not immediately seeing why this include is added in this patch.
 
-> I've asked the various reporters from the 2 bugzilla's for this to also
-> test this new patch. I'll let you know how that goes.
+>  #include "cxl.h"
+>  
+> +static struct acpi_device *to_cxl_host_bridge(struct device *dev)
+> +{
+> +	struct acpi_device *adev = to_acpi_device(dev);
+> +
+> +	if (strcmp(acpi_device_hid(adev), "ACPI0016") == 0)
+> +		return adev;
+> +	return NULL;
+> +}
+> +
+> +static int add_host_bridge_dport(struct device *match, void *arg)
+> +{
+> +	int rc;
+> +	acpi_status status;
+> +	unsigned long long uid;
+> +	struct cxl_port *root_port = arg;
+> +	struct device *host = root_port->dev.parent;
+> +	struct acpi_device *bridge = to_cxl_host_bridge(match);
+> +
+> +	if (!bridge)
+> +		return 0;
+> +
+> +	status = acpi_evaluate_integer(bridge->handle, METHOD_NAME__UID, NULL,
+> +				       &uid);
+> +	if (status != AE_OK) {
+> +		dev_err(host, "unable to retrieve _UID of %s\n",
+> +			dev_name(match));
+> +		return -ENODEV;
+> +	}
+> +
+> +	rc = cxl_add_dport(root_port, match, uid, CXL_RESOURCE_NONE);
+> +	if (rc) {
+> +		dev_err(host, "failed to add downstream port: %s\n",
+> +			dev_name(match));
+> +		return rc;
+> +	}
+> +	dev_dbg(host, "add dport%llu: %s\n", uid, dev_name(match));
+> +	return 0;
+> +}
+> +
+>  static int cxl_acpi_probe(struct platform_device *pdev)
+>  {
+>  	struct cxl_port *root_port;
+>  	struct device *host = &pdev->dev;
+> +	struct acpi_device *adev = ACPI_COMPANION(host);
+>  
+>  	root_port = devm_cxl_add_port(host, host, CXL_RESOURCE_NONE, NULL);
+>  	if (IS_ERR(root_port))
+>  		return PTR_ERR(root_port);
+>  	dev_dbg(host, "add: %s\n", dev_name(&root_port->dev));
+>  
+> -	return 0;
+> +	return bus_for_each_dev(adev->dev.bus, NULL, root_port,
+> +				add_host_bridge_dport);
+>  }
+>  
+>  static const struct acpi_device_id cxl_acpi_ids[] = {
+> diff --git a/drivers/cxl/core.c b/drivers/cxl/core.c
+> index dbbb34618d7d..4418b30cce4f 100644
+> --- a/drivers/cxl/core.c
+> +++ b/drivers/cxl/core.c
+> @@ -33,10 +33,22 @@ static struct attribute_group cxl_base_attribute_group = {
+>  	.attrs = cxl_base_attributes,
+>  };
+>  
+> +static void cxl_dport_release(struct cxl_dport *dport)
+> +{
+> +	put_device(dport->dport);
+> +	list_del(&dport->list);
+This ordering isn't the reverse of what happens cxl_add_dport()
+That would be
 
-The _OSC on at least one of the affected platforms look like this:
+list_del()
+put_device()
+kfree()
 
-    If ((Arg0 == ToUUID ("0811b06e-4a27-44f9-8d60-3cbbc22e7b48") /* Platform-wide Capabilities */))
-    {
-	If ((Arg1 == One))
-	{
-	    OSCP = CAP0 /* \_SB_._OSC.CAP0 */
-	    If ((CAP0 & 0x04))
-	    {
-		OSCO = 0x04
-		If (((SGMD & 0x0F) != 0x02))
-		{
-		    If ((RTD3 == Zero))
-		    {
-			CAP0 &= 0x3B
-			STS0 |= 0x10
-		    }
-		}
-	    }
-	}
-	Else
-	{
-	    STS0 &= 0xFFFFFF00
-	    STS0 |= 0x0A
-	}
-    }
-    Else
-    {
-	STS0 &= 0xFFFFFF00
-	STS0 |= 0x06
-    }
+If there is a strong reason for that I'd like to see a comment here.
 
-Probably it is fine to call it several times but the issue is with the mask
-that it does:
+> +	kfree(dport);
+> +}
+> +
+>  static void cxl_port_release(struct device *dev)
+>  {
+>  	struct cxl_port *port = to_cxl_port(dev);
+> +	struct cxl_dport *dport, *_d;
+>  
+> +	device_lock(dev);
+> +	list_for_each_entry_safe(dport, _d, &port->dports, list)
+> +		cxl_dport_release(dport);
+> +	device_unlock(dev);
+>  	ida_free(&cxl_port_ida, port->id);
+>  	kfree(port);
+>  }
+> @@ -60,9 +72,22 @@ struct cxl_port *to_cxl_port(struct device *dev)
+>  	return container_of(dev, struct cxl_port, dev);
+>  }
+>  
+> -static void unregister_dev(void *dev)
+> +static void unregister_port(void *_port)
+>  {
+> -	device_unregister(dev);
+> +	struct cxl_port *port = _port;
+> +	struct cxl_dport *dport;
+> +
+> +	device_lock(&port->dev);
+> +	list_for_each_entry(dport, &port->dports, list) {
+> +		char link_name[CXL_TARGET_STRLEN];
+> +
+> +		if (snprintf(link_name, CXL_TARGET_STRLEN, "dport%d",
+> +			     dport->port_id) >= CXL_TARGET_STRLEN)
+> +			continue;
+> +		sysfs_remove_link(&port->dev.kobj, link_name);
+> +	}
+> +	device_unlock(&port->dev);
+> +	device_unregister(&port->dev);
+>  }
+>  
+>  static void cxl_unlink_uport(void *_port)
+> @@ -113,6 +138,7 @@ static struct cxl_port *cxl_port_alloc(struct device *uport,
+>  
+>  	port->uport = uport;
+>  	port->component_reg_phys = component_reg_phys;
+> +	INIT_LIST_HEAD(&port->dports);
+>  
+>  	device_initialize(dev);
+>  	device_set_pm_not_required(dev);
+> @@ -157,7 +183,7 @@ struct cxl_port *devm_cxl_add_port(struct device *host, struct device *uport,
+>  	if (rc)
+>  		goto err;
+>  
+> -	rc = devm_add_action_or_reset(host, unregister_dev, dev);
+> +	rc = devm_add_action_or_reset(host, unregister_port, port);
+>  	if (rc)
+>  		return ERR_PTR(rc);
+>  
+> @@ -173,6 +199,69 @@ struct cxl_port *devm_cxl_add_port(struct device *host, struct device *uport,
+>  }
+>  EXPORT_SYMBOL_GPL(devm_cxl_add_port);
+>  
+> +static int add_dport(struct cxl_port *port, struct cxl_dport *new)
+> +{
+> +	struct cxl_dport *dport, *dup = NULL;
+> +
+> +	device_lock(&port->dev);
+> +	list_for_each_entry (dport, &port->dports, list)
+> +		if (new->port_id == dport->port_id) {
+> +			dup = dport;
+> +			goto err;
+> +		}
+> +	list_add_tail(&new->list, &port->dports);
+> +	device_unlock(&port->dev);
+> +
+> +	return 0;
+> +
+> +err:
+> +	device_unlock(&port->dev);
+> +	dev_err(&port->dev,
+> +		"unable to add dport%d-%s non-unique port id (%s)\n",
+> +		new->port_id, dev_name(new->dport), dev_name(dup->dport));
 
-    CAP0 &= 0x3B
+As there is potential that you might end up with other errors in here long term,
+why not move this to the point where the error is detected?
+I think you are fine doing it under the mutex.  Obviously indent will be a deeper
+than ideal.
 
-This clears out the upper bits. I think this is actually a BIOS bug as it ends
-up clearing OSC_SB_PCLPI_SUPPORT which is probably not intented, and that seems
-to cause skipping of the LPI tables or something like that.
+> +	return -EEXIST;
+> +}
+> +
+> +/*
 
-The alternative is to pass the original caps to the second _OSC call. I think
-this is safe too. While looking at the code, I found a couple of other issues
-that should be fixed with the below hack patch.
+This is a bit inconsistent wrt to what functions get full kernel-doc.
+My personal preference would be all the exported functions + any others
+where it is particularly useful.
 
-What do you think about this approach?
+> + * Append downstream port data to a cxl_port, note that all allocations
+> + * and links are undone by cxl_port deletion and release.
+> + */
+> +int cxl_add_dport(struct cxl_port *port, struct device *dport_dev, int port_id,
+> +		  resource_size_t component_reg_phys)
+> +{
+> +	char link_name[CXL_TARGET_STRLEN];
+> +	struct cxl_dport *dport;
+> +	int rc;
+> +
+> +	if (snprintf(link_name, CXL_TARGET_STRLEN, "dport%d", port_id) >=
+> +	    CXL_TARGET_STRLEN)
+> +		return -EINVAL;
+> +
+> +	dport = kzalloc(sizeof(*dport), GFP_KERNEL);
+> +	if (!dport)
+> +		return -ENOMEM;
+> +
+> +	INIT_LIST_HEAD(&dport->list);
+> +	dport->dport = get_device(dport_dev);
+> +	dport->port_id = port_id;
+> +	dport->component_reg_phys = component_reg_phys;
+> +	dport->port = port;
+> +
+> +	rc = add_dport(port, dport);
+> +	if (rc)
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index be7da23fad76..80ff81bb668b 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -290,7 +290,7 @@ static void acpi_bus_osc_negotiate_platform_control(void)
- 	struct acpi_osc_context context = {
- 		.uuid_str = sb_uuid_str,
- 		.rev = 1,
--		.cap.length = 8,
-+		.cap.length = sizeof(capbuf),
- 		.cap.pointer = capbuf,
- 	};
- 	acpi_handle handle;
-@@ -330,32 +330,21 @@ static void acpi_bus_osc_negotiate_platform_control(void)
- 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
- 		return;
- 
--	capbuf_ret = context.ret.pointer;
--	if (context.ret.length <= OSC_SUPPORT_DWORD) {
--		kfree(context.ret.pointer);
--		return;
--	}
-+	kfree(context.ret.pointer);
- 
--	/*
--	 * Now run _OSC again with query flag clear and with the caps
--	 * supported by both the OS and the platform.
--	 */
-+	/* Now run _OSC again with query flag clear */
- 	capbuf[OSC_QUERY_DWORD] = 0;
--	capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
--	kfree(context.ret.pointer);
- 
- 	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
- 		return;
- 
- 	capbuf_ret = context.ret.pointer;
--	if (context.ret.length > OSC_SUPPORT_DWORD) {
--		osc_sb_apei_support_acked =
--			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
--		osc_pc_lpi_support_confirmed =
--			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
--		osc_sb_native_usb4_support_confirmed =
--			capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
--	}
-+	osc_sb_apei_support_acked =
-+		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_APEI_SUPPORT;
-+	osc_pc_lpi_support_confirmed =
-+		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_PCLPI_SUPPORT;
-+	osc_sb_native_usb4_support_confirmed =
-+		capbuf_ret[OSC_SUPPORT_DWORD] & OSC_SB_NATIVE_USB4_SUPPORT;
- 
- 	kfree(context.ret.pointer);
- }
+If you get an error here, it's not been added to the list, but
+in the cxl_dport_release() you remove it from the list. I think you 
+just want to put and free the device here.
+
+
+> +		goto err;
+> +
+> +	rc = sysfs_create_link(&port->dev.kobj, &dport_dev->kobj, link_name);
+> +	if (rc)
+> +		goto err;
+> +
+> +	return 0;
+> +err:
+> +	cxl_dport_release(dport);
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_GPL(cxl_add_dport);
+> +
+>  /**
+>   * cxl_probe_component_regs() - Detect CXL Component register blocks
+>   * @dev: Host device of the @base mapping
+> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> index 46c81165c210..0b89fcfe728a 100644
+> --- a/drivers/cxl/cxl.h
+> +++ b/drivers/cxl/cxl.h
+> @@ -146,6 +146,7 @@ int cxl_map_device_regs(struct pci_dev *pdev,
+>  			struct cxl_register_map *map);
+>  
+>  #define CXL_RESOURCE_NONE ((resource_size_t) -1)
+> +#define CXL_TARGET_STRLEN 20
+>  
+>  /**
+>   * struct cxl_port - logical collection of upstream port devices and
+> @@ -154,19 +155,39 @@ int cxl_map_device_regs(struct pci_dev *pdev,
+>   * @dev: this port's device
+>   * @uport: PCI or platform device implementing the upstream port capability
+>   * @id: id for port device-name
+> + * @dports: cxl_dport instances referenced by decoders
+>   * @component_regs_phys: component register capability base address (optional)
+>   */
+>  struct cxl_port {
+>  	struct device dev;
+>  	struct device *uport;
+>  	int id;
+> +	struct list_head dports;
+>  	resource_size_t component_reg_phys;
+>  };
+>  
+> +/**
+> + * struct cxl_dport - CXL downstream port
+> + * @dport: PCI bridge or firmware device representing the downstream link
+> + * @port_id: unique hardware identifier for dport in decoder target list
+> + * @component_reg_phys: downstream port component registers
+> + * @port: reference to cxl_port that contains this downstream port
+> + * @list: node for a cxl_port's list of cxl_dport instances
+> + */
+> +struct cxl_dport {
+> +	struct device *dport;
+> +	int port_id;
+> +	resource_size_t component_reg_phys;
+> +	struct cxl_port *port;
+> +	struct list_head list;
+> +};
+> +
+>  struct cxl_port *to_cxl_port(struct device *dev);
+>  struct cxl_port *devm_cxl_add_port(struct device *host, struct device *uport,
+>  				   resource_size_t component_reg_phys,
+>  				   struct cxl_port *parent_port);
+>  
+> +int cxl_add_dport(struct cxl_port *port, struct device *dport, int port_id,
+> +		  resource_size_t component_reg_phys);
+>  extern struct bus_type cxl_bus_type;
+>  #endif /* __CXL_H__ */
+> 
+
