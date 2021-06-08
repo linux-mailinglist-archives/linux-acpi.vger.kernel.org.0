@@ -2,125 +2,243 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D34A39FAC9
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 17:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97A7839FB12
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 17:43:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232123AbhFHPfb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 11:35:31 -0400
-Received: from mail-oi1-f182.google.com ([209.85.167.182]:46706 "EHLO
-        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231165AbhFHPfb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 11:35:31 -0400
-Received: by mail-oi1-f182.google.com with SMTP id c13so16355531oib.13
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Jun 2021 08:33:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YJN35sA8oiOBg7KCovp5JQeiORtqOg6k54cAUrPLtG4=;
-        b=A35NB4iLSxYJ7aAkl2TM0CWj5MiiMDbIcluEPA3axo8+zH1k2GylMyBiBBuzQsmh9A
-         o7xuoBfABq6Y0hkRUgDqQCWeVGFA2J2/Pz9noxmizPRQlzaB0vTepQt611KRcWCwVgQ3
-         6KWYay0z453a489apI5WOI/urboOPuc2GeW6XuSy4JPhbG40zwjRGqKxSN7kKzYWUQZ5
-         Jk/NZUKVr6NxZlkJiu6ZlPbK7t9EsvgrAu7iuev/JdydLNoFjlB/2JKz1v099LQOFXph
-         xBHDyU1IA31WC4Xbs7aZ0kkbgLiy5XC8mr5qRV4BhLpUydEHcPJLJIf/N2rqzIVpoDjq
-         Gg8Q==
-X-Gm-Message-State: AOAM532aJjsSfHR/yhOefqfbHyy80U5FIL2cUyDWXkMvtSfxpacqNgPC
-        1jRelYxdNT0UaXEtXltKyVPevP+o/N8vluA09L8=
-X-Google-Smtp-Source: ABdhPJzRuyWDI5+sdTCtvHi3RELfHcyPsG7Fwr/BRp/O2MAk04nmgxLKMLMj3rj7/BC6BMgIqYH9/rKQkjXL0FQXcQ4=
-X-Received: by 2002:aca:b406:: with SMTP id d6mr3252568oif.71.1623166418251;
- Tue, 08 Jun 2021 08:33:38 -0700 (PDT)
+        id S231261AbhFHPpV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 11:45:21 -0400
+Received: from mail-bn7nam10on2055.outbound.protection.outlook.com ([40.107.92.55]:27087
+        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231192AbhFHPpT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 8 Jun 2021 11:45:19 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=STHakTLJFTpXsuiQF49q06DP0bwcW6+fyxgxRJel7Ejtfbf/SlaiA8gA8Ro0cNuyqtZo3cK99bIVI90C1RU/MTlCmYwGQF2h6M32F+0hdAuESz8unYrkuM8pgGnPvRalWgVeutvh+FRHABJyk3zUNAS8i5bScAndofV/6gAazoCyfi79VTxDNR+/O3y1mWjyfqCMxfVVCtzY8DX3MwlYFRjMRU2pN7W0qYa2rsOwvjDOcPAW/Qb2Y5gRfclYevCt+o9ss+5TxsozT16CWjNVqxwcbjkJ290SGT+jIc6+MFCSkjXgAhxju9ZGtqyukf5hceXMdrsRnr0FH+2F4RvteQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HzfPVorCkeSgU1msvO3JoSkWOp0y74wtXR8NKCXSfs4=;
+ b=AopdCXwVLpx+ZazXf7OTpK/o6H4Xg76r5ZFMDexhbycFtezfBjRZfzKg2xlRfBCXd4LC7dWaoOIDgqASmkuux44JIF4H7o2jvdKn8hz1tbwxJVXAbic1lYNHmYqeMHScJprophmpNmAx/OLaimJWAjOn/xzXze/wApEvMaGH2oz3LHdrkXNFyqpbeywCxIESPMF6Kx+iTpKzpQcNFL0p//T/8qxKzRO4TDWZ7lE82Rs5S4IOUwrMzEeK/RnrLmB7XYR55F4omHtT+Ma/nsEamRGyxfDZMAKp0P0JR52D3/2j8Ym4+kbBl3/qvZ8ajbY8atYSIAY6KGkVKVUYm/ntRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HzfPVorCkeSgU1msvO3JoSkWOp0y74wtXR8NKCXSfs4=;
+ b=e2LPvU81AEEFF/918v7sutK13e0hXVGNrsJJ9A3dxbtPCg5GZj7V3y6rHswB2JQHqcqvZSiowF8IAKCA2wwpULeF2elq3XmXfY6OSx8z9QUryVOHTKjhNFyel3zpK0Z9FRsJsUZ7AWwGnAHH0Ab3z3mI5upWDWxXulHmXDPKmrA=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
+ by SN1PR12MB2447.namprd12.prod.outlook.com (2603:10b6:802:27::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.24; Tue, 8 Jun
+ 2021 15:43:24 +0000
+Received: from SA0PR12MB4510.namprd12.prod.outlook.com
+ ([fe80::d51c:6137:77f2:5671]) by SA0PR12MB4510.namprd12.prod.outlook.com
+ ([fe80::d51c:6137:77f2:5671%4]) with mapi id 15.20.4195.030; Tue, 8 Jun 2021
+ 15:43:24 +0000
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-nvme@lists.infradead.org (open list:NVM EXPRESS DRIVER),
+        linux-acpi@vger.kernel.org, rrangel@chromium.org,
+        david.e.box@linux.intel.com, Shyam-sundar.S-k@amd.com,
+        Nehal-bakulchandra.Shah@amd.com, Alexander.Deucher@amd.com,
+        prike.liang@amd.com, Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH v7 1/2] ACPI: Move check for _DSD StorageD3Enable property to acpi
+Date:   Tue,  8 Jun 2021 10:42:54 -0500
+Message-Id: <20210608154255.8693-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [76.251.167.31]
+X-ClientProxiedBy: SA0PR11CA0140.namprd11.prod.outlook.com
+ (2603:10b6:806:131::25) To SA0PR12MB4510.namprd12.prod.outlook.com
+ (2603:10b6:806:94::8)
 MIME-Version: 1.0
-References: <20210608140701.17938-1-hui.wang@canonical.com>
-In-Reply-To: <20210608140701.17938-1-hui.wang@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Jun 2021 17:33:27 +0200
-Message-ID: <CAJZ5v0iMpaAZTcb9=sYHqLQbEjGoEYduAiUnXg05fc5yvVVDoA@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI : don't always override the acpi irq
-To:     Hui Wang <hui.wang@canonical.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        manuelkrause@netscape.net
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from AUS-LX-MLIMONCI.amd.com (76.251.167.31) by SA0PR11CA0140.namprd11.prod.outlook.com (2603:10b6:806:131::25) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.21 via Frontend Transport; Tue, 8 Jun 2021 15:43:23 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: fdfaeb91-24bc-417c-8ecb-08d92a942679
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2447:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SN1PR12MB2447A05716893C554FFBF1A7E2379@SN1PR12MB2447.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2331;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: jEuaiUc5ZRuQN/TLP17ycTuqjj5RiE5lyuWolWhqIarP5CqRvffDFllWX94jEZ9gpDqHyV02E6R4UBx3ekpd7a/lHmcfvYFYpbISV3s0bLVg/evMvXSnhqHwMCdC3NRD+kIv8b/c5Dosr4npE999L4mlLtAhaBqXchN4t3EAKcXEhTFa0CAS6MSJhJll8phWDsVin0YbvChC9zlsEga2sKWonlFQrIBEGQCPEX7im3kX274mzM0PUPYLU8eu1UYYn6ejBjQuuW3B4gJlneQan9C6g19C8L/nyTLGEuv9yw6+ysSJ51blBD/muLfIwS7RGv4eu+luaMReJ7ps9tFP8cj3S1DFQB1UJ6wZ6FZQ/Jv7VzoWXvhUzJg/SAYoyJ/A5kpugQaNOlYImWn4vB5QK0qBzDzQLRwTmLU4qyZIH+mIkW2jrkhu1R0Nf7KK1+kqTQzq7fV9bZd2u57VNJoVQYZ2JvyIFs7mX7kpHZuxXIzG0cFl8bKKZ+h1dbZgkN90aXJBdM/v1cPT3WLaobciryB8JYYeIFk/kD4iCJAIbGCIJrNcgHhxcaCSLhoGBEVcv7Wy/mYIicOqF/gCcZmrq6DSutzvDD6N0y6lPPcw2wGtloTn7rbmfXf89AfDGEThb+ptaokaE2QO98jgr9/IUgB+We52JlBlr9voN1c4hL2dkFra8oEyqf+oSQWwcy3nHtSfq1A29aKdDkm/TkSzwKfbtAnUJFY0u7UYuxhfhSj4qBD1XB75BbmjE7dhR+OYtlxnX+iar9DAYYp2/zJ3xA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4510.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(346002)(396003)(376002)(39860400002)(136003)(66476007)(8936002)(6486002)(1076003)(66946007)(66556008)(8676002)(966005)(52116002)(7696005)(26005)(4326008)(16526019)(186003)(478600001)(316002)(5660300002)(38100700002)(86362001)(110136005)(38350700002)(44832011)(83380400001)(2906002)(956004)(2616005)(36756003)(6666004)(45080400002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wcOcvbigsmzJUWfK3O9rWNFZ7a1QHovOKZThQPJqBk0gkMObL/i/ObDrwuCs?=
+ =?us-ascii?Q?Lfzwon+bEQeN1J19HMi/UsydISiLw8YCmljPbpAXpBS8XPqcpQN1fD0gTQej?=
+ =?us-ascii?Q?MM0RQG/IhqwYdbTfpFPl5VVc6SnTdpVqy1Zr8Pd3rx/lwRcESghE3k5vWbgd?=
+ =?us-ascii?Q?wQVRYuZ55gHU/tBY1SOB7OHWH7SpGh9w8l6uijfkcEudrpN6FuF0T0cIgqe1?=
+ =?us-ascii?Q?W6BesYKu7+YVywa0jnekBAepfE8YDt71X7P96MUgq0N8OP0xUUNUBmXOHfGZ?=
+ =?us-ascii?Q?uVtr9QSyPpwKNZlnpraXOcdIOBNyl4ob1DsPOOCvUkiErLkKvqVq7v+9Utt1?=
+ =?us-ascii?Q?7Y+CyghsT0EqAliui6PzH0zF4nTYxNGGoylKCSvYUJ6E1b2kCom/X2CmLa3N?=
+ =?us-ascii?Q?QggwHeY8GvVyyci97xzCWof2ZPhcDZ/FUuDQb9Dinx61h88y8QhWnEDTbV7i?=
+ =?us-ascii?Q?NZ+wkClQmgvmvi1l8qy0wC/AbKFyG4ZFS9S9C23RSxoz/9EbPuOZoSKXF+QQ?=
+ =?us-ascii?Q?rnI78QV1WjCyWRvR/W6fDcJJ6Z6IkyBExE/yHxx+nuqtLK7C5rQRlXZZ8abU?=
+ =?us-ascii?Q?7SShSGNxRUZj19ncEBhCs8Q9dVcpSDCvigB6eY6VBCdYjtIxTiU0jm/MqgJo?=
+ =?us-ascii?Q?XzDM3m4Eqp/Q7OdZXNPZsV2SRVZWxy+kPOsWaCZwnxpZgcPBsaBpE5BDuBnr?=
+ =?us-ascii?Q?SK0slLVOBz9md0QXstIzKHChMEz6nk9bL1N3OMEi6C00I/UlFjiDq54WQkCj?=
+ =?us-ascii?Q?/Yt4DAaZZjg7KG4gT0WW3i8IsxDh6y59GfWYLNrje3y4bmWX3zkDTNXcfTYn?=
+ =?us-ascii?Q?fMB2ijpM4v5A8TYlSrbdjYvFlFKU5vp+PKnukAo9kprsmwHT1S+xx22/8qRu?=
+ =?us-ascii?Q?Psqas7WFzIpHLXnhGRG0DiZp7+5KInV8vMKUsBi0dAC1jYrWep7vqPqkc0vC?=
+ =?us-ascii?Q?GrEfcgRPHamE3WhOlqbK08i1GD+zQ5r86Vm+Sau+it033CU9kdDiEeHGR0M8?=
+ =?us-ascii?Q?+QlLB8q+XeXh/2bGgTc0ouOsQQpeIT2NIjBAUnVLE/upQMbFsxP14aRnQvSl?=
+ =?us-ascii?Q?tVRqRZCHuVmE9AjCXmGbVUgAtN4ctlAHN4ZVAh5gSNZ6i5atk2rfAyqCzGdM?=
+ =?us-ascii?Q?DuIuWUBLeVXnPTOr2qFiY0SMmIMkimmRefoDte1fTzkF+OTAl2X7MKRlRhFl?=
+ =?us-ascii?Q?ovX+OhwULe7HwGTf+noQkuKKCAaHRmX1HW+TaxBCb9dMkfybU4C87a9tpFNO?=
+ =?us-ascii?Q?DozSUhlfPv/FBFa5SeHmAZsCIJLG4LHviEuZOFlf3DorkxrsPnycnOxV4R8O?=
+ =?us-ascii?Q?8Jj7Ro8IMGKWGADM8y3LywS0?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fdfaeb91-24bc-417c-8ecb-08d92a942679
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4510.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2021 15:43:24.0574
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nvw67UDzYIwurga8qrAYZYPs85iPN0+40KUx1te0lbpSbFeSh0qMsnoHwFijn1rHT7ZgEfUNVDbwK5Q9m9fARA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2447
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 8, 2021 at 4:07 PM Hui Wang <hui.wang@canonical.com> wrote:
->
-> The laptop keyboard doesn't work on many MEDION notebooks, but the
-> keyboard works well under Windows and Unix.
->
-> Through debugging, we found this log in the dmesg:
-> ACPI: IRQ 1 override to edge, high
-> pnp 00:03: Plug and Play ACPI device, IDs PNP0303 (active)
->
-> And we checked the IRQ definition in the DSDT, it is:
->     IRQ (Level, ActiveLow, Exclusive, )
->         {1}
->
-> So the BIOS defines the keyboard irq to Level_Low, but the linux
-> kernel override it to Edge_High. If let the linux kernel skip the irq
-> override, the keyboard will work normally.
->
-> From the existing comment in the acpi_dev_get_irqresource(), the
-> override function only needs to be called when BIOS defines IRQ() or
-> IRQNoFlags, and according to the Section 6.4.2.1 of ACPI 6.4 spec [1],
-> if IRQ() is empty or defines IRQNoFlags, the IRQ is High true, edge
-> sensitive and non-shareable. The linux ACPI driver (acpi_rs_set_irq[]
-> in rsirq.c) also assumes so.
->
-> Here check 3 conditions to decide if the legacy is true or not, if it
-> is true, it means the IRQ() is empty or defines IRQNoFlags and need to
-> call irq_override().
->
-> Link: https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#irq-descriptor # [1]
-> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
-> BugLink: http://bugs.launchpad.net/bugs/1909814
-> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reported-and-tested-by: Manuel Krause <manuelkrause@netscape.net>
-> Signed-off-by: Hui Wang <hui.wang@canonical.com>
-> ---
->  drivers/acpi/resource.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index ee78a210c606..5e4341ca6790 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -447,6 +447,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
->  {
->         struct acpi_resource_irq *irq;
->         struct acpi_resource_extended_irq *ext_irq;
-> +       bool irq_legacy;
->
->         switch (ares->type) {
->         case ACPI_RESOURCE_TYPE_IRQ:
-> @@ -459,9 +460,13 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
->                         irqresource_disabled(res, 0);
->                         return false;
->                 }
-> +
-> +               irq_legacy = (irq->triggering == ACPI_EDGE_SENSITIVE && irq->polarity ==
-> +                             ACPI_ACTIVE_HIGH && irq->shareable == ACPI_EXCLUSIVE);
+Although first implemented for NVME, this check may be usable by
+other drivers as well. Microsoft's specification explicitly mentions
+that is may be usable by SATA and AHCI devices.  Google also indicates
+that they have used this with SDHCI in a downstream kernel tree that
+a user can plug a storage device into.
 
-Now it would make sense to use a wrapper function for this:
+Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
+Suggested-by: Keith Busch <kbusch@kernel.org>
+CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
+CC: Alexander Deucher <Alexander.Deucher@amd.com>
+CC: Rafael J. Wysocki <rjw@rjwysocki.net>
+CC: Prike Liang <prike.liang@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ drivers/acpi/device_pm.c | 25 +++++++++++++++++++++++++
+ drivers/nvme/host/pci.c  | 28 +---------------------------
+ include/linux/acpi.h     |  5 +++++
+ 3 files changed, 31 insertions(+), 27 deletions(-)
 
-static bool irq_is_legacy(struct acpi_resource_irq *irq)
-{
-        return irq->triggering == ACPI_EDGE_SENSITIVE &&
-                irq->polarity == ACPI_ACTIVE_HIGH &&
-                irq->shareable == ACPI_EXCLUSIVE;
-}
+Changes from v4->v5:
+ * Correct extra "Link:" word in commit message
+Changes from v5->v6:
+ * Add in commit message tags from Raul, Rafael and Keith
+Changes from v6->v7:
+ * Update kerneldoc comments per suggestsions.
+ * Drop all Acked/Reviewed tags
 
-> +
->                 acpi_dev_get_irqresource(res, irq->interrupts[index],
->                                          irq->triggering, irq->polarity,
-> -                                        irq->shareable, true);
-> +                                        irq->shareable, irq_legacy);
+diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+index d260bc1f3e6e..c45f2d76b67e 100644
+--- a/drivers/acpi/device_pm.c
++++ b/drivers/acpi/device_pm.c
+@@ -1340,4 +1340,29 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
+ 	return 1;
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
++
++/**
++ * acpi_storage_d3 - Check if a storage device should use D3 in the suspend path
++ * @dev: Device to check
++ *
++ * Return %true if the platform firmware wants @dev to be programmed
++ * into D3hot or D3cold (if supported) in the suspend path, or %false
++ * when there is no specific preference. On some platforms, if this
++ * hint is ignored, @dev may remain unresponsive after suspending the
++ * platform as a whole.
++ */
++bool acpi_storage_d3(struct device *dev)
++{
++	struct acpi_device *adev = ACPI_COMPANION(dev);
++	u8 val;
++
++	if (!adev)
++		return false;
++	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
++			&val))
++		return false;
++	return val == 1;
++}
++EXPORT_SYMBOL_GPL(acpi_storage_d3);
++
+ #endif /* CONFIG_PM */
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 3aa7245a505f..8fbc4c87a0d8 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2828,32 +2828,6 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_ACPI
+-static bool nvme_acpi_storage_d3(struct pci_dev *dev)
+-{
+-	struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
+-	u8 val;
+-
+-	/*
+-	 * Look for _DSD property specifying that the storage device on the port
+-	 * must use D3 to support deep platform power savings during
+-	 * suspend-to-idle.
+-	 */
+-
+-	if (!adev)
+-		return false;
+-	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+-			&val))
+-		return false;
+-	return val == 1;
+-}
+-#else
+-static inline bool nvme_acpi_storage_d3(struct pci_dev *dev)
+-{
+-	return false;
+-}
+-#endif /* CONFIG_ACPI */
+-
+ static void nvme_async_probe(void *data, async_cookie_t cookie)
+ {
+ 	struct nvme_dev *dev = data;
+@@ -2903,7 +2877,7 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	quirks |= check_vendor_combination_bug(pdev);
+ 
+-	if (!noacpi && nvme_acpi_storage_d3(pdev)) {
++	if (!noacpi && acpi_storage_d3(&pdev->dev)) {
+ 		/*
+ 		 * Some systems use a bios work around to ask for D3 on
+ 		 * platforms that support kernel managed suspend.
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index c60745f657e9..dd0dafd21e33 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -1004,6 +1004,7 @@ int acpi_dev_resume(struct device *dev);
+ int acpi_subsys_runtime_suspend(struct device *dev);
+ int acpi_subsys_runtime_resume(struct device *dev);
+ int acpi_dev_pm_attach(struct device *dev, bool power_on);
++bool acpi_storage_d3(struct device *dev);
+ #else
+ static inline int acpi_subsys_runtime_suspend(struct device *dev) { return 0; }
+ static inline int acpi_subsys_runtime_resume(struct device *dev) { return 0; }
+@@ -1011,6 +1012,10 @@ static inline int acpi_dev_pm_attach(struct device *dev, bool power_on)
+ {
+ 	return 0;
+ }
++static inline bool acpi_storage_d3(struct device *dev)
++{
++	return false;
++}
+ #endif
+ 
+ #if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
+-- 
+2.25.1
 
-+                                        irq->shareable, irq_is_legacy(irq));
-
->                 break;
->         case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
->                 ext_irq = &ares->data.extended_irq;
-> --
