@@ -2,135 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFCA739F597
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 13:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC72B39F64E
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 14:20:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232106AbhFHLwk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 07:52:40 -0400
-Received: from mail-ot1-f42.google.com ([209.85.210.42]:43538 "EHLO
-        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232026AbhFHLwj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 07:52:39 -0400
-Received: by mail-ot1-f42.google.com with SMTP id i12-20020a05683033ecb02903346fa0f74dso19980818otu.10
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Jun 2021 04:50:33 -0700 (PDT)
+        id S232131AbhFHMW3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 08:22:29 -0400
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:39668 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231993AbhFHMW2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 08:22:28 -0400
+Received: by mail-oi1-f178.google.com with SMTP id m137so17437190oig.6;
+        Tue, 08 Jun 2021 05:20:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=M9rrdi/gOqmv/tUPT/rH1W5N+kPSWkRyn1kWikpbW68=;
-        b=WwJ7JqfWOwO5fp1p2WFwD8mC8eimyeCML44ka8P5UxwRHCQiy08+qQpgduzGnPbnxE
-         kVSMaS6JFPshgkAfaepvMaTnI8Zi1ksxdaMS+uJpAc7tz0b/qkii9Y0D3Mvz688KaFoP
-         009KoAd5bXDJqKj9euKbHe+PHdl/8GQQILLx1qKuYX/+ztUjBks8DqnJT7W9m05as14r
-         Wbqsoy75g6Qyh2FGCdcTUmy4ldXa9eXzcZFd95keh5VrEeWMfRsR4APuGTavV5JXxQQa
-         vkWOJUtYC6oQgORcOSGpux4hZl3sGK2DLRtDwVXzEbfWloLW841bf94imsLH8rnIS4M7
-         KUXg==
-X-Gm-Message-State: AOAM531+SCavZ6nh5i0Z2so6EHX4r3yCIWKfdELssLg2CvqyFAQC/boK
-        1AqaqchztTDBTPZl69P9iQ5OsOfRm8zgXgEroYYuQ4fmWvU=
-X-Google-Smtp-Source: ABdhPJzTqCo6BGG90AIzMkm7pV5eXBDs/2ZmgKEp/CFiIvFMfZpMXtLa5G1HBzZitTeh/yLHPXkPmi98AOeaPUSK9gU=
-X-Received: by 2002:a9d:6c4d:: with SMTP id g13mr14612726otq.321.1623153032682;
- Tue, 08 Jun 2021 04:50:32 -0700 (PDT)
+        bh=OmTdNAirSU2hkyrUMU+ARQjy6bvUlpwnEGNeFoKbjA8=;
+        b=AZvhwZq/UeFte7ZUzd34TXkXMBlB0cMkQHPti6/cN32rjwgvYWet4nbqjVzzi/pCn+
+         jQDCR+/SQd3Fe5UsCrf1Sx7MFBAf6joIx12buswXanTCR3goYB0uTQx6ydnOwQqCCWIe
+         pbKJ/r4dXfTwzLTLuDjdBn+oeprHBKBuMdqHjho6jySsn5QTYwbCqmEado+GF0aQhXiU
+         PnTlJSSnvghJUQ2ondLgkVl3excJCPoRAuEhxS4/0/0yvlRL/9sDg9gj+de80s6VlsK1
+         dVWPMBcDBNcMNmSaJuOSZu4Y2QljhhDvls/yixjF7Og2HsVYmWR5YLc7GCUUTjQLlmZo
+         z3mw==
+X-Gm-Message-State: AOAM5306uT4k9j3BjQ6ajpnxkriaKPFAa1GXJmSzLwYW+nxEUn8EAjWs
+        FEmrso0wnEZCFU9hmhXFCAnGebEpJj6hf1TNAvE=
+X-Google-Smtp-Source: ABdhPJzGnwuhGOuzkrFQmGHEbYgJZPCAHMUb8TTYp305sD+8WsA0diJEPnVIIf53jR51n274a7P1CxE1tcKsGbw4YpI=
+X-Received: by 2002:aca:b406:: with SMTP id d6mr2621167oif.71.1623154835851;
+ Tue, 08 Jun 2021 05:20:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210608045632.8832-1-hui.wang@canonical.com>
-In-Reply-To: <20210608045632.8832-1-hui.wang@canonical.com>
+References: <20210607195430.48228-1-david@redhat.com> <20210607195430.48228-9-david@redhat.com>
+In-Reply-To: <20210607195430.48228-9-david@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Jun 2021 13:50:21 +0200
-Message-ID: <CAJZ5v0inJMEAEDx4WGd4FNp3kYHGA4Pe-UkfpYTUQupKT0-A+Q@mail.gmail.com>
-Subject: Re: [PATCH] ACPI : don't always override the acpi irq
-To:     Hui Wang <hui.wang@canonical.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        manuelkrause@netscape.net
+Date:   Tue, 8 Jun 2021 14:20:24 +0200
+Message-ID: <CAJZ5v0gnT6QSkhcgPbHOXm8_zRQrefkdZk3k3_Ne5XCqoAGguA@mail.gmail.com>
+Subject: Re: [PATCH v1 08/12] ACPI: memhotplug: memory resources cannot be
+ enabled yet
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Marek Kedzierski <mkedzier@redhat.com>,
+        Hui Zhu <teawater@gmail.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        virtualization@lists.linux-foundation.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 8, 2021 at 6:56 AM Hui Wang <hui.wang@canonical.com> wrote:
+On Mon, Jun 7, 2021 at 9:55 PM David Hildenbrand <david@redhat.com> wrote:
 >
-> The laptop keyboard doesn't work on many MEDION notebooks, but the
-> keyboard works well under Windows and Unix.
+> We allocate + initialize everything from scratch. In case enabling the
+> device fails, we free all memory resourcs.
 >
-> Through debugging, we found this log in the dmesg:
-> ACPI: IRQ 1 override to edge, high
-> pnp 00:03: Plug and Play ACPI device, IDs PNP0303 (active)
->
-> And we checked the IRQ definition in the DSDT, it is:
->     IRQ (Level, ActiveLow, Exclusive, )
->         {1}
->
-> So the BIOS defines the keyboard irq to Level_Low, but the linux
-> kernel override it to Edge_High. If let the linux kernel skip the irq
-> override, the keyboard will work normally.
->
-> From the existing comment in the acpi_dev_get_irqresource(), the
-> override function only needs to be called when BIOS defines IRQ() or
-> IRQNoFlags, and according to page 419 and 420 of the
-> ACPI_6_3_final_Jan30.pdf, if IRQ() is empty or defines IRQNoFlags,
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Say "Section ... of ACPI 6.3" instead of referring directly to a PDF file.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-And if you refer to ACPI 6.4 instead, you may use a Link tag to point
-to the relevant section in the HTML format of the spec.
-
-> the IRQ is High true, edge sensitive and non-shareable. The linux
-> ACPI driver (acpi_rs_set_irq[] in rsirq.c) also assumes so.
->
-> So here add a function to check 4 conditions, if all of them are true,
-> call override function. otherwise, it means IRQ descriptior in the
-> BIOS is not legacy or is not empty.
->
-> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
-> BugLink: http://bugs.launchpad.net/bugs/1909814
-> Reported-and-tested-by: Manuel Krause <manuelkrause@netscape.net>
-> Signed-off-by: Hui Wang <hui.wang@canonical.com>
 > ---
->  drivers/acpi/resource.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
+>  drivers/acpi/acpi_memhotplug.c | 4 ----
+>  1 file changed, 4 deletions(-)
 >
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index ee78a210c606..d346aa24ffd6 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -380,6 +380,16 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
->  }
->  EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
->
-> +static bool acpi_dev_irq_empty_or_noflags(bool legacy, u8 triggering, u8 polarity,
-> +                                         u8 shareable)
-> +{
-> +       if (legacy && (triggering == ACPI_EDGE_SENSITIVE) &&
-> +           (polarity == ACPI_ACTIVE_HIGH) && (shareable == ACPI_EXCLUSIVE))
-> +               return true;
-> +       else
-> +               return false;
-
-Because the function returns bool, you can do
-
-  return legacy && triggering == ACPI_EDGE_SENSITIVE && polarity ==
-ACPI_ACTIVE_HIGH && shareable == ACPI_EXCLUSIVE;
-
-Also I'm not sure why a new function is needed for this at all, as the
-check can be done in-line below just fine.
-
-Moreover, as it stands, the only purpose of the "legacy" argument of
-acpi_dev_get_irqresource() is whether or not to do the override, so
-the triggering/polarity/shareable check can be used to determine the
-value of "legacy" when calling that function from
-acpi_dev_resource_interrupt() in the ACPI_RESOURCE_TYPE_IRQ case.
-
-> +}
-> +
->  static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
->                                      u8 triggering, u8 polarity, u8 shareable,
->                                      bool legacy)
-> @@ -401,7 +411,8 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
->          * using extended IRQ descriptors we take the IRQ configuration
->          * from _CRS directly.
+> diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
+> index 1d01d9414c40..eb4faf7c5cad 100644
+> --- a/drivers/acpi/acpi_memhotplug.c
+> +++ b/drivers/acpi/acpi_memhotplug.c
+> @@ -182,10 +182,6 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
+>          * (i.e. memory-hot-remove function)
 >          */
-> -       if (legacy && !acpi_get_override_irq(gsi, &t, &p)) {
-> +       if (acpi_dev_irq_empty_or_noflags(legacy, triggering, polarity, shareable)
-> +           && !acpi_get_override_irq(gsi, &t, &p)) {
->                 u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
->                 u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
->
+>         list_for_each_entry(info, &mem_device->res_list, list) {
+> -               if (info->enabled) { /* just sanity check...*/
+> -                       num_enabled++;
+> -                       continue;
+> -               }
+>                 /*
+>                  * If the memory block size is zero, please ignore it.
+>                  * Don't try to do the following memory hotplug flowchart.
 > --
+> 2.31.1
+>
