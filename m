@@ -2,204 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 536B039F9D7
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 17:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E50A139FAAA
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 17:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231667AbhFHPFI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 11:05:08 -0400
-Received: from mga07.intel.com ([134.134.136.100]:27817 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233740AbhFHPFI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 8 Jun 2021 11:05:08 -0400
-IronPort-SDR: gAWadqoGplPjs30rHZfjDz/Ko2kYOCn+KqrI5CD/0JtckIkNq1dTHZd6Jnt7T1nWE8dyGZXVgp
- 0vyeQZrMl6NQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,10009"; a="268715549"
-X-IronPort-AV: E=Sophos;i="5.83,258,1616482800"; 
-   d="scan'208";a="268715549"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2021 08:03:12 -0700
-IronPort-SDR: y3fZ0dhtLYOOoYHwE2fTRtBYcPsDryJ10MroHcpiuGKZ7YNdq/fHYoj2itTRLY67StzWNIvDXz
- YuvcU0qbXQTQ==
-X-IronPort-AV: E=Sophos;i="5.83,258,1616482800"; 
-   d="scan'208";a="552305629"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2021 08:03:08 -0700
-Received: by lahna (sSMTP sendmail emulation); Tue, 08 Jun 2021 18:03:06 +0300
-Date:   Tue, 8 Jun 2021 18:03:06 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mario Limonciello <mario.limonciello@outlook.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi <linux-acpi@vger.kernel.org>
-Subject: Re: Some SSDT tables are not loading with kernel >= 5.12
-Message-ID: <YL+Gqh9dT06SBLCx@lahna.fi.intel.com>
-References: <f634a05a-e3a9-93ab-4b87-d41f5ee083a5@redhat.com>
- <93d783c4-4468-023b-193e-3fc6eca35445@redhat.com>
- <a3c05e2f-af1c-ef19-4c9a-6b5b82d2da6d@redhat.com>
- <CAJZ5v0hYnEes7SDqwSqTGKQf4Qebr=gmj_qSQOPWKQzPdpAwrw@mail.gmail.com>
- <FR1PR80MB5051E91269FD36681BB357A7E1389@FR1PR80MB5051.lamprd80.prod.outlook.com>
- <YL5EjVDYLPhRKMIA@lahna.fi.intel.com>
- <209a230c-a7a6-7a8e-0515-97fb534d7401@redhat.com>
- <0f733402-ae3b-b4e7-13c4-e6161f9c7e81@redhat.com>
- <YL9YOlLosVeYfuuu@lahna.fi.intel.com>
- <edeba86c-1db7-e547-09a0-27da405155b3@redhat.com>
+        id S231572AbhFHP3h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 11:29:37 -0400
+Received: from mail-oi1-f169.google.com ([209.85.167.169]:35375 "EHLO
+        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231253AbhFHP3g (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 11:29:36 -0400
+Received: by mail-oi1-f169.google.com with SMTP id v22so21918412oic.2
+        for <linux-acpi@vger.kernel.org>; Tue, 08 Jun 2021 08:27:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HNwqdF6FkF+jEphsav1OW8cGD9Z3o0y9RutUW9W683k=;
+        b=nAHCul9o2WOflGZ+9cLkKBgJSj4Tnyu3/2X3CVw1b5RoerbD+iMId/I6WJ7RMXdZiG
+         vsgqizH8KieMXQvJS9wsCmTyxrtYO6j2BPFU31cJj0I6yLTLmw9gcZiL0ZkOL0FlQLYd
+         yO3Dy74XKVG5CGSLsfPqm9faw8Et0ZEkpGAbgcHkRXqqWlIxOkVLpEYBCJ960eBWNk9R
+         OKccY9B+7UIUmXsvaR9SwLHb3cBE9AVzC/xRD1EizI1VTB43Ri75YtrNDg86zUFSV3Wr
+         OFklkR8NhE8Ao9v0mNYYYFMCeUUqWvmVH0ovMzE6VLBl9CLszv5N5UpGJnD+8PNfTG9K
+         uj4w==
+X-Gm-Message-State: AOAM531cleY0h1KHxmzkTdCj5NufULsarFqtVOypOjtLGr0xcguM+7Sv
+        GoNmiEiWC5ewJ42plXQWiMEY2jZDRDFy82HAdn0=
+X-Google-Smtp-Source: ABdhPJw77ZfVxI0LUmBlUzwfJDe5Gk5EiRp2mgYf1qRMoU0+3AGGWi6PwFORKPY+Iw1IzD/mf56Jnwn6i9dg404tClo=
+X-Received: by 2002:aca:650d:: with SMTP id m13mr3242674oim.157.1623166063480;
+ Tue, 08 Jun 2021 08:27:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <edeba86c-1db7-e547-09a0-27da405155b3@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20210607173156.5548-1-mario.limonciello@amd.com>
+ <20210608053546.GA14116@lst.de> <CAJZ5v0gMgwJ9kq_mo_dYoTUAqQzhXmrgp9wnY4TRPU1pJp=TyQ@mail.gmail.com>
+ <556a22c7-58af-b9d4-d50c-25d7d16bd344@amd.com>
+In-Reply-To: <556a22c7-58af-b9d4-d50c-25d7d16bd344@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 8 Jun 2021 17:27:32 +0200
+Message-ID: <CAJZ5v0jwjSruQ1OYNyuJ=3UJA5LJW1-fGSw3Jy8jhRFfXasTuQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] ACPI: Move check for _DSD StorageD3Enable property
+ to acpi
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        rrangel@chromium.org, David Box <david.e.box@linux.intel.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        Nehal-bakulchandra.Shah@amd.com,
+        Alex Deucher <Alexander.Deucher@amd.com>,
+        Prike Liang <prike.liang@amd.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans,
-
-On Tue, Jun 08, 2021 at 03:24:28PM +0200, Hans de Goede wrote:
-> Hi,
-> 
-> On 6/8/21 1:44 PM, Mika Westerberg wrote:
-> > Hi,
-> > 
-> > On Tue, Jun 08, 2021 at 11:50:15AM +0200, Hans de Goede wrote:
-> >> Hi,
+On Tue, Jun 8, 2021 at 4:18 PM Limonciello, Mario
+<mario.limonciello@amd.com> wrote:
+>
+> On 6/8/2021 06:20, Rafael J. Wysocki wrote:
+> > On Tue, Jun 8, 2021 at 7:35 AM Christoph Hellwig <hch@lst.de> wrote:
 > >>
-> >> On 6/7/21 9:18 PM, Hans de Goede wrote:
-> >>> Hi,
-> >>>
-> >>> On 6/7/21 6:08 PM, Mika Westerberg wrote:
-> >>>> Hi,
-> >>>>
-> >>>> Tried now on ADL-P and TGL systems and the _OSC still works properly.
-> >>>>
-> >>>> Thanks Hans for fixing!
-> >>>>
-> >>>> Feel free to add my Tested-by.
-> >>>
-> >>> Thank you for testing, unfortunately so far from the comments here:
-> >>>
-> >>> https://bugzilla.kernel.org/show_bug.cgi?id=213023
-> >>>
-> >>> it seems that my patch does not help resolve the issues caused
-> >>> by commit 719e1f561afb ("ACPI: Execute platform _OSC also with query
-> >>> bit clear"), where as reverting that commit does resolve them :|
-> >>>
-> >>> Does anyone have any other ideas how to fix this ?
-> >>
-> >> The reporter who has done the bisect has commented out the new/second
-> >> _OSC call and that fixes things for them. So I've written a new fix
-> >> (attached), note just as before this is untested ATM.
-> >>
-> >> Mika, if you can test this one (it replaces the previous one)
-> >> on machines with native USB4 support to check those don't regress then
-> >> that would be great.
-> > 
-> > I can test it sure, but first let's try to understand what the problem is :)
-> > 
-> >> I've asked the various reporters from the 2 bugzilla's for this to also
-> >> test this new patch. I'll let you know how that goes.
-> > 
-> > The _OSC on at least one of the affected platforms look like this:
-> > 
-> >     If ((Arg0 == ToUUID ("0811b06e-4a27-44f9-8d60-3cbbc22e7b48") /* Platform-wide Capabilities */))
-> >     {
-> > 	If ((Arg1 == One))
-> > 	{
-> > 	    OSCP = CAP0 /* \_SB_._OSC.CAP0 */
-> > 	    If ((CAP0 & 0x04))
-> > 	    {
-> > 		OSCO = 0x04
-> > 		If (((SGMD & 0x0F) != 0x02))
-> > 		{
-> > 		    If ((RTD3 == Zero))
-> > 		    {
-> > 			CAP0 &= 0x3B
-> > 			STS0 |= 0x10
-> > 		    }
-> > 		}
-> > 	    }
-> > 	}
-> > 	Else
-> > 	{
-> > 	    STS0 &= 0xFFFFFF00
-> > 	    STS0 |= 0x0A
-> > 	}
-> >     }
-> >     Else
-> >     {
-> > 	STS0 &= 0xFFFFFF00
-> > 	STS0 |= 0x06
-> >     }
-> > 
-> > Probably it is fine to call it several times but the issue is with the mask
-> > that it does:
-> > 
-> >     CAP0 &= 0x3B
-> > 
-> > This clears out the upper bits. I think this is actually a BIOS bug as it ends
-> > up clearing OSC_SB_PCLPI_SUPPORT which is probably not intented, and that seems
-> > to cause skipping of the LPI tables or something like that.
-> > 
-> > The alternative is to pass the original caps to the second _OSC call. I think
-> > this is safe too. While looking at the code, I found a couple of other issues
-> > that should be fixed with the below hack patch.
-> > 
-> > What do you think about this approach?
-> 
-> I think you might be on to something, quoting from the spec:
-> 
-> """
-> 6.2.11.1.3 Sequence of _OSC calls
-> The following rules govern sequences of calls to _OSC that are issued to the same host bridge and
-> occur within the same boot.
-> • The OS is permitted to evaluate _OSC an arbitrary number of times.
-> • If the OS declares support of a feature in the Status Field in one call to _OSC, then it must
-> preserve the set state of that bit (declaring support for that feature) in all subsequent calls.
-> • If the OS is granted control of a feature in the Control Field in one call to _OSC, then it must
-> preserve the set state of that bit (requesting that feature) in all subsequent calls.
-> """
-> 
-> So the spec is saying that we should indeed keep all the flags which set during
-> the first call also set during subsequent calls.
-> 
-> If you can turn this into a proper patch then I can ask the reporters of
-> the 2 bugs to test that patch.
+> >> On Mon, Jun 07, 2021 at 12:31:55PM -0500, Mario Limonciello wrote:
+> >>> +/**
+> >>> + * acpi_storage_d3 - Check if a storage device should use D3.
+> >
+> > Let's be specific about what D3 means here in the first place and
+> > that's D3hot AFAICS.
+> >
+> > And the comment should be something like "Check whether or not to use
+> > D3hot in the suspend path".
+>
+> Actually it can be D3hot or D3cold.  Microsoft's documentation doesn't
+> indicate it's D3hot.  On the AMD platforms that prompted some of these
+> changes it's D3cold.
 
-Sure I will. First I think I figured why this happens. The BIOS loads the HWP
-tables dynamically (in ssdt9.dsl) like this:
+So say "D3" in the one-line description above and "D3hot or D3cold (if
+supported)" in the more detailed comment below.
 
-\_PR.PRxx.GCAP():
+> >
+> >>> + * @dev: Device to check
+> >>> + *
+> >>> + * Returns %true if @dev should be put into D3 when the ->suspend method is
+> >>> + * called, else %false.  The name of this function is somewhat misleading
+> >>> + * as it has nothing to do with storage except for the name of the ACPI
+> >>> + * property.  On some platforms resume will not work if this hint is ignored.
+> >
+> > I would write it this way:
+> >
+> > "Return %true if the platform firmware wants @dev to be programmed
+> > into D3hot in the suspend path, or %false when there is no specific
+> > preference. On some platforms, if this hint is ignored, @dev may
+> > remain unresponsive after suspending the platform as a whole."
+> >
+> > And I'm not sure if it is necessary to mention "storage" in this comment at all.
+> >
+>
+> Is your thought here in not mentioning "storage" that this symbol may be
+> overloaded in the future to look at more than just the StorageD3Enable
+> property and used for other things too?
 
-            If ((OSYS >= 0x07DF))
-            {   
-                If (((CFGD & 0x00400000) && !(SDTL & 0x40)))
-                {   
-                    If ((\_SB.OSCP & 0x40))
-                    {   
-                        SDTL |= 0x40
-                        OperationRegion (HWP0, SystemMemory, DerefOf (SSDT [0x0D]), DerefOf (SSDT [0x0E]))
-                        Load (HWP0, HW0) /* \_PR_.PR00.HW0_ */
-                        If ((CFGD & 0x00800000))
-                        {   
-                            OperationRegion (HWPL, SystemMemory, DerefOf (SSDT [0x13]), DerefOf (SSDT [0x14]))
-                            Load (HWPL, HW2) /* \_PR_.PR00.HW2_ */
-                        }
-                    }
-
-
-Note it checks the \_SB.OSCP which is set in _OSC to the value of the "support"
-buffer that Linux populates. However, in _OSC it also clears that particular
-bit (when RTD3 is set to 0):
-
-	CAP0 &= 0x3B
-	STS0 |= 0x10
-
-Since Linux calls the _OSC again with the cleared bit the \_SB.OSCP also does
-not have that bit set anymore and that makes GCAP() to skip the Load()
-operation resulting the errors users have reported.
-
-This looks like that the BIOS expects the same set of "support" bits to be set
-on each call, or alternatively it only expects the _OSC to be run once.
-
-In any case, I will make a proper patch soon with the above added to the commit log too.
+Well, the property itself is not about storage any more anyway.
