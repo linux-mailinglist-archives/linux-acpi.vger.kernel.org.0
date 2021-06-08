@@ -2,98 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04AF839EDE2
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 06:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5351739EE30
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 07:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229797AbhFHE6d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 00:58:33 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45811 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbhFHE6c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 00:58:32 -0400
-Received: from [123.112.67.167] (helo=localhost.localdomain)
-        by youngberry.canonical.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <hui.wang@canonical.com>)
-        id 1lqTn4-00016o-MB; Tue, 08 Jun 2021 04:56:39 +0000
-From:   Hui Wang <hui.wang@canonical.com>
-To:     linux-acpi@vger.kernel.org, rafael.j.wysocki@intel.com
-Cc:     manuelkrause@netscape.net
-Subject: [PATCH] ACPI : don't always override the acpi irq
-Date:   Tue,  8 Jun 2021 12:56:32 +0800
-Message-Id: <20210608045632.8832-1-hui.wang@canonical.com>
-X-Mailer: git-send-email 2.25.1
+        id S229937AbhFHFhm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 01:37:42 -0400
+Received: from verein.lst.de ([213.95.11.211]:49178 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229526AbhFHFhm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 8 Jun 2021 01:37:42 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 2E0A967373; Tue,  8 Jun 2021 07:35:47 +0200 (CEST)
+Date:   Tue, 8 Jun 2021 07:35:46 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
+        linux-acpi@vger.kernel.org, rrangel@chromium.org,
+        david.e.box@linux.intel.com, Shyam-sundar.S-k@amd.com,
+        Nehal-bakulchandra.Shah@amd.com, Alexander.Deucher@amd.com,
+        prike.liang@amd.com,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH v6 1/2] ACPI: Move check for _DSD StorageD3Enable
+ property to acpi
+Message-ID: <20210608053546.GA14116@lst.de>
+References: <20210607173156.5548-1-mario.limonciello@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210607173156.5548-1-mario.limonciello@amd.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The laptop keyboard doesn't work on many MEDION notebooks, but the
-keyboard works well under Windows and Unix.
+On Mon, Jun 07, 2021 at 12:31:55PM -0500, Mario Limonciello wrote:
+> +/**
+> + * acpi_storage_d3 - Check if a storage device should use D3.
+> + * @dev: Device to check
+> + *
+> + * Returns %true if @dev should be put into D3 when the ->suspend method is
+> + * called, else %false.  The name of this function is somewhat misleading
+> + * as it has nothing to do with storage except for the name of the ACPI
+> + * property.  On some platforms resume will not work if this hint is ignored.
+> + *
+> + */
 
-Through debugging, we found this log in the dmesg:
-ACPI: IRQ 1 override to edge, high
-pnp 00:03: Plug and Play ACPI device, IDs PNP0303 (active)
+I still do not like this comment.  There is nothing about only using this
+for storage devices.  It is specific to a PCIe slot, and if I plug
+something that is not a storage device into it the same restrictions
+still apply.
 
-And we checked the IRQ definition in the DSDT, it is:
-    IRQ (Level, ActiveLow, Exclusive, )
-        {1}
-
-So the BIOS defines the keyboard irq to Level_Low, but the linux
-kernel override it to Edge_High. If let the linux kernel skip the irq
-override, the keyboard will work normally.
-
-From the existing comment in the acpi_dev_get_irqresource(), the
-override function only needs to be called when BIOS defines IRQ() or
-IRQNoFlags, and according to page 419 and 420 of the
-ACPI_6_3_final_Jan30.pdf, if IRQ() is empty or defines IRQNoFlags,
-the IRQ is High true, edge sensitive and non-shareable. The linux
-ACPI driver (acpi_rs_set_irq[] in rsirq.c) also assumes so.
-
-So here add a function to check 4 conditions, if all of them are true,
-call override function. otherwise, it means IRQ descriptior in the
-BIOS is not legacy or is not empty.
-
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
-BugLink: http://bugs.launchpad.net/bugs/1909814
-Reported-and-tested-by: Manuel Krause <manuelkrause@netscape.net>
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
----
- drivers/acpi/resource.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index ee78a210c606..d346aa24ffd6 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -380,6 +380,16 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
- }
- EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
- 
-+static bool acpi_dev_irq_empty_or_noflags(bool legacy, u8 triggering, u8 polarity,
-+					  u8 shareable)
-+{
-+	if (legacy && (triggering == ACPI_EDGE_SENSITIVE) &&
-+	    (polarity == ACPI_ACTIVE_HIGH) && (shareable == ACPI_EXCLUSIVE))
-+		return true;
-+	else
-+		return false;
-+}
-+
- static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 				     u8 triggering, u8 polarity, u8 shareable,
- 				     bool legacy)
-@@ -401,7 +411,8 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 	 * using extended IRQ descriptors we take the IRQ configuration
- 	 * from _CRS directly.
- 	 */
--	if (legacy && !acpi_get_override_irq(gsi, &t, &p)) {
-+	if (acpi_dev_irq_empty_or_noflags(legacy, triggering, polarity, shareable)
-+	    && !acpi_get_override_irq(gsi, &t, &p)) {
- 		u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
- 		u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
- 
--- 
-2.25.1
-
+Also no need for the empty-ish line at the end.
