@@ -2,198 +2,414 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F047039F4EE
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 13:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DDDB39F4F2
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 13:28:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231890AbhFHLaD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 07:30:03 -0400
-Received: from mail-ot1-f44.google.com ([209.85.210.44]:39614 "EHLO
-        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231661AbhFHLaC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 07:30:02 -0400
-Received: by mail-ot1-f44.google.com with SMTP id 5-20020a9d01050000b02903c700c45721so18880120otu.6
-        for <linux-acpi@vger.kernel.org>; Tue, 08 Jun 2021 04:28:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZDQ2BSSl67ck1vvYJoFh/3g0MHC3Vf+JuWnQHiL10v0=;
-        b=rYSrI1kJ6bXsSFU4ODIxt/qT85ksOSsbjGSBidFaxkqRovD1UTe3C6Y3o+8iBHaO1I
-         X2FaJ4UK9dH5d6YI9gIYjbMYIRjoKSAinnCMxHAmynM+CTtLtKywl23ldV+f/yAm94Ra
-         x8CYNz0TPEEVmrTL/IZu5jMO2dsroLKZXubu2gfWLQSuDr+zkETKk+b9sesCPl1AQdol
-         vif0/8P9ODBBp5Lax+jvohsqy8R/PIivJ+JIh/giZhR74KEgvM7wN2SJoGve2aQg/kTr
-         buv2f7N5ceqXphlabPwNbJutIWqOblct05Wbr2ZtClmRrkgKbGES20mmmn1YXbBPLuwm
-         4Bpw==
-X-Gm-Message-State: AOAM531FI9DSZYurKltLoLGz25EJhSDA7kyMVmGTqfoCdghcqfGPqh/i
-        a0N+mOgDOm9fGA1IH9v3XKyagC2RJG4UapelKHw=
-X-Google-Smtp-Source: ABdhPJyJL1GNbZ9W6xaADH/uQ7Km9hFPsTEVOT9RuVOEnq6m8rIEqK2Sfeme2svgp3BjgLELVBJa2VxBtHgknPPzIpI=
-X-Received: by 2002:a9d:6c4d:: with SMTP id g13mr14527986otq.321.1623151689185;
- Tue, 08 Jun 2021 04:28:09 -0700 (PDT)
+        id S231710AbhFHLaf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 07:30:35 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3166 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231689AbhFHLad (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 07:30:33 -0400
+Received: from fraeml740-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FznnP2Cvwz6G86p;
+        Tue,  8 Jun 2021 19:19:21 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml740-chm.china.huawei.com (10.206.15.221) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Tue, 8 Jun 2021 13:28:38 +0200
+Received: from localhost (10.52.125.197) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 8 Jun 2021
+ 12:28:38 +0100
+Date:   Tue, 8 Jun 2021 12:28:36 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+CC:     <linux-cxl@vger.kernel.org>,
+        Alison Schofield <alison.schofield@intel.com>,
+        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v5 2/6] cxl/acpi: Introduce cxl_root, the root of a
+ cxl_port topology
+Message-ID: <20210608122836.000018fc@Huawei.com>
+In-Reply-To: <162295950449.1109360.5228772194963187441.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <162295949351.1109360.10329014558746500142.stgit@dwillia2-desk3.amr.corp.intel.com>
+        <162295950449.1109360.5228772194963187441.stgit@dwillia2-desk3.amr.corp.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20210607173156.5548-1-mario.limonciello@amd.com> <20210607173156.5548-2-mario.limonciello@amd.com>
-In-Reply-To: <20210607173156.5548-2-mario.limonciello@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Jun 2021 13:27:58 +0200
-Message-ID: <CAJZ5v0jFop-M6dT18+eDDgUepFY=CxjHWjfYf6nxrk5B64=vwQ@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] ACPI: Add quirks for AMD Renoir/Lucienne CPUs to
- force the D3 hint
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        rrangel@chromium.org, David Box <david.e.box@linux.intel.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Nehal-bakulchandra.Shah@amd.com,
-        Alex Deucher <Alexander.Deucher@amd.com>,
-        Prike Liang <prike.liang@amd.com>,
-        Julian Sikorski <belegdol@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.125.197]
+X-ClientProxiedBy: lhreml722-chm.china.huawei.com (10.201.108.73) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 7, 2021 at 7:32 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> AMD systems from Renoir and Lucienne require that the NVME controller
-> is put into D3 over a Modern Standby / suspend-to-idle
-> cycle.  This is "typically" accomplished using the `StorageD3Enable`
-> property in the _DSD, but this property was introduced after many
-> of these systems launched and most OEM systems don't have it in
-> their BIOS.
->
-> On AMD Renoir without these drives going into D3 over suspend-to-idle
-> the resume will fail with the NVME controller being reset and a trace
-> like this in the kernel logs:
-> ```
-> [   83.556118] nvme nvme0: I/O 161 QID 2 timeout, aborting
-> [   83.556178] nvme nvme0: I/O 162 QID 2 timeout, aborting
-> [   83.556187] nvme nvme0: I/O 163 QID 2 timeout, aborting
-> [   83.556196] nvme nvme0: I/O 164 QID 2 timeout, aborting
-> [   95.332114] nvme nvme0: I/O 25 QID 0 timeout, reset controller
-> [   95.332843] nvme nvme0: Abort status: 0x371
-> [   95.332852] nvme nvme0: Abort status: 0x371
-> [   95.332856] nvme nvme0: Abort status: 0x371
-> [   95.332859] nvme nvme0: Abort status: 0x371
-> [   95.332909] PM: dpm_run_callback(): pci_pm_resume+0x0/0xe0 returns -16
-> [   95.332936] nvme 0000:03:00.0: PM: failed to resume async: error -16
-> ```
->
-> The Microsoft documentation for StorageD3Enable mentioned that Windows has
-> a hardcoded allowlist for D3 support, which was used for these platforms.
-> Introduce quirks to hardcode them for Linux as well.
->
-> As this property is now "standardized", OEM systems using AMD Cezanne and
-> newer APU's have adopted this property, and quirks like this should not be
-> necessary.
->
-> CC: Julian Sikorski <belegdol@gmail.com>
-> CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
-> CC: Alexander Deucher <Alexander.Deucher@amd.com>
-> CC: Rafael J. Wysocki <rjw@rjwysocki.net>
-> CC: Prike Liang <prike.liang@amd.com>
-> Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+On Sat, 5 Jun 2021 23:05:04 -0700
+Dan Williams <dan.j.williams@intel.com> wrote:
+
+> While CXL builds upon the PCI software model for enumeration and
+> endpoint control, a static platform component is required to bootstrap
+> the CXL memory layout. Similar to how ACPI identifies root-level PCI
+> memory resources the ACPI identifies the address space and interleave
+> configuration for CXL Memory.
+> 
+> In addition to identifying the host bridges, ACPI is responsible for
+> enumerating the CXL memory space that can be addressed by downstream
+> decoders. This is similar to the requirement for ACPI to publish
+> resources reported by _CRS for PCI host bridges. Specifically ACPI
+> publishes a table, CXL Early Discovery Table (CEDT), which includes a
+> list of CXL Memory resource, CXL Fixed Memory Window Structures (CFMWS).
+> 
+> For now introduce the core infrastructure for a cxl_port hierarchy
+> starting with a root level anchor represented by the ACPI0017 device.
+> 
+> Follow on changes model support for the configurable decode capabilities
+> of cxl_port instances.
+> 
+> Co-developed-by: Alison Schofield <alison.schofield@intel.com>
+> Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+
+Two trivial comments inline.
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
 > ---
->  drivers/acpi/device_pm.c |  3 +++
->  drivers/acpi/x86/utils.c | 27 +++++++++++++++++++++++++++
->  include/acpi/acpi_bus.h  |  5 +++++
->  3 files changed, 35 insertions(+)
->
-> Changes from v4->v5:
->  * Add this patch back in as it's been made apparent that the
->    system needs to be hardcoded for these.
->    Changes:
->    - Drop Cezanne - it's now covered by StorageD3Enable
->    - Rebase ontop of acpi_storage_d3 outside of NVME
-> Changes from v5->v6:
->  * Move the quirk check into drivers/acpi/x86/ as suggested by
->    Rafael.
->
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index 1edb68d00b8e..985c17384192 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -1356,6 +1356,9 @@ bool acpi_storage_d3(struct device *dev)
->         struct acpi_device *adev = ACPI_COMPANION(dev);
->         u8 val;
->
-> +       if (force_storage_d3())
-> +               return true;
+>  Documentation/ABI/testing/sysfs-bus-cxl |   11 ++
+>  drivers/cxl/Kconfig                     |   15 +++
+>  drivers/cxl/Makefile                    |    2 
+>  drivers/cxl/acpi.c                      |   39 ++++++++
+>  drivers/cxl/core.c                      |  160 +++++++++++++++++++++++++++++++
+>  drivers/cxl/cxl.h                       |   23 ++++
+>  6 files changed, 250 insertions(+)
+>  create mode 100644 drivers/cxl/acpi.c
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
+> index 2fe7490ad6a8..fb996ced7629 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-cxl
+> +++ b/Documentation/ABI/testing/sysfs-bus-cxl
+> @@ -24,3 +24,14 @@ Description:
+>  		(RO) "Persistent Only Capacity" as bytes. Represents the
+>  		identically named field in the Identify Memory Device Output
+>  		Payload in the CXL-2.0 specification.
 > +
->         if (!adev)
->                 return false;
->         if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
-> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-> index bdc1ba00aee9..2b8d5b3c876f 100644
-> --- a/drivers/acpi/x86/utils.c
-> +++ b/drivers/acpi/x86/utils.c
-> @@ -135,3 +135,30 @@ bool acpi_device_always_present(struct acpi_device *adev)
->
->         return ret;
->  }
+> +What:		/sys/bus/cxl/devices/portX/uport
+> +Date:		May, 2021
+> +KernelVersion:	v5.14
+> +Contact:	linux-cxl@vger.kernel.org
+> +Description:
+> +		CXL port objects are enumerated from either a platform firmware
+> +		device (ACPI0017 and ACPI0016) or PCIe switch upstream port with
+> +		CXL component registers. The 'uport' symlink connects the CXL
+> +		portX object to the device that published the CXL port
+> +		capability.
+
+Is this a complete list of ABI added? Looks like we also add devtype
+attribute in this series.
+
+Mind you I just realized I didn't document the proposed CDAT file either yet.
+
+
+> diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> index 5483ba92b6da..d2573f6aef91 100644
+> --- a/drivers/cxl/Kconfig
+> +++ b/drivers/cxl/Kconfig
+> @@ -45,4 +45,19 @@ config CXL_MEM_RAW_COMMANDS
+>  	  potential impact to memory currently in use by the kernel.
+>  
+>  	  If developing CXL hardware or the driver say Y, otherwise say N.
 > +
-> +/*
-> + * AMD systems from Renoir and Lucienne *require* that the NVME controller
-> + * is put into D3 over a Modern Standby / suspend-to-idle cycle.
-> + *
-> + * This is "typically" accomplished using the `StorageD3Enable`
-> + * property in the _DSD that is checked via the `acpi_storage_d3` function
-> + * but this property was introduced after many of these systems launched
-> + * and most OEM systems don't have it in their BIOS.
-> + *
-> + * The Microsoft documentation for StorageD3Enable mentioned that Windows has
-> + * a hardcoded allowlist for D3 support, which was used for these platforms.
-> + *
-> + * This allows quirking on Linux in a similar fashion.
-> + */
-> +const struct x86_cpu_id storage_d3_cpu_ids[] = {
-> +       X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),  /* Renoir */
-> +       X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL), /* Lucienne */
-> +       {}
+> +config CXL_ACPI
+> +	tristate "CXL ACPI: Platform Support"
+> +	depends on ACPI
+> +	help
+> +	  Enable support for host managed device memory (HDM) resources
+> +	  published by a platform's ACPI CXL memory layout description.  See
+> +	  Chapter 9.14.1 CXL Early Discovery Table (CEDT) in the CXL 2.0
+> +	  specification, and CXL Fixed Memory Window Structures (CEDT.CFMWS)
+> +	  (https://www.computeexpresslink.org/spec-landing). The CXL core
+> +	  consumes these resource to publish the root of a cxl_port decode
+> +	  hierarchy to map regions that represent System RAM, or Persistent
+> +	  Memory regions to be managed by LIBNVDIMM.
+> +
+> +	  If unsure say 'm'.
+>  endif
+> diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
+> index d9d282dc15be..a29efb3e8ad2 100644
+> --- a/drivers/cxl/Makefile
+> +++ b/drivers/cxl/Makefile
+> @@ -1,7 +1,9 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  obj-$(CONFIG_CXL_BUS) += cxl_core.o
+>  obj-$(CONFIG_CXL_MEM) += cxl_pci.o
+> +obj-$(CONFIG_CXL_ACPI) += cxl_acpi.o
+>  
+>  ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=CXL
+>  cxl_core-y := core.o
+>  cxl_pci-y := pci.o
+> +cxl_acpi-y := acpi.o
+> diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+> new file mode 100644
+> index 000000000000..556d25ab6966
+> --- /dev/null
+> +++ b/drivers/cxl/acpi.c
+> @@ -0,0 +1,39 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/* Copyright(c) 2021 Intel Corporation. All rights reserved. */
+> +#include <linux/platform_device.h>
+> +#include <linux/module.h>
+> +#include <linux/device.h>
+> +#include <linux/kernel.h>
+> +#include <linux/acpi.h>
+> +#include "cxl.h"
+> +
+> +static int cxl_acpi_probe(struct platform_device *pdev)
+> +{
+> +	struct cxl_port *root_port;
+> +	struct device *host = &pdev->dev;
+> +
+> +	root_port = devm_cxl_add_port(host, host, CXL_RESOURCE_NONE, NULL);
+> +	if (IS_ERR(root_port))
+> +		return PTR_ERR(root_port);
+> +	dev_dbg(host, "add: %s\n", dev_name(&root_port->dev));
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct acpi_device_id cxl_acpi_ids[] = {
+> +	{ "ACPI0017", 0 },
+> +	{ "", 0 },
+> +};
+> +MODULE_DEVICE_TABLE(acpi, cxl_acpi_ids);
+> +
+> +static struct platform_driver cxl_acpi_driver = {
+> +	.probe = cxl_acpi_probe,
+> +	.driver = {
+> +		.name = KBUILD_MODNAME,
+> +		.acpi_match_table = cxl_acpi_ids,
+> +	},
 > +};
 > +
-> +bool force_storage_d3(void)
+> +module_platform_driver(cxl_acpi_driver);
+> +MODULE_LICENSE("GPL v2");
+> +MODULE_IMPORT_NS(CXL);
+> diff --git a/drivers/cxl/core.c b/drivers/cxl/core.c
+> index 853666d8a9f5..dbbb34618d7d 100644
+> --- a/drivers/cxl/core.c
+> +++ b/drivers/cxl/core.c
+> @@ -4,6 +4,8 @@
+>  #include <linux/device.h>
+>  #include <linux/module.h>
+>  #include <linux/pci.h>
+> +#include <linux/slab.h>
+> +#include <linux/idr.h>
+>  #include "cxl.h"
+>  
+>  /**
+> @@ -13,6 +15,164 @@
+>   * point for cross-device interleave coordination through cxl ports.
+>   */
+>  
+> +static DEFINE_IDA(cxl_port_ida);
+> +
+> +static ssize_t devtype_show(struct device *dev, struct device_attribute *attr,
+> +			    char *buf)
 > +{
-> +       if (x86_match_cpu(storage_d3_cpu_ids))
-> +               return true;
-> +       return false;
+> +	return sysfs_emit(buf, "%s\n", dev->type->name);
 
-Well, what about doing
-
-  return x86_match_cpu(storage_d3_cpu_ids);
-
-instead?
+I guess it's really small so doesn't matter that much, but not so nice
+that we are gaining multiple instances of this same function.
 
 > +}
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 3a82faac5767..9b0ddbae5617 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -607,11 +607,16 @@ int acpi_disable_wakeup_device_power(struct acpi_device *dev);
->
->  #ifdef CONFIG_X86
->  bool acpi_device_always_present(struct acpi_device *adev);
-> +bool force_storage_d3(void);
-
-This doesn't need to go into acpi_bus.h, because it will only be used
-in device_pm.c.
-
-You may as well put it into drivers/acpi/internal.h.
-
->  #else
->  static inline bool acpi_device_always_present(struct acpi_device *adev)
->  {
->         return false;
->  }
-> +static inline bool force_storage_d3(void)
+> +static DEVICE_ATTR_RO(devtype);
+> +
+> +static struct attribute *cxl_base_attributes[] = {
+> +	&dev_attr_devtype.attr,
+> +	NULL,
+> +};
+> +
+> +static struct attribute_group cxl_base_attribute_group = {
+> +	.attrs = cxl_base_attributes,
+> +};
+> +
+> +static void cxl_port_release(struct device *dev)
 > +{
-> +       return false;
+> +	struct cxl_port *port = to_cxl_port(dev);
+> +
+> +	ida_free(&cxl_port_ida, port->id);
+> +	kfree(port);
 > +}
->  #endif
->
->  #ifdef CONFIG_PM
-> --
+> +
+> +static const struct attribute_group *cxl_port_attribute_groups[] = {
+> +	&cxl_base_attribute_group,
+> +	NULL,
+> +};
+> +
+> +static const struct device_type cxl_port_type = {
+> +	.name = "cxl_port",
+> +	.release = cxl_port_release,
+> +	.groups = cxl_port_attribute_groups,
+> +};
+> +
+> +struct cxl_port *to_cxl_port(struct device *dev)
+> +{
+> +	if (dev_WARN_ONCE(dev, dev->type != &cxl_port_type,
+> +			  "not a cxl_port device\n"))
+> +		return NULL;
+> +	return container_of(dev, struct cxl_port, dev);
+> +}
+> +
+> +static void unregister_dev(void *dev)
+> +{
+> +	device_unregister(dev);
+> +}
+> +
+> +static void cxl_unlink_uport(void *_port)
+> +{
+> +	struct cxl_port *port = _port;
+> +
+> +	sysfs_remove_link(&port->dev.kobj, "uport");
+> +}
+> +
+> +static int devm_cxl_link_uport(struct device *host, struct cxl_port *port)
+> +{
+> +	int rc;
+> +
+> +	rc = sysfs_create_link(&port->dev.kobj, &port->uport->kobj, "uport");
+> +	if (rc)
+> +		return rc;
+> +	return devm_add_action_or_reset(host, cxl_unlink_uport, port);
+> +}
+> +
+> +static struct cxl_port *cxl_port_alloc(struct device *uport,
+> +				       resource_size_t component_reg_phys,
+> +				       struct cxl_port *parent_port)
+> +{
+> +	struct cxl_port *port;
+> +	struct device *dev;
+> +	int rc;
+> +
+> +	port = kzalloc(sizeof(*port), GFP_KERNEL);
+> +	if (!port)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	rc = ida_alloc(&cxl_port_ida, GFP_KERNEL);
+> +	if (rc < 0)
+> +		goto err;
+> +	port->id = rc;
+> +
+> +	/*
+> +	 * The top-level cxl_port "cxl_root" does not have a cxl_port as
+> +	 * its parent and it does not have any corresponding component
+> +	 * registers as its decode is described by a fixed platform
+> +	 * description.
+> +	 */
+> +	dev = &port->dev;
+> +	if (parent_port)
+> +		dev->parent = &parent_port->dev;
+> +	else
+> +		dev->parent = uport;
+> +
+> +	port->uport = uport;
+> +	port->component_reg_phys = component_reg_phys;
+> +
+> +	device_initialize(dev);
+> +	device_set_pm_not_required(dev);
+> +	dev->bus = &cxl_bus_type;
+> +	dev->type = &cxl_port_type;
+> +
+> +	return port;
+> +
+> +err:
+> +	kfree(port);
+> +	return ERR_PTR(rc);
+> +}
+> +
+> +/**
+> + * devm_cxl_add_port - register a cxl_port in CXL memory decode hierarchy
+> + * @host: host device for devm operations
+> + * @uport: "physical" device implementing this upstream port
+> + * @component_reg_phys: (optional) for configurable cxl_port instances
+> + * @parent_port: next hop up in the CXL memory decode hierarchy
+> + */
+> +struct cxl_port *devm_cxl_add_port(struct device *host, struct device *uport,
+> +				   resource_size_t component_reg_phys,
+> +				   struct cxl_port *parent_port)
+> +{
+> +	struct cxl_port *port;
+> +	struct device *dev;
+> +	int rc;
+> +
+> +	port = cxl_port_alloc(uport, component_reg_phys, parent_port);
+> +	if (IS_ERR(port))
+> +		return port;
+> +
+> +	dev = &port->dev;
+> +	if (parent_port)
+> +		rc = dev_set_name(dev, "port%d", port->id);
+> +	else
+> +		rc = dev_set_name(dev, "root%d", port->id);
+> +	if (rc)
+> +		goto err;
+> +
+> +	rc = device_add(dev);
+> +	if (rc)
+> +		goto err;
+> +
+> +	rc = devm_add_action_or_reset(host, unregister_dev, dev);
+> +	if (rc)
+> +		return ERR_PTR(rc);
+> +
+> +	rc = devm_cxl_link_uport(host, port);
+> +	if (rc)
+> +		return ERR_PTR(rc);
+> +
+> +	return port;
+> +
+> +err:
+> +	put_device(dev);
+> +	return ERR_PTR(rc);
+> +}
+> +EXPORT_SYMBOL_GPL(devm_cxl_add_port);
+> +
+>  /**
+>   * cxl_probe_component_regs() - Detect CXL Component register blocks
+>   * @dev: Host device of the @base mapping
+> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> index 2c47e9cffd44..46c81165c210 100644
+> --- a/drivers/cxl/cxl.h
+> +++ b/drivers/cxl/cxl.h
+> @@ -145,5 +145,28 @@ int cxl_map_device_regs(struct pci_dev *pdev,
+>  			struct cxl_device_regs *regs,
+>  			struct cxl_register_map *map);
+>  
+> +#define CXL_RESOURCE_NONE ((resource_size_t) -1)
+> +
+> +/**
+> + * struct cxl_port - logical collection of upstream port devices and
+> + *		     downstream port devices to construct a CXL memory
+> + *		     decode hierarchy.
+> + * @dev: this port's device
+> + * @uport: PCI or platform device implementing the upstream port capability
+> + * @id: id for port device-name
+> + * @component_regs_phys: component register capability base address (optional)
+> + */
+> +struct cxl_port {
+> +	struct device dev;
+> +	struct device *uport;
+> +	int id;
+> +	resource_size_t component_reg_phys;
+> +};
+> +
+> +struct cxl_port *to_cxl_port(struct device *dev);
+> +struct cxl_port *devm_cxl_add_port(struct device *host, struct device *uport,
+> +				   resource_size_t component_reg_phys,
+> +				   struct cxl_port *parent_port);
+> +
+>  extern struct bus_type cxl_bus_type;
+>  #endif /* __CXL_H__ */
+> 
+
