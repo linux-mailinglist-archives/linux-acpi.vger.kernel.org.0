@@ -2,129 +2,189 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E479E39F0FC
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 10:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CB2C39F18B
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jun 2021 11:00:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229507AbhFHIeN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Jun 2021 04:34:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52906 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231338AbhFHIeK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 8 Jun 2021 04:34:10 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AAF4561183;
-        Tue,  8 Jun 2021 08:32:09 +0000 (UTC)
-Date:   Tue, 8 Jun 2021 09:32:07 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Marek Kedzierski <mkedzier@redhat.com>,
-        Hui Zhu <teawater@gmail.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org, Will Deacon <will@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Baoquan He <bhe@redhat.com>,
-        Laurent Dufour <ldufour@linux.ibm.com>,
-        Sergei Trofimovich <slyfox@gentoo.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Michel Lespinasse <michel@lespinasse.org>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        Joe Perches <joe@perches.com>,
-        Pierre Morel <pmorel@linux.ibm.com>,
-        Jia He <justin.he@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH v1 04/12] mm/memory_hotplug: remove nid parameter from
- arch_remove_memory()
-Message-ID: <20210608083206.GE17957@arm.com>
-References: <20210607195430.48228-1-david@redhat.com>
- <20210607195430.48228-5-david@redhat.com>
+        id S230410AbhFHJCY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Jun 2021 05:02:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:56221 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229942AbhFHJCV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Jun 2021 05:02:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1623142828;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=q8pQTS5vz7W3pBaGE0d38TVTbjri0nLjhaoLXCAvVt4=;
+        b=HcVt12BMAiXCn35SHF3s8IDfBi88MB7DNNuQQMVJTDJE2d6qvfqTQWfPi2Twgfy321Nnr7
+        e6e0Z6U066d+QOXMm/7zTQO1pL5MrvpA1klcaA7r/Z8g8mrcMfPfe9bTyRCbELmi+AiHn5
+        f+17Iu/gCGAcNeydCnzusoWj2tIOKro=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-464-3sIp7lirPdiekHx0diCdNw-1; Tue, 08 Jun 2021 05:00:27 -0400
+X-MC-Unique: 3sIp7lirPdiekHx0diCdNw-1
+Received: by mail-ej1-f71.google.com with SMTP id z15-20020a1709063a0fb029040d43ca6e95so3425867eje.12
+        for <linux-acpi@vger.kernel.org>; Tue, 08 Jun 2021 02:00:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=q8pQTS5vz7W3pBaGE0d38TVTbjri0nLjhaoLXCAvVt4=;
+        b=qMpXLcQSaNjYo+iC+PnWgA9odXqTyEkdJXNiFOUkH3Va58DMN1MwDBT5Qto+80LgYp
+         MLCPV1DBN1yb7QJIWD8kysBEt7/735e79a8YnKjwCvRgccoRW4WOMQeyXcf34Z4swZ1t
+         CLsj1USmzgmDcve/uFzd/2Vl6NQQZ03E2dcpR6REZpmIyDA1iLv/ztW2DTHpr/i9C2Z7
+         sRFd6mKzqbHTpmaTTgpUpFj72NN1gPXK4xMD4KrvIee1t/ZswHIpmKx7+nyAJOC6nsak
+         1KRT5zs66uc82TKokVbhLPfEP57D5my26/GlJKTzUMsOi4iV1iINvXVZX1kQUKaMNj0W
+         EF0A==
+X-Gm-Message-State: AOAM532k9ELpp12m4+EaW1YHzZxq8nA/4Vpmfp+JMWUFK/ts3nsN9Q/4
+        RNR5tXLRuSvvJvl6c00eSb5ZfImwBz2WCzS5OmO5PhPaerJm6926kPpEQj2BWYapT/01WoD3StQ
+        ERQH7fQQbTKpTihqU2oyHCQ==
+X-Received: by 2002:a17:906:a04e:: with SMTP id bg14mr5775588ejb.366.1623142825959;
+        Tue, 08 Jun 2021 02:00:25 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw0+0lBjVs9CJK1gPDtNITf0ZqRD1SRcnD3pEOFRUdvDJbycYeSORdCpGk0gKsOlfgba/chOA==
+X-Received: by 2002:a17:906:a04e:: with SMTP id bg14mr5775558ejb.366.1623142825703;
+        Tue, 08 Jun 2021 02:00:25 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id di16sm8488697edb.62.2021.06.08.02.00.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Jun 2021 02:00:25 -0700 (PDT)
+Subject: Re: [PATCH v5 0/6] Introduce intel_skl_int3472 module
+To:     Daniel Scally <djrscally@gmail.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, devel@acpica.org
+Cc:     Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        laurent.pinchart@ideasonboard.com, kieran.bingham@ideasonboard.com
+References: <20210603224007.120560-1-djrscally@gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <4400512a-b788-7074-d3c6-0ec228b43d7e@redhat.com>
+Date:   Tue, 8 Jun 2021 11:00:24 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210607195430.48228-5-david@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20210603224007.120560-1-djrscally@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 07, 2021 at 09:54:22PM +0200, David Hildenbrand wrote:
-> The parameter is unused, let's remove it.
-> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: x86@kernel.org
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Laurent Dufour <ldufour@linux.ibm.com>
-> Cc: Sergei Trofimovich <slyfox@gentoo.org>
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Michel Lespinasse <michel@lespinasse.org>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-> Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> Cc: Joe Perches <joe@perches.com>
-> Cc: Pierre Morel <pmorel@linux.ibm.com>
-> Cc: Jia He <justin.he@arm.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  arch/arm64/mm/mmu.c            | 3 +--
+Hi,
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+On 6/4/21 12:40 AM, Daniel Scally wrote:
+> Hello all
+> 
+> Bit longer than hoped but here's v5.
+> 
+> v4:
+> https://lore.kernel.org/lkml/20210520140928.3252671-1-djrscally@gmail.com/
+> 
+> v3
+> https://lore.kernel.org/lkml/20210222130735.1313443-1-djrscally@gmail.com/
+> 
+> v2
+> https://lore.kernel.org/platform-driver-x86/20210118003428.568892-1-djrscally@gmail.com/
+> 
+> v1
+> https://lore.kernel.org/linux-media/20201130133129.1024662-1-djrscally@gmail.com/T/#m91934e12e3d033da2e768e952ea3b4a125ee3e67
+> 
+> The only changes are the dropped patches, renamed functions in 2/6 and most of
+> Andy's suggestions on 5/6 - I didn't hit them all yet but didn't want to delay
+> this any more.
+> 
+> Series level changelog:
+> 
+> 	- Dropped all but the essential patches to simplify merge plan - thanks
+> 	Hans.
+
+Thank you. Andy has already sends me a pull-req for the gpiolib-acpi changes
+and I expect Rafael to send me a pull-req (from an immutable branch) for the
+ACPI bits soon-ish.
+
+When I merge those both into pdx86 I should be able to pick-up 5/6.
+
+Given the long time this has been in the making I'm tempted to do that
+(pick up 5/6 as is) and then we can do further cleanups like looking into
+using the existing fixed-regulator code later. My mean reason to do this
+would be to get this code into the hands of users starting with the 5.14
+kernel.
+
+So question, how usable is this (from the kernel pov, I know userspace
+needs work too) once I merge 5/6. Is the kernel-side support for the cameras
+on some Surface devices then complete or are more patches necessary in
+other subsystems ?
+
+Note another advantage of just merging 5/6 as is and doing the fixed-regulator
+bits on top, is that having those in a separate commit makes it easier to
+see if these indeed result in a nice cleanup (vs sticking with the current code).
+
+Regards,
+
+Hans
+
+
+
+
+
+
+> 
+> Daniel Scally (6):
+>   ACPI: scan: Extend acpi_walk_dep_device_list()
+>   ACPI: scan: Add function to fetch dependent of acpi device
+>   gpiolib: acpi: Export acpi_get_gpiod()
+>   gpiolib: acpi: Add acpi_gpio_get_io_resource()
+>   platform/x86: Add intel_skl_int3472 driver
+>   mfd: tps68470: Remove tps68470 MFD driver
+> 
+>  MAINTAINERS                                   |   5 +
+>  drivers/acpi/ec.c                             |   2 +-
+>  drivers/acpi/pmic/Kconfig                     |   2 +-
+>  drivers/acpi/pmic/intel_pmic_chtdc_ti.c       |   2 +-
+>  drivers/acpi/scan.c                           | 104 ++++-
+>  drivers/gpio/Kconfig                          |   2 +-
+>  drivers/gpio/gpiolib-acpi.c                   |  61 ++-
+>  drivers/i2c/i2c-core-acpi.c                   |   8 +-
+>  drivers/mfd/Kconfig                           |  18 -
+>  drivers/mfd/Makefile                          |   1 -
+>  drivers/mfd/tps68470.c                        |  97 ----
+>  drivers/platform/surface/aggregator/core.c    |   6 +-
+>  drivers/platform/surface/surface3_power.c     |  22 +-
+>  .../platform/surface/surface_acpi_notify.c    |   7 +-
+>  drivers/platform/x86/Kconfig                  |   2 +
+>  drivers/platform/x86/Makefile                 |   1 +
+>  drivers/platform/x86/intel-int3472/Kconfig    |  30 ++
+>  drivers/platform/x86/intel-int3472/Makefile   |   5 +
+>  .../intel_skl_int3472_clk_and_regulator.c     | 196 ++++++++
+>  .../intel-int3472/intel_skl_int3472_common.c  | 106 +++++
+>  .../intel-int3472/intel_skl_int3472_common.h  | 118 +++++
+>  .../intel_skl_int3472_discrete.c              | 417 ++++++++++++++++++
+>  .../intel_skl_int3472_tps68470.c              | 137 ++++++
+>  include/acpi/acpi_bus.h                       |   8 +
+>  include/linux/acpi.h                          |  11 +-
+>  include/linux/gpio/consumer.h                 |   2 +
+>  26 files changed, 1205 insertions(+), 165 deletions(-)
+>  delete mode 100644 drivers/mfd/tps68470.c
+>  create mode 100644 drivers/platform/x86/intel-int3472/Kconfig
+>  create mode 100644 drivers/platform/x86/intel-int3472/Makefile
+>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_clk_and_regulator.c
+>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_common.c
+>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_common.h
+>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_discrete.c
+>  create mode 100644 drivers/platform/x86/intel-int3472/intel_skl_int3472_tps68470.c
+> 
+
