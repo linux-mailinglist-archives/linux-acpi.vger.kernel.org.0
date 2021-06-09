@@ -2,37 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A2D13A1A84
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jun 2021 18:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C90D3A1B29
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jun 2021 18:43:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233701AbhFIQIi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Jun 2021 12:08:38 -0400
-Received: from mga18.intel.com ([134.134.136.126]:57658 "EHLO mga18.intel.com"
+        id S229634AbhFIQp2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Jun 2021 12:45:28 -0400
+Received: from mga01.intel.com ([192.55.52.88]:46170 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235013AbhFIQIh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 9 Jun 2021 12:08:37 -0400
-IronPort-SDR: DyEs3Wq3vUAl7l0FAXYB7/WeDjBq3keFUytLe+SP69mqRC7ruh+gIYHuY2EVgF97Wu+BEaTMbO
- zHfSkaH/TulA==
-X-IronPort-AV: E=McAfee;i="6200,9189,10010"; a="192417238"
+        id S229519AbhFIQp0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 9 Jun 2021 12:45:26 -0400
+IronPort-SDR: PwnoeWHW0Bs47tzgNBG56YEAqvjAkHYMqdfpG2qMDcHH8FqC6gqJe8qVg8oGIKSxZjgZw+1pxL
+ IU0DvyZYjLOw==
+X-IronPort-AV: E=McAfee;i="6200,9189,10010"; a="226484522"
 X-IronPort-AV: E=Sophos;i="5.83,261,1616482800"; 
-   d="scan'208";a="192417238"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2021 09:02:00 -0700
-IronPort-SDR: /er0kuxVYCyZZdeZBbz8eLDjMwaRzJoO5sfwXHEgDf6pt0m6GeAsGL32EZ0BMHPWgzVQzZLC3B
- Rm3Ga5I/i97g==
+   d="scan'208";a="226484522"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2021 09:43:29 -0700
+IronPort-SDR: hP9j+B+ni2BECBp8h0OkJpLjseh/BPDWKVz/wBHqM+MbQ9XZZ24MTlZhRd6Wc+xOlWoSq8bA0j
+ mGNLPRjQKXnA==
 X-IronPort-AV: E=Sophos;i="5.83,261,1616482800"; 
-   d="scan'208";a="469914303"
+   d="scan'208";a="619732342"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2021 09:01:58 -0700
-Subject: [PATCH v6 5/5] cxl/acpi: Introduce cxl_decoder objects
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2021 09:43:29 -0700
+Subject: [PATCH v7 5/5] cxl/acpi: Introduce cxl_decoder objects
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     linux-cxl@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
-Date:   Wed, 09 Jun 2021 09:01:57 -0700
-Message-ID: <162325451704.2293126.8710272179264082084.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <162325448982.2293126.16916114289970424561.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <162325448982.2293126.16916114289970424561.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Wed, 09 Jun 2021 09:43:29 -0700
+Message-ID: <162325695128.2293823.17519927266014762694.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <162325451704.2293126.8710272179264082084.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <162325451704.2293126.8710272179264082084.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -60,31 +60,33 @@ operation, but they are otherwise agnostic to the type of memory
 Here is an example topology from a single-ported host-bridge environment
 without CFMWS decodes enumerated.
 
-/sys/bus/cxl/devices/root0
-├── devtype
-├── dport0 -> ../LNXSYSTM:00/LNXSYBUS:00/ACPI0016:00
-├── port1
-│   ├── decoder1.0
-│   │   ├── devtype
-│   │   ├── end
-│   │   ├── locked
-│   │   ├── start
-│   │   ├── subsystem -> ../../../../bus/cxl
-│   │   ├── target_list
-│   │   ├── target_type
-│   │   └── uevent
-│   ├── devtype
-│   ├── dport0 -> ../../pci0000:34/0000:34:00.0
-│   ├── subsystem -> ../../../bus/cxl
-│   ├── uevent
-│   └── uport -> ../../LNXSYSTM:00/LNXSYBUS:00/ACPI0016:00
-├── subsystem -> ../../bus/cxl
-├── uevent
-└── uport -> ../platform/ACPI0017:00
+    /sys/bus/cxl/devices/root0
+    ├── devtype
+    ├── dport0 -> ../../../LNXSYSTM:00/LNXSYBUS:00/ACPI0016:00
+    ├── port1
+    │   ├── decoder1.0
+    │   │   ├── devtype
+    │   │   ├── locked
+    │   │   ├── size
+    │   │   ├── start
+    │   │   ├── subsystem -> ../../../../../../bus/cxl
+    │   │   ├── target_list
+    │   │   ├── target_type
+    │   │   └── uevent
+    │   ├── devtype
+    │   ├── dport0 -> ../../../../pci0000:34/0000:34:00.0
+    │   ├── subsystem -> ../../../../../bus/cxl
+    │   ├── uevent
+    │   └── uport -> ../../../../LNXSYSTM:00/LNXSYBUS:00/ACPI0016:00
+    ├── subsystem -> ../../../../bus/cxl
+    ├── uevent
+    └── uport -> ../../ACPI0017:00
 
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
+Changes since v6: mark target_type and target_list attributes as static (Ben)
+
  Documentation/ABI/testing/sysfs-bus-cxl |   70 ++++++++
  drivers/cxl/acpi.c                      |   20 ++
  drivers/cxl/core.c                      |  265 +++++++++++++++++++++++++++++++
@@ -208,7 +210,7 @@ index 1f075dffc042..be357eea552c 100644
  
  static int add_host_bridge_dport(struct device *match, void *arg)
 diff --git a/drivers/cxl/core.c b/drivers/cxl/core.c
-index 8a3f3804f252..c47432f3ac72 100644
+index 8a3f3804f252..1b9ee0b08384 100644
 --- a/drivers/cxl/core.c
 +++ b/drivers/cxl/core.c
 @@ -33,6 +33,168 @@ static struct attribute_group cxl_base_attribute_group = {
@@ -263,7 +265,7 @@ index 8a3f3804f252..c47432f3ac72 100644
 +	}
 +	return -ENXIO;
 +}
-+DEVICE_ATTR_RO(target_type);
++static DEVICE_ATTR_RO(target_type);
 +
 +static ssize_t target_list_show(struct device *dev,
 +			       struct device_attribute *attr, char *buf)
@@ -299,7 +301,7 @@ index 8a3f3804f252..c47432f3ac72 100644
 +
 +	return offset + rc;
 +}
-+DEVICE_ATTR_RO(target_list);
++static DEVICE_ATTR_RO(target_list);
 +
 +static struct attribute *cxl_decoder_base_attrs[] = {
 +	&dev_attr_start.attr,
