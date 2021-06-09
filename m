@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95EEF3A1CE1
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jun 2021 20:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 579E13A1CE2
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jun 2021 20:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229472AbhFISmX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Jun 2021 14:42:23 -0400
-Received: from mail-bn7nam10on2087.outbound.protection.outlook.com ([40.107.92.87]:35052
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        id S229720AbhFISmZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Jun 2021 14:42:25 -0400
+Received: from mail-dm6nam11on2049.outbound.protection.outlook.com ([40.107.223.49]:43969
+        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229655AbhFISmW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 9 Jun 2021 14:42:22 -0400
+        id S229655AbhFISmX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 9 Jun 2021 14:42:23 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gtd7DLSZjCI9O87unTVZ/iIbk+RLvc2IRXwe3L0niic8KvFQH/lUUXfW522lTcr2ozOzmC9QGSvYMUqC4Blxngu5Zbd3GAWA6+BmXKPFVGnk1nwvoBAXjWvUHCgr+c5GDB0Ymm43AawJB04XLJGXKF0K0sd8ePu4pfDTUMSaMkbSJgpwCaHWVSYpsEne0d1mSD4dXFRwEKpoWF3CBHadiy05e1EbBHx2zQTfY0cTiHwTrTuPAVjFoGl1CZhZGCujuz074VQZTijWPaglNIAVASoUUUzGKlpiQULBhy97k3EhJCk245+P9vDdmQwDO+R8s8glmbqN5MtVNosbtvWPsQ==
+ b=AcR3dXe5G9QnRqtuuk1Kel0uwG9qAYS7Yu2iBns/e+OVJaiM8ZRBNPDifRsQX5DGoh2wqJShsQMrzTA2eSWt3jOtbODBDYmrVbAgsae2v1Z8OipekxL2urAYYvboNXIuOEkw7qjDnQhny55XUvp1AbS8KgEgZWQ5P6VK3tR7/Xj5S2Q98DnZtANS/NQp+NWpyHMuEITLTX2h+ZpSBrD9abAH6aPJTDpp6U765aUnFL0aFn6SsZyHdvT5/C0xy+gHe6yU4UU/tsbOSERbPw84rbHb0wG7sf3HuHAJt2uLzcy8bDA40K/YBkXa4sHJ0F9GEXxoy1naG/u1+dyFadJ3Rw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ypvCnyUd5RBQKL9dZApil9tzBsSW1lIFZ6RG94ym65I=;
- b=I+Vi9WtvuOXV5ymcG6Z8V1IvLMAXoollHEuyrpf+RwKihPonzF6oACKRdv25byk07TRICJ7R1PxoNoSg04A7/a1IauYPFwVq+EK5UX8/+KAOAoXNTTum1NI4MTX228293qPVKrm6zyOjZ8PXAijry7IE4bjzM4IaOk5edUgtXuBgAtZ2Z86L0hOFlsFd6ht6Qu56cefOysMdN+Uwhv9tEw1MPxHD6QEw5LoIifcl/QVeFDB8OgcjrA8cJZ3A7feu5SsLc4rU06TlIn2tKnHkB5CU6G2Gbm43AeHB4Gas+AKqCKwbuzG+8M6A6rueuBebp3801qTlYgY+KQanaT2rfA==
+ bh=r+zzckDZxGaw/DdS4Grb9AIl1c6pRPUbfIZ4++psXfU=;
+ b=I83QFxCghKoKWHF8IC+HrfWCi0ZNoACuNKwAFmTarHmovCYgh8mYlhHTJ5FA1X4MeljAOwcmfxICRrQFTN5nXdyZASOX9t1FRRNRn8caI9r1Qa4amIEHzz216hfU1PpDKIMzD+gc2LZlajR7aJyeWnU6PdEB6vSxSOeIVlyhZ94q1mvTyOKn46CeyICGg4vTAgD9txRfsWERWKw3pT9yah14t2le9yXu437RL375jtpxNDMIw8pM9L5ijuWVcyK/VHzQTRah2vFzNlH2MEiqY0fMU06nltxO0N9dIM/xBKSBhd+vgtoZ6hLfx1TPxAFkCMQP6PVogT/71MlChyJzRQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ypvCnyUd5RBQKL9dZApil9tzBsSW1lIFZ6RG94ym65I=;
- b=zNSjkvByrVAz4XiWM+tJb3oI3qNnG6sNpmFxM4py4B8cDzQ6UCpKVDbPDSnZBQ9p5hjKf1sjP41VuOAuYJ78ZN3ApxIy1iYrMzfPXfY/+cJmVyoNA3htcTNbwMRB3wBBx/Rm57U0IkjHFQmdKAqmp3mXxzMAzK2prX3nFecci2Q=
+ bh=r+zzckDZxGaw/DdS4Grb9AIl1c6pRPUbfIZ4++psXfU=;
+ b=eadoUn1rx9Wel1ps0LCNE419qP/exhuL//jl+XO9WxnGFuWcw5rHluRK1NDnh5llUIuZqhsSqK3f0Esvz0MAgw9CC87tokzXeDpm7hf0LnLoC69gRLEw//n5Jh4zuZJ3Nas2NTwomnW+tWmHIaPQs7glj4woMqSUHZq9IUDvCAE=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
- by SN1PR12MB2512.namprd12.prod.outlook.com (2603:10b6:802:31::14) with
+ by SN6PR12MB2781.namprd12.prod.outlook.com (2603:10b6:805:67::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.20; Wed, 9 Jun
- 2021 18:40:25 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.27; Wed, 9 Jun
+ 2021 18:40:26 +0000
 Received: from SA0PR12MB4510.namprd12.prod.outlook.com
  ([fe80::d51c:6137:77f2:5671]) by SA0PR12MB4510.namprd12.prod.outlook.com
  ([fe80::d51c:6137:77f2:5671%4]) with mapi id 15.20.4195.030; Wed, 9 Jun 2021
- 18:40:25 +0000
+ 18:40:26 +0000
 From:   Mario Limonciello <mario.limonciello@amd.com>
 To:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
         Christoph Hellwig <hch@lst.de>,
@@ -47,11 +47,14 @@ Cc:     linux-nvme@lists.infradead.org (open list:NVM EXPRESS DRIVER),
         david.e.box@linux.intel.com, Shyam-sundar.S-k@amd.com,
         Nehal-bakulchandra.Shah@amd.com, Alexander.Deucher@amd.com,
         prike.liang@amd.com, Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v8 1/2] ACPI: Check StorageD3Enable _DSD property in ACPI code
-Date:   Wed,  9 Jun 2021 13:40:17 -0500
-Message-Id: <20210609184018.26017-1-mario.limonciello@amd.com>
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Julian Sikorski <belegdol@gmail.com>
+Subject: [PATCH v8 2/2] ACPI: Add quirks for AMD Renoir/Lucienne CPUs to force the D3 hint
+Date:   Wed,  9 Jun 2021 13:40:18 -0500
+Message-Id: <20210609184018.26017-2-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210609184018.26017-1-mario.limonciello@amd.com>
+References: <20210609184018.26017-1-mario.limonciello@amd.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [165.204.78.25]
@@ -60,193 +63,183 @@ X-ClientProxiedBy: SA9PR13CA0168.namprd13.prod.outlook.com
  (2603:10b6:806:94::8)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from AUS-LX-MLIMONCI.amd.com (165.204.78.25) by SA9PR13CA0168.namprd13.prod.outlook.com (2603:10b6:806:28::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.9 via Frontend Transport; Wed, 9 Jun 2021 18:40:24 +0000
+Received: from AUS-LX-MLIMONCI.amd.com (165.204.78.25) by SA9PR13CA0168.namprd13.prod.outlook.com (2603:10b6:806:28::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.9 via Frontend Transport; Wed, 9 Jun 2021 18:40:25 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 78896174-605b-4a90-1b6b-08d92b760bcd
-X-MS-TrafficTypeDiagnostic: SN1PR12MB2512:
+X-MS-Office365-Filtering-Correlation-Id: f1a2c0ba-a958-4837-190c-08d92b760c8a
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2781:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SN1PR12MB251230D01E00C538EDC646C5E2369@SN1PR12MB2512.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2399;
+X-Microsoft-Antispam-PRVS: <SN6PR12MB278147D0B998E880925F4942E2369@SN6PR12MB2781.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 53S1OgzptM+UVoYJSU3AjPvcB2vEnzNHj0lfJ2EgsYfq4MswIUJ1c/65x5D5Kk4IAmflocWTEqXZ6jPNIdeksFTXStUBjagDV3SuaB5AlQnneKbzzViGaww5aksGlQJs9B45SGV+Pa9uap7gifhxAFfIebZh9jSRvVrkIsxuThQvj6ArXh24TYEpjXP6+lOkpoP9KbBn0H8ep0MyTRuHDrzfhyKEFCsDY+7w6cElN4ALI33DLTgrjzwgQhI7mT9RPIJ6W6tKIY0hC+V0obdWhRKuydY0a7994cv4CFs41fy+hf//2otUxhSBVt38GvRIgLQ2IufiFiNN1xYNd/viC/idDEdLMqgMHWtvFgG5Xr4JwwuAsqo37UJynmtYEganr43aeZhYkZBUjUggJRn15kPcBCJ8yemL0UIcGL5HpZloJOyY3KDva/KoucNd5o+4OYm4SjlT8MY2RZOTqebJIRqX9pOCs54lSUCvfgL7oh4a35OySZas+WoW1OsDHEBkLZ7yD44Hg3rESNqCMLYzj6wuxvH2B81OjAQqT4eUupKA3P4X3OeQLdQbNM4xoI1JW6WjLBcr71b1rr7x7IbDqmN9zavubs0L5zSrcZvIPU9x8q+jKae4hOuXtgHWYpEE9Ka9QkxZduAICvCyLDULEr0yvrEx498FaW2QZMg2hcLBHAYloxBaC9D/NtFdkQX06lSTeqFS2oZZ2lNDd9Ywqk7QPI1buHLqAdUhYFyzmnSUdZgjg7fU9XnR4Rm752NPbsM+boJlc0FAMfvTMvlFtg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4510.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(39860400002)(376002)(136003)(366004)(396003)(66476007)(66556008)(66946007)(5660300002)(8676002)(54906003)(316002)(38100700002)(83380400001)(38350700002)(7696005)(6666004)(1076003)(8936002)(2616005)(52116002)(86362001)(45080400002)(956004)(6486002)(966005)(16526019)(26005)(7416002)(186003)(2906002)(4326008)(478600001)(44832011)(36756003)(110136005);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: OM/DsM81ed44BLm00AB1tqH0W6AVHDaFEIzxEbiEfZNTrOIiMls0L2wvhMwb+7qp2mlfGI/c1um9WXNi3oNtvJOtFTTG9hpMP6ngeIbcMAxZoZtHUy9l9DsOYC5T2Kf9TCKrmwxW1BvWlZb4ER/0UoW0R6MOaqZEWDjYZnnBSPg6p+W6dGteoKUm+1Cj6KfVna5UTFZSzPBJTG9qBKHOru4C4rlhQMRDC6TQKIa3dKu0IbitShRjS2NOqyVaYArcXv9jkVauVCV46wKXULTcOl37c23WKINsGqStJxQs7TsWRRdiPFZFZKT/72KKqXM5eyraAilu0haS0Mzjusb95Yl5xx6YbC7qeWKa5WFcWUuQLl1yEKmHy/rIkEx2vtfuMLgfGQ55ADdmuCIFdJS6iUL/x2l2op9UYdVzx0RHoOi4HSVqfCO3OuAlsdJO8iMm4qALmk5pyLmYU4fpGs8lYJQlHlFuU3SPwqdwl2rOMZ24vGRyFsHJx6XDdmvKGkH/jK2jJXghZiVw7xVYkW9oNFP5rQcJQxGr8WlNWoD65E2BQGVJWzNccuGI2VlMw6ym7+XWUHkutAd9B1ni6CRL6JhxpAe0fJ/nslYriCmjlj7WF/SxJaAJ0lcIjmj+10udC0k14UppnzWu03IdxNqIE9mWz4zM0tKs/cv4fLOAhJPGw41RQ6mWCeutIjaN7ln8UFE+JKL/yndBWPw6L7Xy2mPRGum6ipfnUJsBzwNiSWCdss1lrFlGB7Kvt8hT5EDqPgWJqaVUSRKt5onyk0463g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4510.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(346002)(136003)(396003)(366004)(36756003)(38350700002)(66946007)(5660300002)(6666004)(38100700002)(2616005)(44832011)(966005)(478600001)(6486002)(66556008)(86362001)(45080400002)(8936002)(54906003)(66476007)(110136005)(26005)(4326008)(7416002)(316002)(83380400001)(16526019)(2906002)(52116002)(956004)(1076003)(8676002)(186003)(7696005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?svyOqSJ+Kj4Mey57/WM4FJ0BCwT9wG/XBjgteff8NG4sHnMQdbezWmcCYgpH?=
- =?us-ascii?Q?evfo6hVzhD/JUiCEFqT2+rUIU5pzVcmrWqEK0VPQIFoSo882vxw6YmaIJ/FL?=
- =?us-ascii?Q?iklixIWUNzaBMYm4KqfDGdBcrUhlifnGlFINGKOQSY3ye/BfQimm/SpdwZ2b?=
- =?us-ascii?Q?r9onhaiZcHvOsNTe3KDbHE7nAI0caWr2Xv+DRf3D2+U2Dke4pD2blIvmOmnF?=
- =?us-ascii?Q?cdBfnryIBdvllmzUROBi0jvVhLFcF8pEwVLUIZpoYBx+8PfgjwW0ZMV/WbS5?=
- =?us-ascii?Q?ojwd8ryi5xkQFfDwSNFL6oqGgALLvM6NuAQRXMxKZF/CUHf7jJt8JTxJSl7u?=
- =?us-ascii?Q?GxB69xwIUtpBsKetU+1a87gLrm8elXUEpYismDH3rCRqeaX9FaTBANlVHtYw?=
- =?us-ascii?Q?SlJHN8wC+eVpNiYqiqVeqyADcsEb+o3U1P/qeGYVmggTix+C1UM2u8Vus4ba?=
- =?us-ascii?Q?xkUDB1hXxkQxllCyCMuo/RJF1LKZL03EcFays9JeAGWv1yWBrVjIZZGy5DRd?=
- =?us-ascii?Q?ptgqDBhTZIBBRZIXFjqV1NQv0WQbWu3wpMmfafpB9wQuPWLxl7r6NHpddIhy?=
- =?us-ascii?Q?XRQlo4vvkCXJ7RUfOZvAW8oxhMvUQZq2qD2+VPxbeYk8dBkl1TttCcUld9bD?=
- =?us-ascii?Q?tT2M+0mg5fwfko75sVjnwBrws+xJ47dxuB+/Q443khIwDhlYBluM25S7Fkxn?=
- =?us-ascii?Q?yBLdg8FiTQEf/mJW8SxQCS2Je3EGY5fOUhoX+ULfdzmJLC60jtHYkvF1vLV3?=
- =?us-ascii?Q?5c7Ou5PmZJaFhO5OmiWF5nUJLsXZG6l7wcNqoZfl2ohHnzbSu5cQ/4BDTNLl?=
- =?us-ascii?Q?WiA6FjRPQjzIv/0e/sxbEjV53/hgPTMQvDy5lFe51lGGmbD12FVwlYP53kQZ?=
- =?us-ascii?Q?n/WxXRzN0UBMfinZXpGDCNwHqlo0Cea0wnhV3SJrHVFAy8x0TB484jrIoYPh?=
- =?us-ascii?Q?8HjjLk0N9N9fpvmycJBqE45qy1wZji1km3slQaQroY3igKc0ir2H1QrooPOw?=
- =?us-ascii?Q?4R0Rf9KAZBBOyYhZnO1Asj9MBQ53eu25EpiCGhtvUUUcwrdCrZbWJWuDCYbT?=
- =?us-ascii?Q?MnPYD/dldMAPmTywKQ1WT8KK0n2I4D7lUBFd3J32DeVIWem9q4TgwnUJ4nYy?=
- =?us-ascii?Q?cm314LzjXn5W7QEpHNYIsDhTMfaS8xQp19V6vaVe3epz//uSQqce67owhvWI?=
- =?us-ascii?Q?AUMr5jd+xi/WqC9T/ANl0CabABipIe3rVAk5ADMmxShbG/0bDthtV8lZY2Ow?=
- =?us-ascii?Q?GQExAfmHrQANiRQPqJobL9IZchYNfk2/VU7PEYl714FM8PXwJ87KMbgEVRas?=
- =?us-ascii?Q?drxSaXs/FEkvH53YtxwYM75r?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?dkafhBJMxrKF23rPFGjYqHvdpXjf3h8cIHesXpRxf+sf4Q5nAg1S/sruurI7?=
+ =?us-ascii?Q?JqzMRI4PPDq9PWat0W/yjYqSBgOOAlVbzaOUYkYa9rq2UrF7JKIyNYv47xtQ?=
+ =?us-ascii?Q?CAvjScQG0ssziuhzsCHES0k2WZL19xTr1GYEV2lU7B65D3fXowR4byhBjhL0?=
+ =?us-ascii?Q?La3ZFR5DEVw8i4ZRigUXolACwpGAiPkIK0QG9qHwKhkvqQHFjbpHkdH2+Fam?=
+ =?us-ascii?Q?lLp4cSsXafQnsIPVwnpAH2ZU5r6U4oOBKlXJbcNuvw4nJUTAAjasrD6EzsJI?=
+ =?us-ascii?Q?+G4IaevA+z9k/3bsrE72vMiMB11qADLZ+hJqtuq0RJu15154sMlgifgAaKlY?=
+ =?us-ascii?Q?EtXNROtCPjlD87y2CtaOD+Ou8UiKpWOUQ9BJxgSglHf3lgZGOBKDkwfIyyCr?=
+ =?us-ascii?Q?gKuLA6vE6Z3ZPhvZdRkPG7D9ab565Ea1vvvDW3Tv0T9mOnLYFIaHTWNubEH5?=
+ =?us-ascii?Q?zZKGhsM38oiRIQu4dKMMe93PVRJ0XQ5bGt1GgxRavPEF203Hff003dZL3THw?=
+ =?us-ascii?Q?R7dN8yplbI8Q0Q+MN7KGDSPDCgRsrkryo/VWAvuUS7UqtiXIvgXDwjnifM1a?=
+ =?us-ascii?Q?YbdDJj/sW+wgfFGIHpDYD28jhZCc7Gn2T41T9LdY2qonO9Eo+H0YfgrTEVsM?=
+ =?us-ascii?Q?iG1dY3UbVyZbiy62fr9yDk1f48IBTehpFEI8oc5bq+YZYpEWZ0XCIOtwJmYu?=
+ =?us-ascii?Q?4HFj5A5P5m+gMVUEO6r73NiITOgQ0hOfkHD8oq13m3ujLZzFwV7iHG3r+rc7?=
+ =?us-ascii?Q?Sx2G/ncuJokMPW+LzTF/ROLDe/f2fI+9hlLjjFw757xj0z03cibZofeoHEjX?=
+ =?us-ascii?Q?+hxPTHC0iWVw1GQ44dQw5BPH9PlwagSSr+nGIw6bPYexwHLHdDHf0yYtnVPM?=
+ =?us-ascii?Q?FU4Eetnb7KhVIQNLkA9cdQUSW02EuBDOiLb13acvgjvOcIs8igNB5ezcR0ud?=
+ =?us-ascii?Q?YHAhWicJgvA49xPBrzbWCTwjl3S1JS+m4Ds3k4SIgvjCnZFidkQEYx+U8XV+?=
+ =?us-ascii?Q?M7um7jY9gDJwhOiCC9Mc/tv7uFe66lp1P9yobgWh7hagmxeumXDLsYFBYicM?=
+ =?us-ascii?Q?byszjRZUITSj2n2BaGHi21hoPHHKG8EldIG9bxNNGiliFaGG6EEReEYhJavj?=
+ =?us-ascii?Q?vedIbBjhduoCkVJPKQm87Jz78PBNzOZh0l0GeGZPl8zGTOVynfaDFuSTp2hW?=
+ =?us-ascii?Q?CP4JU/YommtHPzi8DQdztqeVysN6dPoDRjJ/GA60zpdOxLWdjUDjG7d6zlgV?=
+ =?us-ascii?Q?ru+qmkcUIbiWnqzWslQytyXgEs0jZIrrkjLHyi0i7i4ymr3t4wRLUyf7VdzS?=
+ =?us-ascii?Q?yaP/bv0FGyr6r3K5apFqkCkk?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78896174-605b-4a90-1b6b-08d92b760bcd
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1a2c0ba-a958-4837-190c-08d92b760c8a
 X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4510.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2021 18:40:25.5136
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2021 18:40:26.7273
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SgHO0E6nTt77JWIC7S/E/0xQEaWtZkKVe3+gcT1cuO/p0zk2FQZnf51r4ZKXqAlJ5EVlcaS98t5C7FX/DEDu7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2512
+X-MS-Exchange-CrossTenant-UserPrincipalName: rk4cSRDP81sBqdviSOATpBBe2X0K3RwaQMuP8vcQsHYWxBxOmOyXBGOtXtcNt0CEE8YmUL689DRyU+e79xphVg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2781
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Although first implemented for NVME, this check may be usable by
-other drivers as well. Microsoft's specification explicitly mentions
-that is may be usable by SATA and AHCI devices.  Google also indicates
-that they have used this with SDHCI in a downstream kernel tree that
-a user can plug a storage device into.
+AMD systems from Renoir and Lucienne require that the NVME controller
+is put into D3 over a Modern Standby / suspend-to-idle
+cycle.  This is "typically" accomplished using the `StorageD3Enable`
+property in the _DSD, but this property was introduced after many
+of these systems launched and most OEM systems don't have it in
+their BIOS.
 
-Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-Suggested-by: Keith Busch <kbusch@kernel.org>
+On AMD Renoir without these drives going into D3 over suspend-to-idle
+the resume will fail with the NVME controller being reset and a trace
+like this in the kernel logs:
+```
+[   83.556118] nvme nvme0: I/O 161 QID 2 timeout, aborting
+[   83.556178] nvme nvme0: I/O 162 QID 2 timeout, aborting
+[   83.556187] nvme nvme0: I/O 163 QID 2 timeout, aborting
+[   83.556196] nvme nvme0: I/O 164 QID 2 timeout, aborting
+[   95.332114] nvme nvme0: I/O 25 QID 0 timeout, reset controller
+[   95.332843] nvme nvme0: Abort status: 0x371
+[   95.332852] nvme nvme0: Abort status: 0x371
+[   95.332856] nvme nvme0: Abort status: 0x371
+[   95.332859] nvme nvme0: Abort status: 0x371
+[   95.332909] PM: dpm_run_callback(): pci_pm_resume+0x0/0xe0 returns -16
+[   95.332936] nvme 0000:03:00.0: PM: failed to resume async: error -16
+```
+
+The Microsoft documentation for StorageD3Enable mentioned that Windows has
+a hardcoded allowlist for D3 support, which was used for these platforms.
+Introduce quirks to hardcode them for Linux as well.
+
+As this property is now "standardized", OEM systems using AMD Cezanne and
+newer APU's have adopted this property, and quirks like this should not be
+necessary.
+
 CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
 CC: Alexander Deucher <Alexander.Deucher@amd.com>
-CC: Rafael J. Wysocki <rjw@rjwysocki.net>
 CC: Prike Liang <prike.liang@amd.com>
+Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Julian Sikorski <belegdol@gmail.com>
 ---
- drivers/acpi/device_pm.c | 29 +++++++++++++++++++++++++++++
- drivers/nvme/host/pci.c  | 28 +---------------------------
- include/linux/acpi.h     |  5 +++++
- 3 files changed, 35 insertions(+), 27 deletions(-)
-
+ drivers/acpi/device_pm.c |  3 +++
+ drivers/acpi/internal.h  |  9 +++++++++
+ drivers/acpi/x86/utils.c | 25 +++++++++++++++++++++++++
+ 3 files changed, 37 insertions(+)
+ 
 Changes from v4->v5:
- * Correct extra "Link:" word in commit message
+ * Add this patch back in as it's been made apparent that the
+   system needs to be hardcoded for these.
+   Changes:
+   - Drop Cezanne - it's now covered by StorageD3Enable
+   - Rebase ontop of acpi_storage_d3 outside of NVME
 Changes from v5->v6:
- * Add in commit message tags from Raul, Rafael and Keith
+ * Move the quirk check into drivers/acpi/x86/ as suggested by
+   Rafael.
 Changes from v6->v7:
- * Update kerneldoc comments per suggestsions.
- * Drop all Acked/Reviewed tags
-Changes from v7->v8
- * Add Rafael's tag and corrections for title and doc
- * Add in comment requested by Christoph for non-storage to kernel-doc
+ * Move header location
+ * Optimization of force function
+Changes from v7->v8:
+ * Add tags
+
 diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-index d260bc1f3e6e..c8600978b283 100644
+index c8600978b283..c40fc135ff0c 100644
 --- a/drivers/acpi/device_pm.c
 +++ b/drivers/acpi/device_pm.c
-@@ -1340,4 +1340,33 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
- 	return 1;
- }
- EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
-+
-+/**
-+ * acpi_storage_d3 - Check if D3 should be used in the suspend path
-+ * @dev: Device to check
-+ *
-+ * Return %true if the platform firmware wants @dev to be programmed
-+ * into D3hot or D3cold (if supported) in the suspend path, or %false
-+ * when there is no specific preference. On some platforms, if this
-+ * hint is ignored, @dev may remain unresponsive after suspending the
-+ * platform as a whole.
-+ *
-+ * Although the property has storage in the name it actually is
-+ * applied to the PCIe slot and plugging in a non-storage device the
-+ * same platform restrictions will likely apply.
-+ */
-+bool acpi_storage_d3(struct device *dev)
-+{
-+	struct acpi_device *adev = ACPI_COMPANION(dev);
-+	u8 val;
-+
-+	if (!adev)
-+		return false;
-+	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
-+			&val))
-+		return false;
-+	return val == 1;
-+}
-+EXPORT_SYMBOL_GPL(acpi_storage_d3);
-+
- #endif /* CONFIG_PM */
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 3aa7245a505f..8fbc4c87a0d8 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2828,32 +2828,6 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
- 	return 0;
- }
+@@ -1360,6 +1360,9 @@ bool acpi_storage_d3(struct device *dev)
+ 	struct acpi_device *adev = ACPI_COMPANION(dev);
+ 	u8 val;
  
--#ifdef CONFIG_ACPI
--static bool nvme_acpi_storage_d3(struct pci_dev *dev)
--{
--	struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
--	u8 val;
--
--	/*
--	 * Look for _DSD property specifying that the storage device on the port
--	 * must use D3 to support deep platform power savings during
--	 * suspend-to-idle.
--	 */
--
--	if (!adev)
--		return false;
--	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
--			&val))
--		return false;
--	return val == 1;
--}
--#else
--static inline bool nvme_acpi_storage_d3(struct pci_dev *dev)
--{
--	return false;
--}
--#endif /* CONFIG_ACPI */
--
- static void nvme_async_probe(void *data, async_cookie_t cookie)
- {
- 	struct nvme_dev *dev = data;
-@@ -2903,7 +2877,7 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++	if (force_storage_d3())
++		return true;
++
+ 	if (!adev)
+ 		return false;
+ 	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
+diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+index f973bbe90e5e..e29ec463bb07 100644
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -236,6 +236,15 @@ static inline int suspend_nvs_save(void) { return 0; }
+ static inline void suspend_nvs_restore(void) {}
+ #endif
  
- 	quirks |= check_vendor_combination_bug(pdev);
- 
--	if (!noacpi && nvme_acpi_storage_d3(pdev)) {
-+	if (!noacpi && acpi_storage_d3(&pdev->dev)) {
- 		/*
- 		 * Some systems use a bios work around to ask for D3 on
- 		 * platforms that support kernel managed suspend.
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index c60745f657e9..dd0dafd21e33 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1004,6 +1004,7 @@ int acpi_dev_resume(struct device *dev);
- int acpi_subsys_runtime_suspend(struct device *dev);
- int acpi_subsys_runtime_resume(struct device *dev);
- int acpi_dev_pm_attach(struct device *dev, bool power_on);
-+bool acpi_storage_d3(struct device *dev);
- #else
- static inline int acpi_subsys_runtime_suspend(struct device *dev) { return 0; }
- static inline int acpi_subsys_runtime_resume(struct device *dev) { return 0; }
-@@ -1011,6 +1012,10 @@ static inline int acpi_dev_pm_attach(struct device *dev, bool power_on)
- {
- 	return 0;
- }
-+static inline bool acpi_storage_d3(struct device *dev)
++#ifdef CONFIG_X86
++bool force_storage_d3(void);
++#else
++static inline bool force_storage_d3(void)
 +{
 +	return false;
 +}
- #endif
++#endif
++
+ /*--------------------------------------------------------------------------
+ 				Device properties
+   -------------------------------------------------------------------------- */
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index bdc1ba00aee9..5298bb4d81fe 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -135,3 +135,28 @@ bool acpi_device_always_present(struct acpi_device *adev)
  
- #if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
+ 	return ret;
+ }
++
++/*
++ * AMD systems from Renoir and Lucienne *require* that the NVME controller
++ * is put into D3 over a Modern Standby / suspend-to-idle cycle.
++ *
++ * This is "typically" accomplished using the `StorageD3Enable`
++ * property in the _DSD that is checked via the `acpi_storage_d3` function
++ * but this property was introduced after many of these systems launched
++ * and most OEM systems don't have it in their BIOS.
++ *
++ * The Microsoft documentation for StorageD3Enable mentioned that Windows has
++ * a hardcoded allowlist for D3 support, which was used for these platforms.
++ *
++ * This allows quirking on Linux in a similar fashion.
++ */
++const struct x86_cpu_id storage_d3_cpu_ids[] = {
++	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
++	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
++	{}
++};
++
++bool force_storage_d3(void)
++{
++	return x86_match_cpu(storage_d3_cpu_ids);
++}
 -- 
 2.25.1
 
