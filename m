@@ -2,99 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB603A143B
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jun 2021 14:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 486B43A14C3
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jun 2021 14:45:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230169AbhFIMZE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Jun 2021 08:25:04 -0400
-Received: from mail-oo1-f53.google.com ([209.85.161.53]:35365 "EHLO
-        mail-oo1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229753AbhFIMZE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Jun 2021 08:25:04 -0400
-Received: by mail-oo1-f53.google.com with SMTP id s20-20020a4ae9940000b02902072d5df239so5829765ood.2
-        for <linux-acpi@vger.kernel.org>; Wed, 09 Jun 2021 05:23:10 -0700 (PDT)
+        id S235219AbhFIMrG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Jun 2021 08:47:06 -0400
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:38811 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235194AbhFIMrE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Jun 2021 08:47:04 -0400
+Received: by mail-ot1-f41.google.com with SMTP id j11-20020a9d738b0000b02903ea3c02ded8so10165948otk.5
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Jun 2021 05:45:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ef4o5raAS3In70X0xfp1x71L6eApbLteni5XOPikDJs=;
-        b=B9w8KQa0H9fM6xWPvnZCuy7FSWv6TRAY9gZYqFglEKnJ2iwGtp4tFuka/13A38mFZE
-         WY5OZxxj/cy5OBaUe8f/9kBILW0Y6sBbm4k8miz9lA3LXXZBZD7lpoMOk9k+3ViFgohh
-         Zmi3M/W7KIijX4EOfyBrQFJUMV1dL38pFAwVFZCsC57IPPNkNocyY1NS3R6dfKC5hVV/
-         74ipGf6dqSl87aZXSVmJF8Kby6BVQC5NEePF/oLtvw0TfpoAkpt90i9TfnDSe0YE/5p0
-         1JhGuiy3hYJBs8jeeHI4qeuvhgtEBS0BVIpXdVoPpLty/3gKW9FV1boeQwQttT7bch9a
-         CK8A==
-X-Gm-Message-State: AOAM532ofyg0MhnVdzU58l6iC+Z6180WSHpusaiMq960ghNNhEdvGRmU
-        l15JNHVj00U+oGTNVWNdSl9bXn9YKCAsFn4VI4zsGwgw
-X-Google-Smtp-Source: ABdhPJxAwsu/2N2fyR/8TnPe/YvsCqxGBuX8j0eIHVomDBlTF4yQgD/rLZK20Q/4bvJ+p9qTHpyBcjyGgscnsStT0u4=
-X-Received: by 2002:a4a:9bcb:: with SMTP id b11mr21605499ook.44.1623241389662;
- Wed, 09 Jun 2021 05:23:09 -0700 (PDT)
+        bh=lkCxoNHzgFXJq2BIYGnsc6tqd+cRp4h82zBz3msM8FA=;
+        b=OD2SI0FSbghXrLzJMTlRc/ieCc+BbVpWLZSO+I3BlP+Xm9NIsIE3VynA5A7YMMVh7G
+         tdHv66Cr7AHpZfUFvTnhzPskHi8vhwD4VF7+NjuHkmr4ALbu1Etaa5ChmhfIUZj4dpyk
+         IzEMV0A7qpVe1qcvWeTDbFErk7whEdqY8eMKax5kFN/8RhFBByzbbC401HFhWV5YQtHg
+         UM4T/w5yCLgzmYhDeY3AOKcR2K7bc85u2V53cwLF5T0rAxF9p+N6K0pMDfP59tkRFusk
+         FxmOYpvKP8CDq6fR/X6yDqP+yuaAnGIic+YRHhYCrFJecI1pcp6PMcwuNhjLyIPPTRfI
+         t+JQ==
+X-Gm-Message-State: AOAM533JD7OJKv1DpXizEmVFji9TUbsjKTiaGbIGmbvxdumkN35FTS3q
+        n0AdKLHdrNZ8b1HwN8VNMl8mCo24dm0+L0c98KYo7PaEca8=
+X-Google-Smtp-Source: ABdhPJy5Jiit9UltLB571wDyk6REThxR800Gt0LeUYpoHdrwGuEulugt1UBsfvOAKk/u7Rib936S1SOsEY7/9NMd29o=
+X-Received: by 2002:a9d:3e53:: with SMTP id h19mr22291509otg.260.1623242700341;
+ Wed, 09 Jun 2021 05:45:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210609102533.6565-1-mika.westerberg@linux.intel.com> <54a5da2d-255c-4617-b2fa-8bc8e8746360@redhat.com>
-In-Reply-To: <54a5da2d-255c-4617-b2fa-8bc8e8746360@redhat.com>
+References: <20210609021442.12446-1-hui.wang@canonical.com>
+In-Reply-To: <20210609021442.12446-1-hui.wang@canonical.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 9 Jun 2021 14:22:58 +0200
-Message-ID: <CAJZ5v0gyZhwcODnLhOfNc=Lxkr9kqt4UrsYsQUggp2dtGRWWSg@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: Pass the same capabilities to the _OSC
- regardless of the query flag
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Mario Limonciello <mario.limonciello@outlook.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Wed, 9 Jun 2021 14:44:49 +0200
+Message-ID: <CAJZ5v0juxLJXiyreAjeNkUYZZ2SHWCdFRM+ip3-H6NrgYHa=Cw@mail.gmail.com>
+Subject: Re: [PATCH v3] ACPI : don't always override the acpi irq
+To:     Hui Wang <hui.wang@canonical.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        manuelkrause@netscape.net, Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 9, 2021 at 1:25 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Wed, Jun 9, 2021 at 4:14 AM Hui Wang <hui.wang@canonical.com> wrote:
 >
-> Hi,
+> The laptop keyboard doesn't work on many MEDION notebooks, but the
+> keyboard works well under Windows and Unix.
 >
-> On 6/9/21 12:25 PM, Mika Westerberg wrote:
-> > Commit 719e1f561afb ("ACPI: Execute platform _OSC also with query bit
-> > clear") makes acpi_bus_osc_negotiate_platform_control() not only query
-> > the platforms capabilities but it also commits the result back to the
-> > firmware to report which capabilities are supported by the OS back to
-> > the firmware
-> >
-> > On certain systems the BIOS loads SSDT tables dynamically based on the
-> > capabilities the OS claims to support. However, on these systems the
-> > _OSC actually clears some of the bits (under certain conditions) so what
-> > happens is that now when we call the _OSC twice the second time we pass
-> > the cleared values and that results errors like below to appear on the
-> > system log:
-> >
-> >   ACPI BIOS Error (bug): Could not resolve symbol [\_PR.PR00._CPC], AE_NOT_FOUND (20210105/psargs-330)
-> >   ACPI Error: Aborting method \_PR.PR01._CPC due to previous error (AE_NOT_FOUND) (20210105/psparse-529)
-> >
-> > In addition the ACPI 6.4 spec says following [1]:
-> >
-> >   If the OS declares support of a feature in the Support Field in one
-> >   call to _OSC, then it must preserve the set state of that bit
-> >   (declaring support for that feature) in all subsequent calls.
-> >
-> > Based on the above we can fix the issue by passing the same set of
-> > capabilities to the platform wide _OSC in both calls regardless of the
-> > query flag.
-> >
-> > While there drop the context.ret.length checks which were wrong to begin
-> > with (as the length is number of bytes not elements). This is already
-> > checked in acpi_run_osc() that also returns an error in that case.
-> >
-> > Includes fixes by Hans de Goede.
-> >
-> > [1] https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#sequence-of-osc-calls
-> >
-> > BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213023
-> > BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1963717
-> > Fixes: 719e1f561afb ("ACPI: Execute platform _OSC also with query bit clear")
-> > Cc: Mario Limonciello <mario.limonciello@outlook.com>
-> > cc: Hans de Goede <hdegoede@redhat.com>
-> > Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Through debugging, we found this log in the dmesg:
+> ACPI: IRQ 1 override to edge, high
+> pnp 00:03: Plug and Play ACPI device, IDs PNP0303 (active)
 >
-> Thanks, patch looks good to me:
+> And we checked the IRQ definition in the DSDT, it is:
+>     IRQ (Level, ActiveLow, Exclusive, )
+>         {1}
 >
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> So the BIOS defines the keyboard irq to Level_Low, but the linux
+> kernel override it to Edge_High. If let the linux kernel skip the irq
+> override, the keyboard will work normally.
+>
+> From the existing comment in the acpi_dev_get_irqresource(), the
+> override function only needs to be called when BIOS defines IRQ() or
+> IRQNoFlags, and according to the Section 6.4.2.1 of ACPI 6.4 spec [1],
+> if IRQ() is empty or defines IRQNoFlags, the IRQ is High true, edge
+> sensitive and non-shareable. The linux ACPI driver (acpi_rs_set_irq[]
+> in rsirq.c) also assumes so.
+>
+> Here check 3 conditions to decide if the legacy is true or not, if it
+> is true, it means the IRQ() is empty or defines IRQNoFlags and need to
+> call irq_override().
+>
+> Link: https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#irq-descriptor # [1]
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
+> BugLink: http://bugs.launchpad.net/bugs/1909814
+> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Reported-and-tested-by: Manuel Krause <manuelkrause@netscape.net>
+> Signed-off-by: Hui Wang <hui.wang@canonical.com>
+> ---
+>  drivers/acpi/resource.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index ee78a210c606..dc01fb550b28 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -423,6 +423,13 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+>         }
+>  }
+>
+> +static bool irq_is_legacy(struct acpi_resource_irq *irq)
+> +{
+> +       return irq->triggering == ACPI_EDGE_SENSITIVE &&
+> +               irq->polarity == ACPI_ACTIVE_HIGH &&
+> +               irq->shareable == ACPI_EXCLUSIVE;
+> +}
+> +
+>  /**
+>   * acpi_dev_resource_interrupt - Extract ACPI interrupt resource information.
+>   * @ares: Input ACPI resource object.
+> @@ -461,7 +468,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+>                 }
+>                 acpi_dev_get_irqresource(res, irq->interrupts[index],
+>                                          irq->triggering, irq->polarity,
+> -                                        irq->shareable, true);
+> +                                        irq->shareable, irq_is_legacy(irq));
+>                 break;
+>         case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
+>                 ext_irq = &ares->data.extended_irq;
+> --
 
-Applied as 5.13-rc material, thanks!
+Applied as 5.14 material under a new subject ("ACPI: resources: Add
+checks for ACPI IRQ override") and with some edits in the patch
+changelog.
+
+Note, however, that this is a change in behavior that may result in
+regressions on old machines, in which case some further refinements of
+the code will be necessary.
+
+Thanks!
