@@ -2,147 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2125A3A0F94
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jun 2021 11:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BB5D3A107B
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jun 2021 12:49:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237949AbhFIJ03 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Jun 2021 05:26:29 -0400
-Received: from mga04.intel.com ([192.55.52.120]:11756 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233972AbhFIJ03 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 9 Jun 2021 05:26:29 -0400
-IronPort-SDR: Rt1Bq+uLzVByaVhiyJd+02/IQv6fidlvPxpv1WmrY9CeEXDwn+9KlXBqNe001FxqWSGNK0D8Mj
- CC0dcaE8Qb9Q==
-X-IronPort-AV: E=McAfee;i="6200,9189,10009"; a="203183918"
-X-IronPort-AV: E=Sophos;i="5.83,260,1616482800"; 
-   d="scan'208";a="203183918"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2021 02:24:34 -0700
-IronPort-SDR: N7YechYws/gdpL3BpFCk/UyUb/uO1sL3uD/PgSbgUbq8Mf7LjTVDfNhJHfpWbJ+aVh+XTH7Ejz
- PdOlsvyfL+4w==
-X-IronPort-AV: E=Sophos;i="5.83,260,1616482800"; 
-   d="scan'208";a="552617607"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2021 02:24:31 -0700
-Received: by lahna (sSMTP sendmail emulation); Wed, 09 Jun 2021 12:24:29 +0300
-Date:   Wed, 9 Jun 2021 12:24:29 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Mario Limonciello <mario.limonciello@outlook.com>,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] ACPI: Pass the same capabilities to the _OSC regardless
- of the query flag
-Message-ID: <YMCIzfV7QJq+Kksu@lahna.fi.intel.com>
-References: <YL+Gqh9dT06SBLCx@lahna.fi.intel.com>
- <20210608163810.18071-1-mika.westerberg@linux.intel.com>
- <d0bdb868-95c9-8908-06e1-01f1364f12a0@redhat.com>
- <3b58902f-fda3-d957-2e9c-204e82b2f570@redhat.com>
+        id S234772AbhFIJqG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Jun 2021 05:46:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59440 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234017AbhFIJqG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Jun 2021 05:46:06 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08614C061574
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Jun 2021 02:44:12 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id y7so20086634wrh.7
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Jun 2021 02:44:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=n+lFdIy/Fj8w641ouj5kQ8wz/6ZZG0ZHAWeOT4yzbRc=;
+        b=AT64ZswDoaXLxTV5klTqoMfaholatkhAgnHUHUWahtJmGmuFXvejIFYV2hDEh4Rk3O
+         PDGIZWSNjngAhf2i1GUAhAuRbdZyt4r4L6BOpuInByx9+QeUJVeV0PHMpVrQd7krsSxF
+         /tBikZ50LsePM25jiogN+MPuP137zS1/Bpq+O9862lzK7vprtdrHBr+1FbJaCQYp1zBw
+         xiOZYCS9lSQUuALZaaPZwSyTm392hcZhtCagAm+d01KNzUVdfqo7smulok/Utmwxg2vt
+         DTGcUvy0B+AAEAhMD5XTQvmSSbd/mI0FqHAy2In9nE5SA87kIDLgx8Q2hR5YA3dBRMXw
+         8cAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=n+lFdIy/Fj8w641ouj5kQ8wz/6ZZG0ZHAWeOT4yzbRc=;
+        b=Dj2UFHYbJ6mjlo6m6HWee5puDO/EcUTRSfD7UsiNBIhuCor4Uq48ey3u9ODtheJglr
+         CmvAVRx3UBgbqvmYg+esBXxqTg5OBGfLYCF4zUroqucqvt/VZMciVWanKiOpPYmDia5B
+         U0TmUhmMwZEc3/9pduoDa4ZwNIwPoSU42fDaMWTJi3z6hbYszDQsj6GUejm2+ZzI3wkS
+         oyFuDeFLoxRfo0K/6Arxv2eBlg06iMdvCnHfwHmCs20z+YVeD95MSzPv2xX2QmF5vKa6
+         EDD6k2V0ewoaHEkGm2gzXU//3e1dRlfKFDZVA4GIqD9ZJPzJf7O7ptu7/SJqkYvNHnjS
+         CqCA==
+X-Gm-Message-State: AOAM531B93xzbheIxF+xTkO3CQ74q5WAhQCQu6XocyN/IFzZDFtxFDez
+        lIZzEF3upOgvzRDHsSogsJgAaw==
+X-Google-Smtp-Source: ABdhPJwO3THpKtkdcUWrskaIYkB0u8maKDhXBCguE9TgSQU4qzM70G7eqJmGWmGYL8J1rMvvo9H1PA==
+X-Received: by 2002:a5d:67cf:: with SMTP id n15mr27346967wrw.228.1623231850644;
+        Wed, 09 Jun 2021 02:44:10 -0700 (PDT)
+Received: from myrica (adsl-84-226-111-173.adslplus.ch. [84.226.111.173])
+        by smtp.gmail.com with ESMTPSA id m23sm6757801wml.27.2021.06.09.02.44.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Jun 2021 02:44:10 -0700 (PDT)
+Date:   Wed, 9 Jun 2021 11:43:52 +0200
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     Will Deacon <will@kernel.org>
+Cc:     joro@8bytes.org, catalin.marinas@arm.com, kernel-team@android.com,
+        robh+dt@kernel.org, linux-acpi@vger.kernel.org,
+        sudeep.holla@arm.com, robin.murphy@arm.com, guohanjun@huawei.com,
+        devicetree@vger.kernel.org, iommu@lists.linux-foundation.org,
+        zhangfei.gao@linaro.org, wangzhou1@hisilicon.com,
+        Jonathan.Cameron@huawei.com, lorenzo.pieralisi@arm.com,
+        linux-arm-kernel@lists.infradead.org, eric.auger@redhat.com,
+        rjw@rjwysocki.net, lenb@kernel.org
+Subject: Re: [PATCH v15 0/3] iommu/arm-smmu-v3: Add stall support
+Message-ID: <YMCNWOkJ/xi2Yv1U@myrica>
+References: <20210526161927.24268-1-jean-philippe@linaro.org>
+ <162314710744.3707892.6632600736379822229.b4-ty@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3b58902f-fda3-d957-2e9c-204e82b2f570@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <162314710744.3707892.6632600736379822229.b4-ty@kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 09, 2021 at 09:58:31AM +0200, Hans de Goede wrote:
-> Hi,
+On Tue, Jun 08, 2021 at 12:42:34PM +0100, Will Deacon wrote:
+> On Wed, 26 May 2021 18:19:25 +0200, Jean-Philippe Brucker wrote:
+> > Add stall support for SMMUv3, enabling I/O page faults and SVA for
+> > compatible devices. No change since last version [1], but I'd still like
+> > this to be considered for upstream, because there exists hardware and
+> > applications.
+> > 
+> > Stall is implemented by the Kunpeng 920 processor for its compression
+> > and crypto accelerators, with which I tested the SVA infrastructure.
+> > Using the userspace accelerator API [2], a program can obtain a queue
+> > from one of these devices and submit compression or encryption work
+> > within the program's address space. UADK [3] provides a library to do
+> > this, and there is an openssl plugin [4] to use it.
+> > 
+> > [...]
 > 
-> On 6/8/21 7:10 PM, Hans de Goede wrote:
-> > Hi,
-> > 
-> > On 6/8/21 6:38 PM, Mika Westerberg wrote:
-> >> Commit 719e1f561afb ("ACPI: Execute platform _OSC also with query bit
-> >> clear") makes acpi_bus_osc_negotiate_platform_control() not only query
-> >> the platforms capabilities but it also commits the result back to the
-> >> firmware to report which capabilities are supported by the OS back to
-> >> the firmware
-> >>
-> >> On certain systems the BIOS loads SSDT tables dynamically based on the
-> >> capabilities the OS claims to support. However, on these systems the
-> >> _OSC actually clears some of the bits (under certain conditions) so what
-> >> happens is that now when we call the _OSC twice the second time we pass
-> >> the cleared values and that results errors like below to appear on the
-> >> system log:
-> >>
-> >>   ACPI BIOS Error (bug): Could not resolve symbol [\_PR.PR00._CPC], AE_NOT_FOUND (20210105/psargs-330)
-> >>   ACPI Error: Aborting method \_PR.PR01._CPC due to previous error (AE_NOT_FOUND) (20210105/psparse-529)
-> >>
-> >> In addition the ACPI 6.4 spec says following [1]:
-> >>
-> >>   If the OS declares support of a feature in the Support Field in one
-> >>   call to _OSC, then it must preserve the set state of that bit
-> >>   (declaring support for that feature) in all subsequent calls.
-> >>
-> >> Based on the above we can fix the issue by passing the same set of
-> >> capabilities to the platform wide _OSC in both calls regardless of the
-> >> query flag.
-> >>
-> >> While there drop the context.ret.length check which was wrong to begin
-> >> with (as the length is number of bytes not elements). This is already
-> >> checked in acpi_run_osc() that also returns an error in that case.
-> >>
-> >> [1] https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#sequence-of-osc-calls
-> >>
-> >> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213023
-> >> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1963717
-> >> Fixes: 719e1f561afb ("ACPI: Execute platform _OSC also with query bit clear")
-> >> Cc: Mario Limonciello <mario.limonciello@outlook.com>
-> >> cc: Hans de Goede <hdegoede@redhat.com>
-> >> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> >> ---
-> >>  drivers/acpi/bus.c | 21 +++++++--------------
-> >>  1 file changed, 7 insertions(+), 14 deletions(-)
-> >>
-> >> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> >> index be7da23fad76..61e8c02595ac 100644
-> >> --- a/drivers/acpi/bus.c
-> >> +++ b/drivers/acpi/bus.c
-> >> @@ -336,26 +336,19 @@ static void acpi_bus_osc_negotiate_platform_control(void)
-> >>  		return;
-> >>  	}
-> >>  
-> >> -	/*
-> >> -	 * Now run _OSC again with query flag clear and with the caps
-> >> -	 * supported by both the OS and the platform.
-> >> -	 */
-> >> +	/* Now run _OSC again with query flag clear */
-> >>  	capbuf[OSC_QUERY_DWORD] = 0;
-> >> -	capbuf[OSC_SUPPORT_DWORD] = capbuf_ret[OSC_SUPPORT_DWORD];
-> >> -	kfree(context.ret.pointer);
-> > 
-> > This kfree needs to be moved up, rather then be completely removed
-> > and you are still leaving 1 of the unnecessary length checks in place.
-> > 
-> > I've added this fixup on top, to fix both these issues:
-> > 
-> > --- a/drivers/acpi/bus.c
-> > +++ b/drivers/acpi/bus.c
-> > @@ -330,11 +330,7 @@ static void acpi_bus_osc_negotiate_platform_control(void)
-> >  	if (ACPI_FAILURE(acpi_run_osc(handle, &context)))
-> >  		return;
-> >  
-> > -	capbuf_ret = context.ret.pointer;
-> > -	if (context.ret.length <= OSC_SUPPORT_DWORD) {
-> > -		kfree(context.ret.pointer);
-> > -		return;
-> > -	}
-> > +	kfree(context.ret.pointer);
-> >  
-> >  	/* Now run _OSC again with query flag clear */
-> >  	capbuf[OSC_QUERY_DWORD] = 0;
-> > 
-> > I'll ask the reporters of:
-> > https://bugzilla.kernel.org/show_bug.cgi?id=213023
-> > https://bugzilla.redhat.com/show_bug.cgi?id=1963717
-> > 
-> > To test the (fixed-up) patch, so that they can confirm if this indeed
-> > fixes things.
+> Applied to will (for-joerg/arm-smmu/updates), thanks!
 > 
-> I've received confirmation from 2 users that this patch (with the fixup)
-> fixes this. Can send a v2 with the fixup squashed in for Rafael to pick up?
+> [1/3] dt-bindings: document stall property for IOMMU masters
+>       https://git.kernel.org/will/c/ed1d08b9d0c9
+> [2/3] ACPI/IORT: Enable stall support for platform devices
+>       https://git.kernel.org/will/c/6522b1e0c78f
+> [3/3] iommu/arm-smmu-v3: Add stall support for platform devices
+>       https://git.kernel.org/will/c/395ad89d11fd
+> 
 
-Thanks Hans for the fixup and checking with the users! I will send the
-v2 with your fixup soon.
+Thanks!  That concludes most of the SVA work. For SMMUv3 we still need to
+figure out DVM, there will be PRI at some point, and I'm sure some
+bugfixes but I don't plan to send any other major feature support for the
+next cycles.
+
+Thanks,
+Jean
+
