@@ -2,145 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4F5F3A2E35
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Jun 2021 16:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B50833A2F2C
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Jun 2021 17:18:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231447AbhFJOcG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Jun 2021 10:32:06 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3197 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231445AbhFJOcF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Jun 2021 10:32:05 -0400
-Received: from fraeml741-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4G15mp0dWcz6G7J2;
-        Thu, 10 Jun 2021 22:23:22 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml741-chm.china.huawei.com (10.206.15.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 10 Jun 2021 16:30:05 +0200
-Received: from localhost (10.52.126.112) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Thu, 10 Jun
- 2021 15:30:04 +0100
-Date:   Thu, 10 Jun 2021 15:30:00 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>, <ira.weiny@intel.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-CC:     Ben Widawsky <ben.widawsky@intel.com>,
-        Chris Browy <cbrowy@avery-design.com>,
-        <linux-acpi@vger.kernel.org>, <alison.schofield@intel.com>,
-        <vishal.l.verma@intel.com>, Fangjian <f.fangjian@huawei.com>,
-        <linuxarm@huawei.com>
-Subject: Re: [PATCH v4 0/5] PCI Data Object Exchange support + CXL CDAT
-Message-ID: <20210610153000.00000739@Huawei.com>
-In-Reply-To: <20210524133938.2815206-1-Jonathan.Cameron@huawei.com>
-References: <20210524133938.2815206-1-Jonathan.Cameron@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S231467AbhFJPUb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Jun 2021 11:20:31 -0400
+Received: from mail-pf1-f174.google.com ([209.85.210.174]:42826 "EHLO
+        mail-pf1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231374AbhFJPUa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Jun 2021 11:20:30 -0400
+Received: by mail-pf1-f174.google.com with SMTP id s14so1878120pfd.9
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Jun 2021 08:18:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mS2MKuQ1MIt5zD53BiXmwH5v3s+3aSWZOMRcLFPuyQQ=;
+        b=aQo9cpvxebrDYW33Evapw/yzHiQs2RxOy61K7n6IgoUxXfISlrgVfdnJDR4OZgqovP
+         yYwwBdVs3foftayF4m2A9wfEOAncKKn2BRzh1HtIvcmSvLMtsw/HHxtzrcY1+psDLHsc
+         40TLCaGdp6NniC1rGVV5GIPP6vudH01wEdeJmKMaXJ95lJq3OLJDIqsTRGzNTM4OJrpa
+         DwZpfxIW+A4Mqvse8uOyl2SMZ8N6V+1Oi9kbUwhek03aEk400N9J9eKocfp3NckjiLen
+         FCAX3l3f1J1Ln8lqWl6H4IoUj9GnbnYM3FT3hXAZR6WPQh4m/nDjCW4F0zDww18ZIQEC
+         WcRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mS2MKuQ1MIt5zD53BiXmwH5v3s+3aSWZOMRcLFPuyQQ=;
+        b=CtjlrfHiYoT1fOp5mNTzxvdnsJajqdcNCt0snUSZF5uuRlLs/SG+lkZH24gT1KA/Qa
+         eDsmLyHA96QMVM21BdIP4F0JOPTU5JKJ3uQzqFQeHO4irhAtnwlf9JawvHMhhJClJns2
+         e9IVXyTMgJn757t1CTgSPZHv9W8BPNRNd3tpx+rw2wlssbaLFy/62K/0wYl/YCEt5ET9
+         uu+9VwrdIrusLfgkpgi7M9CSE5y83iq3fNnHVmewqCxvtsEY3ymDI7dQbNz4D608Opur
+         17fFIHK9ItnTeLo6vEbA8lqDRg6Q+rczla4e13bFmABafvC0UPny1dgax0gU3ts1bgBP
+         5cjA==
+X-Gm-Message-State: AOAM530onxgv4U9L8UOx9CyIXp18NuAKUXX++xjUg2j+2byq2F3nMw1r
+        HUTnW+P0DfnCnwEdQRvwx9PTgJFUxTGhVcZpNTvHPA==
+X-Google-Smtp-Source: ABdhPJwEZL6AolcfQZhCtpeWi9L4JRznxZSkG0jfVSTQeMveEIT9vlfwlPBapoWue5ubB3fyFFQoiZkPFIhMAYJAY0g=
+X-Received: by 2002:a62:8287:0:b029:2ec:9b1f:9c0a with SMTP id
+ w129-20020a6282870000b02902ec9b1f9c0amr3541997pfd.31.1623338254593; Thu, 10
+ Jun 2021 08:17:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.126.112]
-X-ClientProxiedBy: lhreml728-chm.china.huawei.com (10.201.108.79) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+References: <20210524133938.2815206-1-Jonathan.Cameron@huawei.com> <20210524133938.2815206-2-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20210524133938.2815206-2-Jonathan.Cameron@huawei.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Thu, 10 Jun 2021 08:17:23 -0700
+Message-ID: <CAPcyv4i5-d6HrhQwUmjx7HqKA+pr8aQjPGHJ=7Sh3eTgJ1UKyg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/5] PCI: Add vendor ID for the PCI SIG
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Linux PCI <linux-pci@vger.kernel.org>, linux-cxl@vger.kernel.org,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        "Weiny, Ira" <ira.weiny@intel.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Chris Browy <cbrowy@avery-design.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        "Schofield, Alison" <alison.schofield@intel.com>,
+        Vishal L Verma <vishal.l.verma@intel.com>,
+        Fangjian <f.fangjian@huawei.com>, Linuxarm <linuxarm@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 24 May 2021 21:39:33 +0800
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-
-> Series first introduces generic support for DOE mailboxes as defined
-> in the ECN to the PCIe r5.0 specification available from the PCI SIG [0]
-> 
-> A user is then introduced in the form of the table access protocol defined
-> in the CXL 2.0 specification [1] used to access the
-> Coherent Device Attribute Table (CDAT) defined in [2]
-> 
-> Finally, in two patches that are not intended for merging, an example
-> of a generic IOCTL interface to perform synchronous exchanges from user
-> space in a kernel mediated fashion is introduced. The current consensus
-> seems in favour of not introducing such an interface, but instead
-> providing per protocol interfaces where appropriate. As this code was
-> developed in parallel with that discussion and may be of use to someone it
-> is included here.
+On Mon, May 24, 2021 at 6:41 AM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
 >
+> This ID is used in DOE headers to identify protocols that are defined
+> within the PCI Express Base Specification.
+>
+> Specified in Table 7-x2 of the Data Object Exchange ECN (approved 12 March
+> 2020) available from https://members.pcisig.com/wg/PCI-SIG/document/14143
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  include/linux/pci_ids.h | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+> index 4c3fa5293d76..dcc8b4b14198 100644
+> --- a/include/linux/pci_ids.h
+> +++ b/include/linux/pci_ids.h
+> @@ -149,6 +149,7 @@
+>  #define PCI_CLASS_OTHERS               0xff
+>
+>  /* Vendors and devices.  Sort key: vendor first, device next. */
+> +#define PCI_VENDOR_ID_PCI_SIG          0x0001
 
-Gentle, not particularly urgent, request for review on this set.
+Should this not be:
 
-I am currently missing ABI docs for the CDAT binary attribute, but
-that could be handled in a follow up patch.
+PCI_DOE_VENDOR_ID_PCI_SIG?
 
-Thanks,
-
-Jonathan
- 
-> Open questions.
-> * Do we need to prevent userspace access to the DOE when the kernel is
->   managing it (registered by driver)? Discussion in thread:
->   https://lore.kernel.org/linux-pci/20210419165451.2176200-1-Jonathan.Cameron@huawei.com/
-> * Does a generic userspace mediation interface make sense?
->   Currently it seems not, but as it was nearly ready, I've included
->   it in this patch set anyway.
-> * Move CXL cdat handling to a separate file, or wait until we can see
->   how it is going to be used?
->   
-> Changes since v3
-> Thanks to Ira, Bjorn and Dan for feedback.
-> * Addition of a generic IOCTL interface and demo program for discussion.
-> * Fixed an issue with accidentally disabling interrupts.
-> * Ensure IRQ_HANDLED always returned as clearing of BUSY can result
->   in an interrupt, but there is no means of identifying this.
->   The best that can be done is to eat the interrupt.
-> * Edited comments to more directly tie them to the code the referred to.
-> * Lock scope documentation update.
-> * Dropped the CDAT dump to log patch as we are hopefully getting closer
->   to this being applied.
-> * Fixed the references to pcie_ missed when renaming to pci_ in v3.
-> 
-> Set based on cxl/next
-> 
-> All testing conducted against QEMU emulation of a CXL type 3 device
-> in conjunction with DOE mailbox patches v5 [3, 4]
-> 
-> [0] https://pcisig.com/specifications
-> [1] https://www.computeexpresslink.org/download-the-specification
-> [2] https://uefi.org/node/4093
-> [3] https://lore.kernel.org/qemu-devel/20210202005948.241655-1-ben.widawsky@intel.com/
-> [4] https://lore.kernel.org/qemu-devel/1619454964-10190-1-git-send-email-cbrowy@avery-design.com/
-> 
-> Jonathan Cameron (5):
->   PCI: Add vendor ID for the PCI SIG
->   PCI/DOE: Add Data Object Exchange support
->   cxl/mem: Add CDAT table reading from DOE
->   DONOTMERGE PCI/DOE Add per DOE chrdev for ioctl based access
->   DONOTMERGE: PCI/DOE: Add userspace example program to tools/pci
-> 
->  drivers/cxl/Kconfig           |   1 +
->  drivers/cxl/cxl.h             |  21 +
->  drivers/cxl/mem.c             | 174 ++++++++
->  drivers/cxl/mem.h             |   6 +
->  drivers/pci/Kconfig           |   8 +
->  drivers/pci/Makefile          |   1 +
->  drivers/pci/doe.c             | 794 ++++++++++++++++++++++++++++++++++
->  drivers/pci/pci-driver.c      |   3 +-
->  include/linux/pci-doe.h       | 100 +++++
->  include/linux/pci.h           |   3 +
->  include/linux/pci_ids.h       |   1 +
->  include/uapi/linux/pci_doe.h  |  32 ++
->  include/uapi/linux/pci_regs.h |  29 +-
->  tools/pci/Build               |   1 +
->  tools/pci/Makefile            |   9 +-
->  tools/pci/doetest.c           | 131 ++++++
->  16 files changed, 1311 insertions(+), 3 deletions(-)
->  create mode 100644 drivers/pci/doe.c
->  create mode 100644 include/linux/pci-doe.h
->  create mode 100644 include/uapi/linux/pci_doe.h
->  create mode 100644 tools/pci/doetest.c
-> 
-> 
-> base-commit: 35c32e3095d396c750f5cdfdaa94cba83d9b23c6
-
+...because I don't think this value will ever show up at the typical
+config-offset 0 vendor-id, will it?
