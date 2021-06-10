@@ -2,83 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE363A2575
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Jun 2021 09:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26C993A25A8
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Jun 2021 09:41:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbhFJH35 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Jun 2021 03:29:57 -0400
-Received: from mail-wm1-f52.google.com ([209.85.128.52]:39787 "EHLO
-        mail-wm1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229788AbhFJH34 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Jun 2021 03:29:56 -0400
-Received: by mail-wm1-f52.google.com with SMTP id l18-20020a1ced120000b029014c1adff1edso5846082wmh.4
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Jun 2021 00:28:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=avXVNANZtbNtwGIzbu5/mOfsXzmuN+oN/aMUmryqr0Q=;
-        b=VRc2QaSAIMV+KGi0BcOqJRfSdMyNdLNEnXzUhLI7MlCE0fkDGka7VzIygBBqC2saf9
-         MPf2W6216h7Xg6oe2W1TW2qNY8OMi4TArPB3UivfENQTdjQJWZDSbeW7OPBTjSDOd3Kt
-         gpkC7T9gXVRYLEWez/PECMfvnheDLFss2Sljc7DXK5q6EQ9XViOXVnnqszp7h61tIz/t
-         A6T7EPBDCVW3HxlxhDfZrgtX71Q4H8Iq2BQRIlmxZNbmGfKP+bPpb2prIJk0UUGjSLk1
-         AiGQEGOI0F87ozUc9J0SJbp8AxJ7Ss5VjUhtdIdM9kQSi81BL/1617BSJlYRD8gKInXi
-         JnUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=avXVNANZtbNtwGIzbu5/mOfsXzmuN+oN/aMUmryqr0Q=;
-        b=KtqBQgUZFRqtDS8DHJVaMha5XLnetyZCTmaT8R8PJEGUxKi7k/o9jeFhoLlSqT0swY
-         Tg9eLjUNmUY7kvAwbfEoWef01Owjr0JO4jcte2x0jaSPdGILkb7P/0TuM70XKw6S2LD+
-         c8caxQ6+oWglulDI4NBqURCjughJJRH54deOuAFfSUuRHnVIvbEfY3sbOGWgNnQ4hUIB
-         SBTxG8oNU2M17Izb/ExDFCQvofmr1LAfEN/tCyq/HzFZ74qVrc5X3cxIAHnvLBbOo8Ug
-         w+ne3asqP5UwiqmLhCzLT6Yroaqh8GzYoww+N+TEtGt8TNEakblkbo3k5TM1ymGOUsW6
-         30mA==
-X-Gm-Message-State: AOAM5325SJxNAzKJ3H/7pHD+bQ2hVl6Ol8zfAgy41p/F5m86/UFMNTdu
-        4iCg2UkNzraTlYvj7d5ZDH8akQ==
-X-Google-Smtp-Source: ABdhPJwbq9CPx2IleqzQLDh7nuPcvAdqoVFXQyJlT7lKUCc0c5RG1MjzcAoY254nLwYIvQPK18ygFg==
-X-Received: by 2002:a05:600c:410c:: with SMTP id j12mr3466501wmi.117.1623310020028;
-        Thu, 10 Jun 2021 00:27:00 -0700 (PDT)
-Received: from myrica (adsl-84-226-111-173.adslplus.ch. [84.226.111.173])
-        by smtp.gmail.com with ESMTPSA id l16sm8809890wmj.47.2021.06.10.00.26.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jun 2021 00:26:58 -0700 (PDT)
-Date:   Thu, 10 Jun 2021 09:26:41 +0200
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Joerg Roedel <joro@8bytes.org>
-Cc:     kernel test robot <lkp@intel.com>, rjw@rjwysocki.net,
-        lenb@kernel.org, mst@redhat.com, kbuild-all@lists.01.org,
-        clang-built-linux@googlegroups.com, will@kernel.org,
-        catalin.marinas@arm.com, baolu.lu@linux.intel.com,
-        dwmw2@infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org
-Subject: Re: [PATCH v3 2/6] ACPI: Move IOMMU setup code out of IORT
-Message-ID: <YMG+sdvQ9/BkeBCe@myrica>
-References: <20210602154444.1077006-3-jean-philippe@linaro.org>
- <202106030417.97asL7dA-lkp@intel.com>
- <YLiELyo+KLuYqA24@myrica>
- <YLpFHwGPuWsB3AgV@8bytes.org>
+        id S229802AbhFJHnx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Jun 2021 03:43:53 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:5477 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229634AbhFJHnx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Jun 2021 03:43:53 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4G0wpJ69GFzZfyS;
+        Thu, 10 Jun 2021 15:39:04 +0800 (CST)
+Received: from dggemi758-chm.china.huawei.com (10.1.198.144) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Thu, 10 Jun 2021 15:41:55 +0800
+Received: from huawei.com (10.175.101.6) by dggemi758-chm.china.huawei.com
+ (10.1.198.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 10
+ Jun 2021 15:41:54 +0800
+From:   ChenXiaoSong <chenxiaosong2@huawei.com>
+To:     <rjw@rjwysocki.net>, <lenb@kernel.org>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <yukuai3@huawei.com>, <yi.zhang@huawei.com>,
+        <chenxiaosong2@huawei.com>
+Subject: [PATCH -next] ACPI: fix doc warnings
+Date:   Thu, 10 Jun 2021 15:48:12 +0800
+Message-ID: <20210610074812.57973-1-chenxiaosong2@huawei.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YLpFHwGPuWsB3AgV@8bytes.org>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.101.6]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggemi758-chm.china.huawei.com (10.1.198.144)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 04, 2021 at 05:22:07PM +0200, Joerg Roedel wrote:
-> On Thu, Jun 03, 2021 at 09:26:39AM +0200, Jean-Philippe Brucker wrote:
-> > These are only defined when CONFIG_IOMMU_API is set. IORT uses them inside
-> > an #ifdef, I can do the same. Maybe moving these two functions to a new
-> > drivers/acpi/iommu.c would be nicer, though.
-> 
-> Not sure what the ACPI maintainers and reviewers prefer, but I would
-> just #ifdef the functions and provide stubs in the #else path if
-> necessary.
+Fix gcc W=1 warnings:
+drivers/acpi/cppc_acpi.c:1356: warning: Function parameter or member 'cpu_num' not described in 'cppc_get_transition_latency'
+drivers/acpi/cppc_acpi.c:573: warning: Function parameter or member 'pcc_ss_id' not described in 'pcc_data_alloc'
+drivers/acpi/dock.c:388: warning: Function parameter or member 'ds' not described in 'handle_eject_request'
+drivers/acpi/dock.c:388: warning: Function parameter or member 'event' not described in 'handle_eject_request'
+drivers/acpi/sleep.c:496: warning: Function parameter or member 'acpi_state' not described in 'acpi_pm_start'
+drivers/acpi/sleep.c:536: warning: Function parameter or member 'pm_state' not described in 'acpi_suspend_begin'
+drivers/acpi/sleep.c:663: warning: Function parameter or member 'pm_state' not described in 'acpi_suspend_begin_old'
+drivers/acpi/sleep.c:956: warning: Function parameter or member 'stage' not described in 'acpi_hibernation_begin_old'
 
-Yes, I'll resend with that
+Signed-off-by: ChenXiaoSong <chenxiaosong2@huawei.com>
+---
+ drivers/acpi/cppc_acpi.c | 2 ++
+ drivers/acpi/dock.c      | 2 ++
+ drivers/acpi/sleep.c     | 4 ++++
+ 3 files changed, 8 insertions(+)
 
-Thanks,
-Jean
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index a4d4eebba1da..611938f2c132 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -561,6 +561,7 @@ bool __weak cpc_ffh_supported(void)
+ 
+ /**
+  * pcc_data_alloc() - Allocate the pcc_data memory for pcc subspace
++ * @pcc_ss_id: pcc subspace id.
+  *
+  * Check and allocate the cppc_pcc_data memory.
+  * In some processor configurations it is possible that same subspace
+@@ -1346,6 +1347,7 @@ EXPORT_SYMBOL_GPL(cppc_set_perf);
+ 
+ /**
+  * cppc_get_transition_latency - returns frequency transition latency in ns
++ * @cpu: CPU for which to get transition latency.
+  *
+  * ACPI CPPC does not explicitly specify how a platform can specify the
+  * transition latency for performance change requests. The closest we have
+diff --git a/drivers/acpi/dock.c b/drivers/acpi/dock.c
+index 7cf92158008f..6c0fb5c9b938 100644
+--- a/drivers/acpi/dock.c
++++ b/drivers/acpi/dock.c
+@@ -380,6 +380,8 @@ static int dock_in_progress(struct dock_station *ds)
+ 
+ /**
+  * handle_eject_request - handle an undock request checking for error conditions
++ * @ds: the dock station.
++ * @event: Event code.
+  *
+  * Check to make sure the dock device is still present, then undock and
+  * hotremove all the devices that may need removing.
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index aaea10d39201..95521a8b49fc 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -491,6 +491,7 @@ static void acpi_pm_finish(void)
+ 
+ /**
+  * acpi_pm_start - Start system PM transition.
++ * @acpi_state: Power state value.
+  */
+ static void acpi_pm_start(u32 acpi_state)
+ {
+@@ -531,6 +532,7 @@ static u32 acpi_suspend_states[] = {
+ /**
+  *	acpi_suspend_begin - Set the target system sleep state to the state
+  *		associated with given @pm_state, if supported.
++ *	@pm_state: pm suspend state.
+  */
+ static int acpi_suspend_begin(suspend_state_t pm_state)
+ {
+@@ -658,6 +660,7 @@ static const struct platform_suspend_ops acpi_suspend_ops = {
+  *		state associated with given @pm_state, if supported, and
+  *		execute the _PTS control method.  This function is used if the
+  *		pre-ACPI 2.0 suspend ordering has been requested.
++ *	@pm_state: pm suspend state.
+  */
+ static int acpi_suspend_begin_old(suspend_state_t pm_state)
+ {
+@@ -951,6 +954,7 @@ static const struct platform_hibernation_ops acpi_hibernation_ops = {
+  *		ACPI_STATE_S4 and execute the _PTS control method.  This
+  *		function is used if the pre-ACPI 2.0 suspend ordering has been
+  *		requested.
++ *	@stage: pm event massage
+  */
+ static int acpi_hibernation_begin_old(pm_message_t stage)
+ {
+-- 
+2.25.4
 
