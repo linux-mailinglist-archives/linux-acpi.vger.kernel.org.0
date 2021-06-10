@@ -2,132 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26C993A25A8
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Jun 2021 09:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99DAD3A2626
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Jun 2021 10:03:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229802AbhFJHnx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Jun 2021 03:43:53 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:5477 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbhFJHnx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Jun 2021 03:43:53 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4G0wpJ69GFzZfyS;
-        Thu, 10 Jun 2021 15:39:04 +0800 (CST)
-Received: from dggemi758-chm.china.huawei.com (10.1.198.144) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2176.2; Thu, 10 Jun 2021 15:41:55 +0800
-Received: from huawei.com (10.175.101.6) by dggemi758-chm.china.huawei.com
- (10.1.198.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 10
- Jun 2021 15:41:54 +0800
-From:   ChenXiaoSong <chenxiaosong2@huawei.com>
-To:     <rjw@rjwysocki.net>, <lenb@kernel.org>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <yukuai3@huawei.com>, <yi.zhang@huawei.com>,
-        <chenxiaosong2@huawei.com>
-Subject: [PATCH -next] ACPI: fix doc warnings
-Date:   Thu, 10 Jun 2021 15:48:12 +0800
-Message-ID: <20210610074812.57973-1-chenxiaosong2@huawei.com>
-X-Mailer: git-send-email 2.25.4
+        id S229980AbhFJIFn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Jun 2021 04:05:43 -0400
+Received: from mail-wr1-f46.google.com ([209.85.221.46]:42761 "EHLO
+        mail-wr1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229914AbhFJIFm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Jun 2021 04:05:42 -0400
+Received: by mail-wr1-f46.google.com with SMTP id c5so1134014wrq.9
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Jun 2021 01:03:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6d64EfMmKjBsLXuufmWEUBLj9XWA4YjPbU9Y/1wt2B8=;
+        b=ObI/IzUukEYxx+7H8+Qf0c5GsgYSNdbZSErulQp+S5M095cDQ63LAs4nqiCOr4OSe0
+         i/FNuhtV6CsQXPFO7XOQ6EM/eQxQDqwiYBae+RKq3EOIgwxnwJUnU7d09ygRpJh0rbiS
+         WmfD13dPCc27InjhoUw07zaBwR0qqlRJMZrskGrqVpjWJEuhLHcy7PnYvSBzEkMk7Y4C
+         X/nPyuSTqbaIwiPMZbeIP5zs4ELOKDWw4c7/dWuPyF1U172DTBtgjmadVm4nASZWRfbM
+         M0tjl+lcuIZQH59VeO5Eb0JfSz8aylyM0XkCrZmSE6BhddflN5ZkTX1nTFcqksk8IJHb
+         gIbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6d64EfMmKjBsLXuufmWEUBLj9XWA4YjPbU9Y/1wt2B8=;
+        b=PavOPCSPo/v+yHHZiS7mWwWMwIO4Dd58FBwwtduNSkMtrcnuVgUkjYwOx7d6UkZFEp
+         qUtwBHO2b/IKLz4IunFtNgzbJnMcY5ZYrUjMVQNxBus1Niuc5rcjV+0U2C8YakzAJ+eZ
+         NabSRxCfurLaGEXXOoEcv4Rc5dqj2+eqHI4IAYRqfFFWmpZYywsD0HM9rqRc/Axwrdjm
+         kBHWAuSeoGU9wEV2gmM2bxoijJteciu5crnunBt2XCiOapbDXutegcfpE4bg7WUOPtmi
+         Qxru5xp/JiMdm4z032jUEMslLVav1MJG6V1tCMy8M1PndKEuLze67PPf1bm0c/Z20Ixb
+         yE9A==
+X-Gm-Message-State: AOAM533DUxhMcPm0QT2DefCVIBw+Ms640OHRvqJtQ12dgewMZ7X4k6pt
+        kHOHU8Wb4tNdleRzl+w+wEv53A==
+X-Google-Smtp-Source: ABdhPJz3GLvas2zyoO7uIAb3y7v6qAeWCy4E0Q2PobZGKURJL4xC2/JOv5xITetYPC0Kt6UtuqclGw==
+X-Received: by 2002:a5d:6b81:: with SMTP id n1mr3885872wrx.144.1623312166388;
+        Thu, 10 Jun 2021 01:02:46 -0700 (PDT)
+Received: from localhost.localdomain (adsl-84-226-111-173.adslplus.ch. [84.226.111.173])
+        by smtp.gmail.com with ESMTPSA id o3sm2715059wrm.78.2021.06.10.01.02.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jun 2021 01:02:45 -0700 (PDT)
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
+Cc:     will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
+        dwmw2@infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, eric.auger@redhat.com,
+        sebastien.boeuf@intel.com, robin.murphy@arm.com,
+        kevin.tian@intel.com, lorenzo.pieralisi@arm.com,
+        guohanjun@huawei.com, sudeep.holla@arm.com,
+        jean-philippe@linaro.org
+Subject: [PATCH v4 0/6] Add support for ACPI VIOT
+Date:   Thu, 10 Jun 2021 09:51:27 +0200
+Message-Id: <20210610075130.67517-1-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.101.6]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggemi758-chm.china.huawei.com (10.1.198.144)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Fix gcc W=1 warnings:
-drivers/acpi/cppc_acpi.c:1356: warning: Function parameter or member 'cpu_num' not described in 'cppc_get_transition_latency'
-drivers/acpi/cppc_acpi.c:573: warning: Function parameter or member 'pcc_ss_id' not described in 'pcc_data_alloc'
-drivers/acpi/dock.c:388: warning: Function parameter or member 'ds' not described in 'handle_eject_request'
-drivers/acpi/dock.c:388: warning: Function parameter or member 'event' not described in 'handle_eject_request'
-drivers/acpi/sleep.c:496: warning: Function parameter or member 'acpi_state' not described in 'acpi_pm_start'
-drivers/acpi/sleep.c:536: warning: Function parameter or member 'pm_state' not described in 'acpi_suspend_begin'
-drivers/acpi/sleep.c:663: warning: Function parameter or member 'pm_state' not described in 'acpi_suspend_begin_old'
-drivers/acpi/sleep.c:956: warning: Function parameter or member 'stage' not described in 'acpi_hibernation_begin_old'
+Add a driver for the ACPI VIOT table, which provides topology
+information for para-virtual IOMMUs. Enable virtio-iommu on
+non-devicetree platforms, including x86.
 
-Signed-off-by: ChenXiaoSong <chenxiaosong2@huawei.com>
----
- drivers/acpi/cppc_acpi.c | 2 ++
- drivers/acpi/dock.c      | 2 ++
- drivers/acpi/sleep.c     | 4 ++++
- 3 files changed, 8 insertions(+)
+Since v3 [1] I fixed a build bug for !CONFIG_IOMMU_API. Joerg offered to
+take this series through the IOMMU tree, which requires Acks for patches
+1-3.
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index a4d4eebba1da..611938f2c132 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -561,6 +561,7 @@ bool __weak cpc_ffh_supported(void)
- 
- /**
-  * pcc_data_alloc() - Allocate the pcc_data memory for pcc subspace
-+ * @pcc_ss_id: pcc subspace id.
-  *
-  * Check and allocate the cppc_pcc_data memory.
-  * In some processor configurations it is possible that same subspace
-@@ -1346,6 +1347,7 @@ EXPORT_SYMBOL_GPL(cppc_set_perf);
- 
- /**
-  * cppc_get_transition_latency - returns frequency transition latency in ns
-+ * @cpu: CPU for which to get transition latency.
-  *
-  * ACPI CPPC does not explicitly specify how a platform can specify the
-  * transition latency for performance change requests. The closest we have
-diff --git a/drivers/acpi/dock.c b/drivers/acpi/dock.c
-index 7cf92158008f..6c0fb5c9b938 100644
---- a/drivers/acpi/dock.c
-+++ b/drivers/acpi/dock.c
-@@ -380,6 +380,8 @@ static int dock_in_progress(struct dock_station *ds)
- 
- /**
-  * handle_eject_request - handle an undock request checking for error conditions
-+ * @ds: the dock station.
-+ * @event: Event code.
-  *
-  * Check to make sure the dock device is still present, then undock and
-  * hotremove all the devices that may need removing.
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index aaea10d39201..95521a8b49fc 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -491,6 +491,7 @@ static void acpi_pm_finish(void)
- 
- /**
-  * acpi_pm_start - Start system PM transition.
-+ * @acpi_state: Power state value.
-  */
- static void acpi_pm_start(u32 acpi_state)
- {
-@@ -531,6 +532,7 @@ static u32 acpi_suspend_states[] = {
- /**
-  *	acpi_suspend_begin - Set the target system sleep state to the state
-  *		associated with given @pm_state, if supported.
-+ *	@pm_state: pm suspend state.
-  */
- static int acpi_suspend_begin(suspend_state_t pm_state)
- {
-@@ -658,6 +660,7 @@ static const struct platform_suspend_ops acpi_suspend_ops = {
-  *		state associated with given @pm_state, if supported, and
-  *		execute the _PTS control method.  This function is used if the
-  *		pre-ACPI 2.0 suspend ordering has been requested.
-+ *	@pm_state: pm suspend state.
-  */
- static int acpi_suspend_begin_old(suspend_state_t pm_state)
- {
-@@ -951,6 +954,7 @@ static const struct platform_hibernation_ops acpi_hibernation_ops = {
-  *		ACPI_STATE_S4 and execute the _PTS control method.  This
-  *		function is used if the pre-ACPI 2.0 suspend ordering has been
-  *		requested.
-+ *	@stage: pm event massage
-  */
- static int acpi_hibernation_begin_old(pm_message_t stage)
- {
+You can find a QEMU implementation at [2], with extra support for
+testing all VIOT nodes including MMIO-based endpoints and IOMMU.
+This series is at [3].
+
+[1] https://lore.kernel.org/linux-iommu/20210602154444.1077006-1-jean-philippe@linaro.org/
+[2] https://jpbrucker.net/git/qemu/log/?h=virtio-iommu/acpi
+[3] https://jpbrucker.net/git/linux/log/?h=virtio-iommu/acpi
+
+
+Jean-Philippe Brucker (6):
+  ACPI: arm64: Move DMA setup operations out of IORT
+  ACPI: Move IOMMU setup code out of IORT
+  ACPI: Add driver for the VIOT table
+  iommu/dma: Pass address limit rather than size to
+    iommu_setup_dma_ops()
+  iommu/dma: Simplify calls to iommu_setup_dma_ops()
+  iommu/virtio: Enable x86 support
+
+ drivers/acpi/Kconfig         |   3 +
+ drivers/iommu/Kconfig        |   4 +-
+ drivers/acpi/Makefile        |   2 +
+ drivers/acpi/arm64/Makefile  |   1 +
+ include/acpi/acpi_bus.h      |   3 +
+ include/linux/acpi.h         |   3 +
+ include/linux/acpi_iort.h    |  14 +-
+ include/linux/acpi_viot.h    |  19 ++
+ include/linux/dma-iommu.h    |   4 +-
+ arch/arm64/mm/dma-mapping.c  |   2 +-
+ drivers/acpi/arm64/dma.c     |  50 +++++
+ drivers/acpi/arm64/iort.c    | 129 ++-----------
+ drivers/acpi/bus.c           |   2 +
+ drivers/acpi/scan.c          |  78 +++++++-
+ drivers/acpi/viot.c          | 364 +++++++++++++++++++++++++++++++++++
+ drivers/iommu/amd/iommu.c    |   9 +-
+ drivers/iommu/dma-iommu.c    |  17 +-
+ drivers/iommu/intel/iommu.c  |  10 +-
+ drivers/iommu/virtio-iommu.c |   8 +
+ MAINTAINERS                  |   8 +
+ 20 files changed, 580 insertions(+), 150 deletions(-)
+ create mode 100644 include/linux/acpi_viot.h
+ create mode 100644 drivers/acpi/arm64/dma.c
+ create mode 100644 drivers/acpi/viot.c
+
 -- 
-2.25.4
+2.31.1
 
