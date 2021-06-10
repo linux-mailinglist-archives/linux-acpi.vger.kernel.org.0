@@ -2,54 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B2ED3A34A1
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Jun 2021 22:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D71D13A369E
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Jun 2021 23:47:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230465AbhFJUOH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Jun 2021 16:14:07 -0400
-Received: from mail-pg1-f181.google.com ([209.85.215.181]:39557 "EHLO
-        mail-pg1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbhFJUOD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Jun 2021 16:14:03 -0400
-Received: by mail-pg1-f181.google.com with SMTP id z1so644492pgj.6
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Jun 2021 13:12:06 -0700 (PDT)
+        id S230083AbhFJVtX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Jun 2021 17:49:23 -0400
+Received: from mail-pf1-f177.google.com ([209.85.210.177]:39593 "EHLO
+        mail-pf1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230265AbhFJVtQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Jun 2021 17:49:16 -0400
+Received: by mail-pf1-f177.google.com with SMTP id k15so2728112pfp.6
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Jun 2021 14:47:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ybXQ8wv/C12Ca5WDiueTj4x3bqTsPAZ5Ylr8uxI2UN8=;
-        b=uniQedDJUO2c9f95UKPw6TdlwlNerlkHGcB6BORYJbsAq5UVrNd1x8o2yZlKLd/Te3
-         Sd/oslHJS/3HPQT1jfKsQQ9qVSpeYTfi1H2vI9j6Jz5qSIzewWwiXfEIVmu4oKH7GILQ
-         VgPO+pA+TkhwKWFyXzjlbVL4/3bf/r2zmNQwc1BH/gkXYDKAa+Y16dBNsgIVb+6eUXla
-         BM0nlPQ+SuSI/3JeVZEnEvp02XsM93sKgxRKmkm6Uet+wLMKOHBh2PrMzrLf/fkqmAkj
-         rM+SeOLqPMz10uMWwI3tX0tHDBH0fmGX1ff6vQ2r3Be0Fd77QnRf/PcFsFrzasMO+qZl
-         D/0g==
+        bh=AJs/cT5NX+2FDUFvId1l7Kc3TXMWDpEYoHdOsouzksQ=;
+        b=qt+ead1dpPehI1T5qsG5/K7kRcoEFivS2+uaUcY7vuViQv0RH0NSckTMApvmkmpfy3
+         MSeU6L3/lZGxtV1+wM0rjM/sFZTWD1qLTfqMbfFY6+gb7qluXN457ArpGBeguwrxotXZ
+         dX+oCsG2JGUDcP/PsR+aqWJOltAOyTXiledbk1bgmbpoCtE7+9dlysUQxkgwRFo0Lk4V
+         4SyyYTscPpk2ag+eNx5ymuzMweehOIjJECU1PcrI/02sihH6MbYBGyv3r+UfE4bF+5C/
+         OJsL+JvJUPcpheguSU2G6zrfisM9nbiQw4AkOWUiHtZXrNWfQoIk/cLO7oY3cDEiAlry
+         HxNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ybXQ8wv/C12Ca5WDiueTj4x3bqTsPAZ5Ylr8uxI2UN8=;
-        b=eDD7N2s00xoj0+X7eKsMTzU+GyhaEKU7XTvTWLy5UKq33wNjtKnnHa3ppu1OUMyNiw
-         3ajElNmykJILb2ClYco/3FWXakkUZCj3pSyZLi163E728xQf5t7T+mT592LfUKF8OeoL
-         iW7HKlh9UhDD4AB1WG2ONmhriymZAtAmmZCa0LvhLPlGdz+Xs22iK/xJO7X7SIdWMOia
-         ate+CBOHzxLmLi0qG0qm5//D+fDjaSZVTXA2jovMt47dXz3Ua1uTWJ3LRzExkWPTJEVg
-         qPuzm7u2yzwGB63Mh/A0Ixim3O5H08NnzLIVItZrvZVUMJNSAwVDkf4uO0JUzk35G71P
-         9zNA==
-X-Gm-Message-State: AOAM531NWzVC8txCl/Ch/mqoL5qMaiCqO7R1/Fur68HOViqI4nMx/dyC
-        pdFZN+9H4ZiDl6hf/BRo399WgnIALFntDEImKxCHxA==
-X-Google-Smtp-Source: ABdhPJxfjaRqh8MUgs4T2Dweyx5nPlSxYhbGFyZwRyPqLQOkYUzEvKy6Rzx8E7b+W8umVVg4sldpoXtz4S2/Qin70wI=
-X-Received: by 2002:aa7:952b:0:b029:2e9:eef1:8e17 with SMTP id
- c11-20020aa7952b0000b02902e9eef18e17mr4585971pfp.70.1623355866709; Thu, 10
- Jun 2021 13:11:06 -0700 (PDT)
+        bh=AJs/cT5NX+2FDUFvId1l7Kc3TXMWDpEYoHdOsouzksQ=;
+        b=a3KFaPsuVOoq+WiPwpeVm1kbxGtjkCdwhDDHQGzO0v+UbBK/yTp5CzOrtploc1mwDU
+         YugRRoDtAjZKbrNAni5UJuVN3eZtIKUOzKxvOXNb8ynJhcWhTvWvAnvNLUml4vkbCLdR
+         IeBkbb8Fm1XXjGWv3BxjH3Njlv5RV15ovE0DYzl4m6Ag0+AzrA8AosLLlojtyWhCKY09
+         Oh2WtZVZN/3dhOh8zuxuPwBzyKgIajkM+YQb63MseAXHfh4V+tqgYciKVqzpOpnnQUGA
+         mDtz8mzKVBNNXCE9FFV3XRzUdHKRwAwt209mkGNbuBaMtx2yQ5NqJaiGS4/1YlDrL0SS
+         RuTg==
+X-Gm-Message-State: AOAM533r8LlQnwrQeSDMDRz605lxpl4oZZw4UQO/nFXCxzrx9u+MeE67
+        VXCE6KM5ax3zEGV+f1ZnDSAIvzHbtuIkI6uSSrjcQg==
+X-Google-Smtp-Source: ABdhPJw6aCpnw3vy6bs/B6otg+eaAICy3pMz41TJiuZ6mEVa2AJYQ/PUh8nokA/EkyCO6DsJwhdpodCz680Gqaf0UQ4=
+X-Received: by 2002:a63:5c4a:: with SMTP id n10mr424342pgm.279.1623361579694;
+ Thu, 10 Jun 2021 14:46:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210524133938.2815206-1-Jonathan.Cameron@huawei.com>
- <20210524133938.2815206-2-Jonathan.Cameron@huawei.com> <CAPcyv4i5-d6HrhQwUmjx7HqKA+pr8aQjPGHJ=7Sh3eTgJ1UKyg@mail.gmail.com>
- <20210610183924.0000491d@Huawei.com>
-In-Reply-To: <20210610183924.0000491d@Huawei.com>
+References: <20210524133938.2815206-1-Jonathan.Cameron@huawei.com> <20210524133938.2815206-4-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20210524133938.2815206-4-Jonathan.Cameron@huawei.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Thu, 10 Jun 2021 13:10:56 -0700
-Message-ID: <CAPcyv4hE8M2qmMZYH+rRbYJyCV0LVNsc0hAYcRqOawd6aYUBRw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/5] PCI: Add vendor ID for the PCI SIG
+Date:   Thu, 10 Jun 2021 14:46:08 -0700
+Message-ID: <CAPcyv4hJ3e0jwTbfvg_bWvLdvk=4VO+b3JsQRj=CMezrfoEDbA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/5] cxl/mem: Add CDAT table reading from DOE
 To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc:     Linux PCI <linux-pci@vger.kernel.org>, linux-cxl@vger.kernel.org,
         Bjorn Helgaas <helgaas@kernel.org>,
@@ -66,78 +63,396 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 10, 2021 at 10:39 AM Jonathan Cameron
+On Mon, May 24, 2021 at 6:42 AM Jonathan Cameron
 <Jonathan.Cameron@huawei.com> wrote:
 >
-> On Thu, 10 Jun 2021 08:17:23 -0700
-> Dan Williams <dan.j.williams@intel.com> wrote:
+> This patch provides a sysfs binary attribute to allow dumping of the whole
+> table.
 >
-> > On Mon, May 24, 2021 at 6:41 AM Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com> wrote:
-> > >
-> > > This ID is used in DOE headers to identify protocols that are defined
-> > > within the PCI Express Base Specification.
-> > >
-> > > Specified in Table 7-x2 of the Data Object Exchange ECN (approved 12 March
-> > > 2020) available from https://members.pcisig.com/wg/PCI-SIG/document/14143
-> > >
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > ---
-> > >  include/linux/pci_ids.h | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-> > > index 4c3fa5293d76..dcc8b4b14198 100644
-> > > --- a/include/linux/pci_ids.h
-> > > +++ b/include/linux/pci_ids.h
-> > > @@ -149,6 +149,7 @@
-> > >  #define PCI_CLASS_OTHERS               0xff
-> > >
-> > >  /* Vendors and devices.  Sort key: vendor first, device next. */
-> > > +#define PCI_VENDOR_ID_PCI_SIG          0x0001
-> >
-> > Should this not be:
-> >
-> > PCI_DOE_VENDOR_ID_PCI_SIG?
-> >
-> > ...because I don't think this value will ever show up at the typical
-> > config-offset 0 vendor-id, will it?
+> Binary dumping is modeled on /sys/firmware/ACPI/tables/
 >
-> Good question.
+> The ability to dump this table will be very useful for emulation of real
+> devices once they become available as QEMU CXL type 3 device emulation will
+> be able to load this file in.
 >
-> Whilst I agree it is unlikely to turn up as a conventional vendor-id
-> (though I've not found any text ruling it out) it already turns up
-> in locations other than DOE.
+> This does not support table updates at runtime. It will always provide
+> whatever was there when first cached. Handling of table updates can be
+> implemented later.
 >
-> Many of them aren't software visible, but potentially places
-> like SPDM are in which you would have a registry ID of 0x3 (PCI-SIG)
-> followed by the PCI vendor ID (this one).  Those are used in SPDM
-> vendor defined requests / responses.
+> Once we have more users, this code can move out to driver/cxl/cdat.c or
+> similar.
 >
-> That SPDM feature is then used in IDE establishment.
-> The IDE ECN (via pcisig.com) has the following:
-> "The VendorID field of the VENDOR_DEFINED_REQUEST/
->  VENDOR_DEFINED_RESPONSE must contain the value 0001h, which is assigned to
->  the PCI-SIG."
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/cxl/Kconfig |   1 +
+>  drivers/cxl/cxl.h   |  21 ++++++
+>  drivers/cxl/mem.c   | 174 ++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/mem.h   |   6 ++
+>  4 files changed, 202 insertions(+)
 >
-> Which to my reading, isn't quite the same as saying it's a vendor ID,
-> but nearly so.
+> diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> index 97dc4d751651..26cad9fa29f7 100644
+> --- a/drivers/cxl/Kconfig
+> +++ b/drivers/cxl/Kconfig
+> @@ -15,6 +15,7 @@ if CXL_BUS
 >
-> Now, I argued the *_DVSEC_* naming in the CXL one based on the spec saying
-> that was all it could be used for but I may well have been wrong longer
-> term.
+>  config CXL_MEM
+>         tristate "CXL.mem: Memory Devices"
+> +       select PCI_DOE
+>         help
+>           The CXL.mem protocol allows a device to act as a provider of
+>           "System RAM" and/or "Persistent Memory" that is fully coherent
+> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> index d49e0cb679fa..e649a286aace 100644
+> --- a/drivers/cxl/cxl.h
+> +++ b/drivers/cxl/cxl.h
+> @@ -7,6 +7,7 @@
+>  #include <linux/bitfield.h>
+>  #include <linux/bitops.h>
+>  #include <linux/io.h>
+> +#include <linux/pci-doe.h>
 >
-> I'm fine with renaming it to the PCI_DOE_* version then dropping the DOE
-> when it gets used for something else though if that works for people.
+>  /* CXL 2.0 8.2.8.1 Device Capabilities Array Register */
+>  #define CXLDEV_CAP_ARRAY_OFFSET 0x0
+> @@ -69,5 +70,25 @@ struct cxl_regs {
+>  void cxl_setup_device_regs(struct device *dev, void __iomem *base,
+>                            struct cxl_device_regs *regs);
 >
-> At least this time naming isn't made awkward by legalese.
+> +/*
+> + * Address space properties derived from:
+> + * CXL 2.0 8.2.5.12.7 CXL HDM Decoder 0 Control Register
+> + */
+> +#define CXL_ADDRSPACE_RAM   BIT(0)
+> +#define CXL_ADDRSPACE_PMEM  BIT(1)
+> +#define CXL_ADDRSPACE_TYPE2 BIT(2)
+> +#define CXL_ADDRSPACE_TYPE3 BIT(3)
+> +#define CXL_ADDRSPACE_MASK  GENMASK(3, 0)
 
-For fun I did a lookup for vendor-id 1 and it came back "Fry's
-Electronics Counterfeit Flash Drive"
+Looks like this got picked up from a rebase... they're now decoder
+flags, but no need to include them in the CDAT patch.
 
-https://pcilookup.com/?ven=0001&dev=&action=submit
+> +
+> +#define CXL_DOE_PROTOCOL_COMPLIANCE 0
+> +#define CXL_DOE_PROTOCOL_TABLE_ACCESS 2
+> +
+> +/* Common to request and response */
+> +#define CXL_DOE_TABLE_ACCESS_3_CODE GENMASK(7, 0)
+> +#define   CXL_DOE_TABLE_ACCESS_3_CODE_READ 0
+> +#define CXL_DOE_TABLE_ACCESS_3_TYPE GENMASK(15, 8)
+> +#define   CXL_DOE_TABLE_ACCESS_3_TYPE_CDAT 0
+> +#define CXL_DOE_TABLE_ACCESS_3_ENTRY_HANDLE GENMASK(31, 16)
+> +
+>  extern struct bus_type cxl_bus_type;
+>  #endif /* __CXL_H__ */
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> index c5fdf2c57181..4224d1de311e 100644
+> --- a/drivers/cxl/mem.c
+> +++ b/drivers/cxl/mem.c
+> @@ -14,6 +14,7 @@
+>  #include "pci.h"
+>  #include "cxl.h"
+>  #include "mem.h"
+> +#include "cdat.h"
+>
+>  /**
+>   * DOC: cxl mem
+> @@ -926,6 +927,85 @@ static int cxl_mem_setup_mailbox(struct cxl_mem *cxlm)
+>         return 0;
+>  }
+>
+> +#define CDAT_DOE_REQ(entry_handle)                                     \
+> +       (FIELD_PREP(CXL_DOE_TABLE_ACCESS_REQ_CODE,                      \
+> +                   CXL_DOE_TABLE_ACCESS_REQ_CODE_READ) |               \
+> +        FIELD_PREP(CXL_DOE_TABLE_ACCESS_TABLE_TYPE,                    \
+> +                   CXL_DOE_TABLE_ACCESS_TABLE_TYPE_CDATA) |            \
+> +        FIELD_PREP(CXL_DOE_TABLE_ACCESS_ENTRY_HANDLE, (entry_handle)))
+> +
+> +static ssize_t cdat_get_length(struct pci_doe *doe)
+> +{
+> +       u32 cdat_request_pl = CDAT_DOE_REQ(0);
+> +       u32 cdat_response_pl[32];
+> +       struct pci_doe_exchange ex = {
+> +               .vid = PCI_DVSEC_VENDOR_ID_CXL,
+> +               .protocol = CXL_DOE_PROTOCOL_TABLE_ACCESS,
+> +               .request_pl = &cdat_request_pl,
+> +               .request_pl_sz = sizeof(cdat_request_pl),
+> +               .response_pl = cdat_response_pl,
+> +               .response_pl_sz = sizeof(cdat_response_pl),
+> +       };
+> +
+> +       ssize_t rc;
+> +
+> +       rc = pci_doe_exchange_sync(doe, &ex);
+> +       if (rc < 0)
+> +               return rc;
+> +       if (rc < 1)
+> +               return -EIO;
+> +
+> +       return cdat_response_pl[1];
+> +}
+> +
+> +static int cdat_to_buffer(struct pci_doe *doe, u32 *buffer, size_t length)
+> +{
+> +       int entry_handle = 0;
+> +       int rc;
+> +
+> +       do {
+> +               u32 cdat_request_pl = CDAT_DOE_REQ(entry_handle);
+> +               u32 cdat_response_pl[32];
+> +               struct pci_doe_exchange ex = {
+> +                       .vid = PCI_DVSEC_VENDOR_ID_CXL,
+> +                       .protocol = CXL_DOE_PROTOCOL_TABLE_ACCESS,
+> +                       .request_pl = &cdat_request_pl,
+> +                       .request_pl_sz = sizeof(cdat_request_pl),
+> +                       .response_pl = cdat_response_pl,
+> +                       .response_pl_sz = sizeof(cdat_response_pl),
+> +               };
+> +               size_t entry_dw;
+> +               u32 *entry;
+> +
+> +               rc = pci_doe_exchange_sync(doe, &ex);
+> +               if (rc < 0)
+> +                       return rc;
+> +
+> +               entry = cdat_response_pl + 1;
 
-The potential for it to be used in other places outside of DOE makes
-me think the way you have it here is fine.
+I think:
 
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+entry = &cdat_response_pl[1];
+
+...is less ambiguous, otherwise you need to backtrack and remember
+that cdat_response_pl is an array not a struct. Perhaps a comment or a
+symbol name for "1" would help here too?
+
+
+> +               entry_dw = rc / sizeof(u32);
+> +               /* Skip Header */
+> +               entry_dw -= 1;
+> +               entry_dw = min(length / 4, entry_dw);
+
+sometimes sizeof(u32) sometimes "4"?
+
+> +               memcpy(buffer, entry, entry_dw * sizeof(u32));
+> +               length -= entry_dw * sizeof(u32);
+
+Why not keep entry_dw in bytes, it seems this conversion to a word
+count is causing more trouble than it is worth above.
+
+> +               buffer += entry_dw;
+> +               entry_handle = FIELD_GET(CXL_DOE_TABLE_ACCESS_ENTRY_HANDLE, cdat_response_pl[0]);
+> +
+> +       } while (entry_handle != 0xFFFF);
+
+Shouldn't this also break out if length goes to zero?
+
+> +
+> +       return 0;
+> +}
+> +
+> +static void cxl_mem_free_irq_vectors(void *data)
+> +{
+> +       pci_free_irq_vectors(data);
+> +}
+> +
+> +static void cxl_mem_doe_unregister_all(void *data)
+> +{
+> +       pci_doe_unregister_all(data);
+> +}
+> +
+>  static struct cxl_mem *cxl_mem_create(struct pci_dev *pdev, u32 reg_lo,
+>                                       u32 reg_hi)
+>  {
+> @@ -933,6 +1013,7 @@ static struct cxl_mem *cxl_mem_create(struct pci_dev *pdev, u32 reg_lo,
+>         struct cxl_mem *cxlm;
+>         void __iomem *regs;
+>         u64 offset;
+> +       int irqs;
+>         u8 bar;
+>         int rc;
+>
+> @@ -971,6 +1052,44 @@ static struct cxl_mem *cxl_mem_create(struct pci_dev *pdev, u32 reg_lo,
+>                 return NULL;
+>         }
+>
+> +       /*
+> +        * An implementation of a cxl type3 device may support an unknown
+> +        * number of interrupts. Assume that number is not that large and
+> +        * request them all.
+> +        */
+> +       irqs = pci_msix_vec_count(pdev);
+> +       rc = pci_alloc_irq_vectors(pdev, irqs, irqs, PCI_IRQ_MSIX);
+> +       if (rc != irqs) {
+> +               /* No interrupt available - carry on */
+> +               dev_dbg(dev, "No interrupts available for DOE\n");
+> +       } else {
+> +               /*
+> +                * Enabling bus mastering could be done within the DOE
+> +                * initialization, but as it potentially has other impacts
+> +                * keep it within the driver.
+> +                */
+> +               pci_set_master(pdev);
+> +               rc = devm_add_action_or_reset(dev, cxl_mem_free_irq_vectors,
+> +                                              pdev);
+> +               if (rc)
+> +                       return NULL;
+> +       }
+> +
+> +       /*
+> +        * Find a DOE mailbox that supports CDAT.
+> +        * Supporting other DOE protocols will require more complexity.
+> +        */
+> +       rc = pci_doe_register_all(pdev);
+> +       if (rc < 0)
+> +               return NULL;
+> +
+> +       rc = devm_add_action_or_reset(dev, cxl_mem_doe_unregister_all, pdev);
+> +       if (rc)
+> +               return NULL;
+> +
+> +       cxlm->table_doe = pci_doe_find(pdev, PCI_DVSEC_VENDOR_ID_CXL,
+> +                                      CXL_DOE_PROTOCOL_TABLE_ACCESS);
+> +
+
+cxl_mem_create() is about allocating / initializing the @cxlm object.
+I think the above belongs in its own hardware init function. Well the
+interrupt init belongs in its own init function before
+cxl_mem_create() and the DOE / CDAT registration can come sometime
+later after cxl_mem_identify() succeeds. I.e. it's not until the
+driver has successfully setup mailbox communications should it worry
+about talking to the DOE.
+
+>         dev_dbg(dev, "Mapped CXL Memory Device resource\n");
+>         return cxlm;
+>  }
+> @@ -1060,6 +1179,31 @@ static ssize_t pmem_size_show(struct device *dev, struct device_attribute *attr,
+>         return sysfs_emit(buf, "%#llx\n", len);
+>  }
+>
+> +static ssize_t CDAT_read(struct file *filp, struct kobject *kobj,
+> +                        struct bin_attribute *bin_attr, char *buf,
+> +                        loff_t offset, size_t count)
+> +{
+> +       struct device *dev = kobj_to_dev(kobj);
+> +       struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
+> +
+> +       return memory_read_from_buffer(buf, count, &offset, cxlmd->cdat_table,
+> +                                      cxlmd->cdat_length);
+> +}
+> +
+> +static BIN_ATTR_RO(CDAT, 0);
+> +
+> +static umode_t cxl_memdev_bin_attr_is_visible(struct kobject *kobj,
+> +                                             struct bin_attribute *attr, int i)
+> +{
+> +       struct device *dev = kobj_to_dev(kobj);
+> +       struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
+> +
+> +       if ((attr == &bin_attr_CDAT) && cxlmd->cdat_table)
+> +               return 0400;
+> +
+> +       return 0;
+> +}
+> +
+>  static struct device_attribute dev_attr_pmem_size =
+>         __ATTR(size, 0444, pmem_size_show, NULL);
+>
+> @@ -1069,6 +1213,11 @@ static struct attribute *cxl_memdev_attributes[] = {
+>         NULL,
+>  };
+>
+> +static struct bin_attribute *cxl_memdev_bin_attributes[] = {
+> +       &bin_attr_CDAT,
+> +       NULL,
+> +};
+> +
+>  static struct attribute *cxl_memdev_pmem_attributes[] = {
+>         &dev_attr_pmem_size.attr,
+>         NULL,
+> @@ -1081,6 +1230,8 @@ static struct attribute *cxl_memdev_ram_attributes[] = {
+>
+>  static struct attribute_group cxl_memdev_attribute_group = {
+>         .attrs = cxl_memdev_attributes,
+> +       .bin_attrs = cxl_memdev_bin_attributes,
+> +       .is_bin_visible = cxl_memdev_bin_attr_is_visible,
+>  };
+>
+>  static struct attribute_group cxl_memdev_ram_attribute_group = {
+> @@ -1158,6 +1309,25 @@ static struct cxl_memdev *cxl_memdev_alloc(struct cxl_mem *cxlm)
+>         return ERR_PTR(rc);
+>  }
+>
+> +static int cxl_cache_cdat_table(struct cxl_memdev *cxlmd)
+> +{
+> +       struct cxl_mem *cxlm = cxlmd->cxlm;
+> +       struct device *dev = &cxlmd->dev;
+> +       ssize_t cdat_length;
+> +
+> +       if (cxlm->table_doe == NULL)
+> +               return 0;
+> +
+> +       cdat_length = cdat_get_length(cxlm->table_doe);
+> +       if (cdat_length < 0)
+> +               return cdat_length;
+> +
+> +       cxlmd->cdat_length = cdat_length;
+> +       cxlmd->cdat_table = devm_kzalloc(dev->parent, cdat_length, GFP_KERNEL);
+
+I'm not sure how big these CDATs can get, but I don't think there is
+any requirement for the memory to be contiguous, so perhaps this
+should be kvzalloc() to be kind to the page allocator.
+
+> +
+> +       return cdat_to_buffer(cxlm->table_doe, cxlmd->cdat_table, cxlmd->cdat_length);
+> +}
+> +
+>  static int cxl_mem_add_memdev(struct cxl_mem *cxlm)
+>  {
+>         struct cxl_memdev *cxlmd;
+> @@ -1180,6 +1350,10 @@ static int cxl_mem_add_memdev(struct cxl_mem *cxlm)
+>          */
+>         cxlmd->cxlm = cxlm;
+>
+> +       rc = cxl_cache_cdat_table(cxlmd);
+> +       if (rc)
+> +               goto err;
+> +
+>         cdev = &cxlmd->cdev;
+>         rc = cdev_device_add(cdev, dev);
+>         if (rc)
+> diff --git a/drivers/cxl/mem.h b/drivers/cxl/mem.h
+> index 0a3f70316872..fb26155a8fb3 100644
+> --- a/drivers/cxl/mem.h
+> +++ b/drivers/cxl/mem.h
+> @@ -38,12 +38,16 @@
+>   * @cdev: char dev core object for ioctl operations
+>   * @cxlm: pointer to the parent device driver data
+>   * @id: id number of this memdev instance.
+> + * @cdat_table: cache of CDAT table
+> + * @cdat_length: length of cached CDAT table
+>   */
+>  struct cxl_memdev {
+>         struct device dev;
+>         struct cdev cdev;
+>         struct cxl_mem *cxlm;
+>         int id;
+> +       void *cdat_table;
+> +       size_t cdat_length;
+>  };
+>
+>  /**
+> @@ -51,6 +55,7 @@ struct cxl_memdev {
+>   * @pdev: The PCI device associated with this CXL device.
+>   * @base: IO mappings to the device's MMIO
+>   * @cxlmd: Logical memory device chardev / interface
+> + * @table_doe: Data exchange object mailbox used to read tables
+>   * @regs: Parsed register blocks
+>   * @payload_size: Size of space for payload
+>   *                (CXL 2.0 8.2.8.4.3 Mailbox Capabilities Register)
+> @@ -65,6 +70,7 @@ struct cxl_mem {
+>         void __iomem *base;
+>         struct cxl_memdev *cxlmd;
+>
+> +       struct pci_doe *table_doe;
+>         struct cxl_regs regs;
+>
+>         size_t payload_size;
