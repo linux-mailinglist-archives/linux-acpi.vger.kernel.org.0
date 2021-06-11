@@ -2,159 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF2C73A396A
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jun 2021 03:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 892A93A3E66
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jun 2021 10:57:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbhFKB4e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Jun 2021 21:56:34 -0400
-Received: from mga04.intel.com ([192.55.52.120]:50514 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230280AbhFKB4e (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 10 Jun 2021 21:56:34 -0400
-IronPort-SDR: HpM2hvEHuyHIrNACHgmq1eSAvaBtxaY4fDCOyN+RfVpQDsS5vIKN5qKKLk/pMRdgRaRB4QBtva
- yDe1llkS6CIw==
-X-IronPort-AV: E=McAfee;i="6200,9189,10011"; a="203608362"
-X-IronPort-AV: E=Sophos;i="5.83,265,1616482800"; 
-   d="scan'208";a="203608362"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2021 18:54:36 -0700
-IronPort-SDR: d/ScbsOBg+fHebLR6GX/Ht2IrL7pxGzKTzd8bqQlXHmNsAffQ0ezojuwDKlubkSSWhwrQmhWVM
- w2Ebi96pJx/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,265,1616482800"; 
-   d="scan'208";a="419929888"
-Received: from lkp-server02.sh.intel.com (HELO 3cb98b298c7e) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 10 Jun 2021 18:54:35 -0700
-Received: from kbuild by 3cb98b298c7e with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lrWNX-0000NH-1R; Fri, 11 Jun 2021 01:54:35 +0000
-Date:   Fri, 11 Jun 2021 09:54:17 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- bd8ae083b1f33fcc969fac4384495f21b355e13a
-Message-ID: <60c2c249.Qm30P1cyQ8CYve29%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S230269AbhFKI7u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Jun 2021 04:59:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36748 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231161AbhFKI7u (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Jun 2021 04:59:50 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36889C061574;
+        Fri, 11 Jun 2021 01:57:36 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id k7so5329474pjf.5;
+        Fri, 11 Jun 2021 01:57:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ouekwhno07itCig8YCgajxgS9RkFe/Y+2BrTY237h+s=;
+        b=VgTtoPPKM3igTzT5SIAvAHNZZBTUBbosJcxArByn42tReSuhuRZNoEutO9z0lVMfQl
+         NoLDgaECGiYfocJIx0zZsaNFDWM4LVr32+oXw9JMsrplqTRxhorawwhdAdLelq5v37Bj
+         R2S+D0JODPC5fkTsa91Gi9BZCw+2PsaMAIY46ygvQhaWYUIqmDEV+sOG7TSymGaFtHg0
+         nbNEfd2l0zsw0Al7i0NX8xJ1kAC7uqwKwi8QCe7cj4K8UYXNdnBPIRJEucvFEkAy7IJc
+         86oe5fTFeTsHHNp/NSBP3ni2JddqIDDHTHtcQ9d3zTLsovkTbBx1GA5nhCBrCYn20xD5
+         8L+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Ouekwhno07itCig8YCgajxgS9RkFe/Y+2BrTY237h+s=;
+        b=MImVY6GLB6B09i2bxRTgkPG5fxBCyIIT3kn+QDKu3L4JshrZK0CmdojV6ziGL9xy1s
+         6lramuQYNCvUCH1Y43+Gm33pVuleYWhyKV26xBom2eqtv9xGOWpuu4kkp7pVxp9gfEuW
+         hTh3Cae2/WvhIqj84+kF8bpXkzJOgV04uE29zqiUS9ndPpRjdemGTzlyqMBE4qX0jkm0
+         qpGnpC+YPviN8ZMoNu5uproCToN7lZw5OfqPRJyfIx7SuzA8oqmXG+Z3nY/LzhTu8QwY
+         QdjYLVgjLKswkOfAyjP3/PDg1ez/y7cZoXm8F1adOEIVEYtBYgUypGzWS2+Q5IJYmalE
+         lQLA==
+X-Gm-Message-State: AOAM531bKaDitK2FXTRtImFthboV7Po5Nt57A7Kl0ICuyNzfc9J/hiDT
+        +ae643I2ciCWtMfPgB/u6UA6iyhPN2y7IqWyz+8=
+X-Google-Smtp-Source: ABdhPJyXN4rhndd5UsCHJJUELDHbwDk5Xg+Nv9b19zHCwlCngN67bB+XYCPMx0lCSA3EVZp+1pmBNWC+uFSdeRin1hI=
+X-Received: by 2002:a17:902:c784:b029:104:9a21:262a with SMTP id
+ w4-20020a170902c784b02901049a21262amr3068721pla.21.1623401855633; Fri, 11 Jun
+ 2021 01:57:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20210610163917.4138412-1-ciorneiioana@gmail.com> <20210610163917.4138412-13-ciorneiioana@gmail.com>
+In-Reply-To: <20210610163917.4138412-13-ciorneiioana@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 11 Jun 2021 11:57:19 +0300
+Message-ID: <CAHp75Vcch1aO97Dg86Eo9bdrdwSfPE+p5iFJLk8Y5jx13q8Cpg@mail.gmail.com>
+Subject: Re: [PATCH net-next v8 12/15] net/fsl: Use [acpi|of]_mdiobus_register
+To:     Ioana Ciornei <ciorneiioana@gmail.com>
+Cc:     Grant Likely <grant.likely@arm.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jeremy Linton <jeremy.linton@arm.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Marcin Wojtas <mw@semihalf.com>,
+        Pieter Jansen Van Vuuren <pieter.jansenvv@bamboosystems.io>,
+        Jon <jon@solid-run.com>, Saravana Kannan <saravanak@google.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Calvin Johnson <calvin.johnson@nxp.com>,
+        Cristi Sovaiala <cristian.sovaiala@nxp.com>,
+        Florin Laurentiu Chiculita <florinlaurentiu.chiculita@nxp.com>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Diana Madalina Craciun <diana.craciun@nxp.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux.cj" <linux.cj@gmail.com>, netdev <netdev@vger.kernel.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Calvin Johnson <calvin.johnson@oss.nxp.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: bd8ae083b1f33fcc969fac4384495f21b355e13a  Merge branch 'acpi-scan' into bleeding-edge
+On Thu, Jun 10, 2021 at 7:40 PM Ioana Ciornei <ciorneiioana@gmail.com> wrote:
+>
+> From: Calvin Johnson <calvin.johnson@oss.nxp.com>
+>
+> Depending on the device node type, call the specific OF or ACPI
+> mdiobus_register function.
+>
+> Note: For both ACPI and DT cases, endianness of MDIO controller
 
-elapsed time: 722m
+controllers
 
-configs tested: 96
-configs skipped: 2
+> need to be specified using "little-endian" property.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+using the
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                  mpc885_ads_defconfig
-powerpc                      pasemi_defconfig
-sh                          r7785rp_defconfig
-s390                                defconfig
-arm                              alldefconfig
-s390                       zfcpdump_defconfig
-powerpc                    socrates_defconfig
-ia64                        generic_defconfig
-arm                          badge4_defconfig
-arm                  colibri_pxa270_defconfig
-xtensa                       common_defconfig
-mips                      fuloong2e_defconfig
-arc                         haps_hs_defconfig
-ia64                         bigsur_defconfig
-sh                     sh7710voipgw_defconfig
-powerpc                         ps3_defconfig
-arm                            mmp2_defconfig
-powerpc                     sequoia_defconfig
-arm                        mvebu_v7_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20210610
-i386                 randconfig-a006-20210610
-i386                 randconfig-a004-20210610
-i386                 randconfig-a001-20210610
-i386                 randconfig-a005-20210610
-i386                 randconfig-a003-20210610
-x86_64               randconfig-a015-20210610
-x86_64               randconfig-a011-20210610
-x86_64               randconfig-a012-20210610
-x86_64               randconfig-a014-20210610
-x86_64               randconfig-a016-20210610
-x86_64               randconfig-a013-20210610
-i386                 randconfig-a015-20210610
-i386                 randconfig-a013-20210610
-i386                 randconfig-a016-20210610
-i386                 randconfig-a014-20210610
-i386                 randconfig-a012-20210610
-i386                 randconfig-a011-20210610
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                            kunit_defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+...
 
-clang tested configs:
-x86_64               randconfig-a002-20210610
-x86_64               randconfig-a001-20210610
-x86_64               randconfig-a004-20210610
-x86_64               randconfig-a003-20210610
-x86_64               randconfig-a006-20210610
-x86_64               randconfig-a005-20210610
+> Changes in v8:
+> - Directly call the OF or ACPI variants of registering the MDIO bus.
+>   This is needed because the fwnode_mdio.c module should only implement
+>   features which can be achieved without going back to the OF/ACPI
+>   variants. Without this restrictions we directly end up in a dependency
+>   cycle: of_mdio -> fwnode_mdio -> of_mdio.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Shouldn't be simple fwnode_mdio.h.
+The idea of fwnode APIs that they provide a common ground for all
+resource providers.
+
+> - Changed the commit title since the fwnode_mdiobus_register() is no
+>   longer available
+>
+> Changes in v7:
+> - Include fwnode_mdio.h
+
+> - Alphabetically sort header inclusions
+
+I suppose this should be a separate change.
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
