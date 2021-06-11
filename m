@@ -2,59 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 892DF3A4676
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jun 2021 18:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B36C23A4738
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jun 2021 18:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229540AbhFKQa3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Jun 2021 12:30:29 -0400
-Received: from mail-oi1-f180.google.com ([209.85.167.180]:37623 "EHLO
-        mail-oi1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbhFKQa2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Jun 2021 12:30:28 -0400
-Received: by mail-oi1-f180.google.com with SMTP id h9so6381181oih.4
-        for <linux-acpi@vger.kernel.org>; Fri, 11 Jun 2021 09:28:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=WXIdRzS5H5MAfobhwh2B1mI1QQeBNzs9Ms3hgm3MmTQ=;
-        b=bjiPUwE72n6GzZlEICPu6JBQSWQtCW79wC0Tpo/t9GoBf1oik+LN6ZL5K/keXlAFOM
-         gOBUpfc4svEJtEvyT+zurKumWrC0fzXKcP4vs9Hn6Ksl5pK1f/oS5e6aY/rP6xegQpPR
-         z74ZSwuAXvVVP9MvvnwGmJpDX2lAWtiLTl96QFJpI2vfvUg8/Pu0ngDra8dJY/BmFjda
-         24yUPnV9m41ac0K5oHvTwK7dra1LNdMpqmEr9kOv5bG9Dix02JIPUdhRIm8MJKopZZ9k
-         apfIwwwrM4r7z3FgDWMVUFIYFJ5BC3iZMdvPE9YOjMsBM7L/zLl0N7fVOO0oNr5nOn4M
-         90EA==
-X-Gm-Message-State: AOAM530iNpYKV4WCS8TJH441bzA91CbALjuHouHPeDGqVF0ARaLGDDk/
-        sr1LCUQl8vtxMDdpnf+SRnz+a31Sm61BaELPUjc=
-X-Google-Smtp-Source: ABdhPJzt+lGPPpAOUAFktef1kB2pICbUPKwO+dxZcFKeGqdgDytFT2T4pBhbaOvUOOwS58serYnX1dWBFFnUkWIdZ2k=
-X-Received: by 2002:aca:b406:: with SMTP id d6mr3013182oif.71.1623428893869;
- Fri, 11 Jun 2021 09:28:13 -0700 (PDT)
+        id S230236AbhFKRAu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Jun 2021 13:00:50 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:49266 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229540AbhFKRAt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Jun 2021 13:00:49 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 2.0.5)
+ id c1029fb533963793; Fri, 11 Jun 2021 18:58:49 +0200
+Received: from kreacher.localnet (89-64-82-41.dynamic.chello.pl [89.64.82.41])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id ACEC56698B2;
+        Fri, 11 Jun 2021 18:58:48 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, Borislav Petkov <bp@suse.de>
+Subject: [PATCH] ACPI: power: Use dev_dbg() to print some messages
+Date:   Fri, 11 Jun 2021 18:58:48 +0200
+Message-ID: <2601165.mvXUDI8C0e@kreacher>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 11 Jun 2021 18:28:03 +0200
-Message-ID: <CAJZ5v0h+HG5eDcjBJKxNqnEbOKayG8A2wk337NmRio_OxurGEA@mail.gmail.com>
-Subject: [GIT PULL] acpi-scan material for v5.14
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 89.64.82.41
+X-CLIENT-HOSTNAME: 89-64-82-41.dynamic.chello.pl
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrfedukedgudegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepkeelrdeigedrkedvrdegudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrieegrdekvddrgedupdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghpsehsuhhsvgdruggv
+X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Hans,
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The following commits:
+The messages printed by acpi_resume_power_resources() and
+acpi_turn_off_unused_power_resources() are not important enough to be
+printed with pr_info(), so use dev_dbg() instead of it to get rid of
+some noise in the kernel log.
 
-23db673d7e51 ACPI: scan: initialize local variable to avoid garbage
-being returned
-b83e2b306736 ACPI: scan: Add function to fetch dependent of ACPI device
-a9e10e587304 ACPI: scan: Extend acpi_walk_dep_device_list()
-6d27975851b1 ACPI: scan: Rearrange dep_unmet initialization
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/power.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-are available for you to pull from from the git branch at:
+Index: linux-pm/drivers/acpi/power.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/power.c
++++ linux-pm/drivers/acpi/power.c
+@@ -1004,7 +1004,7 @@ void acpi_resume_power_resources(void)
+ 
+ 		if (state == ACPI_POWER_RESOURCE_STATE_OFF
+ 		    && resource->ref_count) {
+-			dev_info(&resource->device.dev, "Turning ON\n");
++			dev_dbg(&resource->device.dev, "Turning ON\n");
+ 			__acpi_power_on(resource);
+ 		}
+ 
+@@ -1034,7 +1034,7 @@ void acpi_turn_off_unused_power_resource
+ 		 */
+ 		if (!resource->ref_count &&
+ 		    resource->state != ACPI_POWER_RESOURCE_STATE_OFF) {
+-			dev_info(&resource->device.dev, "Turning OFF\n");
++			dev_dbg(&resource->device.dev, "Turning OFF\n");
+ 			__acpi_power_off(resource);
+ 		}
+ 
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-scan
 
-that is not going to be rebased before merging.
 
-Thanks!
