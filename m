@@ -2,55 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 892A93A3E66
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jun 2021 10:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 837033A3E7B
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jun 2021 11:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230269AbhFKI7u (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Jun 2021 04:59:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36748 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231161AbhFKI7u (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Jun 2021 04:59:50 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36889C061574;
-        Fri, 11 Jun 2021 01:57:36 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id k7so5329474pjf.5;
-        Fri, 11 Jun 2021 01:57:36 -0700 (PDT)
+        id S231283AbhFKJD2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Jun 2021 05:03:28 -0400
+Received: from mail-pl1-f173.google.com ([209.85.214.173]:43710 "EHLO
+        mail-pl1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230460AbhFKJD1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Jun 2021 05:03:27 -0400
+Received: by mail-pl1-f173.google.com with SMTP id v12so2504224plo.10;
+        Fri, 11 Jun 2021 02:01:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Ouekwhno07itCig8YCgajxgS9RkFe/Y+2BrTY237h+s=;
-        b=VgTtoPPKM3igTzT5SIAvAHNZZBTUBbosJcxArByn42tReSuhuRZNoEutO9z0lVMfQl
-         NoLDgaECGiYfocJIx0zZsaNFDWM4LVr32+oXw9JMsrplqTRxhorawwhdAdLelq5v37Bj
-         R2S+D0JODPC5fkTsa91Gi9BZCw+2PsaMAIY46ygvQhaWYUIqmDEV+sOG7TSymGaFtHg0
-         nbNEfd2l0zsw0Al7i0NX8xJ1kAC7uqwKwi8QCe7cj4K8UYXNdnBPIRJEucvFEkAy7IJc
-         86oe5fTFeTsHHNp/NSBP3ni2JddqIDDHTHtcQ9d3zTLsovkTbBx1GA5nhCBrCYn20xD5
-         8L+A==
+        bh=fIlvnpCPbICwDJ4Vl00FPiAYRz1ggW2QfBtE3qOeQVk=;
+        b=TCKGtdywZsQ0mUdoNA1VIXMy1S4UFr0Ur7QxJ8scHxxHbnqqyS3zEccbMsxmjBTYF1
+         m5rPzJFtJuk4Y8f048RqUFJ2pXMI/EOQ8zAqiQ6Akh1+HrXreQP6fO83PnO7auH/J72A
+         W9ugS5yt3wF/4/3yY6ZpFl/Se6GdI4MXMq9oM4+Pjfc7iEajS3aeMqnsYPrH012T1JmA
+         O+kcBd9nMucev4zJwCRO6GxNVUibopNwpiTs7VsqPHd2aRj2/7kn8fqR527gbCQbT8K4
+         x+8+w37HZ7gyaUzd1KRNEj7YiE8h5f7EgBK85+PltyFgMEZ+ObAF07llCg276oaM2umZ
+         qeiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Ouekwhno07itCig8YCgajxgS9RkFe/Y+2BrTY237h+s=;
-        b=MImVY6GLB6B09i2bxRTgkPG5fxBCyIIT3kn+QDKu3L4JshrZK0CmdojV6ziGL9xy1s
-         6lramuQYNCvUCH1Y43+Gm33pVuleYWhyKV26xBom2eqtv9xGOWpuu4kkp7pVxp9gfEuW
-         hTh3Cae2/WvhIqj84+kF8bpXkzJOgV04uE29zqiUS9ndPpRjdemGTzlyqMBE4qX0jkm0
-         qpGnpC+YPviN8ZMoNu5uproCToN7lZw5OfqPRJyfIx7SuzA8oqmXG+Z3nY/LzhTu8QwY
-         QdjYLVgjLKswkOfAyjP3/PDg1ez/y7cZoXm8F1adOEIVEYtBYgUypGzWS2+Q5IJYmalE
-         lQLA==
-X-Gm-Message-State: AOAM531bKaDitK2FXTRtImFthboV7Po5Nt57A7Kl0ICuyNzfc9J/hiDT
-        +ae643I2ciCWtMfPgB/u6UA6iyhPN2y7IqWyz+8=
-X-Google-Smtp-Source: ABdhPJyXN4rhndd5UsCHJJUELDHbwDk5Xg+Nv9b19zHCwlCngN67bB+XYCPMx0lCSA3EVZp+1pmBNWC+uFSdeRin1hI=
-X-Received: by 2002:a17:902:c784:b029:104:9a21:262a with SMTP id
- w4-20020a170902c784b02901049a21262amr3068721pla.21.1623401855633; Fri, 11 Jun
- 2021 01:57:35 -0700 (PDT)
+        bh=fIlvnpCPbICwDJ4Vl00FPiAYRz1ggW2QfBtE3qOeQVk=;
+        b=N95S2MhLkYQru+a5U6vwPC1YeDyPoKNlqjNF2zhF+vM2xGWrlMFOEhVSF3S9R+Unv2
+         jX4+o+iGJBH+ZfASXlMG8LjCeu5kSmApjpqKbHe4OtWuwtmejYVx4xQGAobJQxXgqiZe
+         ts888de+dRgbilLs2AeaRSxsxR8FkBLWinjpDC9UekyDEu5qJrW2GYQXMjcXPByytZPK
+         J3VagULo+TXAvvSsj2nj6P6dTCIZgGf5UNe00JBFXRQJaUr8thBbR2eZeQss1J0Vo/8G
+         MpAkwkqK4ztQW1fBHyXSKlVrlWuSCbhD7dJ4x6e6Fv77zrnU3JPa2F3SXRf7HcvFx+wO
+         epLA==
+X-Gm-Message-State: AOAM533U9RxSKoXtE/fKayTaoVExowa01hy5esHOutMxFY6Su/IwHSWU
+        TiEbToZxVAO6T3BHGGN9/pA9KDnKvEkYUGC4pSQ=
+X-Google-Smtp-Source: ABdhPJzWieTjQAnrXBUrCrA/glfRXSe+6PTqF2ceabrTCs2gWSFNY6hUn/WuRybe32pJBCyFKUReYtmPNT/trGAAtQE=
+X-Received: by 2002:a17:90b:818:: with SMTP id bk24mr3566082pjb.228.1623402018625;
+ Fri, 11 Jun 2021 02:00:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210610163917.4138412-1-ciorneiioana@gmail.com> <20210610163917.4138412-13-ciorneiioana@gmail.com>
-In-Reply-To: <20210610163917.4138412-13-ciorneiioana@gmail.com>
+References: <20210610163917.4138412-1-ciorneiioana@gmail.com>
+In-Reply-To: <20210610163917.4138412-1-ciorneiioana@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 11 Jun 2021 11:57:19 +0300
-Message-ID: <CAHp75Vcch1aO97Dg86Eo9bdrdwSfPE+p5iFJLk8Y5jx13q8Cpg@mail.gmail.com>
-Subject: Re: [PATCH net-next v8 12/15] net/fsl: Use [acpi|of]_mdiobus_register
+Date:   Fri, 11 Jun 2021 12:00:02 +0300
+Message-ID: <CAHp75VfeyWYKRYuufd8CkCwjCWPRssuQVNfCSknnJWB9HvUcMA@mail.gmail.com>
+Subject: Re: [PATCH net-next v8 00/15] ACPI support for dpaa2 driver
 To:     Ioana Ciornei <ciorneiioana@gmail.com>
 Cc:     Grant Likely <grant.likely@arm.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -75,7 +71,6 @@ Cc:     Grant Likely <grant.likely@arm.com>,
         Laurentiu Tudor <laurentiu.tudor@nxp.com>,
         Len Brown <lenb@kernel.org>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Calvin Johnson <calvin.johnson@oss.nxp.com>,
         Ioana Ciornei <ioana.ciornei@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
@@ -84,42 +79,39 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Thu, Jun 10, 2021 at 7:40 PM Ioana Ciornei <ciorneiioana@gmail.com> wrote:
 >
-> From: Calvin Johnson <calvin.johnson@oss.nxp.com>
+> From: Ioana Ciornei <ioana.ciornei@nxp.com>
 >
-> Depending on the device node type, call the specific OF or ACPI
-> mdiobus_register function.
+> This patch set provides ACPI support to DPAA2 network drivers.
 >
-> Note: For both ACPI and DT cases, endianness of MDIO controller
-
-controllers
-
-> need to be specified using "little-endian" property.
-
-using the
-
-...
-
-> Changes in v8:
-> - Directly call the OF or ACPI variants of registering the MDIO bus.
->   This is needed because the fwnode_mdio.c module should only implement
->   features which can be achieved without going back to the OF/ACPI
->   variants. Without this restrictions we directly end up in a dependency
->   cycle: of_mdio -> fwnode_mdio -> of_mdio.
-
-Shouldn't be simple fwnode_mdio.h.
-The idea of fwnode APIs that they provide a common ground for all
-resource providers.
-
-> - Changed the commit title since the fwnode_mdiobus_register() is no
->   longer available
+> It also introduces new fwnode based APIs to support phylink and phy
+> layers
+>     Following functions are defined:
+>       phylink_fwnode_phy_connect()
+>       fwnode_mdiobus_register_phy()
+>       fwnode_get_phy_id()
+>       fwnode_phy_find_device()
+>       device_phy_find_device()
+>       fwnode_get_phy_node()
+>       fwnode_mdio_find_device()
+>       acpi_get_local_address()
 >
-> Changes in v7:
-> - Include fwnode_mdio.h
+>     First one helps in connecting phy to phylink instance.
+>     Next three helps in getting phy_id and registering phy to mdiobus
+>     Next two help in finding a phy on a mdiobus.
+>     Next one helps in getting phy_node from a fwnode.
+>     Last one is used to get local address from _ADR object.
+>
+>     Corresponding OF functions are refactored.
 
-> - Alphabetically sort header inclusions
+In general it looks fine to me. What really worries me is the calls like
 
-I suppose this should be a separate change.
+of_foo -> fwnode_bar -> of_baz.
 
+As I have commented in one patch the idea of fwnode APIs is to have a
+common ground for all resource providers. So, at the end it shouldn't
+be a chain of calls like above mentioned. Either fix the name (so, the
+first one will be in fwnode or device namespace) or fix the API that
+it will be fwnode/device API.
 
 -- 
 With Best Regards,
