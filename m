@@ -2,160 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D9E3A4D10
-	for <lists+linux-acpi@lfdr.de>; Sat, 12 Jun 2021 08:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08CFD3A4F66
+	for <lists+linux-acpi@lfdr.de>; Sat, 12 Jun 2021 16:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229584AbhFLGJm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 12 Jun 2021 02:09:42 -0400
-Received: from mga14.intel.com ([192.55.52.115]:48765 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229446AbhFLGJm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 12 Jun 2021 02:09:42 -0400
-IronPort-SDR: setgfYPhZZMxMV9AAQ5YgFTrzbMXzPRlqRBDQNGwjF6Rl9gJKxlx/nF2AdjwtUDkHMVlBpb8uf
- hGgaVbgRtyrw==
-X-IronPort-AV: E=McAfee;i="6200,9189,10012"; a="205464033"
-X-IronPort-AV: E=Sophos;i="5.83,268,1616482800"; 
-   d="scan'208";a="205464033"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2021 23:07:42 -0700
-IronPort-SDR: pSN8dmRFGJiKQX5eqDiiXWw+tl8m+YMMU5uzqT3970zUdu/I5gWJ9D3yiTY2RXyWLNzvWcXGVU
- XKvK2MwUNO/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,268,1616482800"; 
-   d="scan'208";a="449329385"
-Received: from lkp-server02.sh.intel.com (HELO 3cb98b298c7e) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 11 Jun 2021 23:07:41 -0700
-Received: from kbuild by 3cb98b298c7e with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lrwo1-0000qP-Bw; Sat, 12 Jun 2021 06:07:41 +0000
-Date:   Sat, 12 Jun 2021 14:07:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 2be4aa8aed4de696f2741f8aef751b0da3292184
-Message-ID: <60c44f14.t3H+iJZK/X31Hjjq%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S230213AbhFLPAN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 12 Jun 2021 11:00:13 -0400
+Received: from mail-il1-f194.google.com ([209.85.166.194]:41821 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230191AbhFLPAM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 12 Jun 2021 11:00:12 -0400
+Received: by mail-il1-f194.google.com with SMTP id t6so8172534iln.8
+        for <linux-acpi@vger.kernel.org>; Sat, 12 Jun 2021 07:58:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=pYbNpjnnqjc+Xi/bRrpptmfJ508WVQ/5TiSYG5equZ4=;
+        b=sjLsNqf871cpoS5eyMRIOysH4SDb+MVAWx0bCNUkJ8Ng9h0nT3GYi378jY/l1ChFRp
+         8pgEdHGUeNS5F9h1UUPAckd7koW1opYSDOnEyNH2F9L84OuIeNX1cq4xebxPHG4Ee/Ls
+         alWOVRcKuSMgO/q6hm8zjDcmf2b0Jbe8A+umetdDSNzlZ/Xu89225M+U2psrgTg31SBU
+         erArgEihTCTZvEVKalg5Mc1WG4/ekWdXPYZI7KT1Vvh03mHv9b8mgiOQNoXin2cCEAIg
+         uAjYoqfUGM6559anGRVqG0/pefDvooNfG5EXLzycys+lfJsGGb+G9pwZVhUzxsEwAjDz
+         H3vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=pYbNpjnnqjc+Xi/bRrpptmfJ508WVQ/5TiSYG5equZ4=;
+        b=izjkcz3P1S/PToKWcfbyp73XVIRN1AqzSbv5pDa+HZYkTv19o6F0XjLFTn0WwrT3QP
+         7x2l7ID9GxJhDJp5dt5yEIfZXIL3o3A5rT2tYNPvVQKEpXCR6MvEltJ+wo91SjZKFx7R
+         XmU7edlqrbIzphUfDa7Ji1n6WTT1d8LXGbHLdimyIEN4vsvMJm78H5lvo0TzE3JFXQ2C
+         lj6OqncWhNd8y79x0BGcPst6WcOQnyhEdMss95goM4kAjsJ0T0l3KrFYSj6o+KYx2Sad
+         IL5r8Gr2EfvsBa+4XkSNHRiuCNhGWQ8SoXQsCLLqFeLXL9jYvYI+Mc6T5pKMH/y1Yzul
+         JELQ==
+X-Gm-Message-State: AOAM530PP45Gk8UfWBct7euGZjD5586mmpdYOuOs3hE1Qh2JpbVS/UDB
+        gCvQsRmEsjoSMEx9lrKkM40ZpQ1ZuAHs8JVoX70=
+X-Google-Smtp-Source: ABdhPJz9XFp8TBHauycH3uKC0dtjU+AxEyOvf2GVgE+VI5NwSRgwat2xcqtN5IMATCH3Kh0bdLO2U8VgXCeXd9IninI=
+X-Received: by 2002:a05:6e02:f48:: with SMTP id y8mr7463111ilj.85.1623509822931;
+ Sat, 12 Jun 2021 07:57:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Sender: drwwgosh@gmail.com
+Received: by 2002:a92:cc4b:0:0:0:0:0 with HTTP; Sat, 12 Jun 2021 07:57:02
+ -0700 (PDT)
+From:   "Mr. Dabire Basole" <mrdabirebsole@gmail.com>
+Date:   Sat, 12 Jun 2021 10:57:02 -0400
+X-Google-Sender-Auth: KOH_1xxe8NgmUrlnrBAluEV2M1M
+Message-ID: <CACC9pSfQJfQ6Zh5hyV67_4q-Re6tVAo0QVJDzkUvZidwS6dofA@mail.gmail.com>
+Subject: PERSONAL TREAT AS URGENT.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 2be4aa8aed4de696f2741f8aef751b0da3292184  Merge branch 'pm-core' into bleeding-edge
+FROM MR. DABIRE BASOLE
+AUDIT & ACCOUNT MANAGER
+BANK OF AFRICA (B.O.A)
+OUAGADOUGOU BURKINA FASO
+WEST AFRICA.
 
-elapsed time: 727m
+Dear Friend,
 
-configs tested: 97
-configs skipped: 2
+With due respect, I have decided to contact you on a business
+transaction that will be beneficial to both of us. At the bank last
+account and auditing evaluation, my staffs came across an old account
+which was being maintained by a foreign client who we learn was among
+the deceased passengers of motor accident on November.2003, the
+deceased was unable to run this account since his death. The account
+has remained dormant without the knowledge of his family since it was
+put in a safe deposit account in the bank for future investment by the
+client.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Since his demise, even the members of his family haven't applied for
+claims over this fund and it has been in the safe deposit account
+until I discovered that it cannot be claimed since our client is a
+foreign national and we are sure that he has no next of kin here to
+file claims over the money. As the director of the department, this
+discovery was brought to my office so as to decide what is to be done.
+I decided to seek ways through which to transfer this money out of the
+bank and out of the country too.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                          rsk7264_defconfig
-mips                         bigsur_defconfig
-sh                              ul2_defconfig
-arm                          pxa910_defconfig
-sh                          lboxre2_defconfig
-powerpc                     sequoia_defconfig
-powerpc                      acadia_defconfig
-arm                      jornada720_defconfig
-mips                  maltasmvp_eva_defconfig
-mips                malta_qemu_32r6_defconfig
-mips                      loongson3_defconfig
-powerpc                     kmeter1_defconfig
-mips                           ci20_defconfig
-arc                          axs103_defconfig
-arm                  colibri_pxa300_defconfig
-m68k                       m5249evb_defconfig
-powerpc                          g5_defconfig
-mips                           rs90_defconfig
-arm                            mps2_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20210611
-i386                 randconfig-a006-20210611
-i386                 randconfig-a004-20210611
-i386                 randconfig-a001-20210611
-i386                 randconfig-a005-20210611
-i386                 randconfig-a003-20210611
-x86_64               randconfig-a002-20210611
-x86_64               randconfig-a001-20210611
-x86_64               randconfig-a004-20210611
-x86_64               randconfig-a003-20210611
-x86_64               randconfig-a006-20210611
-x86_64               randconfig-a005-20210611
-i386                 randconfig-a015-20210611
-i386                 randconfig-a013-20210611
-i386                 randconfig-a016-20210611
-i386                 randconfig-a014-20210611
-i386                 randconfig-a012-20210611
-i386                 randconfig-a011-20210611
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                            kunit_defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+The total amount in the account is USD$18.6 ( Eighteen Million Six Hundred
+Thousand United Stated Dollars) with my positions as
+staffs of the bank, I am handicapped because I cannot operate foreign
+accounts and cannot lay bonafide claim over this money. The client was
+a foreign national and you will only be asked to act as his next of
+kin and I will supply you with all the necessary information and bank
+data to assist you in being able to transfer this money to any bank of
+your choice where this money could be transferred into.
 
-clang tested configs:
-x86_64               randconfig-a015-20210611
-x86_64               randconfig-a011-20210611
-x86_64               randconfig-a012-20210611
-x86_64               randconfig-a014-20210611
-x86_64               randconfig-a016-20210611
-x86_64               randconfig-a013-20210611
+The total sum will be shared as follows: 50% for me, 50% for you,
+while 10% will map aside for any expenses incidental occur during the
+transfering of this fund into your bank account. and the expenses
+should be the first thing to be remove before sharing of this fund
+according to our percentages . The transfer is risk free on both sides
+hence you are going to follow my instruction till the fund transfer to
+your account. Since I work in this bank that is why you should be
+confident in the success of this transaction because you will be
+updated with information as at when desired.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+I will wish you to keep this transaction secret and confidential as I
+am hoping to retire with my share of this money at the end of
+transaction which will be when this money is safety in your account. I
+will then come over to your country for sharing according to the
+previously agreed percentages. You might even have to advise me on
+possibilities of investment in your country or elsewhere of our
+choice. May God help you to help me to a restive retirement, Amen,
+
+Please for further information and inquires feel free to contact me
+back immediately for more explanation and better understanding I want
+you to assure me your capability of handling this project with trust
+by providing me your following information details such as:
+
+(1)NAME..............
+(2)AGE:................
+(3)SEX:.....................
+(4)PHONE NUMBER:.................
+(5)OCCUPATION:................ .....
+(6)YOUR COUNTRY:.....................
+
+Yours sincerely,
+
+Mr. Dabire Basole.
