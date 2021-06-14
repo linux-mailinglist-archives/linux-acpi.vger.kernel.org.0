@@ -2,84 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8814B3A69F3
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jun 2021 17:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D42C3A6A2B
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jun 2021 17:27:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232869AbhFNPWn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Jun 2021 11:22:43 -0400
-Received: from mail-oi1-f178.google.com ([209.85.167.178]:39450 "EHLO
-        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233352AbhFNPWm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Jun 2021 11:22:42 -0400
-Received: by mail-oi1-f178.google.com with SMTP id m137so14755205oig.6;
-        Mon, 14 Jun 2021 08:20:39 -0700 (PDT)
+        id S233793AbhFNP3A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Jun 2021 11:29:00 -0400
+Received: from mail-oi1-f175.google.com ([209.85.167.175]:39446 "EHLO
+        mail-oi1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232951AbhFNP2r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Jun 2021 11:28:47 -0400
+Received: by mail-oi1-f175.google.com with SMTP id m137so14775404oig.6;
+        Mon, 14 Jun 2021 08:26:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=gbBfsd6QEJyPQsk1CFsyqjVRFq1U4IMEejVMTtFMNhw=;
-        b=Mr8g5S0U4PyApU8CUmzu9GiKe2D9uks/omGEQQvYc9pdGyDGFN6odg8ohEJQJNexXk
-         NFCVmr0E4tLfmqb0DhJN535AXcE2qgfpZQo/oJXuW6ndR6HSASZ3HWMgZVv0yQ/5gJHa
-         CJ7DJZGX5dPPLLjskwZEMd5bo4uEWwe9X0l0l3tfseNwwJu678gXFYFWBb7SuZNBf85i
-         bs48otkvrabsrPUnneStE+2D9R/zZUMmPOB0Um6yFkFi9rrd5gWklIz1dOMfBJidMyzb
-         zffwwF5SvZitTH2AU0UBsb4ep/aouNPzWYR0NscwkGpdjk9r+wj+cwqFugY2jcCwFrE2
-         TX6A==
-X-Gm-Message-State: AOAM531d4QMUOuIqulqPrka8hVRJ8xSONWiChlIglyGEJMw2yre1R0TQ
-        N2AM70vA6rBPkVqgz82WNX1Jy03MoDuoT2EPNMo=
-X-Google-Smtp-Source: ABdhPJxo1NPLcjNmblnmCOGnKctiYGjLLtuut1juPQ/9q+mVa97ENZvUcN6GtP/HnlSjlrGRK3NgsaPhFfIxPSBMDNA=
-X-Received: by 2002:aca:b406:: with SMTP id d6mr10830977oif.71.1623684039411;
- Mon, 14 Jun 2021 08:20:39 -0700 (PDT)
+        bh=0sSq9ybaXLzcEnLmrkiwounRgSaQeLjSaCKta1cywKc=;
+        b=nhkROyZKIv46j5Hb7csZUn3JjBRYap22btsUFkO50IFH8tOK4rUVHDroE6XY43Vr7a
+         pGQ+cPzItXDvw6COpxN1p0Lm7wRIWD9Dz/cLEyRsqhFGwj++YGsmFoPz1XMUmtPPIqN+
+         ubVqZ1T9AajIgrDequosKwh81TanPGrU7Nk2qptFwRGYE0Txn3/b3yXJB477AAGo9doU
+         tQyYtMAQqgOKDA0io+xhSADFLqw6IRcv+Y79Wgia6JhjnoJWdHE8Mt8j8ZW+QSC35lNJ
+         90ffyfgTHhTOm6sooNURVBi84rIiNNiqCoku/6VaEx4fRGN/lkyNFGgF7MQ4IoA8D+1a
+         JxOw==
+X-Gm-Message-State: AOAM531+gzeclfxwiwdVKdYaeOGvgie2a57dyKzLk7bRadJ/Y3CfaqqI
+        5VGyFksj/La0w7P7KnR2VnxJ3UJFQRjnSW7VZSo=
+X-Google-Smtp-Source: ABdhPJxCnoxVRhoWU2aoXrjzOpuc+fuJ3e8PcK/gmRG4OYJmM75ITjAeaW9XnEKD15icAM7zVqV8jSW+n/ipruphUV0=
+X-Received: by 2002:aca:49c7:: with SMTP id w190mr8999247oia.157.1623684404808;
+ Mon, 14 Jun 2021 08:26:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <1623318039-57133-1-git-send-email-yang.lee@linux.alibaba.com>
-In-Reply-To: <1623318039-57133-1-git-send-email-yang.lee@linux.alibaba.com>
+References: <20210610113501.3439670-1-libaokun1@huawei.com>
+In-Reply-To: <20210610113501.3439670-1-libaokun1@huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 14 Jun 2021 17:20:28 +0200
-Message-ID: <CAJZ5v0gjjS=f5jmA4+SL=K2D1073y3oa5J1yaeFqwkC9tUv2yQ@mail.gmail.com>
-Subject: Re: [PATCH -next 1/2] ACPI: processor_throttling: Remove redundant
- initialization of 'obj'
-To:     Yang Li <yang.lee@linux.alibaba.com>
+Date:   Mon, 14 Jun 2021 17:26:33 +0200
+Message-ID: <CAJZ5v0ivf6xN0pd4Ub6YuKCwDUpXLcEZywdT+JPKa=1qTOH-iA@mail.gmail.com>
+Subject: Re: [PATCH -next] ACPI: sysfs: fix doc warnings in device_sysfs.c
+To:     Baokun Li <libaokun1@huawei.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        clang-built-linux@googlegroups.com
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Yue Haibing <yuehaibing@huawei.com>, yangjihong1@huawei.com,
+        yu kuai <yukuai3@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jun 10, 2021 at 11:40 AM Yang Li <yang.lee@linux.alibaba.com> wrote:
+On Thu, Jun 10, 2021 at 1:25 PM Baokun Li <libaokun1@huawei.com> wrote:
 >
-> 'obj' is being initialized, however this value is never read as
-> 'obj' is assigned an updated value later. Remove the redundant
-> initialization.
+> Fixes the following W=1 kernel build warning(s):
 >
-> Clean up clang warning:
-> drivers/acpi/processor_throttling.c:409:20: warning: Value stored to
-> 'obj' during its initialization is never read
-> [clang-analyzer-deadcode.DeadStores]
+>  drivers/acpi/device_sysfs.c:278: warning: Function parameter or
+>   member 'dev' not described in 'acpi_device_uevent_modalias'
+>  drivers/acpi/device_sysfs.c:278: warning: Function parameter or
+>   member 'env' not described in 'acpi_device_uevent_modalias'
+>  drivers/acpi/device_sysfs.c:323: warning: Function parameter or
+>   member 'dev' not described in 'acpi_device_modalias'
+>  drivers/acpi/device_sysfs.c:323: warning: Function parameter or
+>   member 'buf' not described in 'acpi_device_modalias'
+>  drivers/acpi/device_sysfs.c:323: warning: Function parameter or
+>   member 'size' not described in 'acpi_device_modalias'
 >
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
 > ---
->  drivers/acpi/processor_throttling.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/device_sysfs.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/acpi/processor_throttling.c b/drivers/acpi/processor_throttling.c
-> index 0086afe..017fd02 100644
-> --- a/drivers/acpi/processor_throttling.c
-> +++ b/drivers/acpi/processor_throttling.c
-> @@ -406,7 +406,7 @@ static int acpi_processor_get_throttling_control(struct acpi_processor *pr)
->         acpi_status status = 0;
->         struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
->         union acpi_object *ptc = NULL;
-> -       union acpi_object obj = { 0 };
-> +       union acpi_object obj;
->         struct acpi_processor_throttling *throttling;
+> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+> index fa2c1c93072c..3b08efa88ba5 100644
+> --- a/drivers/acpi/device_sysfs.c
+> +++ b/drivers/acpi/device_sysfs.c
+> @@ -268,7 +268,8 @@ int __acpi_device_uevent_modalias(struct acpi_device *adev,
 >
->         status = acpi_evaluate_object(pr->handle, "_PTC", NULL, &buffer);
-> --
+>  /**
+>   * acpi_device_uevent_modalias - uevent modalias for ACPI-enumerated devices.
+> - *
+> + * @dev: Struct device.
+> + * @env: Uevent kobject.
 
-Applied as 5.14 material, thanks!
+This doesn't appear to be accurate.
+
+@env doesn't point to a kobject.
+
+>   * Create the uevent modalias field for ACPI-enumerated devices.
+>   *
+>   * Because other buses do not support ACPI HIDs & CIDs, e.g. for a device with
+> @@ -313,7 +314,9 @@ static int __acpi_device_modalias(struct acpi_device *adev, char *buf, int size)
+>
+>  /**
+>   * acpi_device_modalias - modalias sysfs attribute for ACPI-enumerated devices.
+> - *
+> + * @dev: Struct device.
+> + * @buf: The buffer.
+> + * @size: Size of the buffer.
+>   * Create the modalias sysfs attribute for ACPI-enumerated devices.
+>   *
+>   * Because other buses do not support ACPI HIDs & CIDs, e.g. for a device with
+> --
+> 2.31.1
+>
