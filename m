@@ -2,187 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53F403A64A2
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jun 2021 13:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB0FD3A66B8
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jun 2021 14:37:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234829AbhFNL1J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Jun 2021 07:27:09 -0400
-Received: from foss.arm.com ([217.140.110.172]:33488 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233249AbhFNLZN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 14 Jun 2021 07:25:13 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B0A0D6D;
-        Mon, 14 Jun 2021 04:23:10 -0700 (PDT)
-Received: from [10.57.9.136] (unknown [10.57.9.136])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B8DC3F694;
-        Mon, 14 Jun 2021 04:23:08 -0700 (PDT)
-Subject: Re: [PATCH v5 3/8] ACPI/IORT: Add a helper to retrieve RMR memory
- regions
-To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org
-Cc:     jon@solid-run.com, linuxarm@huawei.com, steven.price@arm.com,
-        guohanjun@huawei.com, yangyicong@huawei.com, Sami.Mujawar@arm.com,
-        wanghuiqiang@huawei.com
+        id S232791AbhFNMjm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Jun 2021 08:39:42 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187]:9114 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232775AbhFNMjm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Jun 2021 08:39:42 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4G3W9b42KPzZdp9;
+        Mon, 14 Jun 2021 20:34:43 +0800 (CST)
+Received: from dggema722-chm.china.huawei.com (10.3.20.86) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Mon, 14 Jun 2021 20:37:37 +0800
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ dggema722-chm.china.huawei.com (10.3.20.86) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2176.2; Mon, 14 Jun 2021 20:37:36 +0800
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2176.012; Mon, 14 Jun 2021 13:37:34 +0100
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Robin Murphy <robin.murphy@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
+CC:     Linuxarm <linuxarm@huawei.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "joro@8bytes.org" <joro@8bytes.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        "steven.price@arm.com" <steven.price@arm.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        "jon@solid-run.com" <jon@solid-run.com>,
+        "eric.auger@redhat.com" <eric.auger@redhat.com>,
+        yangyicong <yangyicong@huawei.com>
+Subject: RE: [PATCH v5 1/8] ACPI/IORT: Add support for RMR node parsing
+Thread-Topic: [PATCH v5 1/8] ACPI/IORT: Add support for RMR node parsing
+Thread-Index: AQHXUIxnG5hhFJByf0K0fNZqfWU2CasTaxEAgAAiFPA=
+Date:   Mon, 14 Jun 2021 12:37:34 +0000
+Message-ID: <5634877440314121a8b0ed7cc238fb63@huawei.com>
 References: <20210524110222.2212-1-shameerali.kolothum.thodi@huawei.com>
- <20210524110222.2212-4-shameerali.kolothum.thodi@huawei.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <9e788789-c1c2-10f1-d99c-93cfa6ea3348@arm.com>
-Date:   Mon, 14 Jun 2021 12:23:04 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ <20210524110222.2212-2-shameerali.kolothum.thodi@huawei.com>
+ <15c7fac0-11a8-0cdb-aac3-b5d8feb8f066@arm.com>
+In-Reply-To: <15c7fac0-11a8-0cdb-aac3-b5d8feb8f066@arm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.26.251]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <20210524110222.2212-4-shameerali.kolothum.thodi@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021-05-24 12:02, Shameer Kolothum wrote:
-> Add a helper function that retrieves RMR memory descriptors
-> associated with a given IOMMU. This will be used by IOMMU
-> drivers to setup necessary mappings.
-> 
-> Now that we have this, invoke it from the generic helper
-> interface.
-> 
-> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> ---
->   drivers/acpi/arm64/iort.c | 50 +++++++++++++++++++++++++++++++++++++++
->   drivers/iommu/dma-iommu.c |  4 ++++
->   include/linux/acpi_iort.h |  7 ++++++
->   3 files changed, 61 insertions(+)
-> 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index fea1ffaedf3b..01917caf58de 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -12,6 +12,7 @@
->   
->   #include <linux/acpi_iort.h>
->   #include <linux/bitfield.h>
-> +#include <linux/dma-iommu.h>
->   #include <linux/iommu.h>
->   #include <linux/kernel.h>
->   #include <linux/list.h>
-> @@ -837,6 +838,53 @@ static inline int iort_add_device_replay(struct device *dev)
->   	return err;
->   }
->   
-> +/**
-> + * iort_iommu_get_rmrs - Helper to retrieve RMR info associated with IOMMU
-> + * @iommu: fwnode for the IOMMU
-> + * @head: RMR list head to be populated
-> + *
-> + * Returns: 0 on success, <0 failure
-> + */
-> +int iort_iommu_get_rmrs(struct fwnode_handle *iommu_fwnode,
-> +			struct list_head *head)
-> +{
-> +	struct iort_rmr_entry *e;
-> +	struct acpi_iort_node *iommu;
-> +	int rmrs = 0;
-> +
-> +	iommu = iort_get_iort_node(iommu_fwnode);
-> +	if (!iommu || list_empty(&iort_rmr_list))
-> +		return -ENODEV;
-> +
-> +	list_for_each_entry(e, &iort_rmr_list, list) {
-> +		int prot = IOMMU_READ | IOMMU_WRITE | IOMMU_NOEXEC | IOMMU_MMIO;
-> +		struct iommu_resv_region *region;
-> +		enum iommu_resv_type type;
-> +		struct acpi_iort_rmr_desc *rmr_desc;
-> +
-> +		if (e->smmu != iommu)
-> +			continue;
-> +
-> +		rmr_desc = e->rmr_desc;
-> +		if (e->flags & IOMMU_RMR_REMAP_PERMITTED)
-> +			type = IOMMU_RESV_DIRECT_RELAXABLE;
-> +		else
-> +			type = IOMMU_RESV_DIRECT;
-
-Wasn't the idea that we can do all this during the initial parsing, i.e. 
-we don't even have iort_rmr_entry, we store them as iommu_resv_regions 
-and simply kmemdup() or whatever at this point?
-
-Robin.
-
-> +
-> +		region = iommu_alloc_resv_region(rmr_desc->base_address,
-> +						 rmr_desc->length,
-> +						 prot, type);
-> +		if (region) {
-> +			region->fw_data.rmr.flags = e->flags;
-> +			region->fw_data.rmr.sid = e->sid;
-> +			list_add_tail(&region->list, head);
-> +			rmrs++;
-> +		}
-> +	}
-> +
-> +	return (rmrs == 0) ? -ENODEV : 0;
-> +}
-> +
->   /**
->    * iort_iommu_msi_get_resv_regions - Reserved region driver helper
->    * @dev: Device from iommu_get_resv_regions()
-> @@ -1108,6 +1156,8 @@ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
->   const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
->   						const u32 *input_id)
->   { return NULL; }
-> +int iort_iommu_get_rmrs(struct fwnode_handle *fwnode, struct list_head *head)
-> +{ return -ENODEV; }
->   #endif
->   
->   static int nc_dma_get_range(struct device *dev, u64 *size)
-> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-> index 229ec65d98be..f893d460cfa4 100644
-> --- a/drivers/iommu/dma-iommu.c
-> +++ b/drivers/iommu/dma-iommu.c
-> @@ -185,6 +185,9 @@ EXPORT_SYMBOL(iommu_put_dma_cookie);
->   int iommu_dma_get_rmrs(struct fwnode_handle *iommu_fwnode,
->   		       struct list_head *list)
->   {
-> +	if (!is_of_node(iommu_fwnode))
-> +		return iort_iommu_get_rmrs(iommu_fwnode, list);
-> +
->   	return -EINVAL;
->   }
->   EXPORT_SYMBOL(iommu_dma_get_rmrs);
-> @@ -200,6 +203,7 @@ EXPORT_SYMBOL(iommu_dma_get_rmrs);
->   void iommu_dma_put_rmrs(struct fwnode_handle *iommu_fwnode,
->   			struct list_head *list)
->   {
-> +	generic_iommu_put_resv_regions(iommu_fwnode->dev, list);
->   }
->   EXPORT_SYMBOL(iommu_dma_put_rmrs);
->   
-> diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-> index 1a12baa58e40..e8c45fa59531 100644
-> --- a/include/linux/acpi_iort.h
-> +++ b/include/linux/acpi_iort.h
-> @@ -39,6 +39,8 @@ const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
->   						const u32 *id_in);
->   int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
->   phys_addr_t acpi_iort_dma_get_max_cpu_address(void);
-> +int iort_iommu_get_rmrs(struct fwnode_handle *iommu_fwnode,
-> +			struct list_head *list);
->   #else
->   static inline void acpi_iort_init(void) { }
->   static inline u32 iort_msi_map_id(struct device *dev, u32 id)
-> @@ -59,6 +61,11 @@ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
->   
->   static inline phys_addr_t acpi_iort_dma_get_max_cpu_address(void)
->   { return PHYS_ADDR_MAX; }
-> +
-> +static inline
-> +int iort_iommu_get_rmrs(struct fwnode_handle *iommu_fwnode,
-> +			struct list_head *list)
-> +{ return -ENODEV; }
->   #endif
->   
->   #endif /* __ACPI_IORT_H__ */
-> 
+SGkgUm9iaW4sDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUm9iaW4g
+TXVycGh5IFttYWlsdG86cm9iaW4ubXVycGh5QGFybS5jb21dDQo+IFNlbnQ6IDE0IEp1bmUgMjAy
+MSAxMjoxNQ0KPiBUbzogU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaSA8c2hhbWVlcmFsaS5rb2xv
+dGh1bS50aG9kaUBodWF3ZWkuY29tPjsNCj4gbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRl
+YWQub3JnOyBsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZzsNCj4gaW9tbXVAbGlzdHMubGludXgt
+Zm91bmRhdGlvbi5vcmcNCj4gQ2M6IExpbnV4YXJtIDxsaW51eGFybUBodWF3ZWkuY29tPjsgbG9y
+ZW56by5waWVyYWxpc2lAYXJtLmNvbTsNCj4gam9yb0A4Ynl0ZXMub3JnOyB3YW5naHVpcWlhbmcg
+PHdhbmdodWlxaWFuZ0BodWF3ZWkuY29tPjsgR3VvaGFuanVuDQo+IChIYW5qdW4gR3VvKSA8Z3Vv
+aGFuanVuQGh1YXdlaS5jb20+OyBzdGV2ZW4ucHJpY2VAYXJtLmNvbTsNCj4gU2FtaS5NdWphd2Fy
+QGFybS5jb207IGpvbkBzb2xpZC1ydW4uY29tOyBlcmljLmF1Z2VyQHJlZGhhdC5jb207DQo+IHlh
+bmd5aWNvbmcgPHlhbmd5aWNvbmdAaHVhd2VpLmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2
+NSAxLzhdIEFDUEkvSU9SVDogQWRkIHN1cHBvcnQgZm9yIFJNUiBub2RlIHBhcnNpbmcNCj4gDQo+
+IE9uIDIwMjEtMDUtMjQgMTI6MDIsIFNoYW1lZXIgS29sb3RodW0gd3JvdGU6DQo+ID4gQWRkIHN1
+cHBvcnQgZm9yIHBhcnNpbmcgUk1SIG5vZGUgaW5mb3JtYXRpb24gZnJvbSBBQ1BJLg0KPiA+IEZp
+bmQgYXNzb2NpYXRlZCBzdHJlYW0gaWQgYW5kIHNtbXUgbm9kZSBpbmZvIGZyb20gdGhlDQo+ID4g
+Uk1SIG5vZGUgYW5kIHBvcHVsYXRlIGEgbGlua2VkIGxpc3Qgd2l0aCBSTVIgbWVtb3J5DQo+ID4g
+ZGVzY3JpcHRvcnMuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTaGFtZWVyIEtvbG90aHVtDQo+
+IDxzaGFtZWVyYWxpLmtvbG90aHVtLnRob2RpQGh1YXdlaS5jb20+DQo+ID4gLS0tDQo+ID4gICBk
+cml2ZXJzL2FjcGkvYXJtNjQvaW9ydC5jIHwgMTA0DQo+ICsrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKystDQo+ID4gICAxIGZpbGUgY2hhbmdlZCwgMTAzIGluc2VydGlvbnMoKyks
+IDEgZGVsZXRpb24oLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkvYXJtNjQv
+aW9ydC5jIGIvZHJpdmVycy9hY3BpL2FybTY0L2lvcnQuYw0KPiA+IGluZGV4IDM5MTJhMWY2MDU4
+ZS4uZmVhMWZmYWVkZjNiIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvYWNwaS9hcm02NC9pb3J0
+LmMNCj4gPiArKysgYi9kcml2ZXJzL2FjcGkvYXJtNjQvaW9ydC5jDQo+ID4gQEAgLTQwLDYgKzQw
+LDE5IEBAIHN0cnVjdCBpb3J0X2Z3bm9kZSB7DQo+ID4gICBzdGF0aWMgTElTVF9IRUFEKGlvcnRf
+Zndub2RlX2xpc3QpOw0KPiA+ICAgc3RhdGljIERFRklORV9TUElOTE9DSyhpb3J0X2Z3bm9kZV9s
+b2NrKTsNCj4gPg0KPiA+ICsvKg0KPiA+ICsgKiBPbmUgZW50cnkgZm9yIElPUlQgUk1SLg0KPiA+
+ICsgKi8NCj4gPiArc3RydWN0IGlvcnRfcm1yX2VudHJ5IHsNCj4gPiArCXN0cnVjdCBsaXN0X2hl
+YWQgbGlzdDsNCj4gPiArCXUzMiBzaWQ7DQo+ID4gKwlzdHJ1Y3QgYWNwaV9pb3J0X25vZGUgKnNt
+bXU7DQo+ID4gKwlzdHJ1Y3QgYWNwaV9pb3J0X3Jtcl9kZXNjICpybXJfZGVzYzsNCj4gPiArCXUz
+MiBmbGFnczsNCj4gPiArfTsNCj4gPiArDQo+ID4gK3N0YXRpYyBMSVNUX0hFQUQoaW9ydF9ybXJf
+bGlzdCk7ICAgICAgICAgLyogbGlzdCBvZiBSTVIgcmVnaW9ucyBmcm9tIEFDUEkNCj4gKi8NCj4g
+PiArDQo+ID4gICAvKioNCj4gPiAgICAqIGlvcnRfc2V0X2Z3bm9kZSgpIC0gQ3JlYXRlIGlvcnRf
+Zndub2RlIGFuZCB1c2UgaXQgdG8gcmVnaXN0ZXINCj4gPiAgICAqCQkgICAgICAgaW9tbXUgZGF0
+YSBpbiB0aGUgaW9ydF9md25vZGVfbGlzdA0KPiA+IEBAIC0zOTMsNyArNDA2LDggQEAgc3RhdGlj
+IHN0cnVjdCBhY3BpX2lvcnRfbm9kZQ0KPiAqaW9ydF9ub2RlX2dldF9pZChzdHJ1Y3QgYWNwaV9p
+b3J0X25vZGUgKm5vZGUsDQo+ID4gICAJCWlmIChub2RlLT50eXBlID09IEFDUElfSU9SVF9OT0RF
+X05BTUVEX0NPTVBPTkVOVCB8fA0KPiA+ICAgCQkgICAgbm9kZS0+dHlwZSA9PSBBQ1BJX0lPUlRf
+Tk9ERV9QQ0lfUk9PVF9DT01QTEVYIHx8DQo+ID4gICAJCSAgICBub2RlLT50eXBlID09IEFDUElf
+SU9SVF9OT0RFX1NNTVVfVjMgfHwNCj4gPiAtCQkgICAgbm9kZS0+dHlwZSA9PSBBQ1BJX0lPUlRf
+Tk9ERV9QTUNHKSB7DQo+ID4gKwkJICAgIG5vZGUtPnR5cGUgPT0gQUNQSV9JT1JUX05PREVfUE1D
+RyB8fA0KPiA+ICsJCSAgICBub2RlLT50eXBlID09IEFDUElfSU9SVF9OT0RFX1JNUikgew0KPiA+
+ICAgCQkJKmlkX291dCA9IG1hcC0+b3V0cHV0X2Jhc2U7DQo+ID4gICAJCQlyZXR1cm4gcGFyZW50
+Ow0KPiA+ICAgCQl9DQo+ID4gQEAgLTE2NjAsNiArMTY3NCw5MSBAQCBzdGF0aWMgdm9pZCBfX2lu
+aXQgaW9ydF9lbmFibGVfYWNzKHN0cnVjdA0KPiBhY3BpX2lvcnRfbm9kZSAqaW9ydF9ub2RlKQ0K
+PiA+ICAgI2Vsc2UNCj4gPiAgIHN0YXRpYyBpbmxpbmUgdm9pZCBpb3J0X2VuYWJsZV9hY3Moc3Ry
+dWN0IGFjcGlfaW9ydF9ub2RlICppb3J0X25vZGUpIHsgfQ0KPiA+ICAgI2VuZGlmDQo+ID4gK3N0
+YXRpYyBpbnQgaW9ydF9ybXJfZGVzY192YWxpZChzdHJ1Y3QgYWNwaV9pb3J0X3Jtcl9kZXNjICpk
+ZXNjLCB1MzIgY291bnQpDQo+ID4gK3sNCj4gPiArCWludCBpLCBqOw0KPiA+ICsNCj4gPiArCWZv
+ciAoaSA9IDA7IGkgPCBjb3VudDsgaSsrKSB7DQo+ID4gKwkJdTY0IGVuZCwgc3RhcnQgPSBkZXNj
+W2ldLmJhc2VfYWRkcmVzcywgbGVuZ3RoID0gZGVzY1tpXS5sZW5ndGg7DQo+ID4gKw0KPiA+ICsJ
+CWlmICghSVNfQUxJR05FRChzdGFydCwgU1pfNjRLKSB8fCAhSVNfQUxJR05FRChsZW5ndGgsIFNa
+XzY0SykpDQo+ID4gKwkJCXJldHVybiAtRUlOVkFMOw0KPiANCj4gV2Ugc2hvdWxkIGNlcnRhaW5s
+eSBGV19CVUcgZm9yIHRoaXMsIGJ1dCBtYXliZSBpdCdzIE9LIHRvIGNvbnRpbnVlLA0KPiBzaW5j
+ZSBhbGwgd2Ugc2hvdWxkIG5lZWQgdG8gZG8gaXMgcm91bmQgb3VyIGlvbW11X3Jlc3ZfcmVnaW9u
+cyB0byBhdA0KPiBsZWFzdCBQQUdFX1NJWkUuIFRoYXQgc2VlbXMgcG9zc2libHkgYmV0dGVyIHRo
+YW4gaWdub3JpbmcgdGhlbSBhbmQNCj4gaGF2aW5nIHRoaW5ncyBwb3RlbnRpYWxseSBibG93IHVw
+IGxhdGVyIChlc3BlY2lhbGx5IGlmIGFuIGVuZCB1c2VyDQo+IGV4ZXJjaXNlcyB0aGUgc3lzdGVt
+IG1vcmUgdGhvcm91Z2hseSB0aGFuIHRoZSBmaXJtd2FyZSBkZXZlbG9wZXIgdGVzdGVkDQo+IGl0
+LCB3aGljaCBpbiBhdCBsZWFzdCBvbmUgY2FzZSBJJ3ZlIHNlZW4gbWF5IGJlICJhdCBhbGwiLi4u
+KQ0KDQpPay4gV2lsbCByZXBvcnQgRldfQlVHIGJ1dCBjb250aW51ZSB3aXRoIGEgcm91bmRlZCBh
+ZGRyL3NpemUuDQoNCj4gDQo+ID4gKwkJZW5kID0gc3RhcnQgKyBsZW5ndGggLSAxOw0KPiA+ICsN
+Cj4gPiArCQkvKiBDaGVjayBmb3IgYWRkcmVzcyBvdmVybGFwICovDQo+ID4gKwkJZm9yIChqID0g
+aSArIDE7IGogPCBjb3VudDsgaisrKSB7DQo+ID4gKwkJCXU2NCBlX3N0YXJ0ID0gZGVzY1tqXS5i
+YXNlX2FkZHJlc3M7DQo+ID4gKwkJCXU2NCBlX2VuZCA9IGVfc3RhcnQgKyBkZXNjW2pdLmxlbmd0
+aCAtIDE7DQo+ID4gKw0KPiA+ICsJCQlpZiAoc3RhcnQgPD0gZV9lbmQgJiYgZW5kID49IGVfc3Rh
+cnQpDQo+ID4gKwkJCQlyZXR1cm4gLUVJTlZBTDsNCj4gDQo+IFNpbWlsYXJseSBpdCdzIG5vdCAq
+dG9vKiBoYXJkIHRvIHRyaW0gb3ZlcmxhcHM7IEkgZ3Vlc3MgaXQncyByZWFsbHkgYQ0KPiBxdWVz
+dGlvbiBvZiB3aGV0aGVyIHdlIHdhbnQgdG8gYm90aGVyIDovDQoNCkkgZ3Vlc3MgdGhlbiwgd2Ug
+Y2FuIGp1c3QgcmVwb3J0IGl0IGFuZCBpZ25vcmUsDQogICBwcl93YXJuKEZXX0JVRywgIkZvdW5k
+IG92ZXJsYXBwaW5nIHJtciBkZXNjIEAuLi4uLCBidXQgaWdub3JpbmcuLi5cbiINCg0KVGhhbmtz
+DQpTaGFtZWVyDQoNCj4gPiArCQl9DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJcmV0dXJuIDA7DQo+
+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyBpbnQgX19pbml0IGlvcnRfcGFyc2Vfcm1yKHN0cnVj
+dCBhY3BpX2lvcnRfbm9kZSAqaW9ydF9ub2RlKQ0KPiA+ICt7DQo+ID4gKwlzdHJ1Y3QgYWNwaV9p
+b3J0X25vZGUgKnNtbXU7DQo+ID4gKwlzdHJ1Y3QgaW9ydF9ybXJfZW50cnkgKmU7DQo+ID4gKwlz
+dHJ1Y3QgYWNwaV9pb3J0X3JtciAqcm1yOw0KPiA+ICsJc3RydWN0IGFjcGlfaW9ydF9ybXJfZGVz
+YyAqcm1yX2Rlc2M7DQo+ID4gKwl1MzIgbWFwX2NvdW50ID0gaW9ydF9ub2RlLT5tYXBwaW5nX2Nv
+dW50Ow0KPiA+ICsJdTMyICBzaWQ7DQo+IA0KPiBOaXQ6IGV4dHJhIHNwYWNlLg0KPiANCj4gPiAr
+CWludCBpLCByZXQgPSAwOw0KPiA+ICsNCj4gPiArCWlmIChpb3J0X25vZGUtPnR5cGUgIT0gQUNQ
+SV9JT1JUX05PREVfUk1SKQ0KPiA+ICsJCXJldHVybiAwOw0KPiA+ICsNCj4gPiArCWlmICghaW9y
+dF9ub2RlLT5tYXBwaW5nX29mZnNldCB8fCBtYXBfY291bnQgIT0gMSkgew0KPiANCj4gQmV3YXJl
+IHRoYXQgdGhlcmUgd2FzIHNvbWUgZGlzY3Vzc2lvbiBhYm91dCBhbGxvd2luZyBtdWx0aXBsZSBT
+SURzIHRvDQo+IHNoYXJlIGFuIFJNUiBkZXNjcmlwdG9yLCBzaW5jZSB0aGVyZSBhcmUgcG90ZW50
+aWFsIHVzZS1jYXNlcyB3aGljaCB3b3VsZA0KPiBvdGhlcndpc2UgbGVhZCB0byBleGNlc3NpdmUg
+ZHVwbGljYXRpb24gKGUuZy4gYW4gTVNJIGRvb3JiZWxsIGNhcnZlb3V0DQo+IGluIGEgVk0gd2hp
+Y2ggd291bGQgZWZmZWN0aXZlbHkgYXBwbHkgdG8gYWxsIHBvc3NpYmxlIFBDSSBSSURzKS4gSSB0
+aGluaw0KPiB0aGUgY29uY2x1c2lvbiB3ZSByZWFjaGVkIHdhcyB0aGF0IGRpc2FsbG93aW5nIHRo
+YXQgd2FzIGZhaXJseQ0KPiBhcmJpdHJhcnksIGFuZCBjb3VsZCBwb3NzaWJseSBiZSByZWxheGVk
+IGluIGZ1dHVyZS4gSXQgbG9va3MgbGlrZSB0aGUNCj4gZGVzaWduIG9mIHRoaW5ncyBoZXJlIGNv
+dWxkIGdyb3cgdG8gZml0IHRoYXQgZmFpcmx5IGVhc2lseSB0aG91Z2gsIHNvIEkNCj4gZG9uJ3Qg
+dGhpbmsgaXQncyBhIG1ham9yIGNvbmNlcm4uDQo+IA0KPiBSb2Jpbi4NCj4gDQo+ID4gKwkJcHJf
+ZXJyKEZXX0JVRyAiSW52YWxpZCBJRCBtYXBwaW5nLCBza2lwcGluZyBSTVIgbm9kZSAlcFxuIiwN
+Cj4gPiArCQkgICAgICAgaW9ydF9ub2RlKTsNCj4gPiArCQlyZXR1cm4gLUVJTlZBTDsNCj4gPiAr
+CX0NCj4gPiArDQo+ID4gKwkvKiBSZXRyaWV2ZSBhc3NvY2lhdGVkIHNtbXUgYW5kIHN0cmVhbSBp
+ZCAqLw0KPiA+ICsJc21tdSA9IGlvcnRfbm9kZV9nZXRfaWQoaW9ydF9ub2RlLCAmc2lkLCAwKTsN
+Cj4gPiArCWlmICghc21tdSkgew0KPiA+ICsJCXByX2VycihGV19CVUcgIkludmFsaWQgU01NVSBy
+ZWZlcmVuY2UsIHNraXBwaW5nIFJNUg0KPiBub2RlICVwXG4iLA0KPiA+ICsJCSAgICAgICBpb3J0
+X25vZGUpOw0KPiA+ICsJCXJldHVybiAtRUlOVkFMOw0KPiA+ICsJfQ0KPiA+ICsNCj4gPiArCS8q
+IFJldHJpZXZlIFJNUiBkYXRhICovDQo+ID4gKwlybXIgPSAoc3RydWN0IGFjcGlfaW9ydF9ybXIg
+Kilpb3J0X25vZGUtPm5vZGVfZGF0YTsNCj4gPiArCWlmICghcm1yLT5ybXJfb2Zmc2V0IHx8ICFy
+bXItPnJtcl9jb3VudCkgew0KPiA+ICsJCXByX2VycihGV19CVUcgIkludmFsaWQgUk1SIGRlc2Ny
+aXB0b3IgYXJyYXksIHNraXBwaW5nIFJNUg0KPiBub2RlICVwXG4iLA0KPiA+ICsJCSAgICAgICBp
+b3J0X25vZGUpOw0KPiA+ICsJCXJldHVybiAtRUlOVkFMOw0KPiA+ICsJfQ0KPiA+ICsNCj4gPiAr
+CXJtcl9kZXNjID0gQUNQSV9BRERfUFRSKHN0cnVjdCBhY3BpX2lvcnRfcm1yX2Rlc2MsIGlvcnRf
+bm9kZSwNCj4gPiArCQkJCXJtci0+cm1yX29mZnNldCk7DQo+ID4gKw0KPiA+ICsJcmV0ID0gaW9y
+dF9ybXJfZGVzY192YWxpZChybXJfZGVzYywgcm1yLT5ybXJfY291bnQpOw0KPiA+ICsJaWYgKHJl
+dCkgew0KPiA+ICsJCXByX2VycihGV19CVUcgIkludmFsaWQgUk1SIGRlc2NyaXB0b3JbJWRdIGZv
+ciBub2RlICVwLA0KPiBza2lwcGluZy4uLlxuIiwNCj4gPiArCQkgICAgICAgaSwgaW9ydF9ub2Rl
+KTsNCj4gPiArCQlyZXR1cm4gcmV0Ow0KPiA+ICsJfQ0KPiA+ICsNCj4gPiArCWZvciAoaSA9IDA7
+IGkgPCBybXItPnJtcl9jb3VudDsgaSsrLCBybXJfZGVzYysrKSB7DQo+ID4gKwkJZSA9IGttYWxs
+b2Moc2l6ZW9mKCplKSwgR0ZQX0tFUk5FTCk7DQo+ID4gKwkJaWYgKCFlKQ0KPiA+ICsJCQlyZXR1
+cm4gLUVOT01FTTsNCj4gPiArDQo+ID4gKwkJZS0+c2lkID0gc2lkOw0KPiA+ICsJCWUtPnNtbXUg
+PSBzbW11Ow0KPiA+ICsJCWUtPnJtcl9kZXNjID0gcm1yX2Rlc2M7DQo+ID4gKwkJZS0+ZmxhZ3Mg
+PSBybXItPmZsYWdzOw0KPiA+ICsNCj4gPiArCQlsaXN0X2FkZF90YWlsKCZlLT5saXN0LCAmaW9y
+dF9ybXJfbGlzdCk7DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJcmV0dXJuIDA7DQo+ID4gK30NCj4g
+Pg0KPiA+ICAgc3RhdGljIHZvaWQgX19pbml0IGlvcnRfaW5pdF9wbGF0Zm9ybV9kZXZpY2VzKHZv
+aWQpDQo+ID4gICB7DQo+ID4gQEAgLTE2ODksNiArMTc4OCw5IEBAIHN0YXRpYyB2b2lkIF9faW5p
+dCBpb3J0X2luaXRfcGxhdGZvcm1fZGV2aWNlcyh2b2lkKQ0KPiA+DQo+ID4gICAJCWlvcnRfZW5h
+YmxlX2Fjcyhpb3J0X25vZGUpOw0KPiA+DQo+ID4gKwkJaWYgKGlvcnRfdGFibGUtPnJldmlzaW9u
+ID09IDMpDQo+ID4gKwkJCWlvcnRfcGFyc2Vfcm1yKGlvcnRfbm9kZSk7DQo+ID4gKw0KPiA+ICAg
+CQlvcHMgPSBpb3J0X2dldF9kZXZfY2ZnKGlvcnRfbm9kZSk7DQo+ID4gICAJCWlmIChvcHMpIHsN
+Cj4gPiAgIAkJCWZ3bm9kZSA9IGFjcGlfYWxsb2NfZndub2RlX3N0YXRpYygpOw0KPiA+DQo=
