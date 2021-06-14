@@ -2,62 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C9033A69A1
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jun 2021 17:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8814B3A69F3
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jun 2021 17:20:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233080AbhFNPKi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Jun 2021 11:10:38 -0400
-Received: from mga04.intel.com ([192.55.52.120]:44388 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233171AbhFNPKh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 14 Jun 2021 11:10:37 -0400
-IronPort-SDR: 4vC0FRzoENk7tcGWuHzbjaWjZV/kQu5xqcdIf2sLs3lc+ZX6m0Zb1rTBDGbz19jeWQDhLwTXA0
- fQ+AN1vONSMg==
-X-IronPort-AV: E=McAfee;i="6200,9189,10015"; a="203994839"
-X-IronPort-AV: E=Sophos;i="5.83,273,1616482800"; 
-   d="scan'208";a="203994839"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2021 08:08:33 -0700
-IronPort-SDR: 6GB43enzBJUiLPUEDuF9iAWxKMmGqREy2uUktLwtgqLshifAMqYLLavj9TpY557CYXpiuPEDxn
- 33bTtLCIVfig==
-X-IronPort-AV: E=Sophos;i="5.83,273,1616482800"; 
-   d="scan'208";a="553392379"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2021 08:08:31 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lsoCP-002GHP-EU; Mon, 14 Jun 2021 18:08:25 +0300
-Date:   Mon, 14 Jun 2021 18:08:25 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Linux GPIO <linux-gpio@vger.kernel.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: Re: [GIT PULL] intel-gpio for 5.14-1
-Message-ID: <YMdw6WdEQdGATBNJ@smile.fi.intel.com>
-References: <YL43SrZ8N8H+ZHE9@black.fi.intel.com>
+        id S232869AbhFNPWn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Jun 2021 11:22:43 -0400
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:39450 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233352AbhFNPWm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Jun 2021 11:22:42 -0400
+Received: by mail-oi1-f178.google.com with SMTP id m137so14755205oig.6;
+        Mon, 14 Jun 2021 08:20:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gbBfsd6QEJyPQsk1CFsyqjVRFq1U4IMEejVMTtFMNhw=;
+        b=Mr8g5S0U4PyApU8CUmzu9GiKe2D9uks/omGEQQvYc9pdGyDGFN6odg8ohEJQJNexXk
+         NFCVmr0E4tLfmqb0DhJN535AXcE2qgfpZQo/oJXuW6ndR6HSASZ3HWMgZVv0yQ/5gJHa
+         CJ7DJZGX5dPPLLjskwZEMd5bo4uEWwe9X0l0l3tfseNwwJu678gXFYFWBb7SuZNBf85i
+         bs48otkvrabsrPUnneStE+2D9R/zZUMmPOB0Um6yFkFi9rrd5gWklIz1dOMfBJidMyzb
+         zffwwF5SvZitTH2AU0UBsb4ep/aouNPzWYR0NscwkGpdjk9r+wj+cwqFugY2jcCwFrE2
+         TX6A==
+X-Gm-Message-State: AOAM531d4QMUOuIqulqPrka8hVRJ8xSONWiChlIglyGEJMw2yre1R0TQ
+        N2AM70vA6rBPkVqgz82WNX1Jy03MoDuoT2EPNMo=
+X-Google-Smtp-Source: ABdhPJxo1NPLcjNmblnmCOGnKctiYGjLLtuut1juPQ/9q+mVa97ENZvUcN6GtP/HnlSjlrGRK3NgsaPhFfIxPSBMDNA=
+X-Received: by 2002:aca:b406:: with SMTP id d6mr10830977oif.71.1623684039411;
+ Mon, 14 Jun 2021 08:20:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YL43SrZ8N8H+ZHE9@black.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <1623318039-57133-1-git-send-email-yang.lee@linux.alibaba.com>
+In-Reply-To: <1623318039-57133-1-git-send-email-yang.lee@linux.alibaba.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 14 Jun 2021 17:20:28 +0200
+Message-ID: <CAJZ5v0gjjS=f5jmA4+SL=K2D1073y3oa5J1yaeFqwkC9tUv2yQ@mail.gmail.com>
+Subject: Re: [PATCH -next 1/2] ACPI: processor_throttling: Remove redundant
+ initialization of 'obj'
+To:     Yang Li <yang.lee@linux.alibaba.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        clang-built-linux@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 07, 2021 at 06:12:10PM +0300, Andy Shevchenko wrote:
-> Hi Linux GPIO and TWIMC maintainers,
-> 
-> This is GPIO material for v5.14 cycle. It contains some stuff that other
-> subsystems may take due to dependencies. Consider this tag immutable.
+On Thu, Jun 10, 2021 at 11:40 AM Yang Li <yang.lee@linux.alibaba.com> wrote:
+>
+> 'obj' is being initialized, however this value is never read as
+> 'obj' is assigned an updated value later. Remove the redundant
+> initialization.
+>
+> Clean up clang warning:
+> drivers/acpi/processor_throttling.c:409:20: warning: Value stored to
+> 'obj' during its initialization is never read
+> [clang-analyzer-deadcode.DeadStores]
+>
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+> ---
+>  drivers/acpi/processor_throttling.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/processor_throttling.c b/drivers/acpi/processor_throttling.c
+> index 0086afe..017fd02 100644
+> --- a/drivers/acpi/processor_throttling.c
+> +++ b/drivers/acpi/processor_throttling.c
+> @@ -406,7 +406,7 @@ static int acpi_processor_get_throttling_control(struct acpi_processor *pr)
+>         acpi_status status = 0;
+>         struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+>         union acpi_object *ptc = NULL;
+> -       union acpi_object obj = { 0 };
+> +       union acpi_object obj;
+>         struct acpi_processor_throttling *throttling;
+>
+>         status = acpi_evaluate_object(pr->handle, "_PTC", NULL, &buffer);
+> --
 
-Bart, any comments on this? Can you, please, pull?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Applied as 5.14 material, thanks!
