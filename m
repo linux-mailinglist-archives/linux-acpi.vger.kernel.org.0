@@ -2,232 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3660E3A88D1
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jun 2021 20:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6002C3A8A1F
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jun 2021 22:23:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231284AbhFOSvA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Jun 2021 14:51:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42688 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230494AbhFOSu7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Jun 2021 14:50:59 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2271C061767
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Jun 2021 11:48:54 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id n12so12189727pgs.13
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Jun 2021 11:48:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0JM4+VLgeYRBpYPu+DbbsTsMP4gd2M6j0wYVzMmmmqc=;
-        b=CSPS9dQljg7NwD37B6BvNQO/fek6+ZCZqpqvB/2NgoHreGc9IxF807VzPPjNsTTMZ1
-         MkcCeOQCkoZpZAEW4Kt2CyXmURSyk7htgofRr/2TMGzCxO2Z5x4qevLGIoLsKA4eXGWM
-         jyC5Vx7fOAMRhxYTlRySNa4VVkktWQZteqN6YzO1cn83NMDPWGLvND92FWPvLk8W7dz2
-         7YDHQPch9tLmUjyeLxEDs6blnVi7WlDqH0ryS6XVdi/+MGdFfNOa6N+xD0xSOllPtzeM
-         D7N+lUOwTUNhcq6CPMD52wILETPrB/h15+ULmur/W5UYROHJtvBz/qoU7kkuzTb9xIYN
-         9ODg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0JM4+VLgeYRBpYPu+DbbsTsMP4gd2M6j0wYVzMmmmqc=;
-        b=K7jo91zfdOGC0pdXge8aqpRh36sSkWlvs+X2TFhuFCilKamQA9cVtDzPRi5Zln6nsf
-         Tuja13eXwgPXBOMXcr+m/EFBypPo560zL/NXjV3Zj55OyeqicllyItSUelFom2fqc7ka
-         e/8bRj7GPRkMOk+bN8xbOE/iZFgOoU+NOG+aeyyJUk/mDys750FINZeFeKfMkkK3d3zO
-         rxtyEpRVQT8HNlNk9r7wjhdFsTvOZxKQMMsmqOMWthsWmkk+N3OxCPGlElox+bQhS3Zo
-         40mlQEyfRvsCorkZgDZk5ONS8WH7EfAjJ6bXdRFbfX1qLqYVyriwHt7+jBME4Xrr++Hb
-         mCaw==
-X-Gm-Message-State: AOAM531JTuZV8CSD1xcDL7PTvPSNPjLLvBCpBARHpDJkTdbAQqDU75bm
-        w9mEj79NisqLWppF0c7yRaM3UoPPOd0tWZ2pHrGvgAzfYMFS0w==
-X-Google-Smtp-Source: ABdhPJycwq+B9IxmHnICIpoOUfF1orYvkEQ0wRNmtPF5XtdiP82GcZBxac+AuSAuanQSbs1E+zB/vxPPtLvBfkDCzqQ=
-X-Received: by 2002:a62:8647:0:b029:2c4:b8d6:843 with SMTP id
- x68-20020a6286470000b02902c4b8d60843mr5627105pfd.71.1623782934196; Tue, 15
- Jun 2021 11:48:54 -0700 (PDT)
+        id S229951AbhFOUZa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Jun 2021 16:25:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40562 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229931AbhFOUZ3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 15 Jun 2021 16:25:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 149D7613B1;
+        Tue, 15 Jun 2021 20:23:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623788604;
+        bh=HnJHZDcj5EVuCXdAUWILXvtiwqyC1i/FMAkPYIYRUoU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=eQUYWmpINSIUsC8aX94+chc0+iSbv6oHAtRBXZCW/eMbj54fD80onQjTIBSSO03wZ
+         MtaaevsTCfV+5TwLRBrjZ88McMwiGY7+Y3hB6VbaE1OTaWy+Noh5XD5KxM8Z12vwGE
+         II6LmdU3bKL41jvXRw3l5Y6Ta9UcFE7Otw/jWDkrXgNW/lyTC/a735ZRPeJhq8XJCZ
+         +HYe2AFLPOQ6E0jyfV04qU5oN8K7jR42tlEIMu899EJ1ihJ/JrVfJTfspin1L4/2+i
+         2AdqKAX4Xyp/TK0tUCyUMNVeQzKy1Ojx+DJ9hnwIsY5J2PdSebXdAAL0Mh8PMZq671
+         sw+KfYSXXhwhw==
+Date:   Tue, 15 Jun 2021 15:23:22 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [RFC 1/1] PCI/ACPI: Make acpi_pci_root_validate_resources()
+ reject IOMEM resources which start at address 0
+Message-ID: <20210615202322.GA2910413@bjorn-Precision-5520>
 MIME-Version: 1.0
-References: <cover.1623705308.git.alison.schofield@intel.com> <0246fe923945ba2b8d885f45279d7d3956c46950.1623705308.git.alison.schofield@intel.com>
-In-Reply-To: <0246fe923945ba2b8d885f45279d7d3956c46950.1623705308.git.alison.schofield@intel.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Tue, 15 Jun 2021 11:48:43 -0700
-Message-ID: <CAPcyv4houyD9PGG4PKiO7OiHkKEZD81=tVSzr_PTShHBzx956A@mail.gmail.com>
-Subject: Re: [PATCH 2/2] cxl/acpi: Use the ACPI CFMWS to create static decoder objects
-To:     Alison Schofield <alison.schofield@intel.com>
-Cc:     Ben Widawsky <ben.widawsky@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        linux-cxl@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210615102555.6035-2-hdegoede@redhat.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[ add linu-acpi for variable length array question below ]
+On Tue, Jun 15, 2021 at 12:25:55PM +0200, Hans de Goede wrote:
+> On some Lenovo laptops the base-addrsss of some PCI devices is left
+> at 0 at boot:
+> 
+> [    0.283145] pci 0000:00:15.0: [8086:34e8] type 00 class 0x0c8000
+> [    0.283217] pci 0000:00:15.0: reg 0x10: [mem 0x00000000-0x00000fff 64bit]
+> [    0.285117] pci 0000:00:15.1: [8086:34e9] type 00 class 0x0c8000
+> [    0.285189] pci 0000:00:15.1: reg 0x10: [mem 0x00000000-0x00000fff 64bit]
 
+s/base-addrsss/base-address/
+Timestamps aren't relevant here and can be trimmed.
 
-On Mon, Jun 14, 2021 at 3:57 PM Alison Schofield
-<alison.schofield@intel.com> wrote:
->
-> The ACPI CXL Early Discovery Table (CEDT) includes a list of CXL memory
-> resources in CXL Fixed Memory Window Structures (CFMWS). Retrieve each
-> CFMWS in the CEDT and add a cxl_decoder object to the root port (root0)
-> for each memory resource.
->
-> Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+It's not really an error if BIOS leaves a PCI BAR unprogrammed.
+
+> There is a _CRS method for these devices, which simply returns the
+> configured 0 address. This is causing the PCI core to not assign
+> memory to these PCI devices and is causing these errors:
+> 
+> [    0.655335] pci 0000:00:15.0: BAR 0: no space for [mem size 0x00001000 64bit]
+> [    0.655337] pci 0000:00:15.0: BAR 0: failed to assign [mem size 0x00001000 64bit]
+> [    0.655339] pci 0000:00:15.1: BAR 0: no space for [mem size 0x00001000 64bit]
+> [    0.655340] pci 0000:00:15.1: BAR 0: failed to assign [mem size 0x00001000 64bit]
+
+I'm confused.  Did you say there's a _CRS method for these *PCI*
+devices (0000:00:15.0, 0000:00:15.1)?
+
+I suspect you mean the *host bridge* has a _CRS method, since I think
+acpi_pci_root_validate_resources() is looking at contents of the host
+bridge _CRS.
+
+On x86, it would likely be a BIOS defect is a host bridge _CRS had a
+memory window starting at 0, but you didn't show what _CRS contained.
+
+The dmesg at https://bugzilla.redhat.com/show_bug.cgi?id=1871793 shows
+this, which looks totally normal and should be unaffected by the patch
+since there's no memory window starting at 0:
+
+  pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7 window]
+  pci_bus 0000:00: root bus resource [io  0x0d00-0xffff window]
+  pci_bus 0000:00: root bus resource [mem 0x000a0000-0x000bffff window]
+  pci_bus 0000:00: root bus resource [mem 0x6d400000-0xbfffffff window]
+
+The ones at https://bugzilla.redhat.com/show_bug.cgi?id=1868899 and
+https://bugs.launchpad.net/ubuntu/+source/linux-signed-hwe/+bug/1878279
+are similar, so I can't quite connect the dots here.
+
+> This happens specifically for the designware I2C PCI devices on these
+> laptops, causing I2C-HID attached touchpads/touchscreens to not work.
+> 
+> Booting with nocrs on these devices results in the kernel itself
+> assigning memory to these devices, fixing things:
+
+"pci=nocrs" to help people repro this or try the same workaround
+elsewhere.
+
+> [    0.355716] pci 0000:00:15.0: BAR 0: assigned [mem 0x29c000000-0x29c000fff 64bit]
+> [    0.355783] pci 0000:00:15.1: BAR 0: assigned [mem 0x29c001000-0x29c001fff 64bit]
+> 
+> At least the following models are known to be affected by this (but there
+> might be more):
+> 
+> Lenovo IdeaPad 3 15IIL05 81WE
+> Lenovo IdeaPad 5 14IIL05 81YH
+> 
+> Add an extra check for the base-address being 0 to
+> acpi_pci_root_validate_resources() and reject IOMEM resources where this
+> is the case, to fix this issue.
+> 
+> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
+> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
+> BugLink: https://bugs.launchpad.net/ubuntu/+source/linux-signed-hwe/+bug/1878279
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
->  drivers/cxl/acpi.c | 106 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 106 insertions(+)
->
-> diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-> index 16f60bc6801f..ac4b3e37e294 100644
-> --- a/drivers/cxl/acpi.c
-> +++ b/drivers/cxl/acpi.c
-> @@ -8,8 +8,112 @@
->  #include <linux/pci.h>
->  #include "cxl.h"
->
-> +/* Encode defined in CXL 2.0 8.2.5.12.7 HDM Decoder Control Register */
-> +#define CFMWS_INTERLEAVE_WAYS(x)       (1 << (x)->interleave_ways)
-> +#define CFMWS_INTERLEAVE_GRANULARITY(x)        ((x)->granularity + 8)
-> +
-> +/*
-> + * CFMWS Restrictions mapped to CXL Decoder Flags
-> + * Restrictions defined in CXL 2.0 ECN CEDT CFMWS
-> + * Decoder Flags defined in CXL 2.0 8.2.5.12.7 HDM Decoder Control Register
-> + */
-> +#define CFMWS_TO_DECODE_TYPE2(x) ((x & ACPI_CEDT_CFMWS_RESTRICT_TYPE2) << 2)
-> +#define CFMWS_TO_DECODE_TYPE3(x) ((x & ACPI_CEDT_CFMWS_RESTRICT_TYPE3) << 2)
-> +#define CFMWS_TO_DECODE_RAM(x)   ((x & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE) >> 2)
-> +#define CFMWS_TO_DECODE_PMEM(x)         ((x & ACPI_CEDT_CFMWS_RESTRICT_PMEM) >> 2)
-> +#define CFMWS_TO_DECODE_FIXED(x) (x & ACPI_CEDT_CFMWS_RESTRICT_FIXED)
-> +
-> +#define CFMWS_TO_DECODER_FLAGS(x) (CFMWS_TO_DECODE_TYPE2(x) | \
-> +                                  CFMWS_TO_DECODE_TYPE3(x) | \
-> +                                  CFMWS_TO_DECODE_RAM(x)   | \
-> +                                  CFMWS_TO_DECODE_PMEM(x)  | \
-> +                                  CFMWS_TO_DECODE_FIXED(x))
+> Note we could instead add the known to be affected models to the
+> pci_crs_quirks table in arch/x86/pci/acpi.c, but it is likely that more
+> systems are affected and a more generic fix seems better in general.
 
-I don't understand the approach taken above. It seems to assume that
-the CXL_DECODER_F_* values are fixed. Those flag values are arbitrary
-and mutable. There is no guarantee that today's CXL_DECODER_F_* values
-match tomorrow's so I'd rather not have 2 places to check when / if
-that happens.
+Definitely good to avoid pci_crs_quirks[] because throwing away _CRS
+completely leads us into uncharted waters, especially for multi-host
+bridge systems that support hotplug.
 
+> ---
+>  drivers/acpi/pci_root.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index dcd593766a64..6cd2ca551005 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -686,6 +686,13 @@ static void acpi_pci_root_validate_resources(struct device *dev,
+>  		if (!(res1->flags & type))
+>  			goto next;
+>  
+> +		if ((type & IORESOURCE_MEM) && res1->start == 0) {
+> +			dev_info(dev, "host bridge window %pR (ignored, start address not set)\n",
+> +				 res1);
+> +			free = true;
+> +			goto next;
+> +		}
 > +
->  static struct acpi_table_header *cedt_table;
->
-> +static int cxl_acpi_cfmws_verify(struct device *dev,
-> +                                struct acpi_cedt_cfmws *cfmws)
-> +{
-> +       int expected_len;
-> +
-> +       if (cfmws->interleave_arithmetic != ACPI_CEDT_CFMWS_ARITHMETIC_MODULO) {
-> +               dev_err(dev, "CFMWS Unsupported Interleave Arithmetic\n");
-
-I expect the user will want to know more about which decode range is
-not being registered. So, for all of these error messages please print
-out the entry, at least the base and end address.
-
-> +               return -EINVAL;
-> +       }
-> +
-> +       if (!IS_ALIGNED(cfmws->base_hpa, SZ_256M)) {
-> +               dev_err(dev, "CFMWS Base HPA not 256MB aligned\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       if (!IS_ALIGNED(cfmws->window_size, SZ_256M)) {
-> +               dev_err(dev, "CFMWS Window Size not 256MB aligned\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       expected_len = struct_size((cfmws), interleave_targets,
-> +                                  CFMWS_INTERLEAVE_WAYS(cfmws));
-
-Oh interesting, I was about to say "unfortunately struct_size() can't
-be used", becuase I thought ACPICA could not support variable length
-array. It turns out 'struct acpi_cedt_cfmws' got away with this. Not
-sure if that is going to change in the future, but it's a positive
-sign otherwise.
-
-> +
-> +       if (expected_len != cfmws->header.length) {
-> +               dev_err(dev, "CFMWS interleave ways and targets mismatch\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static void cxl_add_cfmws_decoders(struct device *dev,
-> +                                  struct cxl_port *root_port)
-> +{
-> +       struct acpi_cedt_cfmws *cfmws;
-> +       struct cxl_decoder *cxld;
-> +       acpi_size len, cur = 0;
-> +       void *cedt_base;
-> +       int rc;
-> +
-> +       len = cedt_table->length - sizeof(*cedt_table);
-> +       cedt_base = cedt_table + 1;
-> +
-> +       while (cur < len) {
-> +               struct acpi_cedt_header *c = cedt_base + cur;
-> +
-> +               if (c->type != ACPI_CEDT_TYPE_CFMWS) {
-> +                       cur += c->length;
-> +                       continue;
-> +               }
-> +
-> +               cfmws = cedt_base + cur;
-> +
-> +               if (cfmws->header.length < sizeof(*cfmws)) {
-> +                       dev_err(dev, "Invalid CFMWS header length %u\n",
-> +                               cfmws->header.length);
-> +                       dev_err(dev, "Failed to add decoders\n");
-> +                       return;
-> +               }
-> +
-> +               rc = cxl_acpi_cfmws_verify(dev, cfmws);
-> +               if (rc) {
-> +                       cur += c->length;
-> +                       continue;
-> +               }
-> +
-> +               cxld = devm_cxl_add_decoder(dev, root_port,
-> +                               CFMWS_INTERLEAVE_WAYS(cfmws),
-> +                               cfmws->base_hpa, cfmws->window_size,
-> +                               CFMWS_INTERLEAVE_WAYS(cfmws),
-> +                               CFMWS_INTERLEAVE_GRANULARITY(cfmws),
-> +                               CXL_DECODER_EXPANDER,
-> +                               CFMWS_TO_DECODER_FLAGS(cfmws->restrictions));
-> +
-> +               if (IS_ERR(cxld))
-> +                       dev_err(dev, "Failed to add decoder\n");
-
-This would be another place to print out the CFMWS entry so that the
-user has some record of which address range is offline.
-
-> +               else
-> +                       dev_dbg(dev, "add: %s\n", dev_name(&cxld->dev));
-> +
-> +               cur += c->length;
-> +       }
-> +}
-> +
->  static struct acpi_cedt_chbs *cxl_acpi_match_chbs(struct device *dev, u32 uid)
->  {
->         struct acpi_cedt_chbs *chbs, *chbs_match = NULL;
-> @@ -251,6 +355,8 @@ static int cxl_acpi_probe(struct platform_device *pdev)
->         if (rc)
->                 goto out;
->
-> +       cxl_add_cfmws_decoders(host, root_port);
-> +
->         /*
->          * Root level scanned with host-bridge as dports, now scan host-bridges
->          * for their role as CXL uports to their CXL-capable PCIe Root Ports.
-> --
-> 2.26.2
->
+>  		/* Exclude non-addressable range or non-addressable portion */
+>  		end = min(res1->end, root->end);
+>  		if (end <= res1->start) {
+> -- 
+> 2.31.1
+> 
