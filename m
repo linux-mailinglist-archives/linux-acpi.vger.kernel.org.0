@@ -2,258 +2,253 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC65E3A73D7
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jun 2021 04:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4608D3A755D
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jun 2021 05:47:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230523AbhFOC04 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Jun 2021 22:26:56 -0400
-Received: from mail-dm6nam12on2083.outbound.protection.outlook.com ([40.107.243.83]:32705
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230344AbhFOC0z (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 14 Jun 2021 22:26:55 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nkhb+7H5NM8Tzh5spzafCop4TMljWatHAOgEeOu3w8SF7f/uk9VwaNSghN6/K1bj3cai4P/KCf4Rn1vgYNRQhXGyPpaGLUm5lOo9sjgABaX5K7VQlg3HoPsIRJIn9PnuXguFPy6oA12Qp5uFWQ/+nZ/ryYk6xKhkG1IH598g4jPELFo0QtEBVIkihMsG4SkBp1CEwAzzet16M0UhRHCwsEIG7sSK7d3f7W9KVhvY4NClewuN8dWmrvuO/UdeMq04FFTulKwjxYaUFVtMtdvgwyCkepqVMYZGDgSjEOzMP1w9wl3Hl3aI7Qk678JwW4CQ88woV03rNjUU9hfEpSPG7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9vYwWKrHaoCMvwl/Ll1hhcr+itzrmxHeRuPJTW+zACQ=;
- b=WupCJvNpB8LHpl3Q9Ycbm0Ui0veZq5grC8UDQHhMXvKbraSlb+/O/NNpAqJ8+u4H5GxyKTqv1CAj9K7ztiGuh10v5Tc9jIQ/WV4NgbBpyt/ea0ztPTXk+23Kk9pF0aeDtW8pO9vKZ0i+c7g+D6m0CPZaE33QE3CY4pF//JMFE095bVuEoVQ7oAL0qNrU5pKGABCZfXLqtpW2Xm0wKk4by0OUNgToQPPOyxlurz3WA/tC5x55/Ik5P4+0bZWesjqSqZBDyUhZrc8kVK3jBCIKC5JC+W0MDYJyk6Xpc3pMTvP4b+/HkWOcHHMDhy9LmGvTvWh5MCdRMpMD8NrSaLDHeQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9vYwWKrHaoCMvwl/Ll1hhcr+itzrmxHeRuPJTW+zACQ=;
- b=GjVx8TZEv2vf6C9zqzpJmtZ7oT77v7rIIhvA1Aad+2p2GdIwnJLm85/igLc8qd/G/tw5MI7Qc9t7SaIk3V1bMsEQIl/sKPTua22RZuAFLUsIsUjWjgMYiLbWFffQB9IEwr7fQeH5aOW6Zj1S0iPoBWNI694kV2f9ct/UNFcUT8U=
-Authentication-Results: rjwysocki.net; dkim=none (message not signed)
- header.d=none;rjwysocki.net; dmarc=none action=none header.from=amd.com;
-Received: from SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
- by SA0PR12MB4511.namprd12.prod.outlook.com (2603:10b6:806:95::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.23; Tue, 15 Jun
- 2021 02:02:39 +0000
-Received: from SA0PR12MB4510.namprd12.prod.outlook.com
- ([fe80::9c16:2794:cd04:2be0]) by SA0PR12MB4510.namprd12.prod.outlook.com
- ([fe80::9c16:2794:cd04:2be0%5]) with mapi id 15.20.4219.025; Tue, 15 Jun 2021
- 02:02:39 +0000
-Subject: Re: [PATCH v8 2/2] ACPI: Add quirks for AMD Renoir/Lucienne CPUs to
- force the D3 hint
-To:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>
-Cc:     "open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>,
-        linux-acpi@vger.kernel.org, rrangel@chromium.org,
-        david.e.box@linux.intel.com, Shyam-sundar.S-k@amd.com,
-        Nehal-bakulchandra.Shah@amd.com, Alexander.Deucher@amd.com,
-        prike.liang@amd.com,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Julian Sikorski <belegdol@gmail.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>
-References: <20210609184018.26017-1-mario.limonciello@amd.com>
- <20210609184018.26017-2-mario.limonciello@amd.com>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-Message-ID: <831df669-b38e-9f4b-dd67-b613aaab6c28@amd.com>
-Date:   Mon, 14 Jun 2021 21:02:36 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-In-Reply-To: <20210609184018.26017-2-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [165.204.77.11]
-X-ClientProxiedBy: SN2PR01CA0005.prod.exchangelabs.com (2603:10b6:804:2::15)
- To SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
+        id S229879AbhFODtP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Jun 2021 23:49:15 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:6501 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229659AbhFODtP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Jun 2021 23:49:15 -0400
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4G3vM22nwQzZh5D;
+        Tue, 15 Jun 2021 11:44:14 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Tue, 15 Jun 2021 11:47:08 +0800
+Received: from [127.0.0.1] (10.40.192.162) by dggpemm500001.china.huawei.com
+ (7.185.36.107) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 15 Jun
+ 2021 11:47:08 +0800
+Subject: Re: [PATCH v7] ACPI / APEI: fix the regression of synchronous
+ external aborts occur in user-mode
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        James Morse <james.morse@arm.com>
+References: <1623415027-36130-1-git-send-email-tanxiaofei@huawei.com>
+ <CAJZ5v0gvzZ-64AJuEsOg2M=veZYz+9ciG5wFEQT7ghki2SNpPA@mail.gmail.com>
+CC:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, "Tony Luck" <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Joerg Roedel <jroedel@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        <linuxarm@openeuler.org>
+From:   Xiaofei Tan <tanxiaofei@huawei.com>
+Message-ID: <d38b018d-2adf-9549-ba55-44289c816fed@huawei.com>
+Date:   Tue, 15 Jun 2021 11:47:08 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.254.51.208] (165.204.77.11) by SN2PR01CA0005.prod.exchangelabs.com (2603:10b6:804:2::15) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.20 via Frontend Transport; Tue, 15 Jun 2021 02:02:37 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 281b6395-5272-4afe-c328-08d92fa1a6f3
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4511:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR12MB4511C0EF12122977A358EDFBE2309@SA0PR12MB4511.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4303;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: upZr9cYYPlRhqVqDoPn/9uWFn5hbyAxsF8drK7KyNfSoJj5HwK9j/hioKTxWiTnDN/cLmYgDaNeCSj6TNITSDI0E3bF7AEl382W0wrLYrWCeBIE3OsC6mNt7eVzGf6QXoVGxM68Z+Y+x12vpqTcg6cAGPkWIbjxZ3RFhTTd+cQ6VbuQVFMXyuRYh7rIpR7XiykMDOcg1H+FDiwu9CV6N/3rBVM6snRA7qfvWbSSZHrMsHHwzhAyw3ilyQ6I9cEPdl1MlrgiDEjSoStLx6GjiOR6i0spL4gescA4PtrCq7YmRmIkJLgk/Rlw8avVvkkkhKJxKWEUIWA3VSaIrYlG+Zwp/Gdbfet76aG1/IOOVuAOjG5NLHqUxAsZuPfmLPR9i56d89rQI1BC+DCItmqSfpRlM6Q3dkGrkFekRzSALpcq+MFpfQi1povcIlUXMXL80JzSho8qUwVpSCg1Ssqm6NnxVnOyT4jLHrBbyEkh13RR3bBVgmTFkl15KVxhrGX+JdCNWt6Fx7JvXShiiniBoLjJGsW7cB8Q6qggfPz4osAXrttyM/rzTSplGEWns0I3IOEQ3OXkbJMtYVOZX/yasLlCRgk39ieOuQPyhgqUICnCKP8AdgyLAkq0lRf3V8mR2QibvbKkUQ5QGUsoR3p2Mvr6L8JtIJU3nOtHamvpysrfj9m4j4dIMe+QCa6iu6aD9rXmmutttvDw6IoSCbbrCvaXX39oY3Ck44zzSdiFEjBIiUCwHnRIsGFq6AvbRzDmWIWfNvJje8xGrKHvLoNxmQw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4510.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(136003)(396003)(376002)(346002)(39860400002)(7416002)(8936002)(31686004)(966005)(38100700002)(86362001)(8676002)(956004)(2616005)(26005)(16576012)(54906003)(2906002)(36756003)(6486002)(31696002)(478600001)(4326008)(186003)(16526019)(110136005)(66476007)(83380400001)(66556008)(53546011)(66946007)(5660300002)(316002)(45080400002)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NnpRNnlUKzJxMVV5NTBpZVdZNThiaGtPYXNIMk1mWjVIbWlza0Q4ZFRpbHRk?=
- =?utf-8?B?V0c0bU15cmRmSTRDdk1LTHc1UTBkLysrWWRFZzBSRmo1d2ZPTW0rc3dYVEVv?=
- =?utf-8?B?S1ZYc2lFWkJ6N2JnTXlQR1o5dHFHOWZ6SFFHTkNUSW9jWEtDOXYrbkFWZ244?=
- =?utf-8?B?Nm1acWY3ekVGY0tyT2hWMU8zNENnREg4WkNjOFoxQmRjM0NEaktIMUdaTzVZ?=
- =?utf-8?B?Y1l1Yks5S25NNmhIZVJUTzJ2TGpMUVA2cHZpb2pBVnM3RlhQd3VIT1kwRWhi?=
- =?utf-8?B?bStFcUZvZ3NRV1IvM1BKd1VOc0RVK2NnSmpPSjhTeHdTV3AzQVNxb0p3VllO?=
- =?utf-8?B?c1dCYndkMUhDUTc3UFJ0NDZFYXFuZ1dDcThJREdrWHNnRkQyeTNQdlpmMGgv?=
- =?utf-8?B?MFFvVEZBR3JadjNQSzZGV25tYmc5WmhtRzEyRi92VDhTRDZ1NWNPKzZSRWU1?=
- =?utf-8?B?eUdyTjlyOExQa0F6bDZWLzIrMkhmclVXU0dzU05yT05qc3BkdGZRSWZDUTd3?=
- =?utf-8?B?VG1WOVZFR0RKVGZ1UEJRVW5YUnN3ZUlQSkJxNG55SGJQNEZJSXluYzh5WTFR?=
- =?utf-8?B?cCtOcEJoQUR3SmZIZTh2RnYvTEtoYlhlVkcxcnQ2NzJ5djlBeU1TSS9GK1lE?=
- =?utf-8?B?U01ZeVpGaGZkMnYzNVlWS3hXSGpuYjFUTDFpdk5qcXNlTGxkd3ZzWlR2RVZs?=
- =?utf-8?B?WWNBTmlKSzhpY3c5OEE3ejlxTy9CdFV4QTB5R2FVZlBQWmpqMDRLTjQvVVpF?=
- =?utf-8?B?WVIyZHdnbXd0VEtZa2pZdE9FNi9rMVVFUzRySEJzTFFXL21Sd0xsbENrc0hG?=
- =?utf-8?B?VXBFZkdVQVptSjFpRWZHUmcrb21IKzltRnBDL0pVZE14Y2toYUpzcWN2Z3dE?=
- =?utf-8?B?OEhpR3VqOGhYZlNFU2lwUUdLclQ4MjVQQmJmVmYyc0dFanRDcmNzTU1rNnF6?=
- =?utf-8?B?NmlBMzFXTHZvNFVvVmIzUDZ6eVVjNlVTd0xGU3I1b3ZDYjdWL2pVTkd4VjlG?=
- =?utf-8?B?cEcxSThiN05xR0Fwc0lBTzlWSnhWQndJVy84ekxDOC9zblNsczJCWVljL1E3?=
- =?utf-8?B?V0V0Q3pPM3hCTXE4YWY5Ky90TS9CVkc5aEFSTmJpMnBnQ3M4VnAyRUlud0xB?=
- =?utf-8?B?RlNpUnowclZVYlI2VWlOUllUM3ptVlROS2dyTDM2OEw0cXlEcEp0bnZYV2Vy?=
- =?utf-8?B?dk5PTEIycXlybmVIVFd5WE5STnVTcWYydW5NWXIvR0JCMFpwVkFuVzBhdWFC?=
- =?utf-8?B?NmtVNFAreVIxQ25WbVZheHFnNWNkRmFGNEIvSFN0dzVNOHROL0ZSNDFZNzFq?=
- =?utf-8?B?RG95ZWtYYWtmQWx6czhQZ3d2dGdHUG9NR3FqSDRsY3ZRZHFsRFpVeTJMSmdi?=
- =?utf-8?B?WmFFRitvelRGU3c1bDd0d0lDUlUyOUhiM2lnektrSW5XUkgxek1SMVV2cU81?=
- =?utf-8?B?eGV2a3hRZWEvUHdmeldhdE95NVRNV0YwSnBEd0kwbmtjdFRjcGNyeG9jQkNm?=
- =?utf-8?B?eDd1V2ZVdzJUU0p5aEw0TG41ZVFFcFpRQWhRUGF1Zk10RlFRYmtLb0p5YVNo?=
- =?utf-8?B?UFI2RjB2TVovQTJ1LzRoN0ovdDdGVG1hSy84RjdRSzhObitrOVphMEpSZndD?=
- =?utf-8?B?enNZZGFFVlViZ1gxWXpMWGxBQU10WDBMRnNGT2U2MjZiL2pMT0tUTmVRMlBq?=
- =?utf-8?B?QTNUbERkNmNDV29WUzdBQ0JCVWZGTjgzYU5rV2s5bkNpYnY4Y3ozaFZQaUxV?=
- =?utf-8?Q?7wZoBLmIgr9g3b2QCx8vGcUzcKMlXOoIqwfbzzc?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 281b6395-5272-4afe-c328-08d92fa1a6f3
-X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4510.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2021 02:02:38.8999
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pn4ZaWSCRXex5kSwQZY0pjabYohe4NGbashyztEF+cgb1lnnNvAVC+W/CGOCxAukmZcqrQK56NdjGPGe+4dSzw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4511
+In-Reply-To: <CAJZ5v0gvzZ-64AJuEsOg2M=veZYz+9ciG5wFEQT7ghki2SNpPA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.40.192.162]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 6/9/2021 13:40, Mario Limonciello wrote:
-> AMD systems from Renoir and Lucienne require that the NVME controller
-> is put into D3 over a Modern Standby / suspend-to-idle
-> cycle.  This is "typically" accomplished using the `StorageD3Enable`
-> property in the _DSD, but this property was introduced after many
-> of these systems launched and most OEM systems don't have it in
-> their BIOS.
-> 
-> On AMD Renoir without these drives going into D3 over suspend-to-idle
-> the resume will fail with the NVME controller being reset and a trace
-> like this in the kernel logs:
-> ```
-> [   83.556118] nvme nvme0: I/O 161 QID 2 timeout, aborting
-> [   83.556178] nvme nvme0: I/O 162 QID 2 timeout, aborting
-> [   83.556187] nvme nvme0: I/O 163 QID 2 timeout, aborting
-> [   83.556196] nvme nvme0: I/O 164 QID 2 timeout, aborting
-> [   95.332114] nvme nvme0: I/O 25 QID 0 timeout, reset controller
-> [   95.332843] nvme nvme0: Abort status: 0x371
-> [   95.332852] nvme nvme0: Abort status: 0x371
-> [   95.332856] nvme nvme0: Abort status: 0x371
-> [   95.332859] nvme nvme0: Abort status: 0x371
-> [   95.332909] PM: dpm_run_callback(): pci_pm_resume+0x0/0xe0 returns -16
-> [   95.332936] nvme 0000:03:00.0: PM: failed to resume async: error -16
-> ```
-> 
-> The Microsoft documentation for StorageD3Enable mentioned that Windows has
-> a hardcoded allowlist for D3 support, which was used for these platforms.
-> Introduce quirks to hardcode them for Linux as well.
-> 
-> As this property is now "standardized", OEM systems using AMD Cezanne and
-> newer APU's have adopted this property, and quirks like this should not be
-> necessary.
-> 
-> CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
-> CC: Alexander Deucher <Alexander.Deucher@amd.com>
-> CC: Prike Liang <prike.liang@amd.com>
-> Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Tested-by: Julian Sikorski <belegdol@gmail.com>
-> ---
->   drivers/acpi/device_pm.c |  3 +++
->   drivers/acpi/internal.h  |  9 +++++++++
->   drivers/acpi/x86/utils.c | 25 +++++++++++++++++++++++++
->   3 files changed, 37 insertions(+)
->   
-> Changes from v4->v5:
->   * Add this patch back in as it's been made apparent that the
->     system needs to be hardcoded for these.
->     Changes:
->     - Drop Cezanne - it's now covered by StorageD3Enable
->     - Rebase ontop of acpi_storage_d3 outside of NVME
-> Changes from v5->v6:
->   * Move the quirk check into drivers/acpi/x86/ as suggested by
->     Rafael.
-> Changes from v6->v7:
->   * Move header location
->   * Optimization of force function
-> Changes from v7->v8:
->   * Add tags
-> 
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index c8600978b283..c40fc135ff0c 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -1360,6 +1360,9 @@ bool acpi_storage_d3(struct device *dev)
->   	struct acpi_device *adev = ACPI_COMPANION(dev);
->   	u8 val;
->   
-> +	if (force_storage_d3())
-> +		return true;
-> +
->   	if (!adev)
->   		return false;
->   	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
-> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-> index f973bbe90e5e..e29ec463bb07 100644
-> --- a/drivers/acpi/internal.h
-> +++ b/drivers/acpi/internal.h
-> @@ -236,6 +236,15 @@ static inline int suspend_nvs_save(void) { return 0; }
->   static inline void suspend_nvs_restore(void) {}
->   #endif
->   
-> +#ifdef CONFIG_X86
-> +bool force_storage_d3(void);
-> +#else
-> +static inline bool force_storage_d3(void)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->   /*--------------------------------------------------------------------------
->   				Device properties
->     -------------------------------------------------------------------------- */
-> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-> index bdc1ba00aee9..5298bb4d81fe 100644
-> --- a/drivers/acpi/x86/utils.c
-> +++ b/drivers/acpi/x86/utils.c
-> @@ -135,3 +135,28 @@ bool acpi_device_always_present(struct acpi_device *adev)
->   
->   	return ret;
->   }
-> +
-> +/*
-> + * AMD systems from Renoir and Lucienne *require* that the NVME controller
-> + * is put into D3 over a Modern Standby / suspend-to-idle cycle.
-> + *
-> + * This is "typically" accomplished using the `StorageD3Enable`
-> + * property in the _DSD that is checked via the `acpi_storage_d3` function
-> + * but this property was introduced after many of these systems launched
-> + * and most OEM systems don't have it in their BIOS.
-> + *
-> + * The Microsoft documentation for StorageD3Enable mentioned that Windows has
-> + * a hardcoded allowlist for D3 support, which was used for these platforms.
-> + *
-> + * This allows quirking on Linux in a similar fashion.
-> + */
-> +const struct x86_cpu_id storage_d3_cpu_ids[] = {
-> +	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
-> +	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
-> +	{}
-> +};
-> +
-> +bool force_storage_d3(void)
-> +{
-> +	return x86_match_cpu(storage_d3_cpu_ids);
-> +}
-> 
+Hi Rafael,
 
-Christoph, Keith ping on this series.  Any other thoughts?
-If it's good can you take this in for nvme-5.14 since Rafael mentioned
-the conflict from the other StorageD3Enable commit in nvme-5.14?
+On 2021/6/14 23:46, Rafael J. Wysocki wrote:
+> On Fri, Jun 11, 2021 at 2:40 PM Xiaofei Tan <tanxiaofei@huawei.com> wrote:
+>>
+>> Before commit 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea()
+>> synchronise with APEI's irq work"), do_sea() would unconditionally
+>> signal the affected task from the arch code. Since that change,
+>> the GHES driver sends the signals.
+>>
+>> This exposes a problem as errors the GHES driver doesn't understand
+>> or doesn't handle effectively are silently ignored. It will cause
+>> the errors get taken again, and circulate endlessly. User-space task
+>> get stuck in this loop.
+>>
+>> Existing firmware on Kunpeng9xx systems reports cache errors with the
+>> 'ARM Processor Error' CPER records.
+>>
+>> Do memory failure handling for ARM Processor Error Section just like
+>> for Memory Error Section.
+>
+> Still, I'm not convinced that this is the right way to address the problem.
+>
+> In particular, is it guaranteed that "ARM Processor Error" will always
+> mean "memory failure" on all platforms?
+>
+
+There are two sources for ARM Processor cache errors(no second case for the platform that doesn't support poison mechanism).
+1.occur in the cache. If it is transient, we have a chance to recover by doing memory failure.
+If it is persistent, we have to handle in other place, such as do cache way isolation in firmware,
+or trigger cpu core isolation in user space. I think most platform can't support such feature,
+so the most simple and effective way is report as fatal error and do isolation during firmware start-up phase.
+
+2.error transferred from other RAS node. If it is from DDR, i think there is no doubt, and this is
+the most cases we met before.If it is from other place of SoC, such as internal SRAM(the probability is very little compare to DDR),
+the error is still in the hardware. But the RAS node that detected the SRAM error will also report the error.
+
+To sum up the above, it is effective for most situation, and no harm for the others.
+
+> If not, doing a platform-specific quirk might be better.
+>
+> James, I need you to hear from you here I suppose.
+>
+>> Fixes: 8fcc4ae6faf8 ("arm64: acpi: Make apei_claim_sea() synchronise with APEI's irq work")
+>> Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+>> Reviewed-by: James Morse <james.morse@arm.com>
+>>
+>> ---
+>> Changes since v5:
+>> - Do some changes following James's suggestions: 1) optimize commit log
+>> 2) use err_info->length instead of err_info++' 3) some coding style
+>> advice.
+>>
+>> Changes since v4:
+>> - 1. Change the patch name from " ACPI / APEI: do memory failure on the
+>> physical address reported by ARM processor error section" to this
+>> more proper one.
+>> - 2. Add a comment in the code to tell why not filter out corrected
+>> error in an uncorrected section.
+>>
+>> Changes since v3:
+>> - Print unhandled error following James Morse's advice.
+>>
+>> Changes since v2:
+>> - Updated commit log
+>> ---
+>>  drivers/acpi/apei/ghes.c | 81 ++++++++++++++++++++++++++++++++++++++----------
+>>  1 file changed, 64 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>> index fce7ade..0c8330e 100644
+>> --- a/drivers/acpi/apei/ghes.c
+>> +++ b/drivers/acpi/apei/ghes.c
+>> @@ -441,28 +441,35 @@ static void ghes_kick_task_work(struct callback_head *head)
+>>         gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
+>>  }
+>>
+>> -static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+>> -                                      int sev)
+>> +static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+>>  {
+>>         unsigned long pfn;
+>> -       int flags = -1;
+>> -       int sec_sev = ghes_severity(gdata->error_severity);
+>> -       struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
+>>
+>>         if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
+>>                 return false;
+>>
+>> -       if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
+>> -               return false;
+>> -
+>> -       pfn = mem_err->physical_addr >> PAGE_SHIFT;
+>> +       pfn = PHYS_PFN(physical_addr);
+>>         if (!pfn_valid(pfn)) {
+>>                 pr_warn_ratelimited(FW_WARN GHES_PFX
+>>                 "Invalid address in generic error data: %#llx\n",
+>> -               mem_err->physical_addr);
+>> +               physical_addr);
+>>                 return false;
+>>         }
+>>
+>> +       memory_failure_queue(pfn, flags);
+>> +       return true;
+>> +}
+>> +
+>> +static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+>> +                                      int sev)
+>> +{
+>> +       int flags = -1;
+>> +       int sec_sev = ghes_severity(gdata->error_severity);
+>> +       struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
+>> +
+>> +       if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))
+>> +               return false;
+>> +
+>>         /* iff following two events can be handled properly by now */
+>>         if (sec_sev == GHES_SEV_CORRECTED &&
+>>             (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+>> @@ -470,14 +477,56 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+>>         if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+>>                 flags = 0;
+>>
+>> -       if (flags != -1) {
+>> -               memory_failure_queue(pfn, flags);
+>> -               return true;
+>> -       }
+>> +       if (flags != -1)
+>> +               return ghes_do_memory_failure(mem_err->physical_addr, flags);
+>>
+>>         return false;
+>>  }
+>>
+>> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
+>> +{
+>> +       struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+>> +       bool queued = false;
+>> +       int sec_sev, i;
+>> +       char *p;
+>> +
+>> +       log_arm_hw_error(err);
+>> +
+>> +       sec_sev = ghes_severity(gdata->error_severity);
+>> +       if (sev != GHES_SEV_RECOVERABLE || sec_sev != GHES_SEV_RECOVERABLE)
+>> +               return false;
+>> +
+>> +       p = (char *)(err + 1);
+>> +       for (i = 0; i < err->err_info_num; i++) {
+>> +               struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
+>> +               bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
+>> +               bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
+>> +               const char *error_type = "unknown error";
+>> +
+>> +               /*
+>> +                * The field (err_info->error_info & BIT(26)) is fixed to set to
+>> +                * 1 in some old firmware of HiSilicon Kunpeng920. We assume that
+>> +                * firmware won't mix corrected errors in an uncorrected section,
+>> +                * and don't filter out 'corrected' error here.
+>> +                */
+>> +               if (is_cache && has_pa) {
+>> +                       queued = ghes_do_memory_failure(err_info->physical_fault_addr, 0);
+>> +                       p += err_info->length;
+>> +                       continue;
+>> +               }
+>> +
+>> +               if (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs))
+>> +                       error_type = cper_proc_error_type_strs[err_info->type];
+>> +
+>> +               pr_warn_ratelimited(FW_WARN GHES_PFX
+>> +                                   "Unhandled processor error type: %s\n",
+>> +                                   error_type);
+>> +               p += err_info->length;
+>> +       }
+>> +
+>> +       return queued;
+>> +}
+>> +
+>>  /*
+>>   * PCIe AER errors need to be sent to the AER driver for reporting and
+>>   * recovery. The GHES severities map to the following AER severities and
+>> @@ -605,9 +654,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+>>                         ghes_handle_aer(gdata);
+>>                 }
+>>                 else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+>> -                       struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
+>> -
+>> -                       log_arm_hw_error(err);
+>> +                       queued = ghes_handle_arm_hw_error(gdata, sev);
+>>                 } else {
+>>                         void *err = acpi_hest_get_payload(gdata);
+>>
+>> --
+>> 2.8.1
+>>
+>
+> .
+>
 
