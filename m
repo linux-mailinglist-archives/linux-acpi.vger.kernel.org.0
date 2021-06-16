@@ -2,221 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A22A83AA2D9
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 20:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB163AA2E5
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 20:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231484AbhFPSHJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Jun 2021 14:07:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32024 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231483AbhFPSHI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 16 Jun 2021 14:07:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1623866702;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4xT1saQU128AxyzVuss1zrmEdIxNhp6j1Em1jnlU658=;
-        b=ckoyEPw89qzroxGPeJ9+AgmHW+pD0nsZVLPO2Y0X/Vr4K2Cn3Aou9Hpj0Qb4n+G9OPtb/C
-        Dgm51MYDmMLvJ3/zZ2dpKqyuVxxynEj4cHns2519ZZR6Y06Ch71YBXrT1UF9DVvr50Blph
-        kNJOHpa0PkGuN0zt1NzXNVcUnY+imhk=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-151-F2wjns-qMbqMFynyZ_roIQ-1; Wed, 16 Jun 2021 14:05:00 -0400
-X-MC-Unique: F2wjns-qMbqMFynyZ_roIQ-1
-Received: by mail-ed1-f72.google.com with SMTP id v8-20020a0564023488b0290393873961f6so106113edc.17
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Jun 2021 11:05:00 -0700 (PDT)
+        id S231580AbhFPSKe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Jun 2021 14:10:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46316 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230152AbhFPSKe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Jun 2021 14:10:34 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A68C06175F;
+        Wed, 16 Jun 2021 11:08:28 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id z26so2845469pfj.5;
+        Wed, 16 Jun 2021 11:08:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6ycID7DbnSZP9eaDdKUdtHxmB+2/7XuKoHI3CIq/KZU=;
+        b=Jusjd8nRH1tNzqbReIyRyGMqdNOZovEla8AilFx6u2cRXOUefONqtH9QpYSdpHp3u+
+         3+Vd0OqbzSyY/oNBvhzpfDvCobe4xCjl3J+EiSn+bCHq9Vv7xpC52u85U5i4MYpxl94J
+         cr0vR3tVDddfem3jhtkQh1m6cYHCmdRbHoSrQfLyakbg+PYxBG6iE7MVET2hnKABr3MM
+         XtCI7TOy4jZrIsCCpbHaIC0hSuJMoyTxuqe4dA8UqiVBhXPrBZToVXJ/XsFZahvdvUtU
+         okUOsnkEuh4UZeS44dMwNFAoWjlMGsjKemltQ5vmZvC0yihNdlbajQ0zOkJS9zXE/feB
+         BJwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=4xT1saQU128AxyzVuss1zrmEdIxNhp6j1Em1jnlU658=;
-        b=VIvRF1ylJFJL7Sgs/dBs6+NV97EwAp1XF5k5zsg2ayoUwC+a/0R8IB0M1zn0bfv60t
-         luRNu2vDnOOsn9C1epLQU5wB8UQrikVgm2fjNLSI+qYvNcjebm7GUst7vd2npIXc1FoI
-         SHP4XHfxmOE78CMgaw8DIiV904P49IiAfTIVoOfjpE8073x9uNYEzDw2lTW7jbUb2YEW
-         hc8nwK2zf56/pzUYTF0KL2ZAXKVMbzlQJSrtfFGx15y7egz7qDZqzdGZCr5echkXwLcP
-         gb4FCg4aMMEal7HJSX5ie2ENxX3zhkTRG7PjgwXwWlvjU+q3REixloH8FBOemzQFMsQ1
-         NyGQ==
-X-Gm-Message-State: AOAM530KkhxevCakkR/wINsY4RcJLWk6hGKhWo5DiMB5tohoqr7nSZk8
-        AUBniwWi2qblAQYc+64DBDxGkxaQTvqnwbg0H+UuIkSAoakOHQMdpuScgudnEREIypLJE0U1wAJ
-        mCzKiMs92oFz8x2Vy6wET6Q==
-X-Received: by 2002:a17:906:430f:: with SMTP id j15mr736306ejm.445.1623866699310;
-        Wed, 16 Jun 2021 11:04:59 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxwIcSFXevkrdUqdR7vlMjxGdoNi3ZMuFXrML+cFZ5zxJRb805KidDx/vbVabJ5yN9kII/82w==
-X-Received: by 2002:a17:906:430f:: with SMTP id j15mr736292ejm.445.1623866699197;
-        Wed, 16 Jun 2021 11:04:59 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id f23sm2016868ejb.101.2021.06.16.11.04.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Jun 2021 11:04:58 -0700 (PDT)
-Subject: Re: [PATCH v2 5/5] ACPI: scan: Fix race related to dropping
- dependencies
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>
-References: <3140195.44csPzL39Z@kreacher> <3070024.5fSG56mABF@kreacher>
- <11783109.O9o76ZdvQC@kreacher>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <ad236554-2915-1c32-b35e-7e0300bbfda5@redhat.com>
-Date:   Wed, 16 Jun 2021 20:04:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6ycID7DbnSZP9eaDdKUdtHxmB+2/7XuKoHI3CIq/KZU=;
+        b=oVkZHuWuJadS/BBRZjBH/qYlBidvgt9aWspmN7mLF9KNypZWWGQo0GN+PN6e69Ps53
+         blw8ikEesCpQeRQ/Mt6QxFYYbm3y2kFvmvIQ+9PiHMQLSTjah2eNgMpOlvACAg7Fq30T
+         ZzjLn71n7Q+UexGw9aR1fbti/zeHYrlNeX74O4icWJi080S4Jy+3Eoa5B1BBzKLg2oMf
+         BqUsjf+GCSLqRukvTwIq9IDKfoviGywNWtTHqKnH7YkShmK/HEt7UN6T9qGRtjdXX7uW
+         s2tVPDSyZ/I2HR2XjVpwrURim5Cx3ukmCKBfFXnCA7eL8fWj15h75iBEz8BHvyYpM41g
+         Myxw==
+X-Gm-Message-State: AOAM5333i0upHc3o1zr87zFmqdR+ZEzzPsRiCBgMsBnmZh97/lhe114O
+        D3uUHVHUtpAf2UZuM20GPXQS0KMsjXaw0SgJy0c=
+X-Google-Smtp-Source: ABdhPJw1QqhinOwO4jllcnvXxgpVFMS7su2PcbZWi0JnPyMT+n+Bj40r0AGZmLY6UjTJJqLlDf8lVpVVfdQrNbCTlz0=
+X-Received: by 2002:a63:4145:: with SMTP id o66mr889626pga.4.1623866907518;
+ Wed, 16 Jun 2021 11:08:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <11783109.O9o76ZdvQC@kreacher>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210603224007.120560-1-djrscally@gmail.com> <20210603224007.120560-6-djrscally@gmail.com>
+ <ea322abe-fa78-bbc3-b4c5-b372a4f28235@redhat.com>
+In-Reply-To: <ea322abe-fa78-bbc3-b4c5-b372a4f28235@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 16 Jun 2021 21:08:11 +0300
+Message-ID: <CAHp75VccZbv8+u-jO8wYSsyQrw+Bd_zeDa==aiTvkh=fteuT3w@mail.gmail.com>
+Subject: Re: [PATCH v5 5/6] platform/x86: Add intel_skl_int3472 driver
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Len Brown <lenb@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        kieran.bingham@ideasonboard.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, Jun 16, 2021 at 8:58 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> On 6/4/21 12:40 AM, Daniel Scally wrote:
+> > ACPI devices with _HID INT3472 are currently matched to the tps68470
+> > driver, however this does not cover all situations in which that _HID
+> > occurs. We've encountered three possibilities:
+> >
+> > 1. On Chrome OS devices, an ACPI device with _HID INT3472 (representing
+> > a physical TPS68470 device) that requires a GPIO and OpRegion driver
+> > 2. On devices designed for Windows, an ACPI device with _HID INT3472
+> > (again representing a physical TPS68470 device) which requires GPIO,
+> > Clock and Regulator drivers.
+> > 3. On other devices designed for Windows, an ACPI device with _HID
+> > INT3472 which does **not** represent a physical TPS68470, and is instead
+> > used as a dummy device to group some system GPIO lines which are meant
+> > to be consumed by the sensor that is dependent on this entry.
+> >
+> > This commit adds a new module, registering a platform driver to deal
+> > with the 3rd scenario plus an i2c driver to deal with #1 and #2, by
+> > querying the CLDB buffer found against INT3472 entries to determine
+> > which is most appropriate.
+> >
+> > Suggested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Signed-off-by: Daniel Scally <djrscally@gmail.com>
+>
+> Thank you for your patch, I've applied this patch to my review-hans
+> branch:
+> https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
+>
+> I've fixed up the missing static marking of skl_int3472_tps68470_calc_type()
+> spotted by lkp@intel.com while applying the patch to my tree.
 
-On 6/16/21 8:00 PM, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> If acpi_add_single_object() runs concurrently with respect to
-> acpi_scan_clear_dep() which deletes a dependencies list entry where
-> the device being added is the consumer, the device's dep_unmet
-> counter may not be updated to reflect that change.
-> 
-> Namely, if the dependencies list entry is deleted right after
-> calling acpi_scan_dep_init() and before calling acpi_device_add(),
-> acpi_scan_clear_dep() will not find the device object corresponding
-> to the consumer device ACPI handle and it will not update its
-> dep_unmet counter to reflect the deletion of the list entry.
-> Consequently, the dep_unmet counter of the device will never
-> become zero going forward which may prevent it from being
-> completely enumerated.
-> 
-> To address this problem, modify acpi_add_single_object() to run
-> acpi_tie_acpi_dev(), to attach the ACPI device object created by it
-> to the corresponding ACPI namespace node, under acpi_dep_list_lock
-> along with acpi_scan_dep_init() whenever the latter is called.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Are you going to apply patch 6 as well?
+IIRC it's acked by Lee.
 
-FWIW this looks good to me now.
-
-Regards,
-
-Hans
-
-
-> ---
-> 
-> -> v2:
->    * Fix memory leak spotted by Hans.
->    * Add the R-by tag from Hans.
-> 
-> ---
->  drivers/acpi/scan.c |   50 ++++++++++++++++++++++++++++++++------------------
->  1 file changed, 32 insertions(+), 18 deletions(-)
-> 
-> Index: linux-pm/drivers/acpi/scan.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/scan.c
-> +++ linux-pm/drivers/acpi/scan.c
-> @@ -657,16 +652,12 @@ static int acpi_tie_acpi_dev(struct acpi
->  	return 0;
->  }
->  
-> -int acpi_device_add(struct acpi_device *device,
-> -		    void (*release)(struct device *))
-> +int __acpi_device_add(struct acpi_device *device,
-> +		      void (*release)(struct device *))
->  {
->  	struct acpi_device_bus_id *acpi_device_bus_id;
->  	int result;
->  
-> -	result = acpi_tie_acpi_dev(device);
-> -	if (result)
-> -		return result;
-> -
->  	/*
->  	 * Linkage
->  	 * -------
-> @@ -755,6 +746,17 @@ err_unlock:
->  	return result;
->  }
->  
-> +int acpi_device_add(struct acpi_device *adev, void (*release)(struct device *))
-> +{
-> +	int ret;
-> +
-> +	ret = acpi_tie_acpi_dev(adev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return __acpi_device_add(adev, release);
-> +}
-> +
->  /* --------------------------------------------------------------------------
->                                   Device Enumeration
->     -------------------------------------------------------------------------- */
-> @@ -1681,14 +1683,10 @@ static void acpi_scan_dep_init(struct ac
->  {
->  	struct acpi_dep_data *dep;
->  
-> -	mutex_lock(&acpi_dep_list_lock);
-> -
->  	list_for_each_entry(dep, &acpi_dep_list, node) {
->  		if (dep->consumer == adev->handle)
->  			adev->dep_unmet++;
->  	}
-> -
-> -	mutex_unlock(&acpi_dep_list_lock);
->  }
->  
->  void acpi_device_add_finalize(struct acpi_device *device)
-> @@ -1707,6 +1705,7 @@ static int acpi_add_single_object(struct
->  				  acpi_handle handle, int type, bool dep_init)
->  {
->  	struct acpi_device *device;
-> +	bool release_dep_lock = false;
->  	int result;
->  
->  	device = kzalloc(sizeof(struct acpi_device), GFP_KERNEL);
-> @@ -1720,16 +1719,31 @@ static int acpi_add_single_object(struct
->  	 * this must be done before the get power-/wakeup_dev-flags calls.
->  	 */
->  	if (type == ACPI_BUS_TYPE_DEVICE || type == ACPI_BUS_TYPE_PROCESSOR) {
-> -		if (dep_init)
-> +		if (dep_init) {
-> +			mutex_lock(&acpi_dep_list_lock);
-> +			/*
-> +			 * Hold the lock until the acpi_tie_acpi_dev() call
-> +			 * below to prevent concurrent acpi_scan_clear_dep()
-> +			 * from deleting a dependency list entry without
-> +			 * updating dep_unmet for the device.
-> +			 */
-> +			release_dep_lock = true;
->  			acpi_scan_dep_init(device);
-> -
-> +		}
->  		acpi_scan_init_status(device);
->  	}
->  
->  	acpi_bus_get_power_flags(device);
->  	acpi_bus_get_wakeup_device_flags(device);
->  
-> -	result = acpi_device_add(device, acpi_device_release);
-> +	result = acpi_tie_acpi_dev(device);
-> +
-> +	if (release_dep_lock)
-> +		mutex_unlock(&acpi_dep_list_lock);
-> +
-> +	if (!result)
-> +		result = __acpi_device_add(device, acpi_device_release);
-> +
->  	if (result) {
->  		acpi_device_release(&device->dev);
->  		return result;
-> 
-> 
-> 
-
+-- 
+With Best Regards,
+Andy Shevchenko
