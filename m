@@ -2,137 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E29FC3A99A4
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 13:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D628F3A9A9A
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 14:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232646AbhFPL4r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Jun 2021 07:56:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46388 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229713AbhFPL4q (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Jun 2021 07:56:46 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9835AC06175F
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Jun 2021 04:54:39 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id u18so1015591plc.0
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Jun 2021 04:54:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=LO5EJonCZ/d5EwONfrhTxGMVZOU8PfqKuC1jlKIm6KY=;
-        b=VB0iWCJfLn2XcQfTxTRN/CEHfkX0u3u7T9uUKaOKeUl2KexASUw/FNEg/owhnh7jcn
-         XLfyljKXu3Tp61NHNzQtHuuPiWtdICkoxV6qceNWWsqJbvaxlUv2rmDvy+I86SICSEPC
-         OhkzIelxRmSMHueQ4EyK1JssvE+n5ymmByD3kP9IWDMGMbuV5xrDmgnSiostd2OoFtfK
-         7JOcmEzIU8jlKDqU02dMq1/i5OVGJFG+aBurXRrYz6EjV3S3RBop5J3NxGsRA47lbbmT
-         HJwe5S9aqQ7EWztiDalPGuUXYv0yzYlBm344RVcyx0YTsxsLf1RIpv8+NAD1l9nBFi8P
-         zvQg==
+        id S229456AbhFPMmO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Jun 2021 08:42:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:27972 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232661AbhFPMmO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 16 Jun 2021 08:42:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1623847208;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ubsBv6f8Gfa2qgRyhsGa5AFvRPZ+U40JlVZfwTYe0kE=;
+        b=h6rWg5NhVeANVTs2qf7xqyq7kb25aOk1maz3eUuAR3gSWXaXLaGUH84G88Yt+1DFyWkGVy
+        LU//ktLUv6xR+K1E1KOYXQh83+F5xIUL8H4icf4Ppf7il2S385WEnAV6l1ddRmwwkhg+ZR
+        pIY1OchDkfLEsTRlpwn1d05qh+jkBKk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-246-GjgSbY-EO72kaRyidz3v-w-1; Wed, 16 Jun 2021 08:40:06 -0400
+X-MC-Unique: GjgSbY-EO72kaRyidz3v-w-1
+Received: by mail-wm1-f69.google.com with SMTP id t11-20020a05600c198bb02901bf95ba8642so1254775wmq.3
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Jun 2021 05:40:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=LO5EJonCZ/d5EwONfrhTxGMVZOU8PfqKuC1jlKIm6KY=;
-        b=l7Awd+87+eAI1AzMKqbG4mPGfGTMra8GM/0ntJsHUmUkvFhFSip6pleDgExZVw2RIv
-         dUFrBUuCHKBHWq2GVL0iuodhaFfA3Vtk59vsATDdmPpIqxcZcR0GE5Yt/nZaR7JKkDex
-         xrIHs7568T7NA18ChWoUzkcRxF8JjBMMFTciW0HHhCXrqrJVFmoYboXZO50g7Ke+/fsn
-         LcGOg/GZFQru6AOA1oow6a3YIVhq0QCEerQ5vda1ntXaTcqFLPAR/RUVR35+iHJdfjuy
-         vzsXyzrlkqEPaYjDjZaUisuYEUKAY8LoG/LknHQCcRnff+uJzlP5HGSUSZ5QeWe0plQb
-         dtwQ==
-X-Gm-Message-State: AOAM533flt1OK41CC++r2+kIFZsqeomBuYOV5FYhk0E5g3vvcrEknKT7
-        YswhvrFNzrUDvPaEF15x6u4p8g==
-X-Google-Smtp-Source: ABdhPJyYd3VQzt+tqYJ+n4o4+TQazujKn+PEyQYXSaGhFBXLJnG6eDoXfU6zgGPLGiB8Uk5i2qK6zA==
-X-Received: by 2002:a17:902:f704:b029:11a:cdee:490 with SMTP id h4-20020a170902f704b029011acdee0490mr8551076plo.37.1623844479074;
-        Wed, 16 Jun 2021 04:54:39 -0700 (PDT)
-Received: from localhost ([136.185.134.182])
-        by smtp.gmail.com with ESMTPSA id w7sm2019453pjy.11.2021.06.16.04.54.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jun 2021 04:54:38 -0700 (PDT)
-Date:   Wed, 16 Jun 2021 17:24:36 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Vincent Guittot <vincent.guittot@linaro.org>
-Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
-        Ionela Voinescu <ionela.voinescu@arm.com>,
-        Ben Segall <bsegall@google.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>,
-        Qian Cai <quic_qiancai@quicinc.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH V2 0/3] cpufreq: cppc: Add support for frequency
- invariance
-Message-ID: <20210616115436.5mm64htpbyxrnpzg@vireshk-i7>
-References: <cover.1623825725.git.viresh.kumar@linaro.org>
- <CAKfTPtCawkocU+ssGi9hz10tMGYib_pfiFGXNMiF1HGYWinMdw@mail.gmail.com>
+        h=x-gm-message-state:reply-to:subject:to:cc:references:from
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding:content-language;
+        bh=ubsBv6f8Gfa2qgRyhsGa5AFvRPZ+U40JlVZfwTYe0kE=;
+        b=o0n3WVia0dhfV0ahhLP9SLJgB0eAreM7JSno4fxtyjEk7RFrs8DnRBXuXptpujv9d/
+         fKQmAXKEwEi14qyAuNNUtd8s/XVrsYgNC2K7oLac4qOr1fbh5wz0Q8lVJA/t21dsDvVD
+         PEjyQgW0wY6laIj5W0MmDyGvx5fgMiUrG3yIxwAhvtw++AmHYx31M8uKLUge0SQM5e2C
+         3XAabH626d7LTakwC02c70/J+vDBJ1bKQRm1TmxQzGrDSUKIKl2TUbHe3n/7wC4GRcnK
+         RfX+AvYLs48ZbzeM3V4LjZUCHWacQoCeT1ByghHNqvDT/dhmRNYzYPBcVXuKRbJmJZFB
+         mKcg==
+X-Gm-Message-State: AOAM531QV2k29TNvoOLWyk8s7KqKTZwwAzzfeocoiHLCv0Gp3pwej5/n
+        aRXSMapBG/KcQ/o4EnDMJ79zenFTuFGEV5W9WJs30xwqAAAdtTXjcIEtcs6+O48qJgBsgNOuk/U
+        SWwbwOv+uaYoslABTApM8pQ==
+X-Received: by 2002:a5d:59af:: with SMTP id p15mr5235715wrr.292.1623847205678;
+        Wed, 16 Jun 2021 05:40:05 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJy5WQBLU4IKG9p3xxW0FVoOol8q9XU19Rj2M+rLCk3pLwV7dw9cSLzoXZeV3mgmVA67Soicyw==
+X-Received: by 2002:a5d:59af:: with SMTP id p15mr5235693wrr.292.1623847205520;
+        Wed, 16 Jun 2021 05:40:05 -0700 (PDT)
+Received: from [192.168.43.95] ([37.172.247.238])
+        by smtp.gmail.com with ESMTPSA id v15sm4914297wmj.39.2021.06.16.05.40.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Jun 2021 05:40:04 -0700 (PDT)
+Reply-To: eric.auger@redhat.com
+Subject: Re: [PATCH v4 0/6] Add support for ACPI VIOT
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
+Cc:     will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
+        dwmw2@infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, sebastien.boeuf@intel.com,
+        robin.murphy@arm.com, kevin.tian@intel.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com
+References: <20210610075130.67517-1-jean-philippe@linaro.org>
+From:   Eric Auger <eric.auger@redhat.com>
+Message-ID: <883de842-d50a-53f9-7589-a6d20e913f2d@redhat.com>
+Date:   Wed, 16 Jun 2021 14:40:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKfTPtCawkocU+ssGi9hz10tMGYib_pfiFGXNMiF1HGYWinMdw@mail.gmail.com>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <20210610075130.67517-1-jean-philippe@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 16-06-21, 12:02, Vincent Guittot wrote:
-> I tested your branch and got the following while booting:
-> 
-> [   24.454543] zswap: loaded using pool lzo/zbud
-> [   24.454753] pstore: Using crash dump compression: deflate
-> [   24.454776] AppArmor: AppArmor sha1 policy hashing enabled
-> [   24.454784] ima: No TPM chip found, activating TPM-bypass!
-> [   24.454789] ima: Allocated hash algorithm: sha256
-> [   24.454801] ima: No architecture policies found
-> [   24.455750] pcieport 0000:0f:00.0: Adding to iommu group 0
-> [   24.893888] ------------[ cut here ]------------
-> [   24.893891] WARNING: CPU: 95 PID: 1442 at
-> drivers/cpufreq/cppc_cpufreq.c:123 cppc_scale_freq_workfn+0xc8/0xf8
-> [   24.893901] Modules linked in:
-> [   24.893906] CPU: 95 PID: 1442 Comm: cppc_fie Not tainted 5.13.0-rc6+ #359
-> [   24.893910] Hardware name: To be filled by O.E.M. Saber/Saber, BIOS
-> 0ACKL026 03/19/2019
-> [   24.893912] pstate: 20400009 (nzCv daif +PAN -UAO -TCO BTYPE=--)
-> [   24.893915] pc : cppc_scale_freq_workfn+0xc8/0xf8
-> [   24.893918] lr : cppc_scale_freq_workfn+0x5c/0xf8
-> [   24.893921] sp : ffff80003727bd90
-> [   24.893922] x29: ffff80003727bd90 x28: 0000000000000000 x27: ffff800010ec2000
-> [   24.893928] x26: ffff800010ec2000 x25: ffff8000107c3d90 x24: 0000000000000001
-> [   24.893932] x23: ffff000816244880 x22: ffff8000113f9000 x21: ffff009f825a0a80
-> [   24.893935] x20: ffff009efc394220 x19: ffff800011199000 x18: 000000000000001b
-> [   24.893939] x17: 0000000000000007 x16: 0000000000000001 x15: 00000000000000bf
-> [   24.893943] x14: 0000000000000016 x13: 000000000000029b x12: 0000000000000016
-> [   24.893946] x11: 0000000000000000 x10: 0000000000000000 x9 : ffff009efc6958c0
-> [   24.893950] x8 : ffff009efc394248 x7 : 0000000002bde780 x6 : 00000000ffffffff
-> [   24.893954] x5 : 00000000916e502a x4 : 00000000d9730e80 x3 : ffffffffffffffff
-> [   24.893958] x2 : 00000000001e8480 x1 : 00000000002625a0 x0 : 0000000000000401
-> [   24.893962] Call trace:
-> [   24.893964]  cppc_scale_freq_workfn+0xc8/0xf8
-> [   24.893967]  kthread_worker_fn+0x110/0x318
-> [   24.893971]  kthread+0xf4/0x120
-> [   24.893973]  ret_from_fork+0x10/0x18
-> [   24.893977] ---[ end trace ea6dbaf832bce3e4 ]---
+Hi Jean,
 
-Thanks Vincent.
+On 6/10/21 9:51 AM, Jean-Philippe Brucker wrote:
+> Add a driver for the ACPI VIOT table, which provides topology
+> information for para-virtual IOMMUs. Enable virtio-iommu on
+> non-devicetree platforms, including x86.
+>
+> Since v3 [1] I fixed a build bug for !CONFIG_IOMMU_API. Joerg offered to
+> take this series through the IOMMU tree, which requires Acks for patches
+> 1-3.
+>
+> You can find a QEMU implementation at [2], with extra support for
+> testing all VIOT nodes including MMIO-based endpoints and IOMMU.
+> This series is at [3].
+>
+> [1] https://lore.kernel.org/linux-iommu/20210602154444.1077006-1-jean-philippe@linaro.org/
+> [2] https://jpbrucker.net/git/qemu/log/?h=virtio-iommu/acpi
+> [3] https://jpbrucker.net/git/linux/log/?h=virtio-iommu/acpi
 
-This is triggering from cppc_scale_freq_workfn():
+I tested the series on both aarch64 and x86_64 with qemu. It works for me.
+Feel free to add my T-b.
 
-        if (WARN_ON(local_freq_scale > 1024))
+Tested-by: Eric Auger <eric.auger@redhat.com>
 
-Looks like there is something fishy about the perf calculations here
-after reading the counters, we tried to scale that in the range 0-1024
-and it came larger than that.
+Thanks
 
-Will keep you posted.
+Eric
 
--- 
-viresh
+>
+>
+> Jean-Philippe Brucker (6):
+>   ACPI: arm64: Move DMA setup operations out of IORT
+>   ACPI: Move IOMMU setup code out of IORT
+>   ACPI: Add driver for the VIOT table
+>   iommu/dma: Pass address limit rather than size to
+>     iommu_setup_dma_ops()
+>   iommu/dma: Simplify calls to iommu_setup_dma_ops()
+>   iommu/virtio: Enable x86 support
+>
+>  drivers/acpi/Kconfig         |   3 +
+>  drivers/iommu/Kconfig        |   4 +-
+>  drivers/acpi/Makefile        |   2 +
+>  drivers/acpi/arm64/Makefile  |   1 +
+>  include/acpi/acpi_bus.h      |   3 +
+>  include/linux/acpi.h         |   3 +
+>  include/linux/acpi_iort.h    |  14 +-
+>  include/linux/acpi_viot.h    |  19 ++
+>  include/linux/dma-iommu.h    |   4 +-
+>  arch/arm64/mm/dma-mapping.c  |   2 +-
+>  drivers/acpi/arm64/dma.c     |  50 +++++
+>  drivers/acpi/arm64/iort.c    | 129 ++-----------
+>  drivers/acpi/bus.c           |   2 +
+>  drivers/acpi/scan.c          |  78 +++++++-
+>  drivers/acpi/viot.c          | 364 +++++++++++++++++++++++++++++++++++
+>  drivers/iommu/amd/iommu.c    |   9 +-
+>  drivers/iommu/dma-iommu.c    |  17 +-
+>  drivers/iommu/intel/iommu.c  |  10 +-
+>  drivers/iommu/virtio-iommu.c |   8 +
+>  MAINTAINERS                  |   8 +
+>  20 files changed, 580 insertions(+), 150 deletions(-)
+>  create mode 100644 include/linux/acpi_viot.h
+>  create mode 100644 drivers/acpi/arm64/dma.c
+>  create mode 100644 drivers/acpi/viot.c
+>
+
