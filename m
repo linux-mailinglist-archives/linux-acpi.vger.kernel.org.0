@@ -2,131 +2,180 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2F5C3A905A
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 06:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FE9D3A9249
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 08:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbhFPENs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Jun 2021 00:13:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54934 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbhFPENr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Jun 2021 00:13:47 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39827C061574
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Jun 2021 21:11:42 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id x196so1060736oif.10
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Jun 2021 21:11:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=aVE95PNmkfCHpI5uXPBdM/5Mvs46rQ7fDVdDbS5iwko=;
-        b=SpIr/g9c+AY3zVTkCu1+W65emEbBORv+3IAuCVUKztdX4qUaUG+vJDVkNIU/onNtu0
-         dmmENUekxBw/XCDDIe2Us8UBuHcxPtElaU+jMs2QWa484nrP6Ex1wPgDqMxWbZYajgHY
-         3asnEswfv52MsvpWd0hMTNFNgvsZthUexFTSkGvGJBqganuVmU4ug1Ahk6LUOl6X/lrS
-         KDwCprqKzZFRngwwVOOXk0+dUAlplV8gO/Yp34r273K6tuAmKOPqbRMFWUEGD1GPqaaR
-         dIJ6e44GueTA/YHHV+1jszeY60ty1O+WWkMajmYrVm9wOFqmhQGt32EUhjN0gkehaKsU
-         fK5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=aVE95PNmkfCHpI5uXPBdM/5Mvs46rQ7fDVdDbS5iwko=;
-        b=G/RzbTiJjr/5w+4JaGzdDm+xTpe8GE749Kea83SgmZFfxNFjJe8FGfolcrbKzMoEVO
-         OaH16dfEkhv2e3Hf+rjBK1pnzmw710MBJIhQCA3jyV+VBh8yv2KUfol4XMxZPMHWrWOQ
-         NH3ovahwDY8Kz1MZ6i4lKUpEB91a03h+MGmvEKhmV8ha3/KkbgD5+r1Nkv5gm/z7x0PU
-         bkHCKsDTnxtLuc4vX2ZKoMDW+rtGvF2FKhS8r5RM8n5L2h/8jNQSZ183R1YHCcKdpMg+
-         DQLlzGNTLwvAMxPcuspSNW+dfq6u3yzWQmEhWwg1r5VJGUZmppyKyt2F3Dvly5JTHc5t
-         vlvg==
-X-Gm-Message-State: AOAM5327fTjGEmcDsM8Fk6WltRIaLZrdjhlc8myEAtQPinWAGyUhjZ6o
-        5oIjuCY14NVwrwuvmNh2L4U=
-X-Google-Smtp-Source: ABdhPJyfbj4dKnVqHZzAGsDxKtOJdu0uX1qB6eg6rW9cqSKdO4Y3Gk+u+M4/7rDKmDj4Vs5hyRKnTg==
-X-Received: by 2002:aca:f547:: with SMTP id t68mr5565494oih.75.1623816701524;
-        Tue, 15 Jun 2021 21:11:41 -0700 (PDT)
-Received: from fedora ([2601:283:4400:c0:96c1:9c48:12a7:2c7c])
-        by smtp.gmail.com with ESMTPSA id b22sm228113oov.31.2021.06.15.21.11.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Jun 2021 21:11:41 -0700 (PDT)
-Date:   Tue, 15 Jun 2021 22:11:32 -0600
-From:   Clayton Casciato <majortomtosourcecontrol@gmail.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH] apci: sysfs: Fixed void function style code issues
-Message-ID: <YMl59Ez79goPxgW7@fedora>
-References: <20210612200910.1094351-1-majortomtosourcecontrol@gmail.com>
- <CAJZ5v0g1iO2_+Pp9j2Y366acnwfgPv9tLDH0PWFHKw+HFWULEw@mail.gmail.com>
+        id S231665AbhFPG3y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Jun 2021 02:29:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59684 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231391AbhFPG3x (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 16 Jun 2021 02:29:53 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AE9C5613BF;
+        Wed, 16 Jun 2021 06:27:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1623824867;
+        bh=HFXY5XjspzH1kzu2GrbFUWzI5z4ecY6jF7OZRuh585A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=i8M85VxHQbZ50V8fMJseWf0vWBO55h7qx/5DDF1AEmTSMWhUjzMvzzmjKrtF8AKcR
+         jwPUkMGj6skaSwKc3Nb/ClX/mf9rqCBl4EoOzg6hiQVc5LWnY4qtyfrSEJ7VphRRWH
+         KduL0CAw/YrDU6ESOYozK0J7Mwh6gXRMtkihQq/zF3LS+B2iz9xXROxs8p6G/3birc
+         rMWLHc4+eJCtsbE9xfUQ8QL3jC1cqZQSUtH6lpM1ZAmA6n8MNE4ItYkhgEns7gOcfF
+         tDqXX7qE2sdpEWYSQWyUHfCyD8Rd8Zrw4MW3EN7CUxyupE2Yrivwa8Z0A4F/HN3xgi
+         IJ4MvA1+etqjg==
+Received: by mail.kernel.org with local (Exim 4.94.2)
+        (envelope-from <mchehab@kernel.org>)
+        id 1ltP1d-004kIJ-Rv; Wed, 16 Jun 2021 08:27:45 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        coresight@lists.linaro.org, devicetree@vger.kernel.org,
+        kunit-dev@googlegroups.com, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-security-module@vger.kernel.org,
+        netdev@vger.kernel.org, x86@kernel.org
+Subject: [PATCH v2 00/29] docs: avoid using ReST :doc:`foo` tag
+Date:   Wed, 16 Jun 2021 08:27:15 +0200
+Message-Id: <cover.1623824363.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0g1iO2_+Pp9j2Y366acnwfgPv9tLDH0PWFHKw+HFWULEw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 14, 2021 at 05:30:25PM +0200, Rafael J. Wysocki wrote:
-> On Sat, Jun 12, 2021 at 10:10 PM Clayton Casciato
-> <majortomtosourcecontrol@gmail.com> wrote:
-> >
-> > Fixed coding style issues.
-> >
-> > Signed-off-by: Clayton Casciato <majortomtosourcecontrol@gmail.com>
-> > ---
-> >  drivers/acpi/sysfs.c | 8 --------
-> >  1 file changed, 8 deletions(-)
-> >
-> > diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> > index d25927195d6d..d6626aba4a6a 100644
-> > --- a/drivers/acpi/sysfs.c
-> > +++ b/drivers/acpi/sysfs.c
-> > @@ -582,8 +582,6 @@ static void delete_gpe_attr_array(void)
-> >                 kfree(counter_attrs);
-> >         }
-> >         kfree(all_attrs);
-> > -
-> > -       return;
-> >  }
-> >
-> >  static void gpe_count(u32 gpe_number)
-> > @@ -598,8 +596,6 @@ static void gpe_count(u32 gpe_number)
-> >         else
-> >                 all_counters[num_gpes + ACPI_NUM_FIXED_EVENTS +
-> >                              COUNT_ERROR].count++;
-> > -
-> > -       return;
-> >  }
-> >
-> >  static void fixed_event_count(u32 event_number)
-> > @@ -612,8 +608,6 @@ static void fixed_event_count(u32 event_number)
-> >         else
-> >                 all_counters[num_gpes + ACPI_NUM_FIXED_EVENTS +
-> >                              COUNT_ERROR].count++;
-> > -
-> > -       return;
-> >  }
-> >
-> >  static void acpi_global_event_handler(u32 event_type, acpi_handle device,
-> > @@ -914,8 +908,6 @@ static void __exit interrupt_stats_exit(void)
-> >         sysfs_remove_group(acpi_kobj, &interrupt_stats_attr_group);
-> >
-> >         delete_gpe_attr_array();
-> > -
-> > -       return;
-> >  }
-> >
-> >  static ssize_t
-> > --
-> 
-> Applied as 5.14 material with edited subject and changelog.
-> 
-> Thanks!
+(Maintainers bcc, to avoid too many recipient troubles)
 
-I'm not sure how to find the edits.
-Did you note them for transparency or would you recommend I do something
-different in the future?
+As discussed at:
+	https://lore.kernel.org/linux-doc/871r9k6rmy.fsf@meer.lwn.net/
 
-These are my first patches and any feedback you'd be willing to provide
-would be appreciated.
+It is better to avoid using :doc:`foo` to refer to Documentation/foo.rst, as the
+automarkup.py extension should handle it automatically, on most cases.
 
-Thank you, Rafael!
+There are a couple of exceptions to this rule:
+
+1. when :doc:  tag is used to point to a kernel-doc DOC: markup;
+2. when it is used with a named tag, e. g. :doc:`some name <foo>`;
+
+On this series:
+
+Patch 1 manually adjust the references inside driver-api/pm/devices.rst,
+as there it uses :file:`foo` to refer to some Documentation/ files;
+
+Patch 2 converts a table at Documentation/dev-tools/kunit/api/index.rst
+into a list, carefully avoiding the 
+
+The remaining patches convert the other occurrences via a replace script.
+They were manually edited, in order to honour 80-columns where possible.
+
+This series based on docs-next branch. In order to avoid merge conflicts,
+I rebased it internally against yesterday's linux-next, dropping a patch
+and a hunk that would have caused conflicts there.
+
+I'll re-send the remaining patch (plus another patch) with conflicting
+changes, together with any other doc:`filename` reference that might
+still be upstream by 5.14-rc1.
+
+---
+
+v2:
+   - dropped media patches (as I merged via my own tree);
+   - removed one patch that would conflict at linux-next (adm1177.rst);
+   - removed one hunk fron kunit patch that would also conflict at
+     linux-next.
+
+Mauro Carvalho Chehab (29):
+  docs: devices.rst: better reference documentation docs
+  docs: dev-tools: kunit: don't use a table for docs name
+  docs: admin-guide: pm: avoid using ReST :doc:`foo` markup
+  docs: admin-guide: hw-vuln: avoid using ReST :doc:`foo` markup
+  docs: admin-guide: sysctl: avoid using ReST :doc:`foo` markup
+  docs: block: biodoc.rst: avoid using ReST :doc:`foo` markup
+  docs: bpf: bpf_lsm.rst: avoid using ReST :doc:`foo` markup
+  docs: core-api: avoid using ReST :doc:`foo` markup
+  docs: dev-tools: testing-overview.rst: avoid using ReST :doc:`foo`
+    markup
+  docs: dev-tools: kunit: avoid using ReST :doc:`foo` markup
+  docs: devicetree: bindings: submitting-patches.rst: avoid using ReST
+    :doc:`foo` markup
+  docs: doc-guide: avoid using ReST :doc:`foo` markup
+  docs: driver-api: avoid using ReST :doc:`foo` markup
+  docs: driver-api: gpio: using-gpio.rst: avoid using ReST :doc:`foo`
+    markup
+  docs: driver-api: surface_aggregator: avoid using ReST :doc:`foo`
+    markup
+  docs: driver-api: usb: avoid using ReST :doc:`foo` markup
+  docs: firmware-guide: acpi: avoid using ReST :doc:`foo` markup
+  docs: i2c: avoid using ReST :doc:`foo` markup
+  docs: kernel-hacking: hacking.rst: avoid using ReST :doc:`foo` markup
+  docs: networking: devlink: avoid using ReST :doc:`foo` markup
+  docs: PCI: endpoint: pci-endpoint-cfs.rst: avoid using ReST :doc:`foo`
+    markup
+  docs: PCI: pci.rst: avoid using ReST :doc:`foo` markup
+  docs: process: submitting-patches.rst: avoid using ReST :doc:`foo`
+    markup
+  docs: security: landlock.rst: avoid using ReST :doc:`foo` markup
+  docs: trace: coresight: coresight.rst: avoid using ReST :doc:`foo`
+    markup
+  docs: trace: ftrace.rst: avoid using ReST :doc:`foo` markup
+  docs: userspace-api: landlock.rst: avoid using ReST :doc:`foo` markup
+  docs: virt: kvm: s390-pv-boot.rst: avoid using ReST :doc:`foo` markup
+  docs: x86: avoid using ReST :doc:`foo` markup
+
+ .../PCI/endpoint/pci-endpoint-cfs.rst         |  2 +-
+ Documentation/PCI/pci.rst                     |  6 +--
+ .../special-register-buffer-data-sampling.rst |  3 +-
+ Documentation/admin-guide/pm/intel_idle.rst   | 16 +++++---
+ Documentation/admin-guide/pm/intel_pstate.rst |  9 +++--
+ Documentation/admin-guide/sysctl/abi.rst      |  2 +-
+ Documentation/admin-guide/sysctl/kernel.rst   | 37 ++++++++++---------
+ Documentation/block/biodoc.rst                |  2 +-
+ Documentation/bpf/bpf_lsm.rst                 | 13 ++++---
+ .../core-api/bus-virt-phys-mapping.rst        |  2 +-
+ Documentation/core-api/dma-api.rst            |  5 ++-
+ Documentation/core-api/dma-isa-lpc.rst        |  2 +-
+ Documentation/core-api/index.rst              |  4 +-
+ Documentation/dev-tools/kunit/api/index.rst   |  8 ++--
+ Documentation/dev-tools/kunit/faq.rst         |  2 +-
+ Documentation/dev-tools/kunit/index.rst       | 14 +++----
+ Documentation/dev-tools/kunit/start.rst       |  4 +-
+ Documentation/dev-tools/kunit/tips.rst        |  5 ++-
+ Documentation/dev-tools/kunit/usage.rst       |  8 ++--
+ Documentation/dev-tools/testing-overview.rst  | 16 ++++----
+ .../bindings/submitting-patches.rst           | 11 +++---
+ Documentation/doc-guide/contributing.rst      |  8 ++--
+ Documentation/driver-api/gpio/using-gpio.rst  |  4 +-
+ Documentation/driver-api/ioctl.rst            |  2 +-
+ Documentation/driver-api/pm/devices.rst       |  8 ++--
+ .../surface_aggregator/clients/index.rst      |  3 +-
+ .../surface_aggregator/internal.rst           | 15 ++++----
+ .../surface_aggregator/overview.rst           |  6 ++-
+ Documentation/driver-api/usb/dma.rst          |  6 +--
+ .../acpi/dsd/data-node-references.rst         |  3 +-
+ .../firmware-guide/acpi/dsd/graph.rst         |  2 +-
+ .../firmware-guide/acpi/enumeration.rst       |  7 ++--
+ Documentation/i2c/instantiating-devices.rst   |  2 +-
+ Documentation/i2c/old-module-parameters.rst   |  3 +-
+ Documentation/i2c/smbus-protocol.rst          |  4 +-
+ Documentation/kernel-hacking/hacking.rst      |  4 +-
+ .../networking/devlink/devlink-region.rst     |  2 +-
+ .../networking/devlink/devlink-trap.rst       |  4 +-
+ Documentation/process/submitting-patches.rst  | 32 ++++++++--------
+ Documentation/security/landlock.rst           |  3 +-
+ Documentation/trace/coresight/coresight.rst   |  8 ++--
+ Documentation/trace/ftrace.rst                |  2 +-
+ Documentation/userspace-api/landlock.rst      | 11 +++---
+ Documentation/virt/kvm/s390-pv-boot.rst       |  2 +-
+ Documentation/x86/boot.rst                    |  4 +-
+ Documentation/x86/mtrr.rst                    |  2 +-
+ 46 files changed, 171 insertions(+), 147 deletions(-)
+
+-- 
+2.31.1
+
+
