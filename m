@@ -2,50 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 961793AA0FA
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 18:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECA313AA101
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 18:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232646AbhFPQP1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Jun 2021 12:15:27 -0400
-Received: from mga09.intel.com ([134.134.136.24]:45566 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232231AbhFPQP1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 16 Jun 2021 12:15:27 -0400
-IronPort-SDR: eq2kV3cKSVqfhWCRBtW7Q41BvUPBfIHve7kTjhhZg2s++TLUbuQl24OWWDoaM1/aKZKyzIC5rr
- 6PVznQIspNgg==
-X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="206165341"
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; 
-   d="scan'208";a="206165341"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2021 09:08:19 -0700
-IronPort-SDR: dpI9sMRx7HXt1pcIXScj9EafgJBFF+0nMCxi5eMbtG7q7VoUt/DzQdri+ok+mgMLALokxFYSei
- WFZ6AAWIp0NQ==
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; 
-   d="scan'208";a="472080648"
-Received: from mlnelson-mobl3.amr.corp.intel.com (HELO intel.com) ([10.252.143.181])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2021 09:08:19 -0700
-Date:   Wed, 16 Jun 2021 09:08:16 -0700
-From:   Ben Widawsky <ben.widawsky@intel.com>
+        id S234810AbhFPQP4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Jun 2021 12:15:56 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:3256 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234636AbhFPQP4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Jun 2021 12:15:56 -0400
+Received: from fraeml741-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4G4qfJ31sPz6J9Kp;
+        Thu, 17 Jun 2021 00:00:40 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml741-chm.china.huawei.com (10.206.15.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Wed, 16 Jun 2021 18:13:48 +0200
+Received: from localhost (10.52.123.249) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 16 Jun
+ 2021 17:13:47 +0100
+Date:   Wed, 16 Jun 2021 17:13:40 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Alison Schofield <alison.schofield@intel.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
+CC:     Ben Widawsky <ben.widawsky@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
         Ira Weiny <ira.weiny@intel.com>,
         Vishal Verma <vishal.l.verma@intel.com>,
-        linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+        <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] cxl/acpi: Add the Host Bridge base address to CXL
- port objects
-Message-ID: <20210616160816.ollsqeyhpnjm5oq2@intel.com>
-References: <cover.1623800340.git.alison.schofield@intel.com>
- <e841b0283edcc281ff31e98e4d3512be3a131c6a.1623800340.git.alison.schofield@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Subject: Re: [PATCH v2 1/2] cxl/acpi: Add the Host Bridge base address to
+ CXL port objects
+Message-ID: <20210616171340.00005295@Huawei.com>
 In-Reply-To: <e841b0283edcc281ff31e98e4d3512be3a131c6a.1623800340.git.alison.schofield@intel.com>
+References: <cover.1623800340.git.alison.schofield@intel.com>
+        <e841b0283edcc281ff31e98e4d3512be3a131c6a.1623800340.git.alison.schofield@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.123.249]
+X-ClientProxiedBy: lhreml750-chm.china.huawei.com (10.201.108.200) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 21-06-15 17:20:38, Alison Schofield wrote:
+On Tue, 15 Jun 2021 17:20:38 -0700
+Alison Schofield <alison.schofield@intel.com> wrote:
+
 > The base address for the Host Bridge port component registers is located
 > in the CXL Host Bridge Structure (CHBS) of the ACPI CXL Early Discovery
 > Table (CEDT). Retrieve the CHBS for each Host Bridge (ACPI0016 device)
@@ -54,6 +61,11 @@ On 21-06-15 17:20:38, Alison Schofield wrote:
 > Co-developed-by: Vishal Verma <vishal.l.verma@intel.com>
 > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 > Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+
+Hi Alison,
+
+A few small suggestions from me.
+
 > ---
 >  drivers/cxl/acpi.c | 105 ++++++++++++++++++++++++++++++++++++++++++---
 >  1 file changed, 99 insertions(+), 6 deletions(-)
@@ -67,32 +79,19 @@ On 21-06-15 17:20:38, Alison Schofield wrote:
 >  #include "cxl.h"
 >  
 > +static struct acpi_table_header *cedt_table;
-
-cedt_header would really be a better name. "Table" is redundant as the 't' in
-CEDT is table.
-
 > +
 > +static struct acpi_cedt_chbs *cxl_acpi_match_chbs(struct device *dev, u32 uid)
 > +{
 > +	struct acpi_cedt_chbs *chbs, *chbs_match = NULL;
 > +	acpi_size len, cur = 0;
 > +	void *cedt_base;
-
-maybe "cedt_body", or "cedt_subtables"
-
 > +	int rc = 0;
 > +
 > +	len = cedt_table->length - sizeof(*cedt_table);
 > +	cedt_base = cedt_table + 1;
-
-As per naming recommendation above, this looks really funny...
-
 > +
 > +	while (cur < len) {
 > +		struct acpi_cedt_header *c = cedt_base + cur;
-
-Okay, now I see why you may have not called the previous thing a header.
-
 > +
 > +		if (c->type != ACPI_CEDT_TYPE_CHBS) {
 > +			cur += c->length;
@@ -105,11 +104,11 @@ Okay, now I see why you may have not called the previous thing a header.
 > +			dev_err(dev, "Invalid CHBS header length: %u\n",
 > +				chbs->header.length);
 > +			rc = -EINVAL;
+
+As below, direct return would be more obvious to my eyes.
+
 > +			break;
 > +		}
-
-I'd just continue here. Maybe there will be another chbs with the correct size.
-
 > +
 > +		if (chbs->uid == uid && !chbs_match) {
 > +			chbs_match = chbs;
@@ -119,28 +118,39 @@ I'd just continue here. Maybe there will be another chbs with the correct size.
 > +
 > +		if (chbs->uid == uid && chbs_match) {
 > +			dev_err(dev, "Duplicate CHBS UIDs %u\n", uid);
+
+Do we actually care, or should we just drop out on first match?
+I don't think think there is any obligation to catch broken tables.
+
 > +			rc = -EINVAL;
+
+Direct return might be easier to follow.
+			return ERR_PTR(-EINVAL);
+
 > +			break;
 > +		}
 
-I'd also just continue here. I think if we have a match, we can just use it and
-ignore BIOS bugs. I'd probably write it like this:
+Maybe more readable as (your option is fine if you prefer it).
 
-if (chbs->uid == uid) {
-	dev_WARN_ONCE(dev, chbs_match, "Duplicate CHBS UIDs %u\n", uid);
-	chbs_match = chbs; /* last one wins */
-	cur += c->length;
-	continue;
-}
+		if (chbs->uuid != uid) {
+			cur += c->length;
+			continue;
+		}
 
-Up to you how you actually write it, but do consider not failing here.
+		if (chbs_match) {
+			dev_err(dev, "D...");
+			return ERR_PTR(-EINVAL);
+		}
+
+		chbs_match = chbs;
+
 
 > +		cur += c->length;
 > +	}
 > +	if (!chbs_match)
 > +		rc = -EINVAL;
 
-Maybe ENODEV or something like it is more appropriate?
+		return ERR_PTR(-EINVAL);
 
 > +	if (rc)
 > +		return ERR_PTR(rc);
@@ -201,6 +211,9 @@ Maybe ENODEV or something like it is more appropriate?
 > +	port = devm_cxl_add_port(host, match, dport->component_reg_phys,
 > +				 root_port);
 > +
+
+Nitpick, no blank line before error handling block.
+
 >  	if (IS_ERR(port))
 >  		return PTR_ERR(port);
 >  	dev_dbg(host, "%s: add: %s\n", dev_name(match), dev_name(&port->dev));
@@ -263,6 +276,4 @@ Maybe ENODEV or something like it is more appropriate?
 >  }
 >  
 >  static const struct acpi_device_id cxl_acpi_ids[] = {
-> -- 
-> 2.26.2
-> 
+
