@@ -2,204 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F92E3AA1B5
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 18:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 068CA3AA1F9
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 19:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230340AbhFPQqH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Jun 2021 12:46:07 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3257 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229602AbhFPQqH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Jun 2021 12:46:07 -0400
-Received: from fraeml744-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4G4rP54mvYz6K6NX;
-        Thu, 17 Jun 2021 00:34:17 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml744-chm.china.huawei.com (10.206.15.225) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 16 Jun 2021 18:43:59 +0200
-Received: from localhost (10.52.123.249) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Wed, 16 Jun
- 2021 17:43:58 +0100
-Date:   Wed, 16 Jun 2021 17:43:51 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Alison Schofield <alison.schofield@intel.com>
-CC:     Ben Widawsky <ben.widawsky@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] cxl/acpi: Use the ACPI CFMWS to create static
- decoder objects
-Message-ID: <20210616174351.000023e6@Huawei.com>
-In-Reply-To: <48f1b59105e46f04b38347fc1555bb5c8d654cff.1623800340.git.alison.schofield@intel.com>
-References: <cover.1623800340.git.alison.schofield@intel.com>
-        <48f1b59105e46f04b38347fc1555bb5c8d654cff.1623800340.git.alison.schofield@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S229741AbhFPRE7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Jun 2021 13:04:59 -0400
+Received: from foss.arm.com ([217.140.110.172]:42244 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229602AbhFPRE6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 16 Jun 2021 13:04:58 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0690C1042;
+        Wed, 16 Jun 2021 10:02:52 -0700 (PDT)
+Received: from [10.57.9.136] (unknown [10.57.9.136])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1516F3F70D;
+        Wed, 16 Jun 2021 10:02:44 -0700 (PDT)
+Subject: Re: [PATCH v4 5/6] iommu/dma: Simplify calls to iommu_setup_dma_ops()
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
+Cc:     will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
+        dwmw2@infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, eric.auger@redhat.com,
+        sebastien.boeuf@intel.com, kevin.tian@intel.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com
+References: <20210610075130.67517-1-jean-philippe@linaro.org>
+ <20210610075130.67517-6-jean-philippe@linaro.org>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <6ce5fecb-fc81-5bf1-3577-6a09437b243e@arm.com>
+Date:   Wed, 16 Jun 2021 18:02:39 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+In-Reply-To: <20210610075130.67517-6-jean-philippe@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.123.249]
-X-ClientProxiedBy: lhreml750-chm.china.huawei.com (10.201.108.200) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 15 Jun 2021 17:20:39 -0700
-Alison Schofield <alison.schofield@intel.com> wrote:
-
-> The ACPI CXL Early Discovery Table (CEDT) includes a list of CXL memory
-> resources in CXL Fixed Memory Window Structures (CFMWS). Retrieve each
-> CFMWS in the CEDT and add a cxl_decoder object to the root port (root0)
-> for each memory resource.
+On 2021-06-10 08:51, Jean-Philippe Brucker wrote:
+> dma-iommu uses the address bounds described in domain->geometry during
+> IOVA allocation. The address size parameters of iommu_setup_dma_ops()
+> are useful for describing additional limits set by the platform
+> firmware, but aren't needed for drivers that call this function from
+> probe_finalize(). The base parameter can be zero because dma-iommu
+> already removes the first IOVA page, and the limit parameter can be
+> U64_MAX because it's only checked against the domain geometry. Simplify
+> calls to iommu_setup_dma_ops().
 > 
-> Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-
-LGTM
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > ---
->  drivers/cxl/acpi.c | 114 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 114 insertions(+)
+>   drivers/iommu/amd/iommu.c   |  9 +--------
+>   drivers/iommu/dma-iommu.c   |  4 +++-
+>   drivers/iommu/intel/iommu.c | 10 +---------
+>   3 files changed, 5 insertions(+), 18 deletions(-)
 > 
-> diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-> index b6d9cd45428c..e3aa356d4dcd 100644
-> --- a/drivers/cxl/acpi.c
-> +++ b/drivers/cxl/acpi.c
-> @@ -8,8 +8,120 @@
->  #include <linux/pci.h>
->  #include "cxl.h"
->  
-> +/* Encode defined in CXL 2.0 8.2.5.12.7 HDM Decoder Control Register */
-> +#define CFMWS_INTERLEAVE_WAYS(x)	(1 << (x)->interleave_ways)
-> +#define CFMWS_INTERLEAVE_GRANULARITY(x)	((x)->granularity + 8)
-> +
->  static struct acpi_table_header *cedt_table;
->  
-> +static unsigned long cfmws_to_decoder_flags(int restrictions)
-> +{
-> +	unsigned long flags = 0;
-> +
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE2)
-> +		flags |= CXL_DECODER_F_TYPE2;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE3)
-> +		flags |= CXL_DECODER_F_TYPE3;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE)
-> +		flags |= CXL_DECODER_F_RAM;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_PMEM)
-> +		flags |= CXL_DECODER_F_PMEM;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_FIXED)
-> +		flags |= CXL_DECODER_F_LOCK;
-> +
-> +	return flags;
-> +}
-> +
-> +static int cxl_acpi_cfmws_verify(struct device *dev,
-> +				 struct acpi_cedt_cfmws *cfmws)
-> +{
-> +	int expected_len;
-> +
-> +	if (cfmws->interleave_arithmetic != ACPI_CEDT_CFMWS_ARITHMETIC_MODULO) {
-> +		dev_err(dev, "CFMWS Unsupported Interleave Arithmetic\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!IS_ALIGNED(cfmws->base_hpa, SZ_256M)) {
-> +		dev_err(dev, "CFMWS Base HPA not 256MB aligned\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!IS_ALIGNED(cfmws->window_size, SZ_256M)) {
-> +		dev_err(dev, "CFMWS Window Size not 256MB aligned\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	expected_len = struct_size((cfmws), interleave_targets,
-> +				   CFMWS_INTERLEAVE_WAYS(cfmws));
-> +
-> +	if (expected_len != cfmws->header.length) {
-> +		dev_err(dev, "CFMWS interleave ways and targets mismatch\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void cxl_add_cfmws_decoders(struct device *dev,
-> +				   struct cxl_port *root_port)
-> +{
-> +	struct acpi_cedt_cfmws *cfmws;
-> +	struct cxl_decoder *cxld;
-> +	acpi_size len, cur = 0;
-> +	void *cedt_base;
-> +	int rc;
-> +
-> +	len = cedt_table->length - sizeof(*cedt_table);
-> +	cedt_base = cedt_table + 1;
-> +
-> +	while (cur < len) {
-> +		struct acpi_cedt_header *c = cedt_base + cur;
-> +
-> +		if (c->type != ACPI_CEDT_TYPE_CFMWS) {
-> +			cur += c->length;
-> +			continue;
-> +		}
-> +
-> +		cfmws = cedt_base + cur;
-> +
-> +		if (cfmws->header.length < sizeof(*cfmws)) {
-> +			dev_err(dev, "Invalid CFMWS header length %u\n",
-> +				cfmws->header.length);
-> +			dev_err(dev, "Failed to add decoders\n");
-> +			return;
-> +		}
-> +
-> +		rc = cxl_acpi_cfmws_verify(dev, cfmws);
-> +		if (rc) {
-> +			dev_err(dev, "CFMWS range %#llx-%#llx not registered\n",
-> +				cfmws->base_hpa, cfmws->base_hpa +
-> +				cfmws->window_size - 1);
-> +			cur += c->length;
-> +			continue;
-> +		}
-> +
-> +		cxld = devm_cxl_add_decoder(dev, root_port,
-> +				CFMWS_INTERLEAVE_WAYS(cfmws),
-> +				cfmws->base_hpa, cfmws->window_size,
-> +				CFMWS_INTERLEAVE_WAYS(cfmws),
-> +				CFMWS_INTERLEAVE_GRANULARITY(cfmws),
-> +				CXL_DECODER_EXPANDER,
-> +				cfmws_to_decoder_flags(cfmws->restrictions));
-> +
-> +		if (IS_ERR(cxld)) {
-> +			dev_err(dev, "Failed to add decoder for %#llx-%#llx\n",
-> +				cfmws->base_hpa, cfmws->base_hpa +
-> +				cfmws->window_size - 1);
-> +		} else {
-> +			dev_dbg(dev, "add: %s range %#llx-%#llx\n",
-> +				dev_name(&cxld->dev), cfmws->base_hpa,
-> +				 cfmws->base_hpa + cfmws->window_size - 1);
-> +		}
-> +		cur += c->length;
-> +	}
-> +}
-> +
->  static struct acpi_cedt_chbs *cxl_acpi_match_chbs(struct device *dev, u32 uid)
->  {
->  	struct acpi_cedt_chbs *chbs, *chbs_match = NULL;
-> @@ -251,6 +363,8 @@ static int cxl_acpi_probe(struct platform_device *pdev)
->  	if (rc)
->  		goto out;
->  
-> +	cxl_add_cfmws_decoders(host, root_port);
-> +
->  	/*
->  	 * Root level scanned with host-bridge as dports, now scan host-bridges
->  	 * for their role as CXL uports to their CXL-capable PCIe Root Ports.
+> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+> index 94b96d81fcfd..d3123bc05c08 100644
+> --- a/drivers/iommu/amd/iommu.c
+> +++ b/drivers/iommu/amd/iommu.c
+> @@ -1708,14 +1708,7 @@ static struct iommu_device *amd_iommu_probe_device(struct device *dev)
+>   
+>   static void amd_iommu_probe_finalize(struct device *dev)
+>   {
+> -	struct iommu_domain *domain;
+> -
+> -	/* Domains are initialized for this device - have a look what we ended up with */
+> -	domain = iommu_get_domain_for_dev(dev);
+> -	if (domain->type == IOMMU_DOMAIN_DMA)
+> -		iommu_setup_dma_ops(dev, IOVA_START_PFN << PAGE_SHIFT, U64_MAX);
+> -	else
+> -		set_dma_ops(dev, NULL);
+> +	iommu_setup_dma_ops(dev, 0, U64_MAX);
+>   }
+>   
+>   static void amd_iommu_release_device(struct device *dev)
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index c62e19bed302..175f8eaeb5b3 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -1322,7 +1322,9 @@ void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 dma_limit)
+>   	if (domain->type == IOMMU_DOMAIN_DMA) {
+>   		if (iommu_dma_init_domain(domain, dma_base, dma_limit, dev))
+>   			goto out_err;
+> -		dev->dma_ops = &iommu_dma_ops;
+> +		set_dma_ops(dev, &iommu_dma_ops);
+> +	} else {
+> +		set_dma_ops(dev, NULL);
 
+I'm not keen on moving this here, since iommu-dma only knows that its 
+own ops are right for devices it *is* managing; it can't assume any 
+particular ops are appropriate for devices it isn't. The idea here is 
+that arch_setup_dma_ops() may have already set the appropriate ops for 
+the non-IOMMU case, so if the default domain type is passthrough then we 
+leave those in place.
+
+For example, I do still plan to revisit my conversion of arch/arm 
+someday, at which point I'd have to undo this for that reason.
+
+Simplifying the base and size arguments is of course fine, but TBH I'd 
+say rip the whole bloody lot out of the arch_setup_dma_ops() flow now. 
+It's a considerable faff passing them around for nothing but a tenuous 
+sanity check in iommu_dma_init_domain(), and now that dev->dma_range_map 
+is a common thing we should expect that to give us any relevant 
+limitations if we even still care.
+
+That said, those are all things which can be fixed up later if the 
+series is otherwise ready to go and there's still a chance of landing it 
+for 5.14. If you do have any other reason to respin, then I think the 
+x86 probe_finalize functions simply want an unconditional 
+set_dma_ops(dev, NULL) before the iommu_setup_dma_ops() call.
+
+Cheers,
+Robin.
+
+>   	}
+>   
+>   	return;
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index 85f18342603c..8d866940692a 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -5165,15 +5165,7 @@ static void intel_iommu_release_device(struct device *dev)
+>   
+>   static void intel_iommu_probe_finalize(struct device *dev)
+>   {
+> -	dma_addr_t base = IOVA_START_PFN << VTD_PAGE_SHIFT;
+> -	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
+> -	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
+> -
+> -	if (domain && domain->type == IOMMU_DOMAIN_DMA)
+> -		iommu_setup_dma_ops(dev, base,
+> -				    __DOMAIN_MAX_ADDR(dmar_domain->gaw));
+> -	else
+> -		set_dma_ops(dev, NULL);
+> +	iommu_setup_dma_ops(dev, 0, U64_MAX);
+>   }
+>   
+>   static void intel_iommu_get_resv_regions(struct device *device,
+> 
