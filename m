@@ -2,46 +2,46 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE9D3A9249
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 08:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 613833A9271
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 08:28:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231665AbhFPG3y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Jun 2021 02:29:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59684 "EHLO mail.kernel.org"
+        id S231975AbhFPGaM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Jun 2021 02:30:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60180 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231391AbhFPG3x (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 16 Jun 2021 02:29:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AE9C5613BF;
-        Wed, 16 Jun 2021 06:27:47 +0000 (UTC)
+        id S231657AbhFPG3y (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 16 Jun 2021 02:29:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7E09A6140F;
+        Wed, 16 Jun 2021 06:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623824867;
-        bh=HFXY5XjspzH1kzu2GrbFUWzI5z4ecY6jF7OZRuh585A=;
-        h=From:To:Cc:Subject:Date:From;
-        b=i8M85VxHQbZ50V8fMJseWf0vWBO55h7qx/5DDF1AEmTSMWhUjzMvzzmjKrtF8AKcR
-         jwPUkMGj6skaSwKc3Nb/ClX/mf9rqCBl4EoOzg6hiQVc5LWnY4qtyfrSEJ7VphRRWH
-         KduL0CAw/YrDU6ESOYozK0J7Mwh6gXRMtkihQq/zF3LS+B2iz9xXROxs8p6G/3birc
-         rMWLHc4+eJCtsbE9xfUQ8QL3jC1cqZQSUtH6lpM1ZAmA6n8MNE4ItYkhgEns7gOcfF
-         tDqXX7qE2sdpEWYSQWyUHfCyD8Rd8Zrw4MW3EN7CUxyupE2Yrivwa8Z0A4F/HN3xgi
-         IJ4MvA1+etqjg==
+        s=k20201202; t=1623824868;
+        bh=B5lTEnXkGEyVgmsK8p6BhCFjJdgDkkDfTb1jiWTpZPs=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=gafOlhgjRhVyNH90XnJj8SG7CJs2eqUjt2tE6b8W0glg9tYsMP5cEAIAVVWDA0UdL
+         rih//xbEUWgjlzl1GCY5gEHvAE6ROzHC7t6Bktx/HWnLrLtBzMwt3ywvmto+dD8/UY
+         Fm2dPm8TwEpKfjSO2eirQjP1CjuKRtqQdAF2EvcfXUeogdDL08SH7H8ePuL1U0cHq5
+         Swz/p8cdy/0A/v6onpl1UPrfan50B76M9LBrRwCbvQngo6wgEC8kvbCCja96UrExeu
+         c19qWgtzQN2MDxSbwEU54sVxXdyx3toV6JFK9fpEFMq4dPQO8e5Zsw3g692f+5zjdo
+         t+m07Ve8x0VyA==
 Received: by mail.kernel.org with local (Exim 4.94.2)
         (envelope-from <mchehab@kernel.org>)
-        id 1ltP1d-004kIJ-Rv; Wed, 16 Jun 2021 08:27:45 +0200
+        id 1ltP1e-004kJO-OO; Wed, 16 Jun 2021 08:27:46 +0200
 From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        coresight@lists.linaro.org, devicetree@vger.kernel.org,
-        kunit-dev@googlegroups.com, kvm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-security-module@vger.kernel.org,
-        netdev@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v2 00/29] docs: avoid using ReST :doc:`foo` tag
-Date:   Wed, 16 Jun 2021 08:27:15 +0200
-Message-Id: <cover.1623824363.git.mchehab+huawei@kernel.org>
+        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 17/29] docs: firmware-guide: acpi: avoid using ReST :doc:`foo` markup
+Date:   Wed, 16 Jun 2021 08:27:32 +0200
+Message-Id: <7162043c18f1ea96c446b332400e44e8087ba142.1623824363.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <cover.1623824363.git.mchehab+huawei@kernel.org>
+References: <cover.1623824363.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
@@ -49,133 +49,65 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-(Maintainers bcc, to avoid too many recipient troubles)
+The :doc:`foo` tag is auto-generated via automarkup.py.
+So, use the filename at the sources, instead of :doc:`foo`.
 
-As discussed at:
-	https://lore.kernel.org/linux-doc/871r9k6rmy.fsf@meer.lwn.net/
-
-It is better to avoid using :doc:`foo` to refer to Documentation/foo.rst, as the
-automarkup.py extension should handle it automatically, on most cases.
-
-There are a couple of exceptions to this rule:
-
-1. when :doc:  tag is used to point to a kernel-doc DOC: markup;
-2. when it is used with a named tag, e. g. :doc:`some name <foo>`;
-
-On this series:
-
-Patch 1 manually adjust the references inside driver-api/pm/devices.rst,
-as there it uses :file:`foo` to refer to some Documentation/ files;
-
-Patch 2 converts a table at Documentation/dev-tools/kunit/api/index.rst
-into a list, carefully avoiding the 
-
-The remaining patches convert the other occurrences via a replace script.
-They were manually edited, in order to honour 80-columns where possible.
-
-This series based on docs-next branch. In order to avoid merge conflicts,
-I rebased it internally against yesterday's linux-next, dropping a patch
-and a hunk that would have caused conflicts there.
-
-I'll re-send the remaining patch (plus another patch) with conflicting
-changes, together with any other doc:`filename` reference that might
-still be upstream by 5.14-rc1.
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
+ .../firmware-guide/acpi/dsd/data-node-references.rst       | 3 ++-
+ Documentation/firmware-guide/acpi/dsd/graph.rst            | 2 +-
+ Documentation/firmware-guide/acpi/enumeration.rst          | 7 ++++---
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
-v2:
-   - dropped media patches (as I merged via my own tree);
-   - removed one patch that would conflict at linux-next (adm1177.rst);
-   - removed one hunk fron kunit patch that would also conflict at
-     linux-next.
-
-Mauro Carvalho Chehab (29):
-  docs: devices.rst: better reference documentation docs
-  docs: dev-tools: kunit: don't use a table for docs name
-  docs: admin-guide: pm: avoid using ReST :doc:`foo` markup
-  docs: admin-guide: hw-vuln: avoid using ReST :doc:`foo` markup
-  docs: admin-guide: sysctl: avoid using ReST :doc:`foo` markup
-  docs: block: biodoc.rst: avoid using ReST :doc:`foo` markup
-  docs: bpf: bpf_lsm.rst: avoid using ReST :doc:`foo` markup
-  docs: core-api: avoid using ReST :doc:`foo` markup
-  docs: dev-tools: testing-overview.rst: avoid using ReST :doc:`foo`
-    markup
-  docs: dev-tools: kunit: avoid using ReST :doc:`foo` markup
-  docs: devicetree: bindings: submitting-patches.rst: avoid using ReST
-    :doc:`foo` markup
-  docs: doc-guide: avoid using ReST :doc:`foo` markup
-  docs: driver-api: avoid using ReST :doc:`foo` markup
-  docs: driver-api: gpio: using-gpio.rst: avoid using ReST :doc:`foo`
-    markup
-  docs: driver-api: surface_aggregator: avoid using ReST :doc:`foo`
-    markup
-  docs: driver-api: usb: avoid using ReST :doc:`foo` markup
-  docs: firmware-guide: acpi: avoid using ReST :doc:`foo` markup
-  docs: i2c: avoid using ReST :doc:`foo` markup
-  docs: kernel-hacking: hacking.rst: avoid using ReST :doc:`foo` markup
-  docs: networking: devlink: avoid using ReST :doc:`foo` markup
-  docs: PCI: endpoint: pci-endpoint-cfs.rst: avoid using ReST :doc:`foo`
-    markup
-  docs: PCI: pci.rst: avoid using ReST :doc:`foo` markup
-  docs: process: submitting-patches.rst: avoid using ReST :doc:`foo`
-    markup
-  docs: security: landlock.rst: avoid using ReST :doc:`foo` markup
-  docs: trace: coresight: coresight.rst: avoid using ReST :doc:`foo`
-    markup
-  docs: trace: ftrace.rst: avoid using ReST :doc:`foo` markup
-  docs: userspace-api: landlock.rst: avoid using ReST :doc:`foo` markup
-  docs: virt: kvm: s390-pv-boot.rst: avoid using ReST :doc:`foo` markup
-  docs: x86: avoid using ReST :doc:`foo` markup
-
- .../PCI/endpoint/pci-endpoint-cfs.rst         |  2 +-
- Documentation/PCI/pci.rst                     |  6 +--
- .../special-register-buffer-data-sampling.rst |  3 +-
- Documentation/admin-guide/pm/intel_idle.rst   | 16 +++++---
- Documentation/admin-guide/pm/intel_pstate.rst |  9 +++--
- Documentation/admin-guide/sysctl/abi.rst      |  2 +-
- Documentation/admin-guide/sysctl/kernel.rst   | 37 ++++++++++---------
- Documentation/block/biodoc.rst                |  2 +-
- Documentation/bpf/bpf_lsm.rst                 | 13 ++++---
- .../core-api/bus-virt-phys-mapping.rst        |  2 +-
- Documentation/core-api/dma-api.rst            |  5 ++-
- Documentation/core-api/dma-isa-lpc.rst        |  2 +-
- Documentation/core-api/index.rst              |  4 +-
- Documentation/dev-tools/kunit/api/index.rst   |  8 ++--
- Documentation/dev-tools/kunit/faq.rst         |  2 +-
- Documentation/dev-tools/kunit/index.rst       | 14 +++----
- Documentation/dev-tools/kunit/start.rst       |  4 +-
- Documentation/dev-tools/kunit/tips.rst        |  5 ++-
- Documentation/dev-tools/kunit/usage.rst       |  8 ++--
- Documentation/dev-tools/testing-overview.rst  | 16 ++++----
- .../bindings/submitting-patches.rst           | 11 +++---
- Documentation/doc-guide/contributing.rst      |  8 ++--
- Documentation/driver-api/gpio/using-gpio.rst  |  4 +-
- Documentation/driver-api/ioctl.rst            |  2 +-
- Documentation/driver-api/pm/devices.rst       |  8 ++--
- .../surface_aggregator/clients/index.rst      |  3 +-
- .../surface_aggregator/internal.rst           | 15 ++++----
- .../surface_aggregator/overview.rst           |  6 ++-
- Documentation/driver-api/usb/dma.rst          |  6 +--
- .../acpi/dsd/data-node-references.rst         |  3 +-
- .../firmware-guide/acpi/dsd/graph.rst         |  2 +-
- .../firmware-guide/acpi/enumeration.rst       |  7 ++--
- Documentation/i2c/instantiating-devices.rst   |  2 +-
- Documentation/i2c/old-module-parameters.rst   |  3 +-
- Documentation/i2c/smbus-protocol.rst          |  4 +-
- Documentation/kernel-hacking/hacking.rst      |  4 +-
- .../networking/devlink/devlink-region.rst     |  2 +-
- .../networking/devlink/devlink-trap.rst       |  4 +-
- Documentation/process/submitting-patches.rst  | 32 ++++++++--------
- Documentation/security/landlock.rst           |  3 +-
- Documentation/trace/coresight/coresight.rst   |  8 ++--
- Documentation/trace/ftrace.rst                |  2 +-
- Documentation/userspace-api/landlock.rst      | 11 +++---
- Documentation/virt/kvm/s390-pv-boot.rst       |  2 +-
- Documentation/x86/boot.rst                    |  4 +-
- Documentation/x86/mtrr.rst                    |  2 +-
- 46 files changed, 171 insertions(+), 147 deletions(-)
-
+diff --git a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+index 9b17dc77d18c..b7ad47df49de 100644
+--- a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
++++ b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+@@ -79,7 +79,8 @@ the ANOD object which is also the final target node of the reference.
+ 	    })
+ 	}
+ 
+-Please also see a graph example in :doc:`graph`.
++Please also see a graph example in
++Documentation/firmware-guide/acpi/dsd/graph.rst.
+ 
+ References
+ ==========
+diff --git a/Documentation/firmware-guide/acpi/dsd/graph.rst b/Documentation/firmware-guide/acpi/dsd/graph.rst
+index 7072db801aeb..4341299aa937 100644
+--- a/Documentation/firmware-guide/acpi/dsd/graph.rst
++++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
+@@ -174,4 +174,4 @@ References
+     referenced 2016-10-04.
+ 
+ [7] _DSD Device Properties Usage Rules.
+-    :doc:`../DSD-properties-rules`
++    Documentation/firmware-guide/acpi/DSD-properties-rules.rst
+diff --git a/Documentation/firmware-guide/acpi/enumeration.rst b/Documentation/firmware-guide/acpi/enumeration.rst
+index 9f0d5c854fa4..18074eb71860 100644
+--- a/Documentation/firmware-guide/acpi/enumeration.rst
++++ b/Documentation/firmware-guide/acpi/enumeration.rst
+@@ -339,8 +339,8 @@ a code like this::
+ There are also devm_* versions of these functions which release the
+ descriptors once the device is released.
+ 
+-See Documentation/firmware-guide/acpi/gpio-properties.rst for more information about the
+-_DSD binding related to GPIOs.
++See Documentation/firmware-guide/acpi/gpio-properties.rst for more information
++about the _DSD binding related to GPIOs.
+ 
+ MFD devices
+ ===========
+@@ -460,7 +460,8 @@ the _DSD of the device object itself or the _DSD of its ancestor in the
+ Otherwise, the _DSD itself is regarded as invalid and therefore the "compatible"
+ property returned by it is meaningless.
+ 
+-Refer to :doc:`DSD-properties-rules` for more information.
++Refer to Documentation/firmware-guide/acpi/DSD-properties-rules.rst for more
++information.
+ 
+ PCI hierarchy representation
+ ============================
 -- 
 2.31.1
-
 
