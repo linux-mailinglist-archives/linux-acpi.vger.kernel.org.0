@@ -2,120 +2,218 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD1403A9F0E
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 17:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 170973A9F13
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 17:29:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234136AbhFPPa3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Jun 2021 11:30:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:26593 "EHLO
+        id S234378AbhFPPbM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Jun 2021 11:31:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:34543 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234077AbhFPPa3 (ORCPT
+        by vger.kernel.org with ESMTP id S234357AbhFPPbL (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 16 Jun 2021 11:30:29 -0400
+        Wed, 16 Jun 2021 11:31:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1623857302;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        s=mimecast20190719; t=1623857344;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=BLas3/nFvDzs67dkoqE0uPTj+WWCmULhYvLflkP+fWo=;
-        b=GGkC1mWrAWu23uiP2Y0xREcTmmf7C3JuBaGHskSMoxQP4Ar5qrmZ9b6YsTImHrkmlaJbqY
-        zBidF4nAqAE1SGhScxDaxwXV4vupAOqlCZ/26lBu6KOF9y0G8e8K5GA+6ckdywo1xncNlI
-        ir20uQjLiKw2A/7BP8EBuOl6R/9LWUU=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-389-Oz0X_DBAMAK3eH_SuLNdcw-1; Wed, 16 Jun 2021 11:28:21 -0400
-X-MC-Unique: Oz0X_DBAMAK3eH_SuLNdcw-1
-Received: by mail-ed1-f70.google.com with SMTP id a16-20020aa7cf100000b0290391819a774aso1265821edy.8
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Jun 2021 08:28:21 -0700 (PDT)
+        bh=loHXjaH+snUizquVOGFXdAGS2wFtAssCuoNUK+zEZXk=;
+        b=TXi/6nJw86/t3k2D3a7cncIq0aX0hGPD3zU8AshgcpyvqMRiPw62rKFgts4pEih+CL5mR3
+        vwpH+Prm0+Jc+YcJshPxC8H1AgBvl6gMDkijosly7hEgxzEjixxljaBIXdSP3kZqPh3pPg
+        adyReHfVIUpd2F4mxPbnJ4kVC9uqZ20=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-587-v0X9FL_RNw6O6ZdhIY6Ulg-1; Wed, 16 Jun 2021 11:29:03 -0400
+X-MC-Unique: v0X9FL_RNw6O6ZdhIY6Ulg-1
+Received: by mail-wr1-f72.google.com with SMTP id y12-20020adffa4c0000b0290119c11bd29eso1441665wrr.2
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Jun 2021 08:29:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=BLas3/nFvDzs67dkoqE0uPTj+WWCmULhYvLflkP+fWo=;
-        b=Q+DGSsBAbsCUBqqCwUKt3aK/IkGW2jxGFt7MilsEc/yHFwRPcPlbHULvVqXgBRZZ8g
-         VUAEs7pmX2MxFftn3/8T7mSYEUb6fTxjvroc4eDBjXkwXjXeYrWUpmsqt2eON9DKjT+7
-         nov2bAXEgZhWROPC+z/xBNYMga9eh2XexQv0Te32a+YdRq3OhrTBJUlkc/TEgbBqJc6k
-         PX3PhKj8VFQ9R3rYA9R1Nk6jPAKQZ8Saj4do7s43s9RdV7Lbs15b3BMPrvalFtrxG2dX
-         u/t68UawHlDEaOfrmQKtZIYvev99By6fn6EIBf9dqFdQWUFARQOm3gj9W9zuiqmJgujo
-         XSLw==
-X-Gm-Message-State: AOAM531DKfXsCFYd+3hM+F2pmhWDOmZyWAYVSEFkA03DKQGMLPYYWnft
-        xG8N33BdJ4anRZeSmSlCBL6B4+5VKm3TJ5nDYX6GorNsqgA7so1oujgSntFNtEXl+wMdwtNxv+E
-        yqGfPCk2+D8ncX93hwAVy/Q==
-X-Received: by 2002:a17:907:6f2:: with SMTP id yh18mr80060ejb.5.1623857300168;
-        Wed, 16 Jun 2021 08:28:20 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw/ww3BJp4hsJ3ry2mzr6M3d8roZGAdHTBAEdOEGDLnh0e3VRj2B6oTQ86XraJunbgXUJNDuQ==
-X-Received: by 2002:a17:907:6f2:: with SMTP id yh18mr80047ejb.5.1623857299995;
-        Wed, 16 Jun 2021 08:28:19 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id n23sm2136526edr.87.2021.06.16.08.28.19
+        h=x-gm-message-state:reply-to:subject:to:cc:references:from
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding:content-language;
+        bh=loHXjaH+snUizquVOGFXdAGS2wFtAssCuoNUK+zEZXk=;
+        b=mt/bLI6IRHcErYraKhd+VGhdovhINEzIm/miUcs11tvBsTwRbl9E1nQPYg2Vm4UT+P
+         24qWxSQ8aHlTUdQaMG5+o0nM8A27HpmFzHa4Q//MQakvtP/X27+P5tWJ+Y6/WufL9fnF
+         5JJvqp+avDenz51HXeRg9mo5S5JILStGq9yOmiHxhLUIx0O5mdwYeDdzt7yTrdLl+nLY
+         /55hxompjjltO0mXrNPtOn6PDzicmQUr6VVMzVnqCuqle1Y4szIs6kt6DfRA6p1hVc7l
+         t/sI7nUfY/4SEGN7r6xlbypbH5HGIQ8vyK5nvanyI1JxEJjQwjnTlKOkiPeyuu+FmwuT
+         6B3A==
+X-Gm-Message-State: AOAM530CfUHHqMDmLsLi9/XtOZQditbXn0SfA8GYtcLsZlWznUDbeaFP
+        5+DjyaYsSg9ch2fPMkNnLRVCl49hZlcCiQ7l05R9CO5N0ESUcJYyLfqL/wkBM9tNVXGeYyoXvj1
+        LhWTJR2kp06moHaKAQuc+BA==
+X-Received: by 2002:a5d:6a02:: with SMTP id m2mr6214501wru.77.1623857342707;
+        Wed, 16 Jun 2021 08:29:02 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJww2Pu5vVjE6MjPOz8ZmDG/gXcWdwBxOIwn5bdbiZvyd47pKBtqNWTde6Bs/ZdGOQmWSbzHnw==
+X-Received: by 2002:a5d:6a02:: with SMTP id m2mr6214481wru.77.1623857342495;
+        Wed, 16 Jun 2021 08:29:02 -0700 (PDT)
+Received: from [192.168.43.95] ([37.172.247.238])
+        by smtp.gmail.com with ESMTPSA id 25sm5158567wmk.20.2021.06.16.08.29.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Jun 2021 08:28:19 -0700 (PDT)
-Subject: Re: [PATCH 2/5] ACPI: scan: Make acpi_walk_dep_device_list()
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <3140195.44csPzL39Z@kreacher> <1881350.PYKUYFuaPT@kreacher>
- <f46533e2-1ebe-0130-9323-b045da6ea62d@redhat.com>
- <CAJZ5v0gZ2Fbff_g_v8t46-957=U_1nGe22sP9W=Hc-dohG8=Jg@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <4a08edff-df90-aeee-1d1d-76e6e0b9af4d@redhat.com>
-Date:   Wed, 16 Jun 2021 17:28:19 +0200
+        Wed, 16 Jun 2021 08:29:02 -0700 (PDT)
+Reply-To: eric.auger@redhat.com
+Subject: Re: [PATCH v4 4/6] iommu/dma: Pass address limit rather than size to
+ iommu_setup_dma_ops()
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
+Cc:     will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
+        dwmw2@infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, sebastien.boeuf@intel.com,
+        robin.murphy@arm.com, kevin.tian@intel.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com
+References: <20210610075130.67517-1-jean-philippe@linaro.org>
+ <20210610075130.67517-5-jean-philippe@linaro.org>
+From:   Eric Auger <eric.auger@redhat.com>
+Message-ID: <6d139529-9539-fbe4-8f85-da39461047ba@redhat.com>
+Date:   Wed, 16 Jun 2021 17:28:59 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0gZ2Fbff_g_v8t46-957=U_1nGe22sP9W=Hc-dohG8=Jg@mail.gmail.com>
+In-Reply-To: <20210610075130.67517-5-jean-philippe@linaro.org>
 Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Jean,
 
-On 6/16/21 5:11 PM, Rafael J. Wysocki wrote:
-> On Wed, Jun 16, 2021 at 4:41 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi,
->>
->> On 6/16/21 4:22 PM, Rafael J. Wysocki wrote:
->>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>>
->>> Because acpi_walk_dep_device_list() is only called by the code in the
->>> file in which it is defined, make it static, drop the export of it
->>> and drop its header from acpi.h.
->>>
->>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>
->> Actually, acpi_walk_dep_device_list() was split out as a
->> helper function used to implement acpi_dev_clear_dependencies()
->> because it will be used outside of drivers/acpi.
-> 
-> Not exactly.
-> 
->> Specifically it will be used in the new intel_skl_int3472 driver:
->> https://patchwork.kernel.org/project/platform-driver-x86/patch/20210603224007.120560-6-djrscally@gmail.com/
-> 
-> That driver will use acpi_dev_get_first_consumer_dev() which is based
-> on acpi_walk_dep_device_list(), but still defined in
-> drivers/acpi/scan.c.
-> 
->> Which I plan to merge into pdx86/for-next today, I've just merged
->> your linux-pm/acpi-scan PULL-req which exports acpi_walk_dep_device_list()
->> as preparation for this.
-> 
-> No, the acpi_walk_dep_device_list() is a leftover there AFAICS.
+On 6/10/21 9:51 AM, Jean-Philippe Brucker wrote:
+> Passing a 64-bit address width to iommu_setup_dma_ops() is valid on
+> virtual platforms, but isn't currently possible. The overflow check in
+> iommu_dma_init_domain() prevents this even when @dma_base isn't 0. Pass
+> a limit address instead of a size, so callers don't have to fake a size
+> to work around the check.
+>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>  include/linux/dma-iommu.h   |  4 ++--
+>  arch/arm64/mm/dma-mapping.c |  2 +-
+>  drivers/iommu/amd/iommu.c   |  2 +-
+>  drivers/iommu/dma-iommu.c   | 12 ++++++------
+>  drivers/iommu/intel/iommu.c |  2 +-
+>  5 files changed, 11 insertions(+), 11 deletions(-)
+>
+> diff --git a/include/linux/dma-iommu.h b/include/linux/dma-iommu.h
+> index 6e75a2d689b4..758ca4694257 100644
+> --- a/include/linux/dma-iommu.h
+> +++ b/include/linux/dma-iommu.h
+> @@ -19,7 +19,7 @@ int iommu_get_msi_cookie(struct iommu_domain *domain, dma_addr_t base);
+>  void iommu_put_dma_cookie(struct iommu_domain *domain);
+>  
+>  /* Setup call for arch DMA mapping code */
+> -void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 size);
+> +void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 dma_limit);
+>  
+>  /* The DMA API isn't _quite_ the whole story, though... */
+>  /*
+> @@ -50,7 +50,7 @@ struct msi_msg;
+>  struct device;
+>  
+>  static inline void iommu_setup_dma_ops(struct device *dev, u64 dma_base,
+> -		u64 size)
+> +				       u64 dma_limit)
+>  {
+>  }
+>  
+> diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
+> index 4bf1dd3eb041..7bd1d2199141 100644
+> --- a/arch/arm64/mm/dma-mapping.c
+> +++ b/arch/arm64/mm/dma-mapping.c
+> @@ -50,7 +50,7 @@ void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+>  
+>  	dev->dma_coherent = coherent;
+>  	if (iommu)
+> -		iommu_setup_dma_ops(dev, dma_base, size);
+> +		iommu_setup_dma_ops(dev, dma_base, size - dma_base - 1);
+I don't get  size - dma_base - 1?
+>  
+>  #ifdef CONFIG_XEN
+>  	if (xen_swiotlb_detect())
+> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+> index 3ac42bbdefc6..94b96d81fcfd 100644
+> --- a/drivers/iommu/amd/iommu.c
+> +++ b/drivers/iommu/amd/iommu.c
+> @@ -1713,7 +1713,7 @@ static void amd_iommu_probe_finalize(struct device *dev)
+>  	/* Domains are initialized for this device - have a look what we ended up with */
+>  	domain = iommu_get_domain_for_dev(dev);
+>  	if (domain->type == IOMMU_DOMAIN_DMA)
+> -		iommu_setup_dma_ops(dev, IOVA_START_PFN << PAGE_SHIFT, 0);
+> +		iommu_setup_dma_ops(dev, IOVA_START_PFN << PAGE_SHIFT, U64_MAX);
+>  	else
+>  		set_dma_ops(dev, NULL);
+>  }
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 7bcdd1205535..c62e19bed302 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -319,16 +319,16 @@ static bool dev_is_untrusted(struct device *dev)
+>   * iommu_dma_init_domain - Initialise a DMA mapping domain
+>   * @domain: IOMMU domain previously prepared by iommu_get_dma_cookie()
+>   * @base: IOVA at which the mappable address space starts
+> - * @size: Size of IOVA space
+> + * @limit: Last address of the IOVA space
+>   * @dev: Device the domain is being initialised for
+>   *
+> - * @base and @size should be exact multiples of IOMMU page granularity to
+> + * @base and @limit + 1 should be exact multiples of IOMMU page granularity to
+>   * avoid rounding surprises. If necessary, we reserve the page at address 0
+>   * to ensure it is an invalid IOVA. It is safe to reinitialise a domain, but
+>   * any change which could make prior IOVAs invalid will fail.
+>   */
+>  static int iommu_dma_init_domain(struct iommu_domain *domain, dma_addr_t base,
+> -		u64 size, struct device *dev)
+> +				 dma_addr_t limit, struct device *dev)
+>  {
+>  	struct iommu_dma_cookie *cookie = domain->iova_cookie;
+>  	unsigned long order, base_pfn;
+> @@ -346,7 +346,7 @@ static int iommu_dma_init_domain(struct iommu_domain *domain, dma_addr_t base,
+>  	/* Check the domain allows at least some access to the device... */
+>  	if (domain->geometry.force_aperture) {
+>  		if (base > domain->geometry.aperture_end ||
+> -		    base + size <= domain->geometry.aperture_start) {
+> +		    limit < domain->geometry.aperture_start) {
+>  			pr_warn("specified DMA range outside IOMMU capability\n");
+>  			return -EFAULT;
+>  		}
+> @@ -1308,7 +1308,7 @@ static const struct dma_map_ops iommu_dma_ops = {
+>   * The IOMMU core code allocates the default DMA domain, which the underlying
+>   * IOMMU driver needs to support via the dma-iommu layer.
+>   */
+> -void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 size)
+> +void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 dma_limit)
+>  {
+>  	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
+>  
+> @@ -1320,7 +1320,7 @@ void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 size)
+>  	 * underlying IOMMU driver needs to support via the dma-iommu layer.
+>  	 */
+>  	if (domain->type == IOMMU_DOMAIN_DMA) {
+> -		if (iommu_dma_init_domain(domain, dma_base, size, dev))
+> +		if (iommu_dma_init_domain(domain, dma_base, dma_limit, dev))
+>  			goto out_err;
+>  		dev->dma_ops = &iommu_dma_ops;
+>  	}
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index be35284a2016..85f18342603c 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -5171,7 +5171,7 @@ static void intel_iommu_probe_finalize(struct device *dev)
+>  
+>  	if (domain && domain->type == IOMMU_DOMAIN_DMA)
+>  		iommu_setup_dma_ops(dev, base,
+> -				    __DOMAIN_MAX_ADDR(dmar_domain->gaw) - base);
+> +				    __DOMAIN_MAX_ADDR(dmar_domain->gaw));
+>  	else
+>  		set_dma_ops(dev, NULL);
+>  }
+Thanks
 
-You are right, my bad.
-
-So with this resolved, this patch is fine too:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
+Eric
 
