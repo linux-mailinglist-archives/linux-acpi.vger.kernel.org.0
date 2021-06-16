@@ -2,193 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D52BE3A8D73
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 02:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A6843A8FC6
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 05:52:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231760AbhFPA1A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Jun 2021 20:27:00 -0400
-Received: from mga03.intel.com ([134.134.136.65]:14098 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230265AbhFPA1A (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 15 Jun 2021 20:27:00 -0400
-IronPort-SDR: cKMRZeDd4ytlVBa0Opv7CZifVTPJ3wa2DryC0y4LHSxaEFAm9gUZ39bo7qYqAxw+e8zW05SjUs
- v5gWKifDDbIw==
-X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="206127849"
-X-IronPort-AV: E=Sophos;i="5.83,276,1616482800"; 
-   d="scan'208";a="206127849"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2021 17:24:53 -0700
-IronPort-SDR: KovZsLBtH8r7kPsBjZf9/jGCgKTsVj9BdMVKA3AqxT0dY4iJBKtAC8yfmyuxenvm7ccx99I7D2
- Vx7ILPfB03RA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,276,1616482800"; 
-   d="scan'208";a="639822567"
-Received: from alison-desk.jf.intel.com (HELO alison-desk) ([10.54.74.53])
-  by fmsmga005.fm.intel.com with ESMTP; 15 Jun 2021 17:24:53 -0700
-From:   Alison Schofield <alison.schofield@intel.com>
-To:     Ben Widawsky <ben.widawsky@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>
-Cc:     linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Subject: [PATCH v2 2/2] cxl/acpi: Use the ACPI CFMWS to create static decoder objects
-Date:   Tue, 15 Jun 2021 17:20:39 -0700
-Message-Id: <48f1b59105e46f04b38347fc1555bb5c8d654cff.1623800340.git.alison.schofield@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <cover.1623800340.git.alison.schofield@intel.com>
-References: <cover.1623800340.git.alison.schofield@intel.com>
-In-Reply-To: <cover.1623800340.git.alison.schofield@intel.com>
-References: <cover.1623800340.git.alison.schofield@intel.com>
+        id S230392AbhFPDyv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Jun 2021 23:54:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50574 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230390AbhFPDyv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Jun 2021 23:54:51 -0400
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3D9FC061574
+        for <linux-acpi@vger.kernel.org>; Tue, 15 Jun 2021 20:52:44 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id p5-20020a9d45450000b029043ee61dce6bso1148803oti.8
+        for <linux-acpi@vger.kernel.org>; Tue, 15 Jun 2021 20:52:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=/U40ejpOstL7ovbpi33uWFDwH+uhmNbcBXnXyzzqdTY=;
+        b=nqeyHG3g3m6yzYWVXcJm3sINtErYOpJZM0QSQU3gl4J6k+t16muMx4fLMELQmFFz/H
+         wlpuwDAqeNVKBiW9ETrtyrKcQNmHtaK1guqWjzcf8pUh7Y6f0B7Mjo4FzANtbPZeWMhQ
+         m9VNGvqSKjR59l1b7tvoAWbEqetHvg1ro7QxWO+TaYPgy7mfz942xNM+yrd2e8RLbLXj
+         0Ufvr6OBFtnWD0W35LSu45IZB9euUU0cGK70HjIdgrottFime7KiJdfHNELn3G7HdlkM
+         eDxuuJIIsPS4OKkZVuh0Uq25LoehDeAEzmd1nrUV5BdM9/H5J9V0X0weMRJl1KZblE5N
+         /YCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=/U40ejpOstL7ovbpi33uWFDwH+uhmNbcBXnXyzzqdTY=;
+        b=qYCrt0pM/1wByD2s8PlWHMHSWV6jcG59LIqWacaKJVeIC+uoWPEFiKxjRf325RfgKH
+         ZUZ+UaK1WerSJUSiDteZ0B1nUlWWE9Bwm/wtAwAbBwAicJaguZTSHyIeop3UPhR1gSPC
+         fXtelT2ysA/r0simnrQFXSTNY5p3B1dwBX5QDS9Jyi1QgTzIiKiM3ZhaL4fPH6anSTAU
+         kGvcQMpls8ds9wWgcyWGH3i0HwnJryMQwejtISAde9bR56+HumfOgXqw9IIlIqb7BzfM
+         JHxuk/EtC52zRKwiOXv3h2WdTr0bG2kYsj+csPIwwk0tOtNHNWpH4LgVkEAEWZR2W0Z2
+         xWqw==
+X-Gm-Message-State: AOAM531KWJhFzuSTQWUxh8MtA16fAnT+iFgsLgTvLglCfchOXURYE80t
+        R3xjcXPOdM3vWZpVPcitkUGKPeIYMQg=
+X-Google-Smtp-Source: ABdhPJwfMls7pZd06H9tY6rR8fUA26tmd0N0Uxb7gULvNNaBV/Tw791O0awm8fpvJvH3qoXgOEAbUQ==
+X-Received: by 2002:a9d:c04:: with SMTP id 4mr2054947otr.245.1623815564208;
+        Tue, 15 Jun 2021 20:52:44 -0700 (PDT)
+Received: from fedora ([2601:283:4400:c0:96c1:9c48:12a7:2c7c])
+        by smtp.gmail.com with ESMTPSA id l25sm204118oie.57.2021.06.15.20.52.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Jun 2021 20:52:43 -0700 (PDT)
+Date:   Tue, 15 Jun 2021 21:52:34 -0600
+From:   Clayton Casciato <majortomtosourcecontrol@gmail.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH] acpi: sysfs: Fixed a control flow style issue
+Message-ID: <YMl1ghOY2SwPPxun@fedora>
+References: <20210612223401.9273-1-majortomtosourcecontrol@gmail.com>
+ <CAJZ5v0idK5cneSF8+A1SrHcs-WHQLmTeAJdB72yNNfH5QygWoQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0idK5cneSF8+A1SrHcs-WHQLmTeAJdB72yNNfH5QygWoQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ACPI CXL Early Discovery Table (CEDT) includes a list of CXL memory
-resources in CXL Fixed Memory Window Structures (CFMWS). Retrieve each
-CFMWS in the CEDT and add a cxl_decoder object to the root port (root0)
-for each memory resource.
+On Mon, Jun 14, 2021 at 05:36:19PM +0200, Rafael J. Wysocki wrote:
+> On Sun, Jun 13, 2021 at 12:37 AM Clayton Casciato
+> <majortomtosourcecontrol@gmail.com> wrote:
+> >
+> > Fixed coding style issue.
+> 
+> I'm not really sure what issue you are fixing here.
+> 
 
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
----
- drivers/cxl/acpi.c | 114 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 114 insertions(+)
+Checkpatch warns that "else is not generally useful after a break or
+return".
 
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index b6d9cd45428c..e3aa356d4dcd 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -8,8 +8,120 @@
- #include <linux/pci.h>
- #include "cxl.h"
- 
-+/* Encode defined in CXL 2.0 8.2.5.12.7 HDM Decoder Control Register */
-+#define CFMWS_INTERLEAVE_WAYS(x)	(1 << (x)->interleave_ways)
-+#define CFMWS_INTERLEAVE_GRANULARITY(x)	((x)->granularity + 8)
-+
- static struct acpi_table_header *cedt_table;
- 
-+static unsigned long cfmws_to_decoder_flags(int restrictions)
-+{
-+	unsigned long flags = 0;
-+
-+	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE2)
-+		flags |= CXL_DECODER_F_TYPE2;
-+	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE3)
-+		flags |= CXL_DECODER_F_TYPE3;
-+	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE)
-+		flags |= CXL_DECODER_F_RAM;
-+	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_PMEM)
-+		flags |= CXL_DECODER_F_PMEM;
-+	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_FIXED)
-+		flags |= CXL_DECODER_F_LOCK;
-+
-+	return flags;
-+}
-+
-+static int cxl_acpi_cfmws_verify(struct device *dev,
-+				 struct acpi_cedt_cfmws *cfmws)
-+{
-+	int expected_len;
-+
-+	if (cfmws->interleave_arithmetic != ACPI_CEDT_CFMWS_ARITHMETIC_MODULO) {
-+		dev_err(dev, "CFMWS Unsupported Interleave Arithmetic\n");
-+		return -EINVAL;
-+	}
-+
-+	if (!IS_ALIGNED(cfmws->base_hpa, SZ_256M)) {
-+		dev_err(dev, "CFMWS Base HPA not 256MB aligned\n");
-+		return -EINVAL;
-+	}
-+
-+	if (!IS_ALIGNED(cfmws->window_size, SZ_256M)) {
-+		dev_err(dev, "CFMWS Window Size not 256MB aligned\n");
-+		return -EINVAL;
-+	}
-+
-+	expected_len = struct_size((cfmws), interleave_targets,
-+				   CFMWS_INTERLEAVE_WAYS(cfmws));
-+
-+	if (expected_len != cfmws->header.length) {
-+		dev_err(dev, "CFMWS interleave ways and targets mismatch\n");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static void cxl_add_cfmws_decoders(struct device *dev,
-+				   struct cxl_port *root_port)
-+{
-+	struct acpi_cedt_cfmws *cfmws;
-+	struct cxl_decoder *cxld;
-+	acpi_size len, cur = 0;
-+	void *cedt_base;
-+	int rc;
-+
-+	len = cedt_table->length - sizeof(*cedt_table);
-+	cedt_base = cedt_table + 1;
-+
-+	while (cur < len) {
-+		struct acpi_cedt_header *c = cedt_base + cur;
-+
-+		if (c->type != ACPI_CEDT_TYPE_CFMWS) {
-+			cur += c->length;
-+			continue;
-+		}
-+
-+		cfmws = cedt_base + cur;
-+
-+		if (cfmws->header.length < sizeof(*cfmws)) {
-+			dev_err(dev, "Invalid CFMWS header length %u\n",
-+				cfmws->header.length);
-+			dev_err(dev, "Failed to add decoders\n");
-+			return;
-+		}
-+
-+		rc = cxl_acpi_cfmws_verify(dev, cfmws);
-+		if (rc) {
-+			dev_err(dev, "CFMWS range %#llx-%#llx not registered\n",
-+				cfmws->base_hpa, cfmws->base_hpa +
-+				cfmws->window_size - 1);
-+			cur += c->length;
-+			continue;
-+		}
-+
-+		cxld = devm_cxl_add_decoder(dev, root_port,
-+				CFMWS_INTERLEAVE_WAYS(cfmws),
-+				cfmws->base_hpa, cfmws->window_size,
-+				CFMWS_INTERLEAVE_WAYS(cfmws),
-+				CFMWS_INTERLEAVE_GRANULARITY(cfmws),
-+				CXL_DECODER_EXPANDER,
-+				cfmws_to_decoder_flags(cfmws->restrictions));
-+
-+		if (IS_ERR(cxld)) {
-+			dev_err(dev, "Failed to add decoder for %#llx-%#llx\n",
-+				cfmws->base_hpa, cfmws->base_hpa +
-+				cfmws->window_size - 1);
-+		} else {
-+			dev_dbg(dev, "add: %s range %#llx-%#llx\n",
-+				dev_name(&cxld->dev), cfmws->base_hpa,
-+				 cfmws->base_hpa + cfmws->window_size - 1);
-+		}
-+		cur += c->length;
-+	}
-+}
-+
- static struct acpi_cedt_chbs *cxl_acpi_match_chbs(struct device *dev, u32 uid)
- {
- 	struct acpi_cedt_chbs *chbs, *chbs_match = NULL;
-@@ -251,6 +363,8 @@ static int cxl_acpi_probe(struct platform_device *pdev)
- 	if (rc)
- 		goto out;
- 
-+	cxl_add_cfmws_decoders(host, root_port);
-+
- 	/*
- 	 * Root level scanned with host-bridge as dports, now scan host-bridges
- 	 * for their role as CXL uports to their CXL-capable PCIe Root Ports.
--- 
-2.26.2
+> Is it the redundant braces around the nested if () statement?
+> 
 
+The patch only removes the else clause.
+
+> If so, the flow before and after the patch is different.  Is this intentional?
+> 
+
+Yes. The patch improves readability by removing the outermost context, reducing
+the nested conditional complexity.
+
+Thank you for your consideration!
+
+> > Signed-off-by: Clayton Casciato <majortomtosourcecontrol@gmail.com>
+> > ---
+> >  drivers/acpi/sysfs.c | 18 +++++++++---------
+> >  1 file changed, 9 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+> > index d6626aba4a6a..0e685ca8f78f 100644
+> > --- a/drivers/acpi/sysfs.c
+> > +++ b/drivers/acpi/sysfs.c
+> > @@ -254,15 +254,15 @@ static int param_get_trace_state(char *buffer, const struct kernel_param *kp)
+> >  {
+> >         if (!(acpi_gbl_trace_flags & ACPI_TRACE_ENABLED))
+> >                 return sprintf(buffer, "disable\n");
+> > -       else {
+> > -               if (acpi_gbl_trace_method_name) {
+> > -                       if (acpi_gbl_trace_flags & ACPI_TRACE_ONESHOT)
+> > -                               return sprintf(buffer, "method-once\n");
+> > -                       else
+> > -                               return sprintf(buffer, "method\n");
+> > -               } else
+> > -                       return sprintf(buffer, "enable\n");
+> > -       }
+> > +
+> > +       if (acpi_gbl_trace_method_name) {
+> > +               if (acpi_gbl_trace_flags & ACPI_TRACE_ONESHOT)
+> > +                       return sprintf(buffer, "method-once\n");
+> > +               else
+> > +                       return sprintf(buffer, "method\n");
+> > +       } else
+> > +               return sprintf(buffer, "enable\n");
+> > +
+> >         return 0;
+> >  }
+> >
+> > --
+> > 2.31.1
+> >
