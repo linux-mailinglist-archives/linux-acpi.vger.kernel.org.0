@@ -2,40 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8A2F3A9EAE
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 17:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2ED73A9ED2
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jun 2021 17:19:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234491AbhFPPOr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Jun 2021 11:14:47 -0400
-Received: from mail-ot1-f42.google.com ([209.85.210.42]:36656 "EHLO
-        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234547AbhFPPOn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Jun 2021 11:14:43 -0400
-Received: by mail-ot1-f42.google.com with SMTP id h24-20020a9d64180000b029036edcf8f9a6so2829084otl.3;
-        Wed, 16 Jun 2021 08:12:37 -0700 (PDT)
+        id S234537AbhFPPVf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Jun 2021 11:21:35 -0400
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:44754 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234002AbhFPPVe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Jun 2021 11:21:34 -0400
+Received: by mail-ot1-f54.google.com with SMTP id q5-20020a9d66450000b02903f18d65089fso2812811otm.11;
+        Wed, 16 Jun 2021 08:19:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=lC2NeqII1gOHZUp/j/9qgc6w3CU2D970PqUKrQ/mFLU=;
-        b=lJQzPdoyJEj8bztOgqHx5oMpIe4pnQs8/YM6N7dWTLsFgfnR6sr5XKwLzNzIxQBKm5
-         eo+5yUZVx5k2OFnUiRuBjD/392IUVNcs7ZR/oplr+mijYLg3EHPA11JaBeZQsXV9dBJR
-         gS+OYOKFEzS3G1Xi7tPQGgXH9jWSCRdp3vnQvXDaPY55ATBlCHlKIYBRMn5sIgJL5fto
-         rRrWjwRIEutJag6MothDj9sZaZZN2iMqhKyK/USUrk7lXRCMKvWfV0nJqlxw9o5Np7oJ
-         WIbyTnm2vDFy8sS62cTywkdXIhpnUsJ1VUeRD+VJPlxh7w4SWg/Nkg3y8y2MuIyxf2sG
-         wmXA==
-X-Gm-Message-State: AOAM532yHs3A3l+nITs8+kmDUWjTnkX+gGgAL/YsLeSFBFBN8S42WZ2E
-        XSvIHfVk8hEX2Gx6VzgG3hTGKmR/Cfa8g75saKM=
-X-Google-Smtp-Source: ABdhPJwTcWoUKlmdSeCFjAAb7mGsMmkwf1IFcCiW7T+oKlXk5BNafaGfJbJHX6C0H2swC46Xsap40vgmYbL0rLiTk1k=
-X-Received: by 2002:a9d:3e53:: with SMTP id h19mr345488otg.260.1623856356561;
- Wed, 16 Jun 2021 08:12:36 -0700 (PDT)
+        bh=9PStG9qnxE4mCRKeuZ4Hjo4vuxLzzhgd7NzpNwUxLZY=;
+        b=OD9uRvfCBwej2llJRB5GO/pl6zD2bp8+Amnn+5DFSy7R6JyxazpP9mbaxVhLdu7hRV
+         E5LE0rYKxfx8ZNPrAuesb5+xZoZyut0KxHb4lxU0UjnLvbFwu3g9BqDUfLC43ub8cyKq
+         RK15WnZ+SEoCQeqaU0eoC2iyDtuqMbnNDH9ZWadXRiahQwvmm47YnkAe/Dk19waZ5vQL
+         akF+zIlkcAxTQdHm3YXmxjWdzHS4mzfj0wO80/M8f1+r69KtW7D3bIPJKE+SV95h1FMZ
+         n+wNmxs6f5CYLHRbzMFUpDk1e5MGVk0f12rlkURwZ118kyrp/hPxo76J7vwz5n5wygO5
+         MT3w==
+X-Gm-Message-State: AOAM530Izv+T0zSIyDhtzb6c3hHK3E4I64ppgp2UFLp6brufOgOus330
+        2ZyNqdiATSx+TrCqT98CNFBoUz/wG4y8VAVXxAcNsZwB
+X-Google-Smtp-Source: ABdhPJycyNud+D4pGA1h7FJTM0h1ssAgqMzXG+REazS6DfYXBA0DC8MnOvc0vXFJmIIVcGJ4fbVeO2PH1pTE0nVP5p8=
+X-Received: by 2002:a9d:3e53:: with SMTP id h19mr373877otg.260.1623856768366;
+ Wed, 16 Jun 2021 08:19:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <3140195.44csPzL39Z@kreacher> <7272740.EvYhyI6sBW@kreacher> <0cd3a0b5-f656-2b4f-b5bc-67680bc80603@redhat.com>
-In-Reply-To: <0cd3a0b5-f656-2b4f-b5bc-67680bc80603@redhat.com>
+References: <3140195.44csPzL39Z@kreacher> <3070024.5fSG56mABF@kreacher> <a691eab8-51bb-0965-9d17-63d438c43490@redhat.com>
+In-Reply-To: <a691eab8-51bb-0965-9d17-63d438c43490@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 16 Jun 2021 17:12:25 +0200
-Message-ID: <CAJZ5v0hVLGqCV85m3cYxsuWS_4jBww54VJ9YTogPy_Tha8VUDA@mail.gmail.com>
-Subject: Re: [PATCH 3/5] ACPI: scan: Fix device object rescan in acpi_scan_clear_dep()
+Date:   Wed, 16 Jun 2021 17:19:16 +0200
+Message-ID: <CAJZ5v0hC2Q4M455X4FQ-Z6tzdFkcUgMH_qPHDVV=4O0OcTpBkg@mail.gmail.com>
+Subject: Re: [PATCH 5/5] ACPI: scan: Fix race related to dropping dependencies
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
@@ -45,91 +45,140 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 16, 2021 at 4:48 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Wed, Jun 16, 2021 at 4:55 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >
 > Hi,
 >
-> On 6/16/21 4:23 PM, Rafael J. Wysocki wrote:
+> On 6/16/21 4:25 PM, Rafael J. Wysocki wrote:
 > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > >
-> > In general, acpi_bus_attach() can only be run safely under
-> > acpi_scan_lock, but that lock cannot be acquired under
-> > acpi_dep_list_lock, so make acpi_scan_clear_dep() schedule deferred
-> > execution of acpi_bus_attach() under acpi_scan_lock instead of
-> > calling it directly.
+> > If acpi_add_single_object() runs concurrently with respect to
+> > acpi_scan_clear_dep() which deletes a dependencies list entry where
+> > the device being added is the consumer, the device's dep_unmet
+> > counter may not be updated to reflect that change.
 > >
-> > This also fixes a possible race between acpi_scan_clear_dep() and
-> > device removal that might cause a device object that went away to
-> > be accessed, because acpi_scan_clear_dep() is changed to acquire
-> > a reference on the consumer device object.
+> > Namely, if the dependencies list entry is deleted right after
+> > calling acpi_scan_dep_init() and before calling acpi_device_add(),
+> > acpi_scan_clear_dep() will not find the device object corresponding
+> > to the consumer device ACPI handle and it will not update its
+> > dep_unmet counter to reflect the deletion of the list entry.
+> > Consequently, the dep_unmet counter of the device will never
+> > become zero going forward which may prevent it from being
+> > completely enumerated.
+> >
+> > To address this problem, modify acpi_add_single_object() to run
+> > acpi_tie_acpi_dev(), to attach the ACPI device object created by it
+> > to the corresponding ACPI namespace node, under acpi_dep_list_lock
+> > along with acpi_scan_dep_init() whenever the latter is called.
 > >
 > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > > ---
-> >  drivers/acpi/scan.c |   50 +++++++++++++++++++++++++++++++++++++++++++++-----
-> >  1 file changed, 45 insertions(+), 5 deletions(-)
+> >  drivers/acpi/scan.c |   46 +++++++++++++++++++++++++++++++++-------------
+> >  1 file changed, 33 insertions(+), 13 deletions(-)
 > >
 > > Index: linux-pm/drivers/acpi/scan.c
 > > ===================================================================
 > > --- linux-pm.orig/drivers/acpi/scan.c
 > > +++ linux-pm/drivers/acpi/scan.c
-> > @@ -2115,16 +2115,56 @@ static int acpi_dev_get_first_consumer_d
+> > @@ -657,16 +657,12 @@ static int acpi_tie_acpi_dev(struct acpi
 > >       return 0;
 > >  }
 > >
-> > -static int acpi_scan_clear_dep(struct acpi_dep_data *dep, void *data)
-> > -{
-> > +struct acpi_scan_clear_dep_work {
-> > +     struct work_struct work;
-> >       struct acpi_device *adev;
-> > +};
-> > +
-> > +static void acpi_scan_clear_dep_fn(struct work_struct *work)
-> > +{
-> > +     struct acpi_scan_clear_dep_work *cdw;
-> > +
-> > +     cdw = container_of(work, struct acpi_scan_clear_dep_work, work);
+> > -int acpi_device_add(struct acpi_device *device,
+> > -                 void (*release)(struct device *))
+> > +int __acpi_device_add(struct acpi_device *device,
+> > +                   void (*release)(struct device *))
+> >  {
+> >       struct acpi_device_bus_id *acpi_device_bus_id;
+> >       int result;
 > >
-> > -     acpi_bus_get_device(dep->consumer, &adev);
-> > +     acpi_scan_lock_acquire();
-> > +     acpi_bus_attach(cdw->adev, true);
-> > +     acpi_scan_lock_release();
+> > -     result = acpi_tie_acpi_dev(device);
+> > -     if (result)
+> > -             return result;
+> > -
+> >       /*
+> >        * Linkage
+> >        * -------
+> > @@ -755,6 +751,17 @@ err_unlock:
+> >       return result;
+> >  }
+> >
+> > +int acpi_device_add(struct acpi_device *adev, void (*release)(struct device *))
+> > +{
+> > +     int ret;
 > > +
-> > +     acpi_dev_put(cdw->adev);
-> > +     kfree(cdw);
+> > +     ret = acpi_tie_acpi_dev(adev);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     return __acpi_device_add(adev, release);
 > > +}
 > > +
-> > +static bool acpi_scan_clear_dep_queue(struct acpi_device *adev)
-> > +{
-> > +     struct acpi_scan_clear_dep_work *cdw;
+> >  /* --------------------------------------------------------------------------
+> >                                   Device Enumeration
+> >     -------------------------------------------------------------------------- */
+> > @@ -1681,14 +1688,10 @@ static void acpi_scan_dep_init(struct ac
+> >  {
+> >       struct acpi_dep_data *dep;
+> >
+> > -     mutex_lock(&acpi_dep_list_lock);
+> > -
+> >       list_for_each_entry(dep, &acpi_dep_list, node) {
+> >               if (dep->consumer == adev->handle)
+> >                       adev->dep_unmet++;
+> >       }
+> > -
+> > -     mutex_unlock(&acpi_dep_list_lock);
+> >  }
+> >
+> >  void acpi_device_add_finalize(struct acpi_device *device)
+> > @@ -1707,6 +1710,7 @@ static int acpi_add_single_object(struct
+> >                                 acpi_handle handle, int type, bool dep_init)
+> >  {
+> >       struct acpi_device *device;
+> > +     bool release_dep_lock = false;
+> >       int result;
+> >
+> >       device = kzalloc(sizeof(struct acpi_device), GFP_KERNEL);
+> > @@ -1720,16 +1724,32 @@ static int acpi_add_single_object(struct
+> >        * this must be done before the get power-/wakeup_dev-flags calls.
+> >        */
+> >       if (type == ACPI_BUS_TYPE_DEVICE || type == ACPI_BUS_TYPE_PROCESSOR) {
+> > -             if (dep_init)
+> > +             if (dep_init) {
+> > +                     mutex_lock(&acpi_dep_list_lock);
+> > +                     /*
+> > +                      * Hold the lock until the acpi_tie_acpi_dev() call
+> > +                      * below to prevent concurrent acpi_scan_clear_dep()
+> > +                      * from deleting a dependency list entry without
+> > +                      * updating dep_unmet for the device.
+> > +                      */
+> > +                     release_dep_lock = true;
+> >                       acpi_scan_dep_init(device);
+> > -
+> > +             }
+> >               acpi_scan_init_status(device);
+> >       }
+> >
+> >       acpi_bus_get_power_flags(device);
+> >       acpi_bus_get_wakeup_device_flags(device);
+> >
+> > -     result = acpi_device_add(device, acpi_device_release);
+> > +     result = acpi_tie_acpi_dev(device);
 > > +
-> > +     if (adev->dep_unmet)
-> > +             return false;
+> > +     if (release_dep_lock)
+> > +             mutex_unlock(&acpi_dep_list_lock);
 > > +
-> > +     cdw = kmalloc(sizeof(*cdw), GFP_KERNEL);
-> > +     if (!cdw)
-> > +             return false;
-> > +
-> > +     cdw->adev = adev;
-> > +     INIT_WORK(&cdw->work, acpi_scan_clear_dep_fn);
-> > +     /*
-> > +      * Since the work function may block on the lock until the entire
-> > +      * initial enumeration of devices is complete, put it into the unbound
-> > +      * workqueue.
-> > +      */
-> > +     queue_work(system_unbound_wq, &cdw->work);
+> > +     if (result)
 >
-> Hmm, I'm a bit worried about this. Even with the system_unbound_wq
-> some code may expect at least some progress being made with processing
-> works during the initial enumeration. OTOH this does run pretty early on.
->
-> Still I wonder if it would not be better to create + use our own workqueue
-> for this ?
->
-> I guess we can always do this if we run into issues later...
+> AFAICT you are missing a "acpi_device_release(&device->dev);"
+> call in the error-exit path here, causing a mem-leak.
 
-Exactly my thought.
+Indeed.
 
-> With that said / otherwise the patch looks good to me:
+I'll send a v2 of this patch alone to fix this issue.
+
+> Otherwise this looks good, with the above fixed this is:
 >
 > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
