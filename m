@@ -2,138 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6875B3AB25D
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 13:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BD8F3AB29D
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 13:31:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232460AbhFQLVr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Jun 2021 07:21:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49846 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232260AbhFQLVr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Jun 2021 07:21:47 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98591C06175F
-        for <linux-acpi@vger.kernel.org>; Thu, 17 Jun 2021 04:19:39 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id k15so4751100pfp.6
-        for <linux-acpi@vger.kernel.org>; Thu, 17 Jun 2021 04:19:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Np/lQVozeidMH5d/F8qOsmZ9gxCf0/IInqaWOQ/30j4=;
-        b=L7dHSltwk04Vk547K8izfarGGRCbF4ISWk6Fb0R1ubDfVGBnc2sFCI9UVohrf3z8hM
-         bfHXvQH6gcaLZHZArDnbvRp9HvDkJnyrua/eizeIjvKJHpLMJusIHhjNATDE7h6TErC5
-         7CZz6Ul0kbXdmlmjXzNHbpmCZxZ/4AiIkQ0CxGMY2QcMDrzN4s/c3O73uMvTPD7Wxb6C
-         MwCRLlkrqHRt8Pcv/UF1TmBMAudCnqRwKjwGjUF8EZYf/MOud9ege9kPmavrzYcEkjSx
-         Furj36cWPM+oRKegQtePu4ABTLDiHiuTjbnzmNQETeUYIDjPgNzrEffPnFNsGlVDOIUv
-         a6Vw==
+        id S232308AbhFQLd5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Jun 2021 07:33:57 -0400
+Received: from mail-ot1-f42.google.com ([209.85.210.42]:33319 "EHLO
+        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232298AbhFQLd5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Jun 2021 07:33:57 -0400
+Received: by mail-ot1-f42.google.com with SMTP id o17-20020a9d76510000b02903eabfc221a9so5839712otl.0;
+        Thu, 17 Jun 2021 04:31:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Np/lQVozeidMH5d/F8qOsmZ9gxCf0/IInqaWOQ/30j4=;
-        b=udzLfN+FyLGA9lgzBugVyman8I4zBhDtPpvDep+nRRwekXch6uJN3ZfV+psrYslZ+m
-         ORLYYNsJpkvQUYNyAZGQqafNOZV2llQRtfQ7dXJ+OIyn8KUWgzAWVPpO6u6nVj/0eVOz
-         aAGVAC+6miNGxrIOGditjux94OdcxVTtnayjitgy1lKR5H308s/hylzHj/PyqiVuebsN
-         RvNwBSBr9RY2XqFcSbKUNW9Z0MkA5tScC9hBlB5s+J2iSZGe/8IZijyQq3oBL6u6pP9K
-         mCXQFBXSYqoXTGeWGerWfU/PgRqoRQd1P4L6trH9Orq16aA1GiYvkJaINbNbtXzi/+ip
-         2a1g==
-X-Gm-Message-State: AOAM533BKRGer0sBvAG2WsnSTd+/pyRi0eWA54jIp41jh8uVFZQEvMsT
-        WmY6FkB5RugWrcW5c89C4x9bgw==
-X-Google-Smtp-Source: ABdhPJxBREtkjK9RmmpOaSHHRyEaKsZymNNG87E3Vgz5LObhwmg1rfNrxRVlX8yXxTFnGAN0vI7hpQ==
-X-Received: by 2002:aa7:8f28:0:b029:2f4:9245:4ed with SMTP id y8-20020aa78f280000b02902f4924504edmr4735299pfr.24.1623928779088;
-        Thu, 17 Jun 2021 04:19:39 -0700 (PDT)
-Received: from localhost ([136.185.134.182])
-        by smtp.gmail.com with ESMTPSA id v15sm4886439pfm.216.2021.06.17.04.19.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jun 2021 04:19:38 -0700 (PDT)
-Date:   Thu, 17 Jun 2021 16:49:36 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Ionela Voinescu <ionela.voinescu@arm.com>
-Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        linux-pm@vger.kernel.org, Qian Cai <quic_qiancai@quicinc.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2 3/3] cpufreq: CPPC: Add support for frequency
- invariance
-Message-ID: <20210617111936.cfjzoh6g5zvolaf5@vireshk-i7>
-References: <cover.1623825725.git.viresh.kumar@linaro.org>
- <e7e653ede3ef54acc906d2bde47a3b9a41533404.1623825725.git.viresh.kumar@linaro.org>
- <20210616124806.GA6495@arm.com>
- <20210617032416.r2gfp25xxvhc5t4x@vireshk-i7>
- <20210617103415.GA29877@arm.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9ZHgz9IMrpOx0nKkCe7ZpuGho0X1kRLWuMLpWJvltF4=;
+        b=aEC/STHflbRdvyKrmvuP6LCBZU+wLveCPV6hwMN8zrJ+VQIGGGsZ+TVtEjr66WD4P8
+         oMXnSl5Vi9S+qzE+5oRRtitnvrmD4Y28e6c49maL3W5OhMvd7F6Y019ECp1hLxuLbSae
+         lpVTltQwIrxAut9gnOf8YLvj51cpO+P1Di1OjnOyC6TiXVoJkj0Ynt/suEEGImUg4GQW
+         FMC5RaGxrN3xJpLD9BRFir6qgm4D8/oTNydCIHnCBFYIB0yt1RPz5h850mW+465a32Lg
+         hWoq62tyQBkoKG9cJXR8VXfZvFt2NPXHPJxaMRRzy4QCFZ7N3fIhGGH0+elGn+OsKPw5
+         2MEQ==
+X-Gm-Message-State: AOAM531vENSAwvyzTCDPHOLMuDzHG/0t3kB3k8A/guUVdS2dUHs9rOuv
+        wd8pyZS8Uis1gK7HweYs44TKSnqVwDwgCNsgr28=
+X-Google-Smtp-Source: ABdhPJwTfCN5ISSxBFZxnhO9LJcdrU6FacDkqlcIyE9q/LixdZJpZH8o9y4Mwpf7qBpcw9m0DuGwR0Z7WLEK0rOH9SI=
+X-Received: by 2002:a05:6830:1bf7:: with SMTP id k23mr4312197otb.206.1623929509428;
+ Thu, 17 Jun 2021 04:31:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210617103415.GA29877@arm.com>
-User-Agent: NeoMutt/20180716-391-311a52
+References: <20210616195239.1627552-1-srinivas.pandruvada@linux.intel.com>
+In-Reply-To: <20210616195239.1627552-1-srinivas.pandruvada@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 17 Jun 2021 13:31:38 +0200
+Message-ID: <CAJZ5v0h2kG5QAbDDkpypiznNYsb3GwdH3NMn12=7PCiiJEfdVg@mail.gmail.com>
+Subject: Re: [PATCH -next] Revert "ACPI: DPTF: Add new PCH FIVR methods"
+To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 17-06-21, 11:34, Ionela Voinescu wrote:
-> I might be missing something, but when you offline a single CPU in a
-> policy, the worse that can happen is that a last call to
-> cppc_scale_freq_tick() would have sneaked in before irqs and the tick
-> are disabled. But even if we have a last call to
-> cppc_scale_freq_workfn(), the counter read methods would know how to
-> cope with hotplug, and the cppc_cpudata structure would still be
-> allocated and have valid desired_perf and highest_perf values.
+On Wed, Jun 16, 2021 at 9:52 PM Srinivas Pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> This reverts commit bab858b30cbe5619038dd68ab89be469fff9861e.
+>
+> Some user reported issues with this change. Will resubmit for 5.15 cycle.
+>
+> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-Okay, I somehow assumed that cppc_scale_freq_workfn() needs to run on the local
-CPU, while it can actually land anywhere. My fault.
+I've dropped this commit completely, as it was the top-most one in the
+DPTF branch.
 
-But the irq-work being queued here is per-cpu and it will get queued on the
-local CPU where the tick occurred.
+Thanks!
 
-Now I am not sure of what will happen to this irq-work in that case. I tried to
-look now and I see that these irq-work items are processed first on tick and
-then the tick handler of scheduler is called, so that will again queue the cppc
-irq-work.
-
-What happens if this happens along with CPU hotplug ? I am not sure I understand
-that. There may or may not be any side effects of this. Lets assume the work
-item is left in the queue as is and no tick happens after that as the CPU is
-offlined. We are good.
-
-Now if we unload the cpufreq driver at this moment, the driver will call
-irq_work_sync(), which may end up in a while loop ? There is no
-irq-work-cancel() API.
-
-Peter: Can you help here on this ? Lemme try to explain a bit here:
-
-We are starting an irq-work (in cppc cpufreq driver) from
-scheduler_tick()->arch_scale_freq_tick(). What will happen if the driver doesn't
-take care of CPU hotplug explicitly and make sure this work isn't queued again
-from the next tick.
-
-Is it important for user to make sure it gets rid of the irq-work during hotplug
-here ?
-
-> Worse case, the last scale factor set for the CPU will be meaningless,
-> but it's already meaningless as the CPU is going down.
-> 
-> When you are referring to the issue reported by Qian I suppose you are
-> referring to this [1]. I think this is the case where you hotplug the
-> last CPU in a policy and free cppc_cpudata.
-> 
-> [1] https://lore.kernel.org/linux-pm/41f5195e-0e5f-fdfe-ba37-34e1fd8e4064@quicinc.com/
-
-Yes, I was talking about this report only, I am not sure now if I understand
-what actually happened here :)
-
-Ionela: I have skipped replying to rest of your email, will get back to that
-once we have clarification on the above first.
-
-Thanks a lot for your reviews, always on time :)
-
--- 
-viresh
+> ---
+>  Documentation/ABI/testing/sysfs-platform-dptf | 42 -------------------
+>  drivers/acpi/dptf/dptf_pch_fivr.c             |  9 ----
+>  2 files changed, 51 deletions(-)
+>
+> diff --git a/Documentation/ABI/testing/sysfs-platform-dptf b/Documentation/ABI/testing/sysfs-platform-dptf
+> index bce1b745fc56..141834342a4d 100644
+> --- a/Documentation/ABI/testing/sysfs-platform-dptf
+> +++ b/Documentation/ABI/testing/sysfs-platform-dptf
+> @@ -111,45 +111,3 @@ Contact:   linux-acpi@vger.kernel.org
+>  Description:
+>                 (RW) The PCH FIVR (Fully Integrated Voltage Regulator) switching frequency in MHz,
+>                 when FIVR clock is 38.4MHz.
+> -
+> -What:          /sys/bus/platform/devices/INTC1045:00/pch_fivr_switch_frequency/fivr_switching_freq_mhz
+> -Date:          June, 2021
+> -KernelVersion: v5.14
+> -Contact:       linux-acpi@vger.kernel.org
+> -Description:
+> -               (RO) PCH FIVR switching control frequency in the units of
+> -               XTAL_FREQ / 128, where XTAL_FREQ is the (product specific)
+> -               Crystal Oscillator frequency.
+> -
+> -What:          /sys/bus/platform/devices/INTC1045:00/pch_fivr_switch_frequency/fivr_switching_fault_status
+> -Date:          June, 2021
+> -KernelVersion: v5.14
+> -Contact:       linux-acpi@vger.kernel.org
+> -Description:
+> -               (RO) Read the FIVR switching frequency control fault status.
+> -
+> -What:          /sys/bus/platform/devices/INTC1045:00/pch_fivr_switch_frequency/ssc_clock_info
+> -Date:          June, 2021
+> -KernelVersion: v5.14
+> -Contact:       linux-acpi@vger.kernel.org
+> -Description:
+> -               (RO) Presents SSC (spread spectrum clock) information for EMI
+> -               (Electro magnetic interference) control. This is a bit mask.
+> -               Bits    Description
+> -               [7:0]   Sets clock spectrum spread percentage:
+> -                       0x00=0.2% , 0x3F=10%
+> -                       1 LSB = 0.1% increase in spread (for
+> -                       settings 0x01 thru 0x1C)
+> -                       1 LSB = 0.2% increase in spread (for
+> -                       settings 0x1E thru 0x3F)
+> -               [8]     When set to 1, enables spread
+> -                       spectrum clock
+> -               [9]     0: Triangle mode. FFC frequency
+> -                       walks around the Fcenter in a linear
+> -                       fashion
+> -                       1: Random walk mode. FFC frequency
+> -                       changes randomly within the SSC
+> -                       (Spread spectrum clock) range
+> -               [10]    0: No white noise. 1: Add white noise
+> -                       to spread waveform
+> -               [11]    When 1, future writes are ignored.
+> diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
+> index 22c4ae0401ef..5fca18296bf6 100644
+> --- a/drivers/acpi/dptf/dptf_pch_fivr.c
+> +++ b/drivers/acpi/dptf/dptf_pch_fivr.c
+> @@ -55,24 +55,15 @@ static ssize_t name##_store(struct device *dev,\
+>
+>  PCH_FIVR_SHOW(freq_mhz_low_clock, GFC0)
+>  PCH_FIVR_SHOW(freq_mhz_high_clock, GFC1)
+> -PCH_FIVR_SHOW(ssc_clock_info, GEMI)
+> -PCH_FIVR_SHOW(fivr_switching_freq_mhz, GFCS)
+> -PCH_FIVR_SHOW(fivr_switching_fault_status, GFFS)
+>  PCH_FIVR_STORE(freq_mhz_low_clock, RFC0)
+>  PCH_FIVR_STORE(freq_mhz_high_clock, RFC1)
+>
+>  static DEVICE_ATTR_RW(freq_mhz_low_clock);
+>  static DEVICE_ATTR_RW(freq_mhz_high_clock);
+> -static DEVICE_ATTR_RO(ssc_clock_info);
+> -static DEVICE_ATTR_RO(fivr_switching_freq_mhz);
+> -static DEVICE_ATTR_RO(fivr_switching_fault_status);
+>
+>  static struct attribute *fivr_attrs[] = {
+>         &dev_attr_freq_mhz_low_clock.attr,
+>         &dev_attr_freq_mhz_high_clock.attr,
+> -       &dev_attr_ssc_clock_info.attr,
+> -       &dev_attr_fivr_switching_freq_mhz.attr,
+> -       &dev_attr_fivr_switching_fault_status.attr,
+>         NULL
+>  };
+>
+> --
+> 2.30.2
+>
