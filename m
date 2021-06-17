@@ -2,209 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 976FC3AAF3A
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 11:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FE5C3AB170
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 12:34:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231335AbhFQJCm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Jun 2021 05:02:42 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3262 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231341AbhFQJCj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Jun 2021 05:02:39 -0400
-Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4G5G3p5ZLLz6L7lv;
-        Thu, 17 Jun 2021 16:50:46 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 17 Jun 2021 11:00:30 +0200
-Received: from localhost (10.52.126.9) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Thu, 17 Jun
- 2021 10:00:29 +0100
-Date:   Thu, 17 Jun 2021 10:00:22 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Alison Schofield <alison.schofield@intel.com>
-CC:     Ben Widawsky <ben.widawsky@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v3 2/2] cxl/acpi: Use the ACPI CFMWS to create static
- decoder objects
-Message-ID: <20210617100022.00004665@Huawei.com>
-In-Reply-To: <e6ed0f7d4859fb0d2369ed251ef2648a228c0d41.1623890468.git.alison.schofield@intel.com>
-References: <cover.1623890468.git.alison.schofield@intel.com>
-        <e6ed0f7d4859fb0d2369ed251ef2648a228c0d41.1623890468.git.alison.schofield@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S231808AbhFQKg3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Jun 2021 06:36:29 -0400
+Received: from foss.arm.com ([217.140.110.172]:51508 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231882AbhFQKgZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Jun 2021 06:36:25 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9DD5031B;
+        Thu, 17 Jun 2021 03:34:17 -0700 (PDT)
+Received: from localhost (e108754-lin.cambridge.arm.com [10.1.195.40])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3DE7E3F694;
+        Thu, 17 Jun 2021 03:34:17 -0700 (PDT)
+Date:   Thu, 17 Jun 2021 11:34:15 +0100
+From:   Ionela Voinescu <ionela.voinescu@arm.com>
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        linux-pm@vger.kernel.org, Qian Cai <quic_qiancai@quicinc.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2 3/3] cpufreq: CPPC: Add support for frequency
+ invariance
+Message-ID: <20210617103415.GA29877@arm.com>
+References: <cover.1623825725.git.viresh.kumar@linaro.org>
+ <e7e653ede3ef54acc906d2bde47a3b9a41533404.1623825725.git.viresh.kumar@linaro.org>
+ <20210616124806.GA6495@arm.com>
+ <20210617032416.r2gfp25xxvhc5t4x@vireshk-i7>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.126.9]
-X-ClientProxiedBy: lhreml719-chm.china.huawei.com (10.201.108.70) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210617032416.r2gfp25xxvhc5t4x@vireshk-i7>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 16 Jun 2021 18:11:08 -0700
-Alison Schofield <alison.schofield@intel.com> wrote:
+Many thanks for the details!
 
-> The ACPI CXL Early Discovery Table (CEDT) includes a list of CXL memory
-> resources in CXL Fixed Memory Window Structures (CFMWS). Retrieve each
-> CFMWS in the CEDT and add a cxl_decoder object to the root port (root0)
-> for each memory resource.
+On Thursday 17 Jun 2021 at 08:54:16 (+0530), Viresh Kumar wrote:
+> On 16-06-21, 13:48, Ionela Voinescu wrote:
+> > I was looking forward to the complete removal of stop_cpu() :).
 > 
-> Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-> ---
->  drivers/cxl/acpi.c | 119 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 119 insertions(+)
+> No one wants to remove more code than I do :)
 > 
-> diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-> index 852b5c270464..018f5ac73b78 100644
-> --- a/drivers/cxl/acpi.c
-> +++ b/drivers/cxl/acpi.c
-> @@ -10,6 +10,123 @@
->  
->  static struct acpi_table_header *acpi_cedt;
->  
-> +/* Encode defined in CXL 2.0 8.2.5.12.7 HDM Decoder Control Register */
-> +#define CFMWS_INTERLEAVE_WAYS(x)	(1 << (x)->interleave_ways)
-> +#define CFMWS_INTERLEAVE_GRANULARITY(x)	((x)->granularity + 8)
-> +
-> +static unsigned long cfmws_to_decoder_flags(int restrictions)
-> +{
-> +	unsigned long flags = 0;
-> +
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE2)
-> +		flags |= CXL_DECODER_F_TYPE2;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE3)
-> +		flags |= CXL_DECODER_F_TYPE3;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE)
-> +		flags |= CXL_DECODER_F_RAM;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_PMEM)
-> +		flags |= CXL_DECODER_F_PMEM;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_FIXED)
-> +		flags |= CXL_DECODER_F_LOCK;
-> +
-> +	return flags;
-> +}
-> +
-> +static int cxl_acpi_cfmws_verify(struct device *dev,
-> +				 struct acpi_cedt_cfmws *cfmws)
-> +{
-> +	int expected_len;
-> +
-> +	if (cfmws->interleave_arithmetic != ACPI_CEDT_CFMWS_ARITHMETIC_MODULO) {
-> +		dev_err(dev, "CFMWS Unsupported Interleave Arithmetic\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!IS_ALIGNED(cfmws->base_hpa, SZ_256M)) {
-> +		dev_err(dev, "CFMWS Base HPA not 256MB aligned\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!IS_ALIGNED(cfmws->window_size, SZ_256M)) {
-> +		dev_err(dev, "CFMWS Window Size not 256MB aligned\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	expected_len = struct_size((cfmws), interleave_targets,
-> +				   CFMWS_INTERLEAVE_WAYS(cfmws));
-> +
-> +	if (cfmws->header.length < expected_len) {
-> +		dev_err(dev, "CFMWS length %d less than expected %d\n",
-> +			cfmws->header.length, expected_len);
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (cfmws->header.length > expected_len)
-> +		dev_dbg(dev, "CFMWS length %d greater than expected %d\n",
-> +			cfmws->header.length, expected_len);
-> +
-> +	return 0;
-> +}
-> +
-> +static void cxl_add_cfmws_decoders(struct device *dev,
-> +				   struct cxl_port *root_port)
-> +{
-> +	struct acpi_cedt_cfmws *cfmws;
-> +	struct cxl_decoder *cxld;
-> +	acpi_size len, cur = 0;
-> +	void *cedt_subtable;
-> +	int rc;
-> +
-> +	len = acpi_cedt->length - sizeof(*acpi_cedt);
-> +	cedt_subtable = acpi_cedt + 1;
-> +
-> +	while (cur < len) {
-> +		struct acpi_cedt_header *c = cedt_subtable + cur;
-> +
-> +		if (c->type != ACPI_CEDT_TYPE_CFMWS) {
-> +			cur += c->length;
-> +			continue;
-> +		}
-> +
-> +		cfmws = cedt_subtable + cur;
-> +
-> +		if (dev_WARN_ONCE(dev, cfmws->header.length < sizeof(*cfmws),
-> +				  "CFMWS entry skipped: invalid length:%u\n",
-> +				  cfmws->header.length)) {
-> +			cur += c->length;
-> +			continue;
-> +		}
-> +
-> +		rc = cxl_acpi_cfmws_verify(dev, cfmws);
-> +		if (rc) {
-> +			dev_err(dev, "CFMWS range %#llx-%#llx not registered\n",
-> +				cfmws->base_hpa, cfmws->base_hpa +
-> +				cfmws->window_size - 1);
-> +			cur += c->length;
-> +			continue;
-> +		}
-> +
-> +		cxld = devm_cxl_add_decoder(dev, root_port,
-> +				CFMWS_INTERLEAVE_WAYS(cfmws),
-> +				cfmws->base_hpa, cfmws->window_size,
-> +				CFMWS_INTERLEAVE_WAYS(cfmws),
-> +				CFMWS_INTERLEAVE_GRANULARITY(cfmws),
-> +				CXL_DECODER_EXPANDER,
-> +				cfmws_to_decoder_flags(cfmws->restrictions));
-> +
-> +		if (IS_ERR(cxld)) {
-> +			dev_err(dev, "Failed to add decoder for %#llx-%#llx\n",
-> +				cfmws->base_hpa, cfmws->base_hpa +
-> +				cfmws->window_size - 1);
+> > I'll only comment on this for now as I should know the rest.
+> > 
+> > Let's assume we don't have these, what happens now is the following:
+> > 
+> > 1. We hotplug out the last CPU in a policy, we call the
+> >    .stop_cpu()/exit() function which will free the cppc_cpudata structure.
+> > 
+> >    The only vulnerability is if we have a last tick on that last CPU,
+> >    after the above callback was called.
+> > 
+> > 2. When the CPU at 1. gets hotplugged back in, the cppc_fi->cpu_data is
+> >    stale.
+> > 
+> > We do not have a problem when removing the CPPC cpufreq module as we're
+> > doing cppc_freq_invariance_exit() before unregistering the driver and
+> > freeing the data.
+> > 
+> > Are 1. and 2 the only problems we have, or have I missed any?
+> 
+> There is more to it. For simplicity, lets assume a quad-core setup,
+> with all 4 CPUs sharing the cpufreq policy. And here is what happens
+> without the new changes:
+> 
+> - On CPPC cpufreq driver insertion, we start 4 kthreads/irq-works (1
+>   for each CPU as it fires from tick) from the ->init() callback.
+> 
+> - Now lets say we offline CPU3. The CPPC cpufreq driver isn't notified
+>   by anyone and it hasn't registered itself to hotplug notifier as
+>   well. So, the irq-work/kthread isn't stopped. This results in the
+>   issue reported by Qian earlier.
+> 
 
-This sounds rather fatal... I guess it'll be exposed later as we won't have
-any means of using the decoder so we don't have to error out here though.
+I might be missing something, but when you offline a single CPU in a
+policy, the worse that can happen is that a last call to
+cppc_scale_freq_tick() would have sneaked in before irqs and the tick
+are disabled. But even if we have a last call to
+cppc_scale_freq_workfn(), the counter read methods would know how to
+cope with hotplug, and the cppc_cpudata structure would still be
+allocated and have valid desired_perf and highest_perf values.
 
-> +		} else {
-> +			dev_dbg(dev, "add: %s range %#llx-%#llx\n",
-> +				dev_name(&cxld->dev), cfmws->base_hpa,
-> +				 cfmws->base_hpa + cfmws->window_size - 1);
-> +		}
-> +		cur += c->length;
-> +	}
-> +}
-> +
->  static struct acpi_cedt_chbs *cxl_acpi_match_chbs(struct device *dev, u32 uid)
->  {
->  	struct acpi_cedt_chbs *chbs, *chbs_match = NULL;
-> @@ -271,6 +388,8 @@ static int cxl_acpi_probe(struct platform_device *pdev)
->  	if (rc)
->  		goto out;
->  
-> +	cxl_add_cfmws_decoders(host, root_port);
-> +
->  	/*
->  	 * Root level scanned with host-bridge as dports, now scan host-bridges
->  	 * for their role as CXL uports to their CXL-capable PCIe Root Ports.
+Worse case, the last scale factor set for the CPU will be meaningless,
+but it's already meaningless as the CPU is going down.
 
+When you are referring to the issue reported by Qian I suppose you are
+referring to this [1]. I think this is the case where you hotplug the
+last CPU in a policy and free cppc_cpudata.
+
+[1] https://lore.kernel.org/linux-pm/41f5195e-0e5f-fdfe-ba37-34e1fd8e4064@quicinc.com/
+
+>   The very same thing happens with schedutil governor too, which uses
+>   very similar mechanisms, and the cpufreq core takes care of it there
+>   by stopping the governor before removing the CPU from policy->cpus
+>   and starting it again. So there we stop irq-work/kthread for all 4
+>   CPUs, then start them only for remaining 3.
+> 
+
+Things are different for sugov: you have to stop the governor when one
+CPU in the policy goes down, and it's normal for sugov not to allow its
+hooks to be called while the governor is down so it has to do a full
+cleanup when going down and a full bringup when going back up.
+
+The difference for CPPC invariance is that only a CPU can trigger the
+work to update its own scale factor, through the tick. No other CPU x
+can trigger a scale factor update for CPU y, but x can carry out the
+work for CPU y (x can run the cppc_scale_freq_workfn(y)).
+
+So when y goes down, it won't have a tick to queue any irq or kthread
+work any longer until it's brought back up. So I believe that the only
+cleanup that needs to be done when a CPU goes offline, is to ensure
+that the work triggered by that last tick is done safely.
+
+>   I thought about that approach as well, but it was too heavy to stop
+>   everyone and start again in this case. And so I invented start_cpu()
+>   and stop_cpu() callbacks.
+> 
+
+> - In this case, because the CPU is going away, we need to make sure we
+>   don't queue any more irq-work or kthread to it and this is one of
+>   the main reasons for adding synchronization in the topology core,
+>   because we need a hard guarantee here that irq-work won't fire
+>   again, as the CPU won't be there or will not be in a sane state.
+> 
+
+We can't queue any more work for it as there's no tick for the offline
+CPU.
+
+> - The same sequence of events is true for the case where the last CPU
+>   of a policy goes away (not in this example, but lets say quad-core
+>   setup with separate policies for each CPU).
+> 
+> - Not just the policy, but the CPU may be going away as well.
+> 
+> I hope I was able to clarify a bit here.
+> 
+
+Thanks! I do agree it is better to be cautious, but I initially wanted to
+understand we don't see the problem bigger than it actually is.
+
+Thanks,
+Ionela.
+
+P.S. I'll give more thought to the rcu use in the arch_topology driver.
+I'm the boring kind that likes to err on the side of caution, so I tend
+to agree that it might be good to have even if the current problem could
+be solved in this driver.
+
+
+> -- 
+> viresh
