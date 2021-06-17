@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C7963AA879
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 03:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0629B3AA87A
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 03:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231882AbhFQBRh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Jun 2021 21:17:37 -0400
+        id S231888AbhFQBRi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Jun 2021 21:17:38 -0400
 Received: from mga02.intel.com ([134.134.136.20]:4963 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231734AbhFQBRg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S231875AbhFQBRg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Wed, 16 Jun 2021 21:17:36 -0400
-IronPort-SDR: Q5EX9bNaKyLVAxGWjLmrq7yT7sXl51z8IdeRw1ArivIcno3l5Rh41SReL3b9DoM/FHWSCpGQyf
- 4DaHHHScHR4g==
-X-IronPort-AV: E=McAfee;i="6200,9189,10017"; a="193404555"
+IronPort-SDR: nCuQy4x5QW9Zrb2LAsIW8eQLpUoiwNW/BX/45mP0JHDBTkPYPhSNqYLgthQHQi29ZOd8HGzkBK
+ uWcYPSe27I9g==
+X-IronPort-AV: E=McAfee;i="6200,9189,10017"; a="193404556"
 X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; 
-   d="scan'208";a="193404555"
+   d="scan'208";a="193404556"
 Received: from fmsmga005.fm.intel.com ([10.253.24.32])
   by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2021 18:15:29 -0700
-IronPort-SDR: vjdJnQv2Ehd19oz0OMiurfXz79fbqTjR49MA4r3ICqs6BnJBJ0zhMuqPCvIf7uTuk+OOZ7gG5G
- qxGftpC2oLZQ==
+IronPort-SDR: 23xTlurzuOIwPfFeJVwRAjQopUsAyKATGe5SKMrez+eIxpr7ylRicEV1TxTUJemEHVGY8Rx7Zt
+ KYIsQ8CupmCw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; 
-   d="scan'208";a="640201719"
+   d="scan'208";a="640201722"
 Received: from alison-desk.jf.intel.com (HELO alison-desk) ([10.54.74.53])
   by fmsmga005.fm.intel.com with ESMTP; 16 Jun 2021 18:15:28 -0700
 From:   Alison Schofield <alison.schofield@intel.com>
@@ -34,9 +34,9 @@ To:     Ben Widawsky <ben.widawsky@intel.com>,
         Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 Cc:     linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH v3 1/2] cxl/acpi: Add the Host Bridge base address to CXL port objects
-Date:   Wed, 16 Jun 2021 18:11:07 -0700
-Message-Id: <d9ea1d724dc30add7b6e320a876681644633f49b.1623890468.git.alison.schofield@intel.com>
+Subject: [PATCH v3 2/2] cxl/acpi: Use the ACPI CFMWS to create static decoder objects
+Date:   Wed, 16 Jun 2021 18:11:08 -0700
+Message-Id: <e6ed0f7d4859fb0d2369ed251ef2648a228c0d41.1623890468.git.alison.schofield@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <cover.1623890468.git.alison.schofield@intel.com>
 References: <cover.1623890468.git.alison.schofield@intel.com>
@@ -46,33 +46,90 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The base address for the Host Bridge port component registers is located
-in the CXL Host Bridge Structure (CHBS) of the ACPI CXL Early Discovery
-Table (CEDT). Retrieve the CHBS for each Host Bridge (ACPI0016 device)
-and include that base address in the port object.
+The ACPI CXL Early Discovery Table (CEDT) includes a list of CXL memory
+resources in CXL Fixed Memory Window Structures (CFMWS). Retrieve each
+CFMWS in the CEDT and add a cxl_decoder object to the root port (root0)
+for each memory resource.
 
-Co-developed-by: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 ---
- drivers/cxl/acpi.c | 98 +++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 93 insertions(+), 5 deletions(-)
+ drivers/cxl/acpi.c | 119 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 119 insertions(+)
 
 diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index 8a723f7f3f73..852b5c270464 100644
+index 852b5c270464..018f5ac73b78 100644
 --- a/drivers/cxl/acpi.c
 +++ b/drivers/cxl/acpi.c
-@@ -8,6 +8,58 @@
- #include <linux/pci.h>
- #include "cxl.h"
+@@ -10,6 +10,123 @@
  
-+static struct acpi_table_header *acpi_cedt;
+ static struct acpi_table_header *acpi_cedt;
+ 
++/* Encode defined in CXL 2.0 8.2.5.12.7 HDM Decoder Control Register */
++#define CFMWS_INTERLEAVE_WAYS(x)	(1 << (x)->interleave_ways)
++#define CFMWS_INTERLEAVE_GRANULARITY(x)	((x)->granularity + 8)
 +
-+static struct acpi_cedt_chbs *cxl_acpi_match_chbs(struct device *dev, u32 uid)
++static unsigned long cfmws_to_decoder_flags(int restrictions)
 +{
-+	struct acpi_cedt_chbs *chbs, *chbs_match = NULL;
++	unsigned long flags = 0;
++
++	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE2)
++		flags |= CXL_DECODER_F_TYPE2;
++	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE3)
++		flags |= CXL_DECODER_F_TYPE3;
++	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE)
++		flags |= CXL_DECODER_F_RAM;
++	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_PMEM)
++		flags |= CXL_DECODER_F_PMEM;
++	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_FIXED)
++		flags |= CXL_DECODER_F_LOCK;
++
++	return flags;
++}
++
++static int cxl_acpi_cfmws_verify(struct device *dev,
++				 struct acpi_cedt_cfmws *cfmws)
++{
++	int expected_len;
++
++	if (cfmws->interleave_arithmetic != ACPI_CEDT_CFMWS_ARITHMETIC_MODULO) {
++		dev_err(dev, "CFMWS Unsupported Interleave Arithmetic\n");
++		return -EINVAL;
++	}
++
++	if (!IS_ALIGNED(cfmws->base_hpa, SZ_256M)) {
++		dev_err(dev, "CFMWS Base HPA not 256MB aligned\n");
++		return -EINVAL;
++	}
++
++	if (!IS_ALIGNED(cfmws->window_size, SZ_256M)) {
++		dev_err(dev, "CFMWS Window Size not 256MB aligned\n");
++		return -EINVAL;
++	}
++
++	expected_len = struct_size((cfmws), interleave_targets,
++				   CFMWS_INTERLEAVE_WAYS(cfmws));
++
++	if (cfmws->header.length < expected_len) {
++		dev_err(dev, "CFMWS length %d less than expected %d\n",
++			cfmws->header.length, expected_len);
++		return -EINVAL;
++	}
++
++	if (cfmws->header.length > expected_len)
++		dev_dbg(dev, "CFMWS length %d greater than expected %d\n",
++			cfmws->header.length, expected_len);
++
++	return 0;
++}
++
++static void cxl_add_cfmws_decoders(struct device *dev,
++				   struct cxl_port *root_port)
++{
++	struct acpi_cedt_cfmws *cfmws;
++	struct cxl_decoder *cxld;
 +	acpi_size len, cur = 0;
 +	void *cedt_subtable;
++	int rc;
 +
 +	len = acpi_cedt->length - sizeof(*acpi_cedt);
 +	cedt_subtable = acpi_cedt + 1;
@@ -80,156 +137,62 @@ index 8a723f7f3f73..852b5c270464 100644
 +	while (cur < len) {
 +		struct acpi_cedt_header *c = cedt_subtable + cur;
 +
-+		if (c->type != ACPI_CEDT_TYPE_CHBS) {
++		if (c->type != ACPI_CEDT_TYPE_CFMWS) {
 +			cur += c->length;
 +			continue;
 +		}
 +
-+		chbs = cedt_subtable + cur;
++		cfmws = cedt_subtable + cur;
 +
-+		if (dev_WARN_ONCE(dev, chbs->header.length < sizeof(*chbs),
-+				  "CHBS entry skipped: invalid length:%u\n",
-+				  chbs->header.length)) {
++		if (dev_WARN_ONCE(dev, cfmws->header.length < sizeof(*cfmws),
++				  "CFMWS entry skipped: invalid length:%u\n",
++				  cfmws->header.length)) {
 +			cur += c->length;
 +			continue;
 +		}
 +
-+		if (chbs->uid != uid) {
++		rc = cxl_acpi_cfmws_verify(dev, cfmws);
++		if (rc) {
++			dev_err(dev, "CFMWS range %#llx-%#llx not registered\n",
++				cfmws->base_hpa, cfmws->base_hpa +
++				cfmws->window_size - 1);
 +			cur += c->length;
 +			continue;
 +		}
 +
-+		if (dev_WARN_ONCE(dev, chbs_match,
-+				  "CHBS entry skipped: duplicate UID:%u\n",
-+				  uid)) {
-+			cur += c->length;
-+			continue;
-+		}
++		cxld = devm_cxl_add_decoder(dev, root_port,
++				CFMWS_INTERLEAVE_WAYS(cfmws),
++				cfmws->base_hpa, cfmws->window_size,
++				CFMWS_INTERLEAVE_WAYS(cfmws),
++				CFMWS_INTERLEAVE_GRANULARITY(cfmws),
++				CXL_DECODER_EXPANDER,
++				cfmws_to_decoder_flags(cfmws->restrictions));
 +
-+		chbs_match = chbs;
++		if (IS_ERR(cxld)) {
++			dev_err(dev, "Failed to add decoder for %#llx-%#llx\n",
++				cfmws->base_hpa, cfmws->base_hpa +
++				cfmws->window_size - 1);
++		} else {
++			dev_dbg(dev, "add: %s range %#llx-%#llx\n",
++				dev_name(&cxld->dev), cfmws->base_hpa,
++				 cfmws->base_hpa + cfmws->window_size - 1);
++		}
 +		cur += c->length;
 +	}
-+
-+	return chbs_match ? chbs_match : ERR_PTR(-ENODEV);
 +}
 +
-+static resource_size_t get_chbcr(struct acpi_cedt_chbs *chbs)
-+{
-+	return IS_ERR(chbs) ? CXL_RESOURCE_NONE : chbs->base;
-+}
-+
- struct cxl_walk_context {
- 	struct device *dev;
- 	struct pci_bus *root;
-@@ -50,6 +102,21 @@ static int match_add_root_ports(struct pci_dev *pdev, void *data)
- 	return 0;
- }
- 
-+static struct cxl_dport *find_dport_by_dev(struct cxl_port *port, struct device *dev)
-+{
-+	struct cxl_dport *dport;
-+
-+	device_lock(&port->dev);
-+	list_for_each_entry(dport, &port->dports, list)
-+		if (dport->dport == dev) {
-+			device_unlock(&port->dev);
-+			return dport;
-+		}
-+
-+	device_unlock(&port->dev);
-+	return NULL;
-+}
-+
- static struct acpi_device *to_cxl_host_bridge(struct device *dev)
+ static struct acpi_cedt_chbs *cxl_acpi_match_chbs(struct device *dev, u32 uid)
  {
- 	struct acpi_device *adev = to_acpi_device(dev);
-@@ -71,6 +138,7 @@ static int add_host_bridge_uport(struct device *match, void *arg)
- 	struct acpi_pci_root *pci_root;
- 	struct cxl_walk_context ctx;
- 	struct cxl_decoder *cxld;
-+	struct cxl_dport *dport;
- 	struct cxl_port *port;
- 
- 	if (!bridge)
-@@ -80,8 +148,14 @@ static int add_host_bridge_uport(struct device *match, void *arg)
- 	if (!pci_root)
- 		return -ENXIO;
- 
--	/* TODO: fold in CEDT.CHBS retrieval */
--	port = devm_cxl_add_port(host, match, CXL_RESOURCE_NONE, root_port);
-+	dport = find_dport_by_dev(root_port, match);
-+	if (!dport) {
-+		dev_dbg(host, "host bridge expected and not found\n");
-+		return -ENODEV;
-+	}
-+
-+	port = devm_cxl_add_port(host, match, dport->component_reg_phys,
-+				 root_port);
- 	if (IS_ERR(port))
- 		return PTR_ERR(port);
- 	dev_dbg(host, "%s: add: %s\n", dev_name(match), dev_name(&port->dev));
-@@ -120,6 +194,7 @@ static int add_host_bridge_dport(struct device *match, void *arg)
- 	int rc;
- 	acpi_status status;
- 	unsigned long long uid;
-+	struct acpi_cedt_chbs *chbs;
- 	struct cxl_port *root_port = arg;
- 	struct device *host = root_port->dev.parent;
- 	struct acpi_device *bridge = to_cxl_host_bridge(match);
-@@ -135,7 +210,12 @@ static int add_host_bridge_dport(struct device *match, void *arg)
- 		return -ENODEV;
- 	}
- 
--	rc = cxl_add_dport(root_port, match, uid, CXL_RESOURCE_NONE);
-+	chbs = cxl_acpi_match_chbs(host, uid);
-+	if (IS_ERR(chbs))
-+		dev_dbg(host, "No CHBS found for Host Bridge: %s\n",
-+			dev_name(match));
-+
-+	rc = cxl_add_dport(root_port, match, uid, get_chbcr(chbs));
- 	if (rc) {
- 		dev_err(host, "failed to add downstream port: %s\n",
- 			dev_name(match));
-@@ -172,6 +252,7 @@ static int add_root_nvdimm_bridge(struct device *match, void *data)
- static int cxl_acpi_probe(struct platform_device *pdev)
- {
- 	int rc;
-+	acpi_status status;
- 	struct cxl_port *root_port;
- 	struct device *host = &pdev->dev;
- 	struct acpi_device *adev = ACPI_COMPANION(host);
-@@ -181,10 +262,14 @@ static int cxl_acpi_probe(struct platform_device *pdev)
- 		return PTR_ERR(root_port);
- 	dev_dbg(host, "add: %s\n", dev_name(&root_port->dev));
- 
-+	status = acpi_get_table(ACPI_SIG_CEDT, 0, &acpi_cedt);
-+	if (ACPI_FAILURE(status))
-+		return -ENXIO;
-+
- 	rc = bus_for_each_dev(adev->dev.bus, NULL, root_port,
- 			      add_host_bridge_dport);
+ 	struct acpi_cedt_chbs *chbs, *chbs_match = NULL;
+@@ -271,6 +388,8 @@ static int cxl_acpi_probe(struct platform_device *pdev)
  	if (rc)
--		return rc;
-+		goto out;
+ 		goto out;
  
++	cxl_add_cfmws_decoders(host, root_port);
++
  	/*
  	 * Root level scanned with host-bridge as dports, now scan host-bridges
-@@ -193,11 +278,14 @@ static int cxl_acpi_probe(struct platform_device *pdev)
- 	rc = bus_for_each_dev(adev->dev.bus, NULL, root_port,
- 			      add_host_bridge_uport);
- 	if (rc)
--		return rc;
-+		goto out;
- 
- 	if (IS_ENABLED(CONFIG_CXL_PMEM))
- 		rc = device_for_each_child(&root_port->dev, root_port,
- 					   add_root_nvdimm_bridge);
-+
-+out:
-+	acpi_put_table(acpi_cedt);
- 	if (rc < 0)
- 		return rc;
- 	return 0;
+ 	 * for their role as CXL uports to their CXL-capable PCIe Root Ports.
 -- 
 2.26.2
 
