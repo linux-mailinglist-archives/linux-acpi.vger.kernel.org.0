@@ -2,201 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B2B13ABBC3
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 20:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1E813ABBCC
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 20:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232897AbhFQS3A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Jun 2021 14:29:00 -0400
-Received: from mga03.intel.com ([134.134.136.65]:54705 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231654AbhFQS2o (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Jun 2021 14:28:44 -0400
-IronPort-SDR: eU2c4Bdg3MwDJrxHpNyOEAkuOKsR/9yRBaRcoiaMuYpotbW4fQHdWU9/9k3CPEs7BBz2yW3KHV
- qXE0JPrTm5Dw==
-X-IronPort-AV: E=McAfee;i="6200,9189,10018"; a="206465039"
-X-IronPort-AV: E=Sophos;i="5.83,281,1616482800"; 
-   d="scan'208";a="206465039"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2021 11:26:00 -0700
-IronPort-SDR: jHmquD2YGyQm+cVb8jObjCWDRTiP/5i7Vwub4VeR35J7gAqKxQLHqtYwfqbkaYMjT0zME0gmfA
- ljkGkVVnYW7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,281,1616482800"; 
-   d="scan'208";a="555282560"
-Received: from alison-desk.jf.intel.com (HELO alison-desk) ([10.54.74.53])
-  by fmsmga001.fm.intel.com with ESMTP; 17 Jun 2021 11:25:59 -0700
-From:   Alison Schofield <alison.schofield@intel.com>
-To:     Ben Widawsky <ben.widawsky@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH v4 2/2] cxl/acpi: Use the ACPI CFMWS to create static decoder objects
-Date:   Thu, 17 Jun 2021 11:21:38 -0700
-Message-Id: <40994ae0fbd778d63973ddbc9b139723db237fdb.1623950781.git.alison.schofield@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <cover.1623950781.git.alison.schofield@intel.com>
-References: <cover.1623950781.git.alison.schofield@intel.com>
-In-Reply-To: <cover.1623950781.git.alison.schofield@intel.com>
-References: <cover.1623950781.git.alison.schofield@intel.com>
+        id S232306AbhFQSac (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Jun 2021 14:30:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33582 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231547AbhFQSab (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Jun 2021 14:30:31 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 603BEC061574
+        for <linux-acpi@vger.kernel.org>; Thu, 17 Jun 2021 11:28:22 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id g8so11659083ejx.1
+        for <linux-acpi@vger.kernel.org>; Thu, 17 Jun 2021 11:28:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=mEjjmEcYCeuAngVHFOxlLmyM2M9CsU8xfLqH/UGJgF4=;
+        b=qf69oz+OoGa+WZLcVf1MVB4p/1vScH1e2Po2rvjMp918v5Ngew7u1OWXgoLPyjuMAO
+         JfNhIpiq/FgRbHmzVJd5vRtWWGrPowlvleBhaibaq+7nbbwlV9LV0lxtmkwmNAh1Q2U3
+         8v3plwF51Q9s5vqSEWOa+RYpTxW9wU8zTyLubiD1ujU7TEppLe1goRWjTRPe72SQ9JFl
+         i+H10CdzeUFQYJ6cj9iEMJpomuBbIPsX9Eb2RIKKowXyXYelofH4sKjSpbaTsX7MOOyY
+         8AgMmOVsKOrE7RcOZKwH1gy5yGi2vOtyA5Q1LtCHGW0ya+r1RjrG2kGEu2JBXuqIE+aI
+         XkPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=mEjjmEcYCeuAngVHFOxlLmyM2M9CsU8xfLqH/UGJgF4=;
+        b=sb0A962DRq7r5J1qoKGb8rxREuSh7TpEj4rroPx8MdKE1o8IXDESeEjzS2B41bq0JM
+         HhfNv7P8xjaoYqzBylh2bKz2tYelxo5p5RKFLCHdr9PXEJbyYh+qE6SjBIKemyXwgq1y
+         17CyLwgWwyADdW/ljBTb5GlRIx3NEjoBsGTwZm22V+7thzpzGD0ctpCITFv4VCnrHcxB
+         /O4VXsTKejr12msYLQ+KWvwSbXZn0p3neSvW6cSu6E/psMh9tR53oLCYEXR4mPM+HS/Y
+         60H8HLyolbw+232tQmOQJaBFnLuUN4+J7j+chWa6m6mWtQnUniOVrpx5iPjDs0NaLRnv
+         SYkw==
+X-Gm-Message-State: AOAM532WtEJ0nhyAqPP0wygjaWJ5yyULMo5rU/Dmp+6zUqTi3dvvrmG6
+        bNcv5fICXf2CYs5kBxOhaMY=
+X-Google-Smtp-Source: ABdhPJxuVgoGitlrFKbuXnZYxt7TodzM2+MP0JuDu5xF/53QOJToZqAipATA1o4v/FjZ+/PWAKNLQw==
+X-Received: by 2002:aa7:c790:: with SMTP id n16mr8522055eds.98.1623954501035;
+        Thu, 17 Jun 2021 11:28:21 -0700 (PDT)
+Received: from ?IPv6:2a02:908:1984:a6c0::47cb? ([2a02:908:1984:a6c0::47cb])
+        by smtp.gmail.com with ESMTPSA id o21sm4090487ejh.57.2021.06.17.11.28.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Jun 2021 11:28:20 -0700 (PDT)
+Subject: Re: [PATCH 1/5] ACPI: PM: s2idle: Use correct revision id
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Cc:     teohhanhui@gmail.com, Shyam-sundar.S-k@amd.com,
+        Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
+References: <20210617164212.584-1-mario.limonciello@amd.com>
+From:   Julian Sikorski <belegdol@gmail.com>
+Message-ID: <f50c6baf-a780-7a58-4083-88d53934290b@gmail.com>
+Date:   Thu, 17 Jun 2021 20:28:19 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+MIME-Version: 1.0
+In-Reply-To: <20210617164212.584-1-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ACPI CXL Early Discovery Table (CEDT) includes a list of CXL memory
-resources in CXL Fixed Memory Window Structures (CFMWS). Retrieve each
-CFMWS in the CEDT and add a cxl_decoder object to the root port (root0)
-for each memory resource.
+W dniu 17.06.2021 o 18:42, Mario Limonciello pisze:
+> From: Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
+> 
+> AMD spec mentions only revision 0. With this change,
+> device constraint list is populated properly.
+> 
+> Signed-off-by: Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
+> ---
+>   drivers/acpi/x86/s2idle.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+> index 2d7ddb8a8cb6..da27c1c45c9f 100644
+> --- a/drivers/acpi/x86/s2idle.c
+> +++ b/drivers/acpi/x86/s2idle.c
+> @@ -96,7 +96,7 @@ static void lpi_device_get_constraints_amd(void)
+>   	int i, j, k;
+>   
+>   	out_obj = acpi_evaluate_dsm_typed(lps0_device_handle, &lps0_dsm_guid,
+> -					  1, ACPI_LPS0_GET_DEVICE_CONSTRAINTS,
+> +					  rev_id, ACPI_LPS0_GET_DEVICE_CONSTRAINTS,
+>   					  NULL, ACPI_TYPE_PACKAGE);
+>   
+>   	if (!out_obj)
+> 
+No regressions against [1] on my ASUS UM425IA. Suspend and resume still 
+work, provided other relevant patches are applied. I am testing on 
+Fedora 5.12 kernel [2].
 
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Ben Widawsky <ben.widawsky@intel.com>
----
- drivers/cxl/acpi.c | 121 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 121 insertions(+)
+Tested-by: Julian Sikorski <belegdol@gmail.com>
 
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index 852b5c270464..7e83c68cb12f 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -10,6 +10,125 @@
- 
- static struct acpi_table_header *acpi_cedt;
- 
-+/* Encode defined in CXL 2.0 8.2.5.12.7 HDM Decoder Control Register */
-+#define CFMWS_INTERLEAVE_WAYS(x)	(1 << (x)->interleave_ways)
-+#define CFMWS_INTERLEAVE_GRANULARITY(x)	((x)->granularity + 8)
-+
-+static unsigned long cfmws_to_decoder_flags(int restrictions)
-+{
-+	unsigned long flags = 0;
-+
-+	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE2)
-+		flags |= CXL_DECODER_F_TYPE2;
-+	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE3)
-+		flags |= CXL_DECODER_F_TYPE3;
-+	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE)
-+		flags |= CXL_DECODER_F_RAM;
-+	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_PMEM)
-+		flags |= CXL_DECODER_F_PMEM;
-+	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_FIXED)
-+		flags |= CXL_DECODER_F_LOCK;
-+
-+	return flags;
-+}
-+
-+static int cxl_acpi_cfmws_verify(struct device *dev,
-+				 struct acpi_cedt_cfmws *cfmws)
-+{
-+	int expected_len;
-+
-+	if (cfmws->interleave_arithmetic != ACPI_CEDT_CFMWS_ARITHMETIC_MODULO) {
-+		dev_err(dev, "CFMWS Unsupported Interleave Arithmetic\n");
-+		return -EINVAL;
-+	}
-+
-+	if (!IS_ALIGNED(cfmws->base_hpa, SZ_256M)) {
-+		dev_err(dev, "CFMWS Base HPA not 256MB aligned\n");
-+		return -EINVAL;
-+	}
-+
-+	if (!IS_ALIGNED(cfmws->window_size, SZ_256M)) {
-+		dev_err(dev, "CFMWS Window Size not 256MB aligned\n");
-+		return -EINVAL;
-+	}
-+
-+	expected_len = struct_size((cfmws), interleave_targets,
-+				   CFMWS_INTERLEAVE_WAYS(cfmws));
-+
-+	if (cfmws->header.length < expected_len) {
-+		dev_err(dev, "CFMWS length %d less than expected %d\n",
-+			cfmws->header.length, expected_len);
-+		return -EINVAL;
-+	}
-+
-+	if (cfmws->header.length > expected_len)
-+		dev_dbg(dev, "CFMWS length %d greater than expected %d\n",
-+			cfmws->header.length, expected_len);
-+
-+	return 0;
-+}
-+
-+static void cxl_add_cfmws_decoders(struct device *dev,
-+				   struct cxl_port *root_port)
-+{
-+	struct acpi_cedt_cfmws *cfmws;
-+	struct cxl_decoder *cxld;
-+	acpi_size len, cur = 0;
-+	void *cedt_subtable;
-+	unsigned long flags;
-+	int rc;
-+
-+	len = acpi_cedt->length - sizeof(*acpi_cedt);
-+	cedt_subtable = acpi_cedt + 1;
-+
-+	while (cur < len) {
-+		struct acpi_cedt_header *c = cedt_subtable + cur;
-+
-+		if (c->type != ACPI_CEDT_TYPE_CFMWS) {
-+			cur += c->length;
-+			continue;
-+		}
-+
-+		cfmws = cedt_subtable + cur;
-+
-+		if (dev_WARN_ONCE(dev, cfmws->header.length < sizeof(*cfmws),
-+				  "CFMWS entry skipped: invalid length:%u\n",
-+				  cfmws->header.length)) {
-+			cur += c->length;
-+			continue;
-+		}
-+
-+		rc = cxl_acpi_cfmws_verify(dev, cfmws);
-+		if (rc) {
-+			dev_err(dev, "CFMWS range %#llx-%#llx not registered\n",
-+				cfmws->base_hpa, cfmws->base_hpa +
-+				cfmws->window_size - 1);
-+			cur += c->length;
-+			continue;
-+		}
-+
-+		flags = cfmws_to_decoder_flags(cfmws->restrictions);
-+		cxld = devm_cxl_add_decoder(dev, root_port,
-+					    CFMWS_INTERLEAVE_WAYS(cfmws),
-+					    cfmws->base_hpa, cfmws->window_size,
-+					    CFMWS_INTERLEAVE_WAYS(cfmws),
-+					    CFMWS_INTERLEAVE_GRANULARITY(cfmws),
-+					    CXL_DECODER_EXPANDER,
-+					    flags);
-+
-+		if (IS_ERR(cxld)) {
-+			dev_err(dev, "Failed to add decoder for %#llx-%#llx\n",
-+				cfmws->base_hpa, cfmws->base_hpa +
-+				cfmws->window_size - 1);
-+		} else {
-+			dev_dbg(dev, "add: %s range %#llx-%#llx\n",
-+				dev_name(&cxld->dev), cfmws->base_hpa,
-+				 cfmws->base_hpa + cfmws->window_size - 1);
-+		}
-+		cur += c->length;
-+	}
-+}
-+
- static struct acpi_cedt_chbs *cxl_acpi_match_chbs(struct device *dev, u32 uid)
- {
- 	struct acpi_cedt_chbs *chbs, *chbs_match = NULL;
-@@ -271,6 +390,8 @@ static int cxl_acpi_probe(struct platform_device *pdev)
- 	if (rc)
- 		goto out;
- 
-+	cxl_add_cfmws_decoders(host, root_port);
-+
- 	/*
- 	 * Root level scanned with host-bridge as dports, now scan host-bridges
- 	 * for their role as CXL uports to their CXL-capable PCIe Root Ports.
--- 
-2.26.2
-
+[1] 
+https://patchwork.kernel.org/project/linux-acpi/patch/20210317143842.786380-2-alexander.deucher@amd.com/
+[2] 
+https://gitlab.com/belegdol/kernel-ark/-/commits/fedora-5.12-s0ix-8-upstream-newnvme
