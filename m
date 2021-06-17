@@ -2,207 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EA653AB7D7
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 17:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84CB93AB7DA
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 17:46:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233486AbhFQPsE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Jun 2021 11:48:04 -0400
-Received: from mga04.intel.com ([192.55.52.120]:28059 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233468AbhFQPsD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Jun 2021 11:48:03 -0400
-IronPort-SDR: 6nXa9aKCOzrlXkHWXdPeNkFHMi3nkH/DN9TguQY++X05jPw9lshns4t/22hm9PKzbRpOUf6YHs
- qhUfQlOxr5BQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,10018"; a="204565833"
-X-IronPort-AV: E=Sophos;i="5.83,280,1616482800"; 
-   d="scan'208";a="204565833"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2021 08:43:33 -0700
-IronPort-SDR: cM++6v/5F8GNRQItj8P7rvTmxewnaKvYJz69NEzLtYBWlW7wpLk2kHbKj56G+DQ23ZzGyBM9kV
- gZhFug06MojA==
-X-IronPort-AV: E=Sophos;i="5.83,280,1616482800"; 
-   d="scan'208";a="472449913"
-Received: from mkalyani-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.138.30])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2021 08:43:32 -0700
-Date:   Thu, 17 Jun 2021 08:43:29 -0700
-From:   Ben Widawsky <ben.widawsky@intel.com>
-To:     Alison Schofield <alison.schofield@intel.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] cxl/acpi: Use the ACPI CFMWS to create static
- decoder objects
-Message-ID: <20210617154329.5dvwuktoiu72wi54@intel.com>
-References: <cover.1623890468.git.alison.schofield@intel.com>
- <e6ed0f7d4859fb0d2369ed251ef2648a228c0d41.1623890468.git.alison.schofield@intel.com>
+        id S231279AbhFQPsu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Jun 2021 11:48:50 -0400
+Received: from mail-oi1-f180.google.com ([209.85.167.180]:39575 "EHLO
+        mail-oi1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232550AbhFQPst (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Jun 2021 11:48:49 -0400
+Received: by mail-oi1-f180.google.com with SMTP id m137so6998775oig.6;
+        Thu, 17 Jun 2021 08:46:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PbzinZ+NAonC9wqlui+dAHlqYhhpl9kkhTWJ6kv1MZc=;
+        b=bq1+gkXgJSMpdRdPHlxymoUlOADVBUVGKoW0K4HLTpuLvyPjpBKGhBll+w4ebldZwX
+         FGceYInZ3soz5/fBL2sJ0wvVvqw6+Js85TRQ2RlxgWEwHuYrbGma/vOnOIXUtKl3Br3t
+         dzAPNlAE2KQxfEo0tFewEb2xwED9HApVWWNNGf/uvXRZAcPiVU2ttw9jF8Pypj/4dTYR
+         GuieRUDdfc3EYum3w7UxXIwDHBMI334gn3i0VDlJV4MYIljAFVDI4D+9meBcPZqLGa/+
+         s+5iCEgkFyJYylbIpFB6rXHw87eHr5l2UKQ9ZIbR8ahSfoCHJppHIDufw4Wv+MXNlZtG
+         37Kg==
+X-Gm-Message-State: AOAM530L42GauWEbtV4OY1pk98KZ/s863hDUovGnV6xJxzdbdS0iErxA
+        mzoukIXKXeBwmB62och78kNhFAK1rRK9INRWOvg=
+X-Google-Smtp-Source: ABdhPJwBDLTRdL1aYnPUuzsn+yps2CWx0f3u/a7Q4Ot0hnvUcWkMC098VZg9oD8NMt6Ex0TvruW6zrSDdUBIDjVVQQk=
+X-Received: by 2002:aca:f0d5:: with SMTP id o204mr2045268oih.71.1623944800016;
+ Thu, 17 Jun 2021 08:46:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e6ed0f7d4859fb0d2369ed251ef2648a228c0d41.1623890468.git.alison.schofield@intel.com>
+References: <20210616170338.23057-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210616170338.23057-1-andriy.shevchenko@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 17 Jun 2021 17:46:29 +0200
+Message-ID: <CAJZ5v0g1R6Mtr9FECtes6nzXWLVtnRvGTFvi_Q_a8=fcJOhfUA@mail.gmail.com>
+Subject: Re: [PATCH v1 1/7] ACPI: sysfs: Make sparse happy about address space
+ in use
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 21-06-16 18:11:08, Alison Schofield wrote:
-> The ACPI CXL Early Discovery Table (CEDT) includes a list of CXL memory
-> resources in CXL Fixed Memory Window Structures (CFMWS). Retrieve each
-> CFMWS in the CEDT and add a cxl_decoder object to the root port (root0)
-> for each memory resource.
-> 
-> Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+On Wed, Jun 16, 2021 at 7:03 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> Sparse is not happy about address space in use in acpi_data_show():
+>
+> drivers/acpi/sysfs.c:428:14: warning: incorrect type in assignment (different address spaces)
+> drivers/acpi/sysfs.c:428:14:    expected void [noderef] __iomem *base
+> drivers/acpi/sysfs.c:428:14:    got void *
+> drivers/acpi/sysfs.c:431:59: warning: incorrect type in argument 4 (different address spaces)
+> drivers/acpi/sysfs.c:431:59:    expected void const *from
+> drivers/acpi/sysfs.c:431:59:    got void [noderef] __iomem *base
+> drivers/acpi/sysfs.c:433:30: warning: incorrect type in argument 1 (different address spaces)
+> drivers/acpi/sysfs.c:433:30:    expected void *logical_address
+> drivers/acpi/sysfs.c:433:30:    got void [noderef] __iomem *base
+>
+> Indeed, acpi_os_map_memory() returns a void pointer with dropped specific
+> address space. Hence, we don't need to carry out __iomem in acpi_data_show().
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  drivers/cxl/acpi.c | 119 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 119 insertions(+)
-> 
-> diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-> index 852b5c270464..018f5ac73b78 100644
-> --- a/drivers/cxl/acpi.c
-> +++ b/drivers/cxl/acpi.c
-> @@ -10,6 +10,123 @@
->  
->  static struct acpi_table_header *acpi_cedt;
->  
-> +/* Encode defined in CXL 2.0 8.2.5.12.7 HDM Decoder Control Register */
-> +#define CFMWS_INTERLEAVE_WAYS(x)	(1 << (x)->interleave_ways)
-> +#define CFMWS_INTERLEAVE_GRANULARITY(x)	((x)->granularity + 8)
-> +
-> +static unsigned long cfmws_to_decoder_flags(int restrictions)
-> +{
-> +	unsigned long flags = 0;
-> +
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE2)
-> +		flags |= CXL_DECODER_F_TYPE2;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE3)
-> +		flags |= CXL_DECODER_F_TYPE3;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE)
-> +		flags |= CXL_DECODER_F_RAM;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_PMEM)
-> +		flags |= CXL_DECODER_F_PMEM;
-> +	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_FIXED)
-> +		flags |= CXL_DECODER_F_LOCK;
-> +
-> +	return flags;
-> +}
-> +
-> +static int cxl_acpi_cfmws_verify(struct device *dev,
-> +				 struct acpi_cedt_cfmws *cfmws)
-> +{
-> +	int expected_len;
-> +
-> +	if (cfmws->interleave_arithmetic != ACPI_CEDT_CFMWS_ARITHMETIC_MODULO) {
-> +		dev_err(dev, "CFMWS Unsupported Interleave Arithmetic\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!IS_ALIGNED(cfmws->base_hpa, SZ_256M)) {
-> +		dev_err(dev, "CFMWS Base HPA not 256MB aligned\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!IS_ALIGNED(cfmws->window_size, SZ_256M)) {
-> +		dev_err(dev, "CFMWS Window Size not 256MB aligned\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	expected_len = struct_size((cfmws), interleave_targets,
-> +				   CFMWS_INTERLEAVE_WAYS(cfmws));
-> +
-> +	if (cfmws->header.length < expected_len) {
-> +		dev_err(dev, "CFMWS length %d less than expected %d\n",
-> +			cfmws->header.length, expected_len);
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (cfmws->header.length > expected_len)
-> +		dev_dbg(dev, "CFMWS length %d greater than expected %d\n",
-> +			cfmws->header.length, expected_len);
-> +
-> +	return 0;
-> +}
-> +
-> +static void cxl_add_cfmws_decoders(struct device *dev,
-> +				   struct cxl_port *root_port)
-> +{
-> +	struct acpi_cedt_cfmws *cfmws;
-> +	struct cxl_decoder *cxld;
-> +	acpi_size len, cur = 0;
-> +	void *cedt_subtable;
-> +	int rc;
-> +
-> +	len = acpi_cedt->length - sizeof(*acpi_cedt);
-> +	cedt_subtable = acpi_cedt + 1;
-> +
-> +	while (cur < len) {
-> +		struct acpi_cedt_header *c = cedt_subtable + cur;
-> +
-> +		if (c->type != ACPI_CEDT_TYPE_CFMWS) {
-> +			cur += c->length;
-> +			continue;
-> +		}
-> +
-> +		cfmws = cedt_subtable + cur;
-> +
-> +		if (dev_WARN_ONCE(dev, cfmws->header.length < sizeof(*cfmws),
-> +				  "CFMWS entry skipped: invalid length:%u\n",
-> +				  cfmws->header.length)) {
-> +			cur += c->length;
-> +			continue;
-> +		}
-> +
-> +		rc = cxl_acpi_cfmws_verify(dev, cfmws);
-> +		if (rc) {
-> +			dev_err(dev, "CFMWS range %#llx-%#llx not registered\n",
-> +				cfmws->base_hpa, cfmws->base_hpa +
-> +				cfmws->window_size - 1);
-> +			cur += c->length;
-> +			continue;
-> +		}
-> +
-> +		cxld = devm_cxl_add_decoder(dev, root_port,
-> +				CFMWS_INTERLEAVE_WAYS(cfmws),
-> +				cfmws->base_hpa, cfmws->window_size,
-> +				CFMWS_INTERLEAVE_WAYS(cfmws),
-> +				CFMWS_INTERLEAVE_GRANULARITY(cfmws),
-> +				CXL_DECODER_EXPANDER,
-> +				cfmws_to_decoder_flags(cfmws->restrictions));
-
-checkpatch complains here for me.
-
-CHECK: Alignment should match open parenthesis
-#122: FILE: drivers/cxl/acpi.c:110:
-+		cxld = devm_cxl_add_decoder(dev, root_port,
-+				CFMWS_INTERLEAVE_WAYS(cfmws),
-
-
-> +
-> +		if (IS_ERR(cxld)) {
-> +			dev_err(dev, "Failed to add decoder for %#llx-%#llx\n",
-> +				cfmws->base_hpa, cfmws->base_hpa +
-> +				cfmws->window_size - 1);
-> +		} else {
-> +			dev_dbg(dev, "add: %s range %#llx-%#llx\n",
-> +				dev_name(&cxld->dev), cfmws->base_hpa,
-> +				 cfmws->base_hpa + cfmws->window_size - 1);
-> +		}
-> +		cur += c->length;
-> +	}
-> +}
-> +
->  static struct acpi_cedt_chbs *cxl_acpi_match_chbs(struct device *dev, u32 uid)
+>  drivers/acpi/sysfs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+> index 88629d26bd48..767aa65e4bdd 100644
+> --- a/drivers/acpi/sysfs.c
+> +++ b/drivers/acpi/sysfs.c
+> @@ -419,7 +419,7 @@ static ssize_t acpi_data_show(struct file *filp, struct kobject *kobj,
+>                               loff_t offset, size_t count)
 >  {
->  	struct acpi_cedt_chbs *chbs, *chbs_match = NULL;
-> @@ -271,6 +388,8 @@ static int cxl_acpi_probe(struct platform_device *pdev)
->  	if (rc)
->  		goto out;
->  
-> +	cxl_add_cfmws_decoders(host, root_port);
-> +
->  	/*
->  	 * Root level scanned with host-bridge as dports, now scan host-bridges
->  	 * for their role as CXL uports to their CXL-capable PCIe Root Ports.
-> -- 
-> 2.26.2
-> 
+>         struct acpi_data_attr *data_attr;
+> -       void __iomem *base;
+> +       void *base;
+>         ssize_t rc;
+>
+>         data_attr = container_of(bin_attr, struct acpi_data_attr, attr);
+> --
+
+Applied as 5.14 material along with patches [2-4,7/7] from this series.
+
+Patches [5-6/7] did not apply for me on top of my acpi-sysfs branch
+(that is included into my linux-next branch), so I have not applied
+them.
+
+Thanks!
