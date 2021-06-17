@@ -2,57 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C80AB3AAB07
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 07:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A1B73AACFE
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jun 2021 09:07:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbhFQF2j convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 17 Jun 2021 01:28:39 -0400
-Received: from mail.rembat24.ru ([185.59.102.178]:33670 "EHLO mail.rembat24.ru"
+        id S229784AbhFQHJg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Jun 2021 03:09:36 -0400
+Received: from mga17.intel.com ([192.55.52.151]:25470 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229546AbhFQF2i (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 17 Jun 2021 01:28:38 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.rembat24.ru (Postfix) with ESMTP id C8EB1222258;
-        Thu, 17 Jun 2021 01:26:18 +0300 (MSK)
-Received: from mail.rembat24.ru ([127.0.0.1])
-        by localhost (mail.rembat24.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 7VRCeQo4jySk; Thu, 17 Jun 2021 01:26:18 +0300 (MSK)
-Received: from mail.rembat24.ru (localhost [127.0.0.1])
-        by mail.rembat24.ru (Postfix) with ESMTPS id AA0351DCF38;
-        Thu, 17 Jun 2021 00:44:04 +0300 (MSK)
-Received: from cris-PC.wifi (unknown [105.9.118.225])
-        by mail.rembat24.ru (Postfix) with ESMTPSA id 218D41DB9DF;
-        Thu, 17 Jun 2021 00:38:31 +0300 (MSK)
-Content-Type: text/plain; charset="utf-8"
+        id S229686AbhFQHIp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 17 Jun 2021 03:08:45 -0400
+IronPort-SDR: fz3TKhbTr7DeP6UuUHXl9II5Er7aCBdcTxD7ncsqj+HNnyE0B8PCqT0wOKovOOeXpnfh00YTgF
+ 1iwabtZKd+Uw==
+X-IronPort-AV: E=McAfee;i="6200,9189,10017"; a="186693360"
+X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; 
+   d="scan'208";a="186693360"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2021 00:06:13 -0700
+IronPort-SDR: K02K3M3NHtO67858oLuffdVnoqks8s7eMb2fXBMiL1Pl+zK5rVGmrWKSKNZ45gdqGGTe+p7WxM
+ Gz3ULd6w2eag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; 
+   d="scan'208";a="555119675"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 17 Jun 2021 00:06:11 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1ltm6M-0001rM-LD; Thu, 17 Jun 2021 07:06:10 +0000
+Date:   Thu, 17 Jun 2021 15:05:34 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 6e92e3ab6c6d4ac9a87fbfae1681ed8515a55809
+Message-ID: <60caf43e.QAqRNTISuNVPS+7i%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: spende von 2,000,000 euro
-To:     Recipients <har@rembat24.ru>
-From:   ''Tayeb souami'' <har@rembat24.ru>
-Date:   Wed, 16 Jun 2021 23:38:23 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20210616213833.218D41DB9DF@mail.rembat24.ru>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Lieber Freund,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 6e92e3ab6c6d4ac9a87fbfae1681ed8515a55809  Merge branch 'acpi-pm' into bleeding-edge
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
+elapsed time: 750m
 
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+configs tested: 98
+configs skipped: 2
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Das ist dein Spendencode: [TS530342018]
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                         shannon_defconfig
+sh                          sdk7786_defconfig
+arm                         orion5x_defconfig
+powerpc                 mpc8315_rdb_defconfig
+arm                             pxa_defconfig
+mips                     cu1830-neo_defconfig
+sparc64                          alldefconfig
+arm                         lpc32xx_defconfig
+arm                          simpad_defconfig
+arm                       netwinder_defconfig
+arm                        multi_v5_defconfig
+powerpc                     kmeter1_defconfig
+powerpc                     ppa8548_defconfig
+arm                       mainstone_defconfig
+sh                        apsh4ad0a_defconfig
+powerpc                      acadia_defconfig
+arm                        neponset_defconfig
+um                                  defconfig
+arc                        nsimosci_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a001-20210615
+x86_64               randconfig-a004-20210615
+x86_64               randconfig-a002-20210615
+x86_64               randconfig-a003-20210615
+x86_64               randconfig-a006-20210615
+x86_64               randconfig-a005-20210615
+i386                 randconfig-a002-20210615
+i386                 randconfig-a006-20210615
+i386                 randconfig-a004-20210615
+i386                 randconfig-a001-20210615
+i386                 randconfig-a005-20210615
+i386                 randconfig-a003-20210615
+i386                 randconfig-a015-20210615
+i386                 randconfig-a013-20210615
+i386                 randconfig-a016-20210615
+i386                 randconfig-a012-20210615
+i386                 randconfig-a014-20210615
+i386                 randconfig-a011-20210615
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
+clang tested configs:
+x86_64               randconfig-b001-20210615
+x86_64               randconfig-a015-20210615
+x86_64               randconfig-a011-20210615
+x86_64               randconfig-a012-20210615
+x86_64               randconfig-a014-20210615
+x86_64               randconfig-a016-20210615
+x86_64               randconfig-a013-20210615
 
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-Herr Tayeb Souami
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
