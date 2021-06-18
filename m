@@ -2,211 +2,254 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F2493AD082
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Jun 2021 18:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C34433AD090
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Jun 2021 18:36:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235933AbhFRQgP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Jun 2021 12:36:15 -0400
-Received: from mail-bn8nam11on2071.outbound.protection.outlook.com ([40.107.236.71]:55136
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S235534AbhFRQgO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 18 Jun 2021 12:36:14 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=n2JSSf5R6ZQO2Hz4AOucyMSkZE/ghDXt5+2mLO0bSBAgR1c1v3Do+nGEVUy0Wi0AoHcuKenW0eM7zBJ93k2+v2bvqSQ7ZAC0/V5FCrK0y2z6VKeFR/3Dy/GgDHvqri6zxmRHE6zxQa3KwPO9b6pZoLiCbBmtAjDAGUJ5izpxWVmnv0gMxHxL6ORFy4pDKEVIOEIvs15ehuIU8mwiuyX3Uhjviar1Ra89iogDRRNpsILHJeXcF7h9bnMg/BR59qoT0FmVBXBIe4bSz5tIMAYsPBGmy9+F5NP8MyL+6o+eKVbHRdjcEodjH6pAC12bvtq/d+wc3jrOvaTxUApD6ofmCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hQ33jiFn5WTgkiYqbWV2QF0zduxx+KfeqnWiAAvXgwg=;
- b=Pv+lL8iA60cAhgPtmMn1n326xbAb4qBYEP20TYWLkvquL+avinUfDL/c7C0xVaCay1PHRA0aDB0cffoMCsqJQnehdgbMeFEGQRXy/yINOzfYjB/JALF+FukeTxhbOfYLtb36TWbG1xz8cOFagKr5LXxArA2cMNhp4S6Em5Zo7ifsPzE5k0ttrBss+jkhG2eVU6EkCzIlaZsvXEm3f3KwrXUs3YHT59IDN741wcP5VLtwV0RkPb4jzGsuksQ8t0gsgIwUhi9AH+/WZ+rOhhMvG3+pW0HIxUb0EZPxiXZHeeZN3xS6vq7NhQ6QpdKMzPrbzIpAIj7OVs4bgDVIHx2lVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hQ33jiFn5WTgkiYqbWV2QF0zduxx+KfeqnWiAAvXgwg=;
- b=gm98sNAmHYNP0cAQLfUhVcN0M6PbgN0Zaq6a9XlKJCmyfXGwTvHMmbzxEBXFA8lgOHEyTZvyP3LJgTJ4OO+h6qQgkAmGYzI5IICkjc8pROPNERkxg3mJGHBY5unliTpPDznu3d6pIA7Xm8J0zfP7gRrsjDF+5EQHBPoqkKpxC14=
-Authentication-Results: amd.com; dkim=none (message not signed)
- header.d=none;amd.com; dmarc=none action=none header.from=amd.com;
-Received: from SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
- by SN1PR12MB2448.namprd12.prod.outlook.com (2603:10b6:802:28::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.15; Fri, 18 Jun
- 2021 16:34:03 +0000
-Received: from SA0PR12MB4510.namprd12.prod.outlook.com
- ([fe80::9c16:2794:cd04:2be0]) by SA0PR12MB4510.namprd12.prod.outlook.com
- ([fe80::9c16:2794:cd04:2be0%6]) with mapi id 15.20.4242.021; Fri, 18 Jun 2021
- 16:34:03 +0000
-Subject: Re: [PATCH 3/5] ACPI: PM: s2idle: Add support for multiple func mask
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Julian Sikorski <belegdol@gmail.com>, teohhanhui@gmail.com,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
-References: <20210617164212.584-1-mario.limonciello@amd.com>
- <20210617164212.584-3-mario.limonciello@amd.com>
- <CAJZ5v0gryewS7GFY_vBd4QAc_5hSG3PH2pZ4xyjStt7TxeCO0Q@mail.gmail.com>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-Message-ID: <5e5bef84-3bbb-05a1-1a28-e01a016007b5@amd.com>
-Date:   Fri, 18 Jun 2021 11:34:00 -0500
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-In-Reply-To: <CAJZ5v0gryewS7GFY_vBd4QAc_5hSG3PH2pZ4xyjStt7TxeCO0Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [165.204.77.11]
-X-ClientProxiedBy: SA9PR13CA0120.namprd13.prod.outlook.com
- (2603:10b6:806:24::35) To SA0PR12MB4510.namprd12.prod.outlook.com
- (2603:10b6:806:94::8)
+        id S235935AbhFRQiO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Jun 2021 12:38:14 -0400
+Received: from foss.arm.com ([217.140.110.172]:44056 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233526AbhFRQiN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 18 Jun 2021 12:38:13 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0FC7813A1;
+        Fri, 18 Jun 2021 09:36:04 -0700 (PDT)
+Received: from [10.57.9.136] (unknown [10.57.9.136])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 411503F70D;
+        Fri, 18 Jun 2021 09:36:01 -0700 (PDT)
+Subject: Re: [PATCH v5 1/5] ACPI: arm64: Move DMA setup operations out of IORT
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
+Cc:     will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
+        dwmw2@infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, eric.auger@redhat.com,
+        sebastien.boeuf@intel.com, kevin.tian@intel.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com
+References: <20210618152059.1194210-1-jean-philippe@linaro.org>
+ <20210618152059.1194210-2-jean-philippe@linaro.org>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <ca1668fa-7aec-fba1-9adb-ed9f932253fd@arm.com>
+Date:   Fri, 18 Jun 2021 17:35:59 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.254.51.208] (165.204.77.11) by SA9PR13CA0120.namprd13.prod.outlook.com (2603:10b6:806:24::35) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4264.9 via Frontend Transport; Fri, 18 Jun 2021 16:34:02 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 3b3f2b14-a88c-41f1-1e24-08d93276e246
-X-MS-TrafficTypeDiagnostic: SN1PR12MB2448:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SN1PR12MB2448006C5E2D4CC2D8D0412DE20D9@SN1PR12MB2448.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:121;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: dKMHJC3P7HTqFw6ZTlKdFjoHGZxvOKkIJedFzcX/EvsA1PCVvGUyvHBU0dCgJdHFLrAlROPlY4kA9P4TePNoiOFO2aodsySDcWSVP/BMnUaGiga9Ve+aumdsEoLKiwa/z2C1cRsmBb0E2fdg2sdFrpz805P14QNDLoLF1MqenOEIXv6tVW2h36u03OV4RiHMD7ARfWCu/VRsNqEZ9Pv286V/b0ABMcs7F/cwIMi7e1rTwymE8CLFKSkkAaqEfmH7+5sGjrkr1vf4ZwLKoOU+PCufrA6iewX6cI5w8XYe9mkSDPXWl+Q+v+FphtjBZcFdkKh54yusU/jyZ4zMQrhIhTsy6mMo1ptaYBM9m0RUyM9gcZiwfYuLMu3ca6tGiLpDJivWu083or4N1t5ChWT9K5IfsdsKAH3x+wf5t3jKdnZfByChw9FnpzwIcPPYAjEKQZEKjuHspCdw50kx8ugChV3CmgQ38fNYBS24h/LFKd1f3o0RQgl0WUDKtUzPU08XlhNwL6gopFufZOhfjk9fu4ZIZSVyVy2i4nAtzI5rJrA+//MxSXT+FAjMOz5ZY937t2msP+td89l+otGIh7OasvZvMnBKHVs5pQvNS8WppEofZDqFs/SP8otCOHkyfUbiMYwSLiaJl3eSxZamfK4Y/u5h3PvI7fzp/P6wtNKrh8B81ndXqptpwvhQPqX2GYvH
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4510.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(39860400002)(396003)(376002)(136003)(346002)(31686004)(86362001)(8936002)(66946007)(31696002)(8676002)(5660300002)(478600001)(83380400001)(36756003)(38100700002)(66476007)(53546011)(16576012)(6916009)(2906002)(16526019)(186003)(2616005)(26005)(66556008)(4326008)(54906003)(316002)(956004)(6486002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SWJUbDh5VDVuckJBdExqWFlqYkl6c250d3k0VExJaUtVMXpreWJFNEQ4ZnlW?=
- =?utf-8?B?VXNtTDF3ZDBZaFhCcVRTM2pCZHo4Q3FKakFCekRCSjUrc0lTOHBaQjU1ZXph?=
- =?utf-8?B?dE9qOExFeEJmM3h4cU1SRkhGYUJPeGlmcW80bzdjNDVFNWpQeGJjRktNMzlW?=
- =?utf-8?B?Q2szeVR2ZjdaMytrWVkzcVlIY0ZFUW1iTWlZSTBucVlxWmNFVlRnNStsalFj?=
- =?utf-8?B?dnpLZVhCdGFIOURVdzdacmQxRmNKYjQ4RVVTOGJRUFpQLzBVbnJsQUw0Qzdk?=
- =?utf-8?B?bkUrRzltY2RCb1RZeEs2c1BCa1NIa1Y0cDQ3aVVGd2YzejBXM3pYNnpGQ0hK?=
- =?utf-8?B?cXA4R3lrcjJ0bWwxTG9HOWRtWlpRVlBLSFdoKzM1UmZsZ01YL2pJTHpZNzJD?=
- =?utf-8?B?TkJ3QXZFQkZGdlArdTF2bjNLdGl0cXE5R0JGenNMbUwwSnJ6aVE3QTMreVc4?=
- =?utf-8?B?ZGdIeTBXZ0g4L2gyNmxqQzVQQlY0bk1OMVE5bHEzdUxGOGd5WEdWTGxZMGRr?=
- =?utf-8?B?Q0pvR2ZxNzBEUDNOa2ZBKytZbURXSVV3TDZMTnJQL2srTTJMbmU1SWRCUUhR?=
- =?utf-8?B?Vmk2ZklzWkVaZ09HRnJYVnhuNGVUV01kNHpVZkt6WWVTUUkrY2xpQ3k3eU94?=
- =?utf-8?B?ZzJiMXNIN0tCYVVhNUZoSE1NSWgrN1llSG8xdEwrTFpaQ2hRZlJTZHlNd1Jr?=
- =?utf-8?B?OWFvelZUSEVMMDNDQncyQ3VrdFNBQmh1QTZrclFtZVlBaVJtcVpyeFFBT25N?=
- =?utf-8?B?ZkNTN0xhclpvb3Vtc3FwYythd2ZDbnNDUVl0bTFXbDRSS0t6NUhZbHZSRkZU?=
- =?utf-8?B?R1g2Q3F0NjFZZTVQb0RNUzFvWEl1cmM5OGxyZEI3NE9hUHlkalBLaVl5bE9o?=
- =?utf-8?B?VUFTNHhjTEl3a3Zobkc5NmhUNXM2RUxlRi81TWR2SExTVGdDOGIzMVcrczA0?=
- =?utf-8?B?Sy9jdWVJQUwweElKN0JGQXF0aTJrQkpNeVFhd0ZqVE9PM2FvQUdoZTFYMkZ6?=
- =?utf-8?B?VVJkNkpNMXlPK3QvSjNpQ0hTZ3BXbkZFem1rdm5NQnZVUWt3OVRjNE1aTFRR?=
- =?utf-8?B?cGROSWlsdVpydnFXN2V6NSsyWU9KbWFKZVRST0V1aWVjMW92M3c1U0hyY2sv?=
- =?utf-8?B?cWhQK09rTk5IR2NQblR4UmVmdHJTcVZhSkEzWHNWVGNNR243RlZuODJiVnhQ?=
- =?utf-8?B?ZG53YXdqTVY2MTlqazMyUkpwUXlBZmJXL3A0ZUpwWkFhZkpyWFJOZWJSVHZw?=
- =?utf-8?B?M2lqRjNFSjBQdHd6SGZLYXltVUkyQUtWLzc4RkI0N1hQZFRrWE8vRWhOL3Uz?=
- =?utf-8?B?bFJLMTlTQVRiY3lEaE9vS1ZGa1BFcGVJazEzdWtGcWRzSHhVOGpxUDJ0SkJz?=
- =?utf-8?B?ZnMvOG1wcnZWS2hmK3Fha2F2bCtBN3AyeDl3aGd6c2Z5WVZaVUc0LzluNU9k?=
- =?utf-8?B?L1cwQ3g3Vi9PSVZVUlZVUytBdnlvR3pLejc2eDlITEgvaElBekt1NkFPZnBQ?=
- =?utf-8?B?ZFpaZUFnTjUxZUZienZrY09FOTQyWnN0SEcvMkhtOWlhbVpseUJuRjJNbGVp?=
- =?utf-8?B?bm41YTZlbUdIQmVZbFJhNTZmeHJRZUxoc0ZXZzV6Q3FZd2VFZWFKZ0ZHNWhn?=
- =?utf-8?B?UHBvczZ5K2ZNSzE3dm9uWnNDS2h6YWI3KzIwdEJGMjBXTGt4WGNRRkhSV3Mv?=
- =?utf-8?B?MDdnSGk1KzYwSCtodDBIMjRMRE1UWlc4cUZKbTg5WGRvZWg3QjNyeEVRQWJw?=
- =?utf-8?Q?FQ7yVCbv2AW91nEkSij51YPn5lJzjBfja9dfvw+?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b3f2b14-a88c-41f1-1e24-08d93276e246
-X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4510.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2021 16:34:03.5178
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pRKarTCeScQCwlFSKgYnPYXuEvAhfBASkSAkR1t0nTZa+nEqV3twEnyvKtTcPnEIb60TdR+NCU1U8hYz2PQLUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2448
+In-Reply-To: <20210618152059.1194210-2-jean-philippe@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 6/18/2021 11:30, Rafael J. Wysocki wrote:
-> On Thu, Jun 17, 2021 at 6:42 PM Mario Limonciello
-> <mario.limonciello@amd.com> wrote:
->>
->> From: Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
->>
->> Required for follow-up patch adding new UUID
->> needing new function mask.
->>
->> Signed-off-by: Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
+On 2021-06-18 16:20, Jean-Philippe Brucker wrote:
+> Extract generic DMA setup code out of IORT, so it can be reused by VIOT.
+> Keep it in drivers/acpi/arm64 for now, since it could break x86
+> platforms that haven't run this code so far, if they have invalid
+> tables.
+
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+
+> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>   drivers/acpi/arm64/Makefile |  1 +
+>   include/linux/acpi.h        |  3 +++
+>   include/linux/acpi_iort.h   |  6 ++---
+>   drivers/acpi/arm64/dma.c    | 50 ++++++++++++++++++++++++++++++++++
+>   drivers/acpi/arm64/iort.c   | 54 ++++++-------------------------------
+>   drivers/acpi/scan.c         |  2 +-
+>   6 files changed, 66 insertions(+), 50 deletions(-)
+>   create mode 100644 drivers/acpi/arm64/dma.c
 > 
-> Your s-o-b is missing.
-
-My apologies.  If I need to spin the series I'll explicitly add it with 
-all the other tags that have come through, otherwise:
-
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-
+> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
+> index 6ff50f4ed947..66acbe77f46e 100644
+> --- a/drivers/acpi/arm64/Makefile
+> +++ b/drivers/acpi/arm64/Makefile
+> @@ -1,3 +1,4 @@
+>   # SPDX-License-Identifier: GPL-2.0-only
+>   obj-$(CONFIG_ACPI_IORT) 	+= iort.o
+>   obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
+> +obj-y				+= dma.o
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index c60745f657e9..7aaa9559cc19 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -259,9 +259,12 @@ void acpi_numa_x2apic_affinity_init(struct acpi_srat_x2apic_cpu_affinity *pa);
+>   
+>   #ifdef CONFIG_ARM64
+>   void acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa);
+> +void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size);
+>   #else
+>   static inline void
+>   acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa) { }
+> +static inline void
+> +acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size) { }
+>   #endif
+>   
+>   int acpi_numa_memory_affinity_init (struct acpi_srat_mem_affinity *ma);
+> diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
+> index 1a12baa58e40..f7f054833afd 100644
+> --- a/include/linux/acpi_iort.h
+> +++ b/include/linux/acpi_iort.h
+> @@ -34,7 +34,7 @@ struct irq_domain *iort_get_device_domain(struct device *dev, u32 id,
+>   void acpi_configure_pmsi_domain(struct device *dev);
+>   int iort_pmsi_get_dev_id(struct device *dev, u32 *dev_id);
+>   /* IOMMU interface */
+> -void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *size);
+> +int iort_dma_get_ranges(struct device *dev, u64 *size);
+>   const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+>   						const u32 *id_in);
+>   int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
+> @@ -48,8 +48,8 @@ static inline struct irq_domain *iort_get_device_domain(
+>   { return NULL; }
+>   static inline void acpi_configure_pmsi_domain(struct device *dev) { }
+>   /* IOMMU interface */
+> -static inline void iort_dma_setup(struct device *dev, u64 *dma_addr,
+> -				  u64 *size) { }
+> +static inline int iort_dma_get_ranges(struct device *dev, u64 *size)
+> +{ return -ENODEV; }
+>   static inline const struct iommu_ops *iort_iommu_configure_id(
+>   				      struct device *dev, const u32 *id_in)
+>   { return NULL; }
+> diff --git a/drivers/acpi/arm64/dma.c b/drivers/acpi/arm64/dma.c
+> new file mode 100644
+> index 000000000000..f16739ad3cc0
+> --- /dev/null
+> +++ b/drivers/acpi/arm64/dma.c
+> @@ -0,0 +1,50 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include <linux/acpi.h>
+> +#include <linux/acpi_iort.h>
+> +#include <linux/device.h>
+> +#include <linux/dma-direct.h>
+> +
+> +void acpi_arch_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
+> +{
+> +	int ret;
+> +	u64 end, mask;
+> +	u64 dmaaddr = 0, size = 0, offset = 0;
+> +
+> +	/*
+> +	 * If @dev is expected to be DMA-capable then the bus code that created
+> +	 * it should have initialised its dma_mask pointer by this point. For
+> +	 * now, we'll continue the legacy behaviour of coercing it to the
+> +	 * coherent mask if not, but we'll no longer do so quietly.
+> +	 */
+> +	if (!dev->dma_mask) {
+> +		dev_warn(dev, "DMA mask not set\n");
+> +		dev->dma_mask = &dev->coherent_dma_mask;
+> +	}
+> +
+> +	if (dev->coherent_dma_mask)
+> +		size = max(dev->coherent_dma_mask, dev->coherent_dma_mask + 1);
+> +	else
+> +		size = 1ULL << 32;
+> +
+> +	ret = acpi_dma_get_range(dev, &dmaaddr, &offset, &size);
+> +	if (ret == -ENODEV)
+> +		ret = iort_dma_get_ranges(dev, &size);
+> +	if (!ret) {
+> +		/*
+> +		 * Limit coherent and dma mask based on size retrieved from
+> +		 * firmware.
+> +		 */
+> +		end = dmaaddr + size - 1;
+> +		mask = DMA_BIT_MASK(ilog2(end) + 1);
+> +		dev->bus_dma_limit = end;
+> +		dev->coherent_dma_mask = min(dev->coherent_dma_mask, mask);
+> +		*dev->dma_mask = min(*dev->dma_mask, mask);
+> +	}
+> +
+> +	*dma_addr = dmaaddr;
+> +	*dma_size = size;
+> +
+> +	ret = dma_direct_set_offset(dev, dmaaddr + offset, dmaaddr, size);
+> +
+> +	dev_dbg(dev, "dma_offset(%#08llx)%s\n", offset, ret ? " failed!" : "");
+> +}
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 3912a1f6058e..a940be1cf2af 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -1144,56 +1144,18 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
+>   }
+>   
+>   /**
+> - * iort_dma_setup() - Set-up device DMA parameters.
+> + * iort_dma_get_ranges() - Look up DMA addressing limit for the device
+> + * @dev: device to lookup
+> + * @size: DMA range size result pointer
+>    *
+> - * @dev: device to configure
+> - * @dma_addr: device DMA address result pointer
+> - * @dma_size: DMA range size result pointer
+> + * Return: 0 on success, an error otherwise.
+>    */
+> -void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
+> +int iort_dma_get_ranges(struct device *dev, u64 *size)
+>   {
+> -	u64 end, mask, dmaaddr = 0, size = 0, offset = 0;
+> -	int ret;
+> -
+> -	/*
+> -	 * If @dev is expected to be DMA-capable then the bus code that created
+> -	 * it should have initialised its dma_mask pointer by this point. For
+> -	 * now, we'll continue the legacy behaviour of coercing it to the
+> -	 * coherent mask if not, but we'll no longer do so quietly.
+> -	 */
+> -	if (!dev->dma_mask) {
+> -		dev_warn(dev, "DMA mask not set\n");
+> -		dev->dma_mask = &dev->coherent_dma_mask;
+> -	}
+> -
+> -	if (dev->coherent_dma_mask)
+> -		size = max(dev->coherent_dma_mask, dev->coherent_dma_mask + 1);
+> +	if (dev_is_pci(dev))
+> +		return rc_dma_get_range(dev, size);
+>   	else
+> -		size = 1ULL << 32;
+> -
+> -	ret = acpi_dma_get_range(dev, &dmaaddr, &offset, &size);
+> -	if (ret == -ENODEV)
+> -		ret = dev_is_pci(dev) ? rc_dma_get_range(dev, &size)
+> -				      : nc_dma_get_range(dev, &size);
+> -
+> -	if (!ret) {
+> -		/*
+> -		 * Limit coherent and dma mask based on size retrieved from
+> -		 * firmware.
+> -		 */
+> -		end = dmaaddr + size - 1;
+> -		mask = DMA_BIT_MASK(ilog2(end) + 1);
+> -		dev->bus_dma_limit = end;
+> -		dev->coherent_dma_mask = min(dev->coherent_dma_mask, mask);
+> -		*dev->dma_mask = min(*dev->dma_mask, mask);
+> -	}
+> -
+> -	*dma_addr = dmaaddr;
+> -	*dma_size = size;
+> -
+> -	ret = dma_direct_set_offset(dev, dmaaddr + offset, dmaaddr, size);
+> -
+> -	dev_dbg(dev, "dma_offset(%#08llx)%s\n", offset, ret ? " failed!" : "");
+> +		return nc_dma_get_range(dev, size);
+>   }
+>   
+>   static void __init acpi_iort_register_irq(int hwirq, const char *name,
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index e10d38ac7cf2..ea613df8f913 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -1537,7 +1537,7 @@ int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
+>   		return 0;
+>   	}
+>   
+> -	iort_dma_setup(dev, &dma_addr, &size);
+> +	acpi_arch_dma_setup(dev, &dma_addr, &size);
+>   
+>   	iommu = iort_iommu_configure_id(dev, input_id);
+>   	if (PTR_ERR(iommu) == -EPROBE_DEFER)
 > 
->> ---
->>   drivers/acpi/x86/s2idle.c | 31 ++++++++++++++++++++-----------
->>   1 file changed, 20 insertions(+), 11 deletions(-)
->>
->> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
->> index c0cba025072f..0d19669ac7ad 100644
->> --- a/drivers/acpi/x86/s2idle.c
->> +++ b/drivers/acpi/x86/s2idle.c
->> @@ -309,14 +309,15 @@ static void lpi_check_constraints(void)
->>          }
->>   }
->>
->> -static void acpi_sleep_run_lps0_dsm(unsigned int func)
->> +static void acpi_sleep_run_lps0_dsm(unsigned int func, unsigned int func_mask, guid_t dsm_guid)
->>   {
->>          union acpi_object *out_obj;
->>
->> -       if (!(lps0_dsm_func_mask & (1 << func)))
->> +       if (!(func_mask & (1 << func)))
->>                  return;
->>
->> -       out_obj = acpi_evaluate_dsm(lps0_device_handle, &lps0_dsm_guid, rev_id, func, NULL);
->> +       out_obj = acpi_evaluate_dsm(lps0_device_handle, &dsm_guid,
->> +                                       rev_id, func, NULL);
->>          ACPI_FREE(out_obj);
->>
->>          acpi_handle_debug(lps0_device_handle, "_DSM function %u evaluation %s\n",
->> @@ -412,11 +413,15 @@ int acpi_s2idle_prepare_late(void)
->>                  lpi_check_constraints();
->>
->>          if (acpi_s2idle_vendor_amd()) {
->> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF_AMD);
->> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD);
->> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF_AMD,
->> +                               lps0_dsm_func_mask, lps0_dsm_guid);
->> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD,
->> +                               lps0_dsm_func_mask, lps0_dsm_guid);
->>          } else {
->> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
->> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
->> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
->> +                               lps0_dsm_func_mask, lps0_dsm_guid);
->> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
->> +                               lps0_dsm_func_mask, lps0_dsm_guid);
->>          }
->>
->>          return 0;
->> @@ -428,11 +433,15 @@ void acpi_s2idle_restore_early(void)
->>                  return;
->>
->>          if (acpi_s2idle_vendor_amd()) {
->> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_AMD);
->> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON_AMD);
->> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_AMD,
->> +                               lps0_dsm_func_mask, lps0_dsm_guid);
->> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON_AMD,
->> +                               lps0_dsm_func_mask, lps0_dsm_guid);
->>          } else {
->> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
->> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
->> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
->> +                               lps0_dsm_func_mask, lps0_dsm_guid);
->> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
->> +                               lps0_dsm_func_mask, lps0_dsm_guid);
->>          }
->>   }
->>
->> --
->> 2.25.1
->>
-
