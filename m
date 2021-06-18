@@ -2,134 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13C793AC657
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Jun 2021 10:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 889043AC734
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Jun 2021 11:16:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233558AbhFRIn7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Jun 2021 04:43:59 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:32198 "EHLO
-        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233129AbhFRIn6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 18 Jun 2021 04:43:58 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15I8ffrw019261;
-        Fri, 18 Jun 2021 08:41:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=2kpiTSJMR+xGEgSz0B8dAR+kCyUSpye/8O4JUhMac+4=;
- b=SGGXcSfEpl+gg3FW6QbOWE5nxMUjlcsBhA53efEKeJHkt3c/MY2FD9o6YvUif/D2qXAm
- bsA9xlMNvRM+3BwyTxIqpb228sFV5dUXRdHFsItYb7GndnRIOAxJwISRNGAi7n5tqbw4
- i1SdG3YgkmwooAHXh5XXZ1h/hlXrmb8O/6yH4arbGUcDihHD1q0OykldHsQ6sJAgkCj6
- /2UDWy73u+FTgNIHEngVPiv49WTYw4JEZslAwibOggdDkmiR2TKxwgHtNDuAtW40BlER
- Ou5NhFlZuOegP+S62wewloOWr4MDGGQ1v4D5vdpBunYmVoB8e2g+K6XxmphLj8ArvUee dw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by mx0b-00069f02.pphosted.com with ESMTP id 39893qsd74-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 18 Jun 2021 08:41:46 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 15I8fDDp049039;
-        Fri, 18 Jun 2021 08:41:45 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by aserp3020.oracle.com with ESMTP id 396waxh6b3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 18 Jun 2021 08:41:45 +0000
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 15I8fMna050193;
-        Fri, 18 Jun 2021 08:41:45 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 396waxh6ar-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 18 Jun 2021 08:41:45 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 15I8fi4u017522;
-        Fri, 18 Jun 2021 08:41:44 GMT
-Received: from kadam (/102.222.70.252)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 18 Jun 2021 01:41:44 -0700
-Date:   Fri, 18 Jun 2021 11:41:37 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     erik.kaneda@intel.com
-Cc:     linux-acpi@vger.kernel.org
-Subject: Re: [bug report] ACPI: PRM: implement OperationRegion handler for
- the PlatformRtMechanism subtype
-Message-ID: <20210618084137.GS1901@kadam>
-References: <YMxb17H5xf4SttpA@mwanda>
+        id S230362AbhFRJSg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Jun 2021 05:18:36 -0400
+Received: from foss.arm.com ([217.140.110.172]:37680 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229819AbhFRJSf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 18 Jun 2021 05:18:35 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7BF711424;
+        Fri, 18 Jun 2021 02:16:26 -0700 (PDT)
+Received: from [10.57.9.136] (unknown [10.57.9.136])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F2FDE3F694;
+        Fri, 18 Jun 2021 02:16:23 -0700 (PDT)
+Subject: Re: [PATCH v4 2/6] ACPI: Move IOMMU setup code out of IORT
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Eric Auger <eric.auger@redhat.com>
+Cc:     kevin.tian@intel.com, mst@redhat.com, catalin.marinas@arm.com,
+        sudeep.holla@arm.com, rjw@rjwysocki.net,
+        virtualization@lists.linux-foundation.org,
+        linux-acpi@vger.kernel.org, iommu@lists.linux-foundation.org,
+        sebastien.boeuf@intel.com, guohanjun@huawei.com, will@kernel.org,
+        dwmw2@infradead.org, linux-arm-kernel@lists.infradead.org,
+        lenb@kernel.org
+References: <20210610075130.67517-1-jean-philippe@linaro.org>
+ <20210610075130.67517-3-jean-philippe@linaro.org>
+ <2c53c9cf-43e6-11c2-6ee3-530ad1f87aec@redhat.com> <YMxOOq8YIBhRhzQM@myrica>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <ff35c106-6254-1a6f-4b95-32a25bbccb96@arm.com>
+Date:   Fri, 18 Jun 2021 10:16:19 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YMxb17H5xf4SttpA@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-ORIG-GUID: jhvrmQjpYRaoOXsbyaP6G7ck6antGx40
-X-Proofpoint-GUID: jhvrmQjpYRaoOXsbyaP6G7ck6antGx40
+In-Reply-To: <YMxOOq8YIBhRhzQM@myrica>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jun 18, 2021 at 11:39:51AM +0300, Dan Carpenter wrote:
-> Hello Erik Kaneda,
+On 2021-06-18 08:41, Jean-Philippe Brucker wrote:
+> Hi Eric,
 > 
-> The patch cefc7ca46235: "ACPI: PRM: implement OperationRegion handler
-> for the PlatformRtMechanism subtype" from Jun 9, 2021, leads to the
-> following static checker warning:
+> On Wed, Jun 16, 2021 at 11:35:13AM +0200, Eric Auger wrote:
+>>> -const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
+>>> -						const u32 *id_in)
+>>> +int iort_iommu_configure_id(struct device *dev, const u32 *id_in)
+>>>   {
+>>>   	struct acpi_iort_node *node;
+>>> -	const struct iommu_ops *ops;
+>>> +	const struct iommu_ops *ops = NULL;
 > 
-> 	drivers/acpi/prmt.c:113 acpi_parse_prmt()
-> 	error: potential null dereference 'tm'.  (kmalloc returns null)
+> Oops, I need to remove this (and add -Werror to my tests.)
 > 
-> drivers/acpi/prmt.c
->     95  static int __init
->     96  acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
->     97  {
->     98          struct acpi_prmt_module_info *module_info;
->     99          struct acpi_prmt_handler_info *handler_info;
->    100          struct prm_handler_info *th;
->    101          struct prm_module_info *tm;
->    102          u64 mmio_count = 0;
->    103          u64 cur_handler = 0;
->    104          u32 module_info_size = 0;
->    105          u64 mmio_range_size = 0;
->    106          void *temp_mmio;
->    107  
->    108          module_info = (struct acpi_prmt_module_info *) header;
->    109          module_info_size = struct_size(tm, handlers, module_info->handler_info_count);
->    110          tm = kmalloc(module_info_size, GFP_KERNEL);
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> Check for NULL?
 > 
->    111  
->    112          guid_copy(&tm->guid, (guid_t *) module_info->module_guid);
->    113          tm->major_rev = module_info->major_rev;
->    114          tm->minor_rev = module_info->minor_rev;
->    115          tm->handler_count = module_info->handler_info_count;
->    116          tm->updatable = true;
->    117  
->    118          if (module_info->mmio_list_pointer) {
->    119                  /*
->    120                   * Each module is associated with a list of addr
->    121                   * ranges that it can use during the service
->    122                   */
->    123                  mmio_count = *(u64 *) memremap(module_info->mmio_list_pointer, 8, MEMREMAP_WB);
->    124                  mmio_range_size = struct_size(tm->mmio_info, addr_ranges, mmio_count);
->    125                  tm->mmio_info = kmalloc(mmio_range_size, GFP_KERNEL);
+>>> +static const struct iommu_ops *acpi_iommu_configure_id(struct device *dev,
+>>> +						       const u32 *id_in)
+>>> +{
+>>> +	int err;
+>>> +	const struct iommu_ops *ops;
+>>> +
+>>> +	/*
+>>> +	 * If we already translated the fwspec there is nothing left to do,
+>>> +	 * return the iommu_ops.
+>>> +	 */
+>>> +	ops = acpi_iommu_fwspec_ops(dev);
+>>> +	if (ops)
+>>> +		return ops;
+>>> +
+>>> +	err = iort_iommu_configure_id(dev, id_in);
+>>> +
+>>> +	/*
+>>> +	 * If we have reason to believe the IOMMU driver missed the initial
+>>> +	 * add_device callback for dev, replay it to get things in order.
+>>> +	 */
+>>> +	if (!err && dev->bus && !device_iommu_mapped(dev))
+>>> +		err = iommu_probe_device(dev);
+>> Previously we had:
+>>      if (!err) {
+>>          ops = iort_fwspec_iommu_ops(dev);
+>>          err = iort_add_device_replay(dev);
+>>      }
+>>
+>> Please can you explain the transform? I see the
+>>
+>> acpi_iommu_fwspec_ops call below but is it not straightforward to me.
+> 
+> I figured that iort_add_device_replay() is only used once and is
+> sufficiently simple to be inlined manually (saving 10 lines). Then I
+> replaced the ops assignment with returns, which saves another line and may
+> be slightly clearer?  I guess it's mostly a matter of taste, the behavior
+> should be exactly the same.
 
-Also here:
+Right, IIRC the multiple assignments to ops were more of a haphazard 
+evolution inherited from the DT version, and looking at it now I think 
+the multiple-return is indeed a bit nicer.
 
-drivers/acpi/prmt.c:131 acpi_parse_prmt() error: potential null dereference 'tm->mmio_info'.  (kmalloc returns null)
+Similarly, it looks like the factoring out of iort_add_device_replay() 
+was originally an attempt to encapsulate the IOMMU_API dependency, but 
+things have moved around a lot since then, so that seems like a sensible 
+simplification to make too.
 
-regards,
-dan carpenter
+Robin.
 
->    126                  temp_mmio = memremap(module_info->mmio_list_pointer, mmio_range_size, MEMREMAP_WB);
->    127                  memmove(tm->mmio_info, temp_mmio, mmio_range_size);
->    128          } else {
->    129                  mmio_range_size = struct_size(tm->mmio_info, addr_ranges, mmio_count);
->    130                  tm->mmio_info = kmalloc(mmio_range_size, GFP_KERNEL);
->    131                  tm->mmio_info->mmio_count = 0;
->    132          }
->    133  
->    134          INIT_LIST_HEAD(&tm->module_list);
->    135          list_add(&tm->module_list, &prm_module_list);
 > 
-> regards,
-> dan carpenter
+>> Also the comment mentions replay. Unsure if it is still OK.
+> 
+> The "replay" part is, but "add_device" isn't accurate because it has since
+> been replaced by probe_device. I'll refresh the comment.
+> 
+> Thanks,
+> Jean
+> _______________________________________________
+> iommu mailing list
+> iommu@lists.linux-foundation.org
+> https://lists.linuxfoundation.org/mailman/listinfo/iommu
+> 
