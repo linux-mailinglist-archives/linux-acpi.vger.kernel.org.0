@@ -2,124 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6D453AC5B9
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Jun 2021 10:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63AAC3AC655
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Jun 2021 10:40:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230175AbhFRIHh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Jun 2021 04:07:37 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46409 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231877AbhFRIHg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Jun 2021 04:07:36 -0400
-Received: from mail-pg1-f200.google.com ([209.85.215.200])
-        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <kai.heng.feng@canonical.com>)
-        id 1lu9VF-0004SG-Fi
-        for linux-acpi@vger.kernel.org; Fri, 18 Jun 2021 08:05:25 +0000
-Received: by mail-pg1-f200.google.com with SMTP id q12-20020a65684c0000b029022094918bbfso5488718pgt.2
-        for <linux-acpi@vger.kernel.org>; Fri, 18 Jun 2021 01:05:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=+PLCucqXHY43yZvJcb/dMjOX1CfrSKN1lKU2FSeK1Fw=;
-        b=To1Oof4gEnGlZfWpsu0uAVjp3Z9Z/RCbgtCvGknq3mnWmAodcT1rpqhMtf4gXZtVeL
-         onEW6cVOdtuKN2fYGfcvj25dPvDjuXwoP00VmtpA2dFv1qjX9U6j26nMove9fJccdtL9
-         6wuAKk3rB8ChoG+1uJWZ6VxXJ8nEcMGnmYxvrrd8mDw0g72iv+vTL6h7WjMD3ug3cUBK
-         LNXbAV0wK0HeX1yrN0igydt3A04Ty2EYlFQe7BxjYUdz2+ZnUWtwXFKKL8SPkOSaH83l
-         kmVeVSlWwXEzbxblA+E4c0g9oBTBI9v0jTVfoihDdBRfS6Lmk1hIbCBNWftzeqDrQc0g
-         M45w==
-X-Gm-Message-State: AOAM531ahpZja2/EGSMbilbBhSqD+Xb+gJre19GvObgY+4AeMaTJoU7o
-        D0VgGHkncC/FbGhuzVVtTduqq3Lv9TP2OleCA6V9imqkKD3KICotPHOvVPWeQY2UgkXX1YhnUIo
-        tBHJPoejs60rgygPepHhjf5UId1JjY9HCfUvrin8=
-X-Received: by 2002:a65:44c1:: with SMTP id g1mr7936929pgs.76.1624003524076;
-        Fri, 18 Jun 2021 01:05:24 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxBaJbp3NM6EPzMxzx9xKavRXZTYjEdsnfw+lAMz1erkyiVyLLYOmB93TsFnhUkkP5nuntCzQ==
-X-Received: by 2002:a65:44c1:: with SMTP id g1mr7936906pgs.76.1624003523747;
-        Fri, 18 Jun 2021 01:05:23 -0700 (PDT)
-Received: from ?IPv6:2001:b011:3815:5129:46fc:fd28:8033:4504? (2001-b011-3815-5129-46fc-fd28-8033-4504.dynamic-ip6.hinet.net. [2001:b011:3815:5129:46fc:fd28:8033:4504])
-        by smtp.gmail.com with ESMTPSA id d127sm7077191pfc.50.2021.06.18.01.05.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Jun 2021 01:05:23 -0700 (PDT)
-Subject: Re: [PATCH 5/5] ACPI: PM: Adjust behavior for field problems on AMD
- systems
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Cc:     Julian Sikorski <belegdol@gmail.com>, teohhanhui@gmail.com,
-        Shyam-sundar.S-k@amd.com
-References: <20210617164212.584-1-mario.limonciello@amd.com>
- <20210617164212.584-5-mario.limonciello@amd.com>
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-Message-ID: <060aec21-d109-a805-5fc9-196e341940a9@canonical.com>
-Date:   Fri, 18 Jun 2021 16:05:19 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S231694AbhFRImN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Jun 2021 04:42:13 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32]:44550 "EHLO
+        mx0a-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233589AbhFRImN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 18 Jun 2021 04:42:13 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15I8W7JA012388;
+        Fri, 18 Jun 2021 08:40:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=K9ViZWnvJaTQyc2xxPxbXG6tzmirAZyhLh1+h4TlX80=;
+ b=cTnICU4J9ROWyX2nQe6ZSY3aeU2PZjP0NnbSC2by3psOpI39vFqNGYmD2oiVMdon+I9r
+ RO7bT3tzc4x00+Hwf6IDQGG3ENWwPFbZd5KExin8GjfJGYKTPgS8IwQ6FvHZUH6xLWUr
+ CXS7Zm0mVnxqyFcgsNI9yAvhtdNbq7/ut83n0LVfbOYXw1umE8/Kf5618cdeFlBuPGj8
+ AA9hZhtmybTD+4vOWWnlg3GBlXVRD3ME9nAwcxERtucgVBNz7i7mdAn6ZqvqfBbBNIKd
+ atwn40NRPagyNPr14p0IA9gJ6rxYN7hhN5nDPIxVgbKlWVytZ+A9OQFyuFazu32X66EL hw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by mx0b-00069f02.pphosted.com with ESMTP id 397jnquru8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 18 Jun 2021 08:40:02 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 15I8Zca0075539;
+        Fri, 18 Jun 2021 08:40:01 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by userp3020.oracle.com with ESMTP id 396waymrr0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 18 Jun 2021 08:40:01 +0000
+Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 15I8e1oo083619;
+        Fri, 18 Jun 2021 08:40:01 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 396waymrqc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 18 Jun 2021 08:40:01 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 15I8dxwQ009406;
+        Fri, 18 Jun 2021 08:39:59 GMT
+Received: from mwanda (/102.222.70.252)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 18 Jun 2021 01:39:59 -0700
+Date:   Fri, 18 Jun 2021 11:39:51 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     erik.kaneda@intel.com
+Cc:     linux-acpi@vger.kernel.org
+Subject: [bug report] ACPI: PRM: implement OperationRegion handler for the
+ PlatformRtMechanism subtype
+Message-ID: <YMxb17H5xf4SttpA@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20210617164212.584-5-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-GUID: IUcVwjJC3PziLPTXFrDHByLgmGfXlcS_
+X-Proofpoint-ORIG-GUID: IUcVwjJC3PziLPTXFrDHByLgmGfXlcS_
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hello Erik Kaneda,
 
-On 6/18/21 12:42 AM, Mario Limonciello wrote:
-> Some AMD Systems with uPEP _HID AMD004/AMDI005 have an off by one bug
-> in their function mask return.  This means that they will call entrance
-> but not exit for matching functions.
->
-> Other AMD systems with this HID should use the Microsoft generic UUID.
->
-> AMD systems with uPEP HID AMDI006 should be using the Microsoft method.
->
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> Tested-by: Julian Sikorski <belegdol@gmail.com>
+The patch cefc7ca46235: "ACPI: PRM: implement OperationRegion handler
+for the PlatformRtMechanism subtype" from Jun 9, 2021, leads to the
+following static checker warning:
 
+	drivers/acpi/prmt.c:113 acpi_parse_prmt()
+	error: potential null dereference 'tm'.  (kmalloc returns null)
 
-The series makes s2idle works on HP EliteBook 845 G8.
+drivers/acpi/prmt.c
+    95  static int __init
+    96  acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
+    97  {
+    98          struct acpi_prmt_module_info *module_info;
+    99          struct acpi_prmt_handler_info *handler_info;
+   100          struct prm_handler_info *th;
+   101          struct prm_module_info *tm;
+   102          u64 mmio_count = 0;
+   103          u64 cur_handler = 0;
+   104          u32 module_info_size = 0;
+   105          u64 mmio_range_size = 0;
+   106          void *temp_mmio;
+   107  
+   108          module_info = (struct acpi_prmt_module_info *) header;
+   109          module_info_size = struct_size(tm, handlers, module_info->handler_info_count);
+   110          tm = kmalloc(module_info_size, GFP_KERNEL);
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Check for NULL?
 
-For the whole series,
+   111  
+   112          guid_copy(&tm->guid, (guid_t *) module_info->module_guid);
+   113          tm->major_rev = module_info->major_rev;
+   114          tm->minor_rev = module_info->minor_rev;
+   115          tm->handler_count = module_info->handler_info_count;
+   116          tm->updatable = true;
+   117  
+   118          if (module_info->mmio_list_pointer) {
+   119                  /*
+   120                   * Each module is associated with a list of addr
+   121                   * ranges that it can use during the service
+   122                   */
+   123                  mmio_count = *(u64 *) memremap(module_info->mmio_list_pointer, 8, MEMREMAP_WB);
+   124                  mmio_range_size = struct_size(tm->mmio_info, addr_ranges, mmio_count);
+   125                  tm->mmio_info = kmalloc(mmio_range_size, GFP_KERNEL);
+   126                  temp_mmio = memremap(module_info->mmio_list_pointer, mmio_range_size, MEMREMAP_WB);
+   127                  memmove(tm->mmio_info, temp_mmio, mmio_range_size);
+   128          } else {
+   129                  mmio_range_size = struct_size(tm->mmio_info, addr_ranges, mmio_count);
+   130                  tm->mmio_info = kmalloc(mmio_range_size, GFP_KERNEL);
+   131                  tm->mmio_info->mmio_count = 0;
+   132          }
+   133  
+   134          INIT_LIST_HEAD(&tm->module_list);
+   135          list_add(&tm->module_list, &prm_module_list);
 
-Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-
-> ---
->   drivers/acpi/x86/s2idle.c | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
->
-> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index 3f2a90648ec9..816bf2c34b7a 100644
-> --- a/drivers/acpi/x86/s2idle.c
-> +++ b/drivers/acpi/x86/s2idle.c
-> @@ -371,12 +371,27 @@ static int lps0_device_attach(struct acpi_device *adev,
->   		return 0;
->   
->   	if (acpi_s2idle_vendor_amd()) {
-> +		/* AMD0004, AMDI0005:
-> +		 * - Should use rev_id 0x0
-> +		 * - function mask > 0x3: Should use AMD method, but has off by one bug
-> +		 * - function mask = 0x3: Should use Microsoft method
-> +		 * AMDI0006:
-> +		 * - should use rev_id 0x0
-> +		 * - function mask = 0x3: Should use Microsoft method
-> +		 */
-> +		const char *hid = acpi_device_hid(adev);
->   		rev_id = 0;
->   		lps0_dsm_func_mask = validate_dsm(adev->handle,
->   					ACPI_LPS0_DSM_UUID_AMD, rev_id, &lps0_dsm_guid);
->   		lps0_dsm_func_mask_microsoft = validate_dsm(adev->handle,
->   					ACPI_LPS0_DSM_UUID_MICROSOFT, rev_id,
->   					&lps0_dsm_guid_microsoft);
-> +		if (lps0_dsm_func_mask > 0x3 && (!strcmp(hid, "AMD0004") ||
-> +						 !strcmp(hid, "AMDI0005"))) {
-> +			lps0_dsm_func_mask = (lps0_dsm_func_mask << 1) | 0x1;
-> +			acpi_handle_debug(adev->handle, "_DSM UUID %s: Adjusted function mask: 0x%x\n",
-> +					  ACPI_LPS0_DSM_UUID_AMD, lps0_dsm_func_mask);
-> +		}
->   	} else {
->   		rev_id = 1;
->   		lps0_dsm_func_mask = validate_dsm(adev->handle,
->
+regards,
+dan carpenter
