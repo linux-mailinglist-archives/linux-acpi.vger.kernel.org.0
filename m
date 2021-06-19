@@ -2,157 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 250B53AD4F0
-	for <lists+linux-acpi@lfdr.de>; Sat, 19 Jun 2021 00:18:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4BA13AD7E4
+	for <lists+linux-acpi@lfdr.de>; Sat, 19 Jun 2021 06:52:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234797AbhFRWU1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Jun 2021 18:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38646 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234901AbhFRWUZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Jun 2021 18:20:25 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C434AC061767
-        for <linux-acpi@vger.kernel.org>; Fri, 18 Jun 2021 15:18:15 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id x19so5430806pln.2
-        for <linux-acpi@vger.kernel.org>; Fri, 18 Jun 2021 15:18:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FE3ige4IUrzO4rZznPTG12clkaJsue7K7FUGlSBMAfs=;
-        b=Yf/hd/nvGltzFs93oV+O815gndRr0N0A4GD+hlEjUljs8fR/r42/5waH+foBbKS7WR
-         4ieWebjxoeI31qMYukpCCF4suivtuw0KIX1kY4xCHCyeA8Pd+qdR2kMIky/pA2j/9n1z
-         T5UtTANEkuiNSh3GT2iBd2oGjOT4PXXJ8YxOU/uBtqj1IiaNYwuRoT9AQFd4bB3iGSod
-         26qHtN9qmDpGolnh/MwXPQ8M2sR3UfA7xZml5iJWrbGghC/MI1rSVb3r8vzpAHp9WgHN
-         rQlO7Wfj93/2gQ031V5AE3UWSmVQEAXyZXRDPtXzUcgRjadraLTfDfG3fXk5uJ+V0D/n
-         TtDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FE3ige4IUrzO4rZznPTG12clkaJsue7K7FUGlSBMAfs=;
-        b=Y9hOyMai3EEj3M3DSL9RZIsXBJzxwmgVZBDEVA4+Mu/S/wzzEgXSd/jk1lgKbLJNoN
-         HZusF5jQoHlqTmN+YPXcxe3A54cYzOijvHhQxAJHr6EfJPWtlwXWGM5W1PNmP099Tj8m
-         T8fF7KmpB3BUbSOmWPefNHXjs/dfLxR2vf3NwYod9sr6crIxEXEZvn24/YnFq8ie3jLd
-         /Zh1xvWrOsWYc+UqSupPSuyGE7+OZqMGA3CLtMCSpVwkM9q+AivirlSXywktmj+km2Fg
-         kLgf5TpcCBWamfSO5J9enQFRvNxWMKS/P1iby/KtPVd+wWuv0FwI6HjipYDaRJSOjFwm
-         HlcQ==
-X-Gm-Message-State: AOAM532IZ+EmOWmHmjZCh8tpwKxsPRBMcmUj6ye1AUz9OHkO2pEfmVt1
-        38lwWUDwSPMwA0eUSxSrbb3gKfxdNycWdpVV16NBIQ==
-X-Google-Smtp-Source: ABdhPJw3BE/jkA8KN4GViEwVomKCDOYCAzb4JhqF7GBtQ+4ny9zul9rQENwJ5XFkX0U2csBd6emTDpwOakbDlUjAcRc=
-X-Received: by 2002:a17:90a:fc88:: with SMTP id ci8mr24404565pjb.13.1624054695229;
- Fri, 18 Jun 2021 15:18:15 -0700 (PDT)
+        id S233158AbhFSEzI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 19 Jun 2021 00:55:08 -0400
+Received: from mga17.intel.com ([192.55.52.151]:27242 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233157AbhFSEzH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 19 Jun 2021 00:55:07 -0400
+IronPort-SDR: /SiwZnDQmCe4vGILOiWipmqoUUsUNPb/1e56q80xAquLW+ruUaGF7nEiif0n5JlEUp0uCJWqyP
+ A4W8yW2T6egQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,10019"; a="187028073"
+X-IronPort-AV: E=Sophos;i="5.83,285,1616482800"; 
+   d="scan'208";a="187028073"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2021 21:52:56 -0700
+IronPort-SDR: xEMZOFmyHLK8qc8sw/aO3vrBlw/MwMbj2AHOJ0pCyHeZXevHzM5bKmS3U9s9uupTzgkJf9mNvB
+ OD1Tdgqq/FoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,285,1616482800"; 
+   d="scan'208";a="405469920"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 18 Jun 2021 21:52:53 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1luSyS-0003Kj-Ix; Sat, 19 Jun 2021 04:52:52 +0000
+Date:   Sat, 19 Jun 2021 12:52:17 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ c897d74f7282775fd4663b575ad12e61ca7be4a4
+Message-ID: <60cd7801.2M6oO2bB0l4paKic%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20210616085118.1141101-1-omosnace@redhat.com>
-In-Reply-To: <20210616085118.1141101-1-omosnace@redhat.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 18 Jun 2021 15:18:04 -0700
-Message-ID: <CAPcyv4jvR8CT4rYODR5KUHNdiqMwQSwJZ+OkVf61kLT3JfjC_Q@mail.gmail.com>
-Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
- lockdown checks
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     linux-security-module@vger.kernel.org,
-        James Morris <jmorris@namei.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        selinux@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        X86 ML <x86@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-cxl@vger.kernel.org, linux-efi <linux-efi@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux-pm mailing list <linux-pm@vger.kernel.org>,
-        linux-serial@vger.kernel.org, bpf@vger.kernel.org,
-        Netdev <netdev@vger.kernel.org>,
-        Kexec Mailing List <kexec@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Casey Schaufler <casey@schaufler-ca.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 16, 2021 at 1:51 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
->
-> Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
-> lockdown") added an implementation of the locked_down LSM hook to
-> SELinux, with the aim to restrict which domains are allowed to perform
-> operations that would breach lockdown.
->
-> However, in several places the security_locked_down() hook is called in
-> situations where the current task isn't doing any action that would
-> directly breach lockdown, leading to SELinux checks that are basically
-> bogus.
->
-> To fix this, add an explicit struct cred pointer argument to
-> security_lockdown() and define NULL as a special value to pass instead
-> of current_cred() in such situations. LSMs that take the subject
-> credentials into account can then fall back to some default or ignore
-> such calls altogether. In the SELinux lockdown hook implementation, use
-> SECINITSID_KERNEL in case the cred argument is NULL.
->
-> Most of the callers are updated to pass current_cred() as the cred
-> pointer, thus maintaining the same behavior. The following callers are
-> modified to pass NULL as the cred pointer instead:
-> 1. arch/powerpc/xmon/xmon.c
->      Seems to be some interactive debugging facility. It appears that
->      the lockdown hook is called from interrupt context here, so it
->      should be more appropriate to request a global lockdown decision.
-> 2. fs/tracefs/inode.c:tracefs_create_file()
->      Here the call is used to prevent creating new tracefs entries when
->      the kernel is locked down. Assumes that locking down is one-way -
->      i.e. if the hook returns non-zero once, it will never return zero
->      again, thus no point in creating these files. Also, the hook is
->      often called by a module's init function when it is loaded by
->      userspace, where it doesn't make much sense to do a check against
->      the current task's creds, since the task itself doesn't actually
->      use the tracing functionality (i.e. doesn't breach lockdown), just
->      indirectly makes some new tracepoints available to whoever is
->      authorized to use them.
-> 3. net/xfrm/xfrm_user.c:copy_to_user_*()
->      Here a cryptographic secret is redacted based on the value returned
->      from the hook. There are two possible actions that may lead here:
->      a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
->         task context is relevant, since the dumped data is sent back to
->         the current task.
->      b) When adding/deleting/updating an SA via XFRM_MSG_xxxSA, the
->         dumped SA is broadcasted to tasks subscribed to XFRM events -
->         here the current task context is not relevant as it doesn't
->         represent the tasks that could potentially see the secret.
->      It doesn't seem worth it to try to keep using the current task's
->      context in the a) case, since the eventual data leak can be
->      circumvented anyway via b), plus there is no way for the task to
->      indicate that it doesn't care about the actual key value, so the
->      check could generate a lot of "false alert" denials with SELinux.
->      Thus, let's pass NULL instead of current_cred() here faute de
->      mieux.
->
-> Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
-> Improvements-suggested-by: Paul Moore <paul@paul-moore.com>
-> Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-[..]
-> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> index 2acc6173da36..c1747b6555c7 100644
-> --- a/drivers/cxl/mem.c
-> +++ b/drivers/cxl/mem.c
-> @@ -568,7 +568,7 @@ static bool cxl_mem_raw_command_allowed(u16 opcode)
->         if (!IS_ENABLED(CONFIG_CXL_MEM_RAW_COMMANDS))
->                 return false;
->
-> -       if (security_locked_down(LOCKDOWN_NONE))
-> +       if (security_locked_down(current_cred(), LOCKDOWN_NONE))
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: c897d74f7282775fd4663b575ad12e61ca7be4a4  Merge branch 'acpi-pm' into bleeding-edge
 
-Acked-by: Dan Williams <dan.j.williams@intel.com>
+elapsed time: 720m
 
-...however that usage looks wrong. The expectation is that if kernel
-integrity protections are enabled then raw command access should be
-disabled. So I think that should be equivalent to LOCKDOWN_PCI_ACCESS
-in terms of the command capabilities to filter.
+configs tested: 93
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                 mpc834x_itx_defconfig
+sh                          polaris_defconfig
+x86_64                            allnoconfig
+xtensa                       common_defconfig
+arm                          pxa168_defconfig
+arm                         axm55xx_defconfig
+arc                        vdk_hs38_defconfig
+m68k                        mvme16x_defconfig
+microblaze                          defconfig
+m68k                        stmark2_defconfig
+arm                       mainstone_defconfig
+m68k                       m5475evb_defconfig
+powerpc                         wii_defconfig
+xtensa                              defconfig
+sh                            migor_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a002-20210618
+i386                 randconfig-a006-20210618
+i386                 randconfig-a004-20210618
+i386                 randconfig-a001-20210618
+i386                 randconfig-a005-20210618
+i386                 randconfig-a003-20210618
+x86_64               randconfig-a015-20210618
+x86_64               randconfig-a011-20210618
+x86_64               randconfig-a012-20210618
+x86_64               randconfig-a014-20210618
+x86_64               randconfig-a016-20210618
+x86_64               randconfig-a013-20210618
+i386                 randconfig-a015-20210618
+i386                 randconfig-a016-20210618
+i386                 randconfig-a013-20210618
+i386                 randconfig-a014-20210618
+i386                 randconfig-a012-20210618
+i386                 randconfig-a011-20210618
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-b001-20210618
+x86_64               randconfig-a002-20210618
+x86_64               randconfig-a001-20210618
+x86_64               randconfig-a004-20210618
+x86_64               randconfig-a003-20210618
+x86_64               randconfig-a006-20210618
+x86_64               randconfig-a005-20210618
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
