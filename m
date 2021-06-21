@@ -2,123 +2,171 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B653AE52E
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jun 2021 10:45:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BEC23AE5D2
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jun 2021 11:20:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230288AbhFUIrk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Jun 2021 04:47:40 -0400
-Received: from mailout1.secunet.com ([62.96.220.44]:57870 "EHLO
-        mailout1.secunet.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229946AbhFUIrk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Jun 2021 04:47:40 -0400
-X-Greylist: delayed 582 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Jun 2021 04:47:37 EDT
-Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
-        by mailout1.secunet.com (Postfix) with ESMTP id BAFED80004E;
-        Mon, 21 Jun 2021 10:35:39 +0200 (CEST)
-Received: from mbx-essen-01.secunet.de (10.53.40.197) by
- cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 21 Jun 2021 10:35:39 +0200
-Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-01.secunet.de
- (10.53.40.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 21 Jun
- 2021 10:35:39 +0200
-Received: by gauss2.secunet.de (Postfix, from userid 1000)
-        id 249D031803E8; Mon, 21 Jun 2021 10:35:39 +0200 (CEST)
-Date:   Mon, 21 Jun 2021 10:35:39 +0200
-From:   Steffen Klassert <steffen.klassert@secunet.com>
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-CC:     <linux-security-module@vger.kernel.org>,
-        James Morris <jmorris@namei.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
+        id S230268AbhFUJW2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Jun 2021 05:22:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44510 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229618AbhFUJW2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Jun 2021 05:22:28 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F18BEC061756
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Jun 2021 02:20:12 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id bb20so5403239pjb.3
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Jun 2021 02:20:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xucopJdQYEMHhZQ7dqqB8UQAFZOXBMVYsdXdizA97FA=;
+        b=vgHziPNRBMyZcOclBhC3U0MKPvE9Hn1g1zorbrtQPSjbwjjMHtxuehLkK5jav4xtQP
+         0MsgvldXgiQbvefMiSDkhR0TiOaOfA3sw7mIbn4hm//b6lkh2TSQ/YwZbqiwf9k6q/yl
+         MpAFGvVHz6gQ8nfIE6QxXJhawJXd93wnismO4+HeCAIO4326OoyrTnZPgapwS53dgSOD
+         2mJPLOYkN9tz8rtAKlyp/n7wxonyxaqipTjoEzSm04OT0zO3uTSx3e8XZY026j5NTswn
+         9c2xHcwYqnPU4NA+I6izG4vBuEs9oAjRCzer7DlyPRnQZtSsiugwN/QrvqdekmRETZ34
+         n7rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xucopJdQYEMHhZQ7dqqB8UQAFZOXBMVYsdXdizA97FA=;
+        b=NMQ5vhHer0pD7Ym74nO1MEYuRyT4PIzhQ8cOGi1FZuKid8mRFgd+W/NUwDfCnz8UsJ
+         +8XLZhY9870dy3fO7PNhcjaw8p8PbIrra1RSBHuyl9BztSaYqlOrPWoxTQVjCZ5b6l0Z
+         JA+OiGZ8X3Lr00gjQDtYKLx/d84h4/ib8gJRSBt/82bBoCnhEeXbhJtFqgPkHKqGUODC
+         WxQnZoUHh8l6jzzFzZPc7QlLqLtEiKCppD9IbHaMvYBQ6VmdwkZ+nI5Eekrf1jniSP61
+         4dlby4oK3fKSwom1Q7XZpU70ZP/B64S/CYJxwQWPC9E1KvATALklbQY3phGceC6dE6lE
+         42MA==
+X-Gm-Message-State: AOAM532JSDGjmsNIRCTKtfU380ek9QS+hAO9VPVpcX/RUMbfDaZTdyZ7
+        RpbulhheXEJqgV+SEQG6e7o3OA==
+X-Google-Smtp-Source: ABdhPJymdL2wIiZ+VPdAPkTBA1iFDujziFi2nwnCOjvdII9bEiKPuiO3gz+pu3aUf6faKlwyhs0G5Q==
+X-Received: by 2002:a17:902:e313:b029:125:827f:c621 with SMTP id q19-20020a170902e313b0290125827fc621mr1847055plc.25.1624267212333;
+        Mon, 21 Jun 2021 02:20:12 -0700 (PDT)
+Received: from localhost ([136.185.134.182])
+        by smtp.gmail.com with ESMTPSA id w123sm7828850pff.186.2021.06.21.02.20.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Jun 2021 02:20:11 -0700 (PDT)
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Rafael Wysocki <rjw@rjwysocki.net>,
+        Ionela Voinescu <ionela.voinescu@arm.com>,
+        Ben Segall <bsegall@google.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ingo Molnar <mingo@redhat.com>,
-        "Herbert Xu" <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        <selinux@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <x86@kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-cxl@vger.kernel.org>, <linux-efi@vger.kernel.org>,
-        <linux-fsdevel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-serial@vger.kernel.org>,
-        <bpf@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <kexec@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        Casey Schaufler <casey@schaufler-ca.com>
-Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
- lockdown checks
-Message-ID: <20210621083539.GY40979@gauss3.secunet.de>
-References: <20210616085118.1141101-1-omosnace@redhat.com>
+        Juri Lelli <juri.lelli@redhat.com>,
+        Mel Gorman <mgorman@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Will Deacon <will@kernel.org>
+Cc:     linux-pm@vger.kernel.org, Qian Cai <quic_qiancai@quicinc.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency invariance
+Date:   Mon, 21 Jun 2021 14:49:33 +0530
+Message-Id: <cover.1624266901.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20210616085118.1141101-1-omosnace@redhat.com>
-X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
- mbx-essen-01.secunet.de (10.53.40.197)
-X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 16, 2021 at 10:51:18AM +0200, Ondrej Mosnacek wrote:
-> Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
-> lockdown") added an implementation of the locked_down LSM hook to
-> SELinux, with the aim to restrict which domains are allowed to perform
-> operations that would breach lockdown.
-> 
-> However, in several places the security_locked_down() hook is called in
-> situations where the current task isn't doing any action that would
-> directly breach lockdown, leading to SELinux checks that are basically
-> bogus.
-> 
-> To fix this, add an explicit struct cred pointer argument to
-> security_lockdown() and define NULL as a special value to pass instead
-> of current_cred() in such situations. LSMs that take the subject
-> credentials into account can then fall back to some default or ignore
-> such calls altogether. In the SELinux lockdown hook implementation, use
-> SECINITSID_KERNEL in case the cred argument is NULL.
-> 
-> Most of the callers are updated to pass current_cred() as the cred
-> pointer, thus maintaining the same behavior. The following callers are
-> modified to pass NULL as the cred pointer instead:
-> 1. arch/powerpc/xmon/xmon.c
->      Seems to be some interactive debugging facility. It appears that
->      the lockdown hook is called from interrupt context here, so it
->      should be more appropriate to request a global lockdown decision.
-> 2. fs/tracefs/inode.c:tracefs_create_file()
->      Here the call is used to prevent creating new tracefs entries when
->      the kernel is locked down. Assumes that locking down is one-way -
->      i.e. if the hook returns non-zero once, it will never return zero
->      again, thus no point in creating these files. Also, the hook is
->      often called by a module's init function when it is loaded by
->      userspace, where it doesn't make much sense to do a check against
->      the current task's creds, since the task itself doesn't actually
->      use the tracing functionality (i.e. doesn't breach lockdown), just
->      indirectly makes some new tracepoints available to whoever is
->      authorized to use them.
-> 3. net/xfrm/xfrm_user.c:copy_to_user_*()
->      Here a cryptographic secret is redacted based on the value returned
->      from the hook. There are two possible actions that may lead here:
->      a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
->         task context is relevant, since the dumped data is sent back to
->         the current task.
->      b) When adding/deleting/updating an SA via XFRM_MSG_xxxSA, the
->         dumped SA is broadcasted to tasks subscribed to XFRM events -
->         here the current task context is not relevant as it doesn't
->         represent the tasks that could potentially see the secret.
->      It doesn't seem worth it to try to keep using the current task's
->      context in the a) case, since the eventual data leak can be
->      circumvented anyway via b), plus there is no way for the task to
->      indicate that it doesn't care about the actual key value, so the
->      check could generate a lot of "false alert" denials with SELinux.
->      Thus, let's pass NULL instead of current_cred() here faute de
->      mieux.
-> 
-> Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
-> Improvements-suggested-by: Paul Moore <paul@paul-moore.com>
-> Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Hello,
 
-For the xfrm part:
+Changes since V2:
 
-Acked-by: Steffen Klassert <steffen.klassert@secunet.com>
+- We don't need start_cpu() and stop_cpu() callbacks anymore, we can make it
+  work using policy ->init() and exit() alone.
+
+- Two new cleanup patches 1/4 and 2/4.
+
+- Improved commit log of 3/4.
+
+- Dropped WARN_ON(local_freq_scale > 1024), since this can occur on counter's
+  overlap (seen with Vincent's setup).
+
+- Handle stuff from init/exit() callbacks only.
+
+Changes since V1:
+
+- Few of the patches migrating users to ->exit() callback are posted separately.
+
+- The CPPC patch was completely reverted and so the support for FIE is again
+  added here from scratch.
+
+- The start_cpu() and stop_cpu() interface is reworked a little so stop_cpu() is
+  only ever called for a CPU if start_cpu() was called for it earlier.
+
+- A new patch to implement RCU locking in arch_topology core to avoid some
+  races.
+
+- Some cleanup and very clear/separate paths for FIE in cppc driver now.
+
+
+-------------------------8<-------------------------
+
+CPPC cpufreq driver is used for ARM servers and this patch series tries to
+provide counter-based frequency invariance support for them in the absence for
+architecture specific counters (like AMUs).
+
+This was reverted earlier for the 5.13 kernel after Qian Cai reported kernel
+oops during suspend/resume.
+
+This is based of v5.13-rc7 + a cleanup patchset:
+
+https://lore.kernel.org/linux-pm/cover.1623825358.git.viresh.kumar@linaro.org/
+
+All the patches are pushed here together for people to run.
+
+https://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git/log/?h=cpufreq/cppc
+
+This is tested on my Hikey platform (without the actual read/write to
+performance counters), with this script for over an hour:
+
+while true; do
+    for i in `seq 1 7`;
+    do
+        echo 0 > /sys/devices/system/cpu/cpu$i/online;
+    done;
+
+    for i in `seq 1 7`;
+    do
+        echo 1 > /sys/devices/system/cpu/cpu$i/online;
+    done;
+done
+
+
+The same is done by Vincent on ThunderX2 and no issues were seen.
+
+I would like to get this merged for 5.14, since it was recently reverted from
+5.13. And that it is still an independent change to a single driver and topology
+APIs that no one is using apart from arm64 topology stuff.
+
+Thanks.
+
+--
+Viresh
+
+Viresh Kumar (4):
+  cpufreq: cppc: Fix potential memleak in cppc_cpufreq_cpu_init
+  cpufreq: cppc: Pass structure instance by reference
+  arch_topology: Avoid use-after-free for scale_freq_data
+  cpufreq: CPPC: Add support for frequency invariance
+
+ drivers/base/arch_topology.c   |  27 +++-
+ drivers/cpufreq/Kconfig.arm    |  10 ++
+ drivers/cpufreq/cppc_cpufreq.c | 287 +++++++++++++++++++++++++++++----
+ include/linux/arch_topology.h  |   1 +
+ kernel/sched/core.c            |   1 +
+ 5 files changed, 292 insertions(+), 34 deletions(-)
+
+-- 
+2.31.1.272.g89b43f80a514
 
