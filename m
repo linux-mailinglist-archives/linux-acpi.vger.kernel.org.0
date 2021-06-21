@@ -2,113 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C47F3AF6A3
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jun 2021 22:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C8863AF6FB
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jun 2021 22:48:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231566AbhFUUJY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Jun 2021 16:09:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50808 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230515AbhFUUJX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Jun 2021 16:09:23 -0400
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5786EC061756
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Jun 2021 13:07:09 -0700 (PDT)
-Received: by mail-qk1-x72e.google.com with SMTP id q190so31020673qkd.2
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Jun 2021 13:07:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=uBcdR0T+6KroutNYMXOLUP20+jwr0Bv2TkyvivOjBOc=;
-        b=Llc1ViRs+26Si+5pYXSSZGx/Cgwbg7/QDSkW/yA/rlz2p0Vz7LafzFfK0E+7dg1l44
-         f1vFlzurto0Wt3PZeez+/hA/ilrgLwjl+sXDUm1dIK5ndz4HtewYPyvsKDdUX5A11WCc
-         F6GbURD2KJGrWRPAXSk/CXQTldnzv6UWwAVKF9J2umJMh/IBZ+20V6dx6USyExZxJBOG
-         CrmA4fB9UAswNUn1cqi7olhJGZd4eu6/b5mi9G0PCY3xHLz+H3UW2w0XlFi9I747XdYS
-         LprI+tELmaTdMSpyO/Z4LEEttCDjA+BY3kzDCjYzn6+5NQ/1lPGHhDEDq/d9RX+R112y
-         W69Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=uBcdR0T+6KroutNYMXOLUP20+jwr0Bv2TkyvivOjBOc=;
-        b=dWt93lxx2sDcawKIXwA8aMax9nuamwzH6vogH2JwIGjuDh8pbfIKun0edSP+bIb5f5
-         Meeg+28PrULu7cJSm2kupPWok1F+3lLlwTVA5nnLBysQ/tinK7KH6DoZkyWqtiaTQmLn
-         IQB062pC8aZxmNjpPzoFNcJNcz9WRFXAMN5HY2RCWSe5zAOD6CqXXtgEsydK8obMbCvu
-         9z6hUgCN+nfVND+FdenmDHLah81rKpHdyxParZGz/+xL1hhDrpoDhOb6P4THF+93rsHR
-         5TUYnH22CPVObA+yYdFPH82XHA7OR2px1D/n3jwGBcQuFIZ9uamyHUvQpIl0pc5gMr0h
-         vQag==
-X-Gm-Message-State: AOAM531eoLWVFCDDFZUGZKG9UeddWajvygl37m1VHD5b8GC4VfBFZwU7
-        +Z15q5Y1brxHC73vuH5cBrNQYHo5VUtd2TQMn7u6xZC750k=
-X-Google-Smtp-Source: ABdhPJyRra2aDo3AX87HCjr8lM2KabmMsSTYoEoQwTRYAJauaAv8llGm5dNBTl1f53WymEQRQlHF9PkBfzbu+cFqK3s=
-X-Received: by 2002:a37:a1d5:: with SMTP id k204mr424751qke.300.1624306028406;
- Mon, 21 Jun 2021 13:07:08 -0700 (PDT)
+        id S230052AbhFUUvD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Jun 2021 16:51:03 -0400
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:14552 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229790AbhFUUvD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 21 Jun 2021 16:51:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1624308530; x=1655844530;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=3VRTmBGgxbNUCdwEHcZBa6NmCsXyGuWivDkf1Wx7pgM=;
+  b=DHYv/grhJPbhuy2rgHUXSoJpdozBACPu4MMvfGYAuB0ZurF3N2weISbm
+   stAeeVNUG8pi4M3fp4CW2YfEfUqWM9DDwF0NKkynqRMMcS1R9aSs2tXje
+   GVpYG8Y8WkuBEIes7PQiZ0hJZLpsUZbeM8SMfiwLGJOgRB08UCKaqgfhE
+   Y=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 21 Jun 2021 13:48:49 -0700
+X-QCInternal: smtphost
+Received: from nasanexm03e.na.qualcomm.com ([10.85.0.48])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/AES256-SHA; 21 Jun 2021 13:48:48 -0700
+Received: from [10.38.245.98] (10.80.80.8) by nasanexm03e.na.qualcomm.com
+ (10.85.0.48) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Mon, 21 Jun
+ 2021 13:48:46 -0700
+Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency
+ invariance
+To:     Viresh Kumar <viresh.kumar@linaro.org>,
+        Rafael Wysocki <rjw@rjwysocki.net>,
+        Ionela Voinescu <ionela.voinescu@arm.com>,
+        Ben Segall <bsegall@google.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Mel Gorman <mgorman@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Will Deacon <will@kernel.org>
+CC:     <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+References: <cover.1624266901.git.viresh.kumar@linaro.org>
+From:   Qian Cai <quic_qiancai@quicinc.com>
+Message-ID: <09a39f5c-b47b-a931-bf23-dc43229fb2dd@quicinc.com>
+Date:   Mon, 21 Jun 2021 16:48:44 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-References: <20210621200459.3558199-1-mw@semihalf.com>
-In-Reply-To: <20210621200459.3558199-1-mw@semihalf.com>
-From:   Marcin Wojtas <mw@semihalf.com>
-Date:   Mon, 21 Jun 2021 22:06:58 +0200
-Message-ID: <CAPv3WKctDU7WOxHzeHc49-G_h42qX-pUpinJN2CVHNoRH86QHw@mail.gmail.com>
-Subject: Re: [net-next: PATCH v3 1/1] ACPI: SPCR: Add new 16550-compatible
- Serial Port Subtype
-To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        devel@acpica.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <cover.1624266901.git.viresh.kumar@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanexm03e.na.qualcomm.com (10.85.0.48)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Apologies for the patch prefix, of course it's a first version and
-unrelated to the networking subsystem.
-
-Best regards,
-Marcin
 
 
-pon., 21 cze 2021 o 22:05 Marcin Wojtas <mw@semihalf.com> napisa=C5=82(a):
->
-> The Microsoft Debug Port Table 2 (DBG2) specification revision
-> May 31, 2017 adds support for 16550-compatible Serial Port
-> Subtype with parameters defined in Generic Address Structure (GAS) [1]
->
-> Add its support in SPCR parsing routine.
->
-> [1] https://docs.microsoft.com/en-us/windows-hardware/drivers/bringup/acp=
-i-debug-port-table
->
-> Signed-off-by: Marcin Wojtas <mw@semihalf.com>
-> ---
->  include/acpi/actbl1.h | 1 +
->  drivers/acpi/spcr.c   | 1 +
->  2 files changed, 2 insertions(+)
->
-> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-> index ce59903c2695..f746012eba8d 100644
-> --- a/include/acpi/actbl1.h
-> +++ b/include/acpi/actbl1.h
-> @@ -498,6 +498,7 @@ struct acpi_dbg2_device {
->  #define ACPI_DBG2_ARM_SBSA_GENERIC  0x000E
->  #define ACPI_DBG2_ARM_DCC           0x000F
->  #define ACPI_DBG2_BCM2835           0x0010
-> +#define ACPI_DBG2_16550_WITH_GAS    0x0012
->
->  #define ACPI_DBG2_1394_STANDARD     0x0000
->
-> diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
-> index 88460bacd5ae..25c2d0be953e 100644
-> --- a/drivers/acpi/spcr.c
-> +++ b/drivers/acpi/spcr.c
-> @@ -136,6 +136,7 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool=
- enable_console)
->                 break;
->         case ACPI_DBG2_16550_COMPATIBLE:
->         case ACPI_DBG2_16550_SUBSET:
-> +       case ACPI_DBG2_16550_WITH_GAS:
->                 uart =3D "uart";
->                 break;
->         default:
-> --
-> 2.29.0
->
+On 6/21/2021 5:19 AM, Viresh Kumar wrote:
+> CPPC cpufreq driver is used for ARM servers and this patch series tries to
+> provide counter-based frequency invariance support for them in the absence for
+> architecture specific counters (like AMUs).
+
+Viresh, this series works fine on my quick tests so far. BTW, I noticed some strange things even with the series applied mentioned below when reading acpi_cppc vs cpufreq sysfs. Do you happen to know are those just hardware/firmware issues because Linux just faithfully exported the register values?
+
+== Arm64 server Foo ==
+CPU max MHz:                     3000.0000
+CPU min MHz:                     1000.0000
+
+/sys/devices/system/cpu/cpu0/acpi_cppc/highest_perf
+300
+/sys/devices/system/cpu/cpu0/acpi_cppc/lowest_freq
+1000
+/sys/devices/system/cpu/cpu0/acpi_cppc/lowest_nonlinear_perf
+200
+/sys/devices/system/cpu/cpu0/acpi_cppc/lowest_perf
+100
+/sys/devices/system/cpu/cpu0/acpi_cppc/nominal_freq <--- should be 3000?
+2800
+/sys/devices/system/cpu/cpu0/acpi_cppc/nominal_perf <--- should be 300?
+280
+/sys/devices/system/cpu/cpu0/acpi_cppc/reference_perf
+100
+
+== Arm64 server Bar ==
+CPU max MHz:                     3000.0000
+CPU min MHz:                     375.0000
+
+/sys/devices/system/cpu/cpu0/acpi_cppc/highest_perf <--- should be 3000? There is no cpufreq boost.
+3300
+/sys/devices/system/cpu/cpu0/acpi_cppc/lowest_freq <--- don't understand why 0.
+0
+/sys/devices/system/cpu/cpu0/acpi_cppc/lowest_nonlinear_perf
+375
+/sys/devices/system/cpu/cpu0/acpi_cppc/lowest_perf
+375
+/sys/devices/system/cpu/cpu0/acpi_cppc/nominal_freq <--- ditto
+0
+/sys/devices/system/cpu/cpu0/acpi_cppc/nominal_perf
+3000
+/sys/devices/system/cpu/cpu0/acpi_cppc/reference_perf
+100
