@@ -2,379 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04D153AFE43
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jun 2021 09:46:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2B4F3B0069
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jun 2021 11:36:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230402AbhFVHsr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Jun 2021 03:48:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:33167 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229853AbhFVHsq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 22 Jun 2021 03:48:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1624347990;
-        h=from:from:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=x5f3bvS7GZvWVtyFwxLN1QlKyB6zTisOpr3FYaadj24=;
-        b=duLAhcngzVOkNlgswjWMGLO8UBLYN1guCeZXzNnOj3SUVFEaVGuT8oT4yDSt2WrJd6MWge
-        sK4ForLidMY8ZBu90JOxxKg0+EkvIiGSk4BkmsvkSPXAWW1RgasmOL/fDj0BOPW9BTRcpl
-        aiRI+9/tNYcb+ZMfDV/JqlXYrbkSdeE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-391-IFb3p_cnNCmWTraYX2zkfg-1; Tue, 22 Jun 2021 03:46:29 -0400
-X-MC-Unique: IFb3p_cnNCmWTraYX2zkfg-1
-Received: by mail-wr1-f72.google.com with SMTP id k3-20020a5d62830000b029011a69a4d069so9165792wru.21
-        for <linux-acpi@vger.kernel.org>; Tue, 22 Jun 2021 00:46:28 -0700 (PDT)
+        id S229612AbhFVJik (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Jun 2021 05:38:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34192 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229490AbhFVJij (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Jun 2021 05:38:39 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A65CC061574
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Jun 2021 02:36:23 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id h16so11753249pjv.2
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Jun 2021 02:36:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Tbh1b3cV5Q3qqNHTOWoiBGQ8jdo8ehqJLGOWO9alnAE=;
+        b=VijD66acf2I0khuIlqULqYLwrNkIQLhnS4/WoaNk5nLctnpK6mPZUl38twowGd8UVN
+         hKG4K4G4xNDeYylZrULINX6kLkplLdNE2XltTaDI6tV8AOhGM6/itdNa3/mQlDl7Uzy4
+         AQS2TvM11G/15vi/qiPPMc84pi0CQmBIR+kD8i4Gh2E5dRG0xaRrovw/nf/qiIQJmA3W
+         pFoTy0q5FmE2JWbCw6Rnw0DwlH26qgO7/bcaJeCTuMC4zS6EKKUWnmBX2yD/HXQuIIRV
+         ua/kaQo0tx3KxnKJ+PQ2y5fH9cnhnTQVkHmdyucV6MRpXhj+nDUsQNqr1qCPdBE9vYWG
+         SAfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:reply-to:subject:to:cc:references:from
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-transfer-encoding:content-language;
-        bh=x5f3bvS7GZvWVtyFwxLN1QlKyB6zTisOpr3FYaadj24=;
-        b=qQenS+LYwk57cUYPKqZQp+HqL5ItNAKPwWzVCuvIe2q6v0kF7eknwPZzcepWW7PXRc
-         H7Bem9e6Vq/NksmmQ3ef3n6nFnuEuGTvsFhjStaphths15N4U1SnoH5FL5ZbiRghTgsm
-         y9FogKND4AA8XWyjXJco54tDoGbH6Wo30kzRXhbTf1ivCJde4Ldlh4KIG29AbBvm4n8X
-         /Yxwm7mBnhlL84J2l7eis94f3qpV3jMmHuT1c/iyZBCyapXclpCMvLkqdos8fCRYp0dP
-         Hj60qjAcVWu20n5el3SAEBhHqQHdBlra7yJ2FBxdwRtVj5x7vyebVEBkj2ZTs/ZDkBT0
-         E8Rg==
-X-Gm-Message-State: AOAM533jZw5sktPFS02yHdHA4Ke/TJQ3kgdC1wFfQa9D+sSP2EPlRer3
-        /wUxDDzvm2ITuEYGWJgP2gEV1TD22/PJl0y8HYX3muY15v5NPqY/Dr2gwXCxS4Y9ooO/LeYpMVQ
-        HkE7FhXU5s09/MkOv6If9RA==
-X-Received: by 2002:adf:c54b:: with SMTP id s11mr3106153wrf.349.1624347988011;
-        Tue, 22 Jun 2021 00:46:28 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw7QcWI8FJ95aqU4FW0VTatFzT/ZlH2y3xbB+zmvo9mrdoUIlvfW4P0sodDcWmUan4mPoZSHw==
-X-Received: by 2002:adf:c54b:: with SMTP id s11mr3106134wrf.349.1624347987821;
-        Tue, 22 Jun 2021 00:46:27 -0700 (PDT)
-Received: from [192.168.43.95] ([37.173.9.63])
-        by smtp.gmail.com with ESMTPSA id g10sm1443719wmh.33.2021.06.22.00.46.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Jun 2021 00:46:27 -0700 (PDT)
-Reply-To: eric.auger@redhat.com
-Subject: Re: [PATCH v5 2/5] ACPI: Move IOMMU setup code out of IORT
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
-Cc:     will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
-        dwmw2@infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux-foundation.org,
-        virtualization@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org, sebastien.boeuf@intel.com,
-        robin.murphy@arm.com, kevin.tian@intel.com,
-        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
-        sudeep.holla@arm.com
-References: <20210618152059.1194210-1-jean-philippe@linaro.org>
- <20210618152059.1194210-3-jean-philippe@linaro.org>
-From:   Eric Auger <eric.auger@redhat.com>
-Message-ID: <6da435e7-3204-e0d1-4c53-e7115e537cb5@redhat.com>
-Date:   Tue, 22 Jun 2021 09:46:24 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Tbh1b3cV5Q3qqNHTOWoiBGQ8jdo8ehqJLGOWO9alnAE=;
+        b=sxuK/ZsVYm6/C11azlhgRf8RN/R/VQHZA6XW2GYMDu6fz+vnB3/YBtBi4NJ1dI9rb2
+         4Rw2/ppIbMzrYYt6ncZcNvdz7EigYNU8XrVJ4mTTMm57k9vOBeGv/2uPkE4lpPPyvdOQ
+         M7oS7Eb0S3cQB/8R++lVHd9pAzVkYV641rFfSY+1TuIA0lCD9ozKfQcRIaunFclrpaoc
+         Bgw+C+vD/lDvBZMQsw7raSsmw7tWjUxeILe8fwj+cXEX//DW3w0AVNiqRPj7H2Jb1NTp
+         a98R/fOhO8IuZBjOvomexYkobsmIw4uc8p8uKnfP46HhQracbOOZqAwTvyMcV3p/NFpU
+         R+0Q==
+X-Gm-Message-State: AOAM531Gd5nanExFfOn5RVEXKOS3m7Baa0zLPZYg9EQi7yHa0Fw2Qt/S
+        9H0o2ef+OYxGZFjjZkibHD0MxRJorWhfgz22X/A=
+X-Google-Smtp-Source: ABdhPJzmS3/hfzu78tx/Bgg1tHfWvOIk48In+KRycbbfHd4s0985Vnqm9y/FJZY8j6AeyTo9Sg737eOcoYaRsjwmy7s=
+X-Received: by 2002:a17:902:fe0a:b029:11d:81c9:3adf with SMTP id
+ g10-20020a170902fe0ab029011d81c93adfmr21911807plj.0.1624354583076; Tue, 22
+ Jun 2021 02:36:23 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210618152059.1194210-3-jean-philippe@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <YM77uq51jmDC/rHt@owl.dominikbrodowski.net>
+In-Reply-To: <YM77uq51jmDC/rHt@owl.dominikbrodowski.net>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 22 Jun 2021 12:35:46 +0300
+Message-ID: <CAHp75Vd1gvsxFZamwp5FJDHVZsvq1S3eMBiJdu+ZD7StDoeGBw@mail.gmail.com>
+Subject: Re: v5.13-rcX regression - NULL pointer dereference - MFD and
+ software node API
+To:     Dominik Brodowski <linux@dominikbrodowski.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jean,
-On 6/18/21 5:20 PM, Jean-Philippe Brucker wrote:
-> Extract the code that sets up the IOMMU infrastructure from IORT, since
-> it can be reused by VIOT. Move it one level up into a new
-> acpi_iommu_configure_id() function, which calls the IORT parsing
-> function which in turn calls the acpi_iommu_fwspec_init() helper.
+-Lee, Hekki
++Hans de Goede, Rafael, Laurent, Sakari
+
+Below bug report again reminds me about the "interesting" design of
+some ACPI tables in the wild. See below for more.
+
+On Sun, Jun 20, 2021 at 11:36 AM Dominik Brodowski
+<linux@dominikbrodowski.net> wrote:
 >
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-
-Thanks
-
-Eric
-
-> ---
->  include/acpi/acpi_bus.h   |  3 ++
->  include/linux/acpi_iort.h |  8 ++---
->  drivers/acpi/arm64/iort.c | 74 +++++----------------------------------
->  drivers/acpi/scan.c       | 73 +++++++++++++++++++++++++++++++++++++-
->  4 files changed, 86 insertions(+), 72 deletions(-)
+> Over a month ago, Andy Shevchenko reported and fixed a NULL pointer
+> dereference issue introduced by commit
+>         42e59982917a ("mfd: core: Add support for software nodes")
+> in v5.13-rc1:
+>         https://lore.kernel.org/lkml/20210510141552.57045-1-andriy.shevch=
+enko@linux.intel.com/
 >
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 3a82faac5767..41f092a269f6 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -588,6 +588,9 @@ struct acpi_pci_root {
->  
->  bool acpi_dma_supported(struct acpi_device *adev);
->  enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev);
-> +int acpi_iommu_fwspec_init(struct device *dev, u32 id,
-> +			   struct fwnode_handle *fwnode,
-> +			   const struct iommu_ops *ops);
->  int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
->  		       u64 *size);
->  int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
-> diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
-> index f7f054833afd..f1f0842a2cb2 100644
-> --- a/include/linux/acpi_iort.h
-> +++ b/include/linux/acpi_iort.h
-> @@ -35,8 +35,7 @@ void acpi_configure_pmsi_domain(struct device *dev);
->  int iort_pmsi_get_dev_id(struct device *dev, u32 *dev_id);
->  /* IOMMU interface */
->  int iort_dma_get_ranges(struct device *dev, u64 *size);
-> -const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
-> -						const u32 *id_in);
-> +int iort_iommu_configure_id(struct device *dev, const u32 *id_in);
->  int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
->  phys_addr_t acpi_iort_dma_get_max_cpu_address(void);
->  #else
-> @@ -50,9 +49,8 @@ static inline void acpi_configure_pmsi_domain(struct device *dev) { }
->  /* IOMMU interface */
->  static inline int iort_dma_get_ranges(struct device *dev, u64 *size)
->  { return -ENODEV; }
-> -static inline const struct iommu_ops *iort_iommu_configure_id(
-> -				      struct device *dev, const u32 *id_in)
-> -{ return NULL; }
-> +static inline int iort_iommu_configure_id(struct device *dev, const u32 *id_in)
-> +{ return -ENODEV; }
->  static inline
->  int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
->  { return 0; }
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index a940be1cf2af..487d1095030d 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -806,23 +806,6 @@ static struct acpi_iort_node *iort_get_msi_resv_iommu(struct device *dev)
->  	return NULL;
->  }
->  
-> -static inline const struct iommu_ops *iort_fwspec_iommu_ops(struct device *dev)
-> -{
-> -	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-> -
-> -	return (fwspec && fwspec->ops) ? fwspec->ops : NULL;
-> -}
-> -
-> -static inline int iort_add_device_replay(struct device *dev)
-> -{
-> -	int err = 0;
-> -
-> -	if (dev->bus && !device_iommu_mapped(dev))
-> -		err = iommu_probe_device(dev);
-> -
-> -	return err;
-> -}
-> -
->  /**
->   * iort_iommu_msi_get_resv_regions - Reserved region driver helper
->   * @dev: Device from iommu_get_resv_regions()
-> @@ -900,18 +883,6 @@ static inline bool iort_iommu_driver_enabled(u8 type)
->  	}
->  }
->  
-> -static int arm_smmu_iort_xlate(struct device *dev, u32 streamid,
-> -			       struct fwnode_handle *fwnode,
-> -			       const struct iommu_ops *ops)
-> -{
-> -	int ret = iommu_fwspec_init(dev, fwnode, ops);
-> -
-> -	if (!ret)
-> -		ret = iommu_fwspec_add_ids(dev, &streamid, 1);
-> -
-> -	return ret;
-> -}
-> -
->  static bool iort_pci_rc_supports_ats(struct acpi_iort_node *node)
->  {
->  	struct acpi_iort_root_complex *pci_rc;
-> @@ -946,7 +917,7 @@ static int iort_iommu_xlate(struct device *dev, struct acpi_iort_node *node,
->  		return iort_iommu_driver_enabled(node->type) ?
->  		       -EPROBE_DEFER : -ENODEV;
->  
-> -	return arm_smmu_iort_xlate(dev, streamid, iort_fwnode, ops);
-> +	return acpi_iommu_fwspec_init(dev, streamid, iort_fwnode, ops);
->  }
->  
->  struct iort_pci_alias_info {
-> @@ -1020,24 +991,13 @@ static int iort_nc_iommu_map_id(struct device *dev,
->   * @dev: device to configure
->   * @id_in: optional input id const value pointer
->   *
-> - * Returns: iommu_ops pointer on configuration success
-> - *          NULL on configuration failure
-> + * Returns: 0 on success, <0 on failure
->   */
-> -const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
-> -						const u32 *id_in)
-> +int iort_iommu_configure_id(struct device *dev, const u32 *id_in)
->  {
->  	struct acpi_iort_node *node;
-> -	const struct iommu_ops *ops;
->  	int err = -ENODEV;
->  
-> -	/*
-> -	 * If we already translated the fwspec there
-> -	 * is nothing left to do, return the iommu_ops.
-> -	 */
-> -	ops = iort_fwspec_iommu_ops(dev);
-> -	if (ops)
-> -		return ops;
-> -
->  	if (dev_is_pci(dev)) {
->  		struct iommu_fwspec *fwspec;
->  		struct pci_bus *bus = to_pci_dev(dev)->bus;
-> @@ -1046,7 +1006,7 @@ const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
->  		node = iort_scan_node(ACPI_IORT_NODE_PCI_ROOT_COMPLEX,
->  				      iort_match_node_callback, &bus->dev);
->  		if (!node)
-> -			return NULL;
-> +			return -ENODEV;
->  
->  		info.node = node;
->  		err = pci_for_each_dma_alias(to_pci_dev(dev),
-> @@ -1059,7 +1019,7 @@ const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
->  		node = iort_scan_node(ACPI_IORT_NODE_NAMED_COMPONENT,
->  				      iort_match_node_callback, dev);
->  		if (!node)
-> -			return NULL;
-> +			return -ENODEV;
->  
->  		err = id_in ? iort_nc_iommu_map_id(dev, node, id_in) :
->  			      iort_nc_iommu_map(dev, node);
-> @@ -1068,32 +1028,14 @@ const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
->  			iort_named_component_init(dev, node);
->  	}
->  
-> -	/*
-> -	 * If we have reason to believe the IOMMU driver missed the initial
-> -	 * add_device callback for dev, replay it to get things in order.
-> -	 */
-> -	if (!err) {
-> -		ops = iort_fwspec_iommu_ops(dev);
-> -		err = iort_add_device_replay(dev);
-> -	}
-> -
-> -	/* Ignore all other errors apart from EPROBE_DEFER */
-> -	if (err == -EPROBE_DEFER) {
-> -		ops = ERR_PTR(err);
-> -	} else if (err) {
-> -		dev_dbg(dev, "Adding to IOMMU failed: %d\n", err);
-> -		ops = NULL;
-> -	}
-> -
-> -	return ops;
-> +	return err;
->  }
->  
->  #else
->  int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
->  { return 0; }
-> -const struct iommu_ops *iort_iommu_configure_id(struct device *dev,
-> -						const u32 *input_id)
-> -{ return NULL; }
-> +int iort_iommu_configure_id(struct device *dev, const u32 *input_id)
-> +{ return -ENODEV; }
->  #endif
->  
->  static int nc_dma_get_range(struct device *dev, u64 *size)
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index ea613df8f913..2a2e690040e9 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -9,6 +9,7 @@
->  #include <linux/kernel.h>
->  #include <linux/acpi.h>
->  #include <linux/acpi_iort.h>
-> +#include <linux/iommu.h>
->  #include <linux/signal.h>
->  #include <linux/kthread.h>
->  #include <linux/dmi.h>
-> @@ -1520,6 +1521,76 @@ int acpi_dma_get_range(struct device *dev, u64 *dma_addr, u64 *offset,
->  	return ret >= 0 ? 0 : ret;
->  }
->  
-> +#ifdef CONFIG_IOMMU_API
-> +int acpi_iommu_fwspec_init(struct device *dev, u32 id,
-> +			   struct fwnode_handle *fwnode,
-> +			   const struct iommu_ops *ops)
-> +{
-> +	int ret = iommu_fwspec_init(dev, fwnode, ops);
-> +
-> +	if (!ret)
-> +		ret = iommu_fwspec_add_ids(dev, &id, 1);
-> +
-> +	return ret;
-> +}
-> +
-> +static inline const struct iommu_ops *acpi_iommu_fwspec_ops(struct device *dev)
-> +{
-> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-> +
-> +	return fwspec ? fwspec->ops : NULL;
-> +}
-> +
-> +static const struct iommu_ops *acpi_iommu_configure_id(struct device *dev,
-> +						       const u32 *id_in)
-> +{
-> +	int err;
-> +	const struct iommu_ops *ops;
-> +
-> +	/*
-> +	 * If we already translated the fwspec there is nothing left to do,
-> +	 * return the iommu_ops.
-> +	 */
-> +	ops = acpi_iommu_fwspec_ops(dev);
-> +	if (ops)
-> +		return ops;
-> +
-> +	err = iort_iommu_configure_id(dev, id_in);
-> +
-> +	/*
-> +	 * If we have reason to believe the IOMMU driver missed the initial
-> +	 * iommu_probe_device() call for dev, replay it to get things in order.
-> +	 */
-> +	if (!err && dev->bus && !device_iommu_mapped(dev))
-> +		err = iommu_probe_device(dev);
-> +
-> +	/* Ignore all other errors apart from EPROBE_DEFER */
-> +	if (err == -EPROBE_DEFER) {
-> +		return ERR_PTR(err);
-> +	} else if (err) {
-> +		dev_dbg(dev, "Adding to IOMMU failed: %d\n", err);
-> +		return NULL;
-> +	}
-> +	return acpi_iommu_fwspec_ops(dev);
-> +}
-> +
-> +#else /* !CONFIG_IOMMU_API */
-> +
-> +int acpi_iommu_fwspec_init(struct device *dev, u32 id,
-> +			   struct fwnode_handle *fwnode,
-> +			   const struct iommu_ops *ops)
-> +{
-> +	return -ENODEV;
-> +}
-> +
-> +static const struct iommu_ops *acpi_iommu_configure_id(struct device *dev,
-> +						       const u32 *id_in)
-> +{
-> +	return NULL;
-> +}
-> +
-> +#endif /* !CONFIG_IOMMU_API */
-> +
->  /**
->   * acpi_dma_configure_id - Set-up DMA configuration for the device.
->   * @dev: The pointer to the device
-> @@ -1539,7 +1610,7 @@ int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
->  
->  	acpi_arch_dma_setup(dev, &dma_addr, &size);
->  
-> -	iommu = iort_iommu_configure_id(dev, input_id);
-> +	iommu = acpi_iommu_configure_id(dev, input_id);
->  	if (PTR_ERR(iommu) == -EPROBE_DEFER)
->  		return -EPROBE_DEFER;
->  
+> A bisect shows that it is indeed commit 42e59982917a which causes boot to
+> fail due to a NULL pointer dereference on my work laptop, where "intel-lp=
+ss"
+> is bound to
+>         00:15.0 Signal processing controller: Intel Corporation Sunrise P=
+oint-LP Serial IO I2C Controller #0 (rev 21)
+> and fails to bind to INT3446:
+>
+> [    6.048087] intel-lpss 0000:00:15.0: enabling device (0000 -> 0002)
+> [    6.050625] idma64 idma64.0: Found Intel integrated DMA 64-bit
+> [    6.109112] intel-lpss 0000:00:15.1: enabling device (0000 -> 0002)
+> [    6.111348] idma64 idma64.1: Found Intel integrated DMA 64-bit
+> [    6.172229] intel-lpss 0000:00:15.2: enabling device (0000 -> 0002)
+> [    6.174353] idma64 idma64.2: Found Intel integrated DMA 64-bit
+> [    6.231865] intel-lpss 0000:00:15.3: enabling device (0000 -> 0002)
+> [    6.233845] idma64 idma64.3: Found Intel integrated DMA 64-bit
 
+> [    6.287492] ACPI Warning: SystemMemory range 0x00000000FE028000-0x0000=
+0000FE0281FF conflicts with OpRegion 0x00000000FE028000-0x00000000FE028207 =
+(\_SB.PCI0.GEXP.BAR0) (20210331/utaddress-204)
+> [    6.287704] ACPI: OSL: Resource conflict; ACPI support missing from dr=
+iver?
+> [    6.289760] intel-lpss: probe of INT3446:00 failed with error -16
+
+Above lines appear due to the following:
+1. In hardware we have an I=C2=B2C bus with GPIO I/O expander (PCA953x
+compatible in all cases I saw so far).
+2. The ACPI table has a "real" driver for that expander written in ASL (sic=
+!).
+3. Due to the above we have I=C2=B2C controller resources and that driver
+in a conflict, because the driver uses I=C2=B2C controller registers
+directly (sic!).
+
+The questions for brainstorming the ideas here are:
+1. Is it possible to blacklist the Device Node from being evaluated /
+parsed based on the ACPI DSDT path (the "real driver", of course,
+doesn't have any other means to be enumerated properly)?
+2. Can we create the ACPI driver in the OS which will take the ACPI
+path as ID for enumeration / instantiation?
+3. Is it possible to hook up on the methods, so we will know what to
+do when a certain method is called (like setting pin direction or so)?
+4. Does above make any sense or we simply mark that hardware as broken
+(i.e. Windoze-only bad desing) and that's it?
+
+> Unfortunately, the patch by Andy Shevchenko (applied on top of Linus' tre=
+e)
+> does not fix the issue. A complete revert, however, does fix the issue, a=
+nd
+> allows my laptop to boot again.
+>
+> In my opinion, it is unfortunate that although it has been known for over=
+ a
+> month that commit 42e59982917a is broken, the bugfix (though probably not
+> far-reaching enough) has not yet progressed upstream.
+
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
