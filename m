@@ -2,168 +2,231 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B61403AFD6D
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jun 2021 08:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DAD13AFE3B
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jun 2021 09:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229828AbhFVGzT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Jun 2021 02:55:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53156 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbhFVGzT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Jun 2021 02:55:19 -0400
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15915C061756
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Jun 2021 23:53:03 -0700 (PDT)
-Received: by mail-pg1-x536.google.com with SMTP id t9so16270923pgn.4
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Jun 2021 23:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=A+0Tg8/ehjkNNlYZ11nZ7l0NXx3B5Abt3YljTUc7YIU=;
-        b=uWmEAgaeRHW4CpBeXjy8FKqCGke5BEp9kO0ZEsSZ8nwqjUF983zd0m1yPQnjszkTSW
-         kh7LcDUJr70ThCHIXmfm6ftXOk3sMiPBK0SUwXtuRxzevg/1cWO+4dC5A7uHF3UtsgFs
-         VLf0x+msmNGcD7Ffqfn5k+x7I3eiz9/kwwWYnV+eRdI9fQosHGWONKtqE3k2kt56RfFX
-         UQnC/woA/zwGy6Oss6cm8cvkhx9RkMqisj6/2KtK1NQIxwVInznALAeDgbVpuQTTi4sf
-         +IXV+er/DCTxt0gsRO+3VfAPD5iYW6y+9ZWQ0St8goS7np2SmkRoVg3IfpeHs1Aiicul
-         GfLA==
+        id S230384AbhFVHso (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Jun 2021 03:48:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:33813 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229844AbhFVHso (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 22 Jun 2021 03:48:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1624347988;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=s3LjnXyq6r2/NZ4srPYVVzflKXYSSWyYedh3TnwCQTw=;
+        b=OcuHfjzMlNuOvDIVGk2tCoyV1RRxAH6xj8VM322gSJaH6iEwPa0DEFplhpHybRgYNPYg0W
+        j2fuIY+N0Q32bnKeqNTzLZNf14MaZIGd8G8vIRhBTNZuI0kFNNPbTYcCCoq+tGCoOQVWRo
+        dMWMd1IYISx+EmGmmzgXT6csU7x0lqA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-314-4jNpwzptMduBLyGVm-EAPg-1; Tue, 22 Jun 2021 03:46:26 -0400
+X-MC-Unique: 4jNpwzptMduBLyGVm-EAPg-1
+Received: by mail-wm1-f69.google.com with SMTP id m6-20020a7bce060000b02901d2a0c361bfso407864wmc.4
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Jun 2021 00:46:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=A+0Tg8/ehjkNNlYZ11nZ7l0NXx3B5Abt3YljTUc7YIU=;
-        b=tallsf5nFfVc4HBtBCFdtKQlqpGGF25n8pNaMPB9LZmmyu9cuhK1PwEMEOKPFxe9Rz
-         k+z9cUDvD3h5yRegSv4+v1Keo8HffPUqBcgxerSjcdIIx73aPEzcs4z1lwo/XvMkJj5G
-         9E7rOYzRsHVJlunQz2aBCKt+sOcikUw9zqZZfKmxAToMcXLwEOgYNixJiuBE3z3CFpoN
-         NmzAC8nlvOFLII3Gwz6WIFvsYhKUc1fHT1bUJvcLyMba1s/r1lD+Sm2IYYoSqOBTGq4e
-         s4faXFV4M+OrhA2mQpIL8rfGwpdXF8KAz5zcukyW5F/ruZr75yLQSprwSkPw1h/7EXdL
-         oTcA==
-X-Gm-Message-State: AOAM532wrG1Et6acgkZVz6/7v60j7TINDO9amJVWawFnXcQxqGN1jbZ1
-        9ez59LXjC6ZOwzLO8xYoqi/ZiA==
-X-Google-Smtp-Source: ABdhPJwTv7IAJoT5FFohk3D27niTo2XcR1hBZCqcYQMKOKAEs1KAKdzTzVz31HlrSO0yKq4m3T1Bpg==
-X-Received: by 2002:a63:4a18:: with SMTP id x24mr2311757pga.303.1624344782512;
-        Mon, 21 Jun 2021 23:53:02 -0700 (PDT)
-Received: from localhost ([136.185.134.182])
-        by smtp.gmail.com with ESMTPSA id d20sm14848939pfn.219.2021.06.21.23.53.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Jun 2021 23:53:02 -0700 (PDT)
-Date:   Tue, 22 Jun 2021 12:22:59 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Qian Cai <quic_qiancai@quicinc.com>
-Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
-        Ionela Voinescu <ionela.voinescu@arm.com>,
-        Ben Segall <bsegall@google.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Will Deacon <will@kernel.org>, linux-pm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency
- invariance
-Message-ID: <20210622065259.nw3e7ajwgzgnlm5e@vireshk-i7>
-References: <cover.1624266901.git.viresh.kumar@linaro.org>
- <09a39f5c-b47b-a931-bf23-dc43229fb2dd@quicinc.com>
+        h=x-gm-message-state:reply-to:subject:to:cc:references:from
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding:content-language;
+        bh=s3LjnXyq6r2/NZ4srPYVVzflKXYSSWyYedh3TnwCQTw=;
+        b=mXXz54Dz+xaksweo2/x9O/bhWrsv1gvWbhvfhfCOsUBGsXFk1HJiuNAgKcEqeCt3f8
+         1fvk/17xA1FhBxzDu+gbHW/DK9GIiTiG4DB81TXCAvWXkZodESuG6wpQ54mB452QzJss
+         oRzrqQESjJ7ADdLabPP95d0uZZ+YQEZA4Qf/06TjPbZ/GgtWKxrJxQbaXas12UFkAV4C
+         pDbevZAL/kU38E9gydNHd9zPL2NdqEJX4Sjk64pQVErrRIcZRJbGc962pQhNriD3BNB1
+         6qkSK15T+ExTeOHqcJHbOGRT9BnTLqawMGKaxu1JHTe8yfeLb1QWgflrd4ShTjSonSyj
+         a8mA==
+X-Gm-Message-State: AOAM533GgmYPSqCLAhJqj7GZtMmSQ/twAv20ZxYQAfFnReTiTJG9PUL7
+        SUMgGOZ2BLipky+BV31x8wU6Y8Abwee82EfN2NMfxS7UsYKbZMj5ypYDQB5nBlihbj6d4M1L2Zp
+        unlWO/afJw/xo6Whnhjzf/g==
+X-Received: by 2002:a1c:4d01:: with SMTP id o1mr3031529wmh.98.1624347985632;
+        Tue, 22 Jun 2021 00:46:25 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzVTZrd+E+UXfTOnAcF9sG4wpKzb71hRRq2GCWLH0ZuH7Xsi2ZJaleDwWLEMxU4CJJmeqU6uQ==
+X-Received: by 2002:a1c:4d01:: with SMTP id o1mr3031507wmh.98.1624347985376;
+        Tue, 22 Jun 2021 00:46:25 -0700 (PDT)
+Received: from [192.168.43.95] ([37.173.9.63])
+        by smtp.gmail.com with ESMTPSA id w2sm17487368wrp.14.2021.06.22.00.46.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Jun 2021 00:46:24 -0700 (PDT)
+Reply-To: eric.auger@redhat.com
+Subject: Re: [PATCH v5 4/5] iommu/dma: Pass address limit rather than size to
+ iommu_setup_dma_ops()
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        rjw@rjwysocki.net, lenb@kernel.org, joro@8bytes.org, mst@redhat.com
+Cc:     will@kernel.org, catalin.marinas@arm.com, baolu.lu@linux.intel.com,
+        dwmw2@infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org,
+        virtualization@lists.linux-foundation.org,
+        linux-arm-kernel@lists.infradead.org, sebastien.boeuf@intel.com,
+        robin.murphy@arm.com, kevin.tian@intel.com,
+        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com
+References: <20210618152059.1194210-1-jean-philippe@linaro.org>
+ <20210618152059.1194210-5-jean-philippe@linaro.org>
+From:   Eric Auger <eric.auger@redhat.com>
+Message-ID: <c773c186-6675-4a78-9512-8d04570ad7e2@redhat.com>
+Date:   Tue, 22 Jun 2021 09:46:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <09a39f5c-b47b-a931-bf23-dc43229fb2dd@quicinc.com>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <20210618152059.1194210-5-jean-philippe@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 21-06-21, 16:48, Qian Cai wrote:
-> Viresh, this series works fine on my quick tests so far.
+Hi Jean,
 
-Thanks for testing.
+On 6/18/21 5:20 PM, Jean-Philippe Brucker wrote:
+> Passing a 64-bit address width to iommu_setup_dma_ops() is valid on
+> virtual platforms, but isn't currently possible. The overflow check in
+> iommu_dma_init_domain() prevents this even when @dma_base isn't 0. Pass
+> a limit address instead of a size, so callers don't have to fake a size
+> to work around the check.
+>
+> The base and limit parameters are being phased out, because:
+> * they are redundant for x86 callers. dma-iommu already reserves the
+>   first page, and the upper limit is already in domain->geometry.
+> * they can now be obtained from dev->dma_range_map on Arm.
+> But removing them on Arm isn't completely straightforward so is left for
+> future work. As an intermediate step, simplify the x86 callers by
+> passing dummy limits.
+>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-> BTW, I
-> noticed some strange things even with the series applied mentioned
-> below when reading acpi_cppc vs cpufreq sysfs. Do you happen to know
-> are those just hardware/firmware issues because Linux just
-> faithfully exported the register values?
+Eric
+> ---
+>  include/linux/dma-iommu.h   |  4 ++--
+>  arch/arm64/mm/dma-mapping.c |  2 +-
+>  drivers/iommu/amd/iommu.c   |  2 +-
+>  drivers/iommu/dma-iommu.c   | 12 ++++++------
+>  drivers/iommu/intel/iommu.c |  5 +----
+>  5 files changed, 11 insertions(+), 14 deletions(-)
+>
+> diff --git a/include/linux/dma-iommu.h b/include/linux/dma-iommu.h
+> index 6e75a2d689b4..758ca4694257 100644
+> --- a/include/linux/dma-iommu.h
+> +++ b/include/linux/dma-iommu.h
+> @@ -19,7 +19,7 @@ int iommu_get_msi_cookie(struct iommu_domain *domain, dma_addr_t base);
+>  void iommu_put_dma_cookie(struct iommu_domain *domain);
+>  
+>  /* Setup call for arch DMA mapping code */
+> -void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 size);
+> +void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 dma_limit);
+>  
+>  /* The DMA API isn't _quite_ the whole story, though... */
+>  /*
+> @@ -50,7 +50,7 @@ struct msi_msg;
+>  struct device;
+>  
+>  static inline void iommu_setup_dma_ops(struct device *dev, u64 dma_base,
+> -		u64 size)
+> +				       u64 dma_limit)
+>  {
+>  }
+>  
+> diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
+> index 4bf1dd3eb041..6719f9efea09 100644
+> --- a/arch/arm64/mm/dma-mapping.c
+> +++ b/arch/arm64/mm/dma-mapping.c
+> @@ -50,7 +50,7 @@ void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+>  
+>  	dev->dma_coherent = coherent;
+>  	if (iommu)
+> -		iommu_setup_dma_ops(dev, dma_base, size);
+> +		iommu_setup_dma_ops(dev, dma_base, dma_base + size - 1);
+>  
+>  #ifdef CONFIG_XEN
+>  	if (xen_swiotlb_detect())
+> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+> index 3ac42bbdefc6..216323fb27ef 100644
+> --- a/drivers/iommu/amd/iommu.c
+> +++ b/drivers/iommu/amd/iommu.c
+> @@ -1713,7 +1713,7 @@ static void amd_iommu_probe_finalize(struct device *dev)
+>  	/* Domains are initialized for this device - have a look what we ended up with */
+>  	domain = iommu_get_domain_for_dev(dev);
+>  	if (domain->type == IOMMU_DOMAIN_DMA)
+> -		iommu_setup_dma_ops(dev, IOVA_START_PFN << PAGE_SHIFT, 0);
+> +		iommu_setup_dma_ops(dev, 0, U64_MAX);
+>  	else
+>  		set_dma_ops(dev, NULL);
+>  }
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 7bcdd1205535..c62e19bed302 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -319,16 +319,16 @@ static bool dev_is_untrusted(struct device *dev)
+>   * iommu_dma_init_domain - Initialise a DMA mapping domain
+>   * @domain: IOMMU domain previously prepared by iommu_get_dma_cookie()
+>   * @base: IOVA at which the mappable address space starts
+> - * @size: Size of IOVA space
+> + * @limit: Last address of the IOVA space
+>   * @dev: Device the domain is being initialised for
+>   *
+> - * @base and @size should be exact multiples of IOMMU page granularity to
+> + * @base and @limit + 1 should be exact multiples of IOMMU page granularity to
+>   * avoid rounding surprises. If necessary, we reserve the page at address 0
+>   * to ensure it is an invalid IOVA. It is safe to reinitialise a domain, but
+>   * any change which could make prior IOVAs invalid will fail.
+>   */
+>  static int iommu_dma_init_domain(struct iommu_domain *domain, dma_addr_t base,
+> -		u64 size, struct device *dev)
+> +				 dma_addr_t limit, struct device *dev)
+>  {
+>  	struct iommu_dma_cookie *cookie = domain->iova_cookie;
+>  	unsigned long order, base_pfn;
+> @@ -346,7 +346,7 @@ static int iommu_dma_init_domain(struct iommu_domain *domain, dma_addr_t base,
+>  	/* Check the domain allows at least some access to the device... */
+>  	if (domain->geometry.force_aperture) {
+>  		if (base > domain->geometry.aperture_end ||
+> -		    base + size <= domain->geometry.aperture_start) {
+> +		    limit < domain->geometry.aperture_start) {
+>  			pr_warn("specified DMA range outside IOMMU capability\n");
+>  			return -EFAULT;
+>  		}
+> @@ -1308,7 +1308,7 @@ static const struct dma_map_ops iommu_dma_ops = {
+>   * The IOMMU core code allocates the default DMA domain, which the underlying
+>   * IOMMU driver needs to support via the dma-iommu layer.
+>   */
+> -void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 size)
+> +void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 dma_limit)
+>  {
+>  	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
+>  
+> @@ -1320,7 +1320,7 @@ void iommu_setup_dma_ops(struct device *dev, u64 dma_base, u64 size)
+>  	 * underlying IOMMU driver needs to support via the dma-iommu layer.
+>  	 */
+>  	if (domain->type == IOMMU_DOMAIN_DMA) {
+> -		if (iommu_dma_init_domain(domain, dma_base, size, dev))
+> +		if (iommu_dma_init_domain(domain, dma_base, dma_limit, dev))
+>  			goto out_err;
+>  		dev->dma_ops = &iommu_dma_ops;
+>  	}
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index be35284a2016..2f7213f0e7a1 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -5165,13 +5165,10 @@ static void intel_iommu_release_device(struct device *dev)
+>  
+>  static void intel_iommu_probe_finalize(struct device *dev)
+>  {
+> -	dma_addr_t base = IOVA_START_PFN << VTD_PAGE_SHIFT;
+>  	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
+> -	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
+>  
+>  	if (domain && domain->type == IOMMU_DOMAIN_DMA)
+> -		iommu_setup_dma_ops(dev, base,
+> -				    __DOMAIN_MAX_ADDR(dmar_domain->gaw) - base);
+> +		iommu_setup_dma_ops(dev, 0, U64_MAX);
+>  	else
+>  		set_dma_ops(dev, NULL);
+>  }
 
-The values are exported by drivers/acpi/cppc_acpi.c I believe and they
-look to be based on simple register reads.
-
-> == Arm64 server Foo ==
-> CPU max MHz:                     3000.0000
-> CPU min MHz:                     1000.0000
-> 
-> /sys/devices/system/cpu/cpu0/acpi_cppc/highest_perf
-> 300
-> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_freq
-> 1000
-> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_nonlinear_perf
-> 200
-> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_perf
-> 100
-> /sys/devices/system/cpu/cpu0/acpi_cppc/nominal_freq <--- should be 3000?
-> 2800
-> /sys/devices/system/cpu/cpu0/acpi_cppc/nominal_perf <--- should be 300?
-> 280
-
-nominal-perf is max perf, and highest-perf is boost-perf. Same goes
-with nominal-freq (i.e. policy->max).
-
-So 280 and 2800 look to be the correct values, 300 and 3000 come with
-boost enabled. Look at the first entry, highest_perf.
-
-> /sys/devices/system/cpu/cpu0/acpi_cppc/reference_perf
-> 100
-> 
-> == Arm64 server Bar ==
-> CPU max MHz:                     3000.0000
-> CPU min MHz:                     375.0000
-> 
-> /sys/devices/system/cpu/cpu0/acpi_cppc/highest_perf <--- should be 3000? There is no cpufreq boost.
-> 3300
-
-This isn't exported by cpufreq driver but acpi, and it just exports
-hardware values of highest_perf (with boost i.e.). cpufreq may or
-may not use this to support boost.
-
-> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_freq <--- don't understand why 0.
-> 0
-
-Because corresponding hardware registers aren't implemented for your
-platform, this is the function that reads these registers:
-
-int cppc_get_perf_caps(int cpunum, struct cppc_perf_caps *perf_caps)
-{
-        ...
-
-	/* Read optional lowest and nominal frequencies if present */
-	if (CPC_SUPPORTED(low_freq_reg))
-		cpc_read(cpunum, low_freq_reg, &low_f);
-
-	if (CPC_SUPPORTED(nom_freq_reg))
-		cpc_read(cpunum, nom_freq_reg, &nom_f);
-
-	perf_caps->lowest_freq = low_f;
-	perf_caps->nominal_freq = nom_f;
-}
-
-> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_nonlinear_perf
-> 375
-> /sys/devices/system/cpu/cpu0/acpi_cppc/lowest_perf
-> 375
-> /sys/devices/system/cpu/cpu0/acpi_cppc/nominal_freq <--- ditto
-> 0
-> /sys/devices/system/cpu/cpu0/acpi_cppc/nominal_perf
-> 3000
-> /sys/devices/system/cpu/cpu0/acpi_cppc/reference_perf
-> 100
-
--- 
-viresh
