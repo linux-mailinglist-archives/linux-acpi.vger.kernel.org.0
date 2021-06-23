@@ -2,91 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EBC63B1EBD
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Jun 2021 18:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA90A3B1F64
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Jun 2021 19:26:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229726AbhFWQfL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Jun 2021 12:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59390 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbhFWQfL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Jun 2021 12:35:11 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E38E0C061756
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Jun 2021 09:32:52 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id g4so1836541pjk.0
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Jun 2021 09:32:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=8WDPpTsAABrndh4h0TsCOGWmpZse3T18rg9azPYg3VA=;
-        b=WinEuGU6UXINDfoxPFGTaWgSMGV0tcRVCvkuEyuNkeI9KVYKUxrpZLsDbNJToa9yWm
-         FtLAuvgRx4S/ZAgM0b7Ww9PGfPhuSa/giWEuBb3tHZDfDhRjXi+sUWyFRdNvm3dAQ55B
-         wdpCCKCsv2LHSWC6HkWvcp3rbBK4IPKztUgc8=
+        id S229660AbhFWR3Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Jun 2021 13:29:16 -0400
+Received: from mail-ot1-f49.google.com ([209.85.210.49]:36711 "EHLO
+        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229523AbhFWR3Q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Jun 2021 13:29:16 -0400
+Received: by mail-ot1-f49.google.com with SMTP id h24-20020a9d64180000b029036edcf8f9a6so2710235otl.3;
+        Wed, 23 Jun 2021 10:26:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=8WDPpTsAABrndh4h0TsCOGWmpZse3T18rg9azPYg3VA=;
-        b=UWsf3k2SG+8oR5ZCY5BhS2w5Ji/eA6AMxO74VEJ95q7vkUDCt5dWdtMXTw7NqGij7s
-         VB9zYQZvW9c2UwtsMQb9GaP9i89DD7WtzxInNX7FOsL0Y3OJ4RQGpbALCFUHTHsuEPMg
-         g2doyBVRSH/v83WuYd30G9Bg5K3YvM6RQoMuWvs3cyw/0rQukJ3IbOmGvwBBCAxka1cu
-         3HpQw4JBlNR5jtHJ1VX0FxlgM7/KTzuBtPI6uhQYMVtEsyuuDtTQ1cgDGuLJSLtDdQS5
-         JCDAWR0KzcjG909v0UKzx/GEDEa6kzOke8+zU5VFLfcVbg1x1grsovAd0hY6oRBjmcCc
-         +zNg==
-X-Gm-Message-State: AOAM5301OQVUW0mIqFavi5ayd2n3o6ksDnVNj/FOspRuE2HjLcik6YrL
-        90QznMMVZxscJPGs0avJqA1joQ==
-X-Google-Smtp-Source: ABdhPJwOpKqsq7WmeQ7TZPAsUZakU8c0IX85QcR9YzJFRPAfyHuRBhtEbEYzYtvUUJnnCHXBx3hDiw==
-X-Received: by 2002:a17:90a:de84:: with SMTP id n4mr6082030pjv.62.1624465972559;
-        Wed, 23 Jun 2021 09:32:52 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id z23sm175748pjn.2.2021.06.23.09.32.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jun 2021 09:32:52 -0700 (PDT)
-Date:   Wed, 23 Jun 2021 09:32:51 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        clang-built-linux@googlegroups.com
-Subject: Re: [PATCH 2/2] ACPI: bgrt: Use sysfs_emit
-Message-ID: <202106230932.96179173E@keescook>
-References: <20210623013802.1904951-1-nathan@kernel.org>
- <20210623013802.1904951-2-nathan@kernel.org>
- <202106222250.7BD80A12FF@keescook>
- <a155e3ee-69aa-408d-208b-06144cf6cf8f@kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2hySmmm64dClZ27jhI5Y3Yqw9/VnJejZB+aX0WgljZo=;
+        b=frIz+liIfQdvSSdOuLOaIF3gc61MrkMLQS84L1I/AOBMTZnYJ8kLbeALoFzZVkP4Tk
+         340bEbAEyGsM7hlYCIK8c6r8hzjADf9Do++p8FlILKjw4UHQxUyEnw2+nCYKaTOH16Hw
+         K8mKP4guTUXdIpQKVuNjesyemxOhIIQUcFQtWfoEsq4VSOz2bpLPzIjJqJ64QmHvapZb
+         PZgjsDFV/A67Hkv0JRspLqmE5MV/bvtYfTPv8wbMqQW8okB6xlh4dpqJ4gk1NFqCIF5F
+         fFSHlDOGnG6jtK9WNNjRVkDMS5kyax5IB30DvmngDxhZ2Pd+hC4Ih1jnz/B6Hu054kDo
+         NHhA==
+X-Gm-Message-State: AOAM531roeO88OXGJYZr7RzQZxNeLXzkQJ6zoRZey5YK3vpV4nm37K4S
+        pncFjVfwibdrATzvUZxebo0kn2rx0nHXdyeS8is=
+X-Google-Smtp-Source: ABdhPJzkF7/upEQ0DXTViC2+CRwHDgP1sncfDiZNpUaMQ9+qPTqxDk54Cn8doVYTp3AChJatHfu6kUXRf/O6y//YYOo=
+X-Received: by 2002:a9d:674b:: with SMTP id w11mr893919otm.260.1624469218068;
+ Wed, 23 Jun 2021 10:26:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a155e3ee-69aa-408d-208b-06144cf6cf8f@kernel.org>
+References: <20210623131421.15159-1-heikki.krogerus@linux.intel.com>
+In-Reply-To: <20210623131421.15159-1-heikki.krogerus@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 23 Jun 2021 19:26:46 +0200
+Message-ID: <CAJZ5v0hEj5e_4RwfCZxnV+zpw92YyYV55Qu6iheVkjrUYorXkg@mail.gmail.com>
+Subject: Re: [PATCH] software node: Handle software node injection to an
+ existing device properly
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 23, 2021 at 09:28:55AM -0700, Nathan Chancellor wrote:
-> On 6/22/2021 10:51 PM, Kees Cook wrote:
-> > On Tue, Jun 22, 2021 at 06:38:02PM -0700, Nathan Chancellor wrote:
-> > > sysfs_emit is preferred to snprintf for emitting values after
-> > > commit 2efc459d06f1 ("sysfs: Add sysfs_emit and sysfs_emit_at to format
-> > > sysfs output").
-> > > 
-> > > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > 
-> > Perhaps just squash this into patch 1? Looks good otherwise!
-> > 
-> 
-> I thought about it but sysfs_emit is a relatively new API and the previous
-> change may want to be backported but I do not have a strong opinion so I can
-> squash it if Rafael or Len feel strongly :)
+On Wed, Jun 23, 2021 at 3:14 PM Heikki Krogerus
+<heikki.krogerus@linux.intel.com> wrote:
+>
+> The function software_node_notify() - the function that creates
+> and removes the symlinks between the node and the device - was
+> called unconditionally in device_add_software_node() and
+> device_remove_software_node(), but it needs to be called in
+> those functions only in the special case where the node is
+> added to a device that has already been registered.
+>
+> This fixes NULL pointer dereference that happens if
+> device_remove_software_node() is used with device that was
+> never registered.
+>
+> Fixes: b622b24519f5 ("software node: Allow node addition to already existing device")
+> Reported-and-tested-by: Dominik Brodowski <linux@dominikbrodowski.net>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-Fair enough. :) I figured since CFI is even newer than sysfs_emit(), it
-didn't make sense to backport. Regardless:
+Applied, thanks!
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+It may not make it into 5.13 though due to the timing.
 
--- 
-Kees Cook
+> ---
+>  drivers/base/swnode.c | 16 ++++++++++++----
+>  1 file changed, 12 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index 3cc11b813f28c..d1f1a82401207 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -1045,7 +1045,15 @@ int device_add_software_node(struct device *dev, const struct software_node *nod
+>         }
+>
+>         set_secondary_fwnode(dev, &swnode->fwnode);
+> -       software_node_notify(dev, KOBJ_ADD);
+> +
+> +       /*
+> +        * If the device has been fully registered by the time this function is
+> +        * called, software_node_notify() must be called separately so that the
+> +        * symlinks get created and the reference count of the node is kept in
+> +        * balance.
+> +        */
+> +       if (device_is_registered(dev))
+> +               software_node_notify(dev, KOBJ_ADD);
+>
+>         return 0;
+>  }
+> @@ -1065,7 +1073,8 @@ void device_remove_software_node(struct device *dev)
+>         if (!swnode)
+>                 return;
+>
+> -       software_node_notify(dev, KOBJ_REMOVE);
+> +       if (device_is_registered(dev))
+> +               software_node_notify(dev, KOBJ_REMOVE);
+>         set_secondary_fwnode(dev, NULL);
+>         kobject_put(&swnode->kobj);
+>  }
+> @@ -1119,8 +1128,7 @@ int software_node_notify(struct device *dev, unsigned long action)
+>
+>         switch (action) {
+>         case KOBJ_ADD:
+> -               ret = sysfs_create_link_nowarn(&dev->kobj, &swnode->kobj,
+> -                                              "software_node");
+> +               ret = sysfs_create_link(&dev->kobj, &swnode->kobj, "software_node");
+>                 if (ret)
+>                         break;
+>
+> --
+> 2.30.2
+>
