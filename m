@@ -2,168 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE3593B0F8C
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jun 2021 23:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 695353B1164
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Jun 2021 03:38:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229501AbhFVVmB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Jun 2021 17:42:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59702 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230102AbhFVVmA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Jun 2021 17:42:00 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2B82C061574;
-        Tue, 22 Jun 2021 14:39:43 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id y14so6740579pgs.12;
-        Tue, 22 Jun 2021 14:39:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=vf1QqRY1JZECqUtWVK03lwMiK0KNaFZdl1pyWINOrhI=;
-        b=W/RV2iMnTS0ylpmZRCnwjRo5o67Qkz7coNidavtUhvO9yVsyrcobEjerT100lyTC/n
-         8Z4EWoF415y7KiQ+TMeh3KJ2QVdAlripbqNJmpf9E0snFiyGejGnzhKHLDjom7TFgDSi
-         GGPin7ybTDVk9Sx21jvP8J2yjz7+NDM4/y3PMtmcwzL6O0P8YAUT89ZqUmO8oQ6vQ2v8
-         PD2kGS/O8dhxMwzvBkJtfNYmu7kOB3JLknIlpIwDyf2K+xFvky95RbLcS0DlXdb89fyq
-         3na+Z9zDKy4CUSN3YKp4VieLCufl39knOvd//4et2XKrEA+5hyEL85l2g2yESfQlmYPS
-         tEBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=vf1QqRY1JZECqUtWVK03lwMiK0KNaFZdl1pyWINOrhI=;
-        b=eUi0s62qODSIFloAhlJWucOkZM5/j+rb7X/9Ca6EFcUG0Ilen4F/t/p6YpeJyV4ay7
-         iV0I2T9cEP43+EtikVnRy3yl8YOg3G+4JhfrPS/hRh9zIHroMR1BQ8e1Nbh33EWtzVRA
-         suOj0OhWLVqqboRbZZXUYLCwWEgxZRbKX7JKSsJGFf1Zsa9PzEBZRiCnDsh4mMISPx/h
-         lSA12VmUP+VRpAAcimyIBhVussKyyG3SPwTgf4XqI5Av8Im6cOcTIoh7tziMOP+r3CI5
-         FtxcehHGAL+Ua/lryrKZcREciXCYpHxGKIFupyHdajjqg63FK9x8PvmozC+b/0Gvisqk
-         R7mA==
-X-Gm-Message-State: AOAM5311wqm5MuAK5VyJbVS9kE5rhXC13ouuDXhG07OIp1sp6msDMjEK
-        NFyw3ah8UAP72zx5zSHvOmw=
-X-Google-Smtp-Source: ABdhPJwZy39F3LlgQBU5rUiN0mtsiLZpfYinKyCjSORRVuKUHK+MddVOeY3NBJJtrbrk1d0OXP+LMg==
-X-Received: by 2002:a62:5444:0:b029:2e9:c69d:dc64 with SMTP id i65-20020a6254440000b02902e9c69ddc64mr5588398pfb.32.1624397983037;
-        Tue, 22 Jun 2021 14:39:43 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:b7e7:569c:6adc:f5e8])
-        by smtp.gmail.com with ESMTPSA id a25sm254014pff.54.2021.06.22.14.39.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jun 2021 14:39:42 -0700 (PDT)
-Date:   Tue, 22 Jun 2021 14:39:39 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ACPI: PM: postpone bringing devices to D0 unless we need
- them
-Message-ID: <YNJYm34h3Z9yfm+k@google.com>
+        id S229794AbhFWBlL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Jun 2021 21:41:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36306 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229751AbhFWBlL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 22 Jun 2021 21:41:11 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2F2CA610A0;
+        Wed, 23 Jun 2021 01:38:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624412334;
+        bh=tYMcg0A6FJf1k3FBz4ypXl/o/qa0iWWfHJFijI/1IVw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=uIr9F5Lyaoq60Bqi+omXqpIj5pbfw2wbaVSYCUmslV6JcQnd6y+BfiDUG/EgT9bHi
+         pc/P+mbrKTmojx+UUZgptzALVoTrs2AE14tyf7shwPFvU9/l17ozqB4a+lUKWRzXhB
+         VqNOoOVzvxT1icBNst3mWou4IvfGGMrjleWqEIc2SeQdOkgyhdDIPC6dzWZdwb7hQg
+         LgdVvR3XKPWlkVKL1dA2g01PC6/AYopHBQoaiwp50TCGQ151FhHNuADgaDXwXFiVYY
+         FK/UloIOC0X4XVMRCppak2ieyvadK5Y2ahOmfuv3wSouEYa5L+plULA0IHaiI+G1pG
+         YZadOlnW3ecYQ==
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Kees Cook <keescook@chromium.org>,
+        clang-built-linux@googlegroups.com,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 1/2] ACPI: bgrt: Fix CFI violation
+Date:   Tue, 22 Jun 2021 18:38:01 -0700
+Message-Id: <20210623013802.1904951-1-nathan@kernel.org>
+X-Mailer: git-send-email 2.32.0.93.g670b81a890
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-Patchwork-Bot: notify
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently ACPI power domain brings devices into D0 state in the "resume
-early" phase. Normally this does not cause any issues, as powering up
-happens quickly. However there are peripherals that have certain timing
-requirements for powering on, for example some models of Elan
-touchscreens need 300msec after powering up/releasing reset line before
-they can accept commands from the host. Such devices will dominate
-the time spent in early resume phase and cause increase in overall
-resume time as we wait for early resume to complete before we can
-proceed to the normal resume stage.
+clang's Control Flow Integrity requires that every indirect call has a
+valid target, which is based on the type of the function pointer. The
+*_show() functions in this file are written as if they will be called
+from dev_attr_show(); however, they will be called from
+sysfs_kf_seq_show() because the files were created by
+sysfs_create_group() and the sysfs ops are based on kobj_sysfs_ops
+because of kobject_add_and_create(). Because the *_show() functions do
+not match the type of the show() member in struct kobj_attribute, there
+is a CFI violation.
 
-There are ways for a driver to indicate that it can tolerate device
-being in the low power mode and that it knows how to power the device
-back up when resuming, bit that requires changes to individual drivers
-that may not really care about details of ACPI controlled power
-management.
+$ cat /sys/firmware/acpi/bgrt/{status,type,version,{x,y}offset}}
+1
+0
+1
+522
+307
 
-This change attempts to solve this issue at ACPI power domain level, by
-postponing powering up device until we get to the normal resume stage,
-unless there is early resume handler defined for the device, or device
-does not declare any resume handlers, in which case we continue powering
-up such devices early. This allows us to shave off several hundred
-milliseconds of resume time on affected systems.
+$ dmesg | grep "CFI failure"
+[  267.761825] CFI failure (target: type_show.d5e1ad21498a5fd14edbc5c320906598.cfi_jt+0x0/0x8):
+[  267.762246] CFI failure (target: xoffset_show.d5e1ad21498a5fd14edbc5c320906598.cfi_jt+0x0/0x8):
+[  267.762584] CFI failure (target: status_show.d5e1ad21498a5fd14edbc5c320906598.cfi_jt+0x0/0x8):
+[  267.762973] CFI failure (target: yoffset_show.d5e1ad21498a5fd14edbc5c320906598.cfi_jt+0x0/0x8):
+[  267.763330] CFI failure (target: version_show.d5e1ad21498a5fd14edbc5c320906598.cfi_jt+0x0/0x8):
 
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Convert these functions to the type of the show() member in struct
+kobj_attribute so that there is no more CFI violation. Because these
+functions are all so similar, combine them into a macro.
+
+Fixes: d1ff4b1cdbab ("ACPI: Add support for exposing BGRT data")
+Link: https://github.com/ClangBuiltLinux/linux/issues/1406
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
+ drivers/acpi/bgrt.c | 57 ++++++++++++++-------------------------------
+ 1 file changed, 18 insertions(+), 39 deletions(-)
 
-v2:
-
-- do not call acpi_device_wakeup_disable() in early resume when
-  we postponing transition to D0, do it all in normal resume phase
-  (Rafael's feedback)
-
-- reduce patch noise in acpi_subsys_resume_early() per Rafael's
-  comments
-
- drivers/acpi/device_pm.c | 32 +++++++++++++++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-index 096153761ebc..8afa66bdb3ce 100644
---- a/drivers/acpi/device_pm.c
-+++ b/drivers/acpi/device_pm.c
-@@ -1131,19 +1131,48 @@ static int acpi_subsys_resume_noirq(struct device *dev)
-  *
-  * Use ACPI to put the given device into the full-power state and carry out the
-  * generic early resume procedure for it during system transition into the
-- * working state.
-+ * working state, but only do that if device either defines early resume
-+ * handler, or does not define power operations at all. Otherwise powering up
-+ * of the device is postponed to the normal resume phase.
-  */
- static int acpi_subsys_resume_early(struct device *dev)
- {
-+	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
- 	int ret;
+diff --git a/drivers/acpi/bgrt.c b/drivers/acpi/bgrt.c
+index 19bb7f870204..e0d14017706e 100644
+--- a/drivers/acpi/bgrt.c
++++ b/drivers/acpi/bgrt.c
+@@ -15,40 +15,19 @@
+ static void *bgrt_image;
+ static struct kobject *bgrt_kobj;
  
- 	if (dev_pm_skip_resume(dev))
- 		return 0;
+-static ssize_t version_show(struct device *dev,
+-			    struct device_attribute *attr, char *buf)
+-{
+-	return snprintf(buf, PAGE_SIZE, "%d\n", bgrt_tab.version);
+-}
+-static DEVICE_ATTR_RO(version);
+-
+-static ssize_t status_show(struct device *dev,
+-			   struct device_attribute *attr, char *buf)
+-{
+-	return snprintf(buf, PAGE_SIZE, "%d\n", bgrt_tab.status);
+-}
+-static DEVICE_ATTR_RO(status);
+-
+-static ssize_t type_show(struct device *dev,
+-			 struct device_attribute *attr, char *buf)
+-{
+-	return snprintf(buf, PAGE_SIZE, "%d\n", bgrt_tab.image_type);
+-}
+-static DEVICE_ATTR_RO(type);
+-
+-static ssize_t xoffset_show(struct device *dev,
+-			    struct device_attribute *attr, char *buf)
+-{
+-	return snprintf(buf, PAGE_SIZE, "%d\n", bgrt_tab.image_offset_x);
+-}
+-static DEVICE_ATTR_RO(xoffset);
+-
+-static ssize_t yoffset_show(struct device *dev,
+-			    struct device_attribute *attr, char *buf)
+-{
+-	return snprintf(buf, PAGE_SIZE, "%d\n", bgrt_tab.image_offset_y);
+-}
+-static DEVICE_ATTR_RO(yoffset);
++#define BGRT_SHOW(_name, _member) \
++	static ssize_t _name##_show(struct kobject *kobj,			\
++				    struct kobj_attribute *attr, char *buf)	\
++	{									\
++		return snprintf(buf, PAGE_SIZE, "%d\n", bgrt_tab._member);	\
++	}									\
++	struct kobj_attribute bgrt_attr_##_name = __ATTR_RO(_name)
++
++BGRT_SHOW(version, version);
++BGRT_SHOW(status, status);
++BGRT_SHOW(type, image_type);
++BGRT_SHOW(xoffset, image_offset_x);
++BGRT_SHOW(yoffset, image_offset_y);
  
-+	if (pm && !pm->resume_early) {
-+		dev_dbg(dev, "postponing D0 transition to normal resume stage\n");
-+		return 0;
-+	}
-+
- 	ret = acpi_dev_resume(dev);
- 	return ret ? ret : pm_generic_resume_early(dev);
- }
+ static ssize_t image_read(struct file *file, struct kobject *kobj,
+ 	       struct bin_attribute *attr, char *buf, loff_t off, size_t count)
+@@ -60,11 +39,11 @@ static ssize_t image_read(struct file *file, struct kobject *kobj,
+ static BIN_ATTR_RO(image, 0);	/* size gets filled in later */
  
-+/**
-+ * acpi_subsys_resume - Resume device using ACPI.
-+ * @dev: Device to Resume.
-+ *
-+ * Use ACPI to put the given device into the full-power state if it has not been
-+ * powered up during early resume phase, and carry out the generic resume
-+ * procedure for it during system transition into the working state.
-+ */
-+static int acpi_subsys_resume(struct device *dev)
-+{
-+	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
-+	int ret = 0;
-+
-+	if (!dev_pm_skip_resume(dev) && pm && !pm->resume_early) {
-+		dev_dbg(dev, "executing postponed D0 transition\n");
-+		ret = acpi_dev_resume(dev);
-+	}
-+
-+	return ret ? ret : pm_generic_resume(dev);
-+}
-+
- /**
-  * acpi_subsys_freeze - Run the device driver's freeze callback.
-  * @dev: Device to handle.
-@@ -1236,6 +1265,7 @@ static struct dev_pm_domain acpi_general_pm_domain = {
- 		.prepare = acpi_subsys_prepare,
- 		.complete = acpi_subsys_complete,
- 		.suspend = acpi_subsys_suspend,
-+		.resume = acpi_subsys_resume,
- 		.suspend_late = acpi_subsys_suspend_late,
- 		.suspend_noirq = acpi_subsys_suspend_noirq,
- 		.resume_noirq = acpi_subsys_resume_noirq,
+ static struct attribute *bgrt_attributes[] = {
+-	&dev_attr_version.attr,
+-	&dev_attr_status.attr,
+-	&dev_attr_type.attr,
+-	&dev_attr_xoffset.attr,
+-	&dev_attr_yoffset.attr,
++	&bgrt_attr_version.attr,
++	&bgrt_attr_status.attr,
++	&bgrt_attr_type.attr,
++	&bgrt_attr_xoffset.attr,
++	&bgrt_attr_yoffset.attr,
+ 	NULL,
+ };
+ 
+
+base-commit: a51c80057a887e0f24bd8303b0791a130ff04121
 -- 
-2.32.0.288.g62a8d224e6-goog
+2.32.0.93.g670b81a890
 
-
--- 
-Dmitry
