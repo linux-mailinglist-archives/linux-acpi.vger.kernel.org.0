@@ -2,71 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F20E3B1168
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Jun 2021 03:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C050E3B1299
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Jun 2021 06:16:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230157AbhFWBlP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Jun 2021 21:41:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36420 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229751AbhFWBlO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 22 Jun 2021 21:41:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4A7D76137D;
-        Wed, 23 Jun 2021 01:38:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624412338;
-        bh=GPF0WU0fX1LOCzKrpyTOeYxkBOMEHDtAKOkeYmjfo8E=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A1YI5HnYTyeZXNeF9zX3FAqL/vQJN7eiCcEDBH9KGqUjJxO+WbJpvD7fT8vesUzCX
-         xbKr9ms5/f/ydCqnGR+Yv7XwGyiOymt61xUvbWkqzDYBhz3vs5eA+Rcg64rlptTJ1z
-         422vq7MHqXonOZMZXS2K1ijVwAtJt9N0zwaHMvCZXsemu9xZR3+fFti35SczbsBVL7
-         tKU2knxojUf9YNZwRGiQXjPQ7QPsavjeBqT92vjU3Wrz63OghvZFsGst2+LnXBb+OO
-         1vTc9kwT9E/YMajGshwOSNw0s8ED5V8TMJ8Tb3/GT9eC15DnBFzfc34BAEVcIRUxoB
-         WhgKdoIaNMN2A==
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        clang-built-linux@googlegroups.com,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 2/2] ACPI: bgrt: Use sysfs_emit
-Date:   Tue, 22 Jun 2021 18:38:02 -0700
-Message-Id: <20210623013802.1904951-2-nathan@kernel.org>
-X-Mailer: git-send-email 2.32.0.93.g670b81a890
-In-Reply-To: <20210623013802.1904951-1-nathan@kernel.org>
-References: <20210623013802.1904951-1-nathan@kernel.org>
+        id S229726AbhFWESf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Jun 2021 00:18:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34126 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229665AbhFWESe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Jun 2021 00:18:34 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8CE6C061756
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Jun 2021 21:16:16 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id i6so1308755pfq.1
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Jun 2021 21:16:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=GM/KfkvNyYfCV4WlRZzF0c8FG8z4yOZdcLnqrydTOJA=;
+        b=hUOg6lAq82C03eqNi/vyOwjZkWZuutjeTFb1It6ihSVgoGU/iaMzRBFoaX0iI3PsyE
+         uoILsXU98tHexmBNrNY6kDyhEfKO44slJMO4ZU2Nr5f2eRrIuHdcFwAAOqmmfNJkLJcr
+         /HE6YCN8zgAufwybqWCg4I2Pg+J166vId5x4a8J1lNKOCvM8gZcz+tJwWBajy+hms9M7
+         +D5+ZiGNBlFV0dWcjb3xhqNwA9R4YRt82s5QW6RsZxhKwC6/BoRmMkcDMYTVQ3/F2Vyg
+         CgwUXfMkUM3Q7WpH+jxmvVE5j2qpEAeKeqXjwE85NORwM8uhpkg0QItlPImu1sks6roF
+         JWmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=GM/KfkvNyYfCV4WlRZzF0c8FG8z4yOZdcLnqrydTOJA=;
+        b=Md+WNq5fc+DWdIHQIWO7fP4bAaYBRTX2lcoxtkNv1Bb2kNIZBlYZCoXMV1FJEN6guS
+         qY20adyRFFK9RpD+uT1bwnqcBufRPbwWgXKZt9huz5gp0PufdbF5Um8sQzk900oZsdZw
+         gqM8X6JeknNFcI+e6J8IChWdZpuOpHC7yYgQdQTLsar7KbgSKmtWMb2nzrf4qt/I+BFS
+         3cUiZ5xL0VrjFRaEzWjX4AJyLYYKi2ieXdtUME5M3d2fiUf9wGgvBT5P1x+LrMHJHrWO
+         tBovhy5r8PwnCyXdX1EbTs4RLqLW4OGvAyQHFqAhDN1b6oowaTh4TmgHqMT2mC0DU1b4
+         GDcQ==
+X-Gm-Message-State: AOAM532CadbzRer91bGKjfaLlbvm7N7MFEm2d3KNfdqFOm3ta1HZepMo
+        F5xpslNmVPSvYaa3RdNPMWZfPA==
+X-Google-Smtp-Source: ABdhPJylDHdym8LIvJOiroKGSEQ/OHsrjmNj1kb8o+oVjkE3RFAy6yQR+kFJv9FARzOtbYTUpgmljA==
+X-Received: by 2002:a63:4b52:: with SMTP id k18mr1967901pgl.190.1624421775966;
+        Tue, 22 Jun 2021 21:16:15 -0700 (PDT)
+Received: from localhost ([136.185.134.182])
+        by smtp.gmail.com with ESMTPSA id d127sm733385pfc.50.2021.06.22.21.16.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jun 2021 21:16:15 -0700 (PDT)
+Date:   Wed, 23 Jun 2021 09:46:13 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Qian Cai <quic_qiancai@quicinc.com>
+Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
+        Ionela Voinescu <ionela.voinescu@arm.com>,
+        Ben Segall <bsegall@google.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Mel Gorman <mgorman@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Will Deacon <will@kernel.org>, linux-pm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency
+ invariance
+Message-ID: <20210623041613.v2lo3nidpgw37abl@vireshk-i7>
+References: <cover.1624266901.git.viresh.kumar@linaro.org>
+ <09a39f5c-b47b-a931-bf23-dc43229fb2dd@quicinc.com>
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <09a39f5c-b47b-a931-bf23-dc43229fb2dd@quicinc.com>
+User-Agent: NeoMutt/20180716-391-311a52
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-sysfs_emit is preferred to snprintf for emitting values after
-commit 2efc459d06f1 ("sysfs: Add sysfs_emit and sysfs_emit_at to format
-sysfs output").
+On 21-06-21, 16:48, Qian Cai wrote:
+> 
+> 
+> On 6/21/2021 5:19 AM, Viresh Kumar wrote:
+> > CPPC cpufreq driver is used for ARM servers and this patch series tries to
+> > provide counter-based frequency invariance support for them in the absence for
+> > architecture specific counters (like AMUs).
+> 
+> Viresh, this series works fine on my quick tests so far.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- drivers/acpi/bgrt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Do you want me to add your Tested-by for the series ?
 
-diff --git a/drivers/acpi/bgrt.c b/drivers/acpi/bgrt.c
-index e0d14017706e..02d208732f9a 100644
---- a/drivers/acpi/bgrt.c
-+++ b/drivers/acpi/bgrt.c
-@@ -19,7 +19,7 @@ static struct kobject *bgrt_kobj;
- 	static ssize_t _name##_show(struct kobject *kobj,			\
- 				    struct kobj_attribute *attr, char *buf)	\
- 	{									\
--		return snprintf(buf, PAGE_SIZE, "%d\n", bgrt_tab._member);	\
-+		return sysfs_emit(buf, "%d\n", bgrt_tab._member);		\
- 	}									\
- 	struct kobj_attribute bgrt_attr_##_name = __ATTR_RO(_name)
- 
 -- 
-2.32.0.93.g670b81a890
-
+viresh
