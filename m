@@ -2,159 +2,139 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 748463B1F9F
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Jun 2021 19:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15C923B1FE3
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Jun 2021 19:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbhFWRjY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Jun 2021 13:39:24 -0400
-Received: from mail-oo1-f43.google.com ([209.85.161.43]:42508 "EHLO
-        mail-oo1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbhFWRjY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Jun 2021 13:39:24 -0400
-Received: by mail-oo1-f43.google.com with SMTP id n20-20020a4abd140000b029024b43f59314so912586oop.9;
-        Wed, 23 Jun 2021 10:37:06 -0700 (PDT)
+        id S229882AbhFWRzX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Jun 2021 13:55:23 -0400
+Received: from mail-oi1-f173.google.com ([209.85.167.173]:34647 "EHLO
+        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229660AbhFWRzW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Jun 2021 13:55:22 -0400
+Received: by mail-oi1-f173.google.com with SMTP id u11so4272040oiv.1;
+        Wed, 23 Jun 2021 10:53:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3melYO0wZCMRg7XHkx/hptxaOoEYV4eau0N+U+gvijA=;
-        b=m5SZMR7jEi3cKnKd9OovfhjBO0Ab6lteNtTGGA/OZ/zCps1yvEc2F+odrZ1h1sBAxn
-         dEDYFlWxqhcNeVDT4WL742HhWKgQknOew249oNVZiR0YDdCxpqPYe3YDKM1fzrHokHDG
-         zq5A8wCsR9PUDfxu9kH92aXUoccjMVlnTs93LAsFQ576caneVXjGlcma+poUblZjR7go
-         9Gi1aUhZPdSO58vSsVCNYqG1hYLY4OZMjYxi5ehOSS4UMJ3kIcuntFUW8Y5ejcy32nug
-         0mWSXHlGM5eSzqL4Y9YQZQu52bgx+KJLmcnnD1t8v5x8hLvnBS2TLgIzPxbNndnEVJHI
-         0wvA==
-X-Gm-Message-State: AOAM532nEXafg07g97oN9Oia8V+JIK/VEBUTauPQ1Jjveqenw+wa4+Fh
-        /xTFRGnR88a/t3mQFsYbU/yNnpKNp3hGIL64SOA=
-X-Google-Smtp-Source: ABdhPJyy84IZQYogTvfFfev6mmMHPVE7Tcr8qSTbweBXX1S44/guPsvT4MVoyUyWoGtLg+sCwk9h/PDS6j3vS4K29FY=
-X-Received: by 2002:a4a:5285:: with SMTP id d127mr805018oob.2.1624469825723;
- Wed, 23 Jun 2021 10:37:05 -0700 (PDT)
+        bh=kKQr82HDDUwFX7W6f2RL9f2u87FR6WdUapSEsXW/DEs=;
+        b=KeWdipt25KXMRkrgo4efs0m9yMPVNZbI6kOvMS85qbcJhDraziteoKg5tlEkN8OF5N
+         9649HlVKd7zbigK7hKtTXjlaqxEmqmP6XkV647OO4t0zW7zRzRlV5sumEMMTE9Jvw6Y9
+         crikD4nj6Q39tW9jUmnU/dutD5Mbz7pJwAwTpwVdLyjl2RCfKog8MuWFF5z2uHRsX9Lp
+         R/xtM8Pd/4lCEaoot4OEqBY0sqmnPqn3Q9AQJu52lghn+kzFn736/tf+7wQYuy/ukGGD
+         9atzfjU0ayBNS+QrhkKK2vBVETwxhMrhUqLfg8pTfA4m/DWY5/41KTsyP0FQL9K5C0Xh
+         p8xA==
+X-Gm-Message-State: AOAM5319OsK+tjd0Cd71ioDXsUAvSDyOwzfdgPRsoyokA92Fp/OBg+hc
+        zZXtolmgnGKLSnkYZZTgDlmoVgjQzstwdW18LFM=
+X-Google-Smtp-Source: ABdhPJwVRzUAEkyf6DGKb9Rgt01zJyb6iZCfhq/4GmCXF95MvMM5PMAMAYEdojbAeYhPmygDFAJ4PoXN1OdcVCwNbew=
+X-Received: by 2002:a05:6808:8d9:: with SMTP id k25mr807424oij.69.1624470783298;
+ Wed, 23 Jun 2021 10:53:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <YNJYm34h3Z9yfm+k@google.com>
-In-Reply-To: <YNJYm34h3Z9yfm+k@google.com>
+References: <3219454.74lMxhSOWB@kreacher> <YNDoGICcg0V8HhpQ@eldamar.lan>
+In-Reply-To: <YNDoGICcg0V8HhpQ@eldamar.lan>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 23 Jun 2021 19:36:54 +0200
-Message-ID: <CAJZ5v0icHp=a2OgM8ptisvC0U1NbzXVXxRHw1ZhMPHWn6dKtUg@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: PM: postpone bringing devices to D0 unless we
- need them
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Date:   Wed, 23 Jun 2021 19:52:52 +0200
+Message-ID: <CAJZ5v0hrcRWgre0HiJFw32dkmNUjaRzT=mFH=6WskopMbZsavA@mail.gmail.com>
+Subject: Re: [PATCH] PCI: PM: Do not read power state in pci_enable_device_flags()
+To:     Salvatore Bonaccorso <carnil@debian.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 22, 2021 at 11:39 PM Dmitry Torokhov
-<dmitry.torokhov@gmail.com> wrote:
+On Mon, Jun 21, 2021 at 9:27 PM Salvatore Bonaccorso <carnil@debian.org> wrote:
 >
-> Currently ACPI power domain brings devices into D0 state in the "resume
-> early" phase. Normally this does not cause any issues, as powering up
-> happens quickly. However there are peripherals that have certain timing
-> requirements for powering on, for example some models of Elan
-> touchscreens need 300msec after powering up/releasing reset line before
-> they can accept commands from the host. Such devices will dominate
-> the time spent in early resume phase and cause increase in overall
-> resume time as we wait for early resume to complete before we can
-> proceed to the normal resume stage.
+> Hi,
 >
-> There are ways for a driver to indicate that it can tolerate device
-> being in the low power mode and that it knows how to power the device
-> back up when resuming, bit that requires changes to individual drivers
-> that may not really care about details of ACPI controlled power
-> management.
+> On Tue, Mar 16, 2021 at 04:51:40PM +0100, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > It should not be necessary to update the current_state field of
+> > struct pci_dev in pci_enable_device_flags() before calling
+> > do_pci_enable_device() for the device, because none of the
+> > code between that point and the pci_set_power_state() call in
+> > do_pci_enable_device() invoked later depends on it.
+> >
+> > Moreover, doing that is actively harmful in some cases.  For example,
+> > if the given PCI device depends on an ACPI power resource whose _STA
+> > method initially returns 0 ("off"), but the config space of the PCI
+> > device is accessible and the power state retrieved from the
+> > PCI_PM_CTRL register is D0, the current_state field in the struct
+> > pci_dev representing that device will get out of sync with the
+> > power.state of its ACPI companion object and that will lead to
+> > power management issues going forward.
+> >
+> > To avoid such issues it is better to leave the current_state value
+> > as is until it is changed to PCI_D0 by do_pci_enable_device() as
+> > appropriate.  However, the power state of the device is not changed
+> > to PCI_D0 if it is already enabled when pci_enable_device_flags()
+> > gets called for it, so update its current_state in that case, but
+> > use pci_update_current_state() covering platform PM too for that.
+> >
+> > Link: https://lore.kernel.org/lkml/20210314000439.3138941-1-luzmaximilian@gmail.com/
+> > Reported-by: Maximilian Luz <luzmaximilian@gmail.com>
+> > Tested-by: Maximilian Luz <luzmaximilian@gmail.com>
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >
+> > Max, I've added a T-by from you even though the patch is slightly different
+> > from what you have tested, but the difference shouldn't matter for your case.
+> >
+> > ---
+> >  drivers/pci/pci.c |   16 +++-------------
+> >  1 file changed, 3 insertions(+), 13 deletions(-)
+> >
+> > Index: linux-pm/drivers/pci/pci.c
+> > ===================================================================
+> > --- linux-pm.orig/drivers/pci/pci.c
+> > +++ linux-pm/drivers/pci/pci.c
+> > @@ -1870,20 +1870,10 @@ static int pci_enable_device_flags(struc
+> >       int err;
+> >       int i, bars = 0;
+> >
+> > -     /*
+> > -      * Power state could be unknown at this point, either due to a fresh
+> > -      * boot or a device removal call.  So get the current power state
+> > -      * so that things like MSI message writing will behave as expected
+> > -      * (e.g. if the device really is in D0 at enable time).
+> > -      */
+> > -     if (dev->pm_cap) {
+> > -             u16 pmcsr;
+> > -             pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
+> > -             dev->current_state = (pmcsr & PCI_PM_CTRL_STATE_MASK);
+> > -     }
+> > -
+> > -     if (atomic_inc_return(&dev->enable_cnt) > 1)
+> > +     if (atomic_inc_return(&dev->enable_cnt) > 1) {
+> > +             pci_update_current_state(dev, dev->current_state);
+> >               return 0;               /* already enabled */
+> > +     }
+> >
+> >       bridge = pci_upstream_bridge(dev);
+> >       if (bridge)
 >
-> This change attempts to solve this issue at ACPI power domain level, by
-> postponing powering up device until we get to the normal resume stage,
-> unless there is early resume handler defined for the device, or device
-> does not declare any resume handlers, in which case we continue powering
-> up such devices early. This allows us to shave off several hundred
-> milliseconds of resume time on affected systems.
+> A user in Debian reported that this commit caused an issue, cf.
+> https://bugs.debian.org/990008#10 with the e1000e driver failing to
+> probe the device. It was reported as well to
+> https://bugzilla.kernel.org/show_bug.cgi?id=213481
 >
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> ---
->
-> v2:
->
-> - do not call acpi_device_wakeup_disable() in early resume when
->   we postponing transition to D0, do it all in normal resume phase
->   (Rafael's feedback)
->
-> - reduce patch noise in acpi_subsys_resume_early() per Rafael's
->   comments
+> According to the above and
+> https://bugzilla.kernel.org/show_bug.cgi?id=213481#c2 reverting
+> 4514d991d992 ("PCI: PM: Do not read power state in
+> pci_enable_device_flags()") fixes the issue.
 
-Applied as 5.14 material, thanks!
+This commit has just been reverted.
 
->  drivers/acpi/device_pm.c | 32 +++++++++++++++++++++++++++++++-
->  1 file changed, 31 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-> index 096153761ebc..8afa66bdb3ce 100644
-> --- a/drivers/acpi/device_pm.c
-> +++ b/drivers/acpi/device_pm.c
-> @@ -1131,19 +1131,48 @@ static int acpi_subsys_resume_noirq(struct device *dev)
->   *
->   * Use ACPI to put the given device into the full-power state and carry out the
->   * generic early resume procedure for it during system transition into the
-> - * working state.
-> + * working state, but only do that if device either defines early resume
-> + * handler, or does not define power operations at all. Otherwise powering up
-> + * of the device is postponed to the normal resume phase.
->   */
->  static int acpi_subsys_resume_early(struct device *dev)
->  {
-> +       const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
->         int ret;
->
->         if (dev_pm_skip_resume(dev))
->                 return 0;
->
-> +       if (pm && !pm->resume_early) {
-> +               dev_dbg(dev, "postponing D0 transition to normal resume stage\n");
-> +               return 0;
-> +       }
-> +
->         ret = acpi_dev_resume(dev);
->         return ret ? ret : pm_generic_resume_early(dev);
->  }
->
-> +/**
-> + * acpi_subsys_resume - Resume device using ACPI.
-> + * @dev: Device to Resume.
-> + *
-> + * Use ACPI to put the given device into the full-power state if it has not been
-> + * powered up during early resume phase, and carry out the generic resume
-> + * procedure for it during system transition into the working state.
-> + */
-> +static int acpi_subsys_resume(struct device *dev)
-> +{
-> +       const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
-> +       int ret = 0;
-> +
-> +       if (!dev_pm_skip_resume(dev) && pm && !pm->resume_early) {
-> +               dev_dbg(dev, "executing postponed D0 transition\n");
-> +               ret = acpi_dev_resume(dev);
-> +       }
-> +
-> +       return ret ? ret : pm_generic_resume(dev);
-> +}
-> +
->  /**
->   * acpi_subsys_freeze - Run the device driver's freeze callback.
->   * @dev: Device to handle.
-> @@ -1236,6 +1265,7 @@ static struct dev_pm_domain acpi_general_pm_domain = {
->                 .prepare = acpi_subsys_prepare,
->                 .complete = acpi_subsys_complete,
->                 .suspend = acpi_subsys_suspend,
-> +               .resume = acpi_subsys_resume,
->                 .suspend_late = acpi_subsys_suspend_late,
->                 .suspend_noirq = acpi_subsys_suspend_noirq,
->                 .resume_noirq = acpi_subsys_resume_noirq,
-> --
-> 2.32.0.288.g62a8d224e6-goog
->
->
-> --
-> Dmitry
+We will try to address the original issue addressed by it in a different way.
+
+Thanks!
