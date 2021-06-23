@@ -2,77 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9F433B1F78
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Jun 2021 19:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C13EF3B1F8F
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Jun 2021 19:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbhFWRcS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Jun 2021 13:32:18 -0400
-Received: from mail-oi1-f176.google.com ([209.85.167.176]:42613 "EHLO
-        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229913AbhFWRcR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Jun 2021 13:32:17 -0400
-Received: by mail-oi1-f176.google.com with SMTP id s23so4140720oiw.9;
-        Wed, 23 Jun 2021 10:29:57 -0700 (PDT)
+        id S229774AbhFWRf3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Jun 2021 13:35:29 -0400
+Received: from mail-ot1-f43.google.com ([209.85.210.43]:41704 "EHLO
+        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229758AbhFWRf1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Jun 2021 13:35:27 -0400
+Received: by mail-ot1-f43.google.com with SMTP id m6-20020a9d1d060000b029044e2d8e855eso755291otm.8;
+        Wed, 23 Jun 2021 10:33:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=uL4OeCof1O3VCffukg7OOAMuEHlzWUS97O2lsZYQKCc=;
-        b=aQoElZhxLjifKGq5Jm/BeqSvOWf9O2tAg7/sXmAHRNJyXPn8FYPyE/zKTjasvPKRAT
-         NRNZJDSqUU8APOPdKXMxV9dtqULemFvioIvnz1mFfIuqmcl6nk+RrT47Ff+MQUBPqFlA
-         BzSwTOQvVkBzF1b4NmS+HY/CwBNI+xtdL5ApOoMjOy/x2hfh/mYwVczBXXvI+yTO+oWs
-         v1UXzrUSMaAmZvd3BZwKQKHVXILb7vH0oGCjWy0xFh5YaODZbfZ97Fblk9El923unaPE
-         EZNKMcb/LYVJCRfT0uuPuzA73RdVd+S0UFCtZEjJTUNbz7fU9QI+MfPnPyp5yT2VF3U8
-         +gxA==
-X-Gm-Message-State: AOAM531rqIAI/5fFyONxOCjJL9J7jaedyM1F+sjhyG2DSkY+BeUzNwT7
-        B/12bHPo7qh9KBs4pV6Q/kp9qUJ3sScul1ChoHc=
-X-Google-Smtp-Source: ABdhPJwbiPQqGwFIcUNl4l/6kdARitMtkOA4F4mgoR15canAR9+PiTPwezeXr3x2W9V51042VY1iiwSM2JzlU5bDpKU=
-X-Received: by 2002:aca:f0d5:: with SMTP id o204mr754770oih.71.1624469372192;
- Wed, 23 Jun 2021 10:29:32 -0700 (PDT)
+        bh=riea6Yx42NfdkMCg0Ketroi7GWO16G5+ktOeMGqjrPA=;
+        b=hlKcXI2BhCRPF1CFoDnettyFZ+oeGEc0q9ijOQbyksFylfT/G71iaNfHBn/3vL6aPk
+         skSjNGLYb1JS/XxIMtzE+KPT9P1soZ08dTnOR+Kl0MHBNjqP9b48S9RAWxBsGrDFgnK2
+         p+FatjNQHGypK0eLxQSVe/429uBAN6HMkYDzwfaYFkdwYGRH35mvmvvYMuZeLusycv5e
+         0+20esYhaR0hZwqm3Gf8ZS+PfM+MUxrwV14da+OvzzS7QcIpQl6Qu2P/YrpPl4HcyFUa
+         mbUAo7G+2T+Zpqvzev4gD35w36I9yUgnit7FMc4yBSuKKjcphtk8t2QM1B+Dblx/LgXY
+         PdLg==
+X-Gm-Message-State: AOAM531+9/rNJHDaLSlXBWUKA6RVgwBbnmPVZbjh/NWpvo555ABK9RbD
+        1OLVg+9VC00MTOdUxn9+E5gAfEEH7oKcpI15JFI=
+X-Google-Smtp-Source: ABdhPJwLCQlTei0mNC4Bf1WC6HysPCpYFklJTlGteqgE/TEzaTHp6+ZUtP6vDXySP99ZK2GhW4JNntTwjMKmznAYBiM=
+X-Received: by 2002:a9d:1905:: with SMTP id j5mr881357ota.321.1624469589692;
+ Wed, 23 Jun 2021 10:33:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210623013802.1904951-1-nathan@kernel.org> <20210623013802.1904951-2-nathan@kernel.org>
- <202106222250.7BD80A12FF@keescook> <a155e3ee-69aa-408d-208b-06144cf6cf8f@kernel.org>
- <202106230932.96179173E@keescook>
-In-Reply-To: <202106230932.96179173E@keescook>
+References: <20210621152433.29716-1-rf@opensource.cirrus.com>
+In-Reply-To: <20210621152433.29716-1-rf@opensource.cirrus.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 23 Jun 2021 19:29:21 +0200
-Message-ID: <CAJZ5v0hgk1_uofRKwQvOPgBqsMsBombAS5SpSo_FoeAXcBArWQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ACPI: bgrt: Use sysfs_emit
-To:     Kees Cook <keescook@chromium.org>,
-        Nathan Chancellor <nathan@kernel.org>
+Date:   Wed, 23 Jun 2021 19:32:58 +0200
+Message-ID: <CAJZ5v0jBk9LnimOPRgVOof-DJp4rqfto31+nFv8gzmsQ1jUB=A@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: tables: Add custom DSDT file as makefile prerequisite
+To:     Richard Fitzgerald <rf@opensource.cirrus.com>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        clang-built-linux@googlegroups.com
+        patches@opensource.cirrus.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jun 23, 2021 at 6:32 PM Kees Cook <keescook@chromium.org> wrote:
+On Mon, Jun 21, 2021 at 5:24 PM Richard Fitzgerald
+<rf@opensource.cirrus.com> wrote:
 >
-> On Wed, Jun 23, 2021 at 09:28:55AM -0700, Nathan Chancellor wrote:
-> > On 6/22/2021 10:51 PM, Kees Cook wrote:
-> > > On Tue, Jun 22, 2021 at 06:38:02PM -0700, Nathan Chancellor wrote:
-> > > > sysfs_emit is preferred to snprintf for emitting values after
-> > > > commit 2efc459d06f1 ("sysfs: Add sysfs_emit and sysfs_emit_at to format
-> > > > sysfs output").
-> > > >
-> > > > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > >
-> > > Perhaps just squash this into patch 1? Looks good otherwise!
-> > >
-> >
-> > I thought about it but sysfs_emit is a relatively new API and the previous
-> > change may want to be backported but I do not have a strong opinion so I can
-> > squash it if Rafael or Len feel strongly :)
+> A custom DSDT file is mostly used during development or debugging,
+> and in that case it is quite likely to want to rebuild the kernel
+> after changing ONLY the content of the DSDT.
 >
-> Fair enough. :) I figured since CFI is even newer than sysfs_emit(), it
-> didn't make sense to backport. Regardless:
+> This patch adds the custom DSDT as a prerequisite to tables.o
+> to ensure a rebuild if the DSDT file is updated. Make will merge
+> the prerequisites from multiple rules for the same target.
 >
-> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+> ---
+>  drivers/acpi/Makefile | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index efb0d1f64019..ceb1aed4b1fc 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -8,6 +8,11 @@ ccflags-$(CONFIG_ACPI_DEBUG)   += -DACPI_DEBUG_OUTPUT
+>  #
+>  # ACPI Boot-Time Table Parsing
+>  #
+> +ifeq ($(CONFIG_ACPI_CUSTOM_DSDT),y)
+> +tables.o: $(src)/../../include/$(subst $\",,$(CONFIG_ACPI_CUSTOM_DSDT_FILE)) ;
+> +
+> +endif
+> +
+>  obj-$(CONFIG_ACPI)             += tables.o
+>  obj-$(CONFIG_X86)              += blacklist.o
+>
+> --
 
-Applied along with the [1/2] as 5.14 material, thanks!
+Applied as 5.14 material, thanks!
