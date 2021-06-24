@@ -2,139 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C923B1FE3
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Jun 2021 19:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99B0D3B2535
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jun 2021 04:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229882AbhFWRzX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Jun 2021 13:55:23 -0400
-Received: from mail-oi1-f173.google.com ([209.85.167.173]:34647 "EHLO
-        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbhFWRzW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Jun 2021 13:55:22 -0400
-Received: by mail-oi1-f173.google.com with SMTP id u11so4272040oiv.1;
-        Wed, 23 Jun 2021 10:53:03 -0700 (PDT)
+        id S229796AbhFXC4i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Jun 2021 22:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56758 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229759AbhFXC4h (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Jun 2021 22:56:37 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3F28C061756
+        for <linux-acpi@vger.kernel.org>; Wed, 23 Jun 2021 19:54:18 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id e33so3497264pgm.3
+        for <linux-acpi@vger.kernel.org>; Wed, 23 Jun 2021 19:54:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=EZtiIZXLAbCl5jLHqK1+lf6V6SP0mpZsmLqgJ+RTBrs=;
+        b=KoqtnfhMV/W89LhqRLh+1OYFx2USIS1tsVLx3UrSx4S2C7B0Z4mLY8a+2OXNMx5q+0
+         K6V3ArCZj2DR+pxF/qc+VOp+NAyw/e6CHy+3iPOA1T1QJ9LHi17n/GNeNXmMkbi84CbB
+         UGdafLOOKt+P/JHZ/Pj+ZgVbU2KeiBHjBIJdscNugzv0do1i6lzsLmW19hk7eaJfR/ET
+         hrH1Lx6GC4RFbsPHWa6BQWyBpSdkGPUqpZrh4CvwuK4SGDxZoAJApRko0f8PVZK+k7qC
+         Eh2yyjxIA/OY69soXQVe9K8Wx0sQi8k1L4SyE/iPoR7JunGU44NThR9AE3YEokZKGiQW
+         YDGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kKQr82HDDUwFX7W6f2RL9f2u87FR6WdUapSEsXW/DEs=;
-        b=KeWdipt25KXMRkrgo4efs0m9yMPVNZbI6kOvMS85qbcJhDraziteoKg5tlEkN8OF5N
-         9649HlVKd7zbigK7hKtTXjlaqxEmqmP6XkV647OO4t0zW7zRzRlV5sumEMMTE9Jvw6Y9
-         crikD4nj6Q39tW9jUmnU/dutD5Mbz7pJwAwTpwVdLyjl2RCfKog8MuWFF5z2uHRsX9Lp
-         R/xtM8Pd/4lCEaoot4OEqBY0sqmnPqn3Q9AQJu52lghn+kzFn736/tf+7wQYuy/ukGGD
-         9atzfjU0ayBNS+QrhkKK2vBVETwxhMrhUqLfg8pTfA4m/DWY5/41KTsyP0FQL9K5C0Xh
-         p8xA==
-X-Gm-Message-State: AOAM5319OsK+tjd0Cd71ioDXsUAvSDyOwzfdgPRsoyokA92Fp/OBg+hc
-        zZXtolmgnGKLSnkYZZTgDlmoVgjQzstwdW18LFM=
-X-Google-Smtp-Source: ABdhPJwVRzUAEkyf6DGKb9Rgt01zJyb6iZCfhq/4GmCXF95MvMM5PMAMAYEdojbAeYhPmygDFAJ4PoXN1OdcVCwNbew=
-X-Received: by 2002:a05:6808:8d9:: with SMTP id k25mr807424oij.69.1624470783298;
- Wed, 23 Jun 2021 10:53:03 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=EZtiIZXLAbCl5jLHqK1+lf6V6SP0mpZsmLqgJ+RTBrs=;
+        b=ATjAd5PLMQqi1pTkF7DsA1Rh/LdYFc2t9cOm4oamawvJT/O761t0j9Yi3MyHyDQk8R
+         vL+eZFk3aLlypof/r78fJCk/IT6KzsIgjF3aklQf6+Jh5y+pZpPCbo00PZm+W2YPZkhD
+         zvBSbxwrXKhWM6KDFldXiG1A1VuHL8dZbwzsvcD/NWFgN46wjGFLPnhrGPWnVr12XCjg
+         m/EKjIYLGiELnzM5vItlCh4A3lmfzgr7wy+fUUj9C+eZ3CWDGuS68uXUSQ6Wcp8nMGlM
+         jwndhkf26IbQ8msnKh/PUZQy/XP5oILdyBdhzn/N5KNnTy6Sk5XIxwqcV4Zy4KuvjcsL
+         PjKw==
+X-Gm-Message-State: AOAM530YiO0rWxV1uoD24NJ7pb+RPV7wDMt2iuKiSNVxrcVWtKNatmFP
+        EFXY0uiHrtpIMaBdMd/SVfFy7Q==
+X-Google-Smtp-Source: ABdhPJzpz4Wdmkby5CYYPfvOjumLHTc525MdbSaDIp32RKEwPpxu3eR2dbF6bbqAhfzcT/S5BC265Q==
+X-Received: by 2002:a65:6a12:: with SMTP id m18mr2561679pgu.229.1624503258102;
+        Wed, 23 Jun 2021 19:54:18 -0700 (PDT)
+Received: from localhost ([136.185.134.182])
+        by smtp.gmail.com with ESMTPSA id y7sm6524339pja.8.2021.06.23.19.54.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jun 2021 19:54:17 -0700 (PDT)
+Date:   Thu, 24 Jun 2021 08:24:14 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Qian Cai <quic_qiancai@quicinc.com>
+Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
+        Ionela Voinescu <ionela.voinescu@arm.com>,
+        Ben Segall <bsegall@google.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Mel Gorman <mgorman@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Will Deacon <will@kernel.org>, linux-pm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency
+ invariance
+Message-ID: <20210624025414.4iszkovggk6lg6hj@vireshk-i7>
+References: <cover.1624266901.git.viresh.kumar@linaro.org>
+ <09a39f5c-b47b-a931-bf23-dc43229fb2dd@quicinc.com>
+ <20210623041613.v2lo3nidpgw37abl@vireshk-i7>
+ <2c540a58-4fef-5a3d-85b4-8862721b6c4f@quicinc.com>
 MIME-Version: 1.0
-References: <3219454.74lMxhSOWB@kreacher> <YNDoGICcg0V8HhpQ@eldamar.lan>
-In-Reply-To: <YNDoGICcg0V8HhpQ@eldamar.lan>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 23 Jun 2021 19:52:52 +0200
-Message-ID: <CAJZ5v0hrcRWgre0HiJFw32dkmNUjaRzT=mFH=6WskopMbZsavA@mail.gmail.com>
-Subject: Re: [PATCH] PCI: PM: Do not read power state in pci_enable_device_flags()
-To:     Salvatore Bonaccorso <carnil@debian.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2c540a58-4fef-5a3d-85b4-8862721b6c4f@quicinc.com>
+User-Agent: NeoMutt/20180716-391-311a52
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jun 21, 2021 at 9:27 PM Salvatore Bonaccorso <carnil@debian.org> wrote:
->
-> Hi,
->
-> On Tue, Mar 16, 2021 at 04:51:40PM +0100, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > It should not be necessary to update the current_state field of
-> > struct pci_dev in pci_enable_device_flags() before calling
-> > do_pci_enable_device() for the device, because none of the
-> > code between that point and the pci_set_power_state() call in
-> > do_pci_enable_device() invoked later depends on it.
-> >
-> > Moreover, doing that is actively harmful in some cases.  For example,
-> > if the given PCI device depends on an ACPI power resource whose _STA
-> > method initially returns 0 ("off"), but the config space of the PCI
-> > device is accessible and the power state retrieved from the
-> > PCI_PM_CTRL register is D0, the current_state field in the struct
-> > pci_dev representing that device will get out of sync with the
-> > power.state of its ACPI companion object and that will lead to
-> > power management issues going forward.
-> >
-> > To avoid such issues it is better to leave the current_state value
-> > as is until it is changed to PCI_D0 by do_pci_enable_device() as
-> > appropriate.  However, the power state of the device is not changed
-> > to PCI_D0 if it is already enabled when pci_enable_device_flags()
-> > gets called for it, so update its current_state in that case, but
-> > use pci_update_current_state() covering platform PM too for that.
-> >
-> > Link: https://lore.kernel.org/lkml/20210314000439.3138941-1-luzmaximilian@gmail.com/
-> > Reported-by: Maximilian Luz <luzmaximilian@gmail.com>
-> > Tested-by: Maximilian Luz <luzmaximilian@gmail.com>
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >
-> > Max, I've added a T-by from you even though the patch is slightly different
-> > from what you have tested, but the difference shouldn't matter for your case.
-> >
-> > ---
-> >  drivers/pci/pci.c |   16 +++-------------
-> >  1 file changed, 3 insertions(+), 13 deletions(-)
-> >
-> > Index: linux-pm/drivers/pci/pci.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/pci/pci.c
-> > +++ linux-pm/drivers/pci/pci.c
-> > @@ -1870,20 +1870,10 @@ static int pci_enable_device_flags(struc
-> >       int err;
-> >       int i, bars = 0;
-> >
-> > -     /*
-> > -      * Power state could be unknown at this point, either due to a fresh
-> > -      * boot or a device removal call.  So get the current power state
-> > -      * so that things like MSI message writing will behave as expected
-> > -      * (e.g. if the device really is in D0 at enable time).
-> > -      */
-> > -     if (dev->pm_cap) {
-> > -             u16 pmcsr;
-> > -             pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
-> > -             dev->current_state = (pmcsr & PCI_PM_CTRL_STATE_MASK);
-> > -     }
-> > -
-> > -     if (atomic_inc_return(&dev->enable_cnt) > 1)
-> > +     if (atomic_inc_return(&dev->enable_cnt) > 1) {
-> > +             pci_update_current_state(dev, dev->current_state);
-> >               return 0;               /* already enabled */
-> > +     }
-> >
-> >       bridge = pci_upstream_bridge(dev);
-> >       if (bridge)
->
-> A user in Debian reported that this commit caused an issue, cf.
-> https://bugs.debian.org/990008#10 with the e1000e driver failing to
-> probe the device. It was reported as well to
-> https://bugzilla.kernel.org/show_bug.cgi?id=213481
->
-> According to the above and
-> https://bugzilla.kernel.org/show_bug.cgi?id=213481#c2 reverting
-> 4514d991d992 ("PCI: PM: Do not read power state in
-> pci_enable_device_flags()") fixes the issue.
+On 23-06-21, 08:57, Qian Cai wrote:
+> Viresh, I am afraid I don't feel comfortable yet. I have a few new tests in
+> development, and will provide an update once ready.
 
-This commit has just been reverted.
+Oh sure, np.
 
-We will try to address the original issue addressed by it in a different way.
+> Also, I noticed the delivered perf is even smaller than lowest_perf (100).
 
-Thanks!
+> # cat /sys/devices/system/cpu/cpu8/acpi_cppc/feedback_ctrs
+>  ref:103377547901 del:54540736873
+> # cat /sys/devices/system/cpu/cpu8/acpi_cppc/feedback_ctrs
+>  ref:103379170101 del:54541599117
+> 
+> 100 * (54541599117 - 54540736873) / (103379170101 - 103377547901) = 53
+> 
+> My understanding is that the delivered perf should fail into the range between
+> lowest_perf and highest_perf. Is that assumption correct? This happens on
+> 5.4-based kernel, so I am in process running your series on that system to see
+> if there is any differences. In any case, if it is a bug it is pre-existing,
+> but I'd like to understand a bit better in that front first.
+
+Vincent:
+
+Can that happen because of CPU idle ?
+
+-- 
+viresh
