@@ -2,34 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44FC03B3269
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jun 2021 17:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20CE73B3814
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jun 2021 22:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231735AbhFXPUU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Jun 2021 11:20:20 -0400
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:52566 "EHLO
-        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231708AbhFXPUT (ORCPT
+        id S232284AbhFXUrA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Jun 2021 16:47:00 -0400
+Received: from alexa-out-sd-01.qualcomm.com ([199.106.114.38]:34438 "EHLO
+        alexa-out-sd-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230116AbhFXUrA (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 24 Jun 2021 11:20:19 -0400
+        Thu, 24 Jun 2021 16:47:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1624547880; x=1656083880;
+  t=1624567480; x=1656103480;
   h=subject:to:cc:references:from:message-id:date:
    mime-version:in-reply-to:content-transfer-encoding;
-  bh=sAbysC06T03vfpgx6gVyg0DlqzJgM/bP3q40WfRjb4s=;
-  b=uRFa1slBw5oyJZ49W/dnFjqTk57wdYLIVgShLt7zCLCZt3Rqz4WavV1c
-   EVjURL1PBWnPtXwS7t+lghSSV4XHOfd29OUcryC1bdcXOK/5I6b7wSo9J
-   SJtTcmBrDeQbOgQoTUg/cO8cxknYpYsRzFWwjJ54aBp/cszZnyJoq5TZ9
-   E=;
-Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 24 Jun 2021 08:18:00 -0700
+  bh=t61dWAbMMDRSTZHexoJmXU/Hc6CoxB6AF/BFYRLmSyg=;
+  b=Bdqs5TgnQsKoKVZ3U230Ctws0YreyaoedmMKpiNGTpnfRm7ZWGzfxPxn
+   ru9JJXdHT6vyzlHuxakk/D8DDMUqx/OYGL/h7AgT+7Luri3/7Y64sTFxF
+   P/IgP+B9H5XZATaKER//htnZy1Nk6CIdgR8iLxa7Auqjl3PdnagBCwfai
+   g=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-01.qualcomm.com with ESMTP; 24 Jun 2021 13:44:40 -0700
 X-QCInternal: smtphost
 Received: from nasanexm03e.na.qualcomm.com ([10.85.0.48])
-  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/AES256-SHA; 24 Jun 2021 08:18:00 -0700
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/AES256-SHA; 24 Jun 2021 13:44:39 -0700
 Received: from [10.111.163.161] (10.80.80.8) by nasanexm03e.na.qualcomm.com
  (10.85.0.48) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Thu, 24 Jun
- 2021 08:17:56 -0700
+ 2021 13:44:37 -0700
 Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency
  invariance
 To:     Ionela Voinescu <ionela.voinescu@arm.com>,
@@ -61,8 +61,8 @@ References: <cover.1624266901.git.viresh.kumar@linaro.org>
  <CAKfTPtAXMYYrG1w-iwSWXb428FkwFArEwXQgHnjShoCEMjdYcw@mail.gmail.com>
  <20210624104734.GA11487@arm.com>
 From:   Qian Cai <quic_qiancai@quicinc.com>
-Message-ID: <daf1ddf5-6f57-84a8-2ada-90590c0c94b5@quicinc.com>
-Date:   Thu, 24 Jun 2021 11:17:55 -0400
+Message-ID: <81ea7ae0-54fd-85ba-b3de-a34520cb7f29@quicinc.com>
+Date:   Thu, 24 Jun 2021 16:44:36 -0400
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
@@ -71,7 +71,7 @@ Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+X-ClientProxiedBy: nasanexm03d.na.qualcomm.com (10.85.0.91) To
  nasanexm03e.na.qualcomm.com (10.85.0.48)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
@@ -79,7 +79,7 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 
 
-On 6/24/2021 6:48 AM, Ionela Voinescu wrote:
+On 6/24/2021 6:48 AM, Ionela Voinescu wrote: 
 > Not if the counters are implemented properly. The kernel considers that
 > both reference and delivered performance counters should stop or reset
 > during idle. The kernel would not account for idle itself.
@@ -91,32 +91,7 @@ On 6/24/2021 6:48 AM, Ionela Voinescu wrote:
 > Qian, do you see these small delivered performance values often or
 > seldom?
 
-Ionela, so I managed to upgrade the kernel on the system to today's linux-next which suppose to include this series. The delivered perf is now 280. However, scaling_min_freq (200 MHz) is not equal to lowest_perf (100).
+FYI, the latest data point it that on the new kernel, the delivered performance does match the cpufreq_cur_freq. IOW, feedback_ctrs works fine. Also, "powersave" governor could bring down the scaling_cur_freq to scaling_min_freq. Right now, looks like the puzzles on this particular system as mentioned in the previous post are,
 
-scaling_driver: acpi_cppc
-scaling_governor: schedutil
-
-Is that normal because lowest_nonlinear_perf is 200? 
-
-Also, on this pretty idle system, 158 of 160 CPUs are always running in max freq (280 MHz). The other 2 are running in 243 and 213 MHz according to scaling_cur_freq. Apparently, "schedutil" does not work proper on this system. I am going to try other governors to narrow down the issue a bit.
-
-FYI, here is the acpi_cppc registers reading:
-
-/sys/devices/system/cpu/cpu0/acpi_cppc/feedback_ctrs
-ref:160705801 del:449594095
-/sys/devices/system/cpu/cpu0/acpi_cppc/highest_perf
-300
-/sys/devices/system/cpu/cpu0/acpi_cppc/lowest_freq
-1000
-/sys/devices/system/cpu/cpu0/acpi_cppc/lowest_nonlinear_perf
-200
-/sys/devices/system/cpu/cpu0/acpi_cppc/lowest_perf
-100
-/sys/devices/system/cpu/cpu0/acpi_cppc/nominal_freq
-2800
-/sys/devices/system/cpu/cpu0/acpi_cppc/nominal_perf
-280
-/sys/devices/system/cpu/cpu0/acpi_cppc/reference_perf
-100
-/sys/devices/system/cpu/cpu0/acpi_cppc/wraparound_time
-18446744073709551615
+1) lowest_freq/lowest_perf != scaling_min_freq
+2) CPPC + schedutil is not able to scale down CPUs.
