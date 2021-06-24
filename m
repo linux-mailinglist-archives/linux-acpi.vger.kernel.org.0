@@ -2,156 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 523F63B2729
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jun 2021 08:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB9793B2BC4
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jun 2021 11:48:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230298AbhFXGLV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Jun 2021 02:11:21 -0400
-Received: from mga11.intel.com ([192.55.52.93]:14098 "EHLO mga11.intel.com"
+        id S230116AbhFXJue (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Jun 2021 05:50:34 -0400
+Received: from foss.arm.com ([217.140.110.172]:51948 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230257AbhFXGLV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 24 Jun 2021 02:11:21 -0400
-IronPort-SDR: NDx3TZcm5w1ooclxdCzOHStoHrcaMW2XjNNQtfovHgjzFMlRgIqEfiGcfmAsewZNUxf/aPtu8e
- Oupvl/iaH6vA==
-X-IronPort-AV: E=McAfee;i="6200,9189,10024"; a="204395807"
-X-IronPort-AV: E=Sophos;i="5.83,295,1616482800"; 
-   d="scan'208";a="204395807"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2021 23:09:02 -0700
-IronPort-SDR: ZhArCfPuSkZwzlunxr/+SijVPaufvrA6o+nSs5u/XR0qEj9QaWh2SpEZG8Y53qVsqFyarvdbiQ
- xcKhrZNfAPJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,295,1616482800"; 
-   d="scan'208";a="454928641"
-Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 23 Jun 2021 23:09:01 -0700
-Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1lwIXs-0006O2-Sc; Thu, 24 Jun 2021 06:09:00 +0000
-Date:   Thu, 24 Jun 2021 14:08:20 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- e6cf95dcf6c8c682f07966659a40def8f973ce18
-Message-ID: <60d42154.P1ij2hzGLeeD/Laa%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S229974AbhFXJud (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 24 Jun 2021 05:50:33 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 50A6E1042;
+        Thu, 24 Jun 2021 02:48:14 -0700 (PDT)
+Received: from localhost (unknown [10.1.195.40])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E40043F718;
+        Thu, 24 Jun 2021 02:48:13 -0700 (PDT)
+Date:   Thu, 24 Jun 2021 10:48:12 +0100
+From:   Ionela Voinescu <ionela.voinescu@arm.com>
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        linux-pm@vger.kernel.org, Qian Cai <quic_qiancai@quicinc.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 4/4] cpufreq: CPPC: Add support for frequency
+ invariance
+Message-ID: <20210624094812.GA6095@arm.com>
+References: <cover.1624266901.git.viresh.kumar@linaro.org>
+ <f963d09e57115969dae32827ade5558b0467d3a0.1624266901.git.viresh.kumar@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <f963d09e57115969dae32827ade5558b0467d3a0.1624266901.git.viresh.kumar@linaro.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: e6cf95dcf6c8c682f07966659a40def8f973ce18  Merge branch 'pm-cpufreq' into bleeding-edge
+Hey,
 
-elapsed time: 726m
+On Monday 21 Jun 2021 at 14:49:37 (+0530), Viresh Kumar wrote:
+> The Frequency Invariance Engine (FIE) is providing a frequency scaling
+> correction factor that helps achieve more accurate load-tracking.
+[..]
+> +static void cppc_cpufreq_cpu_fie_exit(struct cpufreq_policy *policy)
+> +{
+> +	struct cppc_freq_invariance *cppc_fi;
+> +	int cpu;
+> +
+> +	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
+> +		return;
+> +
+> +	/* policy->cpus will be empty here, use related_cpus instead */
+> +	topology_clear_scale_freq_source(SCALE_FREQ_SOURCE_CPPC, policy->related_cpus);
+> +
+> +	for_each_cpu(cpu, policy->related_cpus) {
+> +		cppc_fi = &per_cpu(cppc_freq_inv, cpu);
 
-configs tested: 93
-configs skipped: 2
+Do you think it might be worth having here something like:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+		if (!cppc_fi->cpu_data)
+			continue;
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                          rsk7203_defconfig
-sh                        edosk7760_defconfig
-m68k                          atari_defconfig
-arm                         lpc32xx_defconfig
-arm                          lpd270_defconfig
-arc                    vdk_hs38_smp_defconfig
-powerpc                     pseries_defconfig
-mips                        jmr3927_defconfig
-arm                      footbridge_defconfig
-powerpc                      ppc40x_defconfig
-powerpc                 mpc8315_rdb_defconfig
-sh                         microdev_defconfig
-parisc                generic-32bit_defconfig
-powerpc                    gamecube_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20210622
-i386                 randconfig-a002-20210622
-i386                 randconfig-a003-20210622
-i386                 randconfig-a006-20210622
-i386                 randconfig-a005-20210622
-i386                 randconfig-a004-20210622
-x86_64               randconfig-a012-20210622
-x86_64               randconfig-a016-20210622
-x86_64               randconfig-a015-20210622
-x86_64               randconfig-a014-20210622
-x86_64               randconfig-a013-20210622
-x86_64               randconfig-a011-20210622
-i386                 randconfig-a011-20210622
-i386                 randconfig-a014-20210622
-i386                 randconfig-a013-20210622
-i386                 randconfig-a015-20210622
-i386                 randconfig-a012-20210622
-i386                 randconfig-a016-20210622
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                            kunit_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
+This would be to protect against cases where the platform does not boot
+with all CPUs or the module is loaded after some have already been
+offlined. Unlikely, but..
 
-clang tested configs:
-x86_64               randconfig-b001-20210623
-x86_64               randconfig-a002-20210622
-x86_64               randconfig-a001-20210622
-x86_64               randconfig-a005-20210622
-x86_64               randconfig-a003-20210622
-x86_64               randconfig-a004-20210622
-x86_64               randconfig-a006-20210622
+> +		irq_work_sync(&cppc_fi->irq_work);
+> +		kthread_cancel_work_sync(&cppc_fi->work);
+> +	}
+> +}
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+The rest of the code is almost the same as the original, so that is all
+from me :).
+
+Thanks,
+Ionela.
