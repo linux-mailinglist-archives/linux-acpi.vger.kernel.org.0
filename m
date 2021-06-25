@@ -2,125 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C3A83B4796
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Jun 2021 18:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E30303B47A3
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Jun 2021 18:56:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229940AbhFYQ4o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Jun 2021 12:56:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33770 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbhFYQ4n (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Jun 2021 12:56:43 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CEBDC061767
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Jun 2021 09:54:22 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id m17so5011087plx.7
-        for <linux-acpi@vger.kernel.org>; Fri, 25 Jun 2021 09:54:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=l7dX5dgpmPFuySJbZwA/qhXdydYfRA2CAHeZv6VJOdk=;
-        b=iqLixdZ4UQzIfrMpWEvBZKk5Fvm5nRLt8h9LHj6PsJATVMPi7t0AV1zK5ok8y6mRpP
-         +M8ZOCK/fdssvSFI6zERVDwSO0CDJKSow466MIVRQOMvAPt/3YvcZMXzOmooS3BsNUz8
-         aZsOdhZi6YjFTNoNOv1FnZgYDkyYti0HOxNk6ztUJX2NweNGCSJ8iJE762SgA7Loi333
-         S0LK6OC2LSk9yFqBz/NtkI0obfj2RJSGpHwnYt3uFzpzz5dFzr+CKvb95L5lGFpMROQn
-         Nqw/9cNf3YHkpLw0oADqyiPOY42p4HIc0IHJMdkevGMH5NNE0TklGkeGQNzXcUxWFWBy
-         5Hfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=l7dX5dgpmPFuySJbZwA/qhXdydYfRA2CAHeZv6VJOdk=;
-        b=TJzHl3ZAr5WhqIS4jeCyvZujL8JE06PagOayo3+ZGz3wPhbrV7WjtOS+zk2x0nx48I
-         hlsJykj66d38hfbTvEtuM8co56/wHXUllKW33al/Tp/meT93qGqb4e6AgOatGi+WN8Rd
-         LIVJFoWthIvMWCR2aPNaOxtKbD9ipkyh4VEjHOlat4HDYRZcUo6Fd3tyLfwnqfkFo79b
-         zeuofCredunlpsnEdyqW+Lu9DA21/QPctAUSrvsrVfJkdq2VKTVqVuXfFH0HDNauW9BC
-         yQpeaqerkakOaT349jjzSJNmKluA3NuxLfhg287UdOE7S9dPIK2I6vM3hhjt3U16daLw
-         imOw==
-X-Gm-Message-State: AOAM533MZF6/YsLpKF+BLQ6CiXTYZj6WWHjSgWfmCRjH9gGSHUI5/xxI
-        zU+uNLAl3IZkrECW8w6YZnMxVg==
-X-Google-Smtp-Source: ABdhPJxoBHY6Quyfae50dLrV3dw6N6ydOo0cfw07RcLuzRCsFLfKsBPoKFLzrHhyox7gDhH1l8Cn4w==
-X-Received: by 2002:a17:90b:1809:: with SMTP id lw9mr12225978pjb.128.1624640061688;
-        Fri, 25 Jun 2021 09:54:21 -0700 (PDT)
-Received: from localhost ([136.185.134.182])
-        by smtp.gmail.com with ESMTPSA id b9sm5826453pfm.124.2021.06.25.09.54.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jun 2021 09:54:21 -0700 (PDT)
-Date:   Fri, 25 Jun 2021 22:24:18 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Ionela Voinescu <ionela.voinescu@arm.com>
-Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        linux-pm@vger.kernel.org, Qian Cai <quic_qiancai@quicinc.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 4/4] cpufreq: CPPC: Add support for frequency
+        id S230090AbhFYQ7A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Jun 2021 12:59:00 -0400
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:49765 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229671AbhFYQ66 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 25 Jun 2021 12:58:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1624640198; x=1656176198;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=ZXtRMQWNJI+ejJwk7tELGIlfquZy8wE7UmEjYspURGY=;
+  b=QZ+N/dWZGHjxCkW99sC0aR027XjDI4sdeUUXOppXfYDItedMTWCewdtR
+   gsMBiSzI2fuELizIYF9YLxQd2VOtPWJ0/8oj9QTjSHdrHs6gmialfSBej
+   aXYj345MKc88xI2SxRvfb0jsz0rzXR+4+3d5KZ32eMaruJU+yn0fHjby7
+   0=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 25 Jun 2021 09:56:37 -0700
+X-QCInternal: smtphost
+Received: from nasanexm03e.na.qualcomm.com ([10.85.0.48])
+  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/AES256-SHA; 25 Jun 2021 09:56:34 -0700
+Received: from [10.111.161.13] (10.80.80.8) by nasanexm03e.na.qualcomm.com
+ (10.85.0.48) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Fri, 25 Jun
+ 2021 09:56:32 -0700
+Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency
  invariance
-Message-ID: <20210625165418.shi3gkebumqllxma@vireshk-i7>
+To:     Ionela Voinescu <ionela.voinescu@arm.com>
+CC:     Vincent Guittot <vincent.guittot@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Rafael Wysocki <rjw@rjwysocki.net>,
+        Ben Segall <bsegall@google.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Mel Gorman <mgorman@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "open list:THERMAL" <linux-pm@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 References: <cover.1624266901.git.viresh.kumar@linaro.org>
- <f963d09e57115969dae32827ade5558b0467d3a0.1624266901.git.viresh.kumar@linaro.org>
- <20210624094812.GA6095@arm.com>
- <20210624130418.poiy4ph66mbv3y67@vireshk-i7>
- <20210625085454.GA15540@arm.com>
+ <09a39f5c-b47b-a931-bf23-dc43229fb2dd@quicinc.com>
+ <20210623041613.v2lo3nidpgw37abl@vireshk-i7>
+ <2c540a58-4fef-5a3d-85b4-8862721b6c4f@quicinc.com>
+ <20210624025414.4iszkovggk6lg6hj@vireshk-i7>
+ <CAKfTPtAXMYYrG1w-iwSWXb428FkwFArEwXQgHnjShoCEMjdYcw@mail.gmail.com>
+ <20210624104734.GA11487@arm.com>
+ <daf1ddf5-6f57-84a8-2ada-90590c0c94b5@quicinc.com>
+ <20210625102113.GB15540@arm.com>
+ <1f83d787-a796-0db3-3c2f-1ca616eb1979@quicinc.com>
+ <20210625143713.GA7092@arm.com>
+From:   Qian Cai <quic_qiancai@quicinc.com>
+Message-ID: <6b86e8cb-6088-12f1-863e-c5e4062bef8e@quicinc.com>
+Date:   Fri, 25 Jun 2021 12:56:31 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210625085454.GA15540@arm.com>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <20210625143713.GA7092@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanexm03b.na.qualcomm.com (10.85.0.98) To
+ nasanexm03e.na.qualcomm.com (10.85.0.48)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 25-06-21, 09:54, Ionela Voinescu wrote:
-> Hey,
-> 
-> On Thursday 24 Jun 2021 at 18:34:18 (+0530), Viresh Kumar wrote:
-> > On 24-06-21, 10:48, Ionela Voinescu wrote:
-> > > On Monday 21 Jun 2021 at 14:49:37 (+0530), Viresh Kumar wrote:
-> > > > The Frequency Invariance Engine (FIE) is providing a frequency scaling
-> > > > correction factor that helps achieve more accurate load-tracking.
-> > > [..]
-> > > > +static void cppc_cpufreq_cpu_fie_exit(struct cpufreq_policy *policy)
-> > > > +{
-> > > > +	struct cppc_freq_invariance *cppc_fi;
-> > > > +	int cpu;
-> > > > +
-> > > > +	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
-> > > > +		return;
-> > > > +
-> > > > +	/* policy->cpus will be empty here, use related_cpus instead */
-> > > > +	topology_clear_scale_freq_source(SCALE_FREQ_SOURCE_CPPC, policy->related_cpus);
-> > > > +
-> > > > +	for_each_cpu(cpu, policy->related_cpus) {
-> > > > +		cppc_fi = &per_cpu(cppc_freq_inv, cpu);
-> > > 
-> > > Do you think it might be worth having here something like:
-> > > 
-> > > 		if (!cppc_fi->cpu_data)
-> > > 			continue;
-> > > 
-> > > This would be to protect against cases where the platform does not boot
-> > > with all CPUs or the module is loaded after some have already been
-> > > offlined. Unlikely, but..
-> > 
-> > Even in that case policy->cpus will contain all offline+online CPUs (at ->init()
-> > time), isn't it ?
-> > 
-> 
-> Right, my bad. I missed cpumask_and(policy->cpus, policy->cpus,
-> cpu_online_mask) being done after init(). It logically seems a bit
-> wrong, but drivers are in control of setting policy->cpus and acting on
-> it, and in this case the driver does the right thing.
 
-Do you want me to re-add your Reviewed-by here ?
 
--- 
-viresh
+On 6/25/2021 10:37 AM, Ionela Voinescu wrote:
+> Quick questions for you:
+> 
+> 1. When you say you tried a 5.4 kernel, did you try it with these
+> patches backported? They also have some dependencies with the recent
+> changes in the arch topology driver and cpufreq so they would not be
+> straight forward to backport.
+
+No. It turned out that this 5.4-based kernel has "ondemand" governor by default which works fine which could even scale down to the lowest_perf (1000 MHz). Once switched the governor to "schedutil", it could keep the freq to the lowest. While on the latest kernel, it also works fine by using "ondemand" first and then switch to "schedutil". Even though it can only scale down to lowest_nonlinear_perf (2000 MHz). It is more of that using "schedutil" by default would not work. Also, on the latest kernel, even "userspace" governor only allows to scale down to 2000 MHz.
+
+> If the 5.4 kernel you tried did not have these patches, it might be best
+> to try next/master that has these patches, but with
+> CONFIG_ACPI_CPPC_CPUFREQ_FIE=n, just to eliminate the possibility that
+> an incorrect frequency scale factor here would affect utilization that
+> would then affect the schedutil frequency selection. I would not expect
+> this behavior even if the scale factor was wrong, but it would be good
+> to rule out.
+
+I'll try that at least see if CONFIG_ACPI_CPPC_CPUFREQ_FIE=n would make the latest kernel to be able to scale down to 1000 MHz.
+
+> 2. Is your platform booting with all CPUs? Are any hotplug operations
+> done in your scenario?
+
+Yes, booting with all CPUs. No additional hotplug there.
