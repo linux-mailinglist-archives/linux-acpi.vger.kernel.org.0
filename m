@@ -2,120 +2,222 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FB173B4BFA
-	for <lists+linux-acpi@lfdr.de>; Sat, 26 Jun 2021 04:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 685873B4CD7
+	for <lists+linux-acpi@lfdr.de>; Sat, 26 Jun 2021 07:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229954AbhFZCbz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Jun 2021 22:31:55 -0400
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:2457 "EHLO
-        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229782AbhFZCby (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 25 Jun 2021 22:31:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1624674573; x=1656210573;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=OzVDDKY5xaLH3FGbd2mDr5h3AyjjviKx2toZSojncrg=;
-  b=irO7A5ACWUHR/cSxmXi6bWGOeyX8ob/elhPHO+TG6D3Ne4B5nD6RFI1c
-   3g1RoJeEDyOZ+ezCQEL0JMRmu4dnVgN/fu8UIERvFoB06lKFAlWkZkvz1
-   xm8eEpJmW99nQ3ew4gkY1lOo6Tx3SMlz3YuRPMd3xhnryJEdrnn5FMLP6
-   0=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 25 Jun 2021 19:29:30 -0700
-X-QCInternal: smtphost
-Received: from nasanexm03e.na.qualcomm.com ([10.85.0.48])
-  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/AES256-SHA; 25 Jun 2021 19:29:30 -0700
-Received: from [10.111.161.13] (10.80.80.8) by nasanexm03e.na.qualcomm.com
- (10.85.0.48) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Fri, 25 Jun
- 2021 19:29:27 -0700
-Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency
- invariance
-To:     Ionela Voinescu <ionela.voinescu@arm.com>
-CC:     Vincent Guittot <vincent.guittot@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Rafael Wysocki <rjw@rjwysocki.net>,
-        Ben Segall <bsegall@google.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-References: <cover.1624266901.git.viresh.kumar@linaro.org>
- <09a39f5c-b47b-a931-bf23-dc43229fb2dd@quicinc.com>
- <20210623041613.v2lo3nidpgw37abl@vireshk-i7>
- <2c540a58-4fef-5a3d-85b4-8862721b6c4f@quicinc.com>
- <20210624025414.4iszkovggk6lg6hj@vireshk-i7>
- <CAKfTPtAXMYYrG1w-iwSWXb428FkwFArEwXQgHnjShoCEMjdYcw@mail.gmail.com>
- <20210624104734.GA11487@arm.com>
- <daf1ddf5-6f57-84a8-2ada-90590c0c94b5@quicinc.com>
- <20210625102113.GB15540@arm.com>
- <1f83d787-a796-0db3-3c2f-1ca616eb1979@quicinc.com>
- <20210625143713.GA7092@arm.com>
-From:   Qian Cai <quic_qiancai@quicinc.com>
-Message-ID: <888b0178-00cc-ffa4-48a2-8563cef557a4@quicinc.com>
-Date:   Fri, 25 Jun 2021 22:29:26 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S229462AbhFZFa5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 26 Jun 2021 01:30:57 -0400
+Received: from mga14.intel.com ([192.55.52.115]:58145 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229451AbhFZFa5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 26 Jun 2021 01:30:57 -0400
+IronPort-SDR: 6Fv/kf8pv4pIpS9uWlCiS4vpwQH2zphRgXPLkXRSucBVoVcUHBrKUGOV1QvGSNs4Z0v7LqP0Pv
+ BWypZWV4iHuA==
+X-IronPort-AV: E=McAfee;i="6200,9189,10026"; a="207590720"
+X-IronPort-AV: E=Sophos;i="5.83,300,1616482800"; 
+   d="scan'208";a="207590720"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2021 22:28:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,300,1616482800"; 
+   d="scan'208";a="482039688"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 25 Jun 2021 22:28:31 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1lx0rm-0007aY-Kk; Sat, 26 Jun 2021 05:28:30 +0000
+Date:   Sat, 26 Jun 2021 13:27:56 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 33842e66a789d1e4aa9d0379c1f5f43fd4cc4ae7
+Message-ID: <60d6badc.pqat5jqqO2/O9QRD%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20210625143713.GA7092@arm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanexm03h.na.qualcomm.com (10.85.0.50) To
- nasanexm03e.na.qualcomm.com (10.85.0.48)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 33842e66a789d1e4aa9d0379c1f5f43fd4cc4ae7  Merge branch 'pm-devfreq' into linux-next
 
+elapsed time: 727m
 
-On 6/25/2021 10:37 AM, Ionela Voinescu wrote:
-> Quick questions for you:
-> 
-> 1. When you say you tried a 5.4 kernel, did you try it with these
-> patches backported? They also have some dependencies with the recent
-> changes in the arch topology driver and cpufreq so they would not be
-> straight forward to backport.
-> 
-> If the 5.4 kernel you tried did not have these patches, it might be best
-> to try next/master that has these patches, but with
-> CONFIG_ACPI_CPPC_CPUFREQ_FIE=n, just to eliminate the possibility that
-> an incorrect frequency scale factor here would affect utilization that
-> would then affect the schedutil frequency selection. I would not expect
-> this behavior even if the scale factor was wrong, but it would be good
-> to rule out.
-> 
-> 2. Is your platform booting with all CPUs? Are any hotplug operations
-> done in your scenario?
+configs tested: 161
+configs skipped: 3
 
-Ionela, I found that set ACPI_PROCESSOR=y instead of ACPI_PROCESSOR=m will fix the previous mentioned issues here (any explanations of that?) even though the scaling down is not perfect. Now, we have the following on this idle system:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-# cat /sys/devices/system/cpu/*/cpufreq/cpuinfo_cur_freq | sort | uniq  -c
- 	79 1000000
-  	1 1160000
- 	73 1400000
-  	1 2000000
-  	4 2010000
-  	1 2800000
-  	1 860000
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                  maltasmvp_eva_defconfig
+mips                         db1xxx_defconfig
+sh                        apsh4ad0a_defconfig
+mips                         tb0226_defconfig
+powerpc                           allnoconfig
+mips                        bcm47xx_defconfig
+powerpc                     skiroot_defconfig
+microblaze                          defconfig
+powerpc                 mpc836x_mds_defconfig
+sh                          rsk7201_defconfig
+s390                          debug_defconfig
+powerpc                 mpc832x_mds_defconfig
+arc                            hsdk_defconfig
+arc                           tb10x_defconfig
+ia64                            zx1_defconfig
+powerpc                         ps3_defconfig
+powerpc                      mgcoge_defconfig
+sh                        sh7785lcr_defconfig
+sh                           se7721_defconfig
+sh                        edosk7705_defconfig
+arm                          pxa3xx_defconfig
+arm                          moxart_defconfig
+arm                           u8500_defconfig
+arm                         palmz72_defconfig
+powerpc                 mpc834x_mds_defconfig
+i386                             alldefconfig
+x86_64                              defconfig
+arm                             ezx_defconfig
+arm                           sunxi_defconfig
+mips                        workpad_defconfig
+powerpc                    ge_imp3a_defconfig
+mips                         tb0219_defconfig
+powerpc                      pasemi_defconfig
+sh                             shx3_defconfig
+arm                            zeus_defconfig
+arc                          axs101_defconfig
+sh                          landisk_defconfig
+ia64                          tiger_defconfig
+sh                        dreamcast_defconfig
+arm                         s3c6400_defconfig
+mips                      pic32mzda_defconfig
+powerpc                mpc7448_hpc2_defconfig
+powerpc                     tqm8560_defconfig
+arc                     nsimosci_hs_defconfig
+arm                         hackkit_defconfig
+mips                     cu1830-neo_defconfig
+powerpc                 xes_mpc85xx_defconfig
+m68k                       m5275evb_defconfig
+powerpc                     pq2fads_defconfig
+arm                         vf610m4_defconfig
+m68k                            mac_defconfig
+microblaze                      mmu_defconfig
+arm                        trizeps4_defconfig
+arm                        cerfcube_defconfig
+riscv                          rv32_defconfig
+arm                             pxa_defconfig
+m68k                         amcore_defconfig
+sh                           sh2007_defconfig
+arm                           viper_defconfig
+powerpc                  mpc866_ads_defconfig
+powerpc                    adder875_defconfig
+mips                      malta_kvm_defconfig
+arm                         orion5x_defconfig
+mips                           ip27_defconfig
+sh                               j2_defconfig
+powerpc                     mpc83xx_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+x86_64               randconfig-a002-20210625
+x86_64               randconfig-a001-20210625
+x86_64               randconfig-a005-20210625
+x86_64               randconfig-a003-20210625
+x86_64               randconfig-a004-20210625
+x86_64               randconfig-a006-20210625
+i386                 randconfig-a002-20210625
+i386                 randconfig-a001-20210625
+i386                 randconfig-a003-20210625
+i386                 randconfig-a006-20210625
+i386                 randconfig-a005-20210625
+i386                 randconfig-a004-20210625
+x86_64               randconfig-a012-20210622
+x86_64               randconfig-a016-20210622
+x86_64               randconfig-a015-20210622
+x86_64               randconfig-a014-20210622
+x86_64               randconfig-a013-20210622
+x86_64               randconfig-a011-20210622
+i386                 randconfig-a011-20210625
+i386                 randconfig-a014-20210625
+i386                 randconfig-a013-20210625
+i386                 randconfig-a015-20210625
+i386                 randconfig-a012-20210625
+i386                 randconfig-a016-20210625
+i386                 randconfig-a011-20210622
+i386                 randconfig-a014-20210622
+i386                 randconfig-a013-20210622
+i386                 randconfig-a015-20210622
+i386                 randconfig-a012-20210622
+i386                 randconfig-a016-20210622
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-Even if I rerun a few times, there could still have a few CPUs running lower than lowest_perf (1GHz). Also, even though I set all CPUs to use "userspace" governor and set freq to the lowest. A few CPUs keep changing at will.
+clang tested configs:
+x86_64               randconfig-b001-20210625
+x86_64               randconfig-b001-20210622
+x86_64               randconfig-a002-20210626
+x86_64               randconfig-a001-20210626
+x86_64               randconfig-a005-20210626
+x86_64               randconfig-a003-20210626
+x86_64               randconfig-a004-20210626
+x86_64               randconfig-a006-20210626
+x86_64               randconfig-a002-20210622
+x86_64               randconfig-a001-20210622
+x86_64               randconfig-a005-20210622
+x86_64               randconfig-a003-20210622
+x86_64               randconfig-a004-20210622
+x86_64               randconfig-a006-20210622
 
-# cat /sys/devices/system/cpu/*/cpufreq/cpuinfo_cur_freq | sort | uniq  -c
-	156 1000000
-  	3 2000000
-  	1 760000
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
