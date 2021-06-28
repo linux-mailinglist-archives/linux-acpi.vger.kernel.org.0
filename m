@@ -2,56 +2,24 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74CE23B5DD7
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Jun 2021 14:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB2F3B5EB6
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Jun 2021 15:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232999AbhF1MUf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Jun 2021 08:20:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35082 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232944AbhF1MUe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Jun 2021 08:20:34 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53A4C061760
-        for <linux-acpi@vger.kernel.org>; Mon, 28 Jun 2021 05:18:08 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id h15so32167973lfv.12
-        for <linux-acpi@vger.kernel.org>; Mon, 28 Jun 2021 05:18:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tehhd6VdrWiCxC9wwo4+vP+m/hT8FLLz1Puo1lztuNw=;
-        b=KhhFpIXg+qxGxF2iJ5ep9F/OPXTHEn0MuRixB6AaEixZUtOS9bttFWDm1DScU98T32
-         zA63CoJOY1F0buCQHa4/twZpUuF2iO5/LX2s9F5r8YGnK0H/PUXuD8MIjlDLQEmXICwL
-         an/X93D0izZMUt7MwWp4MV/r32T0flPWeGtsUoNRKBAIDylgtWG+5If0YXFn/kFypPou
-         trtpQrRx/ZGq8Jsh292lJwbP9AFMpfuk9epbmeEO6/Hxw3lo7o6U7jK58MHiuUdqR4iP
-         f3O9Yjecpp4zAhdtlOG135XV0bOMj2lkt+T03fXLTW5txPcZsY+4hUMNwzuXAkOryD0a
-         dXNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tehhd6VdrWiCxC9wwo4+vP+m/hT8FLLz1Puo1lztuNw=;
-        b=EzFIKP917C4i+xHYRbf/8Np9xcF4DpcM5POvpq6IocozVOjCUi7AU2NkxCbHKNnT3R
-         wkPVjYZTZSUEwtFOu4V+vALxaPIyI5pBC+gOoMk7sgvZQad/pIJCHQHtvNBRPd5nKgjO
-         mRA007vGSRNiWFWZ/Cja9PB8k+zORXZ0wCbI+ahrcXCVbH32b7nwQDftIPUiddB9H1ls
-         u/+HQbZVwXmdnHMx8gQcfHZL1J1VoQWuTFs152gG1c+C7E3ezBWZ9FKf4rwIveK9alha
-         zi7vcAUBDaYmiHBv6QstKMtePIMpTx7HQ9g7+LVWUPxjGcWT/eX9IoQxnUv5XJTFyFY/
-         5qlw==
-X-Gm-Message-State: AOAM533zM7H0plwRgqLNj91+ohYgl2JuEBFFH7eSs5MS65+Q0kWpXQwc
-        6/zWSxtoUNhBA0Geex3ivXiylrXJ5sVVXrqoYPB/3g==
-X-Google-Smtp-Source: ABdhPJwBLBEmrOdTpaFNUaLcW8/3UYij/PsDgyhCwFUL2rfX+2Su3J0vrK3es4G/NRbn9RYFl/KP25V+1j0+z6MO9mg=
-X-Received: by 2002:ac2:48b2:: with SMTP id u18mr18957108lfg.154.1624882686925;
- Mon, 28 Jun 2021 05:18:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1624266901.git.viresh.kumar@linaro.org> <20210628115452.GA28797@arm.com>
- <CAKfTPtAtE1WHA19=BrWyekHgFYVn0+LdTLROJzYRdshp-EYOWA@mail.gmail.com>
-In-Reply-To: <CAKfTPtAtE1WHA19=BrWyekHgFYVn0+LdTLROJzYRdshp-EYOWA@mail.gmail.com>
-From:   Vincent Guittot <vincent.guittot@linaro.org>
-Date:   Mon, 28 Jun 2021 14:17:55 +0200
-Message-ID: <CAKfTPtB3w5Zih_gCFgt9Hp=bq-Z7tQaFDbZkfAd+cg2TKRMsMw@mail.gmail.com>
-Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency invariance
-To:     Ionela Voinescu <ionela.voinescu@arm.com>
+        id S233079AbhF1NKm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Jun 2021 09:10:42 -0400
+Received: from foss.arm.com ([217.140.110.172]:58884 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233037AbhF1NKl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 28 Jun 2021 09:10:41 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A7B8C1042;
+        Mon, 28 Jun 2021 06:08:15 -0700 (PDT)
+Received: from localhost (unknown [10.1.195.40])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4741F3F718;
+        Mon, 28 Jun 2021 06:08:15 -0700 (PDT)
+Date:   Mon, 28 Jun 2021 14:08:13 +0100
+From:   Ionela Voinescu <ionela.voinescu@arm.com>
+To:     Vincent Guittot <vincent.guittot@linaro.org>
 Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
         Rafael Wysocki <rjw@rjwysocki.net>,
         Ben Segall <bsegall@google.com>,
@@ -72,14 +40,22 @@ Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency
+ invariance
+Message-ID: <20210628130813.GA18112@arm.com>
+References: <cover.1624266901.git.viresh.kumar@linaro.org>
+ <20210628115452.GA28797@arm.com>
+ <CAKfTPtAtE1WHA19=BrWyekHgFYVn0+LdTLROJzYRdshp-EYOWA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKfTPtAtE1WHA19=BrWyekHgFYVn0+LdTLROJzYRdshp-EYOWA@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 28 Jun 2021 at 14:14, Vincent Guittot
-<vincent.guittot@linaro.org> wrote:
->
+On Monday 28 Jun 2021 at 14:14:14 (+0200), Vincent Guittot wrote:
 > On Mon, 28 Jun 2021 at 13:54, Ionela Voinescu <ionela.voinescu@arm.com> wrote:
 > >
 > > Hi guys,
@@ -187,13 +163,31 @@ On Mon, 28 Jun 2021 at 14:14, Vincent Guittot
 > > [239415.894738] CPU96: cppc scale: 630.
 > > [239417.875326] CPU96: cppc scale: 245.
 > >
->
+> 
 > With the counter being 32bits and the freq scaling being update at
 > tick, you can easily get a overflow on it in idle system. I can easily
 > imagine that when you unplug CPUs there is enough activity on the CPU
 > to update it regularly whereas with all CPUs, the idle time is longer
 > that the counter overflow
->
+> 
+
+Thanks! Yes, given the high wraparound time I thought they were 64 bit.
+All variables in software are 64 bit, but looking at bit width in the
+_CPC entries, the platform counters are 32 bit counters.
+
+> There are 32bits and the overflow need to be handled by cppc_cpufreq
+> driver
+
+I'm wondering if this would be best handled in the function that reads
+the counters or in the cppc_cpufreq driver that uses them. Probably the
+latter, as you say, as the read function should only return the raw
+values, but it does complicate things.
+
+Thanks,
+Ionela.
+
+
+
 > > The counter values shown by feedback_ctrs do not seem monotonic even
 > > when only core 0 threads are online.
 > >
@@ -205,9 +199,6 @@ On Mon, 28 Jun 2021 at 14:14, Vincent Guittot
 > > ref:712486144  del:3708490753
 > > ref:3658438336 del:3401357212
 > > ref:1570998080 del:2279728438
-
-There are 32bits and the overflow need to be handled by cppc_cpufreq driver
-
 > >
 > > For now I was just wondering if you have seen the same and whether you
 > > have an opinion on this.
