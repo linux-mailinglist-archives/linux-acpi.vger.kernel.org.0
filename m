@@ -2,150 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D443B5CB6
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Jun 2021 12:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4501F3B5D45
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Jun 2021 13:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232586AbhF1Kv5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Jun 2021 06:51:57 -0400
-Received: from foss.arm.com ([217.140.110.172]:56396 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232486AbhF1Kv4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 28 Jun 2021 06:51:56 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CC94D6E;
-        Mon, 28 Jun 2021 03:49:31 -0700 (PDT)
-Received: from localhost (unknown [10.1.195.40])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B06E63F694;
-        Mon, 28 Jun 2021 03:49:30 -0700 (PDT)
-Date:   Mon, 28 Jun 2021 11:49:29 +0100
-From:   Ionela Voinescu <ionela.voinescu@arm.com>
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        linux-pm@vger.kernel.org, Qian Cai <quic_qiancai@quicinc.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 4/4] cpufreq: CPPC: Add support for frequency
- invariance
-Message-ID: <20210628104929.GA29595@arm.com>
-References: <cover.1624266901.git.viresh.kumar@linaro.org>
- <f963d09e57115969dae32827ade5558b0467d3a0.1624266901.git.viresh.kumar@linaro.org>
- <20210624094812.GA6095@arm.com>
- <20210624130418.poiy4ph66mbv3y67@vireshk-i7>
- <20210625085454.GA15540@arm.com>
- <20210625165418.shi3gkebumqllxma@vireshk-i7>
+        id S232835AbhF1LmU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Jun 2021 07:42:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54812 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232743AbhF1LmT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Jun 2021 07:42:19 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E6E5C061574
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Jun 2021 04:39:53 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id yy20so21676231ejb.6
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Jun 2021 04:39:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Mozi9talEt/mI/l6KvxWbDISyLan2Xy8GUlPURIr5DU=;
+        b=RU2FaJ2fR3YbZKF2+nW4fWI0RRcd7k2k5Cy7AtOyXK/ZpNf9PWr0pahjkiGV2jHtJw
+         zAbwMY6ASGCMlfS7ztTk7gtjUROEYw14wT1XNU/hQBYOEsMOe0ZCYnzJvysm4Orm9I0l
+         6qRMCH8Y612cgmpvUC8NSSwYR6+qbAc4iCuxeBs+v8kUFe59YBblKZAzJoMb1+v0p2dj
+         lquRLrbzYGVmdsEWB6XykKosh2DsVNgRK1Fms3rfjeWl0ZwRkcKfUM24nsHvYH0gB9WD
+         ab08TTpCuMMPssENbX8t3OzdlRRqdkb+EnLGizV98S/UWyQG/3iSfaFO3oPIU2k+JHIY
+         ljXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=Mozi9talEt/mI/l6KvxWbDISyLan2Xy8GUlPURIr5DU=;
+        b=log290VmBspVF9olmgC4Mx1och2xltURDk14RXHZlz9MjAFnPPWnmNPA8Jr79syKxn
+         l5su9I94FFA0wuTVQUmmvlBAJIeXpuv3KAbRG5jdnWCYpAGDqE0wIktyFVmMah7g/ceI
+         fDwyGVgBHFCvt0u28sw26g/9a6Ds0nNhQ8lq/WelVkf4dG+MYRY1W4/o4/SxDmMG1T53
+         pgOLaXZBb1Z+NTLxhO7n4hLdCXCqBFgoGsHAhen5EiOUfguTjSpyd3g+EaKUlHwrja9u
+         V4xQBn/tL/oKCkCdWMwiJmrZo+8xOmd5WtOPXR5y5evKEZ2D7WknpBndM9if8DSHv/J6
+         /tvg==
+X-Gm-Message-State: AOAM533H3l5RJvbImr/xoaopcgyXUKyOocUcixnGaIMW78m6paLZtdHT
+        gevC12H2e4W+/VXjwSAQV3MXWWqTzCiHUyaqUbk=
+X-Google-Smtp-Source: ABdhPJwW4oJoH1iHlNvKPYZm6j4hS4CzcLJO/hXhJOk4dztqM2rd7AWMqYvUlCilHZsAKWRQZhTrSVU136eVoKjWXYw=
+X-Received: by 2002:a17:907:9711:: with SMTP id jg17mr24293192ejc.106.1624880391646;
+ Mon, 28 Jun 2021 04:39:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210625165418.shi3gkebumqllxma@vireshk-i7>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Received: by 2002:a17:907:3f23:0:0:0:0 with HTTP; Mon, 28 Jun 2021 04:39:51
+ -0700 (PDT)
+Reply-To: georgemike7031@gmail.com
+From:   george mike <greogebrown@gmail.com>
+Date:   Mon, 28 Jun 2021 13:39:51 +0200
+Message-ID: <CAH0Hv2iLR4de6EWY=37Jn2QaZU8JkSXvTw3RwmQTDehO+OQOVQ@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Friday 25 Jun 2021 at 22:24:18 (+0530), Viresh Kumar wrote:
-> On 25-06-21, 09:54, Ionela Voinescu wrote:
-> > Hey,
-> > 
-> > On Thursday 24 Jun 2021 at 18:34:18 (+0530), Viresh Kumar wrote:
-> > > On 24-06-21, 10:48, Ionela Voinescu wrote:
-> > > > On Monday 21 Jun 2021 at 14:49:37 (+0530), Viresh Kumar wrote:
-> > > > > The Frequency Invariance Engine (FIE) is providing a frequency scaling
-> > > > > correction factor that helps achieve more accurate load-tracking.
-> > > > [..]
-> > > > > +static void cppc_cpufreq_cpu_fie_exit(struct cpufreq_policy *policy)
-> > > > > +{
-> > > > > +	struct cppc_freq_invariance *cppc_fi;
-> > > > > +	int cpu;
-> > > > > +
-> > > > > +	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
-> > > > > +		return;
-> > > > > +
-> > > > > +	/* policy->cpus will be empty here, use related_cpus instead */
-> > > > > +	topology_clear_scale_freq_source(SCALE_FREQ_SOURCE_CPPC, policy->related_cpus);
-> > > > > +
-> > > > > +	for_each_cpu(cpu, policy->related_cpus) {
-> > > > > +		cppc_fi = &per_cpu(cppc_freq_inv, cpu);
-> > > > 
-> > > > Do you think it might be worth having here something like:
-> > > > 
-> > > > 		if (!cppc_fi->cpu_data)
-> > > > 			continue;
-> > > > 
-> > > > This would be to protect against cases where the platform does not boot
-> > > > with all CPUs or the module is loaded after some have already been
-> > > > offlined. Unlikely, but..
-> > > 
-> > > Even in that case policy->cpus will contain all offline+online CPUs (at ->init()
-> > > time), isn't it ?
-> > > 
-> > 
-> > Right, my bad. I missed cpumask_and(policy->cpus, policy->cpus,
-> > cpu_online_mask) being done after init(). It logically seems a bit
-> > wrong, but drivers are in control of setting policy->cpus and acting on
-> > it, and in this case the driver does the right thing.
-> 
-> Do you want me to re-add your Reviewed-by here ?
-> 
+Hallo
 
-To be honest I would like to have more time on this before you merge the
-set, to better understand Qian's results and some observations I have
-for Thunder X2 (I will share in a bit).
+Mein Name ist George Mike, ich bin von Beruf Rechtsanwalt. Ich m=C3=B6chte
+dir anbieten
+der n=C3=A4chste Angeh=C3=B6rige meines Klienten. Sie erben die Summe von (=
+8,5
+Millionen US-Dollar)
+Dollar, die mein Mandant vor seinem Tod auf der Bank hinterlie=C3=9F.
 
-For the code, I think it's fine. I have a single observation regarding
-the following code:
+Mein Mandant ist ein B=C3=BCrger Ihres Landes, der mit seiner Frau bei
+einem Autounfall gestorben ist
+und einziger Sohn. Ich habe Anspruch auf 50% des Gesamtfonds, w=C3=A4hrend
+50% dies tun werden
+sein f=C3=BCr dich.
+Bitte kontaktieren Sie meine private E-Mail hier f=C3=BCr weitere
+Details:georgemike7031@gmail.com
 
-> +static void cppc_cpufreq_cpu_fie_init(struct cpufreq_policy *policy)
-> +{
-> +	struct cppc_freq_invariance *cppc_fi;
-> +	int cpu, ret;
-> +
-> +	if (cppc_cpufreq_driver.get == hisi_cppc_cpufreq_get_rate)
-> +		return;
-> +
-> +	for_each_cpu(cpu, policy->cpus) {
-> +		cppc_fi = &per_cpu(cppc_freq_inv, cpu);
-> +		cppc_fi->cpu = cpu;
-> +		cppc_fi->cpu_data = policy->driver_data;
-> +		kthread_init_work(&cppc_fi->work, cppc_scale_freq_workfn);
-> +		init_irq_work(&cppc_fi->irq_work, cppc_irq_work);
-> +
-> +		ret = cppc_get_perf_ctrs(cpu, &cppc_fi->prev_perf_fb_ctrs);
-> +		if (ret) {
-> +			pr_warn("%s: failed to read perf counters for cpu:%d: %d\n",
-> +				__func__, cpu, ret);
-> +			return;
-> +		}
-
-For this condition above, think about a scenario where reading counters
-for offline CPUs returns an error. I'm not sure if that can happen, to
-be honest. That would mean here that you will never initialise the freq
-source unless all CPUs in the policy are online at policy creation.
-
-My recommendation is to warn about the failed read of perf counters but
-only return from this function if the target CPU is online as well when
-reading counters fails.
-
-This is probably a nit, so I'll let you decide if you want to do something
-about this.
-
-Thanks,
-Ionela.
-
-> +	}
-> +
-> +	/* Register for freq-invariance */
-> +	topology_set_scale_freq_source(&cppc_sftd, policy->cpus);
-> +}
-
-
-
-> -- 
-> viresh
+Vielen Dank im Voraus,
+Herr George Mike,
