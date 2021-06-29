@@ -2,142 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C0E53B768A
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jun 2021 18:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44A933B76C8
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jun 2021 19:00:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232755AbhF2QiQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Jun 2021 12:38:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44102 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232116AbhF2QiQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 29 Jun 2021 12:38:16 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C820F61DC2;
-        Tue, 29 Jun 2021 16:35:45 +0000 (UTC)
-Date:   Tue, 29 Jun 2021 17:35:43 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Veronika Kabatova <vkabatov@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        CKI Project <cki-project@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Memory Management <mm-qe@redhat.com>,
-        skt-results-master@redhat.com, Jeff Bastian <jbastian@redhat.com>,
-        Jan Stancek <jstancek@redhat.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        rjw@rjwysocki.net, lenb@kernel.org, guohanjun@huawei.com,
-        sudeep.holla@arm.com, ardb@kernel.org, lv.zheng@intel.com,
-        tony.luck@intel.com
-Subject: Re: =?utf-8?B?4p2MIEZBSUw=?= =?utf-8?Q?=3A?= Test report for kernel
- 5.13.0-rc7 (arm-next, 8ab9b1a9)
-Message-ID: <20210629163543.GA12361@arm.com>
-References: <cki.6A65B499FE.46BPQ6DJTC@redhat.com>
- <20210625083918.GA2736@willie-the-truck>
- <CA+tGwn=rP_hAMLLtoy_s90ZzBjfMggu7T2Qj8HyFfGh1BGUoRA@mail.gmail.com>
- <31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com>
- <20210625110944.GB20835@arm.com>
- <48b23351-3dba-bec8-242f-3c918ae55708@arm.com>
- <8a28663f-6541-6ff4-3de0-b140e3f8a5b9@arm.com>
- <20210629144415.GA28457@lpieralisi>
- <14ca6f72-9b0f-ebd7-9cf8-a5d6190c8e5d@arm.com>
+        id S234214AbhF2RCe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Jun 2021 13:02:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30516 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233994AbhF2RCd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 29 Jun 2021 13:02:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1624986006;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=lvbNyAaXNTQ5069fiqWmGdMCCDHTjfldNskdDQUflO8=;
+        b=iMBPB+Rvw0vtMfq8hYDmCssyQYjQmzleJWcZTJ1SF/g9G6xLUODAqm8/lcT3hLY+9odKTN
+        Ms+J5yTyPrgbid2PjEGDB6EjGDMIQ3BoiDC2yt0Zb9sJA8oC/WGJEejpIfu6yLydjZgeyc
+        vQ5d0iz3rOenRFGd0VdpCNqQgoXD9iw=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-595-GGsXezsVOiqQlEIecPcejw-1; Tue, 29 Jun 2021 13:00:04 -0400
+X-MC-Unique: GGsXezsVOiqQlEIecPcejw-1
+Received: by mail-ej1-f72.google.com with SMTP id f1-20020a1709064941b02903f6b5ef17bfso5962274ejt.20
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Jun 2021 10:00:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=lvbNyAaXNTQ5069fiqWmGdMCCDHTjfldNskdDQUflO8=;
+        b=Fb88FMUhI3FvjCHEDQa1hBhFTW0YY1/W7/NrEUOm4WZklhLiPjsbGw/zlUK/pZFdcW
+         yTUvyhBi53FiZHhIuCZ+EIbWRXFcUtY4kT7kqK3xOriKhDagEG/5TR/j7++RErPhRrpJ
+         JCeYl1cHkBi1v4kLkVdVC2X38Ho2J94MYiyPIHhxaT0Fi5iWc6iMBKYgF079UEosQmhI
+         9CxntDLuGv42JHKu87kHKD9NpaAHaUZnwiGxh8ke0Oe3Kjx9NGVyClSan6rqky0LIVCA
+         dXBD/Mj96xXnfhZ7s28Wc6Et6LrhKzjt7CleSZDtwtwf1GSxNyg4JEFtwyIVXyF8xSEP
+         bXwg==
+X-Gm-Message-State: AOAM533AvC32o7DXawXlWZdhrX63L0zaEB+jo/NP2HX1B2z+Xl79YquQ
+        AhxoslXCk2dwug2WP3Kgp+ZICrIcgXjWP3Gp/2OB4SQGPeWIKhCUglt/tQFdC5yRZRkNHz1OXCH
+        AyE6MUgkjvV22oFRE+wFtvg==
+X-Received: by 2002:a17:906:d20b:: with SMTP id w11mr31393429ejz.242.1624986002911;
+        Tue, 29 Jun 2021 10:00:02 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyqRVaEdobduYFFV7UZZexaizEQ7YzvICKGT0JHpiGhiMaEkOSXzTmU+KuaIvfsal9TLSHd+A==
+X-Received: by 2002:a17:906:d20b:: with SMTP id w11mr31393419ejz.242.1624986002720;
+        Tue, 29 Jun 2021 10:00:02 -0700 (PDT)
+Received: from x1.localdomain ([2a0e:5700:4:11:334c:7e36:8d57:40cb])
+        by smtp.gmail.com with ESMTPSA id i6sm8489096ejr.68.2021.06.29.10.00.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Jun 2021 10:00:02 -0700 (PDT)
+Subject: Re: [PATCH] mfd: axp20x: Update AXP288 volatile ranges
+To:     wens@csie.org
+Cc:     Lee Jones <lee.jones@linaro.org>, linux-acpi@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Clamshell <clamfly@163.com>
+References: <20210626132732.40063-1-hdegoede@redhat.com>
+ <CAGb2v64O3w6AGH4V-r6D_Zni-pCW2g7BTTceb4CoeAdowR2KNw@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <e6bffdd7-20f8-f04c-0c27-09223ce963a0@redhat.com>
+Date:   Tue, 29 Jun 2021 19:00:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <CAGb2v64O3w6AGH4V-r6D_Zni-pCW2g7BTTceb4CoeAdowR2KNw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <14ca6f72-9b0f-ebd7-9cf8-a5d6190c8e5d@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jun 29, 2021 at 04:14:55PM +0100, Robin Murphy wrote:
-> On 2021-06-29 15:44, Lorenzo Pieralisi wrote:
-> > On Tue, Jun 29, 2021 at 12:48:14PM +0100, Robin Murphy wrote:
-> > > [ +ACPI audience ]
-> > > 
-> > > On 2021-06-25 12:15, Robin Murphy wrote:
-> > > > On 2021-06-25 12:09, Catalin Marinas wrote:
-> > > > > On Fri, Jun 25, 2021 at 12:02:52PM +0100, Robin Murphy wrote:
-> > > > > > On 2021-06-25 10:52, Veronika Kabatova wrote:
-> > > > > > [...]
-> > > > > > > > >           ❌ stress: stress-ng
-> > > > > > > > 
-> > > > > > > > Oh no, this looks like another alignment fault in memcpy:
-> > > > > > > > 
-> > > > > > > > [13330.651903] Unable to handle kernel paging request at
-> > > > > > > > virtual address ffff8000534705ff
-[...]
-> > > > > > > > [13330.652218] Call trace:
-> > > > > > > > [13330.652221]  __memcpy+0x168/0x250
-> > > > > > > > [13330.652225]  acpi_data_show+0x5c/0x8c
-> > > > > > > > [13330.652232]  sysfs_kf_bin_read+0x78/0xa0
-> > > > > > > > [13330.652238]  kernfs_file_read_iter+0x9c/0x1a4
-> > > > > > > > [13330.652241]  kernfs_fop_read_iter+0x34/0x50
-> > > > > > > > [13330.652244]  new_sync_read+0xdc/0x154
-> > > > > > > > [13330.652253]  vfs_read+0x158/0x1e4
-> > > > > > > > [13330.652260]  ksys_read+0x64/0xec
-> > > > > > > > [13330.652266]  __arm64_sys_read+0x28/0x34
-> > > > > > > > [13330.652273]  invoke_syscall+0x50/0x120
-> > > > > > > > [13330.652280]  el0_svc_common.constprop.0+0x4c/0xd4
-> > > > > > > > [13330.652284]  do_el0_svc+0x30/0x9c
-> > > > > > > > [13330.652286]  el0_svc+0x2c/0x54
-> > > > > > > > [13330.652294]  el0t_64_sync_handler+0x1a4/0x1b0
-> > > > > > > > [13330.652296]  el0t_64_sync+0x19c/0x1a0
-> > > > > > > > [13330.652303] Code: a984346c a9c4342c f1010042 54fffee8 (a97c3c8e)
-> > > > > > > > [13330.652307] ---[ end trace 227d4380f57145d4 ]---
-> > > > > > > > 
-> > > > > > > > So maybe this issue isn't limited to weird modules, after all...
-> > > > > > > 
-> > > > > > > It ran on the machine from the same set that we were able to reproduce
-> > > > > > > it on previously. If you or anyone else have an idea on how
-> > > > > > > to stabilize the reproducibility or have a debug patch we'll be happy to try it.
-> > > > > > 
-> > > > > > Possibly it depends on the individual machines' firmware exactly how the
-> > > > > > relevant bits of their ACPI tables are aligned in memory?
-> > > > > > 
-> > > > > > I've started digging into that callstack - it may not be a "weird module"
-> > > > > > but it's definitely crusty ACPI code... a238317ce818 ("ACPI: Clean up
-> > > > > > acpi_os_map/unmap_memory() to eliminate __iomem.") looks frankly a bit
-> > > > > > questionable in its decision to blithely cast away __iomem, but then the
-> > > > > > rationale in aafc65c731fe ("ACPI: add arm64 to the platforms that use
-> > > > > > ioremap") seems particularly dubious on top of that (especially
-> > > > > > given this end result).
-[...]
-> > > After picking through the UEFI spec I think I've now got a clearer picture
-> > > of what's happening, but I'm not sure where it goes from here...
-> > > 
-> > > The spec implies that it *is* legitimate for runtime-loaded ACPI tables to
-> > > lie outside the EFI memory map, and that case they must be assumed to be
-> > > uncached, so the behaviour of acpi_os_ioremap() is correct.
-> > 
-> > I'd agree with the reasoning, it would be good to pinpoint whether
-> > that's what actually triggers the issue.
-> > 
-> > I'd like to replicate it if possible (it is TX2 HW but firmware
-> > config is likely to differ from the HW I have at hand), the
-> > test command line that triggers the fault would be useful as
-> > a starting point.
-> > 
-> > Furthermore, is this a v5.13-rc* regression ? If so it would be
-> > good to bisect it - I can't recollect arm64 changes that could
-> > have introduced this regression in the last cycle but I may have
-> > missed something.
+Hi,
+
+Thank you for the review.
+
+On 6/29/21 4:19 AM, Chen-Yu Tsai wrote:
+> Hi,
 > 
-> The actual change which has brought this to light is the update to arm64's
-> memcpy() routine for 5.13 - the new version is more aggressive at making
-> unaligned loads from the source buffer, so now triggers alignment faults
-> more readily when (wrongly) used on iomem mappings in places that were
-> getting away with it by chance under the previous implementation (see also
-> [1], for example).
+> On Sat, Jun 26, 2021 at 9:29 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>
+>> On Cherry Trail devices with an AXP288 PMIC the external SD-card slot
+>> used the AXP's DLDO2 as card-voltage and either DLDO3 or GPIO1LDO
+>> (GPIO1 pin in low noise LDO mode) as signal-voltage.
+>>
+>> These regulators are turned on/off and in case of the signal-voltage
+>> also have their output-voltage changed by the _PS0 and _PS3 power-
+>> management ACPI methods on the MMC-controllers ACPI fwnode as well as
+>> by the _DSM ACPI method for changing the signal voltage.
+>>
+>> The AML code implementing these methods is directly accessing the
+>> PMIC through ACPI I2C OpRegion accesses, instead of using the special
+>> PMIC OpRegion handled by drivers/acpi/pmic/intel_pmic_xpower.c .
+>>
+>> This means that the contents of the involved PMIC registers can change
+>> without the change being made through the regmap interface, so regmap
+>> should not cache the contents of these registers.
+>>
+>> Mark the LDO power on/off, the LDO voltage control and the GPIO1 control
+>> register as volatile, to avoid regmap caching their contents.
+>>
+>> Specifically this fixes an issue on some models where the i915 driver
+>> toggles another LDO using the same on/off register on/off through
+>> MIPI sequences (through intel_soc_pmic_exec_mipi_pmic_seq_element())
+>> which then writes back a cached on/off register-value where the
+>> card-voltage is off causing the external sdcard slot to stop working
+>> when the screen goes blank, or comes back on again.
+>>
+>> Note the AXP288 PMIC is only used on Bay- and Cherry-Trail platforms,
+>> so even though this is an ACPI specific problem there is no need to
+>> make the new volatile ranges conditional since these platforms always
+>> use ACPI.
+>>
+>> Fixes: dc91c3b6fe66 ("mfd: axp20x: Mark AXP20X_VBUS_IPSOUT_MGMT as volatile")
+> 
+> Maybe you want
+> 
+> Fixes: cd53216625a0 ("mfd: axp20x: Fix axp288 volatile ranges")
+> 
+> and then list the other one as a prerequisite? Or just list both tags.
 
-I wouldn't revert any of the memcpy() stuff as it just uncovered an
-existing bug in how the ACPI tables are handled. Could we actually hit
-a similar issue with C code parsing the ACPI tables?
+I've just listed both for v2 of this patch.
 
-Is there a way to map the ACPI tables as Normal Noncacheable
-(ioremap_wc)? Presumably no-one sane would place ACPI tables in memory
-that's sensitive to the access size.
+> Should we CC stable on this?
 
--- 
-Catalin
+That is not necessary, the fix will automatically get picked up in
+the relevant stable series based on the Fixes tag (in my experience).
+
+>> Reported-and-tested-by: Clamshell <clamfly@163.com>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>  drivers/mfd/axp20x.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+>> index 3eae04e24ac8..db6a21465594 100644
+>> --- a/drivers/mfd/axp20x.c
+>> +++ b/drivers/mfd/axp20x.c
+>> @@ -125,12 +125,13 @@ static const struct regmap_range axp288_writeable_ranges[] = {
+>>
+>>  static const struct regmap_range axp288_volatile_ranges[] = {
+>>         regmap_reg_range(AXP20X_PWR_INPUT_STATUS, AXP288_POWER_REASON),
+>> +       regmap_reg_range(AXP22X_PWR_OUT_CTRL1, AXP22X_ALDO3_V_OUT),
+> 
+> This region also covers the voltage and on/off controls for the buck
+> regulators. Maybe include that in your commit message if that was the
+> intent, or skip over them if not?
+
+This was intentional I've added the following comment to the commit
+msg for v2:
+
+"The regulator register-range now marked volatile also includes the
+buck regulator control registers. This is done on purpose these are
+normally not touched by the AML code, but they are updated directly
+by the SoC's PUNIT which means that they may also change without going
+through regmap."
+
+Regards,
+
+Hans
+
+
+
+
+> 
+> 
+> Thanks
+> ChenYu
+> 
+>>         regmap_reg_range(AXP288_BC_GLOBAL, AXP288_BC_GLOBAL),
+>>         regmap_reg_range(AXP288_BC_DET_STAT, AXP20X_VBUS_IPSOUT_MGMT),
+>>         regmap_reg_range(AXP20X_CHRG_BAK_CTRL, AXP20X_CHRG_BAK_CTRL),
+>>         regmap_reg_range(AXP20X_IRQ1_EN, AXP20X_IPSOUT_V_HIGH_L),
+>>         regmap_reg_range(AXP20X_TIMER_CTRL, AXP20X_TIMER_CTRL),
+>> -       regmap_reg_range(AXP22X_GPIO_STATE, AXP22X_GPIO_STATE),
+>> +       regmap_reg_range(AXP20X_GPIO1_CTRL, AXP22X_GPIO_STATE),
+>>         regmap_reg_range(AXP288_RT_BATT_V_H, AXP288_RT_BATT_V_L),
+>>         regmap_reg_range(AXP20X_FG_RES, AXP288_FG_CC_CAP_REG),
+>>  };
+>> --
+>> 2.31.1
+>>
+> 
+
