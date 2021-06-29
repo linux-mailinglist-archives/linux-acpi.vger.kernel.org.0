@@ -2,52 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6C883B6DBF
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jun 2021 06:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 716A33B6DC4
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jun 2021 06:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232008AbhF2EsA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 29 Jun 2021 00:48:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57092 "EHLO
+        id S229634AbhF2EzI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 29 Jun 2021 00:55:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231932AbhF2Er6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Jun 2021 00:47:58 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300B1C061766
-        for <linux-acpi@vger.kernel.org>; Mon, 28 Jun 2021 21:45:31 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id y17so5116558pgf.12
-        for <linux-acpi@vger.kernel.org>; Mon, 28 Jun 2021 21:45:31 -0700 (PDT)
+        with ESMTP id S230077AbhF2EzG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 29 Jun 2021 00:55:06 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ADAEC061760
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Jun 2021 21:52:39 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id g21so14475435pfc.11
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Jun 2021 21:52:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=FgDtIS5nzZ8aSR8Tc0jaozyyA+YsZVdTeRCKNqHLJP8=;
-        b=s+7hfDSlxD/Y9a7eABn6WMMoSmQi/YCkYcPpVxgDJeowPogFtVhq8UmJPpz5h7oBm1
-         yjuOC+N+NcfKGIW2fa+h54NgV7wTxtPvYZxPl1bmMcx/ikaLrtup3v5AZ2M9lYH0PTt6
-         uG4XXUJis4pLbInL2bVnVHHO5uUzd0R/LLxnf/S+aBBAfxTxsqmHkihRV/DdToPexsmx
-         yRzCvO6SaRB9MUIElb3fOaTRr5CtwqWiN4hEQKa+6lxjMnPQ46Oks12EdtYSuj6FKWha
-         ybm5ch2WewxpIlUljrw9BSYI6V0rf+6O+IZodfEQC8OV5ZsjDPbVxuB8om9xkKir9LHx
-         FJsw==
+        bh=nAe56hWX/iMkGrPjUvuhXGh5ni1/NjeEmb5RdJ/Ussc=;
+        b=G66g0bLNjh/AJ0CJ0kUeXNklSmwJwSgkBCRQvpb6C5iOnIxN6Mvdk6x6OLENG97S4A
+         kSJteKWeEpfadf8SvP2t5wk3AKbv/pzMWRHjrlmEpKiHGr7jxv/+6MnfUUVEXNvz9wsR
+         t8+pMkm5YA4o1e8ks9ArKpT27ECkJIUekUEfNGCTD/xim3499ZsKLQ19VPDhPg6rH/hB
+         FSp3fL0r/FK4Kh5Kd2qtpWCE7ZzGhk59zzDieJ3tGEmm76G/ogewnvvJckNBApn64Nwa
+         ouP7Pru3ur1kHniHr1MOxK5Zt32wvUq5TWytNGDfFxXoZRrCWRcI7dNUGTohM0BBoTDC
+         md7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=FgDtIS5nzZ8aSR8Tc0jaozyyA+YsZVdTeRCKNqHLJP8=;
-        b=LxJ5zo45rZ01kvZJM2EIo3Myg55UFqDXjNIA4VdyjpbAOiS+86L4hCOBMlU3cR9qT2
-         4fbU4HrTNO/LNcpeE9mmNb7GfrT4/OEQSAi2JeaJMcnqm+dh8p1Mz+O7+cOrcMvTMKJ7
-         MXPta3o/RjZRupQtzEDXPbbqYhKAnbZJaTFK2zUbWNQ9UD31KAI46lmkApM+e8Kir/mz
-         xn2tMRyiAHoK9BMP8YF/pXYJ7+oypxbDlg0W1svmahnS+iQ4OorZZ5GOYvLQDqk55xR4
-         9LhXc6QUMX3Qeue9G+oASymy68kdWgSahfoETyEL1ZmTyPJXNK2vpTWllY9RmnsH5O1N
-         S69A==
-X-Gm-Message-State: AOAM531E9kntoA4U/pxgsy7qA2y5EAM+vowL6jmK1tHEwaFpSQSsVwUj
-        OWxMoAxVKpb5DW92vmo3os8UEQ==
-X-Google-Smtp-Source: ABdhPJyyV23LoaJhFLvW21uIRAbYnKp8mhRHkcZsUNszFfhAX1Hc2/+IYCqwwk8iqymOvqOkOrGDgg==
-X-Received: by 2002:a63:4706:: with SMTP id u6mr26204029pga.152.1624941930251;
-        Mon, 28 Jun 2021 21:45:30 -0700 (PDT)
+        bh=nAe56hWX/iMkGrPjUvuhXGh5ni1/NjeEmb5RdJ/Ussc=;
+        b=ipU6ucpmPyBpniY/wEhLp6g8QFfuROdn6QNxRr/v1Lwc8JC++dAu8eQQEq4dSYR95B
+         qXK7PzNrkNRfg6MT219hFWLN6Dh4SonFgZu1BnjLdD6USq0mQ+Vgi2nwKxG0eY6mXPaT
+         rTO+hL6FCXuwAZITXRXF2KOd4ZVIwFIsncv8if0xJL2XOMFXnF6vV7mPVFjWYH7qQVfP
+         b5EESeI7MfUfSOiCxy15H1l1o2YhS29Xw/E8xbx82JoK06p1br6cw4SLpFM/xL5ttpKq
+         5CMlSfHxudwfRpGW3wNvWTPc0qYmSV+kvzvsdtIYtE0USQxcontorRgSoFSp9Bhfx1wu
+         b94w==
+X-Gm-Message-State: AOAM531alsoFBXu0XgYJCuVPW7iGGGk2KcaeCxoBNDBFs5tL37kag/7Q
+        m2ITlKtaPDN14StM0ape00PkHA==
+X-Google-Smtp-Source: ABdhPJxDd7Wod3XiCZg94Zt6uE1klx3/zku1RXl5juXJJsIzU0iVteePFsn+tLqlU4f9LjxcOG5/0Q==
+X-Received: by 2002:a63:ba09:: with SMTP id k9mr19146152pgf.340.1624942358511;
+        Mon, 28 Jun 2021 21:52:38 -0700 (PDT)
 Received: from localhost ([136.185.134.182])
-        by smtp.gmail.com with ESMTPSA id p3sm1278076pjt.0.2021.06.28.21.45.29
+        by smtp.gmail.com with ESMTPSA id a23sm16457212pfk.146.2021.06.28.21.52.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jun 2021 21:45:29 -0700 (PDT)
-Date:   Tue, 29 Jun 2021 10:15:27 +0530
+        Mon, 28 Jun 2021 21:52:37 -0700 (PDT)
+Date:   Tue, 29 Jun 2021 10:22:36 +0530
 From:   Viresh Kumar <viresh.kumar@linaro.org>
 To:     Qian Cai <quic_qiancai@quicinc.com>
 Cc:     Ionela Voinescu <ionela.voinescu@arm.com>,
@@ -72,10 +72,8 @@ Cc:     Ionela Voinescu <ionela.voinescu@arm.com>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency
  invariance
-Message-ID: <20210629044527.puvaxcf5fxdly6tz@vireshk-i7>
-References: <cover.1624266901.git.viresh.kumar@linaro.org>
- <09a39f5c-b47b-a931-bf23-dc43229fb2dd@quicinc.com>
- <20210623041613.v2lo3nidpgw37abl@vireshk-i7>
+Message-ID: <20210629045236.pmhqactkc7unsjgj@vireshk-i7>
+References: <20210623041613.v2lo3nidpgw37abl@vireshk-i7>
  <2c540a58-4fef-5a3d-85b4-8862721b6c4f@quicinc.com>
  <20210624025414.4iszkovggk6lg6hj@vireshk-i7>
  <CAKfTPtAXMYYrG1w-iwSWXb428FkwFArEwXQgHnjShoCEMjdYcw@mail.gmail.com>
@@ -83,34 +81,54 @@ References: <cover.1624266901.git.viresh.kumar@linaro.org>
  <daf1ddf5-6f57-84a8-2ada-90590c0c94b5@quicinc.com>
  <20210625102113.GB15540@arm.com>
  <1f83d787-a796-0db3-3c2f-1ca616eb1979@quicinc.com>
+ <20210625143713.GA7092@arm.com>
+ <888b0178-00cc-ffa4-48a2-8563cef557a4@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1f83d787-a796-0db3-3c2f-1ca616eb1979@quicinc.com>
+In-Reply-To: <888b0178-00cc-ffa4-48a2-8563cef557a4@quicinc.com>
 User-Agent: NeoMutt/20180716-391-311a52
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 25-06-21, 09:31, Qian Cai wrote:
-> The problem is that all CPUs are never scaling down.
-> "cpuinfo_cur_freq" and "scaling_cur_freq" are always the 2800 MHz on
-> all CPUs on this idle system. This looks like a regression somewhere
-> as in 5.4-based kernel, I can see "cpuinfo_cur_freq" can go down to
-> 2000 MHz in the same scenario. I'll bisect a bit unless you have
-> better ideas?
+On 25-06-21, 22:29, Qian Cai wrote:
+> Ionela, I found that set ACPI_PROCESSOR=y instead of
+> ACPI_PROCESSOR=m will fix the previous mentioned issues here (any
+> explanations of that?) even though the scaling down is not perfect.
 
-Few things which may let us understand the readings properly.
+Not sure how this affects it.
 
-- cpuinfo_cur_freq: eventually makes a call to cppc_cpufreq_get_rate()
-  and returns the *actual* frequency hardware is running at (based on
-  counter diff around 2 us delay).
+> Now, we have the following on this idle system:
+> 
+> # cat /sys/devices/system/cpu/*/cpufreq/cpuinfo_cur_freq | sort | uniq  -c
+>  	79 1000000
+>   	1 1160000
+>  	73 1400000
+>   	1 2000000
+>   	4 2010000
+>   	1 2800000
+>   	1 860000
+> 
+> Even if I rerun a few times, there could still have a few CPUs
+> running lower than lowest_perf (1GHz).
 
-- scaling_cur_freq: is the frequency the cpufreq core thinks the
-  hardware is running at, it would more in sync with what schedutil
-  (or other governors) wants the CPU to run at. This can be different
-  from what the hardware is running at, i.e. given by
-  cpuinfo_cur_freq.
+(Please wrap your lines at 80 columns, it makes it harder to read
+otherwise).
+
+I think only the counters stopping on idle can get us that.
+
+> Also, even though I set all CPUs to use "userspace" governor and set
+> freq to the lowest. A few CPUs keep changing at will.
+> 
+> # cat /sys/devices/system/cpu/*/cpufreq/cpuinfo_cur_freq | sort | uniq  -c
+> 	156 1000000
+>   	3 2000000
+>   	1 760000
+
+I think this is expected since the hardware is in control of frequency
+here. The software can only request it to run at X frequency, the
+hardware may choose to do something else nevertheless.
 
 -- 
 viresh
