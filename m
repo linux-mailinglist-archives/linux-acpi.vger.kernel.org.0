@@ -2,255 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A89283B6A7A
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Jun 2021 23:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A55A33B6C6F
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jun 2021 04:19:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233041AbhF1VkJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 28 Jun 2021 17:40:09 -0400
-Received: from foss.arm.com ([217.140.110.172]:39724 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232207AbhF1VkI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 28 Jun 2021 17:40:08 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ABC5A1042;
-        Mon, 28 Jun 2021 14:37:41 -0700 (PDT)
-Received: from localhost (unknown [10.1.195.40])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 461243F5A1;
-        Mon, 28 Jun 2021 14:37:41 -0700 (PDT)
-Date:   Mon, 28 Jun 2021 22:37:39 +0100
-From:   Ionela Voinescu <ionela.voinescu@arm.com>
-To:     Vincent Guittot <vincent.guittot@linaro.org>
-Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
-        Rafael Wysocki <rjw@rjwysocki.net>,
-        Ben Segall <bsegall@google.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>,
-        Qian Cai <quic_qiancai@quicinc.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH V3 0/4] cpufreq: cppc: Add support for frequency
- invariance
-Message-ID: <20210628213739.GA8222@arm.com>
-References: <cover.1624266901.git.viresh.kumar@linaro.org>
- <20210628115452.GA28797@arm.com>
- <CAKfTPtAtE1WHA19=BrWyekHgFYVn0+LdTLROJzYRdshp-EYOWA@mail.gmail.com>
- <20210628130813.GA18112@arm.com>
+        id S231304AbhF2CWO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Jun 2021 22:22:14 -0400
+Received: from mail-lj1-f178.google.com ([209.85.208.178]:40516 "EHLO
+        mail-lj1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231194AbhF2CWO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Jun 2021 22:22:14 -0400
+Received: by mail-lj1-f178.google.com with SMTP id d25so28768555lji.7;
+        Mon, 28 Jun 2021 19:19:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=FjE6J2J6ZECJGymv84c7w28BaRkO7xub+I+LeYwtvpk=;
+        b=F4tYccvbHPdRWyGm7q4eFKr7DaUXM6ziBhOFYLucXm7Ci6k5p4BVTwsqqxEn2xod71
+         8eY6ETMtKeSrQBkxtRHKtHMw6/LhaunePhEBpKqF1WBPuvkh2pQvAUXtQ/a8xEQyCtus
+         6OKITvN1OvoDVADpUQG0EyxY/CJnSzeAJLS+/bUPsT8K9G19trg9cvryXVwOWH5eOtxa
+         gCwjkZguGRFHOBmZ//PRVo1W230axT5uRUBU3IftACkkThuzliLrkRAz41pSiUW7COW0
+         tk+v6DcVVAConTVJ6zXqGBDftLEpt7bSn1hgRpJggHvVkp1vjKyvJsjeghIpRn3lHRr2
+         9TbQ==
+X-Gm-Message-State: AOAM5330JS7rl2i+NxX3KAQ9migeoFxH5+JvuB37OD34QcM9dXRwweOo
+        FcdSgVepa+Jic/SdHPBFoLMMKp7qJf02bw==
+X-Google-Smtp-Source: ABdhPJw0K/xDspMwtYm+EUZgpoKmWk/wggb6xFJDKGfk5Y7Ffl+mwW43BC9/IGVxUWTPjicfJEOAIg==
+X-Received: by 2002:a2e:5714:: with SMTP id l20mr1932609ljb.259.1624933185691;
+        Mon, 28 Jun 2021 19:19:45 -0700 (PDT)
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com. [209.85.208.182])
+        by smtp.gmail.com with ESMTPSA id l21sm542954lji.64.2021.06.28.19.19.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Jun 2021 19:19:45 -0700 (PDT)
+Received: by mail-lj1-f182.google.com with SMTP id r16so28696715ljk.9;
+        Mon, 28 Jun 2021 19:19:44 -0700 (PDT)
+X-Received: by 2002:a2e:81d8:: with SMTP id s24mr1933289ljg.78.1624933184787;
+ Mon, 28 Jun 2021 19:19:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210628130813.GA18112@arm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20210626132732.40063-1-hdegoede@redhat.com>
+In-Reply-To: <20210626132732.40063-1-hdegoede@redhat.com>
+Reply-To: wens@csie.org
+From:   Chen-Yu Tsai <wens@csie.org>
+Date:   Tue, 29 Jun 2021 10:19:32 +0800
+X-Gmail-Original-Message-ID: <CAGb2v64O3w6AGH4V-r6D_Zni-pCW2g7BTTceb4CoeAdowR2KNw@mail.gmail.com>
+Message-ID: <CAGb2v64O3w6AGH4V-r6D_Zni-pCW2g7BTTceb4CoeAdowR2KNw@mail.gmail.com>
+Subject: Re: [PATCH] mfd: axp20x: Update AXP288 volatile ranges
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Lee Jones <lee.jones@linaro.org>, linux-acpi@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Clamshell <clamfly@163.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Monday 28 Jun 2021 at 14:08:13 (+0100), Ionela Voinescu wrote:
-> On Monday 28 Jun 2021 at 14:14:14 (+0200), Vincent Guittot wrote:
-> > On Mon, 28 Jun 2021 at 13:54, Ionela Voinescu <ionela.voinescu@arm.com> wrote:
-> > >
-> > > Hi guys,
-> > >
-> > > On Monday 21 Jun 2021 at 14:49:33 (+0530), Viresh Kumar wrote:
-> > > > Hello,
-> > > >
-> > > > Changes since V2:
-> > > >
-> > > > - We don't need start_cpu() and stop_cpu() callbacks anymore, we can make it
-> > > >   work using policy ->init() and exit() alone.
-> > > >
-> > > > - Two new cleanup patches 1/4 and 2/4.
-> > > >
-> > > > - Improved commit log of 3/4.
-> > > >
-> > > > - Dropped WARN_ON(local_freq_scale > 1024), since this can occur on counter's
-> > > >   overlap (seen with Vincent's setup).
-> > > >
-> > >
-> > > If you happen to have the data around, I would like to know more about
-> > > your observations on ThunderX2.
-> > >
-> > >
-> > > I tried ThunderX2 as well, with the following observations:
-> > >
-> > > Booting with userspace governor and all CPUs online, the CPPC frequency
-> > > scale factor was all over the place (even much larger than 1024).
-> > >
-> > > My initial assumptions:
-> > >  - Counters do not behave properly in light of SMT
-> > >  - Firmware does not do a good job to keep the reference and core
-> > >    counters monotonic: save and restore at core off.
-> > >
-> > > So I offlined all CPUs with the exception of 0, 32, 64, 96 - threads of
-> > > a single core (part of policy0). With this all works very well:
-> > >
-> > > root@target:/sys/devices/system/cpu/cpufreq/policy0# echo 1056000 > scaling_setspeed
-> > > root@target:/sys/devices/system/cpu/cpufreq/policy0#
-> > > [ 1863.095370] CPU96: cppc scale: 697.
-> > > [ 1863.175370] CPU0: cppc scale: 492.
-> > > [ 1863.215367] CPU64: cppc scale: 492.
-> > > [ 1863.235366] CPU96: cppc scale: 492.
-> > > [ 1863.485368] CPU32: cppc scale: 492.
-> > >
-> > > root@target:/sys/devices/system/cpu/cpufreq/policy0# echo 1936000 > scaling_setspeed
-> > > root@target:/sys/devices/system/cpu/cpufreq/policy0#
-> > > [ 1891.395363] CPU96: cppc scale: 558.
-> > > [ 1891.415362] CPU0: cppc scale: 595.
-> > > [ 1891.435362] CPU32: cppc scale: 615.
-> > > [ 1891.465363] CPU96: cppc scale: 635.
-> > > [ 1891.495361] CPU0: cppc scale: 673.
-> > > [ 1891.515360] CPU32: cppc scale: 703.
-> > > [ 1891.545360] CPU96: cppc scale: 738.
-> > > [ 1891.575360] CPU0: cppc scale: 779.
-> > > [ 1891.605360] CPU96: cppc scale: 829.
-> > > [ 1891.635360] CPU0: cppc scale: 879.
-> > >
-> > > root@target:/sys/devices/system/cpu/cpufreq/policy0#
-> > > root@target:/sys/devices/system/cpu/cpufreq/policy0# echo 2200000 > scaling_setspeed
-> > > root@target:/sys/devices/system/cpu/cpufreq/policy0#
-> > > [ 1896.585363] CPU32: cppc scale: 1004.
-> > > [ 1896.675359] CPU64: cppc scale: 973.
-> > > [ 1896.715359] CPU0: cppc scale: 1024.
-> > >
-> > > I'm doing a rate limited printk only for increase/decrease values over
-> > > 64 in the scale factor value.
-> > >
-> > > This showed me that SMT is handled properly.
-> > >
-> > > Then, as soon as I start onlining CPUs 1, 33, 65, 97, the scale factor
-> > > stops being even close to correct, for example:
-> > >
-> > > [238394.770328] CPU96: cppc scale: 22328.
-> > > [238395.628846] CPU96: cppc scale: 245.
-> > > [238516.087115] CPU96: cppc scale: 930.
-> > > [238523.385009] CPU96: cppc scale: 245.
-> > > [238538.767473] CPU96: cppc scale: 936.
-> > > [238538.867546] CPU96: cppc scale: 245.
-> > > [238599.367932] CPU97: cppc scale: 2728.
-> > > [238599.859865] CPU97: cppc scale: 452.
-> > > [238647.786284] CPU96: cppc scale: 1438.
-> > > [238669.604684] CPU96: cppc scale: 27306.
-> > > [238676.805049] CPU96: cppc scale: 245.
-> > > [238737.642902] CPU97: cppc scale: 2035.
-> > > [238737.664995] CPU97: cppc scale: 452.
-> > > [238788.066193] CPU96: cppc scale: 2749.
-> > > [238788.110192] CPU96: cppc scale: 245.
-> > > [238817.231659] CPU96: cppc scale: 2698.
-> > > [238818.083687] CPU96: cppc scale: 245.
-> > > [238845.466850] CPU97: cppc scale: 2990.
-> > > [238847.477805] CPU97: cppc scale: 452.
-> > > [238936.984107] CPU97: cppc scale: 1590.
-> > > [238937.029079] CPU97: cppc scale: 452.
-> > > [238979.052464] CPU97: cppc scale: 911.
-> > > [238980.900668] CPU97: cppc scale: 452.
-> > > [239149.587889] CPU96: cppc scale: 803.
-> > > [239151.085516] CPU96: cppc scale: 245.
-> > > [239303.871373] CPU64: cppc scale: 956.
-> > > [239303.906837] CPU64: cppc scale: 245.
-> > > [239308.666786] CPU96: cppc scale: 821.
-> > > [239319.440634] CPU96: cppc scale: 245.
-> > > [239389.978395] CPU97: cppc scale: 4229.
-> > > [239391.969562] CPU97: cppc scale: 452.
-> > > [239415.894738] CPU96: cppc scale: 630.
-> > > [239417.875326] CPU96: cppc scale: 245.
-> > >
-> > 
-> > With the counter being 32bits and the freq scaling being update at
-> > tick, you can easily get a overflow on it in idle system. I can easily
-> > imagine that when you unplug CPUs there is enough activity on the CPU
-> > to update it regularly whereas with all CPUs, the idle time is longer
-> > that the counter overflow
+Hi,
 
-For sane counters, how long the CPU is idle should not matter (please
-see below my definition of sane counters).
+On Sat, Jun 26, 2021 at 9:29 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> On Cherry Trail devices with an AXP288 PMIC the external SD-card slot
+> used the AXP's DLDO2 as card-voltage and either DLDO3 or GPIO1LDO
+> (GPIO1 pin in low noise LDO mode) as signal-voltage.
+>
+> These regulators are turned on/off and in case of the signal-voltage
+> also have their output-voltage changed by the _PS0 and _PS3 power-
+> management ACPI methods on the MMC-controllers ACPI fwnode as well as
+> by the _DSM ACPI method for changing the signal voltage.
+>
+> The AML code implementing these methods is directly accessing the
+> PMIC through ACPI I2C OpRegion accesses, instead of using the special
+> PMIC OpRegion handled by drivers/acpi/pmic/intel_pmic_xpower.c .
+>
+> This means that the contents of the involved PMIC registers can change
+> without the change being made through the regmap interface, so regmap
+> should not cache the contents of these registers.
+>
+> Mark the LDO power on/off, the LDO voltage control and the GPIO1 control
+> register as volatile, to avoid regmap caching their contents.
+>
+> Specifically this fixes an issue on some models where the i915 driver
+> toggles another LDO using the same on/off register on/off through
+> MIPI sequences (through intel_soc_pmic_exec_mipi_pmic_seq_element())
+> which then writes back a cached on/off register-value where the
+> card-voltage is off causing the external sdcard slot to stop working
+> when the screen goes blank, or comes back on again.
+>
+> Note the AXP288 PMIC is only used on Bay- and Cherry-Trail platforms,
+> so even though this is an ACPI specific problem there is no need to
+> make the new volatile ranges conditional since these platforms always
+> use ACPI.
+>
+> Fixes: dc91c3b6fe66 ("mfd: axp20x: Mark AXP20X_VBUS_IPSOUT_MGMT as volatile")
 
-> > 
-> 
-> Thanks! Yes, given the high wraparound time I thought they were 64 bit.
-> All variables in software are 64 bit, but looking at bit width in the
-> _CPC entries, the platform counters are 32 bit counters.
-> 
+Maybe you want
 
-I've looked a bit more over the code, and considering this particular
-system (32 bit counters, maximum frequency of CPUs = 2.2GHz), I believe
-the wraparound is considered, and this should not cause these strange
-values in the scale factor.
+Fixes: cd53216625a0 ("mfd: axp20x: Fix axp288 volatile ranges")
 
-I consider the counters sane if both stop during idle - either they stop
-when CPU is clock gated, or some firmware does save/restore at core off.
-Therefore, in all idle cases they seem to have stopped, from the point of
-view of the OS. The ACPI spec mentions that both count "any time the
-processor is active".
+and then list the other one as a prerequisite? Or just list both tags.
 
-After the cores return from idle, the counters will wraparound at a
-minimum of 1.95s. So with a tick every 4ms at most 1 wraparound would
-have happened which allows the getDelta() function in cppc_cpufreq
-driver to get the proper difference in values.
+Should we CC stable on this? I don't know the exact use case for these
+devices. Are people running distro LTS kernels on them?
 
-Let me know what you think.
+> Reported-and-tested-by: Clamshell <clamfly@163.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/mfd/axp20x.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+> index 3eae04e24ac8..db6a21465594 100644
+> --- a/drivers/mfd/axp20x.c
+> +++ b/drivers/mfd/axp20x.c
+> @@ -125,12 +125,13 @@ static const struct regmap_range axp288_writeable_ranges[] = {
+>
+>  static const struct regmap_range axp288_volatile_ranges[] = {
+>         regmap_reg_range(AXP20X_PWR_INPUT_STATUS, AXP288_POWER_REASON),
+> +       regmap_reg_range(AXP22X_PWR_OUT_CTRL1, AXP22X_ALDO3_V_OUT),
 
-Thanks,
-Ionela.
+This region also covers the voltage and on/off controls for the buck
+regulators. Maybe include that in your commit message if that was the
+intent, or skip over them if not?
 
-> > There are 32bits and the overflow need to be handled by cppc_cpufreq
-> > driver
-> 
-> I'm wondering if this would be best handled in the function that reads
-> the counters or in the cppc_cpufreq driver that uses them. Probably the
-> latter, as you say, as the read function should only return the raw
-> values, but it does complicate things.
-> 
-> Thanks,
-> Ionela.
-> 
-> 
-> 
-> > > The counter values shown by feedback_ctrs do not seem monotonic even
-> > > when only core 0 threads are online.
-> > >
-> > > ref:2812420736 del:166051103
-> > > ref:3683620736 del:641578595
-> > > ref:1049653440 del:1548202980
-> > > ref:2099053440 del:2120997459
-> > > ref:3185853440 del:2714205997
-> > > ref:712486144  del:3708490753
-> > > ref:3658438336 del:3401357212
-> > > ref:1570998080 del:2279728438
-> > >
-> > > For now I was just wondering if you have seen the same and whether you
-> > > have an opinion on this.
-> > >
-> > > > This is tested on my Hikey platform (without the actual read/write to
-> > > > performance counters), with this script for over an hour:
-> > > >
-> > > > while true; do
-> > > >     for i in `seq 1 7`;
-> > > >     do
-> > > >         echo 0 > /sys/devices/system/cpu/cpu$i/online;
-> > > >     done;
-> > > >
-> > > >     for i in `seq 1 7`;
-> > > >     do
-> > > >         echo 1 > /sys/devices/system/cpu/cpu$i/online;
-> > > >     done;
-> > > > done
-> > > >
-> > > >
-> > > > The same is done by Vincent on ThunderX2 and no issues were seen.
-> > >
-> > > Hotplug worked fine for me as well on both platforms I tested (Juno R2
-> > > and ThunderX2).
-> > >
-> > > Thanks,
-> > > Ionela.
+
+Thanks
+ChenYu
+
+>         regmap_reg_range(AXP288_BC_GLOBAL, AXP288_BC_GLOBAL),
+>         regmap_reg_range(AXP288_BC_DET_STAT, AXP20X_VBUS_IPSOUT_MGMT),
+>         regmap_reg_range(AXP20X_CHRG_BAK_CTRL, AXP20X_CHRG_BAK_CTRL),
+>         regmap_reg_range(AXP20X_IRQ1_EN, AXP20X_IPSOUT_V_HIGH_L),
+>         regmap_reg_range(AXP20X_TIMER_CTRL, AXP20X_TIMER_CTRL),
+> -       regmap_reg_range(AXP22X_GPIO_STATE, AXP22X_GPIO_STATE),
+> +       regmap_reg_range(AXP20X_GPIO1_CTRL, AXP22X_GPIO_STATE),
+>         regmap_reg_range(AXP288_RT_BATT_V_H, AXP288_RT_BATT_V_L),
+>         regmap_reg_range(AXP20X_FG_RES, AXP288_FG_CC_CAP_REG),
+>  };
+> --
+> 2.31.1
+>
