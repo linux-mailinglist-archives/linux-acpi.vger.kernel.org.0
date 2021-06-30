@@ -2,171 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 355303B8948
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jun 2021 21:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CB1C3B89B0
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jun 2021 22:27:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233693AbhF3Tsu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Jun 2021 15:48:50 -0400
-Received: from mail-dm6nam12on2075.outbound.protection.outlook.com ([40.107.243.75]:62305
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229700AbhF3Tst (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 30 Jun 2021 15:48:49 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JmnIG3cU0NKjlEyAHpokY/WgKor19FW41t1CEzkuIT/kUl9VGPGypwN9mKeLezFefiSeFdFXfz3gJHE/df1wLTomZJTjJ9pQXBnqsUxqpneeFAvqGgU9DKuHrp8cWXQZ+t39GRNUWWswzJzFpTBhQinUoKfJ7fYE/4PdtHGS3QbCvSJCrY2SO20VOhIcB0KSGJDOuLJvGdflN3dkPp8pogdC2sW5kpRU9KgrI5lGdPsUCdPyH8KO+6Pu6ApVA3EQkQIIOmCVBc0xo2s9r+cNERiCc7JeSq+sp8UPLkDahg2KiNE6t1J1ODajt2t7eENIQ/FV6Jjf+sfdGOBkl9UitQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f9Nm9L3mznSJPWBuxu6jYs8p6of3ysIGVMyMt5nG3l0=;
- b=hTXEccprTsnbVP53d0vaEr4m4JhYYpDFqkv16OdFXj4yLaEBeElYu+8VYKDssd2dr3SrjyFCNg/7+bhWBSvdCCgL3a7BnZ4tyflMFImUPcDs3NEoYIdVc0JlyncRMa60Zyk8ZhKLd4jSbG7Fzm+nnzJqvIig3yQS7XhCeh98DrXfgOApH7+ocqBdfDK6kO51zhdmdpBb4ut/p1to3RVHw9QIaHBeN02C8kTcGQp9GkTpsEXTqbyOp8TlNLfo6I1vW3mfNNfk/P2I+3ch3mFuKBHryDDqbUIFaLbaPtPtVCL8XT26YMrdR+Uz1f5Xx9gFlg1sUoJBDvOsm23EpAYR+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f9Nm9L3mznSJPWBuxu6jYs8p6of3ysIGVMyMt5nG3l0=;
- b=yPRB01odGvmaAW9iH0mvZaLxj5hRiZGy261M6i7zuJ06z+zZTtV/VTv8CKAuJjdOdiWbwoUHvkqLMGUGywQ+yh9gyN8rF27RGzQsrTOoLsq6bC9woEaxIt8KuUSo6zViHztZe+q15wEbTYwlSFZvoq/LeO1jEBqoxLHX9T+srdo=
-Authentication-Results: rjwysocki.net; dkim=none (message not signed)
- header.d=none;rjwysocki.net; dmarc=none action=none header.from=amd.com;
-Received: from SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
- by SA0PR12MB4592.namprd12.prod.outlook.com (2603:10b6:806:9b::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4264.20; Wed, 30 Jun
- 2021 19:46:18 +0000
-Received: from SA0PR12MB4510.namprd12.prod.outlook.com
- ([fe80::9c16:2794:cd04:2be0]) by SA0PR12MB4510.namprd12.prod.outlook.com
- ([fe80::9c16:2794:cd04:2be0%6]) with mapi id 15.20.4264.026; Wed, 30 Jun 2021
- 19:46:18 +0000
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Cc:     Julian Sikorski <belegdol@gmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH] ACPI: PM: Only mark EC GPE for wakeup on Intel systems
-Date:   Wed, 30 Jun 2021 14:46:06 -0500
-Message-Id: <20210630194606.530-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [165.204.77.1]
-X-ClientProxiedBy: SA0PR11CA0078.namprd11.prod.outlook.com
- (2603:10b6:806:d2::23) To SA0PR12MB4510.namprd12.prod.outlook.com
- (2603:10b6:806:94::8)
+        id S234240AbhF3U3p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Jun 2021 16:29:45 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:56754 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234208AbhF3U3p (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 30 Jun 2021 16:29:45 -0400
+Received: from zn.tnic (p200300ec2f12c300341904cf3ce6da03.dip0.t-ipconnect.de [IPv6:2003:ec:2f12:c300:3419:4cf:3ce6:da03])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9468B1EC052A;
+        Wed, 30 Jun 2021 22:27:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1625084834;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=86yXg3hLUA1nTjtkdrF8ezRaEgM4FbW0oMD3BQItYJ4=;
+        b=U9QqFhZE8zeta3O6rwSTpio3PZepEPd6hMTZZlMZKI3j5AviK6zI4HnHVp4eBgXlPt2TP7
+        yDC5EOErSIrTFJFqMhIFFb3ScTHtjKVpqp2EgD1XJumGLQfoJjgqyYyJM/AHUwOTT6FsxJ
+        0PCd12rXShZCeUsZt9LtS4ce6RFn7OU=
+Date:   Wed, 30 Jun 2021 22:27:06 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [GIT PULL] ACPI updates for v5.14-rc1
+Message-ID: <YNzTmmru8JK++Abo@zn.tnic>
+References: <CAJZ5v0hm5ihfU_hBbMB9u7SmH18PLGp6+Z6=wBLa8WxaVQRTpg@mail.gmail.com>
+ <YNxLvhBBE7Ff6Q5u@zn.tnic>
+ <CAJZ5v0g_+xDVYRiVR4aDFKsNqLg9DeGAMKU1+CPCorpf=Ceb7A@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from AUS-LX-MLIMONCI.amd.com (165.204.77.1) by SA0PR11CA0078.namprd11.prod.outlook.com (2603:10b6:806:d2::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4287.22 via Frontend Transport; Wed, 30 Jun 2021 19:46:18 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a6884916-0dc0-4350-1182-08d93bffbad5
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4592:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SA0PR12MB45924771257AAAE21B3805E3E2019@SA0PR12MB4592.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4502;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sTNyRB8bq24xGmK+WSQ6EkvpaYmKUZAlhgGSljfEX7NiUdg5hZoYOJRQdBY63i6+bALFnzUPr+ZpmP71tYzSYUpV26yXlnrq2j3BSmYP1NJUsgpAPCve4iKGH100fNRImf73rPvc8PZOAFPQizoYOnMmIc34HCdFwwtdcg1Fe7YscTJBR9Hr3h1HTOk2Kn9JGaGHdpG8BVqYbQ5h63kzWPxn9I7x8FpW8iNcspSocBu/4Do+kT/RTEGbC4T4GHnj4thlAIUQ+6J17TAfDav9yf2elKEOxQalN2SvTgzNJyfRRXghrocv9+7Z/qDcr1lrPsLBUGhdozlxS+5YpoGxkBCM6Brcj8Ipej8xSHKLlD2xmHeNNtLCjZvCBeL26JMA8OwEM8Fpyq/m8A5x5fLw52h5Pu8+0FxHCkkS3YYjr/L8PKMezB7590sVNBLvAr2tj/FL8uT/4u4OaIGWV12RQmKRrAwso1HLPqOi4jJclanwUQOOFtWR3iCcUS5+cKqN5/ReBWeaXliDJioSwGJ8JVxjhqBdm8nWZGeb8QchWZZi7gjmpOV23u/4QpXI8/RGL60bBOeAK1rMoDkGF6gF/LagqwQZFfYQggSBO9CIF0S6U8+9i3JKuQwlfqhzudML83TsnegZLMgpGrf/hnh6n8gwGbMqIjPS9aKpPlfVHfGsAs/3mEo2SmxxxA03lMZ8S66pbN3EL5a/cI9lM0nhJSLsyAusJ4UvOyMRJTbFXQyERUNWw8qCBK8TKULU8lbK/sHbm0iJvOX82wjz/EjdeC+yIYgmwbGb7wKWzR18ieMwl9IRNPCIU6coFi7YuWThfnHmy1lL5Dtt88jtCdjxRQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4510.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(39860400002)(366004)(346002)(136003)(396003)(66556008)(966005)(66476007)(7696005)(52116002)(5660300002)(36756003)(186003)(8676002)(16526019)(2906002)(38100700002)(38350700002)(54906003)(44832011)(6666004)(316002)(6486002)(26005)(86362001)(83380400001)(110136005)(478600001)(956004)(66946007)(4326008)(2616005)(8936002)(1076003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Q2VMa7+27RuNEDKB8gbF7BfJMOCHBmQM8yI9OkbM9jOm3bZDMMZaTtlmhwIP?=
- =?us-ascii?Q?D6zZ1CRxRi1s12CDZJDADpP6gX5y0/o/axPNOfsS1PrzFsualk8cP+0NOw+c?=
- =?us-ascii?Q?igWohi0/W8wu+gBtrpTOSYTKTOF82H2X1et8jWUTuID7FCWgice4lT95yQza?=
- =?us-ascii?Q?rHqKJadraT9Z8hSEsrDJaVs6/oABV1IMvrYVwoB3nkE9iT/fm7wmMd0i1vRF?=
- =?us-ascii?Q?Z/WZwlCwIeOrjHu5fREwRoYtWj2tGAKBlbcYKapzdIHG0t5F/gOdW51cXCib?=
- =?us-ascii?Q?OcN0xfGVGMGXeYGN+XjXRwxAKB/4LN4lXO/GCmJAMPuFRmlexK8sNDibFf3B?=
- =?us-ascii?Q?Oquffu3ggZ9VYLAwE2whAfAb1B/+txBs5Z4uN9G1uTScmNmyRQfmLXr9anLr?=
- =?us-ascii?Q?MpLvPULZfDRIIBP2rs6prCjOP4sdk3zZ6H1HRFhuZJZpHKpNahgc4tqTBxlu?=
- =?us-ascii?Q?3cTjEGUHzzM1mju6ABnqXuRHxyWfi1iiuCTIlcB2yQod9g7oi9y59LIfkwXH?=
- =?us-ascii?Q?CJxw8idX+2jxp0EgY10ZkO33DUgCWgNhpUpC0DHv93HzWTcbJCoujMVi37i0?=
- =?us-ascii?Q?cjaGnMOxiY/F87M1G9VfCPTum6ZXTxW4srbkq1cqiv5qXCOX28hHPisTZmXx?=
- =?us-ascii?Q?WClBeL9crsK4udkoNzX60W5J53VV6gf7V/ZC59Cnfn0Ux/meIT2YZedYmYsz?=
- =?us-ascii?Q?au0ZqC5qJYQLaYtrzDoToXunWFVjfhls2zqiXV86PAZ9iogkjztA4PUM4A0P?=
- =?us-ascii?Q?fA4WSFnOPmN3CwPQTnLZmvJNL0K1QV3N8QtYy+Dk1TrRSzLZAVc7gZTm3izr?=
- =?us-ascii?Q?cd+dO271YDDasvzW2jKLbwvMOSILAHyshwfMYPVwU75Ocuu+aPlk33pA18iw?=
- =?us-ascii?Q?AFEfElqdHw6VxKQhEzVORDoVwp6eH7zKEeoH36zjy8AZnMmruvwap3NbzRuJ?=
- =?us-ascii?Q?FnjPvmy87Kjge1oBq2wCX/+cveHiJoQPHdSk4bZue/EbWB2K70RCVR2wr42D?=
- =?us-ascii?Q?Va/74Pb8QpZ1Rnpp4XDZ6DxLaHCXUjlpJS7hqsGW0/2Vf6IvRyChvfEQCLw6?=
- =?us-ascii?Q?59oe8vwnRxWKDF2e8/tuEHsvGPJ9OKHXAXRU/9JDeRN2eqdKdsxea8jV06yS?=
- =?us-ascii?Q?h2BB3jxEG5hnHyDPKIWY5kV0evNPiK4PN2QkXA4UewR2StSbb8K6IYoxUI9k?=
- =?us-ascii?Q?xIZJ4/zxjDqgn4LxIeNE6VUMZPO0z7wvqNtSdCzXSqcJNS2wtdQNaDV654FJ?=
- =?us-ascii?Q?p93h8peSqlnMVfo+gNguR2Eb25rV74+VNcIo2TlFU4RjCQWFQSwf86lBSgVz?=
- =?us-ascii?Q?NYsFXaQs/ByUsrE+a1aY2ka+?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6884916-0dc0-4350-1182-08d93bffbad5
-X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4510.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2021 19:46:18.8503
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dZD13ysT7xcV+BQUi/R10P8OP1E49HUQyvzNXH87rAzc7mjqBSdKPCAe3tW3LJK0/UtZNwlqjS2xSjrywZ9rNA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4592
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0g_+xDVYRiVR4aDFKsNqLg9DeGAMKU1+CPCorpf=Ceb7A@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When using s2idle on a variety of AMD notebook systems, they are
-experiencing spurious events that the EC or SMU are in the wrong
-state leading to a hard time waking up or higher than expected
-power consumption.
+On Wed, Jun 30, 2021 at 07:19:05PM +0200, Rafael J. Wysocki wrote:
+> What about the following help text (white space damage by gmail)?
+> 
+> ---
+>  drivers/acpi/Kconfig |   10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> Index: linux-pm/drivers/acpi/Kconfig
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/Kconfig
+> +++ linux-pm/drivers/acpi/Kconfig
+> @@ -548,3 +548,13 @@ config ACPI_PRMT
+>      bool "Platform Runtime Mechanism Support"
+>      depends on EFI && X86_64
+>      default y
+> +    help
+> +      Platform Runtime Mechanism (PRM) is a firmware interface exposing a
+> +      set of binary executables that can be called from the AML interpreter
+> +      or directly from device drivers.
+> +
+> +      Say Y to enable the AML interpreter to execute the PRM code.
+> +
+> +      While this feature is optional in principle, leaving it out may
+> +      substantially increase computational overhead related to the
+> +      initialization of some server systems.
 
-These events only occur when the EC GPE is inadvertently set as a wakeup
-source. Originally the EC GPE was only set as a wakeup source when using
-the intel-vbtn or intel-hid drivers in commit 10a08fd65ec1 ("ACPI: PM:
-Set up EC GPE for system wakeup from drivers that need it") but during
-testing a reporter discovered that this was not enough for their ASUS
-Zenbook UX430UNR/i7-8550U to wakeup by lid event or keypress.
-Marking the EC GPE for wakeup universally resolved this for that
-reporter in commit b90ff3554aa3 ("ACPI: PM: s2idle: Always set up EC GPE
-for system wakeup").
+Thanks, much better!
 
-However this behavior has lead to a number of problems:
-
-* On both Lenovo T14 and P14s the keyboard wakeup doesn't work, and
-sometimes the power button event doesn't work.
-* On HP 635 G7 detaching or attaching AC during suspend will cause
-the system not to wakeup
-* On Asus vivobook to prevent detaching AC causing resume problems
-* On Lenovo 14ARE05 to prevent detaching AC causing resume problems
-* On HP ENVY x360  to prevent detaching AC causing resume problems
-
-As there may be other Intel systems besides ASUS Zenbook UX430UNR/i7-8550U
-that don't use intel-vbtn or intel-hid avoid these problems by only
-universally marking the EC GPE wakesource on non-AMD systems.
-
-Link: https://patchwork.kernel.org/project/linux-pm/cover/5997740.FPbUVk04hV@kreacher/#22825489
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1230
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1629
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
----
- drivers/acpi/x86/s2idle.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-index 816bf2c34b7a..1c507804fb10 100644
---- a/drivers/acpi/x86/s2idle.c
-+++ b/drivers/acpi/x86/s2idle.c
-@@ -417,11 +417,15 @@ static int lps0_device_attach(struct acpi_device *adev,
- 		mem_sleep_current = PM_SUSPEND_TO_IDLE;
- 
- 	/*
--	 * Some LPS0 systems, like ASUS Zenbook UX430UNR/i7-8550U, require the
--	 * EC GPE to be enabled while suspended for certain wakeup devices to
--	 * work, so mark it as wakeup-capable.
-+	 * Some Intel based LPS0 systems, like ASUS Zenbook UX430UNR/i7-8550U don't
-+	 * use intel-hid or intel-vbtn but require the EC GPE to be enabled while
-+	 * suspended for certain wakeup devices to work, so mark it as wakeup-capable.
-+	 *
-+	 * Only enable on !AMD as enabling this universally causes problems for a number
-+	 * of AMD based systems.
- 	 */
--	acpi_ec_mark_gpe_for_wake();
-+	if (!acpi_s2idle_vendor_amd())
-+		acpi_ec_mark_gpe_for_wake();
- 
- 	return 0;
- }
 -- 
-2.25.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
