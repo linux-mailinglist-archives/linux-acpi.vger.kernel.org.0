@@ -2,306 +2,171 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B0463B883F
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jun 2021 20:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 355303B8948
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jun 2021 21:46:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232358AbhF3SVD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Jun 2021 14:21:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35142 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229991AbhF3SVD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 30 Jun 2021 14:21:03 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 448A861159
-        for <linux-acpi@vger.kernel.org>; Wed, 30 Jun 2021 18:18:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625077114;
-        bh=GBVvQalhFaUQl/Ek88Tz4cg5CdD61d1IodMIdPWwuic=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=szmyYXlgleQlZR2YqFRa86casT1Sackdw79iA5y79N8GgKJEV2mEUy+gtUV3br8LT
-         nJdgulQnfTWZbSX05/icmPQjNJLFkHdSEaVXRMtwEdMYQmpsZMtVX8r/jKuT7HWi40
-         hkFjI/yrPLaUHBKEEkHbylpKf61COXPr2y0RBX1O7nDrw9SmE5NDP4ZZySBFIra4Uv
-         YALOBVYI3ud3RD2IWAuFtVUUTYTb6XzAi9fIEg5fBKJU0DzYckQfq/M6WUfpg4Za/Z
-         SkLqdVrdzftnMt9PCGgkj8svEo4M27svP/dbkLE45oMwSpRiYGhTh6UUn2hcTMBXVH
-         WvsUWTXMnrqsA==
-Received: by mail-oo1-f49.google.com with SMTP id u14-20020a4ae68e0000b029024bf1563f62so868949oot.3
-        for <linux-acpi@vger.kernel.org>; Wed, 30 Jun 2021 11:18:34 -0700 (PDT)
-X-Gm-Message-State: AOAM531N4cUkBZYfgRVdCsEhBiOjETn2O2baYecpi1xUqwXQgLFuoscQ
-        x4GvbiCpmU5j5FGSJW6qD0V+qRIEEpjiuAz95Lo=
-X-Google-Smtp-Source: ABdhPJzyOaUKiFt1576VrcMwcaBOxoVlWMdjGjAvtlRcg+Eh7jSZlpvL44eF60o/9JdHdtcv3A20V024hKhPeZ4Iqug=
-X-Received: by 2002:a4a:2f87:: with SMTP id p129mr9449979oop.41.1625077113585;
- Wed, 30 Jun 2021 11:18:33 -0700 (PDT)
+        id S233693AbhF3Tsu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Jun 2021 15:48:50 -0400
+Received: from mail-dm6nam12on2075.outbound.protection.outlook.com ([40.107.243.75]:62305
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229700AbhF3Tst (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 30 Jun 2021 15:48:49 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JmnIG3cU0NKjlEyAHpokY/WgKor19FW41t1CEzkuIT/kUl9VGPGypwN9mKeLezFefiSeFdFXfz3gJHE/df1wLTomZJTjJ9pQXBnqsUxqpneeFAvqGgU9DKuHrp8cWXQZ+t39GRNUWWswzJzFpTBhQinUoKfJ7fYE/4PdtHGS3QbCvSJCrY2SO20VOhIcB0KSGJDOuLJvGdflN3dkPp8pogdC2sW5kpRU9KgrI5lGdPsUCdPyH8KO+6Pu6ApVA3EQkQIIOmCVBc0xo2s9r+cNERiCc7JeSq+sp8UPLkDahg2KiNE6t1J1ODajt2t7eENIQ/FV6Jjf+sfdGOBkl9UitQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f9Nm9L3mznSJPWBuxu6jYs8p6of3ysIGVMyMt5nG3l0=;
+ b=hTXEccprTsnbVP53d0vaEr4m4JhYYpDFqkv16OdFXj4yLaEBeElYu+8VYKDssd2dr3SrjyFCNg/7+bhWBSvdCCgL3a7BnZ4tyflMFImUPcDs3NEoYIdVc0JlyncRMa60Zyk8ZhKLd4jSbG7Fzm+nnzJqvIig3yQS7XhCeh98DrXfgOApH7+ocqBdfDK6kO51zhdmdpBb4ut/p1to3RVHw9QIaHBeN02C8kTcGQp9GkTpsEXTqbyOp8TlNLfo6I1vW3mfNNfk/P2I+3ch3mFuKBHryDDqbUIFaLbaPtPtVCL8XT26YMrdR+Uz1f5Xx9gFlg1sUoJBDvOsm23EpAYR+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f9Nm9L3mznSJPWBuxu6jYs8p6of3ysIGVMyMt5nG3l0=;
+ b=yPRB01odGvmaAW9iH0mvZaLxj5hRiZGy261M6i7zuJ06z+zZTtV/VTv8CKAuJjdOdiWbwoUHvkqLMGUGywQ+yh9gyN8rF27RGzQsrTOoLsq6bC9woEaxIt8KuUSo6zViHztZe+q15wEbTYwlSFZvoq/LeO1jEBqoxLHX9T+srdo=
+Authentication-Results: rjwysocki.net; dkim=none (message not signed)
+ header.d=none;rjwysocki.net; dmarc=none action=none header.from=amd.com;
+Received: from SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
+ by SA0PR12MB4592.namprd12.prod.outlook.com (2603:10b6:806:9b::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4264.20; Wed, 30 Jun
+ 2021 19:46:18 +0000
+Received: from SA0PR12MB4510.namprd12.prod.outlook.com
+ ([fe80::9c16:2794:cd04:2be0]) by SA0PR12MB4510.namprd12.prod.outlook.com
+ ([fe80::9c16:2794:cd04:2be0%6]) with mapi id 15.20.4264.026; Wed, 30 Jun 2021
+ 19:46:18 +0000
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Cc:     Julian Sikorski <belegdol@gmail.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH] ACPI: PM: Only mark EC GPE for wakeup on Intel systems
+Date:   Wed, 30 Jun 2021 14:46:06 -0500
+Message-Id: <20210630194606.530-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [165.204.77.1]
+X-ClientProxiedBy: SA0PR11CA0078.namprd11.prod.outlook.com
+ (2603:10b6:806:d2::23) To SA0PR12MB4510.namprd12.prod.outlook.com
+ (2603:10b6:806:94::8)
 MIME-Version: 1.0
-References: <31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com> <20210625110944.GB20835@arm.com>
- <48b23351-3dba-bec8-242f-3c918ae55708@arm.com> <8a28663f-6541-6ff4-3de0-b140e3f8a5b9@arm.com>
- <20210629144415.GA28457@lpieralisi> <14ca6f72-9b0f-ebd7-9cf8-a5d6190c8e5d@arm.com>
- <20210629163543.GA12361@arm.com> <20210630103715.GA12089@lpieralisi>
- <e548e72c-83a4-2366-dd57-3e746040fea9@arm.com> <CAMj1kXH=Q+WNgGsbApiq94z5OpJOnNLcFk_dyoVm_-VQunv3MA@mail.gmail.com>
- <20210630154923.GA16215@lpieralisi>
-In-Reply-To: <20210630154923.GA16215@lpieralisi>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 30 Jun 2021 20:18:22 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHgPmJV6sPO8OWYj84Ncts00fzn+gJ=+xzcXYhCxvm-aA@mail.gmail.com>
-Message-ID: <CAMj1kXHgPmJV6sPO8OWYj84Ncts00fzn+gJ=+xzcXYhCxvm-aA@mail.gmail.com>
-Subject: =?UTF-8?B?UmU6IOKdjCBGQUlMOiBUZXN0IHJlcG9ydCBmb3Iga2VybmVsIDUuMTMuMC1yYzcgKGFybQ==?=
-        =?UTF-8?B?LW5leHQsIDhhYjliMWE5KQ==?=
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Robin Murphy <robin.murphy@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Veronika Kabatova <vkabatov@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        CKI Project <cki-project@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Memory Management <mm-qe@redhat.com>,
-        skt-results-master@redhat.com, Jeff Bastian <jbastian@redhat.com>,
-        Jan Stancek <jstancek@redhat.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>, lv.zheng@intel.com,
-        Tony Luck <tony.luck@intel.com>,
-        James Morse <james.morse@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from AUS-LX-MLIMONCI.amd.com (165.204.77.1) by SA0PR11CA0078.namprd11.prod.outlook.com (2603:10b6:806:d2::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4287.22 via Frontend Transport; Wed, 30 Jun 2021 19:46:18 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a6884916-0dc0-4350-1182-08d93bffbad5
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4592:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SA0PR12MB45924771257AAAE21B3805E3E2019@SA0PR12MB4592.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4502;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sTNyRB8bq24xGmK+WSQ6EkvpaYmKUZAlhgGSljfEX7NiUdg5hZoYOJRQdBY63i6+bALFnzUPr+ZpmP71tYzSYUpV26yXlnrq2j3BSmYP1NJUsgpAPCve4iKGH100fNRImf73rPvc8PZOAFPQizoYOnMmIc34HCdFwwtdcg1Fe7YscTJBR9Hr3h1HTOk2Kn9JGaGHdpG8BVqYbQ5h63kzWPxn9I7x8FpW8iNcspSocBu/4Do+kT/RTEGbC4T4GHnj4thlAIUQ+6J17TAfDav9yf2elKEOxQalN2SvTgzNJyfRRXghrocv9+7Z/qDcr1lrPsLBUGhdozlxS+5YpoGxkBCM6Brcj8Ipej8xSHKLlD2xmHeNNtLCjZvCBeL26JMA8OwEM8Fpyq/m8A5x5fLw52h5Pu8+0FxHCkkS3YYjr/L8PKMezB7590sVNBLvAr2tj/FL8uT/4u4OaIGWV12RQmKRrAwso1HLPqOi4jJclanwUQOOFtWR3iCcUS5+cKqN5/ReBWeaXliDJioSwGJ8JVxjhqBdm8nWZGeb8QchWZZi7gjmpOV23u/4QpXI8/RGL60bBOeAK1rMoDkGF6gF/LagqwQZFfYQggSBO9CIF0S6U8+9i3JKuQwlfqhzudML83TsnegZLMgpGrf/hnh6n8gwGbMqIjPS9aKpPlfVHfGsAs/3mEo2SmxxxA03lMZ8S66pbN3EL5a/cI9lM0nhJSLsyAusJ4UvOyMRJTbFXQyERUNWw8qCBK8TKULU8lbK/sHbm0iJvOX82wjz/EjdeC+yIYgmwbGb7wKWzR18ieMwl9IRNPCIU6coFi7YuWThfnHmy1lL5Dtt88jtCdjxRQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4510.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(39860400002)(366004)(346002)(136003)(396003)(66556008)(966005)(66476007)(7696005)(52116002)(5660300002)(36756003)(186003)(8676002)(16526019)(2906002)(38100700002)(38350700002)(54906003)(44832011)(6666004)(316002)(6486002)(26005)(86362001)(83380400001)(110136005)(478600001)(956004)(66946007)(4326008)(2616005)(8936002)(1076003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Q2VMa7+27RuNEDKB8gbF7BfJMOCHBmQM8yI9OkbM9jOm3bZDMMZaTtlmhwIP?=
+ =?us-ascii?Q?D6zZ1CRxRi1s12CDZJDADpP6gX5y0/o/axPNOfsS1PrzFsualk8cP+0NOw+c?=
+ =?us-ascii?Q?igWohi0/W8wu+gBtrpTOSYTKTOF82H2X1et8jWUTuID7FCWgice4lT95yQza?=
+ =?us-ascii?Q?rHqKJadraT9Z8hSEsrDJaVs6/oABV1IMvrYVwoB3nkE9iT/fm7wmMd0i1vRF?=
+ =?us-ascii?Q?Z/WZwlCwIeOrjHu5fREwRoYtWj2tGAKBlbcYKapzdIHG0t5F/gOdW51cXCib?=
+ =?us-ascii?Q?OcN0xfGVGMGXeYGN+XjXRwxAKB/4LN4lXO/GCmJAMPuFRmlexK8sNDibFf3B?=
+ =?us-ascii?Q?Oquffu3ggZ9VYLAwE2whAfAb1B/+txBs5Z4uN9G1uTScmNmyRQfmLXr9anLr?=
+ =?us-ascii?Q?MpLvPULZfDRIIBP2rs6prCjOP4sdk3zZ6H1HRFhuZJZpHKpNahgc4tqTBxlu?=
+ =?us-ascii?Q?3cTjEGUHzzM1mju6ABnqXuRHxyWfi1iiuCTIlcB2yQod9g7oi9y59LIfkwXH?=
+ =?us-ascii?Q?CJxw8idX+2jxp0EgY10ZkO33DUgCWgNhpUpC0DHv93HzWTcbJCoujMVi37i0?=
+ =?us-ascii?Q?cjaGnMOxiY/F87M1G9VfCPTum6ZXTxW4srbkq1cqiv5qXCOX28hHPisTZmXx?=
+ =?us-ascii?Q?WClBeL9crsK4udkoNzX60W5J53VV6gf7V/ZC59Cnfn0Ux/meIT2YZedYmYsz?=
+ =?us-ascii?Q?au0ZqC5qJYQLaYtrzDoToXunWFVjfhls2zqiXV86PAZ9iogkjztA4PUM4A0P?=
+ =?us-ascii?Q?fA4WSFnOPmN3CwPQTnLZmvJNL0K1QV3N8QtYy+Dk1TrRSzLZAVc7gZTm3izr?=
+ =?us-ascii?Q?cd+dO271YDDasvzW2jKLbwvMOSILAHyshwfMYPVwU75Ocuu+aPlk33pA18iw?=
+ =?us-ascii?Q?AFEfElqdHw6VxKQhEzVORDoVwp6eH7zKEeoH36zjy8AZnMmruvwap3NbzRuJ?=
+ =?us-ascii?Q?FnjPvmy87Kjge1oBq2wCX/+cveHiJoQPHdSk4bZue/EbWB2K70RCVR2wr42D?=
+ =?us-ascii?Q?Va/74Pb8QpZ1Rnpp4XDZ6DxLaHCXUjlpJS7hqsGW0/2Vf6IvRyChvfEQCLw6?=
+ =?us-ascii?Q?59oe8vwnRxWKDF2e8/tuEHsvGPJ9OKHXAXRU/9JDeRN2eqdKdsxea8jV06yS?=
+ =?us-ascii?Q?h2BB3jxEG5hnHyDPKIWY5kV0evNPiK4PN2QkXA4UewR2StSbb8K6IYoxUI9k?=
+ =?us-ascii?Q?xIZJ4/zxjDqgn4LxIeNE6VUMZPO0z7wvqNtSdCzXSqcJNS2wtdQNaDV654FJ?=
+ =?us-ascii?Q?p93h8peSqlnMVfo+gNguR2Eb25rV74+VNcIo2TlFU4RjCQWFQSwf86lBSgVz?=
+ =?us-ascii?Q?NYsFXaQs/ByUsrE+a1aY2ka+?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6884916-0dc0-4350-1182-08d93bffbad5
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4510.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2021 19:46:18.8503
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dZD13ysT7xcV+BQUi/R10P8OP1E49HUQyvzNXH87rAzc7mjqBSdKPCAe3tW3LJK0/UtZNwlqjS2xSjrywZ9rNA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4592
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 30 Jun 2021 at 17:49, Lorenzo Pieralisi
-<lorenzo.pieralisi@arm.com> wrote:
->
-> On Wed, Jun 30, 2021 at 03:22:57PM +0200, Ard Biesheuvel wrote:
-> > On Wed, 30 Jun 2021 at 13:17, Robin Murphy <robin.murphy@arm.com> wrote=
-:
-> > >
-> > > On 2021-06-30 11:37, Lorenzo Pieralisi wrote:
-> > > > On Tue, Jun 29, 2021 at 05:35:43PM +0100, Catalin Marinas wrote:
-> > > >> On Tue, Jun 29, 2021 at 04:14:55PM +0100, Robin Murphy wrote:
-> > > >>> On 2021-06-29 15:44, Lorenzo Pieralisi wrote:
-> > > >>>> On Tue, Jun 29, 2021 at 12:48:14PM +0100, Robin Murphy wrote:
-> > > >>>>> [ +ACPI audience ]
-> > > >>>>>
-> > > >>>>> On 2021-06-25 12:15, Robin Murphy wrote:
-> > > >>>>>> On 2021-06-25 12:09, Catalin Marinas wrote:
-> > > >>>>>>> On Fri, Jun 25, 2021 at 12:02:52PM +0100, Robin Murphy wrote:
-> > > >>>>>>>> On 2021-06-25 10:52, Veronika Kabatova wrote:
-> > > >>>>>>>> [...]
-> > > >>>>>>>>>>>            =E2=9D=8C stress: stress-ng
-> > > >>>>>>>>>>
-> > > >>>>>>>>>> Oh no, this looks like another alignment fault in memcpy:
-> > > >>>>>>>>>>
-> > > >>>>>>>>>> [13330.651903] Unable to handle kernel paging request at
-> > > >>>>>>>>>> virtual address ffff8000534705ff
-> > > >> [...]
-> > > >>>>>>>>>> [13330.652218] Call trace:
-> > > >>>>>>>>>> [13330.652221]  __memcpy+0x168/0x250
-> > > >>>>>>>>>> [13330.652225]  acpi_data_show+0x5c/0x8c
-> > > >>>>>>>>>> [13330.652232]  sysfs_kf_bin_read+0x78/0xa0
-> > > >>>>>>>>>> [13330.652238]  kernfs_file_read_iter+0x9c/0x1a4
-> > > >>>>>>>>>> [13330.652241]  kernfs_fop_read_iter+0x34/0x50
-> > > >>>>>>>>>> [13330.652244]  new_sync_read+0xdc/0x154
-> > > >>>>>>>>>> [13330.652253]  vfs_read+0x158/0x1e4
-> > > >>>>>>>>>> [13330.652260]  ksys_read+0x64/0xec
-> > > >>>>>>>>>> [13330.652266]  __arm64_sys_read+0x28/0x34
-> > > >>>>>>>>>> [13330.652273]  invoke_syscall+0x50/0x120
-> > > >>>>>>>>>> [13330.652280]  el0_svc_common.constprop.0+0x4c/0xd4
-> > > >>>>>>>>>> [13330.652284]  do_el0_svc+0x30/0x9c
-> > > >>>>>>>>>> [13330.652286]  el0_svc+0x2c/0x54
-> > > >>>>>>>>>> [13330.652294]  el0t_64_sync_handler+0x1a4/0x1b0
-> > > >>>>>>>>>> [13330.652296]  el0t_64_sync+0x19c/0x1a0
-> > > >>>>>>>>>> [13330.652303] Code: a984346c a9c4342c f1010042 54fffee8 (=
-a97c3c8e)
-> > > >>>>>>>>>> [13330.652307] ---[ end trace 227d4380f57145d4 ]---
-> > > >>>>>>>>>>
-> > > >>>>>>>>>> So maybe this issue isn't limited to weird modules, after =
-all...
-> > > >>>>>>>>>
-> > > >>>>>>>>> It ran on the machine from the same set that we were able t=
-o reproduce
-> > > >>>>>>>>> it on previously. If you or anyone else have an idea on how
-> > > >>>>>>>>> to stabilize the reproducibility or have a debug patch we'l=
-l be happy to try it.
-> > > >>>>>>>>
-> > > >>>>>>>> Possibly it depends on the individual machines' firmware exa=
-ctly how the
-> > > >>>>>>>> relevant bits of their ACPI tables are aligned in memory?
-> > > >>>>>>>>
-> > > >>>>>>>> I've started digging into that callstack - it may not be a "=
-weird module"
-> > > >>>>>>>> but it's definitely crusty ACPI code... a238317ce818 ("ACPI:=
- Clean up
-> > > >>>>>>>> acpi_os_map/unmap_memory() to eliminate __iomem.") looks fra=
-nkly a bit
-> > > >>>>>>>> questionable in its decision to blithely cast away __iomem, =
-but then the
-> > > >>>>>>>> rationale in aafc65c731fe ("ACPI: add arm64 to the platforms=
- that use
-> > > >>>>>>>> ioremap") seems particularly dubious on top of that (especia=
-lly
-> > > >>>>>>>> given this end result).
-> > > >> [...]
-> > > >>>>> After picking through the UEFI spec I think I've now got a clea=
-rer picture
-> > > >>>>> of what's happening, but I'm not sure where it goes from here..=
-.
-> > > >>>>>
-> > > >>>>> The spec implies that it *is* legitimate for runtime-loaded ACP=
-I tables to
-> > > >>>>> lie outside the EFI memory map, and that case they must be assu=
-med to be
-> > > >>>>> uncached, so the behaviour of acpi_os_ioremap() is correct.
-> > > >>>>
-> > > >>>> I'd agree with the reasoning, it would be good to pinpoint wheth=
-er
-> > > >>>> that's what actually triggers the issue.
-> > > >>>>
-> > > >>>> I'd like to replicate it if possible (it is TX2 HW but firmware
-> > > >>>> config is likely to differ from the HW I have at hand), the
-> > > >>>> test command line that triggers the fault would be useful as
-> > > >>>> a starting point.
-> > > >>>>
-> > > >>>> Furthermore, is this a v5.13-rc* regression ? If so it would be
-> > > >>>> good to bisect it - I can't recollect arm64 changes that could
-> > > >>>> have introduced this regression in the last cycle but I may have
-> > > >>>> missed something.
-> > > >>>
-> > > >>> The actual change which has brought this to light is the update t=
-o arm64's
-> > > >>> memcpy() routine for 5.13 - the new version is more aggressive at=
- making
-> > > >>> unaligned loads from the source buffer, so now triggers alignment=
- faults
-> > > >>> more readily when (wrongly) used on iomem mappings in places that=
- were
-> > > >>> getting away with it by chance under the previous implementation =
-(see also
-> > > >>> [1], for example).
-> > > >>
-> > > >> I wouldn't revert any of the memcpy() stuff as it just uncovered a=
-n
-> > > >> existing bug in how the ACPI tables are handled. Could we actually=
- hit
-> > > >> a similar issue with C code parsing the ACPI tables?
-> > > >
-> > > > I agree - I don't think a revert should be considered, this looks l=
-ike
-> > > > a long standing ACPI bug.
-> > > >
-> > > > This needs debugging but I believe that it all depends on the table
-> > > > being in the EFI map or not. I'd help a lot if I managed to reprodu=
-ce
-> > > > the bug for a given set-up so that we can check which table is caus=
-ing
-> > > > it.
-> > > >
-> > > >> Is there a way to map the ACPI tables as Normal Noncacheable
-> > > >> (ioremap_wc)?
-> > > >
-> > > > That's a good point. IIUC UEFI 2.9 (2.3.6) requires tables loaded a=
-t
-> > > > runtime (see above - I really would like to understand what table
-> > > > is triggering this bug) that are not in the EFI memory map and whos=
-e
-> > > > attributes cannot be retrieved through ACPI descriptors to be consi=
-dered
-> > > > non-cacheable.
-> > > >
-> > > > The question is whether [arm64] acpi_os_ioremap() can be changed so=
- that
-> > > > the above is mapped to Normal NC rather than device-nGnRnE; this ma=
-y
-> > > > cause surprises the other way around (given that dev-nGnRnE is an
-> > > > all encompassing fallback - again IIUC, I believe Ard knows better
-> > > > than me if he has time to chime in).
-> > > >
-> > > > We need a reproducer and some tracing in the ACPI code.
-> > >
-> > > Having looked even more at the sysfs code, I think this might not
-> > > actually be an ACPI table per se, but specifically only the Generic
-> > > Error Status Block pointed to by the BERT (so maybe it also requires =
-the
-> > > machine to have experienced a boot-time error to be present?). ACPI
-> > > merely says that this is "a range of addressable memory" and "System
-> > > firmware must report this memory range as firmware reserved", so I ha=
-ve
-> > > no idea whether there's any specific expectation of how it's supposed=
- to
-> > > be mapped.
-> > >
-> >
-> > Thanks for digging that up.
-> >
-> > If the memory in question is firmware reserved, it should appear in
-> > the EFI memory map, and have the memory type attributes set, in which
->
-> Thanks a lot Ard for chiming in.
->
-> How are those memory type attributes determined by firmware ?
->
+When using s2idle on a variety of AMD notebook systems, they are
+experiencing spurious events that the EC or SMU are in the wrong
+state leading to a hard time waking up or higher than expected
+power consumption.
 
-It depends on the implementation, but in typical EDK2 based UEFI/PI
-firmware, the memory attributes are assigned to the whole of DRAM, and
-simply inherited by the allocated regions as they are being created.
+These events only occur when the EC GPE is inadvertently set as a wakeup
+source. Originally the EC GPE was only set as a wakeup source when using
+the intel-vbtn or intel-hid drivers in commit 10a08fd65ec1 ("ACPI: PM:
+Set up EC GPE for system wakeup from drivers that need it") but during
+testing a reporter discovered that this was not enough for their ASUS
+Zenbook UX430UNR/i7-8550U to wakeup by lid event or keypress.
+Marking the EC GPE for wakeup universally resolved this for that
+reporter in commit b90ff3554aa3 ("ACPI: PM: s2idle: Always set up EC GPE
+for system wakeup").
 
-However, in the case of error records, I can imagine there may be
-cases where the regions are deliberately defined as uncached, to
-ensure the error metadata does not linger somewhere in the cache
-hierarchy where other agents are not able to see it.
+However this behavior has lead to a number of problems:
 
+* On both Lenovo T14 and P14s the keyboard wakeup doesn't work, and
+sometimes the power button event doesn't work.
+* On HP 635 G7 detaching or attaching AC during suspend will cause
+the system not to wakeup
+* On Asus vivobook to prevent detaching AC causing resume problems
+* On Lenovo 14ARE05 to prevent detaching AC causing resume problems
+* On HP ENVY x360  to prevent detaching AC causing resume problems
 
-> > case acpi_os_ioremap() should do the right thing.
->
-> The question is what the right thing is or reworded what those
-> attributes are supposed to be for the Boot Error Region in question (as
-> Robin reported, ACPI specs 6.4, 18.3.1, "the Boot Error Region is a
-> range of addressable memory" and "..must report this memory range
-> as firmware reserved").
->
+As there may be other Intel systems besides ASUS Zenbook UX430UNR/i7-8550U
+that don't use intel-vbtn or intel-hid avoid these problems by only
+universally marking the EC GPE wakesource on non-AMD systems.
 
-That only defines the memory type, not the attributes. I don't think
-we should be too presciptive here, but simply ensure that the OS has
-all the info it needs to infer whether uncached means normal-nc or
-device.
+Link: https://patchwork.kernel.org/project/linux-pm/cover/5997740.FPbUVk04hV@kreacher/#22825489
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1230
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1629
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+---
+ drivers/acpi/x86/s2idle.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+index 816bf2c34b7a..1c507804fb10 100644
+--- a/drivers/acpi/x86/s2idle.c
++++ b/drivers/acpi/x86/s2idle.c
+@@ -417,11 +417,15 @@ static int lps0_device_attach(struct acpi_device *adev,
+ 		mem_sleep_current = PM_SUSPEND_TO_IDLE;
+ 
+ 	/*
+-	 * Some LPS0 systems, like ASUS Zenbook UX430UNR/i7-8550U, require the
+-	 * EC GPE to be enabled while suspended for certain wakeup devices to
+-	 * work, so mark it as wakeup-capable.
++	 * Some Intel based LPS0 systems, like ASUS Zenbook UX430UNR/i7-8550U don't
++	 * use intel-hid or intel-vbtn but require the EC GPE to be enabled while
++	 * suspended for certain wakeup devices to work, so mark it as wakeup-capable.
++	 *
++	 * Only enable on !AMD as enabling this universally causes problems for a number
++	 * of AMD based systems.
+ 	 */
+-	acpi_ec_mark_gpe_for_wake();
++	if (!acpi_s2idle_vendor_amd())
++		acpi_ec_mark_gpe_for_wake();
+ 
+ 	return 0;
+ }
+-- 
+2.25.1
 
-> > IIRC (but I don't have time to check - I'm on vacation), the ACPI core
-> > code does have separate code paths internally, but they are all
-> > brought out via acpi_os_ioremap() where MMIO and memory are combined
-> > again. Perhaps we should start looking at addressing this?
->
-> BTW, commit in question:
->
-> git log -p 7dae6326ed76
->
-> I believe you mean, if the OS maps an address with acpi_os_map_memory(),
-> we must convey the "memory" information to the arm64 back-end (instead
-> of falling back to acpi_os_ioremap()) so that the back-end can map it
-> with "memory" semantics (ie by choosing attributes that may need to
-> override the EFI memory map ones) ?
->
-
-Yes.
-
-> In current code, even if the BERT were mapped with acpi_os_map_iomem()
-> this would change nothing since it's acpi_os_ioremap() that runs the
-> rule (backed up by EFI memory map region info).
->
-
-Indeed. So the fact that acpi_os_map_memory() is backed by
-acpi_os_ioremap() is something we should fix. So they should both
-consult the EFI memory map, but have different fallback defaults if
-the region is not annotated correctly.
-
-> > So how does the sysfs code find the contents of this file? If some
-> > code is interpreting the BERT, could it be updated to use memory
-> > semantics explicitly when dumping the error status block?
->
-> See the commit above. Do you mean replacing the mapping function
-> in acpi_data_show() with something explicit eg ioremap_wc() through
-> a back-end specific implementation ?
->
-
-It seems the sysfs code already does the right thing, but the plumbing
-is simply wrong. The API clearly conveys the 'memory' semantics, but
-we drop those on the floor before reaching the memremap/ioremap
-backend.
