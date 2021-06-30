@@ -2,143 +2,171 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9923F3B7F60
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jun 2021 10:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F913B80E6
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jun 2021 12:37:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233223AbhF3IxB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 30 Jun 2021 04:53:01 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:9436 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233108AbhF3IxA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 30 Jun 2021 04:53:00 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GFFMv58LFzZp54;
-        Wed, 30 Jun 2021 16:47:23 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 30 Jun 2021 16:50:30 +0800
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 30 Jun 2021 16:50:28 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2176.012; Wed, 30 Jun 2021 09:50:26 +0100
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     Jon Nettleton <jon@solid-run.com>,
-        Robin Murphy <robin.murphy@arm.com>
-CC:     linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        "Steven Price" <steven.price@arm.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        yangyicong <yangyicong@huawei.com>,
-        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: RE: [PATCH v5 7/8] iommu/arm-smmu: Get associated RMR info and
- install bypass SMR
-Thread-Topic: [PATCH v5 7/8] iommu/arm-smmu: Get associated RMR info and
- install bypass SMR
-Thread-Index: AQHXUIyLvua7xjhPQkeDex9n58702KsTV/iAgBdgBoCAAGnfAIAAMyCAgAEihEA=
-Date:   Wed, 30 Jun 2021 08:50:26 +0000
-Message-ID: <d2223be42ce9497da8c02a87558beab6@huawei.com>
-References: <20210524110222.2212-1-shameerali.kolothum.thodi@huawei.com>
- <20210524110222.2212-8-shameerali.kolothum.thodi@huawei.com>
- <2bc3ae21-f2af-ee2c-5e9d-d47633e0439e@arm.com>
- <CABdtJHtpN7s2gTwUkeWcachOnk6djgMaJLGtnKq5SExA82bDDA@mail.gmail.com>
- <b33c1525-5a74-a985-fd39-f4df8614f210@arm.com>
- <CABdtJHsz+ycVffJTyekau_OY6ROmoTBWAGd_guikxauT=nnuJQ@mail.gmail.com>
-In-Reply-To: <CABdtJHsz+ycVffJTyekau_OY6ROmoTBWAGd_guikxauT=nnuJQ@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.82.108]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S233959AbhF3Kjy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 30 Jun 2021 06:39:54 -0400
+Received: from foss.arm.com ([217.140.110.172]:35134 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229882AbhF3Kjx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 30 Jun 2021 06:39:53 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 00EF611D4;
+        Wed, 30 Jun 2021 03:37:25 -0700 (PDT)
+Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 208C13F5A1;
+        Wed, 30 Jun 2021 03:37:20 -0700 (PDT)
+Date:   Wed, 30 Jun 2021 11:37:15 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Catalin Marinas <catalin.marinas@arm.com>
+Cc:     Robin Murphy <robin.murphy@arm.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Veronika Kabatova <vkabatov@redhat.com>,
+        Will Deacon <will@kernel.org>,
+        CKI Project <cki-project@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Memory Management <mm-qe@redhat.com>,
+        skt-results-master@redhat.com, Jeff Bastian <jbastian@redhat.com>,
+        Jan Stancek <jstancek@redhat.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        rjw@rjwysocki.net, lenb@kernel.org, guohanjun@huawei.com,
+        sudeep.holla@arm.com, ardb@kernel.org, lv.zheng@intel.com,
+        tony.luck@intel.com
+Subject: Re: =?utf-8?B?4p2MIEZBSUw=?= =?utf-8?Q?=3A?= Test report for kernel
+ 5.13.0-rc7 (arm-next, 8ab9b1a9)
+Message-ID: <20210630103715.GA12089@lpieralisi>
+References: <cki.6A65B499FE.46BPQ6DJTC@redhat.com>
+ <20210625083918.GA2736@willie-the-truck>
+ <CA+tGwn=rP_hAMLLtoy_s90ZzBjfMggu7T2Qj8HyFfGh1BGUoRA@mail.gmail.com>
+ <31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com>
+ <20210625110944.GB20835@arm.com>
+ <48b23351-3dba-bec8-242f-3c918ae55708@arm.com>
+ <8a28663f-6541-6ff4-3de0-b140e3f8a5b9@arm.com>
+ <20210629144415.GA28457@lpieralisi>
+ <14ca6f72-9b0f-ebd7-9cf8-a5d6190c8e5d@arm.com>
+ <20210629163543.GA12361@arm.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210629163543.GA12361@arm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9uIE5ldHRsZXRvbiBb
-bWFpbHRvOmpvbkBzb2xpZC1ydW4uY29tXQ0KPiBTZW50OiAyOSBKdW5lIDIwMjEgMTc6MjYNCj4g
-VG86IFJvYmluIE11cnBoeSA8cm9iaW4ubXVycGh5QGFybS5jb20+DQo+IENjOiBTaGFtZWVyYWxp
-IEtvbG90aHVtIFRob2RpIDxzaGFtZWVyYWxpLmtvbG90aHVtLnRob2RpQGh1YXdlaS5jb20+Ow0K
-PiBsaW51eC1hcm0ta2VybmVsIDxsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc+
-OyBBQ1BJIERldmVsIE1hbGluZw0KPiBMaXN0IDxsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZz47
-IGlvbW11QGxpc3RzLmxpbnV4LWZvdW5kYXRpb24ub3JnOyBMaW51eGFybQ0KPiA8bGludXhhcm1A
-aHVhd2VpLmNvbT47IFN0ZXZlbiBQcmljZSA8c3RldmVuLnByaWNlQGFybS5jb20+OyBHdW9oYW5q
-dW4NCj4gKEhhbmp1biBHdW8pIDxndW9oYW5qdW5AaHVhd2VpLmNvbT47IHlhbmd5aWNvbmcNCj4g
-PHlhbmd5aWNvbmdAaHVhd2VpLmNvbT47IFNhbWkuTXVqYXdhckBhcm0uY29tOyB3YW5naHVpcWlh
-bmcNCj4gPHdhbmdodWlxaWFuZ0BodWF3ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHY1
-IDcvOF0gaW9tbXUvYXJtLXNtbXU6IEdldCBhc3NvY2lhdGVkIFJNUiBpbmZvIGFuZA0KPiBpbnN0
-YWxsIGJ5cGFzcyBTTVINCj4gDQoNClsuLi5dDQogDQo+IFNoYW1lZXIsDQo+IA0KPiBTb3JyeSBm
-b3IgdGhlIGRlbGF5cy4gIEhlcmUgaXMgYSBkaWZmIG9mIHRoZSBjaGFuZ2VzIHRoYXQgc2hvdWxk
-DQo+IGFkZHJlc3MgdGhlIGlzc3VlcyBwb2ludGVkIG91dCBieSBSb2JpbiwNCj4gSSBoYXZlIHRl
-c3RlZCB0aGF0IHRoaXMgd29ya3MgYXMgZXhwZWN0ZWQgb24gbXkgSG9uZXlDb21iIExYMjE2MEEu
-DQoNCk9rLiBUaGFua3MgZm9yIHRoYXQuDQoNCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaW9tbXUv
-YXJtL2FybS1zbW11L2FybS1zbW11LmMNCj4gYi9kcml2ZXJzL2lvbW11L2FybS9hcm0tc21tdS9h
-cm0tc21tdS5jDQo+IGluZGV4IGFiN2I5ZGI3NzYyNS4uYTM1OGJkMzI2ZDBiIDEwMDY0NA0KPiAt
-LS0gYS9kcml2ZXJzL2lvbW11L2FybS9hcm0tc21tdS9hcm0tc21tdS5jDQo+ICsrKyBiL2RyaXZl
-cnMvaW9tbXUvYXJtL2FybS1zbW11L2FybS1zbW11LmMNCj4gQEAgLTIwNjgsMjkgKzIwNjgsMjEg
-QEAgc3RhdGljIHZvaWQNCj4gYXJtX3NtbXVfcm1yX2luc3RhbGxfYnlwYXNzX3NtcihzdHJ1Y3Qg
-YXJtX3NtbXVfZGV2aWNlICpzbW11KQ0KPiAgICAgICAgIHN0cnVjdCBsaXN0X2hlYWQgcm1yX2xp
-c3Q7DQo+ICAgICAgICAgc3RydWN0IGlvbW11X3Jlc3ZfcmVnaW9uICplOw0KPiAgICAgICAgIGlu
-dCBpLCBjbnQgPSAwOw0KPiAtICAgICAgIHUzMiBzbXI7DQo+ICAgICAgICAgdTMyIHJlZzsNCj4g
-DQo+ICAgICAgICAgSU5JVF9MSVNUX0hFQUQoJnJtcl9saXN0KTsNCj4gICAgICAgICBpZiAoaW9t
-bXVfZG1hX2dldF9ybXJzKGRldl9md25vZGUoc21tdS0+ZGV2KSwgJnJtcl9saXN0KSkNCj4gICAg
-ICAgICAgICAgICAgIHJldHVybjsNCj4gDQo+IC0gICAgICAgcmVnID0gYXJtX3NtbXVfZ3IwX3Jl
-YWQoc21tdSwgQVJNX1NNTVVfR1IwX3NDUjApOw0KPiArICAgICAgIC8qIFJhdGhlciB0aGFuIHRy
-eWluZyB0byBsb29rIGF0IGV4aXN0aW5nIG1hcHBpbmdzIHRoYXQNCj4gKyAgICAgICAgKiBhcmUg
-c2V0dXAgYnkgdGhlIGZpcm13YXJlIGFuZCB0aGVuIGludmFsaWRhdGUgdGhlIG9uZXMNCj4gKyAg
-ICAgICAgKiB0aGF0IGRvIG5vIGhhdmUgbWF0Y2hpbmcgUk1SIGVudHJpZXMsIGp1c3QgZGlzYWJs
-ZSB0aGUNCj4gKyAgICAgICAgKiBTTU1VIHVudGlsIGl0IGdldHMgZW5hYmxlZCBhZ2FpbiBpbiB0
-aGUgcmVzZXQgcm91dGluZS4NCj4gKyAgICAgICAgKi8NCj4gDQo+IC0gICAgICAgaWYgKChyZWcg
-JiBBUk1fU01NVV9zQ1IwX1VTRkNGRykgJiYgIShyZWcgJg0KPiBBUk1fU01NVV9zQ1IwX0NMSUVO
-VFBEKSkgew0KPiAtICAgICAgICAgICAgICAgLyoNCj4gLSAgICAgICAgICAgICAgICAqIFNNTVUg
-aXMgYWxyZWFkeSBlbmFibGVkIGFuZCBkaXNhbGxvd2luZyBieXBhc3MsIHNvDQo+IHByZXNlcnZl
-DQo+IC0gICAgICAgICAgICAgICAgKiB0aGUgZXhpc3RpbmcgU01Scw0KPiAtICAgICAgICAgICAg
-ICAgICovDQo+IC0gICAgICAgICAgICAgICBmb3IgKGkgPSAwOyBpIDwgc21tdS0+bnVtX21hcHBp
-bmdfZ3JvdXBzOyBpKyspIHsNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgc21yID0gYXJtX3Nt
-bXVfZ3IwX3JlYWQoc21tdSwNCj4gQVJNX1NNTVVfR1IwX1NNUihpKSk7DQo+IC0gICAgICAgICAg
-ICAgICAgICAgICAgIGlmICghRklFTERfR0VUKEFSTV9TTU1VX1NNUl9WQUxJRCwgc21yKSkNCj4g
-LSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb250aW51ZTsNCj4gLSAgICAgICAgICAg
-ICAgICAgICAgICAgc21tdS0+c21yc1tpXS5pZCA9DQo+IEZJRUxEX0dFVChBUk1fU01NVV9TTVJf
-SUQsIHNtcik7DQo+IC0gICAgICAgICAgICAgICAgICAgICAgIHNtbXUtPnNtcnNbaV0ubWFzayA9
-DQo+IEZJRUxEX0dFVChBUk1fU01NVV9TTVJfTUFTSywgc21yKTsNCj4gLSAgICAgICAgICAgICAg
-ICAgICAgICAgc21tdS0+c21yc1tpXS52YWxpZCA9IHRydWU7DQo+IC0gICAgICAgICAgICAgICB9
-DQo+IC0gICAgICAgfQ0KPiArICAgICAgIHJlZyA9IGFybV9zbW11X2dyMF9yZWFkKHNtbXUsIEFS
-TV9TTU1VX0dSMF9zQ1IwKTsNCj4gKyAgICAgICByZWcgJj0gfkFSTV9TTU1VX3NDUjBfQ0xJRU5U
-UEQ7DQo+ICsgICAgICAgYXJtX3NtbXVfZ3IwX3dyaXRlKHNtbXUsIEFSTV9TTU1VX0dSMF9zQ1Iw
-LCByZWcpOw0KPiANCj4gICAgICAgICBsaXN0X2Zvcl9lYWNoX2VudHJ5KGUsICZybXJfbGlzdCwg
-bGlzdCkgew0KPiAgICAgICAgICAgICAgICAgdTMyIHNpZCA9IGUtPmZ3X2RhdGEucm1yLnNpZDsN
-Cj4gQEAgLTIxMDAsMjUgKzIwOTIsMTYgQEAgc3RhdGljIHZvaWQNCj4gYXJtX3NtbXVfcm1yX2lu
-c3RhbGxfYnlwYXNzX3NtcihzdHJ1Y3QgYXJtX3NtbXVfZGV2aWNlICpzbW11KQ0KPiAgICAgICAg
-ICAgICAgICAgICAgICAgICBjb250aW51ZTsNCj4gICAgICAgICAgICAgICAgIGlmIChzbW11LT5z
-MmNyc1tpXS5jb3VudCA9PSAwKSB7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIHNtbXUtPnNt
-cnNbaV0uaWQgPSBzaWQ7DQo+IC0gICAgICAgICAgICAgICAgICAgICAgIHNtbXUtPnNtcnNbaV0u
-bWFzayA9IH4wOw0KPiArICAgICAgICAgICAgICAgICAgICAgICBzbW11LT5zbXJzW2ldLm1hc2sg
-PSAwOw0KPiAgICAgICAgICAgICAgICAgICAgICAgICBzbW11LT5zbXJzW2ldLnZhbGlkID0gdHJ1
-ZTsNCj4gICAgICAgICAgICAgICAgIH0NCj4gICAgICAgICAgICAgICAgIHNtbXUtPnMyY3JzW2ld
-LmNvdW50Kys7DQo+ICAgICAgICAgICAgICAgICBzbW11LT5zMmNyc1tpXS50eXBlID0gUzJDUl9U
-WVBFX0JZUEFTUzsNCj4gICAgICAgICAgICAgICAgIHNtbXUtPnMyY3JzW2ldLnByaXZjZmcgPSBT
-MkNSX1BSSVZDRkdfREVGQVVMVDsNCj4gLSAgICAgICAgICAgICAgIHNtbXUtPnMyY3JzW2ldLmNi
-bmR4ID0gMHhmZjsNCj4gDQo+ICAgICAgICAgICAgICAgICBjbnQrKzsNCj4gICAgICAgICB9DQo+
-IA0KPiAtICAgICAgIGlmICgocmVnICYgQVJNX1NNTVVfc0NSMF9VU0ZDRkcpICYmICEocmVnICYN
-Cj4gQVJNX1NNTVVfc0NSMF9DTElFTlRQRCkpIHsNCj4gLSAgICAgICAgICAgICAgIC8qIFJlbW92
-ZSB0aGUgdmFsaWQgYml0IGZvciB1bnVzZWQgU01ScyAqLw0KPiAtICAgICAgICAgICAgICAgZm9y
-IChpID0gMDsgaSA8IHNtbXUtPm51bV9tYXBwaW5nX2dyb3VwczsgaSsrKSB7DQo+IC0gICAgICAg
-ICAgICAgICAgICAgICAgIGlmIChzbW11LT5zMmNyc1tpXS5jb3VudCA9PSAwKQ0KPiAtICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHNtbXUtPnNtcnNbaV0udmFsaWQgPSBmYWxzZTsNCj4g
-LSAgICAgICAgICAgICAgIH0NCj4gLSAgICAgICB9DQo+IC0NCj4gICAgICAgICBkZXZfbm90aWNl
-KHNtbXUtPmRldiwgIlx0cHJlc2VydmVkICVkIGJvb3QgbWFwcGluZyVzXG4iLCBjbnQsDQo+ICAg
-ICAgICAgICAgICAgICAgICBjbnQgPT0gMSA/ICIiIDogInMiKTsNCj4gICAgICAgICBpb21tdV9k
-bWFfcHV0X3JtcnMoZGV2X2Z3bm9kZShzbW11LT5kZXYpLCAmcm1yX2xpc3QpOw0KPiANCj4gUGxl
-YXNlIGluY2x1ZGUgdGhhdCBpbiB5b3VyIG5leHQgcGF0Y2ggc2VyaWVzLiAgTGV0IG1lIGtub3cg
-aWYgeW91DQo+IHdhbnQgbWUgdG8gc2VuZCB5b3UgdGhlIHBhdGNoIGRpcmVjdA0KPiBvZmYgdGhl
-IGxpc3QuDQoNCk5vIHByb2JsZW0sIEkgd2lsbCB0YWtlIHRoaXMgaW4gbmV4dC4NCg0KVGhhbmtz
-LA0KU2hhbWVlcg0K
+On Tue, Jun 29, 2021 at 05:35:43PM +0100, Catalin Marinas wrote:
+> On Tue, Jun 29, 2021 at 04:14:55PM +0100, Robin Murphy wrote:
+> > On 2021-06-29 15:44, Lorenzo Pieralisi wrote:
+> > > On Tue, Jun 29, 2021 at 12:48:14PM +0100, Robin Murphy wrote:
+> > > > [ +ACPI audience ]
+> > > > 
+> > > > On 2021-06-25 12:15, Robin Murphy wrote:
+> > > > > On 2021-06-25 12:09, Catalin Marinas wrote:
+> > > > > > On Fri, Jun 25, 2021 at 12:02:52PM +0100, Robin Murphy wrote:
+> > > > > > > On 2021-06-25 10:52, Veronika Kabatova wrote:
+> > > > > > > [...]
+> > > > > > > > > >           ❌ stress: stress-ng
+> > > > > > > > > 
+> > > > > > > > > Oh no, this looks like another alignment fault in memcpy:
+> > > > > > > > > 
+> > > > > > > > > [13330.651903] Unable to handle kernel paging request at
+> > > > > > > > > virtual address ffff8000534705ff
+> [...]
+> > > > > > > > > [13330.652218] Call trace:
+> > > > > > > > > [13330.652221]  __memcpy+0x168/0x250
+> > > > > > > > > [13330.652225]  acpi_data_show+0x5c/0x8c
+> > > > > > > > > [13330.652232]  sysfs_kf_bin_read+0x78/0xa0
+> > > > > > > > > [13330.652238]  kernfs_file_read_iter+0x9c/0x1a4
+> > > > > > > > > [13330.652241]  kernfs_fop_read_iter+0x34/0x50
+> > > > > > > > > [13330.652244]  new_sync_read+0xdc/0x154
+> > > > > > > > > [13330.652253]  vfs_read+0x158/0x1e4
+> > > > > > > > > [13330.652260]  ksys_read+0x64/0xec
+> > > > > > > > > [13330.652266]  __arm64_sys_read+0x28/0x34
+> > > > > > > > > [13330.652273]  invoke_syscall+0x50/0x120
+> > > > > > > > > [13330.652280]  el0_svc_common.constprop.0+0x4c/0xd4
+> > > > > > > > > [13330.652284]  do_el0_svc+0x30/0x9c
+> > > > > > > > > [13330.652286]  el0_svc+0x2c/0x54
+> > > > > > > > > [13330.652294]  el0t_64_sync_handler+0x1a4/0x1b0
+> > > > > > > > > [13330.652296]  el0t_64_sync+0x19c/0x1a0
+> > > > > > > > > [13330.652303] Code: a984346c a9c4342c f1010042 54fffee8 (a97c3c8e)
+> > > > > > > > > [13330.652307] ---[ end trace 227d4380f57145d4 ]---
+> > > > > > > > > 
+> > > > > > > > > So maybe this issue isn't limited to weird modules, after all...
+> > > > > > > > 
+> > > > > > > > It ran on the machine from the same set that we were able to reproduce
+> > > > > > > > it on previously. If you or anyone else have an idea on how
+> > > > > > > > to stabilize the reproducibility or have a debug patch we'll be happy to try it.
+> > > > > > > 
+> > > > > > > Possibly it depends on the individual machines' firmware exactly how the
+> > > > > > > relevant bits of their ACPI tables are aligned in memory?
+> > > > > > > 
+> > > > > > > I've started digging into that callstack - it may not be a "weird module"
+> > > > > > > but it's definitely crusty ACPI code... a238317ce818 ("ACPI: Clean up
+> > > > > > > acpi_os_map/unmap_memory() to eliminate __iomem.") looks frankly a bit
+> > > > > > > questionable in its decision to blithely cast away __iomem, but then the
+> > > > > > > rationale in aafc65c731fe ("ACPI: add arm64 to the platforms that use
+> > > > > > > ioremap") seems particularly dubious on top of that (especially
+> > > > > > > given this end result).
+> [...]
+> > > > After picking through the UEFI spec I think I've now got a clearer picture
+> > > > of what's happening, but I'm not sure where it goes from here...
+> > > > 
+> > > > The spec implies that it *is* legitimate for runtime-loaded ACPI tables to
+> > > > lie outside the EFI memory map, and that case they must be assumed to be
+> > > > uncached, so the behaviour of acpi_os_ioremap() is correct.
+> > > 
+> > > I'd agree with the reasoning, it would be good to pinpoint whether
+> > > that's what actually triggers the issue.
+> > > 
+> > > I'd like to replicate it if possible (it is TX2 HW but firmware
+> > > config is likely to differ from the HW I have at hand), the
+> > > test command line that triggers the fault would be useful as
+> > > a starting point.
+> > > 
+> > > Furthermore, is this a v5.13-rc* regression ? If so it would be
+> > > good to bisect it - I can't recollect arm64 changes that could
+> > > have introduced this regression in the last cycle but I may have
+> > > missed something.
+> > 
+> > The actual change which has brought this to light is the update to arm64's
+> > memcpy() routine for 5.13 - the new version is more aggressive at making
+> > unaligned loads from the source buffer, so now triggers alignment faults
+> > more readily when (wrongly) used on iomem mappings in places that were
+> > getting away with it by chance under the previous implementation (see also
+> > [1], for example).
+> 
+> I wouldn't revert any of the memcpy() stuff as it just uncovered an
+> existing bug in how the ACPI tables are handled. Could we actually hit
+> a similar issue with C code parsing the ACPI tables?
+
+I agree - I don't think a revert should be considered, this looks like
+a long standing ACPI bug.
+
+This needs debugging but I believe that it all depends on the table
+being in the EFI map or not. I'd help a lot if I managed to reproduce
+the bug for a given set-up so that we can check which table is causing
+it.
+
+> Is there a way to map the ACPI tables as Normal Noncacheable
+> (ioremap_wc)?
+
+That's a good point. IIUC UEFI 2.9 (2.3.6) requires tables loaded at
+runtime (see above - I really would like to understand what table
+is triggering this bug) that are not in the EFI memory map and whose
+attributes cannot be retrieved through ACPI descriptors to be considered
+non-cacheable.
+
+The question is whether [arm64] acpi_os_ioremap() can be changed so that
+the above is mapped to Normal NC rather than device-nGnRnE; this may
+cause surprises the other way around (given that dev-nGnRnE is an
+all encompassing fallback - again IIUC, I believe Ard knows better
+than me if he has time to chime in).
+
+We need a reproducer and some tracing in the ACPI code.
+
+Lorenzo
+
+>Presumably no-one sane would place ACPI tables in memory that's
+>sensitive to the access size.
