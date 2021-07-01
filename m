@@ -2,71 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3CDB3B94B6
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jul 2021 18:35:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41B6C3B94DE
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Jul 2021 18:48:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbhGAQha (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 1 Jul 2021 12:37:30 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:52736 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbhGAQha (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jul 2021 12:37:30 -0400
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 2.1.0)
- id b44318c53906634a; Thu, 1 Jul 2021 18:34:57 +0200
-Received: from kreacher.localnet (89-64-80-13.dynamic.chello.pl [89.64.80.13])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 29CC9669AED;
-        Thu,  1 Jul 2021 18:34:57 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>, Borislav Petkov <bp@suse.de>
-Subject: [PATCH] ACPI: Kconfig: Provide help text for the ACPI_PRMT option
-Date:   Thu, 01 Jul 2021 18:34:52 +0200
-Message-ID: <11780652.O9o76ZdvQC@kreacher>
+        id S229873AbhGAQvE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 1 Jul 2021 12:51:04 -0400
+Received: from mail-oi1-f171.google.com ([209.85.167.171]:38448 "EHLO
+        mail-oi1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229812AbhGAQvE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 1 Jul 2021 12:51:04 -0400
+Received: by mail-oi1-f171.google.com with SMTP id t3so8008881oic.5
+        for <linux-acpi@vger.kernel.org>; Thu, 01 Jul 2021 09:48:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SWmfrIjC6NGeYGIHT0HaNDsjbNJdlkOi17oHy7aVsOc=;
+        b=ETADIu5qZLyd4jlQjEJS//2jdSq6NEM2xHSIhiVmLw4a586Lwf5Lzi8s+fFQ9ZcnNq
+         6AJyhkVpKlvf/tBV+NnGkGuzQ/ntQjY72lUo/wcKPCrdLYi5i4FpccITn7jIAZKS8Asn
+         nrQWeP8zmdATn+jnKcZfVQ9kGx/GPHK0iniEptISU2OISRiYeyn0BKB4Cz7FmZldlADX
+         zxZokyDjaOUq7FZ3VO1ugS2w+0ZS/Cnp0UcBGi/UEQU2bJygg7LAu1uIBr9MoVR1lFv5
+         VGaIytMRk5inD8qhHECBieHgJ4QVvq5y+bq2t/X1L2VD1M4lq9YXqZNtxIbwcvEVFfOV
+         SQhw==
+X-Gm-Message-State: AOAM532nZoMc9lQL+Kab+h6UlAU4Ns6ia8u1Eko/hM3j6/uKmr/oFGVD
+        lRKcmwy+XHpi5gpGrjYpwiOIoj4wltvgTW+diGY=
+X-Google-Smtp-Source: ABdhPJwPpefHjqAkZrkfnaX0Ivp1W4ae9mkBjuoqMy8Qh+XyCHWRxEFK+9hmOOZpMoSwgxXggxBT7jQBOswoWWv6MPg=
+X-Received: by 2002:aca:417:: with SMTP id 23mr339156oie.71.1625158113383;
+ Thu, 01 Jul 2021 09:48:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20210630194606.530-1-mario.limonciello@amd.com>
+In-Reply-To: <20210630194606.530-1-mario.limonciello@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 1 Jul 2021 18:48:22 +0200
+Message-ID: <CAJZ5v0jhYL6Qrj5vvU=5FguF=mVryfrBBtgvc8cHzcKkXM_eOg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PM: Only mark EC GPE for wakeup on Intel systems
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Julian Sikorski <belegdol@gmail.com>,
+        Alex Deucher <alexander.deucher@amd.com>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 89.64.80.13
-X-CLIENT-HOSTNAME: 89-64-80-13.dynamic.chello.pl
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledrfeeiiedguddttdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhephfegtdffjeehkeegleejveevtdeugfffieeijeduuddtkefgjedvheeujeejtedvnecukfhppeekledrieegrdektddrudefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdeigedrkedtrddufedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsphesshhushgvrdguvg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Jun 30, 2021 at 9:46 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> When using s2idle on a variety of AMD notebook systems, they are
+> experiencing spurious events that the EC or SMU are in the wrong
+> state leading to a hard time waking up or higher than expected
+> power consumption.
+>
+> These events only occur when the EC GPE is inadvertently set as a wakeup
+> source. Originally the EC GPE was only set as a wakeup source when using
+> the intel-vbtn or intel-hid drivers in commit 10a08fd65ec1 ("ACPI: PM:
+> Set up EC GPE for system wakeup from drivers that need it") but during
+> testing a reporter discovered that this was not enough for their ASUS
+> Zenbook UX430UNR/i7-8550U to wakeup by lid event or keypress.
+> Marking the EC GPE for wakeup universally resolved this for that
+> reporter in commit b90ff3554aa3 ("ACPI: PM: s2idle: Always set up EC GPE
+> for system wakeup").
+>
+> However this behavior has lead to a number of problems:
+>
+> * On both Lenovo T14 and P14s the keyboard wakeup doesn't work, and
+> sometimes the power button event doesn't work.
+> * On HP 635 G7 detaching or attaching AC during suspend will cause
+> the system not to wakeup
+> * On Asus vivobook to prevent detaching AC causing resume problems
+> * On Lenovo 14ARE05 to prevent detaching AC causing resume problems
+> * On HP ENVY x360  to prevent detaching AC causing resume problems
+>
+> As there may be other Intel systems besides ASUS Zenbook UX430UNR/i7-8550U
+> that don't use intel-vbtn or intel-hid avoid these problems by only
+> universally marking the EC GPE wakesource on non-AMD systems.
+>
+> Link: https://patchwork.kernel.org/project/linux-pm/cover/5997740.FPbUVk04hV@kreacher/#22825489
+> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1230
+> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1629
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Acked-by: Alex Deucher <alexander.deucher@amd.com>
+> ---
+>  drivers/acpi/x86/s2idle.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+> index 816bf2c34b7a..1c507804fb10 100644
+> --- a/drivers/acpi/x86/s2idle.c
+> +++ b/drivers/acpi/x86/s2idle.c
+> @@ -417,11 +417,15 @@ static int lps0_device_attach(struct acpi_device *adev,
+>                 mem_sleep_current = PM_SUSPEND_TO_IDLE;
+>
+>         /*
+> -        * Some LPS0 systems, like ASUS Zenbook UX430UNR/i7-8550U, require the
+> -        * EC GPE to be enabled while suspended for certain wakeup devices to
+> -        * work, so mark it as wakeup-capable.
+> +        * Some Intel based LPS0 systems, like ASUS Zenbook UX430UNR/i7-8550U don't
+> +        * use intel-hid or intel-vbtn but require the EC GPE to be enabled while
+> +        * suspended for certain wakeup devices to work, so mark it as wakeup-capable.
+> +        *
+> +        * Only enable on !AMD as enabling this universally causes problems for a number
+> +        * of AMD based systems.
+>          */
+> -       acpi_ec_mark_gpe_for_wake();
+> +       if (!acpi_s2idle_vendor_amd())
+> +               acpi_ec_mark_gpe_for_wake();
+>
+>         return 0;
+>  }
+> --
 
-Add missing help text for CONFIG_ACPI_PRMT.
-
-Fixes: cefc7ca46235 ("ACPI: PRM: implement OperationRegion handler for the PlatformRtMechanism subtype")
-Reported-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/Kconfig |   10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-Index: linux-pm/drivers/acpi/Kconfig
-===================================================================
---- linux-pm.orig/drivers/acpi/Kconfig
-+++ linux-pm/drivers/acpi/Kconfig
-@@ -548,3 +548,13 @@ config ACPI_PRMT
- 	bool "Platform Runtime Mechanism Support"
- 	depends on EFI && X86_64
- 	default y
-+	help
-+	  Platform Runtime Mechanism (PRM) is a firmware interface exposing a
-+	  set of binary executables that can be called from the AML interpreter
-+	  or directly from device drivers.
-+
-+	  Say Y to enable the AML interpreter to execute the PRM code.
-+
-+	  While this feature is optional in principle, leaving it out may
-+	  substantially increase computational overhead related to the
-+	  initialization of some server systems.
-
-
-
+Applied as 5.14-rc1 material, thanks!
