@@ -2,45 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 444073BA361
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jul 2021 18:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 593593BA362
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jul 2021 18:51:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229609AbhGBQxc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Jul 2021 12:53:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:59303 "EHLO
+        id S229676AbhGBQxe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Jul 2021 12:53:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32030 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229455AbhGBQxc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jul 2021 12:53:32 -0400
+        by vger.kernel.org with ESMTP id S229455AbhGBQxe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jul 2021 12:53:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1625244659;
+        s=mimecast20190719; t=1625244661;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=Hczf/zYMcFbd9s+5bjvba857G/D075IEVL9MJvSYO7s=;
-        b=b7GoLmNLEFZ8dAPgVxObWpVztyV+zJST4/VMClLkNVP6yY/Q0B5RmsPHlu8QDmY52yyeIx
-        GXEHxGjHW3Ox053vz2doYMkR3ESZub39vt+O50V+XwFfEgk26WWn8QaqX8W91b6xsEK4u9
-        U7K9141fFOrJwfbWaU5Dmm9BzynMtQM=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+yJbnHAwVZYEldlG8dDs+r60cd3R3+p12OdCsSqrO5M=;
+        b=IzveF37KE+T8cVSiGHnX92dG5IUgNXwU5N/8arVIvGK5twzoa8c3FkZlYN2xNmW0Nkr3uq
+        kuN9S6cCIARLgTRwKguzsfadDrDrAZSQlbIMTYV/JkJWsZOPCkhO3URUY1m69PqlfHGgi9
+        d4+U/AweOwAovNrJ11t+6g/6bB2Xp4g=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-283-tDb4ghCnNDKaV0ezAAFK0A-1; Fri, 02 Jul 2021 12:50:56 -0400
-X-MC-Unique: tDb4ghCnNDKaV0ezAAFK0A-1
+ us-mta-249-uPpMs_q5OHikZogi40Ag_g-1; Fri, 02 Jul 2021 12:50:58 -0400
+X-MC-Unique: uPpMs_q5OHikZogi40Ag_g-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6C1941084F62;
-        Fri,  2 Jul 2021 16:50:55 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E754E1084F7E;
+        Fri,  2 Jul 2021 16:50:56 +0000 (UTC)
 Received: from x1.localdomain.com (ovpn-112-237.ams2.redhat.com [10.36.112.237])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 34FCC1000324;
-        Fri,  2 Jul 2021 16:50:52 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id AF5B81001281;
+        Fri,  2 Jul 2021 16:50:55 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>
 Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         Andy Shevchenko <andy@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         linux-acpi@vger.kernel.org
-Subject: [PATCH 1/2] ACPI / PMIC: XPower: optimize I2C-bus accesses
-Date:   Fri,  2 Jul 2021 18:50:51 +0200
-Message-Id: <20210702165052.81750-1-hdegoede@redhat.com>
+Subject: [PATCH 2/2] ACPI / PMIC: XPower: optimize MIPI PMIQ sequence I2C-bus accesses
+Date:   Fri,  2 Jul 2021 18:50:52 +0200
+Message-Id: <20210702165052.81750-2-hdegoede@redhat.com>
+In-Reply-To: <20210702165052.81750-1-hdegoede@redhat.com>
+References: <20210702165052.81750-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
@@ -62,80 +65,60 @@ fashion, so that higher-level code which does multiple I2C-transfers can
 call it once for a group of transfers, turning the calls done by the
 I2C-bus-driver into no-ops.
 
-Move / add iosf_mbi_block_punit_i2c_access() calls in / to the XPower
-OpRegion code so that the PUNIT semaphore only needs to be taken once
-for each OpRegion access.
+The default exec_mipi_pmic_seq_element implementation from
+drivers/acpi/pmic/intel_pmic.c does a regmap_update_bits() call and
+the involved registers are typically marked as volatile in the regmap,
+so this leads to 2 I2C-bus accesses.
+
+Add a XPower AXP288 specific implementation of exec_mipi_pmic_seq_element
+which calls iosf_mbi_block_punit_i2c_access() calls before the
+regmap_update_bits() call to avoid having to do the whole expensive
+acquire PUNIT semaphore dance twice.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/pmic/intel_pmic_xpower.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ drivers/acpi/pmic/intel_pmic_xpower.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/drivers/acpi/pmic/intel_pmic_xpower.c b/drivers/acpi/pmic/intel_pmic_xpower.c
-index a091d5a8392c..644a495a4f13 100644
+index 644a495a4f13..93c516ad361e 100644
 --- a/drivers/acpi/pmic/intel_pmic_xpower.c
 +++ b/drivers/acpi/pmic/intel_pmic_xpower.c
-@@ -178,15 +178,17 @@ static int intel_xpower_pmic_update_power(struct regmap *regmap, int reg,
- {
- 	int data, ret;
+@@ -266,10 +266,34 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
+ 	return ret;
+ }
  
--	/* GPIO1 LDO regulator needs special handling */
--	if (reg == XPOWER_GPI1_CTRL)
--		return regmap_update_bits(regmap, reg, GPI1_LDO_MASK,
--					  on ? GPI1_LDO_ON : GPI1_LDO_OFF);
--
- 	ret = iosf_mbi_block_punit_i2c_access();
- 	if (ret)
- 		return ret;
- 
-+	/* GPIO1 LDO regulator needs special handling */
-+	if (reg == XPOWER_GPI1_CTRL) {
-+		ret = regmap_update_bits(regmap, reg, GPI1_LDO_MASK,
-+					 on ? GPI1_LDO_ON : GPI1_LDO_OFF);
-+		goto out;
++static int intel_xpower_exec_mipi_pmic_seq_element(struct regmap *regmap,
++						   u16 i2c_address, u32 reg_address,
++						   u32 value, u32 mask)
++{
++	int ret;
++
++	if (i2c_address != 0x34) {
++		pr_err("%s: Unexpected i2c-addr: 0x%02x (reg-addr 0x%x value 0x%x mask 0x%x)\n",
++		       __func__, i2c_address, reg_address, value, mask);
++		return -ENXIO;
 +	}
 +
- 	if (regmap_read(regmap, reg, &data)) {
- 		ret = -EIO;
- 		goto out;
-@@ -218,6 +220,10 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
- 	int ret, adc_ts_pin_ctrl;
- 	u8 buf[2];
- 
 +	ret = iosf_mbi_block_punit_i2c_access();
 +	if (ret)
 +		return ret;
 +
- 	/*
- 	 * The current-source used for the battery temp-sensor (TS) is shared
- 	 * with the GPADC. For proper fuel-gauge and charger operation the TS
-@@ -231,14 +237,14 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
- 	 */
- 	ret = regmap_read(regmap, AXP288_ADC_TS_PIN_CTRL, &adc_ts_pin_ctrl);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	if (adc_ts_pin_ctrl & AXP288_ADC_TS_CURRENT_ON_OFF_MASK) {
- 		ret = regmap_update_bits(regmap, AXP288_ADC_TS_PIN_CTRL,
- 					 AXP288_ADC_TS_CURRENT_ON_OFF_MASK,
- 					 AXP288_ADC_TS_CURRENT_ON_ONDEMAND);
- 		if (ret)
--			return ret;
-+			goto out;
- 
- 		/* Wait a bit after switching the current-source */
- 		usleep_range(6000, 10000);
-@@ -254,6 +260,9 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
- 				   AXP288_ADC_TS_CURRENT_ON);
- 	}
- 
-+out:
++	ret = regmap_update_bits(regmap, reg_address, mask, value);
++
 +	iosf_mbi_unblock_punit_i2c_access();
 +
- 	return ret;
- }
- 
++	return ret;
++}
++
+ static struct intel_pmic_opregion_data intel_xpower_pmic_opregion_data = {
+ 	.get_power = intel_xpower_pmic_get_power,
+ 	.update_power = intel_xpower_pmic_update_power,
+ 	.get_raw_temp = intel_xpower_pmic_get_raw_temp,
++	.exec_mipi_pmic_seq_element = intel_xpower_exec_mipi_pmic_seq_element,
+ 	.power_table = power_table,
+ 	.power_table_count = ARRAY_SIZE(power_table),
+ 	.thermal_table = thermal_table,
 -- 
 2.31.1
 
