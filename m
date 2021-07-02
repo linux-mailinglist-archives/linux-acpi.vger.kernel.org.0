@@ -2,88 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC7B23BA1F0
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jul 2021 16:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 444073BA361
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Jul 2021 18:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232868AbhGBOIX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 2 Jul 2021 10:08:23 -0400
-Received: from mga17.intel.com ([192.55.52.151]:38847 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232777AbhGBOIW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 2 Jul 2021 10:08:22 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10033"; a="189118182"
-X-IronPort-AV: E=Sophos;i="5.83,317,1616482800"; 
-   d="scan'208";a="189118182"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2021 07:05:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,317,1616482800"; 
-   d="scan'208";a="482455102"
-Received: from aubrey-app.sh.intel.com (HELO [10.239.53.25]) ([10.239.53.25])
-  by FMSMGA003.fm.intel.com with ESMTP; 02 Jul 2021 07:05:48 -0700
-Subject: Re: [PATCH 2/2] ACPI: let BIOS fall back to legacy handling if PRM
- disabled
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Aubrey Li <aubrey.li@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>
-References: <1625209430-19934-1-git-send-email-aubrey.li@intel.com>
- <1625209430-19934-2-git-send-email-aubrey.li@intel.com>
- <CAJZ5v0jq=-97bW_s7dx2U=y-3rZoJsLtFre2XXYAaQgAdbQdXA@mail.gmail.com>
- <f8f0b7ee-b225-eff0-cfcc-bb43e9e520dc@linux.intel.com>
- <CAJZ5v0gO0jMTr_X__NKfo+SX0ygyN2C7CQiz03Vo-WObo_ZZNQ@mail.gmail.com>
-From:   Aubrey Li <aubrey.li@linux.intel.com>
-Message-ID: <fa4279ff-7bc9-ae13-6bbf-b9dcfae3a21b@linux.intel.com>
-Date:   Fri, 2 Jul 2021 22:06:09 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S229609AbhGBQxc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 2 Jul 2021 12:53:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:59303 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229455AbhGBQxc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 2 Jul 2021 12:53:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1625244659;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Hczf/zYMcFbd9s+5bjvba857G/D075IEVL9MJvSYO7s=;
+        b=b7GoLmNLEFZ8dAPgVxObWpVztyV+zJST4/VMClLkNVP6yY/Q0B5RmsPHlu8QDmY52yyeIx
+        GXEHxGjHW3Ox053vz2doYMkR3ESZub39vt+O50V+XwFfEgk26WWn8QaqX8W91b6xsEK4u9
+        U7K9141fFOrJwfbWaU5Dmm9BzynMtQM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-283-tDb4ghCnNDKaV0ezAAFK0A-1; Fri, 02 Jul 2021 12:50:56 -0400
+X-MC-Unique: tDb4ghCnNDKaV0ezAAFK0A-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6C1941084F62;
+        Fri,  2 Jul 2021 16:50:55 +0000 (UTC)
+Received: from x1.localdomain.com (ovpn-112-237.ams2.redhat.com [10.36.112.237])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 34FCC1000324;
+        Fri,  2 Jul 2021 16:50:52 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH 1/2] ACPI / PMIC: XPower: optimize I2C-bus accesses
+Date:   Fri,  2 Jul 2021 18:50:51 +0200
+Message-Id: <20210702165052.81750-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0gO0jMTr_X__NKfo+SX0ygyN2C7CQiz03Vo-WObo_ZZNQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 7/2/21 10:02 PM, Rafael J. Wysocki wrote:
-> On Fri, Jul 2, 2021 at 4:02 PM Aubrey Li <aubrey.li@linux.intel.com> wrote:
->>
->> On 7/2/21 7:37 PM, Rafael J. Wysocki wrote:
->>> On Fri, Jul 2, 2021 at 9:03 AM Aubrey Li <aubrey.li@intel.com> wrote:
->>>>
->>>> Based on _OSC PRM bit, BIOS can choose switch from legacy handling
->>>> to using PRM. So if CONFIG_ACPI_PRMT is disabled, this bit should
->>>> not be set to let BIOS fall back to the legacy handling (such as SMI).
->>>>
->>>> Cc: Dan Williams <dan.j.williams@intel.com>
->>>> Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
->>>> ---
->>>>  drivers/acpi/bus.c | 2 ++
->>>>  1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
->>>> index 60fb6a84..30a3d4a 100644
->>>> --- a/drivers/acpi/bus.c
->>>> +++ b/drivers/acpi/bus.c
->>>> @@ -303,7 +303,9 @@ static void acpi_bus_osc_negotiate_platform_control(void)
->>>>
->>>>         capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_HOTPLUG_OST_SUPPORT;
->>>>         capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PCLPI_SUPPORT;
->>>> +#ifdef CONFIG_ACPI_PRMT
->>>>         capbuf[OSC_SUPPORT_DWORD] |= OSC_SB_PRM_SUPPORT;
->>>> +#endif
->>>
->>> What about using if (IS_ENABLED()) instead of #ifdef?
->>
->> aha, sorry, using if (IS_ENABLED()) is better, will come up with a new version soon.
-> 
-> No need (see my other reply).
-> 
-> Thanks!
-> 
+The I2C-bus to the XPower AXP288 is shared between the Linux kernel and
+the SoCs PUNIT. The PUNIT has a semaphore which the kernel must "lock"
+before it may use the bus and while the kernel holds the semaphore the CPU
+and GPU power-states must not be changed otherwise the system will freeze.
 
-Okay, thanks Rafael!
+This is a complex process, which is quite expensive. This is all done by
+iosf_mbi_block_punit_i2c_access(). To ensure that no unguarded I2C-bus
+accesses happen, iosf_mbi_block_punit_i2c_access() gets called by the
+I2C-bus-driver for every I2C transfer. Because this is so expensive it
+is allowed to call iosf_mbi_block_punit_i2c_access() in a nested
+fashion, so that higher-level code which does multiple I2C-transfers can
+call it once for a group of transfers, turning the calls done by the
+I2C-bus-driver into no-ops.
+
+Move / add iosf_mbi_block_punit_i2c_access() calls in / to the XPower
+OpRegion code so that the PUNIT semaphore only needs to be taken once
+for each OpRegion access.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/pmic/intel_pmic_xpower.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/acpi/pmic/intel_pmic_xpower.c b/drivers/acpi/pmic/intel_pmic_xpower.c
+index a091d5a8392c..644a495a4f13 100644
+--- a/drivers/acpi/pmic/intel_pmic_xpower.c
++++ b/drivers/acpi/pmic/intel_pmic_xpower.c
+@@ -178,15 +178,17 @@ static int intel_xpower_pmic_update_power(struct regmap *regmap, int reg,
+ {
+ 	int data, ret;
+ 
+-	/* GPIO1 LDO regulator needs special handling */
+-	if (reg == XPOWER_GPI1_CTRL)
+-		return regmap_update_bits(regmap, reg, GPI1_LDO_MASK,
+-					  on ? GPI1_LDO_ON : GPI1_LDO_OFF);
+-
+ 	ret = iosf_mbi_block_punit_i2c_access();
+ 	if (ret)
+ 		return ret;
+ 
++	/* GPIO1 LDO regulator needs special handling */
++	if (reg == XPOWER_GPI1_CTRL) {
++		ret = regmap_update_bits(regmap, reg, GPI1_LDO_MASK,
++					 on ? GPI1_LDO_ON : GPI1_LDO_OFF);
++		goto out;
++	}
++
+ 	if (regmap_read(regmap, reg, &data)) {
+ 		ret = -EIO;
+ 		goto out;
+@@ -218,6 +220,10 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
+ 	int ret, adc_ts_pin_ctrl;
+ 	u8 buf[2];
+ 
++	ret = iosf_mbi_block_punit_i2c_access();
++	if (ret)
++		return ret;
++
+ 	/*
+ 	 * The current-source used for the battery temp-sensor (TS) is shared
+ 	 * with the GPADC. For proper fuel-gauge and charger operation the TS
+@@ -231,14 +237,14 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
+ 	 */
+ 	ret = regmap_read(regmap, AXP288_ADC_TS_PIN_CTRL, &adc_ts_pin_ctrl);
+ 	if (ret)
+-		return ret;
++		goto out;
+ 
+ 	if (adc_ts_pin_ctrl & AXP288_ADC_TS_CURRENT_ON_OFF_MASK) {
+ 		ret = regmap_update_bits(regmap, AXP288_ADC_TS_PIN_CTRL,
+ 					 AXP288_ADC_TS_CURRENT_ON_OFF_MASK,
+ 					 AXP288_ADC_TS_CURRENT_ON_ONDEMAND);
+ 		if (ret)
+-			return ret;
++			goto out;
+ 
+ 		/* Wait a bit after switching the current-source */
+ 		usleep_range(6000, 10000);
+@@ -254,6 +260,9 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
+ 				   AXP288_ADC_TS_CURRENT_ON);
+ 	}
+ 
++out:
++	iosf_mbi_unblock_punit_i2c_access();
++
+ 	return ret;
+ }
+ 
+-- 
+2.31.1
+
