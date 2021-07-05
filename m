@@ -2,39 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11E403BBFFC
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jul 2021 17:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 785F83BC00F
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jul 2021 17:33:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232766AbhGEPeA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Jul 2021 11:34:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57322 "EHLO mail.kernel.org"
+        id S232146AbhGEPeO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Jul 2021 11:34:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58828 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232738AbhGEPdR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 5 Jul 2021 11:33:17 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3D35E619AC;
-        Mon,  5 Jul 2021 15:30:26 +0000 (UTC)
+        id S232816AbhGEPd2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 5 Jul 2021 11:33:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 69328610A6;
+        Mon,  5 Jul 2021 15:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625499027;
-        bh=UR+XYQAXUwgZ8/KKoXPfCS7hXQWs9X4z7ocp7oltBuc=;
+        s=k20201202; t=1625499044;
+        bh=aQ5vHJkxuc0ZwJIL/ivo28JrPYFcDVA2PP2Pc061mZY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PfUhkXhE7U4VGcYdS4ZUHb+fvpwjxrwuP4WeLhu1dHF8RuVsmwLqYIaKz8iN1GyPA
-         A4rnKlBthvcJ2zZzVWtBgEdNII6bKFIUoRxgbxzkxq8qgSXNk8aBphbFVNQPTFup1a
-         diRU7oWW2kUH1H9jEkB5XD2zH2jTWKmXcf+2VszJB6846BPZ790fRSCTsTjGNKDT43
-         HLPWQOC4Zz2M82zwUINEGm4/u0et8/JlTVrx39UPa8q+PZQBZQRnaKo3e5W3W0hRHf
-         OoxiUws+wa65zOp124+lF6cGxQnTCp7izqp3H5JDhaQIBWV8LeSkUzpQE2MTorp9kI
-         e/Nt4xYkjhjFA==
+        b=AAo4TVy4xoNQTvGjRIRn4lkaaUgAwUngXKn5M1TcHN7BSJGM4PfwAt7Yp/P7+HRLt
+         KhOsmQnfMOgflpwGAygyPFKFywuh18x5YfEXWNiLEfGw9UPWq0Ur1tf+QoFOZSJAdR
+         6lW2n1AcvUbwR+P0lw0EGHws20pBgFA016u7MxPuIrte95uzLyiaDsvxNr8GC8s3Eh
+         uTi3PCofozv2CIGjlC9ZldqpfParIOYJIqjFJj90je3/nZIkYs+6/2Yeq32MoauNu7
+         HJoG+FnPrVV0rmAFZ8c2EKrr9cwDNCCZeygg5KZilFpv8pxe54P9Y6gN5ip4w/twWs
+         x9hQPxBFBQU/Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hui Wang <hui.wang@canonical.com>,
+Cc:     Mario Limonciello <mario.limonciello@amd.com>,
+        Prike Liang <Prike.Liang@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Manuel Krause <manuelkrause@netscape.net>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 20/41] ACPI: resources: Add checks for ACPI IRQ override
-Date:   Mon,  5 Jul 2021 11:29:40 -0400
-Message-Id: <20210705153001.1521447-20-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 03/26] ACPI: processor idle: Fix up C-state latency if not ordered
+Date:   Mon,  5 Jul 2021 11:30:16 -0400
+Message-Id: <20210705153039.1521781-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210705153001.1521447-1-sashal@kernel.org>
-References: <20210705153001.1521447-1-sashal@kernel.org>
+In-Reply-To: <20210705153039.1521781-1-sashal@kernel.org>
+References: <20210705153039.1521781-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -43,80 +44,111 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hui Wang <hui.wang@canonical.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 0ec4e55e9f571f08970ed115ec0addc691eda613 ]
+[ Upstream commit 65ea8f2c6e230bdf71fed0137cf9e9d1b307db32 ]
 
-The laptop keyboard doesn't work on many MEDION notebooks, but the
-keyboard works well under Windows and Unix.
+Generally, the C-state latency is provided by the _CST method or
+FADT, but some OEM platforms using AMD Picasso, Renoir, Van Gogh,
+and Cezanne set the C2 latency greater than C3's which causes the
+C2 state to be skipped.
 
-Through debugging, we found this log in the dmesg:
+That will block the core entering PC6, which prevents S0ix working
+properly on Linux systems.
 
- ACPI: IRQ 1 override to edge, high
- pnp 00:03: Plug and Play ACPI device, IDs PNP0303 (active)
+In other operating systems, the latency values are not validated and
+this does not cause problems by skipping states.
 
- And we checked the IRQ definition in the DSDT, it is:
+To avoid this issue on Linux, detect when latencies are not an
+arithmetic progression and sort them.
 
-    IRQ (Level, ActiveLow, Exclusive, )
-        {1}
-
-So the BIOS defines the keyboard IRQ to Level_Low, but the Linux
-kernel override it to Edge_High. If the Linux kernel is modified
-to skip the IRQ override, the keyboard will work normally.
-
-From the existing comment in acpi_dev_get_irqresource(), the override
-function only needs to be called when IRQ() or IRQNoFlags() is used
-to populate the resource descriptor, and according to Section 6.4.2.1
-of ACPI 6.4 [1], if IRQ() is empty or IRQNoFlags() is used, the IRQ
-is High true, edge sensitive and non-shareable. ACPICA also assumes
-that to be the case (see acpi_rs_set_irq[] in rsirq.c).
-
-In accordance with the above, check 3 additional conditions
-(EdgeSensitive, ActiveHigh and Exclusive) when deciding whether or
-not to treat an ACPI_RESOURCE_TYPE_IRQ resource as "legacy", in which
-case the IRQ override is applicable to it.
-
-Link: https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#irq-descriptor # [1]
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
-BugLink: http://bugs.launchpad.net/bugs/1909814
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reported-by: Manuel Krause <manuelkrause@netscape.net>
-Tested-by: Manuel Krause <manuelkrause@netscape.net>
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
-[ rjw: Subject rewrite, changelog edits ]
+Link: https://gitlab.freedesktop.org/agd5f/linux/-/commit/026d186e4592c1ee9c1cb44295912d0294508725
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1230#note_712174
+Suggested-by: Prike Liang <Prike.Liang@amd.com>
+Suggested-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+[ rjw: Subject and changelog edits ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/acpi/processor_idle.c | 40 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index f2f5f1dc7c61..9d82440a1d75 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -430,6 +430,13 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 	}
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index ed56c6d20b08..53ae679c00f0 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -16,6 +16,7 @@
+ #include <linux/acpi.h>
+ #include <linux/dmi.h>
+ #include <linux/sched.h>       /* need_resched() */
++#include <linux/sort.h>
+ #include <linux/tick.h>
+ #include <linux/cpuidle.h>
+ #include <linux/cpu.h>
+@@ -540,10 +541,37 @@ static void acpi_processor_power_verify_c3(struct acpi_processor *pr,
+ 	return;
  }
  
-+static bool irq_is_legacy(struct acpi_resource_irq *irq)
++static int acpi_cst_latency_cmp(const void *a, const void *b)
 +{
-+	return irq->triggering == ACPI_EDGE_SENSITIVE &&
-+		irq->polarity == ACPI_ACTIVE_HIGH &&
-+		irq->shareable == ACPI_EXCLUSIVE;
++	const struct acpi_processor_cx *x = a, *y = b;
++
++	if (!(x->valid && y->valid))
++		return 0;
++	if (x->latency > y->latency)
++		return 1;
++	if (x->latency < y->latency)
++		return -1;
++	return 0;
++}
++static void acpi_cst_latency_swap(void *a, void *b, int n)
++{
++	struct acpi_processor_cx *x = a, *y = b;
++	u32 tmp;
++
++	if (!(x->valid && y->valid))
++		return;
++	tmp = x->latency;
++	x->latency = y->latency;
++	y->latency = tmp;
 +}
 +
- /**
-  * acpi_dev_resource_interrupt - Extract ACPI interrupt resource information.
-  * @ares: Input ACPI resource object.
-@@ -468,7 +475,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+ static int acpi_processor_power_verify(struct acpi_processor *pr)
+ {
+ 	unsigned int i;
+ 	unsigned int working = 0;
++	unsigned int last_latency = 0;
++	unsigned int last_type = 0;
++	bool buggy_latency = false;
+ 
+ 	pr->power.timer_broadcast_on_state = INT_MAX;
+ 
+@@ -567,12 +595,24 @@ static int acpi_processor_power_verify(struct acpi_processor *pr)
  		}
- 		acpi_dev_get_irqresource(res, irq->interrupts[index],
- 					 irq->triggering, irq->polarity,
--					 irq->shareable, true);
-+					 irq->shareable, irq_is_legacy(irq));
- 		break;
- 	case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
- 		ext_irq = &ares->data.extended_irq;
+ 		if (!cx->valid)
+ 			continue;
++		if (cx->type >= last_type && cx->latency < last_latency)
++			buggy_latency = true;
++		last_latency = cx->latency;
++		last_type = cx->type;
+ 
+ 		lapic_timer_check_state(i, pr, cx);
+ 		tsc_check_state(cx->type);
+ 		working++;
+ 	}
+ 
++	if (buggy_latency) {
++		pr_notice("FW issue: working around C-state latencies out of order\n");
++		sort(&pr->power.states[1], max_cstate,
++		     sizeof(struct acpi_processor_cx),
++		     acpi_cst_latency_cmp,
++		     acpi_cst_latency_swap);
++	}
++
+ 	lapic_timer_propagate_broadcast(pr);
+ 
+ 	return (working);
 -- 
 2.30.2
 
