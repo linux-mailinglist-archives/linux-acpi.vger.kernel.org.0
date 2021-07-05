@@ -2,36 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 275BC3BC073
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jul 2021 17:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B693B3BC07A
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jul 2021 17:34:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233436AbhGEPgF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Jul 2021 11:36:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58400 "EHLO mail.kernel.org"
+        id S233478AbhGEPgL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Jul 2021 11:36:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58632 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232666AbhGEPey (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 5 Jul 2021 11:34:54 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6F998619B8;
-        Mon,  5 Jul 2021 15:31:21 +0000 (UTC)
+        id S232955AbhGEPfE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 5 Jul 2021 11:35:04 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5CE7A619B5;
+        Mon,  5 Jul 2021 15:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625499082;
-        bh=iOiTZk4TXHOX8IjPxj0AzqSMvpzu7iV7iJ7wVQTMQ7A=;
+        s=k20201202; t=1625499088;
+        bh=SA5MZgS2PfvCVaCfZaGNl9mDx1oFuWLRKXOI2zUk/hk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mDiOjRxLxJxuZ431KVht1NjvKbeaTRSPARn7SoXU8lEsjLbQbjD8pPE47PBVDv2sJ
-         zxpuIwkX+u4KX6fdlh+os8Lh+v/AkIFbWSch23Xcc35a6Q5MSi4AZapn8HrsVUMN2M
-         OBz9zydMAcfe6bjynmD/6f6mvJepA1VphAm996qkYeOPEmxwjL2+2+w4yK4DtWheD6
-         SMhYyDdnzZ63HLVqdJYZJlM6Se/nDb/mAEmUoi608PQ5egB0iTSaPS3OFEJa4tkgcG
-         B7qskf8zPb0GBU5YGQX5mLMkzttoz590cIOVaTpI1q1lQ07isGsQkVY53+lIQ2zOpm
-         IUKufaJR7MVzw==
+        b=AI1ROChN2SulH6WspYhG7goTZpPYdg82D42Ta3Cr1fOWDpJjwUytFsyYTJURSGInL
+         lq8H8D1y+Wb2eFhoL5PhYkikXJPyuPHVbQNCcqo5LsdeDdtPHtYcEJFukUwQ6pZw/B
+         7nYnA3lo0n0fNzmgA3O0wUYzGsH903cgazXcK4R50+LqOrFkWwYNTXExJ+u7tK8z8Y
+         sVljgH2J36+GpbcmXqYNh9wjseKQvZPggesCnBaCv1jNE6DWa8Xxrw8ebZhFYzoCaO
+         fvrs2D9N9WuE3y/r+m5HsuJ2BDY6sSmIB5zc+NQazc3zBxD/vdIJ0UNW0m2wp55ygh
+         77uGjzPZnYAzQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chris Chiu <chris.chiu@canonical.com>,
-        Jian-Hong Pan <jhp@endlessos.org>,
+Cc:     Erik Kaneda <erik.kaneda@intel.com>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Bob Moore <robert.moore@intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 06/17] ACPI: EC: Make more Asus laptops use ECDT _GPE
-Date:   Mon,  5 Jul 2021 11:31:02 -0400
-Message-Id: <20210705153114.1522046-6-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
+        devel@acpica.org
+Subject: [PATCH AUTOSEL 4.19 11/17] ACPICA: Fix memory leak caused by _CID repair function
+Date:   Mon,  5 Jul 2021 11:31:07 -0400
+Message-Id: <20210705153114.1522046-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210705153114.1522046-1-sashal@kernel.org>
 References: <20210705153114.1522046-1-sashal@kernel.org>
@@ -43,52 +45,53 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Erik Kaneda <erik.kaneda@intel.com>
 
-[ Upstream commit 6306f0431914beaf220634ad36c08234006571d5 ]
+[ Upstream commit c27bac0314131b11bccd735f7e8415ac6444b667 ]
 
-More ASUS laptops have the _GPE define in the DSDT table with a
-different value than the _GPE number in the ECDT.
+ACPICA commit 180cb53963aa876c782a6f52cc155d951b26051a
 
-This is causing media keys not working on ASUS X505BA/BP, X542BA/BP
+According to the ACPI spec, _CID returns a package containing
+hardware ID's. Each element of an ASL package contains a reference
+count from the parent package as well as the element itself.
 
-Add model info to the quirks list.
+Name (TEST, Package() {
+    "String object" // this package element has a reference count of 2
+})
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
+A memory leak was caused in the _CID repair function because it did
+not decrement the reference count created by the package. Fix the
+memory leak by calling acpi_ut_remove_reference on _CID package elements
+that represent a hardware ID (_HID).
+
+Link: https://github.com/acpica/acpica/commit/180cb539
+Tested-by: Shawn Guo <shawn.guo@linaro.org>
+Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/acpi/acpica/nsrepair2.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 9415a0041aaf..e3df3dda0332 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1904,6 +1904,22 @@ static const struct dmi_system_id ec_dmi_table[] __initconst = {
- 	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 	DMI_MATCH(DMI_PRODUCT_NAME, "GL702VMK"),}, NULL},
- 	{
-+	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BA", {
-+	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+	DMI_MATCH(DMI_PRODUCT_NAME, "X505BA"),}, NULL},
-+	{
-+	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BP", {
-+	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+	DMI_MATCH(DMI_PRODUCT_NAME, "X505BP"),}, NULL},
-+	{
-+	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BA", {
-+	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+	DMI_MATCH(DMI_PRODUCT_NAME, "X542BA"),}, NULL},
-+	{
-+	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BP", {
-+	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+	DMI_MATCH(DMI_PRODUCT_NAME, "X542BP"),}, NULL},
-+	{
- 	ec_honor_ecdt_gpe, "ASUS X550VXK", {
- 	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 	DMI_MATCH(DMI_PRODUCT_NAME, "X550VXK"),}, NULL},
+diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
+index a3bd6280882c..4c8ce483805d 100644
+--- a/drivers/acpi/acpica/nsrepair2.c
++++ b/drivers/acpi/acpica/nsrepair2.c
+@@ -375,6 +375,13 @@ acpi_ns_repair_CID(struct acpi_evaluate_info *info,
+ 
+ 			(*element_ptr)->common.reference_count =
+ 			    original_ref_count;
++
++			/*
++			 * The original_element holds a reference from the package object
++			 * that represents _HID. Since a new element was created by _HID,
++			 * remove the reference from the _CID package.
++			 */
++			acpi_ut_remove_reference(original_element);
+ 		}
+ 
+ 		element_ptr++;
 -- 
 2.30.2
 
