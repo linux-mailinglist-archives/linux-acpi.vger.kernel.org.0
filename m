@@ -2,150 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 585673BBD50
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jul 2021 15:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 346EF3BBEE3
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jul 2021 17:28:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230502AbhGENIJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Jul 2021 09:08:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53790 "EHLO mail.kernel.org"
+        id S231800AbhGEPa6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Jul 2021 11:30:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55202 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231149AbhGENII (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 5 Jul 2021 09:08:08 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4840F61474;
-        Mon,  5 Jul 2021 13:05:29 +0000 (UTC)
-From:   Huacai Chen <chenhuacai@loongson.cn>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Jianmin Lv <lvjianmin@loongson.cn>
-Subject: [PATCH 3/3] ACPICA: Events: Support fixed pcie wake event
-Date:   Mon,  5 Jul 2021 21:05:49 +0800
-Message-Id: <20210705130549.1232418-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210705124206.1228958-1-chenhuacai@loongson.cn>
-References: <20210705124206.1228958-1-chenhuacai@loongson.cn>
+        id S231535AbhGEPa5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 5 Jul 2021 11:30:57 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8C9B961964;
+        Mon,  5 Jul 2021 15:28:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1625498900;
+        bh=F0ZOtPaLg7ZLUv7+BtbmeLGwPX6I3v75FrJSUcAv5ag=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=huDSiHpvFROUq0ysbML0Utq8M2LqzJBGTPhw+SlqypbwJfW1Xp+IL39XiHaEzRdok
+         z+7UUKcBr/lWp6+lYhqgJ28UcBB7l7bXv/6bMjoBXrOb2LF+wXSSMhdpi2BTInkuYU
+         KgDNiUEijF3jQqsjDkf7lgDDisF0WqDUNZ1DgAXkjo8zNGJHRkyGgfWSvoTKSUjCGV
+         2YZc7KhFktAE3HECD+9yUPZqgY7qf7rEB4x0Atkfu6PaaKBHmwPBlHNpSdUWGztH/c
+         JdLC3v1fayXQSQZrREK+sPNb4WTCROpMu/FVMD5q2CkdvUsnJbYYGsx3jUgvru8+cl
+         zpuulgFGrEwig==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.13 03/59] ACPI: PM: s2idle: Add missing LPS0 functions for AMD
+Date:   Mon,  5 Jul 2021 11:27:19 -0400
+Message-Id: <20210705152815.1520546-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210705152815.1520546-1-sashal@kernel.org>
+References: <20210705152815.1520546-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some chipsets (such as Loongson's LS7A) support fixed pcie wake event
-which is defined in the PM1 block(related description can be found in
-4.8.4.1.1 PM1 Status Registers, 4.8.4.2.1 PM1 Control Registers and
-5.2.9 Fixed ACPI Description Table (FADT)), so we add code to handle it.
+From: Alex Deucher <alexander.deucher@amd.com>
 
-ACPI Spec 6.4 link:
-https://uefi.org/specifications/ACPI/6.4/
+[ Upstream commit f59a905b962c34642e862b5edec35c0eda72d70d ]
 
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+These are supposedly not required for AMD platforms,
+but at least some HP laptops seem to require it to
+properly turn off the keyboard backlight.
+
+Based on a patch from Marcin Bachry <hegel666@gmail.com>.
+
+Bug: https://gitlab.freedesktop.org/drm/amd/-/issues/1230
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/evevent.c  | 17 +++++++++++------
- drivers/acpi/acpica/hwsleep.c  | 12 ++++++++++++
- drivers/acpi/acpica/utglobal.c |  4 ++++
- include/acpi/actypes.h         |  3 ++-
- 4 files changed, 29 insertions(+), 7 deletions(-)
+ drivers/acpi/x86/s2idle.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/acpi/acpica/evevent.c b/drivers/acpi/acpica/evevent.c
-index 35385148fedb..2340986de37b 100644
---- a/drivers/acpi/acpica/evevent.c
-+++ b/drivers/acpi/acpica/evevent.c
-@@ -140,9 +140,9 @@ static acpi_status acpi_ev_fixed_event_initialize(void)
+diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+index 2b69536cdccb..2d7ddb8a8cb6 100644
+--- a/drivers/acpi/x86/s2idle.c
++++ b/drivers/acpi/x86/s2idle.c
+@@ -42,6 +42,8 @@ static const struct acpi_device_id lps0_device_ids[] = {
  
- 		if (acpi_gbl_fixed_event_info[i].enable_register_id != 0xFF) {
- 			status =
--			    acpi_write_bit_register(acpi_gbl_fixed_event_info
--						    [i].enable_register_id,
--						    ACPI_DISABLE_EVENT);
-+			    acpi_write_bit_register(acpi_gbl_fixed_event_info[i].enable_register_id,
-+						    (i == ACPI_EVENT_PCIE_WAKE) ?
-+						    ACPI_ENABLE_EVENT : ACPI_DISABLE_EVENT);
- 			if (ACPI_FAILURE(status)) {
- 				return (status);
- 			}
-@@ -185,6 +185,11 @@ u32 acpi_ev_fixed_event_detect(void)
- 		return (int_status);
- 	}
+ /* AMD */
+ #define ACPI_LPS0_DSM_UUID_AMD      "e3f32452-febc-43ce-9039-932122d37721"
++#define ACPI_LPS0_ENTRY_AMD         2
++#define ACPI_LPS0_EXIT_AMD          3
+ #define ACPI_LPS0_SCREEN_OFF_AMD    4
+ #define ACPI_LPS0_SCREEN_ON_AMD     5
  
-+	if (fixed_enable & ACPI_BITMASK_PCIEXP_WAKE_DISABLE)
-+		fixed_enable &= ~ACPI_BITMASK_PCIEXP_WAKE_DISABLE;
-+	else
-+		fixed_enable |= ACPI_BITMASK_PCIEXP_WAKE_DISABLE;
-+
- 	ACPI_DEBUG_PRINT((ACPI_DB_INTERRUPTS,
- 			  "Fixed Event Block: Enable %08X Status %08X\n",
- 			  fixed_enable, fixed_status));
-@@ -248,9 +253,9 @@ static u32 acpi_ev_fixed_event_dispatch(u32 event)
- 	 * and disable the event to prevent further interrupts.
- 	 */
- 	if (!acpi_gbl_fixed_event_handlers[event].handler) {
--		(void)acpi_write_bit_register(acpi_gbl_fixed_event_info[event].
--					      enable_register_id,
--					      ACPI_DISABLE_EVENT);
-+		(void)acpi_write_bit_register(acpi_gbl_fixed_event_info[event].enable_register_id,
-+					      event == ACPI_EVENT_PCIE_WAKE ?
-+					      ACPI_ENABLE_EVENT : ACPI_DISABLE_EVENT);
+@@ -408,6 +410,7 @@ int acpi_s2idle_prepare_late(void)
  
- 		ACPI_ERROR((AE_INFO,
- 			    "No installed handler for fixed event - %s (%u), disabling",
-diff --git a/drivers/acpi/acpica/hwsleep.c b/drivers/acpi/acpica/hwsleep.c
-index 14baa13bf848..7e7ea4c2e914 100644
---- a/drivers/acpi/acpica/hwsleep.c
-+++ b/drivers/acpi/acpica/hwsleep.c
-@@ -312,6 +312,18 @@ acpi_status acpi_hw_legacy_wake(u8 sleep_state)
- 				    [ACPI_EVENT_SLEEP_BUTTON].
- 				    status_register_id, ACPI_CLEAR_STATUS);
+ 	if (acpi_s2idle_vendor_amd()) {
+ 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF_AMD);
++		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD);
+ 	} else {
+ 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
+ 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
+@@ -422,6 +425,7 @@ void acpi_s2idle_restore_early(void)
+ 		return;
  
-+	/* Enable pcie wake event if support */
-+	if ((acpi_gbl_FADT.flags & ACPI_FADT_PCI_EXPRESS_WAKE)) {
-+		(void)
-+		acpi_write_bit_register(acpi_gbl_fixed_event_info
-+				[ACPI_EVENT_PCIE_WAKE].
-+				enable_register_id, ACPI_DISABLE_EVENT);
-+		(void)
-+		acpi_write_bit_register(acpi_gbl_fixed_event_info
-+				[ACPI_EVENT_PCIE_WAKE].
-+				status_register_id, ACPI_CLEAR_STATUS);
-+	}
-+
- 	acpi_hw_execute_sleep_method(METHOD_PATHNAME__SST, ACPI_SST_WORKING);
- 	return_ACPI_STATUS(status);
- }
-diff --git a/drivers/acpi/acpica/utglobal.c b/drivers/acpi/acpica/utglobal.c
-index 59a48371a7bc..16f7a206fc6d 100644
---- a/drivers/acpi/acpica/utglobal.c
-+++ b/drivers/acpi/acpica/utglobal.c
-@@ -186,6 +186,10 @@ struct acpi_fixed_event_info acpi_gbl_fixed_event_info[ACPI_NUM_FIXED_EVENTS] =
- 					ACPI_BITREG_RT_CLOCK_ENABLE,
- 					ACPI_BITMASK_RT_CLOCK_STATUS,
- 					ACPI_BITMASK_RT_CLOCK_ENABLE},
-+	/* ACPI_EVENT_PCIE_WAKE	    */ {ACPI_BITREG_PCIEXP_WAKE_STATUS,
-+					ACPI_BITREG_PCIEXP_WAKE_DISABLE,
-+					ACPI_BITMASK_PCIEXP_WAKE_STATUS,
-+					ACPI_BITMASK_PCIEXP_WAKE_DISABLE},
- };
- #endif				/* !ACPI_REDUCED_HARDWARE */
- 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 92c71dfce0d5..0b6c72033487 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -714,7 +714,8 @@ typedef u32 acpi_event_type;
- #define ACPI_EVENT_POWER_BUTTON         2
- #define ACPI_EVENT_SLEEP_BUTTON         3
- #define ACPI_EVENT_RTC                  4
--#define ACPI_EVENT_MAX                  4
-+#define ACPI_EVENT_PCIE_WAKE            5
-+#define ACPI_EVENT_MAX                  5
- #define ACPI_NUM_FIXED_EVENTS           ACPI_EVENT_MAX + 1
- 
- /*
+ 	if (acpi_s2idle_vendor_amd()) {
++		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_AMD);
+ 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON_AMD);
+ 	} else {
+ 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
 -- 
-2.27.0
+2.30.2
 
