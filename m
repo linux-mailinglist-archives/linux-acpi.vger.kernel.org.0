@@ -2,37 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44BE93BBFC0
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jul 2021 17:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D6323BBFCF
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Jul 2021 17:33:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232759AbhGEPdU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 5 Jul 2021 11:33:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58510 "EHLO mail.kernel.org"
+        id S232554AbhGEPdY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 5 Jul 2021 11:33:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58642 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232527AbhGEPcn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 5 Jul 2021 11:32:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 13CA8610A6;
-        Mon,  5 Jul 2021 15:30:04 +0000 (UTC)
+        id S232563AbhGEPcu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 5 Jul 2021 11:32:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 44078619A5;
+        Mon,  5 Jul 2021 15:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625499005;
-        bh=sFlGSuKcTC7RPMt0MiOEKxjw8fGmpLxEHQqCcT2gRJA=;
+        s=k20201202; t=1625499013;
+        bh=dXXVnySI/CpXWxQ8VvGu2yX/iHzyHAWviakPv4O1TGs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QuqlH5ZUnigIHPWfYh3YwDJrYLAPBMwpcEE9IOhMgIcuCso8wU1vgThLTUvB9lzkL
-         TnAPCEA0E/VVKJ0/caSRHTlKY6tST4UlE7PX8TAvsrfCQBw8zvgKMU79eellDFbDjO
-         Z/IlO1TEunYOGzH98Gx37lVNkrRKFGtRzaipP29r7YfO43WiWecFQGPmNst10ZS0lB
-         KOaXZiyZbh1e6xpRLsNYRlzR3nzAqt+yPtrzGOycgtnAEr8ve19hPNkFiMjl2zh/3N
-         M18jzkNaQjcsAuKSSsYqMACqX8lDjYASrd+0vYKXw++m3xgmXCg9KU5Vyv7+sOh/Bd
-         yM1ueGkfGYtGQ==
+        b=KFPU6785V6GLPxXnbSggVqjbG0SddjzHaL3tuLu+u8gVj5K/nPOXfKMVwgbQv9YQ5
+         Fk+/oWvw9hsWpCOe2Y/pxr5fYm1rTWD8fViSQGLCwm8KhM/QWODz6w4AtWNdp7JjD9
+         2yH/8EYL/F+J7kVfPR0/eaPWYRuZlKMghjb4+xzNwl82i2XwT9E6S2JKvUTVYp29xF
+         gRnJb3k6I6WWiSAzuATmrbSR1zDPp+IMAtwwviVDKqVjdFo9aFP2PzvTqeY1oSkP9L
+         onVn1dAlL9oepa1FxxAvcYJ7IhMlnplOQ/bMq7Z2Gk8NiO34fQJip9scB8dky7cF2B
+         xHBOfq47t3MAg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Mario Limonciello <mario.limonciello@amd.com>,
-        Prike Liang <Prike.Liang@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+Cc:     Chris Chiu <chris.chiu@canonical.com>,
+        Jian-Hong Pan <jhp@endlessos.org>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 03/41] ACPI: processor idle: Fix up C-state latency if not ordered
-Date:   Mon,  5 Jul 2021 11:29:23 -0400
-Message-Id: <20210705153001.1521447-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 09/41] ACPI: EC: Make more Asus laptops use ECDT _GPE
+Date:   Mon,  5 Jul 2021 11:29:29 -0400
+Message-Id: <20210705153001.1521447-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210705153001.1521447-1-sashal@kernel.org>
 References: <20210705153001.1521447-1-sashal@kernel.org>
@@ -44,111 +43,52 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Chris Chiu <chris.chiu@canonical.com>
 
-[ Upstream commit 65ea8f2c6e230bdf71fed0137cf9e9d1b307db32 ]
+[ Upstream commit 6306f0431914beaf220634ad36c08234006571d5 ]
 
-Generally, the C-state latency is provided by the _CST method or
-FADT, but some OEM platforms using AMD Picasso, Renoir, Van Gogh,
-and Cezanne set the C2 latency greater than C3's which causes the
-C2 state to be skipped.
+More ASUS laptops have the _GPE define in the DSDT table with a
+different value than the _GPE number in the ECDT.
 
-That will block the core entering PC6, which prevents S0ix working
-properly on Linux systems.
+This is causing media keys not working on ASUS X505BA/BP, X542BA/BP
 
-In other operating systems, the latency values are not validated and
-this does not cause problems by skipping states.
+Add model info to the quirks list.
 
-To avoid this issue on Linux, detect when latencies are not an
-arithmetic progression and sort them.
-
-Link: https://gitlab.freedesktop.org/agd5f/linux/-/commit/026d186e4592c1ee9c1cb44295912d0294508725
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1230#note_712174
-Suggested-by: Prike Liang <Prike.Liang@amd.com>
-Suggested-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-[ rjw: Subject and changelog edits ]
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_idle.c | 40 +++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ drivers/acpi/ec.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index fb161a21d0ae..8377c3ed10ff 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -16,6 +16,7 @@
- #include <linux/acpi.h>
- #include <linux/dmi.h>
- #include <linux/sched.h>       /* need_resched() */
-+#include <linux/sort.h>
- #include <linux/tick.h>
- #include <linux/cpuidle.h>
- #include <linux/cpu.h>
-@@ -389,10 +390,37 @@ static void acpi_processor_power_verify_c3(struct acpi_processor *pr,
- 	return;
- }
- 
-+static int acpi_cst_latency_cmp(const void *a, const void *b)
-+{
-+	const struct acpi_processor_cx *x = a, *y = b;
-+
-+	if (!(x->valid && y->valid))
-+		return 0;
-+	if (x->latency > y->latency)
-+		return 1;
-+	if (x->latency < y->latency)
-+		return -1;
-+	return 0;
-+}
-+static void acpi_cst_latency_swap(void *a, void *b, int n)
-+{
-+	struct acpi_processor_cx *x = a, *y = b;
-+	u32 tmp;
-+
-+	if (!(x->valid && y->valid))
-+		return;
-+	tmp = x->latency;
-+	x->latency = y->latency;
-+	y->latency = tmp;
-+}
-+
- static int acpi_processor_power_verify(struct acpi_processor *pr)
- {
- 	unsigned int i;
- 	unsigned int working = 0;
-+	unsigned int last_latency = 0;
-+	unsigned int last_type = 0;
-+	bool buggy_latency = false;
- 
- 	pr->power.timer_broadcast_on_state = INT_MAX;
- 
-@@ -416,12 +444,24 @@ static int acpi_processor_power_verify(struct acpi_processor *pr)
- 		}
- 		if (!cx->valid)
- 			continue;
-+		if (cx->type >= last_type && cx->latency < last_latency)
-+			buggy_latency = true;
-+		last_latency = cx->latency;
-+		last_type = cx->type;
- 
- 		lapic_timer_check_state(i, pr, cx);
- 		tsc_check_state(cx->type);
- 		working++;
- 	}
- 
-+	if (buggy_latency) {
-+		pr_notice("FW issue: working around C-state latencies out of order\n");
-+		sort(&pr->power.states[1], max_cstate,
-+		     sizeof(struct acpi_processor_cx),
-+		     acpi_cst_latency_cmp,
-+		     acpi_cst_latency_swap);
-+	}
-+
- 	lapic_timer_propagate_broadcast(pr);
- 
- 	return (working);
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index e0cb1bcfffb2..32f3b6d268f5 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1859,6 +1859,22 @@ static const struct dmi_system_id ec_dmi_table[] __initconst = {
+ 	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+ 	DMI_MATCH(DMI_PRODUCT_NAME, "GL702VMK"),}, NULL},
+ 	{
++	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BA", {
++	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++	DMI_MATCH(DMI_PRODUCT_NAME, "X505BA"),}, NULL},
++	{
++	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X505BP", {
++	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++	DMI_MATCH(DMI_PRODUCT_NAME, "X505BP"),}, NULL},
++	{
++	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BA", {
++	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++	DMI_MATCH(DMI_PRODUCT_NAME, "X542BA"),}, NULL},
++	{
++	ec_honor_ecdt_gpe, "ASUSTeK COMPUTER INC. X542BP", {
++	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++	DMI_MATCH(DMI_PRODUCT_NAME, "X542BP"),}, NULL},
++	{
+ 	ec_honor_ecdt_gpe, "ASUS X550VXK", {
+ 	DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+ 	DMI_MATCH(DMI_PRODUCT_NAME, "X550VXK"),}, NULL},
 -- 
 2.30.2
 
