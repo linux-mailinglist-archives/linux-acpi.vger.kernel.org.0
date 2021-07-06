@@ -2,126 +2,252 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF3A43BDD2B
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Jul 2021 20:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2CFF3BDD54
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Jul 2021 20:36:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231233AbhGFSaj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Jul 2021 14:30:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:46198 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229992AbhGFSaj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Jul 2021 14:30:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1625596079;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=c1hAP22t+F04dtV6l5OX6ERD06Cyqx+4ybbfUmOgayc=;
-        b=ZJTxdN2cfxjlGbukOJXTIzemixAWHA0SSyKqpIxJ/kPeG2gKlGdcfME8QGCzirJA50fq/m
-        CbzhbSouqhtycrrBDArj65tOfh5JZgBPPWD+fWXsIAeWZp94o6K+YzIRKVFcO4drOLC+KH
-        TUgnMMVk7VhxcGbDUTK10dOjmVKhuE8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-538-ye0vBT_NP4aUnv0h2CfT-g-1; Tue, 06 Jul 2021 14:27:58 -0400
-X-MC-Unique: ye0vBT_NP4aUnv0h2CfT-g-1
-Received: by mail-ej1-f72.google.com with SMTP id p20-20020a1709064994b02903cd421d7803so6175662eju.22
-        for <linux-acpi@vger.kernel.org>; Tue, 06 Jul 2021 11:27:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=c1hAP22t+F04dtV6l5OX6ERD06Cyqx+4ybbfUmOgayc=;
-        b=Y1Z8IKeZU8sQqhMFz5HVIFU4tKuccQPzdUysqRvIctlRsdnFJ8IyAZjZEBvyBy3aU5
-         tbWYQAWxGQVDR3CobOM+31Mk9UhYP8qvEERYtNTMHfSjGIdrMrHWheQKfPskjMW6kdJa
-         cTZvKI9Z1lu+MJwX9H4siy/T9+we9B3B0BteYX7OlBkq1un8Yg26SQ7JRM2JPhHSW3sI
-         AcrpDKv62pCme6Ax3/XKRppovqiW1XC5yOl3wsVQ4Bivu7KGdW0M+yhZu3IBbO5wuTM5
-         k3lqWOsvckObA1DstnXyw00sj/6Vo9byG3nh3qQFboXinST51zP/W2rrqGZZO9VSfkZR
-         NrAA==
-X-Gm-Message-State: AOAM531QrV6lFWLjZZMrB8YEeRBR01jyA1xBRqBZNVbei5rgikKDJYAZ
-        /uYJ7ub86Wu5txWG2EbaQZurpGvhkQ0pXc1a66t7imKF8KWrLRwcm261EwBksLmplbKhq/yfdj2
-        HaKFOwCXDzthMtFgNP/zsoxFrFJhz56Cv3gIejF2Z0oc7Cfc3ILPB2u1/cPajOCtT8JyGTpeZeQ
-        ==
-X-Received: by 2002:a17:906:8584:: with SMTP id v4mr19905028ejx.301.1625596077394;
-        Tue, 06 Jul 2021 11:27:57 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxJv1IgHiEv5mRLRk9yjNsoBI1Tv2eX9gGHUDcvAckvqefV3l+NY46gJ+1HsAP4hut5beUW0Q==
-X-Received: by 2002:a17:906:8584:: with SMTP id v4mr19904991ejx.301.1625596077016;
-        Tue, 06 Jul 2021 11:27:57 -0700 (PDT)
-Received: from x1.localdomain ([2a0e:5700:4:11:334c:7e36:8d57:40cb])
-        by smtp.gmail.com with ESMTPSA id i8sm5977705ejo.30.2021.07.06.11.27.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jul 2021 11:27:56 -0700 (PDT)
-Subject: Re: [PATCH v2 2/2] ACPI / PMIC: XPower: optimize MIPI PMIQ sequence
- I2C-bus accesses
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+        id S231172AbhGFSis (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Jul 2021 14:38:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59234 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231376AbhGFSir (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Jul 2021 14:38:47 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93AA6C061574
+        for <linux-acpi@vger.kernel.org>; Tue,  6 Jul 2021 11:36:08 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m0ps1-0007tV-Rc; Tue, 06 Jul 2021 20:32:33 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m0prk-0001yq-8e; Tue, 06 Jul 2021 20:32:16 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m0prk-0004ND-2r; Tue, 06 Jul 2021 20:32:16 +0200
+Date:   Tue, 6 Jul 2021 20:32:15 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     nvdimm@lists.linux.dev, Alexey Kardashevskiy <aik@ozlabs.ru>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
+        Jens Taprogge <jens.taprogge@taprogge.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        xen-devel@lists.xenproject.org,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Julien Grall <jgrall@amazon.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Alex Elder <elder@kernel.org>, linux-parisc@vger.kernel.org,
+        Geoff Levand <geoff@infradead.org>, linux-fpga@vger.kernel.org,
+        linux-usb@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Thorsten Scherer <t.scherer@eckelmann.de>,
+        kernel@pengutronix.de, Jon Mason <jdmason@kudzu.us>,
+        linux-ntb@googlegroups.com, Wu Hao <hao.wu@intel.com>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Manohar Vanga <manohar.vanga@gmail.com>,
+        linux-wireless@vger.kernel.org,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        virtualization@lists.linux-foundation.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        target-devel@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        linux-i2c@vger.kernel.org,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Ira Weiny <ira.weiny@intel.com>, Helge Deller <deller@gmx.de>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        industrypack-devel@lists.sourceforge.net,
+        linux-mips@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
+        linux-media@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
+        Johan Hovold <johan@kernel.org>, greybus-dev@lists.linaro.org,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-References: <20210706160923.20273-1-hdegoede@redhat.com>
- <20210706160923.20273-2-hdegoede@redhat.com>
- <YOSGPC5p5guALYUJ@smile.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <7f13b049-d2a2-1720-2d82-a10770c49fb0@redhat.com>
-Date:   Tue, 6 Jul 2021 20:27:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        linux-arm-kernel@lists.infradead.org,
+        Johannes Thumshirn <morbidrsa@gmail.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Joey Pabalan <jpabalanb@gmail.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
+        Bodo Stroesser <bostroesser@gmail.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Tyrel Datwyler <tyreld@linux.ibm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>,
+        SeongJae Park <sjpark@amazon.de>, linux-hyperv@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, Frank Li <lznuaa@gmail.com>,
+        netdev@vger.kernel.org, Qinglang Miao <miaoqinglang@huawei.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        linux-staging@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Chen-Yu Tsai <wens@csie.org>, linux-input@vger.kernel.org,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Allen Hubbe <allenbh@gmail.com>, Alex Dubov <oakad@yahoo.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Moritz Fischer <mdf@kernel.org>, linux-cxl@vger.kernel.org,
+        Michael Buesch <m@bues.ch>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Martyn Welch <martyn@welchs.me.uk>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-mmc@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sven Van Asbroeck <TheSven73@gmail.com>, kvm@vger.kernel.org,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        linux-remoteproc@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kirti Wankhede <kwankhede@nvidia.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        linux-i3c@lists.infradead.org,
+        linux1394-devel@lists.sourceforge.net,
+        Lee Jones <lee.jones@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-scsi@vger.kernel.org,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        Michael Jamet <michael.jamet@intel.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Hannes Reinecke <hare@suse.de>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Juergen Gross <jgross@suse.com>, linuxppc-dev@lists.ozlabs.org,
+        Takashi Iwai <tiwai@suse.com>,
+        Alexandre Bounine <alex.bou9@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Marc Zyngier <maz@kernel.org>, dmaengine@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Johannes Thumshirn <jth@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>
+Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
+Message-ID: <20210706183215.tcd7i4pwz2gxtxtb@pengutronix.de>
+References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
+ <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <YOSGPC5p5guALYUJ@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="q2vlxiybuwkj6z7s"
+Content-Disposition: inline
+In-Reply-To: <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
 
-On 7/6/21 6:35 PM, Andy Shevchenko wrote:
-> On Tue, Jul 06, 2021 at 06:09:23PM +0200, Hans de Goede wrote:
->> The I2C-bus to the XPower AXP288 is shared between the Linux kernel and
->> the SoCs P-Unit. The P-Unit has a semaphore which the kernel must "lock"
->> before it may use the bus and while the kernel holds the semaphore the CPU
->> and GPU power-states must not be changed otherwise the system will freeze.
->>
->> This is a complex process, which is quite expensive. This is all done by
->> iosf_mbi_block_punit_i2c_access(). To ensure that no unguarded I2C-bus
->> accesses happen, iosf_mbi_block_punit_i2c_access() gets called by the
->> I2C-bus-driver for every I2C transfer. Because this is so expensive it
->> is allowed to call iosf_mbi_block_punit_i2c_access() in a nested
->> fashion, so that higher-level code which does multiple I2C-transfers can
->> call it once for a group of transfers, turning the calls done by the
->> I2C-bus-driver into no-ops.
->>
->> The default exec_mipi_pmic_seq_element implementation from
->> drivers/acpi/pmic/intel_pmic.c does a regmap_update_bits() call and
->> the involved registers are typically marked as volatile in the regmap,
->> so this leads to 2 I2C-bus accesses.
->>
->> Add a XPower AXP288 specific implementation of exec_mipi_pmic_seq_element
->> which calls iosf_mbi_block_punit_i2c_access() calls before the
->> regmap_update_bits() call to avoid having to do the whole expensive
->> acquire P-Unit semaphore dance twice.
-> 
-> ...
-> 
-> The idea for the further improvement
-> 
->> +	if (i2c_address != 0x34) {
->> +		pr_err("%s: Unexpected i2c-addr: 0x%02x (reg-addr 0x%x value 0x%x mask 0x%x)\n",
->> +		       __func__, i2c_address, reg_address, value, mask);
->> +		return -ENXIO;
->> +	}
-> 
-> We have this in intel_pmic.c. Can we reorganize the code the way we will have
-> this check solely in the intel_pmic.c?
+--q2vlxiybuwkj6z7s
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-No, the drivers/acpi/pmic/intel_pmic_chtwc.c implementation accepts multiple
-i2c addresses because the whiskey cove has multiple register banks split
-over different i2c-addressses.
+Hello,
 
-Regards,
+v1 was acked by some more after I stopped looking in my mailbox while
+preparing v2:
 
-Hans
+On Tue, Jul 06, 2021 at 05:48:03PM +0200, Uwe Kleine-K=F6nig wrote:
+> The driver core ignores the return value of this callback because there
+> is only little it can do when a device disappears.
+>=20
+> This is the final bit of a long lasting cleanup quest where several
+> buses were converted to also return void from their remove callback.
+> Additionally some resource leaks were fixed that were caused by drivers
+> returning an error code in the expectation that the driver won't go
+> away.
+>=20
+> With struct bus_type::remove returning void it's prevented that newly
+> implemented buses return an ignored error code and so don't anticipate
+> wrong expectations for driver authors.
+>=20
+> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk> (For ARM, Am=
+ba and related parts)
+> Acked-by: Mark Brown <broonie@kernel.org>
+> Acked-by: Chen-Yu Tsai <wens@csie.org> (for drivers/bus/sunxi-rsb.c)
+> Acked-by: Pali Roh=E1r <pali@kernel.org>
+> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> (for drivers/media)
+> Acked-by: Hans de Goede <hdegoede@redhat.com> (For drivers/platform)
+> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Acked-By: Vinod Koul <vkoul@kernel.org>
+> Acked-by: Juergen Gross <jgross@suse.com> (For Xen)
+> Acked-by: Lee Jones <lee.jones@linaro.org> (For drivers/mfd)
+> Acked-by: Johannes Thumshirn <jth@kernel.org> (For drivers/mcb)
+> Acked-by: Johan Hovold <johan@kernel.org>
+> Acked-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org> (For drive=
+rs/slimbus)
+> Acked-by: Kirti Wankhede <kwankhede@nvidia.com> (For drivers/vfio)
+> Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
+> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com> (For ulpi and=
+ typec)
+> Acked-by: Samuel Iglesias Gons=E1lvez <siglesias@igalia.com> (For ipack)
+> Reviewed-by: Tom Rix <trix@redhat.com> (For fpga)
+> Acked-by: Geoff Levand <geoff@infradead.org> (For ps3)
 
+Acked-by: Yehezkel Bernat <YehezkelShB@gmail.com> (For thunderbolt)
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Acked-by: Alexander Shishkin <alexander.shishkin@linux.intel.com> (For inte=
+l_th)
+Acked-by: Dominik Brodowski <linux@dominikbrodowski.net> (For pcmcia)
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--q2vlxiybuwkj6z7s
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDkoawACgkQwfwUeK3K
+7AkRFgf/Qj+Sw4DQa5XQzuIke1atkI5Z9SH6bby9lfgLCjU/9fFWokjZXUFUlHEd
+p6KCgzwG5JD4RoIVKyntr/S7rR3FlCH5aMtgDi4xzKWybmOwAdP5XCSzU6ois1Cd
+G76Gg954N8CBAyFE6c0p18Fu1R1fscGQQDIF6yrUJ6p9WbpckBTw8xuX/AOicKcu
+r9s0okuUVqJmb0eM1Io+LGgjIvSLaUPl2lFnllwI6ztli3Wwo3NhHhy0iFZN9q1n
+IAXVYkylaIeq6hoC+Fo0NN0/ZNZRsV+s2qlzlaQkj8zQmyYqfN369rEDpTajwdlU
+JoOxFMsceOjeYMAEfCEfUeEBRom3lw==
+=mbzo
+-----END PGP SIGNATURE-----
+
+--q2vlxiybuwkj6z7s--
