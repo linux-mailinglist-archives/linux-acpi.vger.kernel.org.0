@@ -2,40 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C793C3BF016
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jul 2021 21:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD0043BF01A
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jul 2021 21:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230185AbhGGTQ3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 7 Jul 2021 15:16:29 -0400
-Received: from mail-oi1-f171.google.com ([209.85.167.171]:41943 "EHLO
-        mail-oi1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230130AbhGGTQ0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Jul 2021 15:16:26 -0400
-Received: by mail-oi1-f171.google.com with SMTP id w74so4630437oiw.8;
-        Wed, 07 Jul 2021 12:13:45 -0700 (PDT)
+        id S230130AbhGGTSR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 7 Jul 2021 15:18:17 -0400
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:38568 "EHLO
+        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229987AbhGGTSQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 7 Jul 2021 15:18:16 -0400
+Received: by mail-oi1-f181.google.com with SMTP id t3so4650054oic.5;
+        Wed, 07 Jul 2021 12:15:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=s57HET1CJ9VwocJDNMVl4bMwfDk+FHcmP4aVj9NssM8=;
-        b=kupYP4W4SAv7R4chjgcqW4fDeR81pU1ywFmAQNEseCMO7iCHDhItbLXCSBbWtFerjl
-         hjvX1zZ+1O+2sfVHAfLsr/gRT5XbdsV9/9jR56X6Pzm09gBsgsOFq7PlCjjtfFtDgvvs
-         LhWwQ3TEVOarlZ0BmLoAwier5LfsmwDxsdIFCy824eImFnGoL+1fO9nk8em1yitpAUl0
-         C7tC/+tedtz1IHii2Uy8XGR4jyWQYbsmADRGSNdByqW9abhJbz4fQdZvvoEZ5bgyLtZP
-         9PWwRx/7fLuRu7SYVElnnkWH1E33fw6btkpoklUhYCtiqL2GqyZgMyN5/VROegiWQrg+
-         +6Cg==
-X-Gm-Message-State: AOAM5312NhDaWcCwwxPVcJG04P8rvtMUdN2H60drzeRnG1e/oxwyP58J
-        1HqRB9GLAvLa/CzVqurGy/VpritYTeIqywwdoa4=
-X-Google-Smtp-Source: ABdhPJx3Glz7RywfPWdLhoHFBOaOtbmUKzba/ibGgk3Ao5OXBO1JXiAPb6qG/pozIuGi8wDNt3EaI49URx9gPuAlMCk=
-X-Received: by 2002:aca:c457:: with SMTP id u84mr10561786oif.69.1625685224619;
- Wed, 07 Jul 2021 12:13:44 -0700 (PDT)
+        bh=VS+OavrM7FmP/g20PDOoldlmx3b2KcPSPd27JXFo4F4=;
+        b=X6Vesw7+jfSbnDY9jsXvP/5/bVIIZDGsNy9YQtP5/xdo4C24ZL7sbYsR9TlA/8NM/Y
+         TeBMlkAUSCGrjk28HXvzuXd43hEqcHQIexMHEyndRcuWQcVPV8wEu44vbBLGTaXCF8Og
+         WOcBBpXnGyKxmE3aK92v8bkWOMC5PEugYodVBeUtIv6KPPgoRLRZOANMR2HuMnpLOAsI
+         KjpcbgB5siv48hYnljRqNDzIpdW3JdZJ+evdxUK/GNJ8Eat5sm+e0wmFjGb65vY2XXYV
+         aNtEclZGOWhSC+OpF6mVMXBi4kAfEEPVngOGcrik7nEtTY2oIN2sBsEtRFo9E+jyBnNk
+         widQ==
+X-Gm-Message-State: AOAM533VN/99n+RHaR5XBZM+Ln3wNbV6O2yhQBr4mQsMWX8wsZ5coVmr
+        Pw2mX3kXGBR3ldWPijkfuy0qPb43MDfp0vLhFzf0Se7Hqgo=
+X-Google-Smtp-Source: ABdhPJwU7hf6NL7lCQJehECFecihPzycPteoe/6+wmp+h/fTpcxXTg+wuVfUbAtw060jgznxxAmzjvlZbb0nAXPITV4=
+X-Received: by 2002:aca:c457:: with SMTP id u84mr10568372oif.69.1625685334843;
+ Wed, 07 Jul 2021 12:15:34 -0700 (PDT)
 MIME-Version: 1.0
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 7 Jul 2021 21:13:33 +0200
-Message-ID: <CAJZ5v0gQhJHNn99sEpen_CK3+7vkn=t-56bG574k_TyTPGy96Q@mail.gmail.com>
-Subject: [GIT PULL] More power management updates for v5.14-rc1
+Date:   Wed, 7 Jul 2021 21:15:24 +0200
+Message-ID: <CAJZ5v0ijscuK9x8CbGR1ak2Gdox6J1fzyFrTgYoS-AGca=peuQ@mail.gmail.com>
+Subject: [GIT PULL] More ACPI updates for v5.14-rc1
 To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
@@ -47,117 +46,67 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- pm-5.14-rc1-2
+ acpi-5.14-rc1-2
 
-with top-most commit 843372db2e3bf9694e98a1ff9d0da6dc3d53aab8
+with top-most commit 166fdb4dd05f2e9f3b3d347682ab6d1b679b362d
 
- Merge branches 'pm-cpuidle', 'pm-sleep' and 'pm-domains'
+ Merge branches 'acpi-misc', 'acpi-video' and 'acpi-prm'
 
-on top of commit 3563f55ce65462063543dfa6a8d8c7fbfb9d7772
+on top of commit 5e6928249b81b4d8727ab6a4037a171d15455cb0
 
- Merge tag 'pm-5.14-rc1' of
+ Merge tag 'acpi-5.14-rc1' of
 git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
 
-to receive more power management updates for 5.14-rc1.
+to receive more ACPI updates for 5.14-rc1.
 
-These include cpufreq core simplifications and fixes, cpufreq
-driver updates, cpuidle driver update, a generic power domains
-(genpd) locking fix and a debug-related simplification of the PM
-core.
+These include fixes of the recently introduced support for the
+Platform Runtime Mechanism (PRM) feature, a new backlight quirk,
+a suspend-to-idle wakeup fix for non-Intel platforms and a fix
+for the AMBA bus resource list in /proc/iomem.
 
 Specifics:
 
- - Drop the ->stop_cpu() (not really useful) and ->resolve_freq()
-   (unused) cpufreq driver callbacks and modify the users of the
-   former accordingly (Viresh Kumar, Rafael Wysocki).
+ - Fix up the recently added Platform Runtime Mechanism (PRM)
+   support by correcting a couple of implementation mistakes in it
+   and adding a Kconfig help text to describe it (Aubrey Li,
+   Rafael Wysocki).
 
- - Add frequency invariance support to the ACPI CPPC cpufreq driver
-   again along with the related fixes and cleanups (Viresh Kumar).
+ - Add backlight quirk for Dell Vostro 3350 (Hans de Goede).
 
- - Update the Meditak, qcom and SCMI ARM cpufreq drivers (Fabien
-   Parent, Seiya Wang, Sibi Sankar, Christophe JAILLET).
+ - Avoid spurious wakeups from suspend-to-idle on non-Intel platforms
+   by restricting special EC GPE handling to the Intel ones (Mario
+   Limonciello).
 
- - Rename black/white-lists in the DT cpufreq driver (Viresh Kumar).
-
- - Add generic performance domains support to the dvfs DT bindings
-   (Sudeep Holla).
-
- - Refine locking in the generic power domains (genpd) support code
-   to avoid lock dependency issues (Stephen Boyd).
-
- - Update the MSM and qcom ARM cpuidle drivers (Bartosz Dudziak).
-
- - Simplify the PM core debug code by using ktime_us_delta() to
-   compute time interval lengths (Mark-PK Tsai).
+ - Modify the AMBA bus support in ACPI to avoid adding invalid
+   resource names in /proc/iomem (Liguang Zhang).
 
 Thanks!
 
 
 ---------------
 
-Bartosz Dudziak (2):
-      dt-bindings: arm: msm: Add SAW2 for MSM8226
-      cpuidle: qcom: Add SPM register data for MSM8226
+Aubrey Li (2):
+      ACPI: Correct \_SB._OSC bit definition for PRM
+      ACPI: Do not singal PRM support if not enabled
 
-Christophe JAILLET (1):
-      cpufreq: scmi: Fix an error message
+Hans de Goede (1):
+      ACPI: video: Add quirk for the Dell Vostro 3350
 
-Fabien Parent (1):
-      cpufreq: mediatek: add support for mt8365
+Liguang Zhang (1):
+      ACPI: AMBA: Fix resource name in /proc/iomem
 
-Mark-PK Tsai (1):
-      PM: sleep: Use ktime_us_delta() in initcall_debug_report()
+Mario Limonciello (1):
+      ACPI: PM: Only mark EC GPE for wakeup on Intel systems
 
 Rafael J. Wysocki (1):
-      cpufreq: intel_pstate: Combine ->stop_cpu() and ->offline()
-
-Seiya Wang (2):
-      clk: mediatek: remove deprecated CLK_INFRA_CA57SEL for MT8173 SoC
-      dt-bindings: cpufreq: update cpu type and clock name for MT8173 SoC
-
-Sibi Sankar (1):
-      cpufreq: blacklist SC7280 in cpufreq-dt-platdev
-
-Stephen Boyd (1):
-      PM: domains: Shrink locking area of the gpd_list_lock
-
-Sudeep Holla (1):
-      dt-bindings: dvfs: Add support for generic performance domains
-
-Viresh Kumar (10):
-      cpufreq: dt: Rename black/white-lists
-      cpufreq: CPPC: Migrate to ->exit() callback instead of ->stop_cpu()
-      cpufreq: powernv: Migrate to ->exit() callback instead of ->stop_cpu()
-      cpufreq: Remove the ->stop_cpu() driver callback
-      cpufreq: Reuse cpufreq_driver_resolve_freq() in __cpufreq_driver_target()
-      cpufreq: Remove ->resolve_freq()
-      cpufreq: CPPC: Fix potential memleak in cppc_cpufreq_cpu_init
-      cpufreq: CPPC: Pass structure instance by reference
-      arch_topology: Avoid use-after-free for scale_freq_data
-      cpufreq: CPPC: Add support for frequency invariance
+      ACPI: Kconfig: Provide help text for the ACPI_PRMT option
 
 ---------------
 
- Documentation/cpu-freq/cpu-drivers.rst             |   6 -
- Documentation/devicetree/bindings/arm/cpus.yaml    |   7 +
- .../devicetree/bindings/arm/msm/qcom,saw2.txt      |   1 +
- .../bindings/cpufreq/cpufreq-mediatek.txt          |   8 +-
- .../bindings/dvfs/performance-domain.yaml          |  74 +++++
- .../translations/zh_CN/cpu-freq/cpu-drivers.rst    |   5 -
- drivers/base/arch_topology.c                       |  27 +-
- drivers/base/power/domain.c                        |  38 ++-
- drivers/base/power/main.c                          |   5 +-
- drivers/cpufreq/Kconfig.arm                        |  10 +
- drivers/cpufreq/cppc_cpufreq.c                     | 324 ++++++++++++++++++---
- drivers/cpufreq/cpufreq-dt-platdev.c               |  10 +-
- drivers/cpufreq/cpufreq.c                          |  44 ++-
- drivers/cpufreq/intel_pstate.c                     |  11 +-
- drivers/cpufreq/mediatek-cpufreq.c                 |   1 +
- drivers/cpufreq/powernv-cpufreq.c                  |  23 +-
- drivers/cpufreq/scmi-cpufreq.c                     |   2 +-
- drivers/cpuidle/cpuidle-qcom-spm.c                 |  14 +
- include/dt-bindings/clock/mt8173-clk.h             |   1 -
- include/linux/arch_topology.h                      |   1 +
- include/linux/cpufreq.h                            |  10 -
- kernel/sched/core.c                                |   1 +
- 22 files changed, 474 insertions(+), 149 deletions(-)
+ drivers/acpi/Kconfig      | 10 ++++++++++
+ drivers/acpi/acpi_amba.c  |  1 +
+ drivers/acpi/acpi_video.c |  9 +++++++++
+ drivers/acpi/bus.c        |  3 ++-
+ drivers/acpi/x86/s2idle.c | 12 ++++++++----
+ include/linux/acpi.h      |  2 +-
+ 6 files changed, 31 insertions(+), 6 deletions(-)
