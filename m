@@ -2,156 +2,206 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6F53BDEFD
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Jul 2021 23:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B35CB3BE07B
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Jul 2021 03:10:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbhGFVkb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 6 Jul 2021 17:40:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43092 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229894AbhGFVka (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 6 Jul 2021 17:40:30 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DE21C061574;
-        Tue,  6 Jul 2021 14:37:51 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id h1-20020a17090a3d01b0290172d33bb8bcso2390238pjc.0;
-        Tue, 06 Jul 2021 14:37:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Ocbz7plpl2GsaeWZtT2xSwu/ECmgcGgX+U0mFWoVx8o=;
-        b=fjV4+ka8h0vH05QQfb5mosysrP9nHimBGyZMIaa5AG6oYKlZIJ9fBu1u8zdUGxqK0V
-         Um+d4Woup62vh1nDeTEMfYQu/z07c7tU/WMAtzd8zyjZ+D++/9qAcGD3Qi5HWfAEidnP
-         LVIhoqq3BcdDCaWawKEqjjS8yu6I4JR+nAEzkK0jeMXN28vBiyhs3oL9vVM3I/zG4bRq
-         0ch+fVpWTwIZJdpOA5MGN4Hsas/DzY0s55S8/73rafQT0BQHzaPtbSSjdX9FgBPH3Kng
-         zdOUu0zymj0lCUC9mcaI5h90C5jAW9R9slEqBMssceloFyAtObCoJPafpr9GaUMLPWWg
-         1jSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Ocbz7plpl2GsaeWZtT2xSwu/ECmgcGgX+U0mFWoVx8o=;
-        b=WK3yTWnvM5htSk/VSimnCQqje/FGFNelVEcwioYL2R7o83YW8eHgkZ6evNB3mBqPc0
-         b3GB1gLkWojJs9XG4BTClxxWXSVq9Gv09epEhdKJWYrb06H3nFuUuHgoZMgPD+WJybRF
-         3gZPab5P9vzwNlIIVEEo5Jl90VKSVHHxvBhjU3Pay3BEhOy6ShtVlTPAKjzUw+5LPvM3
-         g6Hpy3G6QibGd3AnFNfSCRKBRvetF31DDjQDeo8pnbGgCNJEzMmdhIwT1ify8AXwqciQ
-         XYOzvzRvY9jKXvHDc86y1R7eC14/aeggf/uWlHU2/VXBeEU0HO0uKcxPPx3BI1CBvsUI
-         0OtQ==
-X-Gm-Message-State: AOAM531T2RTDL3ySJyrUH9BdixZdoksL8kUK7Ivl7hx7XCT9buaF/thj
-        cTEAlptetL3RDzHa5EJYnN0=
-X-Google-Smtp-Source: ABdhPJyn2Hi8kaCYu+WokB25snaMIG+9Q6KwjeQoMDQJIrAIZd3JeXm641055Ca25Y6q1bD80UK2hA==
-X-Received: by 2002:a17:90a:3009:: with SMTP id g9mr2332932pjb.82.1625607470831;
-        Tue, 06 Jul 2021 14:37:50 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id h14sm14343197pgv.47.2021.07.06.14.37.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jul 2021 14:37:49 -0700 (PDT)
-Date:   Wed, 7 Jul 2021 06:37:39 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-sunxi@lists.linux.dev, linux-cxl@vger.kernel.org,
-        nvdimm@lists.linux.dev, dmaengine@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-fpga@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
-        industrypack-devel@lists.sourceforge.net,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
-        greybus-dev@lists.linaro.org, target-devel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
-Message-ID: <YOTMp88HfFiy6+RM@shinobu>
-References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
- <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+        id S229935AbhGGBM5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 6 Jul 2021 21:12:57 -0400
+Received: from mga17.intel.com ([192.55.52.151]:35997 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229834AbhGGBM5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 6 Jul 2021 21:12:57 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10037"; a="189598134"
+X-IronPort-AV: E=Sophos;i="5.83,330,1616482800"; 
+   d="scan'208";a="189598134"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2021 18:10:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,330,1616482800"; 
+   d="scan'208";a="627857349"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 06 Jul 2021 18:10:16 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1m0w4t-000DHX-77; Wed, 07 Jul 2021 01:10:15 +0000
+Date:   Wed, 07 Jul 2021 09:09:49 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 7570e1f151ada42f46d385c0e67940fe1e732804
+Message-ID: <60e4fedd.KeUF+gcntEGUCndG%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="VOubNWsj2sFIOkFX"
-Content-Disposition: inline
-In-Reply-To: <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 7570e1f151ada42f46d385c0e67940fe1e732804  Merge branch 'pm-domains' into linux-next
 
---VOubNWsj2sFIOkFX
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+elapsed time: 727m
 
-On Tue, Jul 06, 2021 at 05:48:03PM +0200, Uwe Kleine-K=C3=B6nig wrote:
-> The driver core ignores the return value of this callback because there
-> is only little it can do when a device disappears.
->=20
-> This is the final bit of a long lasting cleanup quest where several
-> buses were converted to also return void from their remove callback.
-> Additionally some resource leaks were fixed that were caused by drivers
-> returning an error code in the expectation that the driver won't go
-> away.
->=20
-> With struct bus_type::remove returning void it's prevented that newly
-> implemented buses return an ignored error code and so don't anticipate
-> wrong expectations for driver authors.
->=20
-> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk> (For ARM, Am=
-ba and related parts)
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Chen-Yu Tsai <wens@csie.org> (for drivers/bus/sunxi-rsb.c)
-> Acked-by: Pali Roh=C3=A1r <pali@kernel.org>
-> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> (for drivers/media)
-> Acked-by: Hans de Goede <hdegoede@redhat.com> (For drivers/platform)
-> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Acked-By: Vinod Koul <vkoul@kernel.org>
-> Acked-by: Juergen Gross <jgross@suse.com> (For Xen)
-> Acked-by: Lee Jones <lee.jones@linaro.org> (For drivers/mfd)
-> Acked-by: Johannes Thumshirn <jth@kernel.org> (For drivers/mcb)
-> Acked-by: Johan Hovold <johan@kernel.org>
-> Acked-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org> (For drive=
-rs/slimbus)
-> Acked-by: Kirti Wankhede <kwankhede@nvidia.com> (For drivers/vfio)
-> Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com> (For ulpi and=
- typec)
-> Acked-by: Samuel Iglesias Gons=C3=A1lvez <siglesias@igalia.com> (For ipac=
-k)
-> Reviewed-by: Tom Rix <trix@redhat.com> (For fpga)
-> Acked-by: Geoff Levand <geoff@infradead.org> (For ps3)
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> ---
+configs tested: 147
+configs skipped: 3
 
->  drivers/base/isa.c                        | 4 +---
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+ia64                             allmodconfig
+x86_64                    rhel-8.3-kselftests
+ia64                             allyesconfig
+powerpc                      ppc6xx_defconfig
+mips                 decstation_r4k_defconfig
+sh                           se7206_defconfig
+m68k                       bvme6000_defconfig
+ia64                      gensparse_defconfig
+powerpc                     tqm8560_defconfig
+sh                        sh7757lcr_defconfig
+powerpc                 mpc85xx_cds_defconfig
+arm                         shannon_defconfig
+sh                          rsk7264_defconfig
+m68k                            q40_defconfig
+x86_64                           alldefconfig
+s390                       zfcpdump_defconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                     tqm5200_defconfig
+mips                          ath25_defconfig
+sh                           se7619_defconfig
+arm                          pxa168_defconfig
+powerpc                    adder875_defconfig
+arc                    vdk_hs38_smp_defconfig
+powerpc                     pseries_defconfig
+mips                        bcm47xx_defconfig
+mips                           ip32_defconfig
+powerpc                     akebono_defconfig
+mips                     cu1830-neo_defconfig
+arc                              alldefconfig
+sh                     magicpanelr2_defconfig
+powerpc                    ge_imp3a_defconfig
+xtensa                       common_defconfig
+arm                      jornada720_defconfig
+arm                    vt8500_v6_v7_defconfig
+powerpc                 mpc8313_rdb_defconfig
+mips                      bmips_stb_defconfig
+arm                             rpc_defconfig
+s390                             alldefconfig
+sh                          kfr2r09_defconfig
+sh                   secureedge5410_defconfig
+sh                        apsh4ad0a_defconfig
+arm                            mps2_defconfig
+arm                             pxa_defconfig
+arm                       omap2plus_defconfig
+powerpc                 mpc832x_rdb_defconfig
+powerpc                     tqm8555_defconfig
+powerpc                      acadia_defconfig
+powerpc                      chrp32_defconfig
+m68k                          atari_defconfig
+mips                           xway_defconfig
+arm                      footbridge_defconfig
+sh                             sh03_defconfig
+xtensa                    smp_lx200_defconfig
+i386                                defconfig
+arm                        vexpress_defconfig
+mips                            e55_defconfig
+sh                            hp6xx_defconfig
+powerpc                   motionpro_defconfig
+sh                           se7750_defconfig
+microblaze                      mmu_defconfig
+m68k                        stmark2_defconfig
+arm                            lart_defconfig
+powerpc                    mvme5100_defconfig
+sh                         microdev_defconfig
+sh                           se7722_defconfig
+mips                       bmips_be_defconfig
+powerpc                     mpc5200_defconfig
+alpha                            alldefconfig
+powerpc                 linkstation_defconfig
+arm                           viper_defconfig
+ia64                          tiger_defconfig
+arm                            dove_defconfig
+x86_64                            allnoconfig
+ia64                                defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20210706
+i386                 randconfig-a006-20210706
+i386                 randconfig-a001-20210706
+i386                 randconfig-a003-20210706
+i386                 randconfig-a005-20210706
+i386                 randconfig-a002-20210706
+x86_64               randconfig-a012-20210706
+x86_64               randconfig-a011-20210706
+x86_64               randconfig-a013-20210706
+x86_64               randconfig-a015-20210706
+x86_64               randconfig-a014-20210706
+x86_64               randconfig-a016-20210706
+i386                 randconfig-a012-20210706
+i386                 randconfig-a011-20210706
+i386                 randconfig-a015-20210706
+i386                 randconfig-a016-20210706
+i386                 randconfig-a014-20210706
+i386                 randconfig-a013-20210706
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
---VOubNWsj2sFIOkFX
-Content-Type: application/pgp-signature; name="signature.asc"
+clang tested configs:
+x86_64               randconfig-b001-20210706
+x86_64               randconfig-a002-20210706
+x86_64               randconfig-a003-20210706
+x86_64               randconfig-a001-20210706
+x86_64               randconfig-a004-20210706
+x86_64               randconfig-a005-20210706
+x86_64               randconfig-a006-20210706
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmDkzSMACgkQhvpINdm7
-VJLVFhAAyxEk2xOSRC1xhJSnjLQvNeb+KeTAJr+uaSAwwExERXcbGlIryhqCZSij
-fZRzkvgPIscNAegWidvmuhZlhkFJPwvPArfhB/pFIDvQ1xX0kCPH3T51Lncu35Tf
-vgluc4JhAW9+1UzoKZsv8RK4uY2ETRMBBeYs7epjqK2RhCvzG8rDMD+Dy49nxrYX
-eNdmcR+7EcK8RjLmb/YEfNXxcXdDW0KlU5ATAh+PKuAPKbOKpoKfKuYsOYS7VrGJ
-MAk5lC5J/bqbBWM4eqm+g5NbskWMr1N5WC60R7K3isMCoaEpnKNhSD3kvYIFe2Tf
-mWyIE2c7D+UWhzbp+Kq4+DHzBN4ajLBy0oMd28HrGOQmD+/chjjc1zTOK9uNBvKz
-xBRbxQl7OrAnKhUqcrgVpVL30EvTNajZIOZdwtGXhQCWW+MX747JE+H291VLg3gz
-a0p6IJ8TS+gOgGGvmNjVg6yHYuKv6XDbDfI7tc0dRJUOoVqfbkIHSvAQQzn0LIFn
-k/Ln4D8LDFj8X3fHbfz200+nzo9gwA5ZXhWXzvTKXhSEyBoc3+i+Ihn3bgYf6rI8
-j8LozqWaWpNxaLMBrLuy06ldAuzhnQ7wPw1JuGXDAY1vdMYVVRp1XcbjBSqybXMA
-weoaxx4Lwh05XikzxZpXDQBx5N+5V3sYRuqGrYs7H1ZUm0rT0I0=
-=yTaM
------END PGP SIGNATURE-----
-
---VOubNWsj2sFIOkFX--
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
