@@ -2,30 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B938B3C18FB
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jul 2021 20:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CA233C18FD
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Jul 2021 20:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230333AbhGHSL4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 8 Jul 2021 14:11:56 -0400
-Received: from foss.arm.com ([217.140.110.172]:36034 "EHLO foss.arm.com"
+        id S230396AbhGHSL7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 8 Jul 2021 14:11:59 -0400
+Received: from foss.arm.com ([217.140.110.172]:36026 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230273AbhGHSLz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 8 Jul 2021 14:11:55 -0400
+        id S230365AbhGHSL4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 8 Jul 2021 14:11:56 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AFD631424;
-        Thu,  8 Jul 2021 11:09:12 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C84471477;
+        Thu,  8 Jul 2021 11:09:13 -0700 (PDT)
 Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C9D623F66F;
-        Thu,  8 Jul 2021 11:09:11 -0700 (PDT)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E26693F66F;
+        Thu,  8 Jul 2021 11:09:12 -0700 (PDT)
 From:   Sudeep Holla <sudeep.holla@arm.com>
 To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Sudeep Holla <sudeep.holla@arm.com>,
         Cristian Marussi <cristian.marussi@arm.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Jassi Brar <jassisinghbrar@gmail.com>
-Subject: [PATCH 12/13] mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)
-Date:   Thu,  8 Jul 2021 19:08:50 +0100
-Message-Id: <20210708180851.2311192-13-sudeep.holla@arm.com>
+Subject: [PATCH 13/13] mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe
+Date:   Thu,  8 Jul 2021 19:08:51 +0100
+Message-Id: <20210708180851.2311192-14-sudeep.holla@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210708180851.2311192-1-sudeep.holla@arm.com>
 References: <20210708180851.2311192-1-sudeep.holla@arm.com>
@@ -35,191 +35,215 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-With all the plumbing in place to avoid accessing PCCT type and other
-fields directly from the PCCT table all the time, let us now add the
-support for extended PCC subspaces(type 3 and 4).
+Move the PCCT subspace parsing and allocation into pcc_mbox_probe so
+that we can get rid of global PCC channel and mailbox controller data.
+It also helps to make use of devm_* APIs for all the allocations.
 
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 ---
- drivers/mailbox/pcc.c | 119 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 102 insertions(+), 17 deletions(-)
+ drivers/mailbox/pcc.c | 119 ++++++++++++++++++++++--------------------
+ 1 file changed, 63 insertions(+), 56 deletions(-)
 
 diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 99ad3429f174..22d1c7691887 100644
+index 22d1c7691887..c915b915e039 100644
 --- a/drivers/mailbox/pcc.c
 +++ b/drivers/mailbox/pcc.c
-@@ -89,12 +89,18 @@ struct pcc_chan_reg {
-  * @db: PCC register bundle for the doorbell register
-  * @plat_irq_ack: PCC register bundle for the platform interrupt acknowledge
-  *	register
-+ * @cmd_complete: PCC register bundle for the command complete check register
-+ * @cmd_update: PCC register bundle for the command complete update register
-+ * @error: PCC register bundle for the error status register
-  * @db_irq: doorbell interrupt
-  */
- struct pcc_chan_info {
- 	struct pcc_mbox_chan chan;
- 	struct pcc_chan_reg db;
- 	struct pcc_chan_reg plat_irq_ack;
-+	struct pcc_chan_reg cmd_complete;
-+	struct pcc_chan_reg cmd_update;
-+	struct pcc_chan_reg error;
- 	int db_irq;
- };
+@@ -63,8 +63,6 @@
  
-@@ -228,9 +234,29 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ #define MBOX_IRQ_NAME		"pcc-mbox"
+ 
+-static struct mbox_chan *pcc_mbox_channels;
+-
+ /**
+  * struct pcc_chan_reg - PCC register bundle
+  *
+@@ -106,7 +104,7 @@ struct pcc_chan_info {
+ 
+ #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
+ static struct pcc_chan_info *chan_info;
+-static struct mbox_controller pcc_mbox_ctrl = {};
++static int pcc_chan_count;
+ 
+ /*
+  * PCC can be used with perf critical drivers such as CPPC
+@@ -281,8 +279,8 @@ struct pcc_mbox_chan *
+ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
  {
- 	struct pcc_chan_info *pchan;
- 	struct mbox_chan *chan = p;
-+	u64 val;
-+	int ret;
+ 	struct pcc_chan_info *pchan = chan_info + subspace_id;
+-	struct device *dev = pcc_mbox_ctrl.dev;
+ 	struct mbox_chan *chan = pchan->chan.mchan;
++	struct device *dev = chan->mbox->dev;
+ 	unsigned long flags;
  
- 	pchan = chan->con_priv;
- 
-+	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
-+	if (ret)
-+		return IRQ_NONE;
-+
-+	val &= pchan->cmd_complete.status_mask;
-+	if (!val)
-+		return IRQ_NONE;
-+
-+	ret = pcc_chan_reg_read(&pchan->error, &val);
-+	if (ret)
-+		return IRQ_NONE;
-+	val &= pchan->error.status_mask;
-+	if (val) {
-+		val &= ~pchan->error.status_mask;
-+		pcc_chan_reg_write(&pchan->error, val);
-+		return IRQ_NONE;
-+	}
-+
- 	mbox_chan_received_data(chan, NULL);
- 
- 	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
-@@ -335,8 +361,13 @@ EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
+ 	if (IS_ERR(chan) || chan->cl) {
+@@ -570,16 +568,12 @@ static void pcc_parse_subspace_shmem(struct pcc_chan_info *pchan,
   */
- static int pcc_send_data(struct mbox_chan *chan, void *data)
+ static int __init acpi_pcc_probe(void)
  {
-+	int ret;
- 	struct pcc_chan_info *pchan = chan->con_priv;
++	int count, i, rc = 0;
++	acpi_status status;
+ 	struct acpi_table_header *pcct_tbl;
+-	struct acpi_subtable_header *pcct_entry;
+-	struct acpi_table_pcct *acpi_pcct_tbl;
+ 	struct acpi_subtable_proc proc[ACPI_PCCT_TYPE_RESERVED];
+-	int count, i, rc;
+-	acpi_status status = AE_OK;
  
-+	ret = pcc_chan_reg_read_modify_write(&pchan->cmd_update);
-+	if (ret)
-+		return ret;
-+
- 	return pcc_chan_reg_read_modify_write(&pchan->db);
- }
+-	/* Search for PCCT */
+ 	status = acpi_get_table(ACPI_SIG_PCCT, 0, &pcct_tbl);
+-
+ 	if (ACPI_FAILURE(status) || !pcct_tbl)
+ 		return -ENODEV;
  
-@@ -429,6 +460,16 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
- 					pcct2_ss->ack_preserve_mask,
- 					pcct2_ss->ack_write_mask, 0,
- 					"PLAT IRQ ACK");
-+
-+	} else if (pcct_ss->header.type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE ||
-+		   pcct_ss->header.type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE) {
-+		struct acpi_pcct_ext_pcc_master *pcct_ext = (void *)pcct_ss;
-+
-+		ret = pcc_chan_reg_init(&pchan->plat_irq_ack,
-+					&pcct_ext->platform_ack_register,
-+					pcct_ext->ack_preserve_mask,
-+					pcct_ext->ack_set_mask, 0,
-+					"PLAT IRQ ACK");
+@@ -601,21 +595,60 @@ static int __init acpi_pcc_probe(void)
+ 			pr_warn("Invalid PCCT: %d PCC subspaces\n", count);
+ 
+ 		rc = -EINVAL;
+-		goto err_put_pcct;
++	} else {
++		pcc_chan_count = count;
  	}
  
- 	return ret;
-@@ -446,14 +487,48 @@ static int pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
- {
- 	int ret = 0;
+-	pcc_mbox_channels = kcalloc(count, sizeof(struct mbox_chan),
+-				    GFP_KERNEL);
++	acpi_put_table(pcct_tbl);
++
++	return rc;
++}
++
++/**
++ * pcc_mbox_probe - Called when we find a match for the
++ *	PCCT platform device. This is purely used to represent
++ *	the PCCT as a virtual device for registering with the
++ *	generic Mailbox framework.
++ *
++ * @pdev: Pointer to platform device returned when a match
++ *	is found.
++ *
++ *	Return: 0 for Success, else errno.
++ */
++static int pcc_mbox_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct mbox_controller *pcc_mbox_ctrl;
++	struct mbox_chan *pcc_mbox_channels;
++	struct acpi_table_header *pcct_tbl;
++	struct acpi_subtable_header *pcct_entry;
++	struct acpi_table_pcct *acpi_pcct_tbl;
++	acpi_status status = AE_OK;
++	int i, rc, count = pcc_chan_count;
++
++	/* Search for PCCT */
++	status = acpi_get_table(ACPI_SIG_PCCT, 0, &pcct_tbl);
++
++	if (ACPI_FAILURE(status) || !pcct_tbl)
++		return -ENODEV;
++
++	pcc_mbox_channels = devm_kcalloc(dev, count, sizeof(*pcc_mbox_channels),
++					 GFP_KERNEL);
+ 	if (!pcc_mbox_channels) {
+-		pr_err("Could not allocate space for PCC mbox channels\n");
+ 		rc = -ENOMEM;
+-		goto err_put_pcct;
++		goto err;
+ 	}
  
--	struct acpi_pcct_subspace *pcct_ss;
--
--	pcct_ss = (struct acpi_pcct_subspace *)pcct_entry;
--
--	ret = pcc_chan_reg_init(&pchan->db,
--				&pcct_ss->doorbell_register,
--				pcct_ss->preserve_mask,
--				pcct_ss->write_mask, 0,	"Doorbell");
-+	if (pcct_entry->type <= ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2) {
-+		struct acpi_pcct_subspace *pcct_ss;
-+
-+		pcct_ss = (struct acpi_pcct_subspace *)pcct_entry;
-+
-+		ret = pcc_chan_reg_init(&pchan->db,
-+					&pcct_ss->doorbell_register,
-+					pcct_ss->preserve_mask,
-+					pcct_ss->write_mask, 0,	"Doorbell");
-+
-+	} else {
-+		struct acpi_pcct_ext_pcc_master *pcct_ext;
-+
-+		pcct_ext = (struct acpi_pcct_ext_pcc_master *)pcct_entry;
-+
-+		ret = pcc_chan_reg_init(&pchan->db,
-+					&pcct_ext->doorbell_register,
-+					pcct_ext->preserve_mask,
-+					pcct_ext->write_mask, 0, "Doorbell");
-+		if (ret)
-+			return ret;
-+
-+		ret = pcc_chan_reg_init(&pchan->cmd_complete,
-+					&pcct_ext->cmd_complete_register,
-+					0, 0, pcct_ext->cmd_complete_mask,
-+					"Command Complete Check");
-+		if (ret)
-+			return ret;
-+
-+		ret = pcc_chan_reg_init(&pchan->cmd_update,
-+					&pcct_ext->cmd_update_register,
-+					pcct_ext->cmd_update_preserve_mask,
-+					pcct_ext->cmd_update_set_mask, 0,
-+					"Command Complete Update");
-+		if (ret)
-+			return ret;
-+
-+		ret = pcc_chan_reg_init(&pchan->error,
-+					&pcct_ext->error_status_register,
-+					0, 0, pcct_ext->error_status_mask,
-+					"Error Status");
+-	chan_info = kcalloc(count, sizeof(*chan_info), GFP_KERNEL);
++	chan_info = devm_kcalloc(dev, count, sizeof(*chan_info), GFP_KERNEL);
+ 	if (!chan_info) {
+ 		rc = -ENOMEM;
+-		goto err_free_mbox;
++		goto err;
 +	}
- 	return ret;
++
++	pcc_mbox_ctrl = devm_kmalloc(dev, sizeof(*pcc_mbox_ctrl), GFP_KERNEL);
++	if (!pcc_mbox_ctrl) {
++		rc = -ENOMEM;
++		goto err;
+ 	}
+ 
+ 	/* Point to the first PCC subspace entry */
+@@ -624,7 +657,7 @@ static int __init acpi_pcc_probe(void)
+ 
+ 	acpi_pcct_tbl = (struct acpi_table_pcct *) pcct_tbl;
+ 	if (acpi_pcct_tbl->flags & ACPI_PCCT_DOORBELL)
+-		pcc_mbox_ctrl.txdone_irq = true;
++		pcc_mbox_ctrl->txdone_irq = true;
+ 
+ 	for (i = 0; i < count; i++) {
+ 		struct pcc_chan_info *pchan = chan_info + i;
+@@ -632,7 +665,7 @@ static int __init acpi_pcc_probe(void)
+ 		pcc_mbox_channels[i].con_priv = pchan;
+ 		pchan->chan.mchan = &pcc_mbox_channels[i];
+ 
+-		if (pcc_mbox_ctrl.txdone_irq) {
++		if (pcc_mbox_ctrl->txdone_irq) {
+ 			rc = pcc_parse_subspace_irq(pchan, pcct_entry);
+ 			if (rc < 0)
+ 				goto err;
+@@ -647,51 +680,25 @@ static int __init acpi_pcc_probe(void)
+ 			((unsigned long) pcct_entry + pcct_entry->length);
+ 	}
+ 
+-	pcc_mbox_ctrl.num_chans = count;
++	pcc_mbox_ctrl->num_chans = count;
+ 
+-	pr_info("Detected %d PCC Subspaces\n", pcc_mbox_ctrl.num_chans);
++	pr_info("Detected %d PCC Subspaces\n", pcc_mbox_ctrl->num_chans);
+ 
+-	return 0;
++	pcc_mbox_ctrl->chans = pcc_mbox_channels;
++	pcc_mbox_ctrl->ops = &pcc_chan_ops;
++	pcc_mbox_ctrl->dev = dev;
+ 
++	pr_info("Registering PCC driver as Mailbox controller\n");
++	rc = mbox_controller_register(pcc_mbox_ctrl);
++	if (rc)
++		pr_err("Err registering PCC as Mailbox controller: %d\n", rc);
++	else
++		return 0;
+ err:
+-	kfree(chan_info);
+-err_free_mbox:
+-	kfree(pcc_mbox_channels);
+-err_put_pcct:
+ 	acpi_put_table(pcct_tbl);
+ 	return rc;
  }
  
-@@ -467,15 +542,25 @@ static int pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
- static void pcc_parse_subspace_shmem(struct pcc_chan_info *pchan,
- 				     struct acpi_subtable_header *pcct_entry)
- {
--	struct acpi_pcct_subspace *pcct_ss;
+-/**
+- * pcc_mbox_probe - Called when we find a match for the
+- *	PCCT platform device. This is purely used to represent
+- *	the PCCT as a virtual device for registering with the
+- *	generic Mailbox framework.
+- *
+- * @pdev: Pointer to platform device returned when a match
+- *	is found.
+- *
+- *	Return: 0 for Success, else errno.
+- */
+-static int pcc_mbox_probe(struct platform_device *pdev)
+-{
+-	int ret = 0;
 -
--	pcct_ss = (struct acpi_pcct_subspace *)pcct_entry;
+-	pcc_mbox_ctrl.chans = pcc_mbox_channels;
+-	pcc_mbox_ctrl.ops = &pcc_chan_ops;
+-	pcc_mbox_ctrl.dev = &pdev->dev;
 -
--	pchan->chan.shmem_base_addr = pcct_ss->base_address;
--	pchan->chan.shmem_size = pcct_ss->length;
--	pchan->chan.latency = pcct_ss->latency;
--	pchan->chan.max_access_rate = pcct_ss->max_access_rate;
--	pchan->chan.min_turnaround_time = pcct_ss->min_turnaround_time;
-+	if (pcct_entry->type <= ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2) {
-+		struct acpi_pcct_subspace *pcct_ss =
-+			(struct acpi_pcct_subspace *)pcct_entry;
-+
-+		pchan->chan.shmem_base_addr = pcct_ss->base_address;
-+		pchan->chan.shmem_size = pcct_ss->length;
-+		pchan->chan.latency = pcct_ss->latency;
-+		pchan->chan.max_access_rate = pcct_ss->max_access_rate;
-+		pchan->chan.min_turnaround_time = pcct_ss->min_turnaround_time;
-+	} else {
-+		struct acpi_pcct_ext_pcc_master *pcct_ext =
-+			(struct acpi_pcct_ext_pcc_master *)pcct_entry;
-+
-+		pchan->chan.shmem_base_addr = pcct_ext->base_address;
-+		pchan->chan.shmem_size = pcct_ext->length;
-+		pchan->chan.latency = pcct_ext->latency;
-+		pchan->chan.max_access_rate = pcct_ext->max_access_rate;
-+		pchan->chan.min_turnaround_time = pcct_ext->min_turnaround_time;
-+	}
- }
- 
- /**
+-	pr_info("Registering PCC driver as Mailbox controller\n");
+-	ret = mbox_controller_register(&pcc_mbox_ctrl);
+-
+-	if (ret) {
+-		pr_err("Err registering PCC as Mailbox controller: %d\n", ret);
+-		ret = -ENODEV;
+-	}
+-
+-	return ret;
+-}
+-
+ static struct platform_driver pcc_mbox_driver = {
+ 	.probe = pcc_mbox_probe,
+ 	.driver = {
 -- 
 2.25.1
 
