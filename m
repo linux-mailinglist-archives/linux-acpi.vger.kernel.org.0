@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31E233C3950
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Jul 2021 01:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22BF43C396E
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Jul 2021 01:57:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233506AbhGJX6m (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 10 Jul 2021 19:58:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40150 "EHLO mail.kernel.org"
+        id S233764AbhGJX7n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 10 Jul 2021 19:59:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48430 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234107AbhGJX5U (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 10 Jul 2021 19:57:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 700B261421;
-        Sat, 10 Jul 2021 23:52:35 +0000 (UTC)
+        id S233567AbhGJX60 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 10 Jul 2021 19:58:26 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 88EB5613DC;
+        Sat, 10 Jul 2021 23:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625961156;
-        bh=mSF4KWxKqflnSF5N8gIsUPwDq4JB+/Htfxs/bFcwq4Q=;
+        s=k20201202; t=1625961179;
+        bh=twK7smbQ2xhiwNylkjkTv7chyuqvOTm6osPmo7B/YOk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ejaUv9cFZi1sv5lGtoSsQQD7OGp5LuI6kNd4SC/BguOA3FFPREsgJwfihJu8VwGCn
-         zIxZmGFSZEAXysyQ712SXnPJHzfqltRjKrAG6JNhA7ccWx0/lqQzgqIvcyAW1XrGWM
-         2fCE/8OPyY0/ku1h8I7X9UjzivNsqhrngtDNjYORYMV0QCWA5/l5DxyaiIGbKGWlC0
-         b3TqGVTNzDrdIR4EaZ2BSoFlCuD4N6OX4GXmPO2aPZ0/1561YiMLfZbmSWgDKEmg33
-         YcP6lIIp0yHhe9epcZA/xyeZ8qoMl9e/9/IkNkzDwPVT6/4TeQ40HS5CFDkbA9EoOQ
-         4szNNqkkAj5aQ==
+        b=PJUenRWnwUrMt7hs8A9bz8igXzhlMwHacH+I0xhQ0te/58bY4Oz2vo8C9NSA+z1Tl
+         9OyAM16MRAz0EMHZRK+hVoAez1i05xrNccKz5Vl5wDUbXAytN1w8OUgeyXZfQP5kX8
+         od3PMabCP3NN8B+zNnK0rTWn6FULYvL2iERbi9TnOGC426PudX7zJKGJuixYWWuCSq
+         LHm7XDpFvhcjttLJP0idbbTFKKHJqRxy5WhB7TbC6DlrZ3FDUS7PprlqgIKIG74WPf
+         oXouFMfCy/phNJw3YiX0xL8Y5rgBE365cPqQF/nUOWnyAqajIkkBjJ03ArAHQqTnYV
+         tWj8mVjxZYe1A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
+Cc:     Liguang Zhang <zhangliguang@linux.alibaba.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 18/21] ACPI: video: Add quirk for the Dell Vostro 3350
-Date:   Sat, 10 Jul 2021 19:52:09 -0400
-Message-Id: <20210710235212.3222375-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 14/16] ACPI: AMBA: Fix resource name in /proc/iomem
+Date:   Sat, 10 Jul 2021 19:52:38 -0400
+Message-Id: <20210710235240.3222618-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210710235212.3222375-1-sashal@kernel.org>
-References: <20210710235212.3222375-1-sashal@kernel.org>
+In-Reply-To: <20210710235240.3222618-1-sashal@kernel.org>
+References: <20210710235240.3222618-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -42,47 +42,34 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Liguang Zhang <zhangliguang@linux.alibaba.com>
 
-[ Upstream commit 9249c32ec9197e8d34fe5179c9e31668a205db04 ]
+[ Upstream commit 7718629432676b5ebd9a32940782fe297a0abf8d ]
 
-The Dell Vostro 3350 ACPI video-bus device reports spurious
-ACPI_VIDEO_NOTIFY_CYCLE events resulting in spurious KEY_SWITCHVIDEOMODE
-events being reported to userspace (and causing trouble there).
+In function amba_handler_attach(), dev->res.name is initialized by
+amba_device_alloc. But when address_found is false, dev->res.name is
+assigned to null value, which leads to wrong resource name display in
+/proc/iomem, "<BAD>" is seen for those resources.
 
-Add a quirk setting the report_key_events mask to
-REPORT_BRIGHTNESS_KEY_EVENTS so that the ACPI_VIDEO_NOTIFY_CYCLE
-events will be ignored, while still reporting brightness up/down
-hotkey-presses to userspace normally.
-
-BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1911763
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Liguang Zhang <zhangliguang@linux.alibaba.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_video.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/acpi/acpi_amba.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 7df7abde1fcb..5a69260edf80 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -556,6 +556,15 @@ static const struct dmi_system_id video_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro V131"),
- 		},
- 	},
-+	{
-+	 .callback = video_set_report_key_events,
-+	 .driver_data = (void *)((uintptr_t)REPORT_BRIGHTNESS_KEY_EVENTS),
-+	 .ident = "Dell Vostro 3350",
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 3350"),
-+		},
-+	},
- 	/*
- 	 * Some machines change the brightness themselves when a brightness
- 	 * hotkey gets pressed, despite us telling them not to. In this case
+diff --git a/drivers/acpi/acpi_amba.c b/drivers/acpi/acpi_amba.c
+index 7f77c071709a..eb09ee71ceb2 100644
+--- a/drivers/acpi/acpi_amba.c
++++ b/drivers/acpi/acpi_amba.c
+@@ -70,6 +70,7 @@ static int amba_handler_attach(struct acpi_device *adev,
+ 		case IORESOURCE_MEM:
+ 			if (!address_found) {
+ 				dev->res = *rentry->res;
++				dev->res.name = dev_name(&dev->dev);
+ 				address_found = true;
+ 			}
+ 			break;
 -- 
 2.30.2
 
