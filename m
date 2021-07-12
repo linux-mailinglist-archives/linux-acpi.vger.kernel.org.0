@@ -2,128 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D26B3C5C83
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jul 2021 14:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 618453C6182
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jul 2021 19:06:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233746AbhGLMph (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Jul 2021 08:45:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:60059 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230361AbhGLMpg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 12 Jul 2021 08:45:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1626093768;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pXhL//ogQJi+M8+nVdHcrU68d/XzKP3Ysz4l2H7Enzo=;
-        b=EsnOiJlIlzUNM7Kf6oJ9GKG3KesDTiQ7Gwv2d5eTmw6tJWl69TJYxlVvOdPW+0dMPPlK4a
-        98zEEevcEX0YBglNFkZ8Z9/82+esZByojVfsfDlH2IzormKmnogj268LeaiQ2BmzlW+yos
-        +a8Td0us9nn/EFESAhmQHBYmQatSK7o=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-479-fIG3VmWRMnu31B8obKN8uw-1; Mon, 12 Jul 2021 08:42:46 -0400
-X-MC-Unique: fIG3VmWRMnu31B8obKN8uw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S234775AbhGLRJj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Jul 2021 13:09:39 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:62342 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234561AbhGLRJj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jul 2021 13:09:39 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 2.1.0)
+ id 1126075ed0e12430; Mon, 12 Jul 2021 19:06:48 +0200
+Received: from kreacher.localnet (89-64-82-45.dynamic.chello.pl [89.64.82.45])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4983C804309;
-        Mon, 12 Jul 2021 12:42:41 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-113-111.rdu2.redhat.com [10.10.113.111])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id AEFCA5C232;
-        Mon, 12 Jul 2021 12:42:21 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        virtualization@lists.linux-foundation.org,
-        linux-acpi@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Anton Blanchard <anton@ozlabs.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Dave Jiang <dave.jiang@intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jia He <justin.he@arm.com>, Joe Perches <joe@perches.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Laurent Dufour <ldufour@linux.ibm.com>,
-        Michel Lespinasse <michel@lespinasse.org>,
-        Nathan Lynch <nathanl@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Pierre Morel <pmorel@linux.ibm.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Rich Felker <dalias@libc.org>,
-        Scott Cheloha <cheloha@linux.ibm.com>,
-        Sergei Trofimovich <slyfox@gentoo.org>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PATCH v1 4/4] ACPI: memhotplug: memory resources cannot be enabled yet
-Date:   Mon, 12 Jul 2021 14:40:52 +0200
-Message-Id: <20210712124052.26491-5-david@redhat.com>
-In-Reply-To: <20210712124052.26491-1-david@redhat.com>
-References: <20210712124052.26491-1-david@redhat.com>
+        by v370.home.net.pl (Postfix) with ESMTPSA id 9E3C7669C07;
+        Mon, 12 Jul 2021 19:06:47 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux PCI <linux-pci@vger.kernel.org>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Utkarsh H Patel <utkarsh.h.patel@intel.com>,
+        Koba Ko <koba.ko@canonical.com>
+Subject: [RFT][PATCH] PCI: PM: Add special case handling for PCIe device wakeup
+Date:   Mon, 12 Jul 2021 19:06:47 +0200
+Message-ID: <5475468.DvuYhMxLoT@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 89.64.82.45
+X-CLIENT-HOSTNAME: 89-64-82-45.dynamic.chello.pl
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddruddvgddutdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvvefgteeuteehkeduuedvudetleevffdtffdtjeejueekffetieekgfeigfehudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeekledrieegrdekvddrgeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdeigedrkedvrdeghedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdhptghisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
+ thhtohepmhhikhgrrdifvghsthgvrhgsvghrgheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrghirdhhvghnghdrfhgvnhhgsegtrghnohhnihgtrghlrdgtohhmpdhrtghpthhtohepuhhtkhgrrhhshhdrhhdrphgrthgvlhesihhnthgvlhdrtghomhdprhgtphhtthhopehkohgsrgdrkhhosegtrghnohhnihgtrghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-We allocate + initialize everything from scratch. In case enabling the
-device fails, we free all memory resourcs.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
+Some PCIe devices only support PME (Power Management Event) from
+D3cold.  One example is the ASMedia xHCI controller:
+
+ 11:00.0 USB controller: ASMedia Technology Inc. ASM1042A USB 3.0 Host Controller (prog-if 30 [XHCI])
+   ...
+   Capabilities: [78] Power Management version 3
+           Flags: PMEClk- DSI- D1- D2- AuxCurrent=55mA PME(D0-,D1-,D2-,D3hot-,D3cold+)
+           Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=0 PME-
+
+In those cases, if the device is expected to generate wakeup events
+from its final power state, pci_target_state() returns D0, which
+prevents the PCIe port the device is connected to from entering any
+low-power states too.  However, if the device were allowed to go into
+D3hot, its parent PCIe port would also be able to go into D3 and if
+it goes into D3cold, it would cause the endpoint device to end up in
+D3cold too (as per the PCI PM spec v1.2, Table 6-1), in which case
+the endpoint would be able to signal PME.  This means that the system
+could be put into a lower-power configuration without sacrificing the
+the given device's ability to generate PME.
+
+In order to avoid missing that opportunity, extend pci_pme_capable()
+to check the device's parent in the special case when the target
+state is D3hot and the device can only signal PME from D3cold and
+update pci_target_state() to return the current target state if
+pci_pme_capable() returns 'true' for it.
+
+Link: https://lore.kernel.org/linux-pm/20210617123653.58640-1-mika.westerberg@linux.intel.com
+Reported-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reported-by: Utkarsh H Patel <utkarsh.h.patel@intel.com>
+Reported-by: Koba Ko <koba.ko@canonical.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/acpi_memhotplug.c | 4 ----
- 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-index 1d01d9414c40..eb4faf7c5cad 100644
---- a/drivers/acpi/acpi_memhotplug.c
-+++ b/drivers/acpi/acpi_memhotplug.c
-@@ -182,10 +182,6 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
- 	 * (i.e. memory-hot-remove function)
- 	 */
- 	list_for_each_entry(info, &mem_device->res_list, list) {
--		if (info->enabled) { /* just sanity check...*/
--			num_enabled++;
--			continue;
+Hi,
+
+Anyone who can reproduce the problem described in the changelog,
+please test the patch and let me know the result.
+
+Thanks!
+
+---
+ drivers/pci/pci.c |   38 ++++++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
+
+Index: linux-pm/drivers/pci/pci.c
+===================================================================
+--- linux-pm.orig/drivers/pci/pci.c
++++ linux-pm/drivers/pci/pci.c
+@@ -2298,10 +2298,29 @@ void pci_pme_wakeup_bus(struct pci_bus *
+  */
+ bool pci_pme_capable(struct pci_dev *dev, pci_power_t state)
+ {
++	struct pci_dev *parent;
++
+ 	if (!dev->pm_cap)
+ 		return false;
+ 
+-	return !!(dev->pme_support & (1 << state));
++	if (dev->pme_support & (1 << state))
++		return true;
++
++	/*
++	 * Special case: The target state is D3hot and the device only supports
++	 * signaling PME from D3cold, but it is a PCIe device whose parent port
++	 * can go into D3cold.  In that case, if the device is allowed to go
++	 * into D3hot, the parent port can go into D3cold which will cause the
++	 * device to end up in D3cold, so it will be able to signal PME from the
++	 * final state.
++	 */
++	if (state != PCI_D3hot || !(dev->pme_support & (1 << PCI_D3cold)))
++		return false;
++
++	parent = dev->bus->self;
++	return pci_bridge_d3_possible(parent) &&
++		platform_pci_power_manageable(parent) &&
++		platform_pci_choose_state(parent) == PCI_D3cold;
+ }
+ EXPORT_SYMBOL(pci_pme_capable);
+ 
+@@ -2595,17 +2614,12 @@ static pci_power_t pci_target_state(stru
+ 	if (dev->current_state == PCI_D3cold)
+ 		target_state = PCI_D3cold;
+ 
+-	if (wakeup) {
+-		/*
+-		 * Find the deepest state from which the device can generate
+-		 * PME#.
+-		 */
+-		if (dev->pme_support) {
+-			while (target_state
+-			      && !(dev->pme_support & (1 << target_state)))
+-				target_state--;
 -		}
- 		/*
- 		 * If the memory block size is zero, please ignore it.
- 		 * Don't try to do the following memory hotplug flowchart.
--- 
-2.31.1
+-	}
++	if (!wakeup || !dev->pme_support || pci_pme_capable(dev, target_state))
++		return target_state;
++
++	/* Find the deepest state from which the device can generate PME#. */
++	while (target_state && !(dev->pme_support & (1 << target_state)))
++		target_state--;
+ 
+ 	return target_state;
+ }
+
+
 
