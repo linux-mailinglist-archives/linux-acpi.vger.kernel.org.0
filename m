@@ -2,37 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 658023C5C72
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jul 2021 14:41:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05FBB3C5C74
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jul 2021 14:41:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233852AbhGLMoR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Jul 2021 08:44:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32873 "EHLO
+        id S233964AbhGLMog (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Jul 2021 08:44:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:57073 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233843AbhGLMoR (ORCPT
+        by vger.kernel.org with ESMTP id S233517AbhGLMof (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 12 Jul 2021 08:44:17 -0400
+        Mon, 12 Jul 2021 08:44:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1626093687;
+        s=mimecast20190719; t=1626093707;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=qEbDQXGhHEIQfXJJ1NDA7WskESqj8IOu7J2/Cf7/u6Q=;
-        b=Fs9CXKbGTKina7mFGIErfcSJizxtVYM/EAiaRIGse6BQP2OcL+UNviTMEKgOYl17mMcoF2
-        xZKaj8KjV45vyXdzvpbJXD0Y4yaEsu6gLbTD9OXVDTNqgKiFZPCKxYeY/cup5OLxzqqwSb
-        kei8JGwPG1iwLTcC5bbrRGm1tePS4yY=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Iimg+qQSgcqxiRNdP92p/YunXPxELvQ8PHwm9CDHrrU=;
+        b=gtBeDxczV/yWqKfjr0cVXNyn0kXIwa5ZjKFqoBHHXVWZhgGRrE5lWDpYpWaBjOgpYT/nik
+        A3MssR1Z14mzDKYuiTD9Ev2H3jMZHo4kr5fOXwR9rMRlSO/+R6q2YmOYzZQxNlruN0Jqmn
+        3s3p/bKKs+ylEjniNrOuOvp93jiiPVM=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-421-VADwkUjmOYKhbpMmcyul4g-1; Mon, 12 Jul 2021 08:41:26 -0400
-X-MC-Unique: VADwkUjmOYKhbpMmcyul4g-1
+ us-mta-509-9K5-8dqLPLuDmHE1nn5TOQ-1; Mon, 12 Jul 2021 08:41:45 -0400
+X-MC-Unique: 9K5-8dqLPLuDmHE1nn5TOQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8A5AB802C87;
-        Mon, 12 Jul 2021 12:41:18 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D1FDC100CED4;
+        Mon, 12 Jul 2021 12:41:39 +0000 (UTC)
 Received: from t480s.redhat.com (ovpn-113-111.rdu2.redhat.com [10.10.113.111])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 285555C1D1;
-        Mon, 12 Jul 2021 12:40:53 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E63A15C232;
+        Mon, 12 Jul 2021 12:41:18 +0000 (UTC)
 From:   David Hildenbrand <david@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
@@ -85,9 +86,11 @@ Cc:     linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
         Vishal Verma <vishal.l.verma@intel.com>,
         Will Deacon <will@kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: mm/memory_hotplug: preparatory patches for new online policy and memory
-Date:   Mon, 12 Jul 2021 14:40:48 +0200
-Message-Id: <20210712124052.26491-1-david@redhat.com>
+Subject: [PATCH v1 1/4] mm/memory_hotplug: use "unsigned long" for PFN in zone_for_pfn_range()
+Date:   Mon, 12 Jul 2021 14:40:49 +0200
+Message-Id: <20210712124052.26491-2-david@redhat.com>
+In-Reply-To: <20210712124052.26491-1-david@redhat.com>
+References: <20210712124052.26491-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
@@ -95,65 +98,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Checkpatch complained on a follow-up patch that we are using "unsigned"
+here, which defaults to "unsigned int" and checkpatch is correct.
 
-these are all cleanups and one fix previously sent as part of [1]:
-	[PATCH v1 00/12] mm/memory_hotplug: "auto-movable" online policy
-	and memory groups
+Use "unsigned long" instead, just as we do in other places when handling
+PFNs. This can bite us once we have physical addresses in the range of
+multiple TB.
 
-These patches make sense even without the other series, therefore I pulled
-them out to make the other series easier to digest.
+Fixes: e5e689302633 ("mm, memory_hotplug: display allowed zones in the preferred ordering")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ include/linux/memory_hotplug.h | 4 ++--
+ mm/memory_hotplug.c            | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-[1] https://lkml.kernel.org/r/20210607195430.48228-1-david@redhat.com
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: virtualization@lists.linux-foundation.org
-Cc: linux-mm@kvack.org
-Cc: linux-acpi@vger.kernel.org
-
-David Hildenbrand (4):
-  mm/memory_hotplug: use "unsigned long" for PFN in zone_for_pfn_range()
-  mm/memory_hotplug: remove nid parameter from arch_remove_memory()
-  mm/memory_hotplug: remove nid parameter from remove_memory() and
-    friends
-  ACPI: memhotplug: memory resources cannot be enabled yet
-
- arch/arm64/mm/mmu.c                           |  3 +-
- arch/ia64/mm/init.c                           |  3 +-
- arch/powerpc/mm/mem.c                         |  3 +-
- .../platforms/pseries/hotplug-memory.c        |  9 +++--
- arch/s390/mm/init.c                           |  3 +-
- arch/sh/mm/init.c                             |  3 +-
- arch/x86/mm/init_32.c                         |  3 +-
- arch/x86/mm/init_64.c                         |  3 +-
- drivers/acpi/acpi_memhotplug.c                | 11 +-----
- drivers/dax/kmem.c                            |  3 +-
- drivers/virtio/virtio_mem.c                   |  4 +--
- include/linux/memory_hotplug.h                | 17 +++++----
- mm/memory_hotplug.c                           | 36 +++++++++++--------
- mm/memremap.c                                 |  5 +--
- 14 files changed, 45 insertions(+), 61 deletions(-)
-
-
-base-commit: e73f0f0ee7541171d89f2e2491130c7771ba58d3
+diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+index a7fd2c3ccb77..d01b504ce06f 100644
+--- a/include/linux/memory_hotplug.h
++++ b/include/linux/memory_hotplug.h
+@@ -339,8 +339,8 @@ extern void sparse_remove_section(struct mem_section *ms,
+ 		unsigned long map_offset, struct vmem_altmap *altmap);
+ extern struct page *sparse_decode_mem_map(unsigned long coded_mem_map,
+ 					  unsigned long pnum);
+-extern struct zone *zone_for_pfn_range(int online_type, int nid, unsigned start_pfn,
+-		unsigned long nr_pages);
++extern struct zone *zone_for_pfn_range(int online_type, int nid,
++		unsigned long start_pfn, unsigned long nr_pages);
+ extern int arch_create_linear_mapping(int nid, u64 start, u64 size,
+ 				      struct mhp_params *params);
+ void arch_remove_linear_mapping(u64 start, u64 size);
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 8cb75b26ea4f..93b3abaf9828 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -708,8 +708,8 @@ static inline struct zone *default_zone_for_pfn(int nid, unsigned long start_pfn
+ 	return movable_node_enabled ? movable_zone : kernel_zone;
+ }
+ 
+-struct zone *zone_for_pfn_range(int online_type, int nid, unsigned start_pfn,
+-		unsigned long nr_pages)
++struct zone *zone_for_pfn_range(int online_type, int nid,
++		unsigned long start_pfn, unsigned long nr_pages)
+ {
+ 	if (online_type == MMOP_ONLINE_KERNEL)
+ 		return default_kernel_zone_for_pfn(nid, start_pfn, nr_pages);
 -- 
 2.31.1
 
