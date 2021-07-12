@@ -2,77 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BAF53C62C1
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jul 2021 20:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A69403C6306
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jul 2021 20:57:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235947AbhGLSmp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Jul 2021 14:42:45 -0400
-Received: from mga04.intel.com ([192.55.52.120]:19676 "EHLO mga04.intel.com"
+        id S233379AbhGLTAl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Jul 2021 15:00:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54316 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234875AbhGLSmp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 12 Jul 2021 14:42:45 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10043"; a="208217320"
-X-IronPort-AV: E=Sophos;i="5.84,234,1620716400"; 
-   d="scan'208";a="208217320"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2021 11:39:55 -0700
-X-IronPort-AV: E=Sophos;i="5.84,234,1620716400"; 
-   d="scan'208";a="459282015"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2021 11:39:54 -0700
-Received: from andy by smile with local (Exim 4.94.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1m30qK-00CKO8-B3; Mon, 12 Jul 2021 21:39:48 +0300
-Date:   Mon, 12 Jul 2021 21:39:48 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        id S230409AbhGLTAl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 12 Jul 2021 15:00:41 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 37C676120A;
+        Mon, 12 Jul 2021 18:57:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1626116271;
+        bh=P4x4u3W+TsFok4fGyNrfpkXYKrxbAAG8fhhPCl/58dM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=o8dVLW3ZHOzMIO61CZfvi7WbSL4XKXcBuWThED5UfMeXbyoojpQP12fb0YP75amnF
+         44OJpkAx8uqaV2fe5ErzBym9guajnYBiuavAaMyksuRLumYLQWDcE8ZPHcr7HAG65B
+         VCqUWFaOiFyhHFwQCjXuWp2t8bU5asDqGGQ5b9gI=
+Date:   Mon, 12 Jul 2021 20:57:48 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH v1 0/6] ACPI: glue / driver core: Eliminate
- acpi_platform_notify() and split device_platform_notify()
-Message-ID: <YOyMdICr/30LhTao@smile.fi.intel.com>
+Subject: Re: [PATCH v1 5/6] software nodes: Split software_node_notify()
+Message-ID: <YOyQrK3b2dhb2wTF@kroah.com>
 References: <2780027.e9J7NaK4W3@kreacher>
+ <5627033.MhkbZ0Pkbq@kreacher>
+ <YOyD/4kdvd77PzLy@kroah.com>
+ <CAJZ5v0gJP1ywCwEgdGdx2A4ZPaSKc3utmXeO_geiGfA85axZOw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2780027.e9J7NaK4W3@kreacher>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <CAJZ5v0gJP1ywCwEgdGdx2A4ZPaSKc3utmXeO_geiGfA85axZOw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 12, 2021 at 07:19:57PM +0200, Rafael J. Wysocki wrote:
-> Hi Greg et al,
+On Mon, Jul 12, 2021 at 08:30:06PM +0200, Rafael J. Wysocki wrote:
+> On Mon, Jul 12, 2021 at 8:03 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Mon, Jul 12, 2021 at 07:27:12PM +0200, Rafael J. Wysocki wrote:
+> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > >
+> > > Split software_node_notify_remove) out of software_node_notify()
+> > > and make device_platform_notify() call the latter on device addition
+> > > and the former on device removal.
+> > >
+> > > While at it, put the headers of the above functions into base.h,
+> > > because they don't need to be present in a global header file.
+> > >
+> > > No intentional functional impact.
+> > >
+> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > ---
+> > >  drivers/base/base.h      |    3 ++
+> > >  drivers/base/core.c      |    9 +++---
+> > >  drivers/base/swnode.c    |   61 ++++++++++++++++++++++++-----------------------
+> > >  include/linux/property.h |    2 -
+> > >  4 files changed, 39 insertions(+), 36 deletions(-)
+> > >
+> > > Index: linux-pm/drivers/base/swnode.c
+> > > ===================================================================
+> > > --- linux-pm.orig/drivers/base/swnode.c
+> > > +++ linux-pm/drivers/base/swnode.c
+> > > @@ -11,6 +11,8 @@
+> > >  #include <linux/property.h>
+> > >  #include <linux/slab.h>
+> > >
+> > > +#include "base.h"
+> > > +
+> > >  struct swnode {
+> > >       struct kobject kobj;
+> > >       struct fwnode_handle fwnode;
+> > > @@ -1053,7 +1055,7 @@ int device_add_software_node(struct devi
+> > >        * balance.
+> > >        */
+> > >       if (device_is_registered(dev))
+> > > -             software_node_notify(dev, KOBJ_ADD);
+> > > +             software_node_notify(dev);
+> >
+> > Should this now be called "software_node_notify_add()" to match up with:
+> >
+> > >       if (device_is_registered(dev))
+> > > -             software_node_notify(dev, KOBJ_REMOVE);
+> > > +             software_node_notify_remove(dev);
+> >
+> > The other being called "_remove"?
+> >
+> > Makes it more obvious to me :)
 > 
-> This series doesn't change functionality (at least not intentionally), but
-> it get rids of a few unneeded checks, parameter passing etc.
+> The naming convention used here follows platform_notify() and
+> platform_notify_remove(), and the analogous function names in ACPI for
+> that matter.
 > 
-> Patches [1-2/6] simplify the ACPI "glue" code.
-> 
-> Patch [3/6] renames a couple of ACPI functions to avoid name collisions going
-> forward.
-> 
-> Patch [4/6] gets rid of acpi_platform_notify().
-> 
-> Patch [5/6] rearranges the software nodes code along the lines of what happens
-> to the ACPI "glue" code in patch [4/6].
-> 
-> Patch [6/6] deals with device_platform_notify().
-> 
-> Please review and let me know if there are any concerns regarding this.
+> I thought that adding _add in just one case would be sort of odd, but
+> of course I can do that, so please let me know what you want me to do.
 
-The result looks good to me, but perhaps the ordering can be changed to
-minimize addition of the lines that are going to be removed inside the same
-series.
+Ah, ok, that makes more sense, let's just leave it as-is then:
 
-In either case, feel free to add
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
