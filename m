@@ -2,135 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E834E3C61DF
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jul 2021 19:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 781293C624E
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jul 2021 20:03:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234994AbhGLRbZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Jul 2021 13:31:25 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:61526 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234742AbhGLRbY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jul 2021 13:31:24 -0400
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 2.1.0)
- id e09e8c5f6ca796ac; Mon, 12 Jul 2021 19:28:35 +0200
-Received: from kreacher.localnet (89-64-82-45.dynamic.chello.pl [89.64.82.45])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 2E631669C37;
-        Mon, 12 Jul 2021 19:28:34 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        id S233424AbhGLSGf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Jul 2021 14:06:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35938 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229907AbhGLSGe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 12 Jul 2021 14:06:34 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BDFBA60FE9;
+        Mon, 12 Jul 2021 18:03:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1626113026;
+        bh=LkvW1JLK2NT6i1fjYtvOCiy9MWLBrAy006sVsMDFBX4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=J+zXDS2kb4sDgxf6GXaH9W0z7o2xp7O64QQyQK4zRqGfQiDIj1LQVD3y1PRbJhq5B
+         dGI0rHKGS2dOSX2dIgMbO/MBak3NCD2yx8CUjuaaltZzGC4WHW6w41XiuHEKx6gDOJ
+         x3mgZsmdmWzBXpw26mQfooxCDqq7AT+shySBlcA8=
+Date:   Mon, 12 Jul 2021 20:03:43 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
         "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>
-Subject: [PATCH v1 6/6] driver core: Split device_platform_notify()
-Date:   Mon, 12 Jul 2021 19:28:16 +0200
-Message-ID: <7971483.NyiUUSuA9g@kreacher>
-In-Reply-To: <2780027.e9J7NaK4W3@kreacher>
+Subject: Re: [PATCH v1 5/6] software nodes: Split software_node_notify()
+Message-ID: <YOyD/4kdvd77PzLy@kroah.com>
 References: <2780027.e9J7NaK4W3@kreacher>
+ <5627033.MhkbZ0Pkbq@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 89.64.82.45
-X-CLIENT-HOSTNAME: 89-64-82-45.dynamic.chello.pl
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddruddvgdduudduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvjeelgffhiedukedtleekkedvudfggefhgfegjefgueekjeelvefggfdvledutdenucfkphepkeelrdeigedrkedvrdegheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrieegrdekvddrgeehpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehv
- ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhgvihhkkhhirdhkrhhoghgvrhhusheslhhinhhugidrihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5627033.MhkbZ0Pkbq@kreacher>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon, Jul 12, 2021 at 07:27:12PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Split software_node_notify_remove) out of software_node_notify()
+> and make device_platform_notify() call the latter on device addition
+> and the former on device removal.
+> 
+> While at it, put the headers of the above functions into base.h,
+> because they don't need to be present in a global header file.
+> 
+> No intentional functional impact.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>  drivers/base/base.h      |    3 ++
+>  drivers/base/core.c      |    9 +++---
+>  drivers/base/swnode.c    |   61 ++++++++++++++++++++++++-----------------------
+>  include/linux/property.h |    2 -
+>  4 files changed, 39 insertions(+), 36 deletions(-)
+> 
+> Index: linux-pm/drivers/base/swnode.c
+> ===================================================================
+> --- linux-pm.orig/drivers/base/swnode.c
+> +++ linux-pm/drivers/base/swnode.c
+> @@ -11,6 +11,8 @@
+>  #include <linux/property.h>
+>  #include <linux/slab.h>
+>  
+> +#include "base.h"
+> +
+>  struct swnode {
+>  	struct kobject kobj;
+>  	struct fwnode_handle fwnode;
+> @@ -1053,7 +1055,7 @@ int device_add_software_node(struct devi
+>  	 * balance.
+>  	 */
+>  	if (device_is_registered(dev))
+> -		software_node_notify(dev, KOBJ_ADD);
+> +		software_node_notify(dev);
 
-Split device_platform_notify_remove) out of device_platform_notify()
-and call the latter on device addition and the former on device
-removal.
+Should this now be called "software_node_notify_add()" to match up with:
 
-No intentional functional impact.
+>  	if (device_is_registered(dev))
+> -		software_node_notify(dev, KOBJ_REMOVE);
+> +		software_node_notify_remove(dev);
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/base/core.c |   37 +++++++++++++++++--------------------
- 1 file changed, 17 insertions(+), 20 deletions(-)
+The other being called "_remove"?
 
-Index: linux-pm/drivers/base/core.c
-===================================================================
---- linux-pm.orig/drivers/base/core.c
-+++ linux-pm/drivers/base/core.c
-@@ -2000,24 +2000,24 @@ static inline int device_is_not_partitio
- }
- #endif
- 
--static int
--device_platform_notify(struct device *dev, enum kobject_action action)
-+static void device_platform_notify(struct device *dev)
- {
--	if (action == KOBJ_ADD)
--		acpi_device_notify(dev);
--	else if (action == KOBJ_REMOVE)
--		acpi_device_notify_remove(dev);
--
--	if (action == KOBJ_ADD)
--		software_node_notify(dev);
--	else if (action == KOBJ_REMOVE)
--		software_node_notify_remove(dev);
-+	acpi_device_notify(dev);
- 
--	if (platform_notify && action == KOBJ_ADD)
-+	software_node_notify(dev);
-+
-+	if (platform_notify)
- 		platform_notify(dev);
--	else if (platform_notify_remove && action == KOBJ_REMOVE)
-+}
-+
-+static void device_platform_notify_remove(struct device *dev)
-+{
-+	acpi_device_notify_remove(dev);
-+
-+	software_node_notify_remove(dev);
-+
-+	if (platform_notify_remove)
- 		platform_notify_remove(dev);
--	return 0;
- }
- 
- /**
-@@ -3289,9 +3289,7 @@ int device_add(struct device *dev)
- 	}
- 
- 	/* notify platform of device entry */
--	error = device_platform_notify(dev, KOBJ_ADD);
--	if (error)
--		goto platform_error;
-+	device_platform_notify(dev);
- 
- 	error = device_create_file(dev, &dev_attr_uevent);
- 	if (error)
-@@ -3394,8 +3392,7 @@ done:
-  SymlinkError:
- 	device_remove_file(dev, &dev_attr_uevent);
-  attrError:
--	device_platform_notify(dev, KOBJ_REMOVE);
--platform_error:
-+	device_platform_notify_remove(dev);
- 	kobject_uevent(&dev->kobj, KOBJ_REMOVE);
- 	glue_dir = get_glue_dir(dev);
- 	kobject_del(&dev->kobj);
-@@ -3540,7 +3537,7 @@ void device_del(struct device *dev)
- 	bus_remove_device(dev);
- 	device_pm_remove(dev);
- 	driver_deferred_probe_del(dev);
--	device_platform_notify(dev, KOBJ_REMOVE);
-+	device_platform_notify_remove(dev);
- 	device_remove_properties(dev);
- 	device_links_purge(dev);
- 
+Makes it more obvious to me :)
 
+thanks,
 
-
+greg k-h
