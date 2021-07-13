@@ -2,120 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD1D13C6323
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Jul 2021 21:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A123C6888
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jul 2021 04:35:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236056AbhGLTHi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 12 Jul 2021 15:07:38 -0400
-Received: from mail-ot1-f44.google.com ([209.85.210.44]:45799 "EHLO
-        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236037AbhGLTHi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jul 2021 15:07:38 -0400
-Received: by mail-ot1-f44.google.com with SMTP id 75-20020a9d08510000b02904acfe6bcccaso19913797oty.12;
-        Mon, 12 Jul 2021 12:04:49 -0700 (PDT)
+        id S232852AbhGMChr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 12 Jul 2021 22:37:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51928 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230037AbhGMChr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 12 Jul 2021 22:37:47 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8DDDC0613EE
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Jul 2021 19:34:57 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id c17so38484453ejk.13
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Jul 2021 19:34:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RBPu6xYIBS0viB5UZS492p6zHqYEhcALtpbidr1sCrU=;
+        b=hAqQVpiv52aQMiILfGaILA7UZ3Vb7hpAEZl5MSyT4Y9giLdF8ZWBqgareVlSQUHWpR
+         ZUrim0on5dre3bqN5EGAiRzVWG6nVeaiF+s6JaGu2Q+54HjtAgU1AvqcqlU5GALyqPc8
+         J59ZdfyvvWc0CNOaKSGrAuHZon7DtT9jG9x1ueo2PbGCXBvXV9LCEYmPz0NJvuwLKCb4
+         e5swfb54jlYSJ49YcMdOKdIhN3CYIP2f7H6ObIehgsT00rpoEugEWTcwjWsk6Ijx/OB+
+         sziXashjbhIgbQwAsqKXq8JHPkE9kbOMVO58+jj4MNa7U/Fp8vQxUrXCiR8DuABY3fmZ
+         DToA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=reEJf1bmElX4/0DK2loR9L7DpxWf5DpKVb/0nheNJZA=;
-        b=n/eVYPEsUOJEIcaGvLhXqSokYCdbaB4lNf4loc4/KQBpJKk3+XBjoMr3eQrVFPZVvi
-         4cEqIy1GtssldzZxDPsbmxK5dJMw8ifqV0Wa6cafgQfhysuCRitaILzbQK+EOorqogyM
-         4a0L35h6f1GpJsdBnhv0TZQ0tEmvLOr9/54WkwDj3O9zNyAtYbgbACUIZIFtg5DOdaw3
-         NeqshNDWT7aVSLWs88LEim+xXOv96aSrqfLQfb3G3RRJBy6R9CIIlwAnJ296AdnQAzKU
-         wfO8ubj2KRUezsd5i5+ctTqrWLEvCGmrwAwjE6IYnlPoCumKE89XLw1+hEHEyGFcvvIQ
-         Hwug==
-X-Gm-Message-State: AOAM533nurr5XRtOKE1tukWSaDHcahCq97D0tWG6a9xaj/y4H1CJF5Vn
-        qLVnu21aXTzO85iGFn4jAsZS340pEeYs/lHfXDwHKxPg
-X-Google-Smtp-Source: ABdhPJyQ8aCvZedt0gS7+ZoS4te5VHnzm3uHQ0+dHpBCKXjAZWwuKG16pDhnFV547DTrombI9BFXMSdkV2oJpJDlEAQ=
-X-Received: by 2002:a9d:604e:: with SMTP id v14mr404882otj.260.1626116689419;
- Mon, 12 Jul 2021 12:04:49 -0700 (PDT)
+        bh=RBPu6xYIBS0viB5UZS492p6zHqYEhcALtpbidr1sCrU=;
+        b=P9SyFCgT80MQjEIIrSekkAin2tkHpzYRP1SyHbas6BIKKuAEWCOsDb8jVvTpXQ6XRf
+         XZYzlaC6kpuH6IqFCHVwSfb4I3iZQNCEfnKUd4OnIJAanVDg2jvRO8EC6V5+rXWW6Mks
+         pEsW8tTImluwhC5X/NyFxJzrBJCmnQMLCTup1VOwNE+ckk1a7uI2cSrI7McBPhhtVdjb
+         yxhpvYMujYQNofjLJwdn6cqhULOPXh0TSlX+ERbxE72hbSglpC58gzpRzP32MUVBlQIY
+         lpYAl2/+J1al20fR6JJkF7nC/jLaJqH6fAh7GrowgMApZDuNT5JYSwx/1/1bojqhUIEE
+         H8vA==
+X-Gm-Message-State: AOAM533kCyw/xrpOyAGsdMCxTvExJF4Xwbx6rE5XvS8w4e3fyUN1mMde
+        SUv7FSHo/nQyGOBFBqa2GOu571CRMpCEEPDfX+ND
+X-Google-Smtp-Source: ABdhPJyytdq/CE/wkitIkFTYSvvbb5T4D4KC4bniBQLIKEAC15BXF2YMkUTZuWQQktrfljWaz21U9sH3mGdCEuV7T/M=
+X-Received: by 2002:a17:907:10d8:: with SMTP id rv24mr2673354ejb.542.1626143695922;
+ Mon, 12 Jul 2021 19:34:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <2780027.e9J7NaK4W3@kreacher> <5627033.MhkbZ0Pkbq@kreacher>
- <YOyD/4kdvd77PzLy@kroah.com> <CAJZ5v0gJP1ywCwEgdGdx2A4ZPaSKc3utmXeO_geiGfA85axZOw@mail.gmail.com>
- <YOyQrK3b2dhb2wTF@kroah.com>
-In-Reply-To: <YOyQrK3b2dhb2wTF@kroah.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 12 Jul 2021 21:04:38 +0200
-Message-ID: <CAJZ5v0j8RUviZRTgsYNis5vc+6g0ACLGiOm84Y+ocPpHBXgLoA@mail.gmail.com>
-Subject: Re: [PATCH v1 5/6] software nodes: Split software_node_notify()
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>
+References: <20210616085118.1141101-1-omosnace@redhat.com> <8735tdiyc1.ffs@nanos.tec.linutronix.de>
+In-Reply-To: <8735tdiyc1.ffs@nanos.tec.linutronix.de>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Mon, 12 Jul 2021 22:34:45 -0400
+Message-ID: <CAHC9VhRAN4RS2c3cwpr=DQ_45MDqn2QV7nL4J3ZWXKfUNLcjdQ@mail.gmail.com>
+Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
+ lockdown checks
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Ondrej Mosnacek <omosnace@redhat.com>,
+        linux-security-module@vger.kernel.org,
+        James Morris <jmorris@namei.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        selinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        x86@kernel.org, linux-acpi@vger.kernel.org,
+        linux-cxl@vger.kernel.org, linux-efi@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-serial@vger.kernel.org,
+        bpf@vger.kernel.org, netdev@vger.kernel.org,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Casey Schaufler <casey@schaufler-ca.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 12, 2021 at 8:57 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Sat, Jun 19, 2021 at 1:00 PM Thomas Gleixner <tglx@linutronix.de> wrote:
+> On Wed, Jun 16 2021 at 10:51, Ondrej Mosnacek wrote:
+> > diff --git a/arch/x86/mm/testmmiotrace.c b/arch/x86/mm/testmmiotrace.c
+> > index bda73cb7a044..c43a13241ae8 100644
+> > --- a/arch/x86/mm/testmmiotrace.c
+> > +++ b/arch/x86/mm/testmmiotrace.c
+> > @@ -116,7 +116,7 @@ static void do_test_bulk_ioremapping(void)
+> >  static int __init init(void)
+> >  {
+> >       unsigned long size = (read_far) ? (8 << 20) : (16 << 10);
+> > -     int ret = security_locked_down(LOCKDOWN_MMIOTRACE);
+> > +     int ret = security_locked_down(current_cred(), LOCKDOWN_MMIOTRACE);
 >
-> On Mon, Jul 12, 2021 at 08:30:06PM +0200, Rafael J. Wysocki wrote:
-> > On Mon, Jul 12, 2021 at 8:03 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Mon, Jul 12, 2021 at 07:27:12PM +0200, Rafael J. Wysocki wrote:
-> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >
-> > > > Split software_node_notify_remove) out of software_node_notify()
-> > > > and make device_platform_notify() call the latter on device addition
-> > > > and the former on device removal.
-> > > >
-> > > > While at it, put the headers of the above functions into base.h,
-> > > > because they don't need to be present in a global header file.
-> > > >
-> > > > No intentional functional impact.
-> > > >
-> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > ---
-> > > >  drivers/base/base.h      |    3 ++
-> > > >  drivers/base/core.c      |    9 +++---
-> > > >  drivers/base/swnode.c    |   61 ++++++++++++++++++++++++-----------------------
-> > > >  include/linux/property.h |    2 -
-> > > >  4 files changed, 39 insertions(+), 36 deletions(-)
-> > > >
-> > > > Index: linux-pm/drivers/base/swnode.c
-> > > > ===================================================================
-> > > > --- linux-pm.orig/drivers/base/swnode.c
-> > > > +++ linux-pm/drivers/base/swnode.c
-> > > > @@ -11,6 +11,8 @@
-> > > >  #include <linux/property.h>
-> > > >  #include <linux/slab.h>
-> > > >
-> > > > +#include "base.h"
-> > > > +
-> > > >  struct swnode {
-> > > >       struct kobject kobj;
-> > > >       struct fwnode_handle fwnode;
-> > > > @@ -1053,7 +1055,7 @@ int device_add_software_node(struct devi
-> > > >        * balance.
-> > > >        */
-> > > >       if (device_is_registered(dev))
-> > > > -             software_node_notify(dev, KOBJ_ADD);
-> > > > +             software_node_notify(dev);
-> > >
-> > > Should this now be called "software_node_notify_add()" to match up with:
-> > >
-> > > >       if (device_is_registered(dev))
-> > > > -             software_node_notify(dev, KOBJ_REMOVE);
-> > > > +             software_node_notify_remove(dev);
-> > >
-> > > The other being called "_remove"?
-> > >
-> > > Makes it more obvious to me :)
-> >
-> > The naming convention used here follows platform_notify() and
-> > platform_notify_remove(), and the analogous function names in ACPI for
-> > that matter.
-> >
-> > I thought that adding _add in just one case would be sort of odd, but
-> > of course I can do that, so please let me know what you want me to do.
+> I have no real objection to those patches, but it strikes me odd that
+> out of the 62 changed places 58 have 'current_cred()' and 4 have NULL as
+> argument.
 >
-> Ah, ok, that makes more sense, let's just leave it as-is then:
->
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> I can't see why this would ever end up with anything else than
+> current_cred() or NULL and NULL being the 'special' case. So why not
+> having security_locked_down_no_cred() and make current_cred() implicit
+> for security_locked_down() which avoids most of the churn and just makes
+> the special cases special. I might be missing something though.
 
-Thanks!
+Unfortunately it is not uncommon for kernel subsystems to add, move,
+or otherwise play around with LSM hooks without checking with the LSM
+folks; generally this is okay, but there have been a few problems in
+the past and I try to keep that in mind when we are introducing new
+hooks or modifying existing ones.  If we have two LSM hooks for
+roughly the same control point it has the potential to cause
+confusion, e.g. do I use the "normal" or the "no_cred" version?  What
+if I don't want to pass a credential, can I just use "no_cred"?  My
+thinking with the single, always-pass-a-cred function is that callers
+don't have to worry about choosing from multiple, similar hooks and
+they know they need to pass a cred which hopefully gets them thinking
+about what cred is appropriate.  It's not foolproof, but I believe the
+single hook approach will be less prone to accidents ... or so I hope
+:)
+
+-- 
+paul moore
+www.paul-moore.com
