@@ -2,176 +2,329 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98AA23C73DA
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jul 2021 18:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAC953C771B
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Jul 2021 21:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229643AbhGMQLW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 13 Jul 2021 12:11:22 -0400
-Received: from mga18.intel.com ([134.134.136.126]:38150 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229697AbhGMQLW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 13 Jul 2021 12:11:22 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10044"; a="197466116"
-X-IronPort-AV: E=Sophos;i="5.84,236,1620716400"; 
-   d="scan'208";a="197466116"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2021 09:05:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,236,1620716400"; 
-   d="scan'208";a="503199535"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmsmga002.fm.intel.com with ESMTP; 13 Jul 2021 09:05:19 -0700
-Received: from fmsmsx609.amr.corp.intel.com (10.18.126.89) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.10; Tue, 13 Jul 2021 09:05:19 -0700
-Received: from fmsmsx606.amr.corp.intel.com (10.18.126.86) by
- fmsmsx609.amr.corp.intel.com (10.18.126.89) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.10; Tue, 13 Jul 2021 09:05:19 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx606.amr.corp.intel.com (10.18.126.86) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.10 via Frontend Transport; Tue, 13 Jul 2021 09:05:19 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2242.10; Tue, 13 Jul 2021 09:05:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fF1GEALtLMUcG8Z1H8rK/FKAv2ydu9mrmGoy1Gv2b1wTZJaKWa0bF0dA1Vs+KpdRejonXzBVJup1UEpffHXIm/ytxFNwG2d+fFkGM3qgX4zsAgNliLzgQyOyjHKh/aC4gYHRLDhgTnEPEh7tjImL74AgDsoWXIka4vzp9mq6FXt+IuuYkaXE+Xu2V1OX9KdtmUWGK7FAo5Yewuk26gimK9uPBP+D4wtXjVL3sq9FcoYHJEgUylaWjJ1Txqgwinxsl15GhZP7WwjBVBz0ydPbqeLF3FQzYaovLF4HafAcXZwgCHVXX+yzAT3m1bqEO2y+RK2OQlverd/uPJF9yRtriA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/SDFJc6V//gx04pQEpnGwksX6C6WyT2izhWtl7Bu3Yg=;
- b=bZFcr5JyDx+DbCdHQqCqhS6zVoTTj8uWY1LlCXR3hs7wNWLHE5I6HKhVE8KtRDjPGW3LsfZow2297g2QV9sPR52rnabrYxUQOfxkRpoPYIujQAClHmtJn0VA3B8PnNkpKnOKWZ0esv2MYmAGbpPb+yuViLuugSlsYB8Fn7fpseySARTi6jD7bOS8esHGT983anZhJ27r47CrkV4pB+plp5hMJmp4Qbv+4C6ssYj1mGzT5qJVHQPHFMLblDzvOk1zEYU/T4AcFjVOANfjUKUlSH5ywLgOL4teJzjw5TrlgO7qj09cfS+khoe62oaGS1j/1SFo0P575lRr+3wbGxPoIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/SDFJc6V//gx04pQEpnGwksX6C6WyT2izhWtl7Bu3Yg=;
- b=aJ7ZGVqVrtIgB1x3I5Yc+wH7A5Gz16cRetZwNYDtMlHfTul69OtcXrISn79A503JIPdPwlN4tK1ggBlRmkWsotHSORvSjapxBvonk4Dri31E6oHFZk6SDckrEqm2hHz2QGJoAhbfDG7AU55T9wJT8FkJYbzM3I1xGVgSnFenHwg=
-Received: from BYAPR11MB3256.namprd11.prod.outlook.com (2603:10b6:a03:76::19)
- by SJ0PR11MB5008.namprd11.prod.outlook.com (2603:10b6:a03:2d5::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.22; Tue, 13 Jul
- 2021 16:05:16 +0000
-Received: from BYAPR11MB3256.namprd11.prod.outlook.com
- ([fe80::f1f3:ba46:dd24:f466]) by BYAPR11MB3256.namprd11.prod.outlook.com
- ([fe80::f1f3:ba46:dd24:f466%7]) with mapi id 15.20.4308.027; Tue, 13 Jul 2021
- 16:05:16 +0000
-From:   "Moore, Robert" <robert.moore@intel.com>
-To:     Huilong Deng <denghuilong@cdjrlc.com>,
-        "erik.kaneda@intel.com" <erik.kaneda@intel.com>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "lenb@kernel.org" <lenb@kernel.org>
-CC:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] ACPICA: macros should not use a trailing semicolon
-Thread-Topic: [PATCH] ACPICA: macros should not use a trailing semicolon
-Thread-Index: AQHXdiCsOq9KNdYiyE+YI9k+Z5yl2qtBFWlg
-Date:   Tue, 13 Jul 2021 16:05:16 +0000
-Message-ID: <BYAPR11MB3256BFA3E0749F609239FF4587149@BYAPR11MB3256.namprd11.prod.outlook.com>
-References: <20210711064552.59735-1-denghuilong@cdjrlc.com>
-In-Reply-To: <20210711064552.59735-1-denghuilong@cdjrlc.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-version: 11.5.1.3
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-authentication-results: cdjrlc.com; dkim=none (message not signed)
- header.d=none;cdjrlc.com; dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: cba8b6da-3acd-4cb7-fabe-08d946180145
-x-ms-traffictypediagnostic: SJ0PR11MB5008:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SJ0PR11MB50083C1773EC749BC15D62F287149@SJ0PR11MB5008.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2331;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: FLAlUg01u9S1UPy7kie4EXSPTN8BFuzBW2M+I/TbWUfM6xFHNjpCdfx72If1RGKj1HRnlRwUQB4O4fwIyql9QR33hI7MuoebVKbafRHIsyyf5brHIkWc4ASGVkxtCDdatSL9b32aOEG91Oek/pJxVdL9uTTI8A6Ov+D0+SfgrVtJAVGjK48Df1va/ArIpP7Zi7qnhxY1SH84AsCZ6sk+skxqeW6nxM36ffrLzM43UlXyZLFsQeomGO7biAWzZEyyHlFn6nrkksRjS3RLsNh5RP9taScfFFcCrols+umDUNOC/BHXaa4EHTNtYR1HVRR/AE/4x2mLfnLCO7olKmLYQfIyvyYM+Q60kUqlGLqKLkqtvplSfEyGpmanXqBQeo3kskb22u0oYRwOil6GyvsytXgXv3FLJXeRnWTVPnpPkmcVwrPuSYdCtF0/bIhLjp0ZeqFemxCM+hwNpw+JZr1DUpKLVzwbMEtRu3Up32aYvpFJmI2deIGlyShH0dSw8KqXoZP+GbR9YiARv1oy9m2TQRCh3rx6yElsXSx9fscP9Tb8Md5u/zsVltBTnBN5ISEw6fa/p91thnINd1SruqhkSzylAERQpKaRWh35JWRL9vtRKp5gtY32jZtS2LOI1Nr8nhbjfXkdX9cCTc6cQf9F5g==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3256.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(346002)(396003)(39860400002)(376002)(136003)(38100700002)(186003)(83380400001)(8676002)(110136005)(26005)(5660300002)(122000001)(71200400001)(66556008)(478600001)(76116006)(53546011)(64756008)(4744005)(66446008)(52536014)(4326008)(86362001)(6506007)(66476007)(66946007)(55016002)(8936002)(316002)(7696005)(9686003)(54906003)(2906002)(33656002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?TLskdew53JlKXYKbqJGyJY0YXGKT3kHCiBLtbUtxd4R4aIG2AJ6jHzVo9Bn2?=
- =?us-ascii?Q?RR8griBfjQrMKa9RogF34i4t14qTkcFQopiWmew3pb9CLtXVe1W49JJZeYgk?=
- =?us-ascii?Q?aFYWLkbIaPn4T5try83VlIJPAIWQUT+XzqrUlpsrmOFT6vpz9gGc7v2UzSqb?=
- =?us-ascii?Q?LwYYmXmiR5/l6MZPfycF6s92WTLTR3dVy9bW9Jy+CnKb7OAht6WSwxfMDCjD?=
- =?us-ascii?Q?elcWBv4+swB2XV6A2Rq9ckEs4mhhKcVvFAx0LVMqKuZLNQCFzxNoR95sCOkO?=
- =?us-ascii?Q?Aj5pM40DFUqffmMifj2ziRk7I+TBvBH0qZQ7fWfJJ2KbDVSZ+cL4S+XSSsy8?=
- =?us-ascii?Q?WhUzUI4Kf1eBcgJDFggX2jpQyq4RPxDNlNXm+F2Uidnd/b9Wi+Ax1/34fa9x?=
- =?us-ascii?Q?T6zkNHqirxF4hyLr5GEtxk7VV4/Ged+l5T6aswdAOqd4/HPz1ZHZORGOmNK8?=
- =?us-ascii?Q?senUMnykcNXVOfbXd/Nuk612dT6sCwq3BT9hAUqNb3uEXEb5K0k1pPF9/SeR?=
- =?us-ascii?Q?hp16y500C+4ODFihuxHKsY0w0bT83phiwGfCEPMMS0vsiFAOIRnsw2shu6OS?=
- =?us-ascii?Q?8n9JuqySQ3Q8YQ3Wm6ZtC85vGMtuhkJLACM8b55UpfGB9eljnak3H/qH9XT6?=
- =?us-ascii?Q?Pbu/RKeDccEZSfu1Nl6iNiQjpnqyNJwQiXQS1r6XwQ10WG9p7aiYgD/ZNtev?=
- =?us-ascii?Q?IuDexKMBOYsKyePoCxh4UwvG34Fi0jeuGpNyKZj8hNwNpkv01878Rs5rRuYV?=
- =?us-ascii?Q?li1210+c1IFPcUKCuA49cPKn0ZuXYv6DiiAuEb6X2QvNp1d8dbFhIW1b6hrC?=
- =?us-ascii?Q?EM7GuJBRT2KpsvShP7MLnQPjmv3unGakVlPT2meCzlp4PQb+HyFT/fq2NeMN?=
- =?us-ascii?Q?yYotxzF+e+PJqqyklcXJFArBJVDKE683zcy1yD8llZLdQgNKRIkQq1c7vUYX?=
- =?us-ascii?Q?ja3Y36UqDZ8YfTASGzyjXzZUTq2QEJfy0jPIDyPWmtBz5PaHeNAt+TfVvi9i?=
- =?us-ascii?Q?2iqEo8f91zw4GHEjj1xD1rek9wxUzX/zP9Jp4SB56iWycgW9mR0x6joVlhHu?=
- =?us-ascii?Q?/g7whxa7fdHBnaGONBVvfZMEJqsPCrpNJOf/4bELrJ9JygnPsul6HLyS9H94?=
- =?us-ascii?Q?frGPJvusH/K+D+gvn3LLFsrQQdwsJM88+UwrEbbAWiwnGu7U8iFgL5mw00Ej?=
- =?us-ascii?Q?JfHZ5dYf5ccsMYZRisX2HipdnfER/rVnHpLypshTtKqpRJKpgQTybn2olJzs?=
- =?us-ascii?Q?UH3kbHNiV2vtSQjzA5ALsBZU7Q0MaNeCqdp6jml1320z7iOKwmvtOKrj3V7E?=
- =?us-ascii?Q?ziRdDg0jX9iCwKc95RXBXnsO?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S234457AbhGMTjW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 13 Jul 2021 15:39:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58436 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234540AbhGMTjV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 13 Jul 2021 15:39:21 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93324C0613EE
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Jul 2021 12:36:30 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m3OBr-0001GT-RJ; Tue, 13 Jul 2021 21:35:35 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m3OBi-0006p7-4I; Tue, 13 Jul 2021 21:35:26 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1m3OBh-0002bU-W6; Tue, 13 Jul 2021 21:35:25 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     kernel@pengutronix.de,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre Bounine <alex.bou9@gmail.com>,
+        Alex Dubov <oakad@yahoo.com>, Alex Elder <elder@kernel.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Allen Hubbe <allenbh@gmail.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Andy Gross <agross@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bodo Stroesser <bostroesser@gmail.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Dexuan Cui <decui@microsoft.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Eric Farman <farman@linux.ibm.com>,
+        Finn Thain <fthain@linux-m68k.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Frank Li <lznuaa@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Geoff Levand <geoff@infradead.org>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Hannes Reinecke <hare@suse.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>, Ira Weiny <ira.weiny@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Jason Wang <jasowang@redhat.com>,
+        Jens Taprogge <jens.taprogge@taprogge.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Joey Pabalan <jpabalanb@gmail.com>,
+        Johan Hovold <johan@kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Johannes Thumshirn <morbidrsa@gmail.com>,
+        Jon Mason <jdmason@kudzu.us>, Juergen Gross <jgross@suse.com>,
+        Julien Grall <jgrall@amazon.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Kirti Wankhede <kwankhede@nvidia.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Lee Jones <lee.jones@linaro.org>, Len Brown <lenb@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Manohar Vanga <manohar.vanga@gmail.com>,
+        Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Martyn Welch <martyn@welchs.me.uk>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Michael Buesch <m@bues.ch>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michael Jamet <michael.jamet@intel.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        Moritz Fischer <mdf@kernel.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Peter Oberparleiter <oberpar@linux.ibm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Rich Felker <dalias@libc.org>,
+        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
+        Rob Herring <robh@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Samuel Holland <samuel@sholland.org>,
+        Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
+        SeongJae Park <sjpark@amazon.de>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Stefan Richter <stefanr@s5r6.in-berlin.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Sven Van Asbroeck <TheSven73@gmail.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thorsten Scherer <t.scherer@eckelmann.de>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Tom Rix <trix@redhat.com>,
+        Tyrel Datwyler <tyreld@linux.ibm.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vineeth Vijayan <vneethv@linux.ibm.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Wolfram Sang <wsa@kernel.org>, Wu Hao <hao.wu@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Yufen Yu <yuyufen@huawei.com>, alsa-devel@alsa-project.org,
+        dmaengine@vger.kernel.org, greybus-dev@lists.linaro.org,
+        industrypack-devel@lists.sourceforge.net, kvm@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-cxl@vger.kernel.org,
+        linux-fpga@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-media@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-ntb@googlegroups.com, linux-parisc@vger.kernel.org,
+        linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-sunxi@lists.linux.dev,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, nvdimm@lists.linux.dev,
+        platform-driver-x86@vger.kernel.org, sparclinux@vger.kernel.org,
+        target-devel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org
+Subject: [PATCH v4 0/5] bus: Make remove callback return void
+Date:   Tue, 13 Jul 2021 21:35:17 +0200
+Message-Id: <20210713193522.1770306-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3256.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cba8b6da-3acd-4cb7-fabe-08d946180145
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jul 2021 16:05:16.2779
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: q6WgmjlBT+lhpNNK/N2HGYH14uT5yHeo0TesMqBR1buXON03waqWArYTqTZeWZyoFHW9VE+zNx05b2D5TuHKKQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5008
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Got it, thanks.
-Bob
+Hello,
+
+this is v4 of the final patch set for my effort to make struct
+bus_type::remove return void.
+
+The first four patches contain cleanups that make some of these
+callbacks (more obviously) always return 0. They are acked by the
+respective maintainers. Bjorn Helgaas explicitly asked to include the
+pci patch (#1) into this series, so Greg taking this is fine. I assume
+the s390 people are fine with Greg taking patches #2 to #4, too, they
+didn't explicitly said so though.
+
+The last patch actually changes the prototype and so touches quite some
+drivers and has the potential to conflict with future developments, so I
+consider it beneficial to put these patches into next soon. I expect
+that it will be Greg who takes the complete series, he already confirmed
+via irc (for v2) to look into this series.
+
+The only change compared to v3 is in the fourth patch where I modified a
+few more drivers to fix build failures. Some of them were found by build
+bots (thanks!), some of them I found myself using a regular expression
+search. The newly modified files are:
+
+ arch/sparc/kernel/vio.c
+ drivers/nubus/bus.c
+ drivers/sh/superhyway/superhyway.c
+ drivers/vlynq/vlynq.c
+ drivers/zorro/zorro-driver.c
+ sound/ac97/bus.c
+
+Best regards
+Uwe
+
+Uwe Kleine-König (5):
+  PCI: endpoint: Make struct pci_epf_driver::remove return void
+  s390/cio: Make struct css_driver::remove return void
+  s390/ccwgroup: Drop if with an always false condition
+  s390/scm: Make struct scm_driver::remove return void
+  bus: Make remove callback return void
+
+ arch/arm/common/locomo.c                  | 3 +--
+ arch/arm/common/sa1111.c                  | 4 +---
+ arch/arm/mach-rpc/ecard.c                 | 4 +---
+ arch/mips/sgi-ip22/ip22-gio.c             | 3 +--
+ arch/parisc/kernel/drivers.c              | 5 ++---
+ arch/powerpc/platforms/ps3/system-bus.c   | 3 +--
+ arch/powerpc/platforms/pseries/ibmebus.c  | 3 +--
+ arch/powerpc/platforms/pseries/vio.c      | 3 +--
+ arch/s390/include/asm/eadm.h              | 2 +-
+ arch/sparc/kernel/vio.c                   | 4 +---
+ drivers/acpi/bus.c                        | 3 +--
+ drivers/amba/bus.c                        | 4 +---
+ drivers/base/auxiliary.c                  | 4 +---
+ drivers/base/isa.c                        | 4 +---
+ drivers/base/platform.c                   | 4 +---
+ drivers/bcma/main.c                       | 6 ++----
+ drivers/bus/sunxi-rsb.c                   | 4 +---
+ drivers/cxl/core.c                        | 3 +--
+ drivers/dax/bus.c                         | 4 +---
+ drivers/dma/idxd/sysfs.c                  | 4 +---
+ drivers/firewire/core-device.c            | 4 +---
+ drivers/firmware/arm_scmi/bus.c           | 4 +---
+ drivers/firmware/google/coreboot_table.c  | 4 +---
+ drivers/fpga/dfl.c                        | 4 +---
+ drivers/hid/hid-core.c                    | 4 +---
+ drivers/hid/intel-ish-hid/ishtp/bus.c     | 4 +---
+ drivers/hv/vmbus_drv.c                    | 5 +----
+ drivers/hwtracing/intel_th/core.c         | 4 +---
+ drivers/i2c/i2c-core-base.c               | 5 +----
+ drivers/i3c/master.c                      | 4 +---
+ drivers/input/gameport/gameport.c         | 3 +--
+ drivers/input/serio/serio.c               | 3 +--
+ drivers/ipack/ipack.c                     | 4 +---
+ drivers/macintosh/macio_asic.c            | 4 +---
+ drivers/mcb/mcb-core.c                    | 4 +---
+ drivers/media/pci/bt8xx/bttv-gpio.c       | 3 +--
+ drivers/memstick/core/memstick.c          | 3 +--
+ drivers/mfd/mcp-core.c                    | 3 +--
+ drivers/misc/mei/bus.c                    | 4 +---
+ drivers/misc/tifm_core.c                  | 3 +--
+ drivers/mmc/core/bus.c                    | 4 +---
+ drivers/mmc/core/sdio_bus.c               | 4 +---
+ drivers/net/netdevsim/bus.c               | 3 +--
+ drivers/ntb/core.c                        | 4 +---
+ drivers/ntb/ntb_transport.c               | 4 +---
+ drivers/nubus/bus.c                       | 6 ++----
+ drivers/nvdimm/bus.c                      | 3 +--
+ drivers/pci/endpoint/pci-epf-core.c       | 7 ++-----
+ drivers/pci/pci-driver.c                  | 3 +--
+ drivers/pcmcia/ds.c                       | 4 +---
+ drivers/platform/surface/aggregator/bus.c | 4 +---
+ drivers/platform/x86/wmi.c                | 4 +---
+ drivers/pnp/driver.c                      | 3 +--
+ drivers/rapidio/rio-driver.c              | 4 +---
+ drivers/rpmsg/rpmsg_core.c                | 7 ++-----
+ drivers/s390/block/scm_drv.c              | 4 +---
+ drivers/s390/cio/ccwgroup.c               | 6 +-----
+ drivers/s390/cio/chsc_sch.c               | 3 +--
+ drivers/s390/cio/css.c                    | 7 +++----
+ drivers/s390/cio/css.h                    | 2 +-
+ drivers/s390/cio/device.c                 | 9 +++------
+ drivers/s390/cio/eadm_sch.c               | 4 +---
+ drivers/s390/cio/scm.c                    | 5 +++--
+ drivers/s390/cio/vfio_ccw_drv.c           | 3 +--
+ drivers/s390/crypto/ap_bus.c              | 4 +---
+ drivers/scsi/scsi_debug.c                 | 3 +--
+ drivers/sh/superhyway/superhyway.c        | 8 ++------
+ drivers/siox/siox-core.c                  | 4 +---
+ drivers/slimbus/core.c                    | 4 +---
+ drivers/soc/qcom/apr.c                    | 4 +---
+ drivers/spi/spi.c                         | 4 +---
+ drivers/spmi/spmi.c                       | 3 +--
+ drivers/ssb/main.c                        | 4 +---
+ drivers/staging/fieldbus/anybuss/host.c   | 4 +---
+ drivers/staging/greybus/gbphy.c           | 4 +---
+ drivers/target/loopback/tcm_loop.c        | 5 ++---
+ drivers/thunderbolt/domain.c              | 4 +---
+ drivers/tty/serdev/core.c                 | 4 +---
+ drivers/usb/common/ulpi.c                 | 4 +---
+ drivers/usb/serial/bus.c                  | 4 +---
+ drivers/usb/typec/bus.c                   | 4 +---
+ drivers/vdpa/vdpa.c                       | 4 +---
+ drivers/vfio/mdev/mdev_driver.c           | 4 +---
+ drivers/virtio/virtio.c                   | 3 +--
+ drivers/vlynq/vlynq.c                     | 4 +---
+ drivers/vme/vme.c                         | 4 +---
+ drivers/xen/xenbus/xenbus.h               | 2 +-
+ drivers/xen/xenbus/xenbus_probe.c         | 4 +---
+ drivers/zorro/zorro-driver.c              | 3 +--
+ include/linux/device/bus.h                | 2 +-
+ include/linux/pci-epf.h                   | 2 +-
+ sound/ac97/bus.c                          | 6 ++----
+ sound/aoa/soundbus/core.c                 | 4 +---
+ 93 files changed, 107 insertions(+), 263 deletions(-)
 
 
------Original Message-----
-From: Huilong Deng <denghuilong@cdjrlc.com>=20
-Sent: Saturday, July 10, 2021 11:46 PM
-To: Moore, Robert <robert.moore@intel.com>; erik.kaneda@intel.com; Wysocki,=
- Rafael J <rafael.j.wysocki@intel.com>; lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.=
-org; Huilong Deng <denghuilong@cdjrlc.com>
-Subject: [PATCH] ACPICA: macros should not use a trailing semicolon
-
-Macros should not use a trailing semicolon.
-
-Signed-off-by: Huilong Deng <denghuilong@cdjrlc.com>
----
- include/acpi/acoutput.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h index 1b4c45=
-815695..5a3875744678 100644
---- a/include/acpi/acoutput.h
-+++ b/include/acpi/acoutput.h
-@@ -415,7 +415,7 @@
- /* Conditional execution */
-=20
- #define ACPI_DEBUG_EXEC(a)              a
--#define ACPI_DEBUG_ONLY_MEMBERS(a)      a;
-+#define ACPI_DEBUG_ONLY_MEMBERS(a)      a
- #define _VERBOSE_STRUCTURES
-=20
- /* Various object display routines for debug */
---
-2.32.0
-
-
+base-commit: e73f0f0ee7541171d89f2e2491130c7771ba58d3
+-- 
+2.30.2
 
