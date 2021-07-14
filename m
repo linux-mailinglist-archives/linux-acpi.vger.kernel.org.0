@@ -2,126 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 243E33C8AA4
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jul 2021 20:18:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CB243C8AA6
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jul 2021 20:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229651AbhGNSVA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Jul 2021 14:21:00 -0400
-Received: from mail-oo1-f49.google.com ([209.85.161.49]:44941 "EHLO
-        mail-oo1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230379AbhGNSVA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jul 2021 14:21:00 -0400
-Received: by mail-oo1-f49.google.com with SMTP id u13-20020a4ad0cd0000b02902638ef0f883so301254oor.11;
-        Wed, 14 Jul 2021 11:18:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gL9wte4jm249mEpLwF1GV8lanhK36T8A64+3sF6q2RE=;
-        b=uT7pZ2lStq+h8iNl2CNfGt2B/vqdpUUeqQA2ZTxWlT1CJiduZ6ssQvoaNH4EBkHiJa
-         HjwBYMQ8N0GI8TdY30UQZGfarCV55MUiSyFeztjdRPOycD8nWRt1/bA1GbIjVnGiLlrU
-         p0w+rFIECPg6LuRinlj32AKIOqzB5OxkmacQ8qGzZSjCeFw4lEwJMUz+K2MMg60L8QUz
-         RIOCojGi+K+pTg1u5LVfraZL9+Vm8Q7Jyg+hfEkOu0V8cxj+SRXoM66R6pkUNgbVLJ9q
-         MQLeKqQFMxh7J4ucnP0L2fXg9TTn73nQuwwk8Stwtl5hdz+5xwjINO6KNlM6AvmDqhri
-         uPFw==
-X-Gm-Message-State: AOAM5313ZniotFprNcLjJKomtO66pBMBL2M7BIXPftRtKXnSLKs0ys49
-        9nLNn40gqiTfV7OQWtZmXpXwsoiiohChs77IiNI=
-X-Google-Smtp-Source: ABdhPJxpt5PSLiPqjE1fknhV/cFqwcTEA4+dRzcAqyhZEJpDSAg0Vz2Abi4MXrqyP/fZ02GYdVSkYtyCHSyqmdSSHiI=
-X-Received: by 2002:a4a:5dc6:: with SMTP id w189mr9050963ooa.1.1626286688369;
- Wed, 14 Jul 2021 11:18:08 -0700 (PDT)
+        id S230379AbhGNSVi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Jul 2021 14:21:38 -0400
+Received: from foss.arm.com ([217.140.110.172]:38056 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229738AbhGNSVi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 14 Jul 2021 14:21:38 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 694A6D6E;
+        Wed, 14 Jul 2021 11:18:46 -0700 (PDT)
+Received: from e120937-lin (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8769E3F774;
+        Wed, 14 Jul 2021 11:18:45 -0700 (PDT)
+Date:   Wed, 14 Jul 2021 19:18:43 +0100
+From:   Cristian Marussi <cristian.marussi@arm.com>
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jassi Brar <jassisinghbrar@gmail.com>
+Subject: Re: [PATCH 06/13] mailbox: pcc: Add pcc_mbox_chan structure to hold
+ shared memory region info
+Message-ID: <20210714181843.GC49078@e120937-lin>
+References: <20210708180851.2311192-1-sudeep.holla@arm.com>
+ <20210708180851.2311192-7-sudeep.holla@arm.com>
 MIME-Version: 1.0
-References: <2780027.e9J7NaK4W3@kreacher> <5627033.MhkbZ0Pkbq@kreacher>
- <YOyD/4kdvd77PzLy@kroah.com> <CAJZ5v0gJP1ywCwEgdGdx2A4ZPaSKc3utmXeO_geiGfA85axZOw@mail.gmail.com>
- <YO1E3PjX/uqZEgCF@kuha.fi.intel.com>
-In-Reply-To: <YO1E3PjX/uqZEgCF@kuha.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 14 Jul 2021 20:17:57 +0200
-Message-ID: <CAJZ5v0geFmdPFHvE9Rfd9jyErbgmRb=2SWRTc+uivOuWa02-3Q@mail.gmail.com>
-Subject: Re: [PATCH v1 5/6] software nodes: Split software_node_notify()
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210708180851.2311192-7-sudeep.holla@arm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jul 13, 2021 at 9:46 AM Heikki Krogerus
-<heikki.krogerus@linux.intel.com> wrote:
->
-> On Mon, Jul 12, 2021 at 08:30:06PM +0200, Rafael J. Wysocki wrote:
-> > On Mon, Jul 12, 2021 at 8:03 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Mon, Jul 12, 2021 at 07:27:12PM +0200, Rafael J. Wysocki wrote:
-> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >
-> > > > Split software_node_notify_remove) out of software_node_notify()
-> > > > and make device_platform_notify() call the latter on device addition
-> > > > and the former on device removal.
-> > > >
-> > > > While at it, put the headers of the above functions into base.h,
-> > > > because they don't need to be present in a global header file.
-> > > >
-> > > > No intentional functional impact.
-> > > >
-> > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > ---
-> > > >  drivers/base/base.h      |    3 ++
-> > > >  drivers/base/core.c      |    9 +++---
-> > > >  drivers/base/swnode.c    |   61 ++++++++++++++++++++++++-----------------------
-> > > >  include/linux/property.h |    2 -
-> > > >  4 files changed, 39 insertions(+), 36 deletions(-)
-> > > >
-> > > > Index: linux-pm/drivers/base/swnode.c
-> > > > ===================================================================
-> > > > --- linux-pm.orig/drivers/base/swnode.c
-> > > > +++ linux-pm/drivers/base/swnode.c
-> > > > @@ -11,6 +11,8 @@
-> > > >  #include <linux/property.h>
-> > > >  #include <linux/slab.h>
-> > > >
-> > > > +#include "base.h"
-> > > > +
-> > > >  struct swnode {
-> > > >       struct kobject kobj;
-> > > >       struct fwnode_handle fwnode;
-> > > > @@ -1053,7 +1055,7 @@ int device_add_software_node(struct devi
-> > > >        * balance.
-> > > >        */
-> > > >       if (device_is_registered(dev))
-> > > > -             software_node_notify(dev, KOBJ_ADD);
-> > > > +             software_node_notify(dev);
-> > >
-> > > Should this now be called "software_node_notify_add()" to match up with:
-> > >
-> > > >       if (device_is_registered(dev))
-> > > > -             software_node_notify(dev, KOBJ_REMOVE);
-> > > > +             software_node_notify_remove(dev);
-> > >
-> > > The other being called "_remove"?
-> > >
-> > > Makes it more obvious to me :)
-> >
-> > The naming convention used here follows platform_notify() and
-> > platform_notify_remove(), and the analogous function names in ACPI for
-> > that matter.
->
-> So why not rename those instead: platform_notify() to
-> platform_notify_add() and so on? You are in any case modifying
-> acpi_device_notify() in this series, and I think there is only one
-> place left where .platform_notify is assigned. I believe you also
-> wouldn't then need to worry about the function name collision (3/6).
->
-> > I thought that adding _add in just one case would be sort of odd, but
-> > of course I can do that, so please let me know what you want me to do.
->
-> I would prefer the "_add" ending, but in any case, FWIW:
->
-> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+On Thu, Jul 08, 2021 at 07:08:44PM +0100, Sudeep Holla wrote:
+> Currently PCC mailbox controller sets con_priv in each channel to hold
+> the pointer to pcct subspace entry it corresponds to. The mailbox uses
 
-Thanks!
+nit: s/uses/users
+
+> will then fetch this pointer from the channel descriptor they get when
+> they request for the channel. Using that pointer they then parse the
+> pcct entry again to fetch all the information about shared memory region.
+> 
+> In order to remove individual users of PCC mailbox parsing the PCCT
+> subspace entries to fetch same information, let us consolidate the same
+> in pcc mailbox controller by parsing all the shared memory region
+> information into a structure that can also hold the mbox_chan pointer it
+> represent.
+> 
+> This can then be used as main PCC mailbox channel pointer that we can
+> return as part of pcc_mbox_request_channel instead of standard mailbox
+> channel pointer.
+> 
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> ---
+>  drivers/mailbox/pcc.c | 27 +++++++++++++++++++++++++++
+>  include/acpi/pcc.h    |  9 +++++++++
+>  2 files changed, 36 insertions(+)
+> 
+> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> index 5f19bee71c04..affde0995d52 100644
+> --- a/drivers/mailbox/pcc.c
+> +++ b/drivers/mailbox/pcc.c
+> @@ -67,11 +67,13 @@ static struct mbox_chan *pcc_mbox_channels;
+>  /**
+>   * struct pcc_chan_info - PCC channel specific information
+>   *
+> + * @chan: PCC channel information with Shared Memory Region info
+>   * @db_vaddr: cached virtual address for doorbell register
+>   * @db_ack_vaddr: cached virtual address for doorbell ack register
+>   * @db_irq: doorbell interrupt
+>   */
+>  struct pcc_chan_info {
+> +	struct pcc_mbox_chan chan;
+>  	void __iomem *db_vaddr;
+>  	void __iomem *db_ack_vaddr;
+>  	int db_irq;
+> @@ -469,6 +471,27 @@ static void pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
+>  						  db_reg->bit_width / 8);
+>  }
+>  
+> +/**
+> + * pcc_parse_subspace_shmem - Parse the PCC Shared Memory Region information
+> + *
+> + * @pchan: Pointer to the PCC channel info structure.
+> + * @pcct_entry: Pointer to the ACPI subtable header.
+> + *
+> + */
+> +static void pcc_parse_subspace_shmem(struct pcc_chan_info *pchan,
+> +				     struct acpi_subtable_header *pcct_entry)
+> +{
+> +	struct acpi_pcct_subspace *pcct_ss;
+> +
+> +	pcct_ss = (struct acpi_pcct_subspace *)pcct_entry;
+> +
+> +	pchan->chan.shmem_base_addr = pcct_ss->base_address;
+> +	pchan->chan.shmem_size = pcct_ss->length;
+> +	pchan->chan.latency = pcct_ss->latency;
+> +	pchan->chan.max_access_rate = pcct_ss->max_access_rate;
+> +	pchan->chan.min_turnaround_time = pcct_ss->min_turnaround_time;
+> +}
+> +
+
+Out of curiosity this ACPI provided latency/max_access/turnaround_time
+are supposed to be considered and/or enforced where ? by the clients
+using this controller ?
+
+>  /**
+>   * acpi_pcc_probe - Parse the ACPI tree for the PCCT.
+>   *
+> @@ -536,6 +559,8 @@ static int __init acpi_pcc_probe(void)
+>  		struct pcc_chan_info *pchan = chan_info + i;
+>  		pcc_mbox_channels[i].con_priv = pcct_entry;
+>  
+> +		pchan->chan.mchan = &pcc_mbox_channels[i];
+> +
+>  		if (pcc_mbox_ctrl.txdone_irq) {
+>  			rc = pcc_parse_subspace_irq(pchan, pcct_entry);
+>  			if (rc < 0)
+> @@ -543,6 +568,8 @@ static int __init acpi_pcc_probe(void)
+>  		}
+>  		pcc_parse_subspace_db_reg(pchan, pcct_entry);
+>  
+> +		pcc_parse_subspace_shmem(pchan, pcct_entry);
+> +
+>  		pcct_entry = (struct acpi_subtable_header *)
+>  			((unsigned long) pcct_entry + pcct_entry->length);
+>  	}
+> diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
+> index 4dec4ed138cd..5e510a6b8052 100644
+> --- a/include/acpi/pcc.h
+> +++ b/include/acpi/pcc.h
+> @@ -9,6 +9,15 @@
+>  #include <linux/mailbox_controller.h>
+>  #include <linux/mailbox_client.h>
+>  
+> +struct pcc_mbox_chan {
+> +	struct mbox_chan *mchan;
+> +	u64 shmem_base_addr;
+> +	u64 shmem_size;
+> +	u32 latency;
+> +	u32 max_access_rate;
+> +	u16 min_turnaround_time;
+> +};
+> +
+>  #define MAX_PCC_SUBSPACES	256
+>  #ifdef CONFIG_PCC
+>  extern struct mbox_chan *pcc_mbox_request_channel(struct mbox_client *cl,
+> -- 
+> 2.25.1
+
+
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+
+Thanks,
+Cristian
