@@ -2,161 +2,259 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CB243C8AA6
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jul 2021 20:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7070C3C8B10
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jul 2021 20:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230379AbhGNSVi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Jul 2021 14:21:38 -0400
-Received: from foss.arm.com ([217.140.110.172]:38056 "EHLO foss.arm.com"
+        id S229806AbhGNSkv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Jul 2021 14:40:51 -0400
+Received: from foss.arm.com ([217.140.110.172]:38272 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229738AbhGNSVi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Jul 2021 14:21:38 -0400
+        id S229861AbhGNSkv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 14 Jul 2021 14:40:51 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 694A6D6E;
-        Wed, 14 Jul 2021 11:18:46 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EE9F2D6E;
+        Wed, 14 Jul 2021 11:37:58 -0700 (PDT)
 Received: from e120937-lin (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8769E3F774;
-        Wed, 14 Jul 2021 11:18:45 -0700 (PDT)
-Date:   Wed, 14 Jul 2021 19:18:43 +0100
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1E3563F774;
+        Wed, 14 Jul 2021 11:37:58 -0700 (PDT)
+Date:   Wed, 14 Jul 2021 19:37:51 +0100
 From:   Cristian Marussi <cristian.marussi@arm.com>
 To:     Sudeep Holla <sudeep.holla@arm.com>
 Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Jassi Brar <jassisinghbrar@gmail.com>
-Subject: Re: [PATCH 06/13] mailbox: pcc: Add pcc_mbox_chan structure to hold
- shared memory region info
-Message-ID: <20210714181843.GC49078@e120937-lin>
+Subject: Re: [PATCH 10/13] mailbox: pcc: Avoid accessing PCCT table in
+ pcc_send_data and pcc_mbox_irq
+Message-ID: <20210714183751.GD49078@e120937-lin>
 References: <20210708180851.2311192-1-sudeep.holla@arm.com>
- <20210708180851.2311192-7-sudeep.holla@arm.com>
+ <20210708180851.2311192-11-sudeep.holla@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210708180851.2311192-7-sudeep.holla@arm.com>
+In-Reply-To: <20210708180851.2311192-11-sudeep.holla@arm.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 08, 2021 at 07:08:44PM +0100, Sudeep Holla wrote:
-> Currently PCC mailbox controller sets con_priv in each channel to hold
-> the pointer to pcct subspace entry it corresponds to. The mailbox uses
+On Thu, Jul 08, 2021 at 07:08:48PM +0100, Sudeep Holla wrote:
+> Now that the con_priv is availvale solely for PCC mailbox controller
+nit: s/availvale/available
 
-nit: s/uses/users
-
-> will then fetch this pointer from the channel descriptor they get when
-> they request for the channel. Using that pointer they then parse the
-> pcct entry again to fetch all the information about shared memory region.
+> driver, let us use the same to save the channel specific information
+> in it so that we can it whenever required instead of parsing the PCCT
+> table entries every time in both pcc_send_data and pcc_mbox_irq.
 > 
-> In order to remove individual users of PCC mailbox parsing the PCCT
-> subspace entries to fetch same information, let us consolidate the same
-> in pcc mailbox controller by parsing all the shared memory region
-> information into a structure that can also hold the mbox_chan pointer it
-> represent.
-> 
-> This can then be used as main PCC mailbox channel pointer that we can
-> return as part of pcc_mbox_request_channel instead of standard mailbox
-> channel pointer.
+> We can now use the newly introduces PCC register bundle to simplify both
+> saving of channel specific information and accessing them without repeated
+> checks for the subspace type.
 > 
 > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 > ---
->  drivers/mailbox/pcc.c | 27 +++++++++++++++++++++++++++
->  include/acpi/pcc.h    |  9 +++++++++
->  2 files changed, 36 insertions(+)
-> 
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index 5f19bee71c04..affde0995d52 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -67,11 +67,13 @@ static struct mbox_chan *pcc_mbox_channels;
->  /**
->   * struct pcc_chan_info - PCC channel specific information
->   *
-> + * @chan: PCC channel information with Shared Memory Region info
->   * @db_vaddr: cached virtual address for doorbell register
->   * @db_ack_vaddr: cached virtual address for doorbell ack register
->   * @db_irq: doorbell interrupt
->   */
->  struct pcc_chan_info {
-> +	struct pcc_mbox_chan chan;
->  	void __iomem *db_vaddr;
->  	void __iomem *db_ack_vaddr;
->  	int db_irq;
-> @@ -469,6 +471,27 @@ static void pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
->  						  db_reg->bit_width / 8);
->  }
->  
-> +/**
-> + * pcc_parse_subspace_shmem - Parse the PCC Shared Memory Region information
-> + *
-> + * @pchan: Pointer to the PCC channel info structure.
-> + * @pcct_entry: Pointer to the ACPI subtable header.
-> + *
-> + */
-> +static void pcc_parse_subspace_shmem(struct pcc_chan_info *pchan,
-> +				     struct acpi_subtable_header *pcct_entry)
-> +{
-> +	struct acpi_pcct_subspace *pcct_ss;
-> +
-> +	pcct_ss = (struct acpi_pcct_subspace *)pcct_entry;
-> +
-> +	pchan->chan.shmem_base_addr = pcct_ss->base_address;
-> +	pchan->chan.shmem_size = pcct_ss->length;
-> +	pchan->chan.latency = pcct_ss->latency;
-> +	pchan->chan.max_access_rate = pcct_ss->max_access_rate;
-> +	pchan->chan.min_turnaround_time = pcct_ss->min_turnaround_time;
-> +}
-> +
-
-Out of curiosity this ACPI provided latency/max_access/turnaround_time
-are supposed to be considered and/or enforced where ? by the clients
-using this controller ?
-
->  /**
->   * acpi_pcc_probe - Parse the ACPI tree for the PCCT.
->   *
-> @@ -536,6 +559,8 @@ static int __init acpi_pcc_probe(void)
->  		struct pcc_chan_info *pchan = chan_info + i;
->  		pcc_mbox_channels[i].con_priv = pcct_entry;
->  
-> +		pchan->chan.mchan = &pcc_mbox_channels[i];
-> +
->  		if (pcc_mbox_ctrl.txdone_irq) {
->  			rc = pcc_parse_subspace_irq(pchan, pcct_entry);
->  			if (rc < 0)
-> @@ -543,6 +568,8 @@ static int __init acpi_pcc_probe(void)
->  		}
->  		pcc_parse_subspace_db_reg(pchan, pcct_entry);
->  
-> +		pcc_parse_subspace_shmem(pchan, pcct_entry);
-> +
->  		pcct_entry = (struct acpi_subtable_header *)
->  			((unsigned long) pcct_entry + pcct_entry->length);
->  	}
-> diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
-> index 4dec4ed138cd..5e510a6b8052 100644
-> --- a/include/acpi/pcc.h
-> +++ b/include/acpi/pcc.h
-> @@ -9,6 +9,15 @@
->  #include <linux/mailbox_controller.h>
->  #include <linux/mailbox_client.h>
->  
-> +struct pcc_mbox_chan {
-> +	struct mbox_chan *mchan;
-> +	u64 shmem_base_addr;
-> +	u64 shmem_size;
-> +	u32 latency;
-> +	u32 max_access_rate;
-> +	u16 min_turnaround_time;
-> +};
-> +
->  #define MAX_PCC_SUBSPACES	256
->  #ifdef CONFIG_PCC
->  extern struct mbox_chan *pcc_mbox_request_channel(struct mbox_client *cl,
-> -- 
-> 2.25.1
-
 
 Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
 
 Thanks,
 Cristian
+
+>  drivers/mailbox/pcc.c | 116 +++++++++++-------------------------------
+>  1 file changed, 30 insertions(+), 86 deletions(-)
+> 
+> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> index 7d48e5c1ac52..237dba9cb445 100644
+> --- a/drivers/mailbox/pcc.c
+> +++ b/drivers/mailbox/pcc.c
+> @@ -86,15 +86,15 @@ struct pcc_chan_reg {
+>   * struct pcc_chan_info - PCC channel specific information
+>   *
+>   * @chan: PCC channel information with Shared Memory Region info
+> - * @db_vaddr: cached virtual address for doorbell register
+> - * @plat_irq_ack_vaddr: cached virtual address for platform interrupt
+> - *	acknowledge register
+> + * @db: PCC register bundle for the doorbell register
+> + * @plat_irq_ack: PCC register bundle for the platform interrupt acknowledge
+> + *	register
+>   * @db_irq: doorbell interrupt
+>   */
+>  struct pcc_chan_info {
+>  	struct pcc_mbox_chan chan;
+> -	void __iomem *db_vaddr;
+> -	void __iomem *plat_irq_ack_vaddr;
+> +	struct pcc_chan_reg db;
+> +	struct pcc_chan_reg plat_irq_ack;
+>  	int db_irq;
+>  };
+>  
+> @@ -242,40 +242,15 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
+>   */
+>  static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>  {
+> -	struct acpi_generic_address *doorbell_ack;
+> -	struct acpi_pcct_hw_reduced *pcct_ss;
+>  	struct pcc_chan_info *pchan;
+>  	struct mbox_chan *chan = p;
+> -	u64 doorbell_ack_preserve;
+> -	u64 doorbell_ack_write;
+> -	u64 doorbell_ack_val;
+> -	int ret;
+>  
+> -	pcct_ss = chan->con_priv;
+> +	pchan = chan->con_priv;
+>  
+>  	mbox_chan_received_data(chan, NULL);
+>  
+> -	if (pcct_ss->header.type == ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2) {
+> -		struct acpi_pcct_hw_reduced_type2 *pcct2_ss = chan->con_priv;
+> -		u32 id = chan - pcc_mbox_channels;
+> -
+> -		pchan = chan_info + id;
+> -		doorbell_ack = &pcct2_ss->platform_ack_register;
+> -		doorbell_ack_preserve = pcct2_ss->ack_preserve_mask;
+> -		doorbell_ack_write = pcct2_ss->ack_write_mask;
+> -
+> -		ret = read_register(pchan->plat_irq_ack_vaddr,
+> -				    &doorbell_ack_val, doorbell_ack->bit_width);
+> -		if (ret)
+> -			return IRQ_NONE;
+> -
+> -		ret = write_register(pchan->plat_irq_ack_vaddr,
+> -				     (doorbell_ack_val & doorbell_ack_preserve)
+> -					| doorbell_ack_write,
+> -				     doorbell_ack->bit_width);
+> -		if (ret)
+> -			return IRQ_NONE;
+> -	}
+> +	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
+> +		return IRQ_NONE;
+>  
+>  	return IRQ_HANDLED;
+>  }
+> @@ -376,42 +351,9 @@ EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
+>   */
+>  static int pcc_send_data(struct mbox_chan *chan, void *data)
+>  {
+> -	struct acpi_pcct_hw_reduced *pcct_ss = chan->con_priv;
+> -	struct acpi_generic_address *doorbell;
+> -	struct pcc_chan_info *pchan;
+> -	u64 doorbell_preserve;
+> -	u64 doorbell_val;
+> -	u64 doorbell_write;
+> -	u32 id = chan - pcc_mbox_channels;
+> -	int ret = 0;
+> -
+> -	if (id >= pcc_mbox_ctrl.num_chans) {
+> -		pr_debug("pcc_send_data: Invalid mbox_chan passed\n");
+> -		return -ENOENT;
+> -	}
+> +	struct pcc_chan_info *pchan = chan->con_priv;
+>  
+> -	pchan = chan_info + id;
+> -	doorbell = &pcct_ss->doorbell_register;
+> -	doorbell_preserve = pcct_ss->preserve_mask;
+> -	doorbell_write = pcct_ss->write_mask;
+> -
+> -	/* Sync notification from OS to Platform. */
+> -	if (pchan->db_vaddr) {
+> -		ret = read_register(pchan->db_vaddr, &doorbell_val,
+> -				    doorbell->bit_width);
+> -		if (ret)
+> -			return ret;
+> -		ret = write_register(pchan->db_vaddr,
+> -				     (doorbell_val & doorbell_preserve)
+> -				      | doorbell_write, doorbell->bit_width);
+> -	} else {
+> -		ret = acpi_read(&doorbell_val, doorbell);
+> -		if (ret)
+> -			return ret;
+> -		ret = acpi_write((doorbell_val & doorbell_preserve) | doorbell_write,
+> -			doorbell);
+> -	}
+> -	return ret;
+> +	return pcc_chan_reg_read_modify_write(&pchan->db);
+>  }
+>  
+>  static const struct mbox_chan_ops pcc_chan_ops = {
+> @@ -479,6 +421,7 @@ pcc_chan_reg_init(struct pcc_chan_reg *reg, struct acpi_generic_address *gas,
+>  static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
+>  				  struct acpi_subtable_header *pcct_entry)
+>  {
+> +	int ret = 0;
+>  	struct acpi_pcct_hw_reduced *pcct_ss;
+>  
+>  	if (pcct_entry->type < ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE ||
+> @@ -497,16 +440,14 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
+>  	if (pcct_ss->header.type == ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2) {
+>  		struct acpi_pcct_hw_reduced_type2 *pcct2_ss = (void *)pcct_ss;
+>  
+> -		pchan->plat_irq_ack_vaddr =
+> -			acpi_os_ioremap(pcct2_ss->platform_ack_register.address,
+> -					pcct2_ss->platform_ack_register.bit_width / 8);
+> -		if (!pchan->plat_irq_ack_vaddr) {
+> -			pr_err("Failed to ioremap PCC ACK register\n");
+> -			return -ENOMEM;
+> -		}
+> +		ret = pcc_chan_reg_init(&pchan->plat_irq_ack,
+> +					&pcct2_ss->platform_ack_register,
+> +					pcct2_ss->ack_preserve_mask,
+> +					pcct2_ss->ack_write_mask, 0,
+> +					"PLAT IRQ ACK");
+>  	}
+>  
+> -	return 0;
+> +	return ret;
+>  }
+>  
+>  /**
+> @@ -516,19 +457,20 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
+>   * @pcct_entry: Pointer to the ACPI subtable header.
+>   *
+>   */
+> -static void pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
+> -				      struct acpi_subtable_header *pcct_entry)
+> +static int pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
+> +				     struct acpi_subtable_header *pcct_entry)
+>  {
+> +	int ret = 0;
+> +
+>  	struct acpi_pcct_subspace *pcct_ss;
+> -	struct acpi_generic_address *db_reg;
+>  
+>  	pcct_ss = (struct acpi_pcct_subspace *)pcct_entry;
+>  
+> -	/* If doorbell is in system memory cache the virt address */
+> -	db_reg = &pcct_ss->doorbell_register;
+> -	if (db_reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+> -		pchan->db_vaddr = acpi_os_ioremap(db_reg->address,
+> -						  db_reg->bit_width / 8);
+> +	ret = pcc_chan_reg_init(&pchan->db,
+> +				&pcct_ss->doorbell_register,
+> +				pcct_ss->preserve_mask,
+> +				pcct_ss->write_mask, 0,	"Doorbell");
+> +	return ret;
+>  }
+>  
+>  /**
+> @@ -617,8 +559,8 @@ static int __init acpi_pcc_probe(void)
+>  
+>  	for (i = 0; i < count; i++) {
+>  		struct pcc_chan_info *pchan = chan_info + i;
+> -		pcc_mbox_channels[i].con_priv = pcct_entry;
+>  
+> +		pcc_mbox_channels[i].con_priv = pchan;
+>  		pchan->chan.mchan = &pcc_mbox_channels[i];
+>  
+>  		if (pcc_mbox_ctrl.txdone_irq) {
+> @@ -626,7 +568,9 @@ static int __init acpi_pcc_probe(void)
+>  			if (rc < 0)
+>  				goto err;
+>  		}
+> -		pcc_parse_subspace_db_reg(pchan, pcct_entry);
+> +		rc = pcc_parse_subspace_db_reg(pchan, pcct_entry);
+> +		if (rc < 0)
+> +			goto err;
+>  
+>  		pcc_parse_subspace_shmem(pchan, pcct_entry);
+>  
+> -- 
+> 2.25.1
+> 
