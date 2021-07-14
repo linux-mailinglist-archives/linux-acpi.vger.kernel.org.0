@@ -2,64 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BD383C8B49
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jul 2021 20:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C60B3C8B86
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jul 2021 21:19:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbhGNSzN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Jul 2021 14:55:13 -0400
-Received: from foss.arm.com ([217.140.110.172]:38422 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229491AbhGNSzM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Jul 2021 14:55:12 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 23136D6E;
-        Wed, 14 Jul 2021 11:52:20 -0700 (PDT)
-Received: from e120937-lin (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 417A83F774;
-        Wed, 14 Jul 2021 11:52:19 -0700 (PDT)
-Date:   Wed, 14 Jul 2021 19:52:16 +0100
-From:   Cristian Marussi <cristian.marussi@arm.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jassi Brar <jassisinghbrar@gmail.com>
-Subject: Re: [PATCH 12/13] mailbox: pcc: Add support for PCCT extended PCC
- subspaces(type 3/4)
-Message-ID: <20210714185216.GE49078@e120937-lin>
-References: <20210708180851.2311192-1-sudeep.holla@arm.com>
- <20210708180851.2311192-13-sudeep.holla@arm.com>
+        id S240080AbhGNTWD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Jul 2021 15:22:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43454 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230185AbhGNTWC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jul 2021 15:22:02 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18E2DC06175F
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Jul 2021 12:19:11 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id z12so2697273qtj.3
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Jul 2021 12:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=1431emLU+9DMQjaf58AgKkMaZ89NMJDdYZGveaRyZc8=;
+        b=ewaNd0vX4GRhu9Jkwg/MBikwijSm35AFEno566Wi+QKDEPuEaLiGKAMQfWuJAavZD6
+         HvOOAY/PxJFY1C/o/W5IRjNDCxGdv/itLYVg+602BpB2pL8K2jyCG7hgsBkUTU+7Uao4
+         EXqD0QdpD4XmvsmbGY9hiZ/XRdklJlUGg9tqOpIu0sDwxnb2wTM8eJyInHZX8afCM/qU
+         hxphfjSctPqdg47TuuvMpzBw7hQQpvsNWkaaeb4gptkN8obUCcaRAx5+X27L5maDHIjS
+         +VSMJ7AMfKsaDnSniW1iTc5J/gsxWqYdOlZuOVp/zNJUHGvde9llVem3ByKW8v87KLjT
+         +stw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=1431emLU+9DMQjaf58AgKkMaZ89NMJDdYZGveaRyZc8=;
+        b=J9X8BKQe8ps0rUOCDk1aZG0pGipDJnx/jXbR6Z8j3SbDzhe5A1FIykokbeN94idpdq
+         y6HHBaR1Jlpb7UjpX+G+0T/XSn/LC64Yj33SOQBwKLgGQf+vew2s9vg+C4DtkdWcLhuJ
+         xeN1f+AUN3plc/GaJ52aw8AmZGdZb9fyPcsi0olCHHVLwVkAE2W/5ixAgbvVodZDOPaq
+         eo+NwYDkN1JOIUKRguvb4e2vnTcz+xkitMSa9NGOHdzUlkG5zVdI+mN8J1P5xW0HXnpM
+         M6m8CW1ljSszucIurxQEcU4MDTxj9F6AfqZkDUIO9EBcSmFA2L+LI7vGFJRQk2sqRwSA
+         UQXg==
+X-Gm-Message-State: AOAM530eFbFQA2X+bOt4ml4oRMRMqBBEXUDHR1vtwqlCuFWzIksUfGJK
+        hPkbXUdJ8BxaMaLoxDacgTl9edDpCcN+XTpYqWh0cg==
+X-Google-Smtp-Source: ABdhPJwJmJ6jcIPrmD/x4dHd+QLYr3DFDLSNWAPv/hxPJ/x5mb6Lq0R9AIrq3EJtWg2eVw5NzpZM8SKKCiszzExjSuQ=
+X-Received: by 2002:aed:2064:: with SMTP id 91mr10637866qta.318.1626290350135;
+ Wed, 14 Jul 2021 12:19:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210708180851.2311192-13-sudeep.holla@arm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20210621200459.3558199-1-mw@semihalf.com> <CAJZ5v0jegOF85Zvo8Oyio9cSvb_WfUCG0oNsXzWHSCTi151u0A@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jegOF85Zvo8Oyio9cSvb_WfUCG0oNsXzWHSCTi151u0A@mail.gmail.com>
+From:   Marcin Wojtas <mw@semihalf.com>
+Date:   Wed, 14 Jul 2021 21:18:59 +0200
+Message-ID: <CAPv3WKehvHfrbK8r0LhgbXvDVnzB=PSZQX7WihhNR+Y2+wKTrA@mail.gmail.com>
+Subject: Re: [net-next: PATCH v3 1/1] ACPI: SPCR: Add new 16550-compatible
+ Serial Port Subtype
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Grzegorz Jaszczyk <jaz@semihalf.com>,
+        Grzegorz Bernacki <gjb@semihalf.com>, upstream@semihalf.com,
+        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
+        Jon <jon@solid-run.com>, Tomasz Nowicki <tn@semihalf.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Robert Moore <robert.moore@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 08, 2021 at 07:08:50PM +0100, Sudeep Holla wrote:
-> With all the plumbing in place to avoid accessing PCCT type and other
-> fields directly from the PCCT table all the time, let us now add the
-> support for extended PCC subspaces(type 3 and 4).
-> 
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> ---
+Hi Rafael,
 
-Hi Sudeep,
 
-just a few general observation on Type 3/4 subspaces from the spec
-Table 14.7:
+=C5=9Br., 14 lip 2021 o 14:27 Rafael J. Wysocki <rafael@kernel.org> napisa=
+=C5=82(a):
+>
+> Sorry for the delay.
+>
+> On Mon, Jun 21, 2021 at 10:05 PM Marcin Wojtas <mw@semihalf.com> wrote:
+> >
+> > The Microsoft Debug Port Table 2 (DBG2) specification revision
+> > May 31, 2017 adds support for 16550-compatible Serial Port
+> > Subtype with parameters defined in Generic Address Structure (GAS) [1]
+> >
+> > Add its support in SPCR parsing routine.
+> >
+> > [1] https://docs.microsoft.com/en-us/windows-hardware/drivers/bringup/a=
+cpi-debug-port-table
+> >
+> > Signed-off-by: Marcin Wojtas <mw@semihalf.com>
+> > ---
+> >  include/acpi/actbl1.h | 1 +
+> >  drivers/acpi/spcr.c   | 1 +
+> >  2 files changed, 2 insertions(+)
+> >
+> > diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+> > index ce59903c2695..f746012eba8d 100644
+> > --- a/include/acpi/actbl1.h
+> > +++ b/include/acpi/actbl1.h
+>
+> This is an ACPICA header, so the first part of the patch should go in
+> via the ACPICA upstream repository.
+>
+> Can you please resend this as two patches to make it easier to process it=
+?
+>
 
-- "If a slave-subspace is present in the PCCT, then the platform interrupt flag must be set to 1." table 14.7
+I created a pull request to the ACPICA upstream with adding all the
+missing DBG2 subtypes:
+https://github.com/acpica/acpica/pull/705
 
-  Maybe is worth to WARN on this if this assumption is violated by the
-  ACPI table we found.
+Once that is accepted and lands, I will import the header update to
+Linux along with the driver modification.
 
-- "Note that if interrupts are edge triggered, then each subspace must have its own unique interrupt."
-
-  Same here, maybe it's worth also to check this, so that after all the
-  pchan->db_irq has been obtained no edge triggered irqs are duplicated
-  before requesting them.
-
-Thanks,
-Cristian
+Best regards,
+Marcin
