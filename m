@@ -2,119 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 160A33C8A7E
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jul 2021 20:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D65A13C8AA2
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jul 2021 20:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239974AbhGNSMf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Jul 2021 14:12:35 -0400
-Received: from foss.arm.com ([217.140.110.172]:37972 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229651AbhGNSMe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 14 Jul 2021 14:12:34 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0A58D6E;
-        Wed, 14 Jul 2021 11:09:42 -0700 (PDT)
-Received: from e120937-lin (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ABD033F774;
-        Wed, 14 Jul 2021 11:09:41 -0700 (PDT)
-Date:   Wed, 14 Jul 2021 19:09:39 +0100
-From:   Cristian Marussi <cristian.marussi@arm.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jassi Brar <jassisinghbrar@gmail.com>
-Subject: Re: [PATCH 05/13] mailbox: pcc: Consolidate subspace doorbell
- register parsing
-Message-ID: <20210714180939.GB49078@e120937-lin>
-References: <20210708180851.2311192-1-sudeep.holla@arm.com>
- <20210708180851.2311192-6-sudeep.holla@arm.com>
+        id S229738AbhGNSUe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 14 Jul 2021 14:20:34 -0400
+Received: from mail-ot1-f49.google.com ([209.85.210.49]:38413 "EHLO
+        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229651AbhGNSUe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jul 2021 14:20:34 -0400
+Received: by mail-ot1-f49.google.com with SMTP id 42-20020a9d012d0000b02904b98d90c82cso3451140otu.5;
+        Wed, 14 Jul 2021 11:17:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8NtKqh/hhXyEdtvjJOvCHjkNgClG5kHRWw+SH0tD8do=;
+        b=bQ0ynAeWR3KMhFQBKSBzJGpB8JzZXX+zVTPAO0msz9XcXfEDUp4AX7prlB1nUz7Ydt
+         RrGdEyXwizVg4hvVuxdK5xk0d3CNiLZRY5vmqp8FkFNTqgGOzALqfgxM7b2tcyHJ+r2G
+         qVxtBpywgLj4CWsRqM8w8CHxe7q6h1htYRMysErQj09wLUen4zMYyL6D15LNIkkZ4PA4
+         2Gb9ty9iztOLo9UD2cjDlFmgb5ovLE70uwZPryL1f4YEItFnh42jujoRWumu+Wvom08M
+         ONIA3F29D69+OIG3DWFoWCTu2uegUhhQK0cxeyeF7DBfESm37qLZ6O+zzNqcGW4TkGOU
+         NWXQ==
+X-Gm-Message-State: AOAM5301mFAfwqCVhvq2faQAKfhggH/VmRoXz6hhV92/+Ihzz09raw5v
+        9fUWtUrsCTIc1L31FNgBfWbYSxaVUmjRmSW92RA=
+X-Google-Smtp-Source: ABdhPJwqSGLdbvDOnyhxufSLXfr0OqA2WwkMn6qYj3wJJCkj8VVcnwuSy6B/oTZlRErz8BiBRyroH9X6GXd2WgbvRHY=
+X-Received: by 2002:a9d:5f19:: with SMTP id f25mr9693465oti.206.1626286661751;
+ Wed, 14 Jul 2021 11:17:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210708180851.2311192-6-sudeep.holla@arm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <2780027.e9J7NaK4W3@kreacher> <YOyMdICr/30LhTao@smile.fi.intel.com>
+In-Reply-To: <YOyMdICr/30LhTao@smile.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 14 Jul 2021 20:17:30 +0200
+Message-ID: <CAJZ5v0jhUjo-Gs=bWeNFaUY=nz3T-LAmVYbK_mDGM-LzEGbyCw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/6] ACPI: glue / driver core: Eliminate
+ acpi_platform_notify() and split device_platform_notify()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 08, 2021 at 07:08:43PM +0100, Sudeep Holla wrote:
-> Extended PCC subspaces(Type 3 and 4) differs from generic(Type 0) and
-nit: s/differs/differ
+On Mon, Jul 12, 2021 at 8:39 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Mon, Jul 12, 2021 at 07:19:57PM +0200, Rafael J. Wysocki wrote:
+> > Hi Greg et al,
+> >
+> > This series doesn't change functionality (at least not intentionally), but
+> > it get rids of a few unneeded checks, parameter passing etc.
+> >
+> > Patches [1-2/6] simplify the ACPI "glue" code.
+> >
+> > Patch [3/6] renames a couple of ACPI functions to avoid name collisions going
+> > forward.
+> >
+> > Patch [4/6] gets rid of acpi_platform_notify().
+> >
+> > Patch [5/6] rearranges the software nodes code along the lines of what happens
+> > to the ACPI "glue" code in patch [4/6].
+> >
+> > Patch [6/6] deals with device_platform_notify().
+> >
+> > Please review and let me know if there are any concerns regarding this.
+>
+> The result looks good to me, but perhaps the ordering can be changed to
+> minimize addition of the lines that are going to be removed inside the same
+> series.
+>
+> In either case, feel free to add
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> HW-Reduced Communication(Type 1 and 2) subspace structures. However some
-> fields share same offsets and same type of structure can be use to
-> extract the fields. In order to simplify that, let us move all the doorbell
-> register parsing into pcc_parse_subspace_db_reg and consolidate there.
-> It will be easier to extend it if required within the same.
-> 
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> ---
->  drivers/mailbox/pcc.c | 31 +++++++++++++++++++++++--------
->  1 file changed, 23 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-> index 55866676a508..5f19bee71c04 100644
-> --- a/drivers/mailbox/pcc.c
-> +++ b/drivers/mailbox/pcc.c
-> @@ -447,6 +447,28 @@ static int pcc_parse_subspace_irq(struct pcc_chan_info *pchan,
->  	return 0;
->  }
->  
-> +/**
-> + * pcc_parse_subspace_db_reg - Parse the PCC doorbell register
-> + *
-> + * @pchan: Pointer to the PCC channel info structure.
-> + * @pcct_entry: Pointer to the ACPI subtable header.
-> + *
-> + */
-> +static void pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
-> +				      struct acpi_subtable_header *pcct_entry)
-> +{
-> +	struct acpi_pcct_subspace *pcct_ss;
-> +	struct acpi_generic_address *db_reg;
-> +
-> +	pcct_ss = (struct acpi_pcct_subspace *)pcct_entry;
-> +
-> +	/* If doorbell is in system memory cache the virt address */
-> +	db_reg = &pcct_ss->doorbell_register;
-> +	if (db_reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
-> +		pchan->db_vaddr = acpi_os_ioremap(db_reg->address,
-> +						  db_reg->bit_width / 8);
-> +}
-> +
->  /**
->   * acpi_pcc_probe - Parse the ACPI tree for the PCCT.
->   *
-> @@ -512,8 +534,6 @@ static int __init acpi_pcc_probe(void)
->  
->  	for (i = 0; i < count; i++) {
->  		struct pcc_chan_info *pchan = chan_info + i;
-> -		struct acpi_generic_address *db_reg;
-> -		struct acpi_pcct_subspace *pcct_ss;
->  		pcc_mbox_channels[i].con_priv = pcct_entry;
->  
->  		if (pcc_mbox_ctrl.txdone_irq) {
-> @@ -521,13 +541,8 @@ static int __init acpi_pcc_probe(void)
->  			if (rc < 0)
->  				goto err;
->  		}
-> -		pcct_ss = (struct acpi_pcct_subspace *) pcct_entry;
-> +		pcc_parse_subspace_db_reg(pchan, pcct_entry);
->  
-> -		/* If doorbell is in system memory cache the virt address */
-> -		db_reg = &pcct_ss->doorbell_register;
-> -		if (db_reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
-> -			pchan->db_vaddr = acpi_os_ioremap(db_reg->address,
-> -							  db_reg->bit_width / 8);
->  		pcct_entry = (struct acpi_subtable_header *)
->  			((unsigned long) pcct_entry + pcct_entry->length);
->  	}
-> -- 
-> 2.25.1
-> 
-
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-
-Thanks,
-Cristian
-
+Thanks!
