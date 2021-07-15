@@ -2,95 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 198793C9353
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Jul 2021 23:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81D283C97B9
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jul 2021 06:49:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231695AbhGNVtT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 14 Jul 2021 17:49:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51308 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236053AbhGNVtT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 14 Jul 2021 17:49:19 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3882C06175F
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Jul 2021 14:46:26 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id v6so6143416lfp.6
-        for <linux-acpi@vger.kernel.org>; Wed, 14 Jul 2021 14:46:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=lH52iQ89d3JdCw1yanWMdKAt6CiDTmROo7xBwGJBkCg=;
-        b=NgWFUD3QKKcxsdDRCUmDEUk0IUlU+0aZxk181PRlYjy3+yp4sKxFeE2SHIQdRZRp7k
-         yeDjlZt+T3LJO9mvxPhk+fyEISHQScsymlKCKXpCY6hWaPfmwlW6y/aO6I1HScGNzYEB
-         dM/EcQ+2GyCPJKxxcG1QHM84dML02BbnhB+PqpfdPVuWTQgH05Z1ZOT0URsLXLu20l95
-         iNdUfnE+sAlfnPT7RaAhmYtZhmUIHZNOcQOGQkPw+wTWiXbj8jEK4aJc6rgt5Yu0PEOi
-         LYObgPue2y1HiWqD2fE09rH2oRfcx/NWk+N4RlT9qM3tv3KZ4dO0uIAOX6S0GHFvtDIM
-         kXBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=lH52iQ89d3JdCw1yanWMdKAt6CiDTmROo7xBwGJBkCg=;
-        b=jq1YK5FXCghZV8026awKMP9K+qAuTMjNTllCv8kkre43YxOqkB/DyGzXzLJ/xuGde4
-         4guSe1towVztBumh9wlOOlN39urlRMtJ2nJRUjQe7M/rxrKD6h8BP8luf3Pavk48WWxy
-         IVtv/xNKNHUVb7mK+9IyYwWPttLP1PNR1j0aN/hcNGFdk1nUEGUqYRz5CK7ikiq2r/HY
-         9Bx7AYvRZHzARpEcgUXXinPRdeIGF/kgHykBczeZfZwDWBCT71iYktXGW3Pro9krNpkA
-         kizf6A0GM8tLAcCDXnvl5oY5mCHtAy95fd1Mfhn0/SIXuKunlJ3Wk/7s2NgD9y+sJks4
-         DPXw==
-X-Gm-Message-State: AOAM530EZhbZBNpSzNzKACbNqbWX5398fPbep3qvCLL/YKhvDrvzMQoK
-        VyA+rhsZX2KyF1x7kpjAc2Idmw==
-X-Google-Smtp-Source: ABdhPJxthwLdCnryFxZ0ELE1D9Row/k0pt3HWvAqvkLVx29rmwps7QRVOmbjdXWaN/OZYocOukHVqw==
-X-Received: by 2002:a19:6d01:: with SMTP id i1mr214902lfc.422.1626299185256;
-        Wed, 14 Jul 2021 14:46:25 -0700 (PDT)
-Received: from gilgamesh.lab.semihalf.net ([83.142.187.85])
-        by smtp.gmail.com with ESMTPSA id s21sm370837lji.57.2021.07.14.14.46.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jul 2021 14:46:24 -0700 (PDT)
-From:   Marcin Wojtas <mw@semihalf.com>
-To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Cc:     jaz@semihalf.com, gjb@semihalf.com, upstream@semihalf.com,
-        Samer.El-Haj-Mahmoud@arm.com, jon@solid-run.com, tn@semihalf.com,
-        rjw@rjwysocki.net, lenb@kernel.org, robert.moore@intel.com,
-        Marcin Wojtas <mw@semihalf.com>
-Subject: [PATCH 2/2] ACPI: SPCR: Add support for the new 16550-compatible Serial Port Subtype
-Date:   Wed, 14 Jul 2021 23:43:46 +0200
-Message-Id: <20210714214346.1397942-3-mw@semihalf.com>
-X-Mailer: git-send-email 2.29.0
-In-Reply-To: <20210714214346.1397942-1-mw@semihalf.com>
-References: <20210714214346.1397942-1-mw@semihalf.com>
+        id S237613AbhGOEwg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Jul 2021 00:52:36 -0400
+Received: from mail.loongson.cn ([114.242.206.163]:35286 "EHLO loongson.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231599AbhGOEwg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 15 Jul 2021 00:52:36 -0400
+Received: by ajax-webmail-mail.loongson.cn (Coremail) ; Thu, 15 Jul 2021
+ 12:49:31 +0800 (GMT+08:00)
+X-Originating-IP: [112.20.113.90]
+Date:   Thu, 15 Jul 2021 12:49:31 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        "Len Brown" <lenb@kernel.org>,
+        "Robert Moore" <robert.moore@intel.com>,
+        "Erik Kaneda" <erik.kaneda@intel.com>,
+        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        "Xuefeng Li" <lixuefeng@loongson.cn>,
+        "Jiaxun Yang" <jiaxun.yang@flygoat.com>, chenhuacai@gmail.com
+Subject: Re: Re: [PATCH 1/3] ACPI: Add LoongArch support for
+ ACPI_PROCESSOR/ACPI_NUMA
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.10a build 20191018(4c4f6d15)
+ Copyright (c) 2002-2021 www.mailtech.cn .loongson.cn
+In-Reply-To: <CAJZ5v0gyun_85uXrH6jt-d3XjaOFZmHEYGnKKGL-XUb=4ZcrMQ@mail.gmail.com>
+References: <20210705124206.1228958-1-chenhuacai@loongson.cn>
+ <20210705124206.1228958-2-chenhuacai@loongson.cn>
+ <CAJZ5v0gyun_85uXrH6jt-d3XjaOFZmHEYGnKKGL-XUb=4ZcrMQ@mail.gmail.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <407870af.c1bf.17aa87f94db.Coremail.chenhuacai@loongson.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: AQAAf9DxD+Nbvu9gbD0gAA--.14199W
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQADBl3QvNq0HAAAsH
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Microsoft Debug Port Table 2 (DBG2) specification revision
-May 31, 2017 added definition of the 16550-compatible Serial Port
-Subtype with parameters defined in Generic Address Structure (GAS) [1]
-
-Add its support in the SPCR table parsing routine.
-
-[1] https://docs.microsoft.com/en-us/windows-hardware/drivers/bringup/acpi-debug-port-table
-
-Signed-off-by: Marcin Wojtas <mw@semihalf.com>
----
- drivers/acpi/spcr.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
-index 88460bacd5ae..25c2d0be953e 100644
---- a/drivers/acpi/spcr.c
-+++ b/drivers/acpi/spcr.c
-@@ -136,6 +136,7 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
- 		break;
- 	case ACPI_DBG2_16550_COMPATIBLE:
- 	case ACPI_DBG2_16550_SUBSET:
-+	case ACPI_DBG2_16550_WITH_GAS:
- 		uart = "uart";
- 		break;
- 	default:
--- 
-2.29.0
-
+SGksIFJhZmFlbCwKCgomZ3Q7IC0tLS0t5Y6f5aeL6YKu5Lu2LS0tLS0KJmd0OyDlj5Hku7bkuro6
+ICJSYWZhZWwgSi4gV3lzb2NraSIgPHJhZmFlbEBrZXJuZWwub3JnPgomZ3Q7IOWPkemAgeaXtumX
+tDogMjAyMS0wNy0xNCAyMDozMDozMyAo5pif5pyf5LiJKQomZ3Q7IOaUtuS7tuS6ujogIkh1YWNh
+aSBDaGVuIiA8Y2hlbmh1YWNhaUBsb29uZ3Nvbi5jbj4KJmd0OyDmioTpgIE6ICJSYWZhZWwgSiAu
+IFd5c29ja2kiIDxyandAcmp3eXNvY2tpLm5ldD4sICJMZW4gQnJvd24iIDxsZW5iQGtlcm5lbC5v
+cmc+LCAiUm9iZXJ0IE1vb3JlIiA8cm9iZXJ0Lm1vb3JlQGludGVsLmNvbT4sICJFcmlrIEthbmVk
+YSIgPGVyaWsua2FuZWRhQGludGVsLmNvbT4sICJBQ1BJIERldmVsIE1hbGluZyBMaXN0IiA8bGlu
+dXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc+LCAib3BlbiBsaXN0OkFDUEkgQ09NUE9ORU5UIEFSQ0hJ
+VEVDVFVSRSAoQUNQSUNBKSIgPGRldmVsQGFjcGljYS5vcmc+LCAiWHVlZmVuZyBMaSIgPGxpeHVl
+ZmVuZ0Bsb29uZ3Nvbi5jbj4sICJKaWF4dW4gWWFuZyIgPGppYXh1bi55YW5nQGZseWdvYXQuY29t
+PgomZ3Q7IOS4u+mimDogUmU6IFtQQVRDSCAxLzNdIEFDUEk6IEFkZCBMb29uZ0FyY2ggc3VwcG9y
+dCBmb3IgQUNQSV9QUk9DRVNTT1IvQUNQSV9OVU1BCiZndDsgCiZndDsgT24gTW9uLCBKdWwgNSwg
+MjAyMSBhdCAyOjQxIFBNIEh1YWNhaSBDaGVuIDxjaGVuaHVhY2FpQGxvb25nc29uLmNuPiB3cm90
+ZToKJmd0OyAmZ3Q7CiZndDsgJmd0OyBXZSBhcmUgcHJlcGFyaW5nIHRvIGFkZCBuZXcgTG9vbmdz
+b24gKGJhc2VkIG9uIExvb25nQXJjaCwgbm90IE1JUFMpCiZndDsgJmd0OyBzdXBwb3J0LiBMb29u
+Z0FyY2ggdXNlIEFDUEkgb3RoZXIgdGhhbiBEVCBhcyBpdHMgYm9vdCBwcm90b2NvbCwgc28KJmd0
+OyAmZ3Q7IGFkZCBpdHMgc3VwcG9ydCBmb3IgQUNQSV9QUk9DRVNTT1IvQUNQSV9OVU1BLgomZ3Q7
+ICZndDsKJmd0OyAmZ3Q7IFNpZ25lZC1vZmYtYnk6IEh1YWNhaSBDaGVuIDxjaGVuaHVhY2FpQGxv
+b25nc29uLmNuPgomZ3Q7ICZndDsgLS0tCiZndDsgJmd0OyAgZHJpdmVycy9hY3BpL0tjb25maWcg
+ICAgICB8IDQgKystLQomZ3Q7ICZndDsgIGRyaXZlcnMvYWNwaS9udW1hL0tjb25maWcgfCAyICst
+CiZndDsgJmd0OyAgZHJpdmVycy9hY3BpL251bWEvc3JhdC5jICB8IDIgKy0KJmd0OyAmZ3Q7ICBp
+bmNsdWRlL2xpbnV4L2FjcGkuaCAgICAgIHwgMiArLQomZ3Q7ICZndDsgIDQgZmlsZXMgY2hhbmdl
+ZCwgNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQomZ3Q7ICZndDsKJmd0OyAmZ3Q7IGRp
+ZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkvS2NvbmZpZyBiL2RyaXZlcnMvYWNwaS9LY29uZmlnCiZn
+dDsgJmd0OyBpbmRleCBmZTBiYjYyNzdlNGQuLjkwYWZhNDRlZmNiYSAxMDA2NDQKJmd0OyAmZ3Q7
+IC0tLSBhL2RyaXZlcnMvYWNwaS9LY29uZmlnCiZndDsgJmd0OyArKysgYi9kcml2ZXJzL2FjcGkv
+S2NvbmZpZwomZ3Q7ICZndDsgQEAgLTI4MCw5ICsyODAsOSBAQCBjb25maWcgQUNQSV9DUFBDX0xJ
+QgomZ3Q7ICZndDsKJmd0OyAmZ3Q7ICBjb25maWcgQUNQSV9QUk9DRVNTT1IKJmd0OyAmZ3Q7ICAg
+ICAgICAgdHJpc3RhdGUgIlByb2Nlc3NvciIKJmd0OyAmZ3Q7IC0gICAgICAgZGVwZW5kcyBvbiBY
+ODYgfHwgSUE2NCB8fCBBUk02NAomZ3Q7ICZndDsgKyAgICAgICBkZXBlbmRzIG9uIFg4NiB8fCBJ
+QTY0IHx8IEFSTTY0IHx8IExPT05HQVJDSAomZ3Q7ICZndDsgICAgICAgICBzZWxlY3QgQUNQSV9Q
+Uk9DRVNTT1JfSURMRQomZ3Q7ICZndDsgLSAgICAgICBzZWxlY3QgQUNQSV9DUFVfRlJFUV9QU1Mg
+aWYgWDg2IHx8IElBNjQKJmd0OyAmZ3Q7ICsgICAgICAgc2VsZWN0IEFDUElfQ1BVX0ZSRVFfUFNT
+IGlmIFg4NiB8fCBJQTY0IHx8IExPT05HQVJDSAomZ3Q7ICZndDsgICAgICAgICBkZWZhdWx0IHkK
+Jmd0OyAmZ3Q7ICAgICAgICAgaGVscAomZ3Q7ICZndDsgICAgICAgICAgIFRoaXMgZHJpdmVyIGFk
+ZHMgc3VwcG9ydCBmb3IgdGhlIEFDUEkgUHJvY2Vzc29yIHBhY2thZ2UuIEl0IGlzIHJlcXVpcmVk
+CiZndDsgJmd0OyBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL251bWEvS2NvbmZpZyBiL2RyaXZl
+cnMvYWNwaS9udW1hL0tjb25maWcKJmd0OyAmZ3Q7IGluZGV4IGZjZjJlNTU2ZDY5ZC4uMzliMWYz
+NGMyMWRmIDEwMDY0NAomZ3Q7ICZndDsgLS0tIGEvZHJpdmVycy9hY3BpL251bWEvS2NvbmZpZwom
+Z3Q7ICZndDsgKysrIGIvZHJpdmVycy9hY3BpL251bWEvS2NvbmZpZwomZ3Q7ICZndDsgQEAgLTIs
+NyArMiw3IEBACiZndDsgJmd0OyAgY29uZmlnIEFDUElfTlVNQQomZ3Q7ICZndDsgICAgICAgICBi
+b29sICJOVU1BIHN1cHBvcnQiCiZndDsgJmd0OyAgICAgICAgIGRlcGVuZHMgb24gTlVNQQomZ3Q7
+ICZndDsgLSAgICAgICBkZXBlbmRzIG9uIChYODYgfHwgSUE2NCB8fCBBUk02NCkKJmd0OyAmZ3Q7
+ICsgICAgICAgZGVwZW5kcyBvbiAoWDg2IHx8IElBNjQgfHwgQVJNNjQgfHwgTE9PTkdBUkNIKQom
+Z3Q7ICZndDsgICAgICAgICBkZWZhdWx0IHkgaWYgSUE2NCB8fCBBUk02NAomZ3Q7ICZndDsKJmd0
+OyAmZ3Q7ICBjb25maWcgQUNQSV9ITUFUCiZndDsgJmd0OyBkaWZmIC0tZ2l0IGEvZHJpdmVycy9h
+Y3BpL251bWEvc3JhdC5jIGIvZHJpdmVycy9hY3BpL251bWEvc3JhdC5jCiZndDsgJmd0OyBpbmRl
+eCA2MDIxYTEwMTM0NDIuLmI4Nzk1ZmM0OTA5NyAxMDA2NDQKJmd0OyAmZ3Q7IC0tLSBhL2RyaXZl
+cnMvYWNwaS9udW1hL3NyYXQuYwomZ3Q7ICZndDsgKysrIGIvZHJpdmVycy9hY3BpL251bWEvc3Jh
+dC5jCiZndDsgJmd0OyBAQCAtMjA2LDcgKzIwNiw3IEBAIGludCBfX2luaXQgc3JhdF9kaXNhYmxl
+ZCh2b2lkKQomZ3Q7ICZndDsgICAgICAgICByZXR1cm4gYWNwaV9udW1hICZsdDsgMDsKJmd0OyAm
+Z3Q7ICB9CiZndDsgJmd0OwomZ3Q7ICZndDsgLSNpZiBkZWZpbmVkKENPTkZJR19YODYpIHx8IGRl
+ZmluZWQoQ09ORklHX0FSTTY0KQomZ3Q7ICZndDsgKyNpZiBkZWZpbmVkKENPTkZJR19YODYpIHx8
+IGRlZmluZWQoQ09ORklHX0FSTTY0KSB8fCBkZWZpbmVkKENPTkZJR19MT09OR0FSQ0gpCiZndDsg
+Jmd0OyAgLyoKJmd0OyAmZ3Q7ICAgKiBDYWxsYmFjayBmb3IgU0xJVCBwYXJzaW5nLiAgcHhtX3Rv
+X25vZGUoKSByZXR1cm5zIE5VTUFfTk9fTk9ERSBmb3IKJmd0OyAmZ3Q7ICAgKiBJL08gbG9jYWxp
+dGllcyBzaW5jZSBTUkFUIGRvZXMgbm90IGxpc3QgdGhlbS4gIEkvTyBsb2NhbGl0aWVzIGFyZQom
+Z3Q7ICZndDsgZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvYWNwaS5oIGIvaW5jbHVkZS9saW51
+eC9hY3BpLmgKJmd0OyAmZ3Q7IGluZGV4IDZiYjM2ZmQ2YmEzMS4uM2JhODUxMWNiZWRlIDEwMDY0
+NAomZ3Q7ICZndDsgLS0tIGEvaW5jbHVkZS9saW51eC9hY3BpLmgKJmd0OyAmZ3Q7ICsrKyBiL2lu
+Y2x1ZGUvbGludXgvYWNwaS5oCiZndDsgJmd0OyBAQCAtMjQ5LDcgKzI0OSw3IEBAIHZvaWQgYWNw
+aV90YWJsZV9wcmludF9tYWR0X2VudHJ5IChzdHJ1Y3QgYWNwaV9zdWJ0YWJsZV9oZWFkZXIgKm1h
+ZHQpOwomZ3Q7ICZndDsgIC8qIHRoZSBmb2xsb3dpbmcgbnVtYSBmdW5jdGlvbnMgYXJlIGFyY2hp
+dGVjdHVyZS1kZXBlbmRlbnQgKi8KJmd0OyAmZ3Q7ICB2b2lkIGFjcGlfbnVtYV9zbGl0X2luaXQg
+KHN0cnVjdCBhY3BpX3RhYmxlX3NsaXQgKnNsaXQpOwomZ3Q7ICZndDsKJmd0OyAmZ3Q7IC0jaWYg
+ZGVmaW5lZChDT05GSUdfWDg2KSB8fCBkZWZpbmVkKENPTkZJR19JQTY0KQomZ3Q7ICZndDsgKyNp
+ZiBkZWZpbmVkKENPTkZJR19YODYpIHx8IGRlZmluZWQoQ09ORklHX0lBNjQpIHx8IGRlZmluZWQo
+Q09ORklHX0xPT05HQVJDSCkKJmd0OyAmZ3Q7ICB2b2lkIGFjcGlfbnVtYV9wcm9jZXNzb3JfYWZm
+aW5pdHlfaW5pdCAoc3RydWN0IGFjcGlfc3JhdF9jcHVfYWZmaW5pdHkgKnBhKTsKJmd0OyAmZ3Q7
+ICAjZWxzZQomZ3Q7ICZndDsgIHN0YXRpYyBpbmxpbmUgdm9pZAomZ3Q7ICZndDsgLS0KJmd0OyAK
+Jmd0OyBEb2VzIHRoaXMgcGF0Y2ggYWxvbmUgbWFrZSBzZW5zZSB3aXRob3V0IHRoZSBvdGhlciB0
+d28gaW4gdGhlIHNlcmllcz8KJmd0OyBJZiBzbywgSSBjYW4gcXVldWUgaXQgdXAgZm9yIDUuMTUs
+IHNvIHBsZWFzZSBsZXQgbWUga25vdy4KWWVzLCB0aGlzIHBhdGNoIGhhcyBubyBkZXBlbmRlbmN5
+IHdpdGggb3RoZXIgdHdvLgoKSHVhY2FpCiZndDsgCiZndDsgVGhhbmtzIQo8L2NoZW5odWFjYWlA
+bG9vbmdzb24uY24+PC9jaGVuaHVhY2FpQGxvb25nc29uLmNuPjwvamlheHVuLnlhbmdAZmx5Z29h
+dC5jb20+PC9saXh1ZWZlbmdAbG9vbmdzb24uY24+PC9kZXZlbEBhY3BpY2Eub3JnPjwvbGludXgt
+YWNwaUB2Z2VyLmtlcm5lbC5vcmc+PC9lcmlrLmthbmVkYUBpbnRlbC5jb20+PC9yb2JlcnQubW9v
+cmVAaW50ZWwuY29tPjwvbGVuYkBrZXJuZWwub3JnPjwvcmp3QHJqd3lzb2NraS5uZXQ+PC9jaGVu
+aHVhY2FpQGxvb25nc29uLmNuPjwvcmFmYWVsQGtlcm5lbC5vcmc+
