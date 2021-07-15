@@ -2,129 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81D283C97B9
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jul 2021 06:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E97373C99AF
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jul 2021 09:35:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237613AbhGOEwg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Jul 2021 00:52:36 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:35286 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231599AbhGOEwg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 15 Jul 2021 00:52:36 -0400
-Received: by ajax-webmail-mail.loongson.cn (Coremail) ; Thu, 15 Jul 2021
- 12:49:31 +0800 (GMT+08:00)
-X-Originating-IP: [112.20.113.90]
-Date:   Thu, 15 Jul 2021 12:49:31 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
+        id S234349AbhGOHhw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Jul 2021 03:37:52 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28]:49702 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229620AbhGOHhw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Jul 2021 03:37:52 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 30FC22278A;
+        Thu, 15 Jul 2021 07:34:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1626334498; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=W8D9wkVQjCjpsTZI0LeYY1YMvGOjfr6Eirr0wGuU3zw=;
+        b=APjYsBSzgmbv27H6ngdklOnm9sX810tgnWNVSpE3s+unB4aMNPcDpcvOGlmEiHo/xnNGMQ
+        zHqMGpiKfxahJdarGVTSMzzuZ5Mno14SlVZBzIxWzIj5dZLHjykzt6z2uVeiAJ0imSm3GT
+        /OKEyKp9e/6m+n19R8VOa9w1vzg4ij8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1626334498;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=W8D9wkVQjCjpsTZI0LeYY1YMvGOjfr6Eirr0wGuU3zw=;
+        b=j2sex9s0TGkB2tMcV8yUueddvu5574zDPkwrO+mqwSFNEYFpeaXk1dPvZEm49EyIY+DJOS
+        qzgb5Rk+EfrwCGCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D1CFA13C2C;
+        Thu, 15 Jul 2021 07:34:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id T82EMSHl72APZgAAMHmgww
+        (envelope-from <jroedel@suse.de>); Thu, 15 Jul 2021 07:34:57 +0000
+Date:   Thu, 15 Jul 2021 09:34:55 +0200
+From:   Joerg Roedel <jroedel@suse.de>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        "Len Brown" <lenb@kernel.org>,
-        "Robert Moore" <robert.moore@intel.com>,
-        "Erik Kaneda" <erik.kaneda@intel.com>,
-        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        "Xuefeng Li" <lixuefeng@loongson.cn>,
-        "Jiaxun Yang" <jiaxun.yang@flygoat.com>, chenhuacai@gmail.com
-Subject: Re: Re: [PATCH 1/3] ACPI: Add LoongArch support for
- ACPI_PROCESSOR/ACPI_NUMA
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.10a build 20191018(4c4f6d15)
- Copyright (c) 2002-2021 www.mailtech.cn .loongson.cn
-In-Reply-To: <CAJZ5v0gyun_85uXrH6jt-d3XjaOFZmHEYGnKKGL-XUb=4ZcrMQ@mail.gmail.com>
-References: <20210705124206.1228958-1-chenhuacai@loongson.cn>
- <20210705124206.1228958-2-chenhuacai@loongson.cn>
- <CAJZ5v0gyun_85uXrH6jt-d3XjaOFZmHEYGnKKGL-XUb=4ZcrMQ@mail.gmail.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+Cc:     Joerg Roedel <joro@8bytes.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] PCI/APCI: Move acpi_pci_osc_support() check to
+ negotiation phase
+Message-ID: <YO/lH2fEwTNeQso1@suse.de>
+References: <20210714085512.2176-1-joro@8bytes.org>
+ <20210714085512.2176-2-joro@8bytes.org>
+ <CAJZ5v0if-5A0vZSTeDvqLtqE2jZrKjCFcRouR2uFgycZ7CdWkg@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID: <407870af.c1bf.17aa87f94db.Coremail.chenhuacai@loongson.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: AQAAf9DxD+Nbvu9gbD0gAA--.14199W
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQADBl3QvNq0HAAAsH
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0if-5A0vZSTeDvqLtqE2jZrKjCFcRouR2uFgycZ7CdWkg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGksIFJhZmFlbCwKCgomZ3Q7IC0tLS0t5Y6f5aeL6YKu5Lu2LS0tLS0KJmd0OyDlj5Hku7bkuro6
-ICJSYWZhZWwgSi4gV3lzb2NraSIgPHJhZmFlbEBrZXJuZWwub3JnPgomZ3Q7IOWPkemAgeaXtumX
-tDogMjAyMS0wNy0xNCAyMDozMDozMyAo5pif5pyf5LiJKQomZ3Q7IOaUtuS7tuS6ujogIkh1YWNh
-aSBDaGVuIiA8Y2hlbmh1YWNhaUBsb29uZ3Nvbi5jbj4KJmd0OyDmioTpgIE6ICJSYWZhZWwgSiAu
-IFd5c29ja2kiIDxyandAcmp3eXNvY2tpLm5ldD4sICJMZW4gQnJvd24iIDxsZW5iQGtlcm5lbC5v
-cmc+LCAiUm9iZXJ0IE1vb3JlIiA8cm9iZXJ0Lm1vb3JlQGludGVsLmNvbT4sICJFcmlrIEthbmVk
-YSIgPGVyaWsua2FuZWRhQGludGVsLmNvbT4sICJBQ1BJIERldmVsIE1hbGluZyBMaXN0IiA8bGlu
-dXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc+LCAib3BlbiBsaXN0OkFDUEkgQ09NUE9ORU5UIEFSQ0hJ
-VEVDVFVSRSAoQUNQSUNBKSIgPGRldmVsQGFjcGljYS5vcmc+LCAiWHVlZmVuZyBMaSIgPGxpeHVl
-ZmVuZ0Bsb29uZ3Nvbi5jbj4sICJKaWF4dW4gWWFuZyIgPGppYXh1bi55YW5nQGZseWdvYXQuY29t
-PgomZ3Q7IOS4u+mimDogUmU6IFtQQVRDSCAxLzNdIEFDUEk6IEFkZCBMb29uZ0FyY2ggc3VwcG9y
-dCBmb3IgQUNQSV9QUk9DRVNTT1IvQUNQSV9OVU1BCiZndDsgCiZndDsgT24gTW9uLCBKdWwgNSwg
-MjAyMSBhdCAyOjQxIFBNIEh1YWNhaSBDaGVuIDxjaGVuaHVhY2FpQGxvb25nc29uLmNuPiB3cm90
-ZToKJmd0OyAmZ3Q7CiZndDsgJmd0OyBXZSBhcmUgcHJlcGFyaW5nIHRvIGFkZCBuZXcgTG9vbmdz
-b24gKGJhc2VkIG9uIExvb25nQXJjaCwgbm90IE1JUFMpCiZndDsgJmd0OyBzdXBwb3J0LiBMb29u
-Z0FyY2ggdXNlIEFDUEkgb3RoZXIgdGhhbiBEVCBhcyBpdHMgYm9vdCBwcm90b2NvbCwgc28KJmd0
-OyAmZ3Q7IGFkZCBpdHMgc3VwcG9ydCBmb3IgQUNQSV9QUk9DRVNTT1IvQUNQSV9OVU1BLgomZ3Q7
-ICZndDsKJmd0OyAmZ3Q7IFNpZ25lZC1vZmYtYnk6IEh1YWNhaSBDaGVuIDxjaGVuaHVhY2FpQGxv
-b25nc29uLmNuPgomZ3Q7ICZndDsgLS0tCiZndDsgJmd0OyAgZHJpdmVycy9hY3BpL0tjb25maWcg
-ICAgICB8IDQgKystLQomZ3Q7ICZndDsgIGRyaXZlcnMvYWNwaS9udW1hL0tjb25maWcgfCAyICst
-CiZndDsgJmd0OyAgZHJpdmVycy9hY3BpL251bWEvc3JhdC5jICB8IDIgKy0KJmd0OyAmZ3Q7ICBp
-bmNsdWRlL2xpbnV4L2FjcGkuaCAgICAgIHwgMiArLQomZ3Q7ICZndDsgIDQgZmlsZXMgY2hhbmdl
-ZCwgNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQomZ3Q7ICZndDsKJmd0OyAmZ3Q7IGRp
-ZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkvS2NvbmZpZyBiL2RyaXZlcnMvYWNwaS9LY29uZmlnCiZn
-dDsgJmd0OyBpbmRleCBmZTBiYjYyNzdlNGQuLjkwYWZhNDRlZmNiYSAxMDA2NDQKJmd0OyAmZ3Q7
-IC0tLSBhL2RyaXZlcnMvYWNwaS9LY29uZmlnCiZndDsgJmd0OyArKysgYi9kcml2ZXJzL2FjcGkv
-S2NvbmZpZwomZ3Q7ICZndDsgQEAgLTI4MCw5ICsyODAsOSBAQCBjb25maWcgQUNQSV9DUFBDX0xJ
-QgomZ3Q7ICZndDsKJmd0OyAmZ3Q7ICBjb25maWcgQUNQSV9QUk9DRVNTT1IKJmd0OyAmZ3Q7ICAg
-ICAgICAgdHJpc3RhdGUgIlByb2Nlc3NvciIKJmd0OyAmZ3Q7IC0gICAgICAgZGVwZW5kcyBvbiBY
-ODYgfHwgSUE2NCB8fCBBUk02NAomZ3Q7ICZndDsgKyAgICAgICBkZXBlbmRzIG9uIFg4NiB8fCBJ
-QTY0IHx8IEFSTTY0IHx8IExPT05HQVJDSAomZ3Q7ICZndDsgICAgICAgICBzZWxlY3QgQUNQSV9Q
-Uk9DRVNTT1JfSURMRQomZ3Q7ICZndDsgLSAgICAgICBzZWxlY3QgQUNQSV9DUFVfRlJFUV9QU1Mg
-aWYgWDg2IHx8IElBNjQKJmd0OyAmZ3Q7ICsgICAgICAgc2VsZWN0IEFDUElfQ1BVX0ZSRVFfUFNT
-IGlmIFg4NiB8fCBJQTY0IHx8IExPT05HQVJDSAomZ3Q7ICZndDsgICAgICAgICBkZWZhdWx0IHkK
-Jmd0OyAmZ3Q7ICAgICAgICAgaGVscAomZ3Q7ICZndDsgICAgICAgICAgIFRoaXMgZHJpdmVyIGFk
-ZHMgc3VwcG9ydCBmb3IgdGhlIEFDUEkgUHJvY2Vzc29yIHBhY2thZ2UuIEl0IGlzIHJlcXVpcmVk
-CiZndDsgJmd0OyBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL251bWEvS2NvbmZpZyBiL2RyaXZl
-cnMvYWNwaS9udW1hL0tjb25maWcKJmd0OyAmZ3Q7IGluZGV4IGZjZjJlNTU2ZDY5ZC4uMzliMWYz
-NGMyMWRmIDEwMDY0NAomZ3Q7ICZndDsgLS0tIGEvZHJpdmVycy9hY3BpL251bWEvS2NvbmZpZwom
-Z3Q7ICZndDsgKysrIGIvZHJpdmVycy9hY3BpL251bWEvS2NvbmZpZwomZ3Q7ICZndDsgQEAgLTIs
-NyArMiw3IEBACiZndDsgJmd0OyAgY29uZmlnIEFDUElfTlVNQQomZ3Q7ICZndDsgICAgICAgICBi
-b29sICJOVU1BIHN1cHBvcnQiCiZndDsgJmd0OyAgICAgICAgIGRlcGVuZHMgb24gTlVNQQomZ3Q7
-ICZndDsgLSAgICAgICBkZXBlbmRzIG9uIChYODYgfHwgSUE2NCB8fCBBUk02NCkKJmd0OyAmZ3Q7
-ICsgICAgICAgZGVwZW5kcyBvbiAoWDg2IHx8IElBNjQgfHwgQVJNNjQgfHwgTE9PTkdBUkNIKQom
-Z3Q7ICZndDsgICAgICAgICBkZWZhdWx0IHkgaWYgSUE2NCB8fCBBUk02NAomZ3Q7ICZndDsKJmd0
-OyAmZ3Q7ICBjb25maWcgQUNQSV9ITUFUCiZndDsgJmd0OyBkaWZmIC0tZ2l0IGEvZHJpdmVycy9h
-Y3BpL251bWEvc3JhdC5jIGIvZHJpdmVycy9hY3BpL251bWEvc3JhdC5jCiZndDsgJmd0OyBpbmRl
-eCA2MDIxYTEwMTM0NDIuLmI4Nzk1ZmM0OTA5NyAxMDA2NDQKJmd0OyAmZ3Q7IC0tLSBhL2RyaXZl
-cnMvYWNwaS9udW1hL3NyYXQuYwomZ3Q7ICZndDsgKysrIGIvZHJpdmVycy9hY3BpL251bWEvc3Jh
-dC5jCiZndDsgJmd0OyBAQCAtMjA2LDcgKzIwNiw3IEBAIGludCBfX2luaXQgc3JhdF9kaXNhYmxl
-ZCh2b2lkKQomZ3Q7ICZndDsgICAgICAgICByZXR1cm4gYWNwaV9udW1hICZsdDsgMDsKJmd0OyAm
-Z3Q7ICB9CiZndDsgJmd0OwomZ3Q7ICZndDsgLSNpZiBkZWZpbmVkKENPTkZJR19YODYpIHx8IGRl
-ZmluZWQoQ09ORklHX0FSTTY0KQomZ3Q7ICZndDsgKyNpZiBkZWZpbmVkKENPTkZJR19YODYpIHx8
-IGRlZmluZWQoQ09ORklHX0FSTTY0KSB8fCBkZWZpbmVkKENPTkZJR19MT09OR0FSQ0gpCiZndDsg
-Jmd0OyAgLyoKJmd0OyAmZ3Q7ICAgKiBDYWxsYmFjayBmb3IgU0xJVCBwYXJzaW5nLiAgcHhtX3Rv
-X25vZGUoKSByZXR1cm5zIE5VTUFfTk9fTk9ERSBmb3IKJmd0OyAmZ3Q7ICAgKiBJL08gbG9jYWxp
-dGllcyBzaW5jZSBTUkFUIGRvZXMgbm90IGxpc3QgdGhlbS4gIEkvTyBsb2NhbGl0aWVzIGFyZQom
-Z3Q7ICZndDsgZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvYWNwaS5oIGIvaW5jbHVkZS9saW51
-eC9hY3BpLmgKJmd0OyAmZ3Q7IGluZGV4IDZiYjM2ZmQ2YmEzMS4uM2JhODUxMWNiZWRlIDEwMDY0
-NAomZ3Q7ICZndDsgLS0tIGEvaW5jbHVkZS9saW51eC9hY3BpLmgKJmd0OyAmZ3Q7ICsrKyBiL2lu
-Y2x1ZGUvbGludXgvYWNwaS5oCiZndDsgJmd0OyBAQCAtMjQ5LDcgKzI0OSw3IEBAIHZvaWQgYWNw
-aV90YWJsZV9wcmludF9tYWR0X2VudHJ5IChzdHJ1Y3QgYWNwaV9zdWJ0YWJsZV9oZWFkZXIgKm1h
-ZHQpOwomZ3Q7ICZndDsgIC8qIHRoZSBmb2xsb3dpbmcgbnVtYSBmdW5jdGlvbnMgYXJlIGFyY2hp
-dGVjdHVyZS1kZXBlbmRlbnQgKi8KJmd0OyAmZ3Q7ICB2b2lkIGFjcGlfbnVtYV9zbGl0X2luaXQg
-KHN0cnVjdCBhY3BpX3RhYmxlX3NsaXQgKnNsaXQpOwomZ3Q7ICZndDsKJmd0OyAmZ3Q7IC0jaWYg
-ZGVmaW5lZChDT05GSUdfWDg2KSB8fCBkZWZpbmVkKENPTkZJR19JQTY0KQomZ3Q7ICZndDsgKyNp
-ZiBkZWZpbmVkKENPTkZJR19YODYpIHx8IGRlZmluZWQoQ09ORklHX0lBNjQpIHx8IGRlZmluZWQo
-Q09ORklHX0xPT05HQVJDSCkKJmd0OyAmZ3Q7ICB2b2lkIGFjcGlfbnVtYV9wcm9jZXNzb3JfYWZm
-aW5pdHlfaW5pdCAoc3RydWN0IGFjcGlfc3JhdF9jcHVfYWZmaW5pdHkgKnBhKTsKJmd0OyAmZ3Q7
-ICAjZWxzZQomZ3Q7ICZndDsgIHN0YXRpYyBpbmxpbmUgdm9pZAomZ3Q7ICZndDsgLS0KJmd0OyAK
-Jmd0OyBEb2VzIHRoaXMgcGF0Y2ggYWxvbmUgbWFrZSBzZW5zZSB3aXRob3V0IHRoZSBvdGhlciB0
-d28gaW4gdGhlIHNlcmllcz8KJmd0OyBJZiBzbywgSSBjYW4gcXVldWUgaXQgdXAgZm9yIDUuMTUs
-IHNvIHBsZWFzZSBsZXQgbWUga25vdy4KWWVzLCB0aGlzIHBhdGNoIGhhcyBubyBkZXBlbmRlbmN5
-IHdpdGggb3RoZXIgdHdvLgoKSHVhY2FpCiZndDsgCiZndDsgVGhhbmtzIQo8L2NoZW5odWFjYWlA
-bG9vbmdzb24uY24+PC9jaGVuaHVhY2FpQGxvb25nc29uLmNuPjwvamlheHVuLnlhbmdAZmx5Z29h
-dC5jb20+PC9saXh1ZWZlbmdAbG9vbmdzb24uY24+PC9kZXZlbEBhY3BpY2Eub3JnPjwvbGludXgt
-YWNwaUB2Z2VyLmtlcm5lbC5vcmc+PC9lcmlrLmthbmVkYUBpbnRlbC5jb20+PC9yb2JlcnQubW9v
-cmVAaW50ZWwuY29tPjwvbGVuYkBrZXJuZWwub3JnPjwvcmp3QHJqd3lzb2NraS5uZXQ+PC9jaGVu
-aHVhY2FpQGxvb25nc29uLmNuPjwvcmFmYWVsQGtlcm5lbC5vcmc+
+Hi Rafael,
+
+On Wed, Jul 14, 2021 at 02:04:17PM +0200, Rafael J. Wysocki wrote:
+> >         decode_osc_support(root, "OS supports", support);
+> > -       status = acpi_pci_osc_support(root, support);
+> > -       if (ACPI_FAILURE(status)) {
+> > -               *no_aspm = 1;
+> >
+> > -               /* _OSC is optional for PCI host bridges */
+> > -               if ((status == AE_NOT_FOUND) && !is_pcie)
+> > +       if (!pcie_ports_disabled) {
+> 
+> If pcie_ports_disabled is set, we don't want to request any control
+> from the platform firmware at all and, specifically, we don't want to
+> evaluate _OSC with the OSC_QUERY_ENABLE clear in
+> capbuf[OSC_QUERY_DWORD].
+> 
+> I'm not sure how this is achieved after your changes.
+
+Yeah, it isn't. The acpi_pci_osc_control_set() function will always do
+an _OSC call with OSC_QUERY_ENABLE clear. I will come up with a new
+approach.
+
+Thanks,
+
+	Joerg
+
