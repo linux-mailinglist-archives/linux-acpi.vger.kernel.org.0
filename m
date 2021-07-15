@@ -2,57 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA3A93C9BE5
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jul 2021 11:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3FE33C9BF0
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jul 2021 11:35:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235535AbhGOJez (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Jul 2021 05:34:55 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29]:50120 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233487AbhGOJey (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Jul 2021 05:34:54 -0400
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 18EB81FDFD;
-        Thu, 15 Jul 2021 09:32:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1626341520; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=MLv5bgPyPZ/99VSlXVeSEdpKHTQqgo5Imyesbas7viQ=;
-        b=ZRmRE3+NP6OfGMaASjmKDYmhh1Gc35DxuyIw8ArLNDXiXvyyIo8fGraZqIvotFtEkRQTq2
-        cmpPSexA+56IoUpEIUb29TWEAkx3S1sfpkoajCXovaxM6ILRkFOhZ4ltDx8bRxd6xY9+fB
-        QJew3j+y5JAYfdy3FaHZkAkz4KVlxsg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1626341520;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=MLv5bgPyPZ/99VSlXVeSEdpKHTQqgo5Imyesbas7viQ=;
-        b=fpQjexCLwxaDMk2nuloW7K6GAO0D5g32O4gvc0vy2yTSNi36N9VtVQxeVqctkbHVEhHD64
-        +/8XMN8CxGDhbcBQ==
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id B0AAF13AB6;
-        Thu, 15 Jul 2021 09:31:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap1.suse-dmz.suse.de with ESMTPSA
-        id WNi2J4wA8GBcBwAAGKfGzw
-        (envelope-from <osalvador@suse.de>); Thu, 15 Jul 2021 09:31:56 +0000
-Date:   Thu, 15 Jul 2021 11:31:54 +0200
-From:   Oscar Salvador <osalvador@suse.de>
+        id S230314AbhGOJiP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Jul 2021 05:38:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42014 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236202AbhGOJiO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 15 Jul 2021 05:38:14 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 336BEC061760
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Jul 2021 02:35:21 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id p22so4636739pfh.8
+        for <linux-acpi@vger.kernel.org>; Thu, 15 Jul 2021 02:35:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QXkiqMT/glRYwyHPQoyx3aDo7nh/1KZKgmUiqtcAPDY=;
+        b=MzDY4nkv0QsPl3RRx5bPYDTbkke6SLjvc2oe/RSnFjWPoG5T8dKKOpymsgn9qnMEo5
+         sHqxBMigOcqDJef4hC+9JXoGQOaC8weUX9BDwb4LL9Bd7P0Krz13fdt/z7yzOy3r9d5S
+         rG3d/tO8xgT4XztexfXgIp3IDYBeGN9W+twCbHxAaE97054zyI195LlstTaa9miNyIXM
+         ZtVHwqJ28F/LP7I/1SsMcG0zjwTSwJpQ0xkHBDByyigddb4j1A3R2obUCxlnJQF5ykQN
+         Ztp7XfV6waqivs0muPAXuxlF2/iTY49SqqzHdAHr2xrNm0uZ88d8P0soxXfEf0udttiW
+         YxVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QXkiqMT/glRYwyHPQoyx3aDo7nh/1KZKgmUiqtcAPDY=;
+        b=gQe3l7iowuyRlRKA8y2rIDCrV9DuBN5PKv2Xtugpcyo2xAJGc09mKDLESnIaXRGIKO
+         yZcgt98d25eDFpEgIPZg1aHMGE+RvnvaMtZ0dm47OKRMjz0OMevQA2VrczJ0SCfFN1D8
+         TfQGIxyFljBYfFV2d0aEzzzU5PBDbmQyHUyBEcevJehRr4YKp0IL1CT0NRviEei+DTQr
+         +251lwnO1r4xOOuEPsmGZlEe5zNlocV9iflQ4GitFeizmUijswoe1zQpHMNO5CsQd93P
+         Pr6MmJLbrA9lIPjsry7v3eZEKDHawdnBApEFgCB1IE/lXEfW9or3Ah53ltpiSViOJVwe
+         svGQ==
+X-Gm-Message-State: AOAM531WqLLV4cmQnNi0GduRpJpTOJvVgZ9FgMD52mmBLKTqgyGtvUJ6
+        b3SGYXN3ajPJ7c2ex/sCHh6Ga2fMqU+WpXUtvGpS2w==
+X-Google-Smtp-Source: ABdhPJy2uQJqyr3RFS9AkYE3fVuTqbnURkqwNQ1RLEW+9aA5TH6NCB5ZJZS9dFUK64ivUOQm56b4e/NNJvAz5zqRy3A=
+X-Received: by 2002:a05:6a00:1508:b029:332:3aab:d842 with SMTP id
+ q8-20020a056a001508b02903323aabd842mr3528446pfu.59.1626341720657; Thu, 15 Jul
+ 2021 02:35:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210712124052.26491-1-david@redhat.com> <20210712124052.26491-2-david@redhat.com>
+In-Reply-To: <20210712124052.26491-2-david@redhat.com>
+From:   Muchun Song <songmuchun@bytedance.com>
+Date:   Thu, 15 Jul 2021 17:34:44 +0800
+Message-ID: <CAMZfGtVtUZphhNiKEZ2Xj7gTbkG0YaV5oxPRy-Kiw+J_NO9=ag@mail.gmail.com>
+Subject: Re: [PATCH v1 1/4] mm/memory_hotplug: use "unsigned long" for PFN in zone_for_pfn_range()
 To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Vitaly Kuznetsov <vkuznets@redhat.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
         Jason Wang <jasowang@redhat.com>,
         Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
         Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Oscar Salvador <osalvador@suse.de>,
         Michal Hocko <mhocko@kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
         Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -95,33 +103,21 @@ Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         Vishal Verma <vishal.l.verma@intel.com>,
         Will Deacon <will@kernel.org>,
         Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH v1 1/4] mm/memory_hotplug: use "unsigned long" for PFN in
- zone_for_pfn_range()
-Message-ID: <20210715093146.GA759@linux>
-References: <20210712124052.26491-1-david@redhat.com>
- <20210712124052.26491-2-david@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210712124052.26491-2-david@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jul 12, 2021 at 02:40:49PM +0200, David Hildenbrand wrote:
+On Mon, Jul 12, 2021 at 8:42 PM David Hildenbrand <david@redhat.com> wrote:
+>
 > Checkpatch complained on a follow-up patch that we are using "unsigned"
 > here, which defaults to "unsigned int" and checkpatch is correct.
-> 
+>
 > Use "unsigned long" instead, just as we do in other places when handling
 > PFNs. This can bite us once we have physical addresses in the range of
 > multiple TB.
-> 
+>
 > Fixes: e5e689302633 ("mm, memory_hotplug: display allowed zones in the preferred ordering")
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-
--- 
-Oscar Salvador
-SUSE L3
+Reviewed-by: Muchun Song <songmuchun@bytedance.com>
