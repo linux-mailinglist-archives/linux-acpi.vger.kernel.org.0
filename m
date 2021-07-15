@@ -2,207 +2,213 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2702C3CA0A0
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jul 2021 16:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0A613CA03C
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Jul 2021 16:07:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231941AbhGOObp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 15 Jul 2021 10:31:45 -0400
-Received: from elvis.franken.de ([193.175.24.41]:59759 "EHLO elvis.franken.de"
+        id S238388AbhGOOK2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 15 Jul 2021 10:10:28 -0400
+Received: from mga12.intel.com ([192.55.52.136]:59890 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229624AbhGOObo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 15 Jul 2021 10:31:44 -0400
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1m42Ly-0004w9-02; Thu, 15 Jul 2021 16:28:42 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id AC72DC099E; Thu, 15 Jul 2021 15:02:21 +0200 (CEST)
-Date:   Thu, 15 Jul 2021 15:02:21 +0200
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernel@pengutronix.de, Cornelia Huck <cohuck@redhat.com>,
-        linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Geoff Levand <geoff@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Stefan Richter <stefanr@s5r6.in-berlin.de>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
-        Moritz Fischer <mdf@kernel.org>,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
-        Jens Taprogge <jens.taprogge@taprogge.org>,
-        Johannes Thumshirn <morbidrsa@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Maxim Levitsky <maximlevitsky@gmail.com>,
-        Alex Dubov <oakad@yahoo.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Alexandre Bounine <alex.bou9@gmail.com>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Thorsten Scherer <t.scherer@eckelmann.de>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, Michael Buesch <m@bues.ch>,
-        Sven Van Asbroeck <TheSven73@gmail.com>,
-        Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Rob Herring <robh@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Kirti Wankhede <kwankhede@nvidia.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Martyn Welch <martyn@welchs.me.uk>,
-        Manohar Vanga <manohar.vanga@gmail.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Marc Zyngier <maz@kernel.org>,
-        Tyrel Datwyler <tyreld@linux.ibm.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Qinglang Miao <miaoqinglang@huawei.com>,
-        Alexey Kardashevskiy <aik@ozlabs.ru>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Joey Pabalan <jpabalanb@gmail.com>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Frank Li <lznuaa@gmail.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        Bodo Stroesser <bostroesser@gmail.com>,
-        Hannes Reinecke <hare@suse.de>,
-        David Woodhouse <dwmw@amazon.co.uk>,
-        SeongJae Park <sjpark@amazon.de>,
-        Julien Grall <jgrall@amazon.com>,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-sunxi@lists.linux.dev, linux-cxl@vger.kernel.org,
-        nvdimm@lists.linux.dev, dmaengine@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux-fpga@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
-        industrypack-devel@lists.sourceforge.net,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
-        greybus-dev@lists.linaro.org, target-devel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-serial@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
-        xen-devel@lists.xenproject.org,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Johannes Thumshirn <jth@kernel.org>
-Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
-Message-ID: <20210715130221.GA10298@alpha.franken.de>
-References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
- <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+        id S231446AbhGOOK1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 15 Jul 2021 10:10:27 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10045"; a="190232478"
+X-IronPort-AV: E=Sophos;i="5.84,242,1620716400"; 
+   d="scan'208";a="190232478"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2021 07:07:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,242,1620716400"; 
+   d="scan'208";a="495445439"
+Received: from orsmsx606.amr.corp.intel.com ([10.22.229.19])
+  by FMSMGA003.fm.intel.com with ESMTP; 15 Jul 2021 07:07:33 -0700
+Received: from orsmsx605.amr.corp.intel.com (10.22.229.18) by
+ ORSMSX606.amr.corp.intel.com (10.22.229.19) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.10; Thu, 15 Jul 2021 07:07:31 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx605.amr.corp.intel.com (10.22.229.18) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4
+ via Frontend Transport; Thu, 15 Jul 2021 07:07:31 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.175)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2242.10; Thu, 15 Jul 2021 07:07:31 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ev1doja6eC+21ZYreweoam3UNEiyDlE4UdHcNc9B2SpnI56T+ouH6wvfkItf6eob3M1ZiL7SoVPY9Lfx4ghGC2KforbCCVRDO+sb85CBhu08XFBVJaMCHwyLXGL4VuwSSTG9u8VqX3AENFAw+fYyPqCifvvSHmy5DfAN5kufgpmuEf11MMkqXioqPjTghklfY9cZ/vCExPEwl/CZGYp8dJ5viUujVUz3I5gQIE5VCQLwiUfraaHsa9k/CEhJbVlD6ktEh0S8B02AmS5Egzvaj0uHxQ801+JegL3e6cTodVYdArzgtA94gMzyu662+s5w9U2S33tRY+Stzf2IDqBn0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pQBdv8XpvtSkWtfTDa6UYa928vjjCK6yigCXiAlstck=;
+ b=Nh3jiv6f1fTeR2Urea+NAlPMpcPLWgdaRXXh7LsJNprirl/fkdDmIkhoICB6BYVbpYKDHU+M1m9zUuS14roG73eP2/j+BME7cFfVfdcxDVEg+4lW1lzf4c5MZhm4zgxeRMk51wOYwwP3cJBffkSdYUuclVqhjFZZeH2iiq8JFHUY2DNlKJIXQjWPBXIXxA2sKvwTgQmhmHoDKZfW6zeQqZC/wK7zTY38zacFE8Gxz1ZClLWlPSFyc+67ws0AABfsXKPUwKPi8jKgtixN+TJqvnLIH8xXkn0w1K56vIJmj385Cdhp16RfS/1xlgkN3SA5jAbsraty214WikMdwdMcKA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pQBdv8XpvtSkWtfTDa6UYa928vjjCK6yigCXiAlstck=;
+ b=fJMq7PAUwEwTGvCCrHXktM96iy5+DYYa1/prAWS0FSI/ie1ya9fV/avATlJ3AGK8jGBJHM+GZiRaetdZ7CYIFtTru0uyUlgdbOqTYIGoVe9ntUOZS3O9ah1pAnT4uSP3dCVOt+yb9K7/DnE6BZHhiDJFkeLs7TYvylkz3g/NfYw=
+Received: from BYAPR11MB3256.namprd11.prod.outlook.com (2603:10b6:a03:76::19)
+ by BYAPR11MB3446.namprd11.prod.outlook.com (2603:10b6:a03:1a::29) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.23; Thu, 15 Jul
+ 2021 14:07:28 +0000
+Received: from BYAPR11MB3256.namprd11.prod.outlook.com
+ ([fe80::f1f3:ba46:dd24:f466]) by BYAPR11MB3256.namprd11.prod.outlook.com
+ ([fe80::f1f3:ba46:dd24:f466%7]) with mapi id 15.20.4308.027; Thu, 15 Jul 2021
+ 14:07:28 +0000
+From:   "Moore, Robert" <robert.moore@intel.com>
+To:     Marcin Wojtas <mw@semihalf.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>
+CC:     "jaz@semihalf.com" <jaz@semihalf.com>,
+        "gjb@semihalf.com" <gjb@semihalf.com>,
+        "upstream@semihalf.com" <upstream@semihalf.com>,
+        "Samer.El-Haj-Mahmoud@arm.com" <Samer.El-Haj-Mahmoud@arm.com>,
+        "jon@solid-run.com" <jon@solid-run.com>,
+        "tn@semihalf.com" <tn@semihalf.com>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>
+Subject: RE: [PATCH 1/2] ACPICA: Add new DBG2 Serial Port Subtypes
+Thread-Topic: [PATCH 1/2] ACPICA: Add new DBG2 Serial Port Subtypes
+Thread-Index: AQHXePnnR//FH/r3cki0IN+Vh3tJWatEEynw
+Date:   Thu, 15 Jul 2021 14:07:28 +0000
+Message-ID: <BYAPR11MB3256CACCFB4A08B5D450D3A087129@BYAPR11MB3256.namprd11.prod.outlook.com>
+References: <20210714214346.1397942-1-mw@semihalf.com>
+ <20210714214346.1397942-2-mw@semihalf.com>
+In-Reply-To: <20210714214346.1397942-2-mw@semihalf.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.5.1.3
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: semihalf.com; dkim=none (message not signed)
+ header.d=none;semihalf.com; dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 3762b71d-8271-419f-a951-08d94799e138
+x-ms-traffictypediagnostic: BYAPR11MB3446:
+x-microsoft-antispam-prvs: <BYAPR11MB3446718EF5E57BE6440A944C87129@BYAPR11MB3446.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:374;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 1HWT/Yxtw0jj9gnvQXHR+kKb/rBiO+r8NLC5Tw8h/g27mmOoZZ+ufHRDsaKLj0OljGqiHSGCw6nezO7KQO5BJnWiHVur7CPTYi+SNnGu6p1mwNNaSA9fs2hC8HYNx45mJiKMI5fbNly0c/yUc9Xij/EOBWD+2bhv4p9k83i5lDmKdWw2UOMVUYAgIwYa9n5lGCAM786rffOEcfzsw0yT0CryrcbnkeRWmSd//pp/6oUpGV2Se35MHBl9IOk1R6w59CrIdcGpC9in+SN1zWmcI3FtkfYyvQ89DeCUIiigl2ThLNKZZdKlgYG732t8+SmcxLhwKYZ3ZAHJ5U+9gjiigS8plI/Ejgj6T5QPlxS4yhCVwS3Y16Y6iltAjir6QYdIcDzOhkDRLY4RPctdzLdg/Ut5nTKsL4C9/pytDBnKCysu/Yb9FVzqy7C0VPHP3eINGDTa8DfZGO3f4YgSdtxd2JzImD0Iy4+To3DB0kNhL2LrCLgzQp/Nnk+QAdCOgoK/JwcOz7kbYsROdgdwUBqL7z+d735Dfo+2Ni+086kAqAroKXvvPgUsTDEW3+0XXjm5dR/rKZCyBqw6aL9OwtLdVtnturEP+CuDvVYXiU1k3uirxYBbIXev7ffAN2CLCTE0BY57HBMjckDP0VIsjADKC5sTYrrRJUTecpK0G9x8BLIvb7nNoAA19SOXwNLukd1821v+PwAO3XbJtV6aREPWJsDnBhXu/4Z6oz6TtYVPDwZ3afeY4Xoib/Jgwl+rjkuw9Fi8Fb/5OxwJqTgdHSdaalgo4LiWywc1qu/5JUADui+ckBGzGkFVYSssFprpDJyZdJyfWVN7CcgxUgDjg3yMBw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3256.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(186003)(4326008)(71200400001)(86362001)(6506007)(52536014)(64756008)(66446008)(83380400001)(66556008)(66476007)(66946007)(316002)(8936002)(2906002)(54906003)(5660300002)(53546011)(76116006)(110136005)(122000001)(55016002)(8676002)(966005)(33656002)(38100700002)(26005)(7696005)(9686003)(7416002)(45080400002)(478600001)(38070700004);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?h3F+9zv7A560Iup7AhONYCGU5zBmOq+Wy85jKCkSvap2mkOYM7HsoNYYhshq?=
+ =?us-ascii?Q?YGiNK4ZUK4X1vLHKMhMma9yakkWtloKe3v7UBEZUHqWyHwJfOL4j82jaT2Jj?=
+ =?us-ascii?Q?axpHxWJayj3577g4xuvcr4li2wrcs7BVqytGJ8NXclKYmVg+6LCzklksa+J5?=
+ =?us-ascii?Q?lNTMebGFZu0xWeNqepT21gKMzg3A0o8Gri1g+6jRFQRdh8352Uz3cUgDHhmx?=
+ =?us-ascii?Q?9AYjvaoyRkThXxPSSQ4UYjLC3VSJjVZVx3YnydAthdj3jIec1DQ1JdLo0rrg?=
+ =?us-ascii?Q?5FXuDUFnikD2X0ngRWAeRjGXl6VQxt/AAiAtAjkKVveMl8WkAA4qtTmRJGJm?=
+ =?us-ascii?Q?WWg08hAb7k4w9ZQ0HgWv0IFPs31iZ+QOR4XSf7B11EN+t164jf9jwaBdb5ph?=
+ =?us-ascii?Q?CHFMDHfvp764SU8E4UGyYoOrhpaqRx1KOu04+msjQF0/Eb2OBPkYEszTkWBY?=
+ =?us-ascii?Q?mmle5WxJ5UtyT3tR/NwB9A3DEYoxpPuTEYzl/nJHxOA56Rf8pK0ptHTbG2TX?=
+ =?us-ascii?Q?P2fOfNmgZCD/SyaCYKiBk/Cyp5kp8CHc6s++YSm4Sd2CtVukKOy2ybVAPgXB?=
+ =?us-ascii?Q?Grod/8Lt0+PaEAN3EXAOMdmZ+YYdveFhWHLy0s48jWG/LnCR7XZptX/be/V8?=
+ =?us-ascii?Q?Rj3FdwrkCFTWvxo/A5dW0MKSwsEcI6AcBPLdwDUl1L4NGwFuQvs9pFBaOkAY?=
+ =?us-ascii?Q?BtDOR86KIOs1C2VcMiX2A4Dgkc2VcAWxC87k5yHJB5+DyUzf5FfcAo9+nYTi?=
+ =?us-ascii?Q?jZgtt/u6NzCvxFzgs3J7/nrHyuNly3sBj7Cb4WdSREU8JJZNDp2ytz8K8ypd?=
+ =?us-ascii?Q?2cLr1+yda1FPjSDtilYd04L/HgrPR2DkBw4vtnusf5zubzlliyIhkye4ahYS?=
+ =?us-ascii?Q?CzGIEkKfkgIiLe8SHVVPXOPwaMx8ffyW5Rcfa5IBH7mH4vWRJeJmTlItbdob?=
+ =?us-ascii?Q?ZrFPl54OMKn1vhhaNMtuptqpl/RVTlZlqZ5y/29FPcnTv5cwwrCoMfC0qfXW?=
+ =?us-ascii?Q?nDwJcM5/IMdkz5uR57KtMz++W5/qvZ2AvC6Qgsfq5FplboL9dpLE426wTyrM?=
+ =?us-ascii?Q?YQSGT7qSgkT8wXGMhZFva9XhwN/6MiRtvyBvAFjDQeLQ7CNSGjnRTKW5UEf6?=
+ =?us-ascii?Q?mypLlBvZSbTHytXkD70uoHfLDNTkWTcxyUYnnBu1SPTmasl3bPBDoxHUIdYl?=
+ =?us-ascii?Q?RoQ0xeDrtYw0iIJ6rpGXDi0fqQeXAzLDWC+IfuYpRRI2kb8f8QbGQaCOwBiL?=
+ =?us-ascii?Q?vXKcu5e/JQzpcvCj1EabddfAw+jOXTXmx0vLmT2kefRGNY6avd22C1OXWK00?=
+ =?us-ascii?Q?32V5rQcJ8ZbhacOXPSNnwTih?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3256.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3762b71d-8271-419f-a951-08d94799e138
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jul 2021 14:07:28.3141
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: yIaI63kJzqsO/PYoz4CJe3u1TUxgAobJN/bMyjec2KT+kzObUZisHdxPjV2M0MU+DUk9PJPHvnjCyWU2AqZ+AA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB3446
+X-OriginatorOrg: intel.com
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jul 06, 2021 at 05:48:03PM +0200, Uwe Kleine-König wrote:
-> The driver core ignores the return value of this callback because there
-> is only little it can do when a device disappears.
-> 
-> This is the final bit of a long lasting cleanup quest where several
-> buses were converted to also return void from their remove callback.
-> Additionally some resource leaks were fixed that were caused by drivers
-> returning an error code in the expectation that the driver won't go
-> away.
-> 
-> With struct bus_type::remove returning void it's prevented that newly
-> implemented buses return an ignored error code and so don't anticipate
-> wrong expectations for driver authors.
-> 
-> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk> (For ARM, Amba and related parts)
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Chen-Yu Tsai <wens@csie.org> (for drivers/bus/sunxi-rsb.c)
-> Acked-by: Pali Rohár <pali@kernel.org>
-> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> (for drivers/media)
-> Acked-by: Hans de Goede <hdegoede@redhat.com> (For drivers/platform)
-> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Acked-By: Vinod Koul <vkoul@kernel.org>
-> Acked-by: Juergen Gross <jgross@suse.com> (For Xen)
-> Acked-by: Lee Jones <lee.jones@linaro.org> (For drivers/mfd)
-> Acked-by: Johannes Thumshirn <jth@kernel.org> (For drivers/mcb)
-> Acked-by: Johan Hovold <johan@kernel.org>
-> Acked-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org> (For drivers/slimbus)
-> Acked-by: Kirti Wankhede <kwankhede@nvidia.com> (For drivers/vfio)
-> Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com> (For ulpi and typec)
-> Acked-by: Samuel Iglesias Gonsálvez <siglesias@igalia.com> (For ipack)
-> Reviewed-by: Tom Rix <trix@redhat.com> (For fpga)
-> Acked-by: Geoff Levand <geoff@infradead.org> (For ps3)
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> ---
-> [...] 
->  arch/mips/sgi-ip22/ip22-gio.c             | 3 +--
+This was already reported (with a patch that we've already merged) by semih=
+alf-wojtas-marcin
 
-Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+-----Original Message-----
+From: Marcin Wojtas <mw@semihalf.com>=20
+Sent: Wednesday, July 14, 2021 2:44 PM
+To: linux-kernel@vger.kernel.org; linux-acpi@vger.kernel.org; devel@acpica.=
+org
+Cc: jaz@semihalf.com; gjb@semihalf.com; upstream@semihalf.com; Samer.El-Haj=
+-Mahmoud@arm.com; jon@solid-run.com; tn@semihalf.com; rjw@rjwysocki.net; le=
+nb@kernel.org; Moore, Robert <robert.moore@intel.com>; Marcin Wojtas <mw@se=
+mihalf.com>
+Subject: [PATCH 1/2] ACPICA: Add new DBG2 Serial Port Subtypes
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+ACPICA commit d95c7d206b5836c7770e8e9cd613859887fded8f
+
+The Microsoft Debug Port Table 2 (DBG2) specification revision September 21=
+, 2020 comprises additional Serial Port Subtypes [1].
+Reflect that in the actbl1.h header file.
+
+[1] https://docs.microsoft.com/en-us/windows-hardware/drivers/bringup/acpi-=
+debug-port-table
+
+Link: https://github.com/acpica/acpica/commit/d95c7d20
+Signed-off-by: Marcin Wojtas <mw@semihalf.com>
+---
+ include/acpi/actbl1.h | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h index ef2872dea0=
+1c..7bbb3e2bd33f 100644
+--- a/include/acpi/actbl1.h
++++ b/include/acpi/actbl1.h
+@@ -482,7 +482,7 @@ struct acpi_csrt_descriptor {
+  * DBG2 - Debug Port Table 2
+  *        Version 0 (Both main table and subtables)
+  *
+- * Conforms to "Microsoft Debug Port Table 2 (DBG2)", December 10, 2015
++ * Conforms to "Microsoft Debug Port Table 2 (DBG2)", September 21,=20
++ 2020
+  *
+  *************************************************************************=
+*****/
+=20
+@@ -532,11 +532,24 @@ struct acpi_dbg2_device {
+=20
+ #define ACPI_DBG2_16550_COMPATIBLE  0x0000
+ #define ACPI_DBG2_16550_SUBSET      0x0001
++#define ACPI_DBG2_MAX311XE_SPI      0x0002
+ #define ACPI_DBG2_ARM_PL011         0x0003
++#define ACPI_DBG2_MSM8X60           0x0004
++#define ACPI_DBG2_16550_NVIDIA      0x0005
++#define ACPI_DBG2_TI_OMAP           0x0006
++#define ACPI_DBG2_APM88XXXX         0x0008
++#define ACPI_DBG2_MSM8974           0x0009
++#define ACPI_DBG2_SAM5250           0x000A
++#define ACPI_DBG2_INTEL_USIF        0x000B
++#define ACPI_DBG2_IMX6              0x000C
+ #define ACPI_DBG2_ARM_SBSA_32BIT    0x000D
+ #define ACPI_DBG2_ARM_SBSA_GENERIC  0x000E
+ #define ACPI_DBG2_ARM_DCC           0x000F
+ #define ACPI_DBG2_BCM2835           0x0010
++#define ACPI_DBG2_SDM845_1_8432MHZ  0x0011
++#define ACPI_DBG2_16550_WITH_GAS    0x0012
++#define ACPI_DBG2_SDM845_7_372MHZ   0x0013
++#define ACPI_DBG2_INTEL_LPSS        0x0014
+=20
+ #define ACPI_DBG2_1394_STANDARD     0x0000
+=20
+--
+2.29.0
+
