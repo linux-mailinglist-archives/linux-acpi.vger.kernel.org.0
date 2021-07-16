@@ -2,137 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEE4A3CB484
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jul 2021 10:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5113CB54B
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jul 2021 11:32:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237055AbhGPIi7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Jul 2021 04:38:59 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3426 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232016AbhGPIi7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jul 2021 04:38:59 -0400
-Received: from fraeml704-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GR46T1Xzgz6H7NP;
-        Fri, 16 Jul 2021 16:24:49 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml704-chm.china.huawei.com (10.206.15.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Fri, 16 Jul 2021 10:36:03 +0200
-Received: from A2006125610.china.huawei.com (10.47.80.222) by
- lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Fri, 16 Jul 2021 09:35:56 +0100
-From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-To:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
-CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
-        <joro@8bytes.org>, <robin.murphy@arm.com>,
-        <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
-        <steven.price@arm.com>, <Sami.Mujawar@arm.com>,
-        <jon@solid-run.com>, <eric.auger@redhat.com>,
-        <yangyicong@huawei.com>
-Subject: [PATCH v6 9/9] iommu/dma: Reserve any RMR regions associated with a dev
-Date:   Fri, 16 Jul 2021 09:34:42 +0100
-Message-ID: <20210716083442.1708-10-shameerali.kolothum.thodi@huawei.com>
-X-Mailer: git-send-email 2.12.0.windows.1
-In-Reply-To: <20210716083442.1708-1-shameerali.kolothum.thodi@huawei.com>
-References: <20210716083442.1708-1-shameerali.kolothum.thodi@huawei.com>
+        id S233364AbhGPJf0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 16 Jul 2021 05:35:26 -0400
+Received: from mga12.intel.com ([192.55.52.136]:13721 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232617AbhGPJfX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 16 Jul 2021 05:35:23 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10046"; a="190385471"
+X-IronPort-AV: E=Sophos;i="5.84,244,1620716400"; 
+   d="scan'208";a="190385471"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2021 02:32:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,244,1620716400"; 
+   d="scan'208";a="573616163"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 16 Jul 2021 02:32:15 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 16 Jul 2021 12:32:14 +0300
+Date:   Fri, 16 Jul 2021 12:32:14 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     laurentiu.tudor@nxp.com
+Cc:     andriy.shevchenko@linux.intel.com, gregkh@linuxfoundation.org,
+        rafael@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, jon@solid-run.com
+Subject: Re: [RFC PATCH] software node: balance refcount for managed sw nodes
+Message-ID: <YPFSHiHZzjwJD2PI@kuha.fi.intel.com>
+References: <20210716081711.7638-1-laurentiu.tudor@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.47.80.222]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210716081711.7638-1-laurentiu.tudor@nxp.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Get ACPI IORT RMR regions associated with a dev reserved
-so that there is a unity mapping for them in SMMU.
+Fri, Jul 16, 2021 at 11:17:11AM +0300, laurentiu.tudor@nxp.com kirjoitti:
+> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+> 
+> software_node_notify(), on KOBJ_REMOVE drops the refcount twice on managed
+> software nodes, thus leading to underflow errors. Balance the refcount by
+> bumping it in the device_create_managed_software_node() function.
+> 
+> The error [1] was encountered after adding a .shutdown() op to our
+> fsl-mc-bus driver.
+> 
+> [1]
+> pc : refcount_warn_saturate+0xf8/0x150
+> lr : refcount_warn_saturate+0xf8/0x150
+> sp : ffff80001009b920
+> x29: ffff80001009b920 x28: ffff1a2420318000 x27: 0000000000000000
+> x26: ffffccac15e7a038 x25: 0000000000000008 x24: ffffccac168e0030
+> x23: ffff1a2428a82000 x22: 0000000000080000 x21: ffff1a24287b5000
+> x20: 0000000000000001 x19: ffff1a24261f4400 x18: ffffffffffffffff
+> x17: 6f72645f726f7272 x16: 0000000000000000 x15: ffff80009009b607
+> x14: 0000000000000000 x13: ffffccac16602670 x12: 0000000000000a17
+> x11: 000000000000035d x10: ffffccac16602670 x9 : ffffccac16602670
+> x8 : 00000000ffffefff x7 : ffffccac1665a670 x6 : ffffccac1665a670
+> x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000ffffffff
+> x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff1a2420318000
+> Call trace:
+>  refcount_warn_saturate+0xf8/0x150
+>  kobject_put+0x10c/0x120
+>  software_node_notify+0xd8/0x140
+>  device_platform_notify+0x4c/0xb4
+>  device_del+0x188/0x424
+>  fsl_mc_device_remove+0x2c/0x4c
+>  rebofind sp.c__fsl_mc_device_remove+0x14/0x2c
+>  device_for_each_child+0x5c/0xac
+>  dprc_remove+0x9c/0xc0
+>  fsl_mc_driver_remove+0x28/0x64
+>  __device_release_driver+0x188/0x22c
+>  device_release_driver+0x30/0x50
+>  bus_remove_device+0x128/0x134
+>  device_del+0x16c/0x424
+>  fsl_mc_bus_remove+0x8c/0x114
+>  fsl_mc_bus_shutdown+0x14/0x20
+>  platform_shutdown+0x28/0x40
+>  device_shutdown+0x15c/0x330
+>  __do_sys_reboot+0x218/0x2a0
+>  __arm64_sys_reboot+0x28/0x34
+>  invoke_syscall+0x48/0x114
+>  el0_svc_common+0x40/0xdc
+>  do_el0_svc+0x2c/0x94
+>  el0_svc+0x2c/0x54
+>  el0t_64_sync_handler+0xa8/0x12c
+>  el0t_64_sync+0x198/0x19c
+> ---[ end trace 32eb1c71c7d86821 ]---
+> 
+> Reported-by: Jon Nettleton <jon@solid-run.com>
+> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+> ---
+>  drivers/base/swnode.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index d1f1a8240120..907616ca487f 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -1113,6 +1113,8 @@ int device_create_managed_software_node(struct device *dev,
+>  	to_swnode(fwnode)->managed = true;
+>  	set_secondary_fwnode(dev, fwnode);
+>  
+> +	kobject_get(&to_swnode(fwnode)->kobj);
+> +
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(device_create_managed_software_node);
 
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
----
- drivers/iommu/dma-iommu.c | 56 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 51 insertions(+), 5 deletions(-)
+We can't increment the refcount uncoditionally like that. Would this
+work instead:
 
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 1b6e27475279..c1ae0c3d4b33 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -207,22 +207,68 @@ void iommu_dma_put_rmrs(struct fwnode_handle *iommu_fwnode,
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index d1f1a82401207..bdb50a06c82ae 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -1113,6 +1113,9 @@ int device_create_managed_software_node(struct device *dev,
+        to_swnode(fwnode)->managed = true;
+        set_secondary_fwnode(dev, fwnode);
+ 
++       if (device_is_registered(dev))
++               software_node_notify(dev, KOBJ_ADD);
++
+        return 0;
  }
- EXPORT_SYMBOL(iommu_dma_put_rmrs);
- 
-+static bool iommu_dma_dev_has_rmr(struct iommu_fwspec *fwspec,
-+				  struct iommu_resv_region *e)
-+{
-+	int i;
-+
-+	for (i = 0; i < fwspec->num_ids; i++) {
-+		if (e->fw_data.rmr.sid == fwspec->ids[i])
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static void iommu_dma_get_rmr_resv_regions(struct device *dev,
-+					   struct list_head *list)
-+{
-+	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-+	struct list_head rmr_list;
-+	struct iommu_resv_region *rmr, *tmp;
-+
-+	INIT_LIST_HEAD(&rmr_list);
-+	if (iommu_dma_get_rmrs(fwspec->iommu_fwnode, &rmr_list))
-+		return;
-+
-+	if (dev_is_pci(dev)) {
-+		struct pci_dev *pdev = to_pci_dev(dev);
-+		struct pci_host_bridge *host = pci_find_host_bridge(pdev->bus);
-+
-+		if (!host->preserve_config)
-+			return;
-+	}
-+
-+	list_for_each_entry_safe(rmr, tmp, &rmr_list, list) {
-+		if (!iommu_dma_dev_has_rmr(fwspec, rmr))
-+			continue;
-+
-+		/* Remove from iommu RMR list and add to dev resv_regions */
-+		list_del_init(&rmr->list);
-+		list_add_tail(&rmr->list, list);
-+	}
-+
-+	iommu_dma_put_rmrs(fwspec->iommu_fwnode, &rmr_list);
-+}
-+
- /**
-  * iommu_dma_get_resv_regions - Reserved region driver helper
-  * @dev: Device from iommu_get_resv_regions()
-  * @list: Reserved region list from iommu_get_resv_regions()
-  *
-  * IOMMU drivers can use this to implement their .get_resv_regions callback
-- * for general non-IOMMU-specific reservations. Currently, this covers GICv3
-- * ITS region reservation on ACPI based ARM platforms that may require HW MSI
-- * reservation.
-+ * for general non-IOMMU-specific reservations. Currently this covers,
-+ *  -GICv3 ITS region reservation on ACPI based ARM platforms that may
-+ *   require HW MSI reservation.
-+ *  -Any ACPI IORT RMR memory range reservations (IORT spec rev E.b)
-  */
- void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list)
- {
- 
--	if (!is_of_node(dev_iommu_fwspec_get(dev)->iommu_fwnode))
-+	if (!is_of_node(dev_iommu_fwspec_get(dev)->iommu_fwnode)) {
- 		iort_iommu_msi_get_resv_regions(dev, list);
--
-+		iommu_dma_get_rmr_resv_regions(dev, list);
-+	}
- }
- EXPORT_SYMBOL(iommu_dma_get_resv_regions);
- 
+ EXPORT_SYMBOL_GPL(device_create_managed_software_node);
+
+thanks,
+
 -- 
-2.17.1
-
+heikki
