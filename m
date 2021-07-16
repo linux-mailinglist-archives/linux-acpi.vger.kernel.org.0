@@ -2,145 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C71D3CBAF4
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jul 2021 19:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 621133CBB14
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jul 2021 19:22:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230270AbhGPROc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 16 Jul 2021 13:14:32 -0400
-Received: from mail-ot1-f47.google.com ([209.85.210.47]:41884 "EHLO
-        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230256AbhGPROb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jul 2021 13:14:31 -0400
-Received: by mail-ot1-f47.google.com with SMTP id f12-20020a056830204cb029048bcf4c6bd9so10540587otp.8
-        for <linux-acpi@vger.kernel.org>; Fri, 16 Jul 2021 10:11:36 -0700 (PDT)
+        id S231312AbhGPRZ3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 16 Jul 2021 13:25:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53436 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230476AbhGPRZ1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jul 2021 13:25:27 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BA95C061760
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Jul 2021 10:22:32 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id oz7so12443311ejc.2
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Jul 2021 10:22:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=solid-run-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3c+sIMooxtvDJVn8odY5JLFWl/IcyMyFIVxI67a4xSE=;
+        b=C/KEm8SY1qRUq8mfvLz7OVdGBiu3jZv76CDgZzY2pjAN2b4Wx2YLbSoRxo4KrQ5Ing
+         oZLQNbWqO67GD4pM9c8sevTAv4rCOm8nYLVIMxZNr5pXR0ma9pIFlzYXMaXh6Drv4FG5
+         H5a2NqUUia2w9A2+QMZ/tduTd4VTxtqYjqr66pTRe4Mxy26VP86vCKTDcbyt142T9DJ5
+         RCoMmd7r1+su12GBNvh6fUs2U0H38lW+rzaVVRq/yrqNQ4Yx3cTygD8KvO1iiPhc655M
+         7eD+aBBT3gaDqt/N0TCshI6/k3C3WIE4uRjhQtYg0liO5sY/sUFXER+PDXhBpsbBVSTq
+         o4zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=KNuTw/A4f9C8O7wXXOPp5dr/FmMmVJJ2W7NnHC4GCEs=;
-        b=KjGfC2fp/a/Z8Es2ywKgoPOroXSpjur1AuheEuudG647xC6Xyn30tw9pqQo8AUmm3x
-         miLXKjBIjo91QSF7CcC7yNqacrYQxTogN6+7TOFAUi0Daxijn1t5YkzN9rkYZ9Fv4iQh
-         OOKDpPA6eOK1iXNBZo627oN3dBrIzM6Ya7XjIM44IodfthxLyuJJCyF2agbvrggO4bYn
-         Igkda6yafM9qiP5UPNad/F5gEFdIAAQAdPUAnUXtrD2yUrtWHF/OHuUK6fFq6ZGlF+IP
-         8k1gK2ZuEZpJVBQ2nbXv7PjJ5VSWIuPIEy6YmLjFSoSK9qj2HFQz2kaZf3Q2VDtCbXGm
-         33Gg==
-X-Gm-Message-State: AOAM533Z+zY6OTGhPQ9cV3T3kbwo1DvB0NP1jYLT5D7PL4WcVwZ+NxuM
-        88CnI/iAR5y2oBna6liM8gqx+BLWJZi9KCzf76M=
-X-Google-Smtp-Source: ABdhPJw1JujzvbOp1ydZUW1nklRlfBPlOZ+7iC9huThdPtvWeFgpaIMOVTnw+lhDKgSgNPk+FwV3fn+tjyW9YjaOS2Q=
-X-Received: by 2002:a9d:5f19:: with SMTP id f25mr9330215oti.206.1626455496081;
- Fri, 16 Jul 2021 10:11:36 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=3c+sIMooxtvDJVn8odY5JLFWl/IcyMyFIVxI67a4xSE=;
+        b=iK0OYkfafPr73Eg72nHdhnuavGjS4yKuD3pwOMgHa0ggsfQRgUMa8UDlPeqnQnQDeW
+         7ycxvvEwkpz2FuZYwbqgSXfQ/XkkSDgmTeZBAs1VTZUyHA0cRf+Mkt3QLdRPrXUdrIPC
+         HkkoXT53obl3bE0b2Gl4eeH2+MvTShMIUsdrbQoJAJrrAClXCG2zdkjXTIIycb9DQfFa
+         cCHlNBQ2r4yPYvGdKVKpPa9FOe9snhpRRwnrJoFoarJj5j9WZWUZtGpGZaXkUeUB8C3n
+         ynuWdxoIvMTucX0h4aoL2OrDxJBUxLxq6G4ACtfXw0nx+xbor/qoA/dchVJTgkfN6LGG
+         +Ziw==
+X-Gm-Message-State: AOAM532zcGPCjuEKnszCYAymR6EXoBF5YMwV/AuL/qwlK74R1uIdu2Ka
+        o3dKGSGvvToXgnX0ap8bVNsZtIV0jcCyu0NWIKqUPw==
+X-Google-Smtp-Source: ABdhPJyLuAxVHnqK+wx3ejq+Fn8StY+eDIP0EU5IEIZdhxkZCMlzyXAdlFLhmjA8wtQaIy15/WQq4RqPdOpMXdZWDIU=
+X-Received: by 2002:a17:906:3699:: with SMTP id a25mr12875173ejc.452.1626456150821;
+ Fri, 16 Jul 2021 10:22:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210705124206.1228958-1-chenhuacai@loongson.cn>
- <20210705124206.1228958-2-chenhuacai@loongson.cn> <CAJZ5v0gyun_85uXrH6jt-d3XjaOFZmHEYGnKKGL-XUb=4ZcrMQ@mail.gmail.com>
- <407870af.c1bf.17aa87f94db.Coremail.chenhuacai@loongson.cn>
-In-Reply-To: <407870af.c1bf.17aa87f94db.Coremail.chenhuacai@loongson.cn>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 16 Jul 2021 19:11:25 +0200
-Message-ID: <CAJZ5v0juBC5USF_t-kF7Npk7onXF6SkKvwechuUYiM2jzFuN3Q@mail.gmail.com>
-Subject: Re: Re: [PATCH 1/3] ACPI: Add LoongArch support for ACPI_PROCESSOR/ACPI_NUMA
-To:     =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
+References: <20210716101602.1891-1-laurentiu.tudor@nxp.com> <YPF40t5bhgTFM2wK@smile.fi.intel.com>
+In-Reply-To: <YPF40t5bhgTFM2wK@smile.fi.intel.com>
+From:   Jon Nettleton <jon@solid-run.com>
+Date:   Fri, 16 Jul 2021 19:21:53 +0200
+Message-ID: <CABdtJHuKyybhJazpAc8KT54ELtZ319rdb6CbSH6zB5x3NhgtAw@mail.gmail.com>
+Subject: Re: [PATCH] software node: balance refcount for managed sw nodes
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>, chenhuacai@gmail.com
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 15, 2021 at 6:49 AM 陈华才 <chenhuacai@loongson.cn> wrote:
+On Fri, Jul 16, 2021 at 2:17 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> Hi, Rafael,
+> On Fri, Jul 16, 2021 at 01:16:02PM +0300, laurentiu.tudor@nxp.com wrote:
+> > From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+> >
+> > software_node_notify(), on KOBJ_REMOVE drops the refcount twice on managed
+> > software nodes, thus leading to underflow errors. Balance the refcount by
+> > bumping it in the device_create_managed_software_node() function.
+> >
+> > The error [1] was encountered after adding a .shutdown() op to our
+> > fsl-mc-bus driver.
+>
+> Looking into the history of adding ->shutdown() to dwc3 driver (it got reverted
+> later on), I can tell that probably something is wrong in the ->shutdown()
+> method itself.
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 >
 >
-> &gt; -----原始邮件-----
-> &gt; 发件人: "Rafael J. Wysocki" <rafael@kernel.org>
-> &gt; 发送时间: 2021-07-14 20:30:33 (星期三)
-> &gt; 收件人: "Huacai Chen" <chenhuacai@loongson.cn>
-> &gt; 抄送: "Rafael J . Wysocki" <rjw@rjwysocki.net>, "Len Brown" <lenb@kernel.org>, "Robert Moore" <robert.moore@intel.com>, "Erik Kaneda" <erik.kaneda@intel.com>, "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>, "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>, "Xuefeng Li" <lixuefeng@loongson.cn>, "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-> &gt; 主题: Re: [PATCH 1/3] ACPI: Add LoongArch support for ACPI_PROCESSOR/ACPI_NUMA
-> &gt;
-> &gt; On Mon, Jul 5, 2021 at 2:41 PM Huacai Chen <chenhuacai@loongson.cn> wrote:
-> &gt; &gt;
-> &gt; &gt; We are preparing to add new Loongson (based on LoongArch, not MIPS)
-> &gt; &gt; support. LoongArch use ACPI other than DT as its boot protocol, so
-> &gt; &gt; add its support for ACPI_PROCESSOR/ACPI_NUMA.
-> &gt; &gt;
-> &gt; &gt; Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> &gt; &gt; ---
-> &gt; &gt;  drivers/acpi/Kconfig      | 4 ++--
-> &gt; &gt;  drivers/acpi/numa/Kconfig | 2 +-
-> &gt; &gt;  drivers/acpi/numa/srat.c  | 2 +-
-> &gt; &gt;  include/linux/acpi.h      | 2 +-
-> &gt; &gt;  4 files changed, 5 insertions(+), 5 deletions(-)
-> &gt; &gt;
-> &gt; &gt; diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> &gt; &gt; index fe0bb6277e4d..90afa44efcba 100644
-> &gt; &gt; --- a/drivers/acpi/Kconfig
-> &gt; &gt; +++ b/drivers/acpi/Kconfig
-> &gt; &gt; @@ -280,9 +280,9 @@ config ACPI_CPPC_LIB
-> &gt; &gt;
-> &gt; &gt;  config ACPI_PROCESSOR
-> &gt; &gt;         tristate "Processor"
-> &gt; &gt; -       depends on X86 || IA64 || ARM64
-> &gt; &gt; +       depends on X86 || IA64 || ARM64 || LOONGARCH
-> &gt; &gt;         select ACPI_PROCESSOR_IDLE
-> &gt; &gt; -       select ACPI_CPU_FREQ_PSS if X86 || IA64
-> &gt; &gt; +       select ACPI_CPU_FREQ_PSS if X86 || IA64 || LOONGARCH
-> &gt; &gt;         default y
-> &gt; &gt;         help
-> &gt; &gt;           This driver adds support for the ACPI Processor package. It is required
-> &gt; &gt; diff --git a/drivers/acpi/numa/Kconfig b/drivers/acpi/numa/Kconfig
-> &gt; &gt; index fcf2e556d69d..39b1f34c21df 100644
-> &gt; &gt; --- a/drivers/acpi/numa/Kconfig
-> &gt; &gt; +++ b/drivers/acpi/numa/Kconfig
-> &gt; &gt; @@ -2,7 +2,7 @@
-> &gt; &gt;  config ACPI_NUMA
-> &gt; &gt;         bool "NUMA support"
-> &gt; &gt;         depends on NUMA
-> &gt; &gt; -       depends on (X86 || IA64 || ARM64)
-> &gt; &gt; +       depends on (X86 || IA64 || ARM64 || LOONGARCH)
-> &gt; &gt;         default y if IA64 || ARM64
-> &gt; &gt;
-> &gt; &gt;  config ACPI_HMAT
-> &gt; &gt; diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> &gt; &gt; index 6021a1013442..b8795fc49097 100644
-> &gt; &gt; --- a/drivers/acpi/numa/srat.c
-> &gt; &gt; +++ b/drivers/acpi/numa/srat.c
-> &gt; &gt; @@ -206,7 +206,7 @@ int __init srat_disabled(void)
-> &gt; &gt;         return acpi_numa &lt; 0;
-> &gt; &gt;  }
-> &gt; &gt;
-> &gt; &gt; -#if defined(CONFIG_X86) || defined(CONFIG_ARM64)
-> &gt; &gt; +#if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH)
-> &gt; &gt;  /*
-> &gt; &gt;   * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
-> &gt; &gt;   * I/O localities since SRAT does not list them.  I/O localities are
-> &gt; &gt; diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> &gt; &gt; index 6bb36fd6ba31..3ba8511cbede 100644
-> &gt; &gt; --- a/include/linux/acpi.h
-> &gt; &gt; +++ b/include/linux/acpi.h
-> &gt; &gt; @@ -249,7 +249,7 @@ void acpi_table_print_madt_entry (struct acpi_subtable_header *madt);
-> &gt; &gt;  /* the following numa functions are architecture-dependent */
-> &gt; &gt;  void acpi_numa_slit_init (struct acpi_table_slit *slit);
-> &gt; &gt;
-> &gt; &gt; -#if defined(CONFIG_X86) || defined(CONFIG_IA64)
-> &gt; &gt; +#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(CONFIG_LOONGARCH)
-> &gt; &gt;  void acpi_numa_processor_affinity_init (struct acpi_srat_cpu_affinity *pa);
-> &gt; &gt;  #else
-> &gt; &gt;  static inline void
-> &gt; &gt; --
-> &gt;
-> &gt; Does this patch alone make sense without the other two in the series?
-> &gt; If so, I can queue it up for 5.15, so please let me know.
-> Yes, this patch has no dependency with other two.
 
-OK, applied as 5.15 material.
+Isn't the other alternative to just remove the second kobject_put from
+KOBJ_REMOVE ?
 
-Thanks!
+@@ -1149,7 +1147,6 @@ int software_node_notify(struct device *dev,
+unsigned long action)
+
+                if (swnode->managed) {
+                        set_secondary_fwnode(dev, NULL);
+-                       kobject_put(&swnode->kobj);
+                }
+                break;
+        default:
+
+If we aren't being incremented in device_create_managed_software_node() then
+should we be decremented here?
+
+-Jon
