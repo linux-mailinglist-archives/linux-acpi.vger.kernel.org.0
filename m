@@ -2,177 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DBCC3CBB23
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jul 2021 19:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED1C3CBB2C
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jul 2021 19:29:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230256AbhGPRa2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Jul 2021 13:30:28 -0400
-Received: from mail-oi1-f182.google.com ([209.85.167.182]:36449 "EHLO
-        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229803AbhGPRa2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jul 2021 13:30:28 -0400
-Received: by mail-oi1-f182.google.com with SMTP id u15so11733102oiw.3;
-        Fri, 16 Jul 2021 10:27:32 -0700 (PDT)
+        id S230256AbhGPRb6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 16 Jul 2021 13:31:58 -0400
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:46733 "EHLO
+        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229803AbhGPRb6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jul 2021 13:31:58 -0400
+Received: by mail-oi1-f181.google.com with SMTP id t25so11682056oiw.13;
+        Fri, 16 Jul 2021 10:29:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=CeaYmmqy0BTpl+jDq91lfBNwbCyDsDM5K5yy/bAjZb8=;
-        b=FAPztlYFw1562P/9FCUHLVWBXjnHzhaV8eEK6EWsn2viuRPrgFrQIf0tkbeubJwyRy
-         oIqHCSy5/JDmDRuxK6Z3ShFAc/5v9bzZprxqBwWnfiz62VDq/BMzqOz7uvAjttuMQBKk
-         P2nzdNgLwVmbeiYXlLxpy+WenZbUHyKhUoKWsXvLsKZxoAAh1Q8Cl88lT45eYoC20SJf
-         TyG8CvsNniMvNFIW/rja5r4Ea+OLgoWTFMWLDvFq8Xyk7G027h2Y5v9PHMzu3Sch6nEu
-         xsc090SRo/Ypa6+kwTyKCrmgqjxz/O2dOqYRo9Fq+L0kVo8g+VnYdVzbFkKy2tQDBlB/
-         T6+Q==
-X-Gm-Message-State: AOAM532o9RjR1o3JWspNbqsvu9pO38AUDTdXfUop9qvK3RkI+BrYQ+Xr
-        L7WjhNZqruBDfu2z0rFDmsFgVHkwOr2B5NV5kcE=
-X-Google-Smtp-Source: ABdhPJwREseWLWurDmxtUAjhpSaJUD5vYvIYiRBtvUwiqgC0pgq77pnXlc+lgYa79H2Ecw7YYi0BHyoK3SF9OmCUYpY=
-X-Received: by 2002:a05:6808:10d0:: with SMTP id s16mr8300574ois.69.1626456451648;
- Fri, 16 Jul 2021 10:27:31 -0700 (PDT)
+        bh=B6mBSGEQ2PUgYALYpaho9euhH7yHslY6CwXaUaYLnKQ=;
+        b=iLBDOrZDGSAFheUcs25D2QA/YEMekSjdhQiJpbhGX7PD86aZvJLqeR+ZLgayOZ3yHD
+         YWZzcJXDly2PSb8xEoMb7/qQCyHId06iEjvWWgRTwZ+lbVGTNB9G8sWqfyRUvsALtVcw
+         0R4y5VJOJHJyXxre9CNFT7eRSuyQ6ACSYxPmb0IseoIg9fObXEUcqJ8Q73SOy552rZNR
+         MUeT3TfuHlNrXwQuq/RvIZ3gkNIHxo+BWIhjXS9HRBSuQDjPKWE9KdmS90Z+hmkymjN1
+         IyKf7BK8uodLnygmeOQwGFBZw9fdnaSRISRrPsYk00DOq1j8uDYMlPIlK/OwqVIVIhDK
+         bktQ==
+X-Gm-Message-State: AOAM533fRtcFsbPmS69ZbprU50ASY4+mEpRp16dzPFArB/aifWrgTKAn
+        Bk/2vk5LEfaCpyVGzWVNY3bSfxUf2frZRytxNt0=
+X-Google-Smtp-Source: ABdhPJwSbkfOdjeei8TwHmwUrgoW1akU7sF/SvpcPNEtQH6hwggXdya/fzJBDHqzePBcQVXwN8amUixZpVSoYtHmX+I=
+X-Received: by 2002:aca:4f57:: with SMTP id d84mr8863695oib.71.1626456541912;
+ Fri, 16 Jul 2021 10:29:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210712182121.2936794-1-andy.shevchenko@gmail.com> <d542bc45-6e52-dc12-69bf-76fa6dcaaf5e@gmail.com>
-In-Reply-To: <d542bc45-6e52-dc12-69bf-76fa6dcaaf5e@gmail.com>
+References: <20210715141651.82325-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210715141651.82325-1-andriy.shevchenko@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 16 Jul 2021 19:27:20 +0200
-Message-ID: <CAJZ5v0jR5T2+EHXz_RqzMDxb0i9pDhQTDZomWe3po91A7Bb-xg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ACPI: utils: Fix reference counting in for_each_acpi_dev_match()
-To:     Daniel Scally <djrscally@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+Date:   Fri, 16 Jul 2021 19:28:51 +0200
+Message-ID: <CAJZ5v0h=70mAb5y_bfJ1tS8nhoBU+KFwkZ_t5g49UA=4EMFcFw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] ACPI: configfs: Use sysfs_emit() in "show" functions
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>
+        Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 14, 2021 at 12:32 AM Daniel Scally <djrscally@gmail.com> wrote:
+On Thu, Jul 15, 2021 at 4:16 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> Hi Andy - thanks for fixing this
+> The sysfs_emit() function was introduced to make it less ambiguous
+> which function is preferred when writing to the output buffer in
+> a "show" callback [1].
 >
-> On 12/07/2021 19:21, Andy Shevchenko wrote:
-> > Currently it's possible to iterate over the dangling pointer in case the device
-> > suddenly disappears. This may happen becase callers put it at the end of a loop.
-> >
-> > Instead, let's move that call inside acpi_dev_get_next_match_dev().
-> >
-> > Fixes: 803abec64ef9 ("media: ipu3-cio2: Add cio2-bridge to ipu3-cio2 driver")
-> > Fixes: bf263f64e804 ("media: ACPI / bus: Add acpi_dev_get_next_match_dev() and helper macro")
-> > Fixes: edbd1bc4951e ("efi/dev-path-parser: Switch to use for_each_acpi_dev_match()")
-> > Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Convert the GPIO library sysfs interface from sprintf() to sysfs_emit()
+> accordingly, as the latter is aware of the PAGE_SIZE buffer and correctly
+> returns the number of bytes written into the buffer.
 >
-> Reviewed-by: Daniel Scally <djrscally@gmail.com>
+> No functional change intended.
+>
+> [1] Documentation/filesystems/sysfs.rst
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/acpi/acpi_configfs.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_configfs.c b/drivers/acpi/acpi_configfs.c
+> index 76b83b181356..6e6ef8a1f447 100644
+> --- a/drivers/acpi/acpi_configfs.c
+> +++ b/drivers/acpi/acpi_configfs.c
+> @@ -103,7 +103,7 @@ static ssize_t acpi_table_signature_show(struct config_item *cfg, char *str)
+>         if (!h)
+>                 return -EINVAL;
+>
+> -       return sprintf(str, "%.*s\n", ACPI_NAMESEG_SIZE, h->signature);
+> +       return sysfs_emit(str, "%.*s\n", ACPI_NAMESEG_SIZE, h->signature);
+>  }
+>
+>  static ssize_t acpi_table_length_show(struct config_item *cfg, char *str)
+> @@ -113,7 +113,7 @@ static ssize_t acpi_table_length_show(struct config_item *cfg, char *str)
+>         if (!h)
+>                 return -EINVAL;
+>
+> -       return sprintf(str, "%d\n", h->length);
+> +       return sysfs_emit(str, "%d\n", h->length);
+>  }
+>
+>  static ssize_t acpi_table_revision_show(struct config_item *cfg, char *str)
+> @@ -123,7 +123,7 @@ static ssize_t acpi_table_revision_show(struct config_item *cfg, char *str)
+>         if (!h)
+>                 return -EINVAL;
+>
+> -       return sprintf(str, "%d\n", h->revision);
+> +       return sysfs_emit(str, "%d\n", h->revision);
+>  }
+>
+>  static ssize_t acpi_table_oem_id_show(struct config_item *cfg, char *str)
+> @@ -133,7 +133,7 @@ static ssize_t acpi_table_oem_id_show(struct config_item *cfg, char *str)
+>         if (!h)
+>                 return -EINVAL;
+>
+> -       return sprintf(str, "%.*s\n", ACPI_OEM_ID_SIZE, h->oem_id);
+> +       return sysfs_emit(str, "%.*s\n", ACPI_OEM_ID_SIZE, h->oem_id);
+>  }
+>
+>  static ssize_t acpi_table_oem_table_id_show(struct config_item *cfg, char *str)
+> @@ -143,7 +143,7 @@ static ssize_t acpi_table_oem_table_id_show(struct config_item *cfg, char *str)
+>         if (!h)
+>                 return -EINVAL;
+>
+> -       return sprintf(str, "%.*s\n", ACPI_OEM_TABLE_ID_SIZE, h->oem_table_id);
+> +       return sysfs_emit(str, "%.*s\n", ACPI_OEM_TABLE_ID_SIZE, h->oem_table_id);
+>  }
+>
+>  static ssize_t acpi_table_oem_revision_show(struct config_item *cfg, char *str)
+> @@ -153,7 +153,7 @@ static ssize_t acpi_table_oem_revision_show(struct config_item *cfg, char *str)
+>         if (!h)
+>                 return -EINVAL;
+>
+> -       return sprintf(str, "%d\n", h->oem_revision);
+> +       return sysfs_emit(str, "%d\n", h->oem_revision);
+>  }
+>
+>  static ssize_t acpi_table_asl_compiler_id_show(struct config_item *cfg,
+> @@ -164,7 +164,7 @@ static ssize_t acpi_table_asl_compiler_id_show(struct config_item *cfg,
+>         if (!h)
+>                 return -EINVAL;
+>
+> -       return sprintf(str, "%.*s\n", ACPI_NAMESEG_SIZE, h->asl_compiler_id);
+> +       return sysfs_emit(str, "%.*s\n", ACPI_NAMESEG_SIZE, h->asl_compiler_id);
+>  }
+>
+>  static ssize_t acpi_table_asl_compiler_revision_show(struct config_item *cfg,
+> @@ -175,7 +175,7 @@ static ssize_t acpi_table_asl_compiler_revision_show(struct config_item *cfg,
+>         if (!h)
+>                 return -EINVAL;
+>
+> -       return sprintf(str, "%d\n", h->asl_compiler_revision);
+> +       return sysfs_emit(str, "%d\n", h->asl_compiler_revision);
+>  }
+>
+>  CONFIGFS_ATTR_RO(acpi_table_, signature);
+> --
 
-Applied as 5.14-rc material, thanks!
-
-> > ---
-> > v2:
-> > - rebased on top of v5.14-rc1 and hence added fix for EFI code
-> > - added kernel documentation update to point out that
-> >   acpi_dev_get_next_match_dev() drops a reference on the given
-> >   ACPI device (Rafael)
-> >
-> >  drivers/acpi/utils.c                       | 7 +++----
-> >  drivers/firmware/efi/dev-path-parser.c     | 1 -
-> >  drivers/media/pci/intel/ipu3/cio2-bridge.c | 6 ++----
-> >  include/acpi/acpi_bus.h                    | 5 -----
-> >  4 files changed, 5 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
-> > index e7ddd281afff..d5cedffeeff9 100644
-> > --- a/drivers/acpi/utils.c
-> > +++ b/drivers/acpi/utils.c
-> > @@ -860,11 +860,9 @@ EXPORT_SYMBOL(acpi_dev_present);
-> >   * Return the next match of ACPI device if another matching device was present
-> >   * at the moment of invocation, or NULL otherwise.
-> >   *
-> > - * FIXME: The function does not tolerate the sudden disappearance of @adev, e.g.
-> > - * in the case of a hotplug event. That said, the caller should ensure that
-> > - * this will never happen.
-> > - *
-> >   * The caller is responsible for invoking acpi_dev_put() on the returned device.
-> > + * On the other hand the function invokes  acpi_dev_put() on the given @adev
-> > + * assuming that its reference counter had been increased beforehand.
-> >   *
-> >   * See additional information in acpi_dev_present() as well.
-> >   */
-> > @@ -880,6 +878,7 @@ acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const cha
-> >       match.hrv = hrv;
-> >
-> >       dev = bus_find_device(&acpi_bus_type, start, &match, acpi_dev_match_cb);
-> > +     acpi_dev_put(adev);
-> >       return dev ? to_acpi_device(dev) : NULL;
-> >  }
-> >  EXPORT_SYMBOL(acpi_dev_get_next_match_dev);
-> > diff --git a/drivers/firmware/efi/dev-path-parser.c b/drivers/firmware/efi/dev-path-parser.c
-> > index 10d4457417a4..eb9c65f97841 100644
-> > --- a/drivers/firmware/efi/dev-path-parser.c
-> > +++ b/drivers/firmware/efi/dev-path-parser.c
-> > @@ -34,7 +34,6 @@ static long __init parse_acpi_path(const struct efi_dev_path *node,
-> >                       break;
-> >               if (!adev->pnp.unique_id && node->acpi.uid == 0)
-> >                       break;
-> > -             acpi_dev_put(adev);
-> >       }
-> >       if (!adev)
-> >               return -ENODEV;
-> > diff --git a/drivers/media/pci/intel/ipu3/cio2-bridge.c b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-> > index 4657e99df033..59a36f922675 100644
-> > --- a/drivers/media/pci/intel/ipu3/cio2-bridge.c
-> > +++ b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-> > @@ -173,10 +173,8 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
-> >       int ret;
-> >
-> >       for_each_acpi_dev_match(adev, cfg->hid, NULL, -1) {
-> > -             if (!adev->status.enabled) {
-> > -                     acpi_dev_put(adev);
-> > +             if (!adev->status.enabled)
-> >                       continue;
-> > -             }
-> >
-> >               if (bridge->n_sensors >= CIO2_NUM_PORTS) {
-> >                       acpi_dev_put(adev);
-> > @@ -185,7 +183,6 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
-> >               }
-> >
-> >               sensor = &bridge->sensors[bridge->n_sensors];
-> > -             sensor->adev = adev;
-> >               strscpy(sensor->name, cfg->hid, sizeof(sensor->name));
-> >
-> >               ret = cio2_bridge_read_acpi_buffer(adev, "SSDB",
-> > @@ -215,6 +212,7 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
-> >                       goto err_free_swnodes;
-> >               }
-> >
-> > +             sensor->adev = acpi_dev_get(adev);
-> >               adev->fwnode.secondary = fwnode;
-> >
-> >               dev_info(&cio2->dev, "Found supported sensor %s\n",
-> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > index 1ae993fee4a5..b9d434a93632 100644
-> > --- a/include/acpi/acpi_bus.h
-> > +++ b/include/acpi/acpi_bus.h
-> > @@ -707,11 +707,6 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv);
-> >   * @hrv: Hardware Revision of the device, pass -1 to not check _HRV
-> >   *
-> >   * The caller is responsible for invoking acpi_dev_put() on the returned device.
-> > - *
-> > - * FIXME: Due to above requirement there is a window that may invalidate @adev
-> > - * and next iteration will use a dangling pointer, e.g. in the case of a
-> > - * hotplug event. That said, the caller should ensure that this will never
-> > - * happen.
-> >   */
-> >  #define for_each_acpi_dev_match(adev, hid, uid, hrv)                 \
-> >       for (adev = acpi_dev_get_first_match_dev(hid, uid, hrv);        \
+Applied along with the [2/2[ as 5.15 material, thanks!
