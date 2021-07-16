@@ -2,269 +2,140 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4FF83CBA80
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jul 2021 18:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF3EB3CBAEF
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Jul 2021 19:07:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229498AbhGPQ3V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 16 Jul 2021 12:29:21 -0400
-Received: from foss.arm.com ([217.140.110.172]:40742 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229462AbhGPQ3V (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 16 Jul 2021 12:29:21 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2D80A31B;
-        Fri, 16 Jul 2021 09:26:26 -0700 (PDT)
-Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B94F23F7D7;
-        Fri, 16 Jul 2021 09:26:23 -0700 (PDT)
-Date:   Fri, 16 Jul 2021 17:26:17 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Robin Murphy <robin.murphy@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Veronika Kabatova <vkabatov@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        CKI Project <cki-project@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Memory Management <mm-qe@redhat.com>,
-        skt-results-master@redhat.com, Jeff Bastian <jbastian@redhat.com>,
-        Jan Stancek <jstancek@redhat.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>, lv.zheng@intel.com,
-        Tony Luck <tony.luck@intel.com>,
-        James Morse <james.morse@arm.com>
-Subject: Re: =?utf-8?B?4p2MIEZBSUw=?= =?utf-8?Q?=3A?= Test report for kernel
- 5.13.0-rc7 (arm-next, 8ab9b1a9)
-Message-ID: <20210716162617.GA1403@lpieralisi>
-References: <20210629144415.GA28457@lpieralisi>
- <14ca6f72-9b0f-ebd7-9cf8-a5d6190c8e5d@arm.com>
- <20210629163543.GA12361@arm.com>
- <20210630103715.GA12089@lpieralisi>
- <e548e72c-83a4-2366-dd57-3e746040fea9@arm.com>
- <CAMj1kXH=Q+WNgGsbApiq94z5OpJOnNLcFk_dyoVm_-VQunv3MA@mail.gmail.com>
- <20210630154923.GA16215@lpieralisi>
- <CAMj1kXHgPmJV6sPO8OWYj84Ncts00fzn+gJ=+xzcXYhCxvm-aA@mail.gmail.com>
- <20210705161715.GA19877@lpieralisi>
- <CAMj1kXHQKKnzJUEXMMzt3D1NUodeik8FZN1OTpD9zf8ZWrp6Lw@mail.gmail.com>
+        id S229545AbhGPRKs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 16 Jul 2021 13:10:48 -0400
+Received: from mail-oi1-f170.google.com ([209.85.167.170]:33680 "EHLO
+        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229534AbhGPRKs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 16 Jul 2021 13:10:48 -0400
+Received: by mail-oi1-f170.google.com with SMTP id s23so11703177oij.0
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Jul 2021 10:07:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8AsjM0zHjsroVPxNVB9BrkBRP3AvB+V6XnB2ZxVS6Ks=;
+        b=F0dNfMRbpM1a9Cqn9nw9A4inhA20yQolhCyQbvQad8fpTuF7Ik/5+9ZjP8NyQJwQIQ
+         S8vMvSXGqzF4cTeFje5YNyDXSpRwGnt5CMDDrXqABfSa4SJPHKQToaUledtzVAglKBrI
+         FiP3om4bPGjL17Zw1iqP3a+/aKqWzfaBmHPncksx2ZwtevAgy6IiLWf57kv6c0c+nxNG
+         lgeUZ6E5QWq0UNy7gHG0YD6blvDBI5EKFBQrw7SCamjLgIVmnI6+J2xm72Wh7MrQlGSo
+         FdqSiKVjW36vsXrjpQfCI06K7g7NKHRMdneLyrhwJo1bU1LbcMgoLqi7wLTI8GUNsWjd
+         KF2w==
+X-Gm-Message-State: AOAM530+vHyo4L39KlCP4y4AE5OLiazWlp5FOOnhtg9zhMZXbisE3c+v
+        lLDDPSDLTr+Ia3qAFEiXHGIRiYChWnewBYMMwns=
+X-Google-Smtp-Source: ABdhPJwwcVr4p1x45KVnLenIXVvN/5Em+GVKBqX7VS9/POg/eSO7kGZIA91P/F/tlqe/wv+YVC8l2+THUQ2+qQL+RwQ=
+X-Received: by 2002:a05:6808:10d0:: with SMTP id s16mr8239534ois.69.1626455272569;
+ Fri, 16 Jul 2021 10:07:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXHQKKnzJUEXMMzt3D1NUodeik8FZN1OTpD9zf8ZWrp6Lw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20210706160923.20273-1-hdegoede@redhat.com>
+In-Reply-To: <20210706160923.20273-1-hdegoede@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 16 Jul 2021 19:07:41 +0200
+Message-ID: <CAJZ5v0gbmdNPus1XURJSw9joqJfhsD=QNm0O_bPJyyf9XEzS0w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] ACPI / PMIC: XPower: optimize I2C-bus accesses
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 16, 2021 at 06:16:01PM +0200, Ard Biesheuvel wrote:
-> On Mon, 5 Jul 2021 at 18:17, Lorenzo Pieralisi
-> <lorenzo.pieralisi@arm.com> wrote:
-> >
-> > On Wed, Jun 30, 2021 at 08:18:22PM +0200, Ard Biesheuvel wrote:
-> >
-> > [...]
-> >
-> > > > In current code, even if the BERT were mapped with acpi_os_map_iomem()
-> > > > this would change nothing since it's acpi_os_ioremap() that runs the
-> > > > rule (backed up by EFI memory map region info).
-> > > >
-> > >
-> > > Indeed. So the fact that acpi_os_map_memory() is backed by
-> > > acpi_os_ioremap() is something we should fix. So they should both
-> > > consult the EFI memory map, but have different fallback defaults if
-> > > the region is not annotated correctly.
-> >
-> > Put together patch below even though I am not really satisfied, a tad
-> > intrusive and duplicate code in generic/arch backends, compile tested
-> > only; overall this IO vs memory mapping distinction is a bit too fuzzy
-> > for my taste - there is legacy unfortunately to consider though.
-> >
-> 
-> I'd say that this does not look unreasonable at all. Is there any way
-> we could get this tested on actual hw?
+On Tue, Jul 6, 2021 at 6:09 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> The I2C-bus to the XPower AXP288 is shared between the Linux kernel and
+> the SoCs P-Unit. The P-Unit has a semaphore which the kernel must "lock"
+> before it may use the bus and while the kernel holds the semaphore the CPU
+> and GPU power-states must not be changed otherwise the system will freeze.
+>
+> This is a complex process, which is quite expensive. This is all done by
+> iosf_mbi_block_punit_i2c_access(). To ensure that no unguarded I2C-bus
+> accesses happen, iosf_mbi_block_punit_i2c_access() gets called by the
+> I2C-bus-driver for every I2C transfer. Because this is so expensive it
+> is allowed to call iosf_mbi_block_punit_i2c_access() in a nested
+> fashion, so that higher-level code which does multiple I2C-transfers can
+> call it once for a group of transfers, turning the calls done by the
+> I2C-bus-driver into no-ops.
+>
+> Add iosf_mbi_block_punit_i2c_access() calls around groups of register
+> accesses, so that the P-Unit semaphore only needs to be taken once
+> for each group of register accesses.
+>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v2:
+> -Do not hold the P-Unit sempahore over the usleep_range() in
+>  intel_xpower_pmic_get_raw_temp()
+> ---
+>  drivers/acpi/pmic/intel_pmic_xpower.c | 23 ++++++++++++++++++-----
+>  1 file changed, 18 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/acpi/pmic/intel_pmic_xpower.c b/drivers/acpi/pmic/intel_pmic_xpower.c
+> index a091d5a8392c..5750c5e7d4c6 100644
+> --- a/drivers/acpi/pmic/intel_pmic_xpower.c
+> +++ b/drivers/acpi/pmic/intel_pmic_xpower.c
+> @@ -178,15 +178,17 @@ static int intel_xpower_pmic_update_power(struct regmap *regmap, int reg,
+>  {
+>         int data, ret;
+>
+> -       /* GPIO1 LDO regulator needs special handling */
+> -       if (reg == XPOWER_GPI1_CTRL)
+> -               return regmap_update_bits(regmap, reg, GPI1_LDO_MASK,
+> -                                         on ? GPI1_LDO_ON : GPI1_LDO_OFF);
+> -
+>         ret = iosf_mbi_block_punit_i2c_access();
+>         if (ret)
+>                 return ret;
+>
+> +       /* GPIO1 LDO regulator needs special handling */
+> +       if (reg == XPOWER_GPI1_CTRL) {
+> +               ret = regmap_update_bits(regmap, reg, GPI1_LDO_MASK,
+> +                                        on ? GPI1_LDO_ON : GPI1_LDO_OFF);
+> +               goto out;
+> +       }
+> +
+>         if (regmap_read(regmap, reg, &data)) {
+>                 ret = -EIO;
+>                 goto out;
+> @@ -234,6 +236,11 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
+>                 return ret;
+>
+>         if (adc_ts_pin_ctrl & AXP288_ADC_TS_CURRENT_ON_OFF_MASK) {
+> +               /*
+> +                * AXP288_ADC_TS_PIN_CTRL reads are cached by the regmap, so
+> +                * this does to a single I2C-transfer, and thus there is no
+> +                * need to explicitly call iosf_mbi_block_punit_i2c_access().
+> +                */
+>                 ret = regmap_update_bits(regmap, AXP288_ADC_TS_PIN_CTRL,
+>                                          AXP288_ADC_TS_CURRENT_ON_OFF_MASK,
+>                                          AXP288_ADC_TS_CURRENT_ON_ONDEMAND);
+> @@ -244,6 +251,10 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
+>                 usleep_range(6000, 10000);
+>         }
+>
+> +       ret = iosf_mbi_block_punit_i2c_access();
+> +       if (ret)
+> +               return ret;
+> +
+>         ret = regmap_bulk_read(regmap, AXP288_GP_ADC_H, buf, 2);
+>         if (ret == 0)
+>                 ret = (buf[0] << 4) + ((buf[1] >> 4) & 0x0f);
+> @@ -254,6 +265,8 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
+>                                    AXP288_ADC_TS_CURRENT_ON);
+>         }
+>
+> +       iosf_mbi_unblock_punit_i2c_access();
+> +
+>         return ret;
+>  }
+>
+> --
 
-Sure, I was meant to follow-up and was caught up in something else,
-sorry.
-
-I will clean up the log, push it out in a branch on Monday, CKI
-should pick it up. I will also think about other possible testing
-options.
-
-Thanks for having a look !
-Lorenzo
-
-> > -- >8 --
-> > Subject: [PATCH] ACPI: Add memory semantics to acpi_os_map_memory()
-> >
-> > Some platforms require memory semantics requested by the mapping function
-> > to be translated into architectural specific memory attributes so that
-> > the mapping is effectively implementing what is expected from it in
-> > terms of allowed access patterns (eg unaligned access).
-> >
-> > Rework acpi_os_map_memory() and acpi_os_ioremap() back-end to split
-> > them into two separate code paths that allow the architectural
-> > back-end to detect the default memory attributes required by
-> > the mapping in question.
-> >
-> > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > ---
-> >  arch/arm64/include/asm/acpi.h |  3 +++
-> >  arch/arm64/kernel/acpi.c      | 16 ++++++++++++++--
-> >  drivers/acpi/osl.c            | 23 ++++++++++++++++-------
-> >  include/acpi/acpi_io.h        |  8 ++++++++
-> >  4 files changed, 41 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-> > index bd68e1b7f29f..7535dc7cc5aa 100644
-> > --- a/arch/arm64/include/asm/acpi.h
-> > +++ b/arch/arm64/include/asm/acpi.h
-> > @@ -50,6 +50,9 @@ pgprot_t __acpi_get_mem_attribute(phys_addr_t addr);
-> >  void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size);
-> >  #define acpi_os_ioremap acpi_os_ioremap
-> >
-> > +void __iomem *acpi_os_memmap(acpi_physical_address phys, acpi_size size);
-> > +#define acpi_os_memmap acpi_os_memmap
-> > +
-> >  typedef u64 phys_cpuid_t;
-> >  #define PHYS_CPUID_INVALID INVALID_HWID
-> >
-> > diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-> > index cada0b816c8a..4c04fb40dc86 100644
-> > --- a/arch/arm64/kernel/acpi.c
-> > +++ b/arch/arm64/kernel/acpi.c
-> > @@ -261,7 +261,8 @@ pgprot_t __acpi_get_mem_attribute(phys_addr_t addr)
-> >         return __pgprot(PROT_DEVICE_nGnRnE);
-> >  }
-> >
-> > -void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
-> > +static void __iomem *__acpi_os_ioremap(acpi_physical_address phys,
-> > +                                      acpi_size size, bool memory)
-> >  {
-> >         efi_memory_desc_t *md, *region = NULL;
-> >         pgprot_t prot;
-> > @@ -289,7 +290,8 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
-> >          * regions that require a virtual mapping to make them accessible to
-> >          * the EFI runtime services.
-> >          */
-> > -       prot = __pgprot(PROT_DEVICE_nGnRnE);
-> > +       prot = memory ? __pgprot(PROT_NORMAL_NC) :
-> > +                       __pgprot(PROT_DEVICE_nGnRnE);
-> >         if (region) {
-> >                 switch (region->type) {
-> >                 case EFI_LOADER_CODE:
-> > @@ -349,6 +351,16 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
-> >         return __ioremap(phys, size, prot);
-> >  }
-> >
-> > +void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
-> > +{
-> > +       return __acpi_os_ioremap(phys, size, false);
-> > +}
-> > +
-> > +void __iomem *acpi_os_memmap(acpi_physical_address phys, acpi_size size)
-> > +{
-> > +       return __acpi_os_ioremap(phys, size, true);
-> > +}
-> > +
-> >  /*
-> >   * Claim Synchronous External Aborts as a firmware first notification.
-> >   *
-> > diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-> > index 327e1b4eb6b0..01dd115689bf 100644
-> > --- a/drivers/acpi/osl.c
-> > +++ b/drivers/acpi/osl.c
-> > @@ -284,7 +284,8 @@ acpi_map_lookup_virt(void __iomem *virt, acpi_size size)
-> >  #define should_use_kmap(pfn)   page_is_ram(pfn)
-> >  #endif
-> >
-> > -static void __iomem *acpi_map(acpi_physical_address pg_off, unsigned long pg_sz)
-> > +static void __iomem *acpi_map(acpi_physical_address pg_off, unsigned long pg_sz,
-> > +                             bool memory)
-> >  {
-> >         unsigned long pfn;
-> >
-> > @@ -294,7 +295,8 @@ static void __iomem *acpi_map(acpi_physical_address pg_off, unsigned long pg_sz)
-> >                         return NULL;
-> >                 return (void __iomem __force *)kmap(pfn_to_page(pfn));
-> >         } else
-> > -               return acpi_os_ioremap(pg_off, pg_sz);
-> > +               return memory ? acpi_os_memmap(pg_off, pg_sz) :
-> > +                               acpi_os_ioremap(pg_off, pg_sz);
-> >  }
-> >
-> >  static void acpi_unmap(acpi_physical_address pg_off, void __iomem *vaddr)
-> > @@ -309,9 +311,10 @@ static void acpi_unmap(acpi_physical_address pg_off, void __iomem *vaddr)
-> >  }
-> >
-> >  /**
-> > - * acpi_os_map_iomem - Get a virtual address for a given physical address range.
-> > + * __acpi_os_map_iomem - Get a virtual address for a given physical address range.
-> >   * @phys: Start of the physical address range to map.
-> >   * @size: Size of the physical address range to map.
-> > + * @memory: true if remapping memory, false if IO
-> >   *
-> >   * Look up the given physical address range in the list of existing ACPI memory
-> >   * mappings.  If found, get a reference to it and return a pointer to it (its
-> > @@ -321,8 +324,8 @@ static void acpi_unmap(acpi_physical_address pg_off, void __iomem *vaddr)
-> >   * During early init (when acpi_permanent_mmap has not been set yet) this
-> >   * routine simply calls __acpi_map_table() to get the job done.
-> >   */
-> > -void __iomem __ref
-> > -*acpi_os_map_iomem(acpi_physical_address phys, acpi_size size)
-> > +static void __iomem __ref
-> > +*__acpi_os_map_iomem(acpi_physical_address phys, acpi_size size, bool memory)
-> >  {
-> >         struct acpi_ioremap *map;
-> >         void __iomem *virt;
-> > @@ -353,7 +356,7 @@ void __iomem __ref
-> >
-> >         pg_off = round_down(phys, PAGE_SIZE);
-> >         pg_sz = round_up(phys + size, PAGE_SIZE) - pg_off;
-> > -       virt = acpi_map(phys, size);
-> > +       virt = acpi_map(phys, size, memory);
-> >         if (!virt) {
-> >                 mutex_unlock(&acpi_ioremap_lock);
-> >                 kfree(map);
-> > @@ -372,11 +375,17 @@ void __iomem __ref
-> >         mutex_unlock(&acpi_ioremap_lock);
-> >         return map->virt + (phys - map->phys);
-> >  }
-> > +
-> > +void __iomem __ref
-> > +*acpi_os_map_iomem(acpi_physical_address phys, acpi_size size)
-> > +{
-> > +       return __acpi_os_map_iomem(phys, size, false);
-> > +}
-> >  EXPORT_SYMBOL_GPL(acpi_os_map_iomem);
-> >
-> >  void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
-> >  {
-> > -       return (void *)acpi_os_map_iomem(phys, size);
-> > +       return (void *)__acpi_os_map_iomem(phys, size, true);
-> >  }
-> >  EXPORT_SYMBOL_GPL(acpi_os_map_memory);
-> >
-> > diff --git a/include/acpi/acpi_io.h b/include/acpi/acpi_io.h
-> > index 027faa8883aa..a0212e67d6f4 100644
-> > --- a/include/acpi/acpi_io.h
-> > +++ b/include/acpi/acpi_io.h
-> > @@ -14,6 +14,14 @@ static inline void __iomem *acpi_os_ioremap(acpi_physical_address phys,
-> >  }
-> >  #endif
-> >
-> > +#ifndef acpi_os_memmap
-> > +static inline void __iomem *acpi_os_memmap(acpi_physical_address phys,
-> > +                                           acpi_size size)
-> > +{
-> > +       return ioremap_cache(phys, size);
-> > +}
-> > +#endif
-> > +
-> >  extern bool acpi_permanent_mmap;
-> >
-> >  void __iomem __ref
-> > --
-> > 2.29.1
-> >
+Applied along with the [2/2] as 5.15 material, thanks!
