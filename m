@@ -2,100 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 928663CD460
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jul 2021 14:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 681493CD462
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Jul 2021 14:11:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236807AbhGSL3b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 19 Jul 2021 07:29:31 -0400
-Received: from mail-oi1-f177.google.com ([209.85.167.177]:34723 "EHLO
-        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236782AbhGSL3a (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Jul 2021 07:29:30 -0400
-Received: by mail-oi1-f177.google.com with SMTP id u11so20461690oiv.1
-        for <linux-acpi@vger.kernel.org>; Mon, 19 Jul 2021 05:10:08 -0700 (PDT)
+        id S236718AbhGSLal (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 19 Jul 2021 07:30:41 -0400
+Received: from mail-ot1-f51.google.com ([209.85.210.51]:36734 "EHLO
+        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236505AbhGSLak (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 19 Jul 2021 07:30:40 -0400
+Received: by mail-ot1-f51.google.com with SMTP id h24-20020a9d64180000b029036edcf8f9a6so17954599otl.3;
+        Mon, 19 Jul 2021 05:11:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Yfde0RjlqdKu/WzvQew0iyLAZTuzu0gAVFBNgSN9E0A=;
-        b=Apw3c23nme2HWEVqnKsyD2ZQetDSn7a2KRN7UFhlUX0NCf/zyocNCRqjGgSIjVouja
-         0nfCASCZxF8lZhvZ+V7+2CagFd9Ql5t527IrKHVCNdUgkjm+BNQxJVzGaxzzMJjnRZDP
-         QigPGpsN02kdUo/GHycgujisp71ch1ewRH5kT8aTjCWNct2zIN+zqTGE5xHb1czZgowY
-         atNSvNkvQEah9Jpl5zydAlqFndUO2RPVCvrs57L6EAIm7z82mlSCh8b0vj8YbofNy3LJ
-         PeI8U9l2NAsiK2PKj9wZVNZ3iEi6xHfKX2YojLL5DFYfjatNOzwcwua93eNJQAnbyFuY
-         kQQA==
-X-Gm-Message-State: AOAM531HR+dI/K3UCz89gsV92zPfFDu7kR7f7cWGR1bHz3Q9IcvOC4fm
-        L1CvZgKrrcHPrxzOf2xt+T+xf+0nhJcvJ7FWG/I=
-X-Google-Smtp-Source: ABdhPJx5O1GR70bIBl4m3GAuJCn/+HxAdq2W3bQ800RnKQ1Wp9VT526E/NZSErv36INGHpkeN8VjNMvK0KYRoB9nJXI=
-X-Received: by 2002:aca:4f57:: with SMTP id d84mr17574262oib.71.1626696608384;
- Mon, 19 Jul 2021 05:10:08 -0700 (PDT)
+        bh=2moxWKKaPa9ZFExfempOvPi7aHjsJs/En8lY3f7yAtE=;
+        b=owUxVM+dO9F6z5rFjUJEV5vQKegcYHWmBHXgH+UyyzbXAddaGHZRbCgMLM6Lz2xYT/
+         LpaLqTRh0xosQ2w/jc284zZVBA4iSLS3XCGM+elvkyN3FZZYazYX120LFURxcyITsnTJ
+         bMlLWl28nKaTkKjDkZ+MHx+lgvAIIP2YtO732CoMlf7pUipb83X5DIeUQVdC1ijGlVdO
+         WJ3D9Ls/sLdp8Fddy/L/0ffFOS9vekvWiAYGWxFoxHx5bERbY180yccLXfAobI7DdWXn
+         yUtlUH1vmeSwRls0UTsMfZLU2mVOdIbWoRz+q1mka8wQyRoopT6gz6fV61nLmo1Jk4i9
+         1okA==
+X-Gm-Message-State: AOAM53102r4yy3fm2TcKdsJHx8X1vXzQjXXsEtJFbV+3pQ2ORbF/umph
+        Z22ofFoq/Q6b//5HEqKJt+VulwCKh+pHFFQnklFqSKtuBkw=
+X-Google-Smtp-Source: ABdhPJxNOKlU+YwP89jrbWPKr9XB0U4es4cykMcIG5GYp2Qcj9p0FLrxZy4Wd61E9LXcchZSNnjpKAAKpU0pflyoK3w=
+X-Received: by 2002:a9d:2968:: with SMTP id d95mr18293090otb.321.1626696679462;
+ Mon, 19 Jul 2021 05:11:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210718041138.4739-1-mario.limonciello@amd.com>
-In-Reply-To: <20210718041138.4739-1-mario.limonciello@amd.com>
+References: <20210717031806.29866-1-wangrui@loongson.cn>
+In-Reply-To: <20210717031806.29866-1-wangrui@loongson.cn>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 19 Jul 2021 14:09:53 +0200
-Message-ID: <CAJZ5v0iOV-E2V=XvLDmwPXpBEsywe2me58LbX2PxuJdDUCG7Qw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: Add support for upcoming AMD uPEP HID AMDI007
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        stable@kernel.org
+Date:   Mon, 19 Jul 2021 14:11:04 +0200
+Message-ID: <CAJZ5v0hWiLWHk2_CQ0uytP28ab26Atm-MU5YvUWWwHWdKS5c-A@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Kconfig: Fix table override from built-in initrd
+To:     Rui Wang <wangrui@loongson.cn>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Shunyong Yang <shunyong.yang@hxt-semitech.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Jul 18, 2021 at 6:11 AM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Sat, Jul 17, 2021 at 5:18 AM Rui Wang <wangrui@loongson.cn> wrote:
 >
-> AMD systems with uPEP HID AMDI007 should be using revision 2 and
-> the AMD method.
+> The commit 65e00e04e5aea ("initramfs: refactor the initramfs build rules")
+> had dropped the CONFIG_INITRAMFS_COMPRESSION.
 >
-> CC: stable@kernel.org # v5.14
+> This patch updates INITRAMFS_COMPRESSION="" to INITRAMFS_COMPRESSION_NONE.
+>
+> CC: Rafael J. Wysocki <rjw@rjwysocki.net>
+> CC: Len Brown <lenb@kernel.org>
+> CC: Shunyong Yang <shunyong.yang@hxt-semitech.com>
+> CC: linux-acpi@vger.kernel.org
+> CC: linux-kernel@vger.kernel.org
+> Signed-off-by: Rui Wang <wangrui@loongson.cn>
 
-Well, what do you mean?
+I've already applied an alternative patch making the same change:
 
-5.14 is still under development.
+https://patchwork.kernel.org/project/linux-acpi/patch/ad9c50c54887bde41ae5de782248231c06a527c0.1626262835.git.rrichter@amd.com/
 
-
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->  drivers/acpi/x86/s2idle.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+>  drivers/acpi/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index 1c507804fb10..fbdbef0ab552 100644
-> --- a/drivers/acpi/x86/s2idle.c
-> +++ b/drivers/acpi/x86/s2idle.c
-> @@ -378,19 +378,25 @@ static int lps0_device_attach(struct acpi_device *adev,
->                  * AMDI0006:
->                  * - should use rev_id 0x0
->                  * - function mask = 0x3: Should use Microsoft method
-> +                * AMDI0007:
-> +                * - Should use rev_id 0x2
-> +                * - Should only use AMD method
->                  */
->                 const char *hid = acpi_device_hid(adev);
-> -               rev_id = 0;
-> +               rev_id = strcmp(hid, "AMDI0007") ? 0 : 2;
->                 lps0_dsm_func_mask = validate_dsm(adev->handle,
->                                         ACPI_LPS0_DSM_UUID_AMD, rev_id, &lps0_dsm_guid);
->                 lps0_dsm_func_mask_microsoft = validate_dsm(adev->handle,
-> -                                       ACPI_LPS0_DSM_UUID_MICROSOFT, rev_id,
-> +                                       ACPI_LPS0_DSM_UUID_MICROSOFT, 0,
->                                         &lps0_dsm_guid_microsoft);
->                 if (lps0_dsm_func_mask > 0x3 && (!strcmp(hid, "AMD0004") ||
->                                                  !strcmp(hid, "AMDI0005"))) {
->                         lps0_dsm_func_mask = (lps0_dsm_func_mask << 1) | 0x1;
->                         acpi_handle_debug(adev->handle, "_DSM UUID %s: Adjusted function mask: 0x%x\n",
->                                           ACPI_LPS0_DSM_UUID_AMD, lps0_dsm_func_mask);
-> +               } else if (lps0_dsm_func_mask_microsoft > 0 && !strcmp(hid, "AMDI0007")) {
-> +                       lps0_dsm_func_mask_microsoft = -EINVAL;
-> +                       acpi_handle_debug(adev->handle, "_DSM Using AMD method\n");
->                 }
->         } else {
->                 rev_id = 1;
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index 9d872ea477a6..8f9940f40baa 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -370,7 +370,7 @@ config ACPI_TABLE_UPGRADE
+>  config ACPI_TABLE_OVERRIDE_VIA_BUILTIN_INITRD
+>         bool "Override ACPI tables from built-in initrd"
+>         depends on ACPI_TABLE_UPGRADE
+> -       depends on INITRAMFS_SOURCE!="" && INITRAMFS_COMPRESSION=""
+> +       depends on INITRAMFS_SOURCE!="" && INITRAMFS_COMPRESSION_NONE
+>         help
+>           This option provides functionality to override arbitrary ACPI tables
+>           from built-in uncompressed initrd.
 > --
-> 2.25.1
+> 2.32.0
 >
