@@ -2,39 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 172883D2CD2
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jul 2021 21:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D0CF3D2CF7
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jul 2021 21:50:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbhGVSxz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Jul 2021 14:53:55 -0400
-Received: from mga18.intel.com ([134.134.136.126]:46682 "EHLO mga18.intel.com"
+        id S230243AbhGVTJx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Jul 2021 15:09:53 -0400
+Received: from mga09.intel.com ([134.134.136.24]:40001 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229585AbhGVSxz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 22 Jul 2021 14:53:55 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10053"; a="198995770"
+        id S229806AbhGVTJm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 22 Jul 2021 15:09:42 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10053"; a="211732182"
 X-IronPort-AV: E=Sophos;i="5.84,261,1620716400"; 
-   d="scan'208";a="198995770"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2021 12:34:29 -0700
+   d="scan'208";a="211732182"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2021 12:50:16 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.84,261,1620716400"; 
-   d="scan'208";a="577417126"
+   d="scan'208";a="470781627"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 22 Jul 2021 12:34:27 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 22 Jul 2021 12:49:57 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 7006FE7; Thu, 22 Jul 2021 22:34:55 +0300 (EEST)
+        id EF735E7; Thu, 22 Jul 2021 22:50:24 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org
+        Heiko Stuebner <heiko@sntech.de>,
+        Elaine Zhang <zhangqing@rock-chips.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-imx@nxp.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
         Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH v1 1/1] clk: x86: Rename clk-lpt to more specific clk-lpss-atom
-Date:   Thu, 22 Jul 2021 22:34:50 +0300
-Message-Id: <20210722193450.35321-1-andriy.shevchenko@linux.intel.com>
+        Stephen Boyd <sboyd@kernel.org>, Abel Vesa <abel.vesa@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: [PATCH v3 1/4] clk: fractional-divider: Export approximation algorithm to the CCF users
+Date:   Thu, 22 Jul 2021 22:50:07 +0300
+Message-Id: <20210722195010.45940-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -42,106 +51,118 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The LPT stands for Lynxpoint PCH. However the driver is used on a few
-Intel Atom SoCs. Rename it to reflect this in a way how another clock
-driver, i.e. clk-pmc-atom, is called.
+At least one user currently duplicates some functions that are provided
+by fractional divider module. Let's export approximation algorithm and
+replace the open-coded variant.
+
+As a bonus the exported function will get better documentation in place.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Heiko Stuebner <heiko@sntech.de>
 ---
+v3: added tags (Heiko)
+ drivers/clk/clk-fractional-divider.c | 11 +++++++----
+ drivers/clk/clk-fractional-divider.h |  9 +++++++++
+ drivers/clk/rockchip/clk.c           | 17 +++--------------
+ 3 files changed, 19 insertions(+), 18 deletions(-)
+ create mode 100644 drivers/clk/clk-fractional-divider.h
 
-Good to go either via ACPI or CCF tree.
-
- drivers/acpi/acpi_lpss.c                       |  6 ++++--
- drivers/clk/x86/Makefile                       |  2 +-
- drivers/clk/x86/{clk-lpt.c => clk-lpss-atom.c} | 12 ++++++------
- include/linux/platform_data/x86/clk-lpss.h     |  2 +-
- 4 files changed, 12 insertions(+), 10 deletions(-)
- rename drivers/clk/x86/{clk-lpt.c => clk-lpss-atom.c} (76%)
-
-diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index 894b7e6ae144..7f163074e4e4 100644
---- a/drivers/acpi/acpi_lpss.c
-+++ b/drivers/acpi/acpi_lpss.c
-@@ -385,7 +385,9 @@ static struct platform_device *lpss_clk_dev;
+diff --git a/drivers/clk/clk-fractional-divider.c b/drivers/clk/clk-fractional-divider.c
+index b1e556f20911..535d299af646 100644
+--- a/drivers/clk/clk-fractional-divider.c
++++ b/drivers/clk/clk-fractional-divider.c
+@@ -14,6 +14,8 @@
+ #include <linux/slab.h>
+ #include <linux/rational.h>
  
- static inline void lpt_register_clock_device(void)
++#include "clk-fractional-divider.h"
++
+ static inline u32 clk_fd_readl(struct clk_fractional_divider *fd)
  {
--	lpss_clk_dev = platform_device_register_simple("clk-lpt", -1, NULL, 0);
-+	lpss_clk_dev = platform_device_register_simple("clk-lpss-atom",
-+						       PLATFORM_DEVID_NONE,
-+						       NULL, 0);
+ 	if (fd->flags & CLK_FRAC_DIVIDER_BIG_ENDIAN)
+@@ -68,9 +70,10 @@ static unsigned long clk_fd_recalc_rate(struct clk_hw *hw,
+ 	return ret;
  }
  
- static int register_device_clock(struct acpi_device *adev,
-@@ -1337,7 +1339,7 @@ void __init acpi_lpss_init(void)
- 	const struct x86_cpu_id *id;
- 	int ret;
- 
--	ret = lpt_clk_init();
-+	ret = lpss_atom_clk_init();
- 	if (ret)
- 		return;
- 
-diff --git a/drivers/clk/x86/Makefile b/drivers/clk/x86/Makefile
-index 18564efdc651..1244c4e568ff 100644
---- a/drivers/clk/x86/Makefile
-+++ b/drivers/clk/x86/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_PMC_ATOM)		+= clk-pmc-atom.o
- obj-$(CONFIG_X86_AMD_PLATFORM_DEVICE)	+= clk-fch.o
--clk-x86-lpss-objs		:= clk-lpt.o
-+clk-x86-lpss-y			:= clk-lpss-atom.o
- obj-$(CONFIG_X86_INTEL_LPSS)	+= clk-x86-lpss.o
- obj-$(CONFIG_CLK_LGM_CGU)	+= clk-cgu.o clk-cgu-pll.o clk-lgm.o
-diff --git a/drivers/clk/x86/clk-lpt.c b/drivers/clk/x86/clk-lpss-atom.c
-similarity index 76%
-rename from drivers/clk/x86/clk-lpt.c
-rename to drivers/clk/x86/clk-lpss-atom.c
-index fbe9fd3ed948..aa9d0bb98f8b 100644
---- a/drivers/clk/x86/clk-lpt.c
-+++ b/drivers/clk/x86/clk-lpss-atom.c
-@@ -13,7 +13,7 @@
- #include <linux/platform_data/x86/clk-lpss.h>
- #include <linux/platform_device.h>
- 
--static int lpt_clk_probe(struct platform_device *pdev)
-+static int lpss_atom_clk_probe(struct platform_device *pdev)
+-static void clk_fd_general_approximation(struct clk_hw *hw, unsigned long rate,
+-					 unsigned long *parent_rate,
+-					 unsigned long *m, unsigned long *n)
++void clk_fractional_divider_general_approximation(struct clk_hw *hw,
++						  unsigned long rate,
++						  unsigned long *parent_rate,
++						  unsigned long *m, unsigned long *n)
  {
- 	struct lpss_clk_data *drvdata;
- 	struct clk *clk;
-@@ -34,14 +34,14 @@ static int lpt_clk_probe(struct platform_device *pdev)
- 	return 0;
+ 	struct clk_fractional_divider *fd = to_clk_fd(hw);
+ 	unsigned long scale;
+@@ -102,7 +105,7 @@ static long clk_fd_round_rate(struct clk_hw *hw, unsigned long rate,
+ 	if (fd->approximation)
+ 		fd->approximation(hw, rate, parent_rate, &m, &n);
+ 	else
+-		clk_fd_general_approximation(hw, rate, parent_rate, &m, &n);
++		clk_fractional_divider_general_approximation(hw, rate, parent_rate, &m, &n);
+ 
+ 	ret = (u64)*parent_rate * m;
+ 	do_div(ret, n);
+diff --git a/drivers/clk/clk-fractional-divider.h b/drivers/clk/clk-fractional-divider.h
+new file mode 100644
+index 000000000000..4fa359a12ef4
+--- /dev/null
++++ b/drivers/clk/clk-fractional-divider.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++struct clk_hw;
++
++void clk_fractional_divider_general_approximation(struct clk_hw *hw,
++						  unsigned long rate,
++						  unsigned long *parent_rate,
++						  unsigned long *m,
++						  unsigned long *n);
+diff --git a/drivers/clk/rockchip/clk.c b/drivers/clk/rockchip/clk.c
+index 049e5e0b64f6..b7be7e11b0df 100644
+--- a/drivers/clk/rockchip/clk.c
++++ b/drivers/clk/rockchip/clk.c
+@@ -22,6 +22,8 @@
+ #include <linux/regmap.h>
+ #include <linux/reboot.h>
+ #include <linux/rational.h>
++
++#include "../clk-fractional-divider.h"
+ #include "clk.h"
+ 
+ /*
+@@ -178,10 +180,8 @@ static void rockchip_fractional_approximation(struct clk_hw *hw,
+ 		unsigned long rate, unsigned long *parent_rate,
+ 		unsigned long *m, unsigned long *n)
+ {
+-	struct clk_fractional_divider *fd = to_clk_fd(hw);
+ 	unsigned long p_rate, p_parent_rate;
+ 	struct clk_hw *p_parent;
+-	unsigned long scale;
+ 
+ 	p_rate = clk_hw_get_rate(clk_hw_get_parent(hw));
+ 	if ((rate * 20 > p_rate) && (p_rate % rate != 0)) {
+@@ -190,18 +190,7 @@ static void rockchip_fractional_approximation(struct clk_hw *hw,
+ 		*parent_rate = p_parent_rate;
+ 	}
+ 
+-	/*
+-	 * Get rate closer to *parent_rate to guarantee there is no overflow
+-	 * for m and n. In the result it will be the nearest rate left shifted
+-	 * by (scale - fd->nwidth) bits.
+-	 */
+-	scale = fls_long(*parent_rate / rate - 1);
+-	if (scale > fd->nwidth)
+-		rate <<= scale - fd->nwidth;
+-
+-	rational_best_approximation(rate, *parent_rate,
+-			GENMASK(fd->mwidth - 1, 0), GENMASK(fd->nwidth - 1, 0),
+-			m, n);
++	clk_fractional_divider_general_approximation(hw, rate, parent_rate, m, n);
  }
  
--static struct platform_driver lpt_clk_driver = {
-+static struct platform_driver lpss_atom_clk_driver = {
- 	.driver = {
--		.name = "clk-lpt",
-+		.name = "clk-lpss-atom",
- 	},
--	.probe = lpt_clk_probe,
-+	.probe = lpss_atom_clk_probe,
- };
- 
--int __init lpt_clk_init(void)
-+int __init lpss_atom_clk_init(void)
- {
--	return platform_driver_register(&lpt_clk_driver);
-+	return platform_driver_register(&lpss_atom_clk_driver);
- }
-diff --git a/include/linux/platform_data/x86/clk-lpss.h b/include/linux/platform_data/x86/clk-lpss.h
-index 207e1a317800..41df326583f9 100644
---- a/include/linux/platform_data/x86/clk-lpss.h
-+++ b/include/linux/platform_data/x86/clk-lpss.h
-@@ -15,6 +15,6 @@ struct lpss_clk_data {
- 	struct clk *clk;
- };
- 
--extern int lpt_clk_init(void);
-+extern int lpss_atom_clk_init(void);
- 
- #endif /* __CLK_LPSS_H */
+ static struct clk *rockchip_clk_register_frac_branch(
 -- 
 2.30.2
 
