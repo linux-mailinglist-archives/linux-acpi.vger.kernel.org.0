@@ -2,93 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 378133D2049
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jul 2021 11:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3D573D2133
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Jul 2021 11:50:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231269AbhGVIWY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 22 Jul 2021 04:22:24 -0400
-Received: from mga06.intel.com ([134.134.136.31]:38335 "EHLO mga06.intel.com"
+        id S231411AbhGVJJk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 22 Jul 2021 05:09:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45032 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230330AbhGVIWW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 22 Jul 2021 04:22:22 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10052"; a="272716522"
-X-IronPort-AV: E=Sophos;i="5.84,260,1620716400"; 
-   d="scan'208";a="272716522"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2021 02:02:55 -0700
-X-IronPort-AV: E=Sophos;i="5.84,260,1620716400"; 
-   d="scan'208";a="462701664"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2021 02:02:52 -0700
-Received: from andy by smile with local (Exim 4.94.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1m6UbO-00GvE7-Gj; Thu, 22 Jul 2021 12:02:46 +0300
-Date:   Thu, 22 Jul 2021 12:02:46 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Wolfram Sang <wsa@kernel.org>, Hans de Goede <hdegoede@redhat.com>,
-        linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v1 2/6] staging: atomisp: Replace open-coded
- i2c_acpi_find_client_by_adev()
-Message-ID: <YPk0NpOQWhzX31Dj@smile.fi.intel.com>
-References: <20210526124322.48915-1-andriy.shevchenko@linux.intel.com>
- <20210526124322.48915-2-andriy.shevchenko@linux.intel.com>
- <20210722105744.4a94d58d@coco.lan>
+        id S231255AbhGVJJk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 22 Jul 2021 05:09:40 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A848861244;
+        Thu, 22 Jul 2021 09:50:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626947415;
+        bh=5nxov8ciV1tfLgw1o3KidC/AG7DmWvz/Jsf5svr9jzs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Cm8nE1/+TevcInwy+rn1B4+T5kVqAqTToUucYXWnerFGM2OTi+341mhrug0MILyKv
+         h8yEojyplk3+LOL4qcHM/GwFDf8ppmWWlQF7mZzjBgqOEj6mgT5gGhmZgeu7itteuq
+         STubEdS4MhdXCz+cAhSaz24CStCSAIhZt19+9O6URK/G0M3f5AFv315U4+UH+MlQhM
+         ypYq/o2V2cdxN+A2SdQpT04BvjZ66gh+9giRFNmvjBSRdynd68JDSWlsl88Sjw9vGH
+         DukwKI3tpCLtxUiEWogBreNm6inVVlYG5nM6GyZqTc9t4eYqIO0eH222FdR+JqMCWq
+         +JF3xjLNGUw5Q==
+Received: by mail.kernel.org with local (Exim 4.94.2)
+        (envelope-from <mchehab@kernel.org>)
+        id 1m6VLD-008lGb-AO; Thu, 22 Jul 2021 11:50:07 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>,
+        alsa-devel@alsa-project.org, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH 0/3] Get rid of some undesirable characters
+Date:   Thu, 22 Jul 2021 11:50:00 +0200
+Message-Id: <cover.1626947264.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210722105744.4a94d58d@coco.lan>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 22, 2021 at 10:57:44AM +0200, Mauro Carvalho Chehab wrote:
-> Em Wed, 26 May 2021 15:43:18 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> escreveu:
-> 
-> > gmin_i2c_dev_exists() is using open-coded variant of
-> > i2c_acpi_find_client_by_adev(). Replace it with a corresponding call.
-> > 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> At least on the top of v5.14-rc1, this patch causes a compilation
-> issue:
-> 
-> 	drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c: In function ‘gmin_i2c_dev_exists’:
-> 	drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c:386:19: error: implicit declaration of function ‘i2c_acpi_find_client_by_adev’; did you mean ‘i2c_acpi_find_adapter_by_handle’? [-Werror=implicit-function-declaration]
-> 	  386 |         *client = i2c_acpi_find_client_by_adev(adev);
-> 	      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 	      |                   i2c_acpi_find_adapter_by_handle
-> 	drivers/staging/media/atomisp/pci/atomisp_gmin_platform.c:386:17: warning: assignment to ‘struct i2c_client *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-> 	  386 |         *client = i2c_acpi_find_client_by_adev(adev);
-> 	      |                 ^
-> 
-> The reason is because such function is static:
-> 
-> 	$ git grep i2c_acpi_find_client_by_adev
-> 	drivers/i2c/i2c-core-acpi.c:static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
-> 
-> IMO, a patch like that should be applied at the same tree as a patch
-> dropping "static" from drivers/i2c/i2c-core-acpi.c. If you want to do
-> so, feel free to add:
-> 
-> Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Hi Jon,
 
-Thanks!
+While rebasing my docs tree, I noticed that there are three remaining
+patches from my past series that replace some UTF-8 chars by ASCII
+ones that aren't applied yet. Not sure what happened here.
 
-There is a v2 of this where the patch is dropped from.
+Anyway, those are the missing ones.
 
+Mauro Carvalho Chehab (3):
+  docs: sound: kernel-api: writing-an-alsa-driver.rst: replace some
+    characters
+  docs: firmware-guide: acpi: dsd: graph.rst: replace some characters
+  docs: virt: kvm: api.rst: replace some characters
+
+ .../firmware-guide/acpi/dsd/graph.rst         |  2 +-
+ .../kernel-api/writing-an-alsa-driver.rst     |  2 +-
+ Documentation/virt/kvm/api.rst                | 28 +++++++++----------
+ 3 files changed, 16 insertions(+), 16 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.31.1
 
 
