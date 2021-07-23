@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6855B3D3A9B
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jul 2021 14:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1479F3D3A9E
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jul 2021 14:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235106AbhGWMMx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 23 Jul 2021 08:12:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53291 "EHLO
+        id S235141AbhGWMNA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Jul 2021 08:13:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:29099 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235126AbhGWMMx (ORCPT
+        by vger.kernel.org with ESMTP id S235127AbhGWMM7 (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 23 Jul 2021 08:12:53 -0400
+        Fri, 23 Jul 2021 08:12:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1627044806;
+        s=mimecast20190719; t=1627044813;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4BNdBLLGlA2PZ1Ey+ERvbMpf7L4Iuikq21FXsWIbZe4=;
-        b=ZQVpXs9BqJ7tOzMGCgu1bgSQ9pXGldOjNTufABQUhmnTMoQKsVa0giiPdxY9Yxo0GMFbdP
-        6fXRiWOIHJ/0XUIrz0ngWbcM3lpk16uFCvyxg1dF/cTjuqcL1Lyb+Tq31uFrcpzEQney+0
-        0+sLdqvK/OTW4BgtpUcwXqlBsms5AJo=
+        bh=j98qpU+YHIKdeQfJ2Yet6d2346Y/s28/YyYwejYQq9E=;
+        b=GsJ3uQ/Ux5m2NRQytF5msaeBc5amj1Xu4zh+acj0n51YohXyHo6/6m3nAi+tPtAY2o1ND1
+        rzMHmF3RLBXaAj5/ayDf7Tb5pr4OHMyq1v5m12+d62rC6Fadi2yyf2xZHmNrnLRQ7bMDVh
+        TDaBTfEx7M0y7HZbJ08GCGwoXjTJlUU=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-101-1jvXxHdAOqmTb9x-yvVd_g-1; Fri, 23 Jul 2021 08:53:24 -0400
-X-MC-Unique: 1jvXxHdAOqmTb9x-yvVd_g-1
+ us-mta-268-IQk4Qc21OeSZADPFmYG8OA-1; Fri, 23 Jul 2021 08:53:31 -0400
+X-MC-Unique: IQk4Qc21OeSZADPFmYG8OA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 269611B18BC3;
-        Fri, 23 Jul 2021 12:53:22 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7323B1B18BDC;
+        Fri, 23 Jul 2021 12:53:29 +0000 (UTC)
 Received: from t480s.redhat.com (ovpn-112-253.ams2.redhat.com [10.36.112.253])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5CCB83AC1;
-        Fri, 23 Jul 2021 12:53:06 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 72CEE3AC1;
+        Fri, 23 Jul 2021 12:53:22 +0000 (UTC)
 From:   David Hildenbrand <david@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
@@ -57,11 +57,10 @@ Cc:     linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
         Pavel Tatashin <pasha.tatashin@soleen.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         virtualization@lists.linux-foundation.org,
-        linux-acpi@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v2 5/9] ACPI: memhotplug: use a single static memory group for a single memory device
-Date:   Fri, 23 Jul 2021 14:52:06 +0200
-Message-Id: <20210723125210.29987-6-david@redhat.com>
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v2 6/9] dax/kmem: use a single static memory group for a single probed unit
+Date:   Fri, 23 Jul 2021 14:52:07 +0200
+Message-Id: <20210723125210.29987-7-david@redhat.com>
 In-Reply-To: <20210723125210.29987-1-david@redhat.com>
 References: <20210723125210.29987-1-david@redhat.com>
 MIME-Version: 1.0
@@ -71,100 +70,118 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Let's group all memory we add for a single memory device - we want a
-single node for that (which also seems to be the sane thing to do).
+Although dax/kmem users often disable auto-onlining and instead online
+memory manually (usually to ZONE_MOVABLE), there is still value in
+having auto-onlining be aware of the relationship of memory blocks.
 
-We won't care for now about memory that was already added to the system
-(e.g., via e820) -- usually *all* memory of a memory device was already
-added and we'll fail acpi_memory_enable_device().
+Let's treat one probed unit as a single static memory device, similar to
+a single ACPI memory device.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/acpi/acpi_memhotplug.c | 35 +++++++++++++++++++++++++++++-----
- 1 file changed, 30 insertions(+), 5 deletions(-)
+ drivers/dax/kmem.c | 40 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 32 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-index eb4faf7c5cad..0ffa3db142a1 100644
---- a/drivers/acpi/acpi_memhotplug.c
-+++ b/drivers/acpi/acpi_memhotplug.c
-@@ -54,6 +54,7 @@ struct acpi_memory_info {
- struct acpi_memory_device {
- 	struct acpi_device *device;
- 	struct list_head res_list;
+diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+index 99e0f60c4c26..b528f85de845 100644
+--- a/drivers/dax/kmem.c
++++ b/drivers/dax/kmem.c
+@@ -37,15 +37,16 @@ static int dax_kmem_range(struct dev_dax *dev_dax, int i, struct range *r)
+ 
+ struct dax_kmem_data {
+ 	const char *res_name;
 +	int mgid;
+ 	struct resource *res[];
  };
  
- static acpi_status
-@@ -169,12 +170,33 @@ static void acpi_unbind_memory_blocks(struct acpi_memory_info *info)
- static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
+ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
  {
- 	acpi_handle handle = mem_device->device->handle;
-+	mhp_t mhp_flags = MHP_NID_IS_MGID;
- 	int result, num_enabled = 0;
- 	struct acpi_memory_info *info;
--	mhp_t mhp_flags = MHP_NONE;
--	int node;
-+	u64 total_length = 0;
-+	int node, mgid;
+ 	struct device *dev = &dev_dax->dev;
++	unsigned long total_len = 0;
+ 	struct dax_kmem_data *data;
+-	int rc = -ENOMEM;
+-	int i, mapped = 0;
++	int i, rc, mapped = 0;
+ 	int numa_node;
  
- 	node = acpi_get_node(handle);
+ 	/*
+@@ -61,24 +62,44 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+ 		return -EINVAL;
+ 	}
+ 
++	for (i = 0; i < dev_dax->nr_range; i++) {
++		struct range range;
 +
-+	list_for_each_entry(info, &mem_device->res_list, list) {
-+		if (!info->length)
++		rc = dax_kmem_range(dev_dax, i, &range);
++		if (rc) {
++			dev_info(dev, "mapping%d: %#llx-%#llx too small after alignment\n",
++					i, range.start, range.end);
 +			continue;
-+		/* We want a single node for the whole memory group */
-+		if (node < 0)
-+			node = memory_add_physaddr_to_nid(info->start_addr);
-+		total_length += info->length;
++		}
++		total_len += range_len(&range);
 +	}
 +
-+	if (!total_length) {
-+		dev_err(&mem_device->device->dev, "device is empty\n");
++	if (!total_len) {
++		dev_warn(dev, "rejecting DAX region without any memory after alignment\n");
 +		return -EINVAL;
 +	}
 +
-+	mgid = register_static_memory_group(node, PFN_UP(total_length));
-+	if (mgid < 0)
-+		return mgid;
-+	mem_device->mgid = mgid;
+ 	data = kzalloc(struct_size(data, res, dev_dax->nr_range), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+ 
++	rc = -ENOMEM;
+ 	data->res_name = kstrdup(dev_name(dev), GFP_KERNEL);
+ 	if (!data->res_name)
+ 		goto err_res_name;
+ 
++	rc = register_static_memory_group(numa_node, total_len);
++	if (rc < 0)
++		goto err_reg_mgid;
++	data->mgid = rc;
 +
- 	/*
- 	 * Tell the VM there is more memory here...
- 	 * Note: Assume that this function returns zero on success
-@@ -188,12 +210,10 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
- 		 */
- 		if (!info->length)
+ 	for (i = 0; i < dev_dax->nr_range; i++) {
+ 		struct resource *res;
+ 		struct range range;
+ 
+ 		rc = dax_kmem_range(dev_dax, i, &range);
+-		if (rc) {
+-			dev_info(dev, "mapping%d: %#llx-%#llx too small after alignment\n",
+-					i, range.start, range.end);
++		if (rc)
  			continue;
--		if (node < 0)
--			node = memory_add_physaddr_to_nid(info->start_addr);
+-		}
  
- 		if (mhp_supports_memmap_on_memory(info->length))
- 			mhp_flags |= MHP_MEMMAP_ON_MEMORY;
--		result = __add_memory(node, info->start_addr, info->length,
-+		result = __add_memory(mgid, info->start_addr, info->length,
- 				      mhp_flags);
+ 		/* Region is permanently reserved if hotremove fails. */
+ 		res = request_mem_region(range.start, range_len(&range), data->res_name);
+@@ -108,8 +129,8 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+ 		 * Ensure that future kexec'd kernels will not treat
+ 		 * this as RAM automatically.
+ 		 */
+-		rc = add_memory_driver_managed(numa_node, range.start,
+-				range_len(&range), kmem_name, MHP_NONE);
++		rc = add_memory_driver_managed(data->mgid, range.start,
++				range_len(&range), kmem_name, MHP_NID_IS_MGID);
  
- 		/*
-@@ -253,6 +273,10 @@ static void acpi_memory_device_free(struct acpi_memory_device *mem_device)
- 	if (!mem_device)
- 		return;
+ 		if (rc) {
+ 			dev_warn(dev, "mapping%d: %#llx-%#llx memory add failed\n",
+@@ -129,6 +150,8 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+ 	return 0;
  
-+	/* In case we succeeded adding *some* memory, unregistering fails. */
-+	if (mem_device->mgid >= 0)
-+		unregister_memory_group(mem_device->mgid);
-+
- 	acpi_memory_free_device_resources(mem_device);
- 	mem_device->device->driver_data = NULL;
- 	kfree(mem_device);
-@@ -273,6 +297,7 @@ static int acpi_memory_device_add(struct acpi_device *device,
+ err_request_mem:
++	unregister_memory_group(data->mgid);
++err_reg_mgid:
+ 	kfree(data->res_name);
+ err_res_name:
+ 	kfree(data);
+@@ -171,6 +194,7 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
+ 	}
  
- 	INIT_LIST_HEAD(&mem_device->res_list);
- 	mem_device->device = device;
-+	mem_device->mgid = -1;
- 	sprintf(acpi_device_name(device), "%s", ACPI_MEMORY_DEVICE_NAME);
- 	sprintf(acpi_device_class(device), "%s", ACPI_MEMORY_DEVICE_CLASS);
- 	device->driver_data = mem_device;
+ 	if (success >= dev_dax->nr_range) {
++		unregister_memory_group(data->mgid);
+ 		kfree(data->res_name);
+ 		kfree(data);
+ 		dev_set_drvdata(dev, NULL);
 -- 
 2.31.1
 
