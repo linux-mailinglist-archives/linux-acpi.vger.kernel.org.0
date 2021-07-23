@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1479F3D3A9E
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jul 2021 14:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 430EA3D3AA1
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Jul 2021 14:53:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235141AbhGWMNA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 23 Jul 2021 08:13:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:29099 "EHLO
+        id S235156AbhGWMNK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 23 Jul 2021 08:13:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:54114 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235127AbhGWMM7 (ORCPT
+        by vger.kernel.org with ESMTP id S235127AbhGWMNJ (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 23 Jul 2021 08:12:59 -0400
+        Fri, 23 Jul 2021 08:13:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1627044813;
+        s=mimecast20190719; t=1627044823;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=j98qpU+YHIKdeQfJ2Yet6d2346Y/s28/YyYwejYQq9E=;
-        b=GsJ3uQ/Ux5m2NRQytF5msaeBc5amj1Xu4zh+acj0n51YohXyHo6/6m3nAi+tPtAY2o1ND1
-        rzMHmF3RLBXaAj5/ayDf7Tb5pr4OHMyq1v5m12+d62rC6Fadi2yyf2xZHmNrnLRQ7bMDVh
-        TDaBTfEx7M0y7HZbJ08GCGwoXjTJlUU=
+        bh=gyJyx55HAmoGVAJ3/fwHgQgmTxMahZRdR8vu+clKwGM=;
+        b=gjc+ekUe44cinQYzvuv6abGd225c4brtO13Ai/Oa9XauyAsVEus52/f6EZYBA6H62DLFz4
+        uwgMdmqjVR5pRGKmIhGtQpnJmq47stOls7O4njGli4KG29byzdPHAcQNf5nxCKp1oEWZ8o
+        ZqzKnhVEUuLy+oZqrjLUx6DG2bVuoGc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-268-IQk4Qc21OeSZADPFmYG8OA-1; Fri, 23 Jul 2021 08:53:31 -0400
-X-MC-Unique: IQk4Qc21OeSZADPFmYG8OA-1
+ us-mta-486-2kvrrxK9Pty_ACU86rb3_w-1; Fri, 23 Jul 2021 08:53:42 -0400
+X-MC-Unique: 2kvrrxK9Pty_ACU86rb3_w-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7323B1B18BDC;
-        Fri, 23 Jul 2021 12:53:29 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AA25B801AE3;
+        Fri, 23 Jul 2021 12:53:39 +0000 (UTC)
 Received: from t480s.redhat.com (ovpn-112-253.ams2.redhat.com [10.36.112.253])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 72CEE3AC1;
-        Fri, 23 Jul 2021 12:53:22 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C9ED051C63;
+        Fri, 23 Jul 2021 12:53:29 +0000 (UTC)
 From:   David Hildenbrand <david@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
@@ -58,9 +58,9 @@ Cc:     linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         virtualization@lists.linux-foundation.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH v2 6/9] dax/kmem: use a single static memory group for a single probed unit
-Date:   Fri, 23 Jul 2021 14:52:07 +0200
-Message-Id: <20210723125210.29987-7-david@redhat.com>
+Subject: [PATCH v2 7/9] virtio-mem: use a single dynamic memory group for a single virtio-mem device
+Date:   Fri, 23 Jul 2021 14:52:08 +0200
+Message-Id: <20210723125210.29987-8-david@redhat.com>
 In-Reply-To: <20210723125210.29987-1-david@redhat.com>
 References: <20210723125210.29987-1-david@redhat.com>
 MIME-Version: 1.0
@@ -70,118 +70,88 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Although dax/kmem users often disable auto-onlining and instead online
-memory manually (usually to ZONE_MOVABLE), there is still value in
-having auto-onlining be aware of the relationship of memory blocks.
-
-Let's treat one probed unit as a single static memory device, similar to
-a single ACPI memory device.
+Let's use a single dynamic memory group.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/dax/kmem.c | 40 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 32 insertions(+), 8 deletions(-)
+ drivers/virtio/virtio_mem.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index 99e0f60c4c26..b528f85de845 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -37,15 +37,16 @@ static int dax_kmem_range(struct dev_dax *dev_dax, int i, struct range *r)
- 
- struct dax_kmem_data {
- 	const char *res_name;
+diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
+index 774986695dc4..19036922f7ef 100644
+--- a/drivers/virtio/virtio_mem.c
++++ b/drivers/virtio/virtio_mem.c
+@@ -143,6 +143,8 @@ struct virtio_mem {
+ 	 * add_memory_driver_managed().
+ 	 */
+ 	const char *resource_name;
++	/* Memory group identification. */
 +	int mgid;
- 	struct resource *res[];
- };
- 
- static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
- {
- 	struct device *dev = &dev_dax->dev;
-+	unsigned long total_len = 0;
- 	struct dax_kmem_data *data;
--	int rc = -ENOMEM;
--	int i, mapped = 0;
-+	int i, rc, mapped = 0;
- 	int numa_node;
  
  	/*
-@@ -61,24 +62,44 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
- 		return -EINVAL;
- 	}
+ 	 * We don't want to add too much memory if it's not getting onlined,
+@@ -626,8 +628,8 @@ static int virtio_mem_add_memory(struct virtio_mem *vm, uint64_t addr,
+ 		addr + size - 1);
+ 	/* Memory might get onlined immediately. */
+ 	atomic64_add(size, &vm->offline_size);
+-	rc = add_memory_driver_managed(vm->nid, addr, size, vm->resource_name,
+-				       MHP_MERGE_RESOURCE);
++	rc = add_memory_driver_managed(vm->mgid, addr, size, vm->resource_name,
++				       MHP_MERGE_RESOURCE | MHP_NID_IS_MGID);
+ 	if (rc) {
+ 		atomic64_sub(size, &vm->offline_size);
+ 		dev_warn(&vm->vdev->dev, "adding memory failed: %d\n", rc);
+@@ -2562,6 +2564,7 @@ static bool virtio_mem_has_memory_added(struct virtio_mem *vm)
+ static int virtio_mem_probe(struct virtio_device *vdev)
+ {
+ 	struct virtio_mem *vm;
++	uint64_t unit_pages;
+ 	int rc;
  
-+	for (i = 0; i < dev_dax->nr_range; i++) {
-+		struct range range;
-+
-+		rc = dax_kmem_range(dev_dax, i, &range);
-+		if (rc) {
-+			dev_info(dev, "mapping%d: %#llx-%#llx too small after alignment\n",
-+					i, range.start, range.end);
-+			continue;
-+		}
-+		total_len += range_len(&range);
-+	}
-+
-+	if (!total_len) {
-+		dev_warn(dev, "rejecting DAX region without any memory after alignment\n");
-+		return -EINVAL;
-+	}
-+
- 	data = kzalloc(struct_size(data, res, dev_dax->nr_range), GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
+ 	BUILD_BUG_ON(sizeof(struct virtio_mem_req) != 24);
+@@ -2596,6 +2599,16 @@ static int virtio_mem_probe(struct virtio_device *vdev)
+ 	if (rc)
+ 		goto out_del_vq;
  
-+	rc = -ENOMEM;
- 	data->res_name = kstrdup(dev_name(dev), GFP_KERNEL);
- 	if (!data->res_name)
- 		goto err_res_name;
- 
-+	rc = register_static_memory_group(numa_node, total_len);
++	/* use a single dynamic memory group to cover the whole memory device */
++	if (vm->in_sbm)
++		unit_pages = PHYS_PFN(memory_block_size_bytes());
++	else
++		unit_pages = PHYS_PFN(vm->bbm.bb_size);
++	rc = register_dynamic_memory_group(vm->nid, unit_pages);
 +	if (rc < 0)
-+		goto err_reg_mgid;
-+	data->mgid = rc;
++		goto out_del_resource;
++	vm->mgid = rc;
 +
- 	for (i = 0; i < dev_dax->nr_range; i++) {
- 		struct resource *res;
- 		struct range range;
- 
- 		rc = dax_kmem_range(dev_dax, i, &range);
--		if (rc) {
--			dev_info(dev, "mapping%d: %#llx-%#llx too small after alignment\n",
--					i, range.start, range.end);
-+		if (rc)
- 			continue;
--		}
- 
- 		/* Region is permanently reserved if hotremove fails. */
- 		res = request_mem_region(range.start, range_len(&range), data->res_name);
-@@ -108,8 +129,8 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
- 		 * Ensure that future kexec'd kernels will not treat
- 		 * this as RAM automatically.
- 		 */
--		rc = add_memory_driver_managed(numa_node, range.start,
--				range_len(&range), kmem_name, MHP_NONE);
-+		rc = add_memory_driver_managed(data->mgid, range.start,
-+				range_len(&range), kmem_name, MHP_NID_IS_MGID);
- 
- 		if (rc) {
- 			dev_warn(dev, "mapping%d: %#llx-%#llx memory add failed\n",
-@@ -129,6 +150,8 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+ 	/*
+ 	 * If we still have memory plugged, we have to unplug all memory first.
+ 	 * Registering our parent resource makes sure that this memory isn't
+@@ -2610,7 +2623,7 @@ static int virtio_mem_probe(struct virtio_device *vdev)
+ 	vm->memory_notifier.notifier_call = virtio_mem_memory_notifier_cb;
+ 	rc = register_memory_notifier(&vm->memory_notifier);
+ 	if (rc)
+-		goto out_del_resource;
++		goto out_unreg_group;
+ 	rc = register_virtio_mem_device(vm);
+ 	if (rc)
+ 		goto out_unreg_mem;
+@@ -2624,6 +2637,8 @@ static int virtio_mem_probe(struct virtio_device *vdev)
  	return 0;
- 
- err_request_mem:
-+	unregister_memory_group(data->mgid);
-+err_reg_mgid:
- 	kfree(data->res_name);
- err_res_name:
- 	kfree(data);
-@@ -171,6 +194,7 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
+ out_unreg_mem:
+ 	unregister_memory_notifier(&vm->memory_notifier);
++out_unreg_group:
++	unregister_memory_group(vm->mgid);
+ out_del_resource:
+ 	virtio_mem_delete_resource(vm);
+ out_del_vq:
+@@ -2688,6 +2703,7 @@ static void virtio_mem_remove(struct virtio_device *vdev)
+ 	} else {
+ 		virtio_mem_delete_resource(vm);
+ 		kfree_const(vm->resource_name);
++		unregister_memory_group(vm->mgid);
  	}
  
- 	if (success >= dev_dax->nr_range) {
-+		unregister_memory_group(data->mgid);
- 		kfree(data->res_name);
- 		kfree(data);
- 		dev_set_drvdata(dev, NULL);
+ 	/* remove all tracking data - no locking needed */
 -- 
 2.31.1
 
