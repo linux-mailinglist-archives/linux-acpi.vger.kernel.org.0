@@ -2,94 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EF303D6FB6
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jul 2021 08:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA55E3D7143
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jul 2021 10:32:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235327AbhG0GwD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Jul 2021 02:52:03 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:7878 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235653AbhG0GwC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Jul 2021 02:52:02 -0400
+        id S235912AbhG0Icz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Jul 2021 04:32:55 -0400
+Received: from szxga08-in.huawei.com ([45.249.212.255]:12269 "EHLO
+        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235965AbhG0Icy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Jul 2021 04:32:54 -0400
 Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GYnS01DHQz80CB;
-        Tue, 27 Jul 2021 14:48:16 +0800 (CST)
-Received: from dggpemm500003.china.huawei.com (7.185.36.56) by
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4GYqdt663Lz1CNvq;
+        Tue, 27 Jul 2021 16:26:58 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
  dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 27 Jul 2021 14:52:00 +0800
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggpemm500003.china.huawei.com (7.185.36.56) with Microsoft SMTP Server
+ 15.1.2176.2; Tue, 27 Jul 2021 16:32:52 +0800
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 27 Jul 2021 14:51:58 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2176.012; Tue, 27 Jul 2021 07:51:56 +0100
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        "linux-arm-kernel@lists.infradead.org" 
+ 15.1.2176.2; Tue, 27 Jul 2021 16:32:51 +0800
+Subject: Re: [PATCH v6 0/9] ACPI/IORT: Support for IORT RMR node
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
         <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "robin.murphy@arm.com" <robin.murphy@arm.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "joro@8bytes.org" <joro@8bytes.org>
-CC:     "jon@solid-run.com" <jon@solid-run.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        "steven.price@arm.com" <steven.price@arm.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        yangyicong <yangyicong@huawei.com>,
-        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "eric.auger@redhat.com" <eric.auger@redhat.com>
-Subject: RE: [PATCH v6 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Topic: [PATCH v6 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Index: AQHXeh1vg51cV9IdVUizwG8vunPk8atKQ7KAgAwuDYA=
-Date:   Tue, 27 Jul 2021 06:51:56 +0000
-Message-ID: <014a451d00304b80b3de700817d688de@huawei.com>
+        <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
+CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
+        <joro@8bytes.org>, <robin.murphy@arm.com>,
+        <wanghuiqiang@huawei.com>, <steven.price@arm.com>,
+        <Sami.Mujawar@arm.com>, <jon@solid-run.com>,
+        <eric.auger@redhat.com>, <yangyicong@huawei.com>
 References: <20210716083442.1708-1-shameerali.kolothum.thodi@huawei.com>
- <35db3320-d6e2-721e-8d49-e5e2e80e2359@nxp.com>
-In-Reply-To: <35db3320-d6e2-721e-8d49-e5e2e80e2359@nxp.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.92.57]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <fb7a2f1a-faf4-8d0c-bf1a-31cade789f12@huawei.com>
+Date:   Tue, 27 Jul 2021 16:32:51 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
+In-Reply-To: <20210716083442.1708-1-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IExhdXJlbnRpdSBUdWRvciBb
-bWFpbHRvOmxhdXJlbnRpdS50dWRvckBueHAuY29tXQ0KPiBTZW50OiAxOSBKdWx5IDIwMjEgMTQ6
-NDYNCj4gVG86IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkgPHNoYW1lZXJhbGkua29sb3RodW0u
-dGhvZGlAaHVhd2VpLmNvbT47DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9y
-ZzsgbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGlvbW11QGxpc3RzLmxpbnV4LWZvdW5k
-YXRpb24ub3JnDQo+IENjOiBqb25Ac29saWQtcnVuLmNvbTsgTGludXhhcm0gPGxpbnV4YXJtQGh1
-YXdlaS5jb20+Ow0KPiBzdGV2ZW4ucHJpY2VAYXJtLmNvbTsgR3VvaGFuanVuIChIYW5qdW4gR3Vv
-KSA8Z3VvaGFuanVuQGh1YXdlaS5jb20+Ow0KPiB5YW5neWljb25nIDx5YW5neWljb25nQGh1YXdl
-aS5jb20+OyBTYW1pLk11amF3YXJAYXJtLmNvbTsNCj4gcm9iaW4ubXVycGh5QGFybS5jb207IHdh
-bmdodWlxaWFuZyA8d2FuZ2h1aXFpYW5nQGh1YXdlaS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFU
-Q0ggdjYgMC85XSBBQ1BJL0lPUlQ6IFN1cHBvcnQgZm9yIElPUlQgUk1SIG5vZGUNCj4gDQo+IE9u
-IDcvMTYvMjAyMSAxMTozNCBBTSwgU2hhbWVlciBLb2xvdGh1bSB3cm90ZToNCj4gPiBIaSwNCj4g
-Pg0KPiA+IE1ham9yIENoYW5nZXMgZnJvbSB2NToNCj4gPiAtIEFkZHJlc3NlZCBjb21tZW50cyBm
-cm9tIFJvYmluICYgTG9yZW56by4NCj4gPiAgIDogTW92ZWQgaW9ydF9wYXJzZV9ybXIoKSB0byBh
-Y3BpX2lvcnRfaW5pdCgpIGZyb20NCj4gPiAgICAgaW9ydF9pbml0X3BsYXRmb3JtX2RldmljZXMo
-KS4NCj4gPiAgIDogUmVtb3ZlZCB1c2Ugb2Ygc3RydWN0IGlvcnRfcm1yX2VudHJ5IGR1cmluZyB0
-aGUgaW5pdGlhbA0KPiA+ICAgICBwYXJzZS4gVXNpbmcgc3RydWN0IGlvbW11X3Jlc3ZfcmVnaW9u
-IGluc3RlYWQuDQo+ID4gICA6IFJlcG9ydCBSTVIgYWRkcmVzcyBhbGlnbm1lbnQgYW5kIG92ZXJs
-YXAgZXJyb3JzLCBidXQgY29udGludWUuDQo+ID4gICA6IFJld29ya2VkIGFybV9zbW11X2luaXRf
-YnlwYXNzX3N0ZXMoKSAocGF0Y2ggIyA2KS4NCj4gPiAtIFVwZGF0ZWQgU01NVXYyIGJ5cGFzcyBT
-TVIgY29kZS4gVGhhbmtzIHRvIEpvbiBOIChwYXRjaCAjOCkuDQo+ID4gLSBTZXQgSU9NTVUgcHJv
-dGVjdGlvbiBmbGFncyhJT01NVV9DQUNIRSwgSU9NTVVfTU1JTykgYmFzZWQNCj4gPiAgIG9uIFR5
-cGUgb2YgUk1SIHJlZ2lvbi4gU3VnZ2VzdGVkIGJ5IEpvbiBOLg0KDQpbLi4uXQ0KDQo+ID4NCj4g
-VmFsaWRhdGVkIG9uIGEgTlhQIExYMjE2MEEgd2l0aCBTTU1VdjIsIHNvOg0KPiANCj4gVGVzdGVk
-LWJ5OiBMYXVyZW50aXUgVHVkb3IgPGxhdXJlbnRpdS50dWRvckBueHAuY29tPg0KPiANCg0KVGhh
-bmtzIGZvciB0ZXN0aW5nLg0KDQpIaSBBbGwsDQoNCkEgZ2VudGxlIHBpbmcgb24gdGhpcy4uLg0K
-DQpJIGFtIHBsYW5uaW5nIHRvIHJlc3BpbiB0aGlzIHdpdGggdGhlIGZpeCBzdWdnZXN0ZWQgYnkg
-U3RldmUgaW4NCnBhdGNoICM4IGZvciBTTU1VdjIuIEJ1dCB3b3VsZCB3YWl0IHRpbGwgb3RoZXIg
-cGF0Y2hlcyBnZXQgYQ0KcHJvcGVyIHJldmlldyBzbyB0aGF0IEkgY2FuIGluY2x1ZGUgdGhvc2Ug
-Y29tbWVudHMgYXMgd2VsbCBpZg0KYW55Lg0KDQpUaGFua3MsDQpTaGFtZWVyDQo=
+On 2021/7/16 16:34, Shameer Kolothum wrote:
+> Hi,
+> 
+> Major Changes from v5:
+> - Addressed comments from Robin & Lorenzo.
+>    : Moved iort_parse_rmr() to acpi_iort_init() from
+>      iort_init_platform_devices().
+>    : Removed use of struct iort_rmr_entry during the initial
+>      parse. Using struct iommu_resv_region instead.
+>    : Report RMR address alignment and overlap errors, but continue.
+>    : Reworked arm_smmu_init_bypass_stes() (patch # 6).
+> - Updated SMMUv2 bypass SMR code. Thanks to Jon N (patch #8).
+> - Set IOMMU protection flags(IOMMU_CACHE, IOMMU_MMIO) based
+>    on Type of RMR region. Suggested by Jon N.
+
+I use the updated firmware from Huiqiang(Cced), tested on
+my Kunpeng 920 server, the 3408iMRraid and 3416iMRraid can
+work as expected with SMMUv3 enabled.
+
+Tested-by: Hanjun Guo <guohanjun@huawei.com>
+Tested-by: Huiqiang Wang <wanghuiqiang@huawei.com>
+
+Thanks
+Hanjun
