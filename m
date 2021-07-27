@@ -2,99 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2260E3D6D35
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jul 2021 06:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF303D6FB6
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jul 2021 08:52:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230130AbhG0EVu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Jul 2021 00:21:50 -0400
-Received: from szxga08-in.huawei.com ([45.249.212.255]:12266 "EHLO
-        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbhG0EVt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Jul 2021 00:21:49 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4GYk492wt2z1CPJS;
-        Tue, 27 Jul 2021 12:15:53 +0800 (CST)
-Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+        id S235327AbhG0GwD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Jul 2021 02:52:03 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:7878 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235653AbhG0GwC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Jul 2021 02:52:02 -0400
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GYnS01DHQz80CB;
+        Tue, 27 Jul 2021 14:48:16 +0800 (CST)
+Received: from dggpemm500003.china.huawei.com (7.185.36.56) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 27 Jul 2021 12:21:47 +0800
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ 15.1.2176.2; Tue, 27 Jul 2021 14:52:00 +0800
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ dggpemm500003.china.huawei.com (7.185.36.56) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 27 Jul 2021 12:21:46 +0800
-Subject: Re: [PATCH] ACPI: Add memory semantics to acpi_os_map_memory()
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        <linux-kernel@vger.kernel.org>
-CC:     Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>,
-        "Sudeep Holla" <sudeep.holla@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        <linux-acpi@vger.kernel.org>,
+ 15.1.2176.2; Tue, 27 Jul 2021 14:51:58 +0800
+Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
+ lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
+ 15.01.2176.012; Tue, 27 Jul 2021 07:51:56 +0100
+From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To:     Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        "linux-arm-kernel@lists.infradead.org" 
         <linux-arm-kernel@lists.infradead.org>,
-        Veronika kabatova <vkabatov@redhat.com>,
-        Robin Murphy <robin.murphy@arm.com>
-References: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <eaa04e3d-f262-22df-4dce-c88cbaa6a45a@huawei.com>
-Date:   Tue, 27 Jul 2021 12:21:46 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "robin.murphy@arm.com" <robin.murphy@arm.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "joro@8bytes.org" <joro@8bytes.org>
+CC:     "jon@solid-run.com" <jon@solid-run.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        "steven.price@arm.com" <steven.price@arm.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        yangyicong <yangyicong@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "eric.auger@redhat.com" <eric.auger@redhat.com>
+Subject: RE: [PATCH v6 0/9] ACPI/IORT: Support for IORT RMR node
+Thread-Topic: [PATCH v6 0/9] ACPI/IORT: Support for IORT RMR node
+Thread-Index: AQHXeh1vg51cV9IdVUizwG8vunPk8atKQ7KAgAwuDYA=
+Date:   Tue, 27 Jul 2021 06:51:56 +0000
+Message-ID: <014a451d00304b80b3de700817d688de@huawei.com>
+References: <20210716083442.1708-1-shameerali.kolothum.thodi@huawei.com>
+ <35db3320-d6e2-721e-8d49-e5e2e80e2359@nxp.com>
+In-Reply-To: <35db3320-d6e2-721e-8d49-e5e2e80e2359@nxp.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.47.92.57]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.247]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500002.china.huawei.com (7.185.36.229)
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021/7/26 18:00, Lorenzo Pieralisi wrote:
-> The memory attributes attached to memory regions depend on architecture
-> specific mappings.
-> 
-> For some memory regions, the attributes specified by firmware (eg
-> uncached) are not sufficient to determine how a memory region should be
-> mapped by an OS (for instance a region that is define as uncached in
-> firmware can be mapped as Normal or Device memory on arm64) and
-> therefore the OS must be given control on how to map the region to match
-> the expected mapping behaviour (eg if a mapping is requested with memory
-> semantics, it must allow unaligned accesses).
-> 
-> Rework acpi_os_map_memory() and acpi_os_ioremap() back-end to split
-> them into two separate code paths:
-> 
-> acpi_os_memmap() -> memory semantics
-> acpi_os_ioremap() -> MMIO semantics
-> 
-> The split allows the architectural implementation back-ends to detect
-> the default memory attributes required by the mapping in question
-> (ie the mapping API defines the semantics memory vs MMIO) and map the
-> memory accordingly.
-> 
-> Link: https://lore.kernel.org/linux-arm-kernel/31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com
-> Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Hanjun Guo <guohanjun@huawei.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> ---
->   arch/arm64/include/asm/acpi.h |  3 +++
->   arch/arm64/kernel/acpi.c      | 19 ++++++++++++++++---
->   drivers/acpi/osl.c            | 23 ++++++++++++++++-------
->   include/acpi/acpi_io.h        |  8 ++++++++
-
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-
-I did the boot test on both x86 and ARM64 server machines,
-and no regressions,
-
-Tested-by: Hanjun Guo <guohanjun@huawei.com>
-
-Thanks
-Hanjun
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IExhdXJlbnRpdSBUdWRvciBb
+bWFpbHRvOmxhdXJlbnRpdS50dWRvckBueHAuY29tXQ0KPiBTZW50OiAxOSBKdWx5IDIwMjEgMTQ6
+NDYNCj4gVG86IFNoYW1lZXJhbGkgS29sb3RodW0gVGhvZGkgPHNoYW1lZXJhbGkua29sb3RodW0u
+dGhvZGlAaHVhd2VpLmNvbT47DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9y
+ZzsgbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGlvbW11QGxpc3RzLmxpbnV4LWZvdW5k
+YXRpb24ub3JnDQo+IENjOiBqb25Ac29saWQtcnVuLmNvbTsgTGludXhhcm0gPGxpbnV4YXJtQGh1
+YXdlaS5jb20+Ow0KPiBzdGV2ZW4ucHJpY2VAYXJtLmNvbTsgR3VvaGFuanVuIChIYW5qdW4gR3Vv
+KSA8Z3VvaGFuanVuQGh1YXdlaS5jb20+Ow0KPiB5YW5neWljb25nIDx5YW5neWljb25nQGh1YXdl
+aS5jb20+OyBTYW1pLk11amF3YXJAYXJtLmNvbTsNCj4gcm9iaW4ubXVycGh5QGFybS5jb207IHdh
+bmdodWlxaWFuZyA8d2FuZ2h1aXFpYW5nQGh1YXdlaS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFU
+Q0ggdjYgMC85XSBBQ1BJL0lPUlQ6IFN1cHBvcnQgZm9yIElPUlQgUk1SIG5vZGUNCj4gDQo+IE9u
+IDcvMTYvMjAyMSAxMTozNCBBTSwgU2hhbWVlciBLb2xvdGh1bSB3cm90ZToNCj4gPiBIaSwNCj4g
+Pg0KPiA+IE1ham9yIENoYW5nZXMgZnJvbSB2NToNCj4gPiAtIEFkZHJlc3NlZCBjb21tZW50cyBm
+cm9tIFJvYmluICYgTG9yZW56by4NCj4gPiAgIDogTW92ZWQgaW9ydF9wYXJzZV9ybXIoKSB0byBh
+Y3BpX2lvcnRfaW5pdCgpIGZyb20NCj4gPiAgICAgaW9ydF9pbml0X3BsYXRmb3JtX2RldmljZXMo
+KS4NCj4gPiAgIDogUmVtb3ZlZCB1c2Ugb2Ygc3RydWN0IGlvcnRfcm1yX2VudHJ5IGR1cmluZyB0
+aGUgaW5pdGlhbA0KPiA+ICAgICBwYXJzZS4gVXNpbmcgc3RydWN0IGlvbW11X3Jlc3ZfcmVnaW9u
+IGluc3RlYWQuDQo+ID4gICA6IFJlcG9ydCBSTVIgYWRkcmVzcyBhbGlnbm1lbnQgYW5kIG92ZXJs
+YXAgZXJyb3JzLCBidXQgY29udGludWUuDQo+ID4gICA6IFJld29ya2VkIGFybV9zbW11X2luaXRf
+YnlwYXNzX3N0ZXMoKSAocGF0Y2ggIyA2KS4NCj4gPiAtIFVwZGF0ZWQgU01NVXYyIGJ5cGFzcyBT
+TVIgY29kZS4gVGhhbmtzIHRvIEpvbiBOIChwYXRjaCAjOCkuDQo+ID4gLSBTZXQgSU9NTVUgcHJv
+dGVjdGlvbiBmbGFncyhJT01NVV9DQUNIRSwgSU9NTVVfTU1JTykgYmFzZWQNCj4gPiAgIG9uIFR5
+cGUgb2YgUk1SIHJlZ2lvbi4gU3VnZ2VzdGVkIGJ5IEpvbiBOLg0KDQpbLi4uXQ0KDQo+ID4NCj4g
+VmFsaWRhdGVkIG9uIGEgTlhQIExYMjE2MEEgd2l0aCBTTU1VdjIsIHNvOg0KPiANCj4gVGVzdGVk
+LWJ5OiBMYXVyZW50aXUgVHVkb3IgPGxhdXJlbnRpdS50dWRvckBueHAuY29tPg0KPiANCg0KVGhh
+bmtzIGZvciB0ZXN0aW5nLg0KDQpIaSBBbGwsDQoNCkEgZ2VudGxlIHBpbmcgb24gdGhpcy4uLg0K
+DQpJIGFtIHBsYW5uaW5nIHRvIHJlc3BpbiB0aGlzIHdpdGggdGhlIGZpeCBzdWdnZXN0ZWQgYnkg
+U3RldmUgaW4NCnBhdGNoICM4IGZvciBTTU1VdjIuIEJ1dCB3b3VsZCB3YWl0IHRpbGwgb3RoZXIg
+cGF0Y2hlcyBnZXQgYQ0KcHJvcGVyIHJldmlldyBzbyB0aGF0IEkgY2FuIGluY2x1ZGUgdGhvc2Ug
+Y29tbWVudHMgYXMgd2VsbCBpZg0KYW55Lg0KDQpUaGFua3MsDQpTaGFtZWVyDQo=
