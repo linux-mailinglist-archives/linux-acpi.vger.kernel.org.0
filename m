@@ -2,226 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7343B3D6CB0
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jul 2021 05:28:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2260E3D6D35
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jul 2021 06:21:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234763AbhG0Crc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 26 Jul 2021 22:47:32 -0400
-Received: from mga14.intel.com ([192.55.52.115]:42538 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234731AbhG0Crc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 26 Jul 2021 22:47:32 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10057"; a="212080719"
-X-IronPort-AV: E=Sophos;i="5.84,272,1620716400"; 
-   d="scan'208";a="212080719"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2021 20:28:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,272,1620716400"; 
-   d="scan'208";a="437102821"
-Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 26 Jul 2021 20:27:58 -0700
-Received: from kbuild by d053b881505b with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1m8Dl8-0006Pu-0R; Tue, 27 Jul 2021 03:27:58 +0000
-Date:   Tue, 27 Jul 2021 11:27:20 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 1dae4a65c01109508ee17281b6d92b734d7bc1f3
-Message-ID: <60ff7d18.Or5/Z76P5dwqfEGM%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S230130AbhG0EVu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Jul 2021 00:21:50 -0400
+Received: from szxga08-in.huawei.com ([45.249.212.255]:12266 "EHLO
+        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229487AbhG0EVt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 27 Jul 2021 00:21:49 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4GYk492wt2z1CPJS;
+        Tue, 27 Jul 2021 12:15:53 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Tue, 27 Jul 2021 12:21:47 +0800
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Tue, 27 Jul 2021 12:21:46 +0800
+Subject: Re: [PATCH] ACPI: Add memory semantics to acpi_os_map_memory()
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        <linux-kernel@vger.kernel.org>
+CC:     Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>,
+        "Sudeep Holla" <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Veronika kabatova <vkabatov@redhat.com>,
+        Robin Murphy <robin.murphy@arm.com>
+References: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <eaa04e3d-f262-22df-4dce-c88cbaa6a45a@huawei.com>
+Date:   Tue, 27 Jul 2021 12:21:46 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 1dae4a65c01109508ee17281b6d92b734d7bc1f3  Merge branch 'pm-pci' into linux-next
+On 2021/7/26 18:00, Lorenzo Pieralisi wrote:
+> The memory attributes attached to memory regions depend on architecture
+> specific mappings.
+> 
+> For some memory regions, the attributes specified by firmware (eg
+> uncached) are not sufficient to determine how a memory region should be
+> mapped by an OS (for instance a region that is define as uncached in
+> firmware can be mapped as Normal or Device memory on arm64) and
+> therefore the OS must be given control on how to map the region to match
+> the expected mapping behaviour (eg if a mapping is requested with memory
+> semantics, it must allow unaligned accesses).
+> 
+> Rework acpi_os_map_memory() and acpi_os_ioremap() back-end to split
+> them into two separate code paths:
+> 
+> acpi_os_memmap() -> memory semantics
+> acpi_os_ioremap() -> MMIO semantics
+> 
+> The split allows the architectural implementation back-ends to detect
+> the default memory attributes required by the mapping in question
+> (ie the mapping API defines the semantics memory vs MMIO) and map the
+> memory accordingly.
+> 
+> Link: https://lore.kernel.org/linux-arm-kernel/31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com
+> Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Hanjun Guo <guohanjun@huawei.com>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> ---
+>   arch/arm64/include/asm/acpi.h |  3 +++
+>   arch/arm64/kernel/acpi.c      | 19 ++++++++++++++++---
+>   drivers/acpi/osl.c            | 23 ++++++++++++++++-------
+>   include/acpi/acpi_io.h        |  8 ++++++++
 
-elapsed time: 722m
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
 
-configs tested: 167
-configs skipped: 3
+I did the boot test on both x86 and ARM64 server machines,
+and no regressions,
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Tested-by: Hanjun Guo <guohanjun@huawei.com>
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20210726
-sh                          landisk_defconfig
-arm                            lart_defconfig
-powerpc                      katmai_defconfig
-arm                          pxa168_defconfig
-arm                         lpc18xx_defconfig
-powerpc                    socrates_defconfig
-powerpc                       holly_defconfig
-xtensa                          iss_defconfig
-sh                        dreamcast_defconfig
-xtensa                              defconfig
-powerpc                     mpc5200_defconfig
-sh                      rts7751r2d1_defconfig
-h8300                     edosk2674_defconfig
-powerpc                      cm5200_defconfig
-mips                         mpc30x_defconfig
-powerpc                         wii_defconfig
-arm                       netwinder_defconfig
-arm                        magician_defconfig
-arm                        trizeps4_defconfig
-sh                           se7722_defconfig
-arm                            qcom_defconfig
-powerpc                   lite5200b_defconfig
-arm                          pcm027_defconfig
-mips                            gpr_defconfig
-arm                            mps2_defconfig
-arc                        vdk_hs38_defconfig
-m68k                       m5249evb_defconfig
-sh                          sdk7786_defconfig
-arm                         mv78xx0_defconfig
-sh                   rts7751r2dplus_defconfig
-sh                          kfr2r09_defconfig
-sh                          r7780mp_defconfig
-arm                            xcep_defconfig
-mips                       bmips_be_defconfig
-powerpc                       ebony_defconfig
-sh                          sdk7780_defconfig
-powerpc                      ppc64e_defconfig
-powerpc                     sbc8548_defconfig
-arm                          iop32x_defconfig
-ia64                      gensparse_defconfig
-sh                 kfr2r09-romimage_defconfig
-sh                               alldefconfig
-arm                       imx_v6_v7_defconfig
-arm                             mxs_defconfig
-powerpc                 mpc8313_rdb_defconfig
-powerpc                          g5_defconfig
-mips                           rs90_defconfig
-riscv                    nommu_virt_defconfig
-m68k                        mvme147_defconfig
-sh                     magicpanelr2_defconfig
-powerpc                 linkstation_defconfig
-sh                          r7785rp_defconfig
-ia64                          tiger_defconfig
-arm                           spitz_defconfig
-ia64                             alldefconfig
-powerpc                    sam440ep_defconfig
-riscv                    nommu_k210_defconfig
-i386                             allyesconfig
-arc                            hsdk_defconfig
-sh                        sh7785lcr_defconfig
-powerpc                     kilauea_defconfig
-mips                     cu1830-neo_defconfig
-sh                          urquell_defconfig
-mips                        bcm47xx_defconfig
-arm                          exynos_defconfig
-powerpc                     stx_gp3_defconfig
-sh                   sh7770_generic_defconfig
-sh                              ul2_defconfig
-mips                           ip27_defconfig
-mips                         bigsur_defconfig
-sh                        sh7763rdp_defconfig
-x86_64                              defconfig
-openrisc                  or1klitex_defconfig
-sh                             espt_defconfig
-s390                             allmodconfig
-mips                        nlm_xlp_defconfig
-x86_64                            allnoconfig
-ia64                                defconfig
-ia64                             allyesconfig
-ia64                             allmodconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-sparc                               defconfig
-i386                                defconfig
-sparc                            allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a003-20210726
-x86_64               randconfig-a006-20210726
-x86_64               randconfig-a001-20210726
-x86_64               randconfig-a005-20210726
-x86_64               randconfig-a004-20210726
-x86_64               randconfig-a002-20210726
-i386                 randconfig-a005-20210726
-i386                 randconfig-a003-20210726
-i386                 randconfig-a004-20210726
-i386                 randconfig-a002-20210726
-i386                 randconfig-a001-20210726
-i386                 randconfig-a006-20210726
-i386                 randconfig-a016-20210726
-i386                 randconfig-a013-20210726
-i386                 randconfig-a012-20210726
-i386                 randconfig-a011-20210726
-i386                 randconfig-a014-20210726
-i386                 randconfig-a015-20210726
-i386                 randconfig-a016-20210727
-i386                 randconfig-a013-20210727
-i386                 randconfig-a012-20210727
-i386                 randconfig-a011-20210727
-i386                 randconfig-a014-20210727
-i386                 randconfig-a015-20210727
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-c001-20210726
-x86_64               randconfig-a003-20210725
-x86_64               randconfig-a006-20210725
-x86_64               randconfig-a001-20210725
-x86_64               randconfig-a005-20210725
-x86_64               randconfig-a004-20210725
-x86_64               randconfig-a002-20210725
-x86_64               randconfig-a003-20210727
-x86_64               randconfig-a006-20210727
-x86_64               randconfig-a001-20210727
-x86_64               randconfig-a005-20210727
-x86_64               randconfig-a004-20210727
-x86_64               randconfig-a002-20210727
-x86_64               randconfig-a011-20210726
-x86_64               randconfig-a016-20210726
-x86_64               randconfig-a013-20210726
-x86_64               randconfig-a014-20210726
-x86_64               randconfig-a012-20210726
-x86_64               randconfig-a015-20210726
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Thanks
+Hanjun
