@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D95E23D7697
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jul 2021 15:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E9A43D7689
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Jul 2021 15:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237029AbhG0NaO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 27 Jul 2021 09:30:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57234 "EHLO mail.kernel.org"
+        id S236821AbhG0NaB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 27 Jul 2021 09:30:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57220 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236738AbhG0NUQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 27 Jul 2021 09:20:16 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8F13661ABC;
-        Tue, 27 Jul 2021 13:19:36 +0000 (UTC)
+        id S236942AbhG0NU3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 27 Jul 2021 09:20:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 95F8561ACE;
+        Tue, 27 Jul 2021 13:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627391977;
-        bh=CAXc8LZihg7Es+984OqvWcmER3uPykOlQi6083aw+5U=;
+        s=k20201202; t=1627392000;
+        bh=m8eVRp7kvqRylifcK3gNGxLsO1GYKoZFlzGmAUzr1Bs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ktEqGYXftZmybaNR253XPfpQAELy5b42ROT0tMyw4u0tlWvfMMSIMyLCzhOvoBJYD
-         5dOLWaEP6XhNuF8d3dA/TJtQq1t33ll8yd/Z9/NxmVtzJDXR+0q0f+Z8PHjA9lv9ql
-         WG6wu4iel52UC6i23rkpEdpMPWI5mjGPYMDJL0x4k7T8lJRtkcOs/W++9v6TOhw8rN
-         Wye/ABj2M90Pr7R87b9flNMTXdrugk9rCZ3QhSwRSHIEzr/K4LR6nwgu4cXhEqFqdM
-         QHiuvBU31Z7iScJkew+8yItfkugahbVBQ6qSBGEgScgZGnCy7Lrzs5C9rAkz9M6qU8
-         qxteXEJqrD31w==
+        b=l/Og+HPSIgCgj/5EmSf1CBiLZWFGWITsxyH+QkNtTonjVSjlk158J/8xzyCUvooV1
+         uwcW66fsqUZ8MsevkI9+DazOclDueb0Ad5kERcv/qUJfI5vz2VOk84mt+fKdbgXS/H
+         YokBviW0WTz8tLTzNOsJ0dsjjkXGqYScxQe1byn/mZVb0kRBG+D4kBJDUp0qljPhh1
+         Qp5W75nuux4uTLJeUGxDeRqJMonCMDD/x9UDfbuG+3Kgz8/TcrbJHzLbIXQHGxzV1U
+         79ylUv3sNrNdPHUwM0LfCZPr6WieT9CxnmDqCZPeuWZmrnpHbhDp3wk/9PiqXAGAAL
+         mAagz7dNtAnyg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -31,12 +31,12 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 5.13 21/21] ACPI: fix NULL pointer dereference
-Date:   Tue, 27 Jul 2021 09:19:08 -0400
-Message-Id: <20210727131908.834086-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 17/17] ACPI: fix NULL pointer dereference
+Date:   Tue, 27 Jul 2021 09:19:38 -0400
+Message-Id: <20210727131938.834920-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210727131908.834086-1-sashal@kernel.org>
-References: <20210727131908.834086-1-sashal@kernel.org>
+In-Reply-To: <20210727131938.834920-1-sashal@kernel.org>
+References: <20210727131938.834920-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -69,10 +69,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 3a82faac5767..cd98af6ba155 100644
+index 37dac195adbb..6ad3b89a8a2e 100644
 --- a/include/acpi/acpi_bus.h
 +++ b/include/acpi/acpi_bus.h
-@@ -716,7 +716,8 @@ static inline struct acpi_device *acpi_dev_get(struct acpi_device *adev)
+@@ -689,7 +689,8 @@ acpi_dev_get_first_match_dev(const char *hid, const char *uid, s64 hrv);
  
  static inline void acpi_dev_put(struct acpi_device *adev)
  {
