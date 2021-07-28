@@ -2,153 +2,178 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C5433D93B9
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jul 2021 18:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 664253D9439
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jul 2021 19:25:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230469AbhG1Q53 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Jul 2021 12:57:29 -0400
-Received: from mga12.intel.com ([192.55.52.136]:51739 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230101AbhG1Q5Q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 28 Jul 2021 12:57:16 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10059"; a="192300304"
-X-IronPort-AV: E=Sophos;i="5.84,276,1620716400"; 
-   d="scan'208";a="192300304"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2021 09:57:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,276,1620716400"; 
-   d="scan'208";a="417827554"
-Received: from linux.intel.com ([10.54.29.200])
-  by orsmga003.jf.intel.com with ESMTP; 28 Jul 2021 09:57:13 -0700
-Received: from debox1-desk1.jf.intel.com (debox1-desk1.jf.intel.com [10.54.75.160])
-        by linux.intel.com (Postfix) with ESMTP id 79C2158086A;
-        Wed, 28 Jul 2021 09:57:13 -0700 (PDT)
-Message-ID: <d5972bd061a00c2b8e9e7953a4472a853336f359.camel@linux.intel.com>
-Subject: Re: [PATCH 1/2] acpi: Add acpi_init_properties to ACPI driver code
-From:   "David E. Box" <david.e.box@linux.intel.com>
-Reply-To: david.e.box@linux.intel.com
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Michael Bottini <michael.a.bottini@linux.intel.com>,
-        rjw@rjwysocki.net, lenb@kernel.org, irenic.rajneesh@gmail.com,
-        mgross@linux.intel.com
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Date:   Wed, 28 Jul 2021 09:57:13 -0700
-In-Reply-To: <1fd1a48e-3756-e933-9038-cb3f3e247144@redhat.com>
-References: <20210723202157.2425-1-michael.a.bottini@linux.intel.com>
-         <d8e4f0f3-7282-50d4-16ac-2f67b210373c@redhat.com>
-         <1fd1a48e-3756-e933-9038-cb3f3e247144@redhat.com>
-Organization: David E. Box
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S229542AbhG1RZL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Jul 2021 13:25:11 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:53084 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229537AbhG1RZK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Jul 2021 13:25:10 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
+ id d053bcc70460610a; Wed, 28 Jul 2021 19:25:06 +0200
+Received: from kreacher.localnet (89-64-80-148.dynamic.chello.pl [89.64.80.148])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 5E854669F32;
+        Wed, 28 Jul 2021 19:25:05 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux PCI <linux-pci@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Utkarsh H Patel <utkarsh.h.patel@intel.com>,
+        Koba Ko <koba.ko@canonical.com>
+Subject: [PATCH v2] PCI: PM: Add special case handling for PCIe device wakeup
+Date:   Wed, 28 Jul 2021 19:25:04 +0200
+Message-ID: <3149540.aeNJFYEL58@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 89.64.80.148
+X-CLIENT-HOSTNAME: 89-64-80-148.dynamic.chello.pl
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrgeelgdelfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdevgfetueetheekudeuvdduteelvefftdfftdejjeeukeffteeikefgiefghedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepkeelrdeigedrkedtrddugeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdeigedrkedtrddugeekpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+ pdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhgvlhhgrggrsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgrihdrhhgvnhhgrdhfvghnghestggrnhhonhhitggrlhdrtghomhdprhgtphhtthhopehuthhkrghrshhhrdhhrdhprghtvghlsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhhosggrrdhkohestggrnhhonhhitggrlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2021-07-28 at 11:10 +0200, Hans de Goede wrote:
-> Hi,
-> 
-> On 7/28/21 11:08 AM, Hans de Goede wrote:
-> > Hi,
-> > 
-> > On 7/23/21 10:21 PM, Michael Bottini wrote:
-> > > Some products in the field, like Intel Rocket Lake systems,
-> > > contain
-> > > AML code that can modify _DSD properties after they have been
-> > > evaluated by ACPI init code. Therefore, there is a need for
-> > > drivers
-> > > to be able to reevaluate _DSDs so that the updated property
-> > > values can
-> > > be read. Export acpi_init_properties() for this purpose.
-> > > 
-> > > Signed-off-by: Michael Bottini
-> > > <michael.a.bottini@linux.intel.com>
-> > 
-> > My first instinct here is this is a firmware bug and we should
-> > go out of our way here to not support this and to instead apply
-> > pressure on the vendor to get the firmware fixed.
-> > 
-> > Let me explain, the standard use of _DSD is to allow embedding
-> > open-firmware/devicetree style properties inside ACPI nodes.
-> > 
-> > devicetree files, unlike AML contain static information, which
-> > is parsed once and only once.
-> > 
-> > Allowing AML code to dynamically change _DSD results pretty
-> > much breaks this entire model.
-> > 
-> > So I might be shooting from the hip a bit here:
-> > "no, just no". IOW nack.
-> 
-> I should have read the rest of the thread first I guess.
-> 
-> I see that Andy and Rafael are saying the same thing.
-> 
-> So here we have 3 people who all 3 are somewhat experts in ACPI
-> saying no to this. So yes please talk to the BIOS team as you
-> indicated elsewhere in the thread.
-> 
-> Regards,
-> 
-> Hans
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-We get that reevaluating the _DSD would be against spec. We have taken
-this back to the firmware team as a bug and asked for a fix or
-different solution. Thanks.
+Some PCIe devices only support PME (Power Management Event) from
+D3cold.  One example is the ASMedia xHCI controller:
 
-> 
-> 
-> 
-> 
-> > > ---
-> > >  drivers/acpi/property.c | 1 +
-> > >  include/linux/acpi.h    | 6 ++++++
-> > >  2 files changed, 7 insertions(+)
-> > > 
-> > > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> > > index e312ebaed8db..2c1f8cf1a8f0 100644
-> > > --- a/drivers/acpi/property.c
-> > > +++ b/drivers/acpi/property.c
-> > > @@ -432,6 +432,7 @@ void acpi_init_properties(struct acpi_device
-> > > *adev)
-> > >         if (!adev->data.pointer)
-> > >                 acpi_extract_apple_properties(adev);
-> > >  }
-> > > +EXPORT_SYMBOL(acpi_init_properties);
-> > >  
-> > >  static void acpi_destroy_nondev_subnodes(struct list_head *list)
-> > >  {
-> > > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> > > index 72e4f7fd268c..57defc3bc9b9 100644
-> > > --- a/include/linux/acpi.h
-> > > +++ b/include/linux/acpi.h
-> > > @@ -716,6 +716,8 @@ static inline u64
-> > > acpi_arch_get_root_pointer(void)
-> > >  
-> > >  int acpi_get_local_address(acpi_handle handle, u32 *addr);
-> > >  
-> > > +void acpi_init_properties(struct acpi_device *adev);
-> > > +
-> > >  #else  /* !CONFIG_ACPI */
-> > >  
-> > >  #define acpi_disabled 1
-> > > @@ -976,6 +978,10 @@ static inline int
-> > > acpi_get_local_address(acpi_handle handle, u32 *addr)
-> > >         return -ENODEV;
-> > >  }
-> > >  
-> > > +static inline void acpi_init_properties(struct acpi_device
-> > > *adev)
-> > > +{
-> > > +}
-> > > +
-> > >  #endif /* !CONFIG_ACPI */
-> > >  
-> > >  #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
-> > > 
-> 
+ 11:00.0 USB controller: ASMedia Technology Inc. ASM1042A USB 3.0 Host Controller (prog-if 30 [XHCI])
+   ...
+   Capabilities: [78] Power Management version 3
+       Flags: PMEClk- DSI- D1- D2- AuxCurrent=55mA PME(D0-,D1-,D2-,D3hot-,D3cold+)
+       Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=0 PME-
+
+In those cases, if the device is expected to generate wakeup events
+from its final power state, pci_target_state() returns D0, which
+prevents the PCIe hierarchy above the device from entering any
+low-power states too, but the device cannot signal PME from D0
+either.  However, if the device were allowed to go into D3hot, its
+parent PCIe port and its ancestors would also be able to go into D3
+and if any of them goes into D3cold, the device would end up in
+D3cold too (as per the PCI PM spec v1.2, Table 6-1), in which case
+it would be able to signal PME.
+
+This means that the system could be put into a lower-power
+configuration while meeting the requirement to enable the device to
+generate PME from the final state (which is not the case if the
+device stays in D0 along with the entire hierarchy above it).
+
+In order to avoid missing that opportunity, extend pci_pme_capable()
+to return 'true' in the special case when the target state is D3hot
+and the device can only signal PME from D3cold and update
+pci_target_state() to return the current target state if
+pci_pme_capable() returns 'true' for it.
+
+This change can be regarded as a pci_target_state() fix, because that
+function should ignore its 'wakeup' argument if signaling PME from
+any power states shallower than the current candidate one (including
+D0) is not supported.
+
+Link: https://lore.kernel.org/linux-pm/20210617123653.58640-1-mika.westerberg@linux.intel.com
+Fixes: 666ff6f83e1d ("PCI/PM: Avoid using device_may_wakeup() for runtime PM")
+Reported-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reported-by: Utkarsh H Patel <utkarsh.h.patel@intel.com>
+Reported-by: Koba Ko <koba.ko@canonical.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+Hi Mika,
+
+IMO it is better to address the case in which the device cannot signal PME from
+D0 (as well as from any power states shallower than D3cold), which appears to be
+the one at hand, to start with and then, if need be, take care of the case in
+which signaling PME from both D0 and D3cold is supported separately.
+
+If the device cannot signal PME from D0, then there is no point returning D0
+from pci_target_state() just because 'wakeup' is set, so this is a bug, and
+then enabling PME in case the device ends up in D3cold can be regarded as "best
+effort" (we cannot guarantee that this will always happen, but then it is the
+only way to enable it to signal wakeup anyway).
+
+The case when signaling PME from D0 and D3cold (if we need to worry about it at
+all) is more controversial, because in that case leaving the device in D0 really
+allows it to signal wakeup, while putting it into D3hot in hope that it will end
+up in D3cold may not work.
+
+Cheers!
+
+-> v2:
+   * Instead of checking the direct parent of the device in question, which
+     doesn't work, check if the device can signal PME from any power states
+     shallower than D3cold, including D0.  If not, return 'true' from
+     pci_pme_capable() for D3hot as a way to indicate that the device should
+     be able to signal wakeup from the final state conditional on getting
+     one of its ancestors into D3cold.
+
+---
+ drivers/pci/pci.c |   34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
+
+Index: linux-pm/drivers/pci/pci.c
+===================================================================
+--- linux-pm.orig/drivers/pci/pci.c
++++ linux-pm/drivers/pci/pci.c
+@@ -2301,7 +2300,21 @@ bool pci_pme_capable(struct pci_dev *dev
+ 	if (!dev->pm_cap)
+ 		return false;
+ 
+-	return !!(dev->pme_support & (1 << state));
++	if (dev->pme_support & (1 << state))
++		return true;
++
++	/*
++	 * Special case: The target state is D3hot and the device (which is a
++	 * PCIe one) only supports signaling PME from D3cold.  In that case, if
++	 * the device is allowed to go into D3hot, its ancestor PCIe port may go
++	 * into D3cold which will cause the device to end up in D3cold too
++	 * (along the lines of the PCI PM spec v1.2, Table 6-1), so it will be
++	 * able to signal PME from the final state.  It will not be able to
++	 * signal PME if left in D0, however.
++	 */
++	return state == PCI_D3hot && pci_is_pcie(dev) &&
++		(dev->pme_support & (1 << PCI_D3cold)) &&
++		!(dev->pme_support ^ (1 << PCI_D3cold));
+ }
+ EXPORT_SYMBOL(pci_pme_capable);
+ 
+@@ -2595,17 +2608,12 @@ static pci_power_t pci_target_state(stru
+ 	if (dev->current_state == PCI_D3cold)
+ 		target_state = PCI_D3cold;
+ 
+-	if (wakeup) {
+-		/*
+-		 * Find the deepest state from which the device can generate
+-		 * PME#.
+-		 */
+-		if (dev->pme_support) {
+-			while (target_state
+-			      && !(dev->pme_support & (1 << target_state)))
+-				target_state--;
+-		}
+-	}
++	if (!wakeup || !dev->pme_support || pci_pme_capable(dev, target_state))
++		return target_state;
++
++	/* Find the deepest state from which the device can generate PME#. */
++	while (target_state && !(dev->pme_support & (1 << target_state)))
++		target_state--;
+ 
+ 	return target_state;
+ }
+
 
 
