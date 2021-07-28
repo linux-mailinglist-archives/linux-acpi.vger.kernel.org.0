@@ -2,66 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFA343D939E
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jul 2021 18:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C5433D93B9
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Jul 2021 18:57:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbhG1Qyo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 28 Jul 2021 12:54:44 -0400
-Received: from mail-ot1-f52.google.com ([209.85.210.52]:33759 "EHLO
-        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbhG1Qyo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 28 Jul 2021 12:54:44 -0400
-Received: by mail-ot1-f52.google.com with SMTP id 61-20020a9d0d430000b02903eabfc221a9so2815802oti.0;
-        Wed, 28 Jul 2021 09:54:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0PgNZ436M2jw8/FCjILyCZri/MUE2bro2uDvxBo2jlU=;
-        b=nD+X8nHscVKFiFvYklIyUDw4hquwkKXVUoRJUDu+CSFtoEeoSNck4RLI4r8WKEplUC
-         gvQjg1Nd55ek0mOeorzpjoTrcD2LgkrKS9bl9tkwNQuricsMfV3CRywnIhkDHcV+NfC4
-         /I+io1rL1bM6VyMmv9Gs20br+F0DmfpIBJ4fnxCKkdiz8zzylm4qDJgwlygKrp+QIC3e
-         xb7/8SJsDYzGeYIANFLEDYTvOB5jZyc7EnHCf7EKm832x7JyOFUikcX/QRhH8arm77fi
-         j2/3PKcU5B82R5r+X1bFxM/NlfO37NTSdU7Rj+VuOVhMM1E5WjCNLjkZAI1+CP5VxE3p
-         lgxQ==
-X-Gm-Message-State: AOAM530D7/xEkFigo+UAfNhVmvgYAaEV3MG1AnJ4jzjZ3NryaMwcnzoi
-        jwNYwhsQKkIcbwuWOrBaPHS0m0XQjrfzK6KvmDk=
-X-Google-Smtp-Source: ABdhPJzQppdx6fA1DUfutvjdx1AxsGLtON8pEhx1sa4xp4BPtxjOplcOzCofquN8IUn+qKNCCTrxfxt0O0pj66Jtk/w=
-X-Received: by 2002:a9d:2968:: with SMTP id d95mr693275otb.321.1627491280620;
- Wed, 28 Jul 2021 09:54:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210728151958.15205-1-hui.wang@canonical.com>
- <YQGA4Kj2Imz44D3k@kroah.com> <CAJZ5v0iKTXSHRU96_xjnh4Zjh4gNfwZs9PusrX3OA059HJNHsw@mail.gmail.com>
- <a27b6363-e8d3-f9ad-5029-a4a434c6d79b@gmail.com>
-In-Reply-To: <a27b6363-e8d3-f9ad-5029-a4a434c6d79b@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 28 Jul 2021 18:54:29 +0200
-Message-ID: <CAJZ5v0hkXcouTpF0Hmv9jUwHytOZRz0-T3TYGwzodT0EJYqRjw@mail.gmail.com>
-Subject: Re: [PATCH] Revert "ACPI: resources: Add checks for ACPI IRQ override"
-To:     PGNet Dev <pgnet.dev@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hui Wang <hui.wang@canonical.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Stable <stable@vger.kernel.org>, manuelkrause@netscape.net
+        id S230469AbhG1Q53 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 28 Jul 2021 12:57:29 -0400
+Received: from mga12.intel.com ([192.55.52.136]:51739 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230101AbhG1Q5Q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 28 Jul 2021 12:57:16 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10059"; a="192300304"
+X-IronPort-AV: E=Sophos;i="5.84,276,1620716400"; 
+   d="scan'208";a="192300304"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2021 09:57:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,276,1620716400"; 
+   d="scan'208";a="417827554"
+Received: from linux.intel.com ([10.54.29.200])
+  by orsmga003.jf.intel.com with ESMTP; 28 Jul 2021 09:57:13 -0700
+Received: from debox1-desk1.jf.intel.com (debox1-desk1.jf.intel.com [10.54.75.160])
+        by linux.intel.com (Postfix) with ESMTP id 79C2158086A;
+        Wed, 28 Jul 2021 09:57:13 -0700 (PDT)
+Message-ID: <d5972bd061a00c2b8e9e7953a4472a853336f359.camel@linux.intel.com>
+Subject: Re: [PATCH 1/2] acpi: Add acpi_init_properties to ACPI driver code
+From:   "David E. Box" <david.e.box@linux.intel.com>
+Reply-To: david.e.box@linux.intel.com
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Michael Bottini <michael.a.bottini@linux.intel.com>,
+        rjw@rjwysocki.net, lenb@kernel.org, irenic.rajneesh@gmail.com,
+        mgross@linux.intel.com
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Date:   Wed, 28 Jul 2021 09:57:13 -0700
+In-Reply-To: <1fd1a48e-3756-e933-9038-cb3f3e247144@redhat.com>
+References: <20210723202157.2425-1-michael.a.bottini@linux.intel.com>
+         <d8e4f0f3-7282-50d4-16ac-2f67b210373c@redhat.com>
+         <1fd1a48e-3756-e933-9038-cb3f3e247144@redhat.com>
+Organization: David E. Box
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 28, 2021 at 6:50 PM PGNet Dev <pgnet.dev@gmail.com> wrote:
->
-> On 7/28/21 12:38 PM, Rafael J. Wysocki wrote:
-> > On Wed, Jul 28, 2021 at 6:08 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > Applied as 5.14-rc material, thanks!
->
-> ty!
->
-> Will this revert be auto-magically backported to earlier stable (5.12x/5.13x) trees?
+On Wed, 2021-07-28 at 11:10 +0200, Hans de Goede wrote:
+> Hi,
+> 
+> On 7/28/21 11:08 AM, Hans de Goede wrote:
+> > Hi,
+> > 
+> > On 7/23/21 10:21 PM, Michael Bottini wrote:
+> > > Some products in the field, like Intel Rocket Lake systems,
+> > > contain
+> > > AML code that can modify _DSD properties after they have been
+> > > evaluated by ACPI init code. Therefore, there is a need for
+> > > drivers
+> > > to be able to reevaluate _DSDs so that the updated property
+> > > values can
+> > > be read. Export acpi_init_properties() for this purpose.
+> > > 
+> > > Signed-off-by: Michael Bottini
+> > > <michael.a.bottini@linux.intel.com>
+> > 
+> > My first instinct here is this is a firmware bug and we should
+> > go out of our way here to not support this and to instead apply
+> > pressure on the vendor to get the firmware fixed.
+> > 
+> > Let me explain, the standard use of _DSD is to allow embedding
+> > open-firmware/devicetree style properties inside ACPI nodes.
+> > 
+> > devicetree files, unlike AML contain static information, which
+> > is parsed once and only once.
+> > 
+> > Allowing AML code to dynamically change _DSD results pretty
+> > much breaks this entire model.
+> > 
+> > So I might be shooting from the hip a bit here:
+> > "no, just no". IOW nack.
+> 
+> I should have read the rest of the thread first I guess.
+> 
+> I see that Andy and Rafael are saying the same thing.
+> 
+> So here we have 3 people who all 3 are somewhat experts in ACPI
+> saying no to this. So yes please talk to the BIOS team as you
+> indicated elsewhere in the thread.
+> 
+> Regards,
+> 
+> Hans
 
-It carries the Cc:stable tag, so it should be picked up automatically.
+We get that reevaluating the _DSD would be against spec. We have taken
+this back to the firmware team as a bug and asked for a fix or
+different solution. Thanks.
 
-> Or does that require a manual trigger?
-> Or, is that a distro kernel release issue?
->
+> 
+> 
+> 
+> 
+> > > ---
+> > >  drivers/acpi/property.c | 1 +
+> > >  include/linux/acpi.h    | 6 ++++++
+> > >  2 files changed, 7 insertions(+)
+> > > 
+> > > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> > > index e312ebaed8db..2c1f8cf1a8f0 100644
+> > > --- a/drivers/acpi/property.c
+> > > +++ b/drivers/acpi/property.c
+> > > @@ -432,6 +432,7 @@ void acpi_init_properties(struct acpi_device
+> > > *adev)
+> > >         if (!adev->data.pointer)
+> > >                 acpi_extract_apple_properties(adev);
+> > >  }
+> > > +EXPORT_SYMBOL(acpi_init_properties);
+> > >  
+> > >  static void acpi_destroy_nondev_subnodes(struct list_head *list)
+> > >  {
+> > > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > > index 72e4f7fd268c..57defc3bc9b9 100644
+> > > --- a/include/linux/acpi.h
+> > > +++ b/include/linux/acpi.h
+> > > @@ -716,6 +716,8 @@ static inline u64
+> > > acpi_arch_get_root_pointer(void)
+> > >  
+> > >  int acpi_get_local_address(acpi_handle handle, u32 *addr);
+> > >  
+> > > +void acpi_init_properties(struct acpi_device *adev);
+> > > +
+> > >  #else  /* !CONFIG_ACPI */
+> > >  
+> > >  #define acpi_disabled 1
+> > > @@ -976,6 +978,10 @@ static inline int
+> > > acpi_get_local_address(acpi_handle handle, u32 *addr)
+> > >         return -ENODEV;
+> > >  }
+> > >  
+> > > +static inline void acpi_init_properties(struct acpi_device
+> > > *adev)
+> > > +{
+> > > +}
+> > > +
+> > >  #endif /* !CONFIG_ACPI */
+> > >  
+> > >  #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
+> > > 
+> 
+
+
