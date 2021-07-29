@@ -2,42 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E4CA3DA734
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jul 2021 17:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA003DA7EC
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jul 2021 17:54:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237307AbhG2PKA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Jul 2021 11:10:00 -0400
-Received: from mail-oi1-f173.google.com ([209.85.167.173]:44675 "EHLO
-        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229864AbhG2PKA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jul 2021 11:10:00 -0400
-Received: by mail-oi1-f173.google.com with SMTP id w6so8826205oiv.11;
-        Thu, 29 Jul 2021 08:09:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5bJH/fpoUt2uQkPvcGjyGDKgGhlQRm6pEd78vhS/jc4=;
-        b=dcpopyNmCSugC/5Ljm+GJtGYxWHX9qB3IgvaSbUM4/MjayxwF23BRzMAVQwKlGpS0e
-         IVbdHO5V00PmyaQVbWedk2YpU4Zhk/uKQzKa61zivfwtR1LtXyp9Cr49eFD5byB5riJM
-         kDImKeHY2/SJCkJ2dpYbZ3GCCRK+pswMaPSGrg/M1eR7mIcN5pZJJm66ddu1sGblbl9T
-         /ZyDx4flkuY2c6OQKCvZ3GOLGBD751aVS/skUTXrScqZBwuHzQVHjvQutiEy483cmLSh
-         gKxDPZGVP/D+FQC+wD87YbMfEKE3uwCrXk4dIKW+T17coe1Ze9TR+ZDhqhXEgTl1wTG9
-         JMPQ==
-X-Gm-Message-State: AOAM532ugR+AmWRt2QpIGJteHO8MM6QY1G5E9mFq/tq/1z3rrfxsrddK
-        28N3VS+z3lQmXQUxL2TpPwWTqwqpx2vJEpYz3xI=
-X-Google-Smtp-Source: ABdhPJyvEGB8FjJACYl3Fr7vWAR7dFS0J8VaBw0Le10jR0USiUfcLHOOMG8vDbEB/DEgNPj66v0To6sSiuu4EQ8RXyg=
-X-Received: by 2002:a05:6808:198c:: with SMTP id bj12mr1418309oib.71.1627571396779;
- Thu, 29 Jul 2021 08:09:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <4668274.31r3eYUQgx@kreacher> <2207145.ElGaqSPkdT@kreacher>
-In-Reply-To: <2207145.ElGaqSPkdT@kreacher>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 29 Jul 2021 17:09:45 +0200
-Message-ID: <CAJZ5v0jA92Mdrv2NyKpNs0tB45_p2sFmh_81RaBpnFVnr66+5g@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] PCI: PM: Add special case handling for PCIe device wakeup
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linux PCI <linux-pci@vger.kernel.org>
+        id S237947AbhG2Pyg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Jul 2021 11:54:36 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:60716 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237875AbhG2Pyf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jul 2021 11:54:35 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
+ id fea072fe12c31b53; Thu, 29 Jul 2021 17:54:30 +0200
+Received: from kreacher.localnet (89-64-80-223.dynamic.chello.pl [89.64.80.223])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 564DC669F29;
+        Thu, 29 Jul 2021 17:54:29 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux PCI <linux-pci@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
 Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
@@ -45,30 +30,82 @@ Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         Kai-Heng Feng <kai.heng.feng@canonical.com>,
         Utkarsh H Patel <utkarsh.h.patel@intel.com>,
         Koba Ko <koba.ko@canonical.com>
+Subject: [PATCH v1.1 1/2] PCI: PM: Avoid forcing PCI_D0 for wakeup reasons inconsistently
+Date:   Thu, 29 Jul 2021 17:54:28 +0200
+Message-ID: <2593738.mvXUDI8C0e@kreacher>
+In-Reply-To: <2207145.ElGaqSPkdT@kreacher>
+References: <4668274.31r3eYUQgx@kreacher> <2207145.ElGaqSPkdT@kreacher>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 89.64.80.223
+X-CLIENT-HOSTNAME: 89-64-80-223.dynamic.chello.pl
+X-VADE-SPAMSTATE: spam:low
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrheefgdehtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegoufhprghmkfhpucdlfedttddmnecujfgurhephffvufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepteeggfelteegudehueegieekveduleeuledvueefjeefffegfeejudfgteefhefhnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepkeelrdeigedrkedtrddvvdefnecuufhprghmkfhppeekledrieegrdektddrvddvfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrieegrdektddrvddvfedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdhptghisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhikhgrrdifvghsthgvrhgsvghrgheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgv
+ lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrghirdhhvghnghdrfhgvnhhgsegtrghnohhnihgtrghlrdgtohhmpdhrtghpthhtohepuhhtkhgrrhhshhdrhhdrphgrthgvlhesihhnthgvlhdrtghomhdprhgtphhtthhopehkohgsrgdrkhhosegtrghnohhnihgtrghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jul 29, 2021 at 4:49 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> It is inconsistent to return PCI_D0 from pci_target_state() instead
-> of the original target state if 'wakeup' is true and the device
-> cannot signal PME from D0.
->
-> This only happens when the device cannot signal PME from the original
-> target state and any shallower power states (including D0) and that
-> case is effectively equivalent to the one in which PME signaling is
-> not supported at all.  Since the original target state is returned in
-> the latter case, make the function do that in the former one too.
->
-> Link: https://lore.kernel.org/linux-pm/3149540.aeNJFYEL58@kreacher/
-> Fixes: 666ff6f83e1d ("PCI/PM: Avoid using device_may_wakeup() for runtime PM")
-> Reported-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Reported-by: Utkarsh H Patel <utkarsh.h.patel@intel.com>
-> Reported-by: Koba Ko <koba.ko@canonical.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The subject of this patch should be different, let me resend it.
+It is inconsistent to return PCI_D0 from pci_target_state() instead
+of the original target state if 'wakeup' is true and the device
+cannot signal PME from D0.
+
+This only happens when the device cannot signal PME from the original
+target state and any shallower power states (including D0) and that
+case is effectively equivalent to the one in which PME singaling is
+not supported at all.  Since the original target state is returned in
+the latter case, make the function do that in the former one too.
+
+Link: https://lore.kernel.org/linux-pm/3149540.aeNJFYEL58@kreacher/
+Fixes: 666ff6f83e1d ("PCI/PM: Avoid using device_may_wakeup() for runtime PM")
+Reported-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reported-by: Utkarsh H Patel <utkarsh.h.patel@intel.com>
+Reported-by: Koba Ko <koba.ko@canonical.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+v1 -> v1.1
+      * Resend under a suitable subject.
+
+---
+ drivers/pci/pci.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+Index: linux-pm/drivers/pci/pci.c
+===================================================================
+--- linux-pm.orig/drivers/pci/pci.c
++++ linux-pm/drivers/pci/pci.c
+@@ -2595,16 +2595,20 @@ static pci_power_t pci_target_state(stru
+ 	if (dev->current_state == PCI_D3cold)
+ 		target_state = PCI_D3cold;
+ 
+-	if (wakeup) {
++	if (wakeup && dev->pme_support) {
++		pci_power_t state = target_state;
++
+ 		/*
+ 		 * Find the deepest state from which the device can generate
+ 		 * PME#.
+ 		 */
+-		if (dev->pme_support) {
+-			while (target_state
+-			      && !(dev->pme_support & (1 << target_state)))
+-				target_state--;
+-		}
++		while (state && !(dev->pme_support & (1 << state)))
++			state--;
++
++		if (state)
++			return state;
++		else if (dev->pme_support & 1)
++			return PCI_D0;
+ 	}
+ 
+ 	return target_state;
+
+
+
