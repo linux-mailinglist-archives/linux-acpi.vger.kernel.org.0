@@ -2,358 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B4493D9F64
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jul 2021 10:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 315AF3D9FAE
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jul 2021 10:37:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235158AbhG2IVp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Jul 2021 04:21:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:52075 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235149AbhG2IVo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 29 Jul 2021 04:21:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1627546901;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=ogx7OPoevsyxONHkz9yx2l49e9r0H22u7bYOBcQCtFk=;
-        b=DfHqOenarKttyzfajinN/uZLmXu2QgKDnNoBsHnDC0zZDFeiOi9i6W4pFpQnGiRzBFpwRe
-        y/YmVU/FEogjonut5RYg7Fsil5yOPEWbCUtMD8pCoeArWBMWmHt0/OWLBkJU4cOxcvgGZq
-        gvrALmSGs4hlFwbvljmAzwSTNvbkAsw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-352-Ri04Hx1cPYSaZtQ7Z6GwGA-1; Thu, 29 Jul 2021 04:21:39 -0400
-X-MC-Unique: Ri04Hx1cPYSaZtQ7Z6GwGA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 11015801AEB;
-        Thu, 29 Jul 2021 08:21:38 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.194.92])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 08F6960C05;
-        Thu, 29 Jul 2021 08:21:34 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mark Gross <mgross@linux.intel.com>,
+        id S235206AbhG2Ihr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 29 Jul 2021 04:37:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32842 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235035AbhG2Ihr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 29 Jul 2021 04:37:47 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D4FEC061757;
+        Thu, 29 Jul 2021 01:37:44 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id e2-20020a17090a4a02b029016f3020d867so8194457pjh.3;
+        Thu, 29 Jul 2021 01:37:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EsrfTvny/SpzJRbB7yoAhloVOqEJbXPedO1ke9Lw82Y=;
+        b=M76cyDQcjfsuDEkSnUD2bWiws7Vcq5lLpCBBh4QGVSzp78nf6GBA+bpWD1vvOIkQdc
+         jcYXl1LmJSDRA1wTnm/OGTtZq/WspSqSTOwNkeTIAk42PtKxPkZ58I1h03F0Cd1xYY31
+         SCgPQUSP2/VlTEVXaiN6tf5yv5SHHUqukZ8D/tQ30RTv6OO9l+L+PqTDXiYGYx1nMirv
+         uPFBcAn8gaQaCNdNfgqHSjx0FAAisg9GnaV6qTH9DNME/r/xv/NL/DuhhfIs5R//F8cv
+         /eD9LQi4mGEV+DGg2a7ycskyG3gfZ5YMXHk+xlhTzAtVWbdM5zyG0YM8oMFPhHN/NTUp
+         i+Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EsrfTvny/SpzJRbB7yoAhloVOqEJbXPedO1ke9Lw82Y=;
+        b=SKMHpAbgbnoPwd2U7cWo2IsqBdJNwn33LA+Ep/CEcdwWYb9h9JpUD+KKmO+GYti3GC
+         6ae3KxHVSkneG6bjhOl5quLzZF+V5tEFrUwMn430dFoK8rKULzc0JtC67nVsCqzEmgQa
+         4n4FKFH7LYJz3mTivUmd0h7yG/TY1BNEl3cIAn5cNCI2lCicPm5FkR5trg3GEqHaLBSZ
+         NJSx72fEaJN71xQxVb3jxlldAk82TMb+14r3J9ejlbC62tSju4tuTmpoEMnlKqjsrgoA
+         rxUCoke1Ao+etasv0psaS3w6WBEybZVl2I7uqE7wcE0BR6kFUG0n2lzokFdi4YO+QH4j
+         4pWA==
+X-Gm-Message-State: AOAM530lwWO38XSmFnQdrqqfL3TT0UMJGE0KtD1/R5nLPc0ySuwf9U/6
+        61llZZEqdDE6g9Elr5v0gHP20oyjsQTX4W5J6KI=
+X-Google-Smtp-Source: ABdhPJzwrcm4RQAm4C1p1Rn8af5HkQIAJqwrrsYynFizjWfO6+au8SYAk+BLwfxghFP9rTUHccYIOIsuBe40dFx8tw8=
+X-Received: by 2002:a63:5a5b:: with SMTP id k27mr2916152pgm.74.1627547863853;
+ Thu, 29 Jul 2021 01:37:43 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210729082134.6683-1-hdegoede@redhat.com>
+In-Reply-To: <20210729082134.6683-1-hdegoede@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 29 Jul 2021 11:37:04 +0300
+Message-ID: <CAHp75VepyNqwLSDaDmc+XCk+_gC5+zGUQ51DOo7KUt2-Gaty-Q@mail.gmail.com>
+Subject: Re: [PATCH] platform/x86: Add and use a dual_accel_detect() helper
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Mark Gross <mgross@linux.intel.com>,
         Andy Shevchenko <andy@infradead.org>,
         Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-        Mark Pearson <markpearson@lenovo.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        ibm-acpi-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
+        Mark Pearson <markpearson@lenovo.com>,
+        Thinkpad-acpi devel ML <ibm-acpi-devel@lists.sourceforge.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
         Julius Lehmann <julius@devpi.de>
-Subject: [PATCH] platform/x86: Add and use a dual_accel_detect() helper
-Date:   Thu, 29 Jul 2021 10:21:34 +0200
-Message-Id: <20210729082134.6683-1-hdegoede@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Various 360 degree hinges (yoga) style 2-in-1 devices use 2 accelerometers
-to allow the OS to determine the angle between the display and the base of
-the device.
+On Thu, Jul 29, 2021 at 11:21 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Various 360 degree hinges (yoga) style 2-in-1 devices use 2 accelerometers
+> to allow the OS to determine the angle between the display and the base of
+> the device.
+>
+> On Windows these are read by a special HingeAngleService process which
+> calls undocumented ACPI methods, to let the firmware know if the 2-in-1 is
+> in tablet- or laptop-mode. The firmware may use this to disable the kbd and
+> touchpad to avoid spurious input in tablet-mode as well as to report
+> SW_TABLET_MODE info to the OS.
+>
+> Since Linux does not call these undocumented methods, the SW_TABLET_MODE
+> info reported by various pdx86 drivers is incorrect on these devices.
+>
+> Before this commit the intel-hid and thinkpad_acpi code already had 2
+> hardcoded checks for ACPI hardware-ids of dual-accel sensors to avoid
+> reporting broken info.
+>
+> And now we also have a bug-report about the same problem in the intel-vbtn
+> code. Since there are at least 3 different ACPI hardware-ids in play, add
+> a new dual_accel_detect() helper which checks for all 3, rather then
+> adding different hardware-ids to the drivers as bug-reports trickle in.
+> Having shared code which checks all known hardware-ids is esp. important
+> for the intel-hid and intel-vbtn drivers as these are generic drivers
+> which are used on a lot of devices.
+>
+> The BOSC0200 hardware-id requires special handling, because often it is
+> used for a single-accelerometer setup. Only in a few cases it refers to
+> a dual-accel setup, in which case there will be 2 I2cSerialBus resources
+> in the device's resource-list, so the helper checks for this.
 
-On Windows these are read by a special HingeAngleService process which
-calls undocumented ACPI methods, to let the firmware know if the 2-in-1 is
-in tablet- or laptop-mode. The firmware may use this to disable the kbd and
-touchpad to avoid spurious input in tablet-mode as well as to report
-SW_TABLET_MODE info to the OS.
+...
 
-Since Linux does not call these undocumented methods, the SW_TABLET_MODE
-info reported by various pdx86 drivers is incorrect on these devices.
+> +static int dual_accel_i2c_resource_count(struct acpi_resource *ares, void *data)
+> +{
+> +       struct acpi_resource_i2c_serialbus *sb;
+> +       int *count = data;
+> +
+> +       if (i2c_acpi_get_i2c_resource(ares, &sb))
+> +               *count = *count + 1;
+> +
+> +       return 1;
+> +}
 
-Before this commit the intel-hid and thinkpad_acpi code already had 2
-hardcoded checks for ACPI hardware-ids of dual-accel sensors to avoid
-reporting broken info.
+It will be a third copy of this in the kernel.
+Let's put it to i2c.h or somewhere available for all these users.
 
-And now we also have a bug-report about the same problem in the intel-vbtn
-code. Since there are at least 3 different ACPI hardware-ids in play, add
-a new dual_accel_detect() helper which checks for all 3, rather then
-adding different hardware-ids to the drivers as bug-reports trickle in.
-Having shared code which checks all known hardware-ids is esp. important
-for the intel-hid and intel-vbtn drivers as these are generic drivers
-which are used on a lot of devices.
+> +
+> +static int dual_accel_i2c_client_count(struct acpi_device *adev)
+> +{
+> +       int ret, count = 0;
+> +       LIST_HEAD(r);
+> +
+> +       ret = acpi_dev_get_resources(adev, &r, dual_accel_i2c_resource_count, &count);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       acpi_dev_free_resource_list(&r);
+> +       return count;
+> +}
 
-The BOSC0200 hardware-id requires special handling, because often it is
-used for a single-accelerometer setup. Only in a few cases it refers to
-a dual-accel setup, in which case there will be 2 I2cSerialBus resources
-in the device's resource-list, so the helper checks for this.
+So does this.
 
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=209011
-Reported-and-tested-by: Julius Lehmann <julius@devpi.de>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes from RFC:
--Add Julius' Reported-and-tested-by
----
- drivers/platform/x86/Kconfig             |  3 +
- drivers/platform/x86/dual_accel_detect.h | 75 ++++++++++++++++++++++++
- drivers/platform/x86/intel-hid.c         | 21 ++-----
- drivers/platform/x86/intel-vbtn.c        | 18 +++++-
- drivers/platform/x86/thinkpad_acpi.c     |  3 +-
- 5 files changed, 101 insertions(+), 19 deletions(-)
- create mode 100644 drivers/platform/x86/dual_accel_detect.h
+Taking into account that this is a bug fix, I'm okay if you do above
+as an additional patch (or patches) on top of this.
 
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index 7d385c3b2239..d12db6c316ea 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -508,6 +508,7 @@ config THINKPAD_ACPI
- 	depends on RFKILL || RFKILL = n
- 	depends on ACPI_VIDEO || ACPI_VIDEO = n
- 	depends on BACKLIGHT_CLASS_DEVICE
-+	depends on I2C
- 	select ACPI_PLATFORM_PROFILE
- 	select HWMON
- 	select NVRAM
-@@ -691,6 +692,7 @@ config INTEL_HID_EVENT
- 	tristate "INTEL HID Event"
- 	depends on ACPI
- 	depends on INPUT
-+	depends on I2C
- 	select INPUT_SPARSEKMAP
- 	help
- 	  This driver provides support for the Intel HID Event hotkey interface.
-@@ -742,6 +744,7 @@ config INTEL_VBTN
- 	tristate "INTEL VIRTUAL BUTTON"
- 	depends on ACPI
- 	depends on INPUT
-+	depends on I2C
- 	select INPUT_SPARSEKMAP
- 	help
- 	  This driver provides support for the Intel Virtual Button interface.
-diff --git a/drivers/platform/x86/dual_accel_detect.h b/drivers/platform/x86/dual_accel_detect.h
-new file mode 100644
-index 000000000000..1a069159da91
---- /dev/null
-+++ b/drivers/platform/x86/dual_accel_detect.h
-@@ -0,0 +1,75 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Helper code to detect 360 degree hinges (yoga) style 2-in-1 devices using 2 accelerometers
-+ * to allow the OS to determine the angle between the display and the base of the device.
-+ *
-+ * On Windows these are read by a special HingeAngleService process which calls undocumented
-+ * ACPI methods, to let the firmware know if the 2-in-1 is in tablet- or laptop-mode.
-+ * The firmware may use this to disable the kbd and touchpad to avoid spurious input in
-+ * tablet-mode as well as to report SW_TABLET_MODE info to the OS.
-+ *
-+ * Since Linux does not call these undocumented methods, the SW_TABLET_MODE info reported
-+ * by various drivers/platform/x86 drivers is incorrect. These drivers use the detection
-+ * code in this file to disable SW_TABLET_MODE reporting to avoid reporting broken info
-+ * (instead userspace can derive the status itself by directly reading the 2 accels).
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/i2c.h>
-+
-+static int dual_accel_i2c_resource_count(struct acpi_resource *ares, void *data)
-+{
-+	struct acpi_resource_i2c_serialbus *sb;
-+	int *count = data;
-+
-+	if (i2c_acpi_get_i2c_resource(ares, &sb))
-+		*count = *count + 1;
-+
-+	return 1;
-+}
-+
-+static int dual_accel_i2c_client_count(struct acpi_device *adev)
-+{
-+	int ret, count = 0;
-+	LIST_HEAD(r);
-+
-+	ret = acpi_dev_get_resources(adev, &r, dual_accel_i2c_resource_count, &count);
-+	if (ret < 0)
-+		return ret;
-+
-+	acpi_dev_free_resource_list(&r);
-+	return count;
-+}
-+
-+static bool dual_accel_detect_bosc0200(void)
-+{
-+	struct acpi_device *adev;
-+	int count;
-+
-+	adev = acpi_dev_get_first_match_dev("BOSC0200", NULL, -1);
-+	if (!adev)
-+		return false;
-+
-+	count = dual_accel_i2c_client_count(adev);
-+
-+	acpi_dev_put(adev);
-+
-+	return count == 2;
-+}
-+
-+static bool dual_accel_detect(void)
-+{
-+	/* Systems which use a pair of accels with KIOX010A / KIOX020A ACPI ids */
-+	if (acpi_dev_present("KIOX010A", NULL, -1))
-+		return true;
-+
-+	/* Systems which use a single DUAL250E ACPI device to model 2 accels */
-+	if (acpi_dev_present("DUAL250E", NULL, -1))
-+		return true;
-+
-+	/* Systems which use a single BOSC0200 ACPI device to model 2 accels */
-+	if (dual_accel_detect_bosc0200())
-+		return true;
-+
-+	return false;
-+}
-diff --git a/drivers/platform/x86/intel-hid.c b/drivers/platform/x86/intel-hid.c
-index e5fbe017f8e1..2e4e97a626a5 100644
---- a/drivers/platform/x86/intel-hid.c
-+++ b/drivers/platform/x86/intel-hid.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/suspend.h>
-+#include "dual_accel_detect.h"
- 
- /* When NOT in tablet mode, VGBS returns with the flag 0x40 */
- #define TABLET_MODE_FLAG BIT(6)
-@@ -122,6 +123,7 @@ struct intel_hid_priv {
- 	struct input_dev *array;
- 	struct input_dev *switches;
- 	bool wakeup_mode;
-+	bool dual_accel;
- };
- 
- #define HID_EVENT_FILTER_UUID	"eeec56b3-4442-408f-a792-4edd4d758054"
-@@ -451,22 +453,9 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
- 	 * SW_TABLET_MODE report, in these cases we enable support when receiving
- 	 * the first event instead of during driver setup.
- 	 *
--	 * Some 360 degree hinges (yoga) style 2-in-1 devices use 2 accelerometers
--	 * to allow the OS to determine the angle between the display and the base
--	 * of the device. On Windows these are read by a special HingeAngleService
--	 * process which calls an ACPI DSM (Device Specific Method) on the
--	 * ACPI KIOX010A device node for the sensor in the display, to let the
--	 * firmware know if the 2-in-1 is in tablet- or laptop-mode so that it can
--	 * disable the kbd and touchpad to avoid spurious input in tablet-mode.
--	 *
--	 * The linux kxcjk1013 driver calls the DSM for this once at probe time
--	 * to ensure that the builtin kbd and touchpad work. On some devices this
--	 * causes a "spurious" 0xcd event on the intel-hid ACPI dev. In this case
--	 * there is not a functional tablet-mode switch, so we should not register
--	 * the tablet-mode switch device.
-+	 * See dual_accel_detect.h for more info on the dual_accel check.
- 	 */
--	if (!priv->switches && (event == 0xcc || event == 0xcd) &&
--	    !acpi_dev_present("KIOX010A", NULL, -1)) {
-+	if (!priv->switches && !priv->dual_accel && (event == 0xcc || event == 0xcd)) {
- 		dev_info(&device->dev, "switch event received, enable switches supports\n");
- 		err = intel_hid_switches_setup(device);
- 		if (err)
-@@ -607,6 +596,8 @@ static int intel_hid_probe(struct platform_device *device)
- 		return -ENOMEM;
- 	dev_set_drvdata(&device->dev, priv);
- 
-+	priv->dual_accel = dual_accel_detect();
-+
- 	err = intel_hid_input_setup(device);
- 	if (err) {
- 		pr_err("Failed to setup Intel HID hotkeys\n");
-diff --git a/drivers/platform/x86/intel-vbtn.c b/drivers/platform/x86/intel-vbtn.c
-index 888a764efad1..309166431063 100644
---- a/drivers/platform/x86/intel-vbtn.c
-+++ b/drivers/platform/x86/intel-vbtn.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/suspend.h>
-+#include "dual_accel_detect.h"
- 
- /* Returned when NOT in tablet mode on some HP Stream x360 11 models */
- #define VGBS_TABLET_MODE_FLAG_ALT	0x10
-@@ -66,6 +67,7 @@ static const struct key_entry intel_vbtn_switchmap[] = {
- struct intel_vbtn_priv {
- 	struct input_dev *buttons_dev;
- 	struct input_dev *switches_dev;
-+	bool dual_accel;
- 	bool has_buttons;
- 	bool has_switches;
- 	bool wakeup_mode;
-@@ -160,6 +162,10 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
- 		input_dev = priv->buttons_dev;
- 	} else if ((ke = sparse_keymap_entry_from_scancode(priv->switches_dev, event))) {
- 		if (!priv->has_switches) {
-+			/* See dual_accel_detect.h for more info */
-+			if (priv->dual_accel)
-+				return;
-+
- 			dev_info(&device->dev, "Registering Intel Virtual Switches input-dev after receiving a switch event\n");
- 			ret = input_register_device(priv->switches_dev);
- 			if (ret)
-@@ -248,11 +254,15 @@ static const struct dmi_system_id dmi_switches_allow_list[] = {
- 	{} /* Array terminator */
- };
- 
--static bool intel_vbtn_has_switches(acpi_handle handle)
-+static bool intel_vbtn_has_switches(acpi_handle handle, bool dual_accel)
- {
- 	unsigned long long vgbs;
- 	acpi_status status;
- 
-+	/* See dual_accel_detect.h for more info */
-+	if (dual_accel)
-+		return false;
-+
- 	if (!dmi_check_system(dmi_switches_allow_list))
- 		return false;
- 
-@@ -263,13 +273,14 @@ static bool intel_vbtn_has_switches(acpi_handle handle)
- static int intel_vbtn_probe(struct platform_device *device)
- {
- 	acpi_handle handle = ACPI_HANDLE(&device->dev);
--	bool has_buttons, has_switches;
-+	bool dual_accel, has_buttons, has_switches;
- 	struct intel_vbtn_priv *priv;
- 	acpi_status status;
- 	int err;
- 
-+	dual_accel = dual_accel_detect();
- 	has_buttons = acpi_has_method(handle, "VBDL");
--	has_switches = intel_vbtn_has_switches(handle);
-+	has_switches = intel_vbtn_has_switches(handle, dual_accel);
- 
- 	if (!has_buttons && !has_switches) {
- 		dev_warn(&device->dev, "failed to read Intel Virtual Button driver\n");
-@@ -281,6 +292,7 @@ static int intel_vbtn_probe(struct platform_device *device)
- 		return -ENOMEM;
- 	dev_set_drvdata(&device->dev, priv);
- 
-+	priv->dual_accel = dual_accel;
- 	priv->has_buttons = has_buttons;
- 	priv->has_switches = has_switches;
- 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 603156a6e3ed..50ff04c84650 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -73,6 +73,7 @@
- #include <linux/uaccess.h>
- #include <acpi/battery.h>
- #include <acpi/video.h>
-+#include "dual_accel_detect.h"
- 
- /* ThinkPad CMOS commands */
- #define TP_CMOS_VOLUME_DOWN	0
-@@ -3232,7 +3233,7 @@ static int hotkey_init_tablet_mode(void)
- 		 * the laptop/tent/tablet mode to the EC. The bmc150 iio driver
- 		 * does not support this, so skip the hotkey on these models.
- 		 */
--		if (has_tablet_mode && !acpi_dev_present("BOSC0200", "1", -1))
-+		if (has_tablet_mode && !dual_accel_detect())
- 			tp_features.hotkey_tablet = TP_HOTKEY_TABLET_USES_GMMS;
- 		type = "GMMS";
- 	} else if (acpi_evalf(hkey_handle, &res, "MHKG", "qd")) {
 -- 
-2.31.1
-
+With Best Regards,
+Andy Shevchenko
