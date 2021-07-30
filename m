@@ -2,99 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0B33DBE8B
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jul 2021 20:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55B223DC00D
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jul 2021 22:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230094AbhG3SxA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Jul 2021 14:53:00 -0400
-Received: from mail-oi1-f174.google.com ([209.85.167.174]:44022 "EHLO
-        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229773AbhG3SxA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 30 Jul 2021 14:53:00 -0400
-Received: by mail-oi1-f174.google.com with SMTP id z26so14479444oih.10;
-        Fri, 30 Jul 2021 11:52:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=RuHOO+tvlD2YfqaGK+Oz0rBM0rH5c8DYOmI/fOMJusE=;
-        b=b/oKOmMSo1GyTiHC94odEcxNx/I82/WOX15HRyKG0zi1IZi63P/qAHNYpv/FAIJphX
-         UL4BQuXH98HG6rU4xePdui+D2s0r2EBtTO0cSFlzWTdwMVUZzl1mVqdOPttSZ5V3Pvd4
-         16mTOQLXKUIrGR4ii5Neb8ru3LGe1fOMDCdgTsqFSLLmsV6oeI0JQ2Yy7vvUlOLNxBvb
-         p5wtGqb5PJw1jCEjuQQO8TgXPuGy2/jhBhMpNbDgiUuL9TP6aTq2VPptVNZm1fC0T6N4
-         3FIJAhrfvYvXlYB5M1WMOie7Udb/nIaqjHaRAWjGWeV/3iK2oayKN6UCEpdlkB6old7Z
-         /ydQ==
-X-Gm-Message-State: AOAM5304f2LeUHW/6gKTvivAZxT1pXG05BvqCp7oJTwovq0U5BDhTbfM
-        OlEx6ylTory0Gcap2ddbKBBqjFpV2nrgQaQ5ytRkJQtSB6E=
-X-Google-Smtp-Source: ABdhPJyPsVCLDmYR9zFPb5UJ5xtrAa2d5QTnBtP1chLNPz6XoDPxB0Qot80b+0JMLgn9/U9GZ+8w/FfJQG3l/bN0juY=
-X-Received: by 2002:aca:d7d5:: with SMTP id o204mr2669951oig.69.1627671175176;
- Fri, 30 Jul 2021 11:52:55 -0700 (PDT)
+        id S230310AbhG3Uxq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Jul 2021 16:53:46 -0400
+Received: from mga07.intel.com ([134.134.136.100]:12936 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230217AbhG3Uxq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 30 Jul 2021 16:53:46 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10061"; a="276943441"
+X-IronPort-AV: E=Sophos;i="5.84,282,1620716400"; 
+   d="scan'208";a="276943441"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2021 13:53:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,282,1620716400"; 
+   d="scan'208";a="582294574"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 30 Jul 2021 13:53:37 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id A5EB0D7; Fri, 30 Jul 2021 23:54:06 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>
+Subject: [PATCH v1 1/1] x86/PCI: Introduce pcibios_is_irq_managed() helper
+Date:   Fri, 30 Jul 2021 23:53:55 +0300
+Message-Id: <20210730205355.26504-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 30 Jul 2021 20:52:44 +0200
-Message-ID: <CAJZ5v0h_QSqNjAz9EEp4DBk0jQSE3W+m5niC_7KWgvETwS1Yyg@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v5.14-rc4
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+The check for irq_managed flag along with non-zero irq is an idiom
+for x86 PCI implementation. Introduce helper and switch users over
+using it.
 
-Please pull from the tag
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ arch/x86/include/asm/pci.h   | 4 ++++
+ arch/x86/pci/intel_mid_pci.c | 5 ++---
+ arch/x86/pci/irq.c           | 4 ++--
+ drivers/acpi/pci_irq.c       | 4 ++--
+ 4 files changed, 10 insertions(+), 7 deletions(-)
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.14-rc4
+diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
+index d2c76c8d8cfd..ac25470c9558 100644
+--- a/arch/x86/include/asm/pci.h
++++ b/arch/x86/include/asm/pci.h
+@@ -92,6 +92,10 @@ void pcibios_scan_root(int bus);
+ struct irq_routing_table *pcibios_get_irq_routing_table(void);
+ int pcibios_set_irq_routing(struct pci_dev *dev, int pin, int irq);
+ 
++static inline bool pcibios_irq_is_managed(struct pci_dev *dev)
++{
++	return dev->irq_managed && dev->irq > 0;
++}
+ 
+ #define HAVE_PCI_MMAP
+ #define arch_can_pci_mmap_wc()	pat_enabled()
+diff --git a/arch/x86/pci/intel_mid_pci.c b/arch/x86/pci/intel_mid_pci.c
+index f04742caf62b..0da287bcabf5 100644
+--- a/arch/x86/pci/intel_mid_pci.c
++++ b/arch/x86/pci/intel_mid_pci.c
+@@ -230,7 +230,7 @@ static int intel_mid_pci_irq_enable(struct pci_dev *dev)
+ 	int ret;
+ 	u8 gsi;
+ 
+-	if (dev->irq_managed && dev->irq > 0)
++	if (pcibios_irq_is_managed(dev))
+ 		return 0;
+ 
+ 	ret = pci_read_config_byte(dev, PCI_INTERRUPT_LINE, &gsi);
+@@ -290,8 +290,7 @@ static int intel_mid_pci_irq_enable(struct pci_dev *dev)
+ 
+ static void intel_mid_pci_irq_disable(struct pci_dev *dev)
+ {
+-	if (!mp_should_keep_irq(&dev->dev) && dev->irq_managed &&
+-	    dev->irq > 0) {
++	if (pcibios_irq_is_managed(dev) && !mp_should_keep_irq(&dev->dev)) {
+ 		mp_unmap_irq(dev->irq);
+ 		dev->irq_managed = 0;
+ 	}
+diff --git a/arch/x86/pci/irq.c b/arch/x86/pci/irq.c
+index d3a73f9335e1..ce3927b68f9e 100644
+--- a/arch/x86/pci/irq.c
++++ b/arch/x86/pci/irq.c
+@@ -1210,7 +1210,7 @@ static int pirq_enable_irq(struct pci_dev *dev)
+ 			struct pci_dev *temp_dev;
+ 			int irq;
+ 
+-			if (dev->irq_managed && dev->irq > 0)
++			if (pcibios_irq_is_managed(dev))
+ 				return 0;
+ 
+ 			irq = IO_APIC_get_PCI_irq_vector(dev->bus->number,
+@@ -1280,7 +1280,7 @@ bool mp_should_keep_irq(struct device *dev)
+ static void pirq_disable_irq(struct pci_dev *dev)
+ {
+ 	if (io_apic_assign_pci_irqs && !mp_should_keep_irq(&dev->dev) &&
+-	    dev->irq_managed && dev->irq) {
++	    pcibios_irq_is_managed(dev)) {
+ 		mp_unmap_irq(dev->irq);
+ 		dev->irq = 0;
+ 		dev->irq_managed = 0;
+diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
+index b63954c36e86..b463bdd2dbb5 100644
+--- a/drivers/acpi/pci_irq.c
++++ b/drivers/acpi/pci_irq.c
+@@ -397,7 +397,7 @@ int __acpi_pci_irq_enable(struct pci_dev *dev, int polarity)
+ 		return 0;
+ 	}
+ 
+-	if (dev->irq_managed && dev->irq > 0)
++	if (pcibios_irq_is_managed(dev))
+ 		return 0;
+ 
+ 	entry = acpi_pci_irq_lookup(dev, pin);
+@@ -486,7 +486,7 @@ void acpi_pci_irq_disable(struct pci_dev *dev)
+ 	u8 pin;
+ 
+ 	pin = dev->pin;
+-	if (!pin || !dev->irq_managed || dev->irq <= 0)
++	if (!pin || !pcibios_irq_is_managed(dev))
+ 		return;
+ 
+ 	/* Keep IOAPIC pin configuration when suspending */
+-- 
+2.30.2
 
-with top-most commit e83f54eacf137de228a52c20c74e77f575684600
-
- Merge branches 'acpi-resources' and 'acpi-dptf'
-
-on top of commit ff1176468d368232b684f75e82563369208bc371
-
- Linux 5.14-rc3
-
-to receive ACPI fixes for 5.14-rc4.
-
-These revert a recent IRQ resources handling modification that
-turned out to be problematic, fix suspend-to-idle handling on
-AMD platforms to take upcoming systems into account properly
-and fix the retrieval of the DPTF attributes of the PCH FIVR.
-
-Specifics:
-
- - Revert recent change of the ACPI IRQ resources handling that
-   attempted to improve the ACPI IRQ override selection logic, but
-   introduced serious regressions on some systems (Hui Wang).
-
- - Fix up quirks for AMD platforms in the suspend-to-idle support
-   code so as to take upcoming systems using uPEP HID AMDI007 into
-   account as appropriate (Mario Limonciello).
-
- - Fix the code retrieving DPTF attributes of the PCH FIVR so that
-   it agrees on the return data type with the ACPI control method
-   evaluated for this purpose (Srinivas Pandruvada).
-
-Thanks!
-
-
----------------
-
-Hui Wang (1):
-      Revert "ACPI: resources: Add checks for ACPI IRQ override"
-
-Mario Limonciello (1):
-      ACPI: PM: Add support for upcoming AMD uPEP HID AMDI007
-
-Srinivas Pandruvada (1):
-      ACPI: DPTF: Fix reading of attributes
-
----------------
-
- drivers/acpi/dptf/dptf_pch_fivr.c | 51 +++++++++++++++++++++++++++++++++------
- drivers/acpi/resource.c           |  9 +------
- drivers/acpi/x86/s2idle.c         | 10 ++++++--
- 3 files changed, 52 insertions(+), 18 deletions(-)
