@@ -2,141 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55B223DC00D
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jul 2021 22:53:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C31F3DC16F
+	for <lists+linux-acpi@lfdr.de>; Sat, 31 Jul 2021 01:10:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230310AbhG3Uxq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 30 Jul 2021 16:53:46 -0400
-Received: from mga07.intel.com ([134.134.136.100]:12936 "EHLO mga07.intel.com"
+        id S233712AbhG3XK1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Jul 2021 19:10:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41642 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230217AbhG3Uxq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 30 Jul 2021 16:53:46 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10061"; a="276943441"
-X-IronPort-AV: E=Sophos;i="5.84,282,1620716400"; 
-   d="scan'208";a="276943441"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2021 13:53:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,282,1620716400"; 
-   d="scan'208";a="582294574"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 30 Jul 2021 13:53:37 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id A5EB0D7; Fri, 30 Jul 2021 23:54:06 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Subject: [PATCH v1 1/1] x86/PCI: Introduce pcibios_is_irq_managed() helper
-Date:   Fri, 30 Jul 2021 23:53:55 +0300
-Message-Id: <20210730205355.26504-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S231192AbhG3XK1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 30 Jul 2021 19:10:27 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id A93C560F46;
+        Fri, 30 Jul 2021 23:10:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627686621;
+        bh=Sjp4XaUrf6HxEvu7npUCI/ehDdZe1dulAD0sjDUDhlE=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=pZi95NbTenUi7hiYCLIAEqQotMERG486710SuDJBpXbvvyMMj+Hx5SULOJwKx4MIp
+         vL0/Jb0RGToYrsp/CxNovfgeheQiyJGmDfofh9zOHO55CUK4W/8XLpUYqVjVTSEWSC
+         2y4BdnbB56jyv0c1EL1UykMdB8n92HsGOEk4TyyZoyAD6cobmGgU8/3a5PKGqMq8em
+         cBmcERKIIts514xMYueCDbb9zpAC9GbSz1eTjknGjmLekXmhW4nOODLrsg1LXtRTN6
+         TYagR0+z86XzdH0wY26dEhvrh7/6mR4z1bn/lm/V6J8NYheTsIqharXpHxJzXe1t+X
+         BZFAGa+0UaQOQ==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id A28E9609F6;
+        Fri, 30 Jul 2021 23:10:21 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fixes for v5.14-rc4
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0h_QSqNjAz9EEp4DBk0jQSE3W+m5niC_7KWgvETwS1Yyg@mail.gmail.com>
+References: <CAJZ5v0h_QSqNjAz9EEp4DBk0jQSE3W+m5niC_7KWgvETwS1Yyg@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-pm.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0h_QSqNjAz9EEp4DBk0jQSE3W+m5niC_7KWgvETwS1Yyg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.14-rc4
+X-PR-Tracked-Commit-Id: e83f54eacf137de228a52c20c74e77f575684600
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: e1dab4c02de0b495a9393915d71e452f8e77a464
+Message-Id: <162768662165.18102.14339168640741366406.pr-tracker-bot@kernel.org>
+Date:   Fri, 30 Jul 2021 23:10:21 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The check for irq_managed flag along with non-zero irq is an idiom
-for x86 PCI implementation. Introduce helper and switch users over
-using it.
+The pull request you sent on Fri, 30 Jul 2021 20:52:44 +0200:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- arch/x86/include/asm/pci.h   | 4 ++++
- arch/x86/pci/intel_mid_pci.c | 5 ++---
- arch/x86/pci/irq.c           | 4 ++--
- drivers/acpi/pci_irq.c       | 4 ++--
- 4 files changed, 10 insertions(+), 7 deletions(-)
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.14-rc4
 
-diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
-index d2c76c8d8cfd..ac25470c9558 100644
---- a/arch/x86/include/asm/pci.h
-+++ b/arch/x86/include/asm/pci.h
-@@ -92,6 +92,10 @@ void pcibios_scan_root(int bus);
- struct irq_routing_table *pcibios_get_irq_routing_table(void);
- int pcibios_set_irq_routing(struct pci_dev *dev, int pin, int irq);
- 
-+static inline bool pcibios_irq_is_managed(struct pci_dev *dev)
-+{
-+	return dev->irq_managed && dev->irq > 0;
-+}
- 
- #define HAVE_PCI_MMAP
- #define arch_can_pci_mmap_wc()	pat_enabled()
-diff --git a/arch/x86/pci/intel_mid_pci.c b/arch/x86/pci/intel_mid_pci.c
-index f04742caf62b..0da287bcabf5 100644
---- a/arch/x86/pci/intel_mid_pci.c
-+++ b/arch/x86/pci/intel_mid_pci.c
-@@ -230,7 +230,7 @@ static int intel_mid_pci_irq_enable(struct pci_dev *dev)
- 	int ret;
- 	u8 gsi;
- 
--	if (dev->irq_managed && dev->irq > 0)
-+	if (pcibios_irq_is_managed(dev))
- 		return 0;
- 
- 	ret = pci_read_config_byte(dev, PCI_INTERRUPT_LINE, &gsi);
-@@ -290,8 +290,7 @@ static int intel_mid_pci_irq_enable(struct pci_dev *dev)
- 
- static void intel_mid_pci_irq_disable(struct pci_dev *dev)
- {
--	if (!mp_should_keep_irq(&dev->dev) && dev->irq_managed &&
--	    dev->irq > 0) {
-+	if (pcibios_irq_is_managed(dev) && !mp_should_keep_irq(&dev->dev)) {
- 		mp_unmap_irq(dev->irq);
- 		dev->irq_managed = 0;
- 	}
-diff --git a/arch/x86/pci/irq.c b/arch/x86/pci/irq.c
-index d3a73f9335e1..ce3927b68f9e 100644
---- a/arch/x86/pci/irq.c
-+++ b/arch/x86/pci/irq.c
-@@ -1210,7 +1210,7 @@ static int pirq_enable_irq(struct pci_dev *dev)
- 			struct pci_dev *temp_dev;
- 			int irq;
- 
--			if (dev->irq_managed && dev->irq > 0)
-+			if (pcibios_irq_is_managed(dev))
- 				return 0;
- 
- 			irq = IO_APIC_get_PCI_irq_vector(dev->bus->number,
-@@ -1280,7 +1280,7 @@ bool mp_should_keep_irq(struct device *dev)
- static void pirq_disable_irq(struct pci_dev *dev)
- {
- 	if (io_apic_assign_pci_irqs && !mp_should_keep_irq(&dev->dev) &&
--	    dev->irq_managed && dev->irq) {
-+	    pcibios_irq_is_managed(dev)) {
- 		mp_unmap_irq(dev->irq);
- 		dev->irq = 0;
- 		dev->irq_managed = 0;
-diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-index b63954c36e86..b463bdd2dbb5 100644
---- a/drivers/acpi/pci_irq.c
-+++ b/drivers/acpi/pci_irq.c
-@@ -397,7 +397,7 @@ int __acpi_pci_irq_enable(struct pci_dev *dev, int polarity)
- 		return 0;
- 	}
- 
--	if (dev->irq_managed && dev->irq > 0)
-+	if (pcibios_irq_is_managed(dev))
- 		return 0;
- 
- 	entry = acpi_pci_irq_lookup(dev, pin);
-@@ -486,7 +486,7 @@ void acpi_pci_irq_disable(struct pci_dev *dev)
- 	u8 pin;
- 
- 	pin = dev->pin;
--	if (!pin || !dev->irq_managed || dev->irq <= 0)
-+	if (!pin || !pcibios_irq_is_managed(dev))
- 		return;
- 
- 	/* Keep IOAPIC pin configuration when suspending */
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/e1dab4c02de0b495a9393915d71e452f8e77a464
+
+Thank you!
+
 -- 
-2.30.2
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
