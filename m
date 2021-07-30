@@ -2,62 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF2283DAA8C
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Jul 2021 19:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 833E93DB71F
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Jul 2021 12:26:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbhG2R6C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 29 Jul 2021 13:58:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55884 "EHLO mail.kernel.org"
+        id S238368AbhG3K0n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 30 Jul 2021 06:26:43 -0400
+Received: from mga11.intel.com ([192.55.52.93]:53264 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229556AbhG2R6C (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 29 Jul 2021 13:58:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 86C8A60F43;
-        Thu, 29 Jul 2021 17:57:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627581478;
-        bh=sHVAtdltvNlYJDlFbFo8fnDl6wpPZ8/yhEYynksMt+o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GYJ/oO9nNVRcdy/tM8Bmwbi4SZ1GCK4UBbF09czq4r4IP/fmhVtHVZdWehF+FGnu7
-         59ymxbsroLfzIFHjqCk/PD29xtP5SMkSUQV978aWer3yIBmPj3V8IA+KNyfqfFUYCl
-         gzQXlhSwDRT3yBIzDqDhFjz5NpIcBxDsKqEgznoKpJpGSk65fL+0+OX66dtUI0cfWw
-         zhAFHENMUOBUiElkCJRXaMH2Rr6LcsnO25gAY49f9DZfzfEvCX7w2mzZo+APVbnP9C
-         W/XXvs8W6rH2IF7EoqMlarfu97W8Pvf2ujYW8pwmzCSc4YGS8OrLuo5DjDxL/SL0wV
-         mVG7b3M7d35fA==
-Date:   Thu, 29 Jul 2021 13:57:57 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     PGNet Dev <pgnet.dev@gmail.com>
-Cc:     rafael@kernel.org, gregkh@linuxfoundation.org,
-        hui.wang@canonical.com, linux-acpi@vger.kernel.org,
-        rafael.j.wysocki@intel.com, stable@vger.kernel.org,
-        manuelkrause@netscape.net
-Subject: Re: [PATCH] Revert "ACPI: resources: Add checks for ACPI IRQ
- override"
-Message-ID: <YQLsJUqc3kgQGvMP@sashalap>
-References: <20210728151958.15205-1-hui.wang@canonical.com>
- <YQGA4Kj2Imz44D3k@kroah.com>
- <CAJZ5v0iKTXSHRU96_xjnh4Zjh4gNfwZs9PusrX3OA059HJNHsw@mail.gmail.com>
- <a27b6363-e8d3-f9ad-5029-a4a434c6d79b@gmail.com>
+        id S238274AbhG3K0n (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 30 Jul 2021 06:26:43 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10060"; a="209959346"
+X-IronPort-AV: E=Sophos;i="5.84,281,1620716400"; 
+   d="scan'208";a="209959346"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2021 03:26:38 -0700
+X-IronPort-AV: E=Sophos;i="5.84,281,1620716400"; 
+   d="scan'208";a="418432773"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2021 03:26:34 -0700
+Received: by lahna (sSMTP sendmail emulation); Fri, 30 Jul 2021 13:26:31 +0300
+Date:   Fri, 30 Jul 2021 13:26:31 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Utkarsh H Patel <utkarsh.h.patel@intel.com>,
+        Koba Ko <koba.ko@canonical.com>
+Subject: Re: [PATCH v1.1 1/2] PCI: PM: Avoid forcing PCI_D0 for wakeup
+ reasons inconsistently
+Message-ID: <YQPT1y2hA+/UPReI@lahna>
+References: <4668274.31r3eYUQgx@kreacher>
+ <2207145.ElGaqSPkdT@kreacher>
+ <2593738.mvXUDI8C0e@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a27b6363-e8d3-f9ad-5029-a4a434c6d79b@gmail.com>
+In-Reply-To: <2593738.mvXUDI8C0e@kreacher>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jul 28, 2021 at 12:52:20PM -0400, PGNet Dev wrote:
->On 7/28/21 12:38 PM, Rafael J. Wysocki wrote:
->>On Wed, Jul 28, 2021 at 6:08 PM Greg KH <gregkh@linuxfoundation.org> wrote:
->>Applied as 5.14-rc material, thanks!
->
->ty!
->
->Will this revert be auto-magically backported to earlier stable (5.12x/5.13x) trees?
->Or does that require a manual trigger?
->Or, is that a distro kernel release issue?
+On Thu, Jul 29, 2021 at 05:54:28PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> It is inconsistent to return PCI_D0 from pci_target_state() instead
+> of the original target state if 'wakeup' is true and the device
+> cannot signal PME from D0.
+> 
+> This only happens when the device cannot signal PME from the original
+> target state and any shallower power states (including D0) and that
+> case is effectively equivalent to the one in which PME singaling is
+> not supported at all.  Since the original target state is returned in
+> the latter case, make the function do that in the former one too.
+> 
+> Link: https://lore.kernel.org/linux-pm/3149540.aeNJFYEL58@kreacher/
+> Fixes: 666ff6f83e1d ("PCI/PM: Avoid using device_may_wakeup() for runtime PM")
+> Reported-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-Since it has a cc to stable it should happen automagically.
-
--- 
-Thanks,
-Sasha
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Tested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
