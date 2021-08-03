@@ -2,895 +2,598 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A0003DE47D
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Aug 2021 04:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B54733DE6D3
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Aug 2021 08:42:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233670AbhHCCmd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 2 Aug 2021 22:42:33 -0400
-Received: from mail-mw2nam12on2042.outbound.protection.outlook.com ([40.107.244.42]:31872
-        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233197AbhHCCmc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 2 Aug 2021 22:42:32 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AVMcKMedoGKz9BMiTiUq55Fc7MQI4+jcyfozdLA7UJZu/QUdri2S4O45+MJ39+K/bFyrqB57dN3GkmDQIq7ApmUf5PpD8L4Fa2GxcSjAiQ5CduX1mD3QuE2IMbb74WTF5zOPonwGMqVPjG4/Gg3cgkv8XQHxW43OCSIIl6gGZy+3B+ufMipPmW/AEEe/oM+Vsh5jTiYAmsjnYHaBoblAk1ROU/F//9X8+6Oq8XpsAlO/bcBQ5LFOhoZ1WKlilY9o2TmrvTX/PVTBHAyTbY6MBMePsyY/53y0UrM2KHVddqZ4TcjoJHgh0gU8luqDJNDo+Gbg7vxjPPqqwI+ipRHe6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TzRm/F5qkVbEixhEGzNoUsRyT2oMi+dhNd+5Ox5RVJc=;
- b=fDISuHeDqIWHIdh3hQbzcxMZri2MIbRotoH/LJHqVDL1rxeeWl2hJS/ld4khBmwe9bwFaMjdEHY9mVPLsgPMiLM7r7dRNx4dvrSWKUbdgIwMHIwkCYISWlpHrNATtJsxpYZK9bG6hW39g05xNyY6X0kxQzln8hlyMLNoJlD/PDAS8i/cI59quDn6ZahdDXl2QPuWdjc6Q9QwZZPSuQUoCT8uIqprRXHggNCUs9a/ewsBsP6O0/Hji+3nDpr1ueCISr3LuQW7b8CnaRpkEsWSznlYjo5KDaBJKn+vCknJOw4qfPgKCsdy37RMUDlBqrqBqUeH/H2dk5/vvKgIfW9gQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TzRm/F5qkVbEixhEGzNoUsRyT2oMi+dhNd+5Ox5RVJc=;
- b=DNs90T661dnz+e/EAcSPSc1CWutqwhCzo9ss/hhc3uZheQb5Tmda8yvSfTkSn+gwNxgb+oCsVnWJOe8LFqIPIpRK0glNnEn4HtTeaIL89LFgj4forCA4rCZQTdWoqHTpj2lu+AotV+9dE3QWPFuWvxln4x480CNskXRYRKLzK5Q=
-Received: from BYAPR12MB3238.namprd12.prod.outlook.com (2603:10b6:a03:13b::20)
- by BYAPR12MB3333.namprd12.prod.outlook.com (2603:10b6:a03:a9::30) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.22; Tue, 3 Aug
- 2021 02:42:18 +0000
-Received: from BYAPR12MB3238.namprd12.prod.outlook.com
- ([fe80::a1a7:610:55c6:fca9]) by BYAPR12MB3238.namprd12.prod.outlook.com
- ([fe80::a1a7:610:55c6:fca9%7]) with mapi id 15.20.4373.026; Tue, 3 Aug 2021
- 02:42:18 +0000
-From:   "Liang, Prike" <Prike.Liang@amd.com>
-To:     "Huang, Ray" <Ray.Huang@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>
-CC:     "Natikar, Basavaraj" <Basavaraj.Natikar@amd.com>,
-        "Shah, Nehal-bakulchandra" <Nehal-bakulchandra.Shah@amd.com>,
-        Stephen MacNeil <macneisj@gmail.com>,
-        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-acpi <linux-acpi@vger.kernel.org>,
-        "Natikar, Basavaraj" <Basavaraj.Natikar@amd.com>,
-        "S-k, Shyam-sundar" <Shyam-sundar.S-k@amd.com>
-Subject: RE: AMD laptops defaulting to S3 instead of S0ix (was amd_sfh)
-Thread-Topic: AMD laptops defaulting to S3 instead of S0ix (was amd_sfh)
-Thread-Index: AQHXhrozB0v0BCXrukiiYq2OCgOVV6teiAcAgAFtv4CAACPdgIAA05UAgAAd+hA=
-Date:   Tue, 3 Aug 2021 02:42:18 +0000
-Message-ID: <BYAPR12MB3238DC9B9BBDF9B21C430646FBF09@BYAPR12MB3238.namprd12.prod.outlook.com>
-References: <CALWF37bJU92DxcD4VhBxbS+X+EUv-UW2oY-ogwMyNyGAnn=0WA@mail.gmail.com>
- <309288ec-27ac-0321-dce5-e9ba2bbab7ed@redhat.com>
- <BN9PR12MB505286920B83D4C71AC81E3CA0EE9@BN9PR12MB5052.namprd12.prod.outlook.com>
- <e11ce06f-8a5d-345a-5113-dd8802e9a0b9@amd.com>
- <eab56fac-175b-29b7-f66b-398b6477f390@redhat.com>
- <20210803002018.GH2563957@hr-amd>
-In-Reply-To: <20210803002018.GH2563957@hr-amd>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ActionId=28442bb7-b885-4b9c-b4e3-5011f91af0e0;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=0;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=true;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public-AIP
- 2.0;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2021-08-03T02:07:54Z;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
-authentication-results: amd.com; dkim=none (message not signed)
- header.d=none;amd.com; dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 3c8241a9-5bf6-4dc6-31e6-08d956284fdd
-x-ms-traffictypediagnostic: BYAPR12MB3333:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BYAPR12MB333311FEFA7CE64D9A7A8031FBF09@BYAPR12MB3333.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: UvzuC42SHB+BN0TwRdgpvT9uyCUnBBw1fXlVQBwVDY3r1QSIUB5Y/7iW4l+jZX/g8zSQIirxCEOWsv3XBV8evF2+6w45aQ4QgV83ZiX5OVuo2+W+cYTyMlV3TWSuMpJ9WxftnWYYW2nrl14BSPKi/1Oiqmm7Xo1kahU2VEof3wkD2Rfc4EgklVBQQqDQIZU4UXAWhtE+rMfJ4j2MHmK0Y6kCNCGhj9qXCtF5mLmnsaIFReSJkBgxX0XsE8tkkMpB9Gb3B1SvO8IF0g5zMbcECZIgkIk/58VbDmYghm6ALopDtzMg0D/Ia2s3E7kOvKPvqO0ljQkFf+LC/f9fqGQjc2pCTLmO1oAs4g+wrtL8410cB0T7q/pN/3Vq6uqXqBW0100Dyw8NDkoGJ1bq9qLKKDOkL6P2kAvSDFiczo3UGF3fMwFDMBKe7i5m6Uj0AuopBIVg03GYr20YeKz9SjoU6+zmmd0An/WZy397/XeG6Z7mATBIvxto1uODHpPVYVyVmJuPw4ngWDdCdvfO0lNIH3a3Awmz4R/tAw54W7YCNjS+kByD4srpScqoZMdcv3sbrel4DX00FvAQVRulcysnkRHa/7YA1AbujxJGr6LvR7BHPd2yR+0Xp8LsS5QLhpuBME0yVlEkIRc+aiyyOQ5F5DAFGi/jET/jHVm8VijkjHVLjuOR4MNfk5HekzSB1QAa/BvBwVRnwnz0ZfvD/z36UxZQDQoLBRqSALggWRcm514Sly4qm7aD2RY3EbjeqAIqcwGAmybKwtmjVeec2SEF3HFAz8SV4SQebzfubwBjGNP3zClp6U8L0ajm2AApxmy8
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3238.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(136003)(346002)(396003)(366004)(9686003)(8936002)(186003)(316002)(54906003)(8676002)(478600001)(30864003)(83380400001)(110136005)(26005)(2906002)(55016002)(66476007)(4326008)(66446008)(76116006)(53546011)(6506007)(71200400001)(66556008)(66946007)(52536014)(64756008)(5660300002)(86362001)(33656002)(38070700005)(38100700002)(7696005)(122000001)(32563001)(579004)(559001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?aa8MhdTzuwWRtY4Y9r36ZA49c+xlzpILIX4pDE5rW3gaVc//1U4xFYnuPH?=
- =?iso-8859-1?Q?RqqTZhmfqaQqH5rrXBRHc5hGHjoSG9kS3+BjGfxWk5NdMP+WmQ3zrR9Hjf?=
- =?iso-8859-1?Q?f6A6VucNzfxZyJnBI5DQaMeMLCOz4vTqyYd/cOwyczLHaYBEAnZo9YK0pg?=
- =?iso-8859-1?Q?XVL/O1vqq7uehdxwLuVPPlBQF0WuN+zm5//oINkIcxsu4eMJTrZeLv2+wz?=
- =?iso-8859-1?Q?ehv53QsNayvtxQUwQWTE7046Pc8ehCn7AGp3h123Tf70Ozw8F4AD62lovm?=
- =?iso-8859-1?Q?KskAkz+TBzjwANMjipOZK6ExlGshcOCDSmMAGRNHBd092DrFiB7+7379y9?=
- =?iso-8859-1?Q?k+gb/o645LxoO+SMQwOwjwtpD1YuirZ5VNxC9SLpM7pkkqoSpGgsDotFni?=
- =?iso-8859-1?Q?BpjJw88ebERzeCWpKwNlxhLYkbFcouz9N4xcnfBYZXxCP4/CCO1JEy5sNH?=
- =?iso-8859-1?Q?vQo6PP8F147tWjzEIO6ZQuEWdC3MO9TEU/sSpHnh6UQcw7By45ybC5/0Ur?=
- =?iso-8859-1?Q?tY+m403mTCvehxx14+ZncirNyOnICOjLKoK/7DzLqEem+Wwqt1Xr5QBqxS?=
- =?iso-8859-1?Q?hf2i/Z0W64SCDChU+R8wdGtz6TbfbgfRQC3fPgP1NOHFmNq+NIevCOfkNW?=
- =?iso-8859-1?Q?W2mi/U46257pbLo6kB632Yla+2M4E+rolFsIsomem5PN/CzUh07E/c8kNR?=
- =?iso-8859-1?Q?h83KtF9mhXkwb9NeZoeDNn/4/kiIGdAMKRgM01ksnjtb0A4/kqDtX0lIvS?=
- =?iso-8859-1?Q?9kLorZE5EjiuPxeIceTUhTvJqm86OSmuyKJ61VGj0XJV13JIa3VVubJIkw?=
- =?iso-8859-1?Q?BUU3DjC5jU9YmXUxE0LS6tlJldcSNPx8qV6pp0Yf2PwCkPxo/3PQ8jxAm0?=
- =?iso-8859-1?Q?14/8AVjb4OTrtod/fyXp8OIDtAUmnvtfEBYNeV2y1mQDPN+Jnh34KeG6Mj?=
- =?iso-8859-1?Q?68Ot4to2idvs1YczSbBjc7l00LF0ikuolK8WXrkokF8FGflhhfh+B0K10q?=
- =?iso-8859-1?Q?KdAi6+sTBayUlMoZuj2JGNI8iCYhTXfmIF/nWlrhQfFSr2JYRadQN5q/cb?=
- =?iso-8859-1?Q?2ugdQRdT5wrx292luLRuLIChNdTFUxrVRtTCiLND3DmZcL8qa95y5zA5cC?=
- =?iso-8859-1?Q?4wEfYvtjDtkk1z8zA7pxcCngMJtDMN0Blj5jCRTgcbErh6Yw4qq8QEvxzY?=
- =?iso-8859-1?Q?/WFpreBuohPgJnr5FUuNODF8INRCSVD4g0IejxniTVXn5qn7rrQBsTYZlR?=
- =?iso-8859-1?Q?dG44RT10i465pzMeGg+aBDqJPKFggfTahLRTv8ke8mpraqzAsgnSCzlbHv?=
- =?iso-8859-1?Q?afQUz2RbvTMkCgsEIV9KZFM6Oz0E1Om2Ss6ERBYM8+WqNURJARJJ6D8FB5?=
- =?iso-8859-1?Q?ZgfLSU+XA8?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S234044AbhHCGmm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Aug 2021 02:42:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44288 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234036AbhHCGmm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 3 Aug 2021 02:42:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8B5F460F93;
+        Tue,  3 Aug 2021 06:42:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627972951;
+        bh=1pXoEvbn+uAAOF2APebVUSgYzT5cl/mUdR4SchffRRo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=iXAHxJTNp/KsENk1ZuDRtl2m3HjNn/2Y7PTPPtc+3ubXi0qsbMk0blyL8Q7f1y08u
+         jsAoHD5x5dpz0/syn7VzTVlfspMSN03cV+4H51FYni8FCwnZ27WMmrViAXf9f8S/P9
+         zDuYGp6AxbhTV2eeJYYt2uAUcwKdy2aycx9TlwDNTdaiaHy/fO0zw08DYMj7fz5iF6
+         zJQkS2k2zlfkm1RwULqIJ3mqQM8Tmiaj5T4UImIGRBX7TT6pg8Dm7Dbx4sYw+4lSyE
+         6dJjBZulKO8Zxm9+KGC97kaV4gcrNmUlcgTRJtyra/xMmksTcaVIgk1A4yfxJL15gS
+         yu0BvXik0gfHg==
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Albert Ou <aou@eecs.berkeley.edu>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Len Brown <lenb@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Will Deacon <will@kernel.org>, devicetree@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mm@kvack.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        x86@kernel.org
+Subject: [PATCH v3] memblock: make memblock_find_in_range method private
+Date:   Tue,  3 Aug 2021 09:42:18 +0300
+Message-Id: <20210803064218.6611-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3238.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c8241a9-5bf6-4dc6-31e6-08d956284fdd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Aug 2021 02:42:18.6653
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: T8eJKwjBnBYp2FyIjwqztFm7pwvRR+UcAb1n8YhSMVpmlvFrJeKnfSFGAU2/rGHk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3333
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[Public]
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-In the AMD existing S0ix system seems needn't monitor SFH idle state, meanw=
-hile SFH is powered by S5 rail and the rail keeps ON when SOC is in S3/S0i3=
- state. Regards to SFH stop working after S3 resume maybe caused by power r=
-ail and device context tear down during S3 suspend. In addition, we also ne=
-ed implement SFH suspend callback in amd-sfh-hid like as other vendor.
+There are a lot of uses of memblock_find_in_range() along with
+memblock_reserve() from the times memblock allocation APIs did not exist.
 
-Thanks,
-Prike
-> -----Original Message-----
-> From: Huang, Ray <Ray.Huang@amd.com>
-> Sent: Tuesday, August 3, 2021 8:20 AM
-> To: Hans de Goede <hdegoede@redhat.com>
-> Cc: Natikar, Basavaraj <Basavaraj.Natikar@amd.com>; Shah, Nehal-
-> bakulchandra <Nehal-bakulchandra.Shah@amd.com>; Stephen MacNeil
-> <macneisj@gmail.com>; Limonciello, Mario <Mario.Limonciello@amd.com>;
-> Rafael J . Wysocki <rjw@rjwysocki.net>; Linux PM <linux-
-> pm@vger.kernel.org>; linux-acpi <linux-acpi@vger.kernel.org>; Natikar,
-> Basavaraj <Basavaraj.Natikar@amd.com>; S-k, Shyam-sundar <Shyam-
-> sundar.S-k@amd.com>; Liang, Prike <Prike.Liang@amd.com>
-> Subject: Re: AMD laptops defaulting to S3 instead of S0ix (was amd_sfh)
->
-> + Prike
->
-> On Mon, Aug 02, 2021 at 01:43:01PM +0200, Hans de Goede wrote:
-> > Hi,
-> >
-> > On 8/2/21 11:34 AM, Basavaraj Natikar wrote:
-> > > On 8/1/2021 5:15 PM, Shah, Nehal-bakulchandra wrote:
-> > >> [AMD Official Use Only]
-> > >>
-> > >> Adding few more folks
-> > >>
-> > >> -----Original Message-----
-> > >> From: Hans de Goede <hdegoede@redhat.com>
-> > >> Sent: Sunday, August 1, 2021 3:17 PM
-> > >> To: Stephen MacNeil <macneisj@gmail.com>; Limonciello, Mario
-> > >> <Mario.Limonciello@amd.com>; Rafael J . Wysocki <rjw@rjwysocki.net>
-> > >> Cc: Linux PM <linux-pm@vger.kernel.org>; linux-acpi
-> > >> <linux-acpi@vger.kernel.org>
-> > >> Subject: AMD laptops defaulting to S3 instead of S0ix (was amd_sfh)
-> > >>
-> > >> Hi Rafael, Mario,
-> > >>
-> > >> Stephen is having an issue with a recent AMD laptop (a Lenovo Ideapa=
-d
-> model) where Linux defaults to using S3/deep suspend instead of S0ix/s2id=
-le.
-> > >
-> > > Hi Hans, Et al.
-> > >
-> > > Looks like the Lenovo platform Stephen MacNeil is using does not supp=
-ort
-> the S2Idle as the FADT flags as not set (looking at the output of the scr=
-ipt).
-> >
-> > I believe it does, if it would not support s2idle at all, then this
-> > would not be offered as an option in the "cat /sys/power/mem_sleep"
-> output.
-> >
-> > Part of the problem seems to be that the system supports s2idle, but
-> > does not use it by default
-> >
-> > > If sensors are not working after ACPI S3 resume, I am suspecting
-> > > that it could be because the PM support is missing in the amd-sfh dri=
-ver
-> (which is already WIP from my side).
-> >
-> > Right, making sure the SFH code also works with S3 suspend is good
-> > regardless, but AFAIK most modern systems should use S01x / s2idle
-> suspend by default.
-> >
-> > Regards,
-> >
-> > Hans
-> >
-> >
-> >
-> > >> This is causing the sensors provided by the AMD Sensor Fusion Hub to
-> stop working after a suspend/resume. Adding mem_sleep_default=3Ds2idle to
-> the kernel commandline fixes this.
-> > >>
-> > >> Do you have any idea what might be causing this ?
-> > >>
-> > >> Regards,
-> > >>
-> > >> Hans
-> > >>
-> > >>
-> > >>
-> > >> On 7/31/21 2:31 PM, Stephen MacNeil wrote:
-> > >>> I wrote Basavaraj Natikar the new maintainer of amd_sfh for the ker=
-nel,
-> after sending the information he wanted his reply was...
-> > >>>
-> > >>>>> Thanks Stephen MacNeil,
-> > >>> On our hardware we do not see any amd_sfh issue with 5.14.0-rc2
-> kernel.
-> > >>>
-> > >>> Could you please check with Lenovo, as we are not observing amd_sfh
-> issue on our reference platforms too.
-> > >>>
-> > >>> Thanks,
-> > >>> Basavaraj
-> > >>> <<
-> > >>> looking at the information I sent him  i looks like the issue is
-> > >>> (to me anyway)
-> > >>>
-> > >>> cat /sys/power/mem_sleep
-> > >>> [s2idle] deep
-> > >>>
-> > >>> without
-> > >>> cat /sys/power/mem_sleep
-> > >>> s2idle [deep]
-> > >>>
-> > >>>
-> > >>> this is the info he requested... any idea who else I can contact.
-> > >>> this is the output with and without the kernel param
-> > >>>
-> > >>>
-> > >>>
-> > >>> Thanks a lot Stephen MacNeil  for the information.
-> > >>>
-> > >>>
-> > >>>
-> > >>> Could you please provide me below information:-
-> > >>>
-> > >>> =B7  what version of kernel is running.
-> > >>>
-> > >>> uname -a
-> > >>> Linux ideapad 5.14.0-051400rc2-generic #202107182230 SMP Sun Jul
-> > >>> 18
-> > >>> 22:34:12 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
-> > >>>
-> > >>>
-> > >>> =B7  Are you using latest patches from amd-sfh
-> > >>>
-> > >>> only the kernel
-> > >>>
-> > >>> =B7  Could you please provide me output of /sys/power/mem_sleep
-> > >>>
-> > >>> with kernel option mem_sleep_default=3Ds2idle
-> > >>>
-> > >>> cat /sys/power/mem_sleep
-> > >>> [s2idle] deep
-> > >>>
-> > >>> without
-> > >>> cat /sys/power/mem_sleep
-> > >>> s2idle [deep]
-> > >>>
-> > >>> =B7  Could you please provide output of below script after
-> > >>> installing "apt install iasl*". acpica-tools
-> > >>>
-> > >>> with kernel option mem_sleep_default=3Ds2idle
-> > >>>
-> > >>> Intel ACPI Component Architecture
-> > >>> ASL+ Optimizing Compiler/Disassembler version 20190509
-> > >>> Copyright (c) 2000 - 2019 Intel Corporation
-> > >>>
-> > >>> File appears to be binary: found 265 non-ASCII characters,
-> > >>> disassembling Binary file appears to be a valid ACPI table,
-> > >>> disassembling Input file apic.dat, Length 0x138 (312) bytes
-> > >>> ACPI: APIC 0x0000000000000000 000138 (v02 LENOVO CB-
-> 01    00000000
-> > >>> LENO 00000001) Acpi Data Table [APIC] decoded Formatted output:
-> > >>> apic.dsl - 16071 bytes File appears to be binary: found 40
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file batb.dat, Length 0x4A
-> > >>> (74) bytes
-> > >>> ACPI: BATB 0x0000000000000000 00004A (v02 LENOVO CB-
-> 01    00000000
-> > >>> LENO 00000001) Unknown ACPI table signature [BATB], decoding ACPI
-> > >>> table header only Acpi Data Table [BATB] decoded Formatted output:
-> > >>> batb.dsl - 1274 bytes File appears to be binary: found 31
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file bgrt.dat, Length 0x38
-> > >>> (56) bytes
-> > >>> ACPI: BGRT 0x0000000000000000 000038 (v01 LENOVO CB-
-> 01    00000002
-> > >>> LENO 00000001) Acpi Data Table [BGRT] decoded Formatted output:
-> > >>> bgrt.dsl - 1606 bytes File appears to be binary: found 16
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file cdit.dat, Length 0x29
-> > >>> (41) bytes
-> > >>> ACPI: CDIT 0x0000000000000000 000029 (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Unknown ACPI table signature [CDIT], decoding ACPI
-> > >>> table header only Acpi Data Table [CDIT] decoded Formatted output:
-> > >>> cdit.dsl - 1115 bytes File appears to be binary: found 2765
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file crat.dat, Length 0xB80
-> > >>> (2944) bytes
-> > >>> ACPI: CRAT 0x0000000000000000 000B80 (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Unknown ACPI table signature [CRAT], decoding ACPI
-> > >>> table header only Acpi Data Table [CRAT] decoded Formatted output:
-> > >>> crat.dsl - 15424 bytes File appears to be binary: found 15189
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file dsdt.dat, Length 0xAE9B
-> > >>> (44699) bytes
-> > >>> ACPI: DSDT 0x0000000000000000 00AE9B (v01 LENOVO
-> AMD      00001000
-> > >>> INTL 20180313) Pass 1 parse of [DSDT] Pass 2 parse of [DSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    dsdt.dsl - 384071 bytes File appears to be binary:
-> > >>> found 229 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file facp.dat,
-> > >>> Length 0x10C
-> > >>> (268) bytes
-> > >>> ACPI: FACP 0x0000000000000000 00010C (v05 LENOVO CB-
-> 01    00000003
-> > >>> LENO 00000001) Acpi Data Table [FACP] decoded Formatted output:
-> > >>> facp.dsl - 10098 bytes File appears to be binary: found 59
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file facs.dat, Length 0x40
-> > >>> (64) bytes
-> > >>> ACPI: FACS 0x0000000000000000 000040 Acpi Data Table [FACS]
-> > >>> decoded Formatted output:  facs.dsl - 1368 bytes File appears to
-> > >>> be binary:
-> > >>> found 28 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file fpdt.dat,
-> > >>> Length 0x34
-> > >>> (52) bytes
-> > >>> ACPI: FPDT 0x0000000000000000 000034 (v01 LENOVO CB-
-> 01    00000002
-> > >>> LENO 00000001) Acpi Data Table [FPDT] decoded Formatted output:
-> > >>> fpdt.dsl - 1452 bytes File appears to be binary: found 30
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file hpet.dat, Length 0x38
-> > >>> (56) bytes
-> > >>> ACPI: HPET 0x0000000000000000 000038 (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Acpi Data Table [HPET] decoded Formatted output:
-> > >>> hpet.dsl - 1865 bytes File appears to be binary: found 279
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file ivrs.dat, Length 0x1A4
-> > >>> (420) bytes
-> > >>> ACPI: IVRS 0x0000000000000000 0001A4 (v02 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Acpi Data Table [IVRS] decoded Formatted output:
-> > >>> ivrs.dsl - 6001 bytes File appears to be binary: found 36
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file mcfg.dat, Length 0x3C
-> > >>> (60) bytes
-> > >>> ACPI: MCFG 0x0000000000000000 00003C (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Acpi Data Table [MCFG] decoded Formatted output:
-> > >>> mcfg.dsl - 1526 bytes File appears to be binary: found 32
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file msdm.dat, Length 0x55
-> > >>> (85) bytes
-> > >>> ACPI: MSDM 0x0000000000000000 000055 (v03 LENOVO CB-
-> 01    00000000
-> > >>> LENO 00000001) Acpi Data Table [MSDM] decoded Formatted output:
-> > >>> msdm.dsl - 1557 bytes File appears to be binary: found 25
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file sbst.dat, Length 0x30
-> > >>> (48) bytes
-> > >>> ACPI: SBST 0x0000000000000000 000030 (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Acpi Data Table [SBST] decoded Formatted output:
-> > >>> sbst.dsl - 1282 bytes File appears to be binary: found 410
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file ssdt10.dat, Length
-> > >>> 0x47F (1151) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 00047F (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt10.dsl - 5673 bytes File appears to be binary:
-> > >>> found 708 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt11.dat,
-> > >>> Length 0xC1D (3101) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 000C1D (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt11.dsl - 15424 bytes File appears to be binary:
-> > >>> found 848 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt12.dat,
-> > >>> Length 0x9AD (2477) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 0009AD (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt12.dsl - 12474 bytes File appears to be binary:
-> > >>> found 9207 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt1.dat,
-> > >>> Length
-> > >>> 0x7216 (29206) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 007216 (v02 LENOVO AmdTable
-> 00000002
-> > >>> MSFT 04000000) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt1.dsl - 208699 bytes File appears to be binary:
-> > >>> found 3968 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt2.dat,
-> > >>> Length
-> > >>> 0x1500 (5376) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 001500 (v01 LENOVO AmdTable
-> 00000001
-> > >>> AMD
-> > >>> 00000001) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT] Parsing
-> > >>> Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt2.dsl - 59265 bytes File appears to be binary:
-> > >>> found 449 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt3.dat,
-> > >>> Length 0x53A (1338) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 00053A (v01 LENOVO Tpm2Tabl
-> 00009999
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt3.dsl - 10738 bytes File appears to be binary:
-> > >>> found 474 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt4.dat,
-> > >>> Length 0x64C (1612) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 00064C (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt4.dsl - 8258 bytes File appears to be binary:
-> > >>> found 400 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt5.dat,
-> > >>> Length 0x480 (1152) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 000480 (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt5.dsl - 5582 bytes File appears to be binary:
-> > >>> found 1140 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt6.dat,
-> > >>> Length 0x1497 (5271) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 001497 (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt6.dsl - 20293 bytes File appears to be binary:
-> > >>> found 1314 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt7.dat,
-> > >>> Length
-> > >>> 0x1576 (5494) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 001576 (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt7.dsl - 30076 bytes File appears to be binary:
-> > >>> found 4095 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt8.dat,
-> > >>> Length 0x353C (13628) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 00353C (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt8.dsl - 78242 bytes File appears to be binary:
-> > >>> found 74 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt9.dat,
-> > >>> Length 0x90
-> > >>> (144) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 000090 (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt9.dsl - 1767 bytes File appears to be binary:
-> > >>> found 32 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file tpm2.dat,
-> > >>> Length 0x38 (56) bytes
-> > >>> ACPI: TPM2 0x0000000000000000 000038 (v04 LENOVO CB-
-> 01    00000002
-> > >>> LENO 00000001) Acpi Data Table [TPM2] decoded Formatted output:
-> > >>> tpm2.dsl - 1515 bytes File appears to be binary: found 189
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file uefi.dat, Length 0x12A
-> > >>> (298) bytes
-> > >>> ACPI: UEFI 0x0000000000000000 00012A (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Acpi Data Table [UEFI] decoded Formatted output:
-> > >>> uefi.dsl - 2505 bytes File appears to be binary: found 37100
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file vfct.dat, Length 0xD484
-> > >>> (54404) bytes
-> > >>> ACPI: VFCT 0x0000000000000000 00D484 (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Unknown ACPI table signature [VFCT], decoding ACPI
-> > >>> table header only Acpi Data Table [VFCT] decoded Formatted output:
-> > >>> vfct.dsl - 269557 bytes File appears to be binary: found 17
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file wsmt.dat, Length 0x28
-> > >>> (40) bytes
-> > >>> ACPI: WSMT 0x0000000000000000 000028 (v01 LENOVO CB-
-> 01    00000000
-> > >>> LENO 00000001) Acpi Data Table [WSMT] decoded Formatted output:
-> > >>> wsmt.dsl - 1313 bytes Low Power S0 Idle is 0 The system does not
-> > >>> support S0ix!
-> > >>>
-> > >>>
-> > >>> without
-> > >>>
-> > >>> Intel ACPI Component Architecture
-> > >>> ASL+ Optimizing Compiler/Disassembler version 20190509
-> > >>> Copyright (c) 2000 - 2019 Intel Corporation
-> > >>>
-> > >>> File appears to be binary: found 265 non-ASCII characters,
-> > >>> disassembling Binary file appears to be a valid ACPI table,
-> > >>> disassembling Input file apic.dat, Length 0x138 (312) bytes
-> > >>> ACPI: APIC 0x0000000000000000 000138 (v02 LENOVO CB-
-> 01    00000000
-> > >>> LENO 00000001) Acpi Data Table [APIC] decoded Formatted output:
-> > >>> apic.dsl - 16071 bytes File appears to be binary: found 40
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file batb.dat, Length 0x4A
-> > >>> (74) bytes
-> > >>> ACPI: BATB 0x0000000000000000 00004A (v02 LENOVO CB-
-> 01    00000000
-> > >>> LENO 00000001) Unknown ACPI table signature [BATB], decoding ACPI
-> > >>> table header only Acpi Data Table [BATB] decoded Formatted output:
-> > >>> batb.dsl - 1274 bytes File appears to be binary: found 31
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file bgrt.dat, Length 0x38
-> > >>> (56) bytes
-> > >>> ACPI: BGRT 0x0000000000000000 000038 (v01 LENOVO CB-
-> 01    00000002
-> > >>> LENO 00000001) Acpi Data Table [BGRT] decoded Formatted output:
-> > >>> bgrt.dsl - 1606 bytes File appears to be binary: found 16
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file cdit.dat, Length 0x29
-> > >>> (41) bytes
-> > >>> ACPI: CDIT 0x0000000000000000 000029 (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Unknown ACPI table signature [CDIT], decoding ACPI
-> > >>> table header only Acpi Data Table [CDIT] decoded Formatted output:
-> > >>> cdit.dsl - 1115 bytes File appears to be binary: found 2765
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file crat.dat, Length 0xB80
-> > >>> (2944) bytes
-> > >>> ACPI: CRAT 0x0000000000000000 000B80 (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Unknown ACPI table signature [CRAT], decoding ACPI
-> > >>> table header only Acpi Data Table [CRAT] decoded Formatted output:
-> > >>> crat.dsl - 15424 bytes File appears to be binary: found 15189
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file dsdt.dat, Length 0xAE9B
-> > >>> (44699) bytes
-> > >>> ACPI: DSDT 0x0000000000000000 00AE9B (v01 LENOVO
-> AMD      00001000
-> > >>> INTL 20180313) Pass 1 parse of [DSDT] Pass 2 parse of [DSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    dsdt.dsl - 384071 bytes File appears to be binary:
-> > >>> found 229 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file facp.dat,
-> > >>> Length 0x10C
-> > >>> (268) bytes
-> > >>> ACPI: FACP 0x0000000000000000 00010C (v05 LENOVO CB-
-> 01    00000003
-> > >>> LENO 00000001) Acpi Data Table [FACP] decoded Formatted output:
-> > >>> facp.dsl - 10098 bytes File appears to be binary: found 59
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file facs.dat, Length 0x40
-> > >>> (64) bytes
-> > >>> ACPI: FACS 0x0000000000000000 000040 Acpi Data Table [FACS]
-> > >>> decoded Formatted output:  facs.dsl - 1368 bytes File appears to
-> > >>> be binary:
-> > >>> found 28 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file fpdt.dat,
-> > >>> Length 0x34
-> > >>> (52) bytes
-> > >>> ACPI: FPDT 0x0000000000000000 000034 (v01 LENOVO CB-
-> 01    00000002
-> > >>> LENO 00000001) Acpi Data Table [FPDT] decoded Formatted output:
-> > >>> fpdt.dsl - 1452 bytes File appears to be binary: found 30
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file hpet.dat, Length 0x38
-> > >>> (56) bytes
-> > >>> ACPI: HPET 0x0000000000000000 000038 (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Acpi Data Table [HPET] decoded Formatted output:
-> > >>> hpet.dsl - 1865 bytes File appears to be binary: found 279
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file ivrs.dat, Length 0x1A4
-> > >>> (420) bytes
-> > >>> ACPI: IVRS 0x0000000000000000 0001A4 (v02 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Acpi Data Table [IVRS] decoded Formatted output:
-> > >>> ivrs.dsl - 6001 bytes File appears to be binary: found 36
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file mcfg.dat, Length 0x3C
-> > >>> (60) bytes
-> > >>> ACPI: MCFG 0x0000000000000000 00003C (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Acpi Data Table [MCFG] decoded Formatted output:
-> > >>> mcfg.dsl - 1526 bytes File appears to be binary: found 32
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file msdm.dat, Length 0x55
-> > >>> (85) bytes
-> > >>> ACPI: MSDM 0x0000000000000000 000055 (v03 LENOVO CB-
-> 01    00000000
-> > >>> LENO 00000001) Acpi Data Table [MSDM] decoded Formatted output:
-> > >>> msdm.dsl - 1557 bytes File appears to be binary: found 25
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file sbst.dat, Length 0x30
-> > >>> (48) bytes
-> > >>> ACPI: SBST 0x0000000000000000 000030 (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Acpi Data Table [SBST] decoded Formatted output:
-> > >>> sbst.dsl - 1282 bytes File appears to be binary: found 410
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file ssdt10.dat, Length
-> > >>> 0x47F (1151) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 00047F (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt10.dsl - 5673 bytes File appears to be binary:
-> > >>> found 708 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt11.dat,
-> > >>> Length 0xC1D (3101) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 000C1D (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt11.dsl - 15424 bytes File appears to be binary:
-> > >>> found 848 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt12.dat,
-> > >>> Length 0x9AD (2477) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 0009AD (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt12.dsl - 12474 bytes File appears to be binary:
-> > >>> found 9207 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt1.dat,
-> > >>> Length
-> > >>> 0x7216 (29206) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 007216 (v02 LENOVO AmdTable
-> 00000002
-> > >>> MSFT 04000000) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt1.dsl - 208699 bytes File appears to be binary:
-> > >>> found 3968 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt2.dat,
-> > >>> Length
-> > >>> 0x1500 (5376) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 001500 (v01 LENOVO AmdTable
-> 00000001
-> > >>> AMD
-> > >>> 00000001) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT] Parsing
-> > >>> Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt2.dsl - 59265 bytes File appears to be binary:
-> > >>> found 449 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt3.dat,
-> > >>> Length 0x53A (1338) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 00053A (v01 LENOVO Tpm2Tabl
-> 00009999
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt3.dsl - 10738 bytes File appears to be binary:
-> > >>> found 474 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt4.dat,
-> > >>> Length 0x64C (1612) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 00064C (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt4.dsl - 8258 bytes File appears to be binary:
-> > >>> found 400 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt5.dat,
-> > >>> Length 0x480 (1152) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 000480 (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt5.dsl - 5582 bytes File appears to be binary:
-> > >>> found 1140 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt6.dat,
-> > >>> Length 0x1497 (5271) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 001497 (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt6.dsl - 20293 bytes File appears to be binary:
-> > >>> found 1314 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt7.dat,
-> > >>> Length
-> > >>> 0x1576 (5494) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 001576 (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt7.dsl - 30076 bytes File appears to be binary:
-> > >>> found 4095 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt8.dat,
-> > >>> Length 0x353C (13628) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 00353C (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt8.dsl - 78242 bytes File appears to be binary:
-> > >>> found 74 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file ssdt9.dat,
-> > >>> Length 0x90
-> > >>> (144) bytes
-> > >>> ACPI: SSDT 0x0000000000000000 000090 (v01 LENOVO AmdTable
-> 00000001
-> > >>> INTL 20180313) Pass 1 parse of [SSDT] Pass 2 parse of [SSDT]
-> > >>> Parsing Deferred Opcodes (Methods/Buffers/Packages/Regions)
-> > >>>
-> > >>> Parsing completed
-> > >>> Disassembly completed
-> > >>> ASL Output:    ssdt9.dsl - 1767 bytes File appears to be binary:
-> > >>> found 32 non-ASCII characters, disassembling Binary file appears
-> > >>> to be a valid ACPI table, disassembling Input file tpm2.dat,
-> > >>> Length 0x38 (56) bytes
-> > >>> ACPI: TPM2 0x0000000000000000 000038 (v04 LENOVO CB-
-> 01    00000002
-> > >>> LENO 00000001) Acpi Data Table [TPM2] decoded Formatted output:
-> > >>> tpm2.dsl - 1515 bytes File appears to be binary: found 189
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file uefi.dat, Length 0x12A
-> > >>> (298) bytes
-> > >>> ACPI: UEFI 0x0000000000000000 00012A (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Acpi Data Table [UEFI] decoded Formatted output:
-> > >>> uefi.dsl - 2505 bytes File appears to be binary: found 37100
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file vfct.dat, Length 0xD484
-> > >>> (54404) bytes
-> > >>> ACPI: VFCT 0x0000000000000000 00D484 (v01 LENOVO CB-
-> 01    00000001
-> > >>> LENO 00000001) Unknown ACPI table signature [VFCT], decoding ACPI
-> > >>> table header only Acpi Data Table [VFCT] decoded Formatted output:
-> > >>> vfct.dsl - 269557 bytes File appears to be binary: found 17
-> > >>> non-ASCII characters, disassembling Binary file appears to be a
-> > >>> valid ACPI table, disassembling Input file wsmt.dat, Length 0x28
-> > >>> (40) bytes
-> > >>> ACPI: WSMT 0x0000000000000000 000028 (v01 LENOVO CB-
-> 01    00000000
-> > >>> LENO 00000001) Acpi Data Table [WSMT] decoded Formatted output:
-> > >>> wsmt.dsl - 1313 bytes Low Power S0 Idle is 0 The system does not
-> > >>> support S0ix!
-> > >>>
-> > >>>
-> > >>> #################################################
-> > >>> #!/bin/bash
-> > >>>
-> > >>> cd /var/tmp/
-> > >>>
-> > >>> acpidump -b
-> > >>>
-> > >>> iasl -d *.dat
-> > >>>
-> > >>> lp=3D$(grep "Low Power S0 Idle" /var/tmp/facp.dsl | awk '{print
-> > >>> $(NF)}')
-> > >>>
-> > >>> if [ "$lp" -eq 1 ]; then
-> > >>>
-> > >>> echo "Low Power S0 Idle is" $lp
-> > >>>
-> > >>> echo "The system supports S0ix!"
-> > >>>
-> > >>> else
-> > >>>
-> > >>> echo "Low Power S0 Idle is" $lp
-> > >>>
-> > >>> echo "The system does not support S0ix!"
-> > >>>
-> > >>> fi
-> > >>>
-> > >>>
-> > >>>
-> > >>> Thanks,
-> > >>>
-> > >>> Basavaraj
-> > >>>
-> > >>>
-> > >>>
-> > >>>
-> > >>> --
-> > >>> Stephen MacNeil
-> > >>> 905 334 5092
-> > >>> mglessons.com
-> > >>>
-> <https://nam11.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2F
-> > >>>
-> mglessons.com%2F&amp;data=3D04%7C01%7Cray.huang%40amd.com%7C0db
-> f347b
-> > >>>
-> 744f4480a76608d955aab43c%7C3dd8961fe4884e608e11a82d994e183d%7C0
-> %7C
-> > >>>
-> 0%7C637635013945224005%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wL
-> jAwMDA
-> > >>>
-> iLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=3DZ
-> > >>>
-> c6RqCBpmncIWTGiBpZ%2BmOBmPVV7gIx8mS2hqBenP6k%3D&amp;reserve
-> d=3D0>
-> > >
-> >
+memblock_find_in_range() is the very core of memblock allocations, so any
+future changes to its internal behaviour would mandate updates of all the
+users outside memblock.
+
+Replace the calls to memblock_find_in_range() with an equivalent calls to
+memblock_phys_alloc() and memblock_phys_alloc_range() and make
+memblock_find_in_range() private method of memblock.
+
+This simplifies the callers, ensures that (unlikely) errors in
+memblock_reserve() are handled and improves maintainability of
+memblock_find_in_range().
+
+Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+---
+v3:
+* simplify check for exact crash kerenl allocation on arm, per Rob
+* make crash_max unsigned long long on arm64, per Rob
+ 
+v2: https://lore.kernel.org/lkml/20210802063737.22733-1-rppt@kernel.org 
+* don't change error message in arm::reserve_crashkernel(), per Russell
+
+v1: https://lore.kernel.org/lkml/20210730104039.7047-1-rppt@kernel.org
+
+ arch/arm/kernel/setup.c           | 20 +++++---------
+ arch/arm64/kvm/hyp/reserved_mem.c |  9 +++----
+ arch/arm64/mm/init.c              | 36 ++++++++-----------------
+ arch/mips/kernel/setup.c          | 14 +++++-----
+ arch/riscv/mm/init.c              | 44 ++++++++++---------------------
+ arch/s390/kernel/setup.c          | 10 ++++---
+ arch/x86/kernel/aperture_64.c     |  5 ++--
+ arch/x86/mm/init.c                | 21 +++++++++------
+ arch/x86/mm/numa.c                |  5 ++--
+ arch/x86/mm/numa_emulation.c      |  5 ++--
+ arch/x86/realmode/init.c          |  2 +-
+ drivers/acpi/tables.c             |  5 ++--
+ drivers/base/arch_numa.c          |  5 +---
+ drivers/of/of_reserved_mem.c      | 12 ++++++---
+ include/linux/memblock.h          |  2 --
+ mm/memblock.c                     |  2 +-
+ 16 files changed, 79 insertions(+), 118 deletions(-)
+
+diff --git a/arch/arm/kernel/setup.c b/arch/arm/kernel/setup.c
+index f97eb2371672..284a80c0b6e1 100644
+--- a/arch/arm/kernel/setup.c
++++ b/arch/arm/kernel/setup.c
+@@ -1012,31 +1012,25 @@ static void __init reserve_crashkernel(void)
+ 		unsigned long long lowmem_max = __pa(high_memory - 1) + 1;
+ 		if (crash_max > lowmem_max)
+ 			crash_max = lowmem_max;
+-		crash_base = memblock_find_in_range(CRASH_ALIGN, crash_max,
+-						    crash_size, CRASH_ALIGN);
++
++		crash_base = memblock_phys_alloc_range(crash_size, CRASH_ALIGN,
++						       CRASH_ALIGN, crash_max);
+ 		if (!crash_base) {
+ 			pr_err("crashkernel reservation failed - No suitable area found.\n");
+ 			return;
+ 		}
+ 	} else {
++		unsigned long long crash_max = crash_base + crash_size;
+ 		unsigned long long start;
+ 
+-		start = memblock_find_in_range(crash_base,
+-					       crash_base + crash_size,
+-					       crash_size, SECTION_SIZE);
+-		if (start != crash_base) {
++		start = memblock_phys_alloc_range(crash_size, SECTION_SIZE,
++						  crash_base, crash_max);
++		if (!start) {
+ 			pr_err("crashkernel reservation failed - memory is in use.\n");
+ 			return;
+ 		}
+ 	}
+ 
+-	ret = memblock_reserve(crash_base, crash_size);
+-	if (ret < 0) {
+-		pr_warn("crashkernel reservation failed - memory is in use (0x%lx)\n",
+-			(unsigned long)crash_base);
+-		return;
+-	}
+-
+ 	pr_info("Reserving %ldMB of memory at %ldMB for crashkernel (System RAM: %ldMB)\n",
+ 		(unsigned long)(crash_size >> 20),
+ 		(unsigned long)(crash_base >> 20),
+diff --git a/arch/arm64/kvm/hyp/reserved_mem.c b/arch/arm64/kvm/hyp/reserved_mem.c
+index d654921dd09b..578670e3f608 100644
+--- a/arch/arm64/kvm/hyp/reserved_mem.c
++++ b/arch/arm64/kvm/hyp/reserved_mem.c
+@@ -92,12 +92,10 @@ void __init kvm_hyp_reserve(void)
+ 	 * this is unmapped from the host stage-2, and fallback to PAGE_SIZE.
+ 	 */
+ 	hyp_mem_size = hyp_mem_pages << PAGE_SHIFT;
+-	hyp_mem_base = memblock_find_in_range(0, memblock_end_of_DRAM(),
+-					      ALIGN(hyp_mem_size, PMD_SIZE),
+-					      PMD_SIZE);
++	hyp_mem_base = memblock_phys_alloc(ALIGN(hyp_mem_size, PMD_SIZE),
++					   PMD_SIZE);
+ 	if (!hyp_mem_base)
+-		hyp_mem_base = memblock_find_in_range(0, memblock_end_of_DRAM(),
+-						      hyp_mem_size, PAGE_SIZE);
++		hyp_mem_base = memblock_phys_alloc(hyp_mem_size, PAGE_SIZE);
+ 	else
+ 		hyp_mem_size = ALIGN(hyp_mem_size, PMD_SIZE);
+ 
+@@ -105,7 +103,6 @@ void __init kvm_hyp_reserve(void)
+ 		kvm_err("Failed to reserve hyp memory\n");
+ 		return;
+ 	}
+-	memblock_reserve(hyp_mem_base, hyp_mem_size);
+ 
+ 	kvm_info("Reserved %lld MiB at 0x%llx\n", hyp_mem_size >> 20,
+ 		 hyp_mem_base);
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index 8490ed2917ff..0bffd2d1854f 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -74,6 +74,7 @@ phys_addr_t arm64_dma_phys_limit __ro_after_init;
+ static void __init reserve_crashkernel(void)
+ {
+ 	unsigned long long crash_base, crash_size;
++	unsigned long long crash_max = arm64_dma_phys_limit;
+ 	int ret;
+ 
+ 	ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
+@@ -84,33 +85,18 @@ static void __init reserve_crashkernel(void)
+ 
+ 	crash_size = PAGE_ALIGN(crash_size);
+ 
+-	if (crash_base == 0) {
+-		/* Current arm64 boot protocol requires 2MB alignment */
+-		crash_base = memblock_find_in_range(0, arm64_dma_phys_limit,
+-				crash_size, SZ_2M);
+-		if (crash_base == 0) {
+-			pr_warn("cannot allocate crashkernel (size:0x%llx)\n",
+-				crash_size);
+-			return;
+-		}
+-	} else {
+-		/* User specifies base address explicitly. */
+-		if (!memblock_is_region_memory(crash_base, crash_size)) {
+-			pr_warn("cannot reserve crashkernel: region is not memory\n");
+-			return;
+-		}
++	/* User specifies base address explicitly. */
++	if (crash_base)
++		crash_max = crash_base + crash_size;
+ 
+-		if (memblock_is_region_reserved(crash_base, crash_size)) {
+-			pr_warn("cannot reserve crashkernel: region overlaps reserved memory\n");
+-			return;
+-		}
+-
+-		if (!IS_ALIGNED(crash_base, SZ_2M)) {
+-			pr_warn("cannot reserve crashkernel: base address is not 2MB aligned\n");
+-			return;
+-		}
++	/* Current arm64 boot protocol requires 2MB alignment */
++	crash_base = memblock_phys_alloc_range(crash_size, SZ_2M,
++					       crash_base, crash_max);
++	if (!crash_base) {
++		pr_warn("cannot allocate crashkernel (size:0x%llx)\n",
++			crash_size);
++		return;
+ 	}
+-	memblock_reserve(crash_base, crash_size);
+ 
+ 	pr_info("crashkernel reserved: 0x%016llx - 0x%016llx (%lld MB)\n",
+ 		crash_base, crash_base + crash_size, crash_size >> 20);
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 23a140327a0b..f979adfd4fc2 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -452,8 +452,9 @@ static void __init mips_parse_crashkernel(void)
+ 		return;
+ 
+ 	if (crash_base <= 0) {
+-		crash_base = memblock_find_in_range(CRASH_ALIGN, CRASH_ADDR_MAX,
+-							crash_size, CRASH_ALIGN);
++		crash_base = memblock_phys_alloc_range(crash_size, CRASH_ALIGN,
++						       CRASH_ALIGN,
++						       CRASH_ADDR_MAX);
+ 		if (!crash_base) {
+ 			pr_warn("crashkernel reservation failed - No suitable area found.\n");
+ 			return;
+@@ -461,8 +462,9 @@ static void __init mips_parse_crashkernel(void)
+ 	} else {
+ 		unsigned long long start;
+ 
+-		start = memblock_find_in_range(crash_base, crash_base + crash_size,
+-						crash_size, 1);
++		start = memblock_phys_alloc_range(crash_size, 1,
++						  crash_base,
++						  crash_base + crash_size);
+ 		if (start != crash_base) {
+ 			pr_warn("Invalid memory region reserved for crash kernel\n");
+ 			return;
+@@ -656,10 +658,6 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	mips_reserve_vmcore();
+ 
+ 	mips_parse_crashkernel();
+-#ifdef CONFIG_KEXEC
+-	if (crashk_res.start != crashk_res.end)
+-		memblock_reserve(crashk_res.start, resource_size(&crashk_res));
+-#endif
+ 	device_tree_init();
+ 
+ 	/*
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index a14bf3910eec..88649337c568 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -812,38 +812,22 @@ static void __init reserve_crashkernel(void)
+ 
+ 	crash_size = PAGE_ALIGN(crash_size);
+ 
+-	if (crash_base == 0) {
+-		/*
+-		 * Current riscv boot protocol requires 2MB alignment for
+-		 * RV64 and 4MB alignment for RV32 (hugepage size)
+-		 */
+-		crash_base = memblock_find_in_range(search_start, search_end,
+-						    crash_size, PMD_SIZE);
+-
+-		if (crash_base == 0) {
+-			pr_warn("crashkernel: couldn't allocate %lldKB\n",
+-				crash_size >> 10);
+-			return;
+-		}
+-	} else {
+-		/* User specifies base address explicitly. */
+-		if (!memblock_is_region_memory(crash_base, crash_size)) {
+-			pr_warn("crashkernel: requested region is not memory\n");
+-			return;
+-		}
+-
+-		if (memblock_is_region_reserved(crash_base, crash_size)) {
+-			pr_warn("crashkernel: requested region is reserved\n");
+-			return;
+-		}
+-
++	if (crash_base) {
++		search_start = crash_base;
++		search_end = crash_base + crash_size;
++	}
+ 
+-		if (!IS_ALIGNED(crash_base, PMD_SIZE)) {
+-			pr_warn("crashkernel: requested region is misaligned\n");
+-			return;
+-		}
++	/*
++	 * Current riscv boot protocol requires 2MB alignment for
++	 * RV64 and 4MB alignment for RV32 (hugepage size)
++	 */
++	crash_base = memblock_phys_alloc_range(crash_size, PMD_SIZE,
++					       search_start, search_end);
++	if (crash_base == 0) {
++		pr_warn("crashkernel: couldn't allocate %lldKB\n",
++			crash_size >> 10);
++		return;
+ 	}
+-	memblock_reserve(crash_base, crash_size);
+ 
+ 	pr_info("crashkernel: reserved 0x%016llx - 0x%016llx (%lld MB)\n",
+ 		crash_base, crash_base + crash_size, crash_size >> 20);
+diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
+index ff0f9e838916..3d9efee0f43c 100644
+--- a/arch/s390/kernel/setup.c
++++ b/arch/s390/kernel/setup.c
+@@ -626,8 +626,9 @@ static void __init reserve_crashkernel(void)
+ 			return;
+ 		}
+ 		low = crash_base ?: low;
+-		crash_base = memblock_find_in_range(low, high, crash_size,
+-						    KEXEC_CRASH_MEM_ALIGN);
++		crash_base = memblock_phys_alloc_range(crash_size,
++						       KEXEC_CRASH_MEM_ALIGN,
++						       low, high);
+ 	}
+ 
+ 	if (!crash_base) {
+@@ -636,14 +637,15 @@ static void __init reserve_crashkernel(void)
+ 		return;
+ 	}
+ 
+-	if (register_memory_notifier(&kdump_mem_nb))
++	if (register_memory_notifier(&kdump_mem_nb)) {
++		memblock_free(crash_base, crash_size);
+ 		return;
++	}
+ 
+ 	if (!OLDMEM_BASE && MACHINE_IS_VM)
+ 		diag10_range(PFN_DOWN(crash_base), PFN_DOWN(crash_size));
+ 	crashk_res.start = crash_base;
+ 	crashk_res.end = crash_base + crash_size - 1;
+-	memblock_remove(crash_base, crash_size);
+ 	pr_info("Reserving %lluMB of memory at %lluMB "
+ 		"for crashkernel (System RAM: %luMB)\n",
+ 		crash_size >> 20, crash_base >> 20,
+diff --git a/arch/x86/kernel/aperture_64.c b/arch/x86/kernel/aperture_64.c
+index 294ed4392a0e..10562885f5fc 100644
+--- a/arch/x86/kernel/aperture_64.c
++++ b/arch/x86/kernel/aperture_64.c
+@@ -109,14 +109,13 @@ static u32 __init allocate_aperture(void)
+ 	 * memory. Unfortunately we cannot move it up because that would
+ 	 * make the IOMMU useless.
+ 	 */
+-	addr = memblock_find_in_range(GART_MIN_ADDR, GART_MAX_ADDR,
+-				      aper_size, aper_size);
++	addr = memblock_phys_alloc_range(aper_size, aper_size,
++					 GART_MIN_ADDR, GART_MAX_ADDR);
+ 	if (!addr) {
+ 		pr_err("Cannot allocate aperture memory hole [mem %#010lx-%#010lx] (%uKB)\n",
+ 		       addr, addr + aper_size - 1, aper_size >> 10);
+ 		return 0;
+ 	}
+-	memblock_reserve(addr, aper_size);
+ 	pr_info("Mapping aperture over RAM [mem %#010lx-%#010lx] (%uKB)\n",
+ 		addr, addr + aper_size - 1, aper_size >> 10);
+ 	register_nosave_region(addr >> PAGE_SHIFT,
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 75ef19aa8903..1152a29ce109 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -26,6 +26,7 @@
+ #include <asm/pti.h>
+ #include <asm/text-patching.h>
+ #include <asm/memtype.h>
++#include <xen/xen.h>
+ 
+ /*
+  * We need to define the tracepoints somewhere, and tlb.c
+@@ -127,14 +128,12 @@ __ref void *alloc_low_pages(unsigned int num)
+ 		unsigned long ret = 0;
+ 
+ 		if (min_pfn_mapped < max_pfn_mapped) {
+-			ret = memblock_find_in_range(
++			ret = memblock_phys_alloc_range(
++					PAGE_SIZE * num, PAGE_SIZE,
+ 					min_pfn_mapped << PAGE_SHIFT,
+-					max_pfn_mapped << PAGE_SHIFT,
+-					PAGE_SIZE * num , PAGE_SIZE);
++					max_pfn_mapped << PAGE_SHIFT);
+ 		}
+-		if (ret)
+-			memblock_reserve(ret, PAGE_SIZE * num);
+-		else if (can_use_brk_pgt)
++		if (!ret && can_use_brk_pgt)
+ 			ret = __pa(extend_brk(PAGE_SIZE * num, PAGE_SIZE));
+ 
+ 		if (!ret)
+@@ -610,9 +609,15 @@ static void __init memory_map_top_down(unsigned long map_start,
+ 	unsigned long addr;
+ 	unsigned long mapped_ram_size = 0;
+ 
++	real_end = ALIGN_DOWN(map_end, PMD_SIZE);
++
+ 	/* xen has big range in reserved near end of ram, skip it at first.*/
+-	addr = memblock_find_in_range(map_start, map_end, PMD_SIZE, PMD_SIZE);
+-	real_end = addr + PMD_SIZE;
++	if (xen_domain()) {
++		addr = memblock_phys_alloc_range(PMD_SIZE, PMD_SIZE,
++						 map_start, map_end);
++		memblock_free(addr, PMD_SIZE);
++		real_end = addr + PMD_SIZE;
++	}
+ 
+ 	/* step_size need to be small so pgt_buf from BRK could cover it */
+ 	step_size = PMD_SIZE;
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index e94da744386f..a1b5c71099e6 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -376,15 +376,14 @@ static int __init numa_alloc_distance(void)
+ 	cnt++;
+ 	size = cnt * cnt * sizeof(numa_distance[0]);
+ 
+-	phys = memblock_find_in_range(0, PFN_PHYS(max_pfn_mapped),
+-				      size, PAGE_SIZE);
++	phys = memblock_phys_alloc_range(size, PAGE_SIZE, 0,
++					 PFN_PHYS(max_pfn_mapped));
+ 	if (!phys) {
+ 		pr_warn("Warning: can't allocate distance table!\n");
+ 		/* don't retry until explicitly reset */
+ 		numa_distance = (void *)1LU;
+ 		return -ENOMEM;
+ 	}
+-	memblock_reserve(phys, size);
+ 
+ 	numa_distance = __va(phys);
+ 	numa_distance_cnt = cnt;
+diff --git a/arch/x86/mm/numa_emulation.c b/arch/x86/mm/numa_emulation.c
+index 87d77cc52f86..737491b13728 100644
+--- a/arch/x86/mm/numa_emulation.c
++++ b/arch/x86/mm/numa_emulation.c
+@@ -447,13 +447,12 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
+ 	if (numa_dist_cnt) {
+ 		u64 phys;
+ 
+-		phys = memblock_find_in_range(0, PFN_PHYS(max_pfn_mapped),
+-					      phys_size, PAGE_SIZE);
++		phys = memblock_phys_alloc_range(phys_size, PAGE_SIZE, 0,
++						 PFN_PHYS(max_pfn_mapped));
+ 		if (!phys) {
+ 			pr_warn("NUMA: Warning: can't allocate copy of distance table, disabling emulation\n");
+ 			goto no_emu;
+ 		}
+-		memblock_reserve(phys, phys_size);
+ 		phys_dist = __va(phys);
+ 
+ 		for (i = 0; i < numa_dist_cnt; i++)
+diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+index 6534c92d0f83..31b5856010cb 100644
+--- a/arch/x86/realmode/init.c
++++ b/arch/x86/realmode/init.c
+@@ -28,7 +28,7 @@ void __init reserve_real_mode(void)
+ 	WARN_ON(slab_is_available());
+ 
+ 	/* Has to be under 1M so we can execute real-mode AP code. */
+-	mem = memblock_find_in_range(0, 1<<20, size, PAGE_SIZE);
++	mem = memblock_phys_alloc_range(size, PAGE_SIZE, 0, 1<<20);
+ 	if (!mem)
+ 		pr_info("No sub-1M memory is available for the trampoline\n");
+ 	else
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index a37a1532a575..f9383736fa0f 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -583,8 +583,8 @@ void __init acpi_table_upgrade(void)
+ 	}
+ 
+ 	acpi_tables_addr =
+-		memblock_find_in_range(0, ACPI_TABLE_UPGRADE_MAX_PHYS,
+-				       all_tables_size, PAGE_SIZE);
++		memblock_phys_alloc_range(all_tables_size, PAGE_SIZE,
++					  0, ACPI_TABLE_UPGRADE_MAX_PHYS);
+ 	if (!acpi_tables_addr) {
+ 		WARN_ON(1);
+ 		return;
+@@ -599,7 +599,6 @@ void __init acpi_table_upgrade(void)
+ 	 * Both memblock_reserve and e820__range_add (via arch_reserve_mem_area)
+ 	 * works fine.
+ 	 */
+-	memblock_reserve(acpi_tables_addr, all_tables_size);
+ 	arch_reserve_mem_area(acpi_tables_addr, all_tables_size);
+ 
+ 	/*
+diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
+index 4cc4e117727d..46c503486e96 100644
+--- a/drivers/base/arch_numa.c
++++ b/drivers/base/arch_numa.c
+@@ -279,13 +279,10 @@ static int __init numa_alloc_distance(void)
+ 	int i, j;
+ 
+ 	size = nr_node_ids * nr_node_ids * sizeof(numa_distance[0]);
+-	phys = memblock_find_in_range(0, PFN_PHYS(max_pfn),
+-				      size, PAGE_SIZE);
++	phys = memblock_phys_alloc_range(size, PAGE_SIZE, 0, PFN_PHYS(max_pfn));
+ 	if (WARN_ON(!phys))
+ 		return -ENOMEM;
+ 
+-	memblock_reserve(phys, size);
+-
+ 	numa_distance = __va(phys);
+ 	numa_distance_cnt = nr_node_ids;
+ 
+diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+index fd3964d24224..59c1390cdf42 100644
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -33,18 +33,22 @@ static int __init early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
+ 	phys_addr_t *res_base)
+ {
+ 	phys_addr_t base;
++	int err = 0;
+ 
+ 	end = !end ? MEMBLOCK_ALLOC_ANYWHERE : end;
+ 	align = !align ? SMP_CACHE_BYTES : align;
+-	base = memblock_find_in_range(start, end, size, align);
++	base = memblock_phys_alloc_range(size, align, start, end);
+ 	if (!base)
+ 		return -ENOMEM;
+ 
+ 	*res_base = base;
+-	if (nomap)
+-		return memblock_mark_nomap(base, size);
++	if (nomap) {
++		err = memblock_mark_nomap(base, size);
++		if (err)
++			memblock_free(base, size);
++	}
+ 
+-	return memblock_reserve(base, size);
++	return err;
+ }
+ 
+ /*
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 4a53c3ca86bd..b066024c62e3 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -99,8 +99,6 @@ void memblock_discard(void);
+ static inline void memblock_discard(void) {}
+ #endif
+ 
+-phys_addr_t memblock_find_in_range(phys_addr_t start, phys_addr_t end,
+-				   phys_addr_t size, phys_addr_t align);
+ void memblock_allow_resize(void);
+ int memblock_add_node(phys_addr_t base, phys_addr_t size, int nid);
+ int memblock_add(phys_addr_t base, phys_addr_t size);
+diff --git a/mm/memblock.c b/mm/memblock.c
+index de7b553baa50..28a813d9e955 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -315,7 +315,7 @@ static phys_addr_t __init_memblock memblock_find_in_range_node(phys_addr_t size,
+  * Return:
+  * Found address on success, 0 on failure.
+  */
+-phys_addr_t __init_memblock memblock_find_in_range(phys_addr_t start,
++static phys_addr_t __init_memblock memblock_find_in_range(phys_addr_t start,
+ 					phys_addr_t end, phys_addr_t size,
+ 					phys_addr_t align)
+ {
+
+base-commit: ff1176468d368232b684f75e82563369208bc371
+-- 
+2.28.0
+
