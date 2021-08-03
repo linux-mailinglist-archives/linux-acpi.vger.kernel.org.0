@@ -2,31 +2,31 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1C553DF46A
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Aug 2021 20:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0088E3DF469
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Aug 2021 20:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238782AbhHCSMj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Aug 2021 14:12:39 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:51498 "EHLO
+        id S238753AbhHCSMi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Aug 2021 14:12:38 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:50892 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238775AbhHCSMi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Aug 2021 14:12:38 -0400
+        with ESMTP id S238767AbhHCSMh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Aug 2021 14:12:37 -0400
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
- id 81848ed8b7b36df9; Tue, 3 Aug 2021 20:12:26 +0200
+ id d51e9b9f1238c297; Tue, 3 Aug 2021 20:12:24 +0200
 Received: from kreacher.localnet (89-64-81-181.dynamic.chello.pl [89.64.81.181])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 948A766A01E;
-        Tue,  3 Aug 2021 20:12:25 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 24ED966A01E;
+        Tue,  3 Aug 2021 20:12:24 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To:     Linux ACPI <linux-acpi@vger.kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Bob Moore <robert.moore@intel.com>
-Subject: [PATCH 2/7] ACPICA: Fix an if statement (add parens)
-Date:   Tue, 03 Aug 2021 20:08:45 +0200
-Message-ID: <4654328.GXAFRqVoOG@kreacher>
+Subject: [PATCH 3/7] ACPICA: Macros should not use a trailing semicolon
+Date:   Tue, 03 Aug 2021 20:09:18 +0200
+Message-ID: <2084744.irdbgypaU6@kreacher>
 In-Reply-To: <5748555.lOV4Wx5bFT@kreacher>
 References: <5748555.lOV4Wx5bFT@kreacher>
 MIME-Version: 1.0
@@ -43,33 +43,29 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Bob Moore <robert.moore@intel.com>
 
-ACPICA commit 4dbe4b9a0c203b04918705f022e0db997aa55696
+ACPICA commit 8d49c0b2b78b8a8c5dae4d5ff28432729f4d59f2
 
-Link: https://github.com/acpica/acpica/commit/4dbe4b9a
+Link: https://github.com/acpica/acpica/commit/8d49c0b2
+Signed-off-by: Huilong Deng <denghuilong@cdjrlc.com>
 Signed-off-by: Bob Moore <robert.moore@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/acpica/dswexec.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/acpi/acoutput.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/dswexec.c b/drivers/acpi/acpica/dswexec.c
-index 41ba7773fd10..f2d2267054af 100644
---- a/drivers/acpi/acpica/dswexec.c
-+++ b/drivers/acpi/acpica/dswexec.c
-@@ -561,11 +561,10 @@ acpi_status acpi_ds_exec_end_op(struct acpi_walk_state *walk_state)
- 								op->common.
- 								node->object,
- 								NULL);
--				if ACPI_FAILURE
--					(status) {
-+				if (ACPI_FAILURE(status)) {
- 					ACPI_EXCEPTION((AE_INFO, status,
- 							"While writing to buffer field"));
--					}
-+				}
- 			}
- 			ACPI_FREE(namepath);
- 			status = AE_OK;
+diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
+index 1b4c45815695..5a3875744678 100644
+--- a/include/acpi/acoutput.h
++++ b/include/acpi/acoutput.h
+@@ -415,7 +415,7 @@
+ /* Conditional execution */
+ 
+ #define ACPI_DEBUG_EXEC(a)              a
+-#define ACPI_DEBUG_ONLY_MEMBERS(a)      a;
++#define ACPI_DEBUG_ONLY_MEMBERS(a)      a
+ #define _VERBOSE_STRUCTURES
+ 
+ /* Various object display routines for debug */
 -- 
 2.26.2
 
