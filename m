@@ -2,203 +2,268 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51AE23DF027
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Aug 2021 16:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E18F33DF18C
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Aug 2021 17:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236601AbhHCOVT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Aug 2021 10:21:19 -0400
-Received: from mga03.intel.com ([134.134.136.65]:46842 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236550AbhHCOVT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 3 Aug 2021 10:21:19 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10064"; a="213735432"
-X-IronPort-AV: E=Sophos;i="5.84,291,1620716400"; 
-   d="scan'208";a="213735432"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2021 07:21:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,291,1620716400"; 
-   d="scan'208";a="511260496"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by FMSMGA003.fm.intel.com with ESMTP; 03 Aug 2021 07:21:06 -0700
-Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.10; Tue, 3 Aug 2021 07:21:06 -0700
-Received: from orsmsx608.amr.corp.intel.com (10.22.229.21) by
- ORSMSX609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.10; Tue, 3 Aug 2021 07:21:05 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx608.amr.corp.intel.com (10.22.229.21) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.10 via Frontend Transport; Tue, 3 Aug 2021 07:21:05 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.171)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2242.10; Tue, 3 Aug 2021 07:21:05 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DJ4fl9x8uA6ffBXT8lTa/6DX87jpdtnZX9KzcoKxK31QjkyiM4otm9l0c4O9X0ewePmEYJjqhuGgw5x3yoR5ACuHiABto/CB429XiGMYe4FArsMY8YzpCR9RAuha30OcJhmtVnRGzOcaHVqbL45GEYCg6ZEYl+TcZa9jq5Tpjasup4OKZLVWxl/6vc7zStoCRlyFzhjs4Riqa4MWr94PMei0jzYr30/KbBWlurZkl9eOxsY5kEl6/0tO0xeYC0OrDYpOvLJFeoOoPPYgFNGdWLmOWexZ54rAesAMSCiRq1/ihPIb6i5J8TmjrZZI6IY35oiyMiJ2FvxeYb6kwRRtdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D4SvTOpzscmtcEwiIF95CNFKzyto4llH+QjUz3Lsa4A=;
- b=R253qvcC6HCoe5MKJqqrx+URotz3sVMzp4Wa1kRviTYDpnJOs0oU3jA2jb8ci31Hkq4pu5J9pYMu73PkiaWMf6Ayg7irkeCquwdVmwnzTRG8wXT0v00slqCwDHqs0T95cMISmmoZOGA8IW6U/8dn9CxU9mu8YTpj4763hfUSM19Y7i+gN6+mC6K3ulv/I95HFAzcc/vbGh9CC/gPoWqv/23r8RHORLuf/cj71aPbf0uYQ9fZ8AX5GBbE6U+EMIQl85pJCQXn+QhCQMjRbRoVcw3nOd/DNi0h2yU1hQPWIrYOXuY14LTG4Ryiq4B+eKMa2tFwihPY9uuLKnUSV+v1Uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D4SvTOpzscmtcEwiIF95CNFKzyto4llH+QjUz3Lsa4A=;
- b=SJ8ajsKAyKDGUmsH93vZWm7HkR1AC59poegNkiSUNqmRuERaxPUftxcjo3wNAZygH5aohj9LxtLo43RyTReQrM7bHRku0Jp7zEVuNG0664/loB4F8T/3GdORSh8lDVdjXCH+MjxmW7H9jNJsUbGjP2+Jt/Nj0aumwhqtULvIz4E=
-Authentication-Results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5326.namprd11.prod.outlook.com (2603:10b6:5:391::8) by
- DM5PR11MB1977.namprd11.prod.outlook.com (2603:10b6:3:108::13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4373.25; Tue, 3 Aug 2021 14:21:04 +0000
-Received: from DM4PR11MB5326.namprd11.prod.outlook.com
- ([fe80::405a:afd:fd5e:5430]) by DM4PR11MB5326.namprd11.prod.outlook.com
- ([fe80::405a:afd:fd5e:5430%9]) with mapi id 15.20.4373.026; Tue, 3 Aug 2021
- 14:21:04 +0000
-Subject: Re: Tr: Unable to boot on multiple kernel with acpi
-To:     Greg KH <gregkh@linuxfoundation.org>,
-        Adrien Precigout <dev@asdrip.fr>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        Bob Moore <robert.moore@intel.com>
-CC:     <stable@vger.kernel.org>, <regressions@lists.linux.dev>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Erik Kaneda <erik.kaneda@gmail.com>
-References: <fc66decb-ed13-45dd-bf82-91f0cc516a30@asdrip.fr>
- <eb9250ed-2ae9-07d5-e966-9063fffa34f8@asdrip.fr> <YQY5rsWFhk5Okt0Y@kroah.com>
-From:   "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Organization: Intel Technology Poland Sp. z o. o., KRS 101882, ul. Slowackiego
- 173, 80-298 Gdansk
-Message-ID: <2da0ad34-bd01-47b2-29fc-c2e8210e3697@intel.com>
-Date:   Tue, 3 Aug 2021 16:20:57 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.12.0
-In-Reply-To: <YQY5rsWFhk5Okt0Y@kroah.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-ClientProxiedBy: AM0PR02CA0154.eurprd02.prod.outlook.com
- (2603:10a6:20b:28d::21) To DM4PR11MB5326.namprd11.prod.outlook.com
- (2603:10b6:5:391::8)
+        id S236898AbhHCPbE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 3 Aug 2021 11:31:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:21622 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236827AbhHCPa5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 3 Aug 2021 11:30:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1628004645;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ef5H/YzWjPRhpmEEex0YbOyxkXYC0ZJIajn0GIxKBlE=;
+        b=Ge5aL2LJYyL7SFUN4/8+uzVsGUyeqEYdDDb48hSvxnjfaSV82T+lIm94FU1RWi9k4TmkFi
+        Cs8tbhGOKi50b6b+XPumM34mHUbCBvRQ2i7U9Zg/fQuoHjG5K2Bb7Wurot1WjYUL9jGlRW
+        00bOvdsFE1cOQxZqw/DPYEXJd+bACuA=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-90-4RCBgrSEOb201IF0Hg4OFQ-1; Tue, 03 Aug 2021 11:30:44 -0400
+X-MC-Unique: 4RCBgrSEOb201IF0Hg4OFQ-1
+Received: by mail-ed1-f71.google.com with SMTP id de5-20020a0564023085b02903bb92fd182eso10724729edb.8
+        for <linux-acpi@vger.kernel.org>; Tue, 03 Aug 2021 08:30:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Ef5H/YzWjPRhpmEEex0YbOyxkXYC0ZJIajn0GIxKBlE=;
+        b=nlczV2lGcRpv09IE1XF38rRq2C7KPB0HqxfNfqQXdMcpZWfkcj2qk2nVaTTW00fc5V
+         22aK4B1S/42T0WXmWthBG4TvlMhpNokUYCBMVQ30afkfiySgUeNHgmTJVyfoDUlIaZ4e
+         /4IL5Ef4lui863BREHoJ4wUtQiOOeNNcP8wgdQdnND+p2gGCF3oS3Z7KNGzXKJqTkUXv
+         X9ihUj/boSCvohC446EWx9ofXIGzq2n9B5wwCoKeKkk9uqw/QM4xv6AKrTcO7TLSwgCL
+         G7XC1aTw3iotYAD/f6KONBOlaJGMkRVbM+8FAIau1kRaQI5c7T2KkJgZkhV2jdHE9sV0
+         Oscg==
+X-Gm-Message-State: AOAM532TZ8Gxg8JSI0I+qKcj9AIh7HM8PhrHmd10VqT+r236rGzWFZf1
+        m22UrrRxJKmnKX6vtdE5MB0Hfnvxj8V+tGzk67jFIs650HPl4dhMtDDGfXFcN+XbmZOcGQQgnHe
+        tcUINLN2lARIw1O7Kr02SAQ==
+X-Received: by 2002:a17:906:1da1:: with SMTP id u1mr20660498ejh.307.1628004643431;
+        Tue, 03 Aug 2021 08:30:43 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxf6rV1ZatT2GQ6a3+XcXIUCr6rut+vBVs6RfI7E2ACDBMkrHwlwXE3OZTZ7a4m4dn8RViNBQ==
+X-Received: by 2002:a17:906:1da1:: with SMTP id u1mr20660382ejh.307.1628004643075;
+        Tue, 03 Aug 2021 08:30:43 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id b17sm4094598edd.27.2021.08.03.08.30.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Aug 2021 08:30:42 -0700 (PDT)
+Subject: Re: [PATCH 00/38] Replace deprecated CPU-hotplug
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        linux-kernel@vger.kernel.org
+Cc:     tglx@linutronix.de, Peter Zijlstra <peterz@infradead.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Ben Segall <bsegall@google.com>,
+        Borislav Petkov <bp@alien8.de>, cgroups@vger.kernel.org,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        coresight@lists.linaro.org,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Daniel Jordan <daniel.m.jordan@oracle.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Gonglei <arei.gonglei@huawei.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jason Wang <jasowang@redhat.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Jiri Kosina <jikos@kernel.org>, Jiri Olsa <jolsa@redhat.com>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Julian Wiedmann <jwi@linux.ibm.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Karol Herbst <karolherbst@gmail.com>,
+        Karsten Graul <kgraul@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Len Brown <lenb@kernel.org>, Len Brown <len.brown@intel.com>,
+        Leo Yan <leo.yan@linaro.org>, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-edac@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-pm@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-raid@vger.kernel.org,
+        linux-s390@vger.kernel.org, live-patching@vger.kernel.org,
+        Mark Gross <mgross@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mel Gorman <mgorman@suse.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Mike Leach <mike.leach@linaro.org>,
+        Mike Travis <mike.travis@hpe.com>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Namhyung Kim <namhyung@kernel.org>, netdev@vger.kernel.org,
+        nouveau@lists.freedesktop.org,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+        Pekka Paalanen <ppaalanen@gmail.com>,
+        Petr Mladek <pmladek@suse.com>,
+        platform-driver-x86@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>, rcu@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, x86@kernel.org
+References: <20210803141621.780504-1-bigeasy@linutronix.de>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <83dc5dfd-1ed0-f428-826f-fb819911fc89@redhat.com>
+Date:   Tue, 3 Aug 2021 17:30:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.100.217] (89.64.81.181) by AM0PR02CA0154.eurprd02.prod.outlook.com (2603:10a6:20b:28d::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.18 via Frontend Transport; Tue, 3 Aug 2021 14:21:02 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ad2da176-7cc9-4c22-1a3b-08d95689ed4b
-X-MS-TrafficTypeDiagnostic: DM5PR11MB1977:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM5PR11MB19777089C7EE486CABD7C072CBF09@DM5PR11MB1977.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2733;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: JzF/UBZl0iPyrwIY0pULsjCSbKSAsQ2mVepth691ND0oCCZw4yf12AdXt0zdz+aUKc/k1v4fzlSAtvdolTWUroEGOfmKPqFK55hvyt5LnvLHuMHfRvJ4hVOKVyAxapJeZ37t/Upm/IEku16aQUSUq/wWn0etEis1wfyMZz9io6eOF2RJhQUa9mdKTwBhKNhdI3Z9IisVBJJWcIMvw/ULDWgpwaQijgQCXCaV/FgOpsek4xUwnH2pwj+WN39hklN9I4TfNdLv3RKdjUPZvO/2F2h5A52xh9dCL7yuUxxAnj5Ua2kA/usywrr+nw8gcQ3M2yAMJThxsFpRX6nRl9Z1VMOk1S3ArfAiSN/g8KHDtIJzUkbTG3ACplOoUgPYX11s1HuolU1G3uz24gWQx8dqAjJMknjFNGgEZNiocJRaQGH7J37/GE/V8yZlKSSyLC5v+nV9U8q/7P1FSY80GH8DusJHGphYAYf5seoSIdvNHHOt6FSxmsfm1yGfndXl4dl8VgVYD6XJwbIxF1jJ95Um1TiHdyu0z6hjzlz24pOHiLaujTZFBbf3MX/IJmM7Pb+LDZJAJxKTxI9QhJmhq9uaNEn96E7jA3pCQ2ckga601o6vX8wWvD/fWLwO5iTRUtB5VGSyw0a4Qde4Dw3ObtQQqyMWHSSbNpm2aNbdZ9sceBsX13jnsco5TR1ksK5WDkRNS6+chCl9Qmij5vgvB7aeGRsdY+Tap5pDBvsB67fricjWlFUq/e96LKHoncqIzcSPoVDEWeNzCYsqZ0uP/AYRnyESCR7J8zKYNP/Ge1TmOPvUnyJPwJeIP0t+K92iq6Gn
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5326.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(366004)(136003)(396003)(346002)(39860400002)(53546011)(5660300002)(66556008)(66476007)(186003)(6666004)(2906002)(31696002)(2616005)(86362001)(956004)(4326008)(8936002)(6486002)(36756003)(26005)(36916002)(8676002)(6636002)(478600001)(110136005)(38100700002)(83380400001)(66946007)(31686004)(316002)(54906003)(16576012)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OVRVSWJPWWFEdG0wbDl6VERHc01leVd5RVNXQmdkbjJhT0dDMi95OTlCa2Z4?=
- =?utf-8?B?TzVicmVnS0w0N3hKbElBQTM0Zkl2TXFCU3U4RFlTNGdEejB1VkNWU0V0VDFi?=
- =?utf-8?B?aGNVNEpDTlkwdzd4SDhhVTJxYnJiUmxTaEo1V1JCaGdoWE8yZnhvZExnT01J?=
- =?utf-8?B?bVpPYk8xZVhIa1lDSjNqN3lickc2NVNZU3BpQ3MzT1hWaVF5bmR2RTF0QW5B?=
- =?utf-8?B?c0tCRlYwRUFKaTk4VHJkVVFNckxjUGpNU1RpVzg5aFNJWkgxQm1BUEQ2UWxD?=
- =?utf-8?B?ZW0rYm1QWlhXeHJBUDZmWXAyMStCTUU2MlViUmFsT0RYVkRMR1p5NER3ODZR?=
- =?utf-8?B?WDdBVXBJaEFsVkVMLytpZGxaV2VUWFA0TFZmdUE4NTVJNWZHVm84VSs5NUZt?=
- =?utf-8?B?bmRvYzJOcVF1YWdPUHlYaVdSVDJad1FKTWtrZFkyYXRlQmN1dUdjV3V4OFVz?=
- =?utf-8?B?Rko2emxvanZjRDhoMTgrckxYendnKzFrYitiU25LeW54bzVOdngyYTgzZncv?=
- =?utf-8?B?UGM5M0JGWGZKaWZFZW1xRmJLWElaSkJuNEhKb0RTbE40OFRMc3FIMzBQZEFk?=
- =?utf-8?B?cHJ6NTVLOWMyU3MyQ2ttZm1PVGo5MUxIUW51ekpOcTRmREljb2FyYzN4c0Q0?=
- =?utf-8?B?TUV4TDV6RC9BWHREOXQ3V2prS0NkOTIvZGhVdzFTUWdmTzJuQWxWK3owbVVw?=
- =?utf-8?B?a3NGeUl1ajNyKzFZazgxZGJIcXFURk1EUkNDYmFLZGJISWduTzlmbk8xend5?=
- =?utf-8?B?Sm16OS90VmpoaytQS0U0Q2ZSZEo4N05RS2FnZmlZWVRPVjI1bDYxb3pLYlpL?=
- =?utf-8?B?WVZHMWdvYXh3NUMzRy9RSnpOTG1ubDV2QWN6c3dxYzJnSFNDb0M0RWZyc04r?=
- =?utf-8?B?N3cxOERNaTVvU25ibm5pVFl6d21tdzk2WEw4WnhkaWYySCsrNStQM0VKY1By?=
- =?utf-8?B?NWY0Y3RqdFgyUVVRTjRtTExLRjZCV3VEdFZtZEJyUGpkT01lSXJKUGNmTGlS?=
- =?utf-8?B?L0gvOXphaENhQ3hTOUNhNnFTekd5Uy9tMjJHQUcyeWgwWGNsTFA1Tjk1ei9y?=
- =?utf-8?B?V09wdlM0bDI5YTk3WVl6MVQycVhjdTE2aXhFaTUweTIxdW5ZMERZeDUrMGRL?=
- =?utf-8?B?K0Jhc2IzSVltUnZQTE1rTkpGSmFFTUFHdG9EbjR5eVhOOVdPZStJT2tKWjdu?=
- =?utf-8?B?STAvNGFHTGp3WFpxK1VobDdZVk5JR3RCVU8rb1loa3FnM3lybjJWTVdEeVQ4?=
- =?utf-8?B?b3ZYWVU4N3U2RS9tVGlFRFJQWlJveU9zM3JuN1NmQUNMeXJqa1FFUjZHU1My?=
- =?utf-8?B?TlJxTXU1eXFWcVlzWUNvYkd5QkxPOWpoY1kxNXR5bmZ5K3g1bkRFUXJwaUJJ?=
- =?utf-8?B?NGRGNlJLMW00eWgvN2dvcFFLcldFQXgweTZGdDdzcjA3SXlxb1B4R290bnVx?=
- =?utf-8?B?eGErdlM5cmRvRXVsa2VST2hiTU5mVFgwcUNEVzE2SGwzTmVtdERxRTI4cFJR?=
- =?utf-8?B?cE5pK2t1bmxhR0pZcU9wUERyMHU0N29tamkyb3lhdjBaVGJ0bHpaNjhIQWFN?=
- =?utf-8?B?TmE4VkdCY1FCTXhtOFpQRjMzaXErSW9yWDRaSlRTTldBdTlKUmkxSGhnVzlN?=
- =?utf-8?B?cjBJYi8vQU82R2tFUktJelEzWFcrMTRudlQwOHhVdXlPMjNIQjhFYUhwYTJa?=
- =?utf-8?B?YUhCV243TEk4WFZhaEZ4bk8rN0NSR3lDY2t3STMyMDdSRHpCTUZzWjhvajJv?=
- =?utf-8?Q?P698u1xx5TRUwgDXfVwXGiIUDanavKh/91pAl8S?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad2da176-7cc9-4c22-1a3b-08d95689ed4b
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5326.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2021 14:21:04.2849
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1REOPRGgZ9UNOovVfu4gtVX0icgTOxxtEcHxZTof1NLABB9lnQ4SeYqLfCmEtM0QwMX4kSBhnzqh5Jkk6WocKxKQ2qt3RlL7kLZ5RhTCwM4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR11MB1977
-X-OriginatorOrg: intel.com
+In-Reply-To: <20210803141621.780504-1-bigeasy@linutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 8/1/2021 8:05 AM, Greg KH wrote:
-> On Sat, Jul 31, 2021 at 05:27:39PM +0200, Adrien Precigout wrote:
->>> Hi,
->>>
->>> On my acer swift 3 (SF314-51), I can't boot on my device since 4.19.198
->>> (no issue with 4.19.197) without adding "acpi=off" in the parameters.
->>> Same thing happens on 5.12.19 (didn't happened in 5.12.16), 5.13.4 and
->>> .5 and 5.10.52.
->>>
->>> If acpi is not off issue is :
->>> -black screen after grub,
->>> -no errors, no activity (tested by leaving the pc 10 hours), no tty, no
->>> logs whatsoever in journalctl as if the kernel didn't start. Even adding
->>> 'debug' or 'initcall_debug' doesn't show anything.
->>>
->>> If I add acpi=off, the screen blinks one time and boots normally but
->>> after kernel 5.10 (5.12 and 5.13) I loose usage of keyboard and
->>> touchpad.
->>>
->>> Notes:
->>> - I'm using Manjaro KDE
->>> - I have tested with 4.19.198 Vanilla (config file attached) and same
->>> thing happened
->>> - setting nomodeset doesn't change anything
->>> - tried every acpi parameters, only =off worked
->>> - Bios was not updated, but the bug persisted after upgrading it
->>> - Acpi issue is recurrent with this pc it seems below 4.11
->>> (https://askubuntu.com/questions/929904/cant-pass-the-acpi-off-problem
->>> <https://askubuntu.com/questions/929904/cant-pass-the-acpi-off-problem>)
->>>
->>> Thank you for your help,
->>> Adrien
->>>
->> Hi again,
->>
->> I've done a bisect on the 4.19.y branch and I've found that it is the commit
->> 2bf1f848ca0af4e3d49624df49cbbd5511ec49a3 [ACPICA: Fix memory leak caused by
->> _CID repair function] that introduced the bug. By doing a git revert and
->> building the kernel I can boot normally but as long as this commit exist I
->> just get a black screen as explained above.
-> Thanks for helping to narrow this down.
->
-> Rafael and EriK, this is commit c27bac031413 ("ACPICA: Fix memory leak
-> caused by _CID repair function") in Linus's tree, that showed up in
-> 5.14-rc1.  Any chance you all can revert this, or provide a fix?
+Hi Sebastien,
 
-I'm thinking let's revert and revisit in the next cycle.
+On 8/3/21 4:15 PM, Sebastian Andrzej Siewior wrote:
+> This is a tree wide replacement of the deprecated CPU hotplug functions
+> which are only wrappers around the actual functions.
+> 
+> Each patch is independent and can be picked up by the relevant maintainer.
 
-I'll queue up a revert of this.
+Ok; and I take it that then also is the plan for merging these ?
 
-Cheers,
+FWIW I'm fine with the drivers/platform/x86 patch going upstream
+through some other tree if its easier to keep the set together ...
 
-Rafael
+Regards,
 
+Hans
+
+
+
+> 
+> Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+> Cc: Amit Kucheria <amitk@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Ben Segall <bsegall@google.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: cgroups@vger.kernel.org
+> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+> Cc: coresight@lists.linaro.org
+> Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
+> Cc: Daniel Jordan <daniel.m.jordan@oracle.com>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Davidlohr Bueso <dave@stgolabs.net>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> Cc: Gonglei <arei.gonglei@huawei.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Hans de Goede <hdegoede@redhat.com>
+> Cc: Heiko Carstens <hca@linux.ibm.com>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: Jiri Kosina <jikos@kernel.org>
+> Cc: Jiri Olsa <jolsa@redhat.com>
+> Cc: Joe Lawrence <joe.lawrence@redhat.com>
+> Cc: Joel Fernandes <joel@joelfernandes.org>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: John Stultz <john.stultz@linaro.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+> Cc: Josh Triplett <josh@joshtriplett.org>
+> Cc: Julian Wiedmann <jwi@linux.ibm.com>
+> Cc: Juri Lelli <juri.lelli@redhat.com>
+> Cc: Karol Herbst <karolherbst@gmail.com>
+> Cc: Karsten Graul <kgraul@linux.ibm.com>
+> Cc: kvm-ppc@vger.kernel.org
+> Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Len Brown <len.brown@intel.com>
+> Cc: Leo Yan <leo.yan@linaro.org>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-crypto@vger.kernel.org
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-edac@vger.kernel.org
+> Cc: linux-hwmon@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-pm@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-raid@vger.kernel.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: live-patching@vger.kernel.org
+> Cc: Mark Gross <mgross@linux.intel.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Mike Leach <mike.leach@linaro.org>
+> Cc: Mike Travis <mike.travis@hpe.com>
+> Cc: Miroslav Benes <mbenes@suse.cz>
+> Cc: Namhyung Kim <namhyung@kernel.org>
+> Cc: netdev@vger.kernel.org
+> Cc: nouveau@lists.freedesktop.org
+> Cc: "Paul E. McKenney" <paulmck@kernel.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: Pekka Paalanen <ppaalanen@gmail.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Petr Mladek <pmladek@suse.com>
+> Cc: platform-driver-x86@vger.kernel.org
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: rcu@vger.kernel.org
+> Cc: Robin Holt <robinmholt@gmail.com>
+> Cc: Song Liu <song@kernel.org>
+> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Cc: Steffen Klassert <steffen.klassert@secunet.com>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Steve Wahl <steve.wahl@hpe.com>
+> Cc: Stuart Hayes <stuart.w.hayes@gmail.com>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Cc: Tejun Heo <tj@kernel.org>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Vincent Guittot <vincent.guittot@linaro.org>
+> Cc: Viresh Kumar <viresh.kumar@linaro.org>
+> Cc: virtualization@lists.linux-foundation.org
+> Cc: x86@kernel.org
+> Cc: Zefan Li <lizefan.x@bytedance.com>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> 
+> Sebastian
+> 
 
