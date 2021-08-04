@@ -2,83 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E99DE3E05E6
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Aug 2021 18:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D172C3E0795
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Aug 2021 20:27:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235816AbhHDQ22 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 4 Aug 2021 12:28:28 -0400
-Received: from mail-ot1-f51.google.com ([209.85.210.51]:44782 "EHLO
-        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229725AbhHDQ22 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Aug 2021 12:28:28 -0400
-Received: by mail-ot1-f51.google.com with SMTP id o2-20020a9d22020000b0290462f0ab0800so2132092ota.11;
-        Wed, 04 Aug 2021 09:28:14 -0700 (PDT)
+        id S238951AbhHDS1j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Aug 2021 14:27:39 -0400
+Received: from mail-ot1-f49.google.com ([209.85.210.49]:38543 "EHLO
+        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240276AbhHDS1g (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Aug 2021 14:27:36 -0400
+Received: by mail-ot1-f49.google.com with SMTP id g5-20020a9d6b050000b02904f21e977c3eso2495511otp.5;
+        Wed, 04 Aug 2021 11:27:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=j3kzQ55GGFtb0Mnc40mJ/qjwvjBGrMWl/RUKJOzRSJ4=;
-        b=V/uWiOX4GvD84Kx08E41CAuH525XmKyBaEXVGwNFTcMB4zptUeeJLHWaof7DT7YxkM
-         eCROhGvYSMpugK/OctniIkKrtYWLvWAdbJnViofJjsQxODwLSTwn7YRIrhwW3CxK6ZbZ
-         5a6mE6Bgk4NOc1slWm9wOr4d5lFRIKjRLMmSYoxCxCHV+nvHAs42GVksPDdiB6T6ZTN/
-         j1PkuQ9St7nYwni/LY2CuzOmjqZObPIvM9Uytqn4En4H1AN1Y5EovG71DnI9ynwDDp+d
-         8gQELrh1AFaeJnKLe1O0tRbFzHhpZ//TVl4Au5Wrxl3HyqUOvAr8NuRUID0ChmCaNTtG
-         i5zw==
-X-Gm-Message-State: AOAM5301yYliCatiPHX1wVgwUyiW3jSZTav3G09I4n9MXmqe+Y7H7LAN
-        67RHwJ3KWFp10EJDo6bMccLrRHfzsdNbkk/OAMo=
-X-Google-Smtp-Source: ABdhPJz3wrMIcjsODR4s1X5t9UxcGX3nbsnfrHYhJrS5pP8rhRT2xB1xfqzyfplseVLyyccz/6Wp2X6PeyiM1uJwaTo=
-X-Received: by 2002:a9d:5c8b:: with SMTP id a11mr461995oti.206.1628094494364;
- Wed, 04 Aug 2021 09:28:14 -0700 (PDT)
+        bh=hazk2yjrmJfy94v5XypD2msNbyP8STncbqMZCCOqXpI=;
+        b=ZxEjZFnXnt6kIPH19Ts9Gq1CIf+kWrDLitaD5IyYVZN5m2d93fvKED4RhZf9gt6OP5
+         QD+tOUrm8IvY8FuYNJbm7oj3M3zGCHFsulYiACvBPIoZVgdR04mDKppT7OpMRLL17W7K
+         y44mD9mURzAlppCbV7ZlaZsip03ezIPR7jzInW+I8OKiIK3FicdWE/81Bb/nPdUhvz99
+         uQyzFnfRoBnqQaHeAFXMMzNvpjpofxQJ7tu+M7JdBoWzU9ILEOcuO6bGYgwDv9lRDXdg
+         pk6WP4rJspjDaTmARKzqMGaGvzFUeD3IQKJuubUbXcfd231SeRs9qNcaicPKAKyCbMa9
+         gg4w==
+X-Gm-Message-State: AOAM531/HZNr1WDn7mx+FXmGNqREgnquRidvXhi15ERz1/dNbyhs8HDJ
+        QiOLgK4dinHSTldwcSouEGmjkktUe2gP9rcv2vQ=
+X-Google-Smtp-Source: ABdhPJznCEmFBJnX99LUG3SXw0QcRfDJTxXpKxasjBLW5NYJV2bK6sDsabfdP+ReVSTxYj7+MdirIzLK+f9itPf0jOs=
+X-Received: by 2002:a9d:5c8b:: with SMTP id a11mr815179oti.206.1628101642829;
+ Wed, 04 Aug 2021 11:27:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210722193450.35321-1-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0h6OQDB2hijnfinwpwpo_483UkcjGi8jYX4J6VETqLBEA@mail.gmail.com>
- <CAJZ5v0iCmu+P=phePuNeWC4MgMJ08hMtJrKoCUAzjSSnxBzObw@mail.gmail.com> <162809409848.19113.15878488082512415331@swboyd.mtv.corp.google.com>
-In-Reply-To: <162809409848.19113.15878488082512415331@swboyd.mtv.corp.google.com>
+References: <20210803141621.780504-1-bigeasy@linutronix.de> <20210803141621.780504-30-bigeasy@linutronix.de>
+In-Reply-To: <20210803141621.780504-30-bigeasy@linutronix.de>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 4 Aug 2021 18:28:03 +0200
-Message-ID: <CAJZ5v0iu_6yxh1hgNT+C7efJX774fK0jaYYXkC2eMt24cd+Lhg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] clk: x86: Rename clk-lpt to more specific clk-lpss-atom
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
+Date:   Wed, 4 Aug 2021 20:27:11 +0200
+Message-ID: <CAJZ5v0giKO4y=LG9vWc2h+vHt0xr2EAyhQgd6u51vryihM4msw@mail.gmail.com>
+Subject: Re: [PATCH 29/38] ACPI: processor: Replace deprecated CPU-hotplug functions.
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 4, 2021 at 6:21 PM Stephen Boyd <sboyd@kernel.org> wrote:
+On Tue, Aug 3, 2021 at 4:17 PM Sebastian Andrzej Siewior
+<bigeasy@linutronix.de> wrote:
 >
-> Quoting Rafael J. Wysocki (2021-08-04 09:03:31)
-> > On Fri, Jul 23, 2021 at 3:40 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > >
-> > > On Thu, Jul 22, 2021 at 9:34 PM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > >
-> > > > The LPT stands for Lynxpoint PCH. However the driver is used on a few
-> > > > Intel Atom SoCs. Rename it to reflect this in a way how another clock
-> > > > driver, i.e. clk-pmc-atom, is called.
-> > > >
-> > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > > ---
-> > > >
-> > > > Good to go either via ACPI or CCF tree.
-> > >
-> > > In case you want the latter:
-> > >
-> > > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Assuming that this hasn't been picked up, I'm going to apply it as
-> > 5.15 material.
-> >
+> The functions cpu_hotplug_begin, cpu_hotplug_done, get_online_cpus() and
+> put_online_cpus() have been deprecated during the CPU hotplug rework. They map
+> directly to cpus_write_lock(), cpus_write_unlock, cpus_read_lock() and
+> cpus_read_unlock().
 >
-> I applied it already to clk tree. Maybe I forgot to send the email,
-> sorry.
+> Replace deprecated CPU-hotplug functions with the official version.
+> The behavior remains unchanged.
+>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> ---
+>  drivers/acpi/acpi_pad.c       | 4 ++--
+>  drivers/acpi/acpi_processor.c | 8 ++++----
+>  drivers/acpi/processor_idle.c | 4 ++--
+>  3 files changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
+> index df4adeb335b24..f45979aa2d648 100644
+> --- a/drivers/acpi/acpi_pad.c
+> +++ b/drivers/acpi/acpi_pad.c
+> @@ -249,12 +249,12 @@ static void set_power_saving_task_num(unsigned int num)
+>
+>  static void acpi_pad_idle_cpus(unsigned int num_cpus)
+>  {
+> -       get_online_cpus();
+> +       cpus_read_lock();
+>
+>         num_cpus = min_t(unsigned int, num_cpus, num_online_cpus());
+>         set_power_saving_task_num(num_cpus);
+>
+> -       put_online_cpus();
+> +       cpus_read_unlock();
+>  }
+>
+>  static uint32_t acpi_pad_idle_cpus_num(void)
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> index 2d5bd2a6ddcef..6737b1cbf6d69 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -182,7 +182,7 @@ static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+>                 return -ENODEV;
+>
+>         cpu_maps_update_begin();
+> -       cpu_hotplug_begin();
+> +       cpus_write_lock();
+>
+>         ret = acpi_map_cpu(pr->handle, pr->phys_id, pr->acpi_id, &pr->id);
+>         if (ret)
+> @@ -203,7 +203,7 @@ static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+>         pr->flags.need_hotplug_init = 1;
+>
+>  out:
+> -       cpu_hotplug_done();
+> +       cpus_write_unlock();
+>         cpu_maps_update_done();
+>         return ret;
+>  }
+> @@ -454,13 +454,13 @@ static void acpi_processor_remove(struct acpi_device *device)
+>         per_cpu(processors, pr->id) = NULL;
+>
+>         cpu_maps_update_begin();
+> -       cpu_hotplug_begin();
+> +       cpus_write_lock();
+>
+>         /* Remove the CPU. */
+>         arch_unregister_cpu(pr->id);
+>         acpi_unmap_cpu(pr->id);
+>
+> -       cpu_hotplug_done();
+> +       cpus_write_unlock();
+>         cpu_maps_update_done();
+>
+>         try_offline_node(cpu_to_node(pr->id));
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index 095c8aca141eb..f37fba9e5ba0b 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -1301,7 +1301,7 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
+>         if (pr->id == 0 && cpuidle_get_driver() == &acpi_idle_driver) {
+>
+>                 /* Protect against cpu-hotplug */
+> -               get_online_cpus();
+> +               cpus_read_lock();
+>                 cpuidle_pause_and_lock();
+>
+>                 /* Disable all cpuidle devices */
+> @@ -1330,7 +1330,7 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
+>                         }
+>                 }
+>                 cpuidle_resume_and_unlock();
+> -               put_online_cpus();
+> +               cpus_read_unlock();
+>         }
+>
+>         return 0;
+> --
 
-No prob, dropping it now.
+Applied as 5.15 material, thanks!
