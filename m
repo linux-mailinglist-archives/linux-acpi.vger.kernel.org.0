@@ -2,169 +2,192 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB8053E0534
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Aug 2021 18:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A7CC3E058A
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Aug 2021 18:12:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232604AbhHDQEC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 4 Aug 2021 12:04:02 -0400
-Received: from mail-oi1-f174.google.com ([209.85.167.174]:38588 "EHLO
-        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232163AbhHDQD4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Aug 2021 12:03:56 -0400
-Received: by mail-oi1-f174.google.com with SMTP id u25so3407395oiv.5;
-        Wed, 04 Aug 2021 09:03:43 -0700 (PDT)
+        id S234505AbhHDQNA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Aug 2021 12:13:00 -0400
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:41595 "EHLO
+        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236856AbhHDQLB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 4 Aug 2021 12:11:01 -0400
+Received: by mail-ot1-f52.google.com with SMTP id c2-20020a0568303482b029048bcf4c6bd9so2091482otu.8;
+        Wed, 04 Aug 2021 09:10:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=tKSdWR6LuP7/2+zwPkH2rMp+y8qOWa7f1FszBegCdng=;
-        b=Pnr3VZ/Zzim2ilv4g2t5ExrJQvxpVtJA+gUVhl4SmHrY5nv8V9CAUPrBfUfrGtBwuC
-         2wRa3FYGQyHJZwAnqlbS7I53AGVX++qyg3a3lN4zw3Gvh5UaRnZ+l5QT5GjHqAS36RLv
-         qWVcbuxgEeGsu5nz6VEe2098tYYumHDGCC4GMY8A039sASw6VQqhgATemA1QjO7piB0k
-         fJkP6IqPZyroJVWEKk8QRV7MmUuCZcV3vZFPqPiyq7qQuzHIp9yq7Re4hxdbXaRaXJc7
-         kZuDq0IPF1j0du6x1Vbh40bOyGxUkiQ9A1DuJ9F+bOvdDPuEg4sm0V+2caj25Rk6O7Ix
-         It+w==
-X-Gm-Message-State: AOAM531L5RbLaiE3ntJqU4tjJEu7lF7Tl5ENiAJSS2Zn0S9f01ThCRqp
-        z6uR4K7O7Uz1LYGrsASe2hVDZxJRWLw2O4ID/EM=
-X-Google-Smtp-Source: ABdhPJwb+AFSuQFd9Qt4IaQNDfDv9oeVcM8t2rpq2EZ4QBkdI/asefkWq9s+RrEs9nAXHu5UoYJMOy8tNNLKUXyy6Qo=
-X-Received: by 2002:a05:6808:198c:: with SMTP id bj12mr136049oib.71.1628093023170;
- Wed, 04 Aug 2021 09:03:43 -0700 (PDT)
+        bh=T7AhsKkNeKlxrKLwf2lu2/fTBaaXeyW71BjLC2HOaC0=;
+        b=alAtC4M+Z52chE45rzgGlO/bcoAKwybF12SsbvKCMEQ3RMZBESP1VYLgiS2IAwvfIc
+         DvxizqfgEq+5+onlmsHfycwJfRyUAgOXFnF/V/Qi43PfLJHCt53xx0wM7rv/uA/aWUXC
+         jvqhfK3pnzvKcP+sYxHwH0MnEtUL8M+heu+W8tc6fiY3N3roaDuIDy/WOD65nXcvkcA2
+         3eBvIvc7MWkL2SxMwHXp5fwRtuMX5VwL8kpM6eH245wOots9wbOye8EI+yY0zYJwyTqK
+         Zf/kNfQbDLTSe0RFZWxcWH/DkpWGwMsm2mXFExFctf6cyz03uyeC3uYGQSGdqnGy1ber
+         28lA==
+X-Gm-Message-State: AOAM533CmDhdD+LvUY5YI6LGfUL5eR9C7/rmn+jOtgcjEPV08RbyjG2i
+        +DhjecJcAy5Icnzx4xc5yiiaNv2c1aSc8DPHTho=
+X-Google-Smtp-Source: ABdhPJzDztXuMiJLwFF+T1k/SeyM/HS9BfZy3kmkWHSLJgoCZpcTxciDIGVe3smRjud0UOpDf1J30ojxeA2yxG1G+Ww=
+X-Received: by 2002:a05:6830:9a:: with SMTP id a26mr373353oto.260.1628093447493;
+ Wed, 04 Aug 2021 09:10:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210722193450.35321-1-andriy.shevchenko@linux.intel.com> <CAJZ5v0h6OQDB2hijnfinwpwpo_483UkcjGi8jYX4J6VETqLBEA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0h6OQDB2hijnfinwpwpo_483UkcjGi8jYX4J6VETqLBEA@mail.gmail.com>
+References: <20210727162240.425773-1-srinivas.pandruvada@linux.intel.com>
+In-Reply-To: <20210727162240.425773-1-srinivas.pandruvada@linux.intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 4 Aug 2021 18:03:31 +0200
-Message-ID: <CAJZ5v0iCmu+P=phePuNeWC4MgMJ08hMtJrKoCUAzjSSnxBzObw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] clk: x86: Rename clk-lpt to more specific clk-lpss-atom
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+Date:   Wed, 4 Aug 2021 18:10:36 +0200
+Message-ID: <CAJZ5v0gPwEdJt1xjePg97eAxYpb8j5yTGUBNvQyJcHoqHK-MpA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: DPTF: Add new PCH FIVR methods
+To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jul 23, 2021 at 3:40 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Tue, Jul 27, 2021 at 6:22 PM Srinivas Pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
 >
-> On Thu, Jul 22, 2021 at 9:34 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > The LPT stands for Lynxpoint PCH. However the driver is used on a few
-> > Intel Atom SoCs. Rename it to reflect this in a way how another clock
-> > driver, i.e. clk-pmc-atom, is called.
-> >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > ---
-> >
-> > Good to go either via ACPI or CCF tree.
+> Some additional information is required for updating PCH FIVR values
+> upon WiFi channel changes.
 >
-> In case you want the latter:
+> New attributes added to the existing sysfs:
+> fivr_switching_freq_mhz : Get the FIVR switching control frequency.
+>                           Uses ACPI method GFCS
+> fivr_switching_fault_status: Read the FIVR switching frequency control
+>                         fault status. Uses ACPI method GFFS
 >
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ssc_clock_info : Presents SSC (spread spectrum clock) information for EMI
+> (Electro magnetic interference) control. Use ACPI method GEMI. Refer
+> to the description of GEMI method below.
+>
+> GFFS
+> This ACPI method is used to read the FIVR switching frequency control
+> fault status.
+> Bits    Description
+> [0:0]   Fault status when set to 1
+> [31:1]  Reserved
+>
+> GFCS
+> This ACPI method is used to read the FIVR switching control
+> frequency.
+> Bits    Description
+> [11:0]  Actual Frequency = value * XTAL_FREQ / 128
+> [31:12] Reserved
+>
+> GEMI
+> This ACPI method is used to read the programmed register value for EMI
+> (Electro magnetic interference) control.
+>
+> Bits    Description
+> [7:0]   Sets clock spectrum spread percentage:
+>         0x00=0.2% , 0x3F=10%
+>         1 LSB = 0.1% increase in spread (for
+>         settings 0x01 thru 0x1C)
+>         1 LSB = 0.2% increase in spread (for
+>         settings 0x1E thru 0x3F)
+> [8]     When set to 1, enables spread
+>         spectrum clock
+> [9]     0: Triangle mode. FFC frequency
+>         walks around the Fcenter in a linear
+>         fashion
+>         1: Random walk mode. FFC frequency
+>         changes randomly within the SSC
+>         (Spread spectrum clock) range
+> [10]    0: No white noise. 1: Add white noise
+>         to spread waveform
+> [11]    When 1, future writes are ignored.
+>
+> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> ---
+> This commit was merged to 5.14 next tree, but later reverted. The
+> problem was not in this commit but reading attributes in general. This
+> is fixed by prior patch "ACPI: DPTF: Fix reading of attributes"
 
-Assuming that this hasn't been picked up, I'm going to apply it as
-5.15 material.
+Now applied as 5.15 material, thanks!
 
-Thanks!
-
-> >  drivers/acpi/acpi_lpss.c                       |  6 ++++--
-> >  drivers/clk/x86/Makefile                       |  2 +-
-> >  drivers/clk/x86/{clk-lpt.c => clk-lpss-atom.c} | 12 ++++++------
-> >  include/linux/platform_data/x86/clk-lpss.h     |  2 +-
-> >  4 files changed, 12 insertions(+), 10 deletions(-)
-> >  rename drivers/clk/x86/{clk-lpt.c => clk-lpss-atom.c} (76%)
-> >
-> > diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-> > index 894b7e6ae144..7f163074e4e4 100644
-> > --- a/drivers/acpi/acpi_lpss.c
-> > +++ b/drivers/acpi/acpi_lpss.c
-> > @@ -385,7 +385,9 @@ static struct platform_device *lpss_clk_dev;
-> >
-> >  static inline void lpt_register_clock_device(void)
-> >  {
-> > -       lpss_clk_dev = platform_device_register_simple("clk-lpt", -1, NULL, 0);
-> > +       lpss_clk_dev = platform_device_register_simple("clk-lpss-atom",
-> > +                                                      PLATFORM_DEVID_NONE,
-> > +                                                      NULL, 0);
-> >  }
-> >
-> >  static int register_device_clock(struct acpi_device *adev,
-> > @@ -1337,7 +1339,7 @@ void __init acpi_lpss_init(void)
-> >         const struct x86_cpu_id *id;
-> >         int ret;
-> >
-> > -       ret = lpt_clk_init();
-> > +       ret = lpss_atom_clk_init();
-> >         if (ret)
-> >                 return;
-> >
-> > diff --git a/drivers/clk/x86/Makefile b/drivers/clk/x86/Makefile
-> > index 18564efdc651..1244c4e568ff 100644
-> > --- a/drivers/clk/x86/Makefile
-> > +++ b/drivers/clk/x86/Makefile
-> > @@ -1,6 +1,6 @@
-> >  # SPDX-License-Identifier: GPL-2.0-only
-> >  obj-$(CONFIG_PMC_ATOM)         += clk-pmc-atom.o
-> >  obj-$(CONFIG_X86_AMD_PLATFORM_DEVICE)  += clk-fch.o
-> > -clk-x86-lpss-objs              := clk-lpt.o
-> > +clk-x86-lpss-y                 := clk-lpss-atom.o
-> >  obj-$(CONFIG_X86_INTEL_LPSS)   += clk-x86-lpss.o
-> >  obj-$(CONFIG_CLK_LGM_CGU)      += clk-cgu.o clk-cgu-pll.o clk-lgm.o
-> > diff --git a/drivers/clk/x86/clk-lpt.c b/drivers/clk/x86/clk-lpss-atom.c
-> > similarity index 76%
-> > rename from drivers/clk/x86/clk-lpt.c
-> > rename to drivers/clk/x86/clk-lpss-atom.c
-> > index fbe9fd3ed948..aa9d0bb98f8b 100644
-> > --- a/drivers/clk/x86/clk-lpt.c
-> > +++ b/drivers/clk/x86/clk-lpss-atom.c
-> > @@ -13,7 +13,7 @@
-> >  #include <linux/platform_data/x86/clk-lpss.h>
-> >  #include <linux/platform_device.h>
-> >
-> > -static int lpt_clk_probe(struct platform_device *pdev)
-> > +static int lpss_atom_clk_probe(struct platform_device *pdev)
-> >  {
-> >         struct lpss_clk_data *drvdata;
-> >         struct clk *clk;
-> > @@ -34,14 +34,14 @@ static int lpt_clk_probe(struct platform_device *pdev)
-> >         return 0;
-> >  }
-> >
-> > -static struct platform_driver lpt_clk_driver = {
-> > +static struct platform_driver lpss_atom_clk_driver = {
-> >         .driver = {
-> > -               .name = "clk-lpt",
-> > +               .name = "clk-lpss-atom",
-> >         },
-> > -       .probe = lpt_clk_probe,
-> > +       .probe = lpss_atom_clk_probe,
-> >  };
-> >
-> > -int __init lpt_clk_init(void)
-> > +int __init lpss_atom_clk_init(void)
-> >  {
-> > -       return platform_driver_register(&lpt_clk_driver);
-> > +       return platform_driver_register(&lpss_atom_clk_driver);
-> >  }
-> > diff --git a/include/linux/platform_data/x86/clk-lpss.h b/include/linux/platform_data/x86/clk-lpss.h
-> > index 207e1a317800..41df326583f9 100644
-> > --- a/include/linux/platform_data/x86/clk-lpss.h
-> > +++ b/include/linux/platform_data/x86/clk-lpss.h
-> > @@ -15,6 +15,6 @@ struct lpss_clk_data {
-> >         struct clk *clk;
-> >  };
-> >
-> > -extern int lpt_clk_init(void);
-> > +extern int lpss_atom_clk_init(void);
-> >
-> >  #endif /* __CLK_LPSS_H */
-> > --
-> > 2.30.2
-> >
+>  Documentation/ABI/testing/sysfs-platform-dptf | 40 +++++++++++++++++++
+>  drivers/acpi/dptf/dptf_pch_fivr.c             |  9 +++++
+>  2 files changed, 49 insertions(+)
+>
+> diff --git a/Documentation/ABI/testing/sysfs-platform-dptf b/Documentation/ABI/testing/sysfs-platform-dptf
+> index 141834342a4d..53c6b1000320 100644
+> --- a/Documentation/ABI/testing/sysfs-platform-dptf
+> +++ b/Documentation/ABI/testing/sysfs-platform-dptf
+> @@ -111,3 +111,43 @@ Contact:   linux-acpi@vger.kernel.org
+>  Description:
+>                 (RW) The PCH FIVR (Fully Integrated Voltage Regulator) switching frequency in MHz,
+>                 when FIVR clock is 38.4MHz.
+> +
+> +What:          /sys/bus/platform/devices/INTC1045:00/pch_fivr_switch_frequency/fivr_switching_freq_mhz
+> +Date:          September, 2021
+> +KernelVersion: v5.15
+> +Contact:       linux-acpi@vger.kernel.org
+> +Description:
+> +               (RO) Get the FIVR switching control frequency in MHz.
+> +
+> +What:          /sys/bus/platform/devices/INTC1045:00/pch_fivr_switch_frequency/fivr_switching_fault_status
+> +Date:          September, 2021
+> +KernelVersion: v5.15
+> +Contact:       linux-acpi@vger.kernel.org
+> +Description:
+> +               (RO) Read the FIVR switching frequency control fault status.
+> +
+> +What:          /sys/bus/platform/devices/INTC1045:00/pch_fivr_switch_frequency/ssc_clock_info
+> +Date:          September, 2021
+> +KernelVersion: v5.15
+> +Contact:       linux-acpi@vger.kernel.org
+> +Description:
+> +               (RO) Presents SSC (spread spectrum clock) information for EMI
+> +               (Electro magnetic interference) control. This is a bit mask.
+> +               Bits    Description
+> +               [7:0]   Sets clock spectrum spread percentage:
+> +                       0x00=0.2% , 0x3F=10%
+> +                       1 LSB = 0.1% increase in spread (for
+> +                       settings 0x01 thru 0x1C)
+> +                       1 LSB = 0.2% increase in spread (for
+> +                       settings 0x1E thru 0x3F)
+> +               [8]     When set to 1, enables spread
+> +                       spectrum clock
+> +               [9]     0: Triangle mode. FFC frequency
+> +                       walks around the Fcenter in a linear
+> +                       fashion
+> +                       1: Random walk mode. FFC frequency
+> +                       changes randomly within the SSC
+> +                       (Spread spectrum clock) range
+> +               [10]    0: No white noise. 1: Add white noise
+> +                       to spread waveform
+> +               [11]    When 1, future writes are ignored.
+> diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
+> index 550b9081fcbc..f4e9c2ef2f88 100644
+> --- a/drivers/acpi/dptf/dptf_pch_fivr.c
+> +++ b/drivers/acpi/dptf/dptf_pch_fivr.c
+> @@ -90,15 +90,24 @@ static ssize_t name##_store(struct device *dev,\
+>
+>  PCH_FIVR_SHOW(freq_mhz_low_clock, GFC0)
+>  PCH_FIVR_SHOW(freq_mhz_high_clock, GFC1)
+> +PCH_FIVR_SHOW(ssc_clock_info, GEMI)
+> +PCH_FIVR_SHOW(fivr_switching_freq_mhz, GFCS)
+> +PCH_FIVR_SHOW(fivr_switching_fault_status, GFFS)
+>  PCH_FIVR_STORE(freq_mhz_low_clock, RFC0)
+>  PCH_FIVR_STORE(freq_mhz_high_clock, RFC1)
+>
+>  static DEVICE_ATTR_RW(freq_mhz_low_clock);
+>  static DEVICE_ATTR_RW(freq_mhz_high_clock);
+> +static DEVICE_ATTR_RO(ssc_clock_info);
+> +static DEVICE_ATTR_RO(fivr_switching_freq_mhz);
+> +static DEVICE_ATTR_RO(fivr_switching_fault_status);
+>
+>  static struct attribute *fivr_attrs[] = {
+>         &dev_attr_freq_mhz_low_clock.attr,
+>         &dev_attr_freq_mhz_high_clock.attr,
+> +       &dev_attr_ssc_clock_info.attr,
+> +       &dev_attr_fivr_switching_freq_mhz.attr,
+> +       &dev_attr_fivr_switching_fault_status.attr,
+>         NULL
+>  };
+>
+> --
+> 2.31.1
+>
