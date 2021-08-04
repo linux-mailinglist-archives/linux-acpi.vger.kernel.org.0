@@ -2,158 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77FE33DF51F
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Aug 2021 21:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DE033DFB3D
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Aug 2021 07:49:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239394AbhHCTIa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 3 Aug 2021 15:08:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56410 "EHLO mail.kernel.org"
+        id S235264AbhHDFt0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 4 Aug 2021 01:49:26 -0400
+Received: from mga02.intel.com ([134.134.136.20]:30063 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239389AbhHCTIa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 3 Aug 2021 15:08:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6758760F9C;
-        Tue,  3 Aug 2021 19:07:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628017697;
-        bh=+C3jjxLGYKPgJknmmGMOt0xrAE6Lm0yMyg9+fV845Dg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=C8zqBiAF+/8ByrtHscexhIqNJ3ZB6Q9VGNwYaOueNcmaK2iVDBJ7DZpIMyN51lRoa
-         /kdDa3fYvlvArsXTmjlHyuNAjtVH4DKC+Oco312NYeUL1Iz1dYwnmfI9MKYYGOFCf+
-         6fdAPndFlrgVFxJGXwp5I9zXWrfeCx6KfEOihedyO/RE0YoZvI8vFnE09Za7bZxbJQ
-         5kuCtIORrLGHG2vE4xsI58xJjXeJjCvuKtQyzTekCAL178KuTOc97FuEFAKt8SRvlM
-         1riAzWuQamXvHnghUF59KN2iD1n7MWJtZ/mPAM7jy2uMfj8GIHqqrCJ5AFZQQeHXLj
-         gDIpHLkooESXg==
-Date:   Tue, 3 Aug 2021 22:07:37 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>,
-        Len Brown <lenb@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Will Deacon <will@kernel.org>, devicetree@vger.kernel.org,
-        kvmarm@lists.cs.columbia.edu, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mm@kvack.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH v3] memblock: make memblock_find_in_range method private
-Message-ID: <YQmT+Z9QhcwI43GK@kernel.org>
-References: <20210803064218.6611-1-rppt@kernel.org>
- <20210803180526.GD5786@arm.com>
+        id S232887AbhHDFtZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 4 Aug 2021 01:49:25 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10065"; a="201021367"
+X-IronPort-AV: E=Sophos;i="5.84,293,1620716400"; 
+   d="scan'208";a="201021367"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2021 22:49:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,293,1620716400"; 
+   d="scan'208";a="670790234"
+Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 03 Aug 2021 22:49:11 -0700
+Received: from kbuild by d053b881505b with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mB9mA-000Ece-U9; Wed, 04 Aug 2021 05:49:10 +0000
+Date:   Wed, 04 Aug 2021 13:49:00 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 1c016eb02e4517ee1a985e4db117f2a6764d0f01
+Message-ID: <610a2a4c.6Cl0wJs0lSxruNZS%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210803180526.GD5786@arm.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 03, 2021 at 07:05:26PM +0100, Catalin Marinas wrote:
-> On Tue, Aug 03, 2021 at 09:42:18AM +0300, Mike Rapoport wrote:
-> > diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> > index 8490ed2917ff..0bffd2d1854f 100644
-> > --- a/arch/arm64/mm/init.c
-> > +++ b/arch/arm64/mm/init.c
-> > @@ -74,6 +74,7 @@ phys_addr_t arm64_dma_phys_limit __ro_after_init;
-> >  static void __init reserve_crashkernel(void)
-> >  {
-> >  	unsigned long long crash_base, crash_size;
-> > +	unsigned long long crash_max = arm64_dma_phys_limit;
-> >  	int ret;
-> >  
-> >  	ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
-> > @@ -84,33 +85,18 @@ static void __init reserve_crashkernel(void)
-> >  
-> >  	crash_size = PAGE_ALIGN(crash_size);
-> >  
-> > -	if (crash_base == 0) {
-> > -		/* Current arm64 boot protocol requires 2MB alignment */
-> > -		crash_base = memblock_find_in_range(0, arm64_dma_phys_limit,
-> > -				crash_size, SZ_2M);
-> > -		if (crash_base == 0) {
-> > -			pr_warn("cannot allocate crashkernel (size:0x%llx)\n",
-> > -				crash_size);
-> > -			return;
-> > -		}
-> > -	} else {
-> > -		/* User specifies base address explicitly. */
-> > -		if (!memblock_is_region_memory(crash_base, crash_size)) {
-> > -			pr_warn("cannot reserve crashkernel: region is not memory\n");
-> > -			return;
-> > -		}
-> > +	/* User specifies base address explicitly. */
-> > +	if (crash_base)
-> > +		crash_max = crash_base + crash_size;
-> >  
-> > -		if (memblock_is_region_reserved(crash_base, crash_size)) {
-> > -			pr_warn("cannot reserve crashkernel: region overlaps reserved memory\n");
-> > -			return;
-> > -		}
-> > -
-> > -		if (!IS_ALIGNED(crash_base, SZ_2M)) {
-> > -			pr_warn("cannot reserve crashkernel: base address is not 2MB aligned\n");
-> > -			return;
-> > -		}
-> > +	/* Current arm64 boot protocol requires 2MB alignment */
-> > +	crash_base = memblock_phys_alloc_range(crash_size, SZ_2M,
-> > +					       crash_base, crash_max);
-> > +	if (!crash_base) {
-> > +		pr_warn("cannot allocate crashkernel (size:0x%llx)\n",
-> > +			crash_size);
-> > +		return;
-> >  	}
-> > -	memblock_reserve(crash_base, crash_size);
-> 
-> We'll miss a bit on debug information provided to the user in case of a
-> wrong crash_base/size option on the command line. Not sure we care much,
-> though the alignment would probably be useful (maybe we document it
-> somewhere).
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 1c016eb02e4517ee1a985e4db117f2a6764d0f01  Merge branch 'acpica' into bleeding-edge
 
-It is already documented:
+elapsed time: 808m
 
-Documentation/admin-guide/kdump/kdump.rst:
-   On arm64, use "crashkernel=Y[@X]".  Note that the start address of
-   the kernel, X if explicitly specified, must be aligned to 2MiB (0x200000).
- 
-> What I haven't checked is whether memblock_phys_alloc_range() aims to
-> get a 2MB aligned end (size) as well. If crash_size is not 2MB aligned,
-> crash_max wouldn't be either and the above could fail. We only care
-> about the crash_base to be aligned but the memblock_phys_alloc_range()
-> doc says that both the start and size would be aligned to this.
+configs tested: 87
+configs skipped: 3
 
-The doc lies :)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-memblock_phys_alloc_range() boils down to 
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                     tqm5200_defconfig
+powerpc                 mpc832x_mds_defconfig
+mips                        qi_lb60_defconfig
+arm                           u8500_defconfig
+arm                     am200epdkit_defconfig
+mips                        nlm_xlr_defconfig
+ia64                        generic_defconfig
+powerpc                      acadia_defconfig
+arm                        multi_v5_defconfig
+arm                            mps2_defconfig
+arc                          axs103_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+x86_64                            allnoconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20210803
+i386                 randconfig-a005-20210803
+i386                 randconfig-a002-20210803
+i386                 randconfig-a006-20210803
+i386                 randconfig-a001-20210803
+i386                 randconfig-a003-20210803
+i386                 randconfig-a012-20210803
+i386                 randconfig-a011-20210803
+i386                 randconfig-a015-20210803
+i386                 randconfig-a013-20210803
+i386                 randconfig-a014-20210803
+i386                 randconfig-a016-20210803
+x86_64               randconfig-a002-20210803
+x86_64               randconfig-a004-20210803
+x86_64               randconfig-a006-20210803
+x86_64               randconfig-a003-20210803
+x86_64               randconfig-a001-20210803
+x86_64               randconfig-a005-20210803
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-	for_each_free_mem_range_reverse(i, nid, flags, &this_start, &this_end,
-					NULL) {
+clang tested configs:
+x86_64               randconfig-a012-20210803
+x86_64               randconfig-a016-20210803
+x86_64               randconfig-a013-20210803
+x86_64               randconfig-a011-20210803
+x86_64               randconfig-a014-20210803
+x86_64               randconfig-a015-20210803
 
-		/* clamp this_{start,end} to the user defined limits */
-
-		cand = round_down(this_end - size, align);
-		if (cand >= this_start)
-			return cand;
-	}
-
--- 
-Sincerely yours,
-Mike.
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
