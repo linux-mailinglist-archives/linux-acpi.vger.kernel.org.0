@@ -2,32 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 090EC3E15C4
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Aug 2021 15:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E703E1684
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Aug 2021 16:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232805AbhHENfc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Aug 2021 09:35:32 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:12457 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232900AbhHENfb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Aug 2021 09:35:31 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GgTzD1P7LzckCR;
-        Thu,  5 Aug 2021 21:31:36 +0800 (CST)
-Received: from dggpemm100003.china.huawei.com (7.185.36.68) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 5 Aug 2021 21:35:10 +0800
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggpemm100003.china.huawei.com (7.185.36.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 5 Aug 2021 21:35:08 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2176.012; Thu, 5 Aug 2021 14:35:06 +0100
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-CC:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        id S241428AbhHEOJ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Aug 2021 10:09:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60454 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239962AbhHEOJ1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Aug 2021 10:09:27 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F0DF160E53
+        for <linux-acpi@vger.kernel.org>; Thu,  5 Aug 2021 14:09:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628172553;
+        bh=X0ZBKP2BynT6mUkVamflegnrwl7zM/qOLlWxMOgStJ8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=qjFnaEAs8MTD53IG1QNkymTsDTZMIfutANeDj4N4kqV6clEFBb099kbvCDcdEJn3F
+         dd/2023D487b2qDAy57LvfWcYMjJsK70Pkc+pdSaL5V5N+cWxsaqf/qfRMAwMUMPcK
+         bXKxBNWlQqs9LBMfWOGQ00pusPDFXDkMcaJnb8rIpJMNG9b3tna+Cs8tiSYxpt9y08
+         ITlcxwguelYjk6CPUhWN1HWWkMkyw6ZXu4qs1SlBTnkX81ScjMCEF6UVaYYdrr6RVi
+         EaCs+fZsoYPkxcPZIW2hyjp4h8l0Ngks77yQKFryGDnte7Z4mUv1IhjTZEvCRhWQqJ
+         TXwJvpmEF0mgw==
+Received: by mail-oi1-f178.google.com with SMTP id u25so7500172oiv.5
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Aug 2021 07:09:12 -0700 (PDT)
+X-Gm-Message-State: AOAM5331XTZMnoTfPhaxz962OY+aEQSVr/L+Tv9lsfmf9HKPlfnva/3a
+        oHVLRfhwQmZAyl2JebymcDnZVeeDq9Iy3T0qCn4=
+X-Google-Smtp-Source: ABdhPJyHVKR7zzGcPQV2xm5EVEtZyYFzaNP/C6TfKB70DcfcnYGbNIe+jy356hymU7h1io7dkA7w6OMFA0NN5+2eDJk=
+X-Received: by 2002:aca:39c6:: with SMTP id g189mr5556956oia.47.1628172552322;
+ Thu, 05 Aug 2021 07:09:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
+ <CAMj1kXHNjeDb2HuPeV_6Er4oALVKFz+g=gQ_0rf+JW22NxqqTA@mail.gmail.com> <8df7fc81b00142b68126efd3c700a579@huawei.com>
+In-Reply-To: <8df7fc81b00142b68126efd3c700a579@huawei.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 5 Aug 2021 16:09:00 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHTdDWz14B5Smzfmj5NQqCTTsgFjam6EevvOwFKLsmJzw@mail.gmail.com>
+Message-ID: <CAMj1kXHTdDWz14B5Smzfmj5NQqCTTsgFjam6EevvOwFKLsmJzw@mail.gmail.com>
+Subject: Re: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
+To:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux IOMMU <iommu@lists.linux-foundation.org>,
         Linuxarm <linuxarm@huawei.com>,
@@ -42,128 +55,155 @@ CC:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Jon Nettleton <jon@solid-run.com>,
         Eric Auger <eric.auger@redhat.com>,
         yangyicong <yangyicong@huawei.com>
-Subject: RE: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Topic: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Index: AQHXidEW6lbeFvKh4k2Spj/Qhyfs76tk1X4AgAASi4A=
-Date:   Thu, 5 Aug 2021 13:35:06 +0000
-Message-ID: <8df7fc81b00142b68126efd3c700a579@huawei.com>
-References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
- <CAMj1kXHNjeDb2HuPeV_6Er4oALVKFz+g=gQ_0rf+JW22NxqqTA@mail.gmail.com>
-In-Reply-To: <CAMj1kXHNjeDb2HuPeV_6Er4oALVKFz+g=gQ_0rf+JW22NxqqTA@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.91.4]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQXJkIEJpZXNoZXV2ZWwg
-W21haWx0bzphcmRiQGtlcm5lbC5vcmddDQo+IFNlbnQ6IDA1IEF1Z3VzdCAyMDIxIDE0OjIzDQo+
-IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpIDxzaGFtZWVyYWxpLmtvbG90aHVtLnRob2Rp
-QGh1YXdlaS5jb20+DQo+IENjOiBMaW51eCBBUk0gPGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5m
-cmFkZWFkLm9yZz47IEFDUEkgRGV2ZWwgTWFsaW5nIExpc3QNCj4gPGxpbnV4LWFjcGlAdmdlci5r
-ZXJuZWwub3JnPjsgTGludXggSU9NTVUNCj4gPGlvbW11QGxpc3RzLmxpbnV4LWZvdW5kYXRpb24u
-b3JnPjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+Ow0KPiBMb3JlbnpvIFBpZXJhbGlz
-aSA8bG9yZW56by5waWVyYWxpc2lAYXJtLmNvbT47IEpvZXJnIFJvZWRlbA0KPiA8am9yb0A4Ynl0
-ZXMub3JnPjsgUm9iaW4gTXVycGh5IDxyb2Jpbi5tdXJwaHlAYXJtLmNvbT47IFdpbGwgRGVhY29u
-DQo+IDx3aWxsQGtlcm5lbC5vcmc+OyB3YW5naHVpcWlhbmcgPHdhbmdodWlxaWFuZ0BodWF3ZWku
-Y29tPjsgR3VvaGFuanVuDQo+IChIYW5qdW4gR3VvKSA8Z3VvaGFuanVuQGh1YXdlaS5jb20+OyBT
-dGV2ZW4gUHJpY2UNCj4gPHN0ZXZlbi5wcmljZUBhcm0uY29tPjsgU2FtaSBNdWphd2FyIDxTYW1p
-Lk11amF3YXJAYXJtLmNvbT47IEpvbg0KPiBOZXR0bGV0b24gPGpvbkBzb2xpZC1ydW4uY29tPjsg
-RXJpYyBBdWdlciA8ZXJpYy5hdWdlckByZWRoYXQuY29tPjsNCj4geWFuZ3lpY29uZyA8eWFuZ3lp
-Y29uZ0BodWF3ZWkuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHY3IDAvOV0gQUNQSS9JT1JU
-OiBTdXBwb3J0IGZvciBJT1JUIFJNUiBub2RlDQo+IA0KPiBPbiBUaHUsIDUgQXVnIDIwMjEgYXQg
-MTA6MTAsIFNoYW1lZXIgS29sb3RodW0NCj4gPHNoYW1lZXJhbGkua29sb3RodW0udGhvZGlAaHVh
-d2VpLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBIaSwNCj4gPg0KPiA+IFRoZSBzZXJpZXMgYWRkcyBz
-dXBwb3J0IHRvIElPUlQgUk1SIG5vZGVzIHNwZWNpZmllZCBpbiBJT1JUDQo+ID4gUmV2aXNpb24g
-RS5iIC1BUk0gREVOIDAwNDlFWzBdLiBSTVIgbm9kZXMgYXJlIHVzZWQgdG8gZGVzY3JpYmUNCj4g
-PiBtZW1vcnkgcmFuZ2VzIHRoYXQgYXJlIHVzZWQgYnkgZW5kcG9pbnRzIGFuZCByZXF1aXJlIGEg
-dW5pdHkNCj4gPiBtYXBwaW5nIGluIFNNTVUuDQo+ID4NCj4gPiBXZSBoYXZlIGZhY2VkIGlzc3Vl
-cyB3aXRoIDM0MDhpTVIgUkFJRCBjb250cm9sbGVyIGNhcmRzIHdoaWNoDQo+ID4gZmFpbCB0byBi
-b290IHdoZW4gU01NVSBpcyBlbmFibGVkLiBUaGlzIGlzIGJlY2F1c2UgdGhlc2UNCj4gPiBjb250
-cm9sbGVycyBtYWtlIHVzZSBvZiBob3N0IG1lbW9yeSBmb3IgdmFyaW91cyBjYWNoaW5nIHJlbGF0
-ZWQNCj4gPiBwdXJwb3NlcyBhbmQgd2hlbiBTTU1VIGlzIGVuYWJsZWQgdGhlIGlNUiBmaXJtd2Fy
-ZSBmYWlscyB0bw0KPiA+IGFjY2VzcyB0aGVzZSBtZW1vcnkgcmVnaW9ucyBhcyB0aGVyZSBpcyBu
-byBtYXBwaW5nIGZvciB0aGVtLg0KPiA+IElPUlQgUk1SIHByb3ZpZGVzIGEgd2F5IGZvciBVRUZJ
-IHRvIGRlc2NyaWJlIGFuZCByZXBvcnQgdGhlc2UNCj4gPiBtZW1vcnkgcmVnaW9ucyBzbyB0aGF0
-IHRoZSBrZXJuZWwgY2FuIG1ha2UgYSB1bml0eSBtYXBwaW5nIGZvcg0KPiA+IHRoZXNlIGluIFNN
-TVUuDQo+ID4NCj4gDQo+IERvZXMgdGhpcyBtZWFuIHdlIGFyZSBpZ25vcmluZyB0aGUgUk1SIG1l
-bW9yeSByYW5nZXMsIGFuZCBleHBvc2luZyB0aGUNCj4gZW50aXJlIHBoeXNpY2FsIGFkZHJlc3Mg
-c3BhY2UgdG8gZGV2aWNlcyB1c2luZyB0aGUgc3RyZWFtIElEcyBpbg0KPiBxdWVzdGlvbj8NCg0K
-Tm9wZS4gUk1SIG5vZGUgaXMgdXNlZCB0byBkZXNjcmliZSB0aGUgbWVtb3J5IHJhbmdlcyB1c2Vk
-IGJ5IGVuZCBwb2ludHMNCmJlaGluZCBTTU1VLiBBbmQgdGhpcyBpbmZvcm1hdGlvbiBpcyB1c2Vk
-IHRvIGNyZWF0ZSAxIDogMSBtYXBwaW5ncyBmb3IgdGhvc2UNCnJhbmdlcyBpbiBTTU1VLiBBbnl0
-aGluZyBvdXRzaWRlIHRob3NlIHJhbmdlcyB3aWxsIHJlc3VsdCBpbiB0cmFuc2xhdGlvbg0KZmF1
-bHQoaWYgdGhlcmUgYXJlIG5vIG90aGVyIGR5bmFtaWMgRE1BIG1hcHBpbmdzKS4NCg0KVGhhbmtz
-LA0KU2hhbWVlcg0KDQo+IA0KPiA+IENoYW5nZSBIaXN0b3J5Og0KPiA+DQo+ID4gdjYgLS0+IHY3
-DQo+ID4NCj4gPiBUaGUgb25seSBjaGFuZ2UgZnJvbSB2NiBpcyB0aGUgZml4IHBvaW50ZWQgb3V0
-IGJ5IFN0ZXZlIHRvDQo+ID4gdGhlIFNNTVV2MiBTTVIgYnlwYXNzIGluc3RhbGwgaW4gcGF0Y2gg
-IzguDQo+ID4NCj4gPiBUaGFua3MgdG8gdGhlIFRlc3RlZC1ieSB0YWdzIGJ5IExhdXJlbnRpdSB3
-aXRoIFNNTVV2MiBhbmQNCj4gPiBIYW5qdW4vSHVpcWlhbmcgd2l0aCBTTU1VdjMgZm9yIHY2LiBJ
-IGhhdmVuJ3QgYWRkZWQgdGhlIHRhZ3MNCj4gPiB5ZXQgYXMgdGhlIHNlcmllcyBzdGlsbCBuZWVk
-cyBtb3JlIHJldmlld1sxXS4NCj4gPg0KPiA+IEZlZWRiYWNrIGFuZCB0ZXN0cyBvbiB0aGlzIHNl
-cmllcyBpcyB2ZXJ5IG11Y2ggYXBwcmVjaWF0ZWQuDQo+ID4NCj4gPiB2NSAtLT4gdjYNCj4gPiAt
-IEFkZHJlc3NlZCBjb21tZW50cyBmcm9tIFJvYmluICYgTG9yZW56by4NCj4gPiAgIDogTW92ZWQg
-aW9ydF9wYXJzZV9ybXIoKSB0byBhY3BpX2lvcnRfaW5pdCgpIGZyb20NCj4gPiAgICAgaW9ydF9p
-bml0X3BsYXRmb3JtX2RldmljZXMoKS4NCj4gPiAgIDogUmVtb3ZlZCB1c2Ugb2Ygc3RydWN0IGlv
-cnRfcm1yX2VudHJ5IGR1cmluZyB0aGUgaW5pdGlhbA0KPiA+ICAgICBwYXJzZS4gVXNpbmcgc3Ry
-dWN0IGlvbW11X3Jlc3ZfcmVnaW9uIGluc3RlYWQuDQo+ID4gICA6IFJlcG9ydCBSTVIgYWRkcmVz
-cyBhbGlnbm1lbnQgYW5kIG92ZXJsYXAgZXJyb3JzLCBidXQgY29udGludWUuDQo+ID4gICA6IFJl
-d29ya2VkIGFybV9zbW11X2luaXRfYnlwYXNzX3N0ZXMoKSAocGF0Y2ggIyA2KS4NCj4gPiAtIFVw
-ZGF0ZWQgU01NVXYyIGJ5cGFzcyBTTVIgY29kZS4gVGhhbmtzIHRvIEpvbiBOIChwYXRjaCAjOCku
-DQo+ID4gLSBTZXQgSU9NTVUgcHJvdGVjdGlvbiBmbGFncyhJT01NVV9DQUNIRSwgSU9NTVVfTU1J
-TykgYmFzZWQNCj4gPiAgIG9uIFR5cGUgb2YgUk1SIHJlZ2lvbi4gU3VnZ2VzdGVkIGJ5IEpvbiBO
-Lg0KPiA+DQo+ID4gVGhhbmtzLA0KPiA+IFNoYW1lZXINCj4gPiBbMF0gaHR0cHM6Ly9kZXZlbG9w
-ZXIuYXJtLmNvbS9kb2N1bWVudGF0aW9uL2RlbjAwNDkvbGF0ZXN0Lw0KPiA+IFsxXQ0KPiBodHRw
-czovL2xvcmUua2VybmVsLm9yZy9saW51eC1hY3BpLzIwMjEwNzE2MDgzNDQyLjE3MDgtMS1zaGFt
-ZWVyYWxpLmtvbG90aA0KPiB1bS50aG9kaUBodWF3ZWkuY29tL1QvI20wNDNjOTViODY5OTczYTgz
-NGIyZmQ1N2YzZTFlZDAzMjVjODRmM2I3DQo+ID4gLS0tLS0tDQo+ID4gdjQgLS0+IHY1DQo+ID4g
-IC1BZGRlZCBhIGZ3X2RhdGEgdW5pb24gdG8gc3RydWN0IGlvbW11X3Jlc3ZfcmVnaW9uIGFuZCBy
-ZW1vdmVkDQo+ID4gICBzdHJ1Y3QgaW9tbXVfcm1yIChCYXNlZCBvbiBjb21tZW50cyBmcm9tIEpv
-ZXJnL1JvYmluKS4NCj4gPiAgLUFkZGVkIGlvbW11X3B1dF9ybXJzKCkgdG8gcmVsZWFzZSBtZW0u
-DQo+ID4gIC1UaGFua3MgdG8gU3RldmUgZm9yIHZlcmlmeWluZyBvbiBTTU1VdjIsIGJ1dCBub3Qg
-YWRkZWQgdGhlIFRlc3RlZC1ieQ0KPiA+ICAgeWV0IGJlY2F1c2Ugb2YgdGhlIGFib3ZlIGNoYW5n
-ZXMuDQo+ID4NCj4gPiB2MyAtLT52NA0KPiA+IC1JbmNsdWRlZCB0aGUgU01NVXYyIFNNUiBieXBh
-c3MgaW5zdGFsbCBjaGFuZ2VzIHN1Z2dlc3RlZCBieQ0KPiA+ICBTdGV2ZShwYXRjaCAjNykNCj4g
-PiAtQXMgcGVyIFJvYmluJ3MgY29tbWVudHMsIFJNUiByZXNlcnZlIGltcGxlbWVudGF0aW9uIGlz
-IG5vdw0KPiA+ICBtb3JlIGdlbmVyaWMgIChwYXRjaCAjOCkgYW5kIGRyb3BwZWQgdjMgcGF0Y2hl
-cyA4IGFuZCAxMC4NCj4gPiAtUmViYXNlIHRvIDUuMTMtcmMxDQo+ID4NCj4gPiBSRkMgdjIgLS0+
-IHYzDQo+ID4gIC1Ecm9wcGVkIFJGQyB0YWcgYXMgdGhlIEFDUElDQSBoZWFkZXIgY2hhbmdlcyBh
-cmUgbm93IHJlYWR5IHRvIGJlDQo+ID4gICBwYXJ0IG9mIDUuMTNbMF0uIEJ1dCB0aGlzIHNlcmll
-cyBzdGlsbCBoYXMgYSBkZXBlbmRlbmN5IG9uIHRoYXQgcGF0Y2guDQo+ID4gIC1BZGRlZCBJT1JU
-IEUuYiByZWxhdGVkIGNoYW5nZXMobm9kZSBmbGFncywgX0RTTSBmdW5jdGlvbiA1IGNoZWNrcyBm
-b3INCj4gPiAgIFBDSWUpLg0KPiA+ICAtQ2hhbmdlZCBSTVIgdG8gc3RyZWFtIGlkIG1hcHBpbmcg
-ZnJvbSBNOk4gdG8gTToxIGFzIHBlciB0aGUgc3BlYyBhbmQNCj4gPiAgIGRpc2N1c3Npb24gaGVy
-ZVsxXS4NCj4gPiAgLUxhc3QgdHdvIHBhdGNoZXMgYWRkIHN1cHBvcnQgZm9yIFNNTVV2MihUaGFu
-a3MgdG8gSm9uIE5ldHRsZXRvbiEpDQo+ID4gLS0tLS0tDQo+ID4NCj4gPiBKb24gTmV0dGxldG9u
-ICgxKToNCj4gPiAgIGlvbW11L2FybS1zbW11OiBHZXQgYXNzb2NpYXRlZCBSTVIgaW5mbyBhbmQg
-aW5zdGFsbCBieXBhc3MgU01SDQo+ID4NCj4gPiBTaGFtZWVyIEtvbG90aHVtICg4KToNCj4gPiAg
-IGlvbW11OiBJbnRyb2R1Y2UgYSB1bmlvbiB0byBzdHJ1Y3QgaW9tbXVfcmVzdl9yZWdpb24NCj4g
-PiAgIEFDUEkvSU9SVDogQWRkIHN1cHBvcnQgZm9yIFJNUiBub2RlIHBhcnNpbmcNCj4gPiAgIGlv
-bW11L2RtYTogSW50cm9kdWNlIGdlbmVyaWMgaGVscGVyIHRvIHJldHJpZXZlIFJNUiBpbmZvDQo+
-ID4gICBBQ1BJL0lPUlQ6IEFkZCBhIGhlbHBlciB0byByZXRyaWV2ZSBSTVIgbWVtb3J5IHJlZ2lv
-bnMNCj4gPiAgIGlvbW11L2FybS1zbW11LXYzOiBJbnRyb2R1Y2Ugc3RydGFiIGluaXQgaGVscGVy
-DQo+ID4gICBpb21tdS9hcm0tc21tdS12MzogUmVmYWN0b3IgYXJtX3NtbXVfaW5pdF9ieXBhc3Nf
-c3RlcygpIHRvIGZvcmNlDQo+ID4gICAgIGJ5cGFzcw0KPiA+ICAgaW9tbXUvYXJtLXNtbXUtdjM6
-IEdldCBhc3NvY2lhdGVkIFJNUiBpbmZvIGFuZCBpbnN0YWxsIGJ5cGFzcyBTVEUNCj4gPiAgIGlv
-bW11L2RtYTogUmVzZXJ2ZSBhbnkgUk1SIHJlZ2lvbnMgYXNzb2NpYXRlZCB3aXRoIGEgZGV2DQo+
-ID4NCj4gPiAgZHJpdmVycy9hY3BpL2FybTY0L2lvcnQuYyAgICAgICAgICAgICAgICAgICB8IDE3
-Mg0KPiArKysrKysrKysrKysrKysrKysrLQ0KPiA+ICBkcml2ZXJzL2lvbW11L2FybS9hcm0tc21t
-dS12My9hcm0tc21tdS12My5jIHwgIDc2ICsrKysrKystLQ0KPiA+ICBkcml2ZXJzL2lvbW11L2Fy
-bS9hcm0tc21tdS9hcm0tc21tdS5jICAgICAgIHwgIDQ4ICsrKysrKw0KPiA+ICBkcml2ZXJzL2lv
-bW11L2RtYS1pb21tdS5jICAgICAgICAgICAgICAgICAgIHwgIDg5ICsrKysrKysrKy0NCj4gPiAg
-aW5jbHVkZS9saW51eC9hY3BpX2lvcnQuaCAgICAgICAgICAgICAgICAgICB8ICAgNyArDQo+ID4g
-IGluY2x1ZGUvbGludXgvZG1hLWlvbW11LmggICAgICAgICAgICAgICAgICAgfCAgMTMgKysNCj4g
-PiAgaW5jbHVkZS9saW51eC9pb21tdS5oICAgICAgICAgICAgICAgICAgICAgICB8ICAxMSArKw0K
-PiA+ICA3IGZpbGVzIGNoYW5nZWQsIDM5MyBpbnNlcnRpb25zKCspLCAyMyBkZWxldGlvbnMoLSkN
-Cj4gPg0KPiA+IC0tDQo+ID4gMi4xNy4xDQo+ID4NCj4gPg0KPiA+IF9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQo+ID4gbGludXgtYXJtLWtlcm5lbCBtYWls
-aW5nIGxpc3QNCj4gPiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gPiBo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJu
-ZWwNCg==
+On Thu, 5 Aug 2021 at 15:35, Shameerali Kolothum Thodi
+<shameerali.kolothum.thodi@huawei.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Ard Biesheuvel [mailto:ardb@kernel.org]
+> > Sent: 05 August 2021 14:23
+> > To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+> > Cc: Linux ARM <linux-arm-kernel@lists.infradead.org>; ACPI Devel Maling List
+> > <linux-acpi@vger.kernel.org>; Linux IOMMU
+> > <iommu@lists.linux-foundation.org>; Linuxarm <linuxarm@huawei.com>;
+> > Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>; Joerg Roedel
+> > <joro@8bytes.org>; Robin Murphy <robin.murphy@arm.com>; Will Deacon
+> > <will@kernel.org>; wanghuiqiang <wanghuiqiang@huawei.com>; Guohanjun
+> > (Hanjun Guo) <guohanjun@huawei.com>; Steven Price
+> > <steven.price@arm.com>; Sami Mujawar <Sami.Mujawar@arm.com>; Jon
+> > Nettleton <jon@solid-run.com>; Eric Auger <eric.auger@redhat.com>;
+> > yangyicong <yangyicong@huawei.com>
+> > Subject: Re: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
+> >
+> > On Thu, 5 Aug 2021 at 10:10, Shameer Kolothum
+> > <shameerali.kolothum.thodi@huawei.com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > The series adds support to IORT RMR nodes specified in IORT
+> > > Revision E.b -ARM DEN 0049E[0]. RMR nodes are used to describe
+> > > memory ranges that are used by endpoints and require a unity
+> > > mapping in SMMU.
+> > >
+> > > We have faced issues with 3408iMR RAID controller cards which
+> > > fail to boot when SMMU is enabled. This is because these
+> > > controllers make use of host memory for various caching related
+> > > purposes and when SMMU is enabled the iMR firmware fails to
+> > > access these memory regions as there is no mapping for them.
+> > > IORT RMR provides a way for UEFI to describe and report these
+> > > memory regions so that the kernel can make a unity mapping for
+> > > these in SMMU.
+> > >
+> >
+> > Does this mean we are ignoring the RMR memory ranges, and exposing the
+> > entire physical address space to devices using the stream IDs in
+> > question?
+>
+> Nope. RMR node is used to describe the memory ranges used by end points
+> behind SMMU. And this information is used to create 1 : 1 mappings for those
+> ranges in SMMU. Anything outside those ranges will result in translation
+> fault(if there are no other dynamic DMA mappings).
+>
+
+Excellent! It was not obvious to me from looking at the patches, so I
+had to ask.
+
+Thanks,
+Ard.
+
+>
+> >
+> > > Change History:
+> > >
+> > > v6 --> v7
+> > >
+> > > The only change from v6 is the fix pointed out by Steve to
+> > > the SMMUv2 SMR bypass install in patch #8.
+> > >
+> > > Thanks to the Tested-by tags by Laurentiu with SMMUv2 and
+> > > Hanjun/Huiqiang with SMMUv3 for v6. I haven't added the tags
+> > > yet as the series still needs more review[1].
+> > >
+> > > Feedback and tests on this series is very much appreciated.
+> > >
+> > > v5 --> v6
+> > > - Addressed comments from Robin & Lorenzo.
+> > >   : Moved iort_parse_rmr() to acpi_iort_init() from
+> > >     iort_init_platform_devices().
+> > >   : Removed use of struct iort_rmr_entry during the initial
+> > >     parse. Using struct iommu_resv_region instead.
+> > >   : Report RMR address alignment and overlap errors, but continue.
+> > >   : Reworked arm_smmu_init_bypass_stes() (patch # 6).
+> > > - Updated SMMUv2 bypass SMR code. Thanks to Jon N (patch #8).
+> > > - Set IOMMU protection flags(IOMMU_CACHE, IOMMU_MMIO) based
+> > >   on Type of RMR region. Suggested by Jon N.
+> > >
+> > > Thanks,
+> > > Shameer
+> > > [0] https://developer.arm.com/documentation/den0049/latest/
+> > > [1]
+> > https://lore.kernel.org/linux-acpi/20210716083442.1708-1-shameerali.koloth
+> > um.thodi@huawei.com/T/#m043c95b869973a834b2fd57f3e1ed0325c84f3b7
+> > > ------
+> > > v4 --> v5
+> > >  -Added a fw_data union to struct iommu_resv_region and removed
+> > >   struct iommu_rmr (Based on comments from Joerg/Robin).
+> > >  -Added iommu_put_rmrs() to release mem.
+> > >  -Thanks to Steve for verifying on SMMUv2, but not added the Tested-by
+> > >   yet because of the above changes.
+> > >
+> > > v3 -->v4
+> > > -Included the SMMUv2 SMR bypass install changes suggested by
+> > >  Steve(patch #7)
+> > > -As per Robin's comments, RMR reserve implementation is now
+> > >  more generic  (patch #8) and dropped v3 patches 8 and 10.
+> > > -Rebase to 5.13-rc1
+> > >
+> > > RFC v2 --> v3
+> > >  -Dropped RFC tag as the ACPICA header changes are now ready to be
+> > >   part of 5.13[0]. But this series still has a dependency on that patch.
+> > >  -Added IORT E.b related changes(node flags, _DSM function 5 checks for
+> > >   PCIe).
+> > >  -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
+> > >   discussion here[1].
+> > >  -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!)
+> > > ------
+> > >
+> > > Jon Nettleton (1):
+> > >   iommu/arm-smmu: Get associated RMR info and install bypass SMR
+> > >
+> > > Shameer Kolothum (8):
+> > >   iommu: Introduce a union to struct iommu_resv_region
+> > >   ACPI/IORT: Add support for RMR node parsing
+> > >   iommu/dma: Introduce generic helper to retrieve RMR info
+> > >   ACPI/IORT: Add a helper to retrieve RMR memory regions
+> > >   iommu/arm-smmu-v3: Introduce strtab init helper
+> > >   iommu/arm-smmu-v3: Refactor arm_smmu_init_bypass_stes() to force
+> > >     bypass
+> > >   iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
+> > >   iommu/dma: Reserve any RMR regions associated with a dev
+> > >
+> > >  drivers/acpi/arm64/iort.c                   | 172
+> > +++++++++++++++++++-
+> > >  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  76 +++++++--
+> > >  drivers/iommu/arm/arm-smmu/arm-smmu.c       |  48 ++++++
+> > >  drivers/iommu/dma-iommu.c                   |  89 +++++++++-
+> > >  include/linux/acpi_iort.h                   |   7 +
+> > >  include/linux/dma-iommu.h                   |  13 ++
+> > >  include/linux/iommu.h                       |  11 ++
+> > >  7 files changed, 393 insertions(+), 23 deletions(-)
+> > >
+> > > --
+> > > 2.17.1
+> > >
+> > >
+> > > _______________________________________________
+> > > linux-arm-kernel mailing list
+> > > linux-arm-kernel@lists.infradead.org
+> > > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
