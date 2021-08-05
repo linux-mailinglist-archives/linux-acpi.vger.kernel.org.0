@@ -2,137 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1903E0FF0
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Aug 2021 10:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D4413E11DB
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Aug 2021 12:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235821AbhHEIKO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Aug 2021 04:10:14 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:3593 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239048AbhHEIKO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Aug 2021 04:10:14 -0400
-Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4GgLqp4z5jz6G9VM;
-        Thu,  5 Aug 2021 16:09:42 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 5 Aug 2021 10:09:58 +0200
-Received: from A2006125610.china.huawei.com (10.47.91.4) by
- lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Thu, 5 Aug 2021 09:09:51 +0100
-From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-To:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
-CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
-        <joro@8bytes.org>, <robin.murphy@arm.com>, <will@kernel.org>,
-        <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
-        <steven.price@arm.com>, <Sami.Mujawar@arm.com>,
-        <jon@solid-run.com>, <eric.auger@redhat.com>,
-        <yangyicong@huawei.com>
-Subject: [PATCH v7 9/9] iommu/dma: Reserve any RMR regions associated with a dev
-Date:   Thu, 5 Aug 2021 09:07:24 +0100
-Message-ID: <20210805080724.480-10-shameerali.kolothum.thodi@huawei.com>
-X-Mailer: git-send-email 2.12.0.windows.1
-In-Reply-To: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
-References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
+        id S240170AbhHEKDg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Aug 2021 06:03:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37152 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240171AbhHEKD3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Aug 2021 06:03:29 -0400
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD078C061765
+        for <linux-acpi@vger.kernel.org>; Thu,  5 Aug 2021 03:03:13 -0700 (PDT)
+Received: by mail-io1-xd29.google.com with SMTP id z7so5929910iog.13
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Aug 2021 03:03:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=JgSrcULNaOdiEU0gJY4fVzPMy894wr9ygHl+ydiVexI=;
+        b=pOopjRg+5LI5M+B/nznj7WHGE/L4SX12GC8kzV9epi8qx74zKvB5YVtPxVIj/JThvn
+         SX2DDYjIxCa++bFJB6O+BZKq0lbGlHP0gzUcGWT/Pzpy5YWRozjMtYgo72FCUqmOHnCq
+         P7YlkJ7B9zDaqg9F/bGAeCacbhWNO6amuZrVF6xcPcda2ZAxc+t/01W9VsFcIveViR/G
+         SbelyyGEJTiUL/0ca0kQIG77fXIM3f7GVl41tqVUgTubic4PhEpGtBubwZt7G/LtW3Q+
+         hD94yj/i/Ec4WDVYCbqJYn6QJGOb+aakRaTrLT+4FdDtfhIMebVT2PSKcqpWzlC7CR+g
+         3xjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=JgSrcULNaOdiEU0gJY4fVzPMy894wr9ygHl+ydiVexI=;
+        b=WVX1lfKuNRL9KtsPvcShVPhCxMZzpLCA9fskHd6VVI8HStcKDXxm5vqKmjtm1qh0g6
+         ng4chFVw4zUujpOYo4YqgjUUE/Edl7r7YORhjDh+rtCksXSXU+oWFs7zdZrjwRs+6831
+         y09o1q+E16q/hoKvpdxkbbY6zHKHaUY+UAIuzaqR/MwCcHlXHtyzJvINNVjEnC4Ftvht
+         lrJ2s4rTFa9+7+Qv67PtWBQweTfYPs/Bwn7Jp6AP/lbpb3dy3dN9IC6f3P7CZaSMPj3E
+         5/GKDC16Ql9CpDnuqebzKhHhYW4Iyjuq28k3mV5r+1nlul2XShFanHwH/dlwQk8whc+N
+         NsiQ==
+X-Gm-Message-State: AOAM531PnYnioexfkuVELHR8fp7TpxLlkXPvq+nUxFFBcTwF1n4KqKTg
+        Lm0JXGFACfrY8tGF94SqVbjnxFpxPRWCQ4+0ygs=
+X-Google-Smtp-Source: ABdhPJzAnZ61Zk5ltCQNGYKGKYq4KwssWEGlVzZKqjA8YRAKYsZf2WQVrk7EYSO53SrG9pX6FqhqKUiAIH1K4Et0M3E=
+X-Received: by 2002:a02:c6b8:: with SMTP id o24mr3972857jan.108.1628157792696;
+ Thu, 05 Aug 2021 03:03:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.47.91.4]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Received: by 2002:a4f:ce86:0:0:0:0:0 with HTTP; Thu, 5 Aug 2021 03:03:12 -0700 (PDT)
+Reply-To: pointerscott009@gmail.com
+From:   Sir Jakes <sirjakes12@gmail.com>
+Date:   Thu, 5 Aug 2021 11:03:12 +0100
+Message-ID: <CAE2OSQeG3xw=GiCS7k9UuYBG8GMe=n6z8eJcQY+r7+YsUMiesw@mail.gmail.com>
+Subject: Business Office Offer.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Get ACPI IORT RMR regions associated with a dev reserved
-so that there is a unity mapping for them in SMMU.
-
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
----
- drivers/iommu/dma-iommu.c | 56 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 51 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 1b6e27475279..c1ae0c3d4b33 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -207,22 +207,68 @@ void iommu_dma_put_rmrs(struct fwnode_handle *iommu_fwnode,
- }
- EXPORT_SYMBOL(iommu_dma_put_rmrs);
- 
-+static bool iommu_dma_dev_has_rmr(struct iommu_fwspec *fwspec,
-+				  struct iommu_resv_region *e)
-+{
-+	int i;
-+
-+	for (i = 0; i < fwspec->num_ids; i++) {
-+		if (e->fw_data.rmr.sid == fwspec->ids[i])
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static void iommu_dma_get_rmr_resv_regions(struct device *dev,
-+					   struct list_head *list)
-+{
-+	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-+	struct list_head rmr_list;
-+	struct iommu_resv_region *rmr, *tmp;
-+
-+	INIT_LIST_HEAD(&rmr_list);
-+	if (iommu_dma_get_rmrs(fwspec->iommu_fwnode, &rmr_list))
-+		return;
-+
-+	if (dev_is_pci(dev)) {
-+		struct pci_dev *pdev = to_pci_dev(dev);
-+		struct pci_host_bridge *host = pci_find_host_bridge(pdev->bus);
-+
-+		if (!host->preserve_config)
-+			return;
-+	}
-+
-+	list_for_each_entry_safe(rmr, tmp, &rmr_list, list) {
-+		if (!iommu_dma_dev_has_rmr(fwspec, rmr))
-+			continue;
-+
-+		/* Remove from iommu RMR list and add to dev resv_regions */
-+		list_del_init(&rmr->list);
-+		list_add_tail(&rmr->list, list);
-+	}
-+
-+	iommu_dma_put_rmrs(fwspec->iommu_fwnode, &rmr_list);
-+}
-+
- /**
-  * iommu_dma_get_resv_regions - Reserved region driver helper
-  * @dev: Device from iommu_get_resv_regions()
-  * @list: Reserved region list from iommu_get_resv_regions()
-  *
-  * IOMMU drivers can use this to implement their .get_resv_regions callback
-- * for general non-IOMMU-specific reservations. Currently, this covers GICv3
-- * ITS region reservation on ACPI based ARM platforms that may require HW MSI
-- * reservation.
-+ * for general non-IOMMU-specific reservations. Currently this covers,
-+ *  -GICv3 ITS region reservation on ACPI based ARM platforms that may
-+ *   require HW MSI reservation.
-+ *  -Any ACPI IORT RMR memory range reservations (IORT spec rev E.b)
-  */
- void iommu_dma_get_resv_regions(struct device *dev, struct list_head *list)
- {
- 
--	if (!is_of_node(dev_iommu_fwspec_get(dev)->iommu_fwnode))
-+	if (!is_of_node(dev_iommu_fwspec_get(dev)->iommu_fwnode)) {
- 		iort_iommu_msi_get_resv_regions(dev, list);
--
-+		iommu_dma_get_rmr_resv_regions(dev, list);
-+	}
- }
- EXPORT_SYMBOL(iommu_dma_get_resv_regions);
- 
 -- 
-2.17.1
+Dear Sir / Madam,
+We are experts in Finance, Investments, and Advisory.
+We grant loans to interested investors, Companies & Individuals
+Available offer as follows:-
+Consolidation, Buying, Building, Business Improving, Refinancing
+Commercial Property and Personal Loan.
+We fund for $50,000,000.00 million up to $500,000,000.00 million at @
+2% Interest rate duration of 1/25 years without resorting to your
+bank.
 
+Kindly revert back if you have projects that need funding for
+immediate consideration and negotiation by contacting us back with
+Loan Amount Needed and Duration for further processing.
+
+Pointers Financial Corporation
+25954 Eden Landing Rd, Hayward
+CA 94545 United States.
+Loan Department.
