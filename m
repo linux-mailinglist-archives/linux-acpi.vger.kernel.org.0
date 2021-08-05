@@ -2,61 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F1833E1229
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Aug 2021 12:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BA1D3E1598
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Aug 2021 15:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240397AbhHEKJk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 5 Aug 2021 06:09:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38700 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240353AbhHEKJi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 5 Aug 2021 06:09:38 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57EBAC0613C1
-        for <linux-acpi@vger.kernel.org>; Thu,  5 Aug 2021 03:09:24 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id x14so7521449edr.12
-        for <linux-acpi@vger.kernel.org>; Thu, 05 Aug 2021 03:09:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
-        b=n10iYXs1AptC2KvJm+JtSBDhlxmP7w+4FSSzJCGBzq744n00FbqUWvZZ1M3bZIKpMZ
-         47t3M6EWAmnRZF6k56QxknChoLO78dSaGiSlJbAqzjzueaaLLGpPQ3kFrT+txqh9UQPY
-         ckHJxwkcp9Sb+t5M3r6xElhq5Tv3kwreLwJ7h0PIV6g++T/NLgEsq3RUzTDxwVMWNudb
-         B23/XgMRR0KFyESIvsnqpAwJc00bgHroH7IdjmYgwt6LTT9l4eHOjIJs17dI9kANiK68
-         b7SkW3ma7hdPuV0RwtTRXLbBeqCyKXnkNrXjF0ByEpQ7Ioda+xBsHwM+DF7fSBt/H/Gl
-         v/7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
-        b=UlqdelR5YAhkncjfxn2qbq8uhv2B/og6AfkQSZhrRdfJrfmAvMrR6mDtAvQsDaxNQ/
-         yPtJNznjDwXJuE4W0SwHk2fyZvpl82XL9Q9IuqAWhjkkKMXWfCNWuuvFtLWPAL7OAdNL
-         kB8QutaEOt6qK3rvLFSL0frj1WqstSfLW2VW9RhqLSc7zd2jPXtiZS+KHsPYuF40KkKm
-         F8F5CrlU2cm9l4dJ3gex/pD1/RJNCL1NE1+NXPa8ES2UyjPE0eHalDLJLgmz1RT9N5G4
-         vr7mc9H7fhZF68YgcuMy/n8lG/OewZcV+XtGXr76PazMwYibEihv8CNFS88cTe+aAHQH
-         PyJw==
-X-Gm-Message-State: AOAM5312M1JK78ZDs77xS6nX3X2RKIADxOAuGFxek2tuwOny+aMur8pk
-        mSjiKE++ZQn95+5fmVClt+dLaF6IXM4SxLhH/UE=
-X-Google-Smtp-Source: ABdhPJzuHjsBuIWS9qvNtJFp87n7oEYiWdxsYj88OckM/2Pcka357A6t48J28bM9KZMmF0BZhbTLriiZhGWd0NHcLJ4=
-X-Received: by 2002:a05:6402:49a:: with SMTP id k26mr5365440edv.279.1628158163011;
- Thu, 05 Aug 2021 03:09:23 -0700 (PDT)
+        id S240497AbhHENW6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 5 Aug 2021 09:22:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52516 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229771AbhHENW6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 5 Aug 2021 09:22:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4B9A761158
+        for <linux-acpi@vger.kernel.org>; Thu,  5 Aug 2021 13:22:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628169764;
+        bh=rABZo6aAjftHjiZ5IWVoUogsJY3wYwnWG2rnzy4liBo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Wvd0gPN3bIkbH85Jb8aiK9vAeTaGXkKH0MPPvHrT67OI7Yv4pArZ3mpw+PSlewnAk
+         PnYEYc30nVMFJfbbkDTxRhqH4HilA2dnpEQinC6/a2ywTKEu5145yOWfueC31EFsne
+         QhqBB69I6VY8hq+RW66dpCUIpmO6LVAeWRUefgRrASbWZBtrtYcVZ1bPgZvE8U7j1Z
+         pIK8w0B94XWyw2tc9gxARVmYCPzhqQAjHnGb+TBmGyMiIH1MeZ3T3eUM+Lg7HwHP4C
+         w4DGrWG56tp3VXJvpseidZvpVsG86dLc/vIcckBLXQRwspK+ODQ7dt3zdW1045KQDp
+         4XqNS2b0S6CLA==
+Received: by mail-ot1-f43.google.com with SMTP id 61-20020a9d0d430000b02903eabfc221a9so5107954oti.0
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Aug 2021 06:22:44 -0700 (PDT)
+X-Gm-Message-State: AOAM532vMSah/DbAtyJS1dGVMPc+1diYJGcgHYTWVQD85VxUqIGNSMui
+        WJSTb7zfGAe5CyTRt1J0ffCV7KLS2dt1JmEX+Dc=
+X-Google-Smtp-Source: ABdhPJx0hDuVxvbP140/VxO38R4dIU/rEbrl3LBsoE8UOKfL6M4pTys5XpazDhygGrztUo1RJOEBxMauD3jhjiaPAZQ=
+X-Received: by 2002:a9d:5c2:: with SMTP id 60mr3654201otd.77.1628169763566;
+ Thu, 05 Aug 2021 06:22:43 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6408:258c:b029:e3:fe5c:5c2d with HTTP; Thu, 5 Aug 2021
- 03:09:20 -0700 (PDT)
-Reply-To: theresabangurah3333@yahoo.com
-From:   Theresa Bangurah <mariamabah77879@gmail.com>
-Date:   Thu, 5 Aug 2021 11:09:20 +0100
-Message-ID: <CAAi==jpsiLcjDaWg_=tyzCq6dfO42hxUrbAZW5hFC8u1MxcqiQ@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
+References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
+In-Reply-To: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 5 Aug 2021 15:22:32 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHNjeDb2HuPeV_6Er4oALVKFz+g=gQ_0rf+JW22NxqqTA@mail.gmail.com>
+Message-ID: <CAMj1kXHNjeDb2HuPeV_6Er4oALVKFz+g=gQ_0rf+JW22NxqqTA@mail.gmail.com>
+Subject: Re: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>, wanghuiqiang@huawei.com,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Steven Price <steven.price@arm.com>,
+        Sami Mujawar <Sami.Mujawar@arm.com>,
+        Jon Nettleton <jon@solid-run.com>,
+        Eric Auger <eric.auger@redhat.com>, yangyicong@huawei.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--- 
-My name is Mrs.Theresa Bangurah,i am American citizen i have something
-important to tell you.Reply me immediately you get this message.God
-bless you.
+On Thu, 5 Aug 2021 at 10:10, Shameer Kolothum
+<shameerali.kolothum.thodi@huawei.com> wrote:
+>
+> Hi,
+>
+> The series adds support to IORT RMR nodes specified in IORT
+> Revision E.b -ARM DEN 0049E[0]. RMR nodes are used to describe
+> memory ranges that are used by endpoints and require a unity
+> mapping in SMMU.
+>
+> We have faced issues with 3408iMR RAID controller cards which
+> fail to boot when SMMU is enabled. This is because these
+> controllers make use of host memory for various caching related
+> purposes and when SMMU is enabled the iMR firmware fails to
+> access these memory regions as there is no mapping for them.
+> IORT RMR provides a way for UEFI to describe and report these
+> memory regions so that the kernel can make a unity mapping for
+> these in SMMU.
+>
+
+Does this mean we are ignoring the RMR memory ranges, and exposing the
+entire physical address space to devices using the stream IDs in
+question?
+
+
+> Change History:
+>
+> v6 --> v7
+>
+> The only change from v6 is the fix pointed out by Steve to
+> the SMMUv2 SMR bypass install in patch #8.
+>
+> Thanks to the Tested-by tags by Laurentiu with SMMUv2 and
+> Hanjun/Huiqiang with SMMUv3 for v6. I haven't added the tags
+> yet as the series still needs more review[1].
+>
+> Feedback and tests on this series is very much appreciated.
+>
+> v5 --> v6
+> - Addressed comments from Robin & Lorenzo.
+>   : Moved iort_parse_rmr() to acpi_iort_init() from
+>     iort_init_platform_devices().
+>   : Removed use of struct iort_rmr_entry during the initial
+>     parse. Using struct iommu_resv_region instead.
+>   : Report RMR address alignment and overlap errors, but continue.
+>   : Reworked arm_smmu_init_bypass_stes() (patch # 6).
+> - Updated SMMUv2 bypass SMR code. Thanks to Jon N (patch #8).
+> - Set IOMMU protection flags(IOMMU_CACHE, IOMMU_MMIO) based
+>   on Type of RMR region. Suggested by Jon N.
+>
+> Thanks,
+> Shameer
+> [0] https://developer.arm.com/documentation/den0049/latest/
+> [1] https://lore.kernel.org/linux-acpi/20210716083442.1708-1-shameerali.kolothum.thodi@huawei.com/T/#m043c95b869973a834b2fd57f3e1ed0325c84f3b7
+> ------
+> v4 --> v5
+>  -Added a fw_data union to struct iommu_resv_region and removed
+>   struct iommu_rmr (Based on comments from Joerg/Robin).
+>  -Added iommu_put_rmrs() to release mem.
+>  -Thanks to Steve for verifying on SMMUv2, but not added the Tested-by
+>   yet because of the above changes.
+>
+> v3 -->v4
+> -Included the SMMUv2 SMR bypass install changes suggested by
+>  Steve(patch #7)
+> -As per Robin's comments, RMR reserve implementation is now
+>  more generic  (patch #8) and dropped v3 patches 8 and 10.
+> -Rebase to 5.13-rc1
+>
+> RFC v2 --> v3
+>  -Dropped RFC tag as the ACPICA header changes are now ready to be
+>   part of 5.13[0]. But this series still has a dependency on that patch.
+>  -Added IORT E.b related changes(node flags, _DSM function 5 checks for
+>   PCIe).
+>  -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
+>   discussion here[1].
+>  -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!)
+> ------
+>
+> Jon Nettleton (1):
+>   iommu/arm-smmu: Get associated RMR info and install bypass SMR
+>
+> Shameer Kolothum (8):
+>   iommu: Introduce a union to struct iommu_resv_region
+>   ACPI/IORT: Add support for RMR node parsing
+>   iommu/dma: Introduce generic helper to retrieve RMR info
+>   ACPI/IORT: Add a helper to retrieve RMR memory regions
+>   iommu/arm-smmu-v3: Introduce strtab init helper
+>   iommu/arm-smmu-v3: Refactor arm_smmu_init_bypass_stes() to force
+>     bypass
+>   iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
+>   iommu/dma: Reserve any RMR regions associated with a dev
+>
+>  drivers/acpi/arm64/iort.c                   | 172 +++++++++++++++++++-
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  76 +++++++--
+>  drivers/iommu/arm/arm-smmu/arm-smmu.c       |  48 ++++++
+>  drivers/iommu/dma-iommu.c                   |  89 +++++++++-
+>  include/linux/acpi_iort.h                   |   7 +
+>  include/linux/dma-iommu.h                   |  13 ++
+>  include/linux/iommu.h                       |  11 ++
+>  7 files changed, 393 insertions(+), 23 deletions(-)
+>
+> --
+> 2.17.1
+>
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
