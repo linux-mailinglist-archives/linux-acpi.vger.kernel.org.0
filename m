@@ -2,213 +2,310 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 275673E29E4
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Aug 2021 13:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 498913E2AC4
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Aug 2021 14:47:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242299AbhHFLko convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 6 Aug 2021 07:40:44 -0400
-Received: from mout.kundenserver.de ([217.72.192.75]:59291 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245628AbhHFLki (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Aug 2021 07:40:38 -0400
-Received: from [192.168.1.107] ([37.4.249.97]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MFbmS-1mMQCh2khi-00H9QQ; Fri, 06 Aug 2021 13:40:05 +0200
-Subject: Re: [PATCH 0/3] CM4 ACPI PCIe quirk
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     linux-pci@vger.kernel.org, lorenzo.pieralisi@arm.com,
-        nsaenz@kernel.org, bhelgaas@google.com, rjw@rjwysocki.net,
-        lenb@kernel.org, robh@kernel.org, kw@linux.com,
-        f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20210805211200.491275-1-jeremy.linton@arm.com>
-From:   Stefan Wahren <stefan.wahren@i2se.com>
-Autocrypt: addr=stefan.wahren@i2se.com; keydata=
- LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tClZlcnNpb246IEdudVBHIHYy
- CgptUUlOQkZ0NmdCTUJFQUN1Yi9wQmV2SHhidkplZnlaRzMySklObW4yYnNFUFgyNVY2ZmVq
- bXlZd21DR0tqRnRMCi9Eb1VNRVZIRHhDSjQ3Qk1YbzM0NGZIVjFDM0FudWRnTjFCZWhMb0J0
- TEh4bW5lQ3pnSDNLY1B0V1c3cHRqNEcKdEp2OUNRRFp5MjdTS29FUHh5YUk4Q0YweWdSeEpj
- NzJNOUk5d21zUFo1YlVIc0x1WVdNcVE3SmNSbVBzNkQ4ZwpCa2srOC95bmdFeU5FeHd4SnBS
- MXlsajVianhXREh5WVF2dUo1THpaS3VPOUxCM2xYVnNjNGJxWEVqYzZWRnVaCkZDQ2svc3lp
- by9ZaHNlOE4rUXN4N01RYWd6NHdLVWtRUWJmWGcxVnFrVG5BaXZYczQyVm5Ja211NWd6SXcv
- MHQKUkp2NTBGUmhIaHhweUtBSThCOG5oTjhRdng3TVZrUGM1dkRmZDN1R1lXNDdKUGhWUUJj
- VXdKd05rLzQ5RjllQQp2ZzJtdE1QRm5GT1JrV1VSdlArRzZGSmZtNitDdk92N1lmUDF1ZXdB
- aTRsbitKTzFnK2dqVklXbC9XSnB5MG5UCmlwZGZlSDlkSGtnU2lmUXVuWWN1Y2lzTXlvUmJG
- OTU1dENna0VZOUVNRWRZMXQ4aUdEaUNnWDZzNTBMSGJpM2sKNDUzdWFjcHhmUVhTYUF3UGtz
- bDhNa0NPc3YyZUVyNElOQ0hZUUR5WmljbEJ1dUNnOEVOYlI2QUdWdFpTUGNRYgplbnpTektS
- Wm9POUNhcUlEK2ZhdkxpQi9kaHptSEErOWJnSWhtWGZ2WFJMRFp6ZThwbzFkeXQzRTFzaFhp
- ZGRaClBBOE51SlZ6RUl0MmxtSTZWOHBaRHBuMjIxcmZLaml2UlFpYW9zNTRUZ1pqak1ZSTdu
- bko3ZTZ4endBUkFRQUIKdENCVGRHVm1ZVzRnVjJGb2NtVnVJRHgzWVdoeVpXNXpkRUJuYlhn
- dWJtVjBQb2tDTndRVEFRZ0FJUVVDWElkYwo0Z0liQXdVTENRZ0hBZ1lWQ0FrS0N3SUVGZ0lE
- QVFJZUFRSVhnQUFLQ1JDVWdld1BFWkR5MjFPVEQvOUdpWkxkCnRSWWNteVJKZ2x0aVFRekFp
- UWRjSUQ3OGxHb1dwL3grci92Y1U2YjZqdVl1ZVR3Z1Iwclc3djdsMklSQnlEN24KSEp4YSt0
- SVNvUVpCZ2hvbE1JZmI5TXRoR09KTENZNzdrL1FoQWhuMzJOR1prZWp3OXR6a3MvNDBtclpT
- VVQ4NApaeWJzUVhyTE0vSFI2VElJL0RlUEIwbktEM0ppcHBzMlVIUUQ5cUQySWpFd1NRUGxI
- akNPckVaaDQ1UFo3bTkrClo5M0x6aVRlc1dabFlRdUxpSndzNHJLcHRIVzFkL3dSZWxzaG1t
- NlFxY0wybDRDL2U0MGVEQjlncTRkU1poOVgKUEVZbGxpeU5RaDdhMkxTZHVtRTFyK2NTd0lq
- RS91ZHRSdmRPOWFLb0psT2JVSzVkTmpTUEg3d0tUYndkWGRZRApHUHdEaFhkNThOQXdyK1BY
- QmxQajB0STFMQ3ErTEJ4ZUt6aFdYK0dWcTlEb2pWanlVREV4Rk5Ga1h1b0M3ZzhtClY5VDB0
- ZUJpdVpSbm91WEt3VjJGcHRaT0hIN0JVRVd0a0t0aGgxZXRmT1dwaWdCemtVN2JQc2ZJWVQr
- cnk5dGIKMW9KK3Y0MVBOYXFaRW1QVXBKeHZmek5UN3Ayd01lRDdaajlmMHJ1YlJQdExBSjJR
- R2pyRkhzdVh3QU9xcHl6ZQoxOEVidHNZazBOMHp1SEVoY2orUEJJQmZoMFlJWWQ1MW9mNkdJ
- aU95UjlxMFhYdHBsVUo3VDIvSDF1UXFrWGxwCitnVzRWa2lmc2NJckl1eWZueFpXMTJlSXZq
- NnlicVdMN2FZS0dZbVQ2aUxDUGJIWXlZY2F5bDRFa0ZjckNGN0UKZTBXVC9zY1ZNaE8vNVgv
- SGFOQTVIQngvcjUycGdMY3Y0aTlNeExRbVUzUmxabUZ1SUZkaGFISmxiaUE4YzNSbApabUZ1
- TG5kaGFISmxia0JwTW5ObExtTnZiVDZKQWpnRUV3RUNBQ0lGQWx0NmdCTUNHd01HQ3drSUJ3
- TUNCaFVJCkFna0tDd1FXQWdNQkFoNEJBaGVBQUFvSkVKU0I3QThSa1BMYmpic1AvamdqYVNz
- NUh0bGtBSXZXUytGcm15N2MKaG5jT0F4TFRWL0Q2UkV3SU95R0poRkt3d29pck55UTJnOXZV
- YTNZQ1lDZjFmSjh3RWhhS09COWQwTHBNUm5MNApkRVQ4ZDgyMzhFL3BLK0hxTktpSXNKaHM2
- SnNLOFpnalZRR3JtbWZua0dyWisxdjBIQnV4ZGljZ0duUC9XdHVBClVsOGw2Mi9BTGJheXlq
- KzYxQ2xyc0V0UklhcU82N0xJWXdQaVBEUkkrWGlNek5pR3pIRi8xUTZHUjAyUkg2YTMKRjg5
- ejhhUHhjSGkxWnZDdDJ5a3o2VUVjaHpQMHI1Z3FGSisvTC9VcHU4ME1YaVk0djVlSWFCNTJn
- VlBnaXlNQQpsTDJkRHMxbUladm5yUkxSWTJ0YjNtQVlOa1Y1QjVJRFQzcGtXeTZrS281T0Nn
- SytZZFlPUjhGTloyb04ydDhPCnJLK1ZudGFLN01NU0tIbG1ZL3NPd3RSbEVoMU9CbXJjQ3dH
- d21wLzA1R2tSNDZmL0lzaFJWZUZPUmF3K0dBcXQKUDIrQ0ZhMkNOQS9JSG5aTm95aWtsRHpQ
- UUhVVUdzck5wcERyaFg5Sm1oQm1nMXYyeXdIMU5YdTFpRGZQMUJBdwpLZ29rdDVmNVVhUkY5
- c0FBNTN2V0V2YlVVTjllZXNGR0x6UFdkSkdRNWhwZC9WSDVJUXk5U0JyaC93SWNla3E1Cm4w
- a042cGJUSHhHRTUyU2kvTVZJa05UdURaM2FwbjJqbERaNHBPdHBCWEkydlAzYlBPK05pcUJa
- anNVM3R4TGkKV2R2MkZqeXp6NlhMUndlV1JZVkw1SGE2TER0eG9yMnZ1NlVQMDdwOXh6MXhS
- WmFPRFczb1lsSEZ6WXBhNFc1ZwpMSGIybEVrSXVVZlNjaWNHYmpqQXRDbFRkR1ZtWVc0Z1Yy
- Rm9jbVZ1SUR4emRHVm1ZVzR1ZDJGb2NtVnVRR2x1CkxYUmxZMmd1WTI5dFBva0NOd1FUQVFn
- QUlRVUNYSWRlaHdJYkF3VUxDUWdIQWdZVkNBa0tDd0lFRmdJREFRSWUKQVFJWGdBQUtDUkNV
- Z2V3UEVaRHkyeUhURC85VUY3UWxEa0d4elE3QWFDSTZOOTVpUWY4LzFvU1VhRE51Mlk2SQpL
- K0R6UXBiMVRiVE9yM1ZKd3dZOGEzT1d6NU5MU09MTVdlVnh0K29zTW1sUUlHdWJEM09EWko4
- aXpQbEcvSnJOCnQ1elNkbU41SUE1ZjNlc1dXUVZLdmdoWkFnVERxZHB2K1pIVzJFbXhuQUox
- dUxGWFhlUWQzVVpjQzVyMy9nL3YKU2FNbzl4ZWszSjVtTnVEbTcxbEVXc0FzL0JBY0ZjK3lu
- TGh4d0JXQld3c3Z3UjhiSHRKNURPTVd2YUt1RHNrcApJR0ZVZS9LYjJCK2pyYXZRM1RuNnMv
- SHFKTTBjZXhTSHo1cGUrMHNHdlArdDlKNzIzNEJGUXdlRkV4cmlleThVCkl4T3I0WEFiYWFi
- U3J5WW5VL3pWSDlVMWkyQUlRWk1XSkFldkN2VmdRL1UrTmVSaFh1ZGU5WVVtRE1EbzJzQjIK
- VkFGRUFxaUYyUVVIUEEybThhN0VPM3lmTDRyTWswaUh6TElLdmg2L3JIOFFDWThpM1h4VE5M
- OWlDTHpCV3UvTgpPbkNBYlMremx2TFphaVNNaDVFZnV4VHR2NFBsVmRFamY2MlArWkhJRDE2
- Z1VEd0VtYXpMQU1yeDY2NmpINWt1ClVDVFZ5bWJMMFR2Qis2TDZBUmw4QU55TTRBRG1rV2tw
- eU0yMmtDdUlTWUFFZlFSM3VXWFo5WWd4YVBNcWJWK3cKQnJoSmc0SGFONkM2eFRxR3YzcjRC
- MmFxYjc3L0NWb1JKMVo5Y3BIQ3dpT3pJYUFtdnl6UFU2TXhDRFhaOEZnWQpsVDR2MjNHNWlt
- SlAyemdYNXMrRjZBQ1VKOVVRUEQwdVRmK0o5RGEycitza2gvc1dPbloreWNvSE5CUXZvY1pF
- Ck5BSFFmN2tDRFFSYmVvQVRBUkFBMkhkMGZzRFZLNzJSTFNESGJ5ME9oZ0RjRGxWQk0yTSto
- WVlwTzNmWDFyKysKc2hpcVBLQ0hWQXNRNWJ4ZTdIbUppbUhhNEtLWXMya3YvbWx0L0NhdUNK
- Ly9wbWN5Y0JNN0d2d25Lem11WHp1QQpHbVZUWkM2V1I1TGtha0ZydEhPelZtc0VHcE52NVJj
- OWw2SFlGcExrYlNrVmk1U1BRWkp5K0VNZ01DRmdqclpmClZGNnlvdHdFMWFmN0hOdE1oTlBh
- TEROMW9VS0Y1aitSeVJnNWl3SnVDRGtuSGp3QlFWNHBndzIvNXZTOEE3WlEKdjJNYlcvVExF
- eXBLWGlmNzhJaGdBelh0RTJYck0xbi9vNlpINzFvUkZGS096NDJsRmR6ZHJTWDBZc3FYZ0hD
- WAo1Z0l0TGZxemoxcHNNYTlvMWVpTlRFbTFkVlFyVHFueXMwbDE4b2FsUk5zd1lsUW1uWUJ3
- cHdDa2FUSExNSHdLCmZHQmJvNWRMUEVzaHRWb3dJNm5zZ3FMVHlRSG1xSFlxVVpZSXBpZ21t
- QzNTd0JXWTFWNmZmVUVta3FwQUFDRW4KTDQvZ1Vnbjd5US81ZDBzZXFuQXEycFNCSE1VVW9D
- Y1R6RVFVV1ZraUR2M1JrN2hURm1oVHNNcTc4eHYyWFJzWApNUjZ5UWhTVFBGWkNZRFVFeEVs
- RXNTbzlGV0hXcjZ6SHlZY2M4cURMRnZHOUZQaG1RdVQyczlCbHg2Z0kzMjNHCm5FcTFsd1dQ
- SlZ6UDRqUWtKS0lBWHdGcHYrVzhDV0xxekRXT3ZkbHJEYVRhVk1zY0ZUZUg1VzZVcHJsNjVq
- cUYKUUdNcGNSR0NzOEdDVVcxM0gwSXlPdFF0d1dYQTRueStTTDgxcHZpQW1hU1hVOGxhS2FS
- dTkxVk9WYUY5ZjRzQQpFUUVBQVlrQ0h3UVlBUUlBQ1FVQ1czcUFFd0liREFBS0NSQ1VnZXdQ
- RVpEeTIrb1hELzljSEhSa0JaT2ZrbVNxCjE0U3Z4MDYyUHRVMEtWNDcwVFNucC9qV29ZSm5L
- SXczRzBtWElSZ3J0SDJkUHdwSWdWanNZeVJTVk1LbVNwdDUKWnJEZjlOdFRiTldnazhWb0xl
- WnpZRW8rSjNvUHFGclRNczNhWVl2N2U0K0pLNjk1WW5tUSttT0Q5bmlhOTE1dApyNUFaajk1
- VWZTVGx5VW15aWMxZDhvdnNmMWZQN1hDVVZSRmNSamZOZkRGMW9ML3BEZ01QNUdaMk93YVRl
- am15CkN1SGpNOElSMUNpYXZCcFlEbUJuVFlrN1B0aHk2YXRXdllsMGZ5L0NxYWpUS3N4Nytw
- OXh6aXU4WmZWWCtpS0IKQ2MrSGUrRURFZEdJRGh2TlovSVFIZk9CMlBVWFdHUytzOUZOVHhy
- L0E2bkxHWG5BOVk2dzkzaVBkWUl3eFM3SwpYTG9LSmVlMTBEamx6c1lzUmZsRk9XMFpPaVNp
- aElDWGlRVjF1cU02dHpGRzlndFJjaXVzNVVBdGhXYU8xT3dVClNDUW1mQ09tNGZ2TUlKSUE5
- cnh0b1M2T3FSUWNpRjNjcm1vMHJKQ3ROMmF3WmZnaThYRWlmN2Q2aGp2MEVLTTkKWFpvaUFa
- WVpEKy9pTG01VGFLV042b0dJdGkwVmpKdjhaWk9aT2ZDYjZ2cUZJa0pXK2FPdTRvclRMRk16
- MjhhbwpVM1F5V3BOQzhGRm1kWXNWdWE4czZnTjFOSWE2eTNxYS9aQjhiQS9pa3k1OUFFejRp
- RElScmdVek1FZzhBazdUCmZtMUtpWWVpVHRCRENvMjVCdlhqYnFzeXhrUUQxbmtSbTZGQVZ6
- RXVPUEllOEp1cVcyeEQ5aXhHWXZqVTVoa1IKZ0pwM2dQNWIrY25HM0xQcXF1UTJFNmdvS1VN
- TEFia0NEUVJiZmw5REFSQUFzRExjYStMbFAydm5mdEVHaHBjQQpCR1ZOUUVGbkdQckNhdVU2
- SGhOODA1V3RQVHRtc1JPdUp6cWdVVDBtcHFXSWZacTZzTXd5dkhLOVRzL0tIM0paClVWYlJD
- M3oyaDNLZmhIL0RhZjk1cGQ2bVBjL2g5dkYvT3kzK2VUV2hnR25QNmNBNWtsUitmTzFXaEc4
- VnJpWHYKck5lUkcyMHN6emplSG9jblNJY1Q1WHVaUjB1REhPaUd4T2l6MXNNUkZUR3h6R095
- MTlSOXJ2dTYzdGlJM2Q3dgpnYzc1T0NBZGtlQi9TZUNFbGFSdzBUZjdMWmJQampzRjI2M0JZ
- bk1mNGtrTkVLdnFXY1UyaWNNcCtxZXpqeW5CCnB2ZXVlMHJDVFFCWUFRbG9GQ1ZUR0hyV1dB
- NkQ0VzVPMkFmSWRJYzF1MUpDWnAyZjVMV1ZvVUZUVklyUW5RUVUKU0hDaWZyOU1aeExUdFBK
- ZFU1Mm9TUHczZGs0aExQOGlKSUx1dnYvYXZhakNzUVlIRXR3WXNiZUZaeGl1TGdscApBN1lj
- Sk5ObXBnQ3BNRDR3VWh2bEN0QUtOQlFXeXIyOTc2OThFUVRuNDZlQmVVNkttMkNpaFhrZ3dD
- eWY4ZXlLCkxFM3NYZXdhcTVrZ1pXdk5xNml1NXFZSVJCOXl3K2NYYzYwZE9aRE9scTkzWDVT
- QVJZemFvZXBrSHo0cmtMa1AKUG8rdENIeUhRUHNHblBYYzlXVDgwREM5Tm5KR2R2VWx5NXJk
- TUk0eHBaeWdlb2tqd293VlFsUFV1Y1M2TXluNwpmOHc4Y2dmQjdDMklBSWNEeDJwUC9IendY
- dmtDT1FOQTdtVjFsTTA4bitnVmtUcnpweGlwNURicTRDSW9ZeDJNCkpaVDhiR1JINlhqY1VE
- S2EwOVFoeVpzQUVRRUFBWWtFUkFRWUFRZ0FEd1VDVzM1ZlF3SWJBZ1VKQThKbkFBSXAKQ1JD
- VWdld1BFWkR5MjhGZElBUVpBUWdBQmdVQ1czNWZRd0FLQ1JCVnhETFBjVk1NamNkc0QvMFJo
- QXN1UVlPeQpyMTNCbDNOaFhrWUFaR3AyWkZER3VrZTdPU2tWOG9qT09UZFR5ei9jT1JHQ2J5
- ZEQrRGd2cUZ5VmRuT1hLZ08wCmxKbUd3ckdlTGRnZ0F2aDBpaHJwNU8wWVVKOWJCU1htR01t
- UVRZSC9BbUxUR2FkYnVqQ1dqNWZGVWtDeXd4aW0KSHV5MFBiMjRwelR2UzUwR1k1WStxSDBG
- SE5haWdka2tpV04zcnVnN0haRXUvQ3lsUFpqT1h6K0QxUVBNckV4dwo3ZC9NS2FiVis5YU5i
- UVlabGRJajk4UXd2VUYxS1N6YThqbFVJdnBoUnEyN0FUOGZER1lHUGZERU1nMmNCT2FlCkty
- N29uUXM0YjdhV082aWZEbHhRVHB6c3pvK0FuODA3Tk1TdFZFRmYrczNBaFZEM2U3bmY4SkJh
- dmJWckFlMGsKb20yNm96elBubnh6K2xxVlZ0dzZVazRYTUl6dGl4L0h3SFl3dUNuY1VYWndL
- MEkzeUFKd2pZd29vck9DaEozUwpFVWJKUVB0R3NneFJERXhWQkZlNk5MUC82MnhQOU82dGFj
- d09kYjBNbVAxYjM5cFJBVEM3YmdkMWxkVUxpNzVaCmxKckowL1NpVkVyb3FOWXk3OXRmbWdB
- WjJVeFptczlTckV5Nm85UVNmc24xYVh2K01QTDlKYUNHbWtQNnpiTFEKTm5kajBKY2FRbmtD
- MHZneWRPMUJtNk11OTZQOXVmbEtaY0FTNndtTE01SWRIT3lqTDg4d0h3anVjakFPQnRjdwpw
- MG9HVG5WT25Sc05ZU084VzhZWi9LZGJ1Nzg1ZGF6TXFKMmlOakFEdUJiZG02TjRqNUVkTW5r
- TG4wQklmUEpwCmRnbTR2bDJVcExqd1JHci9NM3dtbTVwdnMrNnVCN2hrL0ZKaUQvNGxsRU5Q
- NGVNMWg3U200aitWcTZOMSt6VEIKSVhKQWViSXFhc0RwNXlaUzdYcnk0STM2bjg1WEVZZkcw
- MWx0QXlob05WMkRPOFNJUlFwdWkydHErOVJQM1JLMQpKREJ4eEVKWTJFTzVKWjhNeGFQSFEw
- RFQwNWxSRmpLMkFsaGRFSXRqTGpwSjNmVW05c3FMeE1XeHpQNlV6M2lpCjJ1YTR1bnJ0Nk9D
- VHFRd2lqRi8zYlRXaXd2VkFBSG5NRlVpb1hzaEhhb2hWRGNWZm5lSU1mVjBiUUNYWWkzTnAK
- WTB2MFp3Y2lGSCtnU0M3cUQ2WE51aHBWR1NMNElpbGlGeS9TemNhSkV6QUhlTERTaFpQMkNX
- ZG5DNHZnbDM3dApocHg4aDU1WWhKbjZIU3VVelBnaGFLdFZCMmsrajdaZXlaK1NGeHA3SXVi
- SEN3TEhsUWhUNzVSd1EzaUF4S242CjBxajUxY1lUbnF4ZFpYVzZmSDNQa3VNellVNUdwcVIv
- MU9sNWMvd2ZJNmc2QW04eUtXLzBFVUx0K0tuNExGc1MKbTdZM201SDV2MTJVNkpCWXZWK3Ix
- M2paaW9zNEVFREU5M0Q1c05IMk1JeVJ6Q0RxMXpkZHQ0WHV5S0ZqUEtXMQo5aWJaRGZGVjdL
- dUNzdnVMMjNzQmMxc0NNb3ArRTFtVC9ReE9JQTZvRFQxTVFzdHdPVnVReURDdi9PdktTZ2Z6
- CjhGWEdMNkFQY2xqQ3FqOEFKaHhReXN4ZG9pUVA4bS92dStialdHR3Z4dzVzMWxncGlSRFRS
- VVBnY0pKTmFHWTIKVklEclpRaTROU2lOUTBOSWkrZGp1NGZOTW1DcFFxZzh0YkMzY0FhNnl3
- bTZvUUIxU0JobURYMmUxMWdSbGx1SQpPblRHUEUwSFRvM2w3MmxoYmc9PQo9cVpNVgotLS0t
- LUVORCBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCg==
-Message-ID: <1e7d639e-112b-892c-4279-23af82ea004e@i2se.com>
-Date:   Fri, 6 Aug 2021 13:40:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S231887AbhHFMrw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Aug 2021 08:47:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:40794 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1343751AbhHFMrw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Aug 2021 08:47:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1628254056;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=971GhShz25Kr5BT/yqIK2pAuLtt/U3ecg5I+mmxzob0=;
+        b=QaeKfo9jsawquLurt62oYvcOngBXiFrzXQX7f1NZxUWcwD02ege7jJe5kUy/byy6/A/31C
+        rdN2cSt1jgcuzb+jB80r+gpbnRLqRe/goRlxARwlj7altfMkk4rS89tUiYGhvOX4iNR6sh
+        1BxaBsPntv5ebk7xnys6ieYHeDEe+C4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-201-M9FlUlnAMRCzKX-mM45-aQ-1; Fri, 06 Aug 2021 08:47:33 -0400
+X-MC-Unique: M9FlUlnAMRCzKX-mM45-aQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 06F2E1084F5F;
+        Fri,  6 Aug 2021 12:47:30 +0000 (UTC)
+Received: from t480s.redhat.com (unknown [10.39.192.224])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 16DFE5D6A1;
+        Fri,  6 Aug 2021 12:47:16 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Marek Kedzierski <mkedzier@redhat.com>,
+        Hui Zhu <teawater@gmail.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH v3 0/9] mm/memory_hotplug: "auto-movable" online policy and memory groups
+Date:   Fri,  6 Aug 2021 14:47:06 +0200
+Message-Id: <20210806124715.17090-1-david@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20210805211200.491275-1-jeremy.linton@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Content-Language: en-US
-X-Provags-ID: V03:K1:C891bMNflNEnNuQu9soF0cwJ7szSNK4HXZT1A7bb0mBlJlwpOpD
- rGEgRGHCCO7/niwOvc8nr263HBmukhHjuljZYnc39zgqGShEYIg/wvIB3OHU+7pS1C5AkrJ
- rpTI8RCYwNQS8Ib46Abf6Ggng40rvSKvYngneLZA7WyCbUC2uULD3M06dYefdJJg4HY2od5
- ZY7S27Pqb7kWKtom62vHg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:71pa6kn6WSY=:gMEuooBEj321EK/56BL34W
- 5hQn9ztoZZY4WZDhM3xCSaRV5QK1tX8+wcNTqzdaFClEGP+GKB6NsAv5lWzJhvSKumflA5OsI
- qeXodAQsmFkESgoHrAQjcLilYuT/Td9lu7ggKWe6ZSOdx0rhuC1wEbjqdR0v7ugdfEw2juFcj
- S+Y8Hqta/ZcUA2r3PAr/CXCWmoqCjkZ/9jwxfVC0P5nbTKspgLGaDnuxt/Apj63Yjl64EnjUn
- tDqzMJFATw2qUX2WgOLYMyvg90L1+7p1oTGaYsQ56npKCw+HpJgeAIZ31Xt4gLQkn4ecG6zTA
- /ryyTt47fGXArgne9KaEBO+YvW68X0vjr0FRwiACwnFZZZJBs1LnFksGAXrr98AJl6yQu4WKB
- oDAoDowhHI/I4dpjhw/1/JzklP6R9zpZ1esuOj3aKVVVzBrtBeyQhE444lXybUI6Ytx5JoRfh
- Gnt2ch7bpz6kjX0qe0ecRQd4wArcMLqNPoFDMTQvo4p2x0PbDFA9O0slWgFyVkgQYiwGPLe02
- IqHRXKiL5eQ7+8hzMuBpzjp0LJDbxq+Wl5cZVl1qYxOivUntMXTAyVPMhWG+DJ/ZQmSuTye+X
- B+W0mt7Jz4qlxxuvpKDtF7bl6V5fDQb1IIsCe19iCBfkm4y5UHhB7ZPd/oHU3eKTondopCE48
- IiFuPQMkNNcPiilWi51ojMv11KwaivTyzW8qn1Rmy9hpfy37K9YxcBjyt7LPaGNVwVc245rLJ
- mfrJLvr8EwqyxvEGGqkkt47nYwUp/fxK1YRsn5g0g4LDNVBC4c0lj/AwSZcPm6LJjzajTbQVo
- jSj0aikxGn/yma/NBArRmpFmpmOghhxNiGz9exo8LWx5jNNflhpcyK/HiGCavYqF1T8qW449c
- aXE359iufnuMpkQ4Rxkw==
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jeremy,
+Hi,
 
-Am 05.08.21 um 23:11 schrieb Jeremy Linton:
-> The PFTF CM4 is an ACPI platform that is following the PCIe SMCCC
-> standard because its PCIe config space isn't ECAM compliant and is
-> split into two parts. One part for the root port registers and a
-> moveable window which points at a given device's 4K config space.
-> Thus it doesn't have a MCFG (and really any MCFG provided would be
-> nonsense anyway). As linux doesn't support the PCIe SMCCC standard
-> we key off a linux specific host bridge _DSD to add custom ECAM
-> ops and cfgres. The cfg op selects between those two regions, as
-> well as disallowing problematic accesses, particularly if the link
-> is down because there isn't an attached device.
+this series is based on v5.14-rc3, with [2] on top.
 
-i just want to inform you, that i recently submitted the inital patch
-series for DT support regarding CM4 [1].
 
-I left out anything related to PCIe (including downstream changes to
-pcie-brcmstb).
+I. Goal
 
-Best regards
-Stefan
+The goal of this series is improving in-kernel auto-online support. It
+tackles the fundamental problems that:
 
-[1] - https://marc.info/?l=linux-arm-kernel&m=162782110325813&w=2
+ 1) We can create zone imbalances when onlining all memory blindly to
+    ZONE_MOVABLE, in the worst case crashing the system. We have to know
+    upfront how much memory we are going to hotplug such that we can
+    safely enable auto-onlining of all hotplugged memory to ZONE_MOVABLE
+    via "online_movable". This is far from practical and only applicable in
+    limited setups -- like inside VMs under the RHV/oVirt hypervisor which
+    will never hotplug more than 3 times the boot memory (and the
+    limitation is only in place due to the Linux limitation).
 
+ 2) We see more setups that implement dynamic VM resizing, hot(un)plugging
+    memory to resize VM memory. In these setups, we might hotplug a lot of
+    memory, but it might happen in various small steps in both directions
+    (e.g., 2 GiB -> 8 GiB -> 4 GiB -> 16 GiB ...). virtio-mem is the
+    primary driver of this upstream right now, performing such dynamic
+    resizing NUMA-aware via multiple virtio-mem devices.
+
+    Onlining all hotplugged memory to ZONE_NORMAL means we basically have
+    no hotunplug guarantees. Onlining all to ZONE_MOVABLE means we can
+    easily run into zone imbalances when growing a VM. We want a mixture,
+    and we want as much memory as reasonable/configured in ZONE_MOVABLE.
+    Details regarding zone imbalances can be found at [1].
+
+ 3) Memory devices consist of 1..X memory block devices, however, the
+    kernel doesn't really track the relationship. Consequently, also user
+    space has no idea. We want to make per-device decisions.
+
+    As one example, for memory hotunplug it doesn't make sense to use a
+    mixture of zones within a single DIMM: we want all MOVABLE if
+    possible, otherwise all !MOVABLE, because any !MOVABLE part will easily
+    block the whole DIMM from getting hotunplugged.
+
+    As another example, virtio-mem operates on individual units that span
+    1..X memory blocks. Similar to a DIMM, we want a unit to either be all
+    MOVABLE or !MOVABLE. A "unit" can be thought of like a DIMM, however,
+    all units of a virtio-mem device logically belong together and are
+    managed (added/removed) by a single driver. We want as much memory of
+    a virtio-mem device to be MOVABLE as possible.
+
+ 4) We want memory onlining to be done right from the kernel while adding
+    memory, not triggered by user space via udev rules; for example, this
+    is reqired for fast memory hotplug for drivers that add individual
+    memory blocks, like virito-mem. We want a way to configure a policy in
+    the kernel and avoid implementing advanced policies in user space.
+
+The auto-onlining support we have in the kernel is not sufficient. All we
+have is a) online everything MOVABLE (online_movable) b) online everything
+!MOVABLE (online_kernel) c) keep zones contiguous (online). This series
+allows configuring c) to mean instead "online movable if possible according
+to the coniguration, driven by a maximum MOVABLE:KERNEL ratio" -- a new
+onlining policy.
+
+
+II. Approach
+
+This series does 3 things:
+
+ 1) Introduces the "auto-movable" online policy that initially operates on
+    individual memory blocks only. It uses a maximum MOVABLE:KERNEL ratio
+    to make a decision whether a memory block will be onlined to
+    ZONE_MOVABLE or not. However, in the basic form, hotplugged KERNEL
+    memory does not allow for more MOVABLE memory (details in the
+    patches). CMA memory is treated like MOVABLE memory.
+
+ 2) Introduces static (e.g., DIMM) and dynamic (e.g., virtio-mem) memory
+    groups and uses group information to make decisions in the
+    "auto-movable" online policy across memory blocks of a single memory
+    device (modeled as memory group). More details can be found in patch
+    #3 or in the DIMM example below.
+
+ 3) Maximizes ZONE_MOVABLE memory within dynamic memory groups, by
+    allowing ZONE_NORMAL memory within a dynamic memory group to allow for
+    more ZONE_MOVABLE memory within the same memory group. The target use
+    case is dynamic VM resizing using virtio-mem. See the virtio-mem
+    example below.
+
+I remember that the basic idea of using a ratio to implement a policy in
+the kernel was once mentioned by Vitaly Kuznetsov, but I might be wrong
+(I lost the pointer to that discussion).
+
+For me, the main use case is using it along with virtio-mem (and
+DIMMs / ppc64 dlpar where necessary) for dynamic resizing of VMs,
+increasing the amount of memory we can hotunplug reliably again if we
+might eventually hotplug a lot of memory to a VM.
+
+
+III. Target Usage
+
+The target usage will be:
+
+ 1) Linux boots with "mhp_default_online_type=offline"
+
+ 2) User space (e.g., systemd unit) configures memory onlining (according
+    to a config file and system properties), for example:
+    * Setting memory_hotplug.online_policy=auto-movable
+    * Setting memory_hotplug.auto_movable_ratio=301
+    * Setting memory_hotplug.auto_movable_numa_aware=true
+
+ 3) User space enabled auto onlining via "echo online >
+    /sys/devices/system/memory/auto_online_blocks"
+
+ 4) User space triggers manual onlining of all already-offline memory
+    blocks (go over offline memory blocks and set them to "online")
+
+
+IV. Example
+
+For DIMMs, hotplugging 4 GiB DIMMs to a 4 GiB VM with a configured ratio of
+301% results in the following layout:
+	Memory block 0-15:    DMA32   (early)
+	Memory block 32-47:   Normal  (early)
+	Memory block 48-79:   Movable (DIMM 0)
+	Memory block 80-111:  Movable (DIMM 1)
+	Memory block 112-143: Movable (DIMM 2)
+	Memory block 144-275: Normal  (DIMM 3)
+	Memory block 176-207: Normal  (DIMM 4)
+	... all Normal
+	(-> hotplugged Normal memory does not allow for more Movable memory)
+
+For virtio-mem, using a simple, single virtio-mem device with a 4 GiB VM
+will result in the following layout:
+	Memory block 0-15:    DMA32   (early)
+	Memory block 32-47:   Normal  (early)
+	Memory block 48-143:  Movable (virtio-mem, first 12 GiB)
+	Memory block 144:     Normal  (virtio-mem, next 128 MiB)
+	Memory block 145-147: Movable (virtio-mem, next 384 MiB)
+	Memory block 148:     Normal  (virtio-mem, next 128 MiB)
+	Memory block 149-151: Movable (virtio-mem, next 384 MiB)
+	... Normal/Movable mixture as above
+	(-> hotplugged Normal memory allows for more Movable memory within
+	    the same device)
+
+Which gives us maximum flexibility when dynamically growing/shrinking a
+VM in smaller steps.
+
+
+V. Doc Update
+
+I'll update the memory-hotplug.rst documentation, once the overhaul [1] is
+usptream. Until then, details can be found in patch #2.
+
+
+VI. Future Work
+
+ 1) Use memory groups for ppc64 dlpar
+ 2) Being able to specify a portion of (early) kernel memory that will be
+    excluded from the ratio. Like "128 MiB globally/per node" are excluded.
+
+    This might be helpful when starting VMs with extremely small memory
+    footprint (e.g., 128 MiB) and hotplugging memory later -- not wanting
+    the first hotplugged units getting onlined to ZONE_MOVABLE. One
+    alternative would be a trigger to not consider ZONE_DMA memory
+    in the ratio. We'll have to see if this is really rrequired.
+ 3) Indicate to user space that MOVABLE might be a bad idea -- especially
+    relevant when memory ballooning without support for balloon compaction
+    is active.
+
+
+v2 -> v3:
+- "mm/memory_hotplug: introduce "auto-movable" online policy"
+-- Fixup !CONFIG_CMA compilation issue
+- "drivers/base/memory: introduce "memory groups" to logically group memory
+   blocks": Address Gregs feedback
+-- Rename and document group handling functions
+-- Store list of memory blocks instead of a reference count
+-- Return -EBUSY if memory_group_unregister() fails because there are
+   still memory blocks added
+-- Document why memory_group_register() copies the given structure
+-- Simplify return handling in register memory_group_register()
+-- Document "struct memory_group" properly
+- Adjust other code to renamed group handling functions
+- Minor comment fixes and add some more comments
+
+v1 -> v2:
+- Split out all cleanup patches into [2]
+- Minor patch description updates
+- "dax/kmem: use a single static memory group for a single probed unit"
+-- Added
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Marek Kedzierski <mkedzier@redhat.com>
+Cc: Hui Zhu <teawater@gmail.com>
+Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: virtualization@lists.linux-foundation.org
+Cc: linux-mm@kvack.org
+Cc: linux-acpi@vger.kernel.org
+
+[1] https://lkml.kernel.org/r/20210707073205.3835-1-david@redhat.com
+[2] https://lkml.kernel.org/r/20210712124052.26491-1-david@redhat.com
+
+David Hildenbrand (9):
+  mm: track present early pages per zone
+  mm/memory_hotplug: introduce "auto-movable" online policy
+  drivers/base/memory: introduce "memory groups" to logically group
+    memory blocks
+  mm/memory_hotplug: track present pages in memory groups
+  ACPI: memhotplug: use a single static memory group for a single memory
+    device
+  dax/kmem: use a single static memory group for a single probed unit
+  virtio-mem: use a single dynamic memory group for a single virtio-mem
+    device
+  mm/memory_hotplug: memory group aware "auto-movable" online policy
+  mm/memory_hotplug: improved dynamic memory group aware "auto-movable"
+    online policy
+
+ drivers/acpi/acpi_memhotplug.c |  35 +++-
+ drivers/base/memory.c          | 225 ++++++++++++++++++++---
+ drivers/dax/kmem.c             |  40 +++-
+ drivers/virtio/virtio_mem.c    |  22 ++-
+ include/linux/memory.h         |  55 +++++-
+ include/linux/memory_hotplug.h |  21 ++-
+ include/linux/mmzone.h         |   7 +
+ mm/memory_hotplug.c            | 325 ++++++++++++++++++++++++++++++++-
+ mm/page_alloc.c                |   3 +
+ 9 files changed, 683 insertions(+), 50 deletions(-)
+
+-- 
+2.31.1
 
