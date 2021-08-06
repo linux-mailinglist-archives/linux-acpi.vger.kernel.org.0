@@ -2,108 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B64B3E3184
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Aug 2021 00:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 170DE3E318C
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Aug 2021 00:13:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245447AbhHFWJe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Aug 2021 18:09:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49088 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245444AbhHFWJe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Aug 2021 18:09:34 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1235C0613CF;
-        Fri,  6 Aug 2021 15:09:17 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id h14so12769403wrx.10;
-        Fri, 06 Aug 2021 15:09:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=HbdHuUgm9R0O8iD622sN5nUz4CxbxanIEic5v8NNLJE=;
-        b=SuLT8uBTDrpu9O8cTw8EoHnTAMCFyuGzPjEAfgUBnzfLjrNHMfi5GCnTWT4pDq7KbX
-         K73XknSxcL2b0lQhgySS5mPF9dT3GpYo8pvVNrY2hTtjWEXsF6x3mXed+xySyc7SzwG3
-         N+zyrsTxJ25lgW8VWX4ojjtQ7aMVayF+QDE0q+AQN+pn4Jf2zQqqfOzbzSewcVbv6gSu
-         jqxrKXvRMeP24IaasGaqXj+3t0Ls1d8K5CncgStW44WsLxUB87Pt3BQCtar80b3hvL2s
-         wLr7kHSrNg/3K6SUcmKDaryD6bG7s4kk5nuIMKHgRvzW34fyUBBDBPPzXE6z/3pUE7yh
-         BPqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HbdHuUgm9R0O8iD622sN5nUz4CxbxanIEic5v8NNLJE=;
-        b=nIve0DiIjfZkHDvvXpSMBfpkEMyImM1Q7d4EAQh2zD4T7MJq1lNP0KCuShLRdZ4bhQ
-         qYilMYatxnqtwmzneCqH4RTzUjz5bMM9DS3mHHLX2QkuHjWU4QTI2qBSYIY0yWaJ2UNZ
-         AcbJcm8XAM+BqlxLbpKyFnjr5hvo61C17x3QVecSyqlD1pwxe9LBtfSNhdZ6QRC+2mk5
-         TSaQGXIEqVqDdklKVycqa2BHE4m/wTRz3AaIexHTTR9pHfYmJqAwv+GEv8NmMqhc7zi9
-         tnGQ8s2Q3wPg5VfIB57IGid58mKzHjpuet0lT52+wv8OYPXlsprPZusiUCIzLfmhzmNF
-         avew==
-X-Gm-Message-State: AOAM533s/BSrIBdxS3Vyco6g1tg+j6vdbQIJQfVck/n+7KFDzrSlmYCd
-        8zF38Ok+lKZM/Ue1xGLdM8Y2TfNL0HE=
-X-Google-Smtp-Source: ABdhPJxsjnEToAvjIfzMFnIo0vfMKI+o6oeBOX0DBjBZbRWHUVjqUhqntfB/c/EGvqh1q089GWkc8g==
-X-Received: by 2002:adf:cd02:: with SMTP id w2mr13222132wrm.68.1628287756350;
-        Fri, 06 Aug 2021 15:09:16 -0700 (PDT)
-Received: from localhost.localdomain (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net. [86.13.91.161])
-        by smtp.gmail.com with ESMTPSA id y21sm12764204wma.38.2021.08.06.15.09.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Aug 2021 15:09:15 -0700 (PDT)
-From:   Daniel Scally <djrscally@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-acpi@vger.kernel.org, gregkh@linuxfoundation.org,
-        rafael@kernel.org, andriy.shevchenko@linux.intel.com,
-        laurent.pinchart@ideasonboard.com
-Subject: [PATCH RESEND v3 2/2] Revert "media: device property: Call fwnode_graph_get_endpoint_by_id() for fwnode->secondary"
-Date:   Fri,  6 Aug 2021 23:09:06 +0100
-Message-Id: <20210806220906.326758-3-djrscally@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210806220906.326758-1-djrscally@gmail.com>
-References: <20210806220906.326758-1-djrscally@gmail.com>
+        id S245451AbhHFWNP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Aug 2021 18:13:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53284 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231577AbhHFWNO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 6 Aug 2021 18:13:14 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 291E761179;
+        Fri,  6 Aug 2021 22:12:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628287978;
+        bh=ntBblkw27DzG1SDuhwy9/ADL5F68jkVcbJJtcTu4720=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=nTUpXNwatcS8bNHyLfP0yBfT8MRCkrXawEWlGkn+Y7ZWiwzgz/Fo7WGrVHb5Zu2Nf
+         /7g+YxnSxlnrDJ3YyFMOLHgmurdVnQRU59bID88Ia6SAOlaKPyax6Yua+aqsxPfB5d
+         zL2mZ/ospnIZW4FLU82UBzvdaOLSkK8ls6vRWHWyANh3AMakQAeDkQyo/uBIdVddZ3
+         w/DuweOx1bZrolnnKh2FbjE4lQLirPjj0/jWNTmdiFe0N4Z04Gmqg+ZRKNr5qLLVJ6
+         P5FpBeQFVJ5tcEgY2dnjA9ymLy7XqOmHQulbUH2rH8LWMsISaGTeC8t/IREtcqYSSL
+         aejk4FTUA+TiQ==
+Date:   Fri, 6 Aug 2021 17:12:56 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     linux-pci@vger.kernel.org, lorenzo.pieralisi@arm.com,
+        nsaenz@kernel.org, bhelgaas@google.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robh@kernel.org, kw@linux.com,
+        f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] PCI/ACPI: Add new quirk detection, enable bcm2711
+Message-ID: <20210806221256.GA1891371@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210805211200.491275-4-jeremy.linton@arm.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This reverts commit acd418bfcfc415cf5e6414b6d1c6acfec850f290. Checking for
-endpoints against fwnode->secondary in fwnode_graph_get_next_endpoint() is
-a better way to do this since that function is also used in a bunch of
-other places, for instance sensor drivers checking that they do have an
-endpoint connected during probe.
+In subject, this or similar would match history:
 
-This reversion depends on the previous patch in this series, "device property:
-Check fwnode->secondary in fwnode_graph_get_next_endpoint()".
+  PCI/ACPI: Add Broadcom bcm2711 MCFG quirk
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Daniel Scally <djrscally@gmail.com>
----
+On Thu, Aug 05, 2021 at 04:12:00PM -0500, Jeremy Linton wrote:
+> Now that we have a bcm2711 quirk, we need to be able to
+> detect it when the MCFG is missing. Use a namespace
+> property as an alternative to the MCFG OEM.
 
-Changes in v3:
+Rewrap to use ~75 columns.
 
-	- specified that this patch depends on 1/2 (Greg)
+Mention the DT namespace property here.
 
- drivers/base/property.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> ---
+>  drivers/acpi/pci_mcfg.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
+> index 53cab975f612..7d77fc72c2a4 100644
+> --- a/drivers/acpi/pci_mcfg.c
+> +++ b/drivers/acpi/pci_mcfg.c
+> @@ -169,6 +169,9 @@ static struct mcfg_fixup mcfg_quirks[] = {
+>  	ALTRA_ECAM_QUIRK(1, 13),
+>  	ALTRA_ECAM_QUIRK(1, 14),
+>  	ALTRA_ECAM_QUIRK(1, 15),
+> +
+> +	{ "bcm2711", "", 0, 0, MCFG_BUS_ANY, &bcm2711_pcie_ops,
+> +	  DEFINE_RES_MEM(0xFD500000, 0xA000) },
+>  };
+>  
+>  static char mcfg_oem_id[ACPI_OEM_ID_SIZE];
+> @@ -198,8 +201,19 @@ static void pci_mcfg_apply_quirks(struct acpi_pci_root *root,
+>  	u16 segment = root->segment;
+>  	struct resource *bus_range = &root->secondary;
+>  	struct mcfg_fixup *f;
+> +	const char *soc;
+>  	int i;
+>  
+> +	/*
+> +	 * This could be a machine with a PCI/SMC conduit,
+> +	 * which means it doens't have MCFG. Get the machineid from
+> +	 * the namespace definition instead.
 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index fb0e852dad5f..c6bb3d453c57 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -1234,14 +1234,7 @@ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
- 		best_ep_id = fwnode_ep.id;
- 	}
- 
--	if (best_ep)
--		return best_ep;
--
--	if (fwnode && !IS_ERR_OR_NULL(fwnode->secondary))
--		return fwnode_graph_get_endpoint_by_id(fwnode->secondary, port,
--						       endpoint, flags);
--
--	return NULL;
-+	return best_ep;
- }
- EXPORT_SYMBOL_GPL(fwnode_graph_get_endpoint_by_id);
- 
--- 
-2.25.1
+s/SMC/SMCCC/ ?  Cover letter uses SMCCC (not sure it's relevant anyway)
+s/doens't/doesn't/
 
+Rewrap comment to use ~80 columns.
+
+Seems pretty reasonable that a platform without standard ECAM might
+not have MCFG, since MCFG basically implies ECAM.
+
+Is "linux,pcie-quirk" the right property to look for?  It doesn't
+sound very generic, and it doesn't sound like anything related to
+ECAM.  Is it new?  I don't see it in the tree yet.  Should it be in
+Documentation/devicetree/bindings/pci/pci.txt so we don't get a
+different property name for every new platform?
+
+> +	 */
+> +	if (!fwnode_property_read_string(acpi_fwnode_handle(root->device),
+> +					 "linux,pcie-quirk", &soc)) {
+> +		memcpy(mcfg_oem_id, soc, ACPI_OEM_ID_SIZE);
+> +	}
+> +
+>  	for (i = 0, f = mcfg_quirks; i < ARRAY_SIZE(mcfg_quirks); i++, f++) {
+>  		if (pci_mcfg_quirk_matches(f, segment, bus_range)) {
+>  			if (f->cfgres.start)
+> -- 
+> 2.31.1
+> 
