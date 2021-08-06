@@ -2,70 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 738223E2C23
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Aug 2021 16:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C6A83E2CE2
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Aug 2021 16:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236588AbhHFOKu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Aug 2021 10:10:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54790 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235427AbhHFOKs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Aug 2021 10:10:48 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BED33C06179C
-        for <linux-acpi@vger.kernel.org>; Fri,  6 Aug 2021 07:10:32 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id p21so13185594edi.9
-        for <linux-acpi@vger.kernel.org>; Fri, 06 Aug 2021 07:10:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
-        b=q3xyYt1HrVQnyL1KZndhIFKim0Z6RZXWCajZa6+jKaUt/xPBmWrU2b2TpwIqgxHoY3
-         6sUeXJPoUC3zz+xqx5Y/7bh16ON7BcCcP2liy5jl/yv+hyxVGmxIcBCDJXoapuOO0RIl
-         REN9Zv+ClhtVVEMybVDTEUTnyt+YraWqvgNO4CiPEvSNbjJp0ymaQzc4FwPALfOqM4La
-         f+KzIMXFoGuca5XlZdCXXnnqi+xUiOGsem/cV9JUjNFonSZWOzEGazowyEr2eG3dp5DR
-         pLBa7cN2FmOkeXw/dSFAaB7k29Eu0Yivashc8iQbXHlro4ZoI7aiyRP21+G8wGDlMmu6
-         HPDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/oMubRmlLM5EZ/UdY6Fj3wsfS2kyoMzN9ASXgZ3xneY=;
-        b=dF7D7358IeaEO/glyH4PSBSQgT8mHQsdcAnaSoLWgvefF34yXT6RRTJEqsv5tMtsEU
-         /5/1dRkOXeOoTxviL5+C7JF7gadOpGYSF8NeQst5DZdUi2TC0OrZO3/qyLa8VTIf0GbE
-         j9ivl+HQWB/rJoZrQduLinldyAvPC2fuEeVAT19Cdm6MzmHG47PTRlf7NhFY6tFIOUVO
-         PwDqSZgVsDbH3vRcfVsrK3aEDbp4Awxooly11YORhwBRsup+HClNUxUMnvTf46xDXS5x
-         DpG1zhUNab2kXrQrmOtEc0knQwrdIVlIgyteFW3kINtme84Zp+FPaD+H6fSczGwoAxtH
-         qC+Q==
-X-Gm-Message-State: AOAM530+bsBDX2RnahgqoBFdoZyzZn3oh69MF+nJLC82k7CJa4l+TVdR
-        KgwIU/t3YOP25UQAUEslvS7/Y+ydD7/v7uNL9A==
-X-Google-Smtp-Source: ABdhPJx229jhz+o+nQwdgIkoqR5HwLh3S4+JGHt0eG+5fB4X3WTmNmInTj1ZpuXDIVm9CYEhhFZzLyuZYbLrplGdX6A=
-X-Received: by 2002:a05:6402:3094:: with SMTP id de20mr13526197edb.272.1628259031175;
- Fri, 06 Aug 2021 07:10:31 -0700 (PDT)
+        id S242203AbhHFOoS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Aug 2021 10:44:18 -0400
+Received: from mga12.intel.com ([192.55.52.136]:45748 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241632AbhHFOoP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 6 Aug 2021 10:44:15 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10068"; a="193974201"
+X-IronPort-AV: E=Sophos;i="5.84,300,1620716400"; 
+   d="scan'208";a="193974201"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2021 07:43:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,300,1620716400"; 
+   d="scan'208";a="459389331"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 06 Aug 2021 07:43:55 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 3B11EDE; Fri,  6 Aug 2021 17:37:40 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        hdegoede@redhat.com, Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] x86/platform: Increase maximum GPIO number for X86_64
+Date:   Fri,  6 Aug 2021 17:37:11 +0300
+Message-Id: <20210806143711.37553-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Received: by 2002:a54:26cf:0:0:0:0:0 with HTTP; Fri, 6 Aug 2021 07:10:30 -0700 (PDT)
-Reply-To: mrmaxwellwatford@gmail.com
-From:   Maxwell Watford <orchowskiruthi@gmail.com>
-Date:   Fri, 6 Aug 2021 14:10:30 +0000
-Message-ID: <CA+q9Q6OJB6Z0+y=5_3MBDNGkAUG9rVxg7bZVma38uDOvJ+sOGw@mail.gmail.com>
-Subject: i need your reply
-To:     orchowskiruthi@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Greetings,
+By default the 512 GPIOs is a maximum on any x86 platform.
+With, for example, Intel Tiger Lake-H the SoC based controller
+occupies up to 480 pins. This leaves only 32 available for
+GPIO expanders or other drivers, like PMIC. Hence, bump the
+maximum GPIO number to 1024 for X86_64 and leave 512 for X86_32.
 
-We are writing to you from Ecowas Finance Controller Office Lome Togo,
-because we have received a file from the Ministry of Finance Lome-
-Togo, concerning an Inherited Fund bearing your name on it, And after
-our verifications, we found out that the funds belong to you.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ arch/x86/Kconfig | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-It has been awarded and I will like to guide you to claim the funds.
-Please contact me at my private email address
-(mrmaxwellwatford@gmail.com) for more information and directive
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 45962aaf2b2c..495ed6229b52 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -340,6 +340,19 @@ config NEED_PER_CPU_PAGE_FIRST_CHUNK
+ config ARCH_HIBERNATION_POSSIBLE
+ 	def_bool y
+ 
++# The GPIO number here must be sorted by descending number. In case of
++# a multiplatform kernel, we just want the highest value required by the
++# selected platforms.
++config ARCH_NR_GPIO
++	int
++	default 1024 if X86_64
++	default 512 if X86_32
++	default 0
++	help
++	  Maximum number of GPIOs in the system.
++
++	  If unsure, leave the default value.
++
+ config ARCH_SUSPEND_POSSIBLE
+ 	def_bool y
+ 
+-- 
+2.30.2
 
-I am looking forward to your urgent reply,
-Best regards
-Mr Maxwell Watford
