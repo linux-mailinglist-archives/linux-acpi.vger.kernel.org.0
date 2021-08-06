@@ -2,302 +2,532 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E62623E2AE6
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Aug 2021 14:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D571B3E2B12
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Aug 2021 15:01:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239767AbhHFMuW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Aug 2021 08:50:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:22992 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1343826AbhHFMtI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Aug 2021 08:49:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1628254132;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=r/SgQo4rPUsW9F0dO56kaeaqlgSVg1Obn3tnWbE8+Ww=;
-        b=Mqui/rXxaetL6ydmmkx7YGjeViGHPh4P+6GegmT2sg5D9FqEdy0Ngp9O4KQpv3eju62X/t
-        q1nP7m9WfyLiWIRRYVFm4ieN0Rsi9mpJQQN4oHi8G4ZpFh3WdAm1iyQsvTVb/r2hYccN6O
-        OkYmHs2qicVjnGZZG8S7MkF0Y3G87QU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-434-nhBixEt3MnqJpJGiX_Bmfg-1; Fri, 06 Aug 2021 08:48:51 -0400
-X-MC-Unique: nhBixEt3MnqJpJGiX_Bmfg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BC6FE107ACF5;
-        Fri,  6 Aug 2021 12:48:48 +0000 (UTC)
-Received: from t480s.redhat.com (unknown [10.39.192.224])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 021885D6A1;
-        Fri,  6 Aug 2021 12:48:42 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Marek Kedzierski <mkedzier@redhat.com>,
-        Hui Zhu <teawater@gmail.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Michal Hocko <mhocko@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Mike Rapoport <rppt@kernel.org>,
+        id S1343929AbhHFNBT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Aug 2021 09:01:19 -0400
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:33626 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343928AbhHFNBS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Aug 2021 09:01:18 -0400
+Received: by mail-ot1-f45.google.com with SMTP id 61-20020a9d0d430000b02903eabfc221a9so8838688oti.0;
+        Fri, 06 Aug 2021 06:01:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JR8mZQiiH7oUmHN4ES6S490WwMOYDz5AaU+8qiqrWeQ=;
+        b=NxOi/y5WoPEOFnMfwo8wGYa57XJ7GLD7vum3NcsADtADtB8TQzr3IZDXeymcJdLq8G
+         Amg6mssuKAHUel9lwUXF3j8EXCGhsjLzq9a2DA1sttMM0io44uPCVpEx4mMde7KhMoJp
+         XDpcBfC91F0l1V7XFHamKAf4sBt3GtuwzscWccYkiY9QxlXEzwLV2wzSiJXzo+lKHNuX
+         mkuG9rhq4DG2ZeCIuZvCrwn4DWnY8xQEPD9C7ckbC25c5ZlZODNoRupLC0yZY9UG8ikG
+         w6Z1IHrQAjsWxdtIETnQxk1WJQyCkVVeBlyX0heKsAKThM6Xiv/atDPAbcPkWo9HUcqx
+         +KFw==
+X-Gm-Message-State: AOAM530fOXbYbIMbtexcXnY/YTsb3o3B0o+otscuaRm/JhWnH28PipUO
+        EeHImjPOkoPFdVGHMShLbGKc4e65beBWf0MysFc=
+X-Google-Smtp-Source: ABdhPJxMBac7Go5YyuLnQZ5A458wBnHYFm67QiRCIMuqUR5gJ2vmFPp8U+i1AskIE4/Hb0mGx4UgJCSFBfKVpnRaeiE=
+X-Received: by 2002:a05:6830:1f59:: with SMTP id u25mr7539208oth.321.1628254860622;
+ Fri, 06 Aug 2021 06:01:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210801201336.2224111-1-adobriyan@gmail.com> <20210801201336.2224111-2-adobriyan@gmail.com>
+In-Reply-To: <20210801201336.2224111-2-adobriyan@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 6 Aug 2021 15:00:49 +0200
+Message-ID: <CAJZ5v0iL-dG1+yYQ26ZK3WMAr=vAEcoA11+vhyRTzX3j=zU=cA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] isystem: ship and use stdarg.h
+To:     Alexey Dobriyan <adobriyan@gmail.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH v3 9/9] mm/memory_hotplug: improved dynamic memory group aware "auto-movable" online policy
-Date:   Fri,  6 Aug 2021 14:47:15 +0200
-Message-Id: <20210806124715.17090-10-david@redhat.com>
-In-Reply-To: <20210806124715.17090-1-david@redhat.com>
-References: <20210806124715.17090-1-david@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Currently, the "auto-movable" online policy does not allow for hotplugged
-KERNEL (ZONE_NORMAL) memory to increase the amount of MOVABLE memory we can
-have, primarily, because there is no coordiantion across memory devices and
-we don't want to create zone-imbalances accidentially when unplugging
-memory.
+On Sun, Aug 1, 2021 at 10:13 PM Alexey Dobriyan <adobriyan@gmail.com> wrote:
+>
+> Ship minimal stdarg.h (1 type, 4 macros) as <linux/stdarg.h>.
+> stdarg.h is the only userspace header commonly used in the kernel.
+>
+> GPL 2 version of <stdarg.h> can be extracted from
+> http://archive.debian.org/debian/pool/main/g/gcc-4.2/gcc-4.2_4.2.4.orig.tar.gz
+>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: linux-efi@vger.kernel.org
+> Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
 
-However, within a single memory device it's different. Let's allow for
-KERNEL memory within a dynamic memory group to allow for more MOVABLE
-within the same memory group. The only thing we have to take care of is
-that the managing driver avoids zone imbalances by unplugging MOVABLE
-memory first, otherwise there can be corner cases where unplug of memory
-could result in (accidential) zone imbalances.
+For the ACPI part:
 
-virtio-mem is the only user of dynamic memory groups and recently added
-support for prioritizing unplug of ZONE_MOVABLE over ZONE_NORMAL, so we
-don't need a new toggle to enable it for dynamic memory groups.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-We limit this handling to dynamic memory groups, because:
-
-* We want to keep the runtime overhead for collecting stats when onlining
-  a single memory block small. We tend to have only a handful of dynamic
-  memory groups, but we can have quite some static memory groups (e.g., 256
-  DIMMs).
-* It doesn't make too much sense for static memory groups, as we try
-  onlining all applicable memory blocks either completely to ZONE_MOVABLE
-  or not. In ordinary operation, we won't have a mixture of zones
-  within a static memory group.
-
-When adding memory to a dynamic memory group, we'll first online memory to
-ZONE_MOVABLE as long as early KERNEL memory allows for it. Then, we'll
-online the next unit(s) to ZONE_NORMAL, until we can online the next
-unit(s) to ZONE_MOVABLE.
-
-For a simple virtio-mem device with a MOVABLE:KERNEL ratio of 3:1, it
-will result in a layout like:
-
-  [M][M][M][M][M][M][M][M][N][M][M][M][N][M][M][M]...
-  ^ movable memory due to early kernel memory
-			   ^ allows for more movable memory ...
-			      ^-----^ ... here
-				       ^ allows for more movable memory ...
-				          ^-----^ ... here
-
-While the created layout is sub-optimal when it comes to contiguous zones,
-it gives us the maximum flexibility when dynamically growing/shrinking a
-device; we can grow small VMs really big in small steps, and still
-shrink reliably to e.g., 1/4 of the maximum VM size in this example,
-removing full memory blocks along with meta data more reliably.
-
-Mark dynamic memory groups in the xarray such that we can efficiently
-iterate over them when collecting stats. In usual setups, we have one
-virtio-mem device per NUMA node, and usually only a small number of NUMA
-nodes.
-
-Note: for now, there seems to be no compelling reason to make this
-behavior configurable.
-
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- drivers/base/memory.c  | 30 +++++++++++++++++++++
- include/linux/memory.h |  3 +++
- mm/memory_hotplug.c    | 60 +++++++++++++++++++++++++++++++++++++++---
- 3 files changed, 89 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index b699ddc42693..440fd656c002 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -86,6 +86,7 @@ static DEFINE_XARRAY(memory_blocks);
-  * Memory groups, indexed by memory group id (mgid).
-  */
- static DEFINE_XARRAY_FLAGS(memory_groups, XA_FLAGS_ALLOC);
-+#define MEMORY_GROUP_MARK_DYNAMIC	XA_MARK_1
- 
- static BLOCKING_NOTIFIER_HEAD(memory_chain);
- 
-@@ -939,6 +940,8 @@ static int memory_group_register(struct memory_group group)
- 	if (ret) {
- 		kfree(new_group);
- 		return ret;
-+	} else if (group.is_dynamic) {
-+		xa_set_mark(&memory_groups, mgid, MEMORY_GROUP_MARK_DYNAMIC);
- 	}
- 	return mgid;
- }
-@@ -1044,3 +1047,30 @@ struct memory_group *memory_group_find_by_id(int mgid)
- {
- 	return xa_load(&memory_groups, mgid);
- }
-+
-+/*
-+ * This is an internal helper only to be used in core memory hotplug code to
-+ * walk all dynamic memory groups excluding a given memory group, either
-+ * belonging to a specific node, or belonging to any node.
-+ */
-+int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
-+			       struct memory_group *excluded, void *arg)
-+{
-+	struct memory_group *group;
-+	unsigned long index;
-+	int ret = 0;
-+
-+	xa_for_each_marked(&memory_groups, index, group,
-+			   MEMORY_GROUP_MARK_DYNAMIC) {
-+		if (group == excluded)
-+			continue;
-+#ifdef CONFIG_NUMA
-+		if (nid != NUMA_NO_NODE && group->nid != nid)
-+			continue;
-+#endif /* CONFIG_NUMA */
-+		ret = func(group, arg);
-+		if (ret)
-+			break;
-+	}
-+	return ret;
-+}
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index 6ffdc1db385f..cbcc43ad2b97 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -146,6 +146,9 @@ extern int memory_group_register_static(int nid, unsigned long max_pages);
- extern int memory_group_register_dynamic(int nid, unsigned long unit_pages);
- extern int memory_group_unregister(int mgid);
- struct memory_group *memory_group_find_by_id(int mgid);
-+typedef int (*walk_memory_groups_func_t)(struct memory_group *, void *);
-+int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
-+			       struct memory_group *excluded, void *arg);
- #endif /* CONFIG_MEMORY_HOTPLUG_SPARSE */
- 
- #ifdef CONFIG_MEMORY_HOTPLUG
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index fd2edd99f8df..39faf2b56b50 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -752,11 +752,44 @@ static void auto_movable_stats_account_zone(struct auto_movable_stats *stats,
- #endif /* CONFIG_CMA */
- 	}
- }
-+struct auto_movable_group_stats {
-+	unsigned long movable_pages;
-+	unsigned long req_kernel_early_pages;
-+};
- 
--static bool auto_movable_can_online_movable(int nid, unsigned long nr_pages)
-+static int auto_movable_stats_account_group(struct memory_group *group,
-+					   void *arg)
-+{
-+	const int ratio = READ_ONCE(auto_movable_ratio);
-+	struct auto_movable_group_stats *stats = arg;
-+	long pages;
-+
-+	/*
-+	 * We don't support modifying the config while the auto-movable online
-+	 * policy is already enabled. Just avoid the division by zero below.
-+	 */
-+	if (!ratio)
-+		return 0;
-+
-+	/*
-+	 * Calculate how many early kernel pages this group requires to
-+	 * satisfy the configured zone ratio.
-+	 */
-+	pages = group->present_movable_pages * 100 / ratio;
-+	pages -= group->present_kernel_pages;
-+
-+	if (pages > 0)
-+		stats->req_kernel_early_pages += pages;
-+	stats->movable_pages += group->present_movable_pages;
-+	return 0;
-+}
-+
-+static bool auto_movable_can_online_movable(int nid, struct memory_group *group,
-+					    unsigned long nr_pages)
- {
--	struct auto_movable_stats stats = {};
- 	unsigned long kernel_early_pages, movable_pages;
-+	struct auto_movable_group_stats group_stats = {};
-+	struct auto_movable_stats stats = {};
- 	pg_data_t *pgdat = NODE_DATA(nid);
- 	struct zone *zone;
- 	int i;
-@@ -777,6 +810,21 @@ static bool auto_movable_can_online_movable(int nid, unsigned long nr_pages)
- 	kernel_early_pages = stats.kernel_early_pages;
- 	movable_pages = stats.movable_pages;
- 
-+	/*
-+	 * Kernel memory inside dynamic memory group allows for more MOVABLE
-+	 * memory within the same group. Remove the effect of all but the
-+	 * current group from the stats.
-+	 */
-+	walk_dynamic_memory_groups(nid, auto_movable_stats_account_group,
-+				   group, &group_stats);
-+	if (kernel_early_pages <= group_stats.req_kernel_early_pages)
-+		return false;
-+	kernel_early_pages -= group_stats.req_kernel_early_pages;
-+	movable_pages -= group_stats.movable_pages;
-+
-+	if (group && group->is_dynamic)
-+		kernel_early_pages += group->present_kernel_pages;
-+
- 	/*
- 	 * Test if we could online the given number of pages to ZONE_MOVABLE
- 	 * and still stay in the configured ratio.
-@@ -834,6 +882,10 @@ static struct zone *default_kernel_zone_for_pfn(int nid, unsigned long start_pfn
-  *    with unmovable allocations). While there are corner cases where it might
-  *    still work, it is barely relevant in practice.
-  *
-+ * Exceptions are dynamic memory groups, which allow for more MOVABLE
-+ * memory within the same memory group -- because in that case, there is
-+ * coordination within the single memory device managed by a single driver.
-+ *
-  * We rely on "present pages" instead of "managed pages", as the latter is
-  * highly unreliable and dynamic in virtualized environments, and does not
-  * consider boot time allocations. For example, memory ballooning adjusts the
-@@ -899,12 +951,12 @@ static struct zone *auto_movable_zone_for_pfn(int nid,
- 	 * nobody interferes, all will be MOVABLE if possible.
- 	 */
- 	nr_pages = max_pages - online_pages;
--	if (!auto_movable_can_online_movable(NUMA_NO_NODE, nr_pages))
-+	if (!auto_movable_can_online_movable(NUMA_NO_NODE, group, nr_pages))
- 		goto kernel_zone;
- 
- #ifdef CONFIG_NUMA
- 	if (auto_movable_numa_aware &&
--	    !auto_movable_can_online_movable(nid, nr_pages))
-+	    !auto_movable_can_online_movable(nid, group, nr_pages))
- 		goto kernel_zone;
- #endif /* CONFIG_NUMA */
- 
--- 
-2.31.1
-
+> ---
+>  arch/parisc/kernel/firmware.c                         |  2 +-
+>  arch/powerpc/kernel/prom_init.c                       |  2 +-
+>  arch/powerpc/kernel/rtas.c                            |  2 +-
+>  arch/powerpc/kernel/udbg.c                            |  2 +-
+>  arch/s390/boot/pgm_check_info.c                       |  2 +-
+>  arch/x86/boot/boot.h                                  |  2 +-
+>  drivers/firmware/efi/libstub/efi-stub-helper.c        |  2 +-
+>  drivers/firmware/efi/libstub/vsprintf.c               |  2 +-
+>  drivers/gpu/drm/amd/display/dc/dc_helper.c            |  2 +-
+>  drivers/gpu/drm/drm_print.c                           |  2 +-
+>  drivers/isdn/capi/capiutil.c                          |  2 +-
+>  drivers/macintosh/via-cuda.c                          |  2 +-
+>  drivers/macintosh/via-pmu.c                           |  2 +-
+>  .../atomisp/pci/hive_isp_css_include/print_support.h  |  2 +-
+>  drivers/staging/media/atomisp/pci/ia_css_env.h        |  2 +-
+>  .../pci/runtime/debug/interface/ia_css_debug.h        |  2 +-
+>  drivers/staging/media/atomisp/pci/sh_css_internal.h   |  2 +-
+>  fs/befs/debug.c                                       |  2 +-
+>  fs/reiserfs/prints.c                                  |  2 +-
+>  fs/ufs/super.c                                        |  2 +-
+>  include/acpi/platform/acgcc.h                         |  2 +-
+>  include/linux/kernel.h                                |  2 +-
+>  include/linux/printk.h                                |  2 +-
+>  include/linux/stdarg.h                                | 11 +++++++++++
+>  include/linux/string.h                                |  2 +-
+>  lib/debug_info.c                                      |  3 +--
+>  lib/kasprintf.c                                       |  2 +-
+>  lib/kunit/string-stream.h                             |  2 +-
+>  lib/vsprintf.c                                        |  2 +-
+>  mm/kfence/report.c                                    |  2 +-
+>  net/batman-adv/log.c                                  |  2 +-
+>  31 files changed, 41 insertions(+), 31 deletions(-)
+>  create mode 100644 include/linux/stdarg.h
+>
+> diff --git a/arch/parisc/kernel/firmware.c b/arch/parisc/kernel/firmware.c
+> index 665b70086685..7034227dbdf3 100644
+> --- a/arch/parisc/kernel/firmware.c
+> +++ b/arch/parisc/kernel/firmware.c
+> @@ -51,7 +51,7 @@
+>   *                                     prumpf  991016
+>   */
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  #include <linux/delay.h>
+>  #include <linux/init.h>
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+> index a5bf355ce1d6..10664633f7e3 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -14,7 +14,7 @@
+>  /* we cannot use FORTIFY as it brings in new symbols */
+>  #define __NO_FORTIFY
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/kernel.h>
+>  #include <linux/string.h>
+>  #include <linux/init.h>
+> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+> index 99f2cce635fb..ff80bbad22a5 100644
+> --- a/arch/powerpc/kernel/rtas.c
+> +++ b/arch/powerpc/kernel/rtas.c
+> @@ -7,7 +7,7 @@
+>   * Copyright (C) 2001 IBM.
+>   */
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/kernel.h>
+>  #include <linux/types.h>
+>  #include <linux/spinlock.h>
+> diff --git a/arch/powerpc/kernel/udbg.c b/arch/powerpc/kernel/udbg.c
+> index 01595e8cafe7..b1544b2f6321 100644
+> --- a/arch/powerpc/kernel/udbg.c
+> +++ b/arch/powerpc/kernel/udbg.c
+> @@ -5,7 +5,7 @@
+>   * c 2001 PPC 64 Team, IBM Corp
+>   */
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/types.h>
+>  #include <linux/sched.h>
+>  #include <linux/console.h>
+> diff --git a/arch/s390/boot/pgm_check_info.c b/arch/s390/boot/pgm_check_info.c
+> index 3a46abed2549..b7d8dd88bbf2 100644
+> --- a/arch/s390/boot/pgm_check_info.c
+> +++ b/arch/s390/boot/pgm_check_info.c
+> @@ -1,5 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  #include <linux/kernel.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/string.h>
+>  #include <linux/ctype.h>
+>  #include <asm/stacktrace.h>
+> @@ -8,7 +9,6 @@
+>  #include <asm/setup.h>
+>  #include <asm/sclp.h>
+>  #include <asm/uv.h>
+> -#include <stdarg.h>
+>  #include "boot.h"
+>
+>  const char hex_asc[] = "0123456789abcdef";
+> diff --git a/arch/x86/boot/boot.h b/arch/x86/boot/boot.h
+> index ca866f1cca2e..34c9dbb6a47d 100644
+> --- a/arch/x86/boot/boot.h
+> +++ b/arch/x86/boot/boot.h
+> @@ -18,7 +18,7 @@
+>
+>  #ifndef __ASSEMBLY__
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/types.h>
+>  #include <linux/edd.h>
+>  #include <asm/setup.h>
+> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> index ae87dded989d..d489bdc645fe 100644
+> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
+> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+> @@ -7,7 +7,7 @@
+>   * Copyright 2011 Intel Corporation; author Matt Fleming
+>   */
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  #include <linux/ctype.h>
+>  #include <linux/efi.h>
+> diff --git a/drivers/firmware/efi/libstub/vsprintf.c b/drivers/firmware/efi/libstub/vsprintf.c
+> index 1088e288c04d..71c71c222346 100644
+> --- a/drivers/firmware/efi/libstub/vsprintf.c
+> +++ b/drivers/firmware/efi/libstub/vsprintf.c
+> @@ -10,7 +10,7 @@
+>   * Oh, it's a waste of space, but oh-so-yummy for debugging.
+>   */
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  #include <linux/compiler.h>
+>  #include <linux/ctype.h>
+> diff --git a/drivers/gpu/drm/amd/display/dc/dc_helper.c b/drivers/gpu/drm/amd/display/dc/dc_helper.c
+> index a612ba6dc389..ab6bc5d79012 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dc_helper.c
+> +++ b/drivers/gpu/drm/amd/display/dc/dc_helper.c
+> @@ -28,9 +28,9 @@
+>   */
+>
+>  #include <linux/delay.h>
+> +#include <linux/stdarg.h>
+>
+>  #include "dm_services.h"
+> -#include <stdarg.h>
+>
+>  #include "dc.h"
+>  #include "dc_dmub_srv.h"
+> diff --git a/drivers/gpu/drm/drm_print.c b/drivers/gpu/drm/drm_print.c
+> index 111b932cf2a9..f783d4963d4b 100644
+> --- a/drivers/gpu/drm/drm_print.c
+> +++ b/drivers/gpu/drm/drm_print.c
+> @@ -25,7 +25,7 @@
+>
+>  #define DEBUG /* for pr_debug() */
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  #include <linux/io.h>
+>  #include <linux/moduleparam.h>
+> diff --git a/drivers/isdn/capi/capiutil.c b/drivers/isdn/capi/capiutil.c
+> index f26bf3c66d7e..d7ae42edc4a8 100644
+> --- a/drivers/isdn/capi/capiutil.c
+> +++ b/drivers/isdn/capi/capiutil.c
+> @@ -379,7 +379,7 @@ static char *pnames[] =
+>         /*2f */ "Useruserdata"
+>  };
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  /*-------------------------------------------------------*/
+>  static _cdebbuf *bufprint(_cdebbuf *cdb, char *fmt, ...)
+> diff --git a/drivers/macintosh/via-cuda.c b/drivers/macintosh/via-cuda.c
+> index 3581abfb0c6a..cd267392289c 100644
+> --- a/drivers/macintosh/via-cuda.c
+> +++ b/drivers/macintosh/via-cuda.c
+> @@ -9,7 +9,7 @@
+>   *
+>   * Copyright (C) 1996 Paul Mackerras.
+>   */
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/types.h>
+>  #include <linux/errno.h>
+>  #include <linux/kernel.h>
+> diff --git a/drivers/macintosh/via-pmu.c b/drivers/macintosh/via-pmu.c
+> index 4bdd4c45e7a7..4b98bc26a94b 100644
+> --- a/drivers/macintosh/via-pmu.c
+> +++ b/drivers/macintosh/via-pmu.c
+> @@ -18,7 +18,7 @@
+>   *    a sleep or a freq. switch
+>   *
+>   */
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/mutex.h>
+>  #include <linux/types.h>
+>  #include <linux/errno.h>
+> diff --git a/drivers/staging/media/atomisp/pci/hive_isp_css_include/print_support.h b/drivers/staging/media/atomisp/pci/hive_isp_css_include/print_support.h
+> index 540b405cc0f7..a3c7f3de6d17 100644
+> --- a/drivers/staging/media/atomisp/pci/hive_isp_css_include/print_support.h
+> +++ b/drivers/staging/media/atomisp/pci/hive_isp_css_include/print_support.h
+> @@ -16,7 +16,7 @@
+>  #ifndef __PRINT_SUPPORT_H_INCLUDED__
+>  #define __PRINT_SUPPORT_H_INCLUDED__
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  extern int (*sh_css_printf)(const char *fmt, va_list args);
+>  /* depends on host supplied print function in ia_css_init() */
+> diff --git a/drivers/staging/media/atomisp/pci/ia_css_env.h b/drivers/staging/media/atomisp/pci/ia_css_env.h
+> index 6b38723b27cd..3b89bbd837a0 100644
+> --- a/drivers/staging/media/atomisp/pci/ia_css_env.h
+> +++ b/drivers/staging/media/atomisp/pci/ia_css_env.h
+> @@ -17,7 +17,7 @@
+>  #define __IA_CSS_ENV_H
+>
+>  #include <type_support.h>
+> -#include <stdarg.h> /* va_list */
+> +#include <linux/stdarg.h> /* va_list */
+>  #include "ia_css_types.h"
+>  #include "ia_css_acc_types.h"
+>
+> diff --git a/drivers/staging/media/atomisp/pci/runtime/debug/interface/ia_css_debug.h b/drivers/staging/media/atomisp/pci/runtime/debug/interface/ia_css_debug.h
+> index 5e6e7447ae00..e37ef4232c55 100644
+> --- a/drivers/staging/media/atomisp/pci/runtime/debug/interface/ia_css_debug.h
+> +++ b/drivers/staging/media/atomisp/pci/runtime/debug/interface/ia_css_debug.h
+> @@ -19,7 +19,7 @@
+>  /*! \file */
+>
+>  #include <type_support.h>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include "ia_css_types.h"
+>  #include "ia_css_binary.h"
+>  #include "ia_css_frame_public.h"
+> diff --git a/drivers/staging/media/atomisp/pci/sh_css_internal.h b/drivers/staging/media/atomisp/pci/sh_css_internal.h
+> index 3c669ec79b68..496faa7297a5 100644
+> --- a/drivers/staging/media/atomisp/pci/sh_css_internal.h
+> +++ b/drivers/staging/media/atomisp/pci/sh_css_internal.h
+> @@ -20,7 +20,7 @@
+>  #include <math_support.h>
+>  #include <type_support.h>
+>  #include <platform_support.h>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  #if !defined(ISP2401)
+>  #include "input_formatter.h"
+> diff --git a/fs/befs/debug.c b/fs/befs/debug.c
+> index eb7bd6c692c7..02fa66fb82c2 100644
+> --- a/fs/befs/debug.c
+> +++ b/fs/befs/debug.c
+> @@ -14,7 +14,7 @@
+>  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>  #ifdef __KERNEL__
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/string.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/kernel.h>
+> diff --git a/fs/reiserfs/prints.c b/fs/reiserfs/prints.c
+> index 500f2000eb41..30319dc33c18 100644
+> --- a/fs/reiserfs/prints.c
+> +++ b/fs/reiserfs/prints.c
+> @@ -8,7 +8,7 @@
+>  #include <linux/string.h>
+>  #include <linux/buffer_head.h>
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  static char error_buf[1024];
+>  static char fmt_buf[1024];
+> diff --git a/fs/ufs/super.c b/fs/ufs/super.c
+> index 74028b5a7b0a..00a01471ea05 100644
+> --- a/fs/ufs/super.c
+> +++ b/fs/ufs/super.c
+> @@ -70,7 +70,7 @@
+>  #include <linux/module.h>
+>  #include <linux/bitops.h>
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  #include <linux/uaccess.h>
+>
+> diff --git a/include/acpi/platform/acgcc.h b/include/acpi/platform/acgcc.h
+> index f6656be81760..fb172a03a753 100644
+> --- a/include/acpi/platform/acgcc.h
+> +++ b/include/acpi/platform/acgcc.h
+> @@ -22,7 +22,7 @@ typedef __builtin_va_list va_list;
+>  #define va_arg(v, l)            __builtin_va_arg(v, l)
+>  #define va_copy(d, s)           __builtin_va_copy(d, s)
+>  #else
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #endif
+>  #endif
+>
+> diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+> index 1b2f0a7e00d6..2776423a587e 100644
+> --- a/include/linux/kernel.h
+> +++ b/include/linux/kernel.h
+> @@ -2,7 +2,7 @@
+>  #ifndef _LINUX_KERNEL_H
+>  #define _LINUX_KERNEL_H
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/align.h>
+>  #include <linux/limits.h>
+>  #include <linux/linkage.h>
+> diff --git a/include/linux/printk.h b/include/linux/printk.h
+> index e834d78f0478..9f3f29ea348e 100644
+> --- a/include/linux/printk.h
+> +++ b/include/linux/printk.h
+> @@ -2,7 +2,7 @@
+>  #ifndef __KERNEL_PRINTK__
+>  #define __KERNEL_PRINTK__
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/init.h>
+>  #include <linux/kern_levels.h>
+>  #include <linux/linkage.h>
+> diff --git a/include/linux/stdarg.h b/include/linux/stdarg.h
+> new file mode 100644
+> index 000000000000..c8dc7f4f390c
+> --- /dev/null
+> +++ b/include/linux/stdarg.h
+> @@ -0,0 +1,11 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +#ifndef _LINUX_STDARG_H
+> +#define _LINUX_STDARG_H
+> +
+> +typedef __builtin_va_list va_list;
+> +#define va_start(v, l) __builtin_va_start(v, l)
+> +#define va_end(v)      __builtin_va_end(v)
+> +#define va_arg(v, T)   __builtin_va_arg(v, T)
+> +#define va_copy(d, s)  __builtin_va_copy(d, s)
+> +
+> +#endif
+> diff --git a/include/linux/string.h b/include/linux/string.h
+> index b48d2d28e0b1..5e96d656be7a 100644
+> --- a/include/linux/string.h
+> +++ b/include/linux/string.h
+> @@ -6,7 +6,7 @@
+>  #include <linux/types.h>       /* for size_t */
+>  #include <linux/stddef.h>      /* for NULL */
+>  #include <linux/errno.h>       /* for E2BIG */
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <uapi/linux/string.h>
+>
+>  extern char *strndup_user(const char __user *, long);
+> diff --git a/lib/debug_info.c b/lib/debug_info.c
+> index 36daf753293c..cc4723c74af5 100644
+> --- a/lib/debug_info.c
+> +++ b/lib/debug_info.c
+> @@ -5,8 +5,6 @@
+>   * CONFIG_DEBUG_INFO_REDUCED. Please do not add actual code. However,
+>   * adding appropriate #includes is fine.
+>   */
+> -#include <stdarg.h>
+> -
+>  #include <linux/cred.h>
+>  #include <linux/crypto.h>
+>  #include <linux/dcache.h>
+> @@ -22,6 +20,7 @@
+>  #include <linux/net.h>
+>  #include <linux/sched.h>
+>  #include <linux/slab.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/types.h>
+>  #include <net/addrconf.h>
+>  #include <net/sock.h>
+> diff --git a/lib/kasprintf.c b/lib/kasprintf.c
+> index bacf7b83ccf0..cd2f5974ed98 100644
+> --- a/lib/kasprintf.c
+> +++ b/lib/kasprintf.c
+> @@ -5,7 +5,7 @@
+>   *  Copyright (C) 1991, 1992  Linus Torvalds
+>   */
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/export.h>
+>  #include <linux/slab.h>
+>  #include <linux/types.h>
+> diff --git a/lib/kunit/string-stream.h b/lib/kunit/string-stream.h
+> index 5e94b623454f..43f9508a55b4 100644
+> --- a/lib/kunit/string-stream.h
+> +++ b/lib/kunit/string-stream.h
+> @@ -11,7 +11,7 @@
+>
+>  #include <linux/spinlock.h>
+>  #include <linux/types.h>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  struct string_stream_fragment {
+>         struct kunit *test;
+> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+> index 26c83943748a..3bcb7be03f93 100644
+> --- a/lib/vsprintf.c
+> +++ b/lib/vsprintf.c
+> @@ -17,7 +17,7 @@
+>   * - scnprintf and vscnprintf
+>   */
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>  #include <linux/build_bug.h>
+>  #include <linux/clk.h>
+>  #include <linux/clk-provider.h>
+> diff --git a/mm/kfence/report.c b/mm/kfence/report.c
+> index 2a319c21c939..4b891dd75650 100644
+> --- a/mm/kfence/report.c
+> +++ b/mm/kfence/report.c
+> @@ -5,7 +5,7 @@
+>   * Copyright (C) 2020, Google LLC.
+>   */
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  #include <linux/kernel.h>
+>  #include <linux/lockdep.h>
+> diff --git a/net/batman-adv/log.c b/net/batman-adv/log.c
+> index f0e5d1429662..7a93a1e94c40 100644
+> --- a/net/batman-adv/log.c
+> +++ b/net/batman-adv/log.c
+> @@ -7,7 +7,7 @@
+>  #include "log.h"
+>  #include "main.h"
+>
+> -#include <stdarg.h>
+> +#include <linux/stdarg.h>
+>
+>  #include "trace.h"
+>
+> --
+> 2.31.1
+>
