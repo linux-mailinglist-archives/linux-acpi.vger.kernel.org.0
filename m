@@ -2,87 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E18583E2B45
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Aug 2021 15:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CA893E2BCC
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Aug 2021 15:44:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244280AbhHFNXz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Aug 2021 09:23:55 -0400
-Received: from mail-ot1-f42.google.com ([209.85.210.42]:46632 "EHLO
-        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231889AbhHFNXx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Aug 2021 09:23:53 -0400
-Received: by mail-ot1-f42.google.com with SMTP id v8-20020a0568301bc8b02904d5b4e5ca3aso8827224ota.13;
-        Fri, 06 Aug 2021 06:23:37 -0700 (PDT)
+        id S1344411AbhHFNov (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Aug 2021 09:44:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:26359 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1344412AbhHFNot (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Aug 2021 09:44:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1628257473;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LUNCaljoh6zNjohyhM8u6lXSLeXe2hyYUThfCWY505I=;
+        b=KqY9RmX4+ljommeFqdQwC5T+xZt+izV1rTISlDb5FDhyiLgVV9lb3QLWaVj4tx3zzHTAKD
+        2UPgdpGeaiTTqQWGTGkm3hQ1A89G8XxMMSFYVO8UC1GH1rwIIbrHG06eWQ7noq8gS/BJOk
+        zM0kxh7nn8ieceSFIltMDXBXVUTIQHo=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-284-FEqRg1lEPVGTBj7Owfhdfw-1; Fri, 06 Aug 2021 09:44:32 -0400
+X-MC-Unique: FEqRg1lEPVGTBj7Owfhdfw-1
+Received: by mail-ed1-f69.google.com with SMTP id d12-20020a50fe8c0000b02903a4b519b413so4948712edt.9
+        for <linux-acpi@vger.kernel.org>; Fri, 06 Aug 2021 06:44:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+7a1wEFJxsZNYTEDT4I7VC8DBT+Dj66bXnWNfWhfqGg=;
-        b=DiXEA5kJy9UQ5ulbAssNkZZlwyh+PDM4897z9fVX8cBdePvgrG3HU2fztcYemkqaBz
-         mUBsrYS+mVW2a2U7/lpAT1P0YGBjQ4BYahsF95A5bw9QLg3gMHPq1zFYAtjM9bE0w9XK
-         Dc28n+/h/vgkEUagUhwLY5sb5gzk4CHxdy81lejfKs9/TBrmYBhjZNdHiyNdv80Nchgw
-         j61ulyuCo3YZfdOdsYLlnoVCQpE0OniFQUYaF6BW2mKfxQteqHENN2/292YBRlLnUp1d
-         Q3j6+o9xPhHFBoE4SpoiY3W3wGMsL2/CjqH47uu3ZTnz+mpQe6lSY/XtKu3N8BMEpkBS
-         8AFA==
-X-Gm-Message-State: AOAM530ef403DQBZbmg6DHuq1IywR1r3hxCUMH3IJoDbvdJ4bEfnkYiC
-        73TH2jfecOoao6A/ZSzDvFWl+M9cteCKA9rFjwk=
-X-Google-Smtp-Source: ABdhPJx8d5EFqp2lAyy2TUrXmQRHicbFMyRqCXBdAe0pVVxPjCgD5t3ysNgWrOAOM9SAT5j5alkAFe31tkx5LDwRsLg=
-X-Received: by 2002:a05:6830:30a2:: with SMTP id g2mr4684399ots.206.1628256216819;
- Fri, 06 Aug 2021 06:23:36 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=LUNCaljoh6zNjohyhM8u6lXSLeXe2hyYUThfCWY505I=;
+        b=OQFugKi9cNgQ7roCQXx4rDOaw3NjPK8Id+VHKfTDzYS/yhRcqKSXpSYjzeRlnCIpV6
+         /3DUrCDckJpLna0ao5OnXQiz5eJs/acTPaBcsYykMTm5r4UlIcxJdrCZixSJ3cEaf66j
+         xH83Q8eTC00tYWmEOT9dIT+WkWvUlsnXRkyo6T+vq60wWo65+MgvJCEXTGktWxhF+VBu
+         oxQHTZTOk5EpatPmoUcaM8CjzZEmF2xOnP5G043qWSGt9intGs/pVLoZtPk2o3f/8Cnq
+         eTbUShai40817SxWP0xRcogMkVEE5AgW5+JouqzmF9H8NQZvvOCJG4bP3QxyehugjTRQ
+         jXZw==
+X-Gm-Message-State: AOAM531pq2SKXG9di/AWJm3O1hRARQ7hoPgcPR2XvnIpbgedPTAZ+4Bf
+        VzapXTKgbp8Gmk06Qr1B+5k42sQqNGlLJcTEzZX2BAjkp3Yai7JnEd1+SDkT31fPyXbtoOR0Epy
+        3dFIhojaaGN2TZ8BZpP92Cad5wOLKnH9wgOt+nTmLj7y8MqcSDuNdANcHlGBNV3Qev7j+qM/WjQ
+        ==
+X-Received: by 2002:a05:6402:d7:: with SMTP id i23mr13112215edu.291.1628257471238;
+        Fri, 06 Aug 2021 06:44:31 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyL7vlaTOy3c5YZFIfiw2sjAwyw1MSYfWQwVF2pH8QLK/4mhX/K1TBAPijCqcDV0hx7gFIzdw==
+X-Received: by 2002:a05:6402:d7:: with SMTP id i23mr13112187edu.291.1628257471004;
+        Fri, 06 Aug 2021 06:44:31 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id f9sm3693201edy.57.2021.08.06.06.44.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Aug 2021 06:44:30 -0700 (PDT)
+Subject: Re: [PATCH 1/4] i2c: acpi: Add an i2c_acpi_client_count() helper
+ function
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Mark Gross <mgross@linux.intel.com>,
+        Andy Shevchenko <andy@infradead.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+References: <20210803160044.158802-1-hdegoede@redhat.com>
+ <20210803160044.158802-2-hdegoede@redhat.com> <YQlzzy933V9XMHqt@lahna>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <9fbf0d6a-2df3-4765-ccf5-788b86994d71@redhat.com>
+Date:   Fri, 6 Aug 2021 15:44:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-References: <1628210784-136676-1-git-send-email-aubrey.li@intel.com>
-In-Reply-To: <1628210784-136676-1-git-send-email-aubrey.li@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 6 Aug 2021 15:23:25 +0200
-Message-ID: <CAJZ5v0hYVMnQFBkQ_yhF83q-CEJuQ7-TN_Hh2P6b2bM9K--xFQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI/PRM: Deal with table not present or no module found
-To:     Aubrey Li <aubrey.li@intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Aubrey Li <aubrey.li@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <YQlzzy933V9XMHqt@lahna>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 6, 2021 at 2:48 AM Aubrey Li <aubrey.li@intel.com> wrote:
->
-> On the system PRMT table is not present, dmesg output:
->
->         $ dmesg | grep PRM
->         [    1.532237] ACPI: PRMT not present
->         [    1.532237] PRM: found 4294967277 modules
->
-> The result of acpi_table_parse_entries need to be checked and return
-> immediately if PRMT table is not present or no PRM module found.
->
-> Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
-> ---
->  drivers/acpi/prmt.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> index 31cf9ae..1f6007a 100644
-> --- a/drivers/acpi/prmt.c
-> +++ b/drivers/acpi/prmt.c
-> @@ -292,6 +292,12 @@ void __init init_prmt(void)
->         int mc = acpi_table_parse_entries(ACPI_SIG_PRMT, sizeof(struct acpi_table_prmt) +
->                                           sizeof (struct acpi_table_prmt_header),
->                                           0, acpi_parse_prmt, 0);
-> +       /*
-> +        * Return immediately if PRMT table is not present or no PRM module found.
-> +        */
-> +       if (mc <= 0)
-> +               return;
-> +
->         pr_info("PRM: found %u modules\n", mc);
->
->         status = acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
-> --
+Hi,
 
-Applied as 5.14-rc material, thanks!
+On 8/3/21 6:50 PM, Mika Westerberg wrote:
+> On Tue, Aug 03, 2021 at 06:00:41PM +0200, Hans de Goede wrote:
+>> We have 3 files now which have the need to count the number of
+>> I2cSerialBus resources in an ACPI-device's resource-list.
+>>
+>> Currently all implement their own helper function for this,
+>> add a generic helper function to replace the 3 implementations.
+>>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> 
+> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-However, since I'm on vacation next week, it will get into linux-next
-after -rc6.
+Thank you, Wolfram are you also ok with me merging this
+patch through the pdx86 tree?
+
+Regards,
+
+Hans
+
