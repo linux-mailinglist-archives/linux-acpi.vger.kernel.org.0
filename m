@@ -2,189 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 898803E31AB
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Aug 2021 00:21:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33B693E3258
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Aug 2021 02:32:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242277AbhHFWWK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Aug 2021 18:22:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47374 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232178AbhHFWWJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 6 Aug 2021 18:22:09 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1D27F61050;
-        Fri,  6 Aug 2021 22:21:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628288513;
-        bh=UYsjy2E3yhimUFnBlBJOSfmSWLozHm9GL4oX3tbHK1g=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=NbRryqMgEPgafGh/mL+ZhMbNrOHEuCWrF9ePeSSFqjsuxLkMjWFhzFjmxdYevikQq
-         rAnJV9eke+haJI39SXaqpltJSeWeXH9iMLscoKMLKkJEuUExlqDJmPQ30vmzo1hiXy
-         Ueb5IjBL0EJXJ0iyMmiAW5QS+UZqnaHSZtZwP8DK02A6ZXrIGvXaw9gacpeKmJyme6
-         7l5fQNGSA6jjEGI3x6o+1lY55u97ViLawLUupRViSsdk5xXCL32K0BeM3PziCFmdSJ
-         7klPseCMxNxMZ3kLjbgVF5nnsDhaSki7sOK+G4355XbgsnCdfwo5va7slfyEu1SR9O
-         ZkV58UL4JVxew==
-Date:   Fri, 6 Aug 2021 17:21:51 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Jeremy Linton <jeremy.linton@arm.com>
-Cc:     linux-pci@vger.kernel.org, lorenzo.pieralisi@arm.com,
-        nsaenz@kernel.org, bhelgaas@google.com, rjw@rjwysocki.net,
-        lenb@kernel.org, robh@kernel.org, kw@linux.com,
-        f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] PCI: brcmstb: Add ACPI config space quirk
-Message-ID: <20210806222151.GA1892781@bjorn-Precision-5520>
+        id S229458AbhHGAcf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Aug 2021 20:32:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52220 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229379AbhHGAcf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Aug 2021 20:32:35 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AFA9C0613CF;
+        Fri,  6 Aug 2021 17:32:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=xfbXveP9AZ7DrJeKTchC6sa0LBUUGNHkmnU6yLgUglA=; b=S2TjmXhcln45cl7fMiNQjIyZ2
+        QcyEgHwUJIysGWiljwBb4Wif6C/eOS7p1ZICf4FaHW+XkYsAI7UPDKe+CfFnxtp+SWNXtRfAx3o3z
+        TTlFGdBrwAdniov/4ou3trIksj7tnOOCHB9wf2wUBthID93an5PgVcnOpRplyrwhYp13IyCBHUxK+
+        XqGLZDT0YMtQXt5eKvENZHEgxuvPGdJC7oUmG1kSq/k0q2kks9ggOChscscUP3hDaDtEa1xhsN+hu
+        6fs83XPPlosF+YhqubvII+xdisMEijC/aPTjpW7RDcj/I701A+I1K6g0hMHwcBMWQ5snSF8OC2Fim
+        VRYXMtFtA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47034)
+        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1mCAFa-0003UQ-8w; Sat, 07 Aug 2021 01:31:42 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1mCAFT-0007BF-2P; Sat, 07 Aug 2021 01:31:35 +0100
+Date:   Sat, 7 Aug 2021 01:31:35 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Len Brown <lenb@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Will Deacon <will@kernel.org>, devicetree@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mm@kvack.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH v2] memblock: make memblock_find_in_range method private
+Message-ID: <20210807003134.GR22278@shell.armlinux.org.uk>
+References: <20210802063737.22733-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210805211200.491275-3-jeremy.linton@arm.com>
+In-Reply-To: <20210802063737.22733-1-rppt@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 05, 2021 at 04:11:59PM -0500, Jeremy Linton wrote:
-> The PFTF CM4 is an ACPI platform that is following the PCIe SMCCC
-> standard because its PCIe config space isn't ECAM compliant and is
-> split into two parts. One part for the root port registers and a
-> moveable window which points at a given device's 4K config space.
-> Thus it doesn't have a MCFG (and really any MCFG provided would be
-> nonsense anyway). As Linux doesn't support the PCIe SMCCC standard
-> we key off a Linux specific host bridge _DSD to add custom ECAM
-> ops and cfgres. The cfg op selects between those two regions, as
-> well as disallowing problematic accesses, particularly if the link
-> is down because there isn't an attached device.
-
-I'm not sure SMCCC is *really* relevant here.  If it is, an expansion
-of the acronym and a link to a spec would be helpful.
-
-But AFAICT the only important thing here is that it doesn't have
-standard ECAM, and we're going to work around that.
-
-I don't see anything about _DSD in this series.
-
-> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-> ---
->  drivers/pci/controller/Makefile            |  1 +
->  drivers/pci/controller/pcie-brcmstb-acpi.c | 77 ++++++++++++++++++++++
->  include/linux/pci-ecam.h                   |  1 +
->  3 files changed, 79 insertions(+)
->  create mode 100644 drivers/pci/controller/pcie-brcmstb-acpi.c
+On Mon, Aug 02, 2021 at 09:37:37AM +0300, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
 > 
-> diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
-> index aaf30b3dcc14..65aa6fd3ed89 100644
-> --- a/drivers/pci/controller/Makefile
-> +++ b/drivers/pci/controller/Makefile
-> @@ -57,5 +57,6 @@ ifdef CONFIG_PCI_QUIRKS
->  obj-$(CONFIG_ARM64) += pci-thunder-ecam.o
->  obj-$(CONFIG_ARM64) += pci-thunder-pem.o
->  obj-$(CONFIG_ARM64) += pci-xgene.o
-> +obj-$(CONFIG_ARM64) += pcie-brcmstb-acpi.o
->  endif
->  endif
-> diff --git a/drivers/pci/controller/pcie-brcmstb-acpi.c b/drivers/pci/controller/pcie-brcmstb-acpi.c
-> new file mode 100644
-> index 000000000000..76944876155f
-> --- /dev/null
-> +++ b/drivers/pci/controller/pcie-brcmstb-acpi.c
-> @@ -0,0 +1,77 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * ACPI quirks for Brcm2711 PCIe host controller
-> + * As used on the Raspberry Pi Compute Module 4
-> + *
-> + * Copyright (C) 2021 Arm Ltd.
-> + */
-> +
-> +#include <linux/io.h>
-> +#include <linux/pci.h>
-> +#include <linux/pci-acpi.h>
-
-Do we use something from pci-acpi.h?
-
-> +#include <linux/pci-ecam.h>
-> +#include "../pci.h"
-> +#include "pcie-brcmstb.h"
-> +
-> +static int brcm_acpi_init(struct pci_config_window *cfg)
-> +{
-> +	/*
-> +	 * This platform doesn't technically have anything that could be called
-> +	 * ECAM. Its config region has root port specific registers between
-> +	 * standard PCIe defined config registers. Thus the region setup by the
-> +	 * generic ECAM code needs to be adjusted. The HW can access bus 0-ff
-> +	 * but the footprint isn't a nice power of 2 (40k). For purposes of
-> +	 * mapping the config region we are just going to squash the standard
-> +	 * and nonstandard registers together rather than mapping them
-> +	 * separately. This code simply honors the quirk provided base+size
-> +	 * instead.
-> +	 */
-> +	iounmap(cfg->win);
-> +	cfg->win = pci_remap_cfgspace(cfg->res.start, resource_size(&cfg->res));
-> +	if (!cfg->win)
-> +		goto err_exit;
-> +
-> +	/* MSI is nonstandard as well */
-> +	pci_no_msi();
-> +
-> +	return 0;
-> +err_exit:
-> +	dev_err(cfg->parent, "PCI: Failed to remap config\n");
-> +	return -ENOMEM;
-> +}
-> +
-> +static void __iomem *brcm_pcie_map_conf2(struct pci_bus *bus, unsigned int devfn,
-> +					int where)
-
-Rewrap to fit in 80 columns.  81 is just ... weird :)
-
-> +{
-> +	struct pci_config_window *cfg = bus->sysdata;
-> +	void __iomem *base = cfg->win;
-> +	int idx;
-> +	u32 up;
-> +
-> +	/* Accesses to the RC go right to the RC registers if slot==0 */
-> +	if (pci_is_root_bus(bus))
-> +		return PCI_SLOT(devfn) ? NULL : base + where;
-> +
-> +	/* Assure link up before sending request */
-> +	up = readl(base + PCIE_MISC_PCIE_STATUS);
-> +	if (!(up & PCIE_MISC_PCIE_STATUS_PCIE_DL_ACTIVE_MASK))
-> +		return NULL;
-> +
-> +	if (!(up & PCIE_MISC_PCIE_STATUS_PCIE_PHYLINKUP_MASK))
-> +		return NULL;
-
-What happens if the link goes down here?  Hopefully that's a
-recoverable error?
-
-> +	/* For devices, write to the config space index register */
-> +	idx = PCIE_ECAM_OFFSET(bus->number, devfn, 0);
-> +	writel(idx, base + PCIE_EXT_CFG_INDEX);
-> +	return base + PCIE_EXT_CFG_DATA + where;
-> +}
-> +
-> +const struct pci_ecam_ops bcm2711_pcie_ops = {
-> +	.init		= brcm_acpi_init,
-> +	.bus_shift	= 1,
-> +	.pci_ops	= {
-> +		.map_bus	= brcm_pcie_map_conf2,
-> +		.read		= pci_generic_config_read,
-> +		.write		= pci_generic_config_write,
-> +	}
-> +};
-> diff --git a/include/linux/pci-ecam.h b/include/linux/pci-ecam.h
-> index adea5a4771cf..a5de0285bb7f 100644
-> --- a/include/linux/pci-ecam.h
-> +++ b/include/linux/pci-ecam.h
-> @@ -87,6 +87,7 @@ extern const struct pci_ecam_ops xgene_v1_pcie_ecam_ops; /* APM X-Gene PCIe v1 *
->  extern const struct pci_ecam_ops xgene_v2_pcie_ecam_ops; /* APM X-Gene PCIe v2.x */
->  extern const struct pci_ecam_ops al_pcie_ops;	/* Amazon Annapurna Labs PCIe */
->  extern const struct pci_ecam_ops tegra194_pcie_ops; /* Tegra194 PCIe */
-> +extern const struct pci_ecam_ops bcm2711_pcie_ops; /* Bcm2711 PCIe */
->  #endif
->  
->  #if IS_ENABLED(CONFIG_PCI_HOST_COMMON)
-> -- 
-> 2.31.1
+> There are a lot of uses of memblock_find_in_range() along with
+> memblock_reserve() from the times memblock allocation APIs did not exist.
 > 
+> memblock_find_in_range() is the very core of memblock allocations, so any
+> future changes to its internal behaviour would mandate updates of all the
+> users outside memblock.
+> 
+> Replace the calls to memblock_find_in_range() with an equivalent calls to
+> memblock_phys_alloc() and memblock_phys_alloc_range() and make
+> memblock_find_in_range() private method of memblock.
+> 
+> This simplifies the callers, ensures that (unlikely) errors in
+> memblock_reserve() are handled and improves maintainability of
+> memblock_find_in_range().
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+
+Thanks.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
