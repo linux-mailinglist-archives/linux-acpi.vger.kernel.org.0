@@ -2,106 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33B693E3258
-	for <lists+linux-acpi@lfdr.de>; Sat,  7 Aug 2021 02:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89D223E325F
+	for <lists+linux-acpi@lfdr.de>; Sat,  7 Aug 2021 02:35:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbhHGAcf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 6 Aug 2021 20:32:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52220 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbhHGAcf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 6 Aug 2021 20:32:35 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AFA9C0613CF;
-        Fri,  6 Aug 2021 17:32:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=xfbXveP9AZ7DrJeKTchC6sa0LBUUGNHkmnU6yLgUglA=; b=S2TjmXhcln45cl7fMiNQjIyZ2
-        QcyEgHwUJIysGWiljwBb4Wif6C/eOS7p1ZICf4FaHW+XkYsAI7UPDKe+CfFnxtp+SWNXtRfAx3o3z
-        TTlFGdBrwAdniov/4ou3trIksj7tnOOCHB9wf2wUBthID93an5PgVcnOpRplyrwhYp13IyCBHUxK+
-        XqGLZDT0YMtQXt5eKvENZHEgxuvPGdJC7oUmG1kSq/k0q2kks9ggOChscscUP3hDaDtEa1xhsN+hu
-        6fs83XPPlosF+YhqubvII+xdisMEijC/aPTjpW7RDcj/I701A+I1K6g0hMHwcBMWQ5snSF8OC2Fim
-        VRYXMtFtA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47034)
-        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1mCAFa-0003UQ-8w; Sat, 07 Aug 2021 01:31:42 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1mCAFT-0007BF-2P; Sat, 07 Aug 2021 01:31:35 +0100
-Date:   Sat, 7 Aug 2021 01:31:35 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>,
-        Len Brown <lenb@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Will Deacon <will@kernel.org>, devicetree@vger.kernel.org,
-        kvmarm@lists.cs.columbia.edu, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mm@kvack.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        x86@kernel.org
-Subject: Re: [PATCH v2] memblock: make memblock_find_in_range method private
-Message-ID: <20210807003134.GR22278@shell.armlinux.org.uk>
-References: <20210802063737.22733-1-rppt@kernel.org>
+        id S229517AbhHGAfT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 6 Aug 2021 20:35:19 -0400
+Received: from foss.arm.com ([217.140.110.172]:42446 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229379AbhHGAfT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 6 Aug 2021 20:35:19 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 870E731B;
+        Fri,  6 Aug 2021 17:35:02 -0700 (PDT)
+Received: from [192.168.122.166] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A37FA3F66F;
+        Fri,  6 Aug 2021 17:35:01 -0700 (PDT)
+Subject: Re: [PATCH 3/3] PCI/ACPI: Add new quirk detection, enable bcm2711
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     linux-pci@vger.kernel.org, lorenzo.pieralisi@arm.com,
+        nsaenz@kernel.org, bhelgaas@google.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robh@kernel.org, kw@linux.com,
+        f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20210806221256.GA1891371@bjorn-Precision-5520>
+From:   Jeremy Linton <jeremy.linton@arm.com>
+Message-ID: <5f4f484b-9eef-2722-405d-a7ff6259aa0f@arm.com>
+Date:   Fri, 6 Aug 2021 19:34:56 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210802063737.22733-1-rppt@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20210806221256.GA1891371@bjorn-Precision-5520>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 02, 2021 at 09:37:37AM +0300, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> There are a lot of uses of memblock_find_in_range() along with
-> memblock_reserve() from the times memblock allocation APIs did not exist.
-> 
-> memblock_find_in_range() is the very core of memblock allocations, so any
-> future changes to its internal behaviour would mandate updates of all the
-> users outside memblock.
-> 
-> Replace the calls to memblock_find_in_range() with an equivalent calls to
-> memblock_phys_alloc() and memblock_phys_alloc_range() and make
-> memblock_find_in_range() private method of memblock.
-> 
-> This simplifies the callers, ensures that (unlikely) errors in
-> memblock_reserve() are handled and improves maintainability of
-> memblock_find_in_range().
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Hi,
 
-Thanks.
+Thanks for looking at this.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+On 8/6/21 5:12 PM, Bjorn Helgaas wrote:
+> In subject, this or similar would match history:
+> 
+>    PCI/ACPI: Add Broadcom bcm2711 MCFG quirk
+> 
+> On Thu, Aug 05, 2021 at 04:12:00PM -0500, Jeremy Linton wrote:
+>> Now that we have a bcm2711 quirk, we need to be able to
+>> detect it when the MCFG is missing. Use a namespace
+>> property as an alternative to the MCFG OEM.
+> 
+> Rewrap to use ~75 columns.
+> 
+> Mention the DT namespace property here.
+> 
+>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+>> ---
+>>   drivers/acpi/pci_mcfg.c | 14 ++++++++++++++
+>>   1 file changed, 14 insertions(+)
+>>
+>> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
+>> index 53cab975f612..7d77fc72c2a4 100644
+>> --- a/drivers/acpi/pci_mcfg.c
+>> +++ b/drivers/acpi/pci_mcfg.c
+>> @@ -169,6 +169,9 @@ static struct mcfg_fixup mcfg_quirks[] = {
+>>   	ALTRA_ECAM_QUIRK(1, 13),
+>>   	ALTRA_ECAM_QUIRK(1, 14),
+>>   	ALTRA_ECAM_QUIRK(1, 15),
+>> +
+>> +	{ "bcm2711", "", 0, 0, MCFG_BUS_ANY, &bcm2711_pcie_ops,
+>> +	  DEFINE_RES_MEM(0xFD500000, 0xA000) },
+>>   };
+>>   
+>>   static char mcfg_oem_id[ACPI_OEM_ID_SIZE];
+>> @@ -198,8 +201,19 @@ static void pci_mcfg_apply_quirks(struct acpi_pci_root *root,
+>>   	u16 segment = root->segment;
+>>   	struct resource *bus_range = &root->secondary;
+>>   	struct mcfg_fixup *f;
+>> +	const char *soc;
+>>   	int i;
+>>   
+>> +	/*
+>> +	 * This could be a machine with a PCI/SMC conduit,
+>> +	 * which means it doens't have MCFG. Get the machineid from
+>> +	 * the namespace definition instead.
+> 
+> s/SMC/SMCCC/ ?  Cover letter uses SMCCC (not sure it's relevant anyway)
+> s/doens't/doesn't/
+> 
+> Rewrap comment to use ~80 columns.
+> 
+> Seems pretty reasonable that a platform without standard ECAM might
+> not have MCFG, since MCFG basically implies ECAM.
+
+
+Sure, on all the above comments.
+
+> 
+> Is "linux,pcie-quirk" the right property to look for?  It doesn't
+> sound very generic, and it doesn't sound like anything related to
+> ECAM.  Is it new?  I don't see it in the tree yet.  Should it be in
+> Documentation/devicetree/bindings/pci/pci.txt so we don't get a
+> different property name for every new platform?
+
+Yes, I made it up. Someone else commented about the "linux," partially 
+because it should be "linux-" to conform with 
+https://github.com/UEFI/DSD-Guide. But also in the same context of it 
+being linux specific.  I think that guide is where it should end up, 
+rather than the devicetree bindings.
+
+I guess we can request addition to the uefi- but that seems like a 
+mistake this is really (hopefully?) a Linux specific properly as other 
+OS's will simply use the SMC. I think we could request another prefix if 
+we come up with a good one and think it belongs in that guide.
+
+
+
+
+> 
+>> +	 */
+>> +	if (!fwnode_property_read_string(acpi_fwnode_handle(root->device),
+>> +					 "linux,pcie-quirk", &soc)) {
+>> +		memcpy(mcfg_oem_id, soc, ACPI_OEM_ID_SIZE);
+>> +	}
+>> +
+>>   	for (i = 0, f = mcfg_quirks; i < ARRAY_SIZE(mcfg_quirks); i++, f++) {
+>>   		if (pci_mcfg_quirk_matches(f, segment, bus_range)) {
+>>   			if (f->cfgres.start)
+>> -- 
+>> 2.31.1
+>>
+
