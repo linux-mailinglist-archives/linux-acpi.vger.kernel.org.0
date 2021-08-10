@@ -2,148 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6260F3E50AE
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Aug 2021 03:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1880A3E57FB
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Aug 2021 12:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237233AbhHJBkm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 9 Aug 2021 21:40:42 -0400
-Received: from mail-dm6nam12on2073.outbound.protection.outlook.com ([40.107.243.73]:54624
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S234710AbhHJBkm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 9 Aug 2021 21:40:42 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j0KanBjrTC6cogHtM40Adi81evj8etWNMzwV7xGUOKg4O24WuM3++hQ8rSQ7HIrqMNsOrOInQHe8eJ6MHJaNtFuzYTSBHAsfTYGwwzXKLc7a7/87muMu2p7bH+m0aV5Kppxu2v0ZfUlMT7QlMgJPCez4Mu4m2l4lHfeZUVoY5T7fJMwEsZMgE5Dn+5F9ufLlm12WrIfDJnz0WW85y3B2Bf3+9+fUpuWhfzUHDRo34oe1gt/EbCewphfzqWfjWThgjNTNLlb5ziae5OOhEl0XgtdxK7puSsQghqfWb8dhOMW+JWObym0bCagixVUastCOgxtPvsZ3WBvv9iVSBsSOtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DoUwvjFXHpu27ws4KgjuSaN3gHuhrkt4VeNLk/rfoGM=;
- b=QFaXj33kYr/nv/RLgFF1ngiFm38uJFJTSNxbAsLFoPr9jRNZegOa3SYKHMaTvrtAf8Ktfa3sMPvZ05N/jATwnAQ7wxrdoMKF0rTfOJyKNai+9/nsgzRAAOir2+DCJvOgsAuBgZFaEKJFlGGWWQR5ExQ0PYkXsEy0CAeWac3sy8dok7JxfhDPwXbN/HlJ8plJOtKzssBq2ezsnHWUirVRKTGqZB+6kpCj36t5Y/Hgrf8/vLC2M2jTt8NaHu+CQs+JQtwU1nWBzDO7oLPCShYdVSPtM63OlqcM3EzI9mDUxAsnuK0GgrrFY5LufXfr05OqkvOCmqcUl4T1okeV+HF4Fg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DoUwvjFXHpu27ws4KgjuSaN3gHuhrkt4VeNLk/rfoGM=;
- b=dW0vWopr10ZHCYc//jh5BMz4h2gD9NTOjUb4QboLa4Xx4Fzbxsgx2i0WeKND6zO3JAo+FP+7IgKO9HBesTjBpU8tza1qUGbfY2xT2suvPvGTDS8yx5HTmVqPJgJS6jhu5hpYMFDo6SKqsVx0XxnJ97RzKtcEjOTKTVsQr3SuQ20=
-Authentication-Results: rjwysocki.net; dkim=none (message not signed)
- header.d=none;rjwysocki.net; dmarc=none action=none header.from=amd.com;
-Received: from SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8)
- by SN6PR12MB4672.namprd12.prod.outlook.com (2603:10b6:805:12::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.21; Tue, 10 Aug
- 2021 01:40:19 +0000
-Received: from SA0PR12MB4510.namprd12.prod.outlook.com
- ([fe80::e8ae:ebd6:7f5d:4b36]) by SA0PR12MB4510.namprd12.prod.outlook.com
- ([fe80::e8ae:ebd6:7f5d:4b36%7]) with mapi id 15.20.4394.023; Tue, 10 Aug 2021
- 01:40:19 +0000
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org
-Cc:     Pratik.Vishwakarma@amd.com,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH] ACPI: PM: s2idle: Invert Microsoft UUID entry and exit
-Date:   Mon,  9 Aug 2021 20:40:04 -0500
-Message-Id: <20210810014004.16399-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SA0PR11CA0039.namprd11.prod.outlook.com
- (2603:10b6:806:d0::14) To SA0PR12MB4510.namprd12.prod.outlook.com
- (2603:10b6:806:94::8)
+        id S237776AbhHJKHm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Aug 2021 06:07:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59322 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239700AbhHJKHl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Aug 2021 06:07:41 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38601C0613D3;
+        Tue, 10 Aug 2021 03:07:20 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id q2so20279873plr.11;
+        Tue, 10 Aug 2021 03:07:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=/WTc/jRXHtXJWj+Wad8h2vDSBuhiirpHVCKMKslUCDg=;
+        b=TNzlV9OG9ouGtp33JYXV2CuqznwDNP+DLbiBbjPq10lw0tgYJQrVP/+stIoYG4DXet
+         B87oFA8bW29TZO5VXi2mOwA9Rk3vZXkZ80ISTqoP0SE3+1OxsVzP9hTM+rLn0uz/LCGE
+         +MKiFdsXZ6HFdR5FJTNDZ0dLjDLyMeSu0qmO+2oP7qzz1NQFdYQ0mo7CslWrZtMDxYqk
+         ww0SI0/bW4NQaPo5cOCiMiay3F5TWMZkyzimhZYDYpzGde+9z0BW+PP61iFT1w1ZNLb+
+         J54pBg8f8UjIP6T0Cmb9kBMSs2oddz0yD3GyW0JYhavYjirW7xymU0js/JVMWdw/eYe+
+         EXyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=/WTc/jRXHtXJWj+Wad8h2vDSBuhiirpHVCKMKslUCDg=;
+        b=oD98Cq46TLunVWDj+Ii2VmbDhSvUIVCl+Ihr6V+kZbyk2ttKTrfSgpYSN4VEHSqGyr
+         +jRR73I5JZG+TsitkVS901iEZ4fmeF2sQyhdWfiIeJmvPDU5PVnH7BTxpK7QWsbd+EE1
+         PsXsbMtRJrGZCN828k/JlMz+c6Yt5Sv0hAP76UQ+cnrPGV6ISHd/RmDLW+LvzuTl9ese
+         Bocti5GGgrR3I4ieZ3zXgRdf1XQ8pbVf1IdXXzFiuWkQPndLAVt+ROaK0/pZM8H/zWxZ
+         Puv1k0NZgmXJlmYPcDtxlI7pPSD3FAWJIAtrYLGmZB/mTbcRhAMPLHS/NOx+vXjpzMfp
+         xLCQ==
+X-Gm-Message-State: AOAM5311CWx/8+yrRMZ/QiZ/OuVLTx7YmIneuwCd/O0gRdAo39O1fgjj
+        m0/sOaidRvQdUbNwKtWi8UIT4jMvcq6BfA==
+X-Google-Smtp-Source: ABdhPJzQFOqSq8XNRMUD+FN2uxXqX1t0SFajo0UanRiC2+h2uFmQlLC6oXYrIbW9iIs84t6N9EOIAA==
+X-Received: by 2002:a62:ea0f:0:b029:319:8eef:5ff1 with SMTP id t15-20020a62ea0f0000b02903198eef5ff1mr28642049pfh.74.1628590039333;
+        Tue, 10 Aug 2021 03:07:19 -0700 (PDT)
+Received: from [192.168.1.22] (amarseille-551-1-7-65.w92-145.abo.wanadoo.fr. [92.145.152.65])
+        by smtp.gmail.com with ESMTPSA id bk24sm2421518pjb.26.2021.08.10.03.07.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Aug 2021 03:07:18 -0700 (PDT)
+Subject: Re: [PATCH 1/3] PCI: brcmstb: Break register definitions into
+ separate header
+To:     Jeremy Linton <jeremy.linton@arm.com>, linux-pci@vger.kernel.org
+Cc:     lorenzo.pieralisi@arm.com, nsaenz@kernel.org, bhelgaas@google.com,
+        rjw@rjwysocki.net, lenb@kernel.org, robh@kernel.org, kw@linux.com,
+        f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20210805211200.491275-1-jeremy.linton@arm.com>
+ <20210805211200.491275-2-jeremy.linton@arm.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <f82761b1-fb7e-08b2-8bc3-c84d258e26d3@gmail.com>
+Date:   Tue, 10 Aug 2021 03:07:13 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from AUS-LX-MLIMONCI.amd.com (76.251.167.31) by SA0PR11CA0039.namprd11.prod.outlook.com (2603:10b6:806:d0::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.15 via Frontend Transport; Tue, 10 Aug 2021 01:40:19 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b4672048-4eab-451e-1488-08d95b9fcfa7
-X-MS-TrafficTypeDiagnostic: SN6PR12MB4672:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SN6PR12MB4672244947D5F299478B9902E2F79@SN6PR12MB4672.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:350;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 0/u7asKzVAvdLLPkzkz6v7qkr0KyCvh64jSoGnu/WrQkNZrIMH+zCBGhSCYWHLGrCoT8vhcpkTFa093YyPSUUhYryvuBoTbl8NJhaAUJx+qNB1pfPPl9ui94qLZNJ7Okc+/7rtgiXhm9xAxWS0xseyL3yTBggd/0SUCajJ0biaY+9IYDibx0QoRKLmhNa2aESU6Ng4wJa7GdbHuIRl35Z2kRlSZ24fg88AgTSTjGVejdhrB+OKmDA8pzeuxOweh9RftDVvU0fJp+PWFuFiVEoRCqTw8XxIWcPtmwTdnR/1/yzi83Y7RzzuLQRsqFE1EzeFxut2MLCgOvt5Z6rT9PfH6m16qz+NMsNiQOWI/aMfoCcX0hKiUlRnUs0PUV3x0LjEeOtTGneqIMo0BN0+P8aGqJjgZRO77NMIMWbIHD7CDopGeR8gHAuAsd9mcUPF3G7nj4fqQUlrBQTDPCwmOVNJ78cuUXq8rYI0mCgj+OAZHA3SRFyLh0YQEIVejQmir6Tz1pMlBsD2uCdymwN1wRsHzs3KCPTDtqQqLV0CIp2o07vSdVbfhCl+N065/pMDFcI0PoNB2UN5Bh8VQxcrI45KNmClqR/sgtrk7usA6UrD3nJy5Ik2BPD6IqG6+c8LwS0sxC13Z9zKazpJ/uJ9OEt8eB6exoAAuCub99kUiImGl0Th1+mqupazNDPUN4Wq0cwPgWLJH8k1BQ6CnnkdMRUQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4510.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(136003)(376002)(396003)(39860400002)(366004)(47530400004)(52116002)(7696005)(478600001)(6486002)(4326008)(316002)(45080400002)(186003)(2616005)(86362001)(83380400001)(66556008)(66476007)(956004)(66946007)(44832011)(26005)(52230400001)(8676002)(8936002)(1076003)(36756003)(966005)(6666004)(5660300002)(2906002)(38350700002)(38100700002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FeEjf698BIJcS16zugFhDi2irQiZw2fNpxk4z6SB8sdi23ACdStNDoPtzab8?=
- =?us-ascii?Q?nO7N/m0I6Fv/a/HpoVKPmlOMi/Wu+9pOh7WftocU2ST/aWClTQz2zonfw9gW?=
- =?us-ascii?Q?fmIrRqt59hCK9h04ndiHkWJsQgM69bHFrqPasztcM2RwaxN3I9GvCTNJhv9v?=
- =?us-ascii?Q?fTihYQ7jLXSiYTwi4RHOBRBGN2X2dD6mIGjR45FKLByLsruLOeLgx0ZM96wU?=
- =?us-ascii?Q?7Lxg5EA/p0Nrg7TYl6czasDZcbBQxZwuACW7+db2uYPcajDjHDZUo0zJeaCa?=
- =?us-ascii?Q?bXCXTuSx2M32Z99O2nMwAUa+RkfiXMQDFyafydBCDxI3/8C6d6KOfhoUtHwe?=
- =?us-ascii?Q?f4SFZ4FVn36SeDKTpmyutHcPXof+GG6AJEWXf2Za/Dn8+O4BGwQcR3P4fA7X?=
- =?us-ascii?Q?VYxmESnYkY2iONMkN4Sf5lwQHS82FMMAWzh8Y2TJjE26iW2GAG5F6IWJw5Ct?=
- =?us-ascii?Q?rR/c+6aWgrj0Ol1uzTz6gRZXnVHCv8443lBJ0/7FYs5opeprRJkOhMhhiXDT?=
- =?us-ascii?Q?fQbcgSUMiyk5p9/pP/GSK2nKbabVKKBhtQMGWn2vXK5eYHoEAnk2eVgIjmo2?=
- =?us-ascii?Q?QFf0z9qI+YzEzqeAW2lbNSkmk+kK6173c2/3OBVwH7CLUI2vls+qR6C6BG8a?=
- =?us-ascii?Q?KOfWq1HTopXjSkMesoySYVnxSUtkz+waqdLIDyAIWxlmRL3jcUqxvUxHnasu?=
- =?us-ascii?Q?xpHewtdRV/act7I8/Q42nTRN2GclZfC77lBg2jfxLHWZr/vGa0bj/oU37j2y?=
- =?us-ascii?Q?IK+qc2n6AQWRnshWWPYrQKmdcUb+6SAuFE8HBbb6zzW98jIGTnVVIXJWvAin?=
- =?us-ascii?Q?HKzKIiiV75bOvwU00O7nOLRtzQ/yvxpFhe4TOcqSxLhZHFzkffbw9ALlBhPy?=
- =?us-ascii?Q?js3Z+rcHIu1+J0FbQxkWkE0wxUgcjQteYl2uAGExjypUeU6puPfkU4kyh9+z?=
- =?us-ascii?Q?Es0bP0UbAgaevBBUtrfPL0ZA0huvqBOX2SFmeo6r1XxgULcGCcquw5btdRPA?=
- =?us-ascii?Q?6K0qFKZNusoAfu4GJ54Q0zyHYeHaiCSyAgZ+mtnT3+OnIrB2CzZaRSZzsQsN?=
- =?us-ascii?Q?cSwXteUbV2VF75Uz79AdGaV5+w9Fso5G9FA1beVFFACKm/D0yxJCIY7Kqdvr?=
- =?us-ascii?Q?NF3qi+JLGBHTh1V2o56HJtM9VaQT5dIVIIMUnfyOqcoiS5ke31SHsCOFGx8q?=
- =?us-ascii?Q?/bMk4pag9yT8v8wV1PTYGkrrTNFBEgDXUMVEgHUY8Ap/zC5NqYovm4hk8lFP?=
- =?us-ascii?Q?DwowQjTGjR1USMMiVexANlXlNwlOwoO+MsdazvK5LHRfaQ7Nj6Ztv8W5vXZi?=
- =?us-ascii?Q?jktEMrmu9tY0CMzNm0kqVsuT?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4672048-4eab-451e-1488-08d95b9fcfa7
-X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4510.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Aug 2021 01:40:19.3049
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o7ChzYaHGNLOURqDU2r4GX0HKY5C7O5Cd0FCvscpA6/hnHoMjUrO3D7JG7nxcy4WxN39YPeJlDpH6/kvBxPLmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB4672
+In-Reply-To: <20210805211200.491275-2-jeremy.linton@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-It was reported by a user with a Dell m15 R5 (5800H) that
-the keyboard backlight was turning on when entering suspend
-and turning off when exiting (the opposite of how it should be).
 
-The user bisected it back to commit 5dbf50997578 ("ACPI: PM:
-s2idle: Add support for new Microsoft UUID").  Previous to that
-commit the LEDs didn't turn off at all.  Confirming in the spec,
-these were reversed when introduced.
 
-Fix them to match the spec.
+On 8/5/2021 2:11 PM, Jeremy Linton wrote:
+> We are about to create a standalone ACPI quirk module for the
+> bcmstb controller. Lets move the register definitions into a separate
+> file so they can be shared between the APCI quirk and the normal
+> host bridge driver.
+> 
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> ---
+>   drivers/pci/controller/pcie-brcmstb.c | 179 +------------------------
+>   drivers/pci/controller/pcie-brcmstb.h | 182 ++++++++++++++++++++++++++
+>   2 files changed, 183 insertions(+), 178 deletions(-)
+>   create mode 100644 drivers/pci/controller/pcie-brcmstb.h
 
-BugLink: https://gitlab.freedesktop.org/drm/amd/-/issues/1230#note_1021836
-Fixes: 5dbf50997578 ("ACPI: PM: s2idle: Add support for new Microsoft UUID")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/acpi/x86/s2idle.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+You moved more than just register definitions into pcie-brcmstb.h you 
+also moved internal structure definitions, enumerations, etc. which are 
+not required since pcie-brcmstb-acpi.c does not access the brcm_pcie 
+structure but open codes accesses to the MISC_STATUS register instead.
 
-diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-index fbdbef0ab552..3a308461246a 100644
---- a/drivers/acpi/x86/s2idle.c
-+++ b/drivers/acpi/x86/s2idle.c
-@@ -452,7 +452,7 @@ int acpi_s2idle_prepare_late(void)
- 	if (lps0_dsm_func_mask_microsoft > 0) {
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
-+		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-@@ -479,7 +479,7 @@ void acpi_s2idle_restore_early(void)
- 	if (lps0_dsm_func_mask_microsoft > 0) {
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
-+		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+There are no include guards added to this file (it is debatable whether 
+we should add them), and it is also not covered by the existing BROADCOM 
+BCM2711/BCM2835 ARM ARCHITECTURE MAINTAINERS file entry.
+
+Given that there can be new platforms supported by this PCIe controller 
+in the future possibly with the same limitations as the 2711, but with a 
+seemingly different MISC_STATUS layout, you will have to think about a 
+solution that scales, maybe we cross that bridge when we get there.
 -- 
-2.25.1
-
+Florian
