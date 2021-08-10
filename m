@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1DA03E5D4A
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Aug 2021 16:18:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90AF23E5D76
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Aug 2021 16:21:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241195AbhHJOSc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Aug 2021 10:18:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53856 "EHLO mail.kernel.org"
+        id S241206AbhHJOUE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Aug 2021 10:20:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54576 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242751AbhHJOQ5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 10 Aug 2021 10:16:57 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C1B7761100;
-        Tue, 10 Aug 2021 14:16:19 +0000 (UTC)
+        id S243149AbhHJOSE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 10 Aug 2021 10:18:04 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 45D276024A;
+        Tue, 10 Aug 2021 14:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628604980;
-        bh=OrP3N2oIAEF39lwPt9uLzLIaN8jnmwa8q+zzqhPiHJw=;
+        s=k20201202; t=1628604999;
+        bh=h1B/iAWbC/Ujk+7bkx1aAwKMlZWFcRfIRTS2gNnUtS0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TX2JWEuUaWhQxsUJZZpVqlrgXtuJqpYWj4TlUNYnkOklunrMJYAlI4vSD5YaOqxWj
-         wb2t1azLC1onDi4e2TGmQzesVmrTigqvCnp2wlFRULbFMlaYBNNgd3J1xl8Lg2LPCY
-         XBx/jLs0ctYfZLlaWgx0jvBYX2H3tRUIbdobBWW7VJWTqfG3nyH8qPFDpYHqqf9Kr+
-         bgHEsVblK54xmuJSFCsx4MwBdzIfq0Jt2v69o+RQ8G0ytPSKbh6hCRN62vl9JKFW5i
-         AkVftNO0G/uwc1XzmbEghztQWas8oPJGnACsCKixjEVpCZE00QKC4f7sWfPfrJ37HN
-         LjHI1+H024hSw==
+        b=l4xpER+4hYUJ1Df47aStV1t9cjeyYEy3UHAHU3vOP/pOSfH0/ilmgLfgVaJM8I92k
+         sBg2CnPFGVoYJLSUJ3RnupBZxXfPD1ypgfAHMbpmbHPm1oMC4Zy4GwGYKNS0iIvqz1
+         9g3xPJwA8wRj1X6hI4SSisbL8EHriRxNpjNxJZp/2I9nREWAux4hNDZwNp/MD3SbLp
+         vOSD6McDfcCQc19gLEKjWJz5NpR6cFn2FpDUcdltipDBaPpELm3npo+ccvBOpQY7lr
+         dB2OiqLUHFNasRo4lMKk0DhDPaGCQ9sO69604XIWPpFuSKqXkAxgUhD4zDIiG10FxU
+         zxrPE5OxrlEUQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Adrien Precigout <dev@asdrip.fr>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 5.4 11/13] Revert "ACPICA: Fix memory leak caused by _CID repair function"
-Date:   Tue, 10 Aug 2021 10:16:03 -0400
-Message-Id: <20210810141606.3117932-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 10/11] Revert "ACPICA: Fix memory leak caused by _CID repair function"
+Date:   Tue, 10 Aug 2021 10:16:23 -0400
+Message-Id: <20210810141625.3118097-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210810141606.3117932-1-sashal@kernel.org>
-References: <20210810141606.3117932-1-sashal@kernel.org>
+In-Reply-To: <20210810141625.3118097-1-sashal@kernel.org>
+References: <20210810141625.3118097-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -59,7 +59,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 deletions(-)
 
 diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
-index b7c408ce340c..663d85e0adba 100644
+index 4c8ce483805d..a3bd6280882c 100644
 --- a/drivers/acpi/acpica/nsrepair2.c
 +++ b/drivers/acpi/acpica/nsrepair2.c
 @@ -375,13 +375,6 @@ acpi_ns_repair_CID(struct acpi_evaluate_info *info,
