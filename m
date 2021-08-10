@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 277A63E5CDB
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Aug 2021 16:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86FF33E5D14
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Aug 2021 16:17:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242445AbhHJOP7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Aug 2021 10:15:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52426 "EHLO mail.kernel.org"
+        id S242803AbhHJORA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Aug 2021 10:17:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53248 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242372AbhHJOPu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 10 Aug 2021 10:15:50 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9A6E360F41;
-        Tue, 10 Aug 2021 14:15:26 +0000 (UTC)
+        id S242401AbhHJOQV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 10 Aug 2021 10:16:21 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EB21160F02;
+        Tue, 10 Aug 2021 14:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628604927;
-        bh=T/67Tow/psOEgY9EDGLlWov3WbyBqHix91AGPcj2dNE=;
+        s=k20201202; t=1628604959;
+        bh=/oB2UE8jOnRL1guBpCaQUOs0Yy9zo16YZNOX1+5BSEc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PH6xDufp55Gwp7EEkWCWVXQOVsSeRGDa24KTz82AUTLNDzFJQNRLDE2juG/2CJFCl
-         eWeX86xTDllsk/GZdLJFJVW2I5bfxRSU2DQBgHa+NwLkAZm4Cv+DNu0YBLcecTyosB
-         ca12Qj4P/fNbKWl02ahdThKlHSff/x4s+MzMR53PbZmIs94mo7L4EZmZbzNl8MYNkE
-         l+5dJjK03vCywq66kGy/o6UQvL7xtYifqmdjhLeaVHB0h2jzK2Y7u78UR2+HpwTc8b
-         gOXumnQupdR49t7A2pXDcF2e49mpa2/XmsCa5AOKEJIs0V7p5mPLiap8yOf4ID0OiP
-         flJ47wQoOVgoA==
+        b=NA4xJCVMYC/3GrfMWnrqLVUrs+v91ZEkuIlkdbv7qS4PXo9s8bwQQ+AGmcd+eCFCk
+         8pg7eIF8PSMvM8N9g3zCpz7lz2Ul9lFj2RP1TVswmGgIL4SavSPJZJjV9VU3C1OUS4
+         VSj1/aSjaIUfcXyxncU4n2/bu/oVr9CNcagH/kkDHBPhYPPhJR8CkcJkrTXojHMdKR
+         tbPeEsrahS91+IeWP75DlyeaMzLV8dhv/ZyTLMv+hIhw3MHdnq5nJCiW8v8uwKJ424
+         9tZ4PGn6FxPrL+ROJdqZ2pzUeZOAKoMXPcZrKxT8NEzPgAhLz9WasNMsv9TT4Pg1H+
+         /Kx7TWYTYO6Zw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Adrien Precigout <dev@asdrip.fr>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 5.13 16/24] Revert "ACPICA: Fix memory leak caused by _CID repair function"
-Date:   Tue, 10 Aug 2021 10:14:57 -0400
-Message-Id: <20210810141505.3117318-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 16/20] Revert "ACPICA: Fix memory leak caused by _CID repair function"
+Date:   Tue, 10 Aug 2021 10:15:34 -0400
+Message-Id: <20210810141538.3117707-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210810141505.3117318-1-sashal@kernel.org>
-References: <20210810141505.3117318-1-sashal@kernel.org>
+In-Reply-To: <20210810141538.3117707-1-sashal@kernel.org>
+References: <20210810141538.3117707-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -59,10 +59,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 deletions(-)
 
 diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
-index 38e10ab976e6..14b71b41e845 100644
+index 8768594c79e5..125143c41bb8 100644
 --- a/drivers/acpi/acpica/nsrepair2.c
 +++ b/drivers/acpi/acpica/nsrepair2.c
-@@ -379,13 +379,6 @@ acpi_ns_repair_CID(struct acpi_evaluate_info *info,
+@@ -375,13 +375,6 @@ acpi_ns_repair_CID(struct acpi_evaluate_info *info,
  
  			(*element_ptr)->common.reference_count =
  			    original_ref_count;
