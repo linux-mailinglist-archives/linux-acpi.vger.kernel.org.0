@@ -2,89 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C9BE3E7BCB
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Aug 2021 17:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD7453E7DC4
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Aug 2021 18:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241930AbhHJPKy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Aug 2021 11:10:54 -0400
-Received: from foss.arm.com ([217.140.110.172]:57658 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242538AbhHJPKx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 10 Aug 2021 11:10:53 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 803A01FB;
-        Tue, 10 Aug 2021 08:10:31 -0700 (PDT)
-Received: from [192.168.122.166] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1016E3F718;
-        Tue, 10 Aug 2021 08:10:31 -0700 (PDT)
-Subject: Re: [PATCH 1/3] PCI: brcmstb: Break register definitions into
- separate header
-To:     Florian Fainelli <f.fainelli@gmail.com>, linux-pci@vger.kernel.org
-Cc:     lorenzo.pieralisi@arm.com, nsaenz@kernel.org, bhelgaas@google.com,
-        rjw@rjwysocki.net, lenb@kernel.org, robh@kernel.org, kw@linux.com,
-        bcm-kernel-feedback-list@broadcom.com, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20210805211200.491275-1-jeremy.linton@arm.com>
- <20210805211200.491275-2-jeremy.linton@arm.com>
- <f82761b1-fb7e-08b2-8bc3-c84d258e26d3@gmail.com>
-From:   Jeremy Linton <jeremy.linton@arm.com>
-Message-ID: <ab2aa9e3-cdc7-1bc7-d493-8f3c991c3285@arm.com>
-Date:   Tue, 10 Aug 2021 10:10:30 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S229512AbhHJQrP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Aug 2021 12:47:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40196 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229516AbhHJQrP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Aug 2021 12:47:15 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA77C0613C1;
+        Tue, 10 Aug 2021 09:46:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=HvAkw/gWJZ3QY8CKcv5rMg/NeJiwJ1weAp+TQ0QSQA8=; b=uzTnnhsPt/hTLjj9DlvEAnAfmH
+        tUB0NOMY6YhX+f6MCX2Sbs0qzeD9ZWO//eUd793IpW9850y9HyqO+72l4+eyQ0ZzJcym+BEgzL1HO
+        eP70W+ozn59iemTM+eLMyrZledeerni4d/aMcv9wTReJuuPXXJRUZ5YE02NTDu8K0FvxsJv8pt6rX
+        s4WYf0kPzTW6KbXQlR+u/Pfs8V82WA+DeX11NqF5Ewgal25o1Tkh2to+7rArfh9t6LG3mN/7HIB1K
+        lVO9VZgcpmykWRMNjR7c5lSiZpgquXuAIp8ti0dhB185CFHrl4KqM+mfSdFD14vk23YWMaRLybzwx
+        0w8Q0NCQ==;
+Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mDUsC-00CMTk-CF; Tue, 10 Aug 2021 16:45:27 +0000
+Date:   Tue, 10 Aug 2021 17:45:04 +0100
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Veronika kabatova <vkabatov@redhat.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH v2 1/3] ACPI: osl: Add __force attribute in
+ acpi_os_map_iomem() cast
+Message-ID: <YRKtEDycefrZLB3X@infradead.org>
+References: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
+ <20210802152359.12623-2-lorenzo.pieralisi@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <f82761b1-fb7e-08b2-8bc3-c84d258e26d3@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210802152359.12623-2-lorenzo.pieralisi@arm.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Mon, Aug 02, 2021 at 04:23:57PM +0100, Lorenzo Pieralisi wrote:
+> Add a __force attribute to the void* cast in acpi_os_map_iomem()
+> to prevent sparse warnings.
 
-Thanks for taking a look at this!
-
-
-On 8/10/21 5:07 AM, Florian Fainelli wrote:
-> 
-> 
-> On 8/5/2021 2:11 PM, Jeremy Linton wrote:
->> We are about to create a standalone ACPI quirk module for the
->> bcmstb controller. Lets move the register definitions into a separate
->> file so they can be shared between the APCI quirk and the normal
->> host bridge driver.
->>
->> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
->> ---
->>   drivers/pci/controller/pcie-brcmstb.c | 179 +------------------------
->>   drivers/pci/controller/pcie-brcmstb.h | 182 ++++++++++++++++++++++++++
->>   2 files changed, 183 insertions(+), 178 deletions(-)
->>   create mode 100644 drivers/pci/controller/pcie-brcmstb.h
-> 
-> You moved more than just register definitions into pcie-brcmstb.h you 
-> also moved internal structure definitions, enumerations, etc. which are 
-> not required since pcie-brcmstb-acpi.c does not access the brcm_pcie 
-> structure but open codes accesses to the MISC_STATUS register instead.
-> 
-> There are no include guards added to this file (it is debatable whether 
-> we should add them), and it is also not covered by the existing BROADCOM 
-> BCM2711/BCM2835 ARM ARCHITECTURE MAINTAINERS file entry.
-
-Sure, I will reduce the .h to just the register definitions, guard it, 
-and tweak maintainers to cover pcie-brcmstb*.
-
-
-> 
-> Given that there can be new platforms supported by this PCIe controller 
-> in the future possibly with the same limitations as the 2711, but with a 
-> seemingly different MISC_STATUS layout, you will have to think about a 
-> solution that scales, maybe we cross that bridge when we get there.
-
-Yes, given I don't know what those changes are I can't predict how they 
-would have to be handled, or even if the platform would be a target of 
-the community maintaining the UEFI/ACPI port on the RPi. So punting on 
-that topic seems a reasonable solution at the moment. Better yet, more 
-of the linux community will see the advantage of the firmware interface 
-and this platform can utilize that method.
+Err, no.  These annotation are there for a reason and need to
+be propagated instead.  And independent of that a __force cast
+without a comment explaining it is a complete no-go.
