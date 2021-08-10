@@ -2,60 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD7453E7DC4
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Aug 2021 18:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 521FE3E7EBF
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Aug 2021 19:34:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbhHJQrP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 10 Aug 2021 12:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40196 "EHLO
+        id S233255AbhHJRfG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 10 Aug 2021 13:35:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229516AbhHJQrP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Aug 2021 12:47:15 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA77C0613C1;
-        Tue, 10 Aug 2021 09:46:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=HvAkw/gWJZ3QY8CKcv5rMg/NeJiwJ1weAp+TQ0QSQA8=; b=uzTnnhsPt/hTLjj9DlvEAnAfmH
-        tUB0NOMY6YhX+f6MCX2Sbs0qzeD9ZWO//eUd793IpW9850y9HyqO+72l4+eyQ0ZzJcym+BEgzL1HO
-        eP70W+ozn59iemTM+eLMyrZledeerni4d/aMcv9wTReJuuPXXJRUZ5YE02NTDu8K0FvxsJv8pt6rX
-        s4WYf0kPzTW6KbXQlR+u/Pfs8V82WA+DeX11NqF5Ewgal25o1Tkh2to+7rArfh9t6LG3mN/7HIB1K
-        lVO9VZgcpmykWRMNjR7c5lSiZpgquXuAIp8ti0dhB185CFHrl4KqM+mfSdFD14vk23YWMaRLybzwx
-        0w8Q0NCQ==;
-Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mDUsC-00CMTk-CF; Tue, 10 Aug 2021 16:45:27 +0000
-Date:   Tue, 10 Aug 2021 17:45:04 +0100
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Veronika kabatova <vkabatov@redhat.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH v2 1/3] ACPI: osl: Add __force attribute in
- acpi_os_map_iomem() cast
-Message-ID: <YRKtEDycefrZLB3X@infradead.org>
-References: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
- <20210802152359.12623-2-lorenzo.pieralisi@arm.com>
+        with ESMTP id S232963AbhHJRec (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 10 Aug 2021 13:34:32 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31132C0611A0
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Aug 2021 10:33:14 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id m18so19028259ljo.1
+        for <linux-acpi@vger.kernel.org>; Tue, 10 Aug 2021 10:33:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
+        b=RsiBBdA9QKOcTCF5lGXKVsjmClQ3sMV8nYRHi5UzQ6RFRdaZ6t981j56diJ7q3WLiT
+         dSrogDmRt6kwHS+J+pcIdphvlu5Vk62bOJudqb0dzEOf5Tr6sAVMWTY2NbEn++ZnSdaf
+         F4yj6h4F7VBk6uVCXN4p2StSiBpSckLhr0NJoCtUTvVh+gCrpSdvA2dss+nT8Q4XWg+b
+         4x9fMuBGMminOSzPCK8njOsWexpWsfb2omBFXa3GLhHqzUauC1r8oyB3fDvFuiS7qNjT
+         fDqijYMWxjmP3EeBvtWaIUY7Z5YEma/9OhqmI5Ya7ZKqW/5hzlkm8xAdNsqyzESz/5Xj
+         5sZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
+        b=P1qU1l5cQa8iB1iEU6rMgbTiIE1fz4LrtLGKNJYURo9C0os+sWmHSV9RY4YKilDr+O
+         m7SkhpXQzhEME2mvJP8k2XIRaNjHTLMkcR8/oUfhz1Rc3IXLPGjS0am1pjjhmLVS+mKi
+         Jz0D2tpG+47UduKyhuYFflXiydJqaI8NcvEzK5kuiUL+DUAmtT6hQ9u9ZTB6U28pd8pm
+         pPOrTf2vS8DpX2cEj+nvxjZgHps3Ezus2lk2l982mb660mwVRp/SVr5rMq/T100i5Vub
+         0o6V/jOrGYCWnUrjwY+zrmAki5bMl/NlQtzeNCuUqdCYsB2FbeJLsCOa4HEFxYWnlAgP
+         ROGQ==
+X-Gm-Message-State: AOAM531oPOFe2hgbs/+XEnY8B/yM6Cf6XnfVv2yeUrgCI/U5UnTOexBn
+        E4M+BCANzazgJKsM41rVyuaw9BlGPZf6oA1PBmg=
+X-Google-Smtp-Source: ABdhPJw+sC+pBQw0G+0ULVvin/r/jCVVb1V7XUqN67UCoWrnBzyIXnaSzK5br1SZrCupI/L0LIZWgMfi7vhpZK+Wcm0=
+X-Received: by 2002:a05:651c:32c:: with SMTP id b12mr1745558ljp.198.1628616792032;
+ Tue, 10 Aug 2021 10:33:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210802152359.12623-2-lorenzo.pieralisi@arm.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Received: by 2002:ac2:5d2e:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 10:33:10
+ -0700 (PDT)
+Reply-To: majidmuzaffar8@gmail.com
+From:   Majid Muzaffar <ing.abdullabin.rishid.me@gmail.com>
+Date:   Tue, 10 Aug 2021 20:33:10 +0300
+Message-ID: <CAFsu49XXzY7ugKhGzJm5OPKe2LG1R35c-Dkp83VgS3+u27y=sQ@mail.gmail.com>
+Subject: Proposal
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 02, 2021 at 04:23:57PM +0100, Lorenzo Pieralisi wrote:
-> Add a __force attribute to the void* cast in acpi_os_map_iomem()
-> to prevent sparse warnings.
+Salam alaikum,
 
-Err, no.  These annotation are there for a reason and need to
-be propagated instead.  And independent of that a __force cast
-without a comment explaining it is a complete no-go.
+I am the investment officer of UAE based investment company who are
+ready to fund projects outside UAE, in the form of debt finance. We
+grant loan to both Corporate and private entities at a low interest
+rate of 3% ROI per annum. The terms are very flexible and interesting.
+Kindly revert back if you have projects that needs funding for further
+discussion and negotiation.
+
+Thanks
+
+investment officer
