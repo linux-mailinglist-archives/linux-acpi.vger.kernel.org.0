@@ -2,67 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A4B03E949B
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Aug 2021 17:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C99F83E949D
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Aug 2021 17:36:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231388AbhHKPgP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Aug 2021 11:36:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45678 "EHLO
+        id S233127AbhHKPhA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Aug 2021 11:37:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233010AbhHKPgP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Aug 2021 11:36:15 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BAEBC061765;
-        Wed, 11 Aug 2021 08:35:51 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id h13so3699545wrp.1;
-        Wed, 11 Aug 2021 08:35:51 -0700 (PDT)
+        with ESMTP id S233010AbhHKPg7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Aug 2021 11:36:59 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 112C7C061765;
+        Wed, 11 Aug 2021 08:36:36 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id x7so3275048ilh.10;
+        Wed, 11 Aug 2021 08:36:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
-        b=PpD1KVvxnVz+rmv3iCZFOs5Ob5VhklieYZKpJGI6mjzMVfh0IqWIQEkGG8jefSF0Gl
-         UrzNCEX0BvyJkkQLWS7y/O0abHE37dsN/sgJHpFa7ECxuMRzMzNFjzx8EE5RtKBYwmTb
-         NrLgfdwsPRlpitoe+B40gHYtiQIxNqT5YNB6K5sEbSxyUwQX7O+W4KDyTjDwtdatqOwx
-         qSQZ5fdqlCFNty6nv4p41TjPc9FJgNQ5XVklKdKwivwZdstPQSU1ntLvjM9Nv4hqwBEr
-         /2cW2R9+ha/PKz90SChPcfMQGyPTN66Z3yZdvfJuuPxq1Dbx1KA0lwJ4CxJb/nTcic3w
-         N9CQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=C4Yippe1FfLHJnm/bBg0Tev596XLEVnx9ptKT8Tmv1w=;
+        b=tuo0NJhlbsE1cgJWOCTQMJGME0TyKH6WbYQBRHNGe6yb4vS8khVqpRBj9CelO4Drcu
+         ipgawXlzgK+T4+0OBbYZXrAC1LFA5a7zBBMAxXttMA0xiNXNci6NbPSr29QvVBGM+LzW
+         29epQDHdAjX31mv91AAwgsMS8FmaqZJ2+oJcz/nKZExo2GdJ6bM9tSj48TZSrpoMKC02
+         c+JeSib3R+Nz6EjTa6xDUcvTxRMEGNVg12BZ4RkXpr1AUdAsrvuWuBm2oTzNFEZOw4S7
+         PMChY9ksUDnIApH0yl+pHTagBMzZoevhZZ0489tbZYC1FLezbgfwtDnFmSd48OU9F4Sr
+         Cgpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
-        b=CV8fq7TVWEmZAG2hZv4J3q+yCXIi6QsmDzTGuprXsy2gveVlQCl2LcATWCnGTXFJeu
-         /iF8YzHb/P4iRfT3hyfuiUDbrY0qtoSxmhaxKhYYlN1c3wfSau21J9CdnZIU2ZMMR3LP
-         1M0it5xj52CQak4rLcPqNTcTgajoBAQJBpDHCheVY7Z8UkXuM7+zgcpZfB8ughvRZiaD
-         4PeCvFidDPLIEXzmsXfL1ACUZNBQD3LaJKyohdnHvGiGyKHQDo8Y74XYzE9rG22dKUKM
-         kKqPQBEqBmsnEhVQksNLZISy1WhzJMgla1FnB2gAsR/irmwe+Pqh//+foBzP3Z7d1813
-         7mVA==
-X-Gm-Message-State: AOAM532ogYSHmmtPf3Nd2+/yDfztdwJag3CKV105VusAkffGD6JPYCLd
-        hN7YlUYdqEF86nWTs8i+/pc=
-X-Google-Smtp-Source: ABdhPJzleJyUH4rR5rGF6HaKFLe8yYY1eTQnRJ+667iopDH9OiBMHRWr+vVrxm2QcwZhWm/Qrn6tuw==
-X-Received: by 2002:adf:dcce:: with SMTP id x14mr25187373wrm.53.1628696149936;
-        Wed, 11 Aug 2021 08:35:49 -0700 (PDT)
-Received: from [192.168.1.70] ([102.64.209.185])
-        by smtp.gmail.com with ESMTPSA id o24sm6251662wmm.37.2021.08.11.08.35.30
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Wed, 11 Aug 2021 08:35:49 -0700 (PDT)
-Message-ID: <6113ee55.1c69fb81.925d2.e690@mx.google.com>
-From:   Vanina curth <curtisvani0038@gmail.com>
-X-Google-Original-From: Vanina  curth
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=C4Yippe1FfLHJnm/bBg0Tev596XLEVnx9ptKT8Tmv1w=;
+        b=LpSorsVwJjjVCPeQGFkGkfWbP7HWl53bo8sHm2c7D4QGOsuYZYyV88HR08mZuH45tb
+         0er6S5+RvjA6EBDmtYCULRCX0dvtRDnGGO1WUJIHtLumctYOOwYSeNtHGo1v1VQrg64g
+         B5KX1sxj8LIbxxFYsBU1OhjZT1ef7qpW+JjhENWVnYtWqW5WKMKkveHbEPrE+m47m1S3
+         V6fDbBLTxd2ZFUjOr0u6Qz/vCD/sEgXSkwVg1jvhU8+LodJeon9X2jb/MKQL3UbGyteU
+         vRASRzGwI6DP5+bPB9pkohaaInKBZfPyHQBpSy/0YzLfe9EVjjs0611usmD7kN1/TtSk
+         cBeA==
+X-Gm-Message-State: AOAM530djA9ULyBqQnzmp8PQhXfU3tV0rTxcBJLbT0RUtar2DDabmWdd
+        Unc9EAjeiolcGq3TOTiq5cU=
+X-Google-Smtp-Source: ABdhPJyNTPz4hVjuOvkYyoJGprZOIGKlvLeq9sYzEWOuFruqzCYMdKQk+WsJtr3StkToCnA5pmFe0A==
+X-Received: by 2002:a05:6e02:1aaf:: with SMTP id l15mr51523ilv.128.1628696195512;
+        Wed, 11 Aug 2021 08:36:35 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id r1sm12858165ilt.37.2021.08.11.08.36.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Aug 2021 08:36:35 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 1293C27C0054;
+        Wed, 11 Aug 2021 11:36:33 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Wed, 11 Aug 2021 11:36:34 -0400
+X-ME-Sender: <xms:f-4TYeyDY-tqzLn91IwpWBMsoKdcnhn-Po73HZSJ3YMhnblmhH6gIQ>
+    <xme:f-4TYaRPay_p1qCOKeStxdzVbhKSppcTl_RPqCUtDWdQJOq5zohNwNqwm6rsyrJRz
+    1s2B_ufH2JLpr152Q>
+X-ME-Received: <xmr:f-4TYQWZzjQEVuDeGplKGtke55nDNhu_9lu3CX5s3jm5oyWwKiAwekeYZKY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrkedugdeltdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcuhfgv
+    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
+    hnpeeiueevjeelheduteefveeflefgjeetfeehvdekudekgfegudeghfduhfetveejuden
+    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
+    ohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnh
+    hgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:f-4TYUgR8cSw0c2QXu0An5T3UvBrcX3cDGBtKcReql7HxgKePM4i-w>
+    <xmx:f-4TYQDQzgoxcAIn_ZyyTk4-napsH79pFmucDo26F5V8xSvPVEIYyw>
+    <xmx:f-4TYVIs1alv2ETfrTUIikowPrWaQA-FrrMbpOX1YhoQKGbwm5dRWQ>
+    <xmx:ge4TYXC3gDEQxmiAu1dk9kOmvcSH1TynfVeQg8CBKcwSw82hnL8DC6YWMrk>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 11 Aug 2021 11:36:31 -0400 (EDT)
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Stephen Hemminger <sthemmin@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+        Rob Herring <robh@kernel.org>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-hyperv@vger.kernel.org,
+        Sunil Muthuswamy <sunilmut@microsoft.com>,
+        Marc Zyngier <maz@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Subject: [RFC 0/5] PCI: Use the private field of pci_host_bridge for ACPI device
+Date:   Wed, 11 Aug 2021 23:36:14 +0800
+Message-Id: <20210811153619.88922-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Dear
-To:     Recipients <Vanina@vger.kernel.org>
-Date:   Wed, 11 Aug 2021 15:35:21 +0000
-Reply-To: curtisvani9008@gmail.com
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-How are you? I'm Vanina. I'm interested to know you and I would like to kno=
-w more about you and establish relationship with you. i will wait for your =
-response. thank you.
+Hi Lorenzo,
+
+As our previous discussion, I make a patchset showing the required
+effort if we want to use ->private in pci_host_bridge to store ACPI
+device pointer on ARM64. This patchset is mostly for discussion purpose.
+
+This patchset is based onto the v5 of my Hyper-V PCI on ARM64 patchset:
+
+	https://lore.kernel.org/lkml/20210726180657.142727-1-boqun.feng@gmail.com/
+
+, and I've tested it with other code under development to fully enable
+Hyper-V virtual PCI on ARM64.
+
+Regards,
+Boqun
+
+
+Boqun Feng (5):
+  PCI: Introduce pci_create_root_bus_priv()
+  PCI/ACPI: Store ACPI device information in the host bridge structure
+  PCI: hv: Set NULL as the ACPI device for the PCI host bridge
+  arm64: PCI: Retrieve ACPI device information directly from host
+    bridges
+  PCI: hv: Remove the dependency of pci_config_window
+
+ arch/arm64/kernel/pci.c             | 14 +-------------
+ drivers/acpi/pci_root.c             |  5 +++--
+ drivers/pci/controller/pci-hyperv.c | 20 +++++++++++++++-----
+ drivers/pci/probe.c                 | 15 ++++++++++++---
+ include/linux/pci-acpi.h            |  5 +++++
+ include/linux/pci.h                 |  3 +++
+ 6 files changed, 39 insertions(+), 23 deletions(-)
+
+-- 
+2.32.0
+
