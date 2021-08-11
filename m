@@ -2,134 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A33D3E8BFC
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Aug 2021 10:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E2343E8EDB
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Aug 2021 12:40:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236114AbhHKIkT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Aug 2021 04:40:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58928 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236012AbhHKIkS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 11 Aug 2021 04:40:18 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD6EEC061765;
-        Wed, 11 Aug 2021 01:39:54 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id d131-20020a1c1d890000b02902516717f562so1382837wmd.3;
-        Wed, 11 Aug 2021 01:39:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=/cH18u9OhTCq+UpoTOaDG1DbIfkplQjzOdXKSsM62pY=;
-        b=rhcOyetStHFST5GEeY1BJw0x7RWCBh9KJoHPIxjlpISW1LTUNyjLuUyAPLHTj6Xgco
-         mfCVCXvil0lwxvRCLm5akQNAE1L5oq6ORX8ElGjg3o9IboKQhQaoaDFNvX/aEMjTUaeT
-         mbGMuXEzF3j31qdvoqj2HimFUECogfbCXEBLwmayU/t4YKjutfmN+/8nHbmACAwp0h+j
-         ZWPtqo03iknDZHwqSwfu8vDSf/lm4zbqikKpHf8s8wv2Ay2cK49riyP/A9KvIj8wVyYw
-         OPal5vsEZuP/AOn2+7E02in4Fm3lpF6mmb3YJcdYU9OuK7PP8aue4SN8rLSwm/c1CQKE
-         aVCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=/cH18u9OhTCq+UpoTOaDG1DbIfkplQjzOdXKSsM62pY=;
-        b=VxxdS8OrnMfhHQ3DFnahh/HPMAuwG0cDxR2Xq4y0fW0X9KsjEqrJ8Jmw1GW5nKY6Os
-         /bCcEL4P32ngD2jvUU6cFYDMwYn7AVcEDEs55dlhNgH//yVMoDQ3iBT69JwNgFmT5XkU
-         modPYgCchZvIyIuie/ziwnGha6megBH2ryh8y86KHcBIEseWvyiec85RYAO7r0pVzAKJ
-         aOyoPNO6XGyjRfwWmzAd/OTda297Y5qRJpiEklV7Dk825CODAuG3WERGFoQlRmEm9C+o
-         gOeT0jRcDLrm5AHWkAr8yDCWCcSvWa8fMq35CgGSI7f1NehpsAbj33n+ipP/vhtcluGE
-         Ghlg==
-X-Gm-Message-State: AOAM5321y52gNDV9Pfq5hxic+8Bmoi1PAth/JE4rR5TdywEVBMSQycZS
-        Ngvz5G72QoDT/bew+Jz96DfbV1HV5hLs3g==
-X-Google-Smtp-Source: ABdhPJzvXPBtPce351ozTgUTJzAFC8LeON/hShsPJeZMmb9e8OuKPmGCXGsHChYOwT4/VHQjTHse6g==
-X-Received: by 2002:a7b:c5d2:: with SMTP id n18mr8745229wmk.97.1628671193039;
-        Wed, 11 Aug 2021 01:39:53 -0700 (PDT)
-Received: from ?IPv6:2a01:cb05:8192:e700:90a4:fe44:d3d1:f079? (2a01cb058192e70090a4fe44d3d1f079.ipv6.abo.wanadoo.fr. [2a01:cb05:8192:e700:90a4:fe44:d3d1:f079])
-        by smtp.gmail.com with ESMTPSA id h9sm22884485wmb.35.2021.08.11.01.39.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Aug 2021 01:39:52 -0700 (PDT)
-Subject: Re: [PATCH 1/3] PCI: brcmstb: Break register definitions into
- separate header
-To:     Jeremy Linton <jeremy.linton@arm.com>, linux-pci@vger.kernel.org
-Cc:     lorenzo.pieralisi@arm.com, nsaenz@kernel.org, bhelgaas@google.com,
-        rjw@rjwysocki.net, lenb@kernel.org, robh@kernel.org, kw@linux.com,
-        bcm-kernel-feedback-list@broadcom.com, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20210805211200.491275-1-jeremy.linton@arm.com>
- <20210805211200.491275-2-jeremy.linton@arm.com>
- <f82761b1-fb7e-08b2-8bc3-c84d258e26d3@gmail.com>
- <ab2aa9e3-cdc7-1bc7-d493-8f3c991c3285@arm.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <ff7c598a-4c1d-7da0-f40a-f0c435e785d3@gmail.com>
-Date:   Wed, 11 Aug 2021 01:39:52 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S237042AbhHKKlE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Aug 2021 06:41:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32938 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237020AbhHKKlD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 11 Aug 2021 06:41:03 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7510E60FC3;
+        Wed, 11 Aug 2021 10:40:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628678440;
+        bh=MWYsgBQRSHA52IzMe7OkpIpL0S/lsPWSSoypLj4ev5U=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Rr1TiTfXf7kLOQpQAnQMdTKvb6FpJYfiHlPfyzDC4BKNBKnfDcpZ9OG+/ZJp9vnbr
+         wmd1JllIpx58JrGj8ML5wvwuqRavxJYmGploaSGWxXf1IMRymCIWH10rXuxE9LNP/O
+         S2EC8BP3gDFFvXb0lVvxILCj5uZtsb6D9yoJv1/DIGty6+XC9NZzzYrMQwDTJU9nk5
+         +mcCaIHWLxitlQEl4VoDnTRI5G4f3os+LI/Z7+P0B4opUuY0f04Wdtl8hZjq8uxcpZ
+         WIRJPnQ9iBo7qQjrkPz471mys1stPbA/eX8LkxC112c6GbNaG+EsMoK0MUuizBy2ZF
+         muzSJ66j45toQ==
+Received: by mail-ot1-f42.google.com with SMTP id r19-20020a0568301353b029050aa53c3801so2804125otq.2;
+        Wed, 11 Aug 2021 03:40:40 -0700 (PDT)
+X-Gm-Message-State: AOAM530gMrw8T/fpWJt+4PH5OMA01axVn5cSFwdiv12dK3JdKxj0L5H0
+        vXzboY32cMAKKRW3ocvN5akTISaxCSgC5wultWQ=
+X-Google-Smtp-Source: ABdhPJzPyKV7zx62nUBCZ2Es0zascWHwk+SGVynlTVLACq+nWngWkUsz8u230ZGhfNyEloS44T/aLWgev5adH1SFKcI=
+X-Received: by 2002:a9d:5cc7:: with SMTP id r7mr8041809oti.108.1628678439823;
+ Wed, 11 Aug 2021 03:40:39 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <ab2aa9e3-cdc7-1bc7-d493-8f3c991c3285@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
+ <20210802152359.12623-2-lorenzo.pieralisi@arm.com> <YRKtEDycefrZLB3X@infradead.org>
+In-Reply-To: <YRKtEDycefrZLB3X@infradead.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 11 Aug 2021 12:40:28 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEB1CFj1svCWu7yOoUi_OkEqYEUQnB_XWOd3gD+ejO_6w@mail.gmail.com>
+Message-ID: <CAMj1kXEB1CFj1svCWu7yOoUi_OkEqYEUQnB_XWOd3gD+ejO_6w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] ACPI: osl: Add __force attribute in
+ acpi_os_map_iomem() cast
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Veronika kabatova <vkabatov@redhat.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, 10 Aug 2021 at 18:46, Christoph Hellwig <hch@infradead.org> wrote:
+>
+> On Mon, Aug 02, 2021 at 04:23:57PM +0100, Lorenzo Pieralisi wrote:
+> > Add a __force attribute to the void* cast in acpi_os_map_iomem()
+> > to prevent sparse warnings.
+>
+> Err, no.  These annotation are there for a reason and need to
+> be propagated instead.  And independent of that a __force cast
+> without a comment explaining it is a complete no-go.
 
+The whole problem we are solving here is that ACPI, being based on
+x86, conflates MMIO mappings with memory mappings, and has been using
+the same underlying infrastructure for either. On arm64, this is not
+sufficient, given that the semantics of uncached memory vs device are
+different (the former permits unaligned accesses and clear cacheline
+instructions, but the latter doesn't). A recent optimization applied
+to memcpy() on arm64 (which now relies more on unaligned accesses for
+performance) has uncovered an issue where firmware tables being mapped
+non-cacheable by the ACPI core will end up using device mappings,
+which causes memcpy() to choke on their contents.
 
-On 8/10/2021 8:10 AM, Jeremy Linton wrote:
-> Hi,
-> 
-> Thanks for taking a look at this!
-> 
-> 
-> On 8/10/21 5:07 AM, Florian Fainelli wrote:
->>
->>
->> On 8/5/2021 2:11 PM, Jeremy Linton wrote:
->>> We are about to create a standalone ACPI quirk module for the
->>> bcmstb controller. Lets move the register definitions into a separate
->>> file so they can be shared between the APCI quirk and the normal
->>> host bridge driver.
->>>
->>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
->>> ---
->>>   drivers/pci/controller/pcie-brcmstb.c | 179 +------------------------
->>>   drivers/pci/controller/pcie-brcmstb.h | 182 ++++++++++++++++++++++++++
->>>   2 files changed, 183 insertions(+), 178 deletions(-)
->>>   create mode 100644 drivers/pci/controller/pcie-brcmstb.h
->>
->> You moved more than just register definitions into pcie-brcmstb.h you 
->> also moved internal structure definitions, enumerations, etc. which 
->> are not required since pcie-brcmstb-acpi.c does not access the 
->> brcm_pcie structure but open codes accesses to the MISC_STATUS 
->> register instead.
->>
->> There are no include guards added to this file (it is debatable 
->> whether we should add them), and it is also not covered by the 
->> existing BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE MAINTAINERS file 
->> entry.
-> 
-> Sure, I will reduce the .h to just the register definitions, guard it, 
-> and tweak maintainers to cover pcie-brcmstb*.
-> 
-> 
->>
->> Given that there can be new platforms supported by this PCIe 
->> controller in the future possibly with the same limitations as the 
->> 2711, but with a seemingly different MISC_STATUS layout, you will have 
->> to think about a solution that scales, maybe we cross that bridge when 
->> we get there.
-> 
-> Yes, given I don't know what those changes are I can't predict how they 
-> would have to be handled, or even if the platform would be a target of 
-> the community maintaining the UEFI/ACPI port on the RPi. So punting on 
-> that topic seems a reasonable solution at the moment. Better yet, more 
-> of the linux community will see the advantage of the firmware interface 
-> and this platform can utilize that method.
-
-Ideally newer platforms would support ECAM and would not require a 
-custom quirk if nothing else, we do have discussions about that right 
-now, although it is not clear to me how it will materialize into a 
-product that people can buy.
--- 
-Florian
+So propagating the annotation makes no sense, as we are creating a
+memory mapping using the iomem primitive. I wouldn't object to a
+comment being added, but I think the context should have been obvious
+to anyone who had bothered to look at the entire series.
