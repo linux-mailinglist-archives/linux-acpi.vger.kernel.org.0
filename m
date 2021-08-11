@@ -2,79 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A51C33E92DC
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Aug 2021 15:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A98133E9333
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Aug 2021 16:02:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231867AbhHKNmJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 11 Aug 2021 09:42:09 -0400
-Received: from mga06.intel.com ([134.134.136.31]:7976 "EHLO mga06.intel.com"
+        id S232011AbhHKOCc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 11 Aug 2021 10:02:32 -0400
+Received: from foss.arm.com ([217.140.110.172]:51498 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230425AbhHKNmJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 11 Aug 2021 09:42:09 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="276158943"
-X-IronPort-AV: E=Sophos;i="5.84,313,1620716400"; 
-   d="scan'208";a="276158943"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2021 06:41:45 -0700
-X-IronPort-AV: E=Sophos;i="5.84,313,1620716400"; 
-   d="scan'208";a="503499266"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2021 06:41:42 -0700
-Received: from andy by smile with local (Exim 4.94.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mDoUB-007uxQ-Nh; Wed, 11 Aug 2021 16:41:35 +0300
-Date:   Wed, 11 Aug 2021 16:41:35 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        id S230479AbhHKOCb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 11 Aug 2021 10:02:31 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE76C1063;
+        Wed, 11 Aug 2021 07:02:07 -0700 (PDT)
+Received: from e123427-lin.cambridge.arm.com (unknown [10.57.39.227])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B09CF3F718;
+        Wed, 11 Aug 2021 07:02:04 -0700 (PDT)
+Date:   Wed, 11 Aug 2021 15:01:57 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [PATCH v1 1/1] x86/platform: Increase maximum GPIO number for
- X86_64
-Message-ID: <YRPTj1jl8VaRkkk/@smile.fi.intel.com>
-References: <20210806143711.37553-1-andriy.shevchenko@linux.intel.com>
- <CACRpkda+t4ZhL1bP1a6Cwnh9rYH9Hj59_7VLg45KV+Va5iBR9w@mail.gmail.com>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Veronika kabatova <vkabatov@redhat.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH v2 1/3] ACPI: osl: Add __force attribute in
+ acpi_os_map_iomem() cast
+Message-ID: <20210811140157.GA28658@e123427-lin.cambridge.arm.com>
+References: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
+ <20210802152359.12623-2-lorenzo.pieralisi@arm.com>
+ <YRKtEDycefrZLB3X@infradead.org>
+ <CAMj1kXEB1CFj1svCWu7yOoUi_OkEqYEUQnB_XWOd3gD+ejO_6w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACRpkda+t4ZhL1bP1a6Cwnh9rYH9Hj59_7VLg45KV+Va5iBR9w@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <CAMj1kXEB1CFj1svCWu7yOoUi_OkEqYEUQnB_XWOd3gD+ejO_6w@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Aug 11, 2021 at 03:14:59PM +0200, Linus Walleij wrote:
-> On Fri, Aug 6, 2021 at 4:44 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> 
-> > By default the 512 GPIOs is a maximum on any x86 platform.
-> > With, for example, Intel Tiger Lake-H the SoC based controller
-> > occupies up to 480 pins. This leaves only 32 available for
-> > GPIO expanders or other drivers, like PMIC. Hence, bump the
-> > maximum GPIO number to 1024 for X86_64 and leave 512 for X86_32.
+On Wed, Aug 11, 2021 at 12:40:28PM +0200, Ard Biesheuvel wrote:
+> On Tue, 10 Aug 2021 at 18:46, Christoph Hellwig <hch@infradead.org> wrote:
 > >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > On Mon, Aug 02, 2021 at 04:23:57PM +0100, Lorenzo Pieralisi wrote:
+> > > Add a __force attribute to the void* cast in acpi_os_map_iomem()
+> > > to prevent sparse warnings.
+> >
+> > Err, no.  These annotation are there for a reason and need to
+> > be propagated instead.  And independent of that a __force cast
+> > without a comment explaining it is a complete no-go.
 > 
-> Looks reasonable to me.
-> The goal with the whole descriptor refactoring is to get this
-> completely dynamic but it turns out to take forever. It is as it
-> is.
+> The whole problem we are solving here is that ACPI, being based on
+> x86, conflates MMIO mappings with memory mappings, and has been using
+> the same underlying infrastructure for either. On arm64, this is not
+> sufficient, given that the semantics of uncached memory vs device are
+> different (the former permits unaligned accesses and clear cacheline
+> instructions, but the latter doesn't). A recent optimization applied
+> to memcpy() on arm64 (which now relies more on unaligned accesses for
+> performance) has uncovered an issue where firmware tables being mapped
+> non-cacheable by the ACPI core will end up using device mappings,
+> which causes memcpy() to choke on their contents.
 > 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> So propagating the annotation makes no sense, as we are creating a
+> memory mapping using the iomem primitive. I wouldn't object to a
+> comment being added, but I think the context should have been obvious
+> to anyone who had bothered to look at the entire series.
 
-Thanks!
+I can add a comment and respin. Basically a __force attribute is
+added to ignore a sparse warning that's been ignored for aeons
+anyway - I will add the rationale above.
 
-Rafael, can you please review this?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+drivers/acpi/osl.c:379:17: warning: cast removes address space '__iomem' of expression
