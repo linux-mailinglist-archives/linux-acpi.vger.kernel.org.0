@@ -2,77 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C3B93EAC36
-	for <lists+linux-acpi@lfdr.de>; Thu, 12 Aug 2021 23:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABDFB3EB000
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Aug 2021 08:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232697AbhHLVHa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 12 Aug 2021 17:07:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55938 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234502AbhHLVH2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 12 Aug 2021 17:07:28 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1153BC0617A8
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Aug 2021 14:07:03 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id g13so15839573lfj.12
-        for <linux-acpi@vger.kernel.org>; Thu, 12 Aug 2021 14:07:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6PC9qkv0bT5Q6RXEYPNOhipMKAifPwXWAHn4hf32awA=;
-        b=vYBXkKzxA1EduNxnfN1Numn+ttQQ0nz3qIeVUko6iVKC/NjsgH83Zru6BhgsImsWIQ
-         8wfmTu1KPc4fLXq5wLA+Z6wIoMIlghED7eGC8Snq2SaAQcKmfzs+4GsQoa+jVCEC5Tie
-         C3NOi/XrUgdJIujw5fQY7Ma7EhVidMLYQDELAw1hTUvKEO1CEAkhocKD53L7/qW433kV
-         zHR+1kCbSp+kCN00MD+oxygnC/SqGCTYsLkJ9gUjT+0K2yCPCDuBjlli6z97la/+jDR3
-         PzK5ZH8iaw/f7OwfQR550zGdcRYr47BJe+D6TEkPpUG36wtjIvX3sAefJo6q1BZaBJob
-         5gWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6PC9qkv0bT5Q6RXEYPNOhipMKAifPwXWAHn4hf32awA=;
-        b=J/BZ8DgxSi0SAflZLdOeXsYo3LgTN79jwtKUfLx0kva5RA+ixaNxFzhlJ4VVQYRTN4
-         9WgdWnl3Rl4hzSLH11ToC3Ir+U54+x8XKlCt7wHqAQ5EZcwDyFb9RvNXroXj58IXcLvJ
-         2Uh9ZXn0w0IzGEnb3p9vOsCw02a2wJkD4AKEuDcnOok228zfsxLsIZjWfgTVQ8SJ1uFA
-         XuyI8RC3B0RzcF3b0hpLhIa2/AHOGs7Dgt+2X3PqXpAzfjgFMRcXdCN66YrvvXLej7Dd
-         xbpDFeQDXLDvEUw5su9uHemuPDbd2+DcdVpKEB18dKkMegIfzKsezzRycojfH8HYHfj5
-         vkEg==
-X-Gm-Message-State: AOAM531XcsjFNRWvILmDpbl6i7YWSEsn3ttxTIdl+alVN2QuG8TbmkfK
-        fQqCkoSBKKcobD9MkbroB85ZG4Xm0RL2eFTY6p7B4A==
-X-Google-Smtp-Source: ABdhPJxG7tjf/3lJu727KTAlDk9tbnswuGrxJU9a2UtDAP01GNjfL1zAJjqiqNFgL0ryBoEgKoxD0oLgMGot3sehaiU=
-X-Received: by 2002:a05:6512:32a3:: with SMTP id q3mr3709067lfe.157.1628802421338;
- Thu, 12 Aug 2021 14:07:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <YRUskkALrPLa2cSf@smile.fi.intel.com>
-In-Reply-To: <YRUskkALrPLa2cSf@smile.fi.intel.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 12 Aug 2021 23:06:49 +0200
-Message-ID: <CACRpkdbAw=+x9vJL7TiqyA+M8J9CA2go+hjuP0EUzzkEZikbbg@mail.gmail.com>
-Subject: Re: Possible ACPI abuse in Mellanox BlueField Gigabit Ethernet driver
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linux GPIO <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        id S238711AbhHMG1a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 13 Aug 2021 02:27:30 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:13310 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238523AbhHMG1a (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 13 Aug 2021 02:27:30 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4GmD9Y4K3nz85pm;
+        Fri, 13 Aug 2021 14:26:57 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 13 Aug 2021 14:26:57 +0800
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 13 Aug 2021 14:26:56 +0800
+Subject: Re: [PATCH] x86/acpi: Don't add CPUs that are not online capable
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+CC:     Alex Deucher <alexander.deucher@amd.com>,
+        Huang Rui <ray.huang@amd.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        David Thompson <davthompson@nvidia.com>,
-        Asmaa Mnebhi <asmaa@nvidia.com>,
-        Liming Sun <limings@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>,
+        "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" 
+        <linux-kernel@vger.kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+References: <20210812051657.28605-1-mario.limonciello@amd.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <a671969e-526f-cdc0-6c77-0eb2d940ec5c@huawei.com>
+Date:   Fri, 13 Aug 2021 14:26:56 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
+MIME-Version: 1.0
+In-Reply-To: <20210812051657.28605-1-mario.limonciello@amd.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 12, 2021 at 4:13 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On 2021/8/12 13:16, Mario Limonciello wrote:
+> A number of systems are showing "hotplug capable" CPUs when they
+> are not really hotpluggable.  This is because the MADT has extra
+> CPU entries to support different CPUs that may be inserted into
+> the socket with different numbers of cores.
+> 
+> The ACPI spec is clear that the Online Capable bit in the
+> MADT should be used to determine whether or not a CPU is hotplug
+> capable when the enabled bit is not set.
 
-> From time to time I do grep kernel for ACPI_RESOURCE_TYPE_GPIO usage.
-> Recently the drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_gpio.c
-> caught my eye.
+This was introduced in ACPI 6.3 spec, which means ACPI 6.2 and
+earlier versions don't include the "Online Capable bit".
 
-Thanks for doing this Andy, I wonder if there are other GPIO things we
-should be looking out for.
+> 
+> Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html?#local-apic-flags
+> Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+> Reviewed-by: Huang Rui <ray.huang@amd.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>   arch/x86/kernel/acpi/boot.c | 6 ++++++
+>   include/acpi/actbl2.h       | 1 +
+>   2 files changed, 7 insertions(+)
+> 
+> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+> index e55e0c1fad8c..eeb10b27d6de 100644
+> --- a/arch/x86/kernel/acpi/boot.c
+> +++ b/arch/x86/kernel/acpi/boot.c
+> @@ -239,6 +239,12 @@ acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
+>   	if (processor->id == 0xff)
+>   		return 0;
+>   
+> +	/* don't register processors that can not be onlined */
+> +	if (!(processor->lapic_flags & ACPI_MADT_ENABLED)) {
+> +		if (!(processor->lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
+> +			return 0;
+> +	}
 
-Yours,
-Linus Walleij
+For firmware using ACPI 6.2 and early versions, the
+ACPI_MADT_ONLINE_CAPABLE bit is reserved as zero, so if
+we set CPU as disabled, the code here will always return
+0 in those firmwares.
+
+> +
+>   	/*
+>   	 * We need to register disabled CPU as well to permit
+>   	 * counting disabled CPUs. This allows us to size
+
+So we will not register the disabled CPU and will break
+CPU hotplug features.
+
+I think we need to consider the compatibility with old versions
+of firmware.
+
+Thanks
+Hanjun
+
