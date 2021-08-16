@@ -2,278 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E880F3ED389
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 14:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91DF13ED3AB
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 14:07:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232882AbhHPMBL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Aug 2021 08:01:11 -0400
-Received: from mga14.intel.com ([192.55.52.115]:38495 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233463AbhHPMA5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 16 Aug 2021 08:00:57 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10077"; a="215572761"
-X-IronPort-AV: E=Sophos;i="5.84,324,1620716400"; 
-   d="scan'208";a="215572761"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2021 05:00:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,324,1620716400"; 
-   d="scan'208";a="504864844"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 16 Aug 2021 05:00:07 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 30F076BF; Mon, 16 Aug 2021 15:00:03 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        David Thompson <davthompson@nvidia.com>,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        netdev@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        id S233718AbhHPMHf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Aug 2021 08:07:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59658 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233017AbhHPMHf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Aug 2021 08:07:35 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A96C061764;
+        Mon, 16 Aug 2021 05:07:03 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id j1so26118704pjv.3;
+        Mon, 16 Aug 2021 05:07:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3XH+hAXLsnjPgNeGfopQI25eSsQDjMM+EKsYX2dX9go=;
+        b=Xbg2TtaidYz/v3B7/WuPbVCXcBGYOPetmljCxQ6T3qOpIYqKnxuviytIL/8SNUIwPV
+         Ztnv3jeb9Eb82oOjgMBCpfZkHq7cwVCSniPTgXcYhRdROVK3jlj6mvUMq91FA1fbqrjp
+         EdeLANA6UNUjCuMc9rrxflSB/sVi8ViCN9WsaiDWY4xFVtBz900L+v/XHoSzKZ69BoCi
+         UXJ3A89PtMuX/5eD/69/JyqRqxvEkTPsLFxL5PtA1GyMDL592R9i03M21zj2p2odFt8T
+         lk2mVWSl1D5e4YtiO94U8SsxBYu5vz/ZklRLZuvmmIQYjbvLPeQk/WzIbjFaNoAto2IQ
+         yL0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3XH+hAXLsnjPgNeGfopQI25eSsQDjMM+EKsYX2dX9go=;
+        b=boZi0Lrxh2N5RyPCkMUMCKyZs+5kFpNJqZQ418voLkIMQrn2Nf7euX6P0xNYeZQHNw
+         aTdH+5BJHFohIQvI+8X2qGOye8IjV4nz4lgzPeaX/OZN00AXs9JeDaSCvMhwWLdBn7Bw
+         q5OC4gM5MCT/GHjHirECl6eeoVU+XJHdc07deYEsJwhccx9siIQTMJs1m7MsqbPeQsrn
+         rwezO/nhlx2Go4D1059L9YErc3ldPgDTAOmA7tWr0rKYWl2W4HWVFYLdOMpFzmPIBA1H
+         04fLiLjps2+0gBsYUr8gZABvchcFMjFTmUq/aDIsTDLEPGtNXtPDM7nNzrI0dY2FeN3N
+         AFjg==
+X-Gm-Message-State: AOAM533BmH0qcoMT1UEXrKjqCwYRs1m+/B5/lcYB8slfEppd3PnOYc3f
+        buFqaB7GtUB71KWzywRIYVM0LNsqTVNXiFQucAI=
+X-Google-Smtp-Source: ABdhPJzD/BdoSe8IpCKOam9wtqMZiVHkA44BuzI8Pf5H8Pkqo+pQ0YlITieVj1DRtlkeo1hUSAe7j2xJlzFgL3u1ztU=
+X-Received: by 2002:a05:6a00:d41:b0:3e1:3316:2ef with SMTP id
+ n1-20020a056a000d4100b003e1331602efmr12432821pfv.40.1629115622813; Mon, 16
+ Aug 2021 05:07:02 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 16 Aug 2021 15:06:23 +0300
+Message-ID: <CAHp75Vc2Hpdk715R3=JPp==tUX394ZWLp96BJHHkarj9TpJ0FQ@mail.gmail.com>
+Subject: Re: [PATCH v1 0/6] gpio: mlxbf2: Introduce proper interrupt handling
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     David Thompson <davthompson@nvidia.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Asmaa Mnebhi <asmaa@nvidia.com>,
         Liming Sun <limings@nvidia.com>
-Subject: [PATCH v1 6/6] TODO: net: mellanox: mlxbf_gige: Replace non-standard interrupt handling
-Date:   Mon, 16 Aug 2021 14:59:53 +0300
-Message-Id: <20210816115953.72533-7-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
-References: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Since GPIO driver supports interrupt handling, replace custom routine with
-simple IRQ request.
+On Mon, Aug 16, 2021 at 3:01 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> This is just a WIP / TODO series based on the discussion [1].
+> I hope nVidia will finish it and fix the initial problem sooner than later.
+>
+> Bart, Linus, First 4 patches may be directly applied to the tree (they are
+> at least compile-tested, but I believe they won't change any functionality.
+>
+> Patch 5 is some stubs that should have been done in the driver.
+> Patch 6 is follow up removal of custom GPIO IRQ handling from
+> Mellanox GBE driver. Both of them are quite far from finishing,
+> but it's a start for nVidia to develop and test proper solution.
+>
+> In any case, I will probably sent end this week the ACPI IRQ abuse
+> part from the GBE driver (I won't touch OF path).
+>
+> ARs for nVidia:
+> 0) review this series;
+> 1) properly develop GPIO driver;
+> 2) replace custom code with correct one;
+> 3) send the work for review to GPIO and ACPI maintainers (basically list
+>    of this series).
+>
+> On my side I will help you if you have any questions regarding to GPIO
+> and ACPI.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- .../mellanox/mlxbf_gige/mlxbf_gige_gpio.c     | 212 ------------------
- 1 file changed, 212 deletions(-)
- delete mode 100644 drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_gpio.c
+Missed link
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_gpio.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_gpio.c
-deleted file mode 100644
-index a8d966db5715..000000000000
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_gpio.c
-+++ /dev/null
-@@ -1,212 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause
--
--/* Initialize and handle GPIO interrupt triggered by INT_N PHY signal.
-- * This GPIO interrupt triggers the PHY state machine to bring the link
-- * up/down.
-- *
-- * Copyright (C) 2021 NVIDIA CORPORATION & AFFILIATES
-- */
--
--#include <linux/acpi.h>
--#include <linux/bitfield.h>
--#include <linux/device.h>
--#include <linux/err.h>
--#include <linux/gpio/driver.h>
--#include <linux/interrupt.h>
--#include <linux/io.h>
--#include <linux/irq.h>
--#include <linux/irqdomain.h>
--#include <linux/irqreturn.h>
--#include <linux/platform_device.h>
--#include <linux/property.h>
--
--#include "mlxbf_gige.h"
--#include "mlxbf_gige_regs.h"
--
--#define MLXBF_GIGE_GPIO_CAUSE_FALL_EN		0x48
--#define MLXBF_GIGE_GPIO_CAUSE_OR_CAUSE_EVTEN0	0x80
--#define MLXBF_GIGE_GPIO_CAUSE_OR_EVTEN0		0x94
--#define MLXBF_GIGE_GPIO_CAUSE_OR_CLRCAUSE	0x98
--
--static void mlxbf_gige_gpio_enable(struct mlxbf_gige *priv)
--{
--	unsigned long flags;
--	u32 val;
--
--	spin_lock_irqsave(&priv->gpio_lock, flags);
--	val = readl(priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_OR_CLRCAUSE);
--	val |= priv->phy_int_gpio_mask;
--	writel(val, priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_OR_CLRCAUSE);
--
--	/* The INT_N interrupt level is active low.
--	 * So enable cause fall bit to detect when GPIO
--	 * state goes low.
--	 */
--	val = readl(priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_FALL_EN);
--	val |= priv->phy_int_gpio_mask;
--	writel(val, priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_FALL_EN);
--
--	/* Enable PHY interrupt by setting the priority level */
--	val = readl(priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_OR_EVTEN0);
--	val |= priv->phy_int_gpio_mask;
--	writel(val, priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_OR_EVTEN0);
--	spin_unlock_irqrestore(&priv->gpio_lock, flags);
--}
--
--static void mlxbf_gige_gpio_disable(struct mlxbf_gige *priv)
--{
--	unsigned long flags;
--	u32 val;
--
--	spin_lock_irqsave(&priv->gpio_lock, flags);
--	val = readl(priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_OR_EVTEN0);
--	val &= ~priv->phy_int_gpio_mask;
--	writel(val, priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_OR_EVTEN0);
--	spin_unlock_irqrestore(&priv->gpio_lock, flags);
--}
--
--static irqreturn_t mlxbf_gige_gpio_handler(int irq, void *ptr)
--{
--	struct mlxbf_gige *priv;
--	u32 val;
--
--	priv = ptr;
--
--	/* Check if this interrupt is from PHY device.
--	 * Return if it is not.
--	 */
--	val = readl(priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_OR_CAUSE_EVTEN0);
--	if (!(val & priv->phy_int_gpio_mask))
--		return IRQ_NONE;
--
--	/* Clear interrupt when done, otherwise, no further interrupt
--	 * will be triggered.
--	 */
--	val = readl(priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_OR_CLRCAUSE);
--	val |= priv->phy_int_gpio_mask;
--	writel(val, priv->gpio_io + MLXBF_GIGE_GPIO_CAUSE_OR_CLRCAUSE);
--
--	generic_handle_irq(priv->phy_irq);
--
--	return IRQ_HANDLED;
--}
--
--static void mlxbf_gige_gpio_mask(struct irq_data *irqd)
--{
--	struct mlxbf_gige *priv = irq_data_get_irq_chip_data(irqd);
--
--	mlxbf_gige_gpio_disable(priv);
--}
--
--static void mlxbf_gige_gpio_unmask(struct irq_data *irqd)
--{
--	struct mlxbf_gige *priv = irq_data_get_irq_chip_data(irqd);
--
--	mlxbf_gige_gpio_enable(priv);
--}
--
--static struct irq_chip mlxbf_gige_gpio_chip = {
--	.name			= "mlxbf_gige_phy",
--	.irq_mask		= mlxbf_gige_gpio_mask,
--	.irq_unmask		= mlxbf_gige_gpio_unmask,
--};
--
--static int mlxbf_gige_gpio_domain_map(struct irq_domain *d,
--				      unsigned int irq,
--				      irq_hw_number_t hwirq)
--{
--	irq_set_chip_data(irq, d->host_data);
--	irq_set_chip_and_handler(irq, &mlxbf_gige_gpio_chip, handle_simple_irq);
--	irq_set_noprobe(irq);
--
--	return 0;
--}
--
--static const struct irq_domain_ops mlxbf_gige_gpio_domain_ops = {
--	.map    = mlxbf_gige_gpio_domain_map,
--	.xlate	= irq_domain_xlate_twocell,
--};
--
--#ifdef CONFIG_ACPI
--static int mlxbf_gige_gpio_resources(struct acpi_resource *ares,
--				     void *data)
--{
--	struct acpi_resource_gpio *gpio;
--	u32 *phy_int_gpio = data;
--
--	if (ares->type == ACPI_RESOURCE_TYPE_GPIO) {
--		gpio = &ares->data.gpio;
--		*phy_int_gpio = gpio->pin_table[0];
--	}
--
--	return 1;
--}
--#endif
--
--void mlxbf_gige_gpio_free(struct mlxbf_gige *priv)
--{
--	irq_dispose_mapping(priv->phy_irq);
--	irq_domain_remove(priv->irqdomain);
--}
--
--int mlxbf_gige_gpio_init(struct platform_device *pdev,
--			 struct mlxbf_gige *priv)
--{
--	struct device *dev = &pdev->dev;
--	struct resource *res;
--	u32 phy_int_gpio = 0;
--	int ret;
--
--	LIST_HEAD(resources);
--
--	res = platform_get_resource(pdev, IORESOURCE_MEM, MLXBF_GIGE_RES_GPIO0);
--	if (!res)
--		return -ENODEV;
--
--	priv->gpio_io = devm_ioremap(dev, res->start, resource_size(res));
--	if (!priv->gpio_io)
--		return -ENOMEM;
--
--#ifdef CONFIG_ACPI
--	ret = acpi_dev_get_resources(ACPI_COMPANION(dev),
--				     &resources, mlxbf_gige_gpio_resources,
--				     &phy_int_gpio);
--	acpi_dev_free_resource_list(&resources);
--	if (ret < 0 || !phy_int_gpio) {
--		dev_err(dev, "Error retrieving the gpio phy pin");
--		return -EINVAL;
--	}
--#endif
--
--	priv->phy_int_gpio_mask = BIT(phy_int_gpio);
--
--	mlxbf_gige_gpio_disable(priv);
--
--	priv->hw_phy_irq = platform_get_irq(pdev, MLXBF_GIGE_PHY_INT_N);
--
--	priv->irqdomain = irq_domain_add_simple(NULL, 1, 0,
--						&mlxbf_gige_gpio_domain_ops,
--						priv);
--	if (!priv->irqdomain) {
--		dev_err(dev, "Failed to add IRQ domain\n");
--		return -ENOMEM;
--	}
--
--	priv->phy_irq = irq_create_mapping(priv->irqdomain, 0);
--	if (!priv->phy_irq) {
--		irq_domain_remove(priv->irqdomain);
--		priv->irqdomain = NULL;
--		dev_err(dev, "Error mapping PHY IRQ\n");
--		return -EINVAL;
--	}
--
--	ret = devm_request_irq(dev, priv->hw_phy_irq, mlxbf_gige_gpio_handler,
--			       IRQF_ONESHOT | IRQF_SHARED, "mlxbf_gige_phy", priv);
--	if (ret) {
--		dev_err(dev, "Failed to request PHY IRQ");
--		mlxbf_gige_gpio_free(priv);
--		return ret;
--	}
--
--	return ret;
--}
+[1]: https://x-lore.kernel.org/linux-acpi/YRUskkALrPLa2cSf@smile.fi.intel.com/T/#u
+
+> Andy Shevchenko (6):
+>   gpio: mlxbf2: Convert to device PM ops
+>   gpio: mlxbf2: Drop wrong use of ACPI_PTR()
+>   gpio: mlxbf2: Use devm_platform_ioremap_resource()
+>   gpio: mlxbf2: Use DEFINE_RES_MEM_NAMED() helper macro
+>   TODO: gpio: mlxbf2: Introduce IRQ support
+>   TODO: net: mellanox: mlxbf_gige: Replace non-standard interrupt
+>     handling
+>
+>  drivers/gpio/gpio-mlxbf2.c                    | 151 ++++++++++---
+>  .../mellanox/mlxbf_gige/mlxbf_gige_gpio.c     | 212 ------------------
+>  2 files changed, 120 insertions(+), 243 deletions(-)
+>  delete mode 100644 drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_gpio.c
+>
+> --
+> 2.30.2
+>
+
+
 -- 
-2.30.2
-
+With Best Regards,
+Andy Shevchenko
