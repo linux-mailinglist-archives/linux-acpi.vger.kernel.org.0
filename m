@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 694C23EDDC8
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 21:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E0153EDDD2
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 21:23:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229966AbhHPTVR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Aug 2021 15:21:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48072 "EHLO
+        id S230026AbhHPTXj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Aug 2021 15:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230105AbhHPTVR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Aug 2021 15:21:17 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EEB7C061764
-        for <linux-acpi@vger.kernel.org>; Mon, 16 Aug 2021 12:20:45 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id w17so34855641ybl.11
-        for <linux-acpi@vger.kernel.org>; Mon, 16 Aug 2021 12:20:45 -0700 (PDT)
+        with ESMTP id S229587AbhHPTXi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Aug 2021 15:23:38 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6F20C061764
+        for <linux-acpi@vger.kernel.org>; Mon, 16 Aug 2021 12:23:06 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id m193so34896774ybf.9
+        for <linux-acpi@vger.kernel.org>; Mon, 16 Aug 2021 12:23:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=m941o/jFjrWB+9ctuoqyaTbWLdVEpdtxf8KbVW3gbIk=;
-        b=HOcq2K66ZKPP31cm6RZHlq56X1yVo3CslldYBgHbHXxxMx7sY6sZ1vLFOOnXHJleKX
-         tO/frA17gCW9yPjK7AVdKkSSiP1Iv0L+nZ+n2/RgX3kRbvp0GdXhR5nLkOslpYafc0JQ
-         PkpSFzwudTgrqTz7HrQPLEjxSpwXHrxHnygXnrp/cESRvJPu7YQInaR1QVgQiTjVYlb6
-         LO1C9EcGr+3h4RXG8tE7aJOXee5qMGNY/lDMu8mvcEzj1PYJgFi/9sfXDlgiVG6X6XBE
-         XVPzgzGnPL63UhqQdsSPZU6LF4cksKdPLlFNzzp8AE8zUYtDedL9BrXBwozgwbwQdNLz
-         m+UA==
+        bh=vFPwTBww7HCfgcrya8tDZnP7/RkqO96aoh1ArMM5DY4=;
+        b=vZ6ODT6K51FYe7v5j1ZJgTBaKdzBTUpxqFN4KAFDzaFqZcJzKDfjAT3i2rMh2HGSgJ
+         iv06p1rxGJElyiNNUKJjZQcS4YSPt65aq4BuuoFJ8wFOXX76OyPKDK4dllYXKjiHIK2t
+         uTnY+/frCK20rCUslEWC5xUe3cxqCCZSeJc/Z9P25kURFA2crXd9KJCjPq5HbChAKmp7
+         gx8eBw6qmNkXBeUwFdXacMIVsvsX136dGL5jOIRWMQmH2jwym2xoxLhDtRgP+TcTyiep
+         wlIwPqibVKE3eLWmauWhtEp7xORuNwrDFrVf6Y3rExuTKMTR/3u05+gGvF6lvk39jca2
+         3/nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=m941o/jFjrWB+9ctuoqyaTbWLdVEpdtxf8KbVW3gbIk=;
-        b=ItmdA1iJgYS58SUy7JHQlSMzedr+IU06HGBSUfXe2rKmkoxKAzwf2jlBtjGHXpk/F7
-         a9+jCoqvB9veN5vWNZU3ZBPVwdGvcaOGbZqxdFo/dzZ0sw/5pQ+XAbFrrFMFXz+mrqLz
-         b5MnzLM+LZfvxIwoBbeT9hQvlV4rEdQeW2vEqhF/t1gA5nEQj6849Cs7mZmcyoi8Uxtb
-         0LLNsmZnbyUEF/ls/xsVIFHwegwgp6qfSy7/at/aG0b5svH1lyc1NqotSgBZR4gjC3Bb
-         z3t2KoLHi+gwiTtqcey4GLw3Zgkr/1CtT+g9SzQ1n/3rZYHY5wXzhFezMr1pQCsTiNIa
-         C1nw==
-X-Gm-Message-State: AOAM5324K0owXD+zeugRimhM9ToUaAm4i2aOv9ytf7vQEopeTvyCb//a
-        0YrSQg6AaK51KdILhgWmDRWnp39vphIMPLU3m9MP0Q==
-X-Google-Smtp-Source: ABdhPJyZubQxyT6jtWns+tJs06g+ZUE+aT6gqe9sdAyanSPoHdmeju9qXBQYZwQYua2zd6rbCJ4Hw7GA9o7bLCNoPSs=
-X-Received: by 2002:a25:db89:: with SMTP id g131mr23150445ybf.302.1629141644661;
- Mon, 16 Aug 2021 12:20:44 -0700 (PDT)
+        bh=vFPwTBww7HCfgcrya8tDZnP7/RkqO96aoh1ArMM5DY4=;
+        b=tRqjI1GCLMmaiGYdleQqOIEiB2C9WARija4WehKYmkBx5M3NiF8WlyX3JBKJI9E8FD
+         +8h6j1DPSOMKiIa0ZP92VMbtf1bpAbp8BW2yqBkJ3MYpWKHTu4Yp7AEGY3xigm8bu3G1
+         DhFyUGGvwXmm/YBQIlwROXzBdRD3Mxb22nECtZym22PRX0SHxtkbbMDU5/sRXUetvtbV
+         rUznD/UZSiXKRQEIbGktaegL+DSFH/TF7RlGDvNfs2gzTskg0MUv8bCI0h0RLuMvdbgp
+         RiqRRa36Od9h/fuLy25xS13HyuoDrRQniUBqYiwkOEEx+tUvekQjUQI37ROa5tqoYn5P
+         dHdg==
+X-Gm-Message-State: AOAM533MzEBd3ygr+TOnDPzLNARaYof9cWv3pDFKHtTcxJvCaUcXdxXr
+        suvNei3jgrTwuW57sVOyU+oe4gQjVMgemanmvaKl+A==
+X-Google-Smtp-Source: ABdhPJxwXZrFe4LWrpZFpwgg7gLZvKHb3ZIrP9S0LtYkOZmaPsEtio72uZa7F9r34JcVRyMCEwKaL7zFY0sq8jjEgQs=
+X-Received: by 2002:a25:505:: with SMTP id 5mr23079960ybf.157.1629141786081;
+ Mon, 16 Aug 2021 12:23:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com> <20210816115953.72533-3-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20210816115953.72533-3-andriy.shevchenko@linux.intel.com>
+References: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
 From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Mon, 16 Aug 2021 21:20:34 +0200
-Message-ID: <CAMpxmJWrCJb6JJtQVurM3UexPwqz1OuydE9NvxyRwBb5hD=7aQ@mail.gmail.com>
-Subject: Re: [PATCH v1 2/6] gpio: mlxbf2: Drop wrong use of ACPI_PTR()
+Date:   Mon, 16 Aug 2021 21:22:55 +0200
+Message-ID: <CAMpxmJURiWN5dj_CQsEeE2zh1q-gvWK4HF6FXS2=ZK=yPUP_zw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/6] gpio: mlxbf2: Introduce proper interrupt handling
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     David Thompson <davthompson@nvidia.com>,
         LKML <linux-kernel@vger.kernel.org>,
@@ -70,58 +70,48 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Mon, Aug 16, 2021 at 2:00 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> ACPI_PTR() is more harmful than helpful. For example, in this case
-> if CONFIG_ACPI=n, the ID table left unused which is not what we want.
+> This is just a WIP / TODO series based on the discussion [1].
+> I hope nVidia will finish it and fix the initial problem sooner than later.
 >
-> Instead of adding ifdeffery here and there, drop ACPI_PTR() and
-> replace acpi.h with mod_devicetable.h.
+> Bart, Linus, First 4 patches may be directly applied to the tree (they are
+> at least compile-tested, but I believe they won't change any functionality.
 >
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/gpio/gpio-mlxbf2.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> Patch 5 is some stubs that should have been done in the driver.
+> Patch 6 is follow up removal of custom GPIO IRQ handling from
+> Mellanox GBE driver. Both of them are quite far from finishing,
+> but it's a start for nVidia to develop and test proper solution.
 >
-> diff --git a/drivers/gpio/gpio-mlxbf2.c b/drivers/gpio/gpio-mlxbf2.c
-> index 68c471c10fa4..c0aa622fef76 100644
-> --- a/drivers/gpio/gpio-mlxbf2.c
-> +++ b/drivers/gpio/gpio-mlxbf2.c
-> @@ -1,6 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0
+> In any case, I will probably sent end this week the ACPI IRQ abuse
+> part from the GBE driver (I won't touch OF path).
 >
-> -#include <linux/acpi.h>
->  #include <linux/bitfield.h>
->  #include <linux/bitops.h>
->  #include <linux/device.h>
-> @@ -8,6 +7,7 @@
->  #include <linux/io.h>
->  #include <linux/ioport.h>
->  #include <linux/kernel.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm.h>
-> @@ -307,14 +307,14 @@ static SIMPLE_DEV_PM_OPS(mlxbf2_pm_ops, mlxbf2_gpio_suspend, mlxbf2_gpio_resume)
+> ARs for nVidia:
+> 0) review this series;
+> 1) properly develop GPIO driver;
+> 2) replace custom code with correct one;
+> 3) send the work for review to GPIO and ACPI maintainers (basically list
+>    of this series).
 >
->  static const struct acpi_device_id __maybe_unused mlxbf2_gpio_acpi_match[] = {
->         { "MLNXBF22", 0 },
-> -       {},
-> +       {}
-
-Ninja change :) I removed it - send a separate patch for this if you want to.
-
-Bart
-
->  };
->  MODULE_DEVICE_TABLE(acpi, mlxbf2_gpio_acpi_match);
+> On my side I will help you if you have any questions regarding to GPIO
+> and ACPI.
 >
->  static struct platform_driver mlxbf2_gpio_driver = {
->         .driver = {
->                 .name = "mlxbf2_gpio",
-> -               .acpi_match_table = ACPI_PTR(mlxbf2_gpio_acpi_match),
-> +               .acpi_match_table = mlxbf2_gpio_acpi_match,
->                 .pm = &mlxbf2_pm_ops,
->         },
->         .probe    = mlxbf2_gpio_probe,
+> Andy Shevchenko (6):
+>   gpio: mlxbf2: Convert to device PM ops
+>   gpio: mlxbf2: Drop wrong use of ACPI_PTR()
+>   gpio: mlxbf2: Use devm_platform_ioremap_resource()
+>   gpio: mlxbf2: Use DEFINE_RES_MEM_NAMED() helper macro
+>   TODO: gpio: mlxbf2: Introduce IRQ support
+>   TODO: net: mellanox: mlxbf_gige: Replace non-standard interrupt
+>     handling
+>
+>  drivers/gpio/gpio-mlxbf2.c                    | 151 ++++++++++---
+>  .../mellanox/mlxbf_gige/mlxbf_gige_gpio.c     | 212 ------------------
+>  2 files changed, 120 insertions(+), 243 deletions(-)
+>  delete mode 100644 drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_gpio.c
+>
 > --
 > 2.30.2
 >
+
+Applied first four patches.
+
+Bart
