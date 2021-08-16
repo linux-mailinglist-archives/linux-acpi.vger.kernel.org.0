@@ -2,163 +2,219 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E21673ED3ED
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 14:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BBD43ED4CC
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 15:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234159AbhHPM2o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Aug 2021 08:28:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:59184 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234272AbhHPM2n (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 16 Aug 2021 08:28:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1629116891;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8J8uBMlBdBuZQDmBUgS0XJpmfufRjyMynx7EajosaWQ=;
-        b=Z6DypfmM+xwP6pTHwccokUkUxbvvmJYUqzdpeJz7N9RKTSId3BeAKfa5ny33J5HaxK4go1
-        54iXXkVMfyfQ5WN3Y65Qe4NvLcK+60c9y7ikmSxQ3EaqQV3ts3z4HMMyRgQIOwooHO6QYg
-        0RrYrp610D2kgzZG6Q1D1ySlb+ZVrZ4=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-410-g1ByHYyzO_GwF9ZO_UUVhA-1; Mon, 16 Aug 2021 08:28:10 -0400
-X-MC-Unique: g1ByHYyzO_GwF9ZO_UUVhA-1
-Received: by mail-ed1-f70.google.com with SMTP id y22-20020a0564023596b02903bd9452ad5cso8736299edc.20
-        for <linux-acpi@vger.kernel.org>; Mon, 16 Aug 2021 05:28:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=8J8uBMlBdBuZQDmBUgS0XJpmfufRjyMynx7EajosaWQ=;
-        b=bfd25zCTAhVI6BQXARrnbLJqlupaYQn3pReHHikec+82qEQqPiEfATZrOSNXsq8iIo
-         DcLpvEfBpAObiN/6IpTTylGmPT/EOXKuF4bxDvSwUApQBwCLtuWodTL75gAsjcodrL9T
-         2ukWLKPvZaCmI4vdyZGaV0iAH30anIIPewIEIjSTPmaA4beDvedikc6VbPVfp55Txoto
-         2Bjk8IYSfjjJM4YwTLXBgVVvC+BSdY4244UCc723hhhyP6D7X16QAwKg6Dx1R7zowSiY
-         Ro9CYfISm1ocIyE5K/QBDdrXD2t6xsb1MA+vD3I/4VErE9OVRGYa9+DTqAfKDq1lg5GN
-         L0DA==
-X-Gm-Message-State: AOAM531xZEsiH113iHrKv5lT+ztFb5Kt1ahnN2GEBTNhPKhw+rVY0wdK
-        d6j44AIqy++EuccYHTR342aIbaYU/rmr7qUT30lw+alTxNUOq4CoWyBxVK8meSJiQzHhDIqIrJl
-        4voqFVxaq1MSgIwANuduKmRrEWcw5Tmp3rN60QVX75/nIexSiWy4U+qI2KGRSqI6NtAOuKdqBuQ
-        ==
-X-Received: by 2002:aa7:c1c4:: with SMTP id d4mr19752504edp.301.1629116888829;
-        Mon, 16 Aug 2021 05:28:08 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxUmlBUHs63dKqL9LT4V4WRNxi+CMzooXe+Mwa29D+sBIDUIx5mArm48KO18Z6xhvLDCt7yJA==
-X-Received: by 2002:aa7:c1c4:: with SMTP id d4mr19752482edp.301.1629116888636;
-        Mon, 16 Aug 2021 05:28:08 -0700 (PDT)
-Received: from x1.localdomain ([81.30.35.201])
-        by smtp.gmail.com with ESMTPSA id c8sm3608839ejp.124.2021.08.16.05.28.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Aug 2021 05:28:08 -0700 (PDT)
-Subject: Re: [PATCH regression fix v2] gpiolib: acpi: Make
- set-debounce-timeout failures non fatal
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20210816104119.75019-1-hdegoede@redhat.com>
- <YRpWxnZvM2kzjcX/@smile.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <e7c1b41a-4d11-21f4-0add-9b6dd00a8da6@redhat.com>
-Date:   Mon, 16 Aug 2021 14:28:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <YRpWxnZvM2kzjcX/@smile.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
+        id S236866AbhHPNFb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Aug 2021 09:05:31 -0400
+Received: from mail-dm6nam10on2080.outbound.protection.outlook.com ([40.107.93.80]:30620
+        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S237025AbhHPNFN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 16 Aug 2021 09:05:13 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NpdkBOdmfUI5UA1Qamx3Z895vnLKHutT3qbWFPsOTOfLw0BZS5lAyPtY6e08xe5k7puxH3uBWlaTppnaeU221FM2ePzhGgzEM43G8IEGYHnK2aDk21vom8i94SQ/Q/ihxERz7xq/z1MqLSTApa7nAyrai01cDem8iukEQi5S9w1oxDvvl6HgoAoh/DJLE+S52gY3jtFpCMqFperabn+cHriNjoa1lWto+ulYjo/R/aJO7FxfpuHpj8uLRTRl1YwDRWSXUk1Q978XuY0sq8F701W58/We7JhI8K+A0UvFtVx7h93C2AIsxeGF3L2Lryz9ADB32oATXeTHcaxy+aVRKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LG1XhtVuCaCd5OjS2979QwneiWyRZvxVtjhTdxJzZ4E=;
+ b=LlkB32IvfuJ2INqckhJXgueDCiUT9wIfXAAROPewBWqOxgLXUxSdvyGOFWNhfqiULv1v9kH6vnCpBYz4MpRtWEF67lTMoNZyyum32CtFJQXM8suseHBFB2U2Ev34+1WB76SHL/mjHL4quixXuOUM4RxJIgz92ihjLmkad4W+Ut802VuL55aD9hiATXMDBhY4WIjHBuq34T6h6t4vY0YJEQDVKs5hEj+WYmwNGM2jG5WrnnKHSK4L28z1O7Q7Qw4Nj87vBO2ubC67JCz/P+yNkHjqZcvYQS09F/c7WxjOQyJSPBOmEpPo02VPvYO362C+Cq7GlmxGE21O6mKYkQ467g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LG1XhtVuCaCd5OjS2979QwneiWyRZvxVtjhTdxJzZ4E=;
+ b=D7HC6MifPLEuPCsjC0uXfhDFrGRArujAjxcQcOypgx8QMacAoaG1w/Pg9ePY5180rd5G2ba9XeTFYWRySH/yQj5UcuZGdyR6+ukl2ccVJB9SOK1BAjHiQ8FPmORKDnE8a+fbiezXqiFK3I/pKoeXyyWhZyPfnbSHMojLhlmFcTWAbhjxNiTOJgRGLwIIjX5BjrjoVNFcp03y9vy0spnckHmK3LMRFPJjEBmm7ODLpnzyeYGB7d+Svhs7+4WooCfTbkomz3N71fiCAjIUgxN//u0W8TSk/mvdZ6ohjZTFlZdf6p2xs3wNw5BfBB44jfT0HCw8IFfmlyii0Bsc+0v/kg==
+Received: from CH2PR12MB3895.namprd12.prod.outlook.com (2603:10b6:610:2a::13)
+ by CH2PR12MB4246.namprd12.prod.outlook.com (2603:10b6:610:a9::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.19; Mon, 16 Aug
+ 2021 13:04:38 +0000
+Received: from CH2PR12MB3895.namprd12.prod.outlook.com
+ ([fe80::9473:20a9:50d1:4b1f]) by CH2PR12MB3895.namprd12.prod.outlook.com
+ ([fe80::9473:20a9:50d1:4b1f%6]) with mapi id 15.20.4415.023; Mon, 16 Aug 2021
+ 13:04:38 +0000
+From:   Asmaa Mnebhi <asmaa@nvidia.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        David Thompson <davthompson@nvidia.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+CC:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Liming Sun <limings@nvidia.com>
+Subject: RE: [PATCH v1 1/6] gpio: mlxbf2: Convert to device PM ops
+Thread-Topic: [PATCH v1 1/6] gpio: mlxbf2: Convert to device PM ops
+Thread-Index: AQHXkpZGM/yx3akJD0WfnrDIzZ0lYat2F2+Q
+Date:   Mon, 16 Aug 2021 13:04:38 +0000
+Message-ID: <CH2PR12MB3895C5A27672000417F0E90CD7FD9@CH2PR12MB3895.namprd12.prod.outlook.com>
+References: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
+ <20210816115953.72533-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210816115953.72533-2-andriy.shevchenko@linux.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: linux.intel.com; dkim=none (message not signed)
+ header.d=none;linux.intel.com; dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 0153c21e-cffa-4544-7860-08d960b6678e
+x-ms-traffictypediagnostic: CH2PR12MB4246:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <CH2PR12MB42466A3C594440502B5706B7D7FD9@CH2PR12MB4246.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:158;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: BfiCGq2mWJv43kPMnQSZixluICLgwFuCysMTRoaREXgIukUvr7H9t9bdMNgRuAR9K/BMXM4XnpjL3F6tEv2MsZx772t3YBboCY7+Okf+ekxRX8WvTJeSJL8Vsf8n56SLHZEXYrliTd5FRBDH35StmDTivh51eXLY2Ws2DnGzmILderpMH83IxzOaMrYGne93OvKVBKh2yKnFjVkG8IND6h8Nvf/xuxSIhElHzv5Vo8pq73pPIpdZWNYCZzQ9FhJ0RuEFZ9BoFqAkbadzqTyyFpnkUd6tmICLi/qQ59BJ4vaQrhHrLUCQFmMdQo/3KcS12GR2hBEbvKE6/uf6sOMq227qcwbDTAhxIZ0lPtA0Q61A5srsz1V1YsWcyYtc5pwa2CyrP4w1JZjDz/ZLr6+lB192L495OJh/dj1Mbm8gevESlPoivixVPbjeGg+xyO/VPMuAa7dlAwY+f/LZZmHeSC2QAnK7SPjWsYzPxrFu0TVaTVMdCjL+n36Uqc3TRksNbcbQqLEsdtCOnSDCJKfXGWEUlRDD7vnzoMhsp+PpghCIojuP3Ydi418QvrG8EuOkzTSLKy0VqL3+PTKk0pwgT+JcOe1Z9uqpjmlFysvdnJTM5e0JqNxhZLK6MsRiiCco6ZRGEt8iZHroccgzeAlFp7To7HhSkDMEndtj960gH5o0pS1k/bXA/fJe6qK5vjPsAVJiAiUVHN+NdymFaRN0qA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3895.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(366004)(346002)(136003)(396003)(110136005)(86362001)(316002)(478600001)(54906003)(7696005)(52536014)(107886003)(2906002)(8676002)(8936002)(9686003)(7416002)(55016002)(4326008)(186003)(83380400001)(33656002)(53546011)(26005)(38100700002)(122000001)(66946007)(64756008)(66446008)(66556008)(66476007)(6506007)(71200400001)(38070700005)(5660300002)(76116006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?r4G6SwrLu23greljENKELrvnTLTu++Z9nmKhnnndqVB0bKfc8d77WN5SLulx?=
+ =?us-ascii?Q?1jpUF70KEkEgwqdiWWJq0cBqpmAgrK1zmk307LOv8+5hEAwfmm3+Dm91G9h/?=
+ =?us-ascii?Q?3XbTW8DLACrGar44m/r3ukKehFx/K0LMLm9X0kQCOaq8rX7H58cNSwkn5Wl6?=
+ =?us-ascii?Q?wlgxvRMNurtuGrCN2bKL10SZp4LTmjpXfigzXpNC5gWBmsKK9KK9HGvqjkFd?=
+ =?us-ascii?Q?eqSgvamGaC90TXEWC9vdaSrHyj1QcAASxUoLfWsuRRgel2XJMAvjX3Z3en+l?=
+ =?us-ascii?Q?gBQiibS8zZUNV+rbAlBBpGib6RRebGHq8rwmTZgaXnkUKe2zLrgbG7Yxx+Zw?=
+ =?us-ascii?Q?xQDJWMP2E63a2nwDJHnHe60c1unZxLcVRLEFZdtMke/cmwWiJYuj04Wf7WYn?=
+ =?us-ascii?Q?aZMlICkXBr2jvUIGC/xwXvjwKg6mDamMsmFB3DvQgcZ9nOkT1MBnEXu0o5qU?=
+ =?us-ascii?Q?BBGG46E/cNYYlVt3iheev9cnlRJOgXWYpLKV42fKhGxibuSn2Tj9sR5FVt69?=
+ =?us-ascii?Q?Yimece3SnPbdlk8Z4u0g/aUMHT2MQUKSafBZWmca4HHOi2hU0esU2lKKcwFV?=
+ =?us-ascii?Q?dFY4UEhQqfK7uPOYQr4wdD9JhgYowebPasaTT8AZRq1AcaOevrEqEChZoXJu?=
+ =?us-ascii?Q?DOZS8oTBkFWLhGBtssz9HjG2IVOJ/4KmfP+QqcxRoPkbtN/IhvSLkLPXElaB?=
+ =?us-ascii?Q?VbyOl/vIDiuL35KeF6JIp+OKOFvuOWVxzg1QS6vqCeHU/ep5iqjY1Omjx/TF?=
+ =?us-ascii?Q?idUGcqbWdXNWcpoMBLD5ysK00qpGiIlMOI7CmjwGnHi8TJiVphUQQ5ObkfwG?=
+ =?us-ascii?Q?v0F60rLW8i7cSRR4jaDlJSGc8GDHSVj/y0z4+cccziJDYiuDy4lyd9VWLEOY?=
+ =?us-ascii?Q?L9NXdSakgRUOP1q7nBscIrFJi0ij8Hyq/Ukg/DAq0xIAZg0P6IF/bZeqhYYR?=
+ =?us-ascii?Q?u9ZzkekotfyGx7ABbNIYTwsdZ1Gcztaa0A5Hm75nxVUlbjrCANUyiaYLjqh5?=
+ =?us-ascii?Q?2rkuAQuul+cbiiyHvELp5xC52lBC1gHMXZL2nbcXrT6f+dxqxg2LrA+cAywl?=
+ =?us-ascii?Q?L9pZbXcLvVLBDpLxqmzeavSCH4uWtthq4zd0FTJemvuEfqCDZkE3ZF2k57cV?=
+ =?us-ascii?Q?722WWmYUM2Gl/Wk34IRpqrTk8pOX8Jic1k1BKd5ard5ioKg/9CPo4NI8BFwp?=
+ =?us-ascii?Q?/QmAjFZ7B+rhlyRHfjeMyKvnJlOuC5ibDhwngpbbbeoyXh/lIgeINcbxKR0I?=
+ =?us-ascii?Q?1XROBjRGOhtIJAHer8aYgPbEyckbqFvr542qQf9RL++ClqWZUxGFc9NUuQ8B?=
+ =?us-ascii?Q?j70HOBXjYw59V3wMv05HtIzO?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3895.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0153c21e-cffa-4544-7860-08d960b6678e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Aug 2021 13:04:38.6310
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: zG+oSs3pjcXtYyP03iBeSGRz/LDAsHnbD520bZ+uX+GAnXsofuCVz9f5J8VWBLdNK7BrtiUz/Lmr1cDctQzPWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4246
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Acked-by: Asmaa Mnebhi <asmaa@nvidia.com>
 
-On 8/16/21 2:15 PM, Andy Shevchenko wrote:
-> On Mon, Aug 16, 2021 at 12:41:19PM +0200, Hans de Goede wrote:
->> Commit 8dcb7a15a585 ("gpiolib: acpi: Take into account debounce settings")
->> made the gpiolib-acpi code call gpio_set_debounce_timeout() when requesting
->> GPIOs.
->>
->> This in itself is fine, but it also made gpio_set_debounce_timeout()
->> errors fatal, causing the requesting of the GPIO to fail. This is causing
->> regressions. E.g. on a HP ElitePad 1000 G2 various _AEI specified GPIO
->> ACPI event sources specify a debouncy timeout of 20 ms, but the
->> pinctrl-baytrail.c only supports certain fixed values, the closest
->> ones being 12 or 24 ms and pinctrl-baytrail.c responds with -EINVAL
->> when specified a value which is not one of the fixed values.
->>
->> This is causing the acpi_request_own_gpiod() call to fail for 3
->> ACPI event sources on the HP ElitePad 1000 G2, which in turn is causing
->> e.g. the battery charging vs discharging status to never get updated,
->> even though a charger has been plugged-in or unplugged.
->>
->> Make gpio_set_debounce_timeout() errors non fatal, warning about the
->> failure instead, to fix this regression.
->>
->> Note we should probably also fix various pinctrl drivers to just
->> pick the first bigger discrete value rather then returning -EINVAL but
->> this will need to be done on a per driver basis, where as this fix
->> at least gets us back to where things were before and thus restores
->> functionality on devices where this was lost due to
->> gpio_set_debounce_timeout() errors.
-> 
-> Yes, I also think that we need to choose upper debounce instead of rejecting
-> the settings. And yes, I agree that for now it's not suitable as a fix.
-> 
-> That said,
-> Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+-----Original Message-----
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>=20
+Sent: Monday, August 16, 2021 8:00 AM
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>; David Thompson <da=
+vthompson@nvidia.com>; linux-kernel@vger.kernel.org; linux-gpio@vger.kernel=
+.org; netdev@vger.kernel.org; linux-acpi@vger.kernel.org
+Cc: Linus Walleij <linus.walleij@linaro.org>; Bartosz Golaszewski <bgolasze=
+wski@baylibre.com>; David S. Miller <davem@davemloft.net>; Jakub Kicinski <=
+kuba@kernel.org>; Rafael J. Wysocki <rjw@rjwysocki.net>; Asmaa Mnebhi <asma=
+a@nvidia.com>; Liming Sun <limings@nvidia.com>
+Subject: [PATCH v1 1/6] gpio: mlxbf2: Convert to device PM ops
+Importance: High
 
-Thank you.
+Convert driver to use modern device PM ops interface.
 
-FYI, I've prepared a patch to choose the upper debounce time for
-pintctrl-baytrail . I'll test it when I'm back home tonight and
-then submit it upstream.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/gpio/gpio-mlxbf2.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
-Regards,
-
-Hans
-
-
-
-
-> 
->> Fixes: 8dcb7a15a585 ("gpiolib: acpi: Take into account debounce settings")
->> Depends-on: 2e2b496cebef ("gpiolib: acpi: Extract acpi_request_own_gpiod() helper")
->> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->> Changes in v2:
->> -Fix typo in commit msg
->> -Add Mika's Reviewed-by
->> -Add Depends-on tag
->> ---
->>  drivers/gpio/gpiolib-acpi.c | 6 ++++--
->>  1 file changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
->> index 411525ac4cc4..47712b6903b5 100644
->> --- a/drivers/gpio/gpiolib-acpi.c
->> +++ b/drivers/gpio/gpiolib-acpi.c
->> @@ -313,9 +313,11 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
->>  
->>  	ret = gpio_set_debounce_timeout(desc, agpio->debounce_timeout);
->>  	if (ret)
->> -		gpiochip_free_own_desc(desc);
->> +		dev_warn(chip->parent,
->> +			 "Failed to set debounce-timeout for pin 0x%04X, err %d\n",
->> +			 pin, ret);
->>  
->> -	return ret ? ERR_PTR(ret) : desc;
->> +	return desc;
->>  }
->>  
->>  static bool acpi_gpio_in_ignore_list(const char *controller_in, int pin_in)
->> -- 
->> 2.31.1
->>
-> 
+diff --git a/drivers/gpio/gpio-mlxbf2.c b/drivers/gpio/gpio-mlxbf2.c index =
+befa5e109943..68c471c10fa4 100644
+--- a/drivers/gpio/gpio-mlxbf2.c
++++ b/drivers/gpio/gpio-mlxbf2.c
+@@ -47,12 +47,10 @@
+ #define YU_GPIO_MODE0_SET		0x54
+ #define YU_GPIO_MODE0_CLEAR		0x58
+=20
+-#ifdef CONFIG_PM
+ struct mlxbf2_gpio_context_save_regs {
+ 	u32 gpio_mode0;
+ 	u32 gpio_mode1;
+ };
+-#endif
+=20
+ /* BlueField-2 gpio block context structure. */  struct mlxbf2_gpio_contex=
+t { @@ -61,9 +59,7 @@ struct mlxbf2_gpio_context {
+ 	/* YU GPIO blocks address */
+ 	void __iomem *gpio_io;
+=20
+-#ifdef CONFIG_PM
+ 	struct mlxbf2_gpio_context_save_regs *csave_regs; -#endif  };
+=20
+ /* BlueField-2 gpio shared structure. */ @@ -284,11 +280,9 @@ mlxbf2_gpio_=
+probe(struct platform_device *pdev)
+ 	return 0;
+ }
+=20
+-#ifdef CONFIG_PM
+-static int mlxbf2_gpio_suspend(struct platform_device *pdev,
+-				pm_message_t state)
++static int __maybe_unused mlxbf2_gpio_suspend(struct device *dev)
+ {
+-	struct mlxbf2_gpio_context *gs =3D platform_get_drvdata(pdev);
++	struct mlxbf2_gpio_context *gs =3D dev_get_drvdata(dev);
+=20
+ 	gs->csave_regs->gpio_mode0 =3D readl(gs->gpio_io +
+ 		YU_GPIO_MODE0);
+@@ -298,9 +292,9 @@ static int mlxbf2_gpio_suspend(struct platform_device *=
+pdev,
+ 	return 0;
+ }
+=20
+-static int mlxbf2_gpio_resume(struct platform_device *pdev)
++static int __maybe_unused mlxbf2_gpio_resume(struct device *dev)
+ {
+-	struct mlxbf2_gpio_context *gs =3D platform_get_drvdata(pdev);
++	struct mlxbf2_gpio_context *gs =3D dev_get_drvdata(dev);
+=20
+ 	writel(gs->csave_regs->gpio_mode0, gs->gpio_io +
+ 		YU_GPIO_MODE0);
+@@ -309,7 +303,7 @@ static int mlxbf2_gpio_resume(struct platform_device *p=
+dev)
+=20
+ 	return 0;
+ }
+-#endif
++static SIMPLE_DEV_PM_OPS(mlxbf2_pm_ops, mlxbf2_gpio_suspend,=20
++mlxbf2_gpio_resume);
+=20
+ static const struct acpi_device_id __maybe_unused mlxbf2_gpio_acpi_match[]=
+ =3D {
+ 	{ "MLNXBF22", 0 },
+@@ -321,12 +315,9 @@ static struct platform_driver mlxbf2_gpio_driver =3D {
+ 	.driver =3D {
+ 		.name =3D "mlxbf2_gpio",
+ 		.acpi_match_table =3D ACPI_PTR(mlxbf2_gpio_acpi_match),
++		.pm =3D &mlxbf2_pm_ops,
+ 	},
+ 	.probe    =3D mlxbf2_gpio_probe,
+-#ifdef CONFIG_PM
+-	.suspend  =3D mlxbf2_gpio_suspend,
+-	.resume   =3D mlxbf2_gpio_resume,
+-#endif
+ };
+=20
+ module_platform_driver(mlxbf2_gpio_driver);
+--
+2.30.2
 
