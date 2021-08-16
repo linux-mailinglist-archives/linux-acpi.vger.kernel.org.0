@@ -2,91 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C59433ED2B1
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 12:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 231A13ED314
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 13:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235784AbhHPLAD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Aug 2021 07:00:03 -0400
-Received: from foss.arm.com ([217.140.110.172]:42872 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232390AbhHPLAC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 16 Aug 2021 07:00:02 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 583B36D;
-        Mon, 16 Aug 2021 03:59:31 -0700 (PDT)
-Received: from [10.57.36.146] (unknown [10.57.36.146])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 76F743F40C;
-        Mon, 16 Aug 2021 03:59:29 -0700 (PDT)
-Subject: Re: [PATCH v2 1/3] ACPI: osl: Add __force attribute in
- acpi_os_map_iomem() cast
-To:     Ard Biesheuvel <ardb@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Veronika kabatova <vkabatov@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>
-References: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
- <20210802152359.12623-2-lorenzo.pieralisi@arm.com>
- <YRKtEDycefrZLB3X@infradead.org>
- <CAMj1kXEB1CFj1svCWu7yOoUi_OkEqYEUQnB_XWOd3gD+ejO_6w@mail.gmail.com>
- <YRPZ2Kqb/MFggHzQ@infradead.org> <20210811145508.GA3650@lpieralisi>
- <20210816095854.GA2599@lpieralisi>
- <CAMj1kXHM8tG2f-i6u8Ohb0RV9XTqq2N1Oooz_Q2kvLpdfTMxqw@mail.gmail.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <381418c8-5302-6991-b3aa-df6378dd1c64@arm.com>
-Date:   Mon, 16 Aug 2021 11:59:24 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S236138AbhHPLbL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Aug 2021 07:31:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53293 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235976AbhHPLbL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 16 Aug 2021 07:31:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1629113439;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=FI/eHQB74IQIC2qpQ/Xncvk17iFUa0PElL4kPSDcR0s=;
+        b=jCA1jXo4vBhhdP6gXbSNvuVeTueQgzfFAeA5WxC8ekC7HYgOfPAl1AAd3ECbkjpZaZQL3J
+        LaPdXTCSoREOhH9lGFd6LAZ86VQ73rPJpy3BXKC7lRJlgqqERWYachty7cBk5wfqgF6GkK
+        y3Zg9ABSzNeLinR8lpQbthJQkkOJ5VU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-591-PGUG3SmDMPepkt_pKqkB6w-1; Mon, 16 Aug 2021 07:30:38 -0400
+X-MC-Unique: PGUG3SmDMPepkt_pKqkB6w-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CB5CD1853028;
+        Mon, 16 Aug 2021 11:30:36 +0000 (UTC)
+Received: from x1.localdomain (unknown [10.39.194.5])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id C9E7D6E0B7;
+        Mon, 16 Aug 2021 11:30:08 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mark Pearson <markpearson@lenovo.com>,
+        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+        "Luke D . Jones" <luke@ljones.dev>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: [PATCH] ACPI: platform-profile: call sysfs_notify() from platform_profile_store()
+Date:   Mon, 16 Aug 2021 13:30:07 +0200
+Message-Id: <20210816113007.88902-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <CAMj1kXHM8tG2f-i6u8Ohb0RV9XTqq2N1Oooz_Q2kvLpdfTMxqw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021-08-16 11:21, Ard Biesheuvel wrote:
-> On Mon, 16 Aug 2021 at 11:59, Lorenzo Pieralisi
-> <lorenzo.pieralisi@arm.com> wrote:
->>
->> On Wed, Aug 11, 2021 at 03:55:08PM +0100, Lorenzo Pieralisi wrote:
->>> On Wed, Aug 11, 2021 at 03:08:24PM +0100, Christoph Hellwig wrote:
->>>> On Wed, Aug 11, 2021 at 12:40:28PM +0200, Ard Biesheuvel wrote:
->>>>> The whole problem we are solving here is that ACPI, being based on
->>>>> x86, conflates MMIO mappings with memory mappings, and has been using
->>>>> the same underlying infrastructure for either.
->>>>
->>>> So let's fix that problem instead of papering over it.
->>>
->>> Patch (3) in this series is a fix - I would ask whether it makes
->>> sense to merge patches (2-3) now and think about reworking the current
->>> ACPI IO/MEM mapping API later, it can be an invasive change for a fix,
->>> assuming we agree on how to rework the ACPI IO/MEM mapping API.
->>
->> What should we do then with this series ?
->>
-> 
-> It is not even clear that reworking the ACPI core is feasible to begin
-> with, OTOH, fixing a sparse warning is arguably not a critical bug fix
-> either, so I'd suggest we just drop that bit.
+Drivers like thinkpad_acpi and ideapad_laptop call the
+platform_profile_notify() helper when the profile is changed by hardware
+(the embedded-controller/EC) in response to an EC handled hotkey.
 
-Indeed, the only way to truly fix the issue is to fire up the time 
-machine and rewrite the ACPI and EFI specs to not define that tables and 
-data may or may not be required to be mapped as Device memory depending 
-on the whims of the firmware. Otherwise we're basically always going to 
-have one or more casts *somewhere*, even if we were to play it safe and 
-return everything as iomem instead.
+This allows userspace to monitor for such changes by polling for POLLPRI
+on the platform_profile sysfs file. But the profile can also be changed
+underneath a userspace program monitoring it by anonther userspace program
+storing a new value.
 
-I guess for read-only access to tables, the core code might be able to 
-maintain a shadow copy of anything device-memory-mapped in normal memory 
-and expose that instead, but if anything has to be writeable I'm not 
-sure how we could abstract that "properly".
+Add a sysfs_notify() call to platform_profile_store(), so that userspace
+programs monitoring for changes also get notified in this case.
 
-Robin.
+Also update the documentation to document that POLLPRI polling can be
+used to watch for changes.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ Documentation/ABI/testing/sysfs-platform_profile | 7 +++++++
+ drivers/acpi/platform_profile.c                  | 3 +++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/Documentation/ABI/testing/sysfs-platform_profile b/Documentation/ABI/testing/sysfs-platform_profile
+index dae9c8941905..baf1d125f9f8 100644
+--- a/Documentation/ABI/testing/sysfs-platform_profile
++++ b/Documentation/ABI/testing/sysfs-platform_profile
+@@ -26,3 +26,10 @@ Contact:	Hans de Goede <hdegoede@redhat.com>
+ Description:	Reading this file gives the current selected profile for this
+ 		device. Writing this file with one of the strings from
+ 		platform_profile_choices changes the profile to the new value.
++
++		This file can be monitored for changes by polling for POLLPRI,
++		POLLPRI will be signalled on any changes, independent of those
++		changes coming from a userspace write; or coming from another
++		source such as e.g. a hotkey triggered profile change handled
++		either directly by the embedded-controller or fully handled
++		inside the kernel.
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index dd2fbf38e414..d418462ab791 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -106,6 +106,9 @@ static ssize_t platform_profile_store(struct device *dev,
+ 	}
+ 
+ 	err = cur_profile->profile_set(cur_profile, i);
++	if (!err)
++		sysfs_notify(acpi_kobj, NULL, "platform_profile");
++
+ 	mutex_unlock(&profile_lock);
+ 	if (err)
+ 		return err;
+-- 
+2.31.1
+
