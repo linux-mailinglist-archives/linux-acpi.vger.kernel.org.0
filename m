@@ -2,92 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B7633ED92D
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 16:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FF023EDAFA
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 18:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232234AbhHPOtW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Aug 2021 10:49:22 -0400
-Received: from mga17.intel.com ([192.55.52.151]:32699 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232095AbhHPOtW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 16 Aug 2021 10:49:22 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10078"; a="196140208"
-X-IronPort-AV: E=Sophos;i="5.84,326,1620716400"; 
-   d="scan'208";a="196140208"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2021 07:48:50 -0700
-X-IronPort-AV: E=Sophos;i="5.84,326,1620716400"; 
-   d="scan'208";a="504935472"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2021 07:48:47 -0700
-Received: from andy by smile with local (Exim 4.94.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mFduq-00AQUa-Ie; Mon, 16 Aug 2021 17:48:40 +0300
-Date:   Mon, 16 Aug 2021 17:48:40 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [PATCH v1 1/1] x86/platform: Increase maximum GPIO number for
- X86_64
-Message-ID: <YRp6yHt7JMmGvvQn@smile.fi.intel.com>
-References: <20210806143711.37553-1-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0iTNwQfh6ZZxry16hOjokGOOSZthq6C_yed07a2HQ7h2Q@mail.gmail.com>
- <YRppqnAqJ1G+4mva@smile.fi.intel.com>
- <CAJZ5v0ib7oP5EG2k6_Q0Yiq=_WGu01iGVDmV+QoVRLaxTXZHDw@mail.gmail.com>
+        id S229556AbhHPQaw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Aug 2021 12:30:52 -0400
+Received: from mail-oo1-f41.google.com ([209.85.161.41]:37826 "EHLO
+        mail-oo1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229966AbhHPQav (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Aug 2021 12:30:51 -0400
+Received: by mail-oo1-f41.google.com with SMTP id l12-20020a4a94cc0000b02902618ad2ea55so5121354ooi.4
+        for <linux-acpi@vger.kernel.org>; Mon, 16 Aug 2021 09:30:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tRzOLffUL0G8w5kUeO7SDimTni/kC8VLNoLI6Stxcvk=;
+        b=b5fA1dmPgOesbtsvlMOPeN05uuge4vslKBN3u+lq+1kxLj1FvDOhWuluKnQWJvrqNF
+         6whDADYYnhCryZxNWpGQae7wND2hazhh3/gzmYJ1NHl2M3JR+4Vj79ldTvZBLd3nC4PW
+         1Y5af5hZc0rMWQOlQP5GlVbUa1JOgdMCDpWbqXvWB1zX2U7Jse8lyasYunNGgHMZ4oG4
+         psgq48sOxp3BVIzGx2yLa/BaCNZHdWYJuWArQK5Qf72kSk8CymA8yeFNO3sW6QxynrXE
+         l2QWATXbdi7TJRg1srDYU7LfuYqLwx/CQG+bKSbze1kmbnIR6VyB/f/cS2/ah5Q2xDsH
+         d4lA==
+X-Gm-Message-State: AOAM533rO0lumcQ8Cf22rWVYpDeyUnIvxhbwk4KbkQlQC7IDf8MAXlkQ
+        4254Gor1vEHPgRHWvvhqPn6kvWo5dilSOomvY34=
+X-Google-Smtp-Source: ABdhPJwCa1zjs6u26/VWc7HF7a6aqpFxNivoRmKLkiW6dWQfkvhU4scaNwxKi/B61AVHiE7BD9lxeo118kqeMlqsjdw=
+X-Received: by 2002:a4a:dcd0:: with SMTP id h16mr5983734oou.44.1629131419681;
+ Mon, 16 Aug 2021 09:30:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0ib7oP5EG2k6_Q0Yiq=_WGu01iGVDmV+QoVRLaxTXZHDw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20210810014004.16399-1-mario.limonciello@amd.com>
+In-Reply-To: <20210810014004.16399-1-mario.limonciello@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 16 Aug 2021 18:30:08 +0200
+Message-ID: <CAJZ5v0iUwBKGGFarPwhSUcjgHmNVA9T1T+wapXABYg70GqkoRg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PM: s2idle: Invert Microsoft UUID entry and exit
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Pratik Vishwakarma <Pratik.Vishwakarma@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 16, 2021 at 03:55:59PM +0200, Rafael J. Wysocki wrote:
-> On Mon, Aug 16, 2021 at 3:35 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Mon, Aug 16, 2021 at 03:25:13PM +0200, Rafael J. Wysocki wrote:
-> > > On Fri, Aug 6, 2021 at 4:44 PM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
+On Tue, Aug 10, 2021 at 3:40 AM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> It was reported by a user with a Dell m15 R5 (5800H) that
+> the keyboard backlight was turning on when entering suspend
+> and turning off when exiting (the opposite of how it should be).
+>
+> The user bisected it back to commit 5dbf50997578 ("ACPI: PM:
+> s2idle: Add support for new Microsoft UUID").  Previous to that
+> commit the LEDs didn't turn off at all.  Confirming in the spec,
+> these were reversed when introduced.
+>
+> Fix them to match the spec.
+>
+> BugLink: https://gitlab.freedesktop.org/drm/amd/-/issues/1230#note_1021836
+> Fixes: 5dbf50997578 ("ACPI: PM: s2idle: Add support for new Microsoft UUID")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/acpi/x86/s2idle.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+> index fbdbef0ab552..3a308461246a 100644
+> --- a/drivers/acpi/x86/s2idle.c
+> +++ b/drivers/acpi/x86/s2idle.c
+> @@ -452,7 +452,7 @@ int acpi_s2idle_prepare_late(void)
+>         if (lps0_dsm_func_mask_microsoft > 0) {
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
+>                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
+> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
+>                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
+>                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> @@ -479,7 +479,7 @@ void acpi_s2idle_restore_early(void)
+>         if (lps0_dsm_func_mask_microsoft > 0) {
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
+>                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
+> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
+>                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
+>                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> --
 
-...
-
-> > > Wouldn't
-> > >
-> > > default 1024 if X86_64
-> > > default 512
-> > >
-> > > be sufficient?
-> > >
-> > > It's either X86_64 or X86_32 anyway AFAICS.
-
-Fixed in v2.
-
-...
-
-> > Btw, what do you think. do we need comment above and help text here? I copied
-> > these from ARM, but I'm not sure it would be useful on x86 as much.
-> 
-> Both the comment and the help text aren't particularly useful IMO.
-> 
-> The comment is a bit confusing even, because x86 kernels are
-> multiplatform as a rule.
-
-Ditto.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Applied as 5.14-rc material, thanks!
