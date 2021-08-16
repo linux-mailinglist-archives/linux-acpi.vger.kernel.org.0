@@ -2,104 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 231A13ED314
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 13:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B21A43ED385
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 14:00:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236138AbhHPLbL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Aug 2021 07:31:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:53293 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235976AbhHPLbL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 16 Aug 2021 07:31:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1629113439;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=FI/eHQB74IQIC2qpQ/Xncvk17iFUa0PElL4kPSDcR0s=;
-        b=jCA1jXo4vBhhdP6gXbSNvuVeTueQgzfFAeA5WxC8ekC7HYgOfPAl1AAd3ECbkjpZaZQL3J
-        LaPdXTCSoREOhH9lGFd6LAZ86VQ73rPJpy3BXKC7lRJlgqqERWYachty7cBk5wfqgF6GkK
-        y3Zg9ABSzNeLinR8lpQbthJQkkOJ5VU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-591-PGUG3SmDMPepkt_pKqkB6w-1; Mon, 16 Aug 2021 07:30:38 -0400
-X-MC-Unique: PGUG3SmDMPepkt_pKqkB6w-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CB5CD1853028;
-        Mon, 16 Aug 2021 11:30:36 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.194.5])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C9E7D6E0B7;
-        Mon, 16 Aug 2021 11:30:08 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Mark Pearson <markpearson@lenovo.com>,
-        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-        "Luke D . Jones" <luke@ljones.dev>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: [PATCH] ACPI: platform-profile: call sysfs_notify() from platform_profile_store()
-Date:   Mon, 16 Aug 2021 13:30:07 +0200
-Message-Id: <20210816113007.88902-1-hdegoede@redhat.com>
+        id S234996AbhHPMBG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Aug 2021 08:01:06 -0400
+Received: from mga07.intel.com ([134.134.136.100]:49131 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234791AbhHPMAz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 16 Aug 2021 08:00:55 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10077"; a="279586998"
+X-IronPort-AV: E=Sophos;i="5.84,324,1620716400"; 
+   d="scan'208";a="279586998"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2021 05:00:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,324,1620716400"; 
+   d="scan'208";a="572448305"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 16 Aug 2021 05:00:03 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id DD688FF; Mon, 16 Aug 2021 15:00:02 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        David Thompson <davthompson@nvidia.com>,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        netdev@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Asmaa Mnebhi <asmaa@nvidia.com>,
+        Liming Sun <limings@nvidia.com>
+Subject: [PATCH v1 0/6] gpio: mlxbf2: Introduce proper interrupt handling
+Date:   Mon, 16 Aug 2021 14:59:47 +0300
+Message-Id: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Drivers like thinkpad_acpi and ideapad_laptop call the
-platform_profile_notify() helper when the profile is changed by hardware
-(the embedded-controller/EC) in response to an EC handled hotkey.
+This is just a WIP / TODO series based on the discussion [1].
+I hope nVidia will finish it and fix the initial problem sooner than later.
 
-This allows userspace to monitor for such changes by polling for POLLPRI
-on the platform_profile sysfs file. But the profile can also be changed
-underneath a userspace program monitoring it by anonther userspace program
-storing a new value.
+Bart, Linus, First 4 patches may be directly applied to the tree (they are
+at least compile-tested, but I believe they won't change any functionality.
 
-Add a sysfs_notify() call to platform_profile_store(), so that userspace
-programs monitoring for changes also get notified in this case.
+Patch 5 is some stubs that should have been done in the driver.
+Patch 6 is follow up removal of custom GPIO IRQ handling from
+Mellanox GBE driver. Both of them are quite far from finishing,
+but it's a start for nVidia to develop and test proper solution.
 
-Also update the documentation to document that POLLPRI polling can be
-used to watch for changes.
+In any case, I will probably sent end this week the ACPI IRQ abuse
+part from the GBE driver (I won't touch OF path).
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- Documentation/ABI/testing/sysfs-platform_profile | 7 +++++++
- drivers/acpi/platform_profile.c                  | 3 +++
- 2 files changed, 10 insertions(+)
+ARs for nVidia:
+0) review this series;
+1) properly develop GPIO driver;
+2) replace custom code with correct one;
+3) send the work for review to GPIO and ACPI maintainers (basically list
+   of this series).
 
-diff --git a/Documentation/ABI/testing/sysfs-platform_profile b/Documentation/ABI/testing/sysfs-platform_profile
-index dae9c8941905..baf1d125f9f8 100644
---- a/Documentation/ABI/testing/sysfs-platform_profile
-+++ b/Documentation/ABI/testing/sysfs-platform_profile
-@@ -26,3 +26,10 @@ Contact:	Hans de Goede <hdegoede@redhat.com>
- Description:	Reading this file gives the current selected profile for this
- 		device. Writing this file with one of the strings from
- 		platform_profile_choices changes the profile to the new value.
-+
-+		This file can be monitored for changes by polling for POLLPRI,
-+		POLLPRI will be signalled on any changes, independent of those
-+		changes coming from a userspace write; or coming from another
-+		source such as e.g. a hotkey triggered profile change handled
-+		either directly by the embedded-controller or fully handled
-+		inside the kernel.
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index dd2fbf38e414..d418462ab791 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -106,6 +106,9 @@ static ssize_t platform_profile_store(struct device *dev,
- 	}
- 
- 	err = cur_profile->profile_set(cur_profile, i);
-+	if (!err)
-+		sysfs_notify(acpi_kobj, NULL, "platform_profile");
-+
- 	mutex_unlock(&profile_lock);
- 	if (err)
- 		return err;
+On my side I will help you if you have any questions regarding to GPIO
+and ACPI.
+
+Andy Shevchenko (6):
+  gpio: mlxbf2: Convert to device PM ops
+  gpio: mlxbf2: Drop wrong use of ACPI_PTR()
+  gpio: mlxbf2: Use devm_platform_ioremap_resource()
+  gpio: mlxbf2: Use DEFINE_RES_MEM_NAMED() helper macro
+  TODO: gpio: mlxbf2: Introduce IRQ support
+  TODO: net: mellanox: mlxbf_gige: Replace non-standard interrupt
+    handling
+
+ drivers/gpio/gpio-mlxbf2.c                    | 151 ++++++++++---
+ .../mellanox/mlxbf_gige/mlxbf_gige_gpio.c     | 212 ------------------
+ 2 files changed, 120 insertions(+), 243 deletions(-)
+ delete mode 100644 drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_gpio.c
+
 -- 
-2.31.1
+2.30.2
 
