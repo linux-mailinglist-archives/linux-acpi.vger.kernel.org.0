@@ -2,103 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE423ED7FF
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 15:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0F9D3ED840
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 16:00:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbhHPN46 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Aug 2021 09:56:58 -0400
-Received: from mail-oi1-f181.google.com ([209.85.167.181]:38628 "EHLO
-        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbhHPN45 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Aug 2021 09:56:57 -0400
-Received: by mail-oi1-f181.google.com with SMTP id u25so26782416oiv.5;
-        Mon, 16 Aug 2021 06:56:26 -0700 (PDT)
+        id S230490AbhHPOAp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Aug 2021 10:00:45 -0400
+Received: from mail-oi1-f172.google.com ([209.85.167.172]:44778 "EHLO
+        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231445AbhHPN7y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Aug 2021 09:59:54 -0400
+Received: by mail-oi1-f172.google.com with SMTP id w6so26702841oiv.11;
+        Mon, 16 Aug 2021 06:58:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=0uKKAqouMrQ5RgAbl37XN2HPKshvq14pMZ68Q1KvZR4=;
-        b=GoE6oa48lNfNl1J4y5toavcHOWmP+I7MQpWI+llmbsBWT/bsFQw+3xWrh669vhyagO
-         DkY/KJNHivFeg3qXwnex4KVyhQruDt31sPOpPAoQ6vb0wRondhnzQaVpR4mm7XoeR3O/
-         1RLXISFU5urDA8eGKOIVicFacEGmh0kwuD3v3t8fwc4ow+cduQ+Brfnui2j0tB2YyG2R
-         C7Kuvo1y1obDz4IYSD5PIonRANsIyKuXF4PQW0TTULv+E7qnQiGMTosO3csvYpHe3T49
-         2njrR2N5ziOT6jF6wuEX7gZlHLwrTmU874nX0i4GSKRDngMNs5opLlh4KtI9XESm0hV9
-         di3g==
-X-Gm-Message-State: AOAM530sx8cho9lAiOcPWTJbeVfJ1cex5TbluSKaRh7RF7HFFdAVlIFJ
-        zen15Yif3xHxSE9ZH3bSV0XKRoHl9OXKxc/bE1c=
-X-Google-Smtp-Source: ABdhPJzr4FSgkxW5uRL0cvQgUoHQ2a9lqILSFnzzFljV07kigV/zFHRKEVbH4KzCPm8eekeCuQ0eIA+Kxb0DZTa0IdE=
-X-Received: by 2002:a05:6808:220c:: with SMTP id bd12mr12147522oib.157.1629122185765;
- Mon, 16 Aug 2021 06:56:25 -0700 (PDT)
+        bh=XVC/6gEUhU4vuXQZAwgAC2E+AXjHkZw8kmCwwJT5EkY=;
+        b=o/meJLg2KkDJCYyiLCtWNi/xp4tMAeJFU4ojzVzTzLvSr2yK4E7KYaUMgrm2W73CDp
+         gFZBwwjXv3XUxkONbauz3OT8c+GtX8K32jLtaLoCrn9Bie5aczrX+jSCC3XSVcse6csb
+         2LPokq5h0z6vnIKCTztMFXLpW6/oBJ3DHsjkQvNmCOy89TKJYHHz+lxaYoGbvVTlehia
+         GUIcokyRB2CbSVKtuzVKYqCHYV/5RMCvXQ6BKKo8WEoQ4iJFKFuZsFEOPiRTxo4YdFSr
+         dZufibB96H6M97pnJRK+PYKy76SamCL9dC5F+E7xotQc0C8roS+IKr1NPWaNGaOYaKR/
+         TG0A==
+X-Gm-Message-State: AOAM532d/QDOe/ZmkWcvStc+ZokQUbmKnjp/JzdsPKR1aSCRgtgfUrHn
+        vDtyTrADeuJPS8N9POd6uE+gQawxee2ChKx0gS8=
+X-Google-Smtp-Source: ABdhPJyPgh9rmvAjz/JQaNbgjqpHiYubxebOtNNiEu+tbqf7o2TwycD9Yo4s0S/HWKi7unIB8UtE76WdXOPSeDIPtcg=
+X-Received: by 2002:a05:6808:10c1:: with SMTP id s1mr1029801ois.69.1629122300340;
+ Mon, 16 Aug 2021 06:58:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210806143711.37553-1-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0iTNwQfh6ZZxry16hOjokGOOSZthq6C_yed07a2HQ7h2Q@mail.gmail.com> <YRppqnAqJ1G+4mva@smile.fi.intel.com>
-In-Reply-To: <YRppqnAqJ1G+4mva@smile.fi.intel.com>
+References: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
+ <20210802152359.12623-2-lorenzo.pieralisi@arm.com> <YRKtEDycefrZLB3X@infradead.org>
+ <CAMj1kXEB1CFj1svCWu7yOoUi_OkEqYEUQnB_XWOd3gD+ejO_6w@mail.gmail.com>
+ <YRPZ2Kqb/MFggHzQ@infradead.org> <20210811145508.GA3650@lpieralisi>
+ <20210816095854.GA2599@lpieralisi> <CAMj1kXHM8tG2f-i6u8Ohb0RV9XTqq2N1Oooz_Q2kvLpdfTMxqw@mail.gmail.com>
+In-Reply-To: <CAMj1kXHM8tG2f-i6u8Ohb0RV9XTqq2N1Oooz_Q2kvLpdfTMxqw@mail.gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 16 Aug 2021 15:55:59 +0200
-Message-ID: <CAJZ5v0ib7oP5EG2k6_Q0Yiq=_WGu01iGVDmV+QoVRLaxTXZHDw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] x86/platform: Increase maximum GPIO number for X86_64
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+Date:   Mon, 16 Aug 2021 15:57:54 +0200
+Message-ID: <CAJZ5v0jp_cQ4gvd6TGO6dSgGtCuuEEpkmArxMMe0tcgoZAbSdg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] ACPI: osl: Add __force attribute in
+ acpi_os_map_iomem() cast
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     Christoph Hellwig <hch@infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Veronika kabatova <vkabatov@redhat.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 16, 2021 at 3:35 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Mon, Aug 16, 2021 at 12:22 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> On Mon, Aug 16, 2021 at 03:25:13PM +0200, Rafael J. Wysocki wrote:
-> > On Fri, Aug 6, 2021 at 4:44 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
+> On Mon, 16 Aug 2021 at 11:59, Lorenzo Pieralisi
+> <lorenzo.pieralisi@arm.com> wrote:
+> >
+> > On Wed, Aug 11, 2021 at 03:55:08PM +0100, Lorenzo Pieralisi wrote:
+> > > On Wed, Aug 11, 2021 at 03:08:24PM +0100, Christoph Hellwig wrote:
+> > > > On Wed, Aug 11, 2021 at 12:40:28PM +0200, Ard Biesheuvel wrote:
+> > > > > The whole problem we are solving here is that ACPI, being based on
+> > > > > x86, conflates MMIO mappings with memory mappings, and has been using
+> > > > > the same underlying infrastructure for either.
+> > > >
+> > > > So let's fix that problem instead of papering over it.
 > > >
-> > > By default the 512 GPIOs is a maximum on any x86 platform.
-> > > With, for example, Intel Tiger Lake-H the SoC based controller
-> > > occupies up to 480 pins. This leaves only 32 available for
-> > > GPIO expanders or other drivers, like PMIC. Hence, bump the
-> > > maximum GPIO number to 1024 for X86_64 and leave 512 for X86_32.
->
-> Thanks for review, my answers below.
->
-> > > +# The GPIO number here must be sorted by descending number. In case of
-> > > +# a multiplatform kernel, we just want the highest value required by the
-> > > +# selected platforms.
-> > > +config ARCH_NR_GPIO
-> > > +       int
-> > > +       default 1024 if X86_64
-> > > +       default 512 if X86_32
-> > > +       default 0
+> > > Patch (3) in this series is a fix - I would ask whether it makes
+> > > sense to merge patches (2-3) now and think about reworking the current
+> > > ACPI IO/MEM mapping API later, it can be an invasive change for a fix,
+> > > assuming we agree on how to rework the ACPI IO/MEM mapping API.
 > >
-> > Wouldn't
+> > What should we do then with this series ?
 > >
-> > default 1024 if X86_64
-> > default 512
-> >
-> > be sufficient?
-> >
-> > It's either X86_64 or X86_32 anyway AFAICS.
 >
-> I guess so.
->
-> > > +       help
-> > > +         Maximum number of GPIOs in the system.
-> > > +
-> > > +         If unsure, leave the default value.
->
-> Btw, what do you think. do we need comment above and help text here? I copied
-> these from ARM, but I'm not sure it would be useful on x86 as much.
+> It is not even clear that reworking the ACPI core is feasible to begin
+> with, OTOH, fixing a sparse warning is arguably not a critical bug fix
+> either, so I'd suggest we just drop that bit.
 
-Both the comment and the help text aren't particularly useful IMO.
-
-The comment is a bit confusing even, because x86 kernels are
-multiplatform as a rule.
+So I'm assuming that one more iteration of this series will be posted.
