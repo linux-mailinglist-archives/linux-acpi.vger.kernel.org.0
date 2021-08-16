@@ -2,111 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E9BF3ED226
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 12:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C59433ED2B1
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 12:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230124AbhHPKl6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Aug 2021 06:41:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:46591 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230250AbhHPKl5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 16 Aug 2021 06:41:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1629110486;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=V9lD4ZmCA2xeNbbRR9JsVRuBy+tH5ySdLMD/ECLgSTI=;
-        b=TjlMHe2stdg1MTMTIgWJ09QPImNYoxH2SUPeH9ypRlOuHvMMEw1X7tgpZ0ORkr9JeYWgRB
-        qkWwHddygZh5g/6Dt5OOD+OjaodMo3hWXOM4FcD5p6K9zIAnCG1VaX9LZi8ii1t/js8kMv
-        l3nM/wuquVo567FEroReiZeUOMSeBxc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-567-Jhr0IT9cMJGxc__N4WMSAQ-1; Mon, 16 Aug 2021 06:41:23 -0400
-X-MC-Unique: Jhr0IT9cMJGxc__N4WMSAQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BD5561853026;
-        Mon, 16 Aug 2021 10:41:21 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.194.5])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3A2D25D6A8;
-        Mon, 16 Aug 2021 10:41:19 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH regression fix v2] gpiolib: acpi: Make set-debounce-timeout failures non fatal
-Date:   Mon, 16 Aug 2021 12:41:19 +0200
-Message-Id: <20210816104119.75019-1-hdegoede@redhat.com>
+        id S235784AbhHPLAD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Aug 2021 07:00:03 -0400
+Received: from foss.arm.com ([217.140.110.172]:42872 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232390AbhHPLAC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 16 Aug 2021 07:00:02 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 583B36D;
+        Mon, 16 Aug 2021 03:59:31 -0700 (PDT)
+Received: from [10.57.36.146] (unknown [10.57.36.146])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 76F743F40C;
+        Mon, 16 Aug 2021 03:59:29 -0700 (PDT)
+Subject: Re: [PATCH v2 1/3] ACPI: osl: Add __force attribute in
+ acpi_os_map_iomem() cast
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Veronika kabatova <vkabatov@redhat.com>,
+        Will Deacon <will@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
+References: <20210726100026.12538-1-lorenzo.pieralisi@arm.com>
+ <20210802152359.12623-2-lorenzo.pieralisi@arm.com>
+ <YRKtEDycefrZLB3X@infradead.org>
+ <CAMj1kXEB1CFj1svCWu7yOoUi_OkEqYEUQnB_XWOd3gD+ejO_6w@mail.gmail.com>
+ <YRPZ2Kqb/MFggHzQ@infradead.org> <20210811145508.GA3650@lpieralisi>
+ <20210816095854.GA2599@lpieralisi>
+ <CAMj1kXHM8tG2f-i6u8Ohb0RV9XTqq2N1Oooz_Q2kvLpdfTMxqw@mail.gmail.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <381418c8-5302-6991-b3aa-df6378dd1c64@arm.com>
+Date:   Mon, 16 Aug 2021 11:59:24 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+In-Reply-To: <CAMj1kXHM8tG2f-i6u8Ohb0RV9XTqq2N1Oooz_Q2kvLpdfTMxqw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Commit 8dcb7a15a585 ("gpiolib: acpi: Take into account debounce settings")
-made the gpiolib-acpi code call gpio_set_debounce_timeout() when requesting
-GPIOs.
+On 2021-08-16 11:21, Ard Biesheuvel wrote:
+> On Mon, 16 Aug 2021 at 11:59, Lorenzo Pieralisi
+> <lorenzo.pieralisi@arm.com> wrote:
+>>
+>> On Wed, Aug 11, 2021 at 03:55:08PM +0100, Lorenzo Pieralisi wrote:
+>>> On Wed, Aug 11, 2021 at 03:08:24PM +0100, Christoph Hellwig wrote:
+>>>> On Wed, Aug 11, 2021 at 12:40:28PM +0200, Ard Biesheuvel wrote:
+>>>>> The whole problem we are solving here is that ACPI, being based on
+>>>>> x86, conflates MMIO mappings with memory mappings, and has been using
+>>>>> the same underlying infrastructure for either.
+>>>>
+>>>> So let's fix that problem instead of papering over it.
+>>>
+>>> Patch (3) in this series is a fix - I would ask whether it makes
+>>> sense to merge patches (2-3) now and think about reworking the current
+>>> ACPI IO/MEM mapping API later, it can be an invasive change for a fix,
+>>> assuming we agree on how to rework the ACPI IO/MEM mapping API.
+>>
+>> What should we do then with this series ?
+>>
+> 
+> It is not even clear that reworking the ACPI core is feasible to begin
+> with, OTOH, fixing a sparse warning is arguably not a critical bug fix
+> either, so I'd suggest we just drop that bit.
 
-This in itself is fine, but it also made gpio_set_debounce_timeout()
-errors fatal, causing the requesting of the GPIO to fail. This is causing
-regressions. E.g. on a HP ElitePad 1000 G2 various _AEI specified GPIO
-ACPI event sources specify a debouncy timeout of 20 ms, but the
-pinctrl-baytrail.c only supports certain fixed values, the closest
-ones being 12 or 24 ms and pinctrl-baytrail.c responds with -EINVAL
-when specified a value which is not one of the fixed values.
+Indeed, the only way to truly fix the issue is to fire up the time 
+machine and rewrite the ACPI and EFI specs to not define that tables and 
+data may or may not be required to be mapped as Device memory depending 
+on the whims of the firmware. Otherwise we're basically always going to 
+have one or more casts *somewhere*, even if we were to play it safe and 
+return everything as iomem instead.
 
-This is causing the acpi_request_own_gpiod() call to fail for 3
-ACPI event sources on the HP ElitePad 1000 G2, which in turn is causing
-e.g. the battery charging vs discharging status to never get updated,
-even though a charger has been plugged-in or unplugged.
+I guess for read-only access to tables, the core code might be able to 
+maintain a shadow copy of anything device-memory-mapped in normal memory 
+and expose that instead, but if anything has to be writeable I'm not 
+sure how we could abstract that "properly".
 
-Make gpio_set_debounce_timeout() errors non fatal, warning about the
-failure instead, to fix this regression.
-
-Note we should probably also fix various pinctrl drivers to just
-pick the first bigger discrete value rather then returning -EINVAL but
-this will need to be done on a per driver basis, where as this fix
-at least gets us back to where things were before and thus restores
-functionality on devices where this was lost due to
-gpio_set_debounce_timeout() errors.
-
-Fixes: 8dcb7a15a585 ("gpiolib: acpi: Take into account debounce settings")
-Depends-on: 2e2b496cebef ("gpiolib: acpi: Extract acpi_request_own_gpiod() helper")
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
--Fix typo in commit msg
--Add Mika's Reviewed-by
--Add Depends-on tag
----
- drivers/gpio/gpiolib-acpi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 411525ac4cc4..47712b6903b5 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -313,9 +313,11 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
- 
- 	ret = gpio_set_debounce_timeout(desc, agpio->debounce_timeout);
- 	if (ret)
--		gpiochip_free_own_desc(desc);
-+		dev_warn(chip->parent,
-+			 "Failed to set debounce-timeout for pin 0x%04X, err %d\n",
-+			 pin, ret);
- 
--	return ret ? ERR_PTR(ret) : desc;
-+	return desc;
- }
- 
- static bool acpi_gpio_in_ignore_list(const char *controller_in, int pin_in)
--- 
-2.31.1
-
+Robin.
