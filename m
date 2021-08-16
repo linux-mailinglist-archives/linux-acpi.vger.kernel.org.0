@@ -2,209 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93C453ED3B8
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 14:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CE303ED3C0
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Aug 2021 14:15:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233919AbhHPMMR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Aug 2021 08:12:17 -0400
-Received: from mga02.intel.com ([134.134.136.20]:2451 "EHLO mga02.intel.com"
+        id S233109AbhHPMPm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 16 Aug 2021 08:15:42 -0400
+Received: from mga11.intel.com ([192.55.52.93]:30375 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229836AbhHPMMR (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 16 Aug 2021 08:12:17 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10077"; a="203048050"
+        id S229836AbhHPMPm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 16 Aug 2021 08:15:42 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10077"; a="212728833"
 X-IronPort-AV: E=Sophos;i="5.84,324,1620716400"; 
-   d="scan'208";a="203048050"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2021 05:11:45 -0700
+   d="scan'208";a="212728833"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2021 05:15:10 -0700
 X-IronPort-AV: E=Sophos;i="5.84,324,1620716400"; 
-   d="scan'208";a="509678987"
+   d="scan'208";a="422823966"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2021 05:11:43 -0700
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2021 05:15:08 -0700
 Received: from andy by smile with local (Exim 4.94.2)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mFbSq-00ANtl-R8; Mon, 16 Aug 2021 15:11:36 +0300
-Date:   Mon, 16 Aug 2021 15:11:36 +0300
+        id 1mFbWA-00ANwn-5g; Mon, 16 Aug 2021 15:15:02 +0300
+Date:   Mon, 16 Aug 2021 15:15:02 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     Linux GPIO <linux-gpio@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        David Thompson <davthompson@nvidia.com>,
-        Liming Sun <limings@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: Possible ACPI abuse in Mellanox BlueField Gigabit Ethernet driver
-Message-ID: <YRpV+OkStsy3p96b@smile.fi.intel.com>
-References: <YRUskkALrPLa2cSf@smile.fi.intel.com>
- <CH2PR12MB389540C4C751277287147E95D7F99@CH2PR12MB3895.namprd12.prod.outlook.com>
- <YRVLkMoTvp4+X0Nx@smile.fi.intel.com>
- <CH2PR12MB3895CB35E6EA17908979D631D7F99@CH2PR12MB3895.namprd12.prod.outlook.com>
- <YRZ4palCFBFdR/7D@smile.fi.intel.com>
- <CH2PR12MB38954677254F4243A9067E9ED7FA9@CH2PR12MB3895.namprd12.prod.outlook.com>
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH regression fix v2] gpiolib: acpi: Make
+ set-debounce-timeout failures non fatal
+Message-ID: <YRpWxnZvM2kzjcX/@smile.fi.intel.com>
+References: <20210816104119.75019-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CH2PR12MB38954677254F4243A9067E9ED7FA9@CH2PR12MB3895.namprd12.prod.outlook.com>
+In-Reply-To: <20210816104119.75019-1-hdegoede@redhat.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 13, 2021 at 02:32:25PM +0000, Asmaa Mnebhi wrote:
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com> 
-> Sent: Friday, August 13, 2021 9:50 AM
-> On Thu, Aug 12, 2021 at 08:07:49PM +0000, Asmaa Mnebhi wrote:
-> > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Sent: Thursday, August 12, 2021 12:26 PM On Thu, Aug 12, 2021 at 
-> > 03:54:26PM +0000, Asmaa Mnebhi wrote:
+On Mon, Aug 16, 2021 at 12:41:19PM +0200, Hans de Goede wrote:
+> Commit 8dcb7a15a585 ("gpiolib: acpi: Take into account debounce settings")
+> made the gpiolib-acpi code call gpio_set_debounce_timeout() when requesting
+> GPIOs.
 > 
-> > My first question, is it already firmware in the wild that does this?
-> > I.o.w. is there any time to amend it if needed?
+> This in itself is fine, but it also made gpio_set_debounce_timeout()
+> errors fatal, causing the requesting of the GPIO to fail. This is causing
+> regressions. E.g. on a HP ElitePad 1000 G2 various _AEI specified GPIO
+> ACPI event sources specify a debouncy timeout of 20 ms, but the
+> pinctrl-baytrail.c only supports certain fixed values, the closest
+> ones being 12 or 24 ms and pinctrl-baytrail.c responds with -EINVAL
+> when specified a value which is not one of the fixed values.
 > 
-> > > Are you asking if it is possible to change the ACPI table's GPIO pin 
-> > > on the fly at boot time in UEFI code?
+> This is causing the acpi_request_own_gpiod() call to fail for 3
+> ACPI event sources on the HP ElitePad 1000 G2, which in turn is causing
+> e.g. the battery charging vs discharging status to never get updated,
+> even though a charger has been plugged-in or unplugged.
 > 
-> I'm asking if there is any device with these tables on market?
+> Make gpio_set_debounce_timeout() errors non fatal, warning about the
+> failure instead, to fix this regression.
 > 
-> Yes it is.
+> Note we should probably also fix various pinctrl drivers to just
+> pick the first bigger discrete value rather then returning -EINVAL but
+> this will need to be done on a per driver basis, where as this fix
+> at least gets us back to where things were before and thus restores
+> functionality on devices where this was lost due to
+> gpio_set_debounce_timeout() errors.
 
-Ouch. But luckily there is no crime in the tables per se as I have told before.
-Should be fixed in the kernel without any firmware updates / fixes involved.
+Yes, I also think that we need to choose upper debounce instead of rejecting
+the settings. And yes, I agree that for now it's not suitable as a fix.
 
-...
+That said,
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> > The interrupt that we care about (which signals link up/link down 
-> > events) is actually the shared HW irq BF_RSH0_DEVICE_YU_INT (edge 
-> > triggered, active high whenever there is an i2c, mdio or gpio 
-> > interrupt).  We get that interrupt value from the ACPI table as follows:
-> > priv->hw_phy_irq = platform_get_irq(pdev, MLXBF_GIGE_PHY_INT_N);
+> Fixes: 8dcb7a15a585 ("gpiolib: acpi: Take into account debounce settings")
+> Depends-on: 2e2b496cebef ("gpiolib: acpi: Extract acpi_request_own_gpiod() helper")
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Changes in v2:
+> -Fix typo in commit msg
+> -Add Mika's Reviewed-by
+> -Add Depends-on tag
+> ---
+>  drivers/gpio/gpiolib-acpi.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> Wait, what you are telling is that the GpioInt() resource is a dup for one of
-> Interrupt() resource. Is it correct interpretation?
-> 
-> Yes GpioInt is not needed since the ACPI entry (from the above code snippet) defines the shared interrupt as:
->            Interrupt (ResourceConsumer, Edge, ActiveHigh, Shared) { BF_RSH0_DEVICE_YU_INT }
-
-Okay, you need to use GpioInt() properly.
-See cover letter: https://lore.kernel.org/linux-acpi/20210816115953.72533-1-andriy.shevchenko@linux.intel.com/T/#u
-
-> > Although it is overkill, I only used "GpioInt (Edge, ActiveHigh, 
-> > Exclusive, PullUp, \\_SB.GPI0") {12}" to retrieve the GPIO pin number 
-> > (12 or 9) in mlxbf-gige.
-> 
-> Yes, but why do you need to know this pin in software?
-> 
-> I need to know this pin in software to be able to access the corresponding GPIO bits in the control registers. Each gpio register (there are more than 30 HW GPIO related registers) is a 32 bit register. Each bit in those registers corresponds to a different GPIO pin.
-> For example, in each of the following registers (which are used in mlxbf_gige_gpio.c), we only care about R/W to bit 9 or 12 (depending on the board):
-> MLXBF_GIGE_GPIO_CAUSE_OR_CLRCAUSE
-> MLXBF_GIGE_GPIO_CAUSE_OR_CAUSE_EVTEN0
-> MLXBF_GIGE_GPIO_CAUSE_FALL_EN
-> We don't want to modify any other bits since they are bound to other GPIO pins which have specific HW functionalities.
-> 
-> > We could also have created a property (phy-gpio-pin) to pass the GPIO 
-> > pin and that would enable us to remove all code related to "GpioInt"
-> > code in the acpi and mlxbf-gige driver. But I thought that properties 
-> > are in general not the preferred approach?
-> 
-> Properties make sense when there is no standard ACPI approach or it lacks of some information. As far as I can tell here the properties is better, but I would like to understand first the need for this information in the first place (see above comment).
-> 
-> Ok. Please see my reply above.
-> 
-> > So whenever that shared interrupt is triggered, this routine is executed mlxbf_gige_gpio_handler:
-> > ret = devm_request_irq(dev, priv->hw_phy_irq, mlxbf_gige_gpio_handler,
-> >                                 IRQF_ONESHOT | IRQF_SHARED, 
-> > "mlxbf_gige_phy", priv); It checks whether the interrupt is for GPIO 
-> > pin 9 or 12 (depending on the board). If it is, it clears the interrupt accordingly and triggers the generic phy_interrupt routine (in phy.c) phy_interrupt is registered via phy_connect_direct.
-> 
-> This sounds strange to me. What you are telling is that there is no hw register from which you may retrieve this information? So it's a workaround of silicon bug?
-> 
-> Yes. There is no register where I can retrieve this information : ( . This is why firmware decides that at boot time based on the board id.
-> And that is a good idea, I will share this proposal with the HW team as this will make the code a lot cleaner for future generations.
-
-Consider to handle this in GPIO driver and you won't need the headache in the
-consumer drivers. Hardware is fine in this design (as far as I now got it).
-
-> > What I have seen here is a regular GpioInt() resource with a single pin.
-> > 
-> > Asmaa> Yes we only use one GPIO pin.
-> > 
-> > As far as I can see in the code it has the flaw that it actually will use the last GpioInt() resource available in _CRS.
-> > 
-> > Besides that, why do you need to know the pin name and can't simply request an IRQ as every other driver does (the exception is only yours in the entire kernel)? The acpi_dev_gpio_irq_get() call can get Linux vIRQ for you same way you have got it for Interrupt() resources via platform_get_irq().
-> 
-> > To understand better this piece, can you point out to the GPIO driver
-> > code, which implements the driver for _SB.GPI0 in the kernel?
-> 
-> Any comments on this? Do you have a GPIO driver available?
-> 
-> Yes please see below:
-> The gpio driver is gpio-mlxbf2.c
-
-Thanks! It's helpful!
-
-> Here is the ACPI table for it:
-> 
-> Device(GPI0) {
->         Name(_HID, "MLNXBF22")
->         Name(_UID, Zero)
->         Name(_CCA, 1)
->         Name(_CRS, ResourceTemplate() {
->           // for gpio[0] yu block
->           Memory32Fixed(ReadWrite, 0x0280c000, 0x00000100)
->         })
->   }
-> 
-> Device(GPI1) {
->         Name(_HID, "MLNXBF22")
->         Name(_UID, 1)
->         Name(_CCA, 1)
->         Name(_CRS, ResourceTemplate() {
->           // for gpio[1] yu block
->           Memory32Fixed(ReadWrite, 0x0280c100, 0x00000100)
->         })
->       }
->         
-> 
-> Device(GPI2) {
->         Name(_HID, "MLNXBF22")
->         Name(_UID, 2)
->         Name(_CCA, 1)
->         Name(_CRS, ResourceTemplate() {
->           // for gpio[2] yu block
->           Memory32Fixed(ReadWrite, 0x0280c200, 0x00000100)
->         })
->         Name(_DSD, Package() {
->           ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
->           Package() {
->             Package () { "npins", 6 }, // Number of GPIO pins on gpio block 2
->           }
->         })
->       }
-> 
-> > >         }) // Name(_CRS)
-> 
-> > > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Sent: Thursday, August 12, 2021 10:14 AM
-> 
-> > > From time to time I do grep kernel for ACPI_RESOURCE_TYPE_GPIO usage.
-> > > Recently the 
-> > > drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_gpio.c
-> > > caught my eye.
-> > > 
-> > > Looking into the code I see that it looks like misunderstanding of 
-> > > how ACPI works with GPIOs. First of all, I would like to inform that 
-> > > this code has been properly reviewed neither by GPIO nor by ACPI 
-> > > maintainers. Second, before going it to the real conclusions (and 
-> > > potential revert of this), I would like to see the real ACPI tables 
-> > > for this and some explanations from the authors of the driver about 
-> > > GPIO usage here (from hw and sw perspectives).  It makes sense to 
-> > > discuss ASAP, otherwise I would really want to revert it.
-> 
-> --
-> With Best Regards,
-> Andy Shevchenko
-> 
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index 411525ac4cc4..47712b6903b5 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -313,9 +313,11 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
+>  
+>  	ret = gpio_set_debounce_timeout(desc, agpio->debounce_timeout);
+>  	if (ret)
+> -		gpiochip_free_own_desc(desc);
+> +		dev_warn(chip->parent,
+> +			 "Failed to set debounce-timeout for pin 0x%04X, err %d\n",
+> +			 pin, ret);
+>  
+> -	return ret ? ERR_PTR(ret) : desc;
+> +	return desc;
+>  }
+>  
+>  static bool acpi_gpio_in_ignore_list(const char *controller_in, int pin_in)
+> -- 
+> 2.31.1
 > 
 
 -- 
