@@ -2,87 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B8193EE3E0
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Aug 2021 03:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 397C33EE920
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Aug 2021 11:05:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236079AbhHQBlF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 16 Aug 2021 21:41:05 -0400
-Received: from condef-01.nifty.com ([202.248.20.66]:56806 "EHLO
-        condef-01.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235953AbhHQBlE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 16 Aug 2021 21:41:04 -0400
-X-Greylist: delayed 326 seconds by postgrey-1.27 at vger.kernel.org; Mon, 16 Aug 2021 21:41:04 EDT
-Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-01.nifty.com with ESMTP id 17H1WjHw024366;
-        Tue, 17 Aug 2021 10:32:45 +0900
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id 17H1VaIY014246;
-        Tue, 17 Aug 2021 10:31:36 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 17H1VaIY014246
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1629163896;
-        bh=kY53EEVlSun2OrKhcICxxahQyp4LjpGB4vWVi50Hfv8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=hEgIO1zWNUAm6z5VyOMrHJozJTbFvTC4GZGGT/xs0or8+aknjNi4Qg/k+PM9xRW8H
-         dhG4tEdo2VcWThFTG4dq6eAt3xiG8SjETLTVNgDb5wZypdfOciA9iXLFJ4NvZZHuEI
-         aV1GUUL0ftt1kkVpeUcnjS+2IO3Jxu0JMxEBbxAk0IORaWggnO4QI/ueMTXe7w0xYD
-         l7Lmu6RmCpPo5fvjzIiJC8WhBX72VUb6kZkEkps+VppZp+MzorFpzq91TeFdtGVj1B
-         Z04PwxgUfciFtWVdPwJygUUSlw659yMgtf6LGDWpmLOF3Y8yH4a/ZsbKPg9SxhG6Oy
-         jjz/K3fDcpqlQ==
-X-Nifty-SrcIP: [209.85.216.46]
-Received: by mail-pj1-f46.google.com with SMTP id gz13-20020a17090b0ecdb0290178c0e0ce8bso1483099pjb.1;
-        Mon, 16 Aug 2021 18:31:36 -0700 (PDT)
-X-Gm-Message-State: AOAM531Z2bX9S0TpZgOkhaDEHuWL5Nn02EE4ZDCtQ8zztisO2A6JPwP6
-        T3wgRjiaygQ4IRiYG966J6kkt30h/GGz3cmybuo=
-X-Google-Smtp-Source: ABdhPJzUC1mmq2wCI0eNYzNj3+5YcxsdYaAPsGrDHqhNpNjMg6v7t/v+55kBQh5YgHzqvhSB78bp5YUPd+OKtA1A/Jo=
-X-Received: by 2002:a65:6459:: with SMTP id s25mr950393pgv.7.1629163895760;
- Mon, 16 Aug 2021 18:31:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210801201336.2224111-1-adobriyan@gmail.com> <20210801201336.2224111-2-adobriyan@gmail.com>
- <CAMj1kXHA64+6j2HRwxmh0Q9L2X65bWrURBHSBEnGCgmoAemTSw@mail.gmail.com>
-In-Reply-To: <CAMj1kXHA64+6j2HRwxmh0Q9L2X65bWrURBHSBEnGCgmoAemTSw@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Tue, 17 Aug 2021 10:30:58 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARJUTZ-VDP0bTQqjCQwznWB8d+OpYUQJGOOoaQx1X0FcQ@mail.gmail.com>
-Message-ID: <CAK7LNARJUTZ-VDP0bTQqjCQwznWB8d+OpYUQJGOOoaQx1X0FcQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] isystem: ship and use stdarg.h
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
+        id S235289AbhHQJGC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 17 Aug 2021 05:06:02 -0400
+Received: from mga01.intel.com ([192.55.52.88]:47808 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235373AbhHQJGA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 17 Aug 2021 05:06:00 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10078"; a="238106986"
+X-IronPort-AV: E=Sophos;i="5.84,328,1620716400"; 
+   d="scan'208";a="238106986"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2021 02:05:23 -0700
+X-IronPort-AV: E=Sophos;i="5.84,328,1620716400"; 
+   d="scan'208";a="471089536"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2021 02:05:20 -0700
+Received: from andy by smile with local (Exim 4.94.2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mFv22-00Agg5-H2; Tue, 17 Aug 2021 12:05:14 +0300
+Date:   Tue, 17 Aug 2021 12:05:14 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     David Thompson <davthompson@nvidia.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Asmaa Mnebhi <asmaa@nvidia.com>,
+        Liming Sun <limings@nvidia.com>
+Subject: Re: [PATCH v1 6/6] TODO: net: mellanox: mlxbf_gige: Replace
+ non-standard interrupt handling
+Message-ID: <YRt7yqoukWSYmHMg@smile.fi.intel.com>
+References: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
+ <20210816115953.72533-7-andriy.shevchenko@linux.intel.com>
+ <CACRpkdavU=_Fo3DQkD_MAT9Ur-RX46v0L-O=tqibpUtdUhe-NA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACRpkdavU=_Fo3DQkD_MAT9Ur-RX46v0L-O=tqibpUtdUhe-NA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 3, 2021 at 4:14 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Sun, 1 Aug 2021 at 22:13, Alexey Dobriyan <adobriyan@gmail.com> wrote:
+On Tue, Aug 17, 2021 at 01:06:06AM +0200, Linus Walleij wrote:
+> On Mon, Aug 16, 2021 at 2:00 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> 
+> > Since GPIO driver supports interrupt handling, replace custom routine with
+> > simple IRQ request.
 > >
-> > Ship minimal stdarg.h (1 type, 4 macros) as <linux/stdarg.h>.
-> > stdarg.h is the only userspace header commonly used in the kernel.
-> >
->
-> I /think/ I know why this is a good thing, but it is always better to
-> spell it out.
->
-> So with a better explanation in the commit log:
->
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
->
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > ---
+> >  .../mellanox/mlxbf_gige/mlxbf_gige_gpio.c     | 212 ------------------
+> 
+> Don't you also need to remove this file from Makefile?
 
-
-I added your Ack because the benefit of this refactoring
-is described in this:
-
-https://lore.kernel.org/lkml/YQhY40teUJcTc5H4@localhost.localdomain/
-
-
+Of course, this is simply to show the intention. It's just a hint, I have no
+time to write the code for Mellanox, really :-)
 
 -- 
-Best Regards
-Masahiro Yamada
+With Best Regards,
+Andy Shevchenko
+
+
