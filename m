@@ -2,104 +2,176 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67FA83EFCF3
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Aug 2021 08:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C6CA3F0401
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Aug 2021 14:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238043AbhHRGjp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Aug 2021 02:39:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51994 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238205AbhHRGji (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 18 Aug 2021 02:39:38 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2719EC061764
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Aug 2021 23:39:04 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id j1so1966015pjv.3
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Aug 2021 23:39:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=6VE07LLbzv29aUtMl97q7xaV/5G6rvVI2//UYhL0to0=;
-        b=YDLNXL1UfeGT2ueF9icsHaZv7z+FDPU7LSy2ZRXtSe5mZjy3LgTu7bQNdpqisl6xMY
-         0YXqcyw3w0TFPpYQU2f0vc9ROEAVryFZjQXJytjB/enbNYmvVdx4kBPSlGuxnvtnCq/Y
-         iohfl9roTW+pn6r5uFYkUxn6oKKYasENUaQvv4Ad0bSajOTsa80ALEnNV4pMANudDo/b
-         8VtBSAvMSr7AwIXvAfZdHRhHoZu5Vm+gdF8kuO1RBXf+9PWhQrQ8uzjQdhyQgq4LCXxu
-         RQx1CRLR+x2dp60rzHI9HNh3ZGnH98doLGfiKjMfKj7w07ZRabrCLYi9isp1wY2cMdKP
-         0aGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=6VE07LLbzv29aUtMl97q7xaV/5G6rvVI2//UYhL0to0=;
-        b=JqRSy/62hLvJqUUAIRP/o75EMLdsRN6BAsWz2O/F0CBml7QhKX41LEHTli3HjS/sjF
-         odAVa6cJ1UAwMkEq+GyloVEwZYqmbmeDrgszAHsnPNVUrTlzX76NhQzSjeoqAtwDWnrr
-         Efvv1X7+O8v5SY6NeoEB0hl5g1NcqghNH/g3xyUKmWNtrcwCCcg4g86bM8FJm7UBb8E9
-         r3WqIrpMlcNP9t0VfH6i2SzjczVRhdjznAU8giZjmg11+RBsvUYwWTowPoZ4olA4AukU
-         76NHWf5PKwySyfSJ312ArtueDkLPDzrgUc6iYUUxqaU04r5J999qO6RafhxRABNHFtAm
-         RSxw==
-X-Gm-Message-State: AOAM532vejpcyVMG6tX2wdMpscOf7unviKdXtVRT7Ug8Pv+SOIY+2FyW
-        iB410mL/UZ8/wFN2rZhjQm7jSXHrWkAYRsrp
-X-Google-Smtp-Source: ABdhPJwsxyZh2jMcjL70aRNuDM63r/08KQSklh6zuunF7uzTnIapDiJWyVzxwhSlCXUi8SN0pLpCrA==
-X-Received: by 2002:a17:902:8301:b029:12c:d401:1b52 with SMTP id bd1-20020a1709028301b029012cd4011b52mr6127928plb.10.1629268743390;
-        Tue, 17 Aug 2021 23:39:03 -0700 (PDT)
-Received: from AHUANG12-1LT7M0.lenovo.com (220-143-230-157.dynamic-ip.hinet.net. [220.143.230.157])
-        by smtp.gmail.com with ESMTPSA id n18sm4896792pfu.3.2021.08.17.23.39.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Aug 2021 23:39:03 -0700 (PDT)
-From:   Adrian Huang <adrianhuang0701@gmail.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Adrian Huang <adrianhuang0701@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Adrian Huang <ahuang12@lenovo.com>
-Subject: [PATCH 1/1] ACPI: tables: FPDT: Do not print FW_BUG message if subtable types are reserved
-Date:   Wed, 18 Aug 2021 14:38:31 +0800
-Message-Id: <20210818063831.1349-1-adrianhuang0701@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S235397AbhHRMvT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Aug 2021 08:51:19 -0400
+Received: from mga18.intel.com ([134.134.136.126]:30872 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233634AbhHRMvT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 18 Aug 2021 08:51:19 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10079"; a="203462882"
+X-IronPort-AV: E=Sophos;i="5.84,330,1620716400"; 
+   d="scan'208";a="203462882"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2021 05:50:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,330,1620716400"; 
+   d="scan'208";a="449713602"
+Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 18 Aug 2021 05:50:40 -0700
+Received: from kbuild by d053b881505b with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mGL1j-000SuO-Oe; Wed, 18 Aug 2021 12:50:39 +0000
+Date:   Wed, 18 Aug 2021 20:50:31 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ 10bc7fbefe3a9ab4a8e7531752e200ceff5919c7
+Message-ID: <611d0217.Fw+tnLnzUNuKSaug%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Adrian Huang <ahuang12@lenovo.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 10bc7fbefe3a9ab4a8e7531752e200ceff5919c7  Merge branch 'pm-cpufreq-fixes' into linux-next
 
-Table 5.90 "Runtime Performance Record Types" in ACPI 6.4 spec [1] says:
+elapsed time: 1048m
 
-  These type values "0x0003-0xFFFF" of Runtime Performance Record Types
-  are reserved for ACPI spec usage, platform vendor usage, hardware
-  vendor usage, platform firmware vendor usage and future use.
+configs tested: 117
+configs skipped: 3
 
-Users might be confused with the FW_BUG message, and they think this
-is the FW issue. Here is the example in a Lenovo box:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-  ACPI: FPDT 0x00000000A820A000 000044 (v01 LENOVO THINKSYS 00000100 01000013)
-  ACPI: Reserving FPDT table memory at [mem 0xa820a000-0xa820a043]
-  ACPI FPDT: [Firmware Bug]: Invalid record 4113 found
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20210816
+arc                              allyesconfig
+nios2                            allyesconfig
+alpha                            allyesconfig
+riscv                    nommu_k210_defconfig
+mips                      malta_kvm_defconfig
+powerpc                     rainier_defconfig
+ia64                        generic_defconfig
+powerpc                     tqm8540_defconfig
+mips                      maltasmvp_defconfig
+powerpc                     sequoia_defconfig
+sh                        sh7757lcr_defconfig
+powerpc                        icon_defconfig
+powerpc                     redwood_defconfig
+powerpc                     asp8347_defconfig
+parisc                generic-32bit_defconfig
+powerpc                 mpc837x_mds_defconfig
+arm                            mps2_defconfig
+arc                        vdk_hs38_defconfig
+mips                           jazz_defconfig
+mips                     cu1000-neo_defconfig
+ia64                            zx1_defconfig
+sh                        edosk7705_defconfig
+powerpc                   microwatt_defconfig
+arm                  colibri_pxa270_defconfig
+um                               alldefconfig
+sh                           se7721_defconfig
+sh                          rsk7201_defconfig
+mips                        jmr3927_defconfig
+arm                      footbridge_defconfig
+arm                          ep93xx_defconfig
+arm                        keystone_defconfig
+mips                          ath79_defconfig
+powerpc                      katmai_defconfig
+x86_64                            allnoconfig
+powerpc                   currituck_defconfig
+powerpc                 canyonlands_defconfig
+sh                         ecovec24_defconfig
+powerpc                           allnoconfig
+arm                         cm_x300_defconfig
+mips                  maltasmvp_eva_defconfig
+powerpc                      cm5200_defconfig
+arm                       spear13xx_defconfig
+arm                         socfpga_defconfig
+xtensa                    xip_kc705_defconfig
+mips                     loongson1c_defconfig
+arm                          badge4_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nds32                             allnoconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+x86_64               randconfig-a006-20210816
+x86_64               randconfig-a004-20210816
+x86_64               randconfig-a003-20210816
+x86_64               randconfig-a001-20210816
+x86_64               randconfig-a005-20210816
+x86_64               randconfig-a002-20210816
+i386                 randconfig-a004-20210816
+i386                 randconfig-a003-20210816
+i386                 randconfig-a002-20210816
+i386                 randconfig-a001-20210816
+i386                 randconfig-a006-20210816
+i386                 randconfig-a005-20210816
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                            allmodconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-So, remove the FW_BUG message to avoid confusion since those subtable
-types are reserved in ACPI 6.4 spec.
+clang tested configs:
+x86_64               randconfig-a011-20210816
+x86_64               randconfig-a013-20210816
+x86_64               randconfig-a016-20210816
+x86_64               randconfig-a012-20210816
+x86_64               randconfig-a015-20210816
+x86_64               randconfig-a014-20210816
+i386                 randconfig-a011-20210816
+i386                 randconfig-a015-20210816
+i386                 randconfig-a013-20210816
+i386                 randconfig-a014-20210816
+i386                 randconfig-a016-20210816
+i386                 randconfig-a012-20210816
 
-[1] https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#firmware-performance-data-table-fpdt
-
-Cc: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
 ---
- drivers/acpi/acpi_fpdt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
-index 4ee2ad234e3d..568f26a7490a 100644
---- a/drivers/acpi/acpi_fpdt.c
-+++ b/drivers/acpi/acpi_fpdt.c
-@@ -220,8 +220,8 @@ static int fpdt_process_subtable(u64 address, u32 subtable_type)
- 			break;
- 
- 		default:
--			pr_err(FW_BUG "Invalid record %d found.\n", record_header->type);
--			return -EINVAL;
-+			/* Other types are reserved in ACPI 6.4 spec. */
-+			break;
- 		}
- 	}
- 	return 0;
--- 
-2.25.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
