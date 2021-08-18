@@ -2,176 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C6CA3F0401
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Aug 2021 14:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AE103F05C1
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Aug 2021 16:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235397AbhHRMvT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Aug 2021 08:51:19 -0400
-Received: from mga18.intel.com ([134.134.136.126]:30872 "EHLO mga18.intel.com"
+        id S237887AbhHROIu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Aug 2021 10:08:50 -0400
+Received: from mga07.intel.com ([134.134.136.100]:11730 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233634AbhHRMvT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Aug 2021 08:51:19 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10079"; a="203462882"
+        id S238406AbhHROIu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 18 Aug 2021 10:08:50 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10080"; a="280066329"
 X-IronPort-AV: E=Sophos;i="5.84,330,1620716400"; 
-   d="scan'208";a="203462882"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2021 05:50:43 -0700
-X-ExtLoop1: 1
+   d="scan'208";a="280066329"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2021 07:08:14 -0700
 X-IronPort-AV: E=Sophos;i="5.84,330,1620716400"; 
-   d="scan'208";a="449713602"
-Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 18 Aug 2021 05:50:40 -0700
-Received: from kbuild by d053b881505b with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mGL1j-000SuO-Oe; Wed, 18 Aug 2021 12:50:39 +0000
-Date:   Wed, 18 Aug 2021 20:50:31 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 10bc7fbefe3a9ab4a8e7531752e200ceff5919c7
-Message-ID: <611d0217.Fw+tnLnzUNuKSaug%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+   d="scan'208";a="511212717"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2021 07:08:07 -0700
+Received: from andy by smile with local (Exim 4.94.2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mGMEW-00B8AF-Ie; Wed, 18 Aug 2021 17:07:56 +0300
+Date:   Wed, 18 Aug 2021 17:07:56 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     David Thompson <davthompson@nvidia.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Liming Sun <limings@nvidia.com>
+Subject: Re: [PATCH v1 5/6] TODO: gpio: mlxbf2: Introduce IRQ support
+Message-ID: <YR0UPG2451aGt9Xg@smile.fi.intel.com>
+References: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
+ <20210816115953.72533-6-andriy.shevchenko@linux.intel.com>
+ <CH2PR12MB3895ACF821C8242AA55A1DCDD7FD9@CH2PR12MB3895.namprd12.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <CH2PR12MB3895ACF821C8242AA55A1DCDD7FD9@CH2PR12MB3895.namprd12.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 10bc7fbefe3a9ab4a8e7531752e200ceff5919c7  Merge branch 'pm-cpufreq-fixes' into linux-next
+On Mon, Aug 16, 2021 at 09:34:50PM +0000, Asmaa Mnebhi wrote:
+> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com> 
+> Sent: Monday, August 16, 2021 8:00 AM
 
-elapsed time: 1048m
+...
 
-configs tested: 117
-configs skipped: 3
+> +static irqreturn_t mlxbf2_gpio_irq_handler(int irq, void *ptr) {
+> 
+> So how do you suggest registering this handler?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+As usual. This handler should be probably registered via standard mechanisms.
+Perhaps it's hierarchical IRQ, then use that facility of GPIO library.
+(see gpio-dwapb.c for the example).
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20210816
-arc                              allyesconfig
-nios2                            allyesconfig
-alpha                            allyesconfig
-riscv                    nommu_k210_defconfig
-mips                      malta_kvm_defconfig
-powerpc                     rainier_defconfig
-ia64                        generic_defconfig
-powerpc                     tqm8540_defconfig
-mips                      maltasmvp_defconfig
-powerpc                     sequoia_defconfig
-sh                        sh7757lcr_defconfig
-powerpc                        icon_defconfig
-powerpc                     redwood_defconfig
-powerpc                     asp8347_defconfig
-parisc                generic-32bit_defconfig
-powerpc                 mpc837x_mds_defconfig
-arm                            mps2_defconfig
-arc                        vdk_hs38_defconfig
-mips                           jazz_defconfig
-mips                     cu1000-neo_defconfig
-ia64                            zx1_defconfig
-sh                        edosk7705_defconfig
-powerpc                   microwatt_defconfig
-arm                  colibri_pxa270_defconfig
-um                               alldefconfig
-sh                           se7721_defconfig
-sh                          rsk7201_defconfig
-mips                        jmr3927_defconfig
-arm                      footbridge_defconfig
-arm                          ep93xx_defconfig
-arm                        keystone_defconfig
-mips                          ath79_defconfig
-powerpc                      katmai_defconfig
-x86_64                            allnoconfig
-powerpc                   currituck_defconfig
-powerpc                 canyonlands_defconfig
-sh                         ecovec24_defconfig
-powerpc                           allnoconfig
-arm                         cm_x300_defconfig
-mips                  maltasmvp_eva_defconfig
-powerpc                      cm5200_defconfig
-arm                       spear13xx_defconfig
-arm                         socfpga_defconfig
-xtensa                    xip_kc705_defconfig
-mips                     loongson1c_defconfig
-arm                          badge4_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-x86_64               randconfig-a006-20210816
-x86_64               randconfig-a004-20210816
-x86_64               randconfig-a003-20210816
-x86_64               randconfig-a001-20210816
-x86_64               randconfig-a005-20210816
-x86_64               randconfig-a002-20210816
-i386                 randconfig-a004-20210816
-i386                 randconfig-a003-20210816
-i386                 randconfig-a002-20210816
-i386                 randconfig-a001-20210816
-i386                 randconfig-a006-20210816
-i386                 randconfig-a005-20210816
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                            allmodconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+> 1) should I still use BF_RSH0_DEVICE_YU_INT shared interrupt signal?
 
-clang tested configs:
-x86_64               randconfig-a011-20210816
-x86_64               randconfig-a013-20210816
-x86_64               randconfig-a016-20210816
-x86_64               randconfig-a012-20210816
-x86_64               randconfig-a015-20210816
-x86_64               randconfig-a014-20210816
-i386                 randconfig-a011-20210816
-i386                 randconfig-a015-20210816
-i386                 randconfig-a013-20210816
-i386                 randconfig-a014-20210816
-i386                 randconfig-a016-20210816
-i386                 randconfig-a012-20210816
+I don't know your hardware connection between GPIO and GIC. You have to look
+into TRM and see how they are connected and what should be programmed for the
+mode you want to run this in.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 2) or does Linux kernel know (based on parsing GpioInt) how trigger the
+> handler based on the GPIO datain changing (active low/high)? In this case,
+> the kernel will call this handler whenever the GPIO pin (9 or 12) value
+> changes.
+
+After driver in place kernel will know how to map, register and handle the GPIO
+interrupt. But the GIC part is out of the picture here. It may be you will need
+additional stuff there, like disabling (or else) the interrupts, or providing a
+bypass. I can't answer to this.
+
+> I need to check whether GPIO is active low/high but lets assume for
+> now it is open drain active low. We will use acpi_dev_gpio_irq_get to
+> translate GpioInt to a Linux IRQ number:
+
+> irq = acpi_dev_gpio_irq_get_by(ACPI_COMPANION(dev), "phy-gpios", 0);
+> ret = devm_request_irq(dev, irq, mlxbf2_gpio_irq_handler, IRQF_ONESHOT | IRQF_SHARED, dev_name(dev), gs);
+
+Yes.
+(I dunno about one short and shared flags, but you should know it better than me)
+
+> And I will need to add GpioInt to the GPI0 ACPI table as follows:
+
+But you told me that it's already on the market, how are you suppose to change
+existing tables?
+
+> // GPIO Controller
+>       Device(GPI0) {
+>        Name(_HID, "MLNXBF22")
+>         Name(_UID, Zero)
+>         Name(_CCA, 1)
+>         Name(_CRS, ResourceTemplate() {
+>           // for gpio[0] yu block
+>          Memory32Fixed(ReadWrite, 0x0280c000, 0x00000100)
+>          GpioInt (Level, ActiveLow, Exclusive, PullDefault, , " \\_SB.GPI0") {9}
+>         })
+>         Name(_DSD, Package() {
+>           ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>           Package() {
+>             Package () { "phy-gpios", Package() {^GPI0, 0, 0, 0 }},
+>             Package () { "rst-pin", 32 }, // GPIO pin triggering soft reset on BlueSphere and PRIS
+>           }
+>         })
+>       }
+
+No, it's completely wrong. The resources are provided by GPIO controller and
+consumed by devices. You showed me the table for the consumer, which is good
+(of course if you wish to use Edge triggered interrupts there).
+
+...
+
+> +		handle_nested_irq(nested_irq);
+
+> Now how can the mlxbf_gige_main.c driver also retrieve this nested_irq to
+> register its interrupt handler as well? This irq.domain is only visible to
+> the gpio-mlxbf2.c driver isn't it?  phydev->irq (below) should be populated
+> with nested_irq at init time because it is used to register the phy interrupt
+> in this generic function:
+
+nested here is an example, you have to check which one to use.
+
+Moreover the code misses ->irq_set_type() callback.
+
+So, yes, domain will be GPIOs but IRQ core will handle it properly.
+
+> void phy_request_interrupt(struct phy_device *phydev)
+> {
+> 	int err;
+> 
+> 	err = request_threaded_irq(phydev->irq, NULL, phy_interrupt,
+> 				   IRQF_ONESHOT | IRQF_SHARED,
+> 				   phydev_name(phydev), phydev);
+
+You have several IRQ resources (Interrupt() and GpioInt() ones) in the consumer
+device node. I don't know how your hardware is designed, but if you want to use
+GPIO, then this phydev->irq should be a Linux vIRQ returned from above
+mentioned acpi_dev_gpio_irq_get_by() call. Everything else is magically happens.
+
+...
+
+> +	int offset = irqd_to_hwirq(irqd) % MLXBF2_GPIO_MAX_PINS_PER_BLOCK;
+
+> Why is the modulo needed? Isn't the hwirq returned a number between 0 and
+> MLXBF2_GPIO_MAX_PINS_PER_BLOCK-1 ?
+
+It's copy'n'paste from somewhere, since you have device per bank you don't
+need it.
+
+...
+
+> We also need to make sure that the gpio driver is loaded before the
+> mlxbf-gige driver. Otherwise, the mlxbf-gige 1G interface fails to come up.
+> I have implemented this dependency on the gpio driver before, something like
+> this at the end of the mlxbf-gige driver:
+
+> MODULE_SOFTDEP("pre: gpio_mlxbf2");
+
+No, when you have GPIO device is listed in the tables the IRQ mapping will
+return you deferred probe. It doesn't matter when device will appear, but it
+will be functional only when all resource requirements are satisfied.
+
+Above soft dependency doesn't guarantee this, deferred probe does.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
