@@ -2,94 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F11BE3F223B
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Aug 2021 23:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 082603F228C
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Aug 2021 23:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233256AbhHSV2K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 19 Aug 2021 17:28:10 -0400
-Received: from perceval.ideasonboard.com ([213.167.242.64]:60018 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231951AbhHSV2K (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 19 Aug 2021 17:28:10 -0400
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 69AFFDD;
-        Thu, 19 Aug 2021 23:27:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1629408451;
-        bh=82c7+9N3DOpOVO7TtTZmFCuEClko003ueimXqfKdT9U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SGvLs5rbMOYR1a2yJUArh88keTunA1pMUbRy9e/fLWXSP2RZAD8T57vbxVZlg7FKr
-         YZbXILhwqTCHlRB+BThpRBCMPEsS2XX2xc50L+lqY1By+jTCPfgw8Gji/0O58emJS5
-         OayKmetUZB/3KCInNGY1hJR1OIoGJUXcfVy8Dv2A=
-Date:   Fri, 20 Aug 2021 00:27:23 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-media@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, rafael@kernel.org
-Subject: Re: [RFC 1/3] imx258: Defer probing on ident register read fail (on
- ACPI)
-Message-ID: <YR7Mu76nlw4kKwE5@pendragon.ideasonboard.com>
-References: <20210819201936.7390-1-sakari.ailus@linux.intel.com>
- <20210819201936.7390-2-sakari.ailus@linux.intel.com>
+        id S233612AbhHSV5x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 19 Aug 2021 17:57:53 -0400
+Received: from foss.arm.com ([217.140.110.172]:47484 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229605AbhHSV5x (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 19 Aug 2021 17:57:53 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0EC751042;
+        Thu, 19 Aug 2021 14:57:16 -0700 (PDT)
+Received: from u200856.usa.arm.com (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 74E593F40C;
+        Thu, 19 Aug 2021 14:57:15 -0700 (PDT)
+From:   Jeremy Linton <jeremy.linton@arm.com>
+To:     linux-pci@vger.kernel.org
+Cc:     lorenzo.pieralisi@arm.com, nsaenz@kernel.org, bhelgaas@google.com,
+        rjw@rjwysocki.net, lenb@kernel.org, robh@kernel.org, kw@linux.com,
+        f.fainelli@gmail.com, sdonthineni@nvidia.com,
+        stefan.wahren@i2se.com, bcm-kernel-feedback-list@broadcom.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Jeremy Linton <jeremy.linton@arm.com>
+Subject: [PATCH v2 0/4] CM4 ACPI PCIe quirk
+Date:   Thu, 19 Aug 2021 16:56:51 -0500
+Message-Id: <20210819215655.84866-1-jeremy.linton@arm.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210819201936.7390-2-sakari.ailus@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Sakari,
+The PFTF CM4 is an ACPI platform that is following the Arm PCIe SMC
+(DEN0115) standard because its PCIe config space isn't ECAM compliant
+since it is split into two parts. One part describes the root port
+registers, and another contains a moveable window pointing at a given
+device's 4K config space. Thus it doesn't have an MCFG table. As
+Linux doesn't support the PCI/SMC, a host bridge specific _DSD is
+added and associated with custom ECAM ops and cfgres.  The custom cfg
+op selects between those two regions, as well as disallowing
+problematic accesses.
 
-Thank you for the patch.
+V1->V2:
+	Only move register definitions to new .h file, add
+	     include guards.
+	Change quirk namespace identifier.
+	Update Maintainers file.
+	A number of whitespace, grammar, etc fixes.
 
-On Thu, Aug 19, 2021 at 11:19:34PM +0300, Sakari Ailus wrote:
-> Return -EPROBE_DEFER if probing the device fails because of the I²C
-> transaction (-EIO only). This generally happens when the power on sequence
-> of the device has not been fully performed yet due to later probing of
-> other drivers.
-> 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/media/i2c/imx258.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-> index c249507aa2db..2751c12b6029 100644
-> --- a/drivers/media/i2c/imx258.c
-> +++ b/drivers/media/i2c/imx258.c
-> @@ -1109,6 +1109,14 @@ static int imx258_identify_module(struct imx258 *imx258)
->  
->  	ret = imx258_read_reg(imx258, IMX258_REG_CHIP_ID,
->  			      IMX258_REG_VALUE_16BIT, &val);
-> +	if (ret == -EIO && is_acpi_device_node(dev_fwnode(&client->dev))) {
-> +		/*
-> +		 * If we get -EIO here and it's an ACPI device, there's a fair
-> +		 * likelihood it's because the drivers required to power this
-> +		 * device on have not probed yet. Thus return -EPROBE_DEFER.
-> +		 */
-> +		return -EPROBE_DEFER;
 
-That's really a hack :-( The driver shouldn't have to deal with this. If
-power management is handled transparently for the driver, which is
-what's meant to happen with ACPI, then it should be fully transparent.
-An -EIO error may mean a real communication issue, turning it into
-infinite probe deferring isn't right. The ACPI subsystem should figure
-this out and not probe the driver until all the required resources that
-are managed transparently for the driver are available.
+Jeremy Linton (4):
+  PCI: brcmstb: Break register definitions into separate header
+  PCI: brcmstb: Add ACPI config space quirk
+  PCI/ACPI: Add Broadcom bcm2711 MCFG quirk
+  MAINTAINERS: Widen brcmstb PCIe file scope
 
-If this was a one-off hack I may be able to pretend I haven't noticed,
-but this would need to be copied to every single sensor driver, even
-every single I2C device driver. It should be fixed properly in the ACPI
-subsystem instead.
-
-> +	}
->  	if (ret) {
->  		dev_err(&client->dev, "failed to read chip id %x\n",
->  			IMX258_CHIP_ID);
+ MAINTAINERS                                |   2 +-
+ drivers/acpi/pci_mcfg.c                    |  13 ++
+ drivers/pci/controller/Makefile            |   1 +
+ drivers/pci/controller/pcie-brcmstb-acpi.c |  74 ++++++++++
+ drivers/pci/controller/pcie-brcmstb.c      | 150 +-------------------
+ drivers/pci/controller/pcie-brcmstb.h      | 155 +++++++++++++++++++++
+ include/linux/pci-ecam.h                   |   1 +
+ 7 files changed, 247 insertions(+), 149 deletions(-)
+ create mode 100644 drivers/pci/controller/pcie-brcmstb-acpi.c
+ create mode 100644 drivers/pci/controller/pcie-brcmstb.h
 
 -- 
-Regards,
+2.31.1
 
-Laurent Pinchart
