@@ -2,118 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 426BB3F0E4F
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Aug 2021 00:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79CFE3F10D4
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Aug 2021 04:57:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234717AbhHRWlC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 18 Aug 2021 18:41:02 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:57370 "EHLO vps0.lunn.ch"
+        id S235700AbhHSC5g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 18 Aug 2021 22:57:36 -0400
+Received: from mga11.intel.com ([192.55.52.93]:62083 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234624AbhHRWlC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 18 Aug 2021 18:41:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=BHFLjbPCLCF1K1tPIACjXdBhCncOYyQo371Fy8IXvtg=; b=Fbn0t2acIk7bR7DR7/L5OCuExR
-        OCdkGwfBUkianTpnsEMDrU69r24nZ84+Q4Xy5xFve1y5ME+ZAzwU1K7NHoXSS85pseA7kFCCbt4rG
-        ar8lgBDGuFuO0TiEJ1ir4lN4/0Q4R2kYIlZtKNQtb/FPWnSumNa04mKkZ5F7l6xzSPsw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1mGUER-000rcy-DR; Thu, 19 Aug 2021 00:40:23 +0200
-Date:   Thu, 19 Aug 2021 00:40:23 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Asmaa Mnebhi <asmaa@nvidia.com>,
-        David Thompson <davthompson@nvidia.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Liming Sun <limings@nvidia.com>
-Subject: Re: [PATCH v1 5/6] TODO: gpio: mlxbf2: Introduce IRQ support
-Message-ID: <YR2MV6+uQjjhueoS@lunn.ch>
-References: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
- <20210816115953.72533-6-andriy.shevchenko@linux.intel.com>
- <CH2PR12MB3895ACF821C8242AA55A1DCDD7FD9@CH2PR12MB3895.namprd12.prod.outlook.com>
- <YR0UPG2451aGt9Xg@smile.fi.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YR0UPG2451aGt9Xg@smile.fi.intel.com>
+        id S235670AbhHSC5e (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 18 Aug 2021 22:57:34 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10080"; a="213351918"
+X-IronPort-AV: E=Sophos;i="5.84,333,1620716400"; 
+   d="scan'208";a="213351918"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2021 19:56:57 -0700
+X-IronPort-AV: E=Sophos;i="5.84,333,1620716400"; 
+   d="scan'208";a="521403027"
+Received: from dhuo1-mobl.ccr.corp.intel.com ([10.249.169.197])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2021 19:56:55 -0700
+Message-ID: <08895a6117ee6155f15764ad3fafae35b98b7ece.camel@intel.com>
+Subject: Re: [PATCH 1/1] ACPI: tables: FPDT: Do not print FW_BUG message if
+ subtable types are reserved
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     Adrian Huang <adrianhuang0701@gmail.com>,
+        linux-acpi@vger.kernel.org
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Adrian Huang <ahuang12@lenovo.com>
+Date:   Thu, 19 Aug 2021 10:56:53 +0800
+In-Reply-To: <20210818063831.1349-1-adrianhuang0701@gmail.com>
+References: <20210818063831.1349-1-adrianhuang0701@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Asmaa
-
-> > And I will need to add GpioInt to the GPI0 ACPI table as follows:
+On Wed, 2021-08-18 at 14:38 +0800, Adrian Huang wrote:
+> From: Adrian Huang <ahuang12@lenovo.com>
 > 
-> But you told me that it's already on the market, how are you suppose to change
-> existing tables?
-
-BIOSes have as many bugs a the kernel. So your product should be
-designed so you can upgrade the kernel and upgrade the BIOS.
-
-phylib itself does not care if there is an interrupt or not. It will
-fall back to polling. So if your driver finds itself running with old
-tables, it does not matter. Just print a warning to the kernel logs
-suggesting the user upgrades their BIOS firmware.
-
-> > // GPIO Controller
-> >       Device(GPI0) {
-> >        Name(_HID, "MLNXBF22")
-> >         Name(_UID, Zero)
-> >         Name(_CCA, 1)
-> >         Name(_CRS, ResourceTemplate() {
-> >           // for gpio[0] yu block
-> >          Memory32Fixed(ReadWrite, 0x0280c000, 0x00000100)
-> >          GpioInt (Level, ActiveLow, Exclusive, PullDefault, , " \\_SB.GPI0") {9}
-> >         })
-> >         Name(_DSD, Package() {
-> >           ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-> >           Package() {
-> >             Package () { "phy-gpios", Package() {^GPI0, 0, 0, 0 }},
-> >             Package () { "rst-pin", 32 }, // GPIO pin triggering soft reset on BlueSphere and PRIS
-> >           }
-> >         })
-> >       }
+> Table 5.90 "Runtime Performance Record Types" in ACPI 6.4 spec [1]
+> says:
 > 
-> No, it's completely wrong. The resources are provided by GPIO controller and
-> consumed by devices.
+>   These type values "0x0003-0xFFFF" of Runtime Performance Record
+> Types
+>   are reserved for ACPI spec usage, platform vendor usage, hardware
+>   vendor usage, platform firmware vendor usage and future use.
+> 
+> Users might be confused with the FW_BUG message, and they think this
+> is the FW issue. Here is the example in a Lenovo box:
+> 
+>   ACPI: FPDT 0x00000000A820A000 000044 (v01 LENOVO THINKSYS 00000100
+> 01000013)
+>   ACPI: Reserving FPDT table memory at [mem 0xa820a000-0xa820a043]
+>   ACPI FPDT: [Firmware Bug]: Invalid record 4113 found
+> 
+> So, remove the FW_BUG message to avoid confusion since those subtable
+> types are reserved in ACPI 6.4 spec.
+> 
+> [1] 
+> https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#firmware-performance-data-table-fpdt
+> 
 
-In the device tree world, you list the interrupt in the PHY node.
-Documentation/devicetree/bindings/net/ethernet-phy.yaml gives an
-example:
+In 
+https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html#fpdt-performance-record-types
+it also mentions that "0x0002-0xFFFF" of FPDT Performance Record Types
+are reserved, so it's better to fix them all in one patch?
 
-    ethernet {
-        #address-cells = <1>;
-        #size-cells = <0>;
+thanks,
+rui
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
+> ---
+>  drivers/acpi/acpi_fpdt.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
+> index 4ee2ad234e3d..568f26a7490a 100644
+> --- a/drivers/acpi/acpi_fpdt.c
+> +++ b/drivers/acpi/acpi_fpdt.c
+> @@ -220,8 +220,8 @@ static int fpdt_process_subtable(u64 address, u32
+> subtable_type)
+>  			break;
+>  
+>  		default:
+> -			pr_err(FW_BUG "Invalid record %d found.\n",
+> record_header->type);
+> -			return -EINVAL;
+> +			/* Other types are reserved in ACPI 6.4 spec.
+> */
+> +			break;
+>  		}
+>  	}
+>  	return 0;
 
-        ethernet-phy@0 {
-            compatible = "ethernet-phy-id0141.0e90", "ethernet-phy-ieee802.3-c45";
-            interrupt-parent = <&PIC>;
-            interrupts = <35 1>;
-            reg = <0>;
-
-            resets = <&rst 8>;
-            reset-names = "phy";
-            reset-gpios = <&gpio1 4 1>;
-            reset-assert-us = <1000>;
-            reset-deassert-us = <2000>;
-        };
-    };
-
-You need to do something similar in the ACPI world. There was a very
-long discussion in this area recently, and some patches merged. You
-probably need to build on that. See:
-
-firmware-guide/acpi/dsd/phy.rst
-
-	Andrew
