@@ -2,104 +2,279 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F8493F2E9F
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Aug 2021 17:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 079703F3152
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Aug 2021 18:12:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240967AbhHTPNz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Aug 2021 11:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44856 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235928AbhHTPNz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Aug 2021 11:13:55 -0400
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51BBCC061575;
-        Fri, 20 Aug 2021 08:13:17 -0700 (PDT)
-Received: by mail-pg1-x529.google.com with SMTP id o2so9475794pgr.9;
-        Fri, 20 Aug 2021 08:13:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ZLsQBmbYPy6TkjNymlou640ZLna2BWSi56DTvRZ7JDI=;
-        b=MbzDdKH7+C0WQP7+AdNCxPK0vlRWRMmtPT+Em7Ps/ooufmAqDcZUY0sk3UawUAGAs+
-         Mr/h1dZC7EsiDKDhFiut+9P/4ilY5Wg4lTX2RQTTwOHUZGDyM+Xg5Lms5mZzAtfBqxq3
-         yigCNhLWKqU2GdPoc/pdePjfnfZrNZIpQRUe1/EPX+fJiGFTgg283/QA9kbb74bVkGbb
-         g3FSBjD2UyVr7u+Qlv05oZorzfo+zdbUxs8DwetYbxkIaSaVnS9Z/u2OweB81wTOQ5KQ
-         iTTl542GhLhDTucMFXIZMl3rxmQwGmEqs0/NAH+vPmgJ/+LS3qMyCcVBRPoxvnD4DWOJ
-         UELA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ZLsQBmbYPy6TkjNymlou640ZLna2BWSi56DTvRZ7JDI=;
-        b=Sb279YXuUNitXMFH9M1qGNUFJxlXjoO5j6DPRBxfdXUVq+IEQ4OB4oCd84YNulOjwx
-         cFUesrqlXVBNQ3zRe1sswmiliEMwq/Qb1Hz2AdUtF8AcpnZ6fo8Vk7NsUfLQfxFNtbeT
-         OpNM3sRQaeJx13LXRKn5rGQendrIyyMSEWkVbaGsbN5i1aDpvirxdV3nl/Geb6HVuc6C
-         Z5sZi2f4tkvlG6+/DMupZQBnwt/6fGs1p+A/h6bELPn8SddQ/od+Oyb4rVUDntEeqKOe
-         0lfxRZXg19LFop0Yr23KWk5n2/h/qfwZgpLlyfBxUQvVDs4TRi5oU8rUdK/gfEwMKnHT
-         SQOA==
-X-Gm-Message-State: AOAM5308FmHAlSkyWu9stVe9PaTzNeIs6/gBdX7o2LuWYS/g3Ip9Vhzn
-        SUUM81x/h1JE0P+8EBSPGFcgZYLK6OJMqIw0uCLs/ZbB8XQ=
-X-Google-Smtp-Source: ABdhPJxbmIqRf1r08fp79EQIOZACHUYpl9unVHIHWEk04df8kienN+545VPNB0DJ7XYasXxcs021C7JxIhNqC6jEEVE=
-X-Received: by 2002:a65:63d6:: with SMTP id n22mr17071651pgv.74.1629472396869;
- Fri, 20 Aug 2021 08:13:16 -0700 (PDT)
+        id S229784AbhHTQNY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 20 Aug 2021 12:13:24 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:58168 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232233AbhHTQNV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 20 Aug 2021 12:13:21 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
+ id bd9c341d9aad94d5; Fri, 20 Aug 2021 18:12:41 +0200
+Received: from kreacher.localnet (unknown [213.134.175.112])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 3E08D66A221;
+        Fri, 20 Aug 2021 18:12:40 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux PCI <linux-pci@vger.kernel.org>,
+        Jonathan Derrick <jonathan.derrick@intel.com>
+Cc:     Wendy Wang <wendy.wang@intel.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        David Box <david.e.box@linux.intel.com>
+Subject: [PATCH] PCI: VMD: ACPI: Make ACPI companion lookup work for VMD bus
+Date:   Fri, 20 Aug 2021 18:12:39 +0200
+Message-ID: <11834551.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-References: <20210414083022.25453-3-me@fabwu.ch> <20210712090326.7064-1-me@fabwu.ch>
- <20210820131207.GB3@paasikivi.fi.intel.com> <CAHp75Vf=1aKx=SN60rGpUpgvXEryq9w1R7NRi0nCG49jWWzefg@mail.gmail.com>
- <20210820150241.GC3@paasikivi.fi.intel.com>
-In-Reply-To: <20210820150241.GC3@paasikivi.fi.intel.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 20 Aug 2021 18:12:37 +0300
-Message-ID: <CAHp75VdBLaiW=G+BaPHX7-wMoVHqQ1mfC5ijCUTyRckDz2EV6Q@mail.gmail.com>
-Subject: Re: [PATCH v4] ipu3-cio2: Parse sensor orientation and rotation
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-acpi@vger.kernel.org
-Cc:     =?UTF-8?Q?Fabian_W=C3=BCthrich?= <me@fabwu.ch>,
-        linux-media@vger.kernel.org, Jacopo Mondi <jacopo@jmondi.org>,
-        Dan Scally <djrscally@gmail.com>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-CLIENT-IP: 213.134.175.112
+X-CLIENT-HOSTNAME: 213.134.175.112
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrleelgdeliecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhephfegtdffjeehkeegleejveevtdeugfffieeijeduuddtkefgjedvheeujeejtedvnecukfhppedvudefrddufeegrddujeehrdduuddvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudejhedrudduvddphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdhptghisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhonhgrthhhrghnrdguvghrrhhitghksehinhhtvghlrdgtohhmpdhrtghpthhtohepfigvnhguhidrfigrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehv
+ ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhikhgrrdifvghsthgvrhgsvghrgheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvihgurdgvrdgsohigsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=16 Fuz1=16 Fuz2=16
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 20, 2021 at 6:02 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
-> On Fri, Aug 20, 2021 at 04:25:15PM +0300, Andy Shevchenko wrote:
-> > On Fri, Aug 20, 2021 at 4:12 PM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> > > On Mon, Jul 12, 2021 at 11:03:26AM +0200, Fabian W=C3=BCthrich wrote:
-> > > > The sensor orientation is read from the _PLC ACPI buffer and conver=
-ted to a v4l2
-> > > > format.
-> > > >
-> > > > The sensor rotation is read from the SSDB ACPI buffer and converted=
- into
-> > > > degrees.
-> > > >
-> > > > Signed-off-by: Fabian W=C3=BCthrich <me@fabwu.ch>
-> > > > Reviewed-by: Daniel Scally <djrscally@gmail.com>
-> > > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > >
-> > > It's in my tree now.
-> >
-> > Do you know what's going on with
-> > https://lore.kernel.org/linux-media/20210726084055.54887-1-andriy.shevc=
-henko@linux.intel.com/
-> > ?
->
-> I thought you'd be merging that through the other tree where the other
-> patch was merged.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Ah, okay, let's ask Rafael if he can take this for v5.14 cycle.
+On some systems, in order to get to the deepest low-power state of
+the platform (which may be necessary to save significant enough
+amounts of energy while suspended to idle. for example), devices on
+the PCI bus exposed by the VMD driver need to be power-managed via
+ACPI.  However, the layout of the ACPI namespace below the VMD
+controller device object does not reflect the layout of the PCI bus
+under the VMD host bridge, so in order to identify the ACPI companion
+objects for the devices on that bus, it is necessary to use a special
+_ADR encoding on the ACPI side.  In other words, acpi_pci_find_companion()
+does not work for these devices, so it needs to be amended with a
+special lookup logic specific to the VMD bus.
 
-Rafael, I can resubmit a new version with Sakari's ACK. Or you may
-retrieve this by message ID from lore. What do you prefer?
+Address this issue by allowing the VMD driver to temporarily install
+an ACPI companion lookup hook containing the code matching the devices
+on the VMD PCI bus with the corresponding objects in the ACPI
+namespace.
 
-> I can also take it through the media tree. I guess by now it'll be the ne=
-xt
-> version in any case.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Wendy Wang <wendy.wang@intel.com>
+---
+ drivers/pci/controller/vmd.c |   48 ++++++++++++++++++++++++++
+ drivers/pci/host-bridge.c    |    1 
+ drivers/pci/pci-acpi.c       |   78 +++++++++++++++++++++++++++++++++++++++++++
+ include/linux/pci-acpi.h     |    3 +
+ 4 files changed, 130 insertions(+)
 
---
-With Best Regards,
-Andy Shevchenko
+Index: linux-pm/drivers/pci/controller/vmd.c
+===================================================================
+--- linux-pm.orig/drivers/pci/controller/vmd.c
++++ linux-pm/drivers/pci/controller/vmd.c
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <linux/msi.h>
+ #include <linux/pci.h>
++#include <linux/pci-acpi.h>
+ #include <linux/pci-ecam.h>
+ #include <linux/srcu.h>
+ #include <linux/rculist.h>
+@@ -447,6 +448,49 @@ static struct pci_ops vmd_ops = {
+ 	.write		= vmd_pci_write,
+ };
+ 
++#ifdef CONFIG_ACPI
++static struct acpi_device *vmd_acpi_find_companion(struct pci_dev *pci_dev)
++{
++	struct pci_host_bridge *bridge;
++	u32 busnr, addr;
++
++	if (pci_dev->bus->ops != &vmd_ops)
++		return NULL;
++
++	bridge = pci_find_host_bridge(pci_dev->bus);
++	busnr = pci_dev->bus->number - bridge->bus->number;
++	addr = (busnr << 24) | ((u32)pci_dev->devfn << 16) | 0x8000FFFFU;
++
++	dev_dbg(&pci_dev->dev, "Looking for ACPI companion (address 0x%x)\n",
++		addr);
++
++	return acpi_find_child_device(ACPI_COMPANION(bridge->dev.parent), addr,
++				      false);
++}
++
++static bool hook_installed;
++
++static void vmd_acpi_begin(void)
++{
++	if (pci_acpi_set_companion_lookup_hook(vmd_acpi_find_companion))
++		return;
++
++	hook_installed = true;
++}
++
++static void vmd_acpi_end(void)
++{
++	if (!hook_installed)
++		return;
++
++	pci_acpi_clear_companion_lookup_hook();
++	hook_installed = false;
++}
++#else
++static inline void vmd_acpi_begin(void) { }
++static inline void vmd_acpi_end(void) { }
++#endif /* CONFIG_ACPI */
++
+ static void vmd_attach_resources(struct vmd_dev *vmd)
+ {
+ 	vmd->dev->resource[VMD_MEMBAR1].child = &vmd->resources[1];
+@@ -747,6 +791,8 @@ static int vmd_enable_domain(struct vmd_
+ 	if (vmd->irq_domain)
+ 		dev_set_msi_domain(&vmd->bus->dev, vmd->irq_domain);
+ 
++	vmd_acpi_begin();
++
+ 	pci_scan_child_bus(vmd->bus);
+ 	pci_assign_unassigned_bus_resources(vmd->bus);
+ 
+@@ -760,6 +806,8 @@ static int vmd_enable_domain(struct vmd_
+ 
+ 	pci_bus_add_devices(vmd->bus);
+ 
++	vmd_acpi_end();
++
+ 	WARN(sysfs_create_link(&vmd->dev->dev.kobj, &vmd->bus->dev.kobj,
+ 			       "domain"), "Can't create symlink to domain\n");
+ 	return 0;
+Index: linux-pm/drivers/pci/host-bridge.c
+===================================================================
+--- linux-pm.orig/drivers/pci/host-bridge.c
++++ linux-pm/drivers/pci/host-bridge.c
+@@ -23,6 +23,7 @@ struct pci_host_bridge *pci_find_host_br
+ 
+ 	return to_pci_host_bridge(root_bus->bridge);
+ }
++EXPORT_SYMBOL_GPL(pci_find_host_bridge);
+ 
+ struct device *pci_get_host_bridge_device(struct pci_dev *dev)
+ {
+Index: linux-pm/drivers/pci/pci-acpi.c
+===================================================================
+--- linux-pm.orig/drivers/pci/pci-acpi.c
++++ linux-pm/drivers/pci/pci-acpi.c
+@@ -1159,6 +1159,72 @@ void acpi_pci_remove_bus(struct pci_bus
+ }
+ 
+ /* ACPI bus type */
++
++
++DEFINE_STATIC_KEY_FALSE(pci_acpi_companion_lookup_key);
++static DEFINE_MUTEX(pci_acpi_companion_lookup_mtx);
++static struct acpi_device *(*pci_acpi_find_companion_hook)(struct pci_dev *);
++
++/**
++ * pci_acpi_set_companion_lookup_hook - Set ACPI companion lookup callback.
++ * @func: ACPI companion lookup callback pointer or NULL.
++ *
++ * Set a special ACPI companion lookup callback for PCI devices whose companion
++ * objects in the ACPI namespace have _ADR with non-standard bus-device-function
++ * encodings.
++ *
++ * Return 0 on success or a negative error code on failure (in which case no
++ * changes are made).
++ *
++ * The caller is responsible for the appropriate ordering of the invocations of
++ * this function with respect to the enumeration of the PCI devices needing the
++ * callback installed by it.
++ */
++int pci_acpi_set_companion_lookup_hook(struct acpi_device *(*func)(struct pci_dev *))
++{
++	int ret;
++
++	if (!func)
++		return -EINVAL;
++
++	mutex_lock(&pci_acpi_companion_lookup_mtx);
++
++	if (pci_acpi_find_companion_hook) {
++		ret = -EBUSY;
++	} else {
++		pci_acpi_find_companion_hook = func;
++		static_branch_enable(&pci_acpi_companion_lookup_key);
++		ret = 0;
++	}
++
++	mutex_unlock(&pci_acpi_companion_lookup_mtx);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(pci_acpi_set_companion_lookup_hook);
++
++/**
++ * pci_acpi_clear_companion_lookup_hook - Clear ACPI companion lookup callback.
++ *
++ * Clear the special ACPI companion lookup callback previously set by
++ * pci_acpi_set_companion_lookup_hook().  Block until the last running instance
++ * of the callback returns before clearing it.
++ *
++ * The caller is responsible for the appropriate ordering of the invocations of
++ * this function with respect to the enumeration of the PCI devices needing the
++ * callback cleared by it.
++ */
++void pci_acpi_clear_companion_lookup_hook(void)
++{
++	mutex_lock(&pci_acpi_companion_lookup_mtx);
++
++	pci_acpi_find_companion_hook = NULL;
++	static_branch_disable(&pci_acpi_companion_lookup_key);
++
++	mutex_unlock(&pci_acpi_companion_lookup_mtx);
++}
++EXPORT_SYMBOL_GPL(pci_acpi_clear_companion_lookup_hook);
++
+ static struct acpi_device *acpi_pci_find_companion(struct device *dev)
+ {
+ 	struct pci_dev *pci_dev = to_pci_dev(dev);
+@@ -1166,6 +1232,18 @@ static struct acpi_device *acpi_pci_find
+ 	bool check_children;
+ 	u64 addr;
+ 
++	if (static_branch_unlikely(&pci_acpi_companion_lookup_key)) {
++		mutex_lock(&pci_acpi_companion_lookup_mtx);
++
++		adev = pci_acpi_find_companion_hook ?
++			pci_acpi_find_companion_hook(pci_dev) : NULL;
++
++		mutex_unlock(&pci_acpi_companion_lookup_mtx);
++
++		if (adev)
++			return adev;
++	}
++
+ 	check_children = pci_is_bridge(pci_dev);
+ 	/* Please ref to ACPI spec for the syntax of _ADR */
+ 	addr = (PCI_SLOT(pci_dev->devfn) << 16) | PCI_FUNC(pci_dev->devfn);
+Index: linux-pm/include/linux/pci-acpi.h
+===================================================================
+--- linux-pm.orig/include/linux/pci-acpi.h
++++ linux-pm/include/linux/pci-acpi.h
+@@ -122,6 +122,9 @@ static inline void pci_acpi_add_edr_noti
+ static inline void pci_acpi_remove_edr_notifier(struct pci_dev *pdev) { }
+ #endif /* CONFIG_PCIE_EDR */
+ 
++int pci_acpi_set_companion_lookup_hook(struct acpi_device *(*func)(struct pci_dev *));
++void pci_acpi_clear_companion_lookup_hook(void);
++
+ #else	/* CONFIG_ACPI */
+ static inline void acpi_pci_add_bus(struct pci_bus *bus) { }
+ static inline void acpi_pci_remove_bus(struct pci_bus *bus) { }
+
+
+
