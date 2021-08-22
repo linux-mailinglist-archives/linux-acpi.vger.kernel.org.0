@@ -2,71 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8C1B3F35DE
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Aug 2021 23:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57B763F3CFA
+	for <lists+linux-acpi@lfdr.de>; Sun, 22 Aug 2021 03:23:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230200AbhHTVH2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 20 Aug 2021 17:07:28 -0400
-Received: from mga14.intel.com ([192.55.52.115]:29559 "EHLO mga14.intel.com"
+        id S231167AbhHVBYa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 21 Aug 2021 21:24:30 -0400
+Received: from mail.laei.lt ([193.219.135.233]:29878 "EHLO mail.laei.lt"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230175AbhHTVH2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 20 Aug 2021 17:07:28 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10082"; a="216569438"
-X-IronPort-AV: E=Sophos;i="5.84,338,1620716400"; 
-   d="scan'208";a="216569438"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2021 14:06:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,338,1620716400"; 
-   d="scan'208";a="680433247"
-Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 20 Aug 2021 14:06:47 -0700
-Received: from kbuild by d053b881505b with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mHBiw-000VCF-9U; Fri, 20 Aug 2021 21:06:46 +0000
-Date:   Sat, 21 Aug 2021 05:06:10 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Jonathan Derrick <jonathan.derrick@intel.com>
-Cc:     kbuild-all@lists.01.org, Wendy Wang <wendy.wang@intel.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        David Box <david.e.box@linux.intel.com>
-Subject: [RFC PATCH] PCI: VMD: ACPI: pci_acpi_companion_lookup_key can be
- static
-Message-ID: <20210820210610.GA23698@ef1ee8e5bb1c>
-References: <11834551.O9o76ZdvQC@kreacher>
+        id S230346AbhHVBY3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 21 Aug 2021 21:24:29 -0400
+X-Greylist: delayed 2287 seconds by postgrey-1.27 at vger.kernel.org; Sat, 21 Aug 2021 21:24:27 EDT
+Received: from mail.laei.lt (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: irena@laei.lt)
+        by mail.laei.lt (Postfix) with ESMTPSA id DCDD92AE2E5;
+        Sun, 22 Aug 2021 03:29:45 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=laei.lt; s=dkim;
+        t=1629592187; h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=2lwHj5XDucoX50ZJMpQdE8QrbFbydYepWZXUWyT3JjM=;
+        b=ZPt82THYj4V/2bYnBxRDaQGLYrkf2CrPOMMuviQ8i50FfaK83XL8Gnt7ZkHXNhIu/Af4pd
+        SmVV96dbim39/f/9hUW0Kd4npSHzhdqYSiMahzXjV6eT0mHclD1bpCpkUo5pjVeqzZwq46
+        iNx0AcPjmq++3tXvKTsYmqAqHPvzyxRJNtzhnnHzDTOYx22zmVndFlAQb4vqeYMEmWseKM
+        w7fs5N0IU8/4wnhlWm/gcACDo7ZOJdp/ZK3zu5nQH/lcJ7PNXoe2bTZofQtrC42oALa6V7
+        F7LDc4D3YcagKT1QjYdtMNQnILEYxy9nDeJn/65GjMW212Bg8jGooxVvxBm/qQ==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11834551.O9o76ZdvQC@kreacher>
-X-Patchwork-Hint: ignore
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Sun, 22 Aug 2021 01:29:45 +0100
+From:   "Mrs Mavis L. Wanczyk" <irena@laei.lt>
+To:     undisclosed-recipients:;
+Subject: Donation Grant
+Reply-To: mrsmaviswanczyk74@gmail.com
+User-Agent: Roundcube Webmail/1.4.2
+Message-ID: <74cc9ad94c8bb7cd88f1a090527675a3@laei.lt>
+X-Sender: irena@laei.lt
+Organization: Mrs Mavis L. Wanczyk
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-drivers/pci/pci-acpi.c:1164:1: warning: symbol 'pci_acpi_companion_lookup_key' was not declared. Should it be static?
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: kernel test robot <lkp@intel.com>
----
- pci-acpi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index 535f43034a073..c8718aeafae5d 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1161,7 +1161,7 @@ void acpi_pci_remove_bus(struct pci_bus *bus)
- /* ACPI bus type */
- 
- 
--DEFINE_STATIC_KEY_FALSE(pci_acpi_companion_lookup_key);
-+static DEFINE_STATIC_KEY_FALSE(pci_acpi_companion_lookup_key);
- static DEFINE_MUTEX(pci_acpi_companion_lookup_mtx);
- static struct acpi_device *(*pci_acpi_find_companion_hook)(struct pci_dev *);
- 
+-- 
+You have been awarded a donation grant worth $ 5 Million Dollars. 
+Respond with your details for claims.
+
+I await your earliest response.
+
+Good luck.
+Mrs Mavis L. Wanczyk
