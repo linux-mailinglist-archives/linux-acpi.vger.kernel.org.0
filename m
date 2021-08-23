@@ -2,104 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBAF03F4D7D
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Aug 2021 17:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8D873F4FD6
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Aug 2021 19:50:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231146AbhHWP3O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Aug 2021 11:29:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43890 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231521AbhHWP3J (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Aug 2021 11:29:09 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F50AC061575
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Aug 2021 08:28:26 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id s3so32164952ljp.11
-        for <linux-acpi@vger.kernel.org>; Mon, 23 Aug 2021 08:28:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=oZoJVjBidnvPVFvMpPWZppXKGeyyaDUB3Ugu5JUsoak=;
-        b=DQcWRl2EygAvbWWqqltYKUl+RSB7+OSewiVt9YvahcZ5Mg2aLiP1RDpQcO/NG7hO1+
-         XbKUrQiNOIlWwOw9XohcIvsJ86hoxW+LUJVpURPccBY9yxc3PHewzvLD+bLFI//jiNGe
-         30OJ+f4lyMfk2+vMlwafN7EtRt5HwLjaSY4QTTEQnkO2EBoKtACTaDi3y+Rm0D3js3QK
-         yaAifvWjWepBpWYLj3Udc5hMpuWL4MxmZA2EzN/JXsNZJhhsaDpQGPuih/LII/yGIYHS
-         SCOalsY58/BYTQLnZw47qElSFoU6L3/6o/R0vCDfExtonh95L7xCfNw5sQWoMlSDuTIu
-         NExg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=oZoJVjBidnvPVFvMpPWZppXKGeyyaDUB3Ugu5JUsoak=;
-        b=NXfZpotsQwc7tfE2e+QbpdhRFO03Jg5spiTRuwJWTRah972MnIY20OijaZqZHcs8KT
-         xlLFzlh1ad5mhWH+4/t3fo8EsRtug8n/ft6jP9HdiLozTC+eWW29pgFLy8ipnUdRNL5r
-         TTqWWoyRyVB17o4Yc51qeTNr71GmH2qZIwzuWR9sZuxUVo+2tVfnh6MKOh05Hi5ZWzK+
-         CqcpvK/R8PpqLpdlugSXp8D5QfBYIA0GXx5oQrWivsIieHbsuG9SIJ/9GlmiH4TtN9NT
-         za3RDt8/kv4LNwdUdSXs7I2pD+UOeCaJpVU1+Usr6K24stOPXiSslpkT+lW9346mBbT3
-         AjQg==
-X-Gm-Message-State: AOAM531bI7bdlyBbGGGf7xSrrKzJ6+YqDFyG4tQEvTRXDWAD1rUixFO+
-        sFpA5So68hA9v2vz8dPKbSm8674DRJRjgzkvRNQ=
-X-Google-Smtp-Source: ABdhPJycMv72NKrMH3tTbq7VJKzyTt/LcUHdiwkCSwBWi+mld3IutapX8ODnqhu+jhhdCQVB7LNZSL8OYVK0C8Ji/sc=
-X-Received: by 2002:a2e:9444:: with SMTP id o4mr28164155ljh.210.1629732504622;
- Mon, 23 Aug 2021 08:28:24 -0700 (PDT)
+        id S229746AbhHWRu2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Aug 2021 13:50:28 -0400
+Received: from mga12.intel.com ([192.55.52.136]:7008 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231452AbhHWRu1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 23 Aug 2021 13:50:27 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10085"; a="196727115"
+X-IronPort-AV: E=Sophos;i="5.84,344,1620716400"; 
+   d="scan'208";a="196727115"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2021 10:49:35 -0700
+X-IronPort-AV: E=Sophos;i="5.84,344,1620716400"; 
+   d="scan'208";a="597229956"
+Received: from schen9-mobl.amr.corp.intel.com ([10.251.14.9])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2021 10:49:33 -0700
+Subject: Re: [PATCH 3/3] scheduler: Add cluster scheduler level for x86
+To:     Barry Song <21cnbao@gmail.com>, bp@alien8.de,
+        catalin.marinas@arm.com, dietmar.eggemann@arm.com,
+        gregkh@linuxfoundation.org, hpa@zytor.com, juri.lelli@redhat.com,
+        bristot@redhat.com, lenb@kernel.org, mgorman@suse.de,
+        mingo@redhat.com, peterz@infradead.org, rjw@rjwysocki.net,
+        sudeep.holla@arm.com, tglx@linutronix.de
+Cc:     aubrey.li@linux.intel.com, bsegall@google.com,
+        guodong.xu@linaro.org, jonathan.cameron@huawei.com,
+        liguozhu@hisilicon.com, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        mark.rutland@arm.com, msys.mizuma@gmail.com,
+        prime.zeng@hisilicon.com, rostedt@goodmis.org,
+        valentin.schneider@arm.com, vincent.guittot@linaro.org,
+        will@kernel.org, x86@kernel.org, xuwei5@huawei.com,
+        yangyicong@huawei.com, linuxarm@huawei.com,
+        Barry Song <song.bao.hua@hisilicon.com>
+References: <20210820013008.12881-1-21cnbao@gmail.com>
+ <20210820013008.12881-4-21cnbao@gmail.com>
+From:   Tim Chen <tim.c.chen@linux.intel.com>
+Message-ID: <32bcec89-57d5-65e3-970b-affcf4f41667@linux.intel.com>
+Date:   Mon, 23 Aug 2021 10:49:33 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Reply-To: mrsdaniella.kyle@yandex.com
-Sender: banceemmanuel17@gmail.com
-Received: by 2002:ab3:7598:0:0:0:0:0 with HTTP; Mon, 23 Aug 2021 08:28:23
- -0700 (PDT)
-From:   Mrs Daniella Kyle <mrsdaniellakyle6@gmail.com>
-Date:   Mon, 23 Aug 2021 08:28:23 -0700
-X-Google-Sender-Auth: isbJQqntkOnmmWIbFv-qicP-wf8
-Message-ID: <CAE9zZ3720cBjY_5ET=9=WEzDs998yUss7Mxpi2hrP6oF309pNA@mail.gmail.com>
-Subject: Re:ATM Visa card compensation, Thanks for your past effort
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210820013008.12881-4-21cnbao@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
 
-Good Day, This message may actually come to you as surprises today, To
-be very honest with you, It is a joyful moment for me and my family
-right now, so therefore am using this opportunity to inform you that
-have successfully move to Vietnam where am currently living with my
-business partner who assisted me to complete the transfer, but due to
-the willingness and acceptance you showed during my pain have decided
-to willingly compensated you and show my gratitude to you with these
-sum of $950,000.00 Nine Hundred and fifty Thousand US Dollars).
 
-I want you to accept this amount it=E2=80=99s from the bottom of my heart,
-have issued the check and instructed the bank to roll the fund on a
-master card for security reasons, you can use the card to withdraw
-money from any ATM machine worldwide with a maximum of US$10,000 per
-day.
+On 8/19/21 6:30 PM, Barry Song wrote:
+> From: Tim Chen <tim.c.chen@linux.intel.com>
+> 
+> There are x86 CPU architectures (e.g. Jacobsville) where L2 cahce is
+> shared among a cluster of cores instead of being exclusive to one
+> single core.
+> To prevent oversubscription of L2 cache, load should be balanced
+> between such L2 clusters, especially for tasks with no shared data.
+> On benchmark such as SPECrate mcf test, this change provides a
+> boost to performance especially on medium load system on Jacobsville.
+> on a Jacobsville that has 24 Atom cores, arranged into 6 clusters
+> of 4 cores each, the benchmark number is as follow:
+> 
+>  Improvement over baseline kernel for mcf_r
+>  copies		run time	base rate
+>  1		-0.1%		-0.2%
+>  6		25.1%		25.1%
+>  12		18.8%		19.0%
+>  24		0.3%		0.3%
+> 
+> So this looks pretty good. In terms of the system's task distribution,
+> some pretty bad clumping can be seen for the vanilla kernel without
+> the L2 cluster domain for the 6 and 12 copies case. With the extra
+> domain for cluster, the load does get evened out between the clusters.
+> 
+> Note this patch isn't an universal win as spreading isn't necessarily
+> a win, particually for those workload who can benefit from packing.
 
-My bank account manager said you can receive the card and use it
-anywhere in this global world. Go ahead contact the Global ATM
-Alliance directly with this below information. Email Address: .....
-maastercarddeptme20@yahoo.com
+I have another patch set to make cluster scheduling selectable at run
+time and boot time.  Will like to see people's feed back on this patch
+set first before sending that out.
 
- Name: ........... ....... Global Alliance Burkina Faso
-Office Address; ...... 01BP 23 Rue Des Grands Moulins.Ouagadougou, Burkina =
-Faso
-Email Address: ..... [maastercarddeptme20@yahoo.com]
-Name of Manager In charge: Mrs Zoure Gueratou
+Thanks.
 
-Presently, I am very busy here in Vietnam because of the investment
-projects which I and my new partner are having at hand, I have given
-instructions to the ATM Visa card office on your behalf to release the
-ATM card which I gave to you as compensation. Therefore feel free and
-get in touch with her and she will send the card and the pin code to
-you in your location in order for you to start withdrawing the
-compensation money without delay.
-
-My family wishes you best of luck in whatever business you shall
-invest this money into. Kindly let me know as soon you received the
-card together with the pin code.
-
-Thank you
-Yours Sincerely
-Daniela Angelo Kyle
+Tim
