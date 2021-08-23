@@ -2,96 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28CB33F4BC4
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Aug 2021 15:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBAF03F4D7D
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Aug 2021 17:28:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbhHWNe1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Aug 2021 09:34:27 -0400
-Received: from szxga08-in.huawei.com ([45.249.212.255]:15206 "EHLO
-        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232228AbhHWNe0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Aug 2021 09:34:26 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.54])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4GtY8l3zBxz1CZXw;
-        Mon, 23 Aug 2021 21:33:11 +0800 (CST)
-Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 23 Aug 2021 21:33:42 +0800
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 23 Aug 2021 21:33:41 +0800
-Subject: Re: [PATCH] acpi/arm64: fix next_platform_timer() section mismatch
- error
-To:     Jackie Liu <liu.yun@linux.dev>, <lorenzo.pieralisi@arm.com>
-CC:     <linux-acpi@vger.kernel.org>, <liuyun01@kylinos.cn>
-References: <20210823092526.2407526-1-liu.yun@linux.dev>
-From:   Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <7f29a149-e005-f13f-2cc4-a9eb737107e1@huawei.com>
-Date:   Mon, 23 Aug 2021 21:33:41 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S231146AbhHWP3O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Aug 2021 11:29:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43890 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231521AbhHWP3J (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Aug 2021 11:29:09 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F50AC061575
+        for <linux-acpi@vger.kernel.org>; Mon, 23 Aug 2021 08:28:26 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id s3so32164952ljp.11
+        for <linux-acpi@vger.kernel.org>; Mon, 23 Aug 2021 08:28:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=oZoJVjBidnvPVFvMpPWZppXKGeyyaDUB3Ugu5JUsoak=;
+        b=DQcWRl2EygAvbWWqqltYKUl+RSB7+OSewiVt9YvahcZ5Mg2aLiP1RDpQcO/NG7hO1+
+         XbKUrQiNOIlWwOw9XohcIvsJ86hoxW+LUJVpURPccBY9yxc3PHewzvLD+bLFI//jiNGe
+         30OJ+f4lyMfk2+vMlwafN7EtRt5HwLjaSY4QTTEQnkO2EBoKtACTaDi3y+Rm0D3js3QK
+         yaAifvWjWepBpWYLj3Udc5hMpuWL4MxmZA2EzN/JXsNZJhhsaDpQGPuih/LII/yGIYHS
+         SCOalsY58/BYTQLnZw47qElSFoU6L3/6o/R0vCDfExtonh95L7xCfNw5sQWoMlSDuTIu
+         NExg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=oZoJVjBidnvPVFvMpPWZppXKGeyyaDUB3Ugu5JUsoak=;
+        b=NXfZpotsQwc7tfE2e+QbpdhRFO03Jg5spiTRuwJWTRah972MnIY20OijaZqZHcs8KT
+         xlLFzlh1ad5mhWH+4/t3fo8EsRtug8n/ft6jP9HdiLozTC+eWW29pgFLy8ipnUdRNL5r
+         TTqWWoyRyVB17o4Yc51qeTNr71GmH2qZIwzuWR9sZuxUVo+2tVfnh6MKOh05Hi5ZWzK+
+         CqcpvK/R8PpqLpdlugSXp8D5QfBYIA0GXx5oQrWivsIieHbsuG9SIJ/9GlmiH4TtN9NT
+         za3RDt8/kv4LNwdUdSXs7I2pD+UOeCaJpVU1+Usr6K24stOPXiSslpkT+lW9346mBbT3
+         AjQg==
+X-Gm-Message-State: AOAM531bI7bdlyBbGGGf7xSrrKzJ6+YqDFyG4tQEvTRXDWAD1rUixFO+
+        sFpA5So68hA9v2vz8dPKbSm8674DRJRjgzkvRNQ=
+X-Google-Smtp-Source: ABdhPJycMv72NKrMH3tTbq7VJKzyTt/LcUHdiwkCSwBWi+mld3IutapX8ODnqhu+jhhdCQVB7LNZSL8OYVK0C8Ji/sc=
+X-Received: by 2002:a2e:9444:: with SMTP id o4mr28164155ljh.210.1629732504622;
+ Mon, 23 Aug 2021 08:28:24 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210823092526.2407526-1-liu.yun@linux.dev>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.247]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500002.china.huawei.com (7.185.36.229)
-X-CFilter-Loop: Reflected
+Reply-To: mrsdaniella.kyle@yandex.com
+Sender: banceemmanuel17@gmail.com
+Received: by 2002:ab3:7598:0:0:0:0:0 with HTTP; Mon, 23 Aug 2021 08:28:23
+ -0700 (PDT)
+From:   Mrs Daniella Kyle <mrsdaniellakyle6@gmail.com>
+Date:   Mon, 23 Aug 2021 08:28:23 -0700
+X-Google-Sender-Auth: isbJQqntkOnmmWIbFv-qicP-wf8
+Message-ID: <CAE9zZ3720cBjY_5ET=9=WEzDs998yUss7Mxpi2hrP6oF309pNA@mail.gmail.com>
+Subject: Re:ATM Visa card compensation, Thanks for your past effort
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021/8/23 17:25, Jackie Liu wrote:
-> From: Jackie Liu <liuyun01@kylinos.cn>
-> 
-> Fix modpost Section mismatch error in next_platform_timer().
-> 
->    [...]
->    WARNING: modpost: vmlinux.o(.text.unlikely+0x26e60): Section mismatch in reference from the function next_platform_timer() to the variable .init.data:acpi_gtdt_desc
->    The function next_platform_timer() references
->    the variable __initdata acpi_gtdt_desc.
->    This is often because next_platform_timer lacks a __initdata
->    annotation or the annotation of acpi_gtdt_desc is wrong.
-> 
->    WARNING: modpost: vmlinux.o(.text.unlikely+0x26e64): Section mismatch in reference from the function next_platform_timer() to the variable .init.data:acpi_gtdt_desc
->    The function next_platform_timer() references
->    the variable __initdata acpi_gtdt_desc.
->    This is often because next_platform_timer lacks a __initdata
->    annotation or the annotation of acpi_gtdt_desc is wrong.
-> 
->    ERROR: modpost: Section mismatches detected.
->    Set CONFIG_SECTION_MISMATCH_WARN_ONLY=y to allow them.
->    make[1]: *** [scripts/Makefile.modpost:59: vmlinux.symvers] Error 1
->    make[1]: *** Deleting file 'vmlinux.symvers'
->    make: *** [Makefile:1176: vmlinux] Error 2
->    [...]
-> 
-> Fixes: a712c3ed9b8a ("acpi/arm64: Add memory-mapped timer support in GTDT driver")
-> Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
-> ---
->   drivers/acpi/arm64/gtdt.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-> index 0a0a982f9c28..c0e77c1c8e09 100644
-> --- a/drivers/acpi/arm64/gtdt.c
-> +++ b/drivers/acpi/arm64/gtdt.c
-> @@ -36,7 +36,7 @@ struct acpi_gtdt_descriptor {
->   
->   static struct acpi_gtdt_descriptor acpi_gtdt_desc __initdata;
->   
-> -static inline void *next_platform_timer(void *platform_timer)
-> +static inline __init void *next_platform_timer(void *platform_timer)
->   {
->   	struct acpi_gtdt_header *gh = platform_timer;
+Hi,
 
-Looks good to me,
+Good Day, This message may actually come to you as surprises today, To
+be very honest with you, It is a joyful moment for me and my family
+right now, so therefore am using this opportunity to inform you that
+have successfully move to Vietnam where am currently living with my
+business partner who assisted me to complete the transfer, but due to
+the willingness and acceptance you showed during my pain have decided
+to willingly compensated you and show my gratitude to you with these
+sum of $950,000.00 Nine Hundred and fifty Thousand US Dollars).
 
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
+I want you to accept this amount it=E2=80=99s from the bottom of my heart,
+have issued the check and instructed the bank to roll the fund on a
+master card for security reasons, you can use the card to withdraw
+money from any ATM machine worldwide with a maximum of US$10,000 per
+day.
 
-Thanks
-Hanjun
+My bank account manager said you can receive the card and use it
+anywhere in this global world. Go ahead contact the Global ATM
+Alliance directly with this below information. Email Address: .....
+maastercarddeptme20@yahoo.com
+
+ Name: ........... ....... Global Alliance Burkina Faso
+Office Address; ...... 01BP 23 Rue Des Grands Moulins.Ouagadougou, Burkina =
+Faso
+Email Address: ..... [maastercarddeptme20@yahoo.com]
+Name of Manager In charge: Mrs Zoure Gueratou
+
+Presently, I am very busy here in Vietnam because of the investment
+projects which I and my new partner are having at hand, I have given
+instructions to the ATM Visa card office on your behalf to release the
+ATM card which I gave to you as compensation. Therefore feel free and
+get in touch with her and she will send the card and the pin code to
+you in your location in order for you to start withdrawing the
+compensation money without delay.
+
+My family wishes you best of luck in whatever business you shall
+invest this money into. Kindly let me know as soon you received the
+card together with the pin code.
+
+Thank you
+Yours Sincerely
+Daniela Angelo Kyle
