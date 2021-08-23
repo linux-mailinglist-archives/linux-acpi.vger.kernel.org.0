@@ -2,99 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E31E3F4AAA
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Aug 2021 14:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28CB33F4BC4
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Aug 2021 15:34:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236981AbhHWMbo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Aug 2021 08:31:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48270 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233755AbhHWMbl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 23 Aug 2021 08:31:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A53A76138B;
-        Mon, 23 Aug 2021 12:30:55 +0000 (UTC)
-Date:   Mon, 23 Aug 2021 13:30:52 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     linux-kernel@vger.kernel.org, Hanjun Guo <guohanjun@huawei.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Veronika kabatova <vkabatov@redhat.com>,
-        Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH RESEND v3] ACPI: Add memory semantics to
- acpi_os_map_memory()
-Message-ID: <20210823123052.GC8603@arm.com>
-References: <20210802152359.12623-1-lorenzo.pieralisi@arm.com>
- <20210823104618.14552-1-lorenzo.pieralisi@arm.com>
+        id S229881AbhHWNe1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 23 Aug 2021 09:34:27 -0400
+Received: from szxga08-in.huawei.com ([45.249.212.255]:15206 "EHLO
+        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232228AbhHWNe0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 23 Aug 2021 09:34:26 -0400
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4GtY8l3zBxz1CZXw;
+        Mon, 23 Aug 2021 21:33:11 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 23 Aug 2021 21:33:42 +0800
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 23 Aug 2021 21:33:41 +0800
+Subject: Re: [PATCH] acpi/arm64: fix next_platform_timer() section mismatch
+ error
+To:     Jackie Liu <liu.yun@linux.dev>, <lorenzo.pieralisi@arm.com>
+CC:     <linux-acpi@vger.kernel.org>, <liuyun01@kylinos.cn>
+References: <20210823092526.2407526-1-liu.yun@linux.dev>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <7f29a149-e005-f13f-2cc4-a9eb737107e1@huawei.com>
+Date:   Mon, 23 Aug 2021 21:33:41 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210823104618.14552-1-lorenzo.pieralisi@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20210823092526.2407526-1-liu.yun@linux.dev>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 23, 2021 at 11:46:18AM +0100, Lorenzo Pieralisi wrote:
-> The memory attributes attached to memory regions depend on architecture
-> specific mappings.
+On 2021/8/23 17:25, Jackie Liu wrote:
+> From: Jackie Liu <liuyun01@kylinos.cn>
 > 
-> For some memory regions, the attributes specified by firmware (eg
-> uncached) are not sufficient to determine how a memory region should be
-> mapped by an OS (for instance a region that is define as uncached in
-> firmware can be mapped as Normal or Device memory on arm64) and
-> therefore the OS must be given control on how to map the region to match
-> the expected mapping behaviour (eg if a mapping is requested with memory
-> semantics, it must allow unaligned accesses).
+> Fix modpost Section mismatch error in next_platform_timer().
 > 
-> Rework acpi_os_map_memory() and acpi_os_ioremap() back-end to split
-> them into two separate code paths:
+>    [...]
+>    WARNING: modpost: vmlinux.o(.text.unlikely+0x26e60): Section mismatch in reference from the function next_platform_timer() to the variable .init.data:acpi_gtdt_desc
+>    The function next_platform_timer() references
+>    the variable __initdata acpi_gtdt_desc.
+>    This is often because next_platform_timer lacks a __initdata
+>    annotation or the annotation of acpi_gtdt_desc is wrong.
 > 
-> acpi_os_memmap() -> memory semantics
-> acpi_os_ioremap() -> MMIO semantics
+>    WARNING: modpost: vmlinux.o(.text.unlikely+0x26e64): Section mismatch in reference from the function next_platform_timer() to the variable .init.data:acpi_gtdt_desc
+>    The function next_platform_timer() references
+>    the variable __initdata acpi_gtdt_desc.
+>    This is often because next_platform_timer lacks a __initdata
+>    annotation or the annotation of acpi_gtdt_desc is wrong.
 > 
-> The split allows the architectural implementation back-ends to detect
-> the default memory attributes required by the mapping in question
-> (ie the mapping API defines the semantics memory vs MMIO) and map the
-> memory accordingly.
+>    ERROR: modpost: Section mismatches detected.
+>    Set CONFIG_SECTION_MISMATCH_WARN_ONLY=y to allow them.
+>    make[1]: *** [scripts/Makefile.modpost:59: vmlinux.symvers] Error 1
+>    make[1]: *** Deleting file 'vmlinux.symvers'
+>    make: *** [Makefile:1176: vmlinux] Error 2
+>    [...]
 > 
-> Link: https://lore.kernel.org/linux-arm-kernel/31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com
-> Tested-by: Hanjun Guo <guohanjun@huawei.com>
-> Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Hanjun Guo <guohanjun@huawei.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Fixes: a712c3ed9b8a ("acpi/arm64: Add memory-mapped timer support in GTDT driver")
+> Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
 > ---
-> Resending with all lists CC'ed.
+>   drivers/acpi/arm64/gtdt.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Patch series is a v3 of a previous version[2]:
-> 
-> v2->v3:
-> 	- Dropped first two-patches following LKML feedback[2]
-> v1->v2
-> 	- Added patch 1 and 2 according to feedback received on[1]
-> 
-> [1] https://lore.kernel.org/linux-acpi/20210726100026.12538-1-lorenzo.pieralisi@arm.com
-> [2] https://lore.kernel.org/linux-acpi/20210802152359.12623-1-lorenzo.pieralisi@arm.com
-> 
->  arch/arm64/include/asm/acpi.h |  3 +++
->  arch/arm64/kernel/acpi.c      | 19 ++++++++++++++++---
->  drivers/acpi/osl.c            | 23 ++++++++++++++++-------
->  include/acpi/acpi_io.h        |  8 ++++++++
->  4 files changed, 43 insertions(+), 10 deletions(-)
+> diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+> index 0a0a982f9c28..c0e77c1c8e09 100644
+> --- a/drivers/acpi/arm64/gtdt.c
+> +++ b/drivers/acpi/arm64/gtdt.c
+> @@ -36,7 +36,7 @@ struct acpi_gtdt_descriptor {
+>   
+>   static struct acpi_gtdt_descriptor acpi_gtdt_desc __initdata;
+>   
+> -static inline void *next_platform_timer(void *platform_timer)
+> +static inline __init void *next_platform_timer(void *platform_timer)
+>   {
+>   	struct acpi_gtdt_header *gh = platform_timer;
 
-For arm64:
+Looks good to me,
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
 
-I presume this patch would go in via the acpi tree.
-
--- 
-Catalin
+Thanks
+Hanjun
