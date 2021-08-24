@@ -2,216 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F3F3F5DDE
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Aug 2021 14:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 929CD3F5E94
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Aug 2021 15:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237118AbhHXMVv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Aug 2021 08:21:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47302 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237219AbhHXMVs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Aug 2021 08:21:48 -0400
-Received: from theia.8bytes.org (8bytes.org [IPv6:2a01:238:4383:600:38bc:a715:4b6d:a889])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30C15C061757;
-        Tue, 24 Aug 2021 05:21:04 -0700 (PDT)
-Received: from cap.home.8bytes.org (p4ff2b1ea.dip0.t-ipconnect.de [79.242.177.234])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        by theia.8bytes.org (Postfix) with ESMTPSA id CDC26922;
-        Tue, 24 Aug 2021 14:21:00 +0200 (CEST)
-From:   Joerg Roedel <joro@8bytes.org>
-To:     Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>
-Cc:     linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, joro@8bytes.org, jroedel@suse.de
-Subject: [PATCH v3 4/4] PCI/ACPI: Check for _OSC support in acpi_pci_osc_control_set()
-Date:   Tue, 24 Aug 2021 14:20:54 +0200
-Message-Id: <20210824122054.29481-5-joro@8bytes.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210824122054.29481-1-joro@8bytes.org>
-References: <20210824122054.29481-1-joro@8bytes.org>
+        id S237418AbhHXNDz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Aug 2021 09:03:55 -0400
+Received: from mail.huberulrich.de ([81.169.200.209]:35626 "EHLO
+        mail.huberulrich.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237450AbhHXNDy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Aug 2021 09:03:54 -0400
+X-Greylist: delayed 302 seconds by postgrey-1.27 at vger.kernel.org; Tue, 24 Aug 2021 09:03:54 EDT
+DKIM-Signature: v=1; a=rsa-sha256; d=huberulrich.de; s=2017; c=relaxed/relaxed;
+ q=dns/txt; h=from:date:to:cc:message-id:subject;
+ bh=epadiIZkdAvf+vdKVEQ5nF4EW0KWJMs8g8ZqRjxmupY=;
+ b=um8HmFRrK9xR+0zhitmaEERrhyM18HrwU/vqOcpwd1umzOqgNM7bNGXdJ4fG2Vz6jA5jboGN96DpZNqg7/3TXwA9CHboFnzuGwRraZBirEr/DsXwdQihBDJyLwhvjgAnIiPX2/ynMVMyQvqSwO0nLUy+s4/yLvOemPPvw5A1QZ732h6cZdKoZpFdq2ltTEcdkQhW1oXpA5cAIvPN/nZyxRHFJYL9630FgquIMihiPF2wuTuSkQTwgoa5miHRo0sLXhb+xlwiwR7NLWX83BBcipKxbQfUB+HtI1kCLrSkaK2Wj+vrMfFQ5YI8xlMF5RW/BH1Uie6P9MCUKELl8gSGDw==;
+DomainKey-Signature: a=rsa-sha1;
+ b=SdXKTR2VC+vQS8mOxy8DKoWjQoPxbHP6gY7NoIt2+nWoGwfC8jwXgn0TEwWL5BvMid0Vx4vuKFeNtqoFxXiGa0xVMhrxUpCulNaUaToO+tL9oXlsydwsiIY/0kum+b+Mw4IpDXw94Fsc8uLrjsthgOli+RFg/S6juR+4fYuY3I7y0glG/Ov9pwoj92Q+wpstuz+j7gYk1XC61mbtYiFIYqP7u5NTm/97lZhzxyMSYtTke9IsvDiTib23Y1Y11FY74BrNE2yL3y07/fb/nz5s3DOSOyXVML4eGaKizSqRVjbRVSMHk32PZyeIQOwku7cAiRmrUQUyaB7bAR5AjQh1vQ==;
+ c=nofws; q=dns; d=huberulrich.de; s=2017;
+ h=from:to:cc:subject:date:message-id;
+Received: from lenovo-ulrich.fritz.box
+ (2001:16b8:2d34:3e00:b400:f8f7:ccd8:a3aa) by mail.huberulrich.de (Axigen)
+ with (ECDHE-RSA-AES128-GCM-SHA256 encrypted) ESMTPSA id 2E0D0E;
+ Tue, 24 Aug 2021 12:58:05 +0000
+From:   Ulrich Huber <ulrich@huberulrich.de>
+To:     rjw@rjwysocki.net, linux-acpi@vger.kernel.org
+Cc:     Ulrich Huber <ulrich@huberulrich.de>
+Subject: [PATCH] ACPI: Add DMI quirk for Lenovo Yoga 9 (14INTL5)
+Date:   Tue, 24 Aug 2021 14:57:44 +0200
+Message-Id: <20210824125744.11125-1-ulrich@huberulrich.de>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Received-SPF: 
+X-AXIGEN-SPF-Result: Ok
+X-AXIGEN-DK-Result: Ok
+DomainKey-Status: good
+X-AXIGEN-DKIM-Result: Ok
+DKIM-Status: good
+X-AxigenSpam-Level: 5
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Joerg Roedel <jroedel@suse.de>
+The Lenovo Yoga 9 (14INTL5)'s ACPI _LID is bugged:
 
-Get rid of acpi_pci_osc_support() and check for _OSC supported features
-directly in acpi_pci_osc_control_set(). There is no point in doing an
-unconditional _OSC query with control=0 even when the kernel later wants
-to take control over more features.
+After hibernation the lid is initially reported as closed.
+Once closing and then reopening the lid reports the lid as
+open again. This leads to the conclusion that the initial
+notification of the lid is missing but subsequent
+notifications are correct.
 
-This safes one _OSC query and simplifies the code by getting rid of
-the acpi_pci_osc_support() function. As a side effect, the !control
-checks in acpi_pci_query_osc() can also be removed.
+In order fo the Linux LID code to handle this device properly
+the lid_init_state must be set to ACPI_BUTTON_LID_INIT_OPEN.
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Ulrich Huber <ulrich@huberulrich.de>
 ---
- drivers/acpi/pci_root.c | 81 ++++++++++++++++-------------------------
- 1 file changed, 32 insertions(+), 49 deletions(-)
+ drivers/acpi/button.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-index f12e512bcddc..ab2f7dfb0c44 100644
---- a/drivers/acpi/pci_root.c
-+++ b/drivers/acpi/pci_root.c
-@@ -203,26 +203,16 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
- 
- 	capbuf[OSC_QUERY_DWORD] = OSC_QUERY_ENABLE;
- 	capbuf[OSC_SUPPORT_DWORD] = support;
--	if (control)
--		capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
--	else
--		/* Run _OSC query only with existing controls. */
--		capbuf[OSC_CONTROL_DWORD] = root->osc_control_set;
-+	capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
- 
- 	status = acpi_pci_run_osc(root->device->handle, capbuf, &result);
- 	if (ACPI_SUCCESS(status)) {
- 		root->osc_support_set = support;
--		if (control)
--			*control = result;
-+		*control = result;
- 	}
- 	return status;
- }
- 
--static acpi_status acpi_pci_osc_support(struct acpi_pci_root *root, u32 flags)
--{
--	return acpi_pci_query_osc(root, flags, NULL);
--}
--
- struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
- {
- 	struct acpi_pci_root *root;
-@@ -345,8 +335,9 @@ EXPORT_SYMBOL_GPL(acpi_get_pci_dev);
-  * _OSC bits the BIOS has granted control of, but its contents are meaningless
-  * on failure.
-  **/
--static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 req)
-+static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 support)
- {
-+	u32 req = OSC_PCI_EXPRESS_CAPABILITY_CONTROL;
- 	struct acpi_pci_root *root;
- 	acpi_status status;
- 	u32 ctrl, capbuf[3];
-@@ -354,22 +345,16 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 r
- 	if (!mask)
- 		return AE_BAD_PARAMETER;
- 
--	ctrl = *mask;
--	if ((ctrl & req) != req)
--		return AE_TYPE;
--
- 	root = acpi_pci_find_root(handle);
- 	if (!root)
- 		return AE_NOT_EXIST;
- 
--	*mask = ctrl | root->osc_control_set;
--	/* No need to evaluate _OSC if the control was already granted. */
--	if ((root->osc_control_set & ctrl) == ctrl)
--		return AE_OK;
-+	ctrl   = *mask;
-+	*mask |= root->osc_control_set;
- 
- 	/* Need to check the available controls bits before requesting them. */
--	while (*mask) {
--		status = acpi_pci_query_osc(root, root->osc_support_set, mask);
-+	do {
-+		status = acpi_pci_query_osc(root, support, mask);
- 		if (ACPI_FAILURE(status))
- 			return status;
- 		if (ctrl == *mask)
-@@ -377,7 +362,11 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 r
- 		decode_osc_control(root, "platform does not support",
- 				   ctrl & ~(*mask));
- 		ctrl = *mask;
--	}
-+	} while (*mask);
-+
-+	/* No need to request _OSC if the control was already granted. */
-+	if ((root->osc_control_set & ctrl) == ctrl)
-+		return AE_OK;
- 
- 	if ((ctrl & req) != req) {
- 		decode_osc_control(root, "not requesting control; platform does not support",
-@@ -470,7 +459,7 @@ static bool os_control_query_checks(struct acpi_pci_root *root, u32 support)
- static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
- 				 bool is_pcie)
- {
--	u32 support, control, requested;
-+	u32 support, control = 0, requested = 0;
- 	acpi_status status;
- 	struct acpi_device *device = root->device;
- 	acpi_handle handle = device->handle;
-@@ -490,28 +479,15 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
- 	support = calculate_support();
- 
- 	decode_osc_support(root, "OS supports", support);
--	status = acpi_pci_osc_support(root, support);
--	if (ACPI_FAILURE(status)) {
--		*no_aspm = 1;
--
--		/* _OSC is optional for PCI host bridges */
--		if ((status == AE_NOT_FOUND) && !is_pcie)
--			return;
--
--		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
--			 acpi_format_exception(status));
--		return;
--	}
--
--	if (!os_control_query_checks(root, support))
--		return;
- 
--	requested = control = calculate_control();
-+	if (os_control_query_checks(root, support))
-+		requested = control = calculate_control();
- 
--	status = acpi_pci_osc_control_set(handle, &control,
--					  OSC_PCI_EXPRESS_CAPABILITY_CONTROL);
-+	status = acpi_pci_osc_control_set(handle, &control, support);
- 	if (ACPI_SUCCESS(status)) {
--		decode_osc_control(root, "OS now controls", control);
-+		if (control)
-+			decode_osc_control(root, "OS now controls", control);
-+
- 		if (acpi_gbl_FADT.boot_flags & ACPI_FADT_NO_ASPM) {
- 			/*
- 			 * We have ASPM control, but the FADT indicates that
-@@ -522,11 +498,6 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
- 			*no_aspm = 1;
- 		}
- 	} else {
--		decode_osc_control(root, "OS requested", requested);
--		decode_osc_control(root, "platform willing to grant", control);
--		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
--			acpi_format_exception(status));
--
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index f25bd336113b..1f9b9a4c38c7 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -77,6 +77,17 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
+ 		},
+ 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_DISABLED,
+ 	},
++	{
++		/*
++		 * Lenovo Yoga 9 14ITL5, initial notification of the LID device
++		 * never happens.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82BG"),
++		},
++		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_OPEN,
++	},
+ 	{
  		/*
- 		 * We want to disable ASPM here, but aspm_disabled
- 		 * needs to remain in its state from boot so that we
-@@ -535,6 +506,18 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
- 		 * root scan.
- 		 */
- 		*no_aspm = 1;
-+
-+		/* _OSC is optional for PCI host bridges */
-+		if ((status == AE_NOT_FOUND) && !is_pcie)
-+			return;
-+
-+		if (control) {
-+			decode_osc_control(root, "OS requested", requested);
-+			decode_osc_control(root, "platform willing to grant", control);
-+		}
-+
-+		dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
-+			 acpi_format_exception(status));
- 	}
- }
- 
+ 		 * Medion Akoya E2215T, notification of the LID device only
 -- 
-2.32.0
+2.33.0
 
