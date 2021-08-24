@@ -2,91 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8D873F4FD6
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Aug 2021 19:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9862A3F5C83
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Aug 2021 12:57:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229746AbhHWRu2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 23 Aug 2021 13:50:28 -0400
-Received: from mga12.intel.com ([192.55.52.136]:7008 "EHLO mga12.intel.com"
+        id S236340AbhHXK5p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Aug 2021 06:57:45 -0400
+Received: from foss.arm.com ([217.140.110.172]:33904 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231452AbhHWRu1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 23 Aug 2021 13:50:27 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10085"; a="196727115"
-X-IronPort-AV: E=Sophos;i="5.84,344,1620716400"; 
-   d="scan'208";a="196727115"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2021 10:49:35 -0700
-X-IronPort-AV: E=Sophos;i="5.84,344,1620716400"; 
-   d="scan'208";a="597229956"
-Received: from schen9-mobl.amr.corp.intel.com ([10.251.14.9])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2021 10:49:33 -0700
-Subject: Re: [PATCH 3/3] scheduler: Add cluster scheduler level for x86
-To:     Barry Song <21cnbao@gmail.com>, bp@alien8.de,
-        catalin.marinas@arm.com, dietmar.eggemann@arm.com,
-        gregkh@linuxfoundation.org, hpa@zytor.com, juri.lelli@redhat.com,
-        bristot@redhat.com, lenb@kernel.org, mgorman@suse.de,
-        mingo@redhat.com, peterz@infradead.org, rjw@rjwysocki.net,
-        sudeep.holla@arm.com, tglx@linutronix.de
-Cc:     aubrey.li@linux.intel.com, bsegall@google.com,
-        guodong.xu@linaro.org, jonathan.cameron@huawei.com,
-        liguozhu@hisilicon.com, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        mark.rutland@arm.com, msys.mizuma@gmail.com,
-        prime.zeng@hisilicon.com, rostedt@goodmis.org,
-        valentin.schneider@arm.com, vincent.guittot@linaro.org,
-        will@kernel.org, x86@kernel.org, xuwei5@huawei.com,
-        yangyicong@huawei.com, linuxarm@huawei.com,
-        Barry Song <song.bao.hua@hisilicon.com>
-References: <20210820013008.12881-1-21cnbao@gmail.com>
- <20210820013008.12881-4-21cnbao@gmail.com>
-From:   Tim Chen <tim.c.chen@linux.intel.com>
-Message-ID: <32bcec89-57d5-65e3-970b-affcf4f41667@linux.intel.com>
-Date:   Mon, 23 Aug 2021 10:49:33 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S235905AbhHXK5p (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 24 Aug 2021 06:57:45 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E2B6E101E;
+        Tue, 24 Aug 2021 03:57:00 -0700 (PDT)
+Received: from e108754-lin.cambridge.arm.com (e108754-lin.cambridge.arm.com [10.1.198.34])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3FF683F66F;
+        Tue, 24 Aug 2021 03:56:59 -0700 (PDT)
+From:   Ionela Voinescu <ionela.voinescu@arm.com>
+To:     Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Giovanni Gherdovich <ggherdovich@suse.cz>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Sean Kelley <skelley@nvidia.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 0/3] arch_topology, ACPI: populate cpu capacity from CPPC
+Date:   Tue, 24 Aug 2021 11:56:48 +0100
+Message-Id: <20210824105651.28660-1-ionela.voinescu@arm.com>
+X-Mailer: git-send-email 2.29.2.dirty
 MIME-Version: 1.0
-In-Reply-To: <20210820013008.12881-4-21cnbao@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi all,
 
+Apologies for the long delay in posting v2.
 
-On 8/19/21 6:30 PM, Barry Song wrote:
-> From: Tim Chen <tim.c.chen@linux.intel.com>
-> 
-> There are x86 CPU architectures (e.g. Jacobsville) where L2 cahce is
-> shared among a cluster of cores instead of being exclusive to one
-> single core.
-> To prevent oversubscription of L2 cache, load should be balanced
-> between such L2 clusters, especially for tasks with no shared data.
-> On benchmark such as SPECrate mcf test, this change provides a
-> boost to performance especially on medium load system on Jacobsville.
-> on a Jacobsville that has 24 Atom cores, arranged into 6 clusters
-> of 4 cores each, the benchmark number is as follow:
-> 
->  Improvement over baseline kernel for mcf_r
->  copies		run time	base rate
->  1		-0.1%		-0.2%
->  6		25.1%		25.1%
->  12		18.8%		19.0%
->  24		0.3%		0.3%
-> 
-> So this looks pretty good. In terms of the system's task distribution,
-> some pretty bad clumping can be seen for the vanilla kernel without
-> the L2 cluster domain for the 6 and 12 copies case. With the extra
-> domain for cluster, the load does get evened out between the clusters.
-> 
-> Note this patch isn't an universal win as spreading isn't necessarily
-> a win, particually for those workload who can benefit from packing.
+v1->v2:
+ - v1 can be found at [1]
+ - Changed debug prints to the format used on the DT path
+ - s/init_cpu_capacity_cppc/topology_init_cpu_capacity_cppc
 
-I have another patch set to make cluster scheduling selectable at run
-time and boot time.  Will like to see people's feed back on this patch
-set first before sending that out.
+Patches are based on v5.14-rc7.
 
-Thanks.
+The patches have been build tested on x86 and more thoroughly tested on
+Juno R2 (arm64), which uses the new functionality, with the following
+results:
 
-Tim
+root@buildroot:~# dmesg | grep cpu_capacity
+[    2.191152] cpu_capacity: CPU0 cpu_capacity=38300 (raw).
+[    2.196482] cpu_capacity: CPU1 cpu_capacity=38300 (raw).
+[    2.201809] cpu_capacity: CPU2 cpu_capacity=38300 (raw).
+[    2.207136] cpu_capacity: CPU3 cpu_capacity=38300 (raw).
+[    2.212463] cpu_capacity: CPU4 cpu_capacity=102400 (raw).
+[    2.217877] cpu_capacity: CPU5 cpu_capacity=102400 (raw).
+[    2.223291] cpu_capacity: capacity_scale=102400
+[    2.227834] cpu_capacity: CPU0 cpu_capacity=383
+[    2.232376] cpu_capacity: CPU1 cpu_capacity=383
+[    2.236919] cpu_capacity: CPU2 cpu_capacity=383
+[    2.241462] cpu_capacity: CPU3 cpu_capacity=383
+[    2.246004] cpu_capacity: CPU4 cpu_capacity=1024
+[    2.250634] cpu_capacity: CPU5 cpu_capacity=1024
+[    2.255321] cpu_capacity: cpu_capacity initialization done
+
+root@buildroot:~# tail -n +1 /sys/devices/system/cpu/cpu*/cpu_capacity
+==> /sys/devices/system/cpu/cpu0/cpu_capacity <==
+383
+==> /sys/devices/system/cpu/cpu1/cpu_capacity <==
+383
+==> /sys/devices/system/cpu/cpu2/cpu_capacity <==
+383
+==> /sys/devices/system/cpu/cpu3/cpu_capacity <==
+383
+==> /sys/devices/system/cpu/cpu4/cpu_capacity <==
+1024
+==> /sys/devices/system/cpu/cpu5/cpu_capacity <==
+1024
+
+[1]
+https://lore.kernel.org/lkml/20210514095339.12979-1-ionela.voinescu@arm.com/
+
+Thanks,
+Ionela.
+
+Ionela Voinescu (3):
+  x86, ACPI: rename init_freq_invariance_cppc to
+    arch_init_invariance_cppc
+  arch_topology: obtain cpu capacity using information from CPPC
+  arm64, topology: enable use of init_cpu_capacity_cppc()
+
+ arch/arm64/include/asm/topology.h |  4 ++++
+ arch/x86/include/asm/topology.h   |  2 +-
+ drivers/acpi/cppc_acpi.c          |  6 ++---
+ drivers/base/arch_topology.c      | 37 +++++++++++++++++++++++++++++++
+ include/linux/arch_topology.h     |  4 ++++
+ 5 files changed, 49 insertions(+), 4 deletions(-)
+
+-- 
+2.29.2.dirty
+
