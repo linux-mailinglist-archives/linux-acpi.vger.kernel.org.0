@@ -2,74 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5E03F5C88
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Aug 2021 12:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFD723F5DD4
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Aug 2021 14:21:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236534AbhHXK5z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 24 Aug 2021 06:57:55 -0400
-Received: from foss.arm.com ([217.140.110.172]:33968 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236432AbhHXK5x (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 24 Aug 2021 06:57:53 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A069D143B;
-        Tue, 24 Aug 2021 03:57:09 -0700 (PDT)
-Received: from e108754-lin.cambridge.arm.com (e108754-lin.cambridge.arm.com [10.1.198.34])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E6A013F66F;
-        Tue, 24 Aug 2021 03:57:07 -0700 (PDT)
-From:   Ionela Voinescu <ionela.voinescu@arm.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>,
+        id S236983AbhHXMVr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 24 Aug 2021 08:21:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47296 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237036AbhHXMVr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 24 Aug 2021 08:21:47 -0400
+Received: from theia.8bytes.org (8bytes.org [IPv6:2a01:238:4383:600:38bc:a715:4b6d:a889])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B35EC061757;
+        Tue, 24 Aug 2021 05:21:03 -0700 (PDT)
+Received: from cap.home.8bytes.org (p4ff2b1ea.dip0.t-ipconnect.de [79.242.177.234])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by theia.8bytes.org (Postfix) with ESMTPSA id 49C16ED;
+        Tue, 24 Aug 2021 14:20:59 +0200 (CEST)
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Giovanni Gherdovich <ggherdovich@suse.cz>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Sean Kelley <skelley@nvidia.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 3/3] arm64, topology: enable use of init_cpu_capacity_cppc()
-Date:   Tue, 24 Aug 2021 11:56:51 +0100
-Message-Id: <20210824105651.28660-4-ionela.voinescu@arm.com>
-X-Mailer: git-send-email 2.29.2.dirty
-In-Reply-To: <20210824105651.28660-1-ionela.voinescu@arm.com>
-References: <20210824105651.28660-1-ionela.voinescu@arm.com>
+        Len Brown <lenb@kernel.org>
+Cc:     linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, joro@8bytes.org, jroedel@suse.de
+Subject: [PATCH v3 0/4] PCI/ACPI: Simplify PCIe _OSC feature negotiation
+Date:   Tue, 24 Aug 2021 14:20:50 +0200
+Message-Id: <20210824122054.29481-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that the arch topology driver provides a method of setting CPU
-capacity values based on information on highest performance from CPPC,
-use this functionality on arm64 platforms.
+From: Joerg Roedel <jroedel@suse.de>
 
-Signed-off-by: Ionela Voinescu <ionela.voinescu@arm.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Tested-by: Valentin Schneider <valentin.schneider@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
----
- arch/arm64/include/asm/topology.h | 4 ++++
- 1 file changed, 4 insertions(+)
+Hi,
 
-diff --git a/arch/arm64/include/asm/topology.h b/arch/arm64/include/asm/topology.h
-index ec2db3419c41..5ebe51ef6d6c 100644
---- a/arch/arm64/include/asm/topology.h
-+++ b/arch/arm64/include/asm/topology.h
-@@ -24,6 +24,10 @@ void update_freq_counters_refs(void);
- #define arch_scale_freq_capacity topology_get_freq_scale
- #define arch_scale_freq_invariant topology_scale_freq_invariant
- 
-+#ifdef CONFIG_ACPI_CPPC_LIB
-+#define arch_init_invariance_cppc topology_init_cpu_capacity_cppc
-+#endif
-+
- /* Replace task scheduler's default cpu-invariant accounting */
- #define arch_scale_cpu_capacity topology_get_cpu_scale
- 
+here is the third version of my patches to simplify the _OSC
+negotiation of PCIe features between Linux and the firmware.
+
+This version is a complete rewrite, so there is no changelog to the
+previous version. Patches 1-3 are cleanups and small restructurings of
+the code as a preparation for patch 4.
+
+The last patch gets rid of the dedicated _OSC query to check for _OSC
+support and merges that functionality into acpi_pci_osc_control_set().
+
+This allows to simplify and/or remove other functions and consilidate
+error handling in negotiate_os_control().
+
+I have tested the patches with and without 'pcie_ports=compat' and
+found no regressions on my test machine.
+
+Please review.
+
+Thanks,
+
+	Joerg
+
+
+
+Joerg Roedel (4):
+  PCI/ACPI: Remove OSC_PCI_SUPPORT_MASKS and OSC_PCI_CONTROL_MASKS
+  PCI/ACPI: Move supported and control calculations to separaten
+    functions
+  PCI/ACPI: Move _OSC query checks to separate function
+  PCI/ACPI: Check for _OSC support in acpi_pci_osc_control_set()
+
+ drivers/acpi/pci_root.c | 161 +++++++++++++++++++++-------------------
+ include/linux/acpi.h    |   2 -
+ 2 files changed, 84 insertions(+), 79 deletions(-)
+
 -- 
-2.29.2.dirty
+2.32.0
 
