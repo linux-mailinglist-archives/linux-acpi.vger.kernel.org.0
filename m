@@ -2,116 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 321D73F7BA9
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Aug 2021 19:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57E1C3F7BAD
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Aug 2021 19:48:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233006AbhHYRrS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Aug 2021 13:47:18 -0400
-Received: from mail-ot1-f44.google.com ([209.85.210.44]:34725 "EHLO
-        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231602AbhHYRrR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Aug 2021 13:47:17 -0400
-Received: by mail-ot1-f44.google.com with SMTP id k12-20020a056830150c00b0051abe7f680bso46287otp.1;
-        Wed, 25 Aug 2021 10:46:31 -0700 (PDT)
+        id S234689AbhHYRtZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Aug 2021 13:49:25 -0400
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:33465 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231602AbhHYRtZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Aug 2021 13:49:25 -0400
+Received: by mail-oi1-f178.google.com with SMTP id n27so846754oij.0;
+        Wed, 25 Aug 2021 10:48:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iCtlcERoYNnbif+Y8zhh0368pArdTRgkUQL9JCAr/bg=;
-        b=aU3+zl9Ig2KOMEVT6lqGqif9khEA4zJjDPFqkDkV/bOKNPOPSjCGfedxHo7TrAlSEA
-         /XXeJLOgSYjRgWcu7ukW152rmTwX1nJPjAW/eScUfoKocta0E0bfwDwKVYMVdcAHDqEN
-         Bqh/p/JtcjV7a4hTHzjd3eZUrVlMQdp6O/sIMv3GVJaBYOW9mgGd8CpGBFwky9GCeWpz
-         vWjxA9/dDW0lsOOx9c82ReuTA0eSrdRc2VwCHLKaUo3HLQStmCqWCfCZyzojie1yuMGF
-         3bNp9OPRztC5jpND0WWpahWJtSmZRbSJBdE9/3DNDwNF/iqwAUnMY1HXL4UWzna/gs+3
-         A8hA==
-X-Gm-Message-State: AOAM530lCMcyd7ry0zoUlUD5RnR/XbptUWTT2Da3V3rYrTazBDatiADI
-        Cde/93OfWgocTmcsM5KNkZC7UTTdbGKTNRKXUuM=
-X-Google-Smtp-Source: ABdhPJwoeMOzINNBvR+IsBC8Rp3PRgkA7Hhn/rQT6zvv0kkQFzdSIQX5dqxRXMbB/GrayCzX5YJnbcfGv2nDsGqM6ko=
-X-Received: by 2002:a9d:a57:: with SMTP id 81mr24620521otg.260.1629913590155;
- Wed, 25 Aug 2021 10:46:30 -0700 (PDT)
+        bh=oN8MaQRWB2ARwAjkxsd31oxcs1o1bX4XvGF14YSFh0w=;
+        b=QALozDpfqadJoEvRNQ3C/tMYLUC+5q5/nJaUc/9XtfGEVh94FVhiUS8fT1hCXCXp8f
+         ZzARNY6ko/OKdLERcXdw3RBO0PfZbBlzGEKq/FoUr/khJxNFEt1E0FP+kZFt3AVYJvDk
+         AxH2LKPEhE5IlyBjZrRYIUjCkXBWRnpx6eMQVxOPSZzQyNu1Qrsrc9H5/Is+M+ZrON9V
+         BsS6zMNnLzaqhAQ8h5hrl8kxLphkB5dNZb1smV03Kjf0GmKXXBrT3SMyF39RA3qUnwxH
+         4A482cFOj6upnC9hPiSbxes1RLy7jS+R4dx1yPWlbFG8zx0DWEdXoGUs7PvXV6P25pkR
+         l1Pw==
+X-Gm-Message-State: AOAM533pUBTsA98wSwSjc/YPqlowJ405deKQTqHP0cIRnolWhjeB2YHR
+        16gwwxabty1yD06SeLoWf5GvKQqk344YysDe+1c=
+X-Google-Smtp-Source: ABdhPJyeQCRjEBRF2fh37jTBDPKOtYuXLBQHOCwekpq26Y3kiTqbuJsjGGHCM88j7jiPJ6lfBYY8gxKUW0+fmSrM1J0=
+X-Received: by 2002:aca:afcd:: with SMTP id y196mr7802452oie.71.1629913718705;
+ Wed, 25 Aug 2021 10:48:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210802152359.12623-1-lorenzo.pieralisi@arm.com>
- <20210823104618.14552-1-lorenzo.pieralisi@arm.com> <20210823123052.GC8603@arm.com>
-In-Reply-To: <20210823123052.GC8603@arm.com>
+References: <20210824105651.28660-1-ionela.voinescu@arm.com> <20210824105651.28660-2-ionela.voinescu@arm.com>
+In-Reply-To: <20210824105651.28660-2-ionela.voinescu@arm.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 25 Aug 2021 19:46:19 +0200
-Message-ID: <CAJZ5v0g9_jq4xgHTkxX8WFGwTwmSUUMKkMUF2HadauWqGrLiHA@mail.gmail.com>
-Subject: Re: [PATCH RESEND v3] ACPI: Add memory semantics to acpi_os_map_memory()
-To:     Catalin Marinas <catalin.marinas@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
+Date:   Wed, 25 Aug 2021 19:48:28 +0200
+Message-ID: <CAJZ5v0jaRaP-+Zxx9NS8OcREEbmcJo1Zs-p3gT9BLNKBtNtqyg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] x86, ACPI: rename init_freq_invariance_cppc to arch_init_invariance_cppc
+To:     Ionela Voinescu <ionela.voinescu@arm.com>
+Cc:     Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Giovanni Gherdovich <ggherdovich@suse.cz>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Sean Kelley <skelley@nvidia.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Veronika kabatova <vkabatov@redhat.com>,
-        Robin Murphy <robin.murphy@arm.com>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Aug 23, 2021 at 2:31 PM Catalin Marinas <catalin.marinas@arm.com> wrote:
+On Tue, Aug 24, 2021 at 12:57 PM Ionela Voinescu
+<ionela.voinescu@arm.com> wrote:
 >
-> On Mon, Aug 23, 2021 at 11:46:18AM +0100, Lorenzo Pieralisi wrote:
-> > The memory attributes attached to memory regions depend on architecture
-> > specific mappings.
-> >
-> > For some memory regions, the attributes specified by firmware (eg
-> > uncached) are not sufficient to determine how a memory region should be
-> > mapped by an OS (for instance a region that is define as uncached in
-> > firmware can be mapped as Normal or Device memory on arm64) and
-> > therefore the OS must be given control on how to map the region to match
-> > the expected mapping behaviour (eg if a mapping is requested with memory
-> > semantics, it must allow unaligned accesses).
-> >
-> > Rework acpi_os_map_memory() and acpi_os_ioremap() back-end to split
-> > them into two separate code paths:
-> >
-> > acpi_os_memmap() -> memory semantics
-> > acpi_os_ioremap() -> MMIO semantics
-> >
-> > The split allows the architectural implementation back-ends to detect
-> > the default memory attributes required by the mapping in question
-> > (ie the mapping API defines the semantics memory vs MMIO) and map the
-> > memory accordingly.
-> >
-> > Link: https://lore.kernel.org/linux-arm-kernel/31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com
-> > Tested-by: Hanjun Guo <guohanjun@huawei.com>
-> > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > Acked-by: Ard Biesheuvel <ardb@kernel.org>
-> > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > Cc: Will Deacon <will@kernel.org>
-> > Cc: Hanjun Guo <guohanjun@huawei.com>
-> > Cc: Sudeep Holla <sudeep.holla@arm.com>
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> > ---
-> > Resending with all lists CC'ed.
-> >
-> > Patch series is a v3 of a previous version[2]:
-> >
-> > v2->v3:
-> >       - Dropped first two-patches following LKML feedback[2]
-> > v1->v2
-> >       - Added patch 1 and 2 according to feedback received on[1]
-> >
-> > [1] https://lore.kernel.org/linux-acpi/20210726100026.12538-1-lorenzo.pieralisi@arm.com
-> > [2] https://lore.kernel.org/linux-acpi/20210802152359.12623-1-lorenzo.pieralisi@arm.com
-> >
-> >  arch/arm64/include/asm/acpi.h |  3 +++
-> >  arch/arm64/kernel/acpi.c      | 19 ++++++++++++++++---
-> >  drivers/acpi/osl.c            | 23 ++++++++++++++++-------
-> >  include/acpi/acpi_io.h        |  8 ++++++++
-> >  4 files changed, 43 insertions(+), 10 deletions(-)
+> init_freq_invariance_cppc() was called in acpi_cppc_processor_probe(),
+> after CPU performance information and controls were populated from the
+> per-cpu _CPC objects.
 >
-> For arm64:
+> But these _CPC objects provide information that helps with both CPU
+> (u-arch) and frequency invariance. Therefore, change the function name
+> to a more generic one, while adding the arch_ prefix, as this function
+> is expected to be defined differently by different architectures.
 >
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
->
-> I presume this patch would go in via the acpi tree.
+> Signed-off-by: Ionela Voinescu <ionela.voinescu@arm.com>
+> Tested-by: Valentin Schneider <valentin.schneider@arm.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Giovanni Gherdovich <ggherdovich@suse.cz>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 
-Applied as 5.15 material, thanks!
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+
+> ---
+>  arch/x86/include/asm/topology.h | 2 +-
+>  drivers/acpi/cppc_acpi.c        | 6 +++---
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+> index 9239399e5491..61d73013cab8 100644
+> --- a/arch/x86/include/asm/topology.h
+> +++ b/arch/x86/include/asm/topology.h
+> @@ -220,7 +220,7 @@ static inline void arch_set_max_freq_ratio(bool turbo_disabled)
+>
+>  #ifdef CONFIG_ACPI_CPPC_LIB
+>  void init_freq_invariance_cppc(void);
+> -#define init_freq_invariance_cppc init_freq_invariance_cppc
+> +#define arch_init_invariance_cppc init_freq_invariance_cppc
+>  #endif
+>
+>  #endif /* _ASM_X86_TOPOLOGY_H */
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index a4d4eebba1da..c211d77310e8 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -660,8 +660,8 @@ static bool is_cppc_supported(int revision, int num_ent)
+>   *     }
+>   */
+>
+> -#ifndef init_freq_invariance_cppc
+> -static inline void init_freq_invariance_cppc(void) { }
+> +#ifndef arch_init_invariance_cppc
+> +static inline void arch_init_invariance_cppc(void) { }
+>  #endif
+>
+>  /**
+> @@ -826,7 +826,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+>                 goto out_free;
+>         }
+>
+> -       init_freq_invariance_cppc();
+> +       arch_init_invariance_cppc();
+>
+>         kfree(output.pointer);
+>         return 0;
+> --
+> 2.29.2.dirty
+>
