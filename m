@@ -2,133 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D6C3F7A6F
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Aug 2021 18:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 321D73F7BA9
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Aug 2021 19:46:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231142AbhHYQYr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 25 Aug 2021 12:24:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39958 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbhHYQYr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Aug 2021 12:24:47 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDC0FC061757;
-        Wed, 25 Aug 2021 09:24:00 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id qe12-20020a17090b4f8c00b00179321cbae7so196279pjb.2;
-        Wed, 25 Aug 2021 09:24:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=uE3J8XQoOGr0ebXuCoHJ9Ffm9rvxHwZfnIkLXfJVSo4=;
-        b=sdvJCmILzHOSTUhdFGCbYlzRnuovYxN1Z1w8Xi0YKdkPqZn9RaMMiq2pLK/M5pLJxV
-         5Idix/UO0RERCkIHyiVhqthJUyHbpuw3CQfSLSixr8ZeUG7xlBAm3kwOM+LiFpMKlWTm
-         UPE2jVcU2Q+HPa3yAZxwCMYf5kYUjn3SkbbWlkMCgWkeBeimHdCoaCJM8uJdp7C6+Ts0
-         lTBFUu/mdGYdcxXlTFudrfAdMTeK/WepQZvT7Oj34VtShZUNrO0FgJa6S5jFALdRx+dM
-         Jl9GAiAyE75o7kZmqWu4lmIS/jLKRapj7TctiRZo+TWOpR+q/sgkBhJz5ktESgLK/VzU
-         xw3Q==
+        id S233006AbhHYRrS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 25 Aug 2021 13:47:18 -0400
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:34725 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231602AbhHYRrR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 25 Aug 2021 13:47:17 -0400
+Received: by mail-ot1-f44.google.com with SMTP id k12-20020a056830150c00b0051abe7f680bso46287otp.1;
+        Wed, 25 Aug 2021 10:46:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=uE3J8XQoOGr0ebXuCoHJ9Ffm9rvxHwZfnIkLXfJVSo4=;
-        b=kcz0XJivSc6AFTvDIRAxfowtSFS3tgt2e8KcrSus37A+fpOeq7dV3zlJ+FI6JU0+67
-         sz6OpZaTUhSLqESRD8CqsSzHstXakUwKzri26GCHmLCg0knLdyr+cerpLaC0nkMFWO23
-         aXEwOeCB9QOu6uNYHlhZzrIaKp+ybplPPGDaYh6w7NmRcIvq7qA827duy4LYMuKnuR3D
-         Q29payyebEWeypKCUBBdWi/KuRhrm35Ddl7TKWDpoUkP0Om0tts3ZNc2RwWZrUpyiMLX
-         CsHVhg+IFW27e2cyrTeWKyaNTCgr105I1uKxiZmSpE15DemPaeOSPod6h4T9un/sEPPF
-         IQpA==
-X-Gm-Message-State: AOAM533ntvDFDYUgCzrmNLhkjKUxzsEhJtaEXFocnWA9odfJsghsgtrP
-        e2BfWmC9ORuAaMZPAe1UeIE=
-X-Google-Smtp-Source: ABdhPJw4or/kJhUyzwtXF1xhp2MI7DcbP5ad8eWFOmCpqQqVK8l9X+ehU0dZdCphnqZ78TN7B+WCww==
-X-Received: by 2002:a17:90a:d686:: with SMTP id x6mr11481460pju.227.1629908640380;
-        Wed, 25 Aug 2021 09:24:00 -0700 (PDT)
-Received: from [10.230.31.46] ([192.19.223.252])
-        by smtp.gmail.com with UTF8SMTPSA id u21sm252802pfh.163.2021.08.25.09.23.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Aug 2021 09:23:59 -0700 (PDT)
-Message-ID: <0f21622f-2651-d1ca-7b47-4a3060a9539c@gmail.com>
-Date:   Wed, 25 Aug 2021 18:23:47 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iCtlcERoYNnbif+Y8zhh0368pArdTRgkUQL9JCAr/bg=;
+        b=aU3+zl9Ig2KOMEVT6lqGqif9khEA4zJjDPFqkDkV/bOKNPOPSjCGfedxHo7TrAlSEA
+         /XXeJLOgSYjRgWcu7ukW152rmTwX1nJPjAW/eScUfoKocta0E0bfwDwKVYMVdcAHDqEN
+         Bqh/p/JtcjV7a4hTHzjd3eZUrVlMQdp6O/sIMv3GVJaBYOW9mgGd8CpGBFwky9GCeWpz
+         vWjxA9/dDW0lsOOx9c82ReuTA0eSrdRc2VwCHLKaUo3HLQStmCqWCfCZyzojie1yuMGF
+         3bNp9OPRztC5jpND0WWpahWJtSmZRbSJBdE9/3DNDwNF/iqwAUnMY1HXL4UWzna/gs+3
+         A8hA==
+X-Gm-Message-State: AOAM530lCMcyd7ry0zoUlUD5RnR/XbptUWTT2Da3V3rYrTazBDatiADI
+        Cde/93OfWgocTmcsM5KNkZC7UTTdbGKTNRKXUuM=
+X-Google-Smtp-Source: ABdhPJwoeMOzINNBvR+IsBC8Rp3PRgkA7Hhn/rQT6zvv0kkQFzdSIQX5dqxRXMbB/GrayCzX5YJnbcfGv2nDsGqM6ko=
+X-Received: by 2002:a9d:a57:: with SMTP id 81mr24620521otg.260.1629913590155;
+ Wed, 25 Aug 2021 10:46:30 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.0.2
-Subject: Re: [PATCH v2 3/4] PCI/ACPI: Add Broadcom bcm2711 MCFG quirk
-Content-Language: en-US
-To:     Jeremy Linton <jeremy.linton@arm.com>, linux-pci@vger.kernel.org
-Cc:     lorenzo.pieralisi@arm.com, nsaenz@kernel.org, bhelgaas@google.com,
-        rjw@rjwysocki.net, lenb@kernel.org, robh@kernel.org, kw@linux.com,
-        sdonthineni@nvidia.com, stefan.wahren@i2se.com,
-        bcm-kernel-feedback-list@broadcom.com, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20210819215655.84866-1-jeremy.linton@arm.com>
- <20210819215655.84866-4-jeremy.linton@arm.com>
- <9796674a-5870-135c-2fdc-fb0d5347d7c7@gmail.com>
- <ddffee4b-8136-9ca1-85f7-bfdbac07bfe7@arm.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <ddffee4b-8136-9ca1-85f7-bfdbac07bfe7@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20210802152359.12623-1-lorenzo.pieralisi@arm.com>
+ <20210823104618.14552-1-lorenzo.pieralisi@arm.com> <20210823123052.GC8603@arm.com>
+In-Reply-To: <20210823123052.GC8603@arm.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 25 Aug 2021 19:46:19 +0200
+Message-ID: <CAJZ5v0g9_jq4xgHTkxX8WFGwTwmSUUMKkMUF2HadauWqGrLiHA@mail.gmail.com>
+Subject: Re: [PATCH RESEND v3] ACPI: Add memory semantics to acpi_os_map_memory()
+To:     Catalin Marinas <catalin.marinas@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Veronika kabatova <vkabatov@redhat.com>,
+        Robin Murphy <robin.murphy@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Mon, Aug 23, 2021 at 2:31 PM Catalin Marinas <catalin.marinas@arm.com> wrote:
+>
+> On Mon, Aug 23, 2021 at 11:46:18AM +0100, Lorenzo Pieralisi wrote:
+> > The memory attributes attached to memory regions depend on architecture
+> > specific mappings.
+> >
+> > For some memory regions, the attributes specified by firmware (eg
+> > uncached) are not sufficient to determine how a memory region should be
+> > mapped by an OS (for instance a region that is define as uncached in
+> > firmware can be mapped as Normal or Device memory on arm64) and
+> > therefore the OS must be given control on how to map the region to match
+> > the expected mapping behaviour (eg if a mapping is requested with memory
+> > semantics, it must allow unaligned accesses).
+> >
+> > Rework acpi_os_map_memory() and acpi_os_ioremap() back-end to split
+> > them into two separate code paths:
+> >
+> > acpi_os_memmap() -> memory semantics
+> > acpi_os_ioremap() -> MMIO semantics
+> >
+> > The split allows the architectural implementation back-ends to detect
+> > the default memory attributes required by the mapping in question
+> > (ie the mapping API defines the semantics memory vs MMIO) and map the
+> > memory accordingly.
+> >
+> > Link: https://lore.kernel.org/linux-arm-kernel/31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com
+> > Tested-by: Hanjun Guo <guohanjun@huawei.com>
+> > Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> > Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> > Cc: Ard Biesheuvel <ardb@kernel.org>
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: Hanjun Guo <guohanjun@huawei.com>
+> > Cc: Sudeep Holla <sudeep.holla@arm.com>
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> > ---
+> > Resending with all lists CC'ed.
+> >
+> > Patch series is a v3 of a previous version[2]:
+> >
+> > v2->v3:
+> >       - Dropped first two-patches following LKML feedback[2]
+> > v1->v2
+> >       - Added patch 1 and 2 according to feedback received on[1]
+> >
+> > [1] https://lore.kernel.org/linux-acpi/20210726100026.12538-1-lorenzo.pieralisi@arm.com
+> > [2] https://lore.kernel.org/linux-acpi/20210802152359.12623-1-lorenzo.pieralisi@arm.com
+> >
+> >  arch/arm64/include/asm/acpi.h |  3 +++
+> >  arch/arm64/kernel/acpi.c      | 19 ++++++++++++++++---
+> >  drivers/acpi/osl.c            | 23 ++++++++++++++++-------
+> >  include/acpi/acpi_io.h        |  8 ++++++++
+> >  4 files changed, 43 insertions(+), 10 deletions(-)
+>
+> For arm64:
+>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+>
+> I presume this patch would go in via the acpi tree.
 
-
-On 8/24/2021 11:39 PM, Jeremy Linton wrote:
-> Hi,
-> 
-> On 8/22/21 3:53 AM, Florian Fainelli wrote:
->>
->>
->> On 8/19/2021 11:56 PM, Jeremy Linton wrote:
->>> Now that there is a bcm2711 quirk, it needs to be enabled when the
->>> MCFG is missing. Use an ACPI namespace _DSD property
->>> "linux-ecam-quirk-id" as an alternative to the MCFG OEM.
->>>
->>> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
->>> ---
->>>   drivers/acpi/pci_mcfg.c | 13 +++++++++++++
->>>   1 file changed, 13 insertions(+)
->>>
->>> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
->>> index 53cab975f612..4b991ee5c66c 100644
->>> --- a/drivers/acpi/pci_mcfg.c
->>> +++ b/drivers/acpi/pci_mcfg.c
->>> @@ -169,6 +169,9 @@ static struct mcfg_fixup mcfg_quirks[] = {
->>>       ALTRA_ECAM_QUIRK(1, 13),
->>>       ALTRA_ECAM_QUIRK(1, 14),
->>>       ALTRA_ECAM_QUIRK(1, 15),
->>> +
->>> +    { "bcm2711", "", 0, 0, MCFG_BUS_ANY, &bcm2711_pcie_ops,
->>> +      DEFINE_RES_MEM(0xFD500000, 0xA000) },
->>>   };
->>>   static char mcfg_oem_id[ACPI_OEM_ID_SIZE];
->>> @@ -198,8 +201,18 @@ static void pci_mcfg_apply_quirks(struct 
->>> acpi_pci_root *root,
->>>       u16 segment = root->segment;
->>>       struct resource *bus_range = &root->secondary;
->>>       struct mcfg_fixup *f;
->>> +    const char *soc;
->>>       int i;
->>> +    /*
->>> +     * This may be a machine with a PCI/SMC conduit, which means it 
->>> doesn't
->>> +     * have an MCFG. Use an ACPI namespace definition instead.
->>> +     */
->>> +    if (!fwnode_property_read_string(acpi_fwnode_handle(root->device),
->>> +                     "linux-ecam-quirk-id", &soc)) {
->>> +        memcpy(mcfg_oem_id, soc, ACPI_OEM_ID_SIZE);
->>
->> Being super paranoid here, can we use one of the "safe" string copy 
->> routines here just in case?
-> 
-> Hmm, I went around with this a bit when I first wrote it, because the 
-> OEM fields in the ACPI tables are fixed len and don't have null 
-> termination. Maybe the right thing to do here is verify the string size 
-> is at least as long as the OEM_ID_SIZE and then continue to use the memcpy.
-
-Sure, sounds entirely reasonable to me.
--- 
-Florian
+Applied as 5.15 material, thanks!
