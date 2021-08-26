@@ -2,56 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2E63F8F52
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Aug 2021 21:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3900A3F8FEC
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Aug 2021 23:29:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230393AbhHZT5d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 Aug 2021 15:57:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230085AbhHZT5c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 26 Aug 2021 15:57:32 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80694C0613C1
-        for <linux-acpi@vger.kernel.org>; Thu, 26 Aug 2021 12:56:44 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id z5so8158132ybj.2
-        for <linux-acpi@vger.kernel.org>; Thu, 26 Aug 2021 12:56:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JFAHUDZyyahIcWw7Cvy/uu3QfGKT8k+W/eOL0ZhDFn8=;
-        b=c+HL58Mpu2qY6DsQ+9tdT8HIhGv/o4TXrZcytK40XxfLh9zT8seGs3u5kCCzTcU003
-         jdsJW57wCClGc++F1QNvfZVWckvIeVg0m3pgIollN6wnDlvbpKmO8/miYyJzHVAHwqkC
-         ldYQc3mdQaenCOiXecR7PJH7eRuc9AjV1o6RuGNLGz2YZSD0qVK/7TQkQxmbQ/jkgT+X
-         nmeaxdvhysNcdyvv/ANfl53RKclFCFliPC8zLxzi7YT8FGBuC4lw7koeJKvbpeSD68dK
-         4ztpfrk9xmB5hKJEKdcjcSrd9O+IUErBt0tovr4zKJC8W60FqaavUtcgHQDOAEdV9KqE
-         EGzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JFAHUDZyyahIcWw7Cvy/uu3QfGKT8k+W/eOL0ZhDFn8=;
-        b=kTUkGghDy5Ww9Wte5aw7LxNFtbimn4UEy/odlm4GDv2VmzrTCUcglIldut3Rxtoq/t
-         +FiXrXVlyGaNd3NCx0ND+59I++llnGgcsmacdH3TofRkZZneoclMidwgpwygZRYX3FsT
-         1MNNFgc0PeeJ9ND0KHyzJa+YdsZyyJhYdl+svFVoqav33bYU69DcRQN9oyzdQI//XA4p
-         S3sP5vndx7hFX35jAr7OvMl4Tjw58lrKMvmSR2Sph6DDnSUBL0cSBArvEDP0BleXd0mc
-         v2gPf56JuuWZCPNUbYt/Hfb0HJOUVeFmjvMP+PRFMD2reZMKtqBn+bgQkbtvV3KmCPHF
-         CR3w==
-X-Gm-Message-State: AOAM532laGr52JncPYNCPrXD0he30iZtVoenuII8XfJJuRLTKxaohA18
-        5GKrhzjFEHR2infz2+EMD0WxRzLDp7TIq6inGi0RLg==
-X-Google-Smtp-Source: ABdhPJzBanXg7oKhlkUNt9M+hgCQcqMj4csOvmzyt41Q9AP5DJSOE8icqZgGfMzxdnGjwp2AlOc5gP15GOVzMlQ6fHQ=
-X-Received: by 2002:a25:bdc6:: with SMTP id g6mr552373ybk.310.1630007803595;
- Thu, 26 Aug 2021 12:56:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210826074526.825517-1-saravanak@google.com> <20210826074526.825517-2-saravanak@google.com>
- <YSeTdb6DbHbBYabN@lunn.ch>
-In-Reply-To: <YSeTdb6DbHbBYabN@lunn.ch>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 26 Aug 2021 12:56:07 -0700
-Message-ID: <CAGETcx-pSi60NtMM=59cve8kN9ff9fgepQ5R=uJ3Gynzh=0_BA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT
-To:     Andrew Lunn <andrew@lunn.ch>
+        id S243574AbhHZUyD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 Aug 2021 16:54:03 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:43772 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243561AbhHZUyD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 26 Aug 2021 16:54:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=qC9/a8QwjDtxsvgwRxW0lzbEcViqsOvHK7tcWNdMLbQ=; b=zMzBLIqCfZ/pbHHDZG1oQ6Pt2v
+        HrbBiDt6y4JivV0Gvj8EA/iOEiybhzEbk+LqeG7Es/mHBDe2MtxmetfUgQS0wWsnnBDgehyNvgyC9
+        p34jvzvu2WpMJGjkvBG2OPZlfGvsW6AW8I/B7J9KdJKWvPXXWB+wf4UC6YV2pRFhu4Ps=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1mJMN0-0040b5-3d; Thu, 26 Aug 2021 22:53:06 +0200
+Date:   Thu, 26 Aug 2021 22:53:06 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Saravana Kannan <saravanak@google.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -63,128 +36,71 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for
+ FWNODE_FLAG_BROKEN_PARENT
+Message-ID: <YSf/Mps9E77/6kZX@lunn.ch>
+References: <20210826074526.825517-1-saravanak@google.com>
+ <20210826074526.825517-2-saravanak@google.com>
+ <YSeTdb6DbHbBYabN@lunn.ch>
+ <CAGETcx-pSi60NtMM=59cve8kN9ff9fgepQ5R=uJ3Gynzh=0_BA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx-pSi60NtMM=59cve8kN9ff9fgepQ5R=uJ3Gynzh=0_BA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Greg, Florian, Vladimir, Alvin,
+> The  DT node in [2] is probed by realtek_smi_probe() [3]. The call flow is:
+> realtek_smi_probe()
+>   -> dsa_register_switch()
+>     -> dsa_switch_probe()
+>       -> dsa_tree_setup()
+>         -> dsa_tree_setup_switches()
+>           -> dsa_switch_setup()
+>             -> ds->ops->setup(ds)
+>               -> rtl8366rb_setup()
+>                 -> realtek_smi_setup_mdio()
+>                   -> of_mdiobus_register()
+>                      This scans the MDIO bus/DT and device_add()s the PHYs
+>           -> dsa_port_setup()
+>             -> dsa_port_link_register_of()
+>               -> dsa_port_phylink_register()
+>                 -> phylink_of_phy_connect()
+>                   -> phylink_fwnode_phy_connect()
+>                     -> phy_attach_direct()
+>                        This checks if PHY device has already probed (by
+>                        checking for dev->driver). If not, it forces the
+>                        probe of the PHY using one of the generic PHY
+>                        drivers.
+> 
+> So within dsa_register_switch() the PHY device is added and then
+> expected to have probed in the same thread/calling context. As stated
+> earlier, this is not guaranteed by the driver core.
 
-Let's continue the rest of the discussion here.
+Have you looked at:
 
-On Thu, Aug 26, 2021 at 6:13 AM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Thu, Aug 26, 2021 at 12:45:24AM -0700, Saravana Kannan wrote:
-> > If a parent device is also a supplier to a child device, fw_devlink=on
-> > (correctly) delays the probe() of the child device until the probe() of
-> > the parent finishes successfully.
-> >
-> > However, some drivers of such parent devices (where parent is also a
-> > supplier) incorrectly expect the child device to finish probing
-> > successfully as soon as they are added using device_add() and before the
-> > probe() of the parent device has completed successfully.
->
-> Please can you point at the code making this assumption. It sounds
-> like we are missing some EPROBE_DEFER handling in the driver, or maybe
-> the DSA framework.
+commit 16983507742cbcaa5592af530872a82e82fb9c51
+Author: Heiner Kallweit <hkallweit1@gmail.com>
+Date:   Fri Mar 27 01:00:22 2020 +0100
 
-For context, this was discussed and explained in [1] and subsequent
-replies. But let me summarize it here.
+    net: phy: probe PHY drivers synchronously
 
-Alvin reported an issue that with fw_devlink=on, his downstream
-hardware which is very similar to [2] doesn't have its PHYs probed
-correctly. Instead of the PHYs being probed by the specific driver, it
-gets probed by the "Generic PHY" driver. For those who aren't very
-familiar with PHYs/networking (this is based on what Andrew explained
-to me earlier), Ethernet PHYs follow a specific standard and can have
-some extended functionality. The specific driver would give the full
-functionality, but if it's not available when the PHY needs to be
-used/connected, the generic PHY driver is force bound to the PHY and
-it gives the basic functionality.
+See the full commit message, but the code change is:
 
-So upon digging into this, this is what I found and where I think we
-have some bad assumptions about the driver core are present:
+iff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 3b8f6b0b47b5..d543df282365 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2577,6 +2577,7 @@ int phy_driver_register(struct phy_driver *new_driver, struct module *owner)
+        new_driver->mdiodrv.driver.probe = phy_probe;
+        new_driver->mdiodrv.driver.remove = phy_remove;
+        new_driver->mdiodrv.driver.owner = owner;
++       new_driver->mdiodrv.driver.probe_type = PROBE_FORCE_SYNCHRONOUS;
+ 
+        retval = driver_register(&new_driver->mdiodrv.driver);
+        if (retval) {
 
-The  DT node in [2] is probed by realtek_smi_probe() [3]. The call flow is:
-realtek_smi_probe()
-  -> dsa_register_switch()
-    -> dsa_switch_probe()
-      -> dsa_tree_setup()
-        -> dsa_tree_setup_switches()
-          -> dsa_switch_setup()
-            -> ds->ops->setup(ds)
-              -> rtl8366rb_setup()
-                -> realtek_smi_setup_mdio()
-                  -> of_mdiobus_register()
-                     This scans the MDIO bus/DT and device_add()s the PHYs
-          -> dsa_port_setup()
-            -> dsa_port_link_register_of()
-              -> dsa_port_phylink_register()
-                -> phylink_of_phy_connect()
-                  -> phylink_fwnode_phy_connect()
-                    -> phy_attach_direct()
-                       This checks if PHY device has already probed (by
-                       checking for dev->driver). If not, it forces the
-                       probe of the PHY using one of the generic PHY
-                       drivers.
+How does this add to the overall picture?
 
-So within dsa_register_switch() the PHY device is added and then
-expected to have probed in the same thread/calling context. As stated
-earlier, this is not guaranteed by the driver core. And this is what
-needs fixing. This works as long as the PHYs don't have dependencies
-on any other devices/suppliers and never defer probe. In the issue
-Alvin reported, the PHYs have a dependency and things fall apart. I
-don't have a strong opinion on whether this is a framework level fix
-or fixes in a few drivers.
-
-In the specific instance of [2] (providing snippet below to make it
-easier to follow), the "phy0" device [4] depends on the "switch"
-device [2] since "switch_intc" (the interrupt provider for phy0) is
-initialized by the "switch" driver. And fw_devlink=on delays the probe
-of phy0 until switch[2] finishes probing successfully (i.e. after
-dsa_register_switch() <- realtek_smi_probe() returns) -- this is the
-whole point of fw_devlink=on this is what reduces the useless deferred
-probes/probe attempts of consumers before the suppliers finish probing
-successfully.
-
-Since dsa_register_switch() assumes the PHYs would have been probed as
-soon as they are added, but they aren't probed in this case, the PHY
-is force bound to the generic PHY driver. Which is the original issue
-Alvin reported. Hope this clears things up for everyone.
-
--Saravana
-
-switch {
-        compatible = "realtek,rtl8366rb";
-...
-
-        switch_intc: interrupt-controller {
-...
-        };
-
-        ports {
-...
-                port@0 {
-                        phy-handle = <&phy0>;
-                };
-                port@1 {
-                };
-...
-        };
-
-        mdio {
-                compatible = "realtek,smi-mdio";
-...
-                phy0: phy@0 {
-...
-                        interrupt-parent = <&switch_intc>;
-                        interrupts = <0>;
-                };
-...
-        };
-};
-
-[1] - https://lore.kernel.org/netdev/CAGETcx_uj0V4DChME-gy5HGKTYnxLBX=TH2rag29f_p=UcG+Tg@mail.gmail.com/
-[2] - https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/gemini-dlink-dir-685.dts?id=73f3af7b4611d77bdaea303fb639333eb28e37d7#n190
-[3] - https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/dsa/realtek-smi-core.c?id=73f3af7b4611d77bdaea303fb639333eb28e37d7#n386
-[4] - https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/gemini-dlink-dir-685.dts?id=73f3af7b4611d77bdaea303fb639333eb28e37d7#n255
+    Andrew
