@@ -2,65 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD7083F8877
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Aug 2021 15:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AEAD3F8AA4
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Aug 2021 17:03:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242592AbhHZNO0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 26 Aug 2021 09:14:26 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:43138 "EHLO vps0.lunn.ch"
+        id S242870AbhHZPEU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 26 Aug 2021 11:04:20 -0400
+Received: from mga03.intel.com ([134.134.136.65]:43599 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242578AbhHZNOZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 26 Aug 2021 09:14:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=e1rYrhfrtOiTIjo0IHzJZeE0Xa8Rxjj6cG2GX4KDlKE=; b=5fouSf2s/UWUhO7p7gJjRBCev7
-        CspK1pigRIeS1r7r7NkYfrmv3RxavwdAbL+1A1n60EDKRIyhXd4N/UrwdIQUnR78gUY1YAHDHdDbF
-        WeQCItrV60afDpulpm2byb8rLSw0nt0hhqKh4eFUlH9dmXDnIipYuzweoOk1GCIbCDCQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1mJFC9-003x4d-6Y; Thu, 26 Aug 2021 15:13:25 +0200
-Date:   Thu, 26 Aug 2021 15:13:25 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for
- FWNODE_FLAG_BROKEN_PARENT
-Message-ID: <YSeTdb6DbHbBYabN@lunn.ch>
-References: <20210826074526.825517-1-saravanak@google.com>
- <20210826074526.825517-2-saravanak@google.com>
+        id S231793AbhHZPEL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 26 Aug 2021 11:04:11 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10088"; a="217796075"
+X-IronPort-AV: E=Sophos;i="5.84,353,1620716400"; 
+   d="scan'208";a="217796075"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2021 08:03:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,353,1620716400"; 
+   d="scan'208";a="465151649"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 26 Aug 2021 08:03:21 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id B23C1D1; Thu, 26 Aug 2021 18:03:22 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [resend, PATCH v2 1/1] x86/platform: Increase maximum GPIO number for X86_64
+Date:   Thu, 26 Aug 2021 18:03:17 +0300
+Message-Id: <20210826150317.29435-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210826074526.825517-2-saravanak@google.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 26, 2021 at 12:45:24AM -0700, Saravana Kannan wrote:
-> If a parent device is also a supplier to a child device, fw_devlink=on
-> (correctly) delays the probe() of the child device until the probe() of
-> the parent finishes successfully.
-> 
-> However, some drivers of such parent devices (where parent is also a
-> supplier) incorrectly expect the child device to finish probing
-> successfully as soon as they are added using device_add() and before the
-> probe() of the parent device has completed successfully.
+By default the 512 GPIOs is the maximum on any x86 platform.
+With, for example, Intel Tiger Lake-H the SoC based controller
+occupies up to 480 pins. This leaves only 32 available for
+GPIO expanders or other drivers, like PMIC. Hence, bump the
+maximum GPIO number to 1024 for X86_64 and leave 512 for X86_32.
 
-Please can you point at the code making this assumption. It sounds
-like we are missing some EPROBE_DEFER handling in the driver, or maybe
-the DSA framework.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+---
+v2 resend: actually added Rafael and linux-acpi@ to Cc list
+v2: dropped confusing comment and help, simplified defaults (Rafael)
+    added Rb tag (Linus)
+ arch/x86/Kconfig | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-     Andrew
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 858ce2736bd6..25960fe242bd 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -338,6 +338,11 @@ config NEED_PER_CPU_PAGE_FIRST_CHUNK
+ config ARCH_HIBERNATION_POSSIBLE
+ 	def_bool y
+ 
++config ARCH_NR_GPIO
++	int
++	default 1024 if X86_64
++	default 512
++
+ config ARCH_SUSPEND_POSSIBLE
+ 	def_bool y
+ 
+-- 
+2.32.0
+
