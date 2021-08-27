@@ -2,214 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5393C3F9E80
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Aug 2021 20:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 764DB3F9F53
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Aug 2021 20:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbhH0SHd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Aug 2021 14:07:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42878 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229638AbhH0SHd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Aug 2021 14:07:33 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DC6CC0613D9
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Aug 2021 11:06:43 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id z5so14126179ybj.2
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Aug 2021 11:06:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=O3s9f2E13tixtnr2/bSCIqrGke2AT2NqpZMSk6hvRH4=;
-        b=iuYQyFkQ5/TL5cX/RcHE6ZJmiwGbWZOTcby02j5+FDFOpAACobkcqWsDgAQ7tN+f8D
-         6aRyKMt2ni6tx77v9wCE1vdEYmTnaErgw7VkZkQbwI0upEDvlH5rL8ZQG4t+oCYG6n7Q
-         el48MNbJC9GRrvaG7fasRjdlNOmR6VkLbusayWLOiR2xhTkBOV+RG67F+C1QvcsU/mxS
-         Wud9BnYML+OwIFs9Ocol/fyDnW3vc1j51BKg3tjXO9g/ayDj8HoyNNMvt0bHQkjdFV0z
-         PaNy4akTzhgelUE3DUaD0nH88K2a8KH0620tunULdaMbUu+fkWCkDzg/m27KBduBXcpM
-         eu8A==
+        id S230232AbhH0S5n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Aug 2021 14:57:43 -0400
+Received: from mail-oo1-f54.google.com ([209.85.161.54]:34464 "EHLO
+        mail-oo1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230180AbhH0S5n (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Aug 2021 14:57:43 -0400
+Received: by mail-oo1-f54.google.com with SMTP id g4-20020a4ab044000000b002900bf3b03fso1306788oon.1;
+        Fri, 27 Aug 2021 11:56:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=O3s9f2E13tixtnr2/bSCIqrGke2AT2NqpZMSk6hvRH4=;
-        b=BH8JmEdje/WIeP/TLHGIymxJ7hz+tmiP0b2VM1scDQqwXIndNltvH9mD6lZlgPkjtS
-         2ES53l2rv/ktJt58yg1xFK8BFIkiMxBmIwv6d7hr3wARGBRCzcp3QqHa1kG85Kscpkg8
-         lm3v6RH+zvDG0Pma03sNDpC41AHMzwjPvvuvy0vhKuXXG7g2P9Q/WLtJbMrPgCROXN/B
-         imBRrJpzsdIbO/j1QPF03iyzrb/jSnX/4QzsL0pJh155tCJXRhZdYLzUT7Vr84vAy+xM
-         GtHpNxYa2XSIAyQ7xMOfoyYVhATvPsDa4IyGTfBQY3ELSEU0gfkEOB6pZ9RXiurRw3zn
-         6KqQ==
-X-Gm-Message-State: AOAM533KuoHDbdnbnw+PMb2Txnm20pdGF1KFz4riUIHebaLswthf6cQe
-        QABnchf6LlmyPlAULJSB91RvuoupXhTGxaCtsBmXLA==
-X-Google-Smtp-Source: ABdhPJw4/QH4Iv/xsSGLNMlZDjMdvel/IZrlut9sCt20+4zJjDhDXplBmcxT9YWjQWNStv1ojMkU3KS4MPKveBIYXys=
-X-Received: by 2002:a5b:50b:: with SMTP id o11mr6910997ybp.466.1630087602090;
- Fri, 27 Aug 2021 11:06:42 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=IVgojgnGhqQ+wkgkjmsrimQe5aqsGL34JdBENArlM/M=;
+        b=HRsIau2cInvstsRF9MZ+4xIr7FLeiVeBgNybfCN+nXiAByADTbAYKmI3AOO96tY+yT
+         fkJuvCTy/eDvm/Jl52EsGlN0ibVh1rUs952klOjFqR8TdpXZ8+6SGyGsIF2NtW3u6Eim
+         pijGbd59dhmFqmO3vQrBKqvpYIkkX6/ZmHhKSuDwOdPklm/1aJRgOOFVotW0hc7VGq2Y
+         b3YbLbghCOl5pOBlwUu8V316YIeVEBlXnQuQ6QTLVMoXiW8cq0biqhA+rvvzFA+LdNAa
+         kGhv3D1pXhChlbeu2GW446Z59zzBtL+nVltXiMFkbipDLv1L6+7XFGIii0yoOhouzVxt
+         09uA==
+X-Gm-Message-State: AOAM5319dd7CWf5ilsUAdfaPiFv9jaUW1tAXWO9C9JX/J8HQUPrQJnYN
+        4JVV0F659BJqdPb+vidHLMq3CTUqEYG/7buzYz+WC3pXvttmvA==
+X-Google-Smtp-Source: ABdhPJzwzdphUl+0nAfGpPcPOTLFkW86A5/1abHeqIpo6qbEZTXN4mWTCkLUVggDnfobi52p5e/TaD15urSJKaExsJc=
+X-Received: by 2002:a4a:ca83:: with SMTP id x3mr234892ooq.2.1630090613467;
+ Fri, 27 Aug 2021 11:56:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210826074526.825517-1-saravanak@google.com> <20210826074526.825517-2-saravanak@google.com>
- <YSeTdb6DbHbBYabN@lunn.ch> <CAGETcx-pSi60NtMM=59cve8kN9ff9fgepQ5R=uJ3Gynzh=0_BA@mail.gmail.com>
- <YSf/Mps9E77/6kZX@lunn.ch> <CAGETcx_h6moWbS7m4hPm6Ub3T0tWayUQkppjevkYyiA=8AmACw@mail.gmail.com>
- <YSg+dRPSX9/ph6tb@lunn.ch> <CAGETcx_r8LSxV5=GQ-1qPjh7qGbCqTsSoSkQfxAKL5q+znRoWg@mail.gmail.com>
- <YSjsQmx8l4MXNvP+@lunn.ch>
-In-Reply-To: <YSjsQmx8l4MXNvP+@lunn.ch>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 27 Aug 2021 11:06:06 -0700
-Message-ID: <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 27 Aug 2021 20:56:42 +0200
+Message-ID: <CAJZ5v0hxquKvcHR_YYd+csGWwHB5HW2uXMYtM=uT5QDqFLH8ew@mail.gmail.com>
+Subject: [GIT PULL] ACPI fix for v5.14-rc8
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 27, 2021 at 6:44 AM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > fw_devlink=on/device links short circuits the probe() call of a
-> > consumer (in this case the PHY) and returns -EPROBE_DEFER if the
-> > supplier's (in this case switch) probe hasn't finished without an
-> > error. fw_devlink/device links effectively does the probe in graph
-> > topological order and there's a ton of good reasons to do it that way
-> > -- what's why fw_devlink=on was implemented.
-> >
-> > In this specific case though, since the PHY depends on the parent
-> > device, if we fail the parent's probe realtek_smi_probe() because the
-> > PHYs failed to probe, we'll get into a catch-22/chicken-n-egg
-> > situation and the switch/PHYs will never probe.
->
-> So lets look at:
->
-> arch/arm/boot/dts/vf610-zii-dev-rev-b.dts
->
->        mdio-mux {
->                 compatible = "mdio-mux-gpio";
->                 pinctrl-0 = <&pinctrl_mdio_mux>;
->                 pinctrl-names = "default";
->                 gpios = <&gpio0 8  GPIO_ACTIVE_HIGH
->                          &gpio0 9  GPIO_ACTIVE_HIGH
->                          &gpio0 24 GPIO_ACTIVE_HIGH
->                          &gpio0 25 GPIO_ACTIVE_HIGH>;
->                 mdio-parent-bus = <&mdio1>;
->                 #address-cells = <1>;
->                 #size-cells = <0>;
->
->
-> We have an MDIO multiplexor
->
->
->                 mdio_mux_1: mdio@1 {
->                         reg = <1>;
->                         #address-cells = <1>;
->                         #size-cells = <0>;
->
->                         switch0: switch@0 {
->                                 compatible = "marvell,mv88e6085";
->                                 pinctrl-0 = <&pinctrl_gpio_switch0>;
->                                 pinctrl-names = "default";
->                                 reg = <0>;
->                                 dsa,member = <0 0>;
->                                 interrupt-parent = <&gpio0>;
->                                 interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
->
-> On the first bus, we have a Ethernet switch.
->
->                                 interrupt-controller;
->                                 #interrupt-cells = <2>;
->                                 eeprom-length = <512>;
->
->                                 ports {
->                                         #address-cells = <1>;
->                                         #size-cells = <0>;
->
->                                         port@0 {
->                                                 reg = <0>;
->                                                 label = "lan0";
->                                                 phy-handle = <&switch0phy0>;
->                                         };
->
-> The first port of that switch has a pointer to a PHY.
->
->                                mdio {
->                                         #address-cells = <1>;
->                                         #size-cells = <0>;
->
-> That Ethernet switch also has an MDIO bus,
->
->                                         switch0phy0: switch0phy0@0 {
->                                                 reg = <0>;
->
-> On that bus is the PHY.
->
->                                                 interrupt-parent = <&switch0>;
->                                                 interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
->
-> And that PHY has an interrupt. And that interrupt is provided by the switch.
->
-> Given your description, it sounds like this is also go to break.
+Hi Linus,
 
-Based on what you pasted here (I didn't look any closer), I think it
-will break too.
+Please pull from the tag
 
->
-> vf610-zii-dev-rev-c.dts is the same pattern, and there are more
-> examples for mv88e6xxx.
->
-> It is a common pattern, e.g. the mips ar9331.dtsi follows it.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.14-rc8
 
-Then I think this should be solved at the DSA framework level. Make a
-component-master/aggregate device made up of the switches and
-ports/PHYs. Then wait for all of them to not -EPROBE_DEFER and then
-initialize the DSA?
+with top-most commit 294c34e704e78d641b039064ce72d4531afe0088
 
-> I've not yet looked at plain Ethernet drivers. This pattern could also
-> exist there. And i wonder about other complex structures, i2c bus
-> multiplexors, you can have interrupt controllers as i2c devices,
-> etc. So the general case could exist in other places.
+ media: ipu3-cio2: Drop reference on error path in cio2_bridge_connect_sensor()
 
-I haven't seen any generic issues like this reported so far. It's only
-after adding phy-handle that we are hitting these issues with DSA
-switches.
+on top of commit e22ce8eb631bdc47a4a4ea7ecf4e4ba499db4f93
 
-> I don't think we should be playing whack-a-mole by changing drivers as
-> we find they regress and break. We need a generic fix. I think the
-> solution is pretty clear. As you said the device depends on its
-> parent. DT is a tree, so it is easy to walk up the tree to detect this
-> relationship, and not fail the probe.
+ Linux 5.14-rc7
 
-It's easy to do, but it is the wrong behavior for fw_devlink=on. There
-are plenty of cases where it's better to delay the child device's
-probe until the parent finishes. You even gave an example[7] where it
-would help avoid unnecessary deferred probes. There are plenty of
-other cases like this too -- there's actually a USB driver that had an
-infinite deferred probe loop that fw_devlink=on fixes. Also, the whole
-point of fw_devlink=on is to enforce ordering like this -- so just
-blanket ignoring dependencies on parent devices doesn't make sense.
+to receive an ACPI fix for 5.14-rc8 (or final 5.14).
 
-But a parent device's probe depending on a child device's probe to
-succeed as soon as it's added is never right though. So I think that's
-what needs to be addresses.
+This fixes an ACPI-related regression introduced during this cycle that has
+been partially addressed by an earlier commit (Andy Shevchenko).
 
-So we have a couple of options:
-1. Use a component driver model to initialize switches. I think it
-could be doable at the DSA framework level.
-2. Ask fw_devlink=on to ignore it for all switch devices -- it might
-be possible to move my "quick fix" to the DSA framework.
-3. Remove fw_devlink support for phy-handle.
+Thanks!
 
-I honestly think (1) is the best option and makes sense logically too.
-Not saying it's a trivial work or a one liner, but it actually makes
-sense. (2) might not be possible -- I need to take a closer look. I'd
-prefer not doing (3), but I'd take that over breaking the whole point
-of fw_devlink=on.
 
--Saravana
+---------------
 
-[7] - https://lore.kernel.org/netdev/YR5eMeKzcuYtB6Tk@lunn.ch/
+Andy Shevchenko (1):
+      media: ipu3-cio2: Drop reference on error path in
+cio2_bridge_connect_sensor()
+
+---------------
+
+ drivers/media/pci/intel/ipu3/cio2-bridge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
