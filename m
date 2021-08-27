@@ -2,29 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C79533F9A6A
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Aug 2021 15:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5393C3F9E80
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Aug 2021 20:06:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235591AbhH0Npi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Aug 2021 09:45:38 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:44762 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232312AbhH0Nph (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 27 Aug 2021 09:45:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=U4iw9bGfwsiLVriGmOSmQiVeY8AhY1Wlg6keAnSbylw=; b=2MIAxJFd2O7afg050RyBGVQMpJ
-        l8Jj/0grtM4Wjh7TBzLXmtNY1mAAoeqEMdyjyMzsvZI36V2+FCutEf9iO9TbObDSXzC/vUQKIHzDX
-        k0OKanA0JtQR+322DPhNY8A2HiHr8rd2lOyeeQyFJqEMRUzJ+BFFBpxlrSSpNoJmcOtA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1mJc9q-0047E0-1o; Fri, 27 Aug 2021 15:44:34 +0200
-Date:   Fri, 27 Aug 2021 15:44:34 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Saravana Kannan <saravanak@google.com>
+        id S229678AbhH0SHd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Aug 2021 14:07:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42878 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229638AbhH0SHd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Aug 2021 14:07:33 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DC6CC0613D9
+        for <linux-acpi@vger.kernel.org>; Fri, 27 Aug 2021 11:06:43 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id z5so14126179ybj.2
+        for <linux-acpi@vger.kernel.org>; Fri, 27 Aug 2021 11:06:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=O3s9f2E13tixtnr2/bSCIqrGke2AT2NqpZMSk6hvRH4=;
+        b=iuYQyFkQ5/TL5cX/RcHE6ZJmiwGbWZOTcby02j5+FDFOpAACobkcqWsDgAQ7tN+f8D
+         6aRyKMt2ni6tx77v9wCE1vdEYmTnaErgw7VkZkQbwI0upEDvlH5rL8ZQG4t+oCYG6n7Q
+         el48MNbJC9GRrvaG7fasRjdlNOmR6VkLbusayWLOiR2xhTkBOV+RG67F+C1QvcsU/mxS
+         Wud9BnYML+OwIFs9Ocol/fyDnW3vc1j51BKg3tjXO9g/ayDj8HoyNNMvt0bHQkjdFV0z
+         PaNy4akTzhgelUE3DUaD0nH88K2a8KH0620tunULdaMbUu+fkWCkDzg/m27KBduBXcpM
+         eu8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=O3s9f2E13tixtnr2/bSCIqrGke2AT2NqpZMSk6hvRH4=;
+        b=BH8JmEdje/WIeP/TLHGIymxJ7hz+tmiP0b2VM1scDQqwXIndNltvH9mD6lZlgPkjtS
+         2ES53l2rv/ktJt58yg1xFK8BFIkiMxBmIwv6d7hr3wARGBRCzcp3QqHa1kG85Kscpkg8
+         lm3v6RH+zvDG0Pma03sNDpC41AHMzwjPvvuvy0vhKuXXG7g2P9Q/WLtJbMrPgCROXN/B
+         imBRrJpzsdIbO/j1QPF03iyzrb/jSnX/4QzsL0pJh155tCJXRhZdYLzUT7Vr84vAy+xM
+         GtHpNxYa2XSIAyQ7xMOfoyYVhATvPsDa4IyGTfBQY3ELSEU0gfkEOB6pZ9RXiurRw3zn
+         6KqQ==
+X-Gm-Message-State: AOAM533KuoHDbdnbnw+PMb2Txnm20pdGF1KFz4riUIHebaLswthf6cQe
+        QABnchf6LlmyPlAULJSB91RvuoupXhTGxaCtsBmXLA==
+X-Google-Smtp-Source: ABdhPJw4/QH4Iv/xsSGLNMlZDjMdvel/IZrlut9sCt20+4zJjDhDXplBmcxT9YWjQWNStv1ojMkU3KS4MPKveBIYXys=
+X-Received: by 2002:a5b:50b:: with SMTP id o11mr6910997ybp.466.1630087602090;
+ Fri, 27 Aug 2021 11:06:42 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210826074526.825517-1-saravanak@google.com> <20210826074526.825517-2-saravanak@google.com>
+ <YSeTdb6DbHbBYabN@lunn.ch> <CAGETcx-pSi60NtMM=59cve8kN9ff9fgepQ5R=uJ3Gynzh=0_BA@mail.gmail.com>
+ <YSf/Mps9E77/6kZX@lunn.ch> <CAGETcx_h6moWbS7m4hPm6Ub3T0tWayUQkppjevkYyiA=8AmACw@mail.gmail.com>
+ <YSg+dRPSX9/ph6tb@lunn.ch> <CAGETcx_r8LSxV5=GQ-1qPjh7qGbCqTsSoSkQfxAKL5q+znRoWg@mail.gmail.com>
+ <YSjsQmx8l4MXNvP+@lunn.ch>
+In-Reply-To: <YSjsQmx8l4MXNvP+@lunn.ch>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 27 Aug 2021 11:06:06 -0700
+Message-ID: <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT
+To:     Andrew Lunn <andrew@lunn.ch>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -36,121 +66,150 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for
- FWNODE_FLAG_BROKEN_PARENT
-Message-ID: <YSjsQmx8l4MXNvP+@lunn.ch>
-References: <20210826074526.825517-1-saravanak@google.com>
- <20210826074526.825517-2-saravanak@google.com>
- <YSeTdb6DbHbBYabN@lunn.ch>
- <CAGETcx-pSi60NtMM=59cve8kN9ff9fgepQ5R=uJ3Gynzh=0_BA@mail.gmail.com>
- <YSf/Mps9E77/6kZX@lunn.ch>
- <CAGETcx_h6moWbS7m4hPm6Ub3T0tWayUQkppjevkYyiA=8AmACw@mail.gmail.com>
- <YSg+dRPSX9/ph6tb@lunn.ch>
- <CAGETcx_r8LSxV5=GQ-1qPjh7qGbCqTsSoSkQfxAKL5q+znRoWg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGETcx_r8LSxV5=GQ-1qPjh7qGbCqTsSoSkQfxAKL5q+znRoWg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> fw_devlink=on/device links short circuits the probe() call of a
-> consumer (in this case the PHY) and returns -EPROBE_DEFER if the
-> supplier's (in this case switch) probe hasn't finished without an
-> error. fw_devlink/device links effectively does the probe in graph
-> topological order and there's a ton of good reasons to do it that way
-> -- what's why fw_devlink=on was implemented.
-> 
-> In this specific case though, since the PHY depends on the parent
-> device, if we fail the parent's probe realtek_smi_probe() because the
-> PHYs failed to probe, we'll get into a catch-22/chicken-n-egg
-> situation and the switch/PHYs will never probe.
+On Fri, Aug 27, 2021 at 6:44 AM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > fw_devlink=on/device links short circuits the probe() call of a
+> > consumer (in this case the PHY) and returns -EPROBE_DEFER if the
+> > supplier's (in this case switch) probe hasn't finished without an
+> > error. fw_devlink/device links effectively does the probe in graph
+> > topological order and there's a ton of good reasons to do it that way
+> > -- what's why fw_devlink=on was implemented.
+> >
+> > In this specific case though, since the PHY depends on the parent
+> > device, if we fail the parent's probe realtek_smi_probe() because the
+> > PHYs failed to probe, we'll get into a catch-22/chicken-n-egg
+> > situation and the switch/PHYs will never probe.
+>
+> So lets look at:
+>
+> arch/arm/boot/dts/vf610-zii-dev-rev-b.dts
+>
+>        mdio-mux {
+>                 compatible = "mdio-mux-gpio";
+>                 pinctrl-0 = <&pinctrl_mdio_mux>;
+>                 pinctrl-names = "default";
+>                 gpios = <&gpio0 8  GPIO_ACTIVE_HIGH
+>                          &gpio0 9  GPIO_ACTIVE_HIGH
+>                          &gpio0 24 GPIO_ACTIVE_HIGH
+>                          &gpio0 25 GPIO_ACTIVE_HIGH>;
+>                 mdio-parent-bus = <&mdio1>;
+>                 #address-cells = <1>;
+>                 #size-cells = <0>;
+>
+>
+> We have an MDIO multiplexor
+>
+>
+>                 mdio_mux_1: mdio@1 {
+>                         reg = <1>;
+>                         #address-cells = <1>;
+>                         #size-cells = <0>;
+>
+>                         switch0: switch@0 {
+>                                 compatible = "marvell,mv88e6085";
+>                                 pinctrl-0 = <&pinctrl_gpio_switch0>;
+>                                 pinctrl-names = "default";
+>                                 reg = <0>;
+>                                 dsa,member = <0 0>;
+>                                 interrupt-parent = <&gpio0>;
+>                                 interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+>
+> On the first bus, we have a Ethernet switch.
+>
+>                                 interrupt-controller;
+>                                 #interrupt-cells = <2>;
+>                                 eeprom-length = <512>;
+>
+>                                 ports {
+>                                         #address-cells = <1>;
+>                                         #size-cells = <0>;
+>
+>                                         port@0 {
+>                                                 reg = <0>;
+>                                                 label = "lan0";
+>                                                 phy-handle = <&switch0phy0>;
+>                                         };
+>
+> The first port of that switch has a pointer to a PHY.
+>
+>                                mdio {
+>                                         #address-cells = <1>;
+>                                         #size-cells = <0>;
+>
+> That Ethernet switch also has an MDIO bus,
+>
+>                                         switch0phy0: switch0phy0@0 {
+>                                                 reg = <0>;
+>
+> On that bus is the PHY.
+>
+>                                                 interrupt-parent = <&switch0>;
+>                                                 interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+>
+> And that PHY has an interrupt. And that interrupt is provided by the switch.
+>
+> Given your description, it sounds like this is also go to break.
 
-So lets look at:
+Based on what you pasted here (I didn't look any closer), I think it
+will break too.
 
-arch/arm/boot/dts/vf610-zii-dev-rev-b.dts
+>
+> vf610-zii-dev-rev-c.dts is the same pattern, and there are more
+> examples for mv88e6xxx.
+>
+> It is a common pattern, e.g. the mips ar9331.dtsi follows it.
 
-       mdio-mux {
-                compatible = "mdio-mux-gpio";
-                pinctrl-0 = <&pinctrl_mdio_mux>;
-                pinctrl-names = "default";
-                gpios = <&gpio0 8  GPIO_ACTIVE_HIGH
-                         &gpio0 9  GPIO_ACTIVE_HIGH
-                         &gpio0 24 GPIO_ACTIVE_HIGH
-                         &gpio0 25 GPIO_ACTIVE_HIGH>;
-                mdio-parent-bus = <&mdio1>;
-                #address-cells = <1>;
-                #size-cells = <0>;
+Then I think this should be solved at the DSA framework level. Make a
+component-master/aggregate device made up of the switches and
+ports/PHYs. Then wait for all of them to not -EPROBE_DEFER and then
+initialize the DSA?
 
+> I've not yet looked at plain Ethernet drivers. This pattern could also
+> exist there. And i wonder about other complex structures, i2c bus
+> multiplexors, you can have interrupt controllers as i2c devices,
+> etc. So the general case could exist in other places.
 
-We have an MDIO multiplexor
+I haven't seen any generic issues like this reported so far. It's only
+after adding phy-handle that we are hitting these issues with DSA
+switches.
 
+> I don't think we should be playing whack-a-mole by changing drivers as
+> we find they regress and break. We need a generic fix. I think the
+> solution is pretty clear. As you said the device depends on its
+> parent. DT is a tree, so it is easy to walk up the tree to detect this
+> relationship, and not fail the probe.
 
-                mdio_mux_1: mdio@1 {
-                        reg = <1>;
-                        #address-cells = <1>;
-                        #size-cells = <0>;
+It's easy to do, but it is the wrong behavior for fw_devlink=on. There
+are plenty of cases where it's better to delay the child device's
+probe until the parent finishes. You even gave an example[7] where it
+would help avoid unnecessary deferred probes. There are plenty of
+other cases like this too -- there's actually a USB driver that had an
+infinite deferred probe loop that fw_devlink=on fixes. Also, the whole
+point of fw_devlink=on is to enforce ordering like this -- so just
+blanket ignoring dependencies on parent devices doesn't make sense.
 
-                        switch0: switch@0 {
-                                compatible = "marvell,mv88e6085";
-                                pinctrl-0 = <&pinctrl_gpio_switch0>;
-                                pinctrl-names = "default";
-                                reg = <0>;
-                                dsa,member = <0 0>;
-                                interrupt-parent = <&gpio0>;
-                                interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+But a parent device's probe depending on a child device's probe to
+succeed as soon as it's added is never right though. So I think that's
+what needs to be addresses.
 
-On the first bus, we have a Ethernet switch.
+So we have a couple of options:
+1. Use a component driver model to initialize switches. I think it
+could be doable at the DSA framework level.
+2. Ask fw_devlink=on to ignore it for all switch devices -- it might
+be possible to move my "quick fix" to the DSA framework.
+3. Remove fw_devlink support for phy-handle.
 
-                                interrupt-controller;
-                                #interrupt-cells = <2>;
-                                eeprom-length = <512>;
+I honestly think (1) is the best option and makes sense logically too.
+Not saying it's a trivial work or a one liner, but it actually makes
+sense. (2) might not be possible -- I need to take a closer look. I'd
+prefer not doing (3), but I'd take that over breaking the whole point
+of fw_devlink=on.
 
-                                ports {
-                                        #address-cells = <1>;
-                                        #size-cells = <0>;
+-Saravana
 
-                                        port@0 {
-                                                reg = <0>;
-                                                label = "lan0";
-                                                phy-handle = <&switch0phy0>;
-                                        };
-
-The first port of that switch has a pointer to a PHY.
-
-                               mdio {
-                                        #address-cells = <1>;
-                                        #size-cells = <0>;
-
-That Ethernet switch also has an MDIO bus,
-
-                                        switch0phy0: switch0phy0@0 {
-                                                reg = <0>;
-
-On that bus is the PHY.
-
-                                                interrupt-parent = <&switch0>;
-                                                interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-
-And that PHY has an interrupt. And that interrupt is provided by the switch.
-
-Given your description, it sounds like this is also go to break.
-
-vf610-zii-dev-rev-c.dts is the same pattern, and there are more
-examples for mv88e6xxx.
-
-It is a common pattern, e.g. the mips ar9331.dtsi follows it.
-
-I've not yet looked at plain Ethernet drivers. This pattern could also
-exist there. And i wonder about other complex structures, i2c bus
-multiplexors, you can have interrupt controllers as i2c devices,
-etc. So the general case could exist in other places.
-
-I don't think we should be playing whack-a-mole by changing drivers as
-we find they regress and break. We need a generic fix. I think the
-solution is pretty clear. As you said the device depends on its
-parent. DT is a tree, so it is easy to walk up the tree to detect this
-relationship, and not fail the probe.
-
-   Andrew
+[7] - https://lore.kernel.org/netdev/YR5eMeKzcuYtB6Tk@lunn.ch/
