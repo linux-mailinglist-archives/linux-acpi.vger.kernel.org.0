@@ -2,76 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 764DB3F9F53
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Aug 2021 20:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B1103FA04E
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Aug 2021 22:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbhH0S5n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 27 Aug 2021 14:57:43 -0400
-Received: from mail-oo1-f54.google.com ([209.85.161.54]:34464 "EHLO
-        mail-oo1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230180AbhH0S5n (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 27 Aug 2021 14:57:43 -0400
-Received: by mail-oo1-f54.google.com with SMTP id g4-20020a4ab044000000b002900bf3b03fso1306788oon.1;
-        Fri, 27 Aug 2021 11:56:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=IVgojgnGhqQ+wkgkjmsrimQe5aqsGL34JdBENArlM/M=;
-        b=HRsIau2cInvstsRF9MZ+4xIr7FLeiVeBgNybfCN+nXiAByADTbAYKmI3AOO96tY+yT
-         fkJuvCTy/eDvm/Jl52EsGlN0ibVh1rUs952klOjFqR8TdpXZ8+6SGyGsIF2NtW3u6Eim
-         pijGbd59dhmFqmO3vQrBKqvpYIkkX6/ZmHhKSuDwOdPklm/1aJRgOOFVotW0hc7VGq2Y
-         b3YbLbghCOl5pOBlwUu8V316YIeVEBlXnQuQ6QTLVMoXiW8cq0biqhA+rvvzFA+LdNAa
-         kGhv3D1pXhChlbeu2GW446Z59zzBtL+nVltXiMFkbipDLv1L6+7XFGIii0yoOhouzVxt
-         09uA==
-X-Gm-Message-State: AOAM5319dd7CWf5ilsUAdfaPiFv9jaUW1tAXWO9C9JX/J8HQUPrQJnYN
-        4JVV0F659BJqdPb+vidHLMq3CTUqEYG/7buzYz+WC3pXvttmvA==
-X-Google-Smtp-Source: ABdhPJzwzdphUl+0nAfGpPcPOTLFkW86A5/1abHeqIpo6qbEZTXN4mWTCkLUVggDnfobi52p5e/TaD15urSJKaExsJc=
-X-Received: by 2002:a4a:ca83:: with SMTP id x3mr234892ooq.2.1630090613467;
- Fri, 27 Aug 2021 11:56:53 -0700 (PDT)
-MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 27 Aug 2021 20:56:42 +0200
-Message-ID: <CAJZ5v0hxquKvcHR_YYd+csGWwHB5HW2uXMYtM=uT5QDqFLH8ew@mail.gmail.com>
-Subject: [GIT PULL] ACPI fix for v5.14-rc8
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        id S231295AbhH0ULy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 27 Aug 2021 16:11:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37794 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229591AbhH0ULy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 27 Aug 2021 16:11:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 2CD01600AA;
+        Fri, 27 Aug 2021 20:11:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630095065;
+        bh=qdasnpqVL1ldk/1IaFGIn6XYtysbrAlDLz36BUDq1MQ=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=QqzHaHll78LLDhrmjdpeprcuzuYCiOdSNBSA7Ezq/ie7uXWTyzUIjgwM/cHfGRjrO
+         J1bk7ycnT9T7okiOMMeX1bUsIfpXzCTB/xHw7IWMbuDOY8GtNuRPMtEFNuaE7yNceR
+         6NAMh4WnvzsFJ6YKhWv57paAT9RFvG7avaNf/IKQr3JtSHTnFiigzqKBIhiY+uCv4p
+         e8irzsIP65PhvaA5L6NlXkSvzqNGBsxEHvgikP2EOvvjvqxcxB8QC4bgyG3MkOIFyP
+         TkHWNpT7En9vcmlpd258H7fcOoS5acy5VrsQ6wsQytS/jd8Ii/v+21f7VJtB7DI3+W
+         ZAYGGD+mHUdAg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 242BF60A14;
+        Fri, 27 Aug 2021 20:11:05 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fix for v5.14-rc8
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0hxquKvcHR_YYd+csGWwHB5HW2uXMYtM=uT5QDqFLH8ew@mail.gmail.com>
+References: <CAJZ5v0hxquKvcHR_YYd+csGWwHB5HW2uXMYtM=uT5QDqFLH8ew@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0hxquKvcHR_YYd+csGWwHB5HW2uXMYtM=uT5QDqFLH8ew@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.14-rc8
+X-PR-Tracked-Commit-Id: 294c34e704e78d641b039064ce72d4531afe0088
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 8f9d0349841a2871624bb1e85309e03e9867c16e
+Message-Id: <163009506514.27622.6354119366992452590.pr-tracker-bot@kernel.org>
+Date:   Fri, 27 Aug 2021 20:11:05 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux Media Mailing List <linux-media@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Fri, 27 Aug 2021 20:56:42 +0200:
 
-Please pull from the tag
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.14-rc8
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.14-rc8
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/8f9d0349841a2871624bb1e85309e03e9867c16e
 
-with top-most commit 294c34e704e78d641b039064ce72d4531afe0088
+Thank you!
 
- media: ipu3-cio2: Drop reference on error path in cio2_bridge_connect_sensor()
-
-on top of commit e22ce8eb631bdc47a4a4ea7ecf4e4ba499db4f93
-
- Linux 5.14-rc7
-
-to receive an ACPI fix for 5.14-rc8 (or final 5.14).
-
-This fixes an ACPI-related regression introduced during this cycle that has
-been partially addressed by an earlier commit (Andy Shevchenko).
-
-Thanks!
-
-
----------------
-
-Andy Shevchenko (1):
-      media: ipu3-cio2: Drop reference on error path in
-cio2_bridge_connect_sensor()
-
----------------
-
- drivers/media/pci/intel/ipu3/cio2-bridge.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
