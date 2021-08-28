@@ -2,77 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 415103FA5B5
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Aug 2021 14:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 729713FA6DE
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Aug 2021 19:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234320AbhH1Mru (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 28 Aug 2021 08:47:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37286 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234012AbhH1Mru (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 28 Aug 2021 08:47:50 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1AB7C061756
-        for <linux-acpi@vger.kernel.org>; Sat, 28 Aug 2021 05:46:59 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id p15so16605340ljn.3
-        for <linux-acpi@vger.kernel.org>; Sat, 28 Aug 2021 05:46:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=b9iYCiedFW90BoTCcYvgC5pThEpnCb7p4vhek6KauzY=;
-        b=S/b7UsLv25gunIAaraDGy7PNaF0ardT226EgWCqWjTbo3832UqBQ73orDGkmu/Y9un
-         f756Gf1l1+R4/KgnVZOVu1+mWkA2/E6k2gBLnZ1dLfCjTrqYcW+8Hf32kQgzSKJUDUHl
-         a+G1ouifA7YLs+x7RQEp5jtrUfXqorp5fNkgFtFUYQp4ePV0X3i/qvYoJ6FbWjj1bGVw
-         1ui38wtEoxuqF9VpMDJLbspGc/JiwCM11VfzuyR5aul+KDNpL0w+pel1pxVaVXIXhV/P
-         1+p5B5m17M4/J+qUS/nefQAINzna1sAlyAVNKCKG8b6V2im3uAEaCKKF5VFfV2bDnA8z
-         ANbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=b9iYCiedFW90BoTCcYvgC5pThEpnCb7p4vhek6KauzY=;
-        b=Q5qCLdaJFl5W4TJa+pdwP2rx4Fo6eDflLY81i0p6J8U8NioD45G039ZkUmCSKfVmLj
-         kUUvUMFygz4hapsYzTxLuihJVP29anw/0ya+n46konGAx/mRKy91mm+l387Mb6wFvYC4
-         oJ/JhQ3qu+YawQV/vdFbctq2qtusq6yUbFPAK6cayUpPF33TqWNbswi0y7J8IjLgPG53
-         14GOUc2kq5ytiXqZSixyT81UR5YtD79OhXJx+jvAwWYMnDWVCB92vlqqgKT+ZGJw3AvF
-         afQ79BIH9X/w33PPPa1XZ7lLcPs6tGENQ23CIWVolcsIBTHnRBSJGcqDx3Xl+uoM8ubd
-         i3gQ==
-X-Gm-Message-State: AOAM532+wux08tWO3dSOclW6UZ/3owVyShJ4kLxFAy0qREOajowwcZ2f
-        rp1npKVAF4qaYF9j8I73w2DEzrzJzfu0+RCfrXQ=
-X-Google-Smtp-Source: ABdhPJzVgMVKg+ssAHnhGgRSeLawM0bIU/6HuXeVxtcx96VYziUUGmFAvo5lert8/FNi9vWAjp1IpWX0GFTzc8joIXY=
-X-Received: by 2002:a2e:a4ca:: with SMTP id p10mr11970836ljm.415.1630154818247;
- Sat, 28 Aug 2021 05:46:58 -0700 (PDT)
+        id S233282AbhH1RCz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 28 Aug 2021 13:02:55 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:46128 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230470AbhH1RCy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 28 Aug 2021 13:02:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=34N6KPTUp7LARCoRQy4s+AFxJpLySRpClrFRIaL/Ojg=; b=2pYR2t2UYn1zmKDF18hnELZW1t
+        ifIU8YFelD1D6urPBYtDCOgHOzEXPjmJZEHF9NX0k+96wo4lnrN8n5dcCUbnnz1BHGWEq31Wrdifl
+        KHaqQ7hrhGZyiLgD0hYT8rOc15OG8DYk8J5XK85FZx4CL/Q84Qw2m6m0DCfo9BdoBB30=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1mK1iG-004IxO-QV; Sat, 28 Aug 2021 19:01:48 +0200
+Date:   Sat, 28 Aug 2021 19:01:48 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for
+ FWNODE_FLAG_BROKEN_PARENT
+Message-ID: <YSpr/BOZj2PKoC8B@lunn.ch>
+References: <YSeTdb6DbHbBYabN@lunn.ch>
+ <CAGETcx-pSi60NtMM=59cve8kN9ff9fgepQ5R=uJ3Gynzh=0_BA@mail.gmail.com>
+ <YSf/Mps9E77/6kZX@lunn.ch>
+ <CAGETcx_h6moWbS7m4hPm6Ub3T0tWayUQkppjevkYyiA=8AmACw@mail.gmail.com>
+ <YSg+dRPSX9/ph6tb@lunn.ch>
+ <CAGETcx_r8LSxV5=GQ-1qPjh7qGbCqTsSoSkQfxAKL5q+znRoWg@mail.gmail.com>
+ <YSjsQmx8l4MXNvP+@lunn.ch>
+ <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
+ <YSlG4XRGrq5D1/WU@lunn.ch>
+ <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6520:3816:b0:138:b14c:bc76 with HTTP; Sat, 28 Aug 2021
- 05:46:57 -0700 (PDT)
-Reply-To: hamadoufabien@gmail.com
-From:   hamadou fabien <mr.sohalarfan.latif888@gmail.com>
-Date:   Sat, 28 Aug 2021 05:46:57 -0700
-Message-ID: <CAJLrsjqu3-cdGX010KOoXNA-U9TzrbPYFazXcNhafOntmeExEA@mail.gmail.com>
-Subject: Dear partner.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DEAR FRIEND.
+On Fri, Aug 27, 2021 at 02:33:02PM -0700, Saravana Kannan wrote:
+> On Fri, Aug 27, 2021 at 1:11 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> >
+> > > > I've not yet looked at plain Ethernet drivers. This pattern could also
+> > > > exist there. And i wonder about other complex structures, i2c bus
+> > > > multiplexors, you can have interrupt controllers as i2c devices,
+> > > > etc. So the general case could exist in other places.
+> > >
+> > > I haven't seen any generic issues like this reported so far. It's only
+> > > after adding phy-handle that we are hitting these issues with DSA
+> > > switches.
+> >
+> > Can you run your parser over the 2250 DTB blobs and see how many
+> > children have dependencies on a parent? That could give us an idea how
+> > many moles need whacking. And maybe, where in the tree they are
+> > hiding?
+> 
+> You are only responding to part of my email. As I said in my previous
+> email: "There are plenty of cases where it's better to delay the child
+> device's probe until the parent finishes. You even gave an example[7]
+> where it would help avoid unnecessary deferred probes." Can you please
+> give your thoughts on the rest of the points I made too?
 
-My name is Mr.Hamadou Fabien. I am working with one of the prime banks
-in Burkina Faso.
-Here in this bank existed a dormant account for many years, which
-belonged to one of our late foreign customer.
-The amount in this account stands at $13,300,000.00 (Thirteen Million
-Three Hundred Thousand USA Dollars).
+I must admit, my main problem at the moment is -rc1 in two weeks
+time. It seems like a number of board with Ethernet switches will be
+broken, that worked before. phy-handle is not limited to switch
+drivers, it is also used for Ethernet drivers. So it could be, a
+number of Ethernet drivers are also going to be broken in -rc1?
 
-I want a foreign account where the bank will transfer this fund. I
-know you would be surprised to read this message,
-especially from someone relatively unknown to you. But do not worry
-yourself so much. This is a genuine risk free and legal business
-transaction.
+But the issues sounds not to be specific to phy-handle, but any
+phandle that points back to a parent. So it could be drivers outside
+of networking are also going to be broken with -rc1?
 
-Reply back to me urgently, if you are interested. All details shall be
-sent to you once I hear from you.
+You have been very focused on one or two drivers. I would much rather
+see you getting an idea of how wide spread this problem is, and what
+should we do for -rc1?
 
-Best regards,
-Mr.Hamadou Fabien
+Even if modifying DSA drivers to component drivers is possible, while
+not breaking backwards compatibility with DT, it is not going to
+happen over night. That is something for the next merge window, not
+this merge window.
+
+So reverting the phy-handle seems like part of the fix for -rc1. But
+until you look at those 2250 DTB blobs, we have no idea if that is
+sufficient for -rc1.
+
+    Andrew
