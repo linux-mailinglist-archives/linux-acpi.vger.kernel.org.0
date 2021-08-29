@@ -2,105 +2,184 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 729713FA6DE
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Aug 2021 19:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E6A83FAB00
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Aug 2021 13:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233282AbhH1RCz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 28 Aug 2021 13:02:55 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:46128 "EHLO vps0.lunn.ch"
+        id S235136AbhH2LOZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 29 Aug 2021 07:14:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55154 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230470AbhH1RCy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 28 Aug 2021 13:02:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=34N6KPTUp7LARCoRQy4s+AFxJpLySRpClrFRIaL/Ojg=; b=2pYR2t2UYn1zmKDF18hnELZW1t
-        ifIU8YFelD1D6urPBYtDCOgHOzEXPjmJZEHF9NX0k+96wo4lnrN8n5dcCUbnnz1BHGWEq31Wrdifl
-        KHaqQ7hrhGZyiLgD0hYT8rOc15OG8DYk8J5XK85FZx4CL/Q84Qw2m6m0DCfo9BdoBB30=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1mK1iG-004IxO-QV; Sat, 28 Aug 2021 19:01:48 +0200
-Date:   Sat, 28 Aug 2021 19:01:48 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for
- FWNODE_FLAG_BROKEN_PARENT
-Message-ID: <YSpr/BOZj2PKoC8B@lunn.ch>
-References: <YSeTdb6DbHbBYabN@lunn.ch>
- <CAGETcx-pSi60NtMM=59cve8kN9ff9fgepQ5R=uJ3Gynzh=0_BA@mail.gmail.com>
- <YSf/Mps9E77/6kZX@lunn.ch>
- <CAGETcx_h6moWbS7m4hPm6Ub3T0tWayUQkppjevkYyiA=8AmACw@mail.gmail.com>
- <YSg+dRPSX9/ph6tb@lunn.ch>
- <CAGETcx_r8LSxV5=GQ-1qPjh7qGbCqTsSoSkQfxAKL5q+znRoWg@mail.gmail.com>
- <YSjsQmx8l4MXNvP+@lunn.ch>
- <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
- <YSlG4XRGrq5D1/WU@lunn.ch>
- <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
+        id S235019AbhH2LOZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 29 Aug 2021 07:14:25 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CAC9160E76;
+        Sun, 29 Aug 2021 11:13:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630235613;
+        bh=BnBRwDN85ORCazfakESASJMzH9Wh5wWHlFpgiukx6N0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MeyUT6GkYuZ2V6mkbXH/j2Hiigw08YpVkRSP11el3KV59BTxV7vIUQKxwhdB2sSBg
+         04f72VrsvtipmXkkWi9vvqkg6ughOsagw8lSo2Q4K52c6Bt8MYw1QdRqcFhySFluzk
+         idCuZLsgvImxd8GtQiO+nUtFqlLU2CxIwA0fr28fjEBIptqdP7UH/LqLesTBtGN2MX
+         QuZMfBG11SlgGb22phSAHsUQW4QFCBYUvXtfLjtkDEyp/+WJ78iI+Qb3R7j3d1Bzt8
+         5nRInUvQs14X/sjFukFuY6y+GsZTjNI37YwYzItZcUXkm/OVDeyPzr2HZ4k9qknH0a
+         tcBRu4uw1cALg==
+Received: by pali.im (Postfix)
+        id 5A587B0F; Sun, 29 Aug 2021 13:13:30 +0200 (CEST)
+Date:   Sun, 29 Aug 2021 13:13:30 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     lorenzo.pieralisi@arm.com
+Cc:     Jeremy Linton <jeremy.linton@arm.com>, linux-pci@vger.kernel.org,
+        nsaenz@kernel.org, bhelgaas@google.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robh@kernel.org, kw@linux.com,
+        f.fainelli@gmail.com, sdonthineni@nvidia.com,
+        stefan.wahren@i2se.com, bcm-kernel-feedback-list@broadcom.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] PCI: brcmstb: Add ACPI config space quirk
+Message-ID: <20210829111330.22f6n3tvmm246jzg@pali>
+References: <20210819215655.84866-1-jeremy.linton@arm.com>
+ <20210819215655.84866-3-jeremy.linton@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
+In-Reply-To: <20210819215655.84866-3-jeremy.linton@arm.com>
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Aug 27, 2021 at 02:33:02PM -0700, Saravana Kannan wrote:
-> On Fri, Aug 27, 2021 at 1:11 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > > > I've not yet looked at plain Ethernet drivers. This pattern could also
-> > > > exist there. And i wonder about other complex structures, i2c bus
-> > > > multiplexors, you can have interrupt controllers as i2c devices,
-> > > > etc. So the general case could exist in other places.
-> > >
-> > > I haven't seen any generic issues like this reported so far. It's only
-> > > after adding phy-handle that we are hitting these issues with DSA
-> > > switches.
-> >
-> > Can you run your parser over the 2250 DTB blobs and see how many
-> > children have dependencies on a parent? That could give us an idea how
-> > many moles need whacking. And maybe, where in the tree they are
-> > hiding?
+On Thursday 19 August 2021 16:56:53 Jeremy Linton wrote:
+> The PFTF CM4 is an ACPI platform that isn't ECAM compliant. Its config
+> space is in two parts. One part is for the root port registers and a
+> second moveable window pointing at a device's 4K config space. Thus it
+> doesn't have an MCFG, and any MCFG provided would be nonsense
+> anyway. Instead, a Linux specific host bridge _DSD selects a custom
+> ECAM ops and cfgres. The cfg op picks between those two regions while
+> disallowing problematic accesses.
+
+I'm not sure if Lorenzo would like this patch series...
+
+In past there was a long discussion about ECAM compliance, MCFG quirks
+and usage of ACPI (on other platform), see long thread:
+https://lore.kernel.org/linux-pci/20200207183427.GA40158@google.com/
+
+And I think it is not a good idea to extend MCFG quirks table as
+according to discussion it was just temporary plaster and if platform is
+not ACPI / ECAM compliant then it should use DT booting...
+
+Lorenzo, could you put any comment on this?
+
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> ---
+>  drivers/pci/controller/Makefile            |  1 +
+>  drivers/pci/controller/pcie-brcmstb-acpi.c | 74 ++++++++++++++++++++++
+>  include/linux/pci-ecam.h                   |  1 +
+>  3 files changed, 76 insertions(+)
+>  create mode 100644 drivers/pci/controller/pcie-brcmstb-acpi.c
 > 
-> You are only responding to part of my email. As I said in my previous
-> email: "There are plenty of cases where it's better to delay the child
-> device's probe until the parent finishes. You even gave an example[7]
-> where it would help avoid unnecessary deferred probes." Can you please
-> give your thoughts on the rest of the points I made too?
-
-I must admit, my main problem at the moment is -rc1 in two weeks
-time. It seems like a number of board with Ethernet switches will be
-broken, that worked before. phy-handle is not limited to switch
-drivers, it is also used for Ethernet drivers. So it could be, a
-number of Ethernet drivers are also going to be broken in -rc1?
-
-But the issues sounds not to be specific to phy-handle, but any
-phandle that points back to a parent. So it could be drivers outside
-of networking are also going to be broken with -rc1?
-
-You have been very focused on one or two drivers. I would much rather
-see you getting an idea of how wide spread this problem is, and what
-should we do for -rc1?
-
-Even if modifying DSA drivers to component drivers is possible, while
-not breaking backwards compatibility with DT, it is not going to
-happen over night. That is something for the next merge window, not
-this merge window.
-
-So reverting the phy-handle seems like part of the fix for -rc1. But
-until you look at those 2250 DTB blobs, we have no idea if that is
-sufficient for -rc1.
-
-    Andrew
+> diff --git a/drivers/pci/controller/Makefile b/drivers/pci/controller/Makefile
+> index aaf30b3dcc14..65aa6fd3ed89 100644
+> --- a/drivers/pci/controller/Makefile
+> +++ b/drivers/pci/controller/Makefile
+> @@ -57,5 +57,6 @@ ifdef CONFIG_PCI_QUIRKS
+>  obj-$(CONFIG_ARM64) += pci-thunder-ecam.o
+>  obj-$(CONFIG_ARM64) += pci-thunder-pem.o
+>  obj-$(CONFIG_ARM64) += pci-xgene.o
+> +obj-$(CONFIG_ARM64) += pcie-brcmstb-acpi.o
+>  endif
+>  endif
+> diff --git a/drivers/pci/controller/pcie-brcmstb-acpi.c b/drivers/pci/controller/pcie-brcmstb-acpi.c
+> new file mode 100644
+> index 000000000000..71f6def3074c
+> --- /dev/null
+> +++ b/drivers/pci/controller/pcie-brcmstb-acpi.c
+> @@ -0,0 +1,74 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * ACPI quirks for Brcm2711 PCIe host controller
+> + * As used on the Raspberry Pi Compute Module 4
+> + *
+> + * Copyright (C) 2021 Arm Ltd.
+> + */
+> +
+> +#include <linux/io.h>
+> +#include <linux/pci.h>
+> +#include <linux/pci-ecam.h>
+> +#include "../pci.h"
+> +#include "pcie-brcmstb.h"
+> +
+> +static int brcm_acpi_init(struct pci_config_window *cfg)
+> +{
+> +	/*
+> +	 * This platform doesn't technically have anything that could be called
+> +	 * ECAM. Its config region has root port specific registers between
+> +	 * standard PCIe defined config registers. Thus the region setup by the
+> +	 * generic ECAM code needs to be adjusted. The HW can access bus 0-ff
+> +	 * but the footprint isn't a nice power of 2 (40k). For purposes of
+> +	 * mapping the config region we are just going to squash the standard
+> +	 * and nonstandard registers together rather than mapping them separately.
+> +	 */
+> +	iounmap(cfg->win);
+> +	cfg->win = pci_remap_cfgspace(cfg->res.start, resource_size(&cfg->res));
+> +	if (!cfg->win)
+> +		goto err_exit;
+> +
+> +	/* MSI is nonstandard as well */
+> +	pci_no_msi();
+> +
+> +	return 0;
+> +err_exit:
+> +	dev_err(cfg->parent, "PCI: Failed to remap config\n");
+> +	return -ENOMEM;
+> +}
+> +
+> +static void __iomem *brcm_pcie_map_conf2(struct pci_bus *bus,
+> +					unsigned int devfn, int where)
+> +{
+> +	struct pci_config_window *cfg = bus->sysdata;
+> +	void __iomem *base = cfg->win;
+> +	int idx;
+> +	u32 up;
+> +
+> +	/* Accesses to the RC go right to the RC registers if slot==0 */
+> +	if (pci_is_root_bus(bus))
+> +		return PCI_SLOT(devfn) ? NULL : base + where;
+> +
+> +	/* Assure link up before sending request */
+> +	up = readl(base + PCIE_MISC_PCIE_STATUS);
+> +	if (!(up & PCIE_MISC_PCIE_STATUS_PCIE_DL_ACTIVE_MASK))
+> +		return NULL;
+> +
+> +	if (!(up & PCIE_MISC_PCIE_STATUS_PCIE_PHYLINKUP_MASK))
+> +		return NULL;
+> +
+> +	/* For devices, write to the config space index register */
+> +	idx = PCIE_ECAM_OFFSET(bus->number, devfn, 0);
+> +	writel(idx, base + PCIE_EXT_CFG_INDEX);
+> +	return base + PCIE_EXT_CFG_DATA + where;
+> +}
+> +
+> +const struct pci_ecam_ops bcm2711_pcie_ops = {
+> +	.init		= brcm_acpi_init,
+> +	.bus_shift	= 1,
+> +	.pci_ops	= {
+> +		.map_bus	= brcm_pcie_map_conf2,
+> +		.read		= pci_generic_config_read,
+> +		.write		= pci_generic_config_write,
+> +	}
+> +};
+> diff --git a/include/linux/pci-ecam.h b/include/linux/pci-ecam.h
+> index adea5a4771cf..a5de0285bb7f 100644
+> --- a/include/linux/pci-ecam.h
+> +++ b/include/linux/pci-ecam.h
+> @@ -87,6 +87,7 @@ extern const struct pci_ecam_ops xgene_v1_pcie_ecam_ops; /* APM X-Gene PCIe v1 *
+>  extern const struct pci_ecam_ops xgene_v2_pcie_ecam_ops; /* APM X-Gene PCIe v2.x */
+>  extern const struct pci_ecam_ops al_pcie_ops;	/* Amazon Annapurna Labs PCIe */
+>  extern const struct pci_ecam_ops tegra194_pcie_ops; /* Tegra194 PCIe */
+> +extern const struct pci_ecam_ops bcm2711_pcie_ops; /* Bcm2711 PCIe */
+>  #endif
+>  
+>  #if IS_ENABLED(CONFIG_PCI_HOST_COMMON)
+> -- 
+> 2.31.1
+> 
