@@ -2,71 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB8A3FAD47
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Aug 2021 18:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 401133FB290
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Aug 2021 10:37:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229692AbhH2Q6G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 29 Aug 2021 12:58:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40284 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235720AbhH2Q6G (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 29 Aug 2021 12:58:06 -0400
-Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BEA4C061760
-        for <linux-acpi@vger.kernel.org>; Sun, 29 Aug 2021 09:57:14 -0700 (PDT)
-Received: by mail-oo1-xc2e.google.com with SMTP id y16-20020a4ad6500000b0290258a7ff4058so3812215oos.10
-        for <linux-acpi@vger.kernel.org>; Sun, 29 Aug 2021 09:57:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=XUOatBCS7KXMQIRek9BuQ4CNFHjXdIKefBYCv6RPNRY=;
-        b=XGxY52+NF2/w/zK/epC56qLafpIVSgixVn/8kFgCf/uO14jUv4ZfiZHW1hw///uF09
-         MGqHv+0ofkf4UmZaW2Md/JTwWaNq6H+Nv3+/Wc79yM7RKH97f7QWX88aCnmMI5BUgf5r
-         VsGYXu0sVM9LdBKBUMoZdwLr/CwuiZknW3s6t07bXY81ccNjTtcPAxRrrV6GiswKKMgI
-         GjBiO1BCc5JkvVWkQA3y9N1nBmlAXmAwVk0yM5oHYREch8D0xi47fjO9ctAR0n6bqtuT
-         ssm7uGdiq1QpcuW8NQMJQPUGSZntNBSJgLCYz+NxkjvTallDpn08YH3YIgZy1ETmRZN8
-         ODcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=XUOatBCS7KXMQIRek9BuQ4CNFHjXdIKefBYCv6RPNRY=;
-        b=MVdZbUE28/GJuA6vbmQtparQpipWEC6wrYs9WI4PzA2qUwILFZG5sY/OddGPtQvFC9
-         MtiXbmSM1mSZS7oVWsGqMpdtCBsrazagiFjk5f9tTkI6/hNv8x7v/nvUEWA0496DT0YN
-         5yx6d23HgKLojVCBWr/tycKT5BWldSiY7J0Ai0kodcE76+86to09QKmO4Bnd2T1pvU7j
-         K6Wjy980XgJ22PZF+gWWfJN/C0EkBOlhs9mK0iR5bXIwsOGwOzIEWxVGPBZQ0SpiR4Nj
-         a+uuC474+2IbDJSEOxlU262wp+0bGCKbYGiUFI0yWyvY73kgurIm5eDUogj/XydxIw03
-         j1wA==
-X-Gm-Message-State: AOAM533XFastgr0EuHIB6va8P0ljeeAHIlMlmdG5MWKiJQX2gOYT+6qq
-        s36WchQfhqZe2EsvSvDl7XnYzdYtQVzVOPKzRqk=
-X-Google-Smtp-Source: ABdhPJzPdyqe5N7zbKdTXG6AlHkr6i1F4ww60dZ6p6lAD3Ug4lpBUPI/do0nxNFFIlBAO7wA88X/Q/E+voSKSFqlPzc=
-X-Received: by 2002:a4a:b64b:: with SMTP id f11mr7253550ooo.18.1630256233429;
- Sun, 29 Aug 2021 09:57:13 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a4a:b201:0:0:0:0:0 with HTTP; Sun, 29 Aug 2021 09:57:13
- -0700 (PDT)
-Reply-To: sroomf70@gmail.com
-From:   "Mr. Ali Moses" <alimoses07@gmail.com>
-Date:   Sun, 29 Aug 2021 09:57:13 -0700
-Message-ID: <CADWzZe5T8dVHy5qvvDtxLgWSgu07xhSf3Crp1c_uLoxprVfxzA@mail.gmail.com>
-Subject: Greetings,
-To:     undisclosed-recipients:;
+        id S234618AbhH3Ihl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Aug 2021 04:37:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51048 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233318AbhH3Ihl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 30 Aug 2021 04:37:41 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BDB1460E90;
+        Mon, 30 Aug 2021 08:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630312608;
+        bh=U1Bz+TRPE0qWHJ914Agg77D2LCyxrGJYD98I0IgzduI=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=ACAJ/8opjlZkYWqPkc/po7IKe6UsMR372P2D3M0nWcSwPziCe9rfvwHFNzmGkBF77
+         AdBnGtgHa3hwiaxGlK/KK6q3dz0IRISJ9AwpWxgij42rEdZ/zS5TEVsPRWC4eHZz6F
+         C5TMhkXbp9q6yLx/NEs0LfsNm/h0K6aGqPmFcM1BTdYDyP0+v1p5a/VCJJw1ngpb21
+         rp2//0piv30bOzwAhhoXQiOEUpSWjgx1m1jp/VrhZeorH9SOMM/rvVJtoFHSpdFPmx
+         vi0VzTg+CE57l/Ls6Gd8yAlNxNq/HlCPAX8mQLhVdFFIREOqUMDG7AWum71adhq0VU
+         D6NlaGykdHhaw==
+Message-ID: <44ad79081412af289c68e74cdecb6a2baa2e873c.camel@kernel.org>
+Subject: Re: [PATCH v3 2/4] PCI: brcmstb: Add ACPI config space quirk
+From:   nicolas saenz julienne <nsaenz@kernel.org>
+To:     Jeremy Linton <jeremy.linton@arm.com>, linux-pci@vger.kernel.org
+Cc:     lorenzo.pieralisi@arm.com, bhelgaas@google.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robh@kernel.org, kw@linux.com,
+        f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date:   Mon, 30 Aug 2021 10:36:43 +0200
+In-Reply-To: <20210826071557.29239-3-jeremy.linton@arm.com>
+References: <20210826071557.29239-1-jeremy.linton@arm.com>
+         <20210826071557.29239-3-jeremy.linton@arm.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4 (3.40.4-1.fc34) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
--- 
-Greetings,
-From Mr. Ali Moses, please a huge amount of payment was made into your
-account. as soon as your respond is noted the payment confirmation
-slip will immediately send to you.  please do not hesitate to reply as
-soon as you receive this message. awaiting your urgent reply please.
+Hi Jeremy,
+sorry for the late reply, I've been on vacation.
 
-Thanks
-Mr. Ali Moses,
-Foreign Remittance
+On Thu, 2021-08-26 at 02:15 -0500, Jeremy Linton wrote:
 
-Best regards
-Prof. Dr Diane
-Head of Foreign Operation
+[...]
+
+> +static void __iomem *brcm_pcie_map_conf2(struct pci_bus *bus,
+> +					unsigned int devfn, int where)
+> +{
+> +	struct pci_config_window *cfg = bus->sysdata;
+> +	void __iomem *base = cfg->win;
+> +	int idx;
+> +	u32 up;
+> +
+> +	/* Accesses to the RC go right to the RC registers if slot==0 */
+> +	if (pci_is_root_bus(bus))
+> +		return PCI_SLOT(devfn) ? NULL : base + where;
+> +
+> +	/*
+> +	 * Assure the link is up before sending requests downstream. This is done
+> +	 * to avoid sending transactions to EPs that don't exist. Link flap
+> +	 * conditions/etc make this race more probable. The resulting unrecoverable
+> +	 * SERRORs will result in the machine crashing.
+> +	 */
+> +	up = readl(base + PCIE_MISC_PCIE_STATUS);
+> +	if (!(up & PCIE_MISC_PCIE_STATUS_PCIE_DL_ACTIVE_MASK))
+> +		return NULL;
+> +
+> +	if (!(up & PCIE_MISC_PCIE_STATUS_PCIE_PHYLINKUP_MASK))
+> +		return NULL;
+
+Couldn't this be integrated in the original brcm_pcie_map_conf()? IIUC there is
+nothing ACPI specific about it. It'd also make for less code duplication.
+
+Regards,
+Nicolas
+
