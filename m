@@ -2,78 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 948BA3FBCA3
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Aug 2021 20:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCECC3FBCBD
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Aug 2021 21:03:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231422AbhH3Sqn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Aug 2021 14:46:43 -0400
-Received: from mail-oi1-f175.google.com ([209.85.167.175]:38578 "EHLO
-        mail-oi1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231715AbhH3Sqn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Aug 2021 14:46:43 -0400
-Received: by mail-oi1-f175.google.com with SMTP id u25so15228209oiv.5;
-        Mon, 30 Aug 2021 11:45:49 -0700 (PDT)
+        id S232744AbhH3TEr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 30 Aug 2021 15:04:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56936 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231715AbhH3TEq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Aug 2021 15:04:46 -0400
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55BDC061760
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Aug 2021 12:03:52 -0700 (PDT)
+Received: by mail-yb1-xb2b.google.com with SMTP id k78so26954462ybf.10
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Aug 2021 12:03:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=z2bxnmb0ihpOea9bKFBJwN2QiE7nKKp/Kf8m8WRCLmQ=;
+        b=CNXv9uQY/btGpuGZCGIeiwDkbadXPvVPJGX8i+eMZ94MOA1GM1y93ZATn5Ei0ThY+i
+         JTjfMEaijan7LRBtEtM5It2Yg9iQ5piQQycZRmmHt+mIfxP8D9saNFiGT+F6FaI2mnN1
+         LnCl45iXefqt9y4KBuDEFRCmohy3sNSy1hsaRqjNAcY3XBhkC/aCTPy7kun43JxxXbUF
+         ZiZhgvGhYNK+g9yIztL2E04zfwdkMgBpMRTBngU0KkgHBmqMJtqvDX4lbzZvz4iLVO3Y
+         Lu1pEj2hQ4LRYAsuo6jGb617+9fd0pcLfd/EWU8aZvpFFKvcMZrYsVkpo5VpUeG5F5gK
+         zKUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=vl+usJ71P4/PlgtLXP3kg6YBOTCmsK6JnvVn3SrPT94=;
-        b=ZgTBNarBpqmU+OcBSkeG81ysZ5lEMB7bUBI/j2KLXwpmwgL0px7DxMVGDuMiTOuvNw
-         J1z4jxQ6VMQjn837U5NSKmNFvqZvYvJvEGRHk+5nej5vx/W4dbjZldy8OTaDbh596P1D
-         oxTw4Yd+P75qdzuUSC7zPLZqGN1WpP33nRO6Dyr3Wqf5P6ds0/h+e9lLvVpNtYjkpwdy
-         WTksc0jK+WIwlpbq6rYoSjEC4Hjct1gtDFw3koktPk8uxYYbd/7nBbJje0G4g4c3F/X9
-         4L3Q4Rb4n/rChOHe8UclV/N4GJAVO8Z8c1LnSi/tINNSOZUs8HyoVfzY1eWNqgtg+pLD
-         Noig==
-X-Gm-Message-State: AOAM530ZUJ6G4hyBb8F9n1lXsywnwjsdr3W5HBG/iu5lZNBYJo7PfhGR
-        lvfUTbr5mgaxvG6KGV3MaH7K1JgPlm6fGThZI/o=
-X-Google-Smtp-Source: ABdhPJwTde7kQwugeIZDo6BP76iUdCtUx1SWczsiZTTYIeH1Yi0oQqllH33J7AbdoimyaWkgKLR7/H440CvxDuQ+WRQ=
-X-Received: by 2002:a05:6808:10ce:: with SMTP id s14mr397528ois.157.1630349149186;
- Mon, 30 Aug 2021 11:45:49 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=z2bxnmb0ihpOea9bKFBJwN2QiE7nKKp/Kf8m8WRCLmQ=;
+        b=ZGAWkMqBHqKTflR60QH30WKsVKcDNp5IiJbqXi4oMU3BMIFqjRYtqxUfXWRR37z+gN
+         +bSSewEmIHP7QaUv/Fwb+4zIKvjgy2yGkdP5PybV/DzKe6xFgqyjZsMp3fxOBTKAkljZ
+         m5uDMzcQ1JfRks9q/2GKCLYW0410uwGIFQgMVVXgvZGk2F0RMqRAJiVUnU15yC0wxQqG
+         2onC9UUPzNPEOK7K2JZY3y9NVHYyM7w6qu/DfKKv2322D55TmxLRZUajHWADdyameGxh
+         PL7LQJlDd4A600evTJuH00XEOoqMmglgmRfbIbOObuRe/4M75Rafi6jdt4MiB+WSHDUH
+         rDHg==
+X-Gm-Message-State: AOAM530s96jeA+Xx/arP6dr+7d3QlyK8tg/T97usOGP45ipAhtBWhlJJ
+        mcrokN6/S9kNYZU04i6J3CrCmNsYko90k8C7DZ+OqQ==
+X-Google-Smtp-Source: ABdhPJz9aD6FzTGpzWANYNoSRWYbWlVX4WNltzALVRrIK1we8xo3YfH38PlE1sT1b+6yUjbcDmqzWkoGLExhUMGBhIE=
+X-Received: by 2002:a25:804:: with SMTP id 4mr24050887ybi.346.1630350231696;
+ Mon, 30 Aug 2021 12:03:51 -0700 (PDT)
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 30 Aug 2021 20:45:38 +0200
-Message-ID: <CAJZ5v0icj4uaJ7NuH+V-JQ_5h238juqPsx173Xcs2dMaRK9nvA@mail.gmail.com>
-Subject: [GIT PULL] Device properties framework updates for v5.15-rc1
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <YSeTdb6DbHbBYabN@lunn.ch> <CAGETcx-pSi60NtMM=59cve8kN9ff9fgepQ5R=uJ3Gynzh=0_BA@mail.gmail.com>
+ <YSf/Mps9E77/6kZX@lunn.ch> <CAGETcx_h6moWbS7m4hPm6Ub3T0tWayUQkppjevkYyiA=8AmACw@mail.gmail.com>
+ <YSg+dRPSX9/ph6tb@lunn.ch> <CAGETcx_r8LSxV5=GQ-1qPjh7qGbCqTsSoSkQfxAKL5q+znRoWg@mail.gmail.com>
+ <YSjsQmx8l4MXNvP+@lunn.ch> <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
+ <YSlG4XRGrq5D1/WU@lunn.ch> <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
+ <YSpr/BOZj2PKoC8B@lunn.ch>
+In-Reply-To: <YSpr/BOZj2PKoC8B@lunn.ch>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Mon, 30 Aug 2021 12:03:15 -0700
+Message-ID: <CAGETcx_mjY10WzaOvb=vuojbodK7pvY1srvKmimu4h6xWkeQuQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+On Sat, Aug 28, 2021 at 10:01 AM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Fri, Aug 27, 2021 at 02:33:02PM -0700, Saravana Kannan wrote:
+> > On Fri, Aug 27, 2021 at 1:11 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> > >
+> > > > > I've not yet looked at plain Ethernet drivers. This pattern could also
+> > > > > exist there. And i wonder about other complex structures, i2c bus
+> > > > > multiplexors, you can have interrupt controllers as i2c devices,
+> > > > > etc. So the general case could exist in other places.
+> > > >
+> > > > I haven't seen any generic issues like this reported so far. It's only
+> > > > after adding phy-handle that we are hitting these issues with DSA
+> > > > switches.
+> > >
+> > > Can you run your parser over the 2250 DTB blobs and see how many
+> > > children have dependencies on a parent? That could give us an idea how
+> > > many moles need whacking. And maybe, where in the tree they are
+> > > hiding?
+> >
+> > You are only responding to part of my email. As I said in my previous
+> > email: "There are plenty of cases where it's better to delay the child
+> > device's probe until the parent finishes. You even gave an example[7]
+> > where it would help avoid unnecessary deferred probes." Can you please
+> > give your thoughts on the rest of the points I made too?
+>
+> I must admit, my main problem at the moment is -rc1 in two weeks
+> time. It seems like a number of board with Ethernet switches will be
+> broken, that worked before. phy-handle is not limited to switch
+> drivers, it is also used for Ethernet drivers. So it could be, a
+> number of Ethernet drivers are also going to be broken in -rc1?
 
-Please pull from the tag
+Again, in those cases, based on your FEC example, fw_devlink=on
+actually improves things.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- devprop-5.15-rc1
+> But the issues sounds not to be specific to phy-handle, but any
+> phandle that points back to a parent.
 
-with top-most commit a90887705668fc5587bf5092c38f353ad36c69fd
+I feel like I'm going in circles here. This statement is not true.
+Please read my previous explanations.
 
- Revert "media: device property: Call
-fwnode_graph_get_endpoint_by_id() for fwnode->secondary"
+> So it could be drivers outside
+> of networking are also going to be broken with -rc1?
+> You have been very focused on one or two drivers. I would much rather
+> see you getting an idea of how wide spread this problem is, and what
+> should we do for -rc1?
 
-on top of commit 7c60610d476766e128cc4284bb6349732cbd6606
+Again, it's not a widespread problem as I explained before.
+fw_devlink=on has been the default for 2 kernel versions now. With no
+unfixed reported issues.
 
- Linux 5.14-rc6
+> Even if modifying DSA drivers to component drivers is possible, while
+> not breaking backwards compatibility with DT,
 
-to receive device properties framework changes for 5.15-rc1.
+It should be possible without needing any DT changes.
 
-These improve the handling of secondary firmware nodes in
-fwnode_graph_get_next_endpoint() (Daniel Scally).
+> it is not going to
+> happen over night. That is something for the next merge window, not
+> this merge window.
 
-Thanks!
+Right, I wasn't suggesting the component driver option be implemented
+right away. We were talking about what the longer term proper fix
+would be for DSA (and Ethernet if we actually find issues there) and
+who would do it. That's what I hope this discussion could be.
 
+Also, if we replace Patch 2/2 in this series with the patch below, it
+will work as a generic quick fix for DSA that we could use for -rc1.
+And if we still have issues reported on the phy-handle patch by -rc5
+or so, we could revert the phy-handle patch then so that v5.15 isn't
+broken.
 
----------------
+-Saravana
 
-Daniel Scally (2):
-      device property: Check fwnode->secondary in
-fwnode_graph_get_next_endpoint()
-      Revert "media: device property: Call
-fwnode_graph_get_endpoint_by_id() for fwnode->secondary"
+--- a/net/dsa/dsa2.c
++++ b/net/dsa/dsa2.c
+@@ -1286,6 +1286,17 @@ static int dsa_switch_parse_of(struct
+dsa_switch *ds, struct device_node *dn)
+ {
+        int err;
 
----------------
-
- drivers/base/property.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
++       /* A lot of switch devices have their PHYs as child devices and have
++        * the PHYs depend on the switch as a supplier (Eg: interrupt
++        * controller). With fw_devlink=on, that means the PHYs will defer
++        * probe until the probe() of the switch completes. However, the way
++        * the DSA framework is designed, the PHYs are expected to be probed
++        * successfully before the probe() of the switch completes.
++        *
++        * So, mark the switch devices as a "broken parent" so that fw_devlink
++        * knows not to create device links between PHYs and the parent switch.
++        */
++       np->fwnode.flags |= FWNODE_FLAG_BROKEN_PARENT;
+        err = dsa_switch_parse_member_of(ds, dn);
+        if (err)
+                return err;
