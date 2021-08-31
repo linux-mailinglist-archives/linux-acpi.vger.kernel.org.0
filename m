@@ -2,276 +2,170 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C167A3FCC76
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 19:42:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70BF73FCD38
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 21:20:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233532AbhHaRnW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Aug 2021 13:43:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54262 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231668AbhHaRnV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 13:43:21 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B98C3C061575;
-        Tue, 31 Aug 2021 10:42:25 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id m7-20020a9d4c87000000b0051875f56b95so72526otf.6;
-        Tue, 31 Aug 2021 10:42:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=B1LHGphPEba5NZOfpvC5Fu547UHq90yEuXN6wYUtUOg=;
-        b=Nsh9Rqlg49JA5gem8AN3KCBjJiL9JEbsmZLcVZJZMwy4WD4SO+7OD6DHji7n6AExtF
-         i9k5+0mmfwJQ+gpNK8KheEPwsbIjXlj7xHIwj7xWR0pTl6uPDl9pcCQJVfTm3y0my4z6
-         sfDCiDv6EKVwpIYdNLfGvjZV8IR4+cIeM1tMUPmZPmkwyxtPNFZyoK8rZ/fufsjTHKS5
-         +WRni/XSFdM90RZhSuagCfcwoxNJPvIOLx61n88D8ztQL1kfSi7AJkl3sqnyOWHSYUm8
-         uAziYoc+Kp/GOPUwqg0XZL69yDo+nONmBThvfGffAFzngp9Fmc12kKT//Ot1yYoIzuQC
-         CZ3w==
+        id S232159AbhHaSwd convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 31 Aug 2021 14:52:33 -0400
+Received: from mail-oi1-f172.google.com ([209.85.167.172]:35507 "EHLO
+        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229946AbhHaSwd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 14:52:33 -0400
+Received: by mail-oi1-f172.google.com with SMTP id r26so434725oij.2;
+        Tue, 31 Aug 2021 11:51:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=B1LHGphPEba5NZOfpvC5Fu547UHq90yEuXN6wYUtUOg=;
-        b=ULi/wj16d6By3x0T1dtA+BLDy889GWXptNWoQT0CiF99hCyiAQzwhpZv9fG61zX/jr
-         48BQ1ciwoweL6wXSggVVAQz1ESyj1B40CAHhRjeuvBmlAaSCl9HxKjLipjCpM1TkfSO2
-         MRvF1P/NWVkYVbzRtUa5RY4wKJmAE5DkF/nrU1v5Bq6AzEYj3/RK9Go1GEPaiO5NXsS4
-         aZX9HlEb3kFtAuvuIOCxbX/afz2cNtcJJ21jgJQDMLYbeecxMHjmokfnKqezjoOiNxgh
-         nQgRKr2sa9hHL0yDYJTyFV07ji6UTmNwvesenPamphOdInqglSr/CZ5T3CCSt767UcaE
-         c1ng==
-X-Gm-Message-State: AOAM533e1K37v9YviF2nDqJs8ipxR5Uff7QtSlee+N47rEAhdDxQpWJW
-        L18bG171GoCNxCstz1zDwec=
-X-Google-Smtp-Source: ABdhPJyiiKrDu2x9L8n348OCFziR086Je5juU3I11U3OIknbwQSGanqioLjYclbdKtNBEB2YhmUaYg==
-X-Received: by 2002:a9d:17c5:: with SMTP id j63mr25026360otj.208.1630431745119;
-        Tue, 31 Aug 2021 10:42:25 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id t1sm3987511otp.9.2021.08.31.10.42.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Aug 2021 10:42:24 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 31 Aug 2021 10:42:22 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Xiaoming Ni <nixiaoming@huawei.com>, linux-kernel@vger.kernel.org,
-        peterz@infradead.org, mingo@redhat.com, will@kernel.org,
-        longman@redhat.com, boqun.feng@gmail.com, wangle6@huawei.com,
-        xiaoqian9@huawei.com, shaolexi@huawei.com,
-        linux-acpi@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] semaphore: Add might_sleep() to down_*() family
-Message-ID: <20210831174222.GA1040808@roeck-us.net>
-References: <20210809021215.19991-1-nixiaoming@huawei.com>
- <20210831111322.GA1687117@roeck-us.net>
- <871r69ersb.ffs@tglx>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=pAl6FCn0xjGx+leNhgbAOTdlqbzJCFFy67QvDdz1xcI=;
+        b=gwOAONHIYxfG2o1Gswt7U0C19MTpPbAUWOljzGo/XxlXUq7DXDDlbR/FP7xBBIQWfT
+         uOT8DutB4rVWsiRiEJwFHFBpv4zhiNMOyqVVu22+90fXjYFrZLCUrroBgYgCcXwlb75s
+         L/i/QDs8GmRXpS0vmQAY9UGiYof8VXfzCnFzeuxfuVQHsIwhDBG3lg8Cq87FMBQX1l9A
+         agPrTbCPJ4DXRyZjUX4f1SOfNn37TlODJMF/AcyKdjs63ys91u0irWGGdFjdq/hdJEyK
+         suTzVtSp3ZY8BbLC1UuGTrn0W/3bgQ2qUZSvCKCLgvVLerqIC8tK3l2LSCzGK8sGGSc5
+         6L0Q==
+X-Gm-Message-State: AOAM533Q+fEAPXXiSr+oONNqORUFZn6Oz6efpkS3l5D3PPW5+0Aarhuv
+        BBqSceqAzs2whFHRaIBmrumOOe1oQUThfFIdzqEB2TgL
+X-Google-Smtp-Source: ABdhPJwr3gSGs8wjMkRFy30kSPn37dT9HxNCFRRxYu5Qk4pPjX4Wo6oPAnpNML2i0v6TiCIvjdACwjxhdselfR+ybeg=
+X-Received: by 2002:a05:6808:10c1:: with SMTP id s1mr4132859ois.69.1630435897582;
+ Tue, 31 Aug 2021 11:51:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <871r69ersb.ffs@tglx>
+References: <20210813161842.222414-1-mario.limonciello@amd.com>
+ <CAJZ5v0jynpMMnMBQuyJPYfSG-6JSe5=a6wW0UtUnpGuh68CqkA@mail.gmail.com> <b116a84b-c099-5bf4-6c25-f62cea856f45@amd.com>
+In-Reply-To: <b116a84b-c099-5bf4-6c25-f62cea856f45@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 31 Aug 2021 20:51:26 +0200
+Message-ID: <CAJZ5v0ibUsBCoaz=BRpe42TuiVvSy68wj4VKs+H3Q6uKxCycJQ@mail.gmail.com>
+Subject: Re: [PATCH v2] x86/acpi: Don't add CPUs that are not online capable
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Alexander Deucher <Alexander.Deucher@amd.com>,
+        Ray Huang <Ray.Huang@amd.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>,
+        "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" 
+        <linux-kernel@vger.kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 31, 2021 at 02:13:08PM +0200, Thomas Gleixner wrote:
-> On Tue, Aug 31 2021 at 04:13, Guenter Roeck wrote:
-> 
-> > Hi,
+Sorry for the delay.
+
+On Tue, Aug 17, 2021 at 8:41 PM Limonciello, Mario
+<mario.limonciello@amd.com> wrote:
+>
+> On 8/16/2021 09:04, Rafael J. Wysocki wrote:
+> > On Fri, Aug 13, 2021 at 6:19 PM Mario Limonciello
+> > <mario.limonciello@amd.com> wrote:
+> >>
+> >> A number of systems are showing "hotplug capable" CPUs when they
+> >> are not really hotpluggable.  This is because the MADT has extra
+> >> CPU entries to support different CPUs that may be inserted into
+> >> the socket with different numbers of cores.
+> >>
+> >> Starting with ACPI 6.3 the spec has an Online Capable bit in the
+> >> MADT used to determine whether or not a CPU is hotplug capable
+> >> when the enabled bit is not set.
+> >>
+> >> Link: https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fuefi.org%2Fhtmlspecs%2FACPI_Spec_6_4_html%2F05_ACPI_Software_Programming_Model%2FACPI_Software_Programming_Model.html%3F%23local-apic-flags&amp;data=04%7C01%7Cmario.limonciello%40amd.com%7Ce6a384bf25274f88b49508d960bee40a%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637647195281368169%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=3MWJ5NcRVJ7TP4tJH6uQRbqfZKSqe5RHjGxGbQEP13E%3D&amp;reserved=0
+> >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> >> ---
+> >>   arch/x86/kernel/acpi/boot.c | 10 ++++++++++
+> >>   include/acpi/actbl2.h       |  1 +
+> >>   2 files changed, 11 insertions(+)
+> >>
+> >> Changes from v1->v2:
+> >>   * Check the revision field in MADT to determine if it matches the
+> >>     bump from ACPI 6.3 as suggested by Hanjun Guo
+> >>   * Update description
+> >>
+> >> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+> >> index e55e0c1fad8c..bfa69a5c9c0b 100644
+> >> --- a/arch/x86/kernel/acpi/boot.c
+> >> +++ b/arch/x86/kernel/acpi/boot.c
+> >> @@ -53,6 +53,8 @@ int acpi_ioapic;
+> >>   int acpi_strict;
+> >>   int acpi_disable_cmcff;
+> >>
+> >> +bool acpi_support_online_capable;
 > >
-> > On Mon, Aug 09, 2021 at 10:12:15AM +0800, Xiaoming Ni wrote:
-> >> Semaphore is sleeping lock. Add might_sleep() to down*() family
-> >> (with exception of down_trylock()) to detect atomic context sleep.
-> >> 
-> >> Previously discussed with Peter Zijlstra, see link:
-> >>  https://lore.kernel.org/lkml/20210806082320.GD22037@worktop.programming.kicks-ass.net
-> >> 
-> >> Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
-> >> Acked-by: Will Deacon <will@kernel.org>
+> > Missing static?
+>
+> Ack, thanks.
+>
 > >
-> > This patch results in the following traceback on all arm64 boots with
-> > EFI BIOS.
-> 
-> That's what this change was supposed to catch :)
-> 
-> > The problem is only seen with CONFIG_ACPI_PPTT=y, and thus only on arm64.
-> 
-> The below should fix this.
-> 
-> Thanks,
-> 
->         tglx
-> ---
-> Subject: drivers: base: cacheinfo: Get rid of DEFINE_SMP_CALL_CACHE_FUNCTION()
-> From: Thomas Gleixner <tglx@linutronix.de>
-> Date: Tue, 31 Aug 2021 13:48:34 +0200
-> 
-> DEFINE_SMP_CALL_CACHE_FUNCTION() was usefel before the CPU hotplug rework
-> to ensure that the cache related functions are called on the upcoming CPU
-> because the notifier itself could run on any online CPU.
-> 
-> The hotplug state machine guarantees that the callbacks are invoked on the
-> upcoming CPU. So there is no need to have this SMP function call
-> obfuscation. That indirection was missed when the hotplug notifiers were
-> converted.
-> 
-> This also solves the problem of ARM64 init_cache_level() invoking ACPI
-> functions which take a semaphore in that context. That's invalid as SMP
-> function calls run with interrupts disabled. Running it just from the
-> callback in context of the CPU hotplug thread solves this.
->  
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Fixes: 8571890e1513 ("arm64: Add support for ACPI based firmware tables")
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> >> +
+> >>   /* ACPI SCI override configuration */
+> >>   u8 acpi_sci_flags __initdata;
+> >>   u32 acpi_sci_override_gsi __initdata = INVALID_ACPI_IRQ;
+> >> @@ -138,6 +140,8 @@ static int __init acpi_parse_madt(struct acpi_table_header *table)
+> >>
+> >>                  pr_debug("Local APIC address 0x%08x\n", madt->address);
+> >>          }
+> >> +       if (madt->header.revision >= 5)
+> >> +               acpi_support_online_capable = true;
+> >>
+> >>          default_acpi_madt_oem_check(madt->header.oem_id,
+> >>                                      madt->header.oem_table_id);
+> >> @@ -239,6 +243,12 @@ acpi_parse_lapic(union acpi_subtable_headers * header, const unsigned long end)
+> >>          if (processor->id == 0xff)
+> >>                  return 0;
+> >>
+> >> +       /* don't register processors that can not be onlined */
+> >> +       if (acpi_support_online_capable &&
+> >> +           !(processor->lapic_flags & ACPI_MADT_ENABLED) &&
+> >> +           !(processor->lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
+> >> +               return 0;
+> >> +
+> >>          /*
+> >>           * We need to register disabled CPU as well to permit
+> >>           * counting disabled CPUs. This allows us to size
+> >> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+> >> index 2069ac38a4e2..fae45e383987 100644
+> >> --- a/include/acpi/actbl2.h
+> >> +++ b/include/acpi/actbl2.h
+> >
+> > The one below is an ACPICA change and I'd prefer it to be integrated
+> > via the upstream ACPICA.
+> >
+> > Could you prepare an ACPICA pull request for just the bit below and
+> > send it via GitHub?
+>
+> Sure thing.
+> http://github.com/acpica/acpica/pull/708/
+>
+> They said they would take it later this month or next month.
+>
+> Given that, how do you want to proceed with the first part of this?
+>
+> Should I send a 2 patch series that will add the MADT bit to actbl2.h in
+> advance of their next release, or should I wait to resubmit until after
+> their next release and you've brought it into your tree?
 
-The warning is no longer seen with this patch applied on top of
-v5.14-1100-gb91db6a0b52e, and I don't see any new problems on riscv,
-x86/x86_64, or mips.
+If you want this to go into 5.15, I would suggest going for the first option.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Knowing that the ACPICA patch is going to reach upstream at one point,
+I can put it into Linux in advance.
 
-Thanks,
-Guenter
-
-> ---
->  arch/arm64/kernel/cacheinfo.c   |    7 ++-----
->  arch/mips/kernel/cacheinfo.c    |    7 ++-----
->  arch/riscv/kernel/cacheinfo.c   |    7 ++-----
->  arch/x86/kernel/cpu/cacheinfo.c |    7 ++-----
->  include/linux/cacheinfo.h       |   18 ------------------
->  5 files changed, 8 insertions(+), 38 deletions(-)
-> 
-> --- a/arch/arm64/kernel/cacheinfo.c
-> +++ b/arch/arm64/kernel/cacheinfo.c
-> @@ -43,7 +43,7 @@ static void ci_leaf_init(struct cacheinf
->  	this_leaf->type = type;
->  }
->  
-> -static int __init_cache_level(unsigned int cpu)
-> +int init_cache_level(unsigned int cpu)
->  {
->  	unsigned int ctype, level, leaves, fw_level;
->  	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-> @@ -78,7 +78,7 @@ static int __init_cache_level(unsigned i
->  	return 0;
->  }
->  
-> -static int __populate_cache_leaves(unsigned int cpu)
-> +int populate_cache_leaves(unsigned int cpu)
->  {
->  	unsigned int level, idx;
->  	enum cache_type type;
-> @@ -97,6 +97,3 @@ static int __populate_cache_leaves(unsig
->  	}
->  	return 0;
->  }
-> -
-> -DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
-> -DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
-> --- a/arch/mips/kernel/cacheinfo.c
-> +++ b/arch/mips/kernel/cacheinfo.c
-> @@ -17,7 +17,7 @@ do {								\
->  	leaf++;							\
->  } while (0)
->  
-> -static int __init_cache_level(unsigned int cpu)
-> +int init_cache_level(unsigned int cpu)
->  {
->  	struct cpuinfo_mips *c = &current_cpu_data;
->  	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-> @@ -74,7 +74,7 @@ static void fill_cpumask_cluster(int cpu
->  			cpumask_set_cpu(cpu1, cpu_map);
->  }
->  
-> -static int __populate_cache_leaves(unsigned int cpu)
-> +int populate_cache_leaves(unsigned int cpu)
->  {
->  	struct cpuinfo_mips *c = &current_cpu_data;
->  	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-> @@ -114,6 +114,3 @@ static int __populate_cache_leaves(unsig
->  
->  	return 0;
->  }
-> -
-> -DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
-> -DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
-> --- a/arch/riscv/kernel/cacheinfo.c
-> +++ b/arch/riscv/kernel/cacheinfo.c
-> @@ -113,7 +113,7 @@ static void fill_cacheinfo(struct cachei
->  	}
->  }
->  
-> -static int __init_cache_level(unsigned int cpu)
-> +int init_cache_level(unsigned int cpu)
->  {
->  	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
->  	struct device_node *np = of_cpu_device_node_get(cpu);
-> @@ -155,7 +155,7 @@ static int __init_cache_level(unsigned i
->  	return 0;
->  }
->  
-> -static int __populate_cache_leaves(unsigned int cpu)
-> +int populate_cache_leaves(unsigned int cpu)
->  {
->  	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
->  	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
-> @@ -187,6 +187,3 @@ static int __populate_cache_leaves(unsig
->  
->  	return 0;
->  }
-> -
-> -DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
-> -DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
-> --- a/arch/x86/kernel/cpu/cacheinfo.c
-> +++ b/arch/x86/kernel/cpu/cacheinfo.c
-> @@ -985,7 +985,7 @@ static void ci_leaf_init(struct cacheinf
->  	this_leaf->priv = base->nb;
->  }
->  
-> -static int __init_cache_level(unsigned int cpu)
-> +int init_cache_level(unsigned int cpu)
->  {
->  	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
->  
-> @@ -1014,7 +1014,7 @@ static void get_cache_id(int cpu, struct
->  	id4_regs->id = c->apicid >> index_msb;
->  }
->  
-> -static int __populate_cache_leaves(unsigned int cpu)
-> +int populate_cache_leaves(unsigned int cpu)
->  {
->  	unsigned int idx, ret;
->  	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-> @@ -1033,6 +1033,3 @@ static int __populate_cache_leaves(unsig
->  
->  	return 0;
->  }
-> -
-> -DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
-> -DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
-> --- a/include/linux/cacheinfo.h
-> +++ b/include/linux/cacheinfo.h
-> @@ -79,24 +79,6 @@ struct cpu_cacheinfo {
->  	bool cpu_map_populated;
->  };
->  
-> -/*
-> - * Helpers to make sure "func" is executed on the cpu whose cache
-> - * attributes are being detected
-> - */
-> -#define DEFINE_SMP_CALL_CACHE_FUNCTION(func)			\
-> -static inline void _##func(void *ret)				\
-> -{								\
-> -	int cpu = smp_processor_id();				\
-> -	*(int *)ret = __##func(cpu);				\
-> -}								\
-> -								\
-> -int func(unsigned int cpu)					\
-> -{								\
-> -	int ret;						\
-> -	smp_call_function_single(cpu, _##func, &ret, true);	\
-> -	return ret;						\
-> -}
-> -
->  struct cpu_cacheinfo *get_cpu_cacheinfo(unsigned int cpu);
->  int init_cache_level(unsigned int cpu);
->  int populate_cache_leaves(unsigned int cpu);
+> >
+> >> @@ -808,6 +808,7 @@ struct acpi_madt_multiproc_wakeup_mailbox {
+> >>   /* MADT Local APIC flags */
+> >>
+> >>   #define ACPI_MADT_ENABLED           (1)        /* 00: Processor is usable if set */
+> >> +#define ACPI_MADT_ONLINE_CAPABLE    (2)        /* 01: System HW supports enabling processor at runtime */
+> >>
+> >>   /* MADT MPS INTI flags (inti_flags) */
+> >>
+> >> --
+>
