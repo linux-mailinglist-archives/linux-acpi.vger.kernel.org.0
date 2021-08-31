@@ -2,109 +2,248 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF20B3FC6BA
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 14:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 245FB3FC72F
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 14:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbhHaLmB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Aug 2021 07:42:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53534 "EHLO
+        id S241566AbhHaMRI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Aug 2021 08:17:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230266AbhHaLmB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 07:42:01 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 544D0C061575;
-        Tue, 31 Aug 2021 04:41:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=l//iG72UQUgu2Sgam8e4jXFgahV9t6yqfjss357Zl/I=; b=UGQNARUjmU0UNrllsXfAZ/+m1u
-        ke4UgWNCQFKzrWa8HwEqXRnENub5IcaTf3Rj7I6DfFq0wgy3RrhOYTffJ+S4mmSZ0fc6F8+iF1+13
-        PM9mY5u0NoBzyo/7S1cNU9MNrLY+8DNeinkLVQ1bzpfLsvfv9IE45Fz7lWLJs9+mvCzBiDRcySvMv
-        wv+Yia6qSQqaq8RLI8whUARE/jOEh7s+puisO99TWfuFfke1LaCDfbkA2x4D4i2NhlfaLU+crDxTd
-        Rc61oJN7dnd+6EvV5PKvzomk1Z4Qlb1Il9w6vi1tiHdNcdf4+VqOun8wRhWydc0tbmwB9l99eWLwV
-        d5gmoqLg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mL28C-00EgZk-Kl; Tue, 31 Aug 2021 11:40:44 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 870F4300109;
-        Tue, 31 Aug 2021 13:40:43 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 3F60F2C83EADB; Tue, 31 Aug 2021 13:40:43 +0200 (CEST)
-Date:   Tue, 31 Aug 2021 13:40:43 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Xiaoming Ni <nixiaoming@huawei.com>, linux-kernel@vger.kernel.org,
+        with ESMTP id S241669AbhHaMQ7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 08:16:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB8E7C02559A;
+        Tue, 31 Aug 2021 05:13:10 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1630411989;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=SmjNz3mhJ0BePJvvOp7xQW1xRXoh88iEuf6wgamwsMk=;
+        b=hYO+DpL016+ezqsk4QCzP3VZhKw8e1usy0SRkOeZUN6eHOpGUiZnnFwkPC3HaQbsmj3MxL
+        vvXKBKAFS0Yvxa2xHf8CjUhEHds09Xs8zJZJnCAeGIGys5AYmWzKGXowIGq4ccgu/W2IHL
+        QTpk2LdcccX3kdHkPripb5gnf5YMJp9tQNpCQwoyYkC9kUwd7FYng9DA8/iP8uMenp5tFD
+        sDNFV0awiRY791VYFd2C45PfFUh6TpkpRgUP7df0SavZnbN9xyFhzc1x07rH/crVaZUc2B
+        0HJs/jFtkX5e01tKSqtlCvogiPwBNQ0JFyZoeTj+6yr4iF1uL4N57+YJsH39kg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1630411989;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=SmjNz3mhJ0BePJvvOp7xQW1xRXoh88iEuf6wgamwsMk=;
+        b=4ZnA/q1td52wYvVQktzxACKLVnKy5m0UpBvadm/N2rv25B0KpAhwqtMko1L+c0YUNbV6Al
+        H72RrE5KW0CD7JAA==
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Xiaoming Ni <nixiaoming@huawei.com>
+Cc:     linux-kernel@vger.kernel.org, peterz@infradead.org,
         mingo@redhat.com, will@kernel.org, longman@redhat.com,
         boqun.feng@gmail.com, wangle6@huawei.com, xiaoqian9@huawei.com,
         shaolexi@huawei.com, linux-acpi@vger.kernel.org,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Subject: Re: [PATCH] semaphore: Add might_sleep() to down_*() family
-Message-ID: <YS4VO7iz73jXR9nN@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210831111322.GA1687117@roeck-us.net>
 References: <20210809021215.19991-1-nixiaoming@huawei.com>
  <20210831111322.GA1687117@roeck-us.net>
+Date:   Tue, 31 Aug 2021 14:13:08 +0200
+Message-ID: <871r69ersb.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210831111322.GA1687117@roeck-us.net>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 31, 2021 at 04:13:22AM -0700, Guenter Roeck wrote:
+On Tue, Aug 31 2021 at 04:13, Guenter Roeck wrote:
+
 > Hi,
-> 
+>
 > On Mon, Aug 09, 2021 at 10:12:15AM +0800, Xiaoming Ni wrote:
-> > Semaphore is sleeping lock. Add might_sleep() to down*() family
-> > (with exception of down_trylock()) to detect atomic context sleep.
-> > 
-> > Previously discussed with Peter Zijlstra, see link:
-> >  https://lore.kernel.org/lkml/20210806082320.GD22037@worktop.programming.kicks-ass.net
-> > 
-> > Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
-> > Acked-by: Will Deacon <will@kernel.org>
-> 
+>> Semaphore is sleeping lock. Add might_sleep() to down*() family
+>> (with exception of down_trylock()) to detect atomic context sleep.
+>> 
+>> Previously discussed with Peter Zijlstra, see link:
+>>  https://lore.kernel.org/lkml/20210806082320.GD22037@worktop.programming.kicks-ass.net
+>> 
+>> Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
+>> Acked-by: Will Deacon <will@kernel.org>
+>
 > This patch results in the following traceback on all arm64 boots with
 > EFI BIOS.
-> 
-> The problem is only seen with CONFIG_ACPI_PPTT=y, and thus only on arm64.
-> 
-> Guenter
-> 
-> ---
-> [   14.048540] BUG: sleeping function called from invalid context at kernel/locking/semaphore.c:163
-> [   14.048700] in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 14, name: cpuhp/0
-> [   14.048865] 2 locks held by cpuhp/0/14:
-> [   14.048943]  #0: ffff8000125799b0 (cpu_hotplug_lock){++++}-{0:0}, at: cpuhp_thread_fun+0x38/0x254
-> [   14.049320]  #1: ffff8000125799d8 (cpuhp_state-up){+.+.}-{0:0}, at: cpuhp_thread_fun+0x38/0x254
-> [   14.049523] irq event stamp: 62
-> [   14.049580] hardirqs last  enabled at (61): [<ffff800010269690>] finish_task_switch.isra.0+0xd0/0x2f0
-> [   14.049689] hardirqs last disabled at (62): [<ffff800010313ce8>] generic_exec_single+0x138/0x190
-> [   14.049785] softirqs last  enabled at (0): [<ffff8000102245d4>] copy_process+0x634/0x1af4
-> [   14.049876] softirqs last disabled at (0): [<0000000000000000>] 0x0
-> [   14.050299] CPU: 0 PID: 14 Comm: cpuhp/0 Not tainted 5.14.0-01100-gb91db6a0b52e #1
-> [   14.050452] Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
-> [   14.050694] Call trace:
-> [   14.050753]  dump_backtrace+0x0/0x19c
-> [   14.050839]  show_stack+0x1c/0x30
-> [   14.050892]  dump_stack_lvl+0x9c/0xd8
-> [   14.050949]  dump_stack+0x1c/0x38
-> [   14.050999]  ___might_sleep+0x154/0x200
-> [   14.051053]  __might_sleep+0x54/0x90
-> [   14.051106]  down_timeout+0x34/0x90
-> [   14.051159]  acpi_os_wait_semaphore+0x68/0x9c
-> [   14.051218]  acpi_ut_acquire_mutex+0x50/0xbc
-> [   14.051277]  acpi_get_table+0x3c/0xc0
-> [   14.051330]  acpi_find_last_cache_level+0x44/0x12c
-> [   14.051391]  _init_cache_level+0xd8/0xe4
-> [   14.051446]  generic_exec_single+0xf8/0x190
-> [   14.051502]  smp_call_function_single+0x174/0x1e0
 
-This is the patch working as intended.. You simply cannot schedule with
-interrupts disabled as per the callchain.
+That's what this change was supposed to catch :)
+
+> The problem is only seen with CONFIG_ACPI_PPTT=y, and thus only on arm64.
+
+The below should fix this.
+
+Thanks,
+
+        tglx
+---
+Subject: drivers: base: cacheinfo: Get rid of DEFINE_SMP_CALL_CACHE_FUNCTION()
+From: Thomas Gleixner <tglx@linutronix.de>
+Date: Tue, 31 Aug 2021 13:48:34 +0200
+
+DEFINE_SMP_CALL_CACHE_FUNCTION() was usefel before the CPU hotplug rework
+to ensure that the cache related functions are called on the upcoming CPU
+because the notifier itself could run on any online CPU.
+
+The hotplug state machine guarantees that the callbacks are invoked on the
+upcoming CPU. So there is no need to have this SMP function call
+obfuscation. That indirection was missed when the hotplug notifiers were
+converted.
+
+This also solves the problem of ARM64 init_cache_level() invoking ACPI
+functions which take a semaphore in that context. That's invalid as SMP
+function calls run with interrupts disabled. Running it just from the
+callback in context of the CPU hotplug thread solves this.
+ 
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 8571890e1513 ("arm64: Add support for ACPI based firmware tables")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+---
+ arch/arm64/kernel/cacheinfo.c   |    7 ++-----
+ arch/mips/kernel/cacheinfo.c    |    7 ++-----
+ arch/riscv/kernel/cacheinfo.c   |    7 ++-----
+ arch/x86/kernel/cpu/cacheinfo.c |    7 ++-----
+ include/linux/cacheinfo.h       |   18 ------------------
+ 5 files changed, 8 insertions(+), 38 deletions(-)
+
+--- a/arch/arm64/kernel/cacheinfo.c
++++ b/arch/arm64/kernel/cacheinfo.c
+@@ -43,7 +43,7 @@ static void ci_leaf_init(struct cacheinf
+ 	this_leaf->type = type;
+ }
+ 
+-static int __init_cache_level(unsigned int cpu)
++int init_cache_level(unsigned int cpu)
+ {
+ 	unsigned int ctype, level, leaves, fw_level;
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+@@ -78,7 +78,7 @@ static int __init_cache_level(unsigned i
+ 	return 0;
+ }
+ 
+-static int __populate_cache_leaves(unsigned int cpu)
++int populate_cache_leaves(unsigned int cpu)
+ {
+ 	unsigned int level, idx;
+ 	enum cache_type type;
+@@ -97,6 +97,3 @@ static int __populate_cache_leaves(unsig
+ 	}
+ 	return 0;
+ }
+-
+-DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
+-DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
+--- a/arch/mips/kernel/cacheinfo.c
++++ b/arch/mips/kernel/cacheinfo.c
+@@ -17,7 +17,7 @@ do {								\
+ 	leaf++;							\
+ } while (0)
+ 
+-static int __init_cache_level(unsigned int cpu)
++int init_cache_level(unsigned int cpu)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+@@ -74,7 +74,7 @@ static void fill_cpumask_cluster(int cpu
+ 			cpumask_set_cpu(cpu1, cpu_map);
+ }
+ 
+-static int __populate_cache_leaves(unsigned int cpu)
++int populate_cache_leaves(unsigned int cpu)
+ {
+ 	struct cpuinfo_mips *c = &current_cpu_data;
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+@@ -114,6 +114,3 @@ static int __populate_cache_leaves(unsig
+ 
+ 	return 0;
+ }
+-
+-DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
+-DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
+--- a/arch/riscv/kernel/cacheinfo.c
++++ b/arch/riscv/kernel/cacheinfo.c
+@@ -113,7 +113,7 @@ static void fill_cacheinfo(struct cachei
+ 	}
+ }
+ 
+-static int __init_cache_level(unsigned int cpu)
++int init_cache_level(unsigned int cpu)
+ {
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+ 	struct device_node *np = of_cpu_device_node_get(cpu);
+@@ -155,7 +155,7 @@ static int __init_cache_level(unsigned i
+ 	return 0;
+ }
+ 
+-static int __populate_cache_leaves(unsigned int cpu)
++int populate_cache_leaves(unsigned int cpu)
+ {
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+ 	struct cacheinfo *this_leaf = this_cpu_ci->info_list;
+@@ -187,6 +187,3 @@ static int __populate_cache_leaves(unsig
+ 
+ 	return 0;
+ }
+-
+-DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
+-DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
+--- a/arch/x86/kernel/cpu/cacheinfo.c
++++ b/arch/x86/kernel/cpu/cacheinfo.c
+@@ -985,7 +985,7 @@ static void ci_leaf_init(struct cacheinf
+ 	this_leaf->priv = base->nb;
+ }
+ 
+-static int __init_cache_level(unsigned int cpu)
++int init_cache_level(unsigned int cpu)
+ {
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+ 
+@@ -1014,7 +1014,7 @@ static void get_cache_id(int cpu, struct
+ 	id4_regs->id = c->apicid >> index_msb;
+ }
+ 
+-static int __populate_cache_leaves(unsigned int cpu)
++int populate_cache_leaves(unsigned int cpu)
+ {
+ 	unsigned int idx, ret;
+ 	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+@@ -1033,6 +1033,3 @@ static int __populate_cache_leaves(unsig
+ 
+ 	return 0;
+ }
+-
+-DEFINE_SMP_CALL_CACHE_FUNCTION(init_cache_level)
+-DEFINE_SMP_CALL_CACHE_FUNCTION(populate_cache_leaves)
+--- a/include/linux/cacheinfo.h
++++ b/include/linux/cacheinfo.h
+@@ -79,24 +79,6 @@ struct cpu_cacheinfo {
+ 	bool cpu_map_populated;
+ };
+ 
+-/*
+- * Helpers to make sure "func" is executed on the cpu whose cache
+- * attributes are being detected
+- */
+-#define DEFINE_SMP_CALL_CACHE_FUNCTION(func)			\
+-static inline void _##func(void *ret)				\
+-{								\
+-	int cpu = smp_processor_id();				\
+-	*(int *)ret = __##func(cpu);				\
+-}								\
+-								\
+-int func(unsigned int cpu)					\
+-{								\
+-	int ret;						\
+-	smp_call_function_single(cpu, _##func, &ret, true);	\
+-	return ret;						\
+-}
+-
+ struct cpu_cacheinfo *get_cpu_cacheinfo(unsigned int cpu);
+ int init_cache_level(unsigned int cpu);
+ int populate_cache_leaves(unsigned int cpu);
