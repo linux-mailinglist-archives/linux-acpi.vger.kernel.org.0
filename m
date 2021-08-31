@@ -2,230 +2,251 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C038D3FC210
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 07:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B22E3FC4D6
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 11:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230518AbhHaFIb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Aug 2021 01:08:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51646 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229681AbhHaFIb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 01:08:31 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 659D1C061575
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Aug 2021 22:07:36 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id z19so24899299edi.9
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Aug 2021 22:07:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=solid-run-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+9JLMUEGuTSyUphLOiuK/o3WrAb7TWs20Kwls76RPEk=;
-        b=X0wZCLCMDC9sOHDwi7WuzV8/HIEOdVWVnVcQzbv+QeObhsCAvWlPLJ+q1K4decobT2
-         Rjz7HVerG6qQBUs316Ns6qzYJ7J+gb0AgJWwZFZlf8GkGzI8MelZQO5E83uTeiXBsNS+
-         q96xFs8glcHHP7ug/irAHZ1TtvDKvpD4AqJPHpueP047PMOiXfDrOnXwEQEE3jAzfsoa
-         SU13O9Po/RysClarcjxeCkvfTJ1NPvfYXb6ahOQb41hMuA7HPhcdmwKTpC/Bqb1eCje6
-         XtwcfbKbrJEoOit6kq/cZU4HYiGbNa3Uc2gI1wQDztKzQ2g1F2RytBFxm+S3LflKARBL
-         UCrg==
+        id S240580AbhHaJJU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Aug 2021 05:09:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:22681 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240537AbhHaJJS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 31 Aug 2021 05:09:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1630400903;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=lCeb7MSVHIA6AQvPBMrpCMcewt6C5Hp/EtiNe37zzes=;
+        b=i5pQA4mz1BFv+EFcR1ZstiuLo5fwLkAUMye5dkOkldQCBVzLmxtXglU/0MhcCMmNQfL4zB
+        8hVCHfwaRjQeFqsHTZEhKqTxVPt1G0h9DK6rwVIIUILPY48bK0IeBd4hlplEdqloqIMTLs
+        AugHdcgbpTJ4VjH4JLZ3+wMtMSmxqlk=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-601-o2oj4HPQNOe2AB-pQw_yRw-1; Tue, 31 Aug 2021 05:08:20 -0400
+X-MC-Unique: o2oj4HPQNOe2AB-pQw_yRw-1
+Received: by mail-yb1-f200.google.com with SMTP id h143-20020a25d095000000b0059c2e43cd3eso5295802ybg.12
+        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 02:08:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=+9JLMUEGuTSyUphLOiuK/o3WrAb7TWs20Kwls76RPEk=;
-        b=dn5Fvuh+li1UA7qJl5neFkU0STk406X8sK1WtcOxqW1NjC1tf8yCZrpjCDCNwhGRG4
-         fmWrDNKPORk1xDGMCdJIBEyzgnCHxT/VtZpmCfRWQ787pMe4nSsHuSEYgPtF+BkeN3is
-         PT3GprlK+4exDkffrdtvUgRgZAaGPEtB18B44L7pGCoypoqHdDXY1VL+seA84mLuod7q
-         g8Uw6dF/Nkwuh2fv4w73TmHCaBgYzeobj6Umq8ULhsTjsvAz+JSgoX00A4wYabprQu7/
-         S74zslXsVboq46w5VIj4UGI+sBW8JOf/wU8GbAhtjvziisbQrRGaap4XBN0/A8NlCzCi
-         8V+Q==
-X-Gm-Message-State: AOAM532AsIDzGNZLXQXcxq0f1o2zR5RUzgsRKEpIgT1abtVi8eRL1D3x
-        kaE6A+xv/sdDHnS2LN5J73zlVGK/0zI1LatlHc0AWzAgc/o=
-X-Google-Smtp-Source: ABdhPJw3bs9klmA4ZwzYsj0W52rj0T5yFqeP2kB+dZoyUd8oOW4bpTE8uDnH+x9cAw6FSmg6O3ZRvWW3aUfpYw8S8OI=
-X-Received: by 2002:aa7:dd12:: with SMTP id i18mr27577652edv.368.1630386455037;
- Mon, 30 Aug 2021 22:07:35 -0700 (PDT)
+        bh=lCeb7MSVHIA6AQvPBMrpCMcewt6C5Hp/EtiNe37zzes=;
+        b=IKBZ13jyVi5fGdRnGjJxIHt0CGOtrn6uDXzoAFiJ/QTtXqZE5NL7umk5hlDZWlB3B4
+         1YNxhzmp9g0Dn6vBG3DkFFN9RGRp7hAD9OtkwmWbmi0p0ANaZQXxBm55CFKi+fi9daCb
+         etm0ytKH9DLQTiE7/TLpF9Fh+1Fq0gRRYPpBN9zVeNL9ehGv6hAM9XHIlvOIJvm0BEQu
+         PgWTKRbGkMM0NxKz4qfMSSC3dJTo68Y1bc7lUIp8gnnVBwDfCI6QsiOYJQw48nKP9S+/
+         YGWW9pSvlp+FG4b2h6hmrw7BFPMkRJefQH+FktFORLMzTwVhQj10nZPyljAFz18P9MT2
+         u4tA==
+X-Gm-Message-State: AOAM532h5aU8eHVihszsaYlK/A8HewmiID3ihzcrg2Gq/JklR/HdWyuI
+        cs337pSMz47MLl1idS+AXB3oGeYzfDzsHQCaXaqEIykORG3Mfz9hASP5Mj8Dtn3+d0hSBLVFAPW
+        qd+0qrDQKlBWHIzRYLjWo6aCau4HPK0mi4NOhLQ==
+X-Received: by 2002:a25:c184:: with SMTP id r126mr28651654ybf.123.1630400899633;
+        Tue, 31 Aug 2021 02:08:19 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJy4ZNnqHdPHd1KpwqFLFV6AFeVHb5LZ7Jb5RG2vtJXhk7vybNwPbdTc2aQhHuASLbfSbAuaEwPm90oIL61rhUM=
+X-Received: by 2002:a25:c184:: with SMTP id r126mr28651621ybf.123.1630400899378;
+ Tue, 31 Aug 2021 02:08:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
- <CAMj1kXHNjeDb2HuPeV_6Er4oALVKFz+g=gQ_0rf+JW22NxqqTA@mail.gmail.com>
- <8df7fc81b00142b68126efd3c700a579@huawei.com> <CAMj1kXHTdDWz14B5Smzfmj5NQqCTTsgFjam6EevvOwFKLsmJzw@mail.gmail.com>
-In-Reply-To: <CAMj1kXHTdDWz14B5Smzfmj5NQqCTTsgFjam6EevvOwFKLsmJzw@mail.gmail.com>
-From:   Jon Nettleton <jon@solid-run.com>
-Date:   Tue, 31 Aug 2021 07:06:58 +0200
-Message-ID: <CABdtJHuYgw7cX2=uKMmaiC8UmVo7czk9oVrsc=hyZ4fFGoEskA@mail.gmail.com>
-Subject: Re: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        Steven Price <steven.price@arm.com>,
-        Sami Mujawar <Sami.Mujawar@arm.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        yangyicong <yangyicong@huawei.com>
+References: <20210616085118.1141101-1-omosnace@redhat.com> <CAHC9VhSr2KpeBXuyoHR3_hs+qczFUaBx0oCSMfBBA5UNYU+0KA@mail.gmail.com>
+In-Reply-To: <CAHC9VhSr2KpeBXuyoHR3_hs+qczFUaBx0oCSMfBBA5UNYU+0KA@mail.gmail.com>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Tue, 31 Aug 2021 11:08:08 +0200
+Message-ID: <CAFqZXNvJtMOfLk-SLt2S2qt=+-x8fm9jS3NKxFoT0_5d2=8Ckg@mail.gmail.com>
+Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
+ lockdown checks
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Linux Security Module list 
+        <linux-security-module@vger.kernel.org>,
+        James Morris <jmorris@namei.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        SElinux list <selinux@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
+        linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+        linux-efi@vger.kernel.org,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-serial@vger.kernel.org, bpf <bpf@vger.kernel.org>,
+        network dev <netdev@vger.kernel.org>,
+        kexec@lists.infradead.org,
+        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Aug 5, 2021 at 4:09 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+On Fri, Jun 18, 2021 at 5:40 AM Paul Moore <paul@paul-moore.com> wrote:
+> On Wed, Jun 16, 2021 at 4:51 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> >
+> > Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
+> > lockdown") added an implementation of the locked_down LSM hook to
+> > SELinux, with the aim to restrict which domains are allowed to perform
+> > operations that would breach lockdown.
+> >
+> > However, in several places the security_locked_down() hook is called in
+> > situations where the current task isn't doing any action that would
+> > directly breach lockdown, leading to SELinux checks that are basically
+> > bogus.
+> >
+> > To fix this, add an explicit struct cred pointer argument to
+> > security_lockdown() and define NULL as a special value to pass instead
+> > of current_cred() in such situations. LSMs that take the subject
+> > credentials into account can then fall back to some default or ignore
+> > such calls altogether. In the SELinux lockdown hook implementation, use
+> > SECINITSID_KERNEL in case the cred argument is NULL.
+> >
+> > Most of the callers are updated to pass current_cred() as the cred
+> > pointer, thus maintaining the same behavior. The following callers are
+> > modified to pass NULL as the cred pointer instead:
+> > 1. arch/powerpc/xmon/xmon.c
+> >      Seems to be some interactive debugging facility. It appears that
+> >      the lockdown hook is called from interrupt context here, so it
+> >      should be more appropriate to request a global lockdown decision.
+> > 2. fs/tracefs/inode.c:tracefs_create_file()
+> >      Here the call is used to prevent creating new tracefs entries when
+> >      the kernel is locked down. Assumes that locking down is one-way -
+> >      i.e. if the hook returns non-zero once, it will never return zero
+> >      again, thus no point in creating these files. Also, the hook is
+> >      often called by a module's init function when it is loaded by
+> >      userspace, where it doesn't make much sense to do a check against
+> >      the current task's creds, since the task itself doesn't actually
+> >      use the tracing functionality (i.e. doesn't breach lockdown), just
+> >      indirectly makes some new tracepoints available to whoever is
+> >      authorized to use them.
+> > 3. net/xfrm/xfrm_user.c:copy_to_user_*()
+> >      Here a cryptographic secret is redacted based on the value returned
+> >      from the hook. There are two possible actions that may lead here:
+> >      a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
+> >         task context is relevant, since the dumped data is sent back to
+> >         the current task.
+> >      b) When adding/deleting/updating an SA via XFRM_MSG_xxxSA, the
+> >         dumped SA is broadcasted to tasks subscribed to XFRM events -
+> >         here the current task context is not relevant as it doesn't
+> >         represent the tasks that could potentially see the secret.
+> >      It doesn't seem worth it to try to keep using the current task's
+> >      context in the a) case, since the eventual data leak can be
+> >      circumvented anyway via b), plus there is no way for the task to
+> >      indicate that it doesn't care about the actual key value, so the
+> >      check could generate a lot of "false alert" denials with SELinux.
+> >      Thus, let's pass NULL instead of current_cred() here faute de
+> >      mieux.
+> >
+> > Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
+> > Improvements-suggested-by: Paul Moore <paul@paul-moore.com>
+> > Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
+> > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 >
-> On Thu, 5 Aug 2021 at 15:35, Shameerali Kolothum Thodi
-> <shameerali.kolothum.thodi@huawei.com> wrote:
-> >
-> >
-> >
-> > > -----Original Message-----
-> > > From: Ard Biesheuvel [mailto:ardb@kernel.org]
-> > > Sent: 05 August 2021 14:23
-> > > To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-> > > Cc: Linux ARM <linux-arm-kernel@lists.infradead.org>; ACPI Devel Maling List
-> > > <linux-acpi@vger.kernel.org>; Linux IOMMU
-> > > <iommu@lists.linux-foundation.org>; Linuxarm <linuxarm@huawei.com>;
-> > > Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>; Joerg Roedel
-> > > <joro@8bytes.org>; Robin Murphy <robin.murphy@arm.com>; Will Deacon
-> > > <will@kernel.org>; wanghuiqiang <wanghuiqiang@huawei.com>; Guohanjun
-> > > (Hanjun Guo) <guohanjun@huawei.com>; Steven Price
-> > > <steven.price@arm.com>; Sami Mujawar <Sami.Mujawar@arm.com>; Jon
-> > > Nettleton <jon@solid-run.com>; Eric Auger <eric.auger@redhat.com>;
-> > > yangyicong <yangyicong@huawei.com>
-> > > Subject: Re: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
-> > >
-> > > On Thu, 5 Aug 2021 at 10:10, Shameer Kolothum
-> > > <shameerali.kolothum.thodi@huawei.com> wrote:
-> > > >
-> > > > Hi,
-> > > >
-> > > > The series adds support to IORT RMR nodes specified in IORT
-> > > > Revision E.b -ARM DEN 0049E[0]. RMR nodes are used to describe
-> > > > memory ranges that are used by endpoints and require a unity
-> > > > mapping in SMMU.
-> > > >
-> > > > We have faced issues with 3408iMR RAID controller cards which
-> > > > fail to boot when SMMU is enabled. This is because these
-> > > > controllers make use of host memory for various caching related
-> > > > purposes and when SMMU is enabled the iMR firmware fails to
-> > > > access these memory regions as there is no mapping for them.
-> > > > IORT RMR provides a way for UEFI to describe and report these
-> > > > memory regions so that the kernel can make a unity mapping for
-> > > > these in SMMU.
-> > > >
-> > >
-> > > Does this mean we are ignoring the RMR memory ranges, and exposing the
-> > > entire physical address space to devices using the stream IDs in
-> > > question?
-> >
-> > Nope. RMR node is used to describe the memory ranges used by end points
-> > behind SMMU. And this information is used to create 1 : 1 mappings for those
-> > ranges in SMMU. Anything outside those ranges will result in translation
-> > fault(if there are no other dynamic DMA mappings).
-> >
->
-> Excellent! It was not obvious to me from looking at the patches, so I
-> had to ask.
->
-> Thanks,
-> Ard.
->
-> >
-> > >
-> > > > Change History:
-> > > >
-> > > > v6 --> v7
-> > > >
-> > > > The only change from v6 is the fix pointed out by Steve to
-> > > > the SMMUv2 SMR bypass install in patch #8.
-> > > >
-> > > > Thanks to the Tested-by tags by Laurentiu with SMMUv2 and
-> > > > Hanjun/Huiqiang with SMMUv3 for v6. I haven't added the tags
-> > > > yet as the series still needs more review[1].
-> > > >
-> > > > Feedback and tests on this series is very much appreciated.
-> > > >
-> > > > v5 --> v6
-> > > > - Addressed comments from Robin & Lorenzo.
-> > > >   : Moved iort_parse_rmr() to acpi_iort_init() from
-> > > >     iort_init_platform_devices().
-> > > >   : Removed use of struct iort_rmr_entry during the initial
-> > > >     parse. Using struct iommu_resv_region instead.
-> > > >   : Report RMR address alignment and overlap errors, but continue.
-> > > >   : Reworked arm_smmu_init_bypass_stes() (patch # 6).
-> > > > - Updated SMMUv2 bypass SMR code. Thanks to Jon N (patch #8).
-> > > > - Set IOMMU protection flags(IOMMU_CACHE, IOMMU_MMIO) based
-> > > >   on Type of RMR region. Suggested by Jon N.
-> > > >
-> > > > Thanks,
-> > > > Shameer
-> > > > [0] https://developer.arm.com/documentation/den0049/latest/
-> > > > [1]
-> > > https://lore.kernel.org/linux-acpi/20210716083442.1708-1-shameerali.koloth
-> > > um.thodi@huawei.com/T/#m043c95b869973a834b2fd57f3e1ed0325c84f3b7
-> > > > ------
-> > > > v4 --> v5
-> > > >  -Added a fw_data union to struct iommu_resv_region and removed
-> > > >   struct iommu_rmr (Based on comments from Joerg/Robin).
-> > > >  -Added iommu_put_rmrs() to release mem.
-> > > >  -Thanks to Steve for verifying on SMMUv2, but not added the Tested-by
-> > > >   yet because of the above changes.
-> > > >
-> > > > v3 -->v4
-> > > > -Included the SMMUv2 SMR bypass install changes suggested by
-> > > >  Steve(patch #7)
-> > > > -As per Robin's comments, RMR reserve implementation is now
-> > > >  more generic  (patch #8) and dropped v3 patches 8 and 10.
-> > > > -Rebase to 5.13-rc1
-> > > >
-> > > > RFC v2 --> v3
-> > > >  -Dropped RFC tag as the ACPICA header changes are now ready to be
-> > > >   part of 5.13[0]. But this series still has a dependency on that patch.
-> > > >  -Added IORT E.b related changes(node flags, _DSM function 5 checks for
-> > > >   PCIe).
-> > > >  -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
-> > > >   discussion here[1].
-> > > >  -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!)
-> > > > ------
-> > > >
-> > > > Jon Nettleton (1):
-> > > >   iommu/arm-smmu: Get associated RMR info and install bypass SMR
-> > > >
-> > > > Shameer Kolothum (8):
-> > > >   iommu: Introduce a union to struct iommu_resv_region
-> > > >   ACPI/IORT: Add support for RMR node parsing
-> > > >   iommu/dma: Introduce generic helper to retrieve RMR info
-> > > >   ACPI/IORT: Add a helper to retrieve RMR memory regions
-> > > >   iommu/arm-smmu-v3: Introduce strtab init helper
-> > > >   iommu/arm-smmu-v3: Refactor arm_smmu_init_bypass_stes() to force
-> > > >     bypass
-> > > >   iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
-> > > >   iommu/dma: Reserve any RMR regions associated with a dev
-> > > >
-> > > >  drivers/acpi/arm64/iort.c                   | 172
-> > > +++++++++++++++++++-
-> > > >  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  76 +++++++--
-> > > >  drivers/iommu/arm/arm-smmu/arm-smmu.c       |  48 ++++++
-> > > >  drivers/iommu/dma-iommu.c                   |  89 +++++++++-
-> > > >  include/linux/acpi_iort.h                   |   7 +
-> > > >  include/linux/dma-iommu.h                   |  13 ++
-> > > >  include/linux/iommu.h                       |  11 ++
-> > > >  7 files changed, 393 insertions(+), 23 deletions(-)
-> > > >
-> > > > --
-> > > > 2.17.1
-> > > >
-> > > >
-> > > > _______________________________________________
-> > > > linux-arm-kernel mailing list
-> > > > linux-arm-kernel@lists.infradead.org
-> > > > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> This seems reasonable to me, but before I merge it into the SELinux
+> tree I think it would be good to get some ACKs from the relevant
+> subsystem folks.  I don't believe we ever saw a response to the last
+> question for the PPC folks, did we?
 
-Ping,  Can we get some movement on this patchset?  The standard was
-was ratified over a year ago, and there is real world hardware that is
-using or needs this functionality.
+Can we move this forward somehow, please?
 
-Thanks,
--Jon
+Quoting the yet-unanswered question from the v2 thread for convenience:
+
+> > > The callers migrated to the new hook, passing NULL as cred:
+> > > 1. arch/powerpc/xmon/xmon.c
+[...]
+> >
+> > This definitely sounds like kernel_t based on the description above.
+>
+> Here I'm a little concerned that the hook might be called from some
+> unusual interrupt, which is not masked by spin_lock_irqsave()... We
+> ran into this with PMI (Platform Management Interrupt) before, see
+> commit 5ae5fbd21079 ("powerpc/perf: Fix handling of privilege level
+> checks in perf interrupt context"). While I can't see anything that
+> would suggest something like this happening here, the whole thing is
+> so foreign to me that I'm wary of making assumptions :)
+>
+> @Michael/PPC devs, can you confirm to us that xmon_is_locked_down() is
+> only called from normal syscall/interrupt context (as opposed to
+> something tricky like PMI)?
+
+I strongly suspect the answer will be just "Of course it is, why would
+you even ask such a silly question?", but please let's have it on
+record so we can finally get this patch merged...
+
+
+> > ---
+> >
+> > v3:
+> > - add the cred argument to security_locked_down() and adapt all callers
+> > - keep using current_cred() in BPF, as the hook calls have been shifted
+> >   to program load time (commit ff40e51043af ("bpf, lockdown, audit: Fix
+> >   buggy SELinux lockdown permission checks"))
+> > - in SELinux, don't ignore hook calls where cred == NULL, but use
+> >   SECINITSID_KERNEL as the subject instead
+> > - update explanations in the commit message
+> >
+> > v2: https://lore.kernel.org/lkml/20210517092006.803332-1-omosnace@redhat.com/
+> > - change to a single hook based on suggestions by Casey Schaufler
+> >
+> > v1: https://lore.kernel.org/lkml/20210507114048.138933-1-omosnace@redhat.com/
+> >
+> >  arch/powerpc/xmon/xmon.c             |  4 ++--
+> >  arch/x86/kernel/ioport.c             |  4 ++--
+> >  arch/x86/kernel/msr.c                |  4 ++--
+> >  arch/x86/mm/testmmiotrace.c          |  2 +-
+> >  drivers/acpi/acpi_configfs.c         |  2 +-
+> >  drivers/acpi/custom_method.c         |  2 +-
+> >  drivers/acpi/osl.c                   |  3 ++-
+> >  drivers/acpi/tables.c                |  2 +-
+> >  drivers/char/mem.c                   |  2 +-
+> >  drivers/cxl/mem.c                    |  2 +-
+> >  drivers/firmware/efi/efi.c           |  2 +-
+> >  drivers/firmware/efi/test/efi_test.c |  2 +-
+> >  drivers/pci/pci-sysfs.c              |  6 +++---
+> >  drivers/pci/proc.c                   |  6 +++---
+> >  drivers/pci/syscall.c                |  2 +-
+> >  drivers/pcmcia/cistpl.c              |  2 +-
+> >  drivers/tty/serial/serial_core.c     |  2 +-
+> >  fs/debugfs/file.c                    |  2 +-
+> >  fs/debugfs/inode.c                   |  2 +-
+> >  fs/proc/kcore.c                      |  2 +-
+> >  fs/tracefs/inode.c                   |  2 +-
+> >  include/linux/lsm_hook_defs.h        |  2 +-
+> >  include/linux/lsm_hooks.h            |  1 +
+> >  include/linux/security.h             |  4 ++--
+> >  kernel/bpf/helpers.c                 | 10 ++++++----
+> >  kernel/events/core.c                 |  2 +-
+> >  kernel/kexec.c                       |  2 +-
+> >  kernel/kexec_file.c                  |  2 +-
+> >  kernel/module.c                      |  2 +-
+> >  kernel/params.c                      |  2 +-
+> >  kernel/power/hibernate.c             |  3 ++-
+> >  kernel/trace/bpf_trace.c             | 20 ++++++++++++--------
+> >  kernel/trace/ftrace.c                |  4 ++--
+> >  kernel/trace/ring_buffer.c           |  2 +-
+> >  kernel/trace/trace.c                 | 10 +++++-----
+> >  kernel/trace/trace_events.c          |  2 +-
+> >  kernel/trace/trace_events_hist.c     |  4 ++--
+> >  kernel/trace/trace_events_synth.c    |  2 +-
+> >  kernel/trace/trace_events_trigger.c  |  2 +-
+> >  kernel/trace/trace_kprobe.c          |  6 +++---
+> >  kernel/trace/trace_printk.c          |  2 +-
+> >  kernel/trace/trace_stack.c           |  2 +-
+> >  kernel/trace/trace_stat.c            |  2 +-
+> >  kernel/trace/trace_uprobe.c          |  4 ++--
+> >  net/xfrm/xfrm_user.c                 | 11 +++++++++--
+> >  security/lockdown/lockdown.c         |  3 ++-
+> >  security/security.c                  |  4 ++--
+> >  security/selinux/hooks.c             |  7 +++++--
+> >  48 files changed, 97 insertions(+), 77 deletions(-)
+>
+> --
+> paul moore
+> www.paul-moore.com
+>
+
+--
+Ondrej Mosnacek
+Software Engineer, Linux Security - SELinux kernel
+Red Hat, Inc
+
