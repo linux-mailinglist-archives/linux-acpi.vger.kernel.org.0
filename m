@@ -2,132 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4EBA3FCD55
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 21:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E8A93FCDCD
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 22:01:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239443AbhHaTAk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Aug 2021 15:00:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43966 "EHLO
+        id S240678AbhHaT2D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Aug 2021 15:28:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239523AbhHaTAk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 15:00:40 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32FD4C0612E7
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 11:59:44 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id u14so884626ejf.13
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 11:59:43 -0700 (PDT)
+        with ESMTP id S231952AbhHaT2C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 15:28:02 -0400
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B30C061575
+        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 12:27:07 -0700 (PDT)
+Received: by mail-yb1-xb2e.google.com with SMTP id f15so474313ybg.3
+        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 12:27:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=K4O58ZgiMsf0cCMtsvw/t7AJFM1T3tlDvm3uUGsU/to=;
-        b=m/p6PQxMro/Ee7fR7WvozEwx71BnscpCpL2xs1XR6unVL7bfCWki5mm/DL8tzkxtlv
-         IgmDAUJlZv7+KUUNuYAb3NRkVROzdUIxdGRwwrqEOUO0vD6Cu/HZq+bSFieTd9983AeD
-         YktyhmMz20Tq1h8uROtJTQQFwlHuUy+Bds8+ZIoQqHDYDTRBZ7xIrXRop6SBBaMcqz3D
-         KSsC4i4L46l25F26x2rXCk4fmowpOEt5kNPUpUjO3ZN5jtoqzJulRjdNVM64Yw8ZBWOt
-         rXYGE77kjE3hfKV3j/NE4j8c0xfhsFszf/XJGAR6u3atTQlztdBXyq7sYYSIi6VfUO2y
-         mhuw==
+        bh=MiOmjNUrQTixfmxuIIBr9b2mal/6TnKrZ2hUhLBArdA=;
+        b=LQ5DfuisFfwLylONTNqaEbGbMDFUlrFBwbH7uzQmaiairk1VdXureNF3ast1bdtiHJ
+         1OhdNZOseCGceTZIndqQ3bkMer4XSld2e7dnAd9uMTEiA7PS8GaXCTdO3IDSicU2Sopy
+         pPjQFl+IV7DnIZbTdxmgiujRlcFdDgQnyqd0HafORlQfaUcKzeJM+rtI6EvQcmE9wSPe
+         toKIFSnBzzG7JSG3KcpCza54fQ+OUPbOrF9BJ/H9MuW3cKGhLbtDSLThszd042O+RdCn
+         EMxVbcUSYa78NwDnBcDw/h4mGE0H0xlIhxDKiCa6UwAdwH/aWI6HM1IWE+Uv/Z3fLQx9
+         QWDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=K4O58ZgiMsf0cCMtsvw/t7AJFM1T3tlDvm3uUGsU/to=;
-        b=O7LoitnQe8RNKYXc6kNZOctP+AZr/ZjG/1XPkx9oJI+h31iBXWJ6qd0DubckoT38mP
-         jAeoceJhHndr9NWfExh1z4Wkm4QnCFPUMI8IB1bUlcKATYnyzFjMGxyDUCEq/tYVmiX/
-         wl+2S1t25+87j/HhxP7zDMpinZU2DKKAxOQFbRY8lEhWcg/nUroXyi33vHicDF2M6bcC
-         vjPiQfBWs3vusXwJ+w8BVWlnXqumNie55hmcl9kdoF3y8kDIfGVUh13ZSRqs8z1yKyC7
-         5E9QfBEjPNMHiVOwmGzn1uiY73wcQxYlEcngnT0sCtxLUHSnWEdgQYhsg7efPMuD7cYS
-         2KCg==
-X-Gm-Message-State: AOAM533uMcHcPsdJMTonpce9dbEYQmhX7FvFkie/ITFxkKa391tLTm8x
-        gnEBI6bu97VIfY8Slxrjl7JYafpe60YBlXYsrl8u
-X-Google-Smtp-Source: ABdhPJynhzjWiT5WygcinC1v/vpSrVXtKhAajoj91Y8oOaAf641QOi9pajzp20JXEjTMXZ2nBzK8acBfiZKG6sYGsHg=
-X-Received: by 2002:a17:906:2cd6:: with SMTP id r22mr31706715ejr.398.1630436382385;
- Tue, 31 Aug 2021 11:59:42 -0700 (PDT)
+        bh=MiOmjNUrQTixfmxuIIBr9b2mal/6TnKrZ2hUhLBArdA=;
+        b=pSv8JhRQmOJOHiQxGrl5mS9Tfjbvnk5XU/7Eh++NjI5jfWi06RsoDC255SrM+HbJ5R
+         D7xMpoloUHMKfAgtEQxCuxw3PSUJCHrpZF5ctl33r7vnonNuFw76Tp0MKVB/pmDADrhK
+         lQGD/d4YDPO6M1gZmLtlpDcU6eUNP3UJrcGC3VmkyMfSc3A7nRTYMbjWlY5qZLnqbXWn
+         nc/CdYAZl54Ya06Ib22+88AmaCptlvncY4xoyPgjojnTVrkUplrXwDfah4mobAloeFDo
+         mcJ29riuBQLxVZs5x6XeqhrcZqX8+jVJWjjxu1rCtMszHOUviK6UYb7DH3oKuPMH0lqM
+         9hhQ==
+X-Gm-Message-State: AOAM530nTTEce9CJ6Iv90CQidUmac5081edu0u1yLPQdojf1K1azRlm7
+        AuNXk4NtDI70J26Mvh8uAMwRZGbf9equt52HObmY0g==
+X-Google-Smtp-Source: ABdhPJzbL1ke9geoFZR/f+VEBhnoIaAb/U4CLoY6acRJ2ip3Tlo8GdKSCEA0zQzpPM8yo2/DFDO0RlBa+uEN/mbu/fY=
+X-Received: by 2002:a25:d213:: with SMTP id j19mr33717553ybg.20.1630438026156;
+ Tue, 31 Aug 2021 12:27:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210616085118.1141101-1-omosnace@redhat.com> <CAPcyv4jvR8CT4rYODR5KUHNdiqMwQSwJZ+OkVf61kLT3JfjC_Q@mail.gmail.com>
- <CAFqZXNtuH0329Xvcb415Kar-=o6wwrkFuiP8BZ_2OQhHLqkkAg@mail.gmail.com>
- <CAHC9VhTGECM2p+Q8n48aSdfJzY6XrpXQ5tcFurjWc4A3n8Qxjg@mail.gmail.com> <CAPcyv4i8YXo=xOL2vO67KLABQRDNAxzrzT=a1xtwtrts5pVPKw@mail.gmail.com>
-In-Reply-To: <CAPcyv4i8YXo=xOL2vO67KLABQRDNAxzrzT=a1xtwtrts5pVPKw@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 31 Aug 2021 14:59:31 -0400
-Message-ID: <CAHC9VhReGcV=cngDMmAcEiS2NpkXZQ6b09go9m0omzxLdrUQXg@mail.gmail.com>
-Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
- lockdown checks
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Ondrej Mosnacek <omosnace@redhat.com>,
-        Linux Security Module list 
-        <linux-security-module@vger.kernel.org>,
-        James Morris <jmorris@namei.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        X86 ML <x86@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-cxl@vger.kernel.org, linux-efi <linux-efi@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux-pm mailing list <linux-pm@vger.kernel.org>,
-        linux-serial@vger.kernel.org, bpf <bpf@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        Kexec Mailing List <kexec@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Casey Schaufler <casey@schaufler-ca.com>
+References: <YSf/Mps9E77/6kZX@lunn.ch> <CAGETcx_h6moWbS7m4hPm6Ub3T0tWayUQkppjevkYyiA=8AmACw@mail.gmail.com>
+ <YSg+dRPSX9/ph6tb@lunn.ch> <CAGETcx_r8LSxV5=GQ-1qPjh7qGbCqTsSoSkQfxAKL5q+znRoWg@mail.gmail.com>
+ <YSjsQmx8l4MXNvP+@lunn.ch> <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
+ <YSlG4XRGrq5D1/WU@lunn.ch> <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
+ <YSpr/BOZj2PKoC8B@lunn.ch> <CAGETcx_mjY10WzaOvb=vuojbodK7pvY1srvKmimu4h6xWkeQuQ@mail.gmail.com>
+ <YS4rw7NQcpRmkO/K@lunn.ch>
+In-Reply-To: <YS4rw7NQcpRmkO/K@lunn.ch>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Tue, 31 Aug 2021 12:26:30 -0700
+Message-ID: <CAGETcx_QPh=ppHzBdM2_TYZz3o+O7Ab9-JSY52Yz1--iLnykxA@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 31, 2021 at 2:58 PM Dan Williams <dan.j.williams@intel.com> wrote:
-> On Tue, Aug 31, 2021 at 6:53 AM Paul Moore <paul@paul-moore.com> wrote:
-> > On Tue, Aug 31, 2021 at 5:09 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > > On Sat, Jun 19, 2021 at 12:18 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> > > > On Wed, Jun 16, 2021 at 1:51 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> >
-> > ...
-> >
-> > > > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > > > > index 2acc6173da36..c1747b6555c7 100644
-> > > > > --- a/drivers/cxl/mem.c
-> > > > > +++ b/drivers/cxl/mem.c
-> > > > > @@ -568,7 +568,7 @@ static bool cxl_mem_raw_command_allowed(u16 opcode)
-> > > > >         if (!IS_ENABLED(CONFIG_CXL_MEM_RAW_COMMANDS))
-> > > > >                 return false;
-> > > > >
-> > > > > -       if (security_locked_down(LOCKDOWN_NONE))
-> > > > > +       if (security_locked_down(current_cred(), LOCKDOWN_NONE))
-> > > >
-> > > > Acked-by: Dan Williams <dan.j.williams@intel.com>
-> > > >
-> > > > ...however that usage looks wrong. The expectation is that if kernel
-> > > > integrity protections are enabled then raw command access should be
-> > > > disabled. So I think that should be equivalent to LOCKDOWN_PCI_ACCESS
-> > > > in terms of the command capabilities to filter.
-> > >
-> > > Yes, the LOCKDOWN_NONE seems wrong here... but it's a pre-existing bug
-> > > and I didn't want to go down yet another rabbit hole trying to fix it.
-> > > I'll look at this again once this patch is settled - it may indeed be
-> > > as simple as replacing LOCKDOWN_NONE with LOCKDOWN_PCI_ACCESS.
-> >
-> > At this point you should be well aware of my distaste for merging
-> > patches that have known bugs in them.  Yes, this is a pre-existing
-> > condition, but it seems well within the scope of this work to address
-> > it as well.
-> >
-> > This isn't something that is going to get merged while the merge
-> > window is open, so at the very least you've got almost two weeks to
-> > sort this out - please do that.
+On Tue, Aug 31, 2021 at 6:16 AM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> Yes, apologies, I should have sent the fix shortly after noticing the
-> problem. I'll get the CXL bug fix out of the way so Ondrej can move
-> this along.
+> > > I must admit, my main problem at the moment is -rc1 in two weeks
+> > > time. It seems like a number of board with Ethernet switches will be
+> > > broken, that worked before. phy-handle is not limited to switch
+> > > drivers, it is also used for Ethernet drivers. So it could be, a
+> > > number of Ethernet drivers are also going to be broken in -rc1?
+> >
+> > Again, in those cases, based on your FEC example, fw_devlink=on
+> > actually improves things.
+>
+> Debatable. I did some testing. As expected some boards with Ethernet
+> switches are now broken.
 
-Thanks Dan.
+To clarify myself, I'm saying the patch to parse "ethernet" [8] will
+make things better with fw_devlink=on for FEC. Not sure if you tested
+that patch or not.
 
--- 
-paul moore
-www.paul-moore.com
+And yes, "phy-handle" will make things worse for switches because it
+has two issues that need to be fixed. One is this deferred probe thing
+for which I gave a patch in the previous email and the other is what
+Marek reported (fix in the works). So can you revert "phy-handle"
+support and test with [8] and you should see things be better with
+fw_devlink=on.
+
+[8] - https://lore.kernel.org/netdev/CAGETcx9=AyEfjX_-adgRuX=8a0MkLnj8sy2KJGhxpNCinJu4yA@mail.gmail.com/
+
+> Without fw_devlink=on, some boards are not
+> optimal, but they actually work. With it, they are broken.
+>
+> I did a bisect, and they have been broken since:
+>
+> ea718c699055c8566eb64432388a04974c43b2ea is the first bad commit
+> commit ea718c699055c8566eb64432388a04974c43b2ea
+> Author: Saravana Kannan <saravanak@google.com>
+> Date:   Tue Mar 2 13:11:32 2021 -0800
+>
+>     Revert "Revert "driver core: Set fw_devlink=on by default""
+>
+>     This reverts commit 3e4c982f1ce75faf5314477b8da296d2d00919df.
+>
+>     Since all reported issues due to fw_devlink=on should be addressed by
+>     this series, revert the revert. fw_devlink=on Take II.
+>
+>     Signed-off-by: Saravana Kannan <saravanak@google.com>
+>     Link: https://lore.kernel.org/r/20210302211133.2244281-4-saravanak@google.com
+>     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>
+>  drivers/base/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> So however it is fixed, it needs to go into stable, not just -rc1.
+
+Not sure what was the tip of the tree with which you bisected. For
+example, if phy-handle broke things, bisect could still point at this
+patch above depending on whether the first bisect is good/bad. Because
+reverting this patch effectively disabled phy-handle parsing too.
+
+To be clear, I'm not saying things aren't broken. I'm just pointing
+out some nuances with the bisect that we need to be aware of.
+
+> > Again, it's not a widespread problem as I explained before.
+> > fw_devlink=on has been the default for 2 kernel versions now. With no
+> > unfixed reported issues.
+>
+> Given that some Ethernet switches have been broken all that time, i
+> wonder what else has been broken? Normally, the kernel which is
+> release in December becomes the next LTS. It then gets picked up by
+> the distros and more wide spread tested. So it could be, you get a
+> flood of reports in January and February about things which are
+> broken. This is why i don't think you should be relying on bug
+> reports, you should be taking a more proactive stance and trying to
+> analyse the DTB blobs.
+
+As I mentioned earlier, just looking at DTB doesn't tell me much
+because the driver could still be fine depending on how it's written.
+Also, I don't have an easy way to do this. If I find a way, I'll do
+it.
+
+Btw, most bug reports that have been raised have been fixed with
+generic fixes that address general DT patterns. For example,
+fw_devlink has cycle detection built in, has support for devices that
+never get probed, etc. Enabling fw_devlink=on and handling bug reports
+with generic fixes has worked well so far to get fw_devlink to where
+it is today. I've tried to be very quick in responding to fw_devlink
+issues -- and that has worked out so far and hopefully it'll continue
+to work out.
+
+> I will spend some time trying out your proposed fix. See if they are a
+> quick fix for stable.
+
+Thanks for testing it out. And worst case, we'll revert phy-handle support.
+
+
+-Saravana
