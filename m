@@ -2,166 +2,230 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCECC3FBCBD
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Aug 2021 21:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C038D3FC210
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 07:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232744AbhH3TEr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 30 Aug 2021 15:04:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56936 "EHLO
+        id S230518AbhHaFIb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Aug 2021 01:08:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231715AbhH3TEq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 30 Aug 2021 15:04:46 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55BDC061760
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Aug 2021 12:03:52 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id k78so26954462ybf.10
-        for <linux-acpi@vger.kernel.org>; Mon, 30 Aug 2021 12:03:52 -0700 (PDT)
+        with ESMTP id S229681AbhHaFIb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 01:08:31 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 659D1C061575
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Aug 2021 22:07:36 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id z19so24899299edi.9
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Aug 2021 22:07:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=solid-run-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=z2bxnmb0ihpOea9bKFBJwN2QiE7nKKp/Kf8m8WRCLmQ=;
-        b=CNXv9uQY/btGpuGZCGIeiwDkbadXPvVPJGX8i+eMZ94MOA1GM1y93ZATn5Ei0ThY+i
-         JTjfMEaijan7LRBtEtM5It2Yg9iQ5piQQycZRmmHt+mIfxP8D9saNFiGT+F6FaI2mnN1
-         LnCl45iXefqt9y4KBuDEFRCmohy3sNSy1hsaRqjNAcY3XBhkC/aCTPy7kun43JxxXbUF
-         ZiZhgvGhYNK+g9yIztL2E04zfwdkMgBpMRTBngU0KkgHBmqMJtqvDX4lbzZvz4iLVO3Y
-         Lu1pEj2hQ4LRYAsuo6jGb617+9fd0pcLfd/EWU8aZvpFFKvcMZrYsVkpo5VpUeG5F5gK
-         zKUw==
+        bh=+9JLMUEGuTSyUphLOiuK/o3WrAb7TWs20Kwls76RPEk=;
+        b=X0wZCLCMDC9sOHDwi7WuzV8/HIEOdVWVnVcQzbv+QeObhsCAvWlPLJ+q1K4decobT2
+         Rjz7HVerG6qQBUs316Ns6qzYJ7J+gb0AgJWwZFZlf8GkGzI8MelZQO5E83uTeiXBsNS+
+         q96xFs8glcHHP7ug/irAHZ1TtvDKvpD4AqJPHpueP047PMOiXfDrOnXwEQEE3jAzfsoa
+         SU13O9Po/RysClarcjxeCkvfTJ1NPvfYXb6ahOQb41hMuA7HPhcdmwKTpC/Bqb1eCje6
+         XtwcfbKbrJEoOit6kq/cZU4HYiGbNa3Uc2gI1wQDztKzQ2g1F2RytBFxm+S3LflKARBL
+         UCrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=z2bxnmb0ihpOea9bKFBJwN2QiE7nKKp/Kf8m8WRCLmQ=;
-        b=ZGAWkMqBHqKTflR60QH30WKsVKcDNp5IiJbqXi4oMU3BMIFqjRYtqxUfXWRR37z+gN
-         +bSSewEmIHP7QaUv/Fwb+4zIKvjgy2yGkdP5PybV/DzKe6xFgqyjZsMp3fxOBTKAkljZ
-         m5uDMzcQ1JfRks9q/2GKCLYW0410uwGIFQgMVVXgvZGk2F0RMqRAJiVUnU15yC0wxQqG
-         2onC9UUPzNPEOK7K2JZY3y9NVHYyM7w6qu/DfKKv2322D55TmxLRZUajHWADdyameGxh
-         PL7LQJlDd4A600evTJuH00XEOoqMmglgmRfbIbOObuRe/4M75Rafi6jdt4MiB+WSHDUH
-         rDHg==
-X-Gm-Message-State: AOAM530s96jeA+Xx/arP6dr+7d3QlyK8tg/T97usOGP45ipAhtBWhlJJ
-        mcrokN6/S9kNYZU04i6J3CrCmNsYko90k8C7DZ+OqQ==
-X-Google-Smtp-Source: ABdhPJz9aD6FzTGpzWANYNoSRWYbWlVX4WNltzALVRrIK1we8xo3YfH38PlE1sT1b+6yUjbcDmqzWkoGLExhUMGBhIE=
-X-Received: by 2002:a25:804:: with SMTP id 4mr24050887ybi.346.1630350231696;
- Mon, 30 Aug 2021 12:03:51 -0700 (PDT)
+        bh=+9JLMUEGuTSyUphLOiuK/o3WrAb7TWs20Kwls76RPEk=;
+        b=dn5Fvuh+li1UA7qJl5neFkU0STk406X8sK1WtcOxqW1NjC1tf8yCZrpjCDCNwhGRG4
+         fmWrDNKPORk1xDGMCdJIBEyzgnCHxT/VtZpmCfRWQ787pMe4nSsHuSEYgPtF+BkeN3is
+         PT3GprlK+4exDkffrdtvUgRgZAaGPEtB18B44L7pGCoypoqHdDXY1VL+seA84mLuod7q
+         g8Uw6dF/Nkwuh2fv4w73TmHCaBgYzeobj6Umq8ULhsTjsvAz+JSgoX00A4wYabprQu7/
+         S74zslXsVboq46w5VIj4UGI+sBW8JOf/wU8GbAhtjvziisbQrRGaap4XBN0/A8NlCzCi
+         8V+Q==
+X-Gm-Message-State: AOAM532AsIDzGNZLXQXcxq0f1o2zR5RUzgsRKEpIgT1abtVi8eRL1D3x
+        kaE6A+xv/sdDHnS2LN5J73zlVGK/0zI1LatlHc0AWzAgc/o=
+X-Google-Smtp-Source: ABdhPJw3bs9klmA4ZwzYsj0W52rj0T5yFqeP2kB+dZoyUd8oOW4bpTE8uDnH+x9cAw6FSmg6O3ZRvWW3aUfpYw8S8OI=
+X-Received: by 2002:aa7:dd12:: with SMTP id i18mr27577652edv.368.1630386455037;
+ Mon, 30 Aug 2021 22:07:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <YSeTdb6DbHbBYabN@lunn.ch> <CAGETcx-pSi60NtMM=59cve8kN9ff9fgepQ5R=uJ3Gynzh=0_BA@mail.gmail.com>
- <YSf/Mps9E77/6kZX@lunn.ch> <CAGETcx_h6moWbS7m4hPm6Ub3T0tWayUQkppjevkYyiA=8AmACw@mail.gmail.com>
- <YSg+dRPSX9/ph6tb@lunn.ch> <CAGETcx_r8LSxV5=GQ-1qPjh7qGbCqTsSoSkQfxAKL5q+znRoWg@mail.gmail.com>
- <YSjsQmx8l4MXNvP+@lunn.ch> <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
- <YSlG4XRGrq5D1/WU@lunn.ch> <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
- <YSpr/BOZj2PKoC8B@lunn.ch>
-In-Reply-To: <YSpr/BOZj2PKoC8B@lunn.ch>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 30 Aug 2021 12:03:15 -0700
-Message-ID: <CAGETcx_mjY10WzaOvb=vuojbodK7pvY1srvKmimu4h6xWkeQuQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org
+References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
+ <CAMj1kXHNjeDb2HuPeV_6Er4oALVKFz+g=gQ_0rf+JW22NxqqTA@mail.gmail.com>
+ <8df7fc81b00142b68126efd3c700a579@huawei.com> <CAMj1kXHTdDWz14B5Smzfmj5NQqCTTsgFjam6EevvOwFKLsmJzw@mail.gmail.com>
+In-Reply-To: <CAMj1kXHTdDWz14B5Smzfmj5NQqCTTsgFjam6EevvOwFKLsmJzw@mail.gmail.com>
+From:   Jon Nettleton <jon@solid-run.com>
+Date:   Tue, 31 Aug 2021 07:06:58 +0200
+Message-ID: <CABdtJHuYgw7cX2=uKMmaiC8UmVo7czk9oVrsc=hyZ4fFGoEskA@mail.gmail.com>
+Subject: Re: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        Steven Price <steven.price@arm.com>,
+        Sami Mujawar <Sami.Mujawar@arm.com>,
+        Eric Auger <eric.auger@redhat.com>,
+        yangyicong <yangyicong@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Aug 28, 2021 at 10:01 AM Andrew Lunn <andrew@lunn.ch> wrote:
+On Thu, Aug 5, 2021 at 4:09 PM Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> On Fri, Aug 27, 2021 at 02:33:02PM -0700, Saravana Kannan wrote:
-> > On Fri, Aug 27, 2021 at 1:11 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> > >
-> > > > > I've not yet looked at plain Ethernet drivers. This pattern could also
-> > > > > exist there. And i wonder about other complex structures, i2c bus
-> > > > > multiplexors, you can have interrupt controllers as i2c devices,
-> > > > > etc. So the general case could exist in other places.
-> > > >
-> > > > I haven't seen any generic issues like this reported so far. It's only
-> > > > after adding phy-handle that we are hitting these issues with DSA
-> > > > switches.
-> > >
-> > > Can you run your parser over the 2250 DTB blobs and see how many
-> > > children have dependencies on a parent? That could give us an idea how
-> > > many moles need whacking. And maybe, where in the tree they are
-> > > hiding?
+> On Thu, 5 Aug 2021 at 15:35, Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com> wrote:
 > >
-> > You are only responding to part of my email. As I said in my previous
-> > email: "There are plenty of cases where it's better to delay the child
-> > device's probe until the parent finishes. You even gave an example[7]
-> > where it would help avoid unnecessary deferred probes." Can you please
-> > give your thoughts on the rest of the points I made too?
+> >
+> >
+> > > -----Original Message-----
+> > > From: Ard Biesheuvel [mailto:ardb@kernel.org]
+> > > Sent: 05 August 2021 14:23
+> > > To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+> > > Cc: Linux ARM <linux-arm-kernel@lists.infradead.org>; ACPI Devel Maling List
+> > > <linux-acpi@vger.kernel.org>; Linux IOMMU
+> > > <iommu@lists.linux-foundation.org>; Linuxarm <linuxarm@huawei.com>;
+> > > Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>; Joerg Roedel
+> > > <joro@8bytes.org>; Robin Murphy <robin.murphy@arm.com>; Will Deacon
+> > > <will@kernel.org>; wanghuiqiang <wanghuiqiang@huawei.com>; Guohanjun
+> > > (Hanjun Guo) <guohanjun@huawei.com>; Steven Price
+> > > <steven.price@arm.com>; Sami Mujawar <Sami.Mujawar@arm.com>; Jon
+> > > Nettleton <jon@solid-run.com>; Eric Auger <eric.auger@redhat.com>;
+> > > yangyicong <yangyicong@huawei.com>
+> > > Subject: Re: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
+> > >
+> > > On Thu, 5 Aug 2021 at 10:10, Shameer Kolothum
+> > > <shameerali.kolothum.thodi@huawei.com> wrote:
+> > > >
+> > > > Hi,
+> > > >
+> > > > The series adds support to IORT RMR nodes specified in IORT
+> > > > Revision E.b -ARM DEN 0049E[0]. RMR nodes are used to describe
+> > > > memory ranges that are used by endpoints and require a unity
+> > > > mapping in SMMU.
+> > > >
+> > > > We have faced issues with 3408iMR RAID controller cards which
+> > > > fail to boot when SMMU is enabled. This is because these
+> > > > controllers make use of host memory for various caching related
+> > > > purposes and when SMMU is enabled the iMR firmware fails to
+> > > > access these memory regions as there is no mapping for them.
+> > > > IORT RMR provides a way for UEFI to describe and report these
+> > > > memory regions so that the kernel can make a unity mapping for
+> > > > these in SMMU.
+> > > >
+> > >
+> > > Does this mean we are ignoring the RMR memory ranges, and exposing the
+> > > entire physical address space to devices using the stream IDs in
+> > > question?
+> >
+> > Nope. RMR node is used to describe the memory ranges used by end points
+> > behind SMMU. And this information is used to create 1 : 1 mappings for those
+> > ranges in SMMU. Anything outside those ranges will result in translation
+> > fault(if there are no other dynamic DMA mappings).
+> >
 >
-> I must admit, my main problem at the moment is -rc1 in two weeks
-> time. It seems like a number of board with Ethernet switches will be
-> broken, that worked before. phy-handle is not limited to switch
-> drivers, it is also used for Ethernet drivers. So it could be, a
-> number of Ethernet drivers are also going to be broken in -rc1?
+> Excellent! It was not obvious to me from looking at the patches, so I
+> had to ask.
+>
+> Thanks,
+> Ard.
+>
+> >
+> > >
+> > > > Change History:
+> > > >
+> > > > v6 --> v7
+> > > >
+> > > > The only change from v6 is the fix pointed out by Steve to
+> > > > the SMMUv2 SMR bypass install in patch #8.
+> > > >
+> > > > Thanks to the Tested-by tags by Laurentiu with SMMUv2 and
+> > > > Hanjun/Huiqiang with SMMUv3 for v6. I haven't added the tags
+> > > > yet as the series still needs more review[1].
+> > > >
+> > > > Feedback and tests on this series is very much appreciated.
+> > > >
+> > > > v5 --> v6
+> > > > - Addressed comments from Robin & Lorenzo.
+> > > >   : Moved iort_parse_rmr() to acpi_iort_init() from
+> > > >     iort_init_platform_devices().
+> > > >   : Removed use of struct iort_rmr_entry during the initial
+> > > >     parse. Using struct iommu_resv_region instead.
+> > > >   : Report RMR address alignment and overlap errors, but continue.
+> > > >   : Reworked arm_smmu_init_bypass_stes() (patch # 6).
+> > > > - Updated SMMUv2 bypass SMR code. Thanks to Jon N (patch #8).
+> > > > - Set IOMMU protection flags(IOMMU_CACHE, IOMMU_MMIO) based
+> > > >   on Type of RMR region. Suggested by Jon N.
+> > > >
+> > > > Thanks,
+> > > > Shameer
+> > > > [0] https://developer.arm.com/documentation/den0049/latest/
+> > > > [1]
+> > > https://lore.kernel.org/linux-acpi/20210716083442.1708-1-shameerali.koloth
+> > > um.thodi@huawei.com/T/#m043c95b869973a834b2fd57f3e1ed0325c84f3b7
+> > > > ------
+> > > > v4 --> v5
+> > > >  -Added a fw_data union to struct iommu_resv_region and removed
+> > > >   struct iommu_rmr (Based on comments from Joerg/Robin).
+> > > >  -Added iommu_put_rmrs() to release mem.
+> > > >  -Thanks to Steve for verifying on SMMUv2, but not added the Tested-by
+> > > >   yet because of the above changes.
+> > > >
+> > > > v3 -->v4
+> > > > -Included the SMMUv2 SMR bypass install changes suggested by
+> > > >  Steve(patch #7)
+> > > > -As per Robin's comments, RMR reserve implementation is now
+> > > >  more generic  (patch #8) and dropped v3 patches 8 and 10.
+> > > > -Rebase to 5.13-rc1
+> > > >
+> > > > RFC v2 --> v3
+> > > >  -Dropped RFC tag as the ACPICA header changes are now ready to be
+> > > >   part of 5.13[0]. But this series still has a dependency on that patch.
+> > > >  -Added IORT E.b related changes(node flags, _DSM function 5 checks for
+> > > >   PCIe).
+> > > >  -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
+> > > >   discussion here[1].
+> > > >  -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!)
+> > > > ------
+> > > >
+> > > > Jon Nettleton (1):
+> > > >   iommu/arm-smmu: Get associated RMR info and install bypass SMR
+> > > >
+> > > > Shameer Kolothum (8):
+> > > >   iommu: Introduce a union to struct iommu_resv_region
+> > > >   ACPI/IORT: Add support for RMR node parsing
+> > > >   iommu/dma: Introduce generic helper to retrieve RMR info
+> > > >   ACPI/IORT: Add a helper to retrieve RMR memory regions
+> > > >   iommu/arm-smmu-v3: Introduce strtab init helper
+> > > >   iommu/arm-smmu-v3: Refactor arm_smmu_init_bypass_stes() to force
+> > > >     bypass
+> > > >   iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
+> > > >   iommu/dma: Reserve any RMR regions associated with a dev
+> > > >
+> > > >  drivers/acpi/arm64/iort.c                   | 172
+> > > +++++++++++++++++++-
+> > > >  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  76 +++++++--
+> > > >  drivers/iommu/arm/arm-smmu/arm-smmu.c       |  48 ++++++
+> > > >  drivers/iommu/dma-iommu.c                   |  89 +++++++++-
+> > > >  include/linux/acpi_iort.h                   |   7 +
+> > > >  include/linux/dma-iommu.h                   |  13 ++
+> > > >  include/linux/iommu.h                       |  11 ++
+> > > >  7 files changed, 393 insertions(+), 23 deletions(-)
+> > > >
+> > > > --
+> > > > 2.17.1
+> > > >
+> > > >
+> > > > _______________________________________________
+> > > > linux-arm-kernel mailing list
+> > > > linux-arm-kernel@lists.infradead.org
+> > > > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
-Again, in those cases, based on your FEC example, fw_devlink=on
-actually improves things.
+Ping,  Can we get some movement on this patchset?  The standard was
+was ratified over a year ago, and there is real world hardware that is
+using or needs this functionality.
 
-> But the issues sounds not to be specific to phy-handle, but any
-> phandle that points back to a parent.
-
-I feel like I'm going in circles here. This statement is not true.
-Please read my previous explanations.
-
-> So it could be drivers outside
-> of networking are also going to be broken with -rc1?
-> You have been very focused on one or two drivers. I would much rather
-> see you getting an idea of how wide spread this problem is, and what
-> should we do for -rc1?
-
-Again, it's not a widespread problem as I explained before.
-fw_devlink=on has been the default for 2 kernel versions now. With no
-unfixed reported issues.
-
-> Even if modifying DSA drivers to component drivers is possible, while
-> not breaking backwards compatibility with DT,
-
-It should be possible without needing any DT changes.
-
-> it is not going to
-> happen over night. That is something for the next merge window, not
-> this merge window.
-
-Right, I wasn't suggesting the component driver option be implemented
-right away. We were talking about what the longer term proper fix
-would be for DSA (and Ethernet if we actually find issues there) and
-who would do it. That's what I hope this discussion could be.
-
-Also, if we replace Patch 2/2 in this series with the patch below, it
-will work as a generic quick fix for DSA that we could use for -rc1.
-And if we still have issues reported on the phy-handle patch by -rc5
-or so, we could revert the phy-handle patch then so that v5.15 isn't
-broken.
-
--Saravana
-
---- a/net/dsa/dsa2.c
-+++ b/net/dsa/dsa2.c
-@@ -1286,6 +1286,17 @@ static int dsa_switch_parse_of(struct
-dsa_switch *ds, struct device_node *dn)
- {
-        int err;
-
-+       /* A lot of switch devices have their PHYs as child devices and have
-+        * the PHYs depend on the switch as a supplier (Eg: interrupt
-+        * controller). With fw_devlink=on, that means the PHYs will defer
-+        * probe until the probe() of the switch completes. However, the way
-+        * the DSA framework is designed, the PHYs are expected to be probed
-+        * successfully before the probe() of the switch completes.
-+        *
-+        * So, mark the switch devices as a "broken parent" so that fw_devlink
-+        * knows not to create device links between PHYs and the parent switch.
-+        */
-+       np->fwnode.flags |= FWNODE_FLAG_BROKEN_PARENT;
-        err = dsa_switch_parse_member_of(ds, dn);
-        if (err)
-                return err;
+Thanks,
+-Jon
