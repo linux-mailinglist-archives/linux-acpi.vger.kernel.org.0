@@ -2,168 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E8A93FCDCD
-	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 22:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14C593FCEA9
+	for <lists+linux-acpi@lfdr.de>; Tue, 31 Aug 2021 22:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240678AbhHaT2D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Aug 2021 15:28:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50496 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231952AbhHaT2C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 15:28:02 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B30C061575
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 12:27:07 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id f15so474313ybg.3
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 12:27:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MiOmjNUrQTixfmxuIIBr9b2mal/6TnKrZ2hUhLBArdA=;
-        b=LQ5DfuisFfwLylONTNqaEbGbMDFUlrFBwbH7uzQmaiairk1VdXureNF3ast1bdtiHJ
-         1OhdNZOseCGceTZIndqQ3bkMer4XSld2e7dnAd9uMTEiA7PS8GaXCTdO3IDSicU2Sopy
-         pPjQFl+IV7DnIZbTdxmgiujRlcFdDgQnyqd0HafORlQfaUcKzeJM+rtI6EvQcmE9wSPe
-         toKIFSnBzzG7JSG3KcpCza54fQ+OUPbOrF9BJ/H9MuW3cKGhLbtDSLThszd042O+RdCn
-         EMxVbcUSYa78NwDnBcDw/h4mGE0H0xlIhxDKiCa6UwAdwH/aWI6HM1IWE+Uv/Z3fLQx9
-         QWDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MiOmjNUrQTixfmxuIIBr9b2mal/6TnKrZ2hUhLBArdA=;
-        b=pSv8JhRQmOJOHiQxGrl5mS9Tfjbvnk5XU/7Eh++NjI5jfWi06RsoDC255SrM+HbJ5R
-         D7xMpoloUHMKfAgtEQxCuxw3PSUJCHrpZF5ctl33r7vnonNuFw76Tp0MKVB/pmDADrhK
-         lQGD/d4YDPO6M1gZmLtlpDcU6eUNP3UJrcGC3VmkyMfSc3A7nRTYMbjWlY5qZLnqbXWn
-         nc/CdYAZl54Ya06Ib22+88AmaCptlvncY4xoyPgjojnTVrkUplrXwDfah4mobAloeFDo
-         mcJ29riuBQLxVZs5x6XeqhrcZqX8+jVJWjjxu1rCtMszHOUviK6UYb7DH3oKuPMH0lqM
-         9hhQ==
-X-Gm-Message-State: AOAM530nTTEce9CJ6Iv90CQidUmac5081edu0u1yLPQdojf1K1azRlm7
-        AuNXk4NtDI70J26Mvh8uAMwRZGbf9equt52HObmY0g==
-X-Google-Smtp-Source: ABdhPJzbL1ke9geoFZR/f+VEBhnoIaAb/U4CLoY6acRJ2ip3Tlo8GdKSCEA0zQzpPM8yo2/DFDO0RlBa+uEN/mbu/fY=
-X-Received: by 2002:a25:d213:: with SMTP id j19mr33717553ybg.20.1630438026156;
- Tue, 31 Aug 2021 12:27:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <YSf/Mps9E77/6kZX@lunn.ch> <CAGETcx_h6moWbS7m4hPm6Ub3T0tWayUQkppjevkYyiA=8AmACw@mail.gmail.com>
- <YSg+dRPSX9/ph6tb@lunn.ch> <CAGETcx_r8LSxV5=GQ-1qPjh7qGbCqTsSoSkQfxAKL5q+znRoWg@mail.gmail.com>
- <YSjsQmx8l4MXNvP+@lunn.ch> <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
- <YSlG4XRGrq5D1/WU@lunn.ch> <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
- <YSpr/BOZj2PKoC8B@lunn.ch> <CAGETcx_mjY10WzaOvb=vuojbodK7pvY1srvKmimu4h6xWkeQuQ@mail.gmail.com>
- <YS4rw7NQcpRmkO/K@lunn.ch>
-In-Reply-To: <YS4rw7NQcpRmkO/K@lunn.ch>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 31 Aug 2021 12:26:30 -0700
-Message-ID: <CAGETcx_QPh=ppHzBdM2_TYZz3o+O7Ab9-JSY52Yz1--iLnykxA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        id S241118AbhHaUkc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Aug 2021 16:40:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54326 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232803AbhHaUkc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 31 Aug 2021 16:40:32 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id B25DC61074;
+        Tue, 31 Aug 2021 20:39:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630442376;
+        bh=zbtDN9VrboUSGhLzSw8oNqaQBt2etOLD1hX4mU+A0qc=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=ZB/wqtlVY1aI3nFCvWYrO68HkqVxjavXJusVRDe0i+lfr/hGbm48Do1iHtQnKMKsg
+         agkPaeNKIiQ9f/a3d3/RI78MxANTGCgReYtUEyb9ju/bX5fhbO/uBi3hOiZQ5Jrpwu
+         De/zr0RPlRyFtRzZ0KnapdKAAMMvFKOxpmHnOnIPVO4hRBEZpnMPSMLAzG1Spx5EvR
+         cqj6I4YAHnaM0Q1XinVEnC+vfpyOiAWuFtgLm8690frldl6Qv9o+vpnDhfIZwrQeLW
+         HMkkmDOSX1823RMDYpqy0le13uQu7YmZIoolGj4J/MGoOAT986yQzByw0mL21SjkHP
+         cjkgrDNRQTYGw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id AC8756097A;
+        Tue, 31 Aug 2021 20:39:36 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI updates for v5.15-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0hydPvLrqEuHhxAOp3fUVqA6hiKGbGXgch5xADfQiM-Tg@mail.gmail.com>
+References: <CAJZ5v0hydPvLrqEuHhxAOp3fUVqA6hiKGbGXgch5xADfQiM-Tg@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0hydPvLrqEuHhxAOp3fUVqA6hiKGbGXgch5xADfQiM-Tg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.15-rc1
+X-PR-Tracked-Commit-Id: 2cbd40709a9d44b8b0d418589de12efad6f71c15
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6f1e8b12eec44ee047dc9e0a9544b2cfed739503
+Message-Id: <163044237669.32655.545157047500017157.pr-tracker-bot@kernel.org>
+Date:   Tue, 31 Aug 2021 20:39:36 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 31, 2021 at 6:16 AM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > > I must admit, my main problem at the moment is -rc1 in two weeks
-> > > time. It seems like a number of board with Ethernet switches will be
-> > > broken, that worked before. phy-handle is not limited to switch
-> > > drivers, it is also used for Ethernet drivers. So it could be, a
-> > > number of Ethernet drivers are also going to be broken in -rc1?
-> >
-> > Again, in those cases, based on your FEC example, fw_devlink=on
-> > actually improves things.
->
-> Debatable. I did some testing. As expected some boards with Ethernet
-> switches are now broken.
+The pull request you sent on Mon, 30 Aug 2021 20:44:27 +0200:
 
-To clarify myself, I'm saying the patch to parse "ethernet" [8] will
-make things better with fw_devlink=on for FEC. Not sure if you tested
-that patch or not.
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.15-rc1
 
-And yes, "phy-handle" will make things worse for switches because it
-has two issues that need to be fixed. One is this deferred probe thing
-for which I gave a patch in the previous email and the other is what
-Marek reported (fix in the works). So can you revert "phy-handle"
-support and test with [8] and you should see things be better with
-fw_devlink=on.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6f1e8b12eec44ee047dc9e0a9544b2cfed739503
 
-[8] - https://lore.kernel.org/netdev/CAGETcx9=AyEfjX_-adgRuX=8a0MkLnj8sy2KJGhxpNCinJu4yA@mail.gmail.com/
+Thank you!
 
-> Without fw_devlink=on, some boards are not
-> optimal, but they actually work. With it, they are broken.
->
-> I did a bisect, and they have been broken since:
->
-> ea718c699055c8566eb64432388a04974c43b2ea is the first bad commit
-> commit ea718c699055c8566eb64432388a04974c43b2ea
-> Author: Saravana Kannan <saravanak@google.com>
-> Date:   Tue Mar 2 13:11:32 2021 -0800
->
->     Revert "Revert "driver core: Set fw_devlink=on by default""
->
->     This reverts commit 3e4c982f1ce75faf5314477b8da296d2d00919df.
->
->     Since all reported issues due to fw_devlink=on should be addressed by
->     this series, revert the revert. fw_devlink=on Take II.
->
->     Signed-off-by: Saravana Kannan <saravanak@google.com>
->     Link: https://lore.kernel.org/r/20210302211133.2244281-4-saravanak@google.com
->     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->
->  drivers/base/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> So however it is fixed, it needs to go into stable, not just -rc1.
-
-Not sure what was the tip of the tree with which you bisected. For
-example, if phy-handle broke things, bisect could still point at this
-patch above depending on whether the first bisect is good/bad. Because
-reverting this patch effectively disabled phy-handle parsing too.
-
-To be clear, I'm not saying things aren't broken. I'm just pointing
-out some nuances with the bisect that we need to be aware of.
-
-> > Again, it's not a widespread problem as I explained before.
-> > fw_devlink=on has been the default for 2 kernel versions now. With no
-> > unfixed reported issues.
->
-> Given that some Ethernet switches have been broken all that time, i
-> wonder what else has been broken? Normally, the kernel which is
-> release in December becomes the next LTS. It then gets picked up by
-> the distros and more wide spread tested. So it could be, you get a
-> flood of reports in January and February about things which are
-> broken. This is why i don't think you should be relying on bug
-> reports, you should be taking a more proactive stance and trying to
-> analyse the DTB blobs.
-
-As I mentioned earlier, just looking at DTB doesn't tell me much
-because the driver could still be fine depending on how it's written.
-Also, I don't have an easy way to do this. If I find a way, I'll do
-it.
-
-Btw, most bug reports that have been raised have been fixed with
-generic fixes that address general DT patterns. For example,
-fw_devlink has cycle detection built in, has support for devices that
-never get probed, etc. Enabling fw_devlink=on and handling bug reports
-with generic fixes has worked well so far to get fw_devlink to where
-it is today. I've tried to be very quick in responding to fw_devlink
-issues -- and that has worked out so far and hopefully it'll continue
-to work out.
-
-> I will spend some time trying out your proposed fix. See if they are a
-> quick fix for stable.
-
-Thanks for testing it out. And worst case, we'll revert phy-handle support.
-
-
--Saravana
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
