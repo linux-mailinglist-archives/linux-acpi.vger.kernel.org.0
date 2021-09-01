@@ -2,238 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A42F43FE30E
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Sep 2021 21:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D3133FE313
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Sep 2021 21:32:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344590AbhIATcv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 1 Sep 2021 15:32:51 -0400
-Received: from mail-oo1-f41.google.com ([209.85.161.41]:43970 "EHLO
-        mail-oo1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244842AbhIATcu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Sep 2021 15:32:50 -0400
-Received: by mail-oo1-f41.google.com with SMTP id y16-20020a4ad6500000b0290258a7ff4058so209362oos.10;
-        Wed, 01 Sep 2021 12:31:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=b7NxDX0Jgp22/kVGMB1nWmyMaD1Bg4FZTH3WEct9lqY=;
-        b=oUQ8SdnRRM67NnICZ8PPKkvi5ZsV3LkNESCrkWx8eVJgPfbvEVZNh2iMBYPvABo0qg
-         9uNrW/Iv5wc/5lHJFaaUEAdgmRM9vTSBY3t0lFXWgR4rg9UxudeMoodDkDy91WY7Wtyv
-         vh1k4SmSn0Clvp7x1SwuNTvYhC9MV9JuD24cXyWeoxDtZ2sD6PpZoYjMO1AlFqjbntk7
-         sXo6uc/InP1izaXtkE1FRGGqEQ/Pe22LkZheQzyCDWayT6hzPt7uvaR6uAYUixgR/vex
-         iOMC80hBSwW7fR/B0wX21EhloJKWtgghfoA77hyNBw6t+HfMWlOk/kSVs6fduyqDNOSq
-         uv4w==
-X-Gm-Message-State: AOAM5317KQEcgQnHKLIpR1TJGayVOO7t3rAHXaYyFhyUPVnswKDVqvct
-        2scv1IwCE6rgUGpyH+CPR/rYWLGywn/n95xgfuc=
-X-Google-Smtp-Source: ABdhPJwBNtz8TxaF5pnDsgmMoITlpBvrIt1Pfe1QYXrD8NaCogysKqL3TeDYMiIA9W7aOBtSw9yF1iEIuNzHFt773WY=
-X-Received: by 2002:a4a:a552:: with SMTP id s18mr832630oom.1.1630524713082;
- Wed, 01 Sep 2021 12:31:53 -0700 (PDT)
+        id S244637AbhIATdx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Sep 2021 15:33:53 -0400
+Received: from mga14.intel.com ([192.55.52.115]:23516 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244465AbhIATdw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 1 Sep 2021 15:33:52 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10094"; a="218562979"
+X-IronPort-AV: E=Sophos;i="5.84,370,1620716400"; 
+   d="scan'208";a="218562979"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 12:32:55 -0700
+X-IronPort-AV: E=Sophos;i="5.84,370,1620716400"; 
+   d="scan'208";a="645910084"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 12:32:53 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id C60882028E;
+        Wed,  1 Sep 2021 22:32:51 +0300 (EEST)
+Date:   Wed, 1 Sep 2021 22:32:51 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jean Delvare <jdelvare@suse.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: Re: TPS68470 PMIC config option
+Message-ID: <20210901193251.GZ3@paasikivi.fi.intel.com>
+References: <20210901160234.0e3e24b2@endymion>
+ <YS+6xzk9yc8uPetU@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <20210824122054.29481-1-joro@8bytes.org> <20210824122054.29481-5-joro@8bytes.org>
-In-Reply-To: <20210824122054.29481-5-joro@8bytes.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 1 Sep 2021 21:31:42 +0200
-Message-ID: <CAJZ5v0hUvzhG4u+rwTLCFdcWS-ubPvSxsx_kcUGvQHtQoApNwg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] PCI/ACPI: Check for _OSC support in acpi_pci_osc_control_set()
-To:     Joerg Roedel <joro@8bytes.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Joerg Roedel <jroedel@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YS+6xzk9yc8uPetU@smile.fi.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 24, 2021 at 2:21 PM Joerg Roedel <joro@8bytes.org> wrote:
->
-> From: Joerg Roedel <jroedel@suse.de>
->
-> Get rid of acpi_pci_osc_support() and check for _OSC supported features
-> directly in acpi_pci_osc_control_set(). There is no point in doing an
-> unconditional _OSC query with control=0 even when the kernel later wants
-> to take control over more features.
->
-> This safes one _OSC query and simplifies the code by getting rid of
+Hi Andy, Jean,
 
-s/safes/saves/
+On Wed, Sep 01, 2021 at 08:39:19PM +0300, Andy Shevchenko wrote:
+> +Cc: Sakari.
+> 
+> On Wed, Sep 01, 2021 at 04:02:34PM +0200, Jean Delvare wrote:
+> > Hi Andy,
+> > 
+> > Is there a reason why config TPS68470_PMIC_OPREGION is not under "if
+> > PMIC_OPREGION" where all other *_PMIC_OPREGION driver options are?
+> 
+> It was originally like that.
+> 
+> Sakari, do you know?
 
-> the acpi_pci_osc_support() function. As a side effect, the !control
-> checks in acpi_pci_query_osc() can also be removed.
->
-> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+The answer can be found in Makefile:
 
-Apart from the typo above, I haven't found any issues in the patch, so
+obj-$(CONFIG_PMIC_OPREGION)             += intel_pmic.o
 
-Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+intel_pmic.c seems to contain common functionality for PMICs in Intel SoCs
+whereas the TPS68470 is an external chip. The two codebases are distinct.
 
-> ---
->  drivers/acpi/pci_root.c | 81 ++++++++++++++++-------------------------
->  1 file changed, 32 insertions(+), 49 deletions(-)
->
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index f12e512bcddc..ab2f7dfb0c44 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -203,26 +203,16 @@ static acpi_status acpi_pci_query_osc(struct acpi_pci_root *root,
->
->         capbuf[OSC_QUERY_DWORD] = OSC_QUERY_ENABLE;
->         capbuf[OSC_SUPPORT_DWORD] = support;
-> -       if (control)
-> -               capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
-> -       else
-> -               /* Run _OSC query only with existing controls. */
-> -               capbuf[OSC_CONTROL_DWORD] = root->osc_control_set;
-> +       capbuf[OSC_CONTROL_DWORD] = *control | root->osc_control_set;
->
->         status = acpi_pci_run_osc(root->device->handle, capbuf, &result);
->         if (ACPI_SUCCESS(status)) {
->                 root->osc_support_set = support;
-> -               if (control)
-> -                       *control = result;
-> +               *control = result;
->         }
->         return status;
->  }
->
-> -static acpi_status acpi_pci_osc_support(struct acpi_pci_root *root, u32 flags)
-> -{
-> -       return acpi_pci_query_osc(root, flags, NULL);
-> -}
-> -
->  struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
->  {
->         struct acpi_pci_root *root;
-> @@ -345,8 +335,9 @@ EXPORT_SYMBOL_GPL(acpi_get_pci_dev);
->   * _OSC bits the BIOS has granted control of, but its contents are meaningless
->   * on failure.
->   **/
-> -static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 req)
-> +static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 support)
->  {
-> +       u32 req = OSC_PCI_EXPRESS_CAPABILITY_CONTROL;
->         struct acpi_pci_root *root;
->         acpi_status status;
->         u32 ctrl, capbuf[3];
-> @@ -354,22 +345,16 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 r
->         if (!mask)
->                 return AE_BAD_PARAMETER;
->
-> -       ctrl = *mask;
-> -       if ((ctrl & req) != req)
-> -               return AE_TYPE;
-> -
->         root = acpi_pci_find_root(handle);
->         if (!root)
->                 return AE_NOT_EXIST;
->
-> -       *mask = ctrl | root->osc_control_set;
-> -       /* No need to evaluate _OSC if the control was already granted. */
-> -       if ((root->osc_control_set & ctrl) == ctrl)
-> -               return AE_OK;
-> +       ctrl   = *mask;
-> +       *mask |= root->osc_control_set;
->
->         /* Need to check the available controls bits before requesting them. */
-> -       while (*mask) {
-> -               status = acpi_pci_query_osc(root, root->osc_support_set, mask);
-> +       do {
-> +               status = acpi_pci_query_osc(root, support, mask);
->                 if (ACPI_FAILURE(status))
->                         return status;
->                 if (ctrl == *mask)
-> @@ -377,7 +362,11 @@ static acpi_status acpi_pci_osc_control_set(acpi_handle handle, u32 *mask, u32 r
->                 decode_osc_control(root, "platform does not support",
->                                    ctrl & ~(*mask));
->                 ctrl = *mask;
-> -       }
-> +       } while (*mask);
-> +
-> +       /* No need to request _OSC if the control was already granted. */
-> +       if ((root->osc_control_set & ctrl) == ctrl)
-> +               return AE_OK;
->
->         if ((ctrl & req) != req) {
->                 decode_osc_control(root, "not requesting control; platform does not support",
-> @@ -470,7 +459,7 @@ static bool os_control_query_checks(struct acpi_pci_root *root, u32 support)
->  static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->                                  bool is_pcie)
->  {
-> -       u32 support, control, requested;
-> +       u32 support, control = 0, requested = 0;
->         acpi_status status;
->         struct acpi_device *device = root->device;
->         acpi_handle handle = device->handle;
-> @@ -490,28 +479,15 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->         support = calculate_support();
->
->         decode_osc_support(root, "OS supports", support);
-> -       status = acpi_pci_osc_support(root, support);
-> -       if (ACPI_FAILURE(status)) {
-> -               *no_aspm = 1;
-> -
-> -               /* _OSC is optional for PCI host bridges */
-> -               if ((status == AE_NOT_FOUND) && !is_pcie)
-> -                       return;
-> -
-> -               dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
-> -                        acpi_format_exception(status));
-> -               return;
-> -       }
-> -
-> -       if (!os_control_query_checks(root, support))
-> -               return;
->
-> -       requested = control = calculate_control();
-> +       if (os_control_query_checks(root, support))
-> +               requested = control = calculate_control();
->
-> -       status = acpi_pci_osc_control_set(handle, &control,
-> -                                         OSC_PCI_EXPRESS_CAPABILITY_CONTROL);
-> +       status = acpi_pci_osc_control_set(handle, &control, support);
->         if (ACPI_SUCCESS(status)) {
-> -               decode_osc_control(root, "OS now controls", control);
-> +               if (control)
-> +                       decode_osc_control(root, "OS now controls", control);
-> +
->                 if (acpi_gbl_FADT.boot_flags & ACPI_FADT_NO_ASPM) {
->                         /*
->                          * We have ASPM control, but the FADT indicates that
-> @@ -522,11 +498,6 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->                         *no_aspm = 1;
->                 }
->         } else {
-> -               decode_osc_control(root, "OS requested", requested);
-> -               decode_osc_control(root, "platform willing to grant", control);
-> -               dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
-> -                       acpi_format_exception(status));
-> -
->                 /*
->                  * We want to disable ASPM here, but aspm_disabled
->                  * needs to remain in its state from boot so that we
-> @@ -535,6 +506,18 @@ static void negotiate_os_control(struct acpi_pci_root *root, int *no_aspm,
->                  * root scan.
->                  */
->                 *no_aspm = 1;
-> +
-> +               /* _OSC is optional for PCI host bridges */
-> +               if ((status == AE_NOT_FOUND) && !is_pcie)
-> +                       return;
-> +
-> +               if (control) {
-> +                       decode_osc_control(root, "OS requested", requested);
-> +                       decode_osc_control(root, "platform willing to grant", control);
-> +               }
-> +
-> +               dev_info(&device->dev, "_OSC: platform retains control of PCIe features (%s)\n",
-> +                        acpi_format_exception(status));
->         }
->  }
->
-> --
-> 2.32.0
->
+Perhaps it could make sense to either rename this as
+CONFIG_PMIC_INTEL_OPREGION, or move the TPS68470 driver in and change the
+Kconfig+Makefile to have the common code compiled if at least one of the
+drivers is enabled.
+
+-- 
+Regards,
+
+Sakari Ailus
