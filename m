@@ -2,66 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 133263FD0E4
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Sep 2021 03:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 450B83FD101
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Sep 2021 04:01:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241689AbhIABse (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 31 Aug 2021 21:48:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51272 "EHLO
+        id S241712AbhIACCb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 31 Aug 2021 22:02:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241685AbhIABse (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 21:48:34 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E623CC061764
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 18:47:36 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id r4so2139909ybp.4
-        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 18:47:36 -0700 (PDT)
+        with ESMTP id S241677AbhIACCb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 31 Aug 2021 22:02:31 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52E31C061575
+        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 19:01:35 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id c206so2104083ybb.12
+        for <linux-acpi@vger.kernel.org>; Tue, 31 Aug 2021 19:01:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=bUppOyGDnS2PXlyA+AfNJ4qIRCwjAsIJpMZ2OY0NEas=;
-        b=qGCxpFM9x4A+ZKqPCXlem1JBCqKYPgiuQusam80EPcStiBfQng/KZ/G3b/LP68akmW
-         zEaTndaIysWsJpcxt6hR9hHDEfMCqu8v38hwGwgs/IlQGrL/+8KCOvZUgdNMhefkn7q5
-         EXk4WwuWjsfUImzdGsFxk1gY9tsLUfltarLgVUPMnfmZa9OSfXV9IASKvll1Y/ZAaYfj
-         jVdbTgdgw8UX63yyKZDB8KktBcqwQ27AoR1ndreMh+PbCl+9T0dJ8gXHUkAy2C81lUpb
-         Z+iAK3Qlrc6NBz+pgwyafuFloR1ERVUjKvxwxBHPehD51BabKfZOl0v4tqEkDbghg1f1
-         21HQ==
+        bh=wGf0CBf7Tu/z6D0lNg7ihUdE2JvD3e3Vtv/fQHec648=;
+        b=YmSq0+bWCymGEFH+CXNH4EwHLCnhnw+M+d6hWq6smLmdS+GV57gbbjyBLM/uPToPY1
+         51iU7WHx67Fw1MIefKAH817ioZ0E6suxsrLjIvLmdLCutUqcGf+0oC1RTzYsmVJqQmnY
+         l9VOCvYVyb7LgVBt+Tv0H4ic7xi7yJLf8RoxHrDM16NHbNIfOGC1xLIe1D95ePlc5cLz
+         2a84XENy2oJl3CLZ+TpH7z4td1iRinNGQPsppAcMQBwomHXFwBeO0eGy+snzj2Br+IFz
+         FLrBPKRDEZcjHxw+XFZY7ObbDA+Be0hUdsWKneO8ZFyXKpZ2MyhHLYNh+nqaD8ApD6ex
+         j7ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=bUppOyGDnS2PXlyA+AfNJ4qIRCwjAsIJpMZ2OY0NEas=;
-        b=Yss1rnGwn3hc4wuw8hGsgJdr88zi+UMCcpzmw1aiY3tozsHAqJN9CDj3LVNC514ZwF
-         Ab+Q8oq33BjRmSn/aVH/hJfeIQdCXREfdBLO6XrCmqZxrB61g/XzF9jgwMhQsHJoJWAH
-         /rBdbJou5CGn6kziK/LCenqvTWng71CWmTl97Hz4nxNb5fZzsXinQSvn+vfY5jIwFzB2
-         dY+6GTC6yIkh8A809pDh+So5lYeU8iglKRxyQsBI9/GS/iBzsOJVWcXy9dGkVFvPRpBN
-         uc3KEBWyArjb6oN1nZ52EnqL7ZN/pbTF7AgQ3Z2ND/Slavf1FixBBYuLlrgkFQI2RV7I
-         23ng==
-X-Gm-Message-State: AOAM530oF4nLtHt6nHIqgUas0ARdr/P/d8vg3q9RHqhFBYQcPFGJ9yyw
-        sv+ehcAtZZGZLRFkGfRoeCg99BfZSuP0ftJZw41xwQ==
-X-Google-Smtp-Source: ABdhPJyT6CUc0oxZ8hx9Xt/8WMw+Mrp1K9LbFgvg4hs/hLtHbEkLXskLrbTTMyyO0RGV8pIWeqtq2eb9U/wHNA4o8lo=
-X-Received: by 2002:a25:81ce:: with SMTP id n14mr35769623ybm.32.1630460855812;
- Tue, 31 Aug 2021 18:47:35 -0700 (PDT)
+        bh=wGf0CBf7Tu/z6D0lNg7ihUdE2JvD3e3Vtv/fQHec648=;
+        b=HLSaFsXmPQfsr3v7o/b8tnIi9xAW4ceKmOhYPQBynzBTHLEPKuF4aHErLyzRE8U0wb
+         P+T7lqr4p6JGitShtvgD18KKxgNKqtpiI/nMx1Nwu/kIh22Rcok/Y84tVOlfvsD8DjRK
+         tSayqjmwpkDsBis1Xc8IC8iKuWNVmX+9SFT3DERO80mtESTrVGL3XrYJWw4BsUEz1Dh5
+         sA1XBnHAcBFm5O4714cuWt5CeQuPfI8SKKhLzKMyst9mMO1u7ZP5M5BcM4BZMSWaydG9
+         QUG1BSqQWMWBFl/I/jnrMRJbs18EFaEFaY7IhpVa3B0utkfDXSw+Hya1x78i60Z4vie8
+         uo+Q==
+X-Gm-Message-State: AOAM531ZGI5aEQ1xTnEVP8ERykYcl9qstjRjLpnjl2IQ/545JsCCEX90
+        tZ1kyp/GiS3bS1WGPFwUDBkoJPPpZrlY4i8A8EM67g==
+X-Google-Smtp-Source: ABdhPJzS7FEQLRCVO4eB7zcbXBfM/3bpCfq0Sb6/vCuY1JPZSdsXPS2l/TYnXb0DygQv9KJKHtWoGYr+Jwlq5e1MuKo=
+X-Received: by 2002:a25:9c01:: with SMTP id c1mr33882582ybo.228.1630461694456;
+ Tue, 31 Aug 2021 19:01:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <YSjsQmx8l4MXNvP+@lunn.ch> <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
+References: <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
  <YSlG4XRGrq5D1/WU@lunn.ch> <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
  <YSpr/BOZj2PKoC8B@lunn.ch> <CAGETcx_mjY10WzaOvb=vuojbodK7pvY1srvKmimu4h6xWkeQuQ@mail.gmail.com>
  <YS4rw7NQcpRmkO/K@lunn.ch> <CAGETcx_QPh=ppHzBdM2_TYZz3o+O7Ab9-JSY52Yz1--iLnykxA@mail.gmail.com>
  <YS6nxLp5TYCK+mJP@lunn.ch> <CAGETcx90dOkw+Yp5ZRNqQq2Ny_ToOKvGJNpvyRohaRQi=SQxhw@mail.gmail.com>
- <YS608fdIhH4+qJsn@lunn.ch>
-In-Reply-To: <YS608fdIhH4+qJsn@lunn.ch>
+ <YS608fdIhH4+qJsn@lunn.ch> <20210831231804.zozyenear45ljemd@skbuf>
+In-Reply-To: <20210831231804.zozyenear45ljemd@skbuf>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 31 Aug 2021 18:46:59 -0700
-Message-ID: <CAGETcx_FgDkUSkKG=d9b0Drtcy3BySmTwy1Mzhz0GatmxO5tFg@mail.gmail.com>
+Date:   Tue, 31 Aug 2021 19:00:58 -0700
+Message-ID: <CAGETcx-ktuU1RqXwj_qV8tCOLAg3DXU-wCAm6+NukyxRencSjw@mail.gmail.com>
 Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+To:     Vladimir Oltean <olteanv@gmail.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
         Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
@@ -72,95 +72,45 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 31, 2021 at 4:02 PM Andrew Lunn <andrew@lunn.ch> wrote:
+On Tue, Aug 31, 2021 at 4:18 PM Vladimir Oltean <olteanv@gmail.com> wrote:
 >
-> > If the switches are broken without the phy-handle or ethernet change,
-> > I'm not sure if the "BROKEN_PARENT" patch would help.
+> On Wed, Sep 01, 2021 at 01:02:09AM +0200, Andrew Lunn wrote:
+> > Rev B is interesting because switch0 and switch1 got genphy, while
+> > switch2 got the correct Marvell PHY driver. switch2 PHYs don't have
+> > interrupt properties, so don't loop back to their parent device.
 >
-> > > Which is not enough to fix these Ethernet switches.
-> >
-> > Ok, if you can give more specifics on this, I'll look into it.
+> This is interesting and not what I really expected to happen. It goes to
+> show that we really need more time to understand all the subtleties of
+> device dependencies before jumping on patching stuff.
 >
-> The switches probe, but get the wrong PHY driver, genphy, not the
-> Marvell PHY driver. And genphy is not sufficient for this hardware.
+> In case the DSA tree contains more than one switch, different things
+> will happen in dsa_register_switch().
+> The tree itself is only initialized when the last switch calls
+> dsa_register_switch(). All the other switches just mark themselves as
+> present and exit probing early. See this piece of code in dsa_tree_setup:
 >
-> I'd need:
-> > 1) The DTS file that you see the issue on.
+>         complete = dsa_tree_setup_routing_table(dst);
+>         if (!complete)
+>                 return 0;
 >
-> I did the bisect on arch/arm/boot/dts/vf610-zii-dev-rev-c.dts but i
-> also tested arch/arm/boot/dts/vf610-zii-dev-rev-b.dts.
+> So it should be a general property of cross-chip DSA trees that all
+> switches except the last one will have the specific PHY driver probed
+> properly, and not the genphy.
+>
+> Because all (N - 1) switches of a tree exit early in dsa_register_switch,
+> they have successfully probed by the time the last switch brings up the
+> tree, and brings up the PHYs on behalf of every other switch.
+>
+> The last switch can connect to the PHY on behalf of the other switches
+> past their probe ending, and those PHYs should not defer probing because
+> their supplier is now probed. It is only that the last switch cannot
+> connect to the PHYs of its own ports.
 
-Thanks for the detailed info Andrew. I looked at the DT files. So
-yeah, this is similar to the realtek issue and my generic fix for DSA
-should work for all of these unless I'm forgetting something. Please
-let me know if it doesn't.
+I'm not saying this with any intention of making things easier for me
+(I'm not even sure it does). But your description about how multiple
+switches are handled by DSA has me even more convinced than before
+that DSA needs to use a component device model. This is like the
+textbook example for component devices.
+
 
 -Saravana
-
-> Rev B is interesting because switch0 and switch1 got genphy, while
-> switch2 got the correct Marvell PHY driver. switch2 PHYs don't have
-> interrupt properties, so don't loop back to their parent device.
->
-> Here is Rev B. I trimmed out other devices probing in parallel:
->
-> [    1.029100] fec 400d1000.ethernet: Invalid MAC address: 00:00:00:00:00:00
-> [    1.034735] fec 400d1000.ethernet: Using random MAC address: 42:f2:14:33:78:f5
-> [    1.042272] libphy: fec_enet_mii_bus: probed
-> [    1.455932] libphy: mdio_mux: probed
-> [    1.459432] mv88e6085 0.1:00: switch 0x3520 detected: Marvell 88E6352, revision 1
-> [    1.494076] libphy: mdio: probed
-> [    1.518958] libphy: mdio_mux: probed
-> [    1.522553] mv88e6085 0.2:00: switch 0x3520 detected: Marvell 88E6352, revision 1
-> [    1.537295] libphy: mdio: probed
-> [    1.556571] libphy: mdio_mux: probed
-> [    1.559719] mv88e6085 0.4:00: switch 0x1a70 detected: Marvell 88E6185, revision 2
-> [    1.574614] libphy: mdio: probed
-> [    1.733104] mv88e6085 0.1:00 lan0 (uninitialized): PHY [!mdio-mux!mdio@1!switch@0!mdio:00] driver [Generic PHY] (irq=POLL)
-> [    1.750737] mv88e6085 0.1:00 lan1 (uninitialized): PHY [!mdio-mux!mdio@1!switch@0!mdio:01] driver [Generic PHY] (irq=POLL)
-> [    1.768273] mv88e6085 0.1:00 lan2 (uninitialized): PHY [!mdio-mux!mdio@1!switch@0!mdio:02] driver [Generic PHY] (irq=POLL)
-> [    1.806561] mv88e6085 0.2:00 lan3 (uninitialized): PHY [!mdio-mux!mdio@2!switch@0!mdio:00] driver [Generic PHY] (irq=POLL)
-> [    1.824033] mv88e6085 0.2:00 lan4 (uninitialized): PHY [!mdio-mux!mdio@2!switch@0!mdio:01] driver [Generic PHY] (irq=POLL)
-> [    1.841496] mv88e6085 0.2:00 lan5 (uninitialized): PHY [!mdio-mux!mdio@2!switch@0!mdio:02] driver [Generic PHY] (irq=POLL)
-> [    1.943535] mv88e6085 0.4:00 lan6 (uninitialized): PHY [!mdio-mux!mdio@4!switch@0!mdio:00] driver [Marvell 88E1545] (irq=POLL)
-> [    2.003529] mv88e6085 0.4:00 lan7 (uninitialized): PHY [!mdio-mux!mdio@4!switch@0!mdio:01] driver [Marvell 88E1545] (irq=POLL)
-> [    2.063535] mv88e6085 0.4:00 lan8 (uninitialized): PHY [!mdio-mux!mdio@4!switch@0!mdio:02] driver [Marvell 88E1545] (irq=POLL)
-> [    2.084768] DSA: tree 0 setup
-> [    2.087791] libphy: mdio_mux: probed
-> [    2.265477] Micrel KSZ8041 400d0000.ethernet-1:00: attached PHY driver (mii_bus:phy_addr=400d0000.ethernet-1:00, irq=POLL)
->
-> root@zii-devel-b:~# cat /sys/kernel/debug/devices_deferred
-> root@zii-devel-b:~#
->
-> For Rev C we see:
->
-> [    1.244417] fec 400d1000.ethernet: Invalid MAC address: 00:00:00:00:00:00
-> [    1.250081] fec 400d1000.ethernet: Using random MAC address: c6:42:89:ed:5f:dd
-> [    1.257507] libphy: fec_enet_mii_bus: probed
-> [    1.570725] libphy: mdio_mux: probed
-> [    1.574208] mv88e6085 0.1:00: switch 0xa10 detected: Marvell 88E6390X, revision 1
-> [    1.590272] libphy: mdio: probed
-> [    1.627721] libphy: mdio_mux: probed
-> [    1.631222] mv88e6085 0.2:00: switch 0xa10 detected: Marvell 88E6390X, revision 1
-> [    1.659643] libphy: mdio: probed
-> [    1.811665] mv88e6085 0.1:00 lan1 (uninitialized): PHY [!mdio-mux!mdio@1!switch@0!mdio:01] driver [Generic PHY] (irq=POLL)
-> [    1.829230] mv88e6085 0.1:00 lan2 (uninitialized): PHY [!mdio-mux!mdio@1!switch@0!mdio:02] driver [Generic PHY] (irq=POLL)
-> [    1.845884] mv88e6085 0.1:00 lan3 (uninitialized): PHY [!mdio-mux!mdio@1!switch@0!mdio:03] driver [Generic PHY] (irq=POLL)
-> [    1.863237] mv88e6085 0.1:00 lan4 (uninitialized): PHY [!mdio-mux!mdio@1!switch@0!mdio:04] driver [Generic PHY] (irq=POLL)
-> [    1.884078] mv88e6085 0.2:00 lan5 (uninitialized): PHY [!mdio-mux!mdio@2!switch@0!mdio:01] driver [Generic PHY] (irq=POLL)
-> [    1.901630] mv88e6085 0.2:00 lan6 (uninitialized): PHY [!mdio-mux!mdio@2!switch@0!mdio:02] driver [Generic PHY] (irq=POLL)
-> [    1.918287] mv88e6085 0.2:00 lan7 (uninitialized): PHY [!mdio-mux!mdio@2!switch@0!mdio:03] driver [Generic PHY] (irq=POLL)
-> [    1.933721] mv88e6085 0.2:00 lan8 (uninitialized): PHY [!mdio-mux!mdio@2!switch@0!mdio:04] driver [Generic PHY] (irq=POLL)
-> [    1.948722] DSA: tree 0 setup
-> [    1.951599] libphy: mdio_mux: probed
->
-> [   21.565550] Micrel KSZ8041 400d0000.ethernet-1:00: attached PHY driver (mii_bus:phy_addr=400d0000.ethernet-1:00, irq=48)
->
-> I have Rev B using NFS root, so the interfaces are configured up by
-> the kernel during boot. Rev C has a local root filesystem, so user
-> space brings the interfaces up, and it is only when the FEC is opened
-> does it attach to the Micrel PHY. That explains the difference between
-> 2.265 and 21.565 seconds for the last line.
->
-> Again, nothing deferred.
->
->        Andrew
