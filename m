@@ -2,174 +2,282 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 129B13FEF8F
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 16:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7423E3FF018
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 17:23:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345337AbhIBOie (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 10:38:34 -0400
-Received: from mail-ot1-f41.google.com ([209.85.210.41]:39875 "EHLO
-        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345637AbhIBOib (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 10:38:31 -0400
-Received: by mail-ot1-f41.google.com with SMTP id m7-20020a9d4c87000000b0051875f56b95so2763804otf.6;
-        Thu, 02 Sep 2021 07:37:32 -0700 (PDT)
+        id S1345736AbhIBPYq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 11:24:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345712AbhIBPYp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 11:24:45 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E891C061575;
+        Thu,  2 Sep 2021 08:23:46 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id e26so1554655wmk.2;
+        Thu, 02 Sep 2021 08:23:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=4+qre20SAt2J5nhjwYberL+MSrwIJu2vrpb7BANREbc=;
+        b=XE0Y1ExJHXBK8VQkIswm8JyDHLO/TeOWXUQCTWX0+AllaYld92JRfQTBmjfhiWnAj9
+         /RPQ2mcq+CpPxkqy15KkyYRs731PCfJDzloskFwcOoesTIDpdXZpr5FQIljI1XHKvrQK
+         auSZJAjHCC3LcAYzzHlP9magalW1O7tjyhIQJTTbp9I8St2sy6K4oU0//DXRA06iEhGC
+         5f/IrJ7B1+IiYnLtXt5jBEdZo+/A2EfL7P5yoYVZxzqzAO3JHuSBBKN2KD8mykWOTRS/
+         oGHA/Zo6oToCp5nHBMj8bDWokQdOF1neTu25s57WeYfPBYYcxKaKqRdIBzWgyStxW+K+
+         eS4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2rl17F8ZLBnG5Isa+rmWjX2SNqghsw0qlnTGMKBisZ0=;
-        b=h6acscH9YzN7mudrVnga/dMRI8dWQQsLCC0TAEa7y58n4i2u7YbR/ZXP1fymmI/Jd7
-         avMJozazwugwGRkVG498Kj5ope1tnccMWA5DCNADPqatJ1U97R+iNJITVh+ove3Cj86N
-         CjpM9Ah04avjDqfIQvoFoonHKg2+1UPsnylrYhKPnsJkN4mG4PhaGmxK5mZ4YbVfFr6M
-         Mot6RghEKw3resvqqD2+WySdHg8Pdolns3wkiN6Lc+NSSu0OcF5S4A4pWoSpZcGbO2bh
-         uOEI38KeD4QPQgNyKfFLx3ur1sl/0nqav7KN0vTMnKB7ENjLCiqTYYurGdy6vNzD9eDN
-         vuWw==
-X-Gm-Message-State: AOAM533wLQCvzR7sxHm2QQWhZhne1gS+EQVEN/kKu6/DHUgGdUxty9Y3
-        wier6UK7pCk741q0RqRkrD2JGIaX4ozFsmefjtM=
-X-Google-Smtp-Source: ABdhPJyrp2UQgnC/bMjq5FEMaYHKwQw/CGCD4kMAVeIwn6tfTR+Oa80W/Q25Kga3HOIYpu8ch3KhznvFoaPPcUbuTPI=
-X-Received: by 2002:a9d:7115:: with SMTP id n21mr2928384otj.321.1630593452296;
- Thu, 02 Sep 2021 07:37:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210901225053.1205571-1-vladimir.oltean@nxp.com>
- <20210901225053.1205571-2-vladimir.oltean@nxp.com> <YTBkbvYYy2f/b3r2@kroah.com>
-In-Reply-To: <YTBkbvYYy2f/b3r2@kroah.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 2 Sep 2021 16:37:21 +0200
-Message-ID: <CAJZ5v0jfdE4RTR=71a6eGDoOF5jvr0ReM27WME+owmPLkXuU5w@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next 1/3] net: phy: don't bind genphy in
- phy_attach_direct if the specific driver defers probe
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>,
-        netdev <netdev@vger.kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=4+qre20SAt2J5nhjwYberL+MSrwIJu2vrpb7BANREbc=;
+        b=qFL4xsO7TzOJbWFUa4l/KSRbXuqkl9lk5jhnRmBbl9YC9elEGRGOz3yO/cDIDsq/ki
+         L1I8NypkaPkRw8P1KlYKg6KAeVHBowdT7czgAlchPaXHvA2hrwo6DrWmZ5wdOS8M5Gpq
+         HyBpjuT3qMLrKfENwqhMh25CvFXlgtPTHIY0Z/nCWNpFNtpyKCvR0Y9N6PG/wvK9FEjj
+         h4jTwTDbqagzvMFdZXWtp/pM0tSjuuV/KPSgiPKfLfcksNBMd4UKgl18t686vBpqVyyh
+         KVePAw+QWyEunDY+IWTknoKx4/KP4LDOn0EGEELczT4OaEeH6eD3rSNhv0UUi3LwU3eH
+         9nYQ==
+X-Gm-Message-State: AOAM532b2t2WQVL+CV1ZPXj8C0TqOFmF98kLStIK1fiZOY698LGirsNR
+        sA6R0npE0V+4j6+wDL+qdSA=
+X-Google-Smtp-Source: ABdhPJyhy2WhpoB1L+Z1yPnxo05H488rwWDFWlNzG69vB9YgZrRbvv1/bLfWJgc084JaZPMwWQWVew==
+X-Received: by 2002:a7b:c7cc:: with SMTP id z12mr3676532wmk.108.1630596224612;
+        Thu, 02 Sep 2021 08:23:44 -0700 (PDT)
+Received: from skbuf ([82.78.148.104])
+        by smtp.gmail.com with ESMTPSA id p13sm2170191wro.8.2021.09.02.08.23.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Sep 2021 08:23:44 -0700 (PDT)
+Date:   Thu, 2 Sep 2021 18:23:42 +0300
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         kernel-team <kernel-team@android.com>,
         Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [RFC PATCH net-next 0/3] Make the PHY library stop being so
+ greedy when binding the generic PHY driver
+Message-ID: <20210902152342.vett7qfhvhiyejvo@skbuf>
+References: <20210901225053.1205571-1-vladimir.oltean@nxp.com>
+ <20210902121927.GE22278@shell.armlinux.org.uk>
+ <20210902123532.ruvuecxoig67yv5v@skbuf>
+ <20210902132635.GG22278@shell.armlinux.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210902132635.GG22278@shell.armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 2, 2021 at 7:43 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Thu, Sep 02, 2021 at 02:26:35PM +0100, Russell King (Oracle) wrote:
+> On Thu, Sep 02, 2021 at 03:35:32PM +0300, Vladimir Oltean wrote:
+> > On Thu, Sep 02, 2021 at 01:19:27PM +0100, Russell King (Oracle) wrote:
+> > > On Thu, Sep 02, 2021 at 01:50:50AM +0300, Vladimir Oltean wrote:
+> > > > The central point of that discussion is that DSA seems "broken" for
+> > > > expecting the PHY driver to probe immediately on PHYs belonging to the
+> > > > internal MDIO buses of switches. A few suggestions were made about what
+> > > > to do, but some were not satisfactory and some did not solve the problem.
+> > >
+> > > I think you need to describe the mechanism here. Why wouldn't a PHY
+> > > belonging to an internal MDIO bus of a switch not probe immediately?
+> > > What resources may not be available?
+> >
+> > As you point out below, the interrupt-controller is what is not available.
+> > There is a mechanism called fw_devlink which infers links from one OF
+> > node to another based on phandles. When you have an interrupt-parent,
+> > that OF node becomes a supplier to you. Those OF node links are then
+> > transferred to device links once the devices having those OF nodes are
+> > created.
+> >
+> > > If we have a DSA driver that tries to probe the PHYs before e.g. the
+> > > interrupt controller inside the DSA switch has been configured, aren't
+> > > we just making completely unnecessary problems for ourselves?
+> >
+> > This is not what happens, if that were the case, of course I would fix
+> > _that_ and not in this way.
+> >
+> > > Wouldn't it be saner to ensure that the interrupt controller has been
+> > > setup and become available prior to attempting to setup anything that
+> > > relies upon that interrupt controller?
+> >
+> > The interrupt controller _has_ been set up. The trouble is that the
+> > interrupt controller has the same OF node as the switch itself, and the
+> > same OF node. Therefore, fw_devlink waits for the _entire_ switch to
+> > finish probing, it doesn't have insight into the fact that the
+> > dependency is just on the interrupt controller.
+> >
+> > > From what I see of Marvell switches, the internal PHYs only ever rely
+> > > on internal resources of the switch they are embedded in.
+> > >
+> > > External PHYs to the switch are a different matter - these can rely on
+> > > external clocks, and in that scenario, it would make sense for a
+> > > deferred probe to cause the entire switch to defer, since we don't
+> > > have all the resources for the switch to be functional (and, because we
+> > > want the PHYs to be present at switch probe time, not when we try to
+> > > bring up the interface, I don't see there's much other choice.)
+> > >
+> > > Trying to move that to interface-up time /will/ break userspace - for
+> > > example, Debian's interfaces(8) bridge support will become unreliable,
+> > > and probably a whole host of other userspace. It will cause regressions
+> > > and instability to userspace. So that's a big no.
+> >
+> > Why a big no?
 >
-> On Thu, Sep 02, 2021 at 01:50:51AM +0300, Vladimir Oltean wrote:
-> > There are systems where the PHY driver might get its probe deferred due
-> > to a missing supplier, like an interrupt-parent, gpio, clock or whatever.
-> >
-> > If the phy_attach_direct call happens right in between probe attempts,
-> > the PHY library is greedy and assumes that a specific driver will never
-> > appear, so it just binds the generic PHY driver.
-> >
-> > In certain cases this is the wrong choice, because some PHYs simply need
-> > the specific driver. The specific PHY driver was going to probe, given
-> > enough time, but this doesn't seem to matter to phy_attach_direct.
-> >
-> > To solve this, make phy_attach_direct check whether a specific PHY
-> > driver is pending or not, and if it is, just defer the probing of the
-> > MAC that's connecting to us a bit more too.
-> >
-> > Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> > ---
-> >  drivers/base/dd.c            | 21 +++++++++++++++++++--
-> >  drivers/net/phy/phy_device.c |  8 ++++++++
-> >  include/linux/device.h       |  1 +
-> >  3 files changed, 28 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-> > index 1c379d20812a..b22073b0acd2 100644
-> > --- a/drivers/base/dd.c
-> > +++ b/drivers/base/dd.c
-> > @@ -128,13 +128,30 @@ static void deferred_probe_work_func(struct work_struct *work)
-> >  }
-> >  static DECLARE_WORK(deferred_probe_work, deferred_probe_work_func);
-> >
-> > +static bool __device_pending_probe(struct device *dev)
-> > +{
-> > +     return !list_empty(&dev->p->deferred_probe);
-> > +}
-> > +
-> > +bool device_pending_probe(struct device *dev)
-> > +{
-> > +     bool pending;
-> > +
-> > +     mutex_lock(&deferred_probe_mutex);
-> > +     pending = __device_pending_probe(dev);
-> > +     mutex_unlock(&deferred_probe_mutex);
-> > +
-> > +     return pending;
-> > +}
-> > +EXPORT_SYMBOL_GPL(device_pending_probe);
-> > +
-> >  void driver_deferred_probe_add(struct device *dev)
-> >  {
-> >       if (!dev->can_match)
-> >               return;
-> >
-> >       mutex_lock(&deferred_probe_mutex);
-> > -     if (list_empty(&dev->p->deferred_probe)) {
-> > +     if (!__device_pending_probe(dev)) {
-> >               dev_dbg(dev, "Added to deferred list\n");
-> >               list_add_tail(&dev->p->deferred_probe, &deferred_probe_pending_list);
-> >       }
-> > @@ -144,7 +161,7 @@ void driver_deferred_probe_add(struct device *dev)
-> >  void driver_deferred_probe_del(struct device *dev)
-> >  {
-> >       mutex_lock(&deferred_probe_mutex);
-> > -     if (!list_empty(&dev->p->deferred_probe)) {
-> > +     if (__device_pending_probe(dev)) {
-> >               dev_dbg(dev, "Removed from deferred list\n");
-> >               list_del_init(&dev->p->deferred_probe);
-> >               __device_set_deferred_probe_reason(dev, NULL);
-> > diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> > index 52310df121de..2c22a32f0a1c 100644
-> > --- a/drivers/net/phy/phy_device.c
-> > +++ b/drivers/net/phy/phy_device.c
-> > @@ -1386,8 +1386,16 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
-> >
-> >       /* Assume that if there is no driver, that it doesn't
-> >        * exist, and we should use the genphy driver.
-> > +      * The exception is during probing, when the PHY driver might have
-> > +      * attempted a probe but has requested deferral. Since there might be
-> > +      * MAC drivers which also attach to the PHY during probe time, try
-> > +      * harder to bind the specific PHY driver, and defer the MAC driver's
-> > +      * probing until then.
+> Fundamental rule of kernel programming: we do not break existing
+> userspace.
+
+Of course, I wasn't asking why we shouldn't be breaking user space, but
+about the specifics of why this change would do that.
+
+> Debian has had support for configuring bridges at boot time via
+> the interfaces file for years. Breaking that is going to upset a
+> lot of people (me included) resulting in busted networks. It
+> would be a sure way to make oneself unpopular.
 >
-> Wait, no, this should not be a "special" thing, and why would the list
-> of deferred probe show this?
+> > I expect there to be 2 call paths of phy_attach_direct:
+> > - At probe time. Both the MAC driver and the PHY driver are probing.
+> >   This is what has this patch addresses. There is no issue to return
+> >   -EPROBE_DEFER at that time, since drivers connect to the PHY before
+> >   they register their netdev. So if connecting defers, there is no
+> >   netdev to unregister, and user space knows nothing of this.
+> > - At .ndo_open time. This is where it maybe gets interesting, but not to
+> >   user space. If you open a netdev and it connects to the PHY then, I
+> >   wouldn't expect the PHY to be undergoing a probing process, all of
+> >   that should have been settled by then, should it not? Where it might
+> >   get interesting is with NFS root, and I admit I haven't tested that.
 >
-> If a bus wants to have this type of "generic vs. specific" logic, then
-> it needs to handle it in the bus logic itself as that does NOT fit into
-> the normal driver model at all.
+> I don't think you can make that assumption. Consider the case where
+> systemd is being used, DSA stuff is modular, and we're trying to
+> setup a bridge device on DSA. DSA could be probing while the bridge
+> is being setup.
+>
+> Sadly, this isn't theoretical. I've ended up needing:
+>
+> 	pre-up sleep 1
+>
+> in my bridge configuration to allow time for DSA to finish probing.
+> It's not a pleasant solution, nor a particularly reliable one at
+> that, but it currently works around the problem.
 
-Well, I think that this is a general issue and it appears to me to be
-present in the driver core too, at least to some extent.
+What problem? This is the first time I've heard of this report, and you
+should definitely not need that.
 
-Namely, if there are two drivers matching the same device and the
-first one's ->probe() returns -EPROBE_DEFER, that will be converted to
-EPROBE_DEFER by really_probe(), so driver_probe_device() will pass it
-to __device_attach_driver() which then will return 0.  This
-bus_for_each_drv() will call __device_attach_driver()  for the second
-matching driver even though the first one may still probe successfully
-later.
+I do have a system set up to use systemd-networkd, and I did want to try
+this out:
 
-To me, this really is a variant of "if a driver has failed to probe,
-try another one" which phy_attach_direct() appears to be doing and in
-both cases the probing of the "alternative" is premature if the
-probing of the original driver has been deferred.
+$ for file in /etc/systemd/network/*; do echo ${file}; cat ${file}; done
+/etc/systemd/network/br0.netdev
+[NetDev]
+Name=br0
+Kind=bridge
 
-> Don't try to get a "hint" of this by messing with the probe function list.
+[Bridge]
+VLANFiltering=no
+DefaultPVID=1
+STP=no
 
-I agree that this doesn't look particularly clean, but then I'm
-wondering how to address this cleanly.
+[VLAN]
+MVRP=no
+/etc/systemd/network/br0.network
+[Match]
+Name=br0
+
+[Network]
+DHCP=ipv4
+/etc/systemd/network/eth0.network
+[Match]
+Name=eth0
+
+[Network]
+Bridge=br0
+/etc/systemd/network/eth1.network
+[Match]
+Name=eth1
+
+[Network]
+Bridge=br0
+/etc/systemd/network/eth2.network
+[Match]
+Name=eth2
+
+[Network]
+LinkLocalAddressing=yes
+/etc/systemd/network/swp.network
+[Match]
+Name=swp*
+
+[Network]
+BindCarrier=eth2
+Bridge=br0
+# Before
+# bridge link
+7: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br0 state forwarding priority 32 cost 4
+8: eth1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 master br0 state disabled priority 32 cost 100
+# Kick off the probing
+$ insmod sja1105.ko
+[   34.922908] sja1105 spi0.1: Probed switch chip: SJA1105T
+$ insmod tag_sja1105.ko
+$ echo spi0.1 > /sys/bus/spi/drivers/sja1105/bind
+[   51.345993] sja1105 spi0.1: Probed switch chip: SJA1105T
+[   51.378063] sja1105 spi0.1 swp5 (uninitialized): PHY [mdio@2d24000:06] driver [Broadcom BCM5464] (irq=POLL)
+[   51.389880] sja1105 spi0.1 swp2 (uninitialized): PHY [mdio@2d24000:03] driver [Broadcom BCM5464] (irq=POLL)
+[   51.401806] sja1105 spi0.1 swp3 (uninitialized): PHY [mdio@2d24000:04] driver [Broadcom BCM5464] (irq=POLL)
+[   51.413710] sja1105 spi0.1 swp4 (uninitialized): PHY [mdio@2d24000:05] driver [Broadcom BCM5464] (irq=POLL)
+[   51.424859] fsl-gianfar soc:ethernet@2d90000 eth2: Link is Up - 1Gbps/Full - flow control off
+[   51.453768] sja1105 spi0.1: configuring for fixed/rgmii link mode
+[   51.460094] device eth2 entered promiscuous mode
+[   51.464856] DSA: tree 0 setup
+[   51.477105] br0: port 3(swp2) entered blocking state
+[   51.478394] sja1105 spi0.1: Link is Up - 1Gbps/Full - flow control off
+[   51.482080] br0: port 3(swp2) entered disabled state
+[   51.531585] device swp2 entered promiscuous mode
+[   51.550365] sja1105 spi0.1 swp2: configuring for phy/rgmii-id link mode
+[   51.559631] br0: port 4(swp5) entered blocking state
+[   51.564597] br0: port 4(swp5) entered disabled state
+[   51.586224] device swp5 entered promiscuous mode
+[   51.647483] sja1105 spi0.1 swp5: configuring for phy/rgmii-id link mode
+[   51.665995] br0: port 5(swp4) entered blocking state
+[   51.671004] br0: port 5(swp4) entered disabled state
+[   51.677991] device swp4 entered promiscuous mode
+[   51.685967] br0: port 6(swp3) entered blocking state
+[   51.690935] br0: port 6(swp3) entered disabled state
+[   51.698246] device swp3 entered promiscuous mode
+[   51.746640] sja1105 spi0.1 swp4: configuring for phy/rgmii-id link mode
+[   51.754986] sja1105 spi0.1 swp3: configuring for phy/rgmii-id link mode
+[   54.716225] sja1105 spi0.1 swp2: Link is Up - 1Gbps/Full - flow control off
+[   54.723208] IPv6: ADDRCONF(NETDEV_CHANGE): swp2: link becomes ready
+[   54.729620] br0: port 3(swp2) entered blocking state
+[   54.734576] br0: port 3(swp2) entered forwarding state
+[   54.796136] sja1105 spi0.1 swp5: Link is Up - 1Gbps/Full - flow control off
+[   54.803117] IPv6: ADDRCONF(NETDEV_CHANGE): swp5: link becomes ready
+[   54.809527] br0: port 4(swp5) entered blocking state
+[   54.814484] br0: port 4(swp5) entered forwarding state
+[   54.876397] sja1105 spi0.1 swp3: Link is Up - 1Gbps/Full - flow control off
+[   54.883378] IPv6: ADDRCONF(NETDEV_CHANGE): swp3: link becomes ready
+[   54.889790] br0: port 6(swp3) entered blocking state
+[   54.894744] br0: port 6(swp3) entered forwarding state
+# After
+$ bridge link
+7: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br0 state forwarding priority 32 cost 4
+8: eth1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 master br0 state disabled priority 32 cost 100
+12: swp5@eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br0 state forwarding priority 32 cost 4
+13: swp2@eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br0 state forwarding priority 32 cost 4
+14: swp3@eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br0 state forwarding priority 32 cost 4
+15: swp4@eth2: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 master br0 state disabled priority 32 cost 100
+
+The ports are ready to pass traffic, and are doing it.
+
+So what does "wait for DSA to finish probing" mean? What driver, kernel
+and systemd-networkd version is this, exactly, and what is it that needs
+waiting?
