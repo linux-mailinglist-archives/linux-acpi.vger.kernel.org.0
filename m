@@ -2,163 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 741E93FF3C3
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 21:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17CDA3FF3FB
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 21:16:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347218AbhIBTGJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 15:06:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56540 "EHLO
+        id S243504AbhIBTRU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 15:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347090AbhIBTGJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 15:06:09 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AED8C061575;
-        Thu,  2 Sep 2021 12:05:10 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id q17so4471150edv.2;
-        Thu, 02 Sep 2021 12:05:10 -0700 (PDT)
+        with ESMTP id S231161AbhIBTRP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 15:17:15 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5110AC061575
+        for <linux-acpi@vger.kernel.org>; Thu,  2 Sep 2021 12:16:16 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id f15so5904446ybg.3
+        for <linux-acpi@vger.kernel.org>; Thu, 02 Sep 2021 12:16:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=F3V7EjM9yRS05v9IOxp0t6fq7hXaIjKJDbM8wh8rkpk=;
-        b=EF/FsMDX4vrswrhLo9RSoWV7HVr/ZuqCV/v0uXSO4x2FsIxogZq5BuPlR+fsgfohcH
-         zI0QY9+Dt2Pif4GIio7YUYPjwq0IzvxcH4KX75/77YnDRCOygKHqN3GAc2qtWAcAAwfG
-         zTgIys+QTvqR2qSOb7PG8M4ZZok4O45gV6JIRiCGCG0xhdJ3v9AEK6uB36cICO/IXyky
-         m759QMzjFOH/t81EWzu0meQM0wCKpNTV8lSasgcJ1DE0agc0hpifYPSeo9sf7QQ7axQA
-         5VWPoQ4LtoVhTx+yVrNHp2RkYQ1WTfZuLL4GWWLqY+yGDYy321Qvv/UFbQtNLe/sLB69
-         TmXA==
+        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
+         :subject:to;
+        bh=7cbYprtViCbGFSCYpKEkbMaY3bf1Nu/Wu2L8+nrDJDY=;
+        b=Ei7kwHZ8uCeElPlQ0DB8YQo4G2+UKxudXQlhBuJ7Hz5WbD9lgedl9HENVMv2Lcdy/0
+         TDr2/aysmrLEEMJNisbCYNlwnfgg9V2oUDqsOUiNaC0fy5/naBZRRTlZjljKrz1fi3vA
+         wfBR/Ur9XF9U3b6XyvSDaDIym7iDolsTxpZ8UnuvPvnc1SPr6wFh9InkA1jLHkwdhdkp
+         jJzT4r7LlVfmobVUyVOSqayx3vMrBaKq7W09mggdM+zQIwYeGp3Xhog5nTpnig0ky2DH
+         4Q+z/qLkywHoleFldjcICJIv4242ka1jUwPY4TNpKApC4HfXz4J+3bF/yil/fKQ2wJpA
+         Gg1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=F3V7EjM9yRS05v9IOxp0t6fq7hXaIjKJDbM8wh8rkpk=;
-        b=bw+XrO+WlTvznO8xueA4U28srzpnhJ2ILPeZD0P378wfkr2st+oJOMn4TD3IR9OVuJ
-         Y9Tuz0DkUZyYcqqnbR8TLkFvj0DgyrdE4X/Ed9pG53/NB6OsDngpYxE/dyxa3Q/KONo/
-         5ScTKnxwOGFS+E3aq2QwjQhYXVY9CsEdXJ2g0zm3l4MtHqC4NmKjOXl1olVTKbwDQg/z
-         uXxOinl+6T3woh0Ja3qmMTCfFpfgFN9a8IMRMuB0zdu+uuGr5FLok6xOxE7dOpQJf/CZ
-         Pb5nxtIYMTXsBGVR3hTaR0qRgmNC+g+ExadsZvpyEY8pKjo5odbyVaznlnPUVqXi0kCT
-         cT4Q==
-X-Gm-Message-State: AOAM533+2FjBh5YJ7HZ/P+jC/HawG3z8Ao+cx/tLZzcyDQfMUPRHA1nI
-        PBKE7nGVEUj6xOWVgWWJaRg=
-X-Google-Smtp-Source: ABdhPJyd8Bmg4wTz9yS3MrergaOCvIa58tdB0/8KB3W3Zu4EZnAbYLxBZhK6TzvvUv2aFpWJsMwTyw==
-X-Received: by 2002:aa7:d986:: with SMTP id u6mr5083172eds.156.1630609508814;
-        Thu, 02 Sep 2021 12:05:08 -0700 (PDT)
-Received: from skbuf ([82.78.148.104])
-        by smtp.gmail.com with ESMTPSA id b2sm1574735ejj.124.2021.09.02.12.05.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Sep 2021 12:05:08 -0700 (PDT)
-Date:   Thu, 2 Sep 2021 22:05:07 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        kernel-team <kernel-team@android.com>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [RFC PATCH net-next 0/3] Make the PHY library stop being so
- greedy when binding the generic PHY driver
-Message-ID: <20210902190507.shcdmfi3v55l2zuj@skbuf>
-References: <20210901225053.1205571-1-vladimir.oltean@nxp.com>
- <20210902121927.GE22278@shell.armlinux.org.uk>
- <20210902123532.ruvuecxoig67yv5v@skbuf>
- <20210902132635.GG22278@shell.armlinux.org.uk>
- <20210902152342.vett7qfhvhiyejvo@skbuf>
- <20210902163144.GH22278@shell.armlinux.org.uk>
- <20210902171033.4byfnu3g25ptnghg@skbuf>
- <20210902175043.GK22278@shell.armlinux.org.uk>
+        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
+         :from:date:message-id:subject:to;
+        bh=7cbYprtViCbGFSCYpKEkbMaY3bf1Nu/Wu2L8+nrDJDY=;
+        b=HuLHHs7J4VMZde91zelOUNJR6tuWHJZr5Q/rMR01kCHVfes3l88pVO7huG5tpN36qv
+         U35NfQ1q/06DnEGqM2DEV9hLHx9k+KQm4up9HG964Z50RW8zPq761EamgwJewO36mgdE
+         Qpb9+F8OWFdHZ5ATTDdF8r/YdnMpa3djkh35jFu4SIcV+kR87+6LCLwVDTgRjne8yuMN
+         Uq/9vICZhsltQlpeeGBiz2smhj88+RR9zAZuusm3WJiCk28FAVcaDPvdEoBWNmGmYrHw
+         fE/t+L/ASy15uSNDKw8SytV+n1wHP50pnv6PsrezjiUrj8CwVL6ne5Ies2Xmmrm14Wer
+         CR4A==
+X-Gm-Message-State: AOAM531Xtpus2pmPs2cPQTCctNQehksgQEXHBWD7gkm2jkkZrCR0oYat
+        qPjhfuRf23zX2HFcLv3fbfMV2hG/whBI0DgV1y8=
+X-Google-Smtp-Source: ABdhPJwPI80WiASmx6/+XkIWGCSNV5/tyuNmabsQRAxITDspj29IkzN5SbtPgID1YLvOkn6oq89JPRZc0p7ACaEta5w=
+X-Received: by 2002:a25:6d08:: with SMTP id i8mr6198659ybc.100.1630610175299;
+ Thu, 02 Sep 2021 12:16:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210902175043.GK22278@shell.armlinux.org.uk>
+Received: by 2002:a05:7000:9716:0:0:0:0 with HTTP; Thu, 2 Sep 2021 12:16:14
+ -0700 (PDT)
+Reply-To: officebankdirectorwu@gmail.com
+In-Reply-To: <CACOECawSMCrb-XbcQ5JQKF-1-2E7FJc7tjLYDYddbDC6fcaKgA@mail.gmail.com>
+References: <CACOECaw+PAa_-xZz-xNzPNwHYnGAomZ+8_mq97t24CswRG_3hg@mail.gmail.com>
+ <CACOECaygxwasn8fyni-mx=oWd3Uq6HONEZzExT63zYR01e8oUw@mail.gmail.com>
+ <CACOECayzGzg5cLSMxe=LWP3-GOGRzxAxu6L8PBtjSGTzz3t+Bw@mail.gmail.com>
+ <CACOECazbgDeqrUz2EXS8ZiHdxNN0uL7KvW+x+CQquyyP_LEQnw@mail.gmail.com>
+ <CACOECaxORDf0W9MgdZiDsRTbY8BgfJK2OF+peeW_cUDtRmyeMA@mail.gmail.com> <CACOECawSMCrb-XbcQ5JQKF-1-2E7FJc7tjLYDYddbDC6fcaKgA@mail.gmail.com>
+From:   "officebankdirectorwu@gmail.com" <bankdirector001@gmail.com>
+Date:   Thu, 2 Sep 2021 19:16:14 +0000
+Message-ID: <CACOECaz-JHBxDHxw4gnN_jRghN3dASzx1jLzXzFoWeEBir1VVQ@mail.gmail.com>
+Subject: WU BANK DIRECTOR
+To:     bankdirector001@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 02, 2021 at 06:50:43PM +0100, Russell King (Oracle) wrote:
-> On Thu, Sep 02, 2021 at 05:10:34PM +0000, Vladimir Oltean wrote:
-> > On Thu, Sep 02, 2021 at 05:31:44PM +0100, Russell King (Oracle) wrote:
-> > > On Thu, Sep 02, 2021 at 06:23:42PM +0300, Vladimir Oltean wrote:
-> > > > On Thu, Sep 02, 2021 at 02:26:35PM +0100, Russell King (Oracle) wrote:
-> > > > > Debian has had support for configuring bridges at boot time via
-> > > > > the interfaces file for years. Breaking that is going to upset a
-> > > > > lot of people (me included) resulting in busted networks. It
-> > > > > would be a sure way to make oneself unpopular.
-> > > > >
-> > > > > > I expect there to be 2 call paths of phy_attach_direct:
-> > > > > > - At probe time. Both the MAC driver and the PHY driver are probing.
-> > > > > >   This is what has this patch addresses. There is no issue to return
-> > > > > >   -EPROBE_DEFER at that time, since drivers connect to the PHY before
-> > > > > >   they register their netdev. So if connecting defers, there is no
-> > > > > >   netdev to unregister, and user space knows nothing of this.
-> > > > > > - At .ndo_open time. This is where it maybe gets interesting, but not to
-> > > > > >   user space. If you open a netdev and it connects to the PHY then, I
-> > > > > >   wouldn't expect the PHY to be undergoing a probing process, all of
-> > > > > >   that should have been settled by then, should it not? Where it might
-> > > > > >   get interesting is with NFS root, and I admit I haven't tested that.
-> > > > >
-> > > > > I don't think you can make that assumption. Consider the case where
-> > > > > systemd is being used, DSA stuff is modular, and we're trying to
-> > > > > setup a bridge device on DSA. DSA could be probing while the bridge
-> > > > > is being setup.
-> > > > >
-> > > > > Sadly, this isn't theoretical. I've ended up needing:
-> > > > >
-> > > > > 	pre-up sleep 1
-> > > > >
-> > > > > in my bridge configuration to allow time for DSA to finish probing.
-> > > > > It's not a pleasant solution, nor a particularly reliable one at
-> > > > > that, but it currently works around the problem.
-> > > >
-> > > > What problem? This is the first time I've heard of this report, and you
-> > > > should definitely not need that.
-> > >
-> > > I found it when upgrading the Clearfog by the DSL modems to v5.13.
-> > > When I rebooted it with a previously working kernel (v5.7) it has
-> > > never had a problem. With v5.13, it failed to add all the lan ports
-> > > into the bridge, because the bridge was still being setup by the
-> > > kernel while userspace was trying to configure it. Note that I have
-> > > extra debug in my kernels, hence the extra messages:
-> >
-> > Ok, first you talked about the interfaces file, then systemd. If it's
-> > not about systemd's network manager then I don't see how it is relevant.
->
-> You're reading in stuff to what I write that I did not write... I said:
->
-> "Consider the case where systemd is being used, DSA stuff is modular,
-> and we're trying to setup a bridge device on DSA."
->
-> That does not mean I'm using systemd's network manager - which is
-> something I know little about and have never used.
+ Our office contact, 2554 Road Of Kpalime Face Pharmacy Bet, Lome, Gulf.
 
-You should definitely try it out, it gets a lot of new features added
-all the time, it uses the netlink interface, it reacts on udev events.
+This is WU bank director bring notice for you that  International
+monetary fund (IMF) who compensation you sum of $850,000.00 because
+they found your email address in the list of scam victim . Do you
+willing to get this fund or not?
 
-> The reason I mentioned systemd is precisely because with systemd, you
-> get a hell of a lot happening parallel - and that's significiant in
-> this case, because it's very clear that modules are being loaded in
-> parallel with networking being brought up - and that is where the
-> problems begin. In fact, modules themselves get loaded in paralllel
-> with systemd.
+We look forward to hear from you urgently.
 
-So that's what I don't understand. You're saying that the ifupdown
-service runs in parallel with systemd-modules-load.service, and
-networking is a kernel module? Doesn't that mean it behaves as expected,
-then? /shrug/
-Have you tried adding an 'After=systemd-modules-load.service' dependency
-to the ifupdown service? I don't think that DSA is that bad that it
-registers its net devices outside of the process context in which the
-insmod mv88e6xxx.ko is called. Quite the opposite, I think (but I
-haven't actually taken a close look yet) that the component stuff
-Saravana is proposing would do exactly that. So you "fix" one issue, you
-introduce another.
+Yours faithfully
+Tony  Albert
+BANK DIRECTOR
+Whatsapp, +22870248258
