@@ -2,179 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A06CE3FF10B
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 18:16:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2529C3FF15A
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 18:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346246AbhIBQRs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 12:17:48 -0400
-Received: from mail-ot1-f52.google.com ([209.85.210.52]:43795 "EHLO
-        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346255AbhIBQRp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 12:17:45 -0400
-Received: by mail-ot1-f52.google.com with SMTP id x10-20020a056830408a00b004f26cead745so3173857ott.10
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Sep 2021 09:16:46 -0700 (PDT)
+        id S1346237AbhIBQ2q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 12:28:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47774 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346171AbhIBQ2p (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 12:28:45 -0400
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77BD2C061760
+        for <linux-acpi@vger.kernel.org>; Thu,  2 Sep 2021 09:27:47 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id r4so4971878ybp.4
+        for <linux-acpi@vger.kernel.org>; Thu, 02 Sep 2021 09:27:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=eJLIiedISCJRyHw16WvJSkD85mHHNgMIgGyWz+lopEc=;
+        b=fM+/JeCwdbssBXpOkjmEZ3eIo9++9cKPpbcRN1wKaKgQ4I9DDDeOALD7CaTBisOPz9
+         C1FFKVwWxUb5uKAKlOHcOXhksa4rhh6l8dQ/UWlwEAmfJ9c2ym4Zzfcbxzq4/fo3wVOL
+         W01nxuHRtWPZKJqHXIk6mfSpWKoXky/+m2foBQ7x8FSyVwc4LUUd9pIPc2m+DEdTVuad
+         DfOTGBR6yJH8YE5iEj4/khKub/UXSmvkh7BHCEdbKIVRNgDJmG8qOHcG6Nr9UWyS6soz
+         Q9yS8Hys4HcWWTNi3lfeJVSUy6Cb1Yivd0UayQSJLw42Ru3IVlwOAmkn7PehtICiEM91
+         /KEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=eyZOl70SkSCm7xLHTWRERpMl/pIFluMZB1oK0Mr2pMs=;
-        b=TRXxa8DQaUXtjnuZIkYyaVsCW7IVdSsT8Bhh0JyEPSd0ZLDwzN2F3jZJ3NwU5MhMBT
-         qjvcx4Ut92m0pV+jcx10npuS8cy4OD7ogAxYOTcb4CNlAfmGpedcBZxlGc3XQ+7ILSvk
-         PcyNwNHqqm2teUxc/piCBe+sAD6FSjwJfs/tCH9/H4zDREea35wt2rNRNHUJAwibtbOU
-         u6OZ9cgS5pkHlRlbz3fsbD9N/EIrdJgPhoPgq6fn9KhIG9iU1z0eafZXOzmlqBV8+JGL
-         YoMsg8EivqJ9WCovuAgP44KXnsr/9jbJHr6w4RuvT4bFW70sr2nEU3aKbECuOQQCyehi
-         g2EA==
-X-Gm-Message-State: AOAM531rWWK3lvrYz6yFR7CZ9x+wXQEE3BdzYztaqe6D2EuxOQrN2Reu
-        NmY+HjXgxvDMMCPF9T92PYxf+Viy+B/OUSgydu0=
-X-Google-Smtp-Source: ABdhPJwl2ET43Ex3chFgylCJxeITpVJQJpAU5MNCDco0IrgvZt3UMXJjxdw6gYRvrbuRXasZaDQzbLiXe0iCPY1dvIk=
-X-Received: by 2002:a9d:7396:: with SMTP id j22mr3475150otk.206.1630599406415;
- Thu, 02 Sep 2021 09:16:46 -0700 (PDT)
+        bh=eJLIiedISCJRyHw16WvJSkD85mHHNgMIgGyWz+lopEc=;
+        b=SVXlqRJNXAp+2YV3AfqYW+QQieq7g72d7A1gK7jpSEhS0Y9dBGZ40ZRiUZQMKUklHo
+         ijnZzV7tG/vPf5Y4FsXV40ClJMeFYz2F0CeNMObs2JJ3m7fNQrWjgRwMKf1Hy4zEy8b1
+         rQsg2VCtj/D8ef+YRUxga23yATZt3irO6CuXJvcO9MOxoKxVnc4RY85KZJx3s8WeOzVG
+         KIq/lhu2awMkcHtZRXrOw3HAGxcMglRV5ZR81rDtM7lTxGLKjAbYY80JC2Sw6qm7/Zuq
+         CCmE3ItMrOqADup8EIG77aH0NvWF1udWc1Ns1v9bx8pWqbZzA5fNOOS+50wrZDlCQ7e8
+         Cklg==
+X-Gm-Message-State: AOAM533Ek+w9Z1zV1FE40RSWphxbXZA1GkkL+GfcXpVgSsl/oTHTX0Ga
+        vmkqKwKBqESI3SkOfbtw3h5lE35dbAVXmLKfAf9GzQ==
+X-Google-Smtp-Source: ABdhPJxLXRFWyfyWl9ok1Aa6XveqWoo81KUXhljpBzB+4qFjXNrtY5Q8+BjSRLkRtw+s/CVzpVUYjS1INpOzcfunDRA=
+X-Received: by 2002:a25:d2c8:: with SMTP id j191mr5657920ybg.412.1630600065503;
+ Thu, 02 Sep 2021 09:27:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210901142111.16891-1-mario.limonciello@amd.com>
-In-Reply-To: <20210901142111.16891-1-mario.limonciello@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 2 Sep 2021 18:16:35 +0200
-Message-ID: <CAJZ5v0g=za-D0bDXT-+CpdUQHOR_JPjCvGxt2Zz1hBiPHig_jw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: s2idle: Run both AMD and Microsoft methods if
- both are supported
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        liaoyuan@gmail.com, Maxwell Beck <max@ryt.one>
+References: <20210902025528.1017391-1-saravanak@google.com>
+ <CAGETcx9N34RyrdKDR8dQ7ECyz7ZXBx-Ft16t033NjTiU8p=Y0g@mail.gmail.com> <CAJZ5v0gt_1vKQXxSY6HoHRPR9O_e1f7VwcBnSjeMgCdCibrwgQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gt_1vKQXxSY6HoHRPR9O_e1f7VwcBnSjeMgCdCibrwgQ@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 2 Sep 2021 09:27:09 -0700
+Message-ID: <CAGETcx_dvpFKZnz2w43h=ybp-8YF=OdpW0f2mK+jvDPURDFQJQ@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] Ulf reported an issue[1] with fw_devlink. This
+ series tries to fix that issue.
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "Cc: Android Kernel" <kernel-team@android.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 1, 2021 at 4:21 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
+On Thu, Sep 2, 2021 at 8:56 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> It was reported that on "HP ENVY x360" that power LED does not come back,
-> certain keys like brightness controls do not work, and the fan never
-> spins up, even under load on 5.14 final.
+> On Thu, Sep 2, 2021 at 4:57 AM Saravana Kannan <saravanak@google.com> wrote:
+> >
+> > Oops, forgot to use a proper subject. Sorry.
 >
-> In analysis of the SSDT it's clear that the Microsoft UUID doesn't provide
-> functional support, but rather the AMD UUID should be supporting this
-> system.
->
-> Because this is a gap in the expected logic, we checked back with internal
-> team.  The conclusion was that on Windows AMD uPEP *does* run even when
-> Microsoft UUID present, but most OEM systems have adopted value of "0x3"
-> for supported functions and hence nothing runs.
->
-> Henceforth add support for running both Microsoft and AMD methods.  This
-> approach will also allow the same logic on Intel systems if desired at a
-> future time as well by pulling the evaluation of
-> `lps0_dsm_func_mask_microsoft` out of the `if` block for
-> `acpi_s2idle_vendor_amd`.
->
-> Cc: liaoyuan@gmail.com
-> Link: https://gitlab.freedesktop.org/drm/amd/uploads/9fbcd7ec3a385cc6949c9bacf45dc41b/acpi-f.20.bin
-> BugLink: https://gitlab.freedesktop.org/drm/amd/-/issues/1691
-> Reported-by: Maxwell Beck <max@ryt.one>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/acpi/x86/s2idle.c | 67 +++++++++++++++++++++++----------------
->  1 file changed, 39 insertions(+), 28 deletions(-)
->
-> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-> index 3a308461246a..7d1976e5dd8b 100644
-> --- a/drivers/acpi/x86/s2idle.c
-> +++ b/drivers/acpi/x86/s2idle.c
-> @@ -449,25 +449,30 @@ int acpi_s2idle_prepare_late(void)
->         if (pm_debug_messages_on)
->                 lpi_check_constraints();
->
-> -       if (lps0_dsm_func_mask_microsoft > 0) {
-> +       /* screen off */
-> +       if (lps0_dsm_func_mask > 0)
-> +               acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
-> +                                       ACPI_LPS0_SCREEN_OFF_AMD :
-> +                                       ACPI_LPS0_SCREEN_OFF,
-> +                                       lps0_dsm_func_mask, lps0_dsm_guid);
-> +
-> +       if (lps0_dsm_func_mask_microsoft > 0)
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
->                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
-> -                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-> +
-> +       /* lps0 entry */
-> +       if (lps0_dsm_func_mask > 0)
-> +               acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
-> +                                       ACPI_LPS0_ENTRY_AMD :
-> +                                       ACPI_LPS0_ENTRY,
-> +                                       lps0_dsm_func_mask, lps0_dsm_guid);
-> +       if (lps0_dsm_func_mask_microsoft > 0) {
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
->                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-> -       } else if (acpi_s2idle_vendor_amd()) {
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF_AMD,
-> -                               lps0_dsm_func_mask, lps0_dsm_guid);
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD,
-> -                               lps0_dsm_func_mask, lps0_dsm_guid);
-> -       } else {
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
-> -                               lps0_dsm_func_mask, lps0_dsm_guid);
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
-> -                               lps0_dsm_func_mask, lps0_dsm_guid);
-> +               /* modern standby entry */
-> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
-> +                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
->         }
-> -
->         return 0;
->  }
->
-> @@ -476,24 +481,30 @@ void acpi_s2idle_restore_early(void)
->         if (!lps0_device_handle || sleep_no_lps0)
->                 return;
->
-> -       if (lps0_dsm_func_mask_microsoft > 0) {
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
-> -                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-> +       /* mdoern standby exit */
-> +       if (lps0_dsm_func_mask_microsoft > 0)
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
->                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
-> -                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-> -       } else if (acpi_s2idle_vendor_amd()) {
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_AMD,
-> -                               lps0_dsm_func_mask, lps0_dsm_guid);
-> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON_AMD,
-> -                               lps0_dsm_func_mask, lps0_dsm_guid);
-> -       } else {
-> +
-> +       /* lps0 exit */
-> +       if (lps0_dsm_func_mask > 0)
-> +               acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
-> +                                       ACPI_LPS0_EXIT_AMD :
-> +                                       ACPI_LPS0_EXIT,
-> +                                       lps0_dsm_func_mask, lps0_dsm_guid);
-> +       if (lps0_dsm_func_mask_microsoft > 0)
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
-> -                               lps0_dsm_func_mask, lps0_dsm_guid);
-> +                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-> +
-> +       /* screen on */
-> +       if (lps0_dsm_func_mask_microsoft > 0)
->                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
-> -                               lps0_dsm_func_mask, lps0_dsm_guid);
-> -       }
-> +                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-> +       if (lps0_dsm_func_mask > 0)
-> +               acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
-> +                                       ACPI_LPS0_SCREEN_ON_AMD :
-> +                                       ACPI_LPS0_SCREEN_ON,
-> +                                       lps0_dsm_func_mask, lps0_dsm_guid);
->  }
->
->  static const struct platform_s2idle_ops acpi_s2idle_ops_lps0 = {
-> --
+> Is this a replacement for the "Fix rtl8366rb issues with fw_devlink=on " series?
 
-Applied as 5.15-rc1 material with some edits in the new comments added
-by this patch (including a typo fix).
+No. This is unrelated to that. This is the issue I'm trying to fix:
+https://lore.kernel.org/lkml/CAPDyKFo9Bxremkb1dDrr4OcXSpE0keVze94Cm=zrkOVxHHxBmQ@mail.gmail.com/
 
-Thanks!
+This is kind of a replacement to, but the patch below might be needed
+in general (needs more thought):
+https://lore.kernel.org/lkml/CAGETcx9U2M5i1CAx605fG3Qwm1xwjH2uy4kY4vrAF7YSRSSg+w@mail.gmail.com/
+
+-Saravana
+>
+>
+> > On Wed, Sep 1, 2021 at 7:55 PM Saravana Kannan <saravanak@google.com> wrote:
+> > >
+> > > Ulf, mind testing this?
+> > >
+> > > Thanks,
+> > > Saravana
+> > > [1] - https://lore.kernel.org/lkml/CAPDyKFo9Bxremkb1dDrr4OcXSpE0keVze94Cm=zrkOVxHHxBmQ@mail.gmail.com/
+> > >
+> > > Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> > >
+> > > Saravana Kannan (2):
+> > >   driver core: Add support for FWNODE_FLAG_NEVER_PROBES
+> > >   of: platform: Mark bus devices nodes with FWNODE_FLAG_NEVER_PROBES
+> > >
+> > >  drivers/base/core.c    |  8 ++++++++
+> > >  drivers/of/platform.c  | 16 ++++++++++++++++
+> > >  include/linux/fwnode.h |  8 +++++---
+> > >  3 files changed, 29 insertions(+), 3 deletions(-)
+> > >
+> > > --
+> > > 2.33.0.259.gc128427fd7-goog
+> > >
