@@ -2,42 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6A823FEDBB
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 14:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D67923FEDD7
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 14:35:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344349AbhIBM02 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 08:26:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48054 "EHLO
+        id S234229AbhIBMge (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 08:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344074AbhIBM02 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 08:26:28 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22785C061575;
-        Thu,  2 Sep 2021 05:25:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=1wOKCrX3COV6DlxfudE8AnDiURX7M6vGBTgHMAhqiY4=; b=rqK6AEvPgoByLYFRodspB7Byw
-        7gqMzeAVrrtGevy7S/Pe4kpxFOG541wx2HwjnEnffJUbdF5hpGnPUE5ySMo1DbZcFAzPmnds7zmp+
-        Jj1zgwrIxm6M0IrdmtR1pc/NjF4oW1CvyFeGIDapO7P9JKM4zZouHP9S7Vdcxy+PY9MvtgiZ3DXk+
-        mFmcyTwXarm08r5htAsGboZCNkAZqOtGAinHX0bvrFOY06FxWdqIlPllA4Igcplk7tTNVpClxl26y
-        k6yQu2+qEuQvdgC0jKkB1O+Ngc3fVV9HBJzKmsm7WNRrb0nQBzJeEFDuEVjkJLHCrAEDEs2hy32+E
-        4bbcBfltw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48088)
-        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1mLlma-0001P2-4n; Thu, 02 Sep 2021 13:25:28 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1mLlmZ-0007ov-0Y; Thu, 02 Sep 2021 13:25:27 +0100
-Date:   Thu, 2 Sep 2021 13:25:26 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc:     netdev@vger.kernel.org,
+        with ESMTP id S234098AbhIBMgd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 08:36:33 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42AB0C061575;
+        Thu,  2 Sep 2021 05:35:35 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id t19so3968100ejr.8;
+        Thu, 02 Sep 2021 05:35:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=JDtXEunmFOOZmW+0aOsXK0Lm5ZI2ij8ux95FUu34ZJM=;
+        b=PqW1GirCBDvwbp/Ga2Ddg6i2pz1R5Yc9bMNfbDavKrmCfQny7D35f6ATVhel0WDeZg
+         pdPAAj9emto4iW43J3Ubj4AgOofDMzzbB3ELwMgrkPLddqEWEk313MlGf7jU8ZYCx+H/
+         B2y/W9fH6P4sBYx999uv6Xzrhn/MdWEGU8uk7v6I3sh+qBjXZzQFhPrPpr4D0LH8TsDQ
+         bHBjKDfCyy7Hg8mmWicLishULAZqrqAo35qGy94l+FdaQFnA0lG6/wezJ+J7lRlg+QeF
+         hxk5MMvbdR3PhWhf2fXJVE8UAY4l+BYEBisEjRt2v1qjCqkB+aEXuwWLpGZemTRknIS/
+         DOoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=JDtXEunmFOOZmW+0aOsXK0Lm5ZI2ij8ux95FUu34ZJM=;
+        b=Pp8bZagVLXMzD92Ohir6cyD7cZwaOFizMIyXSetm48RYWYfaJPYjt7ZQAXf7VPyGKW
+         8ctbCBYmvbqermr7eVkEWseZChI2lwDjMhv0f6qua3b32JnwnhtrbSpiWAZGOxN4mQR8
+         HkE5+jZ/JadfdwmKEzIDuN748iVyybiIsbGGCSp8IIQhxq1med5JDqsFNPmXd0aZ+gSQ
+         Ke9iXOiBCETL1Vp49FRgUdbI1aPRMyp2ERZ6ME0uyVWnE7snX058QGAriEtIGlQ/1+6N
+         f6EwuQLpUytVhR+bYAR5es0qt+qdUwBI5WAQe6iVGQtRHnE5qj+GxScvBO0UuvpmWVLU
+         2mfQ==
+X-Gm-Message-State: AOAM532Zv6lUMA8y4dCNrcxZ/WHI2zl+h2nmnWAs8gW5nBD1bEhT38NB
+        8M4yNhy0MM5UWL/p8oZlokE=
+X-Google-Smtp-Source: ABdhPJxayQYena70A4LcBxGfe1LMU/MXJPCCZZbBKEyyCDlZ9DlVxh2w74gWxfqOAOJz/MpIS615lw==
+X-Received: by 2002:a17:907:7601:: with SMTP id jx1mr3548149ejc.69.1630586133751;
+        Thu, 02 Sep 2021 05:35:33 -0700 (PDT)
+Received: from skbuf ([82.78.148.104])
+        by smtp.gmail.com with ESMTPSA id n23sm1150940eds.41.2021.09.02.05.35.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Sep 2021 05:35:33 -0700 (PDT)
+Date:   Thu, 2 Sep 2021 15:35:32 +0300
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Andrew Lunn <andrew@lunn.ch>,
@@ -46,58 +59,83 @@ Cc:     netdev@vger.kernel.org,
         Jakub Kicinski <kuba@kernel.org>,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
         linux-kernel@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>,
         Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         kernel-team <kernel-team@android.com>,
         Len Brown <lenb@kernel.org>
-Subject: Re: [RFC PATCH net-next 2/3] net: dsa: destroy the phylink instance
- on any error in dsa_slave_phy_setup
-Message-ID: <20210902122526.GF22278@shell.armlinux.org.uk>
+Subject: Re: [RFC PATCH net-next 0/3] Make the PHY library stop being so
+ greedy when binding the generic PHY driver
+Message-ID: <20210902123532.ruvuecxoig67yv5v@skbuf>
 References: <20210901225053.1205571-1-vladimir.oltean@nxp.com>
- <20210901225053.1205571-3-vladimir.oltean@nxp.com>
+ <20210902121927.GE22278@shell.armlinux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210901225053.1205571-3-vladimir.oltean@nxp.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20210902121927.GE22278@shell.armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 02, 2021 at 01:50:52AM +0300, Vladimir Oltean wrote:
-> DSA supports connecting to a phy-handle, and has a fallback to a non-OF
-> based method of connecting to an internal PHY on the switch's own MDIO
-> bus, if no phy-handle and no fixed-link nodes were present.
+On Thu, Sep 02, 2021 at 01:19:27PM +0100, Russell King (Oracle) wrote:
+> On Thu, Sep 02, 2021 at 01:50:50AM +0300, Vladimir Oltean wrote:
+> > The central point of that discussion is that DSA seems "broken" for
+> > expecting the PHY driver to probe immediately on PHYs belonging to the
+> > internal MDIO buses of switches. A few suggestions were made about what
+> > to do, but some were not satisfactory and some did not solve the problem.
 > 
-> The -ENODEV error code from the first attempt (phylink_of_phy_connect)
-> is what triggers the second attempt (phylink_connect_phy).
+> I think you need to describe the mechanism here. Why wouldn't a PHY
+> belonging to an internal MDIO bus of a switch not probe immediately?
+> What resources may not be available?
+
+As you point out below, the interrupt-controller is what is not available.
+There is a mechanism called fw_devlink which infers links from one OF
+node to another based on phandles. When you have an interrupt-parent,
+that OF node becomes a supplier to you. Those OF node links are then
+transferred to device links once the devices having those OF nodes are
+created.
+
+> If we have a DSA driver that tries to probe the PHYs before e.g. the
+> interrupt controller inside the DSA switch has been configured, aren't
+> we just making completely unnecessary problems for ourselves?
+
+This is not what happens, if that were the case, of course I would fix
+_that_ and not in this way.
+
+> Wouldn't it be saner to ensure that the interrupt controller has been
+> setup and become available prior to attempting to setup anything that
+> relies upon that interrupt controller?
+
+The interrupt controller _has_ been set up. The trouble is that the
+interrupt controller has the same OF node as the switch itself, and the
+same OF node. Therefore, fw_devlink waits for the _entire_ switch to
+finish probing, it doesn't have insight into the fact that the
+dependency is just on the interrupt controller.
+
+> From what I see of Marvell switches, the internal PHYs only ever rely
+> on internal resources of the switch they are embedded in.
 > 
-> However, when the first attempt returns a different error code than
-> -ENODEV, this results in an unbalance of calls to phylink_create and
-> phylink_destroy by the time we exit the function. The phylink instance
-> has leaked.
+> External PHYs to the switch are a different matter - these can rely on
+> external clocks, and in that scenario, it would make sense for a
+> deferred probe to cause the entire switch to defer, since we don't
+> have all the resources for the switch to be functional (and, because we
+> want the PHYs to be present at switch probe time, not when we try to
+> bring up the interface, I don't see there's much other choice.)
 > 
-> There are many other error codes that can be returned by
-> phylink_of_phy_connect. For example, phylink_validate returns -EINVAL.
-> So this is a practical issue too.
-> 
-> Fixes: aab9c4067d23 ("net: dsa: Plug in PHYLINK support")
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> ---
-> I know, I will send this bug fix to "net" too, this is provided just for
-> testing purposes, and for the completeness of the patch set.
+> Trying to move that to interface-up time /will/ break userspace - for
+> example, Debian's interfaces(8) bridge support will become unreliable,
+> and probably a whole host of other userspace. It will cause regressions
+> and instability to userspace. So that's a big no.
 
-Probably should have been the first patch of the set. This looks
-absolutely correct to me. Please send for the net tree.
-
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-
-Thanks.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Why a big no? I expect there to be 2 call paths of phy_attach_direct:
+- At probe time. Both the MAC driver and the PHY driver are probing.
+  This is what has this patch addresses. There is no issue to return
+  -EPROBE_DEFER at that time, since drivers connect to the PHY before
+  they register their netdev. So if connecting defers, there is no
+  netdev to unregister, and user space knows nothing of this.
+- At .ndo_open time. This is where it maybe gets interesting, but not to
+  user space. If you open a netdev and it connects to the PHY then, I
+  wouldn't expect the PHY to be undergoing a probing process, all of
+  that should have been settled by then, should it not? Where it might
+  get interesting is with NFS root, and I admit I haven't tested that.
