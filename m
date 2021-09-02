@@ -2,78 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDC783FEC38
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 12:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 202A83FEC65
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 12:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242697AbhIBKig (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 06:38:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59446 "EHLO mail.kernel.org"
+        id S245185AbhIBKux (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 06:50:53 -0400
+Received: from mga11.intel.com ([192.55.52.93]:28870 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233714AbhIBKig (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 Sep 2021 06:38:36 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DF24660FC0;
-        Thu,  2 Sep 2021 10:37:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1630579057;
-        bh=myvl5C6bWm7U0pzspU+p4yxBN99ESzBLn2YM1d94xhI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Y1yzDS+opMJgUTIiJtfY1tYRDR+ZoWRoM/XEVw8SmpFek+7lRlcxUoUWGno6E7mdj
-         cYzjWp98uMwc4FoQWi0f3X/b4zLs4z3W5tN88P1FmQX58NJbyRZ05IQkoRGnnhXN1T
-         aAqy72exzeNO9ymO3tU3JSEbDQWSMFm4jNa2J6XQ=
-Date:   Thu, 2 Sep 2021 12:37:34 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        kernel-team <kernel-team@android.com>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [RFC PATCH net-next 1/3] net: phy: don't bind genphy in
- phy_attach_direct if the specific driver defers probe
-Message-ID: <YTCpbkDMUfBtJM1V@kroah.com>
-References: <20210901225053.1205571-1-vladimir.oltean@nxp.com>
- <20210901225053.1205571-2-vladimir.oltean@nxp.com>
- <YTBkbvYYy2f/b3r2@kroah.com>
- <20210902101150.dnd2gycc7ekjwgc6@skbuf>
+        id S243737AbhIBKuw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 2 Sep 2021 06:50:52 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10094"; a="215932033"
+X-IronPort-AV: E=Sophos;i="5.84,372,1620716400"; 
+   d="scan'208";a="215932033"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2021 03:49:54 -0700
+X-IronPort-AV: E=Sophos;i="5.84,372,1620716400"; 
+   d="scan'208";a="521037671"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2021 03:49:52 -0700
+Received: from andy by smile with local (Exim 4.95-RC2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mLkI2-00GnO0-3d;
+        Thu, 02 Sep 2021 13:49:50 +0300
+Date:   Thu, 2 Sep 2021 13:49:50 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jean Delvare <jdelvare@suse.de>
+Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: TPS68470 PMIC config option
+Message-ID: <YTCsTvYy+BjttJdX@smile.fi.intel.com>
+References: <20210901160234.0e3e24b2@endymion>
+ <YS+6xzk9yc8uPetU@smile.fi.intel.com>
+ <20210901193251.GZ3@paasikivi.fi.intel.com>
+ <20210902115731.2fd22c80@endymion>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210902101150.dnd2gycc7ekjwgc6@skbuf>
+In-Reply-To: <20210902115731.2fd22c80@endymion>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 02, 2021 at 01:11:50PM +0300, Vladimir Oltean wrote:
-> On Thu, Sep 02, 2021 at 07:43:10AM +0200, Greg Kroah-Hartman wrote:
-> > Wait, no, this should not be a "special" thing, and why would the list
-> > of deferred probe show this?
+On Thu, Sep 02, 2021 at 11:57:31AM +0200, Jean Delvare wrote:
+> On Wed, 1 Sep 2021 22:32:51 +0300, Sakari Ailus wrote:
+> > On Wed, Sep 01, 2021 at 08:39:19PM +0300, Andy Shevchenko wrote:
+> > > On Wed, Sep 01, 2021 at 04:02:34PM +0200, Jean Delvare wrote:  
+> > > > Is there a reason why config TPS68470_PMIC_OPREGION is not under "if
+> > > > PMIC_OPREGION" where all other *_PMIC_OPREGION driver options are?  
+> > > 
+> > > It was originally like that.
+> > > 
+> > > Sakari, do you know?  
+> > 
+> > The answer can be found in Makefile:
+> > 
+> > obj-$(CONFIG_PMIC_OPREGION)             += intel_pmic.o
+> > 
+> > intel_pmic.c seems to contain common functionality for PMICs in Intel SoCs
+> > whereas the TPS68470 is an external chip. The two codebases are distinct.
+> > 
+> > Perhaps it could make sense to either rename this as
+> > CONFIG_PMIC_INTEL_OPREGION, or move the TPS68470 driver in and change the
+> > Kconfig+Makefile to have the common code compiled if at least one of the
+> > drivers is enabled.
 > 
-> Why as in why would it work/do what I want, or as in why would you want to do that?
-
-Both!  :)
-
-> > If a bus wants to have this type of "generic vs. specific" logic, then
-> > it needs to handle it in the bus logic itself as that does NOT fit into
-> > the normal driver model at all.  Don't try to get a "hint" of this by
-> > messing with the probe function list.
+> OK, thanks for the explanation I get it now. Yes, the fact that the
+> menu looks vendor-neutral while it is about Intel drivers only is
+> confusing. Renaming it would help. I'm not sure about your alternative
+> proposal as I can't actually see any common code or dependency between
+> intel_pmic and tps68470_pmic.
 > 
-> Where and how? Do you have an example?
+> What about the following?
 
-No I do not, sorry, most busses do not do this for obvious ordering /
-loading / we are not that crazy reasons.
+LGTM,
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-What is causing this all to suddenly break?  The devlink stuff?
 
-thanks,
+-- 
+With Best Regards,
+Andy Shevchenko
 
-greg k-h
+
