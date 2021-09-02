@@ -2,160 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23A6B3FECC7
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 13:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 422113FED9B
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 14:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244300AbhIBLSE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 07:18:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60514 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230256AbhIBLSD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 07:18:03 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A31AC061575;
-        Thu,  2 Sep 2021 04:17:05 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a25so3458322ejv.6;
-        Thu, 02 Sep 2021 04:17:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=uFEkTCd/xhh2jHjXLDAM0hWxj6RGslNzQrjo3X/7zUU=;
-        b=A/cYi8R1cALl21mnfBisBtq/UcUEk6B9DJHllYb1B8XYF6oP8CKv0eLrTDrXmwVhN2
-         sWCn2WtsylxzWyApOwb9EVbnqD5s9dS1fx3dQ18RJlfSMV1A1wj9+CqpEJYzKdaKYpB2
-         pi9U8uYZG4sONB1kkD+eTiiN186QrJ24rf1e6ANx14m05K7DDb2XvP0zTDAUoEUkbbR/
-         YPxsu0s6oQv6Kv705tXMzlJPqAknOda6hnKwLjoVPFY8Oi71ux+wYE01I/LJY48VeMmC
-         xOxSSyhOzYAN5ZcHx8i8URE4wk3k76PdeTZPc3mCRXFHDnRwVGmz+DhC9Kg8RCkAFHMz
-         XzFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=uFEkTCd/xhh2jHjXLDAM0hWxj6RGslNzQrjo3X/7zUU=;
-        b=t6nfM9CYcrQN5SmiI5cYlyN6BifsLMSC6OO1BKdQz+5KVfl0Oz2XybsXWHf9h2gFWk
-         hN/DKDDxIW8hkjllIAk8CNciWwwslSmrjw2fKWJ6gESbvV0F5l724jeUbvFrzCb60tGZ
-         YSTuprPjvz2tz5lnx609IBB9VvHxW5QtIdZyHXyG9fRoSlwoyEH+VxvJhuJa1csmQdpB
-         Gi24KzbA9HD4qZrTq1a7W0a+07Pg8SW0If3Gudpm+AM1+peD/Oym4L9bKAsz4SwEPuj2
-         SywBbo6mv7Cuozdfxxl5ARbTGGgJ2BarzDYQv9X5/O1BeGiuromsFRF7rAk1GgnBv6Qe
-         ckSA==
-X-Gm-Message-State: AOAM532vAmsNkP8FA0yxjI3tXWUMtJ+xXzcqLma5v+gfuE7VLFmoFnOT
-        gsEemLpQkdfc4UyUUNVC6KA=
-X-Google-Smtp-Source: ABdhPJxVJn37EXfC1Kkgvx/x3vaArliD0lsBCMi/Vq5/WEkUoTCbcdl5fExGTGuKoQC3WyMe6MlzxQ==
-X-Received: by 2002:a17:907:7844:: with SMTP id lb4mr3117219ejc.381.1630581423928;
-        Thu, 02 Sep 2021 04:17:03 -0700 (PDT)
-Received: from skbuf ([82.78.148.104])
-        by smtp.gmail.com with ESMTPSA id t16sm901503ejj.54.2021.09.02.04.17.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Sep 2021 04:17:03 -0700 (PDT)
-Date:   Thu, 2 Sep 2021 14:17:02 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        kernel-team <kernel-team@android.com>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [RFC PATCH net-next 1/3] net: phy: don't bind genphy in
- phy_attach_direct if the specific driver defers probe
-Message-ID: <20210902111702.4n6suxfbze46wcgb@skbuf>
-References: <20210901225053.1205571-1-vladimir.oltean@nxp.com>
- <20210901225053.1205571-2-vladimir.oltean@nxp.com>
- <YTBkbvYYy2f/b3r2@kroah.com>
- <20210902101150.dnd2gycc7ekjwgc6@skbuf>
- <YTCpbkDMUfBtJM1V@kroah.com>
+        id S1344210AbhIBMQd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 08:16:33 -0400
+Received: from mga05.intel.com ([192.55.52.43]:52921 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1343984AbhIBMQd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 2 Sep 2021 08:16:33 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10094"; a="304658213"
+X-IronPort-AV: E=Sophos;i="5.84,372,1620716400"; 
+   d="scan'208";a="304658213"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2021 05:15:34 -0700
+X-IronPort-AV: E=Sophos;i="5.84,372,1620716400"; 
+   d="scan'208";a="578148214"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2021 05:15:31 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id 6913E2031C;
+        Thu,  2 Sep 2021 15:15:29 +0300 (EEST)
+Date:   Thu, 2 Sep 2021 15:15:29 +0300
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Jean Delvare <jdelvare@suse.de>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>
+Subject: Re: TPS68470 PMIC config option
+Message-ID: <20210902121529.GC3@paasikivi.fi.intel.com>
+References: <20210901160234.0e3e24b2@endymion>
+ <YS+6xzk9yc8uPetU@smile.fi.intel.com>
+ <20210901193251.GZ3@paasikivi.fi.intel.com>
+ <20210902115731.2fd22c80@endymion>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YTCpbkDMUfBtJM1V@kroah.com>
+In-Reply-To: <20210902115731.2fd22c80@endymion>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 02, 2021 at 12:37:34PM +0200, Greg Kroah-Hartman wrote:
-> On Thu, Sep 02, 2021 at 01:11:50PM +0300, Vladimir Oltean wrote:
-> > On Thu, Sep 02, 2021 at 07:43:10AM +0200, Greg Kroah-Hartman wrote:
-> > > Wait, no, this should not be a "special" thing, and why would the list
-> > > of deferred probe show this?
-> >
-> > Why as in why would it work/do what I want, or as in why would you want to do that?
->
-> Both!  :)
+Hi Jean,
 
-So first: why would it work.
-You seem to have a misconception that I am "messing with the probe
-function list".
-I am not, I am just exporting the information whether the device had a
-driver which returned -EPROBE_DEFER during probe, or not. For that I am
-looking at the presence of this device on the deferred_probe_pending_list.
+On Thu, Sep 02, 2021 at 11:57:31AM +0200, Jean Delvare wrote:
+> Hi Sakari,
+> 
+> On Wed, 1 Sep 2021 22:32:51 +0300, Sakari Ailus wrote:
+> > On Wed, Sep 01, 2021 at 08:39:19PM +0300, Andy Shevchenko wrote:
+> > > On Wed, Sep 01, 2021 at 04:02:34PM +0200, Jean Delvare wrote:  
+> > > > Is there a reason why config TPS68470_PMIC_OPREGION is not under "if
+> > > > PMIC_OPREGION" where all other *_PMIC_OPREGION driver options are?  
+> > > 
+> > > It was originally like that.
+> > > 
+> > > Sakari, do you know?  
+> > 
+> > The answer can be found in Makefile:
+> > 
+> > obj-$(CONFIG_PMIC_OPREGION)             += intel_pmic.o
+> > 
+> > intel_pmic.c seems to contain common functionality for PMICs in Intel SoCs
+> > whereas the TPS68470 is an external chip. The two codebases are distinct.
+> > 
+> > Perhaps it could make sense to either rename this as
+> > CONFIG_PMIC_INTEL_OPREGION, or move the TPS68470 driver in and change the
+> > Kconfig+Makefile to have the common code compiled if at least one of the
+> > drivers is enabled.
+> 
+> OK, thanks for the explanation I get it now. Yes, the fact that the
+> menu looks vendor-neutral while it is about Intel drivers only is
+> confusing. Renaming it would help. I'm not sure about your alternative
+> proposal as I can't actually see any common code or dependency between
+> intel_pmic and tps68470_pmic.
 
-driver_probe_device
--> if (ret == -EPROBE_DEFER || ret == EPROBE_DEFER) driver_deferred_probe_add(dev);
-   -> list_add_tail(&dev->p->deferred_probe, &deferred_probe_pending_list);
+There isn't. I was thinking whether all PMIC opregion drivers would be
+behind a menu entry. If you have any sort of a generic kernel then you'd
+probably want all of these in anyway. I don't really have an opinion
+at this point though.
 
-driver_bound
--> driver_deferred_probe_del
-   -> list_del_init(&dev->p->deferred_probe);
+> 
+> What about the following?
+> 
+> From: Jean Delvare <jdelvare@suse.de>
+> Subject: ACPI / PMIC: Rename CONFIG_PMIC_OPREGION
+> 
+> Rename the intel_pmic driver's Kconfig option to make it clear it's
+> about the Intel chipset family.
+> 
+> Signed-off-by: Jean Delvare <jdelvare@suse.de>
+> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Andy Shevchenko <andy@kernel.org>
+> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+> ---
+>  drivers/acpi/pmic/Kconfig                    |   10 +++++-----
+>  drivers/acpi/pmic/Makefile                   |    2 +-
+>  drivers/gpu/drm/i915/display/intel_dsi_vbt.c |    4 ++--
+>  drivers/staging/media/atomisp/Kconfig        |    2 +-
+>  4 files changed, 9 insertions(+), 9 deletions(-)
+> 
+> --- linux-5.14.orig/drivers/acpi/pmic/Kconfig	2021-08-30 00:04:50.000000000 +0200
+> +++ linux-5.14/drivers/acpi/pmic/Kconfig	2021-09-02 11:51:14.146662112 +0200
+> @@ -1,14 +1,14 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  
+> -menuconfig PMIC_OPREGION
+> -	bool "PMIC (Power Management Integrated Circuit) operation region support"
+> +menuconfig INTEL_PMIC_OPREGION
+> +	bool "Intel PMIC (Power Management Integrated Circuit) operation region support"
+>  	help
+>  	  Select this option to enable support for ACPI operation
+> -	  region of the PMIC chip. The operation region can be used
+> +	  region of the Intel PMIC chip. The operation region can be used
+>  	  to control power rails and sensor reading/writing on the
+>  	  PMIC chip.
+>  
+> -if PMIC_OPREGION
+> +if INTEL_PMIC_OPREGION
+>  
+>  config BYTCRC_PMIC_OPREGION
+>  	bool "ACPI operation region support for Bay Trail Crystal Cove PMIC"
+> @@ -48,7 +48,7 @@ config CHT_DC_TI_PMIC_OPREGION
+>  	help
+>  	  This config adds ACPI operation region support for Dollar Cove TI PMIC.
+>  
+> -endif	# PMIC_OPREGION
+> +endif	# INTEL_PMIC_OPREGION
+>  
+>  config TPS68470_PMIC_OPREGION
+>  	bool "ACPI operation region support for TPS68470 PMIC"
+> --- linux-5.14.orig/drivers/acpi/pmic/Makefile	2021-08-30 00:04:50.000000000 +0200
+> +++ linux-5.14/drivers/acpi/pmic/Makefile	2021-09-02 11:21:34.527694178 +0200
+> @@ -1,6 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  
+> -obj-$(CONFIG_PMIC_OPREGION)		+= intel_pmic.o
+> +obj-$(CONFIG_INTEL_PMIC_OPREGION)	+= intel_pmic.o
+>  obj-$(CONFIG_BYTCRC_PMIC_OPREGION)	+= intel_pmic_bytcrc.o
+>  obj-$(CONFIG_CHTCRC_PMIC_OPREGION)	+= intel_pmic_chtcrc.o
+>  obj-$(CONFIG_XPOWER_PMIC_OPREGION)	+= intel_pmic_xpower.o
+> --- linux-5.14.orig/drivers/staging/media/atomisp/Kconfig	2021-08-30 00:04:50.000000000 +0200
+> +++ linux-5.14/drivers/staging/media/atomisp/Kconfig	2021-09-02 11:51:39.792007892 +0200
+> @@ -12,7 +12,7 @@ menuconfig INTEL_ATOMISP
+>  config VIDEO_ATOMISP
+>  	tristate "Intel Atom Image Signal Processor Driver"
+>  	depends on VIDEO_V4L2 && INTEL_ATOMISP
+> -	depends on PMIC_OPREGION
+> +	depends on INTEL_PMIC_OPREGION
+>  	select IOSF_MBI
+>  	select VIDEOBUF_VMALLOC
+>  	select VIDEO_V4L2_SUBDEV_API
+> --- linux-5.14.orig/drivers/gpu/drm/i915/display/intel_dsi_vbt.c	2021-08-30 00:04:50.000000000 +0200
+> +++ linux-5.14/drivers/gpu/drm/i915/display/intel_dsi_vbt.c	2021-09-02 11:52:38.230795493 +0200
+> @@ -511,7 +511,7 @@ static const u8 *mipi_exec_spi(struct in
+>  static const u8 *mipi_exec_pmic(struct intel_dsi *intel_dsi, const u8 *data)
+>  {
+>  	struct drm_i915_private *i915 = to_i915(intel_dsi->base.base.dev);
+> -#ifdef CONFIG_PMIC_OPREGION
+> +#ifdef CONFIG_INTEL_PMIC_OPREGION
+>  	u32 value, mask, reg_address;
+>  	u16 i2c_address;
+>  	int ret;
+> @@ -529,7 +529,7 @@ static const u8 *mipi_exec_pmic(struct i
+>  		drm_err(&i915->drm, "%s failed, error: %d\n", __func__, ret);
+>  #else
+>  	drm_err(&i915->drm,
+> -		"Your hardware requires CONFIG_PMIC_OPREGION and it is not set\n");
+> +		"Your hardware requires CONFIG_INTEL_PMIC_OPREGION and it is not set\n");
 
-So the presence of "dev" inside deferred_probe_pending_list means
-precisely that a driver is pending to be bound.
+I wonder if this is just an Intel PMIC or whether it could be any PMIC.
 
-Second: why would I want to do that.
-In the case of PHY devices, the driver binding process starts here:
+Well, the dependency seems rather machine specific but could in principle
+appear anywhere.
 
-phy_device_register
--> device_add
+Cc Hans and Ville.
 
-It begins synchronously, but may not finish due to probe deferral.
-So after device_add finishes, phydev->drv might be NULL due to 2 reasons:
+>  #endif
+>  
+>  	return data + 15;
+> 
 
-1. -EPROBE_DEFER triggered by "somebody", either by the PHY driver probe
-   function itself, or by third parties (like device_links_check_suppliers
-   happening to notice that before even calling the driver's probe fn).
-   Anyway, the distinction between these 2 is pretty much irrelevant.
+-- 
+Kind regards,
 
-2. There genuinely was no driver loaded in the system for this PHY. Note
-   that the way things are written, the Generic PHY driver will not
-   match on any device in phy_bus_match(). It is bound manually, separately.
-
-The PHY library is absolutely happy to work with a headless chicken, a
-phydev with a NULL phydev->drv. Just search for "if (!phydev->drv)"
-inside drivers/net/phy/phy.c and drivers/net/phy/phy_device.c.
-
-However, the phydev walking with a NULL drv can only last for so long.
-An Ethernet port will soon need that PHY device, and will attach to it.
-There are many code paths, all ending in phy_attach_direct.
-However, when an Ethernet port decides to attach to a PHY device is
-completely asynchronous to the lifetime of the PHY device itself.
-This moment is where a driver is really needed, and if none is present,
-the generic one is force-bound.
-
-My patch only distinguishes between case 1 and 2 for which phydev->drv
-might be NULL. It avoids force-binding the generic PHY when a specific
-PHY driver was found, but did not finish binding due to probe deferral.
-
-> > > If a bus wants to have this type of "generic vs. specific" logic, then
-> > > it needs to handle it in the bus logic itself as that does NOT fit into
-> > > the normal driver model at all.  Don't try to get a "hint" of this by
-> > > messing with the probe function list.
-> >
-> > Where and how? Do you have an example?
->
-> No I do not, sorry, most busses do not do this for obvious ordering /
-> loading / we are not that crazy reasons.
->
-> What is causing this all to suddenly break?  The devlink stuff?
-
-There was a report related to fw_devlink indeed, however strictly
-speaking, I wouldn't say it is the cause of all this. It is pretty
-uncommon for a PHY device to defer probing I think, hence the bad
-assumptions made around it.
+Sakari Ailus
