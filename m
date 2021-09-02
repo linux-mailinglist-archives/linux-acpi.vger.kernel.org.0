@@ -2,99 +2,174 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A60E63FEF69
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 16:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 129B13FEF8F
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 16:37:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345485AbhIBOZs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 10:25:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41338 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345318AbhIBOZl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 Sep 2021 10:25:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 35B16610A4;
-        Thu,  2 Sep 2021 14:24:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630592682;
-        bh=8Q26juGy7jduIrtBN/cCky6QYZFj3PapNW4w/N2c58A=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=MfSV52wFAuVERyUEr7ffSXU2OWRVhIHVwUF/DBjm6//ZPMP2omLe9EgMjfeybJoY9
-         JxMBMKfrVfCJLRcXeO7r1Xq2jL/xRrCiEJZQQrBxLyIos/09gukp93iPF6GTtfpohX
-         ymSe81lXKn/90vujjv2rzeszJP5oWVuGgAlSHPn3oHRRVtKsvJgkm3LFjbyGQ8so19
-         ZtK6Mf9r4RPhM9GEV/QASooW1f5H+9z0Tzt4e7xptfrQuhRJL+GSqLkF6K5bvTjMwL
-         m9ZEgP84FfrMGNTA/pqJSPne8/oWRkNK4x7+BVGOjy/GBXUi8JxYQn95XlgOqA7iJ+
-         HwAGKsh2NwqQg==
-Received: by mail-ej1-f49.google.com with SMTP id bt14so4819282ejb.3;
-        Thu, 02 Sep 2021 07:24:42 -0700 (PDT)
-X-Gm-Message-State: AOAM530FRted8ehtHP8Yjx7V6L+OCpD29ZC2K7E/9CYmx/VHmW8chsqo
-        z6oVoDhs6YBADyvW2lE1h/Bflt6A6HXPeXIpkg==
-X-Google-Smtp-Source: ABdhPJz9Tk3bwAY6hO392hOhhtrO5ROiJlUdHl3FFlHcLzA/kgLn0bakgc+4FtEgu5wnu4BPjOGkeSqX0QjO50Xt+0A=
-X-Received: by 2002:a17:906:8cd:: with SMTP id o13mr4136037eje.341.1630592680828;
- Thu, 02 Sep 2021 07:24:40 -0700 (PDT)
+        id S1345337AbhIBOie (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 10:38:34 -0400
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:39875 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345637AbhIBOib (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 10:38:31 -0400
+Received: by mail-ot1-f41.google.com with SMTP id m7-20020a9d4c87000000b0051875f56b95so2763804otf.6;
+        Thu, 02 Sep 2021 07:37:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2rl17F8ZLBnG5Isa+rmWjX2SNqghsw0qlnTGMKBisZ0=;
+        b=h6acscH9YzN7mudrVnga/dMRI8dWQQsLCC0TAEa7y58n4i2u7YbR/ZXP1fymmI/Jd7
+         avMJozazwugwGRkVG498Kj5ope1tnccMWA5DCNADPqatJ1U97R+iNJITVh+ove3Cj86N
+         CjpM9Ah04avjDqfIQvoFoonHKg2+1UPsnylrYhKPnsJkN4mG4PhaGmxK5mZ4YbVfFr6M
+         Mot6RghEKw3resvqqD2+WySdHg8Pdolns3wkiN6Lc+NSSu0OcF5S4A4pWoSpZcGbO2bh
+         uOEI38KeD4QPQgNyKfFLx3ur1sl/0nqav7KN0vTMnKB7ENjLCiqTYYurGdy6vNzD9eDN
+         vuWw==
+X-Gm-Message-State: AOAM533wLQCvzR7sxHm2QQWhZhne1gS+EQVEN/kKu6/DHUgGdUxty9Y3
+        wier6UK7pCk741q0RqRkrD2JGIaX4ozFsmefjtM=
+X-Google-Smtp-Source: ABdhPJyrp2UQgnC/bMjq5FEMaYHKwQw/CGCD4kMAVeIwn6tfTR+Oa80W/Q25Kga3HOIYpu8ch3KhznvFoaPPcUbuTPI=
+X-Received: by 2002:a9d:7115:: with SMTP id n21mr2928384otj.321.1630593452296;
+ Thu, 02 Sep 2021 07:37:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210902025528.1017391-1-saravanak@google.com> <20210902025528.1017391-3-saravanak@google.com>
-In-Reply-To: <20210902025528.1017391-3-saravanak@google.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 2 Sep 2021 09:24:29 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJOv7D5nHteGPDKC2+ns1caVNs-NFFJppLuK0OEB8dztQ@mail.gmail.com>
-Message-ID: <CAL_JsqJOv7D5nHteGPDKC2+ns1caVNs-NFFJppLuK0OEB8dztQ@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] of: platform: Mark bus devices nodes with FWNODE_FLAG_NEVER_PROBES
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+References: <20210901225053.1205571-1-vladimir.oltean@nxp.com>
+ <20210901225053.1205571-2-vladimir.oltean@nxp.com> <YTBkbvYYy2f/b3r2@kroah.com>
+In-Reply-To: <YTBkbvYYy2f/b3r2@kroah.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 2 Sep 2021 16:37:21 +0200
+Message-ID: <CAJZ5v0jfdE4RTR=71a6eGDoOF5jvr0ReM27WME+owmPLkXuU5w@mail.gmail.com>
+Subject: Re: [RFC PATCH net-next 1/3] net: phy: don't bind genphy in
+ phy_attach_direct if the specific driver defers probe
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>,
+        netdev <netdev@vger.kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        kernel-team <kernel-team@android.com>,
+        Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 1, 2021 at 9:55 PM Saravana Kannan <saravanak@google.com> wrote:
+On Thu, Sep 2, 2021 at 7:43 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> We don't want fw_devlink creating device links for bus devices as
-> they'll never probe. So mark those device node with this flag.
+> On Thu, Sep 02, 2021 at 01:50:51AM +0300, Vladimir Oltean wrote:
+> > There are systems where the PHY driver might get its probe deferred due
+> > to a missing supplier, like an interrupt-parent, gpio, clock or whatever.
+> >
+> > If the phy_attach_direct call happens right in between probe attempts,
+> > the PHY library is greedy and assumes that a specific driver will never
+> > appear, so it just binds the generic PHY driver.
+> >
+> > In certain cases this is the wrong choice, because some PHYs simply need
+> > the specific driver. The specific PHY driver was going to probe, given
+> > enough time, but this doesn't seem to matter to phy_attach_direct.
+> >
+> > To solve this, make phy_attach_direct check whether a specific PHY
+> > driver is pending or not, and if it is, just defer the probing of the
+> > MAC that's connecting to us a bit more too.
+> >
+> > Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> > ---
+> >  drivers/base/dd.c            | 21 +++++++++++++++++++--
+> >  drivers/net/phy/phy_device.c |  8 ++++++++
+> >  include/linux/device.h       |  1 +
+> >  3 files changed, 28 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+> > index 1c379d20812a..b22073b0acd2 100644
+> > --- a/drivers/base/dd.c
+> > +++ b/drivers/base/dd.c
+> > @@ -128,13 +128,30 @@ static void deferred_probe_work_func(struct work_struct *work)
+> >  }
+> >  static DECLARE_WORK(deferred_probe_work, deferred_probe_work_func);
+> >
+> > +static bool __device_pending_probe(struct device *dev)
+> > +{
+> > +     return !list_empty(&dev->p->deferred_probe);
+> > +}
+> > +
+> > +bool device_pending_probe(struct device *dev)
+> > +{
+> > +     bool pending;
+> > +
+> > +     mutex_lock(&deferred_probe_mutex);
+> > +     pending = __device_pending_probe(dev);
+> > +     mutex_unlock(&deferred_probe_mutex);
+> > +
+> > +     return pending;
+> > +}
+> > +EXPORT_SYMBOL_GPL(device_pending_probe);
+> > +
+> >  void driver_deferred_probe_add(struct device *dev)
+> >  {
+> >       if (!dev->can_match)
+> >               return;
+> >
+> >       mutex_lock(&deferred_probe_mutex);
+> > -     if (list_empty(&dev->p->deferred_probe)) {
+> > +     if (!__device_pending_probe(dev)) {
+> >               dev_dbg(dev, "Added to deferred list\n");
+> >               list_add_tail(&dev->p->deferred_probe, &deferred_probe_pending_list);
+> >       }
+> > @@ -144,7 +161,7 @@ void driver_deferred_probe_add(struct device *dev)
+> >  void driver_deferred_probe_del(struct device *dev)
+> >  {
+> >       mutex_lock(&deferred_probe_mutex);
+> > -     if (!list_empty(&dev->p->deferred_probe)) {
+> > +     if (__device_pending_probe(dev)) {
+> >               dev_dbg(dev, "Removed from deferred list\n");
+> >               list_del_init(&dev->p->deferred_probe);
+> >               __device_set_deferred_probe_reason(dev, NULL);
+> > diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> > index 52310df121de..2c22a32f0a1c 100644
+> > --- a/drivers/net/phy/phy_device.c
+> > +++ b/drivers/net/phy/phy_device.c
+> > @@ -1386,8 +1386,16 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+> >
+> >       /* Assume that if there is no driver, that it doesn't
+> >        * exist, and we should use the genphy driver.
+> > +      * The exception is during probing, when the PHY driver might have
+> > +      * attempted a probe but has requested deferral. Since there might be
+> > +      * MAC drivers which also attach to the PHY during probe time, try
+> > +      * harder to bind the specific PHY driver, and defer the MAC driver's
+> > +      * probing until then.
 >
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  drivers/of/platform.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+> Wait, no, this should not be a "special" thing, and why would the list
+> of deferred probe show this?
 >
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index 74afbb7a4f5e..42b3936d204a 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -392,6 +392,22 @@ static int of_platform_bus_create(struct device_node *bus,
->         if (!dev || !of_match_node(matches, bus))
->                 return 0;
->
-> +       /*
-> +        * If the bus node has only one compatible string value and it has
-> +        * matched as a bus node, it's never going to get probed by a device
-> +        * driver. So flag it as such so that fw_devlink knows not to create
-> +        * device links with this device.
-> +        *
-> +        * This doesn't catch all devices that'll never probe, but this is good
-> +        * enough for now.
-> +        *
-> +        * This doesn't really work for PPC because of how it uses
-> +        * of_platform_bus_probe() to add normal devices. So ignore PPC cases.
-> +        */
-> +       if (!IS_ENABLED(CONFIG_PPC) &&
-> +           of_property_count_strings(bus, "compatible") == 1)
-> +               bus->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
+> If a bus wants to have this type of "generic vs. specific" logic, then
+> it needs to handle it in the bus logic itself as that does NOT fit into
+> the normal driver model at all.
 
-This looks fragile relying on 1 compatible string, and the DT flags in
-this code have been fragile too. I'm pretty sure we have cases of
-simple-bus or simple-mfd that also have another compatible.
+Well, I think that this is a general issue and it appears to me to be
+present in the driver core too, at least to some extent.
 
-Couldn't we solve this with a simple driver? Make 'simple-pm-bus'
-driver work for other cases? BTW, this patch doesn't even work for
-simple-pm-bus. A driver for simple-bus may cause issues if there's a
-more specific driver to bind to as we don't handle that. It's simply
-whichever matches first.
+Namely, if there are two drivers matching the same device and the
+first one's ->probe() returns -EPROBE_DEFER, that will be converted to
+EPROBE_DEFER by really_probe(), so driver_probe_device() will pass it
+to __device_attach_driver() which then will return 0.  This
+bus_for_each_drv() will call __device_attach_driver()  for the second
+matching driver even though the first one may still probe successfully
+later.
 
-Rob
+To me, this really is a variant of "if a driver has failed to probe,
+try another one" which phy_attach_direct() appears to be doing and in
+both cases the probing of the "alternative" is premature if the
+probing of the original driver has been deferred.
+
+> Don't try to get a "hint" of this by messing with the probe function list.
+
+I agree that this doesn't look particularly clean, but then I'm
+wondering how to address this cleanly.
