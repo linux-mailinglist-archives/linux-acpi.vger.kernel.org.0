@@ -2,84 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 785653FF095
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 17:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 051AC3FF09F
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 17:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345986AbhIBP5O (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 11:57:14 -0400
-Received: from mail-oi1-f182.google.com ([209.85.167.182]:39556 "EHLO
-        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346004AbhIBP5L (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 11:57:11 -0400
-Received: by mail-oi1-f182.google.com with SMTP id v2so3133536oie.6;
-        Thu, 02 Sep 2021 08:56:12 -0700 (PDT)
+        id S1346010AbhIBP6v (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 11:58:51 -0400
+Received: from mail-oi1-f176.google.com ([209.85.167.176]:46966 "EHLO
+        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230091AbhIBP6u (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 11:58:50 -0400
+Received: by mail-oi1-f176.google.com with SMTP id w144so2603400oie.13;
+        Thu, 02 Sep 2021 08:57:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=aFUx7gWJXzWAVMJZhKIZuBAi3Q5/fwFRAMT3ERwoDNU=;
-        b=faj1tccVwLeud2X9xML3b55iK/VUwfReFGA129Invx+MVkiO3hVQR9ILonBqzVC0o/
-         QSoivudHSO8pJK59KcG13I4JM2QZegtBnWQrRh9qumKio4S1lxI5fJR5kJE+wTORBenp
-         OjmsSWA/oTKnO+yeX+Rs0/1MtaY0tpZXIk9wTnQ4L7FTMhC1WlULn7BgZqP57ONCqR/m
-         U5CcfGBu+k37+x3U1hjUgJ2DApjaaas+CGN+44MEU+5ifqWYbyqwRLQYECAsJPMhfg+5
-         ARWMj5wqWaVJjW1H2POUTDKd/BdE3o2LphPLkoiXhcL2R8Z4qAY+OUaP9Gu1cRjrMOzZ
-         BdPQ==
-X-Gm-Message-State: AOAM531n2tEJzkF92RyiWX1aSAkcnurl3Y3Xr6qKrj/0csfye9sHejGt
-        kkKcsqJ40/gXrk7SWW0SWFTl0MQ9tLcgZBHNJ6YvmA/MWJM=
-X-Google-Smtp-Source: ABdhPJxIJZ2hpZoIlUXIs+4Zj9pU9AHWGv27CaebZYzijqb5oqSbI+DFF0kg+FU3gYPDzNUAB0pbUi3JBb/JGzDWwl8=
-X-Received: by 2002:a05:6808:10c1:: with SMTP id s1mr2618384ois.69.1630598172439;
- Thu, 02 Sep 2021 08:56:12 -0700 (PDT)
+        bh=stuopRO3CP83IQAKJVdvFe0fxa8pn8OZxAVEiwXSWr8=;
+        b=eeVaORroJMWgAnw5iCgsg+GE3Y1tjItMXBfOs+6pdA6u2QgQ8O25/EYaRbdRWnYLou
+         XOCkeEI+mvRybVSrYpjsB26MhKz8sgCdw7+aeXj7tDpxFINtdE+nC/F4ByaykNQwRCb8
+         x5I0q/pV1wLE/12oqnjBnRziQ41VasbJdfOPEFnjXya2A6rkRS0eHiaFonfHdQBAXWWo
+         u1zsnhLVKAcSk9q0fokMCq7RCWTQFycTrhZd7EQKEZb9YpdA8dZxd7Qn7vgpQI1Q5uQQ
+         XulKME+Ydsl18m3vouaUlses5cV9BaVHuPbyZVwrx9hrDMw4iyGZl9+f0hNV1BdmJbBS
+         DMqA==
+X-Gm-Message-State: AOAM531iYFpDnTXYUUXxxr6MRC/a8wmSNWaEkzZ0dHSwdXmp3/VdbAca
+        oypA90ZQgb1hBu3mm3PoYkhBO1+uopNJ1U6L6oE=
+X-Google-Smtp-Source: ABdhPJyX+z87H143hfmmMQyCKXIB5Kevfp15ehfkxjZLnN7SWjJbIo1wKiaQR8Gfvmjk55w781WSys0GDEAB9N0+AOU=
+X-Received: by 2002:a05:6808:10c1:: with SMTP id s1mr2622964ois.69.1630598272038;
+ Thu, 02 Sep 2021 08:57:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210902025528.1017391-1-saravanak@google.com> <CAGETcx9N34RyrdKDR8dQ7ECyz7ZXBx-Ft16t033NjTiU8p=Y0g@mail.gmail.com>
-In-Reply-To: <CAGETcx9N34RyrdKDR8dQ7ECyz7ZXBx-Ft16t033NjTiU8p=Y0g@mail.gmail.com>
+References: <DM6PR11MB32449145A9E3779A480F01D69FC69@DM6PR11MB3244.namprd11.prod.outlook.com>
+ <20210825150008.GA3567157@bjorn-Precision-5520> <CAJZ5v0hNNfVyFoFbKb_r70oiHmOPjZONsFO__JbsaSgLSvB-kg@mail.gmail.com>
+ <c3bcd4fe-15f6-5033-8419-eb44a3306245@intel.com>
+In-Reply-To: <c3bcd4fe-15f6-5033-8419-eb44a3306245@intel.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 2 Sep 2021 17:56:01 +0200
-Message-ID: <CAJZ5v0gt_1vKQXxSY6HoHRPR9O_e1f7VwcBnSjeMgCdCibrwgQ@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] Ulf reported an issue[1] with fw_devlink. This
- series tries to fix that issue.
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Cc: Android Kernel" <kernel-team@android.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Thu, 2 Sep 2021 17:57:41 +0200
+Message-ID: <CAJZ5v0gRH02GZ4oC3X=s2vzHcTGov0bi2bHEbng+PhaPxBBQdw@mail.gmail.com>
+Subject: Re: [PATCH v2] PCI: VMD: ACPI: Make ACPI companion lookup work for
+ VMD bus
+To:     Jon Derrick <jonathan.derrick@intel.com>,
+        Linux PCI <linux-pci@vger.kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        "Wang, Wendy" <wendy.wang@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        David Box <david.e.box@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 2, 2021 at 4:57 AM Saravana Kannan <saravanak@google.com> wrote:
+On Thu, Aug 26, 2021 at 8:24 PM Jon Derrick <jonathan.derrick@intel.com> wrote:
 >
-> Oops, forgot to use a proper subject. Sorry.
+>
+>
+> On 8/25/21 9:26 AM, Rafael J. Wysocki wrote:
+> > On Wed, Aug 25, 2021 at 5:00 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> >>
+> >> On Wed, Aug 25, 2021 at 11:02:47AM +0000, Wang, Wendy wrote:
+> >>> Hi Rafael,
+> >>>
+> >>> Tested this PATCH v2 against intel next v5.12 kernel on ADL-S NVME and SATA storages:
+> >>>
+> >>> cat /sys/devices/pci0000\:00/0000\:00\:0e.0/firmware_node/path
+> >>> \_SB_.PC00.VMD0
+> >>>
+> >>> 10000:e0:17.0 SATA controller: Intel Corporation Device 7ae2 (rev 11)
+> >>> 10000:e0:1d.0 System peripheral: Intel Corporation Device 09ab
+> >>> 10000:e0:1d.4 PCI bridge: Intel Corporation Device 7ab4 (rev 11)
+> >>> 10000:e1:00.0 Non-Volatile memory controller: Samsung Electronics Co Ltd NVMe SSD Controller PM9A1/PM9A3/980PRO
+> >>>
+> >>> [ 6193.658074] ahci 10000:e0:17.0: PCI PM: Suspend power state: D3hot
+> >>> [ 6193.658156] nvme 10000:e1:00.0: PCI PM: Suspend power state: D3hot
+> >>> [ 6193.710883] pcieport 10000:e0:1d.4: PCI PM: Suspend power state: D3cold
+> >
+> > This doesn't happen without using the ACPI companion object (the
+> > deepest power state you can get then is D3hot) AFAICS.
+> >
+> >>> [ 6193.730318] vmd 0000:00:0e.0: PCI PM: Suspend power state: D3hot
+> >>>
+> >>> cat /sys/kernel/debug/pmc_core/substate_residencies
+> >>> Substate   Residency
+> >>> S0i2.0     0
+> >>> S0i2.1     13862128
+> >>>
+> >>> Thanks!
+> >>
+> >> I guess (given Rafael's response) that this is a positive test result,
+> >> i.e., you see the desired behavior with this patch?
+> >
+> > So yes.
+>
+> LGTM then
+>
+> Acked-by: Jon Derrick <jonathan.derrick@intel.com>
 
-Is this a replacement for the "Fix rtl8366rb issues with fw_devlink=on " series?
+Thank you!
 
-
-> On Wed, Sep 1, 2021 at 7:55 PM Saravana Kannan <saravanak@google.com> wrote:
-> >
-> > Ulf, mind testing this?
-> >
-> > Thanks,
-> > Saravana
-> > [1] - https://lore.kernel.org/lkml/CAPDyKFo9Bxremkb1dDrr4OcXSpE0keVze94Cm=zrkOVxHHxBmQ@mail.gmail.com/
-> >
-> > Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> >
-> > Saravana Kannan (2):
-> >   driver core: Add support for FWNODE_FLAG_NEVER_PROBES
-> >   of: platform: Mark bus devices nodes with FWNODE_FLAG_NEVER_PROBES
-> >
-> >  drivers/base/core.c    |  8 ++++++++
-> >  drivers/of/platform.c  | 16 ++++++++++++++++
-> >  include/linux/fwnode.h |  8 +++++---
-> >  3 files changed, 29 insertions(+), 3 deletions(-)
-> >
-> > --
-> > 2.33.0.259.gc128427fd7-goog
-> >
+It doesn't look like there are any concerns regarding this patch, so
+I'll queue it up for merging next week.
