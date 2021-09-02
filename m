@@ -2,152 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E14913FF3BC
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 21:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 741E93FF3C3
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 21:05:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347304AbhIBTER (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 15:04:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54064 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1347218AbhIBTEL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 Sep 2021 15:04:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F23DC610FB;
-        Thu,  2 Sep 2021 19:03:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630609393;
-        bh=qge/1wRptOM7qKmyeVs6L3b7+ZyQhTZtXGQZKA7Cg6A=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Eh+I7fFVsSngU5/wMlBN8fHRhfJ/c/l8qMc6bhoXlSYRgT3jhYezpeFMm4XObvYZD
-         eBY7RQuow1bJ0lZ9WlJpBweJcoJ/9CkD+BMDRlu6MBbr47C3dzMAiplcOQHV5kTbj/
-         65/Giina+oK5mLj9F7IF3B495mt1hmvRhn0tJlZfM5l9n/9RsTy4xrhhJEXP06ic1O
-         xN6C4Q78wELlVHJog0kOVvE6yiDsCd2Cy3cOibmu3OqjNxifsxr7NBMhcKpHptTZCf
-         Ug9KXtGc7LTv9y8eXGrJvLEC8OrNLCUMxFXtN6T2evwKcdy75zche0RonQaAPUDOhX
-         iK/OJKmVtQ/ZA==
-Received: by mail-ej1-f45.google.com with SMTP id jg16so3618604ejc.1;
-        Thu, 02 Sep 2021 12:03:12 -0700 (PDT)
-X-Gm-Message-State: AOAM530yD4qqfTpA36GQEKbpsg+AYORXZj60pEFzaybub2fkseJ/JZG+
-        KvDM3r7lP2XmBl0XJBEC8NJ1W4+wsmutSyJktA==
-X-Google-Smtp-Source: ABdhPJw/U5UN1QoZlj+vN/kmaYOsUEshTeFwCb5cw1o8g+gkV2zt4YgSlmZ5IXTGPfZg5fFk+l3zW1htGkmNhm2b/wA=
-X-Received: by 2002:a17:906:25db:: with SMTP id n27mr5327532ejb.108.1630609391487;
- Thu, 02 Sep 2021 12:03:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210902025528.1017391-1-saravanak@google.com>
- <20210902025528.1017391-3-saravanak@google.com> <CAL_JsqJOv7D5nHteGPDKC2+ns1caVNs-NFFJppLuK0OEB8dztQ@mail.gmail.com>
- <CAGETcx-rOakAX_apu2ecu6jWCwzO0RgMkwdfzyF+UaxQfVj4CA@mail.gmail.com>
-In-Reply-To: <CAGETcx-rOakAX_apu2ecu6jWCwzO0RgMkwdfzyF+UaxQfVj4CA@mail.gmail.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 2 Sep 2021 14:02:58 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+A1T5+KK5xsVVtrMVeuMre3B6sAAroX+a3gQy6wY+r8A@mail.gmail.com>
-Message-ID: <CAL_Jsq+A1T5+KK5xsVVtrMVeuMre3B6sAAroX+a3gQy6wY+r8A@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] of: platform: Mark bus devices nodes with FWNODE_FLAG_NEVER_PROBES
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1347218AbhIBTGJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 15:06:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56540 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347090AbhIBTGJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 15:06:09 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AED8C061575;
+        Thu,  2 Sep 2021 12:05:10 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id q17so4471150edv.2;
+        Thu, 02 Sep 2021 12:05:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=F3V7EjM9yRS05v9IOxp0t6fq7hXaIjKJDbM8wh8rkpk=;
+        b=EF/FsMDX4vrswrhLo9RSoWV7HVr/ZuqCV/v0uXSO4x2FsIxogZq5BuPlR+fsgfohcH
+         zI0QY9+Dt2Pif4GIio7YUYPjwq0IzvxcH4KX75/77YnDRCOygKHqN3GAc2qtWAcAAwfG
+         zTgIys+QTvqR2qSOb7PG8M4ZZok4O45gV6JIRiCGCG0xhdJ3v9AEK6uB36cICO/IXyky
+         m759QMzjFOH/t81EWzu0meQM0wCKpNTV8lSasgcJ1DE0agc0hpifYPSeo9sf7QQ7axQA
+         5VWPoQ4LtoVhTx+yVrNHp2RkYQ1WTfZuLL4GWWLqY+yGDYy321Qvv/UFbQtNLe/sLB69
+         TmXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=F3V7EjM9yRS05v9IOxp0t6fq7hXaIjKJDbM8wh8rkpk=;
+        b=bw+XrO+WlTvznO8xueA4U28srzpnhJ2ILPeZD0P378wfkr2st+oJOMn4TD3IR9OVuJ
+         Y9Tuz0DkUZyYcqqnbR8TLkFvj0DgyrdE4X/Ed9pG53/NB6OsDngpYxE/dyxa3Q/KONo/
+         5ScTKnxwOGFS+E3aq2QwjQhYXVY9CsEdXJ2g0zm3l4MtHqC4NmKjOXl1olVTKbwDQg/z
+         uXxOinl+6T3woh0Ja3qmMTCfFpfgFN9a8IMRMuB0zdu+uuGr5FLok6xOxE7dOpQJf/CZ
+         Pb5nxtIYMTXsBGVR3hTaR0qRgmNC+g+ExadsZvpyEY8pKjo5odbyVaznlnPUVqXi0kCT
+         cT4Q==
+X-Gm-Message-State: AOAM533+2FjBh5YJ7HZ/P+jC/HawG3z8Ao+cx/tLZzcyDQfMUPRHA1nI
+        PBKE7nGVEUj6xOWVgWWJaRg=
+X-Google-Smtp-Source: ABdhPJyd8Bmg4wTz9yS3MrergaOCvIa58tdB0/8KB3W3Zu4EZnAbYLxBZhK6TzvvUv2aFpWJsMwTyw==
+X-Received: by 2002:aa7:d986:: with SMTP id u6mr5083172eds.156.1630609508814;
+        Thu, 02 Sep 2021 12:05:08 -0700 (PDT)
+Received: from skbuf ([82.78.148.104])
+        by smtp.gmail.com with ESMTPSA id b2sm1574735ejj.124.2021.09.02.12.05.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Sep 2021 12:05:08 -0700 (PDT)
+Date:   Thu, 2 Sep 2021 22:05:07 +0300
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Android Kernel Team <kernel-team@android.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        kernel-team <kernel-team@android.com>,
+        Len Brown <lenb@kernel.org>
+Subject: Re: [RFC PATCH net-next 0/3] Make the PHY library stop being so
+ greedy when binding the generic PHY driver
+Message-ID: <20210902190507.shcdmfi3v55l2zuj@skbuf>
+References: <20210901225053.1205571-1-vladimir.oltean@nxp.com>
+ <20210902121927.GE22278@shell.armlinux.org.uk>
+ <20210902123532.ruvuecxoig67yv5v@skbuf>
+ <20210902132635.GG22278@shell.armlinux.org.uk>
+ <20210902152342.vett7qfhvhiyejvo@skbuf>
+ <20210902163144.GH22278@shell.armlinux.org.uk>
+ <20210902171033.4byfnu3g25ptnghg@skbuf>
+ <20210902175043.GK22278@shell.armlinux.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210902175043.GK22278@shell.armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 2, 2021 at 11:57 AM Saravana Kannan <saravanak@google.com> wrote:
->
-> On Thu, Sep 2, 2021 at 7:24 AM Rob Herring <robh+dt@kernel.org> wrote:
+On Thu, Sep 02, 2021 at 06:50:43PM +0100, Russell King (Oracle) wrote:
+> On Thu, Sep 02, 2021 at 05:10:34PM +0000, Vladimir Oltean wrote:
+> > On Thu, Sep 02, 2021 at 05:31:44PM +0100, Russell King (Oracle) wrote:
+> > > On Thu, Sep 02, 2021 at 06:23:42PM +0300, Vladimir Oltean wrote:
+> > > > On Thu, Sep 02, 2021 at 02:26:35PM +0100, Russell King (Oracle) wrote:
+> > > > > Debian has had support for configuring bridges at boot time via
+> > > > > the interfaces file for years. Breaking that is going to upset a
+> > > > > lot of people (me included) resulting in busted networks. It
+> > > > > would be a sure way to make oneself unpopular.
+> > > > >
+> > > > > > I expect there to be 2 call paths of phy_attach_direct:
+> > > > > > - At probe time. Both the MAC driver and the PHY driver are probing.
+> > > > > >   This is what has this patch addresses. There is no issue to return
+> > > > > >   -EPROBE_DEFER at that time, since drivers connect to the PHY before
+> > > > > >   they register their netdev. So if connecting defers, there is no
+> > > > > >   netdev to unregister, and user space knows nothing of this.
+> > > > > > - At .ndo_open time. This is where it maybe gets interesting, but not to
+> > > > > >   user space. If you open a netdev and it connects to the PHY then, I
+> > > > > >   wouldn't expect the PHY to be undergoing a probing process, all of
+> > > > > >   that should have been settled by then, should it not? Where it might
+> > > > > >   get interesting is with NFS root, and I admit I haven't tested that.
+> > > > >
+> > > > > I don't think you can make that assumption. Consider the case where
+> > > > > systemd is being used, DSA stuff is modular, and we're trying to
+> > > > > setup a bridge device on DSA. DSA could be probing while the bridge
+> > > > > is being setup.
+> > > > >
+> > > > > Sadly, this isn't theoretical. I've ended up needing:
+> > > > >
+> > > > > 	pre-up sleep 1
+> > > > >
+> > > > > in my bridge configuration to allow time for DSA to finish probing.
+> > > > > It's not a pleasant solution, nor a particularly reliable one at
+> > > > > that, but it currently works around the problem.
+> > > >
+> > > > What problem? This is the first time I've heard of this report, and you
+> > > > should definitely not need that.
+> > >
+> > > I found it when upgrading the Clearfog by the DSL modems to v5.13.
+> > > When I rebooted it with a previously working kernel (v5.7) it has
+> > > never had a problem. With v5.13, it failed to add all the lan ports
+> > > into the bridge, because the bridge was still being setup by the
+> > > kernel while userspace was trying to configure it. Note that I have
+> > > extra debug in my kernels, hence the extra messages:
 > >
-> > On Wed, Sep 1, 2021 at 9:55 PM Saravana Kannan <saravanak@google.com> wrote:
-> > >
-> > > We don't want fw_devlink creating device links for bus devices as
-> > > they'll never probe. So mark those device node with this flag.
-> > >
-> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > ---
-> > >  drivers/of/platform.c | 16 ++++++++++++++++
-> > >  1 file changed, 16 insertions(+)
-> > >
-> > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> > > index 74afbb7a4f5e..42b3936d204a 100644
-> > > --- a/drivers/of/platform.c
-> > > +++ b/drivers/of/platform.c
-> > > @@ -392,6 +392,22 @@ static int of_platform_bus_create(struct device_node *bus,
-> > >         if (!dev || !of_match_node(matches, bus))
-> > >                 return 0;
-> > >
-> > > +       /*
-> > > +        * If the bus node has only one compatible string value and it has
-> > > +        * matched as a bus node, it's never going to get probed by a device
-> > > +        * driver. So flag it as such so that fw_devlink knows not to create
-> > > +        * device links with this device.
-> > > +        *
-> > > +        * This doesn't catch all devices that'll never probe, but this is good
-> > > +        * enough for now.
-> > > +        *
-> > > +        * This doesn't really work for PPC because of how it uses
-> > > +        * of_platform_bus_probe() to add normal devices. So ignore PPC cases.
-> > > +        */
-> > > +       if (!IS_ENABLED(CONFIG_PPC) &&
-> > > +           of_property_count_strings(bus, "compatible") == 1)
-> > > +               bus->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
-> >
-> > This looks fragile relying on 1 compatible string, and the DT flags in
-> > this code have been fragile too. I'm pretty sure we have cases of
-> > simple-bus or simple-mfd that also have another compatible.
-> >
-> > Couldn't we solve this with a simple driver?
+> > Ok, first you talked about the interfaces file, then systemd. If it's
+> > not about systemd's network manager then I don't see how it is relevant.
 >
-> Oh, I didn't think you'd like that. I'd lean towards that option too
-> if we can address some of the other concerns below.
+> You're reading in stuff to what I write that I did not write... I said:
 >
-> > Make 'simple-pm-bus'
-> > driver work for other cases?
+> "Consider the case where systemd is being used, DSA stuff is modular,
+> and we're trying to setup a bridge device on DSA."
 >
-> > BTW, this patch doesn't even work for
-> > simple-pm-bus.
->
-> How do you mean? Because simple-pm-bus already has a driver and
-> doesn't set "matches" param when it calls of_platform_populate() and
-> this flag won't be set. So at least for simple-pm-bus I don't see any
-> issue.
+> That does not mean I'm using systemd's network manager - which is
+> something I know little about and have never used.
 
-You're right.
+You should definitely try it out, it gets a lot of new features added
+all the time, it uses the netlink interface, it reacts on udev events.
 
-> I was trying to reuse of_default_bus_match_table without explicitly
-> referring to it, but if it's confusing I can add a separate list of
-> compatible strings and use those here instead of using "matches".
+> The reason I mentioned systemd is precisely because with systemd, you
+> get a hell of a lot happening parallel - and that's significiant in
+> this case, because it's very clear that modules are being loaded in
+> parallel with networking being brought up - and that is where the
+> problems begin. In fact, modules themselves get loaded in paralllel
+> with systemd.
 
-What happens with a non-default table? I'm not sure we can assume the
-same behavior.
-
-> > A driver for simple-bus may cause issues if there's a
-> > more specific driver to bind to as we don't handle that. It's simply
-> > whichever matches first.
->
-> Right, this is my worry. Especially for devices like this (there are
-> plenty of cases like this) which have a driver that probes them but
-> also lists simple-bus
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/arm-realview-pb11mp.dts?id=73f3af7b4611d77bdaea303fb639333eb28e37d7#n299
-
-Uhh, that one is certainly a leakage of wanting an soc_device in the
-hierarchy, not any real bus structure reflecting the h/w. I'm not a
-fan of the soc_device stuff and its optional nature. Everything is an
-SoC, so it should always be there? Or your device hierarchy should
-change when you decide to add a soc_device?
-
-> So as long as there's a compatible string that's not one of the
-> "transparent" busses, this driver shouldn't match. So, I don't think I
-> can get away from checking the compatible strings.
->
-> How about I check here to make sure all the "compatible" strings are
-> from an approved transparent bus list, and if it's true, I use
-> driver_override to force match it to a transparent bus driver? Would
-> you be okay with that?
-
-Can't we do that within a driver? We check this and fail probe if
-there's a more specific compatible.  Then another driver can match and
-probe.
-
-Rob
+So that's what I don't understand. You're saying that the ifupdown
+service runs in parallel with systemd-modules-load.service, and
+networking is a kernel module? Doesn't that mean it behaves as expected,
+then? /shrug/
+Have you tried adding an 'After=systemd-modules-load.service' dependency
+to the ifupdown service? I don't think that DSA is that bad that it
+registers its net devices outside of the process context in which the
+insmod mv88e6xxx.ko is called. Quite the opposite, I think (but I
+haven't actually taken a close look yet) that the component stuff
+Saravana is proposing would do exactly that. So you "fix" one issue, you
+introduce another.
