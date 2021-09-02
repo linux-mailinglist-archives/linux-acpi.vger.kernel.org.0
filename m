@@ -2,139 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A78433FF373
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 20:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E14913FF3BC
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 21:03:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347086AbhIBSvU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 14:51:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52900 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347038AbhIBSvU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 14:51:20 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56ECDC061575;
-        Thu,  2 Sep 2021 11:50:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=drpG5yccg6XGFBuzw4/AMknhlRsz6o7ucAUAvYR+2DQ=; b=CzkObxdSZhPWYwQ6tP3AuUhFN
-        gd6wbWSpGQHxLiwVfmACzQZWKgpdNDG0e4IbuRzx4LD+FqPz4jyG3yOx57YrhMpnxzQRtdpclilVe
-        IAICQhxqNmlfEgruayLsenFOKt/zecrLM2/BS8Vj0YQQEYV96p7fJQoKje3Xz3e5f/TmSyIcDdmq3
-        0FO5fw8pdFGqLZClBaYk4FIrC/gHcNb7o3vV6U3j6AnEewiYGPlU4ZEoHB6kxWr3Ooiwz5mZae1bF
-        kdhlgP2s3NtNQdAVlYSoTKHFNPOb9g3qPoVO9zDsZ/GtJLYEdP+Jr9L8cnm6KkyxXoO57135qHP3N
-        DIOmhIc8g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48106)
-        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1mLrn0-0001sL-J6; Thu, 02 Sep 2021 19:50:18 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1mLrmy-00087b-Es; Thu, 02 Sep 2021 19:50:16 +0100
-Date:   Thu, 2 Sep 2021 19:50:16 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc:     netdev@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        kernel-team <kernel-team@android.com>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [RFC PATCH net-next 1/3] net: phy: don't bind genphy in
- phy_attach_direct if the specific driver defers probe
-Message-ID: <20210902185016.GL22278@shell.armlinux.org.uk>
-References: <20210901225053.1205571-1-vladimir.oltean@nxp.com>
- <20210901225053.1205571-2-vladimir.oltean@nxp.com>
+        id S1347304AbhIBTER (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 15:04:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54064 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1347218AbhIBTEL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 2 Sep 2021 15:04:11 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F23DC610FB;
+        Thu,  2 Sep 2021 19:03:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630609393;
+        bh=qge/1wRptOM7qKmyeVs6L3b7+ZyQhTZtXGQZKA7Cg6A=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Eh+I7fFVsSngU5/wMlBN8fHRhfJ/c/l8qMc6bhoXlSYRgT3jhYezpeFMm4XObvYZD
+         eBY7RQuow1bJ0lZ9WlJpBweJcoJ/9CkD+BMDRlu6MBbr47C3dzMAiplcOQHV5kTbj/
+         65/Giina+oK5mLj9F7IF3B495mt1hmvRhn0tJlZfM5l9n/9RsTy4xrhhJEXP06ic1O
+         xN6C4Q78wELlVHJog0kOVvE6yiDsCd2Cy3cOibmu3OqjNxifsxr7NBMhcKpHptTZCf
+         Ug9KXtGc7LTv9y8eXGrJvLEC8OrNLCUMxFXtN6T2evwKcdy75zche0RonQaAPUDOhX
+         iK/OJKmVtQ/ZA==
+Received: by mail-ej1-f45.google.com with SMTP id jg16so3618604ejc.1;
+        Thu, 02 Sep 2021 12:03:12 -0700 (PDT)
+X-Gm-Message-State: AOAM530yD4qqfTpA36GQEKbpsg+AYORXZj60pEFzaybub2fkseJ/JZG+
+        KvDM3r7lP2XmBl0XJBEC8NJ1W4+wsmutSyJktA==
+X-Google-Smtp-Source: ABdhPJw/U5UN1QoZlj+vN/kmaYOsUEshTeFwCb5cw1o8g+gkV2zt4YgSlmZ5IXTGPfZg5fFk+l3zW1htGkmNhm2b/wA=
+X-Received: by 2002:a17:906:25db:: with SMTP id n27mr5327532ejb.108.1630609391487;
+ Thu, 02 Sep 2021 12:03:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210901225053.1205571-2-vladimir.oltean@nxp.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+References: <20210902025528.1017391-1-saravanak@google.com>
+ <20210902025528.1017391-3-saravanak@google.com> <CAL_JsqJOv7D5nHteGPDKC2+ns1caVNs-NFFJppLuK0OEB8dztQ@mail.gmail.com>
+ <CAGETcx-rOakAX_apu2ecu6jWCwzO0RgMkwdfzyF+UaxQfVj4CA@mail.gmail.com>
+In-Reply-To: <CAGETcx-rOakAX_apu2ecu6jWCwzO0RgMkwdfzyF+UaxQfVj4CA@mail.gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 2 Sep 2021 14:02:58 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+A1T5+KK5xsVVtrMVeuMre3B6sAAroX+a3gQy6wY+r8A@mail.gmail.com>
+Message-ID: <CAL_Jsq+A1T5+KK5xsVVtrMVeuMre3B6sAAroX+a3gQy6wY+r8A@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] of: platform: Mark bus devices nodes with FWNODE_FLAG_NEVER_PROBES
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 02, 2021 at 01:50:51AM +0300, Vladimir Oltean wrote:
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 52310df121de..2c22a32f0a1c 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -1386,8 +1386,16 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
->  
->  	/* Assume that if there is no driver, that it doesn't
->  	 * exist, and we should use the genphy driver.
-> +	 * The exception is during probing, when the PHY driver might have
-> +	 * attempted a probe but has requested deferral. Since there might be
-> +	 * MAC drivers which also attach to the PHY during probe time, try
-> +	 * harder to bind the specific PHY driver, and defer the MAC driver's
-> +	 * probing until then.
->  	 */
->  	if (!d->driver) {
-> +		if (device_pending_probe(d))
-> +			return -EPROBE_DEFER;
+On Thu, Sep 2, 2021 at 11:57 AM Saravana Kannan <saravanak@google.com> wrote:
+>
+> On Thu, Sep 2, 2021 at 7:24 AM Rob Herring <robh+dt@kernel.org> wrote:
+> >
+> > On Wed, Sep 1, 2021 at 9:55 PM Saravana Kannan <saravanak@google.com> wrote:
+> > >
+> > > We don't want fw_devlink creating device links for bus devices as
+> > > they'll never probe. So mark those device node with this flag.
+> > >
+> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > ---
+> > >  drivers/of/platform.c | 16 ++++++++++++++++
+> > >  1 file changed, 16 insertions(+)
+> > >
+> > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> > > index 74afbb7a4f5e..42b3936d204a 100644
+> > > --- a/drivers/of/platform.c
+> > > +++ b/drivers/of/platform.c
+> > > @@ -392,6 +392,22 @@ static int of_platform_bus_create(struct device_node *bus,
+> > >         if (!dev || !of_match_node(matches, bus))
+> > >                 return 0;
+> > >
+> > > +       /*
+> > > +        * If the bus node has only one compatible string value and it has
+> > > +        * matched as a bus node, it's never going to get probed by a device
+> > > +        * driver. So flag it as such so that fw_devlink knows not to create
+> > > +        * device links with this device.
+> > > +        *
+> > > +        * This doesn't catch all devices that'll never probe, but this is good
+> > > +        * enough for now.
+> > > +        *
+> > > +        * This doesn't really work for PPC because of how it uses
+> > > +        * of_platform_bus_probe() to add normal devices. So ignore PPC cases.
+> > > +        */
+> > > +       if (!IS_ENABLED(CONFIG_PPC) &&
+> > > +           of_property_count_strings(bus, "compatible") == 1)
+> > > +               bus->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
+> >
+> > This looks fragile relying on 1 compatible string, and the DT flags in
+> > this code have been fragile too. I'm pretty sure we have cases of
+> > simple-bus or simple-mfd that also have another compatible.
+> >
+> > Couldn't we solve this with a simple driver?
+>
+> Oh, I didn't think you'd like that. I'd lean towards that option too
+> if we can address some of the other concerns below.
+>
+> > Make 'simple-pm-bus'
+> > driver work for other cases?
+>
+> > BTW, this patch doesn't even work for
+> > simple-pm-bus.
+>
+> How do you mean? Because simple-pm-bus already has a driver and
+> doesn't set "matches" param when it calls of_platform_populate() and
+> this flag won't be set. So at least for simple-pm-bus I don't see any
+> issue.
 
-Something else that concerns me here.
+You're right.
 
-As noted, many network drivers attempt to attach their PHY when the
-device is brought up, and not during their probe function.
+> I was trying to reuse of_default_bus_match_table without explicitly
+> referring to it, but if it's confusing I can add a separate list of
+> compatible strings and use those here instead of using "matches".
 
-Taking a driver at random:
+What happens with a non-default table? I'm not sure we can assume the
+same behavior.
 
-drivers/net/ethernet/renesas/sh_eth.c
+> > A driver for simple-bus may cause issues if there's a
+> > more specific driver to bind to as we don't handle that. It's simply
+> > whichever matches first.
+>
+> Right, this is my worry. Especially for devices like this (there are
+> plenty of cases like this) which have a driver that probes them but
+> also lists simple-bus
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/arm-realview-pb11mp.dts?id=73f3af7b4611d77bdaea303fb639333eb28e37d7#n299
 
-sh_eth_phy_init() calls of_phy_connect() or phy_connect(), which
-ultimately calls phy_attach_direct() and propagates the error code
-via an error pointer.
+Uhh, that one is certainly a leakage of wanting an soc_device in the
+hierarchy, not any real bus structure reflecting the h/w. I'm not a
+fan of the soc_device stuff and its optional nature. Everything is an
+SoC, so it should always be there? Or your device hierarchy should
+change when you decide to add a soc_device?
 
-sh_eth_phy_init() propagates the error code to its caller,
-sh_eth_phy_start(). This is called from sh_eth_open(), which
-probagates the error code. This is called from .ndo_open... and it's
-highly likely -EPROBE_DEFER will end up being returned to userspace
-through either netlink or netdev ioctls.
+> So as long as there's a compatible string that's not one of the
+> "transparent" busses, this driver shouldn't match. So, I don't think I
+> can get away from checking the compatible strings.
+>
+> How about I check here to make sure all the "compatible" strings are
+> from an approved transparent bus list, and if it's true, I use
+> driver_override to force match it to a transparent bus driver? Would
+> you be okay with that?
 
-Since EPROBE_DEFER is not an error number that we export to
-userspace, this should basically never be exposed to userspace, yet
-we have a path that it _could_ be exposed if the above condition
-is true.
+Can't we do that within a driver? We check this and fail probe if
+there's a more specific compatible.  Then another driver can match and
+probe.
 
-If device_pending_probe() returns true e.g. during initial boot up
-while modules are being loaded - maybe the phy driver doesn't have
-all the resources it needs because of some other module that hasn't
-finished initialising - then we have a window where this will be
-exposed to userspace.
-
-So, do we need to fix all the network drivers to do something if
-their .ndo_open method encounters this? If so, what? Sleep a bit
-and try again? How many times to retry? Convert the error code into
-something else, causing userspace to fail where it worked before? If
-so which error code?
-
-I think this needs to be thought through a bit better. In this case,
-I feel that throwing -EPROBE_DEFER to solve one problem with one
-subsystem can result in new problems elsewhere.
-
-We did have an idea at one point about reserving some flag bits in
-phydev->dev_flags for phylib use, but I don't think that happened.
-If this is the direction we want to go, I think we need to have a
-flag in dev_flags so that callers opt-in to the new behaviour whereas
-callers such as from .ndo_open keep the old behaviour - because they
-just aren't setup to handle an -EPROBE_DEFER return from these
-functions.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Rob
