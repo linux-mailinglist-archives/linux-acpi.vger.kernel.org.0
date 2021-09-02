@@ -2,172 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3073D3FF0C4
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 18:09:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A06CE3FF10B
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 18:16:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345953AbhIBQKX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 12:10:23 -0400
-Received: from mail-ot1-f43.google.com ([209.85.210.43]:36532 "EHLO
-        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234426AbhIBQKW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 12:10:22 -0400
-Received: by mail-ot1-f43.google.com with SMTP id a20-20020a0568300b9400b0051b8ca82dfcso3159745otv.3;
-        Thu, 02 Sep 2021 09:09:24 -0700 (PDT)
+        id S1346246AbhIBQRs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 12:17:48 -0400
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:43795 "EHLO
+        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346255AbhIBQRp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 12:17:45 -0400
+Received: by mail-ot1-f52.google.com with SMTP id x10-20020a056830408a00b004f26cead745so3173857ott.10
+        for <linux-acpi@vger.kernel.org>; Thu, 02 Sep 2021 09:16:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=H9s/CeztrdJ5mW7eXs2FCAq69cl4eT4riWgVkym3DBI=;
-        b=CLMjo0A8UQjvOhhCbMdg4QjTOlwTDqGrsf2xypGTJK0VNn2s3N4dn9x6zzp9FxEP3V
-         1CQBsZeGe12gz0RRBwmof/tkzpNF7vTy2Ebj+FGfaaFnfPm1Ri7EA+U2zvmIHPF7R4Re
-         OrMkut2lUZ2HoDS46x976cD28MDICcluhZdQ0sOLxT+up9OtdjFF/tJ2dH/iWfxBZ1bZ
-         nyuSY4HMoxtpf0Las6lzKEijU0XDJkwq9iwvc7X2y+7Uzu/w/Mlve3PGtV0bXTXWL3LS
-         iORz5Kr9+fc4T2SOvNE1GbR9+uwal0+NQE/sGA3vuYbzcS7mw5kwPAETrHpYyOsZhr8G
-         TKFA==
-X-Gm-Message-State: AOAM531GWSLFx5kFZfeFSdeqJRO2HR6crpHxAKXBK9tqQEdXXG5RR+hq
-        fO7/DuDLVOX+q73bg8YP82cRVSMdtg6ivXpzqu4=
-X-Google-Smtp-Source: ABdhPJzKMX1gorKDZvQ6+EZ0VUUlgn8z9GTqZRYd0mvVKwMjustuLbXhmjMBcAd0OgAzQuoTkwzcuKC+jiZkpimjCfU=
-X-Received: by 2002:a9d:7115:: with SMTP id n21mr3323619otj.321.1630598963788;
- Thu, 02 Sep 2021 09:09:23 -0700 (PDT)
+        bh=eyZOl70SkSCm7xLHTWRERpMl/pIFluMZB1oK0Mr2pMs=;
+        b=TRXxa8DQaUXtjnuZIkYyaVsCW7IVdSsT8Bhh0JyEPSd0ZLDwzN2F3jZJ3NwU5MhMBT
+         qjvcx4Ut92m0pV+jcx10npuS8cy4OD7ogAxYOTcb4CNlAfmGpedcBZxlGc3XQ+7ILSvk
+         PcyNwNHqqm2teUxc/piCBe+sAD6FSjwJfs/tCH9/H4zDREea35wt2rNRNHUJAwibtbOU
+         u6OZ9cgS5pkHlRlbz3fsbD9N/EIrdJgPhoPgq6fn9KhIG9iU1z0eafZXOzmlqBV8+JGL
+         YoMsg8EivqJ9WCovuAgP44KXnsr/9jbJHr6w4RuvT4bFW70sr2nEU3aKbECuOQQCyehi
+         g2EA==
+X-Gm-Message-State: AOAM531rWWK3lvrYz6yFR7CZ9x+wXQEE3BdzYztaqe6D2EuxOQrN2Reu
+        NmY+HjXgxvDMMCPF9T92PYxf+Viy+B/OUSgydu0=
+X-Google-Smtp-Source: ABdhPJwl2ET43Ex3chFgylCJxeITpVJQJpAU5MNCDco0IrgvZt3UMXJjxdw6gYRvrbuRXasZaDQzbLiXe0iCPY1dvIk=
+X-Received: by 2002:a9d:7396:: with SMTP id j22mr3475150otk.206.1630599406415;
+ Thu, 02 Sep 2021 09:16:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210829132243.82281-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20210829132243.82281-1-andriy.shevchenko@linux.intel.com>
+References: <20210901142111.16891-1-mario.limonciello@amd.com>
+In-Reply-To: <20210901142111.16891-1-mario.limonciello@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 2 Sep 2021 18:09:12 +0200
-Message-ID: <CAJZ5v0iXyW3EnsjXsRCGzwkP45jjOHmErMyGhm6HvTOVCawTZA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] Documentation: ACPI: Align the SSDT overlays file
- with the code
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Thu, 2 Sep 2021 18:16:35 +0200
+Message-ID: <CAJZ5v0g=za-D0bDXT-+CpdUQHOR_JPjCvGxt2Zz1hBiPHig_jw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PM: s2idle: Run both AMD and Microsoft methods if
+ both are supported
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        liaoyuan@gmail.com, Maxwell Beck <max@ryt.one>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Aug 29, 2021 at 3:22 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Wed, Sep 1, 2021 at 4:21 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 >
-> This updates the following:
+> It was reported that on "HP ENVY x360" that power LED does not come back,
+> certain keys like brightness controls do not work, and the fan never
+> spins up, even under load on 5.14 final.
 >
-> 1) The ASL code to follow latest ACPI requirements, i.e.
->    - static buffer to be defined outside of the method
->    - The _ADR and _HID shouldn't be together for the same device
+> In analysis of the SSDT it's clear that the Microsoft UUID doesn't provide
+> functional support, but rather the AMD UUID should be supporting this
+> system.
 >
-> 2) EFI section relies on the additional kernel configuration option,
->    i.e. CONFIG_EFI_CUSTOM_SSDT_OVERLAYS
+> Because this is a gap in the expected logic, we checked back with internal
+> team.  The conclusion was that on Windows AMD uPEP *does* run even when
+> Microsoft UUID present, but most OEM systems have adopted value of "0x3"
+> for supported functions and hence nothing runs.
 >
-> 3) Refer to ACPI machine language as AML (capitalized)
+> Henceforth add support for running both Microsoft and AMD methods.  This
+> approach will also allow the same logic on Intel systems if desired at a
+> future time as well by pulling the evaluation of
+> `lps0_dsm_func_mask_microsoft` out of the `if` block for
+> `acpi_s2idle_vendor_amd`.
 >
-> 4) Miscellaneous amendments
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-Applied, thanks!
-
+> Cc: liaoyuan@gmail.com
+> Link: https://gitlab.freedesktop.org/drm/amd/uploads/9fbcd7ec3a385cc6949c9bacf45dc41b/acpi-f.20.bin
+> BugLink: https://gitlab.freedesktop.org/drm/amd/-/issues/1691
+> Reported-by: Maxwell Beck <max@ryt.one>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->  .../admin-guide/acpi/ssdt-overlays.rst        | 49 ++++++++++---------
->  1 file changed, 25 insertions(+), 24 deletions(-)
+>  drivers/acpi/x86/s2idle.c | 67 +++++++++++++++++++++++----------------
+>  1 file changed, 39 insertions(+), 28 deletions(-)
 >
-> diff --git a/Documentation/admin-guide/acpi/ssdt-overlays.rst b/Documentation/admin-guide/acpi/ssdt-overlays.rst
-> index 5d7e25988085..b5fbf54dca19 100644
-> --- a/Documentation/admin-guide/acpi/ssdt-overlays.rst
-> +++ b/Documentation/admin-guide/acpi/ssdt-overlays.rst
-> @@ -30,22 +30,21 @@ following ASL code can be used::
->          {
->              Device (STAC)
->              {
-> -                Name (_ADR, Zero)
->                  Name (_HID, "BMA222E")
-> +                Name (RBUF, ResourceTemplate ()
-> +                {
-> +                    I2cSerialBus (0x0018, ControllerInitiated, 0x00061A80,
-> +                                AddressingMode7Bit, "\\_SB.I2C6", 0x00,
-> +                                ResourceConsumer, ,)
-> +                    GpioInt (Edge, ActiveHigh, Exclusive, PullDown, 0x0000,
-> +                            "\\_SB.GPO2", 0x00, ResourceConsumer, , )
-> +                    { // Pin list
-> +                        0
-> +                    }
-> +                })
+> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+> index 3a308461246a..7d1976e5dd8b 100644
+> --- a/drivers/acpi/x86/s2idle.c
+> +++ b/drivers/acpi/x86/s2idle.c
+> @@ -449,25 +449,30 @@ int acpi_s2idle_prepare_late(void)
+>         if (pm_debug_messages_on)
+>                 lpi_check_constraints();
 >
->                  Method (_CRS, 0, Serialized)
->                  {
-> -                    Name (RBUF, ResourceTemplate ()
-> -                    {
-> -                        I2cSerialBus (0x0018, ControllerInitiated, 0x00061A80,
-> -                                    AddressingMode7Bit, "\\_SB.I2C6", 0x00,
-> -                                    ResourceConsumer, ,)
-> -                        GpioInt (Edge, ActiveHigh, Exclusive, PullDown, 0x0000,
-> -                                "\\_SB.GPO2", 0x00, ResourceConsumer, , )
-> -                        { // Pin list
-> -                            0
-> -                        }
-> -                    })
->                      Return (RBUF)
->                  }
->              }
-> @@ -75,7 +74,7 @@ This option allows loading of user defined SSDTs from initrd and it is useful
->  when the system does not support EFI or when there is not enough EFI storage.
+> -       if (lps0_dsm_func_mask_microsoft > 0) {
+> +       /* screen off */
+> +       if (lps0_dsm_func_mask > 0)
+> +               acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
+> +                                       ACPI_LPS0_SCREEN_OFF_AMD :
+> +                                       ACPI_LPS0_SCREEN_OFF,
+> +                                       lps0_dsm_func_mask, lps0_dsm_guid);
+> +
+> +       if (lps0_dsm_func_mask_microsoft > 0)
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
+>                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
+> -                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> +
+> +       /* lps0 entry */
+> +       if (lps0_dsm_func_mask > 0)
+> +               acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
+> +                                       ACPI_LPS0_ENTRY_AMD :
+> +                                       ACPI_LPS0_ENTRY,
+> +                                       lps0_dsm_func_mask, lps0_dsm_guid);
+> +       if (lps0_dsm_func_mask_microsoft > 0) {
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
+>                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> -       } else if (acpi_s2idle_vendor_amd()) {
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF_AMD,
+> -                               lps0_dsm_func_mask, lps0_dsm_guid);
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD,
+> -                               lps0_dsm_func_mask, lps0_dsm_guid);
+> -       } else {
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
+> -                               lps0_dsm_func_mask, lps0_dsm_guid);
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
+> -                               lps0_dsm_func_mask, lps0_dsm_guid);
+> +               /* modern standby entry */
+> +               acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
+> +                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+>         }
+> -
+>         return 0;
+>  }
 >
->  It works in a similar way with initrd based ACPI tables override/upgrade: SSDT
-> -aml code must be placed in the first, uncompressed, initrd under the
-> +AML code must be placed in the first, uncompressed, initrd under the
->  "kernel/firmware/acpi" path. Multiple files can be used and this will translate
->  in loading multiple tables. Only SSDT and OEM tables are allowed. See
->  initrd_table_override.txt for more details.
-> @@ -103,12 +102,14 @@ This is the preferred method, when EFI is supported on the platform, because it
->  allows a persistent, OS independent way of storing the user defined SSDTs. There
->  is also work underway to implement EFI support for loading user defined SSDTs
->  and using this method will make it easier to convert to the EFI loading
-> -mechanism when that will arrive.
-> +mechanism when that will arrive. To enable it, the
-> +CONFIG_EFI_CUSTOM_SSDT_OVERLAYS shoyld be chosen to y.
+> @@ -476,24 +481,30 @@ void acpi_s2idle_restore_early(void)
+>         if (!lps0_device_handle || sleep_no_lps0)
+>                 return;
 >
-> -In order to load SSDTs from an EFI variable the efivar_ssdt kernel command line
-> -parameter can be used. The argument for the option is the variable name to
-> -use. If there are multiple variables with the same name but with different
-> -vendor GUIDs, all of them will be loaded.
-> +In order to load SSDTs from an EFI variable the ``"efivar_ssdt=..."`` kernel
-> +command line parameter can be used (the name has a limitation of 16 characters).
-> +The argument for the option is the variable name to use. If there are multiple
-> +variables with the same name but with different vendor GUIDs, all of them will
-> +be loaded.
+> -       if (lps0_dsm_func_mask_microsoft > 0) {
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
+> -                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> +       /* mdoern standby exit */
+> +       if (lps0_dsm_func_mask_microsoft > 0)
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
+>                                 lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
+> -                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> -       } else if (acpi_s2idle_vendor_amd()) {
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_AMD,
+> -                               lps0_dsm_func_mask, lps0_dsm_guid);
+> -               acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON_AMD,
+> -                               lps0_dsm_func_mask, lps0_dsm_guid);
+> -       } else {
+> +
+> +       /* lps0 exit */
+> +       if (lps0_dsm_func_mask > 0)
+> +               acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
+> +                                       ACPI_LPS0_EXIT_AMD :
+> +                                       ACPI_LPS0_EXIT,
+> +                                       lps0_dsm_func_mask, lps0_dsm_guid);
+> +       if (lps0_dsm_func_mask_microsoft > 0)
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
+> -                               lps0_dsm_func_mask, lps0_dsm_guid);
+> +                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> +
+> +       /* screen on */
+> +       if (lps0_dsm_func_mask_microsoft > 0)
+>                 acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
+> -                               lps0_dsm_func_mask, lps0_dsm_guid);
+> -       }
+> +                               lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+> +       if (lps0_dsm_func_mask > 0)
+> +               acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
+> +                                       ACPI_LPS0_SCREEN_ON_AMD :
+> +                                       ACPI_LPS0_SCREEN_ON,
+> +                                       lps0_dsm_func_mask, lps0_dsm_guid);
+>  }
 >
->  In order to store the AML code in an EFI variable the efivarfs filesystem can be
->  used. It is enabled and mounted by default in /sys/firmware/efi/efivars in all
-> @@ -127,7 +128,7 @@ variable with the content from a given file::
->
->      #!/bin/sh -e
->
-> -    while ! [ -z "$1" ]; do
-> +    while [ -n "$1" ]; do
->              case "$1" in
->              "-f") filename="$2"; shift;;
->              "-g") guid="$2"; shift;;
-> @@ -167,14 +168,14 @@ variable with the content from a given file::
->  Loading ACPI SSDTs from configfs
->  ================================
->
-> -This option allows loading of user defined SSDTs from userspace via the configfs
-> +This option allows loading of user defined SSDTs from user space via the configfs
->  interface. The CONFIG_ACPI_CONFIGFS option must be select and configfs must be
->  mounted. In the following examples, we assume that configfs has been mounted in
-> -/config.
-> +/sys/kernel/config.
->
-> -New tables can be loading by creating new directories in /config/acpi/table/ and
-> -writing the SSDT aml code in the aml attribute::
-> +New tables can be loading by creating new directories in /sys/kernel/config/acpi/table
-> +and writing the SSDT AML code in the aml attribute::
->
-> -    cd /config/acpi/table
-> +    cd /sys/kernel/config/acpi/table
->      mkdir my_ssdt
->      cat ~/ssdt.aml > my_ssdt/aml
+>  static const struct platform_s2idle_ops acpi_s2idle_ops_lps0 = {
 > --
-> 2.33.0
->
+
+Applied as 5.15-rc1 material with some edits in the new comments added
+by this patch (including a typo fix).
+
+Thanks!
