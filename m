@@ -2,109 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E49293FF238
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 19:21:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B00FE3FF2A8
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Sep 2021 19:41:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346549AbhIBRWb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 13:22:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60476 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346507AbhIBRW3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 13:22:29 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B26E4C061757
-        for <linux-acpi@vger.kernel.org>; Thu,  2 Sep 2021 10:21:30 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id q70so5244824ybg.11
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Sep 2021 10:21:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=On4+bwBZY2VHtzcK0y+sz7PPXSEz1i4XFGr/NoM2bik=;
-        b=HRZoj2agLhRgT4gUkJKlLLg3Yve5/2+MX7OlCLbccLakwWEQnzQqBLvoKNQgiioT0/
-         BzghiksK49NlmDTEsOY3px4DSk6yoX4ZzMD+EdW7rbfLnZqdFsE/9xGgJTo/0rGJhEEH
-         SDTVpt9SlPMr3ZwFAJuVUxKI9N7jT1JiHSxTWRlSsVCAU0220Ofu72V0yVcRBFVtu7uh
-         xymy9muR8zP4q+QaNxrS4cBITENokcBleYy4q2ioLIDGdkaxBM0UK/3xoiIX3pi+lfOL
-         KvxK66VTZpkQbPdym4HzpNS+VlCwQk6a7RGDULWVATkyZP2t0LORoZpnqWD8vQYqIboD
-         +bjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=On4+bwBZY2VHtzcK0y+sz7PPXSEz1i4XFGr/NoM2bik=;
-        b=sU+OmgkvyBl2YG8yeYW3HUj/2L4xFr4R+0DczKsfbQnzNRP1lQlrUcCVBdKUQk46r0
-         zWk/WHMiKFLwGxf7PsKbnH/OkkIYUZYRV97UubueGOpuwSXYWc5PzL0b/U2Kfxdydoi3
-         WnljWiXJ8GqVzpNgqOF3GRvdpvSCDZgTwi0r2MLimUUURlgXx/ln9RWISoq4zmn1HfGz
-         ophibVed318vuz5Tc7hOPHv/ixu3XWUfvbDs+Uk2004CAgFDA+Thxm77P+a4+mWytKdy
-         sUW38aFE0D93vL5ClOH5HfekDu/LFzHY6+vJdUWmYQU7DsxNw14EdAaitkZ9wNsvSNZw
-         2vhw==
-X-Gm-Message-State: AOAM532zWt0az5HQiBDVhrs/zqU9WoqaRDDwDU/jAG2ljS4xqTVwdLgL
-        g6F5IvxrbYQpQvHNQ0cO672nzcpJlZcZPXdT4GVWbg==
-X-Google-Smtp-Source: ABdhPJyS+LxlE16Qm2mQyeB+Z3S3rI0rNtTM2yxEPw2WPNsSBoae9bcHgGafDM0op87STsqfvVtAAi/j1ASriI8aGuk=
-X-Received: by 2002:a25:804:: with SMTP id 4mr5357925ybi.346.1630603289732;
- Thu, 02 Sep 2021 10:21:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210902025528.1017391-1-saravanak@google.com> <20210902025528.1017391-3-saravanak@google.com>
-In-Reply-To: <20210902025528.1017391-3-saravanak@google.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 2 Sep 2021 10:20:53 -0700
-Message-ID: <CAGETcx_6-2HSJuTqKtcLVUD89u6LntSJ-GDXM706ng7PLAba0A@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] of: platform: Mark bus devices nodes with FWNODE_FLAG_NEVER_PROBES
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1347036AbhIBRms (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 13:42:48 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:53780 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1346632AbhIBRmT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 2 Sep 2021 13:42:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=VtDdRsvYXvPM91L9W6La/FIYqWBh7JU22fy4eU4q8YI=; b=SIxlOcdujqgPVHNPYQx7mBMoYR
+        k8Y5DQyburGjlxK0llEtHbv+mUjHVW5BxcEVjzVUlqjm8B/DO0maHJMtimq7PVLJL75z2fmBrPBjJ
+        DI29J//drW58AM0CWof/L3TDPpOUJzLpxqUaQglBvzFp/i6dMXFXb1Z1WLGb2z+XR5fI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1mLqi3-0051nR-1E; Thu, 02 Sep 2021 19:41:07 +0200
+Date:   Thu, 2 Sep 2021 19:41:07 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Vladimir Oltean <olteanv@gmail.com>
+Cc:     Saravana Kannan <saravanak@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for
+ FWNODE_FLAG_BROKEN_PARENT
+Message-ID: <YTEMs1mMIT/Z0c4H@lunn.ch>
+References: <YSpr/BOZj2PKoC8B@lunn.ch>
+ <CAGETcx_mjY10WzaOvb=vuojbodK7pvY1srvKmimu4h6xWkeQuQ@mail.gmail.com>
+ <YS4rw7NQcpRmkO/K@lunn.ch>
+ <CAGETcx_QPh=ppHzBdM2_TYZz3o+O7Ab9-JSY52Yz1--iLnykxA@mail.gmail.com>
+ <YS6nxLp5TYCK+mJP@lunn.ch>
+ <CAGETcx90dOkw+Yp5ZRNqQq2Ny_ToOKvGJNpvyRohaRQi=SQxhw@mail.gmail.com>
+ <YS608fdIhH4+qJsn@lunn.ch>
+ <20210831231804.zozyenear45ljemd@skbuf>
+ <CAGETcx-ktuU1RqXwj_qV8tCOLAg3DXU-wCAm6+NukyxRencSjw@mail.gmail.com>
+ <20210901084625.sqzh3oacwgdbhc7f@skbuf>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210901084625.sqzh3oacwgdbhc7f@skbuf>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 1, 2021 at 7:55 PM Saravana Kannan <saravanak@google.com> wrote:
->
-> We don't want fw_devlink creating device links for bus devices as
-> they'll never probe. So mark those device node with this flag.
->
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  drivers/of/platform.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index 74afbb7a4f5e..42b3936d204a 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -392,6 +392,22 @@ static int of_platform_bus_create(struct device_node *bus,
->         if (!dev || !of_match_node(matches, bus))
->                 return 0;
->
-> +       /*
-> +        * If the bus node has only one compatible string value and it has
-> +        * matched as a bus node, it's never going to get probed by a device
-> +        * driver. So flag it as such so that fw_devlink knows not to create
-> +        * device links with this device.
-> +        *
-> +        * This doesn't catch all devices that'll never probe, but this is good
-> +        * enough for now.
-> +        *
-> +        * This doesn't really work for PPC because of how it uses
-> +        * of_platform_bus_probe() to add normal devices. So ignore PPC cases.
-> +        */
-> +       if (!IS_ENABLED(CONFIG_PPC) &&
-> +           of_property_count_strings(bus, "compatible") == 1)
-> +               bus->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
+>   How would this be avoided? Or are you thinking of some kind of two-level
+>   component driver system:
+>   - the DSA switch is a component master, with components being its
+>     sub-devices such as internal PHYs etc
+>   - the DSA switch is also a component of the DSA switch tree
 
-This patch is wrong. This flag should have been FWNODE_FLAG_NEVER_PROBES.
+I think you might be missing a level. Think about the automotive
+reference design system you posted the DT for a couple of days
+ago. Don't you have cascaded switches, which are not members of the
+same DSA tree. You might need a component for that whole group of
+switches, above what you suggest here.
 
--Saravana
+Can you nest components? How deep can you nest them?
 
-> +
->         for_each_child_of_node(bus, child) {
->                 pr_debug("   create child: %pOF\n", child);
->                 rc = of_platform_bus_create(child, matches, lookup, &dev->dev, strict);
-> --
-> 2.33.0.259.gc128427fd7-goog
->
+    Andrew
