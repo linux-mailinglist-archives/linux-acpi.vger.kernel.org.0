@@ -2,244 +2,236 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 711C63FFD5F
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Sep 2021 11:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DADE40019F
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Sep 2021 16:58:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348919AbhICJm3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Sep 2021 05:42:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:54286 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1348898AbhICJm2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Sep 2021 05:42:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1630662088;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7hLvnClLlStMjpZTeAIE1ZO2uEqHpHnrGDZJuuDhu0o=;
-        b=FbLPTaFyOMbjWxRnmhSITbG/p/NYlY0RcKky2q7BGN9mJDhwEISy9P1hBIjNppR77JAPHb
-        Xf5QraX1gh0f4GLXw2sFrvn6ZD1dPkFs4zllOkPnKZzMIVwsUjOn6nI++l+2yg+r+zZQfD
-        D4KpEPPsbUCfui06PLzx1J5T1GWanbc=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-151-Y4KXfwVlMweVr3pxSOthsw-1; Fri, 03 Sep 2021 05:41:27 -0400
-X-MC-Unique: Y4KXfwVlMweVr3pxSOthsw-1
-Received: by mail-ed1-f72.google.com with SMTP id y21-20020a056402359500b003cd0257fc7fso2471444edc.10
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Sep 2021 02:41:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=7hLvnClLlStMjpZTeAIE1ZO2uEqHpHnrGDZJuuDhu0o=;
-        b=SA0/0Dr2m4Wh5HtcoeDP3OFMlsEzc7uUDiOJdvS818p2bFVFj/kiUBE7pim5h6jQ1f
-         3hdZTzWuDSBhDfMGR10ioGxnq2KY85IljUiYyPXcPtDNM4WJyAXWqXXvlBAoGTjkN7nz
-         52QllZIUheCWMO8typB5CbRZpMHnuIPHnRSP7k1VQGpLRmiG7hCfR0UYqkBv4ajX2BIw
-         92EGIAm6vZVCgcuERndqv2I/jMzLiu7KmRiP6vOk5gJo9PL8NISu29XIjXhThwx6Duv7
-         FE0pfmQvEr0UN7O292Vu/brzUvcoy6KQoyIl3Ub4a0/NAjLG60jlrIQGh+JrQLWyXgU/
-         b6mg==
-X-Gm-Message-State: AOAM532BTHNOruE1Pf6R2CHzUCFyIF/ojJaTU8o7G2ytoHGje+8yACiz
-        PwuOuBP4sNhl/MZ4PqtVpX08klyvjTEStYn2utFjHduUIHMRANjWi0hPrmfXdrOpfJdzs9TtIZx
-        KYP+wpQDBcGqkglSlzO+TBA==
-X-Received: by 2002:a05:6402:40cf:: with SMTP id z15mr3046717edb.70.1630662086336;
-        Fri, 03 Sep 2021 02:41:26 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwVvlOVa5vCaE3fjEj7lwXGvcGylc0wmdHCUhNkWuvv0hbdypQkOAqNQUnJ86GotOebRMkSzg==
-X-Received: by 2002:a05:6402:40cf:: with SMTP id z15mr3046707edb.70.1630662086155;
-        Fri, 03 Sep 2021 02:41:26 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id qt23sm2371698ejb.26.2021.09.03.02.41.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Sep 2021 02:41:25 -0700 (PDT)
-Subject: Re: TPS68470 PMIC config option
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Jean Delvare <jdelvare@suse.de>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-References: <20210901160234.0e3e24b2@endymion>
- <YS+6xzk9yc8uPetU@smile.fi.intel.com>
- <20210901193251.GZ3@paasikivi.fi.intel.com>
- <20210902115731.2fd22c80@endymion>
- <20210902121529.GC3@paasikivi.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <b1fb59bb-aec4-660d-4291-f74f26f5b67b@redhat.com>
-Date:   Fri, 3 Sep 2021 11:41:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S1349528AbhICO7z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Sep 2021 10:59:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38448 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1349488AbhICO7y (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 3 Sep 2021 10:59:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E1A2F61056;
+        Fri,  3 Sep 2021 14:58:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630681134;
+        bh=z2uRNQz69xBL8uUWPBxwwZ7QJqE9ZEA/iXaX6H4y+UY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Ey8NLLAgfpVpIfyi4xTG+Djq62tDNLOGexgzdXvhhiRcK5YT0ztW/q+/siwO2XqJL
+         6TCrnYRQkI+UKO4Tiye+nVbvZqxEK+w/1PLgOjGnrIXGIVStncXwXbwJQByBsgslfl
+         KUySJYdWC3sZn326zwGRoxsiYtbXjw7LTzKec2FuqAgFuEwPLzoq2DhBCyX4p6r0Be
+         jvGKpQztMJ05XxiRL3Et5dHpkFfE+asdkTpbbR4r6ihJilV5UJxxjhm7MYem77x8hM
+         atpj0JhJtk3GKnEgOafWJGRQaH3UmnWp3CjukZotywGGjb+TEi1knQbbAAV0ORswD3
+         ahrTrgT7VW+1w==
+Received: by mail-ej1-f47.google.com with SMTP id me10so12613175ejb.11;
+        Fri, 03 Sep 2021 07:58:54 -0700 (PDT)
+X-Gm-Message-State: AOAM530Ev9qG9AxZLTpSM4t3uuF4y5JkPjarmaRRHo4les/UB66NGYuo
+        shS+dp1LQ1sQHabMjm60QDIymsgMJMCPTZnanw==
+X-Google-Smtp-Source: ABdhPJx4h8QEqzMfrCpb+bUvqzs0SZjObk/x77kp9sCY4GHhjan0I+SMpiSdOCmkP64ZjbH0cwkiECN282QlkbAA2Vw=
+X-Received: by 2002:a17:906:7250:: with SMTP id n16mr4642476ejk.147.1630681133366;
+ Fri, 03 Sep 2021 07:58:53 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210902121529.GC3@paasikivi.fi.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210902025528.1017391-1-saravanak@google.com>
+ <20210902025528.1017391-3-saravanak@google.com> <CAL_JsqJOv7D5nHteGPDKC2+ns1caVNs-NFFJppLuK0OEB8dztQ@mail.gmail.com>
+ <CAGETcx-rOakAX_apu2ecu6jWCwzO0RgMkwdfzyF+UaxQfVj4CA@mail.gmail.com>
+ <CAL_Jsq+A1T5+KK5xsVVtrMVeuMre3B6sAAroX+a3gQy6wY+r8A@mail.gmail.com>
+ <CAGETcx9wY66TsFX_1rFUO+toE-OpkAvWSdcNVK7M=LYwa6xbAw@mail.gmail.com>
+ <CAL_JsqJzt_duSkMm43dwpiGCmqW8PAQ1n6SeyiNkECP8CTcY=g@mail.gmail.com> <CAGETcx-VkJXTXCwh_ctMg_-VDUb4WFxLLYt0ht8tv8yn+kCH6Q@mail.gmail.com>
+In-Reply-To: <CAGETcx-VkJXTXCwh_ctMg_-VDUb4WFxLLYt0ht8tv8yn+kCH6Q@mail.gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Fri, 3 Sep 2021 09:58:42 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJ4auRZonAnR5CKGyKNs1pVfHK24+av0Ox9L_805v=n6w@mail.gmail.com>
+Message-ID: <CAL_JsqJ4auRZonAnR5CKGyKNs1pVfHK24+av0Ox9L_805v=n6w@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] of: platform: Mark bus devices nodes with FWNODE_FLAG_NEVER_PROBES
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Len Brown <lenb@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Thu, Sep 2, 2021 at 8:16 PM Saravana Kannan <saravanak@google.com> wrote:
+>
+> On Thu, Sep 2, 2021 at 5:53 PM Rob Herring <robh+dt@kernel.org> wrote:
+> >
+> > On Thu, Sep 2, 2021 at 2:29 PM Saravana Kannan <saravanak@google.com> wrote:
+> > >
+> > > On Thu, Sep 2, 2021 at 12:03 PM Rob Herring <robh+dt@kernel.org> wrote:
+> > > >
+> > > > On Thu, Sep 2, 2021 at 11:57 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > > >
+> > > > > On Thu, Sep 2, 2021 at 7:24 AM Rob Herring <robh+dt@kernel.org> wrote:
+> > > > > >
+> > > > > > On Wed, Sep 1, 2021 at 9:55 PM Saravana Kannan <saravanak@google.com> wrote:
+> > > > > > >
+> > > > > > > We don't want fw_devlink creating device links for bus devices as
+> > > > > > > they'll never probe. So mark those device node with this flag.
+> > > > > > >
+> > > > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > > > > > ---
+> > > > > > >  drivers/of/platform.c | 16 ++++++++++++++++
+> > > > > > >  1 file changed, 16 insertions(+)
+> > > > > > >
+> > > > > > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> > > > > > > index 74afbb7a4f5e..42b3936d204a 100644
+> > > > > > > --- a/drivers/of/platform.c
+> > > > > > > +++ b/drivers/of/platform.c
+> > > > > > > @@ -392,6 +392,22 @@ static int of_platform_bus_create(struct device_node *bus,
+> > > > > > >         if (!dev || !of_match_node(matches, bus))
+> > > > > > >                 return 0;
+> > > > > > >
+> > > > > > > +       /*
+> > > > > > > +        * If the bus node has only one compatible string value and it has
+> > > > > > > +        * matched as a bus node, it's never going to get probed by a device
+> > > > > > > +        * driver. So flag it as such so that fw_devlink knows not to create
+> > > > > > > +        * device links with this device.
+> > > > > > > +        *
+> > > > > > > +        * This doesn't catch all devices that'll never probe, but this is good
+> > > > > > > +        * enough for now.
+> > > > > > > +        *
+> > > > > > > +        * This doesn't really work for PPC because of how it uses
+> > > > > > > +        * of_platform_bus_probe() to add normal devices. So ignore PPC cases.
+> > > > > > > +        */
+> > > > > > > +       if (!IS_ENABLED(CONFIG_PPC) &&
+> > > > > > > +           of_property_count_strings(bus, "compatible") == 1)
+> > > > > > > +               bus->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
+> > > > > >
+> > > > > > This looks fragile relying on 1 compatible string, and the DT flags in
+> > > > > > this code have been fragile too. I'm pretty sure we have cases of
+> > > > > > simple-bus or simple-mfd that also have another compatible.
+> > > > > >
+> > > > > > Couldn't we solve this with a simple driver?
+> > > > >
+> > > > > Oh, I didn't think you'd like that. I'd lean towards that option too
+> > > > > if we can address some of the other concerns below.
+> > > > >
+> > > > > > Make 'simple-pm-bus'
+> > > > > > driver work for other cases?
+> > > > >
+> > > > > > BTW, this patch doesn't even work for
+> > > > > > simple-pm-bus.
+> > > > >
+> > > > > How do you mean? Because simple-pm-bus already has a driver and
+> > > > > doesn't set "matches" param when it calls of_platform_populate() and
+> > > > > this flag won't be set. So at least for simple-pm-bus I don't see any
+> > > > > issue.
+> > > >
+> > > > You're right.
+> > > >
+> > > > > I was trying to reuse of_default_bus_match_table without explicitly
+> > > > > referring to it, but if it's confusing I can add a separate list of
+> > > > > compatible strings and use those here instead of using "matches".
+> > > >
+> > > > What happens with a non-default table? I'm not sure we can assume the
+> > > > same behavior.
+> > > >
+> > > > > > A driver for simple-bus may cause issues if there's a
+> > > > > > more specific driver to bind to as we don't handle that. It's simply
+> > > > > > whichever matches first.
+> > > > >
+> > > > > Right, this is my worry. Especially for devices like this (there are
+> > > > > plenty of cases like this) which have a driver that probes them but
+> > > > > also lists simple-bus
+> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/arm-realview-pb11mp.dts?id=73f3af7b4611d77bdaea303fb639333eb28e37d7#n299
+> > > >
+> > > > Uhh, that one is certainly a leakage of wanting an soc_device in the
+> > > > hierarchy, not any real bus structure reflecting the h/w. I'm not a
+> > > > fan of the soc_device stuff and its optional nature. Everything is an
+> > > > SoC, so it should always be there? Or your device hierarchy should
+> > > > change when you decide to add a soc_device?
+> > > >
+> > > > > So as long as there's a compatible string that's not one of the
+> > > > > "transparent" busses, this driver shouldn't match. So, I don't think I
+> > > > > can get away from checking the compatible strings.
+> > > > >
+> > > > > How about I check here to make sure all the "compatible" strings are
+> > > > > from an approved transparent bus list, and if it's true, I use
+> > > > > driver_override to force match it to a transparent bus driver? Would
+> > > > > you be okay with that?
+> > > >
+> > > > Can't we do that within a driver? We check this and fail probe if
+> > > > there's a more specific compatible.  Then another driver can match and
+> > > > probe.
+> > >
+> > > I was thinking that initially, but if we fail a probe, the driver core
+> > > will permanently give up (won't search further) or might end up
+> > > retrying with the same driver and never get to the other driver. I'll
+> > > send out a v2 with what I described above. It's not too bad and it
+> > > will also allow us to handle the PPC cases (we'll just need to keep
+> > > adding the simple-bus equivalent entries to a table).
+> >
+> > I wasn't sure, but I traced the calls and it looks like based on
+> > __driver_attach() that if a driver fails probe another one matching
+> > should get to probe:
+>
+> __driver_attach() is called over every device already in a bus. It's
+> called only when a new driver is registered. So it makes sense that
+> one ignores the error returned from probe(). You don't want to fail
+> driver registration because one specific device needs to defer probe.
 
-On 9/2/21 2:15 PM, Sakari Ailus wrote:
-> Hi Jean,
-> 
-> On Thu, Sep 02, 2021 at 11:57:31AM +0200, Jean Delvare wrote:
->> Hi Sakari,
->>
->> On Wed, 1 Sep 2021 22:32:51 +0300, Sakari Ailus wrote:
->>> On Wed, Sep 01, 2021 at 08:39:19PM +0300, Andy Shevchenko wrote:
->>>> On Wed, Sep 01, 2021 at 04:02:34PM +0200, Jean Delvare wrote:  
->>>>> Is there a reason why config TPS68470_PMIC_OPREGION is not under "if
->>>>> PMIC_OPREGION" where all other *_PMIC_OPREGION driver options are?  
->>>>
->>>> It was originally like that.
->>>>
->>>> Sakari, do you know?  
->>>
->>> The answer can be found in Makefile:
->>>
->>> obj-$(CONFIG_PMIC_OPREGION)             += intel_pmic.o
->>>
->>> intel_pmic.c seems to contain common functionality for PMICs in Intel SoCs
+The behavior should be the same no matter whether the device or driver
+is registered first.
 
-That is not correct, it implements an ACPI opregion handler where the
-"API" is defined by Intel, but these are external PMICs which are made
-by Intel, TI and X-Powers.
+Deferred probe errors are handled differently AFAICT.
 
-Note these are only used on hardware with Intel Bay Trail and Cherry Trail
-SoCs (which are more or less Atom series SoCs).
+>
+> The comment is actually from __device_attach_driver()
+>
+> >
+> >         /*
+> >          * Ignore errors returned by ->probe so that the next driver can try
+> >          * its luck.
+> >          */
+>
+> I saw that comment too, but isn't the comment wrong/stale?
 
->>> whereas the TPS68470 is an external chip. The two codebases are distinct.
+I don't know...
 
-The others are external chips too, where the TPS68470 is different is
-that the ACPI OpRegion interface "API" is a different one (defined by Google
-AFAIK) and is only used on ChromeBook devices, in combination with
-various *other* Intel SoCs, mostly standard (Y-series) Core models,
-but possibly also Apollo Lake / Gemini Lake (Atom like) SoCs.
+>
+> bus_probe_device() -> device_initial_probe() -> __device_attach().
+>
+> In __device_attach() we have:
+> ret = bus_for_each_drv(dev->bus, NULL, &data, __device_attach_driver);
+>
+> If you look at bus_for_each_drv()'s comment:
+>  * ...... If @fn returns anything but 0, we break out
+>  * and return it. If @start is not NULL, we use it as the head
+>  * of the list.
+>
+> Inside __device_attach_driver() we see:
+>         /*
+>          * Ignore errors returned by ->probe so that the next driver can try
+>          * its luck.
+>          */
+>         ret = driver_probe_device(drv, dev);
+>         if (ret < 0)
+>                 return ret;
+>
+> So if probe() returned an error, we'd return it right back out. And
+> then bus_for_each_drv() will stop searching for more drivers that
+> match.
 
->>>
->>> Perhaps it could make sense to either rename this as
->>> CONFIG_PMIC_INTEL_OPREGION, or move the TPS68470 driver in and change the
->>> Kconfig+Makefile to have the common code compiled if at least one of the
->>> drivers is enabled.
->>
->> OK, thanks for the explanation I get it now. Yes, the fact that the
->> menu looks vendor-neutral while it is about Intel drivers only is
->> confusing. Renaming it would help. I'm not sure about your alternative
->> proposal as I can't actually see any common code or dependency between
->> intel_pmic and tps68470_pmic.
-> 
-> There isn't. I was thinking whether all PMIC opregion drivers would be
-> behind a menu entry. If you have any sort of a generic kernel then you'd
-> probably want all of these in anyway. I don't really have an opinion
-> at this point though.
+With the exception of deferred probe, probe errors are made positive
+and then ignored.
 
-See above, note with the caveats from above noted I'm fine with the
-rename. OTOH I'm fine with keeping things as is too.
+> So I don't think one driver can give up after a match and have another
+> driver give a device a shot.
 
-A better name might by PMIC_BYT_CHT_OPREGION or PMIC_INTEL_BYT_CHT_OPREGION
-though, since the TPS68470 OpRegion is also found only on devices where
-the main SoC is from Intel.
+I think it just needs to be tried out...
 
->> What about the following?
->>
->> From: Jean Delvare <jdelvare@suse.de>
->> Subject: ACPI / PMIC: Rename CONFIG_PMIC_OPREGION
->>
->> Rename the intel_pmic driver's Kconfig option to make it clear it's
->> about the Intel chipset family.
->>
->> Signed-off-by: Jean Delvare <jdelvare@suse.de>
->> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
->> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
->> Cc: Len Brown <lenb@kernel.org>
->> Cc: Andy Shevchenko <andy@kernel.org>
->> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
->> ---
->>  drivers/acpi/pmic/Kconfig                    |   10 +++++-----
->>  drivers/acpi/pmic/Makefile                   |    2 +-
->>  drivers/gpu/drm/i915/display/intel_dsi_vbt.c |    4 ++--
->>  drivers/staging/media/atomisp/Kconfig        |    2 +-
->>  4 files changed, 9 insertions(+), 9 deletions(-)
->>
->> --- linux-5.14.orig/drivers/acpi/pmic/Kconfig	2021-08-30 00:04:50.000000000 +0200
->> +++ linux-5.14/drivers/acpi/pmic/Kconfig	2021-09-02 11:51:14.146662112 +0200
->> @@ -1,14 +1,14 @@
->>  # SPDX-License-Identifier: GPL-2.0
->>  
->> -menuconfig PMIC_OPREGION
->> -	bool "PMIC (Power Management Integrated Circuit) operation region support"
->> +menuconfig INTEL_PMIC_OPREGION
->> +	bool "Intel PMIC (Power Management Integrated Circuit) operation region support"
->>  	help
->>  	  Select this option to enable support for ACPI operation
->> -	  region of the PMIC chip. The operation region can be used
->> +	  region of the Intel PMIC chip. The operation region can be used
->>  	  to control power rails and sensor reading/writing on the
->>  	  PMIC chip.
->>  
->> -if PMIC_OPREGION
->> +if INTEL_PMIC_OPREGION
->>  
->>  config BYTCRC_PMIC_OPREGION
->>  	bool "ACPI operation region support for Bay Trail Crystal Cove PMIC"
->> @@ -48,7 +48,7 @@ config CHT_DC_TI_PMIC_OPREGION
->>  	help
->>  	  This config adds ACPI operation region support for Dollar Cove TI PMIC.
->>  
->> -endif	# PMIC_OPREGION
->> +endif	# INTEL_PMIC_OPREGION
->>  
->>  config TPS68470_PMIC_OPREGION
->>  	bool "ACPI operation region support for TPS68470 PMIC"
->> --- linux-5.14.orig/drivers/acpi/pmic/Makefile	2021-08-30 00:04:50.000000000 +0200
->> +++ linux-5.14/drivers/acpi/pmic/Makefile	2021-09-02 11:21:34.527694178 +0200
->> @@ -1,6 +1,6 @@
->>  # SPDX-License-Identifier: GPL-2.0
->>  
->> -obj-$(CONFIG_PMIC_OPREGION)		+= intel_pmic.o
->> +obj-$(CONFIG_INTEL_PMIC_OPREGION)	+= intel_pmic.o
->>  obj-$(CONFIG_BYTCRC_PMIC_OPREGION)	+= intel_pmic_bytcrc.o
->>  obj-$(CONFIG_CHTCRC_PMIC_OPREGION)	+= intel_pmic_chtcrc.o
->>  obj-$(CONFIG_XPOWER_PMIC_OPREGION)	+= intel_pmic_xpower.o
->> --- linux-5.14.orig/drivers/staging/media/atomisp/Kconfig	2021-08-30 00:04:50.000000000 +0200
->> +++ linux-5.14/drivers/staging/media/atomisp/Kconfig	2021-09-02 11:51:39.792007892 +0200
->> @@ -12,7 +12,7 @@ menuconfig INTEL_ATOMISP
->>  config VIDEO_ATOMISP
->>  	tristate "Intel Atom Image Signal Processor Driver"
->>  	depends on VIDEO_V4L2 && INTEL_ATOMISP
->> -	depends on PMIC_OPREGION
->> +	depends on INTEL_PMIC_OPREGION
->>  	select IOSF_MBI
->>  	select VIDEOBUF_VMALLOC
->>  	select VIDEO_V4L2_SUBDEV_API
->> --- linux-5.14.orig/drivers/gpu/drm/i915/display/intel_dsi_vbt.c	2021-08-30 00:04:50.000000000 +0200
->> +++ linux-5.14/drivers/gpu/drm/i915/display/intel_dsi_vbt.c	2021-09-02 11:52:38.230795493 +0200
->> @@ -511,7 +511,7 @@ static const u8 *mipi_exec_spi(struct in
->>  static const u8 *mipi_exec_pmic(struct intel_dsi *intel_dsi, const u8 *data)
->>  {
->>  	struct drm_i915_private *i915 = to_i915(intel_dsi->base.base.dev);
->> -#ifdef CONFIG_PMIC_OPREGION
->> +#ifdef CONFIG_INTEL_PMIC_OPREGION
->>  	u32 value, mask, reg_address;
->>  	u16 i2c_address;
->>  	int ret;
->> @@ -529,7 +529,7 @@ static const u8 *mipi_exec_pmic(struct i
->>  		drm_err(&i915->drm, "%s failed, error: %d\n", __func__, ret);
->>  #else
->>  	drm_err(&i915->drm,
->> -		"Your hardware requires CONFIG_PMIC_OPREGION and it is not set\n");
->> +		"Your hardware requires CONFIG_INTEL_PMIC_OPREGION and it is not set\n");
-> 
-> I wonder if this is just an Intel PMIC or whether it could be any PMIC.
+I would like the above to work because it at least partially solves
+the problem of multiple drivers matching. It only works if the
+fallback driver knows there's a better match though which is this
+case. If we don't know then a better match would have to unbind the
+first driver and bind to the better match. I'm not sure that could
+ever work generically.
 
-This is used on devices which use the PMICs which use the ACPI OpRegion
-handler defined in the shared intel_pmic.c code, so changing the check
-as part of renaming the Kconfig option is fine.
-
-I hope this helps clarify things a bit, if not feel free to ask questions.
-
-Regards,
-
-Hans
-
+Rob
