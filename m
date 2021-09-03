@@ -2,188 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B08C43FF7D9
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Sep 2021 01:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26B8F3FF838
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Sep 2021 02:04:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233338AbhIBXbB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 19:31:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33598 "EHLO
+        id S1345768AbhICAF1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Sep 2021 20:05:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231232AbhIBXbB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 19:31:01 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A076C061757
-        for <linux-acpi@vger.kernel.org>; Thu,  2 Sep 2021 16:30:02 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id z5so6963757ybj.2
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Sep 2021 16:30:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6xTg00PepVPylOtm1J0Y6rkZ7Wc4zH5g0ApsRZq0FUI=;
-        b=n0XEJv7UdxOAcuracft+Xvw5QLLeajqnN5CBStW2IoBqQrqE1Dbq87vM10iYzXFByF
-         kUaZoFC1HUuRs53G3sY8xqoEzzF0znynaeWGk0K4NlkxVzF375NsTwszhwJPQ/fLd5QE
-         wDNFWc4sRuP44bSNwqAWirv21TiIhf/t/RQ4VnwmBrB85MFz4Sd2psvxdmin8UuwQjKV
-         BmuvEzVXD1CJKZiwK/c2LdjhBveXGZZ9u4UEZ8RnKeBLujx7P69Uemzzhc4rWPxaoI4m
-         nksWWTXfCGzbqYSGzFUNuSeq0v30pBFOHG99yWvFShn47nWm5dZS+jHyOZYEfCcbLbxL
-         /daw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6xTg00PepVPylOtm1J0Y6rkZ7Wc4zH5g0ApsRZq0FUI=;
-        b=lihRz59aX8V+vir8DFLUeAapzF1Q4mugCFRfvf34zVtyN6wqT8qzM6yrAaQ2zcXfdm
-         7QrJ0vYqDp5kejY6B7XE/Sj3hpjoomLcgwxIq0EGPKhQpURsdKefYUIx0G6Ok4UlYKkf
-         QpB2D30bOrODXqw4vLVFk0X3cQvpzx29D56grXgDH4XE8wsE0FVW7SI+ExXc/HIf6Lt2
-         M8omdrzaLfLyHMVwYElUQZ2WE5vBQHp8I/dA7nfghohAEUI1CdFCWJKiY2RGYwRaQPuR
-         D/qFFa44IV82GRf0juDLJ/aEOsLhtihlHzSyvPmlf1k+U2kBCXDLZJYmUu9znmh+iHlJ
-         FSbw==
-X-Gm-Message-State: AOAM530xY5ZVmx4qJBJbuDrU7sVq0Gs/SaZLPndvAld800jm2Bgtt7cA
-        xdTkGRYQgJiYhhWi7zZeClz4pWwTdJ8lVrrJN+gWmA==
-X-Google-Smtp-Source: ABdhPJwDEizZwDXmFQo9X/jBsqiugcTqCUwjHAa6hvmWH2Qm4+fQv6S4de/oQBbZ8ps6OnpvyMtT6nU3W/ioGOS3xS4=
-X-Received: by 2002:a25:6746:: with SMTP id b67mr1341051ybc.96.1630625401243;
- Thu, 02 Sep 2021 16:30:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210901225053.1205571-1-vladimir.oltean@nxp.com> <20210902220520.hyybu6k3mjzbl7mn@skbuf>
-In-Reply-To: <20210902220520.hyybu6k3mjzbl7mn@skbuf>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 2 Sep 2021 16:29:25 -0700
-Message-ID: <CAGETcx8i_TSRKmnMAwbh9FbQDFO1ueU5nWTRxQgQpaY3i0v=Jw@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next 0/3] Make the PHY library stop being so
- greedy when binding the generic PHY driver
+        with ESMTP id S1343948AbhICAF0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 20:05:26 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E47C061575;
+        Thu,  2 Sep 2021 17:04:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=1aZwa45lKhrAFfmSsnRqBX5rvfTJ2itANvtSd+k2ghc=; b=cY5MmrfGcs4Cg8XSd8qHh+G2f
+        4o/wEHJZkxIhUwlMw0e/JO5IWeOuFpsZnJzCWKjns0+LCTGdQS57fNXfv0Jh3MLTolhDk92xgKtAv
+        V89d5GXoFx3IH9GVru3vJnGekckGLY/Zl9ZxluTMGj5UMhh/lrgFomSi0URHRI6xeQt1QePv99v+E
+        939HYZmCMzpjb/hqTV5ZovKYhm7msFuixkR0dRY4ena+Pc9qpCQ7Q3himRBB+r4rv5a4CkyWJSC+/
+        FvC8Ft+hxCriJqgJ2jPNXb0uM3/gkO32vjBiHI/nQEZlIlA0KGUGVSc/901xNFLuBWy5nKz8HSRyP
+        JVUrhNYlA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48126)
+        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1mLwgw-0002Ew-Jr; Fri, 03 Sep 2021 01:04:22 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1mLwgt-0008MM-Av; Fri, 03 Sep 2021 01:04:19 +0100
+Date:   Fri, 3 Sep 2021 01:04:19 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
 To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        netdev@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
         linux-kernel@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?Q?Alvin_=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
+        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         kernel-team <kernel-team@android.com>,
         Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [RFC PATCH net-next 1/3] net: phy: don't bind genphy in
+ phy_attach_direct if the specific driver defers probe
+Message-ID: <20210903000419.GR22278@shell.armlinux.org.uk>
+References: <20210901225053.1205571-2-vladimir.oltean@nxp.com>
+ <20210902185016.GL22278@shell.armlinux.org.uk>
+ <YTErTRBnRYJpWDnH@lunn.ch>
+ <bd7c9398-5d3d-ccd8-8804-25074cff6bde@gmail.com>
+ <20210902213303.GO22278@shell.armlinux.org.uk>
+ <20210902213949.r3q5764wykqgjm4z@skbuf>
+ <20210902222439.GQ22278@shell.armlinux.org.uk>
+ <20210902224506.5h7bnybjbljs5uxz@skbuf>
+ <YTFX7n9qj2cUh0Ap@lunn.ch>
+ <20210902232607.v7uglvpqi5hyoudq@skbuf>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210902232607.v7uglvpqi5hyoudq@skbuf>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 2, 2021 at 3:05 PM Vladimir Oltean <olteanv@gmail.com> wrote:
->
-> On Thu, Sep 02, 2021 at 01:50:50AM +0300, Vladimir Oltean wrote:
-> > This is a continuation of the discussion on patch "[v1,1/2] driver core:
-> > fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT" from here:
-> > https://patchwork.kernel.org/project/netdevbpf/patch/20210826074526.825517-2-saravanak@google.com/
-> >
-> > Summary: in a complex combination of device dependencies which is not
-> > really relevant to what is being proposed here, DSA ends up calling
-> > phylink_of_phy_connect during a period in which the PHY driver goes
-> > through a series of probe deferral events.
-> >
-> > The central point of that discussion is that DSA seems "broken" for
-> > expecting the PHY driver to probe immediately on PHYs belonging to the
-> > internal MDIO buses of switches. A few suggestions were made about what
-> > to do, but some were not satisfactory and some did not solve the problem.
-> >
-> > In fact, fw_devlink, the mechanism that causes the PHY driver to defer
-> > probing in this particular case, has some significant "issues" too, but
-> > its "issues" are only in quotes "because at worst it'd allow a few
-> > unnecessary deferred probes":
-> > https://patchwork.kernel.org/project/netdevbpf/patch/20210826074526.825517-2-saravanak@google.com/#24418895
-> >
-> > So if that's the criterion by which an issue is an issue, maybe we
-> > should take a step back and look at the bigger picture.
-> >
-> > There is nothing about the idea that a PHY might defer probing, or about
-> > the changes proposed here, that has anything with DSA. Furthermore, the
-> > changes done by this series solve the problem in the same way: "they
-> > allow a few unnecessary deferred probes" <- in this case they provoke
-> > this to the caller of phy_attach_direct.
-> >
-> > If we look at commit 16983507742c ("net: phy: probe PHY drivers
-> > synchronously"), we see that the PHY library expectation is for the PHY
-> > device to have a PHY driver bound to it as soon as device_add() finishes.
-> >
-> > Well, as it turns out, in case the PHY device has any supplier which is
-> > not ready, this is not possible, but that patch still seems to ensure
-> > that the process of binding a driver to the device has at least started.
-> > That process will continue for a while, and will race with
-> > phy_attach_direct calls, so we need to make the latter observe the fact
-> > that a driver is struggling to probe, and wait for it a bit more.
-> >
-> > What I've not tested is loading the PHY module at runtime, and seeing
-> > how phy_attach_direct behaves then. I expect that this change set will
-> > not alter the behavior in that case: the genphy will still bind to a
-> > device with no driver, and phy_attach_direct will not return -EPROBE_DEFER
-> > in that case.
-> >
-> > I might not be very versed in the device core/internals, but the patches
-> > make sense to me, and worked as intended from the first try on my system
-> > (Turris MOX with mv88e6xxx), which was modified to make the same "sins"
-> > as those called out in the thread above:
-> >
-> > - use PHY interrupts provided by the switch itself as an interrupt-controller
-> > - call of_mdiobus_register from setup() and not from probe(), so as to
-> >   not circumvent fw_devlink's limitations, and still get to hit the PHY
-> >   probe deferral conditions.
-> >
-> > So feedback and testing on other platforms is very appreciated.
-> >
-> > Vladimir Oltean (3):
-> >   net: phy: don't bind genphy in phy_attach_direct if the specific
-> >     driver defers probe
-> >   net: dsa: destroy the phylink instance on any error in
-> >     dsa_slave_phy_setup
-> >   net: dsa: allow the phy_connect() call to return -EPROBE_DEFER
-> >
-> >  drivers/base/dd.c            | 21 +++++++++++++++++++--
-> >  drivers/net/phy/phy_device.c |  8 ++++++++
-> >  include/linux/device.h       |  1 +
-> >  net/dsa/dsa2.c               |  2 ++
-> >  net/dsa/slave.c              | 12 +++++-------
-> >  5 files changed, 35 insertions(+), 9 deletions(-)
-> >
-> > --
-> > 2.25.1
-> >
->
-> Ouch, I just realized that Saravana, the person whose reaction I've been
-> waiting for the most, is not copied....
->
-> Saravana, you can find the thread here to sync up with what has been
-> discussed:
-> https://patchwork.kernel.org/project/netdevbpf/cover/20210901225053.1205571-1-vladimir.oltean@nxp.com/
+On Fri, Sep 03, 2021 at 02:26:07AM +0300, Vladimir Oltean wrote:
+> On Fri, Sep 03, 2021 at 01:02:06AM +0200, Andrew Lunn wrote:
+> > We should try to keep phylink_create and phylink_destroy symmetrical:
+> > 
+> > /**
+> >  * phylink_create() - create a phylink instance
+> >  * @config: a pointer to the target &struct phylink_config
+> >  * @fwnode: a pointer to a &struct fwnode_handle describing the network
+> >  *      interface
+> >  * @iface: the desired link mode defined by &typedef phy_interface_t
+> >  * @mac_ops: a pointer to a &struct phylink_mac_ops for the MAC.
+> >  *
+> >  * Create a new phylink instance, and parse the link parameters found in @np.
+> >  * This will parse in-band modes, fixed-link or SFP configuration.
+> >  *
+> >  * Note: the rtnl lock must not be held when calling this function.
+> > 
+> > Having different locking requirements will catch people out.
+> > 
+> > Interestingly, there is no ASSERT_NO_RTNL(). Maybe we should add such
+> > a macro.
+> 
+> In this case, the easiest might be to just take a different mutex in
+> dpaa2 which serializes all places that access the priv->mac references.
+> I don't know exactly why the SFP bus needs the rtnl_mutex, I've removed
+> those locks and will see what fails tomorrow, but I don't think dpaa2
+> has a good enough justification to take the rtnl_mutex just so that it
+> can connect and disconnect to the MAC freely at runtime.
 
-Woah! The thread blew up.
+It needs it to ensure that the sfp-bus code is safe. sfp-bus code
+sits between phylink and the sfp stuff, and will be called from
+either side. It can't have its own lock, because that gives lockdep
+splats.
 
->
-> Sorry.
+Removing a lock and then running the kernel is a down right stupid
+way to test to see if a lock is necessary.
 
-No worries.
+That approach is like having built a iron bridge, covered it in paint,
+then you remove most the bolts, and then test to see whether it's safe
+for vehicles to travel over it by riding your bicycle across it and
+declaring it safe.
 
-I'll read through the thread later and maybe provide more responses,
-but one thing I wanted to say right away:
+Sorry, but if you think "remove lock, run kernel, if it works fine
+the lock is unnecessary" is a valid approach, then you've just
+disqualified yourself from discussing this topic any further.
+Locking is done by knowing the code and code analysis, not by
+playing "does the code fail if I remove it" games. I am utterly
+shocked that you think that this is a valid approach.
 
-Don't depend on dev->p->deferred_probe. It can be "empty" for a device
-that has returned -EPROBE_DEFER for a bunch of reasons:
-
-1. When the device is in the middle of being reattempted, it would be
-empty. You can't hold any lock that'll ensure correctness either
-because deferred probe locking is a mess (I'm working on cleaning that
-up).
-
-2. I'm working on actually not adding devices to that list if there's
-a known supplier that hasn't been probed yet. No point retrying it
-again and again for every deferred probe trigger when we know it's
-going to fail. And we'll basically get topological probe ordering.
-
-Your closest bet right now is d->can_match. Only caveat is that it's
-not cleared if the actual driver gets unregistered.
-
-
--Saravana
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
