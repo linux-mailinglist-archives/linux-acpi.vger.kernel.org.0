@@ -2,231 +2,204 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45F583FF89B
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Sep 2021 03:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B223F3FFD0E
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Sep 2021 11:27:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345041AbhICBRG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Sep 2021 21:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57032 "EHLO
+        id S1348777AbhICJ2a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Sep 2021 05:28:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234035AbhICBRF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Sep 2021 21:17:05 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9045FC061757
-        for <linux-acpi@vger.kernel.org>; Thu,  2 Sep 2021 18:16:06 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id c6so7242471ybm.10
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Sep 2021 18:16:06 -0700 (PDT)
+        with ESMTP id S232257AbhICJ2a (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Sep 2021 05:28:30 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF44C061575;
+        Fri,  3 Sep 2021 02:27:30 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id e21so10757272ejz.12;
+        Fri, 03 Sep 2021 02:27:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WzzSuK0IRJJ8j7IjF4RHdzQ2axPaXOOKA7M5m0rjvG4=;
-        b=e5OiXxTSFHEQjQnefrd/x99LbKXTdAh833OrfGOCQ4IJx8sjWgnT6FqZNL6E9aeoLS
-         H7r2UMbPKOng/y7D4VBkns6QLStpI4tUdgcK6jKTUjZC7sVkZBjYbpecQmIkYIez8xfR
-         bSAKvV6rIWR72aTjVju8SWZ3VQ7FUzWAZvUS3Fnc9BkzxhKTZfVi+AzFvbw9YEUP3gsQ
-         FSMOG7NcNdfUU0yBWLCaUYa557a5aWPSof/+N6XPkBtNDy94oyBbKlT1rg/2gyDhvkHh
-         2C1m+4RVCbWanOeavC4Ki00Xr81Q3tJvIC+Rbw/pRjsPW9aLjSozfoCx3ZRmxxWDaozm
-         DM4Q==
+        d=gmail.com; s=20210112;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=98U6tP9GpBzT341VTGl00bgihnu7GKQ3T3inht08g64=;
+        b=Gfms5tJb+S1JUnUcWuX8H59hWdYjbsq2N5xdq3+ApSAOrVu7Q2zTuKXSIPvoIYgSab
+         zlAkNhaG5uK+rs8udVlW7Bqw9kSho+w5FgFmZOvZf948Gsu6VA8C+eZggEftfKWCJDoa
+         Cs/GcGfsjuWiZO/+6P03B1lREgVKg7Yi/scawqKD2I35f4ZVLyP7KqfY0cLZV7HdRJFh
+         ZzIRDl6n0gpJZYZRzvs126u6gLuF03q3vsHDWgRqlhXHxstwQHyJ3zOB12a6YlmPkAG4
+         gDmfq05jP3VdBcDEJCdmaJn1+r7ClczyoohBoEIbkwCbS2nJ8JnMfV7TPgHtZwA+i7VV
+         NF3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WzzSuK0IRJJ8j7IjF4RHdzQ2axPaXOOKA7M5m0rjvG4=;
-        b=MOrdcs6bpKlV1EtLwG3MVx3+tCoByY19GV+Y724QfGOzWIi0kz5XFmF4vKOYoYVkuK
-         1EKSXU07Wp9MM/5SLy7n9BkUbxuP8uuzssvjFFIAFWXZaT6rJaH7eTTTDD4Tpy1SG8XP
-         jKaVxXcJvnnd0Bl22I0zS3zw/cMt7W38logRjM2nVmg8Jtqh+xXNCYNsOrTCfBbbbgYL
-         SOOddDJHljpn+vPqbYilMju/cEpNarFWWIthrLPFZXjJbNFbcERU+LfHauFF/T4OFpFm
-         ATKUnY9eYxKrju1V0worBrR9tSRPKFaTGNTdTnv5KbehvtWhOm2Ll4+OyS2+zX8wvY8Y
-         od8A==
-X-Gm-Message-State: AOAM532O+UPjBcgNIA8/85UIaDaV4Iqp2Kcy5bTZrPxv5JrxvNEJhlf5
-        AL1XImm52mklFYs3TP5TE5TAgC5gNywgxs3nKuTkJA==
-X-Google-Smtp-Source: ABdhPJyB0+MCJ+1Lweg1HySQP2EHDPqMbfR85E+lrhVlrqCo165WbBzByDRVOXVsRVNHpnV01F+ycGRc9lpELkSUc5A=
-X-Received: by 2002:a25:6746:: with SMTP id b67mr1858374ybc.96.1630631765457;
- Thu, 02 Sep 2021 18:16:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210902025528.1017391-1-saravanak@google.com>
- <20210902025528.1017391-3-saravanak@google.com> <CAL_JsqJOv7D5nHteGPDKC2+ns1caVNs-NFFJppLuK0OEB8dztQ@mail.gmail.com>
- <CAGETcx-rOakAX_apu2ecu6jWCwzO0RgMkwdfzyF+UaxQfVj4CA@mail.gmail.com>
- <CAL_Jsq+A1T5+KK5xsVVtrMVeuMre3B6sAAroX+a3gQy6wY+r8A@mail.gmail.com>
- <CAGETcx9wY66TsFX_1rFUO+toE-OpkAvWSdcNVK7M=LYwa6xbAw@mail.gmail.com> <CAL_JsqJzt_duSkMm43dwpiGCmqW8PAQ1n6SeyiNkECP8CTcY=g@mail.gmail.com>
-In-Reply-To: <CAL_JsqJzt_duSkMm43dwpiGCmqW8PAQ1n6SeyiNkECP8CTcY=g@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 2 Sep 2021 18:15:29 -0700
-Message-ID: <CAGETcx-VkJXTXCwh_ctMg_-VDUb4WFxLLYt0ht8tv8yn+kCH6Q@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] of: platform: Mark bus devices nodes with FWNODE_FLAG_NEVER_PROBES
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=98U6tP9GpBzT341VTGl00bgihnu7GKQ3T3inht08g64=;
+        b=APaGCFkgv6pLofvHrts0IqrvY7jeEKXXB0Y9aa/+DEVbEdv7fiT4TlZ6lxfQM2vWZa
+         CQ06GDsDAt9+gw30TilOhDSYXNd4AsE8eCsx/a4FJ+z/QRagpvdpRZ6UW6xalEm7F8S4
+         itbTq/ulIT3zykCexacak5NrI7EPeXEiFZk502h0jXr5JQ8LQmgQdUBhQ8hi46mrL80H
+         NI4P9sl++D5/GfwFBT6W+eeaU0c9jXc1syz7aUH2FrkrkTIjXatAEfK/crYldEmIeNLd
+         uOwB5XDXX+znqddHoUqfaIS/8XAWPUoZo8KxCnGWXMSmbeKt6gcU/JruKb075WWOOT+b
+         Gyzg==
+X-Gm-Message-State: AOAM531HnIKG6zmkf8oEL9FdhO9VkCVGsFz0BjcI2BxJN5FUh4fk15/e
+        y0ErxmLRjSxoaySrSzvZilo=
+X-Google-Smtp-Source: ABdhPJz6Z+i1MKPF6nnWiX8wxORP4DxEP8XjnsoXDEfh8mtSUmLdxrS8BBfa22C7mVpq2PK+FxWFAw==
+X-Received: by 2002:a17:906:802:: with SMTP id e2mr3126470ejd.133.1630661249140;
+        Fri, 03 Sep 2021 02:27:29 -0700 (PDT)
+Received: from skbuf ([82.78.148.104])
+        by smtp.gmail.com with ESMTPSA id b5sm2382684ejq.56.2021.09.03.02.27.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Sep 2021 02:27:28 -0700 (PDT)
+From:   Ioana Ciornei <ciorneiioana@gmail.com>
+X-Google-Original-From: Ioana Ciornei <ciornei.ioana@gmail.com>
+Date:   Fri, 3 Sep 2021 12:27:27 +0300
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Vladimir Oltean <olteanv@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Len Brown <lenb@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        kernel-team <kernel-team@android.com>,
+        Len Brown <lenb@kernel.org>
+Subject: Re: [RFC PATCH net-next 1/3] net: phy: don't bind genphy in
+ phy_attach_direct if the specific driver defers probe
+Message-ID: <20210903092727.ae44m5rk3qdhyq6x@skbuf>
+References: <20210901225053.1205571-1-vladimir.oltean@nxp.com>
+ <20210901225053.1205571-2-vladimir.oltean@nxp.com>
+ <20210902185016.GL22278@shell.armlinux.org.uk>
+ <YTErTRBnRYJpWDnH@lunn.ch>
+ <bd7c9398-5d3d-ccd8-8804-25074cff6bde@gmail.com>
+ <20210902213303.GO22278@shell.armlinux.org.uk>
+ <20210902213949.r3q5764wykqgjm4z@skbuf>
+ <20210902222439.GQ22278@shell.armlinux.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210902222439.GQ22278@shell.armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 2, 2021 at 5:53 PM Rob Herring <robh+dt@kernel.org> wrote:
->
-> On Thu, Sep 2, 2021 at 2:29 PM Saravana Kannan <saravanak@google.com> wrote:
-> >
-> > On Thu, Sep 2, 2021 at 12:03 PM Rob Herring <robh+dt@kernel.org> wrote:
-> > >
-> > > On Thu, Sep 2, 2021 at 11:57 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > >
-> > > > On Thu, Sep 2, 2021 at 7:24 AM Rob Herring <robh+dt@kernel.org> wrote:
-> > > > >
-> > > > > On Wed, Sep 1, 2021 at 9:55 PM Saravana Kannan <saravanak@google.com> wrote:
-> > > > > >
-> > > > > > We don't want fw_devlink creating device links for bus devices as
-> > > > > > they'll never probe. So mark those device node with this flag.
-> > > > > >
-> > > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > > > > ---
-> > > > > >  drivers/of/platform.c | 16 ++++++++++++++++
-> > > > > >  1 file changed, 16 insertions(+)
-> > > > > >
-> > > > > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> > > > > > index 74afbb7a4f5e..42b3936d204a 100644
-> > > > > > --- a/drivers/of/platform.c
-> > > > > > +++ b/drivers/of/platform.c
-> > > > > > @@ -392,6 +392,22 @@ static int of_platform_bus_create(struct device_node *bus,
-> > > > > >         if (!dev || !of_match_node(matches, bus))
-> > > > > >                 return 0;
-> > > > > >
-> > > > > > +       /*
-> > > > > > +        * If the bus node has only one compatible string value and it has
-> > > > > > +        * matched as a bus node, it's never going to get probed by a device
-> > > > > > +        * driver. So flag it as such so that fw_devlink knows not to create
-> > > > > > +        * device links with this device.
-> > > > > > +        *
-> > > > > > +        * This doesn't catch all devices that'll never probe, but this is good
-> > > > > > +        * enough for now.
-> > > > > > +        *
-> > > > > > +        * This doesn't really work for PPC because of how it uses
-> > > > > > +        * of_platform_bus_probe() to add normal devices. So ignore PPC cases.
-> > > > > > +        */
-> > > > > > +       if (!IS_ENABLED(CONFIG_PPC) &&
-> > > > > > +           of_property_count_strings(bus, "compatible") == 1)
-> > > > > > +               bus->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
-> > > > >
-> > > > > This looks fragile relying on 1 compatible string, and the DT flags in
-> > > > > this code have been fragile too. I'm pretty sure we have cases of
-> > > > > simple-bus or simple-mfd that also have another compatible.
-> > > > >
-> > > > > Couldn't we solve this with a simple driver?
-> > > >
-> > > > Oh, I didn't think you'd like that. I'd lean towards that option too
-> > > > if we can address some of the other concerns below.
-> > > >
-> > > > > Make 'simple-pm-bus'
-> > > > > driver work for other cases?
-> > > >
-> > > > > BTW, this patch doesn't even work for
-> > > > > simple-pm-bus.
-> > > >
-> > > > How do you mean? Because simple-pm-bus already has a driver and
-> > > > doesn't set "matches" param when it calls of_platform_populate() and
-> > > > this flag won't be set. So at least for simple-pm-bus I don't see any
-> > > > issue.
-> > >
-> > > You're right.
-> > >
-> > > > I was trying to reuse of_default_bus_match_table without explicitly
-> > > > referring to it, but if it's confusing I can add a separate list of
-> > > > compatible strings and use those here instead of using "matches".
-> > >
-> > > What happens with a non-default table? I'm not sure we can assume the
-> > > same behavior.
-> > >
-> > > > > A driver for simple-bus may cause issues if there's a
-> > > > > more specific driver to bind to as we don't handle that. It's simply
-> > > > > whichever matches first.
-> > > >
-> > > > Right, this is my worry. Especially for devices like this (there are
-> > > > plenty of cases like this) which have a driver that probes them but
-> > > > also lists simple-bus
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/arm-realview-pb11mp.dts?id=73f3af7b4611d77bdaea303fb639333eb28e37d7#n299
-> > >
-> > > Uhh, that one is certainly a leakage of wanting an soc_device in the
-> > > hierarchy, not any real bus structure reflecting the h/w. I'm not a
-> > > fan of the soc_device stuff and its optional nature. Everything is an
-> > > SoC, so it should always be there? Or your device hierarchy should
-> > > change when you decide to add a soc_device?
-> > >
-> > > > So as long as there's a compatible string that's not one of the
-> > > > "transparent" busses, this driver shouldn't match. So, I don't think I
-> > > > can get away from checking the compatible strings.
-> > > >
-> > > > How about I check here to make sure all the "compatible" strings are
-> > > > from an approved transparent bus list, and if it's true, I use
-> > > > driver_override to force match it to a transparent bus driver? Would
-> > > > you be okay with that?
-> > >
-> > > Can't we do that within a driver? We check this and fail probe if
-> > > there's a more specific compatible.  Then another driver can match and
-> > > probe.
-> >
-> > I was thinking that initially, but if we fail a probe, the driver core
-> > will permanently give up (won't search further) or might end up
-> > retrying with the same driver and never get to the other driver. I'll
-> > send out a v2 with what I described above. It's not too bad and it
-> > will also allow us to handle the PPC cases (we'll just need to keep
-> > adding the simple-bus equivalent entries to a table).
->
-> I wasn't sure, but I traced the calls and it looks like based on
-> __driver_attach() that if a driver fails probe another one matching
-> should get to probe:
+On Thu, Sep 02, 2021 at 11:24:39PM +0100, Russell King (Oracle) wrote:
+> On Fri, Sep 03, 2021 at 12:39:49AM +0300, Vladimir Oltean wrote:
+> > On Thu, Sep 02, 2021 at 10:33:03PM +0100, Russell King (Oracle) wrote:
+> > > That's probably an unreliable indicator. DPAA2 has weirdness in the
+> > > way it can dynamically create and destroy network interfaces, which
+> > > does lead to problems with the rtnl lock. I've been carrying a patch
+> > > from NXP for this for almost two years now, which NXP still haven't
+> > > submitted:
+> > > 
+> > > http://git.armlinux.org.uk/cgit/linux-arm.git/commit/?h=cex7&id=a600f2ee50223e9bcdcf86b65b4c427c0fd425a4
+> > > 
+> > > ... and I've no idea why that patch never made mainline. I need it
+> > > to avoid the stated deadlock on SolidRun Honeycomb platforms when
+> > > creating additional network interfaces for the SFP cages in userspace.
+> > 
+> > Ah, nice, I've copied that broken logic for the dpaa2-switch too:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/?id=d52ef12f7d6c016f3b249db95af33f725e3dd065
+> > 
+> > So why don't you send the patch? I can send it too if you want to, one
+> > for the switch and one for the DPNI driver.
+> 
+> Sorry, I mis-stated. NXP did submit that exact patch, but it's actually
+> incorrect for the reason I stated when it was sent:
+> 
+> https://patchwork.ozlabs.org/project/netdev/patch/1574363727-5437-2-git-send-email-ioana.ciornei@nxp.com/
+> 
+> I did miss the rtnl_lock() around phylink_disconnect_phy() in the
+> description of the race, which goes someway towards hiding it, but
+> there is still a race between phylink_destroy() and another thread
+> calling dpaa2_eth_get_link_ksettings(), and priv->mac being freed:
+> 
+> static int
+> dpaa2_eth_get_link_ksettings(struct net_device *net_dev,
+>                              struct ethtool_link_ksettings *link_settings)
+> {
+>         struct dpaa2_eth_priv *priv = netdev_priv(net_dev);
+> 
+>         if (dpaa2_eth_is_type_phy(priv))
+>                 return phylink_ethtool_ksettings_get(priv->mac->phylink,
+>                                                      link_settings);
+> 
+> which dereferences priv->mac and priv->mac->phylink, vs:
+> 
+> static irqreturn_t dpni_irq0_handler_thread(int irq_num, void *arg)
+> {
+> ...
+>         if (status & DPNI_IRQ_EVENT_ENDPOINT_CHANGED) {
+>                 dpaa2_eth_set_mac_addr(netdev_priv(net_dev));
+>                 dpaa2_eth_update_tx_fqids(priv);
+> 
+>                 if (dpaa2_eth_has_mac(priv))
+>                         dpaa2_eth_disconnect_mac(priv);
+>                 else
+>                         dpaa2_eth_connect_mac(priv);
+>         }
+> 
+> static void dpaa2_eth_disconnect_mac(struct dpaa2_eth_priv *priv)
+> {
+>         if (dpaa2_eth_is_type_phy(priv))
+>                 dpaa2_mac_disconnect(priv->mac);
+> 
+>         if (!dpaa2_eth_has_mac(priv))
+>                 return;
+> 
+>         dpaa2_mac_close(priv->mac);
+>         kfree(priv->mac);		<== potential use after free bug by
+>         priv->mac = NULL;		<== dpaa2_eth_get_link_ksettings()
+> }
+> 
+> void dpaa2_mac_disconnect(struct dpaa2_mac *mac)
+> {
+>         if (!mac->phylink)
+>                 return;
+> 
+>         phylink_disconnect_phy(mac->phylink);
+>         phylink_destroy(mac->phylink);	<== another use-after-free bug via
+> 					    dpaa2_eth_get_link_ksettings()
+>         dpaa2_pcs_destroy(mac);
+> }
+> 
+> Note that phylink_destroy() is documented as:
+> 
+>  * Note: the rtnl lock must not be held when calling this function.
+> 
+> because it calls sfp_bus_del_upstream(), which will take the rtnl lock
+> itself. An alternative solution would be to remove the rtnl locking
+> from sfp_bus_del_upstream(), but then force _everyone_ to take the
+> rtnl lock before calling phylink_destroy() - meaning a larger block of
+> code ends up executing under the lock than is really necessary.
+> 
+> However, as I stated in my review of the patch "As I've already stated,
+> the phylink is not designed to be created and destroyed on a published
+> network device." That still remains true today, and it seems that the
+> issue has never been fixed in DPAA2 despite having been pointed out.
+> 
 
-__driver_attach() is called over every device already in a bus. It's
-called only when a new driver is registered. So it makes sense that
-one ignores the error returned from probe(). You don't want to fail
-driver registration because one specific device needs to defer probe.
+My attempt to fix this issue was that patch that you just pointed at.
+Taking your feedback into account (that phylink is not designed to be
+created and destroyed on a published networking device) I really do not
+know what other viable solution to send out.
 
-The comment is actually from __device_attach_driver()
+The alternative here would have been to just have a different driver for
+the MAC side (probing on dpmac objects) that creates the phylink
+instance at probe time and then is just used by the dpaa2-eth driver
+when it connects to a dpmac. This way no phylink is created/destroyed
+dynamically.
 
->
->         /*
->          * Ignore errors returned by ->probe so that the next driver can try
->          * its luck.
->          */
+This was the architecture of my initial attempt at supporting phylink in
+DPAA2.
+https://patchwork.ozlabs.org/project/netdev/patch/1560470153-26155-5-git-send-email-ioana.ciornei@nxp.com/
 
-I saw that comment too, but isn't the comment wrong/stale?
+If you have any suggestion on how I should go about fixing this, please
+let me know.
 
-bus_probe_device() -> device_initial_probe() -> __device_attach().
+Ioana
 
-In __device_attach() we have:
-ret = bus_for_each_drv(dev->bus, NULL, &data, __device_attach_driver);
-
-If you look at bus_for_each_drv()'s comment:
- * ...... If @fn returns anything but 0, we break out
- * and return it. If @start is not NULL, we use it as the head
- * of the list.
-
-Inside __device_attach_driver() we see:
-        /*
-         * Ignore errors returned by ->probe so that the next driver can try
-         * its luck.
-         */
-        ret = driver_probe_device(drv, dev);
-        if (ret < 0)
-                return ret;
-
-So if probe() returned an error, we'd return it right back out. And
-then bus_for_each_drv() will stop searching for more drivers that
-match.
-
-So I don't think one driver can give up after a match and have another
-driver give a device a shot.
-
->
-> The PPC case is about descending nodes without a compatible string.
-
-That whole thing is kinda confusing, but if PPC has more "simple"
-busses, they can just add to the list I'm maintaining in the v2
-series.
-
--Saravana
