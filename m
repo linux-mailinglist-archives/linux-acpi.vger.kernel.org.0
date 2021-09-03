@@ -2,106 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6717400718
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Sep 2021 22:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82496400741
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Sep 2021 23:07:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351074AbhICUt1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Sep 2021 16:49:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42110 "EHLO
+        id S233726AbhICVIM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Sep 2021 17:08:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351052AbhICUt0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Sep 2021 16:49:26 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E557C061575;
-        Fri,  3 Sep 2021 13:48:26 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id i6so609904edu.1;
-        Fri, 03 Sep 2021 13:48:26 -0700 (PDT)
+        with ESMTP id S232927AbhICVIM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Sep 2021 17:08:12 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63AC2C061575;
+        Fri,  3 Sep 2021 14:07:11 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id f2so791542ljn.1;
+        Fri, 03 Sep 2021 14:07:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=jhRNr0iOROYYKruATBYmBX4u8KwXp0Az/NpG3T4a+BE=;
-        b=eF1CRXdE3zFFPRPXxphywHfGqjBMnfA/tCp2Vgf5uk+45JIvOKANVPSjT2flp+FMF9
-         SdOlecFev9P2ZjWqjKgykf0zKOO4VinAX7K1aQR343ui+UnADrfjlvcNX0MQDWvHBB89
-         GdISAjmjD5Ru9V7CZuXOETPe+yH0WAJ7ZGMYRgSXatzCGi/O0GGsWN/+Qd73AOFIDkkV
-         nrKImHVGU0SMtcd1OQ68jhD1FC7VhPy2twlqZQi5WZR7vcDGRMnW3C2lzklMH5NDfnOe
-         ql6ZRErNsP+YCGN/O+sr7LrVDWI9KfRhb+wljnoDeNeQdkU3o4DfbP1ODjbvsM6JXAQi
-         /KzA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cddtKQeEc+oa7/BpvlWaBuaCGWZ/TlldrluPN2NXTtE=;
+        b=Hz5EnMY9n/FQS5esgrXhtXj2TvnSb9C7/AkyzvBKcmCa6mMSBlyQNIeGuqKgLg+jHe
+         UJh+vdisQrbvmeq5DEzUV4WhoNauWiZrofXOBCSL36NndP4rYYqbgw2eC85iHLObatiG
+         DdQ3blMBXqrGxaneFWTTPO/RQJ/bspZ3ktgggZWyY3Ge+QkLrks5nWxE/PqgYgl2Mn3Y
+         5++U2KxvTvMvl7U7hHYvLebnsHXDTfscfcjFPTYxUHM42L01/BTWXvOI+q+Ku4VuoRII
+         sKBO4IyeyDg4uxARmz8velYK7rgeAPVUlI96CtviARKXkGhkTGXxuAqd4l3r+32XT2Dr
+         Vbng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=jhRNr0iOROYYKruATBYmBX4u8KwXp0Az/NpG3T4a+BE=;
-        b=bTECW3YIn5wNQ4o/wlj+/v6QYdbHmNP6YkUPLUjZkkUCBseQnpbwRe7noCxf9DpXdL
-         gfCoUrr02ekb9VLlK2ROA2aAOBZikjCH17kHQz2j/YGw85UcXQzXJLcHEgoE+xOVqFUH
-         2jz2mrzB45Tv/i6MniwXx3rPYiUKv7lD0QZdHjJkejXxVaIkqKf3pDJ2rtQhu67tXEXL
-         SAUpQw6SW5qbS2xkDX4VhaEAzj1/7Tl5WmjK3IdZjo+6ei4icR4I5IJU+V0Mmh5EM2wS
-         pMIPXHplEcQSAjg9lvjspSR0KPYyizELPIxSzaFvcbsXTX4+Nw11c75sxzM1g2JClwH1
-         8AsA==
-X-Gm-Message-State: AOAM530veLIGWoPrr+JBXBojdhTFw97r0C62yHAsa72gUKeEDgYzJUnZ
-        W0Xk3TNDGYPEMJMj1NHEREE=
-X-Google-Smtp-Source: ABdhPJyIAPKnrFEq1VwnVKULV1n8RWA6yeCeNyAWAEKWHcyjcAhSknkRyU30iZ7Tp4FkU+FkV6cRzw==
-X-Received: by 2002:aa7:d455:: with SMTP id q21mr866712edr.5.1630702104907;
-        Fri, 03 Sep 2021 13:48:24 -0700 (PDT)
-Received: from skbuf ([82.78.148.104])
-        by smtp.gmail.com with ESMTPSA id g9sm108214ejo.60.2021.09.03.13.48.23
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cddtKQeEc+oa7/BpvlWaBuaCGWZ/TlldrluPN2NXTtE=;
+        b=fZkkogpTqiF2VfWE2zYShIiVRGQn1e9Yoq5mjJTbq7TmZiZMSnl632zwMrW7qIKSG3
+         fdXnoawCX4r1ntAlZao8HUdVocH9qtq0kvtS1uXKYmv01qAF2BKeqoBCw6cfZ894FEqa
+         er8MpM8dEmkcAYPVcFrXL13v9xXpo/X/vLD2ilgPS91KAUrNKa3r3iMJv8/FIyLEpbtj
+         5GpzU6OxP37KiQ8p9TmYFLTn0ehrhppbqiTZsP6PU8fykGSxw60T9DWu7QCCc3A58cz7
+         LNBq53urr1FU5xACE8fdkTWN+7jss5L4JtLS811JmF8G8ujnJiV9HLtOZjmvQX62qPHM
+         cgCA==
+X-Gm-Message-State: AOAM533x1MfWLWj2Jh4QauGtdVYvDldIi/70d41I0rvro3dhhx76yOMS
+        gpGNeQjNrCGYWmmB9JcAon0=
+X-Google-Smtp-Source: ABdhPJxf5tD5w3mVT1O8fxC4O/0MzSunHKzDS8vZbgzgpR/wAYo+9b9aQkuECwqWMMBvt5kN591s5Q==
+X-Received: by 2002:a2e:a726:: with SMTP id s38mr653124lje.386.1630703229754;
+        Fri, 03 Sep 2021 14:07:09 -0700 (PDT)
+Received: from kari-VirtualBox.telewell.oy (85-23-89-224.bb.dnainternet.fi. [85.23.89.224])
+        by smtp.gmail.com with ESMTPSA id bt29sm53136lfb.4.2021.09.03.14.07.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Sep 2021 13:48:24 -0700 (PDT)
-Date:   Fri, 3 Sep 2021 23:48:22 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        netdev@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        kernel-team <kernel-team@android.com>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [RFC PATCH net-next 1/3] net: phy: don't bind genphy in
- phy_attach_direct if the specific driver defers probe
-Message-ID: <20210903204822.cachpb2uh53rilzt@skbuf>
-References: <20210902185016.GL22278@shell.armlinux.org.uk>
- <YTErTRBnRYJpWDnH@lunn.ch>
- <bd7c9398-5d3d-ccd8-8804-25074cff6bde@gmail.com>
- <20210902213303.GO22278@shell.armlinux.org.uk>
- <20210902213949.r3q5764wykqgjm4z@skbuf>
- <20210902222439.GQ22278@shell.armlinux.org.uk>
- <20210902224506.5h7bnybjbljs5uxz@skbuf>
- <YTFX7n9qj2cUh0Ap@lunn.ch>
- <20210902232607.v7uglvpqi5hyoudq@skbuf>
- <20210903000419.GR22278@shell.armlinux.org.uk>
+        Fri, 03 Sep 2021 14:07:08 -0700 (PDT)
+From:   Kari Argillander <kari.argillander@gmail.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        linux-acpi@vger.kernel.org
+Cc:     Kari Argillander <kari.argillander@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: scan: Remove unneeded header linux/nls.h
+Date:   Sat,  4 Sep 2021 00:06:33 +0300
+Message-Id: <20210903210633.277807-1-kari.argillander@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210903000419.GR22278@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 03, 2021 at 01:04:19AM +0100, Russell King (Oracle) wrote:
-> Removing a lock and then running the kernel is a down right stupid
-> way to test to see if a lock is necessary.
-> 
-> That approach is like having built a iron bridge, covered it in paint,
-> then you remove most the bolts, and then test to see whether it's safe
-> for vehicles to travel over it by riding your bicycle across it and
-> declaring it safe.
-> 
-> Sorry, but if you think "remove lock, run kernel, if it works fine
-> the lock is unnecessary" is a valid approach, then you've just
-> disqualified yourself from discussing this topic any further.
-> Locking is done by knowing the code and code analysis, not by
-> playing "does the code fail if I remove it" games. I am utterly
-> shocked that you think that this is a valid approach.
+Code that use linux/nls.h was moved to device_sysfs.c by commit
+c2efefb33abf ("ACPI / scan: Move sysfs-related device code to a separate file")
 
-... and this is exactly why you will no longer get any attention from me
-on this topic. Good luck.
+Remove this include so that complier has easier times and it would be
+easier to grep where nls code is used.
+
+Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+---
+ drivers/acpi/scan.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index b24513ec3fae..5b54c80b9d32 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -16,7 +16,6 @@
+ #include <linux/signal.h>
+ #include <linux/kthread.h>
+ #include <linux/dmi.h>
+-#include <linux/nls.h>
+ #include <linux/dma-map-ops.h>
+ #include <linux/platform_data/x86/apple.h>
+ #include <linux/pgtable.h>
+-- 
+2.30.2
+
