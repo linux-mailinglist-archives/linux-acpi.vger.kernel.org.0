@@ -2,142 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3914007BF
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Sep 2021 00:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9299140092E
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Sep 2021 03:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235483AbhICWHh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Sep 2021 18:07:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59438 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233367AbhICWHc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Sep 2021 18:07:32 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3C52C061575;
-        Fri,  3 Sep 2021 15:06:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=lYMnkucizHhHL8bl6S57dxpOGD95qKSgOs+9CPa0waU=; b=Dus1MKxMfi/BXYffGH1yEeYnF
-        A9VlpWmG9ijp0SudJr3vXD+Y/aB/skoRNHBDARZwCEOTEE76+j3bZ4mIFqgs5UhdRBZsESU30hqc+
-        n2Xln2lBAlG6hIDmoSBfMLDUvjkKDIMyPpCrHNWwOvhmMA5YZwT7aERiwhgcdVsLmP/8UrYvWPQOE
-        qHNEiyptSEtQp5dViqxHbreVzgIZRzFRv/xuIE3u6rSDvWY40vyKY/Bv7awGTjYG9Ju4l3t1ICw29
-        x6INddqWWA+coWgfRbg7lRH3zV0heQGeptWfDEdGt++oIZcJmxAnuwMg7JkUlrD3bgWIAIFAyxCtf
-        NDRWeJWrA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48188)
-        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1mMHKM-0003fS-9p; Fri, 03 Sep 2021 23:06:27 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1mMHKJ-0000rh-SA; Fri, 03 Sep 2021 23:06:23 +0100
-Date:   Fri, 3 Sep 2021 23:06:23 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        netdev@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        kernel-team <kernel-team@android.com>,
-        Len Brown <lenb@kernel.org>
-Subject: Re: [RFC PATCH net-next 1/3] net: phy: don't bind genphy in
- phy_attach_direct if the specific driver defers probe
-Message-ID: <20210903220623.GA22278@shell.armlinux.org.uk>
-References: <YTErTRBnRYJpWDnH@lunn.ch>
- <bd7c9398-5d3d-ccd8-8804-25074cff6bde@gmail.com>
- <20210902213303.GO22278@shell.armlinux.org.uk>
- <20210902213949.r3q5764wykqgjm4z@skbuf>
- <20210902222439.GQ22278@shell.armlinux.org.uk>
- <20210902224506.5h7bnybjbljs5uxz@skbuf>
- <YTFX7n9qj2cUh0Ap@lunn.ch>
- <20210902232607.v7uglvpqi5hyoudq@skbuf>
- <20210903000419.GR22278@shell.armlinux.org.uk>
- <20210903204822.cachpb2uh53rilzt@skbuf>
+        id S1351086AbhIDBpD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Sep 2021 21:45:03 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:56688
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231389AbhIDBpD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Sep 2021 21:45:03 -0400
+Received: from localhost.localdomain (unknown [123.112.70.37])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 239713F336;
+        Sat,  4 Sep 2021 01:43:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1630719836;
+        bh=YUjw+GvboUZTZdp9Yn6XFYgmMzKp7VJVVCJ1v4GqtkQ=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=B7Tr840KTEl06thIhB43lUiu0DdYDSkK5arDWcoc3/CHNhORvutBDGRWVJxyeQWwc
+         BthXq90U70UMKQAzSIhS+3Tzh/FMd7U5wcM0wOBNsqh+HGu9SJ+VfsmMyXl+AGdByh
+         TeZ0KiKWK3zOenzo+QEbj1fssYP/aT4RP4Q/1uDraYv/K7Js0aMIKG1w/Q0CcLPuxk
+         n9dw3TtrQLGJiJ98iVmKkbLex1Zkj0Wicvv+cYZ5vw/eQ2sNJehKcfF5LwH/uG5ZuP
+         YQFIxRjzoH5s6fKUp/YLTcILWsa6iUo/4wattnspxtomiht/96lZvXSggAZBNkMc0n
+         mB69zM72HSiRg==
+From:   Hui Wang <hui.wang@canonical.com>
+To:     linux-acpi@vger.kernel.org, rafael.j.wysocki@intel.com
+Cc:     manuelkrause@netscape.net
+Subject: [PATCH] ACPI: resources: add legacy irq override exception by DMI info
+Date:   Sat,  4 Sep 2021 09:43:40 +0800
+Message-Id: <20210904014340.17536-1-hui.wang@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210903204822.cachpb2uh53rilzt@skbuf>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Sep 03, 2021 at 11:48:22PM +0300, Vladimir Oltean wrote:
-> On Fri, Sep 03, 2021 at 01:04:19AM +0100, Russell King (Oracle) wrote:
-> > Removing a lock and then running the kernel is a down right stupid
-> > way to test to see if a lock is necessary.
-> > 
-> > That approach is like having built a iron bridge, covered it in paint,
-> > then you remove most the bolts, and then test to see whether it's safe
-> > for vehicles to travel over it by riding your bicycle across it and
-> > declaring it safe.
-> > 
-> > Sorry, but if you think "remove lock, run kernel, if it works fine
-> > the lock is unnecessary" is a valid approach, then you've just
-> > disqualified yourself from discussing this topic any further.
-> > Locking is done by knowing the code and code analysis, not by
-> > playing "does the code fail if I remove it" games. I am utterly
-> > shocked that you think that this is a valid approach.
-> 
-> ... and this is exactly why you will no longer get any attention from me
-> on this topic. Good luck.
+After the commit 0ec4e55e9f57 ("ACPI: resources: Add checks for ACPI
+IRQ override") is reverted, the keyboard of those Medion laptops can't
+work again.
 
-Good, because your approach to this to me reads as "I don't think you
-know what the hell you're doing so I'm going to remove a lock to test
-whether it is needed." Effectively, that action is an insult towards
-me as the author of that code.
+To fix the keyboard issue, here adding an override check by DMI info,
+this will not affect other machines and this design refers to
+the prt_quirks[] in the drivers/acpi/pci_irq.c.
 
-And as I said, if you think that's a valid approach, then quite frankly
-I don't want you touching my code, because you clearly don't know what
-you're doing as you aren't willing to put the necessary effort in to
-understanding the code.
+If we meet similar issues on other platforms, we could expand the
+table of skip_override_table[] or medion_laptop[].
 
-Removing a lock and running the kernel is _never_ a valid way to see
-whether the lock is required or not. The only way is via code analysis.
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
+BugLink: http://bugs.launchpad.net/bugs/1909814
+Reported-by: Manuel Krause <manuelkrause@netscape.net>
+Tested-by: Manuel Krause <manuelkrause@netscape.net>
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+---
+ drivers/acpi/resource.c | 52 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 51 insertions(+), 1 deletion(-)
 
-I wonder whether you'd take the same approach with filesystems or
-memory management code. Why don't you try removing some locks from
-those subsystems and see how long your filesystems last?
-
-You could have asked why the lock was necessary, and I would have
-described it. That would have been the civil approach. Maybe even
-put forward a hypothesis why you think the lock isn't necessary, but
-no, you decide that the best way to go about this is to remove the
-lock and see whether the kernel breaks.
-
-It may shock you to know that those of us who have been working on
-the kernel for almost 30 years and have seen the evolution of the
-kernel from uniprocessor to SMP, have had to debug race conditions
-caused by a lack of locking know very well that you can have what
-seems to be a functioning kernel despite missing locks - and such a
-kernel can last quite a long time and only show up the race quite
-rarely. This is exactly why "lets remove the lock and see if it
-breaks" is a completely invalid approach. I'm sorry that you don't
-seem to realise just how stupid a suggestion that was.
-
-I can tell you now: removing the locks you proposed will not show an
-immediate problem, but by removing those locks you will definitely
-open up race conditions between driver binding events on the SFP
-side and network usage on the netdev side which will only occur
-rarely.
-
-And just because they only happen rarely is not a justification to
-remove locks, no matter how inconvenient those locks may be.
-
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index ee78a210c606..434c8964f182 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -16,6 +16,7 @@
+ #include <linux/ioport.h>
+ #include <linux/slab.h>
+ #include <linux/irq.h>
++#include <linux/dmi.h>
+ 
+ #ifdef CONFIG_X86
+ #define valid_IRQ(i) (((i) != 0) && ((i) != 2))
+@@ -423,6 +424,49 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+ 	}
+ }
+ 
++static const struct dmi_system_id medion_laptop[] = {
++	{
++		.ident = "MEDION P15651",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
++			DMI_MATCH(DMI_BOARD_NAME, "M15T"),
++		},
++	},
++	{ }
++};
++
++struct irq_override_cmp {
++	const struct dmi_system_id *system;
++	unsigned char irq;
++	unsigned char triggering;
++	unsigned char polarity;
++	unsigned char shareable;
++};
++
++static const struct irq_override_cmp skip_override_table[] = {
++	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
++};
++
++static bool acpi_dev_legacy_irq_override(u32 gsi, u8 triggering, u8 polarity,
++					 u8 shareable)
++{
++	int i;
++	const struct irq_override_cmp *en;
++
++	for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
++		en = &skip_override_table[i];
++
++		if (dmi_check_system(en->system) &&
++		    en->irq == gsi &&
++		    en->triggering == triggering &&
++		    en->polarity == polarity &&
++		    en->shareable == shareable)
++			return false;
++	}
++
++	return true;
++}
++
+ /**
+  * acpi_dev_resource_interrupt - Extract ACPI interrupt resource information.
+  * @ares: Input ACPI resource object.
+@@ -447,6 +491,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+ {
+ 	struct acpi_resource_irq *irq;
+ 	struct acpi_resource_extended_irq *ext_irq;
++	bool is_legacy;
+ 
+ 	switch (ares->type) {
+ 	case ACPI_RESOURCE_TYPE_IRQ:
+@@ -459,9 +504,14 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+ 			irqresource_disabled(res, 0);
+ 			return false;
+ 		}
++
++		is_legacy = acpi_dev_legacy_irq_override(irq->interrupts[index],
++							 irq->triggering, irq->polarity,
++							 irq->shareable);
++
+ 		acpi_dev_get_irqresource(res, irq->interrupts[index],
+ 					 irq->triggering, irq->polarity,
+-					 irq->shareable, true);
++					 irq->shareable, is_legacy);
+ 		break;
+ 	case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
+ 		ext_irq = &ares->data.extended_irq;
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+2.25.1
+
