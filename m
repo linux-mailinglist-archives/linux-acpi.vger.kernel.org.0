@@ -2,73 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C3A6400C29
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Sep 2021 19:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC1F401A80
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Sep 2021 13:21:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236807AbhIDQnW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 4 Sep 2021 12:43:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49504 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236679AbhIDQnV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Sep 2021 12:43:21 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED88C061575
-        for <linux-acpi@vger.kernel.org>; Sat,  4 Sep 2021 09:42:19 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id l7-20020a1c2507000000b002e6be5d86b3so1676190wml.3
-        for <linux-acpi@vger.kernel.org>; Sat, 04 Sep 2021 09:42:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=dqN1F2p/WXZ9l/TtPTY5XeR8JVq9Pp6QHGdHpy1HE3I=;
-        b=f1zivP7BdQJqsJt3aH4+5qamksQVyOu3egGItxzz46L6hSlXjebgdDGf7z90zDm0h4
-         J65DZ50yz7AyiuB9F1pKhgFaC66Sh6L0RT2iyoV4D03uiuAJmAz/SCddx4MREVZLxT/8
-         ywNjgpd3Uk3n46Hul0IeZGhk8jcyguRWpVdtmmMTaCn4Rglvg6jug6CLp0UbdnxflS0S
-         X9bRSYYu5qfWOUiPIrPGsDfFQ7v3Mai2onC02KgCLLzycNcPmpzzMo9lx5xRIy3YfFgo
-         RbBhopWwI8qamJkg9dNiqttg5SUzsPCGfgkRaAYxn8eRpbJ5gKQYICGySHu5SVEbEvfe
-         +9AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=dqN1F2p/WXZ9l/TtPTY5XeR8JVq9Pp6QHGdHpy1HE3I=;
-        b=b6X0cAb1CgYwHdnkBICWuwfYGSwTZQEjYJEHNdFAsDBLtrDdRLM+/3A6O/hIgs1X+X
-         qfoBi1nd6cD2EOk4cWVM1crB7blMxW+grnNe4auIoGejXO3X2Xc5/iPo8L7fJJ2sQzYG
-         92hqB7hRHyhFN87ombNJ5MCJg1thEUFew7RXT+36Rr1mR4hFJlNv1U2BfSryRC4gLIkN
-         BIDmKem4I0QCirWzzOVNYgeckJwVw5WQ1pNFU5CauVCZXs0mTxAxt7bUZen+kYPX8zD7
-         Oa25+5itxD3vl1N7XqyCT2WGA9zAL7qh0Sz5MfIrUzP2Xp3M8YKCFmyc71tBCIeo2jsh
-         NnzA==
-X-Gm-Message-State: AOAM532rE/32rlwsNSdQ3VLaHIRxAHhKU5oetDO1DuCEUx4/3uXgjUk+
-        RqN6EJqDu7PXCtYNIRuSFB4=
-X-Google-Smtp-Source: ABdhPJy6IHmdnKa8y7tQnGaqR9aFUnn/3xllyUuEYxqMVT32vArhdxrd26LCBENjpStmNLOMd55QlQ==
-X-Received: by 2002:a7b:c855:: with SMTP id c21mr3920554wml.0.1630773737370;
-        Sat, 04 Sep 2021 09:42:17 -0700 (PDT)
-Received: from ?IPv6:2003:ea:8f08:4500:dda1:751:1fe4:17b9? (p200300ea8f084500dda107511fe417b9.dip0.t-ipconnect.de. [2003:ea:8f08:4500:dda1:751:1fe4:17b9])
-        by smtp.googlemail.com with ESMTPSA id r20sm2713786wrr.47.2021.09.04.09.42.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 04 Sep 2021 09:42:17 -0700 (PDT)
-To:     Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     linux-acpi@vger.kernel.org, Jean Delvare <jdelvare@suse.com>
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Question about acpi_remove_address_space_handler() behavior if
- handler is running
-Message-ID: <57a2a9fa-e296-85dc-75f8-94ccd0527204@gmail.com>
-Date:   Sat, 4 Sep 2021 18:42:10 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S240404AbhIFLV5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Sep 2021 07:21:57 -0400
+Received: from mail-0201.mail-europe.com ([51.77.79.158]:54537 "EHLO
+        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237040AbhIFLV5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Sep 2021 07:21:57 -0400
+Date:   Mon, 06 Sep 2021 11:20:46 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1630927249;
+        bh=FKpXFSCsaSrL/vo02fNpSCQ04k0SNKer63KKba4Fprc=;
+        h=Date:To:From:Reply-To:Subject:From;
+        b=GBakJtjtx48BHwi0vZkPpNd3tBkXxrYZHXD74s5zrfrkCgjYNIf7wzModytcKkqpg
+         ueG7i/On8r+dWyIRZTtpY4IapLtrwSSUaHvFp5khani3rhM5AcFZA9PnDk2cmsw9Mw
+         GUvtwbBelSJiIy4VOO1qbK0sr9vXoRXhZFsJkUMY=
+To:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+From:   EpicLemon99 <EpicLemon99@protonmail.com>
+Reply-To: EpicLemon99 <EpicLemon99@protonmail.com>
+Subject: ACPI errors on Linux distribution ISO boot up
+Message-ID: <eq3N7LWgv7nk-rKFg758nzHoA9q_iVmK3pZ9XiiWqDKTS-0W0hqxRSK1CiAYI84PiY-APIfnpdTofQqewqjLOKfJoHmCwOg4et9AXnAl4ys=@protonmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.7 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT shortcircuit=no
+        autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+        mailout.protonmail.ch
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-i801 i2c driver installs an own ACPI io handler. When discussing some driver
-improvements one open question is about behavior of
-acpi_remove_address_space_handler() if the handler is currently running.
-Will the function wait until handler is finished? In other words, the actual
-question is: Are we guaranteed that after the call to
-acpi_remove_address_space_handler() the handler can't be running?
+I have problems trying to use Linux distributions on my new machine, a HP P=
+avilion TG01-2856no. The CPU it has was released Q1 2021.
+
+My problem is that whenever I boot a Linux distribution ISO, it appears tha=
+t my CPU stalls on tasks, and I get this error:
+ ACPI Error: Needed [Integer/String/Buffer] found [Device] 00000000d0fa616a=
+ (20200925/exresop-388)
+ ACPI Error: AE_AML_OPERAND_TYPE, While resolving operands for [OpcodeName =
+unavailable] (20200925/dswexec-431)
+
+The most recent kernel version this has happened on is 5.13.13, with Arch L=
+inux.
+
+I could get journalctl logs from NixOS: https://ibb.co/album/9wMM0p
+
+The fact that I have the same problem on multiple distributions has led me =
+to believe that it's something to do with the kernel or ACPI, but I could b=
+e wrong.
+
+I have set Secure Boot off in my BIOS settings and the SATA emulation is se=
+t to AHCI. I have tried with RAID.
+
+I have tried the following boot options: nomodeset, noacpi, noapic, acpi=3D=
+off.
+
+The only distributions that I have managed to get working are Devuan and Ge=
+ntoo.
