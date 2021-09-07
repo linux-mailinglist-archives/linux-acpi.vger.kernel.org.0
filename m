@@ -2,27 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C19E402B62
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Sep 2021 17:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2869402BB2
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Sep 2021 17:23:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344950AbhIGPNJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Sep 2021 11:13:09 -0400
-Received: from mga18.intel.com ([134.134.136.126]:4526 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232090AbhIGPNI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 7 Sep 2021 11:13:08 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10099"; a="207339740"
-X-IronPort-AV: E=Sophos;i="5.85,274,1624345200"; 
-   d="scan'208";a="207339740"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2021 08:12:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,274,1624345200"; 
-   d="scan'208";a="469229470"
-Received: from chenyu-desktop.sh.intel.com ([10.239.158.176])
-  by orsmga007.jf.intel.com with ESMTP; 07 Sep 2021 08:11:58 -0700
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     linux-acpi@vger.kernel.org
+        id S1345175AbhIGPZE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Sep 2021 11:25:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55738 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344974AbhIGPZD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Sep 2021 11:25:03 -0400
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26571C061575
+        for <linux-acpi@vger.kernel.org>; Tue,  7 Sep 2021 08:23:57 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:281:8300:104d::5f6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id D7D46735;
+        Tue,  7 Sep 2021 15:23:53 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net D7D46735
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1631028234; bh=tceuoqLCbBFi1wF26LSs4mfr8Ji5ZyYIiWgS4g2Nw28=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Y3UwR/UCsHOVfoocFGfI8/D0TdbxHDngUtgeoq/0/QrYbVbUU2MiSF3TVHCcqk0em
+         eJArinU/agJlFsU8Pi/2WQKW+jIgfTbPSWgqif6Na9MoPDL+mdssmr/RD+OpPORljy
+         BIUb5NyGap0D4LghrmCCuj8UnYsufEWADl4YNCV0XJRrbjff+haY0w94KD/znFD6Ce
+         FonzB9IoSYW6KdprtCm2mW5Pd9UifctoAVsS6q1hPoN869X3fllOfYCufIVEpByn8+
+         gVE7wdhzIXnoJvnql360vQRZXSTkFq+pjQrNYNbkd39bfrygVXp9igEg3IOR8hdpTf
+         OWQKkkUHvZKpw==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Chen Yu <yu.c.chen@intel.com>, linux-acpi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <len.brown@intel.com>,
@@ -30,113 +38,154 @@ Cc:     linux-kernel@vger.kernel.org,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
         Aubrey Li <aubrey.li@intel.com>,
         Ashok Raj <ashok.raj@intel.com>, Chen Yu <yu.c.chen@intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org
-Subject: [PATCH 2/5][RFC] efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and corresponding structures
-Date:   Tue,  7 Sep 2021 23:17:45 +0800
-Message-Id: <14bb2fa2c49934c627aec07077b96720d46b5202.1631025237.git.yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1631025237.git.yu.c.chen@intel.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH 1/5][RFC] Documentation: Introduce Platform Firmware
+ Runtime Update documentation
+In-Reply-To: <c135a9bf742f3c2181650914f40ce563d7a3dc48.1631025237.git.yu.c.chen@intel.com>
 References: <cover.1631025237.git.yu.c.chen@intel.com>
+ <c135a9bf742f3c2181650914f40ce563d7a3dc48.1631025237.git.yu.c.chen@intel.com>
+Date:   Tue, 07 Sep 2021 09:23:53 -0600
+Message-ID: <87sfygtnna.fsf@meer.lwn.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Platform Firmware Runtime Update image starts with UEFI headers, and the headers
-are defined in UEFI specification, but some of them have not been defined in the
-kernel yet.
+Thanks for adding to the documentation.  I have a few nits for you...
 
-For example, the header layout of a capsule file looks like this:
+Chen Yu <yu.c.chen@intel.com> writes:
 
-EFI_CAPSULE_HEADER
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
-EFI_FIRMWARE_IMAGE_AUTHENTICATION
+> Add the Platform Firmware Runtime Update/Telemetry documentation.
+>
+> Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> ---
+>  Documentation/x86/pfru.rst | 98 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 98 insertions(+)
+>  create mode 100644 Documentation/x86/pfru.rst
 
-These structures would be used by the Platform Firmware Runtime Update
-driver to parse the format of capsule file to verify if the corresponding
-version number is valid. The EFI_CAPSULE_HEADER has been defined in the
-kernel, however the rest are not, thus introduce corresponding UEFI structures
-accordingly.
+When you add a new RST file, you also need to find a spot for it in
+index.rst so it becomes part of the docs build.
 
-The reason why efi_manage_capsule_header_t and efi_manage_capsule_image_header_t
-are packedi might be that:
-According to the uefi spec,
-[Figure 23-6 Firmware Management and Firmware Image Management headers]
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER is located at the lowest offset within
-the body of the capsule. And this structure is designed to be unaligned to save
-space, because in this way the adjacent drivers and binary payload elements could
-start on byte boundary with no padding. And the
-EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER is at the head of each payload, so
-packing this structure also makes room for more data.
+> diff --git a/Documentation/x86/pfru.rst b/Documentation/x86/pfru.rst
+> new file mode 100644
+> index 000000000000..321729f46737
+> --- /dev/null
+> +++ b/Documentation/x86/pfru.rst
+> @@ -0,0 +1,98 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +========================================================
+> +The Linux Platform Firmware Runtime Update and Telemetry
+> +========================================================
+> +
+> +According to the specification of <Management Mode Firmware Runtime Update>[1],
+> +certain computing systems require high Service Level Agreements (SLAs) where
+> +system reboot fewer firmware updates are required to deploy firmware changes
+> +to address bug fixes, security updates and to debug and root cause issues. This
+> +technology is called Intel Seamless Update. The management mode (MM),
+> +UEFI runtime services and ACPI services handle most of the system runtime
+> +functions. Changing the MM code execution during runtime is called MM Runtime
+> +Update. Since the "MM" acronyms might be misunderstood as "Memory Management",
+> +this driver uses "Platform Firmware Runtime Update"(PFRU)
+> +
+> +PFRU provides the following facilities: Performs a runtime firmware driver update
+> +and activate. Ability to inject firmware code at runtime, for dynamic instrumentation.
+> +PFRU Telemetry is a service which allows Runtime Update handler to produce telemetry
+> +data to upper layer OS consumer at runtime. The OS provides interfaces to let the
+> +users query the telemetry data via read operations. The specification specifies the
+> +interface and recommended policy to extract the data, the format and use are left to
+> +individual OEM's and BIOS implementations on what that data represents.
 
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
- include/linux/efi.h | 50 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+Sticking to the 80-column limit is preferable; it keeps the text
+readable. 
 
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 6b5d36babfcc..19ff834e1388 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -148,6 +148,56 @@ typedef struct {
- 	u32 imagesize;
- } efi_capsule_header_t;
- 
-+#pragma pack(1)
-+
-+/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER */
-+typedef struct {
-+	u32	ver;
-+	u16	emb_drv_cnt;
-+	u16	payload_cnt;
-+	/*
-+	 * Variable array indicated by number of
-+	 * (emb_drv_cnt + payload_cnt)
-+	 */
-+	u64	offset_list[];
-+} efi_manage_capsule_header_t;
-+
-+/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER */
-+typedef struct {
-+	u32	ver;
-+	guid_t	image_type_id;
-+	u8	image_index;
-+	u8	reserved_bytes[3];
-+	u32	image_size;
-+	u32	vendor_code_size;
-+	/* ver = 2. */
-+	u64	hw_ins;
-+	/* ver = v3. */
-+	u64	capsule_support;
-+} efi_manage_capsule_image_header_t;
-+
-+#pragma pack()
-+
-+/* WIN_CERTIFICATE */
-+typedef struct {
-+	u32	len;
-+	u16	rev;
-+	u16	cert_type;
-+} win_cert_t;
-+
-+/* WIN_CERTIFICATE_UEFI_GUID */
-+typedef struct {
-+	win_cert_t	hdr;
-+	guid_t		cert_type;
-+	u8		cert_data[];
-+} win_cert_uefi_guid_t;
-+
-+/* EFI_FIRMWARE_IMAGE_AUTHENTICATIO */
-+typedef struct {
-+	u64				mon_count;
-+	win_cert_uefi_guid_t		auth_info;
-+} efi_image_auth_t;
-+
- /*
-  * EFI capsule flags
-  */
--- 
-2.25.1
+> +PFRU interfaces
+> +=====================
 
+Underline lengths should match the title text, or Sphinx will get grumpy
+with you.
+
+> +The user space tool manipulates on /dev/pfru/update for code injection and
+> +driver update. PFRU stands for Platform Firmware Runtime Update, and the /dev/pfru
+> +directory might be reserved for future usage.
+> +
+> + 1. mmap the capsule file
+> +    fd_capsule = open("capsule.cap", O_RDONLY);
+> +    fstat(fd_capsule, &stat);
+> +    addr = mmap(0, stat.st_size, PROT_READ, fd_capsule);
+
+These will not render the way you would like; you'll want to use literal
+blocks for the code samples.
+
+> + 2. Get the capability information(version control, etc) from BIOS via
+> +    read() and do sanity check in user space.
+> +    fd_update = open("/dev/pfru/update", O_RDWR);
+> +    read(fd_update, &cap, sizeof(cap));
+> +    sanity_check(&cap);
+> +
+> + 3. Write the capsule file to runtime update communication buffer
+> +    //kernel might return error if capsule file size is longer than
+> +    //communication buffer
+> +    write(fd_update, addr, stat.st_size);
+> +
+> + 4. Stage the code injection
+> +    ioctl(fd_update, PFRU_IOC_STATGE);
+> +
+> + 5. Activate the code injection
+> +    ioctl(fd_update, PFRU_IOC_ACTIVATE);
+> +
+> + 6. Stage and activate the code injection
+> +    ioctl(fd_update, PFRU_IOC_STAGE_ACTIVATE);
+> +
+> +    PFRU_IOC_STATGE: Stage a capsule image from communication buffer
+> +                    and perform authentication.
+> +    PFRU_IOC_ACTIVATE: Activate a previous staged capsule image.
+> +    PFRU_IOC_STAGE_ACTIVATE: Perform both stage and activation actions.
+> +
+> +PFRU Telemetry
+> +=============
+> +
+> +The user space tool manipulates on /dev/pfru/telemetry for PFRU telemetry log.
+> +Sample code:
+> +
+> + 1. Open telemetry device
+> +    fd_log = open("/dev/pfru/telemetry", O_RDWR);
+> +
+> + 2. Get log level, log type, revision_id via one ioctl invoke
+> +    ioctl(fd_log, PFRU_IOC_GET_LOG_INFO, &info);
+> +
+> + 3. Set log level, log type, revision_id
+> +    ioctl(fd_log, PFRU_IOC_SET_LOG_INFO, &info);
+> +
+> + 4. ioctl(fd_log, PFRU_IOC_GET_DATA_INFO, &data_info);
+> +    Query the information of PFRU telemetry log buffer. The user is
+> +    responsible for parsing the result per the specification.
+> +
+> + 5. Read the telemetry data:
+> +    read(fd_log, buf, data_info.size);
+> +
+> +Please refer to tools/testing/selftests/pfru/pfru_test.c for detail.
+> +
+> +According to <Management Mode Firmware Runtime Update>[1], the telemetry
+> +buffer is a wrap around buffer. If the telemetry buffer gets full, most recent
+> +log data will overwrite old log data. Besides, it is required in the spec that
+> +the read of telemetry should support both full data retrieval and delta telemetry
+> +data retrieval. Since this requirement is more likely a policy we leave this
+> +implementation in user space. That is to say, it is recommended for the user
+> +to double-read the telemetry parameters such as chunk1_size, chunk2_size,
+> +rollover_cnt in data_info structure to make sure that there is no more data appended
+> +while the user is reading the buffer. Besides, only after the runtime update has
+> +been run at least once, the telemetry log would have valid data, otherwise errno code
+> +of EBUSY would be returned.
+> +
+> +[1] https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf
+> -- 
+> 2.25.1
+
+Thanks,
+
+jon
