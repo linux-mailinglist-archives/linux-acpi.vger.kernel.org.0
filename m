@@ -2,91 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 263AA402C18
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Sep 2021 17:44:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18ABB402C0F
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Sep 2021 17:42:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345389AbhIGPpX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Sep 2021 11:45:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60538 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235162AbhIGPpX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Sep 2021 11:45:23 -0400
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08AE3C061575;
-        Tue,  7 Sep 2021 08:44:17 -0700 (PDT)
-Received: by mail-ot1-x32f.google.com with SMTP id c19-20020a9d6153000000b0051829acbfc7so13267043otk.9;
-        Tue, 07 Sep 2021 08:44:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=H6L3JGLH5rzWIFpcToqlYPgU1lSCJF6lajc8EiNcH5s=;
-        b=XnS4Cm7v8XR+aHGINA1uvkxFSWCkDw+oO+6bpdhlUo3MOWq1Vz59tYc6dWrZhb6QSb
-         6hdIfSTPE9yMtXmXX7yjd2QNL+yg3bAn588y9RScXcUJiLY6kmpSSsYRKQOoRyVYSteg
-         vwKM28ORF3knKfXn/rIffbOsLlBof8XKcMTmfuoofQK8QzYzzkKCM6d8hYe8FoebUw1Y
-         x1E4seNlKq8cOD2l7RMe0ctODfe8D71BJH1Pze8SI2CNZe1DOUR1uTl6p34RAof2X8h2
-         jS8qYLcSMm+A3dVd9HbDg8WrelPqhyTzIndgJbPugafc1jcm4hUarTbeW30o2fyh6+Bn
-         B24w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=H6L3JGLH5rzWIFpcToqlYPgU1lSCJF6lajc8EiNcH5s=;
-        b=ht+iYSJGfzVhwKMSwp3xhH64UmWRK9dLH2D4sSifBdm25HoMYhaKEF7bDylwKgw3VC
-         UupGA4yBpJvxu2GXBZ5b50WH7cqYp9BH0KzVlDEH6fNCdgzUFT46xzj20Y3SJWO3tP/E
-         TdqstPHkCuLRae+qcAAH4qylSl9nasCYRlxSBkLgOhhjIT4yZpbwW03CeyNduU3rdW/z
-         yN0djBCBZbaZYBaDGBzEpT3sPeSTl00mgYFV2SImFwodYPR8YjzlYihjX5A/OFSPGxKL
-         nFoY6GvRs4y/96BIBl3o/65JSb5B8hvYkN74BlH9kRHfj1Qs5RnD850mtv8b8qB3hKso
-         FOSw==
-X-Gm-Message-State: AOAM5309QdZEsfRrMFviNGwGttHU51fVDYXp1DrvUN6Z7Ct2BTmmL6sE
-        Xu4GhcXizuhsBN0sGDAtX4w=
-X-Google-Smtp-Source: ABdhPJzQWrtZ5rNjyrci9hxGgUVQp8QtLOQj/fgldG88YmTsraBlmhtlI3LN4jj/zy5kYUqIwOjkOg==
-X-Received: by 2002:a05:6830:614:: with SMTP id w20mr16027388oti.145.1631029456288;
-        Tue, 07 Sep 2021 08:44:16 -0700 (PDT)
-Received: from wintermute.localdomain (cpe-76-183-134-35.tx.res.rr.com. [76.183.134.35])
-        by smtp.gmail.com with ESMTPSA id k24sm2452777otp.31.2021.09.07.08.44.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Sep 2021 08:44:15 -0700 (PDT)
-From:   Chris Morgan <macroalpha82@gmail.com>
-To:     andriy.shevchenko@linux.intel.com
-Cc:     abel.vesa@nxp.com, festevam@gmail.com, heiko@sntech.de,
-        kernel@pengutronix.de, lee.jones@linaro.org, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-clk@vger.kernel.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        mturquette@baylibre.com, rafael.j.wysocki@intel.com,
-        rjw@rjwysocki.net, s.hauer@pengutronix.de, sboyd@kernel.org,
-        shawnguo@kernel.org, zhangqing@rock-chips.com,
-        Chris Morgan <macromorgan@hotmail.com>
-Subject: Re: [PATCH v4 1/4] clk: fractional-divider: Export approximation algorithm to the CCF users
-Date:   Tue,  7 Sep 2021 10:44:00 -0500
-Message-Id: <20210907154400.26656-1-macroalpha82@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210812170025.67074-1-andriy.shevchenko@linux.intel.com>
-References: <20210812170025.67074-1-andriy.shevchenko@linux.intel.com>
+        id S1345333AbhIGPnn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Sep 2021 11:43:43 -0400
+Received: from mga02.intel.com ([134.134.136.20]:21515 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235162AbhIGPnm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 7 Sep 2021 11:43:42 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10099"; a="207458040"
+X-IronPort-AV: E=Sophos;i="5.85,274,1624345200"; 
+   d="scan'208";a="207458040"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2021 08:42:36 -0700
+X-IronPort-AV: E=Sophos;i="5.85,274,1624345200"; 
+   d="scan'208";a="538028650"
+Received: from chenyu-desktop.sh.intel.com (HELO chenyu-desktop) ([10.239.158.176])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2021 08:42:32 -0700
+Date:   Tue, 7 Sep 2021 23:48:30 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Aubrey Li <aubrey.li@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH 1/5][RFC] Documentation: Introduce Platform Firmware
+ Runtime Update documentation
+Message-ID: <20210907154830.GA44825@chenyu-desktop>
+References: <cover.1631025237.git.yu.c.chen@intel.com>
+ <c135a9bf742f3c2181650914f40ce563d7a3dc48.1631025237.git.yu.c.chen@intel.com>
+ <87sfygtnna.fsf@meer.lwn.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87sfygtnna.fsf@meer.lwn.net>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Chris Morgan <macromorgan@hotmail.com>
+Hi Jon,
+On Tue, Sep 07, 2021 at 09:23:53AM -0600, Jonathan Corbet wrote:
+> Thanks for adding to the documentation.  I have a few nits for you...
+> 
+Thank you very much for your comments.
+> Chen Yu <yu.c.chen@intel.com> writes:
+> 
+> > Add the Platform Firmware Runtime Update/Telemetry documentation.
+> >
+> > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> > ---
+> >  Documentation/x86/pfru.rst | 98 ++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 98 insertions(+)
+> >  create mode 100644 Documentation/x86/pfru.rst
+> 
+> When you add a new RST file, you also need to find a spot for it in
+> index.rst so it becomes part of the docs build.
+> 
+I see. Will do in next version.
+> > diff --git a/Documentation/x86/pfru.rst b/Documentation/x86/pfru.rst
+> > new file mode 100644
+> > index 000000000000..321729f46737
+> > --- /dev/null
+> > +++ b/Documentation/x86/pfru.rst
+> > @@ -0,0 +1,98 @@
+> > +.. SPDX-License-Identifier: GPL-2.0
+> > +
+> > +========================================================
+> > +The Linux Platform Firmware Runtime Update and Telemetry
+> > +========================================================
+> > +
+> > +According to the specification of <Management Mode Firmware Runtime Update>[1],
+> > +certain computing systems require high Service Level Agreements (SLAs) where
+> > +system reboot fewer firmware updates are required to deploy firmware changes
+> > +to address bug fixes, security updates and to debug and root cause issues. This
+> > +technology is called Intel Seamless Update. The management mode (MM),
+> > +UEFI runtime services and ACPI services handle most of the system runtime
+> > +functions. Changing the MM code execution during runtime is called MM Runtime
+> > +Update. Since the "MM" acronyms might be misunderstood as "Memory Management",
+> > +this driver uses "Platform Firmware Runtime Update"(PFRU)
+> > +
+> > +PFRU provides the following facilities: Performs a runtime firmware driver update
+> > +and activate. Ability to inject firmware code at runtime, for dynamic instrumentation.
+> > +PFRU Telemetry is a service which allows Runtime Update handler to produce telemetry
+> > +data to upper layer OS consumer at runtime. The OS provides interfaces to let the
+> > +users query the telemetry data via read operations. The specification specifies the
+> > +interface and recommended policy to extract the data, the format and use are left to
+> > +individual OEM's and BIOS implementations on what that data represents.
+> 
+> Sticking to the 80-column limit is preferable; it keeps the text
+> readable. 
+> 
+Okay, will do.
+> > +PFRU interfaces
+> > +=====================
+> 
+> Underline lengths should match the title text, or Sphinx will get grumpy
+> with you.
+> 
+Got it, will fix it.
+> > +The user space tool manipulates on /dev/pfru/update for code injection and
+> > +driver update. PFRU stands for Platform Firmware Runtime Update, and the /dev/pfru
+> > +directory might be reserved for future usage.
+> > +
+> > + 1. mmap the capsule file
+> > +    fd_capsule = open("capsule.cap", O_RDONLY);
+> > +    fstat(fd_capsule, &stat);
+> > +    addr = mmap(0, stat.st_size, PROT_READ, fd_capsule);
+> 
+> These will not render the way you would like; you'll want to use literal
+> blocks for the code samples.
+> 
+Okay, I'll fix it.
 
-Unfortunately, I can confirm this breaks the DSI panel on the Rockchip
-PX30 (and possibly other SoCs). Tested on my Odroid Go Advance. When
-I revert 4e7cf74fa3b2 "clk: fractional-divider: Export approximation
-algorithm to the CCF users" and 928f9e268611 "clk: fractional-divider:
-Hide clk_fractional_divider_ops from wide audience" the panel begins
-working again as expected on the master branch.
-
-It looks like an assumption is made in the vop_crtc_mode_fixup()
-function in the rockchip_drm_vop.c that gets broken with this change.
-Specifically, the function says in the comments "When DRM gives us a
-mode, we should add 999 Hz to it.". I believe this is no longer true
-after this clk change, and when I remove the + 999 from the function
-the DSI panel works again. Note that I do not know the implications
-of removing this 999 aside from that it fixes the DSI panel on my
-PX30 after this change, so I don't know if it's a positive change
-or not.
-
-Thank you.
+thanks,
+Chenyu
