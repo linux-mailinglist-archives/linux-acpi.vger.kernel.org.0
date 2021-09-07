@@ -2,135 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 457F94029A9
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Sep 2021 15:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 705CE402B50
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Sep 2021 17:06:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343881AbhIGNYm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Sep 2021 09:24:42 -0400
-Received: from mx3.molgen.mpg.de ([141.14.17.11]:41297 "EHLO mx1.molgen.mpg.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1344757AbhIGNYe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 7 Sep 2021 09:24:34 -0400
-Received: from [141.14.13.3] (g258.RadioFreeInternet.molgen.mpg.de [141.14.13.3])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: pmenzel)
-        by mx.molgen.mpg.de (Postfix) with ESMTPSA id C1AB661E64846;
-        Tue,  7 Sep 2021 15:23:15 +0200 (CEST)
-Subject: Re: New warning: PRMT not present
-To:     Aubrey Li <aubrey.li@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <64150c95-3f7d-d21f-d6fb-b9d478ed6798@molgen.mpg.de>
- <766862fc-80fa-775b-6e63-6d9422d1d258@molgen.mpg.de>
- <CAJZ5v0i91+kPe4C-wy+oCDvYbR_Vp=MzwEyL+8T3xJU5O4XjRA@mail.gmail.com>
- <c6aaf684-2cd1-f615-34e1-7ef2020ae2d2@molgen.mpg.de>
- <54b6f8cb-4714-587c-b2d0-98134473293d@linux.intel.com>
- <a55ebebc-c8f8-5654-adff-3569d1de2e27@molgen.mpg.de>
- <727d85ff-9efc-42a5-70f1-fcd9fd9e4494@linux.intel.com>
-From:   Paul Menzel <pmenzel@molgen.mpg.de>
-Message-ID: <e7cbf294-1b0f-cd63-e6cf-3d743e1fe036@molgen.mpg.de>
-Date:   Tue, 7 Sep 2021 15:23:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S1344807AbhIGPH0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Sep 2021 11:07:26 -0400
+Received: from mga07.intel.com ([134.134.136.100]:18081 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231362AbhIGPH0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 7 Sep 2021 11:07:26 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10099"; a="283929189"
+X-IronPort-AV: E=Sophos;i="5.85,274,1624345200"; 
+   d="scan'208";a="283929189"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2021 08:05:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,274,1624345200"; 
+   d="scan'208";a="538008820"
+Received: from chenyu-desktop.sh.intel.com ([10.239.158.176])
+  by FMSMGA003.fm.intel.com with ESMTP; 07 Sep 2021 08:05:26 -0700
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Aubrey Li <aubrey.li@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>, Chen Yu <yu.c.chen@intel.com>
+Subject: [PATCH 0/5][RFC] Introduce Platform Firmware Runtime Update and Telemetry drivers
+Date:   Tue,  7 Sep 2021 23:08:33 +0800
+Message-Id: <cover.1631025237.git.yu.c.chen@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <727d85ff-9efc-42a5-70f1-fcd9fd9e4494@linux.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear Aubrey,
+High Service Level Agreements (SLAs) requires that the system runs without
+service interruptions. Generally, system firmware provides runtime services
+such as RAS(Reliability, Availability and Serviceability) features, UEFI runtime
+services and ACPI services. Currently if there is any firmware code changes in
+these code area, the system firmware update and reboot is required. Example of
+bug fix could be wrong register size or location of the register. This means
+customer services are not available during the firmware upgrade, which could
+approach several minutes, resulting in not able to meet SLAs.
 
+Intel provides a mechanism named Management Mode Runtime Update to help the users
+update the firmware without having to reboot[1].
 
-Am 07.09.21 um 15:02 schrieb Aubrey Li:
-> On 9/7/21 3:22 PM, Paul Menzel wrote:
+This series provides the following facilities.
 
->> Am 07.09.21 um 05:26 schrieb Aubrey Li:
->>
->>> On 9/6/21 10:15 PM, Paul Menzel wrote:
->>
->>>> Am 06.09.21 um 14:02 schrieb Rafael J. Wysocki:
->>>>>
->>>>> This should be addressed by commit 2bbfa0addd63 "ACPI: PRM: Deal with
->>>>> table not present or no module found", or yet another fix is needed.
->>>>
->>>> Linux still warns on my systems with Linux 5.14 and Linus’ master in QEMU i440fx and an Asus F2A85-M PRO.
->>>
->>> Does the following patch address your problem?
->>
->> Yes, it does. With this patch cherry-picked to my Linux tree, the warning is gone in QEMU.
->>
->>      qemu-system-x86_64 -kernel /dev/shm/bzImage -append "earlyprintk=serial,ttyS0,keep console=ttyS0,115200 console=tty0" -display none -serial stdio
->>
->> (I have to check my configuration, why normal serial console does not work in QEMU.)
->>
->>> ----------------------------------------------------------------------
->>>   From 52fda76410fcb7a3661687e960634d34fa44fb5f Mon Sep 17 00:00:00 2001
->>> From: Aubrey Li <aubrey.li@intel.com>
->>> Date: Tue, 7 Sep 2021 11:06:59 +0800
->>> Subject: [PATCH] ACPI/RPM: Find PRMT table before parse it
->>
->> What does RPM mean?
-> 
-> PRM, Platform Runtime Mechanism:
-> https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf
+  1. Perform a runtime firmware driver update and activate.
+  2. Ability to inject firmware code at runtime, for dynamic instrumentation.
+  3. Facility to retrieve logs from runtime firmware update and activate telemetry.
+     (The telemetry is based on runtime firmware update: it records the logs during
+      runtime update(code injection and driver update).
 
-Ah, so just a typo in the prefix: RPM → PRM.
+The Management Mode Runtime Update OS Interface Specification[1] provides two ACPI
+device objects to interface with system firmware to perform these updates. This patch
+series introduces the drivers for those ACPI devices.
 
->>> Find and verify PRMT table before parse it, this eliminates a
->>> warning on machines without PRMT table.
->>
->> Please paste the warning for people grepping the commit messages.
->>
->>      ACPI: PRMT not present
-> 
-> Nice suggestion.
-> 
->>
->>> Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
->>> ---
->>>    drivers/acpi/prmt.c | 10 +++++++++-
->>>    1 file changed, 9 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
->>> index 1f6007a..89c22bc 100644
->>> --- a/drivers/acpi/prmt.c
->>> +++ b/drivers/acpi/prmt.c
->>> @@ -288,10 +288,18 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
->>>      void __init init_prmt(void)
->>>    {
->>> +    struct acpi_table_header *tbl;
->>>        acpi_status status;
->>> -    int mc = acpi_table_parse_entries(ACPI_SIG_PRMT, sizeof(struct acpi_table_prmt) +
->>> +    int mc;
->>> +
->>> +    status = acpi_get_table(ACPI_SIG_PRMT, 0, &tbl);
->>> +    if (ACPI_FAILURE(status))
->>> +        return;
->>> +
->>> +    mc = acpi_table_parse_entries(ACPI_SIG_PRMT, sizeof(struct acpi_table_prmt) +
->>>                          sizeof (struct acpi_table_prmt_header),
->>>                          0, acpi_parse_prmt, 0);
->>> +    acpi_put_table(tbl);
->>>        /*
->>>         * Return immediately if PRMT table is not present or no PRM module found.
->>>         */
->>>
->>
->> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> 
-> Thanks for testing, I'll send a formal patch to Rafael.
+[1] https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf
 
-Thank you.
+Chen Yu (5):
+  Documentation: Introduce Platform Firmware Runtime Update
+    documentation
+  efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and
+    corresponding structures
+  drivers/acpi: Introduce Platform Firmware Runtime Update device driver
+  drivers/acpi: Introduce Platform Firmware Runtime Update Telemetry
+  selftests/pfru: add test for Platform Firmware Runtime Update and
+    Telemetry
 
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ Documentation/x86/pfru.rst                    |  98 ++++
+ drivers/acpi/Kconfig                          |   1 +
+ drivers/acpi/Makefile                         |   1 +
+ drivers/acpi/pfru/Kconfig                     |  29 +
+ drivers/acpi/pfru/Makefile                    |   3 +
+ drivers/acpi/pfru/pfru_telemetry.c            | 412 +++++++++++++
+ drivers/acpi/pfru/pfru_update.c               | 544 ++++++++++++++++++
+ include/linux/efi.h                           |  50 ++
+ include/uapi/linux/pfru.h                     | 152 +++++
+ tools/testing/selftests/Makefile              |   1 +
+ tools/testing/selftests/pfru/Makefile         |   7 +
+ tools/testing/selftests/pfru/config           |   2 +
+ tools/testing/selftests/pfru/pfru.h           | 152 +++++
+ tools/testing/selftests/pfru/pfru_test.c      | 324 +++++++++++
+ 15 files changed, 1777 insertions(+)
+ create mode 100644 Documentation/x86/pfru.rst
+ create mode 100644 drivers/acpi/pfru/Kconfig
+ create mode 100644 drivers/acpi/pfru/Makefile
+ create mode 100644 drivers/acpi/pfru/pfru_telemetry.c
+ create mode 100644 drivers/acpi/pfru/pfru_update.c
+ create mode 100644 include/uapi/linux/pfru.h
+ create mode 100644 tools/testing/selftests/pfru/Makefile
+ create mode 100644 tools/testing/selftests/pfru/config
+ create mode 100644 tools/testing/selftests/pfru/pfru.h
+ create mode 100644 tools/testing/selftests/pfru/pfru_test.c
 
-Kind regards,
+-- 
+2.25.1
 
-Paul
