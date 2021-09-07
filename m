@@ -2,58 +2,60 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6825E402F81
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Sep 2021 22:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD028402FC9
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Sep 2021 22:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346472AbhIGURG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Sep 2021 16:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38632 "EHLO
+        id S1347178AbhIGUez (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Sep 2021 16:34:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346464AbhIGURF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Sep 2021 16:17:05 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01B45C061575
-        for <linux-acpi@vger.kernel.org>; Tue,  7 Sep 2021 13:15:59 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id u9so16196080wrg.8
-        for <linux-acpi@vger.kernel.org>; Tue, 07 Sep 2021 13:15:58 -0700 (PDT)
+        with ESMTP id S1346812AbhIGUeZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Sep 2021 16:34:25 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4C9EC061575;
+        Tue,  7 Sep 2021 13:33:18 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id u15-20020a05600c19cf00b002f6445b8f55so281764wmq.0;
+        Tue, 07 Sep 2021 13:33:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+        h=from:subject:to:cc:message-id:date:user-agent:mime-version
          :content-language:content-transfer-encoding;
-        bh=AEzS+NzXiVO2B1rt9KzaQ+5Htm2vKUYnlV52m7gHTQY=;
-        b=Y3uiqLXKYWBfAGyXPPCZhmpgyEGZOEkKCLjNpna93i1kX+Z9wvEzt7cklen5pcuteK
-         bx6LcwajhiMEy9WmkRqQH+8r1SWSkUHZ44VuikvZqLShrBX9gm0XZfqO0gLLATvIpSrC
-         HQo5HVDyJxu4Fw5AzdHjYyfB6D9MIqf3IvX93vrVUNFDR+zCyGXuPVd+ftzyzaAn7h+Q
-         dARF4fwpzfKJ+qWlYQZDGYUJwuc8q8ZanWf2rPTNlsJdybjqq8sjUnuemVzFtoYILo3E
-         UT4s9niJKoQISG95HOCEXBrbG/zvCvKPgbzAIs9XuQ1USr3tr73WUjHajaVeyEUpmcjv
-         gKzQ==
+        bh=W4XkuWV5yjG1px3FAuRaLISaGMSiVa9NKZv3uZD2saA=;
+        b=RWhKX9/wSotzg1YTQsbOEifwUzUlKBZQnn+KUvfcLotgTF3eXjZwmCARxgnFbf1JlI
+         mk6gBgXZjPX8MNZ8lqeR2jRslfI4qnCnI5zIuhRgzi75duqCjDLhNJtY03j1l6R+d71o
+         nFUUMIgaoLM0OX6b9a7o4D26/I48fuZOfwK/0kxSyq5KFj4da4WH6JWjoOldtGFr9oiP
+         oWTtYnvEnn11CbZXx4vRCDlHb/CsfCzLIlKpfuISOtR+yjvd0O7YpaYUdzVwM69O/cLH
+         4VEvUu8v2OqlMbBGMzHQFudqnrihxBXMc/Y+LesKqCfbEwNAdgRwxWvWEf2xCYa3NWyO
+         5Puw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
          :mime-version:content-language:content-transfer-encoding;
-        bh=AEzS+NzXiVO2B1rt9KzaQ+5Htm2vKUYnlV52m7gHTQY=;
-        b=LIwjMKSVofm/DkrLkz1xn7YaRJas473GftjQRyF7XNP+IEh8f81qp8mWPD9SuopxSn
-         RXMLJC0Akx56mYOenvKcidveOp+gLaarpr76pU6tRAbnu8i4SOvyhfw4qwGUsWOUiECl
-         Ljq2cNCUxHHs8CnLU4/kpN5IsNzIyIGtWQOYLlTik19MGOidSPmiulHko2Pw3451dZfQ
-         4uu3MYfm3jtnduRcJTv9J4eFBAVEMAkUBJLVYdLoqwJbbyCMcVl4NqLfPxYj4ecjenqX
-         6Q01wE+WqMr9++IfKMfNYGeI82PsoDd6VasLW7vqZktBtsSfYR8m6YaWzFu8yXeIrhTD
-         kg0g==
-X-Gm-Message-State: AOAM531NWMtEvSXpGZakXx4FMgRy1BTR8tHJ2dGIFANp33ZDNxFDA65X
-        B6gXtabwpPwnrxhMQtfMcWZx/3KUcaI=
-X-Google-Smtp-Source: ABdhPJwlLK4fBE3fmAMUzLqNlYk2PfqaeljGMEAtHxOJiaoOHeAw1uA6UhMdbDqaQTZk2NQKO+60gw==
-X-Received: by 2002:a5d:69c6:: with SMTP id s6mr152255wrw.157.1631045757467;
-        Tue, 07 Sep 2021 13:15:57 -0700 (PDT)
+        bh=W4XkuWV5yjG1px3FAuRaLISaGMSiVa9NKZv3uZD2saA=;
+        b=nDpGCBY1liCrYbp8nC/8LTur5AjnovR+UiE1k8iusDznmML7uEgc6sRmd5hTE+oi9r
+         oxgm7Pzg3PDHUW4mzu9v8f4HBduMO9S1psrzAIT+URi8h7OCMkGWPY0B7L0wwLPuXLAc
+         qPHZhkv9qgMEEXsvty4BSJVg8C2ec9dIowTRP8bIKuyf2cgMRyJbaVVaEOFTU2+DorvP
+         /QfYLLsS67+GrosQnAQOphWWp+eDh/2o3cBsskiY4O7Q5s/6WRks+vQks2K7rZ6msCTD
+         pk+l/Ss0BWrNZF0uYu8Q+f0n4OqM5HGJJY9WxDZOhOHga8ezgAsz8ucqDfisOhQ9LAyG
+         id7g==
+X-Gm-Message-State: AOAM530t98HQJpAX0uGYl2YK2BMSuGwbAysvX86+9PGQNm87+63gFxG0
+        81Np59Cs2uBQ1uHrYdspLRhWmkjr9o0=
+X-Google-Smtp-Source: ABdhPJy4XxF6DzG6c2Wlg617Hm3xoXEWzjZ7NelQPwKCi/yZlAfFv5jnLCdYy0811dfw2gmkKzSsbQ==
+X-Received: by 2002:a05:600c:4f52:: with SMTP id m18mr152949wmq.34.1631046797077;
+        Tue, 07 Sep 2021 13:33:17 -0700 (PDT)
 Received: from ?IPv6:2003:ea:8f08:4500:e01f:158d:8ab5:13ce? (p200300ea8f084500e01f158d8ab513ce.dip0.t-ipconnect.de. [2003:ea:8f08:4500:e01f:158d:8ab5:13ce])
-        by smtp.googlemail.com with ESMTPSA id k4sm12240403wrm.74.2021.09.07.13.15.53
+        by smtp.googlemail.com with ESMTPSA id l2sm149069wmi.1.2021.09.07.13.33.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Sep 2021 13:15:56 -0700 (PDT)
+        Tue, 07 Sep 2021 13:33:16 -0700 (PDT)
+From:   Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH RESEND] i2c: i801: Stop using
+ pm_runtime_set_autosuspend_delay(-1)
 To:     Jean Delvare <jdelvare@suse.com>
 Cc:     linux-acpi@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@intel.com>
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH] i2c: i801: Stop using pm_runtime_set_autosuspend_delay(-1)
-Message-ID: <57de0110-3b33-a05c-286f-0f744b92340b@gmail.com>
-Date:   Tue, 7 Sep 2021 22:15:42 +0200
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
+Message-ID: <515c9685-bad2-86e0-1be6-f9f63578b864@gmail.com>
+Date:   Tue, 7 Sep 2021 22:33:02 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
@@ -81,6 +83,8 @@ improvements:
 Fixes: 4e60d5dd10cd ("i2c: i801: Improve disabling runtime pm")
 Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+- Resend because I missed to cc linux-i2c list
 ---
  drivers/i2c/busses/i2c-i801.c | 9 +++++----
  1 file changed, 5 insertions(+), 4 deletions(-)
