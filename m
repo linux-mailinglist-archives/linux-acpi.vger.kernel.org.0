@@ -2,127 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD028402FC9
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Sep 2021 22:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A950240304E
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Sep 2021 23:29:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347178AbhIGUez (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Sep 2021 16:34:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42836 "EHLO
+        id S1347166AbhIGVbE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Sep 2021 17:31:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346812AbhIGUeZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Sep 2021 16:34:25 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4C9EC061575;
-        Tue,  7 Sep 2021 13:33:18 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id u15-20020a05600c19cf00b002f6445b8f55so281764wmq.0;
-        Tue, 07 Sep 2021 13:33:18 -0700 (PDT)
+        with ESMTP id S1348651AbhIGVaF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Sep 2021 17:30:05 -0400
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCFA1C061757
+        for <linux-acpi@vger.kernel.org>; Tue,  7 Sep 2021 14:28:54 -0700 (PDT)
+Received: by mail-io1-xd2d.google.com with SMTP id a13so388512iol.5
+        for <linux-acpi@vger.kernel.org>; Tue, 07 Sep 2021 14:28:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:subject:to:cc:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=W4XkuWV5yjG1px3FAuRaLISaGMSiVa9NKZv3uZD2saA=;
-        b=RWhKX9/wSotzg1YTQsbOEifwUzUlKBZQnn+KUvfcLotgTF3eXjZwmCARxgnFbf1JlI
-         mk6gBgXZjPX8MNZ8lqeR2jRslfI4qnCnI5zIuhRgzi75duqCjDLhNJtY03j1l6R+d71o
-         nFUUMIgaoLM0OX6b9a7o4D26/I48fuZOfwK/0kxSyq5KFj4da4WH6JWjoOldtGFr9oiP
-         oWTtYnvEnn11CbZXx4vRCDlHb/CsfCzLIlKpfuISOtR+yjvd0O7YpaYUdzVwM69O/cLH
-         4VEvUu8v2OqlMbBGMzHQFudqnrihxBXMc/Y+LesKqCfbEwNAdgRwxWvWEf2xCYa3NWyO
-         5Puw==
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=uQ1QKlOMUxMJjspXpCNHZjX329YTQj9Uc23PyYscxxE=;
+        b=FbO+pDJXDBkBjC1rlKAdQfQgfh08Xa3kp6kg4kr7w0Y5RfqJlJsZJaWhpbBQz8nQqc
+         keSp3KjF48yyjtGYzivaNDwdC5pmNPDMlXgcahzEhY/BtqEdJRNRPSFOYLUsZ498FeFY
+         NucFj/hNQX432SYJKtlG1bl88o+Q4HvaC23zc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=W4XkuWV5yjG1px3FAuRaLISaGMSiVa9NKZv3uZD2saA=;
-        b=nDpGCBY1liCrYbp8nC/8LTur5AjnovR+UiE1k8iusDznmML7uEgc6sRmd5hTE+oi9r
-         oxgm7Pzg3PDHUW4mzu9v8f4HBduMO9S1psrzAIT+URi8h7OCMkGWPY0B7L0wwLPuXLAc
-         qPHZhkv9qgMEEXsvty4BSJVg8C2ec9dIowTRP8bIKuyf2cgMRyJbaVVaEOFTU2+DorvP
-         /QfYLLsS67+GrosQnAQOphWWp+eDh/2o3cBsskiY4O7Q5s/6WRks+vQks2K7rZ6msCTD
-         pk+l/Ss0BWrNZF0uYu8Q+f0n4OqM5HGJJY9WxDZOhOHga8ezgAsz8ucqDfisOhQ9LAyG
-         id7g==
-X-Gm-Message-State: AOAM530t98HQJpAX0uGYl2YK2BMSuGwbAysvX86+9PGQNm87+63gFxG0
-        81Np59Cs2uBQ1uHrYdspLRhWmkjr9o0=
-X-Google-Smtp-Source: ABdhPJy4XxF6DzG6c2Wlg617Hm3xoXEWzjZ7NelQPwKCi/yZlAfFv5jnLCdYy0811dfw2gmkKzSsbQ==
-X-Received: by 2002:a05:600c:4f52:: with SMTP id m18mr152949wmq.34.1631046797077;
-        Tue, 07 Sep 2021 13:33:17 -0700 (PDT)
-Received: from ?IPv6:2003:ea:8f08:4500:e01f:158d:8ab5:13ce? (p200300ea8f084500e01f158d8ab513ce.dip0.t-ipconnect.de. [2003:ea:8f08:4500:e01f:158d:8ab5:13ce])
-        by smtp.googlemail.com with ESMTPSA id l2sm149069wmi.1.2021.09.07.13.33.14
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=uQ1QKlOMUxMJjspXpCNHZjX329YTQj9Uc23PyYscxxE=;
+        b=RA+GqxN4fgKIVHa8Wsz6HlgIrJCIOcIydQ49vdL2W/MQqv22ovPfZ7aN2or7K9cC/G
+         P1Dj7ExZSaKMv9zSX1ZX0U2GyBZAD70jWelXNPOe5zgpI2pBdlGjboax78mwN59FsesN
+         MQgG44MuEIWTt63id3HjEpCSEE0aLMzVFTBcAyjknpe+c2GEL3sqICpSN/d7W5PDdH8k
+         ZKfFfju6vjezXFjnHo0S5JVRkOj2+Yx31mwnRuojD1roeUuLQhngRwzqdJorze/sx3Sj
+         qqIpb+8JyU/T8J+yTMPoS9ZIgavS8GhjzUTLIsS6/DRs7/J8KUWodEd/SZoGhZz4HUm4
+         xCcA==
+X-Gm-Message-State: AOAM530UHnW/c9gKDK2bJAmmg9X8lbbNlAxKJjsrBzSX1OJdyUaGe2zY
+        Z6WtCs2O8PTrLx3nSnmE0GQJwA==
+X-Google-Smtp-Source: ABdhPJzq6xHc9ICyXPhNWoqmW3TFqPqfpQwhKPYhzkwAjJos1JLP7WLlq4mXoHgNUL0MH3n/iMByWw==
+X-Received: by 2002:a05:6638:4104:: with SMTP id ay4mr397781jab.10.1631050134251;
+        Tue, 07 Sep 2021 14:28:54 -0700 (PDT)
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net. [24.9.64.241])
+        by smtp.gmail.com with ESMTPSA id m13sm140087ilh.43.2021.09.07.14.28.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Sep 2021 13:33:16 -0700 (PDT)
-From:   Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH RESEND] i2c: i801: Stop using
- pm_runtime_set_autosuspend_delay(-1)
-To:     Jean Delvare <jdelvare@suse.com>
-Cc:     linux-acpi@vger.kernel.org,
+        Tue, 07 Sep 2021 14:28:53 -0700 (PDT)
+Subject: Re: [PATCH 5/5][RFC] selftests/pfru: add test for Platform Firmware
+ Runtime Update and Telemetry
+To:     Chen Yu <yu.c.chen@intel.com>, linux-acpi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
-Message-ID: <515c9685-bad2-86e0-1be6-f9f63578b864@gmail.com>
-Date:   Tue, 7 Sep 2021 22:33:02 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Aubrey Li <aubrey.li@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>, Shuah Khan <shuah@kernel.org>,
+        linux-kselftest@vger.kernel.org,
+        Dou Shengnan <shengnanx.dou@intel.com>,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <cover.1631025237.git.yu.c.chen@intel.com>
+ <1cef405de3484eef108251562fbf461bad4294c7.1631025237.git.yu.c.chen@intel.com>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <82889db2-1927-582d-c27f-b1f0927ca903@linuxfoundation.org>
+Date:   Tue, 7 Sep 2021 15:28:52 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <1cef405de3484eef108251562fbf461bad4294c7.1631025237.git.yu.c.chen@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The original change works as intended, but Andy pointed in [0] that now
-userspace could re-enable RPM via sysfs, even though we explicitly want
-to disable it. So effectively revert the original patch, just with small
-improvements:
-- Calls to pm_runtime_allow()/pm_runtime_forbid() don't have to be
-  balanced, so we can remove the call to pm_runtime_forbid() in
-  i801_remove().
-- priv->acpi_reserved is accessed after i801_acpi_remove(), and according
-  to Robert [1] the custom handler can't run any longer. Therefore we
-  don't have to take priv->acpi_lock.
+On 9/7/21 9:40 AM, Chen Yu wrote:
+> Introduce a simple test for Platform Firmware Runtime Update and Telemetry
+> drivers. It is based on ioctl to either update firmware driver or code injection,
+> and read corresponding PFRU Telemetry log into user space.
+> 
 
-[0] https://www.spinics.net/lists/linux-i2c/msg52730.html
-[1] https://lore.kernel.org/linux-acpi/BYAPR11MB32561D19A0FD9AB93E2B1E5287D39@BYAPR11MB3256.namprd11.prod.outlook.com/T/#t
+A few things to consider and add handling for them in the
+test.
 
-Fixes: 4e60d5dd10cd ("i2c: i801: Improve disabling runtime pm")
-Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
----
-- Resend because I missed to cc linux-i2c list
----
- drivers/i2c/busses/i2c-i801.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+What happens when non-root user runs this test?
+What happens when the pfru device doesn't exist?
 
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index 1f929e6c3..f3c79942c 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -1623,7 +1623,7 @@ i801_acpi_io_handler(u32 function, acpi_physical_address address, u32 bits,
- 		 * BIOS is accessing the host controller so prevent it from
- 		 * suspending automatically from now on.
- 		 */
--		pm_runtime_set_autosuspend_delay(&pdev->dev, -1);
-+		pm_runtime_get_sync(&pdev->dev);
- 	}
- 
- 	if ((function & ACPI_IO_MASK) == ACPI_READ)
-@@ -1890,9 +1890,6 @@ static void i801_remove(struct pci_dev *dev)
- {
- 	struct i801_priv *priv = pci_get_drvdata(dev);
- 
--	pm_runtime_forbid(&dev->dev);
--	pm_runtime_get_noresume(&dev->dev);
--
- 	i801_disable_host_notify(priv);
- 	i801_del_mux(priv);
- 	i2c_del_adapter(&priv->adapter);
-@@ -1901,6 +1898,10 @@ static void i801_remove(struct pci_dev *dev)
- 
- 	platform_device_unregister(priv->tco_pdev);
- 
-+	/* if acpi_reserved is set then usage_count is incremented already */
-+	if (!priv->acpi_reserved)
-+		pm_runtime_get_noresume(&dev->dev);
-+
- 	/*
- 	 * do not call pci_disable_device(dev) since it can cause hard hangs on
- 	 * some systems during power-off (eg. Fujitsu-Siemens Lifebook E8010)
--- 
-2.33.0
 
+[snip]
+
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	int fd_update, fd_log, fd_capsule;
+> +	struct telem_data_info data_info;
+> +	struct telem_info info;
+> +	struct update_cap_info cap;
+> +	void *addr_map_capsule;
+> +	struct stat st;
+> +	char *log_buf;
+> +	int ret = 0;
+> +
+> +	parse_options(argc, argv);
+> +
+> +	fd_log = open("/dev/pfru/telemetry", O_RDWR);
+> +	if (fd_log < 0) {
+> +		perror("Cannot open telemetry device...");
+> +		return 1;
+> +	}
+
+Is this considered an error or unsupported?
+
+> +	fd_update = open("/dev/pfru/update", O_RDWR);
+> +	if (fd_update < 0) {
+> +		perror("Cannot open code injection device...");
+> +		return 1;
+> +	}
+> +
+
+Same here. If test is run on platform with pfru test should skip
+instead of reporting failure/error.
+
+thanks,
+-- Shuah
