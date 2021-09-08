@@ -2,161 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5EA403A15
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Sep 2021 14:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00EFE403C8B
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Sep 2021 17:32:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349214AbhIHMoE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Sep 2021 08:44:04 -0400
-Received: from mga01.intel.com ([192.55.52.88]:9982 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234005AbhIHMoD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 8 Sep 2021 08:44:03 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10100"; a="242769383"
-X-IronPort-AV: E=Sophos;i="5.85,277,1624345200"; 
-   d="scan'208";a="242769383"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2021 05:42:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,277,1624345200"; 
-   d="scan'208";a="524815432"
-Received: from lkp-server01.sh.intel.com (HELO 730d49888f40) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 08 Sep 2021 05:42:53 -0700
-Received: from kbuild by 730d49888f40 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mNwui-00029g-R8; Wed, 08 Sep 2021 12:42:52 +0000
-Date:   Wed, 08 Sep 2021 20:42:19 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [pm:bleeding-edge] BUILD SUCCESS
- 7d0798a20c777f0726d75b686224b15444d491f1
-Message-ID: <6138afab.2Dgwf19YXvbB6ciZ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1352086AbhIHPdv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Sep 2021 11:33:51 -0400
+Received: from mail-ot1-f51.google.com ([209.85.210.51]:46935 "EHLO
+        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352096AbhIHPdv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Sep 2021 11:33:51 -0400
+Received: by mail-ot1-f51.google.com with SMTP id v33-20020a0568300921b0290517cd06302dso3441521ott.13;
+        Wed, 08 Sep 2021 08:32:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=wCpW8P/qcfUBAUP9yX0etIAnVGW4oa2u6cdb6qiSrnk=;
+        b=Sw/fTWu1Wl5t2ppekAGkn2VAi4O4pncaXfQ7swW/XpUK4q/mY0QA9UKTeVT4x1Uy4s
+         Lz/B+bwI9MAXVSil7c3T6l2fUThLaPqRSrFohB/wjG2us5+dGWnh2qXZ8k48q/AIKLXT
+         Tvmzj5THeof63lDWs/776kGmiVsLvKL29+3n5dg9OFLzVxwUnD2pKmfkB+YOZDcC+muo
+         DWN3ADt8OV5ZchWK1IiduiISFvXGiFq8c1vMh5mr4KyJbQwoL5/VqTREBYlR+79XoGZp
+         wq5KhQvT0B714JU4DlCs7yXX6zp+LrICEysFZp71AO7yamN5JOllpdhp3vicMgEC0RSp
+         XuHA==
+X-Gm-Message-State: AOAM533KBYUDTtbfyjHt4PMPyB6qkGmqUceEq10V1o6Zo/ugJg809lOA
+        dJWWxLUKpBv2rBL8x2IycfWzB6sZzLUewSUXv2RcCRlvEAE=
+X-Google-Smtp-Source: ABdhPJwjDpAIAa6bP74QWXIdmK708YE7bbnCkp4tIEYhFyLQniE/ez5UxX+qKhH/TJs2LKWkh4/oLpULx1N70TlCDVU=
+X-Received: by 2002:a9d:4d93:: with SMTP id u19mr3647281otk.86.1631115163066;
+ Wed, 08 Sep 2021 08:32:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 8 Sep 2021 17:32:32 +0200
+Message-ID: <CAJZ5v0isrxaOi_C50qO1S5t81xQZpnr-bunZp+Y_St+VuH6XxA@mail.gmail.com>
+Subject: [GIT PULL] More ACPI updates for v5.15-rc1
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 7d0798a20c777f0726d75b686224b15444d491f1  Merge branches 'pm-sleep', 'pm-em', 'pm-cpufreq-next' and 'acpi-scan' into bleeding-edge
+Hi Linus,
 
-elapsed time: 1015m
+Please pull from the tag
 
-configs tested: 102
-configs skipped: 3
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.15-rc1-2
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+with top-most commit e543b10cd9d75309c820d2175200d09b2a62f249
 
-gcc tested configs:
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-i386                 randconfig-c001-20210908
-arc                         haps_hs_defconfig
-mips                          ath79_defconfig
-xtensa                  cadence_csp_defconfig
-powerpc                      ppc44x_defconfig
-sh                          sdk7780_defconfig
-sh                        edosk7760_defconfig
-powerpc                     tqm8540_defconfig
-arm                         orion5x_defconfig
-mips                           ci20_defconfig
-mips                      pic32mzda_defconfig
-mips                        maltaup_defconfig
-arm                       versatile_defconfig
-arm                          imote2_defconfig
-arm                       netwinder_defconfig
-sh                           se7343_defconfig
-arm                            dove_defconfig
-powerpc                 mpc8315_rdb_defconfig
-mips                      maltaaprp_defconfig
-x86_64               randconfig-c001-20210908
-arm                  randconfig-c002-20210908
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a005-20210906
-i386                 randconfig-a004-20210906
-i386                 randconfig-a006-20210906
-i386                 randconfig-a002-20210906
-i386                 randconfig-a003-20210906
-i386                 randconfig-a001-20210906
-arc                  randconfig-r043-20210906
-x86_64               randconfig-a006-20210906
-x86_64               randconfig-a004-20210906
-x86_64               randconfig-a003-20210906
-x86_64               randconfig-a005-20210906
-x86_64               randconfig-a001-20210906
-x86_64               randconfig-a002-20210906
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+ Merge branches 'acpi-pm' and 'acpi-docs'
 
-clang tested configs:
-x86_64               randconfig-a011-20210906
-x86_64               randconfig-a016-20210906
-x86_64               randconfig-a012-20210906
-x86_64               randconfig-a015-20210906
-x86_64               randconfig-a014-20210906
-x86_64               randconfig-a013-20210906
-i386                 randconfig-a012-20210906
-i386                 randconfig-a015-20210906
-i386                 randconfig-a011-20210906
-i386                 randconfig-a013-20210906
-i386                 randconfig-a014-20210906
-i386                 randconfig-a016-20210906
-riscv                randconfig-r042-20210906
-hexagon              randconfig-r045-20210906
-s390                 randconfig-r044-20210906
-hexagon              randconfig-r041-20210906
+on top of commit 6f1e8b12eec44ee047dc9e0a9544b2cfed739503
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ Merge tag 'acpi-5.15-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+
+to receive more ACPI updates for 5.15-rc1.
+
+These add ACPI support to the PCI VMD driver, improve suspend-to-idle
+support for AMD platforms and update documentation.
+
+Specifics:
+
+ - Add ACPI support to the PCI VMD driver (Rafael Wysocki).
+
+ - Rearrange suspend-to-idle support code to reflect the platform
+   firmware expectations on some AMD platforms (Mario Limonciello).
+
+ - Make SSDT overlays documentation follow the code documented by it
+   more closely (Andy Shevchenko).
+
+Thanks!
+
+
+---------------
+
+Andy Shevchenko (1):
+      Documentation: ACPI: Align the SSDT overlays file with the code
+
+Mario Limonciello (1):
+      ACPI: PM: s2idle: Run both AMD and Microsoft methods if both are supported
+
+Rafael J. Wysocki (1):
+      PCI: VMD: ACPI: Make ACPI companion lookup work for VMD bus
+
+---------------
+
+ Documentation/admin-guide/acpi/ssdt-overlays.rst | 49 ++++++++--------
+ drivers/acpi/x86/s2idle.c                        | 67 ++++++++++++---------
+ drivers/pci/controller/vmd.c                     | 55 ++++++++++++++++++
+ drivers/pci/host-bridge.c                        |  1 +
+ drivers/pci/pci-acpi.c                           | 74 ++++++++++++++++++++++++
+ include/linux/pci-acpi.h                         |  3 +
+ 6 files changed, 197 insertions(+), 52 deletions(-)
