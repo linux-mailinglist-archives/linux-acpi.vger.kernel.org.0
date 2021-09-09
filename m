@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C82440560A
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Sep 2021 15:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C384240560C
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Sep 2021 15:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241133AbhIINRY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Sep 2021 09:17:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42448 "EHLO mail.kernel.org"
+        id S1353317AbhIINR0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Sep 2021 09:17:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53486 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1357667AbhIINDP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 9 Sep 2021 09:03:15 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 121FD63295;
-        Thu,  9 Sep 2021 11:59:47 +0000 (UTC)
+        id S1358652AbhIINJN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 Sep 2021 09:09:13 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 05211632AA;
+        Thu,  9 Sep 2021 12:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188788;
-        bh=gErt1nfR3OMbvWG5FwqnTixBqSZzxb/W0omYUcl7ER4=;
+        s=k20201202; t=1631188858;
+        bh=g/nPY3ZDoXclTMFRBvIEb8zHry+e4YgWYfCi5WeYZwQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K8TY4nZDoIHUo+qpFo0i3BtHwJFG3pecIrJ0qhjhW5YYJLPNQI8GWN8JXNyBE9+lS
-         8BTcaVLEEkcjVxlAZlrPagqktPeGl8qPC8iIxyClnQyZ5Je6bP0fiS8fWBrIWIm5qq
-         16mzhY4aN4n5Kb0VR+kp7lwEY9+68n/AFxnII9S2z7fVhnE7lFb4/n6viw0WFR7AJs
-         epvWdofNpV4l8/7RdU53JIi6bYFtVG0P73gSmIuxWvVD9ma/hCC2cexNvpGMubJqB8
-         Uh6WAJ+z9FrS6TLdamMwfy23jJo60kNwNcVMQ3HIqlzNbbJNX7VVL9TrG/5IXmRRj5
-         GR0F41q2Y9ilw==
+        b=Q0RxWgZW8TS4pmT34jwXxNT+FBN86gn2vwCvrDOuTE0jeR/pdGwRqqAt/NmyLktuQ
+         +6xZQy4xIjNrZEWYecByZxUAEzxWX0yADPQ1eQoDuIsvx7pkVOLB5kQd9h2xq2++o3
+         Ggds6SJQkDNEr9B0o2xvvK6rRl+fWNh1r+cHZYee9JY08e/XPh92LzK8t6D+t77ij0
+         aIjsO1cq1oCGIGq/qctDRr7ORvcU4WCU8g9PQyOAXpR8RvZdLFBBldTi00OhgKF0Eo
+         GDzozwjB/0iSsZ/V0+L+yQj8Pc5iCvBQZtKCLsBCuUr1Rvdd9SX6GuXRK1ujoCKmwJ
+         ykUQ4hrm+wq8A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bob Moore <robert.moore@intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 4.14 38/59] ACPICA: iASL: Fix for WPBT table with no command-line arguments
-Date:   Thu,  9 Sep 2021 07:58:39 -0400
-Message-Id: <20210909115900.149795-38-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 34/48] ACPICA: iASL: Fix for WPBT table with no command-line arguments
+Date:   Thu,  9 Sep 2021 08:00:01 -0400
+Message-Id: <20210909120015.150411-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909115900.149795-1-sashal@kernel.org>
-References: <20210909115900.149795-1-sashal@kernel.org>
+In-Reply-To: <20210909120015.150411-1-sashal@kernel.org>
+References: <20210909120015.150411-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,10 +61,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
-index 5bde2e700530..7525ab3fb7ec 100644
+index ebc1f4f9fe66..1a503ac15caf 100644
 --- a/include/acpi/actbl3.h
 +++ b/include/acpi/actbl3.h
-@@ -836,6 +836,10 @@ struct acpi_table_wpbt {
+@@ -764,6 +764,10 @@ struct acpi_table_wpbt {
  	u16 arguments_length;
  };
  
