@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C178D405788
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Sep 2021 15:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C82440560A
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Sep 2021 15:36:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357926AbhIINgy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Sep 2021 09:36:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33696 "EHLO mail.kernel.org"
+        id S241133AbhIINRY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Sep 2021 09:17:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42448 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1354413AbhIIM47 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 9 Sep 2021 08:56:59 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 220696325D;
-        Thu,  9 Sep 2021 11:58:26 +0000 (UTC)
+        id S1357667AbhIINDP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 Sep 2021 09:03:15 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 121FD63295;
+        Thu,  9 Sep 2021 11:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631188706;
-        bh=yXefDAaERqdGHDScDcdX/tA9O3S1ih+57YCLMGrkGMM=;
+        s=k20201202; t=1631188788;
+        bh=gErt1nfR3OMbvWG5FwqnTixBqSZzxb/W0omYUcl7ER4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eAYmGRnDdupj661GyXtYsMXFbujox1wi83uCPcIsxxi4HCExft1cc3AXOW2bP0VBk
-         xl59kynq2nUMy/dx7rJkEAEZwHfAPDRzWyeJpT+eB9X1U28Misp9lTY/xcNrhFm0i0
-         HBrPUTGdLsfK0kJVArXqki3VEinK57FNouixPsxwujo31WesuNm+BrEZkeAx3sveaR
-         Srr60w8kJKcrGXJAiMFPD4taLtXBAx721zCNfZq9tFSIm2Toq4CJiboiqc0WyI6FZX
-         TfefNpT/0vhy1rZCcFsddOVmV2kfM3QJ6bTAcCdaDDWnVbGnDolDA0G5DZnFST/ZZ3
-         CczgmQIRa6qUg==
+        b=K8TY4nZDoIHUo+qpFo0i3BtHwJFG3pecIrJ0qhjhW5YYJLPNQI8GWN8JXNyBE9+lS
+         8BTcaVLEEkcjVxlAZlrPagqktPeGl8qPC8iIxyClnQyZ5Je6bP0fiS8fWBrIWIm5qq
+         16mzhY4aN4n5Kb0VR+kp7lwEY9+68n/AFxnII9S2z7fVhnE7lFb4/n6viw0WFR7AJs
+         epvWdofNpV4l8/7RdU53JIi6bYFtVG0P73gSmIuxWvVD9ma/hCC2cexNvpGMubJqB8
+         Uh6WAJ+z9FrS6TLdamMwfy23jJo60kNwNcVMQ3HIqlzNbbJNX7VVL9TrG/5IXmRRj5
+         GR0F41q2Y9ilw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bob Moore <robert.moore@intel.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
         devel@acpica.org
-Subject: [PATCH AUTOSEL 4.19 48/74] ACPICA: iASL: Fix for WPBT table with no command-line arguments
-Date:   Thu,  9 Sep 2021 07:57:00 -0400
-Message-Id: <20210909115726.149004-48-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 38/59] ACPICA: iASL: Fix for WPBT table with no command-line arguments
+Date:   Thu,  9 Sep 2021 07:58:39 -0400
+Message-Id: <20210909115900.149795-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909115726.149004-1-sashal@kernel.org>
-References: <20210909115726.149004-1-sashal@kernel.org>
+In-Reply-To: <20210909115900.149795-1-sashal@kernel.org>
+References: <20210909115900.149795-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,10 +61,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
-index 501f341d1d92..d1fe16d67747 100644
+index 5bde2e700530..7525ab3fb7ec 100644
 --- a/include/acpi/actbl3.h
 +++ b/include/acpi/actbl3.h
-@@ -631,6 +631,10 @@ struct acpi_table_wpbt {
+@@ -836,6 +836,10 @@ struct acpi_table_wpbt {
  	u16 arguments_length;
  };
  
@@ -74,7 +74,7 @@ index 501f341d1d92..d1fe16d67747 100644
 +
  /*******************************************************************************
   *
-  * WSMT - Windows SMM Security Migrations Table
+  * XENV - Xen Environment Table (ACPI 6.0)
 -- 
 2.30.2
 
