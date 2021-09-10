@@ -2,246 +2,211 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B596B406B62
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Sep 2021 14:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ECD7406C5D
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Sep 2021 14:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233073AbhIJM3r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Sep 2021 08:29:47 -0400
-Received: from foss.arm.com ([217.140.110.172]:56226 "EHLO foss.arm.com"
+        id S235363AbhIJMmH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Sep 2021 08:42:07 -0400
+Received: from mga04.intel.com ([192.55.52.120]:57795 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232997AbhIJM3q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 10 Sep 2021 08:29:46 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A6E36D;
-        Fri, 10 Sep 2021 05:28:35 -0700 (PDT)
-Received: from entos-ampere-02.shanghai.arm.com (entos-ampere-02.shanghai.arm.com [10.169.214.103])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 083773F5A1;
-        Fri, 10 Sep 2021 05:28:30 -0700 (PDT)
-From:   Jia He <justin.he@arm.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Will Deacon <will@kernel.org>, Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        Jia He <justin.he@arm.com>, stable@vger.kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH] Revert "ACPI: Add memory semantics to acpi_os_map_memory()"
-Date:   Fri, 10 Sep 2021 20:28:20 +0800
-Message-Id: <20210910122820.26886-1-justin.he@arm.com>
-X-Mailer: git-send-email 2.17.1
+        id S234994AbhIJMl4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 10 Sep 2021 08:41:56 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10102"; a="219206797"
+X-IronPort-AV: E=Sophos;i="5.85,282,1624345200"; 
+   d="scan'208";a="219206797"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2021 05:38:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,282,1624345200"; 
+   d="scan'208";a="607397416"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 10 Sep 2021 05:38:50 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Fri, 10 Sep 2021 15:38:50 +0300
+Date:   Fri, 10 Sep 2021 15:38:50 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jon Nettleton <jon@solid-run.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Subject: Re: [PATCH] software node: balance refcount for managed sw nodes
+Message-ID: <YTtR2pLEMFDubtqi@kuha.fi.intel.com>
+References: <bb009f85-687e-d560-9cc5-1ac4f586a6bd@nxp.com>
+ <YPVufjevu5WaaIxQ@smile.fi.intel.com>
+ <2a0f7fa6-b164-eeb4-118a-acd57d79a484@nxp.com>
+ <CAHp75VcYt+VQq4jp9JdkA4EpGqtks2sP-NRkfSbGj+-Vn5ke=g@mail.gmail.com>
+ <c2186f2c-8be0-6f44-e442-8cb8cbd5f2c2@nxp.com>
+ <2485ac73-6df6-3939-5ee5-ef650d951054@nxp.com>
+ <YTn6dx2rRsLZ6GDJ@kuha.fi.intel.com>
+ <YTn7G/Mgm18JfV9k@kuha.fi.intel.com>
+ <ffe89a41-59c3-499b-1553-0c15f386df01@nxp.com>
+ <e9bc1397-99b7-a57e-4860-80d146848e2c@nxp.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e9bc1397-99b7-a57e-4860-80d146848e2c@nxp.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This reverts commit 437b38c51162f8b87beb28a833c4d5dc85fa864e.
+On Fri, Sep 10, 2021 at 03:05:16PM +0300, Laurentiu Tudor wrote:
+> 
+> 
+> On 9/9/2021 5:01 PM, Laurentiu Tudor wrote:
+> > 
+> > 
+> > On 9/9/2021 3:16 PM, Heikki Krogerus wrote:
+> >> On Thu, Sep 09, 2021 at 03:13:47PM +0300, Heikki Krogerus wrote:
+> >>> On Tue, Sep 07, 2021 at 06:59:18PM +0300, Laurentiu Tudor wrote:
+> >>>>
+> >>>>
+> >>>> On 7/26/2021 10:59 AM, Laurentiu Tudor wrote:
+> >>>>>
+> >>>>>
+> >>>>> On 7/20/2021 1:27 PM, Andy Shevchenko wrote:
+> >>>>>> On Tue, Jul 20, 2021 at 12:22 PM Laurentiu Tudor
+> >>>>>> <laurentiu.tudor@nxp.com> wrote:
+> >>>>>>> On 7/19/2021 3:22 PM, Andy Shevchenko wrote:
+> >>>>>>>> On Mon, Jul 19, 2021 at 03:00:17PM +0300, Laurentiu Tudor wrote:
+> >>>>>>>>> On 7/16/2021 8:21 PM, Jon Nettleton wrote:
+> >>>>>>>>>> On Fri, Jul 16, 2021 at 2:17 PM Andy Shevchenko
+> >>>>>>>>>> <andriy.shevchenko@linux.intel.com> wrote:
+> >>>>>>>>>>>
+> >>>>>>>>>>> On Fri, Jul 16, 2021 at 01:16:02PM +0300, laurentiu.tudor@nxp.com wrote:
+> >>>>>>>>>>>> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> software_node_notify(), on KOBJ_REMOVE drops the refcount twice on managed
+> >>>>>>>>>>>> software nodes, thus leading to underflow errors. Balance the refcount by
+> >>>>>>>>>>>> bumping it in the device_create_managed_software_node() function.
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> The error [1] was encountered after adding a .shutdown() op to our
+> >>>>>>>>>>>> fsl-mc-bus driver.
+> >>>>>>>>>>>
+> >>>>>>>>>>> Looking into the history of adding ->shutdown() to dwc3 driver (it got reverted
+> >>>>>>>>>>> later on), I can tell that probably something is wrong in the ->shutdown()
+> >>>>>>>>>>> method itself.
+> >>>>>>>>>>
+> >>>>>>>>>> Isn't the other alternative to just remove the second kobject_put from
+> >>>>>>>>>> KOBJ_REMOVE ?
+> >>>>>>>>>
+> >>>>>>>>> Or maybe on top of Heikki's suggestion, replace the calls to
+> >>>>>>>>> sysfs_create_link() from KOBJ_ADD with sysfs_create_link_nowarn()?
+> >>>>>>>>
+> >>>>>>>> _noearn will hide the problem. It was there, it was removed from there.
+> >>>>>>>> Perhaps we have to understand the root cause better (some specific flow?).
+> >>>>>>>>
+> >>>>>>>> Any insight from you on the flow when the issue appears? I.o.w. what happened
+> >>>>>>>> on the big picture that we got into the warning you see?
+> >>>>>>>
+> >>>>>>> I encountered the initial issue when trying to shut down a system booted
+> >>>>>>> with ACPI but only after adding a .shutdown() callback to our bus driver
+> >>>>>>> so that the devices are properly taken down. The problem was that
+> >>>>>>> software_node_notify(), on KOBJ_REMOVE was dropping the reference count
+> >>>>>>> twice leading to an underflow error. My initial proposal was to just
+> >>>>>>> bump the refcount in device_create_managed_software_node(). The device
+> >>>>>>> properties that triggered the problem are created here [1].
+> >>>>>>>
+> >>>>>>> Heikko suggested that instead of manually incrementing the refcount to
+> >>>>>>> use software_node_notify(KOBJ_ADD). This triggered the second issue, a
+> >>>>>>> duplicated sysfs entry warning originating in the usb subsystem:
+> >>>>>>> device_create_managed_software_node() ends up being called twice, once
+> >>>>>>> here [2] and secondly, the place I previous mentioned [1].
+> >>>>>>
+> >>>>>> This [3] is what I have reported against DWC3 when ->shutdown() has
+> >>>>>> been added there. And here [4] is another thread about the issue with
+> >>>>>> that callback. The ->release() callback is called at put_device() [5]
+> >>>>>> and ->shutdown() is called before that [6]. That said, can you inspect
+> >>>>>> your ->shutdown() implementation once more time and perhaps see if
+> >>>>>> there is anything that can be amended?
+> >>>>>>
+> >>>>>
+> >>>>> Will do, thanks for the pointers. It could be that we mess something out
+> >>>>> in how we use the driver model.
+> >>>>>
+> >>>>
+> >>>> Quick (and late, sorry) update from my side. I've spent time on
+> >>>> debugging our bus, did found some issues but, at least for now, none are
+> >>>> related to sw node.
+> >>>> In the mean time, I noticed in the swnode code that
+> >>>> device_add_software_node() calls software_node_notify(KOBJ_ADD) while
+> >>>> device_create_managed_software_node() doesn't. Updating [1] the later
+> >>>> with the call to software_node_notify(KOBJ_ADD) does seem to fix the
+> >>>> issue I'm seeing.
+> >>>>
+> >>>> Could this be a problem? Any comments appreciated.
+> >>>>
+> >>>> One more thing perhaps worth mentioning is that, at least for now, there
+> >>>> are few uses for this device_create_managed_software_node() api,
+> >>>> mentioning here a couple of them:
+> >>>>  - arm64 iort code - this seems to be triggering the issue i'm getting
+> >>>>  - dwc3 usb - Andy reported similar issues here, maybe the issue is common?
+> >>>>
+> >>>> [1]
+> >>>> @@ -1113,6 +1125,15 @@ int device_create_managed_software_node(struct
+> >>>> device *dev,
+> >>>>         to_swnode(fwnode)->managed = true;
+> >>>>         set_secondary_fwnode(dev, fwnode);
+> >>>>
+> >>>> +       /*
+> >>>> +        * If the device has been fully registered by the time this
+> >>>> function is
+> >>>> +        * called, software_node_notify() must be called separately so
+> >>>> that the
+> >>>> +        * symlinks get created and the reference count of the node is
+> >>>> kept in
+> >>>> +        * balance.
+> >>>> +        */
+> >>>> +       if (device_is_registered(dev))
+> >>>> +               software_node_notify(dev, KOBJ_ADD);
+> >>>> +
+> >>>>         return 0;
+> >>>>  }
+> >>>
+> >>> That should be fixed indeed. Please send that after -rc1 is out.
+> >>
+> >> I mean, resend :-)
+> >>
+> > 
+> > Right, actually I just noticed that this is the fix you suggested last
+> > time we discussed. :-) I forgot about it, sorry.
+> > There's still the WARN_ON() [1] triggered by the usb subsys, apparently
+> > happening only (!) in ACPI boot scenario, so +Lorenzo.
+> > I'll delay the sending a bit to try to understand what's going on.
+> 
+> I've spent some time looking into this and it  turns out that in the
+> ACPI case, device_create_managed_software_node() ends up being called
+> twice, first here [1] and after that, in the IORT code here [2]. With
+> the proposed patch this causes software_node_notify(KOBJ_ADD) being
+> called twice thus triggering the dup sysfs entry warning.
+> Any comments / ideas welcomed.
+> 
+> [1] https://elixir.bootlin.com/linux/latest/source/drivers/usb/dwc3/host.c#L111
 
-After this commit, a boot panic is alway hit on an Ampere EMAG server
-with call trace as follows:
- Internal error: synchronous external abort: 96000410 [#1] SMP
- Modules linked in:
- CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0+ #462
- Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
- pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[...snip...]
- Call trace:
-  acpi_ex_system_memory_space_handler+0x26c/0x2c8
-  acpi_ev_address_space_dispatch+0x228/0x2c4
-  acpi_ex_access_region+0x114/0x268
-  acpi_ex_field_datum_io+0x128/0x1b8
-  acpi_ex_extract_from_field+0x14c/0x2ac
-  acpi_ex_read_data_from_field+0x190/0x1b8
-  acpi_ex_resolve_node_to_value+0x1ec/0x288
-  acpi_ex_resolve_to_value+0x250/0x274
-  acpi_ds_evaluate_name_path+0xac/0x124
-  acpi_ds_exec_end_op+0x90/0x410
-  acpi_ps_parse_loop+0x4ac/0x5d8
-  acpi_ps_parse_aml+0xe0/0x2c8
-  acpi_ps_execute_method+0x19c/0x1ac
-  acpi_ns_evaluate+0x1f8/0x26c
-  acpi_ns_init_one_device+0x104/0x140
-  acpi_ns_walk_namespace+0x158/0x1d0
-  acpi_ns_initialize_devices+0x194/0x218
-  acpi_initialize_objects+0x48/0x50
-  acpi_init+0xe0/0x498
+I think the problem here is that the secondary fwnode get's replaced
+because the primary fwnode is shared. Can you test it with this, just
+to see if the problem goes away:
 
-From the debugging, we're mapping something which is *not* described by
-the EFI memory map, but *does* want PROT_NORMAL_NC.
+diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
+index f29a264635aa1..e4b40f8b8f242 100644
+--- a/drivers/usb/dwc3/host.c
++++ b/drivers/usb/dwc3/host.c
+@@ -76,7 +76,6 @@ int dwc3_host_init(struct dwc3 *dwc)
+        }
+ 
+        xhci->dev.parent        = dwc->dev;
+-       ACPI_COMPANION_SET(&xhci->dev, ACPI_COMPANION(dwc->dev));
+ 
+        dwc->xhci = xhci;
 
-Hence just revert it before everything is clear.
+> [2] https://elixir.bootlin.com/linux/latest/source/drivers/acpi/arm64/iort.c#L952
 
-Fixes: 437b38c51162 ("ACPI: Add memory semantics to acpi_os_map_memory()")
-Cc: stable@vger.kernel.org
-Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Hanjun Guo <guohanjun@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+I didn't yet look at that one.
 
-Signed-off-by: Jia He <justin.he@arm.com>
----
- arch/arm64/include/asm/acpi.h |  3 ---
- arch/arm64/kernel/acpi.c      | 19 +++----------------
- drivers/acpi/osl.c            | 23 +++++++----------------
- include/acpi/acpi_io.h        |  8 --------
- 4 files changed, 10 insertions(+), 43 deletions(-)
+thanks,
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index 7535dc7cc5aa..bd68e1b7f29f 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -50,9 +50,6 @@ pgprot_t __acpi_get_mem_attribute(phys_addr_t addr);
- void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size);
- #define acpi_os_ioremap acpi_os_ioremap
- 
--void __iomem *acpi_os_memmap(acpi_physical_address phys, acpi_size size);
--#define acpi_os_memmap acpi_os_memmap
--
- typedef u64 phys_cpuid_t;
- #define PHYS_CPUID_INVALID INVALID_HWID
- 
-diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-index 1c9c2f7a1c04..f3851724fe35 100644
---- a/arch/arm64/kernel/acpi.c
-+++ b/arch/arm64/kernel/acpi.c
-@@ -273,8 +273,7 @@ pgprot_t __acpi_get_mem_attribute(phys_addr_t addr)
- 	return __pgprot(PROT_DEVICE_nGnRnE);
- }
- 
--static void __iomem *__acpi_os_ioremap(acpi_physical_address phys,
--				       acpi_size size, bool memory)
-+void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
- {
- 	efi_memory_desc_t *md, *region = NULL;
- 	pgprot_t prot;
-@@ -300,11 +299,9 @@ static void __iomem *__acpi_os_ioremap(acpi_physical_address phys,
- 	 * It is fine for AML to remap regions that are not represented in the
- 	 * EFI memory map at all, as it only describes normal memory, and MMIO
- 	 * regions that require a virtual mapping to make them accessible to
--	 * the EFI runtime services. Determine the region default
--	 * attributes by checking the requested memory semantics.
-+	 * the EFI runtime services.
- 	 */
--	prot = memory ? __pgprot(PROT_NORMAL_NC) :
--			__pgprot(PROT_DEVICE_nGnRnE);
-+	prot = __pgprot(PROT_DEVICE_nGnRnE);
- 	if (region) {
- 		switch (region->type) {
- 		case EFI_LOADER_CODE:
-@@ -364,16 +361,6 @@ static void __iomem *__acpi_os_ioremap(acpi_physical_address phys,
- 	return __ioremap(phys, size, prot);
- }
- 
--void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
--{
--	return __acpi_os_ioremap(phys, size, false);
--}
--
--void __iomem *acpi_os_memmap(acpi_physical_address phys, acpi_size size)
--{
--	return __acpi_os_ioremap(phys, size, true);
--}
--
- /*
-  * Claim Synchronous External Aborts as a firmware first notification.
-  *
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index a43f1521efe6..45c5c0e45e33 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -284,8 +284,7 @@ acpi_map_lookup_virt(void __iomem *virt, acpi_size size)
- #define should_use_kmap(pfn)   page_is_ram(pfn)
- #endif
- 
--static void __iomem *acpi_map(acpi_physical_address pg_off, unsigned long pg_sz,
--			      bool memory)
-+static void __iomem *acpi_map(acpi_physical_address pg_off, unsigned long pg_sz)
- {
- 	unsigned long pfn;
- 
-@@ -295,8 +294,7 @@ static void __iomem *acpi_map(acpi_physical_address pg_off, unsigned long pg_sz,
- 			return NULL;
- 		return (void __iomem __force *)kmap(pfn_to_page(pfn));
- 	} else
--		return memory ? acpi_os_memmap(pg_off, pg_sz) :
--				acpi_os_ioremap(pg_off, pg_sz);
-+		return acpi_os_ioremap(pg_off, pg_sz);
- }
- 
- static void acpi_unmap(acpi_physical_address pg_off, void __iomem *vaddr)
-@@ -311,10 +309,9 @@ static void acpi_unmap(acpi_physical_address pg_off, void __iomem *vaddr)
- }
- 
- /**
-- * __acpi_os_map_iomem - Get a virtual address for a given physical address range.
-+ * acpi_os_map_iomem - Get a virtual address for a given physical address range.
-  * @phys: Start of the physical address range to map.
-  * @size: Size of the physical address range to map.
-- * @memory: true if remapping memory, false if IO
-  *
-  * Look up the given physical address range in the list of existing ACPI memory
-  * mappings.  If found, get a reference to it and return a pointer to it (its
-@@ -324,8 +321,8 @@ static void acpi_unmap(acpi_physical_address pg_off, void __iomem *vaddr)
-  * During early init (when acpi_permanent_mmap has not been set yet) this
-  * routine simply calls __acpi_map_table() to get the job done.
-  */
--static void __iomem __ref
--*__acpi_os_map_iomem(acpi_physical_address phys, acpi_size size, bool memory)
-+void __iomem __ref
-+*acpi_os_map_iomem(acpi_physical_address phys, acpi_size size)
- {
- 	struct acpi_ioremap *map;
- 	void __iomem *virt;
-@@ -356,7 +353,7 @@ static void __iomem __ref
- 
- 	pg_off = round_down(phys, PAGE_SIZE);
- 	pg_sz = round_up(phys + size, PAGE_SIZE) - pg_off;
--	virt = acpi_map(phys, size, memory);
-+	virt = acpi_map(phys, size);
- 	if (!virt) {
- 		mutex_unlock(&acpi_ioremap_lock);
- 		kfree(map);
-@@ -375,17 +372,11 @@ static void __iomem __ref
- 	mutex_unlock(&acpi_ioremap_lock);
- 	return map->virt + (phys - map->phys);
- }
--
--void __iomem *__ref
--acpi_os_map_iomem(acpi_physical_address phys, acpi_size size)
--{
--	return __acpi_os_map_iomem(phys, size, false);
--}
- EXPORT_SYMBOL_GPL(acpi_os_map_iomem);
- 
- void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
- {
--	return (void *)__acpi_os_map_iomem(phys, size, true);
-+	return (void *)acpi_os_map_iomem(phys, size);
- }
- EXPORT_SYMBOL_GPL(acpi_os_map_memory);
- 
-diff --git a/include/acpi/acpi_io.h b/include/acpi/acpi_io.h
-index a0212e67d6f4..027faa8883aa 100644
---- a/include/acpi/acpi_io.h
-+++ b/include/acpi/acpi_io.h
-@@ -14,14 +14,6 @@ static inline void __iomem *acpi_os_ioremap(acpi_physical_address phys,
- }
- #endif
- 
--#ifndef acpi_os_memmap
--static inline void __iomem *acpi_os_memmap(acpi_physical_address phys,
--					    acpi_size size)
--{
--	return ioremap_cache(phys, size);
--}
--#endif
--
- extern bool acpi_permanent_mmap;
- 
- void __iomem __ref
 -- 
-2.17.1
-
+heikki
