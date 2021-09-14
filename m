@@ -2,176 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D1DC409FC6
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Sep 2021 00:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B8C640A57C
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Sep 2021 06:39:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348275AbhIMWfM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Sep 2021 18:35:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50366 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245355AbhIMWfK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 13 Sep 2021 18:35:10 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E2391610FB;
-        Mon, 13 Sep 2021 22:33:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631572433;
-        bh=wR2w6YQJg3iCjxa7BhEis6kUqMGE9iGSJ/ZgLWVJ4vo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hvYrsyGDTnjPVVLzdEEeBKzUTriIUjw5IB5hAhW3Np58Tgb9jvBqq/Q+MGUwg1jvl
-         wrJ9fZNmoAkdelBAZdVTUjzu6fpqk6i/3ro+85XxAWZAWckAw8ZmDHyu6+QEu8VeW4
-         0A+/xuUIHEN/gHLJfwr/I+/Y+NRO3U5ssF8+MqdxOEldvuBmlVchKjRDS7Re1Qfe8B
-         TP5y+hwG/5xBonEzDlcGdz/uqUlA9ow8X3mLVGEUeJkdpZJWL5VHj/6K7TbCDCyJ1s
-         D0g9USTOJ4m0j1NUQJ7t2yKjpQWaU+Bh1tXbK/a8r2wwe6eSYDDxBYwdNeqW9UmH+U
-         CK/b1mpfX4gMA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Mario Limonciello <mario.limonciello@amd.com>,
-        Maxwell Beck <max@ryt.one>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.14 10/25] ACPI: PM: s2idle: Run both AMD and Microsoft methods if both are supported
-Date:   Mon, 13 Sep 2021 18:33:24 -0400
-Message-Id: <20210913223339.435347-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210913223339.435347-1-sashal@kernel.org>
-References: <20210913223339.435347-1-sashal@kernel.org>
+        id S232322AbhINEke (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Sep 2021 00:40:34 -0400
+Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:53918
+        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230415AbhINEkd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 14 Sep 2021 00:40:33 -0400
+Received: from [192.168.1.5] (unknown [124.160.154.16])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 3B9283F045;
+        Tue, 14 Sep 2021 04:39:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1631594349;
+        bh=uuBU+h/IuQdUNYiepyHPinjsbxSTa1hGW+k7DP/hvXA=;
+        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+         In-Reply-To:Content-Type;
+        b=WEPj88bKWxWsZURTRfDjuCB+8K6p2Y+c+choKn8n8/pFlozFcBDIhm6XTAoOfLDm9
+         816l9cUxQrGmrXOr26H4IIwYT7HqCEz4+LD7Q2qKdcERTSuXu01ZhQAzp/TZudE1cn
+         Q4oamOub4ae9kuraqoTYWDxncesoTWzoXAnHkcY2nybkaD5BqF0p6dye1JEDAOB/6r
+         Ap+cae4s5y4XqpGsQA1znzkUqwjqCaEBvpK4NnHaE7vuL8pNIIfw6jjr4Emu0dHDBr
+         5Iv0JfQaBHoXIjybEZ1cQX+zvHBK3VGMZz2Qsjn38xturPOpVaK30q+uLvvMLDH2ZJ
+         WJEcJLRReEjxQ==
+Subject: Re: [PATCH] ACPI: resources: add legacy irq override exception by DMI
+ info
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
+        manuelkrause@netscape.net
+References: <20210904014340.17536-1-hui.wang@canonical.com>
+ <CAJZ5v0gocDX_XFDkUQuYkEEjkxFjPW_u0mf1ZzaHd6FWwAn+bQ@mail.gmail.com>
+From:   Hui Wang <hui.wang@canonical.com>
+Message-ID: <583e76f8-a30b-eb52-18a8-c83ffe48886d@canonical.com>
+Date:   Tue, 14 Sep 2021 12:39:01 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0gocDX_XFDkUQuYkEEjkxFjPW_u0mf1ZzaHd6FWwAn+bQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit fa209644a7124b3f4cf811ced55daef49ae39ac6 ]
+On 9/14/21 1:10 AM, Rafael J. Wysocki wrote:
+> On Sat, Sep 4, 2021 at 3:44 AM Hui Wang <hui.wang@canonical.com> wrote:
+>> After the commit 0ec4e55e9f57 ("ACPI: resources: Add checks for ACPI
+>> IRQ override") is reverted, the keyboard of those Medion laptops can't
+>> work again.
+>>
+>> To fix the keyboard issue, here adding an override check by DMI info,
+>> this will not affect other machines and this design refers to
+>> the prt_quirks[] in the drivers/acpi/pci_irq.c.
+>>
+>> If we meet similar issues on other platforms, we could expand the
+>> table of skip_override_table[] or medion_laptop[].
+>>
+>> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
+>> BugLink: http://bugs.launchpad.net/bugs/1909814
+>> Reported-by: Manuel Krause <manuelkrause@netscape.net>
+>> Tested-by: Manuel Krause <manuelkrause@netscape.net>
+[...]
+>> +                                        u8 shareable)
+>> +{
+>> +       int i;
+>> +       const struct irq_override_cmp *en;
+> This can be declared inside the for () loop.  Also, if "en" means
+> "entry", please call the variable "entry".
+OK, got it.
+>
+>> +
+>> +       for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
+>> +               en = &skip_override_table[i];
+>> +
+>> +               if (dmi_check_system(en->system) &&
+>> +                   en->irq == gsi &&
+>> +                   en->triggering == triggering &&
+>> +                   en->polarity == polarity &&
+>> +                   en->shareable == shareable)
+>> +                       return false;
+>> +       }
+>> +
+>> +       return true;
+>> +}
+>> +
+>>   /**
+>>    * acpi_dev_resource_interrupt - Extract ACPI interrupt resource information.
+>>    * @ares: Input ACPI resource object.
+>> @@ -447,6 +491,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+>>   {
+>>          struct acpi_resource_irq *irq;
+>>          struct acpi_resource_extended_irq *ext_irq;
+>> +       bool is_legacy;
+>>
+>>          switch (ares->type) {
+>>          case ACPI_RESOURCE_TYPE_IRQ:
+>> @@ -459,9 +504,14 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+>>                          irqresource_disabled(res, 0);
+>>                          return false;
+>>                  }
+>> +
+>> +               is_legacy = acpi_dev_legacy_irq_override(irq->interrupts[index],
+>> +                                                        irq->triggering, irq->polarity,
+>> +                                                        irq->shareable);
+>> +
+>>                  acpi_dev_get_irqresource(res, irq->interrupts[index],
+>>                                           irq->triggering, irq->polarity,
+>> -                                        irq->shareable, true);
+>> +                                        irq->shareable, is_legacy);
+> Maybe we can rename the last argument of acpi_dev_get_irqresource() to
+> check_override (or similar) and do the check in there when that is
+> set?
 
-It was reported that on "HP ENVY x360" that power LED does not come
-back, certain keys like brightness controls do not work, and the fan
-never spins up, even under load on 5.14 final.
+OK will change it as the suggestion.
 
-In analysis of the SSDT it's clear that the Microsoft UUID doesn't
-provide functional support, but rather the AMD UUID should be
-supporting this system.
+Thanks.
 
-Because this is a gap in the expected logic, we checked back with
-internal team.  The conclusion was that on Windows AMD uPEP *does*
-run even when Microsoft UUID present, but most OEM systems have
-adopted value of "0x3" for supported functions and hence nothing
-runs.
-
-Henceforth add support for running both Microsoft and AMD methods.
-This approach will also allow the same logic on Intel systems if
-desired at a future time as well by pulling the evaluation of
-`lps0_dsm_func_mask_microsoft` out of the `if` block for
-`acpi_s2idle_vendor_amd`.
-
-Link: https://gitlab.freedesktop.org/drm/amd/uploads/9fbcd7ec3a385cc6949c9bacf45dc41b/acpi-f.20.bin
-BugLink: https://gitlab.freedesktop.org/drm/amd/-/issues/1691
-Reported-by: Maxwell Beck <max@ryt.one>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-[ rjw: Edits of the new comments ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/x86/s2idle.c | 67 +++++++++++++++++++++++----------------
- 1 file changed, 39 insertions(+), 28 deletions(-)
-
-diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
-index 3a308461246a..bd92b549fd5a 100644
---- a/drivers/acpi/x86/s2idle.c
-+++ b/drivers/acpi/x86/s2idle.c
-@@ -449,25 +449,30 @@ int acpi_s2idle_prepare_late(void)
- 	if (pm_debug_messages_on)
- 		lpi_check_constraints();
- 
--	if (lps0_dsm_func_mask_microsoft > 0) {
-+	/* Screen off */
-+	if (lps0_dsm_func_mask > 0)
-+		acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
-+					ACPI_LPS0_SCREEN_OFF_AMD :
-+					ACPI_LPS0_SCREEN_OFF,
-+					lps0_dsm_func_mask, lps0_dsm_guid);
-+
-+	if (lps0_dsm_func_mask_microsoft > 0)
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
--				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-+
-+	/* LPS0 entry */
-+	if (lps0_dsm_func_mask > 0)
-+		acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
-+					ACPI_LPS0_ENTRY_AMD :
-+					ACPI_LPS0_ENTRY,
-+					lps0_dsm_func_mask, lps0_dsm_guid);
-+	if (lps0_dsm_func_mask_microsoft > 0) {
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
--	} else if (acpi_s2idle_vendor_amd()) {
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF_AMD,
--				lps0_dsm_func_mask, lps0_dsm_guid);
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD,
--				lps0_dsm_func_mask, lps0_dsm_guid);
--	} else {
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
--				lps0_dsm_func_mask, lps0_dsm_guid);
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
--				lps0_dsm_func_mask, lps0_dsm_guid);
-+		/* modern standby entry */
-+		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
-+				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
- 	}
--
- 	return 0;
- }
- 
-@@ -476,24 +481,30 @@ void acpi_s2idle_restore_early(void)
- 	if (!lps0_device_handle || sleep_no_lps0)
- 		return;
- 
--	if (lps0_dsm_func_mask_microsoft > 0) {
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
--				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-+	/* Modern standby exit */
-+	if (lps0_dsm_func_mask_microsoft > 0)
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
--				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
--	} else if (acpi_s2idle_vendor_amd()) {
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_AMD,
--				lps0_dsm_func_mask, lps0_dsm_guid);
--		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON_AMD,
--				lps0_dsm_func_mask, lps0_dsm_guid);
--	} else {
-+
-+	/* LPS0 exit */
-+	if (lps0_dsm_func_mask > 0)
-+		acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
-+					ACPI_LPS0_EXIT_AMD :
-+					ACPI_LPS0_EXIT,
-+					lps0_dsm_func_mask, lps0_dsm_guid);
-+	if (lps0_dsm_func_mask_microsoft > 0)
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
--				lps0_dsm_func_mask, lps0_dsm_guid);
-+				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-+
-+	/* Screen on */
-+	if (lps0_dsm_func_mask_microsoft > 0)
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
--				lps0_dsm_func_mask, lps0_dsm_guid);
--	}
-+				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-+	if (lps0_dsm_func_mask > 0)
-+		acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
-+					ACPI_LPS0_SCREEN_ON_AMD :
-+					ACPI_LPS0_SCREEN_ON,
-+					lps0_dsm_func_mask, lps0_dsm_guid);
- }
- 
- static const struct platform_s2idle_ops acpi_s2idle_ops_lps0 = {
--- 
-2.30.2
-
+>>                  break;
+>>          case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
+>>                  ext_irq = &ares->data.extended_irq;
+>> --
