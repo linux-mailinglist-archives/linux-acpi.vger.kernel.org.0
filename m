@@ -2,100 +2,153 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3F0C40AB34
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Sep 2021 11:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 766F840ABA2
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Sep 2021 12:27:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229624AbhINJ4U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Sep 2021 05:56:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58492 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230045AbhINJ4T (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Sep 2021 05:56:19 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A945FC061762
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Sep 2021 02:55:02 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id 140so5326953wma.0
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Sep 2021 02:55:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pdKUVRZtJ1TDIZqyXHbN+tA2qUuBC0xRclnrY6chKzg=;
-        b=RCYq/kdd2XGXv8uX9tzBoBXj6ve07OPtW4zwQWOsekaJ7cpv/0S4DUEXJt0wteDNzz
-         2aS3mspyXU3b90WZmBRcdgyvYYZC1FT7hkRf3GmzTPl3FTQf9Ns2RFLcmJf37zpSUEZF
-         uswqGMY6HcXlM0+Op9UVIHCnNcFOZ5gdmX0ldX1/m0akQp7wP0GQppY+mmLhueIBx9iM
-         H3w/1HzINrm36bads7EbMjrO5rFc1RDsZgYph+syFbOEeS+GSt7kTK72ZjgGVBldtL8W
-         gAv2pqPwQMyCf/08KqnqpG72py9nzqVSW/JRlOh1VbRHOacmcriyd5TzMKKZXr/v5nxN
-         A2WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pdKUVRZtJ1TDIZqyXHbN+tA2qUuBC0xRclnrY6chKzg=;
-        b=IimF7U4fXv/ydIeo+hGfBbwL2h3YkVZghGBSrI0v+QZaPfPPqp9b07x/dySPQEiR1X
-         8Cw5VzkcSjGLPDez6RDVh86+F6rM8+pBBeb9O8flEY0Qlo+1G8cGx0fVqJDxcwHlT6Xc
-         nyzIiRttGK2pFTKhtkDAtCPDihQF+XxAwm60SDkp0AR0ahQhlpXHKtht/O/Z5Tdtu9fu
-         w8CfM2Ut1s7kHbgiFoMtOCj0yAm/jk2SfEYMsXRu8EFtL8fESukaD7jyiGJuO3qjGz7p
-         bMBjoaoRVVExFQjN0jJtNP3YHUFYwI1WqNI3VaHr7LKXh/gEbt2vJ+LGz/XvlzZn1ShW
-         22ow==
-X-Gm-Message-State: AOAM530mt7hGvUqEpSl+e7WM0nB1yLA7OYduOp5Xv1kNZTeYr8UO1vf+
-        kg2J486me/5ifiT8jFe2lgiW1A==
-X-Google-Smtp-Source: ABdhPJxI/cDlAXGQ138HYUrNRJlpQQywhVUAwLpYUug38W2/Rb4S01zxLFrScrzqxXlJdhhheA559Q==
-X-Received: by 2002:a05:600c:19d0:: with SMTP id u16mr1167364wmq.21.1631613300706;
-        Tue, 14 Sep 2021 02:55:00 -0700 (PDT)
-Received: from localhost.localdomain (cpc92880-cmbg19-2-0-cust679.5-4.cable.virginm.net. [82.27.106.168])
-        by smtp.gmail.com with ESMTPSA id t23sm10408900wrb.71.2021.09.14.02.54.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Sep 2021 02:55:00 -0700 (PDT)
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com
-Cc:     linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        sdonthineni@nvidia.com, robh@kernel.org,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v2] PCI/ACPI: Don't reset a fwnode set by OF
-Date:   Tue, 14 Sep 2021 10:51:21 +0100
-Message-Id: <20210914095120.2132059-1-jean-philippe@linaro.org>
-X-Mailer: git-send-email 2.33.0
+        id S230491AbhINK26 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Sep 2021 06:28:58 -0400
+Received: from mga06.intel.com ([134.134.136.31]:40710 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231316AbhINK25 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 14 Sep 2021 06:28:57 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10106"; a="282953662"
+X-IronPort-AV: E=Sophos;i="5.85,292,1624345200"; 
+   d="scan'208";a="282953662"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2021 03:27:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,292,1624345200"; 
+   d="scan'208";a="528729290"
+Received: from lkp-server01.sh.intel.com (HELO 730d49888f40) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 14 Sep 2021 03:27:36 -0700
+Received: from kbuild by 730d49888f40 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mQ5f5-0008Mi-BZ; Tue, 14 Sep 2021 10:27:35 +0000
+Date:   Tue, 14 Sep 2021 18:27:19 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [pm:bleeding-edge] BUILD SUCCESS
+ b7ce7601b5d63191fa66e36621a2ed731c617f9c
+Message-ID: <61407907.N8Z+IHJe/itJ9qIw%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Commit 375553a93201 ("PCI: Setup ACPI fwnode early and at the same time
-with OF") added a call to pci_set_acpi_fwnode() in pci_setup_device(),
-which unconditionally clears any fwnode previously set by
-pci_set_of_node().
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: b7ce7601b5d63191fa66e36621a2ed731c617f9c  Merge branch 'pm-cpufreq' into bleeding-edge
 
-pci_set_acpi_fwnode() looks for ACPI_COMPANION(), which only returns the
-existing fwnode if it was set by ACPI_COMPANION_SET(). If it was set by
-OF instead, ACPI_COMPANION() returns NULL and pci_set_acpi_fwnode()
-accidentally clears the fwnode. To fix this, look for any fwnode instead
-of just ACPI companions.
+elapsed time: 1012m
 
-Fixes: 375553a93201 ("PCI: Setup ACPI fwnode early and at the same time with OF")
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+configs tested: 94
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                         hackkit_defconfig
+sh                   rts7751r2dplus_defconfig
+mips                      maltasmvp_defconfig
+mips                           ip22_defconfig
+sh                      rts7751r2d1_defconfig
+openrisc                         alldefconfig
+m68k                        mvme16x_defconfig
+powerpc                     ep8248e_defconfig
+powerpc                      arches_defconfig
+riscv                               defconfig
+arm                         lpc18xx_defconfig
+arm                           h3600_defconfig
+arm                            dove_defconfig
+powerpc                 canyonlands_defconfig
+arc                          axs103_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a002-20210913
+x86_64               randconfig-a003-20210913
+x86_64               randconfig-a006-20210913
+x86_64               randconfig-a004-20210913
+x86_64               randconfig-a005-20210913
+x86_64               randconfig-a001-20210913
+i386                 randconfig-a004-20210913
+i386                 randconfig-a005-20210913
+i386                 randconfig-a002-20210913
+i386                 randconfig-a006-20210913
+i386                 randconfig-a003-20210913
+i386                 randconfig-a001-20210913
+arc                  randconfig-r043-20210913
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a016-20210913
+x86_64               randconfig-a013-20210913
+x86_64               randconfig-a012-20210913
+x86_64               randconfig-a011-20210913
+x86_64               randconfig-a014-20210913
+x86_64               randconfig-a015-20210913
+i386                 randconfig-a016-20210913
+i386                 randconfig-a011-20210913
+i386                 randconfig-a015-20210913
+i386                 randconfig-a012-20210913
+i386                 randconfig-a013-20210913
+i386                 randconfig-a014-20210913
+riscv                randconfig-r042-20210913
+hexagon              randconfig-r045-20210913
+s390                 randconfig-r044-20210913
+hexagon              randconfig-r041-20210913
+
 ---
-v2: Use dev_fwnode()
-v1: https://lore.kernel.org/linux-pci/20210913172358.1775381-1-jean-philippe@linaro.org/
-This fixes boot of virtio-iommu under OF on v5.15-rc1
----
- drivers/pci/pci-acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index a1b1e2a01632..0f40943a9a18 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -937,7 +937,7 @@ static struct acpi_device *acpi_pci_find_companion(struct device *dev);
- 
- void pci_set_acpi_fwnode(struct pci_dev *dev)
- {
--	if (!ACPI_COMPANION(&dev->dev) && !pci_dev_is_added(dev))
-+	if (!dev_fwnode(&dev->dev) && !pci_dev_is_added(dev))
- 		ACPI_COMPANION_SET(&dev->dev,
- 				   acpi_pci_find_companion(&dev->dev));
- }
--- 
-2.33.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
