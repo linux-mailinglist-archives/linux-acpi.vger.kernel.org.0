@@ -2,131 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B55640B20E
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Sep 2021 16:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 459A940B26A
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Sep 2021 17:01:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233671AbhINOvk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Sep 2021 10:51:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42482 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233443AbhINOvj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 14 Sep 2021 10:51:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DD462603E8;
-        Tue, 14 Sep 2021 14:50:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1631631022;
-        bh=DAaPlzGWFC6ROUbqPTb825J3Wqi2YViY6ufOy1Jm3Jk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Gcnv5MpAxMc/p240wyiOFlm0CXnonPoZe18QMeaJnrp87PHy45BO/8eN+A7NgLtdb
-         VqGpT4Sx2/WJiHylO5f4CqUJOtiKtmV4bHFHjRRDC6BTgL1eIOcqlPPJp5Tj2kxlSA
-         5/AAMbkBmwHb2G5hQil+DOKwbcqKdWZSYxqdIwUk=
-Date:   Tue, 14 Sep 2021 16:50:19 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     laurentiu.tudor@nxp.com
-Cc:     andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com,
-        rafael@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, jon@solid-run.com,
-        lorenzo.pieralisi@arm.com
-Subject: Re: [PATCH v2] software node: balance refcount for managed sw nodes
-Message-ID: <YUC2q1du1vGjAtsd@kroah.com>
-References: <20210914144409.32626-1-laurentiu.tudor@nxp.com>
+        id S234454AbhINPCu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Sep 2021 11:02:50 -0400
+Received: from mail-ot1-f46.google.com ([209.85.210.46]:38647 "EHLO
+        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234455AbhINPCt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Sep 2021 11:02:49 -0400
+Received: by mail-ot1-f46.google.com with SMTP id i8-20020a056830402800b0051afc3e373aso18851905ots.5;
+        Tue, 14 Sep 2021 08:01:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=a69f0p2LO5nM49i5w+9S50sCyKtjFMTTVJCoHsR1aRM=;
+        b=YkjeXHR+8j3ax7mjvYzbeSf1JAcmoFr83uzpN7//WlbX415E2YClaVuCRGYtsR1U6D
+         XHDB1iQ114EZ1AyuBBQSNM1v7FP982r41cRfMyDhe9G5gHRACcLoWsKysQoTXq2+QHK6
+         xmJXJdOaDIDyRo+9SthDXJOZJnr9oPVj40IXopIz1e4xvUjdr14eTp2h4RRv5GssGamx
+         giZ0nhV1iqNYZg3jjQw4i1KsxS2rmAAl4DG4fbJauKxWumWOP1nyS+t78xJmgFFkGaoN
+         PInmQDZqdw9ImzFzzvddl3i1agsYdWfSVb3HbLVS9j1j5amai3zi9wlB+p8wFpHwzjMW
+         yMGw==
+X-Gm-Message-State: AOAM531S8bkfZN/PTWy1JfIqieJ1kk4f5Ek7AU+BBpg/N0/x5gRDyL5u
+        vW53Rv9EL2tyLQPvfGFsRZL6hl9idwn8+xRsQqk=
+X-Google-Smtp-Source: ABdhPJy+bQzkn6kGRLipFnjyWkwhBd6ENe8CcNTE3CERDrwZUInvEkozWDR1E7HDcWNDT1RjJUftgDmyrR3vofRTVmI=
+X-Received: by 2002:a9d:4d93:: with SMTP id u19mr15006591otk.86.1631631692184;
+ Tue, 14 Sep 2021 08:01:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210914144409.32626-1-laurentiu.tudor@nxp.com>
+References: <20210914095120.2132059-1-jean-philippe@linaro.org>
+In-Reply-To: <20210914095120.2132059-1-jean-philippe@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 14 Sep 2021 17:01:21 +0200
+Message-ID: <CAJZ5v0g9v-0hPNMGdsSRsYq1BSiRGjcML3F3u8=vmjOfaPK87Q@mail.gmail.com>
+Subject: Re: [PATCH v2] PCI/ACPI: Don't reset a fwnode set by OF
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Shanker Donthineni <sdonthineni@nvidia.com>,
+        Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 14, 2021 at 05:44:09PM +0300, laurentiu.tudor@nxp.com wrote:
-> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-> 
-> software_node_notify(), on KOBJ_REMOVE drops the refcount twice on managed
-> software nodes, thus leading to underflow errors. Balance the refcount by
-> bumping it in the device_create_managed_software_node() function.
-> 
-> The error [1] was encountered after adding a .shutdown() op to our
-> fsl-mc-bus driver.
-> 
-> [1]
-> pc : refcount_warn_saturate+0xf8/0x150
-> lr : refcount_warn_saturate+0xf8/0x150
-> sp : ffff80001009b920
-> x29: ffff80001009b920 x28: ffff1a2420318000 x27: 0000000000000000
-> x26: ffffccac15e7a038 x25: 0000000000000008 x24: ffffccac168e0030
-> x23: ffff1a2428a82000 x22: 0000000000080000 x21: ffff1a24287b5000
-> x20: 0000000000000001 x19: ffff1a24261f4400 x18: ffffffffffffffff
-> x17: 6f72645f726f7272 x16: 0000000000000000 x15: ffff80009009b607
-> x14: 0000000000000000 x13: ffffccac16602670 x12: 0000000000000a17
-> x11: 000000000000035d x10: ffffccac16602670 x9 : ffffccac16602670
-> x8 : 00000000ffffefff x7 : ffffccac1665a670 x6 : ffffccac1665a670
-> x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000ffffffff
-> x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff1a2420318000
-> Call trace:
->  refcount_warn_saturate+0xf8/0x150
->  kobject_put+0x10c/0x120
->  software_node_notify+0xd8/0x140
->  device_platform_notify+0x4c/0xb4
->  device_del+0x188/0x424
->  fsl_mc_device_remove+0x2c/0x4c
->  rebofind sp.c__fsl_mc_device_remove+0x14/0x2c
->  device_for_each_child+0x5c/0xac
->  dprc_remove+0x9c/0xc0
->  fsl_mc_driver_remove+0x28/0x64
->  __device_release_driver+0x188/0x22c
->  device_release_driver+0x30/0x50
->  bus_remove_device+0x128/0x134
->  device_del+0x16c/0x424
->  fsl_mc_bus_remove+0x8c/0x114
->  fsl_mc_bus_shutdown+0x14/0x20
->  platform_shutdown+0x28/0x40
->  device_shutdown+0x15c/0x330
->  __do_sys_reboot+0x218/0x2a0
->  __arm64_sys_reboot+0x28/0x34
->  invoke_syscall+0x48/0x114
->  el0_svc_common+0x40/0xdc
->  do_el0_svc+0x2c/0x94
->  el0_svc+0x2c/0x54
->  el0t_64_sync_handler+0xa8/0x12c
->  el0t_64_sync+0x198/0x19c
-> ---[ end trace 32eb1c71c7d86821 ]---
-> 
-> Reported-by: Jon Nettleton <jon@solid-run.com>
-> Suggested-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+On Tue, Sep 14, 2021 at 11:55 AM Jean-Philippe Brucker
+<jean-philippe@linaro.org> wrote:
+>
+> Commit 375553a93201 ("PCI: Setup ACPI fwnode early and at the same time
+> with OF") added a call to pci_set_acpi_fwnode() in pci_setup_device(),
+> which unconditionally clears any fwnode previously set by
+> pci_set_of_node().
+>
+> pci_set_acpi_fwnode() looks for ACPI_COMPANION(), which only returns the
+> existing fwnode if it was set by ACPI_COMPANION_SET(). If it was set by
+> OF instead, ACPI_COMPANION() returns NULL and pci_set_acpi_fwnode()
+> accidentally clears the fwnode. To fix this, look for any fwnode instead
+> of just ACPI companions.
+>
+> Fixes: 375553a93201 ("PCI: Setup ACPI fwnode early and at the same time with OF")
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
 > ---
-> Changes since v1:
->  - added Heikki's Reviewed-by: (Thanks!)
-> 
-> Changes since RFC:
->  - use software_node_notify(KOBJ_ADD) instead of directly bumping
->    refcount (Heikki)
-> 
->  drivers/base/swnode.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> index d1f1a8240120..bdb50a06c82a 100644
-> --- a/drivers/base/swnode.c
-> +++ b/drivers/base/swnode.c
-> @@ -1113,6 +1113,9 @@ int device_create_managed_software_node(struct device *dev,
->  	to_swnode(fwnode)->managed = true;
->  	set_secondary_fwnode(dev, fwnode);
->  
-> +	if (device_is_registered(dev))
-> +		software_node_notify(dev, KOBJ_ADD);
-> +
->  	return 0;
+> v2: Use dev_fwnode()
+> v1: https://lore.kernel.org/linux-pci/20210913172358.1775381-1-jean-philippe@linaro.org/
+> This fixes boot of virtio-iommu under OF on v5.15-rc1
+> ---
+>  drivers/pci/pci-acpi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index a1b1e2a01632..0f40943a9a18 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -937,7 +937,7 @@ static struct acpi_device *acpi_pci_find_companion(struct device *dev);
+>
+>  void pci_set_acpi_fwnode(struct pci_dev *dev)
+>  {
+> -       if (!ACPI_COMPANION(&dev->dev) && !pci_dev_is_added(dev))
+> +       if (!dev_fwnode(&dev->dev) && !pci_dev_is_added(dev))
+>                 ACPI_COMPANION_SET(&dev->dev,
+>                                    acpi_pci_find_companion(&dev->dev));
 >  }
->  EXPORT_SYMBOL_GPL(device_create_managed_software_node);
-> -- 
-> 2.17.1
-> 
-
-I am seeing that this needs to go into 5.15-final, but how about any
-further back?  Stable kernels?  Does this "fix" a specific commit?
-
-thanks,
-
-greg k-h
+> --
+> 2.33.0
+>
