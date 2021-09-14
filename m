@@ -2,79 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24AEF40AF9F
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Sep 2021 15:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05DAA40B015
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Sep 2021 16:00:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233351AbhINNxk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 14 Sep 2021 09:53:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57472 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233306AbhINNxi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 14 Sep 2021 09:53:38 -0400
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26CBEC061574;
-        Tue, 14 Sep 2021 06:52:21 -0700 (PDT)
-Received: by mail-pj1-x102f.google.com with SMTP id nn5-20020a17090b38c500b0019af1c4b31fso2060157pjb.3;
-        Tue, 14 Sep 2021 06:52:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=OBuM8TqJ0Hiy++w0Eg3iCTeKL45+UH97Wc5WiqGlxYk=;
-        b=eEN/Cjx/RaHtIuifTzIWtuTNXKn8gN7MXFN1fkI/BBhKK6N8yNK1egUZx6Da0ngWPm
-         4CyFlthWnBdrVPGH5fxFgu6g6VUQH6THmXauJJaclzQFID3Pl9tghRPKFiTU2b+vAXjY
-         4wQS8Z3dv3uWNA8aW2T612eXFIiVHtj8zvmt5CkuuDOdsI94bnDB9Lz8ITLswRwz9YYJ
-         KGugdCwyd2t2b0XfFKZ7EXIeFO9Mhxpu7rxald7qSmyebUL8sMUjdQXjTkZWVLcDnxVS
-         W6U4CBI0RrTWjUbcWgpbwcfy8ZllzRSNNTlBna4UpU1ilh3mx80C67OXU86/9LAFygfQ
-         YUkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=OBuM8TqJ0Hiy++w0Eg3iCTeKL45+UH97Wc5WiqGlxYk=;
-        b=ED93Yvt1rORh9azeDQ6BB0lfXwSUO8e6cFBtWP1rosSwIyuIiuOkaTvIXRh5KSxg3G
-         mynN6gp82oNmpaunOY08sY3UovhAq91zUOQb4FPY0yvkp6N8iA0dN9LlRHmeXNDHmBYt
-         yQoQqxI5H9n7dNhPyC6h49Yzg8W7cwfTkL+/vQCUb01LRnBv4IEHSN3jfKiSD1K7QlMy
-         nN8QY+Js+oP5U/vhEDaP4rD+dRUZecPYStIycjZX52FoLDonf90FR2M99+GshrIVjELp
-         UG9Z3RzJmZNOCFx25eEJWD9jrAS9KQN3QbB2mLQIi+0AnzidhayevndzLefuhbinuYGv
-         OhHQ==
-X-Gm-Message-State: AOAM5320k94w8oiyr9sUKNkenn08XhKSZMjvraOn44ZXruCsBeDh00cS
-        OPZNkwUTyaY6LfYcaJoL2HBGF/MWCWWRPyIrd4Zxoh16
-X-Google-Smtp-Source: ABdhPJzi5Dur2NFQQ5T9iQZsUMijQaMGcr7v2R5hGtdc9r2AmXXaZFZAwG4BBUqObGzm+ZSWsJkvmPKgtEDaJpkN2U0=
-X-Received: by 2002:a17:902:8ec5:b0:13a:2789:cbb0 with SMTP id
- x5-20020a1709028ec500b0013a2789cbb0mr15236406plo.60.1631627540581; Tue, 14
- Sep 2021 06:52:20 -0700 (PDT)
+        id S233259AbhINOBZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 14 Sep 2021 10:01:25 -0400
+Received: from mga17.intel.com ([192.55.52.151]:3701 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232682AbhINOBY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 14 Sep 2021 10:01:24 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10106"; a="202170265"
+X-IronPort-AV: E=Sophos;i="5.85,292,1624345200"; 
+   d="scan'208";a="202170265"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2021 07:00:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,292,1624345200"; 
+   d="scan'208";a="609638201"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 14 Sep 2021 07:00:02 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 14 Sep 2021 17:00:01 +0300
+Date:   Tue, 14 Sep 2021 17:00:01 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     laurentiu.tudor@nxp.com
+Cc:     andriy.shevchenko@linux.intel.com, gregkh@linuxfoundation.org,
+        rafael@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, jon@solid-run.com
+Subject: Re: [PATCH] software node: balance refcount for managed sw nodes
+Message-ID: <YUCq4axWKqn4vwW6@kuha.fi.intel.com>
+References: <20210716101602.1891-1-laurentiu.tudor@nxp.com>
 MIME-Version: 1.0
-References: <20210824122054.29481-1-joro@8bytes.org> <CAJZ5v0jqwgvmRrRts4Nf4ySmrp5gwmv_iJWBh3OjN54ZU+qneQ@mail.gmail.com>
- <CAJZ5v0hn5EvwjPggCeUw+kjDNjdzx3eLP2PRBGKRAyo2eYECyQ@mail.gmail.com> <YUCodXHfHmap1+la@8bytes.org>
-In-Reply-To: <YUCodXHfHmap1+la@8bytes.org>
-Reply-To: bjorn@helgaas.com
-From:   Bjorn Helgaas <bjorn.helgaas@gmail.com>
-Date:   Tue, 14 Sep 2021 08:52:08 -0500
-Message-ID: <CABhMZUV50Tp6-UrRnm_E55QiwJvtLQ64qp7Tn2h+pw_uu7M=iA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] PCI/ACPI: Simplify PCIe _OSC feature negotiation
-To:     Joerg Roedel <joro@8bytes.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Joerg Roedel <jroedel@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210716101602.1891-1-laurentiu.tudor@nxp.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 14, 2021 at 8:50 AM Joerg Roedel <joro@8bytes.org> wrote:
->
-> On Mon, Sep 13, 2021 at 06:14:38PM +0200, Rafael J. Wysocki wrote:
-> > Should I assume that Bjorn will be taking it?
->
-> No idea, checking git-log on the file shows mixed Signed-off-bys from
-> both of you. Bjorn?
+On Fri, Jul 16, 2021 at 01:16:02PM +0300, laurentiu.tudor@nxp.com wrote:
+> From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+> 
+> software_node_notify(), on KOBJ_REMOVE drops the refcount twice on managed
+> software nodes, thus leading to underflow errors. Balance the refcount by
+> bumping it in the device_create_managed_software_node() function.
+> 
+> The error [1] was encountered after adding a .shutdown() op to our
+> fsl-mc-bus driver.
+> 
+> [1]
+> pc : refcount_warn_saturate+0xf8/0x150
+> lr : refcount_warn_saturate+0xf8/0x150
+> sp : ffff80001009b920
+> x29: ffff80001009b920 x28: ffff1a2420318000 x27: 0000000000000000
+> x26: ffffccac15e7a038 x25: 0000000000000008 x24: ffffccac168e0030
+> x23: ffff1a2428a82000 x22: 0000000000080000 x21: ffff1a24287b5000
+> x20: 0000000000000001 x19: ffff1a24261f4400 x18: ffffffffffffffff
+> x17: 6f72645f726f7272 x16: 0000000000000000 x15: ffff80009009b607
+> x14: 0000000000000000 x13: ffffccac16602670 x12: 0000000000000a17
+> x11: 000000000000035d x10: ffffccac16602670 x9 : ffffccac16602670
+> x8 : 00000000ffffefff x7 : ffffccac1665a670 x6 : ffffccac1665a670
+> x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000ffffffff
+> x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff1a2420318000
+> Call trace:
+>  refcount_warn_saturate+0xf8/0x150
+>  kobject_put+0x10c/0x120
+>  software_node_notify+0xd8/0x140
+>  device_platform_notify+0x4c/0xb4
+>  device_del+0x188/0x424
+>  fsl_mc_device_remove+0x2c/0x4c
+>  rebofind sp.c__fsl_mc_device_remove+0x14/0x2c
+>  device_for_each_child+0x5c/0xac
+>  dprc_remove+0x9c/0xc0
+>  fsl_mc_driver_remove+0x28/0x64
+>  __device_release_driver+0x188/0x22c
+>  device_release_driver+0x30/0x50
+>  bus_remove_device+0x128/0x134
+>  device_del+0x16c/0x424
+>  fsl_mc_bus_remove+0x8c/0x114
+>  fsl_mc_bus_shutdown+0x14/0x20
+>  platform_shutdown+0x28/0x40
+>  device_shutdown+0x15c/0x330
+>  __do_sys_reboot+0x218/0x2a0
+>  __arm64_sys_reboot+0x28/0x34
+>  invoke_syscall+0x48/0x114
+>  el0_svc_common+0x40/0xdc
+>  do_el0_svc+0x2c/0x94
+>  el0_svc+0x2c/0x54
+>  el0t_64_sync_handler+0xa8/0x12c
+>  el0t_64_sync+0x198/0x19c
+> ---[ end trace 32eb1c71c7d86821 ]---
+> 
+> Reported-by: Jon Nettleton <jon@solid-run.com>
+> Suggested-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 
-I'll merge it, hopefully this week.  Thanks!
+FWIW:
 
-Bjorn
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+> Changes since RFC:
+>  - use software_node_notify(KOBJ_ADD) instead of directly bumping
+>    refcount (Heikki)
+> 
+>  drivers/base/swnode.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index d1f1a8240120..bdb50a06c82a 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -1113,6 +1113,9 @@ int device_create_managed_software_node(struct device *dev,
+>  	to_swnode(fwnode)->managed = true;
+>  	set_secondary_fwnode(dev, fwnode);
+>  
+> +	if (device_is_registered(dev))
+> +		software_node_notify(dev, KOBJ_ADD);
+> +
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(device_create_managed_software_node);
+> -- 
+> 2.17.1
+
+thanks,
+
+-- 
+heikki
