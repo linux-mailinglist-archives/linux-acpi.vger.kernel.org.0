@@ -2,56 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC63240C16A
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Sep 2021 10:12:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 117A740C16B
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Sep 2021 10:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237046AbhIOINb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Sep 2021 04:13:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57046 "EHLO
+        id S236875AbhIOINc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Sep 2021 04:13:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237058AbhIOINO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Sep 2021 04:13:14 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746DAC061786
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Sep 2021 01:11:49 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id a23-20020a25ae17000000b005ad73346312so2545568ybj.18
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Sep 2021 01:11:49 -0700 (PDT)
+        with ESMTP id S236985AbhIOINP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Sep 2021 04:13:15 -0400
+Received: from mail-qt1-x84a.google.com (mail-qt1-x84a.google.com [IPv6:2607:f8b0:4864:20::84a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AFEC0613D8
+        for <linux-acpi@vger.kernel.org>; Wed, 15 Sep 2021 01:11:52 -0700 (PDT)
+Received: by mail-qt1-x84a.google.com with SMTP id r6-20020a05622a034600b002a0ba9994f4so1780109qtw.22
+        for <linux-acpi@vger.kernel.org>; Wed, 15 Sep 2021 01:11:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=SwVyaP/Ht2PwaBMDQzWc9eJHDBQpCz2nALAmbECEhpQ=;
-        b=QUGoVBusTu4hW55kbQfAHy0Gpz3kYuimJYcUOODn8J0I/7DZkCM14Y/XV93nl4aYCP
-         +ezA6KRcvEAcmEmCHGF5DK4VQuHzoqloHRAExFyo7XQX8VWVQZZuMgxbs6GCErGm2xMo
-         3WhdO6zOo0cDPPeM9+uOMVq6rJzF5I1bMsuh9A+hQ9dQKjLGrEjVGGh3qZ4jo2NavqpK
-         fEWQGL9qQYSigSa3YT6nkRZJis7DRUE0zbaV3jtu3YQv4UgL/fPifi3K+lWZrkLDAE9V
-         0VrtY5L3be1fgKiq/HYPxZl3N1zuyBS1+avTDv8T5P89lhU3OE4fk6lyCuhow3EQ4a24
-         yK+w==
+        bh=tE5kGBxc9PR5MYieHfGicxhFgO1boA1xk2XZYsANqZE=;
+        b=KN5josXRk6vEJRYv7Y1XeBMkRQ8IZkeHu44xya1+5GcI4HNGbxj/PzNhRJv03Gm7gz
+         vwZ+eUszHx3DpNx65e2e5tZwGBh4E735USu8tG5dL74IvqQS7GCR28Zet9kaZOkKGvfO
+         1YhaL/yYj9lv4TJfaP0O95HgWwVHMxevZNv5+x9HkCTw8gLypeb4HuL1IHfm3jfS4XTH
+         kgoGDssnvd/dlvR7WgNGENS05/uC5nXpQCEZw/0JIG5MksUhDetVqUVN7J3YRjO+aXuD
+         xrMHTI1av5a7LngEXrGJW1Q3kTesixXypTyLae2F+0L6oZw4+JAiS73jCRIQsnHE+vJg
+         obag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=SwVyaP/Ht2PwaBMDQzWc9eJHDBQpCz2nALAmbECEhpQ=;
-        b=Gl4qBFXRhtqaKBYotqPv3NGB7BtDCoyK8MgkfiAnCTaQB/jUTYGS3PBmQWn0fsv8Wu
-         Di5msGqBXoZ51Od+N/9A8mSmSOj2Lrq49rfgWbnt0QR8STk3HQlOMMH0ESvNUGF/Qtmj
-         7FsGKHLK63TD1BReyVKiL6azQcLzEOJyRP6IwKfs8ScUNSf9x3y/dg/SRGzFtuFgr2Fg
-         yw6mC05V61Kt6ya2coaHdG6VcLTsXSPfDIj9DDWc4kpim5jm1A7vVQIfJ7LTo8PtlsbT
-         KFKJtOR8wPoCTN4seTONM6iHmABxhd8WFjvo+v1i2PBSksROukHQz2HDHXmCj4no17VR
-         Zixw==
-X-Gm-Message-State: AOAM533W1Z9nUVW7aqDOlU/HMoiOl8a8FF1ArW6amqaUVltp4ZhdIMat
-        v3ttPdW99DVoES+/aNhAQ3ZUsZw+PompAto=
-X-Google-Smtp-Source: ABdhPJzEE5Yr1jFgjYuau+gaFxStrLfBehac0EkhE77LIzIh9w6hvW01QzSMoNh14iJf8H76Z5XogrY3/gaGBTI=
+        bh=tE5kGBxc9PR5MYieHfGicxhFgO1boA1xk2XZYsANqZE=;
+        b=pVv4j/U5UCGrynhW+5ISeXPQ9HXoOMTdGdl0ZOa4aDysXPFHKRg9/j0s/D3G+qEjGY
+         55kc5tQV7sqGoH/uBvdXvRoENcarirqaHfg/ZZkcuo0knO6K4TtX5VgRlBz1R5C8xS1u
+         LfIkKai3mgKk0XTP8586QNETAzVVWRUVi/w2eO9ERNycnPctpFTaSigPc35jQdWRZk0s
+         IAtUTd55F5aisOWgr6MmUcLV3bNOB+BvBGQ+ckR5hwPKbycfldKtKuQa4yciR+UmqBxG
+         JI/8lFn00oWUlLQSwc8qeeJYInmuKrdQvcOJ3q5G1Cznscg+vuvYvKdXZ+89XRvPmWBF
+         lcGg==
+X-Gm-Message-State: AOAM530jz4lYLJ9sHSdSRixJ18J8QtJLB+1J9bJzNAEldOBVEv7VfIxu
+        eFyUuhH4OuuAEjzPZCsU/iooa7pqopZN480=
+X-Google-Smtp-Source: ABdhPJymuo/nGsFPIwVrp7CZBqqkEkLsixu4nf/KlVnpN+10WWdFz1i21Iee5Xghf2MWQiCPsNtZaWmaSD1VQvY=
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:16d1:ab0e:fc4a:b9b1])
- (user=saravanak job=sendgmr) by 2002:a25:6d83:: with SMTP id
- i125mr4550266ybc.298.1631693508682; Wed, 15 Sep 2021 01:11:48 -0700 (PDT)
-Date:   Wed, 15 Sep 2021 01:11:34 -0700
+ (user=saravanak job=sendgmr) by 2002:a0c:fca2:: with SMTP id
+ h2mr9492302qvq.5.1631693511580; Wed, 15 Sep 2021 01:11:51 -0700 (PDT)
+Date:   Wed, 15 Sep 2021 01:11:35 -0700
 In-Reply-To: <20210915081139.480263-1-saravanak@google.com>
-Message-Id: <20210915081139.480263-3-saravanak@google.com>
+Message-Id: <20210915081139.480263-4-saravanak@google.com>
 Mime-Version: 1.0
 References: <20210915081139.480263-1-saravanak@google.com>
 X-Mailer: git-send-email 2.33.0.309.g3052b89438-goog
-Subject: [PATCH v2 2/6] driver core: Set deferred probe reason when deferred
- by driver core
+Subject: [PATCH v2 3/6] driver core: Create __fwnode_link_del() helper function
 From:   Saravana Kannan <saravanak@google.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -67,61 +66,96 @@ Cc:     John Stultz <john.stultz@linaro.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Vladimir Oltean <olteanv@gmail.com>, kernel-team@android.com,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org
+        linux-acpi@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When the driver core defers the probe of a device, set the deferred
-probe reason so that it's easier to debug. The deferred probe reason is
-available in debugfs under devices_deferred.
+The same code is repeated in multiple locations. Create a helper
+function for it.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/base/core.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/base/core.c | 35 +++++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 316df6027093..ca6c61a2e2e9 100644
+index ca6c61a2e2e9..5e7faad4e083 100644
 --- a/drivers/base/core.c
 +++ b/drivers/base/core.c
-@@ -975,6 +975,7 @@ int device_links_check_suppliers(struct device *dev)
- {
- 	struct device_link *link;
- 	int ret = 0;
-+	struct fwnode_handle *sup_fw;
+@@ -101,6 +101,19 @@ int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
+ 	return ret;
+ }
  
- 	/*
- 	 * Device waiting for supplier to become available is not allowed to
-@@ -983,10 +984,11 @@ int device_links_check_suppliers(struct device *dev)
++/**
++ * __fwnode_link_del - Delete a link between two fwnode_handles.
++ * @link: the fwnode_link to be deleted
++ *
++ * The fwnode_link_lock needs to be held when this function is called.
++ */
++static void __fwnode_link_del(struct fwnode_link *link)
++{
++	list_del(&link->s_hook);
++	list_del(&link->c_hook);
++	kfree(link);
++}
++
+ /**
+  * fwnode_links_purge_suppliers - Delete all supplier links of fwnode_handle.
+  * @fwnode: fwnode whose supplier links need to be deleted
+@@ -112,11 +125,8 @@ static void fwnode_links_purge_suppliers(struct fwnode_handle *fwnode)
+ 	struct fwnode_link *link, *tmp;
+ 
  	mutex_lock(&fwnode_link_lock);
- 	if (dev->fwnode && !list_empty(&dev->fwnode->suppliers) &&
- 	    !fw_devlink_is_permissive()) {
--		dev_dbg(dev, "probe deferral - wait for supplier %pfwP\n",
--			list_first_entry(&dev->fwnode->suppliers,
--			struct fwnode_link,
--			c_hook)->supplier);
-+		sup_fw = list_first_entry(&dev->fwnode->suppliers,
-+					  struct fwnode_link,
-+					  c_hook)->supplier;
-+		dev_err_probe(dev, -EPROBE_DEFER, "wait for supplier %pfwP\n",
-+			      sup_fw);
- 		mutex_unlock(&fwnode_link_lock);
- 		return -EPROBE_DEFER;
+-	list_for_each_entry_safe(link, tmp, &fwnode->suppliers, c_hook) {
+-		list_del(&link->s_hook);
+-		list_del(&link->c_hook);
+-		kfree(link);
+-	}
++	list_for_each_entry_safe(link, tmp, &fwnode->suppliers, c_hook)
++		__fwnode_link_del(link);
+ 	mutex_unlock(&fwnode_link_lock);
+ }
+ 
+@@ -131,11 +141,8 @@ static void fwnode_links_purge_consumers(struct fwnode_handle *fwnode)
+ 	struct fwnode_link *link, *tmp;
+ 
+ 	mutex_lock(&fwnode_link_lock);
+-	list_for_each_entry_safe(link, tmp, &fwnode->consumers, s_hook) {
+-		list_del(&link->s_hook);
+-		list_del(&link->c_hook);
+-		kfree(link);
+-	}
++	list_for_each_entry_safe(link, tmp, &fwnode->consumers, s_hook)
++		__fwnode_link_del(link);
+ 	mutex_unlock(&fwnode_link_lock);
+ }
+ 
+@@ -1868,9 +1875,7 @@ static void __fw_devlink_link_to_consumers(struct device *dev)
+ 		if (!own_link || ret == -EAGAIN)
+ 			continue;
+ 
+-		list_del(&link->s_hook);
+-		list_del(&link->c_hook);
+-		kfree(link);
++		__fwnode_link_del(link);
  	}
-@@ -1001,8 +1003,9 @@ int device_links_check_suppliers(struct device *dev)
- 		if (link->status != DL_STATE_AVAILABLE &&
- 		    !(link->flags & DL_FLAG_SYNC_STATE_ONLY)) {
- 			device_links_missing_supplier(dev);
--			dev_dbg(dev, "probe deferral - supplier %s not ready\n",
--				dev_name(link->supplier));
-+			dev_err_probe(dev, -EPROBE_DEFER,
-+				      "supplier %s not ready\n",
-+				      dev_name(link->supplier));
- 			ret = -EPROBE_DEFER;
- 			break;
- 		}
+ }
+ 
+@@ -1922,9 +1927,7 @@ static void __fw_devlink_link_to_suppliers(struct device *dev,
+ 		if (!own_link || ret == -EAGAIN)
+ 			continue;
+ 
+-		list_del(&link->s_hook);
+-		list_del(&link->c_hook);
+-		kfree(link);
++		__fwnode_link_del(link);
+ 
+ 		/* If no device link was created, nothing more to do. */
+ 		if (ret)
 -- 
 2.33.0.309.g3052b89438-goog
 
