@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 117A740C16B
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Sep 2021 10:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EF6B40C170
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Sep 2021 10:12:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236875AbhIOINc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Sep 2021 04:13:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57116 "EHLO
+        id S237251AbhIOINq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Sep 2021 04:13:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236985AbhIOINP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Sep 2021 04:13:15 -0400
-Received: from mail-qt1-x84a.google.com (mail-qt1-x84a.google.com [IPv6:2607:f8b0:4864:20::84a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78AFEC0613D8
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Sep 2021 01:11:52 -0700 (PDT)
-Received: by mail-qt1-x84a.google.com with SMTP id r6-20020a05622a034600b002a0ba9994f4so1780109qtw.22
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Sep 2021 01:11:52 -0700 (PDT)
+        with ESMTP id S236584AbhIOINU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Sep 2021 04:13:20 -0400
+Received: from mail-qv1-xf49.google.com (mail-qv1-xf49.google.com [IPv6:2607:f8b0:4864:20::f49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED14DC0613E3
+        for <linux-acpi@vger.kernel.org>; Wed, 15 Sep 2021 01:11:54 -0700 (PDT)
+Received: by mail-qv1-xf49.google.com with SMTP id z6-20020a056214060600b0037a3f6bd9abso2782216qvw.3
+        for <linux-acpi@vger.kernel.org>; Wed, 15 Sep 2021 01:11:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=tE5kGBxc9PR5MYieHfGicxhFgO1boA1xk2XZYsANqZE=;
-        b=KN5josXRk6vEJRYv7Y1XeBMkRQ8IZkeHu44xya1+5GcI4HNGbxj/PzNhRJv03Gm7gz
-         vwZ+eUszHx3DpNx65e2e5tZwGBh4E735USu8tG5dL74IvqQS7GCR28Zet9kaZOkKGvfO
-         1YhaL/yYj9lv4TJfaP0O95HgWwVHMxevZNv5+x9HkCTw8gLypeb4HuL1IHfm3jfS4XTH
-         kgoGDssnvd/dlvR7WgNGENS05/uC5nXpQCEZw/0JIG5MksUhDetVqUVN7J3YRjO+aXuD
-         xrMHTI1av5a7LngEXrGJW1Q3kTesixXypTyLae2F+0L6oZw4+JAiS73jCRIQsnHE+vJg
-         obag==
+        bh=cajmSKnfvpV4C51UK3Pjlq0PRtDcgxs8IXvmV4F1Bco=;
+        b=MIYh+lurVtarZ7crdmPcrieMH8EZz98B67CS2pRpH+bw+nIifY+/74UZXzCrFVmvG7
+         5JNVXmSzUYMT6PjI6EPXSUDNQWJ0WtDfUXOTV574KiQakHURApKafcz71OkdVKsfbYES
+         cGTYLboAdCqfpDw4psp0OfGRrZdivXKhQR05iQ0bEBla+cLfZ8Lun5wq2S79odkUsf82
+         Ft1meJUUQbSwLBZsoe3vZdLzB1wwu6jtfH6CZvyWrohKZv3afrvUIe6eG7+LQQkv1p0C
+         Rb466pXXNvNvL7w9bCjzEvxuIC/e+NPOqYO0ymBiCbYLNQvQXpENU1zwOp5sl88UQ6Cd
+         5XtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=tE5kGBxc9PR5MYieHfGicxhFgO1boA1xk2XZYsANqZE=;
-        b=pVv4j/U5UCGrynhW+5ISeXPQ9HXoOMTdGdl0ZOa4aDysXPFHKRg9/j0s/D3G+qEjGY
-         55kc5tQV7sqGoH/uBvdXvRoENcarirqaHfg/ZZkcuo0knO6K4TtX5VgRlBz1R5C8xS1u
-         LfIkKai3mgKk0XTP8586QNETAzVVWRUVi/w2eO9ERNycnPctpFTaSigPc35jQdWRZk0s
-         IAtUTd55F5aisOWgr6MmUcLV3bNOB+BvBGQ+ckR5hwPKbycfldKtKuQa4yciR+UmqBxG
-         JI/8lFn00oWUlLQSwc8qeeJYInmuKrdQvcOJ3q5G1Cznscg+vuvYvKdXZ+89XRvPmWBF
-         lcGg==
-X-Gm-Message-State: AOAM530jz4lYLJ9sHSdSRixJ18J8QtJLB+1J9bJzNAEldOBVEv7VfIxu
-        eFyUuhH4OuuAEjzPZCsU/iooa7pqopZN480=
-X-Google-Smtp-Source: ABdhPJymuo/nGsFPIwVrp7CZBqqkEkLsixu4nf/KlVnpN+10WWdFz1i21Iee5Xghf2MWQiCPsNtZaWmaSD1VQvY=
+        bh=cajmSKnfvpV4C51UK3Pjlq0PRtDcgxs8IXvmV4F1Bco=;
+        b=l2nixXL7t1XlgeH/z2nsR91H4P/zmWby9TjdogVqfO0ZVWxTCVLox4I1bPqbPNTDV6
+         84GYBRHsbPprSpYJAgbnjVxI81dUswSeVEN8c1BJrlNta77ajk8VSz1d1QksqO96vwHQ
+         YggrFQfFw3UJEgBMLW38gyDZXAXVXcI4Lwr7wAiVu3RwKbkKBuY8jCMr2cCIUJuCAVOz
+         7jg0/jeoZw0PilydfE+46DoBd2X6eW4J+MY6G64e5kz+0AUSoMBHfb5tWIECmwsh8mdA
+         OUxjVjoOxkrRW72dEgeXwAo5h9VWZK9HLqy1fr0sRz2Bk0dh2dBHnIstoWL58Mf8Cd5K
+         Hk+Q==
+X-Gm-Message-State: AOAM531EqbJCahYuujW1sW5eKZtHnzn2XVOcl5NVWyTofEXq/3UEtLqj
+        MNdJMQLJz8Qjy1A1qIVa/YB7TYgLdThhdqw=
+X-Google-Smtp-Source: ABdhPJw1MLQHUnPoE+xMUea0zwhQNWiEbbrDkOr6kvJJOLYN+b9okqykFfE3JvdOltc9UL2WPu1eY+Y4pt4ZAjk=
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:16d1:ab0e:fc4a:b9b1])
- (user=saravanak job=sendgmr) by 2002:a0c:fca2:: with SMTP id
- h2mr9492302qvq.5.1631693511580; Wed, 15 Sep 2021 01:11:51 -0700 (PDT)
-Date:   Wed, 15 Sep 2021 01:11:35 -0700
+ (user=saravanak job=sendgmr) by 2002:a0c:ab01:: with SMTP id
+ h1mr9553038qvb.0.1631693514157; Wed, 15 Sep 2021 01:11:54 -0700 (PDT)
+Date:   Wed, 15 Sep 2021 01:11:36 -0700
 In-Reply-To: <20210915081139.480263-1-saravanak@google.com>
-Message-Id: <20210915081139.480263-4-saravanak@google.com>
+Message-Id: <20210915081139.480263-5-saravanak@google.com>
 Mime-Version: 1.0
 References: <20210915081139.480263-1-saravanak@google.com>
 X-Mailer: git-send-email 2.33.0.309.g3052b89438-goog
-Subject: [PATCH v2 3/6] driver core: Create __fwnode_link_del() helper function
+Subject: [PATCH v2 4/6] driver core: Add debug logs when fwnode links are added/deleted
 From:   Saravana Kannan <saravanak@google.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -73,89 +73,36 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The same code is repeated in multiple locations. Create a helper
-function for it.
+This will help with debugging fw_devlink issues.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/base/core.c | 35 +++++++++++++++++++----------------
- 1 file changed, 19 insertions(+), 16 deletions(-)
+ drivers/base/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/base/core.c b/drivers/base/core.c
-index ca6c61a2e2e9..5e7faad4e083 100644
+index 5e7faad4e083..f06e8e2dc69b 100644
 --- a/drivers/base/core.c
 +++ b/drivers/base/core.c
-@@ -101,6 +101,19 @@ int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
- 	return ret;
- }
+@@ -95,6 +95,8 @@ int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
  
-+/**
-+ * __fwnode_link_del - Delete a link between two fwnode_handles.
-+ * @link: the fwnode_link to be deleted
-+ *
-+ * The fwnode_link_lock needs to be held when this function is called.
-+ */
-+static void __fwnode_link_del(struct fwnode_link *link)
-+{
-+	list_del(&link->s_hook);
-+	list_del(&link->c_hook);
-+	kfree(link);
-+}
-+
- /**
-  * fwnode_links_purge_suppliers - Delete all supplier links of fwnode_handle.
-  * @fwnode: fwnode whose supplier links need to be deleted
-@@ -112,11 +125,8 @@ static void fwnode_links_purge_suppliers(struct fwnode_handle *fwnode)
- 	struct fwnode_link *link, *tmp;
- 
- 	mutex_lock(&fwnode_link_lock);
--	list_for_each_entry_safe(link, tmp, &fwnode->suppliers, c_hook) {
--		list_del(&link->s_hook);
--		list_del(&link->c_hook);
--		kfree(link);
--	}
-+	list_for_each_entry_safe(link, tmp, &fwnode->suppliers, c_hook)
-+		__fwnode_link_del(link);
+ 	list_add(&link->s_hook, &sup->consumers);
+ 	list_add(&link->c_hook, &con->suppliers);
++	pr_debug("%pfwP Linked as a fwnode consumer to %pfwP\n",
++		 con, sup);
+ out:
  	mutex_unlock(&fwnode_link_lock);
- }
  
-@@ -131,11 +141,8 @@ static void fwnode_links_purge_consumers(struct fwnode_handle *fwnode)
- 	struct fwnode_link *link, *tmp;
- 
- 	mutex_lock(&fwnode_link_lock);
--	list_for_each_entry_safe(link, tmp, &fwnode->consumers, s_hook) {
--		list_del(&link->s_hook);
--		list_del(&link->c_hook);
--		kfree(link);
--	}
-+	list_for_each_entry_safe(link, tmp, &fwnode->consumers, s_hook)
-+		__fwnode_link_del(link);
- 	mutex_unlock(&fwnode_link_lock);
- }
- 
-@@ -1868,9 +1875,7 @@ static void __fw_devlink_link_to_consumers(struct device *dev)
- 		if (!own_link || ret == -EAGAIN)
- 			continue;
- 
--		list_del(&link->s_hook);
--		list_del(&link->c_hook);
--		kfree(link);
-+		__fwnode_link_del(link);
- 	}
- }
- 
-@@ -1922,9 +1927,7 @@ static void __fw_devlink_link_to_suppliers(struct device *dev,
- 		if (!own_link || ret == -EAGAIN)
- 			continue;
- 
--		list_del(&link->s_hook);
--		list_del(&link->c_hook);
--		kfree(link);
-+		__fwnode_link_del(link);
- 
- 		/* If no device link was created, nothing more to do. */
- 		if (ret)
+@@ -109,6 +111,8 @@ int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup)
+  */
+ static void __fwnode_link_del(struct fwnode_link *link)
+ {
++	pr_debug("%pfwP Dropping the fwnode link to %pfwP\n",
++		 link->consumer, link->supplier);
+ 	list_del(&link->s_hook);
+ 	list_del(&link->c_hook);
+ 	kfree(link);
 -- 
 2.33.0.309.g3052b89438-goog
 
