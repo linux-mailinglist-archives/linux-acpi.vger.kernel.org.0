@@ -2,200 +2,287 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5202D40CCFF
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Sep 2021 21:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D292B40CD2F
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Sep 2021 21:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230230AbhIOTG3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Sep 2021 15:06:29 -0400
-Received: from sonic302-22.consmr.mail.ne1.yahoo.com ([66.163.186.148]:37648
-        "EHLO sonic302-22.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229738AbhIOTG3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 15 Sep 2021 15:06:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netscape.net; s=a2048; t=1631732709; bh=pzOgJAW/BAqeaqccm3YEgRudRwOIrWkfR9OJpYV+4bU=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject:Reply-To; b=D8hKJ6cUGFnOyH4RCj4zGZqu49gEbZhhq7xhwRDa5kwNIfwioPpI8Hk68l6DnKeDlTwaunQfUdkbUdIjzPE0YjoEWWfVnzRJ/XGeOVQYNfdxdYIpRAe/zPMoDg76HdKLeJv4zG3RxI80z3ecIbWRxPro/qYDy7RZk7JB3V+tNRJqK4OQ5PBPq+EMq6R+MVzHw0cVDrPdGmSHVUkmZcZi9VkEubzRo0PrK8V/ndGG213uGujGItrIIp4wbjpMRMX2Uh44WrQEel4atYAKj1NkcbaHcWxZ+U59uo8LJilOdgFQy/XeuX6fe+N0gLkjnRVUXWYER2lMPHtIgnKs6O3GhA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1631732709; bh=tZ0LeFLUi7db+GSd8bKQKWXYy2/ql8IEq7dsMrZx+zA=; h=X-Sonic-MF:Subject:To:From:Date:From:Subject; b=RLBcR2Ntrw+DkBWJwe5AHB12l0cfyyGdD6zMbF3URIw0RTpIxC7/0xh+uTbowTimZ1T/Cbm2YOI8mTeyUNhE7TONJZJG4DfsZZiCRzBhJrPFA7O+eo+ZXLP4h10ED0a4bR5c4SQPgLb8sQpodzUPd+sQK1ANTNlgbAxWcTTTFFSla3rYuYu0j1at4DhBQKesvh41VuFV/zUWiJNy/HSCGo5o5cWOMttSz09zohusBj4+/c2DMs2+Bp6oJQ+Vw9QOXtjzGAgq4Ks8v4xYJ5lJJd/L+h97L1xdYPHvhAqWE+lRF8mKioDLNnTc+cL+i7ei5IvU3zxu6bhwoFx7dQT2SQ==
-X-YMail-OSG: .ysEupMVM1nSMBACJmpZPD5ekCJ0OkmX4yfLrJv8QxjiI21dRPbToV5ZUpEzxRc
- TwvkKjsFgygV4B20b5Oka9IBGKDUcIyzKjnCWjFSESnMMzkBrej6ZdQ3g6h12Nc.al1n5YokmS5f
- NYKUG.cEwxOMVkHXTPmhd7zcR_OPtxY3f.xruMSLQ_h0JsWV4sx_YA.0dp0MpQCHOLaMCmlJLdV3
- NvHcFxwgGVGoMKTVr0FNWf._nazJNcOdZlL8uYnvb0fMR9B65exeedZqV5lchuNzR7UZ2kZ8pUTJ
- e0Z2wlHwKwbaKE.mRnfN7pG.x0EGSAkyIpsyDlTQnHoRT3FMFVd96rnzWD69fk4oMN.WDDuKLjTD
- f.kUQxtUOXPAzRzNtP7iplqRHSE0f.9Z5Qy3WUwxmOTU9TGvrSFzB4tmy4_jgXLwn3YxiTEH_bz1
- GseDwFdT.CbN_Fp_UszR09KaK0oN3ez.9yRD_JGu7L5GCXBlUyIdB5FKYTFwCYdMP3qxfyxNnhzC
- riGkMSe7NH5eaiYey.vTXvQgy.0gjCRSEq07WW3H6OJucTU3RRHdI.axEjCyMz4dXDtmazoh6HDt
- QgBtOScSyvb0DQWu0iRJnVqJ2fT052UD5mHagc2c3MlYSGu3lL4pPfPdem4UF5IwSpqRX_yPHULS
- YtiroIO6CW74.ty3aj3GhtSLpE2LpduMsX_vA1mIZXRCQOXQWaUtZu8NtnYBdl1Vppr3HgzkFs2O
- aASzUPvjKWvFCRxJetcz1yaxQWbhwQujaj7apS1c_NuJwr2PcLI1it0yG.E9PwIQYJ9WJXc4NfUI
- CJLIHwEQm0VH7vMxObW8Q7aQBKkwJ7lBHl.BiuVYdgPDQB2k9va_s3YKRJWCPcTVi6gBJipbxvDJ
- y1TF.rmPNAQ3t.7mAUpnrXh_z88SNmvUcWu5NYLBA7nSUsjbKsjFUZ8oUZYVSPkxFnYXjAxfppgM
- 0WS.fsOHq8stwXotoNJ5m3x4_Cj0_hECkYbAJbmF65lqJxbzZa0XAuYtpN82y8VJZSLKWCIJboVO
- XYk4dMK9ykKefbZfXTGsL2Th4rdqypt6PXLnlaDRDhESxkUAMiH4moGhjfkxQogJ5Hn0PKV878F9
- UTuFyneOKdWLlZOzSky.h_o4O8r.TSChI9PlhjUqMG.0IutE4NylwIXxz2J7HiNgbP6HFs.XzwGi
- il0ntI610kh.ePRDHijiiWBBFOAaMrAQm0hkTfeimy8QM2APzpcsZaNaKL0X_DwYZbZ8Y3ep6J_u
- _FzRopuxWIOhiOH7uDD3DSAPdIsvHwQF21XVW4Q03oRyXPUbEI.HbnbDQUFZ8kLPUPoGwNWsSCj1
- VNSZkE4RlXBM8LH_gslwLRtqLbDZkqrvquRkE0uTrQ5cqBX02OUqgtEhzMZ_ADNqtzT3KyLrxcBK
- XwAZFsT4.2Fp7Pseq3TcMFB.bUKnY384ximDi2McfepdyjCeoh2cO8xbCOcPcVz4L7Cb41ZPDT5O
- lamtSXQvWUG4SqbtY5CaYFbW1Bva.Pp_ots3hLgDUfDQx_wMAR4jW0nQQQxzcGPIatz3zurk4FIt
- t2ykGiGNJVbIFxJsKA6gyD3UuwZ8sQX1FKK6rK439Uli4G0eu0hKDNEpgecFmqfq0mG_MAQSppwb
- 184UFtsEZ8xemy_t.EO0iKVLX_FVS88flLU3opKlV684c.oDJIPP386zVKfZMlzMdHjUNQOY1.4Q
- LmWnnHGFr.COgHt4F0uCLZK8cmZ8W3IYzhsdg2pMdN5d69BF5mF1Ff5o4DKBew7KSjLeTI4IAeOB
- tPDVU5UL17EeHY7.KkzhYdgT1qCpow..BXqHNWIpfJPToEEUMopcfeSIoIgiBXsRSivoFch9Q2G2
- rst.NgEpQCQrhNkP0NqoYZ8A3Md854kyGltAzt_5FVvVbHhanIS2zLEF0kxthufK_91zoWVsbPfe
- 6_drv6PxVYvVA1SOjix.Un2U6YuCnkBE0MynWs.7s4IdwKil8G3ZHd9qR_bjwJNYpe_t9T5WX3xZ
- UtKhB0qxXPmD0vwEeZwuazF5t98UesUt9pLdyToPWhY5YqxB9jWBeUbZA28C4XL3UZsy8yV3ULOW
- _5ydHs4B.isJOp5hMwbEtjjUBudDx6lKDW7bzD6ily1Kn84V6ZzFSnJu3gKYwHLonp9LSCNfeipR
- JB8gEZTGXkAJfYw8lR8ffdhFfPv6HJnhDvKoNwHFQJWyp6rVhSuwz.sMdWd1ocAJr5mLNX5mFVry
- fgBeQKTOl2Lf_r9oesbVWqPdeFBWBBqXJtQ9cwCrlbJCKQHSQq7oJqjFZUBfoPJ0VNZcJ84PhlD.
- vSp6acp3XAMNYairvh2tW2NVLoCKcFbAQM9gjZ476Cls-
-X-Sonic-MF: <manuelkrause@aim.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Wed, 15 Sep 2021 19:05:09 +0000
-Received: by kubenode529.mail-prod1.omega.ir2.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 1f3452adc11ecc80765aba0ddb1b736b;
-          Wed, 15 Sep 2021 19:05:06 +0000 (UTC)
-Subject: Re: [PATCH v3] ACPI: resources: add legacy irq override exception by
- DMI info
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hui Wang <hui.wang@canonical.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>
-References: <20210915130905.11196-1-hui.wang@canonical.com>
- <CAJZ5v0g1_zMKX9WeSDF5SXib1EFTke3wMHqtJm-+YtQzSyM6dQ@mail.gmail.com>
-From:   Manuel Krause <manuelkrause@netscape.net>
-Message-ID: <8e93e2ee-b403-c938-d730-7deacbfd759e@netscape.net>
-Date:   Wed, 15 Sep 2021 21:05:01 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0g1_zMKX9WeSDF5SXib1EFTke3wMHqtJm-+YtQzSyM6dQ@mail.gmail.com>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
+        id S231559AbhIOT3M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Sep 2021 15:29:12 -0400
+Received: from mail-dm6nam10on2061.outbound.protection.outlook.com ([40.107.93.61]:60832
+        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231583AbhIOT3L (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 15 Sep 2021 15:29:11 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IMNKU6gUtIKmXHw+VrwLPvGfO7EWCx4c/nPB6N4/YsuvDiRL9+bShLMhNPw/spbKYZT4SEGffdGT2cvvSSqk6M5Trn1bLEDLzxi8bMK0FjiFq6YMDcKkltkh7VFeRhmjBgd2tYq1wEbjyeXW24CP9or3HNXV2KqalIn7BZ5dwGsevML1E5tXghTTegvwBx+dUj6BY6E3P1qH5uMm0olyr4rzQ0VLGaH+wrSuTgjivmFWPVaZz+QZsUAUXGrF61NuDlpCj9P+ZMX+DdKRdfvwTYTuUPdReC/JKL2WGQK2lxXqpSoMm0UufYm997Yd3N2XSK+REzknaEic/goQ2AIsYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=KWuQL4Gel86ltbYscK31uyfz2fKoBm+ZM4wGBea2K3s=;
+ b=N+gDyxYDPWmCulylrae7n3jE8L6c7MrpGismrxoTsm4Y7uy5oaiwvrYef1BMwlEa99g/K1TNsIrQ7m2CFvDo7AZSfTMRxbUQteUlmN1dzyQXVSyNOKdEDdBs/b3BGLbw+wkHnlg72MBFgrWlb2sDiRnVNadKz2c7UptuBNE8TqLo2R20QjdOIpoqiGqYJg6voAXcQk/454f/idJfCsQNqybnwttQ7TFP6bSTRH9ezQossM0mp92Ny31+ZQ5wwhUwT+GCIUEPJKesVDcNEBbh+QJHkZ9GJmdepFbQpBUuh4i0zIE3Qu2q1Mrw7B6kZQseFKmR/8kHFBzknAJaY6ZfjA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KWuQL4Gel86ltbYscK31uyfz2fKoBm+ZM4wGBea2K3s=;
+ b=Z53TLNOGkBI8oeYHwneZrn8XV8HUJzR4D0D3nojcNEEpvWU41o2coeNnhMY8DOS1ZyrxFnIuuMtWdTV1DHuKJxHERjvWJc0vmc14VcWUK7+Wov8Wk+b4PQhKTxlfMmxG4Er2MkLIBCkwu5LE36rfLywG0O0++oMPh+TjF393JWug3VxfQNJaOr8mQ6sWEF0GovEDBQFbM7aw1SKLyGkYDc7FpFfSmbzjZlckZVythsvtij2W7MPD7N13ArkmhVf51wVU/m2U5B+5dJL7cScRXl2TcQJqw+f7gwUVrkE0GfwufitZLkIwDZu+1wrbnaJm8a+1rkixUaWsPfliG8DL1A==
+Received: from CH2PR12MB3895.namprd12.prod.outlook.com (2603:10b6:610:2a::13)
+ by CH2PR12MB4199.namprd12.prod.outlook.com (2603:10b6:610:a7::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.14; Wed, 15 Sep
+ 2021 19:27:51 +0000
+Received: from CH2PR12MB3895.namprd12.prod.outlook.com
+ ([fe80::a46b:a8b7:59d:9142]) by CH2PR12MB3895.namprd12.prod.outlook.com
+ ([fe80::a46b:a8b7:59d:9142%5]) with mapi id 15.20.4500.019; Wed, 15 Sep 2021
+ 19:27:51 +0000
+From:   Asmaa Mnebhi <asmaa@nvidia.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andrew Lunn <andrew@lunn.ch>
+CC:     David Thompson <davthompson@nvidia.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Liming Sun <limings@nvidia.com>
+Subject: RE: [PATCH v1 5/6] TODO: gpio: mlxbf2: Introduce IRQ support
+Thread-Topic: [PATCH v1 5/6] TODO: gpio: mlxbf2: Introduce IRQ support
+Thread-Index: AQHXkpZRAcQDwgai0k+eK2nQg5Bpo6t2INuggAMu2gCALFilUA==
+Date:   Wed, 15 Sep 2021 19:27:51 +0000
+Message-ID: <CH2PR12MB3895E8CDC7DC1AD0144E1416D7DB9@CH2PR12MB3895.namprd12.prod.outlook.com>
+References: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
+ <20210816115953.72533-6-andriy.shevchenko@linux.intel.com>
+ <CH2PR12MB3895ACF821C8242AA55A1DCDD7FD9@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <YR0UPG2451aGt9Xg@smile.fi.intel.com>
+In-Reply-To: <YR0UPG2451aGt9Xg@smile.fi.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.19013 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: linux.intel.com; dkim=none (message not signed)
+ header.d=none;linux.intel.com; dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 4ab5089b-71c8-488d-72b7-08d9787ee877
+x-ms-traffictypediagnostic: CH2PR12MB4199:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <CH2PR12MB4199411E37A9C5A1383F2FFCD7DB9@CH2PR12MB4199.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 5m9kSDCOwOMIUjF+EnpegzoVKAI6HvjuZN2HVPMe+18ABYhg3/SP8e3IDt9eVut/GO3ZhggkvI7OVLNQdc6vIbSn9vBGZ1qrYjDud7pzcbTwpVV5jRPEjEPiNAyOelqCRf3pd+U2Se6lHtb1it1IkruSTkZe7nzWJ2vjnGeNKMN+oq3SN+YJvBKvJmJ9raRV9FodEF5L0iOOkRQTVDTkbSFrUrO6VddoyXX1JE2MHpeUgl671XieKCvz8e43T/+DilABZh67Qj4f1+Xx/oVMKsPW+t5/B/fnJvXBTdEepIeRjfmp6dnHUEoD1FMGXQ5JXXDMLz1BuhjjuHdVr4Qkv7ft3JfQBatIBvKsWoeh+GTrIbeNkHvrqtTF8NJbHP7CFUv3d5cpoF4wXomzlrU/3J+NLf5N/xZbHKlPhWe3OwinfLNI0PyYOTRWIGs0uW//FI3UDj32pupEOYTIHL7rqYlFWSPaJgzY19UiTAgtb9ct2F3UVwUY7UwO5i1FVZobOVyLDOJy72NRolnEvruNp4odl+zhH6OYlIkD/mz878nTo937ClrC+KzqXht9hr/UDR16wrMvctEkB9xHAKbBPihuGu5kOvgse3rhxWLYCSHH/S1uPaGbCwlWtHetbrCKoGwjmoEVtxyGjGlSR5f9Mb7xFKeHGoXudRpvyKJ3W9sIFBeIgPKBHJgcb4GKpxSzMBh9SfxZePWqVEBM+4mmq488KdI1/UrnH0XQJ+AxPuo=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3895.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(396003)(346002)(136003)(366004)(376002)(186003)(8676002)(8936002)(64756008)(66446008)(66556008)(86362001)(4326008)(478600001)(316002)(26005)(33656002)(7416002)(53546011)(107886003)(71200400001)(5660300002)(2906002)(6506007)(38070700005)(54906003)(52536014)(110136005)(76116006)(122000001)(38100700002)(66946007)(9686003)(7696005)(55016002)(66476007)(83380400001)(341764005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?BaKKRZy0ZhSzZywI8APFYRhi0qVaoysZcKikyHoGtbJvyl8LU5x7yBL3KJoy?=
+ =?us-ascii?Q?8iOWqP75c0B9XdK5m6x7P1P2As3ggrxQz0O8R9ilarmJvRX8ey19CIpV+CZo?=
+ =?us-ascii?Q?hWsFnn7VdyyN6ChlLnO20g80INSpcMcIBLrrogCI5IIjifP5NOLe4wKmKD8O?=
+ =?us-ascii?Q?C4B+Cafpkx8D0Irj/JH8mXrq3Ho02X1w1wlv//jO/dPNxr+T6dWdqz4P1acA?=
+ =?us-ascii?Q?LL4mIIapco1yCnDUqNcZVpTLhpzByk4D6r6SKdr6szF90A3zOZOfTugSo4JC?=
+ =?us-ascii?Q?0xuXZdFIApqsB3+CFZ6xH5PtypHJpvMJep7EyYqXdOqI3C4yz04C8q42rxPe?=
+ =?us-ascii?Q?ywoAyScoWt7K5MkuXeHdKZBTcoZHL4Ru4IACEbkCAOQy2LKjElv8/cdvjZZB?=
+ =?us-ascii?Q?ikAZqDBxxlnBNymAV51xz4iTpUXC/1gRWF7b8DTeFLbOcKbRVTn1t/vJ8trs?=
+ =?us-ascii?Q?pf1eXrsiwaomfHZzea9g5s8raKdzjFkx1mnTr3tbE4eI1Y98OnhO42EdQKLi?=
+ =?us-ascii?Q?kSFANnthaxjgKV0pFWI22YY4lCjnY1LeOhbnXp/o2nJDZPrY4p0CNbjQ49z0?=
+ =?us-ascii?Q?uB3bG7Iw345Iw3+QuS7uDSbSvx3HeGsv4PtqBU27gjR6X9fKbtzGPJ/PORDF?=
+ =?us-ascii?Q?2gMOG8zDYSi4dfulSEajDZRjvpClk9izzTeVho1Ww1VqIKuDKhHSPI6OnsaO?=
+ =?us-ascii?Q?v0oQcVJRlzGxPfLefZ6sS16g29pyz/8kcpvKkWbQ6F7LX8vC6HrhxoXMeuuA?=
+ =?us-ascii?Q?QCxxH7wckv7VOTC6ehMXu6cXkWg0SIs2lDf918UaUeiW0XtibMht9en2zwkD?=
+ =?us-ascii?Q?4R/q9/+O184S9+rdBjrIIMC33ROJKeL3vgHnFbOC+1nmJdVw27wvSLjc9GM6?=
+ =?us-ascii?Q?myEH5bQ5HBQWMC2lXRkN8mjGA1XZJ06+MlJ8ynY6vAxqJxfgv0bsEL7+OeIt?=
+ =?us-ascii?Q?PiYvxpODLkrzj6VPC2oefdCWbMecV4WfFrbnudmpAj0kNCzRwCnTfCStYum5?=
+ =?us-ascii?Q?aAHFBe+1YZ0SqpgF7rnDzrhlWh2nVXaUKEy2LoIfp3D8xhOvabr3JGIqEzqk?=
+ =?us-ascii?Q?si8y0N8gNyQR59qz+NIerj5YCknM1huqlTybRCrNMxv4MLefuZDk5EfM8ajY?=
+ =?us-ascii?Q?huSnuiWDprOqr7R7EbU6Oxp1xBA93GjhlFzsyL8kDcxvLid0aoPzR9p28ThQ?=
+ =?us-ascii?Q?cFOCG/b4YJv6185ssme6Fu1cB/kBI+JyN/RnGGJlQ9EFE/hMqcPQJjs5JvR4?=
+ =?us-ascii?Q?5I1H9MpMtdmL4gJOe7YkMWVpCRIHUZ09hUGSlD+Bk0TKSTORBqy9u+5+rVVa?=
+ =?us-ascii?Q?Zvi3E7OIUX5ZVut6Mf0Njj+K?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3895.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ab5089b-71c8-488d-72b7-08d9787ee877
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Sep 2021 19:27:51.0270
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2ZgQsk2T6dA5NnbSkTm38vrUQV431naakuX4QCkNF/rbZLOVt8lrkX5RLlppgyyThuERouE3cOsfXIK4ywmrNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4199
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 15/09/2021 20:13, Rafael J. Wysocki wrote:
-> On Wed, Sep 15, 2021 at 3:09 PM Hui Wang <hui.wang@canonical.com> wrote:
->>
->> After the commit 0ec4e55e9f57 ("ACPI: resources: Add checks for ACPI
->> IRQ override") is reverted, the keyboard of those Medion laptops can't
->> work again.
->>
->> To fix the keyboard issue, here adding an override check by DMI info,
->> this will not affect other machines and this design refers to
->> the prt_quirks[] in the drivers/acpi/pci_irq.c.
->>
->> If we meet similar issues on other platforms, we could expand the
->> table of skip_override_table[] or medion_laptop[].
->>
->> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
->> BugLink: http://bugs.launchpad.net/bugs/1909814
->> Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->> Reported-by: Manuel Krause <manuelkrause@netscape.net>
->> Tested-by: Manuel Krause <manuelkrause@netscape.net>
->> Signed-off-by: Hui Wang <hui.wang@canonical.com>
->> ---
->>   drivers/acpi/resource.c | 49 +++++++++++++++++++++++++++++++++++++++--
->>   1 file changed, 47 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
->> index ee78a210c606..7bf38652e6ac 100644
->> --- a/drivers/acpi/resource.c
->> +++ b/drivers/acpi/resource.c
->> @@ -16,6 +16,7 @@
->>   #include <linux/ioport.h>
->>   #include <linux/slab.h>
->>   #include <linux/irq.h>
->> +#include <linux/dmi.h>
->>
->>   #ifdef CONFIG_X86
->>   #define valid_IRQ(i) (((i) != 0) && ((i) != 2))
->> @@ -380,9 +381,51 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
->>   }
->>   EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
->>
->> +static const struct dmi_system_id medion_laptop[] = {
->> +       {
->> +               .ident = "MEDION P15651",
->> +               .matches = {
->> +                       DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
->> +                       DMI_MATCH(DMI_BOARD_NAME, "M15T"),
->> +               },
->> +       },
->> +       { }
->> +};
->> +
->> +struct irq_override_cmp {
->> +       const struct dmi_system_id *system;
->> +       unsigned char irq;
->> +       unsigned char triggering;
->> +       unsigned char polarity;
->> +       unsigned char shareable;
->> +};
->> +
->> +static const struct irq_override_cmp skip_override_table[] = {
->> +       { medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
->> +};
->> +
->> +static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
->> +                                 u8 shareable)
->> +{
->> +       int i;
->> +
->> +       for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
->> +               const struct irq_override_cmp *entry = &skip_override_table[i];
->> +
->> +               if (dmi_check_system(entry->system) &&
->> +                   entry->irq == gsi &&
->> +                   entry->triggering == triggering &&
->> +                   entry->polarity == polarity &&
->> +                   entry->shareable == shareable)
->> +                       return false;
->> +       }
->> +
->> +       return true;
->> +}
->> +
->>   static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
->>                                       u8 triggering, u8 polarity, u8 shareable,
->> -                                    bool legacy)
->> +                                    bool check_override)
->>   {
->>          int irq, p, t;
->>
->> @@ -401,7 +444,9 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
->>           * using extended IRQ descriptors we take the IRQ configuration
->>           * from _CRS directly.
->>           */
->> -       if (legacy && !acpi_get_override_irq(gsi, &t, &p)) {
->> +       if (check_override &&
->> +           acpi_dev_irq_override(gsi, triggering, polarity, shareable) &&
->> +           !acpi_get_override_irq(gsi, &t, &p)) {
->>                  u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
->>                  u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
->>
->> --
-> 
-> Applied as 5.16 material under the subject "ACPI: resources: Add
-> DMI-based legacy IRQ override quirk" with some changelog edits.
-> 
-> Thanks!
-> 
+Hi Andy, Hi Andrew,
 
-We have to thank you, Rafael, for investing your time and 
-covering this issue + fix again!
+I have a question regarding patch submission. I am going to mimic what Andy=
+ has done for v5/6 and v6/6 and send 2 patches in a bundle as follows:
+/* for the cover letter */ : Subject: [PATCH v1 0/2] gpio: mlxbf2: Introduc=
+e proper interrupt handling
+Subject: [PATCH v1 1/2] gpio: mlxbf2: Introduce IRQ support
+Subject: [PATCH v1 2/2] net: mellanox: mlxbf_gige: Replace non-standard int=
+errupt handling
 
-I just want to add now, that also PATCH v3 works fine on here 
-(with kernel v5.14.4 now).
+Questions:
+1) do the subject lines look ok? i.e. sending patches that target "net" as =
+opposed to "net-next"
+2) would you like me to add a "Fixes" tag to each patch as follows? I am no=
+t sure if you consider this a bug?
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
 
-I'm still not familiar with the kernel patch queueing mechanisms, 
-so forgive my possibly bothering question:
-Would it be possible (e.g. for you) to get that fix into earlier 
-kernel versions? Simple reason to ask for it: Some people 
-thinking over to return their newly bought machine of this type 
-without proper out-of-the-box Linux support.
-It shouldn't be my business, but I understand those folks' concerns.
+Thank you.
+Asmaa
+
+-----Original Message-----
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>=20
+Sent: Wednesday, August 18, 2021 10:08 AM
+To: Asmaa Mnebhi <asmaa@nvidia.com>
+Cc: David Thompson <davthompson@nvidia.com>; linux-kernel@vger.kernel.org; =
+linux-gpio@vger.kernel.org; netdev@vger.kernel.org; linux-acpi@vger.kernel.=
+org; Linus Walleij <linus.walleij@linaro.org>; Bartosz Golaszewski <bgolasz=
+ewski@baylibre.com>; David S. Miller <davem@davemloft.net>; Jakub Kicinski =
+<kuba@kernel.org>; Rafael J. Wysocki <rjw@rjwysocki.net>; Liming Sun <limin=
+gs@nvidia.com>
+Subject: Re: [PATCH v1 5/6] TODO: gpio: mlxbf2: Introduce IRQ support
+Importance: High
+
+On Mon, Aug 16, 2021 at 09:34:50PM +0000, Asmaa Mnebhi wrote:
+> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Sent: Monday, August 16, 2021 8:00 AM
+
+...
+
+> +static irqreturn_t mlxbf2_gpio_irq_handler(int irq, void *ptr) {
+>=20
+> So how do you suggest registering this handler?
+
+As usual. This handler should be probably registered via standard mechanism=
+s.
+Perhaps it's hierarchical IRQ, then use that facility of GPIO library.
+(see gpio-dwapb.c for the example).
+
+> 1) should I still use BF_RSH0_DEVICE_YU_INT shared interrupt signal?
+
+I don't know your hardware connection between GPIO and GIC. You have to loo=
+k into TRM and see how they are connected and what should be programmed for=
+ the mode you want to run this in.
+
+> 2) or does Linux kernel know (based on parsing GpioInt) how trigger=20
+> the handler based on the GPIO datain changing (active low/high)? In=20
+> this case, the kernel will call this handler whenever the GPIO pin (9=20
+> or 12) value changes.
+
+After driver in place kernel will know how to map, register and handle the =
+GPIO interrupt. But the GIC part is out of the picture here. It may be you =
+will need additional stuff there, like disabling (or else) the interrupts, =
+or providing a bypass. I can't answer to this.
+
+> I need to check whether GPIO is active low/high but lets assume for=20
+> now it is open drain active low. We will use acpi_dev_gpio_irq_get to=20
+> translate GpioInt to a Linux IRQ number:
+
+> irq =3D acpi_dev_gpio_irq_get_by(ACPI_COMPANION(dev), "phy-gpios", 0);=20
+> ret =3D devm_request_irq(dev, irq, mlxbf2_gpio_irq_handler, IRQF_ONESHOT=
+=20
+> | IRQF_SHARED, dev_name(dev), gs);
+
+Yes.
+(I dunno about one short and shared flags, but you should know it better th=
+an me)
+
+> And I will need to add GpioInt to the GPI0 ACPI table as follows:
+
+But you told me that it's already on the market, how are you suppose to cha=
+nge existing tables?
+
+> // GPIO Controller
+>       Device(GPI0) {
+>        Name(_HID, "MLNXBF22")
+>         Name(_UID, Zero)
+>         Name(_CCA, 1)
+>         Name(_CRS, ResourceTemplate() {
+>           // for gpio[0] yu block
+>          Memory32Fixed(ReadWrite, 0x0280c000, 0x00000100)
+>          GpioInt (Level, ActiveLow, Exclusive, PullDefault, , " \\_SB.GPI=
+0") {9}
+>         })
+>         Name(_DSD, Package() {
+>           ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>           Package() {
+>             Package () { "phy-gpios", Package() {^GPI0, 0, 0, 0 }},
+>             Package () { "rst-pin", 32 }, // GPIO pin triggering soft res=
+et on BlueSphere and PRIS
+>           }
+>         })
+>       }
+
+No, it's completely wrong. The resources are provided by GPIO controller an=
+d consumed by devices. You showed me the table for the consumer, which is g=
+ood (of course if you wish to use Edge triggered interrupts there).
+
+...
+
+> +		handle_nested_irq(nested_irq);
+
+> Now how can the mlxbf_gige_main.c driver also retrieve this nested_irq=20
+> to register its interrupt handler as well? This irq.domain is only=20
+> visible to the gpio-mlxbf2.c driver isn't it?  phydev->irq (below)=20
+> should be populated with nested_irq at init time because it is used to=20
+> register the phy interrupt in this generic function:
+
+nested here is an example, you have to check which one to use.
+
+Moreover the code misses ->irq_set_type() callback.
+
+So, yes, domain will be GPIOs but IRQ core will handle it properly.
+
+> void phy_request_interrupt(struct phy_device *phydev) {
+> 	int err;
+>=20
+> 	err =3D request_threaded_irq(phydev->irq, NULL, phy_interrupt,
+> 				   IRQF_ONESHOT | IRQF_SHARED,
+> 				   phydev_name(phydev), phydev);
+
+You have several IRQ resources (Interrupt() and GpioInt() ones) in the cons=
+umer device node. I don't know how your hardware is designed, but if you wa=
+nt to use GPIO, then this phydev->irq should be a Linux vIRQ returned from =
+above mentioned acpi_dev_gpio_irq_get_by() call. Everything else is magical=
+ly happens.
+
+...
+
+> +	int offset =3D irqd_to_hwirq(irqd) % MLXBF2_GPIO_MAX_PINS_PER_BLOCK;
+
+> Why is the modulo needed? Isn't the hwirq returned a number between 0=20
+> and
+> MLXBF2_GPIO_MAX_PINS_PER_BLOCK-1 ?
+
+It's copy'n'paste from somewhere, since you have device per bank you don't =
+need it.
+
+...
+
+> We also need to make sure that the gpio driver is loaded before the=20
+> mlxbf-gige driver. Otherwise, the mlxbf-gige 1G interface fails to come u=
+p.
+> I have implemented this dependency on the gpio driver before,=20
+> something like this at the end of the mlxbf-gige driver:
+
+> MODULE_SOFTDEP("pre: gpio_mlxbf2");
+
+No, when you have GPIO device is listed in the tables the IRQ mapping will =
+return you deferred probe. It doesn't matter when device will appear, but i=
+t will be functional only when all resource requirements are satisfied.
+
+Above soft dependency doesn't guarantee this, deferred probe does.
+
+--
+With Best Regards,
+Andy Shevchenko
 
 
-TIA and best regards,
-
-Manuel
