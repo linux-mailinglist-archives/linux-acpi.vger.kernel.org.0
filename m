@@ -2,81 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2101F40CDDB
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Sep 2021 22:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C50540CF63
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Sep 2021 00:35:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231786AbhIOUVQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Sep 2021 16:21:16 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:43020 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231766AbhIOUVP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 15 Sep 2021 16:21:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=g8aS/xkGAi+vDTBvZLmhQHUMkhsVOhjWnP9/XA4zI8w=; b=ioLUW4wT3oJjzjtiwN2aY3fHwD
-        zkES/hsPaaiOjLAgCHjgIduxav+YaVI65maksMyCZqIE271TIyWwlW/8tpe9Ulo7b+3mLd4GrxYle
-        RRlX1Wxt4rOBGJf3lD9D7oYbnkPhE7+8ZF2KrAIAxaNCBMsTUtOab6Yxy8zm5Zc1imG4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1mQbNo-006no5-9W; Wed, 15 Sep 2021 22:19:52 +0200
-Date:   Wed, 15 Sep 2021 22:19:52 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        David Thompson <davthompson@nvidia.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Liming Sun <limings@nvidia.com>
-Subject: Re: [PATCH v1 5/6] TODO: gpio: mlxbf2: Introduce IRQ support
-Message-ID: <YUJVaMkjmbuDGGOE@lunn.ch>
-References: <20210816115953.72533-1-andriy.shevchenko@linux.intel.com>
- <20210816115953.72533-6-andriy.shevchenko@linux.intel.com>
- <CH2PR12MB3895ACF821C8242AA55A1DCDD7FD9@CH2PR12MB3895.namprd12.prod.outlook.com>
- <YR0UPG2451aGt9Xg@smile.fi.intel.com>
- <CH2PR12MB3895E8CDC7DC1AD0144E1416D7DB9@CH2PR12MB3895.namprd12.prod.outlook.com>
+        id S232832AbhIOWhA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Sep 2021 18:37:00 -0400
+Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:34441 "EHLO
+        mellanox.co.il" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232743AbhIOWg7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Sep 2021 18:36:59 -0400
+Received: from Internal Mail-Server by MTLPINE1 (envelope-from asmaa@mellanox.com)
+        with SMTP; 16 Sep 2021 01:28:53 +0300
+Received: from farm-0002.mtbu.labs.mlnx (farm-0002.mtbu.labs.mlnx [10.15.2.32])
+        by mtbu-labmailer.labs.mlnx (8.14.4/8.14.4) with ESMTP id 18FMSrP0018006;
+        Wed, 15 Sep 2021 18:28:53 -0400
+Received: (from asmaa@localhost)
+        by farm-0002.mtbu.labs.mlnx (8.14.7/8.13.8/Submit) id 18FMSomd010292;
+        Wed, 15 Sep 2021 18:28:50 -0400
+From:   Asmaa Mnebhi <asmaa@nvidia.com>
+To:     andy.shevchenko@gmail.com, linux-gpio@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Cc:     Asmaa Mnebhi <asmaa@nvidia.com>, andrew@lunn.ch, kuba@kernel.org,
+        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        davem@davemloft.net, rjw@rjwysocki.net, davthompson@nvidia.com
+Subject: [PATCH v1 0/2] gpio: mlxbf2: Introduce proper interrupt handling
+Date:   Wed, 15 Sep 2021 18:28:45 -0400
+Message-Id: <20210915222847.10239-1-asmaa@nvidia.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CH2PR12MB3895E8CDC7DC1AD0144E1416D7DB9@CH2PR12MB3895.namprd12.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 15, 2021 at 07:27:51PM +0000, Asmaa Mnebhi wrote:
-> Hi Andy, Hi Andrew,
-> 
-> I have a question regarding patch submission. I am going to mimic what Andy has done for v5/6 and v6/6 and send 2 patches in a bundle as follows:
-> /* for the cover letter */ : Subject: [PATCH v1 0/2] gpio: mlxbf2: Introduce proper interrupt handling
-> Subject: [PATCH v1 1/2] gpio: mlxbf2: Introduce IRQ support
-> Subject: [PATCH v1 2/2] net: mellanox: mlxbf_gige: Replace non-standard interrupt handling
-> 
-> Questions:
-> 1) do the subject lines look ok? i.e. sending patches that target "net" as opposed to "net-next"
-> 2) would you like me to add a "Fixes" tag to each patch as follows? I am not sure if you consider this a bug?
-> Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+This is a follow up on a discussion regarding
+proper handling of GPIO interrupts within the
+gpio-mlxbf2.c driver.
 
-You are posting patches which go into two different subsystems. So you
-need to pay special care here. Pick a maintainer you want to merge
-this, and make sure you Cc: the other maintainer. Make it clear in
-patch 0/X which maintainer you would like to take the patch series,
-and that the other should give an Acked-by if they are happy with the
-patches.
+Link to discussion:
+https://lore.kernel.org/netdev/20210816115953.72533-7-andriy.shevchenko@linux.intel.com/T/
 
-I don't think this should be considered a bug, so no need for a Fixes:
-tag.
+Patch 1 adds support to a GPIO IRQ handler in gpio-mlxbf2.c.
+Patch 2 is a follow up removal of custom GPIO IRQ handling
+from the mlxbf_gige driver and replacing it with a simple
+IRQ request. The ACPI table for the mlxbf_gige driver is
+responsible for instantiating the PHY GPIO interrupt via
+GpioInt.
 
-The subject lines look O.K.
+Andy Shevchenko, could you please review this patch series.
+David Miller, could you please ack the changes in the
+mlxbf_gige driver.
 
-Also, please fix your mailer to wrap lines at about 75 characters.
+Asmaa Mnebhi (2):
+  gpio: mlxbf2: Introduce IRQ support
+  net: mellanox: mlxbf_gige: Replace non-standard interrupt handling
 
-      Andrew
+ drivers/gpio/gpio-mlxbf2.c                    | 181 ++++++++++++++-
+ .../net/ethernet/mellanox/mlxbf_gige/Makefile |   1 -
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige.h |  12 -
+ .../mellanox/mlxbf_gige/mlxbf_gige_gpio.c     | 212 ------------------
+ .../mellanox/mlxbf_gige/mlxbf_gige_main.c     |  22 +-
+ 5 files changed, 188 insertions(+), 240 deletions(-)
+ delete mode 100644 drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_gpio.c
+
+-- 
+2.30.1
+
