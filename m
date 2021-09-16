@@ -2,195 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4581D40D388
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Sep 2021 08:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6A0940D38F
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Sep 2021 08:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234728AbhIPG6j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Sep 2021 02:58:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:21859 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234608AbhIPG6g (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Sep 2021 02:58:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1631775436;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=8RB13z4WWFvpQhPAtaErfMzrxHDfvjm55tbgAkFGFds=;
-        b=ZBAJKGHeTQAAls0kn8k6LPMvXMKAHXMry7i+6tnxK7bO8TShzF/vDBg3Pro5mnPDaKfoso
-        2P/voGX3guUEqajPOHXVAaEOZpiXkPe6KJpAyuZy7iVISrGu0cKMJrIdKQA6fUsZz7PZny
-        hcW8Cyp1cns8fuUiUG7QHIfUf9e1W90=
-Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
- [209.85.219.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-417-Jud7kUsHMFiLqjX4kjZvMw-1; Thu, 16 Sep 2021 02:57:15 -0400
-X-MC-Unique: Jud7kUsHMFiLqjX4kjZvMw-1
-Received: by mail-yb1-f200.google.com with SMTP id f64-20020a2538430000b0290593bfc4b046so11267555yba.9
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Sep 2021 23:57:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8RB13z4WWFvpQhPAtaErfMzrxHDfvjm55tbgAkFGFds=;
-        b=I34tWotdwtAsafsAzatuIcb3kRkM99KkBjZmzIC+HuVext/QKkgXoI6x6lFrAmfjFI
-         ehxDFYyK7R8NqO/WkJTqoo1C2YmGr9kt0b+PexCznJLl7Qe0lYmbeVzaL4KfHaQu1iNW
-         honKN/xLR756or1w9jV15e5CPQEDzYS4Br19tTMUIs/7P27j2zjgQzoUf6OfXFwJ8OxH
-         FEFHQYFFJQLpcwy+MzK7//YJoeH0gu9Qh2Q1aqjNj5Xj1jq8JSsQiFcN4xyKGOpaZv1t
-         Lc6BTNqMahfRviMgWZ3/YwD3asEm4oKkKtpEKZ90l/Krc9JxgVxmymQWVyZnGHyzp+0f
-         VDRA==
-X-Gm-Message-State: AOAM532RoAdvK0Npj4m/vwZqVM52gqGRk1wvorRjG5WdyVp/4GQgfww3
-        UmkwHLY6DiyePFXII2IhwidjKXIvO1ibrNurgJ3Fro32U7v4Cny9gcKeCwI3S0MnQvljrmQctlm
-        Asep/5PFgA3vnnQTsU/kXVP99fOWmr7HicjFuuQ==
-X-Received: by 2002:a25:bb8b:: with SMTP id y11mr5374065ybg.384.1631775434452;
-        Wed, 15 Sep 2021 23:57:14 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwLucYeWhnPNQkeQVqS3EcyyweAYtvQL9fa++UxRdE70ZRSeCy7mhVRsSSA5lCGz3A636eqomK45lUsdY3V5KU=
-X-Received: by 2002:a25:bb8b:: with SMTP id y11mr5374044ybg.384.1631775434181;
- Wed, 15 Sep 2021 23:57:14 -0700 (PDT)
+        id S231255AbhIPG7v (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Sep 2021 02:59:51 -0400
+Received: from mga17.intel.com ([192.55.52.151]:20550 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234539AbhIPG7v (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 16 Sep 2021 02:59:51 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10108"; a="202658296"
+X-IronPort-AV: E=Sophos;i="5.85,297,1624345200"; 
+   d="scan'208";a="202658296"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2021 23:58:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,297,1624345200"; 
+   d="scan'208";a="610513266"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 15 Sep 2021 23:58:20 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 16 Sep 2021 09:58:16 +0300
+Date:   Thu, 16 Sep 2021 09:58:16 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Laurentiu Tudor <laurentiu.tudor@nxp.com>, kbuild-all@lists.01.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [rafael-pm:bleeding-edge 6/11] drivers/base/swnode.c:1120:17:
+ error: too many arguments to function 'software_node_notify'
+Message-ID: <YULrCIRyvuryjoGE@kuha.fi.intel.com>
+References: <202109160821.skJVoHhq-lkp@intel.com>
 MIME-Version: 1.0
-References: <20210913140229.24797-1-omosnace@redhat.com> <CAHC9VhRw-S+zZUFz5QFFLMBATjo+YbPAiR21jX6p7cT0T+MVLA@mail.gmail.com>
- <CAHC9VhQyejnmLn0NHQiWzikHs8ZdzAUdZ2WqNxgGM6xhJ4mvMQ@mail.gmail.com>
-In-Reply-To: <CAHC9VhQyejnmLn0NHQiWzikHs8ZdzAUdZ2WqNxgGM6xhJ4mvMQ@mail.gmail.com>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Thu, 16 Sep 2021 08:57:02 +0200
-Message-ID: <CAFqZXNsLZE18YugJYDzxUwjY36Gt2iX=KYtuuu-erY_+_mmvqg@mail.gmail.com>
-Subject: Re: [PATCH v4] lockdown,selinux: fix wrong subject in some SELinux
- lockdown checks
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     Linux Security Module list 
-        <linux-security-module@vger.kernel.org>,
-        James Morris <jmorris@namei.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        X86 ML <x86@kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        linux-cxl@vger.kernel.org, linux-efi <linux-efi@vger.kernel.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux-pm mailing list <linux-pm@vger.kernel.org>,
-        linux-serial@vger.kernel.org, bpf <bpf@vger.kernel.org>,
-        network dev <netdev@vger.kernel.org>,
-        Kexec Mailing List <kexec@lists.infradead.org>,
-        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202109160821.skJVoHhq-lkp@intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 16, 2021 at 4:59 AM Paul Moore <paul@paul-moore.com> wrote:
-> On Mon, Sep 13, 2021 at 5:05 PM Paul Moore <paul@paul-moore.com> wrote:
-> >
-> > On Mon, Sep 13, 2021 at 10:02 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > >
-> > > Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
-> > > lockdown") added an implementation of the locked_down LSM hook to
-> > > SELinux, with the aim to restrict which domains are allowed to perform
-> > > operations that would breach lockdown.
-> > >
-> > > However, in several places the security_locked_down() hook is called in
-> > > situations where the current task isn't doing any action that would
-> > > directly breach lockdown, leading to SELinux checks that are basically
-> > > bogus.
-> > >
-> > > To fix this, add an explicit struct cred pointer argument to
-> > > security_lockdown() and define NULL as a special value to pass instead
-> > > of current_cred() in such situations. LSMs that take the subject
-> > > credentials into account can then fall back to some default or ignore
-> > > such calls altogether. In the SELinux lockdown hook implementation, use
-> > > SECINITSID_KERNEL in case the cred argument is NULL.
-> > >
-> > > Most of the callers are updated to pass current_cred() as the cred
-> > > pointer, thus maintaining the same behavior. The following callers are
-> > > modified to pass NULL as the cred pointer instead:
-> > > 1. arch/powerpc/xmon/xmon.c
-> > >      Seems to be some interactive debugging facility. It appears that
-> > >      the lockdown hook is called from interrupt context here, so it
-> > >      should be more appropriate to request a global lockdown decision.
-> > > 2. fs/tracefs/inode.c:tracefs_create_file()
-> > >      Here the call is used to prevent creating new tracefs entries when
-> > >      the kernel is locked down. Assumes that locking down is one-way -
-> > >      i.e. if the hook returns non-zero once, it will never return zero
-> > >      again, thus no point in creating these files. Also, the hook is
-> > >      often called by a module's init function when it is loaded by
-> > >      userspace, where it doesn't make much sense to do a check against
-> > >      the current task's creds, since the task itself doesn't actually
-> > >      use the tracing functionality (i.e. doesn't breach lockdown), just
-> > >      indirectly makes some new tracepoints available to whoever is
-> > >      authorized to use them.
-> > > 3. net/xfrm/xfrm_user.c:copy_to_user_*()
-> > >      Here a cryptographic secret is redacted based on the value returned
-> > >      from the hook. There are two possible actions that may lead here:
-> > >      a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
-> > >         task context is relevant, since the dumped data is sent back to
-> > >         the current task.
-> > >      b) When adding/deleting/updating an SA via XFRM_MSG_xxxSA, the
-> > >         dumped SA is broadcasted to tasks subscribed to XFRM events -
-> > >         here the current task context is not relevant as it doesn't
-> > >         represent the tasks that could potentially see the secret.
-> > >      It doesn't seem worth it to try to keep using the current task's
-> > >      context in the a) case, since the eventual data leak can be
-> > >      circumvented anyway via b), plus there is no way for the task to
-> > >      indicate that it doesn't care about the actual key value, so the
-> > >      check could generate a lot of "false alert" denials with SELinux.
-> > >      Thus, let's pass NULL instead of current_cred() here faute de
-> > >      mieux.
-> > >
-> > > Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
-> > > Improvements-suggested-by: Paul Moore <paul@paul-moore.com>
-> > > Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
-> > > Acked-by: Dan Williams <dan.j.williams@intel.com>         [cxl]
-> > > Acked-by: Steffen Klassert <steffen.klassert@secunet.com> [xfrm]
-> > > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> > > ---
-> > >
-> > > v4:
-> > > - rebase on top of TODO
-> > > - fix rebase conflicts:
-> > >   * drivers/cxl/pci.c
-> > >     - trivial: the lockdown reason was corrected in mainline
-> > >   * kernel/bpf/helpers.c, kernel/trace/bpf_trace.c
-> > >     - trivial: LOCKDOWN_BPF_READ was renamed to LOCKDOWN_BPF_READ_KERNEL
-> > >       in mainline
-> > >   * kernel/power/hibernate.c
-> > >     - trivial: !secretmem_active() was added to the condition in
-> > >       hibernation_available()
-> > > - cover new security_locked_down() call in kernel/bpf/helpers.c
-> > >   (LOCKDOWN_BPF_WRITE_USER in BPF_FUNC_probe_write_user case)
-> > >
-> > > v3: https://lore.kernel.org/lkml/20210616085118.1141101-1-omosnace@redhat.com/
-> > > - add the cred argument to security_locked_down() and adapt all callers
-> > > - keep using current_cred() in BPF, as the hook calls have been shifted
-> > >   to program load time (commit ff40e51043af ("bpf, lockdown, audit: Fix
-> > >   buggy SELinux lockdown permission checks"))
-> > > - in SELinux, don't ignore hook calls where cred == NULL, but use
-> > >   SECINITSID_KERNEL as the subject instead
-> > > - update explanations in the commit message
-> > >
-> > > v2: https://lore.kernel.org/lkml/20210517092006.803332-1-omosnace@redhat.com/
-> > > - change to a single hook based on suggestions by Casey Schaufler
-> > >
-> > > v1: https://lore.kernel.org/lkml/20210507114048.138933-1-omosnace@redhat.com/
-> >
-> > The changes between v3 and v4 all seem sane to me, but I'm going to
-> > let this sit for a few days in hopes that we can collect a few more
-> > Reviewed-bys and ACKs.  If I don't see any objections I'll merge it
-> > mid-week(ish) into selinux/stable-5.15 and plan on sending it to Linus
-> > after it goes through a build/test cycle.
->
-> Time's up, I just merged this into selinux/stable-5.15 and I'll send
-> this to Linus once it passes testing.
+On Thu, Sep 16, 2021 at 08:13:24AM +0800, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+> head:   9808623e1bba7d929b50865d7e2d7042cd4e5e7b
+> commit: 810fc8571f8b70a4263266d979f97edec2804574 [6/11] software node: balance refcount for managed sw nodes
+> config: arc-randconfig-r001-20210916 (attached as .config)
+> compiler: arc-elf-gcc (GCC) 11.2.0
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=810fc8571f8b70a4263266d979f97edec2804574
+>         git remote add rafael-pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+>         git fetch --no-tags rafael-pm bleeding-edge
+>         git checkout 810fc8571f8b70a4263266d979f97edec2804574
+>         # save the attached .config to linux build tree
+>         mkdir build_dir
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=arc SHELL=/bin/bash drivers/
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    drivers/base/swnode.c: In function 'device_create_managed_software_node':
+> >> drivers/base/swnode.c:1120:17: error: too many arguments to function 'software_node_notify'
+>     1120 |                 software_node_notify(dev, KOBJ_ADD);
+>          |                 ^~~~~~~~~~~~~~~~~~~~
+>    In file included from drivers/base/swnode.c:14:
+>    drivers/base/base.h:206:6: note: declared here
+>      206 | void software_node_notify(struct device *dev);
+>          |      ^~~~~~~~~~~~~~~~~~~~
 
-Thanks!
+Ah, that was modified in commit 384f5a857bae ("software nodes: Split
+software_node_notify()").
+
+So the patch is OK for stable, but for v5.15-rc1 it has to be changed:
+
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 7bd0f3cfb7eb4..c46f6a8e14d23 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -1116,6 +1116,9 @@ int device_create_managed_software_node(struct device *dev,
+        to_swnode(fwnode)->managed = true;
+        set_secondary_fwnode(dev, fwnode);
+ 
++       if (device_is_registered(dev))
++               software_node_notify(dev);
++
+        return 0;
+ }
+ EXPORT_SYMBOL_GPL(device_create_managed_software_node);
+
+
+Rafael, how do want to handle this?
 
 -- 
-Ondrej Mosnacek
-Software Engineer, Linux Security - SELinux kernel
-Red Hat, Inc.
-
+heikki
