@@ -2,164 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2201A40D41F
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Sep 2021 09:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5071040D44B
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Sep 2021 10:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231305AbhIPHyI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Sep 2021 03:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40598 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234767AbhIPHyH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Sep 2021 03:54:07 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52795C061574
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Sep 2021 00:52:47 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id j13so13365664edv.13
-        for <linux-acpi@vger.kernel.org>; Thu, 16 Sep 2021 00:52:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=solid-run-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ODMKOAGqD4ItUpYtqxdJhUq4QAGfb72lqYAxg7uVUGE=;
-        b=chtAbpIChinWBdEU1gL0ntvM9+0WUqRdjW5xXbWXxve4i322V8dGlTe9RiiuK3Ky4X
-         c4akEZ5ZtlGIE4Oq5bKagynGKAzDDWLhPD16IaRA87RHwvszd2Dd9BcUfbSoGsR9eW23
-         jCna1ptofFWrFzh1WoFFdzasf5ZaWs3oaf2rCLIudjsKhBAEHN4skc61+FZLbHn63DN0
-         rNGf+UyI8WD/28M5HK/XKfP5ioyaoiYkqVrB9g+dtXaUnXSgWMUJPcNDt4JNfSsTxCBj
-         blBr5Gzj1Bep+7R7sSd1nskzkOQz0mQNLiq9MFxbbycGsJJRkg9ZK3NBERnWlMz9RRRQ
-         voAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ODMKOAGqD4ItUpYtqxdJhUq4QAGfb72lqYAxg7uVUGE=;
-        b=8OCxSyoUCo7ETrKcCWq+j5+ZQzbEJGcMm3Zh1p5ielzT+wZ5xRZrZa02eqbDItpEJy
-         xKBEww5oNQcsI5zYVZe+eCu512ggRhnme8WoLC6AyZ8NikWg+tZ3m07BcPNAvfQq+R4i
-         Yh0JVhblyhMbKBS36TmvD2gLNNO8QxBjk4rxbHaqfNIn5RvInUs4VhPH1HJ0G/bJuajJ
-         l30r+nQOqH0xY+I5AV8ep3/o7xsWRgqNBYrsPO/hU1yWC+XCTiOhcgLm3+c9FedVN1u0
-         JKQmX+dTQYz3FiH0rW3a32xk4twpjMOyQJHx6MFNfw10wx/ikeAcGS3tfju9BG7ZY8JO
-         dVIA==
-X-Gm-Message-State: AOAM533XOfqsuQyqVycPHxsxltECo05VI40ORF/mobI6WwM7j4IM5X3o
-        l3j6lxr/AHdwptK0ulH5tJwpgGI2DO5uNqEr0hx+Ww==
-X-Google-Smtp-Source: ABdhPJyKDvyZKYCRYuxgjitZgDg2r13roWQBKzWOY1Mt3prlNydzDybS+gDSrHtYZ6S21wAVeWfjewN4V0nE2cFjwQw=
-X-Received: by 2002:a17:906:1341:: with SMTP id x1mr4645297ejb.277.1631778765895;
- Thu, 16 Sep 2021 00:52:45 -0700 (PDT)
+        id S234896AbhIPILP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Sep 2021 04:11:15 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28]:36548 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229908AbhIPILO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Sep 2021 04:11:14 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 137F722335;
+        Thu, 16 Sep 2021 08:09:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1631779793; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=G5PWB8fyjc/ZvOhLzUPjFuQtwty9WDLDIN4Ledq7nK0=;
+        b=W2vAAOiyQLiINpbEM/tiFNpBXMsO2FVcNezxbFTcquMIdWpa267dS6oIe3jeWMrcVJnMPJ
+        nIOWsextRvntdqZvV9zAEQu7nQmP7lB+pwjfxaG5LD7ZDOkRPsMljfztQ/Y0Zi88BSB5Y2
+        MWj8yri6j++AocLWJ02iwwEwKnIYlO8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1631779793;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=G5PWB8fyjc/ZvOhLzUPjFuQtwty9WDLDIN4Ledq7nK0=;
+        b=Az46pu0cvU9FbdPIsquIPhwmed5EUrXpOtdtsDoCkWgnVnGqU01j9SBnosf0b7s/lAcnok
+        28GkvW8tArGiPgBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C866213A23;
+        Thu, 16 Sep 2021 08:09:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id NX5kLtD7QmEbKgAAMHmgww
+        (envelope-from <jdelvare@suse.de>); Thu, 16 Sep 2021 08:09:52 +0000
+Date:   Thu, 16 Sep 2021 10:09:44 +0200
+From:   Jean Delvare <jdelvare@suse.de>
+To:     Heiner Kallweit <hkallweit1@gmail.com>
+Cc:     linux-acpi@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        linux-i2c@vger.kernel.org
+Subject: Re: [PATCH RESEND] i2c: i801: Stop using
+ pm_runtime_set_autosuspend_delay(-1)
+Message-ID: <20210916100944.2ab29898@endymion>
+In-Reply-To: <515c9685-bad2-86e0-1be6-f9f63578b864@gmail.com>
+References: <515c9685-bad2-86e0-1be6-f9f63578b864@gmail.com>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
- <20210805080724.480-3-shameerali.kolothum.thodi@huawei.com>
- <20210805160319.GB23085@lpieralisi> <5d9bebdf-6eb5-49a0-2e8f-490df2d6754d@arm.com>
- <CABdtJHt-18TDHBFq1X89=qngUbopGoFnqjuXiBOPtZG58vy3sg@mail.gmail.com> <f3fc713365f7465e966aaed7cdd8870a@huawei.com>
-In-Reply-To: <f3fc713365f7465e966aaed7cdd8870a@huawei.com>
-From:   Jon Nettleton <jon@solid-run.com>
-Date:   Thu, 16 Sep 2021 09:52:08 +0200
-Message-ID: <CABdtJHuEViN0MSz-ZJhR52+b=F6yvQ5mm_edVuLy1B=nHp+ESQ@mail.gmail.com>
-Subject: Re: [PATCH v7 2/9] ACPI/IORT: Add support for RMR node parsing
-To:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-Cc:     Robin Murphy <robin.murphy@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        Steven Price <steven.price@arm.com>,
-        Sami Mujawar <Sami.Mujawar@arm.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        yangyicong <yangyicong@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 16, 2021 at 9:26 AM Shameerali Kolothum Thodi
-<shameerali.kolothum.thodi@huawei.com> wrote:
->
->
->
-> > -----Original Message-----
-> > From: Jon Nettleton [mailto:jon@solid-run.com]
-> > Sent: 06 September 2021 20:51
-> > To: Robin Murphy <robin.murphy@arm.com>
-> > Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>; Shameerali Kolothum Thodi
-> > <shameerali.kolothum.thodi@huawei.com>; Laurentiu Tudor
-> > <laurentiu.tudor@nxp.com>; linux-arm-kernel
-> > <linux-arm-kernel@lists.infradead.org>; ACPI Devel Maling List
-> > <linux-acpi@vger.kernel.org>; Linux IOMMU
-> > <iommu@lists.linux-foundation.org>; Linuxarm <linuxarm@huawei.com>;
-> > Joerg Roedel <joro@8bytes.org>; Will Deacon <will@kernel.org>;
-> > wanghuiqiang <wanghuiqiang@huawei.com>; Guohanjun (Hanjun Guo)
-> > <guohanjun@huawei.com>; Steven Price <steven.price@arm.com>; Sami
-> > Mujawar <Sami.Mujawar@arm.com>; Eric Auger <eric.auger@redhat.com>;
-> > yangyicong <yangyicong@huawei.com>
-> > Subject: Re: [PATCH v7 2/9] ACPI/IORT: Add support for RMR node parsing
-> >
-> [...]
->
-> > > >
-> > > > On the prot value assignment based on the remapping flag, I'd like
-> > > > to hear Robin/Joerg's opinion, I'd avoid being in a situation where
-> > > > "normally" this would work but then we have to quirk it.
-> > > >
-> > > > Is this a valid assumption _always_ ?
-> > >
-> > > No. Certainly applying IOMMU_CACHE without reference to the device's
-> > > _CCA attribute or how CPUs may be accessing a shared buffer could lead
-> > > to a loss of coherency. At worst, applying IOMMU_MMIO to a
-> > > device-private buffer *could* cause the device to lose coherency with
-> > > itself if the memory underlying the RMR may have allocated into system
-> > > caches. Note that the expected use for non-remappable RMRs is the
-> > > device holding some sort of long-lived private data in system RAM -
-> > > the MSI doorbell trick is far more of a niche hack really.
-> > >
-> > > At the very least I think we need to refer to the device's memory
-> > > access properties here.
-> > >
-> > > Jon, Laurentiu - how do RMRs correspond to the EFI memory map on your
-> > > firmware? I'm starting to think that as long as the underlying memory
-> > > is described appropriately there then we should be able to infer
-> > > correct attributes from the EFI memory type and flags.
-> >
-> > The devices are all cache coherent and marked as _CCA, 1.  The Memory
-> > regions are in the virt table as ARM_MEMORY_REGION_ATTRIBUTE_DEVICE.
-> >
-> > The current chicken and egg problem we have is that during the fsl-mc-bus
-> > initialization we call
-> >
-> > error = acpi_dma_configure_id(&pdev->dev, DEV_DMA_COHERENT,
-> >                                               &mc_stream_id);
-> >
-> > which gets deferred because the SMMU has not been initialized yet. Then we
-> > initialize the RMR tables but there is no device reference there to be able to
-> > query device properties, only the stream id.  After the IORT tables are parsed
-> > and the SMMU is setup, on the second device probe we associate everything
-> > based on the stream id and the fsl-mc-bus device is able to claim its 1-1 DMA
-> > mappings.
->
-> Can we solve this order problem by delaying the iommu_alloc_resv_region()
-> to the iommu_dma_get_rmr_resv_regions(dev, list) ? We could invoke
-> device_get_dma_attr() from there which I believe will return the _CCA attribute.
->
-> Or is that still early to invoke that?
+Hi Heiner,
 
-That looks like it should work. Do we then also need to parse through the
-VirtualMemoryTable matching the start and end addresses to determine the
-other memory attributes like MMIO?
+On Tue, 07 Sep 2021 22:33:02 +0200, Heiner Kallweit wrote:
+> The original change works as intended, but Andy pointed in [0] that now
+> userspace could re-enable RPM via sysfs, even though we explicitly want
+> to disable it. So effectively revert the original patch, just with small
+> improvements:
+> - Calls to pm_runtime_allow()/pm_runtime_forbid() don't have to be
+>   balanced, so we can remove the call to pm_runtime_forbid() in
+>   i801_remove().
+> - priv->acpi_reserved is accessed after i801_acpi_remove(), and according
+>   to Robert [1] the custom handler can't run any longer. Therefore we
+>   don't have to take priv->acpi_lock.
+> 
+> [0] https://www.spinics.net/lists/linux-i2c/msg52730.html
+> [1] https://lore.kernel.org/linux-acpi/BYAPR11MB32561D19A0FD9AB93E2B1E5287D39@BYAPR11MB3256.namprd11.prod.outlook.com/T/#t
+> 
+> Fixes: 4e60d5dd10cd ("i2c: i801: Improve disabling runtime pm")
+> Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> ---
+> - Resend because I missed to cc linux-i2c list
+> ---
+>  drivers/i2c/busses/i2c-i801.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+> index 1f929e6c3..f3c79942c 100644
+> --- a/drivers/i2c/busses/i2c-i801.c
+> +++ b/drivers/i2c/busses/i2c-i801.c
+> @@ -1623,7 +1623,7 @@ i801_acpi_io_handler(u32 function, acpi_physical_address address, u32 bits,
+>  		 * BIOS is accessing the host controller so prevent it from
+>  		 * suspending automatically from now on.
+>  		 */
+> -		pm_runtime_set_autosuspend_delay(&pdev->dev, -1);
+> +		pm_runtime_get_sync(&pdev->dev);
+>  	}
+>  
+>  	if ((function & ACPI_IO_MASK) == ACPI_READ)
+> @@ -1890,9 +1890,6 @@ static void i801_remove(struct pci_dev *dev)
+>  {
+>  	struct i801_priv *priv = pci_get_drvdata(dev);
+>  
+> -	pm_runtime_forbid(&dev->dev);
+> -	pm_runtime_get_noresume(&dev->dev);
+> -
+>  	i801_disable_host_notify(priv);
+>  	i801_del_mux(priv);
+>  	i2c_del_adapter(&priv->adapter);
+> @@ -1901,6 +1898,10 @@ static void i801_remove(struct pci_dev *dev)
+>  
+>  	platform_device_unregister(priv->tco_pdev);
+>  
+> +	/* if acpi_reserved is set then usage_count is incremented already */
+> +	if (!priv->acpi_reserved)
+> +		pm_runtime_get_noresume(&dev->dev);
+> +
+>  	/*
+>  	 * do not call pci_disable_device(dev) since it can cause hard hangs on
+>  	 * some systems during power-off (eg. Fujitsu-Siemens Lifebook E8010)
 
--Jon
+Thanks for following up. I'm not familiar with power management so I'll
+trust you, Andy and Robert on that.
 
->
-> Thanks,
-> Shameer
->
-> > cat /sys/kernel/iommu_groups/0/reserved_regions
-> > 0x0000000001000000 0x0000000010ffffff direct-relaxable
-> > 0x0000000008000000 0x00000000080fffff msi
-> > 0x000000080c000000 0x000000081bffffff direct-relaxable
-> > 0x0000001c00000000 0x0000001c001fffff direct-relaxable
-> > 0x0000002080000000 0x000000209fffffff direct-relaxable
-> >
-> > -Jon
-> >
-> > >
-> > > Robin.
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+
+-- 
+Jean Delvare
+SUSE L3 Support
