@@ -2,502 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4BEA40DED2
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Sep 2021 17:59:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A14F40DFA4
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Sep 2021 18:11:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240307AbhIPQAk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Sep 2021 12:00:40 -0400
-Received: from mga01.intel.com ([192.55.52.88]:1706 "EHLO mga01.intel.com"
+        id S235276AbhIPQM3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Sep 2021 12:12:29 -0400
+Received: from foss.arm.com ([217.140.110.172]:39772 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240084AbhIPQAk (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Sep 2021 12:00:40 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10109"; a="244977584"
-X-IronPort-AV: E=Sophos;i="5.85,298,1624345200"; 
-   d="scan'208";a="244977584"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2021 08:59:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,298,1624345200"; 
-   d="scan'208";a="472824281"
-Received: from chenyu-desktop.sh.intel.com ([10.239.158.176])
-  by orsmga007.jf.intel.com with ESMTP; 16 Sep 2021 08:59:15 -0700
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Aubrey Li <aubrey.li@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>, Chen Yu <yu.c.chen@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
-        Dou Shengnan <shengnanx.dou@intel.com>
-Subject: [PATCH v3 5/5] selftests/pfru: add test for Platform Firmware Runtime Update and Telemetry
-Date:   Fri, 17 Sep 2021 00:04:55 +0800
-Message-Id: <80966998ecc8fd7842a7899b4846b23b9b9b76c3.1631802163.git.yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1631802162.git.yu.c.chen@intel.com>
-References: <cover.1631802162.git.yu.c.chen@intel.com>
+        id S235405AbhIPQJz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 16 Sep 2021 12:09:55 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D9DCE101E;
+        Thu, 16 Sep 2021 09:08:33 -0700 (PDT)
+Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1D5453F5A1;
+        Thu, 16 Sep 2021 09:08:32 -0700 (PDT)
+Date:   Thu, 16 Sep 2021 17:08:27 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Jia He <justin.he@arm.com>, Will Deacon <will@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Harb Abdulhamid <harb@amperecomputing.com>
+Subject: Re: [PATCH v2] Revert "ACPI: Add memory semantics to
+ acpi_os_map_memory()"
+Message-ID: <20210916160827.GA4525@lpieralisi>
+References: <20210910122820.26886-1-justin.he@arm.com>
+ <20210910143223.6705-1-justin.he@arm.com>
+ <CAMj1kXG6Gu=g8P902NB2b+OvzqwJQPqQewYX5UwMiXALYAFkDw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXG6Gu=g8P902NB2b+OvzqwJQPqQewYX5UwMiXALYAFkDw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Introduce a simple test for Platform Firmware Runtime Update and Telemetry
-drivers. It is based on ioctl to either update firmware driver or code
-injection, and read corresponding PFRU Telemetry log into user space.
+On Fri, Sep 10, 2021 at 07:28:49PM +0200, Ard Biesheuvel wrote:
+> On Fri, 10 Sept 2021 at 16:32, Jia He <justin.he@arm.com> wrote:
+> >
+> > This reverts commit 437b38c51162f8b87beb28a833c4d5dc85fa864e.
+> >
+> > After this commit, a boot panic is alway hit on an Ampere EMAG server
+> > with call trace as follows:
+> >  Internal error: synchronous external abort: 96000410 [#1] SMP
+> >  Modules linked in:
+> >  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0+ #462
+> >  Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
+> >  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> > [...snip...]
+> >  Call trace:
+> >   acpi_ex_system_memory_space_handler+0x26c/0x2c8
+> >   acpi_ev_address_space_dispatch+0x228/0x2c4
+> >   acpi_ex_access_region+0x114/0x268
+> >   acpi_ex_field_datum_io+0x128/0x1b8
+> >   acpi_ex_extract_from_field+0x14c/0x2ac
+> >   acpi_ex_read_data_from_field+0x190/0x1b8
+> >   acpi_ex_resolve_node_to_value+0x1ec/0x288
+> >   acpi_ex_resolve_to_value+0x250/0x274
+> >   acpi_ds_evaluate_name_path+0xac/0x124
+> >   acpi_ds_exec_end_op+0x90/0x410
+> >   acpi_ps_parse_loop+0x4ac/0x5d8
+> >   acpi_ps_parse_aml+0xe0/0x2c8
+> >   acpi_ps_execute_method+0x19c/0x1ac
+> >   acpi_ns_evaluate+0x1f8/0x26c
+> >   acpi_ns_init_one_device+0x104/0x140
+> >   acpi_ns_walk_namespace+0x158/0x1d0
+> >   acpi_ns_initialize_devices+0x194/0x218
+> >   acpi_initialize_objects+0x48/0x50
+> >   acpi_init+0xe0/0x498
+> >
+> > As mentioned by Lorenzo:
+> >   "We are forcing memory semantics mappings to PROT_NORMAL_NC, which
+> >   eMAG does not like at all and I'd need to understand why. It looks
+> >   like the issue happen in SystemMemory Opregion handler."
+> >
+> > Hence just revert it before everything is clear.
+> >
+> 
+> Can we try to find the root cause first? -rc1 is not even out yet, and
+> reverting it now means we can not resubmit it until the next merge
+> window.
 
-For example:
+I am waiting to debug this on an eMAG but I noticed something that
+I wanted to bring up.
 
-./pfru_test -h
-usage: pfru_test [OPTIONS]
- code injection:
-  -l, --load
-  -s, --stage
-  -a, --activate
-  -u, --update [stage and activate]
-  -q, --query
-  -d, --revid update
- telemetry:
-  -G, --getloginfo
-  -T, --type(0:execution, 1:history)
-  -L, --level(0, 1, 2, 4)
-  -R, --read
-  -D, --revid log
+SystemMemory Operation region handler - ie
 
-./pfru_test -G
- log_level:4
- log_type:0
- log_revid:2
- max_data_size:65536
- chunk1_size:0
- chunk2_size:1401
- rollover_cnt:0
- reset_cnt:4
+acpi_ex_system_memory_space_handler()
 
-./pfru_test -q
- code injection image type:794bf8b2-6e7b-454e-885f-3fb9bb185402
- fw_version:0
- code_rt_version:1
- driver update image type:0e5f0b14-f849-7945-ad81-bc7b6d2bb245
- drv_rt_version:0
- drv_svn:0
- platform id:39214663-b1a8-4eaa-9024-f2bb53ea4723
- oem id:a36db54f-ea2a-e14e-b7c4-b5780e51ba3d
+maps the Operation Region (that AFAICS is MMIO, it is _not_ memory)
+with acpi_os_map_memory() and I believe that's what is causing this
+bug.
 
-launch the update:
-./pfru_test -l yours.cap -u -T 1 -L 4
+On the other hand, acpi_os_map_generic_address(), to handle spaceid
+ACPI_ADR_SPACE_SYSTEM_MEMORY, uses acpi_os_map_iomem() that is more
+in line with my expectations.
 
-Tested-by: Dou Shengnan <shengnanx.dou@intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
-v3: No change since v2.
-v2: Do not allow non-root user to run this test.
-    (Shuah Khan)
-    Test runs on platform without pfru_telemetry should skip
-    instead of reporting failure/error.
-    (Shuah Khan)
-    Reuse uapi/linux/pfru.h instead of copying it into
-    the test directory.
-    (Mike Rapoport)
----
- include/uapi/linux/pfru.h                |   5 +
- tools/testing/selftests/Makefile         |   1 +
- tools/testing/selftests/pfru/Makefile    |   7 +
- tools/testing/selftests/pfru/config      |   2 +
- tools/testing/selftests/pfru/pfru_test.c | 328 +++++++++++++++++++++++
- 5 files changed, 343 insertions(+)
- create mode 100644 tools/testing/selftests/pfru/Makefile
- create mode 100644 tools/testing/selftests/pfru/config
- create mode 100644 tools/testing/selftests/pfru/pfru_test.c
+Question is: is the mapping in acpi_ex_system_memory_space_handler()
+wrong (and should be patched with acpi_os_map_iomem() ?)
 
-diff --git a/include/uapi/linux/pfru.h b/include/uapi/linux/pfru.h
-index b04852602133..c8a98efd5eb6 100644
---- a/include/uapi/linux/pfru.h
-+++ b/include/uapi/linux/pfru.h
-@@ -8,7 +8,12 @@
- #define __PFRU_H__
- 
- #include <linux/ioctl.h>
-+#ifdef __KERNEL__
- #include <linux/uuid.h>
-+#else
-+#include <uuid/uuid.h>
-+#include <linux/types.h>
-+#endif
- 
- #define PFRU_UUID		"ECF9533B-4A3C-4E89-939E-C77112601C6D"
- #define PFRU_CODE_INJ_UUID		"B2F84B79-7B6E-4E45-885F-3FB9BB185402"
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index c852eb40c4f7..9f1d7b5ea4a7 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -58,6 +58,7 @@ TARGETS += seccomp
- TARGETS += sgx
- TARGETS += sigaltstack
- TARGETS += size
-+TARGETS += pfru
- TARGETS += sparc64
- TARGETS += splice
- TARGETS += static_keys
-diff --git a/tools/testing/selftests/pfru/Makefile b/tools/testing/selftests/pfru/Makefile
-new file mode 100644
-index 000000000000..c61916ccf637
---- /dev/null
-+++ b/tools/testing/selftests/pfru/Makefile
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0+
-+
-+CFLAGS += -Wall -O2
-+LDLIBS := -luuid
-+
-+TEST_GEN_PROGS := pfru_test
-+include ../lib.mk
-diff --git a/tools/testing/selftests/pfru/config b/tools/testing/selftests/pfru/config
-new file mode 100644
-index 000000000000..37f53609acbd
---- /dev/null
-+++ b/tools/testing/selftests/pfru/config
-@@ -0,0 +1,2 @@
-+CONFIG_ACPI_PFRU=m
-+CONFIG_ACPI_PFRU_TELEMETRY=m
-diff --git a/tools/testing/selftests/pfru/pfru_test.c b/tools/testing/selftests/pfru/pfru_test.c
-new file mode 100644
-index 000000000000..b3799d73ab1c
---- /dev/null
-+++ b/tools/testing/selftests/pfru/pfru_test.c
-@@ -0,0 +1,328 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Tests Runtime Update/Telemetry (see Documentation/x86/pfru_update.rst)
-+ */
-+#define _GNU_SOURCE
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <getopt.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+
-+#include "../../../../include/uapi/linux/pfru.h"
-+
-+#define MAX_LOG_SIZE 65536
-+
-+char *capsule_name;
-+int action, query_cap, log_type, log_level, log_read, log_getinfo,
-+	revid, log_revid;
-+int set_log_level, set_log_type,
-+	set_revid, set_log_revid;
-+
-+char *progname;
-+
-+static int valid_log_level(int level)
-+{
-+	return (level == LOG_ERR) || (level == LOG_WARN) ||
-+		(level == LOG_INFO) || (level == LOG_VERB);
-+}
-+
-+static int valid_log_type(int type)
-+{
-+	return (type == LOG_EXEC_IDX) || (type == LOG_HISTORY_IDX);
-+}
-+
-+static void help(void)
-+{
-+	fprintf(stderr,
-+		"usage: %s [OPTIONS]\n"
-+		" code injection:\n"
-+		"  -l, --load\n"
-+		"  -s, --stage\n"
-+		"  -a, --activate\n"
-+		"  -u, --update [stage and activate]\n"
-+		"  -q, --query\n"
-+		"  -d, --revid update\n"
-+		" telemetry:\n"
-+		"  -G, --getloginfo\n"
-+		"  -T, --type(0:execution, 1:history)\n"
-+		"  -L, --level(0, 1, 2, 4)\n"
-+		"  -R, --read\n"
-+		"  -D, --revid log\n",
-+		progname);
-+}
-+
-+char *option_string = "l:sauqd:GT:L:RD:h";
-+static struct option long_options[] = {
-+	{"load", required_argument, 0, 'l'},
-+	{"stage", no_argument, 0, 's'},
-+	{"activate", no_argument, 0, 'a'},
-+	{"update", no_argument, 0, 'u'},
-+	{"query", no_argument, 0, 'q'},
-+	{"getloginfo", no_argument, 0, 'G'},
-+	{"type", required_argument, 0, 'T'},
-+	{"level", required_argument, 0, 'L'},
-+	{"read", no_argument, 0, 'R'},
-+	{"setrev", required_argument, 0, 'd'},
-+	{"setrevlog", required_argument, 0, 'D'},
-+	{"help", no_argument, 0, 'h'},
-+	{}
-+};
-+
-+static void parse_options(int argc, char **argv)
-+{
-+	char *pathname;
-+	int c;
-+
-+	pathname = strdup(argv[0]);
-+	progname = basename(pathname);
-+
-+	while (1) {
-+		int option_index = 0;
-+
-+		c = getopt_long(argc, argv, option_string,
-+				long_options, &option_index);
-+		if (c == -1)
-+			break;
-+		switch (c) {
-+		case 'l':
-+			capsule_name = optarg;
-+			break;
-+		case 's':
-+			action = 1;
-+			break;
-+		case 'a':
-+			action = 2;
-+			break;
-+		case 'u':
-+			action = 3;
-+			break;
-+		case 'q':
-+			query_cap = 1;
-+			break;
-+		case 'G':
-+			log_getinfo = 1;
-+			break;
-+		case 'T':
-+			log_type = atoi(optarg);
-+			set_log_type = 1;
-+			break;
-+		case 'L':
-+			log_level = atoi(optarg);
-+			set_log_level = 1;
-+			break;
-+		case 'R':
-+			log_read = 1;
-+			break;
-+		case 'd':
-+			revid = atoi(optarg);
-+			set_revid = 1;
-+			break;
-+		case 'D':
-+			log_revid = atoi(optarg);
-+			set_log_revid = 1;
-+			break;
-+		case 'h':
-+			help();
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+}
-+
-+void print_cap(struct pfru_update_cap_info *cap)
-+{
-+	char *uuid = malloc(37);
-+
-+	if (!uuid) {
-+		perror("Can not allocate uuid buffer\n");
-+		exit(1);
-+	}
-+	uuid_unparse(cap->code_type, uuid);
-+	printf("code injection image type:%s\n", uuid);
-+	printf("fw_version:%d\n", cap->fw_version);
-+	printf("code_rt_version:%d\n", cap->code_rt_version);
-+
-+	uuid_unparse(cap->drv_type, uuid);
-+	printf("driver update image type:%s\n", uuid);
-+	printf("drv_rt_version:%d\n", cap->drv_rt_version);
-+	printf("drv_svn:%d\n", cap->drv_svn);
-+
-+	uuid_unparse(cap->platform_id, uuid);
-+	printf("platform id:%s\n", uuid);
-+	uuid_unparse(cap->oem_id, uuid);
-+	printf("oem id:%s\n", uuid);
-+
-+	free(uuid);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int fd_update, fd_log, fd_capsule;
-+	struct pfru_telem_data_info data_info;
-+	struct pfru_telem_info info;
-+	struct pfru_update_cap_info cap;
-+	void *addr_map_capsule;
-+	struct stat st;
-+	char *log_buf;
-+	int ret = 0;
-+
-+	if (getuid() != 0) {
-+		printf("Please run the test as root - Exiting.\n");
-+		return 1;
-+	}
-+
-+	parse_options(argc, argv);
-+
-+	fd_update = open("/dev/pfru/update", O_RDWR);
-+	if (fd_update < 0) {
-+		printf("PFRU device not supported - Quit...\n");
-+		return 1;
-+	}
-+
-+	if (query_cap) {
-+		ret = read(fd_update, &cap, sizeof(cap));
-+		if (ret == -1) {
-+			perror("Read error.");
-+			return 1;
-+		}
-+		print_cap(&cap);
-+	}
-+
-+	fd_log = open("/dev/pfru/telemetry", O_RDWR);
-+	if (fd_log < 0) {
-+		printf("PFRU telemetry not supported. Skip...\n");
-+		goto skip_log_set;
-+	}
-+
-+	if (log_getinfo) {
-+		ret = ioctl(fd_log, PFRU_LOG_IOC_GET_DATA_INFO, &data_info);
-+		if (ret) {
-+			perror("Get log data info failed.");
-+			return 1;
-+		}
-+		ret = ioctl(fd_log, PFRU_LOG_IOC_GET_INFO, &info);
-+		if (ret) {
-+			perror("Get log info failed.");
-+			return 1;
-+		}
-+		printf("log_level:%d\n", info.log_level);
-+		printf("log_type:%d\n", info.log_type);
-+		printf("log_revid:%d\n", info.log_revid);
-+		printf("max_data_size:%d\n", data_info.max_data_size);
-+		printf("chunk1_size:%d\n", data_info.chunk1_size);
-+		printf("chunk2_size:%d\n", data_info.chunk2_size);
-+		printf("rollover_cnt:%d\n", data_info.rollover_cnt);
-+		printf("reset_cnt:%d\n", data_info.reset_cnt);
-+
-+		return 0;
-+	}
-+
-+	info.log_level = -1;
-+	info.log_type = -1;
-+	info.log_revid = -1;
-+
-+	if (set_log_level) {
-+		if (!valid_log_level(log_level)) {
-+			printf("Invalid log level %d\n",
-+			       log_level);
-+		} else {
-+			info.log_level = log_level;
-+		}
-+	}
-+	if (set_log_type) {
-+		if (!valid_log_type(log_type)) {
-+			printf("Invalid log type %d\n",
-+			       log_type);
-+		} else {
-+			info.log_type = log_type;
-+		}
-+	}
-+	if (set_log_revid) {
-+		if (!pfru_valid_revid(log_revid)) {
-+			printf("Invalid log revid %d\n",
-+			       log_revid);
-+		} else {
-+			info.log_revid = log_revid;
-+		}
-+	}
-+
-+	ret = ioctl(fd_log, PFRU_LOG_IOC_SET_INFO, &info);
-+	if (ret) {
-+		perror("Log information set failed.(log_level, log_type, log_revid)");
-+		return 1;
-+	}
-+
-+skip_log_set:
-+	if (set_revid) {
-+		ret = ioctl(fd_update, PFRU_IOC_SET_REV, &revid);
-+		if (ret) {
-+			perror("pfru update revid set failed");
-+			return 1;
-+		}
-+		printf("pfru update revid set to %d\n", revid);
-+	}
-+
-+	if (capsule_name) {
-+		fd_capsule = open(capsule_name, O_RDONLY);
-+		if (fd_capsule < 0) {
-+			perror("Can not open capsule file...");
-+			return 1;
-+		}
-+		if (fstat(fd_capsule, &st) < 0) {
-+			perror("Can not fstat capsule file...");
-+			return 1;
-+		}
-+		addr_map_capsule = mmap(NULL, st.st_size, PROT_READ, MAP_SHARED,
-+					fd_capsule, 0);
-+		if (addr_map_capsule == MAP_FAILED) {
-+			perror("Failed to mmap capsule file.");
-+			return 1;
-+		}
-+		ret = write(fd_update, (char *)addr_map_capsule, st.st_size);
-+		printf("Load %d bytes of capsule file into the system\n",
-+		       ret);
-+		if (ret == -1) {
-+			perror("Failed to load capsule file");
-+			return 1;
-+		}
-+		munmap(addr_map_capsule, st.st_size);
-+		printf("Load done.\n");
-+	}
-+
-+	if (action) {
-+		if (action == 1)
-+			ret = ioctl(fd_update, PFRU_IOC_STAGE, NULL);
-+		else if (action == 2)
-+			ret = ioctl(fd_update, PFRU_IOC_ACTIVATE, NULL);
-+		else if (action == 3)
-+			ret = ioctl(fd_update, PFRU_IOC_STAGE_ACTIVATE, NULL);
-+		else
-+			return 1;
-+		printf("Update finished, return %d\n", ret);
-+	}
-+
-+	if (fd_log > 0 && log_read) {
-+		log_buf = malloc(MAX_LOG_SIZE + 1);
-+		if (!log_buf) {
-+			perror("log_buf allocate failed.");
-+			return 1;
-+		}
-+		ret = read(fd_log, log_buf, MAX_LOG_SIZE);
-+		if (ret == -1) {
-+			perror("Read error.");
-+			return 1;
-+		}
-+		log_buf[ret] = '\0';
-+		printf("%s\n", log_buf);
-+		free(log_buf);
-+	}
-+
-+	return 0;
-+}
--- 
-2.25.1
+On x86 this should not change a thing, on ARM it would.
 
+I don't think it is right to map SystemMemory Operation regions with
+memory semantics but on the other hand, other than the EFI memory map,
+there is nothing we can do to determine what a SystemMemory Operation
+region address space actually represents.
+
+Thoughts ? Before embarking on patching
+
+acpi_ex_system_memory_space_handler()
+
+I want to make sure my understanding of the SystemMemory space is
+correct, comments welcome.
+
+I will pinpoint the trigger for this bug shortly and before doing
+anything else.
+
+Thanks,
+Lorenzo
