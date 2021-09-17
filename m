@@ -2,193 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA4F840F6B1
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Sep 2021 13:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B216940F936
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Sep 2021 15:34:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243123AbhIQL22 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Sep 2021 07:28:28 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188]:15433 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241761AbhIQL21 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Sep 2021 07:28:27 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4H9s4s6L3YzRDwD;
-        Fri, 17 Sep 2021 19:22:53 +0800 (CST)
-Received: from dggema722-chm.china.huawei.com (10.3.20.86) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.8; Fri, 17 Sep 2021 19:27:01 +0800
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggema722-chm.china.huawei.com (10.3.20.86) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.8; Fri, 17 Sep 2021 19:27:01 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2308.008; Fri, 17 Sep 2021 12:26:59 +0100
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     Jon Nettleton <jon@solid-run.com>
-CC:     Robin Murphy <robin.murphy@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "ACPI Devel Maling List" <linux-acpi@vger.kernel.org>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        Joerg Roedel <joro@8bytes.org>,
-        "Will Deacon" <will@kernel.org>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        Steven Price <steven.price@arm.com>,
-        Sami Mujawar <Sami.Mujawar@arm.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        yangyicong <yangyicong@huawei.com>
-Subject: RE: [PATCH v7 2/9] ACPI/IORT: Add support for RMR node parsing
-Thread-Topic: [PATCH v7 2/9] ACPI/IORT: Add support for RMR node parsing
-Thread-Index: AQHXidEiKr58723PTUGGkSglF1QKPatlAmqAgDJmwoCAACN+gIAO55oggAAG1QCAABhrQIAAILeAgAGklSA=
-Date:   Fri, 17 Sep 2021 11:26:59 +0000
-Message-ID: <534a04a9fe9941b28670f00222f58ec3@huawei.com>
-References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
- <20210805080724.480-3-shameerali.kolothum.thodi@huawei.com>
- <20210805160319.GB23085@lpieralisi>
- <5d9bebdf-6eb5-49a0-2e8f-490df2d6754d@arm.com>
- <CABdtJHt-18TDHBFq1X89=qngUbopGoFnqjuXiBOPtZG58vy3sg@mail.gmail.com>
- <f3fc713365f7465e966aaed7cdd8870a@huawei.com>
- <CABdtJHuEViN0MSz-ZJhR52+b=F6yvQ5mm_edVuLy1B=nHp+ESQ@mail.gmail.com>
- <e02a00a10ea3440dab1f9f9320de42ad@huawei.com>
- <CABdtJHuRB29Ufryvz=kCO7b_xgVb1D-7y3RQgCkKvSmshkkH1A@mail.gmail.com>
-In-Reply-To: <CABdtJHuRB29Ufryvz=kCO7b_xgVb1D-7y3RQgCkKvSmshkkH1A@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.90.205]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S231887AbhIQNf3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Sep 2021 09:35:29 -0400
+Received: from foss.arm.com ([217.140.110.172]:53248 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240676AbhIQNf2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 17 Sep 2021 09:35:28 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C04D931B;
+        Fri, 17 Sep 2021 06:34:06 -0700 (PDT)
+Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D9C333F719;
+        Fri, 17 Sep 2021 06:34:05 -0700 (PDT)
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jassi Brar <jassisinghbrar@gmail.com>
+Subject: [PATCH v2 00/14] mailbox: pcc: Add support for PCCT extended PCC subspaces
+Date:   Fri, 17 Sep 2021 14:33:43 +0100
+Message-Id: <20210917133357.1911092-1-sudeep.holla@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9uIE5ldHRsZXRvbiBb
-bWFpbHRvOmpvbkBzb2xpZC1ydW4uY29tXQ0KPiBTZW50OiAxNiBTZXB0ZW1iZXIgMjAyMSAxMjox
-Nw0KPiBUbzogU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaSA8c2hhbWVlcmFsaS5rb2xvdGh1bS50
-aG9kaUBodWF3ZWkuY29tPg0KPiBDYzogUm9iaW4gTXVycGh5IDxyb2Jpbi5tdXJwaHlAYXJtLmNv
-bT47IExvcmVuem8gUGllcmFsaXNpDQo+IDxsb3JlbnpvLnBpZXJhbGlzaUBhcm0uY29tPjsgTGF1
-cmVudGl1IFR1ZG9yIDxsYXVyZW50aXUudHVkb3JAbnhwLmNvbT47DQo+IGxpbnV4LWFybS1rZXJu
-ZWwgPGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZz47IEFDUEkgRGV2ZWwgTWFs
-aW5nDQo+IExpc3QgPGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnPjsgTGludXggSU9NTVUNCj4g
-PGlvbW11QGxpc3RzLmxpbnV4LWZvdW5kYXRpb24ub3JnPjsgSm9lcmcgUm9lZGVsIDxqb3JvQDhi
-eXRlcy5vcmc+OyBXaWxsDQo+IERlYWNvbiA8d2lsbEBrZXJuZWwub3JnPjsgd2FuZ2h1aXFpYW5n
-IDx3YW5naHVpcWlhbmdAaHVhd2VpLmNvbT47DQo+IEd1b2hhbmp1biAoSGFuanVuIEd1bykgPGd1
-b2hhbmp1bkBodWF3ZWkuY29tPjsgU3RldmVuIFByaWNlDQo+IDxzdGV2ZW4ucHJpY2VAYXJtLmNv
-bT47IFNhbWkgTXVqYXdhciA8U2FtaS5NdWphd2FyQGFybS5jb20+OyBFcmljDQo+IEF1Z2VyIDxl
-cmljLmF1Z2VyQHJlZGhhdC5jb20+OyB5YW5neWljb25nIDx5YW5neWljb25nQGh1YXdlaS5jb20+
-DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjcgMi85XSBBQ1BJL0lPUlQ6IEFkZCBzdXBwb3J0IGZv
-ciBSTVIgbm9kZSBwYXJzaW5nDQo+IA0KPiBPbiBUaHUsIFNlcCAxNiwgMjAyMSBhdCAxMDoyNiBB
-TSBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpDQo+IDxzaGFtZWVyYWxpLmtvbG90aHVtLnRob2Rp
-QGh1YXdlaS5jb20+IHdyb3RlOg0KPiA+DQo+ID4NCj4gPg0KPiA+ID4gLS0tLS1PcmlnaW5hbCBN
-ZXNzYWdlLS0tLS0NCj4gPiA+IEZyb206IEpvbiBOZXR0bGV0b24gW21haWx0bzpqb25Ac29saWQt
-cnVuLmNvbV0NCj4gPiA+IFNlbnQ6IDE2IFNlcHRlbWJlciAyMDIxIDA4OjUyDQo+ID4gPiBUbzog
-U2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaQ0KPiA8c2hhbWVlcmFsaS5rb2xvdGh1bS50aG9kaUBo
-dWF3ZWkuY29tPg0KPiA+ID4gQ2M6IFJvYmluIE11cnBoeSA8cm9iaW4ubXVycGh5QGFybS5jb20+
-OyBMb3JlbnpvIFBpZXJhbGlzaQ0KPiA+ID4gPGxvcmVuem8ucGllcmFsaXNpQGFybS5jb20+OyBM
-YXVyZW50aXUgVHVkb3INCj4gPiA+IDxsYXVyZW50aXUudHVkb3JAbnhwLmNvbT47IGxpbnV4LWFy
-bS1rZXJuZWwNCj4gPiA+IDxsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc+OyBB
-Q1BJIERldmVsIE1hbGluZyBMaXN0DQo+ID4gPiA8bGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmc+
-OyBMaW51eCBJT01NVQ0KPiA+ID4gPGlvbW11QGxpc3RzLmxpbnV4LWZvdW5kYXRpb24ub3JnPjsg
-Sm9lcmcgUm9lZGVsIDxqb3JvQDhieXRlcy5vcmc+Ow0KPiA+ID4gV2lsbCBEZWFjb24gPHdpbGxA
-a2VybmVsLm9yZz47IHdhbmdodWlxaWFuZw0KPiA+ID4gPHdhbmdodWlxaWFuZ0BodWF3ZWkuY29t
-PjsgR3VvaGFuanVuIChIYW5qdW4gR3VvKQ0KPiA+ID4gPGd1b2hhbmp1bkBodWF3ZWkuY29tPjsg
-U3RldmVuIFByaWNlIDxzdGV2ZW4ucHJpY2VAYXJtLmNvbT47IFNhbWkNCj4gPiA+IE11amF3YXIg
-PFNhbWkuTXVqYXdhckBhcm0uY29tPjsgRXJpYyBBdWdlcg0KPiA8ZXJpYy5hdWdlckByZWRoYXQu
-Y29tPjsNCj4gPiA+IHlhbmd5aWNvbmcgPHlhbmd5aWNvbmdAaHVhd2VpLmNvbT4NCj4gPiA+IFN1
-YmplY3Q6IFJlOiBbUEFUQ0ggdjcgMi85XSBBQ1BJL0lPUlQ6IEFkZCBzdXBwb3J0IGZvciBSTVIg
-bm9kZQ0KPiA+ID4gcGFyc2luZw0KPiA+ID4NCj4gPiA+IE9uIFRodSwgU2VwIDE2LCAyMDIxIGF0
-IDk6MjYgQU0gU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaQ0KPiA+ID4gPHNoYW1lZXJhbGkua29s
-b3RodW0udGhvZGlAaHVhd2VpLmNvbT4gd3JvdGU6DQo+ID4gPiA+DQo+ID4gPiA+DQo+ID4gPiA+
-DQo+ID4gPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+ID4gPiBGcm9tOiBK
-b24gTmV0dGxldG9uIFttYWlsdG86am9uQHNvbGlkLXJ1bi5jb21dDQo+ID4gPiA+ID4gU2VudDog
-MDYgU2VwdGVtYmVyIDIwMjEgMjA6NTENCj4gPiA+ID4gPiBUbzogUm9iaW4gTXVycGh5IDxyb2Jp
-bi5tdXJwaHlAYXJtLmNvbT4NCj4gPiA+ID4gPiBDYzogTG9yZW56byBQaWVyYWxpc2kgPGxvcmVu
-em8ucGllcmFsaXNpQGFybS5jb20+OyBTaGFtZWVyYWxpDQo+ID4gPiA+ID4gS29sb3RodW0gVGhv
-ZGkgPHNoYW1lZXJhbGkua29sb3RodW0udGhvZGlAaHVhd2VpLmNvbT47IExhdXJlbnRpdQ0KPiA+
-ID4gPiA+IFR1ZG9yIDxsYXVyZW50aXUudHVkb3JAbnhwLmNvbT47IGxpbnV4LWFybS1rZXJuZWwN
-Cj4gPiA+ID4gPiA8bGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnPjsgQUNQSSBE
-ZXZlbCBNYWxpbmcgTGlzdA0KPiA+ID4gPiA+IDxsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZz47
-IExpbnV4IElPTU1VDQo+ID4gPiA+ID4gPGlvbW11QGxpc3RzLmxpbnV4LWZvdW5kYXRpb24ub3Jn
-PjsgTGludXhhcm0NCj4gPiA+ID4gPiA8bGludXhhcm1AaHVhd2VpLmNvbT47IEpvZXJnIFJvZWRl
-bCA8am9yb0A4Ynl0ZXMub3JnPjsgV2lsbA0KPiA+ID4gPiA+IERlYWNvbiA8d2lsbEBrZXJuZWwu
-b3JnPjsgd2FuZ2h1aXFpYW5nDQo+ID4gPiA+ID4gPHdhbmdodWlxaWFuZ0BodWF3ZWkuY29tPjsg
-R3VvaGFuanVuIChIYW5qdW4gR3VvKQ0KPiA+ID4gPiA+IDxndW9oYW5qdW5AaHVhd2VpLmNvbT47
-IFN0ZXZlbiBQcmljZSA8c3RldmVuLnByaWNlQGFybS5jb20+Ow0KPiA+ID4gPiA+IFNhbWkgTXVq
-YXdhciA8U2FtaS5NdWphd2FyQGFybS5jb20+OyBFcmljIEF1Z2VyDQo+ID4gPiA8ZXJpYy5hdWdl
-ckByZWRoYXQuY29tPjsNCj4gPiA+ID4gPiB5YW5neWljb25nIDx5YW5neWljb25nQGh1YXdlaS5j
-b20+DQo+ID4gPiA+ID4gU3ViamVjdDogUmU6IFtQQVRDSCB2NyAyLzldIEFDUEkvSU9SVDogQWRk
-IHN1cHBvcnQgZm9yIFJNUiBub2RlDQo+ID4gPiA+ID4gcGFyc2luZw0KPiA+ID4gPiA+DQo+ID4g
-PiA+IFsuLi5dDQo+ID4gPiA+DQo+ID4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiA+IE9uIHRoZSBw
-cm90IHZhbHVlIGFzc2lnbm1lbnQgYmFzZWQgb24gdGhlIHJlbWFwcGluZyBmbGFnLA0KPiA+ID4g
-PiA+ID4gPiBJJ2QgbGlrZSB0byBoZWFyIFJvYmluL0pvZXJnJ3Mgb3BpbmlvbiwgSSdkIGF2b2lk
-IGJlaW5nIGluIGENCj4gPiA+ID4gPiA+ID4gc2l0dWF0aW9uIHdoZXJlICJub3JtYWxseSIgdGhp
-cyB3b3VsZCB3b3JrIGJ1dCB0aGVuIHdlIGhhdmUNCj4gPiA+ID4gPiA+ID4gdG8gcXVpcmsNCj4g
-PiA+IGl0Lg0KPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiBJcyB0aGlzIGEgdmFsaWQgYXNz
-dW1wdGlvbiBfYWx3YXlzXyA/DQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gTm8uIENlcnRhaW5s
-eSBhcHBseWluZyBJT01NVV9DQUNIRSB3aXRob3V0IHJlZmVyZW5jZSB0byB0aGUNCj4gPiA+ID4g
-PiA+IGRldmljZSdzIF9DQ0EgYXR0cmlidXRlIG9yIGhvdyBDUFVzIG1heSBiZSBhY2Nlc3Npbmcg
-YSBzaGFyZWQNCj4gPiA+ID4gPiA+IGJ1ZmZlciBjb3VsZCBsZWFkIHRvIGEgbG9zcyBvZiBjb2hl
-cmVuY3kuIEF0IHdvcnN0LCBhcHBseWluZw0KPiA+ID4gPiA+ID4gSU9NTVVfTU1JTyB0byBhIGRl
-dmljZS1wcml2YXRlIGJ1ZmZlciAqY291bGQqIGNhdXNlIHRoZSBkZXZpY2UNCj4gPiA+ID4gPiA+
-IHRvIGxvc2UgY29oZXJlbmN5IHdpdGggaXRzZWxmIGlmIHRoZSBtZW1vcnkgdW5kZXJseWluZyB0
-aGUgUk1SDQo+ID4gPiA+ID4gPiBtYXkgaGF2ZSBhbGxvY2F0ZWQgaW50byBzeXN0ZW0gY2FjaGVz
-LiBOb3RlIHRoYXQgdGhlIGV4cGVjdGVkDQo+ID4gPiA+ID4gPiB1c2UgZm9yIG5vbi1yZW1hcHBh
-YmxlIFJNUnMgaXMgdGhlIGRldmljZSBob2xkaW5nIHNvbWUgc29ydCBvZg0KPiA+ID4gPiA+ID4g
-bG9uZy1saXZlZCBwcml2YXRlIGRhdGEgaW4gc3lzdGVtIFJBTSAtIHRoZSBNU0kgZG9vcmJlbGwg
-dHJpY2sNCj4gPiA+ID4gPiA+IGlzIGZhciBtb3JlIG9mIGEgbmljaGUNCj4gPiA+IGhhY2sgcmVh
-bGx5Lg0KPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+IEF0IHRoZSB2ZXJ5IGxlYXN0IEkgdGhpbmsg
-d2UgbmVlZCB0byByZWZlciB0byB0aGUgZGV2aWNlJ3MNCj4gPiA+ID4gPiA+IG1lbW9yeSBhY2Nl
-c3MgcHJvcGVydGllcyBoZXJlLg0KPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+IEpvbiwgTGF1cmVu
-dGl1IC0gaG93IGRvIFJNUnMgY29ycmVzcG9uZCB0byB0aGUgRUZJIG1lbW9yeSBtYXANCj4gPiA+
-ID4gPiA+IG9uIHlvdXIgZmlybXdhcmU/IEknbSBzdGFydGluZyB0byB0aGluayB0aGF0IGFzIGxv
-bmcgYXMgdGhlDQo+ID4gPiA+ID4gPiB1bmRlcmx5aW5nIG1lbW9yeSBpcyBkZXNjcmliZWQgYXBw
-cm9wcmlhdGVseSB0aGVyZSB0aGVuIHdlDQo+ID4gPiA+ID4gPiBzaG91bGQgYmUgYWJsZSB0byBp
-bmZlciBjb3JyZWN0IGF0dHJpYnV0ZXMgZnJvbSB0aGUgRUZJIG1lbW9yeSB0eXBlDQo+IGFuZCBm
-bGFncy4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFRoZSBkZXZpY2VzIGFyZSBhbGwgY2FjaGUgY29o
-ZXJlbnQgYW5kIG1hcmtlZCBhcyBfQ0NBLCAxLiAgVGhlDQo+ID4gPiA+ID4gTWVtb3J5IHJlZ2lv
-bnMgYXJlIGluIHRoZSB2aXJ0IHRhYmxlIGFzDQo+ID4gPiBBUk1fTUVNT1JZX1JFR0lPTl9BVFRS
-SUJVVEVfREVWSUNFLg0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gVGhlIGN1cnJlbnQgY2hpY2tlbiBh
-bmQgZWdnIHByb2JsZW0gd2UgaGF2ZSBpcyB0aGF0IGR1cmluZyB0aGUNCj4gPiA+ID4gPiBmc2wt
-bWMtYnVzIGluaXRpYWxpemF0aW9uIHdlIGNhbGwNCj4gPiA+ID4gPg0KPiA+ID4gPiA+IGVycm9y
-ID0gYWNwaV9kbWFfY29uZmlndXJlX2lkKCZwZGV2LT5kZXYsIERFVl9ETUFfQ09IRVJFTlQsDQo+
-ID4gPiA+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICZt
-Y19zdHJlYW1faWQpOw0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gd2hpY2ggZ2V0cyBkZWZlcnJlZCBi
-ZWNhdXNlIHRoZSBTTU1VIGhhcyBub3QgYmVlbiBpbml0aWFsaXplZCB5ZXQuDQo+ID4gPiA+ID4g
-VGhlbiB3ZSBpbml0aWFsaXplIHRoZSBSTVIgdGFibGVzIGJ1dCB0aGVyZSBpcyBubyBkZXZpY2UN
-Cj4gPiA+ID4gPiByZWZlcmVuY2UgdGhlcmUgdG8gYmUgYWJsZSB0byBxdWVyeSBkZXZpY2UgcHJv
-cGVydGllcywgb25seSB0aGUgc3RyZWFtDQo+IGlkLg0KPiA+ID4gPiA+IEFmdGVyIHRoZSBJT1JU
-IHRhYmxlcyBhcmUgcGFyc2VkIGFuZCB0aGUgU01NVSBpcyBzZXR1cCwgb24gdGhlDQo+ID4gPiA+
-ID4gc2Vjb25kIGRldmljZSBwcm9iZSB3ZSBhc3NvY2lhdGUgZXZlcnl0aGluZyBiYXNlZCBvbiB0
-aGUgc3RyZWFtDQo+ID4gPiA+ID4gaWQgYW5kIHRoZSBmc2wtbWMtYnVzIGRldmljZSBpcyBhYmxl
-IHRvIGNsYWltIGl0cyAxLTEgRE1BIG1hcHBpbmdzLg0KPiA+ID4gPg0KPiA+ID4gPiBDYW4gd2Ug
-c29sdmUgdGhpcyBvcmRlciBwcm9ibGVtIGJ5IGRlbGF5aW5nIHRoZQ0KPiA+ID4gPiBpb21tdV9h
-bGxvY19yZXN2X3JlZ2lvbigpIHRvIHRoZQ0KPiA+ID4gPiBpb21tdV9kbWFfZ2V0X3Jtcl9yZXN2
-X3JlZ2lvbnMoZGV2LA0KPiA+ID4gPiBsaXN0KSA/IFdlIGNvdWxkIGludm9rZQ0KPiA+ID4gPiBk
-ZXZpY2VfZ2V0X2RtYV9hdHRyKCkgZnJvbSB0aGVyZSB3aGljaCBJIGJlbGlldmUgd2lsbCByZXR1
-cm4gdGhlDQo+ID4gPiA+IF9DQ0ENCj4gPiA+IGF0dHJpYnV0ZS4NCj4gPiA+ID4NCj4gPiA+ID4g
-T3IgaXMgdGhhdCBzdGlsbCBlYXJseSB0byBpbnZva2UgdGhhdD8NCj4gPiA+DQo+ID4gPiBUaGF0
-IGxvb2tzIGxpa2UgaXQgc2hvdWxkIHdvcmsuIERvIHdlIHRoZW4gYWxzbyBuZWVkIHRvIHBhcnNl
-DQo+ID4gPiB0aHJvdWdoIHRoZSBWaXJ0dWFsTWVtb3J5VGFibGUgbWF0Y2hpbmcgdGhlIHN0YXJ0
-IGFuZCBlbmQgYWRkcmVzc2VzDQo+ID4gPiB0byBkZXRlcm1pbmUgdGhlIG90aGVyIG1lbW9yeSBh
-dHRyaWJ1dGVzIGxpa2UgTU1JTz8NCj4gPg0KPiA+IFllcy4gQnV0IHRoYXQgbG9va3MgdHJpY2t5
-IGFzIEkgY2FuJ3QgZmluZCB0aGF0IHJlYWRpbHkgYXZhaWxhYmxlIG9uDQo+ID4gQXJtLCBsaWtl
-IHRoZSBlZmlfbWVtX2F0dHJpYnV0ZXMoKS4gSSB3aWxsIHRha2UgYSBsb29rLg0KPiA+DQo+ID4g
-UGxlYXNlIGxldCBtZSBrbm93IGlmIHRoZXJlIGlzIG9uZSBvciBhbnkgb3RoZXIgZWFzeSB3YXkg
-dG8gcmV0cmlldmUgaXQuDQo+IA0KPiBtYXliZSB3ZSBkb24ndCBuZWVkIHRvLiAgTWF5YmUgaXQg
-aXMgZW5vdWdoIHRvIGp1c3QgbW92ZQ0KPiBpb21tdV9hbGxvY19yZXN2X3JlZ2lvbnMgYW5kIHRo
-ZW4gc2V0IHRoZSBJT01NVV9DQUNIRSBmbGFnIGlmIHR5cGUgPQ0KPiBJT01NVV9SRVNWX0RJUkVD
-VF9SRUxBWEFCTEUgYW5kIF9DQ049MT8NCg0KSXQgbG9va3MgbGlrZSB3ZSBjb3VsZCBzaW1wbHkg
-Y2FsbCBlZmlfbWVtX3R5cGUoKSBhbmQgY2hlY2sgZm9yDQpFRklfTUVNT1JZX01BUFBFRF9JTy4g
-SSBoYXZlIHVwZGF0ZWQgdGhlIGNvZGUgdG8gc2V0IHRoZQ0KUk1SIHByb3QgdmFsdWUgYmFzZWQg
-b24gX0NDQSBhbmQgRUZJIG1kIHR5cGUuIFBsZWFzZSBzZWUgdGhlIA0KbGFzdCBjb21taXQgb24g
-dGhpcyBicmFuY2ggaGVyZShub3QgdGVzdGVkKSwNCg0KaHR0cHM6Ly9naXRodWIuY29tL2hpc2ls
-aWNvbi9rZXJuZWwtZGV2L2NvbW1pdHMvcHJpdmF0ZS12NS4xNC1yYzQtcm1yLXY3LWV4dA0KDQpQ
-bGVhc2UgdGFrZSBhIGxvb2sgYW5kIGxldCBtZSBrbm93IGlmIHRoaXMgaXMgZ29vZCBlbm91Z2gg
-dG8gc29sdmUgdGhpcyBwcm9ibGVtLg0KDQpUaGFua3MsDQpTaGFtZWVyDQoNCg==
+Hi,
+
+Though the series is about adding support for PCCT extended PCC subspaces,
+except one patch, remaining are either preparatory or clean up to add
+the PCCT extended PCC subspaces. Only patch 12 adds the support of extended
+PCC type3/4 subspaces.
+
+The main change affecting your is the change in pcc_mbox_request_channel
+to avoid clien driver using con_priv member which is designed for controller
+private pointer rather than for client's to use that.
+
+Shared memory region accesses could be consolidated but I am planning to
+take that up later as some drivers are using different types of mappings,
+yet to figure out on how to consolidate that aspect.
+
+Regards,
+Sudeep
+
+v1->v2:
+	- Addressed comments from Cristian and added his review tags as
+	  provided
+
+Sudeep Holla (14):
+  mailbox: pcc: Fix kernel doc warnings
+  ACPI: CPPC: Fix kernel doc warnings
+  mailbox: pcc: Refactor all PCC channel information into a structure
+  mailbox: pcc: Consolidate subspace interrupt information parsing
+  mailbox: pcc: Consolidate subspace doorbell register parsing
+  mailbox: pcc: Add pcc_mbox_chan structure to hold shared memory region info
+  mailbox: pcc: Use PCC mailbox channel pointer instead of standard
+  mailbox: pcc: Rename doorbell ack to platform interrupt ack register
+  mailbox: pcc: Add PCC register bundle and associated accessor functions
+  mailbox: pcc: Avoid accessing PCCT table in pcc_send_data and pcc_mbox_irq
+  mailbox: pcc: Drop handling invalid bit-width in {read,write}_register
+  mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)
+  mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe
+  ACPI/PCC: Add myself as maintainer for PCC mailbox driver
+
+ MAINTAINERS                            |   6 +
+ drivers/acpi/cppc_acpi.c               |  50 +--
+ drivers/hwmon/xgene-hwmon.c            |  35 +-
+ drivers/i2c/busses/i2c-xgene-slimpro.c |  33 +-
+ drivers/mailbox/pcc.c                  | 598 +++++++++++++++----------
+ include/acpi/pcc.h                     |  21 +-
+ 6 files changed, 436 insertions(+), 307 deletions(-)
+
+--
+2.25.1
+
