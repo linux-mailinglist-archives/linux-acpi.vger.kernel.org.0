@@ -2,83 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B216940F936
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Sep 2021 15:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62FC040F938
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Sep 2021 15:34:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231887AbhIQNf3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Sep 2021 09:35:29 -0400
-Received: from foss.arm.com ([217.140.110.172]:53248 "EHLO foss.arm.com"
+        id S244913AbhIQNfe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Sep 2021 09:35:34 -0400
+Received: from foss.arm.com ([217.140.110.172]:53256 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240676AbhIQNf2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 17 Sep 2021 09:35:28 -0400
+        id S240873AbhIQNfa (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 17 Sep 2021 09:35:30 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C04D931B;
-        Fri, 17 Sep 2021 06:34:06 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D789F1063;
+        Fri, 17 Sep 2021 06:34:07 -0700 (PDT)
 Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D9C333F719;
-        Fri, 17 Sep 2021 06:34:05 -0700 (PDT)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id F2A913F719;
+        Fri, 17 Sep 2021 06:34:06 -0700 (PDT)
 From:   Sudeep Holla <sudeep.holla@arm.com>
 To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Sudeep Holla <sudeep.holla@arm.com>,
         Cristian Marussi <cristian.marussi@arm.com>,
         "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Jassi Brar <jassisinghbrar@gmail.com>
-Subject: [PATCH v2 00/14] mailbox: pcc: Add support for PCCT extended PCC subspaces
-Date:   Fri, 17 Sep 2021 14:33:43 +0100
-Message-Id: <20210917133357.1911092-1-sudeep.holla@arm.com>
+Subject: [PATCH v2 01/14] mailbox: pcc: Fix kernel doc warnings
+Date:   Fri, 17 Sep 2021 14:33:44 +0100
+Message-Id: <20210917133357.1911092-2-sudeep.holla@arm.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210917133357.1911092-1-sudeep.holla@arm.com>
+References: <20210917133357.1911092-1-sudeep.holla@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Kernel doc validation script is unhappy and complains with the below set
+of warnings.
 
-Though the series is about adding support for PCCT extended PCC subspaces,
-except one patch, remaining are either preparatory or clean up to add
-the PCCT extended PCC subspaces. Only patch 12 adds the support of extended
-PCC type3/4 subspaces.
+  |  drivers/mailbox/pcc.c:179: warning: Function parameter or member 'irq'
+  |	not described in 'pcc_mbox_irq'
+  |  drivers/mailbox/pcc.c:179: warning: Function parameter or member 'p'
+  |	not described in 'pcc_mbox_irq'
+  |  drivers/mailbox/pcc.c:378: warning: expecting prototype for
+  |	parse_pcc_subspaces(). Prototype was for parse_pcc_subspace() instead
 
-The main change affecting your is the change in pcc_mbox_request_channel
-to avoid clien driver using con_priv member which is designed for controller
-private pointer rather than for client's to use that.
+Fix it.
 
-Shared memory region accesses could be consolidated but I am planning to
-take that up later as some drivers are using different types of mappings,
-yet to figure out on how to consolidate that aspect.
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+ drivers/mailbox/pcc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Regards,
-Sudeep
-
-v1->v2:
-	- Addressed comments from Cristian and added his review tags as
-	  provided
-
-Sudeep Holla (14):
-  mailbox: pcc: Fix kernel doc warnings
-  ACPI: CPPC: Fix kernel doc warnings
-  mailbox: pcc: Refactor all PCC channel information into a structure
-  mailbox: pcc: Consolidate subspace interrupt information parsing
-  mailbox: pcc: Consolidate subspace doorbell register parsing
-  mailbox: pcc: Add pcc_mbox_chan structure to hold shared memory region info
-  mailbox: pcc: Use PCC mailbox channel pointer instead of standard
-  mailbox: pcc: Rename doorbell ack to platform interrupt ack register
-  mailbox: pcc: Add PCC register bundle and associated accessor functions
-  mailbox: pcc: Avoid accessing PCCT table in pcc_send_data and pcc_mbox_irq
-  mailbox: pcc: Drop handling invalid bit-width in {read,write}_register
-  mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)
-  mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe
-  ACPI/PCC: Add myself as maintainer for PCC mailbox driver
-
- MAINTAINERS                            |   6 +
- drivers/acpi/cppc_acpi.c               |  50 +--
- drivers/hwmon/xgene-hwmon.c            |  35 +-
- drivers/i2c/busses/i2c-xgene-slimpro.c |  33 +-
- drivers/mailbox/pcc.c                  | 598 +++++++++++++++----------
- include/acpi/pcc.h                     |  21 +-
- 6 files changed, 436 insertions(+), 307 deletions(-)
-
---
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 0296558f9e22..23391e224a68 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -174,6 +174,10 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
+ 
+ /**
+  * pcc_mbox_irq - PCC mailbox interrupt handler
++ * @irq:	interrupt number
++ * @p: data/cookie passed from the caller to identify the channel
++ *
++ * Returns: IRQ_HANDLED if interrupt is handled or IRQ_NONE if not
+  */
+ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ {
+@@ -364,7 +368,7 @@ static const struct mbox_chan_ops pcc_chan_ops = {
+ };
+ 
+ /**
+- * parse_pcc_subspaces -- Count PCC subspaces defined
++ * parse_pcc_subspace - Count PCC subspaces defined
+  * @header: Pointer to the ACPI subtable header under the PCCT.
+  * @end: End of subtable entry.
+  *
+-- 
 2.25.1
 
