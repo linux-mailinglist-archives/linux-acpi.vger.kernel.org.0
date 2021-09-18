@@ -2,67 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50A3A4106D6
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Sep 2021 15:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C488410701
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Sep 2021 16:18:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239291AbhIRNdT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 18 Sep 2021 09:33:19 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:48762 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239009AbhIRNdR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Sep 2021 09:33:17 -0400
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
- id fac171cdf082cbb6; Sat, 18 Sep 2021 15:31:52 +0200
-Received: from kreacher.localnet (89-77-51-84.dynamic.chello.pl [89.77.51.84])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 690F666A569;
-        Sat, 18 Sep 2021 15:31:49 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        x86 Maintainers <x86@kernel.org>
-Subject: [PATCH v1 0/5] PCI: ACPI: Get rid of struct pci_platform_pm_ops and clean up code
-Date:   Sat, 18 Sep 2021 15:31:48 +0200
-Message-ID: <2341482.jE0xQCEvom@kreacher>
+        id S236888AbhIROTk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 18 Sep 2021 10:19:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42248 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231441AbhIROTk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Sep 2021 10:19:40 -0400
+Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com [IPv6:2607:f8b0:4864:20::a42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F5EFC061574
+        for <linux-acpi@vger.kernel.org>; Sat, 18 Sep 2021 07:18:16 -0700 (PDT)
+Received: by mail-vk1-xa42.google.com with SMTP id 13so4851914vkl.1
+        for <linux-acpi@vger.kernel.org>; Sat, 18 Sep 2021 07:18:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
+         :subject:to;
+        bh=QSp9JWX4XAHKXl7X56VeCQC0onvxbHHBBOV+a/7+PNE=;
+        b=YDyuLyPtan3sCI2xds/RVeENXO77tx7W/YzWsAn4k9INZhsjwdyjbKuMDxSboP50Ps
+         8bH8fgppQ1ScttdnPHyORJRA0ZyA3pqwBeZk0Szwb5C9FGvU6q/llkDwzoztg4QfJgU/
+         nrVdlSb3aZwFJ0PGifGb/ZFHSlO8DRhtO/RLmSdxA9M1C7hhDxk2hRW7T/QT8nCGrrGA
+         Xnm1YUQ4WO1Tq5sgT8my3lB7gQ47SCBBrPfB7NerwownuDD4GtSlgg8E8LGY6wcNri1p
+         GIBS8WtFefQVLaqmdek56VDAI+ah8W1Q4ussF/BN0ya8KEkP2eiF1Nq/96oCX1E9+Wqd
+         HBOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
+         :from:date:message-id:subject:to;
+        bh=QSp9JWX4XAHKXl7X56VeCQC0onvxbHHBBOV+a/7+PNE=;
+        b=JskgqHnIR/diikfQuf4QBY/8LtARSKz23pBjGbmyD1cbMv/FoytJsGjlbbaAzTmiE7
+         h72oE8xgzOdbfANkmN3H1dkB92uvrnUOMJygsfY/4E/qNJbqUGMowTZQFCk/l7jPkCXY
+         RTEAzTFt9e6wCb6pNRJtzXSUi8tTZJnjvddmBMS1Ip87s0PFuScteaEAruwkSWheuc6U
+         8f+EYAxv11ZlYKSvdbcaxxZ/bmUIRM4GdG/f37fo8lf6Kj/JEs4FVx1bGqtLbanyxB61
+         4lF8p//Hqq4CQ5S6dEXTqKq6auNDIArMFgBO+AS+l0wNkNBTomAohms04HLH3iMTQcxC
+         nYTg==
+X-Gm-Message-State: AOAM533DZx/Q1pSLFyxpIxp/aZEv366PQYrnEwaMjT+2zc+7SioddZrq
+        GK5/ZVfl7JP0RW6BPSaoN3CaZEgJrvdg0TvWC2o=
+X-Google-Smtp-Source: ABdhPJwajyo2qMjDEf+/S4o3SDU2T77gaVtzY79DiGgAUU9r172O8DzcVtyMXRW8OnTjk4CRKqhwP5XyX06PVYwaetc=
+X-Received: by 2002:a1f:a68c:: with SMTP id p134mr10934742vke.8.1631974695277;
+ Sat, 18 Sep 2021 07:18:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+Received: by 2002:a59:c470:0:b0:227:7818:73f8 with HTTP; Sat, 18 Sep 2021
+ 07:18:14 -0700 (PDT)
+Reply-To: headoffcedirectorwu3@gmail.com
+In-Reply-To: <CANaBqeDXi9pQ=vqah_8K2a0PAyep20nC7cTgb5qa5HuMDejfdg@mail.gmail.com>
+References: <CANaBqeDXi9pQ=vqah_8K2a0PAyep20nC7cTgb5qa5HuMDejfdg@mail.gmail.com>
+From:   BANK Director <officebankdirector0@gmail.com>
+Date:   Sat, 18 Sep 2021 14:18:14 +0000
+Message-ID: <CANaBqeC1kC+=m9UKZTH2f8t0Z-2k+TJ+1v86GmFT918-NLMc-g@mail.gmail.com>
+Subject: wu
+To:     officebankdirector0@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 89.77.51.84
-X-CLIENT-HOSTNAME: 89-77-51-84.dynamic.chello.pl
-X-VADE-SPAMSTATE: spam:low
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrudehkedgieefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenogfuphgrmhfkphculdeftddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepkeelrdejjedrhedurdekgeenucfuphgrmhfkphepkeelrdejjedrhedurdekgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrjeejrdehuddrkeegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhvghlghgrrghssehkvghrnhgv
- lhdrohhrghdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepmhhikhgrrdifvghsthgvrhgsvghrgheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=56 Fuz1=56 Fuz2=56
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+ Our office contact , 2554 Road Of Kpalime Face Pharmacy Bet, Gulf  Lome Togo
 
-As explained in the changelog of patch [2/5], using struct pci_platform_pm_ops
-for ACPI is not particularly beneficial, so it is better to get rid of it and
-call the functions pointed to by it directly from the PCI core.
+I m bank director bring notice for you that our IMF compensation you
+sum of $850,000.00 because your email address was found in one of scam
+victim list. Do you willing to get this fund or not?
 
-However, struct pci_platform_pm_ops is also used by the Intel MID support code
-that basically is regarded as dead which is why the majority of it has been
-dropped already as of commit 4590d98f5a4f ("sfi: Remove framework for deprecated
-firmware").  Since it doesn't make much sense to update that code, patch [1/5]
-drops the PCI part of it along with some arch pieces that are only needed for
-the PCI stuff.
-
-The main modification is made by patch [2/5] (see the changelog thereof for
-details).
-
-The rest is just cleanups and some code consolidation on top of that.
-
-Thanks!
-
-
-
+Sincerely
+Frank Joe
+Bank Director
+Whatsapp, +22870248258
