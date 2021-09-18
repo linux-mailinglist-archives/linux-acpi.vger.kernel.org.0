@@ -2,124 +2,203 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCD4A4104D1
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Sep 2021 09:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41035410611
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Sep 2021 13:31:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237687AbhIRHia (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 18 Sep 2021 03:38:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39252 "EHLO
+        id S232331AbhIRLcx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 18 Sep 2021 07:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231351AbhIRHi2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Sep 2021 03:38:28 -0400
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20894C061574;
-        Sat, 18 Sep 2021 00:37:05 -0700 (PDT)
-Received: by mail-ua1-x931.google.com with SMTP id v9so7572570uak.1;
-        Sat, 18 Sep 2021 00:37:05 -0700 (PDT)
+        with ESMTP id S239081AbhIRLcv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Sep 2021 07:32:51 -0400
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0EDAC061574
+        for <linux-acpi@vger.kernel.org>; Sat, 18 Sep 2021 04:31:27 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id a10so25927277qka.12
+        for <linux-acpi@vger.kernel.org>; Sat, 18 Sep 2021 04:31:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DzhfRJtsewrJy9gvg3PVALM7qiexBjbh/6ESbF9yAmQ=;
-        b=i1MTcAD9UnYWPlpu2z9dz7O9pjlQi/vuAb8G6J7B83k+RiE8sojZ6LvZ09CgoUK9n4
-         LczbRL08HgiCe6YvEYzMEkXDh1Q0J6Jk4GWLqVgxj1Zsl2mmDINOHcH8tljgjekYyuja
-         wbCP62A2N6pG33G7GTvW5WMKXBJcNSykuLc68szTgl3hBj0vHo3E9/Zrank8lIIdBfjG
-         oq7az9SaGonnHEdklABpvcpHh9cJebxCySh26hjrimvfq6LvmneliPGe0KzLyvCsp6eT
-         j/JPRVOpE7YO6zUAsiaElas3DlU350eVSGokG8rpu5d8vz5qH8YDH2eKKlIpOecW7U60
-         H3/A==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=l9vJ076MUOUMez6fH7RAAuj9aqmTJIuSHEyRJV470Mk=;
+        b=NgEtGjEXLdOgACXd4oF6TXizLmHTc6csVZ3t42PzqRQ8Dtvhpq+V6SqSqWX5+eyBky
+         v7owQd1dZ8AbAIcYFFjfQxFyQpktSqIf2XPZVjJCib+xCwXcutwvNBCaYIe8eC+0vq1w
+         +9508Q1ap9tlIJzHv5Ac1x1N36cxU0nfduvwzd0DfsuvEUU/4mMdrqWxGObGfuq3Ep/K
+         VzPF0doD3lne1z9PnnDjLMyqeFlZ6hTFwwAY312hYZNuxhuvsj/etYkPW+NCKSdsr4Fe
+         XyEQAr/ECeZ1s5QalXw3JRJUvHiWCuTDST4WwdOJPK07CMejiPQaaGRVXWFm5e0qnzIa
+         izuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DzhfRJtsewrJy9gvg3PVALM7qiexBjbh/6ESbF9yAmQ=;
-        b=UaFj+DX7cbkzfu3IVa6RUpB2tvWMzJTrkTAmI+nZ8Wg6zPISx/+jDXpZf6gHfEZhEy
-         +Fdl/TtptrfqdAHQ+q8dtog9n22yzOLutBpADpWwU1ZuaVmlAzRvUcjbrCwVl63892AX
-         B4VpZ6aBTVvkkpDDRy87U5zAIw3dn83A23PUvSCteT3Fvx/VvwPdjqkt008VD/XKJxsI
-         pEVXhqB02VmHC5eKcoVEmuVN1RrI2y+iemTWdFVGG/UT74ju36SRvzXVSs6mpsU+Un4U
-         IZxHHugNSK6xMlldo7xJS99Nn/nTHRNe5lQrokhyMz/4Pa2yPqTcRtyp+eDVeucmAIZl
-         s5Ew==
-X-Gm-Message-State: AOAM531zpCIcGDoGMcljRfa5sNikGEf2Ca3sOomKnEFz8v+evbEOn+41
-        ZaW3deQSf12M64HhZI1nk73pupKF715JcxQqHjs=
-X-Google-Smtp-Source: ABdhPJwi5zes5aLNI68EPqG8s32AnHOL7SpWjSiidkZRKZ44MpDEG9d4/Z3v+a0xOXreS8EF7zbs/z9Lh4RJ9M+id+w=
-X-Received: by 2002:ab0:31c1:: with SMTP id e1mr7426551uan.132.1631950623485;
- Sat, 18 Sep 2021 00:37:03 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=l9vJ076MUOUMez6fH7RAAuj9aqmTJIuSHEyRJV470Mk=;
+        b=ZqbQpPnoczep42KIpnVLLOmyGSQHH2gDt9Nmgr/yuCgj3e+fQLQyN7Lj4Gn/EwEJ/+
+         L95LvsKupL6oIJ09Q2hXtY0RpobFnkIjl4StXvwN+cYagdzxUxrwA7Emg6mztakjfn9y
+         1VOgHyj0Ad7CCJJpGwRIZmblFP2gKcsnmC5bXvlIC8BWYc8IeDtIR6FxF/4URoa6JehS
+         xZYArTZ7616a5mVkkx65Gr9xO+CjCe9zswEBj9vNaF4pLYufYeXvSn2P/flLtZGzeS9X
+         BwKNk5SaqmVmpGa3QMjWVz5ruyW0X247+/iiHalO/ecReIelKHqI8Q/FmZfqtqWvoD/K
+         zj2A==
+X-Gm-Message-State: AOAM533Zwmypoa0Uurv+0ZARThsfBxHA4HRHTAu4cnnCBY2BjznDsm5a
+        Kcp7VHe0Zh+Wni+0UGgOJUZebT344Dk830XXvZbDic9H/vU=
+X-Google-Smtp-Source: ABdhPJybo5CppUEFgbOJqwtrKDw62ZIkbuDwvMXGIkMCJuIZxF0YoB+OYTx6Wxc4/3Db7mw7b3Jed98TQuD6UVRvwrQ=
+X-Received: by 2002:a25:1584:: with SMTP id 126mr20106454ybv.126.1631964686438;
+ Sat, 18 Sep 2021 04:31:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210917035736.3934017-1-chenhuacai@loongson.cn>
- <20210917035736.3934017-19-chenhuacai@loongson.cn> <CAK8P3a26CGyiZ9y7KxHGu6eHXZJ08X4mospr+3CL8g_qi=ACpg@mail.gmail.com>
-In-Reply-To: <CAK8P3a26CGyiZ9y7KxHGu6eHXZJ08X4mospr+3CL8g_qi=ACpg@mail.gmail.com>
-From:   Huacai Chen <chenhuacai@gmail.com>
-Date:   Sat, 18 Sep 2021 15:36:52 +0800
-Message-ID: <CAAhV-H5=Ut+rymv1RH+1GVS2oVZogtuwY_Sk-dDosJh6=USr0Q@mail.gmail.com>
-Subject: Re: [PATCH V3 18/22] LoongArch: Add PCI controller support
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Jianmin Lv <lvjianmin@loongson.cn>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Will Deacon <will@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
+From:   James Dutton <james.dutton@gmail.com>
+Date:   Sat, 18 Sep 2021 12:30:50 +0100
+Message-ID: <CAAMvbhFOYG2dBksLPo1DZdWnUy-vLgL+qiQDH+JrD9VeeYLXww@mail.gmail.com>
+Subject: I2C SMBUS SPD ECC DIMM access vs. ACPI BIOS
+To:     linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Arnd,
+On trying to "modprobe i2c-piix4" I get:
 
-On Fri, Sep 17, 2021 at 5:02 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Fri, Sep 17, 2021 at 5:57 AM Huacai Chen <chenhuacai@loongson.cn> wrote:
-> >
-> > Loongson64 based systems are PC-like systems which use PCI/PCIe as its
-> > I/O bus, This patch adds the PCI host controller support for LoongArch.
-> >
-> > Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
->
-> As discussed before, I think the PCI support should not be part of the
-> architecture code or this patch series. The headers are ok, but the pci.c
-> and acpi.c files have nothing loongarch specific in them, and you clearly
-> just copied most of this from arm64 or x86.
-In V2 part of the PCI code (pci-loongson.c) has moved to
-drivers/pci/controllers. For pci.c and acpi.c, I agree that "the thing
-should be like that", but have some different ideas about "the way to
-arrive at that". In my opinion, we can let this series be merged at
-first, and then do another series to "restructure the files and move
-common parts to the drivers directory". That way looks more natural to
-me (doing the other series at first may block the whole thing).
+[  209.488778] ACPI Warning: SystemIO range
+0x0000000000000B00-0x0000000000000B08 conflicts with OpRegion
+0x0000000000000B00-0x0000000000000B0F (\GSA1.SMBI)
+(20210604/utaddress-204)
+[  209.488791] ACPI: OSL: Resource conflict; ACPI support missing from driver?
 
->
-> What I would suggest you do instead is:
->
-> - start a separate patch series, addressed to the ACPI, PCI host driver
->   and ARM64 maintainers.
->
-> - Move all the bits you need from arch/{arm64,ia64,x86} into
->   drivers/acpi/pci/pci_root.c, duplicating them with #if/#elif/#else
->   where they are too different, making the #else path the
->   default that can be shared with loongarch.
->
-> - Move the bits from pci_root_info/acpi_pci_root_info that are
->   always needed into struct pci_host_bridge, with an
->   #ifdef CONFIG_ACPI where appropriate.
->
-> - Simplify as much as you can easily do.
->
->         Arnd
+The purpose of this attempt is to use I2C SMBUS to read a temp sensor
+on the ECC DIMM.
+This same approach works on a different AMD AM4 motherboard, but this
+is a Gigabyte AMD X399 Threadripper motherboard.
+Now I understand that this warning is a safety warning, because if the
+BIOS ACPI and Linux userspace tried to access the EEPROM SPD on the
+DIMM at the same time, hardware damage might result.
+So, my question is, who should I ask to get enough documentation or
+hints, so that I could modify the source code to make this work
+safely.
+
+DMI: Gigabyte Technology Co., Ltd. X399 AORUS PRO/X399 AORUS PRO-CF,
+BIOS F2 12/11/2019
+LSPCI:
+00:00.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Root Complex
+00:00.2 IOMMU: Advanced Micro Devices, Inc. [AMD] Family 17h (Models
+00h-0fh) I/O Memory Management Unit
+00:01.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+00:01.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) PCIe GPP Bridge
+00:02.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+00:03.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+00:04.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+00:07.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+00:07.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Internal PCIe GPP Bridge 0 to Bus B
+00:08.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+00:08.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Internal PCIe GPP Bridge 0 to Bus B
+00:14.0 SMBus: Advanced Micro Devices, Inc. [AMD] FCH SMBus Controller (rev 59)
+00:14.3 ISA bridge: Advanced Micro Devices, Inc. [AMD] FCH LPC Bridge (rev 51)
+00:18.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 0
+00:18.1 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 1
+00:18.2 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 2
+00:18.3 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 3
+00:18.4 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 4
+00:18.5 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 5
+00:18.6 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 6
+00:18.7 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 7
+00:19.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 0
+00:19.1 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 1
+00:19.2 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 2
+00:19.3 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 3
+00:19.4 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 4
+00:19.5 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 5
+00:19.6 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 6
+00:19.7 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Data Fabric: Device 18h; Function 7
+01:00.0 USB controller: Advanced Micro Devices, Inc. [AMD] X399 Series
+Chipset USB 3.1 xHCI Controller (rev 02)
+01:00.1 SATA controller: Advanced Micro Devices, Inc. [AMD] X399
+Series Chipset SATA Controller (rev 02)
+01:00.2 PCI bridge: Advanced Micro Devices, Inc. [AMD] X399 Series
+Chipset PCIe Bridge (rev 02)
+02:00.0 PCI bridge: Advanced Micro Devices, Inc. [AMD] 300 Series
+Chipset PCIe Port (rev 02)
+02:01.0 PCI bridge: Advanced Micro Devices, Inc. [AMD] 300 Series
+Chipset PCIe Port (rev 02)
+02:02.0 PCI bridge: Advanced Micro Devices, Inc. [AMD] 300 Series
+Chipset PCIe Port (rev 02)
+02:03.0 PCI bridge: Advanced Micro Devices, Inc. [AMD] 300 Series
+Chipset PCIe Port (rev 02)
+02:04.0 PCI bridge: Advanced Micro Devices, Inc. [AMD] 300 Series
+Chipset PCIe Port (rev 02)
+04:00.0 Ethernet controller: Intel Corporation I211 Gigabit Network
+Connection (rev 03)
+08:00.0 Non-Essential Instrumentation [1300]: Advanced Micro Devices,
+Inc. [AMD] Zeppelin/Raven/Raven2 PCIe Dummy Function
+08:00.2 Encryption controller: Advanced Micro Devices, Inc. [AMD]
+Family 17h (Models 00h-0fh) Platform Security Processor
+08:00.3 USB controller: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) USB 3.0 Host Controller
+09:00.0 Non-Essential Instrumentation [1300]: Advanced Micro Devices,
+Inc. [AMD] Zeppelin/Renoir PCIe Dummy Function
+09:00.2 SATA controller: Advanced Micro Devices, Inc. [AMD] FCH SATA
+Controller [AHCI mode] (rev 51)
+09:00.3 Audio device: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) HD Audio Controller
+40:00.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Root Complex
+40:00.2 IOMMU: Advanced Micro Devices, Inc. [AMD] Family 17h (Models
+00h-0fh) I/O Memory Management Unit
+40:01.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+40:01.2 PCI bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) PCIe GPP Bridge
+40:02.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+40:03.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+40:03.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) PCIe GPP Bridge
+40:04.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+40:07.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+40:07.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Internal PCIe GPP Bridge 0 to Bus B
+40:08.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-1fh) PCIe Dummy Host Bridge
+40:08.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) Internal PCIe GPP Bridge 0 to Bus B
+41:00.0 Non-Volatile memory controller: Samsung Electronics Co Ltd
+NVMe SSD Controller SM981/PM981/PM983
+42:00.0 PCI bridge: Advanced Micro Devices, Inc. [AMD] Device 1470 (rev c3)
+43:00.0 PCI bridge: Advanced Micro Devices, Inc. [AMD] Device 1471
+44:00.0 VGA compatible controller: Advanced Micro Devices, Inc.
+[AMD/ATI] Vega 10 XL/XT [Radeon RX Vega 56/64] (rev c3)
+44:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Vega 10
+HDMI Audio [Radeon Vega 56/64]
+45:00.0 Non-Essential Instrumentation [1300]: Advanced Micro Devices,
+Inc. [AMD] Zeppelin/Raven/Raven2 PCIe Dummy Function
+45:00.2 Encryption controller: Advanced Micro Devices, Inc. [AMD]
+Family 17h (Models 00h-0fh) Platform Security Processor
+45:00.3 USB controller: Advanced Micro Devices, Inc. [AMD] Family 17h
+(Models 00h-0fh) USB 3.0 Host Controller
+46:00.0 Non-Essential Instrumentation [1300]: Advanced Micro Devices,
+Inc. [AMD] Zeppelin/Renoir PCIe Dummy Function
+46:00.2 SATA controller: Advanced Micro Devices, Inc. [AMD] FCH SATA
+Controller [AHCI mode] (rev 51)
