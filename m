@@ -2,193 +2,401 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 730F4410D64
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Sep 2021 22:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20D92410D6E
+	for <lists+linux-acpi@lfdr.de>; Sun, 19 Sep 2021 23:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbhISUoh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 19 Sep 2021 16:44:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41158 "EHLO
+        id S230000AbhISVNA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 19 Sep 2021 17:13:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbhISUoh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Sep 2021 16:44:37 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51246C061574;
-        Sun, 19 Sep 2021 13:43:11 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id v24so52642293eda.3;
-        Sun, 19 Sep 2021 13:43:11 -0700 (PDT)
+        with ESMTP id S229790AbhISVM7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 19 Sep 2021 17:12:59 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD428C061574;
+        Sun, 19 Sep 2021 14:11:33 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id t6so52860685edi.9;
+        Sun, 19 Sep 2021 14:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Wz4E08F7JKH6TXiOVNrFs/KWE6EvM1kqWJiilPR/ICw=;
-        b=CM+qQ3gvSzwQAjQSQXh0Qy0GAeQfJ9oijLVm4bB14Tb4MjJoMb/V/Fm9osdVIzvdZa
-         ZGfL8Qf+ggKFBq5nZZAOrKOu4lHuxOKh3oJRyUNVGcuD4gOHq7NKT77eGnTpLrixfuhF
-         +nybJKRv9Qjx9FLxTxX4WGzaFYdAMRAmsCGE9qoiH8ojupiGk2W5/j+wEoFCRsCfG+4q
-         riHmGPuvkjf1zhVeV/rhbqT6PsfCOdYyWS/VN+iQ0QYcDgkLAmaXD9T0Omnz/VkAc1HF
-         IyANWVVVu9fUx65rhpmBuifc/f56jpw7GO6pHaGOnnpVBrpuHLlUM4/YbQi3rATDlGrq
-         CEKw==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=vAXac4brFBrT0gruA6bYxKdR/7fDw7qeOlpxvcrSlnc=;
+        b=b4btKXwHRnpbqiz/Fe03v5aXIia40kInV64mqhBlELt8KyjQyRiBcE66HFBIu++PRq
+         oV1d8pUhQwC4TvVkx0MDnQQlOE/T26eERhy4CPIfRBslWm/8PQnheeIXgrKtuLK/BXXO
+         ba8h2kNKtGUzlUD7TsZKkNZ3vmkfRN+q1I5LAWwLkLXl+EZKl5kC42VIm0QQtLDBZAG0
+         oicyvSNNO0rIlUCXg/1ZUKyoUSeEf+2Qbz4Gm5LLroPdUqNK8SPOii2fX01oEShhIfZD
+         Kc+ttkvoquAqDbDxqsFwST2B7uLGu4pbWtWohO4vFGijxvrS1KkoFzl+/bgC7Q2ExQfq
+         zOXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Wz4E08F7JKH6TXiOVNrFs/KWE6EvM1kqWJiilPR/ICw=;
-        b=3yd5dY0lpH2Q1YiWGhlZb0G59bh/iivp24OJ7/MGRGNMGrln1DttRT+jS2QvwnzNOm
-         BI5nLOlDelq3FMILaICXuZz4gek1EZCWyPYOlt9XFGXYANUTUdg4stbcOejsAYc+VfYB
-         v7snsIThl9onBWwjqgpqAc2fAzwl6vLtr2X4mlPi3Qq3PzJG1sKoezuVG3OfrKgspW+x
-         WXE+D2zT/m3k8+eVckM+A8GQe71JiM4DwHtwXE91gJhOX3hp1VqpJHgF5PVHT5QwXSx3
-         3ytiizpx39ycUkyH0mR3L+kyLdx7DKzdX+HV35TAnd0iHIR44TNvBT12AM2DXmyV0ebF
-         O2MQ==
-X-Gm-Message-State: AOAM531O8H5RGgPtdmYl6a58dDu4qcP4TS4hhv5wo11FmoxZ/51/e8Mp
-        lue52DxBdEkFOGBrmpOYMM+gBFL0nJWkYu+5C5IF8t4/a5A=
-X-Google-Smtp-Source: ABdhPJzlF9XttKygPGwpcbk5GC21VyIc+2DVlZTSEj0PPTXecOxvA3VQO+hMckDvfJ7h4Ke/DJlxLhcig2VIzdKmi8s=
-X-Received: by 2002:a17:906:3b56:: with SMTP id h22mr24422069ejf.141.1632084189798;
- Sun, 19 Sep 2021 13:43:09 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=vAXac4brFBrT0gruA6bYxKdR/7fDw7qeOlpxvcrSlnc=;
+        b=SJtLuA4e9y8qdr9HLHKG88k8S3+4gQOxU6/jtahr7kXjfTzyjP4C9EGDrGA6bo68QU
+         lrQiwIgri8Gi0VoD0OCF11z8cRLhZoQOc/NvU3FAy07yr27fhzLnQlb0hAJwn2l2AJOn
+         FU/HsfWiHG5ha8n8VGH5TnwHCZrQvuaBH2pY7IxIxA0YiO7UJCT5nv5EhqhZMpp+yJS6
+         EwWtnQeUi72TtmweZzZAyhd6Yhr/ABHkh88oeO3WPHEX42R9IWNDplb6E9KpeVGvLUgt
+         i0i+ctbN0M1KIgn6VU30TXrOwIZNM1ipafmTASgNBvV2tlIThym2VyybjTwHiSEZNTQy
+         1vjw==
+X-Gm-Message-State: AOAM5319k92X9YV06gfSE++3yIa6dudAfRITaB0rLgohvj1VFmJbCamj
+        92GtCDgt9Ef9uIIxYtn/1r6k625XkP8=
+X-Google-Smtp-Source: ABdhPJy1YI1jQu52JZLP40FdRIG+eLDURu5fSavj90P4UutkjXKl2sWwdNQfhgmi/uLjqt9d42U9Yw==
+X-Received: by 2002:a17:906:318f:: with SMTP id 15mr24797185ejy.206.1632085892118;
+        Sun, 19 Sep 2021 14:11:32 -0700 (PDT)
+Received: from ?IPv6:2001:981:6fec:1:2c4d:2510:75a:89ab? ([2001:981:6fec:1:2c4d:2510:75a:89ab])
+        by smtp.gmail.com with ESMTPSA id d10sm6092185edx.57.2021.09.19.14.11.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Sep 2021 14:11:31 -0700 (PDT)
+Subject: Re: [PATCH v1 1/5] PCI: PM: x86: Drop Intel MID PCI PM support
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        x86 Maintainers <x86@kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Len Brown <len.brown@intel.com>
+References: <8003272.NyiUUSuA9g@kreacher> <1798761.CQOukoFCf9@kreacher>
+From:   Ferry Toth <fntoth@gmail.com>
+Message-ID: <70cc742c-f015-9e14-9584-c3415e15085a@gmail.com>
+Date:   Sun, 19 Sep 2021 23:11:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-References: <20210918150130.GA30982@xsang-OptiPlex-9020>
-In-Reply-To: <20210918150130.GA30982@xsang-OptiPlex-9020>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 19 Sep 2021 23:42:29 +0300
-Message-ID: <CAHp75VexBzWBWrmtmZzYo4pzEuO-Neuio=wjNfJCH6Je1DQXNQ@mail.gmail.com>
-Subject: Re: [dmaengine] fe364a7d95: UBSAN:array-index-out-of-bounds_in_drivers/acpi/acpica/dswexec.c
-To:     kernel test robot <oliver.sang@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, lkp@lists.01.org,
-        kbuild test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1798761.CQOukoFCf9@kreacher>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-+Cc: Rafael, ACPI ml
+Hi,
 
+Op 18-09-2021 om 15:21 schreef Rafael J. Wysocki:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Support for Intel MID platforms has mostly gone away with the SFI
+> support removal in commit 4590d98f5a4f ("sfi: Remove framework for
+> deprecated firmware"), but there are some pieces of it still in the
+> tree.  One of them is the MID PCI PM support code which gets in the
+> way of subsequent PCI PM simplifications and trying to update it is
+> rather pointless, so get rid of it completely along with the arch
+> code pieces that are only used by it.
 
+Removing PM support for MID will break (among others) Intel Edison, 
+which is currently in use and running up to date vanilla kernel (v5.14) 
+and user space.
 
-On Sun, Sep 19, 2021 at 10:41 AM kernel test robot
-<oliver.sang@intel.com> wrote:
->
->
->
-> Greeting,
->
-> FYI, we noticed the following commit (built with gcc-9):
->
-> commit: fe364a7d95c24e07e9b3f2ab917f01d6d8330bba ("dmaengine: dw: Program xBAR hardware for Elkhart Lake")
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+I would happily test updates PM when they appear.
 
-I do not believe the above commit is related to the reported issue.
-
-> in testcase: netperf
-> version: netperf-x86_64-2.7-0_20210908
-> with following parameters:
->
->         ip: ipv4
->         runtime: 300s
->         nr_threads: 1
->         cluster: cs-localhost
->         test: TCP_CRR
->         cpufreq_governor: performance
->         ucode: 0xb000280
->
-> test-description: Netperf is a benchmark that can be use to measure various aspect of networking performance.
-> test-url: http://www.netperf.org/netperf/
->
->
-> on test machine: 96 threads 2 sockets Ice Lake with 256G memory
->
-> caused below changes (please refer to attached dmesg/kmsg for entire log/backtrace):
->
->
->
-> If you fix the issue, kindly add following tag
-> Reported-by: kernel test robot <oliver.sang@intel.com>
->
->
-> [   47.872842][ T1341] ================================================================================
-> [   47.884637][ T1341] UBSAN: array-index-out-of-bounds in drivers/acpi/acpica/dswexec.c:401:12
-> [   47.884644][ T1341] index -1 is out of range for type 'acpi_operand_object *[9]'
-> [   47.884647][ T1341] CPU: 9 PID: 1341 Comm: systemd-udevd Not tainted 5.14.0-rc1-00001-gfe364a7d95c2-dirty #1
-> [   47.884650][ T1341] Call Trace:
-> 0m] Reached targ[   47.889421][ T1346] IPMI message handler: version 39.2
-> [   47.927593][ T1341]  ubsan_epilogue+0x5/0x40
-> [   47.931873][ T1341]  __ubsan_handle_out_of_bounds+0x69/0x80
-> [   47.943808][ T1341]  acpi_ps_parse_loop+0x4a5/0x5e4
-> [   47.948707][ T1341]  acpi_ps_parse_aml+0x94/0x2c0
-> [   47.954716][ T1341]  acpi_ps_execute_method+0x15e/0x193
-> [   47.959953][ T1341]  acpi_ns_evaluate+0x1c7/0x25e
-> [   47.964663][ T1341]  acpi_evaluate_object+0x140/0x250
-> [   47.969727][ T1341]  acpi_evaluate_dsm+0xac/0x140
-> [   47.974456][ T1341]  acpi_nfit_ctl+0x2c0/0xa00 [nfit]
-> [   47.979522][ T1341]  ? lock_acquire+0xbb/0x2c0
-> [   47.983985][ T1341]  intel_bus_fwa_businfo+0x6a/0xc0 [nfit]
-> [   47.989580][ T1341]  intel_bus_fwa_state+0x66/0x100 [nfit]
-> [   47.995086][ T1341]  intel_bus_fwa_capability+0x19/0x40 [nfit]
-> [   48.000933][ T1341]  nvdimm_bus_firmware_visible+0x35/0x80 [libnvdimm]
->          Startin[   48.007478][ T1341]  internal_create_group+0xde/0x380
-> OpenIPMI Driver [   48.020614][ T1341]  internal_create_groups+0x3d/0xc0
-> ..
-> [   48.033229][ T1341]  ? dev_set_name+0x53/0x80
-> [   48.037936][ T1341]  nvdimm_bus_register+0x133/0x1c0 [libnvdimm]
-> [   48.043959][ T1341]  acpi_nfit_init+0xccf/0x1540 [nfit]
-> [   48.049208][ T1341]  ? get_object+0x40/0x40
-> [   48.053409][ T1341]  ? call_rcu+0x197/0x5c0
-> [   48.057618][ T1341]  ? lockdep_hardirqs_on_prepare+0xd4/0x180
-> [   48.063392][ T1341]  ? kfree+0x33b/0x5c0
-> [   48.067341][ T1341]  ? acpi_evaluate_object+0x229/0x250
-> [   48.072592][ T1341]  ? acpi_nfit_add+0x196/0x200 [nfit]
-> [   48.077832][ T1341]  acpi_nfit_add+0x196/0x200 [nfit]
-> [   48.082897][ T1341]  acpi_device_probe+0x44/0x180
->          Startin[   48.087616][ T1341]  really_probe+0xb3/0x340
-> e command to reb[   48.106497][ T1341]  __driver_attach+0x9e/0x180
-> .
-> [   48.119201][ T1341]  ? __device_attach_driver+0x100/0x100
-> [   48.124863][ T1341]  bus_for_each_dev+0x78/0xc0
-> [   48.129409][ T1341]  bus_add_driver+0x150/0x200
-> [   48.133959][ T1341]  driver_register+0x6c/0xc0
-> [   48.138418][ T1341]  ? 0xffffffffc065b000
-> [   48.142453][ T1341]  nfit_init+0x164/0x1000 [nfit]
-> [   48.147269][ T1341]  do_one_initcall+0x58/0x300
-> [   48.151817][ T1341]  ? kmem_cache_alloc_trace+0x58a/0x780
-> 1;39mRegular bac[   48.168887][ T1341]  ? aa_get_task_label+0xc0/0x300
-> kground program [   48.175164][ T1341]  ? __do_sys_finit_module+0xae/0x140
-> processing daemo[   48.181758][ T1341]  __do_sys_finit_module+0xae/0x140
-> [   48.188211][ T1341]  do_syscall_64+0x38/0xc0
-> [   48.193162][ T1341]  entry_SYSCALL_64_after_hwframe+0x44/0xae
-> [   48.198928][ T1341] RIP: 0033:0x7fbf24907f59
-> [   48.203215][ T1341] Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 07 6f 0c 00 f7 d8 64 89 01 48
-> [   48.222712][ T1341] RSP: 002b:00007fffbc5e56e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-> [   48.222715][ T1341] RAX: ffffffffffffffda RBX: 00005607041aae50 RCX: 00007fbf24907f59
-> [   48.222717][ T1341] RDX: 0000000000000000 RSI: 00007fbf2480ccad RDI: 000000000000000f
->          Startin[   48.222719][ T1341] RBP: 00007fbf2480ccad R08: 0000000000000000 R09: 0000000000000000
-> m Logging Servic[   48.265121][ T1341] R13: 00005607042343b0 R14: 0000000000020000 R15: 00005607041aae50
-> [   48.274370][ T1341] ================================================================================
->
->
->
-> To reproduce:
->
->         git clone https://github.com/intel/lkp-tests.git
->         cd lkp-tests
->         sudo bin/lkp install job.yaml           # job file is attached in this email
->         bin/lkp split-job --compatible job.yaml # generate the yaml file for lkp run
->         sudo bin/lkp run generated-yaml-file
->
->         # if come across any failure that blocks the test,
->         # please remove ~/.lkp and /lkp dir to run from a clean state.
->
->
->
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
-> 0DAY/LKP+ Test Infrastructure                   Open Source Technology Center
-> https://lists.01.org/hyperkitty/list/lkp@lists.01.org       Intel Corporation
->
-> Thanks,
-> Oliver Sang
->
+> 
+> I am going to post patches removing the rest of MID support from arch/x86/
+> and elsewhere, but that is still quite a bit of stuff and I don't want this
+> simple PCI PM series to depend on that work.
+> 
+> ---
+>   arch/x86/include/asm/intel-mid.h  |    3
+>   arch/x86/platform/intel-mid/pwr.c |  150 --------------------------------------
+>   drivers/pci/Makefile              |    1
+>   drivers/pci/pci-mid.c             |   77 -------------------
+>   4 files changed, 231 deletions(-)
+> 
+> Index: linux-pm/drivers/pci/Makefile
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/Makefile
+> +++ linux-pm/drivers/pci/Makefile
+> @@ -22,7 +22,6 @@ obj-$(CONFIG_PCI_ATS)		+= ats.o
+>   obj-$(CONFIG_PCI_IOV)		+= iov.o
+>   obj-$(CONFIG_PCI_BRIDGE_EMUL)	+= pci-bridge-emul.o
+>   obj-$(CONFIG_PCI_LABEL)		+= pci-label.o
+> -obj-$(CONFIG_X86_INTEL_MID)	+= pci-mid.o
+>   obj-$(CONFIG_PCI_SYSCALL)	+= syscall.o
+>   obj-$(CONFIG_PCI_STUB)		+= pci-stub.o
+>   obj-$(CONFIG_PCI_PF_STUB)	+= pci-pf-stub.o
+> Index: linux-pm/drivers/pci/pci-mid.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/pci-mid.c
+> +++ /dev/null
+> @@ -1,77 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -/*
+> - * Intel MID platform PM support
+> - *
+> - * Copyright (C) 2016, Intel Corporation
+> - *
+> - * Author: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> - */
+> -
+> -#include <linux/init.h>
+> -#include <linux/pci.h>
+> -
+> -#include <asm/cpu_device_id.h>
+> -#include <asm/intel-family.h>
+> -#include <asm/intel-mid.h>
+> -
+> -#include "pci.h"
+> -
+> -static bool mid_pci_power_manageable(struct pci_dev *dev)
+> -{
+> -	return true;
+> -}
+> -
+> -static int mid_pci_set_power_state(struct pci_dev *pdev, pci_power_t state)
+> -{
+> -	return intel_mid_pci_set_power_state(pdev, state);
+> -}
+> -
+> -static pci_power_t mid_pci_get_power_state(struct pci_dev *pdev)
+> -{
+> -	return intel_mid_pci_get_power_state(pdev);
+> -}
+> -
+> -static pci_power_t mid_pci_choose_state(struct pci_dev *pdev)
+> -{
+> -	return PCI_D3hot;
+> -}
+> -
+> -static int mid_pci_wakeup(struct pci_dev *dev, bool enable)
+> -{
+> -	return 0;
+> -}
+> -
+> -static bool mid_pci_need_resume(struct pci_dev *dev)
+> -{
+> -	return false;
+> -}
+> -
+> -static const struct pci_platform_pm_ops mid_pci_platform_pm = {
+> -	.is_manageable	= mid_pci_power_manageable,
+> -	.set_state	= mid_pci_set_power_state,
+> -	.get_state	= mid_pci_get_power_state,
+> -	.choose_state	= mid_pci_choose_state,
+> -	.set_wakeup	= mid_pci_wakeup,
+> -	.need_resume	= mid_pci_need_resume,
+> -};
+> -
+> -/*
+> - * This table should be in sync with the one in
+> - * arch/x86/platform/intel-mid/pwr.c.
+> - */
+> -static const struct x86_cpu_id lpss_cpu_ids[] = {
+> -	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SALTWELL_MID, NULL),
+> -	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT_MID, NULL),
+> -	{}
+> -};
+> -
+> -static int __init mid_pci_init(void)
+> -{
+> -	const struct x86_cpu_id *id;
+> -
+> -	id = x86_match_cpu(lpss_cpu_ids);
+> -	if (id)
+> -		pci_set_platform_pm(&mid_pci_platform_pm);
+> -	return 0;
+> -}
+> -arch_initcall(mid_pci_init);
+> Index: linux-pm/arch/x86/platform/intel-mid/pwr.c
+> ===================================================================
+> --- linux-pm.orig/arch/x86/platform/intel-mid/pwr.c
+> +++ linux-pm/arch/x86/platform/intel-mid/pwr.c
+> @@ -5,13 +5,6 @@
+>    * Copyright (C) 2016, Intel Corporation
+>    *
+>    * Author: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> - *
+> - * Intel MID Power Management Unit device driver handles the South Complex PCI
+> - * devices such as GPDMA, SPI, I2C, PWM, and so on. By default PCI core
+> - * modifies bits in PMCSR register in the PCI configuration space. This is not
+> - * enough on some SoCs like Intel Tangier. In such case PCI core sets a new
+> - * power state of the device in question through a PM hook registered in struct
+> - * pci_platform_pm_ops (see drivers/pci/pci-mid.c).
+>    */
+>   
+>   #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> @@ -103,11 +96,6 @@ struct mid_pwr {
+>   
+>   static struct mid_pwr *midpwr;
+>   
+> -static u32 mid_pwr_get_state(struct mid_pwr *pwr, int reg)
+> -{
+> -	return readl(pwr->regs + PM_SSS(reg));
+> -}
+> -
+>   static void mid_pwr_set_state(struct mid_pwr *pwr, int reg, u32 value)
+>   {
+>   	writel(value, pwr->regs + PM_SSC(reg));
+> @@ -150,143 +138,6 @@ static int mid_pwr_wait_for_cmd(struct m
+>   	return mid_pwr_wait(pwr);
+>   }
+>   
+> -static int __update_power_state(struct mid_pwr *pwr, int reg, int bit, int new)
+> -{
+> -	int curstate;
+> -	u32 power;
+> -	int ret;
+> -
+> -	/* Check if the device is already in desired state */
+> -	power = mid_pwr_get_state(pwr, reg);
+> -	curstate = (power >> bit) & 3;
+> -	if (curstate == new)
+> -		return 0;
+> -
+> -	/* Update the power state */
+> -	mid_pwr_set_state(pwr, reg, (power & ~(3 << bit)) | (new << bit));
+> -
+> -	/* Send command to SCU */
+> -	ret = mid_pwr_wait_for_cmd(pwr, CMD_SET_CFG);
+> -	if (ret)
+> -		return ret;
+> -
+> -	/* Check if the device is already in desired state */
+> -	power = mid_pwr_get_state(pwr, reg);
+> -	curstate = (power >> bit) & 3;
+> -	if (curstate != new)
+> -		return -EAGAIN;
+> -
+> -	return 0;
+> -}
+> -
+> -static pci_power_t __find_weakest_power_state(struct mid_pwr_dev *lss,
+> -					      struct pci_dev *pdev,
+> -					      pci_power_t state)
+> -{
+> -	pci_power_t weakest = PCI_D3hot;
+> -	unsigned int j;
+> -
+> -	/* Find device in cache or first free cell */
+> -	for (j = 0; j < LSS_MAX_SHARED_DEVS; j++) {
+> -		if (lss[j].pdev == pdev || !lss[j].pdev)
+> -			break;
+> -	}
+> -
+> -	/* Store the desired state in cache */
+> -	if (j < LSS_MAX_SHARED_DEVS) {
+> -		lss[j].pdev = pdev;
+> -		lss[j].state = state;
+> -	} else {
+> -		dev_WARN(&pdev->dev, "No room for device in PWRMU LSS cache\n");
+> -		weakest = state;
+> -	}
+> -
+> -	/* Find the power state we may use */
+> -	for (j = 0; j < LSS_MAX_SHARED_DEVS; j++) {
+> -		if (lss[j].state < weakest)
+> -			weakest = lss[j].state;
+> -	}
+> -
+> -	return weakest;
+> -}
+> -
+> -static int __set_power_state(struct mid_pwr *pwr, struct pci_dev *pdev,
+> -			     pci_power_t state, int id, int reg, int bit)
+> -{
+> -	const char *name;
+> -	int ret;
+> -
+> -	state = __find_weakest_power_state(pwr->lss[id], pdev, state);
+> -	name = pci_power_name(state);
+> -
+> -	ret = __update_power_state(pwr, reg, bit, (__force int)state);
+> -	if (ret) {
+> -		dev_warn(&pdev->dev, "Can't set power state %s: %d\n", name, ret);
+> -		return ret;
+> -	}
+> -
+> -	dev_vdbg(&pdev->dev, "Set power state %s\n", name);
+> -	return 0;
+> -}
+> -
+> -static int mid_pwr_set_power_state(struct mid_pwr *pwr, struct pci_dev *pdev,
+> -				   pci_power_t state)
+> -{
+> -	int id, reg, bit;
+> -	int ret;
+> -
+> -	id = intel_mid_pwr_get_lss_id(pdev);
+> -	if (id < 0)
+> -		return id;
+> -
+> -	reg = (id * LSS_PWS_BITS) / 32;
+> -	bit = (id * LSS_PWS_BITS) % 32;
+> -
+> -	/* We support states between PCI_D0 and PCI_D3hot */
+> -	if (state < PCI_D0)
+> -		state = PCI_D0;
+> -	if (state > PCI_D3hot)
+> -		state = PCI_D3hot;
+> -
+> -	mutex_lock(&pwr->lock);
+> -	ret = __set_power_state(pwr, pdev, state, id, reg, bit);
+> -	mutex_unlock(&pwr->lock);
+> -	return ret;
+> -}
+> -
+> -int intel_mid_pci_set_power_state(struct pci_dev *pdev, pci_power_t state)
+> -{
+> -	struct mid_pwr *pwr = midpwr;
+> -	int ret = 0;
+> -
+> -	might_sleep();
+> -
+> -	if (pwr && pwr->available)
+> -		ret = mid_pwr_set_power_state(pwr, pdev, state);
+> -	dev_vdbg(&pdev->dev, "set_power_state() returns %d\n", ret);
+> -
+> -	return 0;
+> -}
+> -
+> -pci_power_t intel_mid_pci_get_power_state(struct pci_dev *pdev)
+> -{
+> -	struct mid_pwr *pwr = midpwr;
+> -	int id, reg, bit;
+> -	u32 power;
+> -
+> -	if (!pwr || !pwr->available)
+> -		return PCI_UNKNOWN;
+> -
+> -	id = intel_mid_pwr_get_lss_id(pdev);
+> -	if (id < 0)
+> -		return PCI_UNKNOWN;
+> -
+> -	reg = (id * LSS_PWS_BITS) / 32;
+> -	bit = (id * LSS_PWS_BITS) % 32;
+> -	power = mid_pwr_get_state(pwr, reg);
+> -	return (__force pci_power_t)((power >> bit) & 3);
+> -}
+> -
+>   void intel_mid_pwr_power_off(void)
+>   {
+>   	struct mid_pwr *pwr = midpwr;
+> @@ -469,7 +320,6 @@ static const struct mid_pwr_device_info
+>   	.set_initial_state = tng_set_initial_state,
+>   };
+>   
+> -/* This table should be in sync with the one in drivers/pci/pci-mid.c */
+>   static const struct pci_device_id mid_pwr_pci_ids[] = {
+>   	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_PENWELL), (kernel_ulong_t)&pnw_info },
+>   	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_TANGIER), (kernel_ulong_t)&tng_info },
+> Index: linux-pm/arch/x86/include/asm/intel-mid.h
+> ===================================================================
+> --- linux-pm.orig/arch/x86/include/asm/intel-mid.h
+> +++ linux-pm/arch/x86/include/asm/intel-mid.h
+> @@ -10,9 +10,6 @@
+>   #include <linux/pci.h>
+>   
+>   extern int intel_mid_pci_init(void);
+> -extern int intel_mid_pci_set_power_state(struct pci_dev *pdev, pci_power_t state);
+> -extern pci_power_t intel_mid_pci_get_power_state(struct pci_dev *pdev);
+> -
+>   extern void intel_mid_pwr_power_off(void);
+>   
+>   #define INTEL_MID_PWR_LSS_OFFSET	4
+> 
+> 
+> 
 
-
--- 
-With Best Regards,
-Andy Shevchenko
