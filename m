@@ -2,15 +2,15 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD4AA41293B
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Sep 2021 01:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92B344128D2
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Sep 2021 00:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231843AbhITXMr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Sep 2021 19:12:47 -0400
-Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:48420 "EHLO
+        id S237718AbhITW0S (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Sep 2021 18:26:18 -0400
+Received: from mail-il-dmz.mellanox.com ([193.47.165.129]:59429 "EHLO
         mellanox.co.il" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S231962AbhITXKr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Sep 2021 19:10:47 -0400
+        with ESMTP id S232632AbhITWYH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Sep 2021 18:24:07 -0400
 Received: from Internal Mail-Server by MTLPINE1 (envelope-from asmaa@mellanox.com)
         with SMTP; 21 Sep 2021 00:22:35 +0300
 Received: from farm-0002.mtbu.labs.mlnx (farm-0002.mtbu.labs.mlnx [10.15.2.32])
