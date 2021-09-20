@@ -2,70 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3183D4112D3
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Sep 2021 12:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D43041132F
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Sep 2021 12:57:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230495AbhITK1H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 20 Sep 2021 06:27:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51362 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234917AbhITK1H (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Sep 2021 06:27:07 -0400
-Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FBF5C061574
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Sep 2021 03:25:40 -0700 (PDT)
-Received: by mail-ua1-x941.google.com with SMTP id g16so10806658uam.7
-        for <linux-acpi@vger.kernel.org>; Mon, 20 Sep 2021 03:25:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
-         :subject:to;
-        bh=QSp9JWX4XAHKXl7X56VeCQC0onvxbHHBBOV+a/7+PNE=;
-        b=kqcVbgOTRikArLdjOfSNYep6sU4/LrmYndQgv1J5WNvTFp2JzIsvIYXfBq/3xdAcQb
-         2NEqeUEiWECI2KwYWmbaLjQJDqFWLgi+ieYRvT4RJ5THCiOx4+AhApj14HH6EVCG/W7G
-         ObPXbwYU6AvASdg+mWBTsRBhFBN07SWtDf2wamXClrNG62cjciM6PMgW2JWS0Fthqods
-         FqZxcEbMyARmc9s5/D3ammsxQeYG17KJfSYcgX9rpDoqIwNtAMJQO0rvjgR28UUZJ19M
-         eEqooysfPR8AJjAaOeA+zMOG+hXvK+WA9+rWLUPPvs5c5xRHlwJERq6TitpzIOP4imMR
-         DQdw==
+        id S231863AbhITK7J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Sep 2021 06:59:09 -0400
+Received: from mail-oi1-f171.google.com ([209.85.167.171]:36387 "EHLO
+        mail-oi1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229999AbhITK7I (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 20 Sep 2021 06:59:08 -0400
+Received: by mail-oi1-f171.google.com with SMTP id y201so9433652oie.3;
+        Mon, 20 Sep 2021 03:57:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
-         :from:date:message-id:subject:to;
-        bh=QSp9JWX4XAHKXl7X56VeCQC0onvxbHHBBOV+a/7+PNE=;
-        b=Wv/VNN2gScu5qYWx51IYpqBA49QYLZC4rAepx1Jn7pW5MnERDtUa/1gK8GE9k3aqLH
-         Qli3JjexKWLjcErS4o4PX7ySP+ysHG45KovlgG5ytoPJc8ezeirMmUL777ip9rbO+t/B
-         63FPdcTRj+vHnolrnao2kFos0yYdrDzbHoTyeOUw1r9fTBUCFf0f29FUYt40xpdR4RnF
-         cAEtkcoW354TVVBN68c5MBg0A79ml2Uo3TGzp4bRxgqmwan9NH8jJn8aToQJ7ijUR/vk
-         Kq0f1wVJj8mSxEOtuUQG66HGKS8d1x35IdBjaqs1zHqIxjeeoYhTG9nkIlrbdlElNxNz
-         16qg==
-X-Gm-Message-State: AOAM5318BshURM7SF3Ckk3xf/NmFLeVkk1DJGuaPcwQtnSQw365dQmRx
-        yunblZ8/OqGrUrthU1SmJesFp9EEIlQZYXUpBZ8=
-X-Google-Smtp-Source: ABdhPJwizwl9FI0EwR1MGYrWR+dWYjtL4wWLCONZoBGJj1ZcrQMkPHZvZzIj+ipS5+iK7S9AitEdLZIHZbAmirqjTKo=
-X-Received: by 2002:ab0:3b92:: with SMTP id p18mr11339080uaw.134.1632133539668;
- Mon, 20 Sep 2021 03:25:39 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WnqyCun3sAWL/kGdiirlHdl/hDdczJ+E/CKgO6jqS38=;
+        b=y13OxS13paZpWBbe1U4KCYtnIbnAKe2g9EMnRb03Af4bYdd3IV9gpckGeN+KHUIdyC
+         tmKqmd+g9fNWFgsJ9llEhiPFuq1gMC9d5WNINqA7jjhuxzUr4VYdaxZ/UkzsZKhlDLMx
+         6aoZHvE3uAxt7LTiDzkstT+CNOO6wPmri/cS5u7HZVnr1EF/vpzFwFxEHNwM1guvQxsz
+         k5IUNsKDlMo6oeBc3LpCy/sidshDP3T93/k3mgBmofz686rzm61l1/m7IlgJASaJb51F
+         CQny8RlZr0t8YbSvvHjeho8SDyd+ZyZNNHiwAzNOZQQDgqML98eqHRBO9XX+o5cGJnbS
+         stlA==
+X-Gm-Message-State: AOAM531OJWDD0v30qNxX95uSgwNKnCQA+JOcFD++/4XPIgxg1S9+UPkg
+        jj4NLyRvahbQilfIkOI67/44Yfcj13VcCsSu0xM=
+X-Google-Smtp-Source: ABdhPJy0DFdqF/vT0dT9lSPmkutDMqGEzj0OeH9hqR4+zMIeJoE0khIv7pJ/76blozE0wYBPlmz98W2jw8cOaI1Au50=
+X-Received: by 2002:a05:6808:10ce:: with SMTP id s14mr22555906ois.157.1632135461660;
+ Mon, 20 Sep 2021 03:57:41 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a59:c470:0:b0:227:7818:73f8 with HTTP; Mon, 20 Sep 2021
- 03:25:38 -0700 (PDT)
-Reply-To: headoffcedirectorwu3@gmail.com
-In-Reply-To: <CANaBqeBJjO7xN3E6sFuUHaU_ggArHO_CT8Cu1y2zWq14v0CCTg@mail.gmail.com>
-References: <CANaBqeBJjO7xN3E6sFuUHaU_ggArHO_CT8Cu1y2zWq14v0CCTg@mail.gmail.com>
-From:   BANK Director <officebankdirector0@gmail.com>
-Date:   Mon, 20 Sep 2021 10:25:38 +0000
-Message-ID: <CANaBqeAgzTfpBc+R+HafJrKSmrQJB-ZYFcFJ=u-PNKNCYN7CFg@mail.gmail.com>
-Subject: wu
-To:     officebankdirector0@gmail.com
+References: <8003272.NyiUUSuA9g@kreacher> <1798761.CQOukoFCf9@kreacher> <CAHp75VdoFwH2sQT6dwz4BCorkgJgmYEBHq-+YpT18HZx2cpmrA@mail.gmail.com>
+In-Reply-To: <CAHp75VdoFwH2sQT6dwz4BCorkgJgmYEBHq-+YpT18HZx2cpmrA@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 20 Sep 2021 12:57:27 +0200
+Message-ID: <CAJZ5v0iRviZkLzRP0t2f4q5oY9y6CxRotDnyBVBt-QBt-uYReQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/5] PCI: PM: x86: Drop Intel MID PCI PM support
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        x86 Maintainers <x86@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Len Brown <len.brown@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-  Our office contact , 2554 Road Of Kpalime Face Pharmacy Bet, Gulf  Lome Togo
+On Sun, Sep 19, 2021 at 10:32 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Sun, Sep 19, 2021 at 9:01 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+> >
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Support for Intel MID platforms has mostly gone away with the SFI
+> > support removal in commit 4590d98f5a4f ("sfi: Remove framework for
+> > deprecated firmware"), but there are some pieces of it still in the
+> > tree.  One of them is the MID PCI PM support code which gets in the
+> > way of subsequent PCI PM simplifications and trying to update it is
+> > rather pointless, so get rid of it completely along with the arch
+> > code pieces that are only used by it.
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >
+> > I am going to post patches removing the rest of MID support from arch/x86/
+> > and elsewhere, but that is still quite a bit of stuff and I don't want this
+> > simple PCI PM series to depend on that work.
+>
+> This is still being used by MID with ACPI assisted (*) support.
+> Hence, not ack.
+>
+> *) ACPI layer is provided by U-Boot and can't fulfill all possible
+> features that ACPI may use in the Linux kernel.
 
-I m bank director bring notice for you that our IMF compensation you
-sum of $850,000.00 because your email address was found in one of scam
-victim list. Do you willing to get this fund or not?
+OK, good to know.
 
-Sincerely
-Frank Joe
-Bank Director
-Whatsapp, +22870248258
+I'm not sure how this PCI PM stuff works with ACPI.  It looks like
+this relies on a specific ordering of arch_initcall() calls for
+correctness which is sort of fragile.
