@@ -2,100 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 709C9413342
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Sep 2021 14:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89E9141338E
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Sep 2021 14:51:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231211AbhIUMSk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Sep 2021 08:18:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33934 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229984AbhIUMSk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Sep 2021 08:18:40 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30CBC061574;
-        Tue, 21 Sep 2021 05:17:11 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id r5so4729477edi.10;
-        Tue, 21 Sep 2021 05:17:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=95V6ux+YItWQAUtCiwuExzmwXQnRB/GloOPEEdZ3MdU=;
-        b=GvoevMtwpeSENsO0HW4htGshZNN4RfcKHKMrFLpknFFa6zKv1xNv40X9P9usbFWHtJ
-         QKLzMF9owaWe5njsnvky7MNu0mJOFyR11GpGSYHoXWtx7Ph1Q8c+NTNZHKwr80IkWO4V
-         ChjMla1TYRISUvk/HwagZ97gUmgZGkyGPTxlXYUXTWFheVyNaCp+DZL7Q4+GI5VXbj1H
-         8URqgcincrZM2AApQPTZDb01aWcJzb78kgYgHsMhGcn8hyZyFE0cUVjn3XPuKKpOkC78
-         lH2R3gtp5RqygWKoyGh5lw/ZQt9QS43C4WSm+kruZkOmwkAaybW9EiG0C9DnAuUEf+dx
-         EBCA==
+        id S232803AbhIUMwZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Sep 2021 08:52:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:49384 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232736AbhIUMwZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 21 Sep 2021 08:52:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1632228655;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gkOBjqAV0ouhbcNISGSBmXY/07/63Cpl8i+uD2W0SL4=;
+        b=O60HviHKgDXB05YRFssfPGkFxT+34fFuWrJrpTzcaJDiA0mnLK8sIDZ5RIRxG7gGgmoMfF
+        BoTzApYRSU38EU5pl2wnCPk8uv9faZQjqSktsnMlEx8QWTB/72mMxfa9rn+DZKde7ul1k+
+        vihx4+qOreiTFk3VRsYBotnUyuf4Ze8=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-55-O1eRkA_LOeSJ9xcfdCHy4w-1; Tue, 21 Sep 2021 08:50:54 -0400
+X-MC-Unique: O1eRkA_LOeSJ9xcfdCHy4w-1
+Received: by mail-ed1-f71.google.com with SMTP id n5-20020a05640206c500b003cf53f7cef2so16200594edy.12
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Sep 2021 05:50:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=95V6ux+YItWQAUtCiwuExzmwXQnRB/GloOPEEdZ3MdU=;
-        b=A6pZ48gt1RjfyOaKNHFDqTDx0U33m9LQ7Xcm5B68Y3t7t7jx1LYq9mNGTwdvM7YS26
-         ZQ3q2cbgJywwlTcBV5pAHGoy7Rr51Zmo5tNW7b9EhEtXvvK52x+1sbwFUNaVfkrkqBYs
-         PR1dphMys0LxlmW4z4dZXXkug38dq1O3dQAsm3TJCBuXzVUnSdpZJBnv+pCa8eeAp5zl
-         XfJTPUMOUMfffvGazXGpwuyD+otpMT3kt0UcQ+FKkvUxWcaAjl3+HEUWVsgGBAbyt4AF
-         VgdtnPypsVUkQMMjt8HyUWooAXH8fxOJ+WdZvkHHdA3cBb5GYpx7ccJB+z6Pt/pJYrEx
-         qXtw==
-X-Gm-Message-State: AOAM5318eeaQxj0Dca0nxGS/bIr63j3rWp3iMf8wB0u0C79zpVd10omY
-        RM6K9n8bW8CNcHyvEN6JQWmJC8u+kLK3qxkdBUQ=
-X-Google-Smtp-Source: ABdhPJxCfbselb+XtA+2QpgqB4YRIopMRRstTCPkUE9QXlzT6B9AoPlNAPQeuz3N18XME+ds4GKE4E2TOCkZ/RBjnkw=
-X-Received: by 2002:a17:906:2887:: with SMTP id o7mr34025496ejd.425.1632226617862;
- Tue, 21 Sep 2021 05:16:57 -0700 (PDT)
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=gkOBjqAV0ouhbcNISGSBmXY/07/63Cpl8i+uD2W0SL4=;
+        b=gx67QhYfdPuROhfcdV+H4tc2oAEQKSU3pdwPWMl+5RcoyW7VQPDI9l/VvcOZu7cEBf
+         rOXTo1uFaaOffGPFXpKsNb6B96eKRUgjqSECnccQtu3cJJbMWbcBoK1RkQkY6DlNcEfa
+         Yo+2G5jvQxQcQjEPw18ZJ+CbHzLG3T+QCsJXGlmAIIQFUtxhizytO5xdCECvwXd/p1eO
+         s287YDrvbfi31ohP/fPjJUk9DyY9L71ZxjLembLCf9im28fTzrjrTUWufgLqT2xaOeNU
+         REoq0vT6dAkGGJfapmLzzggF2KsSZ/3NPuCRAelRry/VL2FZjIdr+y94xVWasDKIq9CY
+         6VBA==
+X-Gm-Message-State: AOAM5307IN+bAn50YI3UWSUgURUyzg0+18ZKpVVHxv7Z8VdqtE6P9GH6
+        Z0Obcjp/y/6LAAOmAknLatRHhsfSTEZ+GIgnDwdAlIj0yHDHwJFXQGKMfqaWRFtXfl9i/KqcXeE
+        DtTtP8Ym5tlK2gowFYw0Qnw==
+X-Received: by 2002:a17:906:5045:: with SMTP id e5mr35814756ejk.239.1632228653549;
+        Tue, 21 Sep 2021 05:50:53 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxRrwf090vg7jBTUydLH0bX50Of6iJwYw5EC5TT6k8b62dvJQIpkfN/g1eWxoMOaoQvl3CGcg==
+X-Received: by 2002:a17:906:5045:: with SMTP id e5mr35814737ejk.239.1632228653388;
+        Tue, 21 Sep 2021 05:50:53 -0700 (PDT)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id b38sm8423919edf.46.2021.09.21.05.50.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Sep 2021 05:50:53 -0700 (PDT)
+Subject: Re: [PATCH 1/2] platform: lg-laptop: drop unneeded MODULE_ALIAS
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>, Matan Ziv-Av <matan@svgalib.org>,
+        Mark Gross <mgross@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+References: <20210916170054.136790-1-krzysztof.kozlowski@canonical.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <852fde2e-c2c3-0ad5-6156-05ab1b6ef74c@redhat.com>
+Date:   Tue, 21 Sep 2021 14:50:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-References: <8003272.NyiUUSuA9g@kreacher> <1798761.CQOukoFCf9@kreacher>
- <CAHp75VdoFwH2sQT6dwz4BCorkgJgmYEBHq-+YpT18HZx2cpmrA@mail.gmail.com> <CAJZ5v0iRviZkLzRP0t2f4q5oY9y6CxRotDnyBVBt-QBt-uYReQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iRviZkLzRP0t2f4q5oY9y6CxRotDnyBVBt-QBt-uYReQ@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 21 Sep 2021 15:16:17 +0300
-Message-ID: <CAHp75VdE3gNXy+p=8iyqyY0Ja+AHjv6zFEGwWJSXQwz+A0X1TQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/5] PCI: PM: x86: Drop Intel MID PCI PM support
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        x86 Maintainers <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Len Brown <len.brown@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210916170054.136790-1-krzysztof.kozlowski@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 20, 2021 at 1:57 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> On Sun, Sep 19, 2021 at 10:32 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Sun, Sep 19, 2021 at 9:01 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+Hi,
 
-...
+On 9/16/21 7:00 PM, Krzysztof Kozlowski wrote:
+> The MODULE_DEVICE_TABLE already creates proper alias for ACPI driver.
+> Having another MODULE_ALIAS causes the alias to be duplicated.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 
-> > > I am going to post patches removing the rest of MID support from arch/x86/
-> > > and elsewhere, but that is still quite a bit of stuff and I don't want this
-> > > simple PCI PM series to depend on that work.
-> >
-> > This is still being used by MID with ACPI assisted (*) support.
-> > Hence, not ack.
-> >
-> > *) ACPI layer is provided by U-Boot and can't fulfill all possible
-> > features that ACPI may use in the Linux kernel.
->
-> OK, good to know.
->
-> I'm not sure how this PCI PM stuff works with ACPI.
+Thank you for your patch, I've applied this patch to my review-hans 
+branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
 
-It doesn't that is the point. The PCI is very interesting there and
-what I meant is that the ACPI implementation I have provided via
-U-Boot does not cover these. If you have any hints/ideas how it may be
-handled, I am all ears!
+Note it will show up in my review-hans branch once I've pushed my
+local branch there, which might take a while.
 
-> It looks like
-> this relies on a specific ordering of arch_initcall() calls for
-> correctness which is sort of fragile.
+Once I've run some tests on this branch the patches there will be
+added to the platform-drivers-x86/for-next branch and eventually
+will be included in the pdx86 pull-request to Linus for the next
+merge-window.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Regards,
+
+Hans
+
+
+> ---
+>  drivers/platform/x86/lg-laptop.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
+> index 3e520d5bca07..4f3ece819f4c 100644
+> --- a/drivers/platform/x86/lg-laptop.c
+> +++ b/drivers/platform/x86/lg-laptop.c
+> @@ -60,7 +60,6 @@ MODULE_ALIAS("wmi:" WMI_EVENT_GUID2);
+>  MODULE_ALIAS("wmi:" WMI_EVENT_GUID3);
+>  MODULE_ALIAS("wmi:" WMI_METHOD_WMAB);
+>  MODULE_ALIAS("wmi:" WMI_METHOD_WMBB);
+> -MODULE_ALIAS("acpi*:LGEX0815:*");
+>  
+>  static struct platform_device *pf_device;
+>  static struct input_dev *wmi_input_dev;
+> 
+
