@@ -2,57 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89E9141338E
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Sep 2021 14:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA696413392
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Sep 2021 14:52:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232803AbhIUMwZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Sep 2021 08:52:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:49384 "EHLO
+        id S232819AbhIUMx2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Sep 2021 08:53:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:41161 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232736AbhIUMwZ (ORCPT
+        by vger.kernel.org with ESMTP id S232702AbhIUMxZ (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 21 Sep 2021 08:52:25 -0400
+        Tue, 21 Sep 2021 08:53:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1632228655;
+        s=mimecast20190719; t=1632228716;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gkOBjqAV0ouhbcNISGSBmXY/07/63Cpl8i+uD2W0SL4=;
-        b=O60HviHKgDXB05YRFssfPGkFxT+34fFuWrJrpTzcaJDiA0mnLK8sIDZ5RIRxG7gGgmoMfF
-        BoTzApYRSU38EU5pl2wnCPk8uv9faZQjqSktsnMlEx8QWTB/72mMxfa9rn+DZKde7ul1k+
-        vihx4+qOreiTFk3VRsYBotnUyuf4Ze8=
+        bh=TqxAQwuwKeUNvwuaTqo1+dLfw9h1X6NxpXvwJl/CpGM=;
+        b=itExvVqPG2cyY/PK7A/KCBqNiE/df2bbBtLHHFCo1VLnElZHsABLHbyhIqp2T0epgOhpkV
+        3/coGXBkH227QEQ8w6k6U/tD9bR+4iuqkAtEWsiFbcGKQiNfVFF/NaJ63j7We61wQR2+m+
+        d2GhiNKDqxIw+mRVvkKARliG+Sq7/cE=
 Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
  [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-55-O1eRkA_LOeSJ9xcfdCHy4w-1; Tue, 21 Sep 2021 08:50:54 -0400
-X-MC-Unique: O1eRkA_LOeSJ9xcfdCHy4w-1
-Received: by mail-ed1-f71.google.com with SMTP id n5-20020a05640206c500b003cf53f7cef2so16200594edy.12
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Sep 2021 05:50:54 -0700 (PDT)
+ us-mta-202-KIb5OmqQOdmhvMplBhDlbg-1; Tue, 21 Sep 2021 08:51:55 -0400
+X-MC-Unique: KIb5OmqQOdmhvMplBhDlbg-1
+Received: by mail-ed1-f71.google.com with SMTP id m20-20020aa7c2d4000000b003d1add00b8aso18945775edp.0
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Sep 2021 05:51:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:subject:to:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=gkOBjqAV0ouhbcNISGSBmXY/07/63Cpl8i+uD2W0SL4=;
-        b=gx67QhYfdPuROhfcdV+H4tc2oAEQKSU3pdwPWMl+5RcoyW7VQPDI9l/VvcOZu7cEBf
-         rOXTo1uFaaOffGPFXpKsNb6B96eKRUgjqSECnccQtu3cJJbMWbcBoK1RkQkY6DlNcEfa
-         Yo+2G5jvQxQcQjEPw18ZJ+CbHzLG3T+QCsJXGlmAIIQFUtxhizytO5xdCECvwXd/p1eO
-         s287YDrvbfi31ohP/fPjJUk9DyY9L71ZxjLembLCf9im28fTzrjrTUWufgLqT2xaOeNU
-         REoq0vT6dAkGGJfapmLzzggF2KsSZ/3NPuCRAelRry/VL2FZjIdr+y94xVWasDKIq9CY
-         6VBA==
-X-Gm-Message-State: AOAM5307IN+bAn50YI3UWSUgURUyzg0+18ZKpVVHxv7Z8VdqtE6P9GH6
-        Z0Obcjp/y/6LAAOmAknLatRHhsfSTEZ+GIgnDwdAlIj0yHDHwJFXQGKMfqaWRFtXfl9i/KqcXeE
-        DtTtP8Ym5tlK2gowFYw0Qnw==
-X-Received: by 2002:a17:906:5045:: with SMTP id e5mr35814756ejk.239.1632228653549;
-        Tue, 21 Sep 2021 05:50:53 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxRrwf090vg7jBTUydLH0bX50Of6iJwYw5EC5TT6k8b62dvJQIpkfN/g1eWxoMOaoQvl3CGcg==
-X-Received: by 2002:a17:906:5045:: with SMTP id e5mr35814737ejk.239.1632228653388;
-        Tue, 21 Sep 2021 05:50:53 -0700 (PDT)
+        bh=TqxAQwuwKeUNvwuaTqo1+dLfw9h1X6NxpXvwJl/CpGM=;
+        b=M503Aa+3DF1Ek3va/5tTeAoBSLxQVucU3tJevVK7FCHVhxd9H/DkX5WvVwVKeLRsqv
+         37aEdH6kwyCfMxpyfVj/viipTyKCaMBEf1jGAiDjmNQouxnPjcn5ue5xYHMwOfOjr6MJ
+         W7xzxYCHCQzBycbC3gxGs1ynNG4vS/D2zfRoWVrJwX8BBV2MBV1J+BPqtBqyuPqQxZcw
+         yEfxbahUPHwNifwp3jYuuNFJSNwDPTijEQk7uOWUkkr/qkYU8/d+E/RfWfnAHo7AarfW
+         Xjo6y5yE6CKCALyOONRIKfyKSi67IEcpkq+FR8PYeUYZ+PvoAtsV8Mt+FqK4HjG7XPG8
+         kJsQ==
+X-Gm-Message-State: AOAM533+yuSOrtNeSYNRUD91ETcAszHfzKtvkjv576B5Jn+wO9G0Sk6s
+        zAGh535lNA8Qlw6GGe3Tz2aA1P0eOpRnWi4qkI0udNMs1lH8TwrS27pPXTqhGdhi94Ftd3MGOLw
+        bXlJKQXSv9MSjrdZW8ucv0w==
+X-Received: by 2002:a17:906:c52:: with SMTP id t18mr34493873ejf.148.1632228714521;
+        Tue, 21 Sep 2021 05:51:54 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxhuiUQhb0tewsqj63rPQftRwt57rxaB6FUVbu3JbDMhgH6wEublWh/IKVcBTwPNrwaAf/NaA==
+X-Received: by 2002:a17:906:c52:: with SMTP id t18mr34493856ejf.148.1632228714315;
+        Tue, 21 Sep 2021 05:51:54 -0700 (PDT)
 Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id b38sm8423919edf.46.2021.09.21.05.50.52
+        by smtp.gmail.com with ESMTPSA id d9sm8435983ede.31.2021.09.21.05.51.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Sep 2021 05:50:53 -0700 (PDT)
-Subject: Re: [PATCH 1/2] platform: lg-laptop: drop unneeded MODULE_ALIAS
+        Tue, 21 Sep 2021 05:51:54 -0700 (PDT)
+Subject: Re: [PATCH 2/2] acpi: pnp: remove duplicated BRI0A49 and BDP3336
+ entries
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>, Matan Ziv-Av <matan@svgalib.org>,
@@ -60,13 +61,14 @@ To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         platform-driver-x86@vger.kernel.org
 References: <20210916170054.136790-1-krzysztof.kozlowski@canonical.com>
+ <20210916170054.136790-2-krzysztof.kozlowski@canonical.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <852fde2e-c2c3-0ad5-6156-05ab1b6ef74c@redhat.com>
-Date:   Tue, 21 Sep 2021 14:50:52 +0200
+Message-ID: <f78523c5-df88-a768-3b9a-d542bbd73a1c@redhat.com>
+Date:   Tue, 21 Sep 2021 14:51:53 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210916170054.136790-1-krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20210916170054.136790-2-krzysztof.kozlowski@canonical.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -77,43 +79,37 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 Hi,
 
 On 9/16/21 7:00 PM, Krzysztof Kozlowski wrote:
-> The MODULE_DEVICE_TABLE already creates proper alias for ACPI driver.
-> Having another MODULE_ALIAS causes the alias to be duplicated.
+> BRI0A49 and BDP3336 are already on the list.
 > 
 > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 
-Thank you for your patch, I've applied this patch to my review-hans 
-branch:
-https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
+Thanks, patch looks good to me:
 
-Note it will show up in my review-hans branch once I've pushed my
-local branch there, which might take a while.
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
-Once I've run some tests on this branch the patches there will be
-added to the platform-drivers-x86/for-next branch and eventually
-will be included in the pdx86 pull-request to Linus for the next
-merge-window.
+Rafael, I've picked up 1/2 since that applies to a drivers/platform/x86
+driver. I'll leave picking this one up to you.
 
 Regards,
 
 Hans
 
-
 > ---
->  drivers/platform/x86/lg-laptop.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/acpi/acpi_pnp.c | 2 --
+>  1 file changed, 2 deletions(-)
 > 
-> diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
-> index 3e520d5bca07..4f3ece819f4c 100644
-> --- a/drivers/platform/x86/lg-laptop.c
-> +++ b/drivers/platform/x86/lg-laptop.c
-> @@ -60,7 +60,6 @@ MODULE_ALIAS("wmi:" WMI_EVENT_GUID2);
->  MODULE_ALIAS("wmi:" WMI_EVENT_GUID3);
->  MODULE_ALIAS("wmi:" WMI_METHOD_WMAB);
->  MODULE_ALIAS("wmi:" WMI_METHOD_WMBB);
-> -MODULE_ALIAS("acpi*:LGEX0815:*");
->  
->  static struct platform_device *pf_device;
->  static struct input_dev *wmi_input_dev;
+> diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
+> index 8f2dc176bb41..ffdcfcd4a10d 100644
+> --- a/drivers/acpi/acpi_pnp.c
+> +++ b/drivers/acpi/acpi_pnp.c
+> @@ -156,8 +156,6 @@ static const struct acpi_device_id acpi_pnp_device_ids[] = {
+>  	{"BRI0A49"},		/* Boca Complete Ofc Communicator 14.4 Data-FAX */
+>  	{"BRI1400"},		/* Boca Research 33,600 ACF Modem */
+>  	{"BRI3400"},		/* Boca 33.6 Kbps Internal FD34FSVD */
+> -	{"BRI0A49"},		/* Boca 33.6 Kbps Internal FD34FSVD */
+> -	{"BDP3336"},		/* Best Data Products Inc. Smart One 336F PnP Modem */
+>  	{"CPI4050"},		/* Computer Peripherals Inc. EuroViVa CommCenter-33.6 SP PnP */
+>  	{"CTL3001"},		/* Creative Labs Phone Blaster 28.8 DSVD PnP Voice */
+>  	{"CTL3011"},		/* Creative Labs Modem Blaster 28.8 DSVD PnP Voice */
 > 
 
