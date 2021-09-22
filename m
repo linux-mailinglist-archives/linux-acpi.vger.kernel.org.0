@@ -2,123 +2,116 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A4BD414F0F
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 19:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F101F414F8A
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 20:02:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236811AbhIVR36 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Sep 2021 13:29:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50314 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236781AbhIVR36 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 22 Sep 2021 13:29:58 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5FB0B60F6E;
-        Wed, 22 Sep 2021 17:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1632331707;
-        bh=qxovthTWLhunV065wb5c2FjpbJJiZfXE4TdmvsvSDMI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TQcu/pDhXL13HNpmyzQqZTcSJ2/6tD4xoWby1IDx6WkYy/HNINa13EjrrebrKg8UE
-         oLbnjsUYWbhTtTeq1wDfKapMrX5x8BLN0g99OM7YibV/gsG0xhk6Smi0cQGY8Xe0nn
-         Jo4Z7MbPAaLLSS7BiwRSQ/ZDI3kzhVJWycxSsRVk=
-Date:   Wed, 22 Sep 2021 19:28:25 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Chen Yu <yu.c.chen@intel.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Aubrey Li <aubrey.li@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        linux-doc@vger.kernel.org
-Subject: Re: [PATCH v3 3/5] drivers/acpi: Introduce Platform Firmware Runtime
- Update device driver
-Message-ID: <YUtnuW22MH97p7+G@kroah.com>
-References: <cover.1631802162.git.yu.c.chen@intel.com>
- <90d270c031401430445cb2c4ba1b9b0c265cf9d4.1631802163.git.yu.c.chen@intel.com>
- <YUoBSRrAyaHOCNHb@kroah.com>
- <20210922090442.GA16963@chenyu5-mobl1>
- <YUry6tzScXMD007X@kroah.com>
- <20210922163321.GA31068@chenyu5-mobl1>
+        id S236962AbhIVSEO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Sep 2021 14:04:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50782 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236948AbhIVSEN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Sep 2021 14:04:13 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A162CC061574
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Sep 2021 11:02:43 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id s16so3469210pfk.0
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Sep 2021 11:02:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=an6XTyp8uBzrGIm8VthzqOaurFhFc1KyG06IOfAStAA=;
+        b=EwqISUaWBJ8O5geTpZwGyi7fQL+1ypivOGpEWay2ffpMgSyrQ/R+Mw2qWV7wfQVmhF
+         GtM9v1WUE4U9ys8rICKPHNwbQ60714zTq3ZlQMokC/BQa7P0uTnYfstsA2XrXP7V9zPd
+         CTf+5xFq62zey6lfmMfQIEORp13sh9EIX+dqLzwZnQo7PCXWvGckQSLV1oPwpsguDpwu
+         1gnSkO0ocJnjH3dt4gv6QSeO/SgqbJkFaO2wEfdMx32vJyusQEydSmDwDWMRHYopk5j8
+         qSLro7xL06koQ84b7V6QLizDTH/JMdNv6RmNX6QM3AP/fmwDf86XcsfJY2aWFljX75UF
+         lBig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=an6XTyp8uBzrGIm8VthzqOaurFhFc1KyG06IOfAStAA=;
+        b=zMkQ5Tm5rYuRV+dVkAYhSN1m/UER6f5VE9l3pUXPrzm+G+5u3cSVnfwX7qOZa2LjVc
+         MbFTBA9rSC7ZdJ+9EyrK3oy3gA04yCZgdIgyXAVXECWEd4HIUXtBN/DWTXhebJ6glq6G
+         RRp7FFthPy5B662Z+TtwpxB5iCysHYdgoFVcRUELBxtpC7fxWVqcC7ihlN7o4W8we4qu
+         MtljdR407xHPVoLE6n6vNIJiyw96I7oMhjVD2o2E14/GmwVhihcxOKKEA3Aj0FyDYNFH
+         9vlXvEcd6eavByu3Y09jc/RUpnWpzPFEa+uDVsbCgAHD6nCjlXyrBoSKERdB3N3nok+2
+         /0iw==
+X-Gm-Message-State: AOAM533UaQOj/0kxonsETK4jyCAarLaUOkYCp30bSLv+ccJXonL9KNQ3
+        RaufLeD0SYtZw2IERtSXUnEGBBhU4FiNnPDT71Whsg==
+X-Google-Smtp-Source: ABdhPJw0SmYwBNzhTX9tMVeKLmcFAe2cJ59lQc/vwN6mFo19kXHNTh9pxMz/Ay8xJNhJvOlvtfHXiz0+HEErn0y13ME=
+X-Received: by 2002:a63:68c6:: with SMTP id d189mr150299pgc.377.1632333763202;
+ Wed, 22 Sep 2021 11:02:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210922163321.GA31068@chenyu5-mobl1>
+References: <20210922152919.6940-1-justin.he@arm.com>
+In-Reply-To: <20210922152919.6940-1-justin.he@arm.com>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Wed, 22 Sep 2021 11:02:32 -0700
+Message-ID: <CAPcyv4giSfXxf-GzmvKBvUExfuYZTjfjOSzK74PzQb3jmv6H=w@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: NFIT: Use fallback node id when numa info in NFIT
+ table is incorrect
+To:     Jia He <justin.he@arm.com>
+Cc:     Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Linux NVDIMM <nvdimm@lists.linux.dev>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 23, 2021 at 12:33:21AM +0800, Chen Yu wrote:
-> On Wed, Sep 22, 2021 at 11:10:02AM +0200, Greg Kroah-Hartman wrote:
-> > On Wed, Sep 22, 2021 at 05:04:42PM +0800, Chen Yu wrote:
-> > > Hi Greg,
-> > > On Tue, Sep 21, 2021 at 05:59:05PM +0200, Greg Kroah-Hartman wrote:
-> > > > On Fri, Sep 17, 2021 at 12:02:18AM +0800, Chen Yu wrote:
-> > > > > Introduce the pfru_update driver which can be used for Platform Firmware
-> > > > > Runtime code injection and driver update. The user is expected to provide
-> > > > > the update firmware in the form of capsule file, and pass it to the driver
-> > > > > via ioctl. Then the driver would hand this capsule file to the Platform
-> > > > > Firmware Runtime Update via the ACPI device _DSM method. At last the low
-> > > > > level Management Mode would do the firmware update.
-> > > > > 
-> > > > > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-> > > > 
-> > > > Where is the userspace code that uses this ioctl and has tested it out
-> > > > to verify it works properly?  A link to that in the changelog would be
-> > > > great to have.
-> > > > 
-> > > The patch [5/5] is a self testing tool to test the whole feature. I'll send a
-> > > new version and Cc you too.
-> > 
-> > That tests it, but does not answer the question of who will actually use
-> > this.  What userspace tool needs this new api?
-> >
-> One end user is the cloud user.
+On Wed, Sep 22, 2021 at 8:29 AM Jia He <justin.he@arm.com> wrote:
+>
+> When ACPI NFIT table is failing to populate correct numa information
+> on arm64, dax_kmem will get NUMA_NO_NODE from the NFIT driver.
+>
+> Without this patch, pmem can't be probed as RAM devices on arm64 guest:
+>   $ndctl create-namespace -fe namespace0.0 --mode=devdax --map=dev -s 1g -a 128M
+>   kmem dax0.0: rejecting DAX region [mem 0x240400000-0x2bfffffff] with invalid node: -1
+>   kmem: probe of dax0.0 failed with error -22
+>
 
-What exactly do you mean by "cloud user"?
+I'll add:
 
-> Currently there is no dedicated userspace tool developed to use this
-> feature AFAIK.
+Cc: <stable@vger.kernel.org>
+Fixes: c221c0b0308f ("device-dax: "Hotplug" persistent memory for use
+like normal RAM")
 
-Wonderful, then it is not needed to be added to the kernel :)
+...other than that, looks good to me.
 
-> It was expected that the end users
-> could refer to the self test tool to customize their tools. I'm not sure if
-> this is the proper way to propose the feature, may I have your suggestion on
-> this, should I create a separate git repository for this tool, or put it in
-> tools/selftestings as it is now?
-
-No, do not add this to the kernel unless you have a real need and user
-for this.
-
-
-> > > > > +static struct miscdevice pfru_misc_dev = {
-> > > > > +	.minor = MISC_DYNAMIC_MINOR,
-> > > > > +	.name = "pfru_update",
-> > > > > +	.nodename = "pfru/update",
-> > > > 
-> > > > Why is this in a subdirectory?  What requires this?  Why not just
-> > > > "pfru"?
-> > > > 
-> > > The pfru directory might be reused for pfru_telemetry device, whose driver
-> > > is in 4/5 patch, I'll Cc you with the whole patch set in next version.
-> > 
-> > "might be" is not a valid reason.  Why does this simple driver deserve a
-> > whole /dev/ subdirectory?
-> > 
-> There are pfru_update and pfru_telemetry in the patch, and there is plan to
-> add a pfru_prm device in the future, which stands for "Platform Runtime Mechanism".
-> I'll move them to /dev/ in next version.
-
-That is a very generic name for a very platform specific and arch
-specific interface.  As this is an ACPI interface, why not use that name
-prefix?
-
-thanks,
-
-greg k-h
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Jia He <justin.he@arm.com>
+> ---
+>  drivers/acpi/nfit/core.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> index a3ef6cce644c..7dd80acf92c7 100644
+> --- a/drivers/acpi/nfit/core.c
+> +++ b/drivers/acpi/nfit/core.c
+> @@ -3007,6 +3007,18 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
+>                 ndr_desc->target_node = NUMA_NO_NODE;
+>         }
+>
+> +       /* Fallback to address based numa information if node lookup failed */
+> +       if (ndr_desc->numa_node == NUMA_NO_NODE) {
+> +               ndr_desc->numa_node = memory_add_physaddr_to_nid(spa->address);
+> +               dev_info(acpi_desc->dev, "changing numa node from %d to %d for nfit region [%pa-%pa]",
+> +                       NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
+> +       }
+> +       if (ndr_desc->target_node == NUMA_NO_NODE) {
+> +               ndr_desc->target_node = phys_to_target_node(spa->address);
+> +               dev_info(acpi_desc->dev, "changing target node from %d to %d for nfit region [%pa-%pa]",
+> +                       NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
+> +       }
+> +
+>         /*
+>          * Persistence domain bits are hierarchical, if
+>          * ACPI_NFIT_CAPABILITY_CACHE_FLUSH is set then
+> --
+> 2.17.1
+>
