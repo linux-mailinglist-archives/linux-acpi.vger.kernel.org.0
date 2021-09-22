@@ -2,154 +2,181 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE3D414D08
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 17:33:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 179F9414E2B
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 18:33:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236422AbhIVPew (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Sep 2021 11:34:52 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:54015 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231712AbhIVPew (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Sep 2021 11:34:52 -0400
-Received: from mail-wr1-f42.google.com ([209.85.221.42]) by
- mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MjjGV-1n8Cpn1WPb-00lEIy; Wed, 22 Sep 2021 17:33:20 +0200
-Received: by mail-wr1-f42.google.com with SMTP id d6so7967845wrc.11;
-        Wed, 22 Sep 2021 08:33:20 -0700 (PDT)
-X-Gm-Message-State: AOAM530v2GmQKYCsSGP6oijS2DC1xsDz6zyavVV3CW5uhtxV+gq1IjyV
-        ygBV2XVd1aS5HLndmejUxAeVutaoYlzEGK6mQJE=
-X-Google-Smtp-Source: ABdhPJwhV4sn6QbfZmtuFNVQ/C8ICqs5ozmWe9OsEUK5Bilrb7V6OfquRyS7totZd68AXJE2K2qjsuaRkmP6Fh4XNro=
-X-Received: by 2002:adf:f481:: with SMTP id l1mr147043wro.411.1632324799917;
- Wed, 22 Sep 2021 08:33:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAAhV-H5=Ut+rymv1RH+1GVS2oVZogtuwY_Sk-dDosJh6=USr0Q@mail.gmail.com>
- <20210921223615.GA137894@bhelgaas>
-In-Reply-To: <20210921223615.GA137894@bhelgaas>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 22 Sep 2021 17:33:03 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3SaRTJ_a6tJOHjBeCqwyQTe39-1_2bkD71ZzhJQWCM1Q@mail.gmail.com>
-Message-ID: <CAK8P3a3SaRTJ_a6tJOHjBeCqwyQTe39-1_2bkD71ZzhJQWCM1Q@mail.gmail.com>
-Subject: Re: [PATCH V3 18/22] LoongArch: Add PCI controller support
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Huacai Chen <chenhuacai@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Jianmin Lv <lvjianmin@loongson.cn>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        id S231346AbhIVQfD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Sep 2021 12:35:03 -0400
+Received: from mga03.intel.com ([134.134.136.65]:32777 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229671AbhIVQfD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 Sep 2021 12:35:03 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10115"; a="223681551"
+X-IronPort-AV: E=Sophos;i="5.85,314,1624345200"; 
+   d="scan'208";a="223681551"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2021 09:33:31 -0700
+X-IronPort-AV: E=Sophos;i="5.85,314,1624345200"; 
+   d="scan'208";a="550320315"
+Received: from liaol-mobl.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.249.173.146])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2021 09:33:25 -0700
+Date:   Thu, 23 Sep 2021 00:33:21 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Will Deacon <will@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:wdgOelx+a64SdpfMN4aZ6qUDa8IDqDSysuSrPJzqu4rnd8bRF5K
- aDMS98KGDkdxtuY4ffTRTby4drzsRuUe8JvHJtU6BSTtdGWVI6O9ivf75fXUW8QzmheO/pD
- 5+pHyHmJIt+deDkBAQVIu+Yb9j1NNxyczt81JjPPeE+tjF6fWfKBjcsz06bzE50O2zvQVvx
- SSUqGc0Uw+5dEFId3uT7g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1kZ/sHYy8Ic=:tY8a6z5+zmV8wFXQ0m/igB
- lT9pNTIn7G9oLObifows2Agv8olkdUBnvtX4FAerKMAEFUJYm1E7wScpgye3wSdyX+yHQvN6T
- FpjkIFbndeDdGee2BQYZtwD7bgnIaMctHqxcAYF5pQ65QgjlMkWLNSGh2uEW2kylJ4adrV7EP
- qyPgCPr7GG7GDcMxsjxSvX36hV6nKRJWkYfsGGOFFXLMeYDzWPSsINRg5klKyFEtxNzs4qjZd
- HTMerU3x+f+FHuyGQvAw5Q9ZmmpFENzbH1yunVFkwAzIPoEn9GiiQk/x4q7j+23wCq6R4epi0
- 5dFXd0hP+hQ2OTxBG+QrYDBhSm2tJu29rrpmWaruAGjs5OHo3WdtZqW8HHU4uNSDv0h/QusQs
- Y+Frqdd+15pH3IkBhh1/MxjwBHyArJEQqhFAeeASTYu1SCnvZ5/68H3P3bqAQojyMU5fHGdhf
- Ug9IAeqXTINVJmxy2hyFE0cKwlmczhPiKSqqw8wbno/NPo1jWKkiA7gxbY4ZbVrrP2UWhC6+h
- GUMNNz0owsb0oKfi9gNKxnTENVi/VNZDhFJNefAE9TunOhXuDkdapYlE98uY6PivKFV/JTv0T
- j3lJZe49AqutjLzLfIVcEhaf/JhGB3w6jcoQjAtI0bYksARalI7op94cvQP4TjGH0vsqurEeq
- dT/UFms5B92xqfcpIpBvbcyfA58H4wDHHFa5nZZC4rX94S5kOE+z9dMKtQ7BSMfjiAKHu3elY
- /cNYKx2mLCXF8eU8YWw3C7WY0+v5tDdiPq2VI4i2T9OuKLV78+7UYxxQ2Ge/jleUtdzJfg93a
- K8fV7HYl9FvBVolL68U1gxJA7gcLoKqBe2jmzXi3Nwqohe8TFpfKf0XThIOk9ThzawmPoBLb8
- 1xvKtJi27CP319FcvAwA==
+        Len Brown <len.brown@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Aubrey Li <aubrey.li@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] drivers/acpi: Introduce Platform Firmware Runtime
+ Update device driver
+Message-ID: <20210922163321.GA31068@chenyu5-mobl1>
+References: <cover.1631802162.git.yu.c.chen@intel.com>
+ <90d270c031401430445cb2c4ba1b9b0c265cf9d4.1631802163.git.yu.c.chen@intel.com>
+ <YUoBSRrAyaHOCNHb@kroah.com>
+ <20210922090442.GA16963@chenyu5-mobl1>
+ <YUry6tzScXMD007X@kroah.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YUry6tzScXMD007X@kroah.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 22, 2021 at 12:36 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Wed, Sep 22, 2021 at 11:10:02AM +0200, Greg Kroah-Hartman wrote:
+> On Wed, Sep 22, 2021 at 05:04:42PM +0800, Chen Yu wrote:
+> > Hi Greg,
+> > On Tue, Sep 21, 2021 at 05:59:05PM +0200, Greg Kroah-Hartman wrote:
+> > > On Fri, Sep 17, 2021 at 12:02:18AM +0800, Chen Yu wrote:
+> > > > Introduce the pfru_update driver which can be used for Platform Firmware
+> > > > Runtime code injection and driver update. The user is expected to provide
+> > > > the update firmware in the form of capsule file, and pass it to the driver
+> > > > via ioctl. Then the driver would hand this capsule file to the Platform
+> > > > Firmware Runtime Update via the ACPI device _DSM method. At last the low
+> > > > level Management Mode would do the firmware update.
+> > > > 
+> > > > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> > > 
+> > > Where is the userspace code that uses this ioctl and has tested it out
+> > > to verify it works properly?  A link to that in the changelog would be
+> > > great to have.
+> > > 
+> > The patch [5/5] is a self testing tool to test the whole feature. I'll send a
+> > new version and Cc you too.
+> 
+> That tests it, but does not answer the question of who will actually use
+> this.  What userspace tool needs this new api?
 >
-> On Sat, Sep 18, 2021 at 03:36:52PM +0800, Huacai Chen wrote:
-> > On Fri, Sep 17, 2021 at 5:02 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > > On Fri, Sep 17, 2021 at 5:57 AM Huacai Chen <chenhuacai@loongson.cn> wrote:
-> > > >
-> > > > Loongson64 based systems are PC-like systems which use PCI/PCIe as its
-> > > > I/O bus, This patch adds the PCI host controller support for LoongArch.
-> > > >
-> > > > Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+One end user is the cloud user. Currently there is no dedicated userspace
+tool developed to use this feature AFAIK. It was expected that the end users
+could refer to the self test tool to customize their tools. I'm not sure if
+this is the proper way to propose the feature, may I have your suggestion on
+this, should I create a separate git repository for this tool, or put it in
+tools/selftestings as it is now?
+> > > > +static void dump_update_result(struct pfru_updated_result *result)
+> > > > +{
+> > > > +	pr_debug("Update result:\n");
+> > > > +	pr_debug("Status:%d\n", result->status);
+> > > > +	pr_debug("Extended Status:%d\n", result->ext_status);
+> > > > +	pr_debug("Authentication Time Low:%lld\n", result->low_auth_time);
+> > > > +	pr_debug("Authentication Time High:%lld\n", result->high_auth_time);
+> > > > +	pr_debug("Execution Time Low:%lld\n", result->low_exec_time);
+> > > > +	pr_debug("Execution Time High:%lld\n", result->high_exec_time);
+> > > 
+> > > Why not dev_dbg()?  Same for all pr_* calls in this "driver".
+> > > 
 > > >
-> > > As discussed before, I think the PCI support should not be part of the
-> > > architecture code or this patch series. The headers are ok, but the pci.c
-> > > and acpi.c files have nothing loongarch specific in them, and you clearly
-> > > just copied most of this from arm64 or x86.
-> >
-> > In V2 part of the PCI code (pci-loongson.c) has moved to
-> > drivers/pci/controllers. For pci.c and acpi.c, I agree that "the thing
-> > should be like that", but have some different ideas about "the way to
-> > arrive at that". In my opinion, we can let this series be merged at
-> > first, and then do another series to "restructure the files and move
-> > common parts to the drivers directory". That way looks more natural to
-> > me (doing the other series at first may block the whole thing).
-
-It should not hold up the current series, but I think you should be able
-to do both sides (architecture code and pci support) independently
-at the same time.
-
-> > > What I would suggest you do instead is:
-> > >
-> > > - start a separate patch series, addressed to the ACPI, PCI host driver
-> > >   and ARM64 maintainers.
-> > >
-> > > - Move all the bits you need from arch/{arm64,ia64,x86} into
-> > >   drivers/acpi/pci/pci_root.c, duplicating them with #if/#elif/#else
-> > >   where they are too different, making the #else path the
-> > >   default that can be shared with loongarch.
-> > >
-> > > - Move the bits from pci_root_info/acpi_pci_root_info that are
-> > >   always needed into struct pci_host_bridge, with an
-> > >   #ifdef CONFIG_ACPI where appropriate.
-> > >
-> > > - Simplify as much as you can easily do.
+> > Ok, I'll switch to dev_dbg() in next version. 
+> > > > +static long pfru_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+> > > > +{
+> > > > +	void __user *p;
+> > > > +	int ret = 0, rev;
+> > > > +
+> > > > +	p = (void __user *)arg;
+> > > > +
+> > > > +	switch (cmd) {
+> > > > +	case PFRU_IOC_SET_REV:
+> > > > +		if (copy_from_user(&rev, p, sizeof(unsigned int)))
+> > > > +			return -EFAULT;
+> > > > +		if (!pfru_valid_revid(rev))
+> > > > +			return -EFAULT;
+> > > > +		pfru_dev->rev_id = rev;
+> > > > +		break;
+> > > > +	case PFRU_IOC_STAGE:
+> > > > +		ret = start_acpi_update(START_STAGE);
+> > > > +		break;
+> > > > +	case PFRU_IOC_ACTIVATE:
+> > > > +		ret = start_acpi_update(START_ACTIVATE);
+> > > > +		break;
+> > > > +	case PFRU_IOC_STAGE_ACTIVATE:
+> > > > +		ret = start_acpi_update(START_STAGE_ACTIVATE);
+> > > > +		break;
+> > > > +	default:
+> > > > +		ret = -ENOIOCTLCMD;
+> > > 
+> > > Wrong value :(
+> > Previously I thought that ENOIOCTLCMD stands for 'invalid ioctl command'.
+> > After checking the lkml discussion, it seems that ENOIOCTLCMD should not
+> > be returned to user space. ENOTTY might be more suitible if I understand
+> > correctly.
+> > http://lkml.iu.edu/hypermail/linux/kernel/0105.1/0734.html
+> 
+> Yes, ENOTTY is correct.
+> 
 >
-> I would love to see this done.
->
-> But we already have this kind of redundant code for arm64/ia64/x86.
-> Arguably, we should have refactored it for ia64 or arm64.  It's
-> unfortunate to add loongarch to that list, but why should we penalize
-> loongarch more than arm64 and ia64?
+> > > > +		break;
+> > > > +	}
+> > > > +
+> > > > +	return ret;
+> > > > +}
+> > > > +
+> > > > +#ifdef CONFIG_COMPAT
+> > > > +static long compat_pfru_ioctl(struct file *filep, unsigned int cmd,
+> > > > +			      unsigned long arg)
+> > > > +{
+> > > > +	return pfru_ioctl(filep, cmd, arg);
+> > > > +}
+> > > > +#endif
+> > > 
+> > > Why is this compat ioctl needed at all?
+> > > 
+> > We can not control if the user space tool would be compiled as 32bit.
+> 
+> Then create your ioctl so that a compat ioctl is not needed at all.
+> There is no need to ever use this for new ioctl commands these days.
+> 
+After checking the code, it seems that this driver only needs to deal with
+unlocked_ioctl() without touching compat_ioctl(). Because even if the user
+space is 32bit, the compat_ioctl() would invoke unlocked_ioctl() first
+with a parameter of compat_ptr(arg). It should be safe to remove the compat_ioctl
+hook in this driver.
+> > But I realize that a compat_ptr() was missing. Will fix it in next version.
+> > > > +static struct miscdevice pfru_misc_dev = {
+> > > > +	.minor = MISC_DYNAMIC_MINOR,
+> > > > +	.name = "pfru_update",
+> > > > +	.nodename = "pfru/update",
+> > > 
+> > > Why is this in a subdirectory?  What requires this?  Why not just
+> > > "pfru"?
+> > > 
+> > The pfru directory might be reused for pfru_telemetry device, whose driver
+> > is in 4/5 patch, I'll Cc you with the whole patch set in next version.
+> 
+> "might be" is not a valid reason.  Why does this simple driver deserve a
+> whole /dev/ subdirectory?
+> 
+There are pfru_update and pfru_telemetry in the patch, and there is plan to
+add a pfru_prm device in the future, which stands for "Platform Runtime Mechanism".
+I'll move them to /dev/ in next version.
 
-There is usually something like this that comes up when support for a
-new architecture gets posted and it duplicates some code from other
-architectures.
-
-When I review the port, I try to come to a reasonable balance asking
-the submitters to clean up some aspect of the common code base
-so they and everyone afterwards is able to use more shared
-infrastructure without duplication. This is clearly a different area
-every time, but I think the ACPI PCI code is an obvious thing to
-ask for cleaning up this time, as there are only three existing users.
-
-We could probably have done a better job for the arm64 version,
-but even getting that working was enough of a mess (initially
-you had only ACPI or PCI but not both together), and there
-were other problems with the architecture port that needed sorting
-out at the time.
-
-I can definitely offer to help plan this part a little bit better, but
-I actually hope it's not all that much work.
-
-        Arnd
+Thanks,
+Chenyu
