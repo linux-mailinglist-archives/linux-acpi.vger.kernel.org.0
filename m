@@ -2,103 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ADF7414999
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 14:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 781D74149BB
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 14:53:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236192AbhIVMtr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Sep 2021 08:49:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32834 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236135AbhIVMtm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Sep 2021 08:49:42 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91C32C061764
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Sep 2021 05:48:07 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id 73so9176016qki.4
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Sep 2021 05:48:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BOd6h/Yrxn5Oodi5c84PARcC+Qmls9Bjqxy6D0i0gaE=;
-        b=LC7zuodttu1Ldc3PmL3UjrqEjro5G6YVm2qOGl003DTcVkLTUSdUIWa6OKtoqRkVlf
-         j0ix+QBTVVqcUWeSRjxxdHn0lUBzQDHL1DaxnWnr42cDle3K84/oSTERXmEtLJMtKP6M
-         OoYuft2DDLGK0prGGnNr1uZnivFMmzG7rNuwcy3JHyVbF/z5s66uSVqfTK3KYd0YL13t
-         ZctY/pAkNrCAH7GJIlnrmJ3QmfQUn7nKkErG+aoaOOiFG0aTyO4yca+PjuvvVdUxT8cI
-         7XUYavZXn3IsH5DtnoN2GGF8iePvcaZ/K8REn7ultKz6EXUTBkxY7ozBVjNoKmoihyBC
-         hEQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BOd6h/Yrxn5Oodi5c84PARcC+Qmls9Bjqxy6D0i0gaE=;
-        b=jInNYeNb9rWIEGm6ARcZ1w8/7qJYKxQ0lM5UPFmQfcPtqiLqUllBW/YLLTKzoJ8dl1
-         1fhP6NvMjVbFyy1XZUNCEZd+N+nhDO9WEaXvqJbBrf58YkqIzJFA1Tnbj67QkojrNcRL
-         tILdjmxSrcoWcb81VtDjiWJCK3haQt573OUi0YV0qy9y0WkwHBWuyKhT+D1We9rF+pfD
-         CN1ZGxi0gIxFBL8DfrqKZCsO9GQQWTpK1zw1fotHB9NMLCUfmuvGfkEWamI2fOz69Eib
-         USJVyp3wRSmR7gRtlPTvd6u6i1EqIa6o04EfBoIbR0sdN9s629TZrtHE8fG1NBWkuRQq
-         JFxw==
-X-Gm-Message-State: AOAM5309k75W7w54quAtbTQwt8QYYkgJi3MGHp2Puhmc15TecW2o6x+E
-        S2Pt8xXxPboQ3uzCF23XeMLANs8C9OYbuYUheTLCdw==
-X-Google-Smtp-Source: ABdhPJzOnb/1MbqqxB20FR/qra6sz62kiRapIfLwVRJgk660z7HoheEro+RuNYOomgpi6g87ak9y0dwq/PN9fFl4EzI=
-X-Received: by 2002:a25:14d6:: with SMTP id 205mr1886426ybu.93.1632314886788;
- Wed, 22 Sep 2021 05:48:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210816093856.12313-1-hdegoede@redhat.com> <CACRpkdZ8ngakZhbrJp=OjcayLJ4j7C9gqb72N18fHExtMT7gNg@mail.gmail.com>
- <86fafc6f-113c-2ea9-579b-ea29343865da@redhat.com> <CAMpxmJUtYoq1tX060dw6sKNpAf+D73Dr_s-pMhUdpeOKSr22gg@mail.gmail.com>
- <CAHp75Vf4mjDoiVCZ=z7QS5oDMsPQM1rTQUTFps5fKRsNEj99Ug@mail.gmail.com>
-In-Reply-To: <CAHp75Vf4mjDoiVCZ=z7QS5oDMsPQM1rTQUTFps5fKRsNEj99Ug@mail.gmail.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Wed, 22 Sep 2021 14:47:56 +0200
-Message-ID: <CAMpxmJWwXR=T8Sd9fuzSF5hpX5V-cbtP_eqiUoA8L+eJ2Bx-2w@mail.gmail.com>
-Subject: Re: [PATCH regression fix] gpiolib: acpi: Make set-debounce-timeout
- failures non fatal
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        id S236102AbhIVMyo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Sep 2021 08:54:44 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:54348 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236001AbhIVMym (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 Sep 2021 08:54:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=ZWdV3Ywl5E2tBReyRKkp3nub36ib8xsMWJxoWC+tqZM=; b=EFXR3GlnMnGHIw2VtBsFrp4XLU
+        5ZmpUW7Pwnd7V9z7BtVI69IYgbLKkBa6YZlMCO7gwM/msu3eBMkA6D41LWrWhJ8CTUtZbu05jLBzF
+        wZNctlNM1G4dtdIURdc7QizcwaF+yTZLSOARQwfIhJGz8+sZ5pgpyDnZ0Fwt0UrZRNTg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1mT1k9-007mXu-9X; Wed, 22 Sep 2021 14:52:57 +0200
+Date:   Wed, 22 Sep 2021 14:52:57 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "Cc: Android Kernel" <kernel-team@android.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v3 2/3] driver core: fw_devlink: Add support for
+ FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD
+Message-ID: <YUsnKX1pYc9K8f95@lunn.ch>
+References: <YUocuMM4/VKzNMXq@lunn.ch>
+ <CAJZ5v0iU3SGqrw909GLtuLwAxdyOy=pe2avxpDW+f4dP4ArhaQ@mail.gmail.com>
+ <YUo3kD9jgx6eNadX@lunn.ch>
+ <CAGETcx9hTFhY4+fHd71zYUsWW223GfUWBp8xxFCb2SNR6YUQ4Q@mail.gmail.com>
+ <YUpIgTqyrDRXMUyC@lunn.ch>
+ <CAGETcx_50KQuj0L+MCcf2Se8kpFfZwJBKP0juh_T7w+ZCs2p+g@mail.gmail.com>
+ <YUpW9LIcrcok8rBa@lunn.ch>
+ <CAGETcx_CNyKU-tXT+1_089MpVHQaBoNiZs6K__MrRXzWSi6P8g@mail.gmail.com>
+ <YUp8vu1zUzBTz6WP@lunn.ch>
+ <CAGETcx9YPZ3nSF7ghjiaALa_DMJXqkR45-VL5SA+xT_jd7V+zQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx9YPZ3nSF7ghjiaALa_DMJXqkR45-VL5SA+xT_jd7V+zQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 22, 2021 at 12:56 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Wed, Sep 22, 2021 at 12:17 PM Bartosz Golaszewski
-> <bgolaszewski@baylibre.com> wrote:
-> > On Tue, Sep 21, 2021 at 8:42 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> > > On 9/21/21 8:28 PM, Linus Walleij wrote:
-> > > > On Mon, Aug 16, 2021 at 11:39 AM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> ...
->
-> > > >> Fixes: 8dcb7a15a585 ("gpiolib: acpi: Take into account debounce settings")
-> > > >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> > > >
-> > > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> > > >
-> > > > Bartosz will pick this up I think, I'm a bit off duty with GPIO right now.
-> > >
-> > > Added Bartosz to the To: list, to make sure that he actually
-> > > sees this. I somehow did not add him in the To/Cc when sending out
-> > > the patch, sorry about that.
-> >
-> > Yep, I only process patches that are directed to me personally (TO or CC).
->
-> Hmm... It's then strange that GPIO lib ACPI is not listed for you in
-> MAINTAINERS.
-> Perhaps we need to update MAINTAINERS as well.
->
+> That goes back to Rafael's reply (and I agree):
+> 
+> "Also if the probe has already started, it may still return
+> -EPROBE_DEFER at any time in theory, so as a rule the dependency is
+> actually known to be satisfied when the probe has successfully
+> completed."
+> 
+> So waiting for the probe to finish is the right behavior/intentional
+> for fw_devlink.
 
-With the following line in MAINTAINERS:
+But differs to how things actually work in the driver model. The
+driver model does not care if a driver has finished probing, you can
+use a resource as soon as it is registered. Hence this whole
+problem/discussion.
 
-    7998 F:      drivers/gpio/
-
-My name should pop up for all patches aimed at the GPIO subsystem if
-one uses scripts/get_maintainer.pl.
-
-Bart
+	Andrew
