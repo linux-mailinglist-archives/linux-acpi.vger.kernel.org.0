@@ -2,116 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F101F414F8A
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 20:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 593FC4151BF
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 22:55:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236962AbhIVSEO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Sep 2021 14:04:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50782 "EHLO
+        id S237773AbhIVU42 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Sep 2021 16:56:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236948AbhIVSEN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Sep 2021 14:04:13 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A162CC061574
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Sep 2021 11:02:43 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id s16so3469210pfk.0
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Sep 2021 11:02:43 -0700 (PDT)
+        with ESMTP id S237798AbhIVU41 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Sep 2021 16:56:27 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4226C061767
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Sep 2021 13:54:56 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id y28so17135261lfb.0
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Sep 2021 13:54:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=an6XTyp8uBzrGIm8VthzqOaurFhFc1KyG06IOfAStAA=;
-        b=EwqISUaWBJ8O5geTpZwGyi7fQL+1ypivOGpEWay2ffpMgSyrQ/R+Mw2qWV7wfQVmhF
-         GtM9v1WUE4U9ys8rICKPHNwbQ60714zTq3ZlQMokC/BQa7P0uTnYfstsA2XrXP7V9zPd
-         CTf+5xFq62zey6lfmMfQIEORp13sh9EIX+dqLzwZnQo7PCXWvGckQSLV1oPwpsguDpwu
-         1gnSkO0ocJnjH3dt4gv6QSeO/SgqbJkFaO2wEfdMx32vJyusQEydSmDwDWMRHYopk5j8
-         qSLro7xL06koQ84b7V6QLizDTH/JMdNv6RmNX6QM3AP/fmwDf86XcsfJY2aWFljX75UF
-         lBig==
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
+        b=fr8lNb1tzuroNDnbJJtYWeXOCGZbssrkZvaRy8HVdYCeSSxS96vSwd3R2+r1vg3M6/
+         ex66FoD7Oi9BZ+eroN2ctcLno3UxJhL89X1t6yEsFayGc2q4Pz0zZQBaUGqcHr3s/S1+
+         lgIwwHuJ4O8SDnA5oR3zC/CFwa9fWO84703n6I2aQyNKP1VzeqgyNRTdZaVTG81gy6Vx
+         t6u58+esbUQxWBZY5IFD1w784RDrV2U7d72/V+RQAoF8LyHU+KHsqwJTuZK+RI9xoYHQ
+         hU/k+XKo5P60J+yjbN5r0LQMnBzU5qvJitpMdoh7dt6f9DChJ/lZbweVN/xESakomSrI
+         Tc/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=an6XTyp8uBzrGIm8VthzqOaurFhFc1KyG06IOfAStAA=;
-        b=zMkQ5Tm5rYuRV+dVkAYhSN1m/UER6f5VE9l3pUXPrzm+G+5u3cSVnfwX7qOZa2LjVc
-         MbFTBA9rSC7ZdJ+9EyrK3oy3gA04yCZgdIgyXAVXECWEd4HIUXtBN/DWTXhebJ6glq6G
-         RRp7FFthPy5B662Z+TtwpxB5iCysHYdgoFVcRUELBxtpC7fxWVqcC7ihlN7o4W8we4qu
-         MtljdR407xHPVoLE6n6vNIJiyw96I7oMhjVD2o2E14/GmwVhihcxOKKEA3Aj0FyDYNFH
-         9vlXvEcd6eavByu3Y09jc/RUpnWpzPFEa+uDVsbCgAHD6nCjlXyrBoSKERdB3N3nok+2
-         /0iw==
-X-Gm-Message-State: AOAM533UaQOj/0kxonsETK4jyCAarLaUOkYCp30bSLv+ccJXonL9KNQ3
-        RaufLeD0SYtZw2IERtSXUnEGBBhU4FiNnPDT71Whsg==
-X-Google-Smtp-Source: ABdhPJw0SmYwBNzhTX9tMVeKLmcFAe2cJ59lQc/vwN6mFo19kXHNTh9pxMz/Ay8xJNhJvOlvtfHXiz0+HEErn0y13ME=
-X-Received: by 2002:a63:68c6:: with SMTP id d189mr150299pgc.377.1632333763202;
- Wed, 22 Sep 2021 11:02:43 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=ijKrByR1/KtEp2Ut8Wj0vMi00kBZm/A/r1gPwOEYZIg=;
+        b=k2kRqVEVYF3zg8EbyiO0jqy9nVbPpjOycCDyKU7p+hI498PgFu8+iVE4pOp1AVbxVz
+         0YT2BVuN3Gng2f6p9RWF7bMQSNBfPrZC7sLykb7+qeZwmq5DFx6w2FQ+rFTcdklMk+eU
+         lYgSRFywWGQ7saVjPfVNMN/SRKnxgjahfSYAmcvIFYVuysOW8Vk0Vp+qbAsHDxpQ1YVI
+         sYiH4ahuZ/f/gVB4T5WBeYhOi1cJsQtO8UWQBbor1CD78CRzmf2+JHpnmrltmg+1TM/G
+         nmyuBdzqZmICijSChLuiTJoi12qNuvBcEIJZvrEtim2e2XSs5yRkEGpSxsSmydBmb4yR
+         bR7Q==
+X-Gm-Message-State: AOAM531cvxyvXAcXF5iqS7Dz/kUJW4KMA82lw3JALITeYe1WEIDB5HWc
+        p2Lw3mojB3Lr7MEt4YLNn8Lt731giNWbQHUPy6s=
+X-Google-Smtp-Source: ABdhPJwYYn7ZwazUxB30/XTxKCOf4dlZaC6TfP1ljKsU4ZNb40cpLRsdAvw7sAb51nYQkeG7S6W5vU7Cgq+lC3FYxgE=
+X-Received: by 2002:a05:651c:1546:: with SMTP id y6mr1383813ljp.53.1632344095088;
+ Wed, 22 Sep 2021 13:54:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210922152919.6940-1-justin.he@arm.com>
-In-Reply-To: <20210922152919.6940-1-justin.he@arm.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Wed, 22 Sep 2021 11:02:32 -0700
-Message-ID: <CAPcyv4giSfXxf-GzmvKBvUExfuYZTjfjOSzK74PzQb3jmv6H=w@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: NFIT: Use fallback node id when numa info in NFIT
- table is incorrect
-To:     Jia He <justin.he@arm.com>
-Cc:     Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Linux NVDIMM <nvdimm@lists.linux.dev>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
+Sender: ratcliffijames58@gmail.com
+Received: by 2002:a05:6504:5067:0:0:0:0 with HTTP; Wed, 22 Sep 2021 13:54:54
+ -0700 (PDT)
+From:   Aisha Al-Qaddafi <aisha.gdaffi24@gmail.com>
+Date:   Wed, 22 Sep 2021 21:54:54 +0100
+X-Google-Sender-Auth: B3PIuwFz7UcaHNCffYC8akvbLEk
+Message-ID: <CAKVTYWSPSMf085dB7FkhkLr9XtoZHkjbvunoMard5qsSPn4ZOg@mail.gmail.com>
+Subject: My Dear Friend
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 22, 2021 at 8:29 AM Jia He <justin.he@arm.com> wrote:
->
-> When ACPI NFIT table is failing to populate correct numa information
-> on arm64, dax_kmem will get NUMA_NO_NODE from the NFIT driver.
->
-> Without this patch, pmem can't be probed as RAM devices on arm64 guest:
->   $ndctl create-namespace -fe namespace0.0 --mode=devdax --map=dev -s 1g -a 128M
->   kmem dax0.0: rejecting DAX region [mem 0x240400000-0x2bfffffff] with invalid node: -1
->   kmem: probe of dax0.0 failed with error -22
->
-
-I'll add:
-
-Cc: <stable@vger.kernel.org>
-Fixes: c221c0b0308f ("device-dax: "Hotplug" persistent memory for use
-like normal RAM")
-
-...other than that, looks good to me.
-
-> Suggested-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Jia He <justin.he@arm.com>
-> ---
->  drivers/acpi/nfit/core.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> index a3ef6cce644c..7dd80acf92c7 100644
-> --- a/drivers/acpi/nfit/core.c
-> +++ b/drivers/acpi/nfit/core.c
-> @@ -3007,6 +3007,18 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
->                 ndr_desc->target_node = NUMA_NO_NODE;
->         }
->
-> +       /* Fallback to address based numa information if node lookup failed */
-> +       if (ndr_desc->numa_node == NUMA_NO_NODE) {
-> +               ndr_desc->numa_node = memory_add_physaddr_to_nid(spa->address);
-> +               dev_info(acpi_desc->dev, "changing numa node from %d to %d for nfit region [%pa-%pa]",
-> +                       NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
-> +       }
-> +       if (ndr_desc->target_node == NUMA_NO_NODE) {
-> +               ndr_desc->target_node = phys_to_target_node(spa->address);
-> +               dev_info(acpi_desc->dev, "changing target node from %d to %d for nfit region [%pa-%pa]",
-> +                       NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
-> +       }
-> +
->         /*
->          * Persistence domain bits are hierarchical, if
->          * ACPI_NFIT_CAPABILITY_CACHE_FLUSH is set then
-> --
-> 2.17.1
->
+Assalamu alaikum,
+I came across your e-mail contact prior to a private search while in
+need of your assistance. I am Aisha Al-Qaddafi, the only biological,
+Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a
+single Mother and a Widow with three Children. I have investment funds
+worth Twenty Seven Million Five Hundred Thousand United State Dollar
+($27.500.000.00 ) and i need a trusted  investment Manager/Partner
+because of my current refugee status, however, I am interested in you
+for investment project assistance in your country. If you are willing
+to handle this project on my behalf kindly reply urgently to enable me
+to provide you more information about the investment
+funds.
+Best Regards
