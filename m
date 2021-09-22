@@ -2,114 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78FFB413ED2
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 03:01:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BD0C41447A
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 11:04:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232210AbhIVBCd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Sep 2021 21:02:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40698 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231143AbhIVBCd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Sep 2021 21:02:33 -0400
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 118D3C061575
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Sep 2021 18:01:04 -0700 (PDT)
-Received: by mail-qk1-x731.google.com with SMTP id q81so260562qke.5
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Sep 2021 18:01:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2tzoNjgBHHVVO82xDeud4XNE313zYxYkqzxc5/NZ08A=;
-        b=GGlDWC0II2CLW7KwN7qe9pvg/MIQUgcJy/JGJ9kxJCBAUvijhRdOhhHOGA+kup9px+
-         qAogffQY4KGcU9sBWz0CbucL69NEN/RunSCzX1GkrxkdpNRjnpnR6QHTH3DaQkqQV8P1
-         xMrc5wA9n/s7NWLxjWZ2u45FgRGkKDZvYjTinKj4JMVyzlIDyZhrBstuUsYW46FwdKFA
-         DWYay8U3ZkffzSmhKwFNZX6vcoJ73Vyoe2l+BpccKiQfV4P+wk48MyPmCREDqEPvTPoc
-         8hnaVD4Hv7EdtjCH6LCxwH180X4eUhlg4DRRsZdJKK8txL8c8kWvg1+EI6ABqnpUXVhr
-         Jg7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2tzoNjgBHHVVO82xDeud4XNE313zYxYkqzxc5/NZ08A=;
-        b=WGOqM07GKGgW4oMfx/efBVkwAno+rz/NPsR8YxzWcjAT9YXV+KsLOYam3ia6CXEriX
-         fel1BuE20GehTYuKIRgc0Ic3cmqxkC05iwVT7DDt9JnUbPYqXxs42/0039CIHlrdZhsN
-         L1G6V6mpFIAzUYx4BZXaYDdDicdtIEqpXdxTHL4qM129kGZa8J86J1fh1kQLNP9+RWHb
-         Uu1MIwPiuagZ0f0Zfn3QmjZoidSvHYRpKA8CjkxcfJMuNys2AmzD4ZCkqzlw9sGP8NM0
-         YSSMxBNnhRuVDDVgyQpxlVab935+OdCr8fb/BDDER6vDD01yqTWqf3iZb5y/lwCPLkcl
-         6aug==
-X-Gm-Message-State: AOAM532ACdATxMrNq98nz2OBHemr26qFsCk4ETE6yei2KHhRkWb38wBS
-        8fjgyjE4WATz77B/0EOuh5EUOP+kmoNS59GZcTf8vg==
-X-Google-Smtp-Source: ABdhPJwFpus2NfxEVSKg2x7IV+xzPb+fbtcnBYodXLvkDbaDUMFmm0/qPQBnMspUGNvlOl5b8upBbujF82BPPlxlRp8=
-X-Received: by 2002:a25:e750:: with SMTP id e77mr13431650ybh.23.1632272462992;
- Tue, 21 Sep 2021 18:01:02 -0700 (PDT)
+        id S234176AbhIVJG0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Sep 2021 05:06:26 -0400
+Received: from mga06.intel.com ([134.134.136.31]:35756 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234071AbhIVJG0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 Sep 2021 05:06:26 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10114"; a="284563479"
+X-IronPort-AV: E=Sophos;i="5.85,313,1624345200"; 
+   d="scan'208";a="284563479"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2021 02:04:52 -0700
+X-IronPort-AV: E=Sophos;i="5.85,313,1624345200"; 
+   d="scan'208";a="550173400"
+Received: from liaol-mobl.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.249.173.146])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2021 02:04:46 -0700
+Date:   Wed, 22 Sep 2021 17:04:42 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <len.brown@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Aubrey Li <aubrey.li@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] drivers/acpi: Introduce Platform Firmware Runtime
+ Update device driver
+Message-ID: <20210922090442.GA16963@chenyu5-mobl1>
+References: <cover.1631802162.git.yu.c.chen@intel.com>
+ <90d270c031401430445cb2c4ba1b9b0c265cf9d4.1631802163.git.yu.c.chen@intel.com>
+ <YUoBSRrAyaHOCNHb@kroah.com>
 MIME-Version: 1.0
-References: <YUoFFXtWFAhLvIoH@kroah.com> <CAJZ5v0jjvf6eeEKMtRJ-XP1QbOmjEWG=DmODbMhAFuemNn4rZg@mail.gmail.com>
- <YUocuMM4/VKzNMXq@lunn.ch> <CAJZ5v0iU3SGqrw909GLtuLwAxdyOy=pe2avxpDW+f4dP4ArhaQ@mail.gmail.com>
- <YUo3kD9jgx6eNadX@lunn.ch> <CAGETcx9hTFhY4+fHd71zYUsWW223GfUWBp8xxFCb2SNR6YUQ4Q@mail.gmail.com>
- <YUpIgTqyrDRXMUyC@lunn.ch> <CAGETcx_50KQuj0L+MCcf2Se8kpFfZwJBKP0juh_T7w+ZCs2p+g@mail.gmail.com>
- <YUpW9LIcrcok8rBa@lunn.ch> <CAGETcx_CNyKU-tXT+1_089MpVHQaBoNiZs6K__MrRXzWSi6P8g@mail.gmail.com>
- <YUp8vu1zUzBTz6WP@lunn.ch>
-In-Reply-To: <YUp8vu1zUzBTz6WP@lunn.ch>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Tue, 21 Sep 2021 18:00:26 -0700
-Message-ID: <CAGETcx9YPZ3nSF7ghjiaALa_DMJXqkR45-VL5SA+xT_jd7V+zQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] driver core: fw_devlink: Add support for FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "Cc: Android Kernel" <kernel-team@android.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YUoBSRrAyaHOCNHb@kroah.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 21, 2021 at 5:45 PM Andrew Lunn <andrew@lunn.ch> wrote:
+Hi Greg,
+On Tue, Sep 21, 2021 at 05:59:05PM +0200, Greg Kroah-Hartman wrote:
+> On Fri, Sep 17, 2021 at 12:02:18AM +0800, Chen Yu wrote:
+> > Introduce the pfru_update driver which can be used for Platform Firmware
+> > Runtime code injection and driver update. The user is expected to provide
+> > the update firmware in the form of capsule file, and pass it to the driver
+> > via ioctl. Then the driver would hand this capsule file to the Platform
+> > Firmware Runtime Update via the ACPI device _DSM method. At last the low
+> > level Management Mode would do the firmware update.
+> > 
+> > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> 
+> Where is the userspace code that uses this ioctl and has tested it out
+> to verify it works properly?  A link to that in the changelog would be
+> great to have.
+> 
+The patch [5/5] is a self testing tool to test the whole feature. I'll send a
+new version and Cc you too.
+> > +static void dump_update_result(struct pfru_updated_result *result)
+> > +{
+> > +	pr_debug("Update result:\n");
+> > +	pr_debug("Status:%d\n", result->status);
+> > +	pr_debug("Extended Status:%d\n", result->ext_status);
+> > +	pr_debug("Authentication Time Low:%lld\n", result->low_auth_time);
+> > +	pr_debug("Authentication Time High:%lld\n", result->high_auth_time);
+> > +	pr_debug("Execution Time Low:%lld\n", result->low_exec_time);
+> > +	pr_debug("Execution Time High:%lld\n", result->high_exec_time);
+> 
+> Why not dev_dbg()?  Same for all pr_* calls in this "driver".
+> 
 >
-> > Wait, what's the difference between a real fix vs a long term fix? To
-> > me those are the same.
->
-> Maybe the long term fix is you follow the phandle to the actual
-> resources, see it is present, and allow the probe? That brings you in
-> line with how things actually work with devices probing against
-> resources.
->
-> I don't know how much work that is, since there is no uniform API to
-> follow a phandle to a resource. I think each phandle type has its own
-> helper. For an interrupt phandle you need to use of_irq_get(), for a
-> gpio phandle maybe of_get_named_gpio_flags(), for a reset phandle
-> __of_reset_control_get(), etc.
+Ok, I'll switch to dev_dbg() in next version. 
+> > +static long pfru_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+> > +{
+> > +	void __user *p;
+> > +	int ret = 0, rev;
+> > +
+> > +	p = (void __user *)arg;
+> > +
+> > +	switch (cmd) {
+> > +	case PFRU_IOC_SET_REV:
+> > +		if (copy_from_user(&rev, p, sizeof(unsigned int)))
+> > +			return -EFAULT;
+> > +		if (!pfru_valid_revid(rev))
+> > +			return -EFAULT;
+> > +		pfru_dev->rev_id = rev;
+> > +		break;
+> > +	case PFRU_IOC_STAGE:
+> > +		ret = start_acpi_update(START_STAGE);
+> > +		break;
+> > +	case PFRU_IOC_ACTIVATE:
+> > +		ret = start_acpi_update(START_ACTIVATE);
+> > +		break;
+> > +	case PFRU_IOC_STAGE_ACTIVATE:
+> > +		ret = start_acpi_update(START_STAGE_ACTIVATE);
+> > +		break;
+> > +	default:
+> > +		ret = -ENOIOCTLCMD;
+> 
+> Wrong value :(
+Previously I thought that ENOIOCTLCMD stands for 'invalid ioctl command'.
+After checking the lkml discussion, it seems that ENOIOCTLCMD should not
+be returned to user space. ENOTTY might be more suitible if I understand
+correctly.
+http://lkml.iu.edu/hypermail/linux/kernel/0105.1/0734.html
+> > +		break;
+> > +	}
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +#ifdef CONFIG_COMPAT
+> > +static long compat_pfru_ioctl(struct file *filep, unsigned int cmd,
+> > +			      unsigned long arg)
+> > +{
+> > +	return pfru_ioctl(filep, cmd, arg);
+> > +}
+> > +#endif
+> 
+> Why is this compat ioctl needed at all?
+> 
+We can not control if the user space tool would be compiled as 32bit.
+But I realize that a compat_ptr() was missing. Will fix it in next version.
+> > +static struct miscdevice pfru_misc_dev = {
+> > +	.minor = MISC_DYNAMIC_MINOR,
+> > +	.name = "pfru_update",
+> > +	.nodename = "pfru/update",
+> 
+> Why is this in a subdirectory?  What requires this?  Why not just
+> "pfru"?
+> 
+The pfru directory might be reused for pfru_telemetry device, whose driver
+is in 4/5 patch, I'll Cc you with the whole patch set in next version.
 
-That goes back to Rafael's reply (and I agree):
-
-"Also if the probe has already started, it may still return
--EPROBE_DEFER at any time in theory, so as a rule the dependency is
-actually known to be satisfied when the probe has successfully
-completed."
-
-So waiting for the probe to finish is the right behavior/intentional
-for fw_devlink.
-
-> Because this does not sounds too simple, maybe you can find something
-> simpler which is a real fix for now, good enough that it will get
-> merged, and then you can implement this phandle following for the long
-> term fix?
-
-The simpler fix is really just this patch. I'm hoping Greg/Rafael see
-my point about doing the exception this way prevents things from
-getting worse will we address existing cases that need the flag.
-
-The long/proper fix is to the DSA framework. I have some ideas that I
-think will work but I've had time to get to (but on the top of my
-upstream work list). We can judge that after I send out the patches :)
-
--Saravana
+Thanks,
+Chenyu
