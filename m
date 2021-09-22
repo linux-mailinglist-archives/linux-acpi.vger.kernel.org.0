@@ -2,87 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A6E9414C8C
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 16:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53456414CD3
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 17:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236336AbhIVO7Q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Sep 2021 10:59:16 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:54636 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235014AbhIVO7P (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 22 Sep 2021 10:59:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=cb2MqIRsBK1xs3g/KAOlStoR5T3t07WzhJ2422FcwFE=; b=M0ynUSbAv5YRUL4YdJaik4+wXc
-        WW+4pO0cAf4+lh5MXc17C+FpLOn7WYZtyG0XUk9PWwc606914+PdIh9Qnh6obHjSx3YSx8ZzxyaFG
-        2BXW6vtzT2GUQuPiFiQ5C1IWxv5FPn7Uyow/DQpQSj4h+PjPFw6+1d6DlMWFyQtwt9qw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1mT3gs-007nQl-KY; Wed, 22 Sep 2021 16:57:42 +0200
-Date:   Wed, 22 Sep 2021 16:57:42 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        David Thompson <davthompson@nvidia.com>
-Subject: Re: [PATCH v2 1/2] gpio: mlxbf2: Introduce IRQ support
-Message-ID: <YUtEZvkI7ZPzfffo@lunn.ch>
-References: <20210920212227.19358-1-asmaa@nvidia.com>
- <20210920212227.19358-2-asmaa@nvidia.com>
- <YUpdjh8dtjz29TWU@lunn.ch>
- <CH2PR12MB38951F1A008AE68A6FE7ED96D7A29@CH2PR12MB3895.namprd12.prod.outlook.com>
+        id S233737AbhIVPSG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Sep 2021 11:18:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236411AbhIVPSF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Sep 2021 11:18:05 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D15CFC061574
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Sep 2021 08:16:35 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id pf3-20020a17090b1d8300b0019e081aa87bso2602336pjb.0
+        for <linux-acpi@vger.kernel.org>; Wed, 22 Sep 2021 08:16:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=OQ4AvFZ5nbvWRUPm3CzTig0f5+wDU4nY1Htv96wdBbo=;
+        b=odnhZzor+GS5bUtg8Zjm4o5iUyaKmTMeJwKaP0IVtsHDs3kNWi/LM+GgOxzejfwGVt
+         bNAtf4y/w8DeadUvy3VZPDhlfv81YoPXv+iCpjeYKwvexYX+Ku/XBWEVUMnOwU9GlFbK
+         /P7AHWNqas4LVCP2/dp0XcHKXcH0W/I/hpvVQ3QjjdjU/SAS3Aaei0KUjkrYOyoYscu5
+         FD5XtdL222zZN+V4zAD0FaylAuFeM0yZPEvRyqBtX1PrU8ZlJ5TU6jkUPEFhj7K8/DUt
+         VAR3D4hKiNariP59VYnU2/Pajxy7K50vplSOT6HcR8XQdqxbJ7OPWk0b3v5tbz0qQOmZ
+         PVmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=OQ4AvFZ5nbvWRUPm3CzTig0f5+wDU4nY1Htv96wdBbo=;
+        b=JtFG4GFnL6RHWLLz6V2AF28Sf8B5FWF7//iE3gQE/pbTGPXA7en5li3mG3JXqGb0/h
+         Rn1czcZJy0xLxGM3gUje0Rdj5n+LSGmgwQz0aTvaO/NMhHwNcPDXEf3m+FrNxyLMicTV
+         fxAMjaBvtAI/dhjNiv5XRo2GUxtgW39doRTWguFsD0dsy7+ZkKa851eZk9T5V+NhcsN6
+         lLeHSE5QLEQ7hLqLABPLkd6qv3/D1k4G0Y0ve3+ak+yCIXWx1LyHQY5T+alFoj6wX65i
+         +JGanYq6/AhddAD6adhOjEX38gclEKRFs7kejx18Kfw0gKrJwF59A/7BaLWcaPpDSP1J
+         RH5Q==
+X-Gm-Message-State: AOAM530OzChCJccPn/+6pQMsgQjWgYBUEXqJQQJhicaNFgS1xXe8gQz/
+        vueEXl+BUAWg7T1svZ/44UYU1KPazy6du1satew=
+X-Google-Smtp-Source: ABdhPJz4H9kT//e8DSUGBPrP83lMn5GX+qxeeD6gXW6rkEZn5VG/cQ09RBp1TBQBd/YcnMLt9LAskEKV/pRsslJ2vjM=
+X-Received: by 2002:a17:90a:b392:: with SMTP id e18mr11979749pjr.205.1632323795299;
+ Wed, 22 Sep 2021 08:16:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CH2PR12MB38951F1A008AE68A6FE7ED96D7A29@CH2PR12MB3895.namprd12.prod.outlook.com>
+Received: by 2002:a05:6a11:4591:0:0:0:0 with HTTP; Wed, 22 Sep 2021 08:16:34
+ -0700 (PDT)
+Reply-To: sroomf70@gmail.com
+From:   "Mr. David Aminu" <davidaminu1@gmail.com>
+Date:   Wed, 22 Sep 2021 08:16:34 -0700
+Message-ID: <CALe=1L345PAkioKg92daTk_4HoQd-3iqQMKH6qpNy1dMW8shHw@mail.gmail.com>
+Subject: Good Day,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 22, 2021 at 02:16:40PM +0000, Asmaa Mnebhi wrote:
-> 
-> > +static int
-> > +mlxbf2_gpio_irq_set_type(struct irq_data *irqd, unsigned int type) {
-> > +
-> > +	switch (type & IRQ_TYPE_SENSE_MASK) {
-> > +	case IRQ_TYPE_EDGE_BOTH:
-> > +		fall = true;
-> > +		rise = true;
-> > +		break;
-> > +	case IRQ_TYPE_EDGE_RISING:
-> > +		rise = true;
-> > +		break;
-> > +	case IRQ_TYPE_EDGE_FALLING:
-> > +		fall = true;
-> > +		break;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> 
-> > What PHY are you using? I think every one i've looked at are 
-> > level triggered, not edge. Using an edge interrupt might work 99% 
-> > of the time, but when the timing is just wrong, you can loose an interrupt.
-> > Which might mean phylib thinks the link is down, when it fact it is up. 
-> > You will need to unplug and replug to recover from that.
-> 
-> It is the micrel PHY KSZ9031 so it is an active low level interrupt.
-> Here, IRQ_TYPE_EDGE* macros are mainly used to decide whether to write the
-> YU_GPIO_CAUSE_FALL_EN register vs the YU_GPIO_CAUSE_RISE_EN register.
-> These 2 registers are used in both LEVEL/EDGE interrupts.
+-- 
+Greetings,
+From Mr. David Aminu, please a huge amount of payment was made into
+your account. as soon as your respond is noted the payment
+confirmation slip will immediately send to you.  please do not
+hesitate to reply as soon as you receive this message. awaiting your
+urgent reply please.
 
-I assume you also have an YU_GPIO_CAUSE_LOW_EN and
-YU_GPIO_CAUSE_HIGH_EN registers? These registers need to be set for
-IRQ_TYPE_LEVEL_LOW and IRQ_TYPE_LEVEL_HIGH.
+Thanks
+Mr. David Aminu,
 
-	Andrew
+Best regards
+Prof. Dr Diane
