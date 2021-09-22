@@ -2,223 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33E80414A22
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 15:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E5EF414A92
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Sep 2021 15:31:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230064AbhIVNIi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Sep 2021 09:08:38 -0400
-Received: from foss.arm.com ([217.140.110.172]:48870 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229948AbhIVNIh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 22 Sep 2021 09:08:37 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 627D711B3;
-        Wed, 22 Sep 2021 06:07:07 -0700 (PDT)
-Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 55E303F40C;
-        Wed, 22 Sep 2021 06:07:05 -0700 (PDT)
-Date:   Wed, 22 Sep 2021 14:07:00 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Jia He <justin.he@arm.com>, Will Deacon <will@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Harb Abdulhamid <harb@amperecomputing.com>
-Subject: Re: [PATCH v2] Revert "ACPI: Add memory semantics to
- acpi_os_map_memory()"
-Message-ID: <20210922130700.GA20981@lpieralisi>
-References: <20210910122820.26886-1-justin.he@arm.com>
- <20210910143223.6705-1-justin.he@arm.com>
- <CAMj1kXG6Gu=g8P902NB2b+OvzqwJQPqQewYX5UwMiXALYAFkDw@mail.gmail.com>
- <20210916160827.GA4525@lpieralisi>
- <20210920170055.GA13861@lpieralisi>
- <CAJZ5v0iee2j=NoPFpNstEZYJXWvFYfv22hK7QeH6+kdP6+MhLw@mail.gmail.com>
- <20210921100512.GA28390@lpieralisi>
- <CAMj1kXFz=bsm+Jx-iWB17tYNfi+twSh-uSZfnoDnUf2CMXYodw@mail.gmail.com>
+        id S231864AbhIVNdE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Sep 2021 09:33:04 -0400
+Received: from mail-co1nam11on2057.outbound.protection.outlook.com ([40.107.220.57]:55150
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231758AbhIVNdE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 Sep 2021 09:33:04 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XOSiyMFmnj/fquKpNLhYJNhMtxDiPJ5XI7ViljqJkpiJQRaTEJtHUl8L+MaJ7HUQLZoplGOHKlYqor07jz3tHKLQndZxjVzR0Nr94U3ZKj9GlLdKi4nX+uoYGc9/3c3KvkR4GCwE7eht0ied3V5CvinbuqYJga0VZAXq4VpXypxwyZ6BdRWi155G/xqYzo4wYwomquiq85qya0dBZ9whl5Ecj5Xn1avtpTHIxAPh8iaViOmfXp4YacH0OhLC/WwUBEnnsVwzQqXkP45CxCnaNCjwj3FeW8wSY4kVoLMrpXl/78rNBr3mbbzNv+t1kJL0KkevwBN81MtvdE5hKdWdyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=W17vBEOOy4aNcUdNEx+VEnzEDkVB7r32szqCEfv+Acc=;
+ b=GbLQ5JqwkO0NirXTbOMBpVuBrBlPWniT66GIy0ZY+H0qlvdRJNucPnlVWTtDEObxLtr+oYrPQusZeoiVDKTjjVbh9Sc9KsfmfasjN8oUPTCUHeqaZZCwMIpGCex/XlYr+tTNRNDZRkm5DRt2nM/Txve2XNgeRZs0dHTsYv4twBduchdK3acBzB9zf7awZ++easgxPWf++/rgOQ3lmO6PZCRv1Hl3qJolp6H3pXE0IkbYNf2DHCiSwjhUiSz2MrqqDTrmJRLXw91ZapgrnYDSYvR3trm8mcqh6/Hu+JTL40lJP4eaIUdxWsXGAitL6/eTFjmop9LKzLfk5mMdV12Ktg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W17vBEOOy4aNcUdNEx+VEnzEDkVB7r32szqCEfv+Acc=;
+ b=K+44rdE4IadMtexlksVkH6Ym6oKjIFyyEPIkUR2C4L7bT+F6h2j/ZSZXXkPAqgVry8DfV2JOqZ1U9mGMQw/N57KaZ0ZyzyhDT14HdK9Y3cWs3+0VIRE3rD8lwgBzuHKMRm2ZIxrxojCMVCqzCG/nwIlHkB4mdcTrvU9pO3NSEf8=
+Received: from CO2PR05CA0004.namprd05.prod.outlook.com (2603:10b6:102:2::14)
+ by BN7PR12MB2644.namprd12.prod.outlook.com (2603:10b6:408:2d::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.16; Wed, 22 Sep
+ 2021 13:31:32 +0000
+Received: from CO1NAM11FT056.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:102:2:cafe::d8) by CO2PR05CA0004.outlook.office365.com
+ (2603:10b6:102:2::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.7 via Frontend
+ Transport; Wed, 22 Sep 2021 13:31:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT056.mail.protection.outlook.com (10.13.175.107) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4544.13 via Frontend Transport; Wed, 22 Sep 2021 13:31:32 +0000
+Received: from localhost.localdomain (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Wed, 22 Sep
+ 2021 08:31:30 -0500
+From:   Richard Gong <richard.gong@amd.com>
+To:     <rafael@kernel.org>, <lenb@kernel.org>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <lijo.lazar@amd.com>, Richard Gong <richard.gong@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCHv1] ACPI: processor idle: Allow playing dead in C3 state
+Date:   Wed, 22 Sep 2021 08:31:16 -0500
+Message-ID: <20210922133116.102-1-richard.gong@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFz=bsm+Jx-iWB17tYNfi+twSh-uSZfnoDnUf2CMXYodw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 05186a4b-da85-4922-26d7-08d97dcd4a9b
+X-MS-TrafficTypeDiagnostic: BN7PR12MB2644:
+X-Microsoft-Antispam-PRVS: <BN7PR12MB2644B1B6272CD9D9DAE65F5295A29@BN7PR12MB2644.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4Kox1YYGvppGRXl7Q4az7s7ZQ3wf49pcOFMEF+aR1ZTJzEouymQ/gyAi8nQ6hh5rT0dppKyi8A7IHaiX/gymWXe4suunkpO2vYpBV4jnxQPkwFFxHRkNp3Ze//mSegD/X8zS1kYPI30FWaHA4lVMWW8v3Jpay+wgeecsgnHqzlIDH+iPjyW3YsGAOTr+jsbz6izo6XnBf+uOTZhhadCB6pMuZX3wtlo1l2Q/C9DZTlq8WO5QlOHPOrv0+cK18qXLAS8ns9PS+H9wj8bmcKPuZXSBOoNYIMrGl7+xyd+tBu0LEKVEcTb34Y8fft47ZVg1RNpHCSSZNJAEl05FDBuI9Zb5ud/W8REBXdWFv54MSvyW08hXmz+M9YNo6MhmHr/sKapmIgJJ6DTqA0VwYf2ZIAmbfYdQVZ2V5XRXXkYIgBsq5ya3i5A6m9G8kWTIirK/x3bxFwF03aV0MhjfSWqY3xoGmpAWR/vOBLmMdmyrGW0AdT8q2BhIRj2sz/fgC0yPbCh0ioZegmF7UchS2TxOqiOoro/qDTTZV6CXoGpZS3TACWw0Wh3D/txtO1YgKDl0AISbUAUgTPSth8LXkRkKZRuNl+7AtyfSuVX0SZz5bv/rH/t/MpUaF2uW0eCEETcxtMLxfyds6NYPxm/tmYEKTYf/LYdwM9VzG+MlEWnl6NMSFhXT9YYi+fwBdttQevQ69X6i0Q02VyuSivOViwf4DnJvgR7O+9TVsHPmBPMpEXM=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(8936002)(70206006)(8676002)(16526019)(5660300002)(356005)(70586007)(2616005)(426003)(54906003)(36756003)(47076005)(86362001)(110136005)(316002)(336012)(83380400001)(186003)(4326008)(36860700001)(508600001)(81166007)(966005)(44832011)(82310400003)(1076003)(2906002)(6666004)(26005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2021 13:31:32.1646
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 05186a4b-da85-4922-26d7-08d97dcd4a9b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT056.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR12MB2644
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 22, 2021 at 01:11:26PM +0200, Ard Biesheuvel wrote:
-> On Tue, 21 Sept 2021 at 12:05, Lorenzo Pieralisi
-> <lorenzo.pieralisi@arm.com> wrote:
-> >
-> > On Mon, Sep 20, 2021 at 07:32:56PM +0200, Rafael J. Wysocki wrote:
-> > > On Mon, Sep 20, 2021 at 7:03 PM Lorenzo Pieralisi
-> > > <lorenzo.pieralisi@arm.com> wrote:
-> > > >
-> > > > On Thu, Sep 16, 2021 at 05:08:27PM +0100, Lorenzo Pieralisi wrote:
-> > > > > On Fri, Sep 10, 2021 at 07:28:49PM +0200, Ard Biesheuvel wrote:
-> > > > > > On Fri, 10 Sept 2021 at 16:32, Jia He <justin.he@arm.com> wrote:
-> > > > > > >
-> > > > > > > This reverts commit 437b38c51162f8b87beb28a833c4d5dc85fa864e.
-> > > > > > >
-> > > > > > > After this commit, a boot panic is alway hit on an Ampere EMAG server
-> > > > > > > with call trace as follows:
-> > > > > > >  Internal error: synchronous external abort: 96000410 [#1] SMP
-> > > > > > >  Modules linked in:
-> > > > > > >  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0+ #462
-> > > > > > >  Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
-> > > > > > >  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > > > > > > [...snip...]
-> > > > > > >  Call trace:
-> > > > > > >   acpi_ex_system_memory_space_handler+0x26c/0x2c8
-> > > > > > >   acpi_ev_address_space_dispatch+0x228/0x2c4
-> > > > > > >   acpi_ex_access_region+0x114/0x268
-> > > > > > >   acpi_ex_field_datum_io+0x128/0x1b8
-> > > > > > >   acpi_ex_extract_from_field+0x14c/0x2ac
-> > > > > > >   acpi_ex_read_data_from_field+0x190/0x1b8
-> > > > > > >   acpi_ex_resolve_node_to_value+0x1ec/0x288
-> > > > > > >   acpi_ex_resolve_to_value+0x250/0x274
-> > > > > > >   acpi_ds_evaluate_name_path+0xac/0x124
-> > > > > > >   acpi_ds_exec_end_op+0x90/0x410
-> > > > > > >   acpi_ps_parse_loop+0x4ac/0x5d8
-> > > > > > >   acpi_ps_parse_aml+0xe0/0x2c8
-> > > > > > >   acpi_ps_execute_method+0x19c/0x1ac
-> > > > > > >   acpi_ns_evaluate+0x1f8/0x26c
-> > > > > > >   acpi_ns_init_one_device+0x104/0x140
-> > > > > > >   acpi_ns_walk_namespace+0x158/0x1d0
-> > > > > > >   acpi_ns_initialize_devices+0x194/0x218
-> > > > > > >   acpi_initialize_objects+0x48/0x50
-> > > > > > >   acpi_init+0xe0/0x498
-> > > > > > >
-> > > > > > > As mentioned by Lorenzo:
-> > > > > > >   "We are forcing memory semantics mappings to PROT_NORMAL_NC, which
-> > > > > > >   eMAG does not like at all and I'd need to understand why. It looks
-> > > > > > >   like the issue happen in SystemMemory Opregion handler."
-> > > > > > >
-> > > > > > > Hence just revert it before everything is clear.
-> > > > > > >
-> > > > > >
-> > > > > > Can we try to find the root cause first? -rc1 is not even out yet, and
-> > > > > > reverting it now means we can not resubmit it until the next merge
-> > > > > > window.
-> > > > >
-> > > > > I am waiting to debug this on an eMAG but I noticed something that
-> > > > > I wanted to bring up.
-> > > > >
-> > > > > SystemMemory Operation region handler - ie
-> > > > >
-> > > > > acpi_ex_system_memory_space_handler()
-> > > > >
-> > > > > maps the Operation Region (that AFAICS is MMIO, it is _not_ memory)
-> > > > > with acpi_os_map_memory() and I believe that's what is causing this
-> > > > > bug.
-> > > > >
-> > > > > On the other hand, acpi_os_map_generic_address(), to handle spaceid
-> > > > > ACPI_ADR_SPACE_SYSTEM_MEMORY, uses acpi_os_map_iomem() that is more
-> > > > > in line with my expectations.
-> > > >
-> > > > Hi Rafael,
-> > > >
-> > > > I wanted to ask please if you have any insights on why
-> > > >
-> > > > (1) acpi_ex_system_memory_space_handler()
-> > > > (2) acpi_os_map_generic_address()
-> > > >
-> > > > Use two different calls to map memory for the _same_ address space ID
-> > > > (SystemMemory).
-> > > >
-> > > > (3) acpi_os_map_memory()
-> > > > vs
-> > > > (4) acpi_os_map_iomem()
-> > >
-> > > I don't really have a good answer here.
-> > >
-> > > On x86 this doesn't really matter and that's where
-> > > acpi_ex_system_memory_space_handler() was first introduced.  It is not
-> > > only used for IOMEM (there are SystemMemory operation regions in RAM),
-> > > but since it may be in IOMEM, it should assume so.
-> > >
-> > > > I am struggling to understand why (1) uses (3) ("memory semantics") when
-> > > > (2) uses (4) - it is actually unclear how the distinction between
-> > > > the two mapping APIs is to be drawn and on what basis one should
-> > > > choose which one to use.
-> > > >
-> > > > I am still waiting to grab some HW to debug this report but the issue
-> > > > here is that we are mapping an OpRegion SystemMemory with (3) in the
-> > > > memory space handler and given the patch we are reverting we end up
-> > > > mapping the operation region with normal non-cacheable memory attributes
-> > > > that probably the physical address range behind the OpRegion does not
-> > > > support.
-> > >
-> > > If that is the case, there needs to be a mechanism to decide what kind
-> > > of mapping to use for SystemMemory operation regions based on the type
-> > > of physical memory the address range in question is located in.
-> >
-> > Thank you Rafael. The mechanism we are currently relying on is the EFI
-> > memory map but if the Opregion address is not described there then we
-> > are left with a default choice to make (theoretically I may also parse
-> > all _CRS in the namespace to find whether a resource include the
-> > Opregion and I may infer attributes from the _CRS resource entry).
-> >
-> 
-> I'm not sure that would help, as I would expected the memory described
-> by _CRS to be mostly mutually exclusive from memory used by OpRegions.
-> 
-> > Maybe we should update the ACPI specs to enforce it; with current
-> > firmware the idea of using the OS expected *usage* of memory (ie
-> > memory vs IO) described by the mapping function prototype can't work
-> > as this revert shows (even though it would be better if I manage
-> > to find what the precise issue is).
-> >
-> > We can't map something with specific attributes if we don't know
-> > whether the physical address space backing the region supports it.
-> >
-> 
-> We don't have a a safe default in either direction, so I agree this is
-> a hole in the specs.
-> 
-> > I am left with little choice: I assume the best thing I could do
-> > to fix the original bug is to use ioremap_* in acpi_data_show()
-> > instead of acpi_os_map/unmap_memory() to map that memory with
-> > specific attributes (for BERT error regions, they must be RAM
-> > so, _hopefully_, we know it can be mapped with eg normal memory
-> > mappings).
-> >
-> > Thoughts ?
-> >
-> 
-> One thing I just realized is that the EFI memory map is not a complete
-> solution to begin with, as it may not cover hot/coldplugged memory
-> regions that are only described via ACPI.
-> 
-> Did you make any progress with the eMAG?
+When some cores are disabled on AMD platforms, the system will no longer
+be able to enter suspend-to-idle s0ix.
 
-I manage to get the ACPI tables dump. The fault is triggered on
-a SystemMemory OPregion access (FYI - should be a reset register),
-probably (but on this only Ampere can help us) because the MMIO
-range in question does not support the AXI attributes assigned
-by the NormalNC mapping.
+Update to allow playing dead in C3 state so that the CPUs can enter the
+deepest state on AMD platforms.
 
-I believe mapping SystemMemory Opregions as NormalNC does not make
-much sense anyway.
+BugLink: https://gitlab.freedesktop.org/drm/amd/-/issues/1708
+Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Richard Gong <richard.gong@amd.com>
+---
+ drivers/acpi/processor_idle.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The UEFI specs seem to hint that the ACPI Op-region cacheability
-attributes must be determined through the UEFI memory map, not
-sure whether that means that the OpRegion itself _must_ be in
-the EFI memory map.
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index f37fba9e5ba0..61d5a72d218e 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -789,7 +789,8 @@ static int acpi_processor_setup_cstates(struct acpi_processor *pr)
+ 		state->enter = acpi_idle_enter;
+ 
+ 		state->flags = 0;
+-		if (cx->type == ACPI_STATE_C1 || cx->type == ACPI_STATE_C2) {
++		if (cx->type == ACPI_STATE_C1 || cx->type == ACPI_STATE_C2
++			|| cx->type == ACPI_STATE_C3) {
+ 			state->enter_dead = acpi_idle_play_dead;
+ 			drv->safe_state_index = count;
+ 		}
+-- 
+2.25.1
 
-I believe we need to go on with the revert and find a way to fix the
-BERT error region mappings, to make them NormalNC so that we can do
-unaligned accesses on them.
-
-What to do specs side - to be debated, we have to do something because
-it is impossible to handle it sensibly otherwise.
-
-Lorenzo
