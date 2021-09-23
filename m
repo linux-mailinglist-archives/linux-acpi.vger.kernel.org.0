@@ -2,84 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98DBB416613
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 21:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FB8A41663B
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 21:56:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242903AbhIWTqY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Sep 2021 15:46:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36800 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242796AbhIWTqY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Sep 2021 15:46:24 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07B37C061574;
-        Thu, 23 Sep 2021 12:44:52 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id eg28so27266845edb.1;
-        Thu, 23 Sep 2021 12:44:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=USB+c9NQPlFOCzOlELYb3av2B5sqofQxC78jD/L/Faw=;
-        b=Ivaw8/yqDkDtpnoa7KVXQ6wxjxdqq44QfO1qZ78DTS4rrjKcWcUFsPBm+ofL7L7x6R
-         2IACsu+wVJpiBby+hhKqcpWZLnWHlKEvodtRGQDwLTKo/+iTUpRyV4orTrIkN+h1qs2x
-         XUFHBmZvvYaLJUBBrNmrvpYHkQyUXQGvotwbfkSaL5r4SlgvnJbdPsJQEaDS3bwp4s5q
-         Z5hH+MZLx37l8cSs84HcbrBmhLPCPTxtFYukZpARcdxF3OeiqN7xVc3IwN52TsdwDd5D
-         1OOAqogeF0kZdBMcUcCFFAsC3sNLEFDQk9Po65bBJvriI7kqVh2dbE8SSZDliJeAGV4X
-         tdtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=USB+c9NQPlFOCzOlELYb3av2B5sqofQxC78jD/L/Faw=;
-        b=0aWe1kamQ1hIKWsd80gtCEsvOacMbj12KIzwWzKGIqVKNZDSMPz3yPSlKE9oyxb4Jm
-         ORvgII5ULJzXH9B7arHTm7LqEv3drXIKtm2pOzAMgrZzORlGmh/1njYVpxd/hhFLu3Xb
-         3q1JlMMzyvXHjRt4bHE09qFqYYHsAK52iz52jdCVd1vE/hNBD8V5NGHVR7KQg6NLPycs
-         jf64gaoDb6vI7pUucpx/0dEdBlWHyq7CDIntc6zGnJ/Axy3yvQg053TKX6SuCwCz6WHK
-         h74bj+4NFfMbFcs6GYmSQAUEelzAvJjmUgq1mvf73u1y0jHzkgSyukKqzAl4SfJP2VNR
-         I2Vg==
-X-Gm-Message-State: AOAM533zoBC2X6llCS+z8ecwMZVocozN04fNHpYSiBZ01sriHR1hrFXy
-        jpcgFz7oB0lIrCEPrXduqwI=
-X-Google-Smtp-Source: ABdhPJx47JRxPImn3bCOzzIp9JgZuhIzAfodEXn1mXk91Uklp1+eljNjL+So5E5m3okurvJieN/S6g==
-X-Received: by 2002:a50:cfc3:: with SMTP id i3mr656314edk.36.1632426290611;
-        Thu, 23 Sep 2021 12:44:50 -0700 (PDT)
-Received: from skbuf ([188.26.53.217])
-        by smtp.gmail.com with ESMTPSA id b38sm4101128edf.46.2021.09.23.12.44.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Sep 2021 12:44:50 -0700 (PDT)
-Date:   Thu, 23 Sep 2021 22:44:48 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        kernel-team@android.com, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] fw_devlink bug fixes
-Message-ID: <20210923194448.tnzkdvigknjrgoqn@skbuf>
-References: <20210915170940.617415-1-saravanak@google.com>
- <YUy5nDMeWMg0sfGI@kroah.com>
+        id S242993AbhIWT6N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Sep 2021 15:58:13 -0400
+Received: from mx0b-0016f401.pphosted.com ([67.231.156.173]:38042 "EHLO
+        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S242955AbhIWT6N (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 23 Sep 2021 15:58:13 -0400
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+        by mx0b-0016f401.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18NGN5ji011025;
+        Thu, 23 Sep 2021 12:56:20 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=pfpt0220;
+ bh=UFp7vHEWChMei+bX+QGXOPu3cQ4g6dhqP22TCpFrvSE=;
+ b=jpr0ul68PFkVVUhoAVkwVYlNuKkmZw0iJ8HXHRNwf1MS3xcItFTnzMPXwmvFUY68JYCg
+ LkBWkmyH9ZzocGoe6IONvNjcHUQhRfRbFvXVX+sU8mawNK2TBTRKl77dG9MA1R3+/+7I
+ S6haIPWmo6wlUTM0Ffk2ZnlDxQvlHRxKZ8LHoeS5zNjt5yKVYtovy83Ik5aU6UcMfODu
+ 8yliuYPZjv/zmX1jTGNE+ezy8vsLiLz6MYpb9gGLv+rlLBo28/gyf1sk4KayUGZYJ2Er
+ hdgf1azhviGstug/8pEcDnAEEfgmi9WF3g2lmxj97fgE81EeBnZR/rwuE7zhFEUOoj3h 7Q== 
+Received: from dc5-exch01.marvell.com ([199.233.59.181])
+        by mx0b-0016f401.pphosted.com with ESMTP id 3b8ba6cub4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Thu, 23 Sep 2021 12:56:20 -0700
+Received: from DC5-EXCH02.marvell.com (10.69.176.39) by DC5-EXCH01.marvell.com
+ (10.69.176.38) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Thu, 23 Sep
+ 2021 12:56:18 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.18 via Frontend
+ Transport; Thu, 23 Sep 2021 12:56:18 -0700
+Received: from localhost.localdomain (unknown [10.110.150.250])
+        by maili.marvell.com (Postfix) with ESMTP id BD48F3F707C;
+        Thu, 23 Sep 2021 12:56:17 -0700 (PDT)
+From:   Vasyl Gomonovych <vgomonovych@marvell.com>
+To:     <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>
+CC:     Vasyl Gomonovych <vgomonovych@marvell.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Yazen Ghannam <yazen.ghannam@amd.com>,
+        "Robert Richter" <rrichter@amd.com>,
+        Tom Saeger <tom.saeger@oracle.com>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] ACPI: APEI: Check NULL argument in exported symbol
+Date:   Thu, 23 Sep 2021 12:56:10 -0700
+Message-ID: <20210923195612.25949-1-vgomonovych@marvell.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YUy5nDMeWMg0sfGI@kroah.com>
+Content-Type: text/plain
+X-Proofpoint-GUID: aZDrHPWlEBaye8PBSFJWu5xH-RlXCIWt
+X-Proofpoint-ORIG-GUID: aZDrHPWlEBaye8PBSFJWu5xH-RlXCIWt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-23_06,2021-09-23_01,2020-04-07_01
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 23, 2021 at 07:30:04PM +0200, Greg Kroah-Hartman wrote:
-> It fixes the real problem where drivers were making the wrong assumption
-> that if they registered a device, it would be instantly bound to a
-> driver.  Drivers that did this were getting lucky, as this was never a
-> guarantee of the driver core (think about if you enabled async
-> probing, and the mess with the bus specific locks that should be
-> preventing much of this)
+Exported symbol apei_hest_parse is external API
+and should check pointer argument
 
-Since commit d173a137c5bd ("driver-core: enable drivers to opt-out of
-async probe") it is possible to opt out of async probing, and PHY
-drivers do opt out of it, at the time of writing.
+Signed-off-by: Vasyl Gomonovych <vgomonovych@marvell.com>
+---
+ drivers/acpi/apei/hest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
+index 277f00b288d1..9f5c334c7c88 100644
+--- a/drivers/acpi/apei/hest.c
++++ b/drivers/acpi/apei/hest.c
+@@ -91,7 +91,7 @@ int apei_hest_parse(apei_hest_func_t func, void *data)
+ 	struct acpi_hest_header *hest_hdr;
+ 	int i, rc, len;
+ 
+-	if (hest_disable || !hest_tab)
++	if (hest_disable || !hest_tab || !func)
+ 		return -EINVAL;
+ 
+ 	hest_hdr = (struct acpi_hest_header *)(hest_tab + 1);
+-- 
+2.17.1
+
