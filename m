@@ -2,157 +2,186 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AF92415EC7
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 14:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0DE1415EE3
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 14:55:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240995AbhIWMuu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Sep 2021 08:50:50 -0400
-Received: from mail-ot1-f52.google.com ([209.85.210.52]:37566 "EHLO
-        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240787AbhIWMub (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Sep 2021 08:50:31 -0400
-Received: by mail-ot1-f52.google.com with SMTP id r43-20020a05683044ab00b0054716b40005so1434657otv.4;
-        Thu, 23 Sep 2021 05:49:00 -0700 (PDT)
+        id S241000AbhIWM4h (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Sep 2021 08:56:37 -0400
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:33325 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240787AbhIWM4e (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Sep 2021 08:56:34 -0400
+Received: by mail-ot1-f45.google.com with SMTP id c42-20020a05683034aa00b0051f4b99c40cso8464420otu.0;
+        Thu, 23 Sep 2021 05:55:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HPho5pdPE80Ol42nlkZkWLtxK1B46FluJvPe15qBAgc=;
-        b=7rVbIfl1b/C++IYVIWXpNB3EA8xFGzByqqszAQZAdjoOq30ZWWwVGi9e/MxCoBamhF
-         btsben525ir2iPjbuYOHsA2EWnM2LLVPOJg0OLZrzUE6TiSN0Vp4b1HW08eKs7W/lqyq
-         efWjm9C5slyMqsYr0vsd/2+oIcLvrRGWqZ634k8MlfjcTGdKCsDXPdnW1tG1kZk3kSf+
-         RNHufJzgQK2EXGvl1JfmHFmHZje+hsJmD2mmw4jNWH/2FA0PiB8Rx4feT4SRLFdXtLxb
-         0gpGSGi09ICzLYDbjAJNoXdeXlwCE+jG557qCAFiG4k5OPSViPwSx1Ug7jdHOjNXqSPD
-         rE1A==
-X-Gm-Message-State: AOAM530Ch7mGj31FqJh5giljUlwAiJIqtndlgeGp/lGgetpM9DQwgU3Q
-        mc/YaL8aqp70vSBbI5i8hTDx9SjY4LFSIb3bRZ4=
-X-Google-Smtp-Source: ABdhPJzqIyB8PZUiSI/+lxuDijrE0Lm85sXH1TPxYCbh18wwxFZKnOcawv+pJ9UsVPnnVvNwjuumEoIDYRDPdAZKE10=
-X-Received: by 2002:a9d:4d93:: with SMTP id u19mr4185271otk.86.1632401339990;
- Thu, 23 Sep 2021 05:48:59 -0700 (PDT)
+        bh=9cnE91Z/Nvkblt8KBxlBOz53Y6ULkVoI6AYMgns74AQ=;
+        b=yqKS/r8R2nGhZknhJArHXXEPv40WzYB6FXPozTajea7bPtIA+bQ6z5wyphkCLuBZ5i
+         O0Z1mlF4NQI5zqn5G6lnKeI8OeTpQjg7O3r4aQsapkfh+xH8VL3eHmvjXquJo7GSAX9a
+         CMHZa6KJ9fqrgSYt/sD25KzSBY5w/EhdfjkpmjoRKIaoLOrww2KjaU5HqjrT7M/nrvWu
+         eMbK0j9VbRCfVE/IjEIfeAlNiC5es2yymzWf5j6/oOsmYh98mu2yddL+8Q6e+FHrmbEa
+         Q7m99wyuKx+TobKVIDu0QeurvzQEEEz5tcRKU86QEi7vYiJ2fmzCUULv7OG3Tjjpj35s
+         gFAw==
+X-Gm-Message-State: AOAM533uwXCyAOfxV0MraB3X/Vb5Hbz156yxErPdxU7nehAglEn5rNdP
+        fPtu5r6uoc/HswD49JhFSW/O9zN8zRXwwXvT4/k=
+X-Google-Smtp-Source: ABdhPJy+DM/7fT9mdBRiBQ1UqkGSyZLL8dWzJQl/kV0NQnaajz48gdaoaHkrbTe8M5Xt/wAgkOMXK6u6ADeQd59vYFI=
+X-Received: by 2002:a05:6830:165a:: with SMTP id h26mr4285920otr.301.1632401703209;
+ Thu, 23 Sep 2021 05:55:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210915170940.617415-1-saravanak@google.com> <20210915170940.617415-3-saravanak@google.com>
- <CAJZ5v0h11ts69FJh7LDzhsDs=BT2MrN8Le8dHi73k9dRKsG_4g@mail.gmail.com>
- <YUaPcgc03r/Dw0yk@lunn.ch> <YUoFFXtWFAhLvIoH@kroah.com> <CAJZ5v0jjvf6eeEKMtRJ-XP1QbOmjEWG=DmODbMhAFuemNn4rZg@mail.gmail.com>
- <YUocuMM4/VKzNMXq@lunn.ch> <CAJZ5v0iU3SGqrw909GLtuLwAxdyOy=pe2avxpDW+f4dP4ArhaQ@mail.gmail.com>
- <YUo3kD9jgx6eNadX@lunn.ch> <CAGETcx9hTFhY4+fHd71zYUsWW223GfUWBp8xxFCb2SNR6YUQ4Q@mail.gmail.com>
-In-Reply-To: <CAGETcx9hTFhY4+fHd71zYUsWW223GfUWBp8xxFCb2SNR6YUQ4Q@mail.gmail.com>
+References: <20210910122820.26886-1-justin.he@arm.com> <20210910143223.6705-1-justin.he@arm.com>
+ <20210922163336.GA24633@lpieralisi> <56147a0b8b9fba46@bloch.sibelius.xs4all.nl>
+ <20210923094031.GA6454@lpieralisi> <CAJZ5v0g+OVbhuUUDrLUCfX_mVqY_e8ubgLTU98=jfjTeb4t+Pw@mail.gmail.com>
+ <56147c6e73afe9f6@bloch.sibelius.xs4all.nl>
+In-Reply-To: <56147c6e73afe9f6@bloch.sibelius.xs4all.nl>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 23 Sep 2021 14:48:48 +0200
-Message-ID: <CAJZ5v0h4M1Rp2fVWWYN5qjTi4QjYjjjZ5Nc9=mNU-UtrN1RSXg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] driver core: fw_devlink: Add support for FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        "Cc: Android Kernel" <kernel-team@android.com>,
+Date:   Thu, 23 Sep 2021 14:54:52 +0200
+Message-ID: <CAJZ5v0j7=EGbtGw+FOMwyNWoyRoaeT1cvu6si7nPVVFh307J0g@mail.gmail.com>
+Subject: Re: [PATCH v2] Revert "ACPI: Add memory semantics to acpi_os_map_memory()"
+To:     Mark Kettenis <mark.kettenis@xs4all.nl>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Jia He <justin.he@arm.com>,
+        Harb Abdulhamid <harb@amperecomputing.com>,
+        Will Deacon <will@kernel.org>, Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 21, 2021 at 10:07 PM Saravana Kannan <saravanak@google.com> wrote:
+On Thu, Sep 23, 2021 at 2:26 PM Mark Kettenis <mark.kettenis@xs4all.nl> wrote:
 >
-> Sorry I've been busy with LPC and some other stuff and could respond earlier.
+> > From: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Date: Thu, 23 Sep 2021 13:05:05 +0200
+> >
+> > On Thu, Sep 23, 2021 at 11:40 AM Lorenzo Pieralisi
+> > <lorenzo.pieralisi@arm.com> wrote:
+> > >
+> > > On Thu, Sep 23, 2021 at 01:09:58AM +0200, Mark Kettenis wrote:
+> > > > > Date: Wed, 22 Sep 2021 17:33:36 +0100
+> > > > > From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> > > > >
+> > > > > On Fri, Sep 10, 2021 at 10:32:23PM +0800, Jia He wrote:
+> > > > > > This reverts commit 437b38c51162f8b87beb28a833c4d5dc85fa864e.
+> > > > > >
+> > > > > > After this commit, a boot panic is alway hit on an Ampere EMAG server
+> > > > > > with call trace as follows:
+> > > > > >  Internal error: synchronous external abort: 96000410 [#1] SMP
+> > > > > >  Modules linked in:
+> > > > > >  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0+ #462
+> > > > > >  Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
+> > > > > >  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> > > > > > [...snip...]
+> > > > > >  Call trace:
+> > > > > >   acpi_ex_system_memory_space_handler+0x26c/0x2c8
+> > > > > >   acpi_ev_address_space_dispatch+0x228/0x2c4
+> > > > > >   acpi_ex_access_region+0x114/0x268
+> > > > > >   acpi_ex_field_datum_io+0x128/0x1b8
+> > > > > >   acpi_ex_extract_from_field+0x14c/0x2ac
+> > > > > >   acpi_ex_read_data_from_field+0x190/0x1b8
+> > > > > >   acpi_ex_resolve_node_to_value+0x1ec/0x288
+> > > > > >   acpi_ex_resolve_to_value+0x250/0x274
+> > > > > >   acpi_ds_evaluate_name_path+0xac/0x124
+> > > > > >   acpi_ds_exec_end_op+0x90/0x410
+> > > > > >   acpi_ps_parse_loop+0x4ac/0x5d8
+> > > > > >   acpi_ps_parse_aml+0xe0/0x2c8
+> > > > > >   acpi_ps_execute_method+0x19c/0x1ac
+> > > > > >   acpi_ns_evaluate+0x1f8/0x26c
+> > > > > >   acpi_ns_init_one_device+0x104/0x140
+> > > > > >   acpi_ns_walk_namespace+0x158/0x1d0
+> > > > > >   acpi_ns_initialize_devices+0x194/0x218
+> > > > > >   acpi_initialize_objects+0x48/0x50
+> > > > > >   acpi_init+0xe0/0x498
+> > > > > >
+> > > > > > As mentioned by Lorenzo:
+> > > > > >   "We are forcing memory semantics mappings to PROT_NORMAL_NC, which
+> > > > > >   eMAG does not like at all and I'd need to understand why. It looks
+> > > > > >   like the issue happen in SystemMemory Opregion handler."
+> > > > > >
+> > > > > > Hence just revert it before everything is clear.
+> > > > > >
+> > > > > > Fixes: 437b38c51162 ("ACPI: Add memory semantics to acpi_os_map_memory()")
+> > > > > > Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> > > > > > Cc: Ard Biesheuvel <ardb@kernel.org>
+> > > > > > Cc: Hanjun Guo <guohanjun@huawei.com>
+> > > > > > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > > > > > Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > > > > Cc: Harb Abdulhamid <harb@amperecomputing.com>
+> > > > > >
+> > > > > > Signed-off-by: Jia He <justin.he@arm.com>
+> > > > >
+> > > > > Rewrote the commit log, please take the patch below and repost
+> > > > > it as a v3.
+> > > > >
+> > > > > It would still be great if Ampere can help us understand why
+> > > > > the NormalNC attributes trigger a sync abort on the opregion
+> > > > > before merging it.
+> > > >
+> > > > To be honest, I don't think you really need an explanation from Ampere
+> > > > here.  Mapping a part of the address space that doesn't provide memory
+> > > > semantics with NormalNC attributes is wrong and triggering a sync
+> > > > abort in that case is way better than silently ignoring the access.
+> > >
+> > > That's understood and that's what I explained in the revert commit
+> > > log, no question about it.
+> > >
+> > > I was just asking to confirm if that's what's actually happening.
+> > >
+> > > > Putting my OpenBSD hat on (where we have our own ACPI OSPM
+> > > > implementation) I must say that we always interpreted SystemMemory as
+> > > > memory mapped IO and I think that is a logical choice as SystemIO is
+> > > > used for (non-memory mapped) IO.  And I'd say that the ACPI OSPM code
+> > > > should make sure that it uses properly aligned access to any Field
+> > > > object that doesn't use AnyAcc as its access type.  Even on x86!  And
+> > > > I'd say that AML that uses AnyAcc fields for SystemMemory OpRegions on
+> > > > arm64 is buggy.
+> > > >
+> > > > But maybe relaxing this when the EFI memory map indicates that the
+> > > > address space in question does provide memory semantics does make
+> > > > sense.  That should defenitely be documented in the ACPI standard
+> > > > though.
+> > >
+> > > Mapping SystemMemory Opregions as "memory" does not make sense
+> > > at all to me. Still, that's what Linux ACPICA code does (*if*
+> > > that's what acpi_os_map_memory() is supposed to mean).
+> > >
+> > > https://lore.kernel.org/linux-acpi/20210916160827.GA4525@lpieralisi
+> >
+> > It doesn't need to do that, though, if there are good enough arguments
+> > to change the current behavior (and the argument here is that it may
+> > be an MMIO region, so mapping it as memory doesn't really work, but it
+> > also may be a region in memory - there is no rule in the spec by which
+> > SystemMemory Opregions cannot be "memory" AFAICS) and if that change
+> > doesn't introduce regressions in the installed base.
+> >
+> > > Where do we go from here, to be defined, we still have a bug
+> > > to fix after the revert is applied.
+> > >
+> > > drivers/acpi/sysfs.c
+> > >
+> > > maps BERT error regions with acpi_os_map_memory().
+> >
+> > That mechanism is basically used for exporting ACPI tables to user
+> > space and they are known to reside in memory.  Whether or not BERT
+> > regions should be mapped in the same way is a good question.
 >
-> On Tue, Sep 21, 2021 at 12:50 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > > It works at a device level, so it doesn't know about resources.  The
-> > > only information it has is of the "this device may depend on that
-> > > other device" type and it uses that information to figure out a usable
-> > > probe ordering for drivers.
-> >
-> > And that simplification is the problem. A phandle does not point to a
-> > device, it points to a resource of a device. It should really be doing
-> > what the driver would do, follow the phandle to the resource and see
-> > if it exists yet. If it does not exist then yes it can defer the
-> > probe. If the resource does exist, allow the driver to probe.
-> >
-> > > Also if the probe has already started, it may still return
-> > > -EPROBE_DEFER at any time in theory
-> >
-> > Sure it can, and does. And any driver which is not broken will
-> > unregister its resources on the error path. And that causes users of
-> > the resources to release them. It all nicely unravels, and then tries
-> > again later. This all works, it is what these drivers do.
->
-> One of the points of fw_devlink=on is to avoid the pointless deferred
-> probes that'd happen in this situation. So saying "let this happen"
-> when fw_devlink=on kinda beats the point of it. See further below.
+> It is not inconceivable that BERT regions actually live in memory of
+> the BMC that is exposed over a bus that doesn't implement memory
+> semantics is it?
 
-Well, you need to define "pointless deferred probes" in the first
-place.  fw_devlink adds deferred probes by itself, so why are those
-not pointless whereas the others are?
+No, it isn't, which is why I think that mapping them as RAM may not be
+a good idea in general.
 
-> >
-> > > However, making children wait for their parents to complete probing is
-> > > generally artificial, especially in the cases when the children are
-> > > registered by the parent's driver.  So waiting should be an exception
-> > > in these cases, not a rule.
->
-> Rafael,
->
-> There are cases where the children try to probe too quickly (before
-> the parent has had time to set up all the resources it's setting up)
-> and the child defers the probe. Even Andrew had an example of that
-> with some ethernet driver where the deferred probe is attempted
-> multiple times wasting time and then it eventually succeeds.
-
-You seem to be arguing that it may be possible to replace multiple
-probe attempts that each are deferred with one probe deferral which
-then is beneficial from the performance perspective.
-
-Yes, there are cases like that, but when this is used as a general
-rule, it introduces a problem if it does a deferred probe when there
-is no need for a probe deferral at all (like in the specific problem
-case at hand).  Also if the probing of the child is deferred just
-once, adding an extra dependency on the parent to it doesn't really
-help.
-
-> Considering there's no guarantee that a device_add() will result in
-> the device being bound immediately, why shouldn't we make the child
-> device wait until the parent has completely probed and we know all the
-> resources from the parent are guaranteed to be available? Why can't we
-> treat drivers that assume a device will get bound as soon as it's
-> added as the exception (because we don't guarantee that anyway)?
-
-Because this adds artificial constraints that otherwise aren't there
-in some cases to the picture and asking drivers to mark themselves as
-"please don't add these artificial constraints for me" is not
-particularly straightforward.  Moreover, it does that retroactively
-causing things that are entirely correct and previously worked just
-fine to now have to paint themselves red to continue working as
-before.
-
-The fact that immediate probe completion cannot be guaranteed in
-general doesn't mean that it cannot be assumed in certain situations.
-For example, a parent driver registering a child may know what the
-child driver is and so it may know that the child will either probe
-successfully right away or the probing of it will fail and your extra
-constraint breaks that assumption.  You can't really know how many of
-such cases there are and trying to cover them with a new flag is a
-retroactive whack-a-mole game.
-
-> Also, this assumption that the child will be bound successfully upon
-> addition forces the parent/child drivers to play initcall chicken --
-> the child's driver has to be registered before the parent's driver.
-
-That's true, but why is this a general problem?  For example, they
-both may be registered by the same function in the right order.
-What's wrong with that?
-
-> We should be getting away from those by fixing the parent driver that's
-> making these assumptions (I'll be glad to help with that). We need to
-> be moving towards reducing pointless deferred probes and initcall
-> ordering requirements instead of saying "this bad assumption used to
-> work, so allow me to continue doing that".
-
-It is not always a bad assumption.  It may be code designed this way.
+At the same time, mapping the ACPI tables like the DSDT etc. as RAM is
+always valid.
