@@ -2,76 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1A1B41670B
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 23:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDEF1416801
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Sep 2021 00:28:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235917AbhIWVEu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Sep 2021 17:04:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54786 "EHLO
+        id S243425AbhIWWaC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Sep 2021 18:30:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235628AbhIWVEt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Sep 2021 17:04:49 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8D92C061574;
-        Thu, 23 Sep 2021 14:03:17 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f0d68007248b45e3de00aaa.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:6800:7248:b45e:3de0:aaa])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 269391EC03FE;
-        Thu, 23 Sep 2021 23:03:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1632430991;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=ObxXqz9MwOnlPx6YFBRR3QL7+Uqqp0L8yP+LhFBcOek=;
-        b=ncof9ZZtHlm37SQzzDX4peCVfnOhM8+pS+j6h4QAYrURjns3yxNmP+EbVC78/RcJWZaKDD
-        IGmsrHplIHp5d9DOlgtuhOsQvVwueaWavkPYSdWw1S3h0ZFcVC+Y5SO9v3q3qi1QF6sZwY
-        QOuKSuVbaSmiOSQyAMESqpIaqXlsST8=
-Date:   Thu, 23 Sep 2021 23:03:05 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Vasyl Gomonovych <vgomonovych@marvell.com>
-Cc:     rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-        Tony Luck <tony.luck@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Yazen Ghannam <yazen.ghannam@amd.com>,
-        Robert Richter <rrichter@amd.com>,
-        Tom Saeger <tom.saeger@oracle.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: APEI: Check NULL argument in exported symbol
-Message-ID: <YUzribOnxrSpIwbS@zn.tnic>
-References: <20210923195612.25949-1-vgomonovych@marvell.com>
- <YUzoCwg/cShU2auq@zn.tnic>
+        with ESMTP id S239507AbhIWWaC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Sep 2021 18:30:02 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48850C061574;
+        Thu, 23 Sep 2021 15:28:30 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id s11so7772077pgr.11;
+        Thu, 23 Sep 2021 15:28:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=NjGFClgphH4uTkcVbbvx9JSSPvqb15w479MfvY6Wezk=;
+        b=no//ku5b7snvMBl+1g518aa6fRx78zQ6g1vD3ki+ui5MOpQQfkuOypjKhAVZDTyvWe
+         mXnCTJ/pDREsuRoYbI5kSqGg3lDvJHTzhonj1wmZ97Bgc0zMnc3aMcS6OgWnusGwK2sf
+         NgKiQvV5Ni+3fmMuqnZdAD1pYAvFqPuEzgWMnSJv48hqjkNKj72rHF4C8VThbRJMbs8/
+         sWfExLKVEEiTdfSAQdbW5Klb67tio4u8ywzq0BABXKKwxpXjZxHNGclhPMPPBQ1eFwJF
+         HuO1BS3FwCR3KJuzWgqDRayU9EeMPBgEBBlhoxBnpSEDKb2G6WhwjAKLZnMTr0kL/aBa
+         4CZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=NjGFClgphH4uTkcVbbvx9JSSPvqb15w479MfvY6Wezk=;
+        b=ZAbaOxQ3gTIHwVunnP3Bgnyfj9BBQFmlldPQ5G9QNtsRDIdGTivkFgbngVIZ/1KwHL
+         FRmuV0Mf7c9qNRcntxmw5JPNl4OuTKt3faFSh/MviZB88SJVhBG4JYJLbgsTUXfMUB+Y
+         XBr6CRyQPlNkFlaRcHq1garLEt9mWJrcBuyYtHOsX1M85ahkBoPt5adkIKU2iqApUcdq
+         1B6n2QXYZ9JJ+k3pYFrkIPYqSAGzNiHsqTm7G0Kt3MvrmiOK5j4QLPeNYNcQMsJ8arkT
+         fn7/wlB0k1goy8lKGiBYZxmDfrA0UqvdxFobFlsahRMyw1am5G9hBz8VZWQa8wl+LXqh
+         eZCA==
+X-Gm-Message-State: AOAM532gRCUrGx/uiJYTV8lCRPBMPSBXH9ylFzlXF4jnwmvQ6u2WFisP
+        gMt9gaxhSH2X88M2tq45ec6zXPDF2So=
+X-Google-Smtp-Source: ABdhPJyzhgFkF1eEIzYu1I4d7RfR6teqOQhwYLp2lU0kOIX1loIDvI/Mc+LOJNMKymdVps21FmH9Zw==
+X-Received: by 2002:a63:f84f:: with SMTP id v15mr967754pgj.204.1632436109271;
+        Thu, 23 Sep 2021 15:28:29 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id m186sm5192300pfb.165.2021.09.23.15.28.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Sep 2021 15:28:28 -0700 (PDT)
+Subject: Re: [PATCH v3 0/3] fw_devlink bug fixes
+To:     Saravana Kannan <saravanak@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Vladimir Oltean <olteanv@gmail.com>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+References: <20210915170940.617415-1-saravanak@google.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <6b36ad72-a65f-bd65-abae-c06b673e9154@gmail.com>
+Date:   Thu, 23 Sep 2021 15:28:27 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
+In-Reply-To: <20210915170940.617415-1-saravanak@google.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <YUzoCwg/cShU2auq@zn.tnic>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 23, 2021 at 10:48:11PM +0200, Borislav Petkov wrote:
-> On Thu, Sep 23, 2021 at 12:56:10PM -0700, Vasyl Gomonovych wrote:
-> > Exported symbol apei_hest_parse is external API
-> > and should check pointer argument
+On 9/15/21 10:09 AM, Saravana Kannan wrote:
+> Intended for 5.15.
 > 
-> Why?
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: Andrew Lunn <andrew@lunn.ch>
+> Cc: Vladimir Oltean <olteanv@gmail.com>
 > 
-> All users pass a proper, non-NULL function pointer AFAICT.
+> v1->v2:
+> - Added a few Reviewed-by and Tested-by tags
+> - Addressed Geert's comments in patches 3 and 5
+> - Dropped the fw_devlink.debug patch
+> - Added 2 more patches to the series to address other fw_devlink issues
+> 
+> v2->v3:
+> - Split the logging/debug changes into a separate series
+> 
+> Thanks,
+> Saravana
+> 
+> Saravana Kannan (3):
+>   driver core: fw_devlink: Improve handling of cyclic dependencies
+>   driver core: fw_devlink: Add support for
+>     FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD
+>   net: mdiobus: Set FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD for mdiobus
+>     parents
 
-Looking at this more, that apei_hest_parse() thng should be made static
-and the export dropped.
-
-The last user was removed in
-
-708b20003624 ("PCI/AER: Remove HEST/FIRMWARE_FIRST parsing for AER ownership")
-
-You could mention it in the commit log.
-
-Thx.
-
+Andrew, did you get a chance to test this patch set on a ZII development
+board rev B or C by any chance?
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Florian
