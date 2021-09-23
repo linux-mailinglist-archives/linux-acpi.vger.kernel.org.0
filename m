@@ -2,90 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19FA54166B2
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 22:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FFAB4166BD
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 22:32:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243104AbhIWUcF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Sep 2021 16:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47330 "EHLO
+        id S242955AbhIWUeO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Sep 2021 16:34:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240613AbhIWUcE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Sep 2021 16:32:04 -0400
+        with ESMTP id S242950AbhIWUeO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Sep 2021 16:34:14 -0400
 Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 400EDC061574;
-        Thu, 23 Sep 2021 13:30:32 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id g8so27515116edt.7;
-        Thu, 23 Sep 2021 13:30:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4568DC061574;
+        Thu, 23 Sep 2021 13:32:42 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id y89so16786914ede.2;
+        Thu, 23 Sep 2021 13:32:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fL+h8uQ/7PfcEdzSSrp7BsmxOo8qUJEyVQToL1mn6dI=;
-        b=qmNGwnEEe6lNlTpC650yBYGIgPH6NSSFR/zzN0YcnT21wOv8IGfTUiLM1aRqqRYHvx
-         2uHHeigGqaUG2RqcVI49LQF/a6MJVX93ttfn/5ttX4x0ZVF9YKcniJsVrizLiq5IIOBg
-         7YBThyeuHF9cX5PaySoilVr8uSDl+ngoy80c45b2BenMBHQ7VOwGxaFbW1M9oGuEK7Wy
-         Mbsw8Zdck/83lRPiHGjS5GVyL876i2vh1RuLt7Gin4FBOwWsrtnxPXeRHadEXh47Ls2Q
-         B+oTmnYkAJh6cd117aZaxf0QCSCojhAYnxUQ1LKKh/8M1FJKn14LoePYiF5pCqrOUVK1
-         AS+w==
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=6+Gu/iRqyPqcbnYKhgZwOW6+iVLuEgjvKfe8sK2yqJ4=;
+        b=IGPed7unYhr4J6+l9bBHGFs3XhmPB0N2w2JNTrFN8VrOJeavUYgCkbOwOOU4qs6MED
+         g6Q3rwfB9FK/VmHdg/V8f/VO9Lwyppjr2zjbvqNSPAOGYa09zLsHuuEoj8ZnOSuxfDoP
+         CH2an08ZtT7gpdQuQNt8BX854wb2sDjXtM4JmoLLk4NdZCNde2wO0GwIc9mXG03rYCZA
+         dewyBEZX7tGAhd/Jkxv4nZicY+bEZ8PhDtNkz1TTlJxoM6HJTSHqz56JJKkgcobval0w
+         PkdOP+ldEPbFfCToJMqDmN82SxHoxTVgZqRw7XxMzCZEPRXWZ4syul9/fWFeI4udxQ7Z
+         Ls4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fL+h8uQ/7PfcEdzSSrp7BsmxOo8qUJEyVQToL1mn6dI=;
-        b=5qvVtPegR9G8SIYeitoI+782i7o4BQ74KpOuzG87ubtk3lsl+jI2ptMQGJXCQl3wrP
-         zeXPohxk1WxnIY5Tou8qAeBF4GjBhY4h/8PmA2CYBO6iQukewg6aOX8YHv+Pg29hfg8h
-         jfFwInbPjEfVut5WT8yagft+uiWlZ/PWpb3GLrbvPdwU0UM68qNvU+1uExiS4/jctk+V
-         9G9Umx57ziQgtfVJTh6fjlRDHwp/49Pi5yZRU21tFEMiopSCbUKbOeCrO3TaVkqxdWYQ
-         exBR+djU/FcDz3YS9iKoAtD4WmmrxpAQdOBdLHAvyTtvDQNFwcKpFe3yQCD1iVDo+J8a
-         yDkw==
-X-Gm-Message-State: AOAM530/qBydZ/QvksGp1Am3gc5Ieu/7ftm8GHSiiIWTkajdPz/7Z9/2
-        3n4IrsXmvvuL1TY9ZgtlxJjwmpBi9V5vLYyueCQ=
-X-Google-Smtp-Source: ABdhPJzQsDLZwUbvXYaKD2x4zY9eN8nczEIspbFwNJG4lWhki8aA062Ch01bY8MuA1JdWsUKZvxtj1k8tS5nYwL1Ns8=
-X-Received: by 2002:a50:d987:: with SMTP id w7mr917015edj.240.1632429030823;
- Thu, 23 Sep 2021 13:30:30 -0700 (PDT)
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=6+Gu/iRqyPqcbnYKhgZwOW6+iVLuEgjvKfe8sK2yqJ4=;
+        b=5AVTHhIUyMjxfhB02tMhg7UVUlWTiuVEZ9DAzuSra0r8z8/xD3BrCakfUMp4rBcYen
+         w+ifVWdlVTK4UqC8tpEHdbVub6qyX2bra3hDGmDZJPp4HjAVB9RlsaEcpq0EKQXpxVpW
+         wS9JKPJ16Dhy7fVQKpiKkoq7t6L1cUJFutFGfD/lck4EYHfgwKyvByH+8yn3AqvvfUX/
+         jneWds1lXvOwHUiucD9m+mjQN1+iOrLSPfjXW2vfy9d9M0jdIi9vQQ03Xx/Ia+tq/bH8
+         UMCM0XwTwrUaJKvgN34OxsbN0kbeuKXN4mSuV8KXolTZzAPE56287ZK9/W40Kf+rmKWp
+         zL2g==
+X-Gm-Message-State: AOAM530RgLeGU8eLvpwH7ALLjA0AQU8ou5GfaNYW/FvcR7nnU/6OAVnI
+        lIlCvaluK9avBfFibFEoa0vKKKvP5g8=
+X-Google-Smtp-Source: ABdhPJzEbSkJoi4rqRH0CFl7JJmp+6NbnJGKOhLOcHOXbSP38NZ4QJyIwRvFerAxtL++kL/UgyRcAw==
+X-Received: by 2002:a17:906:1146:: with SMTP id i6mr7416372eja.12.1632429160840;
+        Thu, 23 Sep 2021 13:32:40 -0700 (PDT)
+Received: from ?IPv6:2001:981:6fec:1:2b01:e09b:ffd3:5fee? ([2001:981:6fec:1:2b01:e09b:ffd3:5fee])
+        by smtp.gmail.com with ESMTPSA id x25sm3687473ejy.46.2021.09.23.13.32.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Sep 2021 13:32:40 -0700 (PDT)
+Subject: Re: [PATCH v2 2/7] PCI: ACPI: PM: Do not use pci_platform_pm_ops for
+ ACPI
+From:   Ferry Toth <fntoth@gmail.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+References: <1800633.tdWV9SEqCh@kreacher> <8879480.rMLUfLXkoz@kreacher>
+ <069444f7-d623-fae2-5cd0-83cbbc919aff@gmail.com>
+ <CAJZ5v0gpodPPXTagy5gFFf6mp_jCAdc864CE_giaue72ke7UyQ@mail.gmail.com>
+ <ab803fb5-045d-98dd-2754-688a916f8944@gmail.com>
+Message-ID: <d151c91c-cb65-2830-2453-a02057137400@gmail.com>
+Date:   Thu, 23 Sep 2021 22:32:39 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-References: <20200407173849.43628-1-andriy.shevchenko@linux.intel.com>
- <290741faab199d3e43b6255bf2282075@dev.tdt.de> <YUrO5ajlS9wS6xYU@smile.fi.intel.com>
- <YUrg6TfVhk+TIxDz@smile.fi.intel.com> <d84fb798722762862a7fb08f1e343b6a@dev.tdt.de>
- <CAHp75Vcc_6mcR4gC-MzVTjTBpuozMJMFTosQjpXN8A25pndNpg@mail.gmail.com>
-In-Reply-To: <CAHp75Vcc_6mcR4gC-MzVTjTBpuozMJMFTosQjpXN8A25pndNpg@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 23 Sep 2021 23:29:54 +0300
-Message-ID: <CAHp75Ve=nySDrM9e0yjvvzcGpqAzNaw7A46UdfcSwPyhY66nRw@mail.gmail.com>
-Subject: Re: Add a SSDT ACPI description to recognize my I2C device connected
- via SMBus
-To:     Florian Eckert <fe@dev.tdt.de>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Enrico Weigelt <info@metux.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Florian.Eckert@googlemail.com, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <ab803fb5-045d-98dd-2754-688a916f8944@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 23, 2021 at 11:26 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Thu, Sep 23, 2021 at 5:26 PM Florian Eckert <fe@dev.tdt.de> wrote:
+Hi
 
-...
+Op 23-09-2021 om 15:51 schreef Ferry Toth:
+> Repost (with formatting removed, sorry for the noise)
+> Op 23-09-2021 om 13:30 schreef Rafael J. Wysocki:
+>> On Wed, Sep 22, 2021 at 11:31 PM Ferry Toth<fntoth@gmail.com>  wrote:
+>>> Hi,
+>>> Op 20-09-2021 om 21:17 schreef Rafael J. Wysocki:
+>>>> From: Rafael J. Wysocki<rafael.j.wysocki@intel.com>
+>>>>
+>>>> Using struct pci_platform_pm_ops for ACPI adds unnecessary
+>>>> indirection to the interactions between the PCI core and ACPI PM,
+>>>> which is also subject to retpolines.
+>>>>
+>>>> Moreover, it is not particularly clear from the current code that,
+>>>> as far as PCI PM is concerned, "platform" really means just ACPI
+>>>> except for the special casess when Intel MID PCI PM is used or when
+>>>> ACPI support is disabled (through the kernel config or command line,
+>>>> or because there are no usable ACPI tables on the system).
+>>>>
+>>>> To address the above, rework the PCI PM code to invoke ACPI PM
+>>>> functions directly as needed and drop the acpi_pci_platform_pm
+>>>> object that is not necessary any more.
+>>>>
+>>>> Accordingly, update some of the ACPI PM functions in question to do
+>>>> extra checks in case the ACPI support is disabled (which previously
+>>>> was taken care of by avoiding to set the pci_platform_ops pointer
+>>>> in those cases).
+>>>>
+>>>> Signed-off-by: Rafael J. Wysocki<rafael.j.wysocki@intel.com>
+>>>> ---
+>>>>
+>>>> v1 -> v2:
+>>>>       * Rebase on top of the new [1/7] and move dropping struct
+>>>>         pci_platform_pm_ops to a separate patch.
+>>> I wanted to test this series on 5.15-rc2 but this patch 2/7 doesn't
+>>> apply (after 1/7 applied). Should I apply this on another tree?
+>> This is on top of
+>> https://patchwork.kernel.org/project/linux-acpi/patch/2793105.e9J7NaK4W3@kreacher/ 
+>>
+>> which is not yet in any tree.
+>>
+>> Sorry for the confusion.
+> No problem at all. If I can I will try to report back tonight. Else, 
+> will be delayed 2 due to a short break.
 
-> Summary:
-> 1) _CID notation is wrong in ASL;
-> 2) driver seems supports the _ADR schema which you have used in ASL;
-> 3) something fishy about I/O addresses in the sysfs (is it a typo when
-> you composed the email?);
-> 4) it's unclear what you did with ASL to get it loaded;
-> 5) as Mika suggested, have you checked the kernel configuration?
->
-> Otherwise I can't see anything else suspicious here.
+With those 3 extra patches followed by 7 from this series it builds. But 
+on boot I get:
+dwc3 dwc3.0.auto: this is not a DesignWare USB3 DRD Core
+Then after this it reboots. Nothing in the logs. Nothing else on 
+console, I guess something goes wrong early.
 
-One more thing, I have no idea how max77620 is related to all this
-(you mentioned it in [4]).
+I tried both in host / device mode - no change.
 
-
--- 
-With Best Regards,
-Andy Shevchenko
+Normally in host mode I have:
+usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, 
+bcdDevice= 5.14
+Only ref to dwc3 is:
+tusb1210 dwc3.0.auto.ulpi: using ACPI for GPIO lookup / using lookup 
+tables for GPIO lookup / No GPIO consumer cs found
