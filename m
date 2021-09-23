@@ -2,161 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E8AA415EA2
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 14:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AF92415EC7
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 14:49:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240961AbhIWMpO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Sep 2021 08:45:14 -0400
-Received: from mail-dm6nam10on2089.outbound.protection.outlook.com ([40.107.93.89]:5344
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S240787AbhIWMpN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 23 Sep 2021 08:45:13 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Zy+yFVMy+ia+d2sEg2iTF9FWLHy7vY8S0z/U/LKrPoFt5MNYVirZv3U4MO9Co8kTFd8EAZ9eFf421OvYS+3Zi8+ZaKKUJ4Drcs1lCuBTOGAmUDGQ/euQwQ+QaewSDjIcuvLEIgLAXEJeZVe2veaRGylaYfo6CgwcDAxr6OA8tCn3OSaK3XBmaNyoVKlINMgEFhYUN2/pUMIlEu47DGdfBdAH9NfE9pjgLJvVKuNTx7ZIAkgg7OhZ8nmonvzEOb3ajys9EdTP4sjisK/8E4tDK4DjXfRoEe+AArH11IRV/CcCV1/Kgf8ELS+D14XTPOmM3zVvTBZ3bT1bzWfyo+J6vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=QFy45rdekizq2LkU37JP/WndpjRfDJif5hqMQMqcchA=;
- b=E4qHf7Zgm0c9sECCj2RLe3ufOUUrjoR5+Bs292tYTtK744EkVPNGgnkNaYtXYK63nl3E8Xk8GkZSBYTEQidacutWtIf+vrfWAOxTDUoh9Vx74JEWiqKllH0aYrpPP93rrElFdWj1z+aBFnmLnGD8hhJ2JtqGmnq0eiyzlJO6J8iD/6sEwudpsGOFUm0BqYnNUgy9Ryhz/6Rkbo/uo3Q3G7lPnnkgyVkihOFGhVaRfRvTZEyxtcZjNNV2BK6RYAbENmWRG+KrE6UiO9RV3vTvMK/aztwxCj9yW1WMmyFPX6oeTHC0C4AsU0N3nO5xyUqPGKS3RVl286ic6LT7kdc65A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QFy45rdekizq2LkU37JP/WndpjRfDJif5hqMQMqcchA=;
- b=ueIEBjVtlP1RahvcbE9UW31S47TQDp78tvl0pKMC90S9CilwGm1GgYxxR+PePv+k/8k+QrTEQ4hNu8LWs0uEfzqe3lnIr1Tqy253AEZg09bvOeoW4iCqsbfMKOC1lqzXth3xLs3ZhovCuv7GVlPoZXhQmAdt1FiZUCwff49gJAFOX+sz8wthMF+5Sh9IvgoYWkppEzGxKqnbEngrh2TbWQzH8Gv3VFQTTMbF708fNa6pldTGQc6eePsmuE8XDYzE4ubX94zv8+JstoNtyWVWwBQVHdvy8v7kp1QXaryewmyAxBaNcN54dz6b0fS6Ce/pQZjYN0hfISgwgM7XDklzpw==
-Received: from CH2PR12MB3895.namprd12.prod.outlook.com (2603:10b6:610:2a::13)
- by CH2PR12MB4053.namprd12.prod.outlook.com (2603:10b6:610:7c::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4544.14; Thu, 23 Sep
- 2021 12:43:39 +0000
-Received: from CH2PR12MB3895.namprd12.prod.outlook.com
- ([fe80::a46b:a8b7:59d:9142]) by CH2PR12MB3895.namprd12.prod.outlook.com
- ([fe80::a46b:a8b7:59d:9142%5]) with mapi id 15.20.4523.018; Thu, 23 Sep 2021
- 12:43:39 +0000
-From:   Asmaa Mnebhi <asmaa@nvidia.com>
-To:     Andrew Lunn <andrew@lunn.ch>
-CC:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "bgolaszewski@baylibre.com" <bgolaszewski@baylibre.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        David Thompson <davthompson@nvidia.com>
-Subject: RE: [PATCH v2 1/2] gpio: mlxbf2: Introduce IRQ support
-Thread-Topic: [PATCH v2 1/2] gpio: mlxbf2: Introduce IRQ support
-Thread-Index: AQHXrmWkzr3ID0dlqEu/CHaf9JymsquvFGcAgAAAj5CAARKhAIABbCOQ
-Date:   Thu, 23 Sep 2021 12:43:39 +0000
-Message-ID: <CH2PR12MB3895D489497D7F45B4A45A34D7A39@CH2PR12MB3895.namprd12.prod.outlook.com>
-References: <20210920212227.19358-1-asmaa@nvidia.com>
- <20210920212227.19358-2-asmaa@nvidia.com> <YUpdjh8dtjz29TWU@lunn.ch>
- <CH2PR12MB38951F1A008AE68A6FE7ED96D7A29@CH2PR12MB3895.namprd12.prod.outlook.com>
- <YUtEZvkI7ZPzfffo@lunn.ch>
-In-Reply-To: <YUtEZvkI7ZPzfffo@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: lunn.ch; dkim=none (message not signed)
- header.d=none;lunn.ch; dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a81fe7e1-1ace-4d34-b933-08d97e8fc496
-x-ms-traffictypediagnostic: CH2PR12MB4053:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CH2PR12MB40533E5BA810E39213A0C46ED7A39@CH2PR12MB4053.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 9MZeXyuZbt+GHuLucpdIVWmtbfpOnvIox5N6gk0J2QTw11/ojY6a1T5MrRYBDMUqzrKzK659trmTClMD93BEWheQk198kcdjt7Qf5Cg4poHipRy8xk49+kVkzDheaXynAlfh6iuiHW9XGytz+dtVHefoe2VsLBFeWny/Urz9E5f/3hU9zZkc8ZgRWSTEIv+V4xovOcckk1IY37i7Ug+INl+9bqtJd02l2kmQksEPTJtKkMmZQlfIg6a5F2N60BNqkkDjB8FTMHwjIyfpF0nFZ196Yos59smZrIjuxX2+GwiSXqQ/pQIcxEAbFyD282vRAJf/Y9+zRLiWsbJufXQPSLXzATT64D+h5sqeudQDMSidz7VlBHTfdIkWxDtlkiQMv5GEF/YuGMG+K9ACQRfweJzQvihs3N+t4Io9ra2o43+kUpxdPGH+n72qnrYhIBQ3gSYOj/cbBGla9g5RhQUQdPpPsmwgMVqjOncqx+Y3aJQ57xJjZlDIKiu840mED0jRQm9lNMo004OEusZkYK6aQLcceGdnkOPpMYPtMZzp9m1G7OzMkZnURU6r9hcvZl6yYWlTybANiAK4LEH1fkOX/KUDoCGlxqJGpvgewXG/tL8wO3nXb5lt3N7M85Chc7jLN3YPtBtoPs07/xFhG/Nu0b0M9F/l5CNh417NYz3JYmjNGgI6OyY039XP4vXvRmimuCNHEOUkuQVh1UyIDWDbHg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3895.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(2906002)(316002)(8936002)(83380400001)(86362001)(186003)(52536014)(8676002)(54906003)(6916009)(38070700005)(5660300002)(122000001)(38100700002)(64756008)(66946007)(107886003)(66446008)(33656002)(66476007)(66556008)(9686003)(4326008)(76116006)(7416002)(55016002)(508600001)(71200400001)(6506007)(7696005)(26005);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?13ZCIiTnbTKG+HRqoKq+1kdoqK3+bT5IOyWxRH1DjvHtUr0yHOcvwexmQeMb?=
- =?us-ascii?Q?LFN0QD5maT9VZhEmA+V61xJQ4mhofpHpFuFregx3ZYRYHAgBJpcPpHEER9ff?=
- =?us-ascii?Q?9jR+DfEB9uHnj/qT9BqZoWZKGV4wA9wEB7RPVicd4Q3v3ZgrAWKnoww7oZwK?=
- =?us-ascii?Q?CerYTM9s3mnB/5qkFynsHzQHM5FnpuOcdqHZ6xK9aAcNsQeW6kkaFNXx4PhR?=
- =?us-ascii?Q?yEQagute32fRXxM8cZVcIYg5v/vSInk2hNB0tr/CUonVcor1TIFFyip8gQUx?=
- =?us-ascii?Q?g5p6+lei/ee9XsKRA2/7zTkhS5zLDY/fiT2em6DGrIAW5H0AN685lYwrzCY6?=
- =?us-ascii?Q?4pQsFxjlIS6SRByKmTrj1jQdXBo2aPqDqebkLR2yks1oUOhTz4gAOFRapHCM?=
- =?us-ascii?Q?l1vm3RICmfTok4UhIBpBiL1bwUuMXtbtcZkMioOeIK+3smjdPJw77q28ndp7?=
- =?us-ascii?Q?bLFsiu0149bKMmlokNcHF4Wptj3YiSn70vZNl/xSrz8T8m45btiy15aODww+?=
- =?us-ascii?Q?HN024JPbqeOdWir03YNL6lT31+TCbARxD0gsTCshjA/UlprQHNn0YklLjw4N?=
- =?us-ascii?Q?526hahqUBAOOS4MDBngyc4GTPlUPG0J8Lr9feT5uhCRLuqLcJNG3FEv64EH4?=
- =?us-ascii?Q?iAdfVgvV1f/zxgDTOKJQ7CJMV9P6h7Lm4XHBG0GPaE3BHmttxfZlKENG9Itb?=
- =?us-ascii?Q?vUIjL826wyTsEs2Fk79n1ift8u7Gab6Ys9BfYfIbFgTjLWge11DWkkONpC3C?=
- =?us-ascii?Q?RgCPeQfuZZD//RIo/6/NeJz2kVrFFXSulbawfEMg3ti3O0tCfRbdqtvwtoFP?=
- =?us-ascii?Q?nFJbMXpFmH0l7WUypRTzW8g+29yqY2qcsp+ZVtF6Ld29OJStxC0/VyzxoriO?=
- =?us-ascii?Q?cum0qrQ5NtPB/7mwEblczdBrfyDtrukZJJLfH+96wk/S5CZiyqkME9DX843H?=
- =?us-ascii?Q?g5mi1c1loLoDHeA2pRFKvM79+0l2ZwSTlYhQjTwtMQuAmlIpz4ey3n3qnt7M?=
- =?us-ascii?Q?PTQCYzLc9sSmuusDLYtwCtK8YEwui/OYGK/anUpQpap4l17FdNDdnSI147qg?=
- =?us-ascii?Q?sBNGLmheK+ne8xCKgLXOPEjXtFeqduk9xua9CW2WqzD4F470vYiSPy2MWuEm?=
- =?us-ascii?Q?TXDeoLPGuhtlGGqs+Zz9VRJW8EEEkrfZm4Pu9EHHi8JQFSIIUCeidALXKDnF?=
- =?us-ascii?Q?OgLyaXudvnCCy1vvfOMkV3dfRlMxmR2PtxDkpSmsyeiAU+7D0/SgrjvpfXjj?=
- =?us-ascii?Q?++i6tnpDXuR9VYAvIQ0xWXMK6mgbtFgBwcgJI9A5ARbgb/mIH/3pAg+fnsjJ?=
- =?us-ascii?Q?fbc/ot5D5uV4Al+Iyuf5dLjn?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S240995AbhIWMuu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Sep 2021 08:50:50 -0400
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:37566 "EHLO
+        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240787AbhIWMub (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Sep 2021 08:50:31 -0400
+Received: by mail-ot1-f52.google.com with SMTP id r43-20020a05683044ab00b0054716b40005so1434657otv.4;
+        Thu, 23 Sep 2021 05:49:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HPho5pdPE80Ol42nlkZkWLtxK1B46FluJvPe15qBAgc=;
+        b=7rVbIfl1b/C++IYVIWXpNB3EA8xFGzByqqszAQZAdjoOq30ZWWwVGi9e/MxCoBamhF
+         btsben525ir2iPjbuYOHsA2EWnM2LLVPOJg0OLZrzUE6TiSN0Vp4b1HW08eKs7W/lqyq
+         efWjm9C5slyMqsYr0vsd/2+oIcLvrRGWqZ634k8MlfjcTGdKCsDXPdnW1tG1kZk3kSf+
+         RNHufJzgQK2EXGvl1JfmHFmHZje+hsJmD2mmw4jNWH/2FA0PiB8Rx4feT4SRLFdXtLxb
+         0gpGSGi09ICzLYDbjAJNoXdeXlwCE+jG557qCAFiG4k5OPSViPwSx1Ug7jdHOjNXqSPD
+         rE1A==
+X-Gm-Message-State: AOAM530Ch7mGj31FqJh5giljUlwAiJIqtndlgeGp/lGgetpM9DQwgU3Q
+        mc/YaL8aqp70vSBbI5i8hTDx9SjY4LFSIb3bRZ4=
+X-Google-Smtp-Source: ABdhPJzqIyB8PZUiSI/+lxuDijrE0Lm85sXH1TPxYCbh18wwxFZKnOcawv+pJ9UsVPnnVvNwjuumEoIDYRDPdAZKE10=
+X-Received: by 2002:a9d:4d93:: with SMTP id u19mr4185271otk.86.1632401339990;
+ Thu, 23 Sep 2021 05:48:59 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3895.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a81fe7e1-1ace-4d34-b933-08d97e8fc496
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2021 12:43:39.1282
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fzlYqvulIGKmXdgMhJ3DuEdehJDPvNZxBXfGXqWJTYYd+rHH3AYuXOrzNVBPs0lc3rXnkpy1mUvoSH2Az8XwTg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4053
+References: <20210915170940.617415-1-saravanak@google.com> <20210915170940.617415-3-saravanak@google.com>
+ <CAJZ5v0h11ts69FJh7LDzhsDs=BT2MrN8Le8dHi73k9dRKsG_4g@mail.gmail.com>
+ <YUaPcgc03r/Dw0yk@lunn.ch> <YUoFFXtWFAhLvIoH@kroah.com> <CAJZ5v0jjvf6eeEKMtRJ-XP1QbOmjEWG=DmODbMhAFuemNn4rZg@mail.gmail.com>
+ <YUocuMM4/VKzNMXq@lunn.ch> <CAJZ5v0iU3SGqrw909GLtuLwAxdyOy=pe2avxpDW+f4dP4ArhaQ@mail.gmail.com>
+ <YUo3kD9jgx6eNadX@lunn.ch> <CAGETcx9hTFhY4+fHd71zYUsWW223GfUWBp8xxFCb2SNR6YUQ4Q@mail.gmail.com>
+In-Reply-To: <CAGETcx9hTFhY4+fHd71zYUsWW223GfUWBp8xxFCb2SNR6YUQ4Q@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 23 Sep 2021 14:48:48 +0200
+Message-ID: <CAJZ5v0h4M1Rp2fVWWYN5qjTi4QjYjjjZ5Nc9=mNU-UtrN1RSXg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] driver core: fw_devlink: Add support for FWNODE_FLAG_NEEDS_CHILD_BOUND_ON_ADD
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "Cc: Android Kernel" <kernel-team@android.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> > +static int
-> > +mlxbf2_gpio_irq_set_type(struct irq_data *irqd, unsigned int type)=20
-> > +{
-> > +
-> > +	switch (type & IRQ_TYPE_SENSE_MASK) {
-> > +	case IRQ_TYPE_EDGE_BOTH:
-> > +		fall =3D true;
-> > +		rise =3D true;
-> > +		break;
-> > +	case IRQ_TYPE_EDGE_RISING:
-> > +		rise =3D true;
-> > +		break;
-> > +	case IRQ_TYPE_EDGE_FALLING:
-> > +		fall =3D true;
-> > +		break;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
->=20
-> > What PHY are you using? I think every one i've looked at are level=20
-> > triggered, not edge. Using an edge interrupt might work 99% of the=20
-> > time, but when the timing is just wrong, you can loose an interrupt.
-> > Which might mean phylib thinks the link is down, when it fact it is up.=
-=20
-> > You will need to unplug and replug to recover from that.
->=20
-> It is the micrel PHY KSZ9031 so it is an active low level interrupt.
-> Here, IRQ_TYPE_EDGE* macros are mainly used to decide whether to write=20
-> the YU_GPIO_CAUSE_FALL_EN register vs the YU_GPIO_CAUSE_RISE_EN register.
-> These 2 registers are used in both LEVEL/EDGE interrupts.
+On Tue, Sep 21, 2021 at 10:07 PM Saravana Kannan <saravanak@google.com> wrote:
+>
+> Sorry I've been busy with LPC and some other stuff and could respond earlier.
+>
+> On Tue, Sep 21, 2021 at 12:50 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> >
+> > > It works at a device level, so it doesn't know about resources.  The
+> > > only information it has is of the "this device may depend on that
+> > > other device" type and it uses that information to figure out a usable
+> > > probe ordering for drivers.
+> >
+> > And that simplification is the problem. A phandle does not point to a
+> > device, it points to a resource of a device. It should really be doing
+> > what the driver would do, follow the phandle to the resource and see
+> > if it exists yet. If it does not exist then yes it can defer the
+> > probe. If the resource does exist, allow the driver to probe.
+> >
+> > > Also if the probe has already started, it may still return
+> > > -EPROBE_DEFER at any time in theory
+> >
+> > Sure it can, and does. And any driver which is not broken will
+> > unregister its resources on the error path. And that causes users of
+> > the resources to release them. It all nicely unravels, and then tries
+> > again later. This all works, it is what these drivers do.
+>
+> One of the points of fw_devlink=on is to avoid the pointless deferred
+> probes that'd happen in this situation. So saying "let this happen"
+> when fw_devlink=on kinda beats the point of it. See further below.
 
-> I assume you also have an YU_GPIO_CAUSE_LOW_EN and
+Well, you need to define "pointless deferred probes" in the first
+place.  fw_devlink adds deferred probes by itself, so why are those
+not pointless whereas the others are?
 
-> YU_GPIO_CAUSE_HIGH_EN registers? These registers need to
+> >
+> > > However, making children wait for their parents to complete probing is
+> > > generally artificial, especially in the cases when the children are
+> > > registered by the parent's driver.  So waiting should be an exception
+> > > in these cases, not a rule.
+>
+> Rafael,
+>
+> There are cases where the children try to probe too quickly (before
+> the parent has had time to set up all the resources it's setting up)
+> and the child defers the probe. Even Andrew had an example of that
+> with some ethernet driver where the deferred probe is attempted
+> multiple times wasting time and then it eventually succeeds.
 
-> be set for IRQ_TYPE_LEVEL_LOW and IRQ_TYPE_LEVEL_HIGH.
+You seem to be arguing that it may be possible to replace multiple
+probe attempts that each are deferred with one probe deferral which
+then is beneficial from the performance perspective.
 
-No we don't. I double checked with the HW team and they confirmed that
-YU_GPIO_CAUSE_FALL_EN and YU_GPIO_CAUSE_RISE_EN are used in
-Both level and edge interrupts cases.
+Yes, there are cases like that, but when this is used as a general
+rule, it introduces a problem if it does a deferred probe when there
+is no need for a probe deferral at all (like in the specific problem
+case at hand).  Also if the probing of the child is deferred just
+once, adding an extra dependency on the parent to it doesn't really
+help.
 
-Thanks.
-Asnaa
+> Considering there's no guarantee that a device_add() will result in
+> the device being bound immediately, why shouldn't we make the child
+> device wait until the parent has completely probed and we know all the
+> resources from the parent are guaranteed to be available? Why can't we
+> treat drivers that assume a device will get bound as soon as it's
+> added as the exception (because we don't guarantee that anyway)?
+
+Because this adds artificial constraints that otherwise aren't there
+in some cases to the picture and asking drivers to mark themselves as
+"please don't add these artificial constraints for me" is not
+particularly straightforward.  Moreover, it does that retroactively
+causing things that are entirely correct and previously worked just
+fine to now have to paint themselves red to continue working as
+before.
+
+The fact that immediate probe completion cannot be guaranteed in
+general doesn't mean that it cannot be assumed in certain situations.
+For example, a parent driver registering a child may know what the
+child driver is and so it may know that the child will either probe
+successfully right away or the probing of it will fail and your extra
+constraint breaks that assumption.  You can't really know how many of
+such cases there are and trying to cover them with a new flag is a
+retroactive whack-a-mole game.
+
+> Also, this assumption that the child will be bound successfully upon
+> addition forces the parent/child drivers to play initcall chicken --
+> the child's driver has to be registered before the parent's driver.
+
+That's true, but why is this a general problem?  For example, they
+both may be registered by the same function in the right order.
+What's wrong with that?
+
+> We should be getting away from those by fixing the parent driver that's
+> making these assumptions (I'll be glad to help with that). We need to
+> be moving towards reducing pointless deferred probes and initcall
+> ordering requirements instead of saying "this bad assumption used to
+> work, so allow me to continue doing that".
+
+It is not always a bad assumption.  It may be code designed this way.
