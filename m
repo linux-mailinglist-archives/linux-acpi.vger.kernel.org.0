@@ -2,102 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E50EB415FC0
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 15:28:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D82416008
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Sep 2021 15:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241176AbhIWN3c (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Sep 2021 09:29:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42696 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241259AbhIWN3a (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 23 Sep 2021 09:29:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4AB9361107;
-        Thu, 23 Sep 2021 13:27:56 +0000 (UTC)
-Date:   Thu, 23 Sep 2021 14:27:53 +0100
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Jia He <justin.he@arm.com>
-Cc:     Will Deacon <will@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Harb Abdulhamid <harb@amperecomputing.com>
-Subject: Re: [PATCH v3] Revert "ACPI: Add memory semantics to
- acpi_os_map_memory()"
-Message-ID: <YUyA2U8H0vLEqr3/@arm.com>
-References: <20210923033557.19100-1-justin.he@arm.com>
+        id S241458AbhIWNgu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Sep 2021 09:36:50 -0400
+Received: from mail-ot1-f42.google.com ([209.85.210.42]:41855 "EHLO
+        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241451AbhIWNgs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 23 Sep 2021 09:36:48 -0400
+Received: by mail-ot1-f42.google.com with SMTP id 97-20020a9d006a000000b00545420bff9eso8484439ota.8;
+        Thu, 23 Sep 2021 06:35:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XZZw776AxWux9GflNAqL8Dxi/2W2AZOaGIsTCN23/JI=;
+        b=zSfYErVihtWILD/QzPhxg+FT7es2tdaXKiryb8Q0A8bqZ2/BcXwcQ2RO+8LcdN+RrU
+         2BEefEh1CRhCc+IjwgSCdA6PUBfDeiG2k6h57m7vpEE98VukbNJ9jMQkkx0Vao/rpcQr
+         xPGRpz50zdtPiQx7ApX8qJrO36nRKOt9VzdHpXtXoET+pcH9egUqrfD71IED8QmMxUeh
+         uxzU8gofJgAfkWqF0XnlEvx58Ue8HUwBiaV4ayAUg9R516qnDT5EOPODIlXhtQBlqowr
+         CqkTkD+CZpYDoa/FhYgVLCREZ36Nf4h7BbbWWA5kpRTPp3X5n2g7TsmdvRGXfrs7/Juq
+         AfxA==
+X-Gm-Message-State: AOAM531GZH2CxhGygU/PlqV7/KWD3cDzRkSvrgJ2dqNe/W04SbagcuJx
+        h9N7qNmybVTu1OpzUrzd5MQbbOu34qmBqMJ/l1jKQSy9
+X-Google-Smtp-Source: ABdhPJxbep/n43sV1q9mnlvRyLJF8PEQI/TRth8de/xmRePf4Td9GNDiDEnxffMIwIJhaUPFtEk7Tf7jg65nb5BKQXw=
+X-Received: by 2002:a05:6830:165a:: with SMTP id h26mr4489432otr.301.1632404116454;
+ Thu, 23 Sep 2021 06:35:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210923033557.19100-1-justin.he@arm.com>
+References: <1800633.tdWV9SEqCh@kreacher> <8879480.rMLUfLXkoz@kreacher>
+ <069444f7-d623-fae2-5cd0-83cbbc919aff@gmail.com> <CAJZ5v0gpodPPXTagy5gFFf6mp_jCAdc864CE_giaue72ke7UyQ@mail.gmail.com>
+ <013e3a7b-ec67-1a67-c2b9-e1fbb11c664e@gmail.com>
+In-Reply-To: <013e3a7b-ec67-1a67-c2b9-e1fbb11c664e@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 23 Sep 2021 15:35:05 +0200
+Message-ID: <CAJZ5v0h5TJVCJ+vEon8qK3LVfS_sNbne-M98tiJf2K2uBS6wmw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] PCI: ACPI: PM: Do not use pci_platform_pm_ops for ACPI
+To:     Ferry Toth <fntoth@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 23, 2021 at 11:35:57AM +0800, Jia He wrote:
-> This reverts commit 437b38c51162f8b87beb28a833c4d5dc85fa864e.
-> 
-> The memory semantics added in commit 437b38c51162 causes SystemMemory
-> Operation region, whose address range is not described in the EFI memory
-> map to be mapped as NormalNC memory on arm64 platforms (through
-> acpi_os_map_memory() in acpi_ex_system_memory_space_handler()).
-> 
-> This triggers the following abort on an ARM64 Ampere eMAG machine,
-> because presumably the physical address range area backing the Opregion
-> does not support NormalNC memory attributes driven on the bus.
-> 
->  Internal error: synchronous external abort: 96000410 [#1] SMP
->  Modules linked in:
->  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0+ #462
->  Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
->  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [...snip...]
->  Call trace:
->   acpi_ex_system_memory_space_handler+0x26c/0x2c8
->   acpi_ev_address_space_dispatch+0x228/0x2c4
->   acpi_ex_access_region+0x114/0x268
->   acpi_ex_field_datum_io+0x128/0x1b8
->   acpi_ex_extract_from_field+0x14c/0x2ac
->   acpi_ex_read_data_from_field+0x190/0x1b8
->   acpi_ex_resolve_node_to_value+0x1ec/0x288
->   acpi_ex_resolve_to_value+0x250/0x274
->   acpi_ds_evaluate_name_path+0xac/0x124
->   acpi_ds_exec_end_op+0x90/0x410
->   acpi_ps_parse_loop+0x4ac/0x5d8
->   acpi_ps_parse_aml+0xe0/0x2c8
->   acpi_ps_execute_method+0x19c/0x1ac
->   acpi_ns_evaluate+0x1f8/0x26c
->   acpi_ns_init_one_device+0x104/0x140
->   acpi_ns_walk_namespace+0x158/0x1d0
->   acpi_ns_initialize_devices+0x194/0x218
->   acpi_initialize_objects+0x48/0x50
->   acpi_init+0xe0/0x498
-> 
-> If the Opregion address range is not present in the EFI memory map there
-> is no way for us to determine the memory attributes to use to map it -
-> defaulting to NormalNC does not work (and it is not correct on a memory
-> region that may have read side-effects) and therefore commit
-> 437b38c51162 should be reverted, which means reverting back to the
-> original behavior whereby address ranges that are mapped using
-> acpi_os_map_memory() default to the safe devicenGnRnE attributes on
-> ARM64 if the mapped address range is not defined in the EFI memory map.
-> 
-> Fixes: 437b38c51162 ("ACPI: Add memory semantics to acpi_os_map_memory()")
-> Signed-off-by: Jia He <justin.he@arm.com>
-> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Hanjun Guo <guohanjun@huawei.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Cc: Harb Abdulhamid <harb@amperecomputing.com>
+On Thu, Sep 23, 2021 at 3:26 PM Ferry Toth <fntoth@gmail.com> wrote:
+>
+> Hi,
+>
+> Op 23-09-2021 om 13:30 schreef Rafael J. Wysocki:
+>
+> On Wed, Sep 22, 2021 at 11:31 PM Ferry Toth <fntoth@gmail.com> wrote:
+>
+> Hi,
+> Op 20-09-2021 om 21:17 schreef Rafael J. Wysocki:
+>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> Using struct pci_platform_pm_ops for ACPI adds unnecessary
+> indirection to the interactions between the PCI core and ACPI PM,
+> which is also subject to retpolines.
+>
+> Moreover, it is not particularly clear from the current code that,
+> as far as PCI PM is concerned, "platform" really means just ACPI
+> except for the special casess when Intel MID PCI PM is used or when
+> ACPI support is disabled (through the kernel config or command line,
+> or because there are no usable ACPI tables on the system).
+>
+> To address the above, rework the PCI PM code to invoke ACPI PM
+> functions directly as needed and drop the acpi_pci_platform_pm
+> object that is not necessary any more.
+>
+> Accordingly, update some of the ACPI PM functions in question to do
+> extra checks in case the ACPI support is disabled (which previously
+> was taken care of by avoiding to set the pci_platform_ops pointer
+> in those cases).
+>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>
+> v1 -> v2:
+>      * Rebase on top of the new [1/7] and move dropping struct
+>        pci_platform_pm_ops to a separate patch.
+>
+> I wanted to test this series on 5.15-rc2 but this patch 2/7 doesn't
+> apply (after 1/7 applied). Should I apply this on another tree?
+>
+> This is on top of
+> https://patchwork.kernel.org/project/linux-acpi/patch/2793105.e9J7NaK4W3@kreacher/
+> which is not yet in any tree.
+>
+> Sorry for the confusion.
+>
+> No problem at all. If I can I will try to report back tonight. Else, will be delayed 2 due to a short break.
 
-Since I acked the original patch, I'm acking its revert as well:
-
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Thank you!
