@@ -2,179 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF718417CEE
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Sep 2021 23:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D68C417E67
+	for <lists+linux-acpi@lfdr.de>; Sat, 25 Sep 2021 01:48:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347069AbhIXVSs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Sep 2021 17:18:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47850 "EHLO
+        id S233514AbhIXXtt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Sep 2021 19:49:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233640AbhIXVSr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Sep 2021 17:18:47 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0076EC061571;
-        Fri, 24 Sep 2021 14:17:13 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id bx4so41143920edb.4;
-        Fri, 24 Sep 2021 14:17:13 -0700 (PDT)
+        with ESMTP id S229969AbhIXXts (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Sep 2021 19:49:48 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35F0EC061571
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Sep 2021 16:48:13 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id b15so45973179lfe.7
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Sep 2021 16:48:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=Ku0F7ZGp1w78UA6g0SI9hawfp+gfs+pURjPXFl7geYU=;
-        b=JlQHJJ2tAqd8BdbaypXAsBY1tTTf0C/lg4WwxGfNzuNeOJFeIEDFQkFmklHRYPcWe8
-         gooXdDYK6jfjHqhWt6hJGGULMxpq0WVHa478sWAxGezE63gxe1qDXbj6dRYnuR+cSonU
-         PfWweSWXSw1gg9MKsxaTHhM9pSyLlLXkAh/0fT8xEMD9himCtUG9XYRo4uVeHXC5tbAj
-         OO4GaatYaWzeFe83ek3TmOsAmI3XydjKLc7lksMrQreqK1GXOS6bKY1Dscj6gWBVIoLD
-         lkMfF1JM7adKNIDxKB0loL5qoYbI0li/xBcFlAurr6qrMEZIonlAPLFo9NwO5pfIu1HZ
-         8Fgw==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ODWwcp9dc3Rx2L9zFdDyrTu7n5EdIV9thpMDCNrjnQ0=;
+        b=a+DtypX7LrkejFRzAg1CkVLzp15SCgQJNOqziPoP8tVq2CTqkk7bCVXvLcPo89YS3E
+         4FZMyA1FWlLMmSAzGSt580gj3EAr77Bxq4i8TpeoD7CMdXoVuDUMO/ZO7ua24pN1vEJa
+         zohVlCQ+LEOctOZk6LVJw5BQzc5g587LDy+FHNAo3SQ65qpoROpLrqnTiQILUzeEuC1f
+         8uwnODPDTVn53+78LeNNuHLDA+LXTuQtn99NlZoJjWMRZbocGTlXcqm51LC+9RTB8+xn
+         kbHmsLTmGA64EHLkZuJF54m8lO3T6BMj28TsIt8HQa2TgOsHFZB9UyW5Q1SF+cbz+m2C
+         2adw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=Ku0F7ZGp1w78UA6g0SI9hawfp+gfs+pURjPXFl7geYU=;
-        b=gQelQJnb7CYq37BBaFd7s6fXZGczLtHMujZcnQTSiDgfL5cx9+Ipq6Qn789vPKYeUu
-         6Gf5bv2q3vEBVWiWrvY05y36WU1y7KFy4w1cdIWBJsovsUCXvQdlWW+NJqcOrLP4+Jju
-         NjsAZ0W4vmqgR6thh+KhLB5/qIf7+gcF0gKgvAPKyq24RgWidbXLkWe+TPdckW4vw3tL
-         GMQ9tm0n+JoyxdpnIFiAfi7xDcEjVH2azeir2cmqoJ2qljSQ517MF8X3K3e9ksF2E1dZ
-         Fk4iH0ZEpNSVUddRXK/c7jTxXgRdtQm9u1tEsPUI4lWOi+7917FVRPS5jDe6mx9cy3Xn
-         F0SQ==
-X-Gm-Message-State: AOAM532uqcQus6HvaR+wLPnlbQHfAsgq+pXNkN1Zqp1uD59CIvpc9AH0
-        cjt2tUdom6t4v/yDbYDum2s=
-X-Google-Smtp-Source: ABdhPJwLh8fBAVl8cLd3lk44YVX7BtGY0V3leOMvx1GTyirzhLVSR3stKmqPdzLdam/pV4snR3HmZg==
-X-Received: by 2002:a17:906:3fc8:: with SMTP id k8mr13286423ejj.217.1632518232534;
-        Fri, 24 Sep 2021 14:17:12 -0700 (PDT)
-Received: from ?IPv6:2001:981:6fec:1:aeed:20a8:8105:9a95? ([2001:981:6fec:1:aeed:20a8:8105:9a95])
-        by smtp.gmail.com with ESMTPSA id u14sm6020442edx.52.2021.09.24.14.17.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Sep 2021 14:17:12 -0700 (PDT)
-Subject: Re: [PATCH v2 2/7] PCI: ACPI: PM: Do not use pci_platform_pm_ops for
- ACPI
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-References: <1800633.tdWV9SEqCh@kreacher> <8879480.rMLUfLXkoz@kreacher>
- <069444f7-d623-fae2-5cd0-83cbbc919aff@gmail.com>
- <CAJZ5v0gpodPPXTagy5gFFf6mp_jCAdc864CE_giaue72ke7UyQ@mail.gmail.com>
- <ab803fb5-045d-98dd-2754-688a916f8944@gmail.com>
- <d151c91c-cb65-2830-2453-a02057137400@gmail.com>
- <CAJZ5v0howP_PudCf-43_HqgW48ydc29SeFVRC-wCm_RNKPBMtA@mail.gmail.com>
-From:   Ferry Toth <fntoth@gmail.com>
-Message-ID: <24c2c653-4087-fba1-5745-a62a8ae715c6@gmail.com>
-Date:   Fri, 24 Sep 2021 23:17:11 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ODWwcp9dc3Rx2L9zFdDyrTu7n5EdIV9thpMDCNrjnQ0=;
+        b=QOaV9Js4NQGM7RkFQOCMwztlpU9WolyoaDmbFnqYu4lZf8BX9ZbpCFU+E8iMWAHcks
+         K8TeMKC3xFt+2jn1i3JbIRlWdpoo6fOrM73KAVYXYUmNtRi4f9gkyHxiI2ryRiP3ztL1
+         62d4bG6a/I0F+uw/bcy22fidB1nxTfNbSQv+cDuv5Mn6ZvAI/XjgLZ/MGbB3wKbQkXrl
+         2+bOkVkEbHepG5jMGP68yAZlZX38vT93ceVQXn8CvigiuUyNEyEfwJqRsNXrmMVpyDWo
+         y3pHMnk791Kf4kW0e+pmHelyzNBXeLaQa7u5n1dpOqQO12FUyN848SrtpDLWZ9A5udMW
+         xs5A==
+X-Gm-Message-State: AOAM531mzkS4QTpv2f0LPf1knKjq/zdqqetRPY/EGBODmPPpsa2am4kw
+        ydhP0/4r/5ThvSjSxuOD3t75uyL7IMyxJ2FJ4GmuFg==
+X-Google-Smtp-Source: ABdhPJyC6RxI4N8ux7a3Vj2XCnFeUd3Eqf7IlxJwPR0NIU/3PHgxDNWtzeDF5wG316mbCSrF+m5PcZPWUKyPtvkt0Uo=
+X-Received: by 2002:ac2:4651:: with SMTP id s17mr11792264lfo.584.1632527291369;
+ Fri, 24 Sep 2021 16:48:11 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0howP_PudCf-43_HqgW48ydc29SeFVRC-wCm_RNKPBMtA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <20210923202216.16091-1-asmaa@nvidia.com> <20210923202216.16091-2-asmaa@nvidia.com>
+ <YU26lIUayYXU/x9l@lunn.ch>
+In-Reply-To: <YU26lIUayYXU/x9l@lunn.ch>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sat, 25 Sep 2021 01:48:00 +0200
+Message-ID: <CACRpkdbUJF6VUPk9kCMPBvjeL3frJAbHq+h0-z7P-a1pSU+fiw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] gpio: mlxbf2: Introduce IRQ support
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Asmaa Mnebhi <asmaa@nvidia.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        David Thompson <davthompson@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi
+On Fri, Sep 24, 2021 at 1:46 PM Andrew Lunn <andrew@lunn.ch> wrote:
 
-Op 24-09-2021 om 14:02 schreef Rafael J. Wysocki:
-> On Thu, Sep 23, 2021 at 10:32 PM Ferry Toth <fntoth@gmail.com> wrote:
->> Hi
->>
->> Op 23-09-2021 om 15:51 schreef Ferry Toth:
->>> Repost (with formatting removed, sorry for the noise)
->>> Op 23-09-2021 om 13:30 schreef Rafael J. Wysocki:
->>>> On Wed, Sep 22, 2021 at 11:31 PM Ferry Toth<fntoth@gmail.com>  wrote:
->>>>> Hi,
->>>>> Op 20-09-2021 om 21:17 schreef Rafael J. Wysocki:
->>>>>> From: Rafael J. Wysocki<rafael.j.wysocki@intel.com>
->>>>>>
->>>>>> Using struct pci_platform_pm_ops for ACPI adds unnecessary
->>>>>> indirection to the interactions between the PCI core and ACPI PM,
->>>>>> which is also subject to retpolines.
->>>>>>
->>>>>> Moreover, it is not particularly clear from the current code that,
->>>>>> as far as PCI PM is concerned, "platform" really means just ACPI
->>>>>> except for the special casess when Intel MID PCI PM is used or when
->>>>>> ACPI support is disabled (through the kernel config or command line,
->>>>>> or because there are no usable ACPI tables on the system).
->>>>>>
->>>>>> To address the above, rework the PCI PM code to invoke ACPI PM
->>>>>> functions directly as needed and drop the acpi_pci_platform_pm
->>>>>> object that is not necessary any more.
->>>>>>
->>>>>> Accordingly, update some of the ACPI PM functions in question to do
->>>>>> extra checks in case the ACPI support is disabled (which previously
->>>>>> was taken care of by avoiding to set the pci_platform_ops pointer
->>>>>> in those cases).
->>>>>>
->>>>>> Signed-off-by: Rafael J. Wysocki<rafael.j.wysocki@intel.com>
->>>>>> ---
->>>>>>
->>>>>> v1 -> v2:
->>>>>>        * Rebase on top of the new [1/7] and move dropping struct
->>>>>>          pci_platform_pm_ops to a separate patch.
->>>>> I wanted to test this series on 5.15-rc2 but this patch 2/7 doesn't
->>>>> apply (after 1/7 applied). Should I apply this on another tree?
->>>> This is on top of
->>>> https://patchwork.kernel.org/project/linux-acpi/patch/2793105.e9J7NaK4W3@kreacher/
->>>>
->>>> which is not yet in any tree.
->>>>
->>>> Sorry for the confusion.
->>> No problem at all. If I can I will try to report back tonight. Else,
->>> will be delayed 2 due to a short break.
->> With those 3 extra patches followed by 7 from this series it builds. But
->> on boot I get:
->> dwc3 dwc3.0.auto: this is not a DesignWare USB3 DRD Core
->> Then after this it reboots. Nothing in the logs. Nothing else on
->> console, I guess something goes wrong early.
-> It appears so.
+> > +static int
+> > +mlxbf2_gpio_irq_set_type(struct irq_data *irqd, unsigned int type)
+> > +{
+> > +     struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
+> > +     struct mlxbf2_gpio_context *gs = gpiochip_get_data(gc);
+> > +     int offset = irqd_to_hwirq(irqd);
+> > +     unsigned long flags;
+> > +     bool fall = false;
+> > +     bool rise = false;
+> > +     u32 val;
+> > +
+> > +     switch (type & IRQ_TYPE_SENSE_MASK) {
+> > +     case IRQ_TYPE_EDGE_BOTH:
+> > +     case IRQ_TYPE_LEVEL_MASK:
+> > +             fall = true;
+> > +             rise = true;
+> > +             break;
+> > +     case IRQ_TYPE_EDGE_RISING:
+> > +     case IRQ_TYPE_LEVEL_HIGH:
+> > +             rise = true;
+> > +             break;
+> > +     case IRQ_TYPE_EDGE_FALLING:
+> > +     case IRQ_TYPE_LEVEL_LOW:
+> > +             fall = true;
+> > +             break;
+> > +     default:
+> > +             return -EINVAL;
+> > +     }
 >
-> Can you please try just the 3 extra patches this series is on top of?
-> The problem is more likely to be located in one of them.
-Boots fine with just the 3 so up to and including "ACPI: glue: Look for 
-ACPI bus type only if ACPI companion is not known". From the log I get:
+> I'm still not convinced this is correct. Rising edge is different to
+> high. Rising edge only ever interrupts once, level keeps interrupting
+> until the source is cleared. You cannot store the four different
+> options in two bits.
+>
+> Linus, have you seen anything like this before?
 
+No, and I agree it looks weird.
 
-Intel MID platform detected, using MID PCI ops
-PCI: Using configuration type 1 for base access
-..
-PCI: Using host bridge windows from ACPI; if necessary, use "pci=nocrs" 
-and report a bug
-..
-PCI: Probing PCI hardware
-PCI: root bus 00: using default resources
-PCI: Probing PCI hardware (bus 00)
-PCI: pci_cache_line_size set to 64 bytes
-..
-pnp: PnP ACPI init
-..
-pnp: PnP ACPI: found 2 devices
-..
-xhci-hcd xhci-hcd.1.auto: xHCI Host Controller
-xhci-hcd xhci-hcd.1.auto: new USB bus registered, assigned bus number 1
-xhci-hcd xhci-hcd.1.auto: hcc params 0x0220f06c hci version 0x100 quirks 
-0x0000000002010010
-xhci-hcd xhci-hcd.1.auto: irq 14, io mem 0xf9100000
-usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, 
-bcdDevice= 5.15
-usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
-usb usb1: Product: xHCI Host Controller
-usb usb1: Manufacturer: Linux 5.15.0-rc2-edison-acpi-standard xhci-hcd
-usb usb1: SerialNumber: xhci-hcd.1.auto
-hub 1-0:1.0: USB hub found
-hub 1-0:1.0: 1 port detected
+There must be some explanation, what does the datasheet say?
 
-I continued up to "PCI: ACPI: PM: Do not use pci_platform_pm_ops for 
-ACPI", still boots.
-
-In the logs I still see "Intel MID platform detected, using MID PCI ops".
-
-Unfortunately no more time today, and tomorrow short holiday starts. I 
-will continue after returning next Sat.
-
-
+Yours,
+Linus Walleij
