@@ -2,94 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E33A417848
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Sep 2021 18:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64DC2417872
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Sep 2021 18:22:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347309AbhIXQPP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Sep 2021 12:15:15 -0400
-Received: from mail-ot1-f42.google.com ([209.85.210.42]:34635 "EHLO
-        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347280AbhIXQPO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Sep 2021 12:15:14 -0400
-Received: by mail-ot1-f42.google.com with SMTP id g62-20020a9d2dc4000000b0054752cfbc59so8112528otb.1;
-        Fri, 24 Sep 2021 09:13:41 -0700 (PDT)
+        id S1347297AbhIXQXj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Sep 2021 12:23:39 -0400
+Received: from mail-ot1-f49.google.com ([209.85.210.49]:41584 "EHLO
+        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347172AbhIXQXh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Sep 2021 12:23:37 -0400
+Received: by mail-ot1-f49.google.com with SMTP id 97-20020a9d006a000000b00545420bff9eso13805912ota.8;
+        Fri, 24 Sep 2021 09:22:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ZC1EsaX6wL9yAIaslJ+DDFzcPPT/Y6p1NPh5ojVAeNQ=;
-        b=jbiAyrW2gdcd6B7LThjfje/H/jPuaLEcVBln34uxnnBI8Cbn+v7cZTnTQhjmh86ifT
-         iYHZcHCw1N/jtAegV2liq7Ot/Gzo5vaHPf3kyxQmHxLkXs7qRh3LSCtT62/hZY/xXwgT
-         cCIkURK4SLpCJFUgDi8wkXZRD2G1YRM9xaysKxfsYXQPfWScsUTt8dFDhy+cxtEH2FOD
-         TN50ruyBtVuyUwhBqfOLGEevvyT525usSP7VnVSheh9WoGlc4z/eGvtuUu+9xd4xuuDj
-         rHtEpasVwn7odWX5M8NxmnRKTo/DIuLfBTLd33Fvf5jLY5j4Op0w6t4wMdPYh5vwh1+u
-         T0kA==
-X-Gm-Message-State: AOAM532V/qBwij4/+2y3fo4La3voL2coloall/SEy5RFltzcUF070SJ+
-        +HCzosaEUiCUcc+LxOKdh44pVoPpVuvFKqEo4Fs=
-X-Google-Smtp-Source: ABdhPJyDmk32YSUnR4jaxOpngtEpUVlNAQbbQN6VQfqSURZRXjSvfaW8NMxlUVFCefrC+4cm6RdlM+vRJJSgqXQipr0=
-X-Received: by 2002:a05:6830:2784:: with SMTP id x4mr4892011otu.86.1632500021144;
- Fri, 24 Sep 2021 09:13:41 -0700 (PDT)
+        bh=YcKXSgBtoVcxtHCKOtPHnRdujaEI6ZLYYWV1g18BTr8=;
+        b=Lr/U/Ma205yjlXaM0Q7YccOIBZrpkkX4OEJXiguhRHjeGd/m9nvFyEMhHYpI/xCy15
+         ZNwvNo6fGInC/kY04QuvnlXLL+PmxrsaLIb7/5CY5m/C5B8izVMSBf8lcwpuFNbqKrIT
+         xlzF12jTGJZuga0SSzuTxMzgNl9hE+bCoBe1wivej9dM8ke+rckqTUQI+0we7Mj3/6BY
+         dN9PdnQ4JLKUeZ5odPQQvT3XkbxOfkoTzTXe7HUhGo3qGRprIy0aWPnjH3eymsHjNGs2
+         mcUohMxIXpksmWpvHtl/vLlb9xRxTliur0obBr6S/7zIA6OpCcARBxtl9+aVjxOENGKv
+         dcBg==
+X-Gm-Message-State: AOAM531UYPgj+kcbtaM4XS08JqYvh14Ch1nMAE42InMCp5B7kUQFWAcW
+        G1I5XYa7uijo4gJG+9JpybkcRA55cqV8xbAJJ0c=
+X-Google-Smtp-Source: ABdhPJxjjGGJ3jArOANw1ZAOou2DF9Wa1ntjMZBW0pdESRYxjxL0t/0yjAeEoYELHdGqUVIAPcTvF4Gn/qtQ1rGAcEM=
+X-Received: by 2002:a05:6830:82b:: with SMTP id t11mr4806932ots.319.1632500524066;
+ Fri, 24 Sep 2021 09:22:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210916170054.136790-1-krzysztof.kozlowski@canonical.com>
- <20210916170054.136790-2-krzysztof.kozlowski@canonical.com>
- <f78523c5-df88-a768-3b9a-d542bbd73a1c@redhat.com> <CAJZ5v0gBZUrvX+w2oz-tmvDrHz_tFvzyzVGe4iz2wc3-V_9qPg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gBZUrvX+w2oz-tmvDrHz_tFvzyzVGe4iz2wc3-V_9qPg@mail.gmail.com>
+References: <20210920185028.18738-1-colin.king@canonical.com>
+In-Reply-To: <20210920185028.18738-1-colin.king@canonical.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 24 Sep 2021 18:13:30 +0200
-Message-ID: <CAJZ5v0j03SLpmJhX1jBHcsrVyt+kecmfE8n8-1quCVZBN+4RvQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] acpi: pnp: remove duplicated BRI0A49 and BDP3336 entries
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, Matan Ziv-Av <matan@svgalib.org>,
-        Mark Gross <mgross@linux.intel.com>,
+Date:   Fri, 24 Sep 2021 18:21:53 +0200
+Message-ID: <CAJZ5v0jH9PXm-abLj7MzC--OH+2kgwR8TBF0EcV8=Xh87215Xw@mail.gmail.com>
+Subject: Re: [PATCH] Documentation: ACPI: Fix spelling mistake "Millenium" -> "Millennium"
+To:     Colin King <colin.king@canonical.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 21, 2021 at 3:08 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Mon, Sep 20, 2021 at 8:50 PM Colin King <colin.king@canonical.com> wrote:
 >
-> On Tue, Sep 21, 2021 at 2:52 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> >
-> > Hi,
-> >
-> > On 9/16/21 7:00 PM, Krzysztof Kozlowski wrote:
-> > > BRI0A49 and BDP3336 are already on the list.
-> > >
-> > > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-> >
-> > Thanks, patch looks good to me:
-> >
-> > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-> >
-> > Rafael, I've picked up 1/2 since that applies to a drivers/platform/x86
-> > driver. I'll leave picking this one up to you.
+> From: Colin Ian King <colin.king@canonical.com>
 >
-> I'll pick it up, thanks!
+> There is a spelling mistake in the documentation with the Windows
+> Millennium edition. Fix it.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  Documentation/firmware-guide/acpi/osi.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/firmware-guide/acpi/osi.rst b/Documentation/firmware-guide/acpi/osi.rst
+> index 29e9ef79ebc0..05869c0045d7 100644
+> --- a/Documentation/firmware-guide/acpi/osi.rst
+> +++ b/Documentation/firmware-guide/acpi/osi.rst
+> @@ -74,7 +74,7 @@ The ACPI BIOS flow would include an evaluation of _OS, and the AML
+>  interpreter in the kernel would return to it a string identifying the OS:
+>
+>  Windows 98, SE: "Microsoft Windows"
+> -Windows ME: "Microsoft WindowsME:Millenium Edition"
+> +Windows ME: "Microsoft WindowsME:Millennium Edition"
+>  Windows NT: "Microsoft Windows NT"
+>
+>  The idea was on a platform tasked with running multiple OS's,
+> --
 
-Applied as 5.16 material now, thanks!
-
-> > > ---
-> > >  drivers/acpi/acpi_pnp.c | 2 --
-> > >  1 file changed, 2 deletions(-)
-> > >
-> > > diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
-> > > index 8f2dc176bb41..ffdcfcd4a10d 100644
-> > > --- a/drivers/acpi/acpi_pnp.c
-> > > +++ b/drivers/acpi/acpi_pnp.c
-> > > @@ -156,8 +156,6 @@ static const struct acpi_device_id acpi_pnp_device_ids[] = {
-> > >       {"BRI0A49"},            /* Boca Complete Ofc Communicator 14.4 Data-FAX */
-> > >       {"BRI1400"},            /* Boca Research 33,600 ACF Modem */
-> > >       {"BRI3400"},            /* Boca 33.6 Kbps Internal FD34FSVD */
-> > > -     {"BRI0A49"},            /* Boca 33.6 Kbps Internal FD34FSVD */
-> > > -     {"BDP3336"},            /* Best Data Products Inc. Smart One 336F PnP Modem */
-> > >       {"CPI4050"},            /* Computer Peripherals Inc. EuroViVa CommCenter-33.6 SP PnP */
-> > >       {"CTL3001"},            /* Creative Labs Phone Blaster 28.8 DSVD PnP Voice */
-> > >       {"CTL3011"},            /* Creative Labs Modem Blaster 28.8 DSVD PnP Voice */
-> > >
-> >
+Applied as 5.16 material, thanks!
