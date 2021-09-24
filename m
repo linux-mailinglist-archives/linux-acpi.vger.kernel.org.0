@@ -2,187 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58C17416E76
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Sep 2021 11:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46F10417059
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Sep 2021 12:31:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245079AbhIXJFt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Sep 2021 05:05:49 -0400
-Received: from foss.arm.com ([217.140.110.172]:44896 "EHLO foss.arm.com"
+        id S230207AbhIXKdZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 24 Sep 2021 06:33:25 -0400
+Received: from pout.email.it ([77.93.251.230]:46064 "EHLO pout.email.it"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245055AbhIXJFt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 24 Sep 2021 05:05:49 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F12CD6E;
-        Fri, 24 Sep 2021 02:04:16 -0700 (PDT)
-Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 609B13F719;
-        Fri, 24 Sep 2021 02:04:14 -0700 (PDT)
-Date:   Fri, 24 Sep 2021 10:04:09 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mark Kettenis <mark.kettenis@xs4all.nl>,
-        Jia He <justin.he@arm.com>,
-        Harb Abdulhamid <harb@amperecomputing.com>,
-        Will Deacon <will@kernel.org>, Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Rafael Wysocki <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH v2] Revert "ACPI: Add memory semantics to
- acpi_os_map_memory()"
-Message-ID: <20210924090409.GA26089@lpieralisi>
-References: <20210910122820.26886-1-justin.he@arm.com>
- <20210910143223.6705-1-justin.he@arm.com>
- <20210922163336.GA24633@lpieralisi>
- <56147a0b8b9fba46@bloch.sibelius.xs4all.nl>
- <20210923094031.GA6454@lpieralisi>
- <CAJZ5v0g+OVbhuUUDrLUCfX_mVqY_e8ubgLTU98=jfjTeb4t+Pw@mail.gmail.com>
- <56147c6e73afe9f6@bloch.sibelius.xs4all.nl>
- <CAJZ5v0j7=EGbtGw+FOMwyNWoyRoaeT1cvu6si7nPVVFh307J0g@mail.gmail.com>
+        id S229911AbhIXKdY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 24 Sep 2021 06:33:24 -0400
+X-Greylist: delayed 499 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 Sep 2021 06:33:24 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by pout.email.it (Postfix) with ESMTP id 9F8BCCE381;
+        Fri, 24 Sep 2021 12:23:30 +0200 (CEST)
+Received: from pout.email.it ([127.0.0.1])
+        by localhost (ir-mtaout02.email.it [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 9CKuUfwyWPdf; Fri, 24 Sep 2021 12:23:20 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by pout.email.it (Postfix) with ESMTP id 24558CE1CF;
+        Fri, 24 Sep 2021 12:23:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at ir-mtaout02.email.it
+Received: from pout.email.it ([127.0.0.1])
+        by localhost (ir-mtaout02.email.it [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id WupZ5Wsvxoei; Fri, 24 Sep 2021 12:23:20 +0200 (CEST)
+Received: from ir-zstore42.email.it (unknown [192.168.25.42])
+        by pout.email.it (Postfix) with ESMTP id 276B9CD180;
+        Fri, 24 Sep 2021 12:23:18 +0200 (CEST)
+Date:   Fri, 24 Sep 2021 12:23:18 +0200 (CEST)
+From:   blinkin@email.it
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Message-ID: <1811728383.1384020.1632478998559.JavaMail.zimbra@email.it>
+In-Reply-To: <87tujwhxl2.ffs@tglx>
+References: <629765464.1655403.1628264743080.JavaMail.zimbra@email.it> <87tujxssp2.ffs@tglx> <217397770.2008922.1628604301644.JavaMail.zimbra@email.it> <877dgtql9v.ffs@tglx> <1437097118.2114098.1628689870926.JavaMail.zimbra@email.it> <87tujwhxl2.ffs@tglx>
+Subject: Re: Bug report for kernel v4.15-rc8+
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0j7=EGbtGw+FOMwyNWoyRoaeT1cvu6si7nPVVFh307J0g@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [109.118.219.53]
+X-Mailer: Zimbra 8.8.15_GA_4125 (ZimbraWebClient - GC92 (Linux)/8.8.15_GA_4059)
+Thread-Topic: Bug report for kernel v4.15-rc8+
+Thread-Index: Y6D5gTTm9munIF0vbJIxXTKah8PVWg==
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 23, 2021 at 02:54:52PM +0200, Rafael J. Wysocki wrote:
-> On Thu, Sep 23, 2021 at 2:26 PM Mark Kettenis <mark.kettenis@xs4all.nl> wrote:
-> >
-> > > From: "Rafael J. Wysocki" <rafael@kernel.org>
-> > > Date: Thu, 23 Sep 2021 13:05:05 +0200
-> > >
-> > > On Thu, Sep 23, 2021 at 11:40 AM Lorenzo Pieralisi
-> > > <lorenzo.pieralisi@arm.com> wrote:
-> > > >
-> > > > On Thu, Sep 23, 2021 at 01:09:58AM +0200, Mark Kettenis wrote:
-> > > > > > Date: Wed, 22 Sep 2021 17:33:36 +0100
-> > > > > > From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > > > > >
-> > > > > > On Fri, Sep 10, 2021 at 10:32:23PM +0800, Jia He wrote:
-> > > > > > > This reverts commit 437b38c51162f8b87beb28a833c4d5dc85fa864e.
-> > > > > > >
-> > > > > > > After this commit, a boot panic is alway hit on an Ampere EMAG server
-> > > > > > > with call trace as follows:
-> > > > > > >  Internal error: synchronous external abort: 96000410 [#1] SMP
-> > > > > > >  Modules linked in:
-> > > > > > >  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0+ #462
-> > > > > > >  Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
-> > > > > > >  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > > > > > > [...snip...]
-> > > > > > >  Call trace:
-> > > > > > >   acpi_ex_system_memory_space_handler+0x26c/0x2c8
-> > > > > > >   acpi_ev_address_space_dispatch+0x228/0x2c4
-> > > > > > >   acpi_ex_access_region+0x114/0x268
-> > > > > > >   acpi_ex_field_datum_io+0x128/0x1b8
-> > > > > > >   acpi_ex_extract_from_field+0x14c/0x2ac
-> > > > > > >   acpi_ex_read_data_from_field+0x190/0x1b8
-> > > > > > >   acpi_ex_resolve_node_to_value+0x1ec/0x288
-> > > > > > >   acpi_ex_resolve_to_value+0x250/0x274
-> > > > > > >   acpi_ds_evaluate_name_path+0xac/0x124
-> > > > > > >   acpi_ds_exec_end_op+0x90/0x410
-> > > > > > >   acpi_ps_parse_loop+0x4ac/0x5d8
-> > > > > > >   acpi_ps_parse_aml+0xe0/0x2c8
-> > > > > > >   acpi_ps_execute_method+0x19c/0x1ac
-> > > > > > >   acpi_ns_evaluate+0x1f8/0x26c
-> > > > > > >   acpi_ns_init_one_device+0x104/0x140
-> > > > > > >   acpi_ns_walk_namespace+0x158/0x1d0
-> > > > > > >   acpi_ns_initialize_devices+0x194/0x218
-> > > > > > >   acpi_initialize_objects+0x48/0x50
-> > > > > > >   acpi_init+0xe0/0x498
-> > > > > > >
-> > > > > > > As mentioned by Lorenzo:
-> > > > > > >   "We are forcing memory semantics mappings to PROT_NORMAL_NC, which
-> > > > > > >   eMAG does not like at all and I'd need to understand why. It looks
-> > > > > > >   like the issue happen in SystemMemory Opregion handler."
-> > > > > > >
-> > > > > > > Hence just revert it before everything is clear.
-> > > > > > >
-> > > > > > > Fixes: 437b38c51162 ("ACPI: Add memory semantics to acpi_os_map_memory()")
-> > > > > > > Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > > > > > > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > > > > > > Cc: Hanjun Guo <guohanjun@huawei.com>
-> > > > > > > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > > > > > > Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > > > > Cc: Harb Abdulhamid <harb@amperecomputing.com>
-> > > > > > >
-> > > > > > > Signed-off-by: Jia He <justin.he@arm.com>
-> > > > > >
-> > > > > > Rewrote the commit log, please take the patch below and repost
-> > > > > > it as a v3.
-> > > > > >
-> > > > > > It would still be great if Ampere can help us understand why
-> > > > > > the NormalNC attributes trigger a sync abort on the opregion
-> > > > > > before merging it.
-> > > > >
-> > > > > To be honest, I don't think you really need an explanation from Ampere
-> > > > > here.  Mapping a part of the address space that doesn't provide memory
-> > > > > semantics with NormalNC attributes is wrong and triggering a sync
-> > > > > abort in that case is way better than silently ignoring the access.
-> > > >
-> > > > That's understood and that's what I explained in the revert commit
-> > > > log, no question about it.
-> > > >
-> > > > I was just asking to confirm if that's what's actually happening.
-> > > >
-> > > > > Putting my OpenBSD hat on (where we have our own ACPI OSPM
-> > > > > implementation) I must say that we always interpreted SystemMemory as
-> > > > > memory mapped IO and I think that is a logical choice as SystemIO is
-> > > > > used for (non-memory mapped) IO.  And I'd say that the ACPI OSPM code
-> > > > > should make sure that it uses properly aligned access to any Field
-> > > > > object that doesn't use AnyAcc as its access type.  Even on x86!  And
-> > > > > I'd say that AML that uses AnyAcc fields for SystemMemory OpRegions on
-> > > > > arm64 is buggy.
-> > > > >
-> > > > > But maybe relaxing this when the EFI memory map indicates that the
-> > > > > address space in question does provide memory semantics does make
-> > > > > sense.  That should defenitely be documented in the ACPI standard
-> > > > > though.
-> > > >
-> > > > Mapping SystemMemory Opregions as "memory" does not make sense
-> > > > at all to me. Still, that's what Linux ACPICA code does (*if*
-> > > > that's what acpi_os_map_memory() is supposed to mean).
-> > > >
-> > > > https://lore.kernel.org/linux-acpi/20210916160827.GA4525@lpieralisi
-> > >
-> > > It doesn't need to do that, though, if there are good enough arguments
-> > > to change the current behavior (and the argument here is that it may
-> > > be an MMIO region, so mapping it as memory doesn't really work, but it
-> > > also may be a region in memory - there is no rule in the spec by which
-> > > SystemMemory Opregions cannot be "memory" AFAICS) and if that change
-> > > doesn't introduce regressions in the installed base.
-> > >
-> > > > Where do we go from here, to be defined, we still have a bug
-> > > > to fix after the revert is applied.
-> > > >
-> > > > drivers/acpi/sysfs.c
-> > > >
-> > > > maps BERT error regions with acpi_os_map_memory().
-> > >
-> > > That mechanism is basically used for exporting ACPI tables to user
-> > > space and they are known to reside in memory.  Whether or not BERT
-> > > regions should be mapped in the same way is a good question.
-> >
-> > It is not inconceivable that BERT regions actually live in memory of
-> > the BMC that is exposed over a bus that doesn't implement memory
-> > semantics is it?
-> 
-> No, it isn't, which is why I think that mapping them as RAM may not be
-> a good idea in general.
+hello, any news on this?
 
-Should I patch acpi_data_show() to map BERT error regions (well, that's
-what acpi_data_show() is used on at the moment) as MMIO and use the
-related memcpy routine to read them then :) ?
+----- Messaggio originale -----
+Da: "Thomas Gleixner" <tglx@linutronix.de>
+A: blinkin@email.it
+Cc: "linux-kernel" <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Inviato: Mercoledì, 11 agosto 2021 16:20:41
+Oggetto: Re: Bug report for kernel v4.15-rc8+
 
-Lorenzo
+On Wed, Aug 11 2021 at 15:51, blinkin@email.it wrote:
+> 1) You're booting with an out of tree module
+>
+>   Uninstalled virtualbox, reproduced same behavior without the module.
+>   dmesg outputs attached with and without the workaround
+>   (dmesg_novboxdrv_clean.txt and dmesg_novboxdrv_irqaffinity0.txt)
 
-> At the same time, mapping the ACPI tables like the DSDT etc. as RAM is
-> always valid.
+Ok.
+
+> 2) Please provide information what is consuming 90% of a CPU
+>
+>   top shows a kworker process consistently at 50% without the
+>   workaround, 60% with the workaround. No significant activity amounts
+>   from other processes.  Sometimes that 50% is split between two
+>   kworker processes for a short time.  CPU core #0 activity is a
+>   constant 60% without the workaround, 90% with the workaround
+
+That's broken. /proc/interrupts gives some hint:
+
+1) Stock kernel
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:          0          0          0          9  IR-IO-APIC    1-edge      i8042
+>    8:          0          1          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:          0     923411          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+900k ACPI interrupts right after boot
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:          0          0          0         11  IR-IO-APIC    1-edge      i8042
+>    8:          0          1          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:          0    4869059          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+One minute later it's 4.8M
+
+With affinity forced to CPU0 it's even more:
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:          9          0          0          0  IR-IO-APIC    1-edge      i8042
+>    8:          1          0          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:    7576456          0          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+7.5M right after boot
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:         11          0          0          0  IR-IO-APIC    1-edge      i8042
+>    8:          1          0          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:   10992420          0          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+10.9M after one minute. Though the delta between right after boot and 1
+minute later is in the same ballpark.
+
+Cc'ed the ACPI people for clues.
+
+Thanks,
+
+        tglx
