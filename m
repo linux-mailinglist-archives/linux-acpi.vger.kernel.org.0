@@ -2,120 +2,228 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46F10417059
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Sep 2021 12:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6D3F4170FE
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Sep 2021 13:40:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230207AbhIXKdZ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 24 Sep 2021 06:33:25 -0400
-Received: from pout.email.it ([77.93.251.230]:46064 "EHLO pout.email.it"
+        id S245030AbhIXLls (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Sep 2021 07:41:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52324 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229911AbhIXKdY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 24 Sep 2021 06:33:24 -0400
-X-Greylist: delayed 499 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 Sep 2021 06:33:24 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by pout.email.it (Postfix) with ESMTP id 9F8BCCE381;
-        Fri, 24 Sep 2021 12:23:30 +0200 (CEST)
-Received: from pout.email.it ([127.0.0.1])
-        by localhost (ir-mtaout02.email.it [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 9CKuUfwyWPdf; Fri, 24 Sep 2021 12:23:20 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by pout.email.it (Postfix) with ESMTP id 24558CE1CF;
-        Fri, 24 Sep 2021 12:23:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at ir-mtaout02.email.it
-Received: from pout.email.it ([127.0.0.1])
-        by localhost (ir-mtaout02.email.it [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id WupZ5Wsvxoei; Fri, 24 Sep 2021 12:23:20 +0200 (CEST)
-Received: from ir-zstore42.email.it (unknown [192.168.25.42])
-        by pout.email.it (Postfix) with ESMTP id 276B9CD180;
-        Fri, 24 Sep 2021 12:23:18 +0200 (CEST)
-Date:   Fri, 24 Sep 2021 12:23:18 +0200 (CEST)
-From:   blinkin@email.it
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Message-ID: <1811728383.1384020.1632478998559.JavaMail.zimbra@email.it>
-In-Reply-To: <87tujwhxl2.ffs@tglx>
-References: <629765464.1655403.1628264743080.JavaMail.zimbra@email.it> <87tujxssp2.ffs@tglx> <217397770.2008922.1628604301644.JavaMail.zimbra@email.it> <877dgtql9v.ffs@tglx> <1437097118.2114098.1628689870926.JavaMail.zimbra@email.it> <87tujwhxl2.ffs@tglx>
-Subject: Re: Bug report for kernel v4.15-rc8+
+        id S244321AbhIXLlr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 24 Sep 2021 07:41:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5D17B60F3A;
+        Fri, 24 Sep 2021 11:40:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632483614;
+        bh=U9aS5K/IyRoueg05i1FbrwWdjKbIDOwphKq3cblgnCY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=n2uXgsbtQVwxAFdtxZEOKcqnlPNaO2iKEdETCo8iA2FEEft0f5Zkih4jYQVwrUtmc
+         4ODCWECQAQH4mswHXXrUwA4r89+EzTpi18OPHTJIgesdfKL1my6FcSfWiBEkXo4GHc
+         n22mgc2VfEnxnbWCYpJOi4aB9+RHcFAp1TW0up5ww6wJ3GRB3Bo+6UJGq/PpSUXGXC
+         8IJIGaPixRc7t77SyksWH4EfeFXsOSV3fhYkScY3L+EpEgL28tfW5A6XKdwwdQ/fZI
+         SrFj4lljfBJe3EuyXIzzx4wHhrOO5jDqeuBkKZcX557yu5Z+gWnFvBW066wOmXbzoS
+         wZaewpBVm6yvw==
+Date:   Fri, 24 Sep 2021 07:40:13 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Maxwell Beck <max@ryt.one>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH AUTOSEL 5.14 10/25] ACPI: PM: s2idle: Run both AMD and
+ Microsoft methods if both are supported
+Message-ID: <YU25HdD95AhXgiH2@sashalap>
+References: <20210913223339.435347-1-sashal@kernel.org>
+ <20210913223339.435347-10-sashal@kernel.org>
+ <SA0PR12MB451092FB36EAFACFCD928212E2A19@SA0PR12MB4510.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [109.118.219.53]
-X-Mailer: Zimbra 8.8.15_GA_4125 (ZimbraWebClient - GC92 (Linux)/8.8.15_GA_4059)
-Thread-Topic: Bug report for kernel v4.15-rc8+
-Thread-Index: Y6D5gTTm9munIF0vbJIxXTKah8PVWg==
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <SA0PR12MB451092FB36EAFACFCD928212E2A19@SA0PR12MB4510.namprd12.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-hello, any news on this?
-
------ Messaggio originale -----
-Da: "Thomas Gleixner" <tglx@linutronix.de>
-A: blinkin@email.it
-Cc: "linux-kernel" <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Inviato: Mercoledì, 11 agosto 2021 16:20:41
-Oggetto: Re: Bug report for kernel v4.15-rc8+
-
-On Wed, Aug 11 2021 at 15:51, blinkin@email.it wrote:
-> 1) You're booting with an out of tree module
+On Tue, Sep 21, 2021 at 02:57:26PM +0000, Limonciello, Mario wrote:
+>[Public]
 >
->   Uninstalled virtualbox, reproduced same behavior without the module.
->   dmesg outputs attached with and without the workaround
->   (dmesg_novboxdrv_clean.txt and dmesg_novboxdrv_irqaffinity0.txt)
-
-Ok.
-
-> 2) Please provide information what is consuming 90% of a CPU
+>> -----Original Message-----
+>> From: Sasha Levin <sashal@kernel.org>
+>> Sent: Monday, September 13, 2021 17:33
+>> To: linux-kernel@vger.kernel.org; stable@vger.kernel.org
+>> Cc: Limonciello, Mario <Mario.Limonciello@amd.com>; Maxwell Beck
+>> <max@ryt.one>; Rafael J . Wysocki <rafael.j.wysocki@intel.com>; Sasha Levin
+>> <sashal@kernel.org>; linux-acpi@vger.kernel.org
+>> Subject: [PATCH AUTOSEL 5.14 10/25] ACPI: PM: s2idle: Run both AMD and
+>> Microsoft methods if both are supported
+>>
+>> From: Mario Limonciello <mario.limonciello@amd.com>
+>>
+>> [ Upstream commit fa209644a7124b3f4cf811ced55daef49ae39ac6 ]
+>>
+>> It was reported that on "HP ENVY x360" that power LED does not come
+>> back, certain keys like brightness controls do not work, and the fan
+>> never spins up, even under load on 5.14 final.
+>>
+>> In analysis of the SSDT it's clear that the Microsoft UUID doesn't
+>> provide functional support, but rather the AMD UUID should be
+>> supporting this system.
+>>
+>> Because this is a gap in the expected logic, we checked back with
+>> internal team.  The conclusion was that on Windows AMD uPEP *does*
+>> run even when Microsoft UUID present, but most OEM systems have
+>> adopted value of "0x3" for supported functions and hence nothing
+>> runs.
+>>
+>> Henceforth add support for running both Microsoft and AMD methods.
+>> This approach will also allow the same logic on Intel systems if
+>> desired at a future time as well by pulling the evaluation of
+>> `lps0_dsm_func_mask_microsoft` out of the `if` block for
+>> `acpi_s2idle_vendor_amd`.
+>>
+>> Link:
+>> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgitlab.fr
+>> eedesktop.org%2Fdrm%2Famd%2Fuploads%2F9fbcd7ec3a385cc6949c9bacf45d
+>> c41b%2Facpi-
+>> f.20.bin&amp;data=04%7C01%7Cmario.limonciello%40amd.com%7Ce1f8dfc3d
+>> bfb45fc44ef08d97706917f%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C
+>> 0%7C637671692363481559%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjA
+>> wMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sda
+>> ta=wP0oz8OMnby9PA4MFrbY1ZAT%2FKv1jctTyXl%2BDteNHqY%3D&amp;reserv
+>> ed=0
+>> BugLink:
+>> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgitlab.fr
+>> eedesktop.org%2Fdrm%2Famd%2F-
+>> %2Fissues%2F1691&amp;data=04%7C01%7Cmario.limonciello%40amd.com%7
+>> Ce1f8dfc3dbfb45fc44ef08d97706917f%7C3dd8961fe4884e608e11a82d994e183
+>> d%7C0%7C0%7C637671692363481559%7CUnknown%7CTWFpbGZsb3d8eyJWIj
+>> oiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C100
+>> 0&amp;sdata=MVhVz%2BYBTdwgvkkSRRFsL5QdfDLPgTzoMBjD4dsFfMA%3D&a
+>> mp;reserved=0
+>> Reported-by: Maxwell Beck <max@ryt.one>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> [ rjw: Edits of the new comments ]
+>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>  drivers/acpi/x86/s2idle.c | 67 +++++++++++++++++++++++----------------
+>>  1 file changed, 39 insertions(+), 28 deletions(-)
+>>
+>> diff --git a/drivers/acpi/x86/s2idle.c b/drivers/acpi/x86/s2idle.c
+>> index 3a308461246a..bd92b549fd5a 100644
+>> --- a/drivers/acpi/x86/s2idle.c
+>> +++ b/drivers/acpi/x86/s2idle.c
+>> @@ -449,25 +449,30 @@ int acpi_s2idle_prepare_late(void)
+>>  	if (pm_debug_messages_on)
+>>  		lpi_check_constraints();
+>>
+>> -	if (lps0_dsm_func_mask_microsoft > 0) {
+>> +	/* Screen off */
+>> +	if (lps0_dsm_func_mask > 0)
+>> +		acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
+>> +					ACPI_LPS0_SCREEN_OFF_AMD :
+>> +					ACPI_LPS0_SCREEN_OFF,
+>> +					lps0_dsm_func_mask, lps0_dsm_guid);
+>> +
+>> +	if (lps0_dsm_func_mask_microsoft > 0)
+>>  		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
+>>  				lps0_dsm_func_mask_microsoft,
+>> lps0_dsm_guid_microsoft);
+>> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
+>> -				lps0_dsm_func_mask_microsoft,
+>> lps0_dsm_guid_microsoft);
+>> +
+>> +	/* LPS0 entry */
+>> +	if (lps0_dsm_func_mask > 0)
+>> +		acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
+>> +					ACPI_LPS0_ENTRY_AMD :
+>> +					ACPI_LPS0_ENTRY,
+>> +					lps0_dsm_func_mask, lps0_dsm_guid);
+>> +	if (lps0_dsm_func_mask_microsoft > 0) {
+>>  		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
+>>  				lps0_dsm_func_mask_microsoft,
+>> lps0_dsm_guid_microsoft);
+>> -	} else if (acpi_s2idle_vendor_amd()) {
+>> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF_AMD,
+>> -				lps0_dsm_func_mask, lps0_dsm_guid);
+>> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD,
+>> -				lps0_dsm_func_mask, lps0_dsm_guid);
+>> -	} else {
+>> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF,
+>> -				lps0_dsm_func_mask, lps0_dsm_guid);
+>> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
+>> -				lps0_dsm_func_mask, lps0_dsm_guid);
+>> +		/* modern standby entry */
+>> +		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
+>> +				lps0_dsm_func_mask_microsoft,
+>> lps0_dsm_guid_microsoft);
+>>  	}
+>> -
+>>  	return 0;
+>>  }
+>>
+>> @@ -476,24 +481,30 @@ void acpi_s2idle_restore_early(void)
+>>  	if (!lps0_device_handle || sleep_no_lps0)
+>>  		return;
+>>
+>> -	if (lps0_dsm_func_mask_microsoft > 0) {
+>> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
+>> -				lps0_dsm_func_mask_microsoft,
+>> lps0_dsm_guid_microsoft);
+>> +	/* Modern standby exit */
+>> +	if (lps0_dsm_func_mask_microsoft > 0)
+>>  		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
+>>  				lps0_dsm_func_mask_microsoft,
+>> lps0_dsm_guid_microsoft);
+>> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
+>> -				lps0_dsm_func_mask_microsoft,
+>> lps0_dsm_guid_microsoft);
+>> -	} else if (acpi_s2idle_vendor_amd()) {
+>> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT_AMD,
+>> -				lps0_dsm_func_mask, lps0_dsm_guid);
+>> -		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON_AMD,
+>> -				lps0_dsm_func_mask, lps0_dsm_guid);
+>> -	} else {
+>> +
+>> +	/* LPS0 exit */
+>> +	if (lps0_dsm_func_mask > 0)
+>> +		acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
+>> +					ACPI_LPS0_EXIT_AMD :
+>> +					ACPI_LPS0_EXIT,
+>> +					lps0_dsm_func_mask, lps0_dsm_guid);
+>> +	if (lps0_dsm_func_mask_microsoft > 0)
+>>  		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
+>> -				lps0_dsm_func_mask, lps0_dsm_guid);
+>> +				lps0_dsm_func_mask_microsoft,
+>> lps0_dsm_guid_microsoft);
+>> +
+>> +	/* Screen on */
+>> +	if (lps0_dsm_func_mask_microsoft > 0)
+>>  		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON,
+>> -				lps0_dsm_func_mask, lps0_dsm_guid);
+>> -	}
+>> +				lps0_dsm_func_mask_microsoft,
+>> lps0_dsm_guid_microsoft);
+>> +	if (lps0_dsm_func_mask > 0)
+>> +		acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
+>> +					ACPI_LPS0_SCREEN_ON_AMD :
+>> +					ACPI_LPS0_SCREEN_ON,
+>> +					lps0_dsm_func_mask, lps0_dsm_guid);
+>>  }
+>>
+>>  static const struct platform_s2idle_ops acpi_s2idle_ops_lps0 = {
+>> --
+>> 2.30.2
 >
->   top shows a kworker process consistently at 50% without the
->   workaround, 60% with the workaround. No significant activity amounts
->   from other processes.  Sometimes that 50% is split between two
->   kworker processes for a short time.  CPU core #0 activity is a
->   constant 60% without the workaround, 90% with the workaround
+>I noticed this didn't get picked up automatically for 5.14.6, so as the submitter of the
+>original patch here is an explicit:
+>
+>Acked-by: Mario Limonciello <mario.limonciello@amd.com>
 
-That's broken. /proc/interrupts gives some hint:
+Oh it did now, AUTOSEL just has a lengthier review process.
+Thanks!
 
-1) Stock kernel
-
->             CPU0       CPU1       CPU2       CPU3       
->    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
->    1:          0          0          0          9  IR-IO-APIC    1-edge      i8042
->    8:          0          1          0          0  IR-IO-APIC    8-edge      rtc0
->    9:          0     923411          0          0  IR-IO-APIC    9-fasteoi   acpi
-
-900k ACPI interrupts right after boot
-
->             CPU0       CPU1       CPU2       CPU3       
->    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
->    1:          0          0          0         11  IR-IO-APIC    1-edge      i8042
->    8:          0          1          0          0  IR-IO-APIC    8-edge      rtc0
->    9:          0    4869059          0          0  IR-IO-APIC    9-fasteoi   acpi
-
-One minute later it's 4.8M
-
-With affinity forced to CPU0 it's even more:
-
->             CPU0       CPU1       CPU2       CPU3       
->    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
->    1:          9          0          0          0  IR-IO-APIC    1-edge      i8042
->    8:          1          0          0          0  IR-IO-APIC    8-edge      rtc0
->    9:    7576456          0          0          0  IR-IO-APIC    9-fasteoi   acpi
-
-7.5M right after boot
-
->             CPU0       CPU1       CPU2       CPU3       
->    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
->    1:         11          0          0          0  IR-IO-APIC    1-edge      i8042
->    8:          1          0          0          0  IR-IO-APIC    8-edge      rtc0
->    9:   10992420          0          0          0  IR-IO-APIC    9-fasteoi   acpi
-
-10.9M after one minute. Though the delta between right after boot and 1
-minute later is in the same ballpark.
-
-Cc'ed the ACPI people for clues.
-
+-- 
 Thanks,
-
-        tglx
+Sasha
