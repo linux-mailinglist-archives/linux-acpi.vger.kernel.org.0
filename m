@@ -2,72 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44435417878
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Sep 2021 18:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F23C241788B
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Sep 2021 18:31:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbhIXQZJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Sep 2021 12:25:09 -0400
-Received: from mail-oi1-f176.google.com ([209.85.167.176]:42705 "EHLO
-        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245636AbhIXQZI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Sep 2021 12:25:08 -0400
-Received: by mail-oi1-f176.google.com with SMTP id x124so15106201oix.9;
-        Fri, 24 Sep 2021 09:23:35 -0700 (PDT)
+        id S234233AbhIXQd3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Sep 2021 12:33:29 -0400
+Received: from mail-oi1-f182.google.com ([209.85.167.182]:40480 "EHLO
+        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233640AbhIXQd3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Sep 2021 12:33:29 -0400
+Received: by mail-oi1-f182.google.com with SMTP id t189so15189926oie.7;
+        Fri, 24 Sep 2021 09:31:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=dSEXygsL3UWJLgUyzQZz+MLQB2MjhzN5ePUr9DIGp/I=;
-        b=MSLvX7bmgXR5FaW5+z5pMhj4WpsLHVuBwE+CKA1U2/6ey3ItH3RjOwfD5nBqb9poPp
-         jaArWk+ps8TooWiVCyFsaEZAKhUVtfGf58IN6flHRj5c+0qY5azd1QV+oGemOHd2dOm3
-         nLpYFz8hFH2CNz9pBJCZDUzfMpBKQVoKtvITeqOfu5wsSBcOnPgc84avPpFsHzoxCyF5
-         2BV68GB1DwUi/ewCSScrk+iYyT5DR2wVeWSlh3pbU885OSWDxM5ikgkiCDKoLfp1zmWD
-         Jsnj6+eaXP0A/7hIVYuq0dyQlt5TK5AsG8vS4QnalimzRFyxMjn8eGFjGBG0jGSaThNm
-         Qd0Q==
-X-Gm-Message-State: AOAM53267FP0dCcVLupapYXbcIP8VdimQtZkYDqjPJsZpAVOyTnDxshM
-        9/Rt2MoXikRT5j8GABLUTIL+roX0sCbOZlfcfW7ygpvR
-X-Google-Smtp-Source: ABdhPJzdy7CQbWSQmdLrzlfqBN5IdWweBN19HoBiAY8lmNN0mDJTjWO2JDOuhkb06CWi3grlO5sLtrB6flhyLrLucnU=
-X-Received: by 2002:a05:6808:1816:: with SMTP id bh22mr2120463oib.69.1632500614884;
- Fri, 24 Sep 2021 09:23:34 -0700 (PDT)
+        bh=YbjRBqRzb8KYpNgRLaEYJ6jgr0RlWe+czyRscPGcjD0=;
+        b=vQ8fNfvhglnjgzhvbOGPxDRQ4pYLPj8ikgo+0d0NY4TN4SIt1eX8BadPXrd1Q9ScAS
+         M12UULALO0gi+rp/zpoPhavPPcRkY3bfe8YwRTr6B+/SrJJZf90AW5ZEzD8jPUW245Qz
+         +KwNkb6N5qBoTJp1cEBCL/ncHCq13/zQxo05g+WGIw1zXvrLl5u2sYblzv+12aTKT4Qg
+         sYv0kxeeplOkdPbbYf22fLaduPyall9SYIelvE9NYYVL9bM3NTdA71KhS7t1ijccvOmS
+         Xg3XxeNbeGDzgB7ZkdNWg2dO/cHmrwL986ROB280Jt/Ypm1jOTPx/EFra8/Mq6vjqqsl
+         YZrg==
+X-Gm-Message-State: AOAM531w71GdH9hFcJqYRCsScMnRsFb5EOAxWs6aSQ63SkDn3alBWSPP
+        C1SwxrEP/EiwvFmffEUMc1Sl4BCXCtYu0Xkq0MD9EmqF
+X-Google-Smtp-Source: ABdhPJzb32RBBISpIOFuSg5Fy97JJQ3/0Sf57fxliPmdq5zXsL/R1LO+oIeHtCS6qF58K2GkM5o+xcoC7218A2BmOEY=
+X-Received: by 2002:a05:6808:10ce:: with SMTP id s14mr2287514ois.157.1632501115801;
+ Fri, 24 Sep 2021 09:31:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210921062124.250165-1-standby24x7@gmail.com>
-In-Reply-To: <20210921062124.250165-1-standby24x7@gmail.com>
+References: <20210922133116.102-1-richard.gong@amd.com>
+In-Reply-To: <20210922133116.102-1-richard.gong@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 24 Sep 2021 18:23:24 +0200
-Message-ID: <CAJZ5v0i9NBmap3smR4=NuSfFuwGj9Qj+gK6hf0xN0f1ZB=G9Dg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Kconfig: Fix a typo in Kconfig
-To:     Masanari Iida <standby24x7@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+Date:   Fri, 24 Sep 2021 18:31:44 +0200
+Message-ID: <CAJZ5v0jpOzNS5TFdJNXdxa_p2D_5QQMwwRcSMe8JmjOaTjR8gg@mail.gmail.com>
+Subject: Re: [PATCHv1] ACPI: processor idle: Allow playing dead in C3 state
+To:     Richard Gong <richard.gong@amd.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        lijo.lazar@amd.com, Mario Limonciello <mario.limonciello@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 21, 2021 at 8:21 AM Masanari Iida <standby24x7@gmail.com> wrote:
+On Wed, Sep 22, 2021 at 3:31 PM Richard Gong <richard.gong@amd.com> wrote:
 >
-> This patch fixes a spelling typo in acpi/Kconfig
+> When some cores are disabled on AMD platforms, the system will no longer
+> be able to enter suspend-to-idle s0ix.
 >
-> Signed-off-by: Masanari Iida <standby24x7@gmail.com>
+> Update to allow playing dead in C3 state so that the CPUs can enter the
+> deepest state on AMD platforms.
+>
+> BugLink: https://gitlab.freedesktop.org/drm/amd/-/issues/1708
+> Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+> Signed-off-by: Richard Gong <richard.gong@amd.com>
 > ---
->  drivers/acpi/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/processor_idle.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index 1da360c51d66..cdbdf68bd98f 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -71,7 +71,7 @@ config ACPI_DEBUGGER
->  if ACPI_DEBUGGER
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index f37fba9e5ba0..61d5a72d218e 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -789,7 +789,8 @@ static int acpi_processor_setup_cstates(struct acpi_processor *pr)
+>                 state->enter = acpi_idle_enter;
 >
->  config ACPI_DEBUGGER_USER
-> -       tristate "Userspace debugger accessiblity"
-> +       tristate "Userspace debugger accessibility"
->         depends on DEBUG_FS
->         help
->           Export /sys/kernel/debug/acpi/acpidbg for userspace utilities
+>                 state->flags = 0;
+> -               if (cx->type == ACPI_STATE_C1 || cx->type == ACPI_STATE_C2) {
+> +               if (cx->type == ACPI_STATE_C1 || cx->type == ACPI_STATE_C2
+> +                       || cx->type == ACPI_STATE_C3) {
+>                         state->enter_dead = acpi_idle_play_dead;
+>                         drv->safe_state_index = count;
+>                 }
 > --
 
-Applied as 5.16 material, thanks!
+Tentatively applied as 5.16 material, but have you done any research
+on why this restriction has been there in the first place?
