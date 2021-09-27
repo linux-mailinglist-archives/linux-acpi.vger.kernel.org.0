@@ -2,61 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E10F4195F2
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Sep 2021 16:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 264A241961B
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Sep 2021 16:19:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234702AbhI0OJr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Sep 2021 10:09:47 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:33792 "EHLO vps0.lunn.ch"
+        id S234679AbhI0OVE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Sep 2021 10:21:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33146 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234645AbhI0OJq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 27 Sep 2021 10:09:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=IckG1sRzJnW/Mx/vKohnDrPDQtYCCkvkQ4ZGzZAHtkc=; b=P2UElf26lwjvNVBZKnhDCN+NU6
-        nu8C7CXIA6aQ8Pg+wPzDJnZ8ZpG4Zn7vt+ekLSI1WmIHOKKF7DxZbFUFJWPogl/1dbuDJbai2v5iL
-        Yvb5c1k80++7eOVUSMEJMbNTiSXb7/tUys28eWUvJ+xL5cSitKtw8O6QZAUEXrhLYMWQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1mUrIX-008RkP-4J; Mon, 27 Sep 2021 16:08:01 +0200
-Date:   Mon, 27 Sep 2021 16:08:01 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        David Thompson <davthompson@nvidia.com>
-Subject: Re: [PATCH v3 1/2] gpio: mlxbf2: Introduce IRQ support
-Message-ID: <YVHQQcv2M6soJR6u@lunn.ch>
-References: <20210923202216.16091-1-asmaa@nvidia.com>
- <20210923202216.16091-2-asmaa@nvidia.com>
- <YU26lIUayYXU/x9l@lunn.ch>
- <CACRpkdbUJF6VUPk9kCMPBvjeL3frJAbHq+h0-z7P-a1pSU+fiw@mail.gmail.com>
- <CH2PR12MB38951F2326196AB5B573A73DD7A79@CH2PR12MB3895.namprd12.prod.outlook.com>
+        id S234763AbhI0OVD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 27 Sep 2021 10:21:03 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0F24060F46;
+        Mon, 27 Sep 2021 14:19:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632752366;
+        bh=5kMOQOUkx1xtG9jmMqZdHT5odd4WM6bFcjvYnw7ZgQc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WbHPGtF3SakJPF5u2KRwcuzkmC0EQhIjo4OVMzQocu1T46FIshSgwoc5TiLffiJj0
+         y+TdOq+FeXK1bij8WvQC4Gb64kJoixYkN8uHvXSdkAxImsxiXERQWU+gxcd0rqTwQv
+         WCNJd7CKr9c+oCrw8rvTE/PLwIXzmCgymqbR1OyCLoyhA+XcEF4u2oFvHkR/Bv703B
+         +IkAp7SlLNipT22bLkE4ogDQasqxcadV4BuWMWSVP2iQ9g2CDxyuBG4kJe7K5e02NI
+         DO5mmZq1nm4zF1EzcdsQlsY85n8Dl3+enEJycc/vEe6nJHMv94X2lIF3ai6IceMpgA
+         qsHvGeFYnuXAQ==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Marc Zyngier <maz@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] acpi: arm64: fix section mismatch warning
+Date:   Mon, 27 Sep 2021 16:19:14 +0200
+Message-Id: <20210927141921.1760209-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CH2PR12MB38951F2326196AB5B573A73DD7A79@CH2PR12MB3895.namprd12.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> The BlueField GPIO HW only support Edge interrupts.
+From: Arnd Bergmann <arnd@arndb.de>
 
-O.K. So please remove all level support from this driver, and return
--EINVAL if requested to do level.
+In a gcc-11 randconfig build I came across this warning:
 
-This also means, you cannot use interrupts with the Ethernet PHY. The
-PHY is using level interrupts.
+WARNING: modpost: vmlinux.o(.text.unlikely+0x2c084): Section mismatch in reference from the function next_platform_timer() to the variable .init.data:acpi_gtdt_desc
+The function next_platform_timer() references
+the variable __initdata acpi_gtdt_desc.
+This is often because next_platform_timer lacks a __initdata
+annotation or the annotation of acpi_gtdt_desc is wrong.
 
-    Andrew
+This happens when next_platform_timer() fails to get inlined
+despite the inline annotation. Adding '__init' solves the issue,
+and it seems best to remove the 'inline' in the process seems
+better anyway.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/acpi/arm64/gtdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+index 0a0a982f9c28..c3ad42470a7c 100644
+--- a/drivers/acpi/arm64/gtdt.c
++++ b/drivers/acpi/arm64/gtdt.c
+@@ -36,7 +36,7 @@ struct acpi_gtdt_descriptor {
+ 
+ static struct acpi_gtdt_descriptor acpi_gtdt_desc __initdata;
+ 
+-static inline void *next_platform_timer(void *platform_timer)
++static __init void *next_platform_timer(void *platform_timer)
+ {
+ 	struct acpi_gtdt_header *gh = platform_timer;
+ 
+-- 
+2.29.2
+
