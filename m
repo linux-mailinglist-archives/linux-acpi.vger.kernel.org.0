@@ -2,189 +2,237 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95581419842
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Sep 2021 17:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1096419CA9
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Sep 2021 19:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235267AbhI0PyO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Sep 2021 11:54:14 -0400
-Received: from mail-mw2nam08on2057.outbound.protection.outlook.com ([40.107.101.57]:9280
-        "EHLO NAM04-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S235100AbhI0PyN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 27 Sep 2021 11:54:13 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DxFsIeI9kZ5jiriXc15ShaH+fU6lrpC3s3+j8rnO86iPLW6hbUG5Y9bdAMzXPKG1xCveK5s5DpapqQHK6mkzFQxufmsvzVf1hPZmncKXbtr4A2qOOvcPa5P+Hb1bk3jFMzla9UlF6BIWfgo/TozL75Z2Z/eKvaFeusfED7SbBD4MKizlGHqlRe4AozyTyLpmSqALI89/TByW76swNO5KWZ9CCpTcO23m8hU43FSZK+zbwn4EfXlCYgGpyxa9LmoFTjqtofjTkrvywycuXG6fJFPwGo5Dm7FKl6Ezf2tazOOpocffV3zNr/HyZQzH3acutR6i6U8OeIKJPIr8NDG1lA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=fdEppgCzvKbB7RkJ3jtNVflS78pxJ0dPH6DSVbc8LTM=;
- b=WzsU26C8dC5w5qlHkFN00jJR46+T0aFBjTUL2vGdPHcdofP4sdkG42txCw5ywJ1LZbjnJ5v4NKcmL5mISnQ3OMufVzkSvXOnorMDfPUyUHTX/sYoEowDWVYOEE8JGf2u7jbaJ3tB0JAN3KewdoQU+I4TMZF52YlzSneSEev58WUpG3CvJo47X+TkAqq1tzJt4YeIBZRzWLGVnXK9KslC4xigEBP7TkpJbeZ6W2/aeGy3rePOQCgBYgWF3DISBnhmiZRMPMZZ457NuuvHE8Ph3eYKXHISIl2DohXCxDxCtD7pVn6HPxf+Q4oOd4LSPz2SrT4jdZUoWmwaPf+PGBRpFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fdEppgCzvKbB7RkJ3jtNVflS78pxJ0dPH6DSVbc8LTM=;
- b=G3wWMWM0ZeFQA821MIkizpqtvIHyjAl5x1MwNaYI8TRaJJd1HSurKJyZ/226SuNivFac/VFn3Qz80MOmXYfny0ov6uS19HL2sWGyzxn3dCOCPq3Z340foOlK4mLcS42Dp3jAy9WBzW6B/ShmuhQ6Ibt9oauZFQkrFzAK8ZKhAcSVBKw8XcroSLgcYQUtqirmPJtIAyxEIRztErUOzmiC5f6COivbkjNjPsYStSNo/m0X+CET91rRHOB4XwIQR8EuaClz9ZkygX6rqPl9KH59+qcmzjSvfk0aKNlfabRTFzEcngKPNwDM3jniWHahavdTt5SuHh/knHqRTMeU4D77Bg==
-Received: from CH2PR12MB3895.namprd12.prod.outlook.com (2603:10b6:610:2a::13)
- by CH2PR12MB4939.namprd12.prod.outlook.com (2603:10b6:610:61::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4544.13; Mon, 27 Sep
- 2021 15:52:34 +0000
-Received: from CH2PR12MB3895.namprd12.prod.outlook.com
- ([fe80::a46b:a8b7:59d:9142]) by CH2PR12MB3895.namprd12.prod.outlook.com
- ([fe80::a46b:a8b7:59d:9142%5]) with mapi id 15.20.4544.021; Mon, 27 Sep 2021
- 15:52:34 +0000
-From:   Asmaa Mnebhi <asmaa@nvidia.com>
-To:     Andrew Lunn <andrew@lunn.ch>
-CC:     Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        David Thompson <davthompson@nvidia.com>
-Subject: RE: [PATCH v3 1/2] gpio: mlxbf2: Introduce IRQ support
-Thread-Topic: [PATCH v3 1/2] gpio: mlxbf2: Introduce IRQ support
-Thread-Index: AQHXsLi5/ezHFM2t80qMnoiP1wWjOauzEi0AgADJmACABBI7EIAAAriAgAACbtCAAAsjgIAAAWRQ
-Date:   Mon, 27 Sep 2021 15:52:34 +0000
-Message-ID: <CH2PR12MB3895E69636DDB3811C0EAE3DD7A79@CH2PR12MB3895.namprd12.prod.outlook.com>
-References: <20210923202216.16091-1-asmaa@nvidia.com>
- <20210923202216.16091-2-asmaa@nvidia.com> <YU26lIUayYXU/x9l@lunn.ch>
- <CACRpkdbUJF6VUPk9kCMPBvjeL3frJAbHq+h0-z7P-a1pSU+fiw@mail.gmail.com>
- <CH2PR12MB38951F2326196AB5B573A73DD7A79@CH2PR12MB3895.namprd12.prod.outlook.com>
- <YVHQQcv2M6soJR6u@lunn.ch>
- <CH2PR12MB389585F7D5EFE5E2453593DBD7A79@CH2PR12MB3895.namprd12.prod.outlook.com>
- <YVHbo/cJcHzxUk+d@lunn.ch>
-In-Reply-To: <YVHbo/cJcHzxUk+d@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: lunn.ch; dkim=none (message not signed)
- header.d=none;lunn.ch; dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 9887c1d7-7177-42ec-3776-08d981ced278
-x-ms-traffictypediagnostic: CH2PR12MB4939:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CH2PR12MB4939B2D66FC857E888881775D7A79@CH2PR12MB4939.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: DHKw0eXAHKd6vpumHz4hM/kFjBVKofVVGEmumvmIKAqW3FWuz5LteqFsltKF2M+BAhe9eYGhIAuxhstbhNaD4SPtr6gAOzYhUE3fbtDoIsWqhifSEsNZTaMxww6rOSA9Pexv+MbHOUiiAGHlR+sG0URoI0MSn1EXwZO3SYtr4RIe+gI1vQM+W3xIGRC0t0Z40Jo8pRGBe6NhhBH47EX8FxqgWdYeASbpGY0Yx2azklaKnnQHVh/t49aMHb5veSXqxjPa1esNOKxuwHteju3WFEb7eCAf57aCGLbFIShxM2XjOZCkPciuWdaDFprxK6WvhVyxwQpJ7PvE2eQH7Bo+ukay0VoNlrtDSiGk/C4NKBFA341jl4F5VJRfW4xwJwm/wCoehcFH0gduPlHN7rFxdHD4GLIT6y4fq8w9CIAdPLbpAcj0yD5eQCVYuKp4nBc6OH4IhSFcmU6AsA5poBpsdZ3P6CHRluey3dRKeXc943ds9Tv7gexP/vUAY7+nH5jotPQMRlCyVKyj8fdbh2uZDJCllY1fbfZ+XCFiWTJ0Rentb0xDcA1oAov1CRZ37doeW+C6/Wr9qnOWVT4wNN4y446fOplMXXoAIJmTb7liqA294XHxExKydcgIjNfQM01N2Ei4fNl5UGjYxJTmuA1TY6IhODpu4WSb2Dlpe/alS+CtCaYT6vIGjLDStQ2l1UxTOCKGnmUQXKP4+7s35w1Ekw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3895.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(55016002)(9686003)(8676002)(54906003)(7696005)(38100700002)(71200400001)(2906002)(122000001)(8936002)(83380400001)(107886003)(508600001)(26005)(6506007)(186003)(86362001)(5660300002)(6916009)(33656002)(4326008)(38070700005)(66446008)(7416002)(76116006)(64756008)(66556008)(66476007)(66946007)(52536014)(316002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?GzshvBIYcFlmpHjl+ne4iMFCsB3bs2H5Of9OBX+euLpjHxW5BaKShkyCKYu6?=
- =?us-ascii?Q?6pI/9M9VC5eDHuFueQ1zwAAU5itl+PmDMYlYCta31M0oEC30KyhGwp221SHZ?=
- =?us-ascii?Q?Xz3q6T0PQqdYRfABXhjoVc2fFdm0VvRYnv0GAmDiTm1nIcafBBlKx0fNSh3z?=
- =?us-ascii?Q?N3usHaMAmgubFSFT1OqFeTdiqjwaUgF1Y3FmntmvOkJWPIdsa7x6OpaRTZgo?=
- =?us-ascii?Q?WfWFvjlbCq49CaJsmYwabmZawSFK4eknnY7uombwd4hwXB6KlzdK3ipgCqYa?=
- =?us-ascii?Q?Bv9KzQ7MFnQVymuVdfGn9Zm+DuiXbs1XNgTDDiTAf+O6HZoIjZeKNiJu9Dsc?=
- =?us-ascii?Q?nPQrNvyUlW+aPNzIeFisNoWx1Iq4frIbLL6SBLTdi42jmdzKJFmdr2iql33F?=
- =?us-ascii?Q?jl+ZwtzSQveOIfHXgf5aocjinpTCLb/gcLC/3nOeBHoHYRZJbH0oYo7dkoRZ?=
- =?us-ascii?Q?HmEYXzmSSGd+hfxCRHkSKWLsQrVrd6KllgzvSkypA09T3Yxt+uXyj4PdwRh3?=
- =?us-ascii?Q?GANciIutc5Vso7HKD+x0VSsmS0ifxJXJdl6ADzgO9Gjd5lnEqf07B/ZKcm/+?=
- =?us-ascii?Q?OKaEVcGC6vj2OiCYs8cpqxgR4JKaCsnpW394wYaIk+bzwBMvJBsnoOq135df?=
- =?us-ascii?Q?mk9vJDecLE0O2odszZs9l0bneZ5LTnJolvFB0/x1QFhCTWz2tYTxVUuBkJD4?=
- =?us-ascii?Q?JvUol/pIE75iygKso9vJKE+FoeTDQ9OIoH2XnZeBRlyHKa4CYHJ7j8wmWITy?=
- =?us-ascii?Q?V6F1Brndri0kq5yVFfWpfgNXSeVt7COY1vIL90y/OeBJG23PaH9CS9QuYv8b?=
- =?us-ascii?Q?C/Wp2IkUc4NH+odtwgx6pwA9rWktIq9Tb5XPLf6hU5BmyMtk4YWubwYeWhmB?=
- =?us-ascii?Q?/ywdM3gcvtGrA//bTiazM2xjnlyFDyep33mmuwJYNmdZp26xEiUbH5KBGiZw?=
- =?us-ascii?Q?7cSyyPnYDlBZpUN66ZDyt9J34XFeTBOgJCgYE0c2xapx0AXTqbhTlW/7MWdD?=
- =?us-ascii?Q?W5F0FzeUm92G4lgt/PXZ9inTuijZXathbbKgtomBZ93LezBbsReSn7pSYfUO?=
- =?us-ascii?Q?+M1hv19nnKlndTVGSkLyHaLqyjuxL9YQqmqQ94czDfHSdAX59QMZrm9faxxJ?=
- =?us-ascii?Q?uEMecPUwaawOn+2WFN8ZlMDuDeRxsf3HY9/q3y9e/BV+jZdmFltN2n7a5NmN?=
- =?us-ascii?Q?ZSZprfQpyo0v8CkNUtrTZr75M6ua4IBJnDR4KG0HwaaKbvHw3CM3v24dexRj?=
- =?us-ascii?Q?v8lXBV2qita69diusbQtMX+yZ5h3n8+ss/VJF+kWMY97Qk0I5w02fNQTuumc?=
- =?us-ascii?Q?seSGiG5TL5xHCHq1UbT2xpzT?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S237262AbhI0Ras (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Sep 2021 13:30:48 -0400
+Received: from mail-ot1-f46.google.com ([209.85.210.46]:43793 "EHLO
+        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238321AbhI0R2s (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Sep 2021 13:28:48 -0400
+Received: by mail-ot1-f46.google.com with SMTP id x33-20020a9d37a4000000b0054733a85462so25399070otb.10;
+        Mon, 27 Sep 2021 10:27:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NGpjyQ+zJXVEsYPGA2Ugx59FHWjXwG00/ucsJLecqZ0=;
+        b=vdN2OVO3rY/CYTBCfKTO9GSEKEMnXQ/nWM6Zp7HIOJ5tTMPOEfALn9ymkW52zpiz7y
+         3q400Lu5Scb+YI6cnyst6Km6LhFKt2jIdJlBCaUFCsURReeTy5rY8Kb1oGvMGIvVmg+T
+         oO18RdG/ZQfg8ZlD9XL7HOFCk6gaa4XlLfAwDY1yfQlNeQesn33f5SGibnA25BpqdOZF
+         2OyRBJBGdNycR2Q3nl7COGCn+66NYm599wcqvF0JJhdkjROz/P3JqiYBc/t7zfbQ/Ygw
+         tRx7+JBO/isD3QYQZbX9t9RjxAhLf9gw/Z9MaabhuwuQU7g/WHNWTswnYyGNpyGhJnoU
+         Gzog==
+X-Gm-Message-State: AOAM5335Kl5EZIBVr46EryrX/ehqIuRXs4GKTj1E9FtAkQzFpxII91FU
+        ytQLG5VuFinF9FsFjw4970c70ShJSUSq4QT2bGY=
+X-Google-Smtp-Source: ABdhPJyAnY0vsgCY1m7GqG39dofuhpTzB+7Q0yRwhHdXi/LusxLfoXqtRSqJXgbavAbW8CJnU4t8Yt69+Lc3FinSF1o=
+X-Received: by 2002:a05:6830:82b:: with SMTP id t11mr1026186ots.319.1632763629962;
+ Mon, 27 Sep 2021 10:27:09 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3895.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9887c1d7-7177-42ec-3776-08d981ced278
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Sep 2021 15:52:34.3066
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 85g6gy8H4KOyFypJvboJDqSRxi70K2R8SQHrWM0bb8UblTxFrdBgPfMqs+Q1recyIHOFHFPbPFTVeGuVwD00RQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4939
+References: <cover.1631802162.git.yu.c.chen@intel.com> <084c590593cb18fed03c6631fb9f39dcfaf66d53.1631802162.git.yu.c.chen@intel.com>
+In-Reply-To: <084c590593cb18fed03c6631fb9f39dcfaf66d53.1631802162.git.yu.c.chen@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 27 Sep 2021 19:26:59 +0200
+Message-ID: <CAJZ5v0hoXc=ha1Mv_yWMX7L8q4DzaXL4wagKqQy6RBcF8Qe7JQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] Documentation: Introduce Platform Firmware Runtime
+ Update documentation
+To:     Chen Yu <yu.c.chen@intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <len.brown@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Aubrey Li <aubrey.li@intel.com>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Sep 27, 2021 at 02:19:45PM +0000, Asmaa Mnebhi wrote:
->=20
-> > The BlueField GPIO HW only support Edge interrupts.
->=20
-> O.K. So please remove all level support from this driver, and return=20
-> -EINVAL if requested to do level.
-> This also means, you cannot use interrupts with the Ethernet PHY. The=20
-> PHY is using level interrupts.
->=20
-> Why not? The HW folks said it is alright because they Do some internal=20
-> conversion of PHY signal and we have tested This extensively.
+On Thu, Sep 16, 2021 at 5:53 PM Chen Yu <yu.c.chen@intel.com> wrote:
+>
+> Add the Platform Firmware Runtime Update/Telemetry documentation.
+>
+> Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> ---
+> v3: No change since v2.
+> v2: Add a spot in index.rst so it becomes part of the docs build
+>     (Jonathan Corbet).
+>     Sticking to the 80-column limit(Jonathan Corbet).
+>     Underline lengths should match the title text(Jonathan Corbet).
+>     Use literal blocks for the code samples(Jonathan Corbet).
+> ---
+>  Documentation/x86/index.rst |   1 +
+>  Documentation/x86/pfru.rst  | 100 ++++++++++++++++++++++++++++++++++++
 
-So the PHY is level based. The PHY is combing multiple interrupt sources=20
-into one external interrupt. If any of those internal interrupt sources are=
- active,
-the external interrupt is active. If there are multiple active sources at o=
-nce, the
-interrupt stays low, until they are all cleared. This means there is not an=
- edge
-per interrupt. There is one edge when the first internal source occurs, and=
- no
-more edges, even if there are more internal interrupts.
+The location of this file is somewhat questionable to me.
 
-The general flow in the PHY interrupt handler is to read the interrupt stat=
-us
-register, which tells you which internal interrupts have fired.
-You then address these internal interrupts one by one. This can take some
-time, MDIO is a slow bus etc. While handling these interrupt sources,
-it could be another internal interrupt source triggers. This new internal
-interrupt source keeps the external interrupt active. But there has not
-been an edge, since the interrupt handler is still clearing the sources
-which caused the first interrupt. With level interrupts, this is not an
-issue. When the interrupt handler exits, the interrupt is re-enabled. Since
-it is still active, due to the unhandled internal interrupt sources,
-the level interrupt immediately fires again. the handler then sees this
-new interrupt and handles it. At that point the level interrupt goes inacti=
-ve.
+The interface described by it talks to the platform firmware via ACPI
+methods, there's nothing x86-specific in it.
 
-Now think about what happens if you are using an edge interrupt
-controller with a level interrupt. You get the first edge, and call the
-interrupt handler. And then there are no more edges, despite there
-being more interrupts. You not only loose the new interrupt, you
-never see any more interrupts. You PHY link can go up and down,
-it can try to report being over temperature, that it has detected
-power from the peer, cable tests have passed, etc. But since there
-is no edge, there is never an interrupt.
+Besides, it is hard to say who's the target audience of this document.
 
-So you say it has been extensively tested. Has it been extensively
-tested with multiple internal interrupt sources at the same time?
-And with slight timing variations, so that you trigger this race
-condition? It is not going to happen very often, but when it does,
-it is going to be very bad.
+>  2 files changed, 101 insertions(+)
+>  create mode 100644 Documentation/x86/pfru.rst
+>
+> diff --git a/Documentation/x86/index.rst b/Documentation/x86/index.rst
+> index 383048396336..3791fabf964c 100644
+> --- a/Documentation/x86/index.rst
+> +++ b/Documentation/x86/index.rst
+> @@ -37,3 +37,4 @@ x86-specific Documentation
+>     sgx
+>     features
+>     elf_auxvec
+> +   pfru
+> diff --git a/Documentation/x86/pfru.rst b/Documentation/x86/pfru.rst
+> new file mode 100644
+> index 000000000000..29fe0e518e6d
+> --- /dev/null
+> +++ b/Documentation/x86/pfru.rst
+> @@ -0,0 +1,100 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +========================================================
+> +The Linux Platform Firmware Runtime Update and Telemetry
+> +========================================================
 
-Asmaa>> Thank you very much for the detailed and clear explanation!
-we only enable/support link up/down interrupts. QA has tested
-bringing up/down the network interface +200 times in a loop.
-I agree with you that the INT_N should be connected to a GPIO
-Pin which also supports level interrupt. From a software perspective,
-that HW interrupt flow is not visible/accessible to software.
-I was instructed by HW designers to enable the interrupt and set it as fall=
-ing.
-The software interrupt and handler is not registered
-based on the GPIO interrupt but rather a HW interrupt which is
-common to all GPIO pins (irrelevant here, but this is edge triggered):
-ret =3D devm_request_irq(dev, irq, mlxbf2_gpio_irq_handler,
-                                        IRQF_SHARED, name, gs);
+The "The Linux" piece doesn't add any value here IMO.
 
+> +
+> +According to the specification of `Management Mode Firmware Runtime Update
+> +<https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_
+> +Rev100.pdf>`_, certain computing systems require high Service Level Agreements
+> +(SLAs) where system reboot fewer firmware updates are required to deploy
+> +firmware changes to address bug fixes, security updates and to debug and root
+> +cause issues. This technology is called Intel Seamless Update. The management
+> +mode (MM), UEFI runtime services and ACPI services handle most of the system
+> +runtime functions. Changing the MM code execution during runtime is called MM
+> +Runtime Update. Since the "MM" acronyms might be misunderstood as "Memory
+> +Management", this driver uses the name of "Platform Firmware Runtime Update"
+> +(PFRU).
 
+In the above paragraph it is not necessary to mention the "high SLAs"
+at all.  IMO it would be sufficient to say something like "The PFRU
+(Platform Firmware Runtime Update) kernel interface is designed to
+interact with the platform firmware interface defined in the
+`Management Mode Firmware Runtime Update
+<https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf>`_
+specification."
+
+> +
+> +PFRU provides the following facilities: Performs a runtime firmware driver
+> +update and activate. Ability to inject firmware code at runtime, for dynamic
+> +instrumentation. PFRU Telemetry is a service which allows Runtime Update
+> +handler to produce telemetry data to upper layer OS consumer at runtime. The
+> +OS provides interfaces to let the users query the telemetry data via read
+> +operations. The specification specifies the interface and recommended policy
+> +to extract the data, the format and use are left to individual OEM's and BIOS
+> +implementations on what that data represents.
+
+I'd just say "The primary function of PFRU is to carry out runtime
+updates of the platform firmware, which doesn't require the system to
+be restarted.  It also allows telemetry data to be retrieved from the
+platform firmware."  And the part about how the PFRU telemetry is
+supposed to work belongs to the description of that part.
+
+> +
+> +PFRU interfaces
+> +===============
+
+Because this doesn't really specify the kernel ABI, the part below
+belongs to the man page of the tool that you're going to provide.
+
+In order to document the ABI, please add a document to
+Documentation/ABI/testing/ along the lines of
+Documentation/ABI/testing/rtc-cdev
+
+> +
+> +The user space tool manipulates on /dev/pfru/update for code injection and
+> +driver update. PFRU stands for Platform Firmware Runtime Update, and the
+> +/dev/pfru directory might be reserved for future usage::
+> +
+> + 1. mmap the capsule file.
+> +    fd_capsule = open("capsule.cap", O_RDONLY);
+> +    fstat(fd_capsule, &stat);
+> +    addr = mmap(0, stat.st_size, PROT_READ, fd_capsule);
+> +
+> + 2. Get the capability information(version control, etc) from BIOS via
+> +    read() and do sanity check in user space.
+> +    fd_update = open("/dev/pfru/update", O_RDWR);
+> +    read(fd_update, &cap, sizeof(cap));
+> +    sanity_check(&cap);
+> +
+> + 3. Write the capsule file to runtime update communication buffer.
+> +    kernel might return error if capsule file size is longer than
+> +    communication buffer.
+> +    write(fd_update, addr, stat.st_size);
+> +
+> + 4. Stage the code injection.
+> +    ioctl(fd_update, PFRU_IOC_STATGE);
+> +
+> + 5. Activate the code injection.
+> +    ioctl(fd_update, PFRU_IOC_ACTIVATE);
+> +
+> + 6. Stage and activate the code injection.
+> +    ioctl(fd_update, PFRU_IOC_STAGE_ACTIVATE);
+> +
+> +    PFRU_IOC_STATGE: Stage a capsule image from communication buffer
+> +    and perform authentication.
+> +    [PFRU_IOC_ACTIVATE] Activate a previous staged capsule image.
+> +    [PFRU_IOC_STAGE_ACTIVATE] Perform both stage and activation actions.
+> +
+> +
+> +PFRU Telemetry interfaces
+> +=========================
+> +
+> +The user space tool manipulates on /dev/pfru/telemetry for PFRU telemetry log::
+> +
+> + 1. Open telemetry device
+> +    fd_log = open("/dev/pfru/telemetry", O_RDWR);
+> +
+> + 2. Get log level, log type, revision_id via one ioctl invoke
+> +    ioctl(fd_log, PFRU_IOC_GET_LOG_INFO, &info);
+> +
+> + 3. Set log level, log type, revision_id
+> +    ioctl(fd_log, PFRU_IOC_SET_LOG_INFO, &info);
+> +
+> + 4. ioctl(fd_log, PFRU_IOC_GET_DATA_INFO, &data_info);
+> +    Query the information of PFRU telemetry log buffer. The user is
+> +    responsible for parsing the result per the specification.
+> +
+> + 5. Read the telemetry data:
+> +    read(fd_log, buf, data_info.size);
+> +
+> +Please refer to tools/testing/selftests/pfru/pfru_test.c for detail.
+> +
+> +According to the specification of `Management Mode Firmware Runtime Update
+
+I'd say "According to the ... specification," (ie. without the "of").
+
+> +<https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_
+> +Rev100.pdf>`_, the telemetry buffer is a wrap around buffer. If the telemetry
+> +buffer gets full, most recent log data will overwrite old log data. Besides,
+> +it is required in the spec that the read of telemetry should support both full
+> +data retrieval and delta telemetry data retrieval. Since this requirement is
+> +more likely a policy we leave this implementation in user space. That is to
+> +say, it is recommended for the user to double-read the telemetry parameters
+> +such as chunk1_size, chunk2_size, rollover_cnt in data_info structure to make
+
+It is not clear what you mean by "double read".  It looks like you
+wanted to say that it was recommended to call the
+PFRU_IOC_GET_DATA_INFO ioctl() before a "continuation" read in order
+to check if more data was available.
+
+> +sure that there is no more data appended while the user is reading the buffer.
+> +Besides, only after the runtime update has been run at least once, the telemetry
+> +log would have valid data, otherwise errno code of EBUSY would be returned.
+> --
