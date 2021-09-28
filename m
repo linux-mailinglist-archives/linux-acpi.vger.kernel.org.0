@@ -2,83 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08B7C41B925
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Sep 2021 23:21:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E0B541BB03
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 01:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242885AbhI1VXC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Sep 2021 17:23:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47844 "EHLO mail.kernel.org"
+        id S243266AbhI1XaF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Sep 2021 19:30:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54266 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242879AbhI1VXB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 28 Sep 2021 17:23:01 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7CDDF610C8;
-        Tue, 28 Sep 2021 21:21:21 +0000 (UTC)
+        id S243273AbhI1XaF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 Sep 2021 19:30:05 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DB70761368;
+        Tue, 28 Sep 2021 23:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632864081;
-        bh=uLpgVG1summajGOu4aGPD+c/1s9mDD4IVkYgS7nf3KM=;
+        s=k20201202; t=1632871705;
+        bh=Aj0F5LPnVcUuzJUSV8yvbiS/m7CuZnciB2S9wM6oAZc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=s1Ww067ArBV+jTOqLf2SRlbBVX2AmtZUFzA6aGNpJOasTgFmkouUW9RtGOS+NCpqj
-         SBWB8a7z/OgVkfRnW/Pb/N7FiMUKR8NRrRjNU1njltdgeod4PPlxh8f6cCLR0sussL
-         fdTl9Pai2cbZF+x4hojuccRJ4ru236RJNBEFXzVYOUmWfYbmYATkbmiw2WwHHg8+G2
-         JNkKEtgXcagbcVA+0x9KTNaPArX8J0CewVEoDoK+80rHbXCpMnjR/R6IuPx0CXxPmu
-         H0RC64++j1IMvB703M9dkqW4cGjHl8vvUtt86uj/PJQhQlpnyANCf+UYUWiZ8QwOwf
-         8FDtjxp8CgxJA==
-Date:   Tue, 28 Sep 2021 16:21:19 -0500
+        b=EUNbeeGpLdIaiqtvxWR9rGTEdh3mG9fPw/efsCNs7w80S50R4767T57C+aLN3Mo+1
+         4wT96+eP+DIUZWGRX8so7Y+H7WxBL7eWBEopao1HLx+RsWJKS60k3z0em5vFg/keLP
+         gbGjeQVZYyWmAeGo/PN+multiD+4dOdccby883Z9dKWOSjLg2JDagKIT+N7/Hb7UZO
+         36Gr0e7gHa5dH4AMIPYRngDBEmYTJQUsao6QzTVLwz8jOi2TBYwqtOCQKmmefGjeWx
+         8Zp9KvPUxpj8oootVAkj9KmlXqMeLAHlCO2BxdgPqpEJYH5Z4Jpy9LECU18T72q1tx
+         zEz2mM68ooVKw==
+Date:   Tue, 28 Sep 2021 18:28:23 -0500
 From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Joerg Roedel <joro@8bytes.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        jroedel@suse.de
-Subject: Re: [PATCH v3 0/4] PCI/ACPI: Simplify PCIe _OSC feature negotiation
-Message-ID: <20210928212119.GA735813@bhelgaas>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Ferry Toth <fntoth@gmail.com>
+Subject: Re: [PATCH v2 0/7] PCI: ACPI: Get rid of struct pci_platform_pm_ops
+ and clean up code
+Message-ID: <20210928232823.GA748352@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210824122054.29481-1-joro@8bytes.org>
+In-Reply-To: <1800633.tdWV9SEqCh@kreacher>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Aug 24, 2021 at 02:20:50PM +0200, Joerg Roedel wrote:
-> From: Joerg Roedel <jroedel@suse.de>
-> 
-> Hi,
-> 
-> here is the third version of my patches to simplify the _OSC
-> negotiation of PCIe features between Linux and the firmware.
-> 
-> This version is a complete rewrite, so there is no changelog to the
-> previous version. Patches 1-3 are cleanups and small restructurings of
-> the code as a preparation for patch 4.
-> 
-> The last patch gets rid of the dedicated _OSC query to check for _OSC
-> support and merges that functionality into acpi_pci_osc_control_set().
-> 
-> This allows to simplify and/or remove other functions and consilidate
-> error handling in negotiate_os_control().
-> 
-> I have tested the patches with and without 'pcie_ports=compat' and
-> found no regressions on my test machine.
-> 
-> Please review.
-> 
-> Thanks,
-> 
-> 	Joerg
-> 
-> 
-> 
-> Joerg Roedel (4):
->   PCI/ACPI: Remove OSC_PCI_SUPPORT_MASKS and OSC_PCI_CONTROL_MASKS
->   PCI/ACPI: Move supported and control calculations to separaten
->     functions
->   PCI/ACPI: Move _OSC query checks to separate function
->   PCI/ACPI: Check for _OSC support in acpi_pci_osc_control_set()
-> 
->  drivers/acpi/pci_root.c | 161 +++++++++++++++++++++-------------------
->  include/linux/acpi.h    |   2 -
->  2 files changed, 84 insertions(+), 79 deletions(-)
+[+cc Ferry]
 
-Applied with Rafael's reviewed-by to pci/acpi for v5.16, thanks!
+On Mon, Sep 20, 2021 at 08:52:19PM +0200, Rafael J. Wysocki wrote:
+> Hi All,
+> 
+> As explained in the changelog of patch [2/7], using struct pci_platform_pm_ops
+> for ACPI is not particularly beneficial, so it is better to get rid of it and
+> call the functions pointed to by it directly from the PCI core.
+> 
+> However, struct pci_platform_pm_ops is also used by the Intel MID support code,
+> but it is actually better to call the MID PM function directly from the PCI
+> core either, which is done in patch [1/7].
+> 
+> After these changes, patch [3/7] removes struct pci_platform_pm_ops and the
+> rest is just cleanups and some code consolidation on top of that.
+
+I like these a lot.  Not sure exactly where everything is after the
+conversation with Ferry.  Let me know if I should be doing anything.
