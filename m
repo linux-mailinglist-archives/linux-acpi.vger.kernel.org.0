@@ -2,670 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8742741AF27
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Sep 2021 14:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5E6941AF92
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Sep 2021 15:01:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240526AbhI1Mmx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Sep 2021 08:42:53 -0400
-Received: from mail-oi1-f177.google.com ([209.85.167.177]:33454 "EHLO
-        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240488AbhI1Mmt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Sep 2021 08:42:49 -0400
-Received: by mail-oi1-f177.google.com with SMTP id 24so29856127oix.0;
-        Tue, 28 Sep 2021 05:41:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=iN9a1Aw1zWXTV/h2Icb5TI8nqI1cGIjKtzd1AYVNfvU=;
-        b=KR8ZIuW3zcd+lka/GvXgSQ9Cs6NlX+cnYUpD+QbkfqwPPX6IYiv3Vps+0cGTdTOHgv
-         cemaVhLM+wxGSH4MGF1chpdZCBQtjz4bbAQzNO7Z7tamWgBNa1ysvH8fG1xWAQp24ZY3
-         1Ifx9gCDBJqEogg63ryHcJU7SQGg8gDxgUeBV85CJE4m5Jv5i1/Wzf4wSChW4Na9i8ma
-         h7tvkZ/e2RvVfXbr2/JCrTmuJ5R2GYOtmwTBCL8wAGfwQVKvV4lpI6oejZUgvuflFdXR
-         Mxsyu5EHRYKmnvgs+5Oesnsi/kbY8ajQ53sV9EXK1GBn5zIac7YFjQkU3uAA8hR3bjag
-         xB4w==
-X-Gm-Message-State: AOAM533OSFMNgqBFN122kcrHEd8Fa1ahGjJqRRORP/XpaWb9AO2dYB1W
-        QEH/gM+DDNd8v//ucnr/tu/hMyroQktPQicKA14=
-X-Google-Smtp-Source: ABdhPJwGx5oWHDmR8s8yeqUylWgH2pj9PaMuoJ56t9qOoYRJVtxLwn529xEB1XHGf7+OdB+qxQaNzgHgGVw/sHsUwpk=
-X-Received: by 2002:a54:4f15:: with SMTP id e21mr3443756oiy.71.1632832870033;
- Tue, 28 Sep 2021 05:41:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1631802162.git.yu.c.chen@intel.com> <8df66db9e8c30c762d676448e51c8536afe3b886.1631802163.git.yu.c.chen@intel.com>
-In-Reply-To: <8df66db9e8c30c762d676448e51c8536afe3b886.1631802163.git.yu.c.chen@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 28 Sep 2021 14:40:58 +0200
-Message-ID: <CAJZ5v0j+kZKRN=OymSm+TTB8NMUM3YagMFrygaRFHtQOnCNDEg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/5] drivers/acpi: Introduce Platform Firmware Runtime
- Update Telemetry
-To:     Chen Yu <yu.c.chen@intel.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        id S240129AbhI1NCi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Sep 2021 09:02:38 -0400
+Received: from mail-bn8nam12on2059.outbound.protection.outlook.com ([40.107.237.59]:41062
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S240300AbhI1NCi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 28 Sep 2021 09:02:38 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Jxxx4Mjl9gshw3HoUUEPQqC0AxvronKNeaHumc7EcTxWRnIK5XzCW2O24nmZoXVgjrfPVG3OkHbLPrpDgvTiS/ImL0pHQRd2QAdcx8R7lANUYkgOwZ91NTqR7IkBru3sm5KZvst//o1yDxmmcQhA7lCq9vnRDdP7hr4V7uww0VLqPVkZS308Hw5NbmUzOxBurBQAhHhH1v+a2OyS0HnO6Vni0XYkbea5CUt36RVljoYN3zql+4XcruS0+O/E9N23dV/Be7PagMQpexf0ZY9bQJWipNM3JQT4LG3KwoDOKqXd6JwBylY0deSGbUAl+voLVNKBrCRJTI78J1SE35toiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=foZSW8arBkV3kWi+0Qxf8bLEE41/l2Uq4fm11djW3Rk=;
+ b=oUN8hUJRi8X6EkahPdwM3o1ag3WscdRM+I9orAxI4tnGgbtit/6fG2NiBB9KIOOH5yGOxMhaLkIJFRq1RehJLA2o31NnlaM5Br/b2UFfVTx5s6XuqkvIQGDrPkY+cvfvNTUBHOP97uZqGFcZ5iZ/rFY0Ym5ZJOP9hC32a86Lu80N/BtLcLDtdZuXe8tPzlS3Y1RGkX3Iv8q36znAR5IIeKivpGX1bvWid6uSORwfmohDS9wGbZq7+twywr7yTjkFzBOyCYE2j0BMOPzn9io41/OszMPir+W5nFGSzgf/GWfjj4h5vpEspsN+nSKxQU9YBUGHx7xxdeECOg9VyUvSYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=foZSW8arBkV3kWi+0Qxf8bLEE41/l2Uq4fm11djW3Rk=;
+ b=Oea/9NP3vpVIiqX0wbKSR0hnTy07K6u7bggpjAwVM0sqV0xS8yDi6G+htnO9U3LQrQvyoMcLDVwD+et/uZQMSuwwAWwNsBC40zhNXR4OWDMVaq2zLuBygP++k+T+C5u81cV/6tPnOZuSQLoQuPdZRyDHQvBCVEMDdpbVmG5Ss4c=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from BYAPR12MB3560.namprd12.prod.outlook.com (2603:10b6:a03:ae::10)
+ by BYAPR12MB3062.namprd12.prod.outlook.com (2603:10b6:a03:aa::29) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4544.18; Tue, 28 Sep
+ 2021 13:00:55 +0000
+Received: from BYAPR12MB3560.namprd12.prod.outlook.com
+ ([fe80::2c4e:8ff7:5c3c:25d9]) by BYAPR12MB3560.namprd12.prod.outlook.com
+ ([fe80::2c4e:8ff7:5c3c:25d9%5]) with mapi id 15.20.4544.021; Tue, 28 Sep 2021
+ 13:00:55 +0000
+Message-ID: <3b26b179-69ba-64a2-807e-8d7609fbeb6e@amd.com>
+Date:   Tue, 28 Sep 2021 08:00:52 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.1
+Subject: Re: [PATCHv1] ACPI: processor idle: Allow playing dead in C3 state
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Aubrey Li <aubrey.li@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        lijo.lazar@amd.com, Mario Limonciello <mario.limonciello@amd.com>
+References: <20210922133116.102-1-richard.gong@amd.com>
+ <CAJZ5v0jpOzNS5TFdJNXdxa_p2D_5QQMwwRcSMe8JmjOaTjR8gg@mail.gmail.com>
+From:   "Gong, Richard" <richard.gong@amd.com>
+In-Reply-To: <CAJZ5v0jpOzNS5TFdJNXdxa_p2D_5QQMwwRcSMe8JmjOaTjR8gg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA0PR11CA0099.namprd11.prod.outlook.com
+ (2603:10b6:806:d1::14) To BYAPR12MB3560.namprd12.prod.outlook.com
+ (2603:10b6:a03:ae::10)
+MIME-Version: 1.0
+Received: from [10.254.56.127] (165.204.77.11) by SA0PR11CA0099.namprd11.prod.outlook.com (2603:10b6:806:d1::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4544.15 via Frontend Transport; Tue, 28 Sep 2021 13:00:54 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 712fbc79-b7b9-4f05-e4cc-08d982800211
+X-MS-TrafficTypeDiagnostic: BYAPR12MB3062:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR12MB3062F2EA94F0AA6FE415C33F95A89@BYAPR12MB3062.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: lzeAiZ5Xih6htwPWMCUgaUUpegzh2vuRAkT3WnClwUBEcVpXoicLcsvhnQhkYW77FkzTHhe72tkOHOs/3CzbMdfo+BFP7Jik9ouC2x/Mw4rQyFtlxUWCGdEHCG7NjCR1P7Los/v+dE0m+gv2EZZ3LZZT4sECWKoBmBrow1rCNZPmBEQdrOLLi7XPsUFXsXRP+tBnM97hfP/xbagXa+bWqU6fUJhDZbpOWKclfYaTLRRP78rwqJK4AnxUU554Dv0G+oJ90l0ZYoPDJgUaqhCYkEZZNMJLhQC8+WEbjwU3W/uLZAEj32psNiv5oMAyijFupiSduSp7QdtQ0Pwj30iuze/gm3LZD0yXsmvGUElKE602FWQUDLS6wJ1cnt6TH9EoYMfW/n7erwqOycdI6Wu6bUdzgTR/A2t9Bdktb+kkbYT9eV7l/xYXTFWhLAqex7ZCsp1o+ePj95YrbkjtR0AgmRDvIJoEVPEAqyyzGrGfh9FR1aA0RZZ7Jn56TsCY0/wKkuUG5VxG+1chCfRQZV+TnH5yccqmbee0BqxFDjKAQQdCOZ2+3yQLDDPpW0DOADPb48YyoJBL6yAV8+ZrUh5SfY47xhGc+oTEuhkfKWvINhboRJOaRedeQ/AhU2XE45SQKy4Gcj7Lzv0NOVdh//2wKvIjhitJJmyGZrljC7PSRdDy3AdiTJ9pOUOH1BwxM6S4Kd2yWGEh79YLA2xpjzkf67ykxm33BQS7w0qD5uwclrU=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3560.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(66476007)(45080400002)(86362001)(8936002)(2906002)(54906003)(83380400001)(508600001)(186003)(31696002)(53546011)(31686004)(16576012)(966005)(316002)(26005)(66946007)(8676002)(66556008)(5660300002)(6486002)(4326008)(2616005)(956004)(6916009)(38100700002)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cStYaUpzM1RPNjIxK3Rtc0Z2YmowQUhFcWJINk1oUlM0TitWVHJOa2VvYlhV?=
+ =?utf-8?B?S0NDWEd2R3FZbko4aWpDUWRRMzBQaHJhUUNXNjJKZ1FDRGFTR2toZnhHcFFD?=
+ =?utf-8?B?Yjk3VnlPNFdIa3V6U041dUk4Q3RveUZPL1BKZTQzRUpIYUUrYlRObjdwUFZi?=
+ =?utf-8?B?SnJtUGlZSUk0WkRuNS9IV3lGY1JiZkVQSFhReVdlOHQ2MVUySkNEQ3pNSHdU?=
+ =?utf-8?B?VWhOT0p6V3IxeVJsY0JPRjlQUWwyOHdLcVduaklyL1JPeGtKSU9nUTdaUDhT?=
+ =?utf-8?B?OFM0b2llYjhTKytld1JCR0F2NWZlVGV6SjlwUVU4T1RLRFloaDBiTGR6b3d4?=
+ =?utf-8?B?RGM2QW5xNXlpWThLSjBYRlMwRGJuTnJ6ZWM2Q25kUXFQa1hWTXdDQVdGWUJ4?=
+ =?utf-8?B?YmtqaUl0ZURSU2N6NFhXUzJXd1hPTGRRWHNwd0l5TUJZNG51L2M5akFTU0xq?=
+ =?utf-8?B?ZDFYeFpaYVkwWklBYjAxQk5RTXlTY0dVTUc3cTFuVnZsTUR5SWZiS3h5cDdn?=
+ =?utf-8?B?RE5ndVNTVTExZGlkdVY0azdDUXJhL0NKbXF3YVM2bU8reVgyQVBKVVNrSCtR?=
+ =?utf-8?B?SENCQnczZFYrN04yZ21ua0ZVOVVTblZzS0VhNm51VnBES253dldoR1E5dktC?=
+ =?utf-8?B?cnNoejltWGpvUnFtdGtpNEtsdG42bzIvSENtVG1JQWZJSmg0SzJxVDBTb2JR?=
+ =?utf-8?B?V04rS1B2T0ljM3V4QVVKRXBDb3dORjVvbnI0ckJKMm9yUmlZaTN2clVSS3dm?=
+ =?utf-8?B?Sm5OR3c2aG4vNlRrbmpMY2pTYTVkdS9tUXZKNmpPbDRJRkoxWXlGV3ZPL0Ry?=
+ =?utf-8?B?dE51bXdvZXgrbldtTWVQNzJ3ekFETmhJcW9zSDUwejF4aER2R1JXQVYrM2JL?=
+ =?utf-8?B?VFBwU3IvUzZ2WG1zMC8yMC9NVWxONmo1ZEFlbXlWQmNaRkhENjRFWFFuQ2RW?=
+ =?utf-8?B?WndKcmdUSTNBMXFTSW80bGlBTENWUUtnNDVoTklFTVA3OUEyQm5MUkNLS2lH?=
+ =?utf-8?B?UHF2ZEpJS09EYWc3N3ppSEhINlorWFBPMDk1NEdodjhsNEFkZURUMURyK2pR?=
+ =?utf-8?B?aVdWS3BLZVc5dmV1OFpyZzdqaVZLQnNIbkZJdjVYWTJkL2lXWTVSRjBJRW01?=
+ =?utf-8?B?UWlDbHBkcHNKdGtuQWFpUFdxcHdSQ1FHOEdoSkpvcnRDaVNieDdtd1llZnN4?=
+ =?utf-8?B?WWVSTTlXL0xUcHk1aElMQnZGMEFqeWZqSXp5b3liZ1VGSzh3Nm02d24vM1Fy?=
+ =?utf-8?B?V0VUbWxOdkRqeGpzdHdWY1cwMGw5SURoZ3o2KzVYTjJ1R0U3UHVHblg0ME43?=
+ =?utf-8?B?RTZkNXhCVDc1a0dnSGg5Y3lKbVhhdFNIMWZ2VENxVSt6a0d2MXMyUGY0SGky?=
+ =?utf-8?B?SVVOZWV1RkNJY3ZwcnJibTZBTFVqMzRlWGdhUGszcjhOQkkxWTJiNnN3ZEVR?=
+ =?utf-8?B?aStsdVMzWnM5VnFmZzB5ZzZDMmlVT0FmSWppR0pjRHB1eklYQVE3WWplUXBG?=
+ =?utf-8?B?NjBHUDh5MUxEcVYyMjRQd1hGRm9NSlNmNlZFZCtRZk1aOVRldndkSFlMVzJG?=
+ =?utf-8?B?aGlzV0JBWWZFQ1RkcTgxaElYMUp5RUdFQXhYNWdDQ3J3MC8rY096OG5zVVlx?=
+ =?utf-8?B?YnRkZ0QzcmsvcWU3THZpdEM2MFZYbDh5blg1cVRwQW1ZY1dDS3dpN1FrRmI5?=
+ =?utf-8?B?VVo5T3NBOFdBd3NrY2V6NXdta0F4OGpJd1AzT1pybGZ4OHZhQjN4bzlFUXU3?=
+ =?utf-8?Q?MHwRP9Pgq1cVi9A1GCPQbp8oVTzfNoPECCTAQLG?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 712fbc79-b7b9-4f05-e4cc-08d982800211
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3560.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2021 13:00:55.3616
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q490dMldV4NNaT5ilPyE0t+FYHN/LqmntU6RmJv6izVvQaozcehTtsjzJeNiFhmhAM01OTUPX8QUhX83auqjuA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3062
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Sep 16, 2021 at 5:58 PM Chen Yu <yu.c.chen@intel.com> wrote:
->
-> Platform Firmware Runtime Update(PFRU) Telemetry Service is part of RoT
-> (Root of Trust), which allows PFRU handler and other PFRU drivers to
-> produce telemetry data to upper layer OS consumer at runtime.
->
-> The linux provides interfaces for the user to query the parameters of
-> telemetry data, and the user could read out the telemetry data
-> accordingly.
->
-> Typical log looks like:
->
-> [SmmRuntimeUpdateHandler.ProcessSmmRuntimeUpdate]
-> ProcessSmmRuntimeUpdate = START, Action = 2
-> [SmmRuntimeUpdateHandler.ProcessSmmRuntimeUpdate]
-> FwVersion = 0, CodeInjectionVersion = 1
-> [ShadowSmmRuntimeUpdateImage]
-> Image = 0x74D9B000, ImageSize = 0x1172
-> [ProcessSmmRuntimeUpdate]
-> ShadowSmmRuntimeUpdateImage.Status = Success
-> [ValidateSmmRuntimeUpdateImage]
-> CapsuleHeader.CapsuleGuid = 6DCBD5ED-E82D-4C44-BDA1-7194199AD92A
-> [ValidateSmmRuntimeUpdateImage]
-> FmpCapHeader.Version = 1
-> [ValidateSmmRuntimeUpdateImage]
-> FmpCapImageHeader.UpdateImageTypeId = B2F84B79-7B6E-4E45-885F-3FB9BB185402
-> [ValidateSmmRuntimeUpdateImage]
-> SmmRuntimeUpdateVerifyImageWithDenylist.Status = Success
-> [ValidateSmmRuntimeUpdateImage]
-> SmmRuntimeUpdateVerifyImageWithAllowlist.Status = Success
-> [SmmCodeInjectionVerifyPayloadHeader]
-> PayloadHeader.Signature = 0x31494353
-> [SmmCodeInjectionVerifyPayloadHeader]
-> PayloadHeader.PlatformId = 63462139-A8B1-AA4E-9024-F2BB53EA4723
-> [SmmCodeInjectionVerifyPayloadHeader]
-> PayloadHeader.SupportedSmmFirmwareVersion = 0,
-> PayloadHeader.SmmCodeInjectionRuntimeVersion = 1
-> [ProcessSmmRuntimeUpdate]
-> ValidateSmmRuntimeUpdateImage.Status = Success
-> CPU CSR[0B102D28] Before = 7FBF830E
-> CPU CSR[0B102D28] After = 7FBF8310
-> [ProcessSmmRuntimeUpdate] ProcessSmmCodeInjection.Status = Success
-> [SmmRuntimeUpdateHandler.ProcessSmmRuntimeUpdate]
-> ProcessSmmRuntimeUpdate = End, Status = Success
->
-> Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-> ---
-> v3: Use __u32 instead of int and __64 instead of unsigned long
->     in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
->     Rename the structure in uapi to start with a prefix pfru so as
->     to avoid confusing in the global namespace. (Greg Kroah-Hartman)
-> v2: Do similar clean up as pfru_update driver:
->     Add sanity check for duplicated instance of ACPI device.
->     Update the driver to work with allocated telem_device objects.
->     (Mike Rapoport)
->     For each switch case pair, get rid of the magic case numbers
->     and add a default clause with the error handling.
->     (Mike Rapoport)
-> ---
->  drivers/acpi/pfru/Kconfig          |  14 +
->  drivers/acpi/pfru/Makefile         |   1 +
->  drivers/acpi/pfru/pfru_telemetry.c | 412 +++++++++++++++++++++++++++++
->  include/uapi/linux/pfru.h          |  43 +++
->  4 files changed, 470 insertions(+)
->  create mode 100644 drivers/acpi/pfru/pfru_telemetry.c
->
-> diff --git a/drivers/acpi/pfru/Kconfig b/drivers/acpi/pfru/Kconfig
-> index 3f31b7d95f3b..e2934058884e 100644
-> --- a/drivers/acpi/pfru/Kconfig
-> +++ b/drivers/acpi/pfru/Kconfig
-> @@ -13,3 +13,17 @@ config ACPI_PFRU
->
->           To compile this driver as a module, choose M here:
->           the module will be called pfru_update.
-> +
-> +config ACPI_PFRU_TELEMETRY
+Hi Rafael,
 
-Why does this need a separate Kconfig option?
+On 9/24/2021 11:31 AM, Rafael J. Wysocki wrote:
+> On Wed, Sep 22, 2021 at 3:31 PM Richard Gong <richard.gong@amd.com> wrote:
+>> When some cores are disabled on AMD platforms, the system will no longer
+>> be able to enter suspend-to-idle s0ix.
+>>
+>> Update to allow playing dead in C3 state so that the CPUs can enter the
+>> deepest state on AMD platforms.
+>>
+>> BugLink: https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgitlab.freedesktop.org%2Fdrm%2Famd%2F-%2Fissues%2F1708&amp;data=04%7C01%7Crichard.gong%40amd.com%7Ca5c0db9ce02b4cd0864f08d97f78d33f%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637680980065602427%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=dIO5PDjpncLFIt0aGaTrKJHYIkJm8A4YByGn1%2FsHrtM%3D&amp;reserved=0
+>> Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+>> Signed-off-by: Richard Gong <richard.gong@amd.com>
+>> ---
+>>   drivers/acpi/processor_idle.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+>> index f37fba9e5ba0..61d5a72d218e 100644
+>> --- a/drivers/acpi/processor_idle.c
+>> +++ b/drivers/acpi/processor_idle.c
+>> @@ -789,7 +789,8 @@ static int acpi_processor_setup_cstates(struct acpi_processor *pr)
+>>                  state->enter = acpi_idle_enter;
+>>
+>>                  state->flags = 0;
+>> -               if (cx->type == ACPI_STATE_C1 || cx->type == ACPI_STATE_C2) {
+>> +               if (cx->type == ACPI_STATE_C1 || cx->type == ACPI_STATE_C2
+>> +                       || cx->type == ACPI_STATE_C3) {
+>>                          state->enter_dead = acpi_idle_play_dead;
+>>                          drv->safe_state_index = count;
+>>                  }
+>> --
+> Tentatively applied as 5.16 material, but have you done any research
+> on why this restriction has been there in the first place?
 
-> +       tristate "ACPI Platform Firmware Runtime Update Telemetry Service"
-> +       depends on ACPI_PFRU
-> +       help
-> +         PFRU(Platform Firmware Runtime Update) Telemetry Service is part of
-> +         RoT(Root of Trust), which allows Platform Firmware Runtime Update handler
-> +         and other PFRU drivers to produce telemetry data to upper layer OS consumer
-> +         at runtime.
-> +
-> +         For more information, see:
-> +         <file:Documentation/x86/pfru_update.rst>
-> +
-> +         If unsure, please say N.
-> diff --git a/drivers/acpi/pfru/Makefile b/drivers/acpi/pfru/Makefile
-> index 098cbe80cf3d..30060ba320ea 100644
-> --- a/drivers/acpi/pfru/Makefile
-> +++ b/drivers/acpi/pfru/Makefile
-> @@ -1,2 +1,3 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  obj-$(CONFIG_ACPI_PFRU) += pfru_update.o
-> +obj-$(CONFIG_ACPI_PFRU_TELEMETRY) += pfru_telemetry.o
+Yes, we need this change to align with the updated firmware on AMD 
+platforms.
 
-I'm not sure about this ...
+Regards,
 
-> diff --git a/drivers/acpi/pfru/pfru_telemetry.c b/drivers/acpi/pfru/pfru_telemetry.c
-> new file mode 100644
-> index 000000000000..96dc9e69edc0
-> --- /dev/null
-> +++ b/drivers/acpi/pfru/pfru_telemetry.c
-> @@ -0,0 +1,412 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * ACPI Platform Firmware Runtime Update
-> + * Telemetry Service Device Driver
-> + *
-> + * Copyright (C) 2021 Intel Corporation
-> + * Author: Chen Yu <yu.c.chen@intel.com>
-> + */
-> +#include <linux/acpi.h>
-> +#include <linux/errno.h>
-> +#include <linux/fs.h>
-> +#include <linux/file.h>
-> +#include <linux/minmax.h>
-> +#include <linux/miscdevice.h>
-> +#include <linux/module.h>
-> +#include <linux/mm.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/uuid.h>
-> +#include <linux/uaccess.h>
-> +#include <uapi/linux/pfru.h>
-> +
-> +enum update_index {
-> +       LOG_STATUS_IDX,
-> +       LOG_EXT_STATUS_IDX,
-> +       LOG_MAX_SZ_IDX,
-> +       LOG_CHUNK1_LO_IDX,
-> +       LOG_CHUNK1_HI_IDX,
-> +       LOG_CHUNK1_SZ_IDX,
-> +       LOG_CHUNK2_LO_IDX,
-> +       LOG_CHUNK2_HI_IDX,
-> +       LOG_CHUNK2_SZ_IDX,
-> +       LOG_ROLLOVER_CNT_IDX,
-> +       LOG_RESET_CNT_IDX,
-> +};
-> +
-> +struct pfru_telem_device {
-> +       struct device *dev;
-> +       guid_t uuid;
-> +       struct pfru_telem_info info;
-> +};
-> +
-> +/*
-> + * There would be only one instance of pfru_telem_device.
-> + */
-> +static struct pfru_telem_device *telem_dev;
-> +
-> +static int get_pfru_data_info(struct pfru_telem_data_info *data_info,
-> +                             int log_type)
-> +{
-> +       union acpi_object *out_obj, in_obj, in_buf;
-> +       acpi_handle handle;
-> +       int i, ret = -EINVAL;
-> +
-> +       handle = ACPI_HANDLE(telem_dev->dev);
-> +
-> +       memset(&in_obj, 0, sizeof(in_obj));
-> +       memset(&in_buf, 0, sizeof(in_buf));
-> +       in_obj.type = ACPI_TYPE_PACKAGE;
-> +       in_obj.package.count = 1;
-> +       in_obj.package.elements = &in_buf;
-> +       in_buf.type = ACPI_TYPE_INTEGER;
-> +       in_buf.integer.value = log_type;
-> +
-> +       out_obj = acpi_evaluate_dsm_typed(handle, &telem_dev->uuid,
-> +                                         telem_dev->info.log_revid, FUNC_GET_DATA,
-> +                                         &in_obj, ACPI_TYPE_PACKAGE);
-> +       if (!out_obj) {
-> +               pr_err("Failed to invoke _DSM\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       for (i = 0; i < out_obj->package.count; i++) {
+Richard
 
-Is the loop really necessary?
-
-> +               union acpi_object *obj = &out_obj->package.elements[i];
-> +
-> +               if (obj->type != ACPI_TYPE_INTEGER)
-> +                       goto free_acpi_buffer;
-> +
-> +               switch (i) {
-> +               case LOG_STATUS_IDX:
-> +                       data_info->status = obj->integer.value;
-> +                       break;
-> +               case LOG_EXT_STATUS_IDX:
-> +                       data_info->ext_status = obj->integer.value;
-> +                       break;
-> +               case LOG_MAX_SZ_IDX:
-> +                       data_info->max_data_size = obj->integer.value;
-> +                       break;
-> +               case LOG_CHUNK1_LO_IDX:
-> +                       data_info->chunk1_addr_lo = obj->integer.value;
-> +                       break;
-> +               case LOG_CHUNK1_HI_IDX:
-> +                       data_info->chunk1_addr_hi = obj->integer.value;
-> +                       break;
-> +               case LOG_CHUNK1_SZ_IDX:
-> +                       data_info->chunk1_size = obj->integer.value;
-> +                       break;
-> +               case LOG_CHUNK2_LO_IDX:
-> +                       data_info->chunk2_addr_lo = obj->integer.value;
-> +                       break;
-> +               case LOG_CHUNK2_HI_IDX:
-> +                       data_info->chunk2_addr_hi = obj->integer.value;
-> +                       break;
-> +               case LOG_CHUNK2_SZ_IDX:
-> +                       data_info->chunk2_size = obj->integer.value;
-> +                       break;
-> +               case LOG_ROLLOVER_CNT_IDX:
-> +                       data_info->rollover_cnt = obj->integer.value;
-> +                       break;
-> +               case LOG_RESET_CNT_IDX:
-> +                       data_info->reset_cnt = obj->integer.value;
-> +                       break;
-> +               default:
-> +                       pr_err("Incorrect format of Telemetry info.\n");
-
-dev_dbg()?  And likewise below.
-
-> +                       goto free_acpi_buffer;
-> +               }
-> +       }
-> +       ret = 0;
-> +
-> +free_acpi_buffer:
-> +       ACPI_FREE(out_obj);
-> +
-> +       return ret;
-> +}
-> +
-> +static int set_pfru_log_level(int level)
-> +{
-> +       union acpi_object *out_obj, *obj, in_obj, in_buf;
-> +       enum pfru_dsm_status status;
-> +       acpi_handle handle;
-> +       int ret = -EINVAL;
-> +
-> +       handle = ACPI_HANDLE(telem_dev->dev);
-> +
-> +       memset(&in_obj, 0, sizeof(in_obj));
-> +       memset(&in_buf, 0, sizeof(in_buf));
-> +       in_obj.type = ACPI_TYPE_PACKAGE;
-> +       in_obj.package.count = 1;
-> +       in_obj.package.elements = &in_buf;
-> +       in_buf.type = ACPI_TYPE_INTEGER;
-> +       in_buf.integer.value = level;
-> +
-> +       out_obj = acpi_evaluate_dsm_typed(handle, &telem_dev->uuid,
-> +                                         telem_dev->info.log_revid, FUNC_SET_LEV,
-> +                                         &in_obj, ACPI_TYPE_PACKAGE);
-> +       if (!out_obj)
-> +               return -EINVAL;
-> +
-> +       obj = &out_obj->package.elements[0];
-> +       status = obj->integer.value;
-> +       if (status) {
-> +               pr_err("get MM telemetry level error status %d\n",
-> +                      status);
-> +               goto free_acpi_buffer;
-> +       }
-> +
-> +       obj = &out_obj->package.elements[1];
-> +       status = obj->integer.value;
-> +       if (status) {
-> +               pr_err("get MM telemetry level error extend status %d\n",
-> +                      status);
-> +               goto free_acpi_buffer;
-> +       }
-> +       ret = 0;
-> +
-> +free_acpi_buffer:
-> +       ACPI_FREE(out_obj);
-> +
-> +       return ret;
-> +}
-> +
-> +static int get_pfru_log_level(int *level)
-> +{
-> +       union acpi_object *out_obj, *obj;
-> +       enum pfru_dsm_status status;
-> +       acpi_handle handle;
-> +       int ret = -EINVAL;
-> +
-> +       handle = ACPI_HANDLE(telem_dev->dev);
-> +       out_obj = acpi_evaluate_dsm_typed(handle, &telem_dev->uuid,
-> +                                         telem_dev->info.log_revid, FUNC_GET_LEV,
-> +                                         NULL, ACPI_TYPE_PACKAGE);
-> +       if (!out_obj)
-> +               return -EINVAL;
-> +
-> +       obj = &out_obj->package.elements[0];
-> +       if (obj->type != ACPI_TYPE_INTEGER)
-> +               goto free_acpi_buffer;
-> +       status = obj->integer.value;
-> +       if (status) {
-> +               pr_err("get MM telemetry level error status %d\n",
-> +                      status);
-> +               goto free_acpi_buffer;
-> +       }
-> +
-> +       obj = &out_obj->package.elements[1];
-> +       if (obj->type != ACPI_TYPE_INTEGER)
-> +               goto free_acpi_buffer;
-> +       status = obj->integer.value;
-> +       if (status) {
-> +               pr_err("get MM telemetry level error status %d\n",
-> +                      status);
-> +               goto free_acpi_buffer;
-> +       }
-> +
-> +       obj = &out_obj->package.elements[2];
-> +       if (obj->type != ACPI_TYPE_INTEGER)
-> +               goto free_acpi_buffer;
-> +       *level = obj->integer.value;
-> +
-> +       ret = 0;
-> +
-> +free_acpi_buffer:
-> +       ACPI_FREE(out_obj);
-> +
-> +       return ret;
-> +}
-> +
-> +static int valid_log_level(int level)
-> +{
-> +       return (level == LOG_ERR) || (level == LOG_WARN) ||
-> +               (level == LOG_INFO) || (level == LOG_VERB);
-
-The parens are redundant AFAICS.
-
-> +}
-> +
-> +static int valid_log_type(int type)
-> +{
-> +       return (type == LOG_EXEC_IDX) || (type == LOG_HISTORY_IDX);
-
-And here too.
-
-> +}
-> +
-> +static long pfru_telemetry_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-> +
-> +{
-> +       struct pfru_telem_data_info data_info;
-> +       struct pfru_telem_info info;
-> +       void __user *p;
-> +       int ret = 0;
-> +
-> +       p = (void __user *)arg;
-> +
-> +       switch (cmd) {
-> +       case PFRU_LOG_IOC_SET_INFO:
-> +               if (copy_from_user(&info, p, sizeof(info)))
-> +                       return -EFAULT;
-
-Empty line, please.
-
-> +               if (pfru_valid_revid(info.log_revid))
-> +                       telem_dev->info.log_revid = info.log_revid;
-> +
-> +               if (valid_log_level(info.log_level)) {
-> +                       ret = set_pfru_log_level(info.log_level);
-> +                       if (ret)
-> +                               return ret;
-
-And here.
-
-> +                       telem_dev->info.log_level = info.log_level;
-> +               }
-> +               if (valid_log_type(info.log_type))
-> +                       telem_dev->info.log_type = info.log_type;
-
-And here.  And analogously below.
-
-Generally speaking, I tend to prefer putting empty code lines after an
-if () statement that is not followed by a block.
-
-> +               break;
-> +       case PFRU_LOG_IOC_GET_INFO:
-> +               ret = get_pfru_log_level(&info.log_level);
-> +               if (ret)
-> +                       return ret;
-> +               info.log_type = telem_dev->info.log_type;
-> +               info.log_revid = telem_dev->info.log_revid;
-> +               if (copy_to_user(p, &info, sizeof(info)))
-> +                       ret = -EFAULT;
-> +               break;
-> +       case PFRU_LOG_IOC_GET_DATA_INFO:
-> +               ret = get_pfru_data_info(&data_info, telem_dev->info.log_type);
-> +               if (ret)
-> +                       return ret;
-> +               if (copy_to_user(p, &data_info, sizeof(struct pfru_telem_data_info)))
-> +                       ret = -EFAULT;
-> +               break;
-> +       default:
-> +               ret = -ENOIOCTLCMD;
-> +               break;
-> +       }
-> +       return ret;
-> +}
-> +
-> +static ssize_t pfru_telemetry_read(struct file *filp, char __user *ubuf,
-> +                                  size_t size, loff_t *off)
-> +{
-> +       struct pfru_telem_data_info info;
-> +       phys_addr_t base_addr;
-> +       int buf_size, ret;
-> +       char *buf_ptr;
-> +
-> +       if (*off < 0)
-> +               return -EINVAL;
-> +
-> +       ret = get_pfru_data_info(&info, telem_dev->info.log_type);
-> +       if (ret) {
-> +               pr_err("Could not get telemetry data info %d\n", ret);
-> +               return ret;
-> +       }
-> +
-> +       base_addr = (phys_addr_t)(info.chunk2_addr_lo |
-> +                       (info.chunk2_addr_hi << 32));
-
-This line doesn't need to be broken as far as I'm concerned.
-
-> +       if (!base_addr) {
-> +               pr_err("Telemetry data not ready\n");
-> +               return -EBUSY;
-> +       }
-> +
-> +       buf_size = info.max_data_size;
-> +       if (*off >= buf_size)
-> +               return 0;
-> +
-> +       buf_ptr = memremap(base_addr, buf_size, MEMREMAP_WB);
-> +       if (IS_ERR(buf_ptr))
-> +               return PTR_ERR(buf_ptr);
-> +
-> +       size = min_t(size_t, size, buf_size - *off);
-> +
-> +       ret = -EFAULT;
-> +       if (copy_to_user(ubuf, buf_ptr + *off, size))
-> +               goto out;
-> +       ret = 0;
-
-So this would be far more readable in the following form IMO:
-
-size = min_t(size_t, size, buf_size - *off);
-if (copy_to_user(ubuf, buf_ptr + *off, size))
-        ret = -EFAULT;
-else
-        ret = 0;
-
-And it looks like you won't need the "out" label any more then.
-
-> +out:
-> +       memunmap(buf_ptr);
-> +
-> +       return ret ? ret : size;
-> +}
-> +
-> +#ifdef CONFIG_COMPAT
-> +static long compat_pfru_telemetry_ioctl(struct file *filep, unsigned int cmd,
-> +                                       unsigned long arg)
-> +{
-> +       return pfru_telemetry_ioctl(filep, cmd, arg);
-> +}
-> +#endif
-> +
-> +static const struct file_operations acpi_pfru_telemetry_fops = {
-> +       .owner          = THIS_MODULE,
-> +       .read           = pfru_telemetry_read,
-> +       .unlocked_ioctl = pfru_telemetry_ioctl,
-> +#ifdef CONFIG_COMPAT
-> +       .compat_ioctl   = compat_pfru_telemetry_ioctl,
-> +#endif
-> +       .llseek         = noop_llseek,
-> +};
-
-And I would consider combining this with the update interface so that
-the write() updates the firmware code and the read() gets telemetry
-data from it.
-
-> +
-> +static struct miscdevice pfru_telemetry_misc_dev = {
-> +       .minor = MISC_DYNAMIC_MINOR,
-> +       .name = "pfru_telemetry",
-> +       .nodename = "pfru/telemetry",
-> +       .fops = &acpi_pfru_telemetry_fops,
-> +};
-> +
-> +static int acpi_pfru_telemetry_remove(struct platform_device *pdev)
-> +{
-> +       misc_deregister(&pfru_telemetry_misc_dev);
-> +       kfree(telem_dev);
-> +       telem_dev = NULL;
-> +
-> +       return 0;
-> +}
-> +
-> +static int acpi_pfru_telemetry_probe(struct platform_device *pdev)
-> +{
-> +       acpi_handle handle;
-> +       int ret;
-> +
-> +       if (telem_dev) {
-> +               pr_err("Duplicated PFRU Telemetry INTC1081 detected, skip...\n");
-> +               return 0;
-> +       }
-> +
-> +       telem_dev = kzalloc(sizeof(*telem_dev), GFP_KERNEL);
-> +       if (!telem_dev)
-> +               return -ENOMEM;
-> +
-> +       ret = guid_parse(PFRU_TELEMETRY_UUID, &telem_dev->uuid);
-> +       if (ret)
-> +               goto out;
-> +
-> +       telem_dev->info.log_revid = 1;
-> +       telem_dev->dev = &pdev->dev;
-> +       handle = ACPI_HANDLE(telem_dev->dev);
-> +       if (!acpi_has_method(handle, "_DSM")) {
-> +               pr_err("Missing _DSM\n");
-> +               ret = -ENODEV;
-> +               goto out;
-> +       }
-> +
-> +       ret = misc_register(&pfru_telemetry_misc_dev);
-> +       if (ret)
-> +               goto out;
-> +
-> +       return 0;
-> +out:
-> +       kfree(telem_dev);
-> +       telem_dev = NULL;
-> +
-> +       return ret;
-> +}
-> +
-> +static const struct acpi_device_id acpi_pfru_telemetry_ids[] = {
-> +       {"INTC1081", 0},
-> +       {}
-> +};
-> +MODULE_DEVICE_TABLE(acpi, acpi_pfru_telemetry_ids);
-> +
-> +static struct platform_driver acpi_pfru_telemetry_driver = {
-> +       .driver = {
-> +               .name = "pfru_telemetry",
-> +               .acpi_match_table = acpi_pfru_telemetry_ids,
-> +       },
-> +       .probe = acpi_pfru_telemetry_probe,
-> +       .remove = acpi_pfru_telemetry_remove,
-> +};
-> +module_platform_driver(acpi_pfru_telemetry_driver);
-> +
-> +MODULE_DESCRIPTION("Platform Firmware Runtime Update Telemetry Service device driver");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/include/uapi/linux/pfru.h b/include/uapi/linux/pfru.h
-> index ca0b7433f79f..b04852602133 100644
-> --- a/include/uapi/linux/pfru.h
-> +++ b/include/uapi/linux/pfru.h
-> @@ -98,4 +98,47 @@ struct pfru_updated_result {
->         __u64 high_exec_time;
->  };
->
-> +#define PFRU_TELEMETRY_UUID    "75191659-8178-4D9D-B88F-AC5E5E93E8BF"
-> +
-> +/* Telemetry structures. */
-> +struct pfru_telem_data_info {
-> +       enum pfru_dsm_status status;
-> +       enum pfru_dsm_status ext_status;
-> +       __u64 chunk1_addr_lo;
-> +       __u64 chunk1_addr_hi;
-> +       __u64 chunk2_addr_lo;
-> +       __u64 chunk2_addr_hi;
-> +       __u32 max_data_size;
-> +       __u32 chunk1_size;
-> +       __u32 chunk2_size;
-> +       __u32 rollover_cnt;
-> +       __u32 reset_cnt;
-> +};
-> +
-> +struct pfru_telem_info {
-> +       __u32 log_level;
-> +       __u32 log_type;
-> +       __u32 log_revid;
-> +};
-> +
-> +/* Two logs: history and execution log */
-> +#define LOG_EXEC_IDX   0
-> +#define LOG_HISTORY_IDX        1
-> +#define NR_LOG_TYPE    2
-> +
-> +#define LOG_ERR                0
-> +#define LOG_WARN       1
-> +#define LOG_INFO       2
-> +#define LOG_VERB       4
-> +
-> +#define FUNC_SET_LEV           1
-> +#define FUNC_GET_LEV           2
-> +#define FUNC_GET_DATA          3
-> +
-> +#define LOG_NAME_SIZE          10
-> +
-> +#define PFRU_LOG_IOC_SET_INFO _IOW(PFRU_MAGIC, 0x05, struct pfru_telem_info)
-> +#define PFRU_LOG_IOC_GET_INFO _IOR(PFRU_MAGIC, 0x06, struct pfru_telem_info)
-> +#define PFRU_LOG_IOC_GET_DATA_INFO _IOR(PFRU_MAGIC, 0x07, struct pfru_telem_data_info)
-> +
->  #endif /* __PFRU_H__ */
-> --
