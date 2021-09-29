@@ -2,101 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EB0341CB99
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 20:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93A2341CC17
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 20:47:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344347AbhI2SRs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Sep 2021 14:17:48 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:51876 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345264AbhI2SRs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Sep 2021 14:17:48 -0400
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
- id 200acef27095dc77; Wed, 29 Sep 2021 20:16:05 +0200
-Received: from kreacher.localnet (unknown [213.134.161.209])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id E757F66A71A;
-        Wed, 29 Sep 2021 20:16:04 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Ferry Toth <fntoth@gmail.com>
-Cc:     Linux PCI <linux-pci@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH v3 3/3] PCI: PM: Do not call platform_pci_power_manageable() unnecessarily
-Date:   Wed, 29 Sep 2021 20:15:06 +0200
-Message-ID: <1910546.usQuhbGJ8B@kreacher>
-In-Reply-To: <7312660.EvYhyI6sBW@kreacher>
-References: <1800633.tdWV9SEqCh@kreacher> <7312660.EvYhyI6sBW@kreacher>
+        id S1346123AbhI2StM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Sep 2021 14:49:12 -0400
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:39922 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235814AbhI2StH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Sep 2021 14:49:07 -0400
+Received: by mail-ot1-f44.google.com with SMTP id j11-20020a9d190b000000b00546fac94456so4103610ota.6;
+        Wed, 29 Sep 2021 11:47:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0gh0/D+JLfsfJlqH0a917kdEGhqFFQged7ZchtYxclU=;
+        b=xCtQUXGy4FV2eInUnDP7rXdgijsd9XUPGj4SjMQM0Abmz9o/POO0ishbCsGPehLCu5
+         Lin22uDj/LGRt3dog3Jzqywmb5vVjf1ehqU9EErSpm6kv3DFPP80g7RAU6pbnY6KtTiD
+         n+0LFQ1bsC15EjFyWFDQNqUi7816zzvLdsPrQlObm1zinSaVSL6X7PWJCpVsgUMyVO/M
+         MnK21Nr5MA7JQEMu9FVt7EJbe6cSDgdg4VrqLLQ1W+zI77iuaIZnzSdbZKjdATFlwFgA
+         sG01JuUmQR9lYhTI7zKAHFlh2lXJK4F/JsQ+ZNSAh4BuUThpmmKZHFgJ0TIr9bC+TOCp
+         DhxQ==
+X-Gm-Message-State: AOAM531bOqT0N5hWdNFH4rylYPZK+ZTsaOkyCsOGCPuHwAXohOwj7qj2
+        bCuEBa4qR2PkvGJBsWrIkYWdTvEESc8wUpoAqHSkC1Au
+X-Google-Smtp-Source: ABdhPJxH+pTTbk0IZjcDwThSOx5Jir6Y4UsNlmDuGsgVm/HkIDtlTJgQC59U2XUxYN6Z5+bFQKX+f2eMjXJsAaV2l/U=
+X-Received: by 2002:a05:6830:165a:: with SMTP id h26mr1348976otr.301.1632941245560;
+ Wed, 29 Sep 2021 11:47:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20210927121338.938994-1-arnd@kernel.org>
+In-Reply-To: <20210927121338.938994-1-arnd@kernel.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 29 Sep 2021 20:47:14 +0200
+Message-ID: <CAJZ5v0jJRYQPSfVV_hCD6uxch+vU6kvWV9-KAfqHckHgkFOeaA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: avoid NULL pointer arithmetic
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.161.209
-X-CLIENT-HOSTNAME: 213.134.161.209
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrudekvddguddvudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepteeggfelteegudehueegieekveduleeuledvueefjeefffegfeejudfgteefhefhnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddufedrudefgedrudeiuddrvddtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduiedurddvtdelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfhhnthhothhhsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
- rhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepmhhikhgrrdifvghsthgvrhgsvghrgheslhhinhhugidrihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon, Sep 27, 2021 at 2:13 PM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> There are some very old macros for doing an open-coded offsetof() and
+> cast between pointer and integer in ACPI headers. clang-14 now complains
+> about these:
+>
+> drivers/acpi/acpica/tbfadt.c:86:3: error: performing pointer subtraction with a null pointer has undefined behavior [-Werror,-Wnull-pointer-subtraction]
+>          ACPI_FADT_OFFSET(pm_timer_block),
+>          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> include/acpi/actbl.h:376:47: note: expanded from macro 'ACPI_FADT_OFFSET'
+>  #define ACPI_FADT_OFFSET(f)             (u16) ACPI_OFFSET (struct acpi_table_fadt, f)
+>                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> include/acpi/actypes.h:511:41: note: expanded from macro 'ACPI_OFFSET'
+>  #define ACPI_OFFSET(d, f)               ACPI_PTR_DIFF (&(((d *) 0)->f), (void *) 0)
+>                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> include/acpi/actypes.h:505:79: note: expanded from macro 'ACPI_PTR_DIFF'
+>  #define ACPI_PTR_DIFF(a, b)             ((acpi_size) (ACPI_CAST_PTR (u8, (a)) - ACPI_CAST_PTR (u8, (b))))
+>                                                                               ^ ~~~~~~~~~~~~~~~~~~~~~~~
+> Convert them to the modern equivalents.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  include/acpi/actypes.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+> index 92c71dfce0d5..285bc7b73de3 100644
+> --- a/include/acpi/actypes.h
+> +++ b/include/acpi/actypes.h
+> @@ -507,8 +507,8 @@ typedef u64 acpi_integer;
+>  /* Pointer/Integer type conversions */
+>
+>  #define ACPI_TO_POINTER(i)              ACPI_CAST_PTR (void, (acpi_size) (i))
+> -#define ACPI_TO_INTEGER(p)              ACPI_PTR_DIFF (p, (void *) 0)
+> -#define ACPI_OFFSET(d, f)               ACPI_PTR_DIFF (&(((d *) 0)->f), (void *) 0)
+> +#define ACPI_TO_INTEGER(p)              ((uintptr_t)(p))
+> +#define ACPI_OFFSET(d, f)               offsetof(d, f)
+>  #define ACPI_PHYSADDR_TO_PTR(i)         ACPI_TO_POINTER(i)
+>  #define ACPI_PTR_TO_PHYSADDR(i)         ACPI_TO_INTEGER(i)
+>
+> --
 
-Drop two invocations of platform_pci_power_manageable() that are not
-necessary, because the functions called when it returns 'true' do the
-requisite "power manageable" checks themselves.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
-
-v2 (https://patchwork.kernel.org/project/linux-acpi/patch/2014133.KlZ2vcFHjT@kreacher/) -> v3:
-   * Call platform_pci_set_power_state() in pci_platform_power_transition() as
-     appropriate.
-
----
- drivers/pci/pci.c |   16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
-
-Index: linux-pm/drivers/pci/pci.c
-===================================================================
---- linux-pm.orig/drivers/pci/pci.c
-+++ linux-pm/drivers/pci/pci.c
-@@ -1191,9 +1191,7 @@ void pci_update_current_state(struct pci
-  */
- void pci_refresh_power_state(struct pci_dev *dev)
- {
--	if (platform_pci_power_manageable(dev))
--		platform_pci_refresh_power_state(dev);
--
-+	platform_pci_refresh_power_state(dev);
- 	pci_update_current_state(dev, dev->current_state);
- }
- 
-@@ -1206,14 +1204,10 @@ int pci_platform_power_transition(struct
- {
- 	int error;
- 
--	if (platform_pci_power_manageable(dev)) {
--		error = platform_pci_set_power_state(dev, state);
--		if (!error)
--			pci_update_current_state(dev, state);
--	} else
--		error = -ENODEV;
--
--	if (error && !dev->pm_cap) /* Fall back to PCI_D0 */
-+	error = platform_pci_set_power_state(dev, state);
-+	if (!error)
-+		pci_update_current_state(dev, state);
-+	else if (!dev->pm_cap) /* Fall back to PCI_D0 */
- 		dev->current_state = PCI_D0;
- 
- 	return error;
-
-
-
+Queued up as 5.16 material, converted into an upstream ACPICA pull
+request and submitted, thanks!
