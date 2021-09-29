@@ -2,118 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9994341C43D
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 14:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7317541C44B
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 14:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343677AbhI2MDu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 29 Sep 2021 08:03:50 -0400
-Received: from mail-oi1-f182.google.com ([209.85.167.182]:45788 "EHLO
-        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343879AbhI2MDe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Sep 2021 08:03:34 -0400
-Received: by mail-oi1-f182.google.com with SMTP id v10so2528900oic.12;
-        Wed, 29 Sep 2021 05:01:54 -0700 (PDT)
+        id S245233AbhI2MJo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Sep 2021 08:09:44 -0400
+Received: from mail-ot1-f53.google.com ([209.85.210.53]:37557 "EHLO
+        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244801AbhI2MJo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Sep 2021 08:09:44 -0400
+Received: by mail-ot1-f53.google.com with SMTP id r43-20020a05683044ab00b0054716b40005so2557841otv.4;
+        Wed, 29 Sep 2021 05:08:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=DPTFjBNMYZsH/LoF0h0iC/ghN40ymuV4zkUVlZxxnn4=;
-        b=nFsj8U7fsXNHpID73JvNvKeoev19i8s8Qc6aNmtgTy4h1ZJ12fo5OJUqFMeydby5q0
-         r3XQ7gk6BdmgTayJGmj3OyjutX1cSdGR/9YXDA5f17ybkj5kFXCPQPkLWTw3rYB6rv3Y
-         iNFiyBdnY3VeTOtAgRQ7En8pQ9R7A2VaJgosggcZ6kwzxei42AbsyRBPJNyRx9EBLpV6
-         YMmTzSIANmULQNsnM/KuSRWkBxSyF2qaoWJkbXbvJ1YYHqBsPwA38xxUGPCy/yinc9dX
-         0pzHmsuW3qvFMDCjRoUazXbzN70F9YgiBNkZUJtlQCrG4yUG3a+uT8RfHJTNi9GdXIoy
-         h+0Q==
-X-Gm-Message-State: AOAM53072xOp1CuP/KX0hGBdNG+WNiiKjgOCXHTI4QRyyIjuOYC8iu8h
-        tPxUw9OvakhznHTsJjBA5Db86C9UKnZNLZfnqHMy1GKc
-X-Google-Smtp-Source: ABdhPJxoNw5TPiy7tXyGhRFCBqyoslPg2WsTrtX+8FsVJTpHKJufbkxvO43p83wgr2KyAiyOScD/EBdm7rFq04tgduc=
-X-Received: by 2002:a05:6808:178c:: with SMTP id bg12mr8017044oib.157.1632916913639;
- Wed, 29 Sep 2021 05:01:53 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=lOD2JGNZk8v+mRUWU6qCnLPxFm8GKCd1aSiNdnVC1UI=;
+        b=FHQYjSxzrwaYU1HDc0bhjTGseA+05QJLQBAnmIu9ZSS+OZgNQo8YcU5Y2aTgUNKuZB
+         lUnF3S8q2YT1UYdKEXcG8kiQHK8mN5xhLxYAjpB+CCAE93BWIgY+LiHa+SskcduJCSAd
+         X2J09mC+VuQNpZYy+nCU6W8S9kLMbV3AXN9hZmqbSM/tVXDiV27I9WSWN7cLwtbZySKk
+         M3iS/Zdo1YJny8zF4H7cVRhbxDOmq6cECFLHZQV/dyQGOmjdJ8qGFM4uKTORnlesPWj5
+         RH+gPf2Cyy2VlgNAJAlf9jBPCsC355ansJ8lDjkB6YerZriqgauYeAOrak1ND6+3ihj4
+         HGvw==
+X-Gm-Message-State: AOAM530hltOVEEXPa/9A18qho6Q2PmiPjT9VKhzpDaGfVNtEvspkBIyn
+        mX68Kkq9eIHLP0FzbgY7HbNNZJN0ARvWneO+XEM=
+X-Google-Smtp-Source: ABdhPJxMVCyh+TLDn+QjO1ONDrrdMlbRvA0UkC+rzTXfgidJEc2fjRlS01Q/3WWpPPHZkX8qGU1k9FzfRNmCVT4nNBM=
+X-Received: by 2002:a05:6830:2784:: with SMTP id x4mr10087198otu.86.1632917283115;
+ Wed, 29 Sep 2021 05:08:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210927121338.938994-1-arnd@kernel.org> <92b02547-3aa5-537f-a782-7a25854d88fe@intel.com>
- <BYAPR11MB32560CEAC6CC3C2E93FBBF9387A89@BYAPR11MB3256.namprd11.prod.outlook.com>
-In-Reply-To: <BYAPR11MB32560CEAC6CC3C2E93FBBF9387A89@BYAPR11MB3256.namprd11.prod.outlook.com>
+References: <20210929104625.1112192-1-qtxuning1999@sjtu.edu.cn>
+In-Reply-To: <20210929104625.1112192-1-qtxuning1999@sjtu.edu.cn>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 29 Sep 2021 14:01:41 +0200
-Message-ID: <CAJZ5v0gHgMVjKzKUnJ0HkE+Bz7-1Rav3FnLA+ycF94JTw5V=ww@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: avoid NULL pointer arithmetic
-To:     "Moore, Robert" <robert.moore@intel.com>
-Cc:     "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        Arnd Bergmann <arnd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "llvm@lists.linux.dev" <llvm@lists.linux.dev>,
+Date:   Wed, 29 Sep 2021 14:07:51 +0200
+Message-ID: <CAJZ5v0jSpoEeL9vevWatiGJ6qbbaxSAoiPH1D4RaT1q0c7Sxmw@mail.gmail.com>
+Subject: Re: [PATCH] acpi/processor_idle.c: Fix kernel pointer leak
+To:     Guo Zhi <qtxuning1999@sjtu.edu.cn>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 28, 2021 at 10:39 PM Moore, Robert <robert.moore@intel.com> wrote:
+On Wed, Sep 29, 2021 at 12:56 PM Guo Zhi <qtxuning1999@sjtu.edu.cn> wrote:
 >
-> I can take this patch as-is, I think. I'll try for the next acpica release later this week.
+> Pointers should be printed with %p or %px rather than
+> cast to 'long' and pinted with %ld.
+> Change %ld to %p to print the secured pointer.
 
-Thanks!
+In this particular case, id->driver_data represents a proper integer,
+not an address, although technically it is a pointer data type.  It
+shouldn't be printed with %p and the patch is incorrect.
 
-
-> -----Original Message-----
-> From: Wysocki, Rafael J <rafael.j.wysocki@intel.com>
-> Sent: Tuesday, September 28, 2021 10:44 AM
-> To: Arnd Bergmann <arnd@kernel.org>; Moore, Robert <robert.moore@intel.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>; Nathan Chancellor <nathan@kernel.org>; Nick Desaulniers <ndesaulniers@google.com>; Erik Kaneda <erik.kaneda@intel.com>; linux-acpi@vger.kernel.org; devel@acpica.org; linux-kernel@vger.kernel.org; llvm@lists.linux.dev; Len Brown <lenb@kernel.org>; Rafael J. Wysocki <rafael@kernel.org>
-> Subject: Re: [PATCH] ACPI: avoid NULL pointer arithmetic
 >
-> Bob, this is ACPICA material.
+> Signed-off-by: Guo Zhi <qtxuning1999@sjtu.edu.cn>
+> ---
+>  drivers/acpi/processor_idle.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> Would it be possible to apply this to the upstream from the patch or do you need  a PR for this?
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index f37fba9e5ba0..a9f4ab072583 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -73,9 +73,9 @@ static int set_max_cstate(const struct dmi_system_id *id)
+>         if (max_cstate > ACPI_PROCESSOR_MAX_POWER)
+>                 return 0;
 >
-> On 9/27/2021 2:13 PM, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > There are some very old macros for doing an open-coded offsetof() and
-> > cast between pointer and integer in ACPI headers. clang-14 now
-> > complains about these:
-> >
-> > drivers/acpi/acpica/tbfadt.c:86:3: error: performing pointer subtraction with a null pointer has undefined behavior [-Werror,-Wnull-pointer-subtraction]
-> >           ACPI_FADT_OFFSET(pm_timer_block),
-> >           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > include/acpi/actbl.h:376:47: note: expanded from macro 'ACPI_FADT_OFFSET'
-> >   #define ACPI_FADT_OFFSET(f)             (u16) ACPI_OFFSET (struct acpi_table_fadt, f)
-> >
-> > ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > include/acpi/actypes.h:511:41: note: expanded from macro 'ACPI_OFFSET'
-> >   #define ACPI_OFFSET(d, f)               ACPI_PTR_DIFF (&(((d *) 0)->f), (void *) 0)
-> >
-> > ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > include/acpi/actypes.h:505:79: note: expanded from macro 'ACPI_PTR_DIFF'
-> >   #define ACPI_PTR_DIFF(a, b)             ((acpi_size) (ACPI_CAST_PTR (u8, (a)) - ACPI_CAST_PTR (u8, (b))))
-> >
-> > ^ ~~~~~~~~~~~~~~~~~~~~~~~ Convert them to the modern equivalents.
-> >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
-> >   include/acpi/actypes.h | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h index
-> > 92c71dfce0d5..285bc7b73de3 100644
-> > --- a/include/acpi/actypes.h
-> > +++ b/include/acpi/actypes.h
-> > @@ -507,8 +507,8 @@ typedef u64 acpi_integer;
-> >   /* Pointer/Integer type conversions */
-> >
-> >   #define ACPI_TO_POINTER(i)              ACPI_CAST_PTR (void, (acpi_size) (i))
-> > -#define ACPI_TO_INTEGER(p)              ACPI_PTR_DIFF (p, (void *) 0)
-> > -#define ACPI_OFFSET(d, f)               ACPI_PTR_DIFF (&(((d *) 0)->f), (void *) 0)
-> > +#define ACPI_TO_INTEGER(p)              ((uintptr_t)(p))
-> > +#define ACPI_OFFSET(d, f)               offsetof(d, f)
-> >   #define ACPI_PHYSADDR_TO_PTR(i)         ACPI_TO_POINTER(i)
-> >   #define ACPI_PTR_TO_PHYSADDR(i)         ACPI_TO_INTEGER(i)
-> >
+> -       pr_notice("%s detected - limiting to C%ld max_cstate."
+> +       pr_notice("%s detected - limiting to C%p max_cstate."
+>                   " Override with \"processor.max_cstate=%d\"\n", id->ident,
+> -                 (long)id->driver_data, ACPI_PROCESSOR_MAX_POWER + 1);
+> +               id->driver_data, ACPI_PROCESSOR_MAX_POWER + 1);
 >
+>         max_cstate = (long)id->driver_data;
+>
+> --
+> 2.33.0
 >
