@@ -2,98 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB70641CD45
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 22:14:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC91341CD5A
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 22:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346613AbhI2UPg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Sep 2021 16:15:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51272 "EHLO mail.kernel.org"
+        id S1346506AbhI2U0d (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Sep 2021 16:26:33 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:39554 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1346609AbhI2UPg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 29 Sep 2021 16:15:36 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E91F16141B;
-        Wed, 29 Sep 2021 20:13:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632946432;
-        bh=8xaQPVB8PJRhNlU6vdZU9erLdUJD2O0sg/VRyNiOcLg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TNQ/qCKsJ1V1h1qd+n4eHUt2cCRxg7ZrrHht+KZtntYdtwL2TYo2qKBV6wlg+3IiH
-         UHSaUzjc2aq8SKaOyVtdsMuidfjxoikGEpckvGDAwPFX0dZ4We/aah0we6hiOKNIEK
-         iu1jmdLIZ0GoBRqzwg/KGJ6vQJ3rONlyFu4tkUdjxrwAfrNHHBquFMsP677fu9GKIu
-         cj1M1i+/uq5tst9JjgKHRGjDvrWq5RpKWeAtEfdKfve4ujqaJEJyUFdVaD81EvdLGa
-         sIkJfpBTQLMW3dHS6odHJFx3zgEmK2agniZSDASQQrp4wNaXjNzWt5yRWymbBjemlm
-         pYolU+PIjmHPg==
-Date:   Wed, 29 Sep 2021 22:13:49 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Heiner Kallweit <hkallweit1@gmail.com>
-Cc:     Jean Delvare <jdelvare@suse.com>, linux-acpi@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
-Subject: Re: [PATCH RESEND] i2c: i801: Stop using
- pm_runtime_set_autosuspend_delay(-1)
-Message-ID: <YVTI/bkve3QkHWPs@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Jean Delvare <jdelvare@suse.com>, linux-acpi@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
-References: <515c9685-bad2-86e0-1be6-f9f63578b864@gmail.com>
+        id S1346361AbhI2U0d (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 29 Sep 2021 16:26:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=Lh+F5ZjCx0bOA0ZJvvdGRxDGTO4CVU+5ejZ1orJFARo=; b=MUWnnwDTA13YTmHBToqcVGDNT5
+        ePCd5dqFdM8DbuueNSvx9nvtXef2xRllw5xAQodxwVgSP22IWwn95jfAu9MY5mjXm9tczXEM+7wi5
+        fLdgN9nLR2ly4pwjSQgu4+siBw1mWaxFZfmDlbTr8cBJQkGWuVNAcjPhvYO8ya8Hc7oQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1mVg8E-008qF0-Kf; Wed, 29 Sep 2021 22:24:46 +0200
+Date:   Wed, 29 Sep 2021 22:24:46 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        David Thompson <davthompson@nvidia.com>
+Subject: Re: [PATCH v3 1/2] gpio: mlxbf2: Introduce IRQ support
+Message-ID: <YVTLjp1RSPGNZlUJ@lunn.ch>
+References: <20210923202216.16091-1-asmaa@nvidia.com>
+ <20210923202216.16091-2-asmaa@nvidia.com>
+ <YU26lIUayYXU/x9l@lunn.ch>
+ <CACRpkdbUJF6VUPk9kCMPBvjeL3frJAbHq+h0-z7P-a1pSU+fiw@mail.gmail.com>
+ <CH2PR12MB38951F2326196AB5B573A73DD7A79@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <YVHQQcv2M6soJR6u@lunn.ch>
+ <CH2PR12MB389585F7D5EFE5E2453593DBD7A79@CH2PR12MB3895.namprd12.prod.outlook.com>
+ <YVHbo/cJcHzxUk+d@lunn.ch>
+ <CH2PR12MB389530F4A65840FE04DC8628D7A89@CH2PR12MB3895.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="YSMepRTDEtbVTZpi"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <515c9685-bad2-86e0-1be6-f9f63578b864@gmail.com>
+In-Reply-To: <CH2PR12MB389530F4A65840FE04DC8628D7A89@CH2PR12MB3895.namprd12.prod.outlook.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+> In KSZ9031, Register MII_KSZPHY_INTCS=0x1B reports all interrupt events and
+> clear on read. So if there are 4 different interrupts, once it is read once, all 4 clear at once.
+> The micrel.c driver has defined ack_interrupt to read the above reg and is called every time the
+> interrupt handler phy_interrupt is called. So in this case, we should be good.
+> The code flow in our case would look like this:
+> - 2 interrupt sources (for example, link down followed by link up) set in MII_KSZPHY_INTCS
+> - interrupt handler (phy_interrupt) reads MII_KSZPHY_INT which automatically clears both
+> interrupts
+> - another internal source triggers and sets the register.
+> - The second edge will be caught accordingly by the GPIO.
 
---YSMepRTDEtbVTZpi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I still think there is a small race window. You product manager needs
+to decide if that is acceptable, or if you should poll the PHY.
 
-On Tue, Sep 07, 2021 at 10:33:02PM +0200, Heiner Kallweit wrote:
-> The original change works as intended, but Andy pointed in [0] that now
-> userspace could re-enable RPM via sysfs, even though we explicitly want
-> to disable it. So effectively revert the original patch, just with small
-> improvements:
-> - Calls to pm_runtime_allow()/pm_runtime_forbid() don't have to be
->   balanced, so we can remove the call to pm_runtime_forbid() in
->   i801_remove().
-> - priv->acpi_reserved is accessed after i801_acpi_remove(), and according
->   to Robert [1] the custom handler can't run any longer. Therefore we
->   don't have to take priv->acpi_lock.
->=20
-> [0] https://www.spinics.net/lists/linux-i2c/msg52730.html
-> [1] https://lore.kernel.org/linux-acpi/BYAPR11MB32561D19A0FD9AB93E2B1E528=
-7D39@BYAPR11MB3256.namprd11.prod.outlook.com/T/#t
->=20
-> Fixes: 4e60d5dd10cd ("i2c: i801: Improve disabling runtime pm")
-> Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Anyway, it is clear the hardware only does level interrupts, so the
+GPIO driver should only accept level interrupts. -EINVAL otherwise.
 
-Applied to for-next, thanks!
+I also assume you have a ACPI blob which indicates what sort of
+interrupts that should be used, level low, falling edge etc. Since
+that is outside of the kernel, i will never know what you decide to
+put there. Ideally, until the hardware is fixed, you should not list
+any interrupt and fallback to polling.
 
-
---YSMepRTDEtbVTZpi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmFUyP0ACgkQFA3kzBSg
-KbbbfhAAh+8P2sCioy7vlcpWm2BFYAXbXzXMxxjVDh5gI+261Bgw3UmzgvDkZUGb
-iks7ZcSx2OVS6rmZ927I5Smb0H5yFoDhiVt1LO6C2wTsSeES8PNbQX5nVgjw4Dqy
-ml5m4Z/DhE1mpAny2kM4ZK0zGLXOmps/9Y/rLqbCcL5fXxsR/3WbBKIqaesb8IEl
-xoDqjkDR5ou6z1shuP0oYf1WtBJKmTSQkyTmr//p11Flt6rQz0w3LoBxCGGlfft+
-fRa/SEa0Eq2ks5GRehhG00WJluT5qNNbixNwWkukzx84raLXKj8w+J5tIWp0fQ3t
-sOXg+3yFnen+kDjJNQWXZQ69wfdOGz3dF7dp5B7a5X4jg2FVXh8x/Oa2qrH/kVjK
-23oUyu6uc1U2ohiKRKm4P8hRO3BwkY82vxD9AFPCBjWXokNiq//X+f44E9OFx2w7
-2Ke0tGxV6wEt1Bz6vyPS2plZMwVZh1EEtRW7qBXUTwwop6792jViH12abvFmeBf2
-upK8KE0ixNkm5MnvHTqtY8wV+xrX1fUAHFnVItEH5mS7nAASiQ7c+9qEpU3XXlZh
-jEcF50h+4LPUxcxyTjOYxVR240fnrbku/WvHbXtUx3hjeEqC/qYMI2s05nTilhh1
-0XSBqCQ4zY6TCETL7n1QCbC+SNaq3hNNCwco56oQj8+4ehTWVts=
-=nK0k
------END PGP SIGNATURE-----
-
---YSMepRTDEtbVTZpi--
+    Andrew
