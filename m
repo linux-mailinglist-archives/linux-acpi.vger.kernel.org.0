@@ -2,206 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77A3241CA24
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 18:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97CB241CA27
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 18:31:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345553AbhI2Qc3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Sep 2021 12:32:29 -0400
-Received: from mga04.intel.com ([192.55.52.120]:26977 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345687AbhI2Qc3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 29 Sep 2021 12:32:29 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10122"; a="223093003"
-X-IronPort-AV: E=Sophos;i="5.85,332,1624345200"; 
-   d="scan'208";a="223093003"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2021 09:30:47 -0700
-X-IronPort-AV: E=Sophos;i="5.85,332,1624345200"; 
-   d="scan'208";a="707381797"
-Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.146])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2021 09:30:47 -0700
-Date:   Wed, 29 Sep 2021 09:30:45 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mark Kettenis <mark.kettenis@xs4all.nl>,
-        Jia He <justin.he@arm.com>,
-        Harb Abdulhamid <harb@amperecomputing.com>,
-        Will Deacon <will@kernel.org>, Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH v2] Revert "ACPI: Add memory semantics to
- acpi_os_map_memory()"
-Message-ID: <YVSUtTunKrk+nZcO@agluck-desk2.amr.corp.intel.com>
-References: <20210910143223.6705-1-justin.he@arm.com>
- <20210922163336.GA24633@lpieralisi>
- <56147a0b8b9fba46@bloch.sibelius.xs4all.nl>
- <20210923094031.GA6454@lpieralisi>
- <CAJZ5v0g+OVbhuUUDrLUCfX_mVqY_e8ubgLTU98=jfjTeb4t+Pw@mail.gmail.com>
- <56147c6e73afe9f6@bloch.sibelius.xs4all.nl>
- <CAJZ5v0j7=EGbtGw+FOMwyNWoyRoaeT1cvu6si7nPVVFh307J0g@mail.gmail.com>
- <20210924090409.GA26089@lpieralisi>
- <44f20f07-257b-a1a5-23d9-ffd66bf45887@intel.com>
- <20210929133131.GA20191@lpieralisi>
+        id S1345817AbhI2QdJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Sep 2021 12:33:09 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:41314 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344370AbhI2QdJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Sep 2021 12:33:09 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
+ id 7e2dd45c5bac3e78; Wed, 29 Sep 2021 18:31:26 +0200
+Received: from kreacher.localnet (unknown [213.134.161.209])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 4AADA66A718;
+        Wed, 29 Sep 2021 18:31:26 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Bob Moore <robert.moore@intel.com>,
+        Reik Keutterling <spielkind@gmail.com>
+Subject: [PATCH v2] ACPICA: Avoid evaluating methods too early during system resume
+Date:   Wed, 29 Sep 2021 18:31:25 +0200
+Message-ID: <2618833.mvXUDI8C0e@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210929133131.GA20191@lpieralisi>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.161.209
+X-CLIENT-HOSTNAME: 213.134.161.209
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrudekvddguddttdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdevgfetueetheekudeuvdduteelvefftdfftdejjeeukeffteeikefgiefghedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddufedrudefgedrudeiuddrvddtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduiedurddvtdelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohepshhpihgvlhhkihhnugesghhmrghilhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Sep 29, 2021 at 02:31:31PM +0100, Lorenzo Pieralisi wrote:
-> [+Tony]
-> 
-> On Tue, Sep 28, 2021 at 07:26:52PM +0200, Rafael J. Wysocki wrote:
-> > On 9/24/2021 11:04 AM, Lorenzo Pieralisi wrote:
-> > > On Thu, Sep 23, 2021 at 02:54:52PM +0200, Rafael J. Wysocki wrote:
-> > > > On Thu, Sep 23, 2021 at 2:26 PM Mark Kettenis <mark.kettenis@xs4all.nl> wrote:
-> > > > > > From: "Rafael J. Wysocki" <rafael@kernel.org>
-> > > > > > Date: Thu, 23 Sep 2021 13:05:05 +0200
-> > > > > > 
-> > > > > > On Thu, Sep 23, 2021 at 11:40 AM Lorenzo Pieralisi
-> > > > > > <lorenzo.pieralisi@arm.com> wrote:
-> > > > > > > On Thu, Sep 23, 2021 at 01:09:58AM +0200, Mark Kettenis wrote:
-> > > > > > > > > Date: Wed, 22 Sep 2021 17:33:36 +0100
-> > > > > > > > > From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > > > > > > > > 
-> > > > > > > > > On Fri, Sep 10, 2021 at 10:32:23PM +0800, Jia He wrote:
-> > > > > > > > > > This reverts commit 437b38c51162f8b87beb28a833c4d5dc85fa864e.
-> > > > > > > > > > 
-> > > > > > > > > > After this commit, a boot panic is alway hit on an Ampere EMAG server
-> > > > > > > > > > with call trace as follows:
-> > > > > > > > > >   Internal error: synchronous external abort: 96000410 [#1] SMP
-> > > > > > > > > >   Modules linked in:
-> > > > > > > > > >   CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0+ #462
-> > > > > > > > > >   Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
-> > > > > > > > > >   pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > > > > > > > > > [...snip...]
-> > > > > > > > > >   Call trace:
-> > > > > > > > > >    acpi_ex_system_memory_space_handler+0x26c/0x2c8
-> > > > > > > > > >    acpi_ev_address_space_dispatch+0x228/0x2c4
-> > > > > > > > > >    acpi_ex_access_region+0x114/0x268
-> > > > > > > > > >    acpi_ex_field_datum_io+0x128/0x1b8
-> > > > > > > > > >    acpi_ex_extract_from_field+0x14c/0x2ac
-> > > > > > > > > >    acpi_ex_read_data_from_field+0x190/0x1b8
-> > > > > > > > > >    acpi_ex_resolve_node_to_value+0x1ec/0x288
-> > > > > > > > > >    acpi_ex_resolve_to_value+0x250/0x274
-> > > > > > > > > >    acpi_ds_evaluate_name_path+0xac/0x124
-> > > > > > > > > >    acpi_ds_exec_end_op+0x90/0x410
-> > > > > > > > > >    acpi_ps_parse_loop+0x4ac/0x5d8
-> > > > > > > > > >    acpi_ps_parse_aml+0xe0/0x2c8
-> > > > > > > > > >    acpi_ps_execute_method+0x19c/0x1ac
-> > > > > > > > > >    acpi_ns_evaluate+0x1f8/0x26c
-> > > > > > > > > >    acpi_ns_init_one_device+0x104/0x140
-> > > > > > > > > >    acpi_ns_walk_namespace+0x158/0x1d0
-> > > > > > > > > >    acpi_ns_initialize_devices+0x194/0x218
-> > > > > > > > > >    acpi_initialize_objects+0x48/0x50
-> > > > > > > > > >    acpi_init+0xe0/0x498
-> > > > > > > > > > 
-> > > > > > > > > > As mentioned by Lorenzo:
-> > > > > > > > > >    "We are forcing memory semantics mappings to PROT_NORMAL_NC, which
-> > > > > > > > > >    eMAG does not like at all and I'd need to understand why. It looks
-> > > > > > > > > >    like the issue happen in SystemMemory Opregion handler."
-> > > > > > > > > > 
-> > > > > > > > > > Hence just revert it before everything is clear.
-> > > > > > > > > > 
-> > > > > > > > > > Fixes: 437b38c51162 ("ACPI: Add memory semantics to acpi_os_map_memory()")
-> > > > > > > > > > Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > > > > > > > > > Cc: Ard Biesheuvel <ardb@kernel.org>
-> > > > > > > > > > Cc: Hanjun Guo <guohanjun@huawei.com>
-> > > > > > > > > > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > > > > > > > > > Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > > > > > > > Cc: Harb Abdulhamid <harb@amperecomputing.com>
-> > > > > > > > > > 
-> > > > > > > > > > Signed-off-by: Jia He <justin.he@arm.com>
-> > > > > > > > > Rewrote the commit log, please take the patch below and repost
-> > > > > > > > > it as a v3.
-> > > > > > > > > 
-> > > > > > > > > It would still be great if Ampere can help us understand why
-> > > > > > > > > the NormalNC attributes trigger a sync abort on the opregion
-> > > > > > > > > before merging it.
-> > > > > > > > To be honest, I don't think you really need an explanation from Ampere
-> > > > > > > > here.  Mapping a part of the address space that doesn't provide memory
-> > > > > > > > semantics with NormalNC attributes is wrong and triggering a sync
-> > > > > > > > abort in that case is way better than silently ignoring the access.
-> > > > > > > That's understood and that's what I explained in the revert commit
-> > > > > > > log, no question about it.
-> > > > > > > 
-> > > > > > > I was just asking to confirm if that's what's actually happening.
-> > > > > > > 
-> > > > > > > > Putting my OpenBSD hat on (where we have our own ACPI OSPM
-> > > > > > > > implementation) I must say that we always interpreted SystemMemory as
-> > > > > > > > memory mapped IO and I think that is a logical choice as SystemIO is
-> > > > > > > > used for (non-memory mapped) IO.  And I'd say that the ACPI OSPM code
-> > > > > > > > should make sure that it uses properly aligned access to any Field
-> > > > > > > > object that doesn't use AnyAcc as its access type.  Even on x86!  And
-> > > > > > > > I'd say that AML that uses AnyAcc fields for SystemMemory OpRegions on
-> > > > > > > > arm64 is buggy.
-> > > > > > > > 
-> > > > > > > > But maybe relaxing this when the EFI memory map indicates that the
-> > > > > > > > address space in question does provide memory semantics does make
-> > > > > > > > sense.  That should defenitely be documented in the ACPI standard
-> > > > > > > > though.
-> > > > > > > Mapping SystemMemory Opregions as "memory" does not make sense
-> > > > > > > at all to me. Still, that's what Linux ACPICA code does (*if*
-> > > > > > > that's what acpi_os_map_memory() is supposed to mean).
-> > > > > > > 
-> > > > > > > https://lore.kernel.org/linux-acpi/20210916160827.GA4525@lpieralisi
-> > > > > > It doesn't need to do that, though, if there are good enough arguments
-> > > > > > to change the current behavior (and the argument here is that it may
-> > > > > > be an MMIO region, so mapping it as memory doesn't really work, but it
-> > > > > > also may be a region in memory - there is no rule in the spec by which
-> > > > > > SystemMemory Opregions cannot be "memory" AFAICS) and if that change
-> > > > > > doesn't introduce regressions in the installed base.
-> > > > > > 
-> > > > > > > Where do we go from here, to be defined, we still have a bug
-> > > > > > > to fix after the revert is applied.
-> > > > > > > 
-> > > > > > > drivers/acpi/sysfs.c
-> > > > > > > 
-> > > > > > > maps BERT error regions with acpi_os_map_memory().
-> > > > > > That mechanism is basically used for exporting ACPI tables to user
-> > > > > > space and they are known to reside in memory.  Whether or not BERT
-> > > > > > regions should be mapped in the same way is a good question.
-> > > > > It is not inconceivable that BERT regions actually live in memory of
-> > > > > the BMC that is exposed over a bus that doesn't implement memory
-> > > > > semantics is it?
-> > > > No, it isn't, which is why I think that mapping them as RAM may not be
-> > > > a good idea in general.
-> > > Should I patch acpi_data_show() to map BERT error regions (well, that's
-> > > what acpi_data_show() is used on at the moment) as MMIO and use the
-> > > related memcpy routine to read them then :) ?
-> > 
-> > It actually would be good to clean it up so it is clear that this is only
-> > used for BERT.
-> > 
-> > And then there is this question: if this is not RAM (so effectively it is
-> > device memory), should it be exposed directly to user space?
-> 
-> Do you mean from a security standpoint ? I believe there might be users
-> out there so if we want to remove that sysfs entry it may be
-> problematic.
-> 
-> Maybe Tony has more insights into this than I do:
-> 
-> commit 7dae6326ed76 ("ACPI / sysfs: Extend ACPI sysfs to provide access to boot error region")
-> 
-> Thanks,
-> Lorenzo
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-There are definelty users of /sys/firmware/acpi/tables/data/BERT.
+During wakeup from system-wide sleep states, acpi_get_sleep_type_data()
+is called and it tries to get memory from the slab allocator in order
+to evaluate a control method, but if KFENCE is enabled in the kernel,
+the memory allocation attempt causes an IRQ work to be queued and a
+self-IPI to be sent to the CPU running the code which requires the
+memory controller to be ready, so if that happens too early in the
+wakeup path, it doesn't work.
 
-If there is a concern about mapping the original BIOS memory to
-provide this entry, then we need to allocate kernel memory and make
-a copy that appears in the blob exported to /sys.
+Prevent that from taking place by calling acpi_get_sleep_type_data()
+for S0 upfront, when preparing to enter a given sleep state, and
+saving the data obtained by it for later use during system wakeup.
 
--Tony
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=214271
+Reported-by: Reik Keutterling <spielkind@gmail.com>
+Tested-by: Reik Keutterling <spielkind@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+v1 -> v2:
+   * Fix local variable initialization.
+
+---
+ drivers/acpi/acpica/acglobal.h  |    2 ++
+ drivers/acpi/acpica/hwesleep.c  |    8 ++------
+ drivers/acpi/acpica/hwsleep.c   |   11 ++++-------
+ drivers/acpi/acpica/hwxfsleep.c |    7 +++++++
+ 4 files changed, 15 insertions(+), 13 deletions(-)
+
+Index: linux-pm/drivers/acpi/acpica/acglobal.h
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/acglobal.h
++++ linux-pm/drivers/acpi/acpica/acglobal.h
+@@ -226,6 +226,8 @@ extern struct acpi_bit_register_info
+     acpi_gbl_bit_register_info[ACPI_NUM_BITREG];
+ ACPI_GLOBAL(u8, acpi_gbl_sleep_type_a);
+ ACPI_GLOBAL(u8, acpi_gbl_sleep_type_b);
++ACPI_GLOBAL(u8, acpi_gbl_sleep_type_a_s0);
++ACPI_GLOBAL(u8, acpi_gbl_sleep_type_b_s0);
+ 
+ /*****************************************************************************
+  *
+Index: linux-pm/drivers/acpi/acpica/hwxfsleep.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/hwxfsleep.c
++++ linux-pm/drivers/acpi/acpica/hwxfsleep.c
+@@ -217,6 +217,13 @@ acpi_status acpi_enter_sleep_state_prep(
+ 		return_ACPI_STATUS(status);
+ 	}
+ 
++	status = acpi_get_sleep_type_data(ACPI_STATE_S0,
++					  &acpi_gbl_sleep_type_a_s0,
++					  &acpi_gbl_sleep_type_b_s0);
++	if (ACPI_FAILURE(status)) {
++		acpi_gbl_sleep_type_a_s0 = ACPI_SLEEP_TYPE_INVALID;
++	}
++
+ 	/* Execute the _PTS method (Prepare To Sleep) */
+ 
+ 	arg_list.count = 1;
+Index: linux-pm/drivers/acpi/acpica/hwsleep.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/hwsleep.c
++++ linux-pm/drivers/acpi/acpica/hwsleep.c
+@@ -179,7 +179,7 @@ acpi_status acpi_hw_legacy_sleep(u8 slee
+ 
+ acpi_status acpi_hw_legacy_wake_prep(u8 sleep_state)
+ {
+-	acpi_status status;
++	acpi_status status = AE_OK;
+ 	struct acpi_bit_register_info *sleep_type_reg_info;
+ 	struct acpi_bit_register_info *sleep_enable_reg_info;
+ 	u32 pm1a_control;
+@@ -192,10 +192,7 @@ acpi_status acpi_hw_legacy_wake_prep(u8
+ 	 * This is unclear from the ACPI Spec, but it is required
+ 	 * by some machines.
+ 	 */
+-	status = acpi_get_sleep_type_data(ACPI_STATE_S0,
+-					  &acpi_gbl_sleep_type_a,
+-					  &acpi_gbl_sleep_type_b);
+-	if (ACPI_SUCCESS(status)) {
++	if (acpi_gbl_sleep_type_a_s0 != ACPI_SLEEP_TYPE_INVALID) {
+ 		sleep_type_reg_info =
+ 		    acpi_hw_get_bit_register_info(ACPI_BITREG_SLEEP_TYPE);
+ 		sleep_enable_reg_info =
+@@ -216,9 +213,9 @@ acpi_status acpi_hw_legacy_wake_prep(u8
+ 
+ 			/* Insert the SLP_TYP bits */
+ 
+-			pm1a_control |= (acpi_gbl_sleep_type_a <<
++			pm1a_control |= (acpi_gbl_sleep_type_a_s0 <<
+ 					 sleep_type_reg_info->bit_position);
+-			pm1b_control |= (acpi_gbl_sleep_type_b <<
++			pm1b_control |= (acpi_gbl_sleep_type_b_s0 <<
+ 					 sleep_type_reg_info->bit_position);
+ 
+ 			/* Write the control registers and ignore any errors */
+Index: linux-pm/drivers/acpi/acpica/hwesleep.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/acpica/hwesleep.c
++++ linux-pm/drivers/acpi/acpica/hwesleep.c
+@@ -147,17 +147,13 @@ acpi_status acpi_hw_extended_sleep(u8 sl
+ 
+ acpi_status acpi_hw_extended_wake_prep(u8 sleep_state)
+ {
+-	acpi_status status;
+ 	u8 sleep_type_value;
+ 
+ 	ACPI_FUNCTION_TRACE(hw_extended_wake_prep);
+ 
+-	status = acpi_get_sleep_type_data(ACPI_STATE_S0,
+-					  &acpi_gbl_sleep_type_a,
+-					  &acpi_gbl_sleep_type_b);
+-	if (ACPI_SUCCESS(status)) {
++	if (acpi_gbl_sleep_type_a_s0 != ACPI_SLEEP_TYPE_INVALID) {
+ 		sleep_type_value =
+-		    ((acpi_gbl_sleep_type_a << ACPI_X_SLEEP_TYPE_POSITION) &
++		    ((acpi_gbl_sleep_type_a_s0 << ACPI_X_SLEEP_TYPE_POSITION) &
+ 		     ACPI_X_SLEEP_TYPE_MASK);
+ 
+ 		(void)acpi_write((u64)(sleep_type_value | ACPI_X_SLEEP_ENABLE),
+
+
+
