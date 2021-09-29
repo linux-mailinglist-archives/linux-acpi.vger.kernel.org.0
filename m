@@ -2,68 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 124B941C04B
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 10:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9813D41C313
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 12:56:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244389AbhI2ILB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Sep 2021 04:11:01 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28]:47584 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243480AbhI2ILA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Sep 2021 04:11:00 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 08FCF223AA;
-        Wed, 29 Sep 2021 08:09:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1632902959; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=HWtEvaqyOuYwDv9KpKmrB4Wov0qbAfje9GDeR1dFe9M=;
-        b=JsLrPsRx+jD2vEG9495pn0WJXeFGCt7kSgjimTB5uSGFNgGrv3EbEsq93c9TVU9JluVQll
-        ozpscKZAOag6vhHPqA8zkQQ+SRFGhOTMBuc+vgi4B7K3IYXc0SKkteqBnKbdNWUg/uOBNM
-        Gvju6lxUhXcJvM7KK8WZzB545WwD1CA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1632902959;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=HWtEvaqyOuYwDv9KpKmrB4Wov0qbAfje9GDeR1dFe9M=;
-        b=2rOMNEEw2QXOH1QjyOdAZGF3Y91GfyhyPsn7ANhqtp9dNDl7NQNu44i1pNlZ2baEdACOSS
-        /wvI9CWEtSewjPDg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A411513A81;
-        Wed, 29 Sep 2021 08:09:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id nbdhJi4fVGGQCgAAMHmgww
-        (envelope-from <jroedel@suse.de>); Wed, 29 Sep 2021 08:09:18 +0000
-Date:   Wed, 29 Sep 2021 10:09:09 +0200
-From:   Joerg Roedel <jroedel@suse.de>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Joerg Roedel <joro@8bytes.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] PCI/ACPI: Simplify PCIe _OSC feature negotiation
-Message-ID: <YVQfJa5ZkvD8C3YY@suse.de>
-References: <20210824122054.29481-1-joro@8bytes.org>
- <20210928212119.GA735813@bhelgaas>
+        id S245380AbhI2K6U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Sep 2021 06:58:20 -0400
+Received: from smtp181.sjtu.edu.cn ([202.120.2.181]:43976 "EHLO
+        smtp181.sjtu.edu.cn" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245624AbhI2K6Q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Sep 2021 06:58:16 -0400
+X-Greylist: delayed 596 seconds by postgrey-1.27 at vger.kernel.org; Wed, 29 Sep 2021 06:58:15 EDT
+Received: from proxy02.sjtu.edu.cn (smtp188.sjtu.edu.cn [202.120.2.188])
+        by smtp181.sjtu.edu.cn (Postfix) with ESMTPS id 9314B1008CBCD;
+        Wed, 29 Sep 2021 18:46:36 +0800 (CST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by proxy02.sjtu.edu.cn (Postfix) with ESMTP id 7EFD4200BC2D9;
+        Wed, 29 Sep 2021 18:46:36 +0800 (CST)
+X-Virus-Scanned: amavisd-new at 
+Received: from proxy02.sjtu.edu.cn ([127.0.0.1])
+        by localhost (proxy02.sjtu.edu.cn [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id yANxG9gyx2dr; Wed, 29 Sep 2021 18:46:36 +0800 (CST)
+Received: from guozhi-ipads.ipads-lab.se.sjtu.edu.cn (unknown [202.120.40.82])
+        (Authenticated sender: qtxuning1999@sjtu.edu.cn)
+        by proxy02.sjtu.edu.cn (Postfix) with ESMTPSA id 57718200B5751;
+        Wed, 29 Sep 2021 18:46:28 +0800 (CST)
+From:   Guo Zhi <qtxuning1999@sjtu.edu.cn>
+To:     rafael@kernel.org, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Guo Zhi <qtxuning1999@sjtu.edu.cn>
+Subject: [PATCH] acpi/processor_idle.c: Fix kernel pointer leak
+Date:   Wed, 29 Sep 2021 18:46:25 +0800
+Message-Id: <20210929104625.1112192-1-qtxuning1999@sjtu.edu.cn>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210928212119.GA735813@bhelgaas>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 28, 2021 at 04:21:19PM -0500, Bjorn Helgaas wrote:
-> Applied with Rafael's reviewed-by to pci/acpi for v5.16, thanks!
+Pointers should be printed with %p or %px rather than
+cast to 'long' and pinted with %ld.
+Change %ld to %p to print the secured pointer.
 
-Thanks Bjorn!
+Signed-off-by: Guo Zhi <qtxuning1999@sjtu.edu.cn>
+---
+ drivers/acpi/processor_idle.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index f37fba9e5ba0..a9f4ab072583 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -73,9 +73,9 @@ static int set_max_cstate(const struct dmi_system_id *id)
+ 	if (max_cstate > ACPI_PROCESSOR_MAX_POWER)
+ 		return 0;
+ 
+-	pr_notice("%s detected - limiting to C%ld max_cstate."
++	pr_notice("%s detected - limiting to C%p max_cstate."
+ 		  " Override with \"processor.max_cstate=%d\"\n", id->ident,
+-		  (long)id->driver_data, ACPI_PROCESSOR_MAX_POWER + 1);
++		id->driver_data, ACPI_PROCESSOR_MAX_POWER + 1);
+ 
+ 	max_cstate = (long)id->driver_data;
+ 
+-- 
+2.33.0
+
