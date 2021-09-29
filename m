@@ -2,165 +2,97 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97CB241CA27
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 18:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F3AC41CAF0
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Sep 2021 19:14:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345817AbhI2QdJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Sep 2021 12:33:09 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:41314 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344370AbhI2QdJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Sep 2021 12:33:09 -0400
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
- id 7e2dd45c5bac3e78; Wed, 29 Sep 2021 18:31:26 +0200
-Received: from kreacher.localnet (unknown [213.134.161.209])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 4AADA66A718;
-        Wed, 29 Sep 2021 18:31:26 +0200 (CEST)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Bob Moore <robert.moore@intel.com>,
-        Reik Keutterling <spielkind@gmail.com>
-Subject: [PATCH v2] ACPICA: Avoid evaluating methods too early during system resume
-Date:   Wed, 29 Sep 2021 18:31:25 +0200
-Message-ID: <2618833.mvXUDI8C0e@kreacher>
+        id S1345367AbhI2RQa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Sep 2021 13:16:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54334 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345497AbhI2RQ3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Sep 2021 13:16:29 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4ECC06161C;
+        Wed, 29 Sep 2021 10:14:48 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id bd28so11234796edb.9;
+        Wed, 29 Sep 2021 10:14:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=OQKF+RLkOKzo9hZLWlJSlFW0i6TdEuGYzqVjwQH02LE=;
+        b=eG0HL3t+blVG+2HjIgZmO04iNkhYAM8BXnHAM6Om9vEp012pWtJmYZPsqy5Z+hEQ9G
+         sZP6Cz5xzHbhB2uL8xmzgk82e0hHJysUBWeyf0UWLUHmTvZbJBrQ5BmfDuN0Cl7XSGN1
+         Tns2oU+fzP/r2SiZWC3Eu51wMAYpUxENh4Vxj1Us27aG7BbFSh+TXLtYE4Nf0I1a+CxP
+         HMEhgVr49xOG1pFet4UzHMbdEH+bQntBcmdiRQkXWVLAXJ8zWIuGB85ii5bwVdaBaAIO
+         dzr72iTbqsWRAqZVsypkmAiAgACKt/ukjAYlc9dVJdQeMueyuB8TRm5pmMC3ZIVWMjZ9
+         Sm/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=OQKF+RLkOKzo9hZLWlJSlFW0i6TdEuGYzqVjwQH02LE=;
+        b=3S3JL03lNM90Fmjy2UU76lkU3ForEymKS3MMQAJt3ljcVGBZUGPPK+LabgIgtxYQh5
+         chfGdkzqdVBFzNafqwIgLfcCeYHiTp5q15B+jK+qOAaqG16CHRkp/tN46RA3kMkHNAxv
+         +YKAOTgfkOWcVvXhVgIUM8XZC92GIhdgyX5Omsrgd6YHyh89ioxDC0tmdoaSE2kY/D7j
+         wMUqvbZn6yAj06A0aRH3oFUSkRPyOK+V0Zh/Ri57fyy1UGVvQVDPkzaKAG1CKB2I8w4c
+         V8Aoz81Rau0vA2++B9XGyAlo4NpyQqoZ/AI/5GeNSGLUgtDik461rH6MrFxK7sVw+rn1
+         C+2g==
+X-Gm-Message-State: AOAM531iNZs8yGokVBen8pwWmpZ7nziD1DRcZs6QIfpedpwXDPQfcFhL
+        EoWW48SxcOsiC2E4djQZJKw=
+X-Google-Smtp-Source: ABdhPJyuMSo2XG3S9Q6rcz0SPuJjiu4vfEzdQ0SoiodnSquZ+zn4DQXuVy3riDPoxBDKiT416+vGOw==
+X-Received: by 2002:a17:906:564e:: with SMTP id v14mr1006746ejr.424.1632935687100;
+        Wed, 29 Sep 2021 10:14:47 -0700 (PDT)
+Received: from [192.168.1.97] ([49.236.51.203])
+        by smtp.gmail.com with ESMTPSA id cr9sm266282edb.17.2021.09.29.10.14.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Sep 2021 10:14:46 -0700 (PDT)
+Subject: Re: [PATCH v2 0/7] PCI: ACPI: Get rid of struct pci_platform_pm_ops
+ and clean up code
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+References: <20210928232823.GA748352@bhelgaas>
+From:   Ferry Toth <fntoth@gmail.com>
+Message-ID: <f6be0339-5b11-8c3b-ef5c-47e50e878e2d@gmail.com>
+Date:   Wed, 29 Sep 2021 19:14:43 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.161.209
-X-CLIENT-HOSTNAME: 213.134.161.209
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrudekvddguddttdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdevgfetueetheekudeuvdduteelvefftdfftdejjeeukeffteeikefgiefghedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddufedrudefgedrudeiuddrvddtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrdduiedurddvtdelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohepshhpihgvlhhkihhnugesghhmrghilhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
+In-Reply-To: <20210928232823.GA748352@bhelgaas>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi
 
-During wakeup from system-wide sleep states, acpi_get_sleep_type_data()
-is called and it tries to get memory from the slab allocator in order
-to evaluate a control method, but if KFENCE is enabled in the kernel,
-the memory allocation attempt causes an IRQ work to be queued and a
-self-IPI to be sent to the CPU running the code which requires the
-memory controller to be ready, so if that happens too early in the
-wakeup path, it doesn't work.
-
-Prevent that from taking place by calling acpi_get_sleep_type_data()
-for S0 upfront, when preparing to enter a given sleep state, and
-saving the data obtained by it for later use during system wakeup.
-
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=214271
-Reported-by: Reik Keutterling <spielkind@gmail.com>
-Tested-by: Reik Keutterling <spielkind@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
-
-v1 -> v2:
-   * Fix local variable initialization.
-
----
- drivers/acpi/acpica/acglobal.h  |    2 ++
- drivers/acpi/acpica/hwesleep.c  |    8 ++------
- drivers/acpi/acpica/hwsleep.c   |   11 ++++-------
- drivers/acpi/acpica/hwxfsleep.c |    7 +++++++
- 4 files changed, 15 insertions(+), 13 deletions(-)
-
-Index: linux-pm/drivers/acpi/acpica/acglobal.h
-===================================================================
---- linux-pm.orig/drivers/acpi/acpica/acglobal.h
-+++ linux-pm/drivers/acpi/acpica/acglobal.h
-@@ -226,6 +226,8 @@ extern struct acpi_bit_register_info
-     acpi_gbl_bit_register_info[ACPI_NUM_BITREG];
- ACPI_GLOBAL(u8, acpi_gbl_sleep_type_a);
- ACPI_GLOBAL(u8, acpi_gbl_sleep_type_b);
-+ACPI_GLOBAL(u8, acpi_gbl_sleep_type_a_s0);
-+ACPI_GLOBAL(u8, acpi_gbl_sleep_type_b_s0);
- 
- /*****************************************************************************
-  *
-Index: linux-pm/drivers/acpi/acpica/hwxfsleep.c
-===================================================================
---- linux-pm.orig/drivers/acpi/acpica/hwxfsleep.c
-+++ linux-pm/drivers/acpi/acpica/hwxfsleep.c
-@@ -217,6 +217,13 @@ acpi_status acpi_enter_sleep_state_prep(
- 		return_ACPI_STATUS(status);
- 	}
- 
-+	status = acpi_get_sleep_type_data(ACPI_STATE_S0,
-+					  &acpi_gbl_sleep_type_a_s0,
-+					  &acpi_gbl_sleep_type_b_s0);
-+	if (ACPI_FAILURE(status)) {
-+		acpi_gbl_sleep_type_a_s0 = ACPI_SLEEP_TYPE_INVALID;
-+	}
-+
- 	/* Execute the _PTS method (Prepare To Sleep) */
- 
- 	arg_list.count = 1;
-Index: linux-pm/drivers/acpi/acpica/hwsleep.c
-===================================================================
---- linux-pm.orig/drivers/acpi/acpica/hwsleep.c
-+++ linux-pm/drivers/acpi/acpica/hwsleep.c
-@@ -179,7 +179,7 @@ acpi_status acpi_hw_legacy_sleep(u8 slee
- 
- acpi_status acpi_hw_legacy_wake_prep(u8 sleep_state)
- {
--	acpi_status status;
-+	acpi_status status = AE_OK;
- 	struct acpi_bit_register_info *sleep_type_reg_info;
- 	struct acpi_bit_register_info *sleep_enable_reg_info;
- 	u32 pm1a_control;
-@@ -192,10 +192,7 @@ acpi_status acpi_hw_legacy_wake_prep(u8
- 	 * This is unclear from the ACPI Spec, but it is required
- 	 * by some machines.
- 	 */
--	status = acpi_get_sleep_type_data(ACPI_STATE_S0,
--					  &acpi_gbl_sleep_type_a,
--					  &acpi_gbl_sleep_type_b);
--	if (ACPI_SUCCESS(status)) {
-+	if (acpi_gbl_sleep_type_a_s0 != ACPI_SLEEP_TYPE_INVALID) {
- 		sleep_type_reg_info =
- 		    acpi_hw_get_bit_register_info(ACPI_BITREG_SLEEP_TYPE);
- 		sleep_enable_reg_info =
-@@ -216,9 +213,9 @@ acpi_status acpi_hw_legacy_wake_prep(u8
- 
- 			/* Insert the SLP_TYP bits */
- 
--			pm1a_control |= (acpi_gbl_sleep_type_a <<
-+			pm1a_control |= (acpi_gbl_sleep_type_a_s0 <<
- 					 sleep_type_reg_info->bit_position);
--			pm1b_control |= (acpi_gbl_sleep_type_b <<
-+			pm1b_control |= (acpi_gbl_sleep_type_b_s0 <<
- 					 sleep_type_reg_info->bit_position);
- 
- 			/* Write the control registers and ignore any errors */
-Index: linux-pm/drivers/acpi/acpica/hwesleep.c
-===================================================================
---- linux-pm.orig/drivers/acpi/acpica/hwesleep.c
-+++ linux-pm/drivers/acpi/acpica/hwesleep.c
-@@ -147,17 +147,13 @@ acpi_status acpi_hw_extended_sleep(u8 sl
- 
- acpi_status acpi_hw_extended_wake_prep(u8 sleep_state)
- {
--	acpi_status status;
- 	u8 sleep_type_value;
- 
- 	ACPI_FUNCTION_TRACE(hw_extended_wake_prep);
- 
--	status = acpi_get_sleep_type_data(ACPI_STATE_S0,
--					  &acpi_gbl_sleep_type_a,
--					  &acpi_gbl_sleep_type_b);
--	if (ACPI_SUCCESS(status)) {
-+	if (acpi_gbl_sleep_type_a_s0 != ACPI_SLEEP_TYPE_INVALID) {
- 		sleep_type_value =
--		    ((acpi_gbl_sleep_type_a << ACPI_X_SLEEP_TYPE_POSITION) &
-+		    ((acpi_gbl_sleep_type_a_s0 << ACPI_X_SLEEP_TYPE_POSITION) &
- 		     ACPI_X_SLEEP_TYPE_MASK);
- 
- 		(void)acpi_write((u64)(sleep_type_value | ACPI_X_SLEEP_ENABLE),
-
-
-
+Op 29-09-2021 om 01:28 schreef Bjorn Helgaas:
+> [+cc Ferry]
+> 
+> On Mon, Sep 20, 2021 at 08:52:19PM +0200, Rafael J. Wysocki wrote:
+>> Hi All,
+>>
+>> As explained in the changelog of patch [2/7], using struct pci_platform_pm_ops
+>> for ACPI is not particularly beneficial, so it is better to get rid of it and
+>> call the functions pointed to by it directly from the PCI core.
+>>
+>> However, struct pci_platform_pm_ops is also used by the Intel MID support code,
+>> but it is actually better to call the MID PM function directly from the PCI
+>> core either, which is done in patch [1/7].
+>>
+>> After these changes, patch [3/7] removes struct pci_platform_pm_ops and the
+>> rest is just cleanups and some code consolidation on top of that.
+> 
+> I like these a lot.  Not sure exactly where everything is after the
+> conversation with Ferry.  Let me know if I should be doing anything.
+> 
+I will happily retest likely on Sunday after I return from short holiday 
+and report back here.
