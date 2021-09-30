@@ -2,185 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5256E41D80F
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Sep 2021 12:50:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A747F41DAC3
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Sep 2021 15:15:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349873AbhI3KwA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Sep 2021 06:52:00 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187]:13011 "EHLO
-        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350027AbhI3KwA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Sep 2021 06:52:00 -0400
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4HKqjg3P70zWYrp;
-        Thu, 30 Sep 2021 18:48:55 +0800 (CST)
-Received: from dggpemm500005.china.huawei.com (7.185.36.74) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.8; Thu, 30 Sep 2021 18:50:15 +0800
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggpemm500005.china.huawei.com (7.185.36.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.8; Thu, 30 Sep 2021 18:50:14 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2308.008; Thu, 30 Sep 2021 11:50:12 +0100
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     "eric.auger@redhat.com" <eric.auger@redhat.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        Jean-Philippe Brucker <Jean-Philippe.Brucker@arm.com>
-CC:     Linuxarm <linuxarm@huawei.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "joro@8bytes.org" <joro@8bytes.org>,
-        "robin.murphy@arm.com" <robin.murphy@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        "steven.price@arm.com" <steven.price@arm.com>,
-        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
-        "jon@solid-run.com" <jon@solid-run.com>,
-        yangyicong <yangyicong@huawei.com>
-Subject: RE: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Topic: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Index: AQHXteBJCIW7248MSkqFGc+MCZcobau8Va3g
-Date:   Thu, 30 Sep 2021 10:50:12 +0000
-Message-ID: <b05a6b6cc10143839be5aec384ba3099@huawei.com>
-References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
- <b546b40c-d047-87a4-1892-1bb9575ecab7@redhat.com>
-In-Reply-To: <b546b40c-d047-87a4-1892-1bb9575ecab7@redhat.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.86.28]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1350172AbhI3NRE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Sep 2021 09:17:04 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:40988 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1350073AbhI3NRD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 30 Sep 2021 09:17:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=6PZ49cSEBhLem0jcEWWbaHG2DFFufyxYvXcOVSWTwNQ=; b=2TM7VCntIA9nq6dLq8rKJqwp6J
+        YiJcyL1+ITpJL8GVCi2yTqCwmShQVOyTOpleGPYfeStm12QjEVV7OcEzN6d/SL1Zuh5/GmDA/pfTG
+        nEI4tarqOQWErLTFNqPgX9chKwCCZTvA5xelZWGD2isjcDsTluWj0cOG7YA9FvuIZQ1I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1mVvtx-008x3A-PZ; Thu, 30 Sep 2021 15:15:05 +0200
+Date:   Thu, 30 Sep 2021 15:15:05 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Vladimir Oltean <olteanv@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for
+ FWNODE_FLAG_BROKEN_PARENT
+Message-ID: <YVW4WX9oq9o318Im@lunn.ch>
+References: <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
+ <YSpr/BOZj2PKoC8B@lunn.ch>
+ <CAGETcx_mjY10WzaOvb=vuojbodK7pvY1srvKmimu4h6xWkeQuQ@mail.gmail.com>
+ <YS4rw7NQcpRmkO/K@lunn.ch>
+ <CAGETcx_QPh=ppHzBdM2_TYZz3o+O7Ab9-JSY52Yz1--iLnykxA@mail.gmail.com>
+ <YS6nxLp5TYCK+mJP@lunn.ch>
+ <CAGETcx90dOkw+Yp5ZRNqQq2Ny_ToOKvGJNpvyRohaRQi=SQxhw@mail.gmail.com>
+ <YS608fdIhH4+qJsn@lunn.ch>
+ <20210831231804.zozyenear45ljemd@skbuf>
+ <CAGETcx8MXzFhhxom3u2MXw8XA-uUtm9XGEbYNobfr+Ptq5+fVQ@mail.gmail.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx8MXzFhhxom3u2MXw8XA-uUtm9XGEbYNobfr+Ptq5+fVQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgRXJpYywNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBFcmljIEF1
-Z2VyIFttYWlsdG86ZXJpYy5hdWdlckByZWRoYXQuY29tXQ0KPiBTZW50OiAzMCBTZXB0ZW1iZXIg
-MjAyMSAxMDo0OA0KPiBUbzogU2hhbWVlcmFsaSBLb2xvdGh1bSBUaG9kaSA8c2hhbWVlcmFsaS5r
-b2xvdGh1bS50aG9kaUBodWF3ZWkuY29tPjsNCj4gbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZy
-YWRlYWQub3JnOyBsaW51eC1hY3BpQHZnZXIua2VybmVsLm9yZzsNCj4gaW9tbXVAbGlzdHMubGlu
-dXgtZm91bmRhdGlvbi5vcmc7IEplYW4tUGhpbGlwcGUgQnJ1Y2tlcg0KPiA8SmVhbi1QaGlsaXBw
-ZS5CcnVja2VyQGFybS5jb20+DQo+IENjOiBMaW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNvbT47
-IGxvcmVuem8ucGllcmFsaXNpQGFybS5jb207DQo+IGpvcm9AOGJ5dGVzLm9yZzsgcm9iaW4ubXVy
-cGh5QGFybS5jb207IHdpbGxAa2VybmVsLm9yZzsgd2FuZ2h1aXFpYW5nDQo+IDx3YW5naHVpcWlh
-bmdAaHVhd2VpLmNvbT47IEd1b2hhbmp1biAoSGFuanVuIEd1bykNCj4gPGd1b2hhbmp1bkBodWF3
-ZWkuY29tPjsgc3RldmVuLnByaWNlQGFybS5jb207IFNhbWkuTXVqYXdhckBhcm0uY29tOw0KPiBq
-b25Ac29saWQtcnVuLmNvbTsgeWFuZ3lpY29uZyA8eWFuZ3lpY29uZ0BodWF3ZWkuY29tPg0KPiBT
-dWJqZWN0OiBSZTogW1BBVENIIHY3IDAvOV0gQUNQSS9JT1JUOiBTdXBwb3J0IGZvciBJT1JUIFJN
-UiBub2RlDQo+IA0KPiBIaSBTaGFtZWVyLA0KPiANCj4gT24gOC81LzIxIDEwOjA3IEFNLCBTaGFt
-ZWVyIEtvbG90aHVtIHdyb3RlOg0KPiA+IEhpLA0KPiA+DQo+ID4gVGhlIHNlcmllcyBhZGRzIHN1
-cHBvcnQgdG8gSU9SVCBSTVIgbm9kZXMgc3BlY2lmaWVkIGluIElPUlQNCj4gPiBSZXZpc2lvbiBF
-LmIgLUFSTSBERU4gMDA0OUVbMF0uIFJNUiBub2RlcyBhcmUgdXNlZCB0byBkZXNjcmliZQ0KPiA+
-IG1lbW9yeSByYW5nZXMgdGhhdCBhcmUgdXNlZCBieSBlbmRwb2ludHMgYW5kIHJlcXVpcmUgYSB1
-bml0eQ0KPiA+IG1hcHBpbmcgaW4gU01NVS4NCj4gDQo+IEkgdXNlZCB5b3VyIHNlcmllcyBhbmQg
-Uk1ScyB0byBmb3JjZSBhIGd1ZXN0IGlvbW11ICh2U01NVXYzIG5lc3RlZCBzdGFnZQ0KPiB1c2Ug
-Y2FzZSkgdG8gaGF2ZSBhIGZsYXQgbWFwcGluZyBmb3IgSU9WQXMgd2l0aGluIFsweDgwMDAwMDAs
-IDB4ODEwMDAwMF0NCj4gKG1hdGNoaW5nIE1TSV9JT1ZBX0JBU0UgYW5kIE1TSV9JT1ZBX0xFTkdU
-SCkgdXNlZCBieSB0aGUgaG9zdCB0byBtYXANCj4gTVNJDQo+IHBoeXNpY2FsIGRvb3JiZWxscy4N
-Cj4gDQo+IFRoYXQgd2F5IHdoZW4gYW4gYXNzaWduZWQgZGV2aWNlIHByb3RlY3RlZCBieSBhIHZT
-TU1VdjMgaW1wbGVtZW50ZWQNCj4gdXBvbg0KPiBuZXN0ZWQgc3RhZ2UgaXNzdWVzIGFuIE1TSSB0
-cmFuc2FjdGlvbiwgbGV0J3Mgc2F5IHVzaW5nIElPVkE9MHg4MDAwMDAwLA0KPiB3ZSB3b3VsZCBn
-ZXQ6DQo+IMKgwqDCoCDCoMKgwqAgwqDCoMKgIMKgwqDCoCDCoMKgwqAgUzEgKGd1ZXN0KSDCoMKg
-IMKgwqDCoCDCoMKgIFMyIChob3N0KQ0KPiAweDgwMDAwMDDCoMKgwqAgwqDCoMKgIMKgwqDCoCAw
-eDgwMDAwMDDCoMKgwqAgwqDCoMKgIMKgwqDCoCBQaHlzaWNhbCBEQg0KPiANCj4gVGhpcyBtZXRo
-b2Qgd2FzIHN1Z2dlc3RlZCBieSBKZWFuLVBoaWxpcHBlIChhZGRlZCBpbiBDQykgYW5kIGl0DQo+
-IHNpbXBsaWZpZXMgdGhlIG5lc3RlZCBzdGFnZSBpbnRlZ3JhdGlvbiBiZWNhdXNlIHdlIGRvbid0
-IGhhdmUgdG8gY2FyZQ0KPiBhYm91dCBuZXN0ZWQgc3RhZ2UgTVNJIGJpbmRpbmdzLg0KPiANCj4g
-SG93ZXZlciBpZiBJIHVuZGVyc3RhbmQgY29ycmVjdGx5IHdlIGNhbm5vdCBkZWZpbmUgYSByYW5n
-ZSBvZiBTSURzIHVzaW5nDQo+IHRoZSBzYW1lIFJNUiAoZHVlIHRvIHRoZSBzaW5nbGUgbWFwcGlu
-ZyBiaXQgd2hpY2ggbXVzdCBiZSBzZXQsIFRhYmxlIDUNCj4gZmxhZ3MgZm9ybWF0KS4gVGhpcyBp
-cyBhIHNwZWMgcmVzdHJpY3Rpb24gYW5kIG5vdCBhbiBpc3N1ZSB3aXRoIHlvdXIgc2VyaWVzLg0K
-DQpZZXMuIFRoZSBzcGVjIGN1cnJlbnRseSBtYW5kYXRlcyBzaW5nbGUgbWFwcGluZyBiaXQgdG8g
-YmUgc2V0Lg0KDQo+IA0KPiBBcyBWRklPIGRldmljZXMgY2FuIGJlIGhvdC1wbHVnZ2VkIHdlIHRo
-dXMgbmVlZCB0byBjcmVhdGUgYXMgbWFueSBSTVINCj4gbm9kZXMgYXMgcG90ZW50aWFsIEJERnMs
-IGxlYWRpbmcgdG8gMjU2ICogNiA9IDE1MzYgUk1SIG5vZGVzIGlmIHlvdSBoYXZlDQo+IDUgcGNp
-ZSByb290IHBvcnRzIGFzIGl0IGlzIHVzdWFsIGluIFZNcy4gVGhlbiB0aGlzIGNhdXNlcyBzb21l
-IHRyb3VibGUNCj4gYXQgcWVtdSBsZXZlbCBmb3IgaW5zdGFuY2UsIHdydCBtaWdyYXRpb24uIFNl
-ZSBbUkZDXQ0KPiBody9hcm0vdmlydC1hY3BpLWJ1aWxkOiBBZGQgSU9SVCBSTVIgcmVnaW9ucyB0
-byBoYW5kbGUgTVNJIG5lc3RlZCBiaW5kaW5nLg0KPiANCj4gRG8geW91IGtub3cgaWYgdGhlcmUg
-aXMgYSBwbGFuIHRvIHJlbW92ZSB0aGUgc2luZ2xlIG1hcHBpbmcgbGltaXRhdGlvbg0KPiBpbiB0
-aGUgc3BlYz8NCg0KSSB3b3VsZCBpbWFnaW5lIHNvLiBJbiBhbiBlYXJsaWVyIGNvbW1lbnRbMV0s
-IFJvYmluIGRpZCBtZW50aW9uIGFib3V0IHBvc3NpYmxlDQpyZWxheGluZyBvZiB0aGlzIGluIGZ1
-dHVyZSBzcGVjIHJldmlzaW9uLg0KDQpUaGFua3MsDQpTaGFtZWVyDQoxLiBodHRwczovL2xvcmUu
-a2VybmVsLm9yZy9saW51eC1hcm0ta2VybmVsLzE1YzdmYWMwLTExYTgtMGNkYi1hYWMzLWI1ZDhm
-ZWI4ZjA2NkBhcm0uY29tLw0KDQo+IFRoYW5rcw0KPiANCj4gRXJpYw0KPiA+DQo+ID4gV2UgaGF2
-ZSBmYWNlZCBpc3N1ZXMgd2l0aCAzNDA4aU1SIFJBSUQgY29udHJvbGxlciBjYXJkcyB3aGljaA0K
-PiA+IGZhaWwgdG8gYm9vdCB3aGVuIFNNTVUgaXMgZW5hYmxlZC4gVGhpcyBpcyBiZWNhdXNlIHRo
-ZXNlDQo+ID4gY29udHJvbGxlcnMgbWFrZSB1c2Ugb2YgaG9zdCBtZW1vcnkgZm9yIHZhcmlvdXMg
-Y2FjaGluZyByZWxhdGVkDQo+ID4gcHVycG9zZXMgYW5kIHdoZW4gU01NVSBpcyBlbmFibGVkIHRo
-ZSBpTVIgZmlybXdhcmUgZmFpbHMgdG8NCj4gPiBhY2Nlc3MgdGhlc2UgbWVtb3J5IHJlZ2lvbnMg
-YXMgdGhlcmUgaXMgbm8gbWFwcGluZyBmb3IgdGhlbS4NCj4gPiBJT1JUIFJNUiBwcm92aWRlcyBh
-IHdheSBmb3IgVUVGSSB0byBkZXNjcmliZSBhbmQgcmVwb3J0IHRoZXNlDQo+ID4gbWVtb3J5IHJl
-Z2lvbnMgc28gdGhhdCB0aGUga2VybmVsIGNhbiBtYWtlIGEgdW5pdHkgbWFwcGluZyBmb3INCj4g
-PiB0aGVzZSBpbiBTTU1VLg0KPiA+DQo+ID4gQ2hhbmdlIEhpc3Rvcnk6DQo+ID4NCj4gPiB2NiAt
-LT4gdjcNCj4gPg0KPiA+IFRoZSBvbmx5IGNoYW5nZSBmcm9tIHY2IGlzIHRoZSBmaXggcG9pbnRl
-ZCBvdXQgYnkgU3RldmUgdG8NCj4gPiB0aGUgU01NVXYyIFNNUiBieXBhc3MgaW5zdGFsbCBpbiBw
-YXRjaCAjOC4NCj4gPg0KPiA+IFRoYW5rcyB0byB0aGUgVGVzdGVkLWJ5IHRhZ3MgYnkgTGF1cmVu
-dGl1IHdpdGggU01NVXYyIGFuZA0KPiA+IEhhbmp1bi9IdWlxaWFuZyB3aXRoIFNNTVV2MyBmb3Ig
-djYuIEkgaGF2ZW4ndCBhZGRlZCB0aGUgdGFncw0KPiA+IHlldCBhcyB0aGUgc2VyaWVzIHN0aWxs
-IG5lZWRzIG1vcmUgcmV2aWV3WzFdLg0KPiA+DQo+ID4gRmVlZGJhY2sgYW5kIHRlc3RzIG9uIHRo
-aXMgc2VyaWVzIGlzIHZlcnkgbXVjaCBhcHByZWNpYXRlZC4NCj4gPg0KPiA+IHY1IC0tPiB2Ng0K
-PiA+IC0gQWRkcmVzc2VkIGNvbW1lbnRzIGZyb20gUm9iaW4gJiBMb3JlbnpvLg0KPiA+ICAgOiBN
-b3ZlZCBpb3J0X3BhcnNlX3JtcigpIHRvIGFjcGlfaW9ydF9pbml0KCkgZnJvbQ0KPiA+ICAgICBp
-b3J0X2luaXRfcGxhdGZvcm1fZGV2aWNlcygpLg0KPiA+ICAgOiBSZW1vdmVkIHVzZSBvZiBzdHJ1
-Y3QgaW9ydF9ybXJfZW50cnkgZHVyaW5nIHRoZSBpbml0aWFsDQo+ID4gICAgIHBhcnNlLiBVc2lu
-ZyBzdHJ1Y3QgaW9tbXVfcmVzdl9yZWdpb24gaW5zdGVhZC4NCj4gPiAgIDogUmVwb3J0IFJNUiBh
-ZGRyZXNzIGFsaWdubWVudCBhbmQgb3ZlcmxhcCBlcnJvcnMsIGJ1dCBjb250aW51ZS4NCj4gPiAg
-IDogUmV3b3JrZWQgYXJtX3NtbXVfaW5pdF9ieXBhc3Nfc3RlcygpIChwYXRjaCAjIDYpLg0KPiA+
-IC0gVXBkYXRlZCBTTU1VdjIgYnlwYXNzIFNNUiBjb2RlLiBUaGFua3MgdG8gSm9uIE4gKHBhdGNo
-ICM4KS4NCj4gPiAtIFNldCBJT01NVSBwcm90ZWN0aW9uIGZsYWdzKElPTU1VX0NBQ0hFLCBJT01N
-VV9NTUlPKSBiYXNlZA0KPiA+ICAgb24gVHlwZSBvZiBSTVIgcmVnaW9uLiBTdWdnZXN0ZWQgYnkg
-Sm9uIE4uDQo+ID4NCj4gPiBUaGFua3MsDQo+ID4gU2hhbWVlcg0KPiA+IFswXSBodHRwczovL2Rl
-dmVsb3Blci5hcm0uY29tL2RvY3VtZW50YXRpb24vZGVuMDA0OS9sYXRlc3QvDQo+ID4gWzFdDQo+
-IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LWFjcGkvMjAyMTA3MTYwODM0NDIuMTcwOC0x
-LXNoYW1lZXJhbGkua29sb3RoDQo+IHVtLnRob2RpQGh1YXdlaS5jb20vVC8jbTA0M2M5NWI4Njk5
-NzNhODM0YjJmZDU3ZjNlMWVkMDMyNWM4NGYzYjcNCj4gPiAtLS0tLS0NCj4gPiB2NCAtLT4gdjUN
-Cj4gPiAgLUFkZGVkIGEgZndfZGF0YSB1bmlvbiB0byBzdHJ1Y3QgaW9tbXVfcmVzdl9yZWdpb24g
-YW5kIHJlbW92ZWQNCj4gPiAgIHN0cnVjdCBpb21tdV9ybXIgKEJhc2VkIG9uIGNvbW1lbnRzIGZy
-b20gSm9lcmcvUm9iaW4pLg0KPiA+ICAtQWRkZWQgaW9tbXVfcHV0X3JtcnMoKSB0byByZWxlYXNl
-IG1lbS4NCj4gPiAgLVRoYW5rcyB0byBTdGV2ZSBmb3IgdmVyaWZ5aW5nIG9uIFNNTVV2MiwgYnV0
-IG5vdCBhZGRlZCB0aGUgVGVzdGVkLWJ5DQo+ID4gICB5ZXQgYmVjYXVzZSBvZiB0aGUgYWJvdmUg
-Y2hhbmdlcy4NCj4gPg0KPiA+IHYzIC0tPnY0DQo+ID4gLUluY2x1ZGVkIHRoZSBTTU1VdjIgU01S
-IGJ5cGFzcyBpbnN0YWxsIGNoYW5nZXMgc3VnZ2VzdGVkIGJ5DQo+ID4gIFN0ZXZlKHBhdGNoICM3
-KQ0KPiA+IC1BcyBwZXIgUm9iaW4ncyBjb21tZW50cywgUk1SIHJlc2VydmUgaW1wbGVtZW50YXRp
-b24gaXMgbm93DQo+ID4gIG1vcmUgZ2VuZXJpYyAgKHBhdGNoICM4KSBhbmQgZHJvcHBlZCB2MyBw
-YXRjaGVzIDggYW5kIDEwLg0KPiA+IC1SZWJhc2UgdG8gNS4xMy1yYzENCj4gPg0KPiA+IFJGQyB2
-MiAtLT4gdjMNCj4gPiAgLURyb3BwZWQgUkZDIHRhZyBhcyB0aGUgQUNQSUNBIGhlYWRlciBjaGFu
-Z2VzIGFyZSBub3cgcmVhZHkgdG8gYmUNCj4gPiAgIHBhcnQgb2YgNS4xM1swXS4gQnV0IHRoaXMg
-c2VyaWVzIHN0aWxsIGhhcyBhIGRlcGVuZGVuY3kgb24gdGhhdCBwYXRjaC4NCj4gPiAgLUFkZGVk
-IElPUlQgRS5iIHJlbGF0ZWQgY2hhbmdlcyhub2RlIGZsYWdzLCBfRFNNIGZ1bmN0aW9uIDUgY2hl
-Y2tzIGZvcg0KPiA+ICAgUENJZSkuDQo+ID4gIC1DaGFuZ2VkIFJNUiB0byBzdHJlYW0gaWQgbWFw
-cGluZyBmcm9tIE06TiB0byBNOjEgYXMgcGVyIHRoZSBzcGVjIGFuZA0KPiA+ICAgZGlzY3Vzc2lv
-biBoZXJlWzFdLg0KPiA+ICAtTGFzdCB0d28gcGF0Y2hlcyBhZGQgc3VwcG9ydCBmb3IgU01NVXYy
-KFRoYW5rcyB0byBKb24gTmV0dGxldG9uISkNCj4gPiAtLS0tLS0NCj4gPg0KPiA+IEpvbiBOZXR0
-bGV0b24gKDEpOg0KPiA+ICAgaW9tbXUvYXJtLXNtbXU6IEdldCBhc3NvY2lhdGVkIFJNUiBpbmZv
-IGFuZCBpbnN0YWxsIGJ5cGFzcyBTTVINCj4gPg0KPiA+IFNoYW1lZXIgS29sb3RodW0gKDgpOg0K
-PiA+ICAgaW9tbXU6IEludHJvZHVjZSBhIHVuaW9uIHRvIHN0cnVjdCBpb21tdV9yZXN2X3JlZ2lv
-bg0KPiA+ICAgQUNQSS9JT1JUOiBBZGQgc3VwcG9ydCBmb3IgUk1SIG5vZGUgcGFyc2luZw0KPiA+
-ICAgaW9tbXUvZG1hOiBJbnRyb2R1Y2UgZ2VuZXJpYyBoZWxwZXIgdG8gcmV0cmlldmUgUk1SIGlu
-Zm8NCj4gPiAgIEFDUEkvSU9SVDogQWRkIGEgaGVscGVyIHRvIHJldHJpZXZlIFJNUiBtZW1vcnkg
-cmVnaW9ucw0KPiA+ICAgaW9tbXUvYXJtLXNtbXUtdjM6IEludHJvZHVjZSBzdHJ0YWIgaW5pdCBo
-ZWxwZXINCj4gPiAgIGlvbW11L2FybS1zbW11LXYzOiBSZWZhY3RvcsKgYXJtX3NtbXVfaW5pdF9i
-eXBhc3Nfc3RlcygpIHRvIGZvcmNlDQo+ID4gICAgIGJ5cGFzcw0KPiA+ICAgaW9tbXUvYXJtLXNt
-bXUtdjM6IEdldCBhc3NvY2lhdGVkIFJNUiBpbmZvIGFuZCBpbnN0YWxsIGJ5cGFzcyBTVEUNCj4g
-PiAgIGlvbW11L2RtYTogUmVzZXJ2ZSBhbnkgUk1SIHJlZ2lvbnMgYXNzb2NpYXRlZCB3aXRoIGEg
-ZGV2DQo+ID4NCj4gPiAgZHJpdmVycy9hY3BpL2FybTY0L2lvcnQuYyAgICAgICAgICAgICAgICAg
-ICB8IDE3Mg0KPiArKysrKysrKysrKysrKysrKysrLQ0KPiA+ICBkcml2ZXJzL2lvbW11L2FybS9h
-cm0tc21tdS12My9hcm0tc21tdS12My5jIHwgIDc2ICsrKysrKystLQ0KPiA+ICBkcml2ZXJzL2lv
-bW11L2FybS9hcm0tc21tdS9hcm0tc21tdS5jICAgICAgIHwgIDQ4ICsrKysrKw0KPiA+ICBkcml2
-ZXJzL2lvbW11L2RtYS1pb21tdS5jICAgICAgICAgICAgICAgICAgIHwgIDg5ICsrKysrKysrKy0N
-Cj4gPiAgaW5jbHVkZS9saW51eC9hY3BpX2lvcnQuaCAgICAgICAgICAgICAgICAgICB8ICAgNyAr
-DQo+ID4gIGluY2x1ZGUvbGludXgvZG1hLWlvbW11LmggICAgICAgICAgICAgICAgICAgfCAgMTMg
-KysNCj4gPiAgaW5jbHVkZS9saW51eC9pb21tdS5oICAgICAgICAgICAgICAgICAgICAgICB8ICAx
-MSArKw0KPiA+ICA3IGZpbGVzIGNoYW5nZWQsIDM5MyBpbnNlcnRpb25zKCspLCAyMyBkZWxldGlv
-bnMoLSkNCj4gPg0KDQo=
+On Wed, Sep 29, 2021 at 10:33:16PM -0700, Saravana Kannan wrote:
+> On Tue, Aug 31, 2021 at 4:18 PM Vladimir Oltean <olteanv@gmail.com> wrote:
+> >
+> > On Wed, Sep 01, 2021 at 01:02:09AM +0200, Andrew Lunn wrote:
+> > > Rev B is interesting because switch0 and switch1 got genphy, while
+> > > switch2 got the correct Marvell PHY driver. switch2 PHYs don't have
+> > > interrupt properties, so don't loop back to their parent device.
+> >
+> > This is interesting and not what I really expected to happen. It goes to
+> > show that we really need more time to understand all the subtleties of
+> > device dependencies before jumping on patching stuff.
+> >
+> > In case the DSA tree contains more than one switch, different things
+> > will happen in dsa_register_switch().
+> > The tree itself is only initialized when the last switch calls
+> > dsa_register_switch(). All the other switches just mark themselves as
+> > present and exit probing early. See this piece of code in dsa_tree_setup:
+> >
+> >         complete = dsa_tree_setup_routing_table(dst);
+> >         if (!complete)
+> >                 return 0;
+> 
+> Hi Vladimir,
+> 
+> Can you point me to an example dts file that has a DSA tree with more
+> than one switch and also point me to the switches that form the tree?
+> 
+> I'm working on a RFC series that tries to improve some stuff and
+> having an example DTS to look at would help.
+
+Some of the Zodiac boards have multiple switches. They are all Marvell
+switches, using the mv88e6xxx driver.
+
+arch/arm/boot/dts/vf610-zii-dev-rev-b.dts
+arch/arm/boot/dts/vf610-zii-dev-rev-c.dts
+arch/arm/boot/dts/vf610-zii-scu4-aib.dts
+
+	Andrew
