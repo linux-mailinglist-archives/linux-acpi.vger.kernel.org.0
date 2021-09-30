@@ -2,184 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A4ED41CF54
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Sep 2021 00:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CF4741D2BB
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Sep 2021 07:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347299AbhI2Wmc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Sep 2021 18:42:32 -0400
-Received: from mxout70.expurgate.net ([194.37.255.70]:42979 "EHLO
-        mxout70.expurgate.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343498AbhI2Wma (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Sep 2021 18:42:30 -0400
-Received: from [127.0.0.1] (helo=localhost)
-        by relay.expurgate.net with smtp (Exim 4.92)
-        (envelope-from <fe@dev.tdt.de>)
-        id 1mViFi-000CxA-Cg; Thu, 30 Sep 2021 00:40:38 +0200
-Received: from [195.243.126.94] (helo=securemail.tdt.de)
-        by relay.expurgate.net with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <fe@dev.tdt.de>)
-        id 1mViFh-0007nq-8t; Thu, 30 Sep 2021 00:40:37 +0200
-Received: from securemail.tdt.de (localhost [127.0.0.1])
-        by securemail.tdt.de (Postfix) with ESMTP id 5F662240041;
-        Thu, 30 Sep 2021 00:40:36 +0200 (CEST)
-Received: from mail.dev.tdt.de (unknown [10.2.4.42])
-        by securemail.tdt.de (Postfix) with ESMTP id ADC39240040;
-        Thu, 30 Sep 2021 00:40:35 +0200 (CEST)
-Received: from mail.dev.tdt.de (localhost [IPv6:::1])
-        by mail.dev.tdt.de (Postfix) with ESMTP id 399D3200A9;
-        Thu, 30 Sep 2021 00:40:35 +0200 (CEST)
+        id S1347737AbhI3Ffg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Sep 2021 01:35:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51918 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348079AbhI3Ffg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Sep 2021 01:35:36 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 510ECC06161C
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Sep 2021 22:33:54 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id v195so10091829ybb.0
+        for <linux-acpi@vger.kernel.org>; Wed, 29 Sep 2021 22:33:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=N+NKKdRK9RfodRzKXI8O8ct2lSBYNHsM7sxE9hBdFgs=;
+        b=JfRa6bsas3v+fIYF4C41qARornl22a530WFV/QpLTef0wGba+wr/ErL85dJ4Eg/biV
+         cWf/DLt+lIfU+4J8RVGZ7yoeeKdVW6RTgQmjd38B07nP11nqE6eYB4N4LABgygtw79M4
+         i7Njifo1MrZeppr8aG7Gu1BT5r1gdD3DRmTFdq3ei8Yntq+TbScnsGbvEWFS1adXCrAG
+         pWhBpaScmjzrr7KsDAbQ3brzdtAyIR6APcXDIoizwQpI2NjYMLWM2xJ6rSWXZeEon7i5
+         O0ZzKvp95fhdLXK9FF5q9AvaiUiRaUVKgskBYsb0FrNsOTjdYFGmhOibv/6oeX8gVAWD
+         bmHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=N+NKKdRK9RfodRzKXI8O8ct2lSBYNHsM7sxE9hBdFgs=;
+        b=Qr//wFnMa9sNNkTUcrzim/zr3IFe10yG6/5GcgE/bRvVKoYaM8MKUTcKyl4AVzGAAE
+         q8A8S8Sw9STB7DM1Lm2zZgEn2EXZzuaYmh3CT/y+WzLoicdELwKNGzyFbaDZiQQuy+yM
+         65G4Yr747MPoybLM9xw3DlGJD/wIN5A8jI6fRhxGxK1GIEaBHhZTUq9/hk8Ytcu0vsct
+         RQJnTO5fzk4K0Ke/db5fPX95kmHWkggBLXHwmjV5u2+VlDO/78xyqGRq7FWybjKHqDil
+         iaoBCVWiDif7FHBh3hLhiGIcq1HB0PpYo7+q8oPlZ1qM5q6+/fUL7lryQUqfG6oBGzln
+         v6bg==
+X-Gm-Message-State: AOAM532PzZquqxOSjPKFJuCj0tI9pdId1iwodVxN2VSQcVl/a49Hja3j
+        yKkORdp5Gmp5H6wTArDLgtb4R8GFHWi4gmq3NxSmpA==
+X-Google-Smtp-Source: ABdhPJwQhot8JmlxGg0ZAE8LuycN8IkkPQ2598Nm1DbCQ1RVLb3/Grm/uxdPC06spevHQcO4XCptOiGMkXn2NNUweWQ=
+X-Received: by 2002:a25:4684:: with SMTP id t126mr4148820yba.476.1632980032697;
+ Wed, 29 Sep 2021 22:33:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 30 Sep 2021 00:40:35 +0200
-From:   Florian Eckert <fe@dev.tdt.de>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Enrico Weigelt <info@metux.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Eckert.Florian@googlemail.com, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org
-Subject: Re: Add a SSDT ACPI description to recognize my I2C device connected
- via SMBus
-In-Reply-To: <CAHp75Vcc_6mcR4gC-MzVTjTBpuozMJMFTosQjpXN8A25pndNpg@mail.gmail.com>
-References: <20200407173849.43628-1-andriy.shevchenko@linux.intel.com>
- <290741faab199d3e43b6255bf2282075@dev.tdt.de>
- <YUrO5ajlS9wS6xYU@smile.fi.intel.com> <YUrg6TfVhk+TIxDz@smile.fi.intel.com>
- <d84fb798722762862a7fb08f1e343b6a@dev.tdt.de>
- <CAHp75Vcc_6mcR4gC-MzVTjTBpuozMJMFTosQjpXN8A25pndNpg@mail.gmail.com>
-Message-ID: <e221dce908c5ebffa2970c918b45428d@dev.tdt.de>
-X-Sender: fe@dev.tdt.de
-User-Agent: Roundcube Webmail/1.3.16
-X-Spam-Status: No, score=-1.0 required=5.0 tests=ALL_TRUSTED,
-        T_FILL_THIS_FORM_SHORT autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dev.tdt.de
-X-purgate-type: clean
-X-purgate: clean
-X-purgate-ID: 151534::1632955238-000081E6-5AC7E0B7/0/0
+References: <CAGETcx_vMNZbT-5vCAvvpQNMMHy-19oR-mSfrg6=eSO49vLScQ@mail.gmail.com>
+ <YSlG4XRGrq5D1/WU@lunn.ch> <CAGETcx-ZvENq8tFZ9wb_BCPZabpZcqPrguY5rsg4fSNdOAB+Kw@mail.gmail.com>
+ <YSpr/BOZj2PKoC8B@lunn.ch> <CAGETcx_mjY10WzaOvb=vuojbodK7pvY1srvKmimu4h6xWkeQuQ@mail.gmail.com>
+ <YS4rw7NQcpRmkO/K@lunn.ch> <CAGETcx_QPh=ppHzBdM2_TYZz3o+O7Ab9-JSY52Yz1--iLnykxA@mail.gmail.com>
+ <YS6nxLp5TYCK+mJP@lunn.ch> <CAGETcx90dOkw+Yp5ZRNqQq2Ny_ToOKvGJNpvyRohaRQi=SQxhw@mail.gmail.com>
+ <YS608fdIhH4+qJsn@lunn.ch> <20210831231804.zozyenear45ljemd@skbuf>
+In-Reply-To: <20210831231804.zozyenear45ljemd@skbuf>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Wed, 29 Sep 2021 22:33:16 -0700
+Message-ID: <CAGETcx8MXzFhhxom3u2MXw8XA-uUtm9XGEbYNobfr+Ptq5+fVQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT
+To:     Vladimir Oltean <olteanv@gmail.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, Aug 31, 2021 at 4:18 PM Vladimir Oltean <olteanv@gmail.com> wrote:
+>
+> On Wed, Sep 01, 2021 at 01:02:09AM +0200, Andrew Lunn wrote:
+> > Rev B is interesting because switch0 and switch1 got genphy, while
+> > switch2 got the correct Marvell PHY driver. switch2 PHYs don't have
+> > interrupt properties, so don't loop back to their parent device.
+>
+> This is interesting and not what I really expected to happen. It goes to
+> show that we really need more time to understand all the subtleties of
+> device dependencies before jumping on patching stuff.
+>
+> In case the DSA tree contains more than one switch, different things
+> will happen in dsa_register_switch().
+> The tree itself is only initialized when the last switch calls
+> dsa_register_switch(). All the other switches just mark themselves as
+> present and exit probing early. See this piece of code in dsa_tree_setup:
+>
+>         complete = dsa_tree_setup_routing_table(dst);
+>         if (!complete)
+>                 return 0;
 
-> The mcp23s08 can not be connected to I2C. It's a SPI device.
-> Which chip do you actually have? I believe it's MCP23017 or MCP23018,
-> which is I2C.
+Hi Vladimir,
 
-Yes the device is a mcp23017, but the driver is the pinctrl_mcp23s08 [1]
+Can you point me to an example dts file that has a DSA tree with more
+than one switch and also point me to the switches that form the tree?
 
-root@dev ~ # lsmod | grep mcp
-pinctrl_mcp23s08       16384  0
-regmap_core            45056  1 pinctrl_mcp23s08,[permanent]
+I'm working on a RFC series that tries to improve some stuff and
+having an example DTS to look at would help.
 
-> Summary:
-> 1) _CID notation is wrong in ASL;
+Thanks,
+Saravana
 
-I got it
-
-> 2) driver seems supports the _ADR schema which you have used in ASL;
-
-This refers to the i2c-0, doesn't it?
-My mcp23s08 device is located at the i2c-0 on address 0x24.
-
-> 3) something fishy about I/O addresses in the sysfs (is it a typo when
-> you composed the email?);
-
-No
-
-I have asked myself the same question.
-Something is not right.
-There was a change regarding the Hudson2 in the driver, maybe something 
-went wrong [2]?
-
-> 4) it's unclear what you did with ASL to get it loaded;
-
-On my development device I did a `iasl dsl/mcp23017.dsl`
-Of the following dsl
-
-$ cat dsl/mcp23017.dsl
-DefinitionBlock ("mcp23017.aml", "SSDT", 5, "", "MCP23017", 4)
-{
-     External (\_SB.PCI0.SBUS, DeviceObj)
-
-     Scope (\_SB.PCI0.SBUS)
-     {
-         Device (GPIO)
-         {
-             Name (_HID, "PRP0001")
-             Name (_DDN, "MCP23017 gpio expander")
-             Name (_ADR, Zero)
-             Name (_CRS, ResourceTemplate () {
-                 I2cSerialBus (
-                     0x24,                   // Bus address
-                     ControllerInitiated,    // Don't care
-                     400000,                 // Fast mode (400 kHz)
-                     AddressingMode7Bit,     // 7-bit addressing
-                     "\\_SB.PCI0.SBUS",      // I2C host controller
-                     0                       // Must be 0
-                 )
-             })
-
-             Name (_DSD, Package () {
-                 ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-                 Package () {
-                     Package () { "compatible", Package () { 
-"microchip,mcp23017" } },
-                 }
-             })
-         }
-     }
-}
-
-After that I copied this to my APU3 Target and executed
-  the following commands:
-mkdir /sys/kernel/config/acpi/table/mcp23017
-
-cat mcp23s08.aml > /sys/kernel/config/table/mcp23017
-
-> 5) as Mika suggested, have you checked the kernel configuration?
-
-I have now switched on the suggested option
-CONFIG_ACPI_CUSTOM_METHOD=y
-CONFIG_ACPI_TABLE_UPGRADE=y
-CONFIG_CONFIGFS_FS=y
-CONFIG_ACPI_CONFIGFS=y
-CONFIG_ACPI_DEBUG=y
-
-But this did not solved my issue loading ssdt during runtime.
-
-The output of the aml on the target:
-
-cat /sys/kernel/config/acpi/table/mcp23017/aml
-SSDTsMCP23017INTL \/_SB_PCI0SBUSK
-                                  \/_SB_PCI0SBUS[H
-MCP23017 gpio expande_AD_CRS&
-#$\_SB.PCI0.SBUS_DSD?
-microchip,mcp23017
-
-
-My iasl version:
-
-iasl --version
-Illegal option: --
-
-Intel ACPI Component Architecture
-ASL+ Optimizing Compiler/Disassembler version 20181213
-Copyright (c) 2000 - 2018 Intel Corporation
-
-
-What else can I do?
-The initrd option does not work with OpenWrt.
-Maybe I can get further if you can give me a good HEX for debug_level 
-and the debug_layer?
-
----
-Regards Florian
-
-[1] 
-https://github.com/torvalds/linux/blob/master/drivers/pinctrl/pinctrl-mcp23s08_i2c.c
-[2] 
-https://github.com/torvalds/linux/commit/528d53a1592b0e27c423f7cafc1df85f77fc1163#diff-aa95f6311d1fcc4d85955b153a2510e853807546ac8e0d3aa0310ac30d236147
+>
+> So it should be a general property of cross-chip DSA trees that all
+> switches except the last one will have the specific PHY driver probed
+> properly, and not the genphy.
+>
+> Because all (N - 1) switches of a tree exit early in dsa_register_switch,
+> they have successfully probed by the time the last switch brings up the
+> tree, and brings up the PHYs on behalf of every other switch.
+>
+> The last switch can connect to the PHY on behalf of the other switches
+> past their probe ending, and those PHYs should not defer probing because
+> their supplier is now probed. It is only that the last switch cannot
+> connect to the PHYs of its own ports.
+>
+> So if this does not work (you say that there are 2 switches that use
+> genphy) I suspect there are also other bugs involved.
