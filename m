@@ -2,150 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BE9941DF70
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Sep 2021 18:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6363641E037
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Sep 2021 19:31:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352266AbhI3QpH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Sep 2021 12:45:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39994 "EHLO
+        id S1352724AbhI3RdZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Sep 2021 13:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352254AbhI3QpH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Sep 2021 12:45:07 -0400
-Received: from mail-vk1-xa41.google.com (mail-vk1-xa41.google.com [IPv6:2607:f8b0:4864:20::a41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 814FCC06176D
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Sep 2021 09:43:24 -0700 (PDT)
-Received: by mail-vk1-xa41.google.com with SMTP id w68so3162615vkd.7
-        for <linux-acpi@vger.kernel.org>; Thu, 30 Sep 2021 09:43:24 -0700 (PDT)
+        with ESMTP id S1352720AbhI3RdZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Sep 2021 13:33:25 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41CEFC06176C
+        for <linux-acpi@vger.kernel.org>; Thu, 30 Sep 2021 10:31:42 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id v195so14527821ybb.0
+        for <linux-acpi@vger.kernel.org>; Thu, 30 Sep 2021 10:31:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
-        b=RnPczgshY6Ea9Dh20LP4wm/elvAY3qgHmWeuGG6iiDJKrmEaFgQmVmSwpcjajHStQF
-         LFMLUyoBVi9UkNEuAf1f/WpH4iaDX72kVYAllqh/vCF9F3S0r3gBdSmBLK3hdT51GcEs
-         0JrvNV/ODqLNG4wdsW2RzkzeuIuPeyABBXyGedDXXzWgKNWo+BtVo5SAZtuWTO4wZhpv
-         qub/KQUv46hIcAOkSjTI+k9iQu0t5gRUI7gY7g8BxRAj6hK5MHnDIboTCBJFMKcr+TLH
-         nkRCLoIbcUjYWdkFrVmXxGFMmCQvwRHVuEprMDZ+uyutVQsOqcPW7tntP+Noj0GABzLu
-         xHfQ==
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dbyWtskCAZy+xt/GX/rEgH8dPX77Pl0JHzECutvB7o8=;
+        b=AOfO0Xhr5RbIHSrEG7VDe+G/eQDtr/9yws9yHRrlM4INTiD6bVk7zpxrJIj/11NLkI
+         TIQ6kRv/FruFzkkLOHs/dUDB0vBP6Bz4CdY4KqkoPXWOu4ZpAnGAiNT1Q2DCWTYfCTdw
+         +4idllKUY8B1pBmX1Bbps144pNNEeW76nSwzMwjmCoOCg5LvCJPEseLCwrCg44RzvFJN
+         Z2Rk95vOiKlQv80e0EfbhzQpsAk9HoH8s3Ccy87CD95vUacfVMvqwtVyr31MIN65zPd2
+         nHthyi2Xb0uLapKRmAdVvZbTMJ4GForrM0vxVj5y/e3kS+4k/mi6yeoq3W4tF4LQKMza
+         Ne7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
-        b=dv3IusCwwjkXZKuxgs26524/VWOYUs2uh+BO0a0KO4yXTk83ZSQGUSfGS7z8GTPK/G
-         LDSqygwYhvXkqLlZ7I39rogffTBL7jdo0iIuR80nZdNK7DTRMfiecByKnOeZk7EoGCKf
-         DI61kEkk7BgD9hS44YPF5qROYLl83wxp2Pm0Tm0hWB8+nT57UeXMoWsAT8f+lfmsGyKx
-         HSArQW3JpU7UBOYiKbe44XhBA/0U4kFuMYp0x4nSppI4vKQsA0bbzcpuWY+udWuGCNai
-         6Nfq/C/6/s+gLREwyonphLljtcY9QZpfZpYkIVEkSipVhlHsem8UVsjEDY1egAxZ7QUs
-         2Esw==
-X-Gm-Message-State: AOAM5333it7FvtpVWpAfivdH4nvUT3Ns9Y71q4F/4GiXOTDf2lrerY1+
-        CzeUZQIQ/A1See09FFruyyg8cYeQNZAc7KM3B+M=
-X-Google-Smtp-Source: ABdhPJwK18N5x0ZSKRCnZM8P+anMPjW8DLudkyLRzL8mw04/ZcjZ1bzLrV4qDHhaGiZQYpZPZj0oWIK2xMf2ef+KS3M=
-X-Received: by 2002:a1f:ee0b:: with SMTP id m11mr4330134vkh.19.1633020203604;
- Thu, 30 Sep 2021 09:43:23 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dbyWtskCAZy+xt/GX/rEgH8dPX77Pl0JHzECutvB7o8=;
+        b=xFRo0JrzhNXKA4TcLFn6K1rxF8/zUhBvX+fRend1ugLeNqtPDA9VD0rpOLOl/XhWu3
+         ckbvwbroTir3K8Ltafr1r2+5Mr5U1dFL9rvxC3st8udOPPalUPU5qWLpYOL3E2JQSRat
+         zBy6sOB87LKFnzNLPEan8lHNlaUGDPUOel1Eju3flHmidGOAXILV3Eb22IO+Mqsz6NEF
+         UyM3H6vrhuavU14kfXnPY48q3RUvlH04INHCRh05wSL9PkGWta74vqEft3NJIfapUgJz
+         vXDpcpdGZBbleWHck5Oi4wmgIeP9Wfk3xF6cR+pdE2DjrWbFB+mN1sGju6mT/SNtuayW
+         IXZg==
+X-Gm-Message-State: AOAM533hwgVoQ1056EVU3onSotVxGBj+HqB6+jfJXsbWY77yfOt5vQrR
+        aRXKYR5AC6SR/1nWA4Y8KyDVqaWoBM2UbIJpB4Qnqg==
+X-Google-Smtp-Source: ABdhPJyV3/tD2PJOZ+6zaxIskMQ+tAjgdePucKrZFQgdWa6LnhBqYPlRwMYUesbtPLbMK6lEurqAoxRJi8dLI25P64Y=
+X-Received: by 2002:a25:2b07:: with SMTP id r7mr496920ybr.296.1633023101172;
+ Thu, 30 Sep 2021 10:31:41 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a59:ab2e:0:b0:22d:7f44:603a with HTTP; Thu, 30 Sep 2021
- 09:43:23 -0700 (PDT)
-Reply-To: irenezakari24@gmail.com
-From:   Irene zakari <irenezakari88@gmail.com>
-Date:   Thu, 30 Sep 2021 09:43:23 -0700
-Message-ID: <CAFT8PFFC1wYhu_V1nvdCu7SCx+WmhojOsdD9Ss5nWW_vtvA+kQ@mail.gmail.com>
-Subject: PLEASE I NEED YOUR HELP
-To:     undisclosed-recipients:;
+References: <YSpr/BOZj2PKoC8B@lunn.ch> <CAGETcx_mjY10WzaOvb=vuojbodK7pvY1srvKmimu4h6xWkeQuQ@mail.gmail.com>
+ <YS4rw7NQcpRmkO/K@lunn.ch> <CAGETcx_QPh=ppHzBdM2_TYZz3o+O7Ab9-JSY52Yz1--iLnykxA@mail.gmail.com>
+ <YS6nxLp5TYCK+mJP@lunn.ch> <CAGETcx90dOkw+Yp5ZRNqQq2Ny_ToOKvGJNpvyRohaRQi=SQxhw@mail.gmail.com>
+ <YS608fdIhH4+qJsn@lunn.ch> <20210831231804.zozyenear45ljemd@skbuf>
+ <CAGETcx8MXzFhhxom3u2MXw8XA-uUtm9XGEbYNobfr+Ptq5+fVQ@mail.gmail.com>
+ <20210930134343.ztq3hgianm34dvqb@skbuf> <YVXDAQc6RMvDjjFu@lunn.ch>
+In-Reply-To: <YVXDAQc6RMvDjjFu@lunn.ch>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 30 Sep 2021 10:31:05 -0700
+Message-ID: <CAGETcx8emDg1rojU=_rrQJ3ezpx=wTukFdbBV-uXiu1EQ87=wQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for FWNODE_FLAG_BROKEN_PARENT
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Vladimir Oltean <olteanv@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello   ..
+On Thu, Sep 30, 2021 at 7:00 AM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > Andrew is testing with arch/arm/boot/dts/vf610-zii-dev-rev-b.dts.
+> >
+> > Graphically it looks like this:
+>
+> Nice ASCII art :-)
 
-How do you do over there? I hope you are doing well?
+Thanks for the awesome diagram Vladimir!
 
-My name is Irene. (24 years), i am single, from Gambia, the only child
-of late Eng. Bernard Bakary Zakaria. the Director of Bajam Enterprise
-(Building Construction Company in The Gambia) also the CEO of Bernard
-Import and Export (GAMBIA).
+>
+> This shows the flow of Ethernet frames thought the switch
+> cluster. What is missing, and causing fw_devlink problems is the MDIO
+> bus master for the PHYs, and the interrupt control where PHY
+> interrupts are stored, and the linking from the PHY to the interrupt
+> controller. Physically all these parts are inside the Ethernet switch
+> package. But Linux models them as separate blocks. This is because in
+> the general case, they are all discrete blocks. You have a MAC chip,
+> and a PHY chip, and the PHY interrupt output it connected to a SoC
+> GPIO.
+>
+> >
+> >  +-----------------------------+
+> >  |          VF610 SoC          |
+> >  |          +--------+         |
+> >  |          |  fec1  |         |
+> >  +----------+--------+---------+
+> >                 | DSA master
+> >                 |
+> >                 | ethernet = <&fec1>;
+> >  +--------+----------+---------------------------+
+> >  |        |  port@6  |                           |
+> >  |        +----------+                           |
+> >  |        | CPU port |     dsa,member = <0 0>;   |
+> >  |        +----------+      -> tree 0, switch 0  |
+> >  |        |   cpu    |                           |
+> >  |        +----------+                           |
+> >  |                                               |
+> >  |            switch0                            |
+> >  |                                               |
+> >  +-----------+-----------+-----------+-----------+
+>
+> Inside the block above, is the interrupt controller and the MDIO bus
+> master.
+>
+>
+> >  |   port@0  |   port@1  |   port@2  |   port@5  |
+> >  +-----------+-----------+-----------+-----------+
+> >  |switch0phy0|switch0phy1|switch0phy2|   no PHY  |
+> >  +-----------+-----------+-----------+-----------+
+>
+> The control path for these PHYs is over the MDIO bus. They are probed
+> via the control path bus. These PHYs also have an interrupt output,
+> which is wired to the interrupt controller above.
+>
+>
+> >  | user port | user port | user port | DSA port  |
+> >  +-----------+-----------+-----------+-----------+
+> >  |    lan0   |    lan1   |    lan2   |    dsa    |
+> >  +-----------+-----------+-----------+-----------+
+>
 
-As a matter of fact my mother died when i was barely 4 years old
-according to my late father and because of the type of love he had for
-my mother made him to remain UN-married till he left the ghost..
+Thanks for the dts paths and the additional details Andrew.
 
-So after the death of my father as a result of assassinate, his brother (My
-Uncle) who is the purchasing and marketing sale manager of my late
-fathers company named (Mr. James Tokunbo Oriade Zakaria) wanted to
-convert all the properties and resources of my late father into his
-which i quarreled with him and it made him to lay his anger on me to
-the extent of hiring an assassins to kill me but to God be the glory i
-succeeded by making a way to Burkina faso for my dear life.
-Honestly i do live a fearful life even here in Burkina faso because of
-those Assassins coming after me .
+I think this gives me enough info for now to make sure whatever I'm
+coding isn't completely stupid. I'm trying to make the generic PHY
+driver less greedy (taking it a bit further than what Vladimir was
+attempting) and also delay the use of generic PHY driver as late as
+possible (so that we give as much time as possible for the specific
+driver to be registered/loaded before we give up and use generic PHY
+driver). This would also need some changes to the DSA code and hence
+these questions.
 
-I would want to live and study in your country for my better future.
-because my father same blood brother wanted to force me into undecided
-marriage, just for me to leave my father home and went and live with
-another man I never know as he want to occupied all my father home
-and maybe to sold it as my father no longer alive, I'm the only child
-daughter my father born, '' but he don't know that i am not
-interesting in any of my father properties or early marriage for now,
-because i still have future to think about and to focus on my studies
-first as i was doing my first year in the University before the death
-of my father.
+Btw, do we have non-DSA networking devices where fw_devlink=on
+delaying PHY probes is causing an issue?
 
-Actually what I want to discuss with you is about my personal issue
-concern funds my late father deposited in a bank outside my country,
-worth $4.5 million united state dollars. i need your assistance to
-receive and invest this funds in your country.
-
-Please help me, I am sincere to you and I want to be member of your
-family as well if you wouldn't mind to accept me and lead me to better
-future in your country.
-
-All the documents the bank issue to my father during time of deposit
-is with me now.
-I already notify the bank on phone about the death of my father and
-they are surprise for the news and accept that my father is their good
-customer.
-I will be happy if this money can be invested in any business of your
-choice and it will be under your control till i finished my education,
-also I'm assuring you good relationship and I am ready to discuss the
-amount of money to give you from this money for your help.
-
-Therefore, I shall give you the bank contact and other necessary
-information in my next email if you will only promise me that you will
-not/never betray and disclosed this matter to anybody, because, this
-money is the only hope i have for survival on earth since I have lost
-my parents.
-
-Moreover I have the FUND PLACEMENT CERTIFICATE and the DEATH
-CERTIFICATE here with me, but before I give you further information, i
-will like to know your full data
-
-1. Full Name: ........................
-2. Address: ..................
-3. Nationality: ........... Sex................
-4. Age:........... Date of Birth:................
-5. Occupation:...................
-.....
-6. Phone: ........... Fax:.........................
-7. State of Origin: .......Country:..............
-8. Occupation:...................
-................
-9. Marital status........... E-mail address's: ............
-10. Scan copy of your ID card or Driving License/Photo:............
-DECLARATION:
-
-so that i will be fully sure that i am not trusting the wrong person.
-and it will also give me the mind to send you the bank contact for you
-to communicate with them for more verification about this money. and
-to know you more better.
-
-Meanwhile, you can reach me through my pastor,his name is Pastor Paul
-any time you call, tell him that you want to speak with me because
-right now i am living in the church here in Burkina faso and i don't
-want to stay here any longer,
-send for me to speak with you his phone number is this(+226 75213646)
-
-I will stop here and i will be waiting for your reply and feel free
-ask any thing you want to know about me.
-Please help me, I would be highly appreciated
-Have nice day.
-From Irene
+-Saravana
