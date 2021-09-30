@@ -2,74 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A416B41E2A5
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Sep 2021 22:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F68441E2BB
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Sep 2021 22:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229944AbhI3UYc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Sep 2021 16:24:32 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:41864 "EHLO vps0.lunn.ch"
+        id S1348172AbhI3Ui7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Sep 2021 16:38:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46404 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229941AbhI3UYc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 30 Sep 2021 16:24:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=YmcyVghdJHtC/wool3HxKieEO9gZnFRYp8XV9FD2I/E=; b=tGTRsTo7JNRXFpm9YWcxcsHrlb
-        lZKYTQ0oH4zwS8eWytNikCNTFeIZyAdDOz8jIUuvpoBhUuJ+nbuNEwzvU/CcOEVO1j9Ampqc1HxX7
-        C882PphgctxEbcrOVeMm8l8lkeC0IhhfidAHDXIiv82eCxzfUW9pKsxK9RFRQPTF0L2I=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1mW2Zk-0090EA-Vi; Thu, 30 Sep 2021 22:22:40 +0200
-Date:   Thu, 30 Sep 2021 22:22:40 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Alvin Sipraga <ALSI@bang-olufsen.dk>, kernel-team@android.com,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] driver core: fw_devlink: Add support for
- FWNODE_FLAG_BROKEN_PARENT
-Message-ID: <YVYckPBihi1ukwvE@lunn.ch>
-References: <CAGETcx90dOkw+Yp5ZRNqQq2Ny_ToOKvGJNpvyRohaRQi=SQxhw@mail.gmail.com>
- <YS608fdIhH4+qJsn@lunn.ch>
- <20210831231804.zozyenear45ljemd@skbuf>
- <CAGETcx8MXzFhhxom3u2MXw8XA-uUtm9XGEbYNobfr+Ptq5+fVQ@mail.gmail.com>
- <20210930134343.ztq3hgianm34dvqb@skbuf>
- <YVXDAQc6RMvDjjFu@lunn.ch>
- <CAGETcx8emDg1rojU=_rrQJ3ezpx=wTukFdbBV-uXiu1EQ87=wQ@mail.gmail.com>
- <YVYSMMMkmHQn6n2+@lunn.ch>
- <CAGETcx-L7zhfd72+aRmapb=nAbbFGR5NX0aFK-V9K1WT4ubohA@mail.gmail.com>
- <cb193c3d-e75d-3b1e-f3f4-0dcd1e982407@gmail.com>
+        id S229958AbhI3Ui6 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 30 Sep 2021 16:38:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BD41761A56;
+        Thu, 30 Sep 2021 20:37:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633034235;
+        bh=ZN/Nq4IgDxA5EErobLPJ0c5Be2iycRE3S97JflvWD9A=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=BPq32jzrlVuSLzPIdtejsKSzsAH69I5mBXX6U4MgMyQOLfcspvQV45lqUpUrsWCEP
+         ayiHVc8S8I85gJOUfnTpxVRaOuMnPHiuwzZaLjgSX5uVOOcHev30cMAckqhb3WMJtE
+         XO+nPmZzryQW9u/Ygz4l9jCDCxh7MlS/5Dx2Z1z8sIASb42Sc4fuwbtIxMBR7UcUV3
+         eYdDPf0skysbXbzxf+BvPSOJGiaccSsyiErFWYr6LJr5Q8jIK64Xnd5qkUAX0nm7/J
+         ohdo96/J1aZzlxeIChDpd4fJBgkVkyWWoWDy8HcU/F22d1enAByOlaPg8haOwuHkjk
+         mM22RjtiJYdkg==
+Received: by mail-wr1-f50.google.com with SMTP id s21so12070079wra.7;
+        Thu, 30 Sep 2021 13:37:15 -0700 (PDT)
+X-Gm-Message-State: AOAM532yRAVy8IfF+aUoa0MksgNmAUjhzgAVIKR4FUDZaCKKoTallhxH
+        GryYhx94SdL/sDDjz/KF3g9U2w7biUGnK0bGku8=
+X-Google-Smtp-Source: ABdhPJxnvUmd3Sbm2atNTl5zn2nKYHQQUHYsV989BMn4qOekZwOKzz7lOcoZ2V0mgqE23bRnU5Gh6fYz6YWSBCH+J7o=
+X-Received: by 2002:a5d:564f:: with SMTP id j15mr8376557wrw.336.1633034234173;
+ Thu, 30 Sep 2021 13:37:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cb193c3d-e75d-3b1e-f3f4-0dcd1e982407@gmail.com>
+References: <20210927121338.938994-1-arnd@kernel.org> <CAJZ5v0jJRYQPSfVV_hCD6uxch+vU6kvWV9-KAfqHckHgkFOeaA@mail.gmail.com>
+ <CAJZ5v0jDKK6ecsubVDv_=EUF3goiiDW28tvbKF9cesMphgKaug@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jDKK6ecsubVDv_=EUF3goiiDW28tvbKF9cesMphgKaug@mail.gmail.com>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Thu, 30 Sep 2021 22:36:58 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1Xmj0O8zORM9O+GLS9maqKV-awuSNQdC_zxN1z7mnjnA@mail.gmail.com>
+Message-ID: <CAK8P3a1Xmj0O8zORM9O+GLS9maqKV-awuSNQdC_zxN1z7mnjnA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: avoid NULL pointer arithmetic
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> I don't think this is going to scale, we have dozens and dozens of
-> drivers that connect to the PHY during ndo_open(). It is not realistic
-> to audit them all, just like the opposite case where the drivers do
-> probe MDIO/PHY during their .probe() call is not realistic either.
+On Thu, Sep 30, 2021 at 8:52 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Wed, Sep 29, 2021 at 8:47 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> > On Mon, Sep 27, 2021 at 2:13 PM Arnd Bergmann <arnd@kernel.org> wrote:
+> > >
+> > >  #define ACPI_TO_POINTER(i)              ACPI_CAST_PTR (void, (acpi_size) (i))
+> > > -#define ACPI_TO_INTEGER(p)              ACPI_PTR_DIFF (p, (void *) 0)
+> > > -#define ACPI_OFFSET(d, f)               ACPI_PTR_DIFF (&(((d *) 0)->f), (void *) 0)
+> > > +#define ACPI_TO_INTEGER(p)              ((uintptr_t)(p))
+> > > +#define ACPI_OFFSET(d, f)               offsetof(d, f)
+> > >  #define ACPI_PHYSADDR_TO_PTR(i)         ACPI_TO_POINTER(i)
+> > >  #define ACPI_PTR_TO_PHYSADDR(i)         ACPI_TO_INTEGER(i)
+> > >
+> > > --
+> >
+> > Queued up as 5.16 material, converted into an upstream ACPICA pull
+> > request and submitted, thanks!
+>
+> And reverted from there, because it introduced build issues.
+>
+> Can we use alternative definitions that don't depend on uintptr_t and
+> offsetof()?
 
-I was wondering if Coccinelle could help use here. But a quick scan of
-the documents don't suggest it can follow call stacks. Ideally we
-would what something to goes and finds the struct net_device_ops, and
-gets the function used for .ndo_open. Then look into that function,
-and all functions it calls within the driver, and see if any of them
-connect the PHY to the MAC. We could then add an additional parameter
-to indicate we are in ndo_open context.
+It's a bit tricky, as both were introduced to avoid portability issues.
 
-But it looks like that is wishful thinking.
+For uintptr_t, we could use 'unsigned long', which works on everything
+that Linux can run on, but wouldn't work if this code can be compiled
+for 64-bit Windows. 'size_t' probably works, but likely has the same problem
+as 'uintptr_t' because they require and additional #include. I see
+that some code uses acpi_uintptr_t, which looks like it is meant to
+replace uintptr_t, this is defined as 'void *' in include/acpi/actypes.h,
+so that probably wouldn't avoid the warning.
 
-    Andrew
+For offsetof(), we could use __builtin_offsetof(), which would work with
+any gcc-compatible compiler, if the goal is to avoid including <stddef.h>.
+If it has to work on other compilers, there is no portable way that doesn't
+rely on standard headers. The best idea I'd have would be to use
+"#ifdef offsetof" to choose between the trivial implementation I had
+and the old one that works for non-standard C but may invoke
+undefined behavior.
+
+       Arnd
