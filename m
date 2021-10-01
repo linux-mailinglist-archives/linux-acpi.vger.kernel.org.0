@@ -2,170 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11A9341E90E
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Oct 2021 10:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D73A41EAFC
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Oct 2021 12:32:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352521AbhJAIZ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Oct 2021 04:25:27 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:54288 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1352645AbhJAIZ1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Oct 2021 04:25:27 -0400
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1918C2PX001177;
-        Fri, 1 Oct 2021 04:23:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=G6K+sVMkbV9kGDxT1j5qPRAw9MwY5YvJSeK69w1o8mE=;
- b=GWGytIFg+r0GWNcfDTaPJxZeGudeWy/fRZDp/+picKBzPRfP8eOMTDsAQL7gwkRo3uo2
- YRTA1cW/vJJquRTHqHs7jH2KJnmKUeG42btRUg6Xj9ngFFlDN4JHLHt9q6iRyp04IiJz
- aikPnyxRmUvQVl5nM9Hc5XN3zXUqDp4EfbeVsYOyzDIxgenO31ZaiTnFV2m7mpSRhei1
- qC12nZJyGp5Bh6mBghpKuGmtjq1YprFWtLY8YV7AUopdQ7LhvRHoFRTojufUKUe3arXi
- P2ZNd2Bl5kDKGuDqjfIkM8rjL1/I53VzI0vuLIOz8cgGF5Fup+XxW6Z0sSzVsHJ6m5DN 6Q== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3bdxku07ak-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 01 Oct 2021 04:23:41 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-        by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1918CQeq022296;
-        Fri, 1 Oct 2021 08:23:38 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-        by ppma02fra.de.ibm.com with ESMTP id 3b9uda8kkt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 01 Oct 2021 08:23:38 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1918NaBE53412280
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 1 Oct 2021 08:23:36 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0FDFF11C064;
-        Fri,  1 Oct 2021 08:23:36 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 9BFE811C04A;
-        Fri,  1 Oct 2021 08:23:35 +0000 (GMT)
-Received: from sig-9-145-167-144.de.ibm.com (unknown [9.145.167.144])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Fri,  1 Oct 2021 08:23:35 +0000 (GMT)
-Message-ID: <924c2d6ef51a83cce5c9bcf4004bbf1506c5a768.camel@linux.ibm.com>
-Subject: Re: Oops in during sriov_enable with ixgbe driver
-From:   Niklas Schnelle <schnelle@linux.ibm.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>
-Cc:     Tony Nguyen <anthony.l.nguyen@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Date:   Fri, 01 Oct 2021 10:23:35 +0200
-In-Reply-To: <CAJZ5v0hsQvHp2PqFjxvyx4tPCnNC7BCWyfPj-eADFa1w68BCMQ@mail.gmail.com>
-References: <8e4bbd5c59de31db71f718556654c0aa077df03d.camel@linux.ibm.com>
-         <5ea40608-388e-1137-9b86-85aad1cad6f6@intel.com>
-         <b9e461a5-75de-6f45-1709-d9573492f7ac@intel.com>
-         <CAJZ5v0gpxRDt0V3Eh1_edZAudxyL3-ik4MhT7TzijTYeOd=_Vg@mail.gmail.com>
-         <CAJZ5v0hsQvHp2PqFjxvyx4tPCnNC7BCWyfPj-eADFa1w68BCMQ@mail.gmail.com>
+        id S1353037AbhJAKeS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 1 Oct 2021 06:34:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54676 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1353576AbhJAKeQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 1 Oct 2021 06:34:16 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA365C061775;
+        Fri,  1 Oct 2021 03:32:31 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id g7so32350795edv.1;
+        Fri, 01 Oct 2021 03:32:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/buWv3Asqx8kW1gsPhKrBHjVU5mWPxYIQpwpvJXtO0o=;
+        b=jkNGWFz2YH8ckrY4qu9+JqawpfR9nQh9JqHvJSEXgqn1wW0ZqIAbp6wo8e4k53JWie
+         PG9Vl/qlhKghLtsUQHFZTjw5395tiJ/a0y8S9aMSfdbEWOD0fhmg2Pyxlh/SYSRYd8lO
+         hewjNYNlzym7OcG29daZZMJI7ErWYNY98p3S6t8RHLMRYCgGg4n7vSEvnKTzov1agQYe
+         3B7IoGlPn2nCL+jkulnRVHDy4VgrgfiBWCjEoFml1pCRxm5iFS/EgzaToz2VmELnhBWN
+         379viRefrQzQvoc/N3tg342WCw41fgkxK95RPcV9CrH21lYNW8NfvC+ADhE2T71YmDKX
+         m3SQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/buWv3Asqx8kW1gsPhKrBHjVU5mWPxYIQpwpvJXtO0o=;
+        b=FTRWLOw65SJI7xbEniNKV18EXsl0HbD929Y7bMBh6u274BwstXeknAQOe7w0Mk9JYg
+         uDS2r4PrGEO0sziPh300UbzbsiaLHCeA1FaEoJTUk/KugCvboGcjKQVd/Lpx/R4mxz2S
+         dqyhF1O7qIlT5NGK3L3JjKdKQKtabSmcBKMBZCEWNla76/BzrXuI8+y0cNFE3kIRm4d9
+         7tRqzi2WldRVtxZBy8ffviOYgiD4iKKBXY7T5CJT3n1AxY5Un5ddK4OkC0mt9QMUhRX3
+         P7bCFI1ZZ3zVInITh3Iglff1TSegRUkbmXEVAmnzBd3d53ktKT3OcYfyCSF5qRwzHW4G
+         zWfw==
+X-Gm-Message-State: AOAM5326+vHZ/fizqNgMJum8/7RoseEX40zI2jWtCFHDicYkSTboD5zb
+        R1ifQa9e6qComCJb2YrMiH3Kz4qIDpcA9vlX/hQ=
+X-Google-Smtp-Source: ABdhPJwxMEKjDnhtc7obFtfk3VPIDqJzotNggMPqjw2PjpIwccXrdXetUdUPm3NaN4beRUzAv+miPPxECSjF74GLHPY=
+X-Received: by 2002:a17:906:2345:: with SMTP id m5mr5190628eja.557.1633084350266;
+ Fri, 01 Oct 2021 03:32:30 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210924085104.44806-1-21cnbao@gmail.com>
+In-Reply-To: <20210924085104.44806-1-21cnbao@gmail.com>
+From:   Barry Song <21cnbao@gmail.com>
+Date:   Fri, 1 Oct 2021 23:32:18 +1300
+Message-ID: <CAGsJ_4yW72mktbWjRfE9ngXoq9oXBXyAd_TPjKBNdGiRSoh9LA@mail.gmail.com>
+Subject: Re: [PATCH RESEND 0/3] Represent cluster topology and enable load
+ balance between clusters
+To:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>
+Cc:     aubrey.li@linux.intel.com, Borislav Petkov <bp@alien8.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Ben Segall <bsegall@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guodong Xu <guodong.xu@linaro.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Juri Lelli <juri.lelli@redhat.com>, lenb@kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Linuxarm <linuxarm@huawei.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mel Gorman <mgorman@suse.de>, msys.mizuma@gmail.com,
+        prime.zeng@hisilicon.com, rjw@rjwysocki.net,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Barry Song <song.bao.hua@hisilicon.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>, rafael@kernel.org,
+        Tim Chen <tim.c.chen@linux.intel.com>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        will@kernel.org, x86@kernel.org, yangyicong@huawei.com
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -x7WUWAeS2lx3fdAEJUTltwZzXq29tRr
-X-Proofpoint-GUID: -x7WUWAeS2lx3fdAEJUTltwZzXq29tRr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-30_07,2021-09-30_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- mlxscore=0 adultscore=0 clxscore=1011 suspectscore=0 priorityscore=1501
- malwarescore=0 phishscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
- definitions=main-2110010055
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 2021-09-30 at 20:37 +0200, Rafael J. Wysocki wrote:
-> On Thu, Sep 30, 2021 at 8:20 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > On Thu, Sep 30, 2021 at 7:38 PM Rafael J. Wysocki
-> > <rafael.j.wysocki@intel.com> wrote:
-> > > On 9/30/2021 7:31 PM, Jesse Brandeburg wrote:
-> > > > On 9/28/2021 4:56 AM, Niklas Schnelle wrote:
-> > > > > Hi Jesse, Hi Tony,
-> > > > > 
-> > > > > Since v5.15-rc1 I've been having problems with enabling SR-IOV VFs on
-> > > > > my private workstation with an Intel 82599 NIC with the ixgbe driver. I
-> > > > > haven't had time to bisect or look closer but since it still happens on
-> > > > > v5.15-rc3 I wanted to at least check if you're aware of the problem as
-> > > > > I couldn't find anything on the web.
-> > > > We haven't heard anything of this problem.
-> > > > 
-> > > > 
-> > > > > I get below Oops when trying "echo 2 > /sys/bus/pci/.../sriov_numvfs"
-> > > > > and suspect that the earlier ACPI messages could have something to do
-> > > > > with that, absolutely not an ACPI expert though. If there is a need I
-> > > > > could do a bisect.
-> > > > Hi Niklas, thanks for the report, I added the Intel Driver's list for
-> > > > more exposure.
-> > > > 
-> > > > I asked the developers working on that driver to take a look and they
-> > > > tried to reproduce, and were unable to do so. This might be related to
-> > > > your platform, which strongly suggests that the ACPI stuff may be related.
-> > > > 
-> > > > We have tried to reproduce but everything works fine no call trace in
-> > > > scenario with creating VF.
-> > > > 
-> > > > This is good in that it doesn't seem to be a general failure, you may
-> > > > want to file a kernel bugzilla (bugzilla.kernel.org) to track the issue,
-> > > > and I hope that @Rafael might have some insight.
-> > > > 
-> > > > This issue may be related to changes in acpi_pci_find_companion,
-> > > > but as I say, we are not able to reproduce this.
-> > > > 
-> > > > commit 59dc33252ee777e02332774fbdf3381b1d5d5f5d
-> > > > Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > Date:   Tue Aug 24 16:43:55 2021 +0200
-> > > >      PCI: VMD: ACPI: Make ACPI companion lookup work for VMD bus
-> > > 
-> > > This change doesn't affect any devices beyond the ones on the VMD bus.
-> > 
-> > The only failing case I can see is when the device is on the VMD bus
-> > and its bus pointer is NULL, so the dereference in
-> > vmd_acpi_find_companion() crashes.
-> > 
-> > Can anything like that happen?
-> 
-> Not really, because pci_iov_add_virtfn() sets virtfn->bus.
-> 
-> However, it doesn\t set virtfn->dev.parent AFAICS, so when that gets
-> dereferenced by ACPI_COMPANIO(dev->parent) in
-> acpi_pci_find_companion(), the crash occurs.
-> 
-> We need a !dev->parent check in acpi_pci_find_companion() I suppose:
-> 
-> Does the following change help?
-> 
-> Index: linux-pm/drivers/pci/pci-acpi.c
-> ===================================================================
-> --- linux-pm.orig/drivers/pci/pci-acpi.c
-> +++ linux-pm/drivers/pci/pci-acpi.c
-> @@ -1243,6 +1243,9 @@ static struct acpi_device *acpi_pci_find
->      bool check_children;
->      u64 addr;
-> 
-> +    if (!dev->parent)
-> +        return NULL;
-> +
->      down_read(&pci_acpi_companion_lookup_sem);
-> 
->      adev = pci_acpi_find_companion_hook ?
+Hi Vincent, Dietmar, Peter, Ingo,
+Do you have any comment on this first series which exposes cluster topology
+of ARM64 kunpeng 920 & x86 Jacobsville and supports load balance only for
+the 1st stage?
+I will be very grateful for your comments so that things can move forward in the
+right direction. I think Tim also looks forward to bringing up cluster
+support in
+Jacobsville.
 
+Best Regards
+Barry
 
-Yes the above change fixes the problem for me. SR-IOV enables
-successfully and the VFs are fully usable. Thanks!
-
-Just out of curiosity and because I use this system to test common code
-PCI changed. Do you have an idea what makes my system special here? 
-
-The call to pci_set_acpi_fwnode() in pci_setup_device() is
-unconditional and should do the same on any ACPI enabled system.
-Also nothing in your explanation sounds specific to my system.
-
+On Fri, Sep 24, 2021 at 8:51 PM Barry Song <21cnbao@gmail.com> wrote:
+>
+> From: Barry Song <song.bao.hua@hisilicon.com>
+>
+> ARM64 machines like kunpeng920 and x86 machines like Jacobsville have a
+> level of hardware topology in which some CPU cores, typically 4 cores,
+> share L3 tags or L2 cache.
+>
+> That means spreading those tasks between clusters will bring more memory
+> bandwidth and decrease cache contention. But packing tasks might help
+> decrease the latency of cache synchronization.
+>
+> We have three series to bring up cluster level scheduler in kernel.
+> This is the first series.
+>
+> 1st series(this one): make kernel aware of cluster, expose cluster to sysfs
+> ABI and add SCHED_CLUSTER which can make load balance between clusters to
+> benefit lots of workload.
+> Testing shows this can hugely boost the performance, for example, this
+> can increase 25.1% of SPECrate mcf on Jacobsville and 13.574% of mcf
+> on kunpeng920.
+>
+> 2nd series(wake_affine): modify the wake_affine and let kernel select CPUs
+> within cluster first before scanning the whole LLC so that we can benefit
+> from the lower latency of cache coherence within one single cluster. This
+> series is much more tricky. so we would like to send it after we build
+> the base of cluster by the 1st series. Prototype for 2nd series is here:
+> https://op-lists.linaro.org/pipermail/linaro-open-discussions/2021-June/000219.html
+>
+> 3rd series: a sysctl to permit users to enable or disable cluster scheduler
+> from Tim Chen. Prototype here:
+> Add run time sysctl to enable/disable cluster scheduling
+> https://op-lists.linaro.org/pipermail/linaro-open-discussions/2021-July/000258.html
+>
+> This series is resent and rebased on 5.15-rc2.
+>
+> -V1:
+>  differences with RFC v6
+>  * removed wake_affine path modifcation, which will be separately second series
+>  * cluster_id is gotten by detecting valid ID before falling back to use offset
+>  * lots of benchmark data from both x86 Jacobsville and ARM64 kunpeng920
+>
+> -RFC v6:
+> https://lore.kernel.org/lkml/20210420001844.9116-1-song.bao.hua@hisilicon.com/
+>
+> Barry Song (1):
+>   scheduler: Add cluster scheduler level in core and related Kconfig for
+>     ARM64
+>
+> Jonathan Cameron (1):
+>   topology: Represent clusters of CPUs within a die
+>
+> Tim Chen (1):
+>   scheduler: Add cluster scheduler level for x86
+>
+>  Documentation/ABI/stable/sysfs-devices-system-cpu | 15 +++++
+>  Documentation/admin-guide/cputopology.rst         | 12 ++--
+>  arch/arm64/Kconfig                                |  7 +++
+>  arch/arm64/kernel/topology.c                      |  2 +
+>  arch/x86/Kconfig                                  |  8 +++
+>  arch/x86/include/asm/smp.h                        |  7 +++
+>  arch/x86/include/asm/topology.h                   |  3 +
+>  arch/x86/kernel/cpu/cacheinfo.c                   |  1 +
+>  arch/x86/kernel/cpu/common.c                      |  3 +
+>  arch/x86/kernel/smpboot.c                         | 44 ++++++++++++++-
+>  drivers/acpi/pptt.c                               | 67 +++++++++++++++++++++++
+>  drivers/base/arch_topology.c                      | 14 +++++
+>  drivers/base/topology.c                           | 10 ++++
+>  include/linux/acpi.h                              |  5 ++
+>  include/linux/arch_topology.h                     |  5 ++
+>  include/linux/sched/topology.h                    |  7 +++
+>  include/linux/topology.h                          | 13 +++++
+>  kernel/sched/topology.c                           |  5 ++
+>  18 files changed, 223 insertions(+), 5 deletions(-)
+>
+> --
+> 1.8.3.1
+>
