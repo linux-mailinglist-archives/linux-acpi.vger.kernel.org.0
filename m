@@ -2,116 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6569241F82E
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Oct 2021 01:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AD3341F99B
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Oct 2021 06:19:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231443AbhJAXYg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 1 Oct 2021 19:24:36 -0400
-Received: from mga11.intel.com ([192.55.52.93]:64062 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231265AbhJAXYe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 1 Oct 2021 19:24:34 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10124"; a="222408556"
-X-IronPort-AV: E=Sophos;i="5.85,340,1624345200"; 
-   d="scan'208";a="222408556"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2021 16:22:49 -0700
-X-IronPort-AV: E=Sophos;i="5.85,340,1624345200"; 
-   d="scan'208";a="480787586"
-Received: from schen9-mobl.amr.corp.intel.com ([10.134.109.23])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2021 16:22:47 -0700
-Message-ID: <ece8838d112840bf26adbb09f653babcf298eb28.camel@linux.intel.com>
-Subject: Re: [PATCH RESEND 0/3] Represent cluster topology and enable load
- balance between clusters
-From:   Tim Chen <tim.c.chen@linux.intel.com>
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>
-Cc:     Barry Song <21cnbao@gmail.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Aubrey Li <aubrey.li@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Ben Segall <bsegall@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guodong Xu <guodong.xu@linaro.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        "Cc: Len Brown" <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mel Gorman <mgorman@suse.de>, msys.mizuma@gmail.com,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
-        yangyicong <yangyicong@huawei.com>
-Date:   Fri, 01 Oct 2021 16:22:46 -0700
-In-Reply-To: <YVch0/R9PHzUwqea@hirez.programming.kicks-ass.net>
-References: <20210924085104.44806-1-21cnbao@gmail.com>
-         <CAGsJ_4yW72mktbWjRfE9ngXoq9oXBXyAd_TPjKBNdGiRSoh9LA@mail.gmail.com>
-         <CAKfTPtAtfJRFBbo+kBCYf42hxcc2iP8kkmg3Wcr5aW7Rnf=rfw@mail.gmail.com>
-         <YVch0/R9PHzUwqea@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+        id S229706AbhJBEUy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 2 Oct 2021 00:20:54 -0400
+Received: from new3-smtp.messagingengine.com ([66.111.4.229]:56705 "EHLO
+        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229520AbhJBEUx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 2 Oct 2021 00:20:53 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 5C56C580F78;
+        Sat,  2 Oct 2021 00:19:07 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Sat, 02 Oct 2021 00:19:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nakato.io; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=fm2; bh=DylGuvJdATMpY2rkZNSmEhOXei
+        4V9ICF4PCv80+yHZU=; b=uQGVcLLvCwd9i2ayafKDsKP/VbvpMY+Sr6VU7RrtU+
+        Jl6O1p94E67UPYEiY0oy+uf2iARPa65iLiQ80HIz73ToOYzyklY1J7qJf11Xadql
+        mxjPY92QKBX7YkCkiHyIjE7JzMAUdso5B/xiKaLxND1sDQ8hmLDwQKBX+zRFV7R1
+        nNCB3R5zQbslSfQg7UFLquu1WL9S77tZUfAPT438GLSJ1y2AfAJJzEBGxC52+tde
+        l42DmwVL76xQinziGdP3IQWhx52Sk3eWWsflVxln5IwOxdAe60JHA3Hu+qpv8OFz
+        46JKKi5RnYaJc96/YD9cDrr1o0pz+Ivhhr/RYrCa38Hg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=DylGuvJdATMpY2rkZ
+        NSmEhOXei4V9ICF4PCv80+yHZU=; b=ualAtLYMQ2osHUxoNLlsPQ6qo0dffpcdi
+        28MPCRVSz/kTzoCPFzzB9cSn+P2rJMztYJUWw8/xa4E2kirp9d94UKT6H2LWP472
+        fPRX6v3mHkdnnLrG8ll3cCdV5EN/8GrCQrPKJ3bO0OHbnO+9ySncq5c81WunlmKk
+        D6imId/DbyRe/hAqJc9twNhlUKxdi4khZIC2C7pHzppWt2oq4KgyAKNP0JFTgkaA
+        ApZeunTwBe8rWM/Na7l9qmNTgG96R3o/fBkmJOPRkfwLatarp5gaLZuYvLUabnxo
+        wlmyFIVgJyUD3MCRzTTS57FUdslAxW7sN016mAVCn9A1Iu4nEIIjA==
+X-ME-Sender: <xms:ut1XYddSqXNoMVO768Tcq20_hyuY2qTBJJOXf_K_nQ2QvhWcsxx9dg>
+    <xme:ut1XYbOLr3fwzj8Gv5cJyLYBgPxLpX5kqTwuZHRmjBgwKUzRI9GfYXW1aeE6mq-_K
+    -eADjO6ssknOddXIw>
+X-ME-Received: <xmr:ut1XYWilpaeajnW4vTwgdonpwR2Arlk9qu0KPPrIJsEqYqUEdRMTNZ90FSaSZNVt6DrypHQFbR4vnah0I1v5MlRLViLK0bKvg-wx5hAc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudekjedgkeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtre
+    dttdenucfhrhhomhepufgrtghhihcumfhinhhguceonhgrkhgrthhosehnrghkrghtohdr
+    ihhoqeenucggtffrrghtthgvrhhnpefgjeegieejleelkeeikefhleevudehheehgfeuud
+    dtheetheetvddvfeehjeeitdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhep
+    mhgrihhlfhhrohhmpehnrghkrghtohesnhgrkhgrthhordhioh
+X-ME-Proxy: <xmx:ut1XYW9J5iSh0hazEC7TruTGh9oIVZiSsYBgsZDGZ0DBeLeqKPrPkA>
+    <xmx:ut1XYZvCnswo-3TCNR36AaZaIowRzOjq3pLi64w8beIY04-ai6vLUA>
+    <xmx:ut1XYVG6OhSbyIm890ntqchOwhP8VjahjoekSzGWUUH_ZBiXC7qseg>
+    <xmx:u91XYfKjbC5fQLJzo54mQ_9hwYDQHenk8KF9eysfy_M7YPhM0ln9xw>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 2 Oct 2021 00:19:02 -0400 (EDT)
+From:   Sachi King <nakato@nakato.io>
+To:     Shyam-sundar.S-k@amd.com, hdegoede@redhat.com,
+        mgross@linux.intel.com, mario.limonciello@amd.com,
+        rafael@kernel.org, lenb@kernel.org
+Cc:     platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Sachi King <nakato@nakato.io>,
+        stable@vger.kernel.org
+Subject: [PATCH 1/2] platform/x86: amd-pmc: Add alternative acpi id for PMC controller
+Date:   Sat,  2 Oct 2021 14:18:39 +1000
+Message-Id: <20211002041840.2058647-1-nakato@nakato.io>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 2021-10-01 at 16:57 +0200, Peter Zijlstra wrote:
-> On Fri, Oct 01, 2021 at 12:39:56PM +0200, Vincent Guittot wrote:
-> > Hi Barry,
-> > 
-> > On Fri, 1 Oct 2021 at 12:32, Barry Song <21cnbao@gmail.com> wrote:
-> > > Hi Vincent, Dietmar, Peter, Ingo,
-> > > Do you have any comment on this first series which exposes
-> > > cluster topology
-> > > of ARM64 kunpeng 920 & x86 Jacobsville and supports load balance
-> > > only for
-> > > the 1st stage?
-> > > I will be very grateful for your comments so that things can move
-> > > forward in the
-> > > right direction. I think Tim also looks forward to bringing up
-> > > cluster
-> > > support in
-> > > Jacobsville.
-> > 
-> > This patchset makes sense to me and the addition of a new
-> > scheduling
-> > level to better reflect the HW topology goes in the right
-> > direction.
-> 
-> So I had a look, dreading the selecti-idle-sibling changes, and was
-> pleasantly surprised they're gone :-)
-> 
-> As is, this does indeed look like something mergable without too much
-> hassle.
-> 
-> The one questino I have is, do we want default y?
+The Surface Laptop 4 AMD has used the AMD0005 to identify this
+controller instead of using the appropriate ACPI ID AMDI0005.  Include
+AMD0005 in the acpi id list.
 
-I also agree that default y is preferable.
+Cc: <stable@vger.kernel.org> # 5.14+
+Signed-off-by: Sachi King <nakato@nakato.io>
+---
+ drivers/platform/x86/amd-pmc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
-> The one nit I have is the Kconfig text, I'm not really sure that's
-> clarifying what a cluster is.
-
-Do you have a preference of a different name other than cluster?
-Or simply better documentation on what a cluster is for ARM64
-and x86 in Kconfig?
-
-Thanks.
-
-Tim
+diff --git a/drivers/platform/x86/amd-pmc.c b/drivers/platform/x86/amd-pmc.c
+index d6a7c896ac86..fc95620101e8 100644
+--- a/drivers/platform/x86/amd-pmc.c
++++ b/drivers/platform/x86/amd-pmc.c
+@@ -476,6 +476,7 @@ static const struct acpi_device_id amd_pmc_acpi_ids[] = {
+ 	{"AMDI0006", 0},
+ 	{"AMDI0007", 0},
+ 	{"AMD0004", 0},
++	{"AMD0005", 0},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, amd_pmc_acpi_ids);
+-- 
+2.33.0
 
