@@ -2,99 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE6C84201A7
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 Oct 2021 15:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4E1B4203DF
+	for <lists+linux-acpi@lfdr.de>; Sun,  3 Oct 2021 22:14:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230298AbhJCNRV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 3 Oct 2021 09:17:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51652 "EHLO
+        id S231440AbhJCUP6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 3 Oct 2021 16:15:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230256AbhJCNRU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Oct 2021 09:17:20 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF1CEC061782
-        for <linux-acpi@vger.kernel.org>; Sun,  3 Oct 2021 06:15:32 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id rj12-20020a17090b3e8c00b0019f88e44d85so3681276pjb.4
-        for <linux-acpi@vger.kernel.org>; Sun, 03 Oct 2021 06:15:32 -0700 (PDT)
+        with ESMTP id S230303AbhJCUP5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Oct 2021 16:15:57 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95866C0613EC;
+        Sun,  3 Oct 2021 13:14:09 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id p13so28411863edw.0;
+        Sun, 03 Oct 2021 13:14:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=RNJERDOIDcil3yoF2ADjmROEOLO4j0hGtz7GlVopmOU=;
-        b=Ku31O49TKxGkgrtjjyrnP6eeJJCWPNI+/7eaCBwDN79KwMqoVIp92RH6OzNTTW6MKA
-         qWoB9NkzEsnyeOVQB2gJFk6nTSeFMxtXJAeU52Ao5NDkUcD6bbkusDRnJoo9P0HpjUhL
-         HqdabfC7ZJ4ARM/5YbDJEMLbx6898uKl8kHkN+tNSBf/E3P0KAPuzvD+tvS2zPxnWKbt
-         2hgT3WrlgIhcaL2V/PCsuOeM1gNbGbAx0ZZGNXL2EK3m/Ro6ANBIzVCa6YbeH/yeVIZA
-         cJiiTAXT8VZUfO/yP9TkkGeWmiDSKvR6JMLlV45+SVYhXpTx6zWrWRHvHv6Z6XANCm0Y
-         8s8w==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=RlS0v3/Rhlf3ts75tCU+bjZnRbKsqMQBA94Qzb/r/xs=;
+        b=CC+Mi9BoczOtWghdFEfFfYoZU2BCYTjx1L1Gx4pY0rC5I8wQ0dD9OjUbIZy8i+QZP5
+         dB0SNXNBXHU+SnV5k4MuEV0KbMuRDSaif1Agy563c2lTweyXn8M9Y4ScUFroldGrMC+0
+         5e31UZuiQW3yuGIpMa9vY+nqko+voDN5Co9scrAZfW7OZjSNrRybE1sSnJUpFJHeuRWK
+         Sl9WAipKNC3Qw03rotmZ+ugZCx/jU/UyOhvOOY7e7owxT70NlIC/YWc6YU/mwrjl/sKe
+         EvYdMYX3x5HNIGQQe9SnQD/0q+PGyW9WN2Djge4GaE1lIX4KTUfKfK1YVezpVl9IwY8B
+         JDlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=RNJERDOIDcil3yoF2ADjmROEOLO4j0hGtz7GlVopmOU=;
-        b=N8EruRCg9HiENiFE2WqMADEgXzfrdRwJnaJsxc6HGTx+EzT4UEP8t893IA3KXFAKQ7
-         z8D2DU3FW+BizcOfi9XtKEX7CyBHyTYbtJadGqex5nw9jhQLluP7lb0ZILDnQUorNMzY
-         ho6T/+wsOuI6OZZKDZ+XLlZhMBt2tPHrAwfAQud6NsI4bAD2Tg7ktEgi3ZXnomYKxuGS
-         RWj+P623+fLJ3ebiLDIPsVkfMT2jHVo7hGXvIA1+uNz6GJ6CJBKrk2FlZuNnmJry1VM4
-         i+4knqK+FusZ++Qk7v3hJrrzGtxye0TiZtKnpF8zyPcUmsGE0ESMscLIptyzSZaSO7UL
-         iAgg==
-X-Gm-Message-State: AOAM531TYB4dA2h8I8DCtQ3ytL4UljIOtkp0TKUKTCi40h9BNDir4QBn
-        DDQkJErvk/Cr66sYaUrx+a6xsPuEmlUPWrwX0E8=
-X-Google-Smtp-Source: ABdhPJw5EKdQxe1lMEfHk1VwrCXRklAI65YOay7OOBvD0+QO6RQeDMbHrnesvdJ17xopo9+2ff/uxm6m6KYep0cQI98=
-X-Received: by 2002:a17:90b:4a90:: with SMTP id lp16mr7724012pjb.25.1633266932137;
- Sun, 03 Oct 2021 06:15:32 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=RlS0v3/Rhlf3ts75tCU+bjZnRbKsqMQBA94Qzb/r/xs=;
+        b=1cxrmepgBfPrzMGEyiPdiESLJ6Spa4oARspRsT4H/fXPqizXuN+RS2D3+vWyFlksmj
+         Aqjm//4KSmyRVyxFdsjSaoCAG+uqigklBu3+CFyYZXwW5yPYKUKaQn3206XZ4Bb+VLIj
+         SViZns8IK4i/8tsx2RlCaPeNijKLQTDnwuMAo4bg3LsbXUKtClNbKoBvbHpa/9HRb2z0
+         U43SPnH6p7wSlfUm8HUm5mlJuyM+OZ4tM85yWNLebc/TnXajOuXSBMJyuT0I1VHS6Kbm
+         M7uEp0OOpjfQHO/VF5xxyjgYlsQxrnGOG7QIM0ngzdZj+xvJJogObGpReAJCwGc/XOn7
+         /GpQ==
+X-Gm-Message-State: AOAM531sHq/cdCJ+BtHrTQSalebD/gcaNvwL4TYAsE9MclmJP+na+oUh
+        UC1yeFyB1yzXiqy2OWs/ex6BdWSNNds=
+X-Google-Smtp-Source: ABdhPJy+4s6eEX7JvBs7hlLuxUNVhz/OLNv/vWxNn1GCq22LKuedbNlbm+zDWONLDD5iIxbKvHJDsw==
+X-Received: by 2002:a50:e009:: with SMTP id e9mr13070257edl.254.1633292048113;
+        Sun, 03 Oct 2021 13:14:08 -0700 (PDT)
+Received: from ?IPv6:2001:981:6fec:1:c4f3:8ed5:bdee:bf6c? ([2001:981:6fec:1:c4f3:8ed5:bdee:bf6c])
+        by smtp.gmail.com with ESMTPSA id u4sm5585605ejc.19.2021.10.03.13.14.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 03 Oct 2021 13:14:07 -0700 (PDT)
+Subject: Re: [PATCH v3 0/3] PCI: PM: Simplify and unify some helper functions
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Linux PCI <linux-pci@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+References: <1800633.tdWV9SEqCh@kreacher> <7312660.EvYhyI6sBW@kreacher>
+From:   Ferry Toth <fntoth@gmail.com>
+Message-ID: <fe9b4f36-0b46-f8d7-4a4c-9bdefe1fbd90@gmail.com>
+Date:   Sun, 3 Oct 2021 22:14:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:83c2:0:0:0:0 with HTTP; Sun, 3 Oct 2021 06:15:31
- -0700 (PDT)
-Reply-To: drrhamabenson16@gmail.com
-From:   Dr Rhama Benson <drrhamabenson2016@gmail.com>
-Date:   Sun, 3 Oct 2021 06:15:31 -0700
-Message-ID: <CAJPyHHY-xuZ8NJ2rya-EN=6CLQcuEGP+DNJPUvfUvasLrGkPZw@mail.gmail.com>
-Subject: Contact me back immediately.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <7312660.EvYhyI6sBW@kreacher>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-My Dear Friend.
+Hi,
 
-How are you and your family today? I hope all is well, I'm happy to
-share this transaction with you. I have a very lucrative business
-transaction which requires your utmost discretion. Please understand
-that you and me are to work as one team to inherit this fund, hence I
-am your insider in the bank as the transaction commence. I will direct
-you how to claim and get the fund without any problem I also advise
-you to feel free because its 100% legal and risk free.
+Op 29-09-2021 om 20:05 schreef Rafael J. Wysocki:
+> Hi All,
+> 
+> This series is on top of the linux-next branch from linux-pm.git:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+> 
+> which should be included in linux-next.
+> 
+> Two of the 3 patches in this series, [1-2/3], were included in the "PCI: ACPI:
+> Get rid of struct pci_platform_pm_ops and clean up code" series:
+> 
+>   https://lore.kernel.org/linux-acpi/1800633.tdWV9SEqCh@kreacher/
+> 
+> and the remaining one, [3/3] is a new version of a problematic patch from that
+> series.  The rest of that series is present in the git branch above.
+> 
+> All of the 3 patches in this set need to be tested in order to verify that
+> there are no more issues that need to be addressed in them.
+> 
+> Ferry, please test!
 
-Though, I know it would come to you at uttermost surprise and unbelief
-because its internet contact and it's virtually impossible to know who
-is trustworthy and who to believed but don't be afraid you will not
-regret of dealing with me, I want you to help me to claim and receive
-the fund to your account in your country where it will share between
-me and you for our own benefit.
+This is how I tested:
+3 patches from 
+https://patchwork.kernel.org/project/linux-acpi/patch/2793105.e9J7NaK4W3@kreacher/ 
+on top of 5.15.0-rc2 as before
+4 patches from v2 in the order of linux-pm.git
+then tested without, with 1/3, 1+2/3, 1+2+3/3 on top (with only 3/3 the 
+new patch, 1+2/3 taken from v2 as they are unchanged).
 
-I am aware of the unsafe nature of the internet and was compelled to
-use this medium due to the nature of this project. I have access to
-every vital information that can be used to transfer the fund, which
-may culminate into the investment of the said funds into your account
-or any lucrative company in your country.
+In all 4 cases I didn't find any trouble (related to this patch).
 
-If you will like to assist me as a partner then kindly indicate your
-interest, after which we shall both discuss the modalities and the
-sharing percentage. Upon receipt of your reply on your expression of
-interest, I will give you full details on how the business will be
-executed. I am open for negotiation,
+Thanks for doing this!
 
-Thanks for your anticipated cooperation. Note you might receive this
-message in your inbox or spam folder, depends on your web host or
-server network. Contact me through this
-email(drrhamabenson16@gmail.com)
+> Thanks!
+> 
+> 
+> 
+> 
 
-Name....
-Age.......
-Country......
-Telephone Number......
-
-Compliment of the day,
-Regards,
-Dr. Rhama.
