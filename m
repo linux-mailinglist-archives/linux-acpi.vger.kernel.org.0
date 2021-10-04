@@ -2,119 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D294B421825
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Oct 2021 22:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BD55421A54
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 00:54:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234709AbhJDUHo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 4 Oct 2021 16:07:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50520 "EHLO mail.kernel.org"
+        id S236908AbhJDW4l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Oct 2021 18:56:41 -0400
+Received: from mga17.intel.com ([192.55.52.151]:46069 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229945AbhJDUHo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 4 Oct 2021 16:07:44 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 45B74613C8;
-        Mon,  4 Oct 2021 20:05:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633377955;
-        bh=QFxcagdpp3JABtYxQS+YYAu7t5UVcC1yjuRC3LrvJXI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dbWVOAB24Y0eSC8b+FcLrDXVqM6vtntvCA5wsLR/LwFhL2cQ3dqtNKICGzW+vditC
-         mhcVO5ayUA2W5SuCybdwi0RqLnRVgRQ9NiHZ5/c+AeD1DEsaAm2X8iJuMXIp5dHn2J
-         x4wuHgZhV2V7GJCOg38m0v4e5aixtJTS0aXgy9xMB04I617j4I9Ywr+tLGqTfpZfe6
-         GSj8Zfrxx0ewNNuFEhNyI7fA4sLYKSst0RPInEGx8jxDQtpISCEPBncpurj2cDh12F
-         4ajiZKB6XjUUj42h/a8n7zj51UxqNqNeIwgFjjrttnFWgjI520h8gdTFm41fJcgAsh
-         SxZey5M+dB1YQ==
-Date:   Mon, 4 Oct 2021 22:05:51 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org
-Subject: Re: [PATCH v2 07/14] mailbox: pcc: Use PCC mailbox channel pointer
- instead of standard
-Message-ID: <YVten1PrTMxZ3AZw@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
-        linux-i2c@vger.kernel.org
-References: <20210917133357.1911092-1-sudeep.holla@arm.com>
- <20210917133357.1911092-8-sudeep.holla@arm.com>
+        id S233501AbhJDW4k (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 4 Oct 2021 18:56:40 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10127"; a="206423269"
+X-IronPort-AV: E=Sophos;i="5.85,347,1624345200"; 
+   d="scan'208";a="206423269"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2021 15:54:51 -0700
+X-IronPort-AV: E=Sophos;i="5.85,347,1624345200"; 
+   d="scan'208";a="477402850"
+Received: from schen9-mobl.amr.corp.intel.com ([10.209.66.53])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2021 15:54:50 -0700
+Message-ID: <3a0f95cf5602e11fde0e21032e52aad6e137d940.camel@linux.intel.com>
+Subject: Re: [PATCH RESEND 0/3] Represent cluster topology and enable load
+ balance between clusters
+From:   Tim Chen <tim.c.chen@linux.intel.com>
+To:     Barry Song <21cnbao@gmail.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Aubrey Li <aubrey.li@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Ben Segall <bsegall@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guodong Xu <guodong.xu@linaro.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        "Cc: Len Brown" <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LAK <linux-arm-kernel@lists.infradead.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mel Gorman <mgorman@suse.de>, msys.mizuma@gmail.com,
+        "Zengtao (B)" <prime.zeng@hisilicon.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Barry Song <song.bao.hua@hisilicon.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
+        yangyicong <yangyicong@huawei.com>
+Date:   Mon, 04 Oct 2021 15:54:50 -0700
+In-Reply-To: <CAGsJ_4wvLw=US1ddJr=Jrim1vs-F2hpcQ29LQyqDENd7Fk=ssA@mail.gmail.com>
+References: <20210924085104.44806-1-21cnbao@gmail.com>
+         <CAGsJ_4yW72mktbWjRfE9ngXoq9oXBXyAd_TPjKBNdGiRSoh9LA@mail.gmail.com>
+         <CAKfTPtAtfJRFBbo+kBCYf42hxcc2iP8kkmg3Wcr5aW7Rnf=rfw@mail.gmail.com>
+         <YVch0/R9PHzUwqea@hirez.programming.kicks-ass.net>
+         <ece8838d112840bf26adbb09f653babcf298eb28.camel@linux.intel.com>
+         <CAGsJ_4wvLw=US1ddJr=Jrim1vs-F2hpcQ29LQyqDENd7Fk=ssA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="KJ9CssB/etSZjoeG"
-Content-Disposition: inline
-In-Reply-To: <20210917133357.1911092-8-sudeep.holla@arm.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Sat, 2021-10-02 at 20:09 +1300, Barry Song wrote:
+> 
+> 
+> Thanks, Tim, for your comments.
+> I am ok to make it default "Y" for x86 after having a better doc as
+> below:
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index bd27b1cdac34..940eb1fe0abb 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -1002,12 +1002,17 @@ config NR_CPUS
+>           to the kernel image.
+> 
+>  config SCHED_CLUSTER
+> -       bool "Cluster scheduler support"
+> -       default n
+> +       def_bool y
+> +       prompt "Cluster scheduler support"
+>         help
+>          Cluster scheduler support improves the CPU scheduler's
+> decision
+> -        making when dealing with machines that have clusters of CPUs
+> -        sharing L2 cache. If unsure say N here.
+> +        making when dealing with machines that have clusters of
+> CPUs.
+> +        Cluster usually means a couple of CPUs which are placed
+> closely
+> +        by sharing mid-level caches, last-level cache tags or
+> internal
+> +        busses. For example, on x86 Jacobsville, each 4 CPUs share
+> one
+> +        L2 cache. This feature isn't a universal win because it can
+> bring
+> +        a cost of slightly increased overhead in some places. If
+> unsure
+> +        say N here.
+> 
+> This also aligns well with SCHED_MC and SCHED_SMT in
+> arch/x86/kconfig:
+> config SCHED_MC
+>     def_bool y
+>     prompt "Multi-core scheduler support"
+> 
+> config SCHED_SMT
+>     def_bool y if SMP
+> 
+> But ARM64 is running in a different tradition, arch/arm64/Kconfig has
+> SCHED_MC and SCHED_SMT as below:
+>    config SCHED_MC
+>    bool "Multi-core scheduler support"
+>    help
+>     ...
+> 
+> config SCHED_SMT
+>   bool "SMT scheduler support"
+>   help
+>   ...
+> 
+> 
 
---KJ9CssB/etSZjoeG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Barry,
 
-On Fri, Sep 17, 2021 at 02:33:50PM +0100, Sudeep Holla wrote:
-> Now that we have all the shared memory region information populated in
-> the pcc_mbox_chan, let us propagate the pointer to the same as the
-> return value to pcc_mbox_request channel.
->=20
-> This eliminates the need for the individual users of PCC mailbox to
-> parse the PCCT subspace entries and fetch the shmem information. This
-> also eliminates the need for PCC mailbox controller to set con_priv to
-> PCCT subspace entries. This is required as con_priv is private to the
-> controller driver to attach private data associated with the channel and
-> not meant to be used by the mailbox client/users.
->=20
-> Let us convert all the users of pcc_mbox_{request,free}_channel to use
-> new interface.
->=20
-> Cc: Jean Delvare <jdelvare@suse.com>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: Wolfram Sang <wsa@kernel.org>
-> Cc: linux-hwmon@vger.kernel.org
-> Cc: linux-i2c@vger.kernel.org
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> ---
->  drivers/acpi/cppc_acpi.c               | 43 ++++++------------
->  drivers/hwmon/xgene-hwmon.c            | 35 ++++++--------
->  drivers/i2c/busses/i2c-xgene-slimpro.c | 33 +++++---------
->  drivers/mailbox/pcc.c                  | 63 ++++++++------------------
->  include/acpi/pcc.h                     | 12 ++---
+Found one minor fix to the x86 patch to take care of compile error for
+!CONFIG_SMP.
 
-There is no maintainer for the xgene driver, but I trust you and other
-reviewers of this whole series on this. The I2C part is a minor piece
-anyhow. So:
+Thanks.
 
-Acked-by: Wolfram Sang <wsa@kernel.org>
+Tim
 
+diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+index 2548d824f103..cc164777e661 100644
+--- a/arch/x86/include/asm/topology.h
++++ b/arch/x86/include/asm/topology.h
+@@ -109,12 +109,12 @@ extern const struct cpumask *cpu_clustergroup_mask(int cpu);
+ #define topology_physical_package_id(cpu)	(cpu_data(cpu).phys_proc_id)
+ #define topology_logical_die_id(cpu)		(cpu_data(cpu).logical_die_id)
+ #define topology_die_id(cpu)			(cpu_data(cpu).cpu_die_id)
+-#define topology_cluster_id(cpu)		(per_cpu(cpu_l2c_id, cpu))
+ #define topology_core_id(cpu)			(cpu_data(cpu).cpu_core_id)
+ 
+ extern unsigned int __max_die_per_package;
+ 
+ #ifdef CONFIG_SMP
++#define topology_cluster_id(cpu)		(per_cpu(cpu_l2c_id, cpu))
+ #define topology_die_cpumask(cpu)		(per_cpu(cpu_die_map, cpu))
+ #define topology_cluster_cpumask(cpu)		(cpu_clustergroup_mask(cpu))
+ #define topology_core_cpumask(cpu)		(per_cpu(cpu_core_map, cpu))
 
---KJ9CssB/etSZjoeG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmFbXp8ACgkQFA3kzBSg
-KbbOFg//SS7XWpERP+NL6rB+Ov7trETKM212tYwLBZ3w8t4C40eqbUKY8c4M66c9
-8h9kNtyPatXY+Fv3tvIcYB/gwz8M8zXoWHnU5si/vu8JwJr7eQ9gJabqP/VItwLc
-JbGslC3PeUCmvc3iodb09TJYbfM+R5f+bftfi7qG3NQJ9wfCUpRbjDt8k2ecPzQo
-dAoVJ/zB0UuNhHgZoBMXL0w/1Or/5KSAsq43m3HUgIVQnm+ShhGHHkbk3NVh8f5v
-Cqj1dFLK0ZdG487S51jFZ1AXfmVPLSXrr/IarGNcA0exbYU6JICp6PEl+1vbQuWv
-Gv436odC9hAViGmkCOkfJc360xFUXpu0SBVCdLEak75uOUYQFVhZOtiXvklfXdtI
-FqS8a3co9Cx9iiXGn/y+Rsrcb6rA/djPz4cVTpv5n1qFgWW9hLB96RpqPd7HMrwx
-jPihWQ0vmrldfBk7WsA889ZHhkDkah6vOWof6WMoAC4yH8HPnR+i/F08Fy15q1EO
-xS53lQcitE9oqsR3RLMyB93Djx7Oonuo5kP+fwYKC0493I7UjlppR1s2IKVqfahg
-bpcu4IJwF66faX3BCHA584vy8B3cioo/hZzmAQzpen2UL7Ykn44z6YZr2oekNpnx
-N/zGIEujay68NdYJ63PZNh/OTzWEfZSlMRmYEMFFYpin8k3XQq4=
-=4Sde
------END PGP SIGNATURE-----
-
---KJ9CssB/etSZjoeG--
