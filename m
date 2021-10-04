@@ -2,114 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4E1B4203DF
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 Oct 2021 22:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A368F420859
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Oct 2021 11:34:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231440AbhJCUP6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 3 Oct 2021 16:15:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58696 "EHLO
+        id S231932AbhJDJgN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 4 Oct 2021 05:36:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230303AbhJCUP5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 3 Oct 2021 16:15:57 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95866C0613EC;
-        Sun,  3 Oct 2021 13:14:09 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id p13so28411863edw.0;
-        Sun, 03 Oct 2021 13:14:09 -0700 (PDT)
+        with ESMTP id S229957AbhJDJgM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 4 Oct 2021 05:36:12 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF9CC061745;
+        Mon,  4 Oct 2021 02:34:24 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id v11so3362769pgb.8;
+        Mon, 04 Oct 2021 02:34:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RlS0v3/Rhlf3ts75tCU+bjZnRbKsqMQBA94Qzb/r/xs=;
-        b=CC+Mi9BoczOtWghdFEfFfYoZU2BCYTjx1L1Gx4pY0rC5I8wQ0dD9OjUbIZy8i+QZP5
-         dB0SNXNBXHU+SnV5k4MuEV0KbMuRDSaif1Agy563c2lTweyXn8M9Y4ScUFroldGrMC+0
-         5e31UZuiQW3yuGIpMa9vY+nqko+voDN5Co9scrAZfW7OZjSNrRybE1sSnJUpFJHeuRWK
-         Sl9WAipKNC3Qw03rotmZ+ugZCx/jU/UyOhvOOY7e7owxT70NlIC/YWc6YU/mwrjl/sKe
-         EvYdMYX3x5HNIGQQe9SnQD/0q+PGyW9WN2Djge4GaE1lIX4KTUfKfK1YVezpVl9IwY8B
-         JDlw==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=dJQWn2Sif2VCs7bc9fSojLnxy+HpF5qOK5tsXATQ6mE=;
+        b=Ihuv/5aR8UBlWzjCeRAUDxXhK+LkTNza8BrE/GSAeS0X2LXl/VeoA+BMEQHmlrcX7G
+         3PPSGTqP/Uw9FjOUQIuEteE1Gt/e896IRxN7KwkV7IYxEEAp1Gk/Uy1f3OsjhVzKUEbV
+         f55JrNJD8XLERsrjD/LNDRRGGe1uHdRirE7j1Sf4uvIfjWOvk8Qpac7HdQ6pQHhYNJiu
+         pg+gUQyZ5ID3w7RmcOZoZMn5GTkmsPfN492Yq869VEvklkushQOVBCVy370Ll/31f6Ep
+         0vrZnIJlFAgNrxeyIGBEnN1u/pJ4piLb97xlH4rCSg23wzPQ7LQA1KJUAdSlP7flul5F
+         W2kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=RlS0v3/Rhlf3ts75tCU+bjZnRbKsqMQBA94Qzb/r/xs=;
-        b=1cxrmepgBfPrzMGEyiPdiESLJ6Spa4oARspRsT4H/fXPqizXuN+RS2D3+vWyFlksmj
-         Aqjm//4KSmyRVyxFdsjSaoCAG+uqigklBu3+CFyYZXwW5yPYKUKaQn3206XZ4Bb+VLIj
-         SViZns8IK4i/8tsx2RlCaPeNijKLQTDnwuMAo4bg3LsbXUKtClNbKoBvbHpa/9HRb2z0
-         U43SPnH6p7wSlfUm8HUm5mlJuyM+OZ4tM85yWNLebc/TnXajOuXSBMJyuT0I1VHS6Kbm
-         M7uEp0OOpjfQHO/VF5xxyjgYlsQxrnGOG7QIM0ngzdZj+xvJJogObGpReAJCwGc/XOn7
-         /GpQ==
-X-Gm-Message-State: AOAM531sHq/cdCJ+BtHrTQSalebD/gcaNvwL4TYAsE9MclmJP+na+oUh
-        UC1yeFyB1yzXiqy2OWs/ex6BdWSNNds=
-X-Google-Smtp-Source: ABdhPJy+4s6eEX7JvBs7hlLuxUNVhz/OLNv/vWxNn1GCq22LKuedbNlbm+zDWONLDD5iIxbKvHJDsw==
-X-Received: by 2002:a50:e009:: with SMTP id e9mr13070257edl.254.1633292048113;
-        Sun, 03 Oct 2021 13:14:08 -0700 (PDT)
-Received: from ?IPv6:2001:981:6fec:1:c4f3:8ed5:bdee:bf6c? ([2001:981:6fec:1:c4f3:8ed5:bdee:bf6c])
-        by smtp.gmail.com with ESMTPSA id u4sm5585605ejc.19.2021.10.03.13.14.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 03 Oct 2021 13:14:07 -0700 (PDT)
-Subject: Re: [PATCH v3 0/3] PCI: PM: Simplify and unify some helper functions
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Linux PCI <linux-pci@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-References: <1800633.tdWV9SEqCh@kreacher> <7312660.EvYhyI6sBW@kreacher>
-From:   Ferry Toth <fntoth@gmail.com>
-Message-ID: <fe9b4f36-0b46-f8d7-4a4c-9bdefe1fbd90@gmail.com>
-Date:   Sun, 3 Oct 2021 22:14:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=dJQWn2Sif2VCs7bc9fSojLnxy+HpF5qOK5tsXATQ6mE=;
+        b=DliqU0s+zQW9qQIiHEdMjM/0+GNgeVAtLAkcJvns7me4OtxPfGRvduM+9Hql5FUexc
+         d69J5Uo/Zn0VC3p8liLFYogGzSg7Lh+LRil8mrgno8e9+mvLtxnI1j4wb4/PrB5WXX0V
+         z2om3WEDqJbQgdTtsWxpQZRMHbCIFOWT4tYWFzU40JQsAns0XA8Dp4LxnRzzWiwrwIg4
+         0rRwxF/T/eijg3DkymvECBEK8SRsrqCiDCiqSic3jECFk8YOKceVkDTu/FH4AVZLpyAU
+         UjXuNtZc0BGSRdczteXW8v78x8AmKKNuWBt7nv6hmgS4fR7P4GWcPxACchkkr4xB2HlF
+         hQYA==
+X-Gm-Message-State: AOAM533FDznqbiZhcTQG4SUq2EXOwRn6mwnAfq6AtoIdVwKIXiJIFRcE
+        5O+Mj7SUVPOGPTCDKkKl8KNffhhv5WA=
+X-Google-Smtp-Source: ABdhPJxpNBo9hS5TRJpWRSjoFeXpAMKnaUdujVNM36//c6ofLI2PT0MKgjn/1DdOwCVPdoKK+wCbgw==
+X-Received: by 2002:a63:131f:: with SMTP id i31mr10077531pgl.207.1633340063688;
+        Mon, 04 Oct 2021 02:34:23 -0700 (PDT)
+Received: from sol (106-69-170-56.dyn.iinet.net.au. [106.69.170.56])
+        by smtp.gmail.com with ESMTPSA id v26sm14010911pfm.175.2021.10.04.02.34.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Oct 2021 02:34:22 -0700 (PDT)
+Date:   Mon, 4 Oct 2021 17:34:16 +0800
+From:   Kent Gibson <warthog618@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: linux 5.15-rc4: refcount underflow when unloading gpio-mockup
+Message-ID: <20211004093416.GA2513199@sol>
 MIME-Version: 1.0
-In-Reply-To: <7312660.EvYhyI6sBW@kreacher>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-Op 29-09-2021 om 20:05 schreef Rafael J. Wysocki:
-> Hi All,
-> 
-> This series is on top of the linux-next branch from linux-pm.git:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-> 
-> which should be included in linux-next.
-> 
-> Two of the 3 patches in this series, [1-2/3], were included in the "PCI: ACPI:
-> Get rid of struct pci_platform_pm_ops and clean up code" series:
-> 
->   https://lore.kernel.org/linux-acpi/1800633.tdWV9SEqCh@kreacher/
-> 
-> and the remaining one, [3/3] is a new version of a problematic patch from that
-> series.  The rest of that series is present in the git branch above.
-> 
-> All of the 3 patches in this set need to be tested in order to verify that
-> there are no more issues that need to be addressed in them.
-> 
-> Ferry, please test!
+I'm seeing a refcount underflow when I unload the gpio-mockup module on
+Linux v5.15-rc4 (and going back to v5.15-rc1):
 
-This is how I tested:
-3 patches from 
-https://patchwork.kernel.org/project/linux-acpi/patch/2793105.e9J7NaK4W3@kreacher/ 
-on top of 5.15.0-rc2 as before
-4 patches from v2 in the order of linux-pm.git
-then tested without, with 1/3, 1+2/3, 1+2+3/3 on top (with only 3/3 the 
-new patch, 1+2/3 taken from v2 as they are unchanged).
+# modprobe gpio-mockup gpio_mockup_ranges=-1,4,-1,10
+# rmmod gpio-mockup
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 0 PID: 103 at lib/refcount.c:28 refcount_warn_saturate+0xd1/0x120
+Modules linked in: gpio_mockup(-)
+CPU: 0 PID: 103 Comm: rmmod Not tainted 5.15.0-rc4 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+EIP: refcount_warn_saturate+0xd1/0x120
+Code: e8 a2 b0 3b 00 0f 0b eb 83 80 3d db 2a 8c c1 00 0f 85 76 ff ff ff c7 04 24 88 85 78 c1 b1 01 88 0d db 2a 8c c1 e8 7d b0 3b 00 <0f> 0b e9 5b ff ff ff 80 3d d9 2a 8c c1 00 0f 85 4e ff ff ff c7 04
+EAX: 00000026 EBX: c250b100 ECX: f5fe8c28 EDX: 00000000
+ESI: c244860c EDI: c250b100 EBP: c245be84 ESP: c245be80
+DS: 007b ES: 007b FS: 00d8 GS: 0033 SS: 0068 EFLAGS: 00000296
+CR0: 80050033 CR2: b7e3c3e1 CR3: 024ba000 CR4: 00000690
+Call Trace:
+ kobject_put+0xdc/0xf0
+ software_node_notify_remove+0xa8/0xc0
+ device_del+0x15a/0x3e0
+ ? kfree_const+0xf/0x30
+ ? kobject_put+0xa6/0xf0
+ ? module_remove_driver+0x73/0xa0
+ platform_device_del.part.0+0xf/0x80
+ platform_device_unregister+0x19/0x40
+ gpio_mockup_unregister_pdevs+0x13/0x1b [gpio_mockup]
+ gpio_mockup_exit+0x1c/0x68c [gpio_mockup]
+ __ia32_sys_delete_module+0x137/0x1e0
+ ? task_work_run+0x61/0x90
+ ? exit_to_user_mode_prepare+0x1b5/0x1c0
+ __do_fast_syscall_32+0x50/0xc0
+ do_fast_syscall_32+0x32/0x70
+ do_SYSENTER_32+0x15/0x20
+ entry_SYSENTER_32+0x98/0xe7
+EIP: 0xb7eda549
+Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d 76 00 58 b8 77 00 00 00 cd 80 90 8d 76
+EAX: ffffffda EBX: 0045a19c ECX: 00000800 EDX: 0045a160
+ESI: fffffffe EDI: 0045a160 EBP: bff19d08 ESP: bff19cc8
+DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 007b EFLAGS: 00000202
+---[ end trace 3d71387f54bc2d06 ]---
 
-In all 4 cases I didn't find any trouble (related to this patch).
+I suspect this is related to the recent changes to swnode.c or
+platform.c, as gpio-mockup hasn't changed, but haven't had the
+chance to debug further.
 
-Thanks for doing this!
-
-> Thanks!
-> 
-> 
-> 
-> 
-
+Cheers,
+Kent.
