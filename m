@@ -2,106 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63129423375
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Oct 2021 00:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01757423384
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Oct 2021 00:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236750AbhJEW10 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Oct 2021 18:27:26 -0400
-Received: from foss.arm.com ([217.140.110.172]:34334 "EHLO foss.arm.com"
+        id S233567AbhJEWdm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Oct 2021 18:33:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39934 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236697AbhJEW10 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 5 Oct 2021 18:27:26 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D02B56D;
-        Tue,  5 Oct 2021 15:25:34 -0700 (PDT)
-Received: from [192.168.122.166] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D5B2B3F66F;
-        Tue,  5 Oct 2021 15:25:33 -0700 (PDT)
-Subject: Re: [PATCH v3 2/4] PCI: brcmstb: Add ACPI config space quirk
-To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        lorenzo.pieralisi@arm.com, nsaenz@kernel.org, bhelgaas@google.com,
-        rjw@rjwysocki.net, lenb@kernel.org, robh@kernel.org, kw@linux.com,
+        id S229831AbhJEWdl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 5 Oct 2021 18:33:41 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3557660F92;
+        Tue,  5 Oct 2021 22:31:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633473110;
+        bh=UZwiCJbdtcqvmOH9UyWRK4vS31MLDc+tz1ShuckUbc0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=IwtCnnaMSPzeRpYAgETopQhfFsqBBsLZ84kyD5EKDdTt8OjMKB/xkvPp2+4oU0uMH
+         LWdefuqC1XdWd4kkrFXyAK1VrL10oXWworf2F4klz1A+CIsW9bv45tZNHBhTz/qcRS
+         rbWps3cxy/K/n8UxvhsLanTbRIYPsLz/yjXYnqSAG6/T7IJ6n9AbkVwErhSyAAPv2+
+         djEWzNLe0RdYEZ2xCZy5jUGUxCxrfVTksVmtXbty1pFJm1sMor8QCxehO9wDpTlpV6
+         5LZpTk8Wj/WFm1AnYl/rftKUPze1b1HJAHLuxYApk/2ZiKRcOiuW671KerEHXThfME
+         4dkU1bwqdeIfQ==
+Date:   Tue, 5 Oct 2021 17:31:48 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Jeremy Linton <jeremy.linton@arm.com>
+Cc:     linux-pci@vger.kernel.org, lorenzo.pieralisi@arm.com,
+        nsaenz@kernel.org, bhelgaas@google.com, rjw@rjwysocki.net,
+        lenb@kernel.org, robh@kernel.org, kw@linux.com,
         f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
         linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20211005153209.GA1083986@bhelgaas>
- <d4b34193-31e5-2f95-6365-b58239c0dabb@arm.com>
- <20211005194301.enb5jddzdgczcolx@pali>
-From:   Jeremy Linton <jeremy.linton@arm.com>
-Message-ID: <694bb355-3b5e-9801-3772-ff784b49a603@arm.com>
-Date:   Tue, 5 Oct 2021 17:25:33 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+Subject: Re: [PATCH v3 3/4] PCI/ACPI: Add Broadcom bcm2711 MCFG quirk
+Message-ID: <20211005223148.GA1125087@bhelgaas>
 MIME-Version: 1.0
-In-Reply-To: <20211005194301.enb5jddzdgczcolx@pali>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2bcc69b5-6659-0ec4-cd33-a9b8e61d1afe@arm.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Tue, Oct 05, 2021 at 10:43:32AM -0500, Jeremy Linton wrote:
+> On 10/5/21 10:10 AM, Bjorn Helgaas wrote:
+> > On Thu, Aug 26, 2021 at 02:15:56AM -0500, Jeremy Linton wrote:
+> > > Now that there is a bcm2711 quirk, it needs to be enabled when the
+> > > MCFG is missing. Use an ACPI namespace _DSD property
+> > > "linux-ecam-quirk-id" as an alternative to the MCFG OEM.
+> > > 
+> > > Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> > > Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+> > > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> > > ---
+> > >   drivers/acpi/pci_mcfg.c | 17 +++++++++++++++++
+> > >   1 file changed, 17 insertions(+)
+> > > 
+> > > diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
+> > > index 53cab975f612..04c517418365 100644
+> > > --- a/drivers/acpi/pci_mcfg.c
+> > > +++ b/drivers/acpi/pci_mcfg.c
+> > > @@ -169,6 +169,9 @@ static struct mcfg_fixup mcfg_quirks[] = {
+> > >   	ALTRA_ECAM_QUIRK(1, 13),
+> > >   	ALTRA_ECAM_QUIRK(1, 14),
+> > >   	ALTRA_ECAM_QUIRK(1, 15),
+> > > +
+> > > +	{ "bc2711", "", 0, 0, MCFG_BUS_ANY, &bcm2711_pcie_ops,
+> > > +	  DEFINE_RES_MEM(0xFD500000, 0xA000) },
+> > >   };
+> > >   static char mcfg_oem_id[ACPI_OEM_ID_SIZE];
+> > > @@ -198,8 +201,22 @@ static void pci_mcfg_apply_quirks(struct acpi_pci_root *root,
+> > >   	u16 segment = root->segment;
+> > >   	struct resource *bus_range = &root->secondary;
+> > >   	struct mcfg_fixup *f;
+> > > +	const char *soc;
+> > >   	int i;
+> > > +	/*
+> > > +	 * This may be a machine with a PCI/SMC conduit, which means it doesn't
+> > > +	 * have an MCFG. Use an ACPI namespace definition instead.
+> > > +	 */
+> > > +	if (!fwnode_property_read_string(acpi_fwnode_handle(root->device),
+> > > +					 "linux-ecam-quirk-id", &soc)) {
+> > > +		if (strlen(soc) != ACPI_OEM_ID_SIZE)
+> > 
+> > From a reviewing perspective, it's not obvious why soc must be exactly
+> > ACPI_OEM_ID_SIZE.  Does that imply space-padding in the DT string or
+> > something?
+> 
+> This is at the moment an ACPI only DSD, and it must follow the MADT OEM_ID
+> format for now because we are effectively just overriding that field. The
+> rest of the code in this module is just treating it as a fixed 6 bytes.
+> 
+> > Is there any documentation for this DT property?
+> 
+> Its not a DT property, and its unclear since its linux only if it
+> belongs in previously linked ACPI registry.
 
-On 10/5/21 2:43 PM, Pali Rohár wrote:
-> Hello!
-> 
-> On Tuesday 05 October 2021 10:57:18 Jeremy Linton wrote:
->> Hi,
->>
->> On 10/5/21 10:32 AM, Bjorn Helgaas wrote:
->>> On Thu, Aug 26, 2021 at 02:15:55AM -0500, Jeremy Linton wrote:
->>>> Additionally, some basic bus/device filtering exist to avoid sending
->>>> config transactions to invalid devices on the RP's primary or
->>>> secondary bus. A basic link check is also made to assure that
->>>> something is operational on the secondary side before probing the
->>>> remainder of the config space. If either of these constraints are
->>>> violated and a config operation is lost in the ether because an EP
->>>> doesn't respond an unrecoverable SERROR is raised.
->>>
->>> It's not "lost"; I assume the root port raises an error because it
->>> can't send a transaction over a link that is down.
->>
->> The problem is AFAIK because the root port doesn't do that.
-> 
-> Interesting! Does it mean that PCIe Root Complex / Host Bridge (which I
-> guess contains also logic for Root Port) does not signal transaction
-> failure for config requests? Or it is just your opinion? Because I'm
-> dealing with similar issues and I'm trying to find a way how to detect
-> if some PCIe IP signal transaction error via AXI SLVERR response OR it
-> just does not send any response back. So if you know some way how to
-> check which one it is, I would like to know it too.
+Oh, right, it comes from a _DSD.
 
-This is my _opinion_ based on what I've heard of some other IP 
-integration issues, and what i've seen poking at this one from the 
-perspective of a SW guy rather than a HW guy. So, basically worthless. 
-But, you should consider that most of these cores/interconnects aren't 
-aware of PCIe completion semantics so its the root ports responsibility 
-to say, gracefully translate a non-posted write that doesn't have a 
-completion for the interconnects its attached to, rather than tripping 
-something generic like a SLVERR.
+> > Also not obvious why strlen() is safe here.  I mean, I looked a couple
+> > levels deep in fwnode_property_read_string(), but whatever guarantees
+> > null termination is buried pretty deep.
+> 
+> I've not tracked down who, if anyone other than the AML compiler is
+> guaranteeing a null. The spec says something to the effect "Most other
+> string, however,  are of variable-length and are automatically null
+> terminated by the compiler". Not sure if that helps any.
 
-Anyway, for this I would poke around the pile of exception registers, 
-with your specific processors manual handy because a lot of them are 
-implementation defined.
->>>
->>> Is "SERROR" an ARM64 thing?  My guess is the root port would raise an
->>> Unsupported Request error or similar, and the root complex turns that
->>> into a system-specific SERROR?
-> 
-> Yes, SError is arm64 specific. It is asynchronous CPU interrupt and
-> syndrome code then contains what happened.
-> 
->> AFAIK, what is happening here the CPU core has an outstanding R/W request
->> for which it never receives a response from the root port. So basically its
->> an interconnect protocol violation that the CPU is complaining about rather
->> than something PCIe specific.
-> 
-> Could you describe (ideally in commit message) which SError is
-> triggered? Normally if kernel receive SError interrupt it also puts into
-> dmesg or oops message also syndrome code which describe what kind of
-> error / event occurred. It could help also to other understand what is
-> happening there.
-> 
+Doesn't help for me.  The PCI core shouldn't go in the weeds no matter
+what junk we might get from an AML compiler.  Maybe
+fwnode_property_read_string() guarantees null termination, but it's
+not documented and not easy to verify.
 
+I think a strncpy() here might be better.  Not sure it's worthwhile to
+emit a specific error message for the wrong length.
+
+> > It seems a little weird to use an MCFG quirk mechanism when there's no
+> > MCFG at all on this platform.
+> 
+> Well its just a point to hook in a CFG space quirk, and since that
+> is what most of the MCFG quirks are, it seemed reasonable to reuse
+> it rather than recreate it.
+
+Yeah, it's ugly no matter how we slice it.  The pci_no_msi()
+especially has nothing to do with ECAM at all.  But I don't know how
+to identify this thing for a quirk.  PNP0A08 devices really rely on
+ECAM or a system firmware config accessor.
+
+> > > +			dev_err(&root->device->dev, "ECAM quirk should be %d characters\n",
+> > > +				ACPI_OEM_ID_SIZE);
+> > > +		else
+> > > +			memcpy(mcfg_oem_id, soc, ACPI_OEM_ID_SIZE);
+> > > +	}
+> > > +
+> > >   	for (i = 0, f = mcfg_quirks; i < ARRAY_SIZE(mcfg_quirks); i++, f++) {
+> > >   		if (pci_mcfg_quirk_matches(f, segment, bus_range)) {
+> > >   			if (f->cfgres.start)
+> > > -- 
+> > > 2.31.1
+> > > 
+> 
