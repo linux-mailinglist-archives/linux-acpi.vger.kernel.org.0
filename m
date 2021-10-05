@@ -2,152 +2,201 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B10F24221F0
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 11:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3691C4222AD
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 11:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232871AbhJEJRn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Oct 2021 05:17:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55388 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232773AbhJEJRm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Oct 2021 05:17:42 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D578C061745;
-        Tue,  5 Oct 2021 02:15:52 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id l7so52316484edq.3;
-        Tue, 05 Oct 2021 02:15:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GQoQa0JVYcpFPninq3MwQJ4t+aAurhAVS0gRpy1OuAU=;
-        b=cHHreZie46eyV5UQtcWlPvVeR30gireFFCtLNqpyM6w/hfFeWPQYoCbPA8MNgUaivk
-         jPfib+ImaKHk7EAJjapC/H1QZ68Ju4MWfx4Zd0sz7mc5yvGCGl5stcicc2b2thfblidY
-         zcvyJBTpNo0qU2QZ9qBCOKgPAD8MwQ59E5bd5QtVHfFUPwru63B8iIsAJMH2AW3AkfTv
-         PnjyXsg/vLcwxrkGpDCD6G5MBh4VIceNliXAnSb61DLivBaKv9I7q512+aFZVwh/nnk7
-         hgIpU8D2/zg8VYS5WF4KyjKF7kX/vUJCLmMn2gSxeN1XSPMwHDUrjFDEyxBqJ8vJwa2M
-         r8UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GQoQa0JVYcpFPninq3MwQJ4t+aAurhAVS0gRpy1OuAU=;
-        b=Q7KCYbTNg3nq/6H0UvZi5tr0IMOU/wwMotT7+FEdqPPaZa1jCeRAA4b9WWjmue6iut
-         Xoh5AFCSoLYl6XFCqkvNxLW3JV3pU9q/6OsvnJEb7IiEM3hbAVn+ssTlVaf3GWX+5NEJ
-         CQ79UV3oCXrzpJYac/bb542iylK12dNHiC+n6JCuVYUN7N5mqpIkvUBHK/749xYkQewE
-         7RLcuI3/9RcDwzJKk1xE7ZyPoOJ5hCZkxQUuv9jVHbg1teYKcqWepnk2cQ1dr30WxHIb
-         VmlzlYDqhE6pYQCMacZa9/1qcDCxEWumIhB+KVK9O8GG1udB1YLj9STQ6Cj38SzqB8UH
-         7FUw==
-X-Gm-Message-State: AOAM5321Dv5+/AA92sftTq7BrpL5GiGZl5lpUInPitVA3jvUkklnem0T
-        rbCq8BpC2XKRb3zJgX8eGCNR6Gm12QLQhL02JPg=
-X-Google-Smtp-Source: ABdhPJy0htbluxxNvz1ROazf3bigM3/dNQVFayzx6fX2/fS4wVV0G7Ocw0rMmwj2gcGhjTIQRMODZgczu3OzDmJYpMA=
-X-Received: by 2002:a50:cd87:: with SMTP id p7mr24668925edi.294.1633425350348;
- Tue, 05 Oct 2021 02:15:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210924085104.44806-1-21cnbao@gmail.com> <CAGsJ_4yW72mktbWjRfE9ngXoq9oXBXyAd_TPjKBNdGiRSoh9LA@mail.gmail.com>
- <CAKfTPtAtfJRFBbo+kBCYf42hxcc2iP8kkmg3Wcr5aW7Rnf=rfw@mail.gmail.com>
- <YVch0/R9PHzUwqea@hirez.programming.kicks-ass.net> <ece8838d112840bf26adbb09f653babcf298eb28.camel@linux.intel.com>
- <20211005075001.GJ4323@worktop.programming.kicks-ass.net>
-In-Reply-To: <20211005075001.GJ4323@worktop.programming.kicks-ass.net>
-From:   Barry Song <21cnbao@gmail.com>
-Date:   Tue, 5 Oct 2021 22:15:39 +1300
-Message-ID: <CAGsJ_4xZD0sG0Df666f0bvHOzuPMjnw0dN_mArER5k1pJ6LPLw@mail.gmail.com>
-Subject: Re: [PATCH RESEND 0/3] Represent cluster topology and enable load
- balance between clusters
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Tim Chen <tim.c.chen@linux.intel.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Aubrey Li <aubrey.li@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Ben Segall <bsegall@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
+        id S233469AbhJEJwd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Oct 2021 05:52:33 -0400
+Received: from mga02.intel.com ([134.134.136.20]:64710 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232658AbhJEJwc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 5 Oct 2021 05:52:32 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10127"; a="212820242"
+X-IronPort-AV: E=Sophos;i="5.85,348,1624345200"; 
+   d="diff'?scan'208";a="212820242"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2021 02:50:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,348,1624345200"; 
+   d="diff'?scan'208";a="623338529"
+Received: from kuha.fi.intel.com ([10.237.72.162])
+  by fmsmga001.fm.intel.com with SMTP; 05 Oct 2021 02:50:39 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 05 Oct 2021 12:50:38 +0300
+Date:   Tue, 5 Oct 2021 12:50:38 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Kent Gibson <warthog618@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guodong Xu <guodong.xu@linaro.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        "Cc: Len Brown" <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mel Gorman <mgorman@suse.de>, msys.mizuma@gmail.com,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
-        yangyicong <yangyicong@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: linux 5.15-rc4: refcount underflow when unloading gpio-mockup
+Message-ID: <YVwf7uzL1aydysVl@kuha.fi.intel.com>
+References: <YVrM8VdLKZUt0i8R@kroah.com>
+ <20211004121942.GA3343713@sol>
+ <YVrz86m3+7wDSYlh@kuha.fi.intel.com>
+ <20211004124701.GA3418302@sol>
+ <YVr/t7AbmP/h08GX@kuha.fi.intel.com>
+ <20211004141754.GA3510607@sol>
+ <20211004152844.GA3825382@sol>
+ <CAHp75VeBc3AN+5f680LeK8V6NpiiaPUTgE14FFonUM1W-xrjNA@mail.gmail.com>
+ <20211005004035.GA29779@sol>
+ <YVwLIWrqY9TRLjwG@smile.fi.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="E1rW6XjjgdukUFBO"
+Content-Disposition: inline
+In-Reply-To: <YVwLIWrqY9TRLjwG@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 5, 2021 at 8:50 PM Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Fri, Oct 01, 2021 at 04:22:46PM -0700, Tim Chen wrote:
-> > On Fri, 2021-10-01 at 16:57 +0200, Peter Zijlstra wrote:
->
-> > > The one questino I have is, do we want default y?
-> >
-> > I also agree that default y is preferable.
->
-> I'll change at least the x86 one to:
->
->         default y
->         depends on SMP
->
-> > > The one nit I have is the Kconfig text, I'm not really sure that's
-> > > clarifying what a cluster is.
-> >
-> > Do you have a preference of a different name other than cluster?
-> > Or simply better documentation on what a cluster is for ARM64
-> > and x86 in Kconfig?
->
-> Yes, better wording as to what a cluster is. Currently the x86 and arm64
-> ones actually differ:
->
-> x86:
->         help
->          Cluster scheduler support improves the CPU scheduler's decision
->          making when dealing with machines that have clusters of CPUs
->          sharing L2 cache. If unsure say N here.
->
-> arm64:
->         help
->           Cluster scheduler support improves the CPU scheduler's decision
->           making when dealing with machines that have clusters(sharing internal
->           bus or sharing LLC cache tag). If unsure say N here.
->
->
-> (also, all this stuff being replicated across arch/*/Kconfig seems
-> unfortunate)
 
-perhaps worth a separate patchset to do some cleanup so that SCHED_MC,
-SCHED_SMT etc
-won't be replicated in different architectures. Right now, this kind
-of Kconfig option is copied
-everywhere. I am seeing SCHED_SMT in all of
-arch/arm/Kconfig
-arch/arm64/Kconfig
-arch/ia64/Kconfig
-arch/mips/Kconfig
-arch/powerpc/Kconfig
-arch/s390/Kconfig
-arch/sparc/Kconfig
-arch/x86/Kconfig
-...
+--E1rW6XjjgdukUFBO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Is it a better way to move them to a common Kconfig and let the architectures to
-declare things like ARCH_HAVE_SMT?
+On Tue, Oct 05, 2021 at 11:21:53AM +0300, Andy Shevchenko wrote:
+> On Tue, Oct 05, 2021 at 08:40:35AM +0800, Kent Gibson wrote:
+> > On Mon, Oct 04, 2021 at 10:56:00PM +0300, Andy Shevchenko wrote:
+> > > On Mon, Oct 4, 2021 at 8:51 PM Kent Gibson <warthog618@gmail.com> wrote:
+> 
+> ...
+> 
+> > > Here is debug prints of what happens
+> > > 
+> > > # modprobe gpio-mockup gpio_mockup_ranges=-1,10
+> > > [  212.850993]  (null): device_create_managed_software_node <<< 0
+> > > [  212.858177] platform gpio-mockup.0: software_node_notify 0 <<<
+> > > [  212.865264] platform gpio-mockup.0: software_node_notify 1 <<< 1
+> > > [  212.874159] gpio-mockup gpio-mockup.0: no of_node; not parsing pinctrl DT
+> > > [  212.882962] gpiochip_find_base: found new base at 840
+> > > [  212.889873] gpio gpiochip3: software_node_notify 0 <<<
+> > > [  212.896164] gpio gpiochip3: software_node_notify 1 <<< 1
+> > > [  212.905099] gpio gpiochip3: (gpio-mockup-A): added GPIO chardev (254:3)
+> > > [  212.913313] gpio gpiochip840: software_node_notify 0 <<<
+> > > [  212.920676] gpio gpiochip3: registered GPIOs 840 to 849 on gpio-mockup-A
+> > > [  212.935601] modprobe (185) used greatest stack depth: 12744 bytes left
+> > > 
+> > > As I read it the software node is created for gpio-mockup device and
+> > > then _shared_ with the GPIO device, since it's managed it's gone when
+> > > GPIO device gone followed by UAF when mockup (platform) device itself
+> > > gone. I.o.w. this software node mustn't be managed because it covers
+> > > the lifetime of two different objects. The correct fix is to create
+> > > manually software node and assign it to the pdev and manually free in
+> > > gpio_mockup_unregister_pdevs()/
+> > > 
+> > > Tl;DR: it's a bug in gpio-mockup.
+> > 
+> > So the bug is in the behaviour of gpio_mockup_register_chip()?
+> 
+> Not really. The utter root cause is the former API (device_add_properties()
+> et al) which Heikki is getting rid of in particular because of this issue,
+> i.e. when users blindly call it without fully understanding the picture of
+> the object lifetimes.
+> 
+> > That is out of my court, so I'll leave it to you and Bart to sort out.
+> 
+> I'll see what I can do about.
 
-Thanks
-Barry
+So, something like this (attached)?
+
+-- 
+heikki
+
+--E1rW6XjjgdukUFBO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="gpio-mockup.diff"
+
+diff --git a/drivers/gpio/gpio-mockup.c b/drivers/gpio/gpio-mockup.c
+index 0a9d746a0fe0a..469f3cbfd6b05 100644
+--- a/drivers/gpio/gpio-mockup.c
++++ b/drivers/gpio/gpio-mockup.c
+@@ -476,10 +476,22 @@ static struct platform_device *gpio_mockup_pdevs[GPIO_MOCKUP_MAX_GC];
+ 
+ static void gpio_mockup_unregister_pdevs(void)
+ {
++	struct software_node *swnode;
+ 	int i;
+ 
+-	for (i = 0; i < GPIO_MOCKUP_MAX_GC; i++)
++	for (i = 0; i < GPIO_MOCKUP_MAX_GC; i++) {
++		swnode = to_software_node(gpio_mockup_pdevs[i].dev.fwnode);
++
++		/*
++		 * Note. The software node must be unregistered before the
++		 * device to prevent the device_remove_properties() call in
++		 * device_del() from causing ref count underflow.
++		 */
++		software_node_unregister(swnode);
+ 		platform_device_unregister(gpio_mockup_pdevs[i]);
++		property_entries_free(swnode->properties);
++		kfree(swnode);
++	}
+ }
+ 
+ static __init char **gpio_mockup_make_line_names(const char *label,
+@@ -508,9 +520,11 @@ static int __init gpio_mockup_register_chip(int idx)
+ 	struct property_entry properties[GPIO_MOCKUP_MAX_PROP];
+ 	struct platform_device_info pdevinfo;
+ 	struct platform_device *pdev;
++	struct software_node *swnode;
+ 	char **line_names = NULL;
+ 	char chip_label[32];
+ 	int prop = 0, base;
++	int ret = -ENOMEM;
+ 	u16 ngpio;
+ 
+ 	memset(properties, 0, sizeof(properties));
+@@ -536,20 +550,47 @@ static int __init gpio_mockup_register_chip(int idx)
+ 					"gpio-line-names", line_names, ngpio);
+ 	}
+ 
++	swnode = kzalloc(sizeof(*swnode), GFP_KERNEL);
++	if (!swnode)
++		goto err_free_line_names;
++
++	swnode->properties = property_entry_dup(properties);
++	if (!swnode->properties)
++		goto err_free_swnode;
++
++	ret = software_node_register(swnode);
++	if (ret)
++		goto err_free_properties;
++
+ 	pdevinfo.name = "gpio-mockup";
+ 	pdevinfo.id = idx;
+-	pdevinfo.properties = properties;
++	pdevinfo.fwnode = software_node_fwnode(swnode);
+ 
+ 	pdev = platform_device_register_full(&pdevinfo);
+ 	kfree_strarray(line_names, ngpio);
+ 	if (IS_ERR(pdev)) {
+ 		pr_err("error registering device");
+-		return PTR_ERR(pdev);
++		ret = PTR_ERR(pdev);
++		goto err_unregister_swnode;
+ 	}
+ 
+ 	gpio_mockup_pdevs[idx] = pdev;
+ 
+ 	return 0;
++
++err_unregister_swnode:
++	software_node_unregister(swnode);
++
++err_free_properties:
++	property_entries_free(swnode->properties);
++
++err_free_swnode:
++	kfree(swnode);
++
++err_free_line_names:
++	kfree_strarray(line_names, ngpio);
++
++	return ret;
+ }
+ 
+ static int __init gpio_mockup_init(void)
+
+--E1rW6XjjgdukUFBO--
