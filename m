@@ -2,114 +2,89 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC4BD422480
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 13:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DDA9422483
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 13:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233705AbhJELFq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Oct 2021 07:05:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52902 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233449AbhJELFq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Oct 2021 07:05:46 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0686FC06161C;
-        Tue,  5 Oct 2021 04:03:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=5RXETHUeK0IoWDd8SaOUu8GrGBoYdj45miweofV1tqI=; b=KupXzRHIt3+Y/Pzu29D8sWyaiV
-        Xww0f73lBH9/jQ1W6k5CN0T8+6XGrOEE0VowKEnf82Ymy1v+pzvl69mhpp95GqSwAgZRkqAIWwTOU
-        eVaXoG9lTXX+Dd6eG+JH6CKCmxwfpcVVVxdyMjZf4tCqSKvkExxEGACjV2k2y6aLv9zqz9VIvb2P6
-        faUolqJPjdESdCk4G5yDrJBb/08d6RMMGlr6xHY1bDVGzovCBnYhU//mmwo3eymZBO6nsABlzQ5AM
-        QPo4IbwrzlGzTKyuzLWYLcAcfy6eX28dn08pSpPEeNkXGOMasPdqdIEoTv+jhpojLHDcig1tWM89V
-        aF03Nfxw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mXi9O-000FQG-II; Tue, 05 Oct 2021 10:59:00 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 2305B30019C;
-        Tue,  5 Oct 2021 12:58:21 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 0F544201A0530; Tue,  5 Oct 2021 12:58:21 +0200 (CEST)
-Date:   Tue, 5 Oct 2021 12:58:21 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Barry Song <21cnbao@gmail.com>
-Cc:     Tim Chen <tim.c.chen@linux.intel.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Aubrey Li <aubrey.li@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Ben Segall <bsegall@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guodong Xu <guodong.xu@linaro.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        "Cc: Len Brown" <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mel Gorman <mgorman@suse.de>, msys.mizuma@gmail.com,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
-        yangyicong <yangyicong@huawei.com>
-Subject: Re: [PATCH RESEND 0/3] Represent cluster topology and enable load
- balance between clusters
-Message-ID: <YVwvzchbP5qbogjq@hirez.programming.kicks-ass.net>
-References: <20210924085104.44806-1-21cnbao@gmail.com>
- <CAGsJ_4yW72mktbWjRfE9ngXoq9oXBXyAd_TPjKBNdGiRSoh9LA@mail.gmail.com>
- <CAKfTPtAtfJRFBbo+kBCYf42hxcc2iP8kkmg3Wcr5aW7Rnf=rfw@mail.gmail.com>
- <YVch0/R9PHzUwqea@hirez.programming.kicks-ass.net>
- <ece8838d112840bf26adbb09f653babcf298eb28.camel@linux.intel.com>
- <20211005075001.GJ4323@worktop.programming.kicks-ass.net>
- <CAGsJ_4xZD0sG0Df666f0bvHOzuPMjnw0dN_mArER5k1pJ6LPLw@mail.gmail.com>
+        id S234217AbhJELFu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Oct 2021 07:05:50 -0400
+Received: from mail-oo1-f54.google.com ([209.85.161.54]:40752 "EHLO
+        mail-oo1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233449AbhJELFt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Oct 2021 07:05:49 -0400
+Received: by mail-oo1-f54.google.com with SMTP id j11-20020a4a92cb000000b002902ae8cb10so6274311ooh.7;
+        Tue, 05 Oct 2021 04:03:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rbQR10SUFcLSb0CqZ3+0KI2N/KoBUg4lIS8MaCYfWzA=;
+        b=uTRXokuJvnnt9xhRhvKk7nmg9P1L43vtMvvkzf5c7uTPaL5O6Dm116xMRTZRZLMOKD
+         fojp1hYG7NkIA9hcGEnMqAxJiWVk7tjgJvK8DtXNeyQQqS7cg/EJjHrV9BvN2Z4z56jI
+         auEN2JL0rm9iHJXOVNMEWGLCRuuvyLLFYQ8tBwoYpbYmm6x7Zj22BlEoIkmscDl+fdH5
+         tkKXAnyEhlL7unmkR0KeV3Zd43U00mmYfnXhAZHZ7N/Cg7NpNn5s8ZZ7wN59fescRBEz
+         3jXXD+sRiUyrA47RR8tx2FCxMPDbNTdNh0382at7NxCDuNjDAqqPEmXcsiaVwOmfnS8G
+         P3Tg==
+X-Gm-Message-State: AOAM530Ar+fZq1ruftRtomp4A+sgIEHTZi+HxKS8HktX7BrEcxPVQtJ8
+        xa6J21cuzsIhE/yIGIk5ZPOdfXBlntJaqI/Ffmc=
+X-Google-Smtp-Source: ABdhPJxripPRp/2cLwKftBJJECVik2j1AfoGQDmRIUHPdG4gKa29qqGW4SnWQFEZNeKgTv6jZa4cvNpPu7oUx2ePtCo=
+X-Received: by 2002:a05:6820:17a:: with SMTP id k26mr12930860ood.37.1633431839035;
+ Tue, 05 Oct 2021 04:03:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGsJ_4xZD0sG0Df666f0bvHOzuPMjnw0dN_mArER5k1pJ6LPLw@mail.gmail.com>
+References: <1800633.tdWV9SEqCh@kreacher> <7312660.EvYhyI6sBW@kreacher> <fe9b4f36-0b46-f8d7-4a4c-9bdefe1fbd90@gmail.com>
+In-Reply-To: <fe9b4f36-0b46-f8d7-4a4c-9bdefe1fbd90@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 5 Oct 2021 13:03:42 +0200
+Message-ID: <CAJZ5v0i9vyT7oU-4NkVjrtD+Mz0Udaex=4j6iR5f70ssd8AnbA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] PCI: PM: Simplify and unify some helper functions
+To:     Ferry Toth <fntoth@gmail.com>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 05, 2021 at 10:15:39PM +1300, Barry Song wrote:
+On Sun, Oct 3, 2021 at 10:14 PM Ferry Toth <fntoth@gmail.com> wrote:
+>
+> Hi,
+>
+> Op 29-09-2021 om 20:05 schreef Rafael J. Wysocki:
+> > Hi All,
+> >
+> > This series is on top of the linux-next branch from linux-pm.git:
+> >
+> >   git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+> >
+> > which should be included in linux-next.
+> >
+> > Two of the 3 patches in this series, [1-2/3], were included in the "PCI: ACPI:
+> > Get rid of struct pci_platform_pm_ops and clean up code" series:
+> >
+> >   https://lore.kernel.org/linux-acpi/1800633.tdWV9SEqCh@kreacher/
+> >
+> > and the remaining one, [3/3] is a new version of a problematic patch from that
+> > series.  The rest of that series is present in the git branch above.
+> >
+> > All of the 3 patches in this set need to be tested in order to verify that
+> > there are no more issues that need to be addressed in them.
+> >
+> > Ferry, please test!
+>
+> This is how I tested:
+> 3 patches from
+> https://patchwork.kernel.org/project/linux-acpi/patch/2793105.e9J7NaK4W3@kreacher/
+> on top of 5.15.0-rc2 as before
+> 4 patches from v2 in the order of linux-pm.git
+> then tested without, with 1/3, 1+2/3, 1+2+3/3 on top (with only 3/3 the
+> new patch, 1+2/3 taken from v2 as they are unchanged).
+>
+> In all 4 cases I didn't find any trouble (related to this patch).
+>
+> Thanks for doing this!
 
-> > (also, all this stuff being replicated across arch/*/Kconfig seems
-> > unfortunate)
-> 
-> perhaps worth a separate patchset to do some cleanup so that SCHED_MC,
-> SCHED_SMT etc
-> won't be replicated in different architectures. Right now, this kind
-> of Kconfig option is copied
-> everywhere. I am seeing SCHED_SMT in all of
-> arch/arm/Kconfig
-> arch/arm64/Kconfig
-> arch/ia64/Kconfig
-> arch/mips/Kconfig
-> arch/powerpc/Kconfig
-> arch/s390/Kconfig
-> arch/sparc/Kconfig
-> arch/x86/Kconfig
-> ...
-> 
-> Is it a better way to move them to a common Kconfig and let the architectures to
-> declare things like ARCH_HAVE_SMT?
-
-Dunno, it's all a bit of a mess :/ I can't quickly see a sane
-pattern there.
-
+Thank you!
