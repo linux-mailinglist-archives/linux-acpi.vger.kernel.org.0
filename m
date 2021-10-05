@@ -2,25 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4BBB421D20
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 06:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60D17421D23
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 06:12:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbhJEEKc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Oct 2021 00:10:32 -0400
-Received: from mga17.intel.com ([192.55.52.151]:5183 "EHLO mga17.intel.com"
+        id S229780AbhJEEOd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Oct 2021 00:14:33 -0400
+Received: from mga11.intel.com ([192.55.52.93]:56091 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229446AbhJEEKb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 5 Oct 2021 00:10:31 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10127"; a="206462198"
+        id S229488AbhJEEOd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 5 Oct 2021 00:14:33 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10127"; a="223063574"
 X-IronPort-AV: E=Sophos;i="5.85,347,1624345200"; 
-   d="scan'208";a="206462198"
+   d="scan'208";a="223063574"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2021 21:08:41 -0700
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2021 21:12:43 -0700
 X-IronPort-AV: E=Sophos;i="5.85,347,1624345200"; 
-   d="scan'208";a="487835896"
+   d="scan'208";a="487837619"
 Received: from yilai-mobl1.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.249.172.101])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2021 21:08:35 -0700
-Date:   Tue, 5 Oct 2021 12:08:31 +0800
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2021 21:12:37 -0700
+Date:   Tue, 5 Oct 2021 12:12:31 +0800
 From:   Chen Yu <yu.c.chen@intel.com>
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -39,7 +39,7 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>
 Subject: Re: [PATCH v3 3/5] drivers/acpi: Introduce Platform Firmware Runtime
  Update device driver
-Message-ID: <20211005040831.GA7134@chenyu5-mobl1>
+Message-ID: <20211005041231.GB7134@chenyu5-mobl1>
 References: <cover.1631802162.git.yu.c.chen@intel.com>
  <90d270c031401430445cb2c4ba1b9b0c265cf9d4.1631802163.git.yu.c.chen@intel.com>
  <YUoBSRrAyaHOCNHb@kroah.com>
@@ -74,34 +74,37 @@ On Mon, Sep 27, 2021 at 07:40:39PM +0200, Rafael J. Wysocki wrote:
 > > > > > > > level Management Mode would do the firmware update.
 > > > > > > >
 > > > > > > > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-> > > > > >
-> > > > > > Where is the userspace code that uses this ioctl and has tested it out
-> > > > > > to verify it works properly?  A link to that in the changelog would be
-> > > > > > great to have.
-> > > > > >
-> > > > > The patch [5/5] is a self testing tool to test the whole feature. I'll send a
-> > > > > new version and Cc you too.
-> > > >
-> > > > That tests it, but does not answer the question of who will actually use
-> > > > this.  What userspace tool needs this new api?
-> > > >
-> > > Currently there is no dedicated userspace tool developed to use this
-> > > feature AFAIK.
-> >
-> > Wonderful, then it is not needed to be added to the kernel :)
-> >
 [snip]
-> > > It was expected that the end users
-> > > could refer to the self test tool to customize their tools. I'm not sure if
-> > > this is the proper way to propose the feature, may I have your suggestion on
-> > > this, should I create a separate git repository for this tool, or put it in
-> > > tools/selftestings as it is now?
+> > > > > > > +static struct miscdevice pfru_misc_dev = {
+> > > > > > > +     .minor = MISC_DYNAMIC_MINOR,
+> > > > > > > +     .name = "pfru_update",
+> > > > > > > +     .nodename = "pfru/update",
+> > > > > >
+> > > > > > Why is this in a subdirectory?  What requires this?  Why not just
+> > > > > > "pfru"?
+> > > > > >
+> > > > > The pfru directory might be reused for pfru_telemetry device, whose driver
+> > > > > is in 4/5 patch, I'll Cc you with the whole patch set in next version.
+> > > >
+> > > > "might be" is not a valid reason.  Why does this simple driver deserve a
+> > > > whole /dev/ subdirectory?
+> > > >
+> > > There are pfru_update and pfru_telemetry in the patch, and there is plan to
+> > > add a pfru_prm device in the future, which stands for "Platform Runtime Mechanism".
+> > > I'll move them to /dev/ in next version.
 > >
-> > No, do not add this to the kernel unless you have a real need and user
-> > for this.
-After revisiting this patch set, I'll revise it to better describe the background
-and usage model, and also propose the user space tool to fully demonstrate how to
-use this feature.
+> > That is a very generic name for a very platform specific and arch
+> > specific interface.  As this is an ACPI interface, why not use that name
+> > prefix?
+> 
+> It is not supposed to be either arch-specific or platform-specific.
+> The spec is hosted by the UEFI Forum and it is fairly generic IIUC.
+> In principle, it could be used to update any kind of platform firmware
+> possible to update without system restart.
+> 
+> That said, the I/F to the platform firmware is based on ACPI methods,
+> so "acpi_" would be a reasonable prefix choice.
+Ok, will change it in next version.
 
-thanks,
+Thanks,
 Chenyu
