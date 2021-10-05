@@ -2,117 +2,146 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 242C3423137
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 22:02:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B338423240
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 22:43:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235134AbhJEUEW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Oct 2021 16:04:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45890 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230333AbhJEUEV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 5 Oct 2021 16:04:21 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 606C26120A;
-        Tue,  5 Oct 2021 20:02:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633464150;
-        bh=m2Pch5PBNpHn9fpdx33/OXtGVAsq5SNn8+Ee+4hkSvg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=G2eBNKq0Ek/OFeyD3p7RsKRBXx+3RsdkR8iD1OSFUXnriuwOeB98FR40Sbg1ugWRs
-         X1HUcb3mKDBrS/RotPZ4xg+LowBFy/hQVKTquPfSzERCO3scHEK79IyHzbUtOAIgWQ
-         7UhPphi/d3DkY8k1QIuSSz9cXlsQnPqYT4RNfQ98mHpL2VoFMRqXVxK7Sa07VvQUDp
-         PKLpxtDEA4j5VSFr1ELLTmXN1THAPsnubILodciQqYzRZeayQFHL8H3N2dD1O0qomj
-         8RQ1eik93nT1nEIVI3lMs6HLkS5BFc4tnU8x/S0D3knTHH1l/pLRQLEnvnxZF9nWtx
-         fqDmyybsHgpxQ==
-Received: by pali.im (Postfix)
-        id DDD28812; Tue,  5 Oct 2021 22:02:27 +0200 (CEST)
-Date:   Tue, 5 Oct 2021 22:02:27 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     bhelgaas@google.com, Jeremy Linton <jeremy.linton@arm.com>
-Cc:     linux-pci@vger.kernel.org, lorenzo.pieralisi@arm.com,
-        nsaenz@kernel.org, bhelgaas@google.com, rjw@rjwysocki.net,
-        lenb@kernel.org, robh@kernel.org, kw@linux.com,
-        f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/4] PCI/ACPI: Add Broadcom bcm2711 MCFG quirk
-Message-ID: <20211005200227.ltl6owwksfn7l4xx@pali>
-References: <20210826071557.29239-1-jeremy.linton@arm.com>
- <20210826071557.29239-4-jeremy.linton@arm.com>
+        id S230019AbhJEUp0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Oct 2021 16:45:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48920 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235949AbhJEUp0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Oct 2021 16:45:26 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04AA2C061753;
+        Tue,  5 Oct 2021 13:43:35 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id f9so1525576edx.4;
+        Tue, 05 Oct 2021 13:43:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Og2M5waf4fA2uPXVR7x75f+2DQk+Er2YOKkUnKX3nZk=;
+        b=ap2vC8X6KAv1QHqhkz2q8YofK57fi+puC8XosK5Nz10ZYlMruG5LLHwPvClyBQpMWm
+         8berVuZXF7txYIkit8yuznvzVaI7C5Ow7olHViNWKOyjE1GPlrb/sEujo/OeYcpMl0yW
+         MGc36PE5YBgGXJINGW+BwkKb5gAXA54fzGFdXkIYFvAG+LRXz6brZlhNz6Onv6ydLvPA
+         M1TbBxjrpifn65fpmH8mxNkDUY/1J/M2fyK2AKDW0b1wpD9gYXodLEHKlntCWBUDgknL
+         yl+rJICcXGUvjFf6Cs7+U754p4ffpaW1FLQULNv0meKZUU91HvWYgH0yiQIxMZeBSLcY
+         EZ8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Og2M5waf4fA2uPXVR7x75f+2DQk+Er2YOKkUnKX3nZk=;
+        b=rhumTp6UJyJII+Nocf6isD35feiC6s4nGHv4PU40qDPV3BWOdt1hMNioCMh0BvIK4q
+         ixEnopPyHd7Po4majZPrOfYDXbLXyU4q20LWP5wgTLZGFUmlaTGgWXydmJAjz6u0g94q
+         zf+6FxhqannxHHP37A2atp1O5XVJYoFYeB0KJe1qRW4gYCFboKyvftwuZ7vDpKSs9asT
+         8DtoX0BDDN8xT21woXWQ7xgpWLJeE/JeDjak3QqPtAbzPwGRgSm228boIGjksmbtujPN
+         Cy/6vRMWxZISb2lMnGDODveoFHa6A0/7uQrzzgYm8HPcJr60w67O3sMmC9bMZkSk2g/H
+         /yfQ==
+X-Gm-Message-State: AOAM531LRHTj/4q96TC8unNBQJOSfdKKKQagFoTMs4ajcpYkSxmgeeqk
+        pOvHi1TkwJxobJJhO6vbfcS/EQ1l62OcZCrmc6U=
+X-Google-Smtp-Source: ABdhPJwy6b5QSPhwn9KbIlfOEPHwI/1HnWTI9L+Y+T7NDIRuCf954BxzRKe+Af1JsOXVAXjVYwbdF768KuUur7Usvb8=
+X-Received: by 2002:a17:906:280f:: with SMTP id r15mr26029552ejc.559.1633466613592;
+ Tue, 05 Oct 2021 13:43:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210826071557.29239-4-jeremy.linton@arm.com>
-User-Agent: NeoMutt/20180716
+References: <20210924085104.44806-1-21cnbao@gmail.com> <20210924085104.44806-2-21cnbao@gmail.com>
+ <87o883l9c8.mognet@arm.com>
+In-Reply-To: <87o883l9c8.mognet@arm.com>
+From:   Barry Song <21cnbao@gmail.com>
+Date:   Wed, 6 Oct 2021 09:43:22 +1300
+Message-ID: <CAGsJ_4zCYjha8E6km9fDO8gFR-_vO1Nr0=a7V-b9yLRZGGAC9g@mail.gmail.com>
+Subject: Re: [PATCH RESEND 1/3] topology: Represent clusters of CPUs within a die
+To:     Valentin Schneider <valentin.schneider@arm.com>
+Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Aubrey Li <aubrey.li@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Ben Segall <bsegall@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guodong Xu <guodong.xu@linaro.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        "Cc: Len Brown" <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LAK <linux-arm-kernel@lists.infradead.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mel Gorman <mgorman@suse.de>, msys.mizuma@gmail.com,
+        "Zengtao (B)" <prime.zeng@hisilicon.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Barry Song <song.bao.hua@hisilicon.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Tim Chen <tim.c.chen@linux.intel.com>,
+        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
+        yangyicong <yangyicong@huawei.com>,
+        Tian Tao <tiantao6@hisilicon.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thursday 26 August 2021 02:15:56 Jeremy Linton wrote:
-> Now that there is a bcm2711 quirk, it needs to be enabled when the
-> MCFG is missing. Use an ACPI namespace _DSD property
-> "linux-ecam-quirk-id" as an alternative to the MCFG OEM.
-> 
-> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-> ---
->  drivers/acpi/pci_mcfg.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
-> 
-> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
-> index 53cab975f612..04c517418365 100644
-> --- a/drivers/acpi/pci_mcfg.c
-> +++ b/drivers/acpi/pci_mcfg.c
-> @@ -169,6 +169,9 @@ static struct mcfg_fixup mcfg_quirks[] = {
->  	ALTRA_ECAM_QUIRK(1, 13),
->  	ALTRA_ECAM_QUIRK(1, 14),
->  	ALTRA_ECAM_QUIRK(1, 15),
-> +
-> +	{ "bc2711", "", 0, 0, MCFG_BUS_ANY, &bcm2711_pcie_ops,
-> +	  DEFINE_RES_MEM(0xFD500000, 0xA000) },
+On Wed, Oct 6, 2021 at 5:34 AM Valentin Schneider
+<valentin.schneider@arm.com> wrote:
+>
+> On 24/09/21 20:51, Barry Song wrote:
+> >  void update_siblings_masks(unsigned int cpuid)
+> >  {
+> >       struct cpu_topology *cpu_topo, *cpuid_topo = &cpu_topology[cpuid];
+> > @@ -617,6 +622,11 @@ void update_siblings_masks(unsigned int cpuid)
+> >               if (cpuid_topo->package_id != cpu_topo->package_id)
+> >                       continue;
+> >
+> > +             if (cpuid_topo->cluster_id == cpu_topo->cluster_id) {
+> > +                     cpumask_set_cpu(cpu, &cpuid_topo->cluster_sibling);
+> > +                     cpumask_set_cpu(cpuid, &cpu_topo->cluster_sibling);
+> > +             }
+> > +
+>
+> Hm so without cluster information (e.g. DT system), we have
+> ->cluster_id=-1, we'll essentially copy the package mask into the cluster
+> mask.
+>
+> The exposed cluster mask is still <= package mask which is sensible. Are we
+> fine with that, or do we need/want the mask to be empty in the -1 case? I'm
+> guessing userspace tools should check for either id!=-1 or if the exclusive
+> disjucntion of cluster vs package masks is non-empty.
 
-Hello!
+Hi Valentin,
+Yep, this is a very good question. I'd like change the code to:
+diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+index 7cb31d959f33..fc0836f460fb 100644
+--- a/drivers/base/arch_topology.c
++++ b/drivers/base/arch_topology.c
+@@ -622,7 +622,8 @@ void update_siblings_masks(unsigned int cpuid)
+                if (cpuid_topo->package_id != cpu_topo->package_id)
+                        continue;
 
-According to discussion described in email [1], adding a new MCFG quirk
-(like above) into kernel requires adding some errata entry for
-documenting buggy HW.
+-               if (cpuid_topo->cluster_id == cpu_topo->cluster_id) {
++               if (cpuid_topo->cluster_id == cpu_topo->cluster_id &&
++                   cpuid_topo->cluster_id != -1) {
+                        cpumask_set_cpu(cpu, &cpuid_topo->cluster_sibling);
+                        cpumask_set_cpu(cpuid, &cpu_topo->cluster_sibling);
+                }
 
-But this patch series does not introduce any new errata entry.
+This should be consistent with Tim's patch3/3 for x86 in case
+id is BAD_APICID:
+static bool match_l2c(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
+{
+        ...
+        /* Do not match if we do not have a valid APICID for cpu: */
+        if (per_cpu(cpu_l2c_id, cpu1) == BAD_APICID)
+                return false;
+        ...
+}
 
-Bjorn, could you look at how to properly document these "hw bugs"?
-I guess there would be lot of more requests for adding MCFG quirks as
-now according to [1], doors are open for them. And it is possible that
-after more years nobody would be able to maintain these quirks if would
-not be properly documented.
-
-[1] - https://lore.kernel.org/linux-pci/20210325131231.GA18590@e121166-lin.cambridge.arm.com/
-
->  };
->  
->  static char mcfg_oem_id[ACPI_OEM_ID_SIZE];
-> @@ -198,8 +201,22 @@ static void pci_mcfg_apply_quirks(struct acpi_pci_root *root,
->  	u16 segment = root->segment;
->  	struct resource *bus_range = &root->secondary;
->  	struct mcfg_fixup *f;
-> +	const char *soc;
->  	int i;
->  
-> +	/*
-> +	 * This may be a machine with a PCI/SMC conduit, which means it doesn't
-> +	 * have an MCFG. Use an ACPI namespace definition instead.
-> +	 */
-> +	if (!fwnode_property_read_string(acpi_fwnode_handle(root->device),
-> +					 "linux-ecam-quirk-id", &soc)) {
-> +		if (strlen(soc) != ACPI_OEM_ID_SIZE)
-> +			dev_err(&root->device->dev, "ECAM quirk should be %d characters\n",
-> +				ACPI_OEM_ID_SIZE);
-> +		else
-> +			memcpy(mcfg_oem_id, soc, ACPI_OEM_ID_SIZE);
-> +	}
-> +
->  	for (i = 0, f = mcfg_quirks; i < ARRAY_SIZE(mcfg_quirks); i++, f++) {
->  		if (pci_mcfg_quirk_matches(f, segment, bus_range)) {
->  			if (f->cfgres.start)
-> -- 
-> 2.31.1
-> 
+Thanks
+Barry
