@@ -2,346 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3887E421D4A
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 06:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F4B0421DDA
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 07:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229800AbhJEE0x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Oct 2021 00:26:53 -0400
-Received: from mga06.intel.com ([134.134.136.31]:29482 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229659AbhJEE0x (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 5 Oct 2021 00:26:53 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10127"; a="286526865"
-X-IronPort-AV: E=Sophos;i="5.85,347,1624345200"; 
-   d="scan'208";a="286526865"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2021 21:25:03 -0700
-X-IronPort-AV: E=Sophos;i="5.85,347,1624345200"; 
-   d="scan'208";a="623256247"
-Received: from yilai-mobl1.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.249.172.101])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2021 21:24:57 -0700
-Date:   Tue, 5 Oct 2021 12:24:53 +0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Aubrey Li <aubrey.li@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH v3 3/5] drivers/acpi: Introduce Platform Firmware Runtime
- Update device driver
-Message-ID: <20211005042453.GC7134@chenyu5-mobl1>
-References: <cover.1631802162.git.yu.c.chen@intel.com>
- <90d270c031401430445cb2c4ba1b9b0c265cf9d4.1631802163.git.yu.c.chen@intel.com>
- <CAJZ5v0i__g02rjQh5TuBQN2HejEbZUxiy-4=YSWDUEczrTui0Q@mail.gmail.com>
+        id S231594AbhJEFS0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Oct 2021 01:18:26 -0400
+Received: from mail-bn8nam12on2071.outbound.protection.outlook.com ([40.107.237.71]:17149
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229979AbhJEFSZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 5 Oct 2021 01:18:25 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Cc6Ggj002xbfzfQB1NPYILeJt9BaEWxRZ98DN3EAgpEihw1t0B7Pmx8v4ZBcVsYwrjme5nDMsaoXJG02b6gn0hLnTDX2Gyl6IDNUMQc1GfAW9CqtiqRTwzaPQvvQz7nnjMU+bfrsz12EP4vSUZ0Ark/N+tsPH3w+Aa5rL7M4EX9FxXNIyFOk0G3qG/IQh7hDhWugiUVqclaGkJLkTubyxoKnAj6yoeFMuwLWKLo7IkWqMN51EnUFjebcaRhp+BKzk+9LeobTjOv7BKuuopA/ssv9xhXmoEGqtlb+J/AeHksSXasxub4Vlzlh0n+waqUPX5Z48aSU0J15rcztcOH0UQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JHPdcYrD9/oDRnQ3sTYPyi8DrdbtSpi19upmdGKsNUU=;
+ b=i/L8HsW4Y0b8UZ+yLU8YkI6jUVwFLkc95nEVyrxAAymP29KD2/XawaWUj1zLuoBMmk9SjmtFCRInDsW9SUefsDKaLpYfakfcb4U5nt+v8X2wH3MqEUJ5RNEHxYHw3Rjr/jfqh7SsAbKoJnbsXgf8Wwip+w8d5kJ6oDjieeJhhbtILlHw+d91o8DBkGznsOaQWpXexuvxzPbXgCzoKJcs0/ISppgGt0Elugh1CChb8vDVmkdn5kKYq+Wnv83o7MktqwTSePYnmkLw6W9h9X+DsRaLehkTq3Be0fjE53s0OzN5k9J9Von5ViruXwTNyUJs1qtW4zwnHpk7AbpoBnXLlg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JHPdcYrD9/oDRnQ3sTYPyi8DrdbtSpi19upmdGKsNUU=;
+ b=RExtBlZc04VaHaarHfbyExIOm4mOV9X41WinAhGZvip/+nugegUpYsCURbNqCZCkxcR7I7ZZBWgMt1PSc/NM3ydQlIUlnkDhhIulc0YzwxfPrCb7iaakYtglJovDxUB43S46AelPr3wvhyy4jIACzvLE9UfIpd/dYgvhcWKorgI=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5176.namprd12.prod.outlook.com (2603:10b6:208:311::19)
+ by BL0PR12MB5540.namprd12.prod.outlook.com (2603:10b6:208:1cb::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.17; Tue, 5 Oct
+ 2021 05:16:33 +0000
+Received: from BL1PR12MB5176.namprd12.prod.outlook.com
+ ([fe80::888b:8deb:3f8b:8d61]) by BL1PR12MB5176.namprd12.prod.outlook.com
+ ([fe80::888b:8deb:3f8b:8d61%5]) with mapi id 15.20.4566.022; Tue, 5 Oct 2021
+ 05:16:33 +0000
+Subject: Re: [PATCH 1/2] platform/x86: amd-pmc: Add alternative acpi id for
+ PMC controller
+To:     Sachi King <nakato@nakato.io>, hdegoede@redhat.com,
+        mgross@linux.intel.com, mario.limonciello@amd.com,
+        rafael@kernel.org, lenb@kernel.org
+Cc:     platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, stable@vger.kernel.org
+References: <20211002041840.2058647-1-nakato@nakato.io>
+From:   Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Message-ID: <3ecd9046-ad0c-9c9a-9b09-bbab2f94b9f2@amd.com>
+Date:   Tue, 5 Oct 2021 10:46:18 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+In-Reply-To: <20211002041840.2058647-1-nakato@nakato.io>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BMXPR01CA0076.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:b00:54::16) To BL1PR12MB5176.namprd12.prod.outlook.com
+ (2603:10b6:208:311::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0i__g02rjQh5TuBQN2HejEbZUxiy-4=YSWDUEczrTui0Q@mail.gmail.com>
+Received: from [10.252.89.180] (165.204.159.242) by BMXPR01CA0076.INDPRD01.PROD.OUTLOOK.COM (2603:1096:b00:54::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.15 via Frontend Transport; Tue, 5 Oct 2021 05:16:28 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c9dce909-86d9-446a-fdad-08d987bf4bd3
+X-MS-TrafficTypeDiagnostic: BL0PR12MB5540:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BL0PR12MB554054202A443D985D4729F79AAF9@BL0PR12MB5540.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2803;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: LAIHWOZ5NDE4yF5wOJ5QNuMEf2hDTvW/+jZYG1thIsOt2WA3DlEgcFzzNsALWqIUz9xgRT9WdKHaUjQWi4pOLPu6lLstD5U/XPtcZNLfd1LEeMfDgTID38IUTnPUBXgoC+F84KlOKDbsYWtkjdSr6pbVu6wSdhYszLuTrSjKaOppfQmgZLqXt9V2P9zoI5M9fdC2Q7eW7rq/Hf6l03h+rtouh8cIN4szYcjVYrg4fhbTffMqOM705Q3R4nQSSW7szBdzJakmA6NXWVQq8b35ONMncJepaOxhzWlOtRgo6gQqY6By6lFZvjQZDtapmQH1lCP3Pe4yaP9Bvn42xxtFOlRHQOdEoxO6nUD9sgPtnLAoX1voylJYvg1Su6/gbO6/U6nJzyb8BgvVENcdFZ1ViJjAOW+POTwxgmUgFu1CDGHcI5R+5x1JANIxD3UPIuS7Y5/XSHUoMZATwJV0RLp5XmB62VkzxhFD61tFQzBqUwsYeOKAJTk7GWQFULDo5EnodttJufcB50H2fNFTUBGvNdsAmYXEczSa4w+PBF+7f1l4xJ+xarcZvbvFqqnQ6v/bQjlEv6zh2BlS3olEgqtelDjTiYim3OWiowv/Ps7MgkvV31OssVcm1Yyb8si7RvJNUrEnkTbwN5dlAMdYUAddGo3I7re47TRQpxLAU8VXIDuCOSO3MgAar4y817cweAj/ZeKofsqhuU3OMJPCS4d3ML4ZtgeC+LLn383rYNhRh2p4pVJAQzUXgG+Le1PZKNka
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(5660300002)(66556008)(66946007)(36756003)(558084003)(26005)(66476007)(186003)(4326008)(2906002)(16576012)(8936002)(31696002)(8676002)(31686004)(53546011)(6666004)(38100700002)(508600001)(316002)(2616005)(6486002)(956004)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y2Rpa2VMZTJGc0g2QWNiRFpBOGRpQ3BkV0JGWUFnWHhXdkU3aWhMUG9CalZv?=
+ =?utf-8?B?SjRraGxuZGVpQmVEbFFXcnh5VkI5SFVlQXZtaVRmTXY1bGNJUG8rSVg3Y2RW?=
+ =?utf-8?B?KzlTVG1CQzdXdGVNeU5abWtVWU9rdjcxK0FqZ0JFSkZzT210TWplWkpiZWdN?=
+ =?utf-8?B?SGYwRGoyYys4WVZvRzZPOTNRcDEwd1FDdVR4OHFZM1BTMDlTcHhNMitnWlVF?=
+ =?utf-8?B?VzVpMEhlV2dXUXNnSTN5SzErbXRkNFRuMVY4RzdVMUJ1YTRJZGhhVHQ1VFF2?=
+ =?utf-8?B?cUxSLyswdEd2MldSYnRXU2tZUXdEZzY1RS9hcllVTjc0QTkyTjhSd1JXbjNz?=
+ =?utf-8?B?blJVVlhUVUFQejdKbmRJSFIvaEkrOXQ2WjR3M3MxdXRvN0gvMk94Y1RBV0pu?=
+ =?utf-8?B?S0x2YmtJd2NmbHUydGtHL2h5M2NqMThka016SzVNVXlwTENBTjVMNTFyQnV6?=
+ =?utf-8?B?KzJ5cDV4WUp1Znlnb3daSDRzNHN2Mkl3UlpjaWZqcXZaWVZ4M0U2ditheTha?=
+ =?utf-8?B?NDZjNEcxQTFNbEVzb2xFZkV0Q0J6YWVFUithalU4V1FWVHBWL0RtcWptYVM2?=
+ =?utf-8?B?c2EwQklOUitNYldENndmWFllSTg2NlBubGU2U05hWUZHRFlWQUNzMEYrdmNK?=
+ =?utf-8?B?NFFrVUlFdGlYWEZRWnZzaEhYSkI1OHcyR2JsaFp6QUc5YlFJSWZOazR2WTBO?=
+ =?utf-8?B?WUlaTEhKRDVBUFcxYVZaMDhqemhtUGV6cU1VY0JNcEV1RG5ZNUR5ZmZSSk1S?=
+ =?utf-8?B?UTJzd1lXcXNSdWJLZjhhTTRaKy80dTNMTEVaTkRLR3p5YUNzWGJGbTJNcldW?=
+ =?utf-8?B?MG4wUzdoQ3V0RHlzdWNlYXlWcmlhQm1wWklSbVJHcGpiaTg0VFpyek1VK2tp?=
+ =?utf-8?B?YTV4V2Q2MXBxNU5UK3JZcWZxYzgyZFZjZnFuTHhXeHdnck9Ka2UyTjcyUjdp?=
+ =?utf-8?B?dU80ZGNmL1M1UG5LWDJ4ZFQ1T000UTFPUDE1Zm1TVEYzNlNCcDNvWWdJbFdF?=
+ =?utf-8?B?L2Q3K0x3eDFaa2lQV3Z3Sm5XVU42MEQ2SWJLS0ZhSnhHRnhMMEpiMTlhZGVp?=
+ =?utf-8?B?QTdkUGtMS0VhdDVEVXg1SW40dXNNWE53SVFFbzg1OHJTL1pZUUtSTWIrQzdr?=
+ =?utf-8?B?V3FlUG9USnJ6OGZobkNWdUt1K0kwcVA0aFJIclFHdnRCTWRhNjRGMHZrYjRq?=
+ =?utf-8?B?VFdMS1ZBVkhDbHB6clc5TnlvVVhoaWgzNDlNSUFLMlVZOTI1bjM0ZStMc2JP?=
+ =?utf-8?B?S0tFdnNFbzNCbU12TUdNcFVCTXNocjlSd1ZheitSaStjSDdac05rKzZjZ0o3?=
+ =?utf-8?B?R2JLSUlKNDc1VTZSTXJqQnhNUndyeDRoR0tqUWh6VXVOOXdtaUtMMEFJMzIz?=
+ =?utf-8?B?d2pKVnRaS2tUZ0M0N0tzaERMaUd6VmZZVXZ3dG1PeStnNkgraW9Wa1paM21z?=
+ =?utf-8?B?Ull0TG1CdWR5WExESVM3aVMxcGprMWQzU2RJQ0liT2ZEKzlMZE1wTSt2cTBF?=
+ =?utf-8?B?SktaR1JjdThmK3BSVkh5dmtZQWdDd1BNVVpRcTBUbUY0czVMajFFend6YmlP?=
+ =?utf-8?B?TklDeTJLQWFDZ3ZubllsamQ2VmY0Wlc0c09wQ1BVVnNyYXhJODFRd1BBUWhL?=
+ =?utf-8?B?Q2dHRCt1TStEOGlOQ0NrV3NMVStDdG9lVGpNcmxLZ00zaG9kZFhlRTBYaWZn?=
+ =?utf-8?B?RGZ2MnJUVyt1a0Z0N2dJdmZBMExHbWxPNVhiYlkrYTBmc1pkdUN3TW9YY3Fz?=
+ =?utf-8?Q?i6VbxxVOnBwsYYYfJd8CpzUV5mpvvZzbSlCk+dD?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9dce909-86d9-446a-fdad-08d987bf4bd3
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5176.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2021 05:16:33.5968
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4NaSVgZR0FwFcQFAajhF06p6De2it5NtFmu9suOrhWOToL+sTsZQX2OZCGBAFHIBwL7DjCJoDUqNjEhzkhMEKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB5540
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Sep 28, 2021 at 02:22:28PM +0200, Rafael J. Wysocki wrote:
-> On Thu, Sep 16, 2021 at 5:56 PM Chen Yu <yu.c.chen@intel.com> wrote:
-[snip]
-> > +static bool valid_cap_type(int idx, union acpi_object *obj)
-> > +{
-> > +       acpi_object_type type = obj->type;
-> > +
-> > +       if (idx == CAP_STATUS_IDX || idx == CAP_UPDATE_IDX ||
-> > +           idx == CAP_FW_VER_IDX || idx == CAP_CODE_RT_VER_IDX ||
-> > +           idx == CAP_DRV_RT_VER_IDX || idx == CAP_DRV_SVN_IDX)
-> > +               return type == ACPI_TYPE_INTEGER;
-> > +       else if (idx == CAP_CODE_TYPE_IDX || idx == CAP_DRV_TYPE_IDX ||
-> > +                idx == CAP_PLAT_ID_IDX || idx == CAP_OEM_ID_IDX ||
-> > +                idx == CAP_OEM_INFO_IDX)
-> > +               return type == ACPI_TYPE_BUFFER;
-> > +       else
-> > +               return false;
-> > +}
-> 
-> IMO, this is way overdesigned.  It is not necessary to do all of these
-> checks for every element of the package in query_capability().
->
-[snip] 
-> It is not very useful to do a loop if there is a switch () on the
-> control variable in every step.
-> 
-> > +               union acpi_object *obj = &out_obj->package.elements[i];
-> > +
-> > +               if (!valid_cap_type(i, obj))
-> > +                       goto free_acpi_buffer;
-> > +
-> > +               switch (i) {
-> > +               case CAP_STATUS_IDX:
-> > +                       cap->status = obj->integer.value;
-> > +                       break;
-> 
-> The above can be written as
-> 
-> if (out_obj->package.elements[CAP_STATUS_IDX].type != ACPI_TYPE_INTEGER)
->         goto free_acpi_buffer;
-> 
-> cap->status = out_obj->package.elements[CAP_STATUS_IDX].integer.value;
-> 
-> and analogously for all of the other index values.
-> 
-> But check the number of elements upfront.
-> 
-Ok, got it. The next version will combine above together, and eliminate
-the loop, switch logic.
-> > +               case CAP_UPDATE_IDX:
-> > +                       cap->update_cap = obj->integer.value;
-> > +                       break;
-> > +               case CAP_CODE_TYPE_IDX:
-> > +                       memcpy(&cap->code_type, obj->buffer.pointer,
-> > +                              obj->buffer.length);
-> > +                       break;
-> > +               case CAP_FW_VER_IDX:
-> > +                       cap->fw_version = obj->integer.value;
-> > +                       break;
-> > +               case CAP_CODE_RT_VER_IDX:
-> > +                       cap->code_rt_version = obj->integer.value;
-> > +                       break;
-> > +               case CAP_DRV_TYPE_IDX:
-> > +                       memcpy(&cap->drv_type, obj->buffer.pointer,
-> > +                              obj->buffer.length);
-> > +                       break;
-> > +               case CAP_DRV_RT_VER_IDX:
-> > +                       cap->drv_rt_version = obj->integer.value;
-> > +                       break;
-> > +               case CAP_DRV_SVN_IDX:
-> > +                       cap->drv_svn = obj->integer.value;
-> > +                       break;
-> > +               case CAP_PLAT_ID_IDX:
-> > +                       memcpy(&cap->platform_id, obj->buffer.pointer,
-> > +                              obj->buffer.length);
-> > +                       break;
-> > +               case CAP_OEM_ID_IDX:
-> > +                       memcpy(&cap->oem_id, obj->buffer.pointer,
-> > +                              obj->buffer.length);
-> > +                       break;
-> > +               case CAP_OEM_INFO_IDX:
-> > +                       /*vendor specific data*/
-> > +                       break;
-> > +               default:
-> > +                       pr_err("Incorrect format of Update Capability.\n");
-> 
-> Why pr_err() and not dev_dbg()?
->
-Will change to dev_dbg() in next version. 
-> Besides, it looks like you're going to fail if the package has more
-> elements than expected, but is this really a big deal?
-> 
-> Moreover, what if the number of package elements is too small?
-> 
-Ok, will change it to check if the number of package elements is larger/equals to
-expected in the spec.
-> > +                       goto free_acpi_buffer;
-> > +               }
-> > +       }
-> > +       ret = 0;
-> > +
-> > +free_acpi_buffer:
-> > +       ACPI_FREE(out_obj);
-> > +
-> > +       return ret;
-> > +}
-> > +
-> > +static int query_buffer(struct pfru_com_buf_info *info)
-> > +{
-> > +       union acpi_object *out_obj;
-> > +       acpi_handle handle;
-> > +       int i, ret = -EINVAL;
-> > +
-> > +       handle = ACPI_HANDLE(pfru_dev->dev);
-> > +       out_obj = acpi_evaluate_dsm_typed(handle, &pfru_dev->uuid,
-> > +                                         pfru_dev->rev_id, FUNC_QUERY_BUF,
-> > +                                         NULL, ACPI_TYPE_PACKAGE);
-> > +       if (!out_obj)
-> > +               return -EINVAL;
-> > +
-> > +       for (i = 0; i < out_obj->package.count; i++) {
-> 
-> Again, what is the benefit from doing this loop?
->
-Will eliminate the loop in next version. 
-[snip]
-> > +
-> > +static int get_image_type(efi_manage_capsule_image_header_t *img_hdr,
-> > +                         int *type)
-> > +{
-> > +       guid_t *image_type_id;
-> > +
-> > +       /* check whether this is a code injection or driver update */
-> > +       image_type_id = &img_hdr->image_type_id;
-> 
-> Anything wrong with doing this assignment as initialization?
-> 
-Ok, will change it in next version.
-> > +       if (guid_equal(image_type_id, &pfru_dev->code_uuid))
-> > +               *type = CODE_INJECT_TYPE;
-> > +       else if (guid_equal(image_type_id, &pfru_dev->drv_uuid))
-> > +               *type = DRIVER_UPDATE_TYPE;
-> 
-> And what would be wrong with returning the type or a negative error code?
-> 
-Will change it in next version.
-> > +       else
-> > +               return -EINVAL;
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +/*
-> > + * The (u64 hw_ins) was introduced in UEFI spec version 2,
-> > + * and (u64 capsule_support) was introduced in version 3.
-> > + * The size needs to be adjusted accordingly. That is to
-> > + * say, version 1 should subtract the size of hw_ins+capsule_support,
-> > + * and version 2 should sbstract the size of capsule_support.
-> 
-> Either turn this into a kerneldoc comment or put it inside the function.
-> 
-Will put it inside the function.
-> > + */
-> > +static int adjust_efi_size(efi_manage_capsule_image_header_t *img_hdr,
-> > +                          int *size)
-> > +{
-> > +       int tmp_size = *size;
-> > +
-> > +       tmp_size += sizeof(efi_manage_capsule_image_header_t);
-> > +       switch (img_hdr->ver) {
-> > +       case 1:
-> > +               tmp_size -= 2 * sizeof(u64);
-> > +               break;
-> > +       case 2:
-> > +               tmp_size -= sizeof(u64);
-> > +               break;
-> > +       default:
-> > +               /* only support version 1 and 2 */
-> > +               return -EINVAL;
-> > +       }
-> > +       *size = tmp_size;
-> 
-> Why not simply return the size or a negative error code?
-> 
-Will change it in next version.
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +/*
-> > + * Sanity check if the capsule image has a newer version than current one.
-> > + * Return: true if it is valid, false otherwise.
-> 
-> Would it hurt if this was a proper kerneldoc comment?
-> 
-Will put it inside the function.
-[snip]
-> > +
-> > +static void dump_update_result(struct pfru_updated_result *result)
-> > +{
-> > +       pr_debug("Update result:\n");
-> > +       pr_debug("Status:%d\n", result->status);
-> > +       pr_debug("Extended Status:%d\n", result->ext_status);
-> > +       pr_debug("Authentication Time Low:%lld\n", result->low_auth_time);
-> > +       pr_debug("Authentication Time High:%lld\n", result->high_auth_time);
-> > +       pr_debug("Execution Time Low:%lld\n", result->low_exec_time);
-> > +       pr_debug("Execution Time High:%lld\n", result->high_exec_time);
-> 
-> All of these could be dev_dbg() I suppose?
->
-Ok, will change it in next version. 
-> > +}
-> > +
-> > +
-[snip]
-> > +       for (i = 0; i < out_obj->package.count; i++) {
-> 
-> Same comment regarding the benefit of doing a loop: why is it needed?
-> 
-Will remove the loop in next version.
-[snip]
-> > +
-> > +       switch (cmd) {
-> > +       case PFRU_IOC_SET_REV:
-> > +               if (copy_from_user(&rev, p, sizeof(unsigned int)))
-> > +                       return -EFAULT;
-> > +               if (!pfru_valid_revid(rev))
-> > +                       return -EFAULT;
-> 
-> Why is this the right error code to return here?
-> 
-Will change EFAULT to EINVAL in next version.
-[snip]
-> > +       /* map the communication buffer */
-> > +       phy_addr = (phys_addr_t)(info.addr_lo | (info.addr_hi << 32));
-> > +       buf_ptr = memremap(phy_addr, info.buf_size, MEMREMAP_WB);
-> > +       if (IS_ERR(buf_ptr))
-> > +               return PTR_ERR(buf_ptr);
-> 
-> Empty line here, please.
-> 
-Ok, will do.
-> > +       if (!copy_from_iter_full(buf_ptr, len, &iter)) {
-> > +               pr_err("error! could not read capsule file\n");
-> 
-> dev_dbg()?
-> 
-Ok, will change it in next version.
-> > +               ret = -EINVAL;
-> > +               goto unmap;
-> > +       }
-> > +
-> > +       /* Check if the capsule header has a valid version number. */
-> > +       ret = query_capability(&cap);
-> > +       if (ret)
-> > +               goto unmap;
-> 
-> ret is guaranteed to be 0 here, so you can do
-> 
-> if (cap.status != DSM_SUCCEED)
->         ret = -EBUSY;
-> else if (!valid_version(buf_ptr, &cap))
->         ret = -EINVAL;
-> 
-> and the gotos and the "ret = 0" statement below won't be necessary.
-> 
-Ok, will do in next version.
-[snip]
-> > +static ssize_t pfru_read(struct file *filp, char __user *ubuf,
-> > +                        size_t size, loff_t *off)
-> > +{
-> > +       struct pfru_update_cap_info cap;
-> > +       int ret;
-> > +
-> > +       ret = query_capability(&cap);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       size = min_t(size_t, size, sizeof(cap));
-> > +
-> > +       if (copy_to_user(ubuf, &cap, size))
-> > +               return -EFAULT;
-> 
-> Well, if the read() is only needed for this, maybe consider
-> implementing it as an ioctl() command and using read() for the
-> telemetry retrieval?  Then, you won't need the other special device
-> file, the write() will be the code injection/update, the read() will
-> be telemetry retrieval and all of the rest can be ioctl()s under one
-> special device file.
-> 
-Got it, will try to combine the two modules into one.
 
-thanks,
-Chenyu
+
+On 10/2/2021 9:48 AM, Sachi King wrote:
+> The Surface Laptop 4 AMD has used the AMD0005 to identify this
+> controller instead of using the appropriate ACPI ID AMDI0005.  Include
+> AMD0005 in the acpi id list.
+
+Can you provide an ACPI dump and output of 'cat /sys/power/mem_sleep'
+
+Thanks,
+Shyam
