@@ -2,94 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF2742281E
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 15:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46107422838
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 15:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233942AbhJENoU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Oct 2021 09:44:20 -0400
-Received: from foss.arm.com ([217.140.110.172]:43428 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233077AbhJENoT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 5 Oct 2021 09:44:19 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DC89E1FB;
-        Tue,  5 Oct 2021 06:42:28 -0700 (PDT)
-Received: from e113632-lin (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E6D8F3F70D;
-        Tue,  5 Oct 2021 06:42:24 -0700 (PDT)
-From:   Valentin Schneider <valentin.schneider@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Tim Chen <tim.c.chen@linux.intel.com>
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
-        Barry Song <21cnbao@gmail.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Aubrey Li <aubrey.li@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Ben Segall <bsegall@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guodong Xu <guodong.xu@linaro.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        "Cc\: Len Brown" <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mel Gorman <mgorman@suse.de>, msys.mizuma@gmail.com,
-        "Zengtao \(B\)" <prime.zeng@hisilicon.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
-        yangyicong <yangyicong@huawei.com>
-Subject: Re: [PATCH RESEND 0/3] Represent cluster topology and enable load balance between clusters
-In-Reply-To: <20211005075001.GJ4323@worktop.programming.kicks-ass.net>
-References: <20210924085104.44806-1-21cnbao@gmail.com> <CAGsJ_4yW72mktbWjRfE9ngXoq9oXBXyAd_TPjKBNdGiRSoh9LA@mail.gmail.com> <CAKfTPtAtfJRFBbo+kBCYf42hxcc2iP8kkmg3Wcr5aW7Rnf=rfw@mail.gmail.com> <YVch0/R9PHzUwqea@hirez.programming.kicks-ass.net> <ece8838d112840bf26adbb09f653babcf298eb28.camel@linux.intel.com> <20211005075001.GJ4323@worktop.programming.kicks-ass.net>
-Date:   Tue, 05 Oct 2021 14:42:17 +0100
-Message-ID: <87tuhvlhae.mognet@arm.com>
+        id S234084AbhJENsP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Oct 2021 09:48:15 -0400
+Received: from mail-oi1-f174.google.com ([209.85.167.174]:35501 "EHLO
+        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235132AbhJENsO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Oct 2021 09:48:14 -0400
+Received: by mail-oi1-f174.google.com with SMTP id n64so26293186oih.2;
+        Tue, 05 Oct 2021 06:46:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GZuitQsZRbIllSd5c/N0q7ztxTY7wBNZEilaLOdnQlM=;
+        b=b+Rr4me7ShRBrYIYKZ+QX2dzafebnTZqEql7zZiqIYQxLBO9gO1cM+tz6pIge1gSIz
+         +Fciz2VjkFtaI5n7gKWXyGSzLph1EQnT8BpHF0uLvQ4EJTajFzE6l/zF8f7qZItYSVy5
+         ibE+ocJUE/Gkg3/pTU0L7xZ+U1mT1sLEaG6tVio7bEXLFU3TCgn71vg6ccHeKdbjhrN9
+         co24lEs+yIVhGPxiyfDQHCtdmUvhPd2SdZaO+u8FoSsdyDgxh2VbW8hYio39Ze2c61mQ
+         Govqv68NsjFJkUnTdffX35U+9yn5CHzd2wbEjyH0PYZo2jvKv9HX5xHSIh4N1lq5hKmj
+         XpEg==
+X-Gm-Message-State: AOAM531jXxiHJQsB2V3hJH/1PMrnaHkB8jRr+0PmZxIgLJ7I5E5Ijoj+
+        eDXmjrZwfbunX88GyHYwaBzH/JyWfpfej1s6F43zDm7K
+X-Google-Smtp-Source: ABdhPJzh4caxgPTPZfJujBFskJc0tB54sTnKLP19W0J4hgZFgeBFACv02d3vxyzEzxJptnVRt5FMfvM4F8BKnex7sfk=
+X-Received: by 2002:aca:6009:: with SMTP id u9mr2640823oib.71.1633441583791;
+ Tue, 05 Oct 2021 06:46:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <5523582.DvuYhMxLoT@kreacher>
+In-Reply-To: <5523582.DvuYhMxLoT@kreacher>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 5 Oct 2021 15:46:12 +0200
+Message-ID: <CAJZ5v0gOuAoV2SNFd1m7fHAH86kpA8vTdFpVhoPzinFHs_Zqcw@mail.gmail.com>
+Subject: Re: [PATCH] PCI: ACPI: Check parent pointer in acpi_pci_find_companion()
+To:     Linux PCI <linux-pci@vger.kernel.org>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Shanker Donthineni <sdonthineni@nvidia.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 05/10/21 09:50, Peter Zijlstra wrote:
-> On Fri, Oct 01, 2021 at 04:22:46PM -0700, Tim Chen wrote:
->> On Fri, 2021-10-01 at 16:57 +0200, Peter Zijlstra wrote:
+On Fri, Oct 1, 2021 at 3:58 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
 >
->> > The one questino I have is, do we want default y?
->>
->> I also agree that default y is preferable.
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 >
-> I'll change at least the x86 one to:
+> If acpi_pci_find_companion() is called for a device whose parent
+> pointer is NULL, it will crash when attempting to get the ACPI
+> companion of the parent due to a NULL pointer dereference in
+> the ACPI_COMPANION() macro.
 >
->       default y
->       depends on SMP
+> This was not a problem before commit 375553a93201 ("PCI: Setup ACPI
+> fwnode early and at the same time with OF") that made pci_setup_device()
+> call pci_set_acpi_fwnode() and so it allowed devices with NULL parent
+> pointers to be passed to acpi_pci_find_companion() which is the case
+> in pci_iov_add_virtfn(), for instance.
 >
+> Fix this issue by making acpi_pci_find_companion() check the device's
+> parent pointer upfront and bail out if it is NULL.
+>
+> While pci_iov_add_virtfn() can be changed to set the device's parent
+> pointer before calling pci_setup_device() for it, checking pointers
+> against NULL before dereferencing them is prudent anyway and looking
+> for ACPI companions of virtual functions isn't really useful.
+>
+> Fixes: 375553a93201 ("PCI: Setup ACPI fwnode early and at the same time with OF")
+> Link: https://lore.kernel.org/linux-acpi/8e4bbd5c59de31db71f718556654c0aa077df03d.camel@linux.ibm.com/
+> Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Huh, so the arm64 SCHED_{SMT,MC} configs are defaultless (I added SCHED_SMT
-to arm64's defconfig not so long ago), but x86 has them default y, which
-I'm thinking is a tad better, and would be nice to harmonize. Unfortunately
-different architectures have their own dependency requirements - arm has
-ARM_CPU_TOPOLOGY, parisc has PARISC_CPU_TOPOLOGY...
+Due to the lack of negative feedback I'm queuing this up for 5.15-rc5.
+If there are concerns, please let me know.
 
-Would you hate making SCHED_* a "generic" config, with a common default and
-help text, and punt the arch specific stuff to an ARCH_SUPPORTS_* knob?
-
-Something like:
-
-arch/arm/Kconfig:
-  select ARCH_SUPPORTS_SCHED_MC if ARM_CPU_TOPOLOGY
-
-init/Kconfig:
-  config SCHED_MC
-    def_bool y
-    depends on ARCH_SUPPORTS_SCHED_MC && SMP
+> ---
+>  drivers/pci/pci-acpi.c |    3 +++
+>  1 file changed, 3 insertions(+)
+>
+> Index: linux-pm/drivers/pci/pci-acpi.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/pci-acpi.c
+> +++ linux-pm/drivers/pci/pci-acpi.c
+> @@ -1243,6 +1243,9 @@ static struct acpi_device *acpi_pci_find
+>         bool check_children;
+>         u64 addr;
+>
+> +       if (!dev->parent)
+> +               return NULL;
+> +
+>         down_read(&pci_acpi_companion_lookup_sem);
+>
+>         adev = pci_acpi_find_companion_hook ?
+>
+>
+>
