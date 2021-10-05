@@ -2,146 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B338423240
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 22:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63129423375
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Oct 2021 00:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230019AbhJEUp0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Oct 2021 16:45:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48920 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235949AbhJEUp0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Oct 2021 16:45:26 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04AA2C061753;
-        Tue,  5 Oct 2021 13:43:35 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id f9so1525576edx.4;
-        Tue, 05 Oct 2021 13:43:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Og2M5waf4fA2uPXVR7x75f+2DQk+Er2YOKkUnKX3nZk=;
-        b=ap2vC8X6KAv1QHqhkz2q8YofK57fi+puC8XosK5Nz10ZYlMruG5LLHwPvClyBQpMWm
-         8berVuZXF7txYIkit8yuznvzVaI7C5Ow7olHViNWKOyjE1GPlrb/sEujo/OeYcpMl0yW
-         MGc36PE5YBgGXJINGW+BwkKb5gAXA54fzGFdXkIYFvAG+LRXz6brZlhNz6Onv6ydLvPA
-         M1TbBxjrpifn65fpmH8mxNkDUY/1J/M2fyK2AKDW0b1wpD9gYXodLEHKlntCWBUDgknL
-         yl+rJICcXGUvjFf6Cs7+U754p4ffpaW1FLQULNv0meKZUU91HvWYgH0yiQIxMZeBSLcY
-         EZ8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Og2M5waf4fA2uPXVR7x75f+2DQk+Er2YOKkUnKX3nZk=;
-        b=rhumTp6UJyJII+Nocf6isD35feiC6s4nGHv4PU40qDPV3BWOdt1hMNioCMh0BvIK4q
-         ixEnopPyHd7Po4majZPrOfYDXbLXyU4q20LWP5wgTLZGFUmlaTGgWXydmJAjz6u0g94q
-         zf+6FxhqannxHHP37A2atp1O5XVJYoFYeB0KJe1qRW4gYCFboKyvftwuZ7vDpKSs9asT
-         8DtoX0BDDN8xT21woXWQ7xgpWLJeE/JeDjak3QqPtAbzPwGRgSm228boIGjksmbtujPN
-         Cy/6vRMWxZISb2lMnGDODveoFHa6A0/7uQrzzgYm8HPcJr60w67O3sMmC9bMZkSk2g/H
-         /yfQ==
-X-Gm-Message-State: AOAM531LRHTj/4q96TC8unNBQJOSfdKKKQagFoTMs4ajcpYkSxmgeeqk
-        pOvHi1TkwJxobJJhO6vbfcS/EQ1l62OcZCrmc6U=
-X-Google-Smtp-Source: ABdhPJwy6b5QSPhwn9KbIlfOEPHwI/1HnWTI9L+Y+T7NDIRuCf954BxzRKe+Af1JsOXVAXjVYwbdF768KuUur7Usvb8=
-X-Received: by 2002:a17:906:280f:: with SMTP id r15mr26029552ejc.559.1633466613592;
- Tue, 05 Oct 2021 13:43:33 -0700 (PDT)
+        id S236750AbhJEW10 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Oct 2021 18:27:26 -0400
+Received: from foss.arm.com ([217.140.110.172]:34334 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236697AbhJEW10 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 5 Oct 2021 18:27:26 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D02B56D;
+        Tue,  5 Oct 2021 15:25:34 -0700 (PDT)
+Received: from [192.168.122.166] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D5B2B3F66F;
+        Tue,  5 Oct 2021 15:25:33 -0700 (PDT)
+Subject: Re: [PATCH v3 2/4] PCI: brcmstb: Add ACPI config space quirk
+To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
+        lorenzo.pieralisi@arm.com, nsaenz@kernel.org, bhelgaas@google.com,
+        rjw@rjwysocki.net, lenb@kernel.org, robh@kernel.org, kw@linux.com,
+        f.fainelli@gmail.com, bcm-kernel-feedback-list@broadcom.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20211005153209.GA1083986@bhelgaas>
+ <d4b34193-31e5-2f95-6365-b58239c0dabb@arm.com>
+ <20211005194301.enb5jddzdgczcolx@pali>
+From:   Jeremy Linton <jeremy.linton@arm.com>
+Message-ID: <694bb355-3b5e-9801-3772-ff784b49a603@arm.com>
+Date:   Tue, 5 Oct 2021 17:25:33 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-References: <20210924085104.44806-1-21cnbao@gmail.com> <20210924085104.44806-2-21cnbao@gmail.com>
- <87o883l9c8.mognet@arm.com>
-In-Reply-To: <87o883l9c8.mognet@arm.com>
-From:   Barry Song <21cnbao@gmail.com>
-Date:   Wed, 6 Oct 2021 09:43:22 +1300
-Message-ID: <CAGsJ_4zCYjha8E6km9fDO8gFR-_vO1Nr0=a7V-b9yLRZGGAC9g@mail.gmail.com>
-Subject: Re: [PATCH RESEND 1/3] topology: Represent clusters of CPUs within a die
-To:     Valentin Schneider <valentin.schneider@arm.com>
-Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Aubrey Li <aubrey.li@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Ben Segall <bsegall@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guodong Xu <guodong.xu@linaro.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        "Cc: Len Brown" <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mel Gorman <mgorman@suse.de>, msys.mizuma@gmail.com,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
-        yangyicong <yangyicong@huawei.com>,
-        Tian Tao <tiantao6@hisilicon.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20211005194301.enb5jddzdgczcolx@pali>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 6, 2021 at 5:34 AM Valentin Schneider
-<valentin.schneider@arm.com> wrote:
->
-> On 24/09/21 20:51, Barry Song wrote:
-> >  void update_siblings_masks(unsigned int cpuid)
-> >  {
-> >       struct cpu_topology *cpu_topo, *cpuid_topo = &cpu_topology[cpuid];
-> > @@ -617,6 +622,11 @@ void update_siblings_masks(unsigned int cpuid)
-> >               if (cpuid_topo->package_id != cpu_topo->package_id)
-> >                       continue;
-> >
-> > +             if (cpuid_topo->cluster_id == cpu_topo->cluster_id) {
-> > +                     cpumask_set_cpu(cpu, &cpuid_topo->cluster_sibling);
-> > +                     cpumask_set_cpu(cpuid, &cpu_topo->cluster_sibling);
-> > +             }
-> > +
->
-> Hm so without cluster information (e.g. DT system), we have
-> ->cluster_id=-1, we'll essentially copy the package mask into the cluster
-> mask.
->
-> The exposed cluster mask is still <= package mask which is sensible. Are we
-> fine with that, or do we need/want the mask to be empty in the -1 case? I'm
-> guessing userspace tools should check for either id!=-1 or if the exclusive
-> disjucntion of cluster vs package masks is non-empty.
+Hi,
 
-Hi Valentin,
-Yep, this is a very good question. I'd like change the code to:
-diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-index 7cb31d959f33..fc0836f460fb 100644
---- a/drivers/base/arch_topology.c
-+++ b/drivers/base/arch_topology.c
-@@ -622,7 +622,8 @@ void update_siblings_masks(unsigned int cpuid)
-                if (cpuid_topo->package_id != cpu_topo->package_id)
-                        continue;
+On 10/5/21 2:43 PM, Pali Rohár wrote:
+> Hello!
+> 
+> On Tuesday 05 October 2021 10:57:18 Jeremy Linton wrote:
+>> Hi,
+>>
+>> On 10/5/21 10:32 AM, Bjorn Helgaas wrote:
+>>> On Thu, Aug 26, 2021 at 02:15:55AM -0500, Jeremy Linton wrote:
+>>>> Additionally, some basic bus/device filtering exist to avoid sending
+>>>> config transactions to invalid devices on the RP's primary or
+>>>> secondary bus. A basic link check is also made to assure that
+>>>> something is operational on the secondary side before probing the
+>>>> remainder of the config space. If either of these constraints are
+>>>> violated and a config operation is lost in the ether because an EP
+>>>> doesn't respond an unrecoverable SERROR is raised.
+>>>
+>>> It's not "lost"; I assume the root port raises an error because it
+>>> can't send a transaction over a link that is down.
+>>
+>> The problem is AFAIK because the root port doesn't do that.
+> 
+> Interesting! Does it mean that PCIe Root Complex / Host Bridge (which I
+> guess contains also logic for Root Port) does not signal transaction
+> failure for config requests? Or it is just your opinion? Because I'm
+> dealing with similar issues and I'm trying to find a way how to detect
+> if some PCIe IP signal transaction error via AXI SLVERR response OR it
+> just does not send any response back. So if you know some way how to
+> check which one it is, I would like to know it too.
 
--               if (cpuid_topo->cluster_id == cpu_topo->cluster_id) {
-+               if (cpuid_topo->cluster_id == cpu_topo->cluster_id &&
-+                   cpuid_topo->cluster_id != -1) {
-                        cpumask_set_cpu(cpu, &cpuid_topo->cluster_sibling);
-                        cpumask_set_cpu(cpuid, &cpu_topo->cluster_sibling);
-                }
+This is my _opinion_ based on what I've heard of some other IP 
+integration issues, and what i've seen poking at this one from the 
+perspective of a SW guy rather than a HW guy. So, basically worthless. 
+But, you should consider that most of these cores/interconnects aren't 
+aware of PCIe completion semantics so its the root ports responsibility 
+to say, gracefully translate a non-posted write that doesn't have a 
+completion for the interconnects its attached to, rather than tripping 
+something generic like a SLVERR.
 
-This should be consistent with Tim's patch3/3 for x86 in case
-id is BAD_APICID:
-static bool match_l2c(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
-{
-        ...
-        /* Do not match if we do not have a valid APICID for cpu: */
-        if (per_cpu(cpu_l2c_id, cpu1) == BAD_APICID)
-                return false;
-        ...
-}
+Anyway, for this I would poke around the pile of exception registers, 
+with your specific processors manual handy because a lot of them are 
+implementation defined.
+>>>
+>>> Is "SERROR" an ARM64 thing?  My guess is the root port would raise an
+>>> Unsupported Request error or similar, and the root complex turns that
+>>> into a system-specific SERROR?
+> 
+> Yes, SError is arm64 specific. It is asynchronous CPU interrupt and
+> syndrome code then contains what happened.
+> 
+>> AFAIK, what is happening here the CPU core has an outstanding R/W request
+>> for which it never receives a response from the root port. So basically its
+>> an interconnect protocol violation that the CPU is complaining about rather
+>> than something PCIe specific.
+> 
+> Could you describe (ideally in commit message) which SError is
+> triggered? Normally if kernel receive SError interrupt it also puts into
+> dmesg or oops message also syndrome code which describe what kind of
+> error / event occurred. It could help also to other understand what is
+> happening there.
+> 
 
-Thanks
-Barry
