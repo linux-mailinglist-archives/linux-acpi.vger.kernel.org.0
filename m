@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B84EB4221AE
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 11:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B10F24221F0
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 11:15:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232920AbhJEJIe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Oct 2021 05:08:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53156 "EHLO
+        id S232871AbhJEJRn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Oct 2021 05:17:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232773AbhJEJIe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Oct 2021 05:08:34 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9182EC061745;
-        Tue,  5 Oct 2021 02:06:43 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id f9so13214992edx.4;
-        Tue, 05 Oct 2021 02:06:43 -0700 (PDT)
+        with ESMTP id S232773AbhJEJRm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Oct 2021 05:17:42 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D578C061745;
+        Tue,  5 Oct 2021 02:15:52 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id l7so52316484edq.3;
+        Tue, 05 Oct 2021 02:15:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=BSFeclzRnwoQe2g5vZuTvAXMAyEYQaztfOLftQqfUtM=;
-        b=YmNaz1joJZn98bJslZ8JvRfZjSlvIUIZwh+wPVIkvi2EyNDOil4zbt3q6VYFsiDfSR
-         hZxtkS1GCZ4harzY1cNsetvftMwSeCLPw8BllbmesZ0hkOouYIE3YJeX7FWfP77P2KKg
-         cxN6ApVdJeA5IB0iRVV22irbru5DPS85ffV/dDNO/gsNe8hslgkwXpJnTW6sbFJZFvkq
-         I40VQZrsHepvtk37i+dXWGBxXXI1T4+N+WdVAa4ds+5f7qwoRrwDZaUja+Ferh7Nvc3n
-         GZMq/4z4Li/fR4vEeBQU0qOSSsafs5hJtPbftfkPDlXj/gwpLpvqKPCTayNxATjLQq32
-         591Q==
+        bh=GQoQa0JVYcpFPninq3MwQJ4t+aAurhAVS0gRpy1OuAU=;
+        b=cHHreZie46eyV5UQtcWlPvVeR30gireFFCtLNqpyM6w/hfFeWPQYoCbPA8MNgUaivk
+         jPfib+ImaKHk7EAJjapC/H1QZ68Ju4MWfx4Zd0sz7mc5yvGCGl5stcicc2b2thfblidY
+         zcvyJBTpNo0qU2QZ9qBCOKgPAD8MwQ59E5bd5QtVHfFUPwru63B8iIsAJMH2AW3AkfTv
+         PnjyXsg/vLcwxrkGpDCD6G5MBh4VIceNliXAnSb61DLivBaKv9I7q512+aFZVwh/nnk7
+         hgIpU8D2/zg8VYS5WF4KyjKF7kX/vUJCLmMn2gSxeN1XSPMwHDUrjFDEyxBqJ8vJwa2M
+         r8UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=BSFeclzRnwoQe2g5vZuTvAXMAyEYQaztfOLftQqfUtM=;
-        b=QLXFLKjr3NmVa4oFEiE/oMggj6XxBKZrxsGQngzhgLh6TOiChfbH5jYO399WE6qjLw
-         Tbt7Zuulv4jINI9APhP2STT6MtIeG3F5Gbxqkfwd2b9TzrEOnif7aHs5D6Lb6zH+/tff
-         SkECNZUdtJu/1817ebj6qsesttbH2JXfwi+FWH1nQAi5SRvNijUxQD3eXX/dyFSzwM+o
-         Y3GccAtVU/HayYdfo50OfV9XpRPDWZv2T1RXQZjsWiuEy+DM2FHfL1yzSzpvB5oOHnL8
-         iyrHnN0dZwXjgv59+v3KX26f2f7sBrwdPQMjwBAdAU3GrXZLByHTbY03CNxq4/qDCST2
-         D6mQ==
-X-Gm-Message-State: AOAM531G0Ho9fngCPF8heWNkawCfYQMO4Gn2Jzxs85t6AsodJp7SgiUp
-        VnotVCxqyFd+6dB8NxRDNFIBZ0wCUBINCW96Zpk=
-X-Google-Smtp-Source: ABdhPJxKIjvjMGKHK4XqSHN8WgAXsuEOAR6flGcTg0VSrubjWT2cwGhKMbfk3K4O98PlTBJtbVQLqCWEQsknDVf/9XU=
-X-Received: by 2002:a17:907:767a:: with SMTP id kk26mr22828213ejc.134.1633424802040;
- Tue, 05 Oct 2021 02:06:42 -0700 (PDT)
+        bh=GQoQa0JVYcpFPninq3MwQJ4t+aAurhAVS0gRpy1OuAU=;
+        b=Q7KCYbTNg3nq/6H0UvZi5tr0IMOU/wwMotT7+FEdqPPaZa1jCeRAA4b9WWjmue6iut
+         Xoh5AFCSoLYl6XFCqkvNxLW3JV3pU9q/6OsvnJEb7IiEM3hbAVn+ssTlVaf3GWX+5NEJ
+         CQ79UV3oCXrzpJYac/bb542iylK12dNHiC+n6JCuVYUN7N5mqpIkvUBHK/749xYkQewE
+         7RLcuI3/9RcDwzJKk1xE7ZyPoOJ5hCZkxQUuv9jVHbg1teYKcqWepnk2cQ1dr30WxHIb
+         VmlzlYDqhE6pYQCMacZa9/1qcDCxEWumIhB+KVK9O8GG1udB1YLj9STQ6Cj38SzqB8UH
+         7FUw==
+X-Gm-Message-State: AOAM5321Dv5+/AA92sftTq7BrpL5GiGZl5lpUInPitVA3jvUkklnem0T
+        rbCq8BpC2XKRb3zJgX8eGCNR6Gm12QLQhL02JPg=
+X-Google-Smtp-Source: ABdhPJy0htbluxxNvz1ROazf3bigM3/dNQVFayzx6fX2/fS4wVV0G7Ocw0rMmwj2gcGhjTIQRMODZgczu3OzDmJYpMA=
+X-Received: by 2002:a50:cd87:: with SMTP id p7mr24668925edi.294.1633425350348;
+ Tue, 05 Oct 2021 02:15:50 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210924085104.44806-1-21cnbao@gmail.com> <CAGsJ_4yW72mktbWjRfE9ngXoq9oXBXyAd_TPjKBNdGiRSoh9LA@mail.gmail.com>
  <CAKfTPtAtfJRFBbo+kBCYf42hxcc2iP8kkmg3Wcr5aW7Rnf=rfw@mail.gmail.com>
  <YVch0/R9PHzUwqea@hirez.programming.kicks-ass.net> <ece8838d112840bf26adbb09f653babcf298eb28.camel@linux.intel.com>
- <CAGsJ_4wvLw=US1ddJr=Jrim1vs-F2hpcQ29LQyqDENd7Fk=ssA@mail.gmail.com> <20211005080413.GL4323@worktop.programming.kicks-ass.net>
-In-Reply-To: <20211005080413.GL4323@worktop.programming.kicks-ass.net>
+ <20211005075001.GJ4323@worktop.programming.kicks-ass.net>
+In-Reply-To: <20211005075001.GJ4323@worktop.programming.kicks-ass.net>
 From:   Barry Song <21cnbao@gmail.com>
-Date:   Tue, 5 Oct 2021 22:06:30 +1300
-Message-ID: <CAGsJ_4zgYcne+pOTfLV-pvgQ6R=n4n2Vmc6rC9En_9VGs+BM_w@mail.gmail.com>
+Date:   Tue, 5 Oct 2021 22:15:39 +1300
+Message-ID: <CAGsJ_4xZD0sG0Df666f0bvHOzuPMjnw0dN_mArER5k1pJ6LPLw@mail.gmail.com>
 Subject: Re: [PATCH RESEND 0/3] Represent cluster topology and enable load
  balance between clusters
 To:     Peter Zijlstra <peterz@infradead.org>
@@ -91,61 +91,63 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 5, 2021 at 9:05 PM Peter Zijlstra <peterz@infradead.org> wrote:
+On Tue, Oct 5, 2021 at 8:50 PM Peter Zijlstra <peterz@infradead.org> wrote:
 >
-> On Sat, Oct 02, 2021 at 08:09:58PM +1300, Barry Song wrote:
+> On Fri, Oct 01, 2021 at 04:22:46PM -0700, Tim Chen wrote:
+> > On Fri, 2021-10-01 at 16:57 +0200, Peter Zijlstra wrote:
 >
-> > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> > index 7e4651a1aaf4..86821e83b935 100644
-> > --- a/arch/arm64/Kconfig
-> > +++ b/arch/arm64/Kconfig
-> > @@ -993,8 +993,13 @@ config SCHED_CLUSTER
-> >         bool "Cluster scheduler support"
-> >         help
-> >           Cluster scheduler support improves the CPU scheduler's decision
-> > +         making when dealing with machines that have clusters of CPUs.
-> > +         Cluster usually means a couple of CPUs which are placed closely
-> > +         by sharing mid-level caches, last-level cache tags or internal
-> > +         busses. For example, on Hisilicon Kunpeng920, each 4 CPUs share
-> > +         LLC cache tags. This feature isn't a universal win because it
-> > +         can bring a cost of slightly increased overhead in some places.
-> > +         If unsure say N here.
+> > > The one questino I have is, do we want default y?
 > >
-> >  config SCHED_SMT
-> >         bool "SMT scheduler support"
-> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> > index bd27b1cdac34..940eb1fe0abb 100644
-> > --- a/arch/x86/Kconfig
-> > +++ b/arch/x86/Kconfig
-> > @@ -1002,12 +1002,17 @@ config NR_CPUS
-> >           to the kernel image.
+> > I also agree that default y is preferable.
+>
+> I'll change at least the x86 one to:
+>
+>         default y
+>         depends on SMP
+>
+> > > The one nit I have is the Kconfig text, I'm not really sure that's
+> > > clarifying what a cluster is.
 > >
-> >  config SCHED_CLUSTER
-> > +       def_bool y
-> > +       prompt "Cluster scheduler support"
-> >         help
-> >          Cluster scheduler support improves the CPU scheduler's decision
-> > +        making when dealing with machines that have clusters of CPUs.
-> > +        Cluster usually means a couple of CPUs which are placed closely
-> > +        by sharing mid-level caches, last-level cache tags or internal
-> > +        busses. For example, on x86 Jacobsville, each 4 CPUs share one
-> > +        L2 cache.
+> > Do you have a preference of a different name other than cluster?
+> > Or simply better documentation on what a cluster is for ARM64
+> > and x86 in Kconfig?
 >
->                         This feature isn't a universal win because it can bring
-> > +        a cost of slightly increased overhead in some places. If unsure
-> > +        say N here.
+> Yes, better wording as to what a cluster is. Currently the x86 and arm64
+> ones actually differ:
 >
-> That is a really odd addition to a default-y feature.
+> x86:
+>         help
+>          Cluster scheduler support improves the CPU scheduler's decision
+>          making when dealing with machines that have clusters of CPUs
+>          sharing L2 cache. If unsure say N here.
 >
-> How about I make both:
->
+> arm64:
 >         help
 >           Cluster scheduler support improves the CPU scheduler's decision
->           making when dealing with machines that have clusters of CPUs.
->           Cluster usually means a couple of CPUs which are placed closely
->           by sharing mid-level caches, last-level cache tags or internal
->           busses.
+>           making when dealing with machines that have clusters(sharing internal
+>           bus or sharing LLC cache tag). If unsure say N here.
+>
+>
+> (also, all this stuff being replicated across arch/*/Kconfig seems
+> unfortunate)
 
-looks good to me. thanks!
+perhaps worth a separate patchset to do some cleanup so that SCHED_MC,
+SCHED_SMT etc
+won't be replicated in different architectures. Right now, this kind
+of Kconfig option is copied
+everywhere. I am seeing SCHED_SMT in all of
+arch/arm/Kconfig
+arch/arm64/Kconfig
+arch/ia64/Kconfig
+arch/mips/Kconfig
+arch/powerpc/Kconfig
+arch/s390/Kconfig
+arch/sparc/Kconfig
+arch/x86/Kconfig
+...
 
-barry
+Is it a better way to move them to a common Kconfig and let the architectures to
+declare things like ARCH_HAVE_SMT?
+
+Thanks
+Barry
