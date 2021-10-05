@@ -2,98 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE18142288B
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 15:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A5D44229BF
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Oct 2021 15:59:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235569AbhJENwy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 5 Oct 2021 09:52:54 -0400
-Received: from foss.arm.com ([217.140.110.172]:44844 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235467AbhJENwm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 5 Oct 2021 09:52:42 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 306D61FB;
-        Tue,  5 Oct 2021 06:50:51 -0700 (PDT)
-Received: from e113632-lin (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 37E593F70D;
-        Tue,  5 Oct 2021 06:50:47 -0700 (PDT)
-From:   Valentin Schneider <valentin.schneider@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>,
-        Tim Chen <tim.c.chen@linux.intel.com>
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
-        Barry Song <21cnbao@gmail.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Aubrey Li <aubrey.li@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Ben Segall <bsegall@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guodong Xu <guodong.xu@linaro.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        "Cc\: Len Brown" <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mel Gorman <mgorman@suse.de>, msys.mizuma@gmail.com,
-        "Zengtao \(B\)" <prime.zeng@hisilicon.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
-        yangyicong <yangyicong@huawei.com>
-Subject: Re: [PATCH RESEND 0/3] Represent cluster topology and enable load balance between clusters
-In-Reply-To: <87tuhvlhae.mognet@arm.com>
-References: <20210924085104.44806-1-21cnbao@gmail.com> <CAGsJ_4yW72mktbWjRfE9ngXoq9oXBXyAd_TPjKBNdGiRSoh9LA@mail.gmail.com> <CAKfTPtAtfJRFBbo+kBCYf42hxcc2iP8kkmg3Wcr5aW7Rnf=rfw@mail.gmail.com> <YVch0/R9PHzUwqea@hirez.programming.kicks-ass.net> <ece8838d112840bf26adbb09f653babcf298eb28.camel@linux.intel.com> <20211005075001.GJ4323@worktop.programming.kicks-ass.net> <87tuhvlhae.mognet@arm.com>
-Date:   Tue, 05 Oct 2021 14:50:45 +0100
-Message-ID: <87r1czlgwa.mognet@arm.com>
+        id S235692AbhJEOBA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 5 Oct 2021 10:01:00 -0400
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:35638 "EHLO
+        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236504AbhJEN7b (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 5 Oct 2021 09:59:31 -0400
+Received: by mail-ot1-f52.google.com with SMTP id 77-20020a9d0ed3000000b00546e10e6699so25924069otj.2;
+        Tue, 05 Oct 2021 06:57:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9Dmc2UFMnKcE8fZkmJNJs2CtEujDkiJDHQO9nSLj434=;
+        b=UdoNgHaw9Afd4Na9tYay55Y+V70klvhU7tcwXBqLCrRkPgtzh+sx6wuNrRW78/dlZF
+         FqhcO1Zc7xM5gGe2UfZ42gEWm+GAe4kJkZfHa2OyQeFYunc83vNhqtt6DCKH1o7hlxW/
+         3FTu1VK/WP2tfsgTdBMvNWXGd1QIXGZGhRtBKIDoIiD5W9/IFLCtAaMIraEnRhFT04ko
+         quy2+inUirN6KN+VZ+HgboFfME1hHFatp8xA3LW0k7f+5v6A/Qkn0gpZO2pHm4nw4T6D
+         z7TOhhmaFU4vhkDgMc7a/Snt0K2wNMu4ITQ9IJaKIe2noA8vhFAJYdjtxeZRt4nxCpRw
+         xm5w==
+X-Gm-Message-State: AOAM530Y9B0ZoU1e9fYb3f6fldxKhNpITK8ALJs87qVxB5ICTIJ0LH4a
+        EwPlIT1PlNFlNDyD+67AKU5kPsXAn44Pj//Tmas=
+X-Google-Smtp-Source: ABdhPJxSdpGAi/bDgCXOQyZaMdrRL1F3GTxfm3bZCxHuboEmINvhSI5BEiSNvVfo5XSAyl4iCzKlaOXCcNBeoJ7/iZA=
+X-Received: by 2002:a05:6830:2784:: with SMTP id x4mr14547219otu.86.1633442260806;
+ Tue, 05 Oct 2021 06:57:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20211002044500.24306-1-rdunlap@infradead.org>
+In-Reply-To: <20211002044500.24306-1-rdunlap@infradead.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 5 Oct 2021 15:57:30 +0200
+Message-ID: <CAJZ5v0ggDQ7ZXKRgZXQy-EsdD8-Yu01e=A+OSXm9UkJs2P8wUA@mail.gmail.com>
+Subject: Re: [PATCH] PNP: system.c: unmark a comment as being kernel-doc
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel test robot <lkp@intel.com>,
+        Aditya Srivastava <yashsri421@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 05/10/21 14:42, Valentin Schneider wrote:
-> On 05/10/21 09:50, Peter Zijlstra wrote:
->> On Fri, Oct 01, 2021 at 04:22:46PM -0700, Tim Chen wrote:
->>> On Fri, 2021-10-01 at 16:57 +0200, Peter Zijlstra wrote:
->>
->>> > The one questino I have is, do we want default y?
->>>
->>> I also agree that default y is preferable.
->>
->> I'll change at least the x86 one to:
->>
->>       default y
->>       depends on SMP
->>
+On Sat, Oct 2, 2021 at 6:45 AM Randy Dunlap <rdunlap@infradead.org> wrote:
 >
-> Huh, so the arm64 SCHED_{SMT,MC} configs are defaultless (I added SCHED_SMT
-> to arm64's defconfig not so long ago), but x86 has them default y, which
-> I'm thinking is a tad better, and would be nice to harmonize. Unfortunately
-> different architectures have their own dependency requirements - arm has
-> ARM_CPU_TOPOLOGY, parisc has PARISC_CPU_TOPOLOGY...
+> Fix a documentation build warning caused by the comment not being
+> in kernel-doc format:
 >
-> Would you hate making SCHED_* a "generic" config, with a common default and
-> help text, and punt the arch specific stuff to an ARCH_SUPPORTS_* knob?
+> system.c:110: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+>  * Reserve motherboard resources after PCI claim BARs,
 >
-> Something like:
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Cc: Aditya Srivastava <yashsri421@gmail.com>
+> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> Cc: linux-acpi@vger.kernel.org
+> ---
+>  drivers/pnp/system.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> arch/arm/Kconfig:
->   select ARCH_SUPPORTS_SCHED_MC if ARM_CPU_TOPOLOGY
+> --- linux-next-20211001.orig/drivers/pnp/system.c
+> +++ linux-next-20211001/drivers/pnp/system.c
+> @@ -106,7 +106,7 @@ static int __init pnp_system_init(void)
+>         return pnp_register_driver(&system_pnp_driver);
+>  }
 >
-> init/Kconfig:
->   config SCHED_MC
->     def_bool y
->     depends on ARCH_SUPPORTS_SCHED_MC && SMP
+> -/**
+> +/*
+>   * Reserve motherboard resources after PCI claim BARs,
+>   * but before PCI assign resources for uninitialized PCI devices
+>   */
 
-... Which is essentially what Barry suggested somewhere else in the thread
-(I TL; DR'd).
+Applied as 5.16 material, thanks!
