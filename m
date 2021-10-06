@@ -2,84 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F096A423BEC
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Oct 2021 13:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 851F1423C8F
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Oct 2021 13:22:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229824AbhJFLGf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Oct 2021 07:06:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45968 "EHLO
+        id S238326AbhJFLYY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 6 Oct 2021 07:24:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237952AbhJFLGe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Oct 2021 07:06:34 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0435DC061749
-        for <linux-acpi@vger.kernel.org>; Wed,  6 Oct 2021 04:04:42 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id b20so8817728lfv.3
-        for <linux-acpi@vger.kernel.org>; Wed, 06 Oct 2021 04:04:41 -0700 (PDT)
+        with ESMTP id S238305AbhJFLYW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Oct 2021 07:24:22 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13933C06174E;
+        Wed,  6 Oct 2021 04:22:30 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id m22so7848951wrb.0;
+        Wed, 06 Oct 2021 04:22:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=I2fW+u1saRd4M4QAgAuZUqAw0kIU98LVUQFBA1WDN+0=;
-        b=HYGNE8v98U5gdk4feWjXADhvygQd341fkudI9rRNLp5XBKPkGsK83l4RYlfgZX/Vvo
-         P3ScHjLH0qm4hZdKVLHm/Ky8Gw56k27m8E9+E6pWxv7HexN37McJWNtMWI6265AU/UWW
-         FCsZVEARUfiDfmXhCicNsI1i7u9IF1uV6dINct+tHspvcTrpJUggkLzPpCieil9EziBY
-         B3zJTKUfzLCbEwRqWCHFt+/X3PmdaQBS1iXaPQQOznBhUwVrxLsisCeysWpEehF08ygc
-         LyqQvLS/oPHylNJTs+nrqn0FKFT/lz6iu7Kva1O05jnoMWoc2zvbpCFqJM6OzeKDXcGX
-         OdoQ==
+        bh=jOKM+pEePhem4widkHVhzfPY+xV2PoH5qxuaHku2BGg=;
+        b=jovSS3roUqUucRZmK4Hysv7OycrN+80n0uARBvijogTnlkb1Ogk9DSW8vtukwQHUQb
+         Xu+bnYFNwfFBVT9nBFln+651Vkpy3+zcSxIhvuVyWpV2MweHnjhqrmeYuc86waRdCCUR
+         IfmxVmHIElJAPTXuPHgkMJOg8k98uZykFLrKbQEwke48Xg4rEquuw7oX63f6CLW+AnFR
+         6OwxMPNKhsOrWz3ybgogqAcvS1SFhx6usomHWIWc87ujBcoEpReRn0Rlvo2GATmPNzm6
+         QgIsgYxwcgUpZbMG9nR1huR2BxKjTX8gcOfz+xmlKqByl1qomFKcWBzih0lQnaD551kU
+         hp8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=I2fW+u1saRd4M4QAgAuZUqAw0kIU98LVUQFBA1WDN+0=;
-        b=Eo/W9aIyiXmzC/YSmVNy09xbfE3/XMRSqxBlf5wtN4gkM0KVfTJ5+5DndUSt+upNdW
-         kFCKDYXREp6/9gli5K5tWs24iP573HLoAbHcBb7jm1Z1HSRFYMCyP8povdrAjBYUOj6q
-         Z/WUTs+NvR4Eyopb8nVxdqhvNNekbL+d80JnIfURsieoPMbQg+TMh7qsuHo4y1W/OyXy
-         0egXVNMycYzWVEFso3ShoI1PanHoAekXn8t7fxpFS5if0DaStJnWmxytHT8N+EN97RDB
-         48JhVFFha7Be44oKtM5Gm+XmuquV7oBbj1becg3teo9Doe/MvxMLjBQ9kmWFICV+jHrc
-         HFyA==
-X-Gm-Message-State: AOAM530vG8KgoXW2+uNwGDDZn2t9cgOgRTSahGsZLSjk7HVRjHG+TWQy
-        /LiOdtPboeEKsrlfrFwg5/nITmEEtUOmOEWztrA=
-X-Google-Smtp-Source: ABdhPJyGpkxGksPZKOAS8ufVbuyftRoKiJ2rpACKSIsuTmMKhx3a6wIAKUS8rSB+yh5McknSw0u7T900W4z/EYekeo0=
-X-Received: by 2002:a2e:a5c5:: with SMTP id n5mr3772616ljp.106.1633518280411;
- Wed, 06 Oct 2021 04:04:40 -0700 (PDT)
+        bh=jOKM+pEePhem4widkHVhzfPY+xV2PoH5qxuaHku2BGg=;
+        b=nF2V751+Ok1ZTCrde1cnl0NAozRLA7bU5G51LWF/ZeAZRTHRQIhllITgOPcEpuUCX3
+         MghzybJI0chKJrDPMFZ241r1qc9CwqFlkWLjIy7R6GBi4dgjwRgTwsQwEBOuVJILkssY
+         z6bkr7ZlpnFwuzm5Gpa6jHYcGmrbg+GIMfvA+wbySfvvRjhWkPjuqgD5WNAQDNTZ2UQl
+         Lw4qY+OjMX7vmK3xVga5guBsFQF/lNnt/2cYpL3o4IgdcMqu8aTtFSMMGj2TxRF4AR4Z
+         +0ta3Czmi8NA67pCUSNynX+6jK4kekd4T5PZBnMu/WHdwBx/26IbjiGuc6DU27nx8HwX
+         /eJw==
+X-Gm-Message-State: AOAM5318DXPAVwmMNx6Wbh48inxEvOQf//GlJKyuS9MOONj77GE3sPfL
+        QOXvUZyuBQ7KEcbFSa2MrF8=
+X-Google-Smtp-Source: ABdhPJzqV6pbGRmNxh/6nIl4JB5xH/x4SzqV8vrsv1ncVkzVo4Qnxlyygi4G2S1Zth4R6K2a/KnUSA==
+X-Received: by 2002:a1c:a508:: with SMTP id o8mr9180075wme.29.1633519348664;
+        Wed, 06 Oct 2021 04:22:28 -0700 (PDT)
+Received: from localhost.localdomain ([197.49.35.129])
+        by smtp.gmail.com with ESMTPSA id o15sm4807105wmc.21.2021.10.06.04.22.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Oct 2021 04:22:28 -0700 (PDT)
+From:   Sohaib Mohamed <sohaib.amhmd@gmail.com>
+Cc:     Robert Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPICA: drop unneeded initialization value
+Date:   Wed,  6 Oct 2021 13:20:04 +0200
+Message-Id: <20211006112004.52643-1-sohaib.amhmd@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:ab3:1115:0:0:0:0:0 with HTTP; Wed, 6 Oct 2021 04:04:39 -0700 (PDT)
-From:   Charles Ugo <charlesugo1960@gmail.com>
-Date:   Wed, 6 Oct 2021 13:04:39 +0200
-Message-ID: <CAAsrwmK4aKNmjErL5Wp9QDKVzWo+yXk5EdwKm3gQ5DZu+Wfv0A@mail.gmail.com>
-Subject: Payment notification Letter
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Barrister Charles Ugo and Partners
-Republic of Togo West Africa.
-Tel Contact : +228 9033 58 20
-Contact Person: Barrister  Charles Ugo
+Do not initialise statics to NULL
 
-Dear Friend,
+Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+---
+ drivers/acpi/acpica/dbcmds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I am Barrister Charles Ugo a personal Lawyer to Late (Mr. J.B) who is
-a Nationality of your country or maybe one of your relative; He died
-in my country due to Pandemic Corona Virus Crisis, I have contacted
-you as the beneficiary to the Late Mr. J.B) because you have the same
-name with him; please let me know if you know this man, he deposited
-fund valued at =E2=82=AC4.5 million Euros in our Bank here before he died.
+diff --git a/drivers/acpi/acpica/dbcmds.c b/drivers/acpi/acpica/dbcmds.c
+index 9eb68e0751c7..d0e3b874ca0e 100644
+--- a/drivers/acpi/acpica/dbcmds.c
++++ b/drivers/acpi/acpica/dbcmds.c
+@@ -35,7 +35,7 @@ acpi_db_device_resources(acpi_handle obj_handle,
+ 
+ static void acpi_db_do_one_sleep_state(u8 sleep_state);
+ 
+-static char *acpi_db_trace_method_name = NULL;
++static char *acpi_db_trace_method_name;
+ 
+ /*******************************************************************************
+  *
+-- 
+2.25.1
 
-Your immediate/urgent response is needed now and don=E2=80=99t hesitate to
-call me and also provide to me these below information=E2=80=99s for better
-communication and to enable the holding Bank start payment to you.
-
-1. Your full Name
-2. Your Contact Address
-3. Your Occupation
-4. Telephone N=C2=B0
-5. Private Email.
-
-Get back to me immediately.
-Thanks
-Barrister Charles Ugo.
