@@ -2,59 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60992425112
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Oct 2021 12:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AA9B425140
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Oct 2021 12:38:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240857AbhJGKcs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Oct 2021 06:32:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56820 "EHLO
+        id S240969AbhJGKkZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Oct 2021 06:40:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240726AbhJGKcs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Oct 2021 06:32:48 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FDC6C061746;
-        Thu,  7 Oct 2021 03:30:54 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id v18so21287029edc.11;
-        Thu, 07 Oct 2021 03:30:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8mY64fv5z2ogFhndQ+OIlGH9TZ8lF/cAOTOOGKeTfLw=;
-        b=IV75uUEO7ve3jcFTQQ6a0Hr/G1GyiMzZzVnGSB7EfvQMJ5tIWrRC4wF6dETgBP4aDw
-         l26+4R5zB9K6adNvVf9SVfyBAsgFP8lbqeUHJvfvuAYiSSQkwm8m+SkeHYD8tHk5mup5
-         SaK99WGZ+f09FzfaOoX3ifT96Zb3j0QaIBe9rUIRX/GusHmqapUI5FCmZn9gZ6fFbPV8
-         DNU0yTuvia/M83FHOsFokMOfUvhxRoWNmwhtlYgaPrqhnIoV/hb+sg3gao2eWTy5A82D
-         xo5dZHxTHTL/hajBtitEialaqAsDyE/gPdPJOPq7XAeaU9sykqpOHKixZnA/Ac++g4nu
-         LgLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8mY64fv5z2ogFhndQ+OIlGH9TZ8lF/cAOTOOGKeTfLw=;
-        b=PAKVYZ2jjv7k56TgDOpyLUGobPHlbvqISxfKh2j3MSWwfHK57V/2cS7TKW7FZVCywq
-         iGRKz3tUcmpxhJJtcucy0R03oORjFy/sDcESdiPF06MdI6NgyMe0bxCB67FFg5aakTD1
-         BBodVpFvwaQAkQevqc0hGtpxFhQx0CVPNryevet2JER2QZB0uzssUyveNybA/0HcZXZX
-         FxVd8tGG+Z2ummwHGoNoYlwHattkB7hd7Me/iB5/oaOpvRlFr3ey6SAZP8Hphxkzdbls
-         LlID424mxP42r/VhThMzW5CXkaxovmQDsdc1vy9zD0AUqLtj4ugQKuqxXnlR/QNXMXjU
-         o8yA==
-X-Gm-Message-State: AOAM532KB3vP5LaTqmMgZyK14lzWZC1BDuYP1RW+cgm4dkzxE1bAf8in
-        kvGKOtI6KA24Fk2KgkMAUbRttMZQ9tKiJtluk8A=
-X-Google-Smtp-Source: ABdhPJzrxcI8+MEuid+j/nPlF6m0fxTDB9iXiOL8Z0cef8F4m1dbX18KPjmL0x/le3rVHgOioxp/v891RcG75XEOdZA=
-X-Received: by 2002:a17:906:3383:: with SMTP id v3mr4674165eja.213.1633602648062;
- Thu, 07 Oct 2021 03:30:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210924085104.44806-1-21cnbao@gmail.com> <20210924085104.44806-2-21cnbao@gmail.com>
- <87o883l9c8.mognet@arm.com> <CAGsJ_4zCYjha8E6km9fDO8gFR-_vO1Nr0=a7V-b9yLRZGGAC9g@mail.gmail.com>
- <CAGsJ_4ycKDfFY+LoaUBJ5huH8+kUsGGsC1po4DDQQPU5-ikf8A@mail.gmail.com>
- <20211006121858.GI174703@worktop.programming.kicks-ass.net>
- <CAGsJ_4zdr-Y5=TckNELoxgHDzNKhJuRsF5YAfEep24Ga7Y5ENg@mail.gmail.com> <20211006135550.GJ174703@worktop.programming.kicks-ass.net>
-In-Reply-To: <20211006135550.GJ174703@worktop.programming.kicks-ass.net>
-From:   Barry Song <21cnbao@gmail.com>
-Date:   Thu, 7 Oct 2021 23:30:36 +1300
-Message-ID: <CAGsJ_4xvNCQ=sPzdhmsXbbjsOn4R1+bxYwLvrRNi1wiium5O7g@mail.gmail.com>
-Subject: Re: [PATCH RESEND 1/3] topology: Represent clusters of CPUs within a die
-To:     Peter Zijlstra <peterz@infradead.org>
+        with ESMTP id S240955AbhJGKkV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Oct 2021 06:40:21 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C3AC061762;
+        Thu,  7 Oct 2021 03:38:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Z0HFg8la3obAWV2GGdEJBj4YtmyT7c3u08WRq35X0fo=; b=iRFJNOzhmcmh/dAkVO9P881YVq
+        86hGzZgtuBXX8iNGtm5OzclBT6NslnMwl9H3R5sb5/Lwe0supJf8CaF0mM4FDLrf/Eg6yrxbgMHZ3
+        Py44t3TottmnEdhwKDGGH1VzQn6tLcpASoiodCpI860AsXYGFay7QeKxB6OY4KsALjQP1PQtxaJYu
+        mmvrdvMoltaAxf0eo3YBMycRPBw7X3HhivxTMwtOYPtk48PjrD6hloR4Zg4iP3uu5hT+p+8JchnPb
+        NDhOItF9JFmq9KpBgibmgNtWkzCV2eLmJaRQb8h7hBuEGH/zPR3yjcrC92pwx/adGzsH3tixw0GLr
+        MUYR9FGg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mYQkI-001l03-C6; Thu, 07 Oct 2021 10:35:43 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 508D29811BB; Thu,  7 Oct 2021 12:35:26 +0200 (CEST)
+Date:   Thu, 7 Oct 2021 12:35:26 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Barry Song <21cnbao@gmail.com>
 Cc:     Valentin Schneider <valentin.schneider@arm.com>,
         Dietmar Eggemann <dietmar.eggemann@arm.com>,
         LKML <linux-kernel@vger.kernel.org>,
@@ -87,59 +64,63 @@ Cc:     Valentin Schneider <valentin.schneider@arm.com>,
         Will Deacon <will@kernel.org>, x86 <x86@kernel.org>,
         yangyicong <yangyicong@huawei.com>,
         Tian Tao <tiantao6@hisilicon.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH RESEND 1/3] topology: Represent clusters of CPUs within a
+ die
+Message-ID: <20211007103526.GS174703@worktop.programming.kicks-ass.net>
+References: <20210924085104.44806-1-21cnbao@gmail.com>
+ <20210924085104.44806-2-21cnbao@gmail.com>
+ <87o883l9c8.mognet@arm.com>
+ <CAGsJ_4zCYjha8E6km9fDO8gFR-_vO1Nr0=a7V-b9yLRZGGAC9g@mail.gmail.com>
+ <CAGsJ_4ycKDfFY+LoaUBJ5huH8+kUsGGsC1po4DDQQPU5-ikf8A@mail.gmail.com>
+ <20211006121858.GI174703@worktop.programming.kicks-ass.net>
+ <CAGsJ_4zdr-Y5=TckNELoxgHDzNKhJuRsF5YAfEep24Ga7Y5ENg@mail.gmail.com>
+ <20211006135550.GJ174703@worktop.programming.kicks-ass.net>
+ <CAGsJ_4xvNCQ=sPzdhmsXbbjsOn4R1+bxYwLvrRNi1wiium5O7g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGsJ_4xvNCQ=sPzdhmsXbbjsOn4R1+bxYwLvrRNi1wiium5O7g@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 7, 2021 at 2:55 AM Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Thu, Oct 07, 2021 at 01:50:43AM +1300, Barry Song wrote:
-> > On Thu, Oct 7, 2021 at 1:20 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> > >
-> > > On Wed, Oct 06, 2021 at 11:50:35PM +1300, Barry Song wrote:
-> > >
-> > > > > diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-> > > > > index 7cb31d959f33..fc0836f460fb 100644
-> > > > > --- a/drivers/base/arch_topology.c
-> > > > > +++ b/drivers/base/arch_topology.c
-> > > > > @@ -622,7 +622,8 @@ void update_siblings_masks(unsigned int cpuid)
-> > > > >                 if (cpuid_topo->package_id != cpu_topo->package_id)
-> > > > >                         continue;
-> > > > >
-> > > > > -               if (cpuid_topo->cluster_id == cpu_topo->cluster_id) {
-> > > > > +               if (cpuid_topo->cluster_id == cpu_topo->cluster_id &&
-> > > > > +                   cpuid_topo->cluster_id != -1) {
-> > > > >                         cpumask_set_cpu(cpu, &cpuid_topo->cluster_sibling);
-> > > > >                         cpumask_set_cpu(cpuid, &cpu_topo->cluster_sibling);
-> > > > >                 }
-> > > > >
+On Thu, Oct 07, 2021 at 11:30:36PM +1300, Barry Song wrote:
+> On Thu, Oct 7, 2021 at 2:55 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > On Thu, Oct 07, 2021 at 01:50:43AM +1300, Barry Song wrote:
+> > > On Thu, Oct 7, 2021 at 1:20 AM Peter Zijlstra <peterz@infradead.org> wrote:
 > > > >
-> > > > Hi Peter,
-> > > > Would you like to change this line in your tree?
+> > > > On Wed, Oct 06, 2021 at 11:50:35PM +1300, Barry Song wrote:
+> > > >
+> > > > > > diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+> > > > > > index 7cb31d959f33..fc0836f460fb 100644
+> > > > > > --- a/drivers/base/arch_topology.c
+> > > > > > +++ b/drivers/base/arch_topology.c
+> > > > > > @@ -622,7 +622,8 @@ void update_siblings_masks(unsigned int cpuid)
+> > > > > >                 if (cpuid_topo->package_id != cpu_topo->package_id)
+> > > > > >                         continue;
+> > > > > >
+> > > > > > -               if (cpuid_topo->cluster_id == cpu_topo->cluster_id) {
+> > > > > > +               if (cpuid_topo->cluster_id == cpu_topo->cluster_id &&
+> > > > > > +                   cpuid_topo->cluster_id != -1) {
+> > > > > >                         cpumask_set_cpu(cpu, &cpuid_topo->cluster_sibling);
+> > > > > >                         cpumask_set_cpu(cpuid, &cpu_topo->cluster_sibling);
+> > > > > >                 }
+> > > > > >
+> > > > >
+> > > > > Hi Peter,
+> > > > > Would you like to change this line in your tree?
+> > > >
+> > > > Can you please double check:
+> > > >
+> > > >   https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/log/?h=sched/next
 > > >
-> > > Can you please double check:
-> > >
-> > >   https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/log/?h=sched/next
-> >
-> > yes. It is correct for patch 1/3, thanks!
+> > > yes. It is correct for patch 1/3, thanks!
+> 
+> oops, there is a typo there:
+> + if (cpuid_topo->cluster_id == cpu_topo->cluster_id &&
+> + cpuid_topo->clister_id != -1) {
+> 
+> clister should be cluster.
 
-oops, there is a typo there:
-+ if (cpuid_topo->cluster_id == cpu_topo->cluster_id &&
-+ cpuid_topo->clister_id != -1) {
-
-clister should be cluster.
-
-> >
-> > BTW, patch2/3  is missing some benchmark data and tested-by/SOB tags, i guess
-> > it is because you are still editing?
->
-> Urgh, no, that's my script thinking one of the many
->
-> --------------
->
-> lines you got in there was a terminator. Fixed it, should be pushed out
-> again in a few minutes.
-
-Thanks
-barry
+Yeah, my bad, typing so hard... :-) Already fixed.
