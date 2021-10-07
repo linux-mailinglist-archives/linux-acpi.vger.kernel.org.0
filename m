@@ -2,92 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69732424BC9
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Oct 2021 04:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B32F424FF9
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Oct 2021 11:21:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232378AbhJGC11 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 6 Oct 2021 22:27:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33120 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231241AbhJGC10 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 6 Oct 2021 22:27:26 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B03BBC061755
-        for <linux-acpi@vger.kernel.org>; Wed,  6 Oct 2021 19:25:33 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id s66-20020a252c45000000b005ba35261459so5399205ybs.7
-        for <linux-acpi@vger.kernel.org>; Wed, 06 Oct 2021 19:25:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=+lgV5393cFjBh0OcyjGhmElpsLJbmXQnVDvf2tqgKRU=;
-        b=SDM6DPCnvAVmyIyC8CgVNOyFkplTs3mrdtXk35LmUG5RBm0pUvO+HHlqkjUVpYTmfs
-         9Xv0MDXZn4zHKc6M7mWRwKI2GIVG7bwGgJzEGUEMhXedXuF7MiGU1hEEaPqMM/p1eEzg
-         zbpEec0uHkJ6eJWPEMgB2l7dDarVcDQ5a04qs+MXY+zYz4K7oAMckQ1Mc73Dt6/RHDxZ
-         upqOghZffTePnlTfWAhSLzP3DIQg+Q29ptDGCxwDUdEb4o3wu03qNnvuyS4dqUT3QA2V
-         bRSu79Q5q1NbwcdKXWQK6ma6KbugoHnPsGk6uIWLmuH4amu+iQtaSKmLZlEZV+SdnjK2
-         PMGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=+lgV5393cFjBh0OcyjGhmElpsLJbmXQnVDvf2tqgKRU=;
-        b=rPHGwvpHRPDDfzACaiQyHPjz8zaFb/N40csM1cEirnoeWsugUNwS7rlWb594VqvTVZ
-         PSFFT9LNRuTLKONrGg5E4ThNfvSZeaSeFQPXhTbPxW/WtxxXHsucoKtevVwKcRZd3Hb5
-         zS0wdgekgoQv+dFy9LXg01e8uVFaywZPRp8OdDFLOmDxNlabX9Vzv6XWd0iM+Gwpu181
-         7txXMRkL6qaaqIn/E5Vcye8n0eooYyeBjE4aZY5zaUPCpZz1/Lpz08Qba5pFDxlz+GyP
-         rY6qPdfgsR7p9X107NV/H0ny8cViBgahh+bzHKULNxiMmHO8vFxmtoMgWsSplt+olitR
-         kGNw==
-X-Gm-Message-State: AOAM530d8vQ4fyo4H65Lo6szcbGHB+lGnymb+p6MyGf9te5fOHMw/CkA
-        PfnDRC3/sIG1Nwx5qE5ynYYoJaEqPC00
-X-Google-Smtp-Source: ABdhPJxdWRNuGydztvP98gc+krEQfH0p+cM9r9M3dF+WfW/5/3p7oGLL5Tt5s5OWY71JlW25rQvZ7bKnctIe
-X-Received: from rajat2.mtv.corp.google.com ([2620:15c:202:201:c416:e725:30cd:a48])
- (user=rajatja job=sendgmr) by 2002:a25:5bc5:: with SMTP id
- p188mr1748856ybb.301.1633573532920; Wed, 06 Oct 2021 19:25:32 -0700 (PDT)
-Date:   Wed,  6 Oct 2021 19:25:27 -0700
-In-Reply-To: <20210210230800.30291-2-sakari.ailus@linux.intel.com>
-Message-Id: <20211007022527.2448652-1-rajatja@google.com>
-Mime-Version: 1.0
-References: <20210210230800.30291-2-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.33.0.800.g4c38ced690-goog
-Subject: Re: ACPI: scan: Obtain device's desired enumeration power state
-From:   Rajat Jain <rajatja@google.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org, rajatxjain@gmail.com,
-        sakari.ailus@linux.intel.com
-Cc:     Rajat Jain <rajatja@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S240473AbhJGJXY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Oct 2021 05:23:24 -0400
+Received: from szxga08-in.huawei.com ([45.249.212.255]:24174 "EHLO
+        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240562AbhJGJXR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Oct 2021 05:23:17 -0400
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.55])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4HQ5Pf4n9xz1DHR5;
+        Thu,  7 Oct 2021 17:19:50 +0800 (CST)
+Received: from dggema764-chm.china.huawei.com (10.1.198.206) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.8; Thu, 7 Oct 2021 17:21:20 +0800
+Received: from [10.174.185.179] (10.174.185.179) by
+ dggema764-chm.china.huawei.com (10.1.198.206) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.8; Thu, 7 Oct 2021 17:21:18 +0800
+Subject: Re: [PATCH] drm/i915: Free the returned object of acpi_evaluate_dsm()
+To:     <intel-gfx@lists.freedesktop.org>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+CC:     <jani.nikula@linux.intel.com>, <joonas.lahtinen@linux.intel.com>,
+        <rodrigo.vivi@intel.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
+        <ville.syrjala@linux.intel.com>, <tiwai@suse.de>,
+        <wanghaibin.wang@huawei.com>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        <linux-acpi@vger.kernel.org>
+References: <20210906033541.862-1-yuzenghui@huawei.com>
+From:   Zenghui Yu <yuzenghui@huawei.com>
+Message-ID: <3ae85963-beab-17d2-05f1-5a490cee1296@huawei.com>
+Date:   Thu, 7 Oct 2021 17:21:18 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <20210906033541.862-1-yuzenghui@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.185.179]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggema764-chm.china.huawei.com (10.1.198.206)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+[+linux-acpi]
 
-Hello,
+ping
 
-Now that we have landed the ACPI object for _DSC in the spec:
-https://lore.kernel.org/linux-acpi/CAJZ5v0gwDEjC9T7wfCqDr7R0q_ptz2nVU52_8i8noXHPEign1g@mail.gmail.com/T/
-
-I was wondering what is happening with the corresponding kernel patchset:
-https://lore.kernel.org/linux-acpi/20210210230800.30291-1-sakari.ailus@linux.intel.com/T/#m24e9f51119cbe6eb39f31c097ea3941d00a0baeb
-
-I didn't see any pending comments, so is there a reason it did not land?
-
-Thanks,
-
-Rajat 
-
--- 
-2.33.0.685.g46640cef36-goog
-
+On 2021/9/6 11:35, Zenghui Yu wrote:
+> As per the comment on top of acpi_evaluate_dsm():
+> 
+> | * Evaluate device's _DSM method with specified GUID, revision id and
+> | * function number. Caller needs to free the returned object.
+> 
+> We should free the returned object of acpi_evaluate_dsm() to avoid memory
+> leakage. Otherwise the kmemleak splat will be triggered at boot time (if we
+> compile kernel with CONFIG_DEBUG_TEST_DRIVER_REMOVE=y).
+> 
+> Fixes: 8e55f99c510f ("drm/i915: Invoke another _DSM to enable MUX on HP Workstation laptops")
+> Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+> ---
+>  drivers/gpu/drm/i915/display/intel_acpi.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/display/intel_acpi.c b/drivers/gpu/drm/i915/display/intel_acpi.c
+> index 7cfe91fc05f2..68abeaf2d7d4 100644
+> --- a/drivers/gpu/drm/i915/display/intel_acpi.c
+> +++ b/drivers/gpu/drm/i915/display/intel_acpi.c
+> @@ -186,13 +186,16 @@ void intel_dsm_get_bios_data_funcs_supported(struct drm_i915_private *i915)
+>  {
+>  	struct pci_dev *pdev = to_pci_dev(i915->drm.dev);
+>  	acpi_handle dhandle;
+> +	union acpi_object *obj;
+>  
+>  	dhandle = ACPI_HANDLE(&pdev->dev);
+>  	if (!dhandle)
+>  		return;
+>  
+> -	acpi_evaluate_dsm(dhandle, &intel_dsm_guid2, INTEL_DSM_REVISION_ID,
+> -			  INTEL_DSM_FN_GET_BIOS_DATA_FUNCS_SUPPORTED, NULL);
+> +	obj = acpi_evaluate_dsm(dhandle, &intel_dsm_guid2, INTEL_DSM_REVISION_ID,
+> +				INTEL_DSM_FN_GET_BIOS_DATA_FUNCS_SUPPORTED, NULL);
+> +	if (obj)
+> +		ACPI_FREE(obj);
+>  }
+>  
+>  /*
+> 
