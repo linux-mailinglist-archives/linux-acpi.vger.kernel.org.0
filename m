@@ -2,79 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1D2A4258E6
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Oct 2021 19:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AC72425913
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Oct 2021 19:14:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243031AbhJGRJZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Oct 2021 13:09:25 -0400
-Received: from mail-ot1-f54.google.com ([209.85.210.54]:35441 "EHLO
-        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242368AbhJGRJY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Oct 2021 13:09:24 -0400
-Received: by mail-ot1-f54.google.com with SMTP id 77-20020a9d0ed3000000b00546e10e6699so8372352otj.2;
-        Thu, 07 Oct 2021 10:07:30 -0700 (PDT)
+        id S242916AbhJGRQt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Oct 2021 13:16:49 -0400
+Received: from mail-ot1-f43.google.com ([209.85.210.43]:38461 "EHLO
+        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242964AbhJGRQs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Oct 2021 13:16:48 -0400
+Received: by mail-ot1-f43.google.com with SMTP id c6-20020a9d2786000000b005471981d559so8318495otb.5;
+        Thu, 07 Oct 2021 10:14:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=IefJA9LBUD7adbLBoj6lhBu/BQqC/aTFaIOQ0tDZ+DQ=;
-        b=5VMHO66+Ciwq244nC8uszX8d4UYVKucH5RRnVQNiAfFQW28/z10912Zr0kWyoAwh6U
-         3H7MqcK5KCYeUJCMVYtPH1+wV7j7y0b4pZjM4csUW03tyi7+s1Nrh/zewvK5Zi6B+Eys
-         JRtsGyoZgD5HFhbx9xentsSmuopJNul4p5tEiiANdx1gxHOFk92YXYEc62HDEU9/9Dle
-         xfy6MIZUtuLoRzuMOzf1wph3l27u/2/mWul4XoGX+mLlS1icrL7I7hAMzQZSArIqPegw
-         VG9QPZXLxYNonWy0c9zFX+0gAD6sDw0PFKr36hOdVBdwbSpXzXRtuLkinBqtwnaDTMy8
-         mx6w==
-X-Gm-Message-State: AOAM531fLD+hi7pYWWy64U8L4pEYHDCMeA63Jvclx7BIavaAmVG7lnPX
-        No2PzqCAq4oBANc5sY9e0BjNjwKPdiOF0ZoJNDE=
-X-Google-Smtp-Source: ABdhPJzrrsgi8uz8zu+MUoSiFl5pa9fUsEyroZv6f/hs128KFBk/gp7uP9JpenjMSxRdtp+uu9Z2//YAVV7FkeHQ274=
-X-Received: by 2002:a9d:2f24:: with SMTP id h33mr4756669otb.254.1633626449857;
- Thu, 07 Oct 2021 10:07:29 -0700 (PDT)
+        bh=o3T+99c1VzdeIyWusVw2Hmd834PbhCd+xwBC9PQfBAU=;
+        b=ZSdMxaZUUsu/2DVEo4fdGV0vBrburiP7mq08sjd01dW2AMai793nS3YeIk6kg2uStf
+         bb33C20t0X2adxOxvLs4OtvU26uaeccMEN/o3FUHS+92xvgklWf0GB38Qa0o+sLnK28Q
+         XUdFZwgBtYmuqat/JN3PfcIkuhdxQ1787TTe5oLSzxnTQnkR2OliVW01EXyYnSaojELS
+         VxKwIDjttHxoN2CL5FZOfr7MRQHwkUW/AZt25d01jwQMxwETQ6F29GSpzQDT9l+vY7BP
+         r2gpxKCKTxhfju5ZTCqMW+0uEKJ6g2zIilxe29yBTxF0/z+oXIKK8JSeD2XlkcEcht/J
+         AEVA==
+X-Gm-Message-State: AOAM531DUv16wAL2t7urq0bhdZV1cpXLaek7xc6O6DY/G33VzFp/h6n5
+        MTOU3eoz/guL9b68esyCrVKNTZLybFY0gPKdGws=
+X-Google-Smtp-Source: ABdhPJzPyc5/odlg3KjW2vM3IxGJxxUY7A2LQ1173rtZ7uvV+MchTgq6oN7E52MCLQ63VXxcwWhf/yUYCdwcF3wla6I=
+X-Received: by 2002:a9d:3783:: with SMTP id x3mr4690364otb.16.1633626894283;
+ Thu, 07 Oct 2021 10:14:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211006173125.84423-1-andriy.shevchenko@linux.intel.com>
- <20211006173125.84423-3-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0iN+28gccy00_Ces9bYsLCNJaHaTZGMUwRrPA6TpY3H8A@mail.gmail.com> <YV8oAThCe2dR6K1n@smile.fi.intel.com>
-In-Reply-To: <YV8oAThCe2dR6K1n@smile.fi.intel.com>
+References: <20211006113745.60186-1-sohaib.amhmd@gmail.com>
+In-Reply-To: <20211006113745.60186-1-sohaib.amhmd@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 7 Oct 2021 19:07:19 +0200
-Message-ID: <CAJZ5v0hTqUnvvhEN4O-Boi-_RBFvT5mNKBn+fVdo4XWz0-XJ_Q@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] gpiolib: acpi: Replace custom code with device_match_acpi_handle()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Saravana Kannan <saravanak@google.com>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+Date:   Thu, 7 Oct 2021 19:14:43 +0200
+Message-ID: <CAJZ5v0jzmGWR82zfpGjd2K_YfvzS_ktVeq6oX-p=tx9OXjOTxA@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: drop unneeded initialization value
+To:     Sohaib Mohamed <sohaib.amhmd@gmail.com>
+Cc:     Robert Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Wolfram Sang <wsa@kernel.org>
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 7, 2021 at 7:02 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Wed, Oct 6, 2021 at 1:37 PM Sohaib Mohamed <sohaib.amhmd@gmail.com> wrote:
 >
-> On Thu, Oct 07, 2021 at 06:50:46PM +0200, Rafael J. Wysocki wrote:
-> > On Wed, Oct 6, 2021 at 7:31 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
+> Do not initialise statics to 0
 >
-> ...
+> Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+> ---
+>  drivers/acpi/acpica/dbhistry.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> > > +       return gc->parent ? device_match_acpi_handle(gc->parent, data) : false;
-> >
-> > return gc->parent && device_match_acpi_handle(gc->parent, data);
-> >
-> > would work too if I'm not mistaken.
+> diff --git a/drivers/acpi/acpica/dbhistry.c b/drivers/acpi/acpica/dbhistry.c
+> index fd813c5d3952..60b77b11c0f2 100644
+> --- a/drivers/acpi/acpica/dbhistry.c
+> +++ b/drivers/acpi/acpica/dbhistry.c
+> @@ -24,9 +24,9 @@ typedef struct history_info {
+>  } HISTORY_INFO;
 >
-> Seems so.
+>  static HISTORY_INFO acpi_gbl_history_buffer[HISTORY_SIZE];
+> -static u16 acpi_gbl_lo_history = 0;
+> -static u16 acpi_gbl_num_history = 0;
+> -static u16 acpi_gbl_next_history_index = 0;
+> +static u16 acpi_gbl_lo_history;
+> +static u16 acpi_gbl_num_history;
+> +static u16 acpi_gbl_next_history_index;
 >
-> Thanks for review, I will update for v3.
-> Any other comments to the series?
+>  /*******************************************************************************
+>   *
+> --
 
-Not really.  Patch [2/3] is correct AFAICS.
+Please submit ACPICA changes like this to the upstream ACPICA project
+as per MAINTANIERS.
+
+Thanks!
