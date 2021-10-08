@@ -2,31 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EDEA4262B8
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Oct 2021 05:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEC784262BA
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Oct 2021 05:05:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbhJHDHg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 7 Oct 2021 23:07:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32832 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbhJHDHf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Oct 2021 23:07:35 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 708FBC061570;
-        Thu,  7 Oct 2021 20:05:41 -0700 (PDT)
+        id S230083AbhJHDHh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 7 Oct 2021 23:07:37 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:42158 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229501AbhJHDHh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 7 Oct 2021 23:07:37 -0400
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: tonyk)
-        with ESMTPSA id 45EAA1F4190F
+        with ESMTPSA id 76F871F41911
 From:   =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@collabora.com>
 To:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, kernel@collabora.com,
         krisman@collabora.com, sebastian.reichel@collabora.com,
         pgriffais@valvesoftware.com, hdegoede@redhat.com,
         =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@collabora.com>
-Subject: [PATCH 0/1] acpi: battery: Accept charges over the design capacity as full
-Date:   Fri,  8 Oct 2021 00:05:28 -0300
-Message-Id: <20211008030529.223682-1-andrealmeid@collabora.com>
+Subject: [PATCH 1/1] acpi: battery: Accept charges over the design capacity as full
+Date:   Fri,  8 Oct 2021 00:05:29 -0300
+Message-Id: <20211008030529.223682-2-andrealmeid@collabora.com>
 X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211008030529.223682-1-andrealmeid@collabora.com>
+References: <20211008030529.223682-1-andrealmeid@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -34,37 +33,31 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Some buggy firmware and/or brand new batteries can support a charge that's
+slightly over the reported design capacity. In such cases, the kernel will
+report to userspace that the charging state of the battery is "Unknown",
+when in reality the battery charge is "Full", at least from the design
+capacity point of view. Make the fallback condition accepts capacities
+over the designed capacity so userspace knows that is full.
 
-We have come across a battery that, when brand new, can go above the
-reported maximum charge, leading to reports like this:
-
-$ cat /sys/class/power_supply/BAT1/uevent
-
-POWER_SUPPLY_NAME=BAT1
-POWER_SUPPLY_TYPE=Battery
-POWER_SUPPLY_STATUS=Unknown
-POWER_SUPPLY_PRESENT=1
-POWER_SUPPLY_CHARGE_FULL_DESIGN=4160000
-POWER_SUPPLY_CHARGE_FULL=4538000
-POWER_SUPPLY_CHARGE_NOW=4539000
-POWER_SUPPLY_CAPACITY=100
-POWER_SUPPLY_CAPACITY_LEVEL=Full
-[...]
-
-And then userspace get confused by Unknown and some programs even say
-"Charging: 100%". After applying this patch, kernel reports "Full",
-which for practical reasons is true, even if the battery will charge a
-bit more. After some time, the battery health degrades and the maximum
-charge meets the design expectation. Ideally this would be fixed in the
-battery firmware, but it's not always possible to do that.
-
-André Almeida (1):
-  acpi: battery: Accept charges over the design capacity as full
-
+Signed-off-by: André Almeida <andrealmeid@collabora.com>
+---
  drivers/acpi/battery.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index dae91f906cea..8afa85d6eb6a 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -169,7 +169,7 @@ static int acpi_battery_is_charged(struct acpi_battery *battery)
+ 		return 1;
+ 
+ 	/* fallback to using design values for broken batteries */
+-	if (battery->design_capacity == battery->capacity_now)
++	if (battery->design_capacity <= battery->capacity_now)
+ 		return 1;
+ 
+ 	/* we don't do any sort of metric based on percentages */
 -- 
 2.33.0
 
