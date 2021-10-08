@@ -2,216 +2,238 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87142426A91
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Oct 2021 14:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1A5C426B23
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Oct 2021 14:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240457AbhJHMVi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Oct 2021 08:21:38 -0400
-Received: from new4-smtp.messagingengine.com ([66.111.4.230]:58981 "EHLO
-        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230187AbhJHMVi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Oct 2021 08:21:38 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 8683C580FB0;
-        Fri,  8 Oct 2021 08:19:42 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Fri, 08 Oct 2021 08:19:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nakato.io; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding:content-type; s=fm2; bh=
-        kEPRSs946GBYPNBXQ5nqgrpY4kO95b8VBBcDedB+Mag=; b=I2RwBtRCMc71GdIp
-        5/QJdsZU60npx5a7DFlJRfScoDxc5PbcSCik25SSNOtQv4/sSS9BhiWWmB8AXktz
-        4QanmQE7j6OroUXBMPenknx6WSNFb2x3TDUSbk10gRKkzmfKAvHbAzQAhpQGWEiG
-        AX751tV1W8zhwV7Q6fPWFNluqpsZ/Slz/x2a+nlMGiLUskj4rcnlWTsj8QxxXgl2
-        EqIPIrK+k5IPB2HF8/VuTsfbECC9b9yT6Y9x3Gim6+SWMPNnXZdR+wx6Za/Ei284
-        Uja7rH9mGw7dypWytxZJTXK/oU5yVBfIH+TDcaESZi1pjCEzlZNAxLy2uUGLdgCQ
-        6FQHaA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; bh=kEPRSs946GBYPNBXQ5nqgrpY4kO95b8VBBcDedB+M
-        ag=; b=U1EOUiW4tKuUxv39qT+xBw0W4eT7L1VykUTO2O4XnBe29+DQIHaE+GWU0
-        Y3qFOCdDKgyqzwvTEZKa/qusKwOtCd4p8iTyBKFLvX54nhN/rPlgbEmuPcaZJJgv
-        b2ZFMw81F/9Dx05Cn2M9wpX2+3RyUvyIojj/9cb2YQTzzzSbij7R38/D0WjWUsFc
-        u3FCpyU8/pe0Q8FsB6EUmH40VlvBDAjyi7/6s7BWavajCCDf/FZ5X7ELnQYAX0CG
-        YkHI4sGNxa9tGTRZYEO+7eVB60nGwJxLjfp1/p5Y6kxg0rTz/8hmpNJj8qjvikCV
-        jPWxQ26G9LDJLMAelEDMlJa+cvz0w==
-X-ME-Sender: <xms:XjdgYV9w-A-LbUZxIHeoYjD7QyeGsZzkkO7rdVgAe1nW89oizGLgLA>
-    <xme:XjdgYZtOR0OKK19Ik0d9MYFPBySk4r9FNLOMP-yXvq_K79cNj6snYw4NQYFj9ster
-    Adoomfo839XkwAYUQ>
-X-ME-Received: <xmr:XjdgYTASQI7mrOduBKIUIcJrDG_hQm7_4KpXMXV2nnNCdGjfNqEbb0v111jz72p-wm25TqaqBrkNXUoc94frtWLFk-c3ujkyjl2dpEQ0Nrvqa-A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrvddttddggeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephffvufffkfgjfhgggfgtsehtufertddttddvnecuhfhrohhmpefurggthhhi
-    ucfmihhnghcuoehnrghkrghtohesnhgrkhgrthhordhioheqnecuggftrfgrthhtvghrnh
-    epvefhudehvdeigeegvedtteevueegudfhjeevueetfeefveetieevfeffheeuleeknecu
-    ffhomhgrihhnpehgihhthhhusgdrtghomhdpkhgvrhhnvghlrdhorhhgpdhnohhtrdgtrg
-    htnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgr
-    khgrthhosehnrghkrghtohdrihho
-X-ME-Proxy: <xmx:XjdgYZdKwsoS9u81MJhva0OxX4g4DjJcoBbKmXGyCIIuPhEOsHIGAQ>
-    <xmx:XjdgYaMwNdW0GY-Xf2n7q_NWcvnh1GN5b6OlfgRNEUMEDurz8EWiKw>
-    <xmx:XjdgYbnDgkINrHGPnNytzbvPTBycKMSaWMs0V3lKOQPNm3VAE49yfw>
-    <xmx:XjdgYRo_a4lt65_k3Yk5-LzSCmx_LrFXncigvoCjvSbom8s6xJFw6w>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 8 Oct 2021 08:19:38 -0400 (EDT)
-From:   Sachi King <nakato@nakato.io>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        hdegoede@redhat.com, mgross@linux.intel.com, rafael@kernel.org,
-        lenb@kernel.org, Sanket.Goswami@amd.com,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Cc:     platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] platform/x86: amd-pmc: Add alternative acpi id for PMC controller
-Date:   Fri, 08 Oct 2021 23:19:35 +1100
-Message-ID: <1837953.FDaK0lLtFO@youmu>
-In-Reply-To: <609f5254-4527-38b8-3d1d-5cb06791e103@amd.com>
-References: <20211002041840.2058647-1-nakato@nakato.io> <909f28e9-245a-df90-52f1-98b0f63a2b3a@amd.com> <609f5254-4527-38b8-3d1d-5cb06791e103@amd.com>
+        id S230204AbhJHMvC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Oct 2021 08:51:02 -0400
+Received: from foss.arm.com ([217.140.110.172]:49980 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230216AbhJHMu5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 8 Oct 2021 08:50:57 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8EF2311FB;
+        Fri,  8 Oct 2021 05:49:02 -0700 (PDT)
+Received: from [10.57.22.120] (unknown [10.57.22.120])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C3B203F66F;
+        Fri,  8 Oct 2021 05:48:59 -0700 (PDT)
+Subject: Re: [PATCH v7 2/9] ACPI/IORT: Add support for RMR node parsing
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org
+Cc:     jon@solid-run.com, linuxarm@huawei.com, steven.price@arm.com,
+        guohanjun@huawei.com, yangyicong@huawei.com, Sami.Mujawar@arm.com,
+        will@kernel.org, wanghuiqiang@huawei.com
+References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
+ <20210805080724.480-3-shameerali.kolothum.thodi@huawei.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <e24df2a9-1332-0eb3-b52a-230662fe46ba@arm.com>
+Date:   Fri, 8 Oct 2021 13:48:52 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+In-Reply-To: <20210805080724.480-3-shameerali.kolothum.thodi@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Friday, 8 October 2021 21:27:15 AEDT Shyam Sundar S K wrote:
+On 2021-08-05 09:07, Shameer Kolothum wrote:
+> Add support for parsing RMR node information from ACPI.
 > 
-> On 10/8/2021 1:30 AM, Limonciello, Mario wrote:
-> > 
-> > On 10/5/2021 00:16, Shyam Sundar S K wrote:
-> >>
-> >> On 10/2/2021 9:48 AM, Sachi King wrote:
-> >>> The Surface Laptop 4 AMD has used the AMD0005 to identify this
-> >>> controller instead of using the appropriate ACPI ID AMDI0005.  Include
-> >>> AMD0005 in the acpi id list.
-> >>
-> >> Can you provide an ACPI dump and output of 'cat /sys/power/mem_sleep'
-> > 
-> > I had a look through the acpidump listed there and it seems like the PEP
-> > device is filled with a lot of NO-OP type of code.  This means the LPS0
-> > patch really isn't "needed", but still may be a good idea to include for
-> > completeness in case there ends up being a design based upon this that
-> > does need it.
-> > 
-> > As for this one (the amd-pmc patch) how are things working with it? Have
-> > you checked power consumption
-
-Using my rather limited plug-in power meter I measure 1w with this patch,
-and I've never seen the meter go below this reading, so this may be over
-reporting.  Without this patch however the device bounces around 2.2-2.5w.
-The device consumes 6w with the display off.
-
-I have not left the device for long periods of time to see what the battery
-consumption is over a period of time, however this patch is being carried
-in linux-surface in advance and one users suspend power consumption is
-looking good.  They have reported 2 hours of suspend without a noticable
-power drop from the battery indicator.
-https://github.com/linux-surface/linux-surface/issues/591#issuecomment-936891479
-
-
-> > and verified that the amd_pmc debugfs
-> > statistics are increasing?
-
-s0ix_stats included following smu_fw_info below.
-
-> > Is the system able to resume from s2idle?
-
-It does, however additional patches are required to do so without an external
-device such as a keyboard.  The power button, lid, and power plug trigger
-events via pinctrl-amd.  Keyboard and trackpad go via the Surface EC and
-require the surface_* drivers, which do not have wakeup support.
-
-1. The AMDI0031 pinctrl-amd device is setup on Interrupt 7, however the APIC
-table does not define an interrupt source override.  Right now I'm not sure
-how approach producing a quirk for this.  linux-surface is carrying the hack
-described in
-https://lore.kernel.org/lkml/87lf8ddjqx.ffs@nanos.tec.linutronix.de/
-Also available here:
-https://github.com/linux-surface/kernel/commit/25baf27d6d76f068ab8e7cb7a5be33218ac9bd6b
-
-2. pinctrl: amd: Handle wake-up interrupt
-https://git.kernel.org/torvalds/c/acd47b9f28e5
-Without this patch the device would suspend, but any interrupt via
-pinctrl-amd would result in a failed resume, which is every wakeup
-souce I know of on this device.
-
-3. pinctrl: amd: disable and mask interrupts on probe
-Once I worked out that I needed the patch in 2 above the device gets a lot
-of spurious wakeups, largely because Surface devices have a second embedded
-controller that wants to wake the device on all sorts of events.  We don't
-have support for that, and there were a number of interrupts not configured
-by linux that were set enabled, unmasked, and wake in s0i3 on boot.
-https://lore.kernel.org/linux-gpio/20211001161714.2053597-1-nakato@nakato.io/T/#t
-
-These three are enough to be able to wake the device via a lid event, or by
-changing the state of the power cable.
-
-4. The power button requires another pair of patches.  These are only in the
-linux-surface kernel as qzed would like to run them there for a couple of
-releases before we propose them upstream.  These patches change the method
-used to determine if we should load surfacepro3-button or soc-button-array.
-The AMD variant Surface Laptops were loading surfacepro3-button instead
-soc-button-array.  They can be seen:
-https://github.com/linux-surface/kernel/commit/1927c0b30e5cd95a566a23b6926472bc2be54f42
-https://github.com/linux-surface/kernel/commit/ac1a977392880456f61e830a95e368cad7a0fa3f
-
-
-> Echo-ing to what Mario said, I am also equally interested in knowing the
-> the surface devices are able to reach S2Idle.
+> Find the associated streamid and smmu node info from the
+> RMR node and populate a linked list with RMR memory
+> descriptors.
 > 
-> Spefically can you check if your tree has this commit?
-> https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/commit/?h=for-next&id=9cfe02023cf67a36c2dfb05d1ea3eb79811a8720
-
-My tree currently does not have that one.  I've applied it.
-
-> this would tell the last s0i3 status, whether it was successful or not.
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> ---
+>   drivers/acpi/arm64/iort.c | 134 +++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 133 insertions(+), 1 deletion(-)
 > 
-> cat /sys/kernel/debug/amd_pmc/smu_fw_info
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 3b23fb775ac4..d76ba46ebe67 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -40,6 +40,8 @@ struct iort_fwnode {
+>   static LIST_HEAD(iort_fwnode_list);
+>   static DEFINE_SPINLOCK(iort_fwnode_lock);
+>   
+> +static LIST_HEAD(iort_rmr_list);	/* list of RMR regions from ACPI */
+> +
+>   /**
+>    * iort_set_fwnode() - Create iort_fwnode and use it to register
+>    *		       iommu data in the iort_fwnode_list
+> @@ -393,7 +395,8 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
+>   		if (node->type == ACPI_IORT_NODE_NAMED_COMPONENT ||
+>   		    node->type == ACPI_IORT_NODE_PCI_ROOT_COMPLEX ||
+>   		    node->type == ACPI_IORT_NODE_SMMU_V3 ||
+> -		    node->type == ACPI_IORT_NODE_PMCG) {
+> +		    node->type == ACPI_IORT_NODE_PMCG ||
+> +		    node->type == ACPI_IORT_NODE_RMR) {
+>   			*id_out = map->output_base;
+>   			return parent;
+>   		}
+> @@ -1566,6 +1569,134 @@ static void __init iort_enable_acs(struct acpi_iort_node *iort_node)
+>   #else
+>   static inline void iort_enable_acs(struct acpi_iort_node *iort_node) { }
+>   #endif
+> +static void iort_rmr_desc_check_overlap(struct acpi_iort_rmr_desc *desc, u32 count)
+> +{
+> +	int i, j;
+> +
+> +	for (i = 0; i < count; i++) {
+> +		u64 end, start = desc[i].base_address, length = desc[i].length;
+> +
+> +		end = start + length - 1;
+> +
+> +		/* Check for address overlap */
+> +		for (j = i + 1; j < count; j++) {
+> +			u64 e_start = desc[j].base_address;
+> +			u64 e_end = e_start + desc[j].length - 1;
+> +
+> +			if (start <= e_end && end >= e_start)
+> +				pr_err(FW_BUG "RMR descriptor[0x%llx - 0x%llx] overlaps, continue anyway\n",
+> +				       start, end);
+> +		}
+> +	}
+> +}
+> +
+> +static void __init iort_node_get_rmr_info(struct acpi_iort_node *iort_node)
+> +{
+> +	struct acpi_iort_node *smmu;
+> +	struct acpi_iort_rmr *rmr;
+> +	struct acpi_iort_rmr_desc *rmr_desc;
+> +	u32 map_count = iort_node->mapping_count;
+> +	u32 sid;
+> +	int i;
+> +
+> +	if (!iort_node->mapping_offset || map_count != 1) {
+> +		pr_err(FW_BUG "Invalid ID mapping, skipping RMR node %p\n",
+> +		       iort_node);
+> +		return;
+> +	}
+> +
+> +	/* Retrieve associated smmu and stream id */
+> +	smmu = iort_node_get_id(iort_node, &sid, 0);
+> +	if (!smmu) {
+> +		pr_err(FW_BUG "Invalid SMMU reference, skipping RMR node %p\n",
+> +		       iort_node);
+> +		return;
+> +	}
+> +
+> +	/* Retrieve RMR data */
+> +	rmr = (struct acpi_iort_rmr *)iort_node->node_data;
+> +	if (!rmr->rmr_offset || !rmr->rmr_count) {
+> +		pr_err(FW_BUG "Invalid RMR descriptor array, skipping RMR node %p\n",
+> +		       iort_node);
+> +		return;
+> +	}
+> +
+> +	rmr_desc = ACPI_ADD_PTR(struct acpi_iort_rmr_desc, iort_node,
+> +				rmr->rmr_offset);
+> +
+> +	iort_rmr_desc_check_overlap(rmr_desc, rmr->rmr_count);
+> +
+> +	for (i = 0; i < rmr->rmr_count; i++, rmr_desc++) {
+> +		struct iommu_resv_region *region;
+> +		enum iommu_resv_type type;
+> +		int prot = IOMMU_READ | IOMMU_WRITE;
+> +		u64 addr = rmr_desc->base_address, size = rmr_desc->length;
+> +
+> +		if (!IS_ALIGNED(addr, SZ_64K) || !IS_ALIGNED(size, SZ_64K)) {
+> +			/* PAGE align base addr and size */
+> +			addr &= PAGE_MASK;
+> +			size = PAGE_ALIGN(size + offset_in_page(rmr_desc->base_address));
+> +
+> +			pr_err(FW_BUG "RMR descriptor[0x%llx - 0x%llx] not aligned to 64K, continue with [0x%llx - 0x%llx]\n",
+> +			       rmr_desc->base_address,
+> +			       rmr_desc->base_address + rmr_desc->length - 1,
+> +			       addr, addr + size - 1);
+> +		}
+> +		if (rmr->flags & IOMMU_RMR_REMAP_PERMITTED) {
+> +			type = IOMMU_RESV_DIRECT_RELAXABLE;
+> +			/*
+> +			 * Set IOMMU_CACHE as IOMMU_RESV_DIRECT_RELAXABLE is
+> +			 * normally used for allocated system memory that is
+> +			 * then used for device specific reserved regions.
+> +			 */
+> +			prot |= IOMMU_CACHE;
+> +		} else {
+> +			type = IOMMU_RESV_DIRECT;
+> +			/*
+> +			 * Set IOMMU_MMIO as IOMMU_RESV_DIRECT is normally used
+> +			 * for device memory like MSI doorbell.
+> +			 */
+> +			prot |= IOMMU_MMIO;
+> +		}
 
+I'm not sure we ever got a definitive answer to this - does DPAA2 
+actually go wrong if we use IOMMU_MMIO here? I'd still much prefer to 
+make the fewest possible assumptions, since at this point it's basically 
+just a stop-gap until we can fix the spec. It's become clear that we 
+can't reliably rely on guessing attributes, so I'm not too fussed about 
+theoretical cases that currently don't work (due to complete lack of RMR 
+support) continuing to not work for the moment, as long as we can make 
+the real-world cases we actually have work at all. Anything which only 
+affects performance I'd rather leave until firmware can tell us what to do.
 
-=== SMU Statistics ===
-Table Version: 3
-Hint Count: 1
-Last S0i3 Status: Success
-Time (in us) to S0i3: 102543
-Time (in us) in S0i3: 10790466
+> +		region = iommu_alloc_resv_region(addr, size, prot, type);
+> +		if (region) {
+> +			region->fw_data.rmr.flags = rmr->flags;
+> +			region->fw_data.rmr.sid = sid;
+> +			region->fw_data.rmr.smmu = smmu;
+> +			list_add_tail(&region->list, &iort_rmr_list);
+> +		}
+> +	}
+> +}
+> +
+> +static void __init iort_parse_rmr(void)
+> +{
+> +	struct acpi_iort_node *iort_node, *iort_end;
+> +	struct acpi_table_iort *iort;
+> +	int i;
+> +
+> +	if (iort_table->revision < 3)
+> +		return;
+> +
+> +	iort = (struct acpi_table_iort *)iort_table;
+> +
+> +	iort_node = ACPI_ADD_PTR(struct acpi_iort_node, iort,
+> +				 iort->node_offset);
+> +	iort_end = ACPI_ADD_PTR(struct acpi_iort_node, iort,
+> +				iort_table->length);
+> +
+> +	for (i = 0; i < iort->node_count; i++) {
+> +		if (WARN_TAINT(iort_node >= iort_end, TAINT_FIRMWARE_WORKAROUND,
+> +			       "IORT node pointer overflows, bad table!\n"))
+> +			return;
+> +
+> +		if (iort_node->type == ACPI_IORT_NODE_RMR)
+> +			iort_node_get_rmr_info(iort_node);
+> +
+> +		iort_node = ACPI_ADD_PTR(struct acpi_iort_node, iort_node,
+> +					 iort_node->length);
+> +	}
+> +}
+>   
+>   static void __init iort_init_platform_devices(void)
+>   {
+> @@ -1636,6 +1767,7 @@ void __init acpi_iort_init(void)
+>   	}
+>   
+>   	iort_init_platform_devices();
+> +	iort_parse_rmr();
 
-=== Active time (in us) ===
-DISPLAY  : 0
-CPU      : 39737
-GFX      : 0
-VDD      : 39732
-ACP      : 0
-VCN      : 0
-DF       : 18854
-USB0     : 3790
-USB1     : 2647
+I guess initcall ordering vs. driver registration probably covers it up, 
+but for the sake of cleanliness I'd rather make sure the RMRs are fully 
+discovered *before* we create the SMMU devices that we expect to start 
+consuming them.
 
-> > /sys/kernel/debug/amd_pmc/s0ix_stats
+Robin.
 
-After two seperate suspends:
-
-=== S0ix statistics ===
-S0ix Entry Time: 19022953504
-S0ix Exit Time: 19485830941
-Residency Time: 9643279
-
-=== S0ix statistics ===
-S0ix Entry Time: 21091709805
-S0ix Exit Time: 21586928064
-Residency Time: 10317047
-
-
-> > Does pinctrl-amd load on this system? It seems to me that the power
-> > button GPIO doesn't get used like normally on "regular" UEFI based AMD
-> > systems.  I do see MSHW0040 so this is probably supported by
-> > surfacepro3-button and that will probably service all the important events.
-
-We require the first patch listed above to get pinctrl-amd to load on this
-system, and the two patches mentioned in 4 so we correctly choose
-soc-button-array which is used by all recent Surface devices.
-
-
-
-
+>   }
+>   
+>   #ifdef CONFIG_ZONE_DMA
+> 
