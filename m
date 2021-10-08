@@ -2,130 +2,351 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C120426ED9
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Oct 2021 18:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B57426F57
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Oct 2021 19:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233684AbhJHQ1b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Oct 2021 12:27:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:34980 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236109AbhJHQ1W (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Oct 2021 12:27:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1633710326;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8EjygOpFJynKm91W3p2Pl14fbKVwnx9xc1tF3Y/Nqb4=;
-        b=Mlz1cxeBjZkJ2h5k/f9yl6+G5/yBu45yahqRSt0i2bUtDKYX5k4scBHWOhwnOWW3KoSuVX
-        LPAHaW6fK9LDDR+L5T87JsaArGVqGeJ8Pj+wCqcgHV+UOkfx2jJW/rjtN42JFT7VjkzAVq
-        PosU30mbAVxF6+7mLldaHVujyWUeiqI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-374-4_mLf8_LOIuEkyHvW7xDHg-1; Fri, 08 Oct 2021 12:25:24 -0400
-X-MC-Unique: 4_mLf8_LOIuEkyHvW7xDHg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S232629AbhJHRJO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Oct 2021 13:09:14 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:50074 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229896AbhJHRJO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Oct 2021 13:09:14 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
+ id 0022d0cc6dd07f2b; Fri, 8 Oct 2021 19:07:17 +0200
+Received: from kreacher.localnet (unknown [213.134.175.153])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AF7D68464D4;
-        Fri,  8 Oct 2021 16:23:27 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.192.26])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6018C60BF1;
-        Fri,  8 Oct 2021 16:23:23 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: [PATCH 12/12] platform/x86: int3472: Call acpi_dev_clear_dependencies() on successful probe
-Date:   Fri,  8 Oct 2021 18:21:21 +0200
-Message-Id: <20211008162121.6628-13-hdegoede@redhat.com>
-In-Reply-To: <20211008162121.6628-1-hdegoede@redhat.com>
-References: <20211008162121.6628-1-hdegoede@redhat.com>
+        by v370.home.net.pl (Postfix) with ESMTPSA id 464E366A808;
+        Fri,  8 Oct 2021 19:07:15 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     "Limonciello, Mario" <mario.limonciello@amd.com>
+Cc:     Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        Robert Moore <robert.moore@intel.com>,
+        Erik Kaneda <erik.kaneda@intel.com>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
+Subject: Re: [PATCH] PCI: Put power resources not tied to a physical node in D3cold
+Date:   Fri, 08 Oct 2021 19:07:14 +0200
+Message-ID: <5504370.DvuYhMxLoT@kreacher>
+In-Reply-To: <8c8df41d-265a-637d-bc26-cdaf0e4e93a8@amd.com>
+References: <20211007205126.11769-1-mario.limonciello@amd.com> <2211361.ElGaqSPkdT@kreacher> <8c8df41d-265a-637d-bc26-cdaf0e4e93a8@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.175.153
+X-CLIENT-HOSTNAME: 213.134.175.153
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrvddttddguddtiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhephfduteeiueegtefgieetteffveehhefgieelkedujeekhfettdfgvdelveevkeegnecuffhomhgrihhnpehouhhtlhhoohhkrdgtohhmpdhkvghrnhgvlhdrohhrghenucfkphepvddufedrudefgedrudejhedrudehfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddujeehrdduheefpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopehlvghnsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtphhtthhopehrohgsvghrthdrmhhoohhrvgesihhnthgvlhdrtghomhdprhgt
+ phhtthhopegvrhhikhdrkhgrnhgvuggrsehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeguvghvvghlsegrtghpihgtrgdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The clk and regulator frameworks expect clk/regulator consumer-devices
-to have info about the consumed clks/regulators described in the device's
-fw_node.
+On Friday, October 8, 2021 5:47:53 PM CEST Limonciello, Mario wrote:
+> On 10/8/2021 09:05, Rafael J. Wysocki wrote:
+> > On Thursday, October 7, 2021 10:51:26 PM CEST Mario Limonciello wrote:
+> >> I found a case that a system that two physical SATA controllers share
+> >> the same ACPI Power Resource.  When a drive is connected to one of
+> >> the controllers then it will bind with PCI devices with the ahci driver
+> >> and form a relationship with the firmware node and physical node.  During
+> >> s2idle I see that the constraints are met for this device as it is
+> >> transitioned into the appropriate state. However the second ACPI node
+> >> doesn't have any relationship with a physical node and stays in "D0":
+> >>
+> >> ```
+> >> ACPI: \_SB_.PCI0.GP18.SATA: ACPI: PM: Power state change: D0 -> D3cold
+> >> ACPI: PM: Power resource [P0SA] still in use
+> >> acpi device:2a: Power state changed to D3cold
+> >> ```
+> >>
+> >> Due to the refcounting used on the shared power resource putting the
+> >> device with a physical node into D3 doesn't result in the _OFF method
+> >> being called.
+> >>
+> >> To help with this type of problem, make a new helper function that can
+> >> be used to check all the children of an ACPI device and put any firmware
+> >> nodes that don't have physical devices into D3cold to allow shared
+> >> resources to transition. Call this helper function after PCI devices have
+> >> been scanned and ACPI companions have had a chance to associate.
+> >>
+> >> After making this change, here is what the flow looks like:
+> >> ```
+> >> <snip:bootup>
+> >> ACPI: \_SB_.PCI0.GP18.SAT1: ACPI: PM: Power state change: D0 -> D3cold
+> >> ACPI: PM: Power resource [P0SA] still in use
+> >> acpi device:2c: Power state changed to D3cold
+> >> <snip:suspend>
+> >> ACPI: \_SB_.PCI0.GP18.SATA: ACPI: PM: Power state change: D0 -> D3cold
+> >> ACPI: PM: Power resource [P0SA] turned off
+> >> acpi device:2a: Power state changed to D3cold
+> >> ```
+> >>
+> >> Link: https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flinux-acpi%2F0571292a-286b-18f2-70ad-12b125a61469%40amd.com%2FT%2F%23m042055c5ca1e49c2829655511f04b0311c142559&amp;data=04%7C01%7Cmario.limonciello%40amd.com%7Ce54614dae1624dfb240408d98a64b8da%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637692988971446528%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=9fYSZ4d2cA2TnM453MQxqmOlGN%2FU6WNi7By7pVP2EV4%3D&amp;reserved=0
+> >> BugLink: https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fbugzilla.kernel.org%2Fshow_bug.cgi%3Fid%3D214091&amp;data=04%7C01%7Cmario.limonciello%40amd.com%7Ce54614dae1624dfb240408d98a64b8da%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637692988971446528%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=vsjQOgqzadLYXTfRW2sui5Dp7%2B0EYf14rUCiIDNofoI%3D&amp;reserved=0
+> >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> >> ---
+> >>   drivers/acpi/device_pm.c | 34 ++++++++++++++++++++++++++++++++++
+> >>   drivers/pci/probe.c      |  5 +++++
+> >>   include/acpi/acpi_bus.h  |  1 +
+> >>   3 files changed, 40 insertions(+)
+> >>
+> >> diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
+> >> index 0028b6b51c87..0fb0bbeeae9e 100644
+> >> --- a/drivers/acpi/device_pm.c
+> >> +++ b/drivers/acpi/device_pm.c
+> >> @@ -149,6 +149,40 @@ static int acpi_dev_pm_explicit_set(struct acpi_device *adev, int state)
+> >>   	return 0;
+> >>   }
+> >>   
+> >> +/**
+> >> + * acpi_device_turn_off_absent_children - Turn off power resources for
+> >> + *					  children not physically present.
+> >> + * @parent: ACPI bridge device
+> >> + */
+> >> +int acpi_device_turn_off_absent_children(struct acpi_device *parent)
+> >> +{
+> >> +	struct acpi_device *adev;
+> >> +	int ret = 0;
+> >> +
+> >> +	if (!parent)
+> >> +		return -EINVAL;
+> >> +
+> >> +	list_for_each_entry(adev, &parent->children, node) {
+> > 
+> > It is better to use device_for_each_child() for this, walking the children list
+> > without locking is questionable.
+> > 
+> >> +		int state;
+> >> +
+> >> +		if (!adev->flags.power_manageable ||
+> > 
+> > This need not be checked, acpi_device_set_power() checks it.
+> > 
+> >> +		    !adev->power.flags.power_resources)
+> > 
+> > And I'm not sure about this too.  Even if there are no power resources, it
+> > would be still prudent to release PM resources referred to by unused device
+> > objects by calling _PS3 on them.
+> > 
+> >> +			continue;
+> >> +		if (acpi_get_first_physical_node(adev))
+> >> +			continue;
+> > 
+> > In addition to this, I would check if the device object has _ADR, because
+> > there are legitimate cases when device objects with a _HID have no physical
+> > nodes.
+> > 
+> >> +		ret = acpi_device_get_power(adev, &state);
+> >> +		if (ret)
+> >> +			return ret;
+> >> +		if (state == ACPI_STATE_D3_COLD)
+> >> +			continue;
+> > 
+> > The above is not necessary.
+> > 
+> >> +		ret = acpi_device_set_power(adev, ACPI_STATE_D3_COLD);
+> >> +		if (ret)
+> >> +			return ret;
+> >> +	}
+> >> +	return ret;
+> >> +}
+> >> +EXPORT_SYMBOL_GPL(acpi_device_turn_off_absent_children);
+> > 
+> > And I would put this function into glue.c.
+> > 
+> >> +
+> >>   /**
+> >>    * acpi_device_set_power - Set power state of an ACPI device.
+> >>    * @device: Device to set the power state of.
+> >> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> >> index 79177ac37880..1a45182394d1 100644
+> >> --- a/drivers/pci/probe.c
+> >> +++ b/drivers/pci/probe.c
+> >> @@ -2939,6 +2939,11 @@ static unsigned int pci_scan_child_bus_extend(struct pci_bus *bus,
+> >>   		}
+> >>   	}
+> >>   
+> >> +	/* check for and turn off dangling power resources */
+> >> +	for_each_pci_bridge(dev, bus) {
+> >> +		acpi_device_turn_off_absent_children(ACPI_COMPANION(&dev->dev));
+> > 
+> > IMO it would be better to call this from inside of the ACPI subsystem and
+> > after scanning the entire bus.
+> > 
+> >> +	}
+> >> +
+> >>   	/*
+> >>   	 * We've scanned the bus and so we know all about what's on
+> >>   	 * the other side of any bridges that may be on this bus plus
+> >> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> >> index 13d93371790e..0eba08b60e13 100644
+> >> --- a/include/acpi/acpi_bus.h
+> >> +++ b/include/acpi/acpi_bus.h
+> >> @@ -510,6 +510,7 @@ int acpi_bus_get_status(struct acpi_device *device);
+> >>   
+> >>   int acpi_bus_set_power(acpi_handle handle, int state);
+> >>   const char *acpi_power_state_string(int state);
+> >> +int acpi_device_turn_off_absent_children(struct acpi_device *parent);
+> >>   int acpi_device_set_power(struct acpi_device *device, int state);
+> >>   int acpi_bus_init_power(struct acpi_device *device);
+> >>   int acpi_device_fix_up_power(struct acpi_device *device);
+> >>
+> > 
+> > Overall, something like the appended patch might work. >
+> > Note that on my test-bed machine it makes no difference, though.
+> 
+> Yes this helps the resources on the identified problematic machine.
+> 
+> > 
+> > ---
+> >   drivers/acpi/glue.c     |   28 ++++++++++++++++++++++++++++
+> >   drivers/acpi/internal.h |    2 ++
+> >   drivers/acpi/pci_root.c |    1 +
+> >   3 files changed, 31 insertions(+)
+> > 
+> > Index: linux-pm/drivers/acpi/glue.c
+> > ===================================================================
+> > --- linux-pm.orig/drivers/acpi/glue.c
+> > +++ linux-pm/drivers/acpi/glue.c
+> > @@ -350,3 +350,31 @@ void acpi_device_notify_remove(struct de
+> >   
+> >   	acpi_unbind_one(dev);
+> >   }
+> > +
+> > +static int acpi_dev_turn_off_if_unused(struct device *dev, void *not_used)
+> > +{
+> > +	struct acpi_device *adev = to_acpi_device(dev);
+> > +
+> > +	acpi_dev_turn_off_unused_descendants(adev);
+> > +
+> > +	if (adev->pnp.type.bus_address && !acpi_get_first_physical_node(adev))
+> > +		acpi_device_set_power(adev, ACPI_STATE_D3_COLD);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +/**
+> > + * acpi_dev_turn_off_unused_descendants - Put unused descendants into D3cold.
+> > + * @adev: ACPI device object at the top of a branch of device hierarchy.
+> > + *
+> > + * Walk the branch of the hierarchy of ACPI device objects starting at @adev
+> > + * and put all of the objects in it that have _ADR and have no corresponding
+> > + * physical nodes into D3cold.
+> > + *
+> > + * This allows power resources that are only referred to by unused ACPI device
+> > + * objects to be turned off.
+> > + */
+> > +void acpi_dev_turn_off_unused_descendants(struct acpi_device *adev)
+> > +{
+> > +	device_for_each_child(&adev->dev, NULL, acpi_dev_turn_off_if_unused);
+> > +}
+> > Index: linux-pm/drivers/acpi/internal.h
+> > ===================================================================
+> > --- linux-pm.orig/drivers/acpi/internal.h
+> > +++ linux-pm/drivers/acpi/internal.h
+> > @@ -88,6 +88,8 @@ bool acpi_scan_is_offline(struct acpi_de
+> >   acpi_status acpi_sysfs_table_handler(u32 event, void *table, void *context);
+> >   void acpi_scan_table_notify(void);
+> >   
+> > +void acpi_dev_turn_off_unused_descendants(struct acpi_device *adev);
+> > +
+> >   /* --------------------------------------------------------------------------
+> >                        Device Node Initialization / Removal
+> >      -------------------------------------------------------------------------- */
+> > Index: linux-pm/drivers/acpi/pci_root.c
+> > ===================================================================
+> > --- linux-pm.orig/drivers/acpi/pci_root.c
+> > +++ linux-pm/drivers/acpi/pci_root.c
+> > @@ -630,6 +630,7 @@ static int acpi_pci_root_add(struct acpi
+> >   
+> >   	pci_lock_rescan_remove();
+> >   	pci_bus_add_devices(root->bus);
+> > +	acpi_dev_turn_off_unused_descendants(root->device);
+> >   	pci_unlock_rescan_remove();
+> >   	return 1;
+> >   
+> > 
+> > 
+> > 
+> 
+> When you submit this if no other changes, please include:
+> 
+> Tested-by: Mario Limonciello <mario.limonciello@amd.com>
 
-To work around this info missing from the ACPI tables on devices where
-the int3472 driver is used, the int3472 MFD-cell drivers attach info about
-consumers to the clks/regulators when registering these.
+Thanks, but we may do better in a couple of ways.
 
-This causes problems with the probe ordering wrt drivers for consumers
-of these clks/regulators. Since the lookups are only registered when the
-provider-driver binds, trying to get these clks/regulators before then
-results in a -ENOENT error for clks and a dummy regulator for regulators.
+First off, there's no particular reason to restrict the walk to the device
+objects below the host bridge one.
 
-All the sensor ACPI fw-nodes have a _DEP dependency on the INT3472 ACPI
-fw-node, so to work around these probe ordering issues the sensor drivers
-call the has_unmet_acpi_deps() helper and return -EPROBE_DEFER if this
-returns true.
+Second, if the physical node appears while we're removing power from the
+device, whoever adds it may be confused, so it's better to avoid that.
 
-Add MODULE_SOFTDEP dependencies for the gpio/clk/regulator drivers for
-the instantiated MFD-cells so that these are loaded before us and so
-that they bind immediately when the platform-devs are instantiated;
-and call acpi_dev_clear_dependencies() on successful probe.
+Please check if the appended one still works for you.
 
-This way we ensure that the gpio/clk/regulators are registered before
-we call acpi_dev_clear_dependencies() and the sensor drivers can then
-use has_unmet_acpi_deps() helper to wait for this.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/platform/x86/intel/int3472/discrete.c | 1 +
- drivers/platform/x86/intel/int3472/tps68470.c | 4 ++++
- 2 files changed, 5 insertions(+)
+ drivers/acpi/glue.c     |   16 ++++++++++++++++
+ drivers/acpi/internal.h |    1 +
+ drivers/acpi/scan.c     |    6 ++++++
+ 3 files changed, 23 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
-index fefe12850777..e23a45b985dc 100644
---- a/drivers/platform/x86/intel/int3472/discrete.c
-+++ b/drivers/platform/x86/intel/int3472/discrete.c
-@@ -380,6 +380,7 @@ static int skl_int3472_discrete_probe(struct platform_device *pdev)
- 		return ret;
+Index: linux-pm/drivers/acpi/scan.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/scan.c
++++ linux-pm/drivers/acpi/scan.c
+@@ -2559,6 +2559,12 @@ int __init acpi_scan_init(void)
+ 		}
  	}
  
-+	acpi_dev_clear_dependencies(adev);
- 	return 0;
- }
- 
-diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
-index 36b657888fe2..781ce6ead720 100644
---- a/drivers/platform/x86/intel/int3472/tps68470.c
-+++ b/drivers/platform/x86/intel/int3472/tps68470.c
-@@ -166,6 +166,9 @@ static int skl_int3472_tps68470_probe(struct i2c_client *client)
- 		return device_type;
- 	}
- 
-+	if (ret == 0)
-+		acpi_dev_clear_dependencies(adev);
++	/*
++	 * Make sure that power management resources are not blocked by ACPI
++	 * device objects with no users.
++	 */
++	bus_for_each_dev(&acpi_bus_type, NULL, NULL, acpi_dev_turn_off_if_unused);
 +
- 	return ret;
- }
+ 	acpi_turn_off_unused_power_resources();
  
-@@ -199,3 +202,4 @@ module_i2c_driver(int3472_tps68470);
- MODULE_DESCRIPTION("Intel SkyLake INT3472 ACPI TPS68470 Device Driver");
- MODULE_AUTHOR("Daniel Scally <djrscally@gmail.com>");
- MODULE_LICENSE("GPL v2");
-+MODULE_SOFTDEP("pre: gpio-tps68470 clk-tps68470 tps68470-regulator");
--- 
-2.31.1
+ 	acpi_scan_initialized = true;
+Index: linux-pm/drivers/acpi/glue.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/glue.c
++++ linux-pm/drivers/acpi/glue.c
+@@ -350,3 +350,19 @@ void acpi_device_notify_remove(struct de
+ 
+ 	acpi_unbind_one(dev);
+ }
++
++int acpi_dev_turn_off_if_unused(struct device *dev, void *not_used)
++{
++	struct acpi_device *adev = to_acpi_device(dev);
++
++	if (adev->pnp.type.bus_address) {
++		mutex_lock(&adev->physical_node_lock);
++
++		if (list_empty(&adev->physical_node_list))
++			acpi_device_set_power(adev, ACPI_STATE_D3_COLD);
++
++		mutex_unlock(&adev->physical_node_lock);
++	}
++
++	return 0;
++}
+Index: linux-pm/drivers/acpi/internal.h
+===================================================================
+--- linux-pm.orig/drivers/acpi/internal.h
++++ linux-pm/drivers/acpi/internal.h
+@@ -117,6 +117,7 @@ bool acpi_device_is_battery(struct acpi_
+ bool acpi_device_is_first_physical_node(struct acpi_device *adev,
+ 					const struct device *dev);
+ int acpi_bus_register_early_device(int type);
++int acpi_dev_turn_off_if_unused(struct device *dev, void *not_used);
+ 
+ /* --------------------------------------------------------------------------
+                      Device Matching and Notification
+
+
 
