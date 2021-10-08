@@ -2,37 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F4DC426EF0
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Oct 2021 18:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61192426ECB
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Oct 2021 18:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230116AbhJHQ2N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Oct 2021 12:28:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:34986 "EHLO
+        id S234190AbhJHQ1V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Oct 2021 12:27:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:35611 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239913AbhJHQ1r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Oct 2021 12:27:47 -0400
+        by vger.kernel.org with ESMTP id S231129AbhJHQ1R (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Oct 2021 12:27:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1633710350;
+        s=mimecast20190719; t=1633710321;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4hME9X/3eMZhCAQ7BpDzT3/VoKBAlb5y0lcKAKkPuW4=;
-        b=LalGaIcKAo2MF6XoSuFVmWjtL0LHwbrRh5IxH8F73i+f/CGpiS0+bRKmhPgbFCtnF6+cjx
-        yv8dooN/j98og5lIuDWlh/vuv+MKxBqTTCiCgI/5RJ6i7ACnhO56IlIZz91W92OZBtdUM/
-        iYrdU93jRk2qW6MjvkdDQPnHUtxb+T4=
+        bh=IiokAC43OtxhTz+trmnLFGWiryJw2jtRyA+ECHH1ujM=;
+        b=JqaWLm1CpldeGatLMkTUkaWRJrgDcvBx/mcHC7piyKyu6kBUDpiU3iPeG7cAP9qXYaysDT
+        cSunDPmyhz9rQ3UulMFvhweDFG+uWEZMAFWhi6Pn/gbPA1nvbTplc7h51PpQISFaMYn/xP
+        z7rFoD7ePO6/2zn9OYdhOtUEc5cQk+Y=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-155-4KxdZOwDNI6LUn3Y-_nntQ-1; Fri, 08 Oct 2021 12:25:43 -0400
-X-MC-Unique: 4KxdZOwDNI6LUn3Y-_nntQ-1
+ us-mta-385-ExqFveV7Nr-viHbVk8FeAA-1; Fri, 08 Oct 2021 12:25:18 -0400
+X-MC-Unique: ExqFveV7Nr-viHbVk8FeAA-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7FE5710D01E4;
-        Fri,  8 Oct 2021 16:22:55 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 44A788ECDF3;
+        Fri,  8 Oct 2021 16:23:00 +0000 (UTC)
 Received: from x1.localdomain (unknown [10.39.192.26])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 66CFE60C0F;
-        Fri,  8 Oct 2021 16:22:50 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id E913C60BF1;
+        Fri,  8 Oct 2021 16:22:55 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mark Gross <markgross@kernel.org>,
@@ -50,9 +50,9 @@ Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH 05/12] regulator: Introduce tps68470-regulator driver
-Date:   Fri,  8 Oct 2021 18:21:14 +0200
-Message-Id: <20211008162121.6628-6-hdegoede@redhat.com>
+Subject: [PATCH 06/12] clk: Introduce clk-tps68470 driver
+Date:   Fri,  8 Oct 2021 18:21:15 +0200
+Message-Id: <20211008162121.6628-7-hdegoede@redhat.com>
 In-Reply-To: <20211008162121.6628-1-hdegoede@redhat.com>
 References: <20211008162121.6628-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -68,63 +68,61 @@ driver designed to work with power control methods defined in ACPI, but
 some platforms lack those methods, meaning drivers need to be able to
 consume the resources of these chips through the usual frameworks.
 
-This commit adds a driver for the regulators provided by the tps68470,
+This commit adds a driver for the clocks provided by the tps68470,
 and is designed to bind to the platform_device registered by the
 intel_skl_int3472 module.
 
 This is based on this out of tree driver written by Intel:
-https://github.com/intel/linux-intel-lts/blob/4.14/base/drivers/regulator/tps68470-regulator.c
+https://github.com/intel/linux-intel-lts/blob/4.14/base/drivers/clk/clk-tps68470.c
 with various cleanups added.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/regulator/Kconfig              |   9 ++
- drivers/regulator/Makefile             |   1 +
- drivers/regulator/tps68470-regulator.c | 194 +++++++++++++++++++++++++
- 3 files changed, 204 insertions(+)
- create mode 100644 drivers/regulator/tps68470-regulator.c
+ drivers/clk/Kconfig          |   6 +
+ drivers/clk/Makefile         |   1 +
+ drivers/clk/clk-tps68470.c   | 257 +++++++++++++++++++++++++++++++++++
+ include/linux/mfd/tps68470.h |  11 ++
+ 4 files changed, 275 insertions(+)
+ create mode 100644 drivers/clk/clk-tps68470.c
 
-diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
-index 4fd13b06231f..d107af5bff6c 100644
---- a/drivers/regulator/Kconfig
-+++ b/drivers/regulator/Kconfig
-@@ -1339,6 +1339,15 @@ config REGULATOR_TPS65912
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index c5b3dc97396a..7dffecac83d1 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -169,6 +169,12 @@ config COMMON_CLK_CDCE706
  	help
- 	    This driver supports TPS65912 voltage regulator chip.
+ 	  This driver supports TI CDCE706 programmable 3-PLL clock synthesizer.
  
-+config REGULATOR_TPS68470
-+	tristate "TI TPS68370 PMIC Regulators Driver"
-+	depends on INTEL_SKL_INT3472
++config COMMON_CLK_TPS68470
++	tristate "Clock Driver for TI TPS68470 PMIC"
++	depends on I2C && REGMAP_I2C && INTEL_SKL_INT3472
 +	help
-+	  This driver adds support for the TPS68470 PMIC to register
-+	  regulators against the usual framework.
++	 This driver supports the clocks provided by TPS68470
 +
-+	  The module will be called "tps68470-regulator"
-+
- config REGULATOR_TPS80031
- 	tristate "TI TPS80031/TPS80032 power regulator driver"
- 	depends on MFD_TPS80031
-diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
-index 9e382b50a5ef..03c318110986 100644
---- a/drivers/regulator/Makefile
-+++ b/drivers/regulator/Makefile
-@@ -158,6 +158,7 @@ obj-$(CONFIG_REGULATOR_TPS6524X) += tps6524x-regulator.o
- obj-$(CONFIG_REGULATOR_TPS6586X) += tps6586x-regulator.o
- obj-$(CONFIG_REGULATOR_TPS65910) += tps65910-regulator.o
- obj-$(CONFIG_REGULATOR_TPS65912) += tps65912-regulator.o
-+obj-$(CONFIG_REGULATOR_TPS68470) += tps68470-regulator.o
- obj-$(CONFIG_REGULATOR_TPS80031) += tps80031-regulator.o
- obj-$(CONFIG_REGULATOR_TPS65132) += tps65132-regulator.o
- obj-$(CONFIG_REGULATOR_TWL4030) += twl-regulator.o twl6030-regulator.o
-diff --git a/drivers/regulator/tps68470-regulator.c b/drivers/regulator/tps68470-regulator.c
+ config COMMON_CLK_CDCE925
+ 	tristate "Clock driver for TI CDCE913/925/937/949 devices"
+ 	depends on I2C
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index e42312121e51..6b6a88ae1425 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -63,6 +63,7 @@ obj-$(CONFIG_COMMON_CLK_SI570)		+= clk-si570.o
+ obj-$(CONFIG_COMMON_CLK_STM32F)		+= clk-stm32f4.o
+ obj-$(CONFIG_COMMON_CLK_STM32H7)	+= clk-stm32h7.o
+ obj-$(CONFIG_COMMON_CLK_STM32MP157)	+= clk-stm32mp1.o
++obj-$(CONFIG_COMMON_CLK_TPS68470)      += clk-tps68470.o
+ obj-$(CONFIG_CLK_TWL6040)		+= clk-twl6040.o
+ obj-$(CONFIG_ARCH_VT8500)		+= clk-vt8500.o
+ obj-$(CONFIG_COMMON_CLK_VC5)		+= clk-versaclock5.o
+diff --git a/drivers/clk/clk-tps68470.c b/drivers/clk/clk-tps68470.c
 new file mode 100644
-index 000000000000..82c4b1211c6f
+index 000000000000..3cf7e6151033
 --- /dev/null
-+++ b/drivers/regulator/tps68470-regulator.c
-@@ -0,0 +1,194 @@
++++ b/drivers/clk/clk-tps68470.c
+@@ -0,0 +1,257 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Regulator driver for TPS68470 PMIC
++ * Clock driver for TPS68470 PMIC
 + *
 + * Copyright (C) 2018 Intel Corporation
 + *
@@ -133,166 +131,229 @@ index 000000000000..82c4b1211c6f
 + *	Tianshu Qiu <tian.shu.qiu@intel.com>
 + *	Jian Xu Zheng <jian.xu.zheng@intel.com>
 + *	Yuning Pu <yuning.pu@intel.com>
-+ *	Rajmohan Mani <rajmohan.mani@intel.com>
++ *	Antti Laakso <antti.laakso@intel.com>
 + */
 +
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/init.h>
++#include <linux/clk-provider.h>
++#include <linux/clkdev.h>
 +#include <linux/kernel.h>
 +#include <linux/mfd/tps68470.h>
 +#include <linux/module.h>
-+#include <linux/platform_data/tps68470.h>
 +#include <linux/platform_device.h>
-+#include <linux/regulator/driver.h>
-+#include <linux/regulator/machine.h>
++#include <linux/platform_data/tps68470.h>
++#include <linux/regmap.h>
 +
-+#define TPS68470_REGULATOR(_name, _id, _ops, _n, _vr,			\
-+			   _vm, _er, _em, _t, _lr, _nlr)		\
-+	[TPS68470_ ## _name] = {					\
-+		.name			= # _name,			\
-+		.id			= _id,				\
-+		.ops			= &_ops,			\
-+		.n_voltages		= _n,				\
-+		.type			= REGULATOR_VOLTAGE,		\
-+		.owner			= THIS_MODULE,			\
-+		.vsel_reg		= _vr,				\
-+		.vsel_mask		= _vm,				\
-+		.enable_reg		= _er,				\
-+		.enable_mask		= _em,				\
-+		.volt_table		= _t,				\
-+		.linear_ranges		= _lr,				\
-+		.n_linear_ranges	= _nlr,				\
-+	}
++#define TPS68470_CLK_NAME "tps68470-clk"
 +
-+static const struct linear_range tps68470_ldo_ranges[] = {
-+	REGULATOR_LINEAR_RANGE(875000, 0, 125, 17800),
-+};
++#define to_tps68470_clkdata(clkd) \
++	container_of(clkd, struct tps68470_clkdata, clkout_hw)
 +
-+static const struct linear_range tps68470_core_ranges[] = {
-+	REGULATOR_LINEAR_RANGE(900000, 0, 42, 25000),
-+};
-+
-+/* Operations permitted on DCDCx, LDO2, LDO3 and LDO4 */
-+static struct regulator_ops tps68470_regulator_ops = {
-+	.is_enabled		= regulator_is_enabled_regmap,
-+	.enable			= regulator_enable_regmap,
-+	.disable		= regulator_disable_regmap,
-+	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-+	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-+	.list_voltage		= regulator_list_voltage_linear_range,
-+	.map_voltage		= regulator_map_voltage_linear_range,
-+};
-+
-+static const struct regulator_desc regulators[] = {
-+	TPS68470_REGULATOR(CORE, TPS68470_CORE,
-+			   tps68470_regulator_ops, 43, TPS68470_REG_VDVAL,
-+			   TPS68470_VDVAL_DVOLT_MASK, TPS68470_REG_VDCTL,
-+			   TPS68470_VDCTL_EN_MASK,
-+			   NULL, tps68470_core_ranges,
-+			   ARRAY_SIZE(tps68470_core_ranges)),
-+	TPS68470_REGULATOR(ANA, TPS68470_ANA,
-+			   tps68470_regulator_ops, 126, TPS68470_REG_VAVAL,
-+			   TPS68470_VAVAL_AVOLT_MASK, TPS68470_REG_VACTL,
-+			   TPS68470_VACTL_EN_MASK,
-+			   NULL, tps68470_ldo_ranges,
-+			   ARRAY_SIZE(tps68470_ldo_ranges)),
-+	TPS68470_REGULATOR(VCM, TPS68470_VCM,
-+			   tps68470_regulator_ops, 126, TPS68470_REG_VCMVAL,
-+			   TPS68470_VCMVAL_VCVOLT_MASK, TPS68470_REG_VCMCTL,
-+			   TPS68470_VCMCTL_EN_MASK,
-+			   NULL, tps68470_ldo_ranges,
-+			   ARRAY_SIZE(tps68470_ldo_ranges)),
-+	TPS68470_REGULATOR(VIO, TPS68470_VIO,
-+			   tps68470_regulator_ops, 126, TPS68470_REG_VIOVAL,
-+			   TPS68470_VIOVAL_IOVOLT_MASK, TPS68470_REG_S_I2C_CTL,
-+			   TPS68470_S_I2C_CTL_EN_MASK,
-+			   NULL, tps68470_ldo_ranges,
-+			   ARRAY_SIZE(tps68470_ldo_ranges)),
-+
++struct tps68470_clkout_freqs {
++	unsigned long freq;
++	unsigned int xtaldiv;
++	unsigned int plldiv;
++	unsigned int postdiv;
++	unsigned int buckdiv;
++	unsigned int boostdiv;
++} clk_freqs[] = {
 +/*
-+ * (1) This register must have same setting as VIOVAL if S_IO LDO is used to
-+ *     power daisy chained IOs in the receive side.
-+ * (2) If there is no I2C daisy chain it can be set freely.
++ *  The PLL is used to multiply the crystal oscillator
++ *  frequency range of 3 MHz to 27 MHz by a programmable
++ *  factor of F = (M/N)*(1/P) such that the output
++ *  available at the HCLK_A or HCLK_B pins are in the range
++ *  of 4 MHz to 64 MHz in increments of 0.1 MHz
++ *
++ * hclk_# = osc_in * (((plldiv*2)+320) / (xtaldiv+30)) * (1 / 2^postdiv)
++ *
++ * PLL_REF_CLK should be as close as possible to 100kHz
++ * PLL_REF_CLK = input clk / XTALDIV[7:0] + 30)
++ *
++ * PLL_VCO_CLK = (PLL_REF_CLK * (plldiv*2 + 320))
++ *
++ * BOOST should be as close as possible to 2Mhz
++ * BOOST = PLL_VCO_CLK / (BOOSTDIV[4:0] + 16) *
++ *
++ * BUCK should be as close as possible to 5.2Mhz
++ * BUCK = PLL_VCO_CLK / (BUCKDIV[3:0] + 5)
++ *
++ * osc_in   xtaldiv  plldiv   postdiv   hclk_#
++ * 20Mhz    170      32       1         19.2Mhz
++ * 20Mhz    170      40       1         20Mhz
++ * 20Mhz    170      80       1         24Mhz
 + *
 + */
-+	TPS68470_REGULATOR(VSIO, TPS68470_VSIO,
-+			   tps68470_regulator_ops, 126, TPS68470_REG_VSIOVAL,
-+			   TPS68470_VSIOVAL_IOVOLT_MASK, TPS68470_REG_S_I2C_CTL,
-+			   TPS68470_S_I2C_CTL_EN_MASK,
-+			   NULL, tps68470_ldo_ranges,
-+			   ARRAY_SIZE(tps68470_ldo_ranges)),
-+	TPS68470_REGULATOR(AUX1, TPS68470_AUX1,
-+			   tps68470_regulator_ops, 126, TPS68470_REG_VAUX1VAL,
-+			   TPS68470_VAUX1VAL_AUX1VOLT_MASK,
-+			   TPS68470_REG_VAUX1CTL,
-+			   TPS68470_VAUX1CTL_EN_MASK,
-+			   NULL, tps68470_ldo_ranges,
-+			   ARRAY_SIZE(tps68470_ldo_ranges)),
-+	TPS68470_REGULATOR(AUX2, TPS68470_AUX2,
-+			   tps68470_regulator_ops, 126, TPS68470_REG_VAUX2VAL,
-+			   TPS68470_VAUX2VAL_AUX2VOLT_MASK,
-+			   TPS68470_REG_VAUX2CTL,
-+			   TPS68470_VAUX2CTL_EN_MASK,
-+			   NULL, tps68470_ldo_ranges,
-+			   ARRAY_SIZE(tps68470_ldo_ranges)),
++	{ 19200000, 170, 32, 1, 2, 3 },
++	{ 20000000, 170, 40, 1, 3, 4 },
++	{ 24000000, 170, 80, 1, 4, 8 },
 +};
 +
-+#define TPS68470_REG_INIT_DATA(_name, _min_uV, _max_uV)			\
-+	[TPS68470_ ## _name] = {					\
-+		.constraints = {					\
-+			.name = # _name,				\
-+			.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE |	\
-+					  REGULATOR_CHANGE_STATUS,	\
-+			.min_uV = _min_uV,				\
-+			.max_uV = _max_uV,				\
-+		},							\
++struct tps68470_clkdata {
++	struct clk_hw clkout_hw;
++	struct regmap *regmap;
++	struct clk *clk;
++	int clk_cfg_idx;
++};
++
++static int tps68470_clk_is_prepared(struct clk_hw *hw)
++{
++	struct tps68470_clkdata *clkdata = to_tps68470_clkdata(hw);
++	int val;
++
++	if (regmap_read(clkdata->regmap, TPS68470_REG_PLLCTL, &val))
++		return 0;
++
++	return val & TPS68470_PLL_EN_MASK;
++}
++
++static int tps68470_clk_prepare(struct clk_hw *hw)
++{
++	struct tps68470_clkdata *clkdata = to_tps68470_clkdata(hw);
++	int idx = clkdata->clk_cfg_idx;
++
++	regmap_write(clkdata->regmap, TPS68470_REG_BOOSTDIV, clk_freqs[idx].boostdiv);
++	regmap_write(clkdata->regmap, TPS68470_REG_BUCKDIV, clk_freqs[idx].buckdiv);
++	regmap_write(clkdata->regmap, TPS68470_REG_PLLSWR, TPS68470_PLLSWR_DEFAULT);
++	regmap_write(clkdata->regmap, TPS68470_REG_XTALDIV, clk_freqs[idx].xtaldiv);
++	regmap_write(clkdata->regmap, TPS68470_REG_PLLDIV, clk_freqs[idx].plldiv);
++	regmap_write(clkdata->regmap, TPS68470_REG_POSTDIV, clk_freqs[idx].postdiv);
++	regmap_write(clkdata->regmap, TPS68470_REG_POSTDIV2, clk_freqs[idx].postdiv);
++	regmap_write(clkdata->regmap, TPS68470_REG_CLKCFG2, TPS68470_CLKCFG2_DRV_STR_2MA);
++
++	regmap_write(clkdata->regmap, TPS68470_REG_PLLCTL, 
++		     TPS68470_OSC_EXT_CAP_DEFAULT << TPS68470_OSC_EXT_CAP_SHIFT |
++		     TPS68470_CLK_SRC_XTAL << TPS68470_CLK_SRC_SHIFT);
++
++	regmap_write(clkdata->regmap, TPS68470_REG_CLKCFG1,
++			   (TPS68470_PLL_OUTPUT_ENABLE <<
++			   TPS68470_OUTPUT_A_SHIFT) |
++			   (TPS68470_PLL_OUTPUT_ENABLE <<
++			   TPS68470_OUTPUT_B_SHIFT));
++
++	regmap_update_bits(clkdata->regmap, TPS68470_REG_PLLCTL,
++			   TPS68470_PLL_EN_MASK, TPS68470_PLL_EN_MASK);
++
++	return 0;
++}
++
++static void tps68470_clk_unprepare(struct clk_hw *hw)
++{
++	struct tps68470_clkdata *clkdata = to_tps68470_clkdata(hw);
++
++	/* disable clock first*/
++	regmap_update_bits(clkdata->regmap, TPS68470_REG_PLLCTL, TPS68470_PLL_EN_MASK, 0);
++
++	/* write hw defaults */
++	regmap_write(clkdata->regmap, TPS68470_REG_BOOSTDIV, 0);
++	regmap_write(clkdata->regmap, TPS68470_REG_BUCKDIV, 0);
++	regmap_write(clkdata->regmap, TPS68470_REG_PLLSWR, 0);
++	regmap_write(clkdata->regmap, TPS68470_REG_XTALDIV, 0);
++	regmap_write(clkdata->regmap, TPS68470_REG_PLLDIV, 0);
++	regmap_write(clkdata->regmap, TPS68470_REG_POSTDIV, 0);
++	regmap_write(clkdata->regmap, TPS68470_REG_CLKCFG2, 0);
++	regmap_write(clkdata->regmap, TPS68470_REG_CLKCFG1, 0);
++}
++
++static unsigned long tps68470_clk_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
++{
++	struct tps68470_clkdata *clkdata = to_tps68470_clkdata(hw);
++
++	return clk_freqs[clkdata->clk_cfg_idx].freq;
++}
++
++static int tps68470_clk_cfg_lookup(unsigned long rate)
++{
++	long diff, best_diff = LONG_MAX;
++	int i, best_idx = 0;
++
++	for (i = 0; i < ARRAY_SIZE(clk_freqs); i++) {
++		diff = clk_freqs[i].freq - rate;
++		if (diff == 0)
++			return i;
++
++		diff = abs(diff);
++		if (diff < best_diff) {
++			best_diff = diff;
++			best_idx = i;
++		}
 +	}
 +
-+struct regulator_init_data tps68470_init[] = {
-+	TPS68470_REG_INIT_DATA(CORE, 900000, 1950000),
-+	TPS68470_REG_INIT_DATA(ANA, 875000, 3100000),
-+	TPS68470_REG_INIT_DATA(VCM, 875000, 3100000),
-+	TPS68470_REG_INIT_DATA(VIO, 875000, 3100000),
-+	TPS68470_REG_INIT_DATA(VSIO, 875000, 3100000),
-+	TPS68470_REG_INIT_DATA(AUX1, 875000, 3100000),
-+	TPS68470_REG_INIT_DATA(AUX2, 875000, 3100000),
++	return best_idx;
++}
++
++static long tps68470_clk_round_rate(struct clk_hw *hw, unsigned long rate,
++				    unsigned long *parent_rate)
++{
++	int idx = tps68470_clk_cfg_lookup(rate);
++
++	return clk_freqs[idx].freq;
++}
++
++static int tps68470_clk_set_rate(struct clk_hw *hw, unsigned long rate,
++				 unsigned long parent_rate)
++{
++	struct tps68470_clkdata *clkdata = to_tps68470_clkdata(hw);
++	int idx = tps68470_clk_cfg_lookup(rate);
++
++	if (rate != clk_freqs[idx].freq)
++		return -EINVAL;
++
++	clkdata->clk_cfg_idx = idx;
++	return 0;
++}
++
++static const struct clk_ops tps68470_clk_ops = {
++	.is_prepared = tps68470_clk_is_prepared,
++	.prepare = tps68470_clk_prepare,
++	.unprepare = tps68470_clk_unprepare,
++	.recalc_rate = tps68470_clk_recalc_rate,
++	.round_rate = tps68470_clk_round_rate,
++	.set_rate = tps68470_clk_set_rate,
 +};
 +
-+static int tps68470_regulator_probe(struct platform_device *pdev)
++static struct clk_init_data tps68470_clk_initdata = {
++	.name = TPS68470_CLK_NAME,
++	.ops = &tps68470_clk_ops,
++};
++
++static int tps68470_clk_probe(struct platform_device *pdev)
 +{
-+	struct tps68470_regulator_platform_data *pdata = pdev->dev.platform_data;
-+	struct regulator_config config = { };
-+	struct regmap *tps68470_regmap;
-+	struct regulator_dev *rdev;
-+	int i;
++	struct tps68470_clk_platform_data *pdata = pdev->dev.platform_data;
++	struct tps68470_clkdata *tps68470_clkdata;
++	int ret;
 +
-+	tps68470_regmap = dev_get_drvdata(pdev->dev.parent);
++	tps68470_clkdata = devm_kzalloc(&pdev->dev, sizeof(*tps68470_clkdata),
++					GFP_KERNEL);
++	if (!tps68470_clkdata)
++		return -ENOMEM;
 +
-+	for (i = 0; i < TPS68470_NUM_REGULATORS; i++) {
-+		config.dev = pdev->dev.parent;
-+		config.regmap = tps68470_regmap;
-+		if (pdata && pdata->reg_init_data[i])
-+			config.init_data = pdata->reg_init_data[i];
-+		else
-+			config.init_data = &tps68470_init[i];
++	tps68470_clkdata->regmap = dev_get_drvdata(pdev->dev.parent);
++	tps68470_clkdata->clkout_hw.init = &tps68470_clk_initdata;
++	tps68470_clkdata->clk = devm_clk_register(&pdev->dev, &tps68470_clkdata->clkout_hw);
++	if (IS_ERR(tps68470_clkdata->clk))
++		return PTR_ERR(tps68470_clkdata->clk);
 +
-+		rdev = devm_regulator_register(&pdev->dev, &regulators[i], &config);
-+		if (IS_ERR(rdev)) {
-+			dev_err(&pdev->dev, "failed to register %s regulator\n",
-+				regulators[i].name);
-+			return PTR_ERR(rdev);
-+		}
++	ret = devm_clk_hw_register_clkdev(&pdev->dev, &tps68470_clkdata->clkout_hw,
++					  TPS68470_CLK_NAME, NULL);
++	if (ret)
++		return ret;
++
++	if (pdata) {
++		ret = devm_clk_hw_register_clkdev(&pdev->dev,
++						  &tps68470_clkdata->clkout_hw,
++						  pdata->consumer_con_id,
++						  pdata->consumer_dev_name);
++		if (ret)
++			return ret;
 +	}
 +
 +	return 0;
 +}
 +
-+static struct platform_driver tps68470_regulator_driver = {
++static struct platform_driver tps68470_clk_driver = {
 +	.driver = {
-+		.name = "tps68470-regulator",
++		.name = TPS68470_CLK_NAME,
 +	},
-+	.probe = tps68470_regulator_probe,
++	.probe = tps68470_clk_probe,
 +};
 +
 +/*
@@ -301,21 +362,43 @@ index 000000000000..82c4b1211c6f
 + * acpi_dev_clear_dependencies() after the cell creation).
 + * subsys_initcall() ensures this when the drivers are builtin.
 + */
-+static int __init tps68470_regulator_init(void)
++static int __init tps68470_clk_init(void)
 +{
-+	return platform_driver_register(&tps68470_regulator_driver);
++	return platform_driver_register(&tps68470_clk_driver);
 +}
-+subsys_initcall(tps68470_regulator_init);
++subsys_initcall(tps68470_clk_init);
 +
-+static void __exit tps68470_regulator_exit(void)
++static void __exit tps68470_clk_exit(void)
 +{
-+	platform_driver_unregister(&tps68470_regulator_driver);
++	platform_driver_unregister(&tps68470_clk_driver);
 +}
-+module_exit(tps68470_regulator_exit);
++module_exit(tps68470_clk_exit);
 +
-+MODULE_ALIAS("platform:tps68470-regulator");
-+MODULE_DESCRIPTION("TPS68470 voltage regulator driver");
-+MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("platform:tps68470-clk");
++MODULE_DESCRIPTION("clock driver for TPS68470 pmic");
++MODULE_LICENSE("GPL");
+diff --git a/include/linux/mfd/tps68470.h b/include/linux/mfd/tps68470.h
+index ffe81127d91c..7807fa329db0 100644
+--- a/include/linux/mfd/tps68470.h
++++ b/include/linux/mfd/tps68470.h
+@@ -75,6 +75,17 @@
+ #define TPS68470_CLKCFG1_MODE_A_MASK	GENMASK(1, 0)
+ #define TPS68470_CLKCFG1_MODE_B_MASK	GENMASK(3, 2)
+ 
++#define TPS68470_CLKCFG2_DRV_STR_2MA	0x05
++#define TPS68470_PLL_OUTPUT_ENABLE	0x02
++#define TPS68470_CLK_SRC_XTAL		BIT(0)
++#define TPS68470_PLLSWR_DEFAULT		GENMASK(1, 0)
++#define TPS68470_OSC_EXT_CAP_DEFAULT	0x05
++
++#define TPS68470_OUTPUT_A_SHIFT		0x00
++#define TPS68470_OUTPUT_B_SHIFT		0x02
++#define TPS68470_CLK_SRC_SHIFT		GENMASK(2, 0)
++#define TPS68470_OSC_EXT_CAP_SHIFT	BIT(2)
++
+ #define TPS68470_GPIO_CTL_REG_A(x)	(TPS68470_REG_GPCTL0A + (x) * 2)
+ #define TPS68470_GPIO_CTL_REG_B(x)	(TPS68470_REG_GPCTL0B + (x) * 2)
+ #define TPS68470_GPIO_MODE_MASK		GENMASK(1, 0)
 -- 
 2.31.1
 
