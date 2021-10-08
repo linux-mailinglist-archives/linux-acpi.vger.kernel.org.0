@@ -2,164 +2,368 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D61E4267C2
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Oct 2021 12:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9566C426896
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Oct 2021 13:19:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239526AbhJHK33 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 8 Oct 2021 06:29:29 -0400
-Received: from mail-dm6nam10on2070.outbound.protection.outlook.com ([40.107.93.70]:19777
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S236118AbhJHK32 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 8 Oct 2021 06:29:28 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=admCth41dEBS4mkqaxdDQdwb/MPL1xzjLqD4PG2eh1vp47EcKNK8IuevcXANzsxapm/sTI3SCM/GXfuH16chxo+h4im2zP6GAqO9vlzvOqIcwMH93DnMTbup8ShVmA2mUk8ttjWBvreG/JfFzed+jglZ/jBMg5i+gDQRkeg/xelxbOE0ge/s4pNFfk5AFsugXS3GwkcEyZOESMFoGye3WtvlfutxuKETTTTYAboMVe7GpPPPaFlRUi0aFTmqQ03r1/9vwr2UBYsJKa10StB6VnrvirHjtDlUfAkHejorzvZXaOUX7QJOF+ItztJ4zcJ9tX49/VYD8La/CGVKBZpUnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jkqp3Vt4YfNwM9s7ORqAUE+wiq+EuQfCiWKyJLxJ1HM=;
- b=nGau9lWF19EkN9fcMy5IPBhEbOJkYPP3Gi20/d1WmHQ2wVgJCy7PF6U5iU3DmJU0epwbQbehQC2twnWaz9CHe8jJePkpvmoJ4rRq39oGU34QBklXQGSO53evE7jhz9UaqfqXeAVMh0XhUxD0ohYdR7prPois7qXCdIvTQRWsZxkqmu/CTdQbVzvdynPMlNahCVzJt3QzhZSsxoPlGjzg/FzcRYBpuCWKuFJN8kqHlcNI76P+ocCyY03u2sbPXkzjmkDcQaqokWXFYx31ZTue77K2ZfOpt4tboyJrnQcTgPDUxsyHMAl9q/k6Rd5p6GxQ8U/aDVyn/ZpZG/CRH28BYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jkqp3Vt4YfNwM9s7ORqAUE+wiq+EuQfCiWKyJLxJ1HM=;
- b=D+IxGQjDSKCc+tz6hS4MzYbM2jM2zFUvy3xUII6yhRA2cG/zyDxrSqL8pgQI0jeaUiZJR4cqlYtstqL+uf+zoZVK/Mhim9bp5StsmrroBtV68XSNcYaaQnVsIhinxebpnFHEOaWAfVWBqCZnfWIx4CadAWdyIhgKF7Cv78U9lK0=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5176.namprd12.prod.outlook.com (2603:10b6:208:311::19)
- by BL1PR12MB5109.namprd12.prod.outlook.com (2603:10b6:208:309::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18; Fri, 8 Oct
- 2021 10:27:29 +0000
-Received: from BL1PR12MB5176.namprd12.prod.outlook.com
- ([fe80::f849:56fa:4eaf:85dc]) by BL1PR12MB5176.namprd12.prod.outlook.com
- ([fe80::f849:56fa:4eaf:85dc%7]) with mapi id 15.20.4587.023; Fri, 8 Oct 2021
- 10:27:29 +0000
-Subject: Re: [PATCH 1/2] platform/x86: amd-pmc: Add alternative acpi id for
- PMC controller
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>,
-        Sachi King <nakato@nakato.io>, hdegoede@redhat.com,
-        mgross@linux.intel.com, rafael@kernel.org, lenb@kernel.org,
-        Sanket.Goswami@amd.com
-Cc:     platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, stable@vger.kernel.org
-References: <20211002041840.2058647-1-nakato@nakato.io>
- <3ecd9046-ad0c-9c9a-9b09-bbab2f94b9f2@amd.com>
- <909f28e9-245a-df90-52f1-98b0f63a2b3a@amd.com>
-From:   Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Message-ID: <609f5254-4527-38b8-3d1d-5cb06791e103@amd.com>
-Date:   Fri, 8 Oct 2021 15:57:15 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <909f28e9-245a-df90-52f1-98b0f63a2b3a@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: KL1PR02CA0029.apcprd02.prod.outlook.com
- (2603:1096:820:d::16) To BL1PR12MB5176.namprd12.prod.outlook.com
- (2603:10b6:208:311::19)
+        id S240274AbhJHLVq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 8 Oct 2021 07:21:46 -0400
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:53572 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240126AbhJHLVq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 8 Oct 2021 07:21:46 -0400
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1984fFPx019558;
+        Fri, 8 Oct 2021 06:19:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=PODMain02222019;
+ bh=p2mC168Nmq+RGJAWci6fjWJobSCzU2hErXu4tRaAm4I=;
+ b=mAw/FoL1dt1K+cx4bieSb+LUrPN1jy5UjFuM5WD9kJUuuwBBNXO+6JXxWwDOJukz3UwM
+ IEJ6tyDOgFB+b5N+o8IL3eZFLpel4BTTRkiGO9/HJ65I+pWa2547HFsW9Ac4ndubd+sr
+ XgrUrarJmHqu7etkS9owNksmNTzf/dLJwmRrqNuY8x3y0os0qW/4W+wrOFKFmci0l5D7
+ Q+pVRUKp+/kLtssFIMYWfKy4bJBZX5GqpqU9TGJw3KXo2tAhE8RHiknIcFMRz328ySQd
+ mHfYeM05uKpJtG+j5Ln/iR8wkOjIKHl0SaOXiBXB67jvfkFSiGrl21rf5yyImvDUhrFU QQ== 
+Received: from ediex02.ad.cirrus.com ([87.246.76.36])
+        by mx0b-001ae601.pphosted.com with ESMTP id 3bj86n0s44-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 08 Oct 2021 06:19:06 -0500
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.12; Fri, 8 Oct
+ 2021 12:19:04 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.2242.12 via Frontend
+ Transport; Fri, 8 Oct 2021 12:19:04 +0100
+Received: from aryzen.ad.cirrus.com (unknown [198.61.64.75])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id DE205B16;
+        Fri,  8 Oct 2021 11:19:03 +0000 (UTC)
+From:   Lucas Tanure <tanureal@opensource.cirrus.com>
+To:     Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+        "Jaroslav Kysela" <perex@perex.cz>, Len Brown <lenb@kernel.org>,
+        David Rhodes <david.rhodes@cirrus.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>
+CC:     <alsa-devel@alsa-project.org>, <linux-acpi@vger.kernel.org>,
+        <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>,
+        Lucas Tanure <tanureal@opensource.cirrus.com>
+Subject: [RFC] sound: cs35l41: Add support for Legion 7 16ACHg6 laptop
+Date:   Fri, 8 Oct 2021 12:19:02 +0100
+Message-ID: <20211008111902.103473-1-tanureal@opensource.cirrus.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Received: from [10.252.77.6] (165.204.80.7) by KL1PR02CA0029.apcprd02.prod.outlook.com (2603:1096:820:d::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4544.18 via Frontend Transport; Fri, 8 Oct 2021 10:27:24 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1025beba-57ee-4ca7-3713-08d98a463aed
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5109:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BL1PR12MB510942E9FC050E80368646C79AB29@BL1PR12MB5109.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: GwlZUjUXR+X2gHW1UMXrJp8S3n4KuDwsmIVFmrE7BMMH7v7EWZXessds0Ewiz9PJbdcpcHmIAN+r0KSzPz59sUJgYuTWyvmsXxmlcbhBG7dwJAwrl4r53iCrRdwhacJW+jJWP4e1NIVRISqE3S8d4o5NiLGEidNvtYXYXt0Cru7zvMn/HwCbADpWb9ySq14pGuHoi0dVDD//8Zq27z2tw0gcdwylcFTO1TLby06llBwUcR7NyKy9uiWvhMRlS30h+ccgRnQQvjECeLKANK7Oaw5kBh5zMgR7tGjU3bSW7LYyR1p2lan1BaLCTMdI1ogKhtv9VlLHvHkWsbccln3TJQXpdAoWho1HDPd5qxZBl3128xszlHFWFXJrN7cfqcSIfVB/1KHGdJZA8p5txKfYLLAoQY+OM1hxsTKPxtvIGNboPjVwCnKYNVtfzNOdiEJvYNLEjV9oEt+9v0fJP2SmKIDvI+lCpWmvqWrAqAenekz840nBBepARZ5UJztwQA9unGgkOvL880iRY23+ms62yp/bC0qfOADy8Bvlll51/vReAqi1ANBKbijIUY9lP5H8wDjFzZ6RmY29korpj3VhTJ/pOnnh0oEDneEg5reByHqc8qacXnGnvybD0xCzjcoN+W/JhCz0wrH3WFYfWxd6lV8aiDQ4TzfXEy4JC1aR8+dydaP+uAIrU6elkwpgMrb5bmY/RjGbMu9G4V9mT2/dUwh4jT8nySDDlmeJuMHf+XtA4iA/R6S16YufKdJH7YESznq2avkUEh1uF72my1+UQqkt7LIUhLkKpexfrBUHD7sqXxgsG2+LGD4+nL8sOfgX
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(26005)(956004)(186003)(8676002)(53546011)(2616005)(66476007)(36756003)(8936002)(966005)(83380400001)(31686004)(38100700002)(4326008)(66556008)(86362001)(2906002)(6666004)(66946007)(508600001)(316002)(5660300002)(110136005)(16576012)(6486002)(31696002)(6636002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?STBUaGdhNHdXYkdSeWZ4d2pVVDhxL2lWais5SmJPUjJwc0xnc3g5QlUzSFNx?=
- =?utf-8?B?blozK1VMS1Q5RmpETTFwVHRLZk0zODVZcmxaOHY2cS9CcGQzTWV1ZXZGTDJx?=
- =?utf-8?B?NW9QeDJmcmJ2QVNlTXA1ZEpKNnFqT1V1S3ZXS3BTNG1lbTFiSlVHeUFVZDV4?=
- =?utf-8?B?Um10NEpvcUZFSHQraDh5Qmo0Vm1mbFFRSXhtZjNWVm8yYTZNNDBybFk4U2Zs?=
- =?utf-8?B?akJwZGo3MXpONlVaQXFGZml4NDVCWGlnekJFeXA1Q2c4STlIcTdJdkRpT05W?=
- =?utf-8?B?dlFDWkdvaWZwamhzZ25ENE4xTGphVzBuY1ZhelhBVFQvZDdCMWswblB3c3cw?=
- =?utf-8?B?b2NwMzNUVUlvNDNXU3NMWHh6bldxTklyUzM5QXZSamdBWmVYM0djaVN3WDNr?=
- =?utf-8?B?ZmVlR21Qek1CNjNLTGdqenZjRlhMV1pFdEpYbGVIaVRZZjRpcDhQanlxUHJK?=
- =?utf-8?B?bU5xMUJGSllGYmhKdjJ5WTYzaEMzSWtmbVh5WTZuN2czd1Q4Q001Z1haRUU0?=
- =?utf-8?B?L2NHNmsyTENWZGRqN25xdllvcFNLNkllTU1DNTh6eXZwMWZ6ZHhIN2dlWEJv?=
- =?utf-8?B?YzIrSFhvRkNyWlRjYlE1azgvakhyTm4zN2YzejBwZHFqVGdONW1hM0VnVDJ5?=
- =?utf-8?B?Qm1TMEZ4OHQ5bWprQkdYZ3NQNVVRc1Rob3NNWWZIMjdxT3BHT3hEZHF3NVNE?=
- =?utf-8?B?ZFJuOTh2SVhiTzc3SkRGTTJ0Rmxyd0E2cnlmaHJJdG4yN2lJZzkwclNqMkZt?=
- =?utf-8?B?YWkvTnB0Q1l2SjAwWXVQaG1ycWVsZnM3TUZqSk53dHVnVkx4dFFIU3hBbXpL?=
- =?utf-8?B?RVd6NTJ3TlFqVU95Y2ptMTZhMEdJN09hc2lVMTlicVVjQjhTQUZRTmQ3Lytq?=
- =?utf-8?B?QUozRGk4TjQ3STlPM09ITjdGKzJrWTk1aEVmaHdEQldySXV2OTNhRldrL1Jm?=
- =?utf-8?B?Z3o5MTkzbzQ1bnYza3JSbDVkM2Nmek8yTms0UEhTZENEL1owbHJ1ZnVRZGtl?=
- =?utf-8?B?REZlZW1vT3h6Nms0R0xWWlpzcXdjMGlITWttNUdHUW1XajNWUTRldHhkRGI1?=
- =?utf-8?B?elpMT0J1K0ZTTjFFSG5lOExVVUJXbkQxejYwV1o3MS95Y3pXR3lRTi9ub2t5?=
- =?utf-8?B?RFY3VGdLV21jTkM3MUdPQTZlRGUyRmpXWU40WWVPMDdGeE51cnJzdW9BbXFT?=
- =?utf-8?B?M00wcEtCaUIvc2lycGFaUzd4bjArZUsxZDdrRURsMjFWek8wSGxkT2wyVnVu?=
- =?utf-8?B?dTNYZ1k3UlpCLzhBU2VVQldyS01LcWFuVDJualROR3RQUExwamFDS0N6alVO?=
- =?utf-8?B?bDdQbFF3R09kVkRsSlJRV1RaamhhRHhLTEhJR29QUHJFWmlwUExlYjdjVjNu?=
- =?utf-8?B?Vk5qQnFmMEdUcm9EcjVncFBJYm44K0xDTi94N0VtRklvaTFuWGl3VmFhenJv?=
- =?utf-8?B?Z2M5YitZYzBLelFvNWQxTnZ4ZHl2SmsyVHcwZ1JvMnBQcURuZGU1azAyRnZ1?=
- =?utf-8?B?NFR5eklHMEFHbWhydEl4UzR4MWtFNzlGMDBmUWl0SVphRUZZSEJGbjIweXND?=
- =?utf-8?B?M0xqeEpJRTc4RDhHMDlSNVk1WG51NTdnVTVKd2RLeFNmZ0hRSGc0Y2dHb21O?=
- =?utf-8?B?UDdhb2YwWjlCaWw5NzRUbjcrVk96WjlVRERsRzlFSDllV3FDMm80TjFhandH?=
- =?utf-8?B?eHd6OHNwSC8zamdidTJnT2RmU1pibi9FU2VlaVhvbWZPZVNQZXlMNSsyS3A0?=
- =?utf-8?Q?869SPjzBWRcwWpPH8Gp3aAjuKXmnbBDL4dRBIR9?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1025beba-57ee-4ca7-3713-08d98a463aed
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5176.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2021 10:27:29.2306
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NwQ9RcKaCr/K2ISOzf1ZOGlE95dvri8xVMqmeE7sppP8AT13d1TAvJKGp0Uc762m/MlUE6HFqkkT9IwXoedhHw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5109
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: ken982eHloxDiQpnc9y5wBw9E1Ta-NDV
+X-Proofpoint-ORIG-GUID: ken982eHloxDiQpnc9y5wBw9E1Ta-NDV
+X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi,
 
+I would like to get some guidance about this solution to
+support the 16ACHg6 laptop.
 
-On 10/8/2021 1:30 AM, Limonciello, Mario wrote:
-> +Sanket Goswami
-> 
-> On 10/5/2021 00:16, Shyam Sundar S K wrote:
->>
->>
->> On 10/2/2021 9:48 AM, Sachi King wrote:
->>> The Surface Laptop 4 AMD has used the AMD0005 to identify this
->>> controller instead of using the appropriate ACPI ID AMDI0005.  Include
->>> AMD0005 in the acpi id list.
->>
->> Can you provide an ACPI dump and output of 'cat /sys/power/mem_sleep'
->>
->> Thanks,
->> Shyam
->>
-> 
-> I had a look through the acpidump listed there and it seems like the PEP
-> device is filled with a lot of NO-OP type of code.  This means the LPS0
-> patch really isn't "needed", but still may be a good idea to include for
-> completeness in case there ends up being a design based upon this that
-> does need it.
-> 
-> As for this one (the amd-pmc patch) how are things working with it? Have
-> you checked power consumption and verified that the amd_pmc debugfs
-> statistics are increasing?  Is the system able to resume from s2idle?
+Hardware:
+ - The 16ACHg6 laptop has two CS35L41 amplifiers, connected
+to Realtek ALC287 by an I2S bus and by and direct I2C to the CPU.
+ - The ALC287 codec is connected to the CPU by an HDA bus.
+ - The CS35L41 has a DSP which will require firmware to be loaded.
 
-Echo-ing to what Mario said, I am also equally interested in knowing the
-the surface devices are able to reach S2Idle.
+Architecture:
+ - To load the firmware for CS35L41, this solution will require
+the wm_adsp library, which requires regmap, header definitions and
+register tables.
+ - To minimize the duplication of the code, the HDA functions will
+be placed inside the ASoC CS35L41 driver.
+ - Finally, HDA patch_realtek will access exposed functions from
+ASoC CS35L41 driver to initialize the amplifiers, start and stop
+streams and load firmware.
 
-Spefically can you check if your tree has this commit?
-https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/commit/?h=for-next&id=9cfe02023cf67a36c2dfb05d1ea3eb79811a8720
+Notes:
+ - This is a work in progress, so the code is not functional, its
+only intent is to demonstrate the overall solution
+ - If accepted, this will be split into a couple of patches for
+a new patch chain
 
-this would tell the last s0i3 status, whether it was successful or not.
+Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
+---
+ drivers/acpi/scan.c                          |  1 +
+ drivers/platform/x86/i2c-multi-instantiate.c |  7 ++
+ include/sound/cs35l41.h                      |  4 ++
+ sound/pci/hda/Kconfig                        |  1 +
+ sound/pci/hda/patch_realtek.c                | 21 +++++-
+ sound/soc/codecs/cs35l41.c                   | 75 ++++++++++++++++----
+ 6 files changed, 95 insertions(+), 14 deletions(-)
 
-cat /sys/kernel/debug/amd_pmc/smu_fw_info
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 5b54c80b9d32..c1c27a408420 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -1703,6 +1703,7 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
+ 		{"BSG2150", },
+ 		{"INT33FE", },
+ 		{"INT3515", },
++		{"CLSA0100", },
+ 		{}
+ 	};
+ 
+diff --git a/drivers/platform/x86/i2c-multi-instantiate.c b/drivers/platform/x86/i2c-multi-instantiate.c
+index a50153ecd560..b61f7e30d42a 100644
+--- a/drivers/platform/x86/i2c-multi-instantiate.c
++++ b/drivers/platform/x86/i2c-multi-instantiate.c
+@@ -139,6 +139,12 @@ static const struct i2c_inst_data bsg2150_data[]  = {
+ 	{}
+ };
+ 
++static const struct i2c_inst_data clsa0100_data[]  = {
++	{ "cs35l41", IRQ_RESOURCE_GPIO, 0 },
++	{ "cs35l41", IRQ_RESOURCE_GPIO, 0 },
++	{}
++};
++
+ /*
+  * Device with _HID INT3515 (TI PD controllers) has some unresolved interrupt
+  * issues. The most common problem seen is interrupt flood.
+@@ -170,6 +176,7 @@ static const struct i2c_inst_data bsg2150_data[]  = {
+ static const struct acpi_device_id i2c_multi_inst_acpi_ids[] = {
+ 	{ "BSG1160", (unsigned long)bsg1160_data },
+ 	{ "BSG2150", (unsigned long)bsg2150_data },
++	{ "CLSA0100", (unsigned long)clsa0100_data },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, i2c_multi_inst_acpi_ids);
+diff --git a/include/sound/cs35l41.h b/include/sound/cs35l41.h
+index 1f1e3c6c9be1..4d665b7dbfdf 100644
+--- a/include/sound/cs35l41.h
++++ b/include/sound/cs35l41.h
+@@ -23,6 +23,8 @@ struct cs35l41_irq_cfg {
+ };
+ 
+ struct cs35l41_platform_data {
++	bool no_bst;
++	bool hda;
+ 	int bst_ind;
+ 	int bst_ipk;
+ 	int bst_cap;
+@@ -31,4 +33,6 @@ struct cs35l41_platform_data {
+ 	struct cs35l41_irq_cfg irq_config2;
+ };
+ 
++void cs35l41_hda_init(void);
++
+ #endif /* __CS35L41_H */
+diff --git a/sound/pci/hda/Kconfig b/sound/pci/hda/Kconfig
+index ab9d2746e804..37202466f033 100644
+--- a/sound/pci/hda/Kconfig
++++ b/sound/pci/hda/Kconfig
+@@ -95,6 +95,7 @@ config SND_HDA_CODEC_REALTEK
+ 	tristate "Build Realtek HD-audio codec support"
+ 	select SND_HDA_GENERIC
+ 	select SND_HDA_GENERIC_LEDS
++	select SND_SOC_CS35L41_I2C
+ 	help
+ 	  Say Y or M here to include Realtek HD-audio codec support in
+ 	  snd-hda-intel driver, such as ALC880.
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 4407f7da57c4..2a0ac9a1b613 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -21,6 +21,7 @@
+ #include <sound/core.h>
+ #include <sound/jack.h>
+ #include <sound/hda_codec.h>
++#include <sound/cs35l41.h>
+ #include "hda_local.h"
+ #include "hda_auto_parser.h"
+ #include "hda_jack.h"
+@@ -6443,6 +6444,18 @@ static void alc287_fixup_legion_15imhg05_speakers(struct hda_codec *codec,
+ 	}
+ }
+ 
++static void alc287_fixup_lenovo_y760(struct hda_codec *cdc, const struct hda_fixup *fix, int action)
++{
++	if (action == HDA_FIXUP_ACT_PROBE) {
++		codec_info(cdc, "HDA_FIXUP_ACT_PROBE\n");
++		cs35l41_hda_init();
++	} else if (action == HDA_FIXUP_ACT_INIT) {
++		codec_info(cdc, "HDA_FIXUP_ACT_INIT\n");
++	} else if (action == HDA_FIXUP_ACT_FREE) {
++		codec_info(cdc, "HDA_FIXUP_ACT_FREE\n");
++	}
++}
++
+ /* for alc295_fixup_hp_top_speakers */
+ #include "hp_x360_helper.c"
+ 
+@@ -6663,7 +6676,8 @@ enum {
+ 	ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS,
+ 	ALC287_FIXUP_LEGION_15IMHG05_AUTOMUTE,
+ 	ALC287_FIXUP_YOGA7_14ITL_SPEAKERS,
+-	ALC287_FIXUP_13S_GEN2_SPEAKERS
++	ALC287_FIXUP_13S_GEN2_SPEAKERS,
++	ALC287_FIXUP_LENOVO_Y760
+ };
+ 
+ static const struct hda_fixup alc269_fixups[] = {
+@@ -8361,6 +8375,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC269_FIXUP_HEADSET_MODE,
+ 	},
++	[ALC287_FIXUP_LENOVO_Y760] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc287_fixup_lenovo_y760,
++	},
+ };
+ 
+ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+@@ -8755,6 +8773,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3818, "Lenovo C940", ALC298_FIXUP_LENOVO_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x17aa, 0x3827, "Ideapad S740", ALC285_FIXUP_IDEAPAD_S740_COEF),
+ 	SND_PCI_QUIRK(0x17aa, 0x3843, "Yoga 9i", ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP),
++	SND_PCI_QUIRK(0x17aa, 0x3847, "Legion Y760", ALC287_FIXUP_LENOVO_Y760),
+ 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3852, "Lenovo Yoga 7 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
+index b16eb6610c0e..f643ed1b48c0 100644
+--- a/sound/soc/codecs/cs35l41.c
++++ b/sound/soc/codecs/cs35l41.c
+@@ -21,9 +21,17 @@
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+ #include <sound/tlv.h>
++#include <linux/acpi.h>
+ 
+ #include "cs35l41.h"
+ 
++static struct list_head *cs35l41_hda_lst;
++
++struct cs35l41_hda_node {
++	struct list_head node;
++	struct cs35l41_private *cs35l41;
++};
++
+ static const char * const cs35l41_supplies[CS35L41_NUM_SUPPLIES] = {
+ 	"VA",
+ 	"VP",
+@@ -1039,9 +1047,7 @@ static int cs35l41_set_pdata(struct cs35l41_private *cs35l41)
+ {
+ 	int ret;
+ 
+-	/* Set Platform Data */
+-	/* Required */
+-	if (cs35l41->pdata.bst_ipk &&
++	if (!cs35l41->pdata.no_bst && cs35l41->pdata.bst_ipk &&
+ 	    cs35l41->pdata.bst_ind && cs35l41->pdata.bst_cap) {
+ 		ret = cs35l41_boost_config(cs35l41, cs35l41->pdata.bst_ind,
+ 					   cs35l41->pdata.bst_cap,
+@@ -1051,8 +1057,7 @@ static int cs35l41_set_pdata(struct cs35l41_private *cs35l41)
+ 			return ret;
+ 		}
+ 	} else {
+-		dev_err(cs35l41->dev, "Incomplete Boost component DT config\n");
+-		return -EINVAL;
++		dev_info(cs35l41->dev, "Boost disabled\n");
+ 	}
+ 
+ 	/* Optional */
+@@ -1148,9 +1153,31 @@ static int cs35l41_handle_pdata(struct device *dev,
+ {
+ 	struct cs35l41_irq_cfg *irq_gpio1_config = &pdata->irq_config1;
+ 	struct cs35l41_irq_cfg *irq_gpio2_config = &pdata->irq_config2;
++	struct acpi_device *adev;
++	struct device *phys_dev;
+ 	unsigned int val;
+ 	int ret;
+ 
++	if (memcmp(dev_name(cs35l41->dev), "i2c-CLSA0100", 12) == 0) {
++		pdata->no_bst = true;
++		pdata->hda = true;
++		adev = acpi_dev_get_first_match_dev("CLSA0100", "1", -1);
++		if (!adev) {
++			dev_err(dev, "Failed to find an ACPI device\n");
++			return -ENODEV;
++		}
++
++		phys_dev = get_device(acpi_get_first_physical_node(adev));
++		acpi_dev_put(adev);
++
++		if (!phys_dev) {
++			dev_err(dev, "Failed to find a physical device\n");
++			return -ENODEV;
++		}
++		cs35l41->reset_gpio = gpiod_get_index(phys_dev, NULL, 0, GPIOD_ASIS);
++		return 0;
++	}
++
+ 	ret = device_property_read_u32(dev, "cirrus,boost-peak-milliamp", &val);
+ 	if (ret >= 0)
+ 		pdata->bst_ipk = val;
+@@ -1237,10 +1264,22 @@ static const struct reg_sequence cs35l41_revb2_errata_patch[] = {
+ 	{ 0x00000040,			 0x00003333 },
+ };
+ 
++void cs35l41_hda_init(void)
++{
++	struct list_head *p;
++	int i = 0;
++
++	list_for_each(p, cs35l41_hda_lst) {
++		pr_info("%s %d\n", __func__, i++);
++	}
++}
++EXPORT_SYMBOL_GPL(cs35l41_hda_init);
++
+ int cs35l41_probe(struct cs35l41_private *cs35l41,
+ 		  struct cs35l41_platform_data *pdata)
+ {
+ 	u32 regid, reg_revid, i, mtl_revid, int_status, chipid_match;
++	struct cs35l41_hda_node *cs35l41_hda;
+ 	int irq_pol = 0;
+ 	int ret;
+ 
+@@ -1269,8 +1308,8 @@ int cs35l41_probe(struct cs35l41_private *cs35l41,
+ 	}
+ 
+ 	/* returning NULL can be an option if in stereo mode */
+-	cs35l41->reset_gpio = devm_gpiod_get_optional(cs35l41->dev, "reset",
+-						      GPIOD_OUT_LOW);
++	if (!cs35l41->reset_gpio)
++		cs35l41->reset_gpio = devm_gpiod_get_optional(cs35l41->dev, "reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(cs35l41->reset_gpio)) {
+ 		ret = PTR_ERR(cs35l41->reset_gpio);
+ 		cs35l41->reset_gpio = NULL;
+@@ -1413,12 +1452,22 @@ int cs35l41_probe(struct cs35l41_private *cs35l41,
+ 		goto err;
+ 	}
+ 
+-	ret = devm_snd_soc_register_component(cs35l41->dev,
+-					      &soc_component_dev_cs35l41,
+-					      cs35l41_dai, ARRAY_SIZE(cs35l41_dai));
+-	if (ret < 0) {
+-		dev_err(cs35l41->dev, "Register codec failed: %d\n", ret);
+-		goto err;
++	if (!cs35l41->pdata.hda) {
++		ret = devm_snd_soc_register_component(cs35l41->dev,
++						      &soc_component_dev_cs35l41,
++						      cs35l41_dai, ARRAY_SIZE(cs35l41_dai));
++		if (ret < 0) {
++			dev_err(cs35l41->dev, "Register codec failed: %d\n", ret);
++			goto err;
++		}
++	} else {
++		if (!cs35l41_hda_lst) {
++			cs35l41_hda_lst = devm_kzalloc(cs35l41->dev, sizeof(*cs35l41_hda_lst),
++						       GFP_KERNEL);
++			INIT_LIST_HEAD(cs35l41_hda_lst);
++		}
++		cs35l41_hda = devm_kzalloc(cs35l41->dev, sizeof(*cs35l41_hda), GFP_KERNEL);
++		list_add(&cs35l41_hda->node, cs35l41_hda_lst);
+ 	}
+ 
+ 	dev_info(cs35l41->dev, "Cirrus Logic CS35L41 (%x), Revision: %02X\n",
+-- 
+2.33.0
 
-> 
-> Does pinctrl-amd load on this system?  It seems to me that the power
-> button GPIO doesn't get used like normally on "regular" UEFI based AMD
-> systems.  I do see MSHW0040 so this is probably supported by
-> surfacepro3-button and that will probably service all the important events.
