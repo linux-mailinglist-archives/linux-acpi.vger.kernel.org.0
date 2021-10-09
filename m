@@ -2,215 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57A4A427B5A
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Oct 2021 17:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C8B5427B8D
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Oct 2021 18:06:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234664AbhJIPeF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 9 Oct 2021 11:34:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:44202 "EHLO
+        id S229587AbhJIQIC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 9 Oct 2021 12:08:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:20566 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234707AbhJIPeD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 9 Oct 2021 11:34:03 -0400
+        by vger.kernel.org with ESMTP id S229528AbhJIQIB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 9 Oct 2021 12:08:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1633793525;
+        s=mimecast20190719; t=1633795564;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Vy5Z3QdUpfqORn2sjpoSvKPS9hNo2meUhZmX+X04/3o=;
-        b=gDrqSXDPqtvP4v0cFd+Nbs9DyILkbbMiLTfV8eUQSZEEaItEoi9TiYgbFW7D9nxhgqtpqq
-        XSl9950oYe+eZf+5EFeArPY813+NhK2m/U2X53YXxCY8VKqqJW8+uUF+i7R7AWQapz50Ah
-        d7YCHVVmXMp464bVHcp9p52GA5NzfXI=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-41-XX66Q8c_MaSZLkfmrY987A-1; Sat, 09 Oct 2021 11:32:02 -0400
-X-MC-Unique: XX66Q8c_MaSZLkfmrY987A-1
-Received: by mail-ed1-f69.google.com with SMTP id r11-20020aa7cfcb000000b003d4fbd652b9so9772046edy.14
-        for <linux-acpi@vger.kernel.org>; Sat, 09 Oct 2021 08:32:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Vy5Z3QdUpfqORn2sjpoSvKPS9hNo2meUhZmX+X04/3o=;
-        b=wR9cDG5+M9yhXsfekxOSlSKdGjK6o8dEWuyDQly8lwxpcI5cZTk4BEL52ZX08Httb7
-         eHX9OnCEZi7D+YYBkFodQWiSWQLfioxtxdCsJr5o5MjNqNNO55Nro/sHEE/wKzgit1X4
-         ywZfxKT+kWVCrd9LvhuzimdQvJC1+IfNXbJJMF7DlB0rEqjOL8tLaTdNF8ct+8HFyaJR
-         N2/X429n2tigUTaP2x+oEMGGC/1m0jdYY+AFrSwViHRhj2d5ppX24FMwtzLmCk2Sj3vf
-         w4TMvVIJabBigo71ynEudh5jPczyL2FnKSFh6p+TcdXZJfmnS6FR1yPPvup6ATFzXaHt
-         1uVg==
-X-Gm-Message-State: AOAM531F6w8aVeCHq0Kh9hxI7FJ3Z5RPHSH9glhHmzXLcSMelMXM3eXe
-        AHXunbCa63hdIxLXh0sRKZvgwxO2ze9R216+Un1GxYoHWjsXX6YXg4A4/+vEks1kg3KEFNMTfkS
-        qbF1AUgZGSGl3M4RESNkjwA==
-X-Received: by 2002:a17:906:b098:: with SMTP id x24mr12681590ejy.88.1633793521606;
-        Sat, 09 Oct 2021 08:32:01 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyc0aq1v6Cen4pucn+xg+/nXUMviu2iQrLJ+UJsvQU04U/MylIKbJlM/0EapQnMuOm9DIR2Pw==
-X-Received: by 2002:a17:906:b098:: with SMTP id x24mr12681565ejy.88.1633793521374;
-        Sat, 09 Oct 2021 08:32:01 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id dj8sm1335992edb.53.2021.10.09.08.32.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 09 Oct 2021 08:32:00 -0700 (PDT)
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=iaPvDQL8oAOCDALj9mcU71yczG7rgFT9+NpjQN32tLo=;
+        b=bGq++HyZGxv8pQrxBd8QzMkJfdJQmD/fXdkbX68thIBJxSD0jtcpd+G6/QqA/GXeEWDL9T
+        aevqo4xcOkH6XJFJmHlTPZUkEUMTd4LyFydA7xAaWPR5ISm9QBQVLmYgbjdv6NG5FAqNPt
+        DmuXRECo0sT3z0Bajd220kkQiEiURm8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-534-JhZfooeOOti73xzA8008KA-1; Sat, 09 Oct 2021 12:06:00 -0400
+X-MC-Unique: JhZfooeOOti73xzA8008KA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6ED181808304;
+        Sat,  9 Oct 2021 16:05:58 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.192.7])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1C9F15C1B4;
+        Sat,  9 Oct 2021 16:05:48 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
-Subject: Re: [PATCH 02/12] media: i2c: ov8865: Add an has_unmet_acpi_deps()
- check
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@infradead.org>,
         Daniel Scally <djrscally@gmail.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Len Brown <lenb@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
         linux-clk@vger.kernel.org
-References: <20211008162121.6628-1-hdegoede@redhat.com>
- <20211008162121.6628-3-hdegoede@redhat.com>
- <YWCQ6/AMzP5Nfcyk@pendragon.ideasonboard.com>
- <39a85265-017e-f86d-619b-c1aa6a771a26@redhat.com>
- <YWCUv+gEnfWnpRS6@pendragon.ideasonboard.com>
-Message-ID: <ca413a75-f1e5-e322-029f-bb15e4b190ce@redhat.com>
-Date:   Sat, 9 Oct 2021 17:31:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+Subject: [PATCH v2 00/13] Add support for X86/ACPI camera sensor/PMIC setup with clk and regulator platform data
+Date:   Sat,  9 Oct 2021 18:05:35 +0200
+Message-Id: <20211009160548.306550-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <YWCUv+gEnfWnpRS6@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi All,
 
-On 10/8/21 8:58 PM, Laurent Pinchart wrote:
-> Hi Hans,
-> 
-> On Fri, Oct 08, 2021 at 08:48:18PM +0200, Hans de Goede wrote:
->> On 10/8/21 8:41 PM, Laurent Pinchart wrote:
->>> On Fri, Oct 08, 2021 at 06:21:11PM +0200, Hans de Goede wrote:
->>>> The clk and regulator frameworks expect clk/regulator consumer-devices
->>>> to have info about the consumed clks/regulators described in the device's
->>>> fw_node.
->>>>
->>>> To work around cases where this info is not present in the firmware tables,
->>>> which is often the case on x86/ACPI devices, both frameworks allow the
->>>> provider-driver to attach info about consumers to the clks/regulators
->>>> when registering these.
->>>>
->>>> This causes problems with the probe ordering of the ov8865 driver vs the
->>>> drivers for these clks/regulators. Since the lookups are only registered
->>>> when the provider-driver binds, trying to get these clks/regulators before
->>>> then results in a -ENOENT error for clks and a dummy regulator for regs.
->>>>
->>>> On ACPI/x86 where this is a problem, the ov8865 ACPI fw-nodes have a _DEP
->>>> dependency on the INT3472 ACPI fw-node which describes the hardware which
->>>> provides the clks/regulators.
->>>>
->>>> The drivers/platform/x86/intel/int3472/ code dealing with these ACPI
->>>> fw-nodes will call acpi_dev_clear_dependencies() to indicate that this
->>>> _DEP has been "met" when all the clks/regulators have been setup.
->>>>
->>>> Call the has_unmet_acpi_deps() helper to check for unmet _DEPs
->>>> and return -EPROBE_DEFER if this returns true, so that we wait for
->>>> the clk/regulator setup to be done before continuing with probing.
->>>>
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>> ---
->>>>  drivers/media/i2c/ov8865.c | 3 +++
->>>>  1 file changed, 3 insertions(+)
->>>>
->>>> diff --git a/drivers/media/i2c/ov8865.c b/drivers/media/i2c/ov8865.c
->>>> index ce4e0ae2c4d3..fd18d1256f78 100644
->>>> --- a/drivers/media/i2c/ov8865.c
->>>> +++ b/drivers/media/i2c/ov8865.c
->>>> @@ -2978,6 +2978,9 @@ static int ov8865_probe(struct i2c_client *client)
->>>>  	unsigned int i;
->>>>  	int ret;
->>>>  
->>>> +	if (has_unmet_acpi_deps(dev))
->>>> +		return -EPROBE_DEFER;
->>>> +
->>>
->>> We've worked hard to avoid adding ACPI-specific code such as this in
->>> sensor drivers, as it would then spread like crazy, and also open the
->>> door to more ACPI-specific support. I don't want to open this pandora's
->>> box, I'd like to see this handled in another layer (the I2C core could
->>> be a condidate for instance, but bonus points if it can be handled in
->>> the ACPI subsystem itself).
->>
->> The problem is that we do NOT want this check for all i2c devices,
-> 
-> Any of these sensors can be used on non-ACPI-based platforms, or on
-> ACPI-based platforms where integration has been done right. If it causes
-> an issue to call this function on those platforms, then this driver
-> won't work. If it causes no issue, why can't we call it in the I2C core
-> (or somewhere else) ?
+Here is v2 of my patch-set adding support for camera sensor connected to a
+TPS68470 PMIC on x86/ACPI devices.
 
-This call checks the ACPI-core's count which keep track of all 
-dependencies listed in the _DEP method have been marked as
-"ready/available" by the driver for the Linux-device for those
-dependencies having called acpi_dev_clear_dependencies().
+The big change in v2 is that I've reworked how to defer the binding of the
+camera-sensor drivers till all clk/regulator/gpio consumer/lookup info has
+been registered. See the new patch 1 + 2 (replacing the old patch 1 - 3)
+in this version. There are also some small other changes, mostly as
+a result of this change and patch 12 + 13 are new patches.
 
-The ACPI core code could delay instantiating devices for ACPI described
-devices based on this itself, but it is deliberately not doing this.
+###
 
-This is deliberately not done because the _DEP method
-may point to pretty much any random ACPI object and Linux does
-not necessarily have a driver for all ACPI objects the driver
-points too, which would lead to the devices never getting instantiated.
+The clk and regulator frameworks expect clk/regulator consumer-devices
+to have info about the consumed clks/regulators described in the device's
+fw_node, but on ACPI this info is missing.
 
->> so doing
->> it in any place other then the drivers means having some list of APCI-ids
->> to which to apply this someplace else. And then for every sensor driver
->> which needs this we need to update this list.
->>
->> This is wht I've chosen to just put this check directly in the sensor
->> drivers. It is only 2 lines, it is a no-op on kernels where ACPI
->> is not enabled (without need a #ifdef) and it is a no-op if the
->> sensor i2c-client is not instantiated through APCI even when ACPI
->> support is enabled in the kernel.
->>
->> I understand that you don't want a lot of ACPI specific code inside
->> the drivers, which is why I've come up with this fix which consists
->> of only 2 lines.  My previous attempts (which I never posted)
->> where much worse then this.
-> 
-> So we only need to take one more step to remove just two lines :-)
-> 
-> This is all caused by Intel messing up their ACPI design badly. It's too
-> late to point and shame, it won't fix the problem, but I don't want this
-> to spread through drivers, neither for just those two lines (there are
-> dozens of sensors that would need the same treatment), nor for what the
-> next steps would be when someone else will want to add ACPI-specific
-> code and use this as a precedent. That's why we tried hard with Dan
-> Scally to isolate all the necessary quirks in a single place instead of
-> spreading them through drivers, which would have been easier to
-> implement.
+This series worksaround this by providing platform_data with the info to
+the TPS68470 clk/regulator MFD cells.
 
-Ok, so I've come up with a way to deal with this in the ACPI code
-which does not require sensor-driver code modifications.
+Patches 1 - 2 + 13 deal with a probe-ordering problem this introduces,
+since the lookups are only registered when the provider-driver binds,
+trying to get these clks/regulators before then results in a -ENOENT
+error for clks and a dummy regulator for regulators. See the patches
+for more details.
 
-What I've done is make the ACPI core honor _DEP dependencies for
-a device (instead of mostly ignore them) when one of those _DEPs
-is for a device with a HID of INT3472 (the camera PMIC / discrete
-clk/regulator ACPI device/node). This way the ACPI core can make
-this decision without it having to keep an ever growing list of
-sensor HIDs for which it should honor _DEP-s.
+Patch 3 adds a header file which adds tps68470_clk_platform_data and
+tps68470_regulator_platform_data structs. The futher patches depend on
+this new header file.
 
-I'm about to send out a v2 of this series with this change,
-see patch 1 + 2 of the v2 series.
+Patch 4 + 5 add the TPS68470 clk and regulator drivers
 
-I hope that Rafael is ok with the ACPI changes in there,
-we will see...
+Patches 6 - 11 Modify the INT3472 driver which instantiates the MFD cells to
+provide the necessary platform-data.
+
+Assuming this series is acceptable to everyone, we need to talk about how
+to merge this.
+
+Patches 1 + 2 can be merged into linux-pm by Rafael, independent of the
+rest of the series.
+
+For "[PATCH 03/13] platform_data: Add linux/platform_data/tps68470.h file",
+which all further patches depend on I plan to provide an immutable branch
+myself (once it has been reviewed), which the clk / regulator maintainers
+can then merge before merging the clk / regulator driver which depends on
+this.
+
+And patches 12 + 13 can be merged independently into the media tree. 
 
 Regards,
 
 Hans
+
+
+Daniel Scally (2):
+  platform/x86: int3472: Enable I2c daisy chain
+  media: ipu3-cio2: Add INT347A to cio2-bridge
+
+Hans de Goede (11):
+  ACPI: Add a honor_deps flag to struct acpi_device
+  ACPI: honor dependencies for devices with a _DEP pointing to an
+    INT3472 device
+  platform_data: Add linux/platform_data/tps68470.h file
+  regulator: Introduce tps68470-regulator driver
+  clk: Introduce clk-tps68470 driver
+  platform/x86: int3472: Split into 2 drivers
+  platform/x86: int3472: Add get_sensor_adev_and_name() helper
+  platform/x86: int3472: Pass tps68470_clk_platform_data to the
+    tps68470-regulator MFD-cell
+  platform/x86: int3472: Pass tps68470_regulator_platform_data to the
+    tps68470-regulator MFD-cell
+  platform/x86: int3472: Deal with probe ordering issues
+  media: ipu3-cio2: Add module soft-deps for the INT3472 drivers
+
+ drivers/acpi/bus.c                            |   4 +-
+ drivers/acpi/scan.c                           |  20 +-
+ drivers/clk/Kconfig                           |   6 +
+ drivers/clk/Makefile                          |   1 +
+ drivers/clk/clk-tps68470.c                    | 256 ++++++++++++++++++
+ drivers/media/pci/intel/ipu3/cio2-bridge.c    |   2 +
+ drivers/media/pci/intel/ipu3/ipu3-cio2-main.c |   6 +
+ drivers/platform/x86/intel/int3472/Makefile   |   9 +-
+ ...lk_and_regulator.c => clk_and_regulator.c} |   2 +-
+ drivers/platform/x86/intel/int3472/common.c   |  82 ++++++
+ .../{intel_skl_int3472_common.h => common.h}  |   6 +-
+ ...ntel_skl_int3472_discrete.c => discrete.c} |  51 ++--
+ .../intel/int3472/intel_skl_int3472_common.c  | 106 --------
+ ...ntel_skl_int3472_tps68470.c => tps68470.c} |  97 ++++++-
+ drivers/platform/x86/intel/int3472/tps68470.h |  25 ++
+ .../x86/intel/int3472/tps68470_board_data.c   | 118 ++++++++
+ drivers/regulator/Kconfig                     |   9 +
+ drivers/regulator/Makefile                    |   1 +
+ drivers/regulator/tps68470-regulator.c        | 193 +++++++++++++
+ include/acpi/acpi_bus.h                       |   2 +
+ include/linux/mfd/tps68470.h                  |  11 +
+ include/linux/platform_data/tps68470.h        |  35 +++
+ 22 files changed, 892 insertions(+), 150 deletions(-)
+ create mode 100644 drivers/clk/clk-tps68470.c
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_clk_and_regulator.c => clk_and_regulator.c} (99%)
+ create mode 100644 drivers/platform/x86/intel/int3472/common.c
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_common.h => common.h} (94%)
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_discrete.c => discrete.c} (91%)
+ delete mode 100644 drivers/platform/x86/intel/int3472/intel_skl_int3472_common.c
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_tps68470.c => tps68470.c} (55%)
+ create mode 100644 drivers/platform/x86/intel/int3472/tps68470.h
+ create mode 100644 drivers/platform/x86/intel/int3472/tps68470_board_data.c
+ create mode 100644 drivers/regulator/tps68470-regulator.c
+ create mode 100644 include/linux/platform_data/tps68470.h
+
+-- 
+2.31.1
 
