@@ -2,145 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 243F7427AC7
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Oct 2021 16:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6F55427ACD
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Oct 2021 16:23:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233581AbhJIOYO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 9 Oct 2021 10:24:14 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:55750 "EHLO
+        id S234066AbhJIOZz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 9 Oct 2021 10:25:55 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:41572 "EHLO
         cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233093AbhJIOYO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 9 Oct 2021 10:24:14 -0400
+        with ESMTP id S233093AbhJIOZz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 9 Oct 2021 10:25:55 -0400
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
- id d3d322a473f577f6; Sat, 9 Oct 2021 16:22:16 +0200
+ id b706c1e87c7be95f; Sat, 9 Oct 2021 16:23:57 +0200
 Received: from kreacher.localnet (89-77-51-84.dynamic.chello.pl [89.77.51.84])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 5020B66A6C1;
-        Sat,  9 Oct 2021 16:22:15 +0200 (CEST)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 5DB4C66A755;
+        Sat,  9 Oct 2021 16:23:56 +0200 (CEST)
 From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Linux PCI <linux-pci@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH] ACPI: scan: Release PM resources blocked by unused objects
-Date:   Sat, 09 Oct 2021 16:22:09 +0200
-Message-ID: <5507158.DvuYhMxLoT@kreacher>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH] ACPI: LPSS: Use ACPI_COMPANION() directly
+Date:   Sat, 09 Oct 2021 16:23:55 +0200
+Message-ID: <4687529.31r3eYUQgx@kreacher>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 89.77.51.84
 X-CLIENT-HOSTNAME: 89-77-51-84.dynamic.chello.pl
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrvddtvddgjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvvefgteeuteehkeduuedvudetleevffdtffdtjeejueekffetieekgfeigfehudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeekledrjeejrdehuddrkeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdejjedrhedurdekgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
- pehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrvddtvddgjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepkeelrdejjedrhedurdekgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeekledrjeejrdehuddrkeegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrihihrdhshhgvvhgthhgvnhhkoheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-On some systems the ACPI namespace contains device objects that are
-not used in certain configurations of the system.  If they start off
-in the D0 power state configuration, they will stay in it until the
-system reboots, because of the lack of any mechanism possibly causing
-their configuration to change.  If that happens, they may prevent
-some power resources from being turned off or generally they may
-prevent the platform from getting into the deepest low-power states
-thus causing some energy to be wasted.
+The ACPI_HANDLE() macro returns the ACPI handle of the ACPI device
+object returned by the ACPI_COMPANION() macro, so it is more
+straightforward to evaluate the latter directly instead of passing
+the handle produced by the former to acpi_bus_get_device().
 
-Address this issue by changing the configuration of unused ACPI
-device objects to the D3cold power state one after carrying out
-the ACPI-based enumeration of devices.
+Modify the code accordingly (no intentional functional impact).
 
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=214091
-Link: https://lore.kernel.org/linux-acpi/20211007205126.11769-1-mario.limonciello@amd.com/
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
+ drivers/acpi/acpi_lpss.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Mario,
-
-I've changed acpi_dev_turn_off_if_unused() to check pnp.type.hardware_id
-instead of pnp.type.bus_address, because on some systems there are objects
-with both _ADR and _HID (which is against the spec) and the former is bogus.
-
-Please test this one, even though for PCI devices there should be no difference.
-
-Thanks!
-
----
- drivers/acpi/glue.c     |   25 +++++++++++++++++++++++++
- drivers/acpi/internal.h |    1 +
- drivers/acpi/scan.c     |    6 ++++++
- 3 files changed, 32 insertions(+)
-
-Index: linux-pm/drivers/acpi/scan.c
+Index: linux-pm/drivers/acpi/acpi_lpss.c
 ===================================================================
---- linux-pm.orig/drivers/acpi/scan.c
-+++ linux-pm/drivers/acpi/scan.c
-@@ -2559,6 +2559,12 @@ int __init acpi_scan_init(void)
- 		}
- 	}
+--- linux-pm.orig/drivers/acpi/acpi_lpss.c
++++ linux-pm/drivers/acpi/acpi_lpss.c
+@@ -712,14 +712,13 @@ static void __lpss_reg_write(u32 val, st
  
-+	/*
-+	 * Make sure that power management resources are not blocked by ACPI
-+	 * device objects with no users.
-+	 */
-+	bus_for_each_dev(&acpi_bus_type, NULL, NULL, acpi_dev_turn_off_if_unused);
-+
- 	acpi_turn_off_unused_power_resources();
+ static int lpss_reg_read(struct device *dev, unsigned int reg, u32 *val)
+ {
+-	struct acpi_device *adev;
++	struct acpi_device *adev = ACPI_COMPANION(dev);
+ 	struct lpss_private_data *pdata;
+ 	unsigned long flags;
+ 	int ret;
  
- 	acpi_scan_initialized = true;
-Index: linux-pm/drivers/acpi/glue.c
-===================================================================
---- linux-pm.orig/drivers/acpi/glue.c
-+++ linux-pm/drivers/acpi/glue.c
-@@ -350,3 +350,28 @@ void acpi_device_notify_remove(struct de
+-	ret = acpi_bus_get_device(ACPI_HANDLE(dev), &adev);
+-	if (WARN_ON(ret))
+-		return ret;
++	if (WARN_ON(!adev))
++		return -ENODEV;
  
- 	acpi_unbind_one(dev);
- }
-+
-+int acpi_dev_turn_off_if_unused(struct device *dev, void *not_used)
-+{
-+	struct acpi_device *adev = to_acpi_device(dev);
-+
-+	/*
-+	 * Skip device objects with device IDs, because they may be in use even
-+	 * if they are not companions of any physical device objects.
-+	 */
-+	if (adev->pnp.type.hardware_id)
-+		return 0;
-+
-+	mutex_lock(&adev->physical_node_lock);
-+
-+	/*
-+	 * Device objects without device IDs are not in use if they have no
-+	 * corresponding physical device objects.
-+	 */
-+	if (list_empty(&adev->physical_node_list))
-+		acpi_device_set_power(adev, ACPI_STATE_D3_COLD);
-+
-+	mutex_unlock(&adev->physical_node_lock);
-+
-+	return 0;
-+}
-Index: linux-pm/drivers/acpi/internal.h
-===================================================================
---- linux-pm.orig/drivers/acpi/internal.h
-+++ linux-pm/drivers/acpi/internal.h
-@@ -117,6 +117,7 @@ bool acpi_device_is_battery(struct acpi_
- bool acpi_device_is_first_physical_node(struct acpi_device *adev,
- 					const struct device *dev);
- int acpi_bus_register_early_device(int type);
-+int acpi_dev_turn_off_if_unused(struct device *dev, void *not_used);
+ 	spin_lock_irqsave(&dev->power.lock, flags);
+ 	if (pm_runtime_suspended(dev)) {
+@@ -1266,7 +1265,8 @@ static int acpi_lpss_platform_notify(str
+ 	if (!id || !id->driver_data)
+ 		return 0;
  
- /* --------------------------------------------------------------------------
-                      Device Matching and Notification
+-	if (acpi_bus_get_device(ACPI_HANDLE(&pdev->dev), &adev))
++	adev = ACPI_COMPANION(&pdev->dev);
++	if (!adev)
+ 		return 0;
+ 
+ 	pdata = acpi_driver_data(adev);
 
 
 
