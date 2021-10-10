@@ -2,112 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B612242834C
-	for <lists+linux-acpi@lfdr.de>; Sun, 10 Oct 2021 21:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECC134283C6
+	for <lists+linux-acpi@lfdr.de>; Sun, 10 Oct 2021 23:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232353AbhJJTYW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 10 Oct 2021 15:24:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41812 "EHLO
+        id S232577AbhJJV3g (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 10 Oct 2021 17:29:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232115AbhJJTYV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 10 Oct 2021 15:24:21 -0400
-Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0D69C06161C;
-        Sun, 10 Oct 2021 12:22:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description;
-        bh=x6CwcmPbUPfmUYETToBP1qbHRKqr4+7yeB4/xu8is44=; b=oK5et9c79wUYggmWFTX056Ergx
-        9AJIY5Hb7El3eJdjbvXslvNYFCzGHh0Q9L/HnX4uxYlBktIIwPw3YiqGzLwhHN3anVwOZj+Cn+ivu
-        s22g9inW86aJDzRpwPVh16+hmnHhKxVOyv1dAV/8RsADKl4GYSI+seH1C5uYShF+nk3WmqGVNXPxP
-        tlNvD3i0NLGh6VK0nYfpfy+/QbuTMkC7G4XpJS6paHcPUsHCbglatgUjU6IA0uLfNWWOZKbP9U5Ni
-        lfdLE7GMcKnWKBPoZieOYLahhmTjlgBmmoHuFsErAPeR2QOoPnJa8eR2/j+YwVlNBlqDsvfa/wAsG
-        WbSJ9h8Q==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mZeOs-007IpE-Bu; Sun, 10 Oct 2021 19:22:22 +0000
-Subject: Re: [PATCH v3 05/11] clk: Introduce clk-tps68470 driver
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
-        linux-clk@vger.kernel.org
-References: <20211010185707.195883-1-hdegoede@redhat.com>
- <20211010185707.195883-6-hdegoede@redhat.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <2c4a0997-1f32-0ed1-ad2e-bfce1afd85f1@infradead.org>
-Date:   Sun, 10 Oct 2021 12:22:21 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        with ESMTP id S230364AbhJJV3g (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 10 Oct 2021 17:29:36 -0400
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560C6C061570
+        for <linux-acpi@vger.kernel.org>; Sun, 10 Oct 2021 14:27:37 -0700 (PDT)
+Received: by mail-il1-x134.google.com with SMTP id w11so12783039ilv.6
+        for <linux-acpi@vger.kernel.org>; Sun, 10 Oct 2021 14:27:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=oOqUrSuUCCTti4b89vsLrMyMjdmQmo0cHUZ19+DYd/0=;
+        b=ODlDckO2a7um6qyqZfoQh9is7bQIHc9w7Pxiru453eM3IC6uc95b96tn9sJG9U6n9G
+         ndUG2thILo4x6D+Jx7w3GaVPE61SBksjIjoLu17UjfzwrgZ4/W4EuSB6M19lXOfU/5nk
+         8998gSQrsj7f+9o6tEWb/dZ6GRfMNMoZDfznVtVqyNJpY9wKGFStrE0J2RC2fdBJZVIu
+         YBH2B1wWcTPk7S9RU6TTDtEQFlhG2UKtg5vzCFt0VrRXTFN/0rUf1HBC55jAjUzDG5nC
+         90/2qY1G01du5fGzOR9yySIHGAwjgF7PozW2i3lyYG+Y5Inc1rVVr0KE8KM058JgxGZa
+         OuAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=oOqUrSuUCCTti4b89vsLrMyMjdmQmo0cHUZ19+DYd/0=;
+        b=7a64ZWqdwMKqkLdZsJdNd6pq4uHutIyyCW6hME1oxACMVEnT4UNU6pOoiZgwYSqfFh
+         8/Kohf+BTaZICaUv+zegInwUPf1JJNapk+KZhnK29CPDooOoXRIqy/5KcMw/Rb/hMXcB
+         1Rcmkx4Vh/ML6Apm7warQ62NhfzFy7GATKUS72O1KKsERVqORJWq4qg95zhneezB/0bs
+         /OsGmu1QKbdpRfZkrRKAuaYMD87wfftVWLctnY5gUxjz8bqfiOxEwlWBn8KgM0YVqW8X
+         oQKHjLdEjd0i8F6XsHwAuOWC095SKHEMmQMMGpjMSSWKs3qIzfQcRgJWql8dQZKfzYan
+         miog==
+X-Gm-Message-State: AOAM532o/sDldQ5heu7h8yYOKNglYExy65NYybNY4SrV52wz0biGX/GI
+        Irds8x0jepOLbRbppfM2j0P/ARUuGLxjogtGq+Q=
+X-Google-Smtp-Source: ABdhPJyqomDIJ4NXUQDHU4mZtJeAv2ozdCLhlYKx2uuAm/yVv8mdoMRhzwvkYLDVVnj1p6FU1TK5yDF+aCGgVvAu/+8=
+X-Received: by 2002:a05:6e02:158c:: with SMTP id m12mr16234007ilu.132.1633901256330;
+ Sun, 10 Oct 2021 14:27:36 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20211010185707.195883-6-hdegoede@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6602:160f:0:0:0:0 with HTTP; Sun, 10 Oct 2021 14:27:35
+ -0700 (PDT)
+Reply-To: mrschantelhermans@gmail.com
+From:   Mrs Chantel Hermans <mrs.chantalhermans2002@gmail.com>
+Date:   Sun, 10 Oct 2021 14:27:35 -0700
+Message-ID: <CA+YEVv-5WEAVxRbPeuON0wVE68Nc_ztJBDVX5AQgQHbr8cQQMg@mail.gmail.com>
+Subject: ATTENTION
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 10/10/21 11:57 AM, Hans de Goede wrote:
-> The TPS68470 PMIC provides Clocks, GPIOs and Regulators. At present in
-> the kernel the Regulators and Clocks are controlled by an OpRegion
-> driver designed to work with power control methods defined in ACPI, but
-> some platforms lack those methods, meaning drivers need to be able to
-> consume the resources of these chips through the usual frameworks.
-> 
-> This commit adds a driver for the clocks provided by the tps68470,
-> and is designed to bind to the platform_device registered by the
-> intel_skl_int3472 module.
-> 
-> This is based on this out of tree driver written by Intel:
-> https://github.com/intel/linux-intel-lts/blob/4.14/base/drivers/clk/clk-tps68470.c
-> with various cleanups added.
-> 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v2:
-> - Update the comment on why a subsys_initcall is used to register the drv
-> - Fix trailing whitespice on line 100
-> ---
->   drivers/clk/Kconfig          |   6 +
->   drivers/clk/Makefile         |   1 +
->   drivers/clk/clk-tps68470.c   | 256 +++++++++++++++++++++++++++++++++++
->   include/linux/mfd/tps68470.h |  11 ++
->   4 files changed, 274 insertions(+)
->   create mode 100644 drivers/clk/clk-tps68470.c
-> 
-> diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-> index c5b3dc97396a..7dffecac83d1 100644
-> --- a/drivers/clk/Kconfig
-> +++ b/drivers/clk/Kconfig
-> @@ -169,6 +169,12 @@ config COMMON_CLK_CDCE706
->   	help
->   	  This driver supports TI CDCE706 programmable 3-PLL clock synthesizer.
->   
-> +config COMMON_CLK_TPS68470
-> +	tristate "Clock Driver for TI TPS68470 PMIC"
-> +	depends on I2C && REGMAP_I2C && INTEL_SKL_INT3472
-> +	help
-> +	 This driver supports the clocks provided by TPS68470
-
-End that sentence with a period (full stop): '.'.
-
-Also it should be indented with one tab + 2 spaces.
-
 -- 
-~Randy
+
+
+ATTENTION
+
+
+
+You have been compensated with the sum of 6.9 million dollars in this
+United Nation the payment will be issue into ATM Visa Card,
+
+
+
+and send to you from the Santander Bank of Spain we need your
+Address,Passport and your whatsapp number.
+
+
+
+THANKS
+
+*Mrs Chantel Hermans*
