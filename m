@@ -2,107 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58F8E428AF2
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 12:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DD46428B0F
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 12:50:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235958AbhJKKoL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Oct 2021 06:44:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39016 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235925AbhJKKoK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 11 Oct 2021 06:44:10 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id ED12A60187;
-        Mon, 11 Oct 2021 10:42:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633948930;
-        bh=cjx+5rsYe8UvNF1b9zMrsBf02i/1bJyf0x9UEIvBXgU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gWQav5hpST88/wYDpkh53hX1b4+V0AC77g6mqN4yfcQ9TTH+8ZwTBgH5rzi/pnN3x
-         wSYLuiKJfUdEboJUvENckKIQM0lLvsR9oNoRIjX9KPi+P/tSPMy1tCzXrLXXSOobVJ
-         QbwXpBFpzucrT72JyhRUaL3GoZYGD3ke87TB4QHVFBVMetChnkPndzy63f0UiUpbYQ
-         pb8FgD97npdel3t9qA1/z4wSDmjH/CiwHXNFp6n4f2hkBuuKg/8/lgzzHQL0nUfp35
-         PawwqUfJMsLYAecPFvBAEHYTS0R4zGvDbeLlrkntEtIUBD92XuMX8qiHgR2z9WR1wh
-         irg2MXFeVLmGw==
-Date:   Mon, 11 Oct 2021 11:42:05 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: Re: [PATCH 05/12] regulator: Introduce tps68470-regulator driver
-Message-ID: <YWQU/SYTT5Vk24XH@sirena.org.uk>
-References: <20211008162121.6628-1-hdegoede@redhat.com>
- <20211008162121.6628-6-hdegoede@redhat.com>
+        id S236001AbhJKKwt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Oct 2021 06:52:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50166 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235933AbhJKKws (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 11 Oct 2021 06:52:48 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 848BEC061570
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Oct 2021 03:50:44 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id m22so54903103wrb.0
+        for <linux-acpi@vger.kernel.org>; Mon, 11 Oct 2021 03:50:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
+        b=dCsx+wqYaQyMmAaEMeBGQsR0nFHnovuHvxZM/cOKzJr2RQhMTu1oR/PBPKy7S5AFKJ
+         eDnFu6CX6pKjSabWwgqEH/+u3HWajODC8lzJKn4Au16HpN//JUgGqsnoMMQq/Twk3FX+
+         8EXxhYuwxtv4kKVtRtW5Wd6yKGu+TF12O5piY0e7n2MS7iNnyVq+giliOIINH4LwEl8l
+         z3WHfr9EloNo0eSOT0QSg/KOiVUjiG0zllNW0pL9JSQuQaXgoqK71BddWjdVD/N3rD5V
+         3hqNqGP2O+CVr8R+rJT34SANfPjwY6C8UVHeUTjfqAqtfH2rXpMZlkwhD9i4lWia7dsJ
+         NlzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
+        b=oHFgEXkzRW9KOxMr7/+bmZZY3DQ+c8i0k3QNTi4aQ35v5OVRJxUZ/32iqnPF1lueHv
+         FHEPZZJ0FvHA63iRZH/PHXIF/So0lirIbLh3vPV5KEysaHgWjHRIo4j1BAbvHia8yOhj
+         g7eryjWphVJmJlV7bFYR677V3H7+hRVHFaR22ISZJUpciJA4KJINaWA5vc6wO2JUOqBs
+         68m2/4sAvWbY6TguNvONjbATdNkV0VTJ6olPUD1fRSghSS0ZLKccq+RqKlWMuwzwEKpo
+         qbeW4M7bv38IE3Hl2SD78+S53SKRpWTSznSXHzsYy7PhkpJ6nhfAVTJMafCtzcO9rNHi
+         fxMQ==
+X-Gm-Message-State: AOAM531w6P683Hs3YVS7oRLOU08BCcplOuTKp1oNS2UL91sdRIP8VkjE
+        J9WZ7Z6wngnzeAZtPRQo96Xng1iIjKza3745Idg=
+X-Google-Smtp-Source: ABdhPJzYaLskwbvQ53xWF0XXDedq8yJ1tJjKGShHwhCWhjtdi6yg74TSXfLDU0l62wX63pd6vPolC1lMV7IEKMbUak4=
+X-Received: by 2002:a1c:9dcb:: with SMTP id g194mr20643361wme.174.1633949442987;
+ Mon, 11 Oct 2021 03:50:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="CXmdVO9SzkamGhvy"
-Content-Disposition: inline
-In-Reply-To: <20211008162121.6628-6-hdegoede@redhat.com>
-X-Cookie: Your ignorance cramps my conversation.
+Received: by 2002:adf:dd8c:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 03:50:42
+ -0700 (PDT)
+Reply-To: ramcharan9910@outlook.com
+From:   "Cr.David Ramcharan" <convy0101@gmail.com>
+Date:   Mon, 11 Oct 2021 03:50:42 -0700
+Message-ID: <CADDRs94pB4BWvVmRE+9Q+jWfC9L8v3WuTTwuBWRFkt0to-rMfA@mail.gmail.com>
+Subject: Thank You
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Please I am writing to notify you again on my intention to list your
+name as a beneficiary to the total sum of GBP6.350 million (Six
+million, Three hundred and fifty thousand British Pounds Sterlings) in
+the intent of the deceased (name now withheld since this is my second
+letter to you).
 
---CXmdVO9SzkamGhvy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I contacted you because you bear the surname identity and therefore
+can present you as the beneficiary to inherit the account proceeds of
+the deceased since there is no written "WILL" or trace to the deceased
+family relatives. My aim is to present you to my Bank Authorities as
+the Next of Kin to our deceased client. I will guide you all through
+the Claim procedure by providing all relevant Information and guiding
+you in your decisions and response to the Bank Management. All the
+papers will be processed after your acceptance.
 
-On Fri, Oct 08, 2021 at 06:21:14PM +0200, Hans de Goede wrote:
+In your acceptance of this deal, I request that you kindly forward to
+me your letter of acceptance; your current telephone and fax numbers
+,age, occupational status and a forwarding address to enable me submit
+to the Bank Management the details as the Next of Kin to their
+deceased customer. Reply strictly through: ramcharancrdavid@gmail.com
 
-> +++ b/drivers/regulator/tps68470-regulator.c
-> @@ -0,0 +1,194 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Regulator driver for TPS68470 PMIC
-> + *
-
-Please make the entire comment a C++ one so things look more
-intentional.
-
-> +
-> +/*
-> + * The ACPI tps68470 probe-ordering depends on the clk/gpio/regulator drivers
-> + * being registered before the MFD cells are created (the MFD driver calls
-> + * acpi_dev_clear_dependencies() after the cell creation).
-> + * subsys_initcall() ensures this when the drivers are builtin.
-> + */
-> +static int __init tps68470_regulator_init(void)
-> +{
-> +	return platform_driver_register(&tps68470_regulator_driver);
-> +}
-> +subsys_initcall(tps68470_regulator_init);
-
-If this is actually required then the driver is broken for modular use
-which frankly is just generally broken.  I don't understand why this
-driver would require this when other drivers don't, or what the actual
-requirement is here - what does the call do and why is the ordering
-important?
-
---CXmdVO9SzkamGhvy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmFkFPwACgkQJNaLcl1U
-h9DYAQf/ZlwsujMRBtUtj8bnTodoar5ljYIwvbbIIPON2PaSlXELcV/AX9h7me8A
-R3OBXlixWnyr94CUY3iH/jQFJKqMuIreX0T9TCwjfMgHltPFQUiTbyPA+HhsTYAn
-dyxV8AF3WBEJVmrRJ3nhSkM8UFz5we/AqLeSwbhhW6Z/J/Cy/n1bhSyEJVomkT1j
-cw7+RmGlwHCvVHM0qmZs0h59wL1fQhGL5BH0IgjEDFokKBEfg+zPJTeRYtf4FU0n
-7RjHcJF067H+I4hOCikqmtG+FzdT+wewYIWNwFkOmkvVYLEHqg/uV/8q0oLVzxxi
-QI2Rqn2VTDC8k/pQZA+vsyF5fNNgmA==
-=5gYB
------END PGP SIGNATURE-----
-
---CXmdVO9SzkamGhvy--
+Yours faithfully,
+Cr.David Ramcharan
