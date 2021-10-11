@@ -2,100 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21FF6428A2C
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 11:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A59C4428A87
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 12:08:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235614AbhJKJvU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Oct 2021 05:51:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44394 "EHLO mail.kernel.org"
+        id S235756AbhJKKKD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Oct 2021 06:10:03 -0400
+Received: from foss.arm.com ([217.140.110.172]:42322 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235559AbhJKJvT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 11 Oct 2021 05:51:19 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3FC8360D07;
-        Mon, 11 Oct 2021 09:49:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633945759;
-        bh=2S2M+vWOVlpt6SDouVxbnwzuqIHxp67kF+TZGn3HQzk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qgboGxStzK89PPnYnYrazfeTg8br2hqCfCP9Cd6VYQBoH4VzUR4VQaxsvuSp0XV0S
-         5BnNz207Mic0sXCLXCQnGxM9/ptzYTAtG4lKjzS4qt4YOP5RF/vcHMTpdCEgMW087y
-         Foix2CtTPslsLBcwYswqQi87GEcHHYTwql8f+NOKmIEq2NV2bePnIdUdFf59P0f9nN
-         RsKNhTXGni4Jt9ZaHuMIBOTFOuXM/X35TJea/R4UWkLeU8Q3A4keP62qJPan42iBzB
-         AF1ityGZ2W8rkJS68xPHNZqvHokH4PYY/3KDB91l9M6rPq8K9txX4rFgWfKZy+UOr6
-         Lo6D6bBoZ8P1A==
-Date:   Mon, 11 Oct 2021 11:49:15 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v3 2/3] i2c: acpi: Replace custom function with
- device_match_acpi_handle()
-Message-ID: <YWQImyIlsWdam7T/@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-References: <20211007171815.28336-1-andriy.shevchenko@linux.intel.com>
- <20211007171815.28336-2-andriy.shevchenko@linux.intel.com>
+        id S235695AbhJKKKD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 11 Oct 2021 06:10:03 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 750541FB;
+        Mon, 11 Oct 2021 03:08:03 -0700 (PDT)
+Received: from bogus (unknown [10.57.21.181])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 195683F66F;
+        Mon, 11 Oct 2021 03:08:00 -0700 (PDT)
+Date:   Mon, 11 Oct 2021 11:07:15 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Cristian Marussi <cristian.marussi@arm.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Wolfram Sang <wsa@kernel.org>, linux-hwmon@vger.kernel.org,
+        linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v2 07/14] mailbox: pcc: Use PCC mailbox channel pointer
+ instead of standard
+Message-ID: <20211011100715.yhi4pmre6h2nglfc@bogus>
+References: <20210917133357.1911092-1-sudeep.holla@arm.com>
+ <20210917133357.1911092-8-sudeep.holla@arm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="UJCRYauk+dyrduoc"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211007171815.28336-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210917133357.1911092-8-sudeep.holla@arm.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Guenter,
 
---UJCRYauk+dyrduoc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Fri, Sep 17, 2021 at 02:33:50PM +0100, Sudeep Holla wrote:
+> Now that we have all the shared memory region information populated in
+> the pcc_mbox_chan, let us propagate the pointer to the same as the
+> return value to pcc_mbox_request channel.
+> 
+> This eliminates the need for the individual users of PCC mailbox to
+> parse the PCCT subspace entries and fetch the shmem information. This
+> also eliminates the need for PCC mailbox controller to set con_priv to
+> PCCT subspace entries. This is required as con_priv is private to the
+> controller driver to attach private data associated with the channel and
+> not meant to be used by the mailbox client/users.
+> 
+> Let us convert all the users of pcc_mbox_{request,free}_channel to use
+> new interface.
+> 
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
 
-On Thu, Oct 07, 2021 at 08:18:14PM +0300, Andy Shevchenko wrote:
-> Since driver core provides a generic device_match_acpi_handle()
-> we may replace the custom one with it. This unifies code to find
-> an adapter with the similar one which finds a client.
->=20
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Any objections ? If you are OK, can I have your ack so that the series
+can go in one go.
 
-Fine with me:
-
-Acked-by: Wolfram Sang <wsa@kernel.org>
-
-
---UJCRYauk+dyrduoc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmFkCJsACgkQFA3kzBSg
-KbbBrQ//e4S6A/kk7s4p9GPeIz2YzaWXID6jC1bNc5ax9g6YuwgvkuSYDOyXQHl9
-5U0mYLxdkOxq+9vG++t8lwh0vjJLN9dB7uDmMExtkzWejreqS9IDPc6/qSZIB8An
-kLU1o6jVFTM/SSSMn86pe7aUhMha3i/akqBTdpFwth8ph47yX3AIQ/l8eLvWlHBs
-w6EcyyNgfNLRj4i18bNvfTlqANUtt3R/Is4D73BWOpgCYFbZ6Mm2RuS+ukuyiYTx
-5ZYh6il1Cn6PAEU4vLkA0uA5VGw0U9IxGHwRheIdW1iq5q7rlHFzw//eUVjuD+56
-Uab0gi5gC/O67BFW90FKfH67LGjLl5KfZBKhE28cAlJ21XWYYqoXN8J8jg5wUxvN
-9uK10H7kDQboFz4AvMH49VFvic1FXwzA7Xkw9p07lVpwRBJoyOoqbilTwt/5RDdH
-9bTMJ2qp/hzMhabc3gaNh4gbq7Qe67KdY4RPvpoCvmOf7Zqkk6UaFsXUzjaDJBfA
-qwMdujGL5xUqZtCMtG8ooW6X9rKIo+c2aeShlzRpDBHhMM5doOSObUOAlGECX1we
-l8tS7K6Esoibq85b1y0eXX3iU3zgnapX4QJ8ZJhplkSRwr53NSlW7GCnTJWeColM
-4+TrfXavalv1Pp5lgrM9GjnSH5/7R4D65ioLs75v23/u5JWpzQI=
-=51+n
------END PGP SIGNATURE-----
-
---UJCRYauk+dyrduoc--
+-- 
+Regards,
+Sudeep
