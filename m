@@ -2,22 +2,22 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CAC742972A
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 20:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19E7D42972C
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 20:59:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbhJKTBf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Oct 2021 15:01:35 -0400
+        id S231439AbhJKTBg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Oct 2021 15:01:36 -0400
 Received: from mga02.intel.com ([134.134.136.20]:7166 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231439AbhJKTBd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 11 Oct 2021 15:01:33 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10134"; a="214094070"
+        id S231517AbhJKTBe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 11 Oct 2021 15:01:34 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10134"; a="214094071"
 X-IronPort-AV: E=Sophos;i="5.85,365,1624345200"; 
-   d="scan'208";a="214094070"
+   d="scan'208";a="214094071"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2021 11:59:31 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2021 11:59:32 -0700
 X-IronPort-AV: E=Sophos;i="5.85,365,1624345200"; 
-   d="scan'208";a="562329867"
+   d="scan'208";a="562329872"
 Received: from agluck-desk2.sc.intel.com ([10.3.52.146])
   by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2021 11:59:31 -0700
 From:   Tony Luck <tony.luck@intel.com>
@@ -31,9 +31,9 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-acpi@vger.kernel.org, linux-mm@kvack.org,
         Tony Luck <tony.luck@intel.com>,
         Reinette Chatre <reinette.chatre@intel.com>
-Subject: [PATCH v9 2/7] x86/sgx: Add infrastructure to identify SGX EPC pages
-Date:   Mon, 11 Oct 2021 11:59:19 -0700
-Message-Id: <20211011185924.374213-3-tony.luck@intel.com>
+Subject: [PATCH v9 3/7] x86/sgx: Initial poison handling for dirty and free pages
+Date:   Mon, 11 Oct 2021 11:59:20 -0700
+Message-Id: <20211011185924.374213-4-tony.luck@intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211011185924.374213-1-tony.luck@intel.com>
 References: <20211001164724.220532-1-tony.luck@intel.com>
@@ -44,71 +44,89 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-X86 machine check architecture reports a physical address when there
-is a memory error. Handling that error requires a method to determine
-whether the physical address reported is in any of the areas reserved
-for EPC pages by BIOS.
+A memory controller patrol scrubber can report poison in a page
+that isn't currently being used.
 
-SGX EPC pages do not have Linux "struct page" associated with them.
+Add "poison" field in the sgx_epc_page that can be set for an
+sgx_epc_page. Check for it:
+1) When sanitizing dirty pages
+2) When freeing epc pages
 
-Keep track of the mapping from ranges of EPC pages to the sections
-that contain them using an xarray.
+Poison is a new field separated from flags to avoid having to make
+all updates to flags atomic, or integrate poison state changes into
+some other locking scheme to protect flags.
 
-Create a function arch_is_platform_page() that simply reports whether an
-address is an EPC page for use elsewhere in the kernel. The ACPI error
-injection code needs this function and is typically built as a module,
-so export it.
-
-Note that arch_is_platform_page() will be slower than other similar
-"what type is this page" functions that can simply check bits in the
-"struct page".  If there is some future performance critical user of
-this function it may need to be implemented in a more efficient way.
-
-Note also that the current implementation of xarray allocates a few
-hundred kilobytes for this usage on a system with 4GB of SGX EPC memory
-configured. This isn't ideal, but worth it for the code simplicity.
+In both cases place the poisoned page on a list of poisoned epc pages
+to make sure it will not be reallocated.
 
 Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 Tested-by: Reinette Chatre <reinette.chatre@intel.com>
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 ---
- arch/x86/kernel/cpu/sgx/main.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/kernel/cpu/sgx/main.c | 14 +++++++++++++-
+ arch/x86/kernel/cpu/sgx/sgx.h  |  3 ++-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
-index d18988a46c13..09fa42690ff2 100644
+index 09fa42690ff2..653bace26100 100644
 --- a/arch/x86/kernel/cpu/sgx/main.c
 +++ b/arch/x86/kernel/cpu/sgx/main.c
-@@ -20,6 +20,7 @@ struct sgx_epc_section sgx_epc_sections[SGX_MAX_EPC_SECTIONS];
- static int sgx_nr_epc_sections;
- static struct task_struct *ksgxd_tsk;
- static DECLARE_WAIT_QUEUE_HEAD(ksgxd_waitq);
-+static DEFINE_XARRAY(sgx_epc_address_space);
+@@ -43,6 +43,7 @@ static nodemask_t sgx_numa_mask;
+ static struct sgx_numa_node *sgx_numa_nodes;
+ 
+ static LIST_HEAD(sgx_dirty_page_list);
++static LIST_HEAD(sgx_poison_page_list);
  
  /*
-  * These variables are part of the state of the reclaimer, and must be accessed
-@@ -650,6 +651,8 @@ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
+  * Reset post-kexec EPC pages to the uninitialized state. The pages are removed
+@@ -62,6 +63,12 @@ static void __sgx_sanitize_pages(struct list_head *dirty_page_list)
+ 
+ 		page = list_first_entry(dirty_page_list, struct sgx_epc_page, list);
+ 
++		if (page->poison) {
++			list_del(&page->list);
++			list_add(&page->list, &sgx_poison_page_list);
++			continue;
++		}
++
+ 		ret = __eremove(sgx_get_epc_virt_addr(page));
+ 		if (!ret) {
+ 			/*
+@@ -626,7 +633,11 @@ void sgx_free_epc_page(struct sgx_epc_page *page)
+ 
+ 	spin_lock(&node->lock);
+ 
+-	list_add_tail(&page->list, &node->free_page_list);
++	page->owner = NULL;
++	if (page->poison)
++		list_add(&page->list, &sgx_poison_page_list);
++	else
++		list_add_tail(&page->list, &node->free_page_list);
+ 	sgx_nr_free_pages++;
+ 	page->flags = 0;
+ 
+@@ -658,6 +669,7 @@ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
+ 		section->pages[i].section = index;
+ 		section->pages[i].flags = SGX_EPC_PAGE_IN_USE;
+ 		section->pages[i].owner = NULL;
++		section->pages[i].poison = 0;
+ 		list_add_tail(&section->pages[i].list, &sgx_dirty_page_list);
  	}
  
- 	section->phys_addr = phys_addr;
-+	xa_store_range(&sgx_epc_address_space, section->phys_addr,
-+		       phys_addr + size - 1, section, GFP_KERNEL);
+diff --git a/arch/x86/kernel/cpu/sgx/sgx.h b/arch/x86/kernel/cpu/sgx/sgx.h
+index f9202d3d6278..a990a4c9a00f 100644
+--- a/arch/x86/kernel/cpu/sgx/sgx.h
++++ b/arch/x86/kernel/cpu/sgx/sgx.h
+@@ -31,7 +31,8 @@
  
- 	for (i = 0; i < nr_pages; i++) {
- 		section->pages[i].section = index;
-@@ -661,6 +664,12 @@ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
- 	return true;
- }
- 
-+bool arch_is_platform_page(u64 paddr)
-+{
-+	return !!xa_load(&sgx_epc_address_space, paddr);
-+}
-+EXPORT_SYMBOL_GPL(arch_is_platform_page);
-+
- /**
-  * A section metric is concatenated in a way that @low bits 12-31 define the
-  * bits 12-31 of the metric and @high bits 0-19 define the bits 32-51 of the
+ struct sgx_epc_page {
+ 	unsigned int section;
+-	unsigned int flags;
++	u16 flags;
++	u16 poison;
+ 	struct sgx_encl_page *owner;
+ 	struct list_head list;
+ };
 -- 
 2.31.1
 
