@@ -2,89 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CD464289AB
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 11:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21FF6428A2C
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 11:49:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235490AbhJKJdI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Oct 2021 05:33:08 -0400
-Received: from mga01.intel.com ([192.55.52.88]:48063 "EHLO mga01.intel.com"
+        id S235614AbhJKJvU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Oct 2021 05:51:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44394 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235452AbhJKJdI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 11 Oct 2021 05:33:08 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10133"; a="250221457"
-X-IronPort-AV: E=Sophos;i="5.85,364,1624345200"; 
-   d="scan'208";a="250221457"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2021 02:30:50 -0700
-X-IronPort-AV: E=Sophos;i="5.85,364,1624345200"; 
-   d="scan'208";a="479785314"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2021 02:30:44 -0700
-Received: by lahna (sSMTP sendmail emulation); Mon, 11 Oct 2021 12:30:41 +0300
-Date:   Mon, 11 Oct 2021 12:30:41 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: Re: [PATCH v3 01/11] ACPI: delay enumeration of devices with a _DEP
- pointing to an INT3472 device
-Message-ID: <YWQEQVzF2nMjE10y@lahna>
-References: <20211010185707.195883-1-hdegoede@redhat.com>
- <20211010185707.195883-2-hdegoede@redhat.com>
- <YWPXixp/J6KIzWp6@lahna>
- <0c08069e-7758-fc09-c200-d867d097b499@redhat.com>
+        id S235559AbhJKJvT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 11 Oct 2021 05:51:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3FC8360D07;
+        Mon, 11 Oct 2021 09:49:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633945759;
+        bh=2S2M+vWOVlpt6SDouVxbnwzuqIHxp67kF+TZGn3HQzk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qgboGxStzK89PPnYnYrazfeTg8br2hqCfCP9Cd6VYQBoH4VzUR4VQaxsvuSp0XV0S
+         5BnNz207Mic0sXCLXCQnGxM9/ptzYTAtG4lKjzS4qt4YOP5RF/vcHMTpdCEgMW087y
+         Foix2CtTPslsLBcwYswqQi87GEcHHYTwql8f+NOKmIEq2NV2bePnIdUdFf59P0f9nN
+         RsKNhTXGni4Jt9ZaHuMIBOTFOuXM/X35TJea/R4UWkLeU8Q3A4keP62qJPan42iBzB
+         AF1ityGZ2W8rkJS68xPHNZqvHokH4PYY/3KDB91l9M6rPq8K9txX4rFgWfKZy+UOr6
+         Lo6D6bBoZ8P1A==
+Date:   Mon, 11 Oct 2021 11:49:15 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v3 2/3] i2c: acpi: Replace custom function with
+ device_match_acpi_handle()
+Message-ID: <YWQImyIlsWdam7T/@kunai>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+References: <20211007171815.28336-1-andriy.shevchenko@linux.intel.com>
+ <20211007171815.28336-2-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="UJCRYauk+dyrduoc"
 Content-Disposition: inline
-In-Reply-To: <0c08069e-7758-fc09-c200-d867d097b499@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20211007171815.28336-2-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 11, 2021 at 09:11:05AM +0200, Hans de Goede wrote:
-> Hi,
-> 
-> On 10/11/21 8:19 AM, Mika Westerberg wrote:
-> > Hi,
-> > 
-> > On Sun, Oct 10, 2021 at 08:56:57PM +0200, Hans de Goede wrote:
-> >> +/* List of HIDs for which we honor deps of matching ACPI devs, when checking _DEP lists. */
-> >> +static const char * const acpi_honor_dep_ids[] = {
-> >> +	"INT3472", /* Camera sensor PMIC / clk and regulator info */
-> > 
-> > Is there some reason why we can't do this for all devices with _DEP?
-> > That way we don't need to maintain lists like this.
-> 
-> Up until now the ACPI core deliberate mostly ignores _DEP-s because the
-> _DEP method may point to pretty much any random ACPI object and Linux does
-> not necessarily have a driver for all ACPI objects the driver points too,
-> which would lead to the devices never getting instantiated.
-> 
-> In hindsight this might not have been the best solution (1), but if we
-> now start honoring _DEP-s for all devices all of a sudden then this
-> will almost certainly lead to a whole bunch of regressions.
-> 
-> Note that in this case the HID which triggers this is for the device
-> being depended upon and for all camera sensors used with the IPU3 and
-> IPU4 Intel camera blocks this is the INT3472 device. By triggering on
-> this HID (rather then on the sensor HIDs) I expect that we will not
-> need to update this list all that often.
 
-I see and agree. Thanks for the explanation!
+--UJCRYauk+dyrduoc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-No objections from my side then :)
+On Thu, Oct 07, 2021 at 08:18:14PM +0300, Andy Shevchenko wrote:
+> Since driver core provides a generic device_match_acpi_handle()
+> we may replace the custom one with it. This unifies code to find
+> an adapter with the similar one which finds a client.
+>=20
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+Fine with me:
+
+Acked-by: Wolfram Sang <wsa@kernel.org>
+
+
+--UJCRYauk+dyrduoc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmFkCJsACgkQFA3kzBSg
+KbbBrQ//e4S6A/kk7s4p9GPeIz2YzaWXID6jC1bNc5ax9g6YuwgvkuSYDOyXQHl9
+5U0mYLxdkOxq+9vG++t8lwh0vjJLN9dB7uDmMExtkzWejreqS9IDPc6/qSZIB8An
+kLU1o6jVFTM/SSSMn86pe7aUhMha3i/akqBTdpFwth8ph47yX3AIQ/l8eLvWlHBs
+w6EcyyNgfNLRj4i18bNvfTlqANUtt3R/Is4D73BWOpgCYFbZ6Mm2RuS+ukuyiYTx
+5ZYh6il1Cn6PAEU4vLkA0uA5VGw0U9IxGHwRheIdW1iq5q7rlHFzw//eUVjuD+56
+Uab0gi5gC/O67BFW90FKfH67LGjLl5KfZBKhE28cAlJ21XWYYqoXN8J8jg5wUxvN
+9uK10H7kDQboFz4AvMH49VFvic1FXwzA7Xkw9p07lVpwRBJoyOoqbilTwt/5RDdH
+9bTMJ2qp/hzMhabc3gaNh4gbq7Qe67KdY4RPvpoCvmOf7Zqkk6UaFsXUzjaDJBfA
+qwMdujGL5xUqZtCMtG8ooW6X9rKIo+c2aeShlzRpDBHhMM5doOSObUOAlGECX1we
+l8tS7K6Esoibq85b1y0eXX3iU3zgnapX4QJ8ZJhplkSRwr53NSlW7GCnTJWeColM
+4+TrfXavalv1Pp5lgrM9GjnSH5/7R4D65ioLs75v23/u5JWpzQI=
+=51+n
+-----END PGP SIGNATURE-----
+
+--UJCRYauk+dyrduoc--
