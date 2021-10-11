@@ -2,288 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55899428519
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 04:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88260428601
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 06:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233340AbhJKC1I (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 10 Oct 2021 22:27:08 -0400
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:40181 "EHLO
-        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232813AbhJKC1H (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 10 Oct 2021 22:27:07 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R951e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=xuesong.chen@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0UrJM6zB_1633919104;
-Received: from 30.225.212.130(mailfrom:xuesong.chen@linux.alibaba.com fp:SMTPD_---0UrJM6zB_1633919104)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Mon, 11 Oct 2021 10:25:05 +0800
-Message-ID: <aae81415-d460-c2e2-c342-3f80c3618708@linux.alibaba.com>
-Date:   Mon, 11 Oct 2021 10:25:03 +0800
+        id S233750AbhJKEsE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Oct 2021 00:48:04 -0400
+Received: from mail-bn8nam11on2066.outbound.protection.outlook.com ([40.107.236.66]:30561
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S233778AbhJKEsA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 11 Oct 2021 00:48:00 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IEbFrJtL5nj0xPxIw8or4HikvRqZ7dQ3ZP3uctmhIGY3udybPxPMwxuqwxDRz9gvxhBzCggWdrUU9KMcCt9yL4XwI/+sEGkom/bvDuaYLCNUM0hmg9HPZ/eVuxYFR8rsqXI45J9yzQD8CQsknqPBoPzHP0iua5cXOUV+zcS55wbcwRZTB8hk2XLwsn9gb5Eavf0Jh7ATY6mKczJK2084bYUyvM7rp5pD8C5+29RESzfFx2M0wjHQAMAoS4PUNyqJA87HFyNq7Rx395CRSlD7KxgQDMHl/Z4yOF3Tg9957StGjMQGT2wOj7skF1i3BqONl8GIo/rQsKmN+tP2Ffw1iQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cXFa3Z4AxagLKvohaj5pp6xcSeeWL/caaeWK+OGMA6M=;
+ b=HUKEnVAcHW4zrKhfy9dX7R7GfoVtMqT0xoypa/AELWqko0ptdKN77SnO1kf5sDrORUIyeX+BRDEdtTySjvOrKAuAmPKTH1fgbctdsugRPWwkKjROPwHns1JBfs0zio7J/oVu89MRH8gsY0daSiPwS+GulyQGvxWjdwcQIcAiMP5ZJNs/v1sSBh+JTwHu5tLG3XSDZmSKiEJ4slfalQMeMt+v+0lSoOmWNLUrzcyQI4N9xgGH+eZge+9ac/DiKsf7e8p1JRoI+ACsR6gniFaZHnBME2PirUoSB+Mwhx8LOyz5x0vXS9p2xMS/ux6NX3SRgq3IV2LUGS249hEwiQRV3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=codeaurora.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cXFa3Z4AxagLKvohaj5pp6xcSeeWL/caaeWK+OGMA6M=;
+ b=HO3grOGi1V0xuVrL0OpZcfvKdRX6UVZW5lIbhkVhFmIbS41RwAOaaNTpqiLmrRzTc2jU9XlIil1k7CRotGZ7NKA1IRcMyY9QnvHAO+2jyXghn+lYiYaBU9WEHNiWH12JjL86lsxOfN71K0qLkUrmCmLM83ZPfCE/+IzgwjkTeEs=
+Received: from BN6PR19CA0051.namprd19.prod.outlook.com (2603:10b6:404:e3::13)
+ by BL0PR12MB4914.namprd12.prod.outlook.com (2603:10b6:208:1c4::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.20; Mon, 11 Oct
+ 2021 04:45:59 +0000
+Received: from BN8NAM11FT055.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:404:e3:cafe::fd) by BN6PR19CA0051.outlook.office365.com
+ (2603:10b6:404:e3::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18 via Frontend
+ Transport; Mon, 11 Oct 2021 04:45:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; codeaurora.org; dkim=none (message not signed)
+ header.d=none;codeaurora.org; dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT055.mail.protection.outlook.com (10.13.177.62) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4587.18 via Frontend Transport; Mon, 11 Oct 2021 04:45:59 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Sun, 10 Oct
+ 2021 23:45:58 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Sun, 10 Oct
+ 2021 23:45:58 -0500
+Received: from chrome.amd.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2308.8 via Frontend
+ Transport; Sun, 10 Oct 2021 23:45:54 -0500
+From:   Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
+To:     <sboyd@codeaurora.org>, <linux-clk@vger.kernel.org>
+CC:     <Vijendar.Mukunda@amd.com>, <Basavaraj.Hiregoudar@amd.com>,
+        <Sunil-kumar.Dommati@amd.com>, <Alexander.Deucher@amd.com>,
+        Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Len Brown" <lenb@kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: [PATCH 2/5] drivers: acpi: acpi_apd: Remove unused device property "is-rv"
+Date:   Mon, 11 Oct 2021 10:15:23 +0530
+Message-ID: <20211011044528.66109-2-AjitKumar.Pandey@amd.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20211011044528.66109-1-AjitKumar.Pandey@amd.com>
+References: <20211011044528.66109-1-AjitKumar.Pandey@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.1.2
-Subject: Re: [PATCH v2 1/2] PCI: MCFG: Consolidate the separate PCI MCFG table
- entry list
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
-        james.morse@arm.com, will@kernel.org, rafael@kernel.org,
-        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
-        bhelgaas@google.com, mark.rutland@arm.com,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Jayachandran C <c.jayachandran@gmail.com>,
-        Tomasz Nowicki <tn@semihalf.com>,
-        xuesong.chen@linux.alibaba.com
-References: <20211008213143.GA1373034@bhelgaas>
-From:   Xuesong Chen <xuesong.chen@linux.alibaba.com>
-In-Reply-To: <20211008213143.GA1373034@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: baa349b0-d50e-4200-50a3-08d98c720545
+X-MS-TrafficTypeDiagnostic: BL0PR12MB4914:
+X-Microsoft-Antispam-PRVS: <BL0PR12MB4914B204950FF730B438B43182B59@BL0PR12MB4914.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4303;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: lB2E38JrWKhfZXmFHjDy/YBys+yZMW0oaThbtBxeIixupPi4VXKxxlcm45PVWtGhRNM2MeHjlM9E5dP/46vgcNxOQTruy3JHcYQf5t8nn4gQpjHezixPVUB+6xVfxO/bNzYnMzA+6em8/JsvyvETV9MLB2cKadIefyOOCdoAU/Yw7ZBAYulrOQDKvHGQvmEcOqKQ40uvOY0SRq/5jhGDbCiuKPBbAV1dIZ1Pdq5wHIqj2v8S/snoOhU1WyqShkdSgTjF2adWYawGIyQ+i2iNdNwrmtqt063/Ap2FB07E+Hu9/yxa+G1VxknyeNGLc/r+gUEJZ80exMVRIGNGair8+t3mvTCsvsVwBT31MgjGwTcVFoEWj9YKVwPkxMFTsptUUtFUop5uMZTIx6p1WJEyRH2/NweYqLoWd0lNF1kOP4FnKtZhyuFOjfQzOSvh+1eHnbnAmgtithpbHufgVndnESF11u5zfz1SuS7NHps62Pqk4s5yFn3riU272fQi/FKUOF/UOfmAtXvUHPq0SLgfKR8R6CkKFrMb+SX4IOoNpOfM/deoKEcUk6GYT+pjcmkQLuypH1Og2YX+HFRQE6TGMA0Euolr3wfSh0LqkIzRLj+EfLRDkW3yqs84JkueWbxrksHV4GlSsjo7hNSaq6+Kdq7+ASSQmsY0AE9BU9y3oV3pC4LIYNK6x7glTetnDPQA9UH82gRss0jZwNfjE+ADBd1HVN0tyGgwwABrucMxJyI=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(186003)(5660300002)(82310400003)(70586007)(70206006)(2616005)(8936002)(36756003)(6666004)(426003)(356005)(81166007)(110136005)(508600001)(47076005)(26005)(54906003)(1076003)(8676002)(7696005)(336012)(316002)(2906002)(86362001)(36860700001)(4326008)(83380400001)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2021 04:45:59.1795
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: baa349b0-d50e-4200-50a3-08d98c720545
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT055.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB4914
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello Bjorn,
+Initially "is-rv" device property is added for 48MHz fixed clock
+support on Raven or RV architecture. It's unused now as we moved
+to clock config based selection to extend such support on others
+architecture. This change removed unused code from acpi driver.
 
-On 09/10/2021 05:31, Bjorn Helgaas wrote:
-> [+cc Jayachandran, Tomasz; not sure if they're still around, but just
-> in case they have a comment on any reasons for keeping the
-> pci_mcfg_list list separate.]
-> 
-> On Fri, Oct 08, 2021 at 04:40:12PM +0800, Xuesong Chen wrote:
->> The PCI MCFG entry list is discrete on x86 and other architectures like
->> arm64 in current implementation, this list variable can be consolidated
->> for unnecessary duplication and other purposes, for example, we can remove
->> some of the 'arch' specific codes in the APEI/EINJ module and re-implement
->> it in a more common arch-agnostic way.
-> 
-> This commit log could be more explicit about what's going on here.
-> 
-> From deciphering the patch, I think it takes advantage of the fact
-> that struct pci_mmcfg_region and struct mcfg_entry contain basically
-> the same information, but pci_mmcfg_region contains a little extra
-> information (a struct resource, a virtual address, and a name).
-> 
-Given the PCI MCFG entries are not too much in the reality, so the potential 
-memory space penalty for this little extra information, IMO, can be ignored.
-> To reduce the redundancy, it:
-> 
->   - Moves the "struct pci_mmcfg_region" definition from
->     arch/x86/include/asm/pci_x86.h to include/linux/pci.h, where it
->     can be shared across arches.
-Right.
-> 
->   - Moves pci_mmcfg_list (a list of pci_mmcfg_region structs) from
->     arch/x86/pci/mmconfig-shared.c to drivers/pci/pci.c, where it can
->     be shared across arches.
-Right.
-> 
->   - On x86 (which does not enable CONFIG_ACPI_MCFG), pci_mmcfg_list is
->     built in arch/x86/pci/mmconfig-shared.c as before.
-Ah, this pci_mmcfg_list maybe is not built-in as before since it will use
-the shared one re-defined in drivers/pci/pci.c
-> 
->   - Removes the "struct mcfg_entry" from drivers/acpi/pci_mcfg.c.
-Right, this can be consolidated with "struct pci_mmcfg_region", we need only one.
-> 
->   - Replaces pci_mcfg_list (previously a list of mcfg_entry structs)
->     in drivers/acpi/pci_mcfg.c with the newly-shared pci_mmcfg_list (a
->     list of pci_mmcfg_region structs).
-Right，this is the specific consolidation useage scenario。 
-> 
->   - On ARM64 (which does enable CONFIG_ACPI_MCFG), pci_mmcfg_list is
->     built in drivers/acpi/pci_mcfg.c.
-Ah, the newly shared 'pci_mmcfg_list' re-defined in pci.c will be used by 
-drivers/acpi/pci_mcfg.c, which just like what the x86 does.
-IOW, we move the 'pci_mmcfg_list' to the common 'drivers/pci/pci.c', then
-both the arch/x86/pci/mmconfig-shared.c and drivers/acpi/pci_mcfg.c on arm64
-will use that by the 'extern struct list_head pci_mmcfg_list' declaration.
-> 
-> Does that sound about right?
-Bjorn, for the commit log, do you think I need to add the above steps you mentioned
-into the log message to make it be more explicit? I'd like to update it if the
-answer is yes...
+Signed-off-by: Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
+---
+ drivers/acpi/acpi_apd.c               | 3 ---
+ include/linux/platform_data/clk-fch.h | 1 -
+ 2 files changed, 4 deletions(-)
 
-Feel free to let me know if you have any comments about the code itself.
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 6e02448d15d9..6913e9712852 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -87,9 +87,6 @@ static int fch_misc_setup(struct apd_private_data *pdata)
+ 	if (ret < 0)
+ 		return -ENOENT;
+ 
+-	if (!acpi_dev_get_property(adev, "is-rv", ACPI_TYPE_INTEGER, &obj))
+-		clk_data->is_rv = obj->integer.value;
+-
+ 	list_for_each_entry(rentry, &resource_list, node) {
+ 		clk_data->base = devm_ioremap(&adev->dev, rentry->res->start,
+ 					      resource_size(rentry->res));
+diff --git a/include/linux/platform_data/clk-fch.h b/include/linux/platform_data/clk-fch.h
+index b9f682459f08..850ca776156d 100644
+--- a/include/linux/platform_data/clk-fch.h
++++ b/include/linux/platform_data/clk-fch.h
+@@ -12,7 +12,6 @@
+ 
+ struct fch_clk_data {
+ 	void __iomem *base;
+-	u32 is_rv;
+ };
+ 
+ #endif /* __CLK_FCH_H */
+-- 
+2.25.1
 
-Xuesong
-> 
->> Signed-off-by: Xuesong Chen <xuesong.chen@linux.alibaba.com>
->> ---
->>  arch/x86/include/asm/pci_x86.h | 17 +----------------
->>  arch/x86/pci/mmconfig-shared.c |  2 --
->>  drivers/acpi/pci_mcfg.c        | 34 +++++++++++++---------------------
->>  drivers/pci/pci.c              |  2 ++
->>  include/linux/pci.h            | 17 +++++++++++++++++
->>  5 files changed, 33 insertions(+), 39 deletions(-)
->>
->> diff --git a/arch/x86/include/asm/pci_x86.h b/arch/x86/include/asm/pci_x86.h
->> index 490411d..1f4257c 100644
->> --- a/arch/x86/include/asm/pci_x86.h
->> +++ b/arch/x86/include/asm/pci_x86.h
->> @@ -146,20 +146,7 @@ static inline int  __init pci_acpi_init(void)
->>  extern void pcibios_fixup_irqs(void);
->>  
->>  /* pci-mmconfig.c */
->> -
->> -/* "PCI MMCONFIG %04x [bus %02x-%02x]" */
->> -#define PCI_MMCFG_RESOURCE_NAME_LEN (22 + 4 + 2 + 2)
->> -
->> -struct pci_mmcfg_region {
->> -	struct list_head list;
->> -	struct resource res;
->> -	u64 address;
->> -	char __iomem *virt;
->> -	u16 segment;
->> -	u8 start_bus;
->> -	u8 end_bus;
->> -	char name[PCI_MMCFG_RESOURCE_NAME_LEN];
->> -};
->> +struct pci_mmcfg_region;
->>  
->>  extern int __init pci_mmcfg_arch_init(void);
->>  extern void __init pci_mmcfg_arch_free(void);
->> @@ -174,8 +161,6 @@ extern struct pci_mmcfg_region *__init pci_mmconfig_add(int segment, int start,
->>  
->>  extern struct list_head pci_mmcfg_list;
->>  
->> -#define PCI_MMCFG_BUS_OFFSET(bus)      ((bus) << 20)
->> -
->>  /*
->>   * On AMD Fam10h CPUs, all PCI MMIO configuration space accesses must use
->>   * %eax.  No other source or target registers may be used.  The following
->> diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
->> index 758cbfe..0b961fe6 100644
->> --- a/arch/x86/pci/mmconfig-shared.c
->> +++ b/arch/x86/pci/mmconfig-shared.c
->> @@ -31,8 +31,6 @@
->>  static DEFINE_MUTEX(pci_mmcfg_lock);
->>  #define pci_mmcfg_lock_held() lock_is_held(&(pci_mmcfg_lock).dep_map)
->>  
->> -LIST_HEAD(pci_mmcfg_list);
->> -
->>  static void __init pci_mmconfig_remove(struct pci_mmcfg_region *cfg)
->>  {
->>  	if (cfg->res.parent)
->> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
->> index 53cab97..d9506b0 100644
->> --- a/drivers/acpi/pci_mcfg.c
->> +++ b/drivers/acpi/pci_mcfg.c
->> @@ -13,14 +13,7 @@
->>  #include <linux/pci-acpi.h>
->>  #include <linux/pci-ecam.h>
->>  
->> -/* Structure to hold entries from the MCFG table */
->> -struct mcfg_entry {
->> -	struct list_head	list;
->> -	phys_addr_t		addr;
->> -	u16			segment;
->> -	u8			bus_start;
->> -	u8			bus_end;
->> -};
->> +extern struct list_head pci_mmcfg_list;
->>  
->>  #ifdef CONFIG_PCI_QUIRKS
->>  struct mcfg_fixup {
->> @@ -214,16 +207,13 @@ static void pci_mcfg_apply_quirks(struct acpi_pci_root *root,
->>  #endif
->>  }
->>  
->> -/* List to save MCFG entries */
->> -static LIST_HEAD(pci_mcfg_list);
->> -
->>  int pci_mcfg_lookup(struct acpi_pci_root *root, struct resource *cfgres,
->>  		    const struct pci_ecam_ops **ecam_ops)
->>  {
->>  	const struct pci_ecam_ops *ops = &pci_generic_ecam_ops;
->>  	struct resource *bus_res = &root->secondary;
->>  	u16 seg = root->segment;
->> -	struct mcfg_entry *e;
->> +	struct pci_mmcfg_region *e;
->>  	struct resource res;
->>  
->>  	/* Use address from _CBA if present, otherwise lookup MCFG */
->> @@ -233,10 +223,10 @@ int pci_mcfg_lookup(struct acpi_pci_root *root, struct resource *cfgres,
->>  	/*
->>  	 * We expect the range in bus_res in the coverage of MCFG bus range.
->>  	 */
->> -	list_for_each_entry(e, &pci_mcfg_list, list) {
->> -		if (e->segment == seg && e->bus_start <= bus_res->start &&
->> -		    e->bus_end >= bus_res->end) {
->> -			root->mcfg_addr = e->addr;
->> +	list_for_each_entry(e, &pci_mmcfg_list, list) {
->> +		if (e->segment == seg && e->start_bus <= bus_res->start &&
->> +		    e->end_bus >= bus_res->end) {
->> +			root->mcfg_addr = e->address;
->>  		}
->>  
->>  	}
->> @@ -268,7 +258,7 @@ static __init int pci_mcfg_parse(struct acpi_table_header *header)
->>  {
->>  	struct acpi_table_mcfg *mcfg;
->>  	struct acpi_mcfg_allocation *mptr;
->> -	struct mcfg_entry *e, *arr;
->> +	struct pci_mmcfg_region *e, *arr;
->>  	int i, n;
->>  
->>  	if (header->length < sizeof(struct acpi_table_mcfg))
->> @@ -285,10 +275,12 @@ static __init int pci_mcfg_parse(struct acpi_table_header *header)
->>  
->>  	for (i = 0, e = arr; i < n; i++, mptr++, e++) {
->>  		e->segment = mptr->pci_segment;
->> -		e->addr =  mptr->address;
->> -		e->bus_start = mptr->start_bus_number;
->> -		e->bus_end = mptr->end_bus_number;
->> -		list_add(&e->list, &pci_mcfg_list);
->> +		e->address =  mptr->address;
->> +		e->start_bus = mptr->start_bus_number;
->> +		e->end_bus = mptr->end_bus_number;
->> +		e->res.start = e->address + PCI_MMCFG_BUS_OFFSET(e->start_bus);
->> +		e->res.end = e->address + PCI_MMCFG_BUS_OFFSET(e->end_bus + 1) - 1;
->> +		list_add(&e->list, &pci_mmcfg_list);
->>  	}
->>  
->>  #ifdef CONFIG_PCI_QUIRKS
->> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
->> index ce2ab62..899004e 100644
->> --- a/drivers/pci/pci.c
->> +++ b/drivers/pci/pci.c
->> @@ -47,6 +47,8 @@
->>  int pci_pci_problems;
->>  EXPORT_SYMBOL(pci_pci_problems);
->>  
->> +LIST_HEAD(pci_mmcfg_list);
->> +
->>  unsigned int pci_pm_d3hot_delay;
->>  
->>  static void pci_pme_list_scan(struct work_struct *work);
->> diff --git a/include/linux/pci.h b/include/linux/pci.h
->> index cd8aa6f..71e4c06 100644
->> --- a/include/linux/pci.h
->> +++ b/include/linux/pci.h
->> @@ -55,6 +55,23 @@
->>  #define PCI_RESET_PROBE		true
->>  #define PCI_RESET_DO_RESET	false
->>  
->> +#define PCI_MMCFG_BUS_OFFSET(bus)      ((bus) << 20)
->> +
->> +/* "PCI MMCONFIG %04x [bus %02x-%02x]" */
->> +#define PCI_MMCFG_RESOURCE_NAME_LEN (22 + 4 + 2 + 2)
->> +
->> +/* pci mcfg region */
->> +struct pci_mmcfg_region {
->> +	struct list_head list;
->> +	struct resource res;
->> +	u64 address;
->> +	char __iomem *virt;
->> +	u16 segment;
->> +	u8 start_bus;
->> +	u8 end_bus;
->> +	char name[PCI_MMCFG_RESOURCE_NAME_LEN];
->> +};
->> +
->>  /*
->>   * The PCI interface treats multi-function devices as independent
->>   * devices.  The slot/function address of each device is encoded
->> -- 
->> 1.8.3.1
->>
