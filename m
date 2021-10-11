@@ -2,22 +2,22 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 338E7429729
+	by mail.lfdr.de (Postfix) with ESMTP id C582C42972B
 	for <lists+linux-acpi@lfdr.de>; Mon, 11 Oct 2021 20:59:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233089AbhJKTBe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 11 Oct 2021 15:01:34 -0400
+        id S233994AbhJKTBf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 11 Oct 2021 15:01:35 -0400
 Received: from mga02.intel.com ([134.134.136.20]:7163 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229544AbhJKTBc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 11 Oct 2021 15:01:32 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10134"; a="214094067"
+        id S230394AbhJKTBd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 11 Oct 2021 15:01:33 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10134"; a="214094069"
 X-IronPort-AV: E=Sophos;i="5.85,365,1624345200"; 
-   d="scan'208";a="214094067"
+   d="scan'208";a="214094069"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
   by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2021 11:59:31 -0700
 X-IronPort-AV: E=Sophos;i="5.85,365,1624345200"; 
-   d="scan'208";a="562329859"
+   d="scan'208";a="562329863"
 Received: from agluck-desk2.sc.intel.com ([10.3.52.146])
   by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2021 11:59:31 -0700
 From:   Tony Luck <tony.luck@intel.com>
@@ -29,70 +29,95 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Dave Hansen <dave.hansen@intel.com>,
         Cathy Zhang <cathy.zhang@intel.com>, linux-sgx@vger.kernel.org,
         linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-        Tony Luck <tony.luck@intel.com>
-Subject: [PATCH v9 0/7] Basic recovery for machine checks inside SGX
-Date:   Mon, 11 Oct 2021 11:59:17 -0700
-Message-Id: <20211011185924.374213-1-tony.luck@intel.com>
+        Tony Luck <tony.luck@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>
+Subject: [PATCH v9 1/7] x86/sgx: Add new sgx_epc_page flag bit to mark in-use pages
+Date:   Mon, 11 Oct 2021 11:59:18 -0700
+Message-Id: <20211011185924.374213-2-tony.luck@intel.com>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211001164724.220532-1-tony.luck@intel.com>
+In-Reply-To: <20211011185924.374213-1-tony.luck@intel.com>
 References: <20211001164724.220532-1-tony.luck@intel.com>
+ <20211011185924.374213-1-tony.luck@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Posting latest version to a slightly wider audience.
+SGX EPC pages go through the following life cycle:
 
-The big picture is that SGX uses some memory pages that are walled off
-from access by the OS. This means they:
-1) Don't have "struct page" describing them
-2) Don't appear in the kernel 1:1 map
+        DIRTY ---> FREE ---> IN-USE --\
+                    ^                 |
+                    \-----------------/
 
-But they are still backed by normal DDR memory, so errors can occur.
+Recovery action for poison for a DIRTY or FREE page is simple. Just
+make sure never to allocate the page. IN-USE pages need some extra
+handling.
 
-Parts 1-4 of this series handle the internal SGX bits to keep track of
-these pages in an error context. They've had a fair amount of review
-on the linux-sgx list (but if any of the 37 subscribers to that list
-not named Jarkko or Reinette want to chime in with extra comments and
-{Acked,Reviewed,Tested}-by that would be great).
+Add a new flag bit SGX_EPC_PAGE_IN_USE that is set when a page
+is allocated and cleared when the page is freed.
 
-Linux-mm reviewers can (if they like) skip to part 5 where two changes are
-made: 1) Hook into memory_failure() in the same spot as device mapping 2)
-Skip trying to change 1:1 map (since SGX pages aren't there).
+Notes:
 
-The hooks have generic looking names rather than specifically saying
-"sgx" at the suggestion of Dave Hansen. I'm not wedded to the names,
-so better suggestions welcome.  I could also change to using some
-"ARCH_HAS_PLATFORM_PAGES" config bits if that's the current fashion.
+1) These transitions are made while holding the node->lock so that
+   future code that checks the flags while holding the node->lock
+   can be sure that if the SGX_EPC_PAGE_IN_USE bit is set, then the
+   page is on the free list.
 
-Rafael (and other ACPI list readers) can skip to parts 6 & 7 where there
-are hooks into error injection and reporting to simply say "these odd
-looking physical addresses are actually ok to use). I added some extra
-notes to the einj.rst documentation on how to inject into SGX memory.
+2) Initially while the pages are on the dirty list the
+   SGX_EPC_PAGE_IN_USE bit is set.
 
-Tony Luck (7):
-  x86/sgx: Add new sgx_epc_page flag bit to mark in-use pages
-  x86/sgx: Add infrastructure to identify SGX EPC pages
-  x86/sgx: Initial poison handling for dirty and free pages
-  x86/sgx: Add SGX infrastructure to recover from poison
-  x86/sgx: Hook arch_memory_failure() into mainline code
-  x86/sgx: Add hook to error injection address validation
-  x86/sgx: Add check for SGX pages to ghes_do_memory_failure()
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Tested-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+---
+ arch/x86/kernel/cpu/sgx/main.c | 4 +++-
+ arch/x86/kernel/cpu/sgx/sgx.h  | 3 +++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
- .../firmware-guide/acpi/apei/einj.rst         |  19 ++++
- arch/x86/include/asm/processor.h              |   8 ++
- arch/x86/include/asm/set_memory.h             |   4 +
- arch/x86/kernel/cpu/sgx/main.c                | 104 +++++++++++++++++-
- arch/x86/kernel/cpu/sgx/sgx.h                 |   6 +-
- drivers/acpi/apei/einj.c                      |   3 +-
- drivers/acpi/apei/ghes.c                      |   2 +-
- include/linux/mm.h                            |  14 +++
- mm/memory-failure.c                           |  19 +++-
- 9 files changed, 168 insertions(+), 11 deletions(-)
-
-
-base-commit: 64570fbc14f8d7cb3fe3995f20e26bc25ce4b2cc
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index 63d3de02bbcc..d18988a46c13 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -472,6 +472,7 @@ static struct sgx_epc_page *__sgx_alloc_epc_page_from_node(int nid)
+ 	page = list_first_entry(&node->free_page_list, struct sgx_epc_page, list);
+ 	list_del_init(&page->list);
+ 	sgx_nr_free_pages--;
++	page->flags = SGX_EPC_PAGE_IN_USE;
+ 
+ 	spin_unlock(&node->lock);
+ 
+@@ -626,6 +627,7 @@ void sgx_free_epc_page(struct sgx_epc_page *page)
+ 
+ 	list_add_tail(&page->list, &node->free_page_list);
+ 	sgx_nr_free_pages++;
++	page->flags = 0;
+ 
+ 	spin_unlock(&node->lock);
+ }
+@@ -651,7 +653,7 @@ static bool __init sgx_setup_epc_section(u64 phys_addr, u64 size,
+ 
+ 	for (i = 0; i < nr_pages; i++) {
+ 		section->pages[i].section = index;
+-		section->pages[i].flags = 0;
++		section->pages[i].flags = SGX_EPC_PAGE_IN_USE;
+ 		section->pages[i].owner = NULL;
+ 		list_add_tail(&section->pages[i].list, &sgx_dirty_page_list);
+ 	}
+diff --git a/arch/x86/kernel/cpu/sgx/sgx.h b/arch/x86/kernel/cpu/sgx/sgx.h
+index 4628acec0009..f9202d3d6278 100644
+--- a/arch/x86/kernel/cpu/sgx/sgx.h
++++ b/arch/x86/kernel/cpu/sgx/sgx.h
+@@ -26,6 +26,9 @@
+ /* Pages, which are being tracked by the page reclaimer. */
+ #define SGX_EPC_PAGE_RECLAIMER_TRACKED	BIT(0)
+ 
++/* Allocated pages */
++#define SGX_EPC_PAGE_IN_USE		BIT(1)
++
+ struct sgx_epc_page {
+ 	unsigned int section;
+ 	unsigned int flags;
 -- 
 2.31.1
 
