@@ -2,58 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B379042ABAD
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 20:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E53B42ABCD
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 20:21:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230002AbhJLSPM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Oct 2021 14:15:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55312 "EHLO
+        id S230427AbhJLSXo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Oct 2021 14:23:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232698AbhJLSPL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Oct 2021 14:15:11 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C78C061570;
-        Tue, 12 Oct 2021 11:13:09 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id a25so2772772edx.8;
-        Tue, 12 Oct 2021 11:13:09 -0700 (PDT)
+        with ESMTP id S231586AbhJLSXo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Oct 2021 14:23:44 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9865EC061570;
+        Tue, 12 Oct 2021 11:21:41 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id i20so2756824edj.10;
+        Tue, 12 Oct 2021 11:21:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=Gbt771FcUpKhRbY7l1qKOaogjRjP2WQTDl1Nm1Sbb5s=;
-        b=nR9m8poegxkbYqSEvu0sGbUleY5y9j4ueU4x0z4zFGBeys0kxAWQ0tARkgRqTqu58Q
-         zfZ9wYkH2kqgTE+0+q6LurNMt2LcMdgnTtt1xDdn9xrPz3s/LY7bz2oD+jWv0XByqj3w
-         jkeyX34/ZnkEtgdP0lvrulDXik6yBqQvRGnfestR3ZuFGUfIuMcMF5qHAjKSTddVcuuO
-         E+C+wmcO3Bd6uqHKYG6MlV21XkeHJmEKiQpJWlg1AdwuLlWxVDboZeXHaxGqoc2dVLIQ
-         SBt06KJjQQG0fEOztcMnlu0HESWOwZsnmPf45daNJV9su55j0pRqyEHuxZp/UowstN+Q
-         SoSQ==
+        bh=MFVuZrdOHdoGSfOEt0pRo42UMtYCScP5y9KYqR5Gv7I=;
+        b=P/SY5Vdz/dKYEPV/1+NARq+1zThf1F+nGG1LM3CNxH6dNNaI/QdcDQm9ih6lAQl7dp
+         UuvySsZqacP4RUYxH8BhQQr/0Q+qxiBQxWq+XuMvDjunFApyFUhq6t60Gj2HZ4VYbi8e
+         jBHr73J+GSJZqWJjo5W/Ia00rVOiMAWsGyxE4oO1yVTRlPD7OjA9ro5MZYlSyTTL+G3g
+         I4DtsQpsnR8ve9htkPWIkuA949qFD3CLW5vNcUeiPYuLA4rAKBQsZGw7X4RghESL9ePK
+         7/oZ4iapwo27Nei+F0t8lTEPNSg22NRMxOWEVwPwukDccdl9DYuqrxdYklmscDE8CSWW
+         OJKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=Gbt771FcUpKhRbY7l1qKOaogjRjP2WQTDl1Nm1Sbb5s=;
-        b=RKcw2DsJOTOyUVYjw9osUhC4K9pLzlb6ftXZ0brVTYqrnDI/wnr80Qs/MVZ3zljtPD
-         H+Fl47wwK7lxenIpPB5z29ttAGohxUotZ59O6VyE1Hfuiw+UTy0brWgsIQkS2GC2eUCE
-         UMuA/+B0OwZIBoeHODvSWy6eYJHyvWBQD9qDi5tMYuSsFaZFNxRzD59OUxlq5CPOjyTM
-         iHzh3OMNuP8lIJv1+H4zm8/F52QtayhrQEGz2GQfnBnUBhqkkw+h2SaXbTMonDR1G0qR
-         J6U4Te6KqoZsWnM7+tXAM+cr/3krnTEbSrx2Is5gacT0qPcpRN4lBGHuzhZaiKAIPczy
-         5UbQ==
-X-Gm-Message-State: AOAM5302E/4ltMXDs5TS+/t7EBZy7mKm/wsmGHJo2ZuV9Tzqpwo6WtZq
-        dbR1E/PbAIlLzQUQDQfdxMw=
-X-Google-Smtp-Source: ABdhPJwbZy3JHKQpZ5UY5oPwLwwgrSNtl5KLlgVD6eaf1lk6xQeON7r1+S/KRDcGC/hdkS8l1to66g==
-X-Received: by 2002:a50:da48:: with SMTP id a8mr1752981edk.146.1634062384153;
-        Tue, 12 Oct 2021 11:13:04 -0700 (PDT)
+        bh=MFVuZrdOHdoGSfOEt0pRo42UMtYCScP5y9KYqR5Gv7I=;
+        b=G/0487Uk7Ns4FWR036q2uRYA8eN2G0pbQEn5gBphHZxmHBFkm7QCMFQ6GyWU3keFDm
+         rsRB6uBX8pRuXIVA/NYOSVbPUTn7tQkYAQSZ9AqOW7u6Zd+QOVDgshG9DKJ5+wjuz1zf
+         3d+DJSj2ezboh/Elz9X1zhrkKIj2y7RFeSXxAW55A9XAfXyV3rEsIkWEkpztExDBCiYv
+         IY8RxK44NQqHWTQt6zpRrlJxhVIiVbtNHf4F+abJSfVYWptY++aeHgU2klUIFl56oRXs
+         yEIyaexSuqvtodDY4Gj+apx9DoEkE+2sw8L/BZ0X2/DRAZepnnal1bqZJ6ZR0cxyVBje
+         YVSw==
+X-Gm-Message-State: AOAM533GOhZ1tQl719jtKATEOTWvZbO5W+mAftubP8mrD2gvztLiniIK
+        eec+CNhaFY6/Yeu6Q/Bd23QGE/1UTH8=
+X-Google-Smtp-Source: ABdhPJyT8BreXzV8eO7gg29MQj0v8lbG5wpNCf9Ns7ixilZABJ3kS7QVqS0HF68c9J4APwoo3gvShg==
+X-Received: by 2002:a50:da04:: with SMTP id z4mr1872352edj.52.1634062899284;
+        Tue, 12 Oct 2021 11:21:39 -0700 (PDT)
 Received: from [10.20.0.4] ([194.126.177.11])
-        by smtp.gmail.com with ESMTPSA id nd36sm5422846ejc.17.2021.10.12.11.13.03
+        by smtp.gmail.com with ESMTPSA id fx4sm5309875ejb.113.2021.10.12.11.21.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Oct 2021 11:13:03 -0700 (PDT)
-Message-ID: <f8ab041f-fe54-baf3-a378-f6807a7d3e01@gmail.com>
-Date:   Tue, 12 Oct 2021 20:13:02 +0200
+        Tue, 12 Oct 2021 11:21:38 -0700 (PDT)
+Message-ID: <e15036b7-b41f-a5cf-b8a6-b1b9023197cd@gmail.com>
+Date:   Tue, 12 Oct 2021 20:21:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH v1 4/7] surface: surface3-wmi: Use ACPI_COMPANION()
+Subject: Re: [PATCH v1 5/7] surface: surface3_power: Use ACPI_COMPANION()
  directly
 Content-Language: en-US
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
@@ -62,16 +62,16 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Mark Gross <mgross@linux.intel.com>,
         platform-driver-x86@vger.kernel.org
-References: <4369779.LvFx2qVVIh@kreacher> <3414042.iIbC2pHGDl@kreacher>
+References: <4369779.LvFx2qVVIh@kreacher> <3089655.5fSG56mABF@kreacher>
 From:   Maximilian Luz <luzmaximilian@gmail.com>
-In-Reply-To: <3414042.iIbC2pHGDl@kreacher>
+In-Reply-To: <3089655.5fSG56mABF@kreacher>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 10/12/21 19:44, Rafael J. Wysocki wrote:
+On 10/12/21 19:46, Rafael J. Wysocki wrote:
 > From: Rafael J. Wysocki <rafael@kernel.org>
 > 
 > The ACPI_HANDLE() macro is a wrapper arond the ACPI_COMPANION()
@@ -80,49 +80,49 @@ On 10/12/21 19:44, Rafael J. Wysocki wrote:
 > straightforward to evaluate the latter directly instead of passing
 > the handle produced by the former to acpi_bus_get_device().
 > 
-> Modify s3_wmi_check_platform_device() accordingly (no intentional
-> functional impact).
+> Modify mshw0011_notify() accordingly (no intentional functional
+> impact).
 > 
 > Signed-off-by: Rafael J. Wysocki <rafael@kernel.org>
 
-Looks good to me.
-
-Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
+Looks mostly good to me, small comment/question inline.
 
 > ---
->   drivers/platform/surface/surface3-wmi.c |    9 ++++-----
+>   drivers/platform/surface/surface3_power.c |    9 ++++-----
 >   1 file changed, 4 insertions(+), 5 deletions(-)
 > 
-> Index: linux-pm/drivers/platform/surface/surface3-wmi.c
+> Index: linux-pm/drivers/platform/surface/surface3_power.c
 > ===================================================================
-> --- linux-pm.orig/drivers/platform/surface/surface3-wmi.c
-> +++ linux-pm/drivers/platform/surface/surface3-wmi.c
-> @@ -139,13 +139,12 @@ static acpi_status s3_wmi_attach_spi_dev
->   
->   static int s3_wmi_check_platform_device(struct device *dev, void *data)
+> --- linux-pm.orig/drivers/platform/surface/surface3_power.c
+> +++ linux-pm/drivers/platform/surface/surface3_power.c
+> @@ -160,15 +160,14 @@ mshw0011_notify(struct mshw0011_data *cd
 >   {
-> -	struct acpi_device *adev, *ts_adev = NULL;
+>   	union acpi_object *obj;
+>   	struct acpi_device *adev;
 > -	acpi_handle handle;
-> +	struct acpi_device *adev = ACPI_COMPANION(dev);
-> +	struct acpi_device *ts_adev = NULL;
->   	acpi_status status;
+>   	unsigned int i;
 >   
->   	/* ignore non ACPI devices */
-> -	handle = ACPI_HANDLE(dev);
+> -	handle = ACPI_HANDLE(&cdata->adp1->dev);
 > -	if (!handle || acpi_bus_get_device(handle, &adev))
+> +	adev = ACPI_COMPANION(&cdata->adp1->dev);
 > +	if (!adev)
->   		return 0;
+>   		return -ENODEV;
+
+Do we need to get the ACPI device (adev) here? To me it looks like only
+its handle is actually used so why not keep ACPI_HANDLE() and remove the
+acpi_bus_get_device() call instead?
+
 >   
->   	/* check for LID ACPI switch */
-> @@ -159,7 +158,7 @@ static int s3_wmi_check_platform_device(
->   	    strlen(SPI_CTL_OBJ_NAME)))
->   		return 0;
->   
-> -	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
-> +	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, adev->handle, 1,
->   				     s3_wmi_attach_spi_device, NULL,
->   				     &ts_adev, NULL);
->   	if (ACPI_FAILURE(status))
+> -	obj = acpi_evaluate_dsm_typed(handle, &mshw0011_guid, arg1, arg2, NULL,
+> -				      ACPI_TYPE_BUFFER);
+> +	obj = acpi_evaluate_dsm_typed(adev->handle, &mshw0011_guid, arg1, arg2,
+> +				      NULL, ACPI_TYPE_BUFFER);
+>   	if (!obj) {
+>   		dev_err(&cdata->adp1->dev, "device _DSM execution failed\n");
+>   		return -ENODEV;
 > 
 > 
 > 
+
+Regards,
+Max
