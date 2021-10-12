@@ -2,89 +2,118 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B97F042A9FA
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 18:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC16242AAC8
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 19:30:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230420AbhJLQxW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Oct 2021 12:53:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46190 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231655AbhJLQxW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 12 Oct 2021 12:53:22 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B835960D42;
-        Tue, 12 Oct 2021 16:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634057480;
-        bh=xZrkpJnf1xZwCaEbXMHPPsuTmya/AWfx/7gi6uu/h4I=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=F9blHUmXI6SilVlyRENOPVSyFQYn47i/pPYBAJKk+Hfjbs4Z3TlqCzjlHz2dGRKDH
-         qZe/WQArQfbSaxMnTaxzAE/wFeH14G2Rb31TH11h4l0rvW8s+lEqnG44uA8N+pKpwJ
-         E9UcpNgsO4rr7V/qPUiIq9xU4pazfzaBlz0WW4hkCAqsypoo8NbxPDag2H1y7uwgxR
-         SsO5Vz1bjZhUunDuf84Lv5EEra9TEs9N0TMCnP9fz39eX4PKj8VtO7t3FsFx8n7N23
-         dPVDo3UloKPRQtJyMGlJ3kCQwGYqwj64vFLmjZLY+LNKUbyMyS7w3JpM8ppoP5/niI
-         I16p0CLKdt8XA==
-Message-ID: <b16b8883d19600ca35f6a109cd2669c3c126437a.camel@kernel.org>
-Subject: Re: [PATCH v9 7/7] x86/sgx: Add check for SGX pages to
- ghes_do_memory_failure()
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Tony Luck <tony.luck@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        naoya.horiguchi@nec.com
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Cathy Zhang <cathy.zhang@intel.com>, linux-sgx@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-        Reinette Chatre <reinette.chatre@intel.com>
-Date:   Tue, 12 Oct 2021 19:51:17 +0300
-In-Reply-To: <20211011185924.374213-8-tony.luck@intel.com>
-References: <20211001164724.220532-1-tony.luck@intel.com>
-         <20211011185924.374213-1-tony.luck@intel.com>
-         <20211011185924.374213-8-tony.luck@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.40.0-1 
+        id S231517AbhJLRcq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Oct 2021 13:32:46 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:61872 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229810AbhJLRcp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Oct 2021 13:32:45 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
+ id 6a0cc62dcedd71c2; Tue, 12 Oct 2021 19:30:42 +0200
+Received: from kreacher.localnet (unknown [213.134.187.88])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 51A6866A824;
+        Tue, 12 Oct 2021 19:30:41 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     linux-hwmon@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH] hwmon: acpi_power_meter: Use acpi_bus_get_acpi_device()
+Date:   Tue, 12 Oct 2021 19:30:40 +0200
+Message-ID: <11864888.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.187.88
+X-CLIENT-HOSTNAME: 213.134.187.88
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrvddtkedguddutdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhephfegtdffjeehkeegleejveevtdeugfffieeijeduuddtkefgjedvheeujeejtedvnecukfhppedvudefrddufeegrddukeejrdekkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukeejrdekkedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhhfihmohhnsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhguvghlvhgrrhgvsehsuhhsvgdrtghomhdprhgtphhtthhopehlihhnuhigsehrohgvtghkqdhu
+ shdrnhgvthdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 2021-10-11 at 11:59 -0700, Tony Luck wrote:
-> SGX EPC pages do not have a "struct page" associated with them so the
-> pfn_valid() sanity check fails and results in a warning message to
-> the console.
->=20
-> Add an additional check to skip the warning if the address of the error
-> is in an SGX EPC page.
->=20
-> Tested-by: Reinette Chatre <reinette.chatre@intel.com>
-> Signed-off-by: Tony Luck <tony.luck@intel.com>
-> ---
-> =C2=A0drivers/acpi/apei/ghes.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 0c8330ed1ffd..0c5c9acc6254 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -449,7 +449,7 @@ static bool ghes_do_memory_failure(u64 physical_addr,=
- int flags)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0return false;
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0pfn =3D PHYS_PFN(physical=
-_addr);
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!pfn_valid(pfn)) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!pfn_valid(pfn) && !arch_i=
-s_platform_page(physical_addr)) {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0pr_warn_ratelimited(FW_WARN GHES_PFX
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0"Invalid address in generic error data: %#llx\n",
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0physical_addr);
+From: Rafael J. Wysocki <rafael@kernel.org>
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+In read_domain_devices(), acpi_bus_get_device() is called to obtain
+the ACPI device object attached to the given ACPI handle and
+subsequently that object is passed to get_device() for reference
+counting, but there is a window between the acpi_bus_get_device()
+and get_device() calls in which the ACPI device object in question
+may go away.
 
-/Jarkko
+To address this issue, make read_domain_devices() use
+acpi_bus_get_acpi_device() to reference count and return the given
+ACPI device object in one go and export that function to modules.
+
+While at it, also make read_domain_devices() and
+remove_domain_devices() use acpi_dev_put() instead of calling
+put_device() directly on the ACPI device objects returned by
+acpi_bus_get_acpi_device().
+
+Signed-off-by: Rafael J. Wysocki <rafael@kernel.org>
+---
+ drivers/acpi/scan.c              |    1 +
+ drivers/hwmon/acpi_power_meter.c |   13 +++++--------
+ 2 files changed, 6 insertions(+), 8 deletions(-)
+
+Index: linux-pm/drivers/hwmon/acpi_power_meter.c
+===================================================================
+--- linux-pm.orig/drivers/hwmon/acpi_power_meter.c
++++ linux-pm/drivers/hwmon/acpi_power_meter.c
+@@ -535,7 +535,7 @@ static void remove_domain_devices(struct
+ 
+ 		sysfs_remove_link(resource->holders_dir,
+ 				  kobject_name(&obj->dev.kobj));
+-		put_device(&obj->dev);
++		acpi_dev_put(obj);
+ 	}
+ 
+ 	kfree(resource->domain_devices);
+@@ -597,18 +597,15 @@ static int read_domain_devices(struct ac
+ 			continue;
+ 
+ 		/* Create a symlink to domain objects */
+-		resource->domain_devices[i] = NULL;
+-		if (acpi_bus_get_device(element->reference.handle,
+-					&resource->domain_devices[i]))
++		obj = acpi_bus_get_acpi_device(element->reference.handle);
++		resource->domain_devices[i] = obj;
++		if (!obj)
+ 			continue;
+ 
+-		obj = resource->domain_devices[i];
+-		get_device(&obj->dev);
+-
+ 		res = sysfs_create_link(resource->holders_dir, &obj->dev.kobj,
+ 				      kobject_name(&obj->dev.kobj));
+ 		if (res) {
+-			put_device(&obj->dev);
++			acpi_dev_put(obj);
+ 			resource->domain_devices[i] = NULL;
+ 		}
+ 	}
+Index: linux-pm/drivers/acpi/scan.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/scan.c
++++ linux-pm/drivers/acpi/scan.c
+@@ -608,6 +608,7 @@ struct acpi_device *acpi_bus_get_acpi_de
+ {
+ 	return handle_to_device(handle, get_acpi_device);
+ }
++EXPORT_SYMBOL_GPL(acpi_bus_get_acpi_device);
+ 
+ static struct acpi_device_bus_id *acpi_device_bus_id_match(const char *dev_id)
+ {
+
+
 
