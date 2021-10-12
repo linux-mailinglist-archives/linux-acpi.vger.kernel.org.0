@@ -2,151 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC69A42AD53
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 21:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8C6E42AD4E
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 21:32:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232145AbhJLTic (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Oct 2021 15:38:32 -0400
-Received: from mx1.uni-regensburg.de ([194.94.157.146]:53720 "EHLO
-        mx1.uni-regensburg.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231586AbhJLTic (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Oct 2021 15:38:32 -0400
-X-Greylist: delayed 466 seconds by postgrey-1.27 at vger.kernel.org; Tue, 12 Oct 2021 15:38:31 EDT
-Received: from mx1.uni-regensburg.de (localhost [127.0.0.1])
-        by localhost (Postfix) with SMTP id 0C5A2600004E;
-        Tue, 12 Oct 2021 21:28:40 +0200 (CEST)
-Received: from smtp1.uni-regensburg.de (smtp1.uni-regensburg.de [194.94.157.129])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "smtp.uni-regensburg.de", Issuer "DFN-Verein Global Issuing CA" (not verified))
-        by mx1.uni-regensburg.de (Postfix) with ESMTPS id D5287600004D;
-        Tue, 12 Oct 2021 21:28:39 +0200 (CEST)
-From:   "Andreas K. Huettel" <andreas.huettel@ur.de>
-To:     Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        netdev <netdev@vger.kernel.org>,
-        intel-wired-lan@lists.osuosl.org, Jakub Kicinski <kubakici@wp.pl>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [EXT] Re: [Intel-wired-lan] Intel I350 regression 5.10 -> 5.14 ("The NVM Checksum Is Not Valid") [8086:1521]
-Date:   Tue, 12 Oct 2021 21:28:36 +0200
-Message-ID: <9965462.DAOxP5AVGn@pinacolada>
-Organization: Universitaet Regensburg
-In-Reply-To: <CAJZ5v0gf0y6qDHUJOsvLFctqn8tgKeuTYn5S9rb6+T0Sj26aKw@mail.gmail.com>
-References: <1823864.tdWV9SEqCh@kailua> <6faf4b92-78d5-47a4-63df-cc2bab7769d0@molgen.mpg.de> <CAJZ5v0gf0y6qDHUJOsvLFctqn8tgKeuTYn5S9rb6+T0Sj26aKw@mail.gmail.com>
+        id S232145AbhJLTeK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Oct 2021 15:34:10 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:48364 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231586AbhJLTeJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Oct 2021 15:34:09 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
+ id ce40f750960f5126; Tue, 12 Oct 2021 21:32:06 +0200
+Received: from kreacher.localnet (unknown [213.134.187.88])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id C861766A7F3;
+        Tue, 12 Oct 2021 21:32:05 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Maximilian Luz <luzmaximilian@gmail.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        platform-driver-x86@vger.kernel.org
+Subject: [PATCH v2 5/7] surface: surface3_power: Drop redundant acpi_bus_get_device() call
+Date:   Tue, 12 Oct 2021 21:32:04 +0200
+Message-ID: <2503491.Lt9SDvczpP@kreacher>
+In-Reply-To: <3089655.5fSG56mABF@kreacher>
+References: <4369779.LvFx2qVVIh@kreacher> <3089655.5fSG56mABF@kreacher>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3199422.h16uAIiOU7"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.187.88
+X-CLIENT-HOSTNAME: 213.134.187.88
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrvddtkedgudefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdejlefghfeiudektdelkeekvddugfeghffggeejgfeukeejleevgffgvdeluddtnecukfhppedvudefrddufeegrddukeejrdekkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukeejrdekkedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehluhiimhgrgihimhhilhhirghnsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhguvghgohgvuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehmghhrohhssheslhhinhhugidr
+ ihhnthgvlhdrtghomhdprhgtphhtthhopehplhgrthhfohhrmhdqughrihhvvghrqdigkeeisehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---nextPart3199422.h16uAIiOU7
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: "Andreas K. Huettel" <andreas.huettel@ur.de>
-To: Paul Menzel <pmenzel@molgen.mpg.de>, "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>, netdev <netdev@vger.kernel.org>, intel-wired-lan@lists.osuosl.org, Jakub Kicinski <kubakici@wp.pl>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [EXT] Re: [Intel-wired-lan] Intel I350 regression 5.10 -> 5.14 ("The NVM Checksum Is Not Valid") [8086:1521]
-Date: Tue, 12 Oct 2021 21:28:36 +0200
-Message-ID: <9965462.DAOxP5AVGn@pinacolada>
-Organization: Universitaet Regensburg
-In-Reply-To: <CAJZ5v0gf0y6qDHUJOsvLFctqn8tgKeuTYn5S9rb6+T0Sj26aKw@mail.gmail.com>
-References: <1823864.tdWV9SEqCh@kailua> <6faf4b92-78d5-47a4-63df-cc2bab7769d0@molgen.mpg.de> <CAJZ5v0gf0y6qDHUJOsvLFctqn8tgKeuTYn5S9rb6+T0Sj26aKw@mail.gmail.com>
+From: Rafael J. Wysocki <rafael@kernel.org>
 
-Am Dienstag, 12. Oktober 2021, 19:58:47 CEST schrieb Rafael J. Wysocki:
-> On Tue, Oct 12, 2021 at 7:42 PM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
-> >
-> > [Cc: +ACPI maintainers]
-> >
-> > Am 12.10.21 um 18:34 schrieb Andreas K. Huettel:
-> > >>> The messages easily identifiable are:
-> > >>>
-> > >>> huettel@pinacolada ~/tmp $ cat kernel-messages-5.10.59.txt |grep igb
-> > >>> Oct  5 15:11:18 dilfridge kernel: [    2.090675] igb: Intel(R) Gigabit Ethernet Network Driver
-> > >>> Oct  5 15:11:18 dilfridge kernel: [    2.090676] igb: Copyright (c) 2007-2014 Intel Corporation.
-> > >>> Oct  5 15:11:18 dilfridge kernel: [    2.090728] igb 0000:01:00.0: enabling device (0000 -> 0002)
-> > >>
-> > >> This line is missing below, it indicates that the kernel couldn't or
-> > >> didn't power up the PCIe for some reason. We're looking for something
-> > >> like ACPI or PCI patches (possibly PCI-Power management) to be the
-> > >> culprit here.
-> > >
-> > > So I did a git bisect from linux-v5.10 (good) to linux-v5.14.11 (bad).
-> > >
-> > > The result was:
-> > >
-> > > dilfridge /usr/src/linux-git # git bisect bad
-> > > 6381195ad7d06ef979528c7452f3ff93659f86b1 is the first bad commit
-> > > commit 6381195ad7d06ef979528c7452f3ff93659f86b1
-> > > Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > Date:   Mon May 24 17:26:16 2021 +0200
-> > >
-> > >      ACPI: power: Rework turning off unused power resources
-> > > [...]
-> > >
-> > > I tried naive reverting of this commit on top of 5.14.11. That applies nearly cleanly,
-> > > and after a reboot the additional ethernet interfaces show up with their MAC in the
-> > > boot messages.
-> > >
-> > > (Not knowing how safe that experiment was, I did not go further than single mode and
-> > > immediately rebooted into 5.10 afterwards.)
-> 
-> Reverting this is rather not an option, because the code before it was
-> a one-off fix of an earlier issue, but it should be fixable given some
-> more information.
-> 
-> Basically, I need a boot log from both the good and bad cases and the
-> acpidump output from the affected machine.
-> 
+If the ACPI companion of a given device is not present, the result
+of the ACPI_HANDLE() evaluation for it will be NULL, so calling
+acpi_bus_get_device() on ACPI_HANDLE() result in order to validate
+it is redundant.
 
-https://dev.gentoo.org/~dilfridge/igb/
+Drop the redundant acpi_bus_get_device() call from mshw0011_notify()
+along with a local variable related to it.
 
-^ Should all be here now. 
+No intentional functional impact.
 
-5.10 -> "good" log (the errors are caused by missing support for my i915 graphics and hopefully unrelated)
-5.14 -> "bad" log
+Signed-off-by: Rafael J. Wysocki <rafael@kernel.org>
+---
 
-Thank you for looking at this. If you need anything else, just ask.
-Andreas
+v1 -> v2:
+   * Instead of switching over to using ACPI_COMPANION(), just drop the
+     redundant acpi_bus_get_device() call from mshw0011_notify() and
+     update the subject and changelog accordingly.
 
--- 
-PD Dr. Andreas K. Huettel
-Institute for Experimental and Applied Physics
-University of Regensburg
-93040 Regensburg
-Germany
+---
+ drivers/platform/surface/surface3_power.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-e-mail andreas.huettel@ur.de
-http://www.akhuettel.de/
-
---nextPart3199422.h16uAIiOU7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQKTBAABCgB9FiEE6W4INB9YeKX6Qpi1TEn3nlTQogYFAmFl4eRfFIAAAAAALgAo
-aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldEU5
-NkUwODM0MUY1ODc4QTVGQTQyOThCNTRDNDlGNzlFNTREMEEyMDYACgkQTEn3nlTQ
-ogZUrw//Y4taohugIt9kOpPE2xjRjz2ARhCxQsO59WPlgYGjuNhO0kQVvhAKC8TV
-eCGhPQZVuxSqv6BKpWfyz2TYx5duM8SL9Z3Cyr4I23ACTZJZFHxWmbYlFbtS1Vqk
-qBQuBWaMudAZgJJgN//nusoGe4Rk6Zbx7kn+sihup6YuxaEFEl0mPMRp4NspBnp5
-jfOtLd2bY1Xibfryr/f2GhEAYtiP0BH9ZOtiIFsJQIS7Jsv5e/YrRMI4Tq2ra1Cd
-7xOsLO7srBfLkDh9p0/kssXVTaFdQ6753Oj/Ija6t4dWdYi/Nb/m4wrW+aDyJDs6
-xLTkMuTfHw1+9dQ+0lsazBdUfAEAASi+wtRpJpKFAsP1IbCbQpxj8gCG1yd9GeUT
-IzN5VZBexk3b0tSDlkfXt4QSLG2EENsO3iygsVpa7xHOwJfxUNtCPiH9/W1qGonl
-tqoVeJJmZA2Cu2rcKSP2hRJfz1D/82kUBFMdr5s10viKrO2dxyQ2QbegVlunqXN5
-udgNeu/4WB+cbvxSJkWzwConVPNFwdkS0EeKpamNjUDiJ11vDiTQshd9oU7S6L/P
-O97IoRb8RUO/1Nm8aeLEVDOUrMH1oReSIu4mWLns1ujTSjZWuplc+JmUa3t5xGF0
-960CZiNtLY5h/Qv680gRgYoWWVH74VdT3uEErf7TaN6fHWAKC+8=
-=yBdM
------END PGP SIGNATURE-----
-
---nextPart3199422.h16uAIiOU7--
+Index: linux-pm/drivers/platform/surface/surface3_power.c
+===================================================================
+--- linux-pm.orig/drivers/platform/surface/surface3_power.c
++++ linux-pm/drivers/platform/surface/surface3_power.c
+@@ -159,12 +159,11 @@ mshw0011_notify(struct mshw0011_data *cd
+ 		unsigned int *ret_value)
+ {
+ 	union acpi_object *obj;
+-	struct acpi_device *adev;
+ 	acpi_handle handle;
+ 	unsigned int i;
+ 
+ 	handle = ACPI_HANDLE(&cdata->adp1->dev);
+-	if (!handle || acpi_bus_get_device(handle, &adev))
++	if (!handle)
+ 		return -ENODEV;
+ 
+ 	obj = acpi_evaluate_dsm_typed(handle, &mshw0011_guid, arg1, arg2, NULL,
 
 
 
