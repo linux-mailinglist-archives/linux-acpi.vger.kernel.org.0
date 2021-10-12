@@ -2,112 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1D2542AD06
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 21:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC69A42AD53
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 21:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232648AbhJLTN3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Oct 2021 15:13:29 -0400
-Received: from mail-ot1-f47.google.com ([209.85.210.47]:39539 "EHLO
-        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231886AbhJLTN2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Oct 2021 15:13:28 -0400
-Received: by mail-ot1-f47.google.com with SMTP id k2-20020a056830168200b0054e523d242aso618389otr.6;
-        Tue, 12 Oct 2021 12:11:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UsdaTdlqInk/Db+RELmJSVFeuk7KGQ8SYughWLnehY8=;
-        b=zeF1M07uZ8koHB8p8h4k4Af9rpsS7JfPitcYjb4dJizDs9kwcfTb6SIg1cjkj8xeoo
-         Cm/UONhKNolje1c0RBuxt6ATGTqlN6fGSyX6pMURacipxG5coD/I2i2j48Drho/ITQ/M
-         geJrpgW8zQLyjF6f8le34r0FJ85p6ffUtJ6OgMw0J0tYwD3FmStWzPV2kU5gcMX2ed2Z
-         uJ8Wg7Mv2MbUmtgrVZ6EZGcNgPV+qFQAMgRN/4Vt6EB7CrXdCSetvpZdPUVyz/q5sV3k
-         pJtta2ZEF8Kxb/x6J/MfsnF3CU3Ui6H+rfD9JyPWAYJ8Z16tOqhO22fbsVaWa0bH1JGZ
-         EOog==
-X-Gm-Message-State: AOAM530fRqCRX744roWP+N2vwVYC5wujpE0+4HpyyHDN/vebkZUAX+ed
-        0+8fs1PkZwOVGes5jnN1QLKpsj5PBtHbtINluxw=
-X-Google-Smtp-Source: ABdhPJytCGKquuZUCLHcTR60tHiVx+DiBYKNCYYXZyFiFB2yU1k6CxzHrr7FAo+69ScbY5+qP7A2HHxC8Gc+p27Jylg=
-X-Received: by 2002:a05:6830:1af0:: with SMTP id c16mr14677399otd.16.1634065886475;
- Tue, 12 Oct 2021 12:11:26 -0700 (PDT)
+        id S232145AbhJLTic (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Oct 2021 15:38:32 -0400
+Received: from mx1.uni-regensburg.de ([194.94.157.146]:53720 "EHLO
+        mx1.uni-regensburg.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231586AbhJLTic (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Oct 2021 15:38:32 -0400
+X-Greylist: delayed 466 seconds by postgrey-1.27 at vger.kernel.org; Tue, 12 Oct 2021 15:38:31 EDT
+Received: from mx1.uni-regensburg.de (localhost [127.0.0.1])
+        by localhost (Postfix) with SMTP id 0C5A2600004E;
+        Tue, 12 Oct 2021 21:28:40 +0200 (CEST)
+Received: from smtp1.uni-regensburg.de (smtp1.uni-regensburg.de [194.94.157.129])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client CN "smtp.uni-regensburg.de", Issuer "DFN-Verein Global Issuing CA" (not verified))
+        by mx1.uni-regensburg.de (Postfix) with ESMTPS id D5287600004D;
+        Tue, 12 Oct 2021 21:28:39 +0200 (CEST)
+From:   "Andreas K. Huettel" <andreas.huettel@ur.de>
+To:     Paul Menzel <pmenzel@molgen.mpg.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        netdev <netdev@vger.kernel.org>,
+        intel-wired-lan@lists.osuosl.org, Jakub Kicinski <kubakici@wp.pl>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [EXT] Re: [Intel-wired-lan] Intel I350 regression 5.10 -> 5.14 ("The NVM Checksum Is Not Valid") [8086:1521]
+Date:   Tue, 12 Oct 2021 21:28:36 +0200
+Message-ID: <9965462.DAOxP5AVGn@pinacolada>
+Organization: Universitaet Regensburg
+In-Reply-To: <CAJZ5v0gf0y6qDHUJOsvLFctqn8tgKeuTYn5S9rb6+T0Sj26aKw@mail.gmail.com>
+References: <1823864.tdWV9SEqCh@kailua> <6faf4b92-78d5-47a4-63df-cc2bab7769d0@molgen.mpg.de> <CAJZ5v0gf0y6qDHUJOsvLFctqn8tgKeuTYn5S9rb6+T0Sj26aKw@mail.gmail.com>
 MIME-Version: 1.0
-References: <4369779.LvFx2qVVIh@kreacher> <3089655.5fSG56mABF@kreacher> <e15036b7-b41f-a5cf-b8a6-b1b9023197cd@gmail.com>
-In-Reply-To: <e15036b7-b41f-a5cf-b8a6-b1b9023197cd@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 12 Oct 2021 21:11:15 +0200
-Message-ID: <CAJZ5v0hmvRDZjs6y4q8CuMdP6iu5cOcQ3KLJQm4kD5aNvt4pHw@mail.gmail.com>
-Subject: Re: [PATCH v1 5/7] surface: surface3_power: Use ACPI_COMPANION() directly
-To:     Maximilian Luz <luzmaximilian@gmail.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <mgross@linux.intel.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="nextPart3199422.h16uAIiOU7"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 12, 2021 at 8:21 PM Maximilian Luz <luzmaximilian@gmail.com> wrote:
->
-> On 10/12/21 19:46, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael@kernel.org>
-> >
-> > The ACPI_HANDLE() macro is a wrapper arond the ACPI_COMPANION()
-> > macro and the ACPI handle produced by the former comes from the
-> > ACPI device object produced by the latter, so it is way more
-> > straightforward to evaluate the latter directly instead of passing
-> > the handle produced by the former to acpi_bus_get_device().
-> >
-> > Modify mshw0011_notify() accordingly (no intentional functional
-> > impact).
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael@kernel.org>
->
-> Looks mostly good to me, small comment/question inline.
->
-> > ---
-> >   drivers/platform/surface/surface3_power.c |    9 ++++-----
-> >   1 file changed, 4 insertions(+), 5 deletions(-)
-> >
-> > Index: linux-pm/drivers/platform/surface/surface3_power.c
-> > ===================================================================
-> > --- linux-pm.orig/drivers/platform/surface/surface3_power.c
-> > +++ linux-pm/drivers/platform/surface/surface3_power.c
-> > @@ -160,15 +160,14 @@ mshw0011_notify(struct mshw0011_data *cd
-> >   {
-> >       union acpi_object *obj;
-> >       struct acpi_device *adev;
-> > -     acpi_handle handle;
-> >       unsigned int i;
-> >
-> > -     handle = ACPI_HANDLE(&cdata->adp1->dev);
-> > -     if (!handle || acpi_bus_get_device(handle, &adev))
-> > +     adev = ACPI_COMPANION(&cdata->adp1->dev);
-> > +     if (!adev)
-> >               return -ENODEV;
->
-> Do we need to get the ACPI device (adev) here? To me it looks like only
-> its handle is actually used so why not keep ACPI_HANDLE() and remove the
-> acpi_bus_get_device() call instead?
+--nextPart3199422.h16uAIiOU7
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: "Andreas K. Huettel" <andreas.huettel@ur.de>
+To: Paul Menzel <pmenzel@molgen.mpg.de>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>, netdev <netdev@vger.kernel.org>, intel-wired-lan@lists.osuosl.org, Jakub Kicinski <kubakici@wp.pl>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [EXT] Re: [Intel-wired-lan] Intel I350 regression 5.10 -> 5.14 ("The NVM Checksum Is Not Valid") [8086:1521]
+Date: Tue, 12 Oct 2021 21:28:36 +0200
+Message-ID: <9965462.DAOxP5AVGn@pinacolada>
+Organization: Universitaet Regensburg
+In-Reply-To: <CAJZ5v0gf0y6qDHUJOsvLFctqn8tgKeuTYn5S9rb6+T0Sj26aKw@mail.gmail.com>
+References: <1823864.tdWV9SEqCh@kailua> <6faf4b92-78d5-47a4-63df-cc2bab7769d0@molgen.mpg.de> <CAJZ5v0gf0y6qDHUJOsvLFctqn8tgKeuTYn5S9rb6+T0Sj26aKw@mail.gmail.com>
 
-It actually doesn't really matter, but you're right,
-acpi_bus_get_device() is simply redundant here, so ACPI_HANDLE() is
-sufficient.
+Am Dienstag, 12. Oktober 2021, 19:58:47 CEST schrieb Rafael J. Wysocki:
+> On Tue, Oct 12, 2021 at 7:42 PM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
+> >
+> > [Cc: +ACPI maintainers]
+> >
+> > Am 12.10.21 um 18:34 schrieb Andreas K. Huettel:
+> > >>> The messages easily identifiable are:
+> > >>>
+> > >>> huettel@pinacolada ~/tmp $ cat kernel-messages-5.10.59.txt |grep igb
+> > >>> Oct  5 15:11:18 dilfridge kernel: [    2.090675] igb: Intel(R) Gigabit Ethernet Network Driver
+> > >>> Oct  5 15:11:18 dilfridge kernel: [    2.090676] igb: Copyright (c) 2007-2014 Intel Corporation.
+> > >>> Oct  5 15:11:18 dilfridge kernel: [    2.090728] igb 0000:01:00.0: enabling device (0000 -> 0002)
+> > >>
+> > >> This line is missing below, it indicates that the kernel couldn't or
+> > >> didn't power up the PCIe for some reason. We're looking for something
+> > >> like ACPI or PCI patches (possibly PCI-Power management) to be the
+> > >> culprit here.
+> > >
+> > > So I did a git bisect from linux-v5.10 (good) to linux-v5.14.11 (bad).
+> > >
+> > > The result was:
+> > >
+> > > dilfridge /usr/src/linux-git # git bisect bad
+> > > 6381195ad7d06ef979528c7452f3ff93659f86b1 is the first bad commit
+> > > commit 6381195ad7d06ef979528c7452f3ff93659f86b1
+> > > Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > Date:   Mon May 24 17:26:16 2021 +0200
+> > >
+> > >      ACPI: power: Rework turning off unused power resources
+> > > [...]
+> > >
+> > > I tried naive reverting of this commit on top of 5.14.11. That applies nearly cleanly,
+> > > and after a reboot the additional ethernet interfaces show up with their MAC in the
+> > > boot messages.
+> > >
+> > > (Not knowing how safe that experiment was, I did not go further than single mode and
+> > > immediately rebooted into 5.10 afterwards.)
+> 
+> Reverting this is rather not an option, because the code before it was
+> a one-off fix of an earlier issue, but it should be fixable given some
+> more information.
+> 
+> Basically, I need a boot log from both the good and bad cases and the
+> acpidump output from the affected machine.
+> 
 
-I'll send a v2 of this one.
+https://dev.gentoo.org/~dilfridge/igb/
 
-> >
-> > -     obj = acpi_evaluate_dsm_typed(handle, &mshw0011_guid, arg1, arg2, NULL,
-> > -                                   ACPI_TYPE_BUFFER);
-> > +     obj = acpi_evaluate_dsm_typed(adev->handle, &mshw0011_guid, arg1, arg2,
-> > +                                   NULL, ACPI_TYPE_BUFFER);
-> >       if (!obj) {
-> >               dev_err(&cdata->adp1->dev, "device _DSM execution failed\n");
-> >               return -ENODEV;
-> >
-> >
-> >
->
-> Regards,
-> Max
+^ Should all be here now. 
+
+5.10 -> "good" log (the errors are caused by missing support for my i915 graphics and hopefully unrelated)
+5.14 -> "bad" log
+
+Thank you for looking at this. If you need anything else, just ask.
+Andreas
+
+-- 
+PD Dr. Andreas K. Huettel
+Institute for Experimental and Applied Physics
+University of Regensburg
+93040 Regensburg
+Germany
+
+e-mail andreas.huettel@ur.de
+http://www.akhuettel.de/
+
+--nextPart3199422.h16uAIiOU7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQKTBAABCgB9FiEE6W4INB9YeKX6Qpi1TEn3nlTQogYFAmFl4eRfFIAAAAAALgAo
+aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldEU5
+NkUwODM0MUY1ODc4QTVGQTQyOThCNTRDNDlGNzlFNTREMEEyMDYACgkQTEn3nlTQ
+ogZUrw//Y4taohugIt9kOpPE2xjRjz2ARhCxQsO59WPlgYGjuNhO0kQVvhAKC8TV
+eCGhPQZVuxSqv6BKpWfyz2TYx5duM8SL9Z3Cyr4I23ACTZJZFHxWmbYlFbtS1Vqk
+qBQuBWaMudAZgJJgN//nusoGe4Rk6Zbx7kn+sihup6YuxaEFEl0mPMRp4NspBnp5
+jfOtLd2bY1Xibfryr/f2GhEAYtiP0BH9ZOtiIFsJQIS7Jsv5e/YrRMI4Tq2ra1Cd
+7xOsLO7srBfLkDh9p0/kssXVTaFdQ6753Oj/Ija6t4dWdYi/Nb/m4wrW+aDyJDs6
+xLTkMuTfHw1+9dQ+0lsazBdUfAEAASi+wtRpJpKFAsP1IbCbQpxj8gCG1yd9GeUT
+IzN5VZBexk3b0tSDlkfXt4QSLG2EENsO3iygsVpa7xHOwJfxUNtCPiH9/W1qGonl
+tqoVeJJmZA2Cu2rcKSP2hRJfz1D/82kUBFMdr5s10viKrO2dxyQ2QbegVlunqXN5
+udgNeu/4WB+cbvxSJkWzwConVPNFwdkS0EeKpamNjUDiJ11vDiTQshd9oU7S6L/P
+O97IoRb8RUO/1Nm8aeLEVDOUrMH1oReSIu4mWLns1ujTSjZWuplc+JmUa3t5xGF0
+960CZiNtLY5h/Qv680gRgYoWWVH74VdT3uEErf7TaN6fHWAKC+8=
+=yBdM
+-----END PGP SIGNATURE-----
+
+--nextPart3199422.h16uAIiOU7--
+
+
+
