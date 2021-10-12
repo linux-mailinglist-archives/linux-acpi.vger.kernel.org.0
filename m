@@ -2,142 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7378D429F3B
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 10:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BE6B42A244
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 12:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234714AbhJLIFz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Oct 2021 04:05:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54676 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234787AbhJLIDF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Oct 2021 04:03:05 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6385C061745
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Oct 2021 01:01:02 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id p13so78376278edw.0
-        for <linux-acpi@vger.kernel.org>; Tue, 12 Oct 2021 01:01:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=solid-run-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KfJZrcgRfPAygYP1cdVoz79nAFWF3P3lNeyc+uUIYy0=;
-        b=2GavBjqfc+oauQ9xOAv56VtYHUSnaWMHkv3yliYOgbjt48jD3qN80dyj86rTmA5k4f
-         K7rG4wq2/4PxHHkgurfbM+NLG0HbLsoHzGt3xS7DmUoKpgU9EuL/xptkDo9n2DqOl45m
-         QmkwQPSDs9xEIuSnRiV00CtEm/tWfambYn38xUMR+41TOdUMUnL2qgZ27M/2dEQ2dzIM
-         ovVxoXoX2lR+TCCLcNYigt7Rp2sji6rRSlD81bICT0h+ax6v2W/dWTezPVrirYHUKVRA
-         lC53GgSbTN7E5wj7rGQBSJXy5SJQIyZSuZdx/nkilhum2cM4blcO5YdPTDe8N11l2xEX
-         Ir/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KfJZrcgRfPAygYP1cdVoz79nAFWF3P3lNeyc+uUIYy0=;
-        b=cthQbNWF7oXFQf02e5d2PwzufOs+Y12MhTKmALgCLxrACw/wjFKZlmu4V8lAA1StQb
-         8VLR/hrKtqW6dCo4h1WSwaX0yxJZmlm79xSBYhk9TS41GpNR3AI52xTkZzPYNaw8LHah
-         8oCLOfD6NzzXYd+PpToRftNaDmhbZmrBa9ay/PS4U6XjZEaEoU+Ba6KizimLnqEY3sY+
-         cx037UINd5TQFPCFwA1I92YHH3RD9vIhWahNVitQDhf9rinZ7d+je1RHOEDJ5kczcCiv
-         MvF7Ay7AjGNSHJiWPi1DT3Iz3S20C3q0z017igXH1T9tPOTGj+a3Jw6F+fs4HxDFgrha
-         oiZg==
-X-Gm-Message-State: AOAM5311Hagl3TESlxNtUJcvPkUNocoH7/u0ADYnJny3kyltAvQ6bFhv
-        Z9udC0y8gk8+2z6L/r4uG89ijpP9k7PoiJBVf5YKCA==
-X-Google-Smtp-Source: ABdhPJyjgryazzbSrVkxnCARQE8G78mXqDfLQsroBl7jBnOTY8o6Kw5ZQHxSm1C864LdjD10IKOkyEedslIu0pOhgsA=
-X-Received: by 2002:a17:906:52d6:: with SMTP id w22mr28980498ejn.248.1634025661043;
- Tue, 12 Oct 2021 01:01:01 -0700 (PDT)
+        id S236023AbhJLKix (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Oct 2021 06:38:53 -0400
+Received: from mail-bn8nam11on2063.outbound.protection.outlook.com ([40.107.236.63]:32257
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S236052AbhJLKin (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 12 Oct 2021 06:38:43 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hsxaDbXHAZXqpbPboJYIaaTu0jjOXD/Qs6konirg+OABl0CKdhzJoFND/mtvBduOfCh/cLkIIbTBoZ+MSlrzFm0bPvl735EKKrdrjY9RUd336La53oAVLM6jQKmfQcyDPXeO1XfGRpCDzcgREO6+DueTJ//aAf455DSp9hXyGYMuR/0ao610+dMWJtgPFJEz0rAkIe+M9iw9NkVtRdcQP9VuqrDIZ4PZ4Vrnu4sVzCjY6Rznl5XMipTJzoRU3CrATtbQSwFksPVKQcEQeaJ99M5Yy1iVvvowj3IS5tn7/58n7LSqR9EQ+QHeHlW7mxKVfcN7q8v9Y0NNZmCJZcApbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cXFa3Z4AxagLKvohaj5pp6xcSeeWL/caaeWK+OGMA6M=;
+ b=OO5htt7ZrERx2ndi/02S2Pfzu6dXRcY8MBYjubEuA6GaRChOWANah/Uzm7sC4JdPWU77kH39D++fM+/nHl9siZsUMwNJ7Tybq59hZd4F94kYmTsJXZ7FCt6+FzQL2uCi6lEYQZByfRN0Dk5BTTJiWC6j4fc6CmM4aUfeRxTzof5aRbwzhIjq3wkRMqikteXf/ySyCMwU7kv01QEfPlS6KyhIrqJzmqNbDkYJFz+Wdt0qAbQJ6RYy8X1Cynf7FU3eIIbDf/gkG48e+6cITqoeDPzHoW61olIrQqB3J66Cr6wiZLJpAffm6/3/uY9yfBHkmpxybUIFehNLKtt50fp3ww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cXFa3Z4AxagLKvohaj5pp6xcSeeWL/caaeWK+OGMA6M=;
+ b=xMFrZJBGp+VkGf4uiowNl2L94IjPvCyqNuChFHm61HC1Fhx0ScNQSJF/gRGvv62eRrA+C8Fc1p9+MN+U2VlxHdmuOcoi/19p7mIQq+fqJbr9elyyZI5iU42YqmIAI0j9/HBA2R25mG2LOE2WaZLuqEyEk9N4ZTKbP12C2bmW/5Y=
+Received: from BN1PR10CA0021.namprd10.prod.outlook.com (2603:10b6:408:e0::26)
+ by DM4PR12MB5358.namprd12.prod.outlook.com (2603:10b6:5:39c::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.19; Tue, 12 Oct
+ 2021 10:36:40 +0000
+Received: from BN8NAM11FT036.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:e0:cafe::61) by BN1PR10CA0021.outlook.office365.com
+ (2603:10b6:408:e0::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.24 via Frontend
+ Transport; Tue, 12 Oct 2021 10:36:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT036.mail.protection.outlook.com (10.13.177.168) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4587.18 via Frontend Transport; Tue, 12 Oct 2021 10:36:40 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Tue, 12 Oct
+ 2021 05:36:39 -0500
+Received: from chrome.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2308.8 via Frontend
+ Transport; Tue, 12 Oct 2021 05:36:35 -0500
+From:   Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
+To:     <sboyd@kernel.org>, <linux-clk@vger.kernel.org>
+CC:     <Vijendar.Mukunda@amd.com>, <Basavaraj.Hiregoudar@amd.com>,
+        <Sunil-kumar.Dommati@amd.com>, <Alexander.Deucher@amd.com>,
+        Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Len Brown" <lenb@kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        "open list" <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 2/5] drivers: acpi: acpi_apd: Remove unused device property "is-rv"
+Date:   Tue, 12 Oct 2021 16:06:09 +0530
+Message-ID: <20211012103612.101859-3-AjitKumar.Pandey@amd.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20211012103612.101859-1-AjitKumar.Pandey@amd.com>
+References: <20211012103612.101859-1-AjitKumar.Pandey@amd.com>
 MIME-Version: 1.0
-References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
- <20210805080724.480-3-shameerali.kolothum.thodi@huawei.com>
- <e24df2a9-1332-0eb3-b52a-230662fe46ba@arm.com> <CABdtJHvY5XnQN7wgQ9D8Zcu-NgHRmaUMFPgaPGZwM+AhmVpULw@mail.gmail.com>
- <3225875e-ebd9-6378-e92c-ed3894d8aedc@arm.com>
-In-Reply-To: <3225875e-ebd9-6378-e92c-ed3894d8aedc@arm.com>
-From:   Jon Nettleton <jon@solid-run.com>
-Date:   Tue, 12 Oct 2021 10:00:24 +0200
-Message-ID: <CABdtJHsOShKrRMp33JvbVKuTMLEcHQKaDw0wtZ0igoeGeWJTQg@mail.gmail.com>
-Subject: Re: [PATCH v7 2/9] ACPI/IORT: Add support for RMR node parsing
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Steven Price <steven.price@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        yangyicong <yangyicong@huawei.com>,
-        Sami Mujawar <Sami.Mujawar@arm.com>,
-        Will Deacon <will@kernel.org>,
-        wanghuiqiang <wanghuiqiang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 6f8bceba-3a66-459f-940f-08d98d6c2d03
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5358:
+X-Microsoft-Antispam-PRVS: <DM4PR12MB5358081B192183D9CA25B2A582B69@DM4PR12MB5358.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4303;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: usVgtEffJ7L99phebiB3Fw6aO1IPWoAsxqeoxzwKHcapr0a3s67mAJtgmSDRtyKYQunN0x+40tClUnTHDpnIlsXuzVaYZlnp9ff1ebAXHuqm4ww4MWUSKV4TJrBg3hDBMdSQ57MmIRpQ+W+15lH+Vn4bpCyRyBXLf6lsDiC9CHFL78lLAgbfhSl+NsMNanLtmP7jVezCezSdxFcNf8COcLCsDyfxH9K0t/Ahe3krhDOUZNuMqLux02SfV9MosQ3+LauKEFSXmUarI3S5hG44rtUakfPXXFmkbbQqXkxgQP6Wc09idH/YnqySzTyjyuO8MZZNJ4MaYlaMFoNkI/KQgc/ohlRFwnrMv/1CAbMRbFLyoc/iADOvhYr4VVr6h//+5fAGsYdjVQi8giYR6HHAUgyXa58KBkzpiU+5HS4tFQKe6MI1hbeqPMhXJ7sGhq2khDbk1TpaptcvikNDHemYsNrS0LfRIE4JfVHsCO+Jko+XpNM7J29/ExW9ioYaurmn8kSF+CYjhNy2sKHykudWkvuUl1g4L28JUyKyl62rD5EqnxtNZ51My/a0EApNgsuK+KXAAMjeruhlD7vOgQT0/i3sFoqu6yxvQtcwZJynidOLpuCoRNnPr3DhvbHLd8D0xRJWxNS+gWHLBuG7b0rOdcZtOMCxbb50sN3mvjHnccPn1U9zUF0OrIe65y+VEGDzA9rV9PNiA2bD1fcLIOzoZckagw7XWA/l0obhCGZ4kw4=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(316002)(336012)(508600001)(8936002)(5660300002)(110136005)(83380400001)(54906003)(47076005)(2616005)(426003)(26005)(1076003)(186003)(36860700001)(4326008)(81166007)(70206006)(86362001)(8676002)(7696005)(82310400003)(2906002)(356005)(70586007)(36756003)(6666004)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2021 10:36:40.0399
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f8bceba-3a66-459f-940f-08d98d6c2d03
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT036.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5358
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 11, 2021 at 4:04 PM Robin Murphy <robin.murphy@arm.com> wrote:
->
-> On 2021-10-09 08:06, Jon Nettleton wrote:
-> [...]
-> >>> +             if (rmr->flags & IOMMU_RMR_REMAP_PERMITTED) {
-> >>> +                     type = IOMMU_RESV_DIRECT_RELAXABLE;
-> >>> +                     /*
-> >>> +                      * Set IOMMU_CACHE as IOMMU_RESV_DIRECT_RELAXABLE is
-> >>> +                      * normally used for allocated system memory that is
-> >>> +                      * then used for device specific reserved regions.
-> >>> +                      */
-> >>> +                     prot |= IOMMU_CACHE;
-> >>> +             } else {
-> >>> +                     type = IOMMU_RESV_DIRECT;
-> >>> +                     /*
-> >>> +                      * Set IOMMU_MMIO as IOMMU_RESV_DIRECT is normally used
-> >>> +                      * for device memory like MSI doorbell.
-> >>> +                      */
-> >>> +                     prot |= IOMMU_MMIO;
-> >>> +             }
-> >>
-> >> I'm not sure we ever got a definitive answer to this - does DPAA2
-> >> actually go wrong if we use IOMMU_MMIO here? I'd still much prefer to
-> >> make the fewest possible assumptions, since at this point it's basically
-> >> just a stop-gap until we can fix the spec. It's become clear that we
-> >> can't reliably rely on guessing attributes, so I'm not too fussed about
-> >> theoretical cases that currently don't work (due to complete lack of RMR
-> >> support) continuing to not work for the moment, as long as we can make
-> >> the real-world cases we actually have work at all. Anything which only
-> >> affects performance I'd rather leave until firmware can tell us what to do.
-> >
-> > Well it isn't DPAA2, it is FSL_MC_BUS that fails with IOMMU_MMIO
-> > mappings.  DPAA2 is just one connected device.
->
-> Apologies if I'm being overly loose with terminology there - my point of
-> reference for this hardware is documentation for the old LS2080A, where
-> the "DPAA2 Reference Manual" gives a strong impression that the MC is a
-> component belonging to the overall DPAA2 architecture. Either way it
-> technically stands to reason that the other DPAA2 components would only
-> be usable if the MC itself works (unless I've been holding a major
-> misconception about that for years as well).
->
-> In the context of this discussion, please consider any reference I may
-> make to bits of NXP's hardware to be shorthand for "the thing for which
-> NXP have a vested interest in IORT RMRs".
+Initially "is-rv" device property is added for 48MHz fixed clock
+support on Raven or RV architecture. It's unused now as we moved
+to clock config based selection to extend such support on others
+architecture. This change removed unused code from acpi driver.
 
-Ultimately the spec doesn't mention what IOMMU properties the regions
-should have.  Even marking them as IOMMU_READ/WRITE is as much
-of an assumption as using IOMMU_MMIO or IOMMU_CACHE. It just seems
-IOMMU_MMIO is the most popular since all the examples use it for MSI
-doorbells in the documentation.
+Signed-off-by: Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
+---
+ drivers/acpi/acpi_apd.c               | 3 ---
+ include/linux/platform_data/clk-fch.h | 1 -
+ 2 files changed, 4 deletions(-)
 
-I am interested why this concern is only being brought up at this point
-in a patchset that has been on the mailing list for 8+ months?  This is
-based on a spec that has existed from Arm since 2020 with the most recent
-revisions published in Feb 2021.  The lack of RMR support in the kernel
-is affecting real world products, and the ability for SystemReady ES
-certified systems from just fully working with recent distributions.  Even
-worse, is that without this patchset customers are forced to jump through
-hoops to purposefully re-enable smmu bypass making their systems less
-secure.
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 6e02448d15d9..6913e9712852 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -87,9 +87,6 @@ static int fch_misc_setup(struct apd_private_data *pdata)
+ 	if (ret < 0)
+ 		return -ENOENT;
+ 
+-	if (!acpi_dev_get_property(adev, "is-rv", ACPI_TYPE_INTEGER, &obj))
+-		clk_data->is_rv = obj->integer.value;
+-
+ 	list_for_each_entry(rentry, &resource_list, node) {
+ 		clk_data->base = devm_ioremap(&adev->dev, rentry->res->start,
+ 					      resource_size(rentry->res));
+diff --git a/include/linux/platform_data/clk-fch.h b/include/linux/platform_data/clk-fch.h
+index b9f682459f08..850ca776156d 100644
+--- a/include/linux/platform_data/clk-fch.h
++++ b/include/linux/platform_data/clk-fch.h
+@@ -12,7 +12,6 @@
+ 
+ struct fch_clk_data {
+ 	void __iomem *base;
+-	u32 is_rv;
+ };
+ 
+ #endif /* __CLK_FCH_H */
+-- 
+2.25.1
 
-How is this a good experience for customers of SystemReady hardware
-when for any mainline distribution to work the first thing they have to do is
-make their system less secure?
-
--Jon
-
->
-> Thanks,
-> Robin.
