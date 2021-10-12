@@ -2,79 +2,80 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A79642AAF9
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 19:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E20542AB36
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 19:51:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232520AbhJLRoj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Oct 2021 13:44:39 -0400
-Received: from mx3.molgen.mpg.de ([141.14.17.11]:46965 "EHLO mx1.molgen.mpg.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232602AbhJLRoh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 12 Oct 2021 13:44:37 -0400
-Received: from [192.168.0.2] (ip5f5aef4c.dynamic.kabel-deutschland.de [95.90.239.76])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+        id S232851AbhJLRx0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Oct 2021 13:53:26 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:46916 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233033AbhJLRxY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Oct 2021 13:53:24 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
+ id bcfb80dd1b5e0b5c; Tue, 12 Oct 2021 19:51:20 +0200
+Received: from kreacher.localnet (unknown [213.134.187.88])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        (Authenticated sender: pmenzel)
-        by mx.molgen.mpg.de (Postfix) with ESMTPSA id C1DE061E5FE33;
-        Tue, 12 Oct 2021 19:42:30 +0200 (CEST)
-Subject: Re: [EXT] Re: [Intel-wired-lan] Intel I350 regression 5.10 -> 5.14
- ("The NVM Checksum Is Not Valid") [8086:1521]
-To:     "Andreas K. Huettel" <andreas.huettel@ur.de>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>
-Cc:     netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-        Jakub Kicinski <kubakici@wp.pl>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-References: <1823864.tdWV9SEqCh@kailua> <2944777.ktpJ11cQ8Q@pinacolada>
- <c75203e9-0ef4-20bd-87a5-ad0846863886@intel.com> <2801801.e9J7NaK4W3@kailua>
-From:   Paul Menzel <pmenzel@molgen.mpg.de>
-Message-ID: <6faf4b92-78d5-47a4-63df-cc2bab7769d0@molgen.mpg.de>
-Date:   Tue, 12 Oct 2021 19:42:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        by v370.home.net.pl (Postfix) with ESMTPSA id A58A166A819;
+        Tue, 12 Oct 2021 19:51:19 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org
+Subject: [PATCH v1 1/7] gpio-amdpt: ACPI: Use the ACPI_COMPANION() macro directly
+Date:   Tue, 12 Oct 2021 19:44:08 +0200
+Message-ID: <2179627.iZASKD2KPV@kreacher>
+In-Reply-To: <4369779.LvFx2qVVIh@kreacher>
+References: <4369779.LvFx2qVVIh@kreacher>
 MIME-Version: 1.0
-In-Reply-To: <2801801.e9J7NaK4W3@kailua>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.187.88
+X-CLIENT-HOSTNAME: 213.134.187.88
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrvddtkedgudduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdejlefghfeiudektdelkeekvddugfeghffggeejgfeukeejleevgffgvdeluddtnecukfhppedvudefrddufeegrddukeejrdekkeenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukeejrdekkedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhhsrdifrghllhgvihhjsehlihhnrghrohdrohhrghdprhgtphhtthhopegsrhhglhessghguggvvhdrphhlpdhrtghpthhtoheplhhinhhugidqghhpihhosehvghgvrhdrkhgv
+ rhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-[Cc: +ACPI maintainers]
+From: Rafael J. Wysocki <rafael@kernel.org>
 
-Am 12.10.21 um 18:34 schrieb Andreas K. Huettel:
->>> The messages easily identifiable are:
->>>
->>> huettel@pinacolada ~/tmp $ cat kernel-messages-5.10.59.txt |grep igb
->>> Oct  5 15:11:18 dilfridge kernel: [    2.090675] igb: Intel(R) Gigabit Ethernet Network Driver
->>> Oct  5 15:11:18 dilfridge kernel: [    2.090676] igb: Copyright (c) 2007-2014 Intel Corporation.
->>> Oct  5 15:11:18 dilfridge kernel: [    2.090728] igb 0000:01:00.0: enabling device (0000 -> 0002)
->>
->> This line is missing below, it indicates that the kernel couldn't or
->> didn't power up the PCIe for some reason. We're looking for something
->> like ACPI or PCI patches (possibly PCI-Power management) to be the
->> culprit here.
-> 
-> So I did a git bisect from linux-v5.10 (good) to linux-v5.14.11 (bad).
-> 
-> The result was:
-> 
-> dilfridge /usr/src/linux-git # git bisect bad
-> 6381195ad7d06ef979528c7452f3ff93659f86b1 is the first bad commit
-> commit 6381195ad7d06ef979528c7452f3ff93659f86b1
-> Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Date:   Mon May 24 17:26:16 2021 +0200
-> 
->      ACPI: power: Rework turning off unused power resources
-> [...]
-> 
-> I tried naive reverting of this commit on top of 5.14.11. That applies nearly cleanly,
-> and after a reboot the additional ethernet interfaces show up with their MAC in the
-> boot messages.
-> 
-> (Not knowing how safe that experiment was, I did not go further than single mode and
-> immediately rebooted into 5.10 afterwards.)
+The ACPI_HANDLE() macro is a wrapper arond the ACPI_COMPANION()
+macro and the ACPI handle produced by the former comes from the
+ACPI device object produced by the latter, so it is way more
+straightforward to evaluate the latter directly instead of passing
+the handle produced by the former to acpi_bus_get_device().
+
+Modify pt_gpio_probe() accordingly (no intentional functional impact).
+
+Signed-off-by: Rafael J. Wysocki <rafael@kernel.org>
+---
+ drivers/gpio/gpio-amdpt.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+Index: linux-pm/drivers/gpio/gpio-amdpt.c
+===================================================================
+--- linux-pm.orig/drivers/gpio/gpio-amdpt.c
++++ linux-pm/drivers/gpio/gpio-amdpt.c
+@@ -72,12 +72,10 @@ static void pt_gpio_free(struct gpio_chi
+ static int pt_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+-	struct acpi_device *acpi_dev;
+-	acpi_handle handle = ACPI_HANDLE(dev);
+ 	struct pt_gpio_chip *pt_gpio;
+ 	int ret = 0;
+ 
+-	if (acpi_bus_get_device(handle, &acpi_dev)) {
++	if (!ACPI_COMPANION(dev)) {
+ 		dev_err(dev, "PT GPIO device node not found\n");
+ 		return -ENODEV;
+ 	}
+
+
+
