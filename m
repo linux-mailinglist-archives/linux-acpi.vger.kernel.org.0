@@ -2,79 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDD3142AB55
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 19:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D01F42AB5F
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Oct 2021 19:59:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231243AbhJLR73 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 12 Oct 2021 13:59:29 -0400
-Received: from mga01.intel.com ([192.55.52.88]:36073 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229810AbhJLR73 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 12 Oct 2021 13:59:29 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10135"; a="250631548"
-X-IronPort-AV: E=Sophos;i="5.85,368,1624345200"; 
-   d="scan'208";a="250631548"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2021 10:57:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,368,1624345200"; 
-   d="scan'208";a="460469760"
-Received: from fmsmsx606.amr.corp.intel.com ([10.18.126.86])
-  by orsmga002.jf.intel.com with ESMTP; 12 Oct 2021 10:57:25 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx606.amr.corp.intel.com (10.18.126.86) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.12; Tue, 12 Oct 2021 10:57:25 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2242.12; Tue, 12 Oct 2021 10:57:24 -0700
-Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
- fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.2242.012;
- Tue, 12 Oct 2021 10:57:24 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-        "naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>
-CC:     Andrew Morton <akpm@linux-foundation.org>,
-        Sean Christopherson <seanjc@google.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "Zhang, Cathy" <cathy.zhang@intel.com>,
-        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: RE: [PATCH v9 0/7] Basic recovery for machine checks inside SGX
-Thread-Topic: [PATCH v9 0/7] Basic recovery for machine checks inside SGX
-Thread-Index: AQHXvtIgJmQWZT3tEE2Mnbpy811gw6vQCbsA//+csTA=
-Date:   Tue, 12 Oct 2021 17:57:24 +0000
-Message-ID: <56e62500e9e24f19bd51aaf038bfad6b@intel.com>
-References: <20211001164724.220532-1-tony.luck@intel.com>
-         <20211011185924.374213-1-tony.luck@intel.com>
- <73c711bc548b661977ff26e3d9cc87c9466a8f66.camel@kernel.org>
-In-Reply-To: <73c711bc548b661977ff26e3d9cc87c9466a8f66.camel@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.6.200.16
-x-originating-ip: [10.1.200.100]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S230002AbhJLSBA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 12 Oct 2021 14:01:00 -0400
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:36741 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229495AbhJLSBA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 12 Oct 2021 14:01:00 -0400
+Received: by mail-ot1-f45.google.com with SMTP id p6-20020a9d7446000000b0054e6bb223f3so389232otk.3;
+        Tue, 12 Oct 2021 10:58:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=c2wHi0IsvvbTH5QwojHP29Nw/ht55S854mw0G0+05o0=;
+        b=SXK02OwZ5qwq1AvjWUYnzmt/zIo/lO8I/7OGlOAViPtzPBkg00+oWC2q6yTkGhojbl
+         LTmZJR9Ljjear8rzJ6CuKqIm9kaAtmEz6SZ4tzEkkDVrTo172pfPIxpYETO7vq1EPuDX
+         3Tq3SLx28fB3qZmNAGFpVD9/yxzMG/pjoum4buGUd88/SbdgwlmKS6FSP2ZAsXvYdH1w
+         ljMBYsNhGAcPFYT64Rz1DE3ZTWxv3AeMb+FbKftg+A0cNZqDDtcPlOdXzM1SxIfYXFQO
+         2AI/fOy5AxIXvfangfA/5vzkPM+jI/uyZjep6mVegX+NSFLYjv60gJbmFzFNkQ4jTJVe
+         5rYA==
+X-Gm-Message-State: AOAM530ITrtLPjV/3z+YzU6dyLkq3lkRFTXWYbp/ilhotYq7UXeInNE7
+        qn0Ylo1cTOHv/1M1qoxu0OkkuSJFtdB9hBdpRto=
+X-Google-Smtp-Source: ABdhPJwkV3+7VqGccFRlX/nVgDFie+jFqR5G8Jl/Z4xr89wPEnQZO0oUkBCcsthggrRRQ4FA82xwXHIZxYklyLJUq/k=
+X-Received: by 2002:a05:6830:1af0:: with SMTP id c16mr14382990otd.16.1634061538134;
+ Tue, 12 Oct 2021 10:58:58 -0700 (PDT)
 MIME-Version: 1.0
+References: <1823864.tdWV9SEqCh@kailua> <2944777.ktpJ11cQ8Q@pinacolada>
+ <c75203e9-0ef4-20bd-87a5-ad0846863886@intel.com> <2801801.e9J7NaK4W3@kailua> <6faf4b92-78d5-47a4-63df-cc2bab7769d0@molgen.mpg.de>
+In-Reply-To: <6faf4b92-78d5-47a4-63df-cc2bab7769d0@molgen.mpg.de>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 12 Oct 2021 19:58:47 +0200
+Message-ID: <CAJZ5v0gf0y6qDHUJOsvLFctqn8tgKeuTYn5S9rb6+T0Sj26aKw@mail.gmail.com>
+Subject: Re: [EXT] Re: [Intel-wired-lan] Intel I350 regression 5.10 -> 5.14
+ ("The NVM Checksum Is Not Valid") [8086:1521]
+To:     Paul Menzel <pmenzel@molgen.mpg.de>
+Cc:     "Andreas K. Huettel" <andreas.huettel@ur.de>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        netdev <netdev@vger.kernel.org>,
+        intel-wired-lan@lists.osuosl.org, Jakub Kicinski <kubakici@wp.pl>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-PiBJIHRoaW5rIHlvdSBpbnN0cnVjdGVkIG1lIG9uIHRoaXMgYmVmb3JlIGJ1dCBJJ3ZlIGZvcmdv
-dCBpdDoNCj4gaG93IGRvIEkgc2ltdWxhdGUgdGhpcyBhbmQgdGVzdCBob3cgaXQgd29ya3M/DQoN
-CkphcmtrbywNCg0KWW91IGNhbiB0ZXN0IHRoZSBub24tZXhlY3V0aW9uIHBhdGhzIChlLmcuIHdo
-ZXJlIHRoZSBtZW1vcnkgZXJyb3IgaXMNCnJlcG9ydGVkIGJ5IGEgcGF0cm9sIHNjcnViYmVyIGlu
-IHRoZSBtZW1vcnkgY29udHJvbGxlcikgYnk6DQoNCiMgZWNobyAweHtzb21lX1NHWF9FUENfQURE
-UkVTU30gPiAvc3lzL2RldmljZXMvc3lzdGVtL21lbW9yeS9oYXJkX29mZmxpbmVfcGFnZQ0KDQpU
-aGUgZXhlY3V0aW9uIHBhdGhzIGFyZSBtb3JlIGRpZmZpY3VsdC4gWW91IG5lZWQgYSBzeXN0ZW0g
-dGhhdCBjYW4gaW5qZWN0DQplcnJvcnMgaW50byBFUEMgbWVtb3J5LiBUaGVyZSBhcmUgc29tZSBo
-aW50cyBpbiB0aGUgRG9jdW1lbmF0aW9uIGNoYW5nZXMNCmluIHBhcnQgMDAwNi4NCg0KUmVpbmV0
-dGUgcG9zdGVkIHNvbWUgY2hhbmdlcyB0byBzZ3ggdGVzdHMgdGhhdCBzaGUgdXNlZCB0byB2YWxp
-ZGF0ZS4NCg0KLVRvbnkNCg0K
+On Tue, Oct 12, 2021 at 7:42 PM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
+>
+> [Cc: +ACPI maintainers]
+>
+> Am 12.10.21 um 18:34 schrieb Andreas K. Huettel:
+> >>> The messages easily identifiable are:
+> >>>
+> >>> huettel@pinacolada ~/tmp $ cat kernel-messages-5.10.59.txt |grep igb
+> >>> Oct  5 15:11:18 dilfridge kernel: [    2.090675] igb: Intel(R) Gigabit Ethernet Network Driver
+> >>> Oct  5 15:11:18 dilfridge kernel: [    2.090676] igb: Copyright (c) 2007-2014 Intel Corporation.
+> >>> Oct  5 15:11:18 dilfridge kernel: [    2.090728] igb 0000:01:00.0: enabling device (0000 -> 0002)
+> >>
+> >> This line is missing below, it indicates that the kernel couldn't or
+> >> didn't power up the PCIe for some reason. We're looking for something
+> >> like ACPI or PCI patches (possibly PCI-Power management) to be the
+> >> culprit here.
+> >
+> > So I did a git bisect from linux-v5.10 (good) to linux-v5.14.11 (bad).
+> >
+> > The result was:
+> >
+> > dilfridge /usr/src/linux-git # git bisect bad
+> > 6381195ad7d06ef979528c7452f3ff93659f86b1 is the first bad commit
+> > commit 6381195ad7d06ef979528c7452f3ff93659f86b1
+> > Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Date:   Mon May 24 17:26:16 2021 +0200
+> >
+> >      ACPI: power: Rework turning off unused power resources
+> > [...]
+> >
+> > I tried naive reverting of this commit on top of 5.14.11. That applies nearly cleanly,
+> > and after a reboot the additional ethernet interfaces show up with their MAC in the
+> > boot messages.
+> >
+> > (Not knowing how safe that experiment was, I did not go further than single mode and
+> > immediately rebooted into 5.10 afterwards.)
+
+Reverting this is rather not an option, because the code before it was
+a one-off fix of an earlier issue, but it should be fixable given some
+more information.
+
+Basically, I need a boot log from both the good and bad cases and the
+acpidump output from the affected machine.
