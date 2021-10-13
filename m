@@ -2,118 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 046E242C84D
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Oct 2021 20:04:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6F9642C886
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Oct 2021 20:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230404AbhJMSGZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Oct 2021 14:06:25 -0400
-Received: from mail-oi1-f178.google.com ([209.85.167.178]:37660 "EHLO
-        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229814AbhJMSGY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Oct 2021 14:06:24 -0400
-Received: by mail-oi1-f178.google.com with SMTP id o83so4972417oif.4;
-        Wed, 13 Oct 2021 11:04:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SmvaKZ3JNlPqgI+FpNO1pWiUoIUTD5mfBXxqCsyQVd4=;
-        b=yRT01rUsMfH4ISAFvQGHqxFTWMi3PDCD5BxeAQXYuAivEn1g6RouSFln78azewefXs
-         IoxZ5Ojfr6xkYsMnYAUHGFyNgJs4hYmazgZnXhI2nMJHGfCB2Rw9HC2NdmIcSL8WZM0t
-         ddTpJefL27kUPvHjftt5Y1Gjb4AYgnFfOuYIwLboVeYPUExlxhMuUOgi8gmJnyxKaoek
-         2Tg1wkHNOUFh6WoVF02UneonBdQ4pXOgFlcBuqoiOZUHx6m5xnpEXO1m2wsILpeVouWQ
-         QjSBT9/CdGj1WZcSGR8yf3wbv1erhIfdDPqN+U1PgRNHmO/0OAC++z+2HoPp3xBcLIf2
-         Ml9w==
-X-Gm-Message-State: AOAM531Y7rD8ZSYFHNFpK0iLiBh+cKqD2HjV4bi+Z2IKn+Wil1lFu3MX
-        gUKcTWdmH3eG2q9hvZtsfa8UlZPeSY6W8kCiN6s=
-X-Google-Smtp-Source: ABdhPJwjUGZQz+P/+UB42OUr4UBDYvA6hm08h/w3EZHQT1aJLfFk2sq1OwDDsKHASzDel4InVeHw5l0OMPFAAHHHFTs=
-X-Received: by 2002:aca:b5c3:: with SMTP id e186mr9511001oif.51.1634148261086;
- Wed, 13 Oct 2021 11:04:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <1634095490-3799-1-git-send-email-wangqing@vivo.com>
-In-Reply-To: <1634095490-3799-1-git-send-email-wangqing@vivo.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 13 Oct 2021 20:04:10 +0200
-Message-ID: <CAJZ5v0jkQyj2+M0FeQTAczycc2NzOa+VJD5N3QMkmE8hCT0SWg@mail.gmail.com>
-Subject: Re: [PATCH] acpi: replace snprintf in show functions with sysfs_emit
-To:     Qing Wang <wangqing@vivo.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
+        id S238658AbhJMSU5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Oct 2021 14:20:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52104 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238387AbhJMSU4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 13 Oct 2021 14:20:56 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 04AF161165;
+        Wed, 13 Oct 2021 18:18:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1634149133;
+        bh=h43zpChNzyMQTIytYSLNOFwek9CqlNQr5TsiPcTFR6Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=evt+nFVPa6UAau0wcLmzcJcAovJsoFMrrD+QlA50TSj3Ru8/Pz7p0oZoACJX18G+5
+         Gb+V2/yh+yjOBZ2zeX53OZMQn5wDpjMhlSzWMz6n2WKvhIgQcXLRsFgo3PCWkk0Lms
+         e810yLZrGIFpZhSvFnDBvoKUQkrvXne141Nz4rf8=
+Date:   Wed, 13 Oct 2021 20:18:50 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v1 1/1] device property: Add missed header in fwnode.h
+Message-ID: <YWcjCmYnULuf1CsL@kroah.com>
+References: <20211013143707.80222-1-andriy.shevchenko@linux.intel.com>
+ <CAGETcx_mNWumqmYzytvKG+FvPLA=DWokbbtFv=EGet41G6cQeQ@mail.gmail.com>
+ <CAJZ5v0jJyjYAreubd6ySrt-61Ca4PJUOu6D8VXC1k1GTyVyDZA@mail.gmail.com>
+ <CAGETcx-Yaof2EFzY6C9JHjqi48UBg-nR7aACJ5nJa1T-rbv3Uw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx-Yaof2EFzY6C9JHjqi48UBg-nR7aACJ5nJa1T-rbv3Uw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 13, 2021 at 5:25 AM Qing Wang <wangqing@vivo.com> wrote:
->
-> coccicheck complains about the use of snprintf() in sysfs show functions.
->
-> Fix the coccicheck warning:
-> WARNING: use scnprintf or sprintf.
->
-> Use sysfs_emit instead of scnprintf or sprintf makes more sense.
->
-> Signed-off-by: Qing Wang <wangqing@vivo.com>
-> ---
->  drivers/acpi/acpi_lpss.c | 2 +-
->  drivers/acpi/dock.c      | 8 ++++----
->  2 files changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-> index 894b7e6..9c437d4 100644
-> --- a/drivers/acpi/acpi_lpss.c
-> +++ b/drivers/acpi/acpi_lpss.c
-> @@ -748,7 +748,7 @@ static ssize_t lpss_ltr_show(struct device *dev, struct device_attribute *attr,
->         if (ret)
->                 return ret;
->
-> -       return snprintf(buf, PAGE_SIZE, "%08x\n", ltr_value);
-> +       return sysfs_emit(buf, "%08x\n", ltr_value);
->  }
->
->  static ssize_t lpss_ltr_mode_show(struct device *dev,
-> diff --git a/drivers/acpi/dock.c b/drivers/acpi/dock.c
-> index 7cf9215..c8e9b96 100644
-> --- a/drivers/acpi/dock.c
-> +++ b/drivers/acpi/dock.c
-> @@ -492,7 +492,7 @@ static ssize_t docked_show(struct device *dev,
->         struct acpi_device *adev = NULL;
->
->         acpi_bus_get_device(dock_station->handle, &adev);
-> -       return snprintf(buf, PAGE_SIZE, "%u\n", acpi_device_enumerated(adev));
-> +       return sysfs_emit(buf, "%u\n", acpi_device_enumerated(adev));
->  }
->  static DEVICE_ATTR_RO(docked);
->
-> @@ -504,7 +504,7 @@ static ssize_t flags_show(struct device *dev,
->  {
->         struct dock_station *dock_station = dev->platform_data;
->
-> -       return snprintf(buf, PAGE_SIZE, "%d\n", dock_station->flags);
-> +       return sysfs_emit(buf, "%d\n", dock_station->flags);
->
->  }
->  static DEVICE_ATTR_RO(flags);
-> @@ -543,7 +543,7 @@ static ssize_t uid_show(struct device *dev,
->         if (ACPI_FAILURE(status))
->                 return 0;
->
-> -       return snprintf(buf, PAGE_SIZE, "%llx\n", lbuf);
-> +       return sysfs_emit(buf, "%llx\n", lbuf);
->  }
->  static DEVICE_ATTR_RO(uid);
->
-> @@ -562,7 +562,7 @@ static ssize_t type_show(struct device *dev,
->         else
->                 type = "unknown";
->
-> -       return snprintf(buf, PAGE_SIZE, "%s\n", type);
-> +       return sysfs_emit(buf, "%s\n", type);
->  }
->  static DEVICE_ATTR_RO(type);
->
-> --
+On Wed, Oct 13, 2021 at 10:34:54AM -0700, Saravana Kannan wrote:
+> On Wed, Oct 13, 2021 at 10:31 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> > On Wed, Oct 13, 2021 at 7:21 PM Saravana Kannan <saravanak@google.com> wrote:
+> > >
+> > > On Wed, Oct 13, 2021 at 7:37 AM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > >
+> > > > When adding some stuff to the header file we must not rely on
+> > > > implicit dependencies that are happen by luck or bugs in other
+> > > > headers. Hence fwnode.h needs to use bits.h directly.
+> > > >
+> > > > Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
+> > > > Cc: Saravana Kannan <saravanak@google.com>
+> > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > >
+> > > Acked-by: Saravana Kannan <saravanak@google.com>
+> >
+> > I'm going to pick this up, thanks!
+> >
+> 
+> I think Greg already picked it up.
 
-Applied as 5.16 material with some edits in the subject and changelog, thanks!
+I did, but multiple people can :)
+
+thanks,
+
+greg k-h
