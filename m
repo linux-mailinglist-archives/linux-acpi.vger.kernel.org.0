@@ -2,268 +2,154 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F55142C906
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Oct 2021 20:48:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E422942C915
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Oct 2021 20:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230313AbhJMSu3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Oct 2021 14:50:29 -0400
-Received: from mail-oi1-f179.google.com ([209.85.167.179]:44928 "EHLO
-        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229814AbhJMSu2 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Oct 2021 14:50:28 -0400
-Received: by mail-oi1-f179.google.com with SMTP id y207so5090012oia.11;
-        Wed, 13 Oct 2021 11:48:25 -0700 (PDT)
+        id S237025AbhJMSwW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Oct 2021 14:52:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54660 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230313AbhJMSwU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Oct 2021 14:52:20 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A58A6C061570;
+        Wed, 13 Oct 2021 11:50:16 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id e63so5106495oif.8;
+        Wed, 13 Oct 2021 11:50:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=UX0pQd5EB9hBaMxcKbkdPZN6W778jFQOvy6XcoyXdmA=;
+        b=CsZNfTS0H6bqaKt86EhVq5F8lwSdsQKpiAIWtZlpcWen1vh+0PtdR0uPFRncXop+oI
+         wwLm1C2TrBp6QEhlZu6xINA4tYEHTvUnTm9PRLwWluiwzqTMiSC3vtywCROfky1Q615r
+         A+9kVLXcBPwcwgk7VcfEV3bD4PKUqUHLBxHOZKrJ85LvoEbwbxYuIEBVSxVEN7PY/O0e
+         Mh4XMbf4a0g6xFZ8JLOy68RJLlBcw1bnwqX1+dF5htTnKQBqxkkpclztj/Un12jX8y1M
+         EnQjjFszPnmZULSv7+5xJ3UZfl2FbbX5Upadc0ssn/JC4yzetnW58ZjZIvCcgetZvNyF
+         QOFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Uncg0W16CORITgHLeGs36ZwvOKsR/HwFM8ah6F+jJlQ=;
-        b=RqgDcCKPzX9koOzqtPOeox624mOS21XkktkruA0b82vD3xZstb3U8RWSb3tZ2bzZ+T
-         ZFIO2dN7+GnNMVmdVuYPrvDhglOjcrrDXSfcpqYYKkrOVM7ARItXgBqOpQUk4pXOycHs
-         7iccC91Wtxe3SDUzihLcuLRvj1Je8x8I51z6M1lBY6ZQQPm+jfZBs69dlxn+PjabEBpD
-         0SS80jLURn2YLoI/4g521o20aSsRdRI/PNM0+Uf99RpvitCWvmpjFcof6THEL6Rvlhql
-         sI8hTCauNdwX9Mq524ZKpnETwYdY/P8c9+mVsbMlrMear/f8Hlk1kPaf3a7QbNRLtsKl
-         4Vew==
-X-Gm-Message-State: AOAM532hNuWnk+J6UVjGqMtmfIvfmXCqN7avk/hrtP9p8jPcQeQqEjUQ
-        uuI8qilg3kcd2zPpi2dGKGgeC0hRXqPfi8ob+HU=
-X-Google-Smtp-Source: ABdhPJyc7MCEzrZb0JPNJKLPL937j5cUNrmSmP5Ig/VgZB0YrpouR39aCejCEkHiM7ovjt1eLlLuQIJ/Wdr+e+vvlE8=
-X-Received: by 2002:aca:5c5:: with SMTP id 188mr587027oif.154.1634150904684;
- Wed, 13 Oct 2021 11:48:24 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=UX0pQd5EB9hBaMxcKbkdPZN6W778jFQOvy6XcoyXdmA=;
+        b=iSxiiDUbOG+AoSRDDv7oU0DS5io+qE5QCvcs98ImSHnpCwMHbxwN0WJZ5AaHqiFjmI
+         fNqU5H5G+ERe/0fU1h3rbpuwJYcDn1zEPCSlbN4s9gvXbdryYSXybJw/QgZ2h2z7YHbS
+         2/5PdFdUBfeMO+WXC36u3p28YE4KUUb0u+CqVoohiV1ZZlFeOvuMAic+3cTlRH34Pf1h
+         2HyRgHMt8jhmZHV6TqPR3mh76ntcB7FGMhL3ohOAO+/3WJd9iVqe30h3BhL8sz05FrAk
+         uwCicFK1EjYv3s3fznUAl0ci1tSN+/e9o1m3fM9nQqq5sBHiINuDVNT5I7ivko8qL/e+
+         Gg3g==
+X-Gm-Message-State: AOAM5309eGW7d22M0R0IyeEJwsiNF1vyUpgZ3D3i4VIHqTWp6P1rgHMH
+        OfYENAH3Gnjb22PYMds8WgQ=
+X-Google-Smtp-Source: ABdhPJzu6r85pn6XKHt5b0jAjLKH5NSurelcw1y2viMTEYGVbz4cTcKCyx1qk01BYHnRmmjZUobl3Q==
+X-Received: by 2002:a54:4f1d:: with SMTP id e29mr9751963oiy.179.1634151016104;
+        Wed, 13 Oct 2021 11:50:16 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id e9sm73957otr.25.2021.10.13.11.50.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Oct 2021 11:50:15 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 13 Oct 2021 11:50:14 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        linux-hwmon@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2] hwmon: acpi_power_meter: Use
+ acpi_bus_get_acpi_device()
+Message-ID: <20211013185014.GA3336125@roeck-us.net>
+References: <11864888.O9o76ZdvQC@kreacher>
+ <11871063.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-References: <20211010185707.195883-1-hdegoede@redhat.com> <20211010185707.195883-2-hdegoede@redhat.com>
- <CAJZ5v0i0NR8faABuZVe7V6sKgM4+1kOh-S56usj2WyeiDnfy9g@mail.gmail.com> <0c90d1dd-8e03-714a-1dbf-51b09241a23c@redhat.com>
-In-Reply-To: <0c90d1dd-8e03-714a-1dbf-51b09241a23c@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 13 Oct 2021 20:48:13 +0200
-Message-ID: <CAJZ5v0gN-o6O8daABdtD7ShnUkEgvknAa-VyzS7DG6jX2h8=uA@mail.gmail.com>
-Subject: Re: [PATCH v3 01/11] ACPI: delay enumeration of devices with a _DEP
- pointing to an INT3472 device
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <11871063.O9o76ZdvQC@kreacher>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 13, 2021 at 8:23 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 10/13/21 7:29 PM, Rafael J. Wysocki wrote:
-> > On Sun, Oct 10, 2021 at 8:57 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> >>
-> >> The clk and regulator frameworks expect clk/regulator consumer-devices
-> >> to have info about the consumed clks/regulators described in the device's
-> >> fw_node.
-> >>
-> >> To work around cases where this info is not present in the firmware tables,
-> >> which is often the case on x86/ACPI devices, both frameworks allow the
-> >> provider-driver to attach info about consumers to the clks/regulators
-> >> when registering these.
-> >>
-> >> This causes problems with the probe ordering wrt drivers for consumers
-> >> of these clks/regulators. Since the lookups are only registered when the
-> >> provider-driver binds, trying to get these clks/regulators before then
-> >> results in a -ENOENT error for clks and a dummy regulator for regulators.
-> >>
-> >> One case where we hit this issue is camera sensors such as e.g. the OV8865
-> >> sensor found on the Microsoft Surface Go. The sensor uses clks, regulators
-> >> and GPIOs provided by a TPS68470 PMIC which is described in an INT3472
-> >> ACPI device. There is special platform code handling this and setting
-> >> platform_data with the necessary consumer info on the MFD cells
-> >> instantiated for the PMIC under: drivers/platform/x86/intel/int3472.
-> >>
-> >> For this to work properly the ov8865 driver must not bind to the I2C-client
-> >> for the OV8865 sensor until after the TPS68470 PMIC gpio, regulator and
-> >> clk MFD cells have all been fully setup.
-> >>
-> >> The OV8865 on the Microsoft Surface Go is just one example, all X86
-> >> devices using the Intel IPU3 camera block found on recent Intel SoCs
-> >> have similar issues where there is an INT3472 HID ACPI-device, which
-> >> describes the clks and regulators, and the driver for this INT3472 device
-> >> must be fully initialized before the sensor driver (any sensor driver)
-> >> binds for things to work properly.
-> >>
-> >> On these devices the ACPI nodes describing the sensors all have a _DEP
-> >> dependency on the matching INT3472 ACPI device (there is one per sensor).
-> >>
-> >> This allows solving the probe-ordering problem by delaying the enumeration
-> >> (instantiation of the I2C-client in the ov8865 example) of ACPI-devices
-> >> which have a _DEP dependency on an INT3472 device.
-> >>
-> >> The new acpi_dev_ready_for_enumeration() helper used for this is also
-> >> exported because for devices, which have the enumeration_by_parent flag
-> >> set, the parent-driver will do its own scan of child ACPI devices and
-> >> it will try to enumerate those during its probe(). Code doing this such
-> >> as e.g. the i2c-core-acpi.c code must call this new helper to ensure
-> >> that it too delays the enumeration until all the _DEP dependencies are
-> >> met on devices which have the new honor_deps flag set.
-> >>
-> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> >> ---
-> >>  drivers/acpi/scan.c     | 36 ++++++++++++++++++++++++++++++++++--
-> >>  include/acpi/acpi_bus.h |  5 ++++-
-> >>  2 files changed, 38 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> >> index 5b54c80b9d32..efee6ee91c8f 100644
-> >> --- a/drivers/acpi/scan.c
-> >> +++ b/drivers/acpi/scan.c
-> >> @@ -796,6 +796,12 @@ static const char * const acpi_ignore_dep_ids[] = {
-> >>         NULL
-> >>  };
-> >>
-> >> +/* List of HIDs for which we honor deps of matching ACPI devs, when checking _DEP lists. */
-> >> +static const char * const acpi_honor_dep_ids[] = {
-> >> +       "INT3472", /* Camera sensor PMIC / clk and regulator info */
-> >> +       NULL
-> >> +};
-> >> +
-> >>  static struct acpi_device *acpi_bus_get_parent(acpi_handle handle)
-> >>  {
-> >>         struct acpi_device *device = NULL;
-> >> @@ -1757,8 +1763,12 @@ static void acpi_scan_dep_init(struct acpi_device *adev)
-> >>         struct acpi_dep_data *dep;
-> >>
-> >>         list_for_each_entry(dep, &acpi_dep_list, node) {
-> >> -               if (dep->consumer == adev->handle)
-> >> +               if (dep->consumer == adev->handle) {
-> >> +                       if (dep->honor_dep)
-> >> +                               adev->flags.honor_deps = 1;
-> >
-> > Any concerns about doing
-> >
-> > adev->flags.honor_deps = dep->honor_dep;
-> >
-> > here?
->
-> The idea is to set adev->flags.honor_deps even if the device has
-> multiple deps and only one of them has the honor_dep flag set.
->
-> If we just do:
->
->         adev->flags.honor_deps = dep->honor_dep;
->
-> Then adev->flags.honor_deps ends up having the honor_dep
-> flag of the last dependency checked.
+On Wed, Oct 13, 2021 at 06:04:09PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> In read_domain_devices(), acpi_bus_get_device() is called to obtain
+> the ACPI device object attached to the given ACPI handle and
+> subsequently that object is passed to get_device() for reference
+> counting, but there is a window between the acpi_bus_get_device()
+> and get_device() calls in which the ACPI device object in question
+> may go away.
+> 
+> To address this issue, make read_domain_devices() use
+> acpi_bus_get_acpi_device() to reference count and return the given
+> ACPI device object in one go and export that function to modules.
+> 
+> While at it, also make read_domain_devices() and
+> remove_domain_devices() use acpi_dev_put() instead of calling
+> put_device() directly on the ACPI device objects returned by
+> acpi_bus_get_acpi_device().
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-OK, but in that case dep_unmet may be blocking the enumeration of the
-device even if the one in the acpi_honor_dep_ids[] list has probed
-successfully.
+Applied.
 
-Isn't that a concern?
+Thanks,
+Guenter
 
-> >
-> >> +
-> >>                         adev->dep_unmet++;
-> >> +               }
-> >>         }
-> >>  }
-> >>
-> >> @@ -1962,7 +1972,7 @@ static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
-> >>         for (count = 0, i = 0; i < dep_devices.count; i++) {
-> >>                 struct acpi_device_info *info;
-> >>                 struct acpi_dep_data *dep;
-> >> -               bool skip;
-> >> +               bool skip, honor_dep;
-> >>
-> >>                 status = acpi_get_object_info(dep_devices.handles[i], &info);
-> >>                 if (ACPI_FAILURE(status)) {
-> >> @@ -1971,6 +1981,7 @@ static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
-> >>                 }
-> >>
-> >>                 skip = acpi_info_matches_ids(info, acpi_ignore_dep_ids);
-> >> +              honor_dep = acpi_info_matches_ids(info, acpi_honor_dep_ids);
-> >>                 kfree(info);
-> >>
-> >>                 if (skip)
-> >> @@ -1984,6 +1995,7 @@ static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
-> >>
-> >>                 dep->supplier = dep_devices.handles[i];
-> >>                 dep->consumer = handle;
-> >> +               dep->honor_dep = honor_dep;
-> >>
-> >>                 mutex_lock(&acpi_dep_list_lock);
-> >>                 list_add_tail(&dep->node , &acpi_dep_list);
-> >> @@ -2071,6 +2083,9 @@ static acpi_status acpi_bus_check_add_2(acpi_handle handle, u32 lvl_not_used,
-> >>
-> >>  static void acpi_default_enumeration(struct acpi_device *device)
-> >>  {
-> >> +       if (!acpi_dev_ready_for_enumeration(device))
-> >> +               return;
-> >
-> > I'm not sure about this.
-> >
-> > First of all, this adds an acpi_device_is_present() check here which
-> > potentially is a change in behavior and I'm not sure how it is related
-> > to the other changes in this patch (it is not mentioned in the
-> > changelog AFAICS).
-> >
-> > I'm saying "potentially", because if we get here at all,
-> > acpi_device_is_present() has been evaluated already by
-> > acpi_bus_attach().
->
-> Right the idea was that for this code-path the extra
-> acpi_device_is_present() check is a no-op since the only
-> caller of acpi_default_enumeration() has already done
-> that check before calling acpi_default_enumeration(),
-> where as the is_present check is useful for users outside
-> of the ACPI core code, like e.g. the i2c ACPI enumeration
-> code.
->
-> Although I see this is also called from
-> acpi_generic_device_attach which comes into play when there
-> is devicetree info embedded inside the ACPI tables.
-
-That too, but generally speaking this change should at least be
-mentioned in the changelog.
-
-> > Now, IIUC, the new acpi_dev_ready_for_enumeration() is kind of an
-> > extension of acpi_device_is_present(), so shouldn't it be called by
-> > acpi_bus_attach() instead of the latter rather than from here?
->
-> That is an interesting proposal. I assume you want this to replace
-> the current acpi_device_is_present() call in acpi_bus_attach()
-> then ?
-
-That seems consistent to me.
-
-> For the use-case at hand here that should work fine and it would also
-> make the honor_deps flag work for devices which bind to the actual
-> acpi_device (because we delay the device_attach()) or
-> use an acpi_scan_handler.
->
-> This would mean though that we can now have acpi_device-s where
-> acpi_device_is_present() returns true, but which are not
-> initialized (do not have device->flags.initialized set)
-> that would be a new acpi_device state which we have not had
-> before. I do not immediately forsee this causing issues,
-> but still...
->
-> If you want me to replace the current acpi_device_is_present() call
-> in acpi_bus_attach() with the new acpi_dev_ready_for_enumeration()
-> helper, let me know and I'll prepare a new version with this change
-> (and run some tests with that new version).
-
-I would prefer doing that to making acpi_default_enumeration() special
-with respect to the handling of dependencies.
+> ---
+> 
+> -> v2: Resend with a different From and S-o-b address and with R-by
+>        from Andy.  No other changes.
+> 
+> ---
+>  drivers/acpi/scan.c              |    1 +
+>  drivers/hwmon/acpi_power_meter.c |   13 +++++--------
+>  2 files changed, 6 insertions(+), 8 deletions(-)
+> 
+> Index: linux-pm/drivers/hwmon/acpi_power_meter.c
+> ===================================================================
+> --- linux-pm.orig/drivers/hwmon/acpi_power_meter.c
+> +++ linux-pm/drivers/hwmon/acpi_power_meter.c
+> @@ -535,7 +535,7 @@ static void remove_domain_devices(struct
+>  
+>  		sysfs_remove_link(resource->holders_dir,
+>  				  kobject_name(&obj->dev.kobj));
+> -		put_device(&obj->dev);
+> +		acpi_dev_put(obj);
+>  	}
+>  
+>  	kfree(resource->domain_devices);
+> @@ -597,18 +597,15 @@ static int read_domain_devices(struct ac
+>  			continue;
+>  
+>  		/* Create a symlink to domain objects */
+> -		resource->domain_devices[i] = NULL;
+> -		if (acpi_bus_get_device(element->reference.handle,
+> -					&resource->domain_devices[i]))
+> +		obj = acpi_bus_get_acpi_device(element->reference.handle);
+> +		resource->domain_devices[i] = obj;
+> +		if (!obj)
+>  			continue;
+>  
+> -		obj = resource->domain_devices[i];
+> -		get_device(&obj->dev);
+> -
+>  		res = sysfs_create_link(resource->holders_dir, &obj->dev.kobj,
+>  				      kobject_name(&obj->dev.kobj));
+>  		if (res) {
+> -			put_device(&obj->dev);
+> +			acpi_dev_put(obj);
+>  			resource->domain_devices[i] = NULL;
+>  		}
+>  	}
+> Index: linux-pm/drivers/acpi/scan.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/scan.c
+> +++ linux-pm/drivers/acpi/scan.c
+> @@ -608,6 +608,7 @@ struct acpi_device *acpi_bus_get_acpi_de
+>  {
+>  	return handle_to_device(handle, get_acpi_device);
+>  }
+> +EXPORT_SYMBOL_GPL(acpi_bus_get_acpi_device);
+>  
+>  static struct acpi_device_bus_id *acpi_device_bus_id_match(const char *dev_id)
+>  {
