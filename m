@@ -2,67 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EDDB42C37D
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Oct 2021 16:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE38042C3CD
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Oct 2021 16:44:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230015AbhJMOjN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 13 Oct 2021 10:39:13 -0400
-Received: from mga02.intel.com ([134.134.136.20]:58928 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236309AbhJMOjM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 13 Oct 2021 10:39:12 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10135"; a="214592952"
-X-IronPort-AV: E=Sophos;i="5.85,371,1624345200"; 
-   d="scan'208";a="214592952"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2021 07:37:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,371,1624345200"; 
-   d="scan'208";a="592198916"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga004.jf.intel.com with ESMTP; 13 Oct 2021 07:37:06 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 9828E361; Wed, 13 Oct 2021 17:37:13 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Saravana Kannan <saravanak@google.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] device property: Add missed header in fwnode.h
-Date:   Wed, 13 Oct 2021 17:37:07 +0300
-Message-Id: <20211013143707.80222-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.33.0
+        id S236309AbhJMOqc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 13 Oct 2021 10:46:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53546 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237449AbhJMOqb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 13 Oct 2021 10:46:31 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1363BC061570
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Oct 2021 07:44:28 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id r18so11097140edv.12
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Oct 2021 07:44:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=i6YmpBMDpvUqciTeeopqUBjl8BzBtSmMLDzw4bnotnU=;
+        b=g8rAUh+kFRTFmlfkHBMXJ2/nccCJa3Ynk81USzQYq5btcl1ZPxHNeqaT0Vl6PAWNCI
+         4SIuSHcdasBvAsJs7Qy/io5+NeCmm5JcaROxKyYrtmEHBRIoL6HnkASgaVz68VjguQUk
+         JzL94VBaHU+1CWMbCCyuPDwbIeFvm6/cSFIKC9xwkdsei+hk+e70KmqjuNMlMn34e9qe
+         3Wwr8EkatXWU1veRFZ2b5MaUjNWxiHRp40cXcMvr3Hs8VZG9pJ2sIfFA37TqMFNbMZfF
+         iZU/1Kf8AbgeRN8kn9+pdEzDjzQcbJd9/WzOT03N4Y6bb9aJPS7cZ6vJSeRgRShEkQJY
+         t8Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=i6YmpBMDpvUqciTeeopqUBjl8BzBtSmMLDzw4bnotnU=;
+        b=mWK+FIDLx0awvUtBFIA9qytLobsBs4neNc3gh4UdVMY9AKZMquwWbUaUol2NeWErQv
+         EuENYgw+Jhfx/3U2X4/+s8z0BtyHQ+TTpNqdpF10QeT4GfMB9iItpYWM5S8z/Z5Pv4Ld
+         wYYk0yb4oF3/lX0dlwagywg51G167NNmFhBVU+yawqC20/tkPmvvkkwZFL11Uh9/ZHeV
+         aIHzohE/mD9d+seD6/1N+eQod1Q+tb+ZPQuUUP5/LTbs5bpvZY2acPWc8+6bUspyZsal
+         ArJ2PVe+/ewwDVKh4qV+wjtUbYKOvbIfWzFhClmWLGjeOaCAPtWDOQp664W0s1ykTag+
+         AHIA==
+X-Gm-Message-State: AOAM533OZ/wvQPhzN7TpOmcfCXn3tORbI9zmXC5QlMDr2IzyA4lrxnzF
+        RMggq2UWkRNR4MD4H1fglQr/fF7IRoAEiRdpdFBmQw==
+X-Google-Smtp-Source: ABdhPJzZpTdJ7emb46XqWMJlSJHnw4zoj66lDjO4a2CSC8gaYPY/D+pskCtu8Yv/I2DRiEcjawRWbiECwb4S4PLm7cs=
+X-Received: by 2002:a17:907:764e:: with SMTP id kj14mr39374254ejc.349.1634136263872;
+ Wed, 13 Oct 2021 07:44:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <4369779.LvFx2qVVIh@kreacher> <2179627.iZASKD2KPV@kreacher>
+In-Reply-To: <2179627.iZASKD2KPV@kreacher>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Wed, 13 Oct 2021 16:44:13 +0200
+Message-ID: <CAMRc=MchN6+N_sgW6ZY4JiiVsy112S2_sc8uyqxjzFJtEAumew@mail.gmail.com>
+Subject: Re: [PATCH v1 1/7] gpio-amdpt: ACPI: Use the ACPI_COMPANION() macro directly
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When adding some stuff to the header file we must not rely on
-implicit dependencies that are happen by luck or bugs in other
-headers. Hence fwnode.h needs to use bits.h directly.
+On Tue, Oct 12, 2021 at 7:51 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> From: Rafael J. Wysocki <rafael@kernel.org>
+>
+> The ACPI_HANDLE() macro is a wrapper arond the ACPI_COMPANION()
+> macro and the ACPI handle produced by the former comes from the
+> ACPI device object produced by the latter, so it is way more
+> straightforward to evaluate the latter directly instead of passing
+> the handle produced by the former to acpi_bus_get_device().
+>
+> Modify pt_gpio_probe() accordingly (no intentional functional impact).
+>
+> Signed-off-by: Rafael J. Wysocki <rafael@kernel.org>
+> ---
+>  drivers/gpio/gpio-amdpt.c |    4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> Index: linux-pm/drivers/gpio/gpio-amdpt.c
+> ===================================================================
+> --- linux-pm.orig/drivers/gpio/gpio-amdpt.c
+> +++ linux-pm/drivers/gpio/gpio-amdpt.c
+> @@ -72,12 +72,10 @@ static void pt_gpio_free(struct gpio_chi
+>  static int pt_gpio_probe(struct platform_device *pdev)
+>  {
+>         struct device *dev = &pdev->dev;
+> -       struct acpi_device *acpi_dev;
+> -       acpi_handle handle = ACPI_HANDLE(dev);
+>         struct pt_gpio_chip *pt_gpio;
+>         int ret = 0;
+>
+> -       if (acpi_bus_get_device(handle, &acpi_dev)) {
+> +       if (!ACPI_COMPANION(dev)) {
+>                 dev_err(dev, "PT GPIO device node not found\n");
+>                 return -ENODEV;
+>         }
+>
+>
+>
 
-Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
-Cc: Saravana Kannan <saravanak@google.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/linux/fwnode.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 9f4ad719bfe3..3a532ba66f6c 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -11,6 +11,7 @@
- 
- #include <linux/types.h>
- #include <linux/list.h>
-+#include <linux/bits.h>
- #include <linux/err.h>
- 
- struct fwnode_operations;
--- 
-2.33.0
-
+Acked-by: Bartosz Golaszewski <brgl@bgdev.pl>
