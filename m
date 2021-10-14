@@ -2,61 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F31D42DAA1
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Oct 2021 15:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79EDE42DABB
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Oct 2021 15:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230205AbhJNNn0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Oct 2021 09:43:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57274 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbhJNNn0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 14 Oct 2021 09:43:26 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD48C061570;
-        Thu, 14 Oct 2021 06:41:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=yh0dLNTCAidxPky1fKSiNS/T1k0UpRDN2U2Pf55bD6Q=; b=RYuW1teOpHoxKXuAE0m9w30T5o
-        piZKigjQ0cg4nSULeNxiuEVSgvHKRyIj/BI7eg/iiljIgrU1oQ/KeZAnRvRq8rFI1Wxg2SkO1pqtZ
-        klOcoquqJszlE2YOh9GXH9V6b+HSCpr3WeaSONyri9Nj8KEtDaOJAyX7xZ068gMFQ4AwTVpdbxcaR
-        zBOk5ISSuBfqfv7nv/GX65Zd3nqgKOkhoEA83T2o+EQeRS+kVuQAXfSByZH97ZkcSB7jbAdaktL28
-        Vro+JsZT85iieaduwkauV9g1Fa7/HpCnN2+jJNKn6w28uV0rP5XE/etmAmJO59Ah/+9XrahTKqPT2
-        rA4kvFvA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mb0yf-003Hyo-PY; Thu, 14 Oct 2021 13:40:57 +0000
-Date:   Thu, 14 Oct 2021 06:40:57 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        id S231703AbhJNNuP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Oct 2021 09:50:15 -0400
+Received: from mga12.intel.com ([192.55.52.136]:10895 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231417AbhJNNuO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 14 Oct 2021 09:50:14 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10136"; a="207792675"
+X-IronPort-AV: E=Sophos;i="5.85,372,1624345200"; 
+   d="scan'208";a="207792675"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2021 06:47:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,372,1624345200"; 
+   d="scan'208";a="481265454"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 14 Oct 2021 06:47:56 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 5C3AA361; Thu, 14 Oct 2021 16:48:04 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Saravana Kannan <saravanak@google.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org,
-        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>
-Subject: Re: [PATCH v3] x86/PCI: Ignore E820 reservations for bridge windows
- on newer systems
-Message-ID: <YWgzaa9Z4elzoRwL@infradead.org>
-References: <20211014110357.17957-1-hdegoede@redhat.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH v4 1/3] driver core: Provide device_match_acpi_handle() helper
+Date:   Thu, 14 Oct 2021 16:47:54 +0300
+Message-Id: <20211014134756.39092-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211014110357.17957-1-hdegoede@redhat.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 14, 2021 at 01:03:57PM +0200, Hans de Goede wrote:
-> +	 * Some BIOS-es contain a bug where they add addresses which map to system
-> +	 * RAM in the PCI bridge memory window returned by the ACPI _CRS method,
+We have a couple of users of this helper, make it available for them.
 
-Please avoid the overly long lines in your comments.
+The prototype for the helper is specifically crafted in order to be
+easily used with bus_find_device() call. That's why its location is
+in the driver core rather than ACPI.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v4: amended changelog to clarify implementation details (Rafael)
+ drivers/base/core.c        | 6 ++++++
+ include/linux/device/bus.h | 1 +
+ 2 files changed, 7 insertions(+)
+
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index b67ebe6a323c..fd034d742447 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -4838,6 +4838,12 @@ int device_match_acpi_dev(struct device *dev, const void *adev)
+ }
+ EXPORT_SYMBOL(device_match_acpi_dev);
+ 
++int device_match_acpi_handle(struct device *dev, const void *handle)
++{
++	return ACPI_HANDLE(dev) == handle;
++}
++EXPORT_SYMBOL(device_match_acpi_handle);
++
+ int device_match_any(struct device *dev, const void *unused)
+ {
+ 	return 1;
+diff --git a/include/linux/device/bus.h b/include/linux/device/bus.h
+index 062777a45a74..a039ab809753 100644
+--- a/include/linux/device/bus.h
++++ b/include/linux/device/bus.h
+@@ -143,6 +143,7 @@ int device_match_of_node(struct device *dev, const void *np);
+ int device_match_fwnode(struct device *dev, const void *fwnode);
+ int device_match_devt(struct device *dev, const void *pdevt);
+ int device_match_acpi_dev(struct device *dev, const void *adev);
++int device_match_acpi_handle(struct device *dev, const void *handle);
+ int device_match_any(struct device *dev, const void *unused);
+ 
+ /* iterator helpers for buses */
+-- 
+2.33.0
+
