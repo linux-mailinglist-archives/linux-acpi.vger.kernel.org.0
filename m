@@ -2,318 +2,367 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9471E42DEC2
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Oct 2021 17:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC0742DFEA
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Oct 2021 19:06:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233122AbhJNP5n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Oct 2021 11:57:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:51298 "EHLO
+        id S232411AbhJNRIg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 14 Oct 2021 13:08:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:28956 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233026AbhJNP5k (ORCPT
+        by vger.kernel.org with ESMTP id S233386AbhJNRIf (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 14 Oct 2021 11:57:40 -0400
+        Thu, 14 Oct 2021 13:08:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634226934;
+        s=mimecast20190719; t=1634231190;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=JWnmViuZzS5vCJpHwulEVTRMqyjB1ka4+dw1VkAiD4g=;
-        b=ba42NLyfzebB0jQTUcd1Sdh3WTOfH5tu03hTK4jz/PovJC5oMvDdT0YAmw0lfQJTBFLNse
-        RzJMIS4Pp/pb4CVWFYd1q1/aYj3EleaJt1M0t8yiHEix5F3Z5+vXrIEBSMTo9kEA7TVmhJ
-        ouA7o4XXeiyhVkB3DugFx2eSxOHh20A=
+        bh=WkEo0g2D3Iide8EWMYtZgdJW1SeTeDXtu6MQ3b8t6EA=;
+        b=YWhwTCubbHxCv53HDpzopIPax1pP2cFEuP82bAXIdW7OsxlvOKvCZ7VvmmCSpDjFceHJ/9
+        RMFztwpW6O06b/z6vQJtywBUeYxHb/QrndVGacP3uLDtYcx/dEookjv8Yex3dZkblt57kE
+        IaAdlcomrbxu+yy/eyjRE9OCZt3LMlM=
 Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
  [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-560-tPdqf84lMCK1BGLsuVxmGA-1; Thu, 14 Oct 2021 11:55:33 -0400
-X-MC-Unique: tPdqf84lMCK1BGLsuVxmGA-1
-Received: by mail-ed1-f69.google.com with SMTP id s12-20020a50dacc000000b003dbf7a78e88so2555450edj.2
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Oct 2021 08:55:33 -0700 (PDT)
+ us-mta-501-E4TeK0ghN1Sm2Z7DmOKlBA-1; Thu, 14 Oct 2021 13:06:28 -0400
+X-MC-Unique: E4TeK0ghN1Sm2Z7DmOKlBA-1
+Received: by mail-ed1-f69.google.com with SMTP id s12-20020a50dacc000000b003dbf7a78e88so2740415edj.2
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Oct 2021 10:06:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=JWnmViuZzS5vCJpHwulEVTRMqyjB1ka4+dw1VkAiD4g=;
-        b=Y0sGLkNHk450vPVBjFtVDRCD8InpGVuUlxpWv6AtjbU7kH6I1m4lWKAl2Q4a0qjxm4
-         g1DHHTBiHZndJSTco1SM0lK9b/LD1ElvtkcP3MksifvLH6dfdpX/GnsC7ultdlmb5Oaf
-         Y+IGZfmYajNj5J1TukWR0P0Fxm12L0Yv2kQhQX4B+tGRD8N/utVNRuh6+BtrZ1cQl80q
-         NrsmuJuLuhvrSC5L9+l7EqJ9COQ5GXi+lrD3zpXgHjoM3edKjEsCMmECY+eZvUSz1RTh
-         OEtztNDKrbloQf/dgvIs0Whzb7ccnJLRwGTOoMJOXA/AfjU1IeshXlcYdMe1SxcoN4D/
-         SO8g==
-X-Gm-Message-State: AOAM531zzskwY9uQm4ZRlsi5iLyyNYE35wURJbav7uQMsx33HrvRA/e4
-        IFz3Tw2ES+PiDdsVtYDXupbmxiaPHg0qNoETTfBADsH46AxDMWWpnh5KimkEoTjLZUC5SBqrV4K
-        GLQz/XD1aaJc5DuJrM5sgsA==
-X-Received: by 2002:a50:ccc4:: with SMTP id b4mr9996630edj.83.1634226931936;
-        Thu, 14 Oct 2021 08:55:31 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw7Wah1Y7cQHvDtlggE1t5rDd38gt88Yx5v6/TAUaNgjI2VtkWMOwkydRXvi/iQjcjEunuzVg==
-X-Received: by 2002:a50:ccc4:: with SMTP id b4mr9996587edj.83.1634226931676;
-        Thu, 14 Oct 2021 08:55:31 -0700 (PDT)
+        bh=WkEo0g2D3Iide8EWMYtZgdJW1SeTeDXtu6MQ3b8t6EA=;
+        b=0U58CVZI/EKvz29lrH31bugERPnbOQK7dQfFB1P0dKUNCe/ASKfV9PH7bFlkF6hSeo
+         N3ESAGSQYi3P7vtmSj9SBHe/QHRuclV/uAcPz9V0h5c99h61hH5DUTRicEV49IH0uigI
+         d6VjxnLQJz3+orI+inPlQti3hK4UkCuSSNIKAOwfDdwry2MKtlE/Lp+qcI9laYPD/CaU
+         VggMxgZsyJH/ObFNwUt4dg8herXPttPZR75b6GaONGnRGlqx5UQw3AMkv2xlhaLgJMAw
+         kJ8hRK/d00b6J7tdgXoTzOi9mqyFqN2EaL5LwBkRsCVvDdgLuqjdf7WX6ccs+vQnMdlH
+         f/IA==
+X-Gm-Message-State: AOAM531MtZmd8eDVWQtqxKgcGtW3PEQ/tb9EvkeBkXD4koZzQFrCP62L
+        YwXv5FUOgr6LXwhygkwzEQCXAVMDSvO8TC1aCnnpvTETlif0WesVZtdcUPPSqbT7UpKwno4moSR
+        +vHswHmlfiEPWCRTN2z7wuw==
+X-Received: by 2002:a17:906:abd3:: with SMTP id kq19mr125576ejb.285.1634231186292;
+        Thu, 14 Oct 2021 10:06:26 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxgstQu/qRWXHs0pX3nR5Ux3cPgjmduXCXZOgiX8TmnOO+rCltjF10EB1pche+Kzw856l62gw==
+X-Received: by 2002:a17:906:abd3:: with SMTP id kq19mr125510ejb.285.1634231185873;
+        Thu, 14 Oct 2021 10:06:25 -0700 (PDT)
 Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id b2sm2587687edv.73.2021.10.14.08.55.30
+        by smtp.gmail.com with ESMTPSA id t6sm2924197edj.27.2021.10.14.10.06.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Oct 2021 08:55:31 -0700 (PDT)
-Subject: Re: [PATCH v3 01/11] ACPI: delay enumeration of devices with a _DEP
- pointing to an INT3472 device
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
+        Thu, 14 Oct 2021 10:06:24 -0700 (PDT)
+Subject: Re: [PATCH v3] x86/PCI: Ignore E820 reservations for bridge windows
+ on newer systems
+To:     Bjorn Helgaas <helgaas@kernel.org>
 Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>
-References: <20211010185707.195883-1-hdegoede@redhat.com>
- <20211010185707.195883-2-hdegoede@redhat.com>
- <CAJZ5v0i0NR8faABuZVe7V6sKgM4+1kOh-S56usj2WyeiDnfy9g@mail.gmail.com>
- <0c90d1dd-8e03-714a-1dbf-51b09241a23c@redhat.com>
- <CAJZ5v0gN-o6O8daABdtD7ShnUkEgvknAa-VyzS7DG6jX2h8=uA@mail.gmail.com>
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>
+References: <20211014154906.GA2029160@bhelgaas>
 From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <24f113e8-3af1-7c85-b8b8-584f5663a909@redhat.com>
-Date:   Thu, 14 Oct 2021 17:55:30 +0200
+Message-ID: <49405979-97c2-17ab-7deb-77c8d31092bb@redhat.com>
+Date:   Thu, 14 Oct 2021 19:06:23 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0gN-o6O8daABdtD7ShnUkEgvknAa-VyzS7DG6jX2h8=uA@mail.gmail.com>
+In-Reply-To: <20211014154906.GA2029160@bhelgaas>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Bjorn,
 
-On 10/13/21 8:48 PM, Rafael J. Wysocki wrote:
-> On Wed, Oct 13, 2021 at 8:23 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi,
->>
->> On 10/13/21 7:29 PM, Rafael J. Wysocki wrote:
->>> On Sun, Oct 10, 2021 at 8:57 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>>>
->>>> The clk and regulator frameworks expect clk/regulator consumer-devices
->>>> to have info about the consumed clks/regulators described in the device's
->>>> fw_node.
->>>>
->>>> To work around cases where this info is not present in the firmware tables,
->>>> which is often the case on x86/ACPI devices, both frameworks allow the
->>>> provider-driver to attach info about consumers to the clks/regulators
->>>> when registering these.
->>>>
->>>> This causes problems with the probe ordering wrt drivers for consumers
->>>> of these clks/regulators. Since the lookups are only registered when the
->>>> provider-driver binds, trying to get these clks/regulators before then
->>>> results in a -ENOENT error for clks and a dummy regulator for regulators.
->>>>
->>>> One case where we hit this issue is camera sensors such as e.g. the OV8865
->>>> sensor found on the Microsoft Surface Go. The sensor uses clks, regulators
->>>> and GPIOs provided by a TPS68470 PMIC which is described in an INT3472
->>>> ACPI device. There is special platform code handling this and setting
->>>> platform_data with the necessary consumer info on the MFD cells
->>>> instantiated for the PMIC under: drivers/platform/x86/intel/int3472.
->>>>
->>>> For this to work properly the ov8865 driver must not bind to the I2C-client
->>>> for the OV8865 sensor until after the TPS68470 PMIC gpio, regulator and
->>>> clk MFD cells have all been fully setup.
->>>>
->>>> The OV8865 on the Microsoft Surface Go is just one example, all X86
->>>> devices using the Intel IPU3 camera block found on recent Intel SoCs
->>>> have similar issues where there is an INT3472 HID ACPI-device, which
->>>> describes the clks and regulators, and the driver for this INT3472 device
->>>> must be fully initialized before the sensor driver (any sensor driver)
->>>> binds for things to work properly.
->>>>
->>>> On these devices the ACPI nodes describing the sensors all have a _DEP
->>>> dependency on the matching INT3472 ACPI device (there is one per sensor).
->>>>
->>>> This allows solving the probe-ordering problem by delaying the enumeration
->>>> (instantiation of the I2C-client in the ov8865 example) of ACPI-devices
->>>> which have a _DEP dependency on an INT3472 device.
->>>>
->>>> The new acpi_dev_ready_for_enumeration() helper used for this is also
->>>> exported because for devices, which have the enumeration_by_parent flag
->>>> set, the parent-driver will do its own scan of child ACPI devices and
->>>> it will try to enumerate those during its probe(). Code doing this such
->>>> as e.g. the i2c-core-acpi.c code must call this new helper to ensure
->>>> that it too delays the enumeration until all the _DEP dependencies are
->>>> met on devices which have the new honor_deps flag set.
->>>>
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>> ---
->>>>  drivers/acpi/scan.c     | 36 ++++++++++++++++++++++++++++++++++--
->>>>  include/acpi/acpi_bus.h |  5 ++++-
->>>>  2 files changed, 38 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
->>>> index 5b54c80b9d32..efee6ee91c8f 100644
->>>> --- a/drivers/acpi/scan.c
->>>> +++ b/drivers/acpi/scan.c
->>>> @@ -796,6 +796,12 @@ static const char * const acpi_ignore_dep_ids[] = {
->>>>         NULL
->>>>  };
->>>>
->>>> +/* List of HIDs for which we honor deps of matching ACPI devs, when checking _DEP lists. */
->>>> +static const char * const acpi_honor_dep_ids[] = {
->>>> +       "INT3472", /* Camera sensor PMIC / clk and regulator info */
->>>> +       NULL
->>>> +};
->>>> +
->>>>  static struct acpi_device *acpi_bus_get_parent(acpi_handle handle)
->>>>  {
->>>>         struct acpi_device *device = NULL;
->>>> @@ -1757,8 +1763,12 @@ static void acpi_scan_dep_init(struct acpi_device *adev)
->>>>         struct acpi_dep_data *dep;
->>>>
->>>>         list_for_each_entry(dep, &acpi_dep_list, node) {
->>>> -               if (dep->consumer == adev->handle)
->>>> +               if (dep->consumer == adev->handle) {
->>>> +                       if (dep->honor_dep)
->>>> +                               adev->flags.honor_deps = 1;
->>>
->>> Any concerns about doing
->>>
->>> adev->flags.honor_deps = dep->honor_dep;
->>>
->>> here?
->>
->> The idea is to set adev->flags.honor_deps even if the device has
->> multiple deps and only one of them has the honor_dep flag set.
->>
->> If we just do:
->>
->>         adev->flags.honor_deps = dep->honor_dep;
->>
->> Then adev->flags.honor_deps ends up having the honor_dep
->> flag of the last dependency checked.
-> 
-> OK, but in that case dep_unmet may be blocking the enumeration of the
-> device even if the one in the acpi_honor_dep_ids[] list has probed
-> successfully.
-> 
-> Isn't that a concern?
+Thank you for the review.
 
-For the devices where we set the dep->honor_dep flag this is
-not a concern (based on the DSDTs which I've seen).
+On 10/14/21 5:49 PM, Bjorn Helgaas wrote:
+> On Thu, Oct 14, 2021 at 01:03:57PM +0200, Hans de Goede wrote:
+>> Some BIOS-es contain a bug where they add addresses which map to system RAM
+>> in the PCI bridge memory window returned by the ACPI _CRS method, see
+>> commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
+>> space").
+>>
+>> To avoid this Linux by default excludes E820 reservations when allocating
+>> addresses since 2010. Windows however ignores E820 reserved regions for PCI
+>> mem allocations, so in hindsight Linux honoring them is a problem.
+> 
+> This is a problem not because Windows ignores E820, but because the
+> spec does not support excluding based on E820.  We should cite the
+> spec and include the relevant text here.
 
-I also don't expect it to be a concern for other cases where we may
-set that flag in the future either. This is an opt-in thing, so
-I expect that in cases where we opt in to this, we also ensure that
-any other _DEPs are also met (by having a Linux driver which calls
-acpi_dev_clear_dependencies() for them).
+Ok, for v5 I will replace this with your info on the specs from this email:
+https://lore.kernel.org/linux-pci/20211008110149.GA1313872@bhelgaas/T/#t
 
-And now a days we also have the acpi_ignore_dep_ids[] list so if
-in the future there are some _DEP-s which never get fulfilled/met
-on a device where we set the adev->flags.honor_deps flag, then we
-can always add the ACPI HIDs for those devices to that list.
+> 
+>> Recently (2020) some systems have shown-up with E820 reservations which
+>> cover the entire _CRS returned PCI bridge memory window, causing all
+>> attempts to assign memory to PCI BARs which have not been setup by the
+>> BIOS to fail. For example here are the relevant dmesg bits from a
+>> Lenovo IdeaPad 3 15IIL 81WE:
+>>
+>>  [mem 0x000000004bc50000-0x00000000cfffffff] reserved
+>>  pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
+>>
+>> Ideally Linux would fully stop honoring E820 reservations for PCI mem
+>> allocations, but then the old systems this was added for will regress.
+>> Instead keep the old behavior for old systems, while ignoring the E820
+>> reservations like Windows does for any systems from now on.
+>>
+>> Old systems are defined here as BIOS year < 2018, this was chosen to
+>> make sure that pci_use_e820 will not be set on the currently affected
+>> systems, while at the same time also taking into account that the
+>> systems for which the E820 checking was originally added may have
+>> received BIOS updates for quite a while (esp. CVE related ones),
+>> giving them a more recent BIOS year then 2010.
+>>
+>> Also add pci=no_e820 and pci=use_e820 options to allow overriding
+>> the BIOS year heuristic.
+>>
+>> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
+>> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
+>> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
+>> BugLink: https://bugs.launchpad.net/bugs/1878279
+>> BugLink: https://bugs.launchpad.net/bugs/1931715
+>> BugLink: https://bugs.launchpad.net/bugs/1932069
+>> BugLink: https://bugs.launchpad.net/bugs/1921649
+>> Cc: Benoit Grégoire <benoitg@coeus.ca>
+>> Cc: Hui Wang <hui.wang@canonical.com>
+>> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>> Changes in v3:
+>> - Commit msg tweaks (drop dmesg timestamps, typo fix)
+>> - Use "defined(CONFIG_...)" instead of "defined CONFIG_..."
+>> - Add Mika's Reviewed-by
+>>
+>> Changes in v2:
+>> - Replace the per model DMI quirk approach with disabling E820 reservations
+>>   checking for all systems with a BIOS year >= 2018
+>> - Add documentation for the new kernel-parameters to
+>>   Documentation/admin-guide/kernel-parameters.txt
+>> ---
+>> Other patches trying to address the same issue:
+>> https://lore.kernel.org/r/20210624095324.34906-1-hui.wang@canonical.com
+>> https://lore.kernel.org/r/20200617164734.84845-1-mika.westerberg@linux.intel.com
+>> V1 patch:
+>> https://lore.kernel.org/r/20211005150956.303707-1-hdegoede@redhat.com
+>> ---
+>>  .../admin-guide/kernel-parameters.txt         |  6 ++++
+>>  arch/x86/include/asm/pci_x86.h                | 10 +++++++
+>>  arch/x86/kernel/resource.c                    |  4 +++
+>>  arch/x86/pci/acpi.c                           | 29 +++++++++++++++++++
+>>  arch/x86/pci/common.c                         |  6 ++++
+>>  5 files changed, 55 insertions(+)
+>>
+>> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+>> index 43dc35fe5bc0..969cde5d74c8 100644
+>> --- a/Documentation/admin-guide/kernel-parameters.txt
+>> +++ b/Documentation/admin-guide/kernel-parameters.txt
+>> @@ -3949,6 +3949,12 @@
+>>  				please report a bug.
+>>  		nocrs		[X86] Ignore PCI host bridge windows from ACPI.
+>>  				If you need to use this, please report a bug.
+>> +		use_e820	[X86] Honor E820 reservations when allocating
+>> +				PCI host bridge memory. If you need to use this,
+>> +				please report a bug.
+>> +		no_e820		[X86] ignore E820 reservations when allocating
+>> +				PCI host bridge memory. If you need to use this,
+>> +				please report a bug.
+> 
+> Inconsistent capitalization.
+> 
+> Should use same terminology as nocrs, i.e., "PCI host bridge windows",
+> not "PCI host bridge memory".
+> 
+> I don't think "Honor E820 reservations" is the right way to describe
+> this.  It's not a question of upholding something we *should* be
+> doing.  That would be a matter of working around a BIOS defect.
+> Maybe something like this:
+> 
+>   Use E820 reservations to exclude parts of PCI host bridge windows.
+>   This is a workaround for BIOS defects in host bridge _CRS methods.
+>   If you need to use this, please report a bug to
+>   linux-pci@vger.kernel.org so we can apply it automatically.
 
->>>> +
->>>>                         adev->dep_unmet++;
->>>> +               }
->>>>         }
->>>>  }
->>>>
->>>> @@ -1962,7 +1972,7 @@ static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
->>>>         for (count = 0, i = 0; i < dep_devices.count; i++) {
->>>>                 struct acpi_device_info *info;
->>>>                 struct acpi_dep_data *dep;
->>>> -               bool skip;
->>>> +               bool skip, honor_dep;
->>>>
->>>>                 status = acpi_get_object_info(dep_devices.handles[i], &info);
->>>>                 if (ACPI_FAILURE(status)) {
->>>> @@ -1971,6 +1981,7 @@ static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
->>>>                 }
->>>>
->>>>                 skip = acpi_info_matches_ids(info, acpi_ignore_dep_ids);
->>>> +              honor_dep = acpi_info_matches_ids(info, acpi_honor_dep_ids);
->>>>                 kfree(info);
->>>>
->>>>                 if (skip)
->>>> @@ -1984,6 +1995,7 @@ static u32 acpi_scan_check_dep(acpi_handle handle, bool check_dep)
->>>>
->>>>                 dep->supplier = dep_devices.handles[i];
->>>>                 dep->consumer = handle;
->>>> +               dep->honor_dep = honor_dep;
->>>>
->>>>                 mutex_lock(&acpi_dep_list_lock);
->>>>                 list_add_tail(&dep->node , &acpi_dep_list);
->>>> @@ -2071,6 +2083,9 @@ static acpi_status acpi_bus_check_add_2(acpi_handle handle, u32 lvl_not_used,
->>>>
->>>>  static void acpi_default_enumeration(struct acpi_device *device)
->>>>  {
->>>> +       if (!acpi_dev_ready_for_enumeration(device))
->>>> +               return;
->>>
->>> I'm not sure about this.
->>>
->>> First of all, this adds an acpi_device_is_present() check here which
->>> potentially is a change in behavior and I'm not sure how it is related
->>> to the other changes in this patch (it is not mentioned in the
->>> changelog AFAICS).
->>>
->>> I'm saying "potentially", because if we get here at all,
->>> acpi_device_is_present() has been evaluated already by
->>> acpi_bus_attach().
->>
->> Right the idea was that for this code-path the extra
->> acpi_device_is_present() check is a no-op since the only
->> caller of acpi_default_enumeration() has already done
->> that check before calling acpi_default_enumeration(),
->> where as the is_present check is useful for users outside
->> of the ACPI core code, like e.g. the i2c ACPI enumeration
->> code.
->>
->> Although I see this is also called from
->> acpi_generic_device_attach which comes into play when there
->> is devicetree info embedded inside the ACPI tables.
-> 
-> That too, but generally speaking this change should at least be
-> mentioned in the changelog.
-> 
->>> Now, IIUC, the new acpi_dev_ready_for_enumeration() is kind of an
->>> extension of acpi_device_is_present(), so shouldn't it be called by
->>> acpi_bus_attach() instead of the latter rather than from here?
->>
->> That is an interesting proposal. I assume you want this to replace
->> the current acpi_device_is_present() call in acpi_bus_attach()
->> then ?
-> 
-> That seems consistent to me.
-> 
->> For the use-case at hand here that should work fine and it would also
->> make the honor_deps flag work for devices which bind to the actual
->> acpi_device (because we delay the device_attach()) or
->> use an acpi_scan_handler.
->>
->> This would mean though that we can now have acpi_device-s where
->> acpi_device_is_present() returns true, but which are not
->> initialized (do not have device->flags.initialized set)
->> that would be a new acpi_device state which we have not had
->> before. I do not immediately forsee this causing issues,
->> but still...
->>
->> If you want me to replace the current acpi_device_is_present() call
->> in acpi_bus_attach() with the new acpi_dev_ready_for_enumeration()
->> helper, let me know and I'll prepare a new version with this change
->> (and run some tests with that new version).
-> 
-> I would prefer doing that to making acpi_default_enumeration() special
-> with respect to the handling of dependencies.
+Ok, that works for me, I'll use the above text for v5.
 
-Ok I will make this change in the next version (ETA sometime next week).
+
+> Not 100% sure we need "no_e820" since that should be the default.  But
+> I guess it's conceivable some system might need it.  I just hate
+> adding additional things for people to try and then spread the
+> resulting misinformation as a "fix" on random forums.
+
+no_e820 will be the default for BIOS-year >= 2018, but on older
+systems my patch preserves the old behavior of use_e820.
+
+So to allow people to easily test if no_e820 behavior helps on
+older systems we need it.
+
+I fully agree with your worry about 'misinformation as a "fix"
+on random forums', but I don't have a solution for that.
+
+I guess we could completely omit both cmdline options, but
+that will make debugging issues a lot header. IMHO it is
+worthwhile to have this options to allow users to quickly
+test things when we ask them to do so.
+
+> 
+>>  		routeirq	Do IRQ routing for all PCI devices.
+>>  				This is normally done in pci_enable_device(),
+>>  				so this option is a temporary workaround
+>> diff --git a/arch/x86/include/asm/pci_x86.h b/arch/x86/include/asm/pci_x86.h
+>> index 490411dba438..0bb4e7dd0ffc 100644
+>> --- a/arch/x86/include/asm/pci_x86.h
+>> +++ b/arch/x86/include/asm/pci_x86.h
+>> @@ -39,6 +39,8 @@ do {						\
+>>  #define PCI_ROOT_NO_CRS		0x100000
+>>  #define PCI_NOASSIGN_BARS	0x200000
+>>  #define PCI_BIG_ROOT_WINDOW	0x400000
+>> +#define PCI_USE_E820		0x800000
+>> +#define PCI_NO_E820		0x1000000
+>>  
+>>  extern unsigned int pci_probe;
+>>  extern unsigned long pirq_table_addr;
+>> @@ -64,6 +66,8 @@ void pcibios_scan_specific_bus(int busn);
+>>  
+>>  /* pci-irq.c */
+>>  
+>> +struct pci_dev;
+>> +
+>>  struct irq_info {
+>>  	u8 bus, devfn;			/* Bus, device and function */
+>>  	struct {
+>> @@ -232,3 +236,9 @@ static inline void mmio_config_writel(void __iomem *pos, u32 val)
+>>  # define x86_default_pci_init_irq	NULL
+>>  # define x86_default_pci_fixup_irqs	NULL
+>>  #endif
+>> +
+>> +#if defined(CONFIG_PCI) && defined(CONFIG_ACPI)
+>> +extern bool pci_use_e820;
+>> +#else
+>> +#define pci_use_e820 false
+>> +#endif
+>> diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
+>> index 9b9fb7882c20..e8dc9bc327bd 100644
+>> --- a/arch/x86/kernel/resource.c
+>> +++ b/arch/x86/kernel/resource.c
+>> @@ -1,6 +1,7 @@
+>>  // SPDX-License-Identifier: GPL-2.0
+>>  #include <linux/ioport.h>
+>>  #include <asm/e820/api.h>
+>> +#include <asm/pci_x86.h>
+>>  
+>>  static void resource_clip(struct resource *res, resource_size_t start,
+>>  			  resource_size_t end)
+>> @@ -28,6 +29,9 @@ static void remove_e820_regions(struct resource *avail)
+>>  	int i;
+>>  	struct e820_entry *entry;
+>>  
+>> +	if (!pci_use_e820)
+>> +		return;
+>> +
+>>  	for (i = 0; i < e820_table->nr_entries; i++) {
+>>  		entry = &e820_table->entries[i];
+>>  
+>> diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
+>> index 948656069cdd..6c2febe84b6f 100644
+>> --- a/arch/x86/pci/acpi.c
+>> +++ b/arch/x86/pci/acpi.c
+>> @@ -21,6 +21,8 @@ struct pci_root_info {
+>>  
+>>  static bool pci_use_crs = true;
+>>  static bool pci_ignore_seg = false;
+>> +/* Consumed in arch/x86/kernel/resource.c */
+>> +bool pci_use_e820 = false;
+>>  
+>>  static int __init set_use_crs(const struct dmi_system_id *id)
+>>  {
+>> @@ -160,6 +162,33 @@ void __init pci_acpi_crs_quirks(void)
+>>  	       "if necessary, use \"pci=%s\" and report a bug\n",
+>>  	       pci_use_crs ? "Using" : "Ignoring",
+>>  	       pci_use_crs ? "nocrs" : "use_crs");
+>> +
+>> +	/*
+>> +	 * Some BIOS-es contain a bug where they add addresses which map to system
+>> +	 * RAM in the PCI bridge memory window returned by the ACPI _CRS method, see
+>> +	 * commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address space").
+>> +	 * To avoid this Linux by default excludes E820 reservations when allocating
+>> +	 * addresses since 2010. Windows however ignores E820 reserved regions for
+>> +	 * PCI mem allocations, so in hindsight Linux honoring them is a problem.
+>> +	 * In 2020 some systems have shown-up with E820 reservations which cover the
+>> +	 * entire _CRS returned PCI bridge memory window, causing all attempts to
+>> +	 * assign memory to PCI BARs to fail if Linux honors the E820 reservations.
+>> +	 *
+>> +	 * Ideally Linux would fully stop honoring E820 reservations for PCI mem
+>> +	 * allocations, but then the old systems this was added for will regress.
+>> +	 * Instead keep the old behavior for old systems, while ignoring the E820
+>> +	 * reservations like Windows does for any systems from now on.
+> 
+> Wrap this to fit in 80 columns like the rest of the file.  More
+> important for the file to be internally consistent than any new
+> guidelines.
+
+Already fixed in v4 (the only change in v4). I'll also drop the "Windows..."
+sentence which you did not like in the commit msg for v5.
+
+> 
+>> +	 */
+>> +	if (year >= 0 && year < 2018)
+>> +		pci_use_e820 = true;
+>> +
+>> +	if (pci_probe & PCI_NO_E820)
+>> +		pci_use_e820 = false;
+>> +	else if (pci_probe & PCI_USE_E820)
+>> +		pci_use_e820 = true;
+>> +
+>> +	printk(KERN_INFO "PCI: %s E820 reservations for host bridge windows\n",
+>> +	       pci_use_e820 ? "Honoring" : "Ignoring");
+>>  }
+>>  
+>>  #ifdef	CONFIG_PCI_MMCONFIG
+>> diff --git a/arch/x86/pci/common.c b/arch/x86/pci/common.c
+>> index 3507f456fcd0..091ec7e94fcb 100644
+>> --- a/arch/x86/pci/common.c
+>> +++ b/arch/x86/pci/common.c
+>> @@ -595,6 +595,12 @@ char *__init pcibios_setup(char *str)
+>>  	} else if (!strcmp(str, "nocrs")) {
+>>  		pci_probe |= PCI_ROOT_NO_CRS;
+>>  		return NULL;
+>> +	} else if (!strcmp(str, "use_e820")) {
+>> +		pci_probe |= PCI_USE_E820;
+>> +		return NULL;
+>> +	} else if (!strcmp(str, "no_e820")) {
+>> +		pci_probe |= PCI_NO_E820;
+>> +		return NULL;
+> 
+> Why does pci_probe have to be involved here?  Couldn't we just set
+> pci_use_e820 directly?
+
+This code runs early on, before the heuristics which set
+pci_use_e820 gets set based on the BIOS year, so this is
+done indirectly so that the code doing the heuristics
+(and checking DMI quirks/exceptions if we add any)
+can set a default and then these flags are checked to
+override the default.
+
+> Same argument applies to PCI_USE__CRS and PCI_ROOT_NO_CRS of course,
+> and I probably added those, so maybe there was a reason, or maybe I
+> just screwed up that too.
+
+What I wrote above, also applies to the use_crs handling, which is
+handled the same for the same reason :)
 
 Regards,
 
