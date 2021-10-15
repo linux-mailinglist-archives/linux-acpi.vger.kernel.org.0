@@ -2,114 +2,298 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E84C42E74D
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Oct 2021 05:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA1C942E99B
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Oct 2021 09:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234183AbhJODka (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 14 Oct 2021 23:40:30 -0400
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:44311 "EHLO
-        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234139AbhJODk1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 14 Oct 2021 23:40:27 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R421e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0Us2dp9w_1634269099;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Us2dp9w_1634269099)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 15 Oct 2021 11:38:19 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
-        lenb@kernel.org, rjw@rjwysocki.net
-Cc:     xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com
-Subject: [PATCH] ACPI, APEI, EINJ: Relax platform response timeout to 1 second.
-Date:   Fri, 15 Oct 2021 11:38:17 +0800
-Message-Id: <20211015033817.16719-1-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.24.3 (Apple Git-128)
+        id S235823AbhJOHDh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Oct 2021 03:03:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36452 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234389AbhJOHDh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Oct 2021 03:03:37 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22300C061753
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Oct 2021 00:01:31 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id t16so34037437eds.9
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Oct 2021 00:01:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FmKkfM/1eZ6CH+Nh6bYE9seKAU754cBloquUZK6mdqE=;
+        b=tkVzioxgPLgsxZof6tus91cnxKZrzjdS3z8DEavY8Oi1OmMtqCq65N6JS1GsMCc4eA
+         FgHR7JSmgPMtQpjkLN/lfLULjd48xbrDVeqlAkxp50zIr1GeKu9SxZzpcjOE8rsWpaLO
+         EibptvGr56Ot3HqH2G3Zlrxle/LeVe8kMX97EkEC1Wlstn6q9cA2NbvwBE8994ePisfL
+         /a75reki8xcXuHO6KF/rWatMH67cTf+Tk5yjSZXGfIe3NKPRRCROYb2B0R7ew21kwpZ6
+         MANAKNTSFOG2qsLQVxsKcFpSh04JMzklntlFlllhVRkte4a7whRCrjoNwBvv2TRnuqe0
+         MR/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FmKkfM/1eZ6CH+Nh6bYE9seKAU754cBloquUZK6mdqE=;
+        b=zPlf7Vp95EncehfIFgXHg6F/c4NVFvpPLMuP2qAUkwCxU5+bS43cPtRJ721mwzyvrp
+         HzXF32+Fr+16ks7TRMUSHJIj67vXiS/yBgMP7PFQYhP9+GVXJE+/zBEeUwQPEXzOZ+LZ
+         6tum9VcUuIrRujGHGC+Qqa5KvJk1PZB6dilxOf6Jl6TA3IxiZUXoNPhJDBsbaZeeb6Pc
+         ykRtvVXqv+qc4bXZ8uFS8cwWUG2MPsBQXzfp9N9lCd+ZAYeX1lD9PqVVmWGGUtIj0niR
+         pFtnclhnwaBh1fmZQNoRR8dtkTdkybz9AZGtTHBPgYgvcGcD/8LpOyV3SqR3m1XqsDQO
+         o6Sw==
+X-Gm-Message-State: AOAM532tS8owCx96Fa8PgEhwPEmWUFC9UqQoG4dk9lFfyAu99Ng9NpCl
+        svqRD5WjipFL/PRjRAsvWwEvoXH+U6tLKjy3D8YrGw==
+X-Google-Smtp-Source: ABdhPJwNoPIEp9DqsKcjRA/4bQg99WBVvXwoh/QRRh1FQrhwZnaIKoS9tr3rFItF7II3bnd8+H/p9XfpTYmuH2TO/1A=
+X-Received: by 2002:a50:d50c:: with SMTP id u12mr15591860edi.118.1634281287150;
+ Fri, 15 Oct 2021 00:01:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211008144920.10975-1-asmaa@nvidia.com> <20211008144920.10975-2-asmaa@nvidia.com>
+In-Reply-To: <20211008144920.10975-2-asmaa@nvidia.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Fri, 15 Oct 2021 09:01:16 +0200
+Message-ID: <CAMRc=Mc4yJZ2qv7W+mk-jJhhxEwe+7VowJt51ZekpVrZ=4LsZA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] gpio: mlxbf2: Introduce IRQ support
+To:     Asmaa Mnebhi <asmaa@nvidia.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>, davthompson@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When injecting an error into the platform, the OSPM executes an
-EXECUTE_OPERATION action to instruct the platform to begin the injection
-operation. And then, the OSPM busy waits for a while by continually
-executing CHECK_BUSY_STATUS action until the platform indicates that the
-operation is complete. More specifically, the platform is limited to
-respond within 1 millisecond right now. This is too strict for some
-platforms.
+On Fri, Oct 8, 2021 at 4:50 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
+>
+> Introduce standard IRQ handling in the gpio-mlxbf2.c
+> driver.
+>
+> Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+> ---
+>  drivers/gpio/gpio-mlxbf2.c | 147 ++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 145 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-mlxbf2.c b/drivers/gpio/gpio-mlxbf2.c
+> index 177d03ef4529..3d89912a05b8 100644
+> --- a/drivers/gpio/gpio-mlxbf2.c
+> +++ b/drivers/gpio/gpio-mlxbf2.c
+> @@ -1,9 +1,14 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>
+> +/*
+> + * Copyright (C) 2020-2021 NVIDIA CORPORATION & AFFILIATES
+> + */
+> +
+>  #include <linux/bitfield.h>
+>  #include <linux/bitops.h>
+>  #include <linux/device.h>
+>  #include <linux/gpio/driver.h>
+> +#include <linux/interrupt.h>
+>  #include <linux/io.h>
+>  #include <linux/ioport.h>
+>  #include <linux/kernel.h>
+> @@ -43,9 +48,14 @@
+>  #define YU_GPIO_MODE0                  0x0c
+>  #define YU_GPIO_DATASET                        0x14
+>  #define YU_GPIO_DATACLEAR              0x18
+> +#define YU_GPIO_CAUSE_RISE_EN          0x44
+> +#define YU_GPIO_CAUSE_FALL_EN          0x48
+>  #define YU_GPIO_MODE1_CLEAR            0x50
+>  #define YU_GPIO_MODE0_SET              0x54
+>  #define YU_GPIO_MODE0_CLEAR            0x58
+> +#define YU_GPIO_CAUSE_OR_CAUSE_EVTEN0  0x80
+> +#define YU_GPIO_CAUSE_OR_EVTEN0                0x94
+> +#define YU_GPIO_CAUSE_OR_CLRCAUSE      0x98
+>
+>  struct mlxbf2_gpio_context_save_regs {
+>         u32 gpio_mode0;
+> @@ -55,6 +65,7 @@ struct mlxbf2_gpio_context_save_regs {
+>  /* BlueField-2 gpio block context structure. */
+>  struct mlxbf2_gpio_context {
+>         struct gpio_chip gc;
+> +       struct irq_chip irq_chip;
+>
+>         /* YU GPIO blocks address */
+>         void __iomem *gpio_io;
+> @@ -218,15 +229,114 @@ static int mlxbf2_gpio_direction_output(struct gpio_chip *chip,
+>         return ret;
+>  }
+>
+> +static void mlxbf2_gpio_irq_enable(struct irq_data *irqd)
+> +{
+> +       struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
+> +       struct mlxbf2_gpio_context *gs = gpiochip_get_data(gc);
+> +       int offset = irqd_to_hwirq(irqd);
+> +       unsigned long flags;
+> +       u32 val;
+> +
+> +       spin_lock_irqsave(&gs->gc.bgpio_lock, flags);
+> +       val = readl(gs->gpio_io + YU_GPIO_CAUSE_OR_CLRCAUSE);
+> +       val |= BIT(offset);
+> +       writel(val, gs->gpio_io + YU_GPIO_CAUSE_OR_CLRCAUSE);
+> +
+> +       val = readl(gs->gpio_io + YU_GPIO_CAUSE_OR_EVTEN0);
+> +       val |= BIT(offset);
+> +       writel(val, gs->gpio_io + YU_GPIO_CAUSE_OR_EVTEN0);
+> +       spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
+> +}
+> +
+> +static void mlxbf2_gpio_irq_disable(struct irq_data *irqd)
+> +{
+> +       struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
+> +       struct mlxbf2_gpio_context *gs = gpiochip_get_data(gc);
+> +       int offset = irqd_to_hwirq(irqd);
+> +       unsigned long flags;
+> +       u32 val;
+> +
+> +       spin_lock_irqsave(&gs->gc.bgpio_lock, flags);
+> +       val = readl(gs->gpio_io + YU_GPIO_CAUSE_OR_EVTEN0);
+> +       val &= ~BIT(offset);
+> +       writel(val, gs->gpio_io + YU_GPIO_CAUSE_OR_EVTEN0);
+> +       spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
+> +}
+> +
+> +static irqreturn_t mlxbf2_gpio_irq_handler(int irq, void *ptr)
+> +{
+> +       struct mlxbf2_gpio_context *gs = ptr;
+> +       struct gpio_chip *gc = &gs->gc;
+> +       unsigned long pending;
+> +       u32 level;
+> +
+> +       pending = readl(gs->gpio_io + YU_GPIO_CAUSE_OR_CAUSE_EVTEN0);
+> +       writel(pending, gs->gpio_io + YU_GPIO_CAUSE_OR_CLRCAUSE);
+> +
+> +       for_each_set_bit(level, &pending, gc->ngpio) {
+> +               int gpio_irq = irq_find_mapping(gc->irq.domain, level);
+> +               generic_handle_irq(gpio_irq);
+> +       }
+> +
+> +       return IRQ_RETVAL(pending);
+> +}
+> +
+> +static int
+> +mlxbf2_gpio_irq_set_type(struct irq_data *irqd, unsigned int type)
+> +{
+> +       struct gpio_chip *gc = irq_data_get_irq_chip_data(irqd);
+> +       struct mlxbf2_gpio_context *gs = gpiochip_get_data(gc);
+> +       int offset = irqd_to_hwirq(irqd);
+> +       unsigned long flags;
+> +       bool fall = false;
+> +       bool rise = false;
+> +       u32 val;
+> +
+> +       switch (type & IRQ_TYPE_SENSE_MASK) {
+> +       case IRQ_TYPE_EDGE_BOTH:
+> +               fall = true;
+> +               rise = true;
+> +               break;
+> +       case IRQ_TYPE_EDGE_RISING:
+> +               rise = true;
+> +               break;
+> +       case IRQ_TYPE_EDGE_FALLING:
+> +               fall = true;
+> +               break;
+> +       default:
+> +               return -EINVAL;
+> +       }
+> +
+> +       spin_lock_irqsave(&gs->gc.bgpio_lock, flags);
+> +       if (fall) {
+> +               val = readl(gs->gpio_io + YU_GPIO_CAUSE_FALL_EN);
+> +               val |= BIT(offset);
+> +               writel(val, gs->gpio_io + YU_GPIO_CAUSE_FALL_EN);
+> +       }
+> +
+> +       if (rise) {
+> +               val = readl(gs->gpio_io + YU_GPIO_CAUSE_RISE_EN);
+> +               val |= BIT(offset);
+> +               writel(val, gs->gpio_io + YU_GPIO_CAUSE_RISE_EN);
+> +       }
+> +       spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
+> +
+> +       return 0;
+> +}
+> +
+>  /* BlueField-2 GPIO driver initialization routine. */
+>  static int
+>  mlxbf2_gpio_probe(struct platform_device *pdev)
+>  {
+>         struct mlxbf2_gpio_context *gs;
+>         struct device *dev = &pdev->dev;
+> +       struct gpio_irq_chip *girq;
+>         struct gpio_chip *gc;
+>         unsigned int npins;
+> -       int ret;
+> +       const char *name;
+> +       int ret, irq;
+> +
+> +       name = dev_name(dev);
+>
+>         gs = devm_kzalloc(dev, sizeof(*gs), GFP_KERNEL);
+>         if (!gs)
+> @@ -256,11 +366,44 @@ mlxbf2_gpio_probe(struct platform_device *pdev)
+>                         NULL,
+>                         0);
+>
+> +       if (ret) {
+> +               dev_err(dev, "bgpio_init failed\n");
+> +               return ret;
+> +       }
 
-For example, in Arm platfrom, when injecting a Processor Correctable error,
-the OSPM will warn:
-    Firmware does not respond in time.
+This is a correct fix but it should be sent as a fix aimed for stable
+in a separate branch, as we want that to be backported.
 
-And a message is printed on the console:
-    echo: write error: Input/output error
+Other than that it looks good to me, which tree do you want it to go through?
 
-We observe that the waiting time for DDR error injection is about 10 ms
-and that for PCIe error injection is about 500 ms in Arm platfrom.
+Bart
 
-In this patch, we relax the response timeout to 1 second and allow user to
-pass the time out value as a argument.
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/einj.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-index 133156759551..fa2386ee37db 100644
---- a/drivers/acpi/apei/einj.c
-+++ b/drivers/acpi/apei/einj.c
-@@ -14,6 +14,7 @@
- 
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/moduleparam.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/debugfs.h>
-@@ -28,9 +29,9 @@
- #undef pr_fmt
- #define pr_fmt(fmt) "EINJ: " fmt
- 
--#define SPIN_UNIT		100			/* 100ns */
--/* Firmware should respond within 1 milliseconds */
--#define FIRMWARE_TIMEOUT	(1 * NSEC_PER_MSEC)
-+#define SPIN_UNIT		100			/* 100us */
-+/* Firmware should respond within 1 seconds */
-+#define FIRMWARE_TIMEOUT	(1 * USEC_PER_SEC)
- #define ACPI5_VENDOR_BIT	BIT(31)
- #define MEM_ERROR_MASK		(ACPI_EINJ_MEMORY_CORRECTABLE | \
- 				ACPI_EINJ_MEMORY_UNCORRECTABLE | \
-@@ -40,6 +41,8 @@
-  * ACPI version 5 provides a SET_ERROR_TYPE_WITH_ADDRESS action.
-  */
- static int acpi5;
-+static int timeout_default = FIRMWARE_TIMEOUT;
-+module_param(timeout_default, int, 0644);
- 
- struct set_error_type_with_address {
- 	u32	type;
-@@ -176,7 +179,7 @@ static int einj_timedout(u64 *t)
- 		return 1;
- 	}
- 	*t -= SPIN_UNIT;
--	ndelay(SPIN_UNIT);
-+	udelay(SPIN_UNIT);
- 	touch_nmi_watchdog();
- 	return 0;
- }
-@@ -403,7 +406,7 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
- 			       u64 param3, u64 param4)
- {
- 	struct apei_exec_context ctx;
--	u64 val, trigger_paddr, timeout = FIRMWARE_TIMEOUT;
-+	u64 val, trigger_paddr, timeout = timeout_default;
- 	int rc;
- 
- 	einj_exec_ctx_init(&ctx);
--- 
-2.20.1.12.g72788fdb
-
+> +
+>         gc->direction_input = mlxbf2_gpio_direction_input;
+>         gc->direction_output = mlxbf2_gpio_direction_output;
+>         gc->ngpio = npins;
+>         gc->owner = THIS_MODULE;
+>
+> +       irq = platform_get_irq(pdev, 0);
+> +       if (irq >= 0) {
+> +               gs->irq_chip.name = name;
+> +               gs->irq_chip.irq_set_type = mlxbf2_gpio_irq_set_type;
+> +               gs->irq_chip.irq_enable = mlxbf2_gpio_irq_enable;
+> +               gs->irq_chip.irq_disable = mlxbf2_gpio_irq_disable;
+> +
+> +               girq = &gs->gc.irq;
+> +               girq->chip = &gs->irq_chip;
+> +               girq->handler = handle_simple_irq;
+> +               girq->default_type = IRQ_TYPE_NONE;
+> +               /* This will let us handle the parent IRQ in the driver */
+> +               girq->num_parents = 0;
+> +               girq->parents = NULL;
+> +               girq->parent_handler = NULL;
+> +
+> +               /*
+> +                * Directly request the irq here instead of passing
+> +                * a flow-handler because the irq is shared.
+> +                */
+> +               ret = devm_request_irq(dev, irq, mlxbf2_gpio_irq_handler,
+> +                                      IRQF_SHARED, name, gs);
+> +               if (ret) {
+> +                       dev_err(dev, "failed to request IRQ");
+> +                       return ret;
+> +               }
+> +       }
+> +
+>         platform_set_drvdata(pdev, gs);
+>
+>         ret = devm_gpiochip_add_data(dev, &gs->gc, gs);
+> @@ -315,5 +458,5 @@ static struct platform_driver mlxbf2_gpio_driver = {
+>  module_platform_driver(mlxbf2_gpio_driver);
+>
+>  MODULE_DESCRIPTION("Mellanox BlueField-2 GPIO Driver");
+> -MODULE_AUTHOR("Mellanox Technologies");
+> +MODULE_AUTHOR("Asmaa Mnebhi <asmaa@nvidia.com>");
+>  MODULE_LICENSE("GPL v2");
+> --
+> 2.30.1
+>
