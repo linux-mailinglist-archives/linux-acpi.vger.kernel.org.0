@@ -2,197 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D0742FE25
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Oct 2021 00:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B89842FE71
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Oct 2021 00:57:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235693AbhJOWbS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Oct 2021 18:31:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42760 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235751AbhJOWbS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 15 Oct 2021 18:31:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B73FE6115C;
-        Fri, 15 Oct 2021 22:29:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634336951;
-        bh=TQtRtLYNlFE/GQNWGHE6FL49bQNWg/4TcBK38kMyEcE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OdvqBCvilrxB5rg9TaeamtdhCRox0HpwskMXhsphnvc8PFUZGtmpsu1AMs2gF0wGA
-         9YbLmc+sy5PqGzjPYGxE5N8j3btU3CYGreT7U6rr0J8kGJsi0k7C4g7XDY79WIj8SC
-         X4V3+fTgQxB9FRxot1OBSbzaVd1IiLGDS13cJj0LkVWA1nzN2HqHnsfI9/uQJBGDlg
-         IGPDilW56TCaxYQa/EkCkyG7N5A+jk31n9n5ovfpDLKLInpH7NgYcgvyXQI9C3p/fg
-         9LZj9zgxlhoEvuSNjtRnEfXsvvXsgGg1TCleGikg4tBdzfiMNovhH4+q1XNOdgPnkL
-         e0plAGH1ltXhA==
-Date:   Fri, 15 Oct 2021 23:29:08 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: Re: [PATCH 05/12] regulator: Introduce tps68470-regulator driver
-Message-ID: <YWoAtCdikYfMpUnD@sirena.org.uk>
-References: <YWQU/SYTT5Vk24XH@sirena.org.uk>
- <f6f2d7e8-fdb8-ed64-0cdd-65aded9fc42c@redhat.com>
- <YWmwZJvDYjPWJdb4@sirena.org.uk>
- <d0d1dc05-4cc6-2f47-88a9-700cfc356d86@redhat.com>
- <YWnPaI/ZECdfYre9@sirena.org.uk>
- <843f939a-7e43-bc12-e9fc-582e01129b63@redhat.com>
- <YWnZIZTPiuAIazV+@sirena.org.uk>
- <c595b143-d7ed-e76b-7734-e03d14e0f76e@redhat.com>
- <YWndpGgBtLEAEaNj@sirena.org.uk>
- <1805d16e-87ab-c291-6a73-adabf41344ca@redhat.com>
+        id S243412AbhJOW73 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Oct 2021 18:59:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59694 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243411AbhJOW73 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Oct 2021 18:59:29 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36250C061762
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Oct 2021 15:57:22 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id l6so7263950plh.9
+        for <linux-acpi@vger.kernel.org>; Fri, 15 Oct 2021 15:57:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=3MWGSo8J4w0RXdtVwqVMm4uYTHYEHoeo+tcCsWTKSxY=;
+        b=VZHeZzCY3PL4avtmU8lGuY1CvtpVh+tipHevkUmcXAteh4Dobxc3LNJKbXfdW3Afeg
+         0ZGUGU++NEpP/uTKsyiQaARblf1QCbYOWBGVQCSR+AvKnRxlDtxiRMQHet5qfZ5qYPWg
+         qDV2tH/ubCcZwygo9bw+twYt/FIwJZ8hDUEMMhTlypPSwAAAmCj1UlqGNeiYwXNOUm4p
+         9n1azARmndnl/R2ZbOht6441KMS/w5CruDP6RlKoE4LUd5rMCik3biKxV6xjY95Oteys
+         Pkm4ZLzJD9gtSDKC3l8IArbE8CrsHWDKy6jJ3m9NijRIN69QLbSu58a5bwH0Gf+dqGWq
+         VFYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=3MWGSo8J4w0RXdtVwqVMm4uYTHYEHoeo+tcCsWTKSxY=;
+        b=cX3qDs+YwcceRcYdboO6vhOmty8zp8shyX/v1Z7ycL+nxtXhl3H348t5jMAbErL8q8
+         QRVKIJ4T8AevXQx5ScT9JHqUvQjFYP18XETkydNGxe5qRadTSaUHwXSnc6utxXk7ynp8
+         8/P3dWBguqrrJsI7oGunbGYBOjybFvcbIMtnkmfpGu3UjoNVZtxV2VTz3dPcJNAnp74S
+         5yyYI6qajrtXT1A+T4b6Ry6nEdEn+p1hs3W5IrkZr05gOB8g7JokLTLcB7EZaEIJ6Ywz
+         uKyFHFhE30F4wx92fHSSybflN+wuVF9AJkQowHnpBXMNEO2NT0qufbRtJogAf8mJUZOe
+         NizQ==
+X-Gm-Message-State: AOAM533kqcPx4SKwEPlQmvDR5lMoLiU9K9zUdHfeNMI2pOEQuQZUDxNZ
+        fM6bYoF9p0XmchDau+aJAnCBhfb9VGK8sA==
+X-Google-Smtp-Source: ABdhPJzDiTg12tYXR/PBHuS6tQb0K8WgqbJknwYLtFfXcCkEwyvPA0Aa3zGr1lqiSa8BFBqwmi26dg==
+X-Received: by 2002:a17:902:ed0b:b0:13f:4318:491a with SMTP id b11-20020a170902ed0b00b0013f4318491amr13483327pld.4.1634338641488;
+        Fri, 15 Oct 2021 15:57:21 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id x15sm5665489pgo.48.2021.10.15.15.57.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Oct 2021 15:57:21 -0700 (PDT)
+Date:   Fri, 15 Oct 2021 22:57:17 +0000
+From:   Sean Christopherson <seanjc@google.com>
+To:     Tony Luck <tony.luck@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        naoya.horiguchi@nec.com, Andrew Morton <akpm@linux-foundation.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Cathy Zhang <cathy.zhang@intel.com>, linux-sgx@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        Reinette Chatre <reinette.chatre@intel.com>
+Subject: Re: [PATCH v9 1/7] x86/sgx: Add new sgx_epc_page flag bit to mark
+ in-use pages
+Message-ID: <YWoHTR8D7M8sEUpZ@google.com>
+References: <20211001164724.220532-1-tony.luck@intel.com>
+ <20211011185924.374213-1-tony.luck@intel.com>
+ <20211011185924.374213-2-tony.luck@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="F/jmgXxh9qwDNeFa"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1805d16e-87ab-c291-6a73-adabf41344ca@redhat.com>
-X-Cookie: 1: No code table for op: ++post
+In-Reply-To: <20211011185924.374213-2-tony.luck@intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Mon, Oct 11, 2021, Tony Luck wrote:
+> SGX EPC pages go through the following life cycle:
+> 
+>         DIRTY ---> FREE ---> IN-USE --\
+>                     ^                 |
+>                     \-----------------/
+> 
+> Recovery action for poison for a DIRTY or FREE page is simple. Just
+> make sure never to allocate the page. IN-USE pages need some extra
+> handling.
+> 
+> Add a new flag bit SGX_EPC_PAGE_IN_USE that is set when a page
+> is allocated and cleared when the page is freed.
+> 
+> Notes:
+> 
+> 1) These transitions are made while holding the node->lock so that
+>    future code that checks the flags while holding the node->lock
+>    can be sure that if the SGX_EPC_PAGE_IN_USE bit is set, then the
+>    page is on the free list.
+> 
+> 2) Initially while the pages are on the dirty list the
+>    SGX_EPC_PAGE_IN_USE bit is set.
 
---F/jmgXxh9qwDNeFa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This needs to state _why_ pages are marked as IN_USE from the get-go.  Ignoring
+the "Notes", the whole changelog clearly states the the DIRTY state does _not_
+require special handling, but then "Add SGX infrastructure to recover from poison"
+goes and relies on it being set.
 
-On Fri, Oct 15, 2021 at 10:14:30PM +0200, Hans de Goede wrote:
-> On 10/15/21 9:59 PM, Mark Brown wrote:
+Alternatively, why not invert it and have SGX_EPC_PAGE_FREE?  That would have
+clear semantics, the poison recovery code wouldn't have to assume that !flags
+means "free", and the whole changelog becomes:
 
-> > No, it's not.  What normally happens is that whatever registers the
-> > device will when registering the device supply platform data that the
-> > device later picks up from the struct device during probe.  What you're
-> > saying is that the idea here is that driver unconditionally declares
-> > platform data and then other code scribbles over that before the driver
-> > instantiates.  This is cleaner in that it keeps the platform
-
-Actually, correction - there's no export of tps68470_init[] so I guess
-that's just the data that gets used :/
-
-> > configuration together and safer since the device can't exist before
-> > it's configuration is provided.
-
-> Right, this is the standard device-tree model. Unfortunately the
-> information about which supplies are needed and the constraints
-> for those supplies is missing from the ACPI description for the
-> devices which we are dealing with here.
-
-That's not just the standard device tree model, that's how systems with
-board files work too.
-
-> During that discussion you said that instead we should sinmply
-> directly pass the regulator_init_data, rather then first
-> encoding this in device-properties in a swnode and then
-> decoding those again in the regulator core.
-
-> And passing the regulator_init_data is exactly what we are doing
-> now; and now again this is not what we should be doing ?
-
-No, it is not what the driver doing now.  The driver will *optionally*
-check for platform data, but if none is provided or if it doesn't
-configure some of the regulators then the driver will provide some hard
-coded regulator_init_data as a default.  These might be OK on the system
-you're looking at but will also be used on any other system that happens
-to instantiate the driver without platform data where there's no
-guarantee that the information provided will be safe.  These defaults
-that are being provided may use the same structure that gets used for
-platform data but they aren't really platform data.
-
-Yes, someone could use this on a system that does things in the standard
-fashion where the platform data is getting passed in but if it's ever
-run on any other system then it's going to assume this default platform
-data with these constraints that have been embedded directly into the
-driver without anything to ensure that they make sense on that system.
-
-Indeed, now I go back and dig out the rest of the series it seems that
-there's some drivers/platforms/x86 code added later which does in fact
-do the right thing for some but not all of the regulators, it supplies
-some platform data which overrides some but not all of this default
-regulator_init_data using platform_data having identified the system
-using DMI information (with configurations quite different to and much
-more restricted than the defaults provided, exactly why defaults are an
-issue).  I'm now even more confused about what the information that's
-there is doing in the driver.  Either it's all unneeded even for your
-system and should just be deleted, or if any of it is needed then it
-should be moved to being initialised in the same place everything else
-is so that it's only used on your system and not on any other system
-that happens to end up running the driver.
-
-In any case given that your platform does actually have code for
-identifying it and supplying appropriate platform data the driver itself
-can be fixed by just deleting the else case of
-
-	if (pdata && pdata->reg_init_data[i])
-		config.init_data = pdata->reg_init_data[i];
-	else
-		config.init_data = &tps68470_init[i];
-
-and the data structure/macro it uses.  If no configuration is provided
-by the platform then none should be provided to the core, this in turn
-means that the regulator framework won't reconfigure the hardware if it
-doesn't know it's safe to do so.
-
-> Also note that the current solution is exactly what I suggested
-> we should do during the discussion with Daniel and I even provided
-> example code and you said absolutely nothing about this!
-
-I had been under the impression that the platform data would look like
-normal platform data and come along with the device registration,
-providing default regulator_init_data hadn't really occurred to me.
-
-> And please keep in mind that we *cannot* change the ACPI firmware interfaces
-> and that whether we like it or not things simply work different in the ACPI
-> world.
-
-> Frankly I'm quit unhappy, angry even about how you are blocking progress
-> here. You don't like APCI we get it, can we get over that now please?
-
-ACPI is fine, we have a bunch of perfectly good ways to handle things
-that need quirking on it safely - both platform_data and DMI quirks can
-and do work well here.  The issue is that we should be using those
-things rather than inventing new things unless those new things solve a
-problem.
-
-> So far all you seem to be doing is shooting down solutions, then first
-> being quiet about suggested alternative solutions and then once the
-> alternative solutions are implemented shoot them down again...
-
-> And all that without adding anything constructive. All you have
-> told us is how things should not be done (according to you).
-
-> So fine everything we come up is wrong, please tell us how we should
-> solve this instead then!
-
-The important thing is to get rid of the hard coded defaults for the
-regulator_init_data in the driver itself, if there is regulator_init_data
-in the driver itself then it should be guarded with a DMI or similar
-quirk.  Like I say above I think now I've gone back and dug through the
-rest of the series once the default init_data is gone it's probably OK.
-
---F/jmgXxh9qwDNeFa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmFqALMACgkQJNaLcl1U
-h9B5aQgAhQ7bqrNnhCcHborjeRwONxMdsrv6cyyt5sQlX5QAkjsYkIsE6OJfdwPM
-vHFJhWNXVJxfixf0+HRxF0ROwDSxjE+YOhuAnfxi61RWXx1aLkovdK9kBjVcRP3Y
-+WAgoVItgQ5PZkaL5x8+EvGDlAAmqjauL2EstgBYLoIA4jO9DW0jUoBEISyTlngS
-GXw+3CGX0mKpIADv8UCCjVKFZ4gXerXRroZD6tMqS1rV/YkpaLreZtHZz1iTMSOX
-lkllAPXbaqmKK2XIGd3N6kniK1JgG2uBoXGf4ErkWGl5swcNjIV8QaOVrCfyyg0r
-w23iI+GBFoQd2NNhwK+8601UryTwZQ==
-=ujeE
------END PGP SIGNATURE-----
-
---F/jmgXxh9qwDNeFa--
+  Add a flag to explicitly track whether or not an EPC page is on a free list,
+  memory failure recovery code needs to be able to detect if a poisoned page is
+  free so that recovery can know if it's safe to "steal" the page.
