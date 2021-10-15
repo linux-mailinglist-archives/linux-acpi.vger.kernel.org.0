@@ -2,108 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79CF142EA9D
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Oct 2021 09:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D05B042ECDE
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Oct 2021 10:53:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236295AbhJOHzd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Oct 2021 03:55:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:35140 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236270AbhJOHz3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 15 Oct 2021 03:55:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634284402;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WSCdihYmmS0IN1GmuVO1Ycrr/Th2rhDypmITMXSUWgM=;
-        b=gyYvNvWquL5ckRL2C5AnQL4CpQ1rAuDDRs1O0F0dv3ylrvUdxCQYt5JxnY3kfUkIeCufe/
-        gbfJKL/c2Gb7Q6an3YuHbVoxKH5IWqF0T6Z3iaeXMJ2D0E5xQPjE3j0KuNGc/q0tbuF/ZT
-        w6npF8ljPMGHHZFpiJid5ECLN3FAFHs=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-391-as6V9YyONS-WpiBCI9m_Sg-1; Fri, 15 Oct 2021 03:53:21 -0400
-X-MC-Unique: as6V9YyONS-WpiBCI9m_Sg-1
-Received: by mail-ed1-f71.google.com with SMTP id c30-20020a50f61e000000b003daf3955d5aso7494122edn.4
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Oct 2021 00:53:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=WSCdihYmmS0IN1GmuVO1Ycrr/Th2rhDypmITMXSUWgM=;
-        b=bRAfX0HO8IlYcMdWSCWlOOkFrWUUZJnjqssnFgddM3UNhXY5AjzhCVgUcf7NES84Tg
-         yx/LgmEOAW/LPTgMvHHZeSYiBE1yTTNzV6Ijbncto/J1wiNz90/UzNs0PEDQJpQ9WKs5
-         KHrOpJWmmY3AWC4MJ9esjJqnGwqFH2NbB1nqQqRbLmrsSNAnOaZrWXGAZFiCUcsOhnpt
-         cIwFbdEdLWV2bj2QxlSYEOmJY1VZWlcUGlxFTpID0DO5g4HjhB2HMZqVbDLdKGjxnlcj
-         baQjogSnK1zj/6kLDGDoc38FtiL8yGgtQeTYQ8Poq2AuuQbCT5fnB+TD3XUJ+BpWIEnJ
-         pMvQ==
-X-Gm-Message-State: AOAM5310JAk5jZ2UwHhOK7S86U8K4ICoZABBSrsgw9/FqchiDKhUXGPN
-        Y0g7HY5NXq70+fMrBsX24fH2Wek85m4pUs+ot5Pr84FDKzWymsMXBWdlz8U09oSthhLXQGsQ6lm
-        Hv51oBH2ZbaIafAfhlmHm4g==
-X-Received: by 2002:a50:da4e:: with SMTP id a14mr15561992edk.154.1634284400314;
-        Fri, 15 Oct 2021 00:53:20 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyKwzRN7rZPYuvP0ikraKZR0NQIEUYRQJlDmLs7FqK/noKjG07rVbr2fRTQwVGXutgUYCgiRA==
-X-Received: by 2002:a50:da4e:: with SMTP id a14mr15561982edk.154.1634284400178;
-        Fri, 15 Oct 2021 00:53:20 -0700 (PDT)
-Received: from x1.localdomain (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id a9sm4080539edr.96.2021.10.15.00.53.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Oct 2021 00:53:19 -0700 (PDT)
-Subject: Re: [PATCH v4 0/1] x86/PCI: Ignore E820 reservations for bridge
- windows on newer systems
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20211014211104.GA2048701@bhelgaas>
-From:   Hans de Goede <hdegoede@redhat.com>
-Message-ID: <8761ccf4-ee6a-348e-0d9f-531adc5dd73a@redhat.com>
-Date:   Fri, 15 Oct 2021 09:53:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S233464AbhJOI4B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Oct 2021 04:56:01 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:25192 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232271AbhJOI4B (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 15 Oct 2021 04:56:01 -0400
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.53])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4HW0Qh4lQ2z8tgb;
+        Fri, 15 Oct 2021 16:52:44 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Fri, 15 Oct 2021 16:53:53 +0800
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Fri, 15 Oct 2021 16:53:52 +0800
+Subject: Re: [PATCH] acpi: arm64: fix section mismatch warning
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+CC:     Arnd Bergmann <arnd@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        "Marc Zyngier" <maz@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20210927141921.1760209-1-arnd@kernel.org>
+ <988fa24c-76d2-1c9d-9761-b356efb0576c@huawei.com>
+ <20211013090254.GA9901@lpieralisi>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <220f6cfb-80b1-44db-ce1d-462af5dbf74e@huawei.com>
+Date:   Fri, 15 Oct 2021 16:53:52 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20211014211104.GA2048701@bhelgaas>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <20211013090254.GA9901@lpieralisi>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 10/14/21 11:11 PM, Bjorn Helgaas wrote:
-> On Thu, Oct 14, 2021 at 05:39:07PM +0200, Hans de Goede wrote:
->> Hi All,
+On 2021/10/13 17:02, Lorenzo Pieralisi wrote:
+> On Tue, Oct 12, 2021 at 03:03:29PM +0800, Hanjun Guo wrote:
+>> Hi Arnd,
 >>
->> Here is v4 of my patch to address the E820 reservations vs PCI host bridge
->> ranges issue which are causing touchpad and/or thunderbolt issues on many
->> different laptop models.
+>> On 2021/9/27 22:19, Arnd Bergmann wrote:
+>>> From: Arnd Bergmann <arnd@arndb.de>
+>>>
+>>> In a gcc-11 randconfig build I came across this warning:
+>>>
+>>> WARNING: modpost: vmlinux.o(.text.unlikely+0x2c084): Section mismatch in reference from the function next_platform_timer() to the variable .init.data:acpi_gtdt_desc
+>>> The function next_platform_timer() references
+>>> the variable __initdata acpi_gtdt_desc.
+>>> This is often because next_platform_timer lacks a __initdata
+>>> annotation or the annotation of acpi_gtdt_desc is wrong.
+>>>
+>>> This happens when next_platform_timer() fails to get inlined
+>>> despite the inline annotation. Adding '__init' solves the issue,
+>>> and it seems best to remove the 'inline' in the process seems
+>>> better anyway.
 >>
->> I believe that this is ready for merging now.
+>> There was a patch to fix this issue as well [1],
+>> but not merged yet.
 >>
->> Bjorn, can you review/ack this please ?
->>
->> x86/tip folks it would be ideal if you can pick this up and send it out
->> as a fix to Linus for 5.15. This fixes a bug which has been plaguing a
->> lot of users (see all the bug links in the commit msg).
+>> [1]: https://lore.kernel.org/linux-acpi/7f29a149-e005-f13f-2cc4-a9eb737107e1@huawei.com/T/
 > 
-> FWIW, I think there's a v5 coming.
+> My bad, we did not coordinate well - I noticed your Acked-by but as a
+> rule we should also CC LAKML and Catalin/Will (if they aren't CCed) on
+> the reply to make sure they can actually see it.
 
-Yes I posted a v5 yesterday evening (CEST).
+It's my bad. I will make sure LAKML and Catalin/Will are CCed next time
+when I reply the email.
 
-Regards,
-
-Hans
-
+Thanks
+Hanjun
