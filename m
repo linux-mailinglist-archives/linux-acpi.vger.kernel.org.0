@@ -2,115 +2,307 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B34C742FCAB
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Oct 2021 21:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CA1142FCBF
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Oct 2021 22:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242899AbhJOUBm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 15 Oct 2021 16:01:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54398 "EHLO mail.kernel.org"
+        id S242925AbhJOUFq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 15 Oct 2021 16:05:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55100 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233148AbhJOUBm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 15 Oct 2021 16:01:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0238E61164;
-        Fri, 15 Oct 2021 19:59:34 +0000 (UTC)
+        id S233148AbhJOUFq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 15 Oct 2021 16:05:46 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3A8A561164;
+        Fri, 15 Oct 2021 20:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634327975;
-        bh=aDK8iZJAuvta5cySIJo1074ogrFA3hWL5lNWPdBB9go=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dU7GudpA/i2qy5bF57zhQl06SCvKgJ1Lm5n0Vvilqexr6j2ZtfAMdyLb5Okwzi+wZ
-         Zx/fIwh1OXjcJdneChwzzWfD5VUBiPoCPdwmNdpkTWALHCsttw69nntjHocgXDEYKZ
-         Jty5atq741oSa+f0vdRCewqf9cDRPl1G3gIsQEVOQguKJIB7ql9J21hp0vcVhHm/40
-         rfM7xF9SxWenUD/2VcTVvLEVivIjapf10wBsEu69eQpN/rP669lTi9LUsR2VnpOD9p
-         wRrLDDQFTgwMow3rrmkLvQUFiBPwjqi4uTFpAfW+uNVFUv68bK753SYQDQ4CQmuOSn
-         a2h0nDoC0/aTg==
-Date:   Fri, 15 Oct 2021 20:59:32 +0100
-From:   Mark Brown <broonie@kernel.org>
+        s=k20201202; t=1634328219;
+        bh=y4OcCANn8p1zi/mf9+B2x5L9JgbCIkAItcP35k/OggQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=ZZC3Mq+MEHCQbUqx8CFe/l+/yu38VVwgg95Bh8sk1D9Um5J2SRlSapFecVdYwxTe7
+         xUiizhensx6UEKLUskaVpWpnVW5avZPJCUBma43ihOYVtdy6Wdd26FRDaORDV+xISy
+         ff1JwhE5+S56/YUf6BuDjOu8GH0FUKq17n283xF2eLMwki0UYOnmBrOZBLQ12Sl8Sa
+         fodcHZZ01AMj5e78WXa1IJRGJlhIYQDydW49iriukWHq0M/CT5XSMqRzk+GXeKySi9
+         zexZn5/VfR3b43vamCa4Wm0DLdNoygLHKCGwfoRpPiafzq6IcXCweVvlFJbhar6Yvz
+         300x7NGcJonDA==
+Date:   Fri, 15 Oct 2021 15:03:37 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
 To:     Hans de Goede <hdegoede@redhat.com>
 Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, x86@kernel.org,
         linux-kernel@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: Re: [PATCH 05/12] regulator: Introduce tps68470-regulator driver
-Message-ID: <YWndpGgBtLEAEaNj@sirena.org.uk>
-References: <20211008162121.6628-1-hdegoede@redhat.com>
- <20211008162121.6628-6-hdegoede@redhat.com>
- <YWQU/SYTT5Vk24XH@sirena.org.uk>
- <f6f2d7e8-fdb8-ed64-0cdd-65aded9fc42c@redhat.com>
- <YWmwZJvDYjPWJdb4@sirena.org.uk>
- <d0d1dc05-4cc6-2f47-88a9-700cfc356d86@redhat.com>
- <YWnPaI/ZECdfYre9@sirena.org.uk>
- <843f939a-7e43-bc12-e9fc-582e01129b63@redhat.com>
- <YWnZIZTPiuAIazV+@sirena.org.uk>
- <c595b143-d7ed-e76b-7734-e03d14e0f76e@redhat.com>
+        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>, stable@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH v5 1/2] x86/PCI: Ignore E820 reservations for bridge
+ windows on newer systems
+Message-ID: <20211015200337.GA2152220@bhelgaas>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hwxuglK+oW+JgNbU"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <c595b143-d7ed-e76b-7734-e03d14e0f76e@redhat.com>
-X-Cookie: 1: No code table for op: ++post
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211014183943.27717-2-hdegoede@redhat.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Thu, Oct 14, 2021 at 08:39:42PM +0200, Hans de Goede wrote:
+> Some BIOS-es contain a bug where they add addresses which map to system
+> RAM in the PCI host bridge window returned by the ACPI _CRS method, see
+> commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
+> space").
+> 
+> To work around this bug Linux excludes E820 reserved addresses when
+> allocating addresses from the PCI host bridge window since 2010.
+> 
+> Recently (2020) some systems have shown-up with E820 reservations which
+> cover the entire _CRS returned PCI bridge memory window, causing all
+> attempts to assign memory to PCI BARs which have not been setup by the
+> BIOS to fail. For example here are the relevant dmesg bits from a
+> Lenovo IdeaPad 3 15IIL 81WE:
+> 
+>  [mem 0x000000004bc50000-0x00000000cfffffff] reserved
+>  pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
+> 
+> The ACPI specifications appear to allow this new behavior:
+> 
+> The relationship between E820 and ACPI _CRS is not really very clear.
+> ACPI v6.3, sec 15, table 15-374, says AddressRangeReserved means:
+> 
+>   This range of addresses is in use or reserved by the system and is
+>   not to be included in the allocatable memory pool of the operating
+>   system's memory manager.
+> 
+> and it may be used when:
+> 
+>   The address range is in use by a memory-mapped system device.
+> 
+> Furthermore, sec 15.2 says:
+> 
+>   Address ranges defined for baseboard memory-mapped I/O devices, such
+>   as APICs, are returned as reserved.
+> 
+> A PCI host bridge qualifies as a baseboard memory-mapped I/O device,
+> and its apertures are in use and certainly should not be included in
+> the general allocatable pool, so the fact that some BIOS-es reports
+> the PCI aperture as "reserved" in E820 doesn't seem like a BIOS bug.
+> 
+> So it seems that the excluding of E820 reserved addresses is a mistake.
+> 
+> Ideally Linux would fully stop excluding E820 reserved addresses,
+> but then the old systems this was added for will regress.
+> Instead keep the old behavior for old systems, while ignoring
+> the E820 reservations for any systems from now on.
+> 
+> Old systems are defined here as BIOS year < 2018, this was chosen to
+> make sure that pci_use_e820 will not be set on the currently affected
+> systems, while at the same time also taking into account that the
+> systems for which the E820 checking was originally added may have
+> received BIOS updates for quite a while (esp. CVE related ones),
+> giving them a more recent BIOS year then 2010.
+> 
+> Also add pci=no_e820 and pci=use_e820 options to allow overriding
+> the BIOS year heuristic.
+> 
+> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
+> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
+> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
+> BugLink: https://bugs.launchpad.net/bugs/1878279
+> BugLink: https://bugs.launchpad.net/bugs/1931715
+> BugLink: https://bugs.launchpad.net/bugs/1932069
+> BugLink: https://bugs.launchpad.net/bugs/1921649
+> Cc: Benoit Grégoire <benoitg@coeus.ca>
+> Cc: Hui Wang <hui.wang@canonical.com>
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
---hwxuglK+oW+JgNbU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-On Fri, Oct 15, 2021 at 09:48:24PM +0200, Hans de Goede wrote:
-> On 10/15/21 9:40 PM, Mark Brown wrote:
+I'm sorry we have to add more ugliness because of my mistake in
+4dc2287c1805, but I don't see a better option.
 
-> > I can't see how the quirking gets propagated through into the driver and
-> > I'd really expect that in a situation like this the platform data would
-> > be passed through as platform data from the code doing the quirks,
-
-> That is exactly what is happening here. The platform_data in this
-> case is just an array of regulator_init_data pointers (one per
-> regulator in the PMIC):
-
-No, it's not.  What normally happens is that whatever registers the
-device will when registering the device supply platform data that the
-device later picks up from the struct device during probe.  What you're
-saying is that the idea here is that driver unconditionally declares
-platform data and then other code scribbles over that before the driver
-instantiates.  This is cleaner in that it keeps the platform
-configuration together and safer since the device can't exist before
-it's configuration is provided.
-
-> So we have the code doing the quirks determining the regulator_init_data
-> and passing this through platform_data, which AFAICT is exactly what
-> you want?
-
-No.  There should be no sign of the platform data getting allocated or
-initialised in the driver consuming the platform data.  It should purely
-be reading the data it gets passed by the platform initialisation code.
-
-Please make the use of platform data look like normal platform data use
-rather than going and inventing some new scheme.
-
---hwxuglK+oW+JgNbU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmFp3aQACgkQJNaLcl1U
-h9CMmQf9GXF+Ae5ZPsG+sX+gtPjIfCGeoaqaaFCL/JUl6WBgADy6d5JupE7xRn4k
-WbUPvFobIVxVafRgCdM8pKY5W6I3BQN5LMy+8fQwsyDBgjd6Cvc/cZC5gxANQkKg
-eEvLuXEOx8ZLSfEzIuqw1DZOX7Ka4jkH1KKJt6xbru7PCARlYIFDXbuSq0u86uXf
-JEQs5gqrTPmf1Az0X+b/nBQteQNJ4hy0V38LWkwb2iY1VgVZeBhR+grulQXpr1Jk
-lA1rTi//WYeohXMn7R4OjGK9JHruL8iiTCrsUw34XpVuin1Qlz47HMvtm/z3ZeXW
-/bIdhKDbnuMeV6tIDt35Nl8dvF2+cQ==
-=UmWu
------END PGP SIGNATURE-----
-
---hwxuglK+oW+JgNbU--
+> ---
+> Changes in v5:
+> - Drop mention of Windows behavior from the commit msg, replace with a
+>   reference to the specs
+> - Improve documentation in Documentation/admin-guide/kernel-parameters.txt
+> - Reword the big comment added, use "PCI host bridge window" in it and drop
+>   all refences to Windows
+> 
+> Changes in v4:
+> - Rewrap the big comment block to fit in 80 columns
+> - Add Rafael's Acked-by
+> - Add Cc: stable@vger.kernel.org
+> 
+> Changes in v3:
+> - Commit msg tweaks (drop dmesg timestamps, typo fix)
+> - Use "defined(CONFIG_...)" instead of "defined CONFIG_..."
+> - Add Mika's Reviewed-by
+> 
+> Changes in v2:
+> - Replace the per model DMI quirk approach with disabling E820 reservations
+>   checking for all systems with a BIOS year >= 2018
+> - Add documentation for the new kernel-parameters to
+>   Documentation/admin-guide/kernel-parameters.txt
+> ---
+> Other patches trying to address the same issue:
+> https://lore.kernel.org/r/20210624095324.34906-1-hui.wang@canonical.com
+> https://lore.kernel.org/r/20200617164734.84845-1-mika.westerberg@linux.intel.com
+> V1 patch:
+> https://lore.kernel.org/r/20211005150956.303707-1-hdegoede@redhat.com
+> ---
+>  .../admin-guide/kernel-parameters.txt         |  9 ++++++
+>  arch/x86/include/asm/pci_x86.h                | 10 +++++++
+>  arch/x86/kernel/resource.c                    |  4 +++
+>  arch/x86/pci/acpi.c                           | 28 +++++++++++++++++++
+>  arch/x86/pci/common.c                         |  6 ++++
+>  5 files changed, 57 insertions(+)
+> 
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index 43dc35fe5bc0..07f1615206d4 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -3949,6 +3949,15 @@
+>  				please report a bug.
+>  		nocrs		[X86] Ignore PCI host bridge windows from ACPI.
+>  				If you need to use this, please report a bug.
+> +		use_e820	[X86] Use E820 reservations to exclude parts of
+> +				PCI host bridge windows. This is a workaround
+> +				for BIOS defects in host bridge _CRS methods.
+> +				If you need to use this, please report a bug to
+> +				<linux-pci@vger.kernel.org>.
+> +		no_e820		[X86] Ignore E820 reservations for PCI host
+> +				bridge windows. This is the default on modern
+> +				hardware. If you need to use this, please report
+> +				a bug to <linux-pci@vger.kernel.org>.
+>  		routeirq	Do IRQ routing for all PCI devices.
+>  				This is normally done in pci_enable_device(),
+>  				so this option is a temporary workaround
+> diff --git a/arch/x86/include/asm/pci_x86.h b/arch/x86/include/asm/pci_x86.h
+> index 490411dba438..0bb4e7dd0ffc 100644
+> --- a/arch/x86/include/asm/pci_x86.h
+> +++ b/arch/x86/include/asm/pci_x86.h
+> @@ -39,6 +39,8 @@ do {						\
+>  #define PCI_ROOT_NO_CRS		0x100000
+>  #define PCI_NOASSIGN_BARS	0x200000
+>  #define PCI_BIG_ROOT_WINDOW	0x400000
+> +#define PCI_USE_E820		0x800000
+> +#define PCI_NO_E820		0x1000000
+>  
+>  extern unsigned int pci_probe;
+>  extern unsigned long pirq_table_addr;
+> @@ -64,6 +66,8 @@ void pcibios_scan_specific_bus(int busn);
+>  
+>  /* pci-irq.c */
+>  
+> +struct pci_dev;
+> +
+>  struct irq_info {
+>  	u8 bus, devfn;			/* Bus, device and function */
+>  	struct {
+> @@ -232,3 +236,9 @@ static inline void mmio_config_writel(void __iomem *pos, u32 val)
+>  # define x86_default_pci_init_irq	NULL
+>  # define x86_default_pci_fixup_irqs	NULL
+>  #endif
+> +
+> +#if defined(CONFIG_PCI) && defined(CONFIG_ACPI)
+> +extern bool pci_use_e820;
+> +#else
+> +#define pci_use_e820 false
+> +#endif
+> diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
+> index 9b9fb7882c20..e8dc9bc327bd 100644
+> --- a/arch/x86/kernel/resource.c
+> +++ b/arch/x86/kernel/resource.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  #include <linux/ioport.h>
+>  #include <asm/e820/api.h>
+> +#include <asm/pci_x86.h>
+>  
+>  static void resource_clip(struct resource *res, resource_size_t start,
+>  			  resource_size_t end)
+> @@ -28,6 +29,9 @@ static void remove_e820_regions(struct resource *avail)
+>  	int i;
+>  	struct e820_entry *entry;
+>  
+> +	if (!pci_use_e820)
+> +		return;
+> +
+>  	for (i = 0; i < e820_table->nr_entries; i++) {
+>  		entry = &e820_table->entries[i];
+>  
+> diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
+> index 948656069cdd..72d473054262 100644
+> --- a/arch/x86/pci/acpi.c
+> +++ b/arch/x86/pci/acpi.c
+> @@ -21,6 +21,8 @@ struct pci_root_info {
+>  
+>  static bool pci_use_crs = true;
+>  static bool pci_ignore_seg = false;
+> +/* Consumed in arch/x86/kernel/resource.c */
+> +bool pci_use_e820 = false;
+>  
+>  static int __init set_use_crs(const struct dmi_system_id *id)
+>  {
+> @@ -160,6 +162,32 @@ void __init pci_acpi_crs_quirks(void)
+>  	       "if necessary, use \"pci=%s\" and report a bug\n",
+>  	       pci_use_crs ? "Using" : "Ignoring",
+>  	       pci_use_crs ? "nocrs" : "use_crs");
+> +
+> +	/*
+> +	 * Some BIOS-es contain a bug where they add addresses which map to
+> +	 * system RAM in the PCI host bridge window returned by the ACPI _CRS
+> +	 * method, see commit 4dc2287c1805 ("x86: avoid E820 regions when
+> +	 * allocating address space"). To avoid this Linux by default excludes
+> +	 * E820 reservations when allocating addresses since 2010.
+> +	 * In 2020 some systems have shown-up with E820 reservations which cover
+> +	 * the entire _CRS returned PCI host bridge window, causing all attempts
+> +	 * to assign memory to PCI BARs to fail if Linux uses E820 reservations.
+> +	 *
+> +	 * Ideally Linux would fully stop using E820 reservations, but then
+> +	 * the old systems this was added for will regress.
+> +	 * Instead keep the old behavior for old systems, while ignoring the
+> +	 * E820 reservations for any systems from now on.
+> +	 */
+> +	if (year >= 0 && year < 2018)
+> +		pci_use_e820 = true;
+> +
+> +	if (pci_probe & PCI_NO_E820)
+> +		pci_use_e820 = false;
+> +	else if (pci_probe & PCI_USE_E820)
+> +		pci_use_e820 = true;
+> +
+> +	printk(KERN_INFO "PCI: %s E820 reservations for host bridge windows\n",
+> +	       pci_use_e820 ? "Using" : "Ignoring");
+>  }
+>  
+>  #ifdef	CONFIG_PCI_MMCONFIG
+> diff --git a/arch/x86/pci/common.c b/arch/x86/pci/common.c
+> index 3507f456fcd0..091ec7e94fcb 100644
+> --- a/arch/x86/pci/common.c
+> +++ b/arch/x86/pci/common.c
+> @@ -595,6 +595,12 @@ char *__init pcibios_setup(char *str)
+>  	} else if (!strcmp(str, "nocrs")) {
+>  		pci_probe |= PCI_ROOT_NO_CRS;
+>  		return NULL;
+> +	} else if (!strcmp(str, "use_e820")) {
+> +		pci_probe |= PCI_USE_E820;
+> +		return NULL;
+> +	} else if (!strcmp(str, "no_e820")) {
+> +		pci_probe |= PCI_NO_E820;
+> +		return NULL;
+>  #ifdef CONFIG_PHYS_ADDR_T_64BIT
+>  	} else if (!strcmp(str, "big_root_window")) {
+>  		pci_probe |= PCI_BIG_ROOT_WINDOW;
+> -- 
+> 2.31.1
+> 
