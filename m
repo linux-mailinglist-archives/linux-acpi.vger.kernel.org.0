@@ -2,25 +2,25 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BF5E430227
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Oct 2021 12:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38B0E43022F
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Oct 2021 12:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236835AbhJPKlh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 16 Oct 2021 06:41:37 -0400
-Received: from mga04.intel.com ([192.55.52.120]:31396 "EHLO mga04.intel.com"
+        id S234980AbhJPKo5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 16 Oct 2021 06:44:57 -0400
+Received: from mga06.intel.com ([134.134.136.31]:38326 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231331AbhJPKlg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 16 Oct 2021 06:41:36 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10138"; a="226814724"
+        id S231240AbhJPKo5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 16 Oct 2021 06:44:57 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10138"; a="288902175"
 X-IronPort-AV: E=Sophos;i="5.85,378,1624345200"; 
-   d="scan'208";a="226814724"
+   d="scan'208";a="288902175"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2021 03:39:28 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2021 03:42:49 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.85,378,1624345200"; 
-   d="scan'208";a="628046375"
+   d="scan'208";a="628046687"
 Received: from chenyu-desktop.sh.intel.com ([10.239.158.176])
-  by fmsmga001.fm.intel.com with ESMTP; 16 Oct 2021 03:39:25 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 16 Oct 2021 03:42:45 -0700
 From:   Chen Yu <yu.c.chen@intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -30,10 +30,12 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Ashok Raj <ashok.raj@intel.com>,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
         Mike Rapoport <rppt@kernel.org>,
-        Aubrey Li <aubrey.li@intel.com>, Chen Yu <yu.c.chen@intel.com>
-Subject: [PATCH v4 3/4] drivers/acpi: Introduce Platform Firmware Runtime Update Telemetry
-Date:   Sat, 16 Oct 2021 18:44:31 +0800
-Message-Id: <838245e376c7e6fd0fe1ef55d004ed53763846a2.1634310710.git.yu.c.chen@intel.com>
+        Aubrey Li <aubrey.li@intel.com>,
+        Robert Moore <robert.moore@intel.com>, devel@acpica.org,
+        Chen Yu <yu.c.chen@intel.com>
+Subject: [PATCH v4 4/4] tools: Introduce power/acpi/pfru/pfru
+Date:   Sat, 16 Oct 2021 18:47:33 +0800
+Message-Id: <211f0a7ac4168e37e4f9ca4db0ba587d937970d1.1634310710.git.yu.c.chen@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1634310710.git.yu.c.chen@intel.com>
 References: <cover.1634310710.git.yu.c.chen@intel.com>
@@ -43,289 +45,260 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Platform Firmware Runtime Update(PFRU) Telemetry Service is part of RoT
-(Root of Trust), which allows PFRU handler and other PFRU drivers to
-produce telemetry data to upper layer OS consumer at runtime.
-
-The linux provides interfaces for the user to query the parameters of
-telemetry data, and the user could read out the telemetry data
-accordingly.
-
-Also add the ABI documentation.
-
-Typical log looks like:
-[SmmRuntimeUpdateHandler.ProcessSmmRuntimeUpdate]
-ProcessSmmRuntimeUpdate = START, Action = 2
-[SmmRuntimeUpdateHandler.ProcessSmmRuntimeUpdate]
-FwVersion = 0, CodeInjectionVersion = 1
-[ShadowSmmRuntimeUpdateImage]
-Image = 0x74D9B000, ImageSize = 0x1172
-[ProcessSmmRuntimeUpdate]
-ShadowSmmRuntimeUpdateImage.Status = Success
-[ValidateSmmRuntimeUpdateImage]
-CapsuleHeader.CapsuleGuid = 6DCBD5ED-E82D-4C44-BDA1-7194199AD92A
-[ValidateSmmRuntimeUpdateImage]
-FmpCapHeader.Version = 1
-[ValidateSmmRuntimeUpdateImage]
-FmpCapImageHeader.UpdateImageTypeId = B2F84B79-7B6E-4E45-885F-3FB9BB185402
-[ValidateSmmRuntimeUpdateImage]
-SmmRuntimeUpdateVerifyImageWithDenylist.Status = Success
-[ValidateSmmRuntimeUpdateImage]
-SmmRuntimeUpdateVerifyImageWithAllowlist.Status = Success
-[SmmCodeInjectionVerifyPayloadHeader]
-PayloadHeader.Signature = 0x31494353
-[SmmCodeInjectionVerifyPayloadHeader]
-PayloadHeader.PlatformId = 63462139-A8B1-AA4E-9024-F2BB53EA4723
-[SmmCodeInjectionVerifyPayloadHeader]
-PayloadHeader.SupportedSmmFirmwareVersion = 0,
-PayloadHeader.SmmCodeInjectionRuntimeVersion = 1
-[ProcessSmmRuntimeUpdate]
-ValidateSmmRuntimeUpdateImage.Status = Success
-CPU CSR[0B102D28] Before = 7FBF830E
-CPU CSR[0B102D28] After = 7FBF8310
-[ProcessSmmRuntimeUpdate] ProcessSmmCodeInjection.Status = Success
-[SmmRuntimeUpdateHandler.ProcessSmmRuntimeUpdate]
-ProcessSmmRuntimeUpdate = End, Status = Success
+Introduce a user space tool to make use of the interface exposed by
+Platform Firmware Runtime Update and Telemetry drivers. The users
+can use this tool to do firmware code injection, driver update and
+to retrieve the telemetry data.
 
 Signed-off-by: Chen Yu <yu.c.chen@intel.com>
 ---
-v4: Remove the telemetry kernel Kconfig and combine it with pfru
+v4: Move the tool from tools/testings to tools/power/acpi.
     (Rafael J. Wysocki)
-    Remove redundant parens. (Rafael J. Wysocki)
-v3: Use __u32 instead of int and __64 instead of unsigned long
-    in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
-    Rename the structure in uapi to start with a prefix pfru so as
-    to avoid confusing in the global namespace. (Greg Kroah-Hartman)
-v2: Do similar clean up as pfru_update driver:
-    Add sanity check for duplicated instance of ACPI device.
-    Update the driver to work with allocated telem_device objects.
-    (Mike Rapoport)
-    For each switch case pair, get rid of the magic case numbers
-    and add a default clause with the error handling.
+    Add corresponding man page for this tool.
+    (Rafael J. Wysocki)
+v3: No change since v2.
+v2: Do not allow non-root user to run this test.
+    (Shuah Khan)
+    Test runs on platform without pfru_telemetry should skip
+    instead of reporting failure/error.
+    (Shuah Khan)
+    Reuse uapi/linux/pfru.h instead of copying it into
+    the test directory.
     (Mike Rapoport)
 ---
- drivers/acpi/pfru/pfru_update.c | 380 +++++++++++++++++++++++++++++++-
- include/uapi/linux/pfru.h       |  43 ++++
- 2 files changed, 421 insertions(+), 2 deletions(-)
+ include/uapi/linux/pfru.h      |   5 +
+ tools/power/acpi/pfru/Makefile |  25 +++
+ tools/power/acpi/pfru/pfru.8   | 137 ++++++++++++++
+ tools/power/acpi/pfru/pfru.c   | 336 +++++++++++++++++++++++++++++++++
+ 4 files changed, 505 insertions(+)
+ create mode 100644 tools/power/acpi/pfru/Makefile
+ create mode 100644 tools/power/acpi/pfru/pfru.8
+ create mode 100644 tools/power/acpi/pfru/pfru.c
 
-diff --git a/drivers/acpi/pfru/pfru_update.c b/drivers/acpi/pfru/pfru_update.c
-index f57a39e79808..fe5b1bf0aeb3 100644
---- a/drivers/acpi/pfru/pfru_update.c
-+++ b/drivers/acpi/pfru/pfru_update.c
-@@ -55,6 +55,27 @@ enum update_index {
- 	UPDATE_NR_IDX,
- };
+diff --git a/include/uapi/linux/pfru.h b/include/uapi/linux/pfru.h
+index 9ab74d9cd21a..e7b3e17ef38c 100644
+--- a/include/uapi/linux/pfru.h
++++ b/include/uapi/linux/pfru.h
+@@ -8,7 +8,12 @@
+ #define __PFRU_H__
  
-+enum log_index {
-+	LOG_STATUS_IDX,
-+	LOG_EXT_STATUS_IDX,
-+	LOG_MAX_SZ_IDX,
-+	LOG_CHUNK1_LO_IDX,
-+	LOG_CHUNK1_HI_IDX,
-+	LOG_CHUNK1_SZ_IDX,
-+	LOG_CHUNK2_LO_IDX,
-+	LOG_CHUNK2_HI_IDX,
-+	LOG_CHUNK2_SZ_IDX,
-+	LOG_ROLLOVER_CNT_IDX,
-+	LOG_RESET_CNT_IDX,
-+	LOG_NR_IDX,
-+};
-+
-+struct pfru_log_device {
-+	struct device *dev;
-+	guid_t uuid;
-+	struct pfru_log_info info;
-+};
-+
- struct pfru_device {
- 	guid_t uuid, code_uuid, drv_uuid;
- 	int rev_id;
-@@ -62,6 +83,299 @@ struct pfru_device {
- };
+ #include <linux/ioctl.h>
++#ifdef __KERNEL__
+ #include <linux/uuid.h>
++#else
++#include <uuid/uuid.h>
++#include <linux/types.h>
++#endif
  
- static struct pfru_device *pfru_dev;
-+static struct pfru_log_device *pfru_log_dev;
+ #define PFRU_UUID		"ECF9533B-4A3C-4E89-939E-C77112601C6D"
+ #define PFRU_CODE_INJ_UUID		"B2F84B79-7B6E-4E45-885F-3FB9BB185402"
+diff --git a/tools/power/acpi/pfru/Makefile b/tools/power/acpi/pfru/Makefile
+new file mode 100644
+index 000000000000..54bf913b2a09
+--- /dev/null
++++ b/tools/power/acpi/pfru/Makefile
+@@ -0,0 +1,25 @@
++# SPDX-License-Identifier: GPL-2.0+
 +
-+static int get_pfru_log_data_info(struct pfru_log_data_info *data_info,
-+				  int log_type)
-+{
-+	union acpi_object *out_obj, in_obj, in_buf;
-+	acpi_handle handle;
-+	int ret = -EINVAL;
++CFLAGS += -Wall -O2
++CFLAGS += -DPFRU_HEADER='"../../../../include/uapi/linux/pfru.h"'
++BUILD_OUTPUT	:= $(CURDIR)
 +
-+	handle = ACPI_HANDLE(pfru_log_dev->dev);
++ifeq ("$(origin O)", "command line")
++	BUILD_OUTPUT := $(O)
++endif
 +
-+	memset(&in_obj, 0, sizeof(in_obj));
-+	memset(&in_buf, 0, sizeof(in_buf));
-+	in_obj.type = ACPI_TYPE_PACKAGE;
-+	in_obj.package.count = 1;
-+	in_obj.package.elements = &in_buf;
-+	in_buf.type = ACPI_TYPE_INTEGER;
-+	in_buf.integer.value = log_type;
++pfru : pfru.c
 +
-+	out_obj = acpi_evaluate_dsm_typed(handle, &pfru_log_dev->uuid,
-+					  pfru_log_dev->info.log_revid, FUNC_GET_DATA,
-+					  &in_obj, ACPI_TYPE_PACKAGE);
-+	if (!out_obj)
-+		return ret;
++%: %.c
++	@mkdir -p $(BUILD_OUTPUT)
++	$(CC) $(CFLAGS) $< -o $(BUILD_OUTPUT)/$@ $(LDFLAGS) -luuid
 +
-+	if (out_obj->package.count < LOG_NR_IDX)
-+		goto free_acpi_buffer;
++.PHONY : clean
++clean :
++	@rm -f $(BUILD_OUTPUT)/pfru
 +
-+	if (out_obj->package.elements[LOG_STATUS_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
++install : pfru
++	install -d  $(DESTDIR)$(PREFIX)/bin
++	install $(BUILD_OUTPUT)/pfru $(DESTDIR)$(PREFIX)/bin/pfru
++	install -d  $(DESTDIR)$(PREFIX)/share/man/man8
++	install -m 644 pfru.8 $(DESTDIR)$(PREFIX)/share/man/man8
+diff --git a/tools/power/acpi/pfru/pfru.8 b/tools/power/acpi/pfru/pfru.8
+new file mode 100644
+index 000000000000..2322b59ebada
+--- /dev/null
++++ b/tools/power/acpi/pfru/pfru.8
+@@ -0,0 +1,137 @@
++.TH "PFRU" "8" "October 2021" "pfru 1.0" ""
++.hy
++.SH Name
++.PP
++pfru \- Platform Firmware Runtime Update tool
++.SH SYNOPSIS
++.PP
++\f[B]pfru\f[R] [\f[I]Options\f[R]]
++.SH DESCRIPTION
++.PP
++The PFRU(Platform Firmware Runtime Update) kernel interface is designed
++to
++.PD 0
++.P
++.PD
++interact with the platform firmware interface defined in the
++.PD 0
++.P
++.PD
++Management Mode Firmware Runtime
++Update (https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf)
++.PD 0
++.P
++.PD
++\f[B]pfru\f[R] is the tool to interact with the kernel interface.
++.PD 0
++.P
++.PD
++.SH OPTIONS
++.TP
++.B \f[B]\-h\f[R], \f[B]\-\-help\f[R]
++Display helper information.
++.TP
++.B \f[B]\-l\f[R], \f[B]\-\-load\f[R]
++Load the capsule file into the system.
++To be more specific, the capsule file will be copied to the
++communication buffer.
++.TP
++.B \f[B]\-s\f[R], \f[B]\-\-stage\f[R]
++Stage the capsule image from communication buffer into Management Mode
++and perform authentication.
++.TP
++.B \f[B]\-a\f[R], \f[B]\-\-activate\f[R]
++Activate a previous staged capsule image.
++.TP
++.B \f[B]\-u\f[R], \f[B]\-\-update\f[R]
++Perform both stage and activation actions.
++.TP
++.B \f[B]\-q\f[R], \f[B]\-\-query\f[R]
++Query the update capability.
++.TP
++.B \f[B]\-d\f[R], \f[B]\-\-setrev\f[R]
++Set the revision ID of code injection/driver update.
++.TP
++.B \f[B]\-D\f[R], \f[B]\-\-setrevlog\f[R]
++Set the revision ID of telemetry.
++.TP
++.B \f[B]\-G\f[R], \f[B]\-\-getloginfo\f[R]
++Get telemetry log information and print it out.
++.TP
++.B \f[B]\-T\f[R], \f[B]\-\-type\f[R]
++Set the telemetry log data type.
++.TP
++.B \f[B]\-L\f[R], \f[B]\-\-level\f[R]
++Set the telemetry log level.
++.TP
++.B \f[B]\-R\f[R], \f[B]\-\-read\f[R]
++Read all the telemetry data and print it out.
++.SH EXAMPLES
++.PP
++\f[B]pfru \-G\f[R]
++.PP
++log_level:4
++.PD 0
++.P
++.PD
++log_type:0
++.PD 0
++.P
++.PD
++log_revid:2
++.PD 0
++.P
++.PD
++max_data_size:65536
++.PD 0
++.P
++.PD
++chunk1_size:0
++.PD 0
++.P
++.PD
++chunk2_size:1401
++.PD 0
++.P
++.PD
++rollover_cnt:0
++.PD 0
++.P
++.PD
++reset_cnt:4
++.PP
++\f[B]pfru \-q\f[R]
++.PP
++code injection image type:794bf8b2\-6e7b\-454e\-885f\-3fb9bb185402
++.PD 0
++.P
++.PD
++fw_version:0
++.PD 0
++.P
++.PD
++code_rt_version:1
++.PD 0
++.P
++.PD
++driver update image type:0e5f0b14\-f849\-7945\-ad81\-bc7b6d2bb245
++.PD 0
++.P
++.PD
++drv_rt_version:0
++.PD 0
++.P
++.PD
++drv_svn:0
++.PD 0
++.P
++.PD
++platform id:39214663\-b1a8\-4eaa\-9024\-f2bb53ea4723
++.PD 0
++.P
++.PD
++oem id:a36db54f\-ea2a\-e14e\-b7c4\-b5780e51ba3d
++.PP
++\f[B]pfru \-l yours.cap \-u \-T 1 \-L 4\f[R]
++.SH AUTHORS
++Chen Yu.
+diff --git a/tools/power/acpi/pfru/pfru.c b/tools/power/acpi/pfru/pfru.c
+new file mode 100644
+index 000000000000..a65f895d856e
+--- /dev/null
++++ b/tools/power/acpi/pfru/pfru.c
+@@ -0,0 +1,336 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Platform Firmware Runtime Update tool to do Management
++ * Mode code injection/driver update and telemetry retrieval.
++ */
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <getopt.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include PFRU_HEADER
 +
-+	data_info->status = out_obj->package.elements[LOG_STATUS_IDX].integer.value;
++#define MAX_LOG_SIZE 65536
 +
-+	if (out_obj->package.elements[LOG_EXT_STATUS_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
++char *capsule_name;
++int action, query_cap, log_type, log_level, log_read, log_getinfo,
++	revid, log_revid;
++int set_log_level, set_log_type,
++	set_revid, set_log_revid;
 +
-+	data_info->ext_status =
-+		out_obj->package.elements[LOG_EXT_STATUS_IDX].integer.value;
-+
-+	if (out_obj->package.elements[LOG_MAX_SZ_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	data_info->max_data_size =
-+		out_obj->package.elements[LOG_MAX_SZ_IDX].integer.value;
-+
-+	if (out_obj->package.elements[LOG_CHUNK1_LO_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	data_info->chunk1_addr_lo =
-+		out_obj->package.elements[LOG_CHUNK1_LO_IDX].integer.value;
-+
-+	if (out_obj->package.elements[LOG_CHUNK1_HI_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	data_info->chunk1_addr_hi =
-+		out_obj->package.elements[LOG_CHUNK1_HI_IDX].integer.value;
-+
-+	if (out_obj->package.elements[LOG_CHUNK1_SZ_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	data_info->chunk1_size =
-+		out_obj->package.elements[LOG_CHUNK1_SZ_IDX].integer.value;
-+
-+	if (out_obj->package.elements[LOG_CHUNK2_LO_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	data_info->chunk2_addr_lo =
-+		out_obj->package.elements[LOG_CHUNK2_LO_IDX].integer.value;
-+
-+	if (out_obj->package.elements[LOG_CHUNK2_HI_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	data_info->chunk2_addr_hi =
-+		out_obj->package.elements[LOG_CHUNK2_HI_IDX].integer.value;
-+
-+	if (out_obj->package.elements[LOG_CHUNK2_SZ_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	data_info->chunk2_size =
-+		out_obj->package.elements[LOG_CHUNK2_SZ_IDX].integer.value;
-+
-+	if (out_obj->package.elements[LOG_ROLLOVER_CNT_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	data_info->rollover_cnt =
-+		out_obj->package.elements[LOG_ROLLOVER_CNT_IDX].integer.value;
-+
-+	if (out_obj->package.elements[LOG_RESET_CNT_IDX].type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	data_info->reset_cnt =
-+		out_obj->package.elements[LOG_RESET_CNT_IDX].integer.value;
-+
-+	ret = 0;
-+free_acpi_buffer:
-+	ACPI_FREE(out_obj);
-+
-+	return ret;
-+}
-+
-+static int set_pfru_log_level(int level)
-+{
-+	union acpi_object *out_obj, *obj, in_obj, in_buf;
-+	enum pfru_dsm_status status;
-+	acpi_handle handle;
-+	int ret = -EINVAL;
-+
-+	handle = ACPI_HANDLE(pfru_log_dev->dev);
-+
-+	memset(&in_obj, 0, sizeof(in_obj));
-+	memset(&in_buf, 0, sizeof(in_buf));
-+	in_obj.type = ACPI_TYPE_PACKAGE;
-+	in_obj.package.count = 1;
-+	in_obj.package.elements = &in_buf;
-+	in_buf.type = ACPI_TYPE_INTEGER;
-+	in_buf.integer.value = level;
-+
-+	out_obj = acpi_evaluate_dsm_typed(handle, &pfru_log_dev->uuid,
-+					  pfru_log_dev->info.log_revid, FUNC_SET_LEV,
-+					  &in_obj, ACPI_TYPE_PACKAGE);
-+	if (!out_obj)
-+		return -EINVAL;
-+
-+	obj = &out_obj->package.elements[0];
-+	status = obj->integer.value;
-+	if (status)
-+		goto free_acpi_buffer;
-+
-+	obj = &out_obj->package.elements[1];
-+	status = obj->integer.value;
-+	if (status)
-+		goto free_acpi_buffer;
-+
-+	ret = 0;
-+
-+free_acpi_buffer:
-+	ACPI_FREE(out_obj);
-+
-+	return ret;
-+}
-+
-+static int get_pfru_log_level(int *level)
-+{
-+	union acpi_object *out_obj, *obj;
-+	enum pfru_dsm_status status;
-+	acpi_handle handle;
-+	int ret = -EINVAL;
-+
-+	handle = ACPI_HANDLE(pfru_log_dev->dev);
-+	out_obj = acpi_evaluate_dsm_typed(handle, &pfru_log_dev->uuid,
-+					  pfru_log_dev->info.log_revid, FUNC_GET_LEV,
-+					  NULL, ACPI_TYPE_PACKAGE);
-+	if (!out_obj)
-+		return -EINVAL;
-+
-+	obj = &out_obj->package.elements[0];
-+	if (obj->type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	status = obj->integer.value;
-+	if (status)
-+		goto free_acpi_buffer;
-+
-+	obj = &out_obj->package.elements[1];
-+	if (obj->type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	status = obj->integer.value;
-+	if (status)
-+		goto free_acpi_buffer;
-+
-+	obj = &out_obj->package.elements[2];
-+	if (obj->type != ACPI_TYPE_INTEGER)
-+		goto free_acpi_buffer;
-+
-+	*level = obj->integer.value;
-+	ret = 0;
-+free_acpi_buffer:
-+	ACPI_FREE(out_obj);
-+
-+	return ret;
-+}
++char *progname;
 +
 +static int valid_log_level(int level)
 +{
@@ -338,268 +311,303 @@ index f57a39e79808..fe5b1bf0aeb3 100644
 +	return type == LOG_EXEC_IDX || type == LOG_HISTORY_IDX;
 +}
 +
-+long pfru_log_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
++static void help(void)
 +{
-+	struct pfru_log_data_info data_info;
-+	struct pfru_log_info info;
-+	void __user *p;
-+	int ret = 0;
-+
-+	if (!pfru_log_dev)
-+		return -ENODEV;
-+
-+	p = (void __user *)arg;
-+
-+	switch (cmd) {
-+	case PFRU_LOG_IOC_SET_INFO:
-+		if (copy_from_user(&info, p, sizeof(info)))
-+			return -EFAULT;
-+
-+		if (pfru_valid_revid(info.log_revid))
-+			pfru_log_dev->info.log_revid = info.log_revid;
-+
-+		if (valid_log_level(info.log_level)) {
-+			ret = set_pfru_log_level(info.log_level);
-+			if (ret)
-+				return ret;
-+			pfru_log_dev->info.log_level = info.log_level;
-+		}
-+
-+		if (valid_log_type(info.log_type))
-+			pfru_log_dev->info.log_type = info.log_type;
-+
-+		break;
-+	case PFRU_LOG_IOC_GET_INFO:
-+		ret = get_pfru_log_level(&info.log_level);
-+		if (ret)
-+			return ret;
-+
-+		info.log_type = pfru_log_dev->info.log_type;
-+		info.log_revid = pfru_log_dev->info.log_revid;
-+		if (copy_to_user(p, &info, sizeof(info)))
-+			ret = -EFAULT;
-+
-+		break;
-+	case PFRU_LOG_IOC_GET_DATA_INFO:
-+		ret = get_pfru_log_data_info(&data_info, pfru_log_dev->info.log_type);
-+		if (ret)
-+			return ret;
-+
-+		if (copy_to_user(p, &data_info, sizeof(struct pfru_log_data_info)))
-+			ret = -EFAULT;
-+
-+		break;
-+	default:
-+		ret = -ENOTTY;
-+		break;
-+	}
-+	return ret;
++	fprintf(stderr,
++		"usage: %s [OPTIONS]\n"
++		" code injection:\n"
++		"  -l, --load\n"
++		"  -s, --stage\n"
++		"  -a, --activate\n"
++		"  -u, --update [stage and activate]\n"
++		"  -q, --query\n"
++		"  -d, --revid update\n"
++		" telemetry:\n"
++		"  -G, --getloginfo\n"
++		"  -T, --type(0:execution, 1:history)\n"
++		"  -L, --level(0, 1, 2, 4)\n"
++		"  -R, --read\n"
++		"  -D, --revid log\n",
++		progname);
 +}
 +
-+ssize_t pfru_log_read(struct file *filp, char __user *ubuf,
-+		      size_t size, loff_t *off)
-+{
-+	struct pfru_log_data_info info;
-+	phys_addr_t base_addr;
-+	int buf_size, ret;
-+	char *buf_ptr;
-+
-+	if (!pfru_log_dev)
-+		return -ENODEV;
-+
-+	if (*off < 0)
-+		return -EINVAL;
-+
-+	ret = get_pfru_log_data_info(&info, pfru_log_dev->info.log_type);
-+	if (ret)
-+		return ret;
-+
-+	base_addr = (phys_addr_t)(info.chunk2_addr_lo | (info.chunk2_addr_hi << 32));
-+	/* pfru update has not been launched yet.*/
-+	if (!base_addr)
-+		return -EBUSY;
-+
-+	buf_size = info.max_data_size;
-+	if (*off >= buf_size)
-+		return 0;
-+
-+	buf_ptr = memremap(base_addr, buf_size, MEMREMAP_WB);
-+	if (IS_ERR(buf_ptr))
-+		return PTR_ERR(buf_ptr);
-+
-+	size = min_t(size_t, size, buf_size - *off);
-+	if (copy_to_user(ubuf, buf_ptr + *off, size))
-+		ret = -EFAULT;
-+	else
-+		ret = 0;
-+
-+	memunmap(buf_ptr);
-+
-+	return ret ? ret : size;
-+}
- 
- static int query_capability(struct pfru_update_cap_info *cap)
- {
-@@ -406,7 +720,7 @@ static long pfru_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 		ret = start_acpi_update(START_STAGE_ACTIVATE);
- 		break;
- 	default:
--		ret = -ENOTTY;
-+		ret = pfru_log_ioctl(file, cmd, arg);
- 		break;
- 	}
- 
-@@ -467,6 +781,7 @@ static ssize_t pfru_write(struct file *file, const char __user *buf,
- static const struct file_operations acpi_pfru_fops = {
- 	.owner		= THIS_MODULE,
- 	.write		= pfru_write,
-+	.read		= pfru_log_read,
- 	.unlocked_ioctl = pfru_ioctl,
- 	.llseek		= noop_llseek,
- };
-@@ -478,6 +793,44 @@ static struct miscdevice pfru_misc_dev = {
- 	.fops = &acpi_pfru_fops,
- };
- 
-+static int acpi_pfru_log_remove(struct platform_device *pdev)
-+{
-+	return 0;
-+}
-+
-+static int acpi_pfru_log_probe(struct platform_device *pdev)
-+{
-+	acpi_handle handle;
-+	int ret;
-+
-+	/* One instance is expected. */
-+	if (pfru_log_dev)
-+		return 0;
-+
-+	pfru_log_dev = kzalloc(sizeof(*pfru_log_dev), GFP_KERNEL);
-+	if (!pfru_log_dev)
-+		return -ENOMEM;
-+
-+	ret = guid_parse(PFRU_LOG_UUID, &pfru_log_dev->uuid);
-+	if (ret)
-+		goto out;
-+
-+	pfru_log_dev->info.log_revid = 1;
-+	pfru_log_dev->dev = &pdev->dev;
-+	handle = ACPI_HANDLE(pfru_log_dev->dev);
-+	if (!acpi_has_method(handle, "_DSM")) {
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+
-+	return 0;
-+out:
-+	kfree(pfru_log_dev);
-+	pfru_log_dev = NULL;
-+
-+	return ret;
-+}
-+
- static int acpi_pfru_remove(struct platform_device *pdev)
- {
- 	return 0;
-@@ -526,6 +879,21 @@ static int acpi_pfru_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
-+static const struct acpi_device_id acpi_pfru_log_ids[] = {
-+	{"INTC1081", 0},
++char *option_string = "l:sauqd:GT:L:RD:h";
++static struct option long_options[] = {
++	{"load", required_argument, 0, 'l'},
++	{"stage", no_argument, 0, 's'},
++	{"activate", no_argument, 0, 'a'},
++	{"update", no_argument, 0, 'u'},
++	{"query", no_argument, 0, 'q'},
++	{"getloginfo", no_argument, 0, 'G'},
++	{"type", required_argument, 0, 'T'},
++	{"level", required_argument, 0, 'L'},
++	{"read", no_argument, 0, 'R'},
++	{"setrev", required_argument, 0, 'd'},
++	{"setrevlog", required_argument, 0, 'D'},
++	{"help", no_argument, 0, 'h'},
 +	{}
 +};
-+MODULE_DEVICE_TABLE(acpi, acpi_pfru_log_ids);
 +
-+static struct platform_driver acpi_pfru_log_driver = {
-+	.driver = {
-+		.name = "pfru_log",
-+		.acpi_match_table = acpi_pfru_log_ids,
-+	},
-+	.probe = acpi_pfru_log_probe,
-+	.remove = acpi_pfru_log_remove,
-+};
++static void parse_options(int argc, char **argv)
++{
++	char *pathname;
++	int c;
 +
- static const struct acpi_device_id acpi_pfru_ids[] = {
- 	{"INTC1080", 0},
- 	{}
-@@ -549,7 +917,11 @@ static int __init pfru_init(void)
- 	if (ret)
- 		return ret;
- 
--	return platform_driver_register(&acpi_pfru_driver);
-+	ret = platform_driver_register(&acpi_pfru_driver);
-+	if (ret)
-+		misc_deregister(&pfru_misc_dev);
++	pathname = strdup(argv[0]);
++	progname = basename(pathname);
 +
-+	return platform_driver_register(&acpi_pfru_log_driver);
- }
- 
- static void __exit pfru_exit(void)
-@@ -558,6 +930,10 @@ static void __exit pfru_exit(void)
- 	misc_deregister(&pfru_misc_dev);
- 	kfree(pfru_dev);
- 	pfru_dev = NULL;
++	while (1) {
++		int option_index = 0;
 +
-+	platform_driver_unregister(&acpi_pfru_log_driver);
-+	kfree(pfru_log_dev);
-+	pfru_log_dev = NULL;
- }
- 
- module_init(pfru_init);
-diff --git a/include/uapi/linux/pfru.h b/include/uapi/linux/pfru.h
-index 127fc38638cb..9ab74d9cd21a 100644
---- a/include/uapi/linux/pfru.h
-+++ b/include/uapi/linux/pfru.h
-@@ -99,4 +99,47 @@ struct pfru_updated_result {
- 	__u64 high_exec_time;
- };
- 
-+#define PFRU_LOG_UUID	"75191659-8178-4D9D-B88F-AC5E5E93E8BF"
++		c = getopt_long(argc, argv, option_string,
++				long_options, &option_index);
++		if (c == -1)
++			break;
 +
-+/* Telemetry structures. */
-+struct pfru_log_data_info {
-+	enum pfru_dsm_status status;
-+	enum pfru_dsm_status ext_status;
-+	__u64 chunk1_addr_lo;
-+	__u64 chunk1_addr_hi;
-+	__u64 chunk2_addr_lo;
-+	__u64 chunk2_addr_hi;
-+	__u32 max_data_size;
-+	__u32 chunk1_size;
-+	__u32 chunk2_size;
-+	__u32 rollover_cnt;
-+	__u32 reset_cnt;
-+};
++		switch (c) {
++		case 'l':
++			capsule_name = optarg;
++			break;
++		case 's':
++			action = 1;
++			break;
++		case 'a':
++			action = 2;
++			break;
++		case 'u':
++			action = 3;
++			break;
++		case 'q':
++			query_cap = 1;
++			break;
++		case 'G':
++			log_getinfo = 1;
++			break;
++		case 'T':
++			log_type = atoi(optarg);
++			set_log_type = 1;
++			break;
++		case 'L':
++			log_level = atoi(optarg);
++			set_log_level = 1;
++			break;
++		case 'R':
++			log_read = 1;
++			break;
++		case 'd':
++			revid = atoi(optarg);
++			set_revid = 1;
++			break;
++		case 'D':
++			log_revid = atoi(optarg);
++			set_log_revid = 1;
++			break;
++		case 'h':
++			help();
++			break;
++		default:
++			break;
++		}
++	}
++}
 +
-+struct pfru_log_info {
-+	__u32 log_level;
-+	__u32 log_type;
-+	__u32 log_revid;
-+};
++void print_cap(struct pfru_update_cap_info *cap)
++{
++	char *uuid = malloc(37);
 +
-+/* Two logs: history and execution log */
-+#define LOG_EXEC_IDX	0
-+#define LOG_HISTORY_IDX	1
-+#define NR_LOG_TYPE	2
++	if (!uuid) {
++		perror("Can not allocate uuid buffer\n");
++		exit(1);
++	}
 +
-+#define LOG_ERR		0
-+#define LOG_WARN	1
-+#define LOG_INFO	2
-+#define LOG_VERB	4
++	uuid_unparse(cap->code_type, uuid);
++	printf("code injection image type:%s\n", uuid);
++	printf("fw_version:%d\n", cap->fw_version);
++	printf("code_rt_version:%d\n", cap->code_rt_version);
 +
-+#define FUNC_SET_LEV		1
-+#define FUNC_GET_LEV		2
-+#define FUNC_GET_DATA		3
++	uuid_unparse(cap->drv_type, uuid);
++	printf("driver update image type:%s\n", uuid);
++	printf("drv_rt_version:%d\n", cap->drv_rt_version);
++	printf("drv_svn:%d\n", cap->drv_svn);
 +
-+#define LOG_NAME_SIZE		10
++	uuid_unparse(cap->platform_id, uuid);
++	printf("platform id:%s\n", uuid);
++	uuid_unparse(cap->oem_id, uuid);
++	printf("oem id:%s\n", uuid);
 +
-+#define PFRU_LOG_IOC_SET_INFO _IOW(PFRU_MAGIC, 0x05, struct pfru_log_info)
-+#define PFRU_LOG_IOC_GET_INFO _IOR(PFRU_MAGIC, 0x06, struct pfru_log_info)
-+#define PFRU_LOG_IOC_GET_DATA_INFO _IOR(PFRU_MAGIC, 0x07, struct pfru_log_data_info)
++	free(uuid);
++}
 +
- #endif /* __PFRU_H__ */
++int main(int argc, char *argv[])
++{
++	int fd_update, fd_capsule;
++	struct pfru_log_data_info data_info;
++	struct pfru_log_info info;
++	struct pfru_update_cap_info cap;
++	void *addr_map_capsule;
++	struct stat st;
++	char *log_buf;
++	int ret = 0;
++
++	if (getuid() != 0) {
++		printf("Please run the tool as root - Exiting.\n");
++		return 1;
++	}
++
++	parse_options(argc, argv);
++
++	fd_update = open("/dev/acpi_pfru", O_RDWR);
++	if (fd_update < 0) {
++		printf("PFRU device not supported - Quit...\n");
++		return 1;
++	}
++
++	if (query_cap) {
++		ret = ioctl(fd_update, PFRU_IOC_QUERY_CAP, &cap);
++		if (ret) {
++			perror("Query Update Capability info failed.");
++			return 1;
++		}
++
++		print_cap(&cap);
++	}
++
++	if (log_getinfo) {
++		ret = ioctl(fd_update, PFRU_LOG_IOC_GET_DATA_INFO, &data_info);
++		if (ret) {
++			perror("Get telemetry data info failed.");
++			return 1;
++		}
++
++		ret = ioctl(fd_update, PFRU_LOG_IOC_GET_INFO, &info);
++		if (ret) {
++			perror("Get telemetry info failed.");
++			return 1;
++		}
++
++		printf("log_level:%d\n", info.log_level);
++		printf("log_type:%d\n", info.log_type);
++		printf("log_revid:%d\n", info.log_revid);
++		printf("max_data_size:%d\n", data_info.max_data_size);
++		printf("chunk1_size:%d\n", data_info.chunk1_size);
++		printf("chunk2_size:%d\n", data_info.chunk2_size);
++		printf("rollover_cnt:%d\n", data_info.rollover_cnt);
++		printf("reset_cnt:%d\n", data_info.reset_cnt);
++
++		return 0;
++	}
++
++	info.log_level = -1;
++	info.log_type = -1;
++	info.log_revid = -1;
++
++	if (set_log_level) {
++		if (!valid_log_level(log_level)) {
++			printf("Invalid log level %d\n",
++			       log_level);
++		} else {
++			info.log_level = log_level;
++		}
++	}
++
++	if (set_log_type) {
++		if (!valid_log_type(log_type)) {
++			printf("Invalid log type %d\n",
++			       log_type);
++		} else {
++			info.log_type = log_type;
++		}
++	}
++
++	if (set_log_revid) {
++		if (!pfru_valid_revid(log_revid)) {
++			printf("Invalid log revid %d\n",
++			       log_revid);
++		} else {
++			info.log_revid = log_revid;
++		}
++	}
++
++	ret = ioctl(fd_update, PFRU_LOG_IOC_SET_INFO, &info);
++	if (ret) {
++		perror("Log information set failed.(log_level, log_type, log_revid)");
++		return 1;
++	}
++
++	if (set_revid) {
++		ret = ioctl(fd_update, PFRU_IOC_SET_REV, &revid);
++		if (ret) {
++			perror("pfru update revid set failed");
++			return 1;
++		}
++
++		printf("pfru update revid set to %d\n", revid);
++	}
++
++	if (capsule_name) {
++		fd_capsule = open(capsule_name, O_RDONLY);
++		if (fd_capsule < 0) {
++			perror("Can not open capsule file...");
++			return 1;
++		}
++
++		if (fstat(fd_capsule, &st) < 0) {
++			perror("Can not fstat capsule file...");
++			return 1;
++		}
++
++		addr_map_capsule = mmap(NULL, st.st_size, PROT_READ, MAP_SHARED,
++					fd_capsule, 0);
++		if (addr_map_capsule == MAP_FAILED) {
++			perror("Failed to mmap capsule file.");
++			return 1;
++		}
++
++		ret = write(fd_update, (char *)addr_map_capsule, st.st_size);
++		printf("Load %d bytes of capsule file into the system\n",
++		       ret);
++
++		if (ret == -1) {
++			perror("Failed to load capsule file");
++			return 1;
++		}
++
++		munmap(addr_map_capsule, st.st_size);
++		printf("Load done.\n");
++	}
++
++	if (action) {
++		if (action == 1)
++			ret = ioctl(fd_update, PFRU_IOC_STAGE, NULL);
++		else if (action == 2)
++			ret = ioctl(fd_update, PFRU_IOC_ACTIVATE, NULL);
++		else if (action == 3)
++			ret = ioctl(fd_update, PFRU_IOC_STAGE_ACTIVATE, NULL);
++		else
++			return 1;
++		printf("Update finished, return %d\n", ret);
++	}
++
++	if (log_read) {
++		log_buf = malloc(MAX_LOG_SIZE + 1);
++		if (!log_buf) {
++			perror("log_buf allocate failed.");
++			return 1;
++		}
++
++		ret = read(fd_update, log_buf, MAX_LOG_SIZE);
++		if (ret == -1) {
++			perror("Read error.");
++			return 1;
++		}
++
++		log_buf[ret] = '\0';
++		printf("%s\n", log_buf);
++		free(log_buf);
++	}
++
++	return 0;
++}
 -- 
 2.25.1
 
