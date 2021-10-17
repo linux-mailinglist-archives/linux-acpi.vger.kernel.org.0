@@ -2,65 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6199B430844
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Oct 2021 13:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35CF74309B5
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Oct 2021 16:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245435AbhJQLPC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 17 Oct 2021 07:15:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51464 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbhJQLPB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 17 Oct 2021 07:15:01 -0400
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46BCAC061765
-        for <linux-acpi@vger.kernel.org>; Sun, 17 Oct 2021 04:12:52 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id m20so12932695iol.4
-        for <linux-acpi@vger.kernel.org>; Sun, 17 Oct 2021 04:12:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=O72dKQ3LJGamdGfTg6h5apNrZitzy0yNCJdz+p5Nrco=;
-        b=H4FnRQcPfMGBsemgjlsoynNRDEsgl9LItiMirAGkAYC+vKyzLL1fJSHgW/zSRCpGqf
-         jWkiDAAcfQ+9Xclua+eDxw6ixQmfKYxeN3oWQ5GX5UWiJNlPzeCFvguRturqBhPZrZFU
-         TyV0lPeJO8oXXtUDaRqTcJd2WIB5NKa5sa5Tfi2xYiZ6ELCzMDF+OH68krvqV8SYIfb3
-         wVhCFM9p4YNWq+Ni+bsPtf6gYbIcPYJKtpuYCwtjtJZnn4FdKijhjrJeCNnFeEBWamiO
-         QRjYqJRJBWYVbAcBpeS+zhpz++5WqJI1w1atj9l5/U/CW4sfgC3slg2A8aEtF7nYu4Mv
-         wrLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=O72dKQ3LJGamdGfTg6h5apNrZitzy0yNCJdz+p5Nrco=;
-        b=Igi8vnJ/oaV5Z/UHTfTOfxOU2yYSmw+xVoVFXWmx/ML6a1TpWv5zQMGt3XX2F3CK/l
-         V99pKV0Lxs/UZpPTOLQE5i8LHcEB6GWTtEds5DD2iih353pdak6n+wrDGqy/Of5uiciM
-         pFrw/j8rTlpwlms8zU9w6awoXOGWWCpiZrnB7Ctbgsx/83g0qv6hF0uI6tXfbklFXfci
-         AfY2ONhCWW466ppibTEXIgkxoLyiHMd4+7vV0iNCRqJFaGqiXFUMAt1aFH2PaLCQtXfj
-         aUbxae4dGe2WZfMOMkzr1jMsbrcR9SmkbBX6tVyR7PNZ7q90ToKTd8eS3sesyto9ljR/
-         ec0g==
-X-Gm-Message-State: AOAM530FAAs5lEgj91zbroOQ60Cpmg4MXF6sFH/8ICYiv+fy7B5D0EAZ
-        1sM5zbQDAaYKCZ8dko5TfzbpmpIzjNpcLyQfa14=
-X-Google-Smtp-Source: ABdhPJxFmEsbtP1BZaaDiwTYPMcf6rOQi4r+KExQP1awZ77Ho6tQVBVmtlfBhkAg3bfAG9rRVSFlN96k9AkpHcp3gx0=
-X-Received: by 2002:a05:6602:2ac3:: with SMTP id m3mr10260819iov.138.1634469171714;
- Sun, 17 Oct 2021 04:12:51 -0700 (PDT)
+        id S237987AbhJQOYV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Oct 2021 10:24:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48166 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231156AbhJQOYU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 17 Oct 2021 10:24:20 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9B94960E74;
+        Sun, 17 Oct 2021 14:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634480531;
+        bh=GUiahCSDrD8J6IIWMDZtmEEy4K50EAWbaUrB/r7dK8I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=taswiWj6N5VxmlW6rfycTtYTkfkQBVWWxiYDxUmjbCft7EyznB95j4JmWvOTk2psX
+         CP0pHPHINt+AKCjc51uudA1cn+1gWoRu+NVU8NLjzW0jK4JLdiUEB9wyfVHrfKiClX
+         wZ+WMAmiZqPIR1SwH90CNi3YoyAWmCdoKKm6GhsubgOQ00D0PSrxx9op1vXEo/OqX9
+         NqR9yiicr2je7ot/ZOEc1tneDcR7jnnkH6jDaooa2l8nENj66/W0HG7U0F1EV5L/mz
+         LVrP/c45HcmXzocNEbxMYnPC85DaRBYk9X9f/5Oz1+56j3owQ7T80uWhMlgo05a2+z
+         3kslXyxP7G9qQ==
+Date:   Sun, 17 Oct 2021 16:22:07 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Elie Morisse <syniurge@gmail.com>,
+        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
+        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+        linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v2 3/7] i2c: i2c-amd-mp2-plat: ACPI: Use ACPI_COMPANION()
+ directly
+Message-ID: <YWwxj4CQIbDRkITs@ninjato>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Elie Morisse <syniurge@gmail.com>,
+        Nehal Shah <nehal-bakulchandra.shah@amd.com>,
+        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+        linux-i2c@vger.kernel.org
+References: <4369779.LvFx2qVVIh@kreacher>
+ <3647069.kQq0lBPeGt@kreacher>
+ <1823250.tdWV9SEqCh@kreacher>
 MIME-Version: 1.0
-Received: by 2002:a05:6622:e85:0:0:0:0 with HTTP; Sun, 17 Oct 2021 04:12:51
- -0700 (PDT)
-Reply-To: justinseydou@gmail.com
-From:   Justin Seydou <munozharry894@gmail.com>
-Date:   Sun, 17 Oct 2021 12:12:51 +0100
-Message-ID: <CAMUE5RJGeEk4Bco+JasN_OURJmvFaZ1G+RT2cGgMS_Oja671rA@mail.gmail.com>
-Subject: Proposal
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ICLe6aBUuDu4DwGj"
+Content-Disposition: inline
+In-Reply-To: <1823250.tdWV9SEqCh@kreacher>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear friend,
 
-I am Mr. Justin Seydou. I have a mutually beneficial proposal
-$35millionUSD I want to introduce to you. All documents to execute the
-transaction are valid and available.
-Kindly indicate your interest to enable me explain further.
+--ICLe6aBUuDu4DwGj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Justin Seydou.
+On Wed, Oct 13, 2021 at 06:09:39PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>=20
+> The ACPI_HANDLE() macro is a wrapper arond the ACPI_COMPANION()
+> macro and the ACPI handle produced by the former comes from the
+> ACPI device object produced by the latter, so it is way more
+> straightforward to evaluate the latter directly instead of passing
+> the handle produced by the former to acpi_bus_get_device().
+>=20
+> Modify i2c_amd_probe() accordingly (no intentional functional impact).
+>=20
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+
+Applied to for-next, thanks!
+
+
+--ICLe6aBUuDu4DwGj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmFsMY8ACgkQFA3kzBSg
+KbYAvQ/+KkX/TyMoXgHkVUp2Z6sm51r1NeYGhhnhOIt2dIYEjAKfjyCswsgF7H4u
+6ncL2XO/ms7cMMEE6ACHih6FNWsssoPtSkxhFfk7bNWEoazd6T+0pCV4NgY5dPqC
+iPS8D2znQmn61fCVCOyucM0SG0iD1boMKu9cnjHUD4BOuqxb6NB9jLYGrDvPubmY
+2ToD+raPu0sqybEtbwtsTD3oZl5wyHINGXfXHiasynh08XI4eMZz8xZ5HzPX8GIG
+nAdqXboEqpo5yE9nCUXrAZOukfoAJhspJE1gLkhEcfldGPzTy5iOFIR9g+YAamub
+VZtZrn+zRwOaNe5x/lG7mZm8/zPInAETNTvHj953QbPhWPvdL6L/ksZFVhHEkWTp
+ntrDB//McYIcQGnpJ7x364IL5q7u95eAfK5Pla+ZU0rad1QBR4avg0ML6oaeRGD1
+wi0SGfC4uncyvhLtUvXi8qfJQP9ZjJ4MfFv8+KACfKx/ThsKrVzMeIFe8tRDh9aV
+mE8oVYaFnGsSq7CxOoO7AlhPTQT8DN5kcv+GX7EFHztmIiPZAZ5IWGjT6NBO0oe/
+v+jDRoe3cTNcKrbzrSP7TB32CAS3yAXcwp3o68nfUl/keV5yE7V/E3oTVDf1GJHc
++BWRvxTM2sZAlTdbrFWQFM5j3b0MuQM6Y/xcen6Av8h5rRdG5as=
+=PhsZ
+-----END PGP SIGNATURE-----
+
+--ICLe6aBUuDu4DwGj--
