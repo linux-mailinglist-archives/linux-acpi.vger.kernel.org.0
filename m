@@ -2,65 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A9F74303B4
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Oct 2021 18:25:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6416F430666
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Oct 2021 06:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236105AbhJPQ1X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 16 Oct 2021 12:27:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33584 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237205AbhJPQ1X (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 16 Oct 2021 12:27:23 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92827C06176A
-        for <linux-acpi@vger.kernel.org>; Sat, 16 Oct 2021 09:25:14 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id z20so51193790edc.13
-        for <linux-acpi@vger.kernel.org>; Sat, 16 Oct 2021 09:25:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=PXDRqRXHhYJ9G2cpvs3vbJxoTINuAvYFHHfiK0UYON8=;
-        b=o2nRbaXvGvY7WbKlFMmVKHRKfHlV/tlu6rJZirHuH69aMffZrLNDqyFVherHp44bKt
-         18fSRI6/AoVJvHo7M9geXgocUBqsqEPLtJQ19Uj5KswayKN5VVf6esVg2KjnHMMXYnvh
-         ASUmAUJi4MbwTmzIkDwP7s9IOyxczMjzd+oyDqhNa5TGRCCct83Lykgd2uKy9phEuuCr
-         5aqobhqhUBb8EEQzC2mgJHoa2fXoBoLGc+Z8iFiAQBYlAAtnDzQiLPQSYFE9rXDridBk
-         jwKWTVKW24E4F/FRbSMlgiYJJcduq8AWPOCe+MhlYuGmcwOLUTSmekXpNLyadKTriJnJ
-         T6Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=PXDRqRXHhYJ9G2cpvs3vbJxoTINuAvYFHHfiK0UYON8=;
-        b=rqHGFD/kuUI//eo00CtEfmJyQC99/Jbctq3KyTOvqqo66jTvbIkigxPSXtE/sCtNfm
-         jArsalPxe2l2AaEhwkO3haUsnx7dzoa0mXCw2x/PgkZyL2CV2/uZlwBoEHkqYb4BJpGW
-         FP54jPwQmcg8WEs7nv1BA/gb+Xpxx8kog3W035R5CoBznZzmfFp7wuyZui70eagS0P8l
-         n7uP009xNi0/3ttssUDScs0kQtT94tEDxGshUufVYsgKOOdnHEKVzF/Cwa0ejNxVOUbj
-         S8VOpmoZR+bQsKfel6jvUh64TiB9I9na7+cAVkN60gcf23pBINd2O4HqqW/MB7hk4r2p
-         AwAA==
-X-Gm-Message-State: AOAM532H+NHxaeLDp17STGvKFzKbveIDXh2Z1wZOUTSHXeQjnvtxfgzJ
-        E86Ct6SjM7aCApdxSUJjh7G8T4gmDZZWiVFXXRU=
-X-Google-Smtp-Source: ABdhPJzURrxwauAtjty+KaCUe4lihAvC4I3hHOz3jF4Vw0ybooDZK5BIjYt7Lqi2pXzg7HbyYk/+t9f3pu1zibn0AQA=
-X-Received: by 2002:a17:906:7c86:: with SMTP id w6mr15710724ejo.283.1634401513010;
- Sat, 16 Oct 2021 09:25:13 -0700 (PDT)
+        id S230470AbhJQEJG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Oct 2021 00:09:06 -0400
+Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:37642 "EHLO
+        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229536AbhJQEJG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 17 Oct 2021 00:09:06 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R761e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0UsNvnO5_1634443613;
+Received: from B-J4ZXMD6R-0327.local(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0UsNvnO5_1634443613)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Sun, 17 Oct 2021 12:06:55 +0800
+Subject: Re: [PATCH] ACPI, APEI, EINJ: Relax platform response timeout to 1
+ second.
+To:     "Luck, Tony" <tony.luck@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>
+Cc:     "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+References: <20211015033817.16719-1-xueshuai@linux.alibaba.com>
+ <4d492cef3640414d85ecfdb602ad6fa0@intel.com>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+Message-ID: <869f0c92-0800-b24e-9de8-d8c9cb6972a7@linux.alibaba.com>
+Date:   Sun, 17 Oct 2021 12:06:52 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-Received: by 2002:ab4:a24e:0:0:0:0:0 with HTTP; Sat, 16 Oct 2021 09:25:12
- -0700 (PDT)
-Reply-To: drobafemiaina@gmail.com
-From:   Rev James William <officialunit11@gmail.com>
-Date:   Sat, 16 Oct 2021 09:25:12 -0700
-Message-ID: <CAFYe6wrDLryPU6DPS5hroc=1p=-gOr-9A88vq-ZVVyf2TGn8UA@mail.gmail.com>
-Subject: COMPENSATION PAYMENT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <4d492cef3640414d85ecfdb602ad6fa0@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-COMPENSATION PAYMENT Your Name Was Among the Scam Victims Listed to Be
-Compensated by World Bank/IMF Via ATM Card Valued at ($950,000.00USD)
-Send Your Full: Name: ......................... Address:
-...................................... Mobile No:
-.................................. ID Proof: Reply me;
-drobafemiaina@gmail.com
+Hi, Tony,
+
+Thank you for your reply.
+
+> Spinning for 1ms was maybe ok. Spinning for up to 1s seems like a bad idea.
+>
+> This code is executed inside a mutex ... so maybe it is safe to sleep instead of spin?
+
+May the email Subject misled you. This code do NOT spin for 1 sec. The period of the
+spinning depends on the SPIN_UNIT.
+
+> -#define SPIN_UNIT		100			/* 100ns */
+> -/* Firmware should respond within 1 milliseconds */
+> -#define FIRMWARE_TIMEOUT	(1 * NSEC_PER_MSEC)
+> +#define SPIN_UNIT		100			/* 100us */
+> +/* Firmware should respond within 1 seconds */
+> +#define FIRMWARE_TIMEOUT	(1 * USEC_PER_SEC)
+
+The period was 100 ns and changed to 100 us now. In my opinion, spinning for 100 ns or 100 us is OK :)
+
+The timeout_default is set with FIRMWARE_TIMEOUT (1 sec) by default. If the platform do not
+respond within timeout_default after multiple spins, the OSPM will print a warning message to
+dmesg.
+
 Regards,
-Rev James William
+Shuai
+
+
+On 2021/10/15 PM11:37, Luck, Tony wrote:
+>> We observe that the waiting time for DDR error injection is about 10 ms
+>> and that for PCIe error injection is about 500 ms in Arm platfrom.
+>>
+>> In this patch, we relax the response timeout to 1 second and allow user to
+>> pass the time out value as a argument.
+> 
+> Spinning for 1ms was maybe ok. Spinning for up to 1s seems like a bad idea.
+> 
+> This code is executed inside a mutex ... so maybe it is safe to sleep instead of spin?
+> 
+> -Tony
+> 
