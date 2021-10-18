@@ -2,116 +2,202 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF780430BA8
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Oct 2021 21:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44325430DFD
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 04:59:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234918AbhJQTLF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 17 Oct 2021 15:11:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43588 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233662AbhJQTLE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 17 Oct 2021 15:11:04 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7C8BC06161C;
-        Sun, 17 Oct 2021 12:08:54 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id y12so63436656eda.4;
-        Sun, 17 Oct 2021 12:08:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=D4wPfnIdmFR0mVDCTT9DLYHlH1SJpsLuL8bJ7s6TiF8=;
-        b=eqXhpr1xFPJ6ot/+IRHxQv4y0Qu2npluiR4EBgsxDvJyYyLtOJMz8z49dpwQ+QTNXG
-         VG4o1Sbe0nL3M3b/t/sFJYd2zzVO7qjKH9tW7ZuFMtkKUxuC+ll8nM+tpN3pi8QysFGg
-         C61mZ2f43rxRSHFwzuGJJ0mhkYAL6eBaJC+nkS5ohyWutc78gaiN7hu4TRET+Mxm0bSq
-         qg6+thWnZ/5YHTP5MZAMybf+dLkYTKDac8mKPSw+lItQc7QN+fx+3ezezu5ncweFhPku
-         gIVd53ib4HZx6FX53d727UYtWxGExf56chxPQXFIF+kYqtpB3GVbeVybhBvo0Q1KcnG8
-         nSvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=D4wPfnIdmFR0mVDCTT9DLYHlH1SJpsLuL8bJ7s6TiF8=;
-        b=CFkTAEGlS7Oae94qAbVSeH0xxiBwpm5g3ZpM10LovruIy8/a0ZJ+FqOkNeAKMVBQ5K
-         LsU6aFQpNxLNnGVpkwdiBx7HY9p8E5xilbqgWeXzctE797UFy5OAumxBh7C7cQzC7ABl
-         Zi+xXbfkkwyNC5tln7ful8jZ8EjOpIb1VPkVnCnAWTLJXdUgU2CEU0t1rYuYtUg7JHuA
-         q/UJTpKElAHJO2w5Y9+HRpJxGOofOrkJYz4WOlNphxGev8IW+GaFpI30OjO4AcXSY5tK
-         g7t7PGngfAopsaQCsVpOUR7gy0IYFZfIlbgJLSWAhC693OfQwv6t0OcWygYD/wZhUs2m
-         UWjQ==
-X-Gm-Message-State: AOAM531NXsKz2OMwBsxklgRQS6FDY4pWPWz7SoR3tsBuQAn2KliEVG2i
-        WXbQpZ/jmE76WEvgAZkC5uF3P4oINUJENJIF9pw=
-X-Google-Smtp-Source: ABdhPJxA4vOkMI89Yz/fNxUEqKJBbnJJL1WyIvbb0BkBTvaC9TlQZLCw9egWLsYTEwxT45L4WzXIMXCvULOS+joAYd0=
-X-Received: by 2002:a17:907:8a27:: with SMTP id sc39mr23636774ejc.567.1634497732785;
- Sun, 17 Oct 2021 12:08:52 -0700 (PDT)
+        id S229706AbhJRDBu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Oct 2021 23:01:50 -0400
+Received: from mga14.intel.com ([192.55.52.115]:42099 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229526AbhJRDBu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 17 Oct 2021 23:01:50 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10140"; a="228433468"
+X-IronPort-AV: E=Sophos;i="5.85,381,1624345200"; 
+   d="scan'208";a="228433468"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2021 19:59:39 -0700
+X-IronPort-AV: E=Sophos;i="5.85,381,1624345200"; 
+   d="scan'208";a="526093884"
+Received: from alison-desk.jf.intel.com (HELO localhost) ([10.54.74.41])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2021 19:59:39 -0700
+From:   alison.schofield@intel.com
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>
+Cc:     Alison Schofield <alison.schofield@intel.com>,
+        linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: [PATCH v2] ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT
+Date:   Sun, 17 Oct 2021 20:07:36 -0700
+Message-Id: <20211018030736.443752-1-alison.schofield@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20211017161523.43801-1-kitakar@gmail.com> <20211017161523.43801-2-kitakar@gmail.com>
-In-Reply-To: <20211017161523.43801-2-kitakar@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 17 Oct 2021 22:08:16 +0300
-Message-ID: <CAHp75VfZyk_Ar23grNk2PvzRqaSO++CdkU4NWe2guNkwdGivzg@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/1] ACPI / PMIC: Add i2c address to intel_pmic_bytcrc driver
-To:     Tsuchiya Yuto <kitakar@gmail.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Oct 17, 2021 at 7:16 PM Tsuchiya Yuto <kitakar@gmail.com> wrote:
-> On Microsoft Surface 3 (uses Intel's Atom Cherry Trail SoC), executing
-> intel_soc_pmic_exec_mipi_pmic_seq_element() results in the following
-> error message:
->
->         [ 7196.356682] intel_soc_pmic_exec_mipi_pmic_seq_element: Not implemented
->         [ 7196.356686] intel_soc_pmic_exec_mipi_pmic_seq_element: i2c-addr: 0x6e reg-addr 0x57 value 0x63 mask 0xff
->
-> Surface 3 uses the PMIC device INT33FD, and the DSDT describes its _HRV
-> value is 0x02 [1]:
->
->         Scope (PCI0.I2C7)
->         {
->             Device (PMIC)
->             {
->                 Name (_ADR, Zero)  // _ADR: Address
->                 Name (_HID, "INT33FD" /* Intel Baytrail Power Management IC */)  // _HID: Hardware ID
->                 Name (_CID, "INT33FD" /* Intel Baytrail Power Management IC */)  // _CID: Compatible ID
->                 Name (_DDN, "CRYSTAL COVE+ AIC")  // _DDN: DOS Device Name
->                 Name (_HRV, 0x02)  // _HRV: Hardware Revision
->                 Name (_UID, One)  // _UID: Unique ID
->                 Name (_DEP, Package (0x01)  // _DEP: Dependencies
->                 {
->                     I2C7
->                 })
->         [...]
->
-> Due to this _HRV value, intel_pmic_bytcrc is used as the PMIC driver.
-> However, the i2c address is currently not defined in this driver.
-> This commit adds the missing i2c address 0x6e to the intel_pmic_bytcrc
-> driver.
->
-> [1] https://github.com/linux-surface/acpidumps/blob/f8db3d150815aa21530635b7e646eee271e3b8fe/surface_3/dsdt.dsl#L10868
+From: Alison Schofield <alison.schofield@intel.com>
 
-> References: cc0594c4b0ef ("ACPI / PMIC: Add i2c address for thermal control")
+During NUMA init, CXL memory defined in the SRAT Memory Affinity
+subtable may be assigned to a NUMA node. Since there is no
+requirement that the SRAT be comprehensive for CXL memory another
+mechanism is needed to assign NUMA nodes to CXL memory not identified
+in the SRAT.
 
-Not sure what this tag means.
+Use the CXL Fixed Memory Window Structure (CFMWS) of the ACPI CXL
+Early Discovery Table (CEDT) to find all CXL memory ranges.
+Create a NUMA node for each CFMWS that is not already assigned to
+a NUMA node. Add a memblk attaching its host physical address
+range to the node.
 
-After reading a bit of code I think the best approach is to quirk the
-drivers/mfd/intel_soc_pmic_core.c with DMI to supply HRV. Setting an
-address to all BYT devices may not be the best since I have no idea if
-there are different addresses in use. It may be the case, but the
-problem is that we have no proof. Also BYT driver uses hardcoded power
-and thermal tables, I'm completely unsure that this would not damage
-hardware in some circumstances.
+Note that these ranges may not actually map any memory at boot time.
+They may describe persistent capacity or may be present to enable
+hot-plug.
 
-Hans, what's your opinion on this?
+Consumers can use phys_to_target_node() to discover the NUMA node.
 
-P.S. I dunno if _UID correlates to the type of the chipset (BYT/CHT).
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+---
 
+Changes in v2:
+- Use MAX_NUMNODES as max value when searching node_to_pxm_map() (0-day)
+- Add braces around single statement for loop (coding style)
+- Rename acpi_parse_cfmws() to acpi_cxl_cfmws_init to be more like other
+  functions in this file doing similar work. 
+- Comments: remove superflous and state importance of the init order,
+  CFMWS after SRAT, (Ira, Dan)
+- Add prototype for numa_add_memblk() (0-day)
+
+
+ drivers/acpi/numa/srat.c | 70 ++++++++++++++++++++++++++++++++++++++++
+ drivers/cxl/acpi.c       |  8 +++--
+ include/linux/acpi.h     |  1 +
+ 3 files changed, 76 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index b8795fc49097..4d26a4208af0 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -300,6 +300,67 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
+ }
+ #endif /* defined(CONFIG_X86) || defined (CONFIG_ARM64) */
+ 
++static int __init acpi_cxl_cfmws_init(struct acpi_table_header *acpi_cedt)
++{
++	struct acpi_cedt_cfmws *cfmws;
++	acpi_size len, cur = 0;
++	void *cedt_subtable;
++	int i, pxm, node;
++	u64 start, end;
++
++	/* Find the max PXM defined in the SRAT */
++	for (i = 0; i < MAX_NUMNODES - 1; i++) {
++		if (node_to_pxm_map[i] > pxm)
++			pxm = node_to_pxm_map[i];
++	}
++	/* Start assigning fake PXM values after the SRAT max PXM */
++	pxm++;
++
++	len = acpi_cedt->length - sizeof(*acpi_cedt);
++	cedt_subtable = acpi_cedt + 1;
++
++	while (cur < len) {
++		struct acpi_cedt_header *c = cedt_subtable + cur;
++
++		if (c->type != ACPI_CEDT_TYPE_CFMWS)
++			goto next;
++
++		cfmws = cedt_subtable + cur;
++		if (cfmws->header.length < sizeof(*cfmws)) {
++			pr_warn_once("CFMWS entry skipped:invalid length:%u\n",
++				     cfmws->header.length);
++			goto next;
++		}
++
++		start = cfmws->base_hpa;
++		end = cfmws->base_hpa + cfmws->window_size;
++
++		/*
++		 * Skip if the SRAT already described
++		 * the NUMA details for this HPA.
++		 */
++		node = phys_to_target_node(start);
++		if (node != NUMA_NO_NODE)
++			goto next;
++
++		node = acpi_map_pxm_to_node(pxm);
++		if (node == NUMA_NO_NODE) {
++			pr_err("ACPI NUMA: Too many proximity domains.\n");
++			return -EINVAL;
++		}
++
++		if (numa_add_memblk(node, start, end) < 0) {
++			/* CXL driver must handle the NUMA_NO_NODE case */
++			pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
++				node, start, end);
++		}
++		pxm++;
++next:
++		cur += c->length;
++	}
++	return 0;
++}
++
+ static int __init acpi_parse_slit(struct acpi_table_header *table)
+ {
+ 	struct acpi_table_slit *slit = (struct acpi_table_slit *)table;
+@@ -478,6 +539,15 @@ int __init acpi_numa_init(void)
+ 	/* SLIT: System Locality Information Table */
+ 	acpi_table_parse(ACPI_SIG_SLIT, acpi_parse_slit);
+ 
++	/*
++	 * CEDT: CXL Fixed Memory Window Structures (CFMWS)
++	 * must be parsed after the SRAT. It creates NUMA
++	 * Nodes for CXL memory ranges not already defined
++	 * in the SRAT and it assigns PXMs after the max PXM
++	 * defined in the SRAT.
++	 */
++	acpi_table_parse(ACPI_SIG_CEDT, acpi_cxl_cfmws_init);
++
+ 	if (cnt < 0)
+ 		return cnt;
+ 	else if (!parsed_numa_memblks)
+diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+index 54e9d4d2cf5f..02f765a494b1 100644
+--- a/drivers/cxl/acpi.c
++++ b/drivers/cxl/acpi.c
+@@ -122,9 +122,11 @@ static void cxl_add_cfmws_decoders(struct device *dev,
+ 				cfmws->base_hpa, cfmws->base_hpa +
+ 				cfmws->window_size - 1);
+ 		} else {
+-			dev_dbg(dev, "add: %s range %#llx-%#llx\n",
+-				dev_name(&cxld->dev), cfmws->base_hpa,
+-				 cfmws->base_hpa + cfmws->window_size - 1);
++			dev_dbg(dev, "add: %s node: %d range %#llx-%#llx\n",
++				dev_name(&cxld->dev),
++				phys_to_target_node(cxld->range.start),
++				cfmws->base_hpa,
++				cfmws->base_hpa + cfmws->window_size - 1);
+ 		}
+ 		cur += c->length;
+ 	}
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 974d497a897d..f837fd715440 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -426,6 +426,7 @@ extern bool acpi_osi_is_win8(void);
+ #ifdef CONFIG_ACPI_NUMA
+ int acpi_map_pxm_to_node(int pxm);
+ int acpi_get_node(acpi_handle handle);
++int __init numa_add_memblk(int nodeid, u64 start, u64 end);
+ 
+ /**
+  * pxm_to_online_node - Map proximity ID to online node
+
+base-commit: 64570fbc14f8d7cb3fe3995f20e26bc25ce4b2cc
 -- 
-With Best Regards,
-Andy Shevchenko
+2.31.1
+
