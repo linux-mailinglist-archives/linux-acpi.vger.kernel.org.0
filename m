@@ -2,153 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C739C432278
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 17:17:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E4FA431EC2
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 16:04:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232645AbhJRPTK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Oct 2021 11:19:10 -0400
-Received: from mga02.intel.com ([134.134.136.20]:64674 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232303AbhJRPTI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Oct 2021 11:19:08 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10141"; a="215435697"
-X-IronPort-AV: E=Sophos;i="5.85,382,1624345200"; 
-   d="scan'208";a="215435697"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 08:14:57 -0700
-X-IronPort-AV: E=Sophos;i="5.85,382,1624345200"; 
-   d="scan'208";a="566102855"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 08:14:53 -0700
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id BB78920840;
-        Mon, 18 Oct 2021 15:17:33 +0300 (EEST)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1mcRa5-0001fh-PB; Mon, 18 Oct 2021 15:17:29 +0300
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-i2c@vger.kernel.org
-Cc:     Wolfram Sang <wsa@the-dreams.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        linux-media@vger.kernel.org
-Subject: [PATCH 6/6] at24: Support probing while in non-zero ACPI D state
-Date:   Mon, 18 Oct 2021 15:17:29 +0300
-Message-Id: <20211018121729.6357-7-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211018121729.6357-1-sakari.ailus@linux.intel.com>
-References: <20211018121729.6357-1-sakari.ailus@linux.intel.com>
+        id S231984AbhJROFN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Oct 2021 10:05:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:58086 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234969AbhJRODk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 Oct 2021 10:03:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1634565689;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=alu9+x3UukSgjt1oLDg8yRXsnhUeDxbETePjaj5q6hc=;
+        b=amBFzB6iE50a9iYQvxiyNBvaKuUVp1S9gFEtOmJXd47C3TKvo0k/Yciamx5Ha7uV9/GZ9x
+        mPE7/PQGBQAe3HcbYqrATROA2c/ix2t6QGhB7h5/Hp2qvT19m1qNHdiCz4n05OarMCip1r
+        ojUjMFVyUYF4xMTS5xbuExESVSQ0o6o=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-258-6iLB84JHPUyO2Gk0wM5AAw-1; Mon, 18 Oct 2021 10:01:28 -0400
+X-MC-Unique: 6iLB84JHPUyO2Gk0wM5AAw-1
+Received: by mail-ed1-f70.google.com with SMTP id g28-20020a50d0dc000000b003dae69dfe3aso14455683edf.7
+        for <linux-acpi@vger.kernel.org>; Mon, 18 Oct 2021 07:01:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=alu9+x3UukSgjt1oLDg8yRXsnhUeDxbETePjaj5q6hc=;
+        b=2Owbu/aER7qSHDT1aDEjaX8OdGb1oiPhBzl3bfIuDJ5Lh0vd/7VftDbTwnpgJXfKxf
+         7P1WB6RB9PV8FKuhqIZb6kJH2OyX5BQDjNFwkYYZcwyQmuQD8f9QSah/aQ3gzfg5M0/s
+         e/7NBn9Clnld0imb6Tegava+JEn5B/DRNhogwLom0vtmMZwD9cUFEHBqG8uSyuXV0Vz6
+         2uPFP6J5qem5SJC6Fq6ENheVDhOocFcbU3qNz6iilqio3GsbAxKfvwDZdp+QEvBEp+Mi
+         IH0JhnRbBzFExWWqFq/p3JcNT3JEyzrkl1FY1AxlsAMIg1aIqzKHT9dDuWa2ah+8r479
+         +/8g==
+X-Gm-Message-State: AOAM533Y5r+Ui7OEPKX/ll6WVY7f+ntqT7w00Dc3DmSXj+P/YFXTdp78
+        250Uk/t9sJKs1FVtTwyfqCyhj/Lw8BiaxCIStOADW63K4aITzke+0Lm42+JLfo39kGMdb2GTRxd
+        KqlvSXzf6eeJuAj81lz1AKQ==
+X-Received: by 2002:a17:906:16d0:: with SMTP id t16mr30142967ejd.199.1634565684861;
+        Mon, 18 Oct 2021 07:01:24 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx0pLdIdl2/mSdWIYw55gpZhSC1/jBwkJN0yv+ochanXR2UNh43fcyd5rcN6GDwg9bboL83ow==
+X-Received: by 2002:a17:906:16d0:: with SMTP id t16mr30142841ejd.199.1634565683551;
+        Mon, 18 Oct 2021 07:01:23 -0700 (PDT)
+Received: from [10.40.1.223] ([81.30.35.201])
+        by smtp.gmail.com with ESMTPSA id q2sm9144921eje.118.2021.10.18.07.01.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Oct 2021 07:01:23 -0700 (PDT)
+Message-ID: <97b8914e-e78d-8e3b-290a-6ad10170635b@redhat.com>
+Date:   Mon, 18 Oct 2021 16:01:22 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.0
+Subject: Re: [RFC PATCH 1/1] ACPI / PMIC: Add i2c address to intel_pmic_bytcrc
+ driver
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Tsuchiya Yuto <kitakar@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20211017161523.43801-1-kitakar@gmail.com>
+ <20211017161523.43801-2-kitakar@gmail.com>
+ <3e6428f1-9411-fac6-9172-1dfe6de58c28@redhat.com>
+ <CAHp75VcA+=OsmX7o2WTvYgf8TNpE64qEHq=MVm5vVP-4RBk+ng@mail.gmail.com>
+ <3c9d4f9b-26c2-a135-eb2e-67963aa0bc0b@redhat.com>
+ <YW1QkidNKa79MCBb@smile.fi.intel.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <YW1QkidNKa79MCBb@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In certain use cases (where the chip is part of a camera module, and the
-camera module is wired together with a camera privacy LED), powering on
-the device during probe is undesirable. Add support for the at24 to
-execute probe while being in ACPI D state other than 0 (which means fully
-powered on).
+Hi,
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Tomasz Figa <tfiga@chromium.org>
-Acked-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
----
- drivers/misc/eeprom/at24.c | 45 +++++++++++++++++++++++---------------
- 1 file changed, 27 insertions(+), 18 deletions(-)
+On 10/18/21 12:46, Andy Shevchenko wrote:
+> On Mon, Oct 18, 2021 at 12:38:51PM +0200, Hans de Goede wrote:
+>> On 10/18/21 12:31, Andy Shevchenko wrote:
+>>> On Mon, Oct 18, 2021 at 12:16 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> 
+> ...
+> 
+>>> Btw, IIRC similar code (i.e. BYT vs CHT by CPU
+>>> ID) is being used elsewhere. Perhaps we might have some common
+>>> (library) under arc/x86, PDx86 or so (headers?)?
+>>
+>> We already have helpers for this defined in:
+>>
+>> sound/soc/intel/common/soc-intel-quirks.h
+>>
+>> We could move those to some header under include, maybe:
+>>
+>> include/linux/platform_data/x86/atom.h
+>>
+>> And add #ifdef-ery there so that things will also build on
+>> non x86 ?
+>>
+>> Then we could do a 2 patch series adding the
+>> include/linux/platform_data/x86/atom.h
+>> file + the drivers/mfd/intel_soc_pmic_core.c
+>> change and Lee can merge both through the MFD tree.
+>>
+>> And then we can do further clean-ups of e.g. sound/soc
+>> on top (we can ask Lee to provide an immutable branch).
+>>
+>> How does that sound ?
+> 
+> Sounds like a good plan to me!
 
-diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
-index 305ffad131a29..49ab656e8a96e 100644
---- a/drivers/misc/eeprom/at24.c
-+++ b/drivers/misc/eeprom/at24.c
-@@ -595,6 +595,7 @@ static int at24_probe(struct i2c_client *client)
- 	bool i2c_fn_i2c, i2c_fn_block;
- 	unsigned int i, num_addresses;
- 	struct at24_data *at24;
-+	bool full_power;
- 	struct regmap *regmap;
- 	bool writable;
- 	u8 test_byte;
-@@ -747,14 +748,16 @@ static int at24_probe(struct i2c_client *client)
- 
- 	i2c_set_clientdata(client, at24);
- 
--	err = regulator_enable(at24->vcc_reg);
--	if (err) {
--		dev_err(dev, "Failed to enable vcc regulator\n");
--		return err;
--	}
-+	full_power = acpi_dev_state_d0(&client->dev);
-+	if (full_power) {
-+		err = regulator_enable(at24->vcc_reg);
-+		if (err) {
-+			dev_err(dev, "Failed to enable vcc regulator\n");
-+			return err;
-+		}
- 
--	/* enable runtime pm */
--	pm_runtime_set_active(dev);
-+		pm_runtime_set_active(dev);
-+	}
- 	pm_runtime_enable(dev);
- 
- 	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
-@@ -766,15 +769,18 @@ static int at24_probe(struct i2c_client *client)
- 	}
- 
- 	/*
--	 * Perform a one-byte test read to verify that the
--	 * chip is functional.
-+	 * Perform a one-byte test read to verify that the chip is functional,
-+	 * unless powering on the device is to be avoided during probe (i.e.
-+	 * it's powered off right now).
- 	 */
--	err = at24_read(at24, 0, &test_byte, 1);
--	if (err) {
--		pm_runtime_disable(dev);
--		if (!pm_runtime_status_suspended(dev))
--			regulator_disable(at24->vcc_reg);
--		return -ENODEV;
-+	if (full_power) {
-+		err = at24_read(at24, 0, &test_byte, 1);
-+		if (err) {
-+			pm_runtime_disable(dev);
-+			if (!pm_runtime_status_suspended(dev))
-+				regulator_disable(at24->vcc_reg);
-+			return -ENODEV;
-+		}
- 	}
- 
- 	pm_runtime_idle(dev);
-@@ -794,9 +800,11 @@ static int at24_remove(struct i2c_client *client)
- 	struct at24_data *at24 = i2c_get_clientdata(client);
- 
- 	pm_runtime_disable(&client->dev);
--	if (!pm_runtime_status_suspended(&client->dev))
--		regulator_disable(at24->vcc_reg);
--	pm_runtime_set_suspended(&client->dev);
-+	if (acpi_dev_state_d0(&client->dev)) {
-+		if (!pm_runtime_status_suspended(&client->dev))
-+			regulator_disable(at24->vcc_reg);
-+		pm_runtime_set_suspended(&client->dev);
-+	}
- 
- 	return 0;
- }
-@@ -833,6 +841,7 @@ static struct i2c_driver at24_driver = {
- 	.probe_new = at24_probe,
- 	.remove = at24_remove,
- 	.id_table = at24_ids,
-+	.flags = I2C_DRV_ACPI_WAIVE_D0_PROBE,
- };
- 
- static int __init at24_init(void)
--- 
-2.30.2
+So I've been thinking about this a bit more.
+
+Since sound/soc/intel/common/soc-intel-quirks.h already
+has stubs for non X86 too, I think it is best to just
+move that to include/linux/platform_data/x86/soc.h .
+
+Since the drivers/mfd/intel_soc_pmic_core.c thing is
+a bugfix of sorts, it is probably best to open-code
+the check there and then replace it with the helper
+from include/linux/platform_data/x86/soc.h later.
+
+I'll start prepping a patch series doing things
+this way now.
+
+Regards,
+
+Hans
 
