@@ -2,108 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA0B4432320
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 17:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B0234324E4
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 19:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232164AbhJRPmy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Oct 2021 11:42:54 -0400
-Received: from mga06.intel.com ([134.134.136.31]:31329 "EHLO mga06.intel.com"
+        id S233944AbhJRRXo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Oct 2021 13:23:44 -0400
+Received: from foss.arm.com ([217.140.110.172]:40868 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232209AbhJRPmt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Oct 2021 11:42:49 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10141"; a="289127326"
-X-IronPort-AV: E=Sophos;i="5.85,382,1624345200"; 
-   d="scan'208";a="289127326"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 08:40:31 -0700
-X-IronPort-AV: E=Sophos;i="5.85,382,1624345200"; 
-   d="scan'208";a="482789500"
-Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.146])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 08:40:31 -0700
-Date:   Mon, 18 Oct 2021 08:40:30 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Shuai Xue <xueshuai@linux.alibaba.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
-        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
-Subject: Re: [PATCH] ACPI, APEI, EINJ: Relax platform response timeout to 1
- second.
-Message-ID: <YW2Vbkn5d6r3Y4LA@agluck-desk2.amr.corp.intel.com>
-References: <20211015033817.16719-1-xueshuai@linux.alibaba.com>
- <4d492cef3640414d85ecfdb602ad6fa0@intel.com>
- <869f0c92-0800-b24e-9de8-d8c9cb6972a7@linux.alibaba.com>
+        id S233600AbhJRRXn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 Oct 2021 13:23:43 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD91E2F;
+        Mon, 18 Oct 2021 10:21:31 -0700 (PDT)
+Received: from [10.1.196.28] (eglon.cambridge.arm.com [10.1.196.28])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C10B13F694;
+        Mon, 18 Oct 2021 10:21:30 -0700 (PDT)
+Subject: Re: [PATCH V2] ACPI / APEI: restore interrupt before panic in sdei
+ flow
+To:     =?UTF-8?B?5Lmx55+z?= <zhangliguang@linux.alibaba.com>
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tony Luck <tony.luck@intel.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Borislav Petkov <bp@alien8.de>, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        huangming@linux.alibaba.com
+References: <20211012142910.9688-1-zhangliguang@linux.alibaba.com>
+ <5951ad5b-d755-0150-0f2a-c567eb454dac@arm.com>
+ <f8e73ed7-f45f-0f5d-9055-486fb83dcd82@linux.alibaba.com>
+From:   James Morse <james.morse@arm.com>
+Message-ID: <ddefdfea-a8ca-8735-0f81-8b2748587da5@arm.com>
+Date:   Mon, 18 Oct 2021 18:21:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <869f0c92-0800-b24e-9de8-d8c9cb6972a7@linux.alibaba.com>
+In-Reply-To: <f8e73ed7-f45f-0f5d-9055-486fb83dcd82@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Oct 17, 2021 at 12:06:52PM +0800, Shuai Xue wrote:
-> Hi, Tony,
-> 
-> Thank you for your reply.
-> 
-> > Spinning for 1ms was maybe ok. Spinning for up to 1s seems like a bad idea.
-> >
-> > This code is executed inside a mutex ... so maybe it is safe to sleep instead of spin?
-> 
-> May the email Subject misled you. This code do NOT spin for 1 sec. The period of the
-> spinning depends on the SPIN_UNIT.
+Hi Liguang,
 
-Not just the subject line. See the comment you changed here:
+On 14/10/2021 15:18, 乱石 wrote:
+> 在 2021/10/14 1:44, James Morse 写道:
+>> On 12/10/2021 15:29, Liguang Zhang wrote:
+>>> When hest acpi table configure Hardware Error Notification type as
+>>> Software Delegated Exception(0x0B) for RAS event, OS RAS interacts with
+>>> ATF by SDEI mechanism. On the firmware first system, OS was notified by
+>>> ATF sdei call.
 
-> > -#define SPIN_UNIT		100			/* 100ns */
-> > -/* Firmware should respond within 1 milliseconds */
-> > -#define FIRMWARE_TIMEOUT	(1 * NSEC_PER_MSEC)
-> > +#define SPIN_UNIT		100			/* 100us */
-> > +/* Firmware should respond within 1 seconds */
-> > +#define FIRMWARE_TIMEOUT	(1 * USEC_PER_SEC)
+>>> If fatal RAS error occured, panic was called in sdei_asm_handle()
+>>> without ehf_deactivate_priority executed, which lead interrupt masked.
 
-That definitely reads to me that the timeout was increased from
-1 millisecond to 1 second. With the old code polling for completion
-every 100ns, and the new code polling every 100us
-> 
-> The period was 100 ns and changed to 100 us now. In my opinion, spinning for 100 ns or 100 us is OK :)
+>> So far the story is:
+>> Firmware generated and SDEI event (a kind of software NMI) because of a firmware
+>> interrupt, but it hasn't completely handled the interrupt.
+>>
+>>
+>>> If interrupt masked, system would be halted in kdump flow like this:
+>>>
+>>> arm-smmu-v3 arm-smmu-v3.3.auto: allocated 65536 entries for cmdq
+>>> arm-smmu-v3 arm-smmu-v3.3.auto: allocated 32768 entries for evtq
+>>> arm-smmu-v3 arm-smmu-v3.3.auto: allocated 65536 entries for priq
+>>> arm-smmu-v3 arm-smmu-v3.3.auto: SMMU currently enabled! Resetting...
 
-But what does the code do in between polls? The calling code is:
+>> How and why do firmware interrupts affect the IOMMU?
 
-        for (;;) {
-                rc = apei_exec_run(&ctx, ACPI_EINJ_CHECK_BUSY_STATUS);
-                if (rc)
-                        return rc;
-                val = apei_exec_ctx_get_output(&ctx);
-                if (!(val & EINJ_OP_BUSY))
-                        break;
-                if (einj_timedout(&timeout))
-                        return -EIO;
-        }
+[...]
 
-Now apei_exec_run() and apei_exec_ctx_get_output() are a maze of
-functions & macros. But I don't think they can block, sleep, or
-context switch.
+>> Could you debug why firmware interrupts being active prevent the SMMU from being reset. As
+>> far as I can tell, those should be totally independent.
 
-So this code is "spinning" until either BIOS says the operation is
-complete, or the FIRMWARE_TIMEOUT is reached.
+> If ehf_deactivate_priority() was not executed, pmr_el1 register was not resumed to >0x80,
+> which leads
+> non-secure interrupts masked. arm_smmu_device_probe() finally called usleep_range() which
+> based on
+> hrtimer. Because non-secure timer interrupts was masked, usleep_range would not reponse.
 
-It avoids triggering a watchdog by the call to touch_nmi_watchdog()
-after each spin between polls. But the whole thing may be spinning
-for a second.
+Aha! So nothing to do with with the SMMU at all.
 
-I'm not at all sure that I'm right that the spin could be replaced
-with an msleep(). It will certainly slow things down for systems
-and EINJ operations that actually complete quickly (because instead
-of returnining within 100ns (or 100us with your patch) it will sleep
-for 1 ms (rounded up to next jiffie ... so 4 ms of HZ=250 systems.
+Your firmware has 'disabled' the interrupt by moving the CPUs priority mask so that no
+interrupts at all can be taken.
 
-But I don't care if my error injections take 4ms.
+I still think this is best fixed in firmware.
 
-I do care that one logical CPU spins for 1 second.
+Papering over the problem here is not enough as the handler may encounter memory
+corruption, take an exception, and panic() from some other part of the kernel. Its RAS -
+we know something has gone wrong before we get to this point.
 
--Tony
+The OS needs to be able to call panic() at any point in time.
+
+
+Your firmware should not deny the normal-world interrupts like this.
+Please either complete the interrupt handling before calling into the normal world,
+or disable it if you need the interrupt to not fire again. If the device that triggers the
+interrupt doesn't have a disable, there are hardware registers in the GIC to do this.
+(I don't know how TFA works here, it may be a bug in the upstream code)
+
+
+
+Thanks,
+
+James
