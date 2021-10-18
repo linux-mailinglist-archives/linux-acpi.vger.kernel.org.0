@@ -2,136 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E4FA431EC2
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 16:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA0B4432320
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 17:40:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbhJROFN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Oct 2021 10:05:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:58086 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234969AbhJRODk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Oct 2021 10:03:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634565689;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=alu9+x3UukSgjt1oLDg8yRXsnhUeDxbETePjaj5q6hc=;
-        b=amBFzB6iE50a9iYQvxiyNBvaKuUVp1S9gFEtOmJXd47C3TKvo0k/Yciamx5Ha7uV9/GZ9x
-        mPE7/PQGBQAe3HcbYqrATROA2c/ix2t6QGhB7h5/Hp2qvT19m1qNHdiCz4n05OarMCip1r
-        ojUjMFVyUYF4xMTS5xbuExESVSQ0o6o=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-258-6iLB84JHPUyO2Gk0wM5AAw-1; Mon, 18 Oct 2021 10:01:28 -0400
-X-MC-Unique: 6iLB84JHPUyO2Gk0wM5AAw-1
-Received: by mail-ed1-f70.google.com with SMTP id g28-20020a50d0dc000000b003dae69dfe3aso14455683edf.7
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Oct 2021 07:01:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=alu9+x3UukSgjt1oLDg8yRXsnhUeDxbETePjaj5q6hc=;
-        b=2Owbu/aER7qSHDT1aDEjaX8OdGb1oiPhBzl3bfIuDJ5Lh0vd/7VftDbTwnpgJXfKxf
-         7P1WB6RB9PV8FKuhqIZb6kJH2OyX5BQDjNFwkYYZcwyQmuQD8f9QSah/aQ3gzfg5M0/s
-         e/7NBn9Clnld0imb6Tegava+JEn5B/DRNhogwLom0vtmMZwD9cUFEHBqG8uSyuXV0Vz6
-         2uPFP6J5qem5SJC6Fq6ENheVDhOocFcbU3qNz6iilqio3GsbAxKfvwDZdp+QEvBEp+Mi
-         IH0JhnRbBzFExWWqFq/p3JcNT3JEyzrkl1FY1AxlsAMIg1aIqzKHT9dDuWa2ah+8r479
-         +/8g==
-X-Gm-Message-State: AOAM533Y5r+Ui7OEPKX/ll6WVY7f+ntqT7w00Dc3DmSXj+P/YFXTdp78
-        250Uk/t9sJKs1FVtTwyfqCyhj/Lw8BiaxCIStOADW63K4aITzke+0Lm42+JLfo39kGMdb2GTRxd
-        KqlvSXzf6eeJuAj81lz1AKQ==
-X-Received: by 2002:a17:906:16d0:: with SMTP id t16mr30142967ejd.199.1634565684861;
-        Mon, 18 Oct 2021 07:01:24 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJx0pLdIdl2/mSdWIYw55gpZhSC1/jBwkJN0yv+ochanXR2UNh43fcyd5rcN6GDwg9bboL83ow==
-X-Received: by 2002:a17:906:16d0:: with SMTP id t16mr30142841ejd.199.1634565683551;
-        Mon, 18 Oct 2021 07:01:23 -0700 (PDT)
-Received: from [10.40.1.223] ([81.30.35.201])
-        by smtp.gmail.com with ESMTPSA id q2sm9144921eje.118.2021.10.18.07.01.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Oct 2021 07:01:23 -0700 (PDT)
-Message-ID: <97b8914e-e78d-8e3b-290a-6ad10170635b@redhat.com>
-Date:   Mon, 18 Oct 2021 16:01:22 +0200
+        id S232164AbhJRPmy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Oct 2021 11:42:54 -0400
+Received: from mga06.intel.com ([134.134.136.31]:31329 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232209AbhJRPmt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 18 Oct 2021 11:42:49 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10141"; a="289127326"
+X-IronPort-AV: E=Sophos;i="5.85,382,1624345200"; 
+   d="scan'208";a="289127326"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 08:40:31 -0700
+X-IronPort-AV: E=Sophos;i="5.85,382,1624345200"; 
+   d="scan'208";a="482789500"
+Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.146])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 08:40:31 -0700
+Date:   Mon, 18 Oct 2021 08:40:30 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "zhangliguang@linux.alibaba.com" <zhangliguang@linux.alibaba.com>,
+        "zhuo.song@linux.alibaba.com" <zhuo.song@linux.alibaba.com>
+Subject: Re: [PATCH] ACPI, APEI, EINJ: Relax platform response timeout to 1
+ second.
+Message-ID: <YW2Vbkn5d6r3Y4LA@agluck-desk2.amr.corp.intel.com>
+References: <20211015033817.16719-1-xueshuai@linux.alibaba.com>
+ <4d492cef3640414d85ecfdb602ad6fa0@intel.com>
+ <869f0c92-0800-b24e-9de8-d8c9cb6972a7@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Subject: Re: [RFC PATCH 1/1] ACPI / PMIC: Add i2c address to intel_pmic_bytcrc
- driver
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Tsuchiya Yuto <kitakar@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20211017161523.43801-1-kitakar@gmail.com>
- <20211017161523.43801-2-kitakar@gmail.com>
- <3e6428f1-9411-fac6-9172-1dfe6de58c28@redhat.com>
- <CAHp75VcA+=OsmX7o2WTvYgf8TNpE64qEHq=MVm5vVP-4RBk+ng@mail.gmail.com>
- <3c9d4f9b-26c2-a135-eb2e-67963aa0bc0b@redhat.com>
- <YW1QkidNKa79MCBb@smile.fi.intel.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <YW1QkidNKa79MCBb@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <869f0c92-0800-b24e-9de8-d8c9cb6972a7@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On 10/18/21 12:46, Andy Shevchenko wrote:
-> On Mon, Oct 18, 2021 at 12:38:51PM +0200, Hans de Goede wrote:
->> On 10/18/21 12:31, Andy Shevchenko wrote:
->>> On Mon, Oct 18, 2021 at 12:16 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Sun, Oct 17, 2021 at 12:06:52PM +0800, Shuai Xue wrote:
+> Hi, Tony,
 > 
-> ...
+> Thank you for your reply.
 > 
->>> Btw, IIRC similar code (i.e. BYT vs CHT by CPU
->>> ID) is being used elsewhere. Perhaps we might have some common
->>> (library) under arc/x86, PDx86 or so (headers?)?
->>
->> We already have helpers for this defined in:
->>
->> sound/soc/intel/common/soc-intel-quirks.h
->>
->> We could move those to some header under include, maybe:
->>
->> include/linux/platform_data/x86/atom.h
->>
->> And add #ifdef-ery there so that things will also build on
->> non x86 ?
->>
->> Then we could do a 2 patch series adding the
->> include/linux/platform_data/x86/atom.h
->> file + the drivers/mfd/intel_soc_pmic_core.c
->> change and Lee can merge both through the MFD tree.
->>
->> And then we can do further clean-ups of e.g. sound/soc
->> on top (we can ask Lee to provide an immutable branch).
->>
->> How does that sound ?
+> > Spinning for 1ms was maybe ok. Spinning for up to 1s seems like a bad idea.
+> >
+> > This code is executed inside a mutex ... so maybe it is safe to sleep instead of spin?
 > 
-> Sounds like a good plan to me!
+> May the email Subject misled you. This code do NOT spin for 1 sec. The period of the
+> spinning depends on the SPIN_UNIT.
 
-So I've been thinking about this a bit more.
+Not just the subject line. See the comment you changed here:
 
-Since sound/soc/intel/common/soc-intel-quirks.h already
-has stubs for non X86 too, I think it is best to just
-move that to include/linux/platform_data/x86/soc.h .
+> > -#define SPIN_UNIT		100			/* 100ns */
+> > -/* Firmware should respond within 1 milliseconds */
+> > -#define FIRMWARE_TIMEOUT	(1 * NSEC_PER_MSEC)
+> > +#define SPIN_UNIT		100			/* 100us */
+> > +/* Firmware should respond within 1 seconds */
+> > +#define FIRMWARE_TIMEOUT	(1 * USEC_PER_SEC)
 
-Since the drivers/mfd/intel_soc_pmic_core.c thing is
-a bugfix of sorts, it is probably best to open-code
-the check there and then replace it with the helper
-from include/linux/platform_data/x86/soc.h later.
+That definitely reads to me that the timeout was increased from
+1 millisecond to 1 second. With the old code polling for completion
+every 100ns, and the new code polling every 100us
+> 
+> The period was 100 ns and changed to 100 us now. In my opinion, spinning for 100 ns or 100 us is OK :)
 
-I'll start prepping a patch series doing things
-this way now.
+But what does the code do in between polls? The calling code is:
 
-Regards,
+        for (;;) {
+                rc = apei_exec_run(&ctx, ACPI_EINJ_CHECK_BUSY_STATUS);
+                if (rc)
+                        return rc;
+                val = apei_exec_ctx_get_output(&ctx);
+                if (!(val & EINJ_OP_BUSY))
+                        break;
+                if (einj_timedout(&timeout))
+                        return -EIO;
+        }
 
-Hans
+Now apei_exec_run() and apei_exec_ctx_get_output() are a maze of
+functions & macros. But I don't think they can block, sleep, or
+context switch.
 
+So this code is "spinning" until either BIOS says the operation is
+complete, or the FIRMWARE_TIMEOUT is reached.
+
+It avoids triggering a watchdog by the call to touch_nmi_watchdog()
+after each spin between polls. But the whole thing may be spinning
+for a second.
+
+I'm not at all sure that I'm right that the spin could be replaced
+with an msleep(). It will certainly slow things down for systems
+and EINJ operations that actually complete quickly (because instead
+of returnining within 100ns (or 100us with your patch) it will sleep
+for 1 ms (rounded up to next jiffie ... so 4 ms of HZ=250 systems.
+
+But I don't care if my error injections take 4ms.
+
+I do care that one logical CPU spins for 1 second.
+
+-Tony
