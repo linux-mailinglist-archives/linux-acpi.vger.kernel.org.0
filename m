@@ -2,202 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44325430DFD
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 04:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F042430E76
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 05:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229706AbhJRDBu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 17 Oct 2021 23:01:50 -0400
-Received: from mga14.intel.com ([192.55.52.115]:42099 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229526AbhJRDBu (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 17 Oct 2021 23:01:50 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10140"; a="228433468"
-X-IronPort-AV: E=Sophos;i="5.85,381,1624345200"; 
-   d="scan'208";a="228433468"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2021 19:59:39 -0700
-X-IronPort-AV: E=Sophos;i="5.85,381,1624345200"; 
-   d="scan'208";a="526093884"
-Received: from alison-desk.jf.intel.com (HELO localhost) ([10.54.74.41])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2021 19:59:39 -0700
-From:   alison.schofield@intel.com
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Ben Widawsky <ben.widawsky@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Cc:     Alison Schofield <alison.schofield@intel.com>,
-        linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH v2] ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT
-Date:   Sun, 17 Oct 2021 20:07:36 -0700
-Message-Id: <20211018030736.443752-1-alison.schofield@intel.com>
-X-Mailer: git-send-email 2.25.1
+        id S229589AbhJRD5T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 17 Oct 2021 23:57:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44848 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229445AbhJRD5T (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 17 Oct 2021 23:57:19 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF9B6C06161C
+        for <linux-acpi@vger.kernel.org>; Sun, 17 Oct 2021 20:55:08 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id d3so65169557edp.3
+        for <linux-acpi@vger.kernel.org>; Sun, 17 Oct 2021 20:55:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=b68bAb8a0m9wzcXAGsmuFjzurrnR1btS/FvmfXuqmzY=;
+        b=mYrF5Punyl0WZXYIQdvvy3ODi1sPT8kb0N5RnvQB/K0Im5RID929TaaVcd72Vsze6m
+         aRsCONanuV0txIe0dhh5QHR2ZGB2bHNbJG25lu5aaClUnT/X09LZGG8AcNhf3KejzqtE
+         yU2xKuh5bbRqyHWbin+XEm1iHS3Lneo+eMUjE6jk/mrjpbeMzn4Buw813Jug7R88LQw8
+         /2rhLmwZmDxIu8qbDc3pi3czxvl0lExvehjYo2xaQpDUwOvIi77MSTHlUSU5Hxi357QM
+         rlupM3LEZM2iVAzRRqDnAp8DocSU16q9lO22qK/ZPfr3pw9we1hSOticGzkZHfRDrfNz
+         Ofng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=b68bAb8a0m9wzcXAGsmuFjzurrnR1btS/FvmfXuqmzY=;
+        b=mIgO7187WWcXIHMgQV8HZ+Kiuw9gH7wYNXTbO2q1aFl8iykSoDqSpKYdjHdl4C0in6
+         awrRNSYa+1nbjC5mZEZMLMPYJy8pMJyTA8Rf9Eg5JhQ/u7u34hISy47QFMG8UL/3HgUV
+         Vb3vIirm5a4/1GRRGx4mNPHLfH3/5Xd4uXARHQh8YAuXNI/ZqCyEzETvNIIILZpuuIHD
+         fg0jfKjICfntEFaXVUKYoH4QXWheo2WcMykGtCt2VLbLgIQjnoyQSpHXXL/cQy3qsYsg
+         2Gpzbv24Um7sCLF2InGfLAmLcQA4J41aTmrCzUaUXpi9iSFgxd97BhOuCykcXgkMm9be
+         Gc6A==
+X-Gm-Message-State: AOAM530zOhs3fbtDObUqXBRygipX2MEWOrLNjajvlKZFxB/XZ5MhJBO8
+        /mgX1B7i5XpoxBu+7caVQFRbQ1Ppllp4DB4g6Ys=
+X-Google-Smtp-Source: ABdhPJw2G/XS1BNvNz58Vr9NZOJ5tNtWEjc7peKn7vVQVl8sZpE8llRJgymTU4B2FQlfixd9FJwSzNuQHhpYWouwz8g=
+X-Received: by 2002:a17:907:1044:: with SMTP id oy4mr26446746ejb.308.1634529307433;
+ Sun, 17 Oct 2021 20:55:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a7c:939e:0:b0:125:ac93:d644 with HTTP; Sun, 17 Oct 2021
+ 20:55:06 -0700 (PDT)
+Reply-To: mrsfatima080@gmail.com
+From:   Mrs Fatima Mahamoudou <mrkcsailm22@gmail.com>
+Date:   Sun, 17 Oct 2021 20:55:06 -0700
+Message-ID: <CAGmxK0nMLdJffg1D7S0FVWU46tuPE0StYoDdfHpBbt7Vw7DqTg@mail.gmail.com>
+Subject: From Mrs Fatima Mahamoudou
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Alison Schofield <alison.schofield@intel.com>
+Dear Sir/Madam
 
-During NUMA init, CXL memory defined in the SRAT Memory Affinity
-subtable may be assigned to a NUMA node. Since there is no
-requirement that the SRAT be comprehensive for CXL memory another
-mechanism is needed to assign NUMA nodes to CXL memory not identified
-in the SRAT.
+Mrs Fatima Mahamoudou,I have decided to seek confidential cooperation
+with you for the execution of the deal described here under for our
+mutual benefit. I Hope you will keep it a secret due to the nature of
+the transaction. During the course of our audit last month, I
+discovered an unclaimed/abandoned fund totaling US$3.5 Million in a
+bank account that belongs to a customer who unfortunately lost his
+life and entire family in a car accident.
 
-Use the CXL Fixed Memory Window Structure (CFMWS) of the ACPI CXL
-Early Discovery Table (CEDT) to find all CXL memory ranges.
-Create a NUMA node for each CFMWS that is not already assigned to
-a NUMA node. Add a memblk attaching its host physical address
-range to the node.
+Now our bank has been waiting for any of the relatives to come-up for
+the claim but nobody has done that. I personally has been unsuccessful
+in locating any of the relatives, now, I sincerely seek your consent
+to present you as the next of kin / Will Beneficiary to the deceased
+so that the proceeds of this account valued at (US$3.5 Million United
+State Dollars) can be paid to you, which we will share in these
+percentages ratio, 60% to me and 40% to you. All I request is your
+utmost sincere co- operation; trust and maximum confidentiality to
+achieve this project successfully. I have carefully mapped out the
+moralities for execution of this transaction under a legitimate to
+protect you from any breach of the law both in your arrangement
+country and here in my country when the fund is being transferred to
+your bank account.
 
-Note that these ranges may not actually map any memory at boot time.
-They may describe persistent capacity or may be present to enable
-hot-plug.
+I will have to provide the entire relevant document that will be
+requested to indicate that you are the rightful beneficiary of this
+legacy and our bank will release the fund to you without any further
+delay, upon your consideration and acceptance of this offer, please
+send me the following information as stated below so we can proceed
+and get this fund transferred to your designated bank account
+immediately. I know much about the existence of this fund and the
+secrets surrounding this money.
 
-Consumers can use phys_to_target_node() to discover the NUMA node.
-
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
----
-
-Changes in v2:
-- Use MAX_NUMNODES as max value when searching node_to_pxm_map() (0-day)
-- Add braces around single statement for loop (coding style)
-- Rename acpi_parse_cfmws() to acpi_cxl_cfmws_init to be more like other
-  functions in this file doing similar work. 
-- Comments: remove superflous and state importance of the init order,
-  CFMWS after SRAT, (Ira, Dan)
-- Add prototype for numa_add_memblk() (0-day)
-
-
- drivers/acpi/numa/srat.c | 70 ++++++++++++++++++++++++++++++++++++++++
- drivers/cxl/acpi.c       |  8 +++--
- include/linux/acpi.h     |  1 +
- 3 files changed, 76 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index b8795fc49097..4d26a4208af0 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -300,6 +300,67 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
- }
- #endif /* defined(CONFIG_X86) || defined (CONFIG_ARM64) */
- 
-+static int __init acpi_cxl_cfmws_init(struct acpi_table_header *acpi_cedt)
-+{
-+	struct acpi_cedt_cfmws *cfmws;
-+	acpi_size len, cur = 0;
-+	void *cedt_subtable;
-+	int i, pxm, node;
-+	u64 start, end;
-+
-+	/* Find the max PXM defined in the SRAT */
-+	for (i = 0; i < MAX_NUMNODES - 1; i++) {
-+		if (node_to_pxm_map[i] > pxm)
-+			pxm = node_to_pxm_map[i];
-+	}
-+	/* Start assigning fake PXM values after the SRAT max PXM */
-+	pxm++;
-+
-+	len = acpi_cedt->length - sizeof(*acpi_cedt);
-+	cedt_subtable = acpi_cedt + 1;
-+
-+	while (cur < len) {
-+		struct acpi_cedt_header *c = cedt_subtable + cur;
-+
-+		if (c->type != ACPI_CEDT_TYPE_CFMWS)
-+			goto next;
-+
-+		cfmws = cedt_subtable + cur;
-+		if (cfmws->header.length < sizeof(*cfmws)) {
-+			pr_warn_once("CFMWS entry skipped:invalid length:%u\n",
-+				     cfmws->header.length);
-+			goto next;
-+		}
-+
-+		start = cfmws->base_hpa;
-+		end = cfmws->base_hpa + cfmws->window_size;
-+
-+		/*
-+		 * Skip if the SRAT already described
-+		 * the NUMA details for this HPA.
-+		 */
-+		node = phys_to_target_node(start);
-+		if (node != NUMA_NO_NODE)
-+			goto next;
-+
-+		node = acpi_map_pxm_to_node(pxm);
-+		if (node == NUMA_NO_NODE) {
-+			pr_err("ACPI NUMA: Too many proximity domains.\n");
-+			return -EINVAL;
-+		}
-+
-+		if (numa_add_memblk(node, start, end) < 0) {
-+			/* CXL driver must handle the NUMA_NO_NODE case */
-+			pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
-+				node, start, end);
-+		}
-+		pxm++;
-+next:
-+		cur += c->length;
-+	}
-+	return 0;
-+}
-+
- static int __init acpi_parse_slit(struct acpi_table_header *table)
- {
- 	struct acpi_table_slit *slit = (struct acpi_table_slit *)table;
-@@ -478,6 +539,15 @@ int __init acpi_numa_init(void)
- 	/* SLIT: System Locality Information Table */
- 	acpi_table_parse(ACPI_SIG_SLIT, acpi_parse_slit);
- 
-+	/*
-+	 * CEDT: CXL Fixed Memory Window Structures (CFMWS)
-+	 * must be parsed after the SRAT. It creates NUMA
-+	 * Nodes for CXL memory ranges not already defined
-+	 * in the SRAT and it assigns PXMs after the max PXM
-+	 * defined in the SRAT.
-+	 */
-+	acpi_table_parse(ACPI_SIG_CEDT, acpi_cxl_cfmws_init);
-+
- 	if (cnt < 0)
- 		return cnt;
- 	else if (!parsed_numa_memblks)
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index 54e9d4d2cf5f..02f765a494b1 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -122,9 +122,11 @@ static void cxl_add_cfmws_decoders(struct device *dev,
- 				cfmws->base_hpa, cfmws->base_hpa +
- 				cfmws->window_size - 1);
- 		} else {
--			dev_dbg(dev, "add: %s range %#llx-%#llx\n",
--				dev_name(&cxld->dev), cfmws->base_hpa,
--				 cfmws->base_hpa + cfmws->window_size - 1);
-+			dev_dbg(dev, "add: %s node: %d range %#llx-%#llx\n",
-+				dev_name(&cxld->dev),
-+				phys_to_target_node(cxld->range.start),
-+				cfmws->base_hpa,
-+				cfmws->base_hpa + cfmws->window_size - 1);
- 		}
- 		cur += c->length;
- 	}
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 974d497a897d..f837fd715440 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -426,6 +426,7 @@ extern bool acpi_osi_is_win8(void);
- #ifdef CONFIG_ACPI_NUMA
- int acpi_map_pxm_to_node(int pxm);
- int acpi_get_node(acpi_handle handle);
-+int __init numa_add_memblk(int nodeid, u64 start, u64 end);
- 
- /**
-  * pxm_to_online_node - Map proximity ID to online node
-
-base-commit: 64570fbc14f8d7cb3fe3995f20e26bc25ce4b2cc
--- 
-2.31.1
-
+(1)Your Full Name:
+(2)You=E2=80=99re Contact Address:
+(3)Your direct Mobile telephone Number:
+(4)You=E2=80=99re Date of Birth:
+(5)Your occupation:
+I await your swift response and re-assurance so we commence this
+transaction immediately.
+Best regards.
+Mrs Fatima Mahamoudou
