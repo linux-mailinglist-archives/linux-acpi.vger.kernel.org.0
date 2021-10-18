@@ -2,75 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9B32431679
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 12:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABBA643188D
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Oct 2021 14:12:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbhJRKxM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 18 Oct 2021 06:53:12 -0400
-Received: from mga12.intel.com ([192.55.52.136]:3537 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229473AbhJRKxM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 18 Oct 2021 06:53:12 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10140"; a="208325560"
-X-IronPort-AV: E=Sophos;i="5.85,381,1624345200"; 
-   d="scan'208";a="208325560"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 03:51:00 -0700
-X-IronPort-AV: E=Sophos;i="5.85,381,1624345200"; 
-   d="scan'208";a="593765811"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.159])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 03:50:58 -0700
-Received: from andy by smile with local (Exim 4.95)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1mcQE4-0001tj-8l;
-        Mon, 18 Oct 2021 13:50:40 +0300
-Date:   Mon, 18 Oct 2021 13:50:40 +0300
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Tsuchiya Yuto <kitakar@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH 1/1] ACPI / PMIC: Add i2c address to
- intel_pmic_bytcrc driver
-Message-ID: <YW1RgNMWGg8PW9ia@smile.fi.intel.com>
-References: <20211017161523.43801-1-kitakar@gmail.com>
- <20211017161523.43801-2-kitakar@gmail.com>
- <3e6428f1-9411-fac6-9172-1dfe6de58c28@redhat.com>
- <CAHp75VcA+=OsmX7o2WTvYgf8TNpE64qEHq=MVm5vVP-4RBk+ng@mail.gmail.com>
- <3c9d4f9b-26c2-a135-eb2e-67963aa0bc0b@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c9d4f9b-26c2-a135-eb2e-67963aa0bc0b@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        id S231349AbhJRMOs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 18 Oct 2021 08:14:48 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:53158 "EHLO
+        mail.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231248AbhJRMOs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 18 Oct 2021 08:14:48 -0400
+Received: from localhost (cpc147930-brnt3-2-0-cust60.4-2.cable.virginm.net [86.15.196.61])
+        by mail.monkeyblade.net (Postfix) with ESMTPSA id 434234D31A6D6;
+        Mon, 18 Oct 2021 05:12:32 -0700 (PDT)
+Date:   Mon, 18 Oct 2021 13:12:26 +0100 (BST)
+Message-Id: <20211018.131226.1107812021372806461.davem@davemloft.net>
+To:     asmaa@nvidia.com
+Cc:     andy.shevchenko@gmail.com, linux-gpio@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, andrew@lunn.ch, kuba@kernel.org,
+        linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        rjw@rjwysocki.net, davthompson@nvidia.com
+Subject: Re: [PATCH v5 0/2] gpio: mlxbf2: Introduce proper interrupt
+ handling
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20211015164809.22009-1-asmaa@nvidia.com>
+References: <20211015164809.22009-1-asmaa@nvidia.com>
+X-Mailer: Mew version 6.8 on Emacs 27.2
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail.monkeyblade.net [0.0.0.0]); Mon, 18 Oct 2021 05:12:34 -0700 (PDT)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 18, 2021 at 12:38:51PM +0200, Hans de Goede wrote:
-> On 10/18/21 12:31, Andy Shevchenko wrote:
+From: Asmaa Mnebhi <asmaa@nvidia.com>
+Date: Fri, 15 Oct 2021 12:48:07 -0400
 
-...
-
-> We already have helpers for this defined in:
+> This is a follow up on a discussion regarding
+> proper handling of GPIO interrupts within the
+> gpio-mlxbf2.c driver.
 > 
-> sound/soc/intel/common/soc-intel-quirks.h
+> Link to discussion:
+> https://lore.kernel.org/netdev/20210816115953.72533-7-andriy.shevchenko@linux.intel.com/T/
 > 
-> We could move those to some header under include, maybe:
+> Patch 1 adds support to a GPIO IRQ handler in gpio-mlxbf2.c.
+> Patch 2 is a follow up removal of custom GPIO IRQ handling
+> from the mlxbf_gige driver and replacing it with a simple
+> IRQ request. The ACPI table for the mlxbf_gige driver is
+> responsible for instantiating the PHY GPIO interrupt via
+> GpioInt.
 > 
-> include/linux/platform_data/x86/atom.h
-> 
-> And add #ifdef-ery there so that things will also build on
-> non x86 ?
+> Andy Shevchenko, could you please review this patch series.
+> David Miller, could you please ack the changes in the
+> mlxbf_gige driver.
 
-But it seems the above mentioned header has the stubs!
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Acked-by: David S. Miller <davem@davemloft.net>
