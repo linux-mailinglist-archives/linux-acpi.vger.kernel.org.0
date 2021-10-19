@@ -2,67 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 377A94334F6
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Oct 2021 13:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D35FD433534
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Oct 2021 13:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbhJSLr3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Oct 2021 07:47:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
+        id S235389AbhJSL6a (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Oct 2021 07:58:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230129AbhJSLrX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Oct 2021 07:47:23 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2C30C06161C;
-        Tue, 19 Oct 2021 04:45:10 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id e5-20020a17090a804500b001a116ad95caso2442723pjw.2;
-        Tue, 19 Oct 2021 04:45:10 -0700 (PDT)
+        with ESMTP id S230514AbhJSL63 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 19 Oct 2021 07:58:29 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DF1EC06161C;
+        Tue, 19 Oct 2021 04:56:17 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id e10so8603787plh.8;
+        Tue, 19 Oct 2021 04:56:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :user-agent:mime-version:content-transfer-encoding;
-        bh=MglkHL3I8pOQyT8id8QRZWPVa8Wa8unBVBsZ/PvSniQ=;
-        b=Lxs0zOW48ZOq5Jak2/0u6Z0F2sxlznq6YMiO+bNC7OmfMgDh4IPXX7HSRGO4BrW/al
-         IPQ91uGDO2Hui2GK+dqIB/PIylvk4dWl41qHDPZYy1OhPJILlWfu4zvkptZkaL6/fGv4
-         pqiJitP51Ibr2Pl/QT6rLA0xY/zV2a6ixd7IPYl2k59/HSZgQTVTu9DbQM2PGt/6gfB4
-         RpWpkkcNJiE6jH79yX8+o2XsglAOwKWn2J+tuuDI4hVHD3SzvETEFwG5X/xgm4EDpIek
-         cOd3AIyj+TzZDJwGrz8cu92ZlTeXLgbEyNHol+y3SMyV1Mfl3s5MlF2MW/g6V2jPgJx0
-         AoEw==
+        bh=dUv8SMn+VZQ1/ek8USa16cuvwtNq9xDQ8/6uQu5XFsw=;
+        b=oH5SZvbOiqph7vo+xdOxFAxzsDTsj/XYfRElDAlNCv75sMneC7SvIsMk+hjE4TzY3a
+         umUtZ7qQVKhcYKl1NXdsswpnK7U5TtJ0qd1Gw5hFYF8/MCD8N2fYa9WZ9B/VMdRyHkbO
+         OMOXp5KyYjIrIZe24eMM5p2J/wUrZhc/llgmD1mxb3V+HRfUFpA+pSt5hr5aKwcDfqdv
+         m0t/T8pSI6Kj59bOyZK0KXcVK6kdI9O7UJ2S2n+LpyjYpi5R/HxDnV1dIpZ4jMNTtWBE
+         Z5gQsOoRxvQkwtxlxjY4pxG/RKM0RUn+cLM9KimPOBXW7hWMnV7GITs9fUEJhYjGvzWF
+         Un+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
          :references:user-agent:mime-version:content-transfer-encoding;
-        bh=MglkHL3I8pOQyT8id8QRZWPVa8Wa8unBVBsZ/PvSniQ=;
-        b=cYTzBKV3fZhChjWWfOu1wofienj9JkC72g/Ft9hQq4PHZbXPhdHpSWHPjj4NfIG8fV
-         maQj9OqjRcO11f3K/0XapUCwzXvQoCfEwbbBioAYvkmz/q68R/acqRPDvvi3oBpGHTOH
-         MDNYU9m8rXH2L4W/WVtOo0ovfqeroCWgIKgXX3sCp4Nevfn2JAY+3uQV85d5m4yFpSYB
-         EwUpAPl6tIxtsP3pbJ70MTFGWdxkgnvg8Sdec/lhW3Xj9pOLiYrXqzjXmcNTzu8J5nIo
-         IjDP9Iqum9SI3EdaD6/qFGV5Dspwc+/qTkUSocYi1kA/gtPzFq2GAtkmD3EKoMPQ4cel
-         gxxA==
-X-Gm-Message-State: AOAM533q8HBQ3dhXY6pwPn6omB9NofOYEef1md5eGP/s6eizf+VbaEC1
-        89yRv2ziryGCAOvqQ1xGb8KvWQ0CwDMjjg==
-X-Google-Smtp-Source: ABdhPJxiatKS1Wr8/i/0jQI+M1WXBeOJRq4Rqoss6RqnaANTRhTQz4oI/AX2PYn9FER38GjjG6N4PA==
-X-Received: by 2002:a17:902:d2c2:b0:13e:f4d2:ed3f with SMTP id n2-20020a170902d2c200b0013ef4d2ed3fmr32348919plc.87.1634643910184;
-        Tue, 19 Oct 2021 04:45:10 -0700 (PDT)
+        bh=dUv8SMn+VZQ1/ek8USa16cuvwtNq9xDQ8/6uQu5XFsw=;
+        b=pPdVttWe+SnOQL3wpcuFFvhlzUjEHhe6kdlx/zW34d+I3rqkVRauvy++SxqzLDUx/G
+         Uni4Aaqz77GIRjq1/i242/t+iyweNxGc+gYRQRwDlK0o8N7wBtJ5MQ2UKG8WoZmnuMRj
+         1RmeRmLONEc7bOtldvy5HKpmpIWN46s4ezRyfldzW/AnteAIIXzUk/v2xfo91ua3jyW0
+         H/QrEjBmcwAFfM3YfQzz7cqI1xJuJxBqJLOMNnTG2FsuNJ44Kyun6xkmTRHHJZxTInuQ
+         LHAzWsRUJLAwJfX5OlfMihP6jvV2dwtFyIY0Qp3hMyiqSeSYjAwR27x24sd2a0XVFnKf
+         IhNA==
+X-Gm-Message-State: AOAM532E/2WI0tOwMuz60cCkTCeqe7uOg+1rOvp/fflH9gsShAks7/NB
+        X/ka2gJJ4/eiVdWeqLzoJfY=
+X-Google-Smtp-Source: ABdhPJxPNVhiTgTpCc4DEcK2JpAe/g7639VCbqKwp8Jx3lhhyCtICL6TieqpF0wJzlvF54P5aZf55Q==
+X-Received: by 2002:a17:903:22c9:b0:13e:ed56:70e2 with SMTP id y9-20020a17090322c900b0013eed5670e2mr32940459plg.19.1634644576427;
+        Tue, 19 Oct 2021 04:56:16 -0700 (PDT)
 Received: from ?IPv6:2400:4052:6980:3800:dba7:2b1f:3f26:a5ec? ([2400:4052:6980:3800:dba7:2b1f:3f26:a5ec])
-        by smtp.gmail.com with ESMTPSA id o26sm16781587pfp.177.2021.10.19.04.45.07
+        by smtp.gmail.com with ESMTPSA id 11sm15904349pfl.41.2021.10.19.04.56.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Oct 2021 04:45:09 -0700 (PDT)
-Message-ID: <6881c1e592200b10be0b732cd038730c6bfbbb09.camel@gmail.com>
+        Tue, 19 Oct 2021 04:56:16 -0700 (PDT)
+Message-ID: <23d641620aebd1aa47fd73d040dec4ad8974d03d.camel@gmail.com>
 Subject: Re: [RFC PATCH 1/1] ACPI / PMIC: Add i2c address to
  intel_pmic_bytcrc driver
 From:   Tsuchiya Yuto <kitakar@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Tsuchiya Yuto <kitakar@gmail.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>, Andy Shevchenko <andy@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Date:   Tue, 19 Oct 2021 20:45:06 +0900
-In-Reply-To: <CAHp75VfZyk_Ar23grNk2PvzRqaSO++CdkU4NWe2guNkwdGivzg@mail.gmail.com>
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Tue, 19 Oct 2021 20:56:04 +0900
+In-Reply-To: <3e6428f1-9411-fac6-9172-1dfe6de58c28@redhat.com>
 References: <20211017161523.43801-1-kitakar@gmail.com>
          <20211017161523.43801-2-kitakar@gmail.com>
-         <CAHp75VfZyk_Ar23grNk2PvzRqaSO++CdkU4NWe2guNkwdGivzg@mail.gmail.com>
+         <3e6428f1-9411-fac6-9172-1dfe6de58c28@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.40.4 
 MIME-Version: 1.0
@@ -71,8 +70,10 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, 2021-10-17 at 22:08 +0300, Andy Shevchenko wrote:
-> On Sun, Oct 17, 2021 at 7:16 PM Tsuchiya Yuto <kitakar@gmail.com> wrote:
+On Mon, 2021-10-18 at 11:16 +0200, Hans de Goede wrote:
+> Hi,
+> 
+> On 10/17/21 18:15, Tsuchiya Yuto wrote:
 > > On Microsoft Surface 3 (uses Intel's Atom Cherry Trail SoC), executing
 > > intel_soc_pmic_exec_mipi_pmic_seq_element() results in the following
 > > error message:
@@ -105,19 +106,38 @@ On Sun, 2021-10-17 at 22:08 +0300, Andy Shevchenko wrote:
 > > driver.
 > > 
 > > [1] https://github.com/linux-surface/acpidumps/blob/f8db3d150815aa21530635b7e646eee271e3b8fe/surface_3/dsdt.dsl#L10868
-> 
+> > 
 > > References: cc0594c4b0ef ("ACPI / PMIC: Add i2c address for thermal control")
+> > Signed-off-by: Tsuchiya Yuto <kitakar@gmail.com>
 > 
-> Not sure what this tag means.
+> I believe that it is very unlikely that a device with a Cherry Trail SoC is actually using
+> the Bay Trail version of the PMIC, I would expect that to not necessarily work all that well.
+> 
+> So as Andy said, the right fix here is something like the:
+> 
+> +	hrv = 0x03;
+> 
+> Workaround from your cover-letter.
+> 
+> As Andy said we could use a DMI quirk for this, but chances are that the Microsoft Surface
+> DSDT is not the only one with the wrong HRV value. So instead it might be better to
+> just test for the SoC type as the attached patch does.
+> 
+> Tsuchiya, can you give the attached patch a try.
 
 Thanks!
 
-I thought I could use this tag to mean "I made this patch with this
-commit as a reference". If I used this tag incorrectly, I'll avoid using
-it in the future and instead write with my words.
+I tried your attached patch, and I can confirm that it's working as
+expected.
+
+Now it's using cht one:
+
+        $ ls /sys/devices/pci0000:00/808622C1:05/i2c-5/i2c-INT33FD:00
+        cht_crystal_cove_pmic  crystal_cove_gpio  crystal_cove_pwm  driver  firmware_node  modalias  name  power  subsystem  uevent
+
+and the function intel_soc_pmic_exec_mipi_pmic_seq_element() is also
+working with atomisp driver.
 
 Regards,
 Tsuchiya Yuto
-
-
 
