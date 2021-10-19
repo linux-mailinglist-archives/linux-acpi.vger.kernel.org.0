@@ -2,192 +2,219 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7206D432CF2
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Oct 2021 06:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C03E432CE2
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Oct 2021 06:46:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232933AbhJSEwt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Oct 2021 00:52:49 -0400
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:48059 "EHLO
-        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229755AbhJSEws (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 19 Oct 2021 00:52:48 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=xuesong.chen@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0UspWZnf_1634619033;
-Received: from localhost(mailfrom:xuesong.chen@linux.alibaba.com fp:SMTPD_---0UspWZnf_1634619033)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 19 Oct 2021 12:50:33 +0800
-Date:   Tue, 19 Oct 2021 12:50:33 +0800
-From:   Xuesong Chen <xuesong.chen@linux.alibaba.com>
-To:     catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
-        james.morse@arm.com, will@kernel.org, rafael@kernel.org,
-        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
-        bhelgaas@google.com
-Cc:     linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        xuesong.chen@linux.alibaba.com
-Subject: [PATCH v3 2/2] ACPI: APEI: Filter the PCI MCFG address with an
- arch-agnostic method
-Message-ID: <YW5OmSBM4mO1lDHs@Dennis-MBP.local>
-Reply-To: Xuesong Chen <xuesong.chen@linux.alibaba.com>
+        id S229755AbhJSEsN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Oct 2021 00:48:13 -0400
+Received: from mga07.intel.com ([134.134.136.100]:44807 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229649AbhJSEsM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 19 Oct 2021 00:48:12 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10141"; a="291888233"
+X-IronPort-AV: E=Sophos;i="5.85,383,1624345200"; 
+   d="scan'208";a="291888233"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 21:46:00 -0700
+X-IronPort-AV: E=Sophos;i="5.85,383,1624345200"; 
+   d="scan'208";a="526522054"
+Received: from alison-desk.jf.intel.com (HELO alison-desk) ([10.54.74.41])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2021 21:46:00 -0700
+Date:   Mon, 18 Oct 2021 21:53:54 -0700
+From:   Alison Schofield <alison.schofield@intel.com>
+To:     Ben Widawsky <ben.widawsky@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2] ACPI: NUMA: Add a node and memblk for each CFMWS not
+ in SRAT
+Message-ID: <20211019045354.GA448935@alison-desk>
+References: <20211018030736.443752-1-alison.schofield@intel.com>
+ <20211019041039.goyz6wjo55ncgpmj@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20211019041039.goyz6wjo55ncgpmj@intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The commit d91525eb8ee6 ("ACPI, EINJ: Enhance error injection tolerance
-level") fixes the issue that the ACPI/APEI can not access the PCI MCFG
-address on x86 platform, but this issue can also happen on other
-architectures, for instance, we got below error message on arm64 platform:
-...
-APEI: Can not request [mem 0x50100000-0x50100003] for APEI EINJ Trigger registers
-...
+On Mon, Oct 18, 2021 at 09:10:39PM -0700, Ben Widawsky wrote:
+> On 21-10-17 20:07:36, alison.schofield@intel.com wrote:
+> > From: Alison Schofield <alison.schofield@intel.com>
+> > 
+> > During NUMA init, CXL memory defined in the SRAT Memory Affinity
+> > subtable may be assigned to a NUMA node. Since there is no
+> > requirement that the SRAT be comprehensive for CXL memory another
+> > mechanism is needed to assign NUMA nodes to CXL memory not identified
+> > in the SRAT.
+> > 
+> > Use the CXL Fixed Memory Window Structure (CFMWS) of the ACPI CXL
+> > Early Discovery Table (CEDT) to find all CXL memory ranges.
+> > Create a NUMA node for each CFMWS that is not already assigned to
+> > a NUMA node. Add a memblk attaching its host physical address
+> > range to the node.
+> > 
+> > Note that these ranges may not actually map any memory at boot time.
+> > They may describe persistent capacity or may be present to enable
+> > hot-plug.
+> > 
+> > Consumers can use phys_to_target_node() to discover the NUMA node.
+> > 
+> > Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+> > ---
+> > 
+> > Changes in v2:
+> > - Use MAX_NUMNODES as max value when searching node_to_pxm_map() (0-day)
+> > - Add braces around single statement for loop (coding style)
+> > - Rename acpi_parse_cfmws() to acpi_cxl_cfmws_init to be more like other
+> >   functions in this file doing similar work. 
+> > - Comments: remove superflous and state importance of the init order,
+> >   CFMWS after SRAT, (Ira, Dan)
+> > - Add prototype for numa_add_memblk() (0-day)
+> > 
+> > 
+> >  drivers/acpi/numa/srat.c | 70 ++++++++++++++++++++++++++++++++++++++++
+> >  drivers/cxl/acpi.c       |  8 +++--
+> >  include/linux/acpi.h     |  1 +
+> >  3 files changed, 76 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> > index b8795fc49097..4d26a4208af0 100644
+> > --- a/drivers/acpi/numa/srat.c
+> > +++ b/drivers/acpi/numa/srat.c
+> > @@ -300,6 +300,67 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
+> >  }
+> >  #endif /* defined(CONFIG_X86) || defined (CONFIG_ARM64) */
+> >  
+> > +static int __init acpi_cxl_cfmws_init(struct acpi_table_header *acpi_cedt)
+> > +{
+> > +	struct acpi_cedt_cfmws *cfmws;
+> > +	acpi_size len, cur = 0;
+> > +	void *cedt_subtable;
+> > +	int i, pxm, node;
+> > +	u64 start, end;
+> > +
+> > +	/* Find the max PXM defined in the SRAT */
+> > +	for (i = 0; i < MAX_NUMNODES - 1; i++) {
+> > +		if (node_to_pxm_map[i] > pxm)
+> 
+> Doesn't pxm need to be initialized to something for this to work in the first
+> iteration?
+>
 
-This patch will try to handle this case in a more common way instead of the
-original 'arch' specific solution, which will be beneficial to all the
-APEI-dependent platforms after that.
+Thanks for the review Ben - 
+Yes. This needs to be initialized to 0. Behavior now is undefined, only zero
+by chance.
 
-Signed-off-by: Xuesong Chen <xuesong.chen@linux.alibaba.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Rafael. J. Wysocki <rafael@kernel.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Tomasz Nowicki <tn@semihalf.com>
----
- arch/x86/pci/mmconfig-shared.c | 28 --------------------------
- drivers/acpi/apei/apei-base.c  | 45 ++++++++++++++++++++++++++++--------------
- 2 files changed, 30 insertions(+), 43 deletions(-)
-
-diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
-index 0b961fe6..12f7d96 100644
---- a/arch/x86/pci/mmconfig-shared.c
-+++ b/arch/x86/pci/mmconfig-shared.c
-@@ -605,32 +605,6 @@ static int __init pci_parse_mcfg(struct acpi_table_header *header)
- 	return 0;
- }
- 
--#ifdef CONFIG_ACPI_APEI
--extern int (*arch_apei_filter_addr)(int (*func)(__u64 start, __u64 size,
--				     void *data), void *data);
--
--static int pci_mmcfg_for_each_region(int (*func)(__u64 start, __u64 size,
--				     void *data), void *data)
--{
--	struct pci_mmcfg_region *cfg;
--	int rc;
--
--	if (list_empty(&pci_mmcfg_list))
--		return 0;
--
--	list_for_each_entry(cfg, &pci_mmcfg_list, list) {
--		rc = func(cfg->res.start, resource_size(&cfg->res), data);
--		if (rc)
--			return rc;
--	}
--
--	return 0;
--}
--#define set_apei_filter() (arch_apei_filter_addr = pci_mmcfg_for_each_region)
--#else
--#define set_apei_filter()
--#endif
--
- static void __init __pci_mmcfg_init(int early)
- {
- 	pci_mmcfg_reject_broken(early);
-@@ -665,8 +639,6 @@ void __init pci_mmcfg_early_init(void)
- 		else
- 			acpi_table_parse(ACPI_SIG_MCFG, pci_parse_mcfg);
- 		__pci_mmcfg_init(1);
--
--		set_apei_filter();
- 	}
- }
- 
-diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
-index c7fdb12..daae75a 100644
---- a/drivers/acpi/apei/apei-base.c
-+++ b/drivers/acpi/apei/apei-base.c
-@@ -21,6 +21,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/init.h>
-+#include <linux/pci.h>
- #include <linux/acpi.h>
- #include <linux/slab.h>
- #include <linux/io.h>
-@@ -448,13 +449,34 @@ static int apei_get_nvs_resources(struct apei_resources *resources)
- 	return acpi_nvs_for_each_region(apei_get_res_callback, resources);
- }
- 
--int (*arch_apei_filter_addr)(int (*func)(__u64 start, __u64 size,
--				     void *data), void *data);
--static int apei_get_arch_resources(struct apei_resources *resources)
-+#ifdef CONFIG_PCI
-+extern struct list_head pci_mmcfg_list;
-+static int apei_filter_mcfg_addr(struct apei_resources *res,
-+			struct apei_resources *mcfg_res)
-+{
-+	int rc = 0;
-+	struct pci_mmcfg_region *cfg;
-+
-+	if (list_empty(&pci_mmcfg_list))
-+		return 0;
-+
-+	apei_resources_init(mcfg_res);
-+	list_for_each_entry(cfg, &pci_mmcfg_list, list) {
-+		rc = apei_res_add(&mcfg_res->iomem, cfg->res.start, resource_size(&cfg->res));
-+		if (rc)
-+			return rc;
-+	}
- 
-+	/* filter the mcfg resource from current APEI's */
-+	return apei_resources_sub(res, mcfg_res);
-+}
-+#else
-+static inline int apei_filter_mcfg_addr(struct apei_resources *res,
-+			struct apei_resources *mcfg_res)
- {
--	return arch_apei_filter_addr(apei_get_res_callback, resources);
-+	return 0;
- }
-+#endif
- 
- /*
-  * IO memory/port resource management mechanism is used to check
-@@ -486,15 +508,9 @@ int apei_resources_request(struct apei_resources *resources,
- 	if (rc)
- 		goto nvs_res_fini;
- 
--	if (arch_apei_filter_addr) {
--		apei_resources_init(&arch_res);
--		rc = apei_get_arch_resources(&arch_res);
--		if (rc)
--			goto arch_res_fini;
--		rc = apei_resources_sub(resources, &arch_res);
--		if (rc)
--			goto arch_res_fini;
--	}
-+	rc = apei_filter_mcfg_addr(resources, &arch_res);
-+	if (rc)
-+		goto arch_res_fini;
- 
- 	rc = -EINVAL;
- 	list_for_each_entry(res, &resources->iomem, list) {
-@@ -544,8 +560,7 @@ int apei_resources_request(struct apei_resources *resources,
- 		release_mem_region(res->start, res->end - res->start);
- 	}
- arch_res_fini:
--	if (arch_apei_filter_addr)
--		apei_resources_fini(&arch_res);
-+	apei_resources_fini(&arch_res);
- nvs_res_fini:
- 	apei_resources_fini(&nvs_resources);
- 	return rc;
--- 
-1.8.3.1
-
+> > +			pxm = node_to_pxm_map[i];
+> > +	}
+> > +	/* Start assigning fake PXM values after the SRAT max PXM */
+> > +	pxm++;
+> > +
+> > +	len = acpi_cedt->length - sizeof(*acpi_cedt);
+> > +	cedt_subtable = acpi_cedt + 1;
+> > +
+> 
+> Is there any way at all to share this with acpi.c from the CXL driver?
+> 
+> > +	while (cur < len) {
+> > +		struct acpi_cedt_header *c = cedt_subtable + cur;
+> > +
+> > +		if (c->type != ACPI_CEDT_TYPE_CFMWS)
+> > +			goto next;
+> > +
+> > +		cfmws = cedt_subtable + cur;
+> > +		if (cfmws->header.length < sizeof(*cfmws)) {
+> > +			pr_warn_once("CFMWS entry skipped:invalid length:%u\n",
+> > +				     cfmws->header.length);
+> > +			goto next;
+> > +		}
+> > +
+> > +		start = cfmws->base_hpa;
+> > +		end = cfmws->base_hpa + cfmws->window_size;
+> > +
+> > +		/*
+> > +		 * Skip if the SRAT already described
+> > +		 * the NUMA details for this HPA.
+> > +		 */
+> > +		node = phys_to_target_node(start);
+> > +		if (node != NUMA_NO_NODE)
+> > +			goto next;
+> > +
+> > +		node = acpi_map_pxm_to_node(pxm);
+> > +		if (node == NUMA_NO_NODE) {
+> > +			pr_err("ACPI NUMA: Too many proximity domains.\n");
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +		if (numa_add_memblk(node, start, end) < 0) {
+> > +			/* CXL driver must handle the NUMA_NO_NODE case */
+> > +			pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
+> > +				node, start, end);
+> > +		}
+> > +		pxm++;
+> > +next:
+> > +		cur += c->length;
+> > +	}
+> > +	return 0;
+> > +}
+> > +
+> >  static int __init acpi_parse_slit(struct acpi_table_header *table)
+> >  {
+> >  	struct acpi_table_slit *slit = (struct acpi_table_slit *)table;
+> > @@ -478,6 +539,15 @@ int __init acpi_numa_init(void)
+> >  	/* SLIT: System Locality Information Table */
+> >  	acpi_table_parse(ACPI_SIG_SLIT, acpi_parse_slit);
+> >  
+> > +	/*
+> > +	 * CEDT: CXL Fixed Memory Window Structures (CFMWS)
+> > +	 * must be parsed after the SRAT. It creates NUMA
+> > +	 * Nodes for CXL memory ranges not already defined
+> > +	 * in the SRAT and it assigns PXMs after the max PXM
+> > +	 * defined in the SRAT.
+> > +	 */
+> > +	acpi_table_parse(ACPI_SIG_CEDT, acpi_cxl_cfmws_init);
+> > +
+> >  	if (cnt < 0)
+> >  		return cnt;
+> >  	else if (!parsed_numa_memblks)
+> > diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+> > index 54e9d4d2cf5f..02f765a494b1 100644
+> > --- a/drivers/cxl/acpi.c
+> > +++ b/drivers/cxl/acpi.c
+> > @@ -122,9 +122,11 @@ static void cxl_add_cfmws_decoders(struct device *dev,
+> >  				cfmws->base_hpa, cfmws->base_hpa +
+> >  				cfmws->window_size - 1);
+> >  		} else {
+> > -			dev_dbg(dev, "add: %s range %#llx-%#llx\n",
+> > -				dev_name(&cxld->dev), cfmws->base_hpa,
+> > -				 cfmws->base_hpa + cfmws->window_size - 1);
+> > +			dev_dbg(dev, "add: %s node: %d range %#llx-%#llx\n",
+> > +				dev_name(&cxld->dev),
+> > +				phys_to_target_node(cxld->range.start),
+> > +				cfmws->base_hpa,
+> > +				cfmws->base_hpa + cfmws->window_size - 1);
+> >  		}
+> >  		cur += c->length;
+> >  	}
+> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > index 974d497a897d..f837fd715440 100644
+> > --- a/include/linux/acpi.h
+> > +++ b/include/linux/acpi.h
+> > @@ -426,6 +426,7 @@ extern bool acpi_osi_is_win8(void);
+> >  #ifdef CONFIG_ACPI_NUMA
+> >  int acpi_map_pxm_to_node(int pxm);
+> >  int acpi_get_node(acpi_handle handle);
+> > +int __init numa_add_memblk(int nodeid, u64 start, u64 end);
+> >  
+> >  /**
+> >   * pxm_to_online_node - Map proximity ID to online node
+> > 
+> > base-commit: 64570fbc14f8d7cb3fe3995f20e26bc25ce4b2cc
+> > -- 
+> > 2.31.1
+> > 
