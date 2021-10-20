@@ -2,88 +2,224 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 452E3434B28
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Oct 2021 14:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5F9A434F01
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Oct 2021 17:26:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbhJTMcx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Oct 2021 08:32:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51110 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229702AbhJTMcx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 20 Oct 2021 08:32:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7F4366135E;
-        Wed, 20 Oct 2021 12:30:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634733039;
-        bh=JT2SkvtAggztd5vBpXOy3KiUBY0PoFlXIX09DB3XnHs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZnIUPEIq+hvzCl00QYwDpobI4iFUDxYE/SkDXuEed4ZxhuhfToaA8W8535LPjTRTY
-         4W7zXSOZRKO7ExURf/LBK31wWDQOsDIIQammx1x/wgABht7VUahDLfta3lxOXRPzZR
-         2RhU5xPdjYWSra4E0GiEO92nr76GHsp78fNqFyAGz247M8mPITA+6u64wn/7aG7r7r
-         2/8HgafaK3ZzaWpVOzC/jmrVZEUpe0rpCJw6Yje7Kx8V9HLKY97UnB744PlD+7nxCY
-         SDk9MZX+hq5fxOapESfk4jEQ2tqLQP+6g7o+e3EXjov0ma1NF3sgnHaNCIquEdkL3G
-         lz+XCHRQJROww==
-Date:   Wed, 20 Oct 2021 13:30:36 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Lucas Tanure <tanureal@opensource.cirrus.com>
-Cc:     Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>,
-        Len Brown <lenb@kernel.org>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org,
-        patches@opensource.cirrus.com, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 1/3] sound: cs35l41: Allow HDA systems to use
- CS35l41 ASoC driver
-Message-ID: <YXAL7Gc/wGR0Ce3g@sirena.org.uk>
-References: <20211020085944.17577-1-tanureal@opensource.cirrus.com>
- <20211020085944.17577-2-tanureal@opensource.cirrus.com>
+        id S230103AbhJTP3H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Oct 2021 11:29:07 -0400
+Received: from mail-ot1-f49.google.com ([209.85.210.49]:33434 "EHLO
+        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229941AbhJTP3G (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Oct 2021 11:29:06 -0400
+Received: by mail-ot1-f49.google.com with SMTP id 34-20020a9d0325000000b00552cae0decbso6971879otv.0;
+        Wed, 20 Oct 2021 08:26:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6Of0JrSGPJAIaBNStcb1slkpBnkKhZuGUXczf+OXRpI=;
+        b=2TXxrUg/QGSO1p3BzHu5LsRloTB/WP+YRXntr6bXfT42SmDsDpQIUBMvYGoWwFuYsc
+         kT1Q0K9p/JSOmagRgnc/lZeHSN6e7My0ZG8yPIa2UX9/h/ENYBIO5A0l7lVSJHjUowsA
+         8Uz3Jp0RF72CAh0n55Ggn3mg5l2Vk6Sp1q2VQjJDONocE49fCFgQYqyo4VXZz2e1d+uB
+         WPNlVB4RX/AxrTll2mMhWRIgacJmr0AGZICPqeHLvDvX8coBS8cyWufYK7Pdlvr8p/Fx
+         rvHMLmyHcg8W+DL0tNYqcEM6ZsF168Ir/iatRJil0yepa8qxUqmFjUo3xuQxn5eOZeVN
+         H4xA==
+X-Gm-Message-State: AOAM532G4ADTPC0SzLq0ttC/O5DsSfytibUEUVipg1tvLkVb/mDe3Zxk
+        7jc3872mCaAgmxJzz9FnFzrLAtwZhRO5PDyN32d9g3V9
+X-Google-Smtp-Source: ABdhPJyumLpploANe3bytCsfC9KfbkjoJE/qr1C6KLK8jLrxIzuujr3JvIqDzphq0LymD46aH4+F7Bp33mB9zwOFoN8=
+X-Received: by 2002:a05:6830:90b:: with SMTP id v11mr437852ott.254.1634743612165;
+ Wed, 20 Oct 2021 08:26:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="105KrfQZCqU/K4pU"
-Content-Disposition: inline
-In-Reply-To: <20211020085944.17577-2-tanureal@opensource.cirrus.com>
-X-Cookie: I program, therefore I am.
+References: <20211019050908.449231-1-alison.schofield@intel.com>
+In-Reply-To: <20211019050908.449231-1-alison.schofield@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 20 Oct 2021 17:26:41 +0200
+Message-ID: <CAJZ5v0h3vwrNQrs8F5KQcFoNy+KyAfg6k99cwTO19g-ra7kzFQ@mail.gmail.com>
+Subject: Re: [PATCH v3] ACPI: NUMA: Add a node and memblk for each CFMWS not
+ in SRAT
+To:     Alison Schofield <alison.schofield@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        linux-cxl@vger.kernel.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, Oct 19, 2021 at 7:01 AM <alison.schofield@intel.com> wrote:
+>
+> From: Alison Schofield <alison.schofield@intel.com>
+>
+> During NUMA init, CXL memory defined in the SRAT Memory Affinity
+> subtable may be assigned to a NUMA node. Since there is no
+> requirement that the SRAT be comprehensive for CXL memory another
+> mechanism is needed to assign NUMA nodes to CXL memory not identified
+> in the SRAT.
+>
+> Use the CXL Fixed Memory Window Structure (CFMWS) of the ACPI CXL
+> Early Discovery Table (CEDT) to find all CXL memory ranges.
+> Create a NUMA node for each CFMWS that is not already assigned to
+> a NUMA node. Add a memblk attaching its host physical address
+> range to the node.
+>
+> Note that these ranges may not actually map any memory at boot time.
+> They may describe persistent capacity or may be present to enable
+> hot-plug.
+>
+> Consumers can use phys_to_target_node() to discover the NUMA node.
+>
+> Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 
---105KrfQZCqU/K4pU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dan, this seems to fall into your territory.
 
-On Wed, Oct 20, 2021 at 09:59:42AM +0100, Lucas Tanure wrote:
+> ---
+> Changes in v3:
+> - Initial variable pxm (Ben)
+>
+> Changes in v2:
+> - Use MAX_NUMNODES as max value when searching node_to_pxm_map() (0-day)
+> - Add braces around single statement for loop (coding style)
+> - Rename acpi_parse_cfmws() to acpi_cxl_cfmws_init to be more like other
+>   functions in this file doing similar work.
+> - Comments: remove superflous and state importance of the init order,
+>   CFMWS after SRAT, (Ira, Dan)
+> - Add prototype for numa_add_memblk() (0-day)
+>
+>  drivers/acpi/numa/srat.c | 70 ++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/acpi.c       |  8 +++--
+>  include/linux/acpi.h     |  1 +
+>  3 files changed, 76 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> index b8795fc49097..daaaef58f1e6 100644
+> --- a/drivers/acpi/numa/srat.c
+> +++ b/drivers/acpi/numa/srat.c
+> @@ -300,6 +300,67 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
+>  }
+>  #endif /* defined(CONFIG_X86) || defined (CONFIG_ARM64) */
+>
+> +static int __init acpi_cxl_cfmws_init(struct acpi_table_header *acpi_cedt)
+> +{
+> +       struct acpi_cedt_cfmws *cfmws;
+> +       acpi_size len, cur = 0;
+> +       int i, node, pxm = 0;
+> +       void *cedt_subtable;
+> +       u64 start, end;
+> +
+> +       /* Find the max PXM defined in the SRAT */
+> +       for (i = 0; i < MAX_NUMNODES - 1; i++) {
+> +               if (node_to_pxm_map[i] > pxm)
+> +                       pxm = node_to_pxm_map[i];
+> +       }
+> +       /* Start assigning fake PXM values after the SRAT max PXM */
+> +       pxm++;
+> +
+> +       len = acpi_cedt->length - sizeof(*acpi_cedt);
+> +       cedt_subtable = acpi_cedt + 1;
+> +
+> +       while (cur < len) {
+> +               struct acpi_cedt_header *c = cedt_subtable + cur;
+> +
+> +               if (c->type != ACPI_CEDT_TYPE_CFMWS)
+> +                       goto next;
+> +
+> +               cfmws = cedt_subtable + cur;
+> +               if (cfmws->header.length < sizeof(*cfmws)) {
+> +                       pr_warn_once("CFMWS entry skipped:invalid length:%u\n",
+> +                                    cfmws->header.length);
+> +                       goto next;
+> +               }
+> +
+> +               start = cfmws->base_hpa;
+> +               end = cfmws->base_hpa + cfmws->window_size;
+> +
+> +               /*
+> +                * Skip if the SRAT already described
+> +                * the NUMA details for this HPA.
+> +                */
+> +               node = phys_to_target_node(start);
+> +               if (node != NUMA_NO_NODE)
+> +                       goto next;
+> +
+> +               node = acpi_map_pxm_to_node(pxm);
+> +               if (node == NUMA_NO_NODE) {
+> +                       pr_err("ACPI NUMA: Too many proximity domains.\n");
+> +                       return -EINVAL;
+> +               }
+> +
+> +               if (numa_add_memblk(node, start, end) < 0) {
+> +                       /* CXL driver must handle the NUMA_NO_NODE case */
+> +                       pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
+> +                               node, start, end);
+> +               }
+> +               pxm++;
+> +next:
+> +               cur += c->length;
+> +       }
+> +       return 0;
+> +}
+> +
+>  static int __init acpi_parse_slit(struct acpi_table_header *table)
+>  {
+>         struct acpi_table_slit *slit = (struct acpi_table_slit *)table;
+> @@ -478,6 +539,15 @@ int __init acpi_numa_init(void)
+>         /* SLIT: System Locality Information Table */
+>         acpi_table_parse(ACPI_SIG_SLIT, acpi_parse_slit);
+>
+> +       /*
+> +        * CEDT: CXL Fixed Memory Window Structures (CFMWS)
+> +        * must be parsed after the SRAT. It creates NUMA
+> +        * Nodes for CXL memory ranges not already defined
+> +        * in the SRAT and it assigns PXMs after the max PXM
+> +        * defined in the SRAT.
+> +        */
+> +       acpi_table_parse(ACPI_SIG_CEDT, acpi_cxl_cfmws_init);
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
+acpi_table_parse() creates a memory mapping for accessing the table.
+so it usually is good to call acpi_put_table() when you are done with
+it to let that mapping go away.
 
-> Re-use ASoC driver for supporting for Legion 7 16ACHg6
-> laptop.
-> HDA machine driver will find the registered dais for the
-> Amp and use snd_soc_dai_ops to configure it.
-
-It will find the registered DAIs in what way exactly?
-
-This patch is doing a whole bunch of stuff which isn't described at all
-in the changelog which makes it very hard to review, I can't tell what
-it's supposed to do.
-
---105KrfQZCqU/K4pU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmFwC+sACgkQJNaLcl1U
-h9BpGgf8C7Znyvqsj/ydwkf+M2pPLh07ukHK6c4VRUmxiuxT4/WUeecjcnTvo4El
-J+dqhOnejW1i0PiJ8C/j2sz9Z/W0+asGY4+UcGy9VWUMQ0mUNt46UbEJPYR573ae
-1WJVSy3Gzrx0FC/U/kRFlFplxPnq1VHITlm2oviYhrlqsvHP+9Xd+lBNmZB4H4Bx
-JeEc7rfpHd7uiftVfhrVVNtgKjb+kvPiB4f1NTnwr4ZkDsF9ydULy5Ytq5qvEx7Q
-AQ7MgwVpvdj14Jbmg1Abz4SNNVwwte9M9nc99X+aajfW9Shg77XxjUb90qoTb3iZ
-nOkeqR9aXbE2RBNQZW3HIDaPLkwkEg==
-=WUeG
------END PGP SIGNATURE-----
-
---105KrfQZCqU/K4pU--
+> +
+>         if (cnt < 0)
+>                 return cnt;
+>         else if (!parsed_numa_memblks)
+> diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+> index 10120e4e0b9f..ccf73f0a59a7 100644
+> --- a/drivers/cxl/acpi.c
+> +++ b/drivers/cxl/acpi.c
+> @@ -122,9 +122,11 @@ static void cxl_add_cfmws_decoders(struct device *dev,
+>                                 cfmws->base_hpa, cfmws->base_hpa +
+>                                 cfmws->window_size - 1);
+>                 } else {
+> -                       dev_dbg(dev, "add: %s range %#llx-%#llx\n",
+> -                               dev_name(&cxld->dev), cfmws->base_hpa,
+> -                                cfmws->base_hpa + cfmws->window_size - 1);
+> +                       dev_dbg(dev, "add: %s node: %d range %#llx-%#llx\n",
+> +                               dev_name(&cxld->dev),
+> +                               phys_to_target_node(cxld->range.start),
+> +                               cfmws->base_hpa,
+> +                               cfmws->base_hpa + cfmws->window_size - 1);
+>                 }
+>                 cur += c->length;
+>         }
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 974d497a897d..f837fd715440 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -426,6 +426,7 @@ extern bool acpi_osi_is_win8(void);
+>  #ifdef CONFIG_ACPI_NUMA
+>  int acpi_map_pxm_to_node(int pxm);
+>  int acpi_get_node(acpi_handle handle);
+> +int __init numa_add_memblk(int nodeid, u64 start, u64 end);
+>
+>  /**
+>   * pxm_to_online_node - Map proximity ID to online node
+>
+> base-commit: 64570fbc14f8d7cb3fe3995f20e26bc25ce4b2cc
+> prerequisite-patch-id: f09c67c6b3801f511521fd29c1cc01f5c5b1e9de
+> --
