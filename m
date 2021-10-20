@@ -2,134 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1CEB4340DF
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Oct 2021 23:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F765434383
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Oct 2021 04:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbhJSV5Z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 19 Oct 2021 17:57:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49614 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229544AbhJSV5V (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 19 Oct 2021 17:57:21 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2730161260;
-        Tue, 19 Oct 2021 21:55:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634680508;
-        bh=k8/6DG7Gf2l0QXlkRyX6y3iUIQXOBGnkd5657VOQQA4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=Fax3yqYqNGg3N08Y+4+3iEZixE+nIKZolAfgragJsxeDSoYNqsS8ZBnmsZYKw8mo4
-         zve70NBrjQnDfrFxB92w+w16AHTqikE+RZ1xPkHeKkCGiwAU09zMNimobQtnykFA8G
-         M1ce2nnqRbr+P5eSqu6KHbGnH+0ud0uoMQbkCYh9v4OKLkO77PL7c3TqxuXEvYqYzO
-         FEMbvzhAAvKb8wwzrQjasn3BnLK3hG5LOQi68ZtZTGec6mrY1xeEetZK6xFvA3DN+E
-         IzWB1c8pW4PAyhN0QN5tjloz8TA/9B0+erE+czyyekpIv4WTvhShl4sOSE/JpWug7Z
-         PcLWjJVxzXeag==
-Date:   Tue, 19 Oct 2021 16:55:06 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org,
-        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, stable@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH v5 1/2] x86/PCI: Ignore E820 reservations for bridge
- windows on newer systems
-Message-ID: <20211019215506.GA2411878@bhelgaas>
+        id S229743AbhJTCaX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 19 Oct 2021 22:30:23 -0400
+Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:52231 "EHLO
+        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229653AbhJTCaW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 19 Oct 2021 22:30:22 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=xuesong.chen@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0Ut-jNXD_1634696886;
+Received: from 30.225.212.40(mailfrom:xuesong.chen@linux.alibaba.com fp:SMTPD_---0Ut-jNXD_1634696886)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Wed, 20 Oct 2021 10:28:07 +0800
+Message-ID: <90a632cc-352f-1067-718a-a6b515bf87d7@linux.alibaba.com>
+Date:   Wed, 20 Oct 2021 10:28:06 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211019215240.GA2411590@bhelgaas>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.2.0
+Subject: Re: [PATCH v3 0/2] PCI MCFG consolidation and APEI resource filterin
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
+        james.morse@arm.com, will@kernel.org, rafael@kernel.org,
+        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
+        bhelgaas@google.com, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20211019151258.GA2336650@bhelgaas>
+From:   Xuesong Chen <xuesong.chen@linux.alibaba.com>
+In-Reply-To: <20211019151258.GA2336650@bhelgaas>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 19, 2021 at 04:52:42PM -0500, Bjorn Helgaas wrote:
-> On Thu, Oct 14, 2021 at 08:39:42PM +0200, Hans de Goede wrote:
-> > Some BIOS-es contain a bug where they add addresses which map to system
-> > RAM in the PCI host bridge window returned by the ACPI _CRS method, see
-> > commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
-> > space").
-> > 
-> > To work around this bug Linux excludes E820 reserved addresses when
-> > allocating addresses from the PCI host bridge window since 2010.
-> > 
-> > Recently (2020) some systems have shown-up with E820 reservations which
-> > cover the entire _CRS returned PCI bridge memory window, causing all
-> > attempts to assign memory to PCI BARs which have not been setup by the
-> > BIOS to fail. For example here are the relevant dmesg bits from a
-> > Lenovo IdeaPad 3 15IIL 81WE:
-> > 
-> >  [mem 0x000000004bc50000-0x00000000cfffffff] reserved
-> >  pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
-> > 
-> > The ACPI specifications appear to allow this new behavior:
-> > 
-> > The relationship between E820 and ACPI _CRS is not really very clear.
-> > ACPI v6.3, sec 15, table 15-374, says AddressRangeReserved means:
-> > 
-> >   This range of addresses is in use or reserved by the system and is
-> >   not to be included in the allocatable memory pool of the operating
-> >   system's memory manager.
-> > 
-> > and it may be used when:
-> > 
-> >   The address range is in use by a memory-mapped system device.
-> > 
-> > Furthermore, sec 15.2 says:
-> > 
-> >   Address ranges defined for baseboard memory-mapped I/O devices, such
-> >   as APICs, are returned as reserved.
-> > 
-> > A PCI host bridge qualifies as a baseboard memory-mapped I/O device,
-> > and its apertures are in use and certainly should not be included in
-> > the general allocatable pool, so the fact that some BIOS-es reports
-> > the PCI aperture as "reserved" in E820 doesn't seem like a BIOS bug.
-> > 
-> > So it seems that the excluding of E820 reserved addresses is a mistake.
-> > 
-> > Ideally Linux would fully stop excluding E820 reserved addresses,
-> > but then the old systems this was added for will regress.
-> > Instead keep the old behavior for old systems, while ignoring
-> > the E820 reservations for any systems from now on.
-> > 
-> > Old systems are defined here as BIOS year < 2018, this was chosen to
-> > make sure that pci_use_e820 will not be set on the currently affected
-> > systems, while at the same time also taking into account that the
-> > systems for which the E820 checking was originally added may have
-> > received BIOS updates for quite a while (esp. CVE related ones),
-> > giving them a more recent BIOS year then 2010.
-> > 
-> > Also add pci=no_e820 and pci=use_e820 options to allow overriding
-> > the BIOS year heuristic.
-> > 
-> > BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
-> > BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
-> > BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
-> > BugLink: https://bugs.launchpad.net/bugs/1878279
-> > BugLink: https://bugs.launchpad.net/bugs/1931715
-> > BugLink: https://bugs.launchpad.net/bugs/1932069
-> > BugLink: https://bugs.launchpad.net/bugs/1921649
-> > Cc: Benoit Grégoire <benoitg@coeus.ca>
-> > Cc: Hui Wang <hui.wang@canonical.com>
-> > Cc: stable@vger.kernel.org
-> > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> 
-> I haven't seen anybody else eager to merge this, so I guess I'll stick
-> my neck out here.
-> 
-> I applied this to my for-linus branch for v5.15.
 
-(I only applied patch 1/2, to fix the PCI BAR assignments.  The 2/2
-patch to convert printk to pr_info might be nice, but definitely not
--rc7 material.  I'm hesitant enough about 1/2.)
+On 19/10/2021 23:12, Bjorn Helgaas wrote:
+> On Tue, Oct 19, 2021 at 12:49:16PM +0800, Xuesong Chen wrote:
+>> Hello All,
+>>
+>> The idea of this patch set is very strainforward, it's somehow a refactor
+>> of the original codes to share some ones that they should do. Based on that,
+>> we can resolve the MCFG address access issue in APEI module on x86 in a 
+>> command way instead of the current arch-dependent one, while this issue also
+>> does happen on ARM64 platform.
+>>
+>> The logic of the series is very clear(IMO it's even time-wasting to explain that):
+> 
+> If you want people to look at and care about your changes, it is never
+> a waste of time to explain them.
+
+En, very good point and professional, I'll keep in mind ;-)
+> 
+>> Patch #1: Escalating the 'pci_mmcfg_list' and 'pci_mmcfg_region' to the
+>> pci.[c,h] which will shared by all the arches. A common sense, in some degree.
+>>
+>> Patch #2: Since the 'pci_mmcfg_list' now can be shared across all arches,
+>> the arch-specific fix method can be replaced by the new solution naturally.
+>>
+>> Now the v3 patch has been finalized, can we move forward to the next step? -
+>> either give the concerns/objections or pick it up.
+> 
+> It's helpful to your reviewers if you include a note about changes
+> between v2 and v3, as you did in your v2 0/2 cover letter.
+> 
+> It's also helpful if you thread the series with patches 1 and 2 as
+> responses to the cover letter.  That makes it easy to download the
+> patches using b4.  Here's a little more background:
+> 
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/5.Posting.rst?id=v5.14#n320
+
+OK, I will rewrite it in the next version...
+> 
+>> Xuesong Chen (2):
+>>   PCI: MCFG: Consolidate the separate PCI MCFG table entry list
+>>   ACPI: APEI: Filter the PCI MCFG address with an arch-agnostic method
+>>
+>>  arch/x86/include/asm/pci_x86.h | 17 +---------------
+>>  arch/x86/pci/mmconfig-shared.c | 30 ----------------------------
+>>  drivers/acpi/apei/apei-base.c  | 45 ++++++++++++++++++++++++++++--------------
+>>  drivers/acpi/pci_mcfg.c        | 34 ++++++++++++-------------------
+>>  drivers/pci/pci.c              |  2 ++
+>>  include/linux/pci.h            | 17 ++++++++++++++++
+>>  6 files changed, 63 insertions(+), 82 deletions(-)
+>>
+>> -- 
+>> 1.8.3.1
+>>
