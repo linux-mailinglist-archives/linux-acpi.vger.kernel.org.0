@@ -2,111 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ABA24347AB
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Oct 2021 11:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81FAD4347BB
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Oct 2021 11:17:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229627AbhJTJMj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Oct 2021 05:12:39 -0400
-Received: from mga12.intel.com ([192.55.52.136]:21276 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229503AbhJTJMj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 20 Oct 2021 05:12:39 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10142"; a="208835428"
-X-IronPort-AV: E=Sophos;i="5.87,166,1631602800"; 
-   d="scan'208";a="208835428"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2021 02:10:25 -0700
-X-IronPort-AV: E=Sophos;i="5.87,166,1631602800"; 
-   d="scan'208";a="483642339"
-Received: from chenyu-desktop.sh.intel.com (HELO chenyu-desktop) ([10.239.158.176])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2021 02:10:22 -0700
-Date:   Wed, 20 Oct 2021 17:17:03 +0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-acpi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
-        Ashok Raj <ashok.raj@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Aubrey Li <aubrey.li@intel.com>
-Subject: Re: [PATCH v4 3/4] drivers/acpi: Introduce Platform Firmware Runtime
- Update Telemetry
-Message-ID: <20211020091703.GA47337@chenyu-desktop>
-References: <cover.1634310710.git.yu.c.chen@intel.com>
- <838245e376c7e6fd0fe1ef55d004ed53763846a2.1634310710.git.yu.c.chen@intel.com>
- <YWrrYWeW7uaiJ51u@kroah.com>
- <20211020082939.GA44221@chenyu-desktop>
- <YW/S8N9vR46/wSJY@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YW/S8N9vR46/wSJY@kroah.com>
+        id S229702AbhJTJTj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Oct 2021 05:19:39 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28]:53068 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229639AbhJTJTj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 20 Oct 2021 05:19:39 -0400
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id 2412821A95;
+        Wed, 20 Oct 2021 09:17:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1634721444; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=mDhieyIXeE4V5jHwQZTe7ZXZZbr+qjBnbmqOemXSzlk=;
+        b=fc1si36eMekGSQDqcS/Hn3Eorlm6YyDIm/s2QHHgKQUzjS46rECZKO3+n1oE9Nbk4ifixX
+        lHutHNI6ClB8dkbZYqDyWqO4MSVM5OdXNwSw0pd/TeeNDcLAcLbQu7Al7YRxspvGYABhm/
+        kEFqql32f4JdNRImBy/VF3c03nUsD6Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1634721444;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=mDhieyIXeE4V5jHwQZTe7ZXZZbr+qjBnbmqOemXSzlk=;
+        b=pEnnCCdRCZrs86YOnpoamSueJv/AfbpZdfLMiHOcWnBqMS+tMPKzKMwcS74ex8rJLtlK+x
+        yUV8QW7y9zvj8BBQ==
+Received: from alsa1.suse.de (alsa1.suse.de [10.160.4.42])
+        by relay2.suse.de (Postfix) with ESMTP id 04F4FA3B83;
+        Wed, 20 Oct 2021 09:17:24 +0000 (UTC)
+Date:   Wed, 20 Oct 2021 11:17:24 +0200
+Message-ID: <s5hr1cgys0r.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Lucas Tanure <tanureal@opensource.cirrus.com>
+Cc:     Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+        "Jaroslav Kysela" <perex@perex.cz>, Len Brown <lenb@kernel.org>,
+        David Rhodes <david.rhodes@cirrus.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-acpi@vger.kernel.org>,
+        <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v2 2/3] ALSA: hda/realtek: Add support for Legion 7 16ACHg6 laptop Speakers
+In-Reply-To: <20211020085944.17577-3-tanureal@opensource.cirrus.com>
+References: <20211020085944.17577-1-tanureal@opensource.cirrus.com>
+        <20211020085944.17577-3-tanureal@opensource.cirrus.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 20, 2021 at 10:27:28AM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Oct 20, 2021 at 04:29:39PM +0800, Chen Yu wrote:
-> > > > +ssize_t pfru_log_read(struct file *filp, char __user *ubuf,
-> > > > +		      size_t size, loff_t *off)
-> > > > +{
-> > > > +	struct pfru_log_data_info info;
-> > > > +	phys_addr_t base_addr;
-> > > > +	int buf_size, ret;
-> > > > +	char *buf_ptr;
-> > > > +
-> > > > +	if (!pfru_log_dev)
-> > > > +		return -ENODEV;
-> > > > +
-> > > > +	if (*off < 0)
-> > > > +		return -EINVAL;
-> > > > +
-> > > > +	ret = get_pfru_log_data_info(&info, pfru_log_dev->info.log_type);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	base_addr = (phys_addr_t)(info.chunk2_addr_lo | (info.chunk2_addr_hi << 32));
-> > > > +	/* pfru update has not been launched yet.*/
-> > > > +	if (!base_addr)
-> > > > +		return -EBUSY;
-> > > > +
-> > > > +	buf_size = info.max_data_size;
-> > > > +	if (*off >= buf_size)
-> > > > +		return 0;
-> > > > +
-> > > > +	buf_ptr = memremap(base_addr, buf_size, MEMREMAP_WB);
-> > > > +	if (IS_ERR(buf_ptr))
-> > > > +		return PTR_ERR(buf_ptr);
-> > > > +
-> > > > +	size = min_t(size_t, size, buf_size - *off);
-> > > > +	if (copy_to_user(ubuf, buf_ptr + *off, size))
-> > > > +		ret = -EFAULT;
-> > > > +	else
-> > > > +		ret = 0;
-> > > 
-> > > As all you are doing is mapping some memory and reading from it, why do
-> > > you need a read() file operation at all?  Why not just use mmap?
-> > > 
-> > In the beginning mmap() interface was provided to the user. Then it was
-> > realized that there is no guarantee in the spec that, the physical address
-> > provided by the BIOS would remain unchanged. So instead of asking the user
-> > to mmap the file each time before reading the log, the read() is leveraged
-> > here to always memremap() the latest address.
+On Wed, 20 Oct 2021 10:59:43 +0200,
+Lucas Tanure wrote:
 > 
-> So you are forced to memremap on _EVERY_ read call because the BIOS can
-> change things underneath us without the kernel knowing about it?  How
-> does the chunk2_addr_lo and _hi values change while the system is
-> running?  Where does that happen, and isn't this going to be a very slow
-> and expensive read call all the time?
->
-It was not documented in the spec whether the chunk address will change or not,
-for safety I changed it from mmap() to read(). I'll try to reach the spec designer
-and check if the address will change or not.
+> Find the associated Amps by dai name, and use dai ops to configure it.
+> Disable support for Amps if ASoC not built.
+
+Hrm, it's the question whether such a sneaking into DAI access in open
+code is a good idea.  If any, it could be done by some helper function
+instead.
+
+And some more details:
+
+> +static int alc_add_soc_dai_list(struct alc_spec *spec, const char *dai_name)
+> +{
+> +#if IS_ENABLED(CONFIG_SND_SOC)
+> +	struct snd_soc_dai_link_component dlc;
+> +	struct alc_soc_dai_node *dai_node;
+> +	//struct snd_soc_component *comp;
+> +	struct snd_soc_dai *dai;
+> +
+> +	dlc.dai_name = dai_name;
+> +	dlc.of_node = NULL;
+> +	dlc.name = NULL;
+> +
+> +	dai = snd_soc_find_dai(&dlc);
+> +	if (!dai)
+> +		return -EPROBE_DEFER;
+
+The deferred probe won't work at this stage for HD-audio codecs unlike
+many ASoC codec drivers.  And moreover, the fixup action doesn't
+handle the error at all...
+
+Second, this way may lead to use-after-free if the ASoC stuff is
+unbound while the usage from HD-audio codec side.
+
+Also, the dependency mess is still there.  Even if we allow the hard
+binding to ASoC core here, IS_ENABLED() wouldn't work properly.  It
+must be IS_REACHABLE().
+
 
 thanks,
-Chenyu
- 
-> thanks,
-> 
-> greg k-h
+
+Takashi
