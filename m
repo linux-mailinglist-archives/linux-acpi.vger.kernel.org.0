@@ -2,116 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB8B9434781
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Oct 2021 11:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC08143479F
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Oct 2021 11:07:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbhJTJDD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Oct 2021 05:03:03 -0400
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:48986 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229833AbhJTJDC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 20 Oct 2021 05:03:02 -0400
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19K5NeVY008304;
-        Wed, 20 Oct 2021 04:00:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=PODMain02222019;
- bh=BRB15INUzbwgExlLEwJMjzHHvgiQARdV2CIXbCq4f98=;
- b=DeTaS6OZqt5p4ZZuOYrge9xq2+RqPkcItJyQOtJy2K6RaDL3GiK8to09z7qgI/irwybS
- 6nokCwLDzkZH/lmMBWUVZVXDQr3NV0clsaFDcEsFHpAGySmJ6AdrufT2HSmCc15zpIqi
- N2IG8mJ7bgKhi9mmeYXyFfT+PB/wFp8RFpDbX6o2yvGrzcsP0R6zuY9Zq9X6g+G/Ya8P
- DoBgG8vs3pMZnPDqOduDOAAVBoQiinoJTJAS/95l8SaQGdtYrsu8DycSLCdBUb8zLmhB
- wiYmQqMzdiLMcNOxGAUdLvcm2YHt6l997689T+z1WZa0K43dQh/gJrohQHi4EyFXvODl Rg== 
-Received: from ediex01.ad.cirrus.com ([87.246.76.36])
-        by mx0a-001ae601.pphosted.com with ESMTP id 3bt9k0gcqs-2
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 20 Oct 2021 04:00:02 -0500
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Wed, 20 Oct
- 2021 09:59:47 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.7 via Frontend
- Transport; Wed, 20 Oct 2021 09:59:47 +0100
-Received: from aryzen.ad.cirrus.com (unknown [198.61.65.166])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 3F41411DA;
-        Wed, 20 Oct 2021 08:59:47 +0000 (UTC)
-From:   Lucas Tanure <tanureal@opensource.cirrus.com>
-To:     Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
-        "Jaroslav Kysela" <perex@perex.cz>, Len Brown <lenb@kernel.org>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
-CC:     <alsa-devel@alsa-project.org>, <linux-acpi@vger.kernel.org>,
-        <patches@opensource.cirrus.com>, <linux-kernel@vger.kernel.org>,
-        Lucas Tanure <tanureal@opensource.cirrus.com>
-Subject: [RFC PATCH v2 3/3] ACPI / scan: Create platform device for INT3515 ACPI nodes
-Date:   Wed, 20 Oct 2021 09:59:44 +0100
-Message-ID: <20211020085944.17577-4-tanureal@opensource.cirrus.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211020085944.17577-1-tanureal@opensource.cirrus.com>
-References: <20211020085944.17577-1-tanureal@opensource.cirrus.com>
+        id S229639AbhJTJJQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Oct 2021 05:09:16 -0400
+Received: from out2.migadu.com ([188.165.223.204]:45555 "EHLO out2.migadu.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229570AbhJTJJQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 20 Oct 2021 05:09:16 -0400
+Date:   Wed, 20 Oct 2021 18:06:48 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1634720819;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=tGGXBZ9nlftRplzRbnEZFgw5OfzmeC3UbiQRyY/SD4g=;
+        b=iyyaGvxKReDsgdxRk0A/KeITXndpJQs1eMSQ8Kz/gyvZjZqUlZkqtcl78GxDndmrjgz3Cm
+        fkL4mzmIsSBMdamZj0cvOcH84FAcajsUrjWPjWbOqyUOUEz+0QVqD3nORC8Cb8rZN/4+69
+        SblbdQh4QvbeVd1hCaLkHTylL16wMYA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Naoya Horiguchi <naoya.horiguchi@linux.dev>
+To:     Tony Luck <tony.luck@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        naoya.horiguchi@nec.com, Andrew Morton <akpm@linux-foundation.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Cathy Zhang <cathy.zhang@intel.com>, linux-sgx@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        Reinette Chatre <reinette.chatre@intel.com>
+Subject: Re: [PATCH v10 5/7] x86/sgx: Hook arch_memory_failure() into
+ mainline code
+Message-ID: <20211020090648.GA2339043@u2004>
+References: <20211011185924.374213-1-tony.luck@intel.com>
+ <20211018202542.584115-1-tony.luck@intel.com>
+ <20211018202542.584115-6-tony.luck@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: 5MX4qB7iondzzwsyrMViwtIQPcIq5Kpy
-X-Proofpoint-ORIG-GUID: 5MX4qB7iondzzwsyrMViwtIQPcIq5Kpy
-X-Proofpoint-Spam-Reason: safe
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211018202542.584115-6-tony.luck@intel.com>
+X-Migadu-Flow: FLOW_OUT
+X-Migadu-Auth-User: naoya.horiguchi@linux.dev
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The ACPI device with CLSA0100 is a sound card with multiple
-instances of CS35L41.
+On Mon, Oct 18, 2021 at 01:25:40PM -0700, Tony Luck wrote:
+> Add a call inside memory_failure() to call the arch specific code
+> to check if the address is an SGX EPC page and handle it.
+> 
+> Note the SGX EPC pages do not have a "struct page" entry, so the hook
+> goes in at the same point as the device mapping hook.
+> 
+> Pull the call to acquire the mutex earlier so the SGX errors are also
+> protected.
+> 
+> Make set_mce_nospec() skip SGX pages when trying to adjust
+> the 1:1 map.
+> 
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Tested-by: Reinette Chatre <reinette.chatre@intel.com>
+> Signed-off-by: Tony Luck <tony.luck@intel.com>
+> ---
+...
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 73a52aba448f..62b199ed5ec6 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3284,5 +3284,19 @@ static inline int seal_check_future_write(int seals, struct vm_area_struct *vma)
+>  	return 0;
+>  }
+>  
+> +#ifndef arch_memory_failure
+> +static inline int arch_memory_failure(unsigned long pfn, int flags)
+> +{
+> +	return -ENXIO;
+> +}
+> +#endif
+> +
+> +#ifndef arch_is_platform_page
+> +static inline bool arch_is_platform_page(u64 paddr)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
 
-We add an ID to the I2C multi instantiate list to enumerate
-all I2C slaves correctly.
+How about putting these definitions near the other related functions
+in the same file (like below)?
 
-Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
----
- drivers/acpi/scan.c                          | 1 +
- drivers/platform/x86/i2c-multi-instantiate.c | 7 +++++++
- 2 files changed, 8 insertions(+)
+  ...
+  extern void shake_page(struct page *p);
+  extern atomic_long_t num_poisoned_pages __read_mostly;
+  extern int soft_offline_page(unsigned long pfn, int flags);
+  
+  // here?
+  
+  /*
+   * Error handlers for various types of pages.
+   */
+  enum mf_result {
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 5b54c80b9d32..c1c27a408420 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1703,6 +1703,7 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
- 		{"BSG2150", },
- 		{"INT33FE", },
- 		{"INT3515", },
-+		{"CLSA0100", },
- 		{}
- 	};
- 
-diff --git a/drivers/platform/x86/i2c-multi-instantiate.c b/drivers/platform/x86/i2c-multi-instantiate.c
-index a50153ecd560..b61f7e30d42a 100644
---- a/drivers/platform/x86/i2c-multi-instantiate.c
-+++ b/drivers/platform/x86/i2c-multi-instantiate.c
-@@ -139,6 +139,12 @@ static const struct i2c_inst_data bsg2150_data[]  = {
- 	{}
- };
- 
-+static const struct i2c_inst_data clsa0100_data[]  = {
-+	{ "cs35l41", IRQ_RESOURCE_GPIO, 0 },
-+	{ "cs35l41", IRQ_RESOURCE_GPIO, 0 },
-+	{}
-+};
-+
- /*
-  * Device with _HID INT3515 (TI PD controllers) has some unresolved interrupt
-  * issues. The most common problem seen is interrupt flood.
-@@ -170,6 +176,7 @@ static const struct i2c_inst_data bsg2150_data[]  = {
- static const struct acpi_device_id i2c_multi_inst_acpi_ids[] = {
- 	{ "BSG1160", (unsigned long)bsg1160_data },
- 	{ "BSG2150", (unsigned long)bsg2150_data },
-+	{ "CLSA0100", (unsigned long)clsa0100_data },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, i2c_multi_inst_acpi_ids);
--- 
-2.33.1
+Otherwise, the patch looks good to me.
 
+Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+
+Thanks,
+Naoya Horiguchi
