@@ -2,27 +2,27 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8C3B4346D8
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Oct 2021 10:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D91C84346C5
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Oct 2021 10:23:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229639AbhJTI3p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 20 Oct 2021 04:29:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40306 "EHLO mail.kernel.org"
+        id S229632AbhJTIZQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 20 Oct 2021 04:25:16 -0400
+Received: from mga12.intel.com ([192.55.52.136]:17263 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229839AbhJTI3o (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 20 Oct 2021 04:29:44 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6EC7861183;
-        Wed, 20 Oct 2021 08:27:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1634718451;
-        bh=tjJaMT06OgqJgZOqhhTYFFfdNV2/IZCCyibymMKlwKQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fhqiJqs4BrlBYOvw79caWmgWe7IJYDqZ0SakTJvXfACSYVk43ygWpU5a2oj4oStof
-         puxDOmyPBtcZ9auy/X20yuSHYVATqPf0zDECSwZ5Te7xdOPwLtOiY1Z/CgI2TuGF69
-         BA7MnTq81dBj85t14jl/ic6hvcIroUHxT40EZ1QI=
-Date:   Wed, 20 Oct 2021 10:27:28 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Chen Yu <yu.c.chen@intel.com>
+        id S229603AbhJTIZQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 20 Oct 2021 04:25:16 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10142"; a="208826719"
+X-IronPort-AV: E=Sophos;i="5.87,166,1631602800"; 
+   d="scan'208";a="208826719"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2021 01:23:01 -0700
+X-IronPort-AV: E=Sophos;i="5.87,166,1631602800"; 
+   d="scan'208";a="444269106"
+Received: from chenyu-desktop.sh.intel.com (HELO chenyu-desktop) ([10.239.158.176])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2021 01:22:59 -0700
+Date:   Wed, 20 Oct 2021 16:29:39 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-acpi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
@@ -32,72 +32,131 @@ Cc:     linux-acpi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
         Aubrey Li <aubrey.li@intel.com>
 Subject: Re: [PATCH v4 3/4] drivers/acpi: Introduce Platform Firmware Runtime
  Update Telemetry
-Message-ID: <YW/S8N9vR46/wSJY@kroah.com>
+Message-ID: <20211020082939.GA44221@chenyu-desktop>
 References: <cover.1634310710.git.yu.c.chen@intel.com>
  <838245e376c7e6fd0fe1ef55d004ed53763846a2.1634310710.git.yu.c.chen@intel.com>
  <YWrrYWeW7uaiJ51u@kroah.com>
- <20211020082939.GA44221@chenyu-desktop>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211020082939.GA44221@chenyu-desktop>
+In-Reply-To: <YWrrYWeW7uaiJ51u@kroah.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 20, 2021 at 04:29:39PM +0800, Chen Yu wrote:
-> > > +ssize_t pfru_log_read(struct file *filp, char __user *ubuf,
-> > > +		      size_t size, loff_t *off)
-> > > +{
-> > > +	struct pfru_log_data_info info;
-> > > +	phys_addr_t base_addr;
-> > > +	int buf_size, ret;
-> > > +	char *buf_ptr;
-> > > +
-> > > +	if (!pfru_log_dev)
-> > > +		return -ENODEV;
-> > > +
-> > > +	if (*off < 0)
-> > > +		return -EINVAL;
-> > > +
-> > > +	ret = get_pfru_log_data_info(&info, pfru_log_dev->info.log_type);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	base_addr = (phys_addr_t)(info.chunk2_addr_lo | (info.chunk2_addr_hi << 32));
-> > > +	/* pfru update has not been launched yet.*/
-> > > +	if (!base_addr)
-> > > +		return -EBUSY;
-> > > +
-> > > +	buf_size = info.max_data_size;
-> > > +	if (*off >= buf_size)
-> > > +		return 0;
-> > > +
-> > > +	buf_ptr = memremap(base_addr, buf_size, MEMREMAP_WB);
-> > > +	if (IS_ERR(buf_ptr))
-> > > +		return PTR_ERR(buf_ptr);
-> > > +
-> > > +	size = min_t(size_t, size, buf_size - *off);
-> > > +	if (copy_to_user(ubuf, buf_ptr + *off, size))
-> > > +		ret = -EFAULT;
-> > > +	else
-> > > +		ret = 0;
+On Sat, Oct 16, 2021 at 05:10:25PM +0200, Greg Kroah-Hartman wrote:
+> On Sat, Oct 16, 2021 at 06:44:31PM +0800, Chen Yu wrote:
+> > Platform Firmware Runtime Update(PFRU) Telemetry Service is part of RoT
+> > (Root of Trust), which allows PFRU handler and other PFRU drivers to
+> > produce telemetry data to upper layer OS consumer at runtime.
 > > 
-> > As all you are doing is mapping some memory and reading from it, why do
-> > you need a read() file operation at all?  Why not just use mmap?
+> > The linux provides interfaces for the user to query the parameters of
+> > telemetry data, and the user could read out the telemetry data
+> > accordingly.
+> 
+> What type of interface is this?  How does userspace interact with it?
+> 
 > > 
-> In the beginning mmap() interface was provided to the user. Then it was
-> realized that there is no guarantee in the spec that, the physical address
-> provided by the BIOS would remain unchanged. So instead of asking the user
-> to mmap the file each time before reading the log, the read() is leveraged
-> here to always memremap() the latest address.
-
-So you are forced to memremap on _EVERY_ read call because the BIOS can
-change things underneath us without the kernel knowing about it?  How
-does the chunk2_addr_lo and _hi values change while the system is
-running?  Where does that happen, and isn't this going to be a very slow
-and expensive read call all the time?
+> > Also add the ABI documentation.
+> 
+> Add it where?
+>
+They are all ioctl interfaces, and was introduced in previous patch in
+Documentation/ABI/testing/pfru. The way userspace interace with it is
+introduced in next patch in the man page. I'll revise the commit log to
+better describe how user could use it.
+> > 
+> > Typical log looks like:
+> > [SmmRuntimeUpdateHandler.ProcessSmmRuntimeUpdate]
+> > ProcessSmmRuntimeUpdate = START, Action = 2
+> > [SmmRuntimeUpdateHandler.ProcessSmmRuntimeUpdate]
+> > FwVersion = 0, CodeInjectionVersion = 1
+> > [ShadowSmmRuntimeUpdateImage]
+> > Image = 0x74D9B000, ImageSize = 0x1172
+> > [ProcessSmmRuntimeUpdate]
+> > ShadowSmmRuntimeUpdateImage.Status = Success
+> > [ValidateSmmRuntimeUpdateImage]
+> > CapsuleHeader.CapsuleGuid = 6DCBD5ED-E82D-4C44-BDA1-7194199AD92A
+> > [ValidateSmmRuntimeUpdateImage]
+> > FmpCapHeader.Version = 1
+> > [ValidateSmmRuntimeUpdateImage]
+> > FmpCapImageHeader.UpdateImageTypeId = B2F84B79-7B6E-4E45-885F-3FB9BB185402
+> > [ValidateSmmRuntimeUpdateImage]
+> > SmmRuntimeUpdateVerifyImageWithDenylist.Status = Success
+> > [ValidateSmmRuntimeUpdateImage]
+> > SmmRuntimeUpdateVerifyImageWithAllowlist.Status = Success
+> > [SmmCodeInjectionVerifyPayloadHeader]
+> > PayloadHeader.Signature = 0x31494353
+> > [SmmCodeInjectionVerifyPayloadHeader]
+> > PayloadHeader.PlatformId = 63462139-A8B1-AA4E-9024-F2BB53EA4723
+> > [SmmCodeInjectionVerifyPayloadHeader]
+> > PayloadHeader.SupportedSmmFirmwareVersion = 0,
+> > PayloadHeader.SmmCodeInjectionRuntimeVersion = 1
+> > [ProcessSmmRuntimeUpdate]
+> > ValidateSmmRuntimeUpdateImage.Status = Success
+> > CPU CSR[0B102D28] Before = 7FBF830E
+> > CPU CSR[0B102D28] After = 7FBF8310
+> > [ProcessSmmRuntimeUpdate] ProcessSmmCodeInjection.Status = Success
+> > [SmmRuntimeUpdateHandler.ProcessSmmRuntimeUpdate]
+> > ProcessSmmRuntimeUpdate = End, Status = Success
+> 
+> This log does not make any sense to me, where is it from?  Why the odd
+> line-wrapping?
+>
+It is from the telemetry log generated by the BIOS. Since this content is
+platform specific, I'll remove the log in next version.
+> > +};
+> > +
+> > +
+[snip...]
+> > +ssize_t pfru_log_read(struct file *filp, char __user *ubuf,
+> > +		      size_t size, loff_t *off)
+> > +{
+> > +	struct pfru_log_data_info info;
+> > +	phys_addr_t base_addr;
+> > +	int buf_size, ret;
+> > +	char *buf_ptr;
+> > +
+> > +	if (!pfru_log_dev)
+> > +		return -ENODEV;
+> > +
+> > +	if (*off < 0)
+> > +		return -EINVAL;
+> > +
+> > +	ret = get_pfru_log_data_info(&info, pfru_log_dev->info.log_type);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	base_addr = (phys_addr_t)(info.chunk2_addr_lo | (info.chunk2_addr_hi << 32));
+> > +	/* pfru update has not been launched yet.*/
+> > +	if (!base_addr)
+> > +		return -EBUSY;
+> > +
+> > +	buf_size = info.max_data_size;
+> > +	if (*off >= buf_size)
+> > +		return 0;
+> > +
+> > +	buf_ptr = memremap(base_addr, buf_size, MEMREMAP_WB);
+> > +	if (IS_ERR(buf_ptr))
+> > +		return PTR_ERR(buf_ptr);
+> > +
+> > +	size = min_t(size_t, size, buf_size - *off);
+> > +	if (copy_to_user(ubuf, buf_ptr + *off, size))
+> > +		ret = -EFAULT;
+> > +	else
+> > +		ret = 0;
+> 
+> As all you are doing is mapping some memory and reading from it, why do
+> you need a read() file operation at all?  Why not just use mmap?
+> 
+In the beginning mmap() interface was provided to the user. Then it was
+realized that there is no guarantee in the spec that, the physical address
+provided by the BIOS would remain unchanged. So instead of asking the user
+to mmap the file each time before reading the log, the read() is leveraged
+here to always memremap() the latest address.
 
 thanks,
-
-greg k-h
+Chenyu
+> thanks,
+> 
+> greg k-h
