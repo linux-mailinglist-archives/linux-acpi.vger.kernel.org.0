@@ -2,199 +2,439 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDF224368DB
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Oct 2021 19:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11FE4436913
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Oct 2021 19:31:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232006AbhJURST (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Oct 2021 13:18:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30242 "EHLO
+        id S231868AbhJUReK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Oct 2021 13:34:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:52382 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232055AbhJURSS (ORCPT
+        by vger.kernel.org with ESMTP id S231728AbhJUReJ (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 21 Oct 2021 13:18:18 -0400
+        Thu, 21 Oct 2021 13:34:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634836562;
+        s=mimecast20190719; t=1634837512;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=PVbmNx2Q8EjJXm8nyHGx5Ousb89stVDtJGzhnXN95ec=;
-        b=RKmnSQsvCTEjTMAhdvAaihfVfvEB+HRm7l7oPg5ZCkFfp03qLakZp7t2Ywpv0fzyQEmS5f
-        CYCUEQQRcTgVyHsgOkTYoFbrcUrGKl5p9jrU+FyRLJRw9oC0//PSpw8tDwmo/5yHaDtQ5d
-        AlsAM/H7i6etIZIakZYhX55HVQCKDhk=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-593--Ud2DbZyPP2_xoRNjy2rdQ-1; Thu, 21 Oct 2021 13:16:00 -0400
-X-MC-Unique: -Ud2DbZyPP2_xoRNjy2rdQ-1
-Received: by mail-ed1-f72.google.com with SMTP id g28-20020a50d0dc000000b003dae69dfe3aso1063842edf.7
-        for <linux-acpi@vger.kernel.org>; Thu, 21 Oct 2021 10:16:00 -0700 (PDT)
+        bh=FttkWqye/woUbVrNK1gNL8Qh2ZShvlyYafkWzXQo3/U=;
+        b=SnU0/XAVmTnNY/1um4S8GFJk5/Q1GxV3XHyh3egaNNCufF6aaPoPdfRSwt9V2ijZavsVbB
+        a5IrIP+cYA3ghfFyK0K61WRIqHzJcE+2zdpvZb8/OWrhbXAQUDmEcJ+u38q+IxgQWgLAzk
+        hAfI2/LxG0sxNZOnL1hHhv9hqZWs8jE=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-598-wuNerdplNB2pAU1sJt80oA-1; Thu, 21 Oct 2021 13:31:51 -0400
+X-MC-Unique: wuNerdplNB2pAU1sJt80oA-1
+Received: by mail-ed1-f71.google.com with SMTP id v11-20020a056402348b00b003dcf725d986so1129420edc.1
+        for <linux-acpi@vger.kernel.org>; Thu, 21 Oct 2021 10:31:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=PVbmNx2Q8EjJXm8nyHGx5Ousb89stVDtJGzhnXN95ec=;
-        b=6iXnSFCxTw9VllTPQ67UOSEvjOmqKjV6hv4neDUZtF9AqKk4ToM1GOCuIzdm3eDAaD
-         ZoIZLwj2Mxm9+ghS4eBzVxdFxokCJxRtoH/vbe4f8VuU5V2BdS2Ly2iwIVFhCNssb0fG
-         Hd6cXiCLHBG1t/8p2+lGddZsJg0HCjvogKOIVrf0ahxhtT96SEvkzECs/5vSYNVu64bu
-         MnBez4lKcxNIv289HjrdKUR41r6983q18DEnnsoeoCGiWIQ2hq/S//3iDX9TBPb10JEc
-         BIJrxV+ZoHTWktrUP/VYSMTWTtaSU2W8W9uen3zmoq7/P1KfKDpxdPTRlHedELMm9FnB
-         AuSg==
-X-Gm-Message-State: AOAM531gf6TtTpBeYar9f/wVN2a00DGOBSkSVKSov+qEXtiexHN1Quml
-        aHr1TjaGJbadH3Z/3kQ8ca1EiqSLQ5qkEZgoGqAxol5fMzoUD1nrSbLN3oLKgHWHT8/zo7FUyui
-        omqbfMbXfGR8a7BBEdqWbcQ==
-X-Received: by 2002:a17:907:1c0e:: with SMTP id nc14mr8722280ejc.103.1634836559579;
-        Thu, 21 Oct 2021 10:15:59 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw9Ddy1dmXjTr32jRFjXqDaqxR5La1DixwmbDJ79+PUHh5JU3yjOgvx/JD5tj/TOPgEtON1kg==
-X-Received: by 2002:a17:907:1c0e:: with SMTP id nc14mr8722245ejc.103.1634836559359;
-        Thu, 21 Oct 2021 10:15:59 -0700 (PDT)
+        bh=FttkWqye/woUbVrNK1gNL8Qh2ZShvlyYafkWzXQo3/U=;
+        b=7Fq0U9Sqpo27aaYskTIOW/YteaU4V139k3d7WLi6JY8HZemrV791m49BMliPCxoBHR
+         /0BporPiVN85OMqaOrvSwSkaEp3tWYimt0iJ6KmB4aWIPPkBur+sfnYsZ3Zt95X/LteF
+         zJLsK0VhpSufwN0lwhSH8ljTQgcPFx5PG+ILiHiIEKYOJfLUhe9Z1bv2HiFxI8dZtHXR
+         dSC8SPdnK1FdEZQdK/A0jez2Lp5PBF7sf8zfwrNWbXWmxaspvTvPMgFSrGmBPPASwCXJ
+         wE5AtYTc+Vvf9YcBAzumkFVlNO5o0t+neUsDPrXe3zw2Bo6bzqanBUy5eLnuED6synsM
+         g7Qg==
+X-Gm-Message-State: AOAM530KPU+7es0jA7v0175y7PCruq0ZWOZq4iSGp2hjT+XpHlKkspUz
+        dVNbApkuAgvsWj/xtqVOJN2eBWwT3PH6q1xRQNg6b6q6yqvQ/E16/5NUMh4lkf1fjeXXgR2nUcw
+        3TSDv/KNR2xgVKg+LRCjxVg==
+X-Received: by 2002:a05:6402:2682:: with SMTP id w2mr9441520edd.185.1634837509931;
+        Thu, 21 Oct 2021 10:31:49 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw40qts/AHKJnlgI9kc6XOVWl1IM7KUVJnVdm0nO18gQKI+uMolfMwNHlKBNH8kJjWRyFtUaA==
+X-Received: by 2002:a05:6402:2682:: with SMTP id w2mr9441489edd.185.1634837509694;
+        Thu, 21 Oct 2021 10:31:49 -0700 (PDT)
 Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id z4sm3646641edd.46.2021.10.21.10.15.58
+        by smtp.gmail.com with ESMTPSA id e22sm3418183edu.35.2021.10.21.10.31.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Oct 2021 10:15:58 -0700 (PDT)
-Message-ID: <73aeec22-2ec7-ff21-5c89-c13f2e90a213@redhat.com>
-Date:   Thu, 21 Oct 2021 19:15:57 +0200
+        Thu, 21 Oct 2021 10:31:36 -0700 (PDT)
+Message-ID: <4e5884d5-bcde-dac9-34fb-e29ed32f73c9@redhat.com>
+Date:   Thu, 21 Oct 2021 19:31:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH v5 1/2] x86/PCI: Ignore E820 reservations for bridge
- windows on newer systems
+Subject: Re: [PATCH v3 05/11] clk: Introduce clk-tps68470 driver
 Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+To:     Stephen Boyd <sboyd@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Gross <markgross@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, stable@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-References: <20211020211455.GA2641031@bhelgaas>
+        "Rafael J.Wysocki" <rjw@rjwysocki.net>,
+        Wolfram Sang <wsa@the-dreams.de>
+Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
+        linux-clk@vger.kernel.org
+References: <20211010185707.195883-1-hdegoede@redhat.com>
+ <20211010185707.195883-6-hdegoede@redhat.com>
+ <163415237957.936110.1269283416777498553@swboyd.mtv.corp.google.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20211020211455.GA2641031@bhelgaas>
+In-Reply-To: <163415237957.936110.1269283416777498553@swboyd.mtv.corp.google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bjorn,
+Hi Stephen,
 
-On 10/20/21 23:14, Bjorn Helgaas wrote:
-> On Wed, Oct 20, 2021 at 12:23:26PM +0200, Hans de Goede wrote:
->> On 10/19/21 23:52, Bjorn Helgaas wrote:
->>> On Thu, Oct 14, 2021 at 08:39:42PM +0200, Hans de Goede wrote:
->>>> Some BIOS-es contain a bug where they add addresses which map to system
->>>> RAM in the PCI host bridge window returned by the ACPI _CRS method, see
->>>> commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
->>>> space").
->>>>
->>>> To work around this bug Linux excludes E820 reserved addresses when
->>>> allocating addresses from the PCI host bridge window since 2010.
->>>> ...
+Thank you for the review.
+
+On 10/13/21 21:12, Stephen Boyd wrote:
+> Quoting Hans de Goede (2021-10-10 11:57:01)
+>> diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+>> index c5b3dc97396a..7dffecac83d1 100644
+>> --- a/drivers/clk/Kconfig
+>> +++ b/drivers/clk/Kconfig
+>> @@ -169,6 +169,12 @@ config COMMON_CLK_CDCE706
+>>         help
+>>           This driver supports TI CDCE706 programmable 3-PLL clock synthesizer.
+>>  
+>> +config COMMON_CLK_TPS68470
+>> +       tristate "Clock Driver for TI TPS68470 PMIC"
+>> +       depends on I2C && REGMAP_I2C && INTEL_SKL_INT3472
 > 
->>> I haven't seen anybody else eager to merge this, so I guess I'll stick
->>> my neck out here.
->>>
->>> I applied this to my for-linus branch for v5.15.
->>
->> Thank you, and sorry about the build-errors which the lkp
->> kernel-test-robot found.
->>
->> I've just send out a patch which fixes these build-errors
->> (verified with both .config-s from the lkp reports).
->> Feel free to squash this into the original patch (or keep
->> them separate, whatever works for you).
+> Pretty sure REGMAP_I2C should be selected, not depended on.
 > 
-> Thanks, I squashed the fix in.
+> Can it
 > 
-> HOWEVER, I think it would be fairly risky to push this into v5.15.
-> We would be relying on the assumption that current machines have all
-> fixed the BIOS defect that 4dc2287c1805 addressed, and we have little
-> evidence for that.
-
-It is a 10 year old BIOS defect, so hopefully anything from 2018
-or later will not have it.
-
-> I'm not sure there's significant benefit to having this in v5.15.
-> Yes, the mainline v5.15 kernel would work on the affected machines,
-> but I suspect most people with those machines are running distro
-> kernels, not mainline kernels.
-
-Fedora and Arch do follow mainline pretty closely and a lot of
-users are affected by this (see the large number of BugLinks in
-the commit).
-
-I completely understand why you are reluctant to push this out, but
-your argument about most distros not running mainline kernels also
-applies to chances of people where this may cause a regression
-running mainline kernels also being quite small.
-
-> This issue has been around a long time, so it's not like a regression
-> that we just introduced.  If we fixed these machines and regressed
-> *other* machines, we'd be worse off than we are now.
-
-If we break one machine model and fix a whole bunch of other machines
-then in my book that is a win. Ideally we would not break anything,
-but we can only find out if we actually break anything if we ship
-the change.
-
-> Convince me otherwise if you see this differently :)
-
-See above :)
-
-> In the meantime, here's another possibility for working around this.
-> What if we discarded remove_e820_regions() completely, but aligned the
-> problem _CRS windows a little more?  The 4dc2287c1805 case was this:
+> 	depends on INTEL_SKL_INT3472 || COMPILE_TEST
 > 
->   BIOS-e820: 00000000bfe4dc00 - 00000000c0000000 (reserved)
->   pci_root PNP0A03:00: host bridge window [mem 0xbff00000-0xdfffffff]
+> so that we don't have to enable the intel specific config to compile
+> test this driver?
+
+Ack, all fixed for v4.
+
+>> +       help
+>> +        This driver supports the clocks provided by TPS68470
+>> +
+>>  config COMMON_CLK_CDCE925
+>>         tristate "Clock driver for TI CDCE913/925/937/949 devices"
+>>         depends on I2C
+>> diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+>> index e42312121e51..6b6a88ae1425 100644
+>> --- a/drivers/clk/Makefile
+>> +++ b/drivers/clk/Makefile
+>> @@ -63,6 +63,7 @@ obj-$(CONFIG_COMMON_CLK_SI570)                += clk-si570.o
+>>  obj-$(CONFIG_COMMON_CLK_STM32F)                += clk-stm32f4.o
+>>  obj-$(CONFIG_COMMON_CLK_STM32H7)       += clk-stm32h7.o
+>>  obj-$(CONFIG_COMMON_CLK_STM32MP157)    += clk-stm32mp1.o
+>> +obj-$(CONFIG_COMMON_CLK_TPS68470)      += clk-tps68470.o
+>>  obj-$(CONFIG_CLK_TWL6040)              += clk-twl6040.o
+>>  obj-$(CONFIG_ARCH_VT8500)              += clk-vt8500.o
+>>  obj-$(CONFIG_COMMON_CLK_VC5)           += clk-versaclock5.o
+>> diff --git a/drivers/clk/clk-tps68470.c b/drivers/clk/clk-tps68470.c
+>> new file mode 100644
+>> index 000000000000..27e8cbd0f60e
+>> --- /dev/null
+>> +++ b/drivers/clk/clk-tps68470.c
+>> @@ -0,0 +1,256 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Clock driver for TPS68470 PMIC
+>> + *
+>> + * Copyright (C) 2018 Intel Corporation
+>> + *
+>> + * Authors:
+>> + *     Zaikuo Wang <zaikuo.wang@intel.com>
+>> + *     Tianshu Qiu <tian.shu.qiu@intel.com>
+>> + *     Jian Xu Zheng <jian.xu.zheng@intel.com>
+>> + *     Yuning Pu <yuning.pu@intel.com>
+>> + *     Antti Laakso <antti.laakso@intel.com>
+>> + */
+>> +
+>> +#include <linux/clk-provider.h>
+>> +#include <linux/clkdev.h>
+>> +#include <linux/kernel.h>
+>> +#include <linux/mfd/tps68470.h>
+>> +#include <linux/module.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/platform_data/tps68470.h>
+>> +#include <linux/regmap.h>
+>> +
+>> +#define TPS68470_CLK_NAME "tps68470-clk"
+>> +
+>> +#define to_tps68470_clkdata(clkd) \
+>> +       container_of(clkd, struct tps68470_clkdata, clkout_hw)
+>> +
+>> +struct tps68470_clkout_freqs {
+>> +       unsigned long freq;
+>> +       unsigned int xtaldiv;
+>> +       unsigned int plldiv;
+>> +       unsigned int postdiv;
+>> +       unsigned int buckdiv;
+>> +       unsigned int boostdiv;
+>> +} clk_freqs[] = {
+>> +/*
+>> + *  The PLL is used to multiply the crystal oscillator
+>> + *  frequency range of 3 MHz to 27 MHz by a programmable
+>> + *  factor of F = (M/N)*(1/P) such that the output
+>> + *  available at the HCLK_A or HCLK_B pins are in the range
+>> + *  of 4 MHz to 64 MHz in increments of 0.1 MHz
+>> + *
+>> + * hclk_# = osc_in * (((plldiv*2)+320) / (xtaldiv+30)) * (1 / 2^postdiv)
+>> + *
+>> + * PLL_REF_CLK should be as close as possible to 100kHz
+>> + * PLL_REF_CLK = input clk / XTALDIV[7:0] + 30)
+>> + *
+>> + * PLL_VCO_CLK = (PLL_REF_CLK * (plldiv*2 + 320))
+>> + *
+>> + * BOOST should be as close as possible to 2Mhz
+>> + * BOOST = PLL_VCO_CLK / (BOOSTDIV[4:0] + 16) *
+>> + *
+>> + * BUCK should be as close as possible to 5.2Mhz
+>> + * BUCK = PLL_VCO_CLK / (BUCKDIV[3:0] + 5)
+>> + *
+>> + * osc_in   xtaldiv  plldiv   postdiv   hclk_#
+>> + * 20Mhz    170      32       1         19.2Mhz
+>> + * 20Mhz    170      40       1         20Mhz
+>> + * 20Mhz    170      80       1         24Mhz
+>> + *
+>> + */
+>> +       { 19200000, 170, 32, 1, 2, 3 },
+>> +       { 20000000, 170, 40, 1, 3, 4 },
+>> +       { 24000000, 170, 80, 1, 4, 8 },
+>> +};
+>> +
+>> +struct tps68470_clkdata {
+>> +       struct clk_hw clkout_hw;
+>> +       struct regmap *regmap;
+>> +       struct clk *clk;
+>> +       int clk_cfg_idx;
+>> +};
+>> +
+>> +static int tps68470_clk_is_prepared(struct clk_hw *hw)
+>> +{
+>> +       struct tps68470_clkdata *clkdata = to_tps68470_clkdata(hw);
+>> +       int val;
+>> +
+>> +       if (regmap_read(clkdata->regmap, TPS68470_REG_PLLCTL, &val))
+>> +               return 0;
+>> +
+>> +       return val & TPS68470_PLL_EN_MASK;
+>> +}
+>> +
+>> +static int tps68470_clk_prepare(struct clk_hw *hw)
+>> +{
+>> +       struct tps68470_clkdata *clkdata = to_tps68470_clkdata(hw);
+>> +       int idx = clkdata->clk_cfg_idx;
+>> +
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_BOOSTDIV, clk_freqs[idx].boostdiv);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_BUCKDIV, clk_freqs[idx].buckdiv);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_PLLSWR, TPS68470_PLLSWR_DEFAULT);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_XTALDIV, clk_freqs[idx].xtaldiv);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_PLLDIV, clk_freqs[idx].plldiv);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_POSTDIV, clk_freqs[idx].postdiv);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_POSTDIV2, clk_freqs[idx].postdiv);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_CLKCFG2, TPS68470_CLKCFG2_DRV_STR_2MA);
+>> +
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_PLLCTL,
+>> +                    TPS68470_OSC_EXT_CAP_DEFAULT << TPS68470_OSC_EXT_CAP_SHIFT |
+>> +                    TPS68470_CLK_SRC_XTAL << TPS68470_CLK_SRC_SHIFT);
+>> +
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_CLKCFG1,
+>> +                          (TPS68470_PLL_OUTPUT_ENABLE <<
+>> +                          TPS68470_OUTPUT_A_SHIFT) |
+>> +                          (TPS68470_PLL_OUTPUT_ENABLE <<
+>> +                          TPS68470_OUTPUT_B_SHIFT));
+>> +
+>> +       regmap_update_bits(clkdata->regmap, TPS68470_REG_PLLCTL,
+>> +                          TPS68470_PLL_EN_MASK, TPS68470_PLL_EN_MASK);
+>> +
+>> +       return 0;
+>> +}
+>> +
+>> +static void tps68470_clk_unprepare(struct clk_hw *hw)
+>> +{
+>> +       struct tps68470_clkdata *clkdata = to_tps68470_clkdata(hw);
+>> +
+>> +       /* disable clock first*/
+>> +       regmap_update_bits(clkdata->regmap, TPS68470_REG_PLLCTL, TPS68470_PLL_EN_MASK, 0);
+>> +
+>> +       /* write hw defaults */
 > 
-> where the _CRS window was of size 0x20100000, i.e., 512M + 1M.  At
-> least in this particular case, we could avoid the problem by throwing
-> away that first 1M and aligning the window to a nice 3G boundary.
-> Maybe it would be worth giving up a small fraction (less than 0.2% in
-> this case) of questionable windows like this?
+> Is it necessary to reset the registers to 0? Can the comment indicate
+> why it is necessary instead of stating what the code is doing?
 
-The PCI BAR allocation code tries to fall back to the BIOS assigned
-resource if the allocation fails. That BIOS assigned resource might
-fall outside of the host bridge window after we round the address.
+As mentioned in the commit msg this driver started out of tree, this part
+comes unmodified from the out of tree driver.
 
-My initial gut instinct here is that this has a bigger chance
-of breaking things then my change.
+After inspecting the datasheet you are right and most of these register
+clears are not necessary to disable the clock.
 
-In the beginning of the thread you said that ideally we would
-completely stop using the E820 reservations for PCI host bridge
-windows. Because in hindsight messing with the windows on all
-machines just to work around a clear BIOS bug in some was not a
-good idea.
+Only the clearing of TPS68470_REG_CLKCFG1 is necesary to tristate the
+clk output pin. I will remove the rest and add a comment about the
+clearing of TPS68470_REG_CLKCFG1.
 
-This address-rounding/-aligning you now suggest, is again
-messing with the windows on all machines just to work around
-a clear BIOS bug in some. At least that is how I see this.
+> 
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_BOOSTDIV, 0);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_BUCKDIV, 0);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_PLLSWR, 0);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_XTALDIV, 0);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_PLLDIV, 0);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_POSTDIV, 0);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_CLKCFG2, 0);
+>> +       regmap_write(clkdata->regmap, TPS68470_REG_CLKCFG1, 0);
+>> +}
+>> +
+>> +static unsigned long tps68470_clk_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+>> +{
+>> +       struct tps68470_clkdata *clkdata = to_tps68470_clkdata(hw);
+>> +
+>> +       return clk_freqs[clkdata->clk_cfg_idx].freq;
+>> +}
+>> +
+>> +static int tps68470_clk_cfg_lookup(unsigned long rate)
+> 
+> unsigned? Doesn't seem to return negative numbers.
 
-I can understand that you're not entirely happy with my patch,
-but it does get rid of the use of E820 reservations for
-any current and future machines, removing any messing with
-the _CRS returned windows which we are doing.
+Will fix for v4.
+> 
+>> +{
+>> +       long diff, best_diff = LONG_MAX;
+>> +       int i, best_idx = 0;
+>> +
+>> +       for (i = 0; i < ARRAY_SIZE(clk_freqs); i++) {
+>> +               diff = clk_freqs[i].freq - rate;
+>> +               if (diff == 0)
+>> +                       return i;
+>> +
+>> +               diff = abs(diff);
+>> +               if (diff < best_diff) {
+>> +                       best_diff = diff;
+>> +                       best_idx = i;
+>> +               }
+>> +       }
+>> +
+>> +       return best_idx;
+>> +}
+>> +
+>> +static long tps68470_clk_round_rate(struct clk_hw *hw, unsigned long rate,
+>> +                                   unsigned long *parent_rate)
+>> +{
+>> +       int idx = tps68470_clk_cfg_lookup(rate);
+> 
+> unsigned?
 
-I also understand that you're not entirely comfortable with
-my "fix" not causing regressions else where. If you want to
-delay my fix till 5.16-rc1 that is fine (1).
+Will fix for v4.
+
+
+> 
+>> +
+>> +       return clk_freqs[idx].freq;
+>> +}
+>> +
+>> +static int tps68470_clk_set_rate(struct clk_hw *hw, unsigned long rate,
+>> +                                unsigned long parent_rate)
+>> +{
+>> +       struct tps68470_clkdata *clkdata = to_tps68470_clkdata(hw);
+>> +       int idx = tps68470_clk_cfg_lookup(rate);
+>> +
+>> +       if (rate != clk_freqs[idx].freq)
+>> +               return -EINVAL;
+>> +
+>> +       clkdata->clk_cfg_idx = idx;
+> 
+> Newline here please.
+
+Done.
+
+> Also, why isn't this function actually writing
+> hardware?
+
+set_rate can only be called when the clock is disabled, all the
+necessary values are programmed based on the clk_cfg_idx in
+tps68470_clk_prepare().
+
+Note there is no enable() since enable() may not sleep and
+this device is interfaced over I2C, so the clock is already
+enabled from the prepare() op.
+
+> 
+>> +       return 0;
+>> +}
+>> +
+>> +static const struct clk_ops tps68470_clk_ops = {
+>> +       .is_prepared = tps68470_clk_is_prepared,
+>> +       .prepare = tps68470_clk_prepare,
+>> +       .unprepare = tps68470_clk_unprepare,
+>> +       .recalc_rate = tps68470_clk_recalc_rate,
+>> +       .round_rate = tps68470_clk_round_rate,
+>> +       .set_rate = tps68470_clk_set_rate,
+>> +};
+>> +
+>> +static struct clk_init_data tps68470_clk_initdata = {
+> 
+> const?
+
+Ack.
+
+> 
+>> +       .name = TPS68470_CLK_NAME,
+>> +       .ops = &tps68470_clk_ops,
+>> +};
+>> +
+>> +static int tps68470_clk_probe(struct platform_device *pdev)
+>> +{
+>> +       struct tps68470_clk_platform_data *pdata = pdev->dev.platform_data;
+>> +       struct tps68470_clkdata *tps68470_clkdata;
+>> +       int ret;
+>> +
+>> +       tps68470_clkdata = devm_kzalloc(&pdev->dev, sizeof(*tps68470_clkdata),
+>> +                                       GFP_KERNEL);
+>> +       if (!tps68470_clkdata)
+>> +               return -ENOMEM;
+>> +
+>> +       tps68470_clkdata->regmap = dev_get_drvdata(pdev->dev.parent);
+>> +       tps68470_clkdata->clkout_hw.init = &tps68470_clk_initdata;
+>> +       tps68470_clkdata->clk = devm_clk_register(&pdev->dev, &tps68470_clkdata->clkout_hw);
+> 
+> Please use devm_clk_hw_register()
+
+Good idea, done for v4.
+
+> 
+>> +       if (IS_ERR(tps68470_clkdata->clk))
+>> +               return PTR_ERR(tps68470_clkdata->clk);
+>> +
+>> +       ret = devm_clk_hw_register_clkdev(&pdev->dev, &tps68470_clkdata->clkout_hw,
+>> +                                         TPS68470_CLK_NAME, NULL);
+>> +       if (ret)
+>> +               return ret;
+>> +
+>> +       if (pdata) {
+>> +               ret = devm_clk_hw_register_clkdev(&pdev->dev,
+>> +                                                 &tps68470_clkdata->clkout_hw,
+>> +                                                 pdata->consumer_con_id,
+>> +                                                 pdata->consumer_dev_name);
+>> +               if (ret)
+>> +                       return ret;
+> 
+> Drop these two lines?
+> 
+>> +       }
+>> +
+>> +       return 0;
+> 
+> And then
+> 
+> return ret;
+
+Done for v4.
 
 Regards,
 
 Hans
-
-
-
-1) The stable series will likely pick it up soon after
-5.16-rc1 though, so not sure how much that actually helps
-with getting more testing time.
 
