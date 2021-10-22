@@ -2,111 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23A95436F51
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Oct 2021 03:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE50E436F52
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Oct 2021 03:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231939AbhJVBVL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 21 Oct 2021 21:21:11 -0400
-Received: from mx0b-002e3701.pphosted.com ([148.163.143.35]:58876 "EHLO
-        mx0b-002e3701.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230288AbhJVBVJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 21 Oct 2021 21:21:09 -0400
-Received: from pps.filterd (m0150244.ppops.net [127.0.0.1])
-        by mx0b-002e3701.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19LGFJoi006701;
-        Fri, 22 Oct 2021 01:18:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pps0720;
- bh=HUDmddCHXUhWfT8oQXFDl3mufSPdOPwB7Dko/rlywck=;
- b=ecDp7w5zJNGyMVwiXobPXG9Lt23JmrG09Zow/aRCI3ySYZCfQfmEmuP2G07Nj/uSC1qa
- PDk0bzzj6M0N/tyOggJdMMj+ElF3NbB4krnbw1qtw6OZUtte7wLy4m51v5KeeGwhIU7c
- oq1K6EvroJo80LWRItAFk6yghs4o2vG1rKEmhKje6ydQQlJhyyWVBkAVsLdtyRw1MPzq
- 6nOtCFUMXETk0WpCE834xRE5TqUI6dXmQLQTzmkYl62JxBP8RWEQD0/fVOIqU6+NG6vS
- zcTQ9mGYnlGnHS8SkWNdszLEriZoc6145FcWl0Mgfm/2zviK9gbqhTV66QvlgMZD3hq2 Ag== 
-Received: from g2t2354.austin.hpe.com (g2t2354.austin.hpe.com [15.233.44.27])
-        by mx0b-002e3701.pphosted.com with ESMTP id 3bu4j17jgm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Oct 2021 01:18:50 +0000
-Received: from g2t2360.austin.hpecorp.net (g2t2360.austin.hpecorp.net [16.196.225.135])
-        by g2t2354.austin.hpe.com (Postfix) with ESMTP id 6C73EA0;
-        Fri, 22 Oct 2021 01:18:50 +0000 (UTC)
-Received: from ILEIUN5Z4B.asiapacific.hpqcorp.net (unknown [16.168.144.18])
-        by g2t2360.austin.hpecorp.net (Postfix) with ESMTP id 3671F36;
-        Fri, 22 Oct 2021 01:18:47 +0000 (UTC)
-From:   james.liu@hpe.com
-To:     rafael@kernel.org, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, James Liu <james.liu@hpe.com>
-Subject: [PATCH] ACPI: OSL: Handle the return value of acpi_os_map_generic_address() for a non-register GAS
-Date:   Fri, 22 Oct 2021 09:18:33 +0800
-Message-Id: <20211022011833.24308-1-james.liu@hpe.com>
-X-Mailer: git-send-email 2.25.1
+        id S231443AbhJVBWy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 21 Oct 2021 21:22:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47238 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230288AbhJVBWx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 21 Oct 2021 21:22:53 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A4C286101C;
+        Fri, 22 Oct 2021 01:20:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634865636;
+        bh=g7zKhZ0KPLiGMSOh1+9QyItNNSQJciCAUhhGDw/w/Cw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=IYtrB4qYTLoAuY2+Htoys6JdZdGgpg9MIQOp7AMX3K1rhifnCG2Cn98+65O8GSANq
+         c+OcW5mi8Lj+BA6HjWW173YvSJ66nKXi0tPMcBKzrNnBayfDFynpyYscOFFdRIWV4/
+         GNMXkiasr+d7FC8LUV74UN5oYMsAnY26xzImFyy4rQGGmOeL9ai/wiLmhycD7Cri6p
+         xE2mInhF5fKRa+WeMjseh9okNhNWsgJuxA5Ax3/dryUboH/+qKImXuIlv85G2iHwtV
+         qB8x6dT1GdOzDGJ5Es43hnFzVxZJJo/cJN0VBZYCLU8Gtj+8rrnof9s5FNovRCVKHQ
+         w1lj+uSL/e50Q==
+Date:   Thu, 21 Oct 2021 20:20:34 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org,
+        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>, stable@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH v5 1/2] x86/PCI: Ignore E820 reservations for bridge
+ windows on newer systems
+Message-ID: <20211022012034.GA2703195@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: ocqSL72CzfxS9Sk-4t1JkTLHsfNyUrSI
-X-Proofpoint-ORIG-GUID: ocqSL72CzfxS9Sk-4t1JkTLHsfNyUrSI
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-21_07,2021-10-21_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=822 clxscore=1011
- impostorscore=0 priorityscore=1501 suspectscore=0 mlxscore=0 adultscore=0
- bulkscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
- definitions=main-2110220005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <73aeec22-2ec7-ff21-5c89-c13f2e90a213@redhat.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: James Liu <james.liu@hpe.com>
+On Thu, Oct 21, 2021 at 07:15:57PM +0200, Hans de Goede wrote:
+> On 10/20/21 23:14, Bjorn Helgaas wrote:
+> > On Wed, Oct 20, 2021 at 12:23:26PM +0200, Hans de Goede wrote:
+> >> On 10/19/21 23:52, Bjorn Helgaas wrote:
+> >>> On Thu, Oct 14, 2021 at 08:39:42PM +0200, Hans de Goede wrote:
+> >>>> Some BIOS-es contain a bug where they add addresses which map to system
+> >>>> RAM in the PCI host bridge window returned by the ACPI _CRS method, see
+> >>>> commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
+> >>>> space").
+> >>>>
+> >>>> To work around this bug Linux excludes E820 reserved addresses when
+> >>>> allocating addresses from the PCI host bridge window since 2010.
+> >>>> ...
+> > 
+> >>> I haven't seen anybody else eager to merge this, so I guess I'll stick
+> >>> my neck out here.
+> >>>
+> >>> I applied this to my for-linus branch for v5.15.
+> >>
+> >> Thank you, and sorry about the build-errors which the lkp
+> >> kernel-test-robot found.
+> >>
+> >> I've just send out a patch which fixes these build-errors
+> >> (verified with both .config-s from the lkp reports).
+> >> Feel free to squash this into the original patch (or keep
+> >> them separate, whatever works for you).
+> > 
+> > Thanks, I squashed the fix in.
+> > 
+> > HOWEVER, I think it would be fairly risky to push this into v5.15.
+> > We would be relying on the assumption that current machines have all
+> > fixed the BIOS defect that 4dc2287c1805 addressed, and we have little
+> > evidence for that.
+> 
+> It is a 10 year old BIOS defect, so hopefully anything from 2018
+> or later will not have it.
 
-Modify acpi_os_map_generic_address() to correctly handle a non-register
-GAS (i.e., a pointer to a data structure), whose bit width is expected
-to be 0 according to Table 5.1 in ACPI spec. 6.4.
+We can hope.  AFAIK, Windows allocates space top-down, while Linux
+allocates bottom-up, so I think it's quite possible these defects
+would never be discovered or fixed.  In any event, I don't think we
+have much evidence either way.
 
-For example, the RegisterRegion field in SET_ERROR_TYPE_WITH_ADDRESS is a
-non-register GAS, which points to a data structure whose format is defined
-in Table 18.30 in ACPI Spec. 6.4.
+> > I'm not sure there's significant benefit to having this in v5.15.
+> > Yes, the mainline v5.15 kernel would work on the affected machines,
+> > but I suspect most people with those machines are running distro
+> > kernels, not mainline kernels.
+> 
+> Fedora and Arch do follow mainline pretty closely and a lot of
+> users are affected by this (see the large number of BugLinks in
+> the commit).
+> 
+> I completely understand why you are reluctant to push this out, but
+> your argument about most distros not running mainline kernels also
+> applies to chances of people where this may cause a regression
+> running mainline kernels also being quite small.
 
-This fix can prevent EINJ (Error Injection module) from loading failure
-when a platform firmware can correctly support the format of Injection
-Instruction Entry in an EINJ table.
+True.
 
-Signed-off-by: James Liu <james.liu@hpe.com>
----
- drivers/acpi/osl.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+> > This issue has been around a long time, so it's not like a regression
+> > that we just introduced.  If we fixed these machines and regressed
+> > *other* machines, we'd be worse off than we are now.
+> 
+> If we break one machine model and fix a whole bunch of other machines
+> then in my book that is a win. Ideally we would not break anything,
+> but we can only find out if we actually break anything if we ship
+> the change.
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 45c5c0e45e33..74de9341fadf 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -456,13 +456,23 @@ void __iomem *acpi_os_map_generic_address(struct acpi_generic_address *gas)
- 
- 	if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		return NULL;
-+	/* Handle a non-register GAS (i.e., a pointer to a data structure),
-+	 * whose bit width is expected to be 0 according to ACPI spec. 6.4.
-+	 * For example, The RegisterRegion field in SET_ERROR_TYPE_WITH_ADDRESS
-+	 * points to a data structure whose format is defined in Table 18.30 in
-+	 * ACPI Spec. 6.4
-+	 */
-+	if (!gas->bit_width) {
-+		pr_info("Mapping IOMEM for a non-register GAS.\n");
-+		return  acpi_os_map_iomem(addr, sizeof(unsigned long long));
-+	}
- 
- 	/* Handle possible alignment issues */
- 	memcpy(&addr, &gas->address, sizeof(addr));
--	if (!addr || !gas->bit_width)
-+	if (!addr)
- 		return NULL;
--
--	return acpi_os_map_iomem(addr, gas->bit_width / 8);
-+	else
-+		return acpi_os_map_iomem(addr, gas->bit_width / 8);
- }
- EXPORT_SYMBOL(acpi_os_map_generic_address);
- 
--- 
-2.25.1
+I'm definitely not going to try the "fix many, break one" argument on
+Linus.  Of course we want to fix systems, but IMO it's far better to
+leave a system broken than it is to break one that used to work.
 
+> > In the meantime, here's another possibility for working around this.
+> > What if we discarded remove_e820_regions() completely, but aligned the
+> > problem _CRS windows a little more?  The 4dc2287c1805 case was this:
+> > 
+> >   BIOS-e820: 00000000bfe4dc00 - 00000000c0000000 (reserved)
+> >   pci_root PNP0A03:00: host bridge window [mem 0xbff00000-0xdfffffff]
+> > 
+> > where the _CRS window was of size 0x20100000, i.e., 512M + 1M.  At
+> > least in this particular case, we could avoid the problem by throwing
+> > away that first 1M and aligning the window to a nice 3G boundary.
+> > Maybe it would be worth giving up a small fraction (less than 0.2% in
+> > this case) of questionable windows like this?
+> 
+> The PCI BAR allocation code tries to fall back to the BIOS assigned
+> resource if the allocation fails. That BIOS assigned resource might
+> fall outside of the host bridge window after we round the address.
+> 
+> My initial gut instinct here is that this has a bigger chance
+> of breaking things then my change.
+> 
+> In the beginning of the thread you said that ideally we would
+> completely stop using the E820 reservations for PCI host bridge
+> windows. Because in hindsight messing with the windows on all
+> machines just to work around a clear BIOS bug in some was not a
+> good idea.
+> 
+> This address-rounding/-aligning you now suggest, is again
+> messing with the windows on all machines just to work around
+> a clear BIOS bug in some. At least that is how I see this.
+
+That's true.  I assume Red Hat has a bunch of machines and hopefully
+an archive of dmesg logs from them.  Those logs should contain good
+E820 and _CRS information, so with a little scripting, maybe we could
+get some idea of what's out there.
+
+Bjorn
