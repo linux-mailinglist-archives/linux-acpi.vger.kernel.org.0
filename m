@@ -2,78 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D38EE43772F
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Oct 2021 14:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6C2D43776E
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Oct 2021 14:54:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231808AbhJVMi5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Oct 2021 08:38:57 -0400
-Received: from mail-oi1-f174.google.com ([209.85.167.174]:45579 "EHLO
-        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231537AbhJVMiz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Oct 2021 08:38:55 -0400
-Received: by mail-oi1-f174.google.com with SMTP id z126so4782341oiz.12;
-        Fri, 22 Oct 2021 05:36:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Wq+ijz7hkrgAvLrrYeAZpXxYO+s2Ax5t9fMYOLTN/Nw=;
-        b=kpn5dG8oOfStWUuVEzJmrxruVxqmXzkMKkZpEAohhAWTQKjp/j8Dw8kV8+UTxZ7pKW
-         63djW3SLdu1fCDg/EVFxtK7O9uMMdGTyuWtaK5y1adIVd74slmmezo20RT1bj8t5hOmM
-         3SQcnZcpzjDZs4j6y4zPC4o0Hd1YtX2nRQlDztQE2cngBk15xfVK4yMfWbbv9jpeewpW
-         I3XBWW/7pZmCKSYDYIrH1OatVueYv4AxjRFxaexqLg9ACmPAJnnbHgH+Ec3LyE1U2xW+
-         H92U5GNJmBV1JL12AOsa1GXJvMsAN9wO+EP3uU2H7bc1pEq+n1JncLEnmCyfkjjlYnYd
-         8rzg==
-X-Gm-Message-State: AOAM532Rw5hghmTpzJwstqOBc32huHfCNDkHx2NmUIz/0AlEy3nwmWqI
-        QHXdpmQ+M2mNOVAVI1RlS4XmmsvbtKOjhAQc1B5Be2zh
-X-Google-Smtp-Source: ABdhPJzM+YiKjpNohzo9egAZ1k5JoidFckV6+T/fZjiDsXCm0z0lzC35OwgLubhOaffF9Qg0l/Wy1p4MLcDFyU8c9jI=
-X-Received: by 2002:aca:5c5:: with SMTP id 188mr9339669oif.154.1634906197810;
- Fri, 22 Oct 2021 05:36:37 -0700 (PDT)
+        id S231137AbhJVM4r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Oct 2021 08:56:47 -0400
+Received: from cloudserver094114.home.pl ([79.96.170.134]:54480 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229842AbhJVM4q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Oct 2021 08:56:46 -0400
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
+ id 5dd49476cd0eb2b1; Fri, 22 Oct 2021 14:54:27 +0200
+Received: from kreacher.localnet (unknown [213.134.175.233])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id D821B66A92E;
+        Fri, 22 Oct 2021 14:54:26 +0200 (CEST)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        "open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Nehal Shah <Nehal-bakulchandra.Shah@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v3 1/2] ACPI: Add stubs for wakeup handler functions
+Date:   Fri, 22 Oct 2021 14:54:26 +0200
+Message-ID: <2615562.mvXUDI8C0e@kreacher>
+In-Reply-To: <20211019160401.8296-1-mario.limonciello@amd.com>
+References: <20211019160401.8296-1-mario.limonciello@amd.com>
 MIME-Version: 1.0
-References: <20211022073910.14398-1-songkai01@inspur.com>
-In-Reply-To: <20211022073910.14398-1-songkai01@inspur.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 22 Oct 2021 14:36:26 +0200
-Message-ID: <CAJZ5v0ixPr8WN9hdTtqj1S4XakhH9hJSWJSf9EthdyMEScaOhQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: CPPC: fix return value in register_pcc_channel()
-To:     Kai Song <songkai01@inspur.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.175.233
+X-CLIENT-HOSTNAME: 213.134.175.233
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrudeljedgleelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvjeelgffhiedukedtleekkedvudfggefhgfegjefgueekjeelvefggfdvledutdenucfkphepvddufedrudefgedrudejhedrvdeffeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddujeehrddvfeefpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopehlihhnuhhsrdifrghllhgvihhjsehlihhnrghrohdrohhrghdprhgtphhtthhopeeurghsrghvrghrrghjrdfprghtihhkrghrsegrmhgurdgtohhmpdhrtghpthhtohepufhhhigrmhdqshhunhgurghrrdfuqdhksegrmhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqghhpihho
+ sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheppfgvhhgrlhdqsggrkhhulhgthhgrnhgurhgrrdfuhhgrhhesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 22, 2021 at 9:39 AM Kai Song <songkai01@inspur.com> wrote:
->
-> It uses IS_ERR to judge the return value of
-> pcc_mbox_request_channel().If it is invalid, maybe we should
-> use PTR_ERR to get the correct return value.
+CC: linux-acpi
 
-Either there is a reason to make this change or there isn't.
-
-If there is a reason, then what is it?
-
-> Signed-off-by: Kai Song <songkai01@inspur.com>
+On Tuesday, October 19, 2021 6:04:00 PM CEST Mario Limonciello wrote:
+> commit ddfd9dcf270c ("ACPI: PM: Add acpi_[un]register_wakeup_handler()")
+> added new functions for drivers to use during the s2idle wakeup path, but
+> didn't add stubs for when CONFIG_ACPI wasn't set.
+> 
+> Add those stubs in for other drivers to be able to use.
+> 
+> Fixes: ddfd9dcf270c ("ACPI: PM: Add acpi_[un]register_wakeup_handler()")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->  drivers/acpi/cppc_acpi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index bd482108310c..0bbb5fa27ce7 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -503,7 +503,7 @@ static int register_pcc_channel(int pcc_ss_idx)
->                 if (IS_ERR(pcc_data[pcc_ss_idx]->pcc_channel)) {
->                         pr_err("Failed to find PCC channel for subspace %d\n",
->                                pcc_ss_idx);
-> -                       return -ENODEV;
-> +                       return PTR_ERR(pcc_data[pcc_ss_idx]->pcc_channel);
->                 }
->
->                 /*
-> --
-> 2.27.0
->
+>  include/linux/acpi.h | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 72e4f7fd268c..b31bcc0f4c89 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -976,6 +976,14 @@ static inline int acpi_get_local_address(acpi_handle handle, u32 *addr)
+>  	return -ENODEV;
+>  }
+>  
+> +static inline int acpi_register_wakeup_handler(
+> +	int wake_irq, bool (*wakeup)(void *context), void *context)
+> +{
+> +	return -EINVAL;
+
+-ENOTSUPP ?
+
+> +}
+> +static inline void acpi_unregister_wakeup_handler(
+> +	bool (*wakeup)(void *context), void *context) { }
+> +
+>  #endif	/* !CONFIG_ACPI */
+>  
+>  #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
+> 
+
+
+
+
