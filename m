@@ -2,56 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AC144373E3
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Oct 2021 10:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 878F343744D
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Oct 2021 11:04:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231550AbhJVIuH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Oct 2021 04:50:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33500 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232382AbhJVIuG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Oct 2021 04:50:06 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B9A9C061348;
-        Fri, 22 Oct 2021 01:47:49 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 5so1086232edw.7;
-        Fri, 22 Oct 2021 01:47:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mqw/x/vCZKbqjafLM39rvi0on+kDAQS0f57EQg/oMGM=;
-        b=SqMgUQ5JC2NqnLjncR7he30QQm6LqBBbJ6cIwA1IQqOw+af6qlYnX6Y5DdJWYKM3xX
-         5cFn4E+3J2Wi9yoLyjh1v4O5Kge16fTRATfNGHCaNcmA5ykHxz7XUe0POknDB5rLoiVL
-         q3ZHE0MS6MVkg6Hjkz2FlsFAWx7+PY1UQI5MkSGLqicVnnzD89p9n6iXh6XsoRBOifv5
-         ezX5/s7wp0lqFI0u7TGci7K8IyqMH8npNsJ/EbuMJnmLBXcwgwzeo1xp3uId+E9vSmI/
-         1P2+O6lRgKE+8Jvg18vtii+yNMuPUG+d9+rFrimNiqTMPZPQ45R5pOmRe3YLjSTvTJJM
-         yltw==
+        id S232213AbhJVJGz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Oct 2021 05:06:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32085 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232331AbhJVJGy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 22 Oct 2021 05:06:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1634893477;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=NJGZhkxj38uYQtmuRmaa5a4QRl7cPEpIp72Xf6GYbis=;
+        b=P01r7vf+j+Shx4/WX9StNxXhU5Fklnw7hrahPr3r1HoBc7ONbEJtoPkBY6ekKOzXKilkEg
+        dUPC9vBhido5O6i0iYDC0C6kLyKxO5MWFvmSQ2J4kZcRIp4WBCTyv96+43BETGf6YANS/b
+        MCHkPabM0T9qRYG/tUyDgBXKIbyh1mk=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-235-XzSDOUvKPfmVFVPTxvL34A-1; Fri, 22 Oct 2021 05:04:34 -0400
+X-MC-Unique: XzSDOUvKPfmVFVPTxvL34A-1
+Received: by mail-ed1-f72.google.com with SMTP id v9-20020a50d849000000b003dcb31eabaaso3060908edj.13
+        for <linux-acpi@vger.kernel.org>; Fri, 22 Oct 2021 02:04:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mqw/x/vCZKbqjafLM39rvi0on+kDAQS0f57EQg/oMGM=;
-        b=2+qRgZKfmZONZcrWierQ8rG5myGa8Tag1kBpEP4ORc9J2vR4YpweDK+J/m2BNCXhra
-         2ERp1cwzrCu/KekIg0tE2mjKgf8d6g7E3Qq2dHXfUvIIkzNx5J0XcL2vwj/byBRMLa65
-         PPYTGqAnHMUDRZPHZHy2hmmtAtCz4vmE1h7r+CKfn1p9v76LapIkeap1lOxtOhIUMbbd
-         P2NVlcXZaYqH4IC2ma0g43JEkEwSFMuug/Jc04r2F3v0roofC+OJx0NjCmW3VqQp0TRT
-         Bwy7qJ/tMTg0Sy9zUSTeULnNIP3amgkTlCTzPUzF6rYq+baIFXByYrqLy6Nq1CB9hDqv
-         /+aQ==
-X-Gm-Message-State: AOAM531T/asMGcQR0RIWH9NIqs0brK8BYYgfE3nwg4F3pxWsUJF+m7Ml
-        YowkFP6IxNKkVaqWdPBCVPi0XQWzncpvBKMe1p4=
-X-Google-Smtp-Source: ABdhPJyGk3siQwyG3NqnEjN0QkNpukSjalEA+eN76UWN1FifKQqpLxgKBn6CkVIHGlTpv8P2bWenUiHQ4c67AdGnQtQ=
-X-Received: by 2002:a17:906:5a47:: with SMTP id my7mr13255982ejc.128.1634892467672;
- Fri, 22 Oct 2021 01:47:47 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=NJGZhkxj38uYQtmuRmaa5a4QRl7cPEpIp72Xf6GYbis=;
+        b=0/Rm3u/rVJ4Oa64bf4HYcV8ZzD7CUQBWujrmMQuJh/vXIu7HmgmpI4V+qH/vPRWZAp
+         u2ktyQK42Bnp4Ku2k75eqcoZqmUawXYH4hnTTH+90MnRHgiXLCHsmxg8CgOL2EdZ5LiS
+         aIM+FDGxl7dKB4SrX572uLO7GllCF6Ar1E0liettTKh3RvWVdeec1BKOQOWPgJINo8ma
+         YWr/jIaXMV241jYV0bVIkuf/WZeT9nMVEhDawv3zl6Z24mgtNLNAQRU/+cOb12pqXgix
+         5im4Ugnq4FVciKBxyQolOKYwi/jd3qsOmyX9+SFtkKFM9x0JX4OkRLLyyqzPyNi0UZ5s
+         Mp6Q==
+X-Gm-Message-State: AOAM531WNyYaMxo+IIHz3gk4k1R8ZuoMy0c1zvPs7mFA5nidtkMHTND7
+        BqgiNFZU3Erb++7krTwTZNLb2UWb6FQ0Sp21NNc0n+rnaJQgvv/gmEfBBgGspDjA6MxRANo5QHj
+        hsbMVqFa9aCvava5FACm9vw==
+X-Received: by 2002:a17:907:6d9f:: with SMTP id sb31mr13655307ejc.109.1634893473606;
+        Fri, 22 Oct 2021 02:04:33 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxgaLxV/q19thSWzWkPVL40Td4avhVP3W53ZxVNiGvYCe3dCcT5gMVAl5iE2ggZ3DTJDYw6TQ==
+X-Received: by 2002:a17:907:6d9f:: with SMTP id sb31mr13655281ejc.109.1634893473415;
+        Fri, 22 Oct 2021 02:04:33 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id j1sm4078740edk.53.2021.10.22.02.04.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Oct 2021 02:04:32 -0700 (PDT)
+Message-ID: <fd11b3fb-1f14-cd9e-c6f7-cbea0aa6548b@redhat.com>
+Date:   Fri, 22 Oct 2021 11:04:31 +0200
 MIME-Version: 1.0
-References: <20211010185707.195883-1-hdegoede@redhat.com> <20211010185707.195883-6-hdegoede@redhat.com>
- <163415237957.936110.1269283416777498553@swboyd.mtv.corp.google.com> <4e5884d5-bcde-dac9-34fb-e29ed32f73c9@redhat.com>
-In-Reply-To: <4e5884d5-bcde-dac9-34fb-e29ed32f73c9@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 22 Oct 2021 11:46:51 +0300
-Message-ID: <CAHp75Ve_xqgnaCqc3oyDMWDE9kVm8HNOEcdMuDkOD9epwgfWnA@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
 Subject: Re: [PATCH v3 05/11] clk: Introduce clk-tps68470 driver
-To:     Hans de Goede <hdegoede@redhat.com>
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Stephen Boyd <sboyd@kernel.org>,
         Andy Shevchenko <andy@infradead.org>,
         Daniel Scally <djrscally@gmail.com>,
@@ -72,45 +80,42 @@ Cc:     Stephen Boyd <sboyd@kernel.org>,
         Kate Hsuan <hpa@redhat.com>,
         Linux Media Mailing List <linux-media@vger.kernel.org>,
         linux-clk <linux-clk@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20211010185707.195883-1-hdegoede@redhat.com>
+ <20211010185707.195883-6-hdegoede@redhat.com>
+ <163415237957.936110.1269283416777498553@swboyd.mtv.corp.google.com>
+ <4e5884d5-bcde-dac9-34fb-e29ed32f73c9@redhat.com>
+ <CAHp75Ve_xqgnaCqc3oyDMWDE9kVm8HNOEcdMuDkOD9epwgfWnA@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAHp75Ve_xqgnaCqc3oyDMWDE9kVm8HNOEcdMuDkOD9epwgfWnA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 21, 2021 at 8:31 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> On 10/13/21 21:12, Stephen Boyd wrote:
+Hi,
 
-...
+On 10/22/21 10:46, Andy Shevchenko wrote:
+> On Thu, Oct 21, 2021 at 8:31 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>> On 10/13/21 21:12, Stephen Boyd wrote:
+> 
+> ...
+> 
+>>>> +       regmap_write(clkdata->regmap, TPS68470_REG_CLKCFG1,
+> 
+>>>> +                          (TPS68470_PLL_OUTPUT_ENABLE <<
+>>>> +                          TPS68470_OUTPUT_A_SHIFT) |
+> 
+> One line, please?
+> 
+>>>> +                          (TPS68470_PLL_OUTPUT_ENABLE <<
+>>>> +                          TPS68470_OUTPUT_B_SHIFT));
+> 
+> Ditto.
 
-> >> +       regmap_write(clkdata->regmap, TPS68470_REG_CLKCFG1,
+Ack, both fixed for v4.
 
-> >> +                          (TPS68470_PLL_OUTPUT_ENABLE <<
-> >> +                          TPS68470_OUTPUT_A_SHIFT) |
+Regards,
 
-One line, please?
+Hans
 
-> >> +                          (TPS68470_PLL_OUTPUT_ENABLE <<
-> >> +                          TPS68470_OUTPUT_B_SHIFT));
-
-Ditto.
-
-...
-
-> > Also, why isn't this function actually writing
-> > hardware?
->
-> set_rate can only be called when the clock is disabled, all the
-> necessary values are programmed based on the clk_cfg_idx in
-> tps68470_clk_prepare().
->
-> Note there is no enable() since enable() may not sleep and
-> this device is interfaced over I2C, so the clock is already
-> enabled from the prepare() op.
-
-This reminds me other drivers that do commit the changes to the
-hardware on bus lock, but I'm not sure if anything like that is
-applicable here.
-
--- 
-With Best Regards,
-Andy Shevchenko
