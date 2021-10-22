@@ -2,117 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B02437CA1
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Oct 2021 20:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F6FE437D0C
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Oct 2021 21:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233755AbhJVSie (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Oct 2021 14:38:34 -0400
-Received: from foss.arm.com ([217.140.110.172]:57708 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233713AbhJVSie (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Oct 2021 14:38:34 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E48F1063;
-        Fri, 22 Oct 2021 11:36:16 -0700 (PDT)
-Received: from bogus (unknown [10.57.25.56])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0ADBA3F73D;
-        Fri, 22 Oct 2021 11:36:14 -0700 (PDT)
-Date:   Fri, 22 Oct 2021 19:36:12 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     ACPICA <devel@acpica.org>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Erik Kaneda <erik.kaneda@intel.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: [BUG REPORT][ACPICA] PCC Opregion: Wrong interpretation of channel
- index as table subtype
-Message-ID: <20211022183612.jxhou2pzge6xkv2u@bogus>
+        id S233637AbhJVTDf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 22 Oct 2021 15:03:35 -0400
+Received: from mail-oi1-f172.google.com ([209.85.167.172]:33523 "EHLO
+        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233568AbhJVTDd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 22 Oct 2021 15:03:33 -0400
+Received: by mail-oi1-f172.google.com with SMTP id q129so6283587oib.0;
+        Fri, 22 Oct 2021 12:01:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=sVPsYavfjqxFWrItFViHXcG8XKwEKF8PjeSz3vyL0+o=;
+        b=Z+HVPS3Ed/3hkqIlogw66ybqYc797coIGXi5FhBpX2uwZysuLafjKzZHxHnXSbPWEu
+         D6yo8Mz/YNhAZCWU0n/ZKyznq/n/QXEUnjqTp3Gz1FjU/n/Sf+H7/ztcIvvMahFxMJk4
+         VSd2Rw+TXnMx9a3qu4q1fOyCSVlRhGLSN1OKu8luC54skuNdez/MK4o7yqP5jfcrhc3K
+         LWovbry9Klqtd3YxheGbBNYEERFmqgK770uNAGqq133kYI8h/3oed2dF3sgAmT9MWKhQ
+         JgKP3degT+RBVSDGPUKYDZ3AbYdm1Vu48Pc5ER/+9Gwld+3gDzyYZPcySZ0/VNKcdaGg
+         wC4Q==
+X-Gm-Message-State: AOAM533iAAPFNAvdN42v4+/H4klsT3hW6oLnteL1udl8H2tseY2/a49W
+        aM7sj3YJCp9d7oDCmfCL4pwuLP+vxDvoIPfUL65LeGuA8B0=
+X-Google-Smtp-Source: ABdhPJza4UDhYY1YwYmHq8EtydwJDr1+Sbi/5eSgIKWebxzWVrw4NOs2yyvhyLLfZeDBJeZEuaSTn1GONNhoLsRwbGI=
+X-Received: by 2002:a05:6808:e87:: with SMTP id k7mr1117483oil.166.1634929274954;
+ Fri, 22 Oct 2021 12:01:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 22 Oct 2021 21:01:04 +0200
+Message-ID: <CAJZ5v0hTtyu981j91vxH_u3bvHWWBho4YSAhd+os9Zn=sbwe2Q@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v5.15-rc7
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Linus,
 
-I am trying to add PCC Opregion support in the kernel and am hitting a
-kernel crash when I add PCC Opregion in the ACPI ASL. Below is the
-snippet of the crash:
--->8
+Please pull from the tag
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
- Workqueue: pm pm_runtime_work
- pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __memcpy+0x54/0x260
- lr : acpi_ex_write_data_to_field+0xb8/0x194
- Call trace:
-  __memcpy+0x54/0x260
-  acpi_ex_store_object_to_node+0xa4/0x1d4
-  acpi_ex_store+0x44/0x164
-  acpi_ex_opcode_1A_1T_1R+0x25c/0x508
-  acpi_ds_exec_end_op+0x1b4/0x44c
-  acpi_ps_parse_loop+0x3a8/0x614
-  acpi_ps_parse_aml+0x90/0x2f4
-  acpi_ps_execute_method+0x11c/0x19c
-  acpi_ns_evaluate+0x1ec/0x2b0
-  acpi_evaluate_object+0x170/0x2b0
-  acpi_device_set_power+0x118/0x310
-  acpi_dev_suspend+0xd4/0x180
-  acpi_subsys_runtime_suspend+0x28/0x38
-  __rpm_callback+0x74/0x328
-  rpm_suspend+0x2d8/0x624
-  pm_runtime_work+0xa4/0xb8
-  process_one_work+0x194/0x25c
-  worker_thread+0x260/0x49c
-  kthread+0x14c/0x30c
-  ret_from_fork+0x10/0x20
- Code: f9000006 f81f80a7 d65f03c0 361000c2 (b9400026)
- ---[ end trace 24d8a032fa77b68a ]---
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.15-rc7
 
-On debugging, I figured out that PCC channel index passed via region.address
-in acpi_ex_store_object_to_node is interpreted as the channel subtype.
+with top-most commit 7a7489005a80af97ba289dc0579fccd50af4fe8d
 
-To confirm, I just hacked assuming we don't need to support type 1/2 PCC
-with the change as below:
+ Merge branch 'acpi-tools'
 
--->8
+on top of commit 519d81956ee277b4419c723adfb154603c2565ba
 
-diff --git i/drivers/acpi/acpica/exfield.c w/drivers/acpi/acpica/exfield.c
-index 06f3c9df1e22..8618500f23b3 100644
---- i/drivers/acpi/acpica/exfield.c
-+++ w/drivers/acpi/acpica/exfield.c
-@@ -330,12 +330,7 @@ acpi_ex_write_data_to_field(union acpi_operand_object *source_desc,
-                       obj_desc->field.base_byte_offset,
-                       source_desc->buffer.pointer, data_length);
+ Linux 5.15-rc6
 
--               if ((obj_desc->field.region_obj->region.address ==
--                    PCC_MASTER_SUBSPACE
--                    && MASTER_SUBSPACE_COMMAND(obj_desc->field.
--                                               base_byte_offset))
--                   || GENERIC_SUBSPACE_COMMAND(obj_desc->field.
--                                               base_byte_offset)) {
-+               if (MASTER_SUBSPACE_COMMAND(obj_desc->field.base_byte_offset)) {
+to receive ACPI fixes for 5.15-rc7.
 
-                        /* Perform the write */
+These fix two regressions, one related to ACPI power resources
+management and one that broke ACPI tools compilation.
+
+Specifics:
+
+ - Stop turning off unused ACPI power resources in an unknown state
+   to address a regression introduced during the 5.14 cycle (Rafael
+   Wysocki).
+
+ - Fix an ACPI tools build issue introduced recently when the minimal
+   stdarg.h was added (Miguel Bernal Marin).
+
+Thanks!
 
 
-With the above change, the crash disappears and correctly complains about
-missing PCC Opregion handler(I have more questions on setting up one, will
-follow that up separately).
+---------------
 
--->8
+Miguel Bernal Marin (1):
+      ACPI: tools: fix compilation error
 
-ACPI Error: No handler for Region [PFRM] ((____ptrval____)) [PCC] (20210730/evregion-130)
-ACPI Error: Region PCC (ID=10) has no handler (20210730/exfldio-261)
-ACPI Error: Aborting method \_SB.ETH0._PS3 due to previous error (AE_NOT_EXIST) (20210730/psparse-531)
+Rafael J. Wysocki (1):
+      ACPI: PM: Do not turn off power resources in unknown state
 
-Not sure if my interpretation of the spec is incorrect or indeed this is
-a bug. IIUC only _REG has both PCC channel index/address + the subtable type
-embedded in the argument. The actual declaration of PCC Opregion just needs
-the channel index as the address.
+---------------
 
---
-Regards,
-Sudeep
+ drivers/acpi/power.c          | 7 +------
+ include/acpi/platform/acgcc.h | 9 +++++++--
+ 2 files changed, 8 insertions(+), 8 deletions(-)
