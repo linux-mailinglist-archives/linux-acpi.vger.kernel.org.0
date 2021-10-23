@@ -2,162 +2,306 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 735504380C4
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Oct 2021 01:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08A924383BE
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Oct 2021 15:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231293AbhJVX5K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 22 Oct 2021 19:57:10 -0400
-Received: from mga09.intel.com ([134.134.136.24]:12632 "EHLO mga09.intel.com"
+        id S230048AbhJWNSV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 23 Oct 2021 09:18:21 -0400
+Received: from mga02.intel.com ([134.134.136.20]:24063 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231820AbhJVX5J (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 22 Oct 2021 19:57:09 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10145"; a="229276938"
-X-IronPort-AV: E=Sophos;i="5.87,173,1631602800"; 
-   d="scan'208";a="229276938"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2021 16:54:51 -0700
-X-IronPort-AV: E=Sophos;i="5.87,173,1631602800"; 
-   d="scan'208";a="576908780"
-Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.146])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2021 16:54:50 -0700
-Date:   Fri, 22 Oct 2021 16:54:49 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Shuai Xue <xueshuai@linux.alibaba.com>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        bp@alien8.de, james.morse@arm.com, lenb@kernel.org,
-        rjw@rjwysocki.net, zhangliguang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v2] ACPI, APEI, EINJ: Relax platform response timeout to
- 1 second.
-Message-ID: <YXNPSQT9LnxiyVFC@agluck-desk2.amr.corp.intel.com>
-References: <20211015033817.16719-1-xueshuai@linux.alibaba.com>
- <20211022134424.67279-1-xueshuai@linux.alibaba.com>
+        id S229699AbhJWNSU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 23 Oct 2021 09:18:20 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10145"; a="216615872"
+X-IronPort-AV: E=Sophos;i="5.87,175,1631602800"; 
+   d="scan'208";a="216615872"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2021 06:16:01 -0700
+X-IronPort-AV: E=Sophos;i="5.87,175,1631602800"; 
+   d="scan'208";a="485037247"
+Received: from yli135-mobl.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.249.169.195])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2021 06:15:58 -0700
+Date:   Sat, 23 Oct 2021 21:15:55 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     linux-acpi@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Aubrey Li <aubrey.li@intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/4] drivers/acpi: Introduce Platform Firmware Runtime
+ Update device driver
+Message-ID: <20211023131555.GA28269@chenyu5-mobl1>
+References: <cover.1634899519.git.yu.c.chen@intel.com>
+ <545536e714c32c905fd3614bf4fec65d11fb6541.1634899519.git.yu.c.chen@intel.com>
+ <YXMZoz5vfwsawN49@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211022134424.67279-1-xueshuai@linux.alibaba.com>
+In-Reply-To: <YXMZoz5vfwsawN49@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 22, 2021 at 09:44:24PM +0800, Shuai Xue wrote:
-> When injecting an error into the platform, the OSPM executes an
-> EXECUTE_OPERATION action to instruct the platform to begin the injection
-> operation. And then, the OSPM busy waits for a while by continually
-> executing CHECK_BUSY_STATUS action until the platform indicates that the
-> operation is complete. More specifically, the platform is limited to
-> respond within 1 millisecond right now. This is too strict for some
-> platforms.
+Hi Andy,
+On Fri, Oct 22, 2021 at 11:05:55PM +0300, Andy Shevchenko wrote:
+> On Sat, Oct 23, 2021 at 01:09:51AM +0800, Chen Yu wrote:
+> > Introduce the pfru_update driver which can be used for Platform Firmware
+> > Runtime code injection and driver update[1]. The user is expected to
+> > provide the update firmware in the form of capsule file, and pass it to
+> > the driver via ioctl. Then the driver would hand this capsule file to the
+> > Platform Firmware Runtime Update via the ACPI device _DSM method. At last
+> > the low level Management Mode would do the firmware update.
+> > 
+> > The corresponding userspace tool and man page will be introduced at
+> > tools/power/acpi/pfru.
+> > 
+> > [1] https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf
 > 
-> For example, in Arm platform, when injecting a Processor Correctable error,
-> the OSPM will warn:
->     Firmware does not respond in time.
+> Instead use Link: tag ?
+>
+Yes, will fix it. 
+> > +enum cap_index {
+> > +	CAP_STATUS_IDX,
+> > +	CAP_UPDATE_IDX,
+> > +	CAP_CODE_TYPE_IDX,
+> > +	CAP_FW_VER_IDX,
+> > +	CAP_CODE_RT_VER_IDX,
+> > +	CAP_DRV_TYPE_IDX,
+> > +	CAP_DRV_RT_VER_IDX,
+> > +	CAP_DRV_SVN_IDX,
+> > +	CAP_PLAT_ID_IDX,
+> > +	CAP_OEM_ID_IDX,
+> > +	CAP_OEM_INFO_IDX,
 > 
-> And a message is printed on the console:
->     echo: write error: Input/output error
+> > +	CAP_NR_IDX,
 > 
-> We observe that the waiting time for DDR error injection is about 10 ms
-> and that for PCIe error injection is about 500 ms in Arm platform.
+> Is it terminator entry? Drop comma then. Same for all other similar cases.
 > 
-> In this patch, we relax the response timeout to 1 second and allow user to
-> pass the time out value as a argument.
+Ok, will remove the comma.
+> > +};
 > 
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> ---
-> Changelog v1 -> v2:
-> - Implemented the timeout in msleep instead of udelay.
-> - Link to the v1 patch: https://lkml.org/lkml/2021/10/14/1402
-> ---
->  drivers/acpi/apei/einj.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
+> ...
 > 
-> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-> index 133156759551..e411eb30e0ee 100644
-> --- a/drivers/acpi/apei/einj.c
-> +++ b/drivers/acpi/apei/einj.c
-> @@ -28,9 +28,9 @@
->  #undef pr_fmt
->  #define pr_fmt(fmt) "EINJ: " fmt
->  
-> -#define SPIN_UNIT		100			/* 100ns */
-> -/* Firmware should respond within 1 milliseconds */
-> -#define FIRMWARE_TIMEOUT	(1 * NSEC_PER_MSEC)
-> +#define SLEEP_UNIT		1			/* 1ms */
-
-I know I pointed you to msleep() ... sorry, I was wrong. For a
-1 ms sleep the recommendation is to use usleep_range()
-
-See this write-up in Documentation/timers/timers-howto.rst:
-
-                - Why not msleep for (1ms - 20ms)?
-                        Explained originally here:
-                                https://lore.kernel.org/r/15327.1186166232@lwn.net
-
-                        msleep(1~20) may not do what the caller intends, and
-                        will often sleep longer (~20 ms actual sleep for any
-                        value given in the 1~20ms range). In many cases this
-                        is not the desired behavior.
-
-To answer the question posed in that document on "What is a good range?"
-
-I don't think injection cares too much about precision here. Maybe go
-with
-
-	usleep_range(1000, 5000);
-[with #defines for SLEEP_UNIT_MIN, SLEEP_UNIT_MAX instead of those
-numbers]
-
-> +/* Firmware should respond within 1 seconds */
-> +#define FIRMWARE_TIMEOUT	(1 * MSEC_PER_SEC)
->  #define ACPI5_VENDOR_BIT	BIT(31)
->  #define MEM_ERROR_MASK		(ACPI_EINJ_MEMORY_CORRECTABLE | \
->  				ACPI_EINJ_MEMORY_UNCORRECTABLE | \
-> @@ -40,6 +40,8 @@
->   * ACPI version 5 provides a SET_ERROR_TYPE_WITH_ADDRESS action.
->   */
->  static int acpi5;
-> +static int timeout_default = FIRMWARE_TIMEOUT;
-> +module_param(timeout_default, int, 0644);
-
-You've set the default to 1 second. Who would use this parameter?
-Do you anticipate systems that take even longer to inject?
-A user might set a shorter limit ... but I don't see why they
-would want to.
-
->  
->  struct set_error_type_with_address {
->  	u32	type;
-> @@ -171,12 +173,12 @@ static int einj_get_available_error_type(u32 *type)
->  
->  static int einj_timedout(u64 *t)
->  {
-> -	if ((s64)*t < SPIN_UNIT) {
-> +	if ((s64)*t < SLEEP_UNIT) {
->  		pr_warn(FW_WARN "Firmware does not respond in time\n");
->  		return 1;
->  	}
-> -	*t -= SPIN_UNIT;
-> -	ndelay(SPIN_UNIT);
-> +	*t -= SLEEP_UNIT;
-> +	msleep(SLEEP_UNIT);
->  	touch_nmi_watchdog();
-
-Since we are sleeping instead of spinning, maybe we don't need to
-touch the nmi watchdog?
-
->  	return 0;
->  }
-> @@ -403,7 +405,7 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
->  			       u64 param3, u64 param4)
->  {
->  	struct apei_exec_context ctx;
-> -	u64 val, trigger_paddr, timeout = FIRMWARE_TIMEOUT;
-> +	u64 val, trigger_paddr, timeout = timeout_default;
->  	int rc;
->  
->  	einj_exec_ctx_init(&ctx);
-> -- 
-> 2.20.1.12.g72788fdb
+> > +static int get_image_type(efi_manage_capsule_image_header_t *img_hdr,
+> > +			  struct pfru_device *pfru_dev)
+> > +{
+> > +	guid_t *image_type_id = &img_hdr->image_type_id;
+> > +
+> > +	/* check whether this is a code injection or driver update */
+> > +	if (guid_equal(image_type_id, &pfru_dev->code_uuid))
+> > +		return CODE_INJECT_TYPE;
 > 
+> > +	else if (guid_equal(image_type_id, &pfru_dev->drv_uuid))
+> > +		return DRIVER_UPDATE_TYPE;
+> > +	else
+> > +		return -EINVAL;
+> 
+> In both cases redundant 'else'.
+> 
+Ok.
+> > +}
+> 
+> ...
+> 
+> > +static int adjust_efi_size(efi_manage_capsule_image_header_t *img_hdr,
+> > +			   int size)
+> > +{
+> > +	/*
+> > +	 * The (u64 hw_ins) was introduced in UEFI spec version 2,
+> > +	 * and (u64 capsule_support) was introduced in version 3.
+> > +	 * The size needs to be adjusted accordingly. That is to
+> > +	 * say, version 1 should subtract the size of hw_ins+capsule_support,
+> > +	 * and version 2 should sbstract the size of capsule_support.
+> > +	 */
+> > +	size += sizeof(efi_manage_capsule_image_header_t);
+> > +	switch (img_hdr->ver) {
+> > +	case 1:
+> > +		size -= 2 * sizeof(u64);
+> > +		break;
+> > +	case 2:
+> > +		size -= sizeof(u64);
+> > +		break;
+> > +	default:
+> > +		/* only support version 1 and 2 */
+> > +		return -EINVAL;
+> > +	}
+> 
+> > +	return size;
+> 
+> Perhaps directly return this from the cases?
+> 
+Ok, will do.
+> > +}
+> 
+> ...
+> 
+> > +static long pfru_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+> > +{
+> > +	struct pfru_update_cap_info cap;
+> > +	struct pfru_device *pfru_dev;
+> > +	void __user *p;
+> 
+> > +	int ret = 0, rev;
+> 
+> return 0;  (see below)?
+> 
+> > +	pfru_dev = to_pfru_dev(file);
+> > +	p = (void __user *)arg;
+> > +
+> > +	switch (cmd) {
+> > +	case PFRU_IOC_QUERY_CAP:
+> > +		ret = query_capability(&cap, pfru_dev);
+> > +		if (ret)
+> > +			return ret;
+> > +
+> > +		if (copy_to_user(p, &cap, sizeof(cap)))
+> > +			return -EFAULT;
+> > +
+> > +		break;
+> > +	case PFRU_IOC_SET_REV:
+> > +		if (copy_from_user(&rev, p, sizeof(unsigned int)))
+> > +			return -EFAULT;
+> > +
+> > +		if (!pfru_valid_revid(rev))
+> > +			return -EINVAL;
+> > +
+> > +		pfru_dev->rev_id = rev;
+> > +		break;
+> > +	case PFRU_IOC_STAGE:
+> > +		ret = start_acpi_update(START_STAGE, pfru_dev);
+> > +		break;
+> > +	case PFRU_IOC_ACTIVATE:
+> > +		ret = start_acpi_update(START_ACTIVATE, pfru_dev);
+> > +		break;
+> > +	case PFRU_IOC_STAGE_ACTIVATE:
+> > +		ret = start_acpi_update(START_STAGE_ACTIVATE, pfru_dev);
+> > +		break;
+> > +	default:
+> > +		ret = -ENOTTY;
+> > +		break;
+> > +	}
+> 
+> > +	return ret;
+> 
+> You may return 0 here and directly return from the cases above.
+> 
+I think we can remove the 'return ret' completely, by returning from the cases above.
+> > +}
+> 
+> ...
+> 
+> > +	/* map the communication buffer */
+> 
+> Comment style inconsistency. Compare to...
+> 
+> > +	/* Check if the capsule header has a valid version number. */
+> 
+> ...this one. However, here, since it's one line, no period is needed.
+> 
+>
+Ok, will fix it. 
+> ...
+> 
+> > +out:
+> > +	devm_kfree(&pdev->dev, pfru_dev);
+> 
+> What is this? WHy?!
+> 
+The devm resource is expected to be released during driver de-attach. 
+devm_kfree() is used to free the resource explicitly at the earliest
+time. But it is ok to remove the devm_kfree() and leverage the devm
+to deal with it.
+> > +}
+> 
+> ...
+> 
+> 
+> > +static int __init pfru_init(void)
+> > +{
+> > +	return platform_driver_register(&acpi_pfru_driver);
+> > +}
+> > +
+> > +static void __exit pfru_exit(void)
+> > +{
+> > +	platform_driver_unregister(&acpi_pfru_driver);
+> > +}
+> > +
+> > +module_init(pfru_init);
+> > +module_exit(pfru_exit);
+> 
+> NIH module_platform_driver().
+>
+There would be more than one platform driver to be loaded in this
+file, so module_platform_driver() might not work here. 
+> ...
+> 
+> > +#include <linux/uuid.h>
+> 
+> This is wrong. Please, use raw buffers.
+> 
+Ok, will remove this.
+> ...
+> 
+> Missed types.h.
+> 
+Ok, will add it.
+> ...
+> 
+> > +struct pfru_payload_hdr {
+> > +	__u32	sig;
+> > +	__u32	hdr_version;
+> > +	__u32	hdr_size;
+> > +	__u32	hw_ver;
+> > +	__u32	rt_ver;
+> 
+> > +	uuid_t	platform_id;
+> 
+> No way. Use __u8[16].
+> uuid_t is internal type for kernel.
+> 
+Ok, will change it.
+> > +};
+> 
+> ...
+> 
+> > +struct pfru_update_cap_info {
+> > +	enum pfru_dsm_status status;
+> > +	__u32 update_cap;
+> > +
+> > +	uuid_t code_type;
+> 
+> Ditto.
+> 
+> > +	__u32 fw_version;
+> > +	__u32 code_rt_version;
+> 
+> > +	uuid_t drv_type;
+> 
+> Ditto.
+> 
+> > +	__u32 drv_rt_version;
+> > +	__u32 drv_svn;
+> 
+> > +	uuid_t platform_id;
+> > +	uuid_t oem_id;
+> 
+> Ditto.
+> 
+> > +	char oem_info[];
+> > +};
+> 
+> ...
+> 
+> > +struct pfru_updated_result {
+> 
+> > +	enum pfru_dsm_status status;
+> > +	enum pfru_dsm_status ext_status;
+> 
+> What?! Are you sure enum is the same size on all possible architectures?
+> 
+Ok, changed then to __u32 in next version.
 
--Tony
+thanks,
+Chenyu
