@@ -2,200 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31993438936
-	for <lists+linux-acpi@lfdr.de>; Sun, 24 Oct 2021 15:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D5D8438AA8
+	for <lists+linux-acpi@lfdr.de>; Sun, 24 Oct 2021 18:36:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230301AbhJXNnA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 24 Oct 2021 09:43:00 -0400
-Received: from mail-4316.protonmail.ch ([185.70.43.16]:30783 "EHLO
-        mail-4316.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230021AbhJXNnA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 24 Oct 2021 09:43:00 -0400
-Date:   Sun, 24 Oct 2021 13:40:37 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1635082838;
-        bh=qU5MGAqRjLFdZ0m8iDiY8gSYAzvuW9aHRuHMQqBZbGU=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=rh+iIuZ4kVpFeKPFr6zV4cTizoSX+Nmj0n2gmYT+zXSTlpNsX5mVHiZo2r0B1DH83
-         BNCYV7m6eWueMaaX+nDMVhI/M9RuTLTCZQhH+XPpuboKi0T90x0eCWdpxB081iXDtd
-         lTzednSQ4+lBJbop4frlXYo7uaxFRI7Bhf4ucABs=
-To:     Mario Limonciello <mario.limonciello@amd.com>
-From:   =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        linux-acpi@vger.kernel.org, markpearson@lenovo.com
-Reply-To: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Subject: Re: [PATCH] ACPI: platform_profile: Add support for notification chains
-Message-ID: <wH_kPWXl4frtlsEIPSKi7RJwuVoW30nN7WOJhjdV2J91_My1No4OFsCQvoyoJ9hz95IhQ4g7hsTWVL-nn4lNA81ccb8WTqn-2BPPjiEvHzU=@protonmail.com>
-In-Reply-To: <20211022181608.3121-1-mario.limonciello@amd.com>
-References: <20211022181608.3121-1-mario.limonciello@amd.com>
+        id S229989AbhJXQih (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 24 Oct 2021 12:38:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58030 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229830AbhJXQif (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 24 Oct 2021 12:38:35 -0400
+X-Greylist: delayed 4052 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 24 Oct 2021 09:36:14 PDT
+Received: from mailout3.inleed.net (mailout3.inleed.net [IPv6:2a0b:dc80:cafe:103::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36213C061745
+        for <linux-acpi@vger.kernel.org>; Sun, 24 Oct 2021 09:36:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=andraxin.se
+        ; s=x; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=xxBJVgiO7wCXrXBmL18qaePlip97nn5PadFSgEFDo5k=; b=hQZ8m8EujjkO08F9fGxawXM/Qa
+        RYCQ5X1ypif5WUFG0sQKH7Wgzl8HshFddU1ZapcdjKWhUhOAHb2kmRs+xbd0I5cGf5BVcLXxG1Qad
+        3/M03c9SmeXCJcp1FbQkFDGMvDMs3EM5sqcbkqzbzAxjUFj3ZqVc/9+MOfa+Ma4DWI4n/dgNoHerq
+        4Ga5+3rfbcAhM81pRO5UysvAE/X9tPoeLej8etobMJZfvOIaDZ2497/a4JSbyCdd9d21jyqZ7rfrL
+        V53FHKyKTPKi5jit0HrOlYaiH/tinouS8HOTI2k3Jnez9Zp8iQB+97rzIpKyiciCbaK+P0MJBRbYC
+        JKxMndFA==;
+Received: from c-2b3c524e.07-62-73746f67.bbcust.telenor.se ([78.82.60.43] helo=localhost)
+        by ns3.inleed.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <linux-acpi@andraxin.se>)
+        id 1mefQT-00AVAj-HL; Sun, 24 Oct 2021 17:28:45 +0200
+Date:   Sun, 24 Oct 2021 17:28:50 +0200
+From:   linux-acpi@andraxin.se
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] ACPI: PM: Do not turn off power resources in
+ unknown state
+Message-ID: <YXV7srrMqWK4XagI@eleven>
+References: <3625109.kQq0lBPeGtkreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
-        mailout.protonmail.ch
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3625109.kQq0lBPeGtkreacher>
+X-Authenticated-Id: andras@andraxin.se
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi
+Hi,
 
+My NVME drive was affected by the "turn off in unknown state" feature,
+preventing my system from booting on 5.13 and above, while everything
+worked fine on 5.12 and below.  BTW, I'm really grateful that 5.13 used
+`dev_info` intstead of `dev_dbg`, otherwise I wouldn't have had a chance
+to track this down from comparing plain `dmesg` output alone.
 
-Am I right in thinking that this adds functionality that has no users in th=
-e
-kernel at the moment?
+I cooked up a different patch (before checking here), which takes the
+comment removed by the patch in
+    https://marc.info/?l=linux-acpi&m=163431826227166
+that _some system_ may truly need this at face value, and introduces
+a command-line parameter that allows the current behavior by setting
+'acpi=unknown_off', but allows my system to boot when that's omitted.
 
-
-2021. okt=C3=B3ber 22., p=C3=A9ntek 20:16 keltez=C3=A9ssel, Mario Limonciel=
-lo =C3=ADrta:
-
-> Allow other drivers to react to determine current active profile
-> and react to platform profile changes.
->
-> Drivers wishing to utilize this should register for notification
-> at module load and unregister when unloading.
->
-> Notifications will come in the form of a notifier call.
->
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/acpi/platform_profile.c  | 44 +++++++++++++++++++++++++++-----
->  include/linux/platform_profile.h | 11 ++++++++
->  2 files changed, 49 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_prof=
-ile.c
-> index dd2fbf38e414..964e0c9bf70d 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -21,6 +21,25 @@ static const char * const profile_names[] =3D {
->  =09[PLATFORM_PROFILE_PERFORMANCE] =3D "performance",
->  };
->  static_assert(ARRAY_SIZE(profile_names) =3D=3D PLATFORM_PROFILE_LAST);
-> +static BLOCKING_NOTIFIER_HEAD(platform_profile_chain_head);
-> +
-> +int platform_profile_register_notifier(struct notifier_block *nb)
-> +{
-> +=09return blocking_notifier_chain_register(&platform_profile_chain_head,=
- nb);
-> +}
-> +EXPORT_SYMBOL_GPL(platform_profile_register_notifier);
-> +
-> +int platform_profile_unregister_notifier(struct notifier_block *nb)
-> +{
-> +=09return blocking_notifier_chain_unregister(&platform_profile_chain_hea=
-d, nb);
-> +}
-> +EXPORT_SYMBOL_GPL(platform_profile_unregister_notifier);
-> +
-> +void platform_profile_call_notifier(unsigned long action, void *data)
-> +{
-> +=09blocking_notifier_call_chain(&platform_profile_chain_head, action, da=
-ta);
-> +}
-> +EXPORT_SYMBOL_GPL(platform_profile_call_notifier);
-
-What is the reason for exporting this function?
-
-
->
->  static ssize_t platform_profile_choices_show(struct device *dev,
->  =09=09=09=09=09struct device_attribute *attr,
-> @@ -49,11 +68,8 @@ static ssize_t platform_profile_choices_show(struct de=
-vice *dev,
->  =09return len;
->  }
->
-> -static ssize_t platform_profile_show(struct device *dev,
-> -=09=09=09=09=09struct device_attribute *attr,
-> -=09=09=09=09=09char *buf)
-> +int platform_profile_get(enum platform_profile_option *profile)
->  {
-> -=09enum platform_profile_option profile =3D PLATFORM_PROFILE_BALANCED;
->  =09int err;
->
->  =09err =3D mutex_lock_interruptible(&profile_lock);
-> @@ -65,15 +81,28 @@ static ssize_t platform_profile_show(struct device *d=
-ev,
->  =09=09return -ENODEV;
->  =09}
->
-> -=09err =3D cur_profile->profile_get(cur_profile, &profile);
-> +=09err =3D cur_profile->profile_get(cur_profile, profile);
->  =09mutex_unlock(&profile_lock);
->  =09if (err)
->  =09=09return err;
->
->  =09/* Check that profile is valid index */
-> -=09if (WARN_ON((profile < 0) || (profile >=3D ARRAY_SIZE(profile_names))=
-))
-> +=09if (WARN_ON((*profile < 0) || (*profile >=3D ARRAY_SIZE(profile_names=
-))))
->  =09=09return -EIO;
->
-> +=09return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(platform_profile_get);
-> +
-> +static ssize_t platform_profile_show(struct device *dev,
-> +=09=09=09=09=09struct device_attribute *attr,
-> +=09=09=09=09=09char *buf)
-> +{
-> +=09enum platform_profile_option profile =3D PLATFORM_PROFILE_BALANCED;
-> +=09int ret =3D platform_profile_get(&profile);
-> +
-> +=09if (ret)
-> +=09=09return ret;
->  =09return sysfs_emit(buf, "%s\n", profile_names[profile]);
->  }
->
-> @@ -130,9 +159,12 @@ void platform_profile_notify(void)
->  =09if (!cur_profile)
->  =09=09return;
->  =09sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +=09platform_profile_call_notifier(PLATFORM_PROFILE_CHANGED, NULL);
-> +
->  }
->  EXPORT_SYMBOL_GPL(platform_profile_notify);
->
-> +
->  int platform_profile_register(struct platform_profile_handler *pprof)
->  {
->  =09int err;
-> diff --git a/include/linux/platform_profile.h b/include/linux/platform_pr=
-ofile.h
-> index e5cbb6841f3a..390d95d47e07 100644
-> --- a/include/linux/platform_profile.h
-> +++ b/include/linux/platform_profile.h
-> @@ -11,6 +11,8 @@
->
->  #include <linux/bitops.h>
->
-> +struct notifier_block;
-> +
->  /*
->   * If more options are added please update profile_names array in
->   * platform_profile.c and sysfs-platform_profile documentation.
-> @@ -37,5 +39,14 @@ struct platform_profile_handler {
->  int platform_profile_register(struct platform_profile_handler *pprof);
->  int platform_profile_remove(void);
->  void platform_profile_notify(void);
-> +int platform_profile_get(enum platform_profile_option *profile);
-> +
-> +int platform_profile_register_notifier(struct notifier_block *nb);
-> +int platform_profile_unregister_notifier(struct notifier_block *nb);
-> +void platform_profile_call_notifier(unsigned long action, void *data);
-> +
-> +enum platform_profile_notifier_actions {
-> +=09PLATFORM_PROFILE_CHANGED,
-> +};
->
->  #endif  /*_PLATFORM_PROFILE_H_*/
-> --
-> 2.25.1
-
+I have no idea if using a kernel parameter for such is OK or a no-no,
+but I'll surely learn soon enough...
 
 Regards,
-Barnab=C3=A1s P=C5=91cze
+
+--andrás
+
+
+Alternative patch against 5.14.14 follows
+==========================================================
+--- a/arch/x86/include/asm/acpi.h
++++ b/arch/x86/include/asm/acpi.h
+@@ -30,6 +30,7 @@
+ extern int acpi_use_timer_override;
+ extern int acpi_fix_pin2_polarity;
+ extern int acpi_disable_cmcff;
++extern int acpi_unknown_off;
+ 
+ extern u8 acpi_sci_flags;
+ extern u32 acpi_sci_override_gsi;
+@@ -138,6 +139,7 @@
+ #define acpi_lapic 0
+ #define acpi_ioapic 0
+ #define acpi_disable_cmcff 0
++#define acpi_unknown_off 0
+ static inline void acpi_noirq_set(void) { }
+ static inline void acpi_disable_pci(void) { }
+ static inline void disable_acpi(void) { }
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -52,6 +52,7 @@
+ int acpi_ioapic;
+ int acpi_strict;
+ int acpi_disable_cmcff;
++int acpi_unknown_off;
+ 
+ /* ACPI SCI override configuration */
+ u8 acpi_sci_flags __initdata;
+@@ -1641,6 +1642,10 @@
+ 	/* "acpi=nocmcff" disables FF mode for corrected errors */
+ 	else if (strcmp(arg, "nocmcff") == 0) {
+ 		acpi_disable_cmcff = 1;
++	}
++	/* "acpi=unknown_off" turns off unused devices in unknown state */
++	else if (strcmp(arg, "unknown_off") == 0) {
++		acpi_unknown_off = 1;
+ 	} else {
+ 		/* Core will printk when we return error. */
+ 		return -EINVAL;
+--- a/drivers/acpi/power.c
++++ b/drivers/acpi/power.c
+@@ -1033,6 +1033,7 @@
+ 		 * power resources without any users unconditionally.
+ 		 */
+ 		if (!resource->ref_count &&
++		    (acpi_unknown_off || resource->state != ACPI_POWER_RESOURCE_STATE_UNKNOWN) &&
+ 		    resource->state != ACPI_POWER_RESOURCE_STATE_OFF) {
+ 			dev_dbg(&resource->device.dev, "Turning OFF\n");
+ 			__acpi_power_off(resource);
