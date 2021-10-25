@@ -2,143 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4670743982E
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Oct 2021 16:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1C1B439831
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Oct 2021 16:11:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232941AbhJYONV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 25 Oct 2021 10:13:21 -0400
-Received: from mga18.intel.com ([134.134.136.126]:32647 "EHLO mga18.intel.com"
+        id S233308AbhJYONm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 Oct 2021 10:13:42 -0400
+Received: from mga18.intel.com ([134.134.136.126]:32702 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230242AbhJYONV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 25 Oct 2021 10:13:21 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10147"; a="216568867"
+        id S233264AbhJYONl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 25 Oct 2021 10:13:41 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10147"; a="216568937"
 X-IronPort-AV: E=Sophos;i="5.87,180,1631602800"; 
-   d="scan'208";a="216568867"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2021 07:10:59 -0700
+   d="scan'208";a="216568937"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2021 07:11:19 -0700
 X-IronPort-AV: E=Sophos;i="5.87,180,1631602800"; 
-   d="scan'208";a="485693067"
+   d="scan'208";a="496823204"
 Received: from yifanyao-mobl.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.249.171.31])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2021 07:10:53 -0700
-Date:   Mon, 25 Oct 2021 22:10:49 +0800
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2021 07:11:15 -0700
+Date:   Mon, 25 Oct 2021 22:11:11 +0800
 From:   Chen Yu <yu.c.chen@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-acpi@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
         Mike Rapoport <rppt@kernel.org>,
-        Aubrey Li <aubrey.li@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 1/4] efi: Introduce
- EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and corresponding structures
-Message-ID: <20211025141049.GA12458@chenyu5-mobl1>
+        Aubrey Li <aubrey.li@intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/4] drivers/acpi: Introduce Platform Firmware Runtime
+ Update device driver
+Message-ID: <20211025141111.GA8602@chenyu5-mobl1>
 References: <cover.1635140590.git.yu.c.chen@intel.com>
- <1cd3161bf51de99990fd5ee2dc896b4defef4f38.1635140590.git.yu.c.chen@intel.com>
- <YXZSMCaODRPw0Zlj@kroah.com>
- <20211025114519.GA7559@chenyu5-mobl1>
- <YXac0IYICzIOmeRh@kroah.com>
- <20211025124705.GA9212@chenyu5-mobl1>
- <CAMj1kXG-L5D3WpGRg20xSuCUkqJrXGLJsffOPE4M1OrFcEf2eQ@mail.gmail.com>
+ <6d4a9bc38c1efd2b10955f64629d194c050fdae1.1635140590.git.yu.c.chen@intel.com>
+ <YXZTDp3xB9hZdcuY@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXG-L5D3WpGRg20xSuCUkqJrXGLJsffOPE4M1OrFcEf2eQ@mail.gmail.com>
+In-Reply-To: <YXZTDp3xB9hZdcuY@kroah.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 25, 2021 at 03:11:57PM +0200, Ard Biesheuvel wrote:
-> On Mon, 25 Oct 2021 at 14:47, Chen Yu <yu.c.chen@intel.com> wrote:
-> >
-> > On Mon, Oct 25, 2021 at 02:02:24PM +0200, Greg Kroah-Hartman wrote:
-> > > On Mon, Oct 25, 2021 at 07:45:19PM +0800, Chen Yu wrote:
-> > > > On Mon, Oct 25, 2021 at 08:44:00AM +0200, Greg Kroah-Hartman wrote:
-> > > > > On Mon, Oct 25, 2021 at 02:25:04PM +0800, Chen Yu wrote:
-> > > > > > Platform Firmware Runtime Update image starts with UEFI headers, and the
-> > > > > > headers are defined in UEFI specification, but some of them have not been
-> > > > > > defined in the kernel yet.
-> > > > > >
-> > > > > > For example, the header layout of a capsule file looks like this:
-> > > > > >
-> > > > > > EFI_CAPSULE_HEADER
-> > > > > > EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-> > > > > > EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
-> > > > > > EFI_FIRMWARE_IMAGE_AUTHENTICATION
-> > > > > >
-> > > > > > These structures would be used by the Platform Firmware Runtime Update
-> > > > > > driver to parse the format of capsule file to verify if the corresponding
-> > > > > > version number is valid. The EFI_CAPSULE_HEADER has been defined in the
-> > > > > > kernel, however the rest are not, thus introduce corresponding UEFI
-> > > > > > structures accordingly. Besides, EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-> > > > > > and EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER need not be aligned and
-> > > > > > so the corresponding data types should be packed.
-> > > > > >
-> > > > > > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-> > > > > > ---
-> > > > > > v6: No change since v5.
-> > > > > > v5: No change since v4.
-> > > > > > v4: Revise the commit log to make it more clear. (Rafael J. Wysocki)
-> > > > > > ---
-> > > > > >  include/linux/efi.h | 50 +++++++++++++++++++++++++++++++++++++++++++++
-> > > > > >  1 file changed, 50 insertions(+)
-> > > > > >
-> > > > > > diff --git a/include/linux/efi.h b/include/linux/efi.h
-> > > > > > index 6b5d36babfcc..19ff834e1388 100644
-> > > > > > --- a/include/linux/efi.h
-> > > > > > +++ b/include/linux/efi.h
-> > > > > > @@ -148,6 +148,56 @@ typedef struct {
-> > > > > >         u32 imagesize;
-> > > > > >  } efi_capsule_header_t;
-> > > > > >
-> > > > > > +#pragma pack(1)
-> > > > >
-> > > > > Why is this pragma suddenly needed now in this file?
-> > > > >
-> > > > > If you really need this for a specific structure, use the "__packed"
-> > > > > attribute please.
-> > > > >
-> > > > These two structures are required to be packed in the uefi spec, I'll change
-> > > > them to "__packed".
-> > >
-> > > And they are the _only_ ones in this .h file that require this?  I would
-> > > think that they all require this.
-> > >
-> > I did a search in the uefi specification, and found 42 pack(1) structures,
-> > while the other structures do not have pack(1) attribute.
-> >
-> > It seems to me that whether the structures are required to be strictly packed
-> > depends on the use case. Here's my understanding and I might be wrong: In this
-> > patch, according to the skeleton of capsule file described in
-> > [Figure 23-6 Firmware Management and Firmware Image Management headers]
-> > in the uefi spec [1], the two structures are located at the beginning of
-> > the capsule file, and followed by real payload. If these structure are packed
-> > then the the adjacent binary payload could start on byte boundary without
-> > padding, which might save space for capsule file.
-> >
+On Mon, Oct 25, 2021 at 08:47:42AM +0200, Greg Kroah-Hartman wrote:
+> On Mon, Oct 25, 2021 at 02:25:16PM +0800, Chen Yu wrote:
+[snip...]
+> > +
+> > +static int acpi_pfru_probe(struct platform_device *pdev)
+> > +{
+> > +	struct pfru_device *pfru_dev;
+> > +	acpi_handle handle;
+> > +	static int pfru_idx;
 > 
-> Packing only affects internal padding, and a struct's size is never
-> padded to be a multiple of its alignment (which equals the largest
-> alignment of all its members). This of course assumes that you don't
-> abuse array indexing as a sizeof() operator.
-> 
-> However, the __packed attribute does indicate to the compiler that the
-> entire thing can appear misaligned in memory. So if one follows the
-> other in the capsule header, the __packed attribute may be appropriate
-> to ensure that the second one is not accessed using misaligned loads
-> and stores.
-> 
-> And then there is of course the ambiguity in alignment of uint64_t on
-> x86, which could be either 4 or 8 bytes depending on the context (and
-> UEFI targets all of them). So __packed may be used to disambiguate
-> between those if a uint64_t field appears on a boundary whose offset %
-> 8 == 4.
-> 
-> So please use __packed rather than the pragma(), and apply it wherever
-> it is applied in the spec.
+> Why not use an ida/idr structure for this?  You never decrement this
+> when the device is removed?
 >
-Thanks for the explaination in detail! Ard. Will do in next version.
+Will fix it and use ida_alloc() for this in next version. 
+> > +	int ret;
+> > +
+> > +	pfru_dev = devm_kzalloc(&pdev->dev, sizeof(*pfru_dev), GFP_KERNEL);
+> > +	if (!pfru_dev)
+> > +		return -ENOMEM;
+> > +
+> > +	ret = guid_parse(PFRU_UUID, &pfru_dev->uuid);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = guid_parse(PFRU_CODE_INJ_UUID, &pfru_dev->code_uuid);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = guid_parse(PFRU_DRV_UPDATE_UUID, &pfru_dev->drv_uuid);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	/* default rev id is 1 */
+> > +	pfru_dev->rev_id = 1;
+> > +	pfru_dev->dev = &pdev->dev;
+> > +	handle = ACPI_HANDLE(pfru_dev->dev);
+> > +	if (!acpi_has_method(handle, "_DSM")) {
+> > +		dev_dbg(&pdev->dev, "Missing _DSM\n");
+> > +		return -ENODEV;
+> > +	}
+> 
+> Why not make this check first, before you allocate or parse anything?
+>
+Will fix it in next version. 
+> > +
+> > +	pfru_dev->miscdev.minor = MISC_DYNAMIC_MINOR;
+> > +	pfru_dev->miscdev.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+> > +						"pfru%d", pfru_idx);
+> > +	if (!pfru_dev->miscdev.name)
+> > +		return -ENOMEM;
+> > +
+> > +	pfru_dev->miscdev.nodename = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+> > +						    "acpi_pfru%d", pfru_idx);
+> > +	if (!pfru_dev->miscdev.nodename)
+> > +		return -ENOMEM;
+> > +
+> > +	pfru_idx++;
+> > +	pfru_dev->miscdev.fops = &acpi_pfru_fops;
+> > +
+> > +	ret = misc_register(&pfru_dev->miscdev);
+> > +	if (ret)
+> > +		return ret;
+> 
+> You forgot to set the parent of the misc device here, right?  :(
+> 
+>
+Ah, yes, will fix it in next version. 
+> > +
+> > +	platform_set_drvdata(pdev, pfru_dev);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static const struct acpi_device_id acpi_pfru_ids[] = {
+> > +	{"INTC1080", 0},
+> > +	{}
+> > +};
+> > +MODULE_DEVICE_TABLE(acpi, acpi_pfru_ids);
+> > +
+> > +static struct platform_driver acpi_pfru_driver = {
+> > +	.driver = {
+> > +		.name = "pfru_update",
+> > +		.acpi_match_table = acpi_pfru_ids,
+> > +	},
+> > +	.probe = acpi_pfru_probe,
+> > +	.remove = acpi_pfru_remove,
+> > +};
+> > +
+> > +static int __init pfru_init(void)
+> > +{
+> > +	return platform_driver_register(&acpi_pfru_driver);
+> > +}
+> > +
+> > +static void __exit pfru_exit(void)
+> > +{
+> > +	platform_driver_unregister(&acpi_pfru_driver);
+> > +}
+> > +
+> > +module_init(pfru_init);
+> > +module_exit(pfru_exit);
+> 
+> module_platform_driver()?
+>
+Currently there are two platform drivers in this file, one is this
+platform driver, another one will be introduced in the subsequent
+patch for telemetry. Since the two platform drivers are treated
+as a whole, they are put into one file. Should I split them
+into two files?
 
-Thanks,
+thanks,
 Chenyu 
+> thanks,
+> 
+> greg k-h
