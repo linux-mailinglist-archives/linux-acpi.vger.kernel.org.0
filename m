@@ -2,82 +2,169 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2448E439349
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Oct 2021 12:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFCFE439471
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Oct 2021 13:05:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232764AbhJYKFS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 25 Oct 2021 06:05:18 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:59796 "EHLO mail.skyhub.de"
+        id S232742AbhJYLHy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 Oct 2021 07:07:54 -0400
+Received: from mga02.intel.com ([134.134.136.20]:51333 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232676AbhJYKFS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 25 Oct 2021 06:05:18 -0400
-Received: from zn.tnic (p200300ec2f0f4e00d22405724977670e.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:4e00:d224:572:4977:670e])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0D69F1EC04EE;
-        Mon, 25 Oct 2021 12:02:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1635156175;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=VROD/COb1dL/OTdUDk7Wr4EIAQvPOoqzPadBFiERlkM=;
-        b=nuMp5lccls1KJPQHadmttrue2PiFtNZm3CW2YOMdGvE8NhdtrsCMlXL3hV7eZtyfhnS7RH
-        VozToVrH2f308NOqHwamVRUJtpzIZ35nJsjQXf9c5os8jGHy9zJSDT2h/nB2YG8dNTBJEb
-        4vA/To3lEtuyBD9t4OmBv1caEiJKnYM=
-Date:   Mon, 25 Oct 2021 12:02:53 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] x86/PCI: Fix compile errors when CONFIG_PCI is disabled
-Message-ID: <YXaAzVJGRabW7b9K@zn.tnic>
-References: <20211020102102.86577-1-hdegoede@redhat.com>
- <YXZ92/QxiGq2mM/R@lahna>
+        id S232525AbhJYLHy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 25 Oct 2021 07:07:54 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10147"; a="216793262"
+X-IronPort-AV: E=Sophos;i="5.87,180,1631602800"; 
+   d="scan'208";a="216793262"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2021 04:05:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,180,1631602800"; 
+   d="scan'208";a="664019365"
+Received: from ipu5-build.bj.intel.com (HELO [10.238.232.188]) ([10.238.232.188])
+  by orsmga005.jf.intel.com with ESMTP; 25 Oct 2021 04:05:27 -0700
+Subject: Re: [PATCH 3/6] Documentation: ACPI: Document _DSC object usage for
+ enum power state
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-i2c@vger.kernel.org
+Cc:     Wolfram Sang <wsa@the-dreams.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rajmohan.mani@intel.com, Tomasz Figa <tfiga@chromium.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        linux-media@vger.kernel.org
+References: <20211018121729.6357-1-sakari.ailus@linux.intel.com>
+ <20211018121729.6357-4-sakari.ailus@linux.intel.com>
+From:   Bingbu Cao <bingbu.cao@linux.intel.com>
+Message-ID: <4da84e63-0e3d-155f-f3db-5d3a9efe3aa7@linux.intel.com>
+Date:   Mon, 25 Oct 2021 19:01:41 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <YXZ92/QxiGq2mM/R@lahna>
+In-Reply-To: <20211018121729.6357-4-sakari.ailus@linux.intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Oct 25, 2021 at 12:50:19PM +0300, Mika Westerberg wrote:
-> On Wed, Oct 20, 2021 at 12:21:02PM +0200, Hans de Goede wrote:
-> > arch/x86/include/asm/pci_x86.h uses a number of data -types and defines
-> > without including the headers which define these.
-> > 
-> > Instead so far it has been relying on files including it including the
-> > necessary headers first.
-> > 
-> > Recently a include <asm/pci_x86.h> was added to arch/x86/kernel/resource.c
-> > which does not include the necessary headers first.
-> > 
-> > Add the missing includes to arch/x86/include/asm/pci_x86.h to fix the
-> > compile errors (with certain .config-s) when it is included from
-> > arch/x86/kernel/resource.c.
-> > 
-> > Fixes: f10507a66e36 ("x86/PCI: Ignore E820 reservations for bridge windows on newer systems")
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Sakari,
+
+On 10/18/21 8:17 PM, Sakari Ailus wrote:
+> Document the use of the _DSC object for setting desirable power state
+> during probe.
 > 
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Tomasz Figa <tfiga@chromium.org>
+> ---
+>  Documentation/firmware-guide/acpi/index.rst   |  1 +
+>  .../firmware-guide/acpi/non-d0-probe.rst      | 78 +++++++++++++++++++
+>  2 files changed, 79 insertions(+)
+>  create mode 100644 Documentation/firmware-guide/acpi/non-d0-probe.rst
+> 
+> diff --git a/Documentation/firmware-guide/acpi/index.rst b/Documentation/firmware-guide/acpi/index.rst
+> index a99ee402b212b..b053b0c3d6969 100644
+> --- a/Documentation/firmware-guide/acpi/index.rst
+> +++ b/Documentation/firmware-guide/acpi/index.rst
+> @@ -26,5 +26,6 @@ ACPI Support
+>     acpi-lid
+>     lpit
+>     video_extension
+> +   non-d0-probe
+>     extcon-intel-int3496
+>     intel-pmc-mux
+> diff --git a/Documentation/firmware-guide/acpi/non-d0-probe.rst b/Documentation/firmware-guide/acpi/non-d0-probe.rst
+> new file mode 100644
+> index 0000000000000..78781e1ab6a3d
+> --- /dev/null
+> +++ b/Documentation/firmware-guide/acpi/non-d0-probe.rst
+> @@ -0,0 +1,78 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +========================================
+> +Probing devices in other D states than 0
+> +========================================
+> +
+> +Introduction
+> +============
+> +
+> +In some cases it may be preferred to leave certain devices powered off for the
+> +entire system bootup if powering on these devices has adverse side effects,
+> +beyond just powering on the said device.
+> +
+> +How it works
+> +============
+> +
+> +The _DSC (Device State for Configuration) object that evaluates to an integer
+> +may be used to tell Linux the highest allowed D state for a device during
+> +probe. The support for _DSC requires support from the kernel bus type if the
+> +bus driver normally sets the device in D0 state for probe.
+> +
+> +The downside of using _DSC is that as the device is not powered on, even if
+> +there's a problem with the device, the driver likely probes just fine but the
+> +first user will find out the device doesn't work, instead of a failure at probe
+> +time. This feature should thus be used sparingly.
+> +
+> +I²C
+> +---
+> +
+> +If an I²C driver indicates its support for this by setting the
+> +I2C_DRV_ACPI_WAIVE_D0_PROBE flag in struct i2c_driver.flags field and the
+> +_DSC object evaluates to integer higher than the D state of the device,
+> +the device will not be powered on (put in D0 state) for probe.
+> +
+> +D states
+> +--------
+> +
+> +The D states and thus also the allowed values for _DSC are listed below. Refer
+> +to [1] for more information on device power states.
+> +
+> +.. code-block:: text
+> +
+> +	Number	State	Description
+> +	0	D0	Device fully powered on
+> +	1	D1
+> +	2	D2
+> +	3	D3hot
+> +	4	D3cold	Off
+> +
+> +References
+> +==========
+> +
+> +[1] https://uefi.org/specifications/ACPI/6.4/02_Definition_of_Terms/Definition_of_Terms.html#device-power-state-definitions
+> +
+> +Example
+> +=======
+> +
+> +An ASL example describing an ACPI device using _DSC object to tell Operating
+> +System the device should remain powered off during probe looks like this. Some
+> +objects not relevant from the example point of view have been omitted.
+> +
+> +.. code-block:: text
+> +
+> +	Device (CAM0)
+> +        {
+> +		Name (_HID, "SONY319A")
+> +		Name (_UID, Zero)
+> +		Name (_CRS, ResourceTemplate ()
+> +		{
+> +			I2cSerialBus(0x0020, ControllerInitiated, 0x00061A80,
+> +				     AddressingMode7Bit, "\\_SB.PCI0.I2C0",
+> +				     0x00, ResourceConsumer)
+> +		})
+> +		Name (_DSC, 0, NotSerialized)
+> +		{
+> +			Return (0x4)
+> +                }
+One question here:
+Is the value of _DSC object evaluated from 'Method' or 'Name' ?
 
-IIRC, this was squashed into the Fixes: patch:
-
-https://lore.kernel.org/r/20211020211455.GA2641031@bhelgaas
+> +	}
+> 
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Best regards,
+Bingbu Cao
