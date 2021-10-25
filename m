@@ -2,232 +2,212 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1989443A562
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Oct 2021 23:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C884043A843
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Oct 2021 01:37:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233344AbhJYVFd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 25 Oct 2021 17:05:33 -0400
-Received: from mail-bn7nam10on2046.outbound.protection.outlook.com ([40.107.92.46]:16993
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231339AbhJYVFc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 25 Oct 2021 17:05:32 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gFhFxUCv79EJsAGVnZbEYVwglFg5tWo5icGAP2LTD7ikCLX1UVjQLyhA9sWnEpEllo4U0LvJECH1T3cSUf11a+UFW0xTisIQO7M7mrrQaIosBvnVfeLq2l4pJXA8aO5Xse/AVAaBz1i/wbKDQQKjwY0gz04c/FykA3va4jYrVg7qEFMkDH6VJ5fsDSFYi2gxKB8Fi+kfS8PWcUpTHt/eAhwH+U8QUVH2nX6ocH1k2FI9vvATSRu4zmMuaUxHTZijLboH1U9o03IGt3PXz43TeIrW4/2BcD7ch34gyZRyQY9ztMcUsu2x7mlUaYaC0xqMkTdgtIbc4aiyAluSKhljnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZnRl29aXok+GnDEZFhs+iPcMRK17CUHUeqJzWC6gXV8=;
- b=es+a8ICCFb7rCwC8+IsztWq7Q8BLGyR3wcFFxGT/vaESPifgZ8zLa2Mhbo/DWB8YBiPINsBUoqMuExYTItoXa+ddLpXOFhYhyzuLNUFeLdzPNT/SRzx1bjWoBvpdOwiZRwFYiKV+TJeXGlyUDBtuG5WovJZ213KfHxwHGYqwDu22jRiePxA2qSHNn0wrUiRjHFcuBc8iRfQLX01Jx3fK4dGRNzRVWAQNNsa3hN+pIaWrp5AhBxroW6l4w/b5r8UbSzh65do/LnoD5srjs3sIVNhcMpjI08J7fcBiAFKaXV+AQCgd6odcgJwsf4OBtR5D0A3BZKKQ/NFg9AJU5EqOvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=rjwysocki.net smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZnRl29aXok+GnDEZFhs+iPcMRK17CUHUeqJzWC6gXV8=;
- b=cjUClP0BtV35PT4LrQS1XXxdTSrWY5nxMfv16XIv9gB79rJbH29DGUM5HCjIEDv+Vus0kwIXlICKAVD0/UyI/drM3dykUKZonlUK8nK3+HHgSn/PE+VIJMaGF+/sA8J51ctWfytKe2INL409vTUG487hwjOb+zr1fLEP+lP3PGQ=
-Received: from BN6PR21CA0013.namprd21.prod.outlook.com (2603:10b6:404:8e::23)
- by BN9PR12MB5083.namprd12.prod.outlook.com (2603:10b6:408:134::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.18; Mon, 25 Oct
- 2021 21:03:08 +0000
-Received: from BN8NAM11FT065.eop-nam11.prod.protection.outlook.com
- (2603:10b6:404:8e:cafe::d6) by BN6PR21CA0013.outlook.office365.com
- (2603:10b6:404:8e::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4669.2 via Frontend
- Transport; Mon, 25 Oct 2021 21:03:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; rjwysocki.net; dkim=none (message not signed)
- header.d=none;rjwysocki.net; dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT065.mail.protection.outlook.com (10.13.177.63) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4628.16 via Frontend Transport; Mon, 25 Oct 2021 21:03:07 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Mon, 25 Oct
- 2021 16:03:06 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        <linux-acpi@vger.kernel.org>
-CC:     <markpearson@lenovo.com>, <pobrn@protonmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v2] ACPI: platform_profile: Add support for notification chains
-Date:   Mon, 25 Oct 2021 16:03:03 -0500
-Message-ID: <20211025210303.29083-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
+        id S235154AbhJYXkC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 25 Oct 2021 19:40:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33440 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234889AbhJYXkB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 25 Oct 2021 19:40:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 89FF260187;
+        Mon, 25 Oct 2021 23:37:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635205058;
+        bh=xZuKP0UCTTapRVjN9lDtmo7bL5KlII2WBEwLuNEyNp4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=X294QY26/tHF2bGr/FF+NcS7TQJWsGxCzYVHQHrYygTawrmUqlGO8mmtHYRyZkJef
+         5rnJCBX6j98l1Pj6gLN7t4ZlAqaEuJuSMLReKkwwt3oBWVzxM8vV0CvZ8Me9FdZsz/
+         oI7Rq3zbHHq+cqm/MJZwYXmWyn5wgONJM7Ohj9F7K397SSizkhje71uKksH621ImbQ
+         VOTPcvtIJThOgQyZwImt7kqJWE8UKbsXgQJAGLDt/fks6MrxPO1ogL2exfuub4i2ew
+         lH90U9ROt1HL/Su36R6vAeuEP3C02XdEZ5+jnFcMvu/3n77+mBmIwvUB6/WGiW6rEm
+         TkpJMnC5VmgQA==
+Date:   Mon, 25 Oct 2021 18:37:37 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Xuesong Chen <xuesong.chen@linux.alibaba.com>
+Cc:     catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
+        james.morse@arm.com, will@kernel.org, rafael@kernel.org,
+        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
+        bhelgaas@google.com, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Huang Ying <ying.huang@intel.com>
+Subject: Re: [PATCH v3 2/2] ACPI: APEI: Filter the PCI MCFG address with an
+ arch-agnostic method
+Message-ID: <20211025233737.GA50860@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 34570042-b635-495b-cdda-08d997fad88c
-X-MS-TrafficTypeDiagnostic: BN9PR12MB5083:
-X-Microsoft-Antispam-PRVS: <BN9PR12MB5083A023159B0B87EBA84C4BE2839@BN9PR12MB5083.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: fE7NsbUChCj+eLDO5K8zY60+ZFpzFUfog60LuMIjI9QehBMrkCsHoKiMef+WsupFc07Jv9WQja6gKhZPtVqPDkuJaHMFAy+3bMoUf3ZncEjhp98hLUMFFXu5BPgvWpSMO/md0vfnNNgdTDR1JG9PoxnqOJ9zDc7G5kZvh9/b8pmLzVSikboX4EXvoxjQ1c3PFx0+2K06HqQBJ/LKpiL5AHwjMmWmWgQf9v05lzkdw7LZZ0MHntNy4JXGraf7JHKZ105uqEZlHB8OzJsJ/FfrcUlOpjxvmHHydQJ6SZDVU8iNWL9Ibwoy8QFfQ/6fV4H/wYEUNvdGID184O/LDSxqZJyDSDAxHVhzFCjT+Dn0ptOu53hNgqrQ2p9kw7zaYHQf+uSLUt8ent1DzGZ0/22ku87Ho7ymeK4t74p/9jx26m1WoalxL8g6lj7phtxCu8XFcaP4C3CGvtdPZ/9ONDb5oSy0mSaRYEwIiRt2EpY98seH2kgZzmPStNWEtbxTrFkyQBWeMfl0HyR4gFwPNTs7KiUpGMsJJdNZDrYh+k77XXAIdLMMknThZEt8ngZMvcy6PRa0+sYfETiKPozJrD5KWolwDX+9d9o/N6u8WFfNr8Yw1T43rhOePQ7I/8GEOQQ9q8I+ZdZJ8947y0aRwsl7g5HraSgHOCjFmz4P9xujBC0l4xmi4qf7BO13gez8TbPoXr1GhEkCpPXqQiAz/3LeAraJCeMhgi05LrfAyPJ9Jnsm0GvkeihxXZEdQxcsSIcywV57pdXn2TRbk5LZQCpqYaY+KHow3qiI6T5yq9FdLXd4NPMB7w7QLODVf4LlGTj1
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(8936002)(186003)(6666004)(8676002)(110136005)(336012)(81166007)(7696005)(82310400003)(83380400001)(16526019)(36860700001)(54906003)(508600001)(47076005)(356005)(426003)(316002)(5660300002)(70586007)(36756003)(1076003)(44832011)(966005)(86362001)(70206006)(4326008)(2906002)(26005)(15650500001)(2616005)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2021 21:03:07.9730
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34570042-b635-495b-cdda-08d997fad88c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT065.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5083
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <36685ccd-f1d6-5db4-f282-878d29515f8b@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Allow other drivers to initialize relative to current active
-profile and react to platform profile changes.
+On Fri, Oct 22, 2021 at 05:52:15PM +0800, Xuesong Chen wrote:
+> On 22/10/2021 00:57, Bjorn Helgaas wrote:
+> > On Thu, Oct 21, 2021 at 11:46:40PM +0800, Xuesong Chen wrote:
+> >> On 21/10/2021 02:50, Bjorn Helgaas wrote:
+> >>> On Wed, Oct 20, 2021 at 11:16:38AM +0800, Xuesong Chen wrote:
+> >>>> On 20/10/2021 03:23, Bjorn Helgaas wrote:
+> >>>>> On Tue, Oct 19, 2021 at 12:50:33PM +0800, Xuesong Chen wrote:
+> > 
+> >>>>>> This patch will try to handle this case in a more common way
+> >>>>>> instead of the original 'arch' specific solution, which will be
+> >>>>>> beneficial to all the APEI-dependent platforms after that.
+> >>>>>
+> >>>>> This actually doesn't say anything about what the patch does or
+> >>>>> how it works.  It says "handles this case in a more common way"
+> >>>>> but with no details.
+> >>>>
+> >>>> Good suggestion, I'll give more details about that...
+> >>>>
+> >>>>> The EINJ table contains "injection instructions" that can read
+> >>>>> or write "register regions" described by generic address
+> >>>>> structures (see ACPI v6.3, sec 18.6.2 and 18.6.3), and
+> >>>>> __einj_error_trigger() requests those register regions with
+> >>>>> request_mem_region() or request_region() before executing the
+> >>>>> injections instructions.
+> >>>>>
+> >>>>> IIUC, this patch basically says "if this region is part of the
+> >>>>> MCFG area, we don't need to reserve it." That leads to the
+> >>>>> questions of why we need to reserve *any* of the areas
+> >>>>
+> >>>> AFAIK, the MCFG area is reserved since the ECAM module will
+> >>>> provide a generic Kernel Programming Interfaces(KPI), e.g,
+> >>>> pci_generic_config_read(...), so all the drivers are allowed to
+> >>>> access the pci config space only by those KPIs in a consistent
+> >>>> and safe way, direct raw access will break the rule.  Correct me
+> >>>> if I am missing sth.
+> >>>>
+> >>>>> and why it's safe to simply skip reserving regions that are part
+> >>>>> of the MCFG area.
+> >>>>
+> >>>> Actual there is a commit d91525eb8ee6("ACPI, EINJ: Enhance error
+> >>>> injection tolerance level") before to address this issue, the
+> >>>> entire commit log as below:
+> >>>>
+> >>>>     Some BIOSes utilize PCI MMCFG space read/write opertion to trigger
+> >>>>     specific errors. EINJ will report errors as below when hitting such
+> >>>>     cases:
+> >>>>     
+> >>>>     APEI: Can not request [mem 0x83f990a0-0x83f990a3] for APEI EINJ Trigger registers
+> >>>>     
+> >>>>     It is because on x86 platform ACPI based PCI MMCFG logic has
+> >>>>     reserved all MMCFG spaces so that EINJ can't reserve it again.
+> >>>>     We already trust the ACPI/APEI code when using the EINJ interface
+> >>>>     so it is not a big leap to also trust it to access the right
+> >>>>     MMCFG addresses. Skip address checking to allow the access.
+> >>>
+> >>> I'm not really convinced by that justification because I don't
+> >>> think the issue here is *trust*.  If all we care about is trust,
+> >>> and we trust the ACPI/APEI code, why do we need to reserve
+> >>> anything at all when executing EINJ actions?
+> >>>
+> >>> I think the resource reservation issue is about coordinating
+> >>> multiple users of the address space.  A driver reserves the MMIO
+> >>> address space of a device it controls so no other driver can
+> >>> reserve it at the same time and cause conflicts.
+> >>>
+> >>> I'm not really convinced by this mutual exclusion argument either,
+> >>> because I haven't yet seen a situation where we say "EINJ needs a
+> >>> resource that's already in use by somebody else, so we can't use
+> >>> EINJ."  When conflicts arise, the response is always "we'll just
+> >>> stop reserving this conflicting resource but use it anyway."
+> >>>
+> >>> I think the only real value in apei_resources_request() is a
+> >>> little bit of documentation in /proc/iomem.  For ERST and EINJ,
+> >>> even that only lasts for the tiny period when we're actually
+> >>> executing an action.
+> >>>
+> >>> So convince me there's a reason why we shouldn't just remove
+> >>> apei_resources_request() completely :)
+> >>
+> >> I have to confess that currently I have no strong evidence/reason to
+> >> convince you that it's absolute safe to remove
+> >> apei_resources_request(),  probably in some conditions it *does*
+> >> require to follow the mutual exclusion usage model.  The ECAM/MCFG
+> >> maybe a special case not like other normal device driver, since all
+> >> its MCFG space has been reserved during the initialization. Anyway,
+> >> it's another topic and good point well worth discussing in the
+> >> future.
+> > 
+> > This is missing the point.  It's not the MCFG reservation during
+> > initialization that would make this safe.  What would make it safe is
+> > the fact that ECAM does not require mutual exclusion.
+> > 
+> > When the hardware implements ECAM correctly, PCI config accesses do
+> > not require locking because a config access requires a single MMIO
+> > load or store.
+>
+> I don't quite understand here, we're talking about
+> apei_resources_request() which is a mechanism to void resource
+> conflict,"request_mem_region() tells the kernel that your driver is
+> going to use this range of I/O addresses, which will prevent other
+> drivers to make any overlapping call to the same region through
+> request_mem_region()", but according to the context of 'a single
+> MMIO load or store', are you talking about something like the mutex
+> lock primitive?
 
-Drivers wishing to utilize this should register for notification
-at module load and unregister when unloading.
+My point was that when ECAM is implemented correctly, a CPU does a
+single MMIO load to do a PCI config read and a single MMIO store to do
+a PCI config write.  In that case there no need for any locking, so
+there's no need for APEI to reserve those resources.
 
-Notifications will come in the from a notifier call.
+This is what d91525eb8ee6 ("ACPI, EINJ: Enhance error injection
+tolerance level") does.  That code change makes sense, but the commit
+log does not -- it has nothing to do with trusting the ACPI/APEI code;
+it's just that no matter what the EINJ actions do with the MCFG
+regions, they cannot interfere with other drivers.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
-V1: https://lore.kernel.org/linux-acpi/7d0c7f12-a412-582e-22f2-8285cf74066a@amd.com/T/#m834d32b2ebcf8bd3dab0c5aa48f6deaa48e34e62
-Changes from v1->v2:
- * Add the new performance mode as part of the callback to simplify callers.
- * Drop the GPL symbol export for platform_profile_call_notifier
+> > Many non-ECAM config accessors *do* require locking because they use
+> > several register accesses, e.g., the 0xCF8/0xCFC address/data pairs
+> > used by pci_conf1_read().  If EINJ actions used these, we would have
+> > to enforce mutual exclusion between EINJ config accesses and those
+> > done by other drivers.
+> 
+> I take a look at the pci_conf1_read() function, there's only a pair of
+> raw_spin_lock_irqsave() and raw_spin_unlock_irqrestore(), if that's the
+> mutual exclusion you mentioned, seems it's not related to the
+> apei_resources_request() we're talking about... 
 
- drivers/acpi/platform_profile.c  | 48 ++++++++++++++++++++++++++++----
- include/linux/platform_profile.h | 10 +++++++
- 2 files changed, 52 insertions(+), 6 deletions(-)
+This was an example of a case where EINJ mutual exclusion *would* be
+required.  I do not expect EINJ actions to use the 0xCF8/0xCFC
+registers because there is no mechanism to coordinate that with the OS
+use of the same registers.
 
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index dd2fbf38e414..1badbc8d6012 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -21,6 +21,24 @@ static const char * const profile_names[] = {
- 	[PLATFORM_PROFILE_PERFORMANCE] = "performance",
- };
- static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
-+static BLOCKING_NOTIFIER_HEAD(platform_profile_chain_head);
-+
-+int platform_profile_register_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_register(&platform_profile_chain_head, nb);
-+}
-+EXPORT_SYMBOL_GPL(platform_profile_register_notifier);
-+
-+int platform_profile_unregister_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_unregister(&platform_profile_chain_head, nb);
-+}
-+EXPORT_SYMBOL_GPL(platform_profile_unregister_notifier);
-+
-+static void platform_profile_call_notifier(unsigned long action, void *data)
-+{
-+	blocking_notifier_call_chain(&platform_profile_chain_head, action, data);
-+}
- 
- static ssize_t platform_profile_choices_show(struct device *dev,
- 					struct device_attribute *attr,
-@@ -49,11 +67,8 @@ static ssize_t platform_profile_choices_show(struct device *dev,
- 	return len;
- }
- 
--static ssize_t platform_profile_show(struct device *dev,
--					struct device_attribute *attr,
--					char *buf)
-+int platform_profile_get(enum platform_profile_option *profile)
- {
--	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
- 	int err;
- 
- 	err = mutex_lock_interruptible(&profile_lock);
-@@ -65,15 +80,28 @@ static ssize_t platform_profile_show(struct device *dev,
- 		return -ENODEV;
- 	}
- 
--	err = cur_profile->profile_get(cur_profile, &profile);
-+	err = cur_profile->profile_get(cur_profile, profile);
- 	mutex_unlock(&profile_lock);
- 	if (err)
- 		return err;
- 
- 	/* Check that profile is valid index */
--	if (WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
-+	if (WARN_ON((*profile < 0) || (*profile >= ARRAY_SIZE(profile_names))))
- 		return -EIO;
- 
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(platform_profile_get);
-+
-+static ssize_t platform_profile_show(struct device *dev,
-+					struct device_attribute *attr,
-+					char *buf)
-+{
-+	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
-+	int ret = platform_profile_get(&profile);
-+
-+	if (ret)
-+		return ret;
- 	return sysfs_emit(buf, "%s\n", profile_names[profile]);
- }
- 
-@@ -127,9 +155,17 @@ static const struct attribute_group platform_profile_group = {
- 
- void platform_profile_notify(void)
- {
-+	enum platform_profile_option profile;
-+	int ret;
-+
- 	if (!cur_profile)
- 		return;
- 	sysfs_notify(acpi_kobj, NULL, "platform_profile");
-+	ret = platform_profile_get(&profile);
-+	if (ret)
-+		return;
-+	platform_profile_call_notifier(PLATFORM_PROFILE_CHANGED, &profile);
-+
- }
- EXPORT_SYMBOL_GPL(platform_profile_notify);
- 
-diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
-index e5cbb6841f3a..05ba3403509a 100644
---- a/include/linux/platform_profile.h
-+++ b/include/linux/platform_profile.h
-@@ -11,6 +11,8 @@
- 
- #include <linux/bitops.h>
- 
-+struct notifier_block;
-+
- /*
-  * If more options are added please update profile_names array in
-  * platform_profile.c and sysfs-platform_profile documentation.
-@@ -37,5 +39,13 @@ struct platform_profile_handler {
- int platform_profile_register(struct platform_profile_handler *pprof);
- int platform_profile_remove(void);
- void platform_profile_notify(void);
-+int platform_profile_get(enum platform_profile_option *profile);
-+
-+int platform_profile_register_notifier(struct notifier_block *nb);
-+int platform_profile_unregister_notifier(struct notifier_block *nb);
-+
-+enum platform_profile_notifier_actions {
-+	PLATFORM_PROFILE_CHANGED,
-+};
- 
- #endif  /*_PLATFORM_PROFILE_H_*/
--- 
-2.25.1
+> > Some ARM64 platforms do not implement ECAM correctly, e.g.,
+> > tegra194_map_bus() programs an outbound ATU and xgene_pcie_map_bus()
+> > sets an RTDID register before the MMIO load/store.  Platforms like
+> > this *do* require mutual exclusion between an EINJ config access and
+> > other config accesses.
+> 
+> What's the mutual exclusion for those quirk functions (tegra194 and
+> xgene)?  *mutual* is not applied for single side. I can see neither
+> locking nor request_mem_region() in those bus map functions. 
 
+These currently depend on the pci_lock.  See PCI_OP_READ() in
+drivers/pci/access.c.
+
+EINJ actions cannot acquire the pci_lock, so EINJ actions cannot
+safely use ECAM space on those platforms.
+
+> > These platforms are supported via quirks in pci_mcfg.c, so they will
+> > have resources in the pci_mcfg_list, and if we just ignore all the
+> > MCFG resources in apei_resources_request(), there will be nothing to
+> > prevent ordinary driver config accesses from being corrupted by EINJ
+> > accesses.
+> > 
+> > I think in general, is probably *is* safe to remove MCFG resources
+> > from the APEI reservations, but it would be better if we had some way
+> > to prevent EINJ from using MCFG on platforms like tegra194 and xgene.
+> 
+> Just as I mentioned, since there's no mutual exclusion applied for
+> the tegra194 and xgene (correct me if I am wrong), putting their MCFG
+> resources into the APEI reservation (so the apei_resources_request()
+> applied) does nothing 
+
+I think apei_resources_request() should continue to reserve MCFG areas
+on tegra194 and xgene, but it does not need to reserve them on other
+ARM64 platforms.
+
+Bjorn
