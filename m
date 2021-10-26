@@ -2,75 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D09DA43BAE0
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Oct 2021 21:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF29243BBCF
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Oct 2021 22:47:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238792AbhJZTgF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Oct 2021 15:36:05 -0400
-Received: from mga09.intel.com ([134.134.136.24]:37615 "EHLO mga09.intel.com"
+        id S237038AbhJZUts (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Oct 2021 16:49:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37982 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238774AbhJZTgE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 26 Oct 2021 15:36:04 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="229854952"
-X-IronPort-AV: E=Sophos;i="5.87,184,1631602800"; 
-   d="scan'208";a="229854952"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2021 12:33:39 -0700
-X-IronPort-AV: E=Sophos;i="5.87,184,1631602800"; 
-   d="scan'208";a="447242519"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2021 12:33:37 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mfSCD-001IJ5-M4;
-        Tue, 26 Oct 2021 22:33:17 +0300
-Date:   Tue, 26 Oct 2021 22:33:17 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v1 0/2] ACPI: scan: Honor certain device identification
- rules
-Message-ID: <YXhX/cTjH/H9UOnQ@smile.fi.intel.com>
-References: <11860508.O9o76ZdvQC@kreacher>
+        id S233944AbhJZUts (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 26 Oct 2021 16:49:48 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BA23860296;
+        Tue, 26 Oct 2021 20:47:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635281244;
+        bh=hZut5nm2pKDxCAJpJ+gN/iH1oUKj9aOLGboxGFVJ5YI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=olXKZbS4UT5e405M23mZjkauGYD3HC0pijTZ9JfGB85dm7/+Z6cjvMsAexbv6QabS
+         R4DiczunAOaGB5dG9uqMRBkOl2CsKwA0WEDMSjr88MIYYxS4NQ8LlLjjfc5Y224Vol
+         mU06RB6CXLdgk8QoKjczkeFwWQ2yH8CV/7rJxqVHW3TC1QUMXf40CnVabGu+cIgOqC
+         xrRc/XC85baK33Dtmt6OP2dS0xP+YLBwUsnYgN8q+jg/Ixw7JOBQ0sckmuxqxJRl9U
+         VeTwHiJq+FB3YWx6UCGZePvE20G6irMcDY1/ooBaVJl43GhbA4hdxYBhTVcYkrMuha
+         ES5QdyUDrAtOw==
+Date:   Tue, 26 Oct 2021 15:47:22 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Xuesong Chen <xuesong.chen@linux.alibaba.com>
+Cc:     catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
+        james.morse@arm.com, will@kernel.org, rafael@kernel.org,
+        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
+        bhelgaas@google.com, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Huang Ying <ying.huang@intel.com>
+Subject: Re: [PATCH v3 2/2] ACPI: APEI: Filter the PCI MCFG address with an
+ arch-agnostic method
+Message-ID: <20211026204722.GA158130@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <11860508.O9o76ZdvQC@kreacher>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <1e186336-aa68-d845-307e-aa6e1133322f@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 26, 2021 at 08:51:49PM +0200, Rafael J. Wysocki wrote:
-> Hi All,
+On Tue, Oct 26, 2021 at 05:16:47PM +0800, Xuesong Chen wrote:
+> On 26/10/2021 07:37, Bjorn Helgaas wrote:
+
+> > My point was that when ECAM is implemented correctly, a CPU does a
+> > single MMIO load to do a PCI config read and a single MMIO store to do
+> > a PCI config write.  In that case there no need for any locking, so
+> > there's no need for APEI to reserve those resources.
 > 
-> There are some rules in the ACPI spec regarding which device identification
-> objects can be used together etc., but they are not followed by the kernel
-> code.
+> Ah, got it. That means the PCI ECAM has a implicit mutual exclusion with EINJ
+> if the hardware implemention is correct, so we can remove the MCFG from
+> the APEI's safely.
+
+Well, not quite.  ECAM doesn't *need* mutual exclusion.  Single loads
+and stores are atomic by definition.
+
+> > I think apei_resources_request() should continue to reserve MCFG areas
+> > on tegra194 and xgene, but it does not need to reserve them on other
+> > ARM64 platforms.
 > 
-> This series modifies the code to follow the spec more closely (see patch
-> changelogs for details).
+> As a summary: we need to reserve the MCFG areas on those platforms with a
+> quirk ECAM implementation since there's no lockless method to access the
+> configuration space, on other platforms we don't need to reserve the MCFG
+> resources (so can remove it safely).
+> 
+> So we need to add another patch to handle the case of tegra194 and xgene...
+> I will try to figure it out. 
 
-I understand the motivation, but afraid about consequences on the OEM cheap
-devices that are not always follow letter of the specification.
+I looked through these again and found another problem case (thunder).
+Here are my notes from my research.
 
-As per Intel platforms I would look into Baytrail / Cherrytrail devices for
-the past (I think Hans may help here a lot) and into Elkhart Lake in the
-present (for the letter I mostly refer to CSRT + DSDT cooperation to get
-GP DMA devices enumerated, so I _hope_ DSDT shouldn't have _ADR and _HID
-together).
+Normal ECAM users require no device-specific support.  The platform
+supplies an MCFG table, the generic code works, no mutual exclusion is
+required, and APEI doesn't need to reserve the MCFG areas.
 
-Hence, from the code perspective
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+The problem cases are platforms that supply an MCFG table but require
+some device-specific workarounds.  We can identify these because they
+have quirks in pci-mcfg.c.  Here are the existing quirks and the
+pci_ecam_ops structs they supply:
 
-From the practice I would wait for some tests. I will try to find any new
-information about latest firmware tables on Elkhart Lake machines.
+  AL_ECAM             al_pcie_ops                 # OK
+  QCOM_ECAM32         pci_32b_ops                 # OK
+  HISI_QUAD_DOM       hisi_pcie_ops               # OK
+  THUNDER_PEM_QUIRK   thunder_pem_ecam_ops        # problem
+  THUNDER_PEM_QUIRK   thunder_pem_ecam_ops        # problem
+  THUNDER_ECAM_QUIRK  pci_thunder_ecam_ops        # OK
+  tegra               tegra194_pcie_ops           # problem
+  XGENE_V1_ECAM_MCFG  xgene_v1_pcie_ecam_ops      # problem
+  XGENE_V2_ECAM_MCFG  xgene_v2_pcie_ecam_ops      # problem
+  ALTRA_ECAM_QUIRK    pci_32b_read_ops            # OK
 
--- 
-With Best Regards,
-Andy Shevchenko
+The ones marked "OK" have .map_bus(), .read(), and .write() methods
+that need no mutual exclusion because they boil down to just a single
+MMIO load or store.  These are fine and there shouldn't be a problem
+if an EINJ action accesses the ECAM space.
 
+The others do require mutual exclusion:
 
+  - thunder_pem_ecam_ops: thunder_pem_config_read() calls
+    thunder_pem_bridge_read(), which does a writeq() to PEM_CFG_RD
+    followed by a readq().  The writeq() and readq() must be atomic to
+    avoid corruption.
+
+  - tegra194_pcie_ops: tegra194_map_bus() programs the ATU.  This and
+    the subsequent ECAM read/write must be atomic.
+
+  - xgene_v1_pcie_ecam_ops and xgene_v2_pcie_ecam_ops:
+    xgene_pcie_map_bus() sets the RTID.  This and the subsequent ECAM
+    read/write must be atomic.
+
+I had to look at all these ops individually to find them, so I don't
+see an easy way to identify these problem cases at run-time.
+
+I personally would not have an issue with having APEI try to reserve
+the MCFG regions for any platform that has an MCFG quirk.  That would
+prevent the al, qcom, hisi, thunder-ecam, and altra drivers from using
+EINJ even though it would probably be safe for them.  But we already
+know those platforms are not really ACPI-compliant, so ...
+
+Bjorn
