@@ -2,24 +2,24 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7DD743BCCA
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 00:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16C0C43BCD2
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 00:01:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239750AbhJZWEF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Oct 2021 18:04:05 -0400
+        id S239838AbhJZWES (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Oct 2021 18:04:18 -0400
 Received: from mga18.intel.com ([134.134.136.126]:57940 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239733AbhJZWEC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 26 Oct 2021 18:04:02 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="216934494"
+        id S239752AbhJZWEF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 26 Oct 2021 18:04:05 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="216934497"
 X-IronPort-AV: E=Sophos;i="5.87,184,1631602800"; 
-   d="scan'208";a="216934494"
+   d="scan'208";a="216934497"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
   by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2021 15:01:01 -0700
 X-IronPort-AV: E=Sophos;i="5.87,184,1631602800"; 
-   d="scan'208";a="497555775"
+   d="scan'208";a="497555780"
 Received: from agluck-desk2.sc.intel.com ([10.3.52.146])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2021 15:01:00 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2021 15:01:01 -0700
 From:   Tony Luck <tony.luck@intel.com>
 To:     Borislav Petkov <bp@alien8.de>, x86@kernel.org
 Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
@@ -31,9 +31,9 @@ Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         linux-acpi@vger.kernel.org, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
         Reinette Chatre <reinette.chatre@intel.com>
-Subject: [PATCH v11 5/7] x86/sgx: Hook arch_memory_failure() into mainline code
-Date:   Tue, 26 Oct 2021 15:00:48 -0700
-Message-Id: <20211026220050.697075-6-tony.luck@intel.com>
+Subject: [PATCH v11 6/7] x86/sgx: Add hook to error injection address validation
+Date:   Tue, 26 Oct 2021 15:00:49 -0700
+Message-Id: <20211026220050.697075-7-tony.luck@intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211026220050.697075-1-tony.luck@intel.com>
 References: <20211018202542.584115-1-tony.luck@intel.com>
@@ -44,131 +44,65 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add a call inside memory_failure() to call the arch specific code
-to check if the address is an SGX EPC page and handle it.
+SGX reserved memory does not appear in the standard address maps.
 
-Note the SGX EPC pages do not have a "struct page" entry, so the hook
-goes in at the same point as the device mapping hook.
+Add hook to call into the SGX code to check if an address is located
+in SGX memory.
 
-Pull the call to acquire the mutex earlier so the SGX errors are also
-protected.
-
-Make set_mce_nospec() skip SGX pages when trying to adjust
-the 1:1 map.
+There are other challenges in injecting errors into SGX. Update the
+documentation with a sequence of operations to inject.
 
 Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
 Tested-by: Reinette Chatre <reinette.chatre@intel.com>
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 ---
- arch/x86/include/asm/processor.h  |  8 ++++++++
- arch/x86/include/asm/set_memory.h |  4 ++++
- include/linux/mm.h                | 13 +++++++++++++
- mm/memory-failure.c               | 19 +++++++++++++------
- 4 files changed, 38 insertions(+), 6 deletions(-)
+ .../firmware-guide/acpi/apei/einj.rst         | 19 +++++++++++++++++++
+ drivers/acpi/apei/einj.c                      |  3 ++-
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 9ad2acaaae9b..4865f2860a4f 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -853,4 +853,12 @@ enum mds_mitigations {
- 	MDS_MITIGATION_VMWERV,
- };
+diff --git a/Documentation/firmware-guide/acpi/apei/einj.rst b/Documentation/firmware-guide/acpi/apei/einj.rst
+index c042176e1707..55e2331a6438 100644
+--- a/Documentation/firmware-guide/acpi/apei/einj.rst
++++ b/Documentation/firmware-guide/acpi/apei/einj.rst
+@@ -181,5 +181,24 @@ You should see something like this in dmesg::
+   [22715.834759] EDAC sbridge MC3: PROCESSOR 0:306e7 TIME 1422553404 SOCKET 0 APIC 0
+   [22716.616173] EDAC MC3: 1 CE memory read error on CPU_SrcID#0_Channel#0_DIMM#0 (channel:0 slot:0 page:0x12345 offset:0x0 grain:32 syndrome:0x0 -  area:DRAM err_code:0001:0090 socket:0 channel_mask:1 rank:0)
  
-+#ifdef CONFIG_X86_SGX
-+int arch_memory_failure(unsigned long pfn, int flags);
-+#define arch_memory_failure arch_memory_failure
++Special notes for injection into SGX enclaves:
 +
-+bool arch_is_platform_page(u64 paddr);
-+#define arch_is_platform_page arch_is_platform_page
-+#endif
++There may be a separate BIOS setup option to enable SGX injection.
 +
- #endif /* _ASM_X86_PROCESSOR_H */
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index 43fa081a1adb..ce8dd215f5b3 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -2,6 +2,7 @@
- #ifndef _ASM_X86_SET_MEMORY_H
- #define _ASM_X86_SET_MEMORY_H
- 
-+#include <linux/mm.h>
- #include <asm/page.h>
- #include <asm-generic/set_memory.h>
- 
-@@ -98,6 +99,9 @@ static inline int set_mce_nospec(unsigned long pfn, bool unmap)
- 	unsigned long decoy_addr;
- 	int rc;
- 
-+	/* SGX pages are not in the 1:1 map */
-+	if (arch_is_platform_page(pfn << PAGE_SHIFT))
-+		return 0;
- 	/*
- 	 * We would like to just call:
- 	 *      set_memory_XX((unsigned long)pfn_to_kaddr(pfn), 1);
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 73a52aba448f..0aa48b238db2 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3124,6 +3124,19 @@ extern void shake_page(struct page *p);
- extern atomic_long_t num_poisoned_pages __read_mostly;
- extern int soft_offline_page(unsigned long pfn, int flags);
- 
-+#ifndef arch_memory_failure
-+static inline int arch_memory_failure(unsigned long pfn, int flags)
-+{
-+	return -ENXIO;
-+}
-+#endif
++The injection process consists of setting some special memory controller
++trigger that will inject the error on the next write to the target
++address. But the h/w prevents any software outside of an SGX enclave
++from accessing enclave pages (even BIOS SMM mode).
 +
-+#ifndef arch_is_platform_page
-+static inline bool arch_is_platform_page(u64 paddr)
-+{
-+	return false;
-+}
-+#endif
- 
- /*
-  * Error handlers for various types of pages.
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 3e6449f2102a..b1cbf9845c19 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1632,21 +1632,28 @@ int memory_failure(unsigned long pfn, int flags)
- 	if (!sysctl_memory_failure_recovery)
- 		panic("Memory failure on page %lx", pfn);
- 
-+	mutex_lock(&mf_mutex);
++The following sequence can be used:
++  1) Determine physical address of enclave page
++  2) Use "notrigger=1" mode to inject (this will setup
++     the injection address, but will not actually inject)
++  3) Enter the enclave
++  4) Store data to the virtual address matching physical address from step 1
++  5) Execute CLFLUSH for that virtual address
++  6) Spin delay for 250ms
++  7) Read from the virtual address. This will trigger the error
 +
- 	p = pfn_to_online_page(pfn);
- 	if (!p) {
-+		res = arch_memory_failure(pfn, flags);
-+		if (res == 0)
-+			goto unlock_mutex;
-+
- 		if (pfn_valid(pfn)) {
- 			pgmap = get_dev_pagemap(pfn, NULL);
--			if (pgmap)
--				return memory_failure_dev_pagemap(pfn, flags,
--								  pgmap);
-+			if (pgmap) {
-+				res = memory_failure_dev_pagemap(pfn, flags,
-+								 pgmap);
-+				goto unlock_mutex;
-+			}
- 		}
- 		pr_err("Memory failure: %#lx: memory outside kernel control\n",
- 			pfn);
--		return -ENXIO;
-+		res = -ENXIO;
-+		goto unlock_mutex;
- 	}
+ For more information about EINJ, please refer to ACPI specification
+ version 4.0, section 17.5 and ACPI 5.0, section 18.6.
+diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+index 2882450c443e..67c335baad52 100644
+--- a/drivers/acpi/apei/einj.c
++++ b/drivers/acpi/apei/einj.c
+@@ -544,7 +544,8 @@ static int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+ 	    ((region_intersects(base_addr, size, IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE)
+ 				!= REGION_INTERSECTS) &&
+ 	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_PERSISTENT_MEMORY)
+-				!= REGION_INTERSECTS)))
++				!= REGION_INTERSECTS) &&
++	     !arch_is_platform_page(base_addr)))
+ 		return -EINVAL;
  
--	mutex_lock(&mf_mutex);
--
- try_again:
- 	if (PageHuge(p)) {
- 		res = memory_failure_hugetlb(pfn, flags);
+ inject:
 -- 
 2.31.1
 
