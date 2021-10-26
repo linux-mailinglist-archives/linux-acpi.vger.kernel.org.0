@@ -2,74 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6520043AD47
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Oct 2021 09:34:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44DFB43ADBB
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Oct 2021 10:01:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232702AbhJZHgl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Oct 2021 03:36:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45486 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233042AbhJZHgk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 26 Oct 2021 03:36:40 -0400
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90723C061226
-        for <linux-acpi@vger.kernel.org>; Tue, 26 Oct 2021 00:34:16 -0700 (PDT)
-Received: by mail-qk1-x72e.google.com with SMTP id bm16so1422606qkb.11
-        for <linux-acpi@vger.kernel.org>; Tue, 26 Oct 2021 00:34:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=XOycsyS8WRs8WZM/52QyGEA5jLYLxAJ/W6Zuel7qkRA=;
-        b=RTkl8uyS7i/Iz5qRUnwc5xVXNU3ItwhMHQQvKidk2hcipXqcmdvIYKAl2f6Ta068Zk
-         VjHBjimCcQPorsd9+W70kGV/QQyYlIG5ac65fNlxg0Gp+EwY3dYS2MY63TcmKj99zF4K
-         OnjccWIuvtn06QWgWZzEzGMJEqqqfot0/Yq5Mwj/X/fZnYlC7QW2iOyv0/Ihq2GgIkNe
-         39Fz7stbik7z2033tcY9eKxWbTjQG0a+NSimLwRmuU2iZRQCP9qfDYwoGaUSrADVojZN
-         u87jJ/Sh5FzrpqzsuddA1fcse9NQrGdPYq+U7M7hrgNZlikCsaFzqbENaXp67rJ3OoN1
-         p27g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=XOycsyS8WRs8WZM/52QyGEA5jLYLxAJ/W6Zuel7qkRA=;
-        b=vj2koGyuzEUvYJyoV7OnR0tXGgOnZzU/lDgAqn1qGAb35WjuOUSPINgB+i6OHhKCjm
-         EtLrT/+AQne5cZ/4VWfF6uBDkOia+1l5Em1r9cQFxG9CEhaTOo7h8SFNE6RR+MHXetur
-         7hcIyg+vkDeoYpWsoeKhd7nkOU7TvlFOlEjNjgFZr7mbaKDddn8EhzNpsA/nlEadaJkG
-         F8G1zWd3FdtWrSRje4UDqRkIjKsHOajl+r4P7/2IxazHFrs7dPuTu5R1xuHUez/dS4x1
-         Un1QLNQCpOvINpHE7ksqPw7rwp5NmJXmh0uv6SbjlJQK9AzXvLn71e6RCvWBvzISnx9u
-         KFuA==
-X-Gm-Message-State: AOAM533CDzIKGi+PQDdfOwZol5qr+dfzTTIuYqq4iJ0nSP6dedCJz4/J
-        6w8fg9ejyqgAhsZzDBPZ7blm0aD8BB6UTsRCqwc=
-X-Google-Smtp-Source: ABdhPJygraWvDHKvyuxpxngNnC4QXAScfUHM6x8UGZe8SCemHuEUTx268K8bXq/C3brNH2IxBxPJc/Eipk/UZ/IYTaE=
-X-Received: by 2002:a05:620a:24cf:: with SMTP id m15mr17357368qkn.434.1635233655314;
- Tue, 26 Oct 2021 00:34:15 -0700 (PDT)
+        id S233896AbhJZID3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Oct 2021 04:03:29 -0400
+Received: from esa12.hc1455-7.c3s2.iphmx.com ([139.138.37.100]:22909 "EHLO
+        esa12.hc1455-7.c3s2.iphmx.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232068AbhJZIDQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 26 Oct 2021 04:03:16 -0400
+X-Greylist: delayed 445 seconds by postgrey-1.27 at vger.kernel.org; Tue, 26 Oct 2021 04:03:11 EDT
+IronPort-SDR: nV8hI6SuojD0UHrDzJJyyOX+sZt1C7HNyO1cX+yiFWoqurhDMtLm+bZBgGqdXJuHW/CH1v+EwR
+ H7LviDCpbJNxUIh4WVKEHN5BOv5eKE1C+/1ggTHLwJxE/ftT7L/UKrdNdXJX1h5xyCc437h5vs
+ D2Lye/CDmCZlXVFcWUEVBAfdJhzCZNl6TEZKx8xCssM0BcEIBhXSdRh4JgweNyOR/y+eYx7D1e
+ TuIu3tpRxOz9RblrBg9qNKZey9FCUzBTTWJJmAeSKelNGSblR0k2IcZXT61b7q0gxLw+GhO9XX
+ l5zslQQMBOioqIY3CyO3l8Ch
+X-IronPort-AV: E=McAfee;i="6200,9189,10148"; a="29985614"
+X-IronPort-AV: E=Sophos;i="5.87,182,1631545200"; 
+   d="scan'208";a="29985614"
+Received: from unknown (HELO oym-r2.gw.nic.fujitsu.com) ([210.162.30.90])
+  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP; 26 Oct 2021 16:53:15 +0900
+Received: from oym-m2.gw.nic.fujitsu.com (oym-nat-oym-m2.gw.nic.fujitsu.com [192.168.87.59])
+        by oym-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id 62692F30E3;
+        Tue, 26 Oct 2021 16:53:14 +0900 (JST)
+Received: from oym-om2.fujitsu.com (oym-om2.o.css.fujitsu.com [10.85.58.162])
+        by oym-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id 3DD6ABDB66;
+        Tue, 26 Oct 2021 16:53:12 +0900 (JST)
+Received: from localhost.localdomain (n3235113.np.ts.nmh.cs.fujitsu.co.jp [10.123.235.113])
+        by oym-om2.fujitsu.com (Postfix) with ESMTP id 1832840108E53;
+        Tue, 26 Oct 2021 16:53:12 +0900 (JST)
+From:   Shuuichirou Ishii <ishii.shuuichir@fujitsu.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, robert.moore@intel.com,
+        erik.kaneda@intel.com, rafael.j.wysocki@intel.com, devel@acpica.org
+Cc:     ishii.shuuichir@fujitsu.com
+Subject: [PATCH] ACPI: Add AEST in ACPI Table Definitions
+Date:   Tue, 26 Oct 2021 16:52:57 +0900
+Message-Id: <20211026075257.3785036-1-ishii.shuuichir@fujitsu.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Received: by 2002:ad4:5d66:0:0:0:0:0 with HTTP; Tue, 26 Oct 2021 00:34:14
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.ru
-From:   Aisha Gaddafi <mrzakirhossain4444@gmail.com>
-Date:   Tue, 26 Oct 2021 00:34:14 -0700
-Message-ID: <CAJGJQubW63on415rLVLETXQWQG-BCLgzyQJPxPCA12Z6VvzNCg@mail.gmail.com>
-Subject: Dearest Friend,?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dearest Friend,
+When We added AEST using the Upgrading ACPI tables via initrd function,
+the kernel could not recognize the AEST, so We added AEST the ACPI table
+definition.
 
-In the name of God, Most Gracious, Most Merciful.
+Signed-off-by: Shuuichirou Ishii <ishii.shuuichir@fujitsu.com>
+---
+ drivers/acpi/tables.c | 2 +-
+ include/acpi/actbl2.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-Peace be upon you and mercy be upon you and blessings be upon you.
-I have the sum of $27.5 million USD for investment, I am interested in
-you for investment project assistance in your country. My name is
-Aisha  Gaddafi and presently living in Oman, I am a Widow and single
-Mother with three Children, the only biological Daughter of late
-Libyan President (Late Colonel Muammar Gaddafi) and presently I am
-under political asylum protection by the Omani Government.
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index f9383736fa0f..ab0fb4c33e07 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -499,7 +499,7 @@ static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst = {
+ 	ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
+ 	ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
+ 	ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
+-	ACPI_SIG_NHLT };
++	ACPI_SIG_NHLT, ACPI_SIG_AEST };
+ 
+ #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
+ 
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index a47b32a5cbde..b586e40d4b86 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -48,6 +48,7 @@
+ #define ACPI_SIG_SDEV           "SDEV"	/* Secure Devices table */
+ #define ACPI_SIG_NHLT           "NHLT"	/* Non-HDAudio Link Table */
+ #define ACPI_SIG_SVKL           "SVKL"	/* Storage Volume Key Location Table */
++#define ACPI_SIG_AEST           "AEST" /* Arm Error Source Table */
+ 
+ /*
+  * All tables must be byte-packed to match the ACPI specification, since
+-- 
+2.27.0
 
-Kindly reply urgently for more details.
-
-my email address below: ayishagddafio@mail.ru
-Thanks
-Yours Truly Aisha
