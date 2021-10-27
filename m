@@ -2,137 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53ADB43C23B
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 07:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81DED43C302
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 08:28:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239416AbhJ0FcS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 01:32:18 -0400
-Received: from out30-44.freemail.mail.aliyun.com ([115.124.30.44]:44516 "EHLO
-        out30-44.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238185AbhJ0FcS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 27 Oct 2021 01:32:18 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R501e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04407;MF=xuesong.chen@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0Utr8L.._1635312590;
-Received: from 30.225.212.53(mailfrom:xuesong.chen@linux.alibaba.com fp:SMTPD_---0Utr8L.._1635312590)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 27 Oct 2021 13:29:51 +0800
-Message-ID: <b392f501-e9fb-2c75-42b6-d94e8b8e6ace@linux.alibaba.com>
-Date:   Wed, 27 Oct 2021 13:29:49 +0800
+        id S237056AbhJ0Ga4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 02:30:56 -0400
+Received: from mga18.intel.com ([134.134.136.126]:51650 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230342AbhJ0Ga4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 27 Oct 2021 02:30:56 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="216996554"
+X-IronPort-AV: E=Sophos;i="5.87,186,1631602800"; 
+   d="scan'208";a="216996554"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2021 23:28:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,186,1631602800"; 
+   d="scan'208";a="447415345"
+Received: from lkp-server01.sh.intel.com (HELO 3b851179dbd8) ([10.239.97.150])
+  by orsmga003.jf.intel.com with ESMTP; 26 Oct 2021 23:28:29 -0700
+Received: from kbuild by 3b851179dbd8 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mfcQG-00004L-Qb; Wed, 27 Oct 2021 06:28:28 +0000
+Date:   Wed, 27 Oct 2021 14:27:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ a1ccff3617a4e0310a4d88e0048c160587a21ce2
+Message-ID: <6178f15e.NY1k0d319VLJNJd6%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.2.0
-Subject: Re: [PATCH v3 2/2] ACPI: APEI: Filter the PCI MCFG address with an
- arch-agnostic method
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
-        james.morse@arm.com, will@kernel.org, rafael@kernel.org,
-        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
-        bhelgaas@google.com, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Huang Ying <ying.huang@intel.com>,
-        xuesong.chen@linux.alibaba.com
-References: <20211026204722.GA158130@bhelgaas>
-From:   Xuesong Chen <xuesong.chen@linux.alibaba.com>
-In-Reply-To: <20211026204722.GA158130@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: a1ccff3617a4e0310a4d88e0048c160587a21ce2  Merge branch 'pm-cpufreq' into bleeding-edge
 
+elapsed time: 966m
 
-On 27/10/2021 04:47, Bjorn Helgaas wrote:
-> On Tue, Oct 26, 2021 at 05:16:47PM +0800, Xuesong Chen wrote:
->> On 26/10/2021 07:37, Bjorn Helgaas wrote:
-> 
->>> My point was that when ECAM is implemented correctly, a CPU does a
->>> single MMIO load to do a PCI config read and a single MMIO store to do
->>> a PCI config write.  In that case there no need for any locking, so
->>> there's no need for APEI to reserve those resources.
->>
->> Ah, got it. That means the PCI ECAM has a implicit mutual exclusion with EINJ
->> if the hardware implemention is correct, so we can remove the MCFG from
->> the APEI's safely.
-> 
-> Well, not quite.  ECAM doesn't *need* mutual exclusion.  Single loads
-> and stores are atomic by definition.
-> 
+configs tested: 52
+configs skipped: 3
 
-OK, because ECAM config access has intrinsic atomic primitive, so no need to
-reserve those ECAM config space resources for APEI, that's why commit d91525eb8ee6 
-("ACPI, EINJ: Enhance error injection tolerance level") fix make sense... 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->>> I think apei_resources_request() should continue to reserve MCFG areas
->>> on tegra194 and xgene, but it does not need to reserve them on other
->>> ARM64 platforms.
->>
->> As a summary: we need to reserve the MCFG areas on those platforms with a
->> quirk ECAM implementation since there's no lockless method to access the
->> configuration space, on other platforms we don't need to reserve the MCFG
->> resources (so can remove it safely).
->>
->> So we need to add another patch to handle the case of tegra194 and xgene...
->> I will try to figure it out. 
-> 
-> I looked through these again and found another problem case (thunder).
-> Here are my notes from my research.
-> 
-> Normal ECAM users require no device-specific support.  The platform
-> supplies an MCFG table, the generic code works, no mutual exclusion is
-> required, and APEI doesn't need to reserve the MCFG areas.
-> 
-> The problem cases are platforms that supply an MCFG table but require
-> some device-specific workarounds.  We can identify these because they
-> have quirks in pci-mcfg.c.  Here are the existing quirks and the
-> pci_ecam_ops structs they supply:
-> 
->   AL_ECAM             al_pcie_ops                 # OK
->   QCOM_ECAM32         pci_32b_ops                 # OK
->   HISI_QUAD_DOM       hisi_pcie_ops               # OK
->   THUNDER_PEM_QUIRK   thunder_pem_ecam_ops        # problem
->   THUNDER_PEM_QUIRK   thunder_pem_ecam_ops        # problem
->   THUNDER_ECAM_QUIRK  pci_thunder_ecam_ops        # OK
->   tegra               tegra194_pcie_ops           # problem
->   XGENE_V1_ECAM_MCFG  xgene_v1_pcie_ecam_ops      # problem
->   XGENE_V2_ECAM_MCFG  xgene_v2_pcie_ecam_ops      # problem
->   ALTRA_ECAM_QUIRK    pci_32b_read_ops            # OK
-> 
-> The ones marked "OK" have .map_bus(), .read(), and .write() methods
-> that need no mutual exclusion because they boil down to just a single
-> MMIO load or store.  These are fine and there shouldn't be a problem
-> if an EINJ action accesses the ECAM space.
-> 
-> The others do require mutual exclusion:
-> 
->   - thunder_pem_ecam_ops: thunder_pem_config_read() calls
->     thunder_pem_bridge_read(), which does a writeq() to PEM_CFG_RD
->     followed by a readq().  The writeq() and readq() must be atomic to
->     avoid corruption.
-> 
->   - tegra194_pcie_ops: tegra194_map_bus() programs the ATU.  This and
->     the subsequent ECAM read/write must be atomic.
-> 
->   - xgene_v1_pcie_ecam_ops and xgene_v2_pcie_ecam_ops:
->     xgene_pcie_map_bus() sets the RTID.  This and the subsequent ECAM
->     read/write must be atomic.
-> 
-> I had to look at all these ops individually to find them, so I don't
-> see an easy way to identify these problem cases at run-time.
-> 
-> I personally would not have an issue with having APEI try to reserve
-> the MCFG regions for any platform that has an MCFG quirk.  That would
-> prevent the al, qcom, hisi, thunder-ecam, and altra drivers from using
-> EINJ even though it would probably be safe for them.  But we already
-> know those platforms are not really ACPI-compliant, so ...
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-OK, understood. Since those platforms are not really ACPI-compliant, so
-we can unify all the quirks together. Let me send an inital solution about
-this for your review and see if there's room for further improvement...
-
-Thanks,
-Xuesong
-
-> 
-> Bjorn
-> 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
