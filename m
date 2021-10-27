@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDC5143D4D3
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EECDA43D4F7
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241193AbhJ0VYW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 17:24:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53842 "EHLO
+        id S236005AbhJ0VYh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 17:24:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238904AbhJ0VXf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:23:35 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A922C0432CC;
-        Wed, 27 Oct 2021 14:18:41 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id b32so5810585lfv.0;
-        Wed, 27 Oct 2021 14:18:41 -0700 (PDT)
+        with ESMTP id S241312AbhJ0VXj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:23:39 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8E47C0432D2;
+        Wed, 27 Oct 2021 14:18:42 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id bp15so9014571lfb.4;
+        Wed, 27 Oct 2021 14:18:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ss23/14gvwwJvYM34ibI/ZgbUmpHxVjzq3uUOBHaqko=;
-        b=arwhy2EzVRFeFixUch4iOYgWEx15do0VgxAfdqV0D/m7TKP9iKYpnGzKHPc/i8aFQC
-         696TXg56UlUupf+0+RULAffCTRlP8iUn1mFqCgape3sBElIYYn3vwgHjtN2bztkR/yaz
-         5XVeuFkp92H0x78xi/Heckb4RKbtEPv+wOARiARvxCIQqcVNpwpOqlLJtRckQaDgVOF7
-         skIGftczMYqZ1vyVBJ3tsSBqPsOUSX9T5P10sVT2ED2dp7t8+MxfkB66wM+xzBA5lfYi
-         IRYhj0tnB8GrulFr808wNLi8EcEAMFxyf0xL4I35lWHzPaQq0/pqp97SuSICmC8JFF01
-         uymg==
+        bh=mcl172dtfGlkf1TcslUPgwMlkZWwlYhkCJ06Bxg/bBU=;
+        b=cr3OoRz90WYilQxW+1X5mebi5NSQ3xkQzRtxCrXFmhmNlKVd4Mk6BghlahMCy7Iyto
+         a4UuDalJ4f78KLT3HAaBh5614BnSWOH/t9zbr0YPxrmg6/JuWnf5dAnKZsc2b4GAIVeJ
+         9uKqX2hlny1afoYheoedvOJbugyMQlznsmVrZlOSaKsdu2draZ6B8WFqE5e4JBYGYqhC
+         KXF/Z/WyDDccTQoDfFgyc6FoM2LFPomJZ3hRr6/JbV3znQY16GvUC7Q6Zprq2NGBD3P+
+         O43c0LmvrM3DBmK/z7V4e9Zq9h2WiaNFgKFrXs2jyu8jI7tMHdmmNyPNNNQGazHFhhOk
+         f27Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ss23/14gvwwJvYM34ibI/ZgbUmpHxVjzq3uUOBHaqko=;
-        b=P+hZHiEWfv6uRXeSLPCgb3dBPd2ZZLQ6KTcbdw+K7GjdfhCzLKwNtDkqs5sQKXJ7SI
-         BxRXulihJ5l+UQAfVLg/zR3yr4M8FrFSTqz1FU3aphuUIWAeupIDdkvA6/R9R1pWBLXy
-         9KTvh1J7OyPVPXmzVX2EALGWiQmMVGOpDYxEjuRRFP7UdDpE3fgtt9vEIxOEGK7zYlZE
-         feyM7gl5QwIkoeec4TZJ8hYAcXqNTzCp55o0ucjqbbGChdI4y3oQkKbyhPaVVLKJIt6p
-         M0g4Zz9E0E+1JaFbxbAP6p1tx7EZKoxRymyivLhqmnVHsk2RTjhBgH4QHvoNGwB1QLPO
-         i03Q==
-X-Gm-Message-State: AOAM5331H8T58qOtHlJI9uxY97jztkVrvtfSvImeaDVOy3hn7INiu4L2
-        HqX3s0YMMhcrUe8loZ31nd8=
-X-Google-Smtp-Source: ABdhPJwimcGthRahpfEG00zaldcVjrnfSz4ndztOCehFVrD6lb951uJJXEFJ6kDGLgjZU1iMb9PE8Q==
-X-Received: by 2002:a05:6512:1047:: with SMTP id c7mr83192lfb.589.1635369519432;
-        Wed, 27 Oct 2021 14:18:39 -0700 (PDT)
+        bh=mcl172dtfGlkf1TcslUPgwMlkZWwlYhkCJ06Bxg/bBU=;
+        b=pgU1f2oLo4rCuhwZg+HHW5Iiywkj+aNPfHuL2e8gQx1zi3aLvTgCzPu49g9/W2C/Yl
+         5Zh+jq1/zyKMKxGvUJOqR6gHm+ePpslPa1gM/bTTGfjovb2Gu9pBoDBn25KJLc/nlNRg
+         tjyNxsr0i57UIANPgS+3dEc8dbA7HA8TF43769G3ULDLele5UBoSnoXx1WfThVdOLw5I
+         zLkrW7taTg0xiT3NPNtbrB+dHT8OqGTGLVoHhkuJYnPHPuignXSM+dcbuHx5OvYGDBpd
+         7hrwUIN3UimX3KGcCFOasBAcicI9Orh+uWweRqV1DWP4Xc25g8nsPPjO5d9hhm9wVY1N
+         4U/Q==
+X-Gm-Message-State: AOAM531ZX8tVeuRjffFJHB1mszEZVS6+ZzEefYyD09QVh26JBfFEz+fZ
+        dObXkvzbUFtQ7bPYX9yhyAk=
+X-Google-Smtp-Source: ABdhPJwc0gXcQNbXi4wauxJdUJOzB/R/HFQ4KaA94+CkBW5unEGwAKJM6qsNc2djNTohX6NYEK5drA==
+X-Received: by 2002:a05:6512:3ca3:: with SMTP id h35mr145327lfv.128.1635369521305;
+        Wed, 27 Oct 2021 14:18:41 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru. [46.138.41.28])
-        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.37
+        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Oct 2021 14:18:39 -0700 (PDT)
+        Wed, 27 Oct 2021 14:18:41 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -110,9 +110,9 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [PATCH v2 25/45] reboot: Remove pm_power_off_prepare()
-Date:   Thu, 28 Oct 2021 00:16:55 +0300
-Message-Id: <20211027211715.12671-26-digetx@gmail.com>
+Subject: [PATCH v2 26/45] soc/tegra: pmc: Utilize power-handler API to power off Nexus 7 properly
+Date:   Thu, 28 Oct 2021 00:16:56 +0300
+Message-Id: <20211027211715.12671-27-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -122,56 +122,140 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-All pm_power_off_prepare() users were converted to power-handler API.
-Remove the obsolete callback.
+Nexus 7 Android tablet can be turned off using a special bootloader
+command which is conveyed to bootloader by putting magic value into
+specific scratch register and then rebooting normally. This power-off
+method should be invoked if USB cable is connected. Bootloader then will
+display battery status and power off the device. This behaviour is
+borrowed from downstream kernel and matches user expectations, otherwise
+it looks like device got hung during power-off and it may wake up on
+USB disconnect.
+
+Switch PMC driver to power-handler API, which provides drivers with
+combined power-off+restart call chains functionality, replacing the
+restart-only call chain API.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- include/linux/pm.h |  1 -
- kernel/reboot.c    | 11 -----------
- 2 files changed, 12 deletions(-)
+ drivers/soc/tegra/pmc.c | 54 +++++++++++++++++++++++++++--------------
+ 1 file changed, 36 insertions(+), 18 deletions(-)
 
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 1d8209c09686..d9bf1426f81e 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -20,7 +20,6 @@
-  * Callbacks for platform drivers to implement.
-  */
- extern void (*pm_power_off)(void);
--extern void (*pm_power_off_prepare)(void);
+diff --git a/drivers/soc/tegra/pmc.c b/drivers/soc/tegra/pmc.c
+index 575d6d5b4294..a01330099e1a 100644
+--- a/drivers/soc/tegra/pmc.c
++++ b/drivers/soc/tegra/pmc.c
+@@ -39,6 +39,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/pm_domain.h>
+ #include <linux/pm_opp.h>
++#include <linux/power_supply.h>
+ #include <linux/reboot.h>
+ #include <linux/regmap.h>
+ #include <linux/reset.h>
+@@ -107,6 +108,7 @@
+ #define PMC_USB_DEBOUNCE_DEL		0xec
+ #define PMC_USB_AO			0xf0
  
- struct device; /* we have a circular dep with device.h */
- #ifdef CONFIG_VT_CONSOLE_SLEEP
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index 779429726616..9895bb56cee4 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -48,13 +48,6 @@ int reboot_cpu;
- enum reboot_type reboot_type = BOOT_ACPI;
- int reboot_force;
++#define PMC_SCRATCH37			0x130
+ #define PMC_SCRATCH41			0x140
  
--/*
-- * If set, this is used for preparing the system to power off.
-- */
--
--void (*pm_power_off_prepare)(void);
--EXPORT_SYMBOL_GPL(pm_power_off_prepare);
--
- /**
-  *	emergency_restart - reboot the system
-  *
-@@ -866,10 +859,6 @@ void do_kernel_power_off(void)
- 
- static void do_kernel_power_off_prepare(void)
- {
--	/* legacy pm_power_off_prepare() is unchained and it has highest priority */
--	if (pm_power_off_prepare)
--		return pm_power_off_prepare();
--
- 	blocking_notifier_call_chain(&power_off_handler_list, POWEROFF_PREPARE,
- 				     NULL);
+ #define PMC_WAKE2_MASK			0x160
+@@ -1064,10 +1066,8 @@ int tegra_pmc_cpu_remove_clamping(unsigned int cpuid)
+ 	return tegra_powergate_remove_clamping(id);
  }
+ 
+-static int tegra_pmc_restart_notify(struct notifier_block *this,
+-				    unsigned long action, void *data)
++static void tegra_pmc_restart(const char *cmd)
+ {
+-	const char *cmd = data;
+ 	u32 value;
+ 
+ 	value = tegra_pmc_scratch_readl(pmc, pmc->soc->regs->scratch0);
+@@ -1090,13 +1090,33 @@ static int tegra_pmc_restart_notify(struct notifier_block *this,
+ 	value = tegra_pmc_readl(pmc, PMC_CNTRL);
+ 	value |= PMC_CNTRL_MAIN_RST;
+ 	tegra_pmc_writel(pmc, value, PMC_CNTRL);
++}
+ 
+-	return NOTIFY_DONE;
++static void tegra_pmc_restart_handler(struct restart_data *data)
++{
++	tegra_pmc_restart(data->cmd);
+ }
+ 
+-static struct notifier_block tegra_pmc_restart_handler = {
+-	.notifier_call = tegra_pmc_restart_notify,
+-	.priority = 128,
++static void tegra_pmc_power_off_handler(struct power_off_data *data)
++{
++	/*
++	 * Reboot Nexus 7 into special bootloader mode if USB cable is
++	 * connected in order to display battery status and power off.
++	 */
++	if (of_machine_is_compatible("asus,grouper") &&
++	    power_supply_is_system_supplied()) {
++		const u32 go_to_charger_mode = 0xa5a55a5a;
++
++		tegra_pmc_writel(pmc, go_to_charger_mode, PMC_SCRATCH37);
++		tegra_pmc_restart(NULL);
++	}
++}
++
++static struct power_handler tegra_pmc_power_handler = {
++	.restart_cb = tegra_pmc_restart_handler,
++	.power_off_cb = tegra_pmc_power_off_handler,
++	.power_off_priority = POWEROFF_PRIO_FIRMWARE,
++	.power_off_chaining_allowed = true,
+ };
+ 
+ static int powergate_show(struct seq_file *s, void *data)
+@@ -2859,6 +2879,13 @@ static int tegra_pmc_probe(struct platform_device *pdev)
+ 		pmc->clk = NULL;
+ 	}
+ 
++	err = devm_register_power_handler(&pdev->dev, &tegra_pmc_power_handler);
++	if (err) {
++		dev_err(&pdev->dev, "unable to register power handler, %d\n",
++			err);
++		return err;
++	}
++
+ 	/*
+ 	 * PCLK clock rate can't be retrieved using CLK API because it
+ 	 * causes lockup if CPU enters LP2 idle state from some other
+@@ -2890,20 +2917,13 @@ static int tegra_pmc_probe(struct platform_device *pdev)
+ 			goto cleanup_sysfs;
+ 	}
+ 
+-	err = register_restart_handler(&tegra_pmc_restart_handler);
+-	if (err) {
+-		dev_err(&pdev->dev, "unable to register restart handler, %d\n",
+-			err);
+-		goto cleanup_debugfs;
+-	}
+-
+ 	err = tegra_pmc_pinctrl_init(pmc);
+ 	if (err)
+-		goto cleanup_restart_handler;
++		goto cleanup_debugfs;
+ 
+ 	err = tegra_pmc_regmap_init(pmc);
+ 	if (err < 0)
+-		goto cleanup_restart_handler;
++		goto cleanup_debugfs;
+ 
+ 	err = tegra_powergate_init(pmc, pdev->dev.of_node);
+ 	if (err < 0)
+@@ -2926,8 +2946,6 @@ static int tegra_pmc_probe(struct platform_device *pdev)
+ 
+ cleanup_powergates:
+ 	tegra_powergate_remove_all(pdev->dev.of_node);
+-cleanup_restart_handler:
+-	unregister_restart_handler(&tegra_pmc_restart_handler);
+ cleanup_debugfs:
+ 	debugfs_remove(pmc->debugfs);
+ cleanup_sysfs:
 -- 
 2.33.1
 
