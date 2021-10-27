@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEE9C43D460
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B7A643D477
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:20:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241067AbhJ0VVz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 17:21:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53912 "EHLO
+        id S239675AbhJ0VWl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 17:22:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244491AbhJ0VU6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:20:58 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26741C061236;
-        Wed, 27 Oct 2021 14:18:26 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id u5so6965517ljo.8;
-        Wed, 27 Oct 2021 14:18:26 -0700 (PDT)
+        with ESMTP id S244575AbhJ0VVM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:21:12 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC3E3C06118B;
+        Wed, 27 Oct 2021 14:18:27 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id d23so5637879ljj.10;
+        Wed, 27 Oct 2021 14:18:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=rn6kChPkfoFMf9bWYHf70bnGYIj3LFIVKDTZ1qePG0M=;
-        b=UpWsh/FpGieodrD9s3cNqzK6jy31h5ljZFEwQ+D2q0RTlqvYeysLYZeRQo1KpYyV2E
-         FrJFQ3pk1ZjLGkSmkQuMqpQGm3pLQYdGN7MewaJIFH4jHkVWFJbftv36SpE7wHzAfM6f
-         KfYBgHNJAt7rLgdyfNzETIqs5AkGlF85N8K8c3T6GaZ5ArdlodepiLYddRqHEhO/3Klg
-         D8JJS7iUiqx+skaUr3SoIxZKpGEOkheRNugtxOQ9N5fX3CP32io6EjkCrnAIhbDZrUUD
-         zN+4zZTl26WGoleIrx97PYAjrTar40Pf+ijrpXYWtFKLlTkmoUa0DEaDGbd2O74e82mz
-         NNrw==
+        bh=+aSuiMovnmRlKPN5Rl3JuNmFHUt6skQo3O4wD7dX5JQ=;
+        b=ehfhpJuO10tH0JJc+NToykiYU0vR9QNQWRGBFoJEmaOxGSK6IxZtCBEULR0W0LLrnh
+         rWgUh4Kku73ZADq2I2DXfxnNngsudNBU15HzSYHJ5ZGaDy4yKkQqtcH85+TmIu3x8kh9
+         Xstkp84P8gb9NHhImh/kkEu/eLRzihVMriWTiS1lyvVYlI0S9doH7srHH4uUDtgtagHH
+         NnlFwVxtytB+YFKInQI4zlx/qw9ggp+d792cFqZ86NXSDRvmn2HsZCjK5JnAlXZtcFzO
+         y6wwCc1x7j8EpGXUAyH+X2YWcF6tl/6iZWVr+mUSLKEmJFL/9H+FbFwe9fJf0ZNH5qP/
+         q9Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=rn6kChPkfoFMf9bWYHf70bnGYIj3LFIVKDTZ1qePG0M=;
-        b=PUiT6eRC8CXKXXImEEoHs+LAi8oXfdl9cqflGHVD0i2btPXjcy6a/fajAYxldtLSq6
-         xCNUW5N53UGZJn9rwJQNtU7R5GuR2OtkNRi5FQot8I41Q8MSFyGQhSgtW+Zfg8CMknEJ
-         ftCJwlOwxxRVg5uSSOsBKpGABKHFjM2qfQysEzSw/QrwEQCk3JHayeCyfK/5z5KLqk2I
-         lKgmivqBb9wDOpxeMnFzJMDTPOhBuk7Ntb6OOCSn6wwa/JWlchJcHaEkqey2IiIEi9QM
-         8opWqkLlxNxrPkGsMeMkp0Y2foG8mrc8jZrY/MfBSWuNhhuJZD6XkFETUIPj0A3wMld1
-         e83w==
-X-Gm-Message-State: AOAM530zuIPgL0ZoHcUOGUy4TXdRg+dg69G3kO+cXANx3XTnoD0AyTtG
-        VgCG10WAuy9I6dkV6RRFYTg=
-X-Google-Smtp-Source: ABdhPJzozXX9CLT+V56pSkYTIT6ENXsjFNJw478xo/aJxRV2fH58rMxN8jZgU4s16hZZ4d9qEx0Lfg==
-X-Received: by 2002:a05:651c:114b:: with SMTP id h11mr321181ljo.35.1635369504516;
-        Wed, 27 Oct 2021 14:18:24 -0700 (PDT)
+        bh=+aSuiMovnmRlKPN5Rl3JuNmFHUt6skQo3O4wD7dX5JQ=;
+        b=SS7ePQk+dxXycLCsxOA2TRnFD4LEFP3J8QzupCIhs3T6pem699ztDiJArigp3y45h7
+         doiLTijN+faN9AREIhxcHfUCvVe0ZSemBt1W9IjeCgTNu9CHr3+TIEsfsu2jn+epRmhk
+         ++rmearHuco4deYs0SjAfOEhfgDksg+Q6jhJ0xbh/ugam+G6Ws+nkLm3ADDwqvNlnT6n
+         QGNz5z1LBk2JwLyUk7ZhAP9B21ET6pmSsrt6e/7QfPuGqMfKxGnEnrRbyNcFWkcot1Zg
+         FouHOx3okzQQUX/lEDAPZhyPGBc5ZchnahImPNV50ABzO4cHCC/N+ouffrt9RNJ/x3jB
+         /PyQ==
+X-Gm-Message-State: AOAM5305huWMHnU9/wdtYOLZqEV2AzTceIXs9O3kudrODT9Z5VXZ3Wdy
+        QgKHcYhOJvcLUfrS4u5HiZE=
+X-Google-Smtp-Source: ABdhPJySCnLdJnyefyOJzA6HMZEBF+hyXH0EM8QKUFyfoUHamOZK7R7lRqwGKBcRpuomVJFL6q66/Q==
+X-Received: by 2002:a2e:891a:: with SMTP id d26mr331100lji.368.1635369506344;
+        Wed, 27 Oct 2021 14:18:26 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru. [46.138.41.28])
-        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.22
+        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Oct 2021 14:18:24 -0700 (PDT)
+        Wed, 27 Oct 2021 14:18:26 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -110,9 +110,9 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [PATCH v2 17/45] powerpc: Use do_kernel_power_off()
-Date:   Thu, 28 Oct 2021 00:16:47 +0300
-Message-Id: <20211027211715.12671-18-digetx@gmail.com>
+Subject: [PATCH v2 18/45] riscv: Use do_kernel_power_off()
+Date:   Thu, 28 Oct 2021 00:16:48 +0300
+Message-Id: <20211027211715.12671-19-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -129,39 +129,34 @@ be converted to the new power-off API.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- arch/powerpc/kernel/setup-common.c | 4 +---
- arch/powerpc/xmon/xmon.c           | 3 +--
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ arch/riscv/kernel/reset.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 4f1322b65760..71c4ccd9bbb1 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -161,9 +161,7 @@ void machine_restart(char *cmd)
- void machine_power_off(void)
+diff --git a/arch/riscv/kernel/reset.c b/arch/riscv/kernel/reset.c
+index 9c842c41684a..912288572226 100644
+--- a/arch/riscv/kernel/reset.c
++++ b/arch/riscv/kernel/reset.c
+@@ -23,16 +23,12 @@ void machine_restart(char *cmd)
+ 
+ void machine_halt(void)
  {
- 	machine_shutdown();
--	if (pm_power_off)
+-	if (pm_power_off != NULL)
 -		pm_power_off();
--
+-	else
+-		default_power_off();
 +	do_kernel_power_off();
- 	smp_send_stop();
- 	machine_hang();
- }
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index dd8241c009e5..9d835807d645 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -1243,8 +1243,7 @@ static void bootcmds(void)
- 	} else if (cmd == 'h') {
- 		ppc_md.halt();
- 	} else if (cmd == 'p') {
--		if (pm_power_off)
--			pm_power_off();
-+		do_kernel_power_off();
- 	}
++	default_power_off();
  }
  
+ void machine_power_off(void)
+ {
+-	if (pm_power_off != NULL)
+-		pm_power_off();
+-	else
+-		default_power_off();
++	do_kernel_power_off();
++	default_power_off();
+ }
 -- 
 2.33.1
 
