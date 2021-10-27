@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3426943D50B
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6C2643D512
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240114AbhJ0VZX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 17:25:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53902 "EHLO
+        id S241106AbhJ0VZZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 17:25:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241181AbhJ0VYU (ORCPT
+        with ESMTP id S234550AbhJ0VYU (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:24:20 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D950C06122A;
-        Wed, 27 Oct 2021 14:18:48 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id j2so9016174lfg.3;
-        Wed, 27 Oct 2021 14:18:48 -0700 (PDT)
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E22FC0432DB;
+        Wed, 27 Oct 2021 14:18:50 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id j2so9016302lfg.3;
+        Wed, 27 Oct 2021 14:18:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=VpMTaQaJ0cjNLgvNqh3di7liIGTew7KcJqDZRitT+Gs=;
-        b=IWwdEP2zbLaLlU4mCU5s8PpqrkaIWlck+oA3xnCuAzsOirLY91m5COquObIzRO/SOa
-         ZZIFcDLGTP22p0/7Hcw3xr55ftJZWhQ4nU6sBNGCfWjV2gTeJrHUPc9jLo/fr5xO0l0l
-         0SNS1n6R63fMlbNJFT3gbKkQCc0Ia7/EAvKfYLtASP95KzfXrWNNTSb1yRqxn8x5d6xD
-         hciHreIyBYgx6dcdUlzTSBb07ys9RFpq3Y5/l5Vd2vvkqxnAXOO/WD9ek4xsO4aDTsfM
-         H41ne9Olkj2NqvJkNPysdfnoteByPeCFY3T52VBJFYJ9FKDG6+cEspYVw2UY7y4ppIDD
-         pOHg==
+        bh=umNH2+YT7M6ZKcjQGvjjohnKVEe/3rK29YQH+BDj6i4=;
+        b=nj5zb43OqtwdizDOJ4YZ+fYZadM1gdDKmRqYZUCoy6YYJ9FK+h8NFV8Fm4J2Ku+dUO
+         VD1iu0fINLYL61cuY7tNDYLtDDcpQWTMBS3LiXmrEVigOlROqEfbjJpsrnK8lw9w6k0A
+         Q5RVvk+HURAmLxg4yngnt6lHHBxEc4oSlIcG3ZpIBx+R3YAOuuSSdjMf/vRVMuvqCw1Z
+         E8uGSsJkZ6VWq/NOLfLD+OAnXKEDLZsNGIWjcaZrIrkicK6f30puV4871fbRXrX4aoDM
+         yS04DJACEKWBr3KF/AjOj2De3JGJ2p+GHt74NSrUBKQDPvr858UletsNh5sICSkmVEWD
+         3KsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=VpMTaQaJ0cjNLgvNqh3di7liIGTew7KcJqDZRitT+Gs=;
-        b=fwy9dH9CHv+Ow9BtWYaZ0GSWGKlXqXS94k5WXkdAevuWiFHA6gGkVG6Hrmh0RXBo2V
-         C+UZvfp3/cd6MEKDRiDbeuRSPjMqVsbu5MgGiT93y3mKzEQFlVVVeHHjq4hA5jIr5Ooy
-         43Q3zXB0ac5qmsSwEDx3xGYKBcRnSRjwkd/jImehPR/0/2UgrBf2pmItbR+P092GoLLs
-         WSmtrb5CqHk/J6E+uSiq5Ra4PauTjR7SYYkCox6rJnpGSs4SE8xBSszTBTI4xc/le6Mt
-         5v+nQCZAfZ8/SUiz7Z9vEwpMGh+WOWrDdyqs9Fiv8QMv1j00d3KW/d4J7cAN/cuNjPEf
-         nSmw==
-X-Gm-Message-State: AOAM533uRov04WuqxJlVws2g3MIrDxfXuZH7VIpRfx44u4itTEJY36G9
-        9LYHK06jwcALa1tbyObQFXQ=
-X-Google-Smtp-Source: ABdhPJys0u/+wFsWDr/9j4b/C5x8WEos0EuABuOI0MYqETh3mbRQO/mjL91g1gnGx/4TO6/Fje2n8g==
-X-Received: by 2002:ac2:4c9a:: with SMTP id d26mr128014lfl.344.1635369526848;
-        Wed, 27 Oct 2021 14:18:46 -0700 (PDT)
+        bh=umNH2+YT7M6ZKcjQGvjjohnKVEe/3rK29YQH+BDj6i4=;
+        b=GLTVabvHRgoUlmbC2qHtqkDVDvW3jksnlunk5UGnamviIvFF5gox0gG+4iFOCJ1HVG
+         dUNllC9JDFm6T26jLtFYRBwBlaHlbM6ic2I2Qj9rl3eQcJZ7uHRNQTkPtoBsq/Qbenu5
+         NgtSTX5YYOmNqrmpWcfla16fsabfndGLx9h3vcpS9vrLOPaHdMPYaG0loXoyyGdB7sV/
+         ZrLbD5J0sejGeGO805T+Kfk0I4QE1RoWceKhobwag0QaaTkrvmNopBjohQuXRReL1fDA
+         0rQ5dM/voRfpQ/5DYtsg+DuLOULyoKdLkR2pDB4C7CyRFDX0ethL0i72GWy0qejhBwcs
+         vbpg==
+X-Gm-Message-State: AOAM530RoTjxFvaNZkOQ3M23r5UW5b9tWnXqAdINl5SYzuf6WWpfy6Bg
+        96lc59PMMqp+MqaIXEgJC9s=
+X-Google-Smtp-Source: ABdhPJyzuSZuOYHEQbprBgwtJMyx5L9tc7ERtjIIXrEKG72XHaUi8WMWlLHXLzXgCVfDIwEbrdMbVw==
+X-Received: by 2002:a05:6512:38d0:: with SMTP id p16mr83922lft.483.1635369528748;
+        Wed, 27 Oct 2021 14:18:48 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru. [46.138.41.28])
-        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.45
+        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Oct 2021 14:18:46 -0700 (PDT)
+        Wed, 27 Oct 2021 14:18:48 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -110,9 +110,9 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [PATCH v2 29/45] mfd: acer-a500: Use devm_register_power_handler()
-Date:   Thu, 28 Oct 2021 00:16:59 +0300
-Message-Id: <20211027211715.12671-30-digetx@gmail.com>
+Subject: [PATCH v2 30/45] mfd: ene-kb3930: Use devm_register_power_handler()
+Date:   Thu, 28 Oct 2021 00:17:00 +0300
+Message-Id: <20211027211715.12671-31-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -128,109 +128,102 @@ provides restart-handler support, i.e. all in one API.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mfd/acer-ec-a500.c | 52 ++++++++++++++------------------------
- 1 file changed, 19 insertions(+), 33 deletions(-)
+ drivers/mfd/ene-kb3930.c | 45 ++++++++++++++--------------------------
+ 1 file changed, 15 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/mfd/acer-ec-a500.c b/drivers/mfd/acer-ec-a500.c
-index 80c2fdd14fc4..fc864abc0049 100644
---- a/drivers/mfd/acer-ec-a500.c
-+++ b/drivers/mfd/acer-ec-a500.c
-@@ -31,8 +31,6 @@ enum {
- 	REG_COLD_REBOOT = 0x55,
+diff --git a/drivers/mfd/ene-kb3930.c b/drivers/mfd/ene-kb3930.c
+index 1b73318d1f1f..6a3c5f48e5e1 100644
+--- a/drivers/mfd/ene-kb3930.c
++++ b/drivers/mfd/ene-kb3930.c
+@@ -31,10 +31,9 @@ struct kb3930 {
+ 	struct i2c_client *client;
+ 	struct regmap *ram_regmap;
+ 	struct gpio_descs *off_gpios;
++	struct power_handler power_handler;
  };
  
--static struct i2c_client *a500_ec_client_pm_off;
+-static struct kb3930 *kb3930_power_off;
 -
- static int a500_ec_read(void *context, const void *reg_buf, size_t reg_size,
- 			void *val_buf, size_t val_sizel)
- {
-@@ -104,32 +102,35 @@ static const struct regmap_bus a500_ec_regmap_bus = {
- 	.max_raw_read = 2,
- };
+ #define EC_GPIO_WAVE		0
+ #define EC_GPIO_OFF_MODE	1
  
--static void a500_ec_poweroff(void)
-+static void a500_ec_power_off_handler(struct power_off_data *data)
- {
--	i2c_smbus_write_word_data(a500_ec_client_pm_off,
--				  REG_SHUTDOWN, CMD_SHUTDOWN);
-+	struct i2c_client *client = data->cb_data;
-+
-+	i2c_smbus_write_word_data(client, REG_SHUTDOWN, CMD_SHUTDOWN);
- 
- 	mdelay(A500_EC_POWER_CMD_TIMEOUT);
+@@ -60,21 +59,19 @@ static void kb3930_off(struct kb3930 *ddata, int off_mode)
+ 	}
  }
  
--static int a500_ec_restart_notify(struct notifier_block *this,
--				  unsigned long reboot_mode, void *data)
-+static void a500_ec_restart_handler(struct restart_data *data)
+-static int kb3930_restart(struct notifier_block *this,
+-			  unsigned long mode, void *cmd)
++static void kb3930_restart(struct restart_data *data)
  {
--	if (reboot_mode == REBOOT_WARM)
--		i2c_smbus_write_word_data(a500_ec_client_pm_off,
-+	struct i2c_client *client = data->cb_data;
-+
-+	if (data->mode == REBOOT_WARM)
-+		i2c_smbus_write_word_data(client,
- 					  REG_WARM_REBOOT, CMD_WARM_REBOOT);
- 	else
--		i2c_smbus_write_word_data(a500_ec_client_pm_off,
-+		i2c_smbus_write_word_data(client,
- 					  REG_COLD_REBOOT, CMD_COLD_REBOOT);
- 
- 	mdelay(A500_EC_POWER_CMD_TIMEOUT);
--
+-	kb3930_off(kb3930_power_off, EC_OFF_MODE_REBOOT);
 -	return NOTIFY_DONE;
++	struct kb3930 *ddata = data->cb_data;
++
++	kb3930_off(ddata, EC_OFF_MODE_REBOOT);
  }
  
--static struct notifier_block a500_ec_restart_handler = {
--	.notifier_call = a500_ec_restart_notify,
--	.priority = 200,
-+static struct power_handler a500_ec_power_handler = {
-+	.restart_cb = a500_ec_restart_handler,
-+	.restart_priority = RESTART_PRIO_HIGH,
-+
-+	.power_off_cb = a500_ec_power_off_handler,
-+	.power_off_priority = POWEROFF_PRIO_HIGH,
- };
+-static void kb3930_pm_power_off(void)
++static void kb3930_power_off(struct power_off_data *data)
+ {
+-	kb3930_off(kb3930_power_off, EC_OFF_MODE_POWER);
+-}
++	struct kb3930 *ddata = data->cb_data;
  
- static const struct mfd_cell a500_ec_cells[] = {
-@@ -156,26 +157,12 @@ static int a500_ec_probe(struct i2c_client *client)
+-static struct notifier_block kb3930_restart_nb = {
+-	.notifier_call = kb3930_restart,
+-};
++	kb3930_off(ddata, EC_OFF_MODE_POWER);
++}
+ 
+ static const struct mfd_cell ariel_ec_cells[] = {
+ 	{ .name = "dell-wyse-ariel-led", },
+@@ -131,7 +128,6 @@ static int kb3930_probe(struct i2c_client *client)
+ 	if (!ddata)
+ 		return -ENOMEM;
+ 
+-	kb3930_power_off = ddata;
+ 	ddata->client = client;
+ 	i2c_set_clientdata(client, ddata);
+ 
+@@ -169,24 +165,14 @@ static int kb3930_probe(struct i2c_client *client)
  	}
  
- 	if (of_device_is_system_power_controller(client->dev.of_node)) {
--		a500_ec_client_pm_off = client;
-+		a500_ec_power_handler.cb_data = client;
- 
--		err = register_restart_handler(&a500_ec_restart_handler);
-+		err = devm_register_power_handler(&client->dev,
-+						  &a500_ec_power_handler);
- 		if (err)
- 			return err;
--
+ 	if (ddata->off_gpios) {
+-		register_restart_handler(&kb3930_restart_nb);
 -		if (!pm_power_off)
--			pm_power_off = a500_ec_poweroff;
+-			pm_power_off = kb3930_pm_power_off;
 -	}
--
++		ddata->power_handler.cb_data = ddata;
++		ddata->power_handler.restart_cb = kb3930_restart;
++		ddata->power_handler.power_off_cb = kb3930_power_off;
+ 
 -	return 0;
 -}
 -
--static int a500_ec_remove(struct i2c_client *client)
+-static int kb3930_remove(struct i2c_client *client)
 -{
--	if (of_device_is_system_power_controller(client->dev.of_node)) {
--		if (pm_power_off == a500_ec_poweroff)
--			pm_power_off = NULL;
+-	struct kb3930 *ddata = i2c_get_clientdata(client);
 -
--		unregister_restart_handler(&a500_ec_restart_handler);
+-	if (ddata->off_gpios) {
+-		if (pm_power_off == kb3930_pm_power_off)
+-			pm_power_off = NULL;
+-		unregister_restart_handler(&kb3930_restart_nb);
++		ret = devm_register_power_handler(dev, &ddata->power_handler);
++		if (ret)
++			return ret;
  	}
+-	kb3930_power_off = NULL;
  
  	return 0;
-@@ -193,7 +180,6 @@ static struct i2c_driver a500_ec_driver = {
- 		.of_match_table = a500_ec_match,
- 	},
- 	.probe_new = a500_ec_probe,
--	.remove = a500_ec_remove,
- };
- module_i2c_driver(a500_ec_driver);
+ }
+@@ -199,7 +185,6 @@ MODULE_DEVICE_TABLE(of, kb3930_dt_ids);
  
+ static struct i2c_driver kb3930_driver = {
+ 	.probe_new = kb3930_probe,
+-	.remove = kb3930_remove,
+ 	.driver = {
+ 		.name = "ene-kb3930",
+ 		.of_match_table = kb3930_dt_ids,
 -- 
 2.33.1
 
