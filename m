@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB1D643D542
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 702C843D550
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:24:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229869AbhJ0V00 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 17:26:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53816 "EHLO
+        id S237266AbhJ0V0w (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 17:26:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234416AbhJ0VYz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:24:55 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4452C0432E4;
-        Wed, 27 Oct 2021 14:18:55 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id q16so7019892ljg.3;
-        Wed, 27 Oct 2021 14:18:55 -0700 (PDT)
+        with ESMTP id S239511AbhJ0VZK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:25:10 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1920C0432E7;
+        Wed, 27 Oct 2021 14:18:57 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id d23so5639691ljj.10;
+        Wed, 27 Oct 2021 14:18:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Vtt3o4MswiJ8Uwk5SbVoJldxGf1+YbPRO7EtWlQaYpw=;
-        b=h9Sc10ekNHuFL9pzFR5ivr4ubnoV3ErBKpxwq8qtLnmmEwmpDGD4jSeaWauc76yLUe
-         mSt4r4zCNyFKj4h5OR8HLlxF7zfIwR2mYZXQxAs/YUFPraXy5oJXAYRRb5XFp5DFvHId
-         dp4uwopusQmPxwo8pBprt9hjoN+nwfiSLFgat9Xg5VUZGhfoEbJhN2yWrZJiei/Mb3oo
-         mtgvsX4Y0EPIUr2yLJuO6jAqsOYLbfr0p9vS8kzfJK4fcF7aAzjiqNMDP4LlFTOflII0
-         /Ozi7fljMZ5bdh0k27GOMuAQZgJbYkevh7WpkJcoo8VpN/Xp7c/9529BJm6xL6ZNrYi/
-         VmuQ==
+        bh=J0jiL1GV/+pRa/Pi8omBJ059E/kI2yC/kBEGzY3TRbg=;
+        b=FJbtoAu7rbq7E5RaKvepyk9plUf7jLnT+ML08UZjLgFiOZ5VaykzHp5Ff2lObAbFB8
+         5GZGzZ57ZApIGsXSOF6gLQA97YsI0ZAQ/ZGu34m5aZxcCPPjtIEcQp67CojYOup39/Xv
+         xsYx/9Bl6pD+/d5Egre5OsJvj19u3KKVwrkexlOW8n23RNvDolWdvTv8CSXdsnambAlA
+         jmNsfq7r35M1wkX74Jgv3A3xCPTBUP4sDGuQeSw9FU1X/TxBftWhWMRe81zJ6SuXHAM8
+         TvqOPVU0PykNu+1EXPWfVa52MP/IYJ4S57Q0SiUIct4v8BdbY1Ush4O+dDWBQRJUzf+C
+         FQ7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Vtt3o4MswiJ8Uwk5SbVoJldxGf1+YbPRO7EtWlQaYpw=;
-        b=LHMUt+bqb6vsWNgOhYiUjpd7PIZxB2t67atX224q3pezrfYCTNPkC9MrIiypDcYWbL
-         IJvNMmPaeYD280I9BFuqGDntsCjSN+Fj2h8wV8m3M2rZiZ/g3/MtWy0427x1uqoWgr8V
-         ZXrD237LdoWeXIwp9zkDWbV6QgjLelPBjBnnYJshVafrJkkXARethz4rTP4LAQjdj6ZQ
-         LpEXy5hLZ1iJHfXKlumjZzBKBqNKQAiSGPUqecWJMvnKjHV69UBLBEuvkaRsBjL8iXu2
-         AzNp0zX5Vg5T5ij5EatYO2P/9+N2jBfTrBqBk3wgmAO1FBmrPX3P2+8VNHDy5F9KdZPy
-         W8+w==
-X-Gm-Message-State: AOAM5335WwrGkjE4jxOrZ8U8BUnIpzDVKuScM+W8kJrnaapx440BGe3L
-        UKLeMaC7551sO3PVpxCRIeU=
-X-Google-Smtp-Source: ABdhPJyyBz+GAYvcNwhzUHtMKnc91wku7za2iucydPD6HlUd9fBk/92YnwCUeQIBB5tQ4kJ4zljd+g==
-X-Received: by 2002:a2e:b804:: with SMTP id u4mr293626ljo.425.1635369534279;
-        Wed, 27 Oct 2021 14:18:54 -0700 (PDT)
+        bh=J0jiL1GV/+pRa/Pi8omBJ059E/kI2yC/kBEGzY3TRbg=;
+        b=fQAkdG2Paf8UWsphSCXjx4tY1FvxN2Mp+rzGG3cg+HVCovfiDTlx4jZetfe0S7s5U1
+         CYg/BBse9tgktxPVJDr0K/T+SAEsu9qcp5DnemrHke0Tpj4XpGVCevs5krTG5UBLdt/V
+         uDn+oiXwNo0VXeaB7ydtqGTqTCX/7SrKVnQkQkWnrWo0+Y9iUMxIaOzAHcQl42NdmFHe
+         ni4qmBcxywEufuq56NOr7AhkGHFwTK1k4KPuMeNdZon7iVvJvwbjRPjbUJNH7IZjWqnd
+         MBqdh+bkumos58LsjJ6T6X9U1dZT+Nre5K/wP6ErNirB9lFEB4dkd+ouQl7W45X9wfdI
+         3tnw==
+X-Gm-Message-State: AOAM531BHL5bMwpo6Fr3oIuBPzf7HDVxYGlDOLtDXQ49MUWNUwechcS5
+        lGOYPwEaU/ojDGyL2mNJRR4=
+X-Google-Smtp-Source: ABdhPJwO9DbKrxmMzwfiSQzUITuZHuDXfhRgNgPDDhUghYThRMLe5cQOKy/B7VPBX8OP8l5Jmu7iAw==
+X-Received: by 2002:a2e:8097:: with SMTP id i23mr314285ljg.287.1635369536096;
+        Wed, 27 Oct 2021 14:18:56 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru. [46.138.41.28])
-        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.52
+        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Oct 2021 14:18:53 -0700 (PDT)
+        Wed, 27 Oct 2021 14:18:55 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -110,9 +110,9 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [PATCH v2 33/45] mfd: rk808: Use devm_register_simple_power_off_handler()
-Date:   Thu, 28 Oct 2021 00:17:03 +0300
-Message-Id: <20211027211715.12671-34-digetx@gmail.com>
+Subject: [PATCH v2 34/45] mfd: palmas: Use devm_register_simple_power_off_handler()
+Date:   Thu, 28 Oct 2021 00:17:04 +0300
+Message-Id: <20211027211715.12671-35-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -127,63 +127,66 @@ pm_power_off variable and allows to register multiple power-off handlers.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mfd/rk808.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ drivers/mfd/palmas.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/mfd/rk808.c b/drivers/mfd/rk808.c
-index b181fe401330..3bf369469053 100644
---- a/drivers/mfd/rk808.c
-+++ b/drivers/mfd/rk808.c
-@@ -18,6 +18,7 @@
- #include <linux/mfd/core.h>
- #include <linux/module.h>
- #include <linux/of_device.h>
+diff --git a/drivers/mfd/palmas.c b/drivers/mfd/palmas.c
+index f5b3fa973b13..c7d4d48d2fda 100644
+--- a/drivers/mfd/palmas.c
++++ b/drivers/mfd/palmas.c
+@@ -14,6 +14,7 @@
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
 +#include <linux/reboot.h>
  #include <linux/regmap.h>
+ #include <linux/err.h>
+ #include <linux/mfd/core.h>
+@@ -420,12 +421,12 @@ static void palmas_dt_to_pdata(struct i2c_client *i2c,
+ 			"ti,system-power-controller");
+ }
  
- struct rk808_reg_data {
-@@ -526,12 +527,11 @@ static const struct regmap_irq_chip rk818_irq_chip = {
- 	.init_ack_masked = true,
- };
- 
--static struct i2c_client *rk808_i2c_client;
--
--static void rk808_pm_power_off(void)
-+static void rk808_pm_power_off(void *data)
+-static struct palmas *palmas_dev;
+-static void palmas_power_off(void)
++static void palmas_power_off(void *data)
  {
- 	int ret;
- 	unsigned int reg, bit;
-+	struct i2c_client *rk808_i2c_client = data;
- 	struct rk808 *rk808 = i2c_get_clientdata(rk808_i2c_client);
+ 	unsigned int addr;
+ 	int ret, slave;
+ 	u8 powerhold_mask;
++	struct palmas *palmas_dev = data;
+ 	struct device_node *np = palmas_dev->dev->of_node;
  
- 	switch (rk808->variant) {
-@@ -725,8 +725,14 @@ static int rk808_probe(struct i2c_client *client,
- 	}
- 
- 	if (of_property_read_bool(np, "rockchip,system-power-controller")) {
--		rk808_i2c_client = client;
--		pm_power_off = rk808_pm_power_off;
-+		ret = devm_register_simple_power_off_handler(&client->dev,
-+							     rk808_pm_power_off,
-+							     client);
-+		if (ret) {
-+			dev_err(&client->dev,
-+				"failed to register power-off handler %d\n", ret);
+ 	if (of_property_read_bool(np, "ti,palmas-override-powerhold")) {
+@@ -680,12 +681,16 @@ static int palmas_i2c_probe(struct i2c_client *i2c,
+ 	 */
+ 	if (node) {
+ 		ret = devm_of_platform_populate(&i2c->dev);
+-		if (ret < 0) {
++		if (ret < 0)
 +			goto err_irq;
-+		}
++	}
++
++	if (pdata->pm_off) {
++		ret = devm_register_simple_power_off_handler(&i2c->dev,
++							     palmas_power_off,
++							     palmas);
++		if (ret)
+ 			goto err_irq;
+-		} else if (pdata->pm_off && !pm_power_off) {
+-			palmas_dev = palmas;
+-			pm_power_off = palmas_power_off;
+-		}
  	}
  
- 	return 0;
-@@ -742,13 +748,6 @@ static int rk808_remove(struct i2c_client *client)
+ 	return ret;
+@@ -712,11 +717,6 @@ static int palmas_i2c_remove(struct i2c_client *i2c)
+ 			i2c_unregister_device(palmas->i2c_clients[i]);
+ 	}
  
- 	regmap_del_irq_chip(client->irq, rk808->irq_data);
- 
--	/**
--	 * pm_power_off may points to a function from another module.
--	 * Check if the pointer is set by us and only then overwrite it.
--	 */
--	if (pm_power_off == rk808_pm_power_off)
+-	if (palmas == palmas_dev) {
 -		pm_power_off = NULL;
+-		palmas_dev = NULL;
+-	}
 -
  	return 0;
  }
