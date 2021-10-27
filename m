@@ -2,29 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFC1043C78A
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 12:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51E0743C7EC
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 12:45:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241430AbhJ0KXX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 06:23:23 -0400
-Received: from mga11.intel.com ([192.55.52.93]:15096 "EHLO mga11.intel.com"
+        id S239759AbhJ0KsE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 06:48:04 -0400
+Received: from mga03.intel.com ([134.134.136.65]:19097 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241415AbhJ0KXW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 27 Oct 2021 06:23:22 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="227584241"
+        id S241535AbhJ0KsA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 27 Oct 2021 06:48:00 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="230079956"
 X-IronPort-AV: E=Sophos;i="5.87,186,1631602800"; 
-   d="scan'208";a="227584241"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 03:20:57 -0700
+   d="scan'208";a="230079956"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 03:45:26 -0700
 X-IronPort-AV: E=Sophos;i="5.87,186,1631602800"; 
-   d="scan'208";a="447156221"
+   d="scan'208";a="597316964"
 Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 03:20:54 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 03:45:20 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.95)
         (envelope-from <andriy.shevchenko@intel.com>)
-        id 1mfg2r-001R18-Uz;
-        Wed, 27 Oct 2021 13:20:33 +0300
-Date:   Wed, 27 Oct 2021 13:20:33 +0300
+        id 1mfgQW-001RFx-N2;
+        Wed, 27 Oct 2021 13:45:00 +0300
+Date:   Wed, 27 Oct 2021 13:45:00 +0300
 From:   Andy Shevchenko <andriy.shevchenko@intel.com>
 To:     Chen Yu <yu.c.chen@intel.com>
 Cc:     linux-acpi@vger.kernel.org,
@@ -34,172 +34,106 @@ Cc:     linux-acpi@vger.kernel.org,
         Ashok Raj <ashok.raj@intel.com>,
         Mike Rapoport <rppt@kernel.org>,
         Aubrey Li <aubrey.li@intel.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 2/4] drivers/acpi: Introduce Platform Firmware Runtime
- Update device driver
-Message-ID: <YXkn8aBvAVEXxgdp@smile.fi.intel.com>
+Subject: Re: [PATCH v7 3/4] drivers/acpi: Introduce Platform Firmware Runtime
+ Update Telemetry
+Message-ID: <YXktrG1LhK5tj2uF@smile.fi.intel.com>
 References: <cover.1635317102.git.yu.c.chen@intel.com>
- <a318e4edc13e5a3ff95b901871b8929746535715.1635317102.git.yu.c.chen@intel.com>
+ <b37584e515c36882990295097386e783da29110e.1635317102.git.yu.c.chen@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <a318e4edc13e5a3ff95b901871b8929746535715.1635317102.git.yu.c.chen@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b37584e515c36882990295097386e783da29110e.1635317102.git.yu.c.chen@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 27, 2021 at 03:07:51PM +0800, Chen Yu wrote:
-> Introduce the pfru_update driver which can be used for Platform Firmware
-> Runtime code injection and driver update [1]. The user is expected to
-> provide the update firmware in the form of capsule file, and pass it to
-> the driver via ioctl. Then the driver would hand this capsule file to the
-> Platform Firmware Runtime Update via the ACPI device _DSM method. At last
-> the low level Management Mode would do the firmware update.
+On Wed, Oct 27, 2021 at 03:08:05PM +0800, Chen Yu wrote:
+> Platform Firmware Runtime Update(PFRU) Telemetry Service is part of RoT
+> (Root of Trust), which allows PFRU handler and other PFRU drivers to
+> produce telemetry data to upper layer OS consumer at runtime.
+> 
+> The linux provides interfaces for the user to query the parameters of
+
+Linux kernel
+
+> telemetry data, and the user could read out the telemetry data
+> accordingly.
 > 
 > The corresponding userspace tool and man page will be introduced at
 > tools/power/acpi/pfru.
 
 ...
 
-> +static int get_image_type(struct efi_manage_capsule_image_header *img_hdr,
-> +			  struct pfru_device *pfru_dev)
+> +#include <linux/acpi.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/errno.h>
+> +#include <linux/file.h>
+> +#include <linux/fs.h>
+> +#include <linux/miscdevice.h>
+> +#include <linux/module.h>
+> +#include <linux/mm.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/string.h>
+> +#include <linux/uaccess.h>
+> +#include <linux/uio.h>
+> +#include <linux/uuid.h>
+
++ blank line?
+
+> +#include <uapi/linux/pfru.h>
+
+...
+
+> +static DEFINE_IDA(pfru_log_ida);
+
+Do you need any mutex against operations on IDA? (I don't remember
+if it incorporates any synchronization primitives).
+
+...
+
+Looking into the code I have feelings of déjà-vu. Has it really had
+nothing in common with the previous patch?
+
+...
+
+> +static int valid_log_level(int level)
 > +{
-> +	guid_t *image_type_id = &img_hdr->image_type_id;
+> +	return level == LOG_ERR || level == LOG_WARN ||
+> +		level == LOG_INFO || level == LOG_VERB;
 
-efi_guid_t ?
-
-> +	/* check whether this is a code injection or driver update */
-> +	if (guid_equal(image_type_id, &pfru_dev->code_uuid))
-> +		return CODE_INJECT_TYPE;
-> +
-> +	if (guid_equal(image_type_id, &pfru_dev->drv_uuid))
-> +		return DRIVER_UPDATE_TYPE;
-> +
-> +	return -EINVAL;
-> +}
-
-...
-
-> +static bool valid_version(const void *data, struct pfru_update_cap_info *cap,
-> +			  struct pfru_device *pfru_dev)
-> +{
-> +	struct pfru_payload_hdr *payload_hdr;
-> +	efi_capsule_header_t *cap_hdr;
-> +	struct efi_manage_capsule_header *m_hdr;
-> +	struct efi_manage_capsule_image_header *m_img_hdr;
-> +	struct efi_image_auth *auth;
-> +	int type, size;
-> +
-> +	/*
-> +	 * Sanity check if the capsule image has a newer version
-> +	 * than current one.
-> +	 */
-> +	cap_hdr = (efi_capsule_header_t *)data;
-
-Why casting?
-
-> +	size = cap_hdr->headersize;
-> +	m_hdr = (struct efi_manage_capsule_header *)(data + size);
-> +	/*
-> +	 * Current data structure size plus variable array indicated
-> +	 * by number of (emb_drv_cnt + payload_cnt)
-> +	 */
-> +	size += sizeof(struct efi_manage_capsule_header) +
-> +		      (m_hdr->emb_drv_cnt + m_hdr->payload_cnt) * sizeof(u64);
-> +	m_img_hdr = (struct efi_manage_capsule_image_header *)(data + size);
-> +
-> +	type = get_image_type(m_img_hdr, pfru_dev);
-> +	if (type < 0)
-> +		return false;
-> +
-> +	size = adjust_efi_size(m_img_hdr, size);
-> +	if (size < 0)
-> +		return false;
-> +
-> +	auth = (struct efi_image_auth *)(data + size);
-> +	size += sizeof(u64) + auth->auth_info.hdr.len;
-> +	payload_hdr = (struct pfru_payload_hdr *)(data + size);
-> +
-> +	/* finally compare the version */
-> +	if (type == CODE_INJECT_TYPE)
-> +		return payload_hdr->rt_ver >= cap->code_rt_version;
-> +	else
-> +		return payload_hdr->rt_ver >= cap->drv_rt_version;
-> +}
-
-...
-
-> +static long pfru_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-> +{
-> +	struct pfru_update_cap_info cap;
-> +	struct pfru_device *pfru_dev;
-> +	void __user *p;
-> +	int ret, rev;
-
-> +	pfru_dev = to_pfru_dev(file);
-> +	p = (void __user *)arg;
-
-Can be combined with definitions above. Ditto for the rest cases in the code.
+Indentation.
 
 > +}
 
 ...
 
-> +	phy_addr = (phys_addr_t)(info.addr_lo | (info.addr_hi << 32));
 
-Does it compile without warnings for 32-bit target?
+This ordering in ->probe() is not okay:
+	devm_*()
+	non-devm_*()
+	devm_*()
+	non-devm_*()
 
-...
+One mustn't interleave these. The allowed are:
 
-> +	ret = guid_parse(PFRU_UUID, &pfru_dev->uuid);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = guid_parse(PFRU_CODE_INJ_UUID, &pfru_dev->code_uuid);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = guid_parse(PFRU_DRV_UPDATE_UUID, &pfru_dev->drv_uuid);
-> +	if (ret)
-> +		return ret;
+Case 1:
+	non-devm_*()
 
-Why do you need to keep zillions of copies of the data which seems
-is not going to be changed? Three global variables should be enough,
-no?
+Case 2:
+	devm_*()
 
-> +	ret = ida_alloc(&pfru_ida, GFP_KERNEL);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	pfru_dev->index = ret;
+Case 3:
+	devm_*()
+	non-devm_*()
 
-...
+Otherwise in ->remove() you have wrong release ordering which may hide
+subtle bugs.
 
-> +	/* default rev id is 1 */
-
-Shouldn't you rather define this magic and drop this doubtful comment?
-
-> +	pfru_dev->rev_id = 1;
-
-...
-
-> +failed:
-
-Make you labeling consistent. The usual pattern is to explain what will be
-happened when goto to the certain label, for example, here is 'err_free_ida'.
-Also, add an empty line everywhere before labels.
-
-> +	ida_free(&pfru_ida, pfru_dev->index);
-> +
-> +	return ret;
-> +}
-
-...
-
-> +#define UUID_SIZE 16
-
-It must not be here at all.
-Or it should be properly namespaced.
+Above comment is applicable to the other patch as well as some comments
+from there are applicable here.
 
 -- 
 With Best Regards,
