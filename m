@@ -2,86 +2,128 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C33AD43CF9D
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 19:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC0C43CFD4
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 19:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239283AbhJ0R0V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 13:26:21 -0400
-Received: from mail-oi1-f181.google.com ([209.85.167.181]:42848 "EHLO
-        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232329AbhJ0R0U (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 13:26:20 -0400
-Received: by mail-oi1-f181.google.com with SMTP id g125so4387932oif.9;
-        Wed, 27 Oct 2021 10:23:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/7zZvIfv3CsZqjoYb0Mz7kBVQSW9A8D+jJ6CWe5XNmw=;
-        b=gCIb0wzJEjJbmsTA7REnV9WkTLiJKH2+ZjnBm7a9xDsLMq1W5L3vm/RTyPPhwagw4A
-         MIAGUA0x4QjAarANUPdNb3bt9yHEjP7YCa6wJe6cyqrOl+iaYu259K/Vd/xQebq1b45j
-         ShL07OeuWeMmBjW82cipbMY9VCHQla41xs+MwWBFllFRMuerQ1hiH3Ju8sctBk9echeT
-         /C+seOCcH5CqJIz6H9z3mJWkl0lgXwUJJofBYp4oe9MnfAyRM65rFY7uzm8toRrlX1jb
-         F2ViANVJg1APszFZ51XgIKBJgtwkbqsfubKlNf+kzFWal8VQrmtD4tBgR1jHxbc8GXHz
-         mTZw==
-X-Gm-Message-State: AOAM533O3xCs/1F2dnBHSEAniFnOlKwt23K1AGiEg3xEVFq3sBQfSSQo
-        mBeNeDTdI8NkWQSNbE8Ms/D9VawLh1v7p+lHzDg=
-X-Google-Smtp-Source: ABdhPJwl3VTKKaHQuRP6YmgcNDXqY80yOXmuV1vmIvrsN/TKCh2UxwnTeKCGtFD3C0G6Zdja/n6Fl1aW9umeaEMotl8=
-X-Received: by 2002:a05:6808:e90:: with SMTP id k16mr4567170oil.166.1635355434782;
- Wed, 27 Oct 2021 10:23:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <11862679.O9o76ZdvQC@kreacher> <YXmJjlY6+oFy4siX@smile.fi.intel.com>
-In-Reply-To: <YXmJjlY6+oFy4siX@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 27 Oct 2021 19:23:43 +0200
-Message-ID: <CAJZ5v0j43dhVcbsKyJ8BZjeBbXHNFG-Vtv-UtsJwFBYP4usNFQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: glue: Use acpi_device_adr() in acpi_find_child_device()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
+        id S238485AbhJ0Rhg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 13:37:36 -0400
+Received: from mga07.intel.com ([134.134.136.100]:53607 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238472AbhJ0Rhf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 27 Oct 2021 13:37:35 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10150"; a="293682176"
+X-IronPort-AV: E=Sophos;i="5.87,187,1631602800"; 
+   d="scan'208";a="293682176"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 10:35:10 -0700
+X-IronPort-AV: E=Sophos;i="5.87,187,1631602800"; 
+   d="scan'208";a="665079854"
+Received: from smile.fi.intel.com ([10.237.72.184])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 10:35:08 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mfmp7-001WyC-73;
+        Wed, 27 Oct 2021 20:34:49 +0300
+Date:   Wed, 27 Oct 2021 20:34:48 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v1 0/2] ACPI: scan: Honor certain device identification
+ rules
+Message-ID: <YXmNuKIXjnhOx/Gi@smile.fi.intel.com>
+References: <11860508.O9o76ZdvQC@kreacher>
+ <YXhX/cTjH/H9UOnQ@smile.fi.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YXhX/cTjH/H9UOnQ@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Oct 27, 2021 at 7:17 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Wed, Oct 27, 2021 at 06:59:06PM +0200, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Instead of evaluating _ADR in acpi_find_child_device(), use the
-> > observation that it has already been evaluated and the value returned
-> > by it has been stored in the pnp.type.bus_address field of the ACPI
-> > device object at hand.
->
-> ...
->
-> > +             acpi_bus_address addr = acpi_device_adr(adev);
-> >               int score;
-> >
-> > -             status = acpi_evaluate_integer(adev->handle, METHOD_NAME__ADR,
-> > -                                            NULL, &addr);
-> > -             if (ACPI_FAILURE(status) || addr != address)
-> > +             if (!adev->pnp.type.bus_address || addr != address)
-> >                       continue;
->
-> I'm not sure I understand the new check, i.e. !adev->pnp.type.bus_address.
+On Tue, Oct 26, 2021 at 10:33:17PM +0300, Andy Shevchenko wrote:
+> On Tue, Oct 26, 2021 at 08:51:49PM +0200, Rafael J. Wysocki wrote:
+> > Hi All,
+> > 
+> > There are some rules in the ACPI spec regarding which device identification
+> > objects can be used together etc., but they are not followed by the kernel
+> > code.
+> > 
+> > This series modifies the code to follow the spec more closely (see patch
+> > changelogs for details).
+> 
+> I understand the motivation, but afraid about consequences on the OEM cheap
+> devices that are not always follow letter of the specification.
+> 
+> As per Intel platforms I would look into Baytrail / Cherrytrail devices for
+> the past (I think Hans may help here a lot) and into Elkhart Lake in the
+> present (for the letter I mostly refer to CSRT + DSDT cooperation to get
+> GP DMA devices enumerated, so I _hope_ DSDT shouldn't have _ADR and _HID
+> together).
+> 
+> Hence, from the code perspective
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> From the practice I would wait for some tests. I will try to find any new
+> information about latest firmware tables on Elkhart Lake machines.
 
-See acpi_set_pnp_ids().
+So, what I see in Elkhart Lake
 
-adev->pnp.bus_addres is the address value and
-adev->pnp.type.bus_address is a flag that is set to 1 when _ADR is
-valid.
+Case 1 - Sound Wire devices (2 times):
 
-> IIUC _ADR == 0 is a valid value and children may have it like this.
+    Name (_ADR, 0x40000000)  // _ADR: Address
+    Name (_CID, Package (0x02)  // _CID: Compatible ID
+    {
+        "PRP00001",
+        "PNP0A05" /* Generic Container Device */
+    })
 
-That's true.
+Case 2 - GP DMA devices (3 times):
 
-> I believe this change will break the working things (first comes to my mind
-> is drivers/mfd/intel_quark_i2c_gpio.c).
+    Name (_ADR, 0x001D0003)  // _ADR: Address
+    Name (_HID, "80864BB4")  // _HID: Hardware ID
 
-I don't think so.
+Case 3 - Camera PMIC devices (5 x 2 (CLPn/DSCn) + 1 (PMIC) times = 11x):
+
+    Name (_ADR, Zero)  // _ADR: Address
+    Name (_HID, "INT3472")  // _HID: Hardware ID
+    Name (_CID, "INT3472")  // _CID: Compatible ID
+
+Case 4 - LNK devices (6 times):
+
+    Name (_ADR, Zero)  // _ADR: Address
+    ...
+
+    Name (_UID, One)  // _UID: Unique ID
+    Method (_HID, 0, NotSerialized)  // _HID: Hardware ID
+    {
+        Return (HCID (One))
+    }
+
+Case 5 - Camera sensors (2 times):
+
+    Name (_ADR, Zero)  // _ADR: Address
+    Name (_HID, "INT34xx")  // _HID: Hardware ID
+    Name (_CID, "INT34xx")  // _CID: Compatible ID
+
+
+I have no idea about cameras or audio devices, but what I'm worrying about
+is GP DMA. This kind of devices are PCI, but due to Microsoft hack, called
+CSRT, we have to have a possibility to match DSDT with CSRT ot retrieve
+the crucial information from the latter while being enumerated by the former.
+
+While it may be against the specification, there is no other way to achieve
+that as far as I understand (without either breaking things in Linux or
+getting yellow bang in Windows).
+
+Can you confirm that your change won't modify behaviour for these devices?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
