@@ -2,62 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C602143C4D8
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 10:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 924F543C741
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 12:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238792AbhJ0IQX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 04:16:23 -0400
-Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:37547 "EHLO
-        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236572AbhJ0IQR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 27 Oct 2021 04:16:17 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=xuesong.chen@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0Utrwndh_1635322429;
-Received: from localhost.localdomain(mailfrom:xuesong.chen@linux.alibaba.com fp:SMTPD_---0Utrwndh_1635322429)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 27 Oct 2021 16:13:50 +0800
-From:   Xuesong Chen <xuesong.chen@linux.alibaba.com>
-To:     helgaas@kernel.org
-Cc:     catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
-        james.morse@arm.com, will@kernel.org, rafael@kernel.org,
-        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
-        bhelgaas@google.com, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, xuesong.chen@linux.alibaba.com
-Subject: [PATCH v4 4/4] PCI: MCFG: Add the MCFG entry parse log message
-Date:   Wed, 27 Oct 2021 16:13:44 +0800
-Message-Id: <20211027081344.53778-1-xuesong.chen@linux.alibaba.com>
-X-Mailer: git-send-email 2.24.3 (Apple Git-128)
-In-Reply-To: <20211027081035.53370-1-xuesong.chen@linux.alibaba.com>
-References: <20211027081035.53370-1-xuesong.chen@linux.alibaba.com>
+        id S241331AbhJ0KDm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 06:03:42 -0400
+Received: from mga03.intel.com ([134.134.136.65]:16201 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235237AbhJ0KDd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 27 Oct 2021 06:03:33 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="230073802"
+X-IronPort-AV: E=Sophos;i="5.87,186,1631602800"; 
+   d="scan'208";a="230073802"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 03:01:08 -0700
+X-IronPort-AV: E=Sophos;i="5.87,186,1631602800"; 
+   d="scan'208";a="529573274"
+Received: from smile.fi.intel.com ([10.237.72.184])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2021 03:01:03 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1mffjf-001Qor-Po;
+        Wed, 27 Oct 2021 13:00:43 +0300
+Date:   Wed, 27 Oct 2021 13:00:43 +0300
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Chen Yu <yu.c.chen@intel.com>
+Cc:     linux-acpi@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Aubrey Li <aubrey.li@intel.com>, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org
+Subject: Re: [PATCH v7 1/4] efi: Introduce
+ EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and corresponding structures
+Message-ID: <YXkjS/yhAYAIAWRu@smile.fi.intel.com>
+References: <cover.1635317102.git.yu.c.chen@intel.com>
+ <4898b5784e79b89bb25ce91384427b5ca3547b8f.1635317102.git.yu.c.chen@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4898b5784e79b89bb25ce91384427b5ca3547b8f.1635317102.git.yu.c.chen@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-To make it to be consistent with x86's MMCONFIG and ease the
-disection of PCI MCFG entry parse process.
+On Wed, Oct 27, 2021 at 03:07:24PM +0800, Chen Yu wrote:
+> Platform Firmware Runtime Update image starts with UEFI headers, and the
+> headers are defined in UEFI specification, but some of them have not been
+> defined in the kernel yet.
+> 
+> For example, the header layout of a capsule file looks like this:
+> 
+> EFI_CAPSULE_HEADER
+> EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
+> EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
+> EFI_FIRMWARE_IMAGE_AUTHENTICATION
+> 
+> These structures would be used by the Platform Firmware Runtime Update
+> driver to parse the format of capsule file to verify if the corresponding
+> version number is valid. The EFI_CAPSULE_HEADER has been defined in the
+> kernel, however the rest are not, thus introduce corresponding UEFI
+> structures accordingly. Besides, EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
+> and EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER are required to be packed
+> in the uefi specification. And Ard has pointed out that, the __packed
+> attribute does indicate to the compiler that the entire thing can appear
+> misaligned in memory. So if one follows the other in the capsule header,
+> the __packed attribute may be appropriate to ensure that the second one
+> is not accessed using misaligned loads and stores.
 
-Signed-off-by: Xuesong Chen <xuesong.chen@linux.alibaba.com>
----
- drivers/acpi/pci_mcfg.c | 3 +++
- 1 file changed, 3 insertions(+)
+...
 
-diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
-index b5ab866..99c9bf5 100644
---- a/drivers/acpi/pci_mcfg.c
-+++ b/drivers/acpi/pci_mcfg.c
-@@ -290,6 +290,9 @@ static __init int pci_mcfg_parse(struct acpi_table_header *header)
- 		e->res.end = e->address + PCI_MMCFG_BUS_OFFSET(e->end_bus + 1) - 1;
- 		e->res.flags = IORESOURCE_MEM | IORESOURCE_BUSY;
- 		list_add(&e->list, &pci_mmcfg_list);
-+		pr_info("MCFG entry for domain %04x [bus %02x-%02x] at %pR "
-+			"(base %#lx)\n", e->segment, e->start_bus,
-+			e->end_bus, &e->res, (unsigned long)e->address);
- 	}
- 
- #ifdef CONFIG_PCI_QUIRKS
+> +/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER */
+> +struct efi_manage_capsule_image_header {
+> +	u32	ver;
+
+> +	guid_t	image_type_id;
+
+Shouldn't it be efi_guid_t ?
+
+> +	u8	image_index;
+> +	u8	reserved_bytes[3];
+> +	u32	image_size;
+> +	u32	vendor_code_size;
+> +	/* ver = 2. */
+> +	u64	hw_ins;
+> +	/* ver = v3. */
+> +	u64	capsule_support;
+> +} __packed;
+
+...
+
+> +/* WIN_CERTIFICATE_UEFI_GUID */
+> +struct win_cert_uefi_guid {
+> +	struct win_cert	hdr;
+
+> +	guid_t		cert_type;
+
+Ditto.
+
+> +	u8		cert_data[];
+> +};
+
 -- 
-1.8.3.1
+With Best Regards,
+Andy Shevchenko
+
 
