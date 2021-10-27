@@ -2,127 +2,288 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D019343BF78
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 04:18:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5250343C0A0
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 05:14:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237513AbhJ0CVE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 26 Oct 2021 22:21:04 -0400
-Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131]:56612 "EHLO
-        out30-131.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232231AbhJ0CVD (ORCPT
+        id S239002AbhJ0DRH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 26 Oct 2021 23:17:07 -0400
+Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:40413 "EHLO
+        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238984AbhJ0DRD (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 26 Oct 2021 22:21:03 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R761e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0Utq7SVb_1635301115;
-Received: from B-J4ZXMD6R-0327.local(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Utq7SVb_1635301115)
+        Tue, 26 Oct 2021 23:17:03 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=xuesong.chen@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0Utq-s4f_1635304474;
+Received: from 30.225.212.53(mailfrom:xuesong.chen@linux.alibaba.com fp:SMTPD_---0Utq-s4f_1635304474)
           by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 27 Oct 2021 10:18:37 +0800
-Subject: Re: [PATCH v3] ACPI, APEI, EINJ: Relax platform response timeout to 1
- second.
-To:     "Luck, Tony" <tony.luck@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        bp@alien8.de, james.morse@arm.com, lenb@kernel.org,
-        rjw@rjwysocki.net, zhangliguang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com
-References: <20211015033817.16719-1-xueshuai@linux.alibaba.com>
- <20211026072829.94262-1-xueshuai@linux.alibaba.com>
- <YXg1bWBKja/tqScg@agluck-desk2.amr.corp.intel.com>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-Message-ID: <cf577ea6-1b9d-210c-24d5-660f2ad5757a@linux.alibaba.com>
-Date:   Wed, 27 Oct 2021 10:18:35 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+          Wed, 27 Oct 2021 11:14:35 +0800
+Message-ID: <d2a6628a-2cfb-bb5d-b30b-1ca4f3ae028d@linux.alibaba.com>
+Date:   Wed, 27 Oct 2021 11:14:34 +0800
 MIME-Version: 1.0
-In-Reply-To: <YXg1bWBKja/tqScg@agluck-desk2.amr.corp.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.2.0
+Subject: Re: [PATCH v3 1/2] PCI: MCFG: Consolidate the separate PCI MCFG table
+ entry list
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        James Morse <james.morse@arm.com>,
+        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <YW5OdIyFkTYo0h3W@Dennis-MBP.local>
+ <CAJZ5v0g=+_fATmSrLWiTirmr0MkihKpy7wp-9aFpWVK_RLhp6g@mail.gmail.com>
+ <20211026140820.GA19689@lpieralisi>
+From:   Xuesong Chen <xuesong.chen@linux.alibaba.com>
+In-Reply-To: <20211026140820.GA19689@lpieralisi>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Tony,
 
-Thank you for your patient revision. :)
 
-Cheers,
-Shuai
+On 26/10/2021 22:08, Lorenzo Pieralisi wrote:
+> On Tue, Oct 26, 2021 at 03:14:37PM +0200, Rafael J. Wysocki wrote:
+>> On Tue, Oct 19, 2021 at 6:50 AM Xuesong Chen
+>> <xuesong.chen@linux.alibaba.com> wrote:
+>>>
+>>> The PCI MCFG entry list is discrete on x86 and other arches like ARM64
+>>> in current implementation, this list variable can be consolidated for
+>>> unnecessary duplication and other purposes, for example, we can remove
+>>> some of the arch-specific codes in the APEI/EINJ module and re-implement
+>>> it in a more common arch-agnostic way.
+>>>
+>>> To reduce the redundancy, it:
+>>>   - Moves the "struct pci_mmcfg_region" definition from
+>>>     arch/x86/include/asm/pci_x86.h to include/linux/pci.h, where it
+>>>     can be shared across arches.
+>>>
+>>>   - Moves pci_mmcfg_list (a list of pci_mmcfg_region structs) from
+>>>     arch/x86/pci/mmconfig-shared.c to drivers/pci/pci.c, where it can
+>>>     be shared across arches.
+>>>
+>>>   - On x86 (which does not enable CONFIG_ACPI_MCFG), pci_mmcfg_list is
+>>>     built in arch/x86/pci/mmconfig-shared.c as before.
+>>>
+>>>   - Removes the "struct mcfg_entry" from drivers/acpi/pci_mcfg.c.
+>>>
+>>>   - Replaces pci_mcfg_list (previously a list of mcfg_entry structs)
+>>>     in drivers/acpi/pci_mcfg.c with the newly-shared pci_mmcfg_list (a
+>>>     list of pci_mmcfg_region structs).
+>>>
+>>>   - On ARM64 (which does enable CONFIG_ACPI_MCFG), pci_mmcfg_list is
+>>>     built in drivers/acpi/pci_mcfg.c.
+>>>
+>>> Signed-off-by: Xuesong Chen <xuesong.chen@linux.alibaba.com>
+>>> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+>>> Reviewed-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+>>
+>> I'm guessing that I'm expected to pick up this one?
+> 
+> I did not provide a Reviewed-by: tag for this patch (and I don't
+> think Bjorn provided his either).
+> 
+> That's valid also for patch 2:
+> 
+> https://lore.kernel.org/linux-pci/20211019150405.GA2338201@bhelgaas
+> 
 
-On 2021/10/27 AM1:05, Luck, Tony wrote:
-> On Tue, Oct 26, 2021 at 03:28:29PM +0800, Shuai Xue wrote:
->> When injecting an error into the platform, the OSPM executes an
->> EXECUTE_OPERATION action to instruct the platform to begin the injection
->> operation. And then, the OSPM busy waits for a while by continually
->> executing CHECK_BUSY_STATUS action until the platform indicates that the
->> operation is complete. More specifically, the platform is limited to
->> respond within 1 millisecond right now. This is too strict for some
->> platforms.
->>
->> For example, in Arm platform, when injecting a Processor Correctable error,
->> the OSPM will warn:
->>     Firmware does not respond in time.
->>
->> And a message is printed on the console:
->>     echo: write error: Input/output error
->>
->> We observe that the waiting time for DDR error injection is about 10 ms and
->> that for PCIe error injection is about 500 ms in Arm platform.
->>
->> In this patch, we relax the response timeout to 1 second.
->>
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> 
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
-> 
-> Rafael: Do you want to take this in the acpi tree? If not, I can
-> apply it to the RAS tree (already at -rc7, so in next merge cycle
-> after 5.16-rc1 comes out).
-> 
->> ---
->> Changelog v2 -> v3:
->> - Implemented the timeout in usleep_range instead of msleep.
->> - Dropped command line interface of timeout.
->> - Link to the v1 patch: https://lkml.org/lkml/2021/10/14/1402
->> ---
->>  drivers/acpi/apei/einj.c | 15 ++++++++-------
->>  1 file changed, 8 insertions(+), 7 deletions(-)
->>
->> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
->> index 133156759551..6e1ff4b62a8f 100644
->> --- a/drivers/acpi/apei/einj.c
->> +++ b/drivers/acpi/apei/einj.c
->> @@ -28,9 +28,10 @@
->>  #undef pr_fmt
->>  #define pr_fmt(fmt) "EINJ: " fmt
->>  
->> -#define SPIN_UNIT		100			/* 100ns */
->> -/* Firmware should respond within 1 milliseconds */
->> -#define FIRMWARE_TIMEOUT	(1 * NSEC_PER_MSEC)
->> +#define SLEEP_UNIT_MIN		1000			/* 1ms */
->> +#define SLEEP_UNIT_MAX		5000			/* 5ms */
->> +/* Firmware should respond within 1 seconds */
->> +#define FIRMWARE_TIMEOUT	(1 * USEC_PER_SEC)
->>  #define ACPI5_VENDOR_BIT	BIT(31)
->>  #define MEM_ERROR_MASK		(ACPI_EINJ_MEMORY_CORRECTABLE | \
->>  				ACPI_EINJ_MEMORY_UNCORRECTABLE | \
->> @@ -171,13 +172,13 @@ static int einj_get_available_error_type(u32 *type)
->>  
->>  static int einj_timedout(u64 *t)
->>  {
->> -	if ((s64)*t < SPIN_UNIT) {
->> +	if ((s64)*t < SLEEP_UNIT_MIN) {
->>  		pr_warn(FW_WARN "Firmware does not respond in time\n");
->>  		return 1;
->>  	}
->> -	*t -= SPIN_UNIT;
->> -	ndelay(SPIN_UNIT);
->> -	touch_nmi_watchdog();
->> +	*t -= SLEEP_UNIT_MIN;
->> +	usleep_range(SLEEP_UNIT_MIN, SLEEP_UNIT_MAX);
->> +
->>  	return 0;
->>  }
->>  
->> -- 
->> 2.20.1.12.g72788fdb
->>
+Ah, those tags will be dropped in the next version together with the
+'Reported-by: kernel test robot <lkp@intel.com>' tag suggested by Bjorn.
+
+Thanks for pointing this out and sorry for the possible confusion from
+my courtesy position :-)
+
+Thanks,
+Xuesong 
+
+>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>>> Cc: James Morse <james.morse@arm.com>
+>>> Cc: Will Deacon <will@kernel.org>
+>>> Cc: Rafael. J. Wysocki <rafael@kernel.org>
+>>> Cc: Tony Luck <tony.luck@intel.com>
+>>> Cc: Tomasz Nowicki <tn@semihalf.com>
+>>> ---
+>>>  arch/x86/include/asm/pci_x86.h | 17 +----------------
+>>>  arch/x86/pci/mmconfig-shared.c |  2 --
+>>>  drivers/acpi/pci_mcfg.c        | 34 +++++++++++++---------------------
+>>>  drivers/pci/pci.c              |  2 ++
+>>>  include/linux/pci.h            | 17 +++++++++++++++++
+>>>  5 files changed, 33 insertions(+), 39 deletions(-)
+>>>
+>>> diff --git a/arch/x86/include/asm/pci_x86.h b/arch/x86/include/asm/pci_x86.h
+>>> index 490411d..1f4257c 100644
+>>> --- a/arch/x86/include/asm/pci_x86.h
+>>> +++ b/arch/x86/include/asm/pci_x86.h
+>>> @@ -146,20 +146,7 @@ static inline int  __init pci_acpi_init(void)
+>>>  extern void pcibios_fixup_irqs(void);
+>>>
+>>>  /* pci-mmconfig.c */
+>>> -
+>>> -/* "PCI MMCONFIG %04x [bus %02x-%02x]" */
+>>> -#define PCI_MMCFG_RESOURCE_NAME_LEN (22 + 4 + 2 + 2)
+>>> -
+>>> -struct pci_mmcfg_region {
+>>> -       struct list_head list;
+>>> -       struct resource res;
+>>> -       u64 address;
+>>> -       char __iomem *virt;
+>>> -       u16 segment;
+>>> -       u8 start_bus;
+>>> -       u8 end_bus;
+>>> -       char name[PCI_MMCFG_RESOURCE_NAME_LEN];
+>>> -};
+>>> +struct pci_mmcfg_region;
+>>>
+>>>  extern int __init pci_mmcfg_arch_init(void);
+>>>  extern void __init pci_mmcfg_arch_free(void);
+>>> @@ -174,8 +161,6 @@ extern struct pci_mmcfg_region *__init pci_mmconfig_add(int segment, int start,
+>>>
+>>>  extern struct list_head pci_mmcfg_list;
+>>>
+>>> -#define PCI_MMCFG_BUS_OFFSET(bus)      ((bus) << 20)
+>>> -
+>>>  /*
+>>>   * On AMD Fam10h CPUs, all PCI MMIO configuration space accesses must use
+>>>   * %eax.  No other source or target registers may be used.  The following
+>>> diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
+>>> index 758cbfe..0b961fe6 100644
+>>> --- a/arch/x86/pci/mmconfig-shared.c
+>>> +++ b/arch/x86/pci/mmconfig-shared.c
+>>> @@ -31,8 +31,6 @@
+>>>  static DEFINE_MUTEX(pci_mmcfg_lock);
+>>>  #define pci_mmcfg_lock_held() lock_is_held(&(pci_mmcfg_lock).dep_map)
+>>>
+>>> -LIST_HEAD(pci_mmcfg_list);
+>>> -
+>>>  static void __init pci_mmconfig_remove(struct pci_mmcfg_region *cfg)
+>>>  {
+>>>         if (cfg->res.parent)
+>>> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
+>>> index 53cab97..d9506b0 100644
+>>> --- a/drivers/acpi/pci_mcfg.c
+>>> +++ b/drivers/acpi/pci_mcfg.c
+>>> @@ -13,14 +13,7 @@
+>>>  #include <linux/pci-acpi.h>
+>>>  #include <linux/pci-ecam.h>
+>>>
+>>> -/* Structure to hold entries from the MCFG table */
+>>> -struct mcfg_entry {
+>>> -       struct list_head        list;
+>>> -       phys_addr_t             addr;
+>>> -       u16                     segment;
+>>> -       u8                      bus_start;
+>>> -       u8                      bus_end;
+>>> -};
+>>> +extern struct list_head pci_mmcfg_list;
+>>>
+>>>  #ifdef CONFIG_PCI_QUIRKS
+>>>  struct mcfg_fixup {
+>>> @@ -214,16 +207,13 @@ static void pci_mcfg_apply_quirks(struct acpi_pci_root *root,
+>>>  #endif
+>>>  }
+>>>
+>>> -/* List to save MCFG entries */
+>>> -static LIST_HEAD(pci_mcfg_list);
+>>> -
+>>>  int pci_mcfg_lookup(struct acpi_pci_root *root, struct resource *cfgres,
+>>>                     const struct pci_ecam_ops **ecam_ops)
+>>>  {
+>>>         const struct pci_ecam_ops *ops = &pci_generic_ecam_ops;
+>>>         struct resource *bus_res = &root->secondary;
+>>>         u16 seg = root->segment;
+>>> -       struct mcfg_entry *e;
+>>> +       struct pci_mmcfg_region *e;
+>>>         struct resource res;
+>>>
+>>>         /* Use address from _CBA if present, otherwise lookup MCFG */
+>>> @@ -233,10 +223,10 @@ int pci_mcfg_lookup(struct acpi_pci_root *root, struct resource *cfgres,
+>>>         /*
+>>>          * We expect the range in bus_res in the coverage of MCFG bus range.
+>>>          */
+>>> -       list_for_each_entry(e, &pci_mcfg_list, list) {
+>>> -               if (e->segment == seg && e->bus_start <= bus_res->start &&
+>>> -                   e->bus_end >= bus_res->end) {
+>>> -                       root->mcfg_addr = e->addr;
+>>> +       list_for_each_entry(e, &pci_mmcfg_list, list) {
+>>> +               if (e->segment == seg && e->start_bus <= bus_res->start &&
+>>> +                   e->end_bus >= bus_res->end) {
+>>> +                       root->mcfg_addr = e->address;
+>>>                 }
+>>>
+>>>         }
+>>> @@ -268,7 +258,7 @@ static __init int pci_mcfg_parse(struct acpi_table_header *header)
+>>>  {
+>>>         struct acpi_table_mcfg *mcfg;
+>>>         struct acpi_mcfg_allocation *mptr;
+>>> -       struct mcfg_entry *e, *arr;
+>>> +       struct pci_mmcfg_region *e, *arr;
+>>>         int i, n;
+>>>
+>>>         if (header->length < sizeof(struct acpi_table_mcfg))
+>>> @@ -285,10 +275,12 @@ static __init int pci_mcfg_parse(struct acpi_table_header *header)
+>>>
+>>>         for (i = 0, e = arr; i < n; i++, mptr++, e++) {
+>>>                 e->segment = mptr->pci_segment;
+>>> -               e->addr =  mptr->address;
+>>> -               e->bus_start = mptr->start_bus_number;
+>>> -               e->bus_end = mptr->end_bus_number;
+>>> -               list_add(&e->list, &pci_mcfg_list);
+>>> +               e->address =  mptr->address;
+>>> +               e->start_bus = mptr->start_bus_number;
+>>> +               e->end_bus = mptr->end_bus_number;
+>>> +               e->res.start = e->address + PCI_MMCFG_BUS_OFFSET(e->start_bus);
+>>> +               e->res.end = e->address + PCI_MMCFG_BUS_OFFSET(e->end_bus + 1) - 1;
+>>> +               list_add(&e->list, &pci_mmcfg_list);
+>>>         }
+>>>
+>>>  #ifdef CONFIG_PCI_QUIRKS
+>>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>>> index ce2ab62..899004e 100644
+>>> --- a/drivers/pci/pci.c
+>>> +++ b/drivers/pci/pci.c
+>>> @@ -47,6 +47,8 @@
+>>>  int pci_pci_problems;
+>>>  EXPORT_SYMBOL(pci_pci_problems);
+>>>
+>>> +LIST_HEAD(pci_mmcfg_list);
+>>> +
+>>>  unsigned int pci_pm_d3hot_delay;
+>>>
+>>>  static void pci_pme_list_scan(struct work_struct *work);
+>>> diff --git a/include/linux/pci.h b/include/linux/pci.h
+>>> index cd8aa6f..71e4c06 100644
+>>> --- a/include/linux/pci.h
+>>> +++ b/include/linux/pci.h
+>>> @@ -55,6 +55,23 @@
+>>>  #define PCI_RESET_PROBE                true
+>>>  #define PCI_RESET_DO_RESET     false
+>>>
+>>> +#define PCI_MMCFG_BUS_OFFSET(bus)      ((bus) << 20)
+>>> +
+>>> +/* "PCI MMCONFIG %04x [bus %02x-%02x]" */
+>>> +#define PCI_MMCFG_RESOURCE_NAME_LEN (22 + 4 + 2 + 2)
+>>> +
+>>> +/* pci mcfg region */
+>>> +struct pci_mmcfg_region {
+>>> +       struct list_head list;
+>>> +       struct resource res;
+>>> +       u64 address;
+>>> +       char __iomem *virt;
+>>> +       u16 segment;
+>>> +       u8 start_bus;
+>>> +       u8 end_bus;
+>>> +       char name[PCI_MMCFG_RESOURCE_NAME_LEN];
+>>> +};
+>>> +
+>>>  /*
+>>>   * The PCI interface treats multi-function devices as independent
+>>>   * devices.  The slot/function address of each device is encoded
+>>> --
+>>> 1.8.3.1
+>>>
