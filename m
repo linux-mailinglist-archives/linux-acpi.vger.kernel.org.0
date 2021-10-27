@@ -2,136 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA49443D0AD
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 20:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE85E43D0DE
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 20:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234518AbhJ0S1C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 14:27:02 -0400
-Received: from mail-ot1-f50.google.com ([209.85.210.50]:45809 "EHLO
-        mail-ot1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233726AbhJ0S1C (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 14:27:02 -0400
-Received: by mail-ot1-f50.google.com with SMTP id l16-20020a9d6a90000000b0054e7ab56f27so4820586otq.12;
-        Wed, 27 Oct 2021 11:24:36 -0700 (PDT)
+        id S240100AbhJ0Sj5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 14:39:57 -0400
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:38757 "EHLO
+        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235990AbhJ0Sj4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 14:39:56 -0400
+Received: by mail-oi1-f181.google.com with SMTP id t4so4707545oie.5;
+        Wed, 27 Oct 2021 11:37:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=xkVrgd5x+vh4lCsQtX27kIwieK51Jd1JvnQfPTz93YI=;
-        b=jpHIDnUwcG1KacAPUFZCAfwmRUprxbnCyhKQ4E13Kdw2owmTCozMCORYCzYJ2MaVxj
-         HLtyJIJZyQ6PaSKR5944/+plR9uOzQZ6eexa6QP3GbigipQZwfQs8gvHUj45lXDDO2bg
-         2mgm3GyABQtHnCU6xmOExPXQTGEF5Mrj/Sh9Fv9mQ8K9w3j3dE1reicRnny77TBiUZl7
-         AT3SrUpEHgaflpRIZGGwYaQ+a+VfT8WsbFpBq7wq2eHUe69ozGT12CNcGs86ja6mjWC7
-         wQZ5wTDOXdxIlzIL0FEvcRFt/FIdZOXXQVWQ7OwjPLaNEgbYAd57tAbXlsO2QmLSK9lK
-         2fEQ==
-X-Gm-Message-State: AOAM533LKaWhhygNd4Y544EwL4ovl8kyMJRA7bdmdUdFV8USVN7tPWT5
-        zSJc2FlH+WsN8hDHvNTgN1/Ta9mHJqhNHonygf8=
-X-Google-Smtp-Source: ABdhPJxK5xrtik4xKVv03jjdkdvigewIlW048G3prkktv6QXSCsn6Tah5WNJ8823gKJmnIYjzPZ2su3IGDAm+WcIVys=
-X-Received: by 2002:a05:6830:1af0:: with SMTP id c16mr25672295otd.16.1635359076474;
- Wed, 27 Oct 2021 11:24:36 -0700 (PDT)
+        bh=hVPuTQqP6aEFqO2fyoc1su/oe5Az3LSwCS4uRf5/p08=;
+        b=sVhUQg/eXrcpXfdBOGFDK2xbtpeqz9aty74kKqmAkYFRx8B5LPd+MkGOhXG7Gd+tNw
+         IEuOKB2KaAWbYJpwEV29VYnoqSFIXTPJziq47l9GE+UnrZneAsMnGiHHCMmw8xc8jpYD
+         xialbxW16djho7NNe6umvtwMkQScIdUsSZALdJ0xIZMgbyf2fflbfqsHFGAOXy7PTgUH
+         UBJtMd6Tmol65RQGzhowMQCyfIRboeUiwgNtl5lalPgD4AYum0mTAHS38JfLwSVOoHwA
+         nCJekGOeXydHQhbBxGAQqFi7TUGURkjk7StCt7jBMdqlmsNptx691zDsz31f6m1cX7Do
+         jNXw==
+X-Gm-Message-State: AOAM530a03+t8RUZ7KPBJ2QF9m3kiPJ7hSxx+1UHZY5Cqio+Y4TxmIBN
+        tFMvK2RgMYSRD086KGWa7YmYAsy3DVgLxsmlmNw=
+X-Google-Smtp-Source: ABdhPJzutzJ7/Yj893mdq8no4/lj/5r4vF4oW8JGvIk2VWf04ta96JHBQadGGsCMKVkQFFaoWhZrYdUCMLWXmITeCQE=
+X-Received: by 2002:aca:5c5:: with SMTP id 188mr4840138oif.154.1635359850793;
+ Wed, 27 Oct 2021 11:37:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211015033817.16719-1-xueshuai@linux.alibaba.com>
- <20211026072829.94262-1-xueshuai@linux.alibaba.com> <YXg1bWBKja/tqScg@agluck-desk2.amr.corp.intel.com>
-In-Reply-To: <YXg1bWBKja/tqScg@agluck-desk2.amr.corp.intel.com>
+References: <20211027065438.1742175-1-hch@lst.de>
+In-Reply-To: <20211027065438.1742175-1-hch@lst.de>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 27 Oct 2021 20:24:25 +0200
-Message-ID: <CAJZ5v0gULZymuAuLzG74WxdEuLPqAg+HLWkJ_Wv6m3PLq6aJOg@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI, APEI, EINJ: Relax platform response timeout to 1 second.
-To:     "Luck, Tony" <tony.luck@intel.com>
+Date:   Wed, 27 Oct 2021 20:37:20 +0200
+Message-ID: <CAJZ5v0jYmrV7bMV0b9wB8L-bX6PU+yCDrK8s+jCJh1x3xCi_Rg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: mark apei_hest_parse
+To:     Christoph Hellwig <hch@lst.de>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Shuai Xue <xueshuai@linux.alibaba.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
         Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        luanshi <zhangliguang@linux.alibaba.com>,
-        zhuo.song@linux.alibaba.com
+        Robert Moore <robert.moore@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Oct 26, 2021 at 7:05 PM Luck, Tony <tony.luck@intel.com> wrote:
+On Wed, Oct 27, 2021 at 8:54 AM Christoph Hellwig <hch@lst.de> wrote:
 >
-> On Tue, Oct 26, 2021 at 03:28:29PM +0800, Shuai Xue wrote:
-> > When injecting an error into the platform, the OSPM executes an
-> > EXECUTE_OPERATION action to instruct the platform to begin the injection
-> > operation. And then, the OSPM busy waits for a while by continually
-> > executing CHECK_BUSY_STATUS action until the platform indicates that the
-> > operation is complete. More specifically, the platform is limited to
-> > respond within 1 millisecond right now. This is too strict for some
-> > platforms.
-> >
-> > For example, in Arm platform, when injecting a Processor Correctable error,
-> > the OSPM will warn:
-> >     Firmware does not respond in time.
-> >
-> > And a message is printed on the console:
-> >     echo: write error: Input/output error
-> >
-> > We observe that the waiting time for DDR error injection is about 10 ms and
-> > that for PCIe error injection is about 500 ms in Arm platform.
-> >
-> > In this patch, we relax the response timeout to 1 second.
-> >
-> > Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> apei_hest_parse is only used in hest.c, so mark it static.
 >
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  drivers/acpi/apei/hest.c | 5 +++--
+>  include/acpi/apei.h      | 3 ---
+>  2 files changed, 3 insertions(+), 5 deletions(-)
 >
-> Rafael: Do you want to take this in the acpi tree? If not, I can
-> apply it to the RAS tree (already at -rc7, so in next merge cycle
-> after 5.16-rc1 comes out).
+> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
+> index 277f00b288d14..0edc1ed476737 100644
+> --- a/drivers/acpi/apei/hest.c
+> +++ b/drivers/acpi/apei/hest.c
+> @@ -86,7 +86,9 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
+>         return len;
+>  };
+>
+> -int apei_hest_parse(apei_hest_func_t func, void *data)
+> +typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+> +
+> +static int apei_hest_parse(apei_hest_func_t func, void *data)
+>  {
+>         struct acpi_hest_header *hest_hdr;
+>         int i, rc, len;
+> @@ -121,7 +123,6 @@ int apei_hest_parse(apei_hest_func_t func, void *data)
+>
+>         return 0;
+>  }
+> -EXPORT_SYMBOL_GPL(apei_hest_parse);
+>
+>  /*
+>   * Check if firmware advertises firmware first mode. We need FF bit to be set
+> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+> index 680f80960c3dc..ece0a8af2bae7 100644
+> --- a/include/acpi/apei.h
+> +++ b/include/acpi/apei.h
+> @@ -37,9 +37,6 @@ void __init acpi_hest_init(void);
+>  static inline void acpi_hest_init(void) { return; }
+>  #endif
+>
+> -typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+> -int apei_hest_parse(apei_hest_func_t func, void *data);
+> -
+>  int erst_write(const struct cper_record_header *record);
+>  ssize_t erst_get_record_count(void);
+>  int erst_get_record_id_begin(int *pos);
+> --
 
-I'll queue it up for 5.16.
-
-Thanks!
-
-> > ---
-> > Changelog v2 -> v3:
-> > - Implemented the timeout in usleep_range instead of msleep.
-> > - Dropped command line interface of timeout.
-> > - Link to the v1 patch: https://lkml.org/lkml/2021/10/14/1402
-> > ---
-> >  drivers/acpi/apei/einj.c | 15 ++++++++-------
-> >  1 file changed, 8 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-> > index 133156759551..6e1ff4b62a8f 100644
-> > --- a/drivers/acpi/apei/einj.c
-> > +++ b/drivers/acpi/apei/einj.c
-> > @@ -28,9 +28,10 @@
-> >  #undef pr_fmt
-> >  #define pr_fmt(fmt) "EINJ: " fmt
-> >
-> > -#define SPIN_UNIT            100                     /* 100ns */
-> > -/* Firmware should respond within 1 milliseconds */
-> > -#define FIRMWARE_TIMEOUT     (1 * NSEC_PER_MSEC)
-> > +#define SLEEP_UNIT_MIN               1000                    /* 1ms */
-> > +#define SLEEP_UNIT_MAX               5000                    /* 5ms */
-> > +/* Firmware should respond within 1 seconds */
-> > +#define FIRMWARE_TIMEOUT     (1 * USEC_PER_SEC)
-> >  #define ACPI5_VENDOR_BIT     BIT(31)
-> >  #define MEM_ERROR_MASK               (ACPI_EINJ_MEMORY_CORRECTABLE | \
-> >                               ACPI_EINJ_MEMORY_UNCORRECTABLE | \
-> > @@ -171,13 +172,13 @@ static int einj_get_available_error_type(u32 *type)
-> >
-> >  static int einj_timedout(u64 *t)
-> >  {
-> > -     if ((s64)*t < SPIN_UNIT) {
-> > +     if ((s64)*t < SLEEP_UNIT_MIN) {
-> >               pr_warn(FW_WARN "Firmware does not respond in time\n");
-> >               return 1;
-> >       }
-> > -     *t -= SPIN_UNIT;
-> > -     ndelay(SPIN_UNIT);
-> > -     touch_nmi_watchdog();
-> > +     *t -= SLEEP_UNIT_MIN;
-> > +     usleep_range(SLEEP_UNIT_MIN, SLEEP_UNIT_MAX);
-> > +
-> >       return 0;
-> >  }
-> >
-> > --
-> > 2.20.1.12.g72788fdb
-> >
+Applied as 5.16 material, thanks!
