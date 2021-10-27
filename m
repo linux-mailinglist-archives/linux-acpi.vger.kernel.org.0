@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E80C043D3C1
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AE6F43D3C3
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:18:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244300AbhJ0VU3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 17:20:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53694 "EHLO
+        id S244308AbhJ0VUa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 17:20:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244280AbhJ0VUW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:20:22 -0400
+        with ESMTP id S235594AbhJ0VUY (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:20:24 -0400
 Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D3D6C061745;
-        Wed, 27 Oct 2021 14:17:56 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id bp15so9011349lfb.4;
-        Wed, 27 Oct 2021 14:17:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7ED8C061348;
+        Wed, 27 Oct 2021 14:17:57 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id c28so8884713lfv.13;
+        Wed, 27 Oct 2021 14:17:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wTvK5kO0FUcGnxCyVmK+GKrZNfPhZFNt57h0QWat/qo=;
-        b=ZqOcoukrajwjG0ttfhDDamRtFbZgEiaFrpLAXOR7yQBANjFcnFFXOdYomTLQXBItFZ
-         6fsN0Gio8AJkokF0BnxXjlaJgq1CP0FdapZULDkVLC880wSvbduG3ij7wOgm65yyZHfb
-         /MEYtYvu3WnHHl8p/60KRwD6dDnaqpWEGWZELHlL42ECg0BG3xSUbLaFXBGJ8l5anvCb
-         nmVZ+GAgVHAauuOzz3lnhLFItX2Cbpx7VOJRMQdOkh5vDNRTVY6CLlgAa8SfZ45DmHqN
-         vHhGZ7nhCEzJCcCT39f5nwGqOjoorbJierMaHF5OrWAM3eykGjghB0x8WQgbnqhmKJ6c
-         aKlw==
+        bh=4OzDm5Q6AH2k+PTLkkEFou1ZT7VKkxRv+kE3WUpAOf8=;
+        b=UQ/1aCiL3zbAzp7+64ENWMFEP+bdpmbq+KH3NTi7hX2kN+fFVrO8S32QtOPwQfMxxS
+         B4dmeXUf/BzuJhhzqG8VnHaUgY25bdcGnTrwxpDILzBPa9fYkIseD/FA90YqGQJP6GXZ
+         PaIGof4Fo+LwMmngjVzKDktvBb6N6F/Oq7yFljDHwAcSrBHnke6Ooi6gGMrQtQGLY6gt
+         DkEqtfwDzQkavBqxwLa+DWQ8L/Pn42h6a2KO1Y5kAXNNdt6/bA2gpVm767XfMu2cU+ZD
+         8088MqymRILm5tETDMubwXrrDQl/PbR2eeFdMLFjmwWobAMprcx5uRuWc88/LBbNkX13
+         zK7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wTvK5kO0FUcGnxCyVmK+GKrZNfPhZFNt57h0QWat/qo=;
-        b=XyLdzePTQPe5d5wLqwUMFXhC6n8RjbMnozPHNiHYcxfxWeB4Fm2JhABLYcGHA9HgwE
-         rNiNU6DSH/kI8yY5YAAslvoXUaDZDOYlbEZCI0bhE9bi7ZDcAfYofTZfUtURZnvGkszT
-         Td6a0s9tUqOSMpy4USyd9dtpqLO4RB1UBWURuHzZPR+O6G4+yE1ztPaXQgVvF/31+CH5
-         BZcOjy4+MU4N61sjq19xXYanvC/m9BAJom017+8opjttclZlEZKM4Dx/caaf0Hxw05t4
-         m66efkFeG0bFdQGE83hxKDOWGC6yfkLKI+adLeSy+SiLJqehpkGAiZDpsAiSv1j8eS/K
-         wojQ==
-X-Gm-Message-State: AOAM533nfqN0Si5OzRpJmAUWWXypBjShmwWT1aXXMAdI4LzPPqnwme+z
-        1sUnQNomyxnoeYXPB34tqx4=
-X-Google-Smtp-Source: ABdhPJwuKOrqeex0uVzCe5G2iTS4vzkdpHKtiR+d5t3erf2uXeC/mCcisVEMxQQhKVgKCWNS6EmCsw==
-X-Received: by 2002:a05:6512:38d0:: with SMTP id p16mr80629lft.483.1635369474451;
-        Wed, 27 Oct 2021 14:17:54 -0700 (PDT)
+        bh=4OzDm5Q6AH2k+PTLkkEFou1ZT7VKkxRv+kE3WUpAOf8=;
+        b=ADb0TPjlLpgbCSFF0VyAibL6TGJbBgUPBAzakbfhWHDpINkpQGCNVRikFND+zsLJic
+         LiM2PkB754d+vbjzK+j6R46zpUP7jH0HswBi29OZ0AhJk5FCzFmcmtB+h78wmUFj0/1F
+         QVyVIlsnyLIy5EkJsLcnvz6JAJr6sY6F5LoIKzKA8tF6YffLAZXM/nYPEYc8GXaZmRC9
+         84f6DEaFsRLRyrufKMCP5H5wHt2nO82afRhOjOBBDXmFxWoHvlTSNYW9toY7GplelBby
+         1c5j9CUQ+n1GELUWu0c+NEfPHj83t9QvCFVpUZaXdpTH1wRukWNteETrcK2pIvIQvo0F
+         80CQ==
+X-Gm-Message-State: AOAM530NvOip+WqUu9lvqmu5SWastDPeajUMTCUcAVDeiiNQ3Vgz4AjG
+        ox1mz6ScRArORzzDsOn66pw=
+X-Google-Smtp-Source: ABdhPJyeN/kGQE6WfHsDgri2jvM3EdB0FfWjlbwbrCss0fAIUEYOe9Prwt7QavBIliqBuOmpkw05Og==
+X-Received: by 2002:a05:6512:3f04:: with SMTP id y4mr128266lfa.180.1635369476308;
+        Wed, 27 Oct 2021 14:17:56 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru. [46.138.41.28])
-        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.17.52
+        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.17.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Oct 2021 14:17:54 -0700 (PDT)
+        Wed, 27 Oct 2021 14:17:56 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -110,9 +110,9 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [PATCH v2 01/45] notifier: Remove extern annotation from function prototypes
-Date:   Thu, 28 Oct 2021 00:16:31 +0300
-Message-Id: <20211027211715.12671-2-digetx@gmail.com>
+Subject: [PATCH v2 02/45] notifier: Add blocking_notifier_call_chain_empty()
+Date:   Thu, 28 Oct 2021 00:16:32 +0300
+Message-Id: <20211027211715.12671-3-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -122,78 +122,53 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There is no need to annotate function prototypes with 'extern', it makes
-code less readable. Remove unnecessary annotations from <notifier.h>.
+Add blocking_notifier_call_chain_empty() that returns true if call chain
+is empty.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- include/linux/notifier.h | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ include/linux/notifier.h |  2 ++
+ kernel/notifier.c        | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+)
 
 diff --git a/include/linux/notifier.h b/include/linux/notifier.h
-index 87069b8459af..4b80a815b666 100644
+index 4b80a815b666..054271e9cb20 100644
 --- a/include/linux/notifier.h
 +++ b/include/linux/notifier.h
-@@ -90,7 +90,7 @@ struct srcu_notifier_head {
- 	} while (0)
- 
- /* srcu_notifier_heads must be cleaned up dynamically */
--extern void srcu_init_notifier_head(struct srcu_notifier_head *nh);
-+void srcu_init_notifier_head(struct srcu_notifier_head *nh);
- #define srcu_cleanup_notifier_head(name)	\
- 		cleanup_srcu_struct(&(name)->srcu);
- 
-@@ -141,36 +141,36 @@ extern void srcu_init_notifier_head(struct srcu_notifier_head *nh);
- 
- #ifdef __KERNEL__
- 
--extern int atomic_notifier_chain_register(struct atomic_notifier_head *nh,
-+int atomic_notifier_chain_register(struct atomic_notifier_head *nh,
- 		struct notifier_block *nb);
--extern int blocking_notifier_chain_register(struct blocking_notifier_head *nh,
-+int blocking_notifier_chain_register(struct blocking_notifier_head *nh,
- 		struct notifier_block *nb);
--extern int raw_notifier_chain_register(struct raw_notifier_head *nh,
-+int raw_notifier_chain_register(struct raw_notifier_head *nh,
- 		struct notifier_block *nb);
--extern int srcu_notifier_chain_register(struct srcu_notifier_head *nh,
-+int srcu_notifier_chain_register(struct srcu_notifier_head *nh,
- 		struct notifier_block *nb);
- 
--extern int atomic_notifier_chain_unregister(struct atomic_notifier_head *nh,
-+int atomic_notifier_chain_unregister(struct atomic_notifier_head *nh,
- 		struct notifier_block *nb);
--extern int blocking_notifier_chain_unregister(struct blocking_notifier_head *nh,
-+int blocking_notifier_chain_unregister(struct blocking_notifier_head *nh,
- 		struct notifier_block *nb);
--extern int raw_notifier_chain_unregister(struct raw_notifier_head *nh,
-+int raw_notifier_chain_unregister(struct raw_notifier_head *nh,
- 		struct notifier_block *nb);
--extern int srcu_notifier_chain_unregister(struct srcu_notifier_head *nh,
-+int srcu_notifier_chain_unregister(struct srcu_notifier_head *nh,
- 		struct notifier_block *nb);
- 
--extern int atomic_notifier_call_chain(struct atomic_notifier_head *nh,
-+int atomic_notifier_call_chain(struct atomic_notifier_head *nh,
- 		unsigned long val, void *v);
--extern int blocking_notifier_call_chain(struct blocking_notifier_head *nh,
-+int blocking_notifier_call_chain(struct blocking_notifier_head *nh,
- 		unsigned long val, void *v);
--extern int raw_notifier_call_chain(struct raw_notifier_head *nh,
-+int raw_notifier_call_chain(struct raw_notifier_head *nh,
- 		unsigned long val, void *v);
--extern int srcu_notifier_call_chain(struct srcu_notifier_head *nh,
-+int srcu_notifier_call_chain(struct srcu_notifier_head *nh,
- 		unsigned long val, void *v);
- 
--extern int blocking_notifier_call_chain_robust(struct blocking_notifier_head *nh,
-+int blocking_notifier_call_chain_robust(struct blocking_notifier_head *nh,
- 		unsigned long val_up, unsigned long val_down, void *v);
--extern int raw_notifier_call_chain_robust(struct raw_notifier_head *nh,
-+int raw_notifier_call_chain_robust(struct raw_notifier_head *nh,
+@@ -173,6 +173,8 @@ int blocking_notifier_call_chain_robust(struct blocking_notifier_head *nh,
+ int raw_notifier_call_chain_robust(struct raw_notifier_head *nh,
  		unsigned long val_up, unsigned long val_down, void *v);
  
++bool blocking_notifier_call_chain_empty(struct blocking_notifier_head *nh);
++
  #define NOTIFY_DONE		0x0000		/* Don't care */
+ #define NOTIFY_OK		0x0001		/* Suits me */
+ #define NOTIFY_STOP_MASK	0x8000		/* Don't call further */
+diff --git a/kernel/notifier.c b/kernel/notifier.c
+index b8251dc0bc0f..1f7ba8988b90 100644
+--- a/kernel/notifier.c
++++ b/kernel/notifier.c
+@@ -322,6 +322,20 @@ int blocking_notifier_call_chain(struct blocking_notifier_head *nh,
+ }
+ EXPORT_SYMBOL_GPL(blocking_notifier_call_chain);
+ 
++/**
++ *	blocking_notifier_call_chain_empty - Check whether notifier chain is empty
++ *	@nh: Pointer to head of the blocking notifier chain
++ *
++ *	Checks whether notifier chain is empty.
++ *
++ *	Returns true is notifier chain is empty, false otherwise.
++ */
++bool blocking_notifier_call_chain_empty(struct blocking_notifier_head *nh)
++{
++	return !rcu_access_pointer(nh->head);
++}
++EXPORT_SYMBOL_GPL(blocking_notifier_call_chain_empty);
++
+ /*
+  *	Raw notifier chain routines.  There is no protection;
+  *	the caller must provide it.  Use at your own risk!
 -- 
 2.33.1
 
