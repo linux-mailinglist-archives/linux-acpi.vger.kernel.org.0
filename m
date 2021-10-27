@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6636D43D518
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB1D643D542
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Oct 2021 23:24:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239623AbhJ0VZ2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 27 Oct 2021 17:25:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53908 "EHLO
+        id S229869AbhJ0V00 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 27 Oct 2021 17:26:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241345AbhJ0VYY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:24:24 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16815C0432DE;
-        Wed, 27 Oct 2021 14:18:54 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id j9so8980268lfu.7;
-        Wed, 27 Oct 2021 14:18:54 -0700 (PDT)
+        with ESMTP id S234416AbhJ0VYz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 27 Oct 2021 17:24:55 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4452C0432E4;
+        Wed, 27 Oct 2021 14:18:55 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id q16so7019892ljg.3;
+        Wed, 27 Oct 2021 14:18:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=3tizDJEeWC2iLbZdJm6My4oRtC+CKaYmiKRSIM6veO0=;
-        b=P2SMTBdUazDV2Wnt33aO9FM2Ioz84SezmWonZoC9di4gBNxmpSDTZT6tEbAs+vJh3H
-         Fl3mZiziafsNnSwbT1iMyr0r9bKbxSiHP3xJiOBIo4ewxSS3FiLigSFoEgJOcOsMECFU
-         Ealy6ndYpUfciCkbDSvwvbDJBaKQyOcr0jiZpeL2e0iKkV4AQLDVCHRPOCPCDpkazzgq
-         BERHUZw176GWVNNNOqpmpYaLAn7f4joDeIeKRo11vDGHWht2ujkzv0CrGvSNdzJe9tR3
-         GFiFAzCfeg61A5JBu27BdMdrz99RW2oVhEudj/a2XZux9KH22qJjawF87cCiFM6fKipn
-         F+kg==
+        bh=Vtt3o4MswiJ8Uwk5SbVoJldxGf1+YbPRO7EtWlQaYpw=;
+        b=h9Sc10ekNHuFL9pzFR5ivr4ubnoV3ErBKpxwq8qtLnmmEwmpDGD4jSeaWauc76yLUe
+         mSt4r4zCNyFKj4h5OR8HLlxF7zfIwR2mYZXQxAs/YUFPraXy5oJXAYRRb5XFp5DFvHId
+         dp4uwopusQmPxwo8pBprt9hjoN+nwfiSLFgat9Xg5VUZGhfoEbJhN2yWrZJiei/Mb3oo
+         mtgvsX4Y0EPIUr2yLJuO6jAqsOYLbfr0p9vS8kzfJK4fcF7aAzjiqNMDP4LlFTOflII0
+         /Ozi7fljMZ5bdh0k27GOMuAQZgJbYkevh7WpkJcoo8VpN/Xp7c/9529BJm6xL6ZNrYi/
+         VmuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=3tizDJEeWC2iLbZdJm6My4oRtC+CKaYmiKRSIM6veO0=;
-        b=g94owpKKRRPcgJfPyB2QZFBBLd2nSYMvzLFLDXCJGylerSJTxf9CghzBWfzthzxZNp
-         NLTQ2XYkyUZgIyuHGHdAlx+sWvU3z/hEqgQ8pHHNyL69tZwONzGup43tBqJxnwNq9jXv
-         6Ckc38CpFY9FNP6n5rOr6UaeZFh2nU4dx8cPCTFG2mc6I3Z/Femq0RSufUuHM1CN4Q8i
-         wU71TviYGbXjTcWtoRdZHTGzy4h8VKcUYM1f7rl4RjROG7zirWxlEboDx05gxkPML1PC
-         xK3pGqkeXq/U3O2ohaC+xPtVNYanoaI3lVIxGL7VaJZS+3r1ZVZkSYPk1RQl+F6NXZEQ
-         /UrQ==
-X-Gm-Message-State: AOAM532iXolfbnxXjteiHZAYKM8888fX5FDIKuSLYkNItj1AzwiOxYDY
-        y6XbKrh/nMg45jhwsUzJwLgm7JpxQ9E=
-X-Google-Smtp-Source: ABdhPJw7dGE4iKe+cyeyTSJFUn+l5q/Abxrr3B6KYrOVBl1p66aP04j6vH2fcBbUhHRs8nFJgDlWqw==
-X-Received: by 2002:a05:6512:1095:: with SMTP id j21mr134174lfg.274.1635369532441;
-        Wed, 27 Oct 2021 14:18:52 -0700 (PDT)
+        bh=Vtt3o4MswiJ8Uwk5SbVoJldxGf1+YbPRO7EtWlQaYpw=;
+        b=LHMUt+bqb6vsWNgOhYiUjpd7PIZxB2t67atX224q3pezrfYCTNPkC9MrIiypDcYWbL
+         IJvNMmPaeYD280I9BFuqGDntsCjSN+Fj2h8wV8m3M2rZiZ/g3/MtWy0427x1uqoWgr8V
+         ZXrD237LdoWeXIwp9zkDWbV6QgjLelPBjBnnYJshVafrJkkXARethz4rTP4LAQjdj6ZQ
+         LpEXy5hLZ1iJHfXKlumjZzBKBqNKQAiSGPUqecWJMvnKjHV69UBLBEuvkaRsBjL8iXu2
+         AzNp0zX5Vg5T5ij5EatYO2P/9+N2jBfTrBqBk3wgmAO1FBmrPX3P2+8VNHDy5F9KdZPy
+         W8+w==
+X-Gm-Message-State: AOAM5335WwrGkjE4jxOrZ8U8BUnIpzDVKuScM+W8kJrnaapx440BGe3L
+        UKLeMaC7551sO3PVpxCRIeU=
+X-Google-Smtp-Source: ABdhPJyyBz+GAYvcNwhzUHtMKnc91wku7za2iucydPD6HlUd9fBk/92YnwCUeQIBB5tQ4kJ4zljd+g==
+X-Received: by 2002:a2e:b804:: with SMTP id u4mr293626ljo.425.1635369534279;
+        Wed, 27 Oct 2021 14:18:54 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru. [46.138.41.28])
-        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.50
+        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Oct 2021 14:18:52 -0700 (PDT)
+        Wed, 27 Oct 2021 14:18:53 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -110,9 +110,9 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [PATCH v2 32/45] mfd: retu: Use devm_register_simple_power_off_handler()
-Date:   Thu, 28 Oct 2021 00:17:02 +0300
-Message-Id: <20211027211715.12671-33-digetx@gmail.com>
+Subject: [PATCH v2 33/45] mfd: rk808: Use devm_register_simple_power_off_handler()
+Date:   Thu, 28 Oct 2021 00:17:03 +0300
+Message-Id: <20211027211715.12671-34-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -127,95 +127,66 @@ pm_power_off variable and allows to register multiple power-off handlers.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mfd/retu-mfd.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/mfd/rk808.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/mfd/retu-mfd.c b/drivers/mfd/retu-mfd.c
-index c748fd29a220..d18f05c1f095 100644
---- a/drivers/mfd/retu-mfd.c
-+++ b/drivers/mfd/retu-mfd.c
-@@ -22,6 +22,7 @@
- #include <linux/slab.h>
- #include <linux/mutex.h>
+diff --git a/drivers/mfd/rk808.c b/drivers/mfd/rk808.c
+index b181fe401330..3bf369469053 100644
+--- a/drivers/mfd/rk808.c
++++ b/drivers/mfd/rk808.c
+@@ -18,6 +18,7 @@
+ #include <linux/mfd/core.h>
  #include <linux/module.h>
+ #include <linux/of_device.h>
 +#include <linux/reboot.h>
  #include <linux/regmap.h>
- #include <linux/mfd/core.h>
- #include <linux/mfd/retu.h>
-@@ -81,9 +82,6 @@ static struct regmap_irq_chip retu_irq_chip = {
- 	.ack_base	= RETU_REG_IDR,
+ 
+ struct rk808_reg_data {
+@@ -526,12 +527,11 @@ static const struct regmap_irq_chip rk818_irq_chip = {
+ 	.init_ack_masked = true,
  };
  
--/* Retu device registered for the power off. */
--static struct retu_dev *retu_pm_power_off;
+-static struct i2c_client *rk808_i2c_client;
 -
- static const struct resource tahvo_usb_res[] = {
- 	{
- 		.name	= "tahvo-usb",
-@@ -165,12 +163,12 @@ int retu_write(struct retu_dev *rdev, u8 reg, u16 data)
- }
- EXPORT_SYMBOL_GPL(retu_write);
- 
--static void retu_power_off(void)
-+static void retu_power_off(void *data)
+-static void rk808_pm_power_off(void)
++static void rk808_pm_power_off(void *data)
  {
--	struct retu_dev *rdev = retu_pm_power_off;
-+	struct retu_dev *rdev = data;
- 	int reg;
+ 	int ret;
+ 	unsigned int reg, bit;
++	struct i2c_client *rk808_i2c_client = data;
+ 	struct rk808 *rk808 = i2c_get_clientdata(rk808_i2c_client);
  
--	mutex_lock(&retu_pm_power_off->mutex);
-+	mutex_lock(&rdev->mutex);
- 
- 	/* Ignore power button state */
- 	regmap_read(rdev->regmap, RETU_REG_CC1, &reg);
-@@ -183,7 +181,7 @@ static void retu_power_off(void)
- 	for (;;)
- 		cpu_relax();
- 
--	mutex_unlock(&retu_pm_power_off->mutex);
-+	mutex_unlock(&rdev->mutex);
- }
- 
- static int retu_regmap_read(void *context, const void *reg, size_t reg_size,
-@@ -261,6 +259,17 @@ static int retu_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
- 		 (ret & RETU_REG_ASICR_VILMA) ? rdat->companion_name : "",
- 		 (ret >> 4) & 0x7, ret & 0xf);
- 
-+	if (i2c->addr == 1) {
-+		ret = devm_register_simple_power_off_handler(&i2c->dev,
-+							     retu_power_off,
-+							     rdev);
-+		if (ret) {
-+			dev_err(rdev->dev,
-+				"could not register power-off handler: %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
- 	/* Mask all interrupts. */
- 	ret = retu_write(rdev, rdat->irq_chip->mask_base, 0xffff);
- 	if (ret < 0)
-@@ -279,10 +288,6 @@ static int retu_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
- 		return ret;
+ 	switch (rk808->variant) {
+@@ -725,8 +725,14 @@ static int rk808_probe(struct i2c_client *client,
  	}
  
--	if (i2c->addr == 1 && !pm_power_off) {
--		retu_pm_power_off = rdev;
--		pm_power_off	  = retu_power_off;
--	}
+ 	if (of_property_read_bool(np, "rockchip,system-power-controller")) {
+-		rk808_i2c_client = client;
+-		pm_power_off = rk808_pm_power_off;
++		ret = devm_register_simple_power_off_handler(&client->dev,
++							     rk808_pm_power_off,
++							     client);
++		if (ret) {
++			dev_err(&client->dev,
++				"failed to register power-off handler %d\n", ret);
++			goto err_irq;
++		}
+ 	}
  
  	return 0;
- }
-@@ -291,10 +296,6 @@ static int retu_remove(struct i2c_client *i2c)
- {
- 	struct retu_dev *rdev = i2c_get_clientdata(i2c);
+@@ -742,13 +748,6 @@ static int rk808_remove(struct i2c_client *client)
  
--	if (retu_pm_power_off == rdev) {
--		pm_power_off	  = NULL;
--		retu_pm_power_off = NULL;
--	}
- 	mfd_remove_devices(rdev->dev);
- 	regmap_del_irq_chip(i2c->irq, rdev->irq_data);
+ 	regmap_del_irq_chip(client->irq, rk808->irq_data);
+ 
+-	/**
+-	 * pm_power_off may points to a function from another module.
+-	 * Check if the pointer is set by us and only then overwrite it.
+-	 */
+-	if (pm_power_off == rk808_pm_power_off)
+-		pm_power_off = NULL;
+-
+ 	return 0;
+ }
  
 -- 
 2.33.1
