@@ -2,39 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D2A43DE30
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Oct 2021 11:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0910743DE48
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Oct 2021 11:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229925AbhJ1J4C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Oct 2021 05:56:02 -0400
-Received: from mail-ot1-f44.google.com ([209.85.210.44]:34581 "EHLO
-        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229775AbhJ1J4A (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Oct 2021 05:56:00 -0400
-Received: by mail-ot1-f44.google.com with SMTP id t17-20020a056830083100b00553ced10177so7601568ots.1;
-        Thu, 28 Oct 2021 02:53:32 -0700 (PDT)
+        id S229963AbhJ1KCD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Oct 2021 06:02:03 -0400
+Received: from mail-ot1-f47.google.com ([209.85.210.47]:34682 "EHLO
+        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229775AbhJ1KB6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Oct 2021 06:01:58 -0400
+Received: by mail-ot1-f47.google.com with SMTP id t17-20020a056830083100b00553ced10177so7617839ots.1;
+        Thu, 28 Oct 2021 02:59:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=uz31be5RzrXoa4uAxe1xyKZoIQd0wtsVVy1gZjyOGeo=;
-        b=jdFl/je3Je6T/jpCHs04XX6ITK/a6Yki3Je6sLTq60sPpv8KU3wjQzb7JSWZUuh8Ea
-         E1WhkuHpY/SLaMOFwPpIcpW+Xb3w8MOgphjjDRjOU6zRKQFs8LWQJUPrEduBRmASipAM
-         bPQUtTZoRe6qAUaZfPajlfft820o9J3COt+JFiSYvJxs2d4XftSLrXqkmtZ+12DcunbJ
-         R0+L1t0K7JjQ4QBEcwn3s7kcGoMHl0l1ysAYkvJ1fQYEdg6YvFOJgKQ+vtBH0LIbABle
-         Pi8Go4QlHquNyrdGZuRIvAtfYxXcaGp+h8VTW0DD1Xmtsuutpo61grFpw7QhkgzyqvZu
-         MFlQ==
-X-Gm-Message-State: AOAM532in2NVxr1p+JR32IP/S7/gtP+PmtkbO4WLA3C9ycT+YBthrKNW
-        o2W8Dkq0sIqWcv54+iwf4+qJ56qK90vujKrPxmc=
-X-Google-Smtp-Source: ABdhPJzOhFRTFEQQ+n5tEP/bBwTFb0889hJMVw20FWNyFAcerxAE3whFQ+5AhX1ip3T9ogNIhdu7wA8+/uN9VNCEoX8=
-X-Received: by 2002:a9d:65c1:: with SMTP id z1mr2411564oth.198.1635414812552;
- Thu, 28 Oct 2021 02:53:32 -0700 (PDT)
+        bh=YApfc+rtORQHprN7aKpnZNhl8TPl/VtOJQI8beQJmCY=;
+        b=ZISI/TqYdNfu8bZIXT5RgeyOfBmGr0yaEHq3Lee1O1i0DfKvqoibZzZzq0OWZ6IPNS
+         0HRJ9hu5TnXyshbdh4/4P1ZKND3MtQnb2KkOH4irWfXWORRALOa3EIyITdnA/fgQ/fjH
+         WCKr/uY1dRce5u5wrJ8U5/I19GIq+hkOo9wzt+0ipl79AOjuKXQuuPkAtn4NhW4riTm0
+         yBRqb18GtYUh8SLkJsK4mEJru3Up8assYiSmt/H+I+MO3TfMvAKZgRBVdRZb2d8D7Pr4
+         r8OuqYoOuNY1m+DiiJkUUjcx6Bfk6Y3sxnXELU0g1Q9PBaYTYaB5JM+7Eo95TEn4cWXL
+         DZvg==
+X-Gm-Message-State: AOAM532ufq8H7lkzA/GvA9s/yy+W/QcGd8FcDkkQcGuJoF7g46LIettU
+        xbMvrl0BdX9tnptHeAMgRe8wrFp8RgPc3VIeJlk=
+X-Google-Smtp-Source: ABdhPJzD4cm7tn60vkyopY5CUMxUc9huwAUhS0IgxTyGcJq7Km0Bm+8fuUNsdZomFIBYzzQsRecVralPmU+TS+34zNY=
+X-Received: by 2002:a9d:65c1:: with SMTP id z1mr2427957oth.198.1635415170827;
+ Thu, 28 Oct 2021 02:59:30 -0700 (PDT)
 MIME-Version: 1.0
 References: <20211027211715.12671-1-digetx@gmail.com> <20211027211715.12671-9-digetx@gmail.com>
 In-Reply-To: <20211027211715.12671-9-digetx@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 28 Oct 2021 11:53:20 +0200
-Message-ID: <CAJZ5v0jMdSjmkswzu18LSxcNk+k92Oz5XFFXmu-h=W8aPP4Oig@mail.gmail.com>
+Date:   Thu, 28 Oct 2021 11:59:18 +0200
+Message-ID: <CAJZ5v0gpu2ezMhWr=grg6M8aWAx58DQozbXHoZaiPqUaZxJi4Q@mail.gmail.com>
 Subject: Re: [PATCH v2 08/45] kernel: Add combined power-off+restart handler
  call chain API
 To:     Dmitry Osipenko <digetx@gmail.com>
@@ -55,7 +55,6 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Greg Ungerer <gerg@linux-m68k.org>,
         Joshua Thompson <funaho@jurai.org>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
         Greentime Hu <green.hu@gmail.com>,
         Vincent Chen <deanbo422@gmail.com>,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
@@ -180,6 +179,9 @@ On Wed, Oct 27, 2021 at 11:18 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 > +#define POWEROFF_PRIO_DEFAULT          128
 > +#define POWEROFF_PRIO_HIGH             192
 > +#define POWEROFF_PRIO_FIRMWARE         224
+
+Also I'm wondering why these particular numbers were chosen, here and above?
+
 > +
 > +enum poweroff_mode {
 > +       POWEROFF_NORMAL = 0,
@@ -231,9 +233,78 @@ On Wed, Oct 27, 2021 at 11:18 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 > + * Fill the structure members and pass it to register_power_handler().
 > + */
 > +struct power_handler {
+> +       /**
+> +        * @cb_data:
+> +        *
+> +        * User data included in callback's argument.
+> +        */
 
-The name of this structure is too generic IMV.  There are many things
-that it might apply to in principle.
+And here I would document the structure fields in the main kerneldoc
+comment above.
 
-What about calling power_off_handler or sys_off_handler as it need not
-be about power at all?
+As is, it is a bit hard to grasp the whole definition.
+
+> +       void *cb_data;
+> +
+> +       /**
+> +        * @power_off_cb:
+> +        *
+> +        * Callback that should turn off machine.  Inactive if NULL.
+> +        */
+> +       void (*power_off_cb)(struct power_off_data *data);
+> +
+> +       /**
+> +        * @power_off_prepare_cb:
+> +        *
+> +        * Power-off preparation callback.  All power-off preparation callbacks
+> +        * are invoked before @restart_cb.  Inactive if NULL.
+> +        */
+> +       void (*power_off_prepare_cb)(struct power_off_prep_data *data);
+> +
+> +       /**
+> +        * @power_off_priority:
+> +        *
+> +        * Power-off callback priority, must be unique.  Zero value is
+> +        * reassigned to default priority.  Inactive if @power_off_cb is NULL.
+> +        */
+> +       int power_off_priority;
+> +
+> +       /**
+> +        * @power_off_chaining_allowed:
+> +        *
+> +        * False if callbacks execution should stop when @power_off_cb fails
+> +        * to power off machine.  True if further lower priority power-off
+> +        * callback should be executed.
+> +        */
+> +       bool power_off_chaining_allowed;
+> +
+> +       /**
+> +        * @restart_cb:
+> +        *
+> +        * Callback that should reboot machine.  Inactive if NULL.
+> +        */
+> +       void (*restart_cb)(struct restart_data *data);
+> +
+> +       /**
+> +        * @restart_priority:
+> +        *
+> +        * Restart callback priority, must be unique.  Zero value is reassigned
+> +        * to default priority.  Inactive if @restart_cb is NULL.
+> +        */
+> +       int restart_priority;
+> +
+> +       /**
+> +        * @reboot_prepare_cb:
+> +        *
+> +        * Reboot preparation callback.  All reboot preparation callbacks are
+> +        * invoked before @restart_cb.  Inactive if NULL.
+> +        */
+> +       void (*reboot_prepare_cb)(struct reboot_prep_data *data);
+> +
+> +       /**
+> +        * @priv:
+> +        *
+> +        * Internal data.  Shouldn't be touched.
+> +        */
+> +       const struct power_handler_private_data priv;
+> +};
