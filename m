@@ -2,40 +2,39 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B566743DFA8
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Oct 2021 13:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A622C43E05B
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Oct 2021 13:59:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230157AbhJ1LDj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Oct 2021 07:03:39 -0400
-Received: from mga06.intel.com ([134.134.136.31]:7883 "EHLO mga06.intel.com"
+        id S230093AbhJ1MB4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Oct 2021 08:01:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45218 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230126AbhJ1LDi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 28 Oct 2021 07:03:38 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10150"; a="291216588"
-X-IronPort-AV: E=Sophos;i="5.87,189,1631602800"; 
-   d="scan'208";a="291216588"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2021 04:01:11 -0700
-X-IronPort-AV: E=Sophos;i="5.87,189,1631602800"; 
-   d="scan'208";a="447649034"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2021 04:00:54 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mg395-001jY2-If;
-        Thu, 28 Oct 2021 14:00:31 +0300
-Date:   Thu, 28 Oct 2021 14:00:31 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        id S229578AbhJ1MBv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 28 Oct 2021 08:01:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 17810610FC;
+        Thu, 28 Oct 2021 11:59:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635422364;
+        bh=6SRnBqGEu6kfrjY8F8AIxFOXpP3mk9uNLODc5pl6vYo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PF+p5k3fPcX4g7U/HaBJuzIJ4k5E0pNaC5AYSReMWdptL5C6nDTIJaIE7qlYNYlG6
+         n1n/PwUdpeEdECCRPixbjSlqTeevDW0OntTvozcAaeZnGpyg9v14UXE0Uy+uDhiwA4
+         opUKp2Rh8z49oq5/De4kzH0wt2Tq2fvNA7/+mgp+6zfuqvEwWijrNqLYLBlBZuMPRL
+         88N447RwKebi4Ez1WZLL28f9yHI1UOy8Ip53Ye3TTKmeO3nK2Kc7hLybqU9+9eT+Gw
+         dD6HWh7fPMZRMI/QpI/9KZ3rirsCMx4Hs00YhSbDpBEZNMfr2ZfvOMHA6ZLmKCwWDw
+         xkF14RX5nWTCw==
+Date:   Thu, 28 Oct 2021 12:59:08 +0100
+From:   Mark Brown <broonie@kernel.org>
 To:     Dmitry Osipenko <digetx@gmail.com>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         Lee Jones <lee.jones@linaro.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Guenter Roeck <linux@roeck-us.net>,
         Russell King <linux@armlinux.org.uk>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
@@ -88,90 +87,46 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 03/45] notifier: Add
- atomic/blocking_notifier_has_unique_priority()
-Message-ID: <YXqCz/utp2DFJJ45@smile.fi.intel.com>
+Subject: Re: [PATCH v2 24/45] regulator: pfuze100: Use
+ devm_register_power_handler()
+Message-ID: <YXqQjG+5Eshm9fl5@sirena.org.uk>
 References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-4-digetx@gmail.com>
+ <20211027211715.12671-25-digetx@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Wle3PKA2/qG6+6Vj"
 Content-Disposition: inline
-In-Reply-To: <20211027211715.12671-4-digetx@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20211027211715.12671-25-digetx@gmail.com>
+X-Cookie: try again
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 28, 2021 at 12:16:33AM +0300, Dmitry Osipenko wrote:
-> Add atomic/blocking_notifier_has_unique_priority() helpers which return
-> true if given handler has unique priority.
 
-...
+--Wle3PKA2/qG6+6Vj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> +/**
-> + *	atomic_notifier_has_unique_priority - Checks whether notifier's priority is unique
-> + *	@nh: Pointer to head of the atomic notifier chain
-> + *	@n: Entry in notifier chain to check
-> + *
-> + *	Checks whether there is another notifier in the chain with the same priority.
-> + *	Must be called in process context.
-> + *
-> + *	Returns true if priority is unique, false otherwise.
+On Thu, Oct 28, 2021 at 12:16:54AM +0300, Dmitry Osipenko wrote:
 
-Why this indentation?
+> Use devm_register_power_handler() that replaces global pm_power_off_prepare
+> variable and allows to register multiple power-off handlers.
 
-> + */
-> +bool atomic_notifier_has_unique_priority(struct atomic_notifier_head *nh,
-> +		struct notifier_block *n)
-> +{
-> +	struct notifier_block **nl = &nh->head;
-> +	unsigned long flags;
-> +	bool ret = true;
-> +
-> +	spin_lock_irqsave(&nh->lock, flags);
-> +
-> +	while ((*nl) != NULL && (*nl)->priority >= n->priority) {
+Acked-by: Mark Brown <broonie@kernel.org>
 
-' != NULL' is redundant.
+--Wle3PKA2/qG6+6Vj
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +		if ((*nl)->priority == n->priority && (*nl) != n) {
-> +			ret = false;
-> +			break;
-> +		}
-> +
-> +		nl = &((*nl)->next);
-> +	}
-> +
-> +	spin_unlock_irqrestore(&nh->lock, flags);
-> +
-> +	return ret;
-> +}
+-----BEGIN PGP SIGNATURE-----
 
-...
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmF6kIwACgkQJNaLcl1U
+h9AyhAf+Nziuu181EjKis21sdValh/0I2qd5n6cZmpuLUeA7g6K6TyFH79y+tEkd
+Itu0nx35rsztyjl7+A8ECF9S9uJGD1N0o3cruhqU01R5Kloz9mrUDRii5R3Uh+fm
+wjXlm+iYDXdXIzRmM07WyWi8rUTpLrhHx7ogAb291MVxgxc1LqxOBAwk6hcvnDCB
+aLDZSKk0LT7/yHSU+s5sBmll+K1S09x+XUfo/7VEuf9WqctxN8t6DgnigNeg1sU1
+S3cmBREB1bkkqHuPWJhOyUeW6YyuYI8inCcpXRNtdydg4jwo5l2h16fE8e0db953
+VsD3Y2dmLQu1qKxLNZUqHCelyjTPow==
+=sNsl
+-----END PGP SIGNATURE-----
 
-> +	/*
-> +	 * This code gets used during boot-up, when task switching is
-> +	 * not yet working and interrupts must remain disabled.  At
-
-One space is enough.
-
-> +	 * such times we must not call down_write().
-> +	 */
-
-> +	while ((*nl) != NULL && (*nl)->priority >= n->priority) {
-
-' != NULL' is not needed.
-
-> +		if ((*nl)->priority == n->priority && (*nl) != n) {
-> +			ret = false;
-> +			break;
-> +		}
-> +
-> +		nl = &((*nl)->next);
-> +	}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--Wle3PKA2/qG6+6Vj--
