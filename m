@@ -2,33 +2,40 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80A9643DB54
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Oct 2021 08:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2D6B43DC2C
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Oct 2021 09:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229792AbhJ1Gnc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 28 Oct 2021 02:43:32 -0400
-Received: from mout.gmx.net ([212.227.15.15]:57871 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229586AbhJ1Gnb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 28 Oct 2021 02:43:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1635403130;
-        bh=9epiwmWdzTgZY2j4GBWRs9N0QEWknADgKRkQPvp+Ggo=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=FXhe5yXxylYP540/EC+4AzkmLOP3fNSEmO39fyo/3NOlbWcEm0ryYTd7J3Iv20szB
-         cWKWEC4dZ521NZJ4gyIpkKod8spMS5RmsFlBvqxTT96Vwc/S6HyYHyyyo0FoSjpetw
-         nwPjJnU+hcraQ+NzVcLrxZf8To+aYZc5aH/99quU=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.152.46]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M3UZ6-1mfR6019Wc-000dpr; Thu, 28
- Oct 2021 08:38:50 +0200
-Message-ID: <6470d500-a832-9e1f-e3b9-4d3972b3996e@gmx.de>
-Date:   Thu, 28 Oct 2021 08:38:35 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v2 16/45] parisc: Use do_kernel_power_off()
-Content-Language: en-US
+        id S229863AbhJ1HiP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 28 Oct 2021 03:38:15 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28]:45484 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229800AbhJ1HiP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 28 Oct 2021 03:38:15 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 399DF2177B;
+        Thu, 28 Oct 2021 07:35:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1635406546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=6B5pmyQNFFGuA4GPECyRE5zg2HYL2//T1yApmd7nsM0=;
+        b=r6yeWDlMsEfA0y5YFT2WvCIkR54aJfsk2BjD1k73An8Lpr9mBWZehdxnBWG0AsAvfvNmwI
+        MnonR7NMALwwPFGOhAwXYUyYDhujPU8bNxWRam4ZnSksywP0T/oIpzAMXVbgdvII+AA6d1
+        h1svOAaQoBSAgC2+n2bt/LD5oO+njA0=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7F48A13ABD;
+        Thu, 28 Oct 2021 07:35:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 1yyyHc9SemEoHwAAMHmgww
+        (envelope-from <jgross@suse.com>); Thu, 28 Oct 2021 07:35:43 +0000
+Subject: Re: [PATCH v2 09/45] xen/x86: Use do_kernel_power_off()
 To:     Dmitry Osipenko <digetx@gmail.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -51,6 +58,7 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         Greentime Hu <green.hu@gmail.com>,
         Vincent Chen <deanbo422@gmail.com>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
@@ -64,7 +72,6 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         "H. Peter Anvin" <hpa@zytor.com>,
         Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Santosh Shilimkar <ssantosh@kernel.org>,
@@ -92,75 +99,211 @@ Cc:     Catalin Marinas <catalin.marinas@arm.com>,
         linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
 References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-17-digetx@gmail.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20211027211715.12671-17-digetx@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FyRzIrUgBb05q0bHWFRS/zQ/jjhGXy+pktz0g9vMu8rSAyG2PhH
- igLh0yuSJkfQClwGAYYVp96vDjlam7EqP3CW0lWkZ155s/JTRG7aXysFtzh8fsHm3d7JOnd
- U2wPiCoWHArr/c1zeopIGDkaYwvec8wHmOgMEvIr7aPgxK9GcFiXcIhkSKruN1bnrxyn2QX
- umWMtuIv0Xa3Bg/ofbf6Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Nt03nam4XH8=:N7PuLhTcs13ezPdb4QL3P5
- EAsOC32SEC/CwoA2+8DjNnTsILfn+sFrb9LZytvE/YP2J2Aj7Qx7fkEO40fY8T8rIBLGw9GX+
- NIsaN0+sjNJKdkOQlJE/AFyfJG+vQ7ahzCRk2HMLrf3z5M6K/b0L71tddrkVIJCMb7IuCUzph
- ykgDP6aZxfqVXIMaikKg097ePHHG0x47b/94G1+2NvXBe71nBfFTfm04TrvRNne2czLnMB+Lg
- v+wFHtJZ2jQ9cLfCu2fzZQuGkclVf14XlYnoDKMRVnVFWWYf0adoOjwfKSRtptB20/q31drw2
- HePgYF8sylMcfQbim3Wp4ygBdzf5/6i3x4H4dnB1q/EhvkJY/KiaZgrjHxrJkHNauXcVxsg6y
- 3vvk7psmlYjcJLo6ddOdIBc9OIQs133Ce1iU2wSod2qhYwBPSJppgIk8kJCYKzZxAzsnModUK
- BgEImgsOUGiDlYZe9Muppxy4TrQaqVmfjaM9kmqq8Gvz9GaOjVqBYmFsm570hW8BuF9BI+r+S
- 0GJuN3cdiVBY0G0MhcxnoHe4O22baIwcBDk2FnckJriXO5mZE3hJQVTcEKeAb2ybK5KNuVVY6
- nww/BdElXnSWt1HhtpoHRHlgigO4KvVdiDhtBi8tFoyeYg8pvvK9qgrlLqCEJsbs8TBaWRdRr
- 7fvMB1yoKM8dWEL+Z/gHindYZd433ys7huBzX1XyE7cCnO+L/FE5ZfETDY8DSBwlBCCD940Ri
- wkqaYntrDtmIkWD9BWTD4j7K3fgZUU7IPEaJZjdl5xWo8e268I+GMSTVMrUSVDmQzI7cEG+Lb
- i0qZzTuZiztLiwLZgXQVnYgopvNIgyfo6LMbZ9e4NuBR0ff+vu+fsAwWJH4T3BJlzoZYXX193
- PLDnh+2eGZNNZJ83DOYN1ApcqeJpwMwKyPuCFuf/SxuBIQ7A6oWrcCikiPFJaPxKlXhX5RTg8
- v7QQ4c9ImeWqMCb0i29R5vmks8Ui9IG2X5j/SIZwSpXutCAWE2F/LMHO+pOK/jVtTRVpgu0WW
- MapTUMEB41Z0LdVwL6aYL1P3sWB52Pfffr4C3r7aA/3cWiJWf1QCoiwOmHCTExfYhCTFuQCe5
- +ZRYgxUKbSq514=
+ <20211027211715.12671-10-digetx@gmail.com>
+From:   Juergen Gross <jgross@suse.com>
+Message-ID: <0a9e42a1-c179-0d0c-99e3-f355b5db5aa1@suse.com>
+Date:   Thu, 28 Oct 2021 09:35:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
+MIME-Version: 1.0
+In-Reply-To: <20211027211715.12671-10-digetx@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 10/27/21 23:16, Dmitry Osipenko wrote:
-> Kernel now supports chained power-off handlers. Use do_kernel_power_off(=
-)
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K
+Content-Type: multipart/mixed; boundary="s6NO7De5nnKdkPBqWk386oADRqxtp9b1f";
+ protected-headers="v1"
+From: Juergen Gross <jgross@suse.com>
+To: Dmitry Osipenko <digetx@gmail.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Guenter Roeck
+ <linux@roeck-us.net>, Russell King <linux@armlinux.org.uk>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Greg Ungerer <gerg@linux-m68k.org>, Joshua Thompson <funaho@jurai.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Hu <nickhu@andestech.com>, Greentime Hu <green.hu@gmail.com>,
+ Vincent Chen <deanbo422@gmail.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, Len Brown <lenb@kernel.org>,
+ Santosh Shilimkar <ssantosh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Chen-Yu Tsai <wens@csie.org>,
+ =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
+ Tony Lindgren <tony@atomide.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Vladimir Zapolskiy <vz@mleia.com>,
+ Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>,
+ Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>,
+ Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>,
+ Pavel Machek <pavel@ucw.cz>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-acpi@vger.kernel.org, linux-omap@vger.kernel.org,
+ openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
+ linux-pm@vger.kernel.org
+Message-ID: <0a9e42a1-c179-0d0c-99e3-f355b5db5aa1@suse.com>
+Subject: Re: [PATCH v2 09/45] xen/x86: Use do_kernel_power_off()
+References: <20211027211715.12671-1-digetx@gmail.com>
+ <20211027211715.12671-10-digetx@gmail.com>
+In-Reply-To: <20211027211715.12671-10-digetx@gmail.com>
+
+--s6NO7De5nnKdkPBqWk386oADRqxtp9b1f
+Content-Type: multipart/mixed;
+ boundary="------------58F2BFF62DC0576B4BD13AA9"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------58F2BFF62DC0576B4BD13AA9
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+
+On 27.10.21 23:16, Dmitry Osipenko wrote:
+> Kernel now supports chained power-off handlers. Use do_kernel_power_off=
+()
 > that invokes chained power-off handlers. It also invokes legacy
 > pm_power_off() for now, which will be removed once all drivers will
 > be converted to the new power-off API.
->
+>=20
 > Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 
-Acked-by: Helge Deller <deller@gmx.de> # parisc
+Acked-by: Juergen Gross <jgross@suse.com>
 
 
+Juergen
 
-> ---
->  arch/parisc/kernel/process.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-> index ea3d83b6fb62..928201b1f58f 100644
-> --- a/arch/parisc/kernel/process.c
-> +++ b/arch/parisc/kernel/process.c
-> @@ -26,6 +26,7 @@
->  #include <linux/module.h>
->  #include <linux/personality.h>
->  #include <linux/ptrace.h>
-> +#include <linux/reboot.h>
->  #include <linux/sched.h>
->  #include <linux/sched/debug.h>
->  #include <linux/sched/task.h>
-> @@ -114,8 +115,7 @@ void machine_power_off(void)
->  	pdc_chassis_send_status(PDC_CHASSIS_DIRECT_SHUTDOWN);
->
->  	/* ipmi_poweroff may have been installed. */
-> -	if (pm_power_off)
-> -		pm_power_off();
-> +	do_kernel_power_off();
->
->  	/* It seems we have no way to power the system off via
->  	 * software. The user has to press the button himself. */
->
 
+--------------58F2BFF62DC0576B4BD13AA9
+Content-Type: application/pgp-keys;
+ name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: OpenPGP public key
+Content-Disposition: attachment;
+ filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOBy=
+cWx
+w3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJvedYm8O=
+f8Z
+d621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJNwQpd369y=
+9bf
+IhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvxXP3FAp2pkW0xq=
+G7/
+377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEBAAHNHEp1ZXJnZW4gR=
+3Jv
+c3MgPGpnQHBmdXBmLm5ldD7CwHkEEwECACMFAlOMcBYCGwMHCwkIBwMCAQYVCAIJCgsEFgIDA=
+QIe
+AQIXgAAKCRCw3p3WKL8TL0KdB/93FcIZ3GCNwFU0u3EjNbNjmXBKDY4FUGNQH2lvWAUy+dnyT=
+hpw
+dtF/jQ6j9RwE8VP0+NXcYpGJDWlNb9/JmYqLiX2Q3TyevpB0CA3dbBQp0OW0fgCetToGIQrg0=
+MbD
+1C/sEOv8Mr4NAfbauXjZlvTj30H2jO0u+6WGM6nHwbh2l5O8ZiHkH32iaSTfN7Eu5RnNVUJbv=
+oPH
+Z8SlM4KWm8rG+lIkGurqqu5gu8q8ZMKdsdGC4bBxdQKDKHEFExLJK/nRPFmAuGlId1E3fe10v=
+5QL
++qHI3EIPtyfE7i9Hz6rVwi7lWKgh7pe0ZvatAudZ+JNIlBKptb64FaiIOAWDCx1SzR9KdWVyZ=
+2Vu
+IEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+wsB5BBMBAgAjBQJTjHCvAhsDBwsJCAcDAgEGFQgCC=
+QoL
+BBYCAwECHgECF4AACgkQsN6d1ii/Ey/HmQf/RtI7kv5A2PS4RF7HoZhPVPogNVbC4YA6lW7Dr=
+Wf0
+teC0RR3MzXfy6pJ+7KLgkqMlrAbN/8Dvjoz78X+5vhH/rDLa9BuZQlhFmvcGtCF8eR0T1v0nC=
+/nu
+AFVGy+67q2DH8As3KPu0344TBDpAvr2uYM4tSqxK4DURx5INz4ZZ0WNFHcqsfvlGJALDeE0Lh=
+ITT
+d9jLzdDad1pQSToCnLl6SBJZjDOX9QQcyUigZFtCXFst4dlsvddrxyqT1f17+2cFSdu7+ynLm=
+XBK
+7abQ3rwJY8SbRO2iRulogc5vr/RLMMlscDAiDkaFQWLoqHHOdfO9rURssHNN8WkMnQfvUewRz=
+80h
+SnVlcmdlbiBHcm9zcyA8amdyb3NzQG5vdmVsbC5jb20+wsB5BBMBAgAjBQJTjHDXAhsDBwsJC=
+AcD
+AgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/Ey8PUQf/ehmgCI9jB9hlgexLvgOtf7PJn=
+FOX
+gMLdBQgBlVPO3/D9R8LtF9DBAFPNhlrsfIG/SqICoRCqUcJ96Pn3P7UUinFG/I0ECGF4EvTE1=
+jnD
+kfJZr6jrbjgyoZHiw/4BNwSTL9rWASyLgqlA8u1mf+c2yUwcGhgkRAd1gOwungxcwzwqgljf0=
+N51
+N5JfVRHRtyfwq/ge+YEkDGcTU6Y0sPOuj4Dyfm8fJzdfHNQsWq3PnczLVELStJNdapwPOoE+l=
+otu
+fe3AM2vAEYJ9rTz3Cki4JFUsgLkHFqGZarrPGi1eyQcXeluldO3m91NK/1xMI3/+8jbO0tsn1=
+tqS
+EUGIJi7ox80eSnVlcmdlbiBHcm9zcyA8amdyb3NzQHN1c2UuZGU+wsB5BBMBAgAjBQJTjHDrA=
+hsD
+BwsJCAcDAgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/Ey+LhQf9GL45eU5vOowA2u5N3=
+g3O
+ZUEBmDHVVbqMtzwlmNC4k9Kx39r5s2vcFl4tXqW7g9/ViXYuiDXb0RfUpZiIUW89siKrkzmQ5=
+dM7
+wRqzgJpJwK8Bn2MIxAKArekWpiCKvBOB/Cc+3EXE78XdlxLyOi/NrmSGRIov0karw2RzMNOu5=
+D+j
+LRZQd1Sv27AR+IP3I8U4aqnhLpwhK7MEy9oCILlgZ1QZe49kpcumcZKORmzBTNh30FVKK1Evm=
+V2x
+AKDoaEOgQB4iFQLhJCdP1I5aSgM5IVFdn7v5YgEYuJYx37IoN1EblHI//x/e2AaIHpzK5h88N=
+Eaw
+QsaNRpNSrcfbFmAg987ATQRTjHAWAQgAyzH6AOODMBjgfWE9VeCgsrwH3exNAU32gLq2xvjpW=
+nHI
+s98ndPUDpnoxWQugJ6MpMncr0xSwFmHEgnSEjK/PAjppgmyc57BwKII3sV4on+gDVFJR6Y8ZR=
+wgn
+BC5mVM6JjQ5xDk8WRXljExRfUX9pNhdE5eBOZJrDRoLUmmjDtKzWaDhIg/+1Hzz93X4fCQkNV=
+bVF
+LELU9bMaLPBG/x5q4iYZ2k2ex6d47YE1ZFdMm6YBYMOljGkZKwYde5ldM9mo45mmwe0icXKLk=
+pEd
+IXKTZeKDO+Hdv1aqFuAcccTg9RXDQjmwhC3yEmrmcfl0+rPghO0Iv3OOImwTEe4co3c1mwARA=
+QAB
+wsBfBBgBAgAJBQJTjHAWAhsMAAoJELDendYovxMvQ/gH/1ha96vm4P/L+bQpJwrZ/dneZcmEw=
+Tbe
+8YFsw2V/Buv6Z4Mysln3nQK5ZadD534CF7TDVft7fC4tU4PONxF5D+/tvgkPfDAfF77zy2AH1=
+vJz
+Q1fOU8lYFpZXTXIHb+559UqvIB8AdgR3SAJGHHt4RKA0F7f5ipYBBrC6cyXJyyoprT10EMvU8=
+VGi
+wXvTyJz3fjoYsdFzpWPlJEBRMedCot60g5dmbdrZ5DWClAr0yau47zpWj3enf1tLWaqcsuylW=
+svi
+uGjKGw7KHQd3bxALOknAp4dN3QwBYCKuZ7AddY9yjynVaD5X7nF9nO5BjR/i1DG86lem3iBDX=
+zXs
+ZDn8R38=3D
+=3D2wuH
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------58F2BFF62DC0576B4BD13AA9--
+
+--s6NO7De5nnKdkPBqWk386oADRqxtp9b1f--
+
+--gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmF6Us4FAwAAAAAACgkQsN6d1ii/Ey81
+RQf+O3ya1tE8Z6tv0yRGBRxJKsYIhum0plUzBYr4KjAMitS51HL7pjN2SqE+kRW8tC6fvz4MBV4Z
+Bz+M8arbbC/asIjQfOQZb7/Bq5fDArNCDorqYSn/pVKT1f6Q41/74k05FMlTVVrl+SGj3w59z4uY
+Lf6z5wnewjYkuZOCAGfe2tfxDRlwSaSa2FVHQWI6NNjxysvYLSr3UBBBsh09j8+adx17Q0C5vRvK
+EX1Ik8bZJIw/xEyUzVkwRgpBlMmvnTyQEpLqBoXCH3VyiSymWybl0lJR43bhuZXd44FWcs7GGxnX
+mwHRqP+ks0TmdWNmGx98oQFP3LVC0zx8uBRZBZBycA==
+=NnyJ
+-----END PGP SIGNATURE-----
+
+--gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K--
