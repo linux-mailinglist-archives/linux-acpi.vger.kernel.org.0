@@ -2,142 +2,229 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2CD43F739
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Oct 2021 08:33:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C328343F89B
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Oct 2021 10:10:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232071AbhJ2GgE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 29 Oct 2021 02:36:04 -0400
-Received: from mail-bn8nam11on2080.outbound.protection.outlook.com ([40.107.236.80]:17376
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232058AbhJ2GgD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 29 Oct 2021 02:36:03 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DksFL4UAvBXDN6fWmNH5prxwOTQxOHSD+XO+3QDmkqDJCOHCyzQmKzUWPS8fI7hF+pWMwODueznRm+wsCJFxZqn4LSC3AxNfJEEqcprU17hj1bbex5aYE8FUttwBC9xTqAf8+PrdrAtcwFVzXgo6Apye+FD9dL8a8r6aEwadDdXw3JakFBJn6FmT2V9tDSxyF9yG1lnHbivdBMsh5coO3XWeJ0+5zstC69dnGq8VNgN/Dya5OKHnPN1AUvyetG0YAJ/UAwAMvOgbaNU2RUqZVydG3Xf34rT3krWhqwO9RuAtsO0GS/rwrvBwW4hcB3QsyGfwlY1Z9O2vxZ5R5Xl5sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sYnM5mG24DGTZEIpH26Sf/F+NFIfUiPney5r6GNsd+M=;
- b=PlIIH7RnyLNeFz9gV90Y2/G/r1BDt7Alx9n+F8Ldm41Rlu/1YU934h3fJmftC9wFMOjoeEZ3C+GkUux3+bt87fTr6Lqfv3wFEhph8oElLjScS/XCJHNjVy0FBxdWxCTwSHbh10pAR3zz2S4WqhuP9NgTcIhpKKewcG0xFtBZnmMkdjmngT61rT2VhgLP9xN7gr0woPhvFI9bpuFCA05Q37JFO1leXR2RJrzXslOLK8NcRl8y0D2JQIDgJSpltXmqg6wuAy5cOMh/B0dKM1G53zo/hg8WKQxd30Zdsw3u5xoOlHdBd88olyRMWMM1ojWQz6Ef5JP1r4SPXEutkWJ9Cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sYnM5mG24DGTZEIpH26Sf/F+NFIfUiPney5r6GNsd+M=;
- b=R6WG/soI3IsDBN5QA9K5rsVn8sp8Io9EdH0kG/41hqh7Ibut9+XwfB/skqYq+gh464rIW49apqWV3qjdSO8vTjDY6KIvlR+KhbebbHhJcMwgYqSpfCZu11WDHzUdGAEHr7ldCn5xrPm1Nvw0fszvZl4uMe7Pn1BVGUTrqT+DZN8=
-Received: from MWHPR14CA0034.namprd14.prod.outlook.com (2603:10b6:300:12b::20)
- by SA0PR12MB4560.namprd12.prod.outlook.com (2603:10b6:806:97::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.15; Fri, 29 Oct
- 2021 06:33:33 +0000
-Received: from CO1NAM11FT058.eop-nam11.prod.protection.outlook.com
- (2603:10b6:300:12b:cafe::d5) by MWHPR14CA0034.outlook.office365.com
- (2603:10b6:300:12b::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.14 via Frontend
- Transport; Fri, 29 Oct 2021 06:33:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT058.mail.protection.outlook.com (10.13.174.164) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4649.14 via Frontend Transport; Fri, 29 Oct 2021 06:33:32 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Fri, 29 Oct
- 2021 01:33:24 -0500
-Received: from chrome.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2308.15 via Frontend
- Transport; Fri, 29 Oct 2021 01:33:20 -0500
-From:   Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
-To:     <sboyd@kernel.org>, <linux-clk@vger.kernel.org>
-CC:     <Vijendar.Mukunda@amd.com>, <Alexander.Deucher@amd.com>,
-        <Basavaraj.Hiregoudar@amd.com>, <Sunil-kumar.Dommati@amd.com>,
-        "Ajit Kumar Pandey" <AjitKumar.Pandey@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 RESEND 3/5] ACPI: APD: Add a fmw property clk-name
-Date:   Fri, 29 Oct 2021 12:02:26 +0530
-Message-ID: <20211029063228.578909-4-AjitKumar.Pandey@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211029063228.578909-1-AjitKumar.Pandey@amd.com>
-References: <20211029063228.578909-1-AjitKumar.Pandey@amd.com>
+        id S232412AbhJ2IMl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 29 Oct 2021 04:12:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:30345 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232351AbhJ2IMk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 29 Oct 2021 04:12:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1635495010;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Xu96aStupZygtVSLHvKF+rN1vtm48eum6wSRQF0b9e4=;
+        b=KDTB7NtJvp7LvXn0CxD2NyvNyrZSfwLGv0d0+5+w1HAXk77rRWI2G4kWxCcUJz91qHvjkU
+        c13J9U+6uRXYNr5ONhkuln7FlQ8oKtBppS3FZedhtqtCtGdEnhcerMemB/EeOJIEGOBzht
+        tX5dtT576HPBu9QaUHiugGkeAbocM9A=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-11-y9gjDUTiPqWSz_qP_hVy8Q-1; Fri, 29 Oct 2021 04:10:08 -0400
+X-MC-Unique: y9gjDUTiPqWSz_qP_hVy8Q-1
+Received: by mail-ed1-f72.google.com with SMTP id t18-20020a056402021200b003db9e6b0e57so8454622edv.10
+        for <linux-acpi@vger.kernel.org>; Fri, 29 Oct 2021 01:10:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:from:to:cc:references:in-reply-to
+         :content-transfer-encoding;
+        bh=Xu96aStupZygtVSLHvKF+rN1vtm48eum6wSRQF0b9e4=;
+        b=msESCJvF5StwhKQTKhHMsqqN1e5SbttiQ8Xaz2rILv/+wgSp/oTKJhevWSO/ZKtGkh
+         GD6Y58ddDMSCvrBMA8AQYuhJehyrXk2Q0xaUub6dga6X264v1bUbxfYubmvmzcDyTrNX
+         DiouTz15b7ex8kecTeljyZFhnM0mX5YfwqROsTXQPEZge9xL8uwT4wGDanqARogtNFKm
+         Wi18fRLMN3xYPeceLkhj7QG6AMLg0yT6QDCzSpx6rfTsEMLGTromJq34ZGoA71bXjUIJ
+         9ex3QFEfGA5MQg/2E5vCA0IttPmFu5+T63t8W/LIcDdYogzSziZYX5OjDK31lM4zMB/p
+         mQxg==
+X-Gm-Message-State: AOAM531tZHbnR9AbVybl7lfjVqGFBcN13cC7UzrbxKSpjhkQWLFofWsi
+        30wZKoJ+8pGPxX/+O+8M8Bq2rqO+w1tn+YpGhA8zanABRl6piGT/uCQcN1aKYw03UdNHpUMnMW3
+        WBEzD9f48mMsF8mSzBczwUA==
+X-Received: by 2002:a17:907:a089:: with SMTP id hu9mr12035244ejc.70.1635495007390;
+        Fri, 29 Oct 2021 01:10:07 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz+2ZyHD1jzsaI7gKk3psM2BsN5hgt5uesc1AMIXYBo/23b9OFF/3dpCObBH8E8pCm21h7d1Q==
+X-Received: by 2002:a17:907:a089:: with SMTP id hu9mr12035214ejc.70.1635495007158;
+        Fri, 29 Oct 2021 01:10:07 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id ne2sm2519895ejc.44.2021.10.29.01.10.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Oct 2021 01:10:06 -0700 (PDT)
+Message-ID: <82035130-d810-9f0b-259e-61280de1d81f@redhat.com>
+Date:   Fri, 29 Oct 2021 10:10:05 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f4a2d512-7db8-41b4-e780-08d99aa6075f
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4560:
-X-Microsoft-Antispam-PRVS: <SA0PR12MB45608E459090017BB0F5538C82879@SA0PR12MB4560.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2733;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wCtG5ExQWZjIwURtrzixWDSA81eAMRmhVrPmqJb8AvxYf9ovldYMozJMpxUjgHdpwZz0axYkYq+GWRbjFO0TTBfQOZ3hNtw9EmAkNVTNUkzBNRwBiwGm7ElkqWEeXbxqoznFvZwrZlzi0vUEg4Z/8Cx3v2hVjnl+jzT9gfYUeyTw6R3DDJkLKMk1QSc9NHh3qHt1BiUBKNTCu7DTlF+cQl2ekjIE4Q8g5aDtKFRE0WXDxYkkTOwbLl0eF1BKHNtCRzmnhe+YqenER2o4F0Ktddopgh3uJPCRAm1oN1W6omh1FTSV28rl+jg9FVwbGhz6ae0znWLf53V2ZPx0Ofbb61rVjNcfgJgGVYfP5Q7zIf7e+lrs6oer+D1cgLHws0DIyEZURTJ4qW2Pa708wnE7Mu0t3YaRRC71r7sxF0aQ3blC6MksbLODOrLOKmLaaU7Ow55j/tXqX1Yj29E5fkjP4N/hbFP6XAtOWYwda9fRlk6eK60N0qD0exmvX23ojBfWtN2Ym4PETk3/dsQc4/zdg+GrB/kpGVw6xq0vK5615f6Jp4g4tzSyJjEt5vOGgTgfeN2RZ260XO+NVGjh7OXFcIDsxVaUrwy4usGc3iLY03BJUMDDk8e3SOl53N5tyXi8t4n5em33/vtttc9VUdPkUFoUPJP69WJ5xeQHQllmcBI0qQHs3GOVJK69GGmztfqsc6eqvaW/igXhko9g/iYh6u4XA7OTXyDsfdXnztKIbFE=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(86362001)(356005)(82310400003)(36860700001)(426003)(81166007)(26005)(2616005)(508600001)(1076003)(336012)(186003)(36756003)(316002)(8676002)(54906003)(47076005)(2906002)(8936002)(5660300002)(110136005)(70586007)(7696005)(70206006)(4326008)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2021 06:33:32.7031
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4a2d512-7db8-41b4-e780-08d99aa6075f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT058.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4560
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v5 1/2] x86/PCI: Ignore E820 reservations for bridge
+ windows on newer systems
+Content-Language: en-US
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>, stable@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+References: <20211022012034.GA2703195@bhelgaas>
+ <75d1ef5a-13d9-9a67-0139-90b27b084c84@redhat.com>
+In-Reply-To: <75d1ef5a-13d9-9a67-0139-90b27b084c84@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add a new device property to fetch clk-name from firmware.
+Hi Bjorn,
 
-Signed-off-by: Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
----
- drivers/acpi/acpi_apd.c               | 10 ++++++++++
- include/linux/platform_data/clk-fch.h |  1 +
- 2 files changed, 11 insertions(+)
+On 10/22/21 11:53, Hans de Goede wrote:
+> Hi Bjorn,
+> 
+> On 10/22/21 03:20, Bjorn Helgaas wrote:
+>> On Thu, Oct 21, 2021 at 07:15:57PM +0200, Hans de Goede wrote:
+>>> On 10/20/21 23:14, Bjorn Helgaas wrote:
+>>>> On Wed, Oct 20, 2021 at 12:23:26PM +0200, Hans de Goede wrote:
+>>>>> On 10/19/21 23:52, Bjorn Helgaas wrote:
+>>>>>> On Thu, Oct 14, 2021 at 08:39:42PM +0200, Hans de Goede wrote:
+>>>>>>> Some BIOS-es contain a bug where they add addresses which map to system
+>>>>>>> RAM in the PCI host bridge window returned by the ACPI _CRS method, see
+>>>>>>> commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
+>>>>>>> space").
+>>>>>>>
+>>>>>>> To work around this bug Linux excludes E820 reserved addresses when
+>>>>>>> allocating addresses from the PCI host bridge window since 2010.
+>>>>>>> ...
+>>>>
+>>>>>> I haven't seen anybody else eager to merge this, so I guess I'll stick
+>>>>>> my neck out here.
+>>>>>>
+>>>>>> I applied this to my for-linus branch for v5.15.
+>>>>>
+>>>>> Thank you, and sorry about the build-errors which the lkp
+>>>>> kernel-test-robot found.
+>>>>>
+>>>>> I've just send out a patch which fixes these build-errors
+>>>>> (verified with both .config-s from the lkp reports).
+>>>>> Feel free to squash this into the original patch (or keep
+>>>>> them separate, whatever works for you).
+>>>>
+>>>> Thanks, I squashed the fix in.
+>>>>
+>>>> HOWEVER, I think it would be fairly risky to push this into v5.15.
+>>>> We would be relying on the assumption that current machines have all
+>>>> fixed the BIOS defect that 4dc2287c1805 addressed, and we have little
+>>>> evidence for that.
+>>>
+>>> It is a 10 year old BIOS defect, so hopefully anything from 2018
+>>> or later will not have it.
+>>
+>> We can hope.  AFAIK, Windows allocates space top-down, while Linux
+>> allocates bottom-up, so I think it's quite possible these defects
+>> would never be discovered or fixed.  In any event, I don't think we
+>> have much evidence either way.
+> 
+> Ack.
+> 
+>>>> I'm not sure there's significant benefit to having this in v5.15.
+>>>> Yes, the mainline v5.15 kernel would work on the affected machines,
+>>>> but I suspect most people with those machines are running distro
+>>>> kernels, not mainline kernels.
+>>>
+>>> Fedora and Arch do follow mainline pretty closely and a lot of
+>>> users are affected by this (see the large number of BugLinks in
+>>> the commit).
+>>>
+>>> I completely understand why you are reluctant to push this out, but
+>>> your argument about most distros not running mainline kernels also
+>>> applies to chances of people where this may cause a regression
+>>> running mainline kernels also being quite small.
+>>
+>> True.
+>>
+>>>> This issue has been around a long time, so it's not like a regression
+>>>> that we just introduced.  If we fixed these machines and regressed
+>>>> *other* machines, we'd be worse off than we are now.
+>>>
+>>> If we break one machine model and fix a whole bunch of other machines
+>>> then in my book that is a win. Ideally we would not break anything,
+>>> but we can only find out if we actually break anything if we ship
+>>> the change.
+>>
+>> I'm definitely not going to try the "fix many, break one" argument on
+>> Linus.  Of course we want to fix systems, but IMO it's far better to
+>> leave a system broken than it is to break one that used to work.
+> 
+> Right, what I meant to say with "a win" is a step in the right direction,
+> we definitely must address any regressions coming from this change as
+> soon as we learn about them.
+> 
+>>>> In the meantime, here's another possibility for working around this.
+>>>> What if we discarded remove_e820_regions() completely, but aligned the
+>>>> problem _CRS windows a little more?  The 4dc2287c1805 case was this:
+>>>>
+>>>>   BIOS-e820: 00000000bfe4dc00 - 00000000c0000000 (reserved)
+>>>>   pci_root PNP0A03:00: host bridge window [mem 0xbff00000-0xdfffffff]
+>>>>
+>>>> where the _CRS window was of size 0x20100000, i.e., 512M + 1M.  At
+>>>> least in this particular case, we could avoid the problem by throwing
+>>>> away that first 1M and aligning the window to a nice 3G boundary.
+>>>> Maybe it would be worth giving up a small fraction (less than 0.2% in
+>>>> this case) of questionable windows like this?
+>>>
+>>> The PCI BAR allocation code tries to fall back to the BIOS assigned
+>>> resource if the allocation fails. That BIOS assigned resource might
+>>> fall outside of the host bridge window after we round the address.
+>>>
+>>> My initial gut instinct here is that this has a bigger chance
+>>> of breaking things then my change.
+>>>
+>>> In the beginning of the thread you said that ideally we would
+>>> completely stop using the E820 reservations for PCI host bridge
+>>> windows. Because in hindsight messing with the windows on all
+>>> machines just to work around a clear BIOS bug in some was not a
+>>> good idea.
+>>>
+>>> This address-rounding/-aligning you now suggest, is again
+>>> messing with the windows on all machines just to work around
+>>> a clear BIOS bug in some. At least that is how I see this.
+>>
+>> That's true.  I assume Red Hat has a bunch of machines and hopefully
+>> an archive of dmesg logs from them.  Those logs should contain good
+>> E820 and _CRS information, so with a little scripting, maybe we could
+>> get some idea of what's out there.
+> 
+> We do have a (large-ish) test-lab, but that contains almost exclusively
+> servers, where as the original problem was on Dell Precision laptops.
+> 
+> Also I'm not sure if I can get aggregate data from the lab's machines.
+> I can reserve time on any model we have to debug specific problems,
+> but that is targeting one specific model. I'll ask around about this.
 
-diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-index 6913e9712852..2b958b426b03 100644
---- a/drivers/acpi/acpi_apd.c
-+++ b/drivers/acpi/acpi_apd.c
-@@ -87,6 +87,16 @@ static int fch_misc_setup(struct apd_private_data *pdata)
- 	if (ret < 0)
- 		return -ENOENT;
- 
-+	if (!acpi_dev_get_property(adev, "clk-name", ACPI_TYPE_STRING, &obj)) {
-+		clk_data->name = devm_kzalloc(&adev->dev, obj->string.length,
-+					      GFP_KERNEL);
-+
-+		strcpy(clk_data->name, obj->string.pointer);
-+	} else {
-+		/* Set default name to mclk if entry missing in firmware */
-+		clk_data->name = "mclk";
-+	}
-+
- 	list_for_each_entry(rentry, &resource_list, node) {
- 		clk_data->base = devm_ioremap(&adev->dev, rentry->res->start,
- 					      resource_size(rentry->res));
-diff --git a/include/linux/platform_data/clk-fch.h b/include/linux/platform_data/clk-fch.h
-index 850ca776156d..11a2a23fd9b2 100644
---- a/include/linux/platform_data/clk-fch.h
-+++ b/include/linux/platform_data/clk-fch.h
-@@ -12,6 +12,7 @@
- 
- struct fch_clk_data {
- 	void __iomem *base;
-+	char *name;
- };
- 
- #endif /* __CLK_FCH_H */
--- 
-2.25.1
+So I had another idea to get us a whole bunch of dmesg outputs and that
+is to use the database collected by linux-hardware.org . The dmesg
+were already individually accessible by selecting a specific model machine,
+but I asked them if they could do a dump and I just got an email that a
+dmesg dump is now available here:
+
+https://github.com/linuxhw/Dmesg
+
+Note be careful with the size of the repository - it will take ~3 gigabytes
+of network traffic and ~20 gigabytes of space on the drive to checkout it.
+
+So if you want dmesg outputs to grep through for e820 / host-bridge-window
+info, here you go.
+
+Regards,
+
+Hans
 
