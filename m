@@ -2,93 +2,178 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 617A04404B8
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Oct 2021 23:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 610E544058F
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Oct 2021 00:42:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231669AbhJ2VSE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 29 Oct 2021 17:18:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53460 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231638AbhJ2VSC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 29 Oct 2021 17:18:02 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F4D8C061767;
-        Fri, 29 Oct 2021 14:15:32 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id w1so23809747edd.0;
-        Fri, 29 Oct 2021 14:15:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zB9iTOd6l5xRY5CMg7grYjmtDvYZDiD8fNnJgsxmRRU=;
-        b=ZUVK0iOjP01bBbFRtJazELaaIxANhNBitZ8fQCtTHWI49EV1xOygLc7+WtV7eq+U2K
-         9zgEBG7ELWsWRc4Vkfs8EEmw40GOYfJx0H34sAcDWg+nB4eneRq0a60aWcl/ohVul5j9
-         dxuukyER2DQgzNHfiZ7sQ4595xY7rgWQPF0vlPEBaDlJxw23X4oKGkflSYfza+fbFGuj
-         XnkZrWPhtlOwt7tert1R7g+wxVmBVDkwZcx+P25uy6SucfFMGSvsfAyGv43R9BgpI4d8
-         RMViIoNXYUrcPkOMqR67hj48aOx5SFd4xUH2CPnGTzGKpqYWxJ3IFqDDPrfAE1GUI9c+
-         O7pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zB9iTOd6l5xRY5CMg7grYjmtDvYZDiD8fNnJgsxmRRU=;
-        b=4IcCn3S2bNYqSHQJmF22k4V4PRsTIRUFsSciDLANPwBc5STRxKFydOpRn8bLBANJ69
-         1alq9ST9QmTP3+j5PIPiOGL7SS/Z6Is2wXS7XPIhyBwc5V1Nl7RK/YjNXOBp9iuCWyve
-         U75Se2bk+x9FjKl7HGHh1pFlCYOeLb2lmGYhctHULlUfwRsG7zFL2Tm8QRPAwI2CB0KE
-         AG9VayxZxNfq/+wug0mzg9S9zA+JKOojGBy8+pG9GvsOFAiladLl/xZZRGzr6hkAcBZQ
-         Ye3jqynAI2YJ2RBwXzQoh+IN9cUXO8NXGBaa/nLtNozDwnbX4iG6QgGH4g567cTH9r3J
-         Vw7A==
-X-Gm-Message-State: AOAM533s4/G1HW/yhMskljCsuIQD4k0Jzt0piw0IRrCl0rdNrWmtevOE
-        hTq5b2XCAk56WaVn4rJWaI+3UY/+m8l0J8RlhkjFnUU4c3u0JA==
-X-Google-Smtp-Source: ABdhPJx6hAQf0cMI8/q0l37HlNiY5i1PNjSiBeveMPEQBRbZHbggKWBMIxewQ+CETE/rfTiLZgJbs4e4Ml5qiLNJIYk=
-X-Received: by 2002:a05:6402:205a:: with SMTP id bc26mr6340821edb.119.1635542131112;
- Fri, 29 Oct 2021 14:15:31 -0700 (PDT)
+        id S230410AbhJ2Wol (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 29 Oct 2021 18:44:41 -0400
+Received: from mga14.intel.com ([192.55.52.115]:16865 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229546AbhJ2Wok (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 29 Oct 2021 18:44:40 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10152"; a="231030420"
+X-IronPort-AV: E=Sophos;i="5.87,193,1631602800"; 
+   d="scan'208";a="231030420"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2021 15:41:41 -0700
+X-IronPort-AV: E=Sophos;i="5.87,193,1631602800"; 
+   d="scan'208";a="448273530"
+Received: from alison-desk.jf.intel.com (HELO alison-desk) ([10.54.74.41])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2021 15:41:41 -0700
+Date:   Fri, 29 Oct 2021 15:49:14 -0700
+From:   Alison Schofield <alison.schofield@intel.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Ben Widawsky <ben.widawsky@intel.com>,
+        linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v3] ACPI: NUMA: Add a node and memblk for each CFMWS not
+ in SRAT
+Message-ID: <20211029224914.GA500689@alison-desk>
+References: <20211019050908.449231-1-alison.schofield@intel.com>
+ <CAPcyv4hdC4Uj8YdePMZGFkxgP10VSkX1tiY+ApPctyjfURPSOg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20211015164809.22009-1-asmaa@nvidia.com> <CAMRc=McSPG61nnq9sibBunwso1dsO6Juo2M8MtQuEEGZbWqDNw@mail.gmail.com>
- <CH2PR12MB3895A1C9868F8F0C9CA3FC45D7879@CH2PR12MB3895.namprd12.prod.outlook.com>
-In-Reply-To: <CH2PR12MB3895A1C9868F8F0C9CA3FC45D7879@CH2PR12MB3895.namprd12.prod.outlook.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 30 Oct 2021 00:14:54 +0300
-Message-ID: <CAHp75VcRaumXM5hDEra=UCzAoOAzEP9DGDxVFo3UGvGu8KLqnw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] gpio: mlxbf2: Introduce proper interrupt handling
-To:     Asmaa Mnebhi <asmaa@nvidia.com>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        David Thompson <davthompson@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4hdC4Uj8YdePMZGFkxgP10VSkX1tiY+ApPctyjfURPSOg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 29, 2021 at 7:46 PM Asmaa Mnebhi <asmaa@nvidia.com> wrote:
-
-> > This is a follow up on a discussion regarding proper handling of GPIO
-> > interrupts within the gpio-mlxbf2.c driver.
+On Mon, Oct 25, 2021 at 07:47:32PM -0700, Dan Williams wrote:
+> On Mon, Oct 18, 2021 at 10:01 PM <alison.schofield@intel.com> wrote:
 > >
-> > Link to discussion:
-> > https://lore.kernel.org/netdev/20210816115953.72533-7-andriy.shevchenk
-> > o@linux.intel.com/T/
+> > From: Alison Schofield <alison.schofield@intel.com>
 > >
-> > Patch 1 adds support to a GPIO IRQ handler in gpio-mlxbf2.c.
-> > Patch 2 is a follow up removal of custom GPIO IRQ handling from the
-> > mlxbf_gige driver and replacing it with a simple IRQ request. The ACPI
-> > table for the mlxbf_gige driver is responsible for instantiating the
-> > PHY GPIO interrupt via GpioInt.
+> > During NUMA init, CXL memory defined in the SRAT Memory Affinity
+> > subtable may be assigned to a NUMA node. Since there is no
+> > requirement that the SRAT be comprehensive for CXL memory another
+> > mechanism is needed to assign NUMA nodes to CXL memory not identified
+> > in the SRAT.
 > >
-> > Andy Shevchenko, could you please review this patch series.
-> > David Miller, could you please ack the changes in the mlxbf_gige
-> > driver.
+> > Use the CXL Fixed Memory Window Structure (CFMWS) of the ACPI CXL
+> > Early Discovery Table (CEDT) to find all CXL memory ranges.
+> > Create a NUMA node for each CFMWS that is not already assigned to
+> > a NUMA node. Add a memblk attaching its host physical address
+> > range to the node.
+> >
+> > Note that these ranges may not actually map any memory at boot time.
+> > They may describe persistent capacity or may be present to enable
+> > hot-plug.
+> >
+> > Consumers can use phys_to_target_node() to discover the NUMA node.
+> >
+> > Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+> > ---
 
-It looks nice! Thank you for fixing this code and making it right!
+The next version of this patch is now included in this patchset that
+adds helpers for parsing the CEDT subtables:
+https://lore.kernel.org/linux-cxl/163553711933.2509508.2203471175679990.stgit@dwillia2-desk3.amr.corp.intel.com/T/#mf40d84e1ad4c01f69f794d591b07774255993185
 
--- 
-With Best Regards,
-Andy Shevchenko
+It addresses Dan's comments below.
+
+>> snip
+
+> > +{
+> > +       struct acpi_cedt_cfmws *cfmws;
+> > +       acpi_size len, cur = 0;
+> > +       int i, node, pxm = 0;
+> 
+> Shouldn't this be -1, on the idea that the first numa node to assign
+> if none are set is zero?
+> 
+> I don't think the way you have it is a problem in practice because
+> SRAT should always be there in a NUMA system. However, the first CFMWS
+> pxm should start after the last SRAT entry, or 0 if no SRAT entries.
+> 
+> > +       void *cedt_subtable;
+> > +       u64 start, end;
+> > +
+> > +       /* Find the max PXM defined in the SRAT */
+> > +       for (i = 0; i < MAX_NUMNODES - 1; i++) {
+> 
+> How about:
+> 
+>     for (i = 0, pxm = -1; i < MAX_NUMNODES -1; i++)
+> 
+> ...just to keep the initialization close to the use, but that's just a
+> personal style preference.
+
+Done.
+
+> 
+> > +               if (node_to_pxm_map[i] > pxm)
+> > +                       pxm = node_to_pxm_map[i];
+> > +       }
+> > +       /* Start assigning fake PXM values after the SRAT max PXM */
+> > +       pxm++;
+> > +
+> > +       len = acpi_cedt->length - sizeof(*acpi_cedt);
+> > +       cedt_subtable = acpi_cedt + 1;
+> > +
+> > +       while (cur < len) {
+> 
+> Similarly to above I wonder if this would be cleaner as a for loop
+> then you could use typical "continue" statements rather than goto. I
+> took a stab at creating a for_each_cedt() helper which ended up a
+> decent cleanup for drivers/cxl/
+> 
+>  drivers/cxl/acpi.c |   48 +++++++++++++++---------------------------------
+>  1 file changed, 15 insertions(+), 33 deletions(-)
+> 
+> ...however, I just realized this NUMA code is running at init time, so
+> it can just use the acpi_table_parse_entries_array() helper to walk
+> the CFMWS like the othe subtable walkers in acpi_numa_init(). You
+> would need to update the subtable helpers (acpi_get_subtable_type() et
+> al) to recognize the CEDT case.
+> 
+> [ Side note for the implications of acpi_table_parse_entries_array()
+> for drivers/cxl/acpi.c ]
+> 
+> Rafael, both the NFIT driver and now the CXL ACPI driver have open
+> coded subtable parsing. Any philosophical reason to keep the subtable
+> parsing code as __init? It can still be __init and thrown away if
+> those drivers are not build-time enabled.
+> 
+
+The updated patch (in the greater patchset) now uses the new helpers.
+
+
+> snip
+> > +               node = acpi_map_pxm_to_node(pxm);
+> > +               if (node == NUMA_NO_NODE) {
+> > +                       pr_err("ACPI NUMA: Too many proximity domains.\n");
+> 
+> I would add "while processing CFMWS" to make it clear that the BIOS
+> technically did not declare too many PXMs; it was the Linux heuristic
+> for opportunistically emulating more PXMs.
+> 
+
+Done.
+
+> > snip
+> >         }
+> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > index 974d497a897d..f837fd715440 100644
+> > --- a/include/linux/acpi.h
+> > +++ b/include/linux/acpi.h
+> > @@ -426,6 +426,7 @@ extern bool acpi_osi_is_win8(void);
+> >  #ifdef CONFIG_ACPI_NUMA
+> >  int acpi_map_pxm_to_node(int pxm);
+> >  int acpi_get_node(acpi_handle handle);
+> > +int __init numa_add_memblk(int nodeid, u64 start, u64 end);
+> 
+> This doesn't belong here.
+> 
+> There is already a declaration for this in
+> arch/x86/include/asm/numa.h. I think what you are missing is that your
+> new code needs to be within the same ifdef guards as the other helpers
+> in srat.c that call numa_add_memblk(). See the line that has:
+> 
+> #if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH)
+> 
+> ...above acpi_numa_slit_init()
+
+Done.
