@@ -2,31 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5D7D440395
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Oct 2021 21:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1A3C440396
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Oct 2021 21:52:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230319AbhJ2TyX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 29 Oct 2021 15:54:23 -0400
-Received: from mga01.intel.com ([192.55.52.88]:59702 "EHLO mga01.intel.com"
+        id S230271AbhJ2Tyc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 29 Oct 2021 15:54:32 -0400
+Received: from mga02.intel.com ([134.134.136.20]:57966 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230216AbhJ2TyX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 29 Oct 2021 15:54:23 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10152"; a="254325385"
+        id S230383AbhJ2Tyb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 29 Oct 2021 15:54:31 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10152"; a="217922088"
 X-IronPort-AV: E=Sophos;i="5.87,193,1631602800"; 
-   d="scan'208";a="254325385"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2021 12:51:54 -0700
+   d="scan'208";a="217922088"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2021 12:51:59 -0700
 X-IronPort-AV: E=Sophos;i="5.87,193,1631602800"; 
-   d="scan'208";a="574791750"
+   d="scan'208";a="530503781"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2021 12:51:54 -0700
-Subject: [PATCH 5/6] cxl/test: Mock acpi_table_parse_cedt()
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2021 12:51:59 -0700
+Subject: [PATCH 6/6] ACPI: NUMA: Add a node and memblk for each CFMWS not in
+ SRAT
 From:   Dan Williams <dan.j.williams@intel.com>
 To:     rafael.j.wysocki@intel.com
 Cc:     Alison Schofield <alison.schofield@intel.com>,
         linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
-Date:   Fri, 29 Oct 2021 12:51:53 -0700
-Message-ID: <163553711363.2509508.17428994087868269952.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date:   Fri, 29 Oct 2021 12:51:59 -0700
+Message-ID: <163553711933.2509508.2203471175679990.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <163553708697.2509508.16523059414830959692.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <163553708697.2509508.16523059414830959692.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -37,236 +38,129 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that cxl_acpi has been converted to use the core ACPI CEDT sub-table
-parser, update cxl_test to inject CFMWS and CHBS data directly into
-cxl_acpi's handlers.
+From: Alison Schofield <alison.schofield@intel.com>
 
-Cc: Alison Schofield <alison.schofield@intel.com>
+During NUMA init, CXL memory defined in the SRAT Memory Affinity
+subtable may be assigned to a NUMA node. Since there is no
+requirement that the SRAT be comprehensive for CXL memory another
+mechanism is needed to assign NUMA nodes to CXL memory not identified
+in the SRAT.
+
+Use the CXL Fixed Memory Window Structure (CFMWS) of the ACPI CXL
+Early Discovery Table (CEDT) to find all CXL memory ranges.
+Create a NUMA node for each CFMWS that is not already assigned to
+a NUMA node. Add a memblk attaching its host physical address
+range to the node.
+
+Note that these ranges may not actually map any memory at boot time.
+They may describe persistent capacity or may be present to enable
+hot-plug.
+
+Consumers can use phys_to_target_node() to discover the NUMA node.
+
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/cxl/acpi.c            |    2 +
- tools/testing/cxl/Kbuild      |    3 +-
- tools/testing/cxl/test/cxl.c  |   68 ++++++++++++++++++++++++++++-------------
- tools/testing/cxl/test/mock.c |   30 +++++-------------
- tools/testing/cxl/test/mock.h |    6 ++--
- 5 files changed, 61 insertions(+), 48 deletions(-)
+ drivers/acpi/numa/srat.c |   59 +++++++++++++++++++++++++++++++++++++++++++++-
+ drivers/cxl/acpi.c       |    3 ++
+ 2 files changed, 60 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index b8795fc49097..66a0142dc78c 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -298,6 +298,47 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
+ out_err:
+ 	return -EINVAL;
+ }
++
++static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
++				   void *arg, const unsigned long table_end)
++{
++	struct acpi_cedt_cfmws *cfmws;
++	int *fake_pxm = arg;
++	u64 start, end;
++	int node;
++
++	cfmws = (struct acpi_cedt_cfmws *)header;
++	start = cfmws->base_hpa;
++	end = cfmws->base_hpa + cfmws->window_size;
++
++	/* Skip if the SRAT already described the NUMA details for this HPA */
++	node = phys_to_target_node(start);
++	if (node != NUMA_NO_NODE)
++		return 0;
++
++	node = acpi_map_pxm_to_node(*fake_pxm);
++
++	if (node == NUMA_NO_NODE) {
++		pr_err("ACPI NUMA: Too many proximity domains while processing CFMWS.\n");
++		return -EINVAL;
++	}
++
++	if (numa_add_memblk(node, start, end) < 0) {
++		/* CXL driver must handle the NUMA_NO_NODE case */
++		pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
++			node, start, end);
++	}
++
++	/* Set the next available fake_pxm value */
++	(*fake_pxm)++;
++	return 0;
++}
++#else
++static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
++				   void *arg, const unsigned long table_end)
++{
++	return 0;
++}
+ #endif /* defined(CONFIG_X86) || defined (CONFIG_ARM64) */
+ 
+ static int __init acpi_parse_slit(struct acpi_table_header *table)
+@@ -442,7 +483,7 @@ acpi_table_parse_srat(enum acpi_srat_type id,
+ 
+ int __init acpi_numa_init(void)
+ {
+-	int cnt = 0;
++	int i, fake_pxm, cnt = 0;
+ 
+ 	if (acpi_disabled)
+ 		return -EINVAL;
+@@ -478,6 +519,22 @@ int __init acpi_numa_init(void)
+ 	/* SLIT: System Locality Information Table */
+ 	acpi_table_parse(ACPI_SIG_SLIT, acpi_parse_slit);
+ 
++	/*
++	 * CXL Fixed Memory Window Structures (CFMWS) must be parsed
++	 * after the SRAT. Create NUMA Nodes for CXL memory ranges that
++	 * are defined in the CFMWS and not already defined in the SRAT.
++	 * Initialize a fake_pxm as the first available PXM to emulate.
++	 */
++
++	/* fake_pxm is the next unused PXM value after SRAT parsing */
++	for (i = 0, fake_pxm = -1; i < MAX_NUMNODES - 1; i++) {
++		if (node_to_pxm_map[i] > fake_pxm)
++			fake_pxm = node_to_pxm_map[i];
++	}
++	fake_pxm++;
++	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
++			      &fake_pxm);
++
+ 	if (cnt < 0)
+ 		return cnt;
+ 	else if (!parsed_numa_memblks)
 diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index 7820082a2746..91e4072e7649 100644
+index 91e4072e7649..3163167ecc3a 100644
 --- a/drivers/cxl/acpi.c
 +++ b/drivers/cxl/acpi.c
-@@ -283,6 +283,7 @@ static int add_host_bridge_uport(struct device *match, void *arg)
- }
- 
- struct cxl_chbs_context {
-+	struct device *dev;
- 	unsigned long long uid;
- 	resource_size_t chbcr;
- };
-@@ -327,6 +328,7 @@ static int add_host_bridge_dport(struct device *match, void *arg)
+@@ -125,7 +125,8 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
+ 			cfmws->base_hpa + cfmws->window_size - 1);
+ 		return 0;
  	}
+-	dev_dbg(dev, "add: %s range %#llx-%#llx\n", dev_name(&cxld->dev),
++	dev_dbg(dev, "add: %s node: %d range %#llx-%#llx\n",
++		dev_name(&cxld->dev), phys_to_target_node(cxld->range.start),
+ 		cfmws->base_hpa, cfmws->base_hpa + cfmws->window_size - 1);
  
- 	ctx = (struct cxl_chbs_context) {
-+		.dev = host,
- 		.uid = uid,
- 	};
- 	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CHBS, cxl_get_chbcr, &ctx);
-diff --git a/tools/testing/cxl/Kbuild b/tools/testing/cxl/Kbuild
-index 86deba8308a1..1acdf2fc31c5 100644
---- a/tools/testing/cxl/Kbuild
-+++ b/tools/testing/cxl/Kbuild
-@@ -1,7 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
-+ldflags-y += --wrap=acpi_table_parse_cedt
- ldflags-y += --wrap=is_acpi_device_node
--ldflags-y += --wrap=acpi_get_table
--ldflags-y += --wrap=acpi_put_table
- ldflags-y += --wrap=acpi_evaluate_integer
- ldflags-y += --wrap=acpi_pci_find_root
- ldflags-y += --wrap=pci_walk_bus
-diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
-index cb32f9e27d5d..736d99006fb7 100644
---- a/tools/testing/cxl/test/cxl.c
-+++ b/tools/testing/cxl/test/cxl.c
-@@ -182,6 +182,13 @@ static struct {
- 	},
- };
- 
-+struct acpi_cedt_cfmws *mock_cfmws[4] = {
-+	[0] = &mock_cedt.cfmws0.cfmws,
-+	[1] = &mock_cedt.cfmws1.cfmws,
-+	[2] = &mock_cedt.cfmws2.cfmws,
-+	[3] = &mock_cedt.cfmws3.cfmws,
-+};
-+
- struct cxl_mock_res {
- 	struct list_head list;
- 	struct range range;
-@@ -232,12 +239,6 @@ static struct cxl_mock_res *alloc_mock_res(resource_size_t size)
- 
- static int populate_cedt(void)
- {
--	struct acpi_cedt_cfmws *cfmws[4] = {
--		[0] = &mock_cedt.cfmws0.cfmws,
--		[1] = &mock_cedt.cfmws1.cfmws,
--		[2] = &mock_cedt.cfmws2.cfmws,
--		[3] = &mock_cedt.cfmws3.cfmws,
--	};
- 	struct cxl_mock_res *res;
- 	int i;
- 
-@@ -257,8 +258,8 @@ static int populate_cedt(void)
- 		chbs->length = size;
- 	}
- 
--	for (i = 0; i < ARRAY_SIZE(cfmws); i++) {
--		struct acpi_cedt_cfmws *window = cfmws[i];
-+	for (i = 0; i < ARRAY_SIZE(mock_cfmws); i++) {
-+		struct acpi_cedt_cfmws *window = mock_cfmws[i];
- 
- 		res = alloc_mock_res(window->window_size);
- 		if (!res)
-@@ -269,21 +270,44 @@ static int populate_cedt(void)
  	return 0;
- }
- 
--static acpi_status mock_acpi_get_table(char *signature, u32 instance,
--				       struct acpi_table_header **out_table)
-+/*
-+ * WARNING, this hack assumes the format of 'struct
-+ * cxl_cfmws_context' and 'struct cxl_chbs_context' share the property that
-+ * the first struct member is the device being probed by the cxl_acpi
-+ * driver.
-+ */
-+struct cxl_cedt_context {
-+	struct device *dev;
-+};
-+
-+static int mock_acpi_table_parse_cedt(enum acpi_cedt_type id,
-+				      acpi_tbl_entry_handler_arg handler_arg,
-+				      void *arg)
- {
--	if (instance < U32_MAX || strcmp(signature, ACPI_SIG_CEDT) != 0)
--		return acpi_get_table(signature, instance, out_table);
-+	struct cxl_cedt_context *ctx = arg;
-+	struct device *dev = ctx->dev;
-+	union acpi_subtable_headers *h;
-+	unsigned long end;
-+	int i;
- 
--	*out_table = (struct acpi_table_header *) &mock_cedt;
--	return AE_OK;
--}
-+	if (dev != &cxl_acpi->dev)
-+		return acpi_table_parse_cedt(id, handler_arg, arg);
- 
--static void mock_acpi_put_table(struct acpi_table_header *table)
--{
--	if (table == (struct acpi_table_header *) &mock_cedt)
--		return;
--	acpi_put_table(table);
-+	if (id == ACPI_CEDT_TYPE_CHBS)
-+		for (i = 0; i < ARRAY_SIZE(mock_cedt.chbs); i++) {
-+			h = (union acpi_subtable_headers *)&mock_cedt.chbs[i];
-+			end = (unsigned long)&mock_cedt.chbs[i + 1];
-+			handler_arg(h, arg, end);
-+		}
-+
-+	if (id == ACPI_CEDT_TYPE_CFMWS)
-+		for (i = 0; i < ARRAY_SIZE(mock_cfmws); i++) {
-+			h = (union acpi_subtable_headers *) mock_cfmws[i];
-+			end = (unsigned long) h + mock_cfmws[i]->header.length;
-+			handler_arg(h, arg, end);
-+		}
-+
-+	return 0;
- }
- 
- static bool is_mock_bridge(struct device *dev)
-@@ -388,8 +412,7 @@ static struct cxl_mock_ops cxl_mock_ops = {
- 	.is_mock_port = is_mock_port,
- 	.is_mock_dev = is_mock_dev,
- 	.mock_port = mock_cxl_root_port,
--	.acpi_get_table = mock_acpi_get_table,
--	.acpi_put_table = mock_acpi_put_table,
-+	.acpi_table_parse_cedt = mock_acpi_table_parse_cedt,
- 	.acpi_evaluate_integer = mock_acpi_evaluate_integer,
- 	.acpi_pci_find_root = mock_acpi_pci_find_root,
- 	.list = LIST_HEAD_INIT(cxl_mock_ops.list),
-@@ -574,3 +597,4 @@ static __exit void cxl_test_exit(void)
- module_init(cxl_test_init);
- module_exit(cxl_test_exit);
- MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(ACPI);
-diff --git a/tools/testing/cxl/test/mock.c b/tools/testing/cxl/test/mock.c
-index b8c108abcf07..17408f892df4 100644
---- a/tools/testing/cxl/test/mock.c
-+++ b/tools/testing/cxl/test/mock.c
-@@ -58,36 +58,23 @@ bool __wrap_is_acpi_device_node(const struct fwnode_handle *fwnode)
- }
- EXPORT_SYMBOL(__wrap_is_acpi_device_node);
- 
--acpi_status __wrap_acpi_get_table(char *signature, u32 instance,
--				  struct acpi_table_header **out_table)
-+int __wrap_acpi_table_parse_cedt(enum acpi_cedt_type id,
-+				 acpi_tbl_entry_handler_arg handler_arg,
-+				 void *arg)
- {
--	int index;
-+	int index, rc;
- 	struct cxl_mock_ops *ops = get_cxl_mock_ops(&index);
--	acpi_status status;
- 
- 	if (ops)
--		status = ops->acpi_get_table(signature, instance, out_table);
-+		rc = ops->acpi_table_parse_cedt(id, handler_arg, arg);
- 	else
--		status = acpi_get_table(signature, instance, out_table);
-+		rc = acpi_table_parse_cedt(id, handler_arg, arg);
- 
- 	put_cxl_mock_ops(index);
- 
--	return status;
--}
--EXPORT_SYMBOL(__wrap_acpi_get_table);
--
--void __wrap_acpi_put_table(struct acpi_table_header *table)
--{
--	int index;
--	struct cxl_mock_ops *ops = get_cxl_mock_ops(&index);
--
--	if (ops)
--		ops->acpi_put_table(table);
--	else
--		acpi_put_table(table);
--	put_cxl_mock_ops(index);
-+	return rc;
- }
--EXPORT_SYMBOL(__wrap_acpi_put_table);
-+EXPORT_SYMBOL_NS_GPL(__wrap_acpi_table_parse_cedt, ACPI);
- 
- acpi_status __wrap_acpi_evaluate_integer(acpi_handle handle,
- 					 acpi_string pathname,
-@@ -169,3 +156,4 @@ __wrap_nvdimm_bus_register(struct device *dev,
- EXPORT_SYMBOL_GPL(__wrap_nvdimm_bus_register);
- 
- MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(ACPI);
-diff --git a/tools/testing/cxl/test/mock.h b/tools/testing/cxl/test/mock.h
-index 805a94cb3fbe..15ed0fd877e4 100644
---- a/tools/testing/cxl/test/mock.h
-+++ b/tools/testing/cxl/test/mock.h
-@@ -6,9 +6,9 @@
- struct cxl_mock_ops {
- 	struct list_head list;
- 	bool (*is_mock_adev)(struct acpi_device *dev);
--	acpi_status (*acpi_get_table)(char *signature, u32 instance,
--				      struct acpi_table_header **out_table);
--	void (*acpi_put_table)(struct acpi_table_header *table);
-+	int (*acpi_table_parse_cedt)(enum acpi_cedt_type id,
-+				     acpi_tbl_entry_handler_arg handler_arg,
-+				     void *arg);
- 	bool (*is_mock_bridge)(struct device *dev);
- 	acpi_status (*acpi_evaluate_integer)(acpi_handle handle,
- 					     acpi_string pathname,
 
