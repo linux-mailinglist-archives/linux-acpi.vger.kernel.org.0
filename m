@@ -2,81 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF1CF440D8C
-	for <lists+linux-acpi@lfdr.de>; Sun, 31 Oct 2021 10:02:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E68A440D9F
+	for <lists+linux-acpi@lfdr.de>; Sun, 31 Oct 2021 10:27:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230209AbhJaJEq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 31 Oct 2021 05:04:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:41795 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229660AbhJaJEq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 31 Oct 2021 05:04:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635670935;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=SLG2kfm1CRcYvEXNmRRUsEpFH1oBMt1mUPp6s++xQCU=;
-        b=IroVSEZS5f8YI0ZEmSap+4Fs7lkbApgfILyj7NxH1rHcxofsVPMO1QeJhhuGgJpyD4UVPw
-        ZjqZGIkYCCBr+iwWCXlr19253ajVQlG0dcJzTc0Q6q8YCGxdqO9DfD0ITjq4gCRdNYpq+G
-        peM3vl1+5v+naCxDnpDFZ2e6ymUklak=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-233-lrEBfxnsNc23-zZnM6-T9A-1; Sun, 31 Oct 2021 05:02:11 -0400
-X-MC-Unique: lrEBfxnsNc23-zZnM6-T9A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2D40D362F8;
-        Sun, 31 Oct 2021 09:02:10 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.192.35])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E42485C1C5;
-        Sun, 31 Oct 2021 09:02:08 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Sebastian Reichel <sre@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
-        "Andrew F . Davis" <afd@ti.com>
-Subject: [PATCH] power: supply: bq27xxx: Fix kernel crash on IRQ handler register error
-Date:   Sun, 31 Oct 2021 10:02:08 +0100
-Message-Id: <20211031090208.6564-1-hdegoede@redhat.com>
+        id S229660AbhJaJ3v (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 31 Oct 2021 05:29:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41520 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229525AbhJaJ3v (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 31 Oct 2021 05:29:51 -0400
+Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E9B7C061570
+        for <linux-acpi@vger.kernel.org>; Sun, 31 Oct 2021 02:27:20 -0700 (PDT)
+Received: by mail-ua1-x92d.google.com with SMTP id x3so26529040uar.13
+        for <linux-acpi@vger.kernel.org>; Sun, 31 Oct 2021 02:27:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=0KvQkxFdmSckOXJpLXZtURzOqfI2/nRXk2vwKc98xhg=;
+        b=UGphS5LrRS8QLcnucwAiRs3BQ1bxlkRMjaEcqhjyksJdBp4FDtaydm+Du2m7buVuGa
+         eMer/032DiydGoY1CEa40nCGOgmOFZrUdXo+GR7fYlIps6zkLZhx4CedFMI9/35ZHvli
+         6YuZM6OjBLlg7qh4AXeNyhR4REaIX5hurVvqBtiLa53paUq0rEobcuoD1BLkK76fHUZR
+         6CwY9FFOh1M/jrVNT9/fTC5BkTAkomxCezgs4GewF89dCfwNJlJ55acre8oqU4ND/mPZ
+         rT83ZADW124AUhnP+jtcTT59iV5JYJ8yuaXgxeSYr0gd/zuYo/sIDdzlF4fy91ib79nm
+         cgBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=0KvQkxFdmSckOXJpLXZtURzOqfI2/nRXk2vwKc98xhg=;
+        b=iSWfqwPOi4fMSzlemYHpmXtR1G0GpxO23hUvPW62+0j/Ccreo7Z5jLJAI+x0UR2nW/
+         w8YZlfJhO7PDjbANGo+gfp+Hzk1J5BiJFD84EZS1ZIr6M5E6cLytgs4JnsPJYQCVIE4l
+         rb2gg4x4ns/q5VtIu6Zxdjr1saJeRE0owdYzF6nLtre+Xye/7qoxwUuYYFZWjaOtC4sw
+         VzCNb2sWu+3lTKTdAkFy4mQ9we8uassUGFmJ3zwsjDr1Jir0cSbzM6utgnN7ME3uK0ZI
+         wsj1s2/juR0K5xCKj9F0/7jmmHYg90o6SjgqRgk2IlZCYjrXhWu8M3W9bMZ+j2RNBOYa
+         KVQw==
+X-Gm-Message-State: AOAM530skYo+Hz9aB0w78gIqawKOHZTdI5RlfTNPaTXuGmNL89escQH6
+        3y6hNBvea9oM7c4B7ZImv7h/IlK3TtaUxATxGuw=
+X-Google-Smtp-Source: ABdhPJxBZ4o/EhiqCVUPc3vGb0+zRzt5B9j2qZ+00/L7e+JvuWBFSO7CjIqKMcZaxsS47KQTecJEnhRM6PY0aXmHBpQ=
+X-Received: by 2002:a67:edd7:: with SMTP id e23mr22225551vsp.14.1635672439196;
+ Sun, 31 Oct 2021 02:27:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Received: by 2002:a59:dd88:0:b0:238:2fcb:84b with HTTP; Sun, 31 Oct 2021
+ 02:27:18 -0700 (PDT)
+Reply-To: enzocarranza99@gmail.com
+From:   ENZO CARRANZA <jacobbarney6@gmail.com>
+Date:   Sun, 31 Oct 2021 12:27:18 +0300
+Message-ID: <CAOPi97YQ+7B=NdMTzWC1z4oqSvK6P6+CmUCNWOavSeO_qW_dPA@mail.gmail.com>
+Subject: Best Regards
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When registering the IRQ handler fails, do not just return the error code,
-this will free the devm_kalloc-ed data struct while leaving the queued
-work queued and the registered power_supply registered with both of them
-now pointing to free-ed memory, resulting in various kernel crashes
-soon afterwards.
+From : Mr. Enzo Carranza
+Fax: +34 932 71 56 35
+Email: enzocarranza99@gmail.com
 
-Instead properly tear-down things on IRQ handler register errors.
 
-Fixes: 703df6c09795 ("power: bq27xxx_battery: Reorganize I2C into a module")
-Cc: Andrew F. Davis <afd@ti.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/power/supply/bq27xxx_battery_i2c.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Dear Friend,
+I had no choice but to approach you via this method because I have
+a BUSINESS PROPOSAL that will interest you and will be of mutual benefit to us.
 
-diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
-index 46f078350fd3..cf38cbfe13e9 100644
---- a/drivers/power/supply/bq27xxx_battery_i2c.c
-+++ b/drivers/power/supply/bq27xxx_battery_i2c.c
-@@ -187,7 +187,8 @@ static int bq27xxx_battery_i2c_probe(struct i2c_client *client,
- 			dev_err(&client->dev,
- 				"Unable to register IRQ %d error %d\n",
- 				client->irq, ret);
--			return ret;
-+			bq27xxx_battery_teardown(di);
-+			goto err_failed;
- 		}
- 	}
- 
--- 
-2.31.1
+Kindly get back to me so I can give you the full details.
+Thank you.
 
+Kind regards
+Mr. Enzo Carranza
+Financial Management Consultant.
