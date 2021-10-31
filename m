@@ -2,81 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 528BA440E7D
-	for <lists+linux-acpi@lfdr.de>; Sun, 31 Oct 2021 13:58:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C526440E9B
+	for <lists+linux-acpi@lfdr.de>; Sun, 31 Oct 2021 14:15:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229662AbhJaNAd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 31 Oct 2021 09:00:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58756 "EHLO
+        id S229785AbhJaNSW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 31 Oct 2021 09:18:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbhJaNAc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 31 Oct 2021 09:00:32 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0723C061570;
-        Sun, 31 Oct 2021 05:58:00 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 1so19037274ljv.2;
-        Sun, 31 Oct 2021 05:58:00 -0700 (PDT)
+        with ESMTP id S229626AbhJaNSW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 31 Oct 2021 09:18:22 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C258C061570;
+        Sun, 31 Oct 2021 06:15:50 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id e2so24940544ljg.13;
+        Sun, 31 Oct 2021 06:15:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=TA6d7M3LHM9SuI1wIVm/Ylw65AVnuTrxrE8hG0L+h/w=;
-        b=lgzkHqpL3OhYUvqaqGnsAh6hh3upxZRGVjXQESDsstM3PbOEluLZvHaae+2vY35gZT
-         L0tZ7+uuJ1N+JWUn9a2D35FGntkRnskt2kCSyejPOflQg6cHHPORIZG27DUyRYT02aa8
-         jNd07Dk5/QI5ukbaUGUj4Tw7v+HBvGyszcps6hqVJugdZZdfUVUpYdWXrCZGP4q6AdKq
-         YgTc7zyaPMvXVmJMgAw/19Rh1J6za6D1bvRO1gN4E4EfoDPhWj5sTO5Kxk9QjZ+pYL+M
-         16OUPHL2ymRDH5hSPEpNSvD9g3JiRSUbVO2WpAnM9aBMTSCj2PF4sKKRxmAriKAVe9Lo
-         c8Kw==
+        bh=PD41efnyktLHVkqJ0TVfwzxxHD0nZAcOYiom746hjGQ=;
+        b=GwWyzVHloam8hOV0kUaZxK5hzO1YMmURf/lyKVRA1v0OxXchX6D4NZ0XcggUMjtCzf
+         naB6Lkpkpf7VPU2vFHY8wUIwVme3pMykWZKKr+zFq9v6JMkC9ZIvvjS82w/3BfZveg++
+         XR5+70Lh3ow8eWRR0giUTCrjMm6FYazKCFRVpZuGzNS140U8YPH3YNibym1UroeJdH5F
+         k2BiPe1qrGZ0ZYFHW63vdoQ1T5CPw1+p7Vdm23m3/FvcZeE0noSmqU8h+rRQB51HeOhX
+         OlCimI8A20gfSAJ5uyjXhaHZKXg3sRjBc+/uCiHJD2Fiz2eKv6uCg0NPeeKq9ensRAiW
+         0JSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=TA6d7M3LHM9SuI1wIVm/Ylw65AVnuTrxrE8hG0L+h/w=;
-        b=Uuf8ousGTXk3EluJfTgHwk37HIKvi19KiHcLgv4/dFSxwdlYVd08JaCIrk/JWx7mtt
-         +cO2Mr7CSTdHhMXaUKPyRZgEKhVtUKcEEEllsIBCx2wurla3tCEJzo9/J6Zm/9I80zxf
-         C6LOsYHX+mmy3vx6t8i2pkbkMVlfzSvzRfqyZRNlvaFVCS+BiJ70YWJoOREk2UV2PJNy
-         rEeem1alEZPmOBvEzHLXfp9s2HvKdfZjEIbTeAcN7VbEo6QK6KYwFskxr5o8brC0Han6
-         0NgofkOKw+YqYIJl13e2m6mKYCRCuxl/N3B8tcWYgLZ68IuyWHdxqgV44PkZdiAGGLLd
-         +/fQ==
-X-Gm-Message-State: AOAM533Tyk2mil29tFEK1b0qwiOTPigEV/6QalJ7gu0F6lOFFhy9Kbvg
-        qcRdUHpYChaQbTyQALf+GtKgVCW4wxRsw/NtkjY=
-X-Google-Smtp-Source: ABdhPJwZt88JpwfFKC89QrKsOUKDOwUvKeT3ezfPpc1Z4mfC8xGn5XutAUvCcpuivonNsY+SeRGNhGHzYHFriQHVwHo=
-X-Received: by 2002:a2e:8605:: with SMTP id a5mr25591487lji.107.1635685079348;
- Sun, 31 Oct 2021 05:57:59 -0700 (PDT)
+        bh=PD41efnyktLHVkqJ0TVfwzxxHD0nZAcOYiom746hjGQ=;
+        b=JgX3YLCxRYjjOi+9Mm3k3TX3i8Kq7FD8CiMjuG6REsuC87Gd1HN8OgIxfICqH39FMp
+         wk+CSm8ONzNiPY9db65F2TytdukoWSDujo+EBLUL7KWZGljetH8/Y/Ud15QmR1YIiMTD
+         91qtK3b++UW7QImhM/4lPpKusy9OEfm7TrTTDpWkqsj8J1YDx9IvMfgJucGFipVRUSle
+         q9Al9u/aGV3oPBQLaodNrlPes0zv8Zm3/Fn8H/E9fNzfkP/XYCwIpl1Tyydv+zGgEqjc
+         PoXIn1qBnoxnXcsHDcmwpwvBm8uYeNdh7MtlvqQ7d724OlLkZWpTkAQgVRFUM1sZjIkt
+         +CiQ==
+X-Gm-Message-State: AOAM5336cB4SaMeR4Jc9hbfq4urrqwOXzW8apI7Ryh3p31/sZaY2d4zi
+        TBTPZCBAM+nOd8Y/q0z0wiCMTp8v1zPW5+W3O7g=
+X-Google-Smtp-Source: ABdhPJyFY5myPudPlEIk0GekoyOBXszKfOf23/qHuuqxvTKdHopkZdc2Dj43lMvN4+oDUYFTNkQSNdIo6Cki9a1bP/k=
+X-Received: by 2002:a2e:8605:: with SMTP id a5mr25689897lji.107.1635686148557;
+ Sun, 31 Oct 2021 06:15:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211031090208.6564-1-hdegoede@redhat.com>
-In-Reply-To: <20211031090208.6564-1-hdegoede@redhat.com>
+References: <20211029204017.8223-1-mario.limonciello@amd.com> <20211029204017.8223-2-mario.limonciello@amd.com>
+In-Reply-To: <20211029204017.8223-2-mario.limonciello@amd.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 31 Oct 2021 14:57:23 +0200
-Message-ID: <CAHp75Ve5zUxsB4L613FEE=2cPK8XopLYVC7Ew5Z23r2Xqq-cyA@mail.gmail.com>
-Subject: Re: [PATCH] power: supply: bq27xxx: Fix kernel crash on IRQ handler
- register error
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
+Date:   Sun, 31 Oct 2021 15:15:12 +0200
+Message-ID: <CAHp75VfOBBpt84aQYGOW32kKqeNH5gZUbJtqf1sPP7O-ZZkW+g@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] pinctrl: amd: Fix wakeups when IRQ is shared with SCI
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        "open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        "Andrew F . Davis" <afd@ti.com>
+        Nehal Shah <Nehal-bakulchandra.Shah@amd.com>,
+        stable@kernel.org, Joerie de Gram <j.de.gram@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Oct 31, 2021 at 11:07 AM Hans de Goede <hdegoede@redhat.com> wrote:
+On Fri, Oct 29, 2021 at 11:42 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 >
-> When registering the IRQ handler fails, do not just return the error code,
-> this will free the devm_kalloc-ed data struct while leaving the queued
-
-devm_kzalloc()-ed?
-
-(main point is z/m/etc in the function name)
-
-> work queued and the registered power_supply registered with both of them
-> now pointing to free-ed memory, resulting in various kernel crashes
-> soon afterwards.
+> On some Lenovo AMD Gen2 platforms the IRQ for the SCI and pinctrl drivers
+> are shared.  Due to how the s2idle loop handling works, this case needs
+> an extra explicit check whether the interrupt was caused by SCI or by
+> the GPIO controller.
 >
-> Instead properly tear-down things on IRQ handler register errors.
+> To fix this rework the existing IRQ handler function to function as a
+> checker and an IRQ handler depending on the calling arguments.
+>
+> Cc: stable@kernel.org
+> BugLink: https://gitlab.freedesktop.org/drm/amd/-/issues/1738
+> Reported-by: Joerie de Gram <j.de.gram@gmail.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Acked-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
+...
+
+> +static bool _amd_gpio_irq_handler(int irq, void *dev_id)
+
+I know Linus does not like leading _* in the function names, what
+about 'do_' instead?
+
+...
+
+> +                       /* called from resume context on a shared IRQ, just
+> +                        * checking wake source.
+> +                        */
+
+Is this comment aligned with the style used elsewhere in the driver code?
+
+...
+
+> +                               dev_dbg(&gpio_dev->pdev->dev,
+> +                                       "Waking due to GPIO %ld: 0x%x",
+> +                                       (long)(regs + i - ((u32 __iomem *)gpio_dev->base)), regval);
+
+Oy vey, these castings are ugly. The rule of thumb is that if one does
+such a thing for printf() it means something is really wrong (in 99%
+of the cases).
+
+AFAICS you may simply use 'irqnr + i' as the other message does.
+
+...
+
+>         platform_set_drvdata(pdev, gpio_dev);
+> +       acpi_register_wakeup_handler(gpio_dev->irq, amd_gpio_check_wake, gpio_dev);
+>
+>         dev_dbg(&pdev->dev, "amd gpio driver loaded\n");
+>         return ret;
+> @@ -1021,6 +1045,7 @@ static int amd_gpio_remove(struct platform_device *pdev)
+>         gpio_dev = platform_get_drvdata(pdev);
+>
+>         gpiochip_remove(&gpio_dev->gc);
+> +       acpi_unregister_wakeup_handler(amd_gpio_check_wake, gpio_dev);
+
+Thinking about making this in the generic GPIO library code, but this
+is out of scope of the patch...
 
 -- 
 With Best Regards,
