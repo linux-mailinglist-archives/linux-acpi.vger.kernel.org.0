@@ -2,156 +2,99 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74BD54411F6
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 02:57:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E80A441217
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 03:18:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230281AbhKACAG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 31 Oct 2021 22:00:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38910 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230234AbhKACAF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 31 Oct 2021 22:00:05 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 96C77610E5;
-        Mon,  1 Nov 2021 01:57:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635731852;
-        bh=fuaUan8WpsO3AU0Pd876OqdiQB5S59Rz/RFmfxHCqFo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=WTZ2r/aqsZBJ/SEMp/W5aRRvu0wWWG+qZmM8hZPwjrObwwMpW1TgXwf1zWnw0Qa9i
-         Zv/YGYWGYxl7myNvWxfw0CIgJUc9b2/XePq2AH0H37XLuqx44GHHVjgkb3ys6UwuYH
-         QFUJSlyCI2x3AldpppHi6cKlbUrpf5epTIwYkQ0LyIddZNVrNNmKUj9pq1nkh3vhav
-         ePFznWLS5KXHwuBhRZexeraVkFwzXRLP/38HX/OFwy/5mrR8Hs9LdC9PbwjoOwqbNV
-         ADgrJu7beLvyyJTcpsvn3lAsea5miSCymSsM2dL/H4uMyDHc1oqmdVcUWCHL7cYIF+
-         w+SQ6/88DMfNA==
-Received: by mail-yb1-f173.google.com with SMTP id q74so34927729ybq.11;
-        Sun, 31 Oct 2021 18:57:32 -0700 (PDT)
-X-Gm-Message-State: AOAM532NZZipZ4PmQd8aebdgMaPN+5gcICkzFLd/y8dVP59BicYUBfRR
-        GiO3PJt2T6KiHFhFuW8wOniKZgqQn/AFtYLfgjc=
-X-Google-Smtp-Source: ABdhPJwLzr48xvkbPUYNSwW4wG4jcRHULAsaxHDgvLOaeOhiDi1MY+7mZCeP1WaifSe+QfUYgjKQrdu4XIYT2pTMgvI=
-X-Received: by 2002:ab0:6883:: with SMTP id t3mr16913634uar.66.1635731841194;
- Sun, 31 Oct 2021 18:57:21 -0700 (PDT)
+        id S230234AbhKACVL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 31 Oct 2021 22:21:11 -0400
+Received: from out30-44.freemail.mail.aliyun.com ([115.124.30.44]:51190 "EHLO
+        out30-44.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230233AbhKACVK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 31 Oct 2021 22:21:10 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=xuesong.chen@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0UuPi-hG_1635733115;
+Received: from 30.225.212.104(mailfrom:xuesong.chen@linux.alibaba.com fp:SMTPD_---0UuPi-hG_1635733115)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 01 Nov 2021 10:18:36 +0800
+Message-ID: <e387413f-dbe8-e0f1-257b-141362d74e3a@linux.alibaba.com>
+Date:   Mon, 1 Nov 2021 10:18:35 +0800
 MIME-Version: 1.0
-References: <20211027211715.12671-1-digetx@gmail.com> <20211027211715.12671-13-digetx@gmail.com>
-In-Reply-To: <20211027211715.12671-13-digetx@gmail.com>
-From:   Guo Ren <guoren@kernel.org>
-Date:   Mon, 1 Nov 2021 09:57:10 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTT+EsLt+pnYyTw_B0C8isho=E4tfOWROe9h-GZpYjET=w@mail.gmail.com>
-Message-ID: <CAJF2gTT+EsLt+pnYyTw_B0C8isho=E4tfOWROe9h-GZpYjET=w@mail.gmail.com>
-Subject: Re: [PATCH v2 12/45] csky: Use do_kernel_power_off()
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org, linux-omap@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.2.1
+Subject: Re: [PATCH v4 0/4] PCI MCFG consolidation and APEI resource filtering
+To:     helgaas@kernel.org
+Cc:     catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
+        james.morse@arm.com, will@kernel.org, rafael@kernel.org,
+        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
+        bhelgaas@google.com, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <YW5OTMz+x8zrsqkF@Dennis-MBP.local>
+ <20211027081035.53370-1-xuesong.chen@linux.alibaba.com>
+From:   Xuesong Chen <xuesong.chen@linux.alibaba.com>
+In-Reply-To: <20211027081035.53370-1-xuesong.chen@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Only for this patch, Acked-by: Guo Ren <guoren@kernel.org>
+How about the status of this series, it's really bad, bad and still bad... to wait long
+time for the final judgement, especially you take extremely serious to rework it round
+by round, finaly you receive nothing. Everyone's work should be repected!
 
-On Thu, Oct 28, 2021 at 5:18 AM Dmitry Osipenko <digetx@gmail.com> wrote:
->
-> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
-> that invokes chained power-off handlers. It also invokes legacy
-> pm_power_off() for now, which will be removed once all drivers will
-> be converted to the new power-off API.
->
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+Technically, I don't think it's very hard to say yes or no (what's your concerns) for
+the patch set. If you give your objections and convince me, then I will drop it, that's
+nothing. Hopefully our maintainers can take the responsibility that they should take,
+I totally understand that our maintainers are very busy and will face tens of thousands
+of mails. But, YOU ARE THE MAINTAINER! 
+
+Responsiblity!Responsiblity!! Still TMD f*cking FucResponsiblity!!!
+
+On 27/10/2021 16:10, Xuesong Chen wrote:
+> The issue of commit d91525eb8ee6 ("ACPI, EINJ: Enhance error injection tolerance
+> level") on x86 is also happened on our own ARM64 platform. We sent a patch[1]
+> trying to fix this issue in an arch-specific way as x86 does at first, but
+> according to the suggestion from Lorenzo Pieralisi and Catalin Marinas, we can
+> consolidate the PCI MCFG part then fix it in a more common way, that's why this
+> patch series comes.
+> 
+> [1] https://marc.info/?l=linux-arm-kernel&m=163108478627166&w=2
+> 
 > ---
->  arch/csky/kernel/power.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/csky/kernel/power.c b/arch/csky/kernel/power.c
-> index 923ee4e381b8..86ee202906f8 100644
-> --- a/arch/csky/kernel/power.c
-> +++ b/arch/csky/kernel/power.c
-> @@ -9,16 +9,14 @@ EXPORT_SYMBOL(pm_power_off);
->  void machine_power_off(void)
->  {
->         local_irq_disable();
-> -       if (pm_power_off)
-> -               pm_power_off();
-> +       do_kernel_power_off();
->         asm volatile ("bkpt");
->  }
->
->  void machine_halt(void)
->  {
->         local_irq_disable();
-> -       if (pm_power_off)
-> -               pm_power_off();
-> +       do_kernel_power_off();
->         asm volatile ("bkpt");
->  }
->
-> --
-> 2.33.1
->
-
-
--- 
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
+> Change from v3 to v4:
+>   - Add a new patch (patch #3) to address the quirk ECAM access issue. Because
+>     the normal ECAM config space can be accessed in a lockless way, so we don't
+>     need the mutual exclusion with the EINJ action. But those quirks maybe break
+>     this rule and corrupt the configuration access, reserve its MCFG address
+>     regions in this case to avoid that happens. 
+>   
+>   - Add another patch (patch #4) to log the PCI MCFG entry parse message per
+>     the suggestion from Bjorn Helgaas. The output on ARM64 as:
+>     ACPI: MCFG entry for domain 0000 [bus 00-0f] at [mem 0x50000000-0x50ffffff] (base 0x50000000)
+>   
+>   - Commit message updated with more details of patch #2
+> 
+> Change from v2 to v3:
+>   - Address the comments of Lorenzo Pieralisi about the CONFIG_PCI
+>     dependence issue in APEI module (patch #2)
+> 
+> Change from v1 to v2:
+>   - Fix the "undefined reference to `pci_mmcfg_list'" build error in case
+>     of PCI_CONFIG=n, reported by the kernel test robot
+> 
+> Xuesong Chen (4):
+>   PCI: MCFG: Consolidate the separate PCI MCFG table entry list
+>   ACPI: APEI: Filter the PCI MCFG address with an arch-agnostic method
+>   ACPI: APEI: Reserve the MCFG address for quirk ECAM implementation
+>   PCI: MCFG: Add the MCFG entry parse log message
+> 
+>  arch/x86/include/asm/pci_x86.h | 17 +----------
+>  arch/x86/pci/mmconfig-shared.c | 30 -------------------
+>  drivers/acpi/apei/apei-base.c  | 68 ++++++++++++++++++++++++++++++++----------
+>  drivers/acpi/pci_mcfg.c        | 46 +++++++++++++++-------------
+>  drivers/pci/pci.c              |  2 ++
+>  drivers/pci/quirks.c           |  2 ++
+>  include/linux/pci.h            | 18 +++++++++++
+>  7 files changed, 101 insertions(+), 82 deletions(-)
+> 
