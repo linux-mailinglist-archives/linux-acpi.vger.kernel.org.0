@@ -2,122 +2,156 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFCDC44209F
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 20:16:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBF9C442152
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 21:04:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232517AbhKATTP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Nov 2021 15:19:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:29296 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229549AbhKATTO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Nov 2021 15:19:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635794200;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vPxF4UHOaFrwq4ubL6S9n5LY4w6t78aRQ2QSJla2WzE=;
-        b=iHQc0ylCsYQHM/YZ7Inan+C4Pk4Fnbh5MG1f3xQEYDQvhBsF4lSefP5cyYx0KPI4IOyyR2
-        XK7eQXFkfEjjFgldYSav7JiocdeWItKBlookSjnmvotZENYOKIhpLZ8iaoTc59Er3ZQGoy
-        KGLL3G4i6nrTqS7GF2daqNeccs23gY4=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-101-rKTctuBFPuG5GC6b8-_8fg-1; Mon, 01 Nov 2021 15:16:39 -0400
-X-MC-Unique: rKTctuBFPuG5GC6b8-_8fg-1
-Received: by mail-ed1-f69.google.com with SMTP id w26-20020a056402071a00b003e28a389d04so4200417edx.4
-        for <linux-acpi@vger.kernel.org>; Mon, 01 Nov 2021 12:16:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=vPxF4UHOaFrwq4ubL6S9n5LY4w6t78aRQ2QSJla2WzE=;
-        b=OJczqYg+ECREfCdIspsy1Dahrk7aoY0D63NWGL8EFWYc1Vv4V63h/tRh7S1mx5RJim
-         OHWBTD1elpp9ZQBjyVkQVHw5hEY5dUV3OHlUUyJMt7G2lXuP/GOt9OsYlXFKuSVQVRZx
-         IXMZp53MpnTn0TXs2O96ulA48QX0rj2ACbNsKiizgH12EL0J9+Vl2acFep7IrdnmGhP5
-         97fdb2Vqb5qpNQvqYAy3zV1MhT0/bM21vffEbotOk6yxinBcPS1aq+OcJFF2oWTB5CR8
-         bI4kgstQy4fB2TDZsxh1CAkLDcL1AtmhE3ukr8eorTs5hRYYuVdZyAwHCqzuGir1SKBs
-         BNpw==
-X-Gm-Message-State: AOAM530sRJe1hTUqCfKAPfyfYJKR3GqtK/jcc7Bc9YBDi48zXv++4BOh
-        K8TTP/sbpDfDioPpsxehNyeUpF3opDAlU6LJTaUYO0aKZKhNAd7gZWd586BVbXRxQVqKqh1oUmO
-        K21h5EuCP8Dd5JH6+2Z0AIw==
-X-Received: by 2002:a17:906:9acb:: with SMTP id ah11mr31873283ejc.305.1635794198470;
-        Mon, 01 Nov 2021 12:16:38 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzqRGooy6XZA1Y8t1ql0dlnn+gjO+gI4KXUs5ozQ5VUAaxbAmo9oSU5aRgIi+dcO44lXRA7hQ==
-X-Received: by 2002:a17:906:9acb:: with SMTP id ah11mr31873261ejc.305.1635794198319;
-        Mon, 01 Nov 2021 12:16:38 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id h10sm9331056edf.85.2021.11.01.12.16.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Nov 2021 12:16:37 -0700 (PDT)
-Message-ID: <b3f0d3fe-8038-626e-a68c-b818e6de69da@redhat.com>
-Date:   Mon, 1 Nov 2021 20:16:37 +0100
+        id S229966AbhKAUHS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Nov 2021 16:07:18 -0400
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:25416 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229962AbhKAUHQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Nov 2021 16:07:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1635797082; x=1667333082;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=WdrwZn4ky8KCT9Yu6bhsOCixKbTKsCZbSgQPCcKL9eg=;
+  b=zOIgKMN4oS5+E2u8AanqHbrE2SABHELr2j0koZzcA62ezIqSEOwhzJa8
+   cRh0NjVIAN40JSC8mdt22qAMSyO9ERm6HXSpk2zfVYNwSx6tBZrBZCeiR
+   S8HYO/Y6uQYuYvY6hwLNUDAXYeur08IrbBdPHOd7Nkb7HjgtS5G6t3e5d
+   E=;
+Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
+  by alexa-out.qualcomm.com with ESMTP; 01 Nov 2021 13:04:42 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2021 13:04:41 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
+ Mon, 1 Nov 2021 13:04:41 -0700
+Received: from qian-HP-Z2-SFF-G5-Workstation.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7;
+ Mon, 1 Nov 2021 13:04:39 -0700
+From:   Qian Cai <quic_qiancai@quicinc.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Qian Cai <quic_qiancai@quicinc.com>
+Subject: [RFC PATCH] software node: Skip duplicated software_node sysfs
+Date:   Mon, 1 Nov 2021 16:03:46 -0400
+Message-ID: <20211101200346.16466-1-quic_qiancai@quicinc.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [RFC 3/5] gpiolib: acpi: Add a new "ignore" module option
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Yauhen Kharuzhy <jekhor@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-References: <20211031162428.22368-1-hdegoede@redhat.com>
- <20211031162428.22368-4-hdegoede@redhat.com>
- <CAHp75Vf-EOfF_XfqfWFQZNLp3B03o79xHf4bUrf9x9D9pTrvgw@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAHp75Vf-EOfF_XfqfWFQZNLp3B03o79xHf4bUrf9x9D9pTrvgw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+A recent commit allowed device_create_managed_software_node() to call
+software_node_notify() which could generate duplicated "software_node"
+sysfs files. For example,
 
-On 10/31/21 20:59, Andy Shevchenko wrote:
-> On Sun, Oct 31, 2021 at 6:25 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Add a new "ignore" module option to completely ignore controller@pin combos
->> from _AEI lists.
->>
->> And add a DMI quirk to ignore the interrupt of the BQ27520 fuel-gauge IC
->> on the Xiaomi Mi Pad 2. On this device we use native charger + fuel-gauge
->> drivers because of issues with the ACPI battery implementation. The _AEI
->> listing of the fuel-gauge IRQ is intended for use with the unused ACPI
->> battery implementation and is blocking the bq27xxx fuel-gauge driver
->> from binding.
-> 
-> I'm wondering if the idea behind this is something relative to
-> https://elixir.bootlin.com/linux/latest/source/drivers/acpi/sysfs.c
+"/devices/platform/808622B7:01/xhci-hcd.3.auto/software_node"
 
-The idea indeed is similar, but there is only one set of GPEs and
-the GPIO pin-namespace is per GPIO controller, hence the
-controller-name@pin format used, which is also used for the
-already existing ignore_wake gpiolib-acpi.c module option and
-the patches re-use the existing parsing code.
+Since it was created earlier from another path,
 
-But since there seems to be agreement that using a board-file to
-work around the DSDT deficiencies is the best option this patch
-will no longer be needed. It is probably still good to keep it
-archived somewhere in case the functionality turns out to be
-useful on some other device(s).
+  sysfs_create_link
+  software_node_notify
+  device_add
+  platform_device_add
+  dwc3_host_init
+  dwc3_probe
+  platform_probe
+  really_probe.part.0
+  really_probe
+  __driver_probe_device
+  driver_probe_device
+  __driver_attach
+  bus_for_each_dev
+  driver_attach
+  bus_add_driver
+  driver_register
+  __platform_driver_register
+  dwc3_driver_init at drivers/usb/dwc3/core.c:2072
+  do_one_initcall
 
-Regards,
+Fixed it by using sysfs_create_link_nowarn() in software_node_notify() to
+avoid those bad messages during booting,
 
-Hans
+sysfs: cannot create duplicate filename '/devices/platform/808622B7:01/xhci-hcd.3.auto/software_node'
+ Call trace:
+  dump_backtrace
+  show_stack
+  dump_stack_lvl
+  dump_stack
+  sysfs_warn_dup
+  sysfs_do_create_link_sd.isra.0
+  sysfs_create_link
+  software_node_notify
+  device_create_managed_software_node
+  iort_named_component_init
+  iort_iommu_configure_id
+  acpi_dma_configure_id
+  platform_dma_configure
+  really_probe.part.0
+  really_probe
+  __driver_probe_device
+  driver_probe_device
+  __driver_attach
+  bus_for_each_dev
+  driver_attach
+  bus_add_driver
+  driver_register
+  __platform_driver_register
+  xhci_plat_init
+  do_one_initcall
+  kernel_init_freeable
+  kernel_init
+  ret_from_fork
+
+Fixes: 5aeb05b27f81 ("software node: balance refcount for managed software nodes")
+Signed-off-by: Qian Cai <quic_qiancai@quicinc.com>
+---
+ drivers/base/swnode.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 4debcea4fb12..0a266c312aa3 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -1126,17 +1126,15 @@ void software_node_notify(struct device *dev)
+ 	if (!swnode)
+ 		return;
+ 
+-	ret = sysfs_create_link(&dev->kobj, &swnode->kobj, "software_node");
+-	if (ret)
++	ret = sysfs_create_link_nowarn(&dev->kobj, &swnode->kobj,
++				       "software_node");
++	if (ret && ret != -EEXIST)
+ 		return;
+ 
+-	ret = sysfs_create_link(&swnode->kobj, &dev->kobj, dev_name(dev));
+-	if (ret) {
++	if (!sysfs_create_link(&swnode->kobj, &dev->kobj, dev_name(dev)))
++		kobject_get(&swnode->kobj);
++	else if (!ret)
+ 		sysfs_remove_link(&dev->kobj, "software_node");
+-		return;
+-	}
+-
+-	kobject_get(&swnode->kobj);
+ }
+ 
+ void software_node_notify_remove(struct device *dev)
+-- 
+2.30.2
 
