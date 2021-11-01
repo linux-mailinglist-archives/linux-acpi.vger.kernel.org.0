@@ -2,99 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BCBD441BB9
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 14:28:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C8D8441BC3
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 14:32:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231880AbhKANbK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Nov 2021 09:31:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53992 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230417AbhKANbG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 1 Nov 2021 09:31:06 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A1A3160551;
-        Mon,  1 Nov 2021 13:28:22 +0000 (UTC)
-Date:   Mon, 1 Nov 2021 13:28:19 +0000
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 11/45] arm64: Use do_kernel_power_off()
-Message-ID: <YX/rc872EIlC+QGE@arm.com>
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-12-digetx@gmail.com>
+        id S230417AbhKANfJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Nov 2021 09:35:09 -0400
+Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:57143 "EHLO
+        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231741AbhKANfJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Nov 2021 09:35:09 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=xuesong.chen@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0UucB9j2_1635773551;
+Received: from 30.225.212.104(mailfrom:xuesong.chen@linux.alibaba.com fp:SMTPD_---0UucB9j2_1635773551)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 01 Nov 2021 21:32:32 +0800
+Message-ID: <19fde29a-5a63-3fe7-2e83-307a974c80ad@linux.alibaba.com>
+Date:   Mon, 1 Nov 2021 21:32:31 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211027211715.12671-12-digetx@gmail.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.2.1
+Subject: Re: [PATCH v4 0/4] PCI MCFG consolidation and APEI resource filtering
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Will Deacon <will@kernel.org>, helgaas@kernel.org,
+        catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
+        james.morse@arm.com, rafael@kernel.org, tony.luck@intel.com,
+        mingo@kernel.org, bhelgaas@google.com, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <YW5OTMz+x8zrsqkF@Dennis-MBP.local>
+ <20211027081035.53370-1-xuesong.chen@linux.alibaba.com>
+ <e387413f-dbe8-e0f1-257b-141362d74e3a@linux.alibaba.com>
+ <20211101093618.GA27400@willie-the-truck>
+ <286ac625-e712-d7e9-2f5d-923f1572b5d1@linux.alibaba.com>
+ <YX/cIhZDgUGI3FKd@zn.tnic>
+From:   Xuesong Chen <xuesong.chen@linux.alibaba.com>
+In-Reply-To: <YX/cIhZDgUGI3FKd@zn.tnic>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Oct 28, 2021 at 12:16:41AM +0300, Dmitry Osipenko wrote:
-> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
-> that invokes chained power-off handlers. It also invokes legacy
-> pm_power_off() for now, which will be removed once all drivers will
-> be converted to the new power-off API.
-> 
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+
+On 01/11/2021 20:22, Borislav Petkov wrote:
+> On Mon, Nov 01, 2021 at 08:12:15PM +0800, Xuesong Chen wrote:
+>> I'm very sorry about the non-constructived response, and I'd like to
+>> take this chance to withdraw them entirely... personally this is not a
+>> good example in terms of the mood or the way of expression.
+> 
+> Good idea. There are other maintainers who would ignore you indefinitely
+> for uncalled for explosions like that. And then you would have achieved
+> the opposite of what you were aiming for, with that rant.
+
+Actually that's my original intention, especially when you take lots of serious
+effors to rework it round by round, but no one say YES or NO, which is really
+frustrating. Hopefully the newbies can also be treated fairly in the community.
+During my working experience in the community before, lot's of nice maintainers
+give me very deep impression. What a splendid memory!
+
+> 
+> To Will's point, you can always read Documentation/process/ while
+> waiting for your patches to get reviewed - there the whole process is
+> explained and what the best ways and times are to send a patchset.
+
+Good suggestion, learnt and thanks!
+
+Thanks,
+Xuesong
+> 
+> HTH.
+> 
