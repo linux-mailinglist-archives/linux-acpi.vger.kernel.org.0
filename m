@@ -2,76 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 973964418EC
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 10:51:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C31814419A8
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 11:16:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234598AbhKAJxI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Nov 2021 05:53:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54504 "EHLO mail.kernel.org"
+        id S231841AbhKAKTW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Nov 2021 06:19:22 -0400
+Received: from mga06.intel.com ([134.134.136.31]:12199 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233289AbhKAJvG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 1 Nov 2021 05:51:06 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0DB5F60F70;
-        Mon,  1 Nov 2021 09:36:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635759384;
-        bh=T88RiQbxwaGniFcc+rnbVb40RHNPCR76NdrF/7VPCME=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FrWCB0phomgItdYzJVkmmdiLPWPL348dT5ZdLdhW7AKlMoQpbsJ5bWeDgyFdfwH9F
-         GOO3//OVGmgPo9Dnj5Hh2IZ4xqYQdPILUNMqEOVWk/wS4arRk1bHgyUKADImZrIOYS
-         oTUNhuUivfnG4Rq6q/lIH9qbvwL/iGyXLgLH715/EmkP2KqBP8pr6WPYBzN10c41nR
-         0Uu1lH1D1RpZ6cII5Tg5Y4/tdfMlPex9cBhs+dpn+Jv4TQ4pEBTFoHAygK69FTLAAw
-         dZ9V04UsEuRPvoX8BjLPLUeMskhABJylRYRzktUCkHWtFFZQ1d2eKaeg8cFAiShu2K
-         o/sg0wjYkxBgw==
-Date:   Mon, 1 Nov 2021 09:36:18 +0000
-From:   Will Deacon <will@kernel.org>
-To:     Xuesong Chen <xuesong.chen@linux.alibaba.com>
-Cc:     helgaas@kernel.org, catalin.marinas@arm.com,
-        lorenzo.pieralisi@arm.com, james.morse@arm.com, rafael@kernel.org,
-        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
-        bhelgaas@google.com, linux-pci@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/4] PCI MCFG consolidation and APEI resource filtering
-Message-ID: <20211101093618.GA27400@willie-the-truck>
-References: <YW5OTMz+x8zrsqkF@Dennis-MBP.local>
- <20211027081035.53370-1-xuesong.chen@linux.alibaba.com>
- <e387413f-dbe8-e0f1-257b-141362d74e3a@linux.alibaba.com>
+        id S230298AbhKAKTV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 1 Nov 2021 06:19:21 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10154"; a="291826685"
+X-IronPort-AV: E=Sophos;i="5.87,198,1631602800"; 
+   d="scan'208";a="291826685"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2021 03:16:48 -0700
+X-IronPort-AV: E=Sophos;i="5.87,198,1631602800"; 
+   d="scan'208";a="488572933"
+Received: from shiweiyu-mobl.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.255.28.221])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2021 03:16:45 -0700
+Date:   Mon, 1 Nov 2021 18:16:41 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     linux-acpi@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Aubrey Li <aubrey.li@intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 3/4] drivers/acpi: Introduce Platform Firmware Runtime
+ Update Telemetry
+Message-ID: <20211101101641.GA20219@chenyu5-mobl1>
+References: <cover.1635317102.git.yu.c.chen@intel.com>
+ <b37584e515c36882990295097386e783da29110e.1635317102.git.yu.c.chen@intel.com>
+ <YXktrG1LhK5tj2uF@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <e387413f-dbe8-e0f1-257b-141362d74e3a@linux.alibaba.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YXktrG1LhK5tj2uF@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Wed, Oct 27, 2021 at 01:45:00PM +0300, Andy Shevchenko wrote:
+> On Wed, Oct 27, 2021 at 03:08:05PM +0800, Chen Yu wrote:
+> > Platform Firmware Runtime Update(PFRU) Telemetry Service is part of RoT
+> > (Root of Trust), which allows PFRU handler and other PFRU drivers to
+> > produce telemetry data to upper layer OS consumer at runtime.
+> > 
+> > The linux provides interfaces for the user to query the parameters of
+> 
+> Linux kernel
+>
+Ok. 
+> > telemetry data, and the user could read out the telemetry data
+> > accordingly.
+> > 
+> > The corresponding userspace tool and man page will be introduced at
+> > tools/power/acpi/pfru.
+> 
+> ...
+> 
+> > +#include <linux/acpi.h>
+> > +#include <linux/device.h>
+> > +#include <linux/err.h>
+> > +#include <linux/errno.h>
+> > +#include <linux/file.h>
+> > +#include <linux/fs.h>
+> > +#include <linux/miscdevice.h>
+> > +#include <linux/module.h>
+> > +#include <linux/mm.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/string.h>
+> > +#include <linux/uaccess.h>
+> > +#include <linux/uio.h>
+> > +#include <linux/uuid.h>
+> 
+> + blank line?
+> 
+Ok.
+> > +#include <uapi/linux/pfru.h>
+> 
+> ...
+> 
+> > +static DEFINE_IDA(pfru_log_ida);
+> 
+> Do you need any mutex against operations on IDA? (I don't remember
+> if it incorporates any synchronization primitives).
+> 
+The IDA uses a spinlock_irqsave() to protect the bitmap.
+> ...
+> 
+> Looking into the code I have feelings of déjà-vu. Has it really had
+> nothing in common with the previous patch?
+> 
+They both invokes _DSM to trigger the low level actions. However the input
+parameters and return ACPI package as well as the functions are different
+and hard to extract the common code between them.
+> ...
+> 
+> > +static int valid_log_level(int level)
+> > +{
+> > +	return level == LOG_ERR || level == LOG_WARN ||
+> > +		level == LOG_INFO || level == LOG_VERB;
+> 
+> Indentation.
+> 
+Ok, will add.
+> > +}
+> 
+> ...
+> 
+> 
+> This ordering in ->probe() is not okay:
+> 	devm_*()
+> 	non-devm_*()
+> 	devm_*()
+> 	non-devm_*()
+> 
+> One mustn't interleave these. The allowed are:
+> 
+> Case 1:
+> 	non-devm_*()
+> 
+> Case 2:
+> 	devm_*()
+> 
+> Case 3:
+> 	devm_*()
+> 	non-devm_*()
+> 
+> Otherwise in ->remove() you have wrong release ordering which may hide
+> subtle bugs.
+> 
+Got it. I'll fix it in next version.
+> Above comment is applicable to the other patch as well as some comments
+> from there are applicable here.
+> 
+Ok.
 
-On Mon, Nov 01, 2021 at 10:18:35AM +0800, Xuesong Chen wrote:
-> How about the status of this series, it's really bad, bad and still bad... to wait long
-> time for the final judgement, especially you take extremely serious to rework it round
-> by round, finaly you receive nothing. Everyone's work should be repected!
-
-I've trimmed the rest of your response as it wasn't especially constructive.
-Please can you try to keep things civil, even when you're frustrated? It's
-not very pleasant being on the end of a rant.
-
-One likely explanation for you not getting a reply on your patches is that
-I've discovered many of your emails have ended up in my spam, for some
-reason. I'm using gmail for my inbox so, if Bjorn is doing that as well,
-then there's a good chance he hasn't seen them either.
-
-The other thing to keep in mind is that the 5.16 merge window opened today
-and you posted the latest version of your patches on Wednesday. That doesn't
-really leave enough time for the patches to be reviewed (noting that patch 3
-is new in this version and the kernel build robot was still complaining on
-Friday), queued and put into linux-next, so I would suspect that this series
-is looking more like 5.17 material and therefore not a priority for
-maintainers at the moment.
-
-Your best is probably to post a v5, with the kbuild warnings addressed,
-when -rc1 is released in a couple of weeks. I'm not sure how to fix the
-spam issue though :(
-
-Will
+Thanks,
+Chenyu
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
