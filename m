@@ -2,103 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 396D0441C96
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 15:25:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEF0D441CFB
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 15:58:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231828AbhKAO22 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Nov 2021 10:28:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55840 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbhKAO21 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Nov 2021 10:28:27 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBB3EC061714;
-        Mon,  1 Nov 2021 07:25:53 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id f4so6731768edx.12;
-        Mon, 01 Nov 2021 07:25:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=U8dGpHr2LbqeeAeL0rdMryoAEIzzb9ek644l/wYoSc0=;
-        b=qfPfuUyKZZiLcmVeHl4aZMPpfyaRykfYCtocxIUEaKcP1sB2WeHuRpeSenxfRhzVaJ
-         1VToEAmhDVB5dUVFxg4K9ZVhi1cSVQbk/SummxncNmrLuKtvht+NCy73ZODXPf0WpRUC
-         OlsvB2pbLI0s5s2DL5dB9MUj3UxOO05PLIzMGuKr92Wtv+CDEKAvF+UdX2zJ9N+auyUx
-         cdTKbekFXwzb9hHd0RJpv2JbV+fMSvTLlYDQf658hcmLLUWifohDy7PLV1yu3nYzAwVi
-         jS7+wCXEVlP2VUrf350Mk2gwzhAZiT7P9w41C2y47tSEs/7Vbz1lSjdIV3eCwjr4RBQX
-         2APw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=U8dGpHr2LbqeeAeL0rdMryoAEIzzb9ek644l/wYoSc0=;
-        b=yD4D/vX1Wlx/bwizGp1iTt7Tq74zg4QMBnlg90G+nxYIRiw7CbgWAfTq5FdylhpNoX
-         JHuKLUahKvKV5yERDLpcqYdqjQx6EXbqfv8ruQHsBkf9jI1Z9p0cDLHF+7fbSLeuNxD9
-         qMyvqRJxAOmWCzV7rWovsVkEQPb0Fiwe0EjhN4ZbX8u56ASSUGIjjCFcFIlFYxzH66d2
-         x9DED/LZb+N1zjEShIDu9BA6DE71zjjpl4H11b4xPrwhozaRLVhrA9pTgXnMWCpM8bja
-         +DmH8gtgcMmxgrSW6FyQ4zjVXTTo9seywwVIOFPFnb77e2Fs8meCdjUk2DOMCw+6VPFv
-         eRqw==
-X-Gm-Message-State: AOAM530tLeVXc0Cwp/DLy96fJ+dqAwzoKKMd8fVr+KzY5lPO5ciE+LfR
-        oTVMueDUwRJK4BWUPSJBxPlDcuxqEP2GXRWeOMIbtrfXLCk=
-X-Google-Smtp-Source: ABdhPJzWM6VCDa5ZmF2ZKjZ1DdhV+AAGA9EqR2F/VhuTDDoFuYjeq48tl6QyW1NBKDlXUB980wqbufQ1zQVeZg6M+74=
-X-Received: by 2002:aa7:c44b:: with SMTP id n11mr20384013edr.238.1635776752332;
- Mon, 01 Nov 2021 07:25:52 -0700 (PDT)
+        id S230261AbhKAPAj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Nov 2021 11:00:39 -0400
+Received: from mga04.intel.com ([192.55.52.120]:51342 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229826AbhKAPAj (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 1 Nov 2021 11:00:39 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10154"; a="229757416"
+X-IronPort-AV: E=Sophos;i="5.87,199,1631602800"; 
+   d="scan'208";a="229757416"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2021 07:58:06 -0700
+X-IronPort-AV: E=Sophos;i="5.87,199,1631602800"; 
+   d="scan'208";a="500067645"
+Received: from yingze1x-mobl.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.255.28.120])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2021 07:58:01 -0700
+Date:   Mon, 1 Nov 2021 22:57:57 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Aubrey Li <aubrey.li@intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 2/4] drivers/acpi: Introduce Platform Firmware Runtime
+ Update device driver
+Message-ID: <20211101145757.GA35522@chenyu5-mobl1>
+References: <cover.1635317102.git.yu.c.chen@intel.com>
+ <a318e4edc13e5a3ff95b901871b8929746535715.1635317102.git.yu.c.chen@intel.com>
+ <YXkn8aBvAVEXxgdp@smile.fi.intel.com>
+ <20211101093320.GA18982@chenyu5-mobl1>
+ <YX/NwEdw26wzKFvQ@smile.fi.intel.com>
+ <20211101131434.GA32880@chenyu5-mobl1>
+ <YX/ouT/hi5ccaxsz@kroah.com>
+ <YX/0yCUlGM35vEXS@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <20211025094119.82967-1-hdegoede@redhat.com> <20211025094119.82967-11-hdegoede@redhat.com>
- <CAHp75VdC8i1YWZh_KXNqz_hHgHFoXQ57cce4-x3e6Ha0ZVPQag@mail.gmail.com> <08a94895-ad57-c8f2-fcb5-ff1c1637dc0d@redhat.com>
-In-Reply-To: <08a94895-ad57-c8f2-fcb5-ff1c1637dc0d@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 1 Nov 2021 16:25:02 +0200
-Message-ID: <CAHp75VfYMEZKtR5HZTazSSZ1qgz5iV7Nk9JFHgFmtUuWGqQabg@mail.gmail.com>
-Subject: Re: [PATCH v4 10/11] platform/x86: int3472: Pass tps68470_regulator_platform_data
- to the tps68470-regulator MFD-cell
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YX/0yCUlGM35vEXS@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 1, 2021 at 1:32 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> On 10/25/21 13:38, Andy Shevchenko wrote:
-> > On Mon, Oct 25, 2021 at 12:42 PM Hans de Goede <hdegoede@redhat.com> wrote:
-
-...
-
-> >> +       board_data = int3472_tps68470_get_board_data(dev_name(&client->dev));
-> >
-> >> +       if (board_data)
-> >
-> > IIRC it's a dup. Below already incorporates this.
-> >
-> >> +               gpiod_remove_lookup_table(board_data->tps68470_gpio_lookup_table);
+On Mon, Nov 01, 2021 at 04:08:08PM +0200, Andy Shevchenko wrote:
+> On Mon, Nov 01, 2021 at 02:16:41PM +0100, Greg Kroah-Hartman wrote:
+> > On Mon, Nov 01, 2021 at 09:14:34PM +0800, Chen Yu wrote:
+> > > On Mon, Nov 01, 2021 at 01:21:36PM +0200, Andy Shevchenko wrote:
+> 
+> ...
+> 
+> > > Ok, I'll switch to global variables in next version.
+> > 
+> > Wait, no, why?
+> 
+> But why should we have a duplication of basically static data?
+> 
+> > Keep them per-device unless you can somehow be
+> > guaranteed there will never be more than one of these ACPI devices in a
+> > system.
+> 
+> I guess you missed my point. These definitions are _always_ the same.
+> It does not matter how many devices in the system.
+> 
+> Chen, is my perception correct?
+> If no, then do what Greg says.
 >
-> Not sure what you mean here? This line *dereferences* board_data, so even if
-> gpiod_remove_lookup_table() already contains a NULL check for the table pointer,
-> we still need the board_data check to avoid dereferencing it to get
-> the tps68470_gpio_lookup_table member.
+Yes, there would be only one PFRU ACPI object in the system.
+And for PFRU Telemetry ACPI object, I don't know if the specification
+would introduce separate telemetry log using different uuid in the
+future - Currently there are two telemetry log buffers share the same
+uuid). Maybe for scalability reason we can make them per device.
+> > It's simpler this way, no need to worry about global state at
+> > all.
+> 
+> Actually I have no idea why we even have strings in  and not raw buffers.
+> Moreover, I haven't got why even we have them in uAPI.
+I see. These uuid could be put into the .c and there is no need for the
+user to be aware of these values.
 
-Oh, I see now. Nothing needs to be changed here.
-
--- 
-With Best Regards,
-Andy Shevchenko
+thanks,
+Chenyu
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
