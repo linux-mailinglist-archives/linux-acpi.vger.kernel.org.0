@@ -2,61 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 021804419D7
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 11:27:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0433C4419EE
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 11:31:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232065AbhKAKaG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Nov 2021 06:30:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:24474 "EHLO
+        id S231942AbhKAKeD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Nov 2021 06:34:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:20780 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232021AbhKAKaF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Nov 2021 06:30:05 -0400
+        by vger.kernel.org with ESMTP id S231952AbhKAKeB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Nov 2021 06:34:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635762451;
+        s=mimecast20190719; t=1635762688;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sbRv0LbOwweVcKPem1CDYmre/eBu7RPmgKjL80bCTNo=;
-        b=L0vEIW8YoAmHcoztbqAS04R1wc0VrAoOZH7LBK+6Ps0HOvLcbrlKwBjUti4JsTGwzPAW1V
-        I2YuPt16xjO5OD5ufdRpKt7ECJCT4+6vnEXlWgRj12mqp6AOaJbBCYgKfD724kWT+UvFt1
-        wbEe/CPGO6sl7ZNk8ydah2Yn32zTAas=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-508-hgEG189YMVCusARZfc-OQQ-1; Mon, 01 Nov 2021 06:27:30 -0400
-X-MC-Unique: hgEG189YMVCusARZfc-OQQ-1
-Received: by mail-ed1-f71.google.com with SMTP id q6-20020a056402518600b003e28d92bb85so1735766edd.7
-        for <linux-acpi@vger.kernel.org>; Mon, 01 Nov 2021 03:27:30 -0700 (PDT)
+        bh=dp8l/RCsxjlz7Zk0ZyfQ5HSkUFJxSL+4S21cue4eFb8=;
+        b=cpyIiBQbFwj/YIIR5WmHwh4OdbbGUJcV16fS4yXLsb229aUk1ykgh/v4DsiZBc4gFpzRz/
+        AuJjTEBsXsbki1Ub1donz6fkSFMVdRFnVIyN+jIPSYv8N9y05AHks1OhY0wQCySH58+PdF
+        LaMguBOlbUgN1YagJSYz/Y8ip55XIds=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-367-m-Pj1o-SMUC82lFL5HAU5Q-1; Mon, 01 Nov 2021 06:31:27 -0400
+X-MC-Unique: m-Pj1o-SMUC82lFL5HAU5Q-1
+Received: by mail-ed1-f69.google.com with SMTP id q6-20020a056402518600b003e28d92bb85so1744915edd.7
+        for <linux-acpi@vger.kernel.org>; Mon, 01 Nov 2021 03:31:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=sbRv0LbOwweVcKPem1CDYmre/eBu7RPmgKjL80bCTNo=;
-        b=BAC6UOdrf6+adGofeFWn9jtvAz0s9hNrlapgGM8J4XoI/7d9+4j+Rkb/7SO7rEimxy
-         ivFgzZeZ3OkixiUVBTzWLtWuOMt4nwH7w6oh4MW7XPEiYChXtGgSAbgJWUCnOTgO9EhY
-         Wh+sUxtTX5UmpomUVOseXYMPvkm38aRZFX5bzFDDRGhRO8Khr4bDBp6csdvmRF7cBL85
-         Z5X8hL901c+ghre5ZIFlmhVxrrbpf1HDSmR0PDeSJDl5CPRocEiAjetsLm8veuuQBHu/
-         4VCIS/3x5775u5zg14IkDBMZswXYc0SduuCXy+3LyXUcqdxknkBoG1HDaGn7HdD5NUWz
-         bDNw==
-X-Gm-Message-State: AOAM531iea12YBGTFEIQ0v5EsD+xIj2TsCQ0Vzwi09hTEm3cLZBBzZdv
-        R+pPYyVjFEAP7lk92YNAqfMLV1GNj72V5CuU46gZOio+V3URDDhxov4NPkWx8p7ejGqppSAhQqz
-        yAnRg/28O0fYqY2H4m9OuOA==
-X-Received: by 2002:a17:907:96a4:: with SMTP id hd36mr723477ejc.407.1635762449539;
-        Mon, 01 Nov 2021 03:27:29 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJze8NyVmpBw7YgYiWD+CZnyOJgLe1lkQHSyHpWXs1dtzDSwFrSGxpNbxzdwHMmlXFZDjJJAyA==
-X-Received: by 2002:a17:907:96a4:: with SMTP id hd36mr723456ejc.407.1635762449305;
-        Mon, 01 Nov 2021 03:27:29 -0700 (PDT)
+        bh=dp8l/RCsxjlz7Zk0ZyfQ5HSkUFJxSL+4S21cue4eFb8=;
+        b=LiGDbGTEEeKUWh+40kq7hwr/FfCfAl7SN8ATyU/Eic8bk34sRXqfHUbN+M474NgP9q
+         6CrDKWYiPuNEFYVMEkE4Dv93gNP3R1d9rgCqrWZTNHM9jaYRvkBzt02WP7o9VIeUpqy/
+         vJPobgzLmThZ5W0j++bF8bEE2pd5InRvTC3vjDJbn1eJ7vpJwRR/Imdx+yIkNTgTiQPQ
+         7YGp8P262Hge/Nl/AceEYg7gHsJi1PdP0CsjWQV4kkkGZTLaU8v+JjEVDDh282ocnYYS
+         trk9OB5Yy1JA9KYu8a8+AtluFOCGmLXUmRTdkaPAJ5I4uCIpKH7+/BdeI1ZuIuUXZAuG
+         xdXQ==
+X-Gm-Message-State: AOAM530HAg7OHgxahfieYmxSX5WpcYsO4Z4Q2+idJTgyYMo5B+3GhM+7
+        u8sTRWYi1kRz9WP0JKx9YjYng9IsNDeH0unX3afKYAZJEmiPFzdldMYPppCp+ptPtA6eJ/sXdxN
+        rZmKLZ8p0OpPWWAVDkT2Cbg==
+X-Received: by 2002:aa7:c158:: with SMTP id r24mr24743087edp.65.1635762686392;
+        Mon, 01 Nov 2021 03:31:26 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwa7LV21EyQYFUAKgymc9bpXOYimSIdWdyjMthwHi/ngQYC/LDQgfr3s2AHIBJ3JsdSa+W3bQ==
+X-Received: by 2002:aa7:c158:: with SMTP id r24mr24743063edp.65.1635762686258;
+        Mon, 01 Nov 2021 03:31:26 -0700 (PDT)
 Received: from [10.40.1.223] ([81.30.35.201])
-        by smtp.gmail.com with ESMTPSA id d3sm6726825ejb.35.2021.11.01.03.27.28
+        by smtp.gmail.com with ESMTPSA id dp8sm7011007ejc.83.2021.11.01.03.31.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Nov 2021 03:27:29 -0700 (PDT)
-Message-ID: <ff8c8418-8e73-f949-3734-c0e2e109f554@redhat.com>
-Date:   Mon, 1 Nov 2021 11:27:28 +0100
+        Mon, 01 Nov 2021 03:31:25 -0700 (PDT)
+Message-ID: <8804fa29-d0d9-14a9-e48e-268113a79d07@redhat.com>
+Date:   Mon, 1 Nov 2021 11:31:25 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH v4 05/11] clk: Introduce clk-tps68470 driver
+Subject: Re: [PATCH v4 08/11] platform/x86: int3472: Add
+ get_sensor_adev_and_name() helper
 Content-Language: en-US
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
@@ -80,10 +81,10 @@ Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Linux Media Mailing List <linux-media@vger.kernel.org>,
         linux-clk <linux-clk@vger.kernel.org>
 References: <20211025094119.82967-1-hdegoede@redhat.com>
- <20211025094119.82967-6-hdegoede@redhat.com>
- <CAHp75VdfwA_3QK2Fo1S34rRZWHCMNzzHug4AKsRfOrKu4CU_YA@mail.gmail.com>
+ <20211025094119.82967-9-hdegoede@redhat.com>
+ <CAHp75VeLAW6ZBQYidnD7PDYfAH3A2bq+oMJTru-9OW_t-XS26g@mail.gmail.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAHp75VdfwA_3QK2Fo1S34rRZWHCMNzzHug4AKsRfOrKu4CU_YA@mail.gmail.com>
+In-Reply-To: <CAHp75VeLAW6ZBQYidnD7PDYfAH3A2bq+oMJTru-9OW_t-XS26g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -92,125 +93,65 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 10/25/21 13:24, Andy Shevchenko wrote:
+On 10/25/21 13:31, Andy Shevchenko wrote:
 > On Mon, Oct 25, 2021 at 12:42 PM Hans de Goede <hdegoede@redhat.com> wrote:
 >>
->> The TPS68470 PMIC provides Clocks, GPIOs and Regulators. At present in
->> the kernel the Regulators and Clocks are controlled by an OpRegion
->> driver designed to work with power control methods defined in ACPI, but
->> some platforms lack those methods, meaning drivers need to be able to
->> consume the resources of these chips through the usual frameworks.
+>> The discrete.c code is not the only code which needs to lookup the
+>> acpi_device and device-name for the sensor for which the INT3472
+>> ACPI-device is a GPIO/clk/regulator provider.
 >>
->> This commit adds a driver for the clocks provided by the tps68470,
->> and is designed to bind to the platform_device registered by the
->> intel_skl_int3472 module.
+>> The tps68470.c code also needs this functionality, so factor this
+>> out into a new get_sensor_adev_and_name() helper.
 > 
 > ...
 > 
->> +/*
->> + *  The PLL is used to multiply the crystal oscillator
->> + *  frequency range of 3 MHz to 27 MHz by a programmable
->> + *  factor of F = (M/N)*(1/P) such that the output
->> + *  available at the HCLK_A or HCLK_B pins are in the range
->> + *  of 4 MHz to 64 MHz in increments of 0.1 MHz
-> 
-> Missed (grammatical) period.
-
-Thx, fixed for v5.
-
-> 
->> + *
->> + * hclk_# = osc_in * (((plldiv*2)+320) / (xtaldiv+30)) * (1 / 2^postdiv)
->> + *
->> + * PLL_REF_CLK should be as close as possible to 100kHz
->> + * PLL_REF_CLK = input clk / XTALDIV[7:0] + 30)
->> + *
->> + * PLL_VCO_CLK = (PLL_REF_CLK * (plldiv*2 + 320))
->> + *
->> + * BOOST should be as close as possible to 2Mhz
->> + * BOOST = PLL_VCO_CLK / (BOOSTDIV[4:0] + 16) *
->> + *
->> + * BUCK should be as close as possible to 5.2Mhz
->> + * BUCK = PLL_VCO_CLK / (BUCKDIV[3:0] + 5)
->> + *
->> + * osc_in   xtaldiv  plldiv   postdiv   hclk_#
->> + * 20Mhz    170      32       1         19.2Mhz
->> + * 20Mhz    170      40       1         20Mhz
->> + * 20Mhz    170      80       1         24Mhz
-> 
->> + *
-> 
-> Redundant empty line.
-
-Removed for v5.
-
->> + */
-> 
-> ...
-> 
->> +       /* disable clock first */
-> 
-> Disable
-> first...
-> 
->> +       /* and then tri-state the clock outputs */
-> 
-> ...and
-
-Fixed for v5.
-> ...
-> 
->> +       for (i = 0; i < ARRAY_SIZE(clk_freqs); i++) {
->> +               diff = clk_freqs[i].freq - rate;
->> +               if (diff == 0)
->> +                       return i;
-> 
->> +               diff = abs(diff);
-> 
-> This needs a comment why higher (lower) frequency is okay.
-
-This function is called in 2 places:
-
-1. From tps68470_clk_round_rate(), where higher/lower clearly is ok,
-(see the function name) so no comment needed.
-
-2. From tps68470_clk_set_rate() where it is NOT ok and this is
-enforced in the caller:
-
-        unsigned int idx = tps68470_clk_cfg_lookup(rate);
-
-        if (rate != clk_freqs[idx].freq)
-                return -EINVAL;
-
-This is not easy to describe in a comment, while being obvious
-if someone looking at this actually looks at the callers.
-
-> 
->> +               if (diff < best_diff) {
->> +                       best_diff = diff;
->> +                       best_idx = i;
->> +               }
+>> +int skl_int3472_get_sensor_adev_and_name(struct device *dev,
+>> +                                        struct acpi_device **sensor_adev_ret,
+>> +                                        const char **name_ret)
+>> +{
+>> +       struct acpi_device *adev = ACPI_COMPANION(dev);
+>> +       struct acpi_device *sensor;
+>> +       int ret = 0;
+>> +
+>> +       sensor = acpi_dev_get_first_consumer_dev(adev);
+>> +       if (!sensor) {
+>> +               dev_err(dev, "INT3472 seems to have no dependents.\n");
+>> +               return -ENODEV;
 >> +       }
-> 
-> ...
-> 
->> +       if (pdata) {
->> +               ret = devm_clk_hw_register_clkdev(&pdev->dev,
->> +                                                 &tps68470_clkdata->clkout_hw,
->> +                                                 pdata->consumer_con_id,
->> +                                                 pdata->consumer_dev_name);
-> 
-> if (ret)
->   return ret;
-> 
->> +       }
+>> +
+>> +       *name_ret = devm_kasprintf(dev, GFP_KERNEL, I2C_DEV_NAME_FORMAT,
+>> +                                  acpi_dev_name(sensor));
+>> +       if (!*name_ret)
+>> +               ret = -ENOMEM;
+>> +
+>> +       if (ret == 0 && sensor_adev_ret)
+>> +               *sensor_adev_ret = sensor;
+>> +       else
+>> +               acpi_dev_put(sensor);
 >> +
 >> +       return ret;
 > 
-> return 0;
+> The error path is twisted a bit including far staying ret=0 assignment.
+> 
+> Can it be
+> 
+>        int ret;
+>        ...
+>        *name_ret = devm_kasprintf(dev, GFP_KERNEL, I2C_DEV_NAME_FORMAT,
+>                                   acpi_dev_name(sensor));
+>        if (!*name_ret) {
+>                acpi_dev_put(sensor);
+>                return -ENOMEM;
+>        }
+> 
+>        if (sensor_adev_ret)
+>                *sensor_adev_ret = sensor;
+> 
+>        return 0;
+> 
+> ?
 
-That was the code in v2, but Stephen (the clk maintainer) asked to
-simplify it to its current form, so I'm not going to change this back.
+That misses an acpi_dev_put(sensor) when sensor_adev_ret == NULL.
 
 Regards,
 
