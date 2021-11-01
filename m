@@ -2,58 +2,64 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8578441A28
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 11:47:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79F5A441A30
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 11:48:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231946AbhKAKuC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 1 Nov 2021 06:50:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34600 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231485AbhKAKuB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Nov 2021 06:50:01 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3755BC061714;
-        Mon,  1 Nov 2021 03:47:28 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id 5so61906188edw.7;
-        Mon, 01 Nov 2021 03:47:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zg/2TadFIKEh7TRYW+cbcPrXXMeYP+uLlK5UKpxBpLw=;
-        b=cNey6RR/2MQJMRdV1twInABbCQh0fWlFumvTn9ZmvZjapQQ0R6ZZMgVUBVxuPrDjsT
-         CNzD0L5zHXDHvZm02Wg1spSvN5SmmU1gWamirBxIUAjr/2JjLV5RaK00l5GA7dEd2685
-         sRDKiQq3coI7Ho9Y0riGk//V1pA6JNOXNvRpczAW4diQFzdAOW9Una++uCDaRRx80nIb
-         C1TfXP6fNUMojFQgBU+v6nYLXgaOztwr3VGNMfby1a8bp/81/wLdlChIrRJ2HvGE9MB6
-         pz+aCRmBpYdkXsk3QONCcyjaCnqb5DF0yw6hk8933tXxaIk2J2iM9SYGe95mMT/Xf5gT
-         +d3g==
+        id S232241AbhKAKvG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 1 Nov 2021 06:51:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:40770 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232081AbhKAKvF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 1 Nov 2021 06:51:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1635763711;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/Z2r4wjgjmfKtWXXm/PRt+JSau+E3wOrLAYY5e+orSU=;
+        b=HNj/xOdMYfCbTVzOJAARTd9HeHA/L5KYBooA9B2uOEC1pGE7/kbPlS36jgHzl0Kosb87m9
+        /EHwulFDr3r0EFzK/hGRVIZSUVemdD8tt85pxF7mIWyLmmod82zK3P3kQZS8AwPtS6JJif
+        gZQr2SVkQFmrGYFyME13cL9jK0udFb0=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-204-T5iKTkLbOlyC6EH6shKhPw-1; Mon, 01 Nov 2021 06:48:30 -0400
+X-MC-Unique: T5iKTkLbOlyC6EH6shKhPw-1
+Received: by mail-ed1-f69.google.com with SMTP id s18-20020a056402521200b003dd5902f4f3so15119812edd.23
+        for <linux-acpi@vger.kernel.org>; Mon, 01 Nov 2021 03:48:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zg/2TadFIKEh7TRYW+cbcPrXXMeYP+uLlK5UKpxBpLw=;
-        b=k4p4/j4Y2bx8KTuVJb82zHNDqEjkoUXXYzSNDO/YtqylNzZK20lM4OenGT+wARmuKG
-         Ekb7XApX0q/sHtZ9ZdJ+XZptXDpIrgFQoNhvt9JpgtYAkHBii1z6u8Xyav0kdYrf/gyA
-         qHDO3gILZmYMjgSXjCb7wF7ySbPhHYB6ArCdaw0wexQBXygJ/hh+IQ9KmC4y+CGeI8Rq
-         QWW0UdIjycfrkAh+ZsnCWIEyPZf5MU2/f1LEK1J9bN1BRbrriDFHP3TDweJYfMCJkJNU
-         /pI5lzO9pE0Cf7gm0Z95ikwXA8fvnkoG4GmHaaf2IfIbvVJ7b1NLzeKKXm7qFnEBbM4a
-         Sw/Q==
-X-Gm-Message-State: AOAM530iBMJWlaRLC9TFH2NRJI89dJ3dHkGIe56weoqSK5EtGyp9xFBz
-        fBpHlpXb0gMToVoUQPQAMUKY/W/nA8CMJOAtdtg=
-X-Google-Smtp-Source: ABdhPJySaCcDBrU6r8SzLBhTIbJZlf+fF53ZHRxezNfwopiw5Zt9GadJlgc+nytfqMugPh8RZuSg6C9nEq4qwg0wFg0=
-X-Received: by 2002:a05:6402:207c:: with SMTP id bd28mr29631823edb.240.1635763646840;
- Mon, 01 Nov 2021 03:47:26 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=/Z2r4wjgjmfKtWXXm/PRt+JSau+E3wOrLAYY5e+orSU=;
+        b=pPbCJmaLQvtRDVDmiYPR2KQo47Z5c6DfAMNL2Vhxdt83Hvd7WTsBffopOKOjVxHOU+
+         Nu9+Y9u0ku7rwyJ9VHCVY/vOZ9mXIz5RWQDqSecc2flf3OC+T2Gir3lnUQEM7WHF4EP5
+         hjxUx8h1F4+5KPXFfw5yn9cOhabJHWjOM/fI5WUUutH140KDosX724O2eoAt4w37egm6
+         HXEeS5ZA557zo2J9PLwEUB7u1srLsNk/zsyySytSG4G0CQD7oOBdyf0o2gtfnmuSYegm
+         qPLBhFPEYIHRWZa4ZBJjfuky7yejHRKyQsEVWciorUa1MmfELNGpFXEYZf1PR585ixBt
+         XL1Q==
+X-Gm-Message-State: AOAM5317firzbyohkU4AWf/N2f7BLaIFATmQezCISVAYOGbClVzYppBZ
+        Kiuz8MV/x5TD1IkfucpZXdQs9pU/J5oK0+WlCVpr1wb3Co/obyaKVQCsy5qCSGdA+LmW2wBwQ0G
+        UcAGeqbnvvLB5cz3yGwZyqQ==
+X-Received: by 2002:a05:6402:331:: with SMTP id q17mr3272968edw.58.1635763709666;
+        Mon, 01 Nov 2021 03:48:29 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwqwZ6pYKJ964qOQyIfK0fQV7DN0AlpOGjSg/1ST/kyNYa/fXNYu4eGpY0jOgRgPJc3qHFynA==
+X-Received: by 2002:a05:6402:331:: with SMTP id q17mr3272945edw.58.1635763709553;
+        Mon, 01 Nov 2021 03:48:29 -0700 (PDT)
+Received: from [10.40.1.223] ([81.30.35.201])
+        by smtp.gmail.com with ESMTPSA id hp3sm7010914ejc.61.2021.11.01.03.48.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Nov 2021 03:48:29 -0700 (PDT)
+Message-ID: <9ccd15b1-f751-5c05-cca0-bfccbb9d5b1f@redhat.com>
+Date:   Mon, 1 Nov 2021 11:48:28 +0100
 MIME-Version: 1.0
-References: <20211025094119.82967-1-hdegoede@redhat.com> <20211025094119.82967-9-hdegoede@redhat.com>
- <CAHp75VeLAW6ZBQYidnD7PDYfAH3A2bq+oMJTru-9OW_t-XS26g@mail.gmail.com>
- <8804fa29-d0d9-14a9-e48e-268113a79d07@redhat.com> <CAHp75VcdZV7NLEgQnEbsG951Mo2s_eRwfijgjSConXGF2SaSGA@mail.gmail.com>
-In-Reply-To: <CAHp75VcdZV7NLEgQnEbsG951Mo2s_eRwfijgjSConXGF2SaSGA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 1 Nov 2021 12:46:37 +0200
-Message-ID: <CAHp75Vd6CNkys7E3P_hKAoZ29hA2dpFEqzFWxrSkS8GbC_ivGw@mail.gmail.com>
-Subject: Re: [PATCH v4 08/11] platform/x86: int3472: Add get_sensor_adev_and_name()
- helper
-To:     Hans de Goede <hdegoede@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v4 08/11] platform/x86: int3472: Add
+ get_sensor_adev_and_name() helper
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@infradead.org>,
@@ -74,47 +80,88 @@ Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Kate Hsuan <hpa@redhat.com>,
         Linux Media Mailing List <linux-media@vger.kernel.org>,
         linux-clk <linux-clk@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20211025094119.82967-1-hdegoede@redhat.com>
+ <20211025094119.82967-9-hdegoede@redhat.com>
+ <CAHp75VeLAW6ZBQYidnD7PDYfAH3A2bq+oMJTru-9OW_t-XS26g@mail.gmail.com>
+ <8804fa29-d0d9-14a9-e48e-268113a79d07@redhat.com>
+ <CAHp75VcdZV7NLEgQnEbsG951Mo2s_eRwfijgjSConXGF2SaSGA@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAHp75VcdZV7NLEgQnEbsG951Mo2s_eRwfijgjSConXGF2SaSGA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 1, 2021 at 12:44 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
+Hi,
+
+On 11/1/21 11:44, Andy Shevchenko wrote:
 > On Mon, Nov 1, 2021 at 12:31 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> > On 10/25/21 13:31, Andy Shevchenko wrote:
-> > > On Mon, Oct 25, 2021 at 12:42 PM Hans de Goede <hdegoede@redhat.com> wrote:
-
-...
-
-> > >> +       if (ret == 0 && sensor_adev_ret)
-> > >> +               *sensor_adev_ret = sensor;
-> > >> +       else
-> > >> +               acpi_dev_put(sensor);
-> > >> +
-> > >> +       return ret;
-
-...
-
-> > >        if (sensor_adev_ret)
-> > >                *sensor_adev_ret = sensor;
-> > >
-> > >        return 0;
-> > >
-> > > ?
-> >
-> > That misses an acpi_dev_put(sensor) when sensor_adev_ret == NULL.
->
+>> On 10/25/21 13:31, Andy Shevchenko wrote:
+>>> On Mon, Oct 25, 2021 at 12:42 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> 
+> ...
+> 
+>>>> +int skl_int3472_get_sensor_adev_and_name(struct device *dev,
+>>>> +                                        struct acpi_device **sensor_adev_ret,
+>>>> +                                        const char **name_ret)
+>>>> +{
+>>>> +       struct acpi_device *adev = ACPI_COMPANION(dev);
+>>>> +       struct acpi_device *sensor;
+>>>> +       int ret = 0;
+>>>> +
+>>>> +       sensor = acpi_dev_get_first_consumer_dev(adev);
+>>>> +       if (!sensor) {
+>>>> +               dev_err(dev, "INT3472 seems to have no dependents.\n");
+>>>> +               return -ENODEV;
+>>>> +       }
+>>>> +
+>>>> +       *name_ret = devm_kasprintf(dev, GFP_KERNEL, I2C_DEV_NAME_FORMAT,
+>>>> +                                  acpi_dev_name(sensor));
+>>>> +       if (!*name_ret)
+>>>> +               ret = -ENOMEM;
+>>>> +
+>>>> +       if (ret == 0 && sensor_adev_ret)
+>>>> +               *sensor_adev_ret = sensor;
+>>>> +       else
+>>>> +               acpi_dev_put(sensor);
+>>>> +
+>>>> +       return ret;
+>>>
+>>> The error path is twisted a bit including far staying ret=0 assignment.
+>>>
+>>> Can it be
+>>>
+>>>        int ret;
+>>>        ...
+>>>        *name_ret = devm_kasprintf(dev, GFP_KERNEL, I2C_DEV_NAME_FORMAT,
+>>>                                   acpi_dev_name(sensor));
+>>>        if (!*name_ret) {
+>>>                acpi_dev_put(sensor);
+>>>                return -ENOMEM;
+>>>        }
+>>>
+>>>        if (sensor_adev_ret)
+>>>                *sensor_adev_ret = sensor;
+>>>
+>>>        return 0;
+>>>
+>>> ?
+>>
+>> That misses an acpi_dev_put(sensor) when sensor_adev_ret == NULL.
+> 
 > else
 >   acpi_dev_put(...);
->
-> ?
 
-Hmm... But then in the original code and with this proposal the
-acpi_dev_put() seems a bit strange to me.
-If we are fine (no error code returned) why would the caller (note
-_er_) go different paths?
+Then we have 2 acpi_dev_put() paths, IMHO the original code
+which clearly states that we keep the ref:
 
--- 
-With Best Regards,
-Andy Shevchenko
+if (success && returning-the-ref)
+
+and put the ref in all other cases is better then having
+2 separate put paths.
+
+Regards,
+
+Hans
+
