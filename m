@@ -2,88 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77DD24410AD
-	for <lists+linux-acpi@lfdr.de>; Sun, 31 Oct 2021 21:02:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E4F441194
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Nov 2021 01:11:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229946AbhJaUFH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 31 Oct 2021 16:05:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38032 "EHLO
+        id S230222AbhKAAOB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 31 Oct 2021 20:14:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbhJaUFG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 31 Oct 2021 16:05:06 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31D67C061570;
-        Sun, 31 Oct 2021 13:02:34 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id w1so3679568edd.10;
-        Sun, 31 Oct 2021 13:02:34 -0700 (PDT)
+        with ESMTP id S230309AbhKAAOA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 31 Oct 2021 20:14:00 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D4C6C061714
+        for <linux-acpi@vger.kernel.org>; Sun, 31 Oct 2021 17:11:27 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 188so26735162ljj.4
+        for <linux-acpi@vger.kernel.org>; Sun, 31 Oct 2021 17:11:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zfUaTO+JtpEhn8e4kj/WNJyyw6O24RYn0R5mAg+QdhM=;
-        b=j6yxrxbDE14KoLZW7mKUm9ai+b0gD2eNXHdKpe13a9Q1L9XfF1lf/SNxtTIiQ1mpeH
-         zzfPPYgAqNvB7eY54qFYk4ym006xjZlWOlfjDI1W1IThs35MT7BNn2oMvkUlJ73iBc8m
-         Iz6MHWPjpEozS6gyb6UfTrWAo3CyDVHWC2OLpKTDFruOaZpGMg+QyJq+WzgKOs3+MAti
-         ziZgcnJg+caLAPjNLmrfwwSTkkw1N7+eXuweRy9CVXh9XyMaT52UGPueaOCV9LMV6SP5
-         eNQZ1pH8od0FleHRKIlU+vxIiVVf89P46D1R5BRD4UPgjhEVSByFN8S3XVPwWqeojpps
-         /5KA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=sQl7t73aBkaEXHZnLco2JyiUledsuD6FoDpCBbsiJUE=;
+        b=jNvNXisexdk9y/ApRHhRVTIX8yFxFAAW/z8DTAKFq9DhWs4HIzGGgaXraNflPjSeGD
+         86SXz5hF+19Bl442ULhM89jSTi860Yc9qcddVlBbGgtRDDT/h7FHulqRN1kE+Y3Dwwop
+         H4BZoaPO2LunEs3O7SlQeeqz9LrHp+QtuxIoJ1lIEZsU5Dzsmeb3lz9PJ1s+d7ei01ow
+         RL4SwDGiisJLB9pdWKuuGho7FrYPp1OUOXZDr9MIkkX8s/zXkdo35xJ2YVxG3n7HE5cH
+         Tde3ubLmv8nHkWXrqg4EllyUtRWs7abw5QGS5zoT6/AAE/CzaWUbIqJonQRyGJDlF0kD
+         zkTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zfUaTO+JtpEhn8e4kj/WNJyyw6O24RYn0R5mAg+QdhM=;
-        b=lwznTYzpPypjSOwe0qbl6MRuZVO9V9JwEqauwfC1pJ1kcPNVvf12UFuMqTBCZBFwLt
-         HH1vmtK0nMYv2XtNyTXL1YajxvPuNoXUDAA3nrYbsOgqP0i2ZoukfD6EhHcBz7AtrYGT
-         0eY2bwxwgZ7pYLwiHUfyr7jKhhEs074uT9T6691oMT4cKdV2Sy/gaWbz5HpZGZU4z/PM
-         +6JSTPgczWYh0GdtPfEkC8ClyZrXy2NNtSl5mBqEy/924PkM5x9oqH/+08rYD8hWLCuk
-         80Y4IFCKDQ/Pmb8w01V9BULNRcY3onsu3yByzu+mV8CNaOXhQPn5u0X7v9MMf2YYBupq
-         Hqfw==
-X-Gm-Message-State: AOAM530ayWPM9j/WLg5zonxob3fPAN0sIMJYpLQ+LKKEk3M6AzCu1aL1
-        VHvee0ytLqq50EKtCIVU1ts9eTkKMQgDeI2dIF8=
-X-Google-Smtp-Source: ABdhPJwQcLdE22O0BD2/YnkE/eji2qmfxqA//Hdb2+Oq/NgFgzZ7imVt7Rxdj9HTRsd98Aq8oJdclTKupG7J+V1oe/M=
-X-Received: by 2002:a05:6402:10da:: with SMTP id p26mr34696434edu.283.1635710552671;
- Sun, 31 Oct 2021 13:02:32 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=sQl7t73aBkaEXHZnLco2JyiUledsuD6FoDpCBbsiJUE=;
+        b=QFHwUcLsryEr7Sl0wAX23ePls2E6g/Af0sRNRIAaE22ivsIkK3B6wH2emc1PT8jKdd
+         TfMR3b8Xd2+Zs/0MkH2hcIAOLeoWSnD8jgeKqCcCbC0Njt7ryk6iXFizYWoZN5L0wSV5
+         4043ZDQ8i0gRLbgwbwbMpJkZtMcI8BybRfzC5YzNGvjSyG+m1sNZLGAv1jUoFDVYj+bk
+         dQLQKk0XK8s4WD9tlvKhqzMMxHTvHmpK4OGIemgyb5mW0Fb8AnPjNV1wYc5arh5FI85d
+         h3RwIcPx+u03ao69vgSdYgg/yvF6hHMUBWAy388yht80a62anYh2Cicnoya/gXykFA+L
+         Gqvg==
+X-Gm-Message-State: AOAM531suIOfH3YoeCQkwm0AZwL6VuRNBMMDizHfmxyley3XKBNA5HFr
+        sqhLEJ02+1c7Ved1LssfMb9dMXuiVeQ/DGjIoBw=
+X-Google-Smtp-Source: ABdhPJystpmGOd0+CmgVXR3WAzx5hBNodas+2aEl/43K0sI49uAXYGjs2SDEFNe1khvnAm4xNIiM2grnvq6jZL+4TtA=
+X-Received: by 2002:a05:651c:905:: with SMTP id e5mr28055985ljq.238.1635725485903;
+ Sun, 31 Oct 2021 17:11:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211031162428.22368-1-hdegoede@redhat.com> <20211031162428.22368-4-hdegoede@redhat.com>
- <CAHp75Vf-EOfF_XfqfWFQZNLp3B03o79xHf4bUrf9x9D9pTrvgw@mail.gmail.com>
-In-Reply-To: <CAHp75Vf-EOfF_XfqfWFQZNLp3B03o79xHf4bUrf9x9D9pTrvgw@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 31 Oct 2021 22:01:56 +0200
-Message-ID: <CAHp75Ve-WAQM0aLbhRzyT5KQ-tej17=nczNSY9hG5zXztmRVWQ@mail.gmail.com>
-Subject: Re: [RFC 3/5] gpiolib: acpi: Add a new "ignore" module option
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Yauhen Kharuzhy <jekhor@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
+Received: by 2002:a05:6512:e90:0:0:0:0 with HTTP; Sun, 31 Oct 2021 17:11:25
+ -0700 (PDT)
+Reply-To: salemchantal@mail.ee
+From:   MRS Salem Chantal Rowland <maitrenorbertenochdabire@gmail.com>
+Date:   Sun, 31 Oct 2021 17:11:25 -0700
+Message-ID: <CAGakO-QstH6Cb8W4gKXnuDyZRrkiY4DBFsTgBO21NXfVNC5FVQ@mail.gmail.com>
+Subject: Hello Dear Friend
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Oct 31, 2021 at 9:59 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Sun, Oct 31, 2021 at 6:25 PM Hans de Goede <hdegoede@redhat.com> wrote:
+Attention
 
-> I'm wondering if the idea behind this is something relative to
-> https://elixir.bootlin.com/linux/latest/source/drivers/acpi/sysfs.c
+You have been compensated with the sum of 4.6 million dollars in this
+United Nation the payment will be issue into Atm Visa Card and send to you
+from the Bank we need your Address Passport and your whatsapp number
 
-Missed line:
-https://elixir.bootlin.com/linux/latest/source/drivers/acpi/sysfs.c#L792
+Contact this Email address for more Details (salemchantal@mail.ee)
 
--- 
-With Best Regards,
-Andy Shevchenko
+THANKS
+MRS Salem Chantal Lawrence
