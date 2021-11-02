@@ -2,105 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F086C4434C2
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Nov 2021 18:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C4A24434F5
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Nov 2021 18:58:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234785AbhKBRrB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Nov 2021 13:47:01 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4052 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234734AbhKBRrA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Nov 2021 13:47:00 -0400
-Received: from fraeml734-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HkHHw2w6Sz67Q4R;
-        Wed,  3 Nov 2021 01:41:00 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml734-chm.china.huawei.com (10.206.15.215) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Tue, 2 Nov 2021 18:44:23 +0100
-Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Tue, 2 Nov
- 2021 17:44:22 +0000
-Date:   Tue, 2 Nov 2021 17:44:21 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Dan Williams <dan.j.williams@intel.com>
-CC:     Rafael J Wysocki <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Alison Schofield <alison.schofield@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        <linux-cxl@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 0/6] Introduce acpi_table_parse_cedt and extra nodes for
- CXL.mem
-Message-ID: <20211102174421.00002ae4@Huawei.com>
-In-Reply-To: <CAPcyv4g_c1mF6WvsMHC7-US7YybSprk=GX6cFWjoGOVa+yLx9g@mail.gmail.com>
-References: <163553708697.2509508.16523059414830959692.stgit@dwillia2-desk3.amr.corp.intel.com>
-        <20211101120055.00007383@Huawei.com>
-        <CAPcyv4g_c1mF6WvsMHC7-US7YybSprk=GX6cFWjoGOVa+yLx9g@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S234565AbhKBSBA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Nov 2021 14:01:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:33970 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232856AbhKBSA7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Nov 2021 14:00:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1635875904;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7YWae8/c2+VpFHCahTyZSU56P7dkdlZsynEUAcRXcs8=;
+        b=ZVbjTcup6pAj8VBBfFl0FjtHiVn+I/t/c/yHtig1wMhUPjoFOcN9WEJ1e+n5Gz6P5Zn+VS
+        Fo9zkVdhigZEf+gggkLQFqK/UlmKiR1hs1tu6UoDen7a8CqHP/REZ8J6Dkoyc6hnob9vw9
+        mhXC14y0mgLT+B54w88jEewCjM/kIdQ=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-263-q5-xSsJkPfGZ9XYmjsn5DQ-1; Tue, 02 Nov 2021 13:58:23 -0400
+X-MC-Unique: q5-xSsJkPfGZ9XYmjsn5DQ-1
+Received: by mail-ed1-f72.google.com with SMTP id g3-20020a056402424300b003e2981e1edbso149759edb.3
+        for <linux-acpi@vger.kernel.org>; Tue, 02 Nov 2021 10:58:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=7YWae8/c2+VpFHCahTyZSU56P7dkdlZsynEUAcRXcs8=;
+        b=w1vbQ9eQmKcdtGDuOrwt3w7iK0eZWMtlZ54lNL5KVsSbVt/Bqjmeim5kbTstYN1pkx
+         eFzi6Q0kGLirizlh5oRkNjkcroL6VeeP9TK/DRUzlgkQxshV45rcojx7cwjvxXVfUEhI
+         nh/wytSwsULefOcsCZLNFG7IxZ4vIzdxoyZ4T46hur8Nwcrp+lvzzCOWCnhkEoW9dGq9
+         mRdBG2th75EUwG74aeTwpm9XRRGb5q0BocXRG0qAmTecND1XBfEQgTkOR1Y77H9npRmD
+         /AX+W8+GFaXGZBkvrMZitpLdk6z8QY9ixXMXcPd2QadLe/TS6OIT1KNt2OFqn5WUb53G
+         g9Zw==
+X-Gm-Message-State: AOAM533kUdivp6yLKA07S5H6+u+8riiEDJDtdGNCiGTF7bIAnIpHIPEh
+        YIPpnvbbJx5qSiyVGKJwrhbwWdCVnM3msFvomoSLlq1bEOw1LW0P4arqLBXsd6zLuMDAEkuMUCE
+        Y3us2rZwrFQg+BmgZOd2urQ==
+X-Received: by 2002:a05:6402:1c95:: with SMTP id cy21mr30982355edb.320.1635875901804;
+        Tue, 02 Nov 2021 10:58:21 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx4LRnCc2ywjCJCkzUey0AE4rRRgjUs3hTJutR2Ki1XGzhFVxd5OwCRFJa/mVZ/uC9LuY+1xw==
+X-Received: by 2002:a05:6402:1c95:: with SMTP id cy21mr30982339edb.320.1635875901562;
+        Tue, 02 Nov 2021 10:58:21 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id f7sm11107373edl.33.2021.11.02.10.58.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Nov 2021 10:58:21 -0700 (PDT)
+Message-ID: <b5548052-11c8-d34e-9851-ad64d9032267@redhat.com>
+Date:   Tue, 2 Nov 2021 18:58:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2] power: supply: bq27xxx: Fix kernel crash on IRQ
+ handler register error
+Content-Language: en-US
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "Andrew F . Davis" <afd@ti.com>
+References: <20211031152522.3911-1-hdegoede@redhat.com>
+ <CAHp75Vc6GO4e0_Qp6HfFtd_kbSakaMXsQN4oEPArdmMrxTFb7A@mail.gmail.com>
+ <20211102132352.yqazgy2njnbthujb@earth.universe>
+ <e74947c4-74c8-a17e-f4cb-752a79851954@redhat.com>
+ <20211102164117.pnbpvephlh4wgrwb@earth.universe>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20211102164117.pnbpvephlh4wgrwb@earth.universe>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.41]
-X-ClientProxiedBy: lhreml751-chm.china.huawei.com (10.201.108.201) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 1 Nov 2021 20:41:34 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
+Hi,
 
-> On Mon, Nov 1, 2021 at 5:01 AM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > On Fri, 29 Oct 2021 12:51:27 -0700
-> > Dan Williams <dan.j.williams@intel.com> wrote:
-> >  
-> > > Hi Rafael,
-> > >
-> > > While reviewing "[PATCH v3] ACPI: NUMA: Add a node and memblk for each
-> > > CFMWS not in SRAT" [1]. I noticed that it was open coding CEDT sub-table
-> > > parsing in a similar fashion as drivers/cxl/acpi.c. The driver open
-> > > coded the parsing because the ACPI sub-table helpers are marked __init.
-> > > In order to avoid the ongoing maintenance burden of a split between
-> > > "early" and "late" ACPI sub-table parsing this series proposes to make
-> > > those helpers available to drivers.
-> > >
-> > > The savings in drivers/cxl/ are:
-> > >
-> > >  drivers/cxl/Kconfig |    1
-> > >  drivers/cxl/acpi.c  |  234 +++++++++++++++++++--------------------------------
-> > >  2 files changed, 88 insertions(+), 147 deletions(-)
-> > >
-> > > ...and 15 lines new code not added are saved in this new version of
-> > > "ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT".
-> > >
-> > > Let me know if this looks ok to you and I can carry it in the CXL tree
-> > > (i.e. after the merge window, for v5.17 consideration).
-> > >
-> > > [1]: https://lore.kernel.org/r/20211019050908.449231-1-alison.schofield@intel.com  
-> >
-> > Is it worth the complexity of the __init_or_acpilib and export part?
-> > Seems like a fiddly dance for what looks to be minor savings...  
+On 11/2/21 17:41, Sebastian Reichel wrote:
+> Hi Hans,
 > 
-> It follows the __initdata_or_meminfo precedent that identifies data
-> that is normally __init unless a specific driver needs it. The lesson
-> from the tinyconfig effort was that image size dies a death of many
-> cuts unless care is taken to preserve minor savings. Yes, it's likely
-> trivial in this case, but it's at least a gesture to avoid bloating
-> the kernel image size unnecessarily when the kernel has gotten by so
-> long with this infrastructure being purely __init.
+> On Tue, Nov 02, 2021 at 03:12:51PM +0100, Hans de Goede wrote:
+>> Hi Sebastian,
+>>
+>> On 11/2/21 14:23, Sebastian Reichel wrote:
+>>> Hi,
+>>>
+>>> On Sun, Oct 31, 2021 at 09:34:46PM +0200, Andy Shevchenko wrote:
+>>>> On Sun, Oct 31, 2021 at 5:25 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>>>
+>>>>> When registering the IRQ handler fails, do not just return the error code,
+>>>>> this will free the devm_kzalloc()-ed data struct while leaving the queued
+>>>>> work queued and the registered power_supply registered with both of them
+>>>>> now pointing to free-ed memory, resulting in various kernel crashes
+>>>>> soon afterwards.
+>>>>>
+>>>>> Instead properly tear-down things on IRQ handler register errors.
+>>>>
+>>>> FWIW,
+>>>> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>>>
+>>> Thanks, queued.
+>>
+>> Thank you, note these 2 patches (for the bq25980 driver) are also
+>> pure bug-fixes, I posted them as part of a larger series, but
+>> in hindsight I should have probably posted them separately:
+>>
+>> https://lore.kernel.org/platform-driver-x86/20211030182813.116672-4-hdegoede@redhat.com/
+>> https://lore.kernel.org/platform-driver-x86/20211030182813.116672-5-hdegoede@redhat.com/
+>>
+>> It would be good if you can pick these 2 up too
+>> (I'll respin the rest of the series to address various
+>> review comments without them then).
+>> Let me know if you want me to resend these 2 as a stand alone
+>> series.
+> 
+> Thanks for the pointer, I queued both of them. I had to slightly
+> rebase, since your base did not include 172d0ccea55c. I have not
+> yet reviewed the remaining patchset, but considering there are more
+> patches to bq25890 a rebase would be ncie.
 
-I'm in favor avoiding bloat, but this is ACPI code so rarely very small machines
-and very like that all distros will turn it on anyway on basis they will want
-to support CXL (hopefully!)
+Ack, I'll rebase for the next version of that series.
 
-I guess let's see what Rafael's opinion is.  I don't feel that strongly about
-it if general view is that it is worth the small amount of complexity.
+Regards,
 
-Jonathan
+Hans
 
