@@ -2,273 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 933EE443841
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Nov 2021 23:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D87B44389E
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Nov 2021 23:40:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229525AbhKBWLX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Nov 2021 18:11:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35322 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231272AbhKBWLW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Nov 2021 18:11:22 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 187AFC06120B
-        for <linux-acpi@vger.kernel.org>; Tue,  2 Nov 2021 15:08:47 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id b12so673182wrh.4
-        for <linux-acpi@vger.kernel.org>; Tue, 02 Nov 2021 15:08:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kresin-me.20210112.gappssmtp.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=QQtsdMBTYCrx4ZIdrwpM406mJ59MqUemBaN1hkUC/SQ=;
-        b=h9YP238PcOXtz7wky3z+3DTOyYTZQKzPCN3N5rN6iMGWmpLjFBznmW5wgRIS+2TjeQ
-         wQ5PhXn+DvfpDYtJv2K/uuSP3Tv8Pq2ATyXDGohJxl4mSFtTY0LrzW7flJhSSHAn6NRY
-         5TfHOQn5gFnsWo7Jlts1+IDVQMXHnS5XeUwKE8s3il7yzbYuWybDbf9W4zAMB22MBYct
-         P+B4+iDUJV7sZ7izhB+3TCcnq63zyjih0gAgbcCjiq+SETdmD5g+mzDXhdA5259AtLLZ
-         3KLhBJL3bljuqYlr93ryn1B/4kD7ZDfYC9Mm/FF9GkCSZqs8IlnivToAq0GXT3l8C/ZT
-         /IBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=QQtsdMBTYCrx4ZIdrwpM406mJ59MqUemBaN1hkUC/SQ=;
-        b=lucQbHpIGkLD15wbON1UEpf2kzWZ0/Hv695KnQNoNXukHqyU/mfSP+s/5qA+oTehka
-         loB2F96/SGVhPvdVEpde+FSUHxv0XOOjMO70jBk3SvBeF/r87X/fNz8myE3Fhb0Za52r
-         lvOn9G2Qeg9I8Uvy4McYM76PuzgSec6oY8RGnSEo+g64IJiopLRy2A5JOaFaU/bg8W2n
-         fcSRgWya3v0EF7bZZrDf1lseeNKFbsv1YAK4bH/IjGFfNeOfI2f4/0UCl4SABmvKoRxS
-         S7PA+kFf0MWv/slAIRHiVAOTXkDKFtD07ZPIpzFigrNIYA+F19XGBgfeLJS0iSHCRPmb
-         RC8Q==
-X-Gm-Message-State: AOAM533hmMnSG9NItcT+aTeCfecQdVD8unOjhWw/OV+iUYRQ8j0+qyws
-        WsYyghKDjUU9zbVgjnKsJFs/nQ==
-X-Google-Smtp-Source: ABdhPJxUvC2/L/kChoDWTaNu+8S1bSxZ9jfOV9n1fXrshS6RY3O71hlhviL+BXHtA7AQ41UCBSrEHA==
-X-Received: by 2002:adf:f209:: with SMTP id p9mr47842973wro.191.1635890924929;
-        Tue, 02 Nov 2021 15:08:44 -0700 (PDT)
-Received: from ?IPv6:2003:ec:2f1f:8200:b487:4c63:5540:3502? (p200300ec2f1f8200b4874c6355403502.dip0.t-ipconnect.de. [2003:ec:2f1f:8200:b487:4c63:5540:3502])
-        by smtp.gmail.com with ESMTPSA id g3sm285760wri.45.2021.11.02.15.08.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Nov 2021 15:08:44 -0700 (PDT)
-Subject: Re: [RFC net-next/wireless-next v1 2/2] ath10k: move
- device_get_mac_address() and pass errors up the chain
-To:     Christian Lamparter <chunkeey@gmail.com>, netdev@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org
-Cc:     Ansuel Smith <ansuelsmth@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>, Michael Walle <michael@walle.cc>,
-        Arnd Bergmann <arnd@arndb.de>
-References: <20211030174111.1432663-1-chunkeey@gmail.com>
- <20211030174111.1432663-2-chunkeey@gmail.com>
-From:   Mathias Kresin <dev@kresin.me>
-Message-ID: <2caec4e0-94f4-915c-60d1-c78e7bdc5364@kresin.me>
-Date:   Tue, 2 Nov 2021 23:08:43 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S230155AbhKBWmp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Nov 2021 18:42:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:58148 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229844AbhKBWmp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Nov 2021 18:42:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1635892809;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=370zfpGuUR/QYlFDjZLZ/oiv1jiwAesX/9g3hqhjOWQ=;
+        b=bp3AY5+ni7F6SwN8dMK1A8N+n+Jbt/UbvZm8AglVrMJbQ3wgfVqpyBkohsONXtARNgBn1E
+        s9XWbl4NZkXaE/sMDCdumghiNTzCVroSqIL51NAd9Uw+SgY0wQDkiD24gz0XEAiXhHNg/g
+        fe2xEAQZNi1myGd/esiNCPZoLsSZeV8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-414-ljJlO3FTMM6OqP6-4iJRIQ-1; Tue, 02 Nov 2021 18:40:05 -0400
+X-MC-Unique: ljJlO3FTMM6OqP6-4iJRIQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4C035BBEE3;
+        Tue,  2 Nov 2021 22:40:03 +0000 (UTC)
+Received: from x1.localdomain (unknown [10.39.192.24])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9B04960C05;
+        Tue,  2 Nov 2021 22:40:00 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Sebastian Reichel <sre@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [RFC v2 0/2] ACPI/power-suppy add fuel-gauge support on cht-wc PMIC without USB-PD support devs
+Date:   Tue,  2 Nov 2021 23:39:57 +0100
+Message-Id: <20211102223959.3873-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20211030174111.1432663-2-chunkeey@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: de-DE
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hey Christian,
+Hi All,
 
-just a drive-by comment inline.
+Here is a new RFC to add battery monitoring support on the Xiaomi Mi Pad 2
+this implements option 2 of the different options which I gave in v1:
+https://lore.kernel.org/platform-driver-x86/20211031162428.22368-1-hdegoede@redhat.com/
 
-Mathias
+To solve the challenges of getting this to work on this device, as
+you can see compared to option 1, the first patch has gone from
+adding 3 separate quirks to adding only one; and the 2 gpiolib-acpi
+and 2 bq27xxx_battery driver patches are now no longer necessary.
 
-10/30/21 7:41 PM, Christian Lamparter:
-> device_get_mac_address() can now return -EPROBE_DEFER.
-> This has to be passed back to the device subsystem so
-> the driver will be probed again at a later time.
-> 
-> This was somewhat involved because the best place for this
-> seemed in ath10k_core_create() right after allocation.
-> Thing is that ath10k_core_create() was setup to either
-> return a valid ath10k* instance, or NULL. So each ath10k
-> implementation has to be modified to account for ERR_PTR.
-> 
-> This introduces a new side-effect: the returned error codes
-> from ath10k_core_create() will now be passed along. It's no
-> longer just -ENOMEM.
-> 
-> Note: If device_get_mac_address() didn't get a valid MAC from
-> either the DT/ACPI, nvmem, etc... the driver will just generate
-> random MAC (same as it did before).
-> 
-> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-> ---
-> @Kalle from what I can tell, this is how nvmem-mac could be
-> done with the existing device_get_mac_address() - at a
-> different place. The reason for the move was that -EPROBE_DEFER
-> needs to be returned by the pci/usb/snoc/ahb _probe functions().
-> This wasn't possible in the old location. As ath10k deferres
-> the "bring-up" process into a workqueue task which can't return
-> any errors (it just printk/dev_err them at the end).
-> Also, When I was asking around about this. The common consensus was
-> to just post it and see. This is based on net-next + wireless-testing
-> 
->   drivers/net/wireless/ath/ath10k/ahb.c  |  8 +++++---
->   drivers/net/wireless/ath/ath10k/core.c | 14 ++++++++------
->   drivers/net/wireless/ath/ath10k/pci.c  |  8 +++++---
->   drivers/net/wireless/ath/ath10k/sdio.c |  8 +++++---
->   drivers/net/wireless/ath/ath10k/snoc.c |  8 +++++---
->   drivers/net/wireless/ath/ath10k/usb.c  |  8 +++++---
->   6 files changed, 33 insertions(+), 21 deletions(-)
-> 
->   
-> 
-> diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
-> index ab8f77ae5e66..ad282a06b376 100644
-> --- a/drivers/net/wireless/ath/ath10k/ahb.c
-> +++ b/drivers/net/wireless/ath/ath10k/ahb.c
-> @@ -745,9 +745,11 @@ static int ath10k_ahb_probe(struct platform_device *pdev)
->   	size = sizeof(*ar_pci) + sizeof(*ar_ahb);
->   	ar = ath10k_core_create(size, &pdev->dev, ATH10K_BUS_AHB,
->   				hw_rev, &ath10k_ahb_hif_ops);
-> -	if (!ar) {
-> -		dev_err(&pdev->dev, "failed to allocate core\n");
-> -		return -ENOMEM;
-> +	if (IS_ERR(ar)) {
-> +		ret = PTR_ERR(ar);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&pdev->dev, "failed to allocate core: %d\n", ret);
+These are now all 4 replaced by a new special xiaomi-mipad2 module
+under drivers/platform/x86 which uses a DMI modalias to autoload
+and thus will only be auto-loaded on the actual Mi Pad 2.
 
-There's a helper for that: dev_err_probe().
+I like this option much better then the previous option, but this
+still a RFC for now, since I would like to also see what is necessary
+to get everything PMIC / micro-USB connector related to work on the
+Yoga Book YB1-X91L which is on its way to me.
 
-> +		return ret;
->   	}
->   
->   	ath10k_dbg(ar, ATH10K_DBG_BOOT, "ahb probe\n");
-> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-> index 72a366aa9f60..85d2e8143101 100644
-> --- a/drivers/net/wireless/ath/ath10k/core.c
-> +++ b/drivers/net/wireless/ath/ath10k/core.c
-> @@ -3291,8 +3291,6 @@ static int ath10k_core_probe_fw(struct ath10k *ar)
->   		ath10k_debug_print_board_info(ar);
->   	}
->   
-> -	device_get_mac_address(ar->dev, ar->mac_addr);
-> -
->   	ret = ath10k_core_init_firmware_features(ar);
->   	if (ret) {
->   		ath10k_err(ar, "fatal problem with firmware features: %d\n",
-> @@ -3451,11 +3449,11 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
->   				  const struct ath10k_hif_ops *hif_ops)
->   {
->   	struct ath10k *ar;
-> -	int ret;
-> +	int ret = -ENOMEM;
->   
->   	ar = ath10k_mac_create(priv_size);
->   	if (!ar)
-> -		return NULL;
-> +		goto err_out;
->   
->   	ar->ath_common.priv = ar;
->   	ar->ath_common.hw = ar->hw;
-> @@ -3464,6 +3462,10 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
->   	ar->hif.ops = hif_ops;
->   	ar->hif.bus = bus;
->   
-> +	ret = device_get_mac_address(dev, ar->mac_addr);
-> +	if (ret == -EPROBE_DEFER)
-> +		goto err_free_mac;
-> +
->   	switch (hw_rev) {
->   	case ATH10K_HW_QCA988X:
->   	case ATH10K_HW_QCA9887:
-> @@ -3580,8 +3582,8 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
->   	destroy_workqueue(ar->workqueue);
->   err_free_mac:
->   	ath10k_mac_destroy(ar);
-> -
-> -	return NULL;
-> +err_out:
-> +	return ERR_PTR(ret);
->   }
->   EXPORT_SYMBOL(ath10k_core_create);
->   
-> diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-> index 4d4e2f91e15c..f4736148a382 100644
-> --- a/drivers/net/wireless/ath/ath10k/pci.c
-> +++ b/drivers/net/wireless/ath/ath10k/pci.c
-> @@ -3602,9 +3602,11 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
->   
->   	ar = ath10k_core_create(sizeof(*ar_pci), &pdev->dev, ATH10K_BUS_PCI,
->   				hw_rev, &ath10k_pci_hif_ops);
-> -	if (!ar) {
-> -		dev_err(&pdev->dev, "failed to allocate core\n");
-> -		return -ENOMEM;
-> +	if (IS_ERR(ar)) {
-> +		ret = PTR_ERR(ar);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&pdev->dev, "failed to allocate core: %d\n", ret);
-> +		return ret;
->   	}
->   
->   	ath10k_dbg(ar, ATH10K_DBG_BOOT, "pci probe %04x:%04x %04x:%04x\n",
-> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-> index 63e1c2d783c5..87941e047d07 100644
-> --- a/drivers/net/wireless/ath/ath10k/sdio.c
-> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
-> @@ -2526,9 +2526,11 @@ static int ath10k_sdio_probe(struct sdio_func *func,
->   
->   	ar = ath10k_core_create(sizeof(*ar_sdio), &func->dev, ATH10K_BUS_SDIO,
->   				hw_rev, &ath10k_sdio_hif_ops);
-> -	if (!ar) {
-> -		dev_err(&func->dev, "failed to allocate core\n");
-> -		return -ENOMEM;
-> +	if (IS_ERR(ar)) {
-> +		ret = PTR_ERR(ar);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&func->dev, "failed to allocate core: %d\n", ret);
-> +		return ret;
->   	}
->   
->   	netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_sdio_napi_poll,
-> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-> index 9513ab696fff..b9ac89e226a2 100644
-> --- a/drivers/net/wireless/ath/ath10k/snoc.c
-> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
-> @@ -1728,9 +1728,11 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
->   
->   	ar = ath10k_core_create(sizeof(*ar_snoc), dev, ATH10K_BUS_SNOC,
->   				drv_data->hw_rev, &ath10k_snoc_hif_ops);
-> -	if (!ar) {
-> -		dev_err(dev, "failed to allocate core\n");
-> -		return -ENOMEM;
-> +	if (IS_ERR(ar)) {
-> +		ret = PTR_ERR(ar);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(dev, "failed to allocate core: %d\n", ret);
-> +		return ret;
->   	}
->   
->   	ar_snoc = ath10k_snoc_priv(ar);
-> diff --git a/drivers/net/wireless/ath/ath10k/usb.c b/drivers/net/wireless/ath/ath10k/usb.c
-> index 3d98f19c6ec8..d6dc830a6fa8 100644
-> --- a/drivers/net/wireless/ath/ath10k/usb.c
-> +++ b/drivers/net/wireless/ath/ath10k/usb.c
-> @@ -987,9 +987,11 @@ static int ath10k_usb_probe(struct usb_interface *interface,
->   
->   	ar = ath10k_core_create(sizeof(*ar_usb), &dev->dev, ATH10K_BUS_USB,
->   				hw_rev, &ath10k_usb_hif_ops);
-> -	if (!ar) {
-> -		dev_err(&dev->dev, "failed to allocate core\n");
-> -		return -ENOMEM;
-> +	if (IS_ERR(ar)) {
-> +		ret = PTR_ERR(ar);
-> +		if (ret != -EPROBE_DEFER)
-> +			dev_err(&dev->dev, "failed to allocate core: %d\n", ret);
-> +		return ret;
->   	}
->   
->   	usb_get_dev(dev);
-> 
+Regards,
+
+Hans
+
+
+p.s.
+
+While working on this I realized that there also is a 4th option,
+which is basically option 1 from the v1 RFC minus the 2 gpiolib-acpi
+patches.
+
+With the 2nd option (as implemented by this RFC) we leave the
+_AEI handler in place and run the fuel-gauge without interrupt,
+we can do the same when marking the fuel-gauge as always present
+by treating IRQs on ACPI devices the same way as in the
+max17042_battery code, which has already solved the IRQ problem
+without disabling the _AEI handler:
+
+		/*
+		 * On ACPI systems the IRQ may be handled by ACPI-event code,
+		 * so we need to share (if the ACPI code is willing to share).
+		 */
+		if (acpi_id)
+			flags |= IRQF_SHARED | IRQF_PROBE_SHARED;
+
+This is a pretty decent option too, it requires:
+
+1. 2 more always_present quirks in the ACPI scan code which is part of
+the main kernel image.
+
+2. Patches to the bq27xxx_battery code to support ACPI enumeration.
+
+
+
+
+Hans de Goede (2):
+  ACPI / x86: Add PWM2 on the Xiaomi Mi Pad 2 to the always_present list
+  platform/x86: xiaomi-mipad2: New driver for Xiaomi Mi Pad 2 tablets
+
+ drivers/acpi/x86/utils.c             |   5 ++
+ drivers/platform/x86/Kconfig         |  13 +++
+ drivers/platform/x86/Makefile        |   1 +
+ drivers/platform/x86/xiaomi-mipad2.c | 126 +++++++++++++++++++++++++++
+ 4 files changed, 145 insertions(+)
+ create mode 100644 drivers/platform/x86/xiaomi-mipad2.c
+
+-- 
+2.31.1
 
