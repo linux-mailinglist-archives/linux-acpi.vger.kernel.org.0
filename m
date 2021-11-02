@@ -2,148 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D42F1442B08
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Nov 2021 10:51:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDBC0442F0E
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Nov 2021 14:23:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231928AbhKBJxk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Nov 2021 05:53:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:59608 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231931AbhKBJwj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Nov 2021 05:52:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1635846604;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=GHf1L78zlZbVcgZS57yJJ9tbV6/S/WZ37eDXpQxC7vo=;
-        b=iHOG+lRxOsE+ouLi2P/Kgn6oJQaBX3uSPhBsWTgZJrO0J49qTr2SXcjRTEWQUz7JdWtN7k
-        +Ew/zu57fj54IYmHs/lLqTCUTkkcLQkUb+cwE/5kGBixJLyzQ8O8Qa1Qkq29YrdyZzTvmA
-        g8Og8iyeLx2UZkgA3XYmsBn9Apwq+Rw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-315-ZYvtjyyONiGASnkvrZ7oyw-1; Tue, 02 Nov 2021 05:50:01 -0400
-X-MC-Unique: ZYvtjyyONiGASnkvrZ7oyw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D42FD1927800;
-        Tue,  2 Nov 2021 09:49:58 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.195.91])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0D2E65D9DC;
-        Tue,  2 Nov 2021 09:49:54 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: [PATCH v5 11/11] platform/x86: int3472: Deal with probe ordering issues
-Date:   Tue,  2 Nov 2021 10:49:07 +0100
-Message-Id: <20211102094907.31271-12-hdegoede@redhat.com>
-In-Reply-To: <20211102094907.31271-1-hdegoede@redhat.com>
-References: <20211102094907.31271-1-hdegoede@redhat.com>
+        id S231176AbhKBN0b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Nov 2021 09:26:31 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:60606 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229924AbhKBN0a (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Nov 2021 09:26:30 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id ABD4F1F44A21
+Received: by earth.universe (Postfix, from userid 1000)
+        id 1C9313C0F95; Tue,  2 Nov 2021 14:23:52 +0100 (CET)
+Date:   Tue, 2 Nov 2021 14:23:52 +0100
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "Andrew F . Davis" <afd@ti.com>
+Subject: Re: [PATCH v2] power: supply: bq27xxx: Fix kernel crash on IRQ
+ handler register error
+Message-ID: <20211102132352.yqazgy2njnbthujb@earth.universe>
+References: <20211031152522.3911-1-hdegoede@redhat.com>
+ <CAHp75Vc6GO4e0_Qp6HfFtd_kbSakaMXsQN4oEPArdmMrxTFb7A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="exju7zrkmgu2clvz"
+Content-Disposition: inline
+In-Reply-To: <CAHp75Vc6GO4e0_Qp6HfFtd_kbSakaMXsQN4oEPArdmMrxTFb7A@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The clk and regulator frameworks expect clk/regulator consumer-devices
-to have info about the consumed clks/regulators described in the device's
-fw_node.
 
-To work around this info missing from the ACPI tables on devices where
-the int3472 driver is used, the int3472 MFD-cell drivers attach info about
-consumers to the clks/regulators when registering these.
+--exju7zrkmgu2clvz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This causes problems with the probe ordering wrt drivers for consumers
-of these clks/regulators. Since the lookups are only registered when the
-provider-driver binds, trying to get these clks/regulators before then
-results in a -ENOENT error for clks and a dummy regulator for regulators.
+Hi,
 
-All the sensor ACPI fw-nodes have a _DEP dependency on the INT3472 ACPI
-fw-node, so to work around these probe ordering issues the ACPI core /
-i2c-code does not instantiate the I2C-clients for any ACPI devices
-which have a _DEP dependency on an INT3472 ACPI device until all
-_DEP-s are met.
+On Sun, Oct 31, 2021 at 09:34:46PM +0200, Andy Shevchenko wrote:
+> On Sun, Oct 31, 2021 at 5:25 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> >
+> > When registering the IRQ handler fails, do not just return the error co=
+de,
+> > this will free the devm_kzalloc()-ed data struct while leaving the queu=
+ed
+> > work queued and the registered power_supply registered with both of them
+> > now pointing to free-ed memory, resulting in various kernel crashes
+> > soon afterwards.
+> >
+> > Instead properly tear-down things on IRQ handler register errors.
+>=20
+> FWIW,
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-This relies on acpi_dev_clear_dependencies() getting called by the driver
-for the _DEP-s when they are ready, add a acpi_dev_clear_dependencies()
-call to the discrete.c probe code.
+Thanks, queued.
 
-In the tps68470 case calling acpi_dev_clear_dependencies() is already done
-by the acpi_gpiochip_add() call done by the driver for the GPIO MFD cell
-(The GPIO cell is deliberately the last cell created to make sure the
-clk + regulator cells are already instantiated when this happens).
+-- Sebastian
 
-However for proper probe ordering, the clk/regulator cells must not just
-be instantiated the must be fully ready (the clks + regulators must be
-registered with their subsystems).
+> > Fixes: 703df6c09795 ("power: bq27xxx_battery: Reorganize I2C into a mod=
+ule")
+> > Cc: Andrew F. Davis <afd@ti.com>
+> > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> > ---
+> > Changes in v2:
+> > - Fix devm_kzalloc()-ed type in the commit message
+> > ---
+> >  drivers/power/supply/bq27xxx_battery_i2c.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power=
+/supply/bq27xxx_battery_i2c.c
+> > index 46f078350fd3..cf38cbfe13e9 100644
+> > --- a/drivers/power/supply/bq27xxx_battery_i2c.c
+> > +++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+> > @@ -187,7 +187,8 @@ static int bq27xxx_battery_i2c_probe(struct i2c_cli=
+ent *client,
+> >                         dev_err(&client->dev,
+> >                                 "Unable to register IRQ %d error %d\n",
+> >                                 client->irq, ret);
+> > -                       return ret;
+> > +                       bq27xxx_battery_teardown(di);
+> > +                       goto err_failed;
+> >                 }
+> >         }
+> >
+> > --
+> > 2.31.1
+> >
+>=20
+>=20
+> --=20
+> With Best Regards,
+> Andy Shevchenko
 
-Add MODULE_SOFTDEP dependencies for the clk and regulator drivers for
-the instantiated MFD-cells so that these are loaded before us and so
-that they bind immediately when the platform-devs are instantiated.
+--exju7zrkmgu2clvz
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
-- Only call acpi_dev_clear_dependencies() in the discrete.c case, for the
-  tps68470 case this is already done by the acpi_gpiochip_add() for the
-  GPIO MFD cell.
----
- drivers/platform/x86/intel/int3472/discrete.c | 1 +
- drivers/platform/x86/intel/int3472/tps68470.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
-index ff2bdbb8722c..5b514fa01a97 100644
---- a/drivers/platform/x86/intel/int3472/discrete.c
-+++ b/drivers/platform/x86/intel/int3472/discrete.c
-@@ -380,6 +380,7 @@ static int skl_int3472_discrete_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	acpi_dev_clear_dependencies(adev);
- 	return 0;
- }
- 
-diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
-index 49eea7bb98c1..5232dbcd8212 100644
---- a/drivers/platform/x86/intel/int3472/tps68470.c
-+++ b/drivers/platform/x86/intel/int3472/tps68470.c
-@@ -177,6 +177,11 @@ static int skl_int3472_tps68470_probe(struct i2c_client *client)
- 		return device_type;
- 	}
- 
-+	/*
-+	 * No acpi_dev_clear_dependencies() here, since the acpi_gpiochip_add()
-+	 * for the GPIO cell already does this.
-+	 */
-+
- 	return ret;
- }
- 
-@@ -210,3 +215,4 @@ module_i2c_driver(int3472_tps68470);
- MODULE_DESCRIPTION("Intel SkyLake INT3472 ACPI TPS68470 Device Driver");
- MODULE_AUTHOR("Daniel Scally <djrscally@gmail.com>");
- MODULE_LICENSE("GPL v2");
-+MODULE_SOFTDEP("pre: clk-tps68470 tps68470-regulator");
--- 
-2.31.1
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmGBO+EACgkQ2O7X88g7
++ppmxhAAil5Wgix3gYlBueXhIOuA/ZHpHFxnUZZQHnDlN6n+z3AZMj8quc0MrguB
+kPyqTDIUl1mGIZCTWW3QrqJdMrP4+7NV432F15QKH5G1zMizcvE+K3IXoPvsWMq8
+tyo4ADWcDDNEFE9F8zc2TrE7AextggLMu/fXVwTuBIYVOl9g1QzJKx+p4dghqBGR
+McUpF5isE9APxjHIE36GvgS9nBeyrsylEZ3vS5Qo+Qz0LaMTYvEBzDrLnXD+3p/S
+YGejrstEX1uEt+ulPIDRUU8C+BYlRyVke1EIX//l+OOHbJJE9oPb64KoTIlZIiDf
+cCMqxWF+gKX0XOpVPRME7LuEdbUGDoVGKqaK1qo3vB2AI6g28M+aVFeSx4ot87FZ
+ONjK7TXVl3KCmPcBe1alRlIxNnb2Aj5fXipIoaU6kM9VEEBMjtZFSzKoxi6vCV0E
+e7VTHzOIQsVBu7IIeXoN3OmnZE0O4rYtUtfXLJHxDaS7LvfEyBZk4fRhsMCWSA6C
+MKTSDx6J/f3wWGRNi+z2vFOrAcyLHiAMh6MHVemSTyWZKghhC9DOBuCJo0Bp/Vlb
+3iplXb3YPbqQW9HgQzRyZpEpL4JdjxSdOdAW3j8mjpQYAUFoKTNy/Toq2/SecKhu
+tjeQksvHh24hpfWwTZ8n5lVyBoUEALaNGHTTtkN+vmtWPL05aSA=
+=/dC6
+-----END PGP SIGNATURE-----
 
+--exju7zrkmgu2clvz--
