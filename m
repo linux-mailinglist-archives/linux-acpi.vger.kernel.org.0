@@ -2,100 +2,273 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD17A44374A
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Nov 2021 21:27:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 933EE443841
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Nov 2021 23:08:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbhKBUaF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Nov 2021 16:30:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40930 "EHLO
+        id S229525AbhKBWLX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 2 Nov 2021 18:11:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231254AbhKBUaF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Nov 2021 16:30:05 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11894C061714;
-        Tue,  2 Nov 2021 13:27:30 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id j21so1624283edt.11;
-        Tue, 02 Nov 2021 13:27:29 -0700 (PDT)
+        with ESMTP id S231272AbhKBWLW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 2 Nov 2021 18:11:22 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 187AFC06120B
+        for <linux-acpi@vger.kernel.org>; Tue,  2 Nov 2021 15:08:47 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id b12so673182wrh.4
+        for <linux-acpi@vger.kernel.org>; Tue, 02 Nov 2021 15:08:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=QAaXhUzziYq9zGj4Dn+TSRAKewTMaW26NBtOKk5rNW0=;
-        b=bgMThWbXBX8BJYCrH5bovFBKEVLKqcpIEs4af/BStQOpvBfKG1/neFup8YmukpBfJG
-         ymGA3GTTcuH96/OqfzVR2//BXRBdm0Jj8xxO8+4L+ktsjKk+IcFiEDBm+Ur/7j5D/qPE
-         rxnt493wXJ5+QdktZURiZhtO2aXNpKz2w2YgorA6CbrmDruVbGkEpv4Y2KO8oZ8ALEi1
-         1MW5RM1u/EtE880HX92DzbHSEi6VenQ0r7qadMTm/+Z8cX3XZ8Cp2taWFTpQylW2U4bS
-         m4UjDxNbRrj3kLGd+2LTPP288+/7CcmEMF0d3nF7mdReC7rs2OfHO1O4WnfiFEJwWu54
-         07Tw==
+        d=kresin-me.20210112.gappssmtp.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=QQtsdMBTYCrx4ZIdrwpM406mJ59MqUemBaN1hkUC/SQ=;
+        b=h9YP238PcOXtz7wky3z+3DTOyYTZQKzPCN3N5rN6iMGWmpLjFBznmW5wgRIS+2TjeQ
+         wQ5PhXn+DvfpDYtJv2K/uuSP3Tv8Pq2ATyXDGohJxl4mSFtTY0LrzW7flJhSSHAn6NRY
+         5TfHOQn5gFnsWo7Jlts1+IDVQMXHnS5XeUwKE8s3il7yzbYuWybDbf9W4zAMB22MBYct
+         P+B4+iDUJV7sZ7izhB+3TCcnq63zyjih0gAgbcCjiq+SETdmD5g+mzDXhdA5259AtLLZ
+         3KLhBJL3bljuqYlr93ryn1B/4kD7ZDfYC9Mm/FF9GkCSZqs8IlnivToAq0GXT3l8C/ZT
+         /IBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=QAaXhUzziYq9zGj4Dn+TSRAKewTMaW26NBtOKk5rNW0=;
-        b=LfT5HbcOcJ7x8dDtg9fuqyib/pXN9sSP1nxvqhRwXX6+B5aDuOEKWijvb6xvp4cT/c
-         vm5JGNnyZyCLAB0wSKkDwFhLL8hRgvAStbMDTK4IvrDYO4Hw9tcTTAZ0hjqLYnx53ALo
-         mbbU8BSzaNqRga2dPl0xPI0NtblxQVp4kfuUH8JkEaf1vOPqHYFkf7eViN6PXCTGQt3x
-         XPelVkQITH+fUsdIR95HiXbg14LjS150F0ytisELIPGV5jA30E9JGNrMGebvZb0tW5hZ
-         pSW6eyQhF+oT/WB4rJaHYZsJ0d3DW4GvGHGQHrsXTqYHST2KZQLKabKPu0hCZsieQjm0
-         tpMg==
-X-Gm-Message-State: AOAM530HkCdxSQvCAyDZw5i9gDfY2lXazqF5ZqCv4P3qdGtcXYwusdOp
-        PLwGWplVC8O7UeE7Z+V4tMlcC6l9QdsEXcjec0o=
-X-Google-Smtp-Source: ABdhPJycZI0Dw0WaYwPwN+hEursxXTV7aXeKrv8My/ffFTCtVJCoYnTriOQyB5q1M8/qy6lu8Qsdekqd70HIlrTsS4g=
-X-Received: by 2002:a17:907:7601:: with SMTP id jx1mr48274365ejc.69.1635884848667;
- Tue, 02 Nov 2021 13:27:28 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=QQtsdMBTYCrx4ZIdrwpM406mJ59MqUemBaN1hkUC/SQ=;
+        b=lucQbHpIGkLD15wbON1UEpf2kzWZ0/Hv695KnQNoNXukHqyU/mfSP+s/5qA+oTehka
+         loB2F96/SGVhPvdVEpde+FSUHxv0XOOjMO70jBk3SvBeF/r87X/fNz8myE3Fhb0Za52r
+         lvOn9G2Qeg9I8Uvy4McYM76PuzgSec6oY8RGnSEo+g64IJiopLRy2A5JOaFaU/bg8W2n
+         fcSRgWya3v0EF7bZZrDf1lseeNKFbsv1YAK4bH/IjGFfNeOfI2f4/0UCl4SABmvKoRxS
+         S7PA+kFf0MWv/slAIRHiVAOTXkDKFtD07ZPIpzFigrNIYA+F19XGBgfeLJS0iSHCRPmb
+         RC8Q==
+X-Gm-Message-State: AOAM533hmMnSG9NItcT+aTeCfecQdVD8unOjhWw/OV+iUYRQ8j0+qyws
+        WsYyghKDjUU9zbVgjnKsJFs/nQ==
+X-Google-Smtp-Source: ABdhPJxUvC2/L/kChoDWTaNu+8S1bSxZ9jfOV9n1fXrshS6RY3O71hlhviL+BXHtA7AQ41UCBSrEHA==
+X-Received: by 2002:adf:f209:: with SMTP id p9mr47842973wro.191.1635890924929;
+        Tue, 02 Nov 2021 15:08:44 -0700 (PDT)
+Received: from ?IPv6:2003:ec:2f1f:8200:b487:4c63:5540:3502? (p200300ec2f1f8200b4874c6355403502.dip0.t-ipconnect.de. [2003:ec:2f1f:8200:b487:4c63:5540:3502])
+        by smtp.gmail.com with ESMTPSA id g3sm285760wri.45.2021.11.02.15.08.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Nov 2021 15:08:44 -0700 (PDT)
+Subject: Re: [RFC net-next/wireless-next v1 2/2] ath10k: move
+ device_get_mac_address() and pass errors up the chain
+To:     Christian Lamparter <chunkeey@gmail.com>, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org
+Cc:     Ansuel Smith <ansuelsmth@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>, Michael Walle <michael@walle.cc>,
+        Arnd Bergmann <arnd@arndb.de>
+References: <20211030174111.1432663-1-chunkeey@gmail.com>
+ <20211030174111.1432663-2-chunkeey@gmail.com>
+From:   Mathias Kresin <dev@kresin.me>
+Message-ID: <2caec4e0-94f4-915c-60d1-c78e7bdc5364@kresin.me>
+Date:   Tue, 2 Nov 2021 23:08:43 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-References: <20211101200346.16466-1-quic_qiancai@quicinc.com>
- <CAHp75VcrWPdR8EVGpcsniQedT0J4X700N7thFs6+srTP1MTgwQ@mail.gmail.com>
- <c5767824-f39c-772c-d376-77db24bb2f84@quicinc.com> <CAHp75VebqgAyOz5MYRjdujijhas2iTw3viS1vpXm8RNkBevaMg@mail.gmail.com>
-In-Reply-To: <CAHp75VebqgAyOz5MYRjdujijhas2iTw3viS1vpXm8RNkBevaMg@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 2 Nov 2021 22:26:39 +0200
-Message-ID: <CAHp75Vfo0Bp5SCeb1_oKa5BZBj=X9KdDicbVpUyR4HKY_MDsqg@mail.gmail.com>
-Subject: Re: [RFC PATCH] software node: Skip duplicated software_node sysfs
-To:     Qian Cai <quic_qiancai@quicinc.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20211030174111.1432663-2-chunkeey@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: de-DE
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Nov 2, 2021 at 10:20 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Tue, Nov 2, 2021 at 9:44 PM Qian Cai <quic_qiancai@quicinc.com> wrote:
-> > On 11/1/21 7:51 PM, Andy Shevchenko wrote:
-> > > No, it=E2=80=99s not so easy. What you are doing is a papering over t=
-he real issue
-> > > which is the limitation of the firmware nodes to two. What we need is=
- to
-> > > drop the link from struct fwnode_handle, move it to upper layer and m=
-odify
-> > > all fwnode ops to be used over the list of fwnode:s.
-> >
-> > Andy, this is my first time touching fwnode/swnode. After reading the
-> > source code for a few hours, I still don't understand the hint here.
-> > Specifically, what does the "the link" refer to?
->
-> https://elixir.bootlin.com/linux/latest/source/include/linux/fwnode.h#L36
->
-> (Property related) fwnode (as of today) is the single linked list with
-> only two possible entries. Comments against set_primary_fwnode()
-> followed by set_secondary_fwnode() may shed a bit of light here
-> https://elixir.bootlin.com/linux/latest/source/drivers/base/core.c#L4724
+Hey Christian,
 
-What you can start with, btw, is adding the trace events / points to
-these two functions. (Currently only devres is enabled:
-https://elixir.bootlin.com/linux/latest/source/drivers/base/trace.h)
+just a drive-by comment inline.
 
-When you do this, you may actually see what's going on and how the
-swnode tries to recreate the same file.
+Mathias
 
---=20
-With Best Regards,
-Andy Shevchenko
+10/30/21 7:41 PM, Christian Lamparter:
+> device_get_mac_address() can now return -EPROBE_DEFER.
+> This has to be passed back to the device subsystem so
+> the driver will be probed again at a later time.
+> 
+> This was somewhat involved because the best place for this
+> seemed in ath10k_core_create() right after allocation.
+> Thing is that ath10k_core_create() was setup to either
+> return a valid ath10k* instance, or NULL. So each ath10k
+> implementation has to be modified to account for ERR_PTR.
+> 
+> This introduces a new side-effect: the returned error codes
+> from ath10k_core_create() will now be passed along. It's no
+> longer just -ENOMEM.
+> 
+> Note: If device_get_mac_address() didn't get a valid MAC from
+> either the DT/ACPI, nvmem, etc... the driver will just generate
+> random MAC (same as it did before).
+> 
+> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+> ---
+> @Kalle from what I can tell, this is how nvmem-mac could be
+> done with the existing device_get_mac_address() - at a
+> different place. The reason for the move was that -EPROBE_DEFER
+> needs to be returned by the pci/usb/snoc/ahb _probe functions().
+> This wasn't possible in the old location. As ath10k deferres
+> the "bring-up" process into a workqueue task which can't return
+> any errors (it just printk/dev_err them at the end).
+> Also, When I was asking around about this. The common consensus was
+> to just post it and see. This is based on net-next + wireless-testing
+> 
+>   drivers/net/wireless/ath/ath10k/ahb.c  |  8 +++++---
+>   drivers/net/wireless/ath/ath10k/core.c | 14 ++++++++------
+>   drivers/net/wireless/ath/ath10k/pci.c  |  8 +++++---
+>   drivers/net/wireless/ath/ath10k/sdio.c |  8 +++++---
+>   drivers/net/wireless/ath/ath10k/snoc.c |  8 +++++---
+>   drivers/net/wireless/ath/ath10k/usb.c  |  8 +++++---
+>   6 files changed, 33 insertions(+), 21 deletions(-)
+> 
+>   
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
+> index ab8f77ae5e66..ad282a06b376 100644
+> --- a/drivers/net/wireless/ath/ath10k/ahb.c
+> +++ b/drivers/net/wireless/ath/ath10k/ahb.c
+> @@ -745,9 +745,11 @@ static int ath10k_ahb_probe(struct platform_device *pdev)
+>   	size = sizeof(*ar_pci) + sizeof(*ar_ahb);
+>   	ar = ath10k_core_create(size, &pdev->dev, ATH10K_BUS_AHB,
+>   				hw_rev, &ath10k_ahb_hif_ops);
+> -	if (!ar) {
+> -		dev_err(&pdev->dev, "failed to allocate core\n");
+> -		return -ENOMEM;
+> +	if (IS_ERR(ar)) {
+> +		ret = PTR_ERR(ar);
+> +		if (ret != -EPROBE_DEFER)
+> +			dev_err(&pdev->dev, "failed to allocate core: %d\n", ret);
+
+There's a helper for that: dev_err_probe().
+
+> +		return ret;
+>   	}
+>   
+>   	ath10k_dbg(ar, ATH10K_DBG_BOOT, "ahb probe\n");
+> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+> index 72a366aa9f60..85d2e8143101 100644
+> --- a/drivers/net/wireless/ath/ath10k/core.c
+> +++ b/drivers/net/wireless/ath/ath10k/core.c
+> @@ -3291,8 +3291,6 @@ static int ath10k_core_probe_fw(struct ath10k *ar)
+>   		ath10k_debug_print_board_info(ar);
+>   	}
+>   
+> -	device_get_mac_address(ar->dev, ar->mac_addr);
+> -
+>   	ret = ath10k_core_init_firmware_features(ar);
+>   	if (ret) {
+>   		ath10k_err(ar, "fatal problem with firmware features: %d\n",
+> @@ -3451,11 +3449,11 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
+>   				  const struct ath10k_hif_ops *hif_ops)
+>   {
+>   	struct ath10k *ar;
+> -	int ret;
+> +	int ret = -ENOMEM;
+>   
+>   	ar = ath10k_mac_create(priv_size);
+>   	if (!ar)
+> -		return NULL;
+> +		goto err_out;
+>   
+>   	ar->ath_common.priv = ar;
+>   	ar->ath_common.hw = ar->hw;
+> @@ -3464,6 +3462,10 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
+>   	ar->hif.ops = hif_ops;
+>   	ar->hif.bus = bus;
+>   
+> +	ret = device_get_mac_address(dev, ar->mac_addr);
+> +	if (ret == -EPROBE_DEFER)
+> +		goto err_free_mac;
+> +
+>   	switch (hw_rev) {
+>   	case ATH10K_HW_QCA988X:
+>   	case ATH10K_HW_QCA9887:
+> @@ -3580,8 +3582,8 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
+>   	destroy_workqueue(ar->workqueue);
+>   err_free_mac:
+>   	ath10k_mac_destroy(ar);
+> -
+> -	return NULL;
+> +err_out:
+> +	return ERR_PTR(ret);
+>   }
+>   EXPORT_SYMBOL(ath10k_core_create);
+>   
+> diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+> index 4d4e2f91e15c..f4736148a382 100644
+> --- a/drivers/net/wireless/ath/ath10k/pci.c
+> +++ b/drivers/net/wireless/ath/ath10k/pci.c
+> @@ -3602,9 +3602,11 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
+>   
+>   	ar = ath10k_core_create(sizeof(*ar_pci), &pdev->dev, ATH10K_BUS_PCI,
+>   				hw_rev, &ath10k_pci_hif_ops);
+> -	if (!ar) {
+> -		dev_err(&pdev->dev, "failed to allocate core\n");
+> -		return -ENOMEM;
+> +	if (IS_ERR(ar)) {
+> +		ret = PTR_ERR(ar);
+> +		if (ret != -EPROBE_DEFER)
+> +			dev_err(&pdev->dev, "failed to allocate core: %d\n", ret);
+> +		return ret;
+>   	}
+>   
+>   	ath10k_dbg(ar, ATH10K_DBG_BOOT, "pci probe %04x:%04x %04x:%04x\n",
+> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+> index 63e1c2d783c5..87941e047d07 100644
+> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+> @@ -2526,9 +2526,11 @@ static int ath10k_sdio_probe(struct sdio_func *func,
+>   
+>   	ar = ath10k_core_create(sizeof(*ar_sdio), &func->dev, ATH10K_BUS_SDIO,
+>   				hw_rev, &ath10k_sdio_hif_ops);
+> -	if (!ar) {
+> -		dev_err(&func->dev, "failed to allocate core\n");
+> -		return -ENOMEM;
+> +	if (IS_ERR(ar)) {
+> +		ret = PTR_ERR(ar);
+> +		if (ret != -EPROBE_DEFER)
+> +			dev_err(&func->dev, "failed to allocate core: %d\n", ret);
+> +		return ret;
+>   	}
+>   
+>   	netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_sdio_napi_poll,
+> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+> index 9513ab696fff..b9ac89e226a2 100644
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -1728,9 +1728,11 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
+>   
+>   	ar = ath10k_core_create(sizeof(*ar_snoc), dev, ATH10K_BUS_SNOC,
+>   				drv_data->hw_rev, &ath10k_snoc_hif_ops);
+> -	if (!ar) {
+> -		dev_err(dev, "failed to allocate core\n");
+> -		return -ENOMEM;
+> +	if (IS_ERR(ar)) {
+> +		ret = PTR_ERR(ar);
+> +		if (ret != -EPROBE_DEFER)
+> +			dev_err(dev, "failed to allocate core: %d\n", ret);
+> +		return ret;
+>   	}
+>   
+>   	ar_snoc = ath10k_snoc_priv(ar);
+> diff --git a/drivers/net/wireless/ath/ath10k/usb.c b/drivers/net/wireless/ath/ath10k/usb.c
+> index 3d98f19c6ec8..d6dc830a6fa8 100644
+> --- a/drivers/net/wireless/ath/ath10k/usb.c
+> +++ b/drivers/net/wireless/ath/ath10k/usb.c
+> @@ -987,9 +987,11 @@ static int ath10k_usb_probe(struct usb_interface *interface,
+>   
+>   	ar = ath10k_core_create(sizeof(*ar_usb), &dev->dev, ATH10K_BUS_USB,
+>   				hw_rev, &ath10k_usb_hif_ops);
+> -	if (!ar) {
+> -		dev_err(&dev->dev, "failed to allocate core\n");
+> -		return -ENOMEM;
+> +	if (IS_ERR(ar)) {
+> +		ret = PTR_ERR(ar);
+> +		if (ret != -EPROBE_DEFER)
+> +			dev_err(&dev->dev, "failed to allocate core: %d\n", ret);
+> +		return ret;
+>   	}
+>   
+>   	usb_get_dev(dev);
+> 
+
