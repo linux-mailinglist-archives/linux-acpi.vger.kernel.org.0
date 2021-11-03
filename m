@@ -2,86 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 981B8444883
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Nov 2021 19:46:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0E7844488A
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Nov 2021 19:48:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbhKCStY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Nov 2021 14:49:24 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:50012 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229697AbhKCStX (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Nov 2021 14:49:23 -0400
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
- id 9a91add219eb3001; Wed, 3 Nov 2021 19:46:45 +0100
-Received: from kreacher.localnet (unknown [213.134.161.207])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 9FECA661F93;
-        Wed,  3 Nov 2021 19:46:44 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linus Torvalds <torvalds@linuxfoundation.org>
-Subject: [PATCH] ACPI: Drop ACPI_USE_BUILTIN_STDARG ifdef from acgcc.h
-Date:   Wed, 03 Nov 2021 19:46:43 +0100
-Message-ID: <5779281.lOV4Wx5bFT@kreacher>
+        id S230509AbhKCSvL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Nov 2021 14:51:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33540 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229837AbhKCSvK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Nov 2021 14:51:10 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9786DC061714
+        for <linux-acpi@vger.kernel.org>; Wed,  3 Nov 2021 11:48:32 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id y26so7011561lfa.11
+        for <linux-acpi@vger.kernel.org>; Wed, 03 Nov 2021 11:48:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qLY2jWhqalFDEIv6BXGfHi2ORZbhy7ia23ahAiBL5q8=;
+        b=MnYIfh9K4iVdIy3/Q4jGlXOD785PXwFrrhp22S3h38IRAVyPUnzbxb2WF4fj/Q7oAZ
+         k5gzuePlePHk9WLhHPRZ6KYD6FddHjWoMv8AHmbVHAQXRmVPVTvhoHcrxmRo3FWUaJMm
+         +ofwiIHgazHGiQXZTih/ekH4r888DWo9POyRg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qLY2jWhqalFDEIv6BXGfHi2ORZbhy7ia23ahAiBL5q8=;
+        b=UwTibC7av6WTE3X0s6EGfP1npJzlATDPoeYdlEJ1ql5j/Vv6ln4SV4v9hT5uS/CnPN
+         /zMbiwDBUK2yme67tAvkvCTJG4akm1SFeKhCc/c2WbG3OoQDwbA/Ch6oUO/fG44R/BsK
+         qmhzDrcMOaaxhYIsxqW0L+y4DE7xrvp81Uv+Bc1wdPHkWaiN4vyV+ZAxPckCc1CSPavK
+         9gPCj8BvZ+HfqqzyHpZH2rz/GfMbxe1Z88k3RcKLdybJ0gzJa42XIfrxOfyzzaPdX7jn
+         xPJIy7aCo9lcQRl5qrf8BfnsTBp1/iBQmNDmWR8iZg6wMQPvGDO1zugKVA2HUFLQtzuI
+         HVvQ==
+X-Gm-Message-State: AOAM532p7ovIsqdTlTG2t9RN9Kq4gDAdmk1hiAKNK9c/qBB1ZOZVaO8W
+        yP9GhOVAhKcE8b5QYbxLaj584dP8d2WSWDnA
+X-Google-Smtp-Source: ABdhPJzAFcLlsRcWQBc5+NDL1smfr0rJLtDEigx1l0DbyhzRIa/DoRWV8e24N5Wg0SXKNvosfKpqNw==
+X-Received: by 2002:a05:6512:10d5:: with SMTP id k21mr15836138lfg.534.1635965310722;
+        Wed, 03 Nov 2021 11:48:30 -0700 (PDT)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com. [209.85.167.53])
+        by smtp.gmail.com with ESMTPSA id l14sm269876ljc.112.2021.11.03.11.48.30
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Nov 2021 11:48:30 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id x27so7074276lfu.5
+        for <linux-acpi@vger.kernel.org>; Wed, 03 Nov 2021 11:48:30 -0700 (PDT)
+X-Received: by 2002:a05:6512:3993:: with SMTP id j19mr39722467lfu.402.1635965309983;
+ Wed, 03 Nov 2021 11:48:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <5779281.lOV4Wx5bFT@kreacher>
+In-Reply-To: <5779281.lOV4Wx5bFT@kreacher>
+From:   Linus Torvalds <torvalds@linuxfoundation.org>
+Date:   Wed, 3 Nov 2021 11:48:13 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wh2tO46FtJaRpCrdgifAusMbhsBAcg_ZmX3+AO_-sf-DA@mail.gmail.com>
+Message-ID: <CAHk-=wh2tO46FtJaRpCrdgifAusMbhsBAcg_ZmX3+AO_-sf-DA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Drop ACPI_USE_BUILTIN_STDARG ifdef from acgcc.h
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.161.207
-X-CLIENT-HOSTNAME: 213.134.161.207
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrtddvgdduudefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvvefgteeuteehkeduuedvudetleevffdtffdtjeejueekffetieekgfeigfehudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvudefrddufeegrdduiedurddvtdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudeiuddrvddtjedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugihfohhunhgurghtihhonhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Wed, Nov 3, 2021 at 11:46 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> The ACPI_USE_BUILTIN_STDARG symbol is never set in the kernel build,
+> so stop checking it in include/acpi/platform/acgcc.h and drop all of
+> the macros depending on it (which appear to duplicate the analogous
+> macros from linux/stdarg.h, but in fact are never used).
 
-The ACPI_USE_BUILTIN_STDARG symbol is never set in the kernel build,
-so stop checking it in include/acpi/platform/acgcc.h and drop all of
-the macros depending on it (which appear to duplicate the analogous
-macros from linux/stdarg.h, but in fact are never used). 
+Ack. Thanks,
 
-Link: https://lore.kernel.org/linux-acpi/CAHk-=whCammRsz8PEbrft3M6vGjF506gkxtyGw81uGOUUvD51g@mail.gmail.com/
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- include/acpi/platform/acgcc.h |   13 -------------
- 1 file changed, 13 deletions(-)
-
-Index: linux-pm/include/acpi/platform/acgcc.h
-===================================================================
---- linux-pm.orig/include/acpi/platform/acgcc.h
-+++ linux-pm/include/acpi/platform/acgcc.h
-@@ -10,25 +10,12 @@
- #ifndef __ACGCC_H__
- #define __ACGCC_H__
- 
--/*
-- * Use compiler specific <stdarg.h> is a good practice for even when
-- * -nostdinc is specified (i.e., ACPI_USE_STANDARD_HEADERS undefined.
-- */
- #ifndef va_arg
--#ifdef ACPI_USE_BUILTIN_STDARG
--typedef __builtin_va_list va_list;
--#define va_start(v, l)          __builtin_va_start(v, l)
--#define va_end(v)               __builtin_va_end(v)
--#define va_arg(v, l)            __builtin_va_arg(v, l)
--#define va_copy(d, s)           __builtin_va_copy(d, s)
--#else
- #ifdef __KERNEL__
- #include <linux/stdarg.h>
- #else
--/* Used to build acpi tools */
- #include <stdarg.h>
- #endif /* __KERNEL__ */
--#endif /* ACPI_USE_BUILTIN_STDARG */
- #endif /* ! va_arg */
- 
- #define ACPI_INLINE             __inline__
-
-
-
+                Linus
