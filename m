@@ -2,101 +2,231 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12FA94443CB
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Nov 2021 15:44:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 389AC4444D1
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Nov 2021 16:44:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231618AbhKCOqm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Nov 2021 10:46:42 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:56058 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230252AbhKCOql (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Nov 2021 10:46:41 -0400
-From:   John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1635950644;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=WQWjT01lt3R0Xv+/aSfAVuO7pydPYL3MBaHFBNwN0sg=;
-        b=n7XggwWpmgpMDmt3jqlQKuOkrYL3RO2fi8Jciq5xcN7OD6NwhgKLI2G59/xGCZlzNMwYx6
-        y94qFkuv4DAHMCB9+lAe2zKTYTMNL+ysmU5iQ7Gzs9BAU3YclecRUwUYcxOyPfhzNjUCQ4
-        ZLspzAWUrnfD12YJ1DrwO9Mzg/QckBDha+eTZKkUJX1wUJ/2xX+NH3EZzDTl5Cwtk/2HLy
-        7dUuvZH7uIcnyTficghTb4TJAzCf/2Np+8K18+fI5HYoqXx12VOfo+bMrkM8PyGFx7BiQ2
-        UCDdwLLx+3iNB3Lcmf4j8dukFZBT9my5BnaFLB7M+2bjewXNvlkc8qMF+ijhwg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1635950644;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=WQWjT01lt3R0Xv+/aSfAVuO7pydPYL3MBaHFBNwN0sg=;
-        b=Pk0YubPBCoL0xPBiZd3qd9zVREGyEGHtCVTzcYCRrvnLHnypqTqcwQmYY+QvJzwkLswKPd
-        9v8ecb//g+N2YpCw==
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-acpi@vger.kernel.org
-Cc:     rafael@kernel.org, mika.westerberg@linux.intel.com,
-        Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH 0/3] Get device's parent from parent field, fix sleeping
- IRQs disabled
-In-Reply-To: <20211103133406.659542-1-sakari.ailus@linux.intel.com>
-References: <20211103133406.659542-1-sakari.ailus@linux.intel.com>
-Date:   Wed, 03 Nov 2021 15:50:04 +0106
-Message-ID: <878ry55mff.fsf@jogness.linutronix.de>
+        id S231785AbhKCPqp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Nov 2021 11:46:45 -0400
+Received: from mga03.intel.com ([134.134.136.65]:60450 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229587AbhKCPqo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 3 Nov 2021 11:46:44 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10157"; a="231479295"
+X-IronPort-AV: E=Sophos;i="5.87,206,1631602800"; 
+   d="scan'208";a="231479295"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2021 08:43:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,206,1631602800"; 
+   d="scan'208";a="667568620"
+Received: from chenyu-desktop.sh.intel.com ([10.239.158.186])
+  by orsmga005.jf.intel.com with ESMTP; 03 Nov 2021 08:43:41 -0700
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Aubrey Li <aubrey.li@intel.com>, Chen Yu <yu.c.chen@intel.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v8 0/4] Introduce Platform Firmware Runtime Update and Telemetry drivers
+Date:   Wed,  3 Nov 2021 23:42:56 +0800
+Message-Id: <cover.1635953446.git.yu.c.chen@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-added CC: printk maintainer (Petr Mladek)
+The PFRU (Platform Firmware Runtime Update) kernel interface is designed
+to interact with the platform firmware interface defined in the
+`Management Mode Firmware Runtime Update
+<https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf>`
+specification. The primary function of PFRU is to carry out runtime
+updates of the platform firmware, which doesn't require the system to
+be restarted. It also allows telemetry data to be retrieved from the
+platform firmware.
 
-On 2021-11-03, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
-> This set changes getting fwnode's parent on ACPI fwnode so it no longer
-> needs a semaphore, using struct acpi_device->parent field instead of
-> calling acpi_get_parent(). The semaphore is being acquired when the
-> device's full path is printed which now takes place local IRQs disabled:
->
-> --------8<------------------------
-> BUG: sleeping function called from invalid context at kernel/locking/semaphore.c:163
->
-> ...
->
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x57/0x7d
->  __might_resched.cold+0xf4/0x12f
->  down_timeout+0x21/0x70
->  acpi_os_wait_semaphore+0x63/0x180
->  acpi_ut_acquire_mutex+0x123/0x1ba
->  acpi_get_parent+0x30/0x71
->  acpi_node_get_parent+0x64/0x90
->  ? lock_acquire+0x1a0/0x300
->  fwnode_count_parents+0x6d/0xb0
->  fwnode_full_name_string+0x18/0x90
->  fwnode_string+0xd7/0x140
->  vsnprintf+0x1ec/0x4f0
->  va_format.constprop.0+0x6a/0x130
->  vsnprintf+0x1ec/0x4f0
->  vprintk_store+0x271/0x5a0
->  ? rcu_read_lock_sched_held+0x12/0x70
->  ? lock_release+0x228/0x310
->  ? acpi_initialize_hp_context+0x50/0x50
->  vprintk_emit+0xd5/0x340
->  _printk+0x58/0x6f
-...
-> --------8<------------------------
->
-> I guess one could argue it wasn't great to begin with that getting
-> fwnode's parent required a semaphore to begin with, nevertheless John's
-> patch made it a concrete problem. Added Cc: stable, too.
+=============
+- Change from v7 to v8:
+  - Remove the variable-length array in struct pfru_update_cap_info, and
+    copy the non-variable-length struct pfru_update_cap_info to userspace
+    directly. (Greg Kroah-Hartman)
+  - Use efi_guid_t instead of guid_t when parsing capsule file.
+    (Andy Shevchenko)
+  - Change the type of rev_id from int to u32, because this data will
+    be copied between kernel and userspace. (Greg Kroah-Hartman)
+  - Add a prefix for dev in struct pfru_device to parent_dev, so as
+    to indicate that this filed is the parent of the created miscdev.
+    (Greg Kroah-Hartman)
+  - Use blank lines between different macro sections. (Greg Kroah-Hartman)
+    Illusatrate the possible errno for each ioctl interface.
+    (Greg Kroah-Hartman)
+  - Remove pfru_valid_revid() from uapi header to avoid poluting the global
+    namespace.(Greg Kroah-Hartman)
+  - Assign the value to the enum type explicitly.(Greg Kroah-Hartman)
+  - Change the guid_t to efi_guid_t when parsing image header in get_image_type()
+    (Greg Kroah-Hartman)
+  - Remove the void * to other type casting in valid_version(). (Andy Shevchenko)
+  - Combined the assignment of variables with definitions. (Andy Shevchenko)
+  - Define this magic for revision ID. (Andy Shevchenko)
+  - Make the labeling consistent for error handling. (Andy Shevchenko)
+  - Replace the UUID_SIZE in uapi with 16 directly. (Andy Shevchenko)
+  - Add blank line between generic include header and uapi header.
+    (Andy Shevchenko)
+  - Arrange the order between devm_kzalloc() and normal allocation in
+    acpi_pfru_probe() that, the former should always be ahead of the
+    latter. (Andy Shevchenko)
+- Change from v6 to v7:
+  - Use __packed instead of pragma pack(1).
+    (Greg Kroah-Hartman, Ard Biesheuve)
+  - Use ida_alloc() to allocate a ID, and release the ID when
+    device is removed. (Greg Kroah-Hartman)
+  - Check the _DSM method at early stage, before allocate or parse
+    anything in acpi_pfru_[log_]probe(). (Greg Kroah-Hartman)
+  - Set the parent of the misc device. (Greg Kroah-Hartman)
+  - Use module_platform_driver() instead of platform_driver_register()
+    in module_init(). Separate pfru driver and pfru_telemetry driver
+    to two files. (Greg Kroah-Hartman) 
+- Change from v5 to v6:
+  - Use Link: tag to add the specification download address.
+    (Andy Shevchenko)
+  - Drop comma for each terminator entry in the enum structure.
+    (Andy Shevchenko)
+  - Remove redundant 'else' in get_image_type().
+    (Andy Shevchenko)
+  - Directly return results from the switch cases in adjust_efi_size()
+    and pfru_ioctl().(Andy Shevchenko)
+  - Keep comment style consistency by removing the period for
+    one line comment.
+    (Andy Shevchenko)
+  - Remove devm_kfree() if .probe() failed. 
+    (Andy Shevchenko)
+  - Remove linux/uuid.h and use raw buffers to contain uuid.
+    (Andy Shevchenko)
+  - Include types.h in pfru.h. (Andy Shevchenko)
+  - Use __u8[16] instead of uuid_t. (Andy Shevchenko)
+  - Replace enum in pfru.h with __u32 as enum size is not the
+    same size on all possible architectures.
+    (Andy Shevchenko)
+  - Simplify the userspace tool to use while loop for getopt_long().
+    (Andy Shevchenko)
+- Change from v4 to v5:
+  - Remove Documentation/ABI/pfru, and move the content to kernel doc
+    in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
+  - Shrink the range of ioctl numbers declared in
+    Documentation/userspace-api/ioctl/ioctl-number.rst
+    from 16 to 8. (Greg Kroah-Hartman)
+  - Change global variable struct pfru_device *pfru_dev to
+    per PFRU device. (Greg Kroah-Hartman)
+  - Unregister the misc device in acpi_pfru_remove().
+    (Greg Kroah-Hartman)
+  - Convert the kzalloc() to devm_kzalloc() in the driver so
+    as to avoid freeing the memory. (Greg Kroah-Hartman)
+  - Fix the compile warning by declaring the pfru_log_ioctl() as
+    static. (kernel test robot LKP)
+  - Change to global variable misc_device to per PFRU device.
+    (Greg Kroah-Hartman)
+  - Remove the telemetry output in commit log. (Greg Kroah-Hartman)
+  - Add link for corresponding userspace tool in the commit log.
+    (Greg Kroah-Hartman)
+  - Replace the telemetry .read() with .mmap() so that the userspace
+    could mmap once, and read multiple times. (Greg Kroah-Hartman)
+- Change from v3 to v4:
+  - Add Documentation/ABI/testing/pfru to document the ABI and
+    remove Documentation/x86/pfru.rst (Rafael J. Wysocki)
+  - Replace all pr_err() with dev_dbg() (Greg Kroah-Hartman,
+    Rafael J. Wysocki)
+  - returns ENOTTY rather than ENOIOCTLCMD if invalid ioctl command
+    is provided. (Greg Kroah-Hartman)
+  - Remove compat ioctl. (Greg Kroah-Hartman)
+  - Rename /dev/pfru/pfru_update to /dev/acpi_pfru (Greg Kroah-Hartman)
+  - Simplify the check for element of the package in query_capability()
+    (Rafael J. Wysocki)
+  - Remove the loop in query_capability(), query_buffer() and query
+    the package elemenet directly. (Rafael J. Wysocki)
+  - Check the number of elements in case the number of package
+    elements is too small. (Rafael J. Wysocki)
+  - Doing the assignment as initialization in get_image_type().
+    Meanwhile, returns the type or a negative error code in
+    get_image_type(). (Rafael J. Wysocki)
+  - Put the comments inside the function. (Rafael J. Wysocki)
+  - Returns the size or a negative error code in adjust_efi_size()
+    (Rafael J. Wysocki)
+  - Fix the return value from EFAULT to EINVAL if pfru_valid_revid()
+    does not pass. (Rafael J. Wysocki)
+  - Change the write() to be the code injection/update, the read() to
+    be telemetry retrieval and all of the rest to be ioctl()s under
+    one special device file.(Rafael J. Wysocki)
+  - Remove redundant parens. (Rafael J. Wysocki)
+  - Putting empty code lines after an if () statement that is not
+    followed by a block. (Rafael J. Wysocki)
+  - Remove "goto" tags to make the code more readable. (Rafael J. Wysocki)
+- Change from v2 to v3:
+  - Use valid types for structures that cross the user/kernel boundary
+    in the uapi header. (Greg Kroah-Hartman)
+  - Rename the structure in uapi to start with a prefix pfru so as
+    to avoid confusing in the global namespace. (Greg Kroah-Hartman)
+- Change from v1 to v2:
+  - Add a spot in index.rst so it becomes part of the docs build
+    (Jonathan Corbet).
+  - Sticking to the 80-column limit(Jonathan Corbet).
+  - Underline lengths should match the title text(Jonathan Corbet).
+  - Use literal blocks for the code samples(Jonathan Corbet).
+  - Add sanity check for duplicated instance of ACPI device.
+  - Update the driver to work with allocated pfru_device objects.
+    (Mike Rapoport)
+  - For each switch case pair, get rid of the magic case numbers
+    and add a default clause with the error handling.(Mike Rapoport)
+  - Move the obj->type checks outside the switch to reduce redundancy.
+    (Mike Rapoport)
+  - Parse the code_inj_id and drv_update_id at driver initialization time
+    to reduce the re-parsing at runtime. (Mike Rapoport)
+  - Explain in detail how the size needs to be adjusted when doing
+    version check. (Mike Rapoport)
+  - Rename parse_update_result() to dump_update_result()
+    (Mike Rapoport)
+  - Remove redundant return.(Mike Rapoport)
+  - Do not expose struct capsulate_buf_info to uapi, since it is
+    not needed in userspace. (Mike Rapoport)
+  - Do not allow non-root user to run this test.(Shuah Khan)
+  - Test runs on platform without pfru_telemetry should skip
+    instead of reporting failure/error.(Shuah Khan)
+  - Reuse uapi/linux/pfru.h instead of copying it into the test
+    directory. (Mike Rapoport)
 
-Well, before my work it was vprintk_emit() that was disabling local
-interrupts. So this has always been broken.
+Chen Yu (4):
+  efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and
+    corresponding structures
+  drivers/acpi: Introduce Platform Firmware Runtime Update device driver
+  drivers/acpi: Introduce Platform Firmware Runtime Update Telemetry
+  tools: Introduce power/acpi/pfru/pfru
 
-Really it should be:
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ drivers/acpi/Kconfig                          |   1 +
+ drivers/acpi/Makefile                         |   1 +
+ drivers/acpi/pfru/Kconfig                     |  13 +
+ drivers/acpi/pfru/Makefile                    |   2 +
+ drivers/acpi/pfru/pfru_telemetry.c            | 465 ++++++++++++++
+ drivers/acpi/pfru/pfru_update.c               | 608 ++++++++++++++++++
+ include/linux/efi.h                           |  46 ++
+ include/uapi/linux/pfru.h                     | 262 ++++++++
+ tools/power/acpi/pfru/Makefile                |  25 +
+ tools/power/acpi/pfru/pfru.8                  | 137 ++++
+ tools/power/acpi/pfru/pfru.c                  | 417 ++++++++++++
+ 12 files changed, 1978 insertions(+)
+ create mode 100644 drivers/acpi/pfru/Kconfig
+ create mode 100644 drivers/acpi/pfru/Makefile
+ create mode 100644 drivers/acpi/pfru/pfru_telemetry.c
+ create mode 100644 drivers/acpi/pfru/pfru_update.c
+ create mode 100644 include/uapi/linux/pfru.h
+ create mode 100644 tools/power/acpi/pfru/Makefile
+ create mode 100644 tools/power/acpi/pfru/pfru.8
+ create mode 100644 tools/power/acpi/pfru/pfru.c
 
-Fixes: 3bd32d6a2ee6 ("lib/vsprintf: Add %pfw conversion specifier for
-printing fwnode names")
+-- 
+2.25.1
 
-Regardless, the fix should go into 5.10 and 5.14 stables.
-
-John Ogness
