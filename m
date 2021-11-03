@@ -2,40 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E67404444E5
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Nov 2021 16:47:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A6A54444EC
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Nov 2021 16:49:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231502AbhKCPuW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Nov 2021 11:50:22 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28]:33906 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229928AbhKCPuW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Nov 2021 11:50:22 -0400
+        id S231814AbhKCPvr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Nov 2021 11:51:47 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29]:58340 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231765AbhKCPvr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Nov 2021 11:51:47 -0400
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id AB6DE218A8;
-        Wed,  3 Nov 2021 15:47:44 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTP id C1B3A1FD38;
+        Wed,  3 Nov 2021 15:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1635954464; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1635954549; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=pEzMhx+5raPsZ71FRsDQ1X6KQ5pjLMT6yimtGT38gX0=;
-        b=Sylr35sBpyB/EP5cn9P1vB09EnjUPYPa/HQ/QANAtI0n5Qxelu0TjM3Zca4xSgiM42mR3v
-        XyU/uNBlu04OFYUvQK7t2O4MYqVmLc//pRtevAM7F33vfow+9XwRdUlp3+T4tTMZN1wZgD
-        X8JUsFZKKvFw+aeCLJF2o/hGkiGqmTs=
+        bh=UfsSMQ63Ciq0CR8DQZtZN6CvjWxicn8ShNavcOZog8k=;
+        b=OXT0vTWDpUESk8U4Wgk46w3pODBVb9kWEAZUc+Oz+TR6ZM37ywxKCUKDnN8Ozm1ZBYLFVm
+        jvIYy2hZrEt88+5ALWk0lpz+cr/cVikHdP/kbA8z8Sr2YHsUeYIkPZNQxvEegHWQITmyy1
+        W27U8WfE8B3gPPM9/TFHRJM7F0S9nIc=
 Received: from suse.cz (unknown [10.100.224.162])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 912162C167;
-        Wed,  3 Nov 2021 15:47:44 +0000 (UTC)
-Date:   Wed, 3 Nov 2021 16:47:44 +0100
+        by relay2.suse.de (Postfix) with ESMTPS id A4EC32C144;
+        Wed,  3 Nov 2021 15:49:09 +0000 (UTC)
+Date:   Wed, 3 Nov 2021 16:49:07 +0100
 From:   Petr Mladek <pmladek@suse.com>
 To:     John Ogness <john.ogness@linutronix.de>
 Cc:     Sakari Ailus <sakari.ailus@linux.intel.com>,
         linux-acpi@vger.kernel.org, rafael@kernel.org,
-        mika.westerberg@linux.intel.com
+        mika.westerberg@linux.intel.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Subject: Re: [PATCH 0/3] Get device's parent from parent field, fix sleeping
  IRQs disabled
-Message-ID: <YYKvIPp6BEMXBJZs@alley>
+Message-ID: <YYKvc2/gfLN/p034@alley>
 References: <20211103133406.659542-1-sakari.ailus@linux.intel.com>
  <878ry55mff.fsf@jogness.linutronix.de>
 MIME-Version: 1.0
@@ -45,6 +46,8 @@ In-Reply-To: <878ry55mff.fsf@jogness.linutronix.de>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
+
+(and really add Andy)
 
 On Wed 2021-11-03 15:50:04, John Ogness wrote:
 > added CC: printk maintainer (Petr Mladek)
