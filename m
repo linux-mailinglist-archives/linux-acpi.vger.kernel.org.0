@@ -2,62 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2C3F4439A6
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Nov 2021 00:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01043443CE1
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Nov 2021 06:52:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230299AbhKBXaC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 2 Nov 2021 19:30:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51662 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229900AbhKBXaB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 2 Nov 2021 19:30:01 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 3104460FC2;
-        Tue,  2 Nov 2021 23:27:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635895646;
-        bh=cNv+Rh3bHhhiwrg8VNods1Cl0319xmhhn4Mso9AA3Dc=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=O6CcCRjUGpHSmeB3Lsxo+1k3JN6mFrVG/bD/ow47DwldcNbYN8tsJL8EZ1jJ+ysX7
-         /f7Enbka7Ji9G07HvPY8fDVDoY53xVqVABQ2pTOrvpUgZ5q8pItOcFr3Q+hi0KHvvv
-         UYjz2ozYXyjsy6XzQHAJpqvBFfj4IWjAzDVTeIzH5NlOTOKFF7yv0v9nFpjw61+6Iz
-         N4z0F4u711PIQ7f64uxihEUWdpazYhOoRFmqzyba8trReQLW8IWRMNeNBDNzrmN0AN
-         bSBmlDHJOruYGLM75PUxa6uPAcp1mxxpwGSDUolrL7XKwnQ2vAYB27GNWDombkruqv
-         JucIRlFN8i6/Q==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 250EC60A90;
-        Tue,  2 Nov 2021 23:27:26 +0000 (UTC)
-Subject: Re: [GIT PULL] Power management updates for v5.16-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0iSL3vwvmRL_BvS1J4_NHCNoLO5bG4YFcjVK-oXH_uTAg@mail.gmail.com>
-References: <CAJZ5v0iSL3vwvmRL_BvS1J4_NHCNoLO5bG4YFcjVK-oXH_uTAg@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0iSL3vwvmRL_BvS1J4_NHCNoLO5bG4YFcjVK-oXH_uTAg@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.16-rc1
-X-PR-Tracked-Commit-Id: bf56b90797c4a03c94b702c50e62296edea9fad9
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 833db72142b93a89211c1e43ca0a1e2e16457756
-Message-Id: <163589564614.24792.1055478865512070340.pr-tracker-bot@kernel.org>
-Date:   Tue, 02 Nov 2021 23:27:26 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        id S231127AbhKCFyy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Nov 2021 01:54:54 -0400
+Received: from smtpbguseast3.qq.com ([54.243.244.52]:35819 "EHLO
+        smtpbguseast3.qq.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229650AbhKCFyx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 3 Nov 2021 01:54:53 -0400
+X-QQ-mid: bizesmtp48t1635918689t2dqxqlh
+Received: from localhost.localdomain (unknown [124.126.19.250])
+        by esmtp6.qq.com (ESMTP) with 
+        id ; Wed, 03 Nov 2021 13:51:28 +0800 (CST)
+X-QQ-SSF: 0140000000200070D000B00A0000000
+X-QQ-FEAT: vmnbzJorTWSWh1PNXVj1Ard3xhsTeGeJQOWT2Rcb+YszzQQc3QuapNH4I8N2P
+        WA9wBHc7GguslEERSSw79mcOFNHhCAdt+MucGGIsG6XnhX9j7PDT1I+D8DhhfNvVCaD1E4d
+        bXZkCiZ++J7jmD4t1n3TAQWkg4zGw/3Pztrb2LXJBYWdvWgNp9aOVvUxUf5jM2T7QuGTK67
+        P28ELrJIRYjnkmQs2XGAvaxYDu5BlT7awsijs7geckfCe7Chr6dYqurflijgtZ+T6aNyN2J
+        2V4nyc5I/waIM91RsUsXtOUlJRVHlL4SJ6/soWhe/JZ/RilGai5bj8+QSJvw3rz5AtOjU5b
+        g54Z6Le62E6jMP08cQ=
+X-QQ-GoodBg: 2
+From:   wangzhitong <wangzhitong@uniontech.com>
+To:     rjw@rjwysocki.net, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     wangzhitong <wangzhitong@uniontech.com>
+Subject: [PATCH] ACPI: EC: fix error "do not initialise statics to false"
+Date:   Wed,  3 Nov 2021 13:51:19 +0800
+Message-Id: <20211103055119.19312-1-wangzhitong@uniontech.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:uniontech.com:qybgforeign:qybgforeign1
+X-QQ-Bgrelay: 1
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Tue, 2 Nov 2021 20:53:09 +0100:
+this patch fixes below Errors reported by checkpatch
+ERROR: do not initialise statics to false
++static bool ec_freeze_events __read_mostly = false;
+ERROR: do not initialise statics to false
++static bool boot_ec_is_ecdt = false;
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-5.16-rc1
+Signed-off-by: wangzhitong <wangzhitong@uniontech.com>
+---
+ drivers/acpi/ec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/833db72142b93a89211c1e43ca0a1e2e16457756
-
-Thank you!
-
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 04ce2b96c3da..1255649a4da9 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -133,7 +133,7 @@ static unsigned int ec_storm_threshold  __read_mostly = 8;
+ module_param(ec_storm_threshold, uint, 0644);
+ MODULE_PARM_DESC(ec_storm_threshold, "Maxim false GPE numbers not considered as GPE storm");
+ 
+-static bool ec_freeze_events __read_mostly = false;
++static bool ec_freeze_events __read_mostly;
+ module_param(ec_freeze_events, bool, 0644);
+ MODULE_PARM_DESC(ec_freeze_events, "Disabling event handling during suspend/resume");
+ 
+@@ -177,7 +177,7 @@ struct acpi_ec *first_ec;
+ EXPORT_SYMBOL(first_ec);
+ 
+ static struct acpi_ec *boot_ec;
+-static bool boot_ec_is_ecdt = false;
++static bool boot_ec_is_ecdt;
+ static struct workqueue_struct *ec_wq;
+ static struct workqueue_struct *ec_query_wq;
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.20.1
+
+
+
