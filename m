@@ -2,103 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1853444468A
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Nov 2021 18:03:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 910F04446D4
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Nov 2021 18:16:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232929AbhKCRF4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 3 Nov 2021 13:05:56 -0400
-Received: from mga04.intel.com ([192.55.52.120]:24543 "EHLO mga04.intel.com"
+        id S229698AbhKCRTd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 3 Nov 2021 13:19:33 -0400
+Received: from mga12.intel.com ([192.55.52.136]:53002 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232946AbhKCRF4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 3 Nov 2021 13:05:56 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10157"; a="230268875"
+        id S229621AbhKCRTc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 3 Nov 2021 13:19:32 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10157"; a="211602890"
 X-IronPort-AV: E=Sophos;i="5.87,206,1631602800"; 
-   d="scan'208";a="230268875"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2021 10:02:36 -0700
+   d="scan'208";a="211602890"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2021 10:07:31 -0700
 X-IronPort-AV: E=Sophos;i="5.87,206,1631602800"; 
-   d="scan'208";a="468174212"
+   d="scan'208";a="501172609"
 Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2021 10:02:34 -0700
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2021 10:07:29 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.95)
         (envelope-from <andriy.shevchenko@intel.com>)
-        id 1miJeV-003K0s-9E;
-        Wed, 03 Nov 2021 19:02:19 +0200
-Date:   Wed, 3 Nov 2021 19:02:19 +0200
+        id 1miJjF-003K4I-P2;
+        Wed, 03 Nov 2021 19:07:13 +0200
+Date:   Wed, 3 Nov 2021 19:07:13 +0200
 From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     linux-acpi@vger.kernel.org,
-        John Ogness <john.ogness@linutronix.de>, rafael@kernel.org,
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     John Ogness <john.ogness@linutronix.de>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-acpi@vger.kernel.org, rafael@kernel.org,
         mika.westerberg@linux.intel.com
-Subject: Re: [PATCH 3/3] ACPI: Make acpi_node_get_parent() local
-Message-ID: <YYLAm1X+lFykwTSg@smile.fi.intel.com>
+Subject: Re: [PATCH 0/3] Get device's parent from parent field, fix sleeping
+ IRQs disabled
+Message-ID: <YYLBwX3HN2pT6ZkD@smile.fi.intel.com>
 References: <20211103133406.659542-1-sakari.ailus@linux.intel.com>
- <20211103133406.659542-4-sakari.ailus@linux.intel.com>
+ <878ry55mff.fsf@jogness.linutronix.de>
+ <YYKvIPp6BEMXBJZs@alley>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211103133406.659542-4-sakari.ailus@linux.intel.com>
+In-Reply-To: <YYKvIPp6BEMXBJZs@alley>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 03, 2021 at 03:34:06PM +0200, Sakari Ailus wrote:
-> acpi_node_get_parent() isn't used outside drivers/acpi/property.c. Make it
-> local.
+On Wed, Nov 03, 2021 at 04:47:44PM +0100, Petr Mladek wrote:
+> On Wed 2021-11-03 15:50:04, John Ogness wrote:
+> > On 2021-11-03, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+> > > This set changes getting fwnode's parent on ACPI fwnode so it no longer
+> > > needs a semaphore, using struct acpi_device->parent field instead of
+> > > calling acpi_get_parent(). The semaphore is being acquired when the
+> > > device's full path is printed which now takes place local IRQs disabled:
+> > >
+> > > --------8<------------------------
+> > > BUG: sleeping function called from invalid context at kernel/locking/semaphore.c:163
+> > >
+> > > ...
+> > >
+> > > Call Trace:
+> > >  <TASK>
+> > >  dump_stack_lvl+0x57/0x7d
+> > >  __might_resched.cold+0xf4/0x12f
+> > >  down_timeout+0x21/0x70
+> > >  acpi_os_wait_semaphore+0x63/0x180
+> > >  acpi_ut_acquire_mutex+0x123/0x1ba
+> > >  acpi_get_parent+0x30/0x71
+> > >  acpi_node_get_parent+0x64/0x90
+> > >  ? lock_acquire+0x1a0/0x300
+> > >  fwnode_count_parents+0x6d/0xb0
+> > >  fwnode_full_name_string+0x18/0x90
+> > >  fwnode_string+0xd7/0x140
+> > >  vsnprintf+0x1ec/0x4f0
+> > >  va_format.constprop.0+0x6a/0x130
+> > >  vsnprintf+0x1ec/0x4f0
+> > >  vprintk_store+0x271/0x5a0
+> > >  ? rcu_read_lock_sched_held+0x12/0x70
+> > >  ? lock_release+0x228/0x310
+> > >  ? acpi_initialize_hp_context+0x50/0x50
+> > >  vprintk_emit+0xd5/0x340
+> > >  _printk+0x58/0x6f
+> > ...
+> > > --------8<------------------------
+> > >
+> > > I guess one could argue it wasn't great to begin with that getting
+> > > fwnode's parent required a semaphore to begin with, nevertheless John's
+> > > patch made it a concrete problem. Added Cc: stable, too.
+> 
+> It looks like a generic problem.
+> 
+> If I get it properly, we should make sure that any struct
+> fwnode_operations implementation will _not_ use sleeping locks in
+> the .get_parent() callback. Or anything that is called indirectly
+> from from vsprintf.
 
-Always in favour for such patches!
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Not sure how I may help here, but if there is a requirement to all *printf()
+to be non-sleepable, then yes, this should be done in that way. I'm not sure
+if every single %p extension does this...
 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/acpi/property.c | 3 ++-
->  include/linux/acpi.h    | 7 -------
->  2 files changed, 2 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-> index 7403ee2816eb8..49301d1bba4ff 100644
-> --- a/drivers/acpi/property.c
-> +++ b/drivers/acpi/property.c
-> @@ -1084,7 +1084,8 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
->   * Returns parent node of an ACPI device or data firmware node or %NULL if
->   * not available.
->   */
-> -struct fwnode_handle *acpi_node_get_parent(const struct fwnode_handle *fwnode)
-> +static struct fwnode_handle *
-> +acpi_node_get_parent(const struct fwnode_handle *fwnode)
->  {
->  	if (is_acpi_data_node(fwnode)) {
->  		/* All data nodes have parent pointer so just return that */
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 375715b0535fb..c65a754b1db53 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1168,7 +1168,6 @@ int acpi_node_prop_get(const struct fwnode_handle *fwnode, const char *propname,
->  
->  struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
->  					    struct fwnode_handle *child);
-> -struct fwnode_handle *acpi_node_get_parent(const struct fwnode_handle *fwnode);
->  
->  struct acpi_probe_entry;
->  typedef bool (*acpi_probe_entry_validate_subtbl)(struct acpi_subtable_header *,
-> @@ -1273,12 +1272,6 @@ acpi_get_next_subnode(const struct fwnode_handle *fwnode,
->  	return NULL;
->  }
->  
-> -static inline struct fwnode_handle *
-> -acpi_node_get_parent(const struct fwnode_handle *fwnode)
-> -{
-> -	return NULL;
-> -}
-> -
->  static inline struct fwnode_handle *
->  acpi_graph_get_next_endpoint(const struct fwnode_handle *fwnode,
->  			     struct fwnode_handle *prev)
-> -- 
-> 2.30.2
-> 
-> 
+It may require to update fwnode (source code) documentation to reflect the
+requirement. Also might_sleep() / migth_sleep_if() in the API calls may
+shed a light on (potential) issues.
 
 -- 
 With Best Regards,
