@@ -2,179 +2,100 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05C1744544D
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Nov 2021 14:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69C984455F0
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Nov 2021 16:01:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231206AbhKDN4b (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Nov 2021 09:56:31 -0400
-Received: from mga01.intel.com ([192.55.52.88]:46664 "EHLO mga01.intel.com"
+        id S231293AbhKDPDg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Nov 2021 11:03:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36274 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231345AbhKDN4a (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 4 Nov 2021 09:56:30 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10157"; a="255346056"
-X-IronPort-AV: E=Sophos;i="5.87,208,1631602800"; 
-   d="scan'208";a="255346056"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2021 06:53:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,208,1631602800"; 
-   d="scan'208";a="600254262"
-Received: from lkp-server02.sh.intel.com (HELO c20d8bc80006) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 04 Nov 2021 06:53:49 -0700
-Received: from kbuild by c20d8bc80006 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1midBd-0006Sv-3a; Thu, 04 Nov 2021 13:53:49 +0000
-Date:   Thu, 04 Nov 2021 21:53:30 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- c983c327442e1d67cccb9e2c73589d7cafd2514c
-Message-ID: <6183e5da.3b1O4twb/XE75+ep%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S229920AbhKDPDc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 4 Nov 2021 11:03:32 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 67CD661108;
+        Thu,  4 Nov 2021 15:00:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1636038054;
+        bh=uL12ryXgNUH1YHpwEqn23MZF95Lc2Z8MYbcCpnXHCLE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=jfAThr0n/flvXkmtk55BjcSgst/6t3kaxrFp73k6DPxuoQcRUW/anmuR70kWJJeun
+         jWZeT5gb3zrvW1Ts3ZCD7sM/XL6mysoO0A7CyngXfgPYa7HijIHCy4TTZvRhqXh/u4
+         tga3yjeTosv/uHNrnfPZW13nPhRyQvfujTO8NaR1Rg6svUPLzp+MqEwgdClvaIE0Mc
+         fON2XttXPlp6eZend025rY676uDu2Dm6p8wBr0K0CT33YyFjomWyZrQOn8bR0JYIoa
+         FUpxslFzOEUc0KG9kElZis3xUSLwYnWOwFLcAxguULKlbf8hLe/axV80Pr15JbtDJy
+         hCMUbUhNauwEg==
+Date:   Thu, 4 Nov 2021 10:00:53 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Xuesong Chen <xuesong.chen@linux.alibaba.com>
+Cc:     catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
+        james.morse@arm.com, will@kernel.org, rafael@kernel.org,
+        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
+        bhelgaas@google.com, ying.huang@intel.com,
+        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 0/4] PCI MCFG consolidation and APEI resource filtering
+Message-ID: <20211104150053.GA774800@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20211104105715.47396-1-xuesong.chen@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: c983c327442e1d67cccb9e2c73589d7cafd2514c  Merge branch 'acpi-video' into bleeding-edge
+On Thu, Nov 04, 2021 at 06:57:15PM +0800, Xuesong Chen wrote:
+> The issue of commit d91525eb8ee6 ("ACPI, EINJ: Enhance error injection tolerance
+> level") on x86 is also happened on our own ARM64 platform. We sent a patch[1]
+> trying to fix this issue in an arch-specific way as x86 does at first, but
+> according to the suggestion from Lorenzo Pieralisi and Catalin Marinas, we can
+> consolidate the PCI MCFG part then fix it in a more common way, that's why this
+> patch series comes.
+> 
+> [1] https://marc.info/?l=linux-arm-kernel&m=163108478627166&w=2
 
-elapsed time: 1154m
+Thanks.  I see this and will look at it after getting the v5.16
+changes merged.
 
-configs tested: 118
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20211103
-mips                     loongson1b_defconfig
-powerpc                      cm5200_defconfig
-mips                         mpc30x_defconfig
-powerpc                        icon_defconfig
-sh                           se7721_defconfig
-powerpc                 mpc837x_rdb_defconfig
-nios2                         3c120_defconfig
-nds32                               defconfig
-powerpc                 mpc8540_ads_defconfig
-arm                        neponset_defconfig
-powerpc                     tqm8560_defconfig
-arm                          collie_defconfig
-sh                      rts7751r2d1_defconfig
-sh                 kfr2r09-romimage_defconfig
-m68k                       m5249evb_defconfig
-m68k                       bvme6000_defconfig
-sparc                       sparc32_defconfig
-powerpc                         ps3_defconfig
-mips                      bmips_stb_defconfig
-arm                        mvebu_v7_defconfig
-arm                            dove_defconfig
-arm                       multi_v4t_defconfig
-powerpc                     tqm8540_defconfig
-arm                  randconfig-c002-20211103
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a012-20211103
-x86_64               randconfig-a015-20211103
-i386                 randconfig-a014-20211103
-i386                 randconfig-a016-20211103
-i386                 randconfig-a013-20211103
-i386                 randconfig-a015-20211103
-i386                 randconfig-a011-20211103
-i386                 randconfig-a012-20211103
-arc                  randconfig-r043-20211103
-riscv                randconfig-r042-20211103
-s390                 randconfig-r044-20211103
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-
-clang tested configs:
-mips                 randconfig-c004-20211103
-arm                  randconfig-c002-20211103
-i386                 randconfig-c001-20211103
-s390                 randconfig-c005-20211103
-powerpc              randconfig-c003-20211103
-mips                 randconfig-c004-20211104
-i386                 randconfig-c001-20211104
-arm                  randconfig-c002-20211104
-s390                 randconfig-c005-20211104
-riscv                randconfig-c006-20211104
-powerpc              randconfig-c003-20211104
-x86_64               randconfig-c007-20211104
-i386                 randconfig-a005-20211103
-i386                 randconfig-a003-20211103
-i386                 randconfig-a001-20211103
-i386                 randconfig-a004-20211103
-i386                 randconfig-a006-20211103
-i386                 randconfig-a002-20211103
-x86_64               randconfig-a012-20211104
-x86_64               randconfig-a016-20211104
-x86_64               randconfig-a015-20211104
-x86_64               randconfig-a013-20211104
-x86_64               randconfig-a011-20211104
-x86_64               randconfig-a014-20211104
-x86_64               randconfig-a006-20211103
-x86_64               randconfig-a004-20211103
-x86_64               randconfig-a001-20211103
-x86_64               randconfig-a002-20211103
-x86_64               randconfig-a005-20211103
-x86_64               randconfig-a003-20211103
-hexagon              randconfig-r041-20211103
-hexagon              randconfig-r045-20211103
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> ---
+> Change from v4 to v5:
+>   - Fix the warning: no previous prototype for 'remove_quirk_mcfg_res' warning
+>     reported by the kernel test robot.
+> 
+> Change from v3 to v4:
+>   - Add a new patch (patch #3) to address the quirk ECAM access issue. Because
+>     the normal ECAM config space can be accessed in a lockless way, so we don't
+>     need the mutual exclusion with the EINJ action. But those quirks maybe break
+>     this rule and corrupt the configuration access, reserve its MCFG address
+>     regions in this case to avoid that happens.
+> 
+>   - Add another patch (patch #4) to log the PCI MCFG entry parse message per
+>     the suggestion from Bjorn Helgaas. The output on ARM64 as:
+>     ACPI: MCFG entry for domain 0000 [bus 00-0f] at [mem 0x50000000-0x50ffffff] (base 0x50000000)
+> 
+>   - Commit message updated with more details of patch #2
+> 
+> Change from v2 to v3:
+>   - Address the comments of Lorenzo Pieralisi about the CONFIG_PCI
+>     dependence issue in APEI module (patch #2)
+> 
+> Change from v1 to v2:
+>   - Fix the "undefined reference to `pci_mmcfg_list'" build error in case
+>     of PCI_CONFIG=n, reported by the kernel test robot
+> 
+> Xuesong Chen (4):
+>   PCI: MCFG: Consolidate the separate PCI MCFG table entry list
+>   ACPI: APEI: Filter the PCI MCFG address with an arch-agnostic method
+>   ACPI: APEI: Reserve the MCFG address for quirk ECAM implementation
+>   PCI: MCFG: Add the MCFG entry parse log message
+> 
+>  arch/x86/include/asm/pci_x86.h | 17 +----------
+>  arch/x86/pci/mmconfig-shared.c | 30 -------------------
+>  drivers/acpi/apei/apei-base.c  | 68 ++++++++++++++++++++++++++++++++----------
+>  drivers/acpi/pci_mcfg.c        | 46 +++++++++++++++-------------
+>  drivers/pci/pci.c              |  2 ++
+>  drivers/pci/quirks.c           |  2 ++
+>  include/linux/pci.h            | 18 +++++++++++
+>  7 files changed, 101 insertions(+), 82 deletions(-)
+> 
+> -- 
+> 2.9.5
+> 
