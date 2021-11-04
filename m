@@ -2,118 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09E6644523B
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Nov 2021 12:31:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6591F445341
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Nov 2021 13:45:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229809AbhKDLeM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 4 Nov 2021 07:34:12 -0400
-Received: from mail-ot1-f54.google.com ([209.85.210.54]:47036 "EHLO
-        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229705AbhKDLeM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Nov 2021 07:34:12 -0400
-Received: by mail-ot1-f54.google.com with SMTP id w29-20020a056830411d00b0055abaca9349so7709033ott.13;
-        Thu, 04 Nov 2021 04:31:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=MgdOLOPcs/A9vtxa4IU81lPxBsuAOPrUSmt5KTVFe1c=;
-        b=RtuDRnKoaWUaVIaowkmuA15hLT+FcMOycmX+bE2SSjqRZ/Lxbm/fxOFiLC4g2qLq3s
-         f0r6iG2TD9/7CM+Gv7gkAu8krGhVjAbYxbE7HmRiSQ82ZXXE3+z4az302GYRf6+3C4as
-         iwelHik7ip/h7YjHCZG/e6Q0oWW8HfpCSOX3kDNLuR82o9tO7KdQW6ylnGYggOoj42JB
-         vG0TD9xYZyIaDXTDD5K1yf9FeALFepTRfX41xPS1iOiZgFSmkqxmxQt7wY/jM/FF9dLd
-         0eWEfkCryenle2J3IAapzjCPQCTiwTGm4/ESpmOkS6ONPGSQpTFB1SuVfpjSNeoTXt83
-         VIJw==
-X-Gm-Message-State: AOAM531/jdWSkE0yMHlqOtAFmuOxpoyiLRmg9TmCypGRskPoZy40rx4T
-        3aGp+vZKNYx4EYA7cVSFbsBbTH+FMRmwzgxo1EM=
-X-Google-Smtp-Source: ABdhPJyz+c5mJx35EqCu2zCOmAMuHJd58bEGPCbjF/ZRaisv3JU+s3sWzlmd8eR1Gg5qsKPAA7e55XEGx8XMc0QzcX8=
-X-Received: by 2002:a9d:a64:: with SMTP id 91mr30941382otg.198.1636025493924;
- Thu, 04 Nov 2021 04:31:33 -0700 (PDT)
+        id S229960AbhKDMs1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Nov 2021 08:48:27 -0400
+Received: from mga01.intel.com ([192.55.52.88]:41375 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229505AbhKDMs0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 4 Nov 2021 08:48:26 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10157"; a="255335930"
+X-IronPort-AV: E=Sophos;i="5.87,208,1631602800"; 
+   d="scan'208";a="255335930"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2021 05:45:49 -0700
+X-IronPort-AV: E=Sophos;i="5.87,208,1631602800"; 
+   d="scan'208";a="639334647"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2021 05:45:47 -0700
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id 45B0D20BFE;
+        Thu,  4 Nov 2021 14:45:45 +0200 (EET)
+Date:   Thu, 4 Nov 2021 14:45:45 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     John Ogness <john.ogness@linutronix.de>,
+        linux-acpi@vger.kernel.org, rafael@kernel.org,
+        mika.westerberg@linux.intel.com
+Subject: Re: [PATCH 0/3] Get device's parent from parent field, fix sleeping
+ IRQs disabled
+Message-ID: <YYPV+f45kULCwdh+@paasikivi.fi.intel.com>
+References: <20211103133406.659542-1-sakari.ailus@linux.intel.com>
+ <878ry55mff.fsf@jogness.linutronix.de>
+ <YYKvIPp6BEMXBJZs@alley>
 MIME-Version: 1.0
-References: <20211026075257.3785036-1-ishii.shuuichir@fujitsu.com> <TYCPR01MB6160403C510AE93C1EC2635DE98D9@TYCPR01MB6160.jpnprd01.prod.outlook.com>
-In-Reply-To: <TYCPR01MB6160403C510AE93C1EC2635DE98D9@TYCPR01MB6160.jpnprd01.prod.outlook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 4 Nov 2021 12:31:22 +0100
-Message-ID: <CAJZ5v0j4ZvbkdF2Az_5MLFY=Vt7835LA-U2N2qKbZVk9KDx7QA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Add AEST in ACPI Table Definitions
-To:     "ishii.shuuichir@fujitsu.com" <ishii.shuuichir@fujitsu.com>
-Cc:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "robert.moore@intel.com" <robert.moore@intel.com>,
-        "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
-        "devel@acpica.org" <devel@acpica.org>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "guohanjun@huawei.com" <guohanjun@huawei.com>,
-        "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YYKvIPp6BEMXBJZs@alley>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 4, 2021 at 8:14 AM ishii.shuuichir@fujitsu.com
-<ishii.shuuichir@fujitsu.com> wrote:
->
-> ping?
->
-> P.S.
-> We should have added the maintainer of ACPI FOR ARM64 (ACPI/arm64) first,
-> but since AEST is an arm-spec ACPI table, added the concerned persons
-> as new e-mail addresses.
+Hi Petr, John,
 
-Please resend the patch, then, with all of the requisite addresses
-present in the CC list.
+On Wed, Nov 03, 2021 at 04:47:44PM +0100, Petr Mladek wrote:
+> On Wed 2021-11-03 15:50:04, John Ogness wrote:
+> > added CC: printk maintainer (Petr Mladek)
+> > 
+> > On 2021-11-03, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+> > > This set changes getting fwnode's parent on ACPI fwnode so it no longer
+> > > needs a semaphore, using struct acpi_device->parent field instead of
+> > > calling acpi_get_parent(). The semaphore is being acquired when the
+> > > device's full path is printed which now takes place local IRQs disabled:
+> > >
+> > > --------8<------------------------
+> > > BUG: sleeping function called from invalid context at kernel/locking/semaphore.c:163
+> > >
+> > > ...
+> > >
+> > > Call Trace:
+> > >  <TASK>
+> > >  dump_stack_lvl+0x57/0x7d
+> > >  __might_resched.cold+0xf4/0x12f
+> > >  down_timeout+0x21/0x70
+> > >  acpi_os_wait_semaphore+0x63/0x180
+> > >  acpi_ut_acquire_mutex+0x123/0x1ba
+> > >  acpi_get_parent+0x30/0x71
+> > >  acpi_node_get_parent+0x64/0x90
+> > >  ? lock_acquire+0x1a0/0x300
+> > >  fwnode_count_parents+0x6d/0xb0
+> > >  fwnode_full_name_string+0x18/0x90
+> > >  fwnode_string+0xd7/0x140
+> > >  vsnprintf+0x1ec/0x4f0
+> > >  va_format.constprop.0+0x6a/0x130
+> > >  vsnprintf+0x1ec/0x4f0
+> > >  vprintk_store+0x271/0x5a0
+> > >  ? rcu_read_lock_sched_held+0x12/0x70
+> > >  ? lock_release+0x228/0x310
+> > >  ? acpi_initialize_hp_context+0x50/0x50
+> > >  vprintk_emit+0xd5/0x340
+> > >  _printk+0x58/0x6f
+> > ...
+> > > --------8<------------------------
+> > >
+> > > I guess one could argue it wasn't great to begin with that getting
+> > > fwnode's parent required a semaphore to begin with, nevertheless John's
+> > > patch made it a concrete problem. Added Cc: stable, too.
+> 
+> It looks like a generic problem.
+> 
+> If I get it properly, we should make sure that any struct
+> fwnode_operations implementation will _not_ use sleeping locks in
+> the .get_parent() callback. Or anything that is called indirectly
+> from from vsprintf.
+> 
+> Adding Andy into Cc.
 
-> > -----Original Message-----
-> > From: Shuuichirou Ishii <ishii.shuuichir@fujitsu.com>
-> > Sent: Tuesday, October 26, 2021 4:53 PM
-> > To: rjw@rjwysocki.net; lenb@kernel.org; linux-acpi@vger.kernel.org;
-> > linux-kernel@vger.kernel.org; robert.moore@intel.com; erik.kaneda@intel.com;
-> > rafael.j.wysocki@intel.com; devel@acpica.org
-> > Cc: Ishii, Shuuichirou/石井 周一郎 <ishii.shuuichir@fujitsu.com>
-> > Subject: [PATCH] ACPI: Add AEST in ACPI Table Definitions
-> >
-> > When We added AEST using the Upgrading ACPI tables via initrd function, the
-> > kernel could not recognize the AEST, so We added AEST the ACPI table definition.
-> >
-> > Signed-off-by: Shuuichirou Ishii <ishii.shuuichir@fujitsu.com>
-> > ---
-> >  drivers/acpi/tables.c | 2 +-
-> >  include/acpi/actbl2.h | 1 +
-> >  2 files changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c index
-> > f9383736fa0f..ab0fb4c33e07 100644
-> > --- a/drivers/acpi/tables.c
-> > +++ b/drivers/acpi/tables.c
-> > @@ -499,7 +499,7 @@ static const char table_sigs[][ACPI_NAMESEG_SIZE]
-> > __initconst = {
-> >       ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
-> >       ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
-> >       ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
-> > -     ACPI_SIG_NHLT };
-> > +     ACPI_SIG_NHLT, ACPI_SIG_AEST };
-> >
-> >  #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
-> >
-> > diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h index
-> > a47b32a5cbde..b586e40d4b86 100644
-> > --- a/include/acpi/actbl2.h
-> > +++ b/include/acpi/actbl2.h
-> > @@ -48,6 +48,7 @@
-> >  #define ACPI_SIG_SDEV           "SDEV"       /* Secure Devices table */
-> >  #define ACPI_SIG_NHLT           "NHLT"       /* Non-HDAudio Link Table
-> > */
-> >  #define ACPI_SIG_SVKL           "SVKL"       /* Storage Volume Key
-> > Location Table */
-> > +#define ACPI_SIG_AEST           "AEST" /* Arm Error Source Table */
-> >
-> >  /*
-> >   * All tables must be byte-packed to match the ACPI specification, since
-> > --
-> > 2.27.0
->
+That holds for OF and swnode already, ACPI was an exception to this.
+
+> 
+> > Well, before my work it was vprintk_emit() that was disabling local
+> > interrupts. So this has always been broken.
+
+Fair enough.
+
+> > 
+> > Really it should be:
+> > 
+> > Fixes: 3bd32d6a2ee6 ("lib/vsprintf: Add %pfw conversion specifier for
+> > printing fwnode names")
+> 
+> Yes, I consider this to be the culprit.
+> 
+> > Regardless, the fix should go into 5.10 and 5.14 stables.
+> 
+> Please add the Fixes tag and the following into the commit message:
+> 
+> Cc: stable@vger.kernel.org # v5.5+
+
+I'll use that in v2.
+
+-- 
+Regards,
+
+Sakari Ailus
