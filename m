@@ -2,100 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69C984455F0
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Nov 2021 16:01:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7AED445696
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Nov 2021 16:51:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231293AbhKDPDg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Nov 2021 11:03:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36274 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229920AbhKDPDc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 4 Nov 2021 11:03:32 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 67CD661108;
-        Thu,  4 Nov 2021 15:00:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636038054;
-        bh=uL12ryXgNUH1YHpwEqn23MZF95Lc2Z8MYbcCpnXHCLE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=jfAThr0n/flvXkmtk55BjcSgst/6t3kaxrFp73k6DPxuoQcRUW/anmuR70kWJJeun
-         jWZeT5gb3zrvW1Ts3ZCD7sM/XL6mysoO0A7CyngXfgPYa7HijIHCy4TTZvRhqXh/u4
-         tga3yjeTosv/uHNrnfPZW13nPhRyQvfujTO8NaR1Rg6svUPLzp+MqEwgdClvaIE0Mc
-         fON2XttXPlp6eZend025rY676uDu2Dm6p8wBr0K0CT33YyFjomWyZrQOn8bR0JYIoa
-         FUpxslFzOEUc0KG9kElZis3xUSLwYnWOwFLcAxguULKlbf8hLe/axV80Pr15JbtDJy
-         hCMUbUhNauwEg==
-Date:   Thu, 4 Nov 2021 10:00:53 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Xuesong Chen <xuesong.chen@linux.alibaba.com>
-Cc:     catalin.marinas@arm.com, lorenzo.pieralisi@arm.com,
-        james.morse@arm.com, will@kernel.org, rafael@kernel.org,
-        tony.luck@intel.com, bp@alien8.de, mingo@kernel.org,
-        bhelgaas@google.com, ying.huang@intel.com,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] PCI MCFG consolidation and APEI resource filtering
-Message-ID: <20211104150053.GA774800@bhelgaas>
+        id S231510AbhKDPxo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Nov 2021 11:53:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34112 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229770AbhKDPxo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Nov 2021 11:53:44 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1068BC061714;
+        Thu,  4 Nov 2021 08:51:06 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id b12so9341890wrh.4;
+        Thu, 04 Nov 2021 08:51:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=WZb02HUNcpyrSV5l5/+XMe5AMoc6YwLyY8T5euRMbL8=;
+        b=kw1zp2Tegl4Kqb4SQ0i5nA93CA98pd7hYLtkw13rlOMEQZ+8Q418AzSmPVcyedY74C
+         ABTDfoiZNmd1s4NmsY4PWLZhgb3Y1XfqgBLaWDRnQH+/hLeAofrOwy7p8lZsjZSugL3F
+         qrmL7LzDpqv5BwpI1UxzYHz/nPrF7LPiHH5C3sKTPWd3H/lECZQohDF+Ynq7FWOlIIgS
+         /aPrZ/MhApbdHIyUnl4liqM7yWj9yl03OnkwXGaX+xZbE2IgwRGwXsJAmP+kvLNTw606
+         uTKDJKSeDBWCs1LcRwCwkV1jPQ1fCNcpeM/tbxb8ZP7j1CilcdcHqsXUIgJKjP9eWS94
+         FLxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=WZb02HUNcpyrSV5l5/+XMe5AMoc6YwLyY8T5euRMbL8=;
+        b=1KKrFWtD+EZHWIzSwdqf52hTvLKw/wojFNYVCtR8SZrVmFeua2LteKc8HAl+nQTZHl
+         KFNluKn/n92MRXzFO7iQ5Uc5YqDA7AfWA4t8yBMGq9cMCUnCOY509ixsbmEo3mIxUpSL
+         LzcYuHIdlpIAJKfiVY4Sol3DTwmdu+9a9vFTWuCL69BA8qQUDK77gOqXmArvqQrhLiyU
+         S2gKMP2sttSa7gYtd57tBJb26NArTH/B8zqfLkJzjybrRd3PuTJuRs6kDQBl7+vZAGVm
+         7y+xca0qbLPLGXOkKJf53MxN9oQHGdjqJLDrUr+QgzYEC19QAldngiBpumtwHt6W/Bt3
+         g6Yw==
+X-Gm-Message-State: AOAM532RPwX0ehD7tJFj+rkk3nCt7sgXwkbEAyjCO4rI801Mx38cORNU
+        Y9oIYjG+r3ZxVqGGXOEuACs=
+X-Google-Smtp-Source: ABdhPJyDTpRBmB3xRPfE1CErEHrPH0QFPa6OVsRksW9o7hV8xA9OzQNF3oJjV7lgeE4GnIlESrqjZA==
+X-Received: by 2002:adf:ce8b:: with SMTP id r11mr45456071wrn.294.1636041064535;
+        Thu, 04 Nov 2021 08:51:04 -0700 (PDT)
+Received: from debian64.daheim (p5b0d7fa5.dip0.t-ipconnect.de. [91.13.127.165])
+        by smtp.gmail.com with ESMTPSA id e12sm6714724wrq.20.2021.11.04.08.51.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Nov 2021 08:51:04 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+        by debian64.daheim with esmtp (Exim 4.95)
+        (envelope-from <chunkeey@gmail.com>)
+        id 1mie48-00085z-QO;
+        Thu, 04 Nov 2021 16:51:03 +0100
+Message-ID: <179edf00-3ae0-3964-3433-015da8274aff@gmail.com>
+Date:   Thu, 4 Nov 2021 16:51:03 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211104105715.47396-1-xuesong.chen@linux.alibaba.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [RFC net-next/wireless-next v1 2/2] ath10k: move
+ device_get_mac_address() and pass errors up the chain
+Content-Language: de-DE
+To:     Mathias Kresin <dev@kresin.me>, netdev@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org
+Cc:     Ansuel Smith <ansuelsmth@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>, Michael Walle <michael@walle.cc>,
+        Arnd Bergmann <arnd@arndb.de>
+References: <20211030174111.1432663-1-chunkeey@gmail.com>
+ <20211030174111.1432663-2-chunkeey@gmail.com>
+ <2caec4e0-94f4-915c-60d1-c78e7bdc5364@kresin.me>
+From:   Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <2caec4e0-94f4-915c-60d1-c78e7bdc5364@kresin.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 04, 2021 at 06:57:15PM +0800, Xuesong Chen wrote:
-> The issue of commit d91525eb8ee6 ("ACPI, EINJ: Enhance error injection tolerance
-> level") on x86 is also happened on our own ARM64 platform. We sent a patch[1]
-> trying to fix this issue in an arch-specific way as x86 does at first, but
-> according to the suggestion from Lorenzo Pieralisi and Catalin Marinas, we can
-> consolidate the PCI MCFG part then fix it in a more common way, that's why this
-> patch series comes.
-> 
-> [1] https://marc.info/?l=linux-arm-kernel&m=163108478627166&w=2
+Hi Mathias,
 
-Thanks.  I see this and will look at it after getting the v5.16
-changes merged.
+On 02/11/2021 23:08, Mathias Kresin wrote:
+> 10/30/21 7:41 PM, Christian Lamparter:
+>> --- a/drivers/net/wireless/ath/ath10k/ahb.c
+>> +++ b/drivers/net/wireless/ath/ath10k/ahb.c
+>> @@ -745,9 +745,11 @@ static int ath10k_ahb_probe(struct platform_device *pdev)
+>>       size = sizeof(*ar_pci) + sizeof(*ar_ahb);
+>>       ar = ath10k_core_create(size, &pdev->dev, ATH10K_BUS_AHB,
+>>                   hw_rev, &ath10k_ahb_hif_ops);
+>> -    if (!ar) {
+>> -        dev_err(&pdev->dev, "failed to allocate core\n");
+>> -        return -ENOMEM;
+>> +    if (IS_ERR(ar)) {
+>> +        ret = PTR_ERR(ar);
+>> +        if (ret != -EPROBE_DEFER)
+>> +            dev_err(&pdev->dev, "failed to allocate core: %d\n", ret);
+> 
+> There's a helper for that: dev_err_probe().
 
-> ---
-> Change from v4 to v5:
->   - Fix the warning: no previous prototype for 'remove_quirk_mcfg_res' warning
->     reported by the kernel test robot.
-> 
-> Change from v3 to v4:
->   - Add a new patch (patch #3) to address the quirk ECAM access issue. Because
->     the normal ECAM config space can be accessed in a lockless way, so we don't
->     need the mutual exclusion with the EINJ action. But those quirks maybe break
->     this rule and corrupt the configuration access, reserve its MCFG address
->     regions in this case to avoid that happens.
-> 
->   - Add another patch (patch #4) to log the PCI MCFG entry parse message per
->     the suggestion from Bjorn Helgaas. The output on ARM64 as:
->     ACPI: MCFG entry for domain 0000 [bus 00-0f] at [mem 0x50000000-0x50ffffff] (base 0x50000000)
-> 
->   - Commit message updated with more details of patch #2
-> 
-> Change from v2 to v3:
->   - Address the comments of Lorenzo Pieralisi about the CONFIG_PCI
->     dependence issue in APEI module (patch #2)
-> 
-> Change from v1 to v2:
->   - Fix the "undefined reference to `pci_mmcfg_list'" build error in case
->     of PCI_CONFIG=n, reported by the kernel test robot
-> 
-> Xuesong Chen (4):
->   PCI: MCFG: Consolidate the separate PCI MCFG table entry list
->   ACPI: APEI: Filter the PCI MCFG address with an arch-agnostic method
->   ACPI: APEI: Reserve the MCFG address for quirk ECAM implementation
->   PCI: MCFG: Add the MCFG entry parse log message
-> 
->  arch/x86/include/asm/pci_x86.h | 17 +----------
->  arch/x86/pci/mmconfig-shared.c | 30 -------------------
->  drivers/acpi/apei/apei-base.c  | 68 ++++++++++++++++++++++++++++++++----------
->  drivers/acpi/pci_mcfg.c        | 46 +++++++++++++++-------------
->  drivers/pci/pci.c              |  2 ++
->  drivers/pci/quirks.c           |  2 ++
->  include/linux/pci.h            | 18 +++++++++++
->  7 files changed, 101 insertions(+), 82 deletions(-)
-> 
-> -- 
-> 2.9.5
-> 
+I was looking for that. Thank you! :-)
+(I need to check if this device_get_mac_address() all works
+with 5.15-next or not. It's probably easier to wait until
+5.16-rc1-wt gets released).
+
+Regards,
+Christian
