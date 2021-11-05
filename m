@@ -2,102 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F4A8446566
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Nov 2021 16:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C917E446575
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Nov 2021 16:07:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233289AbhKEPFR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Nov 2021 11:05:17 -0400
-Received: from mail-oi1-f169.google.com ([209.85.167.169]:33503 "EHLO
-        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229680AbhKEPFR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Nov 2021 11:05:17 -0400
-Received: by mail-oi1-f169.google.com with SMTP id bl27so12075248oib.0;
-        Fri, 05 Nov 2021 08:02:37 -0700 (PDT)
+        id S233431AbhKEPJx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Nov 2021 11:09:53 -0400
+Received: from mail-oi1-f177.google.com ([209.85.167.177]:40585 "EHLO
+        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233429AbhKEPJx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Nov 2021 11:09:53 -0400
+Received: by mail-oi1-f177.google.com with SMTP id y11so14972119oih.7;
+        Fri, 05 Nov 2021 08:07:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vX8f2vS+zMIuTQAbDXugdUdsKE/s6J0wYaU1pfRJZTA=;
-        b=vo0Whb2Ddah0QED+fI/Veeg9aieXC26B5VGhl1TGxG1KpxVXJIMxZwEbJjsFekboSt
-         35vMb9h5sMArqFGgFLctxWlOQNSed/obcg4jDjfDEaF4iGUc6RCzNBAW9AkxJlY759zg
-         eEa0k5WFE2ytG4M9vSZYY1IdouNMg2F0uSqLGKSVLYABxqg1TeQ+qg+OuCi4lTXv3pAk
-         tKm+Ho3Gdqkj4hMvgc2p40sq6CasKe9cz+aD127MhOovXN0RSKGOSCM15znomzLgoibk
-         KuB9yzLKIjZp7kWgxjGFjqE8xPK0B7Y5joEryRTvs2vtkwlxhaGnj/paRu2pk4Zqn+6s
-         8YtA==
-X-Gm-Message-State: AOAM530ierKqZvwQYUQ3tHik13xp+Hxrt6VaAJechCn04pg+jhNJyEgd
-        xjzGwdzux/fYABSsITQx37bNjrAiUUpqtQzWwR8=
-X-Google-Smtp-Source: ABdhPJzZPXVrhnJ4VEWfPpiFT1J/OH74jFYU7MUBQgbFjtakZukbwVdozEMRwT4eEbgU6rlsIDrdGPvBNzPSWPxkBsM=
-X-Received: by 2002:aca:5c5:: with SMTP id 188mr22276883oif.154.1636124557321;
- Fri, 05 Nov 2021 08:02:37 -0700 (PDT)
+        bh=ZvVdVt6Iz/HVU1yKu8B9fwySzZLcp1LPGBp9S6J40qg=;
+        b=S6AbPrv2bvsUbRDIuDCavJDmlSl8EeQiOKvwlkgT9oMXAabV5OL40QL/cPpH+6VTfw
+         2BIyWg9s1s2fmT5dtwHpwJXbnGq9gDSTfb8IMZh2WPEHzDDQjwGfa+OXxE/LdcKwcfa3
+         kM0cIch+jY/biO2CbXE7ypmmvPu5H+WfRud4pfYpua9XXXSmedySoW5J4cklvukLcpwG
+         kPMVYZK2gkkt0nJf8Mwcj5AOXY7R1nVpKV27j9n0o8yC2/F5wvXMH+y2qLiZuibDCovf
+         WqPNUTavfwOv2k/HiXPTa6cdzikmfEGneSCeM/g+fRvTOARbbt5BBmn0FpBSBy7e6Ad2
+         X/Qw==
+X-Gm-Message-State: AOAM532Dq2N17LPHPHDWqC1bprLnf80mLlC/qih4nclTVWJJ3dkBm7dA
+        53/Ts3spvnPKQVC2vjjixcHnm1hzcifhe6WIBws=
+X-Google-Smtp-Source: ABdhPJwkyYu3R6ttJ3AqyUzqpIoAIZUMOGQX2Sxr0+VX/E1g0DM4eu61bup+kE+U8voiN+5jC9G1vAsjGp5f8greXoc=
+X-Received: by 2002:aca:5c5:: with SMTP id 188mr22306423oif.154.1636124832859;
+ Fri, 05 Nov 2021 08:07:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211029063228.578909-1-AjitKumar.Pandey@amd.com> <20211029063228.578909-3-AjitKumar.Pandey@amd.com>
-In-Reply-To: <20211029063228.578909-3-AjitKumar.Pandey@amd.com>
+References: <163553708697.2509508.16523059414830959692.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20211101120055.00007383@Huawei.com> <CAPcyv4g_c1mF6WvsMHC7-US7YybSprk=GX6cFWjoGOVa+yLx9g@mail.gmail.com>
+ <20211102174421.00002ae4@Huawei.com>
+In-Reply-To: <20211102174421.00002ae4@Huawei.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 5 Nov 2021 16:02:26 +0100
-Message-ID: <CAJZ5v0jXnwC-C8mAWtQDtoPko9ALAYhpm3X-TZ5L83ROEUJWmA@mail.gmail.com>
-Subject: Re: [PATCH v2 RESEND 2/5] drivers: acpi: acpi_apd: Remove unused
- device property "is-rv"
-To:     Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
-Cc:     Stephen Boyd <sboyd@kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>, Vijendar.Mukunda@amd.com,
-        Alex Deucher <Alexander.Deucher@amd.com>,
-        Basavaraj.Hiregoudar@amd.com, Sunil-kumar.Dommati@amd.com,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+Date:   Fri, 5 Nov 2021 16:07:01 +0100
+Message-ID: <CAJZ5v0jd9ntjmEa=-EyXUOExgJsU_A5fJdB0HirT6c6V802f6Q@mail.gmail.com>
+Subject: Re: [PATCH 0/6] Introduce acpi_table_parse_cedt and extra nodes for CXL.mem
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>
+Cc:     Rafael J Wysocki <rafael.j.wysocki@intel.com>,
         Len Brown <lenb@kernel.org>,
-        "open list:ACPI" <linux-acpi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>
+        Alison Schofield <alison.schofield@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-cxl@vger.kernel.org,
+        Linux ACPI <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Oct 29, 2021 at 8:33 AM Ajit Kumar Pandey
-<AjitKumar.Pandey@amd.com> wrote:
+On Tue, Nov 2, 2021 at 6:44 PM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
 >
-> Initially "is-rv" device property is added for 48MHz fixed clock
-> support on Raven or RV architecture. It's unused now as we moved
-> to clock config based selection to extend such support on others
-> architecture. This change removed unused code from acpi driver.
+> On Mon, 1 Nov 2021 20:41:34 -0700
+> Dan Williams <dan.j.williams@intel.com> wrote:
 >
-> Signed-off-by: Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
+> > On Mon, Nov 1, 2021 at 5:01 AM Jonathan Cameron
+> > <Jonathan.Cameron@huawei.com> wrote:
+> > >
+> > > On Fri, 29 Oct 2021 12:51:27 -0700
+> > > Dan Williams <dan.j.williams@intel.com> wrote:
+> > >
+> > > > Hi Rafael,
+> > > >
+> > > > While reviewing "[PATCH v3] ACPI: NUMA: Add a node and memblk for each
+> > > > CFMWS not in SRAT" [1]. I noticed that it was open coding CEDT sub-table
+> > > > parsing in a similar fashion as drivers/cxl/acpi.c. The driver open
+> > > > coded the parsing because the ACPI sub-table helpers are marked __init.
+> > > > In order to avoid the ongoing maintenance burden of a split between
+> > > > "early" and "late" ACPI sub-table parsing this series proposes to make
+> > > > those helpers available to drivers.
+> > > >
+> > > > The savings in drivers/cxl/ are:
+> > > >
+> > > >  drivers/cxl/Kconfig |    1
+> > > >  drivers/cxl/acpi.c  |  234 +++++++++++++++++++--------------------------------
+> > > >  2 files changed, 88 insertions(+), 147 deletions(-)
+> > > >
+> > > > ...and 15 lines new code not added are saved in this new version of
+> > > > "ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT".
+> > > >
+> > > > Let me know if this looks ok to you and I can carry it in the CXL tree
+> > > > (i.e. after the merge window, for v5.17 consideration).
+> > > >
+> > > > [1]: https://lore.kernel.org/r/20211019050908.449231-1-alison.schofield@intel.com
+> > >
+> > > Is it worth the complexity of the __init_or_acpilib and export part?
+> > > Seems like a fiddly dance for what looks to be minor savings...
+> >
+> > It follows the __initdata_or_meminfo precedent that identifies data
+> > that is normally __init unless a specific driver needs it. The lesson
+> > from the tinyconfig effort was that image size dies a death of many
+> > cuts unless care is taken to preserve minor savings. Yes, it's likely
+> > trivial in this case, but it's at least a gesture to avoid bloating
+> > the kernel image size unnecessarily when the kernel has gotten by so
+> > long with this infrastructure being purely __init.
+>
+> I'm in favor avoiding bloat, but this is ACPI code so rarely very small machines
+> and very like that all distros will turn it on anyway on basis they will want
+> to support CXL (hopefully!)
+>
+> I guess let's see what Rafael's opinion is.  I don't feel that strongly about
+> it if general view is that it is worth the small amount of complexity.
 
-Is this and the [3/5] applicable without the [1/5]?
+The general ACPI changes in this series are fine with me, so Dan
+please feel free to add
 
-If so, I can pick them up once they are approved by some other AMD
-folks, preferably Mario.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-> ---
->  drivers/acpi/acpi_apd.c               | 3 ---
->  include/linux/platform_data/clk-fch.h | 1 -
->  2 files changed, 4 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-> index 6e02448d15d9..6913e9712852 100644
-> --- a/drivers/acpi/acpi_apd.c
-> +++ b/drivers/acpi/acpi_apd.c
-> @@ -87,9 +87,6 @@ static int fch_misc_setup(struct apd_private_data *pdata)
->         if (ret < 0)
->                 return -ENOENT;
->
-> -       if (!acpi_dev_get_property(adev, "is-rv", ACPI_TYPE_INTEGER, &obj))
-> -               clk_data->is_rv = obj->integer.value;
-> -
->         list_for_each_entry(rentry, &resource_list, node) {
->                 clk_data->base = devm_ioremap(&adev->dev, rentry->res->start,
->                                               resource_size(rentry->res));
-> diff --git a/include/linux/platform_data/clk-fch.h b/include/linux/platform_data/clk-fch.h
-> index b9f682459f08..850ca776156d 100644
-> --- a/include/linux/platform_data/clk-fch.h
-> +++ b/include/linux/platform_data/clk-fch.h
-> @@ -12,7 +12,6 @@
->
->  struct fch_clk_data {
->         void __iomem *base;
-> -       u32 is_rv;
->  };
->
->  #endif /* __CLK_FCH_H */
-> --
-> 2.25.1
->
+to it.
+
+Thanks!
