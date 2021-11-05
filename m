@@ -2,73 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2322A445DAB
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Nov 2021 02:57:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 288E4445E1E
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Nov 2021 03:55:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231222AbhKEB75 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 4 Nov 2021 21:59:57 -0400
-Received: from mail-pl1-f178.google.com ([209.85.214.178]:42568 "EHLO
-        mail-pl1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230512AbhKEB75 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Nov 2021 21:59:57 -0400
-Received: by mail-pl1-f178.google.com with SMTP id u17so10124791plg.9;
-        Thu, 04 Nov 2021 18:57:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=96WX6/US4LcMNKbP8rKG9nQdk70oEI+cgp7sotVClCk=;
-        b=42fgUMMktag4DxRByW3Qt2ApISri6+Up2aLcYE0Tj03D7ioVH4dcXTKWquDsuMZNfK
-         A6+IjyT3qqx8rgOKQyQvQLY3Ze2nV2TkpssLDGVT6AtWZvzzdehkC6lYBBTwXlk77lNk
-         03KzqL8L0X+YaVJ3xKrmkl0x9GALqSUoqY9LZbLsRaHa7HDMIthy7MrSZEH9VCRDjQ3C
-         CBhEpMgdIKA6NGS6y+dmNKIMutzie2IbuMSBNdgIDX5gjDDhxgf/wKhCZT9+Ix9heRzi
-         bxUmwzgK/T1yGhfoAFAF+VOsu9Dl7WrEEqmH5MQu42JvkuL6MIyivtMBgMdfdTCt00iM
-         D5UA==
-X-Gm-Message-State: AOAM531NJDnO5iNnR6Gsy2RXG7mnurnRCDQzh6D8PD2gOrsXQ8Q25x7Y
-        cy+7QlANbbzahFm4wiiizWM=
-X-Google-Smtp-Source: ABdhPJyPNvQW04siPU6SnZ8iGFq/FSToZtACsOx4KEawhAt5b+vDpFHXnP0kDfoA+Y0Wagi1Wxf77g==
-X-Received: by 2002:a17:902:ec8f:b0:142:11aa:3974 with SMTP id x15-20020a170902ec8f00b0014211aa3974mr18585933plg.30.1636077438297;
-        Thu, 04 Nov 2021 18:57:18 -0700 (PDT)
-Received: from rocinante ([95.155.85.46])
-        by smtp.gmail.com with ESMTPSA id n11sm4764492pgm.74.2021.11.04.18.57.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Nov 2021 18:57:17 -0700 (PDT)
-Date:   Fri, 5 Nov 2021 02:57:04 +0100
-From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To:     Xuesong Chen <xuesong.chen@linux.alibaba.com>
+        id S232062AbhKEC5r (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 4 Nov 2021 22:57:47 -0400
+Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:47529 "EHLO
+        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231496AbhKEC5r (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 4 Nov 2021 22:57:47 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R811e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=xuesong.chen@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0Uv6m9jd_1636080904;
+Received: from 30.225.212.33(mailfrom:xuesong.chen@linux.alibaba.com fp:SMTPD_---0Uv6m9jd_1636080904)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 05 Nov 2021 10:55:05 +0800
+Message-ID: <0f064ea0-2af7-1141-cf43-ce9d3da0eb6b@linux.alibaba.com>
+Date:   Fri, 5 Nov 2021 10:55:04 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.2.1
+Subject: Re: [PATCH v5 0/4] PCI MCFG consolidation and APEI resource filtering
+To:     =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>
 Cc:     Bjorn Helgaas <helgaas@kernel.org>, catalin.marinas@arm.com,
         lorenzo.pieralisi@arm.com, james.morse@arm.com, will@kernel.org,
         rafael@kernel.org, tony.luck@intel.com, bp@alien8.de,
         mingo@kernel.org, bhelgaas@google.com, ying.huang@intel.com,
         linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] PCI MCFG consolidation and APEI resource filtering
-Message-ID: <YYSPb8+9zcEZ5tLs@rocinante>
 References: <20211104150053.GA774800@bhelgaas>
  <e1a6fa17-106d-6b0b-8974-5a96bb33086e@linux.alibaba.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e1a6fa17-106d-6b0b-8974-5a96bb33086e@linux.alibaba.com>
+ <YYSPb8+9zcEZ5tLs@rocinante>
+From:   Xuesong Chen <xuesong.chen@linux.alibaba.com>
+In-Reply-To: <YYSPb8+9zcEZ5tLs@rocinante>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
 
-[...]
-> > Thanks.  I see this and will look at it after getting the v5.16
-> > changes merged.
+On 05/11/2021 09:57, Krzysztof Wilczyński wrote:
+> Hi,
 > 
-> Ah, Bjorn, I also notice this series is in your patchwork now, hmmm, I don't know why
-> the previous iterations are not there either, seems something doesn't work as expected
-> in my side. Probably my fault for the unpeaceful interlude :-)
-[...]
+> [...]
+>>> Thanks.  I see this and will look at it after getting the v5.16
+>>> changes merged.
+>>
+>> Ah, Bjorn, I also notice this series is in your patchwork now, hmmm, I don't know why
+>> the previous iterations are not there either, seems something doesn't work as expected
+>> in my side. Probably my fault for the unpeaceful interlude :-)
+> [...]
+> 
+> You can check your previous submissions using the following:
+> 
+>   https://patchwork.kernel.org/project/linux-pci/list/?submitter=201963&archive=both&state=*
 
-You can check your previous submissions using the following:
+Ah, yes, it does show all. I thought the previous versions haven't been queued to the patchwork...
 
-  https://patchwork.kernel.org/project/linux-pci/list/?submitter=201963&archive=both&state=*
+Thanks,
+Xuesong
 
-This changes the default filters to include everything you submitted.
-
-	Krzysztof
+> 
+> This changes the default filters to include everything you submitted.
+> 
+> 	Krzysztof
+> 
