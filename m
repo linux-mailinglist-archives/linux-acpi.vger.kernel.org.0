@@ -2,154 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E22CA446307
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Nov 2021 12:55:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DC5B446479
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Nov 2021 14:54:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232719AbhKEL61 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Nov 2021 07:58:27 -0400
-Received: from mga14.intel.com ([192.55.52.115]:18600 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231852AbhKEL60 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 5 Nov 2021 07:58:26 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10158"; a="232134822"
-X-IronPort-AV: E=Sophos;i="5.87,211,1631602800"; 
-   d="scan'208";a="232134822"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2021 04:55:47 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,211,1631602800"; 
-   d="scan'208";a="490300478"
-Received: from lkp-server02.sh.intel.com (HELO c20d8bc80006) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 05 Nov 2021 04:55:45 -0700
-Received: from kbuild by c20d8bc80006 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mixou-0007d0-Da; Fri, 05 Nov 2021 11:55:44 +0000
-Date:   Fri, 05 Nov 2021 19:55:09 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- c00ddaa2e79ed178db8f6c06a77ddc41adc06d9e
-Message-ID: <61851b9d.8faa51Pnt3pJfROV%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S232106AbhKEN4y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Nov 2021 09:56:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47314 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231998AbhKEN4x (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Nov 2021 09:56:53 -0400
+Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 552CFC061714
+        for <linux-acpi@vger.kernel.org>; Fri,  5 Nov 2021 06:54:14 -0700 (PDT)
+Received: by mail-ua1-x941.google.com with SMTP id b3so17255677uam.1
+        for <linux-acpi@vger.kernel.org>; Fri, 05 Nov 2021 06:54:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=NWKMZ//AyFWFbpFk6FF66OtPadVuan7a1ybZS8hGNR8=;
+        b=fAmSJNos3R1bRvV6p7d79//gmx4UVAzKYYfgsThpDy0tzrVteFu7H0DsBUn9io86UQ
+         U1pd1x++I3dTR65Lh51TDKjLghSkWY2PntuItJtrRhxNnJ7Xwnfq/P+r5HpMIjkq0LmF
+         0s92cmvGrXxEyniZh5Px+RZvIwl5MBEXPfGp9RRZsWQYEyHEaAgCeF5nMi6GlCms+ch1
+         aQFwS7N3TGfc5AysOZUBjdKMh6DQNBRj/q0+2Kclb03/otfx0BW4xs0Xuus8yj7+V11n
+         CiHUeSKgn3+MhAJ/VZHWczOWqliBTj3Ot3ZPnbMro30IdWat1ejG2jHHCjhuR0/jePke
+         +gAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=NWKMZ//AyFWFbpFk6FF66OtPadVuan7a1ybZS8hGNR8=;
+        b=kE/+ODBoMbXdJTz5VCeW2dkEK+5ae5MM3hmEqaKa5G6mY6bDVnzbUA6yDftvm8B21o
+         W5RBturhJqvomk0yXDwzndkI4b9ticS6N+e9Z/V5iOJErAAwk8/SHld3TniFFKfxUu8r
+         Q54enY9UMzbEDuYEy+Rcwllvzl766KOEbGb/H+uuRrJR59bYDnx0zGar2qVJrBrjkKUR
+         6YnixJPI3f+KE+uHHX/DsE1Z24MLfJJo6f92aIsugGPRCKI+sZHTvMrd40izRg37gdO5
+         OWtQG0xGxUwCJGH3cpuyhT2ZyeBg3ROmT24798aC7Pqpm8sF2c2lPRAVLfcHz8wdnP3u
+         e3lw==
+X-Gm-Message-State: AOAM530rZW4b9bZbTDgADuW1129AWIUMxi1OtHsU+UgRJLxWpMlleo1Q
+        lUjSU9+loL2Y5H4f5EK81I2GQ2OdFhQFqSTJwN8=
+X-Google-Smtp-Source: ABdhPJy47NAKWK/BOz6nT99PVGamJxrgvUJKaK+0dgHnZY54rGSN4pqdLaqibehh7sWUhqJ2x4OUDcTbfDM3rLCVDEc=
+X-Received: by 2002:a9f:2c98:: with SMTP id w24mr65257366uaj.89.1636120453348;
+ Fri, 05 Nov 2021 06:54:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ab0:20b3:0:0:0:0:0 with HTTP; Fri, 5 Nov 2021 06:54:12 -0700 (PDT)
+Reply-To: uchennailobitenone@gmail.com
+From:   uchenna <robertanderson6016@gmail.com>
+Date:   Fri, 5 Nov 2021 06:54:12 -0700
+Message-ID: <CA+o7mw0BtqKt-Q5nazmqZGwy6s3Ty5xk-BSdU2Pynx4BTR66EA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: c00ddaa2e79ed178db8f6c06a77ddc41adc06d9e  Merge branch 'thermal-int340x' into bleeding-edge
+Attention Please,
 
-elapsed time: 924m
+I am Bar. uchenna ilobi ,  How are you, I hope you are fine and
+healthy? This is to inform you that i have concluded the transaction
+successfully with the help of a new partner from Venezuela and now the
+fund has been transferred to Venezuela into the bank account of the
+new partner.
 
-configs tested: 95
-configs skipped: 3
+Meanwhile, I have decided to compensate you with the sum of
+US$350,000.00 (thiree Hundred and Fifty Thousand United States
+Dollars) due to your past effort, though you disappointed me along the
+line. But nevertheless I am very happy for the successful ending of
+the transaction without any problem and that is the reason why i have
+decided to compensate you with the sum of US$350,000.00 so that you
+will share the joy with me.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I advise you to contact my secretary for Atm Card of US$350.000.00,
+which I kept for you. Contact him now without any delay.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20211105
-m68k                          hp300_defconfig
-arm                            qcom_defconfig
-ia64                          tiger_defconfig
-s390                             allmodconfig
-arm                       versatile_defconfig
-mips                       lemote2f_defconfig
-powerpc                      walnut_defconfig
-riscv                            allyesconfig
-sh                           se7712_defconfig
-powerpc                     asp8347_defconfig
-arm                            mmp2_defconfig
-sh                   sh7770_generic_defconfig
-arm                        oxnas_v6_defconfig
-sh                        sh7757lcr_defconfig
-arm                    vt8500_v6_v7_defconfig
-sh                          r7785rp_defconfig
-arm                        cerfcube_defconfig
-mips                      maltasmvp_defconfig
-arm                  randconfig-c002-20211105
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a012-20211105
-x86_64               randconfig-a016-20211105
-x86_64               randconfig-a015-20211105
-x86_64               randconfig-a013-20211105
-x86_64               randconfig-a011-20211105
-x86_64               randconfig-a014-20211105
-i386                 randconfig-a016-20211105
-i386                 randconfig-a014-20211105
-i386                 randconfig-a015-20211105
-i386                 randconfig-a013-20211105
-i386                 randconfig-a011-20211105
-i386                 randconfig-a012-20211105
-arc                  randconfig-r043-20211105
-riscv                randconfig-r042-20211105
-s390                 randconfig-r044-20211105
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
+Name: solomon brandy
 
-clang tested configs:
-x86_64               randconfig-a004-20211105
-i386                 randconfig-a005-20211105
-i386                 randconfig-a001-20211105
-i386                 randconfig-a003-20211105
-i386                 randconfig-a004-20211105
-i386                 randconfig-a006-20211105
-i386                 randconfig-a002-20211105
-hexagon              randconfig-r041-20211105
-hexagon              randconfig-r045-20211105
+Email:solomonbrandyfiveone@gmail.com
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Kindly reconfirm to him the following below information:
+
+Your full name_________________________
+Your address__________________________
+Your country___________________________
+Your age______________________________
+Your occupation________________________
+Your cell Phone number______________________
+
+Note that if you did not send him the above information complete, he
+will not release the Atm card to you because he has to be sure that it
+is you. Ask him to send you the total sum of ($350.000.00 ) Atm card,
+which I kept for you.
+
+Best regards,
+
+Mr. uchenna ilobi
