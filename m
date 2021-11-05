@@ -2,96 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC5B446479
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Nov 2021 14:54:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 154D044651F
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Nov 2021 15:39:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232106AbhKEN4y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 5 Nov 2021 09:56:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47314 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231998AbhKEN4x (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Nov 2021 09:56:53 -0400
-Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 552CFC061714
-        for <linux-acpi@vger.kernel.org>; Fri,  5 Nov 2021 06:54:14 -0700 (PDT)
-Received: by mail-ua1-x941.google.com with SMTP id b3so17255677uam.1
-        for <linux-acpi@vger.kernel.org>; Fri, 05 Nov 2021 06:54:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=NWKMZ//AyFWFbpFk6FF66OtPadVuan7a1ybZS8hGNR8=;
-        b=fAmSJNos3R1bRvV6p7d79//gmx4UVAzKYYfgsThpDy0tzrVteFu7H0DsBUn9io86UQ
-         U1pd1x++I3dTR65Lh51TDKjLghSkWY2PntuItJtrRhxNnJ7Xwnfq/P+r5HpMIjkq0LmF
-         0s92cmvGrXxEyniZh5Px+RZvIwl5MBEXPfGp9RRZsWQYEyHEaAgCeF5nMi6GlCms+ch1
-         aQFwS7N3TGfc5AysOZUBjdKMh6DQNBRj/q0+2Kclb03/otfx0BW4xs0Xuus8yj7+V11n
-         CiHUeSKgn3+MhAJ/VZHWczOWqliBTj3Ot3ZPnbMro30IdWat1ejG2jHHCjhuR0/jePke
-         +gAg==
+        id S233112AbhKEOmE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 5 Nov 2021 10:42:04 -0400
+Received: from mail-ot1-f48.google.com ([209.85.210.48]:39561 "EHLO
+        mail-ot1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232865AbhKEOmE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 5 Nov 2021 10:42:04 -0400
+Received: by mail-ot1-f48.google.com with SMTP id c26-20020a9d615a000000b0055bf6efab46so5106349otk.6;
+        Fri, 05 Nov 2021 07:39:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=NWKMZ//AyFWFbpFk6FF66OtPadVuan7a1ybZS8hGNR8=;
-        b=kE/+ODBoMbXdJTz5VCeW2dkEK+5ae5MM3hmEqaKa5G6mY6bDVnzbUA6yDftvm8B21o
-         W5RBturhJqvomk0yXDwzndkI4b9ticS6N+e9Z/V5iOJErAAwk8/SHld3TniFFKfxUu8r
-         Q54enY9UMzbEDuYEy+Rcwllvzl766KOEbGb/H+uuRrJR59bYDnx0zGar2qVJrBrjkKUR
-         6YnixJPI3f+KE+uHHX/DsE1Z24MLfJJo6f92aIsugGPRCKI+sZHTvMrd40izRg37gdO5
-         OWtQG0xGxUwCJGH3cpuyhT2ZyeBg3ROmT24798aC7Pqpm8sF2c2lPRAVLfcHz8wdnP3u
-         e3lw==
-X-Gm-Message-State: AOAM530rZW4b9bZbTDgADuW1129AWIUMxi1OtHsU+UgRJLxWpMlleo1Q
-        lUjSU9+loL2Y5H4f5EK81I2GQ2OdFhQFqSTJwN8=
-X-Google-Smtp-Source: ABdhPJy47NAKWK/BOz6nT99PVGamJxrgvUJKaK+0dgHnZY54rGSN4pqdLaqibehh7sWUhqJ2x4OUDcTbfDM3rLCVDEc=
-X-Received: by 2002:a9f:2c98:: with SMTP id w24mr65257366uaj.89.1636120453348;
- Fri, 05 Nov 2021 06:54:13 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VTa1m+M0trWvovWd1u5XqKaD5cR/58XJc93gIZv2JIU=;
+        b=t9m8ZkGOOjtugnTKXE3EgLwT9We6Xtu0HDHJ7RRsefBPGWlDPbdBEmxvOq8F7YCk2g
+         seaRmRJew2ddbO81d7ZvTiDP7VsFGws2rMldtrn/YulP0FszYdRRF4inzqpDyWpyQ+oF
+         Zmc1km1so3lLY6srmP13rHJbtHHrSCZTrIZxSNwoFl7LmLXIm1G+kciO987z3H86YwZG
+         1Q4waSAEzMArZdYtYLWQVnHmF6E75ws7Qv8zQWsW3iMklSpvvuBHif3Ek44SIix6JcJj
+         APZ4a++TTUy/kMHCQyqvYPUQYjk/3XgY2E6xslIVgsoSFvyeLvPnwVgHQzk2bV4Q51Cy
+         pr7w==
+X-Gm-Message-State: AOAM531BymkR77nQsKZeNGys5vHJ192O92pXXRTIjcbxYZWP1RYEWvle
+        dLF0FONN88ExAqxxnjZtOuwEdG5IDoBWOLEwQZu016/T
+X-Google-Smtp-Source: ABdhPJy+X17NfVBfLLcL6WVEJYs2fK1iJTS+86IZ46E7ixSdCOhWifsBUKtdUr3xdhTL4Olm7jipl9zFqmbyXWSaXEY=
+X-Received: by 2002:a9d:a64:: with SMTP id 91mr38181170otg.198.1636123163940;
+ Fri, 05 Nov 2021 07:39:23 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ab0:20b3:0:0:0:0:0 with HTTP; Fri, 5 Nov 2021 06:54:12 -0700 (PDT)
-Reply-To: uchennailobitenone@gmail.com
-From:   uchenna <robertanderson6016@gmail.com>
-Date:   Fri, 5 Nov 2021 06:54:12 -0700
-Message-ID: <CA+o7mw0BtqKt-Q5nazmqZGwy6s3Ty5xk-BSdU2Pynx4BTR66EA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+References: <2606454.mvXUDI8C0e@kreacher> <11862743.O9o76ZdvQC@kreacher>
+In-Reply-To: <11862743.O9o76ZdvQC@kreacher>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 5 Nov 2021 15:39:13 +0100
+Message-ID: <CAJZ5v0i4QAmHszoKybD_TSHdkA6T+LE52DP7Bs_YUGo9NFmNDw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PM: Fix device wakeup power reference counting error
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Attention Please,
+On Thu, Nov 4, 2021 at 10:54 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> On Thursday, November 4, 2021 6:21:51 PM CET Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Fix a device wakeup power reference counting error introduced by
+> > commit a2d7b2e004af ("ACPI: PM: Fix sharing of wakeup power
+> > resources").
+> >
+> > Fixes: a2d7b2e004af ("ACPI: PM: Fix sharing of wakeup power resources")
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/acpi/power.c |    4 +---
+> >  1 file changed, 1 insertion(+), 3 deletions(-)
+> >
+> > Index: linux-pm/drivers/acpi/power.c
+> > ===================================================================
+> > --- linux-pm.orig/drivers/acpi/power.c
+> > +++ linux-pm/drivers/acpi/power.c
+> > @@ -757,10 +757,8 @@ int acpi_disable_wakeup_device_power(str
+> >
+> >       mutex_lock(&acpi_device_lock);
+> >
+> > -     if (dev->wakeup.prepare_count > 1) {
+> > +     if (dev->wakeup.prepare_count >= 1)
+> >               dev->wakeup.prepare_count--;
+> > -             goto out;
+> > -     }
+> >
+> >       /* Do nothing if wakeup power has not been enabled for this device. */
+> >       if (!dev->wakeup.prepare_count)
+>
+> This is still not good.  It should be something like the patch below, but I
+> need to test that one.
 
-I am Bar. uchenna ilobi ,  How are you, I hope you are fine and
-healthy? This is to inform you that i have concluded the transaction
-successfully with the help of a new partner from Venezuela and now the
-fund has been transferred to Venezuela into the bank account of the
-new partner.
+Tested now, so applying as 5.16-rc material.
 
-Meanwhile, I have decided to compensate you with the sum of
-US$350,000.00 (thiree Hundred and Fifty Thousand United States
-Dollars) due to your past effort, though you disappointed me along the
-line. But nevertheless I am very happy for the successful ending of
-the transaction without any problem and that is the reason why i have
-decided to compensate you with the sum of US$350,000.00 so that you
-will share the joy with me.
-
-I advise you to contact my secretary for Atm Card of US$350.000.00,
-which I kept for you. Contact him now without any delay.
-
-Name: solomon brandy
-
-Email:solomonbrandyfiveone@gmail.com
-
-Kindly reconfirm to him the following below information:
-
-Your full name_________________________
-Your address__________________________
-Your country___________________________
-Your age______________________________
-Your occupation________________________
-Your cell Phone number______________________
-
-Note that if you did not send him the above information complete, he
-will not release the Atm card to you because he has to be sure that it
-is you. Ask him to send you the total sum of ($350.000.00 ) Atm card,
-which I kept for you.
-
-Best regards,
-
-Mr. uchenna ilobi
+> ---
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Subject: [PATCH v2] ACPI: PM: Fix device wakeup power reference counting error
+>
+> Fix a device wakeup power reference counting error introduced by
+> commit a2d7b2e004af ("ACPI: PM: Fix sharing of wakeup power
+> resources").
+>
+> Fixes: a2d7b2e004af ("ACPI: PM: Fix sharing of wakeup power resources")
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>
+> -> v2: Actually disable wakeup power when the reference count becomes zero.
+>
+> ---
+>  drivers/acpi/power.c |    8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+>
+> Index: linux-pm/drivers/acpi/power.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/power.c
+> +++ linux-pm/drivers/acpi/power.c
+> @@ -757,13 +757,11 @@ int acpi_disable_wakeup_device_power(str
+>
+>         mutex_lock(&acpi_device_lock);
+>
+> -       if (dev->wakeup.prepare_count > 1) {
+> -               dev->wakeup.prepare_count--;
+> +       /* Do nothing if wakeup power has not been enabled for this device. */
+> +       if (dev->wakeup.prepare_count <= 0)
+>                 goto out;
+> -       }
+>
+> -       /* Do nothing if wakeup power has not been enabled for this device. */
+> -       if (!dev->wakeup.prepare_count)
+> +       if (--dev->wakeup.prepare_count > 0)
+>                 goto out;
+>
+>         err = acpi_device_sleep_wake(dev, 0, 0, 0);
+>
+>
+>
+>
