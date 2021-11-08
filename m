@@ -2,86 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EF0A449B69
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Nov 2021 19:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93B0144A052
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Nov 2021 02:00:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234840AbhKHSJa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Nov 2021 13:09:30 -0500
-Received: from mga09.intel.com ([134.134.136.24]:23229 "EHLO mga09.intel.com"
+        id S241518AbhKIBDB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Nov 2021 20:03:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59284 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234728AbhKHSJ3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 8 Nov 2021 13:09:29 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10162"; a="232136200"
-X-IronPort-AV: E=Sophos;i="5.87,218,1631602800"; 
-   d="scan'208";a="232136200"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2021 10:06:41 -0800
-X-IronPort-AV: E=Sophos;i="5.87,218,1631602800"; 
-   d="scan'208";a="451630202"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2021 10:06:39 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1mk92I-004oXR-SY;
-        Mon, 08 Nov 2021 20:06:26 +0200
-Date:   Mon, 8 Nov 2021 20:06:26 +0200
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Qian Cai <quic_qiancai@quicinc.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH] software node: Skip duplicated software_node sysfs
-Message-ID: <YYlnIpGEmLH5GXft@smile.fi.intel.com>
-References: <20211101200346.16466-1-quic_qiancai@quicinc.com>
- <CAHp75VcrWPdR8EVGpcsniQedT0J4X700N7thFs6+srTP1MTgwQ@mail.gmail.com>
- <52df4a97-1132-d594-0180-132d0ca714d5@quicinc.com>
- <CAHp75VebOnrce-XZjOnZiivQPz-Cdgq6mor5oiLxK8Y49GiNNg@mail.gmail.com>
- <1269258d-db4c-3922-776b-f11e6a1e338e@quicinc.com>
+        id S241528AbhKIBC5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 8 Nov 2021 20:02:57 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1735E6128B;
+        Tue,  9 Nov 2021 01:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1636419611;
+        bh=1LAbinY4XrJhR0cGZxRyou3TsQQ45yvGzggk2EyJ6nI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=AKiUbxsovrabb/i4ILyXn2jmKkWeI2Z58q1U7swhxex/Az9AcXQRilbKW0clVROfB
+         uqlZy/+y7duN5LTXjoLE1bxNNVR43hV1k/wKFXWh+9VCN5+xMj7p2+x1j/HX0TxNeT
+         dk1wyQ+f9KsZUWwBkXbAIGEJhVz5U6ENKyoRqRW3Mp9qZYRDT5sqiXqseLKVu1nD71
+         dIj5bugmnko9xopcI/G+61x8ZdUfLDOFe4T9AMIDkS0jjqKwdkoZBvb6ymdWoFWAL3
+         +HrKA1OcahrIbe78Q/vF1fYcvpDIXeY4qu/c2aCAyGwkvBg8suGpoD8BaFkd+YqEyT
+         Z5rs6KXy0N24A==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Hui Wang <hui.wang@canonical.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Manuel Krause <manuelkrause@netscape.net>,
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 016/146] ACPI: resources: Add DMI-based legacy IRQ override quirk
+Date:   Mon,  8 Nov 2021 12:42:43 -0500
+Message-Id: <20211108174453.1187052-16-sashal@kernel.org>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211108174453.1187052-1-sashal@kernel.org>
+References: <20211108174453.1187052-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1269258d-db4c-3922-776b-f11e6a1e338e@quicinc.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 08, 2021 at 11:07:53AM -0500, Qian Cai wrote:
-> On 11/5/21 3:39 PM, Andy Shevchenko wrote:
-> >> Andy, thanks for the pointers so far. I was able to trace
-> >> set_primary_fwnode() and set_secondary_fwnode().
-> > 
-> > Can you share the trace you have got?
+From: Hui Wang <hui.wang@canonical.com>
 
-...
+[ Upstream commit 892a012699fc0b91a2ed6309078936191447f480 ]
 
-> Then, here are the relevant outputs indicating that
-> "808622B7:01" and  "xhci-hcd.3.auto" have the same
-> primary but different secondaries.
+After the commit 0ec4e55e9f57 ("ACPI: resources: Add checks for ACPI
+IRQ override") is reverted, the keyboard on Medion laptops can't
+work again.
 
-So, it confirms my theory if I'm not mistaken.
+To fix the keyboard issue, add a DMI-based override check that will
+not affect other machines along the lines of prt_quirks[] in
+drivers/acpi/pci_irq.c.
 
-Btw, what you can do in this case is to switch to use fwnode_create_software
-node and switch them in drd.c. It will be much much easier to achieve then
-full kernel refactoring.
+If similar issues are seen on other platforms, the quirk table could
+be expanded in the future.
 
-> [   11.233280] KK set_secondary_fwnode dev name = 808622B7:01, fwnode = ffff000838618840
-> [   11.241846] KK parent = platform
-> [   11.245790] KK primary = ffff0008064b9010
-> [   11.259838] KK set_primary_fwnode dev name = (null), fwnode = ffff0008064b9010
-> [   11.267795] KK parent = 808622B7:01
-> [   11.272000] KK fwnode->dev = 808622B7:01
-> [   11.276636] KK secondary = ffff000838618840
-> [   11.680489] KK set_secondary_fwnode dev name = xhci-hcd.3.auto, fwnode = ffff000838325040
-> [   11.689406] KK parent = 808622B7:01
-> [   11.693916] KK primary = ffff0008064b9010
-> [   11.698763] sysfs: cannot create duplicate filename '/devices/platform/808622B7:01/xhci-hcd.3.auto/software_node'
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
+BugLink: http://bugs.launchpad.net/bugs/1909814
+Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Manuel Krause <manuelkrause@netscape.net>
+Tested-by: Manuel Krause <manuelkrause@netscape.net>
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/resource.c | 49 +++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 47 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index ee78a210c6068..7bf38652e6aca 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -16,6 +16,7 @@
+ #include <linux/ioport.h>
+ #include <linux/slab.h>
+ #include <linux/irq.h>
++#include <linux/dmi.h>
+ 
+ #ifdef CONFIG_X86
+ #define valid_IRQ(i) (((i) != 0) && ((i) != 2))
+@@ -380,9 +381,51 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
+ 
++static const struct dmi_system_id medion_laptop[] = {
++	{
++		.ident = "MEDION P15651",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
++			DMI_MATCH(DMI_BOARD_NAME, "M15T"),
++		},
++	},
++	{ }
++};
++
++struct irq_override_cmp {
++	const struct dmi_system_id *system;
++	unsigned char irq;
++	unsigned char triggering;
++	unsigned char polarity;
++	unsigned char shareable;
++};
++
++static const struct irq_override_cmp skip_override_table[] = {
++	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
++};
++
++static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
++				  u8 shareable)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
++		const struct irq_override_cmp *entry = &skip_override_table[i];
++
++		if (dmi_check_system(entry->system) &&
++		    entry->irq == gsi &&
++		    entry->triggering == triggering &&
++		    entry->polarity == polarity &&
++		    entry->shareable == shareable)
++			return false;
++	}
++
++	return true;
++}
++
+ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+ 				     u8 triggering, u8 polarity, u8 shareable,
+-				     bool legacy)
++				     bool check_override)
+ {
+ 	int irq, p, t;
+ 
+@@ -401,7 +444,9 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+ 	 * using extended IRQ descriptors we take the IRQ configuration
+ 	 * from _CRS directly.
+ 	 */
+-	if (legacy && !acpi_get_override_irq(gsi, &t, &p)) {
++	if (check_override &&
++	    acpi_dev_irq_override(gsi, triggering, polarity, shareable) &&
++	    !acpi_get_override_irq(gsi, &t, &p)) {
+ 		u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
+ 		u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.33.0
 
