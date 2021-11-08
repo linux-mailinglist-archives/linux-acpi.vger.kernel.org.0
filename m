@@ -2,82 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB4C44992C
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Nov 2021 17:12:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EF0A449B69
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Nov 2021 19:06:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235639AbhKHQOx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Nov 2021 11:14:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:39117 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231976AbhKHQOx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Nov 2021 11:14:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1636387928;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=SdztAeC5+Y6+RydYkWsoC/3dnH5yvJgyarTBidkx8ps=;
-        b=hQWTpkRkKWm96I/97V/P2yctDrxRGrl7qpVmCxvvokEuiRY2kPJwO1UJ17tsa0qUAeAXZ3
-        oC8fvNXeFtwk9rC5OTuhFaDD2wpkgn5eym8QN1xeE/rsLC+2Y8H60LizuhCZqdVAeYvdwR
-        IQJcJW+7JCsTY3+3PH6usvuRjzQQOrQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-361-YkCvHW4pOiqXH0akaedPsQ-1; Mon, 08 Nov 2021 11:11:37 -0500
-X-MC-Unique: YkCvHW4pOiqXH0akaedPsQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 009E2802E73;
-        Mon,  8 Nov 2021 16:11:36 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.192.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6B7F55C3E0;
-        Mon,  8 Nov 2021 16:11:34 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 1/1] ACPI / x86: Add PWM2 on the Xiaomi Mi Pad 2 to the always_present list
-Date:   Mon,  8 Nov 2021 17:11:31 +0100
-Message-Id: <20211108161131.896783-2-hdegoede@redhat.com>
-In-Reply-To: <20211108161131.896783-1-hdegoede@redhat.com>
-References: <20211108161131.896783-1-hdegoede@redhat.com>
+        id S234840AbhKHSJa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Nov 2021 13:09:30 -0500
+Received: from mga09.intel.com ([134.134.136.24]:23229 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234728AbhKHSJ3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 8 Nov 2021 13:09:29 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10162"; a="232136200"
+X-IronPort-AV: E=Sophos;i="5.87,218,1631602800"; 
+   d="scan'208";a="232136200"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2021 10:06:41 -0800
+X-IronPort-AV: E=Sophos;i="5.87,218,1631602800"; 
+   d="scan'208";a="451630202"
+Received: from smile.fi.intel.com ([10.237.72.184])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2021 10:06:39 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andy.shevchenko@gmail.com>)
+        id 1mk92I-004oXR-SY;
+        Mon, 08 Nov 2021 20:06:26 +0200
+Date:   Mon, 8 Nov 2021 20:06:26 +0200
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Qian Cai <quic_qiancai@quicinc.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH] software node: Skip duplicated software_node sysfs
+Message-ID: <YYlnIpGEmLH5GXft@smile.fi.intel.com>
+References: <20211101200346.16466-1-quic_qiancai@quicinc.com>
+ <CAHp75VcrWPdR8EVGpcsniQedT0J4X700N7thFs6+srTP1MTgwQ@mail.gmail.com>
+ <52df4a97-1132-d594-0180-132d0ca714d5@quicinc.com>
+ <CAHp75VebOnrce-XZjOnZiivQPz-Cdgq6mor5oiLxK8Y49GiNNg@mail.gmail.com>
+ <1269258d-db4c-3922-776b-f11e6a1e338e@quicinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1269258d-db4c-3922-776b-f11e6a1e338e@quicinc.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The Xiaomi Mi Pad 2 has backlit LEDs behind the capacitive menu, home
-and back buttons below the screen which are controlled by the PWM2
-controller of the CHT SoC. This PWM2 controller gets hidden by the
-firmware, add it to the always_present_ids table so that we can use
-the PWM controller to control the backlighting of the buttons.
+On Mon, Nov 08, 2021 at 11:07:53AM -0500, Qian Cai wrote:
+> On 11/5/21 3:39 PM, Andy Shevchenko wrote:
+> >> Andy, thanks for the pointers so far. I was able to trace
+> >> set_primary_fwnode() and set_secondary_fwnode().
+> > 
+> > Can you share the trace you have got?
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/x86/utils.c | 5 +++++
- 1 file changed, 5 insertions(+)
+...
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index f22f23933063..cb988f9b23a1 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -58,6 +58,11 @@ static const struct always_present_id always_present_ids[] = {
- 	ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X9"),
- 		}),
-+	/* The Xiaomi Mi Pad 2 uses PWM2 for touchkeys backlight control */
-+	ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
-+	      }),
- 	/*
- 	 * The INT0002 device is necessary to clear wakeup interrupt sources
- 	 * on Cherry Trail devices, without it we get nobody cared IRQ msgs.
+> Then, here are the relevant outputs indicating that
+> "808622B7:01" and  "xhci-hcd.3.auto" have the same
+> primary but different secondaries.
+
+So, it confirms my theory if I'm not mistaken.
+
+Btw, what you can do in this case is to switch to use fwnode_create_software
+node and switch them in drd.c. It will be much much easier to achieve then
+full kernel refactoring.
+
+> [   11.233280] KK set_secondary_fwnode dev name = 808622B7:01, fwnode = ffff000838618840
+> [   11.241846] KK parent = platform
+> [   11.245790] KK primary = ffff0008064b9010
+> [   11.259838] KK set_primary_fwnode dev name = (null), fwnode = ffff0008064b9010
+> [   11.267795] KK parent = 808622B7:01
+> [   11.272000] KK fwnode->dev = 808622B7:01
+> [   11.276636] KK secondary = ffff000838618840
+> [   11.680489] KK set_secondary_fwnode dev name = xhci-hcd.3.auto, fwnode = ffff000838325040
+> [   11.689406] KK parent = 808622B7:01
+> [   11.693916] KK primary = ffff0008064b9010
+> [   11.698763] sysfs: cannot create duplicate filename '/devices/platform/808622B7:01/xhci-hcd.3.auto/software_node'
+
 -- 
-2.31.1
+With Best Regards,
+Andy Shevchenko
+
 
