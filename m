@@ -2,152 +2,88 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93B0144A052
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Nov 2021 02:00:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F07B449FA4
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Nov 2021 01:38:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241518AbhKIBDB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 8 Nov 2021 20:03:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59284 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241528AbhKIBC5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 8 Nov 2021 20:02:57 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1735E6128B;
-        Tue,  9 Nov 2021 01:00:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636419611;
-        bh=1LAbinY4XrJhR0cGZxRyou3TsQQ45yvGzggk2EyJ6nI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AKiUbxsovrabb/i4ILyXn2jmKkWeI2Z58q1U7swhxex/Az9AcXQRilbKW0clVROfB
-         uqlZy/+y7duN5LTXjoLE1bxNNVR43hV1k/wKFXWh+9VCN5+xMj7p2+x1j/HX0TxNeT
-         dk1wyQ+f9KsZUWwBkXbAIGEJhVz5U6ENKyoRqRW3Mp9qZYRDT5sqiXqseLKVu1nD71
-         dIj5bugmnko9xopcI/G+61x8ZdUfLDOFe4T9AMIDkS0jjqKwdkoZBvb6ymdWoFWAL3
-         +HrKA1OcahrIbe78Q/vF1fYcvpDIXeY4qu/c2aCAyGwkvBg8suGpoD8BaFkd+YqEyT
-         Z5rs6KXy0N24A==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hui Wang <hui.wang@canonical.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Manuel Krause <manuelkrause@netscape.net>,
-        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 016/146] ACPI: resources: Add DMI-based legacy IRQ override quirk
-Date:   Mon,  8 Nov 2021 12:42:43 -0500
-Message-Id: <20211108174453.1187052-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211108174453.1187052-1-sashal@kernel.org>
-References: <20211108174453.1187052-1-sashal@kernel.org>
+        id S234299AbhKIAld (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 8 Nov 2021 19:41:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37746 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234267AbhKIAlc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 8 Nov 2021 19:41:32 -0500
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C0CC061764
+        for <linux-acpi@vger.kernel.org>; Mon,  8 Nov 2021 16:38:47 -0800 (PST)
+Received: by mail-oi1-x22a.google.com with SMTP id bl27so27758526oib.0
+        for <linux-acpi@vger.kernel.org>; Mon, 08 Nov 2021 16:38:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1y9OQwZEuQdL+QC1JTIKa3QLF+Ig+ClIy0nWbOXZqYM=;
+        b=XTHunefrjTXylGv4F6mDAXO2YW7HyQOluaRirUlo2l8KXmNskKRS4j9ayZH+2KTwlt
+         EESafH29ymec9ip1AcKFR2lCxTcXhYfiHjDp0eH87vv7sgszLcJpOYUAQSv1x++ECr1L
+         V9N6LvSM7yEUWE54WNvIuj3GbLr3zjYyTkflGRhukJNgFmbgcqLjeumQcPJsMMJIVytl
+         rdzVF8I8RS+w/JREqSyzmr3tcy4bepBhvGdlNWdjofmW4DUTE5qBLIaDnt8RamW9wxEz
+         GtwHzWCVljCmsP+w6UKOCwXQEgyEWVuDjSQKOKP8GRcfMqSqGOxtrFWluVWr7+c5UV3/
+         so0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1y9OQwZEuQdL+QC1JTIKa3QLF+Ig+ClIy0nWbOXZqYM=;
+        b=IDPkYy+35Hy0bdw4pdz5SGnY8oDBO4RFyoyQWvU6kgThhnsLJbpj95tMn91a5bA8nl
+         GkyfkgiMRxeRH/CyLmOuqb+lMn6QncFhAw7AWUQN182AoauL4qaioDsiPu8/QlucpUMW
+         Kpb250/7WdGfYi2+UVs2FQP/reCJ1VI6kh8q40MfsbPjVt4elS8aA3TssjQhyZXs2O3X
+         FgDhEo3l1dKffAC5xmmqCuEptx72aRKKadxvweX0IYp5adrBXj3HUVaA3mJbIBxlHY8q
+         wW48DbBTaYmWeRckpvLm43e+iUPUScwQD6ioV2lgDD+GgjptH0e2na4CKMF7WIYoKs6F
+         Ht+A==
+X-Gm-Message-State: AOAM532V8XPkDdd+HPjexMUxU+HySrVtUBdpjL0d5fHhvbZ06YfFpXXy
+        dcPkaJlgo1HFJLIhMhCcl+oxbUgszwGrOWQ9AmbdwQ==
+X-Google-Smtp-Source: ABdhPJyxkFWSH0Ef2pq2VSnwXNsPY1nrhejdmwAdAY/PuUyfvGA6Pxve+eL9Suls1J14bg8FYco8Wyr9LJB49vuVwqc=
+X-Received: by 2002:a54:4791:: with SMTP id o17mr2313570oic.114.1636418326891;
+ Mon, 08 Nov 2021 16:38:46 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20211101014853.6177-1-mario.limonciello@amd.com> <20211101014853.6177-2-mario.limonciello@amd.com>
+In-Reply-To: <20211101014853.6177-2-mario.limonciello@amd.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 9 Nov 2021 01:38:35 +0100
+Message-ID: <CACRpkdahdqrkwEZYVuJLogqW+MobNSbSGsy4HjfBdoUfg0_bUQ@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] pinctrl: amd: Fix wakeups when IRQ is shared with SCI
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        "open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-acpi@vger.kernel.org,
+        Nehal Shah <Nehal-bakulchandra.Shah@amd.com>,
+        Joerie de Gram <j.de.gram@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hui Wang <hui.wang@canonical.com>
+On Mon, Nov 1, 2021 at 2:49 AM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 
-[ Upstream commit 892a012699fc0b91a2ed6309078936191447f480 ]
+> On some Lenovo AMD Gen2 platforms the IRQ for the SCI and pinctrl drivers
+> are shared.  Due to how the s2idle loop handling works, this case needs
+> an extra explicit check whether the interrupt was caused by SCI or by
+> the GPIO controller.
+>
+> To fix this rework the existing IRQ handler function to function as a
+> checker and an IRQ handler depending on the calling arguments.
+>
+> BugLink: https://gitlab.freedesktop.org/drm/amd/-/issues/1738
+> Reported-by: Joerie de Gram <j.de.gram@gmail.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Acked-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-After the commit 0ec4e55e9f57 ("ACPI: resources: Add checks for ACPI
-IRQ override") is reverted, the keyboard on Medion laptops can't
-work again.
+This v7 patch applied for fixes.
 
-To fix the keyboard issue, add a DMI-based override check that will
-not affect other machines along the lines of prt_quirks[] in
-drivers/acpi/pci_irq.c.
+Sorry for the delay, I was busy with the merge window.
+Once the merge window concludes I will rebase this on
+-rc1 and send upstream.
 
-If similar issues are seen on other platforms, the quirk table could
-be expanded in the future.
-
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
-BugLink: http://bugs.launchpad.net/bugs/1909814
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reported-by: Manuel Krause <manuelkrause@netscape.net>
-Tested-by: Manuel Krause <manuelkrause@netscape.net>
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/resource.c | 49 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 47 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index ee78a210c6068..7bf38652e6aca 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -16,6 +16,7 @@
- #include <linux/ioport.h>
- #include <linux/slab.h>
- #include <linux/irq.h>
-+#include <linux/dmi.h>
- 
- #ifdef CONFIG_X86
- #define valid_IRQ(i) (((i) != 0) && ((i) != 2))
-@@ -380,9 +381,51 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
- }
- EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
- 
-+static const struct dmi_system_id medion_laptop[] = {
-+	{
-+		.ident = "MEDION P15651",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
-+			DMI_MATCH(DMI_BOARD_NAME, "M15T"),
-+		},
-+	},
-+	{ }
-+};
-+
-+struct irq_override_cmp {
-+	const struct dmi_system_id *system;
-+	unsigned char irq;
-+	unsigned char triggering;
-+	unsigned char polarity;
-+	unsigned char shareable;
-+};
-+
-+static const struct irq_override_cmp skip_override_table[] = {
-+	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
-+};
-+
-+static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
-+				  u8 shareable)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
-+		const struct irq_override_cmp *entry = &skip_override_table[i];
-+
-+		if (dmi_check_system(entry->system) &&
-+		    entry->irq == gsi &&
-+		    entry->triggering == triggering &&
-+		    entry->polarity == polarity &&
-+		    entry->shareable == shareable)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 				     u8 triggering, u8 polarity, u8 shareable,
--				     bool legacy)
-+				     bool check_override)
- {
- 	int irq, p, t;
- 
-@@ -401,7 +444,9 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 	 * using extended IRQ descriptors we take the IRQ configuration
- 	 * from _CRS directly.
- 	 */
--	if (legacy && !acpi_get_override_irq(gsi, &t, &p)) {
-+	if (check_override &&
-+	    acpi_dev_irq_override(gsi, triggering, polarity, shareable) &&
-+	    !acpi_get_override_irq(gsi, &t, &p)) {
- 		u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
- 		u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
- 
--- 
-2.33.0
-
+Yours,
+Linus Walleij
