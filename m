@@ -2,90 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 487C044C004
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Nov 2021 12:16:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DEB644C0B4
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Nov 2021 13:04:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231311AbhKJLTc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Nov 2021 06:19:32 -0500
-Received: from mga01.intel.com ([192.55.52.88]:59937 "EHLO mga01.intel.com"
+        id S231620AbhKJMGu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Nov 2021 07:06:50 -0500
+Received: from mga17.intel.com ([192.55.52.151]:21295 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229653AbhKJLTc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 10 Nov 2021 06:19:32 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10163"; a="256340017"
+        id S231684AbhKJMGi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 10 Nov 2021 07:06:38 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10163"; a="213383637"
 X-IronPort-AV: E=Sophos;i="5.87,223,1631602800"; 
-   d="scan'208";a="256340017"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 03:16:44 -0800
-X-ExtLoop1: 1
+   d="scan'208";a="213383637"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 04:02:56 -0800
 X-IronPort-AV: E=Sophos;i="5.87,223,1631602800"; 
-   d="scan'208";a="534016057"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 10 Nov 2021 03:16:42 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 62DC118E; Wed, 10 Nov 2021 13:16:44 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Wei Liu <wei.liu@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v1 1/1] ACPI: Replace kernel.h with the necessary inclusions
-Date:   Wed, 10 Nov 2021 13:16:40 +0200
-Message-Id: <20211110111640.62807-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.33.0
+   d="scan'208";a="492073069"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 04:02:54 -0800
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with SMTP id 60272205BA;
+        Wed, 10 Nov 2021 14:02:52 +0200 (EET)
+Date:   Wed, 10 Nov 2021 14:02:52 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org,
+        John Ogness <john.ogness@linutronix.de>, rafael@kernel.org,
+        mika.westerberg@linux.intel.com, Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH 1/2] ACPI: Get acpi_device's parent from the parent field
+Message-ID: <YYu07IEMU17Z+6UQ@paasikivi.fi.intel.com>
+References: <20211109111935.1627406-1-sakari.ailus@linux.intel.com>
+ <20211109111935.1627406-2-sakari.ailus@linux.intel.com>
+ <YYpnQaZ7u9Zqr0Qb@smile.fi.intel.com>
+ <YYt+IDubi6ib/Iko@paasikivi.fi.intel.com>
+ <YYuATCA2yyCFBFN5@smile.fi.intel.com>
+ <YYuBEFXINuk6zmL8@paasikivi.fi.intel.com>
+ <YYuJSsNRFDvBZ6LP@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YYuJSsNRFDvBZ6LP@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When kernel.h is used in the headers it adds a lot into dependency hell,
-especially when there are circular dependencies are involved.
+On Wed, Nov 10, 2021 at 10:56:42AM +0200, Andy Shevchenko wrote:
+> On Wed, Nov 10, 2021 at 10:21:36AM +0200, Sakari Ailus wrote:
+> > On Wed, Nov 10, 2021 at 10:18:20AM +0200, Andy Shevchenko wrote:
+> > > On Wed, Nov 10, 2021 at 10:09:04AM +0200, Sakari Ailus wrote:
+> > > > On Tue, Nov 09, 2021 at 02:19:13PM +0200, Andy Shevchenko wrote:
+> > > > > On Tue, Nov 09, 2021 at 01:19:34PM +0200, Sakari Ailus wrote:
+> 
+> ...
+> 
+> > > > > > -	} else if (is_acpi_device_node(fwnode)) {
+> > > > > > +	}
+> > > > > 
+> > > > > > +	if (is_acpi_device_node(fwnode)) {
+> > > > > 
+> > > > > Unneeded change. Yes I know that 'else' here can be skipped. But in such cases
+> > > > > it's a trade-off between changes, code readability and maintenance. Since here
+> > > > > it's a fix, backporting concerns are also play role.
+> > > > 
+> > > > The patch applies cleanly to 5.5, the oldest kernel where it's needed.
+> > > 
+> > > Why? I don't see how this affects the workflow.
+> > > 
+> > > > Do you prefer another patch to remove the else clause?
+> > > 
+> > > Nope.
+> > > 
+> > > > I think it's a bit overkill...
+> > > 
+> > > Exactly, that's why the question is why have you split the if-else-if to
+> > > two if:s?
+> > 
+> > The else clause is useless, I think the code simply looks better without
+> > it.
+> 
+> I see a contradiction here:
+> 
+> Statement 1: 'else' is useless.
+> Statement 2: patch to remove it is overkill.
 
-Replace kernel.h inclusion with the list of what is really being used.
+There's no contradiction.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- include/acpi/acpi_numa.h | 1 -
- include/acpi/processor.h | 7 ++++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+I argue doing that in a separate patch is waste of everyone's time. As
+simple as that.
 
-diff --git a/include/acpi/acpi_numa.h b/include/acpi/acpi_numa.h
-index 68e4d80c1b32..b5f594754a9e 100644
---- a/include/acpi/acpi_numa.h
-+++ b/include/acpi/acpi_numa.h
-@@ -3,7 +3,6 @@
- #define __ACPI_NUMA_H
- 
- #ifdef CONFIG_ACPI_NUMA
--#include <linux/kernel.h>
- #include <linux/numa.h>
- 
- /* Proximity bitmap length */
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index 683e124ad517..194027371928 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -2,11 +2,16 @@
- #ifndef __ACPI_PROCESSOR_H
- #define __ACPI_PROCESSOR_H
- 
--#include <linux/kernel.h>
- #include <linux/cpu.h>
- #include <linux/cpufreq.h>
- #include <linux/pm_qos.h>
-+#include <linux/printk.h>
-+#include <linux/sched.h>
-+#include <linux/smp.h>
- #include <linux/thermal.h>
-+#include <linux/types.h>
-+#include <linux/workqueue.h>
-+
- #include <asm/acpi.h>
- 
- #define ACPI_PROCESSOR_CLASS		"processor"
+Sure, it could be done, but usually ends up being left as-is.
+
 -- 
-2.33.0
-
+Sakari Ailus
