@@ -2,51 +2,105 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81F1344C57C
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Nov 2021 17:56:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4643B44C9DF
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Nov 2021 20:54:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231841AbhKJQ6v (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 10 Nov 2021 11:58:51 -0500
-Received: from mga03.intel.com ([134.134.136.65]:15090 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231577AbhKJQ6u (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 10 Nov 2021 11:58:50 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10164"; a="232658411"
-X-IronPort-AV: E=Sophos;i="5.87,224,1631602800"; 
-   d="scan'208";a="232658411"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 08:55:10 -0800
-X-IronPort-AV: E=Sophos;i="5.87,224,1631602800"; 
-   d="scan'208";a="669868873"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 08:55:07 -0800
-Received: by lahna (sSMTP sendmail emulation); Wed, 10 Nov 2021 18:55:05 +0200
-Date:   Wed, 10 Nov 2021 18:55:05 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v1 2/2] gpiolib: acpi: shrink
- devm_acpi_dev_add_driver_gpios()
-Message-ID: <YYv5ab2Xlqae7ExC@lahna>
-References: <20211110134743.4300-1-andriy.shevchenko@linux.intel.com>
- <20211110134743.4300-2-andriy.shevchenko@linux.intel.com>
+        id S232018AbhKJT4p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 10 Nov 2021 14:56:45 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:41824 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230362AbhKJT4p (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 10 Nov 2021 14:56:45 -0500
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.0)
+ id e2f8576be3979567; Wed, 10 Nov 2021 20:53:55 +0100
+Received: from kreacher.localnet (unknown [213.134.187.20])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 2842866A9A4;
+        Wed, 10 Nov 2021 20:53:55 +0100 (CET)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        "Kyle D. Pelton" <kyle.d.pelton@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: [PATCH] ACPI: PM: Avoid removing power from unused hardware too early
+Date:   Wed, 10 Nov 2021 20:53:54 +0100
+Message-ID: <2623493.mvXUDI8C0e@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211110134743.4300-2-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.187.20
+X-CLIENT-HOSTNAME: 213.134.187.20
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrudekgdegtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhephfegtdffjeehkeegleejveevtdeugfffieeijeduuddtkefgjedvheeujeejtedvnecukfhppedvudefrddufeegrddukeejrddvtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukeejrddvtddphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtohepkhihlhgvrdgurdhpvghl
+ thhonhesihhnthgvlhdrtghomhdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Nov 10, 2021 at 03:47:43PM +0200, Andy Shevchenko wrote:
-> If all we want to manage is a single pointer, there's no need to
-> manually allocate and add a new devres. We can simply use
-> devm_add_action_or_reset() and shrink the code by a good bit.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Commit c10383e8ddf4 ("ACPI: scan: Release PM resources blocked by
+unused objects") causes power to be removed from some hardware
+resources that appear to be unused too early, which leads to boot
+issues on some systems.
+
+To address this, move putting the unused ACPI device objects into
+D3cold to a late initcall.
+
+Fixes: c10383e8ddf4 ("ACPI: scan: Release PM resources blocked by unused objects")
+Reported-by: Kyle D. Pelton <kyle.d.pelton@intel.com>
+Tested-by: Kyle D. Pelton <kyle.d.pelton@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/scan.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
+
+Index: linux-pm/drivers/acpi/scan.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/scan.c
++++ linux-pm/drivers/acpi/scan.c
+@@ -2559,12 +2559,6 @@ int __init acpi_scan_init(void)
+ 		}
+ 	}
+ 
+-	/*
+-	 * Make sure that power management resources are not blocked by ACPI
+-	 * device objects with no users.
+-	 */
+-	bus_for_each_dev(&acpi_bus_type, NULL, NULL, acpi_dev_turn_off_if_unused);
+-
+ 	acpi_turn_off_unused_power_resources();
+ 
+ 	acpi_scan_initialized = true;
+@@ -2574,6 +2568,22 @@ int __init acpi_scan_init(void)
+ 	return result;
+ }
+ 
++static int acpi_turn_off_unused_devices(void)
++{
++	mutex_lock(&acpi_scan_lock);
++
++	/*
++	 * Make sure that power management resources are not blocked by ACPI
++	 * device objects with no users.
++	 */
++	bus_for_each_dev(&acpi_bus_type, NULL, NULL, acpi_dev_turn_off_if_unused);
++
++	mutex_unlock(&acpi_scan_lock);
++
++	return 0;
++}
++late_initcall(acpi_turn_off_unused_devices);
++
+ static struct acpi_probe_entry *ape;
+ static int acpi_probe_count;
+ static DEFINE_MUTEX(acpi_probe_mutex);
+
+
+
