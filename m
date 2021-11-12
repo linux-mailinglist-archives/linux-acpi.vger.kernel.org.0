@@ -2,84 +2,65 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06E1444E422
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Nov 2021 10:49:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AB3D44E5A9
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Nov 2021 12:42:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234700AbhKLJvy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Nov 2021 04:51:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33386 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234675AbhKLJvx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 12 Nov 2021 04:51:53 -0500
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57DE2C061766
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Nov 2021 01:49:03 -0800 (PST)
-Received: by mail-ed1-x543.google.com with SMTP id g14so35432748edz.2
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Nov 2021 01:49:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=ryMDXG8u8nq91tliEM1jiAtuCmRdwdK2Akbl4Dq/sjs=;
-        b=n9Qm+aV+4Yu8TxAjbYin/9i2l/3EdnZwMIMN4gkAyizd2vIPhIWhIg/OtBABlHViLr
-         4VYWL8UjcUFuGMi+bSKQFVLXTRaK/plQILKFd2SzLFnglAa7sVMGVW+HcMMtxNKXvokK
-         uHCDQheJqXWGaFlBwuoLRE8EBnA6IiY7bxjwZRGFCU7dxMU/n1IZhXU3tBFrAdZVbB8s
-         oPLdqEBhvxqpJnu0S67u6vBruFBf00HjmVvnliH7K0YaXFuk86nnfkjwpB/J6eH3hinN
-         c2VefwmUz9vZfVip8rRuzRjqHI40HLHe+dcbWqYutGCLiUegV5u9D3akWZzKyo1o/EuP
-         uxLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=ryMDXG8u8nq91tliEM1jiAtuCmRdwdK2Akbl4Dq/sjs=;
-        b=q6l7i95ooo9019ztF+TDOg46ZMFgqx7KNHFL8T8JOmuYWMzte5l3XMOoTFRoAPca/T
-         BvnP2XlStt5+txBdLlyEG27KKV2nKbBYSno63qWtHiUqnHyK/QfWoPjuAm/K9JsHbcFA
-         Rxu2sieOTC0mr+DzGhgol7CYjEy8ckpfVD2CMxEtpFYaL+TBMMYObONlKIJHULjl4ChR
-         9/LmmGKdTs14lbkyEoZRx7zSO+J9hWIFGFBpmc33mJfDqJzlX5P6YC32cId5qhF6IMqx
-         zgGJuHluJEzgGUmHrm8VrcUL1zqxrczrEFzxcKO016NUX8cPco9h0/u9fvaaoonvWx3I
-         tg7A==
-X-Gm-Message-State: AOAM532A8gC9NBS0jiCGK4bnUmQYZ9Nzy0pQBlHgcQbVBXeSi4pE8LET
-        gLNAPUGkK3wd+pnmORGXV+8BTyvmFJIFR8fx/Jk=
-X-Google-Smtp-Source: ABdhPJy5SIunUzCDU/n5vNiQTKsYeQvEdvRahkJcQUkBg4+Z4Sf5RtOSjd9WPWGMKL9KkiOH5jhpjC4FFE8NdUbKBbU=
-X-Received: by 2002:a17:907:160b:: with SMTP id hb11mr18653536ejc.336.1636710541853;
- Fri, 12 Nov 2021 01:49:01 -0800 (PST)
-MIME-Version: 1.0
-Reply-To: mrmahammedmamoud@gmail.com
-Sender: suzanqaseemzz@gmail.com
-Received: by 2002:a17:906:9b87:0:0:0:0 with HTTP; Fri, 12 Nov 2021 01:49:01
- -0800 (PST)
-From:   =?UTF-8?Q?Mr_Mahammed=C2=A0Mamoud?= <mr.mahammedmamoud0@gmail.com>
-Date:   Fri, 12 Nov 2021 01:49:01 -0800
-X-Google-Sender-Auth: wVLMJkGnWdovyj2Mkr5WUSFnAEY
-Message-ID: <CAJCaUWsCidoNyO+GhbDChAXsWrzcgdytgrS-MRtv2Mo2w2YkUQ@mail.gmail.com>
-Subject: Von: Herr Mohammed,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S234702AbhKLLp0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Nov 2021 06:45:26 -0500
+Received: from mga12.intel.com ([192.55.52.136]:22242 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234144AbhKLLp0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 12 Nov 2021 06:45:26 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10165"; a="213156428"
+X-IronPort-AV: E=Sophos;i="5.87,229,1631602800"; 
+   d="scan'208";a="213156428"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2021 03:42:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,229,1631602800"; 
+   d="scan'208";a="670627857"
+Received: from srpawnik-desktop.iind.intel.com ([10.223.141.119])
+  by orsmga005.jf.intel.com with ESMTP; 12 Nov 2021 03:42:33 -0800
+From:   Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+To:     rafael@kernel.org, lenb@kernel.org,
+        srinivas.pandruvada@linux.intel.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     sumeet.r.pawnikar@intel.com
+Subject: [PATCH] ACPI: DPTF: Update device ID information under comment
+Date:   Fri, 12 Nov 2021 17:30:29 +0530
+Message-Id: <20211112120029.10851-1-sumeet.r.pawnikar@intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
- Guten Tag,
+Update device ID information appropriately under comment section.
+It seems previously this comment was added considering this driver
+used for Tiger Lake based systems. But, now this is being used by
+Alder Lake based systems as well as per this commit 38748bcb940e
+("ACPI: DPTF: Support Alder Lake"). So, updating the comment for
+more generic type from INT1045 to INT10xx and also correcting it
+from INT to INTC string for this device ID information under
+comment section.
 
-Ich bin Herr Mahammed Mamoud, Account Manager bei einer Investmentbank
-hier in Burkina Faso. In meiner Firma wurde ein Wechselkonto von einem
-langj=C3=A4hrigen Kunden unserer Bank er=C3=B6ffnet. Ich habe die M=C3=B6gl=
-ichkeit,
-den Restfonds (15,8 Millionen US-Dollar) f=C3=BCnfzehn Millionen
-achthunderttausend US-Dollar zu =C3=BCberweisen.
+Signed-off-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+---
+ drivers/acpi/dptf/dptf_pch_fivr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Ich m=C3=B6chte dieses Geld investieren und Sie unserer Bank f=C3=BCr diese=
-s
-Gesch=C3=A4ft vorstellen, und dies wird im Rahmen einer legitimen
-Vereinbarung durchgef=C3=BChrt, die uns vor jeglichen Gesetzesverst=C3=B6=
-=C3=9Fen
-sch=C3=BCtzt. Wir teilen den Fonds zu 40% f=C3=BCr Sie, 50% f=C3=BCr mich u=
-nd 10% f=C3=BCr
-die Gr=C3=BCndung einer Stiftung f=C3=BCr die armen Kinder in Ihrem Land. W=
-enn
-Sie wirklich an meinem Vorschlag interessiert sind, werden Ihnen
-weitere Details der Geld=C3=BCberweisung mitgeteilt.
+diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
+index f4e9c2ef2f88..e7ab0fc90db9 100644
+--- a/drivers/acpi/dptf/dptf_pch_fivr.c
++++ b/drivers/acpi/dptf/dptf_pch_fivr.c
+@@ -46,7 +46,7 @@ static int pch_fivr_read(acpi_handle handle, char *method, struct pch_fivr_resp
+ }
+ 
+ /*
+- * Presentation of attributes which are defined for INT1045
++ * Presentation of attributes which are defined for INTC10xx
+  * They are:
+  * freq_mhz_low_clock : Set PCH FIVR switching freq for
+  *			FIVR clock 19.2MHz and 24MHz
+-- 
+2.17.1
 
-Dein,
-Herr Mahammed Mamoud.
