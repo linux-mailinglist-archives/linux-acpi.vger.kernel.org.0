@@ -2,65 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AB3D44E5A9
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Nov 2021 12:42:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B94FF44E7F8
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Nov 2021 14:54:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234702AbhKLLp0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 12 Nov 2021 06:45:26 -0500
-Received: from mga12.intel.com ([192.55.52.136]:22242 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234144AbhKLLp0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 12 Nov 2021 06:45:26 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10165"; a="213156428"
-X-IronPort-AV: E=Sophos;i="5.87,229,1631602800"; 
-   d="scan'208";a="213156428"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2021 03:42:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,229,1631602800"; 
-   d="scan'208";a="670627857"
-Received: from srpawnik-desktop.iind.intel.com ([10.223.141.119])
-  by orsmga005.jf.intel.com with ESMTP; 12 Nov 2021 03:42:33 -0800
-From:   Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
-To:     rafael@kernel.org, lenb@kernel.org,
-        srinivas.pandruvada@linux.intel.com, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     sumeet.r.pawnikar@intel.com
-Subject: [PATCH] ACPI: DPTF: Update device ID information under comment
-Date:   Fri, 12 Nov 2021 17:30:29 +0530
-Message-Id: <20211112120029.10851-1-sumeet.r.pawnikar@intel.com>
-X-Mailer: git-send-email 2.17.1
+        id S232925AbhKLN5C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 12 Nov 2021 08:57:02 -0500
+Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:42164 "EHLO
+        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231553AbhKLN5B (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 12 Nov 2021 08:57:01 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R581e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0UwCALcf_1636725247;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0UwCALcf_1636725247)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 12 Nov 2021 21:54:08 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
+Cc:     bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
+        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
+        xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com
+Subject: [RFC PATCH] ACPI: Move sdei_init and ghes_init ahead
+Date:   Fri, 12 Nov 2021 21:54:05 +0800
+Message-Id: <20211112135405.19318-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.24.3 (Apple Git-128)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Update device ID information appropriately under comment section.
-It seems previously this comment was added considering this driver
-used for Tiger Lake based systems. But, now this is being used by
-Alder Lake based systems as well as per this commit 38748bcb940e
-("ACPI: DPTF: Support Alder Lake"). So, updating the comment for
-more generic type from INT1045 to INT10xx and also correcting it
-from INT to INTC string for this device ID information under
-comment section.
+On an ACPI system, ACPI is initialised very early from a
+subsys_initcall(), while SDEI is not ready until a subsys_initcall().
+More seriously, the kernel is able to handle and report errors until the
+GHES is initialised by device_initcall().
 
-Signed-off-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+Consequently, when an error occurs during the kernel booting, the
+phyiscal sdei dispatcher in firmware fails to dispatch error events. All
+errors that occurred before GHES initialization are missed and there is
+no chance to report and find them again.
+
+In this patch, move sdei_init and ghes_init as far ahead as possible,
+right after acpi_hest_init().
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 ---
- drivers/acpi/dptf/dptf_pch_fivr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/apei/ghes.c    | 3 +--
+ drivers/acpi/pci_root.c     | 2 ++
+ drivers/firmware/arm_sdei.c | 9 +--------
+ include/acpi/apei.h         | 2 ++
+ 4 files changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
-index f4e9c2ef2f88..e7ab0fc90db9 100644
---- a/drivers/acpi/dptf/dptf_pch_fivr.c
-+++ b/drivers/acpi/dptf/dptf_pch_fivr.c
-@@ -46,7 +46,7 @@ static int pch_fivr_read(acpi_handle handle, char *method, struct pch_fivr_resp
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index c60961d31213..bf0177f44dfd 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1452,7 +1452,7 @@ static struct platform_driver ghes_platform_driver = {
+ 	.remove		= ghes_remove,
+ };
+ 
+-static int __init ghes_init(void)
++int __init ghes_init(void)
+ {
+ 	int rc;
+ 
+@@ -1494,4 +1494,3 @@ static int __init ghes_init(void)
+ err:
+ 	return rc;
+ }
+-device_initcall(ghes_init);
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index 81cc18f39cc8..d9bbb6b8340e 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -977,6 +977,8 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+ void __init acpi_pci_root_init(void)
+ {
+ 	acpi_hest_init();
++	sdei_init();
++	ghes_init();
+ 	if (acpi_pci_disabled)
+ 		return;
+ 
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index 198151ca471d..604063d6f542 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -1089,7 +1089,7 @@ static bool __init sdei_present_acpi(void)
+ 	return true;
  }
  
- /*
-- * Presentation of attributes which are defined for INT1045
-+ * Presentation of attributes which are defined for INTC10xx
-  * They are:
-  * freq_mhz_low_clock : Set PCH FIVR switching freq for
-  *			FIVR clock 19.2MHz and 24MHz
+-static int __init sdei_init(void)
++int __init sdei_init(void)
+ {
+ 	struct platform_device *pdev;
+ 	int ret;
+@@ -1110,13 +1110,6 @@ static int __init sdei_init(void)
+ 	return ret;
+ }
+ 
+-/*
+- * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
+- * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
+- * by device_initcall(). We want to be called in the middle.
+- */
+-subsys_initcall_sync(sdei_init);
+-
+ int sdei_event_handler(struct pt_regs *regs,
+ 		       struct sdei_registered_event *arg)
+ {
+diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+index 680f80960c3d..5e6187ca5621 100644
+--- a/include/acpi/apei.h
++++ b/include/acpi/apei.h
+@@ -33,6 +33,8 @@ extern bool ghes_disable;
+ 
+ #ifdef CONFIG_ACPI_APEI
+ void __init acpi_hest_init(void);
++int __init sdei_init(void);
++int __init ghes_init(void);
+ #else
+ static inline void acpi_hest_init(void) { return; }
+ #endif
 -- 
-2.17.1
+2.20.1.9.gb50a0d7
 
