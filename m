@@ -2,115 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3102A44F47D
-	for <lists+linux-acpi@lfdr.de>; Sat, 13 Nov 2021 19:17:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A82F444F7E5
+	for <lists+linux-acpi@lfdr.de>; Sun, 14 Nov 2021 13:34:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233656AbhKMSTx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 13 Nov 2021 13:19:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40926 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbhKMSTx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 13 Nov 2021 13:19:53 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2ECC061766
-        for <linux-acpi@vger.kernel.org>; Sat, 13 Nov 2021 10:17:00 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id bu18so31218183lfb.0
-        for <linux-acpi@vger.kernel.org>; Sat, 13 Nov 2021 10:17:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=mrn1NIftn+/y3p04+oXFM5Qn8D5ewdrKB9+IXlb70gU=;
-        b=lywvIywKxFlHdXidQtLU2+u0Kz0P/6jbCcTXwr6JrTG1J1VaK2Mszl2tJdWyP+J7nF
-         1PaBi57WPUYC7tgPcIvZXR/N88Q30phP30Mlfq1R6+fn7/ieyAtTLG2JGG1OA9IyI2m/
-         VBYzucN4EE+bTyszSc3LgYNBpRMQ7KrBsuiae+sqJzweyy6N5JgrO/5t1ToUo+ISh5O/
-         oDPRv01L37VyCxPQtiWFWTcT1J6na6CVYMgAgDbaZvHpab7JT94Q2OC7VSOfHbbyXgca
-         drAH+tvDFdLqPh7VgKLksAsU27BitOBsA8Qqo0S++D/LEkLlc6McIkuHIUC1mKCuUjZQ
-         HA9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=mrn1NIftn+/y3p04+oXFM5Qn8D5ewdrKB9+IXlb70gU=;
-        b=PsUJVY5c+M7AWmZa1KJ8Rs4RFAoWb3uxbVQM/XWZZYsnJzgzT+qjIUXP2sA7EjgiV/
-         EwFIQp/v1vkhJfxXKCAfZenR7ArNhqUFhUBNpxV/bnHog91KBeFAquji8iW4TzUVXsUz
-         LumoeJsQfS/mt1li7tY0x595VOxWMFY0KTqp0NNt5NJhexZQoCPpNJxmVYHXVE1EY22z
-         /0xwtdQ2GelIey294NpfWfNoESfZe0BbaKgxVbli9gt7MY/iwrPDstuY4tKJxNdH+vK0
-         4p8uia4gKLFyEj+XF3p9S23TVcMqJNbSmi6vZDWFHlrr+0IHPsO8Dqu96oXSGBSm1Zx4
-         zR/Q==
-X-Gm-Message-State: AOAM532keZ20k5VlWnl6jtDOroyVXkN1tFyZn0Oz4DHIry7q3oEQIKbk
-        ZAFfv4cgaeKH9UIfnYeu13Gq1RBkamfuCTGI
-X-Google-Smtp-Source: ABdhPJx7vtKszr6zsEcRb1fYDb+Mthh3Wo3OmqwifnMx3zsK/Ja1JoEYXYWs4Kh/iA1yxIhyxNEVbA==
-X-Received: by 2002:ac2:430d:: with SMTP id l13mr22848869lfh.656.1636827418961;
-        Sat, 13 Nov 2021 10:16:58 -0800 (PST)
-Received: from localhost.localdomain ([178.127.153.223])
-        by smtp.gmail.com with ESMTPSA id m9sm918244ljg.80.2021.11.13.10.16.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Nov 2021 10:16:58 -0800 (PST)
-Received: from jek by localhost.localdomain with local (Exim 4.95)
-        (envelope-from <jekhor@gmail.com>)
-        id 1mlxaD-000rS3-5U;
-        Sat, 13 Nov 2021 21:16:57 +0300
-Date:   Sat, 13 Nov 2021 21:16:57 +0300
-From:   Yauhen Kharuzhy <jekhor@gmail.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] ACPI / x86: Revert: Make PWM2 device always present at
- Lenovo Yoga Book
-Message-ID: <YZABGfarFQoxpf1R@jeknote.loshitsa1.net>
-References: <20211113135206.5384-1-hdegoede@redhat.com>
+        id S233170AbhKNMgu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 14 Nov 2021 07:36:50 -0500
+Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:56248 "EHLO
+        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230267AbhKNMgn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 14 Nov 2021 07:36:43 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0UwT3AKi_1636893226;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0UwT3AKi_1636893226)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Sun, 14 Nov 2021 20:33:47 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
+Cc:     bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
+        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
+        xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com
+Subject: [RFC PATCH v2] ACPI: Move sdei_init and ghes_init ahead
+Date:   Sun, 14 Nov 2021 20:33:38 +0800
+Message-Id: <20211114123338.92428-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211113135206.5384-1-hdegoede@redhat.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Nov 13, 2021 at 02:52:06PM +0100, Hans de Goede wrote:
-> It turns out that there is a WMI object which controls the PWM2 device
-> used for the keyboard backlight and that WMI object also provides some
-> other useful functionality.
-> 
-> The upcoming lenovo-yogabook-wmi driver will offer both backlight
-> control and the other functionality, so there no longer is a need
-> to have the lpss-pwm driver binding to PWM2 for backlight control;
-> and this is now actually undesirable because this will cause both
-> the WMI code and the lpss-pwm driver to poke at the same PWM
-> controller.
+On an ACPI system, ACPI is initialised very early from a
+subsys_initcall(), while SDEI is not ready until a subsys_initcall().
+More seriously, the kernel is able to handle and report errors until the
+GHES is initialised by device_initcall().
 
-Acked-by: Yauhen Kharuzhy <jekhor@gmail.com>
+Consequently, when an error occurs during the kernel booting, the
+phyiscal sdei dispatcher in firmware fails to dispatch error events. All
+errors that occurred before GHES initialization are missed and there is
+no chance to report and find them again.
 
-> 
-> Revert commit ff6cdfd71495 ("ACPI / x86: Make PWM2 device always present
-> at Lenovo Yoga Book"), removing the always-present quirk for the PWM2
-> ACPI-device, so that the lpss-pwm controller will no longer bind to it.
-> 
-> Cc: Yauhen Kharuzhy <jekhor@gmail.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/acpi/x86/utils.c | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-> index cb988f9b23a1..bfcb76888ca7 100644
-> --- a/drivers/acpi/x86/utils.c
-> +++ b/drivers/acpi/x86/utils.c
-> @@ -54,10 +54,6 @@ static const struct always_present_id always_present_ids[] = {
->  	ENTRY("80860F09", "1", X86_MATCH(ATOM_SILVERMONT), {}),
->  	ENTRY("80862288", "1", X86_MATCH(ATOM_AIRMONT), {}),
->  
-> -	/* Lenovo Yoga Book uses PWM2 for keyboard backlight control */
-> -	ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
-> -			DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X9"),
-> -		}),
->  	/* The Xiaomi Mi Pad 2 uses PWM2 for touchkeys backlight control */
->  	ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
->  		DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
-> -- 
-> 2.31.1
-> 
+In this patch, move sdei_init and ghes_init as far ahead as possible,
+right after acpi_hest_init().
 
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+
+---
+Changelog v1 -> v2:
+Fix compile error without CONFIG_ACPI_APEI enabled
+Reported-by: kernel test robot<lkp@intel.com>
+---
+ drivers/acpi/apei/ghes.c    | 3 +--
+ drivers/acpi/pci_root.c     | 2 ++
+ drivers/firmware/arm_sdei.c | 9 +--------
+ include/acpi/apei.h         | 4 ++++
+ 4 files changed, 8 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 0c8330ed1ffd..4200369503b8 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1457,7 +1457,7 @@ static struct platform_driver ghes_platform_driver = {
+ 	.remove		= ghes_remove,
+ };
+ 
+-static int __init ghes_init(void)
++int __init ghes_init(void)
+ {
+ 	int rc;
+ 
+@@ -1499,4 +1499,3 @@ static int __init ghes_init(void)
+ err:
+ 	return rc;
+ }
+-device_initcall(ghes_init);
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index ab2f7dfb0c44..658b6e536b60 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -946,6 +946,8 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+ void __init acpi_pci_root_init(void)
+ {
+ 	acpi_hest_init();
++	sdei_init();
++	ghes_init();
+ 	if (acpi_pci_disabled)
+ 		return;
+ 
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index a7e762c352f9..606520be326e 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -1059,7 +1059,7 @@ static bool __init sdei_present_acpi(void)
+ 	return true;
+ }
+ 
+-static int __init sdei_init(void)
++int __init sdei_init(void)
+ {
+ 	struct platform_device *pdev;
+ 	int ret;
+@@ -1080,13 +1080,6 @@ static int __init sdei_init(void)
+ 	return ret;
+ }
+ 
+-/*
+- * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
+- * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
+- * by device_initcall(). We want to be called in the middle.
+- */
+-subsys_initcall_sync(sdei_init);
+-
+ int sdei_event_handler(struct pt_regs *regs,
+ 		       struct sdei_registered_event *arg)
+ {
+diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+index ece0a8af2bae..12909c96ef89 100644
+--- a/include/acpi/apei.h
++++ b/include/acpi/apei.h
+@@ -33,8 +33,12 @@ extern bool ghes_disable;
+ 
+ #ifdef CONFIG_ACPI_APEI
+ void __init acpi_hest_init(void);
++int __init sdei_init(void);
++int __init ghes_init(void);
+ #else
+ static inline void acpi_hest_init(void) { return; }
++static inline void sdei_init(void) { return; }
++static inline void ghes_init(void) { return; }
+ #endif
+ 
+ int erst_write(const struct cper_record_header *record);
 -- 
-Yauhen Kharuzhy
+2.20.1.12.g72788fdb
+
