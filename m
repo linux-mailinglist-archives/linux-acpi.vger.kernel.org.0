@@ -2,117 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FE9844F998
-	for <lists+linux-acpi@lfdr.de>; Sun, 14 Nov 2021 18:07:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2864B44FECD
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Nov 2021 07:44:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236240AbhKNRKl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 14 Nov 2021 12:10:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:29826 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236425AbhKNRH7 (ORCPT
+        id S230354AbhKOGrQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Nov 2021 01:47:16 -0500
+Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:43347 "EHLO
+        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230075AbhKOGrP (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Sun, 14 Nov 2021 12:07:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1636909505;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HKhlJl6L8XG/e1kTNa2zkugX2OC5+vLBLiGtbBb04F8=;
-        b=MLOg2iwmBd3QCJ0ICb+PAK2bXOOoOhxNfBGmcZPkD2xoOKuOKSHkj/eZQtrddDe94xlEOK
-        KhbL/PLnQrt92GbXvyAiYMumcw5c+KEwkSXQsTCrnH725w6HcqjkGItmpBy5etwRk0kRCS
-        Q3tmUMYMgc2cRTAnItnGdPGqQ1JQTUk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-512-sStz62q6NCWVIasF6iVnTA-1; Sun, 14 Nov 2021 12:04:58 -0500
-X-MC-Unique: sStz62q6NCWVIasF6iVnTA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4C7E2809864;
-        Sun, 14 Nov 2021 17:04:56 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.192.93])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id CFF3819EF9;
-        Sun, 14 Nov 2021 17:04:52 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-efi@vger.kernel.org
-Subject: [PATCH v2 20/20] extcon: intel-cht-wc: Report RID_A for ACA adapters
-Date:   Sun, 14 Nov 2021 18:03:35 +0100
-Message-Id: <20211114170335.66994-21-hdegoede@redhat.com>
-In-Reply-To: <20211114170335.66994-1-hdegoede@redhat.com>
-References: <20211114170335.66994-1-hdegoede@redhat.com>
+        Mon, 15 Nov 2021 01:47:15 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R421e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0UwafAYb_1636958656;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0UwafAYb_1636958656)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 15 Nov 2021 14:44:18 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
+Cc:     bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
+        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
+        xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com
+Subject: [RFC PATCH v3] ACPI: Move sdei_init and ghes_init ahead
+Date:   Mon, 15 Nov 2021 14:44:15 +0800
+Message-Id: <20211115064415.29933-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.30.1 (Apple Git-130)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Make cht_wc_extcon_get_id() report RID_A for ACA adapters, instead of
-reporting ID_FLOAT.
+On an ACPI system, ACPI is initialised very early from a
+subsys_initcall(), while SDEI is not ready until a subsys_initcall().
+More seriously, the kernel is able to handle and report errors until the
+GHES is initialised by device_initcall().
 
-According to the spec. we should read the USB-ID pin ADC value
-to determine the resistance of the used pull-down resister and
-then return RID_A / RID_B / RID_C based on this. But all "Accessory
-Charger Adapter"s (ACAs) which users can actually buy always use
-a combination of a charging port with one or more USB-A ports, so
-they should always use a resistor indicating RID_A. But the spec
-is hard to read / badly-worded so some of them actually indicate
-they are a RID_B ACA evnen though they clearly are a RID_A ACA.
+Consequently, when an error occurs during the kernel booting, the
+phyiscal sdei dispatcher in firmware fails to dispatch error events. All
+errors that occurred before GHES initialization are missed and there is
+no chance to report and find them again.
 
-To workaround this simply always return INTEL_USB_RID_A, which
-matches all the ACAs which users can actually buy.
+In this patch, move sdei_init and ghes_init as far ahead as possible,
+right after acpi_hest_init().
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 ---
- drivers/extcon/extcon-intel-cht-wc.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+Changelog v2 -> v3:
+Fix compile error in X86
+Reported-by: kernel test robot<lkp@intel.com>
+---
+ drivers/acpi/apei/ghes.c    | 3 +--
+ drivers/acpi/pci_root.c     | 8 +++++++-
+ drivers/firmware/arm_sdei.c | 9 +--------
+ include/acpi/apei.h         | 2 ++
+ include/linux/arm_sdei.h    | 2 ++
+ 5 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/extcon/extcon-intel-cht-wc.c b/drivers/extcon/extcon-intel-cht-wc.c
-index 1030610a3494..c92bc98cb428 100644
---- a/drivers/extcon/extcon-intel-cht-wc.c
-+++ b/drivers/extcon/extcon-intel-cht-wc.c
-@@ -121,13 +121,21 @@ static int cht_wc_extcon_get_id(struct cht_wc_extcon_data *ext, int pwrsrc_sts)
- 		return INTEL_USB_ID_GND;
- 	case CHT_WC_PWRSRC_RID_FLOAT:
- 		return INTEL_USB_ID_FLOAT;
-+	/*
-+	 * According to the spec. we should read the USB-ID pin ADC value here
-+	 * to determine the resistance of the used pull-down resister and then
-+	 * return RID_A / RID_B / RID_C based on this. But all "Accessory
-+	 * Charger Adapter"s (ACAs) which users can actually buy always use
-+	 * a combination of a charging port with one or more USB-A ports, so
-+	 * they should always use a resistor indicating RID_A. But the spec
-+	 * is hard to read / badly-worded so some of them actually indicate
-+	 * they are a RID_B ACA evnen though they clearly are a RID_A ACA.
-+	 * To workaround this simply always return INTEL_USB_RID_A, which
-+	 * matches all the ACAs which users can actually buy.
-+	 */
- 	case CHT_WC_PWRSRC_RID_ACA:
-+		return INTEL_USB_RID_A;
- 	default:
--		/*
--		 * Once we have IIO support for the GPADC we should read
--		 * the USBID GPADC channel here and determine ACA role
--		 * based on that.
--		 */
- 		return INTEL_USB_ID_FLOAT;
- 	}
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 0c8330ed1ffd..4200369503b8 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1457,7 +1457,7 @@ static struct platform_driver ghes_platform_driver = {
+ 	.remove		= ghes_remove,
+ };
+ 
+-static int __init ghes_init(void)
++int __init ghes_init(void)
+ {
+ 	int rc;
+ 
+@@ -1499,4 +1499,3 @@ static int __init ghes_init(void)
+ err:
+ 	return rc;
  }
+-device_initcall(ghes_init);
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index ab2f7dfb0c44..7658ae509377 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -23,7 +23,7 @@
+ #include <linux/dmi.h>
+ #include <linux/platform_data/x86/apple.h>
+ #include <acpi/apei.h>	/* for acpi_hest_init() */
+-
++#include <linux/arm_sdei.h> /* for sdei_init() */
+ #include "internal.h"
+ 
+ #define ACPI_PCI_ROOT_CLASS		"pci_bridge"
+@@ -946,6 +946,12 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+ void __init acpi_pci_root_init(void)
+ {
+ 	acpi_hest_init();
++	#ifdef CONFIG_ARM_SDE_INTERFACE
++	sdei_init();
++	#endif 
++	#ifdef CONFIG_ACPI_APEI_GHES
++	ghes_init();
++	#endif 
+ 	if (acpi_pci_disabled)
+ 		return;
+ 
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index a7e762c352f9..606520be326e 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -1059,7 +1059,7 @@ static bool __init sdei_present_acpi(void)
+ 	return true;
+ }
+ 
+-static int __init sdei_init(void)
++int __init sdei_init(void)
+ {
+ 	struct platform_device *pdev;
+ 	int ret;
+@@ -1080,13 +1080,6 @@ static int __init sdei_init(void)
+ 	return ret;
+ }
+ 
+-/*
+- * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
+- * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
+- * by device_initcall(). We want to be called in the middle.
+- */
+-subsys_initcall_sync(sdei_init);
+-
+ int sdei_event_handler(struct pt_regs *regs,
+ 		       struct sdei_registered_event *arg)
+ {
+diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+index ece0a8af2bae..155a0fe417c6 100644
+--- a/include/acpi/apei.h
++++ b/include/acpi/apei.h
+@@ -27,8 +27,10 @@ extern int hest_disable;
+ extern int erst_disable;
+ #ifdef CONFIG_ACPI_APEI_GHES
+ extern bool ghes_disable;
++int __init ghes_init(void);
+ #else
+ #define ghes_disable 1
++static inline int ghes_init(void) { return 0; }
+ #endif
+ 
+ #ifdef CONFIG_ACPI_APEI
+diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
+index 0a241c5c911d..983b7404bff9 100644
+--- a/include/linux/arm_sdei.h
++++ b/include/linux/arm_sdei.h
+@@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
+ /* For use by arch code when CPU hotplug notifiers are not appropriate. */
+ int sdei_mask_local_cpu(void);
+ int sdei_unmask_local_cpu(void);
++int __init sdei_init(void);
+ #else
+ static inline int sdei_mask_local_cpu(void) { return 0; }
+ static inline int sdei_unmask_local_cpu(void) { return 0; }
++static inline int sdei_init(void) { return 0; }
+ #endif /* CONFIG_ARM_SDE_INTERFACE */
+ 
+ 
 -- 
-2.31.1
+2.20.1.12.g72788fdb
 
