@@ -2,723 +2,214 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE6B4507F9
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Nov 2021 16:12:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6CE045099C
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Nov 2021 17:27:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236664AbhKOPPY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 15 Nov 2021 10:15:24 -0500
-Received: from mga02.intel.com ([134.134.136.20]:40556 "EHLO mga02.intel.com"
+        id S231131AbhKOQae (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 15 Nov 2021 11:30:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36632 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236300AbhKOPOx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 15 Nov 2021 10:14:53 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10168"; a="220668139"
-X-IronPort-AV: E=Sophos;i="5.87,236,1631602800"; 
-   d="scan'208";a="220668139"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2021 07:11:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,236,1631602800"; 
-   d="scan'208";a="644861978"
-Received: from chenyu-desktop.sh.intel.com ([10.239.158.186])
-  by fmsmga001.fm.intel.com with ESMTP; 15 Nov 2021 07:11:48 -0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Mike Rapoport <rppt@kernel.org>, Chen Yu <yu.c.chen@intel.com>,
-        linux-kernel@vger.kernel.org, Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v10 4/4] tools: Introduce power/acpi/tools/pfru
-Date:   Mon, 15 Nov 2021 23:10:41 +0800
-Message-Id: <e0ec68cce09acf1eabb92f2006665864ddb5467a.1636987638.git.yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1636987638.git.yu.c.chen@intel.com>
-References: <cover.1636987638.git.yu.c.chen@intel.com>
+        id S231639AbhKOQad (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 15 Nov 2021 11:30:33 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 36E5960235;
+        Mon, 15 Nov 2021 16:27:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1636993656;
+        bh=4JbhaJa+WKgNpMtMZdbDTrTF43/5Tpkk286u8m+D2q8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=DiziJVtUjHRR5a2WuY01BjtVns2jwsr+GsL2MyTH00JvwAMa2/A/181Jxnj/ccGC9
+         3h71mVzPIfFbKi9dFWK1mF4nEbD67jENiphimWiwftNmwTGTQBwc68KhQRDl3tcHdT
+         hJ9ceH21hBj6XbgPcxcvKXqqhkz0THLwsCf4UiTRrv4vHj2sP1s2HAP+V34um2DSjC
+         nMeO0s0qOOsSrf7GsLCCvfe0HKyy99+Lw8jqP1N6vL7QJ2vwvhrJvwar3FUkbMGbbO
+         XHm2yWdmxjmxpnBlsSWqmSejYZ7lYffxoRlfu2a4bS5hpslqhehXw82nMSkhDfNy9N
+         zQP0VQWA3MBLg==
+Date:   Mon, 15 Nov 2021 10:27:34 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+        bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
+        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
+        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
+Subject: Re: [RFC PATCH v3] ACPI: Move sdei_init and ghes_init ahead
+Message-ID: <20211115162734.GA1566887@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211115064415.29933-1-xueshuai@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Introduce a user space tool to make use of the interface exposed by
-Platform Firmware Runtime Update and Telemetry drivers. The users
-can use this tool to do firmware code injection, driver update and
-to retrieve the telemetry data.
+The subject says *what* the patch does, but doesn't give any clue
+about *why* we want this.
 
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
-v10:No change since v9.
-v9: Add this tool into tools/power/acpi build infrastructure.
-    (Andy Shevchenko)
-v8: Print the length of OEM information if requested.
-v7: No change since v6.
-v6: Simplify the userspace tool to use while loop for getopt_long().
-    (Andy Shevchenko)
-v5: Replace the read() with mmap() so that the userspace
-    could mmap once, and read multiple times. (Greg Kroah-Hartman)
----
- tools/power/acpi/.gitignore          |   1 +
- tools/power/acpi/Makefile            |  16 +-
- tools/power/acpi/Makefile.rules      |   2 +-
- tools/power/acpi/man/pfru.8          | 137 +++++++++
- tools/power/acpi/tools/pfru/Makefile |  23 ++
- tools/power/acpi/tools/pfru/pfru.c   | 417 +++++++++++++++++++++++++++
- 6 files changed, 587 insertions(+), 9 deletions(-)
- create mode 100644 tools/power/acpi/man/pfru.8
- create mode 100644 tools/power/acpi/tools/pfru/Makefile
- create mode 100644 tools/power/acpi/tools/pfru/pfru.c
+On Mon, Nov 15, 2021 at 02:44:15PM +0800, Shuai Xue wrote:
+> On an ACPI system, ACPI is initialised very early from a
+> subsys_initcall(), while SDEI is not ready until a subsys_initcall().
 
-diff --git a/tools/power/acpi/.gitignore b/tools/power/acpi/.gitignore
-index 0b319fc8bb17..a6f196912999 100644
---- a/tools/power/acpi/.gitignore
-+++ b/tools/power/acpi/.gitignore
-@@ -2,4 +2,5 @@
- /acpidbg
- /acpidump
- /ec
-+/pfru
- /include/
-diff --git a/tools/power/acpi/Makefile b/tools/power/acpi/Makefile
-index a249c50ebf55..2fcf09d3add3 100644
---- a/tools/power/acpi/Makefile
-+++ b/tools/power/acpi/Makefile
-@@ -9,18 +9,18 @@ include ../../scripts/Makefile.include
- 
- .NOTPARALLEL:
- 
--all: acpidbg acpidump ec
--clean: acpidbg_clean acpidump_clean ec_clean
--install: acpidbg_install acpidump_install ec_install
--uninstall: acpidbg_uninstall acpidump_uninstall ec_uninstall
-+all: acpidbg acpidump ec pfru
-+clean: acpidbg_clean acpidump_clean ec_clean pfru_clean
-+install: acpidbg_install acpidump_install ec_install pfru_install
-+uninstall: acpidbg_uninstall acpidump_uninstall ec_uninstall pfru_uninstall
- 
--acpidbg acpidump ec: FORCE
-+acpidbg acpidump ec pfru: FORCE
- 	$(call descend,tools/$@,all)
--acpidbg_clean acpidump_clean ec_clean:
-+acpidbg_clean acpidump_clean ec_clean pfru_clean:
- 	$(call descend,tools/$(@:_clean=),clean)
--acpidbg_install acpidump_install ec_install:
-+acpidbg_install acpidump_install ec_install pfru_install:
- 	$(call descend,tools/$(@:_install=),install)
--acpidbg_uninstall acpidump_uninstall ec_uninstall:
-+acpidbg_uninstall acpidump_uninstall ec_uninstall pfru_uninstall:
- 	$(call descend,tools/$(@:_uninstall=),uninstall)
- 
- .PHONY: FORCE
-diff --git a/tools/power/acpi/Makefile.rules b/tools/power/acpi/Makefile.rules
-index 2a6c170b57cd..68aa7e92d554 100644
---- a/tools/power/acpi/Makefile.rules
-+++ b/tools/power/acpi/Makefile.rules
-@@ -9,7 +9,7 @@ objdir := $(OUTPUT)tools/$(TOOL)/
- toolobjs := $(addprefix $(objdir),$(TOOL_OBJS))
- $(OUTPUT)$(TOOL): $(toolobjs) FORCE
- 	$(ECHO) "  LD      " $(subst $(OUTPUT),,$@)
--	$(QUIET) $(LD) $(CFLAGS) $(LDFLAGS) $(toolobjs) -L$(OUTPUT) -o $@
-+	$(QUIET) $(LD) $(CFLAGS) $(toolobjs) $(LDFLAGS) -L$(OUTPUT) -o $@
- 	$(ECHO) "  STRIP   " $(subst $(OUTPUT),,$@)
- 	$(QUIET) $(STRIPCMD) $@
- 
-diff --git a/tools/power/acpi/man/pfru.8 b/tools/power/acpi/man/pfru.8
-new file mode 100644
-index 000000000000..d9cda7beaa3c
---- /dev/null
-+++ b/tools/power/acpi/man/pfru.8
-@@ -0,0 +1,137 @@
-+.TH "PFRU" "8" "October 2021" "pfru 1.0" ""
-+.hy
-+.SH Name
-+.PP
-+pfru \- Platform Firmware Runtime Update tool
-+.SH SYNOPSIS
-+.PP
-+\f[B]pfru\f[R] [\f[I]Options\f[R]]
-+.SH DESCRIPTION
-+.PP
-+The PFRU(Platform Firmware Runtime Update) kernel interface is designed
-+to
-+.PD 0
-+.P
-+.PD
-+interact with the platform firmware interface defined in the
-+.PD 0
-+.P
-+.PD
-+Management Mode Firmware Runtime
-+Update (https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf)
-+.PD 0
-+.P
-+.PD
-+\f[B]pfru\f[R] is the tool to interact with the kernel interface.
-+.PD 0
-+.P
-+.PD
-+.SH OPTIONS
-+.TP
-+.B \f[B]\-h\f[R], \f[B]\-\-help\f[R]
-+Display helper information.
-+.TP
-+.B \f[B]\-l\f[R], \f[B]\-\-load\f[R]
-+Load the capsule file into the system.
-+To be more specific, the capsule file will be copied to the
-+communication buffer.
-+.TP
-+.B \f[B]\-s\f[R], \f[B]\-\-stage\f[R]
-+Stage the capsule image from communication buffer into Management Mode
-+and perform authentication.
-+.TP
-+.B \f[B]\-a\f[R], \f[B]\-\-activate\f[R]
-+Activate a previous staged capsule image.
-+.TP
-+.B \f[B]\-u\f[R], \f[B]\-\-update\f[R]
-+Perform both stage and activation actions.
-+.TP
-+.B \f[B]\-q\f[R], \f[B]\-\-query\f[R]
-+Query the update capability.
-+.TP
-+.B \f[B]\-d\f[R], \f[B]\-\-setrev\f[R]
-+Set the revision ID of code injection/driver update.
-+.TP
-+.B \f[B]\-D\f[R], \f[B]\-\-setrevlog\f[R]
-+Set the revision ID of telemetry.
-+.TP
-+.B \f[B]\-G\f[R], \f[B]\-\-getloginfo\f[R]
-+Get telemetry log information and print it out.
-+.TP
-+.B \f[B]\-T\f[R], \f[B]\-\-type\f[R]
-+Set the telemetry log data type.
-+.TP
-+.B \f[B]\-L\f[R], \f[B]\-\-level\f[R]
-+Set the telemetry log level.
-+.TP
-+.B \f[B]\-R\f[R], \f[B]\-\-read\f[R]
-+Read all the telemetry data and print it out.
-+.SH EXAMPLES
-+.PP
-+\f[B]pfru \-G\f[R]
-+.PP
-+log_level:4
-+.PD 0
-+.P
-+.PD
-+log_type:0
-+.PD 0
-+.P
-+.PD
-+log_revid:2
-+.PD 0
-+.P
-+.PD
-+max_data_size:65536
-+.PD 0
-+.P
-+.PD
-+chunk1_size:0
-+.PD 0
-+.P
-+.PD
-+chunk2_size:1401
-+.PD 0
-+.P
-+.PD
-+rollover_cnt:0
-+.PD 0
-+.P
-+.PD
-+reset_cnt:4
-+.PP
-+\f[B]pfru \-q\f[R]
-+.PP
-+code injection image type:794bf8b2\-6e7b\-454e\-885f\-3fb9bb185402
-+.PD 0
-+.P
-+.PD
-+fw_version:0
-+.PD 0
-+.P
-+.PD
-+code_rt_version:1
-+.PD 0
-+.P
-+.PD
-+driver update image type:0e5f0b14\-f849\-7945\-ad81\-bc7b6d2bb245
-+.PD 0
-+.P
-+.PD
-+drv_rt_version:0
-+.PD 0
-+.P
-+.PD
-+drv_svn:0
-+.PD 0
-+.P
-+.PD
-+platform id:39214663\-b1a8\-4eaa\-9024\-f2bb53ea4723
-+.PD 0
-+.P
-+.PD
-+oem id:a36db54f\-ea2a\-e14e\-b7c4\-b5780e51ba3d
-+.PP
-+\f[B]pfru \-l yours.cap \-u \-T 1 \-L 4\f[R]
-+.SH AUTHORS
-+Chen Yu.
-diff --git a/tools/power/acpi/tools/pfru/Makefile b/tools/power/acpi/tools/pfru/Makefile
-new file mode 100644
-index 000000000000..09002a81e10c
---- /dev/null
-+++ b/tools/power/acpi/tools/pfru/Makefile
-@@ -0,0 +1,23 @@
-+# SPDX-License-Identifier: GPL-2.0+
-+
-+include ../../Makefile.config
-+
-+TOOL = pfru
-+EXTRA_INSTALL = install-man
-+EXTRA_UNINSTALL = uninstall-man
-+
-+CFLAGS += -Wall -O2
-+CFLAGS += -DPFRU_HEADER='"../../../../../include/uapi/linux/pfru.h"'
-+LDFLAGS += -luuid
-+
-+TOOL_OBJS = \
-+	pfru.o
-+
-+include ../../Makefile.rules
-+
-+install-man: $(srctree)/man/pfru.8
-+	$(ECHO) "  INST    " pfru.8
-+	$(QUIET) $(INSTALL_DATA) -D $< $(DESTDIR)$(mandir)/man8/pfru.8
-+uninstall-man:
-+	$(ECHO) "  UNINST  " pfru.8
-+	$(QUIET) rm -f $(DESTDIR)$(mandir)/man8/pfru.8
-diff --git a/tools/power/acpi/tools/pfru/pfru.c b/tools/power/acpi/tools/pfru/pfru.c
-new file mode 100644
-index 000000000000..eeec5043f825
---- /dev/null
-+++ b/tools/power/acpi/tools/pfru/pfru.c
-@@ -0,0 +1,417 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Platform Firmware Runtime Update tool to do Management
-+ * Mode code injection/driver update and telemetry retrieval.
-+ */
-+#define _GNU_SOURCE
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <getopt.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <uuid/uuid.h>
-+#include PFRU_HEADER
-+
-+char *capsule_name;
-+int action, query_cap, log_type, log_level, log_read, log_getinfo,
-+	revid, log_revid;
-+int set_log_level, set_log_type,
-+	set_revid, set_log_revid;
-+
-+char *progname;
-+
-+#define LOG_ERR		0
-+#define LOG_WARN	1
-+#define LOG_INFO	2
-+#define LOG_VERB	4
-+#define LOG_EXEC_IDX	0
-+#define LOG_HISTORY_IDX	1
-+#define REVID_1		1
-+#define REVID_2		2
-+
-+static int valid_log_level(int level)
-+{
-+	return level == LOG_ERR || level == LOG_WARN ||
-+	       level == LOG_INFO || level == LOG_VERB;
-+}
-+
-+static int valid_log_type(int type)
-+{
-+	return type == LOG_EXEC_IDX || type == LOG_HISTORY_IDX;
-+}
-+
-+static inline int valid_log_revid(int id)
-+{
-+	return id == REVID_1 || id == REVID_2;
-+}
-+
-+static void help(void)
-+{
-+	fprintf(stderr,
-+		"usage: %s [OPTIONS]\n"
-+		" code injection:\n"
-+		"  -l, --load\n"
-+		"  -s, --stage\n"
-+		"  -a, --activate\n"
-+		"  -u, --update [stage and activate]\n"
-+		"  -q, --query\n"
-+		"  -d, --revid update\n"
-+		" telemetry:\n"
-+		"  -G, --getloginfo\n"
-+		"  -T, --type(0:execution, 1:history)\n"
-+		"  -L, --level(0, 1, 2, 4)\n"
-+		"  -R, --read\n"
-+		"  -D, --revid log\n",
-+		progname);
-+}
-+
-+char *option_string = "l:sauqd:GT:L:RD:h";
-+static struct option long_options[] = {
-+	{"load", required_argument, 0, 'l'},
-+	{"stage", no_argument, 0, 's'},
-+	{"activate", no_argument, 0, 'a'},
-+	{"update", no_argument, 0, 'u'},
-+	{"query", no_argument, 0, 'q'},
-+	{"getloginfo", no_argument, 0, 'G'},
-+	{"type", required_argument, 0, 'T'},
-+	{"level", required_argument, 0, 'L'},
-+	{"read", no_argument, 0, 'R'},
-+	{"setrev", required_argument, 0, 'd'},
-+	{"setrevlog", required_argument, 0, 'D'},
-+	{"help", no_argument, 0, 'h'},
-+	{}
-+};
-+
-+static void parse_options(int argc, char **argv)
-+{
-+	int option_index = 0;
-+	char *pathname;
-+	int opt;
-+
-+	pathname = strdup(argv[0]);
-+	progname = basename(pathname);
-+
-+	while ((opt = getopt_long_only(argc, argv, option_string,
-+				       long_options, &option_index)) != -1) {
-+		switch (opt) {
-+		case 'l':
-+			capsule_name = optarg;
-+			break;
-+		case 's':
-+			action = 1;
-+			break;
-+		case 'a':
-+			action = 2;
-+			break;
-+		case 'u':
-+			action = 3;
-+			break;
-+		case 'q':
-+			query_cap = 1;
-+			break;
-+		case 'G':
-+			log_getinfo = 1;
-+			break;
-+		case 'T':
-+			log_type = atoi(optarg);
-+			set_log_type = 1;
-+			break;
-+		case 'L':
-+			log_level = atoi(optarg);
-+			set_log_level = 1;
-+			break;
-+		case 'R':
-+			log_read = 1;
-+			break;
-+		case 'd':
-+			revid = atoi(optarg);
-+			set_revid = 1;
-+			break;
-+		case 'D':
-+			log_revid = atoi(optarg);
-+			set_log_revid = 1;
-+			break;
-+		case 'h':
-+			help();
-+			exit(0);
-+		default:
-+			break;
-+		}
-+	}
-+}
-+
-+void print_cap(struct pfru_update_cap_info *cap)
-+{
-+	char *uuid;
-+
-+	uuid = malloc(37);
-+	if (!uuid) {
-+		perror("Can not allocate uuid buffer\n");
-+		exit(1);
-+	}
-+
-+	uuid_unparse(cap->code_type, uuid);
-+	printf("code injection image type:%s\n", uuid);
-+	printf("fw_version:%d\n", cap->fw_version);
-+	printf("code_rt_version:%d\n", cap->code_rt_version);
-+
-+	uuid_unparse(cap->drv_type, uuid);
-+	printf("driver update image type:%s\n", uuid);
-+	printf("drv_rt_version:%d\n", cap->drv_rt_version);
-+	printf("drv_svn:%d\n", cap->drv_svn);
-+
-+	uuid_unparse(cap->platform_id, uuid);
-+	printf("platform id:%s\n", uuid);
-+	uuid_unparse(cap->oem_id, uuid);
-+	printf("oem id:%s\n", uuid);
-+	printf("oem information length:%d\n", cap->oem_info_len);
-+
-+	free(uuid);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int fd_update, fd_update_log, fd_capsule;
-+	struct pfru_log_data_info data_info;
-+	struct pfru_log_info info;
-+	struct pfru_update_cap_info cap;
-+	void *addr_map_capsule;
-+	struct stat st;
-+	char *log_buf;
-+	int ret = 0;
-+
-+	if (getuid() != 0) {
-+		printf("Please run the tool as root - Exiting.\n");
-+		return 1;
-+	}
-+
-+	parse_options(argc, argv);
-+
-+	fd_update = open("/dev/acpi_pfru0", O_RDWR);
-+	if (fd_update < 0) {
-+		printf("PFRU device not supported - Quit...\n");
-+		return 1;
-+	}
-+
-+	fd_update_log = open("/dev/acpi_pfru_telemetry0", O_RDWR);
-+	if (fd_update_log < 0) {
-+		printf("PFRU telemetry device not supported - Quit...\n");
-+		return 1;
-+	}
-+
-+	if (query_cap) {
-+		ret = ioctl(fd_update, PFRU_IOC_QUERY_CAP, &cap);
-+		if (ret)
-+			perror("Query Update Capability info failed.");
-+		else
-+			print_cap(&cap);
-+
-+		close(fd_update);
-+		close(fd_update_log);
-+
-+		return ret;
-+	}
-+
-+	if (log_getinfo) {
-+		ret = ioctl(fd_update_log, PFRU_LOG_IOC_GET_DATA_INFO, &data_info);
-+		if (ret) {
-+			perror("Get telemetry data info failed.");
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		ret = ioctl(fd_update_log, PFRU_LOG_IOC_GET_INFO, &info);
-+		if (ret) {
-+			perror("Get telemetry info failed.");
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		printf("log_level:%d\n", info.log_level);
-+		printf("log_type:%d\n", info.log_type);
-+		printf("log_revid:%d\n", info.log_revid);
-+		printf("max_data_size:%d\n", data_info.max_data_size);
-+		printf("chunk1_size:%d\n", data_info.chunk1_size);
-+		printf("chunk2_size:%d\n", data_info.chunk2_size);
-+		printf("rollover_cnt:%d\n", data_info.rollover_cnt);
-+		printf("reset_cnt:%d\n", data_info.reset_cnt);
-+
-+		return 0;
-+	}
-+
-+	info.log_level = -1;
-+	info.log_type = -1;
-+	info.log_revid = -1;
-+
-+	if (set_log_level) {
-+		if (!valid_log_level(log_level)) {
-+			printf("Invalid log level %d\n",
-+			       log_level);
-+		} else {
-+			info.log_level = log_level;
-+		}
-+	}
-+
-+	if (set_log_type) {
-+		if (!valid_log_type(log_type)) {
-+			printf("Invalid log type %d\n",
-+			       log_type);
-+		} else {
-+			info.log_type = log_type;
-+		}
-+	}
-+
-+	if (set_log_revid) {
-+		if (!valid_log_revid(log_revid)) {
-+			printf("Invalid log revid %d, unchanged.\n",
-+			       log_revid);
-+		} else {
-+			info.log_revid = log_revid;
-+		}
-+	}
-+
-+	ret = ioctl(fd_update_log, PFRU_LOG_IOC_SET_INFO, &info);
-+	if (ret) {
-+		perror("Log information set failed.(log_level, log_type, log_revid)");
-+		close(fd_update);
-+		close(fd_update_log);
-+
-+		return 1;
-+	}
-+
-+	if (set_revid) {
-+		ret = ioctl(fd_update, PFRU_IOC_SET_REV, &revid);
-+		if (ret) {
-+			perror("pfru update revid set failed");
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		printf("pfru update revid set to %d\n", revid);
-+	}
-+
-+	if (capsule_name) {
-+		fd_capsule = open(capsule_name, O_RDONLY);
-+		if (fd_capsule < 0) {
-+			perror("Can not open capsule file...");
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		if (fstat(fd_capsule, &st) < 0) {
-+			perror("Can not fstat capsule file...");
-+			close(fd_capsule);
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		addr_map_capsule = mmap(NULL, st.st_size, PROT_READ, MAP_SHARED,
-+					fd_capsule, 0);
-+		if (addr_map_capsule == MAP_FAILED) {
-+			perror("Failed to mmap capsule file.");
-+			close(fd_capsule);
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		ret = write(fd_update, (char *)addr_map_capsule, st.st_size);
-+		printf("Load %d bytes of capsule file into the system\n",
-+		       ret);
-+
-+		if (ret == -1) {
-+			perror("Failed to load capsule file");
-+			close(fd_capsule);
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		munmap(addr_map_capsule, st.st_size);
-+		close(fd_capsule);
-+		printf("Load done.\n");
-+	}
-+
-+	if (action) {
-+		if (action == 1) {
-+			ret = ioctl(fd_update, PFRU_IOC_STAGE, NULL);
-+		} else if (action == 2) {
-+			ret = ioctl(fd_update, PFRU_IOC_ACTIVATE, NULL);
-+		} else if (action == 3) {
-+			ret = ioctl(fd_update, PFRU_IOC_STAGE_ACTIVATE, NULL);
-+		} else {
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+		printf("Update finished, return %d\n", ret);
-+	}
-+
-+	close(fd_update);
-+
-+	if (log_read) {
-+		void *p_mmap;
-+		int max_data_sz;
-+
-+		ret = ioctl(fd_update_log, PFRU_LOG_IOC_GET_DATA_INFO, &data_info);
-+		if (ret) {
-+			perror("Get telemetry data info failed.");
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		max_data_sz = data_info.max_data_size;
-+		if (!max_data_sz) {
-+			printf("No telemetry data available.\n");
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		log_buf = malloc(max_data_sz + 1);
-+		if (!log_buf) {
-+			perror("log_buf allocate failed.");
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		p_mmap = mmap(NULL, max_data_sz, PROT_READ, MAP_SHARED, fd_update_log, 0);
-+		if (p_mmap == MAP_FAILED) {
-+			perror("mmap error.");
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		memcpy(log_buf, p_mmap, max_data_sz);
-+		log_buf[max_data_sz] = '\0';
-+		printf("%s\n", log_buf);
-+		free(log_buf);
-+
-+		munmap(p_mmap, max_data_sz);
-+	}
-+
-+	close(fd_update_log);
-+
-+	return 0;
-+}
--- 
-2.25.1
+This sentence sounds like it's setting up a contrast between ACPI init
+and SDEI init, but apparently both are subsys_initcall(), so this
+doesn't actually say what the difference is.
 
+> More seriously, the kernel is able to handle and report errors until the
+> GHES is initialised by device_initcall().
+
+Did you mean "unable"?  Or do you really mean the kernel can handle
+errors until GHES is initialized, but can't handle errors *after* GHES
+is initialized?
+
+> Consequently, when an error occurs during the kernel booting, the
+> phyiscal sdei dispatcher in firmware fails to dispatch error events. All
+> errors that occurred before GHES initialization are missed and there is
+> no chance to report and find them again.
+
+s/phyiscal/physical/
+s/sdei/SDEI/
+
+This doesn't explain how something in the kernel can prevent the
+dispatcher in firmware from doing something.  Maybe the firmware emits
+an event and the kernel isn't listening?
+
+What is SDEI?  Please provide a citation to whatever spec is relevant.
+
+> In this patch, move sdei_init and ghes_init as far ahead as possible,
+> right after acpi_hest_init().
+
+Please be explicit about what the dependencies are here.  Is there
+something in sdei_init() that depends on acpi_hest_init()?  If so,
+what is it specifically?
+
+Similarly, does ghes_init() depend on something in sdei_init()?
+
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> ---
+> Changelog v2 -> v3:
+> Fix compile error in X86
+> Reported-by: kernel test robot<lkp@intel.com>
+> ---
+>  drivers/acpi/apei/ghes.c    | 3 +--
+>  drivers/acpi/pci_root.c     | 8 +++++++-
+>  drivers/firmware/arm_sdei.c | 9 +--------
+>  include/acpi/apei.h         | 2 ++
+>  include/linux/arm_sdei.h    | 2 ++
+>  5 files changed, 13 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 0c8330ed1ffd..4200369503b8 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -1457,7 +1457,7 @@ static struct platform_driver ghes_platform_driver = {
+>  	.remove		= ghes_remove,
+>  };
+>  
+> -static int __init ghes_init(void)
+> +int __init ghes_init(void)
+>  {
+>  	int rc;
+>  
+> @@ -1499,4 +1499,3 @@ static int __init ghes_init(void)
+>  err:
+>  	return rc;
+>  }
+> -device_initcall(ghes_init);
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index ab2f7dfb0c44..7658ae509377 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -23,7 +23,7 @@
+>  #include <linux/dmi.h>
+>  #include <linux/platform_data/x86/apple.h>
+>  #include <acpi/apei.h>	/* for acpi_hest_init() */
+> -
+> +#include <linux/arm_sdei.h> /* for sdei_init() */
+>  #include "internal.h"
+>  
+>  #define ACPI_PCI_ROOT_CLASS		"pci_bridge"
+> @@ -946,6 +946,12 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+>  void __init acpi_pci_root_init(void)
+>  {
+>  	acpi_hest_init();
+> +	#ifdef CONFIG_ARM_SDE_INTERFACE
+> +	sdei_init();
+> +	#endif 
+> +	#ifdef CONFIG_ACPI_APEI_GHES
+> +	ghes_init();
+> +	#endif 
+
+I love to replace initcalls with explicit calls.  You provided stubs
+below, so why the #ifdefs here?
+
+>  	if (acpi_pci_disabled)
+>  		return;
+>  
+> diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+> index a7e762c352f9..606520be326e 100644
+> --- a/drivers/firmware/arm_sdei.c
+> +++ b/drivers/firmware/arm_sdei.c
+> @@ -1059,7 +1059,7 @@ static bool __init sdei_present_acpi(void)
+>  	return true;
+>  }
+>  
+> -static int __init sdei_init(void)
+> +int __init sdei_init(void)
+>  {
+>  	struct platform_device *pdev;
+>  	int ret;
+> @@ -1080,13 +1080,6 @@ static int __init sdei_init(void)
+>  	return ret;
+>  }
+>  
+> -/*
+> - * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
+> - * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
+> - * by device_initcall(). We want to be called in the middle.
+> - */
+> -subsys_initcall_sync(sdei_init);
+
+Ugh.  It's really good to get rid of this sort of implicit ordering.
+
+>  int sdei_event_handler(struct pt_regs *regs,
+>  		       struct sdei_registered_event *arg)
+>  {
+> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+> index ece0a8af2bae..155a0fe417c6 100644
+> --- a/include/acpi/apei.h
+> +++ b/include/acpi/apei.h
+> @@ -27,8 +27,10 @@ extern int hest_disable;
+>  extern int erst_disable;
+>  #ifdef CONFIG_ACPI_APEI_GHES
+>  extern bool ghes_disable;
+> +int __init ghes_init(void);
+>  #else
+>  #define ghes_disable 1
+> +static inline int ghes_init(void) { return 0; }
+
+I think the only reason ghes_init() returns int is because that's what
+initcall_t requires.  If ghes_init() is no longer an initcall and
+nobody looks at its return value, it should return void instead.
+
+Same with sdei_init().
+
+>  #endif
+>  
+>  #ifdef CONFIG_ACPI_APEI
+> diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
+> index 0a241c5c911d..983b7404bff9 100644
+> --- a/include/linux/arm_sdei.h
+> +++ b/include/linux/arm_sdei.h
+> @@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
+>  /* For use by arch code when CPU hotplug notifiers are not appropriate. */
+>  int sdei_mask_local_cpu(void);
+>  int sdei_unmask_local_cpu(void);
+> +int __init sdei_init(void);
+>  #else
+>  static inline int sdei_mask_local_cpu(void) { return 0; }
+>  static inline int sdei_unmask_local_cpu(void) { return 0; }
+> +static inline int sdei_init(void) { return 0; }
+>  #endif /* CONFIG_ARM_SDE_INTERFACE */
+>  
+>  
+> -- 
+> 2.20.1.12.g72788fdb
+> 
