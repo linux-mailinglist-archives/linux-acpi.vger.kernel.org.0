@@ -2,203 +2,147 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F7E9452DDE
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Nov 2021 10:23:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DA5B452E13
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Nov 2021 10:33:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233018AbhKPJ0L (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Nov 2021 04:26:11 -0500
-Received: from mail-dm6nam10on2066.outbound.protection.outlook.com ([40.107.93.66]:63553
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232975AbhKPJ0J (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 16 Nov 2021 04:26:09 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UXo+BFgq4JUBZc2ctYb4j3ALOLR7OHobyY4YT8oOHAvGAI0KkLEmfpgqk6P+oqeajLuBQmgk2nycATm0vy31c4N8Sz96XC29nwVH1y57zzgjlRHLiy5W+VDeT46nQutktO+aRPkmMpE1kDwuNb1TM+cgNhxynFSZWLnp9C8S4gSRRga86EH29JkTU3JyexIAMWpMbn9IbHokXSpfjiJKtzhZWIkTzaPhQgZvYGX9LQz1LUuuIV3RK5RWy7hptJYW8N51bzYc7+WzDD32khFzEvqLUvXr3y4SnvsTkteFRpybyqaiIFgAHNnQnsL+A6JWVbt/B8YOOLLLSYIrFSkD7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y90//5GxbVdJiRC9v6Cp/1IS8DPjBjNKcLukt5ou5BI=;
- b=MJZ8d8wPjkBJI+6VfE/uM0GPY6ZEaXQREf5LjgO3AIEjCAogbbbJRbJw6pXPrEXicq35WFaFMHn36hPglyz0YHGLOQmo2QkTaPJBDT1iwAUxehyAeaRwGSaYVDaknyKHWdsGWgDNmYheoHZP4J9fgiIvSXJ/oLE7sh0EUNMDt0r8K32cv81+yTT8MuzZ9C4pqhN15iv2tqY1wywEIDWm9Ojory6Z1atpPC4eR3QSaUV/jyUfLj0PpS2p9GIotcWzKMBI5eTVjBa6RmGmzpq0Yw9lN5Qa3CHUKhbMAXtI7/2xFZuf2vNkqrziEkLlPe0PValIgSU3KG94uS/fKLlNWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
- dkim=pass header.d=xilinx.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y90//5GxbVdJiRC9v6Cp/1IS8DPjBjNKcLukt5ou5BI=;
- b=qwL0x6XfaP820aDK+W8WEz/wN2sMqkeZsTht3OZN98fM3uhV3mNCDfXEzDTOLp/o71vhj0RqhfPKnUQArU0r2aKmITmVDlzCkgU1m+F7q5TwQCC2fDjeuBDFmEfz2hNeNwNF0w29MYjRBdEEzFY9oXiZx7qYzq61uLBjZ3rJA7U=
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com (2603:10b6:a03:234::18)
- by SJ0PR02MB8628.namprd02.prod.outlook.com (2603:10b6:a03:3fd::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4690.20; Tue, 16 Nov
- 2021 09:23:10 +0000
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::c8a:dfb7:e411:9ad]) by BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::c8a:dfb7:e411:9ad%9]) with mapi id 15.20.4690.027; Tue, 16 Nov 2021
- 09:23:10 +0000
-From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>
-Subject: RE: [PATCH] device property: Add fwnode_iomap()
-Thread-Topic: [PATCH] device property: Add fwnode_iomap()
-Thread-Index: AQHX2keckvNuyh1x3kSfGREWzahA66wE4w4AgAD+5KA=
-Date:   Tue, 16 Nov 2021 09:23:10 +0000
-Message-ID: <BY5PR02MB6916AEC2CCB6EAE49A7FBC47A9999@BY5PR02MB6916.namprd02.prod.outlook.com>
-References: <20211115173819.22778-1-anand.ashok.dumbre@xilinx.com>
- <YZKiJFpSU8kIK6Tq@kroah.com>
-In-Reply-To: <YZKiJFpSU8kIK6Tq@kroah.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=xilinx.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f0ac06a6-b5b2-46c5-83b1-08d9a8e2b50f
-x-ms-traffictypediagnostic: SJ0PR02MB8628:
-x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
-x-microsoft-antispam-prvs: <SJ0PR02MB8628AA5E80AD5F302ED4057CA9999@SJ0PR02MB8628.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1468;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: V2K3OR1gjAubyXh45iR+7MZ8e0A2ygQwIS0XNwc8AdHbjOaYkYbIQVvfyrYzHlMmryWt7BNZ/t4MPXJNaqrQimY6ZI+Q0dKyhdaIRNcEzcIT5OxizkSv3dwFoytYDi+qdtkDtVTBqbVxjxfzoa732mT7YRGh0BnYlsJVDLkeueSOpRnrK6HdWs1EIrZLfPfZmmX16WX7CGZPGZMHnuydYZXArYERpaO35QOFbKkEqg1T0asUfmPQcSjsvF5SIAcdopiXfRnGmakBgGRbaowoDdx0lHqDSBnsyc0gCuXNWbLMASatZbP/HpyHRoN8E5gB9/I1Mr7NXs9bS2rzB0IZb8cJzEQc1gmdDVQgBWf6HF2a+K7rDUshNQpzxwQOi2rdWojFceWW9yiRP+JPIomuWrKdD/dnyjvaNFX/1C+FmVDuyUEOc3bHgfk2rJYMM7aWuKimgDnp/S0aD7jdJWemoc4/gGluIvK5s8cIi9qJgB5YMyQGizcvqjhq39Ba+CYfLRvAIysZu1iK2lcFSUoAZRYfENimZk04het69Ta9AR/pVSe/41ar2gGsGnHHMqjo9RSjAKapFe+RcxGoix5+hliUmCPQiBli5aLm/UXS5FiefrFQ7DWbGTRyPLWSGsARLI0JTL58ESlvSK3jhzNo4itxTCAmQ3vIH2OhpZ+gFyPIVTk5914ocfQVggSmomS3L9uXCdbQyvirjUmyC2VEew==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6916.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(316002)(122000001)(5660300002)(38100700002)(7696005)(2906002)(71200400001)(7416002)(54906003)(83380400001)(6506007)(4326008)(52536014)(55016002)(9686003)(53546011)(76116006)(64756008)(33656002)(38070700005)(66446008)(66556008)(66476007)(86362001)(186003)(508600001)(26005)(8936002)(8676002)(6916009)(66946007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?IhrV4hP+D4v48YB7J1c4RiqQRU7gCZMKtvJ5FMYSR7+1zmvifAGh2N8zA555?=
- =?us-ascii?Q?/JTP+dcwHjamzk6Lyxn9CT0hQLDqeqRAidM+vF+9caN0D9U5Gk9vR9llZtSh?=
- =?us-ascii?Q?Rh2cnJeAvm/XnqVbUA6sYmJnj8rQqXsiXWx/9dyxTnWyJCfJbbqGsZgne7On?=
- =?us-ascii?Q?ZotC1O8kdcVTT3s1mYFfgxjHzrkRy99wg7Ck2BjGWH/UUgzoi6/m/pNsoQrP?=
- =?us-ascii?Q?X3Atz1gjJsY12ioXuOUty10llcQb9u55xF8wMshH34UVgeGmisZ22hGg8fS7?=
- =?us-ascii?Q?QDlBEHYWy3QJRZ62ibsLXQWni+wgWF1wn8dVzOI9L1XyGpKQxQyR8jgfiIy8?=
- =?us-ascii?Q?5aWaBLEFh/GCXwHgZ4z3fSehX1N7sucdtPIJD9DjyFrr8ETBAlM6PiVOAQjN?=
- =?us-ascii?Q?Tkpn32iRgMk4aqM3XzkJn22Dlk0mpXa+NXVdCXGQHucfXBGTCbX457cTzdxS?=
- =?us-ascii?Q?C9uAOPB9+ixfJTqMBHhXwDHpH7uYmR3CyrjZiQMHdkrbzfw1YX2WeweuJAIK?=
- =?us-ascii?Q?r47nKBpT6ATbS4cdKZUQK84B0R8VxEtKEP1Ph6oIUwWgMsVVKjcqd1ktFkVo?=
- =?us-ascii?Q?CZAx0MyXgt8OUtrVqiXkxcgY8aGOv39DLniJZIHtPxqvgkB1t04jZIQNVo1j?=
- =?us-ascii?Q?eaw/u4TCdyKizQcVzEB4NMxv3kmkfEvw01sBWTCe9fiHzLXWaJ5KFw5RLSnd?=
- =?us-ascii?Q?i98e+4CaE5uDRikmtL4p0SzUmpzaR/bP373ZDO5RJEnKX5lUmH2Lb88gdN8V?=
- =?us-ascii?Q?NHyP6PEmtGoji80QH01uflllE9nsaF2Vf8+/owH9Xtensawp0dpsZAHEhMVc?=
- =?us-ascii?Q?5JT3ODVTN8xHtqZE9F195Bxud9s2L9m3r8WR88iZr5Xkf56g2vYExdzN4VAk?=
- =?us-ascii?Q?/Bqdw8c2DFBIl7f+7fKtA+iVKKNWLlQ2E56GAJ8nfWCJTL0wI+jfgkLzqanZ?=
- =?us-ascii?Q?0a7C00rucCboey60YDWMqLg4Kz2z18kzm7NIiQaHvowuPEMSQxQo/oSGhW8v?=
- =?us-ascii?Q?DFFBPpzge9OluweEjAZv2cjHe8QPpUKppJs8Lb5HUrP7Z6zg9wYkMj19BxTS?=
- =?us-ascii?Q?qyNQG/v/jJiWJVCPe9peVtFt19lPB7dBB5eSeVglcc3HdbZdh79YeWOeuZ6S?=
- =?us-ascii?Q?AlWmH6CBiXdoXEAxGiZ0/E59IKXx5/BtdHyKHqRwqDXXqHAW+G6r2A4xNdyO?=
- =?us-ascii?Q?NAaL74JLGXCNEuor/SjVoVk5LzvEZWlQRYfIcwXM31ovutuTy7/sqDqRZ7zG?=
- =?us-ascii?Q?DHIaOPkOw3/HERNZtI+baEDbrkxGeirdmvS+PdE9EYPbudf7XStYLOWfXxmV?=
- =?us-ascii?Q?bnt47fGVmZ6uCk3PCcbVR120M6bYIUM572VWWreToJVuJgPJzjFQo0VSqtgL?=
- =?us-ascii?Q?sM6mOtcD9BXjJ9p+W7S+ZKFEDXngdz/NUF2IcJeARMYH60FaHatFlCLAa55r?=
- =?us-ascii?Q?2tzI2AtFf7LkNNJCMMSSu8tFTNHrk5hWGwHYRyW8M2kiC+c6iNmrB9x+4bBx?=
- =?us-ascii?Q?yXxq7CcgBQ58f6E/4lntFLHHxOC0YuIwjQWaG3ryHtFCPDSIS1KQQD3A8NGV?=
- =?us-ascii?Q?czvOhdEqLQJwUy9RLi1fK0YPtUVVFirztGipbuqvrLvxZrUDMCKvDkIJ4kBO?=
- =?us-ascii?Q?aH8QSACdbFsuE06ooRuA58o=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S233257AbhKPJgj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Nov 2021 04:36:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:48269 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233273AbhKPJgd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 16 Nov 2021 04:36:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1637055216;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=cp+iJp9i4ryXcYEsq7JrwWGaLxc1Aah1uRr7rdH93y0=;
+        b=jF7ysspmqMGRMovvGljrtz58D7vv3N0VXb0S/d4TKmmtbSBILp7MFxYbhPZA4VLMTjpaWJ
+        OTWMFVqMXCmxItI8SH91aq0io08lor/ljvc6EQTIIeljc0k5nXl4jFCEGgzzBMfl3624HA
+        fxBgKWWdFaC5P97ifg4f8tVKac5mCBQ=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-271-xNzWKmoVOCSWAcNAG4VPog-1; Tue, 16 Nov 2021 04:33:35 -0500
+X-MC-Unique: xNzWKmoVOCSWAcNAG4VPog-1
+Received: by mail-ed1-f70.google.com with SMTP id i19-20020a05640242d300b003e7d13ebeedso4145737edc.7
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Nov 2021 01:33:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=cp+iJp9i4ryXcYEsq7JrwWGaLxc1Aah1uRr7rdH93y0=;
+        b=Z9JCJGckRa1mflCTc79O1gHbGYsGw0ieICsnTbh4xpQ5YZdyzVRAXJ4GfLAtvRBzU0
+         h/NMGvOmaG3OciQytP74YKUs5dd/8DCDU45e7Zo4kCBFBk0kmb4OE+/+d2QdCPSzMab6
+         oSr2uKsEGvYfwFqy5CGUK4b9218mgghysx4iU+7T1JjOtFOV7cCiLBjVXBvXzzSaWwB3
+         vp2u76z3tZKbVnzySHgkdNaLXpHlcP3qNxDrHznFQCFpz39dtsub0ZFaIPqxI4Sm4qqh
+         FiJ5tnzh5e3CIi6aE/cYNeq3w+Qosa2K8+tfhLNIBkhNOAkBYP8AB/PV/hs+mMvqG+nW
+         D2Pg==
+X-Gm-Message-State: AOAM532QAQIWmUwYT1jgACDWeOgdGuWBt106VbbhvArDtF6FxzCSpghT
+        viJna8qpwk+W1dyZgEEojJyhw3F/MczeGYtxrKu7PXuUUnzyOMmdTBODfCm492cWYk30KWlCRRw
+        EGCDLu+jMchnxKBnzKUlBVg==
+X-Received: by 2002:aa7:c30e:: with SMTP id l14mr8284338edq.370.1637055214313;
+        Tue, 16 Nov 2021 01:33:34 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxZQ5qagfzDYQuhUC2t64EV/F/AOPWgKM5JWXb4ICFnVrOvU/v3eiYcU4LF5nMays3/4VeoLw==
+X-Received: by 2002:aa7:c30e:: with SMTP id l14mr8284306edq.370.1637055214132;
+        Tue, 16 Nov 2021 01:33:34 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id ne33sm7972654ejc.6.2021.11.16.01.33.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Nov 2021 01:33:33 -0800 (PST)
+Message-ID: <66fbed75-7b48-6d91-1ef5-5df1c075e91c@redhat.com>
+Date:   Tue, 16 Nov 2021 10:33:32 +0100
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6916.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0ac06a6-b5b2-46c5-83b1-08d9a8e2b50f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Nov 2021 09:23:10.1552
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gTFJFF3ChTU1ZwgiGYR+UjxPMggFlDle4B8HiCqSbdqW5/jSPdhOsQaI0bOGdZWcZEkyGd0CrRb7gUn7kTfOZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB8628
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 10/20] power: supply: bq25890: Add
+ bq25890_set_otg_cfg() helper
+Content-Language: en-US
+To:     Yauhen Kharuzhy <jekhor@gmail.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, Tsuchiya Yuto <kitakar@gmail.com>,
+        platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org
+References: <20211114170335.66994-1-hdegoede@redhat.com>
+ <20211114170335.66994-11-hdegoede@redhat.com>
+ <YZIyQ1BdJ0v8QTtj@jeknote.loshitsa1.net>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <YZIyQ1BdJ0v8QTtj@jeknote.loshitsa1.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Greg,
+Hi Yauhen,
 
-Thanks for the review.
+On 11/15/21 11:11, Yauhen Kharuzhy wrote:
+> On Sun, Nov 14, 2021 at 06:03:25PM +0100, Hans de Goede wrote:
+>> Add a bq25890_set_otg_cfg() helper function, this is a preparation
+>> patch for adding regulator support.
+>>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>  drivers/power/supply/bq25890_charger.c | 28 ++++++++++++++------------
+>>  1 file changed, 15 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
+>> index 2bdfb58cda75..3c41fe86b3d3 100644
+>> --- a/drivers/power/supply/bq25890_charger.c
+>> +++ b/drivers/power/supply/bq25890_charger.c
+>> @@ -801,6 +801,17 @@ static int bq25890_power_supply_init(struct bq25890_device *bq)
+>>  	return PTR_ERR_OR_ZERO(bq->charger);
+>>  }
+>>  
+>> +static int bq25890_set_otg_cfg(struct bq25890_device *bq, u8 val)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = bq25890_field_write(bq, F_OTG_CFG, val);
+>> +	if (ret < 0)
+>> +		dev_err(bq->dev, "Error switching to boost/charger mode: %d\n", ret);
+> 
+> Just a note: if a connected USB device has relative big capacitor
+> at power wires inside, then a starting current pulse may be enough to
+> overload the boost reguator and VBUS will not be powered. I met this
+> at Yoga Book: the firmware set boost current limit to 1.4 A (default
+> value for bq25892) but when USB hub connected, the BOOST_FAULT event
+> appeared.
+> 
+> To avoid this, Lenovo uses following trick in its kernel: set a boost
+> current limit to big value (2.1 A), wait some time (500 ms) and set
+> the current limit to right value (1.4A). This provides enough current to
+> charge capacitors in the connected device but saves desired long-time limit
+> to prevent overloading if the device consumes too much power itself.
 
-> -----Original Message-----
-> From: Greg KH <gregkh@linuxfoundation.org>
-> Sent: Monday 15 November 2021 6:09 PM
-> To: Anand Ashok Dumbre <ANANDASH@xilinx.com>
-> Cc: linux-kernel@vger.kernel.org; jic23@kernel.org; lars@metafoo.de; linu=
-x-
-> iio@vger.kernel.org; git <git@xilinx.com>; Michal Simek
-> <michals@xilinx.com>; rafael@kernel.org; linux-acpi@vger.kernel.org;
-> andriy.shevchenko@linux.intel.com; heikki.krogerus@linux.intel.com
-> Subject: Re: [PATCH] device property: Add fwnode_iomap()
->=20
-> On Mon, Nov 15, 2021 at 05:38:19PM +0000, Anand Ashok Dumbre wrote:
-> > This patch introduces a new helper routine - fwnode_iomap(), which
-> > allows to map the memory mapped IO for a given device node.
-> >
-> > Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-> > ---
-> >  drivers/base/property.c  | 15 +++++++++++++++
-> > include/linux/property.h |  2 ++
-> >  2 files changed, 17 insertions(+)
-> >
-> > diff --git a/drivers/base/property.c b/drivers/base/property.c index
-> > 453918eb7390..9323e9b5de02 100644
-> > --- a/drivers/base/property.c
-> > +++ b/drivers/base/property.c
-> > @@ -1021,6 +1021,21 @@ int fwnode_irq_get(const struct fwnode_handle
-> > *fwnode, unsigned int index)  }  EXPORT_SYMBOL(fwnode_irq_get);
-> >
-> > +/**
-> > + * fwnode_iomap - Maps the memory mapped IO for a given fwnode
-> > + * @fwnode:	Pointer to the firmware node
-> > + * @index:	Index of the IO range
-> > + *
-> > + * Returns a pointer to the mapped memory.
-> > + */
-> > +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int
-> index) {
-> > +	if (is_of_node(fwnode))
-> > +		return of_iomap(to_of_node(fwnode), index);
-> > +
-> > +	return NULL;
-> > +}
-> > +EXPORT_SYMBOL(fwnode_iomap);
-> > +
-> >  /**
-> >   * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
-> >   * @fwnode: Pointer to the parent firmware node diff --git
-> > a/include/linux/property.h b/include/linux/property.h index
-> > 357513a977e5..9bb0b0155402 100644
-> > --- a/include/linux/property.h
-> > +++ b/include/linux/property.h
-> > @@ -121,6 +121,8 @@ void fwnode_handle_put(struct fwnode_handle
-> > *fwnode);
-> >
-> >  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int
-> > index);
-> >
-> > +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int
-> index);
-> > +
-> >  unsigned int device_get_child_node_count(struct device *dev);
-> >
-> >  static inline bool device_property_read_bool(struct device *dev,
-> > --
-> > 2.17.1
-> >
->=20
-> Also, always run scripts/checkpatch.pl before sending patches out so you
-> do not get grumpy maintainers telling you to run scripts/checkpatch.pl
-> on your patches :)
->=20
+Right I saw this in your git repo, but I cannot reproduce the issue (1)
+I was hoping that since you can reproduce this, that you can rebase
+your fix on top of my patch-set ?
 
-Sorry. Will do and also will send it as a part of my other driver series.
+Also I'm wondering if this behavior should be the default, I believe
+that the max. boost current may also be dependent on some external
+factors, so maybe we should make this behavior conditional on a
+new device-property ?
 
-> thanks,
->=20
-> greg k-h
+Regards,
+
+Hans
+
+
+
+1) I must admit I did not try really hard, I guess I could try an
+USB powered hdd enclosure with a spinning disk
+
+What device are you seeing this with?
+
