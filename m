@@ -2,121 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9321453598
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Nov 2021 16:19:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB2AD45378F
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Nov 2021 17:34:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237857AbhKPPWs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Nov 2021 10:22:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51492 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237827AbhKPPWr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Nov 2021 10:22:47 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B442C061570;
-        Tue, 16 Nov 2021 07:19:50 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id w1so89618060edd.10;
-        Tue, 16 Nov 2021 07:19:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JmBWvXQj8znoaNlP/XJEaiijvOo6PBGp1wWsFw5sd+Y=;
-        b=dHKt+qxBxbb/Rv6TLuF27ll6/vi/79PRdmfilrqAAdoy78Zib/N8o3KpEJvaZLBza1
-         8Cpdi36wDvKg9pqXXhjVliG4WJfPYlEkTw7qx8Tqv/KYAZay8Thq5fj+XPcVC2zNTY3O
-         LsAs1JuSfg5m8eNCCVi78V0i4Y4+O1D7AE2511ss6/JwumN4jOPAG7nNT/EQOH4TgCyQ
-         xLW7K1XNkDmNAtwRuIGRn/0G9uTYVB8m6aGRcQbyX5pqMAfAFnbMzNKqO9ovd8Ks64aU
-         JLC9LugV7CO8n/7+gnbPknr9e4qhN1F7pAeBElMxhGy1hdtRdSB9S0N295uvkBesTq0O
-         BP5g==
+        id S231458AbhKPQfP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Nov 2021 11:35:15 -0500
+Received: from mail-oo1-f48.google.com ([209.85.161.48]:39676 "EHLO
+        mail-oo1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233425AbhKPQdE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Nov 2021 11:33:04 -0500
+Received: by mail-oo1-f48.google.com with SMTP id d1-20020a4a3c01000000b002c2612c8e1eso7412561ooa.6;
+        Tue, 16 Nov 2021 08:30:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=JmBWvXQj8znoaNlP/XJEaiijvOo6PBGp1wWsFw5sd+Y=;
-        b=uFHXRgOq2NCRGW9PQ53EMFq0m5fPtape47SPPn+HkSSQusViBTwIxVNQ6UTZgE55u1
-         TI3hvV1nprf9xTPFPRscDEmXEDJsYLXLvVFAfVqdiJan2H/ZRb7pUd5E6AYyhpwR5KD4
-         wr2huv+a7eGKmPIj+fzKjdo/DCSMu/E+BMXZBlLrR0StyN/0l8ds+XWvIl7PubVvFmGC
-         6nAGtaqhVoMPgbqT7ZnLww6BxstKK6nS48tYEHCGgE0BB3fdhfcohVIAAV8tANHBMQSp
-         mgAC6akBgcOgGH23uFu/XoCsohCKukxrHwzWXgazlR9MqmTR2dOcQLRaYjeCgq3cvIKD
-         D5aw==
-X-Gm-Message-State: AOAM533xnscUr8lD27ULjTb04vUbtd+3wj6KM91casoa1oE4q6xLDL+u
-        FApCkNwdqLktORNOMKQzr5i4QVm5s0ykpIABjfmzx0ojJT4=
-X-Google-Smtp-Source: ABdhPJxyPvxtL5u41BdFRCmpus5JQskyeQT/k/mvLjEvqbLp9EodkDIsgxUvTRaAyeaG4TXjaUVO/qDhhLGfrls95CU=
-X-Received: by 2002:a17:907:9196:: with SMTP id bp22mr10768857ejb.69.1637075988577;
- Tue, 16 Nov 2021 07:19:48 -0800 (PST)
+        bh=WDrq+QOnZFTPGeBGIaTOzJl6i+SxZ4J4MSSRm1zXWEo=;
+        b=pzUVTBKPpMUzSEyuoo8RXlXB1b3e7ZX3yxDmfEnHb32yxU9qnpKCiry+85Cn1Iva7k
+         EpgMbQiEClb1ntD9HKU41R+/4BnScyFJVTDN40juj2Tf7LBYCJTjMfX1+fXMMDDhO9De
+         iDkvmXZPsJW4mBPBbNbBoZjthTkoxUBs744guoo1OPngy8OQs35sBghviwvQutQUrP27
+         VuNwDSuys3b8Yh1V88YuvzTlzdvAjvoq+l0SfhF3LCzCDKu0/oSURdI6pR7ERZH9NJ9g
+         eqZd4ZYZsEgm4faNwbl1ibEl7CjNeHPw32m/hzqWcthCd2qr2tglwApdIqMho5Iz9Uxr
+         gwSA==
+X-Gm-Message-State: AOAM532nHESU9wmnBLEPHOpmJef6ChJJMUb+3nUaSQP9B9T+83MQmmni
+        5TIQ7d+CtNcUzj/8vDwNkaBumtri+bcWU02V3E8=
+X-Google-Smtp-Source: ABdhPJxK/62djEfWaXqQrqza5crsAmOwUIaEHqlghK4v2HJzDZB/TIcs7/cdigkhRN0w2Xl4J44nQng2/aBhY8d7cE0=
+X-Received: by 2002:a4a:ead8:: with SMTP id s24mr4437160ooh.89.1637080207075;
+ Tue, 16 Nov 2021 08:30:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20211114170335.66994-1-hdegoede@redhat.com> <20211114170335.66994-20-hdegoede@redhat.com>
-In-Reply-To: <20211114170335.66994-20-hdegoede@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 16 Nov 2021 17:19:07 +0200
-Message-ID: <CAHp75Vd2ytGkaSDZXuKNLihsK5JYrFv5ezkTAd73o2xFjoNDHQ@mail.gmail.com>
-Subject: Re: [PATCH v2 19/20] extcon: intel-cht-wc: Add support for
- registering a power_supply class-device
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Yauhen Kharuzhy <jekhor@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
+References: <20211101200346.16466-1-quic_qiancai@quicinc.com>
+ <CAHp75VcrWPdR8EVGpcsniQedT0J4X700N7thFs6+srTP1MTgwQ@mail.gmail.com>
+ <52df4a97-1132-d594-0180-132d0ca714d5@quicinc.com> <CAHp75VebOnrce-XZjOnZiivQPz-Cdgq6mor5oiLxK8Y49GiNNg@mail.gmail.com>
+ <YZMrjqhYYNGMP84x@qian-HP-Z2-SFF-G5-Workstation>
+In-Reply-To: <YZMrjqhYYNGMP84x@qian-HP-Z2-SFF-G5-Workstation>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 16 Nov 2021 17:29:56 +0100
+Message-ID: <CAJZ5v0hjq+X=Gej072jwY2Uf4BgvqPHvHTON2p0Mszd5ntjjJA@mail.gmail.com>
+Subject: Re: [RFC PATCH] software node: Skip duplicated software_node sysfs
+To:     Qian Cai <quic_qiancai@quicinc.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Nov 14, 2021 at 7:05 PM Hans de Goede <hdegoede@redhat.com> wrote:
+On Tue, Nov 16, 2021 at 4:54 AM Qian Cai <quic_qiancai@quicinc.com> wrote:
 >
-> The bq25890 used on the Yogabook YB1-X90 / -X91 models relies on
-> the extcon-driver's BC-1.2 charger detection, and the bq25890 driver
-> expect this info to be  available through a parent power_supply
-> class-device which models the detected charger (idem to how the Type-C
-> TCPM code registers a power_supply classdev for the connected charger).
+> On Fri, Nov 05, 2021 at 09:39:42PM +0200, Andy Shevchenko wrote:
+> > > Anyway, what's the "upper layer"? Is that "struct device" or "struct
+> > > swnode"? I suppose you meant:
+> >
+> > struct device here.
+> >
+> > > - Remove "secondary" field from "struct fwnode_handle".
+> > > - Replace "fwnode" from "upper layer" with
+> > >   "struct list_head fwnode_head;".
+> > > - Modify all functions in "software_node_ops" to use "fwnode_head".
+> > >
+> > > Is that correct?
+> >
+> > Yes.
+> >
+> > It might be a bit complicated taking into account how much fwnode is
+> > spreaded in the kernel... Basically, you need to fix all direct
+> > accesses to the dev->fwnode first.
+> > Besides that you need to check that fwnode, which is used out of the
+> > device scope, like in IRQ domains, doesn't use secondary pointer(s).
+> >
+> > This nevertheless adds a lot of flexibility and we may add whatever
+> > type of fwnodes and mix them together.
 >
-> Add support for registering the power_supply class-device expected
-> by this setup.
+> Okay, here is my plan until someone still has an idea to avoid a
+> redesign.
+>
+> Frist, fixes all dev->fwnode / dev.fwnode to use dev_fwnode(). This
+> could be a standalone tree-wide patchset going out to avoid
+> heavy-lifting later.
+>
+> Then, we can create another patchset on top. I have audited
+> "irq_domain" but not seen any "secondary" leakage. Struct
+> "cht_int33fe_data" does have some need to fix.
+>
+> Rename set_secondary_fwnode() to insert_secondary_fwnode(). Fix things
+> in drivers/base/core.c, swnode.c etc to use the new fwnode_head and
+> anything I can't think of right now.
+>
+> Since we will have multiple "software_node" (secondary fwnode:s) for a
+> single "device". What would be the usual way to deal with a
+> linked-list in the sysfs? I can think of just let "software_node"
+> become a directory to host a list of symlinks named from
+> swnode->id. Thoughts?
 
-...
-
-> +       struct cht_wc_extcon_data *ext = power_supply_get_drvdata(psy);
-
-> +       int ret = 0;
-
-Not needed.
-
-> +       switch (psp) {
-> +       case POWER_SUPPLY_PROP_USB_TYPE:
-> +               val->intval = ext->usb_type;
-> +               break;
-> +       case POWER_SUPPLY_PROP_ONLINE:
-> +               val->intval = ext->usb_type ? 1 : 0;
-> +               break;
-> +       default:
-
-> +               ret = -EINVAL;
-> +               break;
-
-return -EINVAL;
-
-> +       }
-> +
-> +       return ret;
-
-return 0;
-
-> +}
-
-P.S. And here you have a "break", which is nice!
-
--- 
-With Best Regards,
-Andy Shevchenko
+Note that one pointer dereference in ACPI_COMPANION() is enough.
