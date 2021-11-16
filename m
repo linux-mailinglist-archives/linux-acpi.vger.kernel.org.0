@@ -2,144 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98E4A45304C
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Nov 2021 12:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C1AE453076
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Nov 2021 12:27:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235010AbhKPLYv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 16 Nov 2021 06:24:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53168 "EHLO
+        id S234960AbhKPLac (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 16 Nov 2021 06:30:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234877AbhKPLYY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Nov 2021 06:24:24 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95943C061208;
-        Tue, 16 Nov 2021 03:21:13 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id x15so86215408edv.1;
-        Tue, 16 Nov 2021 03:21:13 -0800 (PST)
+        with ESMTP id S234994AbhKPL3s (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 16 Nov 2021 06:29:48 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1AECC06120F
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Nov 2021 03:26:46 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id 77-20020a1c0450000000b0033123de3425so1692384wme.0
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Nov 2021 03:26:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KGUzW8oU278JfYrY7N9IF7tN1n/tXliVYmfQC61IxV8=;
-        b=JQVvA1qWRgODHDOSLlagiGOfAXEHF7KxMNWe7LPWtqGmLHJiWZqhx7wzACas6AONv+
-         CAkZ1x83Da19F69Y4szYWBOdQL+g/VUfY93OJyeul01/oezFSOQ6LE5gLKIoAmzWjqbQ
-         hVScUsbwSOsewMQo+Ag4kVJC8jfz6QxeZbLCzCSqcLtwPFrJf7bcJ3pZZKe4qA20MqHi
-         sRiCruhHwvVNi6VRP7p2jZuDMhj8I8FstuiDEoUUygeq5GN/qbWOoXGHoSCEEMM6U0bb
-         /ZL166tglWsxqa7Wt+md18G3lU0bd8L1nY6Qttagny+96fQKAONUvcRdlWPzyCXM2Xyr
-         NBzg==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=49VN2EPgYHrEXK97OpQX0CxGM5w7EiGtxSfN5GFh/XE=;
+        b=JHkobXVvRWKPjJgpwGctsZrNZAaUXURTmWtz1PAwkjpShtnw2xIe4IxyGotDPuzibC
+         Q5mot2AR1EdZp0YszaR3r2ybEOx2FNi+mf9boXaZtQYZk2aaSxUll9YDCw62bdI1DnLQ
+         oIH4ijYH8dimZ9b18CZOM02DemPbh5TPbp0IZQP6LRYEW6CI4vBuyYF3v6dQKruXhra0
+         ISrh3nRfCz/kgnPaZL6TX2CyZGhX8FthNY6hgTSNy87Rzf6pOs269tH9u40KOKtFP2VF
+         vmbdlhp1YbM/ub4lOMlme0/ipfqvkOa6H2ey7QjU3Yr8TVzgn7XtIn6eo6g0+GjlmkU9
+         mnhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KGUzW8oU278JfYrY7N9IF7tN1n/tXliVYmfQC61IxV8=;
-        b=vqoPQ6a212+uBfrUqbXvhvSTWALBagVy4Q0UZJw0g6iyi/ozzsZYygG8uAL7q2dLLF
-         mONP0E0ftmieg0nfzaH29MtNGSUh3ENbHkGU3WdxYnt+FMLH5AjmwVms2bd5E8D74n8F
-         v2bnWJc3IwPNqwehRJ2wZiFYsUrm5ALowU2SvkhbHYfBY74n1P+m6XXHhLDQ6ZZs89xm
-         /LoWTHdCy0Zh9rzwn7/dkLmFboIo4rKx5Xo5RuOHKX4svq4uPh+62MV6+0IZNazXt8op
-         VzWlVoRR9Z1PtgrTF7Npu/XPp4fMp7euLhCPq/bW8Str+dExviB8K1zLTRjuSqah3xoA
-         o6QA==
-X-Gm-Message-State: AOAM530eb7KbT11M4s7n4xwnh37Ba+CZ3ox3uYnF0fo6rO/krRtqN7Uz
-        ny2hf3MufVsWBc92I9c7q+vXQc/oXYq4FGOHbI8=
-X-Google-Smtp-Source: ABdhPJyKSwdFtfR7TpsDewfi37mChVACwnf+QUTy7V6gWiRnFog2qqdct+xLdwNvdm+Gqux0Kkbtu642mJPn2EzrZQE=
-X-Received: by 2002:a17:906:ecac:: with SMTP id qh12mr8693082ejb.377.1637061672128;
- Tue, 16 Nov 2021 03:21:12 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=49VN2EPgYHrEXK97OpQX0CxGM5w7EiGtxSfN5GFh/XE=;
+        b=k9L99t32xpgcdIrDAT1bNOYH6FkRHp/fkUj4wCTF6P7HdleiZvwWxpbhW3eCXSVgLr
+         Kx8Z0tdusxJZD/HJwZKcIh6OTeLKum4yjCdZe/0Lb8GnNzK+Ia5UuS4y7KJY+XL6cxJj
+         gKA328aFTSMFA2ogGcUQ3lxcsUJ1jgQdrZddZ81NzRUEUCPFxXm21WOKEH6rsXS1apis
+         8yWLzy8/W4XWX5WOgpr6wsreQ2x4bRKV/+cPk8WxjWd1z70hhsc7xhzQGx+z5Z7LBmsG
+         aebX8R7kM/UcFAak5M2oA2Wo3deb/Sgeam1Yx3Tmor0diXmBnGU/LvqwkqyJ58sGoiDr
+         VWHg==
+X-Gm-Message-State: AOAM530Nsi1mXrU2gnDu6RxJjRWeb8EHjDfpWVeOFPBF9PQs8x0f57/u
+        mUpJqlOb6bbNh8O49TyLjKFWeXmLYlassKc5HMQ=
+X-Google-Smtp-Source: ABdhPJxY17HC6nmGOHWE6iqbA8wRJP0vZMHkpbaBLpxjBs8AHHbhGKQYmexWpwcaaXI+7XwIdfO/LY/kc1YAwclgHr0=
+X-Received: by 2002:a1c:f213:: with SMTP id s19mr68487015wmc.169.1637062003979;
+ Tue, 16 Nov 2021 03:26:43 -0800 (PST)
 MIME-Version: 1.0
-References: <20211114170335.66994-1-hdegoede@redhat.com> <20211114170335.66994-16-hdegoede@redhat.com>
-In-Reply-To: <20211114170335.66994-16-hdegoede@redhat.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 16 Nov 2021 13:20:31 +0200
-Message-ID: <CAHp75VfYGmW6kO18BL39ippuzyzebNXuBn0PkEV8WScB2-bN6A@mail.gmail.com>
-Subject: Re: [PATCH v2 15/20] i2c: cht-wc: Make charger i2c-client
- instantiation board/device-model specific
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Yauhen Kharuzhy <jekhor@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>
+Received: by 2002:a05:600c:3b97:0:0:0:0 with HTTP; Tue, 16 Nov 2021 03:26:43
+ -0800 (PST)
+Reply-To: ebodrdickson1020@gmail.com
+From:   "Dr.Dickson Ebo" <drdicksonelo1023@gmail.com>
+Date:   Tue, 16 Nov 2021 03:26:43 -0800
+Message-ID: <CABq-xD5cMc7YDaqm-jE=T02sHTTAJFwPRjYALiWxVYa2NbnX+Q@mail.gmail.com>
+Subject: hello
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Nov 14, 2021 at 7:04 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> The i2c-controller on the Cherry Trail - Whiskey Cove PMIC is special
-> in that it is always connected to the I2C charger IC of the board on
-> which the PMIC is used; and the charger IC is not described in ACPI,
-> so the i2c-cht-wc code needs to instantiate an i2c-client for it itself.
->
-> So far this was hardcoded to instantiate an i2c-client for the
-> bq24292i, with all properties, etc. set to match how this charger
-> is used on the GPD win and GPD pcoket devices.
+Finance and Audit Department, Zenith Bank Plc.
 
-"pocket" I believe?
+The President of the Federal Republic of Nigeria through the Zenith
+International Bank Nigeria PLC has released your
+Contract/Inheritance/Compensation Fund.
 
-> There is a rudimentary check to make sure the ACPI tables are at least
-> somewhat as expected, but this is far from accurate, leading to
-> a wrong i2c-client being instantiated for the charger on some boards.
->
-> Switch to the new DMI based intel_cht_wc_get_model() helper which is
-> exported by the MFD driver for the CHT Whiskey Cove PMIC to help PMIC
-> cell drivers like the i2c-cht-wc code reliably detect which board
-> they are running on.
->
-> And add board_info for the charger ICs as found on the other 2 known
-> boards with a Whisky Cove PMIC.
->
-> This has been tested on all 3 known boards.
+Kindly get back to us as soon as possible.
 
-...
-
-> +/********** Lenovo Yogabook YB1-X90F/-X91F/-X91L charger settings **********/
-> +static const char * const lenovo_yb1_bq25892_suppliers[] = {
-> +       "cht_wcove_pwrsrc" };
-
-Something went wrong with indentation...
-
-...
-
-> +       /*
-> +        * The firmware sets everything to the defaults, which leads to a
-> +        * somewhat low charge-current of 2048mA and worse to a batter-voltage
-
-battery?
-
-> +        * of 4.2V instead of 4.35V (when booted without a charger connected).
-> +        * Use our own values instead of "linux,read-back-settings" to fix this.
-> +        */
-
-...
-
-> +       switch (intel_cht_wc_get_model()) {
-> +       case INTEL_CHT_WC_GPD_WIN_POCKET:
-> +               board_info = &gpd_win_board_info;
-> +               break;
-> +       case INTEL_CHT_WC_XIAOMI_MIPAD2:
-> +               board_info = &xiaomi_mipad2_board_info;
-> +               break;
-> +       case INTEL_CHT_WC_LENOVO_YOGABOOK1:
-> +               board_info = &lenovo_yogabook1_board_info;
-> +               break;
-> +       default:
-> +               dev_warn(&pdev->dev, "Unknown model, not instantiating charger device\n");
-
-break;
-
-> +       }
-
--- 
-With Best Regards,
-Andy Shevchenko
+Yours faithfully,
+Dr. Dickson Ebo.
