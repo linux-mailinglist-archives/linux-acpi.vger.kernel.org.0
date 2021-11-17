@@ -2,74 +2,132 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8F994550E7
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Nov 2021 00:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A31244550F6
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Nov 2021 00:16:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241477AbhKQXJ6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 Nov 2021 18:09:58 -0500
-Received: from smtprelay0099.hostedemail.com ([216.40.44.99]:54040 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S233161AbhKQXJ5 (ORCPT
+        id S241517AbhKQXTW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 Nov 2021 18:19:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:38321 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233853AbhKQXTV (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 17 Nov 2021 18:09:57 -0500
-Received: from omf09.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 0314418486701;
-        Wed, 17 Nov 2021 23:06:57 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf09.hostedemail.com (Postfix) with ESMTPA id 2C054E00034E;
-        Wed, 17 Nov 2021 23:06:49 +0000 (UTC)
-Message-ID: <33ca60945b7945ff08ae295a4d683ebe99e41d46.camel@perches.com>
-Subject: Re: [PATCH v9 5/5] MAINTAINERS: Add maintainer for xilinx-ams
-From:   Joe Perches <joe@perches.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Anand Ashok Dumbre <ANANDASH@xilinx.com>,
-        linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, git <git@xilinx.com>,
-        Michal Simek <michals@xilinx.com>, gregkh@linuxfoundation.org,
-        rafael@kernel.org, linux-acpi@vger.kernel.org,
-        heikki.krogerus@linux.intel.com
-Date:   Wed, 17 Nov 2021 15:06:54 -0800
-In-Reply-To: <YZVX9R/TMvkPwuuF@smile.fi.intel.com>
-References: <20211116150842.1051-1-anand.ashok.dumbre@xilinx.com>
-         <20211116150842.1051-6-anand.ashok.dumbre@xilinx.com>
-         <YZPtW5igA8RBYLWv@smile.fi.intel.com>
-         <BY5PR02MB69168A6537474DF8948C3D0BA99A9@BY5PR02MB6916.namprd02.prod.outlook.com>
-         <CAHp75VdaO4+DxMn2eJx7t0_UFgrHGV2vgzXvRB=qwZi-ZpMaOA@mail.gmail.com>
-         <cf7ad8715a02f3a0e4fe0cd8a270585dcf84bb3a.camel@perches.com>
-         <CAHp75VfJBwCcFwbv6fgvwf=Q1UdFXwgNex-4GqKLcf=ZhuqGjw@mail.gmail.com>
-         <164612d20b252a28dda74f5058e0aacb@perches.com>
-         <YZVX9R/TMvkPwuuF@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1 
+        Wed, 17 Nov 2021 18:19:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1637190982;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=H1hRnJjfJYX6TbUmpyiufvx6VLTDYF5oxuthPIfdRZE=;
+        b=e7gMwUAEjFfqVbfbQqUVwcSujPuXpCsjlRLJfvQmn1Qrf2kK9zDEW9tA6Sa/PuTm4x/iBW
+        d+0Y2EbJFlm6JvMRG7iOY6t4Fvqz/l0vk4qLsCHJOCITZoaAUt3lgdgmhOoU/mPyBA0ebB
+        yuku+gLAX6wW1nBt1g4bmQjTQhDtTkU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-386-LO-7zDWdNJqDawIPCCwM4A-1; Wed, 17 Nov 2021 18:16:18 -0500
+X-MC-Unique: LO-7zDWdNJqDawIPCCwM4A-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8BF5D1023F4E;
+        Wed, 17 Nov 2021 23:16:17 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.192.15])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6E6671017CE4;
+        Wed, 17 Nov 2021 23:16:15 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>
+Subject: [PATCH 1/3] pinctrl: cherryview: Don't use pin/offset 0 to mark an interrupt-line as unused
+Date:   Thu, 18 Nov 2021 00:16:12 +0100
+Message-Id: <20211117231614.758362-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2C054E00034E
-X-Spam-Status: No, score=-3.40
-X-Stat-Signature: 5gonfoxuqwgckts6t7zg5ii6eb4g4ijk
-X-Rspamd-Server: rspamout02
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19+IFv9qylv3KP1O9JLcstv6VxH49IBE28=
-X-HE-Tag: 1637190409-49400
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, 2021-11-17 at 21:28 +0200, Andy Shevchenko wrote:
-> On Wed, Nov 17, 2021 at 10:46:20AM -0800, Joe Perches wrote:
-> > On 2021-11-17 09:08, Andy Shevchenko wrote:
-> > > On Wed, Nov 17, 2021 at 6:05 PM Joe Perches <joe@perches.com> wrote:
-> > 
-> > > > What do you think checkpatch is supposed to find?
-> > 
-> > > To me AMS should precede AXI and not the other way around. Agree?
-> > 
-> > Sure but checkpatch just looks at patches and doesn't inspect the patched
-> > file, apply the patch then look at the result. The patch itself looks fine.
-> 
-> I see, checkpatch simply doesn't have such functionality and maintainers should
-> ask people to rung parse-maintainers.pl from time to time…
+offset/pin 0 is a perfectly valid offset, so stop using it to have
+the special meaning of interrupt-line not used in the intr_lines.
 
-I asked Linus to do that before every -rc1 and he demurred.
+Instead introduce a new special INTR_LINE_UNUSED value which is never
+a valid offset and use that to indicate unused interrupt-lines.
 
-https://lore.kernel.org/lkml/CAHk-=wjq68jF+fcSJYpRT3yS+=oOxaEFtYVmSjKb0RLbo7+JWw@mail.gmail.com/
+Cc: Yauhen Kharuzhy <jekhor@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/pinctrl/intel/pinctrl-cherryview.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
+index 980099028cf8..a46f9e5a4748 100644
+--- a/drivers/pinctrl/intel/pinctrl-cherryview.c
++++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
+@@ -73,6 +73,8 @@ struct intel_pad_context {
+ 	u32 padctrl1;
+ };
+ 
++#define INTR_LINE_UNUSED		U32_MAX
++
+ /**
+  * struct intel_community_context - community context for Cherryview
+  * @intr_lines: Mapping between 16 HW interrupt wires and GPIO offset (in GPIO number space)
+@@ -812,7 +814,7 @@ static int chv_gpio_request_enable(struct pinctrl_dev *pctldev,
+ 		/* Reset the interrupt mapping */
+ 		for (i = 0; i < ARRAY_SIZE(cctx->intr_lines); i++) {
+ 			if (cctx->intr_lines[i] == offset) {
+-				cctx->intr_lines[i] = 0;
++				cctx->intr_lines[i] = INTR_LINE_UNUSED;
+ 				break;
+ 			}
+ 		}
+@@ -1319,7 +1321,7 @@ static unsigned chv_gpio_irq_startup(struct irq_data *d)
+ 		else
+ 			handler = handle_edge_irq;
+ 
+-		if (!cctx->intr_lines[intsel]) {
++		if (cctx->intr_lines[intsel] == INTR_LINE_UNUSED) {
+ 			irq_set_handler_locked(d, handler);
+ 			cctx->intr_lines[intsel] = pin;
+ 		}
+@@ -1412,6 +1414,12 @@ static void chv_gpio_irq_handler(struct irq_desc *desc)
+ 		unsigned int offset;
+ 
+ 		offset = cctx->intr_lines[intr_line];
++		if (offset == INTR_LINE_UNUSED) {
++			dev_err(pctrl->dev, "Interrupt on unused interrupt line %u\n",
++				intr_line);
++			continue;
++		}
++
+ 		generic_handle_domain_irq(gc->irq.domain, offset);
+ 	}
+ 
+@@ -1620,9 +1628,10 @@ static int chv_pinctrl_probe(struct platform_device *pdev)
+ 	struct intel_community *community;
+ 	struct device *dev = &pdev->dev;
+ 	struct acpi_device *adev = ACPI_COMPANION(dev);
++	struct intel_community_context *cctx;
+ 	struct intel_pinctrl *pctrl;
+ 	acpi_status status;
+-	int ret, irq;
++	int i, ret, irq;
+ 
+ 	soc_data = intel_pinctrl_get_soc_data(pdev);
+ 	if (IS_ERR(soc_data))
+@@ -1663,6 +1672,10 @@ static int chv_pinctrl_probe(struct platform_device *pdev)
+ 	if (!pctrl->context.communities)
+ 		return -ENOMEM;
+ 
++	cctx = &pctrl->context.communities[0];
++	for (i = 0; i < ARRAY_SIZE(cctx->intr_lines); i++)
++		cctx->intr_lines[i] = INTR_LINE_UNUSED;
++
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+ 		return irq;
+-- 
+2.31.1
 
