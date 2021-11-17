@@ -2,113 +2,185 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EEB8455017
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Nov 2021 23:01:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E48F45506C
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Nov 2021 23:28:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240763AbhKQWEw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 Nov 2021 17:04:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:55958 "EHLO
+        id S241233AbhKQWbj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 Nov 2021 17:31:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:47338 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S240904AbhKQWEk (ORCPT
+        by vger.kernel.org with ESMTP id S241232AbhKQWbg (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 17 Nov 2021 17:04:40 -0500
+        Wed, 17 Nov 2021 17:31:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637186500;
+        s=mimecast20190719; t=1637188117;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gzRqfi9r2d6jzALCSB0C8plEtz9PToXoYBaSZUOHj50=;
-        b=JyiPpkl4YX6YYEbzRroF6IKmkBZjGxqgzpw6cfRf5vbePI8fqBqqlsrVE5SQr6zXYCPZp9
-        wwPPVEYQOy2IET1ksYPpddXSI82105K16TS/Vy0a9cUucbLtl07qnYBv5EBEU9FjpkV7K4
-        dBLW3jGLThgdGmrUtTdsP5gNFsckn0E=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-557-hxFbEqMrPGWZPAMQ7FAlBQ-1; Wed, 17 Nov 2021 17:01:37 -0500
-X-MC-Unique: hxFbEqMrPGWZPAMQ7FAlBQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 43F4C15720;
-        Wed, 17 Nov 2021 22:01:36 +0000 (UTC)
-Received: from x1.localdomain.com (unknown [10.39.192.15])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C875F5D9DE;
-        Wed, 17 Nov 2021 22:01:34 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-mmc@vger.kernel.org
-Subject: [PATCH 5/5] mmc: sdhci-acpi: Use the new soc_intel_is_byt() helper
-Date:   Wed, 17 Nov 2021 23:01:18 +0100
-Message-Id: <20211117220118.408953-6-hdegoede@redhat.com>
-In-Reply-To: <20211117220118.408953-1-hdegoede@redhat.com>
-References: <20211117220118.408953-1-hdegoede@redhat.com>
+        bh=m5qu5e0Bmyi2YyXsZTCJ7FvtB46vdD6fod/tQPP96Gw=;
+        b=RR2VKKS2NxijkPYqJoaRomlbhJGhRaoIS6J7hMXMvNffgvt021N3LA/EgVVpOYspZBuDIt
+        ex1GeB/5qsPfkEzVM+C/GYUP+Tyys9rIcEa++QpXtjwY9awj9rp2aciFhe7tqUfllEAi1D
+        xexoCjWKeLJ1M8/0WrzRfuoQdFZ/2tI=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-61-qzRSzlvOO5qeCyFFz1kYhQ-1; Wed, 17 Nov 2021 17:28:35 -0500
+X-MC-Unique: qzRSzlvOO5qeCyFFz1kYhQ-1
+Received: by mail-ed1-f70.google.com with SMTP id r16-20020a056402019000b003e6cbb77ed2so3458506edv.10
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Nov 2021 14:28:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=m5qu5e0Bmyi2YyXsZTCJ7FvtB46vdD6fod/tQPP96Gw=;
+        b=RrjeH5Zhu/mMq5SKzE3T4IZfvJb23LjcQwXgKKucREFfFSuuv+cRJRUNQ/1H9iHZ5h
+         p9lUhtdvqDGZe1yDvIWmR7rbA+MjbYYTea+7lGGcfly6aozCr2r7fta8V5JhSkaF/eyN
+         sGGx1Y+Xofo+XTy5KVGsQaZdaiiyX7Sr6HktHkFEZgJPm2lRFx/asXOvOIDWUj5Lw/86
+         tEszua15rM7x5itTPdTu9advrM8Nrrw0X9hTE1NhMYf8hTqIOzU1i6CQ9rSizZVbHtH1
+         qEtNuonSyzdrDynAIj9dBADokjLRoM4oiNqZUw3PzcM/hntRDkRkstE8kQLnbTWuNlu0
+         EWdg==
+X-Gm-Message-State: AOAM531enNnLOPervgRelsLH2djJvVIJBsFbGJbnwlZRlu838s1oKuTS
+        xAbhPdzLNqrYGtxCbOhCkh1Ph0/bGwyrwslGqMaSU2tSsgt7RM7Xcp3DANEiBYVatjjBTytcAj/
+        9Et+I6VsvVNv7yI2QQ61/Pg==
+X-Received: by 2002:a17:907:7b9b:: with SMTP id ne27mr26058731ejc.79.1637188114565;
+        Wed, 17 Nov 2021 14:28:34 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxXCOz8zE8sIXG+OzU8g75Ytk28xPrlKauEFcoiDMkcnmuf5MV+OAPoN5sFp5ENv9D9sTpHgQ==
+X-Received: by 2002:a17:907:7b9b:: with SMTP id ne27mr26058685ejc.79.1637188114280;
+        Wed, 17 Nov 2021 14:28:34 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
+        by smtp.gmail.com with ESMTPSA id q14sm617090edj.42.2021.11.17.14.28.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Nov 2021 14:28:33 -0800 (PST)
+Message-ID: <380053ee-4a4a-963c-4f70-6b9dcfef1b98@redhat.com>
+Date:   Wed, 17 Nov 2021 23:28:32 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 16/20] extcon: intel-cht-wc: Use new
+ intel_cht_wc_get_model() helper
+Content-Language: en-US
+To:     Chanwoo Choi <cwchoi00@gmail.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Yauhen Kharuzhy <jekhor@gmail.com>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-efi@vger.kernel.org
+References: <20211114170335.66994-1-hdegoede@redhat.com>
+ <20211114170335.66994-17-hdegoede@redhat.com>
+ <5653c424-e12a-e889-1ae5-14a768dcf221@gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <5653c424-e12a-e889-1ae5-14a768dcf221@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Use the new soc_intel_is_byt() helper function from
-include/linux/platform_data/x86/soc.h .
+Hi,
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/mmc/host/sdhci-acpi.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+On 11/17/21 07:47, Chanwoo Choi wrote:
+> On 21. 11. 15. 오전 2:03, Hans de Goede wrote:
+>> The CHT_WC_VBUS_GPIO_CTLO GPIO actually driving an external 5V Vboost
+>> converter for Vbus depends on the board on which the Cherry Trail -
+>> Whiskey Cove PMIC is actually used.
+>>
+>> Since the information about the exact PMIC setup is necessary in other
+>> places too, the drivers/mfd/intel_soc_pmic_chtwc.c code now has a new
+>> intel_cht_wc_get_model() helper.
+>>
+>> Only poke the CHT_WC_VBUS_GPIO_CTLO GPIO if this new helper returns
+>> INTEL_CHT_WC_GPD_WIN_POCKET, which indicates the Type-C (with PD and
+>> DP-altmode) setup used on the GPD pocket and GPD win; and on which
+>> this GPIO actually controls an external 5V Vboost converter.
+>>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>   drivers/extcon/extcon-intel-cht-wc.c | 35 +++++++++++++++++-----------
+>>   1 file changed, 21 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/drivers/extcon/extcon-intel-cht-wc.c b/drivers/extcon/extcon-intel-cht-wc.c
+>> index 771f6f4cf92e..a5aeeecc44fb 100644
+>> --- a/drivers/extcon/extcon-intel-cht-wc.c
+>> +++ b/drivers/extcon/extcon-intel-cht-wc.c
+>> @@ -14,6 +14,7 @@
+>>   #include <linux/module.h>
+>>   #include <linux/mod_devicetable.h>
+>>   #include <linux/platform_device.h>
+>> +#include <linux/property.h>
+>>   #include <linux/regmap.h>
+>>   #include <linux/slab.h>
+>>   @@ -358,20 +359,26 @@ static int cht_wc_extcon_probe(struct platform_device *pdev)
+>>       if (IS_ERR(ext->edev))
+>>           return PTR_ERR(ext->edev);
+>>   -    /*
+>> -     * When a host-cable is detected the BIOS enables an external 5v boost
+>> -     * converter to power connected devices there are 2 problems with this:
+>> -     * 1) This gets seen by the external battery charger as a valid Vbus
+>> -     *    supply and it then tries to feed Vsys from this creating a
+>> -     *    feedback loop which causes aprox. 300 mA extra battery drain
+>> -     *    (and unless we drive the external-charger-disable pin high it
+>> -     *    also tries to charge the battery causing even more feedback).
+>> -     * 2) This gets seen by the pwrsrc block as a SDP USB Vbus supply
+>> -     * Since the external battery charger has its own 5v boost converter
+>> -     * which does not have these issues, we simply turn the separate
+>> -     * external 5v boost converter off and leave it off entirely.
+>> -     */
+>> -    cht_wc_extcon_set_5v_boost(ext, false);
+>> +    switch (intel_cht_wc_get_model()) {
+> 
+> intel_cht_wc_get_model() is defined in driver/mfd/intel_soc_pmic_chtwc.c
+> 
+> Usually, mfd drivers share the data structure such as struct intel_soc_pmic. But, didn't call the exported function for only
+> specific driver between linux kernel framework (extcon vs. mfd).
+> 
+> So that I think that you better to update the mode information
+> to 'struct intel_soc_pmic' data structure and then use it
+> instead of using the exported function which may make the confusion.
 
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
-index 1461aae13c19..c0350e9c03f3 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -31,8 +31,7 @@
- #include <linux/mmc/slot-gpio.h>
- 
- #ifdef CONFIG_X86
--#include <asm/cpu_device_id.h>
--#include <asm/intel-family.h>
-+#include <linux/platform_data/x86/soc.h>
- #include <asm/iosf_mbi.h>
- #endif
- 
-@@ -239,16 +238,6 @@ static const struct sdhci_acpi_chip sdhci_acpi_chip_int = {
- 
- #ifdef CONFIG_X86
- 
--static bool sdhci_acpi_byt(void)
--{
--	static const struct x86_cpu_id byt[] = {
--		X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT, NULL),
--		{}
--	};
--
--	return x86_match_cpu(byt);
--}
--
- #define BYT_IOSF_SCCEP			0x63
- #define BYT_IOSF_OCP_NETCTRL0		0x1078
- #define BYT_IOSF_OCP_TIMEOUT_BASE	GENMASK(10, 8)
-@@ -257,7 +246,7 @@ static void sdhci_acpi_byt_setting(struct device *dev)
- {
- 	u32 val = 0;
- 
--	if (!sdhci_acpi_byt())
-+	if (!soc_intel_is_byt())
- 		return;
- 
- 	if (iosf_mbi_read(BYT_IOSF_SCCEP, MBI_CR_READ, BYT_IOSF_OCP_NETCTRL0,
-@@ -282,7 +271,7 @@ static void sdhci_acpi_byt_setting(struct device *dev)
- 
- static bool sdhci_acpi_byt_defer(struct device *dev)
- {
--	if (!sdhci_acpi_byt())
-+	if (!soc_intel_is_byt())
- 		return false;
- 
- 	if (!iosf_mbi_available())
--- 
-2.31.1
+That is a good idea, thanks.
+
+I've implemented this suggestion for the upcoming v3 of the patch-set.
+
+Regards,
+
+Hans
+
+
+> 
+>> +    case INTEL_CHT_WC_GPD_WIN_POCKET:
+>> +        /*
+>> +         * When a host-cable is detected the BIOS enables an external 5v boost
+>> +         * converter to power connected devices there are 2 problems with this:
+>> +         * 1) This gets seen by the external battery charger as a valid Vbus
+>> +         *    supply and it then tries to feed Vsys from this creating a
+>> +         *    feedback loop which causes aprox. 300 mA extra battery drain
+>> +         *    (and unless we drive the external-charger-disable pin high it
+>> +         *    also tries to charge the battery causing even more feedback).
+>> +         * 2) This gets seen by the pwrsrc block as a SDP USB Vbus supply
+>> +         * Since the external battery charger has its own 5v boost converter
+>> +         * which does not have these issues, we simply turn the separate
+>> +         * external 5v boost converter off and leave it off entirely.
+>> +         */
+>> +        cht_wc_extcon_set_5v_boost(ext, false);
+>> +        break;
+>> +    default:
+>> +        break;
+>> +    }
+>>         /* Enable sw control */
+>>       ret = cht_wc_extcon_sw_control(ext, true);
+>>
+> 
+> 
 
