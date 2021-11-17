@@ -2,282 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2EDC454914
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Nov 2021 15:45:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CDF7454944
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Nov 2021 15:52:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235555AbhKQOsk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 17 Nov 2021 09:48:40 -0500
-Received: from out30-54.freemail.mail.aliyun.com ([115.124.30.54]:41872 "EHLO
-        out30-54.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233479AbhKQOsj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 17 Nov 2021 09:48:39 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04407;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0Ux3xOmQ_1637160336;
-Received: from 30.240.124.39(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Ux3xOmQ_1637160336)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 17 Nov 2021 22:45:37 +0800
-Message-ID: <c776e881-913e-c9cb-0bd5-e8b725a3418f@linux.alibaba.com>
-Date:   Wed, 17 Nov 2021 22:45:36 +0800
+        id S230026AbhKQOze (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 17 Nov 2021 09:55:34 -0500
+Received: from mail-oi1-f176.google.com ([209.85.167.176]:42893 "EHLO
+        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231635AbhKQOzc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 17 Nov 2021 09:55:32 -0500
+Received: by mail-oi1-f176.google.com with SMTP id n66so6890688oia.9
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Nov 2021 06:52:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uPQz6RGjSZx1pqGnwGyigDzHeQc7ZhXAz0hsX7CsK98=;
+        b=BMer11gIFj0JbQ9abphoqVCN3XX9c5XVOl2S821xt7sblu6TD0jfOv3rNw0etVmmrI
+         lVy9xWviCke+dLrTLzYWE+HMhrAz5rpzVAXtfG9lvuXwQuq7JcTFmw+9K7at6HzKKP4N
+         xlawhaHPBfIY2gp3WyXsiBHlCO8E738uaVZ0jRwTD7rOz313lP5JyvjykPSjQw4Tdt8h
+         jeRStQiocYn8rZ+FNTHxIrJPi41aipI+bWWqutCHJOef6/uCuRj1U2bYZJ6LDSqcgC73
+         //qAcBxZHS1dn6irYiTYFhsvpUBGdm9mraEKDKyOGEwC5UD3/YoeLmCSZp39ORWDQLkj
+         7yrw==
+X-Gm-Message-State: AOAM5313g4I8ZsiOmuyWNMr9O7/Pajb4Ak5diozjKtYL4atEs32eHwLw
+        WDAmcs5n77BMF0t4q8+l+o/cX382sSQ80q8+zyI=
+X-Google-Smtp-Source: ABdhPJzAcGzDGUux2tOOBkjMFiV7iEAdQ073ocOwOsK1b3YFUn1X+4cMs3VrRaNfUfzYW1f0kRNjtGBDU4ryenBXrBc=
+X-Received: by 2002:a05:6808:14c2:: with SMTP id f2mr190689oiw.154.1637160752233;
+ Wed, 17 Nov 2021 06:52:32 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.3.0
-Subject: Re: [RFC PATCH v3] ACPI: Move sdei_init and ghes_init ahead
-Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-        bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
-        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
-        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com
-References: <20211115162734.GA1566887@bhelgaas>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20211115162734.GA1566887@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20211109111935.1627406-1-sakari.ailus@linux.intel.com>
+ <20211109111935.1627406-2-sakari.ailus@linux.intel.com> <YYpnQaZ7u9Zqr0Qb@smile.fi.intel.com>
+ <YYt+IDubi6ib/Iko@paasikivi.fi.intel.com>
+In-Reply-To: <YYt+IDubi6ib/Iko@paasikivi.fi.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 17 Nov 2021 15:52:21 +0100
+Message-ID: <CAJZ5v0jFy2OCi2H+aHnZ8OQXZuDf+RnjchcJce_VNLVpPkzL3g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPI: Get acpi_device's parent from the parent field
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        John Ogness <john.ogness@linutronix.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Petr Mladek <pmladek@suse.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Bjorn,
-
-> On 2021/11/16 AM12:27, Bjorn Helgaas wrote:
-> The subject says *what* the patch does, but doesn't give any clue
-> about *why* we want this.
-I will change it in next version.
-
-
-> On Mon, Nov 15, 2021 at 02:44:15PM +0800, Shuai Xue wrote:
->> On an ACPI system, ACPI is initialised very early from a
->> subsys_initcall(), while SDEI is not ready until a subsys_initcall().
-> 
-> This sentence sounds like it's setting up a contrast between ACPI init
-> and SDEI init, but apparently both are subsys_initcall(), so this
-> doesn't actually say what the difference is.
-> 
->> More seriously, the kernel is able to handle and report errors until the
->> GHES is initialised by device_initcall().
-> 
-> Did you mean "unable"?  Or do you really mean the kernel can handle
-> errors until GHES is initialized, but can't handle errors *after* GHES
-> is initialized?
-Sorry for the typo. Please refer to the following:
-On an ACPI system, ACPI is initialized very early from a subsys_initcall,
-while SDEI is not ready until a *subsys_initcall_sync*. More seriously,
-the kernel is *unable* to handle and report errors until the GHES is
-initialized by device_initcall().
-
-
->> Consequently, when an error occurs during the kernel booting, the
->> phyiscal sdei dispatcher in firmware fails to dispatch error events. All
->> errors that occurred before GHES initialization are missed and there is
->> no chance to report and find them again.
-> 
-> s/phyiscal/physical/
-> s/sdei/SDEI/
-Sorry for typos, they will be corrected in next version.
-
-
-> This doesn't explain how something in the kernel can prevent the
-> dispatcher in firmware from doing something.  Maybe the firmware emits
-> an event and the kernel isn't listening?
-The SDEI driver provides functions (e.g. apei_sdei_register_ghes,
-apei_sdei_unregister_ghes) to register or unregister event callback for
-dispatcher in firmware. When the GHES driver probing, it registers the
-corresponding callback according to the notification type specified by
-generic hardware error source. If the GHES notification type is SDEI, the
-GHES driver will call apei_sdei_register_ghes to register event call.
-
-When the firmware emits an event, it migrates the handling of the event
-into the kernel at the registered entry-point __sdei_asm_handler. And
-finally, the kernel will call the registered event callback and return
-status_code to indicate the status of event handling. SDEI_EV_FAILED
-indicates that the kernel failed to handle the event.
-
-Consequently, when an error occurs during the kernel booting, the kernel is
-unable to handle and report errors until the GHES driver is initialized by
-device_initcall(), in which the event callback is registered.
-
-Therefore, we propose to move sdei_init and ghes_init ahead as far as
-possible on kernel bootup. Other notification types, such as
-acpi_hed_driver should also be applied, which is not mentioned in this patch.
-
-
-> What is SDEI?  Please provide a citation to whatever spec is relevant.
-The Software Delegated Exception Interface (SDEI) is an ARM standard
-for registering callbacks from the platform firmware into the OS. Please
-refer to the [documentation](https://developer.arm.com/documentation/den0054/a)
-for more details.
-
-
->> In this patch, move sdei_init and ghes_init as far ahead as possible,
->> right after acpi_hest_init().
-> 
-> Please be explicit about what the dependencies are here.  Is there
-> something in sdei_init() that depends on acpi_hest_init()?  If so,
-> what is it specifically?
-> 
-> Similarly, does ghes_init() depend on something in sdei_init()?
-From commmit e147133a42cb (ACPI / APEI: Make hest.c manage the estatus
-memory pool) was merged, ghes_init() relies on acpi_hest_init() to manage
-the estatus memory pool. On the other hand, ghes_init() relies on
-sdei_init() to detect the SDEI version and the framework for registering
-and unregistering events. By the way, I don't figure out why acpi_hest_init
-is called in acpi_pci_root_init, it don't rely on any other thing. May it
-could be moved further, following acpi_iort_init in acpi_init.
-
-sdei_init() relies on ACPI table which is initialized subsys_initcall():
-acpi_init(), acpi_bus_init(), acpi_load_tables(), acpi_tb_laod_namespace().
-May it should be also moved further, after acpi_load_tables.
-
-> 
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->> ---
->> Changelog v2 -> v3:
->> Fix compile error in X86
->> Reported-by: kernel test robot<lkp@intel.com>
->> ---
->>  drivers/acpi/apei/ghes.c    | 3 +--
->>  drivers/acpi/pci_root.c     | 8 +++++++-
->>  drivers/firmware/arm_sdei.c | 9 +--------
->>  include/acpi/apei.h         | 2 ++
->>  include/linux/arm_sdei.h    | 2 ++
->>  5 files changed, 13 insertions(+), 11 deletions(-)
->>
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index 0c8330ed1ffd..4200369503b8 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -1457,7 +1457,7 @@ static struct platform_driver ghes_platform_driver = {
->>  	.remove		= ghes_remove,
->>  };
->>  
->> -static int __init ghes_init(void)
->> +int __init ghes_init(void)
->>  {
->>  	int rc;
->>  
->> @@ -1499,4 +1499,3 @@ static int __init ghes_init(void)
->>  err:
->>  	return rc;
->>  }
->> -device_initcall(ghes_init);
->> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
->> index ab2f7dfb0c44..7658ae509377 100644
->> --- a/drivers/acpi/pci_root.c
->> +++ b/drivers/acpi/pci_root.c
->> @@ -23,7 +23,7 @@
->>  #include <linux/dmi.h>
->>  #include <linux/platform_data/x86/apple.h>
->>  #include <acpi/apei.h>	/* for acpi_hest_init() */
->> -
->> +#include <linux/arm_sdei.h> /* for sdei_init() */
->>  #include "internal.h"
->>  
->>  #define ACPI_PCI_ROOT_CLASS		"pci_bridge"
->> @@ -946,6 +946,12 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
->>  void __init acpi_pci_root_init(void)
->>  {
->>  	acpi_hest_init();
->> +	#ifdef CONFIG_ARM_SDE_INTERFACE
->> +	sdei_init();
->> +	#endif 
->> +	#ifdef CONFIG_ACPI_APEI_GHES
->> +	ghes_init();
->> +	#endif 
-> 
-> I love to replace initcalls with explicit calls.  You provided stubs
-> below, so why the #ifdefs here?
-I will change sdei_init in next version like ghes_init:
-	#ifdef CONFIG_ARM_SDE_INTERFACE
-	int __init sdei_init(void);
-	#else
-	static inline int sdei_init(void) { return 0; }
-	#endif
-
-
-> 
->>  	if (acpi_pci_disabled)
->>  		return;
->>  
->> diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
->> index a7e762c352f9..606520be326e 100644
->> --- a/drivers/firmware/arm_sdei.c
->> +++ b/drivers/firmware/arm_sdei.c
->> @@ -1059,7 +1059,7 @@ static bool __init sdei_present_acpi(void)
->>  	return true;
->>  }
->>  
->> -static int __init sdei_init(void)
->> +int __init sdei_init(void)
->>  {
->>  	struct platform_device *pdev;
->>  	int ret;
->> @@ -1080,13 +1080,6 @@ static int __init sdei_init(void)
->>  	return ret;
->>  }
->>  
->> -/*
->> - * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
->> - * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
->> - * by device_initcall(). We want to be called in the middle.
->> - */
->> -subsys_initcall_sync(sdei_init);
-> 
-> Ugh.  It's really good to get rid of this sort of implicit ordering.
-Thank you, agree that:)
-
-
+On Wed, Nov 10, 2021 at 9:09 AM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
 >
->>  int sdei_event_handler(struct pt_regs *regs,
->>  		       struct sdei_registered_event *arg)
->>  {
->> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
->> index ece0a8af2bae..155a0fe417c6 100644
->> --- a/include/acpi/apei.h
->> +++ b/include/acpi/apei.h
->> @@ -27,8 +27,10 @@ extern int hest_disable;
->>  extern int erst_disable;
->>  #ifdef CONFIG_ACPI_APEI_GHES
->>  extern bool ghes_disable;
->> +int __init ghes_init(void);
->>  #else
->>  #define ghes_disable 1
->> +static inline int ghes_init(void) { return 0; }
-> 
-> I think the only reason ghes_init() returns int is because that's what
-> initcall_t requires.  If ghes_init() is no longer an initcall and
-> nobody looks at its return value, it should return void instead.
-> 
-> Same with sdei_init().
-Will change it if we reach an agreement that we shoud move sdei_init
-and ghes_init ahead.
+> Hi Andy,
+>
+> Thanks for the review.
+>
+> On Tue, Nov 09, 2021 at 02:19:13PM +0200, Andy Shevchenko wrote:
+> > On Tue, Nov 09, 2021 at 01:19:34PM +0200, Sakari Ailus wrote:
+> > > Printk modifier %pfw is used to print the full path of the device name.
+> > > This is obtained device by device until a device no longer has a parent.
+> > >
+> > > On ACPI getting the parent fwnode is done by calling acpi_get_parent()
+> > > which tries to down() a semaphore. But local IRQs are now disabled in
+> > > vprintk_store() before the mutex is acquired. This is obviously a problem.
+> > >
+> > > Luckily struct device, embedded in struct acpi_device, has a parent field
+> > > already. Use that field to get the parent instead of relying on
+> > > acpi_get_parent().
+> >
+> > Thanks, with the below addressed
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> >
+> > > Fixes: 3bd32d6a2ee6 ("lib/vsprintf: Add %pfw conversion specifier for printing fwnode names")
+> > > Cc: stable@vger.kernel.org # v5.5+
+> > > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> > > ---
+> > >  drivers/acpi/property.c | 14 ++++++--------
+> > >  1 file changed, 6 insertions(+), 8 deletions(-)
+> > >
+> > > diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> > > index e312ebaed8db4..dc97711ba8081 100644
+> > > --- a/drivers/acpi/property.c
+> > > +++ b/drivers/acpi/property.c
+> > > @@ -1089,16 +1089,14 @@ struct fwnode_handle *acpi_node_get_parent(const struct fwnode_handle *fwnode)
+> > >     if (is_acpi_data_node(fwnode)) {
+> > >             /* All data nodes have parent pointer so just return that */
+> > >             return to_acpi_data_node(fwnode)->parent;
+> >
+> > ...
+> >
+> > > -   } else if (is_acpi_device_node(fwnode)) {
+> > > +   }
+> >
+> > > +   if (is_acpi_device_node(fwnode)) {
+> >
+> > Unneeded change. Yes I know that 'else' here can be skipped. But in such cases
+> > it's a trade-off between changes, code readability and maintenance. Since here
+> > it's a fix, backporting concerns are also play role.
+>
+> The patch applies cleanly to 5.5, the oldest kernel where it's needed.
 
+Which doesn't matter too much.
 
-> 
->>  #endif
->>  
->>  #ifdef CONFIG_ACPI_APEI
->> diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
->> index 0a241c5c911d..983b7404bff9 100644
->> --- a/include/linux/arm_sdei.h
->> +++ b/include/linux/arm_sdei.h
->> @@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
->>  /* For use by arch code when CPU hotplug notifiers are not appropriate. */
->>  int sdei_mask_local_cpu(void);
->>  int sdei_unmask_local_cpu(void);
->> +int __init sdei_init(void);
->>  #else
->>  static inline int sdei_mask_local_cpu(void) { return 0; }
->>  static inline int sdei_unmask_local_cpu(void) { return 0; }
->> +static inline int sdei_init(void) { return 0; }
->>  #endif /* CONFIG_ARM_SDE_INTERFACE */
->>  
->>  
->> -- 
->> 2.20.1.12.g72788fdb
->>
+The change above is not needed and there is no point making it in
+which otherwise is a fix, not just because of the backporting
+concerns, but also for the sake of cleanliness in general.
 
-Thank you for your patient revision.
-
-Best regards,
-Shuai
+Have you posted the v3 already?  If not, please update the patch as
+requested by Andy.
