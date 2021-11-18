@@ -2,76 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88EEB456490
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Nov 2021 21:56:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6FE456492
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Nov 2021 21:56:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230428AbhKRU7U (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Nov 2021 15:59:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:54644 "EHLO
+        id S231392AbhKRU7x (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Nov 2021 15:59:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:56543 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229905AbhKRU7T (ORCPT
+        by vger.kernel.org with ESMTP id S229905AbhKRU7x (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 18 Nov 2021 15:59:19 -0500
+        Thu, 18 Nov 2021 15:59:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637268979;
+        s=mimecast20190719; t=1637269012;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=29keOWINh9ySKUeYwc3es/vFRv61MxyNUwkXnbTagyQ=;
-        b=eqnEJy0MsnPcwAb4CK6J4khuGpO+2HNdBQZ/ALPgEPV5EFC3ZUwIH3Gu7S+dTW3oo6y/x+
-        bratH+ZjaLBhua/9ZaysxfHH3Ns+FENthzPekkgVHJrisN+EHk6GhTbepJB3BCkq5uGIoa
-        hZcrutrTx+dPqVJtiz6PFFouyXId9h0=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=unQKitJKhE8CiwWk7oD7qjBW8RzHNdc0OJrMyXYxXfc=;
+        b=c87HxOgMInEaMuXXmUcXMywzaNE33zfNL3xLw5ti6pNJMFFZWhlKCyvQZDYFwhzCqDeEMf
+        VzT59pJIBT1M9Bs6hwazLieuO8Rd+e1+TYDEu/K2J9SfbFSp5AhtWGUoqPhHs31nMB7WVI
+        2lDEXWq0iyjmvJLCudgZcclW6VxKQZI=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-151-T206QUlLM6eXpF1l--hBmQ-1; Thu, 18 Nov 2021 15:56:17 -0500
-X-MC-Unique: T206QUlLM6eXpF1l--hBmQ-1
-Received: by mail-ed1-f70.google.com with SMTP id v1-20020aa7cd41000000b003e80973378aso4878036edw.14
-        for <linux-acpi@vger.kernel.org>; Thu, 18 Nov 2021 12:56:17 -0800 (PST)
+ us-mta-74-fqIiXuc8MuSaLTg_N6DEJQ-1; Thu, 18 Nov 2021 15:56:51 -0500
+X-MC-Unique: fqIiXuc8MuSaLTg_N6DEJQ-1
+Received: by mail-ed1-f71.google.com with SMTP id w18-20020a056402071200b003e61cbafdb4so6426120edx.4
+        for <linux-acpi@vger.kernel.org>; Thu, 18 Nov 2021 12:56:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=29keOWINh9ySKUeYwc3es/vFRv61MxyNUwkXnbTagyQ=;
-        b=28Uvsn4pGDXe89I9Ew6mcdycoFrjgPco3eTH8x40gL3SZkNvfEzqMbZ8zaW1VjkjIy
-         2JFYcbOhbC3IuZRy8cRlAn4rmvENG9fId5eXqE5zFM4+kp0hzsuc5IAnQOYHGQPz/rNL
-         bcdTLeu4HF/7AtFITA2aOXc5j6Q2TfWdIKh9MgSlZjkJQWb77eddUMLzLXZGaf4rWAzJ
-         UObxVAuDbz736uBj6VvZ5T1oR9TQmF4inkfLufQ558Pk4UhiuOquxaSuRuFJAO3ywSpg
-         kF3ZwYEiaLt0KGrM2OsaqqIyrlzkx7mG4nqW/OmNtLmC3SROz/YhY0QcfP+Af4794I63
-         y4sA==
-X-Gm-Message-State: AOAM530KlHK69fSHELJvPOKNnCVw6xowGluumtg9oeISW+B4f6lSjBsM
-        UQNa1rCcMds7QE5cqjhL2smVK/wIlKs7DJx82oBu2HWW+0bpPX1srYt1xIDVdlWPY5GiF4r89x3
-        +O/Jhq4QZKGdvFY4LId6ODQ==
-X-Received: by 2002:a05:6402:2026:: with SMTP id ay6mr15706482edb.202.1637268976485;
-        Thu, 18 Nov 2021 12:56:16 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJws+VE29QbWq7lI2Dec12W1vdheK6gd+7AgJpDDNMFYmtuh3TygiBKuosIRDsXFQkxD5NzF/w==
-X-Received: by 2002:a05:6402:2026:: with SMTP id ay6mr15706451edb.202.1637268976325;
-        Thu, 18 Nov 2021 12:56:16 -0800 (PST)
+        bh=unQKitJKhE8CiwWk7oD7qjBW8RzHNdc0OJrMyXYxXfc=;
+        b=i6pbLXQhpJWw4mtZSYabkmeqXnrK/bRZPOZYIEouhX88Id/DGtakQ9Ofqkh/I2aVEG
+         2y8mGkfK1Hj/tRvwN+2FQ9ej/cxH/fKsMuqQXnB25bjfj+dcTiGyJhc2cr6oSHnUtmb9
+         LNo3jWwALhr5XMoxuJhyhoNzVVEqS2VJ1YFkP8ky27f+3a3SO07p72CXtsJ620v184rk
+         hy3Od/nlU78QV9MS+HBMnsNyUBP/SUN2EOK1IQNtju/utypDTxifmKBXhE/BD9oxIIZT
+         96+FO+HWGRnoKa4oAXzpDOkXiwi8gZ5mtwFDmQ0KKXwluGOov/x7vzp4lqFWb4Q7HuiO
+         5w4w==
+X-Gm-Message-State: AOAM533damWaOPURSQF610h32Dpy7qO6kC4vMXUhF+JBFfx46Ka18Om3
+        M8ZKgDNSChYh1u/kMuXu4+xrbSiYtJ0OLpIIfwpLvvPkz+OvgaEcy19kPIt5nEQyfhpOc2DUw7Q
+        q/sv0fvJpLh5jmHrynbkM9w==
+X-Received: by 2002:a17:907:7da9:: with SMTP id oz41mr549036ejc.57.1637269007807;
+        Thu, 18 Nov 2021 12:56:47 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxa6DtEvWfkZlwTUJAFc0kRx/YnRxDlZ/alE2N8LFGxKcmMwP3FCWwBsY9SarA/6ytxRMme1w==
+X-Received: by 2002:a17:907:7da9:: with SMTP id oz41mr549012ejc.57.1637269007662;
+        Thu, 18 Nov 2021 12:56:47 -0800 (PST)
 Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id q7sm485820edr.9.2021.11.18.12.56.15
+        by smtp.gmail.com with ESMTPSA id di4sm373349ejc.11.2021.11.18.12.56.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Nov 2021 12:56:16 -0800 (PST)
-Message-ID: <bf374007-c40b-f59d-010c-d68fc520790f@redhat.com>
-Date:   Thu, 18 Nov 2021 21:56:15 +0100
+        Thu, 18 Nov 2021 12:56:47 -0800 (PST)
+Message-ID: <307175ba-e289-6b2f-bcf2-cd0c5cf70296@redhat.com>
+Date:   Thu, 18 Nov 2021 21:56:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH] ACPI / x86: Revert: Make PWM2 device always present at
- Lenovo Yoga Book
+Subject: Re: [PATCH 5.16 regression fix 0/5] ACPI: scan: Skip turning off some
+ unused objects during scan
 Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Yauhen Kharuzhy <jekhor@gmail.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-References: <20211113135206.5384-1-hdegoede@redhat.com>
- <YZABGfarFQoxpf1R@jeknote.loshitsa1.net>
- <CAJZ5v0gcJ_Ke6Ppw78Qv9n_Pws20+YBPJX8j0Pa_U=OLHmELfA@mail.gmail.com>
- <CAJZ5v0iufQMJgybSxfek13+034LuyYpj51ybD-Ke0kj4zRa4MQ@mail.gmail.com>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>
+References: <20211117220118.408953-1-hdegoede@redhat.com>
+ <CAJZ5v0hDWN4cKh+ZcB__wrWHChm=FjhwvCShXzseECQOFotM6w@mail.gmail.com>
+ <937cf1fd-0cb1-1a12-7745-8cc2a2e3405a@redhat.com>
+ <4363288.LvFx2qVVIh@kreacher>
 From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0iufQMJgybSxfek13+034LuyYpj51ybD-Ke0kj4zRa4MQ@mail.gmail.com>
+In-Reply-To: <4363288.LvFx2qVVIh@kreacher>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -80,70 +82,70 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 11/18/21 19:54, Rafael J. Wysocki wrote:
-> On Tue, Nov 16, 2021 at 8:25 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On 11/18/21 15:51, Rafael J. Wysocki wrote:
+> On Thursday, November 18, 2021 12:15:28 PM CET Hans de Goede wrote:
+>> Hi,
 >>
->> On Sat, Nov 13, 2021 at 7:17 PM Yauhen Kharuzhy <jekhor@gmail.com> wrote:
+>> On 11/18/21 12:08, Rafael J. Wysocki wrote:
+>>> On Wed, Nov 17, 2021 at 11:01 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>>
+>>>> Hi Rafael,
+>>>>
+>>>> Commit c10383e8ddf4 ("ACPI: scan: Release PM resources blocked by
+>>>> unused objects") adds a:
+>>>>
+>>>>         bus_for_each_dev(&acpi_bus_type, NULL, NULL, acpi_dev_turn_off_if_unused);
+>>>>
+>>>> call to acpi_scan_init(). On some devices with buggy DSDTs calling
+>>>> _PS3 for one device may result in it turning off another device.
 >>>
->>> On Sat, Nov 13, 2021 at 02:52:06PM +0100, Hans de Goede wrote:
->>>> It turns out that there is a WMI object which controls the PWM2 device
->>>> used for the keyboard backlight and that WMI object also provides some
->>>> other useful functionality.
->>>>
->>>> The upcoming lenovo-yogabook-wmi driver will offer both backlight
->>>> control and the other functionality, so there no longer is a need
->>>> to have the lpss-pwm driver binding to PWM2 for backlight control;
->>>> and this is now actually undesirable because this will cause both
->>>> the WMI code and the lpss-pwm driver to poke at the same PWM
->>>> controller.
+>>> Well, I'm going to revert this commit.  I'm sending a pull request
+>>> with the revert later today.
 >>>
->>> Acked-by: Yauhen Kharuzhy <jekhor@gmail.com>
+>>>> Specifically the DSDT of the GPD win and GPD pocket devices has a
+>>>> "\\_SB_.PCI0.SDHB.BRC1" device for a non existing SDIO wifi module
+>>>> which _PS3 method sets a GPIO causing the PCI wifi card to turn off.
+>>>>
+>>>> I've an earlier, in some ways simpler, fix for this here:
+>>>> https://fedorapeople.org/~jwrdegoede/0001-ACPI-scan-Skip-turning-off-some-unused-objects-durin.patch
+>>>>
+>>>> But the sdhci-acpi.c MMC host code already has an older workaround
+>>>> for it to not toggle power on this broken ACPI object; and this
+>>>> simpler fix would require keeping that workaround. So then we would
+>>>> have 2 workarounds for the same issue in the kernel.
+>>>>
+>>>> Thus instead I've come up with a slightly different approach which
+>>>> IMHO has ended up pretty well.
+>>>>
+>>>> Patches 1-3 of this series are this different approach and assuming
+>>>> they are considered ok must be merged into 5.16 to fix the regression
+>>>> caused by commit c10383e8ddf4 on these devices.
 >>>
->>>>
->>>> Revert commit ff6cdfd71495 ("ACPI / x86: Make PWM2 device always present
->>>> at Lenovo Yoga Book"), removing the always-present quirk for the PWM2
->>>> ACPI-device, so that the lpss-pwm controller will no longer bind to it.
->>>>
->>>> Cc: Yauhen Kharuzhy <jekhor@gmail.com>
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>> ---
->>>>  drivers/acpi/x86/utils.c | 4 ----
->>>>  1 file changed, 4 deletions(-)
->>>>
->>>> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
->>>> index cb988f9b23a1..bfcb76888ca7 100644
->>>> --- a/drivers/acpi/x86/utils.c
->>>> +++ b/drivers/acpi/x86/utils.c
->>>> @@ -54,10 +54,6 @@ static const struct always_present_id always_present_ids[] = {
->>>>       ENTRY("80860F09", "1", X86_MATCH(ATOM_SILVERMONT), {}),
->>>>       ENTRY("80862288", "1", X86_MATCH(ATOM_AIRMONT), {}),
->>>>
->>>> -     /* Lenovo Yoga Book uses PWM2 for keyboard backlight control */
->>>> -     ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
->>>> -                     DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X9"),
->>>> -             }),
->>>>       /* The Xiaomi Mi Pad 2 uses PWM2 for touchkeys backlight control */
->>>>       ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
->>>>               DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
->>>> --
+>>> So I'll have a look at these and if they look good, we can do that
+>>> instead of the problematic commit in 5.17.
 >>
->> Applied as 5.16-rc2 material, thanks!
+>> I'm a bit confused now, if the problematic commit is going to get
+>> reversed then technically we don't need this series anymore ?
 > 
-> I've decided to make this change in 5.17.
+> That's correct.
+> 
+>> Or are you planning on re-introducing it in some form for 5.17 ?
+> 
+> I have been considering this.
+> 
+>> With that said getting this series merged would still be good,
+>> patch 1 + 2 make the existing always_present quirk code more generic
+>> which might be useful later. And then patch 3 (which is small)
+>> allows dropping some ugliness from the sdhci-acpi.c code since
+>> the DSDT bug we are hitting will now be solved by the
+>> new acpi-dev-status-override mechanism.
+> 
+> OK, so this would be applicable for 5.17, but a couple of changelogs
+> need to be updated if I'm not mistaken.
+> 
+> Can you please do that and resend the series?
 
-That is fine, the WMI driver won't land before then anyways.
-
-> It would be good to put the patch under a different subject too,
-> because the way it is may confuse someone to regard it as a fix.
-
-Ack, I will send a v2 with a commit msg which makes it less likely
-this gets picked into a stable series.
-
-Note if it does end up in a stable series that is fine too, there
-were plans to use the LPSS PWM driver to driver the kbd backlight
-but those were never fulfilled so the ACPI PWM device getting
-its default _STA return of 0 back on older kernels will not
-matter.
+I will update some of the commit messages and send a v2 tomorrow.
 
 Regards,
 
