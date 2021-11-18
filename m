@@ -2,172 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E4C24562BC
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Nov 2021 19:43:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4DB94562F6
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Nov 2021 19:54:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232470AbhKRSqe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Nov 2021 13:46:34 -0500
-Received: from mail-oi1-f177.google.com ([209.85.167.177]:39782 "EHLO
-        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231204AbhKRSqd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Nov 2021 13:46:33 -0500
-Received: by mail-oi1-f177.google.com with SMTP id bf8so16266819oib.6;
-        Thu, 18 Nov 2021 10:43:33 -0800 (PST)
+        id S229675AbhKRS5N (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Nov 2021 13:57:13 -0500
+Received: from mail-oo1-f42.google.com ([209.85.161.42]:42771 "EHLO
+        mail-oo1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229600AbhKRS5M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Nov 2021 13:57:12 -0500
+Received: by mail-oo1-f42.google.com with SMTP id x1-20020a4aea01000000b002c296d82604so2780508ood.9
+        for <linux-acpi@vger.kernel.org>; Thu, 18 Nov 2021 10:54:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=1kySb+QlzVqZ4BCjNqmHk4U4EiQ858nhVYzzDU2WDzg=;
-        b=XOoTptNYp9xM/gc0VKPFK1XlsSI6x+R5rxwhMtpuD8nWqPKTraibCIkVTCTQD1Am0w
-         kOrxf9y4YMIs1k65hs4qquaFiK43jgb4Ffe5QJbuuaYdnvdXqa6qj0cOfDjHh0kyBxQh
-         qQgSz7XdgChrvN5cupHVp/F963h16fHj+kCE/pM2OYMRLpVrlgBBA/pzIwzfl7WcAG8Y
-         E9BOfZER7OqI/xO2LneA2s6/OT/wx95opi1fV08/QuJx0+LNwL4IoCawD/7i1nEV+B4Z
-         leEmAfu0tLm/lNtEPI75TcbhANQOLefDDpv3b7hftauy1Jkc0JOv2or5dXxZtmVf7NNh
-         IPnQ==
-X-Gm-Message-State: AOAM533K/F5Zb7KyhaSfPOpWIBqO2+3ax1qf9ttjgLkg06sfxSZhx30i
-        cClMNCU80TEzwfVEaHs1YRU+N7FZX5LUYAn3YoJBeWk8
-X-Google-Smtp-Source: ABdhPJxU59+TqoM8WODxZUXubxZrIjJPnq0V0VNlKJPKi0GdLphbKEvsNJOeS5hHQdXL27kFtyTQ+GOO1VqnJUbHMvk=
-X-Received: by 2002:a05:6808:14c3:: with SMTP id f3mr9724324oiw.51.1637261013150;
- Thu, 18 Nov 2021 10:43:33 -0800 (PST)
+        bh=Rlxy5otINB7xlUSxP6ufLVDm5w5+ImHBI0jJCQCoei8=;
+        b=f88+lQKSYQYcWSUPVMq7Yqtuof+o3lw9QR6amLKkkjIBdE6TU3OXdjFRtGb8XzU4+r
+         BxThicWqTRYf962yBrvrBu6HVj8lfkaiKxQ5zDRynjUl0HMb0hN1cRK8k+UBSo32lF62
+         MQzdcVIC9GZIiRhwU+sefs8ohwzQXxUvoen5Tfk1/loVy8oLHWNvpzI3YjyYCQn5AfS2
+         kZccQhcNngFhpVQO2PGJswrND/s2tWEJVjv6Aif0mMnF5QurTqz3gGdEa7XN/v/bD9Hs
+         XiMwLJvrRU0X0wQZdFhhwxJlj/Rw8trTazyDIEtCf37Wn4Onu/zNI7aoyQP3Muddp3lD
+         RkZQ==
+X-Gm-Message-State: AOAM530gdxLB7hOYKcWue1YCSdY3G4mHxcJfebaDiieMgK/gCELuMlae
+        lFPVaPQ5E2hlNLEZV3UoZ5XKIeRRclZ06msQDjY=
+X-Google-Smtp-Source: ABdhPJwJVQVbp4q9aADIR/FH44fjolR1L8aKAW04yuQfsXUwG0gyvVAE3EzOs2ZXw++UN+DWiZQdiktSChXMy3FkU/c=
+X-Received: by 2002:a4a:1d82:: with SMTP id 124mr14123048oog.91.1637261652023;
+ Thu, 18 Nov 2021 10:54:12 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1635953446.git.yu.c.chen@intel.com> <68d1c452bbf7f742793cb39ebb66f6b4ba6a3fb3.1635953446.git.yu.c.chen@intel.com>
- <CAJZ5v0gKu3JtCGThZKx87rQJeW+xK=ZkSD47kaP+N8Qr8Pq-Tw@mail.gmail.com> <20211118161120.GA884221@chenyu-desktop>
-In-Reply-To: <20211118161120.GA884221@chenyu-desktop>
+References: <20211113135206.5384-1-hdegoede@redhat.com> <YZABGfarFQoxpf1R@jeknote.loshitsa1.net>
+ <CAJZ5v0gcJ_Ke6Ppw78Qv9n_Pws20+YBPJX8j0Pa_U=OLHmELfA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gcJ_Ke6Ppw78Qv9n_Pws20+YBPJX8j0Pa_U=OLHmELfA@mail.gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 18 Nov 2021 19:43:22 +0100
-Message-ID: <CAJZ5v0hGrvg9Jo=QoMbSV19bmK-8npxj6-3GMP14cdoCbhUgnQ@mail.gmail.com>
-Subject: Re: [PATCH v8 1/4] efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
- and corresponding structures
-To:     Chen Yu <yu.c.chen@intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Aubrey Li <aubrey.li@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Thu, 18 Nov 2021 19:54:01 +0100
+Message-ID: <CAJZ5v0iufQMJgybSxfek13+034LuyYpj51ybD-Ke0kj4zRa4MQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / x86: Revert: Make PWM2 device always present at
+ Lenovo Yoga Book
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Yauhen Kharuzhy <jekhor@gmail.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 18, 2021 at 5:21 PM Chen Yu <yu.c.chen@intel.com> wrote:
+On Tue, Nov 16, 2021 at 8:25 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> Hi Rafael,
-> On Thu, Nov 18, 2021 at 04:49:35PM +0100, Rafael J. Wysocki wrote:
-> > On Wed, Nov 3, 2021 at 4:44 PM Chen Yu <yu.c.chen@intel.com> wrote:
+> On Sat, Nov 13, 2021 at 7:17 PM Yauhen Kharuzhy <jekhor@gmail.com> wrote:
+> >
+> > On Sat, Nov 13, 2021 at 02:52:06PM +0100, Hans de Goede wrote:
+> > > It turns out that there is a WMI object which controls the PWM2 device
+> > > used for the keyboard backlight and that WMI object also provides some
+> > > other useful functionality.
 > > >
-> > > Platform Firmware Runtime Update image starts with UEFI headers, and the
-> > > headers are defined in UEFI specification, but some of them have not been
-> > > defined in the kernel yet.
+> > > The upcoming lenovo-yogabook-wmi driver will offer both backlight
+> > > control and the other functionality, so there no longer is a need
+> > > to have the lpss-pwm driver binding to PWM2 for backlight control;
+> > > and this is now actually undesirable because this will cause both
+> > > the WMI code and the lpss-pwm driver to poke at the same PWM
+> > > controller.
+> >
+> > Acked-by: Yauhen Kharuzhy <jekhor@gmail.com>
+> >
 > > >
-> > > For example, the header layout of a capsule file looks like this:
+> > > Revert commit ff6cdfd71495 ("ACPI / x86: Make PWM2 device always present
+> > > at Lenovo Yoga Book"), removing the always-present quirk for the PWM2
+> > > ACPI-device, so that the lpss-pwm controller will no longer bind to it.
 > > >
-> > > EFI_CAPSULE_HEADER
-> > > EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-> > > EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
-> > > EFI_FIRMWARE_IMAGE_AUTHENTICATION
-> > >
-> > > These structures would be used by the Platform Firmware Runtime Update
-> > > driver to parse the format of capsule file to verify if the corresponding
-> > > version number is valid.
-> >
-> > Why does the driver need to do that?
-> >
-> > The firmware will reject the update if the version is invalid anyway, won't it?
-> >
-> Yes, the firmware will reject the update if the version does not match. The motivation
-> of checking it in kernel before the firmware is mainly to deal with a corner case that,
-> if the user provides an invalid capsule image, the kernel could be used as a guard to
-> reject it, without switching to the MM update mode(which might be costly).
-
-OK, but it would be good to mention this somewhere, preferably in he
-changelog and maybe also in a comment next to the related code.
-
-> > > The EFI_CAPSULE_HEADER has been defined in the
-> > > kernel, however the rest are not, thus introduce corresponding UEFI
-> > > structures accordingly.
-> >
-> > I would change the above in the following way:
-> >
-> > "EFI_CAPSULE_HEADER has been defined in the kernel, but the other
-> > structures have not been defined yet, so do that."
-> >
-> Ok, will do.
-> > > Besides, EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
-> > > and EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER are required to be packed
-> > > in the uefi specification.
-> >
-> > > Ard has pointed out that, the __packed
-> > > attribute does indicate to the compiler that the entire thing can appear
-> > > misaligned in memory. So if one follows the other in the capsule header,
-> > > the __packed attribute may be appropriate to ensure that the second one
-> > > is not accessed using misaligned loads and stores.
-> >
-> > "For this reason, use the __packed attribute to indicate to the
-> > compiler that the entire structure can appear misaligned in memory (as
-> > suggested by Ard) in case one of them follows the other directly in a
-> > capsule header."
-> >
-> Ok, will do.
-> > >
-> > > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> > > Cc: Yauhen Kharuzhy <jekhor@gmail.com>
+> > > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > > > ---
-> > > v8: Use efi_guid_t instead of guid_t. (Andy Shevchenko)
-> > > v7: Use __packed instead of pragma pack(1). (Greg Kroah-Hartman, Ard Biesheuve)
-> > > v6: No change since v5.
-> > > v5: No change since v4.
-> > > v4: Revise the commit log to make it more clear. (Rafael J. Wysocki)
-> > > ---
-> > >  include/linux/efi.h | 46 +++++++++++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 46 insertions(+)
+> > >  drivers/acpi/x86/utils.c | 4 ----
+> > >  1 file changed, 4 deletions(-)
 > > >
-> > > diff --git a/include/linux/efi.h b/include/linux/efi.h
-> > > index 6b5d36babfcc..1ec73c5ab6c9 100644
-> > > --- a/include/linux/efi.h
-> > > +++ b/include/linux/efi.h
-> > > @@ -148,6 +148,52 @@ typedef struct {
-> > >         u32 imagesize;
-> > >  } efi_capsule_header_t;
+> > > diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+> > > index cb988f9b23a1..bfcb76888ca7 100644
+> > > --- a/drivers/acpi/x86/utils.c
+> > > +++ b/drivers/acpi/x86/utils.c
+> > > @@ -54,10 +54,6 @@ static const struct always_present_id always_present_ids[] = {
+> > >       ENTRY("80860F09", "1", X86_MATCH(ATOM_SILVERMONT), {}),
+> > >       ENTRY("80862288", "1", X86_MATCH(ATOM_AIRMONT), {}),
 > > >
-> > > +/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER */
-> > > +struct efi_manage_capsule_header {
-> > > +       u32 ver;
-> > > +       u16 emb_drv_cnt;
-> > > +       u16 payload_cnt;
-> > > +       /*
-> > > +        * Variable array indicated by number of
-> > > +        * (emb_drv_cnt + payload_cnt)
-> >
-> > * Variable-size array of the size given by the sum of
-> > * emb_drv_cnt and payload_cnt.
-> >
-> Ok, will change it.
-> > > +        */
-> > > +       u64 offset_list[];
-> > > +} __packed;
-> > > +
-> > > +/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER */
-> > > +struct efi_manage_capsule_image_header {
-> > > +       u32 ver;
-> > > +       efi_guid_t image_type_id;
-> > > +       u8 image_index;
-> > > +       u8 reserved_bytes[3];
-> > > +       u32 image_size;
-> > > +       u32 vendor_code_size;
-> > > +       /* ver = 2. */
-> >
-> > What does this mean?
-> >
-> > > +       u64 hw_ins;
-> > > +       /* ver = v3. */
-> >
-> > And same here?
-> >
-> The hw_ins was introduced in version 2, and capsule_support
-> was introduced in version 3 of the capsule image format.
-> I'll revise the comment in next version.
+> > > -     /* Lenovo Yoga Book uses PWM2 for keyboard backlight control */
+> > > -     ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
+> > > -                     DMI_MATCH(DMI_PRODUCT_NAME, "Lenovo YB1-X9"),
+> > > -             }),
+> > >       /* The Xiaomi Mi Pad 2 uses PWM2 for touchkeys backlight control */
+> > >       ENTRY("80862289", "2", X86_MATCH(ATOM_AIRMONT), {
+> > >               DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
+> > > --
+>
+> Applied as 5.16-rc2 material, thanks!
 
-Please do.
+I've decided to make this change in 5.17.
+
+It would be good to put the patch under a different subject too,
+because the way it is may confuse someone to regard it as a fix.
