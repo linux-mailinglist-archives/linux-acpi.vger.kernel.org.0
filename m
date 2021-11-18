@@ -2,65 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB95C455A6E
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Nov 2021 12:31:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 910AB455BA4
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Nov 2021 13:43:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343998AbhKRLdp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 18 Nov 2021 06:33:45 -0500
-Received: from mga11.intel.com ([192.55.52.93]:56980 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1343900AbhKRLbV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 18 Nov 2021 06:31:21 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10171"; a="231650762"
-X-IronPort-AV: E=Sophos;i="5.87,244,1631602800"; 
-   d="scan'208";a="231650762"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2021 03:28:11 -0800
-X-IronPort-AV: E=Sophos;i="5.87,244,1631602800"; 
-   d="scan'208";a="505572339"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2021 03:28:09 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1mnfaE-0088PW-UP;
-        Thu, 18 Nov 2021 13:28:02 +0200
-Date:   Thu, 18 Nov 2021 13:28:02 +0200
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Yauhen Kharuzhy <jekhor@gmail.com>
-Subject: Re: [PATCH v2 3/3] pinctrl: cherryview: Ignore INT33FF UID 5 ACPI
- device
-Message-ID: <YZY4wj5AHhzFSwdD@smile.fi.intel.com>
-References: <20211118105650.207638-1-hdegoede@redhat.com>
- <20211118105650.207638-3-hdegoede@redhat.com>
+        id S1344748AbhKRMqA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 18 Nov 2021 07:46:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46956 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344756AbhKRMpi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 18 Nov 2021 07:45:38 -0500
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93970C061764
+        for <linux-acpi@vger.kernel.org>; Thu, 18 Nov 2021 04:42:38 -0800 (PST)
+Received: by mail-qk1-x736.google.com with SMTP id m192so1679598qke.2
+        for <linux-acpi@vger.kernel.org>; Thu, 18 Nov 2021 04:42:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=JdAg58blrT6ArecUliYiA4kwOqopT+o2qm7XnvI/ms8=;
+        b=WuU+Q3trvqkx5RRdqT6oMSI95p9rWadxx3iNt/nFFTzNNt7qS6ipZfqwnsD5t2v1Gn
+         dA0R7k4F3nmCASJIfPNtv+jzn1auK1TBjYDxLRHsvzz0jnuUdAdaBNhkMQ6ZQTQEEdQY
+         8omeuLer1la4Bn5z5ZiQvvf4YsO1zSaZJkBD/qOS5Aez4ZCHPyubrMyRFRiWBL4ywn1I
+         DzIAVGg5Fh9oDWGsJTWMIZgrRPqwT9fJVCkTMREJNMSHUB81J86bsbWTszGT8hua8xq7
+         r1zQZz4wKiBpPlMSOZsbX0lYiNZluhSRXpYbQE/DfQxp/OssXW5oaG9LHu0WuUTFyese
+         rpCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=JdAg58blrT6ArecUliYiA4kwOqopT+o2qm7XnvI/ms8=;
+        b=UNvS3C4wN8qpSDPYh46ggiYIhsl6bdIWI73WzyodgNgJerNF+jB7ijnkCnvojgn6OL
+         Zd6h4LvwU7lneEcd25O4Uj4zl6FRR6uZ28gvq6qgSIzFGCgkUcB3ynTOa8+jP2f2S6M6
+         bk8HYNk8cVDU5tNZ9StzaFWmzvBvDCeejRV28Tt4dmpNVFefhikLT01tZeSyCG7vm+m5
+         ygrY9NWiH7iUt5QPnaeq5kD7xoKdOHeWQcGv/Rt7wS6KDwtnzOOOI/QBaGYLPyhyrz55
+         xCkGs6Eh6Nox3NMqZRJ4maoF3pUHboPu4thO79Jl2PFB1HzuUAgicSOcpgba4Gi9j3uZ
+         wgLA==
+X-Gm-Message-State: AOAM531uD0fiU3StgdR1rfpDSl8AKW8XhaxAsuinsevwYa5zjL7P1hUA
+        Yav3KuhV1UVlxPCdjPreCRSmF1SsG6ss5MpzT1bj9r51EFdvEA==
+X-Google-Smtp-Source: ABdhPJzUxl420axGRUuAUl458XxHok/MCW1Cb33mKEcSPuBPt7apXjtyuMVEcUvJxhYKQDlsav3M2wYtxGElsdDk4QM=
+X-Received: by 2002:a05:620a:414a:: with SMTP id k10mr20455470qko.502.1637239357555;
+ Thu, 18 Nov 2021 04:42:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211118105650.207638-3-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From:   Ian Kumlien <ian.kumlien@gmail.com>
+Date:   Thu, 18 Nov 2021 13:42:26 +0100
+Message-ID: <CAA85sZtYVGpvTHBwH6LErQqmEvOZFaKtR2xgFWNcbfTXUau2pQ@mail.gmail.com>
+Subject: HP Elitebook 840 G5 - acpi failure
+To:     linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 18, 2021 at 11:56:50AM +0100, Hans de Goede wrote:
-> Many Cherry Trail DSDTs have an extra INT33FF device with UID 5,
-> the intel_pinctrl_get_soc_data() call will fail for this extra
-> unknown UID, leading to the following error in dmesg:
-> 
->  cherryview-pinctrl: probe of INT33FF:04 failed with error -61
-> 
-> Add a check for this extra UID and return -ENODEV for it to
-> silence this false-positive error message.
+Hi,
 
-Hmm... Interesting. Why do they have it?
-Give me some time to check this...
+I started updating kernels to 5.14 a while ago and the laptop kept
+deadlocking, it's my work laptop so it's quite locked down wrt bios
+and bios updates....
 
--- 
-With Best Regards,
-Andy Shevchenko
+But, i have since tried with 5.15.2 and it still crashes...
 
+So the little testing i have is:
+acpi=off -> works
+acpi=ht -> *boom*
 
+5.13.x did work however and i know there was updates wrt to acpi in 5.14
+
+Older kernel oops can be found here:
+https://photos.app.goo.gl/ZygV5Ja39C7cQCR39
+
+I'd basically just want to know what kind of information can I provide
+to help you to find and fix this issue?
