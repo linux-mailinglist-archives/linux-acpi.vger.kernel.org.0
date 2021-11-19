@@ -2,163 +2,188 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF454571F4
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Nov 2021 16:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1730B45723A
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Nov 2021 16:58:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230525AbhKSPsh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Nov 2021 10:48:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48836 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229936AbhKSPsh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Nov 2021 10:48:37 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F2FEC061574;
-        Fri, 19 Nov 2021 07:45:35 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id t26so45033463lfk.9;
-        Fri, 19 Nov 2021 07:45:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc:content-transfer-encoding;
-        bh=H5DNf1Om0RwN3xbCK02EXPW+4a49S0Mj+o5dz3hW1Ao=;
-        b=jgFeD6KHlr8fc/qBe69bLZyZid40UQIXlYu7QjNSAPKFWeThwOkK4rw8SW6nGU2HC7
-         h41Bl2nc6bcd8VFm2tQQcIKDiXWjJP1Fj6ulg9ECJUCjd36QqSTJHWZtRSsEypg0TYmo
-         9RqE2KiPJzlGYTLvOvFmX/TwtHR5kCbnpJf3pyZ415bwlWXWWWB4CAmQNEanSEdCtwnp
-         w1GaDfnicEFtO/Bo8PBdVm6rHJ33iuUweSY3h43xaQTM66GmoArVXJaK36ipyVX6sInZ
-         nyhls+omGqpGE2oID+XT1IPMzcG+nu8mBdqPCZ2FwgtJO/2Y20LuPZ20fEI10gWdpWai
-         ZYgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc:content-transfer-encoding;
-        bh=H5DNf1Om0RwN3xbCK02EXPW+4a49S0Mj+o5dz3hW1Ao=;
-        b=RRP51P4pzkkCw2OAZPHDSZuqA59EUAhGMRg85AHaXRr6CtLTBwaDqPQQtAF80undp6
-         SnHZThlCZCLEVOoRAOyjc0pSyp+MYxu1vgRq92Pb6OXRdCqegwfqIM+igY1VxfWreDim
-         F6MiQa+eex08JpDrThIJ7UmJTFHuZYSMuEvEuYkPUet1NlHbGUWaX9wVz6Q5TsB9xmiS
-         c9wLG97yRCZm7FVX/4fhvn6n/6tbXJghWsXPHs4oqKfgBYBK4sO+W9U6LNz8Sg7uNcgb
-         asxzp15gjd9L4lg+/7XyqSnSwwK1Y0P6Pz6AOzgCVmwCeb3C2lSgRi6LBf7rP2ch7X4Y
-         gpEw==
-X-Gm-Message-State: AOAM5315cGPt8AjYiEhAWxUr5E6DpUl3hhF/0JdXFdJHNAafFezj3hHq
-        xQ9U2AbfwTcSW2IgmV642H6nq7ASsKlI5h2mkiI=
-X-Google-Smtp-Source: ABdhPJw3+LsGrV6BE/PJnSU0eWWwjMN//P6rVmixx+B5xJdk+hOh+foW7PN1rErwhpVqxuHtpaiySXy/VuoVMi3TPlc=
-X-Received: by 2002:a05:6512:114a:: with SMTP id m10mr34357387lfg.188.1637336733476;
- Fri, 19 Nov 2021 07:45:33 -0800 (PST)
+        id S234617AbhKSQBH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Nov 2021 11:01:07 -0500
+Received: from mout.kundenserver.de ([212.227.126.135]:43863 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233489AbhKSQBH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Nov 2021 11:01:07 -0500
+Received: from mail-wr1-f45.google.com ([209.85.221.45]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1M42zo-1mo6H531ns-0000FQ; Fri, 19 Nov 2021 16:58:03 +0100
+Received: by mail-wr1-f45.google.com with SMTP id r8so18888104wra.7;
+        Fri, 19 Nov 2021 07:58:03 -0800 (PST)
+X-Gm-Message-State: AOAM532mhDjdtvu6c6ToTliwYZng/8gDigytuaK+QoyyX1WgYdrj7nq5
+        tT+R5WMVTX5SxHhnzgAScBM7NiMsAxY9ovH+G8Q=
+X-Google-Smtp-Source: ABdhPJwnsTso3SJsyzelpHMk45ZnrIpUGUkP3Z97jucoO4GjyflpBdZvuKfoRBo685VC8w89e5cIDe6TdYLQkVPBgCM=
+X-Received: by 2002:adf:efc6:: with SMTP id i6mr8808061wrp.428.1637337483020;
+ Fri, 19 Nov 2021 07:58:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20211114170335.66994-1-hdegoede@redhat.com> <20211114170335.66994-19-hdegoede@redhat.com>
- <f84e2060-f6b7-64f9-78cd-e8ad8776ab2d@gmail.com> <662623cd-c70b-63e6-499e-7c24b5d3e342@redhat.com>
-In-Reply-To: <662623cd-c70b-63e6-499e-7c24b5d3e342@redhat.com>
-Reply-To: cwchoi00@gmail.com
-From:   Chanwoo Choi <cwchoi00@gmail.com>
-Date:   Sat, 20 Nov 2021 00:44:56 +0900
-Message-ID: <CAGTfZH1ndMc902R+wJXM+q+4fSJQD+RZVxaWcMvut4+9oSzqnw@mail.gmail.com>
-Subject: Re: [PATCH v2 18/20] extcon: intel-cht-wc: Refactor cht_wc_extcon_get_charger()
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-efi@vger.kernel.org
+References: <20211119113644.1600-1-alx.manpages@gmail.com> <CAK8P3a0qT9tAxFkLN_vJYRcocDW2TcBq79WcYKZFyAG0udZx5Q@mail.gmail.com>
+ <434296d3-8fe1-f1d2-ee9d-ea25d6c4e43e@gmail.com>
+In-Reply-To: <434296d3-8fe1-f1d2-ee9d-ea25d6c4e43e@gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 19 Nov 2021 16:57:46 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2yVXw9gf8-BNvX_rzectNoiy0MqGKvBcXydiUSrc_fCA@mail.gmail.com>
+Message-ID: <CAK8P3a2yVXw9gf8-BNvX_rzectNoiy0MqGKvBcXydiUSrc_fCA@mail.gmail.com>
+Subject: Re: [PATCH 00/17] Add memberof(), split some headers, and slightly
+ simplify code
+To:     "Alejandro Colomar (man-pages)" <alx.manpages@gmail.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, LKML <linux-kernel@vger.kernel.org>,
+        Ajit Khaparde <ajit.khaparde@broadcom.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Borislav Petkov <bp@suse.de>,
+        Corey Minyard <cminyard@mvista.com>, Chris Mason <clm@fb.com>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        David Sterba <dsterba@suse.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Jitendra Bhivare <jitendra.bhivare@broadcom.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        "John S . Gruber" <JohnSGruber@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        Kees Cook <keescook@chromium.org>,
+        Ketan Mukadam <ketan.mukadam@broadcom.com>,
+        Len Brown <lenb@kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
+        Subbu Seetharaman <subbu.seetharaman@broadcom.com>,
+        Intel Graphics <intel-gfx@lists.freedesktop.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-btrfs <linux-btrfs@vger.kernel.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        "open list:DRM DRIVER FOR QEMU'S CIRRUS DEVICE" 
+        <virtualization@lists.linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Y/JjwNjDwd/Q0+diMms58NLy9JY4EB9LGPrp/6JP0lk1hDVVgRw
+ JCE0Ex5UBNbAAg67jcURPyD4IubROn6TXvXmVxG94DTEmNqyr7JjIEeE1XkKRr/7kfNyoLh
+ jXXpthUqT1dr0yh9xfD2raQjMjwuCxSpUAEyGgTEagaX2QZ5t4WEDLzWbWdWZXZR/eCOLsA
+ HoSFiyawE2pP8REfWS+jg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Vf+MpytySlc=:u0G9LLNolDhAJ7j2PFAMBU
+ T6p69vmJQ4U9DqYVupBe7fs9YXstBnGm/v/sz+Cp/4L+mU4U0oZGrj2JwClfryQ2UsOiWs1l5
+ 6KKCNEWHxhq1wLNivg8zuwR5nublGr73jhscZY/xC0zSszWx0b7yWvpmGSUOqi7tqGvEpx7BG
+ f9xLxxrL5zjZRHCDcRi7buNM8KJnOYQG79k1a8HGWXnnOs6IiR754JPo75bLdewSqJ5L9SyjA
+ auBikGOp43f+lhYpOXljsu1L9aN67o3qu1FVT6OxRmObSaHh9/4leZlzD6QH0y//c5KkEKrKe
+ bqVVMcOTv6P3ObWrpPjTWE2uXb6oAyRwnIPPKBAbT8y9LDFoaN95TvgmFUH0+kscEgbvVBx1w
+ 9o/ifi7tNiFc750grxdJn0NpQVRUtc9KqPt+wzw1cHTFAV7BnjxJZCcZm9GoQ8FZBYwPaMrF5
+ DWlyu+Z5eMUA0swwjNoAw6rwCvECZe4D0kden2NxFRVqy1/iWq4hYiKTB5sqShQo2SqELr6v6
+ LDlgNVw5eRqizMQp22K5/0P7itSXJUFP82t/qVhsA4EDmM62Owb1OplnBQ4mL3NY+cEO+yT5+
+ n7/BSRn1S6528EXUQS/kxBBwz2OKiRxcHrcxRaRDHQfiFYZhWigPPL963KNVZR7wN29jWQiIv
+ /FDCLjJbGOdIlVl4rD0cGtRftij2qa+/ElWBLHFlggTpfUbTmQrCDmbKGhOgDX0oXhWjst+3D
+ mdsbQJ3+ru9CgTcV7RRoI9Mg1mCo873z4rWhh9P9UMidKkVVK7JkVax6Wa0hyDdNpdO6lbe+o
+ ilR/jBtZSV8xkpFo5eyLLX/8L13BSLtO1KFg1PH+kj4PhcKzMVUYCzoiVpwwks21ym4xUDQTp
+ c19/D3EAg9Zip6vea0fg==
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Fri, Nov 19, 2021 at 4:06 PM Alejandro Colomar (man-pages)
+<alx.manpages@gmail.com> wrote:
+> On 11/19/21 15:47, Arnd Bergmann wrote:
+> > On Fri, Nov 19, 2021 at 12:36 PM Alejandro Colomar
+>
+> Yes, I would like to untangle the dependencies.
+>
+> The main reason I started doing this splitting
+> is because I wouldn't be able to include
+> <linux/stddef.h> in some headers,
+> because it pulled too much stuff that broke unrelated things.
+>
+> So that's why I started from there.
+>
+> I for example would like to get NULL in memberof()
+> without puling anything else,
+> so <linux/NULL.h> makes sense for that.
+>
+> It's clear that every .c wants NULL,
+> but it's not so clear that every .c wants
+> everything that <linux/stddef.h> pulls indirectly.
 
-On Thu, Nov 18, 2021 at 7:31 AM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 11/17/21 08:15, Chanwoo Choi wrote:
-> > Hello,
-> >
-> > I think that you need to squash it with patch21
-> > I'm not sure that this patch is either atomic or not because
-> > you remove the 'return EXTCON_CHG_USB_SDP/EXTCON_CHG_USB_SDP'
-> > without explaining why it is no problem. Just mention that
-> > pass the role to next 'switch' cases. But, before this change,
-> > there were any reason to return the type of charger cable
-> > before switch statement.
->
-> The setting of usbsrc to "CHT_WC_USBSRC_TYPE_SDP << CHT_WC_USBSRC_TYPE_SH=
-IFT"
-> will make the following switch-case return EXTCON_CHG_USB_SDP
-> just as before, so there is no functional change.
->
-> > According to your patch description, you don't need
-> > to make the separate patch of it. Please squash it with patch21.
->
-> Having this refactoring in a separate patch makes it easier
-> to see what is going on in patch 21. So I'm going to keep this
-> as a separate patch for v3 of this series.
+From what I can tell, linux/stddef.h is tiny, I don't think it's really
+worth optimizing this part. I have spent some time last year
+trying to untangle some of the more interesting headers, but ended
+up not completing this as there are some really hard problems
+once you start getting to the interesting bits.
 
-If you want to keep this  patch, please remove the following description.
-Instead, just mention to focus on refactor it without behavior changes.
+The approach I tried was roughly:
 
-'This is a preparation patch for adding support for registering
-a power_supply class device.'
+- For each header in the kernel, create a preprocessed version
+  that includes all the indirect includes, from that start a set
+  of lookup tables that record which header is eventually included
+  by which ones, and the size of each preprocessed header in
+  bytes
 
+- For a given kernel configuration (e.g. defconfig or allmodconfig)
+  that I'm most interested in, look at which files are built, and what
+  the direct includes are in the source files.
+
+- Sort the headers by the product of the number of direct includes
+  and the preprocessed size: the largest ones are those that are
+  worth looking at first.
+
+- use graphviz to visualize the directed graph showing the includes
+  between the top 100 headers in that list. You get something like
+  I had in [1], or the version afterwards at [2].
+
+- split out unneeded indirect includes from the headers in the center
+  of that graph, typically by splitting out struct definitions.
+
+- repeat.
+
+The main problem with this approach is that as soon as you start
+actually reducing the unneeded indirect includes, you end up with
+countless .c files that no longer build because they are missing a
+direct include for something that was always included somewhere
+deep underneath, so I needed a second set of scripts to add
+direct includes to every .c file.
+
+On the plus side, I did see something on the order of a 30%
+compile speed improvement with clang, which is insane
+given that this only removed dead definitions.
+
+> But I'll note that linux/fs.h, linux/sched.h, linux/mm.h are
+> interesting headers for further splitting.
 >
 >
-> > On 21. 11. 15. =EC=98=A4=EC=A0=84 2:03, Hans de Goede wrote:
-> >> Refactor cht_wc_extcon_get_charger() to have all the returns are in
-> >> the "switch (usbsrc)" cases.
-> >>
-> >> This is a preparation patch for adding support for registering
-> >> a power_supply class device.
-> >>
-> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> >> ---
-> >>   drivers/extcon/extcon-intel-cht-wc.c | 15 ++++++++-------
-> >>   1 file changed, 8 insertions(+), 7 deletions(-)
-> >>
-> >> diff --git a/drivers/extcon/extcon-intel-cht-wc.c b/drivers/extcon/ext=
-con-intel-cht-wc.c
-> >> index 119b83793123..f2b93a99a625 100644
-> >> --- a/drivers/extcon/extcon-intel-cht-wc.c
-> >> +++ b/drivers/extcon/extcon-intel-cht-wc.c
-> >> @@ -153,14 +153,15 @@ static int cht_wc_extcon_get_charger(struct cht_=
-wc_extcon_data *ext,
-> >>       } while (time_before(jiffies, timeout));
-> >>         if (status !=3D CHT_WC_USBSRC_STS_SUCCESS) {
-> >> -        if (ignore_errors)
-> >> -            return EXTCON_CHG_USB_SDP; /* Save fallback */
-> >> +        if (!ignore_errors) {
-> >> +            if (status =3D=3D CHT_WC_USBSRC_STS_FAIL)
-> >> +                dev_warn(ext->dev, "Could not detect charger type\n")=
-;
-> >> +            else
-> >> +                dev_warn(ext->dev, "Timeout detecting charger type\n"=
-);
-> >> +        }
-> >>   -        if (status =3D=3D CHT_WC_USBSRC_STS_FAIL)
-> >> -            dev_warn(ext->dev, "Could not detect charger type\n");
-> >> -        else
-> >> -            dev_warn(ext->dev, "Timeout detecting charger type\n");
-> >> -        return EXTCON_CHG_USB_SDP; /* Save fallback */
-> >> +        /* Save fallback */
-> >> +        usbsrc =3D CHT_WC_USBSRC_TYPE_SDP << CHT_WC_USBSRC_TYPE_SHIFT=
-;
-> >>       }
-> >>         usbsrc =3D (usbsrc & CHT_WC_USBSRC_TYPE_MASK) >> CHT_WC_USBSRC=
-_TYPE_SHIFT;
-> >>
-> >
-> >
+> BTW, I also have a longstanding doubt about
+> how header files are organized in the kernel,
+> and which headers can and cannot be included
+> from which other files.
 >
+> For example I see that files in samples or scripts or tools,
+> that redefine many things such as offsetof() or ARRAY_SIZE(),
+> and I don't know if there's a good reason for that,
+> or if I should simply remove all that stuff and
+> include <linux/offsetof.h> everywhere I see offsetof() being used.
 
+The main issue here is that user space code should not
+include anything outside of include/uapi/ and arch/*/include/uapi/
 
---=20
-Best Regards,
-Chanwoo Choi
+offsetof() is defined in include/linux/stddef.h, so this is by
+definition not accessible here. It appears that there is also
+an include/uapi/linux/stddef.h that is really strange because
+it includes linux/compiler_types.h, which in turn is outside
+of uapi/. This should probably be fixed.
+
+      Arnd
+
+[1] https://drive.google.com/file/d/14IKifYDadg2W5fMsefxr4373jizo9bLl/view?usp=sharing
+[2] https://drive.google.com/file/d/1pWQcv3_ZXGqZB8ogV-JOfoV-WJN2UNnd/view?usp=sharing
