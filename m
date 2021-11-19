@@ -2,74 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 862EC45998C
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 02:16:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E39F2459CD7
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 08:39:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231292AbhKWBTN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Nov 2021 20:19:13 -0500
-Received: from mga05.intel.com ([192.55.52.43]:63681 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230366AbhKWBTN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 22 Nov 2021 20:19:13 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10176"; a="321155316"
-X-IronPort-AV: E=Sophos;i="5.87,256,1631602800"; 
-   d="scan'208";a="321155316"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2021 17:16:04 -0800
-X-IronPort-AV: E=Sophos;i="5.87,256,1631602800"; 
-   d="scan'208";a="509203594"
-Received: from chenyu-desktop.sh.intel.com (HELO chenyu-desktop) ([10.239.158.186])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2021 17:16:01 -0800
-Date:   Tue, 23 Nov 2021 09:15:06 +0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc:     linux-acpi@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
-        Robert Moore <robert.moore@intel.com>
-Subject: Re: [PATCH v11 4/4] tools: Introduce power/acpi/tools/pfru
-Message-ID: <20211123011506.GA994503@chenyu-desktop>
-References: <cover.1637505679.git.yu.c.chen@intel.com>
- <a1f688cd4ade1257e96d13c91eba72a1aeef5d59.1637505679.git.yu.c.chen@intel.com>
- <YZt+VPI2n/MED9O6@smile.fi.intel.com>
- <20211122154842.GA10345@chenyu5-mobl1>
- <YZvQ7iZMJ9nZgh2+@smile.fi.intel.com>
+        id S234159AbhKWHmJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Nov 2021 02:42:09 -0500
+Received: from mx08-00227901.pphosted.com ([91.207.212.184]:37342 "EHLO
+        mx08-00227901.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234151AbhKWHmI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 23 Nov 2021 02:42:08 -0500
+Received: from pps.filterd (m0097674.ppops.net [127.0.0.1])
+        by mx08-.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AJ7wixd018132;
+        Fri, 19 Nov 2021 10:27:11 +0100
+Received: from zbw2k16ex01.bardusch.net ([185.80.186.174])
+        by mx08-.pphosted.com (PPS) with ESMTPS id 3cdmdm1455-4
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Fri, 19 Nov 2021 10:27:11 +0100
+Received: from zbw2k16ex02.bardusch.net (172.25.1.2) by
+ ZBW2K16EX01.bardusch.net (172.25.1.1) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.1.2308.20;
+ Fri, 19 Nov 2021 10:27:10 +0100
+Received: from User (172.25.1.131) by zbw2k16ex02.bardusch.net (172.25.1.2)
+ with Microsoft SMTP Server id 15.1.2308.20 via Frontend Transport; Fri, 19
+ Nov 2021 10:26:59 +0100
+Reply-To: <josechoondak@gmail.com>
+From:   Joseph Choondak <info@ndd.co.mz>
+Subject: I hope this email finds you well.
+Date:   Fri, 19 Nov 2021 01:27:13 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YZvQ7iZMJ9nZgh2+@smile.fi.intel.com>
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <2c858747-1993-42c1-86cf-0a16986254d6@zbw2k16ex02.bardusch.net>
+To:     Undisclosed recipients:;
+X-Proofpoint-GUID: H1-C8yVFIlo9TfbBCSa6JwWkSpDbpByg
+X-Proofpoint-ORIG-GUID: H1-C8yVFIlo9TfbBCSa6JwWkSpDbpByg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-19_08,2021-11-17_01,2020-04-07_01
+X-Proofpoint-Spam-Reason: orgsafe
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Nov 22, 2021 at 07:18:38PM +0200, Andy Shevchenko wrote:
-> On Mon, Nov 22, 2021 at 11:48:42PM +0800, Chen Yu wrote:
-> > On Mon, Nov 22, 2021 at 01:26:12PM +0200, Andy Shevchenko wrote:
-> > > On Sun, Nov 21, 2021 at 11:17:29PM +0800, Chen Yu wrote:
-> > > > Introduce a user space tool to make use of the interface exposed by
-> > > > Platform Firmware Runtime Update and Telemetry drivers. The users
-> > > > can use this tool to do firmware code injection, driver update and
-> > > > to retrieve the telemetry data.
-> > > 
-> > > Have you tried to build tools with `make O=/my/tmp/folder/for/kernel/build ...`
-> > > which previously has been used for kernel builds?
-> > >
-> > I was not aware of that and just had a try. It seems that there is an issue in
-> > tools/power/acpi that, only with the following patch appiled, the make O=xxx
-> > would work:
-> 
-> Cool!
-> Care to send a separate fix for this, please?
->
-Ok, will do.
+May I please ask with considerable urgency for your kind assistance with the following matter.
+I'm a financial person, I think  I have something huge you might be interested in.
 
-thanks,
-Chenyu 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+Looking forward to hearing from you.
+
+
+Respectfully!!
+Joseph Choondak
+Account Executive.
