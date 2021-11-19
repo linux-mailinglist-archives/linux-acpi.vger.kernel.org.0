@@ -2,152 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86F7A4571BD
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Nov 2021 16:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFF454571F4
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Nov 2021 16:45:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232249AbhKSPlx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Nov 2021 10:41:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47148 "EHLO
+        id S230525AbhKSPsh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 19 Nov 2021 10:48:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231563AbhKSPlx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Nov 2021 10:41:53 -0500
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 172BEC061574;
-        Fri, 19 Nov 2021 07:38:51 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id b184-20020a1c1bc1000000b0033140bf8dd5so7799761wmb.5;
-        Fri, 19 Nov 2021 07:38:51 -0800 (PST)
+        with ESMTP id S229936AbhKSPsh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 19 Nov 2021 10:48:37 -0500
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F2FEC061574;
+        Fri, 19 Nov 2021 07:45:35 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id t26so45033463lfk.9;
+        Fri, 19 Nov 2021 07:45:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=AFmWJJSoUz1GaSVge39mjbycrDT+hCXLvixsJ9Vd/mM=;
-        b=ODBGo6Iv/FduaI9j0vjuZl2NIBuAxnbGU2bcovlrBdrVJzhUS8rZrJbsWWThxKF4YM
-         2piqpAuwsNCJaU29VFoQO7tYp0p/gz57fLRCb6NKGAYpsf7vZMEwatmAL2pakRYrkGS3
-         5CyApPlAsK96e4LS/ADUfaZIM6u9y3xUyqMhnbblZWK2zi7mqI87xxyPxJjl4cr+/jre
-         TLKuGOqq84YkD9L4lOHMJstQssFNG/qb6pVtF5F1cB7J9M9uCr9cT69YM7CQNz4GtnWJ
-         HylPvDX49+FriE9yIj2XYmJ+i5Fb1PUieUloxr46vjRuxiOg6D7glHMfGbWoTqqKniMy
-         hK7A==
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc:content-transfer-encoding;
+        bh=H5DNf1Om0RwN3xbCK02EXPW+4a49S0Mj+o5dz3hW1Ao=;
+        b=jgFeD6KHlr8fc/qBe69bLZyZid40UQIXlYu7QjNSAPKFWeThwOkK4rw8SW6nGU2HC7
+         h41Bl2nc6bcd8VFm2tQQcIKDiXWjJP1Fj6ulg9ECJUCjd36QqSTJHWZtRSsEypg0TYmo
+         9RqE2KiPJzlGYTLvOvFmX/TwtHR5kCbnpJf3pyZ415bwlWXWWWB4CAmQNEanSEdCtwnp
+         w1GaDfnicEFtO/Bo8PBdVm6rHJ33iuUweSY3h43xaQTM66GmoArVXJaK36ipyVX6sInZ
+         nyhls+omGqpGE2oID+XT1IPMzcG+nu8mBdqPCZ2FwgtJO/2Y20LuPZ20fEI10gWdpWai
+         ZYgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=AFmWJJSoUz1GaSVge39mjbycrDT+hCXLvixsJ9Vd/mM=;
-        b=6yRJw7p2Om+pPTZzMZJ8Fg1Lxel3+uHdqloONQTsABoQgzWQRLdN61lsB2dO9/YBmw
-         7+dAmKUbJxcnN47xduxm7Tzb4HxrmQ578xBtDxBmruCNGFooerrb2EOiKP60CYXT9fBS
-         hem2ec373L8SdIYISR1dDv/Wf7GKbIrwKQrcHx8TBzui3oQKo5Tm9BBEOY04iV/EwbO5
-         4raOUGh4Nau3fSLwQzAIxn4zMeC5uCGzEquZrvueyGNTxBrRebbAqeGipHw0g4Ho8f+3
-         Tmanp6zZwWCqHIveznLyeyxoft8XblCdqfOxG1hMZjBtQnxnjslLXU/zStZu8T0fwWeC
-         nIRA==
-X-Gm-Message-State: AOAM530OwdnZHrSY7YlzgTDz1mOHeK5z9tYRVTXNkWhajB6B/BSccZ7H
-        tb1a/+bhIFlAFKpDOv4vz5I=
-X-Google-Smtp-Source: ABdhPJyzLCj+QPqjCFbp0MdNnUqJ9A2TJYw2WJIoMils7KWBN9n8betYgJkYA9Hvx/wFV4EI5SabHA==
-X-Received: by 2002:a1c:790d:: with SMTP id l13mr641345wme.101.1637336329656;
-        Fri, 19 Nov 2021 07:38:49 -0800 (PST)
-Received: from [192.168.0.160] ([170.253.36.171])
-        by smtp.gmail.com with ESMTPSA id g18sm15729789wmq.4.2021.11.19.07.38.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Nov 2021 07:38:49 -0800 (PST)
-Message-ID: <f1a90f53-060e-2960-3926-e30b44a1be28@gmail.com>
-Date:   Fri, 19 Nov 2021 16:38:46 +0100
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc:content-transfer-encoding;
+        bh=H5DNf1Om0RwN3xbCK02EXPW+4a49S0Mj+o5dz3hW1Ao=;
+        b=RRP51P4pzkkCw2OAZPHDSZuqA59EUAhGMRg85AHaXRr6CtLTBwaDqPQQtAF80undp6
+         SnHZThlCZCLEVOoRAOyjc0pSyp+MYxu1vgRq92Pb6OXRdCqegwfqIM+igY1VxfWreDim
+         F6MiQa+eex08JpDrThIJ7UmJTFHuZYSMuEvEuYkPUet1NlHbGUWaX9wVz6Q5TsB9xmiS
+         c9wLG97yRCZm7FVX/4fhvn6n/6tbXJghWsXPHs4oqKfgBYBK4sO+W9U6LNz8Sg7uNcgb
+         asxzp15gjd9L4lg+/7XyqSnSwwK1Y0P6Pz6AOzgCVmwCeb3C2lSgRi6LBf7rP2ch7X4Y
+         gpEw==
+X-Gm-Message-State: AOAM5315cGPt8AjYiEhAWxUr5E6DpUl3hhF/0JdXFdJHNAafFezj3hHq
+        xQ9U2AbfwTcSW2IgmV642H6nq7ASsKlI5h2mkiI=
+X-Google-Smtp-Source: ABdhPJw3+LsGrV6BE/PJnSU0eWWwjMN//P6rVmixx+B5xJdk+hOh+foW7PN1rErwhpVqxuHtpaiySXy/VuoVMi3TPlc=
+X-Received: by 2002:a05:6512:114a:: with SMTP id m10mr34357387lfg.188.1637336733476;
+ Fri, 19 Nov 2021 07:45:33 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH 00/17] Add memberof(), split some headers, and slightly
- simplify code
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, LKML <linux-kernel@vger.kernel.org>,
-        Ajit Khaparde <ajit.khaparde@broadcom.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Borislav Petkov <bp@suse.de>,
-        Corey Minyard <cminyard@mvista.com>, Chris Mason <clm@fb.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        David Sterba <dsterba@suse.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Jitendra Bhivare <jitendra.bhivare@broadcom.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        "John S . Gruber" <JohnSGruber@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Kees Cook <keescook@chromium.org>,
-        Ketan Mukadam <ketan.mukadam@broadcom.com>,
-        Len Brown <lenb@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Somnath Kotur <somnath.kotur@broadcom.com>,
-        Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
-        Subbu Seetharaman <subbu.seetharaman@broadcom.com>,
-        intel-gfx@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-btrfs@vger.kernel.org,
-        linux-scsi@vger.kernel.org, netdev@vger.kernel.org,
-        virtualization@lists.linux-foundation.org
-References: <20211119113644.1600-1-alx.manpages@gmail.com>
- <CAK8P3a0qT9tAxFkLN_vJYRcocDW2TcBq79WcYKZFyAG0udZx5Q@mail.gmail.com>
- <434296d3-8fe1-f1d2-ee9d-ea25d6c4e43e@gmail.com>
- <YZfEHZa3f5MXeqoH@smile.fi.intel.com>
-From:   "Alejandro Colomar (man-pages)" <alx.manpages@gmail.com>
-In-Reply-To: <YZfEHZa3f5MXeqoH@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20211114170335.66994-1-hdegoede@redhat.com> <20211114170335.66994-19-hdegoede@redhat.com>
+ <f84e2060-f6b7-64f9-78cd-e8ad8776ab2d@gmail.com> <662623cd-c70b-63e6-499e-7c24b5d3e342@redhat.com>
+In-Reply-To: <662623cd-c70b-63e6-499e-7c24b5d3e342@redhat.com>
+Reply-To: cwchoi00@gmail.com
+From:   Chanwoo Choi <cwchoi00@gmail.com>
+Date:   Sat, 20 Nov 2021 00:44:56 +0900
+Message-ID: <CAGTfZH1ndMc902R+wJXM+q+4fSJQD+RZVxaWcMvut4+9oSzqnw@mail.gmail.com>
+Subject: Re: [PATCH v2 18/20] extcon: intel-cht-wc: Refactor cht_wc_extcon_get_charger()
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Andy,
+Hi,
 
-On 11/19/21 16:34, Andy Shevchenko wrote:
-> On Fri, Nov 19, 2021 at 04:06:27PM +0100, Alejandro Colomar (man-pages) wrote:
->> Yes, I would like to untangle the dependencies.
->>
->> The main reason I started doing this splitting
->> is because I wouldn't be able to include
->> <linux/stddef.h> in some headers,
->> because it pulled too much stuff that broke unrelated things.
->>
->> So that's why I started from there.
->>
->> I for example would like to get NULL in memberof()
->> without puling anything else,
->> so <linux/NULL.h> makes sense for that.
-> 
-> I don't believe that the code that uses NULL won't include types.h.
-
-I'm not sure about the error I got (I didn't write it down),
-but I got a compilation error.
-That's why I split NULL.
-
-If one could anwer my doubt,
-I would be in better position to learn how to avoid them.
-See below.
-
-On 11/19/21 16:06, Alejandro Colomar (man-pages) wrote:
-> BTW, I also have a longstanding doubt about
-> how header files are organized in the kernel,
-> and which headers can and cannot be included
-> from which other files.
+On Thu, Nov 18, 2021 at 7:31 AM Hans de Goede <hdegoede@redhat.com> wrote:
 >
-> For example I see that files in samples or scripts or tools,
-> that redefine many things such as offsetof() or ARRAY_SIZE(),
-> and I don't know if there's a good reason for that,
-> or if I should simply remove all that stuff and
-> include <linux/offsetof.h> everywhere I see offsetof() being used.
+> Hi,
+>
+> On 11/17/21 08:15, Chanwoo Choi wrote:
+> > Hello,
+> >
+> > I think that you need to squash it with patch21
+> > I'm not sure that this patch is either atomic or not because
+> > you remove the 'return EXTCON_CHG_USB_SDP/EXTCON_CHG_USB_SDP'
+> > without explaining why it is no problem. Just mention that
+> > pass the role to next 'switch' cases. But, before this change,
+> > there were any reason to return the type of charger cable
+> > before switch statement.
+>
+> The setting of usbsrc to "CHT_WC_USBSRC_TYPE_SDP << CHT_WC_USBSRC_TYPE_SH=
+IFT"
+> will make the following switch-case return EXTCON_CHG_USB_SDP
+> just as before, so there is no functional change.
+>
+> > According to your patch description, you don't need
+> > to make the separate patch of it. Please squash it with patch21.
+>
+> Having this refactoring in a separate patch makes it easier
+> to see what is going on in patch 21. So I'm going to keep this
+> as a separate patch for v3 of this series.
 
-Thanks,
-Alex
+If you want to keep this  patch, please remove the following description.
+Instead, just mention to focus on refactor it without behavior changes.
+
+'This is a preparation patch for adding support for registering
+a power_supply class device.'
+
+>
+>
+> > On 21. 11. 15. =EC=98=A4=EC=A0=84 2:03, Hans de Goede wrote:
+> >> Refactor cht_wc_extcon_get_charger() to have all the returns are in
+> >> the "switch (usbsrc)" cases.
+> >>
+> >> This is a preparation patch for adding support for registering
+> >> a power_supply class device.
+> >>
+> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> >> ---
+> >>   drivers/extcon/extcon-intel-cht-wc.c | 15 ++++++++-------
+> >>   1 file changed, 8 insertions(+), 7 deletions(-)
+> >>
+> >> diff --git a/drivers/extcon/extcon-intel-cht-wc.c b/drivers/extcon/ext=
+con-intel-cht-wc.c
+> >> index 119b83793123..f2b93a99a625 100644
+> >> --- a/drivers/extcon/extcon-intel-cht-wc.c
+> >> +++ b/drivers/extcon/extcon-intel-cht-wc.c
+> >> @@ -153,14 +153,15 @@ static int cht_wc_extcon_get_charger(struct cht_=
+wc_extcon_data *ext,
+> >>       } while (time_before(jiffies, timeout));
+> >>         if (status !=3D CHT_WC_USBSRC_STS_SUCCESS) {
+> >> -        if (ignore_errors)
+> >> -            return EXTCON_CHG_USB_SDP; /* Save fallback */
+> >> +        if (!ignore_errors) {
+> >> +            if (status =3D=3D CHT_WC_USBSRC_STS_FAIL)
+> >> +                dev_warn(ext->dev, "Could not detect charger type\n")=
+;
+> >> +            else
+> >> +                dev_warn(ext->dev, "Timeout detecting charger type\n"=
+);
+> >> +        }
+> >>   -        if (status =3D=3D CHT_WC_USBSRC_STS_FAIL)
+> >> -            dev_warn(ext->dev, "Could not detect charger type\n");
+> >> -        else
+> >> -            dev_warn(ext->dev, "Timeout detecting charger type\n");
+> >> -        return EXTCON_CHG_USB_SDP; /* Save fallback */
+> >> +        /* Save fallback */
+> >> +        usbsrc =3D CHT_WC_USBSRC_TYPE_SDP << CHT_WC_USBSRC_TYPE_SHIFT=
+;
+> >>       }
+> >>         usbsrc =3D (usbsrc & CHT_WC_USBSRC_TYPE_MASK) >> CHT_WC_USBSRC=
+_TYPE_SHIFT;
+> >>
+> >
+> >
+>
 
 
-
--- 
-Alejandro Colomar
-Linux man-pages comaintainer; https://www.kernel.org/doc/man-pages/
-http://www.alejandro-colomar.es/
+--=20
+Best Regards,
+Chanwoo Choi
