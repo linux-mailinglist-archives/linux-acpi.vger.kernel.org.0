@@ -2,68 +2,302 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 795B9457DF8
-	for <lists+linux-acpi@lfdr.de>; Sat, 20 Nov 2021 13:32:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17767457F9B
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Nov 2021 17:49:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237546AbhKTMfi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 20 Nov 2021 07:35:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42180 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237524AbhKTMfh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 20 Nov 2021 07:35:37 -0500
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36028C061759
-        for <linux-acpi@vger.kernel.org>; Sat, 20 Nov 2021 04:32:34 -0800 (PST)
-Received: by mail-wr1-x42e.google.com with SMTP id t30so23017435wra.10
-        for <linux-acpi@vger.kernel.org>; Sat, 20 Nov 2021 04:32:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=w2dLnl5hsLVKZTBAdcVFnDnMtM7+guW1LU+8LG4nir0=;
-        b=cQ4sa0RLmxPwPFn1iQHtDPNnu3wxt85tlCuJmDnpCjgmGMxx8i/oateruVYQAvti5I
-         A5qE92dvGm+x1YP+CbK5Tq5OhtXE6vNimcHv6le77OfesyWmtCYZNXHE5+IG0f8L2bT0
-         Lci51QRfH33/4FHSDCeiE4klj7YMLnup6Z9AxKwmd8q2vBCk3OtwmaYj1bSnn6G8m6GQ
-         mxOZ3RS8pA3iEAA55aU8/EBq9h3Po0DLytgYovDVsFfbT36OHdQaUGwPLJ3lG01hFOha
-         WpkBpT9gzq2iO8UbGhiS6xFhyGI26B7QXEWnQJX1hxeVH8W2rTVUYcpRy/W1U7h8dL8Y
-         peJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=w2dLnl5hsLVKZTBAdcVFnDnMtM7+guW1LU+8LG4nir0=;
-        b=Piw64R++KqTjR5MxaVxRDvRWb8sRyS3xHJHaTQkHN68NBNAUwMUZWrA9z6fGMrPkJt
-         HuyPxlq5f30V50HGoRaYm3cWde6MqFSvRA4J+XfiuaSIxn9FVKYmCaMj8sFgxagm8zzA
-         go4f32bd7s1W8kUAxQ4afJQ8cgZv6nCqKZGDInENDhHpHZoV3Do9ejeifTyf8nuy7zbR
-         An0oIyfvSyyjr3TVDfaAbOas7c0CVCrnlTQFtfwu+wrv0AWVvGMVcuxyzrU48Lwfvd+r
-         hnEIn5QqehdcRKNvG+c//Xt0QkUKPDQIT6YKtpNBRvReok9YkRle6FZ82UmAdudtK4zW
-         MIbQ==
-X-Gm-Message-State: AOAM5312xXxg0d3vC/fBtUEt7bWss7W0/BwanaA7AyYbBv2knUZrgeMR
-        jYXM3t3TAd24Dui5soUnX4ctOKtAJ4Vb8UPfwKw=
-X-Google-Smtp-Source: ABdhPJx6LRHkcC/2nzZUXHHyWAv8qwOLcVanyMaZO5SAGCaEWZSePdj6KgMnXbsAIfz8H/8CWMAmDV2d6TwcaPqmMOI=
-X-Received: by 2002:a05:6000:144a:: with SMTP id v10mr18155356wrx.315.1637411552709;
- Sat, 20 Nov 2021 04:32:32 -0800 (PST)
+        id S231142AbhKTQwT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 20 Nov 2021 11:52:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35982 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230507AbhKTQwT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 20 Nov 2021 11:52:19 -0500
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C48CF600D4;
+        Sat, 20 Nov 2021 16:49:12 +0000 (UTC)
+Date:   Sat, 20 Nov 2021 16:54:05 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     <linux-kernel@vger.kernel.org>, <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, <git@xilinx.com>,
+        <michal.simek@xilinx.com>, <gregkh@linuxfoundation.org>,
+        <rafael@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <andriy.shevchenko@linux.intel.com>,
+        <heikki.krogerus@linux.intel.com>,
+        Manish Narani <manish.narani@xilinx.com>
+Subject: Re: [PATCH v10 3/5] iio: adc: Add Xilinx AMS driver
+Message-ID: <20211120165345.53de0d51@jic23-huawei>
+In-Reply-To: <20211117161028.11775-4-anand.ashok.dumbre@xilinx.com>
+References: <20211117161028.11775-1-anand.ashok.dumbre@xilinx.com>
+        <20211117161028.11775-4-anand.ashok.dumbre@xilinx.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 2002:adf:f989:0:0:0:0:0 with HTTP; Sat, 20 Nov 2021 04:32:32
- -0800 (PST)
-Reply-To: mitchellvivian01@gamil.com
-From:   Mitchell Vivian <duplanmartine36@gmail.com>
-Date:   Sat, 20 Nov 2021 12:32:32 +0000
-Message-ID: <CAO-XXH5BAMnqsibuyWBB1vSqWFvEU_Fm4N1zBDf2pLptoHQP0A@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello
+On Wed, 17 Nov 2021 16:10:26 +0000
+Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com> wrote:
 
-My name is Miss Vivian Mitchell. I want to donate my fund $ 4.5
-million USD to you on a charity name to help the poor People.
+> The AMS includes an ADC as well as on-chip sensors that can be used to
+> sample external voltages and monitor on-die operating conditions, such
+> as temperature and supply voltage levels. The AMS has two SYSMON blocks.
+> PL-SYSMON block is capable of monitoring off chip voltage and
+> temperature.
+> 
+> PL-SYSMON block has DRP, JTAG and I2C interface to enable monitoring
+> from an external master. Out of these interfaces currently only DRP is
+> supported. Other block PS-SYSMON is memory mapped to PS.
+> 
+> The AMS can use internal channels to monitor voltage and temperature as
+> well as one primary and up to 16 auxiliary channels for measuring
+> external voltages.
+> 
+> The voltage and temperature monitoring channels also have event capability
+> which allows to generate an interrupt when their value falls below or
+> raises above a set threshold.
+> 
+> Co-developed-by: Manish Narani <manish.narani@xilinx.com>
+> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
+> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
 
-As soon as I read from you I will give you more details on how to
-achieve this goal and get this fund transferred into your bank
-account.
+A few minor additions from me to what Andy has noted.
 
-Thanks have a nice day,
-Miss.vivian
+Thanks,
+
+Jonathan
+
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index d3f53549720c..4a8f1833993b 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -115,4 +115,5 @@ obj-$(CONFIG_VF610_ADC) += vf610_adc.o
+>  obj-$(CONFIG_VIPERBOARD_ADC) += viperboard_adc.o
+>  xilinx-xadc-y := xilinx-xadc-core.o xilinx-xadc-events.o
+>  obj-$(CONFIG_XILINX_XADC) += xilinx-xadc.o
+> +obj-$(CONFIG_XILINX_AMS) += xilinx-ams.o
+>  obj-$(CONFIG_SD_ADC_MODULATOR) += sd_adc_modulator.o
+> diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+> new file mode 100644
+> index 000000000000..bb3876b51e3e
+> --- /dev/null
+> +++ b/drivers/iio/adc/xilinx-ams.c
+> @@ -0,0 +1,1447 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Xilinx AMS driver
+> + *
+> + *  Copyright (C) 2021 Xilinx, Inc.
+> + *
+> + *  Manish Narani <mnarani@xilinx.com>
+> + *  Rajnikant Bhojani <rajnikant.bhojani@xilinx.com>
+> + */
+> +
+> +#include <linux/bits.h>
+> +#include <linux/clk.h>
+> +#include <linux/delay.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/io.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/overflow.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/property.h>
+> +#include <linux/slab.h>
+> +
+> +#include <linux/iio/events.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+Used?
+> +
+
+...
+
+> +/**
+> + * struct ams - Driver data for xilinx-ams
+> + * @base: physical base address of device
+> + * @ps_base: physical base address of PS device
+> + * @pl_base: physical base address of PL device
+> + * @clk: clocks associated with the device
+> + * @dev: pointer to device struct
+> + * @lock: to handle multiple user interaction
+> + * @intr_lock: to protect interrupt mask values
+> + * @alarm_mask: alarm configuration
+> + * @masked_alarm: currently masked due to alarm
+> + * @intr_mask: interrupt configuration
+> + * @ams_unmask_work: re-enables event once the event condition disappears
+> + *
+> + * This structure contains necessary state for Sysmon driver to operate
+> + */
+> +struct ams {
+> +	void __iomem *base;
+> +	void __iomem *ps_base;
+> +	void __iomem *pl_base;
+> +	struct clk *clk;
+> +	struct device *dev;
+> +	struct mutex lock;
+> +	spinlock_t intr_lock;
+> +	unsigned int alarm_mask;
+> +	unsigned int masked_alarm;
+
+Hmm. maybe a rename to make these two less confusing?
+Perhaps
+current_masked_alarm?
+
+> +	u64 intr_mask;
+> +	struct delayed_work ams_unmask_work;
+> +};
+> +
+
+
+...
+
+
+> +
+> +static void ams_handle_event(struct iio_dev *indio_dev, u32 event)
+> +{
+> +	const struct iio_chan_spec *chan;
+> +
+> +	chan = ams_event_to_channel(indio_dev, event);
+> +
+> +	if (chan->type == IIO_TEMP) {
+> +		/*
+> +		 * The temperature channel only supports over-temperature
+> +		 * events.
+> +		 */
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(chan->type, chan->channel,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_RISING),
+> +			iio_get_time_ns(indio_dev));
+> +	} else {
+> +		/*
+> +		 * For other channels we don't know whether it is a upper or
+> +		 * lower threshold event. Userspace will have to check the
+> +		 * channel value if it wants to know.
+> +		 */
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(chan->type, chan->channel,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_EITHER),
+> +			iio_get_time_ns(indio_dev));
+
+I think alignment is wrong here. iio_get_time_ns() should align with opening bracket as well.
+
+> +	}
+> +}
+> +
+
+...
+
+> +
+> +static int ams_parse_firmware(struct iio_dev *indio_dev,
+> +			      struct platform_device *pdev)
+> +{
+> +	struct ams *ams = iio_priv(indio_dev);
+> +	struct iio_chan_spec *ams_channels, *dev_channels;
+> +	struct fwnode_handle *child = NULL, *fwnode = dev_fwnode(&pdev->dev);
+
+Where you have values being set, I'd prefer separate line per variable.
+Tends to be a little more readable and we need all the help we can get :)
+
+> +	size_t dev_chan_size, ams_chan_size, num_chan;
+> +	int ret, ch_cnt = 0, i, rising_off, falling_off;
+> +	unsigned int num_channels = 0;
+> +
+
+One blank line is almost always enough. Definitely is here.
+
+> +
+> +	num_chan = ARRAY_SIZE(ams_ps_channels) + ARRAY_SIZE(ams_pl_channels) +
+> +		ARRAY_SIZE(ams_ctrl_channels);
+> +
+> +	ams_chan_size = array_size(num_chan, sizeof(struct iio_chan_spec));
+> +	if (ams_chan_size == SIZE_MAX)
+> +		return -EINVAL;
+> +
+> +	/* Initialize buffer for channel specification */
+> +	ams_channels = kcalloc(num_chan, sizeof(struct iio_chan_spec), GFP_KERNEL);
+> +	if (!ams_channels)
+> +		return -ENOMEM;
+> +
+> +	if (fwnode_device_is_available(fwnode)) {
+> +		ret = ams_init_module(indio_dev, fwnode, ams_channels);
+> +		if (ret < 0)
+> +			goto free_mem;
+> +
+> +		num_channels += ret;
+> +	}
+> +
+> +	fwnode_for_each_child_node(fwnode, child) {
+> +		if (fwnode_device_is_available(child)) {
+> +			ret = ams_init_module(indio_dev, child,
+> +					      ams_channels + num_channels);
+> +			if (ret < 0) {
+> +				fwnode_handle_put(child);
+> +				goto free_mem;
+> +			}
+> +
+> +			num_channels += ret;
+> +		}
+> +	}
+> +
+> +	for (i = 0; i < num_channels; i++) {
+> +		ams_channels[i].channel = ch_cnt++;
+> +
+> +		if (ams_channels[i].scan_index < AMS_CTRL_SEQ_BASE) {
+> +			/* set threshold to max and min for each channel */
+> +			falling_off =
+> +				ams_get_alarm_offset(ams_channels[i].scan_index,
+> +						     IIO_EV_DIR_FALLING);
+> +			rising_off =
+> +				ams_get_alarm_offset(ams_channels[i].scan_index,
+> +						     IIO_EV_DIR_RISING);
+> +			if (ams_channels[i].scan_index >= AMS_PS_SEQ_MAX) {
+> +				writel(AMS_ALARM_THR_MIN,
+> +				       ams->pl_base + falling_off);
+> +				writel(AMS_ALARM_THR_MAX,
+> +				       ams->pl_base + rising_off);
+> +			} else {
+> +				writel(AMS_ALARM_THR_MIN,
+> +				       ams->ps_base + falling_off);
+> +				writel(AMS_ALARM_THR_MAX,
+> +				       ams->ps_base + rising_off);
+> +			}
+> +		}
+> +	}
+> +
+> +	dev_chan_size = array_size((size_t)num_channels, sizeof(struct iio_chan_spec));
+> +	if (dev_chan_size == SIZE_MAX)
+
+Why not goto free_mem for this error case?
+Obviously should never happen, but should handle the error anyway.
+
+> +		return -EINVAL;
+> +
+> +	dev_channels = devm_kcalloc(&pdev->dev, (size_t)num_channels,
+> +				    sizeof(struct iio_chan_spec), GFP_KERNEL);
+> +	if (!dev_channels) {
+> +		ret = -ENOMEM;
+> +		goto free_mem;
+> +	}
+> +
+> +	memcpy(dev_channels, ams_channels,
+> +	       sizeof(*ams_channels) * num_channels);
+> +	indio_dev->channels = dev_channels;
+> +	indio_dev->num_channels = num_channels;
+> +
+> +	ret = 0;
+> +
+> +free_mem:
+> +	kfree(ams_channels);
+> +
+> +	return ret;
+> +}
+
+
