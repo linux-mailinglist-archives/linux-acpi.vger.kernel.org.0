@@ -2,108 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64839457333
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Nov 2021 17:38:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 795B9457DF8
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Nov 2021 13:32:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236543AbhKSQlO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 19 Nov 2021 11:41:14 -0500
-Received: from mga02.intel.com ([134.134.136.20]:44020 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235289AbhKSQlN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 19 Nov 2021 11:41:13 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10172"; a="221662535"
-X-IronPort-AV: E=Sophos;i="5.87,248,1631602800"; 
-   d="scan'208";a="221662535"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2021 08:38:11 -0800
-X-IronPort-AV: E=Sophos;i="5.87,248,1631602800"; 
-   d="scan'208";a="537156505"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2021 08:38:02 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mo6te-008atg-H8;
-        Fri, 19 Nov 2021 18:37:54 +0200
-Date:   Fri, 19 Nov 2021 18:37:54 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Alejandro Colomar (man-pages)" <alx.manpages@gmail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, LKML <linux-kernel@vger.kernel.org>,
-        Ajit Khaparde <ajit.khaparde@broadcom.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Borislav Petkov <bp@suse.de>,
-        Corey Minyard <cminyard@mvista.com>, Chris Mason <clm@fb.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        David Sterba <dsterba@suse.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Jitendra Bhivare <jitendra.bhivare@broadcom.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        "John S . Gruber" <JohnSGruber@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Kees Cook <keescook@chromium.org>,
-        Ketan Mukadam <ketan.mukadam@broadcom.com>,
-        Len Brown <lenb@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Somnath Kotur <somnath.kotur@broadcom.com>,
-        Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
-        Subbu Seetharaman <subbu.seetharaman@broadcom.com>,
-        Intel Graphics <intel-gfx@lists.freedesktop.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-btrfs <linux-btrfs@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        "open list:DRM DRIVER FOR QEMU'S CIRRUS DEVICE" 
-        <virtualization@lists.linux-foundation.org>
-Subject: Re: [PATCH 00/17] Add memberof(), split some headers, and slightly
- simplify code
-Message-ID: <YZfS4lCt8rMZ7UlS@smile.fi.intel.com>
-References: <20211119113644.1600-1-alx.manpages@gmail.com>
- <CAK8P3a0qT9tAxFkLN_vJYRcocDW2TcBq79WcYKZFyAG0udZx5Q@mail.gmail.com>
- <434296d3-8fe1-f1d2-ee9d-ea25d6c4e43e@gmail.com>
- <CAK8P3a2yVXw9gf8-BNvX_rzectNoiy0MqGKvBcXydiUSrc_fCA@mail.gmail.com>
- <f751fb48-d19c-88af-452e-680994a586b4@gmail.com>
+        id S237546AbhKTMfi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 20 Nov 2021 07:35:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42180 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237524AbhKTMfh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 20 Nov 2021 07:35:37 -0500
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36028C061759
+        for <linux-acpi@vger.kernel.org>; Sat, 20 Nov 2021 04:32:34 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id t30so23017435wra.10
+        for <linux-acpi@vger.kernel.org>; Sat, 20 Nov 2021 04:32:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=w2dLnl5hsLVKZTBAdcVFnDnMtM7+guW1LU+8LG4nir0=;
+        b=cQ4sa0RLmxPwPFn1iQHtDPNnu3wxt85tlCuJmDnpCjgmGMxx8i/oateruVYQAvti5I
+         A5qE92dvGm+x1YP+CbK5Tq5OhtXE6vNimcHv6le77OfesyWmtCYZNXHE5+IG0f8L2bT0
+         Lci51QRfH33/4FHSDCeiE4klj7YMLnup6Z9AxKwmd8q2vBCk3OtwmaYj1bSnn6G8m6GQ
+         mxOZ3RS8pA3iEAA55aU8/EBq9h3Po0DLytgYovDVsFfbT36OHdQaUGwPLJ3lG01hFOha
+         WpkBpT9gzq2iO8UbGhiS6xFhyGI26B7QXEWnQJX1hxeVH8W2rTVUYcpRy/W1U7h8dL8Y
+         peJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=w2dLnl5hsLVKZTBAdcVFnDnMtM7+guW1LU+8LG4nir0=;
+        b=Piw64R++KqTjR5MxaVxRDvRWb8sRyS3xHJHaTQkHN68NBNAUwMUZWrA9z6fGMrPkJt
+         HuyPxlq5f30V50HGoRaYm3cWde6MqFSvRA4J+XfiuaSIxn9FVKYmCaMj8sFgxagm8zzA
+         go4f32bd7s1W8kUAxQ4afJQ8cgZv6nCqKZGDInENDhHpHZoV3Do9ejeifTyf8nuy7zbR
+         An0oIyfvSyyjr3TVDfaAbOas7c0CVCrnlTQFtfwu+wrv0AWVvGMVcuxyzrU48Lwfvd+r
+         hnEIn5QqehdcRKNvG+c//Xt0QkUKPDQIT6YKtpNBRvReok9YkRle6FZ82UmAdudtK4zW
+         MIbQ==
+X-Gm-Message-State: AOAM5312xXxg0d3vC/fBtUEt7bWss7W0/BwanaA7AyYbBv2knUZrgeMR
+        jYXM3t3TAd24Dui5soUnX4ctOKtAJ4Vb8UPfwKw=
+X-Google-Smtp-Source: ABdhPJx6LRHkcC/2nzZUXHHyWAv8qwOLcVanyMaZO5SAGCaEWZSePdj6KgMnXbsAIfz8H/8CWMAmDV2d6TwcaPqmMOI=
+X-Received: by 2002:a05:6000:144a:: with SMTP id v10mr18155356wrx.315.1637411552709;
+ Sat, 20 Nov 2021 04:32:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f751fb48-d19c-88af-452e-680994a586b4@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Received: by 2002:adf:f989:0:0:0:0:0 with HTTP; Sat, 20 Nov 2021 04:32:32
+ -0800 (PST)
+Reply-To: mitchellvivian01@gamil.com
+From:   Mitchell Vivian <duplanmartine36@gmail.com>
+Date:   Sat, 20 Nov 2021 12:32:32 +0000
+Message-ID: <CAO-XXH5BAMnqsibuyWBB1vSqWFvEU_Fm4N1zBDf2pLptoHQP0A@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 19, 2021 at 05:12:19PM +0100, Alejandro Colomar (man-pages) wrote:
-> On 11/19/21 16:57, Arnd Bergmann wrote:
+Hello
 
-...
+My name is Miss Vivian Mitchell. I want to donate my fund $ 4.5
+million USD to you on a charity name to help the poor People.
 
-> > On the plus side, I did see something on the order of a 30%
-> > compile speed improvement with clang, which is insane
-> > given that this only removed dead definitions.
-> 
-> Huh!
-> 
-> I'd like to see the kernel some day
-> not having _any_ hidden dependencies.
+As soon as I read from you I will give you more details on how to
+achieve this goal and get this fund transferred into your bank
+account.
 
-It's neither feasible nor practical. If we know the hard dependencies between
-headers, why should we not use implicit inclusion?
-
-We all know that bitmap.h includes bitops.h and this is good and a must, why
-to avoid this?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thanks have a nice day,
+Miss.vivian
