@@ -2,117 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 204884593AD
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Nov 2021 18:06:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B39A4593DE
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Nov 2021 18:18:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238530AbhKVRJQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Nov 2021 12:09:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:36002 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238230AbhKVRJN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 22 Nov 2021 12:09:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637600766;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vnr5tG0rUVEEWNx4SJPka9TwAEv+9j7ye3+GCaD7zSM=;
-        b=UQQG5KdGZUSqKyHTibOI/xhHdqAP//0kjY2U79EqOLQCTl+lDPjMqmBs5LY3BqDG9NMQd8
-        oReXsKh4jyOl+CWJaxkXPDgKmBiYWGrIY+YR0ILoTyLvnVMTsQYM6Aoqayk55Kp06v/9S8
-        IFoESz2eI39x1VsZuukL/FlJj94C6pA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-583-CZ9U9YGYMGGXPyI2XwHwqA-1; Mon, 22 Nov 2021 12:06:02 -0500
-X-MC-Unique: CZ9U9YGYMGGXPyI2XwHwqA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6BC1710168C0;
-        Mon, 22 Nov 2021 17:06:01 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.192.226])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 02BCC5D6D5;
-        Mon, 22 Nov 2021 17:05:59 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, linux-mmc@vger.kernel.org
-Subject: [PATCH v2 7/7] mmc: sdhci-acpi: Use the new soc_intel_is_byt() helper
-Date:   Mon, 22 Nov 2021 18:05:36 +0100
-Message-Id: <20211122170536.7725-8-hdegoede@redhat.com>
-In-Reply-To: <20211122170536.7725-1-hdegoede@redhat.com>
-References: <20211122170536.7725-1-hdegoede@redhat.com>
+        id S233330AbhKVRVx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Nov 2021 12:21:53 -0500
+Received: from mga09.intel.com ([134.134.136.24]:18449 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232643AbhKVRVx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 22 Nov 2021 12:21:53 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10176"; a="234655406"
+X-IronPort-AV: E=Sophos;i="5.87,255,1631602800"; 
+   d="scan'208";a="234655406"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2021 09:18:46 -0800
+X-IronPort-AV: E=Sophos;i="5.87,255,1631602800"; 
+   d="scan'208";a="474419465"
+Received: from smile.fi.intel.com ([10.237.72.184])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2021 09:18:43 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1mpCxi-009X2b-VU;
+        Mon, 22 Nov 2021 19:18:38 +0200
+Date:   Mon, 22 Nov 2021 19:18:38 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Chen Yu <yu.c.chen@intel.com>
+Cc:     linux-acpi@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
+        Robert Moore <robert.moore@intel.com>
+Subject: Re: [PATCH v11 4/4] tools: Introduce power/acpi/tools/pfru
+Message-ID: <YZvQ7iZMJ9nZgh2+@smile.fi.intel.com>
+References: <cover.1637505679.git.yu.c.chen@intel.com>
+ <a1f688cd4ade1257e96d13c91eba72a1aeef5d59.1637505679.git.yu.c.chen@intel.com>
+ <YZt+VPI2n/MED9O6@smile.fi.intel.com>
+ <20211122154842.GA10345@chenyu5-mobl1>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211122154842.GA10345@chenyu5-mobl1>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Use the new soc_intel_is_byt() helper function from
-include/linux/platform_data/x86/soc.h .
+On Mon, Nov 22, 2021 at 11:48:42PM +0800, Chen Yu wrote:
+> On Mon, Nov 22, 2021 at 01:26:12PM +0200, Andy Shevchenko wrote:
+> > On Sun, Nov 21, 2021 at 11:17:29PM +0800, Chen Yu wrote:
+> > > Introduce a user space tool to make use of the interface exposed by
+> > > Platform Firmware Runtime Update and Telemetry drivers. The users
+> > > can use this tool to do firmware code injection, driver update and
+> > > to retrieve the telemetry data.
+> > 
+> > Have you tried to build tools with `make O=/my/tmp/folder/for/kernel/build ...`
+> > which previously has been used for kernel builds?
+> >
+> I was not aware of that and just had a try. It seems that there is an issue in
+> tools/power/acpi that, only with the following patch appiled, the make O=xxx
+> would work:
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Changes in v2:
-- No changes in v2 of this patch-series
----
- drivers/mmc/host/sdhci-acpi.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+Cool!
+Care to send a separate fix for this, please?
 
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
-index 1461aae13c19..c0350e9c03f3 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -31,8 +31,7 @@
- #include <linux/mmc/slot-gpio.h>
- 
- #ifdef CONFIG_X86
--#include <asm/cpu_device_id.h>
--#include <asm/intel-family.h>
-+#include <linux/platform_data/x86/soc.h>
- #include <asm/iosf_mbi.h>
- #endif
- 
-@@ -239,16 +238,6 @@ static const struct sdhci_acpi_chip sdhci_acpi_chip_int = {
- 
- #ifdef CONFIG_X86
- 
--static bool sdhci_acpi_byt(void)
--{
--	static const struct x86_cpu_id byt[] = {
--		X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT, NULL),
--		{}
--	};
--
--	return x86_match_cpu(byt);
--}
--
- #define BYT_IOSF_SCCEP			0x63
- #define BYT_IOSF_OCP_NETCTRL0		0x1078
- #define BYT_IOSF_OCP_TIMEOUT_BASE	GENMASK(10, 8)
-@@ -257,7 +246,7 @@ static void sdhci_acpi_byt_setting(struct device *dev)
- {
- 	u32 val = 0;
- 
--	if (!sdhci_acpi_byt())
-+	if (!soc_intel_is_byt())
- 		return;
- 
- 	if (iosf_mbi_read(BYT_IOSF_SCCEP, MBI_CR_READ, BYT_IOSF_OCP_NETCTRL0,
-@@ -282,7 +271,7 @@ static void sdhci_acpi_byt_setting(struct device *dev)
- 
- static bool sdhci_acpi_byt_defer(struct device *dev)
- {
--	if (!sdhci_acpi_byt())
-+	if (!soc_intel_is_byt())
- 		return false;
- 
- 	if (!iosf_mbi_available())
 -- 
-2.33.1
+With Best Regards,
+Andy Shevchenko
+
 
