@@ -2,223 +2,84 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADB3245A948
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 17:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1E5545A977
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 17:59:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232419AbhKWQzp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Nov 2021 11:55:45 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:52686 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229825AbhKWQzp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 23 Nov 2021 11:55:45 -0500
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 32B331FD58;
-        Tue, 23 Nov 2021 16:52:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1637686355; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=YAE9GMutJ4y4QSEVMvaF/1s6v5n7VJFmuzuv2HkXzkU=;
-        b=foDFfOERDf2ZANAXUgsXk7ltAXGsxPFbbc/bpg55D0X6G5X5YitFK0ZzE4p4ktlRbRbA7y
-        0P3tT0dhz1qwfO/TyXYl2nUBkLCBBLv76qyxARWgcEAVQt0ABApMAF7jCITWUOpwRrnZiL
-        jJn0Utfb+li45acqDlOClaGz0wAgD0U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1637686355;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=YAE9GMutJ4y4QSEVMvaF/1s6v5n7VJFmuzuv2HkXzkU=;
-        b=jWoC58AFYXJTjETKZY+8Ox7IfOg0MK5p0GVz1K9h/FB2O5L9CXTghK8gmtzNQkKbMqkjml
-        VjOETtdD2C751pDg==
-Received: from alsa1.suse.de (alsa1.suse.de [10.160.4.42])
-        by relay2.suse.de (Postfix) with ESMTP id B3DCFA3B8B;
-        Tue, 23 Nov 2021 16:52:34 +0000 (UTC)
-Date:   Tue, 23 Nov 2021 17:52:34 +0100
-Message-ID: <s5hzgpu95m5.wl-tiwai@suse.de>
-From:   Takashi Iwai <tiwai@suse.de>
-To:     Lucas Tanure <tanureal@opensource.cirrus.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        id S237500AbhKWRDA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Nov 2021 12:03:00 -0500
+Received: from mga02.intel.com ([134.134.136.20]:21909 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237505AbhKWRDA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 23 Nov 2021 12:03:00 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10177"; a="222286257"
+X-IronPort-AV: E=Sophos;i="5.87,258,1631602800"; 
+   d="scan'208";a="222286257"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 08:59:51 -0800
+X-IronPort-AV: E=Sophos;i="5.87,258,1631602800"; 
+   d="scan'208";a="497343295"
+Received: from markmu6x-mobl.amr.corp.intel.com (HELO [10.213.168.54]) ([10.213.168.54])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 08:59:48 -0800
+Subject: Re: [PATCH 10/11] hda: cs35l41: Add support for CS35L41 in HDA
+ systems
+To:     Lucas Tanure <tanureal@opensource.cirrus.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Mark Gross <markgross@kernel.org>,
-        "Liam Girdwood" <lgirdwood@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>,
         Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
         Kailang Yang <kailang@realtek.com>,
         Shuming Fan <shumingf@realtek.com>,
-        "Pierre-Louis Bossart" <pierre-louis.bossart@linux.intel.com>,
         David Rhodes <david.rhodes@cirrus.com>,
-        Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
-        Jeremy Szu <jeremy.szu@canonical.com>,
+        Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+Cc:     Jeremy Szu <jeremy.szu@canonical.com>,
         Hui Wang <hui.wang@canonical.com>,
         Werner Sembach <wse@tuxedocomputers.com>,
         Chris Chiu <chris.chiu@canonical.com>,
         Cameron Berkenpas <cam@neo-zeon.de>,
         Sami Loone <sami@loone.fi>, Elia Devito <eliadevito@gmail.com>,
         Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Jack Yu <jack.yu@realtek.com>, "Arnd Bergmann" <arnd@arndb.de>,
+        Jack Yu <jack.yu@realtek.com>, Arnd Bergmann <arnd@arndb.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
-        <alsa-devel@alsa-project.org>, <linux-acpi@vger.kernel.org>,
-        <patches@opensource.cirrus.com>,
-        <platform-driver-x86@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 10/11] hda: cs35l41: Add support for CS35L41 in HDA systems
-In-Reply-To: <20211123163149.1530535-11-tanureal@opensource.cirrus.com>
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org,
+        patches@opensource.cirrus.com, platform-driver-x86@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 References: <20211123163149.1530535-1-tanureal@opensource.cirrus.com>
-        <20211123163149.1530535-11-tanureal@opensource.cirrus.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
- FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
- (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
-Content-Type: text/plain; charset=US-ASCII
+ <20211123163149.1530535-11-tanureal@opensource.cirrus.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Message-ID: <d8fe13f2-ac84-51b6-8eb5-095176a65c39@linux.intel.com>
+Date:   Tue, 23 Nov 2021 10:59:45 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <20211123163149.1530535-11-tanureal@opensource.cirrus.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 23 Nov 2021 17:31:48 +0100,
-Lucas Tanure wrote:
-> 
-> --- a/sound/pci/hda/Makefile
-> +++ b/sound/pci/hda/Makefile
-> @@ -13,25 +13,27 @@ snd-hda-codec-$(CONFIG_SND_HDA_INPUT_BEEP) += hda_beep.o
->  CFLAGS_hda_controller.o := -I$(src)
->  CFLAGS_hda_intel.o := -I$(src)
->  
-> -snd-hda-codec-generic-objs :=	hda_generic.o
-> -snd-hda-codec-realtek-objs :=	patch_realtek.o
-> -snd-hda-codec-cmedia-objs :=	patch_cmedia.o
-> -snd-hda-codec-analog-objs :=	patch_analog.o
-> -snd-hda-codec-idt-objs :=	patch_sigmatel.o
-> -snd-hda-codec-si3054-objs :=	patch_si3054.o
-> -snd-hda-codec-cirrus-objs :=	patch_cirrus.o
-> -snd-hda-codec-cs8409-objs :=	patch_cs8409.o patch_cs8409-tables.o
-> -snd-hda-codec-ca0110-objs :=	patch_ca0110.o
-> -snd-hda-codec-ca0132-objs :=	patch_ca0132.o
-> -snd-hda-codec-conexant-objs :=	patch_conexant.o
-> -snd-hda-codec-via-objs :=	patch_via.o
-> -snd-hda-codec-hdmi-objs :=	patch_hdmi.o hda_eld.o
-> +snd-hda-codec-generic-objs :=		hda_generic.o
 
-You don't need to change other lines because of the newly added driver
-below...
+> +#ifdef CONFIG_ACPI
+> +static const struct acpi_device_id cs35l41_acpi_hda_match[] = {
+> +	{"CLSA0100", 0 },
 
-> +snd-hda-codec-cs35l41-i2c-objs :=	cs35l41_hda_i2c.o cs35l41_hda.o ../../soc/codecs/cs35l41-lib.o
+I could be wrong but this doesn't look like a legit ACPI _HID?
 
-Linking the object in a different level of directory is too ugly and
-would be problematic if multiple drivers want the cs35l41-lib stuff.
-IMO, it's better to make symbols in cs35l41-lib exported and select
-the corresponding Kconfig from HD-audio driver.
+Cirrus Logic can use 'CIR', "CLI", or 'CSC' PNP ID, or an PCI ID.
 
-And, snd-hda-codec-cs35l41-i2c is not really a codec driver.  It's
-rather some bridge for i2c over HD-audio.  So, better to avoid
-snd-hda-codec-* but have some different name.  Otherwise people may
-misunderstand.
+in the past you used
 
-> --- a/sound/pci/hda/patch_realtek.c
-> +++ b/sound/pci/hda/patch_realtek.c
-(snip)
-> @@ -6497,6 +6502,98 @@ static void alc287_fixup_legion_15imhg05_speakers(struct hda_codec *codec,
->  	}
->  }
->  
-> +static int comp_match_dev_name(struct device *dev, void *data)
-> +{
-> +	if (strcmp(dev_name(dev), data) == 0)
-> +		return 1;
-> +
-> +	return 0;
-> +}
-> +
-> +static int find_comp_by_dev_name(struct alc_spec *spec, const char *name)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < HDA_MAX_COMPONENTS; i++) {
-> +		if (strcmp(spec->comps[i].name, name) == 0)
-> +			return i;
-> +	}
-> +
-> +	return -ENODEV;
-> +}
-> +
-> +static int comp_bind(struct device *dev)
-> +{
-> +	struct hda_codec *codec = dev_to_hda_codec(dev);
-> +	struct alc_spec *spec = codec->spec;
-> +
-> +	return component_bind_all(dev, spec->comps);
-> +}
-> +
-> +static void comp_unbind(struct device *dev)
-> +{
-> +	struct hda_codec *codec = dev_to_hda_codec(dev);
-> +	struct alc_spec *spec = codec->spec;
-> +
-> +	component_unbind_all(dev, spec->comps);
-> +}
-> +
-> +static const struct component_master_ops comp_master_ops = {
-> +	.bind = comp_bind,
-> +	.unbind = comp_unbind,
-> +};
-> +
-> +void alc287_legion_16achg6_playback_hook(struct hda_pcm_stream *hinfo, struct hda_codec *codec,
-> +					 struct snd_pcm_substream *sub, int action)
-> +{
-> +	struct alc_spec *spec = codec->spec;
-> +	unsigned int rx_slot;
-> +	int i = 0;
-> +
-> +	switch (action) {
-> +	case HDA_GEN_PCM_ACT_PREPARE:
-> +		rx_slot = 0;
-> +		i = find_comp_by_dev_name(spec, "i2c-CLSA0100:00-cs35l41-hda.0");
-> +		if (i >= 0)
-> +			spec->comps[i].set_channel_map(spec->comps[i].dev, 0, NULL, 1, &rx_slot);
-> +
-> +		rx_slot = 1;
-> +		i = find_comp_by_dev_name(spec, "i2c-CLSA0100:00-cs35l41-hda.1");
-> +		if (i >= 0)
-> +			spec->comps[i].set_channel_map(spec->comps[i].dev, 0, NULL, 1, &rx_slot);
-> +		break;
-> +	}
-> +
-> +	for (i = 0; i < HDA_MAX_COMPONENTS; i++) {
-> +		if (spec->comps[i].dev)
-> +			spec->comps[i].playback_hook(spec->comps[i].dev, action);
-> +	}
-> +
-> +
-> +}
-> +
-> +static void alc287_fixup_legion_16achg6_speakers(struct hda_codec *codec,
-> +						 const struct hda_fixup *fix, int action)
-> +{
-> +	struct device *dev = hda_codec_dev(codec);
-> +	struct alc_spec *spec = codec->spec;
-> +	int ret;
-> +
-> +	switch (action) {
-> +	case HDA_FIXUP_ACT_PRE_PROBE:
-> +		component_match_add(dev, &spec->match, comp_match_dev_name,
-> +				    "i2c-CLSA0100:00-cs35l41-hda.0");
-> +		component_match_add(dev, &spec->match, comp_match_dev_name,
-> +				    "i2c-CLSA0100:00-cs35l41-hda.1");
-> +		ret = component_master_add_with_match(dev, &comp_master_ops, spec->match);
-> +		if (ret)
-> +			codec_err(codec, "Fail to register component aggregator %d\n", ret);
-> +		else
-> +			spec->gen.pcm_playback_hook = alc287_legion_16achg6_playback_hook;
-> +		break;
-> +	}
-> +}
-> +
-
-Those are needed only if the new cs35l41 stuff is enabled, so they can
-be wrapped with #if IS_REACHABLE(xxx).
++#ifdef CONFIG_ACPI
++static const struct acpi_device_id cs35l41_acpi_match[] = {
++	{ "CSC3541", 0 }, /* Cirrus Logic PnP ID + part ID */
++	{},
++};
++MODULE_DEVICE_TABLE(acpi, cs35l41_acpi_match);
++#endif
 
 
-thanks,
-
-Takashi
