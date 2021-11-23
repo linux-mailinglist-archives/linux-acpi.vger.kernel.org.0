@@ -2,84 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1E5545A977
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 17:59:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2A3345A9A1
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 18:06:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237500AbhKWRDA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Nov 2021 12:03:00 -0500
-Received: from mga02.intel.com ([134.134.136.20]:21909 "EHLO mga02.intel.com"
+        id S234047AbhKWRJX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Nov 2021 12:09:23 -0500
+Received: from mga04.intel.com ([192.55.52.120]:51483 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237505AbhKWRDA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 23 Nov 2021 12:03:00 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10177"; a="222286257"
+        id S233715AbhKWRJW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 23 Nov 2021 12:09:22 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10177"; a="233785223"
 X-IronPort-AV: E=Sophos;i="5.87,258,1631602800"; 
-   d="scan'208";a="222286257"
+   d="scan'208";a="233785223"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 08:59:51 -0800
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 09:03:41 -0800
 X-IronPort-AV: E=Sophos;i="5.87,258,1631602800"; 
-   d="scan'208";a="497343295"
-Received: from markmu6x-mobl.amr.corp.intel.com (HELO [10.213.168.54]) ([10.213.168.54])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 08:59:48 -0800
-Subject: Re: [PATCH 10/11] hda: cs35l41: Add support for CS35L41 in HDA
- systems
-To:     Lucas Tanure <tanureal@opensource.cirrus.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
-        Kailang Yang <kailang@realtek.com>,
-        Shuming Fan <shumingf@realtek.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Vitaly Rodionov <vitalyr@opensource.cirrus.com>
-Cc:     Jeremy Szu <jeremy.szu@canonical.com>,
-        Hui Wang <hui.wang@canonical.com>,
-        Werner Sembach <wse@tuxedocomputers.com>,
-        Chris Chiu <chris.chiu@canonical.com>,
-        Cameron Berkenpas <cam@neo-zeon.de>,
-        Sami Loone <sami@loone.fi>, Elia Devito <eliadevito@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Jack Yu <jack.yu@realtek.com>, Arnd Bergmann <arnd@arndb.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org,
-        patches@opensource.cirrus.com, platform-driver-x86@vger.kernel.org,
+   d="scan'208";a="497344837"
+Received: from wangxu2-mobl.ccr.corp.intel.com (HELO chenyu5-mobl1) ([10.249.173.67])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 09:03:38 -0800
+Date:   Wed, 24 Nov 2021 01:03:32 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, Robert Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, devel@acpica.org,
         linux-kernel@vger.kernel.org
-References: <20211123163149.1530535-1-tanureal@opensource.cirrus.com>
- <20211123163149.1530535-11-tanureal@opensource.cirrus.com>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Message-ID: <d8fe13f2-ac84-51b6-8eb5-095176a65c39@linux.intel.com>
-Date:   Tue, 23 Nov 2021 10:59:45 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.14.0
+Subject: Re: [PATCH] tools/power/acpi: Fix the compile error when output
+ directory is specified
+Message-ID: <20211123170332.GA27921@chenyu5-mobl1>
+References: <20211123132330.1008671-1-yu.c.chen@intel.com>
+ <YZzyQ2FD2meImsHD@smile.fi.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20211123163149.1530535-11-tanureal@opensource.cirrus.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YZzyQ2FD2meImsHD@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Tue, Nov 23, 2021 at 03:53:07PM +0200, Andy Shevchenko wrote:
+> On Tue, Nov 23, 2021 at 09:23:30PM +0800, Chen Yu wrote:
+> > Compiling the tool when output directory parameter is specified would
+> > trigger the following error:
+> > 
+> > make O=/data/test/tmp/ -C tools/power/acpi/
+> > 
+> > make: Entering directory '/data/src/kernel/linux/tools/power/acpi'
+> >   DESCEND tools/acpidbg
+> > make[1]: Entering directory '/data/src/kernel/linux/tools/power/acpi/tools/acpidbg'
+> >   MKDIR    include
+> >   CP       include
+> >   CC       tools/acpidbg/acpidbg.o
+> > Assembler messages:
+> > Fatal error: can't create /data/test/tmp/tools/power/acpi/tools/acpidbg/acpidbg.o: No such file or directory
+> > make[1]: *** [../../Makefile.rules:24: /data/test/tmp/tools/power/acpi/tools/acpidbg/acpidbg.o] Error 1
+> > make[1]: Leaving directory '/data/src/kernel/linux/tools/power/acpi/tools/acpidbg'
+> > make: *** [Makefile:18: acpidbg] Error 2
+> > make: Leaving directory '/data/src/kernel/linux/tools/power/acpi'
+> > 
+> > This is because the output directory has not been created yet. Fix this issue by
+> > creating the output directory before compiling.
+> 
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Thanks!
+>
+Thanks for review. 
+> >  
+> >  $(objdir)%.o: %.c $(KERNEL_INCLUDE)
+> >  	$(ECHO) "  CC      " $(subst $(OUTPUT),,$@)
+> > +	$(QUIET) $(MKDIR) -p $(objdir) 2>/dev/null
+> 
+> Not sure we need the `2>/dev/null` part.
+> 
+If the 'O=' is a read-only directory, mkdir would print errors
+and adding 2> would avoid printing it. So the user could focus
+on the real compile error.
 
-> +#ifdef CONFIG_ACPI
-> +static const struct acpi_device_id cs35l41_acpi_hda_match[] = {
-> +	{"CLSA0100", 0 },
-
-I could be wrong but this doesn't look like a legit ACPI _HID?
-
-Cirrus Logic can use 'CIR', "CLI", or 'CSC' PNP ID, or an PCI ID.
-
-in the past you used
-
-+#ifdef CONFIG_ACPI
-+static const struct acpi_device_id cs35l41_acpi_match[] = {
-+	{ "CSC3541", 0 }, /* Cirrus Logic PnP ID + part ID */
-+	{},
-+};
-+MODULE_DEVICE_TABLE(acpi, cs35l41_acpi_match);
-+#endif
+without '2>'  :
+make O=/data/test/tmp -C tools/power/acpi/
+make: Entering directory '/data/src/kernel/linux/tools/power/acpi'
+  DESCEND tools/acpidbg
+mkdir: cannot create directory ‘/data/test/tmp/tools’: Permission denied
 
 
+thanks,
+Chenyu
+> >  	$(QUIET) $(CC) -c $(CFLAGS) -o $@ $<
+> >  
+> >  all: $(OUTPUT)$(TOOL)
+> > -- 
+> > 2.25.1
+> > 
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
