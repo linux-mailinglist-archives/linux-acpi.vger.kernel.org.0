@@ -2,86 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 771A245971B
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Nov 2021 23:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 862EC45998C
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 02:16:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239938AbhKVWHp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 22 Nov 2021 17:07:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:57493 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S239829AbhKVWHi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 22 Nov 2021 17:07:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637618670;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=R0Wu/W/Wi5O+Hzu3YzLggiwAid8zZBDC6HkiLP7qREY=;
-        b=H8X056qefWvvqalAvDAyArK1EWcPrtxW3QRmCPHMsvM3Jfkge96BXjvxBcJRJkEojci+D2
-        BOgfmooAUelTwnvrKhyQ+4BVlkLjMbwWsKZa8CRlaKYetymLD3QVVMlq5xVA7nJkiigJzb
-        5EbC3JPZuOe9AQwxcLr+R39Ews3xw+Y=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-583-kKbqZmKsMSaLpCKi-qGp7g-1; Mon, 22 Nov 2021 17:04:27 -0500
-X-MC-Unique: kKbqZmKsMSaLpCKi-qGp7g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 159CC19251A0;
-        Mon, 22 Nov 2021 22:04:26 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.192.226])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C32C07945B;
-        Mon, 22 Nov 2021 22:04:24 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH] pinctrl: baytrail: Set IRQCHIP_SET_TYPE_MASKED flag on the irqchip
-Date:   Mon, 22 Nov 2021 23:04:23 +0100
-Message-Id: <20211122220423.11256-1-hdegoede@redhat.com>
+        id S231292AbhKWBTN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 22 Nov 2021 20:19:13 -0500
+Received: from mga05.intel.com ([192.55.52.43]:63681 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230366AbhKWBTN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 22 Nov 2021 20:19:13 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10176"; a="321155316"
+X-IronPort-AV: E=Sophos;i="5.87,256,1631602800"; 
+   d="scan'208";a="321155316"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2021 17:16:04 -0800
+X-IronPort-AV: E=Sophos;i="5.87,256,1631602800"; 
+   d="scan'208";a="509203594"
+Received: from chenyu-desktop.sh.intel.com (HELO chenyu-desktop) ([10.239.158.186])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2021 17:16:01 -0800
+Date:   Tue, 23 Nov 2021 09:15:06 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     linux-acpi@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
+        Robert Moore <robert.moore@intel.com>
+Subject: Re: [PATCH v11 4/4] tools: Introduce power/acpi/tools/pfru
+Message-ID: <20211123011506.GA994503@chenyu-desktop>
+References: <cover.1637505679.git.yu.c.chen@intel.com>
+ <a1f688cd4ade1257e96d13c91eba72a1aeef5d59.1637505679.git.yu.c.chen@intel.com>
+ <YZt+VPI2n/MED9O6@smile.fi.intel.com>
+ <20211122154842.GA10345@chenyu5-mobl1>
+ <YZvQ7iZMJ9nZgh2+@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YZvQ7iZMJ9nZgh2+@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The byt_irq_type function ends with the IRQ masked, this means that calls
-to irq_set_irq_type() while the IRQ is enabled end up masking it, which
-is wrong. Add the IRQCHIP_SET_TYPE_MASKED flag to fix this.
+On Mon, Nov 22, 2021 at 07:18:38PM +0200, Andy Shevchenko wrote:
+> On Mon, Nov 22, 2021 at 11:48:42PM +0800, Chen Yu wrote:
+> > On Mon, Nov 22, 2021 at 01:26:12PM +0200, Andy Shevchenko wrote:
+> > > On Sun, Nov 21, 2021 at 11:17:29PM +0800, Chen Yu wrote:
+> > > > Introduce a user space tool to make use of the interface exposed by
+> > > > Platform Firmware Runtime Update and Telemetry drivers. The users
+> > > > can use this tool to do firmware code injection, driver update and
+> > > > to retrieve the telemetry data.
+> > > 
+> > > Have you tried to build tools with `make O=/my/tmp/folder/for/kernel/build ...`
+> > > which previously has been used for kernel builds?
+> > >
+> > I was not aware of that and just had a try. It seems that there is an issue in
+> > tools/power/acpi that, only with the following patch appiled, the make O=xxx
+> > would work:
+> 
+> Cool!
+> Care to send a separate fix for this, please?
+>
+Ok, will do.
 
-This will make the IRQ core call mask() + unmask() on the IRQ around
-a set_type() call when the IRQ is enabled at the type of the call.
-
-Note in practice irq_set_irq_type() getting called while the IRQ is enabled
-almost never happens. I hit this with a buggy DSDT where a wrongly active
-(_STA returns 0xf) I2C ACPI devices point to an IRQ already in use by an
-_AEI handler, leading to the irq_set_irq_type() call in
-acpi_dev_gpio_irq_get_by() getting called while the IRQ is enabled.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/pinctrl/intel/pinctrl-baytrail.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pinctrl/intel/pinctrl-baytrail.c b/drivers/pinctrl/intel/pinctrl-baytrail.c
-index 744ebe417bff..e3dd105e2f6e 100644
---- a/drivers/pinctrl/intel/pinctrl-baytrail.c
-+++ b/drivers/pinctrl/intel/pinctrl-baytrail.c
-@@ -1554,7 +1554,8 @@ static int byt_gpio_probe(struct intel_pinctrl *vg)
- 		vg->irqchip.irq_mask = byt_irq_mask,
- 		vg->irqchip.irq_unmask = byt_irq_unmask,
- 		vg->irqchip.irq_set_type = byt_irq_type,
--		vg->irqchip.flags = IRQCHIP_SKIP_SET_WAKE,
-+		vg->irqchip.flags = IRQCHIP_SKIP_SET_WAKE |
-+				    IRQCHIP_SET_TYPE_MASKED,
- 
- 		girq = &gc->irq;
- 		girq->chip = &vg->irqchip;
--- 
-2.33.1
-
+thanks,
+Chenyu 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
