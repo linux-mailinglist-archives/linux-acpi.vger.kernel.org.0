@@ -2,40 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C49DC45A9D2
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 18:15:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7757E45A9E5
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 18:22:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238004AbhKWRTF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Nov 2021 12:19:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42132 "EHLO mail.kernel.org"
+        id S231807AbhKWRZN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Nov 2021 12:25:13 -0500
+Received: from mga17.intel.com ([192.55.52.151]:43321 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230176AbhKWRTF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 23 Nov 2021 12:19:05 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5EF0660F6F;
-        Tue, 23 Nov 2021 17:15:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637687756;
-        bh=E+dBwomnzyWKIhT2whg5UaMBKOluRqPTO6X6XW8z7mo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EQ0v6PbhOwWl3NzftqVi/qVreHqLCe2Upzbc8LBBCLaqvAkfHvWaeaVYcG86soJDv
-         waw5UnGNjUSVqWsFKSQ4RgKVHNW1GPPpGbP2HHTpP5iDxt1QrGWgz066mZIoyV7Ygd
-         yuTl1w/2oU0xFoqDSQD4gnbf59mZyzSz0JT68ieCwb6T8hR0OM/u+Of9Upt8WfgMcW
-         LpC7MduSgPBiujgcd51rS4INUZgwPj0w4VG1exRe1u7juh9v3ciVenmZH7qPV9VooU
-         fLWRB1p/gJqMuZ6E4G0stRXL7+uevtMly5WlKSz+dAQRMmPPwMK5DFXJdHAX4aE8tB
-         DKOhO8PbkFq6A==
-Date:   Tue, 23 Nov 2021 17:15:48 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Lucas Tanure <tanureal@opensource.cirrus.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        id S231620AbhKWRZM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 23 Nov 2021 12:25:12 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10177"; a="215778929"
+X-IronPort-AV: E=Sophos;i="5.87,258,1631602800"; 
+   d="scan'208";a="215778929"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 09:16:43 -0800
+X-IronPort-AV: E=Sophos;i="5.87,258,1631602800"; 
+   d="scan'208";a="497349857"
+Received: from markmu6x-mobl.amr.corp.intel.com (HELO [10.213.168.54]) ([10.213.168.54])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 09:16:39 -0800
+Subject: Re: [PATCH 10/11] hda: cs35l41: Add support for CS35L41 in HDA
+ systems
+To:     tanureal@opensource.cirrus.com,
+        "Rafael J.Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Mark Gross <markgross@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
+        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
         Kailang Yang <kailang@realtek.com>,
         Shuming Fan <shumingf@realtek.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
         David Rhodes <david.rhodes@cirrus.com>,
         Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
         Jeremy Szu <jeremy.szu@canonical.com>,
@@ -51,55 +47,53 @@ Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org,
         patches@opensource.cirrus.com, platform-driver-x86@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/11] hda: cs35l41: Add support for CS35L41 in HDA
- systems
-Message-ID: <YZ0hxCcP5h1eU63A@sirena.org.uk>
 References: <20211123163149.1530535-1-tanureal@opensource.cirrus.com>
  <20211123163149.1530535-11-tanureal@opensource.cirrus.com>
+ <d8fe13f2-ac84-51b6-8eb5-095176a65c39@linux.intel.com>
+ <ebb877d5-e348-e5fe-a5cb-9ef579a312f5@opensource.cirrus.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Message-ID: <a2ef9f32-0a92-d8cc-8e4a-7d4d4abcc7e9@linux.intel.com>
+Date:   Tue, 23 Nov 2021 11:16:37 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="KmAEv/XYU5I1OTsL"
-Content-Disposition: inline
-In-Reply-To: <20211123163149.1530535-11-tanureal@opensource.cirrus.com>
-X-Cookie: A closed mouth gathers no foot.
+In-Reply-To: <ebb877d5-e348-e5fe-a5cb-9ef579a312f5@opensource.cirrus.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 
---KmAEv/XYU5I1OTsL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Tue, Nov 23, 2021 at 04:31:48PM +0000, Lucas Tanure wrote:
+On 11/23/21 11:06 AM, tanureal@opensource.cirrus.com wrote:
+> On 11/23/21 4:59 PM, Pierre-Louis Bossart
+> <pierre-louis.bossart@linux.intel.com> wrote:
+>>
+>> > +#ifdef CONFIG_ACPI
+>> > +static const struct acpi_device_id cs35l41_acpi_hda_match[] = {
+>> > +    {"CLSA0100", 0 },
+>>
+>> I could be wrong but this doesn't look like a legit ACPI _HID?
+>>
+>> Cirrus Logic can use 'CIR', "CLI", or 'CSC' PNP ID, or an PCI ID.
+>>
+>> in the past you used
+>>
+>> +#ifdef CONFIG_ACPI
+>> +static const struct acpi_device_id cs35l41_acpi_match[] = {
+>> +    { "CSC3541", 0 }, /* Cirrus Logic PnP ID + part ID */
+>> +    {},
+>> +};
+>> +MODULE_DEVICE_TABLE(acpi, cs35l41_acpi_match);
+>> +#endif
+>>
+>>
+>>
+> 
+> This ACPI _HID is already released, there is nothing I can do about it.
+> Future devices will use 'CSC' PnP ID.
 
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/sound/cirrus,cs*
-> +F:	sound/pci/hda/cs35l41*
->  F:	sound/soc/codecs/cs*
-
-Perhaps just match anything starting with cs rather than just this part
-number rather than needing to churn in future?
-
-BTW I notice that the CC list for this series is *huge* and it's hard to
-see why some of the people on CC are included - please think carefully
-about who you're sending things to and why.  People get a lot of mail
-but there's no need to add to the flood, it makes it more likely that
-things that are important will end up getting missed.
-
---KmAEv/XYU5I1OTsL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGdIcMACgkQJNaLcl1U
-h9D3OAf/Z1nxuLACsgmmsSOKL+iZyyHgNx1SqNSpwS2Absxs1WIEk8peLn5AM24+
-9Tj7Yv5qhscn5ogvyquAVxMTbhs/VI4eqsy9z37/cfiHZozMQPz2lxobwxIztyqy
-yLf2YLnHIlenI9gqvj3Ixi7wCm9U7agT/UOhwNWd9IRQDBUSTgjl53owul0Rt0Fv
-uS8EI9cvmZEIyH8vcpA5gWnICVEbq/cBzPkoOvvWwkI4qd2JeAK8s1jO/0Q3vzs9
-X8qgHigt1fLG4768Q4InEvkB8WWBBQ214xT+r4lenjcSqY9KfQwYBxYImuWXZSUZ
-p4EnMrqi1jXMhnPbP46pP/ruPueQ5Q==
-=6Fhl
------END PGP SIGNATURE-----
-
---KmAEv/XYU5I1OTsL--
+ok, add a comment then that you're adding support for an
+already-released value that's not compliant.
