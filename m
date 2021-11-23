@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC6E345A7C8
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 17:32:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4284145A7D2
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Nov 2021 17:33:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234969AbhKWQgE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 23 Nov 2021 11:36:04 -0500
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:55260 "EHLO
+        id S237468AbhKWQgU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 23 Nov 2021 11:36:20 -0500
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:7646 "EHLO
         mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S235318AbhKWQgB (ORCPT
+        by vger.kernel.org with ESMTP id S235982AbhKWQgI (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 23 Nov 2021 11:36:01 -0500
+        Tue, 23 Nov 2021 11:36:08 -0500
 Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AN6Jv72020525;
-        Tue, 23 Nov 2021 10:31:56 -0600
+        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1ANCeXB8012277;
+        Tue, 23 Nov 2021 10:31:55 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding : content-type; s=PODMain02222019;
- bh=j9hLZJzFMAZOG6A9G9YB4YFvcbNiH2pOiYjJgOXYQrI=;
- b=puFYdxjzqSVi8FmSTMgCRWDCmdLcnVKrCx5VI1YJJ9dOAr/JFHHeO1pnchIjpkBWK/KR
- LfnuwthniYQt0gI7OIF30HroLTqKaecxr7FXTKtYW/UtXs/QgS+6sDNQS1KxfVJa0vqJ
- GKx2yNj1c0pPvfuvFsc3FJpo8X/d1FDtj2VYvwJ1Q7CUCTne9ZVBdKgFVjroRwc9nv/b
- XljHov7HN+k8jqXpdEG/ASNB1CD6qSQ9ZOixkHscjzXQynVJAYqfiCh3YO1tOFpokWWK
- qxw9QG450dhZHXXr2tGqX3T9dVbwmzjYH+X+0hTnmgqvuEaRqbUjFyKktP47qugjqZNn GQ== 
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3cg5ms21nk-2
+ bh=Z4waY4CUfZqZb4PuHTMV15Sbyi91pjjmEvXyAxHUB7A=;
+ b=QrHPpT7Ym5aDKWrW/3I7oodI+By3k5CQTAhWVXJDwq1AvKddySP+ULwbGEzf/PA99ZX6
+ DthhlpNJjgZ+l5f8RI7zqttSmVQPAgWjSWqRc8bqexXHYk+9/22F2zKhl8VTUT5G/gR7
+ wlYCSyhYVMMz3pu53i5UBb5/MK1As7hp9RI4SbiCcLsbM0yYyC4G/RV0W6STWVtp4tEJ
+ uu1Byyz9YGLHsC65IsGoEhFdBdTo0zbqzNJHqPjkUSWu/TmrR8U1RX965QDi9h06SEkJ
+ pnWeXN61CWf6WAUEqG24q2VNL9fAZNFsjZWxM81+iQ+//SNW8UUiaI/Nb41h5GO2YonH qg== 
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3cg5ms21ng-3
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Tue, 23 Nov 2021 10:31:56 -0600
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 23 Nov 2021 10:31:55 -0600
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Tue, 23 Nov
- 2021 16:31:53 +0000
+ 2021 16:31:54 +0000
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.17 via Frontend
- Transport; Tue, 23 Nov 2021 16:31:53 +0000
+ Transport; Tue, 23 Nov 2021 16:31:54 +0000
 Received: from aryzen.ad.cirrus.com (unknown [198.61.65.11])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 0563F2A3;
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id ACB6B2A1;
         Tue, 23 Nov 2021 16:31:53 +0000 (UTC)
 From:   Lucas Tanure <tanureal@opensource.cirrus.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -66,191 +66,160 @@ CC:     Jeremy Szu <jeremy.szu@canonical.com>,
         <platform-driver-x86@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>,
         "Lucas Tanure" <tanureal@opensource.cirrus.com>
-Subject: [PATCH 03/11] ASoC: cs35l41: Move regmap config struct to shared code
-Date:   Tue, 23 Nov 2021 16:31:41 +0000
-Message-ID: <20211123163149.1530535-4-tanureal@opensource.cirrus.com>
+Subject: [PATCH 04/11] ASoC: cs35l41: Create function for init array of Supplies
+Date:   Tue, 23 Nov 2021 16:31:42 +0000
+Message-ID: <20211123163149.1530535-5-tanureal@opensource.cirrus.com>
 X-Mailer: git-send-email 2.34.0
 In-Reply-To: <20211123163149.1530535-1-tanureal@opensource.cirrus.com>
 References: <20211123163149.1530535-1-tanureal@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-GUID: HuYSeoxxjjX_d7xNriX0mUm1QC7O0CGy
-X-Proofpoint-ORIG-GUID: HuYSeoxxjjX_d7xNriX0mUm1QC7O0CGy
+X-Proofpoint-GUID: N3BFwnZQAho2AC0-k3McSh0EgDUUl1dq
+X-Proofpoint-ORIG-GUID: N3BFwnZQAho2AC0-k3McSh0EgDUUl1dq
 X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Move regmap configs to external include so CS35L41 HDA
-driver can re-use it.
+Both ASoC and HDA system have to initialize the arrays of supplies
+in the same way, so create a function for that in shared code
 
 Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
 ---
- include/sound/cs35l41.h        |  6 +++++-
- sound/soc/codecs/cs35l41-i2c.c | 15 ---------------
- sound/soc/codecs/cs35l41-lib.c | 34 ++++++++++++++++++++++++++++++++--
- sound/soc/codecs/cs35l41-spi.c | 16 ----------------
- sound/soc/codecs/cs35l41.h     |  6 ------
- 5 files changed, 37 insertions(+), 40 deletions(-)
+ include/sound/cs35l41.h        |  5 ++++-
+ sound/soc/codecs/cs35l41-lib.c | 29 +++++++++++++++++++++++++++++
+ sound/soc/codecs/cs35l41.c     | 23 +++--------------------
+ 3 files changed, 36 insertions(+), 21 deletions(-)
 
 diff --git a/include/sound/cs35l41.h b/include/sound/cs35l41.h
-index 4a5679c856a3..ced80ede1def 100644
+index ced80ede1def..5039e876bad1 100644
 --- a/include/sound/cs35l41.h
 +++ b/include/sound/cs35l41.h
-@@ -10,6 +10,8 @@
- #ifndef __CS35L41_H
- #define __CS35L41_H
- 
-+#include <linux/regmap.h>
-+
- #define CS35L41_FIRSTREG		0x00000000
- #define CS35L41_LASTREG			0x03804FE8
- #define CS35L41_DEVID			0x00000000
-@@ -529,7 +531,6 @@
- #define CS35L41_OTP_TRIM_35		0x0000400C
- #define CS35L41_OTP_TRIM_36		0x00002030
- 
--#define CS35L41_MAX_CACHE_REG		36
- #define CS35L41_OTP_SIZE_WORDS		32
- #define CS35L41_NUM_OTP_ELEM		100
+@@ -536,7 +536,6 @@
  #define CS35L41_NUM_OTP_MAPS		5
-@@ -758,4 +759,7 @@ struct cs35l41_otp_map_element_t {
- 	u32 word_offset;
- };
  
-+extern struct regmap_config cs35l41_regmap_i2c;
-+extern struct regmap_config cs35l41_regmap_spi;
+ #define CS35L41_VALID_PDATA		0x80000000
+-#define CS35L41_NUM_SUPPLIES            2
+ 
+ #define CS35L41_SCLK_MSTR_MASK		0x10
+ #define CS35L41_SCLK_MSTR_SHIFT		4
+@@ -724,6 +723,8 @@
+ #define CS35L41_SPI_MAX_FREQ		4000000
+ #define CS35L41_REGSTRIDE		4
+ 
++#define CS35L41_NUM_SUPPLIES		2
++
+ enum cs35l41_clk_ids {
+ 	CS35L41_CLKID_SCLK = 0,
+ 	CS35L41_CLKID_LRCLK = 1,
+@@ -762,4 +763,6 @@ struct cs35l41_otp_map_element_t {
+ extern struct regmap_config cs35l41_regmap_i2c;
+ extern struct regmap_config cs35l41_regmap_spi;
+ 
++int cs35l41_init_supplies(struct device *dev, struct regulator_bulk_data *supplies);
 +
  #endif /* __CS35L41_H */
-diff --git a/sound/soc/codecs/cs35l41-i2c.c b/sound/soc/codecs/cs35l41-i2c.c
-index db03fe519e2f..de5c8612f030 100644
---- a/sound/soc/codecs/cs35l41-i2c.c
-+++ b/sound/soc/codecs/cs35l41-i2c.c
-@@ -19,21 +19,6 @@
- 
- #include "cs35l41.h"
- 
--static struct regmap_config cs35l41_regmap_i2c = {
--	.reg_bits = 32,
--	.val_bits = 32,
--	.reg_stride = CS35L41_REGSTRIDE,
--	.reg_format_endian = REGMAP_ENDIAN_BIG,
--	.val_format_endian = REGMAP_ENDIAN_BIG,
--	.max_register = CS35L41_LASTREG,
--	.reg_defaults = cs35l41_reg,
--	.num_reg_defaults = ARRAY_SIZE(cs35l41_reg),
--	.volatile_reg = cs35l41_volatile_reg,
--	.readable_reg = cs35l41_readable_reg,
--	.precious_reg = cs35l41_precious_reg,
--	.cache_type = REGCACHE_RBTREE,
--};
--
- static const struct i2c_device_id cs35l41_id_i2c[] = {
- 	{ "cs35l40", 0 },
- 	{ "cs35l41", 0 },
 diff --git a/sound/soc/codecs/cs35l41-lib.c b/sound/soc/codecs/cs35l41-lib.c
-index f3071f235f7d..04f59cda5126 100644
+index 04f59cda5126..4aba0f90b876 100644
 --- a/sound/soc/codecs/cs35l41-lib.c
 +++ b/sound/soc/codecs/cs35l41-lib.c
-@@ -7,10 +7,9 @@
+@@ -7,6 +7,7 @@
  // Author: David Rhodes <david.rhodes@cirrus.com>
  // Author: Lucas Tanure <lucas.tanure@cirrus.com>
  
--#include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
  #include <sound/cs35l41.h>
  
--const struct reg_default cs35l41_reg[CS35L41_MAX_CACHE_REG] = {
-+const struct reg_default cs35l41_reg[] = {
- 	{ CS35L41_PWR_CTRL1,			0x00000000 },
- 	{ CS35L41_PWR_CTRL3,			0x01000010 },
- 	{ CS35L41_GPIO_PAD_CONTROL,		0x00000000 },
-@@ -690,3 +689,34 @@ const struct cs35l41_otp_map_element_t cs35l41_otp_map_map[CS35L41_NUM_OTP_MAPS]
- 		.word_offset = 2,
+ const struct reg_default cs35l41_reg[] = {
+@@ -690,6 +691,11 @@ const struct cs35l41_otp_map_element_t cs35l41_otp_map_map[CS35L41_NUM_OTP_MAPS]
  	},
  };
-+
-+struct regmap_config cs35l41_regmap_i2c = {
-+	.reg_bits = 32,
-+	.val_bits = 32,
-+	.reg_stride = CS35L41_REGSTRIDE,
-+	.reg_format_endian = REGMAP_ENDIAN_BIG,
-+	.val_format_endian = REGMAP_ENDIAN_BIG,
-+	.max_register = CS35L41_LASTREG,
-+	.reg_defaults = cs35l41_reg,
-+	.num_reg_defaults = ARRAY_SIZE(cs35l41_reg),
-+	.volatile_reg = cs35l41_volatile_reg,
-+	.readable_reg = cs35l41_readable_reg,
-+	.precious_reg = cs35l41_precious_reg,
-+	.cache_type = REGCACHE_RBTREE,
+ 
++static const char * const cs35l41_supplies[CS35L41_NUM_SUPPLIES] = {
++	"VA",
++	"VP",
 +};
 +
-+struct regmap_config cs35l41_regmap_spi = {
-+	.reg_bits = 32,
-+	.val_bits = 32,
-+	.pad_bits = 16,
-+	.reg_stride = CS35L41_REGSTRIDE,
-+	.reg_format_endian = REGMAP_ENDIAN_BIG,
-+	.val_format_endian = REGMAP_ENDIAN_BIG,
-+	.max_register = CS35L41_LASTREG,
-+	.reg_defaults = cs35l41_reg,
-+	.num_reg_defaults = ARRAY_SIZE(cs35l41_reg),
-+	.volatile_reg = cs35l41_volatile_reg,
-+	.readable_reg = cs35l41_readable_reg,
-+	.precious_reg = cs35l41_precious_reg,
-+	.cache_type = REGCACHE_RBTREE,
-+};
-diff --git a/sound/soc/codecs/cs35l41-spi.c b/sound/soc/codecs/cs35l41-spi.c
-index 60639edcfc5d..c157153f28d8 100644
---- a/sound/soc/codecs/cs35l41-spi.c
-+++ b/sound/soc/codecs/cs35l41-spi.c
-@@ -17,22 +17,6 @@
+ struct regmap_config cs35l41_regmap_i2c = {
+ 	.reg_bits = 32,
+ 	.val_bits = 32,
+@@ -720,3 +726,26 @@ struct regmap_config cs35l41_regmap_spi = {
+ 	.precious_reg = cs35l41_precious_reg,
+ 	.cache_type = REGCACHE_RBTREE,
+ };
++
++int cs35l41_init_supplies(struct device *dev, struct regulator_bulk_data *supplies)
++{
++	int i, ret;
++
++	for (i = 0; i < CS35L41_NUM_SUPPLIES; i++)
++		supplies[i].supply = cs35l41_supplies[i];
++
++	ret = devm_regulator_bulk_get(dev, CS35L41_NUM_SUPPLIES, supplies);
++	if (ret != 0) {
++		dev_err(dev, "Failed to request core supplies: %d\n", ret);
++		return ret;
++	}
++
++	ret = regulator_bulk_enable(CS35L41_NUM_SUPPLIES, supplies);
++	if (ret != 0) {
++		dev_err(dev, "Failed to enable core supplies: %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
+diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
+index e8e997efaa8b..c8709de41aaf 100644
+--- a/sound/soc/codecs/cs35l41.c
++++ b/sound/soc/codecs/cs35l41.c
+@@ -24,11 +24,6 @@
  
  #include "cs35l41.h"
  
--static struct regmap_config cs35l41_regmap_spi = {
--	.reg_bits = 32,
--	.val_bits = 32,
--	.pad_bits = 16,
--	.reg_stride = CS35L41_REGSTRIDE,
--	.reg_format_endian = REGMAP_ENDIAN_BIG,
--	.val_format_endian = REGMAP_ENDIAN_BIG,
--	.max_register = CS35L41_LASTREG,
--	.reg_defaults = cs35l41_reg,
--	.num_reg_defaults = ARRAY_SIZE(cs35l41_reg),
--	.volatile_reg = cs35l41_volatile_reg,
--	.readable_reg = cs35l41_readable_reg,
--	.precious_reg = cs35l41_precious_reg,
--	.cache_type = REGCACHE_RBTREE,
+-static const char * const cs35l41_supplies[CS35L41_NUM_SUPPLIES] = {
+-	"VA",
+-	"VP",
 -};
 -
- static const struct spi_device_id cs35l41_id_spi[] = {
- 	{ "cs35l40", 0 },
- 	{ "cs35l41", 0 },
-diff --git a/sound/soc/codecs/cs35l41.h b/sound/soc/codecs/cs35l41.h
-index 74ef72d01190..453ece8889e0 100644
---- a/sound/soc/codecs/cs35l41.h
-+++ b/sound/soc/codecs/cs35l41.h
-@@ -11,7 +11,6 @@
- #define __CS35L41_H__
+ struct cs35l41_pll_sysclk_config {
+ 	int freq;
+ 	int clk_cfg;
+@@ -1526,7 +1521,7 @@ static int cs35l41_dsp_init(struct cs35l41_private *cs35l41)
+ int cs35l41_probe(struct cs35l41_private *cs35l41,
+ 		  struct cs35l41_platform_data *pdata)
+ {
+-	u32 regid, reg_revid, i, mtl_revid, int_status, chipid_match;
++	u32 regid, reg_revid, mtl_revid, int_status, chipid_match;
+ 	int irq_pol = 0;
+ 	int ret;
  
- #include <linux/gpio/consumer.h>
--#include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/firmware.h>
- #include <sound/core.h>
-@@ -22,11 +21,6 @@
- #define CS35L41_RX_FORMATS (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE)
- #define CS35L41_TX_FORMATS (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE)
+@@ -1538,21 +1533,9 @@ int cs35l41_probe(struct cs35l41_private *cs35l41,
+ 			return ret;
+ 	}
  
--bool cs35l41_readable_reg(struct device *dev, unsigned int reg);
--bool cs35l41_precious_reg(struct device *dev, unsigned int reg);
--bool cs35l41_volatile_reg(struct device *dev, unsigned int reg);
+-	for (i = 0; i < CS35L41_NUM_SUPPLIES; i++)
+-		cs35l41->supplies[i].supply = cs35l41_supplies[i];
 -
--extern const struct reg_default cs35l41_reg[CS35L41_MAX_CACHE_REG];
- extern const struct cs35l41_otp_map_element_t
- 				cs35l41_otp_map_map[CS35L41_NUM_OTP_MAPS];
+-	ret = devm_regulator_bulk_get(cs35l41->dev, CS35L41_NUM_SUPPLIES,
+-				      cs35l41->supplies);
+-	if (ret != 0) {
+-		dev_err(cs35l41->dev, "Failed to request core supplies: %d\n", ret);
++	ret = cs35l41_init_supplies(cs35l41->dev, cs35l41->supplies);
++	if (ret)
+ 		return ret;
+-	}
+-
+-	ret = regulator_bulk_enable(CS35L41_NUM_SUPPLIES, cs35l41->supplies);
+-	if (ret != 0) {
+-		dev_err(cs35l41->dev, "Failed to enable core supplies: %d\n", ret);
+-		return ret;
+-	}
  
+ 	/* returning NULL can be an option if in stereo mode */
+ 	cs35l41->reset_gpio = devm_gpiod_get_optional(cs35l41->dev, "reset",
 -- 
 2.34.0
 
