@@ -2,103 +2,142 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9515645CB1E
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Nov 2021 18:36:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0B2845CBDA
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Nov 2021 19:09:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229592AbhKXRjr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Nov 2021 12:39:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38204 "EHLO mail.kernel.org"
+        id S242436AbhKXSMf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Nov 2021 13:12:35 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59842 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229538AbhKXRjq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 24 Nov 2021 12:39:46 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D46D760FE3;
-        Wed, 24 Nov 2021 17:36:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637775396;
-        bh=HmpZ/PgUokyQPcT3gkW2G68BXXRTTkFFIjflrvUeDeg=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=dZ2UsOvQoRZrv0cH6UL+Xr4aUgGtGWoib5B1mgMftX6fEQTp29HHNQZwr7AzrHWkM
-         qxiobFcepuKJIdMWgAjbXBwS11s3tbpXjJRqzqUgHfJNt1zNTtKmhk9K+qg6jOq40v
-         2vQvSKw3M8jb39mnaN3paQo8SXtyg7k6SW6xXOKn+cb3o09bJ1fqroDIBEeP5F0nhK
-         IW+8XLI1fYeEBcwuoCPYSMr30CeHUDLpTENtPq4VF/5CHBMAqL6N2hzyAxM4cH7JHc
-         R9yG9Eg1241pw4sOK9YGRVoFKxiDcXFSx1hqPsnLs0usjbj5m/GeYZbD049HxsZTuR
-         FiQ0J7cvlgeSQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Kailang Yang <kailang@realtek.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Shuming Fan <shumingf@realtek.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Gross <markgross@kernel.org>,
-        Lucas Tanure <tanureal@opensource.cirrus.com>,
-        Vitaly Rodionov <vitalyr@opensource.cirrus.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Chris Chiu <chris.chiu@canonical.com>,
-        Cameron Berkenpas <cam@neo-zeon.de>,
-        platform-driver-x86@vger.kernel.org,
-        Jeremy Szu <jeremy.szu@canonical.com>,
-        alsa-devel@alsa-project.org, Hui Wang <hui.wang@canonical.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sami Loone <sami@loone.fi>,
-        Werner Sembach <wse@tuxedocomputers.com>,
-        Elia Devito <eliadevito@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Jack Yu <jack.yu@realtek.com>, patches@opensource.cirrus.com
-In-Reply-To: <20211123163149.1530535-1-tanureal@opensource.cirrus.com>
-References: <20211123163149.1530535-1-tanureal@opensource.cirrus.com>
-Subject: Re: (subset) [PATCH v3 00/11] Add support for Legion 7 16ACHg6 laptop
-Message-Id: <163777539060.2712035.8727444012645430033.b4-ty@kernel.org>
-Date:   Wed, 24 Nov 2021 17:36:30 +0000
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        id S229734AbhKXSMc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 24 Nov 2021 13:12:32 -0500
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6100C60FE8;
+        Wed, 24 Nov 2021 18:09:22 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <maz@kernel.org>)
+        id 1mpwhn-007dLK-9U; Wed, 24 Nov 2021 18:09:15 +0000
+Date:   Wed, 24 Nov 2021 18:09:14 +0000
+Message-ID: <87czmpcto5.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Tyler Baicar <baicar@os.amperecomputing.com>
+Cc:     patches@amperecomputing.com, abdulhamid@os.amperecomputing.com,
+        darren@os.amperecomputing.com, catalin.marinas@arm.com,
+        will@kernel.org, james.morse@arm.com, alexandru.elisei@arm.com,
+        suzuki.poulose@arm.com, lorenzo.pieralisi@arm.com,
+        guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
+        lenb@kernel.org, tony.luck@intel.com, bp@alien8.de,
+        mark.rutland@arm.com, anshuman.khandual@arm.com,
+        vincenzo.frascino@arm.com, tabba@google.com, marcan@marcan.st,
+        keescook@chromium.org, jthierry@redhat.com, masahiroy@kernel.org,
+        samitolvanen@google.com, john.garry@huawei.com,
+        daniel.lezcano@linaro.org, gor@linux.ibm.com,
+        zhangshaokun@hisilicon.com, tmricht@linux.ibm.com,
+        dchinner@redhat.com, tglx@linutronix.de,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        kvmarm@lists.cs.columbia.edu, linux-acpi@vger.kernel.org,
+        linux-edac@vger.kernel.org, ishii.shuuichir@fujitsu.com,
+        Vineeth.Pillai@microsoft.com
+Subject: Re: [PATCH 1/2] ACPI/AEST: Initial AEST driver
+In-Reply-To: <20211124170708.3874-2-baicar@os.amperecomputing.com>
+References: <20211124170708.3874-1-baicar@os.amperecomputing.com>
+        <20211124170708.3874-2-baicar@os.amperecomputing.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: baicar@os.amperecomputing.com, patches@amperecomputing.com, abdulhamid@os.amperecomputing.com, darren@os.amperecomputing.com, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, alexandru.elisei@arm.com, suzuki.poulose@arm.com, lorenzo.pieralisi@arm.com, guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org, tony.luck@intel.com, bp@alien8.de, mark.rutland@arm.com, anshuman.khandual@arm.com, vincenzo.frascino@arm.com, tabba@google.com, marcan@marcan.st, keescook@chromium.org, jthierry@redhat.com, masahiroy@kernel.org, samitolvanen@google.com, john.garry@huawei.com, daniel.lezcano@linaro.org, gor@linux.ibm.com, zhangshaokun@hisilicon.com, tmricht@linux.ibm.com, dchinner@redhat.com, tglx@linutronix.de, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu, linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org, ishii.shuuichir@fujitsu.com, Vineeth.Pillai@microsoft.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 23 Nov 2021 16:31:38 +0000, Lucas Tanure wrote:
-> Add support for laptops that have CS35L41 connected to an
-> HDA codec by I2S and direct I2C/SPI connection to the CPU
+On Wed, 24 Nov 2021 17:07:07 +0000,
+Tyler Baicar <baicar@os.amperecomputing.com> wrote:
 > 
-> Hardware:
->  - The 16ACHg6 laptop has two CS35L41 amplifiers, connected
-> to Realtek ALC287 by an I2S bus and by and direct I2C to the CPU.
->  - The ALC287 codec is connected to the CPU by an HDA bus.
->  - The CS35L41 has a DSP which will require firmware to be loaded.
+> Add support for parsing the ARM Error Source Table and basic handling of
+> errors reported through both memory mapped and system register interfaces.
 > 
-> [...]
+> Assume system register interfaces are only registered with private
+> peripheral interrupts (PPIs); otherwise there is no guarantee the
+> core handling the error is the core which took the error and has the
+> syndrome info in its system registers.
+> 
+> Add logging for all detected errors and trigger a kernel panic if there is
+> any uncorrected error present.
+> 
+> Signed-off-by: Tyler Baicar <baicar@os.amperecomputing.com>
+> ---
+>  MAINTAINERS                     |   1 +
+>  arch/arm64/include/asm/ras.h    |  52 ++++
+>  arch/arm64/include/asm/sysreg.h |   2 +
+>  arch/arm64/kernel/Makefile      |   1 +
+>  arch/arm64/kernel/ras.c         | 125 +++++++++
+>  arch/arm64/kvm/sys_regs.c       |   2 +
+>  drivers/acpi/arm64/Kconfig      |   3 +
+>  drivers/acpi/arm64/Makefile     |   1 +
+>  drivers/acpi/arm64/aest.c       | 450 ++++++++++++++++++++++++++++++++
+>  include/linux/acpi_aest.h       |  50 ++++
+>  include/linux/cpuhotplug.h      |   1 +
+>  11 files changed, 688 insertions(+)
+>  create mode 100644 arch/arm64/include/asm/ras.h
+>  create mode 100644 arch/arm64/kernel/ras.c
+>  create mode 100644 drivers/acpi/arm64/aest.c
+>  create mode 100644 include/linux/acpi_aest.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 5250298d2817..aa0483726606 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -382,6 +382,7 @@ ACPI FOR ARM64 (ACPI/arm64)
+>  M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+>  M:	Hanjun Guo <guohanjun@huawei.com>
+>  M:	Sudeep Holla <sudeep.holla@arm.com>
+> +R:	Tyler Baicar <baicar@os.amperecomputing.com>
+>  L:	linux-acpi@vger.kernel.org
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
 
-Applied to
+Isn't this a bit premature? This isn't even mentioned in the commit
+message, only in passing in the cover letter.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-linus
+> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+> index 16b3f1a1d468..6bbed061d835 100644
+> --- a/arch/arm64/include/asm/sysreg.h
+> +++ b/arch/arm64/include/asm/sysreg.h
+> @@ -230,6 +230,8 @@
+>  #define SYS_ERXADDR_EL1			sys_reg(3, 0, 5, 4, 3)
+>  #define SYS_ERXMISC0_EL1		sys_reg(3, 0, 5, 5, 0)
+>  #define SYS_ERXMISC1_EL1		sys_reg(3, 0, 5, 5, 1)
+> +#define SYS_ERXMISC2_EL1		sys_reg(3, 0, 5, 5, 2)
+> +#define SYS_ERXMISC3_EL1		sys_reg(3, 0, 5, 5, 3)
+>  #define SYS_TFSR_EL1			sys_reg(3, 0, 5, 6, 0)
+>  #define SYS_TFSRE0_EL1			sys_reg(3, 0, 5, 6, 1)
+>  
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index e3ec1a44f94d..dc15e9896db4 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -1573,6 +1573,8 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+>  	{ SYS_DESC(SYS_ERXADDR_EL1), trap_raz_wi },
+>  	{ SYS_DESC(SYS_ERXMISC0_EL1), trap_raz_wi },
+>  	{ SYS_DESC(SYS_ERXMISC1_EL1), trap_raz_wi },
+> +	{ SYS_DESC(SYS_ERXMISC2_EL1), trap_raz_wi },
+> +	{ SYS_DESC(SYS_ERXMISC3_EL1), trap_raz_wi },
+>
 
-Thanks!
-
-[01/11] ASoC: cs35l41: Set the max SPI speed for the whole device
-        commit: 872fc0b6bde8b2dd6891c740cd792d214255dca3
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+This looks like a fix that would deserve its own patch.
 
 Thanks,
-Mark
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
