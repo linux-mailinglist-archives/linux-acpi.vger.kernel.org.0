@@ -2,251 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50CB445CAA2
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Nov 2021 18:07:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9515645CB1E
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Nov 2021 18:36:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349571AbhKXRK7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Nov 2021 12:10:59 -0500
-Received: from mail-bn8nam11on2138.outbound.protection.outlook.com ([40.107.236.138]:19424
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S243736AbhKXRKx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 24 Nov 2021 12:10:53 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Nq50gnd2po+tQXFWzq3ochY1LmCgjynmeZRjIn+is97XP8ts1UFktAAL9E79CRkLo2CEnTeiKZ0OAfOdLA+417yHywZbkKyhfWkhtnJB3Bt8h1DUBlidJPnCaeDAM0/tC+7adtY9QhOJEriBFy9XbZd1a/RV7eq4MD+uWs5rsC73urzsOd74E9ct7ZzrJHorABbmNy51pLQftxJb2EPB6DlbdjiEape+DZGGraZ2IiFeJok2hdmC1Gw5+tVaY3qZJF6J+miVQJyc9E4PVO+2Gffjj+eiDqYnaIpaa+PKahEC96Z07+ie1i3zQJCtQ3uCJJpQ0NZnKay4hoTgsnESxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6YCVELxkKYYFXEFdWfYu2TIPOub5t6l3xA3DgPdBk6Q=;
- b=aIPoShhbA1HabeCzwIsC9jiXJfWDjhMkkkvJrQJuvCbZsI57cWDQxq/LVgYvEDs+POmIc30REPclFeEFLgoETrHomUwqEnEradyRABAM6tvUaGPKpKNACTLnMIkVv6JHRXc23dayvrMtZqsXRbm8kyaKJn89cQ7bazdwY18SZNC3qxAHGcMo6GjO1o1NBUfYHGbLktbXO1q+3KlbVLRJJQkMef0ngHb24ZLZ+tFl57JsuGSB1mRzn/Apb0ffGUZ2OXhyZkSlyPlj0uBcfK19nadAivQbKiOtnk1MMkUX9suVNvUCzRIB733ZgjRsS1YtNCeLcdz6tbnuL6chSmpiwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6YCVELxkKYYFXEFdWfYu2TIPOub5t6l3xA3DgPdBk6Q=;
- b=Jfz7G5Jz0fsoYihisaKa+z5LnhXIi+c1IS4mkeVFueRwhkzAf5aDXZl9TYyu0MckGF1JXcUm8ouV9qmZzm2310H8kB9EROGPGB7m0p8xmdda8ZEp17vrbr6W1P9EOdDk++5U1kGmhye3FzV4jt0WNQgP7TRUYk/F6PToSSKchNo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from CH0PR01MB7033.prod.exchangelabs.com (2603:10b6:610:107::16) by
- CH2PR01MB5654.prod.exchangelabs.com (2603:10b6:610:2f::20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4713.22; Wed, 24 Nov 2021 17:07:41 +0000
-Received: from CH0PR01MB7033.prod.exchangelabs.com
- ([fe80::1dc1:27e5:9fb6:f13d]) by CH0PR01MB7033.prod.exchangelabs.com
- ([fe80::1dc1:27e5:9fb6:f13d%9]) with mapi id 15.20.4734.022; Wed, 24 Nov 2021
- 17:07:41 +0000
-From:   Tyler Baicar <baicar@os.amperecomputing.com>
-To:     patches@amperecomputing.com, abdulhamid@os.amperecomputing.com,
-        darren@os.amperecomputing.com, catalin.marinas@arm.com,
-        will@kernel.org, maz@kernel.org, james.morse@arm.com,
-        alexandru.elisei@arm.com, suzuki.poulose@arm.com,
-        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
-        sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org,
-        tony.luck@intel.com, bp@alien8.de, mark.rutland@arm.com,
-        anshuman.khandual@arm.com, vincenzo.frascino@arm.com,
-        tabba@google.com, marcan@marcan.st, keescook@chromium.org,
-        jthierry@redhat.com, masahiroy@kernel.org, samitolvanen@google.com,
-        john.garry@huawei.com, daniel.lezcano@linaro.org,
-        gor@linux.ibm.com, zhangshaokun@hisilicon.com,
-        tmricht@linux.ibm.com, dchinner@redhat.com, tglx@linutronix.de,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kvmarm@lists.cs.columbia.edu, linux-acpi@vger.kernel.org,
-        linux-edac@vger.kernel.org, ishii.shuuichir@fujitsu.com,
-        Vineeth.Pillai@microsoft.com
-Cc:     Tyler Baicar <baicar@os.amperecomputing.com>
-Subject: [PATCH 2/2] trace, ras: add ARM RAS extension trace event
-Date:   Wed, 24 Nov 2021 12:07:08 -0500
-Message-Id: <20211124170708.3874-3-baicar@os.amperecomputing.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211124170708.3874-1-baicar@os.amperecomputing.com>
-References: <20211124170708.3874-1-baicar@os.amperecomputing.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CH2PR05CA0059.namprd05.prod.outlook.com
- (2603:10b6:610:38::36) To CH0PR01MB7033.prod.exchangelabs.com
- (2603:10b6:610:107::16)
+        id S229592AbhKXRjr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Nov 2021 12:39:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38204 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229538AbhKXRjq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 24 Nov 2021 12:39:46 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D46D760FE3;
+        Wed, 24 Nov 2021 17:36:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1637775396;
+        bh=HmpZ/PgUokyQPcT3gkW2G68BXXRTTkFFIjflrvUeDeg=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=dZ2UsOvQoRZrv0cH6UL+Xr4aUgGtGWoib5B1mgMftX6fEQTp29HHNQZwr7AzrHWkM
+         qxiobFcepuKJIdMWgAjbXBwS11s3tbpXjJRqzqUgHfJNt1zNTtKmhk9K+qg6jOq40v
+         2vQvSKw3M8jb39mnaN3paQo8SXtyg7k6SW6xXOKn+cb3o09bJ1fqroDIBEeP5F0nhK
+         IW+8XLI1fYeEBcwuoCPYSMr30CeHUDLpTENtPq4VF/5CHBMAqL6N2hzyAxM4cH7JHc
+         R9yG9Eg1241pw4sOK9YGRVoFKxiDcXFSx1hqPsnLs0usjbj5m/GeYZbD049HxsZTuR
+         FiQ0J7cvlgeSQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Kailang Yang <kailang@realtek.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        Shuming Fan <shumingf@realtek.com>,
+        David Rhodes <david.rhodes@cirrus.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Gross <markgross@kernel.org>,
+        Lucas Tanure <tanureal@opensource.cirrus.com>,
+        Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Chris Chiu <chris.chiu@canonical.com>,
+        Cameron Berkenpas <cam@neo-zeon.de>,
+        platform-driver-x86@vger.kernel.org,
+        Jeremy Szu <jeremy.szu@canonical.com>,
+        alsa-devel@alsa-project.org, Hui Wang <hui.wang@canonical.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sami Loone <sami@loone.fi>,
+        Werner Sembach <wse@tuxedocomputers.com>,
+        Elia Devito <eliadevito@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Jack Yu <jack.yu@realtek.com>, patches@opensource.cirrus.com
+In-Reply-To: <20211123163149.1530535-1-tanureal@opensource.cirrus.com>
+References: <20211123163149.1530535-1-tanureal@opensource.cirrus.com>
+Subject: Re: (subset) [PATCH v3 00/11] Add support for Legion 7 16ACHg6 laptop
+Message-Id: <163777539060.2712035.8727444012645430033.b4-ty@kernel.org>
+Date:   Wed, 24 Nov 2021 17:36:30 +0000
 MIME-Version: 1.0
-Received: from sut04sys-r242-0330002bj0sa.scc-lab.amperecomputing.com (4.28.12.214) by CH2PR05CA0059.namprd05.prod.outlook.com (2603:10b6:610:38::36) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.6 via Frontend Transport; Wed, 24 Nov 2021 17:07:38 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1b534dea-95d7-47db-fbdb-08d9af6cecc0
-X-MS-TrafficTypeDiagnostic: CH2PR01MB5654:
-X-Microsoft-Antispam-PRVS: <CH2PR01MB5654FA3FAA3CC50F0476C1DEE3619@CH2PR01MB5654.prod.exchangelabs.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4125;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: CHI0uLFSQ84aJLH6YELxyIrsWCfZ5iffWbWJZowSgVPeCGq0sJg49n7UqoXT2wFxFpMe+B9a5NOBUJx0P9i4sAZvZ3HX1iRdnEQDtuiIUCA9F1y3Ohc+PuISh9vVSH1Y/E/eGtWeg0TE7ZW9tpax/QeXul9fiiuQetgEsDDzM5yDOLyfIa+nKmcY4iLgytjr6HXfP/0aCeWlB4yR39NP2NfvkT5WzYiGGG/kUJD4JqkrkIf/CplMeylYNxmDjiefcxhpUmgBxT64XYVHtJ+G2kUg4Pnlrd7X3NccDziM6/SC3z0GQr5oSTJRibgwFSMUrJEFQfRaZX9DSMwEERxJeUwcPWIcIFQzRue3zISYDlGsd+FyghPLXoY+3cH3EnmDSsFj/rwr2x2wj/FnHDOysCkm/OrPTmZeT74UEDzafdQsIFuNN/LzNNzypV+h15dZOa9fhr9DiaRYZn0F8PIAoLjK1+9julT+PKJFX6ANIKxjwAgymu46bTMlww1fCLgKFqxOdSNzq42T4NiBXe1sxlHEdzm9W5mm5ACKjnS5VnhPqN1k95ObHlcK9PbuF9ZLfrhyR6qTaGD19aJtFAVDSIgp4Jz9pwtblxI9NktMpMsvfbRTQsNz9wGnq/IVHn01NCDg3xMMxWCmxkjORR5dJqsuPlxbsRQDjiL2ndocJnzM7Y0HEUkfV2TYzCOVOFoImDCX/vtPoEw1kuZmwJTgG233YUnjqrOPlJUE3xx7EnM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB7033.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(8936002)(186003)(38100700002)(1076003)(38350700002)(5660300002)(316002)(66476007)(83380400001)(66556008)(921005)(52116002)(4326008)(7406005)(508600001)(86362001)(66946007)(26005)(6486002)(6666004)(956004)(7416002)(2906002)(107886003)(2616005)(6512007)(6506007)(8676002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PBDN04zL2AMGX2PtCwjO0W0xqqBcnICjMJsiP2G3XDzCA/93YQmFmrNCGaxI?=
- =?us-ascii?Q?U6jVt/mujP0YPHIN34aeOUou9tm0vGH4W16FSB/I5ABG2f+cjOMj98nIJAbD?=
- =?us-ascii?Q?9gSaPeLNLnT1m7qPXVlhylOyMAoHQckMGCmLg5i+MhW0h9h2eSwP9HcwxpOi?=
- =?us-ascii?Q?kQYCkqavq1vAguhTjF8p4Xu05n3JkdGiRIzO0elT86yfyC1VRRQI1zzzd5qW?=
- =?us-ascii?Q?OX3+WMVAg6J6g1FQCzTRcdWRjLkDSwvlxlHTRPQxEOSW2k/qHl6fv3HCfpo6?=
- =?us-ascii?Q?xNfXRVuKStuShZyTYJLG0sGQxLNrJvG447Cy9tNWlPjsxUJO0yZkzvzf9EVV?=
- =?us-ascii?Q?KYIigZGybksZTFHkibi9mBXfKTOEnJP/xMX/YILv5RkP84PC7d/iUy3+omur?=
- =?us-ascii?Q?4+Gq6Q1hjltN5wCo446+NAnI3B6kZNyHzSSDy85mCmhuNSsY3ALl2ihvGA0C?=
- =?us-ascii?Q?pbbqXFPI6xjcOOUZLhSargKHUmyEZ6TV1JPYHU/V/mOUkGXkgpTYrI2PVlQs?=
- =?us-ascii?Q?ytgM6fkYKC7muT2k8mfjk79wyifF/+XR8LBowaPdgm+fUi3MyIfCO2t2X5Nx?=
- =?us-ascii?Q?N4ScsLTujhqxt17JdS5TuKgX4ZHAWFsClb6+rnf81AIJzX//Yy+JN16kKkaA?=
- =?us-ascii?Q?4AHgPGbzDu61yczjvC1GDbxskPjhO3jFTjxC9WRrA18xP+WptOYgJj/UkwvA?=
- =?us-ascii?Q?/wR8zkjMO2vXqOSYZfETqcE1DDT9n0lMzFhgizjlcKEP/sfOxD8FvhH8APv+?=
- =?us-ascii?Q?QUaD4uLb2vnyNv6M4tp6cWmpKBJR6DvZdCOGTM1T0ozHyvRz9KNnwyuDu1qn?=
- =?us-ascii?Q?tgjYRws08bkYMZqblf2Lu99AiOqydil16ovUkLd9N3S1Q1fSJhu9nT73KVyc?=
- =?us-ascii?Q?J1Z3VUYYNCE729P/2Jqxt1+YnccZ3yPQ6OAQrgl5UY7k3gL1zIEJlAhtyORV?=
- =?us-ascii?Q?V611n3YVjHZH19R5PECjbdwMoofGYIf4P1Rx7GR7EVgsefL/49dMf4EGrL3C?=
- =?us-ascii?Q?DAX7kVjfyJ6si0QzZW1VXT6Nl5yGFhE/z/zSOFkwXB/Zbb/xzGEvcqe3JB3U?=
- =?us-ascii?Q?UYAEiEcVEjpssX2dovQb54H9AgVfMjrX4U72ESaC9+8A4WVi4qC0Uqf3Le8l?=
- =?us-ascii?Q?PNsIvLfvL/wtZ+wnbSVGNzVOkG88J4fH1oDmf5eYaRMfwYfmcltE9hh2KEhq?=
- =?us-ascii?Q?/fYnCoQSSUpncRJdWJThOZP8cXmFPDvEI8avJEfXCh/hbCJ+4EoyUo5ijatg?=
- =?us-ascii?Q?uSImtIcd4dgiTk0jRcugskHPoq+/kn0J/Knq1Q4LLGpNUyd4arEeFd00Xu1O?=
- =?us-ascii?Q?VGLEhJ58wbtc3URBRV04n67GCNJLsokW7egmjWQXCs7NWzc2A0ypN6uJQiSl?=
- =?us-ascii?Q?sO/tdUNY50ymHmthghQleksKg4+rY/Wcx+AGcNHrO6i5fA6RxeG/cCOmsWg6?=
- =?us-ascii?Q?B/xjkZlvLwYhhNozyMvZ2o6Ri7EicvrjzN4MIpqwYzDsT6jMUhlCVoN3RzlS?=
- =?us-ascii?Q?WD4lDhdM3OdHE30KwyWoUdWoQfpVOwIYfvrNUltOnbZ5mmxGr6BrxmrZieOm?=
- =?us-ascii?Q?YGveRWIaNmJv1F3z3Enq8K6MZiktaomtUcJFe34e3xwxq0i936CnIo7kMCr2?=
- =?us-ascii?Q?UsSoIkjWoW88DvQpHK6fBhoMACYnZ6TKzxs9KzkRqjVXKYlavjKSdBiL0s0i?=
- =?us-ascii?Q?U0TuHvnHznQBrpjezupIGkGl26NavO7EEWq6od26ZlzTmT8dxRVZuyehgYnJ?=
- =?us-ascii?Q?E+gAqHnlSQ=3D=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b534dea-95d7-47db-fbdb-08d9af6cecc0
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB7033.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2021 17:07:41.5972
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RWLYZ76EDX2/qzbiNZRc1rRVzOkjd81GousT+NeRY6p+NTSenwAzsEuenqcESNkM1mp6JiWKzPwhK6X8jSswAWMjmqkvdEEhfZt1rGxMDUyVrsA3ymAA9H8EQXNie8zc
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR01MB5654
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add a trace event for hardware errors reported by the ARMv8
-RAS extension registers.
+On Tue, 23 Nov 2021 16:31:38 +0000, Lucas Tanure wrote:
+> Add support for laptops that have CS35L41 connected to an
+> HDA codec by I2S and direct I2C/SPI connection to the CPU
+> 
+> Hardware:
+>  - The 16ACHg6 laptop has two CS35L41 amplifiers, connected
+> to Realtek ALC287 by an I2S bus and by and direct I2C to the CPU.
+>  - The ALC287 codec is connected to the CPU by an HDA bus.
+>  - The CS35L41 has a DSP which will require firmware to be loaded.
+> 
+> [...]
 
-Signed-off-by: Tyler Baicar <baicar@os.amperecomputing.com>
----
- arch/arm64/kernel/ras.c   |  4 +++
- drivers/acpi/arm64/aest.c |  5 ++++
- include/ras/ras_event.h   | 55 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 64 insertions(+)
+Applied to
 
-diff --git a/arch/arm64/kernel/ras.c b/arch/arm64/kernel/ras.c
-index 31e2036a4c70..18071790b2a3 100644
---- a/arch/arm64/kernel/ras.c
-+++ b/arch/arm64/kernel/ras.c
-@@ -6,6 +6,8 @@
- #include <asm/cpufeature.h>
- #include <asm/ras.h>
- 
-+#include <ras/ras_event.h>
-+
- static bool ras_extn_v1p1(void)
- {
- 	unsigned long fld, reg = read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1);
-@@ -95,6 +97,8 @@ void arch_arm_ras_report_error(u64 implemented, bool clear_misc)
- 
- 		arch_arm_ras_print_error(&regs, i, misc23_present);
- 
-+		trace_arm_ras_ext_event(0, cpu_num, 0, i, &regs);
-+
- 		/*
- 		 * In the future, we will treat UER conditions as potentially
- 		 * recoverable.
-diff --git a/drivers/acpi/arm64/aest.c b/drivers/acpi/arm64/aest.c
-index 2df4f2377e51..7ef1750f91b3 100644
---- a/drivers/acpi/arm64/aest.c
-+++ b/drivers/acpi/arm64/aest.c
-@@ -14,6 +14,8 @@
- 
- #include <asm/ras.h>
- 
-+#include <ras/ras_event.h>
-+
- #undef pr_fmt
- #define pr_fmt(fmt) "ACPI AEST: " fmt
- 
-@@ -126,6 +128,9 @@ static void aest_proc(struct aest_node_data *data)
- 
- 		aest_print(data, regs, i, misc23_present);
- 
-+		trace_arm_ras_ext_event(data->node_type, data->data.vendor.acpi_hid,
-+					data->data.vendor.acpi_uid, i, &regs);
-+
- 		if (regs.err_status & ERR_STATUS_UE)
- 			fatal = true;
- 
-diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
-index 0bdbc0d17d2f..27b2be9f950d 100644
---- a/include/ras/ras_event.h
-+++ b/include/ras/ras_event.h
-@@ -338,6 +338,61 @@ TRACE_EVENT(aer_event,
- 			"Not available")
- );
- 
-+/*
-+ * ARM RAS Extension Events Report
-+ *
-+ * This event is generated when an error reported by the ARM RAS extension
-+ * hardware is detected.
-+ */
-+
-+#ifdef CONFIG_ARM64_RAS_EXTN
-+#include <asm/ras.h>
-+TRACE_EVENT(arm_ras_ext_event,
-+
-+	TP_PROTO(u8 type, u32 id0, u32 id1, u32 index, struct ras_ext_regs *regs),
-+
-+	TP_ARGS(type, id0, id1, index, regs),
-+
-+	TP_STRUCT__entry(
-+		__field(u8,  type)
-+		__field(u32, id0)
-+		__field(u32, id1)
-+		__field(u32, index)
-+		__field(u64, err_fr)
-+		__field(u64, err_ctlr)
-+		__field(u64, err_status)
-+		__field(u64, err_addr)
-+		__field(u64, err_misc0)
-+		__field(u64, err_misc1)
-+		__field(u64, err_misc2)
-+		__field(u64, err_misc3)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->type = type;
-+		__entry->id0 = id0;
-+		__entry->id1 = id1;
-+		__entry->index = index;
-+		__entry->err_fr = regs->err_fr;
-+		__entry->err_ctlr = regs->err_ctlr;
-+		__entry->err_status = regs->err_status;
-+		__entry->err_addr = regs->err_addr;
-+		__entry->err_misc0 = regs->err_misc0;
-+		__entry->err_misc1 = regs->err_misc1;
-+		__entry->err_misc2 = regs->err_misc2;
-+		__entry->err_misc3 = regs->err_misc3;
-+	),
-+
-+	TP_printk("type: %d; id0: %d; id1: %d; index: %d; ERR_FR: %llx; ERR_CTLR: %llx; "
-+		  "ERR_STATUS: %llx; ERR_ADDR: %llx; ERR_MISC0: %llx; ERR_MISC1: %llx; "
-+		  "ERR_MISC2: %llx; ERR_MISC3: %llx",
-+		  __entry->type, __entry->id0, __entry->id1, __entry->index, __entry->err_fr,
-+		  __entry->err_ctlr, __entry->err_status, __entry->err_addr,
-+		  __entry->err_misc0, __entry->err_misc1, __entry->err_misc2,
-+		  __entry->err_misc3)
-+);
-+#endif
-+
- /*
-  * memory-failure recovery action result event
-  *
--- 
-2.33.1
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-linus
 
+Thanks!
+
+[01/11] ASoC: cs35l41: Set the max SPI speed for the whole device
+        commit: 872fc0b6bde8b2dd6891c740cd792d214255dca3
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
