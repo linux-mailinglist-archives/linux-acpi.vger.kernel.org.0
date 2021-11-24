@@ -2,105 +2,171 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2F845C695
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Nov 2021 15:07:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA6CA45C85F
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Nov 2021 16:16:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347508AbhKXOKW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 24 Nov 2021 09:10:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55244 "EHLO mail.kernel.org"
+        id S232345AbhKXPTZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 24 Nov 2021 10:19:25 -0500
+Received: from mga02.intel.com ([134.134.136.20]:43962 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1354592AbhKXOI1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 24 Nov 2021 09:08:27 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E2880611BF;
-        Wed, 24 Nov 2021 13:31:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637760715;
-        bh=QFU9huopJ1xeYjSSB6nMmQbA/vbauGkKaHZqMRU4bS8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LIJ/fP9hdSBqgYZhCG+OgB2C952jBEWuMu1dHcaN4OZEqbJqcqf4apX8F4LAU68UA
-         jquyUrJ27zsTNsAQioCetNH3bWP/6qMB4Xllw6GExBZYJoihHO/+CPF4ADTqdFjXRv
-         aXLRW7dXExZ06tGush5Jh41lWAD4Te04qgOF5ejWCVttgN9MK0a1zSO/XORibilYoj
-         +zWvrn5b/uutGFA28JnoBTpeUu4UFbTJ6j/2EF6lH1BJk8LXAyF6uLMsC5x4aXQihk
-         BaF457+Fp4nw8qTa76MziQVv3DrFuq5dqCqk801oC1rTX/li2hN+yYMB5NMBBQnVKE
-         qmHCcr0xaJVfQ==
-Date:   Wed, 24 Nov 2021 13:31:46 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Lucas Tanure <tanureal@opensource.cirrus.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Kailang Yang <kailang@realtek.com>,
-        Shuming Fan <shumingf@realtek.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
-        Jeremy Szu <jeremy.szu@canonical.com>,
-        Hui Wang <hui.wang@canonical.com>,
-        Werner Sembach <wse@tuxedocomputers.com>,
-        Chris Chiu <chris.chiu@canonical.com>,
-        Cameron Berkenpas <cam@neo-zeon.de>,
-        Sami Loone <sami@loone.fi>, Elia Devito <eliadevito@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Jack Yu <jack.yu@realtek.com>, Arnd Bergmann <arnd@arndb.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org,
-        patches@opensource.cirrus.com, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/11] ASoC: cs35l41: Create function for init array of
- Supplies
-Message-ID: <YZ4+wu5aaku4u6qA@sirena.org.uk>
-References: <20211123163149.1530535-1-tanureal@opensource.cirrus.com>
- <20211123163149.1530535-5-tanureal@opensource.cirrus.com>
- <YZ0r2s1z15yXLVhb@sirena.org.uk>
+        id S230158AbhKXPTY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 24 Nov 2021 10:19:24 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10178"; a="222517019"
+X-IronPort-AV: E=Sophos;i="5.87,260,1631602800"; 
+   d="scan'208";a="222517019"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2021 07:16:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,260,1631602800"; 
+   d="scan'208";a="741221507"
+Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.76]) ([10.237.72.76])
+  by fmsmga006.fm.intel.com with ESMTP; 24 Nov 2021 07:16:11 -0800
+Subject: Re: [PATCH v2 6/7] mmc: sdhci-acpi: Remove special handling for GPD
+ win/pocket devices
+To:     Hans de Goede <hdegoede@redhat.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-mmc@vger.kernel.org
+References: <20211122170536.7725-1-hdegoede@redhat.com>
+ <20211122170536.7725-7-hdegoede@redhat.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+Message-ID: <a26356f7-16e7-8d57-af1f-a087354df728@intel.com>
+Date:   Wed, 24 Nov 2021 17:16:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Lkt1foV1iL9BAfKp"
-Content-Disposition: inline
-In-Reply-To: <YZ0r2s1z15yXLVhb@sirena.org.uk>
-X-Cookie: (null cookie
+In-Reply-To: <20211122170536.7725-7-hdegoede@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On 22/11/2021 19:05, Hans de Goede wrote:
+> Remove the special sdhci_acpi_no_fixup_child_power() helper which was
+> added to avoid triggering an ACPI tables bug on the GPD win/pocket
+> devices.
+> 
+> The ACPI child-device triggering this bug has now been added to the
+> acpi_device_override_status() quirk table, so that its status
+> field is set to all 0 (instead of the wrong return value from the _STA
+> ACPI method). This removes the need for the special handling in
+> the sdhci-acpi code.
+> 
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
---Lkt1foV1iL9BAfKp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-On Tue, Nov 23, 2021 at 05:58:59PM +0000, Mark Brown wrote:
-> On Tue, Nov 23, 2021 at 04:31:42PM +0000, Lucas Tanure wrote:
+> ---
+> Changes in v2:
+> - No changes in v2 of this patch-series
+> ---
+>  drivers/mmc/host/sdhci-acpi.c | 61 ++---------------------------------
+>  1 file changed, 3 insertions(+), 58 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
+> index f1ef0d28b0dd..1461aae13c19 100644
+> --- a/drivers/mmc/host/sdhci-acpi.c
+> +++ b/drivers/mmc/host/sdhci-acpi.c
+> @@ -34,7 +34,6 @@
+>  #include <asm/cpu_device_id.h>
+>  #include <asm/intel-family.h>
+>  #include <asm/iosf_mbi.h>
+> -#include <linux/pci.h>
+>  #endif
+>  
+>  #include "sdhci.h"
+> @@ -250,16 +249,6 @@ static bool sdhci_acpi_byt(void)
+>  	return x86_match_cpu(byt);
+>  }
+>  
+> -static bool sdhci_acpi_cht(void)
+> -{
+> -	static const struct x86_cpu_id cht[] = {
+> -		X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT, NULL),
+> -		{}
+> -	};
+> -
+> -	return x86_match_cpu(cht);
+> -}
+> -
+>  #define BYT_IOSF_SCCEP			0x63
+>  #define BYT_IOSF_OCP_NETCTRL0		0x1078
+>  #define BYT_IOSF_OCP_TIMEOUT_BASE	GENMASK(10, 8)
+> @@ -304,43 +293,6 @@ static bool sdhci_acpi_byt_defer(struct device *dev)
+>  	return false;
+>  }
+>  
+> -static bool sdhci_acpi_cht_pci_wifi(unsigned int vendor, unsigned int device,
+> -				    unsigned int slot, unsigned int parent_slot)
+> -{
+> -	struct pci_dev *dev, *parent, *from = NULL;
+> -
+> -	while (1) {
+> -		dev = pci_get_device(vendor, device, from);
+> -		pci_dev_put(from);
+> -		if (!dev)
+> -			break;
+> -		parent = pci_upstream_bridge(dev);
+> -		if (ACPI_COMPANION(&dev->dev) && PCI_SLOT(dev->devfn) == slot &&
+> -		    parent && PCI_SLOT(parent->devfn) == parent_slot &&
+> -		    !pci_upstream_bridge(parent)) {
+> -			pci_dev_put(dev);
+> -			return true;
+> -		}
+> -		from = dev;
+> -	}
+> -
+> -	return false;
+> -}
+> -
+> -/*
+> - * GPDwin uses PCI wifi which conflicts with SDIO's use of
+> - * acpi_device_fix_up_power() on child device nodes. Identifying GPDwin is
+> - * problematic, but since SDIO is only used for wifi, the presence of the PCI
+> - * wifi card in the expected slot with an ACPI companion node, is used to
+> - * indicate that acpi_device_fix_up_power() should be avoided.
+> - */
+> -static inline bool sdhci_acpi_no_fixup_child_power(struct acpi_device *adev)
+> -{
+> -	return sdhci_acpi_cht() &&
+> -	       acpi_dev_hid_uid_match(adev, "80860F14", "2") &&
+> -	       sdhci_acpi_cht_pci_wifi(0x14e4, 0x43ec, 0, 28);
+> -}
+> -
+>  #else
+>  
+>  static inline void sdhci_acpi_byt_setting(struct device *dev)
+> @@ -352,11 +304,6 @@ static inline bool sdhci_acpi_byt_defer(struct device *dev)
+>  	return false;
+>  }
+>  
+> -static inline bool sdhci_acpi_no_fixup_child_power(struct acpi_device *adev)
+> -{
+> -	return false;
+> -}
+> -
+>  #endif
+>  
+>  static int bxt_get_cd(struct mmc_host *mmc)
+> @@ -861,11 +808,9 @@ static int sdhci_acpi_probe(struct platform_device *pdev)
+>  
+>  	/* Power on the SDHCI controller and its children */
+>  	acpi_device_fix_up_power(device);
+> -	if (!sdhci_acpi_no_fixup_child_power(device)) {
+> -		list_for_each_entry(child, &device->children, node)
+> -			if (child->status.present && child->status.enabled)
+> -				acpi_device_fix_up_power(child);
+> -	}
+> +	list_for_each_entry(child, &device->children, node)
+> +		if (child->status.present && child->status.enabled)
+> +			acpi_device_fix_up_power(child);
+>  
+>  	if (sdhci_acpi_byt_defer(dev))
+>  		return -EPROBE_DEFER;
+> 
 
-> > +	ret = regulator_bulk_enable(CS35L41_NUM_SUPPLIES, supplies);
-> > +	if (ret != 0) {
-> > +		dev_err(dev, "Failed to enable core supplies: %d\n", ret);
-> > +		return ret;
-> > +	}
-
-> Where's the matching disable, I didn't see anything in the HDA code?  It
-> is there in cs35l41_remove() in the CODEC driver but there's nothing
-> sharing that bit of code here that I noticed.
-
-Relatedly, given that the HDA stuff will most likely only be used on
-ACPI systems are you sure it needs to handle regulators at all?
-
---Lkt1foV1iL9BAfKp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGePsEACgkQJNaLcl1U
-h9AqFAf+LegJkpoeZg0eJ9EnAmsGSQK73vyaOr+rEHjY4AAFPg11h5r7lfZGByW6
-VAGiGnwJFEIG5OMtGM327Q4xnT7E3PdKxx+p6isIHRvKQy1S/Sgr4zap8WiDnna5
-K8i/jr4dpYmItrfOuWKxoTTlv5W7uGpY+4VPi40oP9Z5LJlxWtwTpWptw/mJPw0t
-UTSn59eX+7dc9B+PJOg68yekHDmVlpNdzVpgGTtoSVGELQ7XoZlPQap0Szj1RsQF
-5U2ztjSjNvsyb8LdyMpw1uy7XVuIniKJtYtC+BgV8of5kxbdqcTTizANTV9VuBAW
-Znu1rJBHlrfNR+kaGEAnMEohvVUpyg==
-=tasH
------END PGP SIGNATURE-----
-
---Lkt1foV1iL9BAfKp--
