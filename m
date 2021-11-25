@@ -2,79 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64EE545D853
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Nov 2021 11:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A82545D878
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Nov 2021 11:54:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229938AbhKYKli (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Nov 2021 05:41:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:22274 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1347736AbhKYKji (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 25 Nov 2021 05:39:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637836587;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=rj/+BdtxxqMjfAndWn4bKVjlengUFC8Pa+4X7IknJMY=;
-        b=O7b0/Ka6B6d2gCZsNTCgZIlDJL80EyO0Ko/uMByNSGU4+eeMg+jpCQV8afjyzhSlRpDQuX
-        LMdSE29BxW6rt1Y+Pzq8dMukHjwlvOQVWe5/Bu6Avy+WnlQ8u8XD/SzZyjZfsRrXcQVBqe
-        DevM9zsvPfrIMQrLtCZPAivRqKQGQOA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-597-HcIRK1aKNTqtfjGSGo95iQ-1; Thu, 25 Nov 2021 05:36:20 -0500
-X-MC-Unique: HcIRK1aKNTqtfjGSGo95iQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1D1DD1800D41;
-        Thu, 25 Nov 2021 10:36:19 +0000 (UTC)
-Received: from x1.localdomain (unknown [10.39.195.117])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0308C2271F;
-        Thu, 25 Nov 2021 10:36:17 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Mark Pearson <markpearson@lenovo.com>
-Subject: [PATCH] ACPI / EC: Mark the ec_sys write_support param as module_param_hw()
-Date:   Thu, 25 Nov 2021 11:36:16 +0100
-Message-Id: <20211125103616.47742-1-hdegoede@redhat.com>
+        id S1354670AbhKYK5z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Nov 2021 05:57:55 -0500
+Received: from mga05.intel.com ([192.55.52.43]:22702 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1349526AbhKYKzy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 25 Nov 2021 05:55:54 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10178"; a="321728672"
+X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; 
+   d="scan'208";a="321728672"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2021 02:51:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; 
+   d="scan'208";a="457827367"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 25 Nov 2021 02:51:33 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mqCLk-0006F5-WE; Thu, 25 Nov 2021 10:51:33 +0000
+Date:   Thu, 25 Nov 2021 18:51:13 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
+        linux-iio@vger.kernel.org, git@xilinx.com, michal.simek@xilinx.com,
+        gregkh@linuxfoundation.org, rafael@kernel.org,
+        linux-acpi@vger.kernel.org, andriy.shevchenko@linux.intel.com
+Cc:     kbuild-all@lists.01.org
+Subject: Re: [PATCH] device property: Add fwnode_iomap()
+Message-ID: <202111251817.YgUIj6sh-lkp@intel.com>
+References: <20211115173819.22778-1-anand.ashok.dumbre@xilinx.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211115173819.22778-1-anand.ashok.dumbre@xilinx.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Using write_support=1 with the ec_sys module changes the mode of the
-"io" debugfs file to 0600. This will cause any attempts to access it under
-a kernel in lockdown mode to return -EPERM, which makes the entire ec_sys
-module unusable.
+Hi Anand,
 
-Use the special module_param_hw() macro for module parameters which
-may not be used while in lockdown mode, to avoid this.
+Thank you for the patch! Yet something to improve:
 
-Cc: Mark Pearson <markpearson@lenovo.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+[auto build test ERROR on linux/master]
+[also build test ERROR on driver-core/driver-core-testing linus/master v5.16-rc2 next-20211125]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/0day-ci/linux/commits/Anand-Ashok-Dumbre/device-property-Add-fwnode_iomap/20211116-014240
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git debe436e77c72fcee804fb867f275e6d31aa999c
+config: s390-randconfig-m031-20211115 (https://download.01.org/0day-ci/archive/20211125/202111251817.YgUIj6sh-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/057b01427afce16994b109c1f32a95bc46973e39
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Anand-Ashok-Dumbre/device-property-Add-fwnode_iomap/20211116-014240
+        git checkout 057b01427afce16994b109c1f32a95bc46973e39
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=s390 SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   s390-linux-ld: drivers/dma/idma64.o: in function `idma64_platform_probe':
+   idma64.c:(.text+0x463e): undefined reference to `devm_ioremap_resource'
+   s390-linux-ld: drivers/dma/qcom/hidma.o: in function `hidma_probe':
+   hidma.c:(.text+0x1cde): undefined reference to `devm_ioremap_resource'
+   s390-linux-ld: hidma.c:(.text+0x1da8): undefined reference to `devm_ioremap_resource'
+   s390-linux-ld: drivers/base/property.o: in function `fwnode_iomap':
+>> property.c:(.text+0x4f34): undefined reference to `of_iomap'
+   s390-linux-ld: drivers/pcmcia/cistpl.o: in function `set_cis_map':
+   cistpl.c:(.text+0x19fc): undefined reference to `ioremap'
+   s390-linux-ld: cistpl.c:(.text+0x1ad6): undefined reference to `iounmap'
+   s390-linux-ld: cistpl.c:(.text+0x1bbe): undefined reference to `iounmap'
+   s390-linux-ld: cistpl.c:(.text+0x1c18): undefined reference to `ioremap'
+   s390-linux-ld: drivers/pcmcia/cistpl.o: in function `release_cis_mem':
+   cistpl.c:(.text+0x371e): undefined reference to `iounmap'
+   s390-linux-ld: drivers/firmware/google/coreboot_table.o: in function `coreboot_table_probe':
+   coreboot_table.c:(.text+0x98e): undefined reference to `memremap'
+   s390-linux-ld: coreboot_table.c:(.text+0xa46): undefined reference to `memunmap'
+   s390-linux-ld: coreboot_table.c:(.text+0xad2): undefined reference to `memremap'
+   s390-linux-ld: coreboot_table.c:(.text+0xc70): undefined reference to `memunmap'
+   s390-linux-ld: drivers/firmware/google/memconsole-coreboot.o: in function `memconsole_probe':
+   memconsole-coreboot.c:(.text+0x3be): undefined reference to `memremap'
+   s390-linux-ld: memconsole-coreboot.c:(.text+0x47a): undefined reference to `devm_memremap'
+   s390-linux-ld: memconsole-coreboot.c:(.text+0x4c4): undefined reference to `memunmap'
+   s390-linux-ld: drivers/firmware/google/vpd.o: in function `vpd_section_destroy.isra.0':
+   vpd.c:(.text+0xaee): undefined reference to `memunmap'
+   s390-linux-ld: drivers/firmware/google/vpd.o: in function `vpd_section_init':
+   vpd.c:(.text+0xcce): undefined reference to `memremap'
+   s390-linux-ld: vpd.c:(.text+0x1178): undefined reference to `memunmap'
+   s390-linux-ld: drivers/firmware/google/vpd.o: in function `vpd_sections_init':
+   vpd.c:(.text+0x122e): undefined reference to `memremap'
+   s390-linux-ld: vpd.c:(.text+0x12c4): undefined reference to `memunmap'
+
 ---
- drivers/acpi/ec_sys.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/ec_sys.c b/drivers/acpi/ec_sys.c
-index fd39c14493ab..c074a0fae059 100644
---- a/drivers/acpi/ec_sys.c
-+++ b/drivers/acpi/ec_sys.c
-@@ -19,7 +19,7 @@ MODULE_DESCRIPTION("ACPI EC sysfs access driver");
- MODULE_LICENSE("GPL");
- 
- static bool write_support;
--module_param(write_support, bool, 0644);
-+module_param_hw(write_support, bool, other, 0644);
- MODULE_PARM_DESC(write_support, "Dangerous, reboot and removal of battery may "
- 		 "be needed.");
- 
--- 
-2.33.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
