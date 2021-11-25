@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A46D45D4B3
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Nov 2021 07:23:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D16CB45D4B6
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Nov 2021 07:24:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347818AbhKYG1C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 25 Nov 2021 01:27:02 -0500
-Received: from mail-co1nam11on2048.outbound.protection.outlook.com ([40.107.220.48]:16001
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        id S1348021AbhKYG1K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 25 Nov 2021 01:27:10 -0500
+Received: from mail-dm6nam12on2067.outbound.protection.outlook.com ([40.107.243.67]:31520
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1346898AbhKYGZB (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 25 Nov 2021 01:25:01 -0500
+        id S1346900AbhKYGZK (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 25 Nov 2021 01:25:10 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=juNZ3h6IGsq0PylgzbOYY8dn4/ulfHSnWDMRrFZyTpFllUWTDGVa+FiD9Wv2ovhFJnncPupAsv3b77U3DjNMiUkDAz8UAcdiih5SPi4qKDeSUucQ7miM5x/fP/gLKS4puvBwN5v5AulftVbU5aXnM9cuvixMbH7SzoZ0jvSC+YUCekcaFte/9RpnQ4YwC7/lfWXpbtLKb2am0r97648ePNInja8u+z+VPJvgRN1IuuqVLN19Ot+nXfKccJgqdWkkRypPBICN8Lk/Nl8ELUdTjVAI0i4YNbGyJ3bh4PWJ/rOW4QT7QWM5HdKK5RCaH0uQVv+r7OS45W/6k70vt2VTbA==
+ b=T4ro4lI7wrLuitdHedLZUzlqoU00oz7yuNGPEjFnSS0b+v51Di9z+9UOt+LEYvyPnKc4r0MKsK8t348gMMOw18x+0a81C/gHBf30+SVngydTnl0pI98RMPtvTZzEXTEAvt2F7j+oaCBwAtPuiVyCj1Hp9akyiGNPxuU2B/DMVhriRdVRpfmJzvaqtnCDf9pPentxfrdLIfzH3gbEdQVUTf7gtRK+8LrvpfL8o0FXgyX7UctU5+Hw7/yfvf0kPKh2mglkhFeIUJtGlgsfB9fUCkGo41QFHD677GQX/CPu9eP1XsNter5eYARPW5fUSqOE0eXfmWGhjH3/FTWbEkvK9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uOU8C6Y7znkiFBHiwjZb0jtsjd1uW6pExmiRuMBLTIE=;
- b=M+YAEpqvkr1dkWsAMaAuh5FbXWJb6svXNcNIwYd5gR5Hhxr/efCnthn52q1Om8lgGsQR78BFswG9hKU9kXGl1WE0VbUXl2dGNu9nsqTtsuT+POFlQPxPwfyc4Q2jpn+J6xnHzN1izUWuYu70ZmJJ9exJCEWXEo70hpc5xj8lSW/lhmc2naj4G0ok3+o6ewc5jfeKm6slYklF6DMOBosnOB1LUa1j9Kt2jv+nwYHvWhADUnKyuXtU8WGQS8Ybl/J0+P/fspXcpXYI1LBir+3u9kw9H9XuuFGuVxh+jOZdOLjnRZG6DlynFYhJuHqKNwNtrxsNz4aQc0WA4Oo+Y8YFtg==
+ bh=sYnM5mG24DGTZEIpH26Sf/F+NFIfUiPney5r6GNsd+M=;
+ b=ZqbsWhxMc2vOW/D4A1pO34AEtbmJt+eObpcjmyGTQZ5W0lI/09q6wAdXC97V2031vvL/b/ilOTlHPuMs7+LMhqUcHxO0K+T2aZ1gRrz0JFcOit4Q0wvlL2MCGoXxLIA0AFAR0FfFxv25xwOB5z0vuY1EMM+i/hQB+y7KjhALB1Cvgzl90AAbtZDo+bN+5Q+tQZE/5RXZlXlXuHdOBmO0fHNPxgZZhsSYJkv6hn7BBG+aQnJaHMhdvNSC1cs2MCA+qHWDEJOFDMP+py5yW8dTSiRx323mBZPAPDb8fO7cJDK2U/CfdH7w1kowlxBVRuMHSb/lOMpdUluHuEVwXhaV9A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uOU8C6Y7znkiFBHiwjZb0jtsjd1uW6pExmiRuMBLTIE=;
- b=uavTRIB5BHIA0HekvcrxLzKywf7hnA1FyZ2z/5BcZE0VLe5y4WmyEkWhTjfuFbum5agpW2OgGPLJoZKDUUWXv1OeUX6otqpTE29c/+q+8ZSvsC8Ezhqryh3hodY4mC8cVJGQ90NKBSXfQ777R2+6K8KokiqFdmCuPasIuBDdj+U=
-Received: from CO2PR18CA0063.namprd18.prod.outlook.com (2603:10b6:104:2::31)
- by DM6PR12MB2988.namprd12.prod.outlook.com (2603:10b6:5:3d::23) with
+ bh=sYnM5mG24DGTZEIpH26Sf/F+NFIfUiPney5r6GNsd+M=;
+ b=zQlNxwYQ1w+BzrvRdLB/x2ReqbAxkIKUJXqibflPFiIXKleByEFmEpJx1l8vVWe3qzYxnleuFDgx5TPLIlHV1Jo4G7i9HbXtJkg9u0q002rNZWwgFsYS8YSqFfB7eDd2snAXwE35juthsNqtvS1UA3sEqJgGrv/aSa0R/upLRdc=
+Received: from MW4PR04CA0120.namprd04.prod.outlook.com (2603:10b6:303:83::35)
+ by CY4PR12MB1941.namprd12.prod.outlook.com (2603:10b6:903:11a::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.24; Thu, 25 Nov
- 2021 06:21:49 +0000
-Received: from CO1NAM11FT028.eop-nam11.prod.protection.outlook.com
- (2603:10b6:104:2:cafe::38) by CO2PR18CA0063.outlook.office365.com
- (2603:10b6:104:2::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.21 via Frontend
- Transport; Thu, 25 Nov 2021 06:21:49 +0000
+ 2021 06:21:55 +0000
+Received: from CO1NAM11FT053.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:83:cafe::1d) by MW4PR04CA0120.outlook.office365.com
+ (2603:10b6:303:83::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4734.19 via Frontend
+ Transport; Thu, 25 Nov 2021 06:21:55 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -44,20 +44,20 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB03.amd.com;
 Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CO1NAM11FT028.mail.protection.outlook.com (10.13.175.214) with Microsoft SMTP
+ CO1NAM11FT053.mail.protection.outlook.com (10.13.175.63) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4734.22 via Frontend Transport; Thu, 25 Nov 2021 06:21:49 +0000
+ 15.20.4734.22 via Frontend Transport; Thu, 25 Nov 2021 06:21:55 +0000
 Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Thu, 25 Nov
- 2021 00:21:44 -0600
+ 2021 00:21:54 -0600
 Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
  (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Thu, 25 Nov
- 2021 00:21:44 -0600
+ 2021 00:21:53 -0600
 Received: from chrome.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server id 15.1.2375.17 via Frontend
- Transport; Thu, 25 Nov 2021 00:21:41 -0600
+ Transport; Thu, 25 Nov 2021 00:21:50 -0600
 From:   Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
 To:     <sboyd@kernel.org>, <rafael@kernel.org>,
         <linux-clk@vger.kernel.org>
@@ -68,9 +68,9 @@ CC:     <Vijendar.Mukunda@amd.com>, <Alexander.Deucher@amd.com>,
         Len Brown <lenb@kernel.org>,
         "open list:ACPI" <linux-acpi@vger.kernel.org>,
         open list <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 2/7] drivers: acpi: acpi_apd: Remove unused device property "is-rv"
-Date:   Thu, 25 Nov 2021 11:50:31 +0530
-Message-ID: <20211125062036.1185994-3-AjitKumar.Pandey@amd.com>
+Subject: [PATCH v3 3/7] ACPI: APD: Add a fmw property clk-name
+Date:   Thu, 25 Nov 2021 11:50:32 +0530
+Message-ID: <20211125062036.1185994-4-AjitKumar.Pandey@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211125062036.1185994-1-AjitKumar.Pandey@amd.com>
 References: <20211125062036.1185994-1-AjitKumar.Pandey@amd.com>
@@ -79,63 +79,67 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0b1a0c10-f325-484d-1dba-08d9afdbdd29
-X-MS-TrafficTypeDiagnostic: DM6PR12MB2988:
-X-Microsoft-Antispam-PRVS: <DM6PR12MB298865884AC25EFBB40B837C82629@DM6PR12MB2988.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4303;
+X-MS-Office365-Filtering-Correlation-Id: 0b6cb3be-f3b5-434e-ca8f-08d9afdbe0ae
+X-MS-TrafficTypeDiagnostic: CY4PR12MB1941:
+X-Microsoft-Antispam-PRVS: <CY4PR12MB194124C9FAA32F43092A45C482629@CY4PR12MB1941.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2733;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 114HYxSeYaZ69wHhIRkWpk8xMtbcXZwaS4fXEql6tsoayRYy4xWHrT7RZxfB+8ebyLSlfFFp4DQ1yOzUgTerej94XLB5QMc4bFMQ+jtOMzwtNf2+vDQ3g4WMgpUyP13i9XJRI8G9ODisjqQyeKTV0E2YCBXQOyFDPkFzWzfY4eixr8a2TaE12vJqJxYqJnayFdutwvHT6shqbysqdNomKunfR9iUKRkpkbeiEg+hEO07cWSqKVL2MnlznIMlieeUT/ijGLukNiUn6JPOix9eD5fLqhDuAkky30auJLc8+7rNIq5Wt3kObuneSmpejYpB8+diGdNxx469zYbzrNL9bG5plKypGp+RV7lVYt4VrH/T0puxYplEAO2XpYUoHWOUzUlfZ8JffnYll/thuGG9ELOL6sAnhdejkHQRYDeODZ4JN6W+KcxvbhrooZ7EcVPY6A3Gg7pObofe1oJtpt/t6GbYOfs7Sv+jQrGkNrtvutbutvpjjH0Lrum3l04QZept6sdV4fIjme2B59LehjELihgAmb6mI99IcJxU3v5sZKfcMJY8xzPwHew1sEIEdcytJS1u0Utik9Dhy/92cth96gyq+dSC45e8ig3+P1QxG3k12Uf9giGzTSaKH8YiC2/HTXHuQMbYAw7DTVwSwq6cvq938Hg+Br1yR8FS5c7tzOEZmuDWyWjlgWG7Sbhfbp9znGrGT09AUK9M4HNuIw+bsTR452iJIVZRBGNt4FeiG5k=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(186003)(2906002)(5660300002)(26005)(70586007)(316002)(7696005)(36756003)(82310400004)(70206006)(83380400001)(4326008)(1076003)(47076005)(36860700001)(426003)(81166007)(110136005)(54906003)(336012)(86362001)(6666004)(2616005)(8936002)(508600001)(356005)(8676002)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: WM8WP3uMT/f6Q3nvqwLJzc3jkdiDViN/xet4MDkxLM6LwjJp9OMwOE5ln30Q5LYsi+cRLrrErA9PkPMRN6PWDBsbPwfo22SKLg4G/eCOHU2l3eeIIJWiJf9O4NTR3VYh0Kls/qD0nC7mXBZDyAjFjx9z/BSymtKR0Xqqw9Nl0sNStapxj5vFX+phthCpIPViVMXGDiLHsIM16sQ22jFu8GP3/NFASK290uSlQsgdC97/ZyL7S7u63kga+/9KFNIZARKypoJ7Vb18oFqo0YxUGQ8j9uJLoBbWRSCy9/lvpNw5GFMHUCblYleBukUfEZ4wtzubYMAD1M9MU/Qaxc8Ql3jMZNyBxlnBFILTngaPBjadgiM9/x2ZqXvE0mICiC/irrIvPh4/KMi5XCswbkpL3HYoWFM5ZIAu5magDW1SWyK63+as2jgdV+a1HIYzxhKhrnotqqKmKMOccR15Kra5oaV956ug0j5ZL1DSpFQD37QMVyuZziEBqxyTtToUCkWpdRuc5XrBkUoB3YrZ7tpSBu4zNR71INmvWa4O9x34Uxwd3MtwgvNynn/MTMc1/hKECNh1MxiWs2ozKKhrKFJn5SYHPsGiF+SCsYqS09n8TW4r/Zpe90Kd29Cld7Cgi32M4IolFudpuFrh2Dm3RgpwbdPyO+fiqM0L8UGq3u4MuxmXi471WhZ3Eq/fCfhSh1Pz8CRfQTgYVC2I/zgFQpbgAQ+ZU/CZ8mzbD3PnnmxJMd4=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(86362001)(82310400004)(5660300002)(8676002)(2616005)(54906003)(70206006)(81166007)(36860700001)(2906002)(1076003)(336012)(426003)(186003)(508600001)(110136005)(356005)(47076005)(36756003)(26005)(4326008)(6666004)(8936002)(7696005)(316002)(70586007)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2021 06:21:49.1214
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2021 06:21:55.0286
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b1a0c10-f325-484d-1dba-08d9afdbdd29
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b6cb3be-f3b5-434e-ca8f-08d9afdbe0ae
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT028.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT053.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB2988
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR12MB1941
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Initially "is-rv" device property is added for 48MHz fixed clock
-support on Raven or RV architecture. It's unused now as we moved
-to pci device_id based selection to extend such support on other
-architectures. This change removed unused code from acpi driver.
+Add a new device property to fetch clk-name from firmware.
 
 Signed-off-by: Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
 ---
- drivers/acpi/acpi_apd.c               | 3 ---
- include/linux/platform_data/clk-fch.h | 1 -
- 2 files changed, 4 deletions(-)
+ drivers/acpi/acpi_apd.c               | 10 ++++++++++
+ include/linux/platform_data/clk-fch.h |  1 +
+ 2 files changed, 11 insertions(+)
 
 diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-index 6e02448d15d9..6913e9712852 100644
+index 6913e9712852..2b958b426b03 100644
 --- a/drivers/acpi/acpi_apd.c
 +++ b/drivers/acpi/acpi_apd.c
-@@ -87,9 +87,6 @@ static int fch_misc_setup(struct apd_private_data *pdata)
+@@ -87,6 +87,16 @@ static int fch_misc_setup(struct apd_private_data *pdata)
  	if (ret < 0)
  		return -ENOENT;
  
--	if (!acpi_dev_get_property(adev, "is-rv", ACPI_TYPE_INTEGER, &obj))
--		clk_data->is_rv = obj->integer.value;
--
++	if (!acpi_dev_get_property(adev, "clk-name", ACPI_TYPE_STRING, &obj)) {
++		clk_data->name = devm_kzalloc(&adev->dev, obj->string.length,
++					      GFP_KERNEL);
++
++		strcpy(clk_data->name, obj->string.pointer);
++	} else {
++		/* Set default name to mclk if entry missing in firmware */
++		clk_data->name = "mclk";
++	}
++
  	list_for_each_entry(rentry, &resource_list, node) {
  		clk_data->base = devm_ioremap(&adev->dev, rentry->res->start,
  					      resource_size(rentry->res));
 diff --git a/include/linux/platform_data/clk-fch.h b/include/linux/platform_data/clk-fch.h
-index b9f682459f08..850ca776156d 100644
+index 850ca776156d..11a2a23fd9b2 100644
 --- a/include/linux/platform_data/clk-fch.h
 +++ b/include/linux/platform_data/clk-fch.h
-@@ -12,7 +12,6 @@
+@@ -12,6 +12,7 @@
  
  struct fch_clk_data {
  	void __iomem *base;
--	u32 is_rv;
++	char *name;
  };
  
  #endif /* __CLK_FCH_H */
