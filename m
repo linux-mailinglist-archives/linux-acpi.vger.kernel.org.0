@@ -2,65 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C47B45ECE9
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Nov 2021 12:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1BAB45EDDB
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Nov 2021 13:28:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241570AbhKZLvR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Nov 2021 06:51:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:40778 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1345405AbhKZLtQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 26 Nov 2021 06:49:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637927163;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=c1ya2zAC+GLUoT5O0PKB3gUVIZyk51duRXmMGKOgUc4=;
-        b=UWEUWbfolEyBTP5kP/4FHgZktfqhwzZUH3emD8oALL2xAH7OHW8MHxUmrYS9xMk/P1meK8
-        /6NxtyJrVRuimFJjq4hC9f5fWZuJS/RWjv7cIeNAnjXuhrd30l1J9CBIf9mtPfO8iRSY8K
-        hLVkio6dUvFFouvqqfMZR03CleIWCv0=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-41-5zqOdJHUMKWViXetr0e6Bg-1; Fri, 26 Nov 2021 06:46:02 -0500
-X-MC-Unique: 5zqOdJHUMKWViXetr0e6Bg-1
-Received: by mail-ed1-f69.google.com with SMTP id s12-20020a50ab0c000000b003efdf5a226fso1708769edc.10
-        for <linux-acpi@vger.kernel.org>; Fri, 26 Nov 2021 03:46:02 -0800 (PST)
+        id S237112AbhKZMb3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Nov 2021 07:31:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37008 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233765AbhKZM33 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Nov 2021 07:29:29 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C220C08C5DA;
+        Fri, 26 Nov 2021 03:56:14 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id j3so18148910wrp.1;
+        Fri, 26 Nov 2021 03:56:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=FjiDebeN0lftz9SIBVsy6WJxvM/l3Hn6Nmxtkdqni4Q=;
+        b=qV59eAZvwVT28HDrcNzurtuW8qs60Idx7SSZRN9FdnyyNugUBTneHz/X8BbSom+Z1M
+         FFMacGSf/yxmIocne/ESqk797izSzsl0zwq2x5T1LtE4DJnz1Reh0lJKpbLTeXWO0rj5
+         9HBk0KmDA3+OnrTaG4/bfBNt/rfhnivxrjflJzSuvH/OKfqln4diqOEZl7uE1VcIhE+m
+         GWaKb+CQxgLCkHCCEQpQdNoIDijAt2a0E8uM+fhYQLDvRfNEoXUGjXZzkTgcIw7T2Tp0
+         FII8k3XvwMmffzfIZPlTJh4/eMfb+xXov9RUY7mNhj9BRbQjckh7AWLjwqPXf5M0w0I4
+         tGow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=c1ya2zAC+GLUoT5O0PKB3gUVIZyk51duRXmMGKOgUc4=;
-        b=aZvH9jKgDFJBTzvMlZyGvdNQJI1y9+3ohgPJI5Lopks/yur4ab+hxMHBdUxPFrFb2c
-         Izbwu2BFcVbpQpauOvjtQpYhLQI3QylUMWXy9VV2k/IDp2lhi2e9R1JL4BGfycQwsrwz
-         teAnd9lMFwdKNWnleAPIN177tiGP6iYkBOn1U5N2ZrZ13jHGA/vprrg/SIQYwwwtsa7j
-         RzVPlra+AYtBZ4/ndCN4IIba7Yc1nbAX8oBCzb6yWP04N4BZtYqLUAojkHhaWrB738pU
-         /6VuQeQ/GtfG1lEslaMRMScDlNs4Q3MuAXdSBR6hkEAdG6QJ8zYGd+nwtihvCMehxJsm
-         MX2Q==
-X-Gm-Message-State: AOAM531wbGg5fbx/tij6oPp83ktNo6t30FtelmY5YKtU06iD2rZCyzwb
-        kS2LMv0A7Oxc0nwv9rDwP4GpMPzmmUWiHYlFevcrPZln3zR1sbtWhvs5caWw2qBPBpWDq4PVKH+
-        R7z4RXauewh2GE/rb7oRdcQ==
-X-Received: by 2002:a17:906:8c3:: with SMTP id o3mr38686194eje.10.1637927161126;
-        Fri, 26 Nov 2021 03:46:01 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwQ7am4Ala1kqDx7YmdB+rbbqSZypeAXzclZOGZ1kAkUizNdbpr5ikUpVseAcA4iSm5SH/CwA==
-X-Received: by 2002:a17:906:8c3:: with SMTP id o3mr38686160eje.10.1637927160921;
-        Fri, 26 Nov 2021 03:46:00 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id f7sm3747090edl.33.2021.11.26.03.46.00
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=FjiDebeN0lftz9SIBVsy6WJxvM/l3Hn6Nmxtkdqni4Q=;
+        b=lCByU3f0B5ufhtD32kXeMylQfmSZAQBw4xJa3fXvULVCnZ38S1NlihoSyBE4I9dwoN
+         T+vxvLAWuIWYa1P7EhcHgx1TNGVwNQWp7MKqhSeC7Y184OhfO63+QahBcdn2Y4BMMeI7
+         sKKpY/yWYFH8epG76qysRIQWkMz390pw3+Ymjj6n5rLsqxcNrlBqw2sIzAQ7tb8+147R
+         5dfMsRNHLmcLFQuCE6bDU5UxE3adBQ1y+f65GVcMp/4LP8Gcc0qPkx+lg8Hrwl8VRtBy
+         +9TmbQeYzQ161jKIvmYO8Rtn358NoMio8GzAJpe607jHGJGumJGUNjsPO5/hmRbYoPXh
+         ZsvQ==
+X-Gm-Message-State: AOAM533bS5l1zGecK2RUs4F08r0p9ozTotsuUbSEhwUVfO/EFtoMd7Eo
+        U2iXwGE9I86dMNg7tASp5qI=
+X-Google-Smtp-Source: ABdhPJzfUgA3+l4rR+XNu5HeQbUXPQ1u3phKl+rWgA+uxctzFaji7KrNTSrX0cUbU77wZeGV2rlWOA==
+X-Received: by 2002:adf:c10e:: with SMTP id r14mr13062187wre.558.1637927772579;
+        Fri, 26 Nov 2021 03:56:12 -0800 (PST)
+Received: from [192.168.0.14] (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net. [86.13.91.161])
+        by smtp.gmail.com with ESMTPSA id p13sm10797690wmi.0.2021.11.26.03.56.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Nov 2021 03:46:00 -0800 (PST)
-Message-ID: <2fd5400e-e587-54d2-1071-ad8df49a8a68@redhat.com>
-Date:   Fri, 26 Nov 2021 12:45:59 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
+        Fri, 26 Nov 2021 03:56:12 -0800 (PST)
 Subject: Re: [PATCH v6 07/15] platform/x86: int3472: Enable I2c daisy chain
-Content-Language: en-US
-To:     Daniel Scally <djrscally@gmail.com>,
+To:     Hans de Goede <hdegoede@redhat.com>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mark Gross <markgross@kernel.org>,
@@ -83,108 +72,121 @@ References: <20211125165412.535063-1-hdegoede@redhat.com>
  <YaAel9HuAvemRg2s@pendragon.ideasonboard.com>
  <03306e12-40ec-39ab-3b40-42b0395e1b65@redhat.com>
  <4ab5efa7-65b0-009c-293a-d7a49776e78d@gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <4ab5efa7-65b0-009c-293a-d7a49776e78d@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ <2fd5400e-e587-54d2-1071-ad8df49a8a68@redhat.com>
+From:   Daniel Scally <djrscally@gmail.com>
+Message-ID: <ef123ea0-f51f-50e1-dbc2-c442a97722e4@gmail.com>
+Date:   Fri, 26 Nov 2021 11:56:11 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <2fd5400e-e587-54d2-1071-ad8df49a8a68@redhat.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
 
-On 11/26/21 12:39, Daniel Scally wrote:
-> Hello
-> 
-> On 26/11/2021 11:30, Hans de Goede wrote:
->> Hi,
+On 26/11/2021 11:45, Hans de Goede wrote:
+> Hi,
+>
+> On 11/26/21 12:39, Daniel Scally wrote:
+>> Hello
 >>
->> On 11/26/21 00:39, Laurent Pinchart wrote:
->>> Hi Hans,
+>> On 26/11/2021 11:30, Hans de Goede wrote:
+>>> Hi,
 >>>
->>> Thank you for the patch.
+>>> On 11/26/21 00:39, Laurent Pinchart wrote:
+>>>> Hi Hans,
+>>>>
+>>>> Thank you for the patch.
+>>>>
+>>>> On Thu, Nov 25, 2021 at 05:54:04PM +0100, Hans de Goede wrote:
+>>>>> From: Daniel Scally <djrscally@gmail.com>
+>>>>>
+>>>>> The TPS68470 PMIC has an I2C passthrough mode through which I2C traffic
+>>>>> can be forwarded to a device connected to the PMIC as though it were
+>>>>> connected directly to the system bus. Enable this mode when the chip
+>>>>> is initialised.
+>>>> Is there any drawback doing this unconditionally, if nothing is
+>>>> connected to the bus on the other side (including no pull-ups) ?
+>>> I actually never took a really close look at this patch, I just
+>>> sorta inherited it from Daniel.
 >>>
->>> On Thu, Nov 25, 2021 at 05:54:04PM +0100, Hans de Goede wrote:
->>>> From: Daniel Scally <djrscally@gmail.com>
->>>>
->>>> The TPS68470 PMIC has an I2C passthrough mode through which I2C traffic
->>>> can be forwarded to a device connected to the PMIC as though it were
->>>> connected directly to the system bus. Enable this mode when the chip
->>>> is initialised.
->>> Is there any drawback doing this unconditionally, if nothing is
->>> connected to the bus on the other side (including no pull-ups) ?
->> I actually never took a really close look at this patch, I just
->> sorta inherited it from Daniel.
+>>> Now that I have taken a close look, I see that it is setting the
+>>> exact same bits as which get set when enabling the VSIO regulator.
+>>>
+>>> The idea here is that the I2C-passthrough only gets enabled when
+>>> the VSIO regulator is turned on, because some sensors end up
+>>> shorting the I2C pins to ground when the sensor is not powered.
+>>>
+>>> Since we set these bits when powering up the VSIO regulator
+>>> and since we do that before trying to talk to the sensor
+>>> I don't think that we need this (hack) anymore.
+>>>
+>>> I will give things a try without this change and if things
+>>> still work I will drop this patch from the set.
+>>>
+>>> Daniel, what do you think?
 >>
->> Now that I have taken a close look, I see that it is setting the
->> exact same bits as which get set when enabling the VSIO regulator.
->>
->> The idea here is that the I2C-passthrough only gets enabled when
->> the VSIO regulator is turned on, because some sensors end up
->> shorting the I2C pins to ground when the sensor is not powered.
->>
->> Since we set these bits when powering up the VSIO regulator
->> and since we do that before trying to talk to the sensor
->> I don't think that we need this (hack) anymore.
->>
->> I will give things a try without this change and if things
->> still work I will drop this patch from the set.
->>
->> Daniel, what do you think?
-> 
-> 
-> Humm, we're only using the VSIO regulator with the VCM though right?
+>> Humm, we're only using the VSIO regulator with the VCM though right?
+> Nope, there is a mapping from VSIO to dovdd for the ov8865 in the
+> board_data; and I'm pretty sure I copied that from your earlier
+> attempts at getting regulator lookups registered :)
 
-Nope, there is a mapping from VSIO to dovdd for the ov8865 in the
-board_data; and I'm pretty sure I copied that from your earlier
-attempts at getting regulator lookups registered :)
-
-And even if the VSIO regulator was only used by the VCM, then it would
-get turned off after probing the VCM, clearing the 2 bits which this
-commit sets. Which would break things if we did not re-enable it when
-the ov8865 needs it.
-
-> Which might not be on when the ov8865 tries to probe. I haven't tried
-> without this patch to be honest; I set it because that was what Windows
-> does when powering on the PMIC.
-
-See above, I'm pretty sure we can do without this patch which means
-that the INT3472 code will no longer be poking at the PMIC directly
-itself, which is good :)
-
-Anyways I'll give this a try sometime next week and then drop the
-patch.
-
-Regards,
-
-Hans
+Oh yeah derp; I was looking at the supply names rather than the
+regulator names, my bad!
+> And even if the VSIO regulator was only used by the VCM, then it would
+> get turned off after probing the VCM, clearing the 2 bits which this
+> commit sets. Which would break things if we did not re-enable it when
+> the ov8865 needs it.
+>
+>> Which might not be on when the ov8865 tries to probe. I haven't tried
+>> without this patch to be honest; I set it because that was what Windows
+>> does when powering on the PMIC.
+> See above, I'm pretty sure we can do without this patch which means
+> that the INT3472 code will no longer be poking at the PMIC directly
+> itself, which is good :)
 
 
+Yeah, in that case I think you're right and this can be dropped.
+
+> Anyways I'll give this a try sometime next week and then drop the
+> patch.
 
 
->>>> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
->>>> Signed-off-by: Daniel Scally <djrscally@gmail.com>
->>>> ---
->>>>  .../x86/intel/int3472/intel_skl_int3472_tps68470.c         | 7 +++++++
->>>>  1 file changed, 7 insertions(+)
->>>>
->>>> diff --git a/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c b/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c
->>>> index c05b4cf502fe..42e688f4cad4 100644
->>>> --- a/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c
->>>> +++ b/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c
->>>> @@ -45,6 +45,13 @@ static int tps68470_chip_init(struct device *dev, struct regmap *regmap)
->>>>  		return ret;
->>>>  	}
->>>>  
->>>> +	/* Enable I2C daisy chain */
->>>> +	ret = regmap_write(regmap, TPS68470_REG_S_I2C_CTL, 0x03);
->>>> +	if (ret) {
->>>> +		dev_err(dev, "Failed to enable i2c daisy chain\n");
->>>> +		return ret;
->>>> +	}
->>>> +
->>>>  	dev_info(dev, "TPS68470 REVID: 0x%02x\n", version);
->>>>  
->>>>  	return 0;
-> 
+Sounds good
 
+>
+> Regards,
+>
+> Hans
+>
+>
+>
+>
+>>>>> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>>>>> Signed-off-by: Daniel Scally <djrscally@gmail.com>
+>>>>> ---
+>>>>>  .../x86/intel/int3472/intel_skl_int3472_tps68470.c         | 7 +++++++
+>>>>>  1 file changed, 7 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c b/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c
+>>>>> index c05b4cf502fe..42e688f4cad4 100644
+>>>>> --- a/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c
+>>>>> +++ b/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c
+>>>>> @@ -45,6 +45,13 @@ static int tps68470_chip_init(struct device *dev, struct regmap *regmap)
+>>>>>  		return ret;
+>>>>>  	}
+>>>>>  
+>>>>> +	/* Enable I2C daisy chain */
+>>>>> +	ret = regmap_write(regmap, TPS68470_REG_S_I2C_CTL, 0x03);
+>>>>> +	if (ret) {
+>>>>> +		dev_err(dev, "Failed to enable i2c daisy chain\n");
+>>>>> +		return ret;
+>>>>> +	}
+>>>>> +
+>>>>>  	dev_info(dev, "TPS68470 REVID: 0x%02x\n", version);
+>>>>>  
+>>>>>  	return 0;
