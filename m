@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFBEC45F3C9
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Nov 2021 19:22:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D10C645F3D5
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Nov 2021 19:22:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240856AbhKZSZ4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Nov 2021 13:25:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57782 "EHLO
+        id S241153AbhKZS0A (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Nov 2021 13:26:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237921AbhKZSXy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Nov 2021 13:23:54 -0500
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8D52C0613A5;
-        Fri, 26 Nov 2021 10:01:59 -0800 (PST)
-Received: by mail-lj1-x22c.google.com with SMTP id j18so7033618ljc.12;
-        Fri, 26 Nov 2021 10:01:59 -0800 (PST)
+        with ESMTP id S238027AbhKZSX6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Nov 2021 13:23:58 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A614C0698CE;
+        Fri, 26 Nov 2021 10:02:02 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id t26so26071836lfk.9;
+        Fri, 26 Nov 2021 10:02:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=TugVlbRXpFiQ9yttEJ2CYhwYKdBA8PSz6pBjqNjtqe8=;
-        b=EXi/oxDDucB7vJNmfYFh1Iwg1we98RTNK7qyQ6Pdkz3hnbaV2hMW4l1POGeJ+EuDW3
-         mfK8h6/HGX48geRcpT6dEfo/FZS8zjrNQzuV9D9yTWn1MlecsUkK/urNFZNa2VjEdWl9
-         3/xQ0erpf6zbbhnap8EibMOxOLqWzB/sgB1oOOeSZJajy/Ifr+5no+/bjgdeTssZ3wit
-         5MjglkJmn7BWDrHCR5FY99XqOGptLogROhVJVK+6zpUEjhp3iHhkSjd8cGYxkYTOE3E5
-         Hunlawsq/RhtNyOKzbO6esnP6jp4mV/8bYBosw7nvP39SDUVYAevi9e0LAdOtl4z+dWr
-         vlGQ==
+        bh=xS83fHvJX20ICn8zHYRDKvqQ1GY72vd2riIHxwkjweU=;
+        b=d2rBY2F8FZR6fxo+AWivP8d/aANzXuwHT+cg69g6mn5w1PrR2Sa1IDulp20ge0kF/A
+         cHnbxdSmlImW4wjqRz81zw3X1kevspbs+ZSvuFeqFssl7QkZMhAYxFVlnhJC7t+o5Ekh
+         eNtRL2ojA7gJWr57oxbZKqm22O40Yv/rsDGA/NeWMpTdjAZIOo1PA/WaWBgnC2ALY5RA
+         62bhQhoX5OCa7ZShxw0qrygSKSdJKJGDVnCPcPOzYsdIdpEoCBnHtdYY6e8ZoWq4VDFh
+         N3S4qSVEELp33r/g+I5VvFht9D09Xj+u4OjF/0z+Ek8MwK4vNOYgNJskWndj6bmjKPsl
+         6oSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=TugVlbRXpFiQ9yttEJ2CYhwYKdBA8PSz6pBjqNjtqe8=;
-        b=jL2P8Q0yJKuMh8P4HXiaeKWhumD2EOdbNO8UBhoUjizotDoqWVt9JAUandQDvoGuBX
-         AnwDoSY/ujtE9Xkom1Vlx2d0/w8M6YCykryXRJIWaJl7076QW+dyqfsQn//FeNO4OQCa
-         wKkqCkJCi4ZKQ78ff9NV/jRMKQfpzRDKJr/ITgqcCsj5ZgUOXS7F5HyO5ORnBG0JHwDZ
-         4kxpWpCsC6RoFbnbaGOsuVcKTYWMiD2yEDqZNUtMWPlixZ7OiHgAe5KS1CF3dCxsXLP6
-         vjYEao/tgyywrCeXU57Zgqs7OT0W+C34W1DtcGIkeLlJCQ11wK/RvFFNOhhZiDfSxHbV
-         XGFQ==
-X-Gm-Message-State: AOAM5335wduFJEFm26IjO6eZuu9ijKQqDoBXIHmGMzvY6w94X4fj6yml
-        oaTlYDnVQMznfZRgw8Nu57A=
-X-Google-Smtp-Source: ABdhPJxZrbo5DYPMSOmTH3wpvpPB7QiVBAcDOPNsyswyNXYwa8DOLhCA5ZoHQosELHStWSCO8T/NkQ==
-X-Received: by 2002:a2e:740b:: with SMTP id p11mr33098297ljc.215.1637949718086;
-        Fri, 26 Nov 2021 10:01:58 -0800 (PST)
+        bh=xS83fHvJX20ICn8zHYRDKvqQ1GY72vd2riIHxwkjweU=;
+        b=7fsancj0mtXR1vA55h92AGUyw2R/ptP2LljkF7RV49pkh0Ggjt0K6LlGHLIC5HEwze
+         +DyHygxnQrMVzLjxJsLQytVrvorK90hw0DAzM4RwqQLz+fi2rCGGr7/DRUvf5T5zuei9
+         XXUf0/hPR15BPEsct9Kn9QHCIha5EBngD+n00vyELaa1tX/9KvwYHJb5g2N2E3aFF7/U
+         KdHDLW5LF0nsIrIZV9Yng7YZU31iwAsyGXSEFIhdkVpvjQVazFHAkoQtMpCMOYRIdwXX
+         vu+l518IWZ8jy+gNgjNupMpOxqIhLyBY75vEsCTdhaBFvc49j8kR4pG6FQdoISMS4NgX
+         WTnQ==
+X-Gm-Message-State: AOAM533LA67jJD9eJr8NDO22lVkqqiwrcJF1L5ZH2PboR8Gz7JEJ/yQ0
+        I/jzSIZbfAUTxPKAKrIDih4=
+X-Google-Smtp-Source: ABdhPJyHlWHAIH2qsXkt3ruT7+BLFA3v5nYyOKPdcFWdHrRv9Oght1lKgGW/OoNNNMfJWGOCYURP8w==
+X-Received: by 2002:a05:6512:32ca:: with SMTP id f10mr32489980lfg.364.1637949720361;
+        Fri, 26 Nov 2021 10:02:00 -0800 (PST)
 Received: from localhost.localdomain (94-29-48-99.dynamic.spd-mgts.ru. [94.29.48.99])
-        by smtp.gmail.com with ESMTPSA id i32sm553831lfv.295.2021.11.26.10.01.56
+        by smtp.gmail.com with ESMTPSA id i32sm553831lfv.295.2021.11.26.10.01.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Nov 2021 10:01:57 -0800 (PST)
+        Fri, 26 Nov 2021 10:01:59 -0800 (PST)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -99,9 +99,9 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: [PATCH v4 04/25] reboot: Correct typo in a comment
-Date:   Fri, 26 Nov 2021 21:00:40 +0300
-Message-Id: <20211126180101.27818-5-digetx@gmail.com>
+Subject: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated priority
+Date:   Fri, 26 Nov 2021 21:00:41 +0300
+Message-Id: <20211126180101.27818-6-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211126180101.27818-1-digetx@gmail.com>
 References: <20211126180101.27818-1-digetx@gmail.com>
@@ -111,26 +111,41 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Correct s/implemenations/implementations/ in <reboot.h>.
+Add sanity check which ensures that there are no two restart handlers
+registered with the same priority. Normally it's a direct sign of a
+problem if two handlers use the same priority.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- include/linux/reboot.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/reboot.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/reboot.h b/include/linux/reboot.h
-index af907a3d68d1..7c288013a3ca 100644
---- a/include/linux/reboot.h
-+++ b/include/linux/reboot.h
-@@ -63,7 +63,7 @@ struct pt_regs;
- extern void machine_crash_shutdown(struct pt_regs *);
- 
- /*
-- * Architecture independent implemenations of sys_reboot commands.
-+ * Architecture independent implementations of sys_reboot commands.
+diff --git a/kernel/reboot.c b/kernel/reboot.c
+index 6bcc5d6a6572..e6659ae329f1 100644
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -182,7 +182,20 @@ static ATOMIC_NOTIFIER_HEAD(restart_handler_list);
   */
+ int register_restart_handler(struct notifier_block *nb)
+ {
+-	return atomic_notifier_chain_register(&restart_handler_list, nb);
++	int ret;
++
++	ret = atomic_notifier_chain_register(&restart_handler_list, nb);
++	if (ret)
++		return ret;
++
++	/*
++	 * Handler must have unique priority. Otherwise call order is
++	 * determined by registration order, which is unreliable.
++	 */
++	WARN(!atomic_notifier_has_unique_priority(&restart_handler_list, nb),
++	     "restart handler must have unique priority\n");
++
++	return 0;
+ }
+ EXPORT_SYMBOL(register_restart_handler);
  
- extern void kernel_restart_prepare(char *cmd);
 -- 
 2.33.1
 
