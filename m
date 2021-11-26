@@ -2,105 +2,91 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C10D45F3A1
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Nov 2021 19:19:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E519745F54E
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Nov 2021 20:40:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239010AbhKZSWw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 26 Nov 2021 13:22:52 -0500
-Received: from mga06.intel.com ([134.134.136.31]:26698 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231664AbhKZSUv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 26 Nov 2021 13:20:51 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10180"; a="296503037"
-X-IronPort-AV: E=Sophos;i="5.87,266,1631602800"; 
-   d="scan'208";a="296503037"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2021 10:13:58 -0800
-X-IronPort-AV: E=Sophos;i="5.87,266,1631602800"; 
-   d="scan'208";a="510079221"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2021 10:13:56 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1mqfjO-00As5Z-61;
-        Fri, 26 Nov 2021 20:13:54 +0200
-Date:   Fri, 26 Nov 2021 20:13:53 +0200
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Yauhen Kharuzhy <jekhor@gmail.com>
-Subject: Re: [PATCH v2 2/3] pinctrl: cherryview: Do not allow the same
- interrupt line to be used by 2 pins
-Message-ID: <YaEj4WuexzxGiP4L@smile.fi.intel.com>
-References: <20211118105650.207638-1-hdegoede@redhat.com>
- <20211118105650.207638-2-hdegoede@redhat.com>
- <YZY1rTL2fnz1pxTq@lahna>
+        id S237295AbhKZTn3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 26 Nov 2021 14:43:29 -0500
+Received: from mail-oi1-f179.google.com ([209.85.167.179]:42963 "EHLO
+        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234565AbhKZTl3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 26 Nov 2021 14:41:29 -0500
+Received: by mail-oi1-f179.google.com with SMTP id n66so20591567oia.9;
+        Fri, 26 Nov 2021 11:38:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=F9WHBsDLTzuit4FpL95JXqUXCEDgLzm46M8tiPrpblo=;
+        b=IslsSqvKbM35zNe++g6CRj8TJ2wnMyRMiM5UXXGGbsuooazcTucLGvy+bG97Jq6LBt
+         T8FYMKHHavu7A6GvpyIsOYRQtAFGKNc8fOCNv470g6xrtyUqQuMiSp+FBl8cWpDn6d4t
+         YiB3yo76K9c6a180SSHcGG+VR6a6qW7N++NQ7UuEsuwc2f7XlYy1K2noOHpyo71qzIE5
+         AF5EKtmcVI6qDsg0+3FLh0BzCg+wqYI5a92L9YMqCcNWSf/NePj+Hfjh94J73za92rWA
+         3ufjbN5L8c0P3+Yhd7bXKlHxdRVuEiK4DJf80HNbJcKhJlIRsZBALkAKj+Ntq1DepURM
+         JSLQ==
+X-Gm-Message-State: AOAM532KqvM9fhZxvhMJyuYqcKSGrAMw7msNrJWyNASZ6JPEJtiDzGjK
+        pN8g3iQtdgvJCZcJC68XBBzzFW3rhSk7d5JZabIplOJ9RsM=
+X-Google-Smtp-Source: ABdhPJxDuNFd5kP8PSZzKLlxI8I7yqqCWq8JrwFtCZ+uIOI9GIMxK3nSuVvjhKTtdG61/NUxeoKptwCjDCwJ2ahRLAo=
+X-Received: by 2002:a05:6808:14c2:: with SMTP id f2mr24949459oiw.154.1637955496108;
+ Fri, 26 Nov 2021 11:38:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YZY1rTL2fnz1pxTq@lahna>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 26 Nov 2021 20:38:05 +0100
+Message-ID: <CAJZ5v0hQaF-ANLc4JO=Ub_JMsqLFpZev_gmpb=NPpg=zmqcauA@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v5.16-rc3
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Nov 18, 2021 at 01:14:53PM +0200, Mika Westerberg wrote:
-> On Thu, Nov 18, 2021 at 11:56:49AM +0100, Hans de Goede wrote:
-> > It is impossible to use the same interrupt line for 2 pins, this will
-> > result in the interrupts only being delivered to the IRQ handler for
-> > the pin for which chv_gpio_irq_type() was called last.
-> > 
-> > The pinctrl-cherryview.c code relies on the BIOS to correctly setup the
-> > interrupt line, but there is a BIOS bug on at least the Medion Akoya E1239T
-> > and the GPD win models where both INT33FF:02 pin 8, used by the powerbutton
-> > and INT33FF:02 pin 21 used as IRQ input for the accelerometer are mapped to
-> > interrupt line 0.
-> > 
-> > This causes 2 problems:
-> > 1. The accelerometer IRQ does not work, since the power button is probed
-> > later taking over the intr_lines[0] slot.
-> > 
-> > 2. Since the accelerometer IRQ is not marked as wakeup, interrupt line 0
-> > gets masked on suspend, causing the power button to not work to wake
-> > the system from suspend.
-> > 
-> > Likewise on the Lenovo Yogabook, which has a touchscreen as keyboard
-> > and the keyboard half of the tablet also has a Wacom digitizer, the BIOS
-> > by default assigns the same interrupt line to the GPIOs used
-> > for their interrupts.
-> > 
-> > Fix these problems by adding a check for this and assigning a new
-> > interrupt line to the 2nd pin for which chv_gpio_irq_type() gets called.
-> > 
-> > With this fix in place the following 2 messages show up in dmesg on
-> > the Medion Akoya E1239T and the GPD win:
-> > 
-> >  cherryview-pinctrl INT33FF:02: interrupt line 0 is used by both pin 21 and pin 8
-> >  cherryview-pinctrl INT33FF:02: changing the interrupt line for pin 8 to 15
-> > 
-> > And the following gets logged on the Lenovo Yogabook:
-> > 
-> >  cherryview-pinctrl INT33FF:01: interrupt-line 0 is used by both pin 49 and pin 56
-> >  cherryview-pinctrl INT33FF:01: changing the interrupt line for pin 56 to 7
-> > 
-> > Note commit 9747070c11d6 ("Input: axp20x-pek - always register interrupt
-> > handlers") was added as a work around for the power button not being able
-> > to wakeup the system. This relies on using the PMIC's connection to the
-> > power button but that only works on systems with the AXP288 PMIC.
-> > Once this fix has been merged that workaround can be removed.
-> > 
-> > Cc: Yauhen Kharuzhy <jekhor@gmail.com>
-> > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> 
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Hi Linus,
 
-Pushed to my review and testing queue, thanks!
+Please pull from the tag
 
--- 
-With Best Regards,
-Andy Shevchenko
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.16-rc3
+
+with top-most commit 2e13e5aeda156f747919c7111723b9302836fb38
+
+ Merge branch 'acpi-properties'
+
+on top of commit 136057256686de39cc3a07c2e39ef6bc43003ff6
+
+ Linux 5.16-rc2
+
+to receive ACPI fixes for 5.16-rc3.
+
+These fix a NULL pointer dereference in the CPPC library code and
+a locking issue related to printing the names of ACPI device nodes
+in the device properties framework.
+
+Specifics:
+
+ - Fix NULL pointer dereference in the CPPC library code occurring
+   on hybrid systems without CPPC support (Rafael Wysocki).
+
+ - Avoid attempts to acquire a semaphore with interrupts off when
+   printing the names of ACPI device nodes and clean up code on
+   top of that fix (Sakari Ailus).
+
+Thanks!
 
 
+---------------
+
+Rafael J. Wysocki (1):
+      ACPI: CPPC: Add NULL pointer check to cppc_get_perf()
+
+Sakari Ailus (2):
+      ACPI: Get acpi_device's parent from the parent field
+      ACPI: Make acpi_node_get_parent() local
+
+---------------
+
+ drivers/acpi/cppc_acpi.c |  9 ++++++++-
+ drivers/acpi/property.c  | 14 +++++---------
+ include/linux/acpi.h     |  7 -------
+ 3 files changed, 13 insertions(+), 17 deletions(-)
