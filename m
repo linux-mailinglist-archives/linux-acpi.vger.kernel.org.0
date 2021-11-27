@@ -2,614 +2,210 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B3FB45FCA9
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 Nov 2021 06:18:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5494745FD58
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Nov 2021 09:00:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229609AbhK0FV4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Nov 2021 00:21:56 -0500
-Received: from mga01.intel.com ([192.55.52.88]:3219 "EHLO mga01.intel.com"
+        id S1352778AbhK0IEB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 27 Nov 2021 03:04:01 -0500
+Received: from mga02.intel.com ([134.134.136.20]:32639 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229918AbhK0FT4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 27 Nov 2021 00:19:56 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10180"; a="259649062"
+        id S1350020AbhK0ICA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 27 Nov 2021 03:02:00 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10180"; a="222975557"
 X-IronPort-AV: E=Sophos;i="5.87,268,1631602800"; 
-   d="scan'208";a="259649062"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2021 21:16:42 -0800
+   d="scan'208";a="222975557"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2021 23:58:46 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.87,268,1631602800"; 
-   d="scan'208";a="675727126"
+   d="scan'208";a="498677373"
 Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
-  by orsmga005.jf.intel.com with ESMTP; 26 Nov 2021 21:16:37 -0800
+  by orsmga007.jf.intel.com with ESMTP; 26 Nov 2021 23:58:44 -0800
 Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1mqq4i-00095l-V0; Sat, 27 Nov 2021 05:16:36 +0000
-Date:   Sat, 27 Nov 2021 13:16:33 +0800
+        id 1mqsbb-0009Et-Df; Sat, 27 Nov 2021 07:58:43 +0000
+Date:   Sat, 27 Nov 2021 15:58:17 +0800
 From:   kernel test robot <lkp@intel.com>
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, git@xilinx.com, michal.simek@xilinx.com,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
-        linux-acpi@vger.kernel.org, andriy.shevchenko@linux.intel.com
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org
-Subject: Re: [PATCH v11 3/5] iio: adc: Add Xilinx AMS driver
-Message-ID: <202111271321.WU0i14KG-lkp@intel.com>
-References: <20211124225407.17793-4-anand.ashok.dumbre@xilinx.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 7975c7f139bb692861600c15d89034a24e467aa9
+Message-ID: <61a1e519./uobgCy4gEBmsNC0%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211124225407.17793-4-anand.ashok.dumbre@xilinx.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Anand,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 7975c7f139bb692861600c15d89034a24e467aa9  Merge branches 'acpi-power', 'acpi-dptf', 'acpi-processor' and 'acpi-scan' into linux-next
 
-Thank you for the patch! Perhaps something to improve:
+elapsed time: 724m
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linux/master linus/master v5.16-rc2 next-20211126]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+configs tested: 148
+configs skipped: 4
 
-url:    https://github.com/0day-ci/linux/commits/Anand-Ashok-Dumbre/Add-Xilinx-AMS-Driver/20211125-065614
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: hexagon-randconfig-r014-20211126 (https://download.01.org/0day-ci/archive/20211127/202111271321.WU0i14KG-lkp@intel.com/config)
-compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project 5162b558d8c0b542e752b037e72a69d5fd51eb1e)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/9b07fe52c07c2e9f6eccd2f2050f69558904ed64
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Anand-Ashok-Dumbre/Add-Xilinx-AMS-Driver/20211125-065614
-        git checkout 9b07fe52c07c2e9f6eccd2f2050f69558904ed64
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/iio/adc/
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211126
+powerpc              randconfig-c003-20211126
+mips                 randconfig-c004-20211126
+arm                            zeus_defconfig
+arm                  colibri_pxa300_defconfig
+arm                         lpc32xx_defconfig
+s390                       zfcpdump_defconfig
+arm                       omap2plus_defconfig
+powerpc                    adder875_defconfig
+arm                            dove_defconfig
+m68k                        m5272c3_defconfig
+arm                        spear3xx_defconfig
+i386                             alldefconfig
+powerpc                 mpc8272_ads_defconfig
+parisc                generic-32bit_defconfig
+powerpc                     akebono_defconfig
+powerpc                     mpc83xx_defconfig
+sh                        edosk7760_defconfig
+powerpc                 mpc8560_ads_defconfig
+m68k                          sun3x_defconfig
+arm                          ep93xx_defconfig
+arm                          simpad_defconfig
+sh                           se7705_defconfig
+powerpc               mpc834x_itxgp_defconfig
+powerpc                          g5_defconfig
+arm                        mvebu_v5_defconfig
+arm                            hisi_defconfig
+sh                           se7750_defconfig
+arm                         hackkit_defconfig
+sh                             sh03_defconfig
+powerpc                     ep8248e_defconfig
+sh                            titan_defconfig
+arm                            xcep_defconfig
+powerpc                    sam440ep_defconfig
+sh                           se7724_defconfig
+powerpc                       eiger_defconfig
+xtensa                              defconfig
+arm                        neponset_defconfig
+powerpc                     mpc5200_defconfig
+sh                           se7722_defconfig
+sh                          sdk7780_defconfig
+arm                          pcm027_defconfig
+powerpc                    gamecube_defconfig
+sh                          kfr2r09_defconfig
+arm                            lart_defconfig
+arm                       cns3420vb_defconfig
+arm                         mv78xx0_defconfig
+arm                          moxart_defconfig
+powerpc                 mpc832x_rdb_defconfig
+sparc                       sparc64_defconfig
+powerpc                  iss476-smp_defconfig
+m68k                         apollo_defconfig
+m68k                        m5407c3_defconfig
+arm                            pleb_defconfig
+xtensa                    smp_lx200_defconfig
+sh                         microdev_defconfig
+sh                        apsh4ad0a_defconfig
+sh                 kfr2r09-romimage_defconfig
+arm                     eseries_pxa_defconfig
+arc                 nsimosci_hs_smp_defconfig
+sh                           sh2007_defconfig
+arm                  randconfig-c002-20211126
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a014-20211126
+x86_64               randconfig-a011-20211126
+x86_64               randconfig-a012-20211126
+x86_64               randconfig-a016-20211126
+x86_64               randconfig-a013-20211126
+x86_64               randconfig-a015-20211126
+i386                 randconfig-a016-20211126
+i386                 randconfig-a015-20211126
+i386                 randconfig-a012-20211126
+i386                 randconfig-a013-20211126
+i386                 randconfig-a014-20211126
+i386                 randconfig-a011-20211126
+arc                  randconfig-r043-20211126
+s390                 randconfig-r044-20211126
+riscv                randconfig-r042-20211126
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
 
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   note: (skipping 4 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   note: (skipping 4 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   note: (skipping 5 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   note: (skipping 5 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   note: (skipping 6 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   note: (skipping 6 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   note: (skipping 5 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   note: (skipping 5 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   note: (skipping 6 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   note: (skipping 6 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   include/linux/bitfield.h:109:30: note: expanded from macro 'FIELD_GET'
-                   (typeof(_mask))(((_reg) & (_mask)) >> __bf_shf(_mask)); \
-                                              ^~~~~
->> drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   include/linux/bitfield.h:109:30: note: expanded from macro 'FIELD_GET'
-                   (typeof(_mask))(((_reg) & (_mask)) >> __bf_shf(_mask)); \
-                                              ^~~~~
-   drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   include/linux/bitfield.h:109:50: note: expanded from macro 'FIELD_GET'
-                   (typeof(_mask))(((_reg) & (_mask)) >> __bf_shf(_mask)); \
-                                                         ~~~~~~~~~^~~~~~
-   include/linux/bitfield.h:42:38: note: expanded from macro '__bf_shf'
-   #define __bf_shf(x) (__builtin_ffsll(x) - 1)
-                                        ^
-   drivers/iio/adc/xilinx-ams.c:322:23: warning: shift count is negative [-Wshift-count-negative]
-           regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-                      ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   include/linux/bitfield.h:109:50: note: expanded from macro 'FIELD_GET'
-                   (typeof(_mask))(((_reg) & (_mask)) >> __bf_shf(_mask)); \
-                                                         ~~~~~~~~~^~~~~~
-   include/linux/bitfield.h:42:38: note: expanded from macro '__bf_shf'
-   #define __bf_shf(x) (__builtin_ffsll(x) - 1)
-                                        ^
-   drivers/iio/adc/xilinx-ams.c:328:21: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask);
-                    ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:35:22: note: expanded from macro '__GENMASK'
-           (((~UL(0)) - (UL(1) << (l)) + 1) & \
-                               ^
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:328:21: warning: shift count is negative [-Wshift-count-negative]
-           regval = FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask);
-                    ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-   include/linux/bits.h:38:31: note: expanded from macro 'GENMASK'
-           (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
-                                        ^
-   include/linux/bits.h:36:11: note: expanded from macro '__GENMASK'
-            (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-                    ^
-   note: (skipping 3 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:335:22: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:323:23: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:315:9: note: expanded from macro '__compiletime_assert'
-                   if (!(condition))                                       \
-                         ^~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:328:21: warning: shift count >= width of type [-Wshift-count-overflow]
-           regval = FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask);
-                    ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/xilinx-ams.c:131:29: note: expanded from macro 'AMS_ISR1_INTR_MASK'
-   #define AMS_ISR1_INTR_MASK              GENMASK(63, 32)
-                                           ^
-
-
-vim +322 drivers/iio/adc/xilinx-ams.c
-
-   312	
-   313	static void ams_update_intrmask(struct ams *ams, u64 mask, u64 val)
-   314	{
-   315		u32 regval;
-   316	
-   317		ams->intr_mask = (ams->intr_mask & ~mask) | (val & mask);
-   318	
-   319		regval = ~(ams->intr_mask | ams->current_masked_alarm);
-   320		writel(regval, ams->base + AMS_IER_0);
-   321	
- > 322		regval = ~(FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask));
-   323		writel(regval, ams->base + AMS_IER_1);
-   324	
-   325		regval = ams->intr_mask | ams->current_masked_alarm;
-   326		writel(regval, ams->base + AMS_IDR_0);
-   327	
-   328		regval = FIELD_GET(AMS_ISR1_INTR_MASK, ams->intr_mask);
-   329		writel(regval, ams->base + AMS_IDR_1);
-   330	}
-   331	
+clang tested configs:
+s390                 randconfig-c005-20211126
+i386                 randconfig-c001-20211126
+powerpc              randconfig-c003-20211126
+riscv                randconfig-c006-20211126
+arm                  randconfig-c002-20211126
+x86_64               randconfig-c007-20211126
+mips                 randconfig-c004-20211126
+x86_64               randconfig-a001-20211126
+x86_64               randconfig-a003-20211126
+x86_64               randconfig-a006-20211126
+x86_64               randconfig-a004-20211126
+x86_64               randconfig-a005-20211126
+x86_64               randconfig-a002-20211126
+i386                 randconfig-a002-20211126
+i386                 randconfig-a001-20211126
+i386                 randconfig-a005-20211126
+i386                 randconfig-a006-20211126
+i386                 randconfig-a004-20211126
+i386                 randconfig-a003-20211126
+hexagon              randconfig-r045-20211126
+hexagon              randconfig-r041-20211126
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
