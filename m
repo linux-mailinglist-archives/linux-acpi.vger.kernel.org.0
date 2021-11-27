@@ -2,132 +2,161 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFAC245FE60
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 Nov 2021 12:57:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAFCC4600AC
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Nov 2021 18:47:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239533AbhK0MBH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Nov 2021 07:01:07 -0500
-Received: from mga14.intel.com ([192.55.52.115]:40271 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239167AbhK0L7G (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 27 Nov 2021 06:59:06 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10180"; a="235994742"
-X-IronPort-AV: E=Sophos;i="5.87,269,1631602800"; 
-   d="scan'208";a="235994742"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2021 03:55:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,269,1631602800"; 
-   d="scan'208";a="593743686"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 27 Nov 2021 03:55:48 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mqwJ1-0009S2-W1; Sat, 27 Nov 2021 11:55:47 +0000
-Date:   Sat, 27 Nov 2021 19:54:56 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
+        id S237590AbhK0Ruw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 27 Nov 2021 12:50:52 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:40452 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240704AbhK0Rsw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 27 Nov 2021 12:48:52 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 462E460EFC;
+        Sat, 27 Nov 2021 17:45:37 +0000 (UTC)
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp.kernel.org (Postfix) with ESMTPSA id A8EB0C53FAD;
+        Sat, 27 Nov 2021 17:45:31 +0000 (UTC)
+Date:   Sat, 27 Nov 2021 17:50:31 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        linux-kernel@vger.kernel.org, lars@metafoo.de,
         linux-iio@vger.kernel.org, git@xilinx.com, michal.simek@xilinx.com,
         gregkh@linuxfoundation.org, rafael@kernel.org,
-        linux-acpi@vger.kernel.org, andriy.shevchenko@linux.intel.com
-Cc:     kbuild-all@lists.01.org
-Subject: Re: [PATCH v11 1/5] device property: Add fwnode_iomap()
-Message-ID: <202111271953.N5Nm1MIG-lkp@intel.com>
-References: <20211124225407.17793-2-anand.ashok.dumbre@xilinx.com>
+        linux-acpi@vger.kernel.org, andriy.shevchenko@linux.intel.com,
+        kbuild-all@lists.01.org
+Subject: Re: [PATCH v11 3/5] iio: adc: Add Xilinx AMS driver
+Message-ID: <20211127175031.6471b43b@jic23-huawei>
+In-Reply-To: <202111271041.Cdu0In2E-lkp@intel.com>
+References: <20211124225407.17793-4-anand.ashok.dumbre@xilinx.com>
+        <202111271041.Cdu0In2E-lkp@intel.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211124225407.17793-2-anand.ashok.dumbre@xilinx.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Anand,
+On Sat, 27 Nov 2021 10:43:11 +0800
+kernel test robot <lkp@intel.com> wrote:
 
-Thank you for the patch! Yet something to improve:
+> Hi Anand,
+> 
+> Thank you for the patch! Perhaps something to improve:
+> 
+> [auto build test WARNING on jic23-iio/togreg]
+> [also build test WARNING on linux/master linus/master v5.16-rc2 next-20211126]
+> [cannot apply to xilinx-xlnx/master]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Anand-Ashok-Dumbre/Add-Xilinx-AMS-Driver/20211125-065614
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+> config: powerpc64-randconfig-s032-20211126 (https://download.01.org/0day-ci/archive/20211127/202111271041.Cdu0In2E-lkp@intel.com/config)
+> compiler: powerpc64-linux-gcc (GCC) 11.2.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # apt-get install sparse
+>         # sparse version: v0.6.4-dirty
+>         # https://github.com/0day-ci/linux/commit/9b07fe52c07c2e9f6eccd2f2050f69558904ed64
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review Anand-Ashok-Dumbre/Add-Xilinx-AMS-Driver/20211125-065614
+>         git checkout 9b07fe52c07c2e9f6eccd2f2050f69558904ed64
+>         # save the config file to linux build tree
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=powerpc SHELL=/bin/bash drivers/clk/ drivers/iio/adc/ drivers/pci/controller/
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> 
+> sparse warnings: (new ones prefixed by >>)
+> >> drivers/iio/adc/xilinx-ams.c:1175:17: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void volatile [noderef] __iomem *addr @@     got void *data @@  
+>    drivers/iio/adc/xilinx-ams.c:1175:17: sparse:     expected void volatile [noderef] __iomem *addr
+>    drivers/iio/adc/xilinx-ams.c:1175:17: sparse:     got void *data
+> >> drivers/iio/adc/xilinx-ams.c:1192:69: sparse: sparse: incorrect type in argument 3 (different address spaces) @@     expected void *data @@     got void [noderef] __iomem *ps_base @@  
+>    drivers/iio/adc/xilinx-ams.c:1192:69: sparse:     expected void *data
+>    drivers/iio/adc/xilinx-ams.c:1192:69: sparse:     got void [noderef] __iomem *ps_base
+> >> drivers/iio/adc/xilinx-ams.c:1206:69: sparse: sparse: incorrect type in argument 3 (different address spaces) @@     expected void *data @@     got void [noderef] __iomem *pl_base @@  
+>    drivers/iio/adc/xilinx-ams.c:1206:69: sparse:     expected void *data
+>    drivers/iio/adc/xilinx-ams.c:1206:69: sparse:     got void [noderef] __iomem *pl_base
+> 
+> vim +1175 drivers/iio/adc/xilinx-ams.c
+> 
+>   1172	
+>   1173	static void ams_iounmap(void *data)
+>   1174	{
+> > 1175		iounmap(data);  
+I guess you probably already fixed this, but I'd do it by passing the
+containing structure in as the *data and then use
+ams->pl_base to access it here.
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on xilinx-xlnx/master linux/master linus/master v5.16-rc2 next-20211126]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+It's a bit more code than we'd normally need but cleaner than force
+changes to and from iomem via forcing the pointer conversions.
 
-url:    https://github.com/0day-ci/linux/commits/Anand-Ashok-Dumbre/Add-Xilinx-AMS-Driver/20211125-065614
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: s390-randconfig-r044-20211126 (https://download.01.org/0day-ci/archive/20211127/202111271953.N5Nm1MIG-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/b9acba7c202b47024781ea7a6f85b787df15f29b
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Anand-Ashok-Dumbre/Add-Xilinx-AMS-Driver/20211125-065614
-        git checkout b9acba7c202b47024781ea7a6f85b787df15f29b
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=s390 SHELL=/bin/bash
+>   1176	}
+>   1177	
+>   1178	static int ams_init_module(struct iio_dev *indio_dev,
+>   1179				   struct fwnode_handle *fwnode,
+>   1180				   struct iio_chan_spec *channels)
+>   1181	{
+>   1182		struct device *dev = indio_dev->dev.parent;
+>   1183		struct ams *ams = iio_priv(indio_dev);
+>   1184		int num_channels = 0;
+>   1185		int ret;
+>   1186	
+>   1187		if (fwnode_property_match_string(fwnode, "compatible",
+>   1188						 "xlnx,zynqmp-ams-ps") == 0) {
+>   1189			ams->ps_base = fwnode_iomap(fwnode, 0);
+>   1190			if (!ams->ps_base)
+>   1191				return -ENXIO;
+> > 1192			ret = devm_add_action_or_reset(dev, ams_iounmap, ams->ps_base);  
+>   1193			if (ret < 0)
+>   1194				return ret;
+>   1195	
+>   1196			/* add PS channels to iio device channels */
+>   1197			memcpy(channels, ams_ps_channels,
+>   1198			       sizeof(ams_ps_channels));
+>   1199			num_channels += ARRAY_SIZE(ams_ps_channels);
+>   1200		} else if (fwnode_property_match_string(fwnode, "compatible",
+>   1201							"xlnx,zynqmp-ams-pl") == 0) {
+>   1202			ams->pl_base = fwnode_iomap(fwnode, 0);
+>   1203			if (!ams->pl_base)
+>   1204				return -ENXIO;
+>   1205	
+> > 1206			ret = devm_add_action_or_reset(dev, ams_iounmap, ams->pl_base);  
+>   1207			if (ret < 0)
+>   1208				return ret;
+>   1209	
+>   1210			/* Copy only first 10 fix channels */
+>   1211			memcpy(channels, ams_pl_channels,
+>   1212			       AMS_PL_MAX_FIXED_CHANNEL * sizeof(*channels));
+>   1213			num_channels += AMS_PL_MAX_FIXED_CHANNEL;
+>   1214	
+>   1215			num_channels = ams_get_ext_chan(fwnode, channels,
+>   1216							num_channels);
+>   1217		} else if (fwnode_property_match_string(fwnode, "compatible",
+>   1218							"xlnx,zynqmp-ams") == 0) {
+>   1219			/* add AMS channels to iio device channels */
+>   1220			memcpy(channels, ams_ctrl_channels,
+>   1221			       sizeof(ams_ctrl_channels));
+>   1222			num_channels += ARRAY_SIZE(ams_ctrl_channels);
+>   1223		} else {
+>   1224			return -EINVAL;
+>   1225		}
+>   1226	
+>   1227		return num_channels;
+>   1228	}
+>   1229	
+> 
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   s390-linux-ld: kernel/dma/coherent.o: in function `dma_init_coherent_memory':
-   coherent.c:(.text+0x6c): undefined reference to `memremap'
-   s390-linux-ld: coherent.c:(.text+0x106): undefined reference to `memunmap'
-   s390-linux-ld: kernel/dma/coherent.o: in function `dma_declare_coherent_memory':
-   coherent.c:(.text+0x436): undefined reference to `memunmap'
-   s390-linux-ld: drivers/irqchip/irq-al-fic.o: in function `al_fic_init_dt':
-   irq-al-fic.c:(.init.text+0x28): undefined reference to `of_iomap'
-   s390-linux-ld: irq-al-fic.c:(.init.text+0x1f4): undefined reference to `iounmap'
-   s390-linux-ld: drivers/dma/idma64.o: in function `idma64_platform_probe':
-   idma64.c:(.text+0x14cc): undefined reference to `devm_ioremap_resource'
-   s390-linux-ld: drivers/tty/ipwireless/main.o: in function `ipwireless_detach':
-   main.c:(.text+0x8a): undefined reference to `iounmap'
-   s390-linux-ld: main.c:(.text+0xd0): undefined reference to `iounmap'
-   s390-linux-ld: drivers/tty/ipwireless/main.o: in function `ipwireless_probe':
-   main.c:(.text+0x258): undefined reference to `ioremap'
-   s390-linux-ld: main.c:(.text+0x30c): undefined reference to `ioremap'
-   s390-linux-ld: main.c:(.text+0x35e): undefined reference to `iounmap'
-   s390-linux-ld: main.c:(.text+0x3a0): undefined reference to `iounmap'
-   s390-linux-ld: drivers/tty/ipwireless/main.o: in function `config_ipwireless':
-   main.c:(.text+0x5a0): undefined reference to `iounmap'
-   s390-linux-ld: main.c:(.text+0x5e0): undefined reference to `iounmap'
-   s390-linux-ld: drivers/base/property.o: in function `fwnode_iomap':
->> property.c:(.text+0xf36): undefined reference to `of_iomap'
-   s390-linux-ld: drivers/net/arcnet/arc-rimi.o: in function `arc_rimi_exit':
-   arc-rimi.c:(.exit.text+0x34): undefined reference to `iounmap'
-   s390-linux-ld: drivers/net/arcnet/arc-rimi.o: in function `arcrimi_found':
-   arc-rimi.c:(.init.text+0xce): undefined reference to `ioremap'
-   s390-linux-ld: arc-rimi.c:(.init.text+0x14c): undefined reference to `iounmap'
-   s390-linux-ld: arc-rimi.c:(.init.text+0x2b0): undefined reference to `iounmap'
-   s390-linux-ld: arc-rimi.c:(.init.text+0x332): undefined reference to `ioremap'
-   s390-linux-ld: arc-rimi.c:(.init.text+0x3f4): undefined reference to `iounmap'
-   s390-linux-ld: drivers/net/arcnet/arc-rimi.o: in function `check_mirror':
-   arc-rimi.c:(.text.unlikely+0x4e): undefined reference to `ioremap'
-   s390-linux-ld: arc-rimi.c:(.text.unlikely+0x74): undefined reference to `iounmap'
-   s390-linux-ld: drivers/net/ethernet/8390/pcnet_cs.o: in function `pcnet_release':
-   pcnet_cs.c:(.text+0x6b8): undefined reference to `iounmap'
-   s390-linux-ld: drivers/net/ethernet/8390/pcnet_cs.o: in function `setup_shmem_window':
-   pcnet_cs.c:(.text+0xb44): undefined reference to `ioremap'
-   s390-linux-ld: pcnet_cs.c:(.text+0xbd8): undefined reference to `iounmap'
-   s390-linux-ld: drivers/net/ethernet/8390/pcnet_cs.o: in function `get_hwinfo':
-   pcnet_cs.c:(.text+0x1558): undefined reference to `ioremap'
-   s390-linux-ld: pcnet_cs.c:(.text+0x1656): undefined reference to `iounmap'
-   s390-linux-ld: drivers/net/ethernet/xircom/xirc2ps_cs.o: in function `xirc2ps_release':
-   xirc2ps_cs.c:(.text+0x518): undefined reference to `iounmap'
-   s390-linux-ld: drivers/net/ethernet/xircom/xirc2ps_cs.o: in function `xirc2ps_config':
-   xirc2ps_cs.c:(.text+0x1584): undefined reference to `ioremap'
-   s390-linux-ld: drivers/pcmcia/cistpl.o: in function `set_cis_map':
-   cistpl.c:(.text+0x5c6): undefined reference to `ioremap'
-   s390-linux-ld: cistpl.c:(.text+0x5fc): undefined reference to `iounmap'
-   s390-linux-ld: cistpl.c:(.text+0x62a): undefined reference to `iounmap'
-   s390-linux-ld: cistpl.c:(.text+0x63c): undefined reference to `ioremap'
-   s390-linux-ld: drivers/pcmcia/cistpl.o: in function `release_cis_mem':
-   cistpl.c:(.text+0xf80): undefined reference to `iounmap'
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
