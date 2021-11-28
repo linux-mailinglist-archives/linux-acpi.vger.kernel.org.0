@@ -2,54 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 026E6460A22
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 Nov 2021 22:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3D5E460A41
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Nov 2021 22:19:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359340AbhK1VM6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 28 Nov 2021 16:12:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38110 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235923AbhK1VK4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 Nov 2021 16:10:56 -0500
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87188C0613F2;
-        Sun, 28 Nov 2021 13:07:08 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id b40so39240469lfv.10;
-        Sun, 28 Nov 2021 13:07:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Kep6H8+bfVZ1xeLjsaS2A7zU/qUFFdJhuzBNEKDyf18=;
-        b=MXJpk4bHJWHUsXnttmXJmMehCMhy9keZTcA7B/bYgzynu+fs9AEzA0zWS1didKGcXM
-         ufZY1nIVOAfP0n1FcIj/YQO+JHOspxllH7lEwqxum4orCJ0HB2fsnMEDGJmWeH/qyrsf
-         tBfKAbmns7/1QIwfCwYfnwageJ9+iaZP7wrA89IK5FuGsmtz3WgnEbf4CfOtVYKh+y1P
-         P/ivsGXGLfJ8qk+PLiIxuT1vyrHF2S+SyEG3Jc+cuHLep64IrIJ92EMzFal/KsyKC+gQ
-         ETMGdua/dzs6IwN9uDl7VCnKUva5ihWYK7VOkSKYM4fVdcc0cO/WridgO5+laEgsd2tU
-         tz4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Kep6H8+bfVZ1xeLjsaS2A7zU/qUFFdJhuzBNEKDyf18=;
-        b=zd/L0oze05DaM0WZ68aQU+E64hr0WLJD2vv8xylw3BVgs+mrIRWAyv0DiFLUNLab6q
-         YuTEWnbPUJ+H/Mi28SlGPftPsfajyCk4gqmUEbferwzbxs9Bt82NoqyDC+vgboPqI4qk
-         0+ac4X0wKER4Pq0ZEt+vko8doRmZhQlISwhQ8mE2GJJpmcb/UghCjxu6Kvd2FxtdX0b8
-         rhxZTTDjdEvJNlrAw+wZAGjHXkVGUa73vLvQjR80sB0DBvMzprWzezaBJ72kIf09sgng
-         wedC0XEeQNKcDYzIfz7r798buaV5JoD5r6lKwQiuNnxBmhH6B5pY8hsv3zaJpNypSm0H
-         NCAQ==
-X-Gm-Message-State: AOAM530skWUAJiQYiiGst7v3XUQpKUKRHub1l41inVv4lmx/Kq2oSEea
-        XP/rzDzD3NzcVKhfKTC39sShfNDw40w=
-X-Google-Smtp-Source: ABdhPJy4zl/AZzFPwJNVkHu3GSDT6aqXWQbZeWCJLgVwlcbzfRDN23rTDTUYoWjDb/oPahZVEVnA9Q==
-X-Received: by 2002:a19:5e59:: with SMTP id z25mr43385851lfi.686.1638133626682;
-        Sun, 28 Nov 2021 13:07:06 -0800 (PST)
-Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru. [94.29.46.111])
-        by smtp.googlemail.com with ESMTPSA id s13sm1104272lfg.126.2021.11.28.13.07.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 28 Nov 2021 13:07:06 -0800 (PST)
-Subject: Re: [PATCH v4 18/25] x86: Use do_kernel_power_off()
-To:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+        id S231403AbhK1VWi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 28 Nov 2021 16:22:38 -0500
+Received: from rere.qmqm.pl ([91.227.64.183]:45225 "EHLO rere.qmqm.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232065AbhK1VUg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 28 Nov 2021 16:20:36 -0500
+Received: from remote.user (localhost [127.0.0.1])
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 4J2LsJ1Lcdz9y;
+        Sun, 28 Nov 2021 22:17:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+        t=1638134236; bh=AVVRrFppT2KXeoQ1knr4qxNAWz0fqZEqjSZX5XRty4k=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qeLiiTlDKcoC3FvftCsYmUekeo8vu2N1pSF3fCD2tgheWVvyonhdof+qu+Ea9djoI
+         F0VfIqhNPcyB+IepSkiEVfWMkXITXgi5yRN5hDrKipQbOIN/UYPiCQ3ypFE5/lr3yX
+         t143o/oCoxAN5HQdJgLvzJt9p7M6RWXHGnJUqKSETKZD7q6dZ+W4qIz0kh2v3idXT1
+         jUvuN2o4SCcowRIIDi5HFtYotMwlOnPhdI33AjtMrxHoxjMEAOO/hdSLgu27razlyO
+         MB5TcQY9Ad3wE8nllR9aML4jKPT5UuRgghYO2j4ETJ73vP6/OvL2peMilDKCW68Ia0
+         6xDNHfFLM+f6A==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.103.3 at mail
+Date:   Sun, 28 Nov 2021 22:17:06 +0100
+From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+To:     Dmitry Osipenko <digetx@gmail.com>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         Russell King <linux@armlinux.org.uk>,
@@ -101,59 +79,79 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v4 08/25] kernel: Add combined power-off+restart handler
+ call chain API
+Message-ID: <YaPx0kY7poGpwCL9@qmqm.qmqm.pl>
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-19-digetx@gmail.com> <YaLYR24XRijSmBq3@qmqm.qmqm.pl>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <3082ba7a-f8f6-b2d9-5ae3-ec639b1a6bee@gmail.com>
-Date:   Mon, 29 Nov 2021 00:06:57 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ <20211126180101.27818-9-digetx@gmail.com>
+ <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
+ <9213569e-0f40-0df1-4710-8dab564e12d6@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <YaLYR24XRijSmBq3@qmqm.qmqm.pl>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <9213569e-0f40-0df1-4710-8dab564e12d6@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-28.11.2021 04:15, Michał Mirosław пишет:
-> On Fri, Nov 26, 2021 at 09:00:54PM +0300, Dmitry Osipenko wrote:
->> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
->> that invokes chained power-off handlers. It also invokes legacy
->> pm_power_off() for now, which will be removed once all drivers will
->> be converted to the new power-off API.
->>
->> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
->> ---
->>  arch/x86/kernel/reboot.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
->> index 0a40df66a40d..cd7d9416d81a 100644
->> --- a/arch/x86/kernel/reboot.c
->> +++ b/arch/x86/kernel/reboot.c
->> @@ -747,10 +747,10 @@ static void native_machine_halt(void)
->>  
->>  static void native_machine_power_off(void)
->>  {
->> -	if (pm_power_off) {
->> +	if (kernel_can_power_off()) {
->>  		if (!reboot_force)
->>  			machine_shutdown();
->> -		pm_power_off();
->> +		do_kernel_power_off();
->>  	}
+On Mon, Nov 29, 2021 at 12:04:01AM +0300, Dmitry Osipenko wrote:
+> 28.11.2021 03:43, Michał Mirosław пишет:
+> > On Fri, Nov 26, 2021 at 09:00:44PM +0300, Dmitry Osipenko wrote:
+> >> SoC platforms often have multiple ways of how to perform system's
+> >> power-off and restart operations. Meanwhile today's kernel is limited to
+> >> a single option. Add combined power-off+restart handler call chain API,
+> >> which is inspired by the restart API. The new API provides both power-off
+> >> and restart functionality.
+> >>
+> >> The old pm_power_off method will be kept around till all users are
+> >> converted to the new API.
+> >>
+> >> Current restart API will be replaced by the new unified API since
+> >> new API is its superset. The restart functionality of the sys-off handler
+> >> API is built upon the existing restart-notifier APIs.
+> >>
+> >> In order to ease conversion to the new API, convenient helpers are added
+> >> for the common use-cases. They will reduce amount of boilerplate code and
+> >> remove global variables. These helpers preserve old behaviour for cases
+> >> where only one power-off handler is expected, this is what all existing
+> >> drivers want, and thus, they could be easily converted to the new API.
+> >> Users of the new API should explicitly enable power-off chaining by
+> >> setting corresponding flag of the power_handler structure.
+> > [...]
+> > 
+> > Hi,
+> > 
+> > A general question: do we really need three distinct chains for this?
 > 
-> Judging from an old commit from 2006 [1], this can be rewritten as:
+> Hello Michał,
 > 
-> if (!reboot_force && kernel_can_power_off())
-> 	machine_shutdown();
-> do_kernel_power_off();
+> At minimum this makes code easier to follow.
 > 
-> And maybe later reworked so it doesn't need kernel_can_power_off().
+> > Can't there be only one that chain of callbacks that get a stage
+> > (RESTART_PREPARE, RESTART, POWER_OFF_PREPARE, POWER_OFF) and can ignore
+> > them at will? Calling through POWER_OFF_PREPARE would also return
+> > whether that POWER_OFF is possible (for kernel_can_power_off()).
 > 
-> [1] http://lkml.iu.edu/hypermail//linux/kernel/0511.3/0681.html
+> I'm having trouble with parsing this comment. Could you please try to
+> rephrase it? I don't see how you could check whether power-off handler
+> is available if you'll mix all handlers together.
 
-It could be rewritten like you're suggesting, but I'd prefer to keep the
-old variant, for clarity.
+If notify_call_chain() would be fixed to return NOTIFY_OK if any call
+returned NOTIFY_OK, then this would be a clear way to gather the
+answer if any of the handlers will attempt the final action (reboot or
+power off).
+
+> 
+> > I would also split this patch into preparation cleanups (like wrapping
+> > pm_power_off call with a function) and adding the notifier-based
+> > implementation.
+> 
+> What's the benefit of this split up will be? Are you suggesting that it
+> will ease reviewing of this patch or something else?
+
+Mainly to ease review, as the wrapping will be a no-op, but the addition
+of notifier chain changes semantics a bit.
+
+Best Regards
+Michał Mirosław
