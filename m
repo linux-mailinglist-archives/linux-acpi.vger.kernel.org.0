@@ -2,30 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13C32460292
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 Nov 2021 01:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D9724602A2
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Nov 2021 01:45:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232401AbhK1AeS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 27 Nov 2021 19:34:18 -0500
-Received: from rere.qmqm.pl ([91.227.64.183]:24740 "EHLO rere.qmqm.pl"
+        id S1356765AbhK1Asr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 27 Nov 2021 19:48:47 -0500
+Received: from rere.qmqm.pl ([91.227.64.183]:12892 "EHLO rere.qmqm.pl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1356618AbhK1AcS (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 27 Nov 2021 19:32:18 -0500
+        id S1356720AbhK1Aqq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 27 Nov 2021 19:46:46 -0500
 Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 4J1q8r4xRGz9Y;
-        Sun, 28 Nov 2021 01:28:44 +0100 (CET)
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 4J1qTm1DhtzNL;
+        Sun, 28 Nov 2021 01:43:24 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1638059340; bh=BpCUv6sc6+ijt8bP2X1dBPBQztb08CMPEjcmSI4mWHs=;
+        t=1638060207; bh=ymi2rjesYlmYsrxY12X8vblXPJWiCK3o6T/SGnAjDZo=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=E2pJXVdwpF7xa7NgJpuaA7I4sUgCSxdIM51ma240k1OvyN0BqmbHCll/qibc7LmRW
-         l2lYyRdiOG0LzZZRcQGCbOEp7l5l7FW2EF13o78tAxh2BlfQLPIqSf2RtHjwNL3AHE
-         ag5QLlLhW95Kp8fH9dCV3j4Imx5XQ5T4nV1vyleMAzKz1Soq6c6OnKpJ5TdzfdwJ2G
-         LnQoKtgUWmpQEblg3IMnaxzgslueaP8apjKdZ9y96JJ35QjeXKQSawNEPmoxjBztTd
-         XADr6Ffb3r0e7Kv67f/UCkeky+8m4GCPkGRqXkdYh2BWzTit8bUIHp4dPNUh/LgLHY
-         SH/yCd1X39o+Q==
+        b=C6SfBZOFpiANlfwmDvX4OuIMVOJSlYKPAQ7cePS7VCRqQvRDRXyoU4e1HDyFW5286
+         aMp77cXaWF2QuMJ//PO7Wx9adwPHxvzWlhsVptz1Bv8pKTYitnPzWsGYgxjQNrOvV7
+         Uk484prqIxJAORTEmmGB3fc8u4Kn87uEVHmrPcrNw+TikFuKmaRxmZpfI/D7x9DxOR
+         HEK/DHm3KCkqlnpSbmB87Uzzanvh59D/q1WHxqRBbTNokUG7ZgWXQQKaJ+DCHFVboG
+         CiQGnas3tcMmGH5URTeE0feIhbti0vtOii+M7lKOB+wnpM9RCc3cCyDZ3xGFva1jKa
+         oHCSKPMXxlqVw==
 X-Virus-Status: Clean
 X-Virus-Scanned: clamav-milter 0.103.3 at mail
-Date:   Sun, 28 Nov 2021 01:28:40 +0100
+Date:   Sun, 28 Nov 2021 01:43:22 +0100
 From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
 To:     Dmitry Osipenko <digetx@gmail.com>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
@@ -79,37 +79,54 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated
- priority
-Message-ID: <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl>
+Subject: Re: [PATCH v4 08/25] kernel: Add combined power-off+restart handler
+ call chain API
+Message-ID: <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-6-digetx@gmail.com>
+ <20211126180101.27818-9-digetx@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-2
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211126180101.27818-6-digetx@gmail.com>
+In-Reply-To: <20211126180101.27818-9-digetx@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 26, 2021 at 09:00:41PM +0300, Dmitry Osipenko wrote:
-> Add sanity check which ensures that there are no two restart handlers
-> registered with the same priority. Normally it's a direct sign of a
-> problem if two handlers use the same priority.
+On Fri, Nov 26, 2021 at 09:00:44PM +0300, Dmitry Osipenko wrote:
+> SoC platforms often have multiple ways of how to perform system's
+> power-off and restart operations. Meanwhile today's kernel is limited to
+> a single option. Add combined power-off+restart handler call chain API,
+> which is inspired by the restart API. The new API provides both power-off
+> and restart functionality.
+> 
+> The old pm_power_off method will be kept around till all users are
+> converted to the new API.
+> 
+> Current restart API will be replaced by the new unified API since
+> new API is its superset. The restart functionality of the sys-off handler
+> API is built upon the existing restart-notifier APIs.
+> 
+> In order to ease conversion to the new API, convenient helpers are added
+> for the common use-cases. They will reduce amount of boilerplate code and
+> remove global variables. These helpers preserve old behaviour for cases
+> where only one power-off handler is expected, this is what all existing
+> drivers want, and thus, they could be easily converted to the new API.
+> Users of the new API should explicitly enable power-off chaining by
+> setting corresponding flag of the power_handler structure.
+[...]
 
-The patch doesn't ensure the property that there are no duplicated-priority
-entries on the chain.
+Hi,
 
-I'd rather see a atomic_notifier_chain_register_unique() that returns
--EBUSY or something istead of adding an entry with duplicate priority.
-That way it would need only one list traversal unless you want to
-register the duplicate anyway (then you would call the older
-atomic_notifier_chain_register() after reporting the error).
+A general question: do we really need three distinct chains for this?
+Can't there be only one that chain of callbacks that get a stage
+(RESTART_PREPARE, RESTART, POWER_OFF_PREPARE, POWER_OFF) and can ignore
+them at will? Calling through POWER_OFF_PREPARE would also return
+whether that POWER_OFF is possible (for kernel_can_power_off()).
 
-(Or you could return > 0 when a duplicate is registered in
-atomic_notifier_chain_register() if the callers are prepared
-for that. I don't really like this way, though.)
+I would also split this patch into preparation cleanups (like wrapping
+pm_power_off call with a function) and adding the notifier-based
+implementation.
 
 Best Regards
-Micha³ Miros³aw
+Micha³ Miros³aw
