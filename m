@@ -2,266 +2,166 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0385460985
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 Nov 2021 20:48:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7FF2460A00
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Nov 2021 22:06:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237829AbhK1Tva (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 28 Nov 2021 14:51:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49120 "EHLO
+        id S243743AbhK1VJb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 28 Nov 2021 16:09:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240139AbhK1Tt0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 Nov 2021 14:49:26 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14EF5C061574;
-        Sun, 28 Nov 2021 11:46:10 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id bi37so38909436lfb.5;
-        Sun, 28 Nov 2021 11:46:09 -0800 (PST)
+        with ESMTP id S1358715AbhK1VHa (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 28 Nov 2021 16:07:30 -0500
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFAF4C061763;
+        Sun, 28 Nov 2021 13:04:13 -0800 (PST)
+Received: by mail-lj1-x229.google.com with SMTP id u22so30582768lju.7;
+        Sun, 28 Nov 2021 13:04:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=5c2x7L/3GBh3yUpNOqfBo5XiVGRYdFLXSX4SbETDqQo=;
-        b=mKnm7iytAs3F5zG4gvNhQKUjuYRdZTaDXrdkogodsE0nfRRe6guLcGJgNkNw7/c652
-         J3cUmpVkMGnDHP42iDGhSp6ZXqH+1BxsXBGsmMRrMrSMK9JwQSkoRjWf8cd828bCl1KE
-         O6Ac0ldb+GAaxvOAiSzX3oxQGqcBylzD6TEBfYHl96VNBN8bsHGVl+qX3AWEGWukH5Ih
-         re/6cAOigJnVGjZmXWF6CGBKcB8WaVGnP4b5ox23lGs4Y5z7dj/8PcuN2VpaJq7wYucr
-         /4vokqY59uSpd/DIq8PMNS1odRBRH3xtWzI6uvh/Psfz3TsbuYBRaCAIeSde/OtuH/3G
-         nBsw==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=wtn5Hkee5e4Yh99ylBrB3oNbIRTQMbXx6i2LcHRuAAA=;
+        b=D7axuJW5K4soTW7ePg2XEY/iNxftObXK2r+AyGGcLpSZUVVVDeOdARXPvJKsrnTiWz
+         AoAXcXPY5kZDAFmNd2VORgyu8fNJK2h3Akf7Z4wOIV4j7hl4k+Lg94oWKvPyZvxvLsrU
+         gHjqykqz9pVTUOOpARf13AebW7syYSoupun9EMn0XvrUZckKr/LqJa+4eSWKEzDWJLdo
+         K7OPzWs09+Av5yHcfZj3Q7MZQ+BDltCGiVFFVwhBt7T15YiSiT0WAJ3uiNnPq9pF4dyU
+         I8pWXsXnC3XNCL+7zY4D1T6JR7EW9moTsiVuNSfEmpW1ojxHFbjsYoYQXbcJq5XV5+Um
+         iPxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=5c2x7L/3GBh3yUpNOqfBo5XiVGRYdFLXSX4SbETDqQo=;
-        b=0FA8W9kOqjHbzQ3XVZHzC+KaxFQnNm6CX8C7q0omC70XTRVJiK9kroOievbB0yfmF9
-         oYPctfe81LwewKEbJXPw21hfplHWtT2q4LBx1TIw4V8USYcqmo0tcHz7J6+s5qJ7lTcG
-         G/ZePJZC66R0dUe9dq34uJAQOs2IMUZtyL3mVgfzNvHwpuW983zMcnxgyfVx+lqsbzxA
-         YT4MDatWGZO03+ImXn3KP8zMuwSaSfUIGAu0+9jlkpdDNu7KKFzbZatLjcOD9uCxQITn
-         F+WPwoVz6oq+DLn0S3F9vYYuFetvijTC7/BuIW87/+yGWB6+EebEJya2bXQ0eYsYwtFW
-         4Jxg==
-X-Gm-Message-State: AOAM530kj8sxJWBzhPUWnkq4eC7yA8RMUdso+224X4i0lKmkLyyNxSLw
-        OYM7nw1pzNlDBUYAVJVgsqw=
-X-Google-Smtp-Source: ABdhPJx4QZQBawYmjCibcf6YH73t5aAjTPkIW4EGO0RP0T+O3QOZcTbk7xlMWehAp+wIYBz2ng4YEg==
-X-Received: by 2002:a19:6412:: with SMTP id y18mr43593647lfb.494.1638128768070;
-        Sun, 28 Nov 2021 11:46:08 -0800 (PST)
-Received: from localhost.localdomain ([37.45.176.136])
-        by smtp.gmail.com with ESMTPSA id z28sm1149185ljn.77.2021.11.28.11.46.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Nov 2021 11:46:07 -0800 (PST)
-Received: from jek by localhost.localdomain with local (Exim 4.95)
-        (envelope-from <jekhor@gmail.com>)
-        id 1mrQ7h-000qFw-SL;
-        Sun, 28 Nov 2021 22:46:05 +0300
-Date:   Sun, 28 Nov 2021 22:46:05 +0300
-From:   Yauhen Kharuzhy <jekhor@gmail.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=wtn5Hkee5e4Yh99ylBrB3oNbIRTQMbXx6i2LcHRuAAA=;
+        b=vrIZVpDT3tnzcveZGsfsZ+sQpoSpPnctxxF5MXi6Ki48xD5/nIR3HxPBhqg9ZbfsCn
+         4ZevCQ6yGiBw0SuAoZbvGQAwtmQXJcm9ehhj1Xm8fkwAT89v4n6U3GxZZQh93rwEUZon
+         sXsUxKnnTjb1iEA45kQH5/ObPXpXN4nv+oiJ2/oNYxkwqDJeGDbjzNRcw6h2zG1t3qi4
+         tcQul+/L9S82LkeDFeJbiGhN98c+Bh10RpBJ0Pqiu1LGtu6kWUwFbkyCdDbbkyRwSVwE
+         PJbp7X0RwNtRCbA3qfSsppTgZJ04LOr9/P5GG5wEn//PG06Yl0HhUPhDayocwjEDRlPB
+         XMqg==
+X-Gm-Message-State: AOAM533w/p62Q3K+3XACckNIHGvJlSknW5xp4/rx1IFpYmeM0rcYt3Bg
+        LHouOxz4uJAURZYFCLWgys7ZLXmTFFA=
+X-Google-Smtp-Source: ABdhPJxH7knkFdz7TFpFlawyIdB41srtPJMqsrOfzCPJDLK6AlWk3m8N6okcECoeJRZyDtP9PR9VhQ==
+X-Received: by 2002:a05:651c:1257:: with SMTP id h23mr44458754ljh.17.1638133451873;
+        Sun, 28 Nov 2021 13:04:11 -0800 (PST)
+Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru. [94.29.46.111])
+        by smtp.googlemail.com with ESMTPSA id c17sm1100736lfr.235.2021.11.28.13.04.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 28 Nov 2021 13:04:11 -0800 (PST)
+Subject: Re: [PATCH v4 08/25] kernel: Add combined power-off+restart handler
+ call chain API
+To:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Sebastian Reichel <sre@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Tsuchiya Yuto <kitakar@gmail.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        linux-i2c@vger.kernel.org, linux-pm@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-efi@vger.kernel.org
-Subject: Re: [PATCH v2 10/20] power: supply: bq25890: Add
- bq25890_set_otg_cfg() helper
-Message-ID: <YaPcfZQ8OsPNUjwK@jeknote.loshitsa1.net>
-References: <20211114170335.66994-1-hdegoede@redhat.com>
- <20211114170335.66994-11-hdegoede@redhat.com>
- <YZIyQ1BdJ0v8QTtj@jeknote.loshitsa1.net>
- <66fbed75-7b48-6d91-1ef5-5df1c075e91c@redhat.com>
- <CAKWEGV7WVsZK=890UG=t3dhqCuoD-6N44DPMzk-_8TSPBm4_Dg@mail.gmail.com>
- <fbc88a7a-317f-9b81-fc76-2ceefcf6c7f5@redhat.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
+        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
+References: <20211126180101.27818-1-digetx@gmail.com>
+ <20211126180101.27818-9-digetx@gmail.com> <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <9213569e-0f40-0df1-4710-8dab564e12d6@gmail.com>
+Date:   Mon, 29 Nov 2021 00:04:01 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
+In-Reply-To: <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fbc88a7a-317f-9b81-fc76-2ceefcf6c7f5@redhat.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Nov 28, 2021 at 04:02:06PM +0100, Hans de Goede wrote:
+28.11.2021 03:43, Michał Mirosław пишет:
+> On Fri, Nov 26, 2021 at 09:00:44PM +0300, Dmitry Osipenko wrote:
+>> SoC platforms often have multiple ways of how to perform system's
+>> power-off and restart operations. Meanwhile today's kernel is limited to
+>> a single option. Add combined power-off+restart handler call chain API,
+>> which is inspired by the restart API. The new API provides both power-off
+>> and restart functionality.
+>>
+>> The old pm_power_off method will be kept around till all users are
+>> converted to the new API.
+>>
+>> Current restart API will be replaced by the new unified API since
+>> new API is its superset. The restart functionality of the sys-off handler
+>> API is built upon the existing restart-notifier APIs.
+>>
+>> In order to ease conversion to the new API, convenient helpers are added
+>> for the common use-cases. They will reduce amount of boilerplate code and
+>> remove global variables. These helpers preserve old behaviour for cases
+>> where only one power-off handler is expected, this is what all existing
+>> drivers want, and thus, they could be easily converted to the new API.
+>> Users of the new API should explicitly enable power-off chaining by
+>> setting corresponding flag of the power_handler structure.
+> [...]
+> 
 > Hi,
 > 
-> On 11/16/21 12:07, Yauhen Kharuzhy wrote:
-> > 
-> > 
-> > аў, 16 ліс 2021, 12:33 карыстальнік Hans de Goede <hdegoede@redhat.com <mailto:hdegoede@redhat.com>> напісаў:
-> > 
-> >     Hi Yauhen,
-> > 
-> >     On 11/15/21 11:11, Yauhen Kharuzhy wrote:
-> >     > On Sun, Nov 14, 2021 at 06:03:25PM +0100, Hans de Goede wrote:
-> >     >> Add a bq25890_set_otg_cfg() helper function, this is a preparation
-> >     >> patch for adding regulator support.
-> >     >>
-> >     >> Signed-off-by: Hans de Goede <hdegoede@redhat.com <mailto:hdegoede@redhat.com>>
-> >     >> ---
-> >     >>  drivers/power/supply/bq25890_charger.c | 28 ++++++++++++++------------
-> >     >>  1 file changed, 15 insertions(+), 13 deletions(-)
-> >     >>
-> >     >> diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
-> >     >> index 2bdfb58cda75..3c41fe86b3d3 100644
-> >     >> --- a/drivers/power/supply/bq25890_charger.c
-> >     >> +++ b/drivers/power/supply/bq25890_charger.c
-> >     >> @@ -801,6 +801,17 @@ static int bq25890_power_supply_init(struct bq25890_device *bq)
-> >     >>      return PTR_ERR_OR_ZERO(bq->charger);
-> >     >>  }
-> >     >> 
-> >     >> +static int bq25890_set_otg_cfg(struct bq25890_device *bq, u8 val)
-> >     >> +{
-> >     >> +    int ret;
-> >     >> +
-> >     >> +    ret = bq25890_field_write(bq, F_OTG_CFG, val);
-> >     >> +    if (ret < 0)
-> >     >> +            dev_err(bq->dev, "Error switching to boost/charger mode: %d\n", ret);
-> >     >
-> >     > Just a note: if a connected USB device has relative big capacitor
-> >     > at power wires inside, then a starting current pulse may be enough to
-> >     > overload the boost reguator and VBUS will not be powered. I met this
-> >     > at Yoga Book: the firmware set boost current limit to 1.4 A (default
-> >     > value for bq25892) but when USB hub connected, the BOOST_FAULT event
-> >     > appeared.
-> >     >
-> >     > To avoid this, Lenovo uses following trick in its kernel: set a boost
-> >     > current limit to big value (2.1 A), wait some time (500 ms) and set
-> >     > the current limit to right value (1.4A). This provides enough current to
-> >     > charge capacitors in the connected device but saves desired long-time limit
-> >     > to prevent overloading if the device consumes too much power itself.
-> > 
-> >     Right I saw this in your git repo, but I cannot reproduce the issue (1)
-> >     I was hoping that since you can reproduce this, that you can rebase
-> >     your fix on top of my patch-set ?
-> > 
-> >     Also I'm wondering if this behavior should be the default, I believe
-> >     that the max. boost current may also be dependent on some external
-> >     factors, so maybe we should make this behavior conditional on a
-> >     new device-property ?
-> > 
-> > Yes, defining of max VBUS current may be a good idea. Another possible approach may be to use some empirical multiplier, like 150% of max 'long time' current limit setting. I almost sure that all hardware will work with short impulse of such current, its usual condition at device connection.
-> > 
-> > 
-> >     Regards,
-> > 
-> >     Hans
-> > 
-> > 
-> > 
-> >     1) I must admit I did not try really hard, I guess I could try an
-> >     USB powered hdd enclosure with a spinning disk
-> > 
-> >     What device are you seeing this with?
-> > 
-> > I cannot remember exactly device but this was a USB hub, possible with keyboard, mouse receiver and USB dongle inserted. I can recheck this issue but one week after, when will return home.
-> 
-> So as I mentioned before I've just tried to reproduce this problem, but
-> I cannot reproduce it with an 2.5" USB disk enclosure with a spinning
-> disk, which typically will cause a nice current-peak when spinning up.
-> 
-> I think this might also require an almost empty battery to reproduce ?
+> A general question: do we really need three distinct chains for this?
 
-Hi.
+Hello Michał,
 
-I tried to reproduce just now with success.
+At minimum this makes code easier to follow.
 
-I have the UNITEK Y-2165B OTG USB hub with cardreader. It has three
-100 uF capacitors connected to the VBUS inside.
+> Can't there be only one that chain of callbacks that get a stage
+> (RESTART_PREPARE, RESTART, POWER_OFF_PREPARE, POWER_OFF) and can ignore
+> them at will? Calling through POWER_OFF_PREPARE would also return
+> whether that POWER_OFF is possible (for kernel_can_power_off()).
 
-If the boost current limit is set to 1.4A, boot failure condition is appeared
-when the hub connected, there is no USB device detected.
+I'm having trouble with parsing this comment. Could you please try to
+rephrase it? I don't see how you could check whether power-off handler
+is available if you'll mix all handlers together.
 
-If the limit is set to 2.15A, the device detected and works, there is no
-fault condition appeared.
+> I would also split this patch into preparation cleanups (like wrapping
+> pm_power_off call with a function) and adding the notifier-based
+> implementation.
 
-So, I think that you may add 1-3 100uF capacitors to
-any USB device or cable and try to reproduce.
-
-Debug I2C dumps are below.
-
-Before connection of the hub:
-
-root@yogabook:/home/jek# i2cdump -f -y 7 0x6b
-No size specified (using byte-data access)
-     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
-00: 00 06 00 0a 42 13 80 cc 03 44 73 02 00 8d 58 57    .?.?B????Ds?.?XW
-10: 4e 00 00 00 05 ff ff ff ff ff ff ff ff ff ff ff    N...?...........
-20: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-30: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-40: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-50: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-60: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-70: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-
-Immediately after connection (look to 0x0c register):
-
-root@yogabook:/home/jek# i2cdump -f -y 7 0x6b
-No size specified (using byte-data access)
-     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
-00: 00 06 00 2a 42 13 82 cc 03 44 73 e2 40 8d 57 57    .?.*B????Ds?@?WW
-10: 4d 00 00 00 05 ff ff ff ff ff ff ff ff ff ff ff    M...?...........
-20: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-30: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-40: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-50: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-60: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-70: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-
-Increase current limit manually and restart the boost converter:
-
-root@yogabook:/home/jek# i2cset -f -y 7 0x6b 0x0a 0x76
-root@yogabook:/home/jek# i2cset -f -y 7 0x6b 0x03 0x0a
-root@yogabook:/home/jek# i2cset -f -y 7 0x6b 0x03 0x2a
-
-root@yogabook:/home/jek# i2cdump -f -y 7 0x6b
-No size specified (using byte-data access)
-     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
-00: 00 06 00 2a 42 13 82 cc 03 44 76 e2 00 8d 57 57    .?.*B????Dv?.?WW
-10: 4d 00 00 00 05 ff ff ff ff ff ff ff ff ff ff ff    M...?...........
-20: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-30: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-40: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-50: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-60: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-70: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
-
-
-
-> 
-> Regards,
-> 
-> Hans
-> 
-
--- 
-Yauhen Kharuzhy
+What's the benefit of this split up will be? Are you suggesting that it
+will ease reviewing of this patch or something else?
