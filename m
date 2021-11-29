@@ -2,116 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADB9246201E
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Nov 2021 20:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E74484621C7
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Nov 2021 21:09:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380124AbhK2TTm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Nov 2021 14:19:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44742 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345426AbhK2TRk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Nov 2021 14:17:40 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5EBC0613E1;
-        Mon, 29 Nov 2021 07:35:46 -0800 (PST)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 553C92A5;
-        Mon, 29 Nov 2021 16:35:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1638200144;
-        bh=vQkTcVeubQtyPEvZTfPpWgr0xCoUlM+OeJ2wAvY6uCE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oe4PxyJ7rOJ6yNLwvZq0rwzDfKO/ZpsZplSPR/6rbcSz8KScSUcJ0sw74veOAAPjO
-         ch3/3pIXPkuEq9U2GunOyYN4O52w4iSSmKvnQ6vxxKxiKhhFYf8jYSYLTAcCEBLcjw
-         VUeAOCZFVl5N4nOZrvU3h5xf4e8THuPM1K5Y9mls=
-Date:   Mon, 29 Nov 2021 17:35:20 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
-        linux-clk@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v6 05/15] regulator: Introduce tps68470-regulator driver
-Message-ID: <YaTzOA7uV5TzHDDR@pendragon.ideasonboard.com>
-References: <20211125165412.535063-1-hdegoede@redhat.com>
- <20211125165412.535063-6-hdegoede@redhat.com>
- <YaAdIG+2MZPsdI+F@pendragon.ideasonboard.com>
- <19aeff06-d397-5f88-6d07-f76a2073b682@redhat.com>
- <YaLBeq0+0A6R2FZG@pendragon.ideasonboard.com>
- <YaTCpgYaPDssQp+N@sirena.org.uk>
+        id S232545AbhK2UNN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Nov 2021 15:13:13 -0500
+Received: from sdc-v-sdnmail1-ext.epnet.com ([140.234.254.212]:60662 "EHLO
+        sdc-v-sdnmail1-ext.epnet.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232577AbhK2ULM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 29 Nov 2021 15:11:12 -0500
+X-Greylist: delayed 303 seconds by postgrey-1.27 at vger.kernel.org; Mon, 29 Nov 2021 15:11:12 EST
+Received: from sdc-epwebmail1 (sdc-v-epwebmail1.epnet.com [10.83.102.226])
+        by sdc-v-sdnmail1-ext.epnet.com (8.14.7/8.14.7/EIS8.14) with ESMTP id 1ATJujS9015735;
+        Mon, 29 Nov 2021 15:05:42 -0500
+Message-Id: <202111292005.1ATJujS9015735@sdc-v-sdnmail1-ext.epnet.com>
 MIME-Version: 1.0
+Sender: ephost@ebsco.com
+From:   support@ebsco.com
+To:     info@soblex.de, stephanie.evans@phe.gov.uk, cktech@ckgroup.co.uk,
+        pharmacontracts@ckagroup.co.uk, nicole.poole@csiro.au,
+        aguimard@ckqls.ch, sfarrow@ckgroup.co.uk, math4mat-search@epfl.ch,
+        yueling.seow@tandf.com.sg, irjournal@uw.edu.pl,
+        editorial@open-research-europe.ec.europa.eu,
+        linux-acpi@archiver.kernel.org, linux-acpi@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        andrew@lunn.ch, arnd@arndb.de,
+        77eed.1635317102.git.yu.c.chen@intel.com,
+        9110e.1635317102.git.yu.c.chen@intel.com,
+        35715.1635317102.git.yu.c.chen@intel.com,
+        47b8f.1635317102.git.yu.c.chen@intel.com,
+        7519.4789817107293464743.stgit@warthog.procyon.org.uk,
+        7519.6594360917661719152.stgit@warthog.procyon.org.uk,
+        519.11215118047756175525.stgit@warthog.procyon.org.uk,
+        519.13954182746095781120.stgit@warthog.procyon.org.uk,
+        519.14706391695553204156.stgit@warthog.procyon.org.uk,
+        7519.8649368675533788865.stgit@warthog.procyon.org.uk,
+        519.17630241595380785887.stgit@warthog.procyon.org.uk,
+        7519.2951437510049163050.stgit@warthog.procyon.org.uk,
+        7519.8303891885033763947.stgit@warthog.procyon.org.uk,
+        7519.5910362900676754518.stgit@warthog.procyon.org.uk,
+        028190125.391374-1-mmakassikis@freebox.fr,
+        jwoithe@physics.adelaide.edu.au, hmh@hmh.eng.br,
+        astarikovskiy@suse.de, rjw@sisk.pl, linux-cifs@archiver.kernel.org,
+        linux-cifs@vger.kernel.org, mmakassikis@freebox.fr,
+        019153937.412534-1-mmakassikis@freebox.fr,
+        019083641.116783-1-mmakassikis@freebox.fr,
+        16235715.3469969-1-mmakassikis@freebox.fr,
+        15130222.2976760-1-mmakassikis@freebox.fr,
+        joe.keller@futurenet.com, luke.filipowicz@futurenet.com,
+        it.rubelsaiful@gmail.com, maria@oleg-avilov.ru,
+        mac.browliamaillard@gmail.com, donald.e.kemper@gmail.com,
+        wendel.dennis@sthenryschools.org, scott.broerman@vtigers.org,
+        mu-admin@obdev.at, contact@titanium-software.fr, xld@tmkk.undo.jp,
+        den.denden@yahoo.com, joshua.garnham@yahoo.co.uk,
+        evgeny.br@gmail.com, gb@birke-software.de, rxw1@protonmail.ch,
+        josefavaughan@worldnet.att.net, gerd.j@adslhome.dk,
+        kemal.kazan@csiro.au, wangyi@cau.edu.cn, rschan@cau.edu.cn,
+        greice.amaralcarneiro@natec.unibz.it,
+        magdalena.walcher@schule.suedtirol.it, sanja.baric@unibz.it,
+        zarei@jahromu.ac.ir, dbarfield@rvc.ac.uk, nccic@dhs.sgov.gov,
+        isabella.breda@heraldnet.com,
+        parentlink.challenger@howellschools.com, marciel.stadnik@ufsc.br,
+        yellowfriend90@yahoo.com.sg, isoken@free.fr, miked@networkm.co.uk,
+        bobbysokhi@hotmail.co.uk, abilitylocksmiths@yahoo.com.au,
+        cocotaso01@hotmail.co.uk, vyshensky@mail.ru,
+        baps1000@hotmail.co.uk, marrykwok@yahoo.com.sg,
+        missmillion@live.co.uk, gabriellux@hotmail.it,
+        liverpool_ere_95@hotmail.co.uk, matt.friendshuh@norfleetgroup.com,
+        molly@plan.design, collier.cheyara222@gmail.com,
+        kristy.estes@teg-tx.com, humberto.friede@hafcoservices.com,
+        holly.dekle@setboundaries.com, leandra@lt.design,
+        norma.brito1@gmail.com, rudy.delarosa@mervalconstruction.com,
+        joan@topio.design, alan_murray01@yahoo.co.uk, showsend@gmass.co.uk,
+        ajay@iquipu.nl, ajay@arena.tec.br, fabricio@mydomainname.com.br
+Date:   29 Nov 2021 15:05:43 -0500
+Subject: Fat Removes and Protein Bars
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <YaTCpgYaPDssQp+N@sirena.org.uk>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mark,
+Q29tbWVudHM6DQpIZXksDQripLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXi
+pLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXi
+pLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXi
+pLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXipLXi
+pLXipLXipLXipLXipLXipLXipLXipLXipLUNCkFmcmljYW4gTWFuZ28gaXMgYSB3ZWln
+aHQgbG9zcyBzdXBwbGVtZW50IHRoYXQgYnVybnMgZmF0LCBzdXBwcmVzc2VzDQpodW5n
+ZXIgYW5kIGNyYXZpbmdzLCBhbmQgaGVscHMgbWFpbnRhaW4gaGVhbHRoeSBjaG9sZXN0
+ZXJvbCBsZXZlbHMuIEl0cw0KdW5pcXVlIGZvcm11bGF0aW9uIGlzIGJhc2VkIG9uIGEg
+bmF0dXJhbCBtb2xlY3VsZSBjYWxsZWQgcGFsbWl0b2xlaWMNCmFjaWQsIGFsc28ga25v
+d24gYXMgT21lZ2EgNy4gVGhpcyB1bmlxdWUgZmF0dHkgYWNpZCBoZWxwcyBmYXQgY2Vs
+bHMNCmNvbW11bmljYXRlIHdpdGggZWFjaCBvdGhlciwgZm9yY2luZyDigJxiYWQgZmF0
+4oCdIGluIHRoZSBib2R5IHRvIGJlDQpyZWxlYXNlZCBhbmQgdXNlZCBmb3IgZW5lcmd5
+LiBXaGljaCBtZWFucyBldmVuIGFzIHlvdSBzdGFydCBkcm9wcGluZw0KdGhvc2Ugc3R1
+YmJvcm4gcG91bmRzLCB5b3XigJlyZSBnb2luZyB0byBmZWVsIGdyZWF0IGFuZCBmdWxs
+IG9mIGVuZXJneSBhcw0KZmF0IHRoYXTigJlzIHJlbGVhc2VkIGZyb20geW91ciBjZWxs
+cyBnZXQgY29udmVydGVkIGludG8gZnVlbCBmb3IgeW91cg0KYm9keS4gPj4+PiBodHRw
+czovL2N1dHQubHkvM1Q4WjdNeA0K4qS14qS14qS14qS14qS14qS14qS14qS14qS14qS1
+4qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS1
+4qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS1
+4qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS1
+4qS14qS14qS14qS14qS14qS14qS14qS14qS14qS1DQpOdXZpYUdvIGlzIGEgZGVsaWNp
+b3VzIHByb3RlaW4gYmFyIHdpdGggYSBjb29raWUgYW5kIGNyZWFtIGZsYXZvciBsb3Zl
+ZA0KYWxsIG92ZXIgdGhlIHdvcmxkISBEdWUgdG8gdGhlIGxhcmdlIGRvc2Ugb2YgcHJv
+dGVpbiBhbmQgYSBzbWFsbCBhbW91bnQNCm9mIHN1Z2FyLCB0aGlzIHByb2R1Y3QgY2Fu
+IHJlcGxhY2UgYW55IG1lYWwuIE51dmlhR28gcHJvdmlkZXMgdGhlIGJvZHkNCndpdGgg
+YW4gZW5lcmd5IGJvb3N0LCBoZWxwcyBidWlsZCBtdXNjbGUgbWFzcyBhbmQgYWNjZWxl
+cmF0ZXMgcmVjb3ZlcnkNCmFmdGVyIHRyYWluaW5nLiBOdXZpYUdvIGJhcnMgYXJlIGNy
+ZWF0ZWQgd2l0aCBwYXNzaW9uIGFuZCBpbiBoYXJtb255DQp3aXRoIG5hdHVyZS4gVGhp
+cyBwcm9kdWN0IGNvbnRhaW5zIHRoZSByaWdodCBwcm9wb3J0aW9ucyBvZg0KbWFjcm9u
+dXRyaWVudHMgdG8gc3RyZW5ndGhlbiB0aGUgYm9keSBhbmQgaGVscCBtYWludGFpbiBh
+IGZpdC1maWd1cmUuDQpOdXZpYUdvIGJhcnMgYXJlIG5vdCBvbmx5IGEgZGVsaWNpb3Vz
+LCBzd2VldCBzbmFjaywgYnV0IGFib3ZlIGFsbCBhDQpyZWFsLCB3aG9sZXNvbWUgbWVh
+bCE+Pj4gaHR0cHM6Ly9jdXR0Lmx5L2tUOFhLZkUNCuKkteKkteKkteKkteKkteKkteKk
+teKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKk
+teKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKk
+teKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKk
+teKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKkteKktQ0KUmVnYXJkcw0K
+4qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS1
+4qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS1
+4qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS1
+4qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS14qS1
+4qS14qS14qS1DQpKdWxpYQ0KICBfX19fXyAgDQoNCg0KUmVjb3JkOiAxDQoNClRpdGxl
+OglCT09LUy4gCQ0KDQpTb3VyY2U6CVByZXNlbnQgU3RhdGUgb2YgRXVyb3BlLiBKdW4x
+Njk4LCBWb2wuIDkgSXNzdWUgNiwgZm9sbG93aW5nDQpwMjQ5LTI0OS4gMXAuIAkNCg0K
+UHVibGljYXRpb24gVHlwZToJUGVyaW9kaWNhbAkNCg0KRG9jdW1lbnQgVHlwZToJQXJ0
+aWNsZQkNCg0KU3ViamVjdHM6CVJIT0RFUywgSGVucnkNCkJPT0tTCQ0KDQpMQ0NOOglz
+bjg0LTQ2MzY1CQ0KDQpBY2Nlc3Npb24gTnVtYmVyOgkzMzIzODg5MQkNCg0KUGVyc2lz
+dGVudCBsaW5rIHRvIHRoaXMgcmVjb3JkIChQZXJtYWxpbmspOiANCmh0dHBzOi8vc2Vh
+cmNoLmVic2NvaG9zdC5jb20vbG9naW4uYXNweD9kaXJlY3Q9dHJ1ZSZkYj1oOWgmQU49
+MzMyMzg4OTEmcw0KaXRlPWVob3N0LWxpdmUNCkN1dCBhbmQgUGFzdGU6IDxhDQpocmVm
+PSJodHRwczovL3NlYXJjaC5lYnNjb2hvc3QuY29tL2xvZ2luLmFzcHg/ZGlyZWN0PXRy
+dWUmZGI9aDloJkFOPTMzMjMNCjg4OTEmc2l0ZT1laG9zdC1saXZlIj5CT09LUy48L2E+
+DQoNCiAgX19fX18gIA0KDQpUaGUgbGluayBpbmZvcm1hdGlvbiBhYm92ZSBwcm92aWRl
+cyBhIHBlcnNpc3RlbnQgbGluayB0byB0aGUgYXJ0aWNsZQ0KeW91J3ZlIHJlcXVlc3Rl
+ZC4NCg0KUGVyc2lzdGVudCBsaW5rIHRvIHRoaXMgcmVjb3JkOiBGb2xsb3dpbmcgdGhl
+IGxpbmsgYWJvdmUgd2lsbCBicmluZyB5b3UNCnRvIHRoZSBzdGFydCBvZiB0aGUgYXJ0
+aWNsZSBvciBjaXRhdGlvbi4NCg0KQ3V0IGFuZCBQYXN0ZTogVG8gcGxhY2UgYXJ0aWNs
+ZSBsaW5rcyBpbiBhbiBleHRlcm5hbCB3ZWIgZG9jdW1lbnQsDQpzaW1wbHkgY29weSBh
+bmQgcGFzdGUgdGhlIEhUTUwgYWJvdmUsIHN0YXJ0aW5nIHdpdGggIjxhIGhyZWYiDQoN
+CklmIHlvdSBoYXZlIGFueSBwcm9ibGVtcyBvciBxdWVzdGlvbnMsIGNvbnRhY3QgVGVj
+aG5pY2FsIFN1cHBvcnQgYXQNCmh0dHA6Ly9zdXBwb3J0LmVwbmV0LmNvbS9jb250YWN0
+L2Fza3VzLnBocCBvciBjYWxsIDgwMC03NTgtNTk5NS4NCg0KVGhpcyBlLW1haWwgd2Fz
+IGdlbmVyYXRlZCBieSBhIHVzZXIgb2YgRUJTQ09ob3N0IHdobyBnYWluZWQgYWNjZXNz
+IHZpYQ0KdGhlIE1JTklURVggTElCUkFSWSBJTkZPIE5FVFdPUksgYWNjb3VudC4gTmVp
+dGhlciBFQlNDTyBub3IgTUlOSVRFWA0KTElCUkFSWSBJTkZPIE5FVFdPUksgaXMgcmVz
+cG9uc2libGUgZm9yIHRoZSBjb250ZW50IG9mIHRoaXMgZS1tYWlsLg0K
 
-On Mon, Nov 29, 2021 at 12:08:06PM +0000, Mark Brown wrote:
-> On Sun, Nov 28, 2021 at 01:38:34AM +0200, Laurent Pinchart wrote:
-> > On Fri, Nov 26, 2021 at 12:22:35PM +0100, Hans de Goede wrote:
-> > > On 11/26/21 00:32, Laurent Pinchart wrote:
-> > > > On Thu, Nov 25, 2021 at 05:54:02PM +0100, Hans de Goede wrote:
-> > > >> The TPS68470 PMIC provides Clocks, GPIOs and Regulators. At present in
-> > > >> the kernel the Regulators and Clocks are controlled by an OpRegion
-> > > >> driver designed to work with power control methods defined in ACPI, but
-> 
-> Please delete unneeded context from mails when replying.  Doing this
-> makes it much easier to find your reply in the message, helping ensure
-> it won't be missed by people scrolling through the irrelevant quoted
-> material.
-
-I have mixed feelings about that, someones the context is indeed not
-needed, but I've found myself more often than not replying deep in a
-mail thread and wishing the context hadn't been deleted, because it
-ended up being relevant.
-
-> > > >> + * (1) This regulator must have the same voltage as VIO if S_IO LDO is used to
-> > > >> + *     power a sensor/VCM which I2C is daisy chained behind the PMIC.
-> > > >> + * (2) If there is no I2C daisy chain it can be set freely.
-> > > >> + */
-> 
-> > > > Do we need safety checks for this ?
-> 
-> > > There really is no way to deal this condition needs to matches inside the driver,
-> > > this should be enforced by setting proper constraints on the 2 regulators where
-> > > the PMIC is used with a sensor I2C daisy chained behind it.
-> 
-> > Right. I tend to be cautious here, as incorrect settings can destroy the
-> > hardware. We should err on the side of too many safety checks rather
-> > than too few. I was thinking that the cio2-bridge driver could set a
-> > daisy-chaining flag, which could trigger additional checks here, but it
-> > wouldn't protect against someone experimenting to support a new device
-> > and setting different voltages without the daisy-chaining flag.
-> 
-> > My biggest worry is that someone with an unsupported machine may start
-> > by copying and pasting an existing configuration to try it out, and fry
-> > their hardware.
-> 
-> There's really nothing you can do that prevents this, especially in the
-> cut'n'paste scenario.  Overrides tend to get copied along with the rest
-> of the configuration, or checks hacked out if people think they're
-> getting in the way without realising what they're there for.
-
-Maybe a big fat warning comment in the code ? Apart from that, I agree,
-I don't think we can do much.
-
--- 
-Regards,
-
-Laurent Pinchart
