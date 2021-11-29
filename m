@@ -2,55 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE92C4615F2
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Nov 2021 14:12:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68709461629
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Nov 2021 14:22:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377782AbhK2NPj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 29 Nov 2021 08:15:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49476 "EHLO
+        id S245516AbhK2N0J (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 29 Nov 2021 08:26:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230282AbhK2NNi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Nov 2021 08:13:38 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730EBC0698FC
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Nov 2021 03:55:07 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id s13so36254650wrb.3
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Nov 2021 03:55:07 -0800 (PST)
+        with ESMTP id S1377631AbhK2NYI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 29 Nov 2021 08:24:08 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E19D7C08EE1B;
+        Mon, 29 Nov 2021 04:04:38 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id b1so43778622lfs.13;
+        Mon, 29 Nov 2021 04:04:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=VVOPTlZ25TG0A/D/zPlBV/5uhzVs33QmnMBQ/KVuzok=;
-        b=lkwhQKXAkPk/45MOJA8n7UmDgKAdLF4A1HrNaCp2DAoqL5jLTFjou3x32wDBBU6GIT
-         yI/CJhxLCUTnAb5/Em/j6rhcsE0aVo3sMd3LYPxdE5+hC1/mTgxkJqsMs5FMlUOo6mFj
-         p7BNzyn9xjUhYwkgG5BzPtj9HurcHm+ccwOPwS4lv9ee0Rp8UDrMmrydCXbQHsTaZXjk
-         xJu5xIGGnwbHMKU206LqjROnwejVkM/SZiOAqwNOvL8q0Fxve51MyLPqAjPb4PZY1YMm
-         QSzNrZA4BSS9QFja3wZ8ES46Bccp24Bd6Zbx0NoBWxwAbV7Rw05PPAukg5XBBny7eyFr
-         nlLw==
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=PNn5ANXHQBQImIpvHbPbNMd2Lqd15EQlJogO89cnByY=;
+        b=MI4kP55/Zlm7TBL7y2OrNMI5h+lPZeZmB7t8OlZkmrVqz5nkh2/Y6HuliAe0oVs0Rk
+         rFetODlieSY8yYJ/zujS836D4HMa1RwjML/CAxKtomUWXSGb1qL/KVpTn6q2+Uvz6fll
+         o53AZuiQAc2GWbWiafTtGZSuw2c5mqIFJqFNiJYF9aTjEDiBqb562eel2zakvhyPlOl3
+         pG/pjhw/StA1ckadkeclKZKjMkX16zdmIl6oAlX+4fS7qeRy6PONzcXzKzm9X1QdAno0
+         Kkwc07Ys2BvHYPaVq37PhoNg88rbf4eu8IhUwjBo48bGGmIHfJryc8vu/Bws5bIp8Ted
+         95RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=VVOPTlZ25TG0A/D/zPlBV/5uhzVs33QmnMBQ/KVuzok=;
-        b=bo8c55TdCp0nH+y8dVNLydbm71PcfqZ5KEOMi/tL71/LoDN0vgL0ziQCpfVD9Uw6nx
-         nAdRjWYZcli6oBTe19CmAEPsL2wPj4lFI0k5k5ivXRqBwP+6a0i9AZKU6+EEEfbqUm1m
-         ygiVi3otJ/YgwIo8r/CjS0shTFJvyraQMk5ZD7S0wBQqDZk/QyOyewNtzUIqEKwr82vJ
-         g+aUwOlVvB5Byb0/PcXaRieLkcKB9lohaZ7I+r8fkz4WM0JCQMlUGISc0tBaaaa59bwh
-         ZCEyPDvuUK5CpAA6HFYztJm+q/7GcJAub7GXUpvRQBJJCVwd5xicn8fyPqC+NwY7PvxZ
-         YBcA==
-X-Gm-Message-State: AOAM5320bOp72zXRjRQm4JS0ZnVuDSpoE/33m4Rc2Rr+JZYjsaXMFdj6
-        3BpJUMU6qupKlB+0X6KAmQyn1g==
-X-Google-Smtp-Source: ABdhPJzBdvU2Vc8uq5wk1K9UX3j47S9iY7roSh9nDqHEi2kZs1JBlBSlXeazNTFhoQ+QITHlIyszPw==
-X-Received: by 2002:adf:e742:: with SMTP id c2mr32868966wrn.498.1638186905995;
-        Mon, 29 Nov 2021 03:55:05 -0800 (PST)
-Received: from google.com ([2.31.167.18])
-        by smtp.gmail.com with ESMTPSA id y15sm16736665wry.72.2021.11.29.03.55.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Nov 2021 03:55:05 -0800 (PST)
-Date:   Mon, 29 Nov 2021 11:55:01 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Dmitry Osipenko <digetx@gmail.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=PNn5ANXHQBQImIpvHbPbNMd2Lqd15EQlJogO89cnByY=;
+        b=ofoh+c30kzyAvX7PeNash1HX3Wdv4rC9lL5fjgeHWDZAoqZ3VSFXUrvyMTXyTkHz91
+         WP0SKuI050NO18iCfzHFHzZI26EdDDUfK3r7cc2es8wnsVEE1dvDQKPBMcuFVHoHkQhN
+         ZvgRCT1aeQ4xpcYTgjI/Jv5cQhixzSFNqbuhpXzC/eGr1qI49Bn4lYdg7YMgQEMHNizw
+         uOetJQx1w/rafolkGj9sO4XkBYPLaHFnBKEqglLSCJjKb9SHu797TFKzHwt+Q3+iDqZC
+         GGQZdmw1gYnjgGiYcy0EfnLpr9N8w74chiHVlEu8mc1fnEAuKxB93sNn+CCRSiJGXAMP
+         tFqg==
+X-Gm-Message-State: AOAM531Z5gComcgPWQJ2C4Z88M84Qkfz1GWynH3L4PWV3UmRrJj1Ant2
+        GqXkMtb1Mjb9qZfmLR9ekSxxM2RqH8g=
+X-Google-Smtp-Source: ABdhPJwfeiycltlybhTj7UKB2JEhJqYEuRYscpRNQomunXBGc+OXGSTBjoVVWr3Sr9Zkv1hFoSwEuA==
+X-Received: by 2002:a05:6512:e9c:: with SMTP id bi28mr45440847lfb.245.1638187475542;
+        Mon, 29 Nov 2021 04:04:35 -0800 (PST)
+Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru. [94.29.46.111])
+        by smtp.googlemail.com with ESMTPSA id g12sm1317274lfu.135.2021.11.29.04.04.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Nov 2021 04:04:34 -0800 (PST)
+Subject: Re: [PATCH v2 28/45] mfd: rn5t618: Use devm_register_power_handler()
+To:     Lee Jones <lee.jones@linaro.org>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -92,7 +91,7 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Chen-Yu Tsai <wens@csie.org>,
-        Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
         Tony Lindgren <tony@atomide.com>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Philipp Zabel <p.zabel@pengutronix.de>,
@@ -112,36 +111,39 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
         linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
         linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 28/45] mfd: rn5t618: Use devm_register_power_handler()
-Message-ID: <YaS/lStp2b8GhVxw@google.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-29-digetx@gmail.com>
+ <20211027211715.12671-29-digetx@gmail.com> <YaS/lStp2b8GhVxw@google.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <592f2326-b450-1db1-0d3d-804415cf5de6@gmail.com>
+Date:   Mon, 29 Nov 2021 15:04:25 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
+In-Reply-To: <YaS/lStp2b8GhVxw@google.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211027211715.12671-29-digetx@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, 28 Oct 2021, Dmitry Osipenko wrote:
-
-> Use devm_register_power_handler() that replaces global pm_power_off
-> variable and allows to register multiple power-off handlers. It also
-> provides restart-handler support, i.e. all in one API.
+29.11.2021 14:55, Lee Jones пишет:
+> On Thu, 28 Oct 2021, Dmitry Osipenko wrote:
 > 
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-> ---
->  drivers/mfd/rn5t618.c | 56 ++++++++++++++++---------------------------
->  1 file changed, 21 insertions(+), 35 deletions(-)
+>> Use devm_register_power_handler() that replaces global pm_power_off
+>> variable and allows to register multiple power-off handlers. It also
+>> provides restart-handler support, i.e. all in one API.
+>>
+>> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+>> ---
+>>  drivers/mfd/rn5t618.c | 56 ++++++++++++++++---------------------------
+>>  1 file changed, 21 insertions(+), 35 deletions(-)
+> 
+> For my own reference (apply this as-is to your sign-off block):
+> 
+>   Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
+> 
 
-For my own reference (apply this as-is to your sign-off block):
-
-  Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Thanks you. This and other driver patches will be slightly changed
+because the power-handler was renamed to sys-off handler starting with
+the v3 of this series, but yours ack still will be valid here.
