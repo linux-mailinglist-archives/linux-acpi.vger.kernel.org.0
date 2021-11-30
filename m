@@ -2,58 +2,76 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F2DC46326C
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Nov 2021 12:31:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D90463A18
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Nov 2021 16:31:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236835AbhK3LfM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Nov 2021 06:35:12 -0500
-Received: from szxga02-in.huawei.com ([45.249.212.188]:16323 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232569AbhK3LfM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Nov 2021 06:35:12 -0500
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4J3KmR72RPz91QC;
-        Tue, 30 Nov 2021 19:31:19 +0800 (CST)
-Received: from [10.67.102.169] (10.67.102.169) by
- canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 30 Nov 2021 19:31:51 +0800
-CC:     <yangyicong@hisilicon.com>,
-        "Zengtao (B)" <prime.zeng@hisilicon.com>
-From:   Yicong Yang <yangyicong@hisilicon.com>
-Subject: [Issue] PCIe AER/Hotplug is disabled when pcie_aspm=off
-To:     <bhelgaas@google.com>, <rafael@kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-Message-ID: <4d5943c3-1951-767a-5b03-46f527e6ab3a@hisilicon.com>
-Date:   Tue, 30 Nov 2021 19:31:51 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+        id S229769AbhK3PfP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Nov 2021 10:35:15 -0500
+Received: from mga02.intel.com ([134.134.136.20]:25819 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238810AbhK3PfO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 30 Nov 2021 10:35:14 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="223466682"
+X-IronPort-AV: E=Sophos;i="5.87,276,1631602800"; 
+   d="scan'208";a="223466682"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 07:31:55 -0800
+X-IronPort-AV: E=Sophos;i="5.87,276,1631602800"; 
+   d="scan'208";a="609170395"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 07:31:54 -0800
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id F3BF2204C6;
+        Tue, 30 Nov 2021 17:31:51 +0200 (EET)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
+        (envelope-from <sakari.ailus@linux.intel.com>)
+        id 1ms57i-003vRF-8c; Tue, 30 Nov 2021 17:32:50 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com,
+        rafael@kernel.org,
+        /tmp/small/0000-cover-letter.patch@punajuuri.localdomain
+Subject: [PATCH 1/7] device property: Fix fwnode_graph_devcon_match() fwnode leak
+Date:   Tue, 30 Nov 2021 17:32:44 +0200
+Message-Id: <20211130153250.935726-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.102.169]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bjorn and Rafael,
+For each endpoint it encounters, fwnode_graph_devcon_match() checks
+whether the endpoint's remote port parent device is available. If it is
+not, it ignores the endpoint but does not put the reference to the remote
+endpoint port parent fwnode. For available devices the fwnode handle
+reference is put as expected.
 
-Our test found that if set pcie_aspm=off in cmdline, the AER and hotplug is also disabled without
-negotiating with firmware through _OSC. Driver regards ASPM as a requirement of PCIe support and
-if it's disabled, we'll not enable other advanced services like AER and hotplug at all.
+Put the reference for unavailable devices now.
 
-Any reason for binding ASPM with other PCIe services? There is an attempt to split ASPM with other
-services [1] but the patch is not accepted. The original patch [2] makes ASPM a necessity related
-a bugzilla report but I didn't figure out the detailed reason for doing so.
+Fixes: 637e9e52b185 ("device connection: Find device connections also from device graphs")
+Cc: stable@vger.kernel.org # for 5.1 and later
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+---
+ drivers/base/property.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Can we add some detailed reasons in the code why regards ASPM a necessity?
-or shall we split ASPM and other services as they are independent?
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index f1f35b48ab8b9..6df99e526ab0f 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -1206,8 +1206,10 @@ fwnode_graph_devcon_match(struct fwnode_handle *fwnode, const char *con_id,
+ 
+ 	fwnode_graph_for_each_endpoint(fwnode, ep) {
+ 		node = fwnode_graph_get_remote_port_parent(ep);
+-		if (!fwnode_device_is_available(node))
++		if (!fwnode_device_is_available(node)) {
++			fwnode_handle_put(node);
+ 			continue;
++		}
+ 
+ 		ret = match(node, con_id, data);
+ 		fwnode_handle_put(node);
+-- 
+2.30.2
 
-[1] https://lore.kernel.org/linux-pci/20190702201318.GC128603@google.com/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=415e12b23792
-
-Thanks,
-Yicong
