@@ -2,38 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C703C463A19
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Nov 2021 16:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 713C5463A21
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Nov 2021 16:32:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230465AbhK3PfX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Nov 2021 10:35:23 -0500
-Received: from mga17.intel.com ([192.55.52.151]:4622 "EHLO mga17.intel.com"
+        id S235071AbhK3PgH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Nov 2021 10:36:07 -0500
+Received: from mga12.intel.com ([192.55.52.136]:53792 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234669AbhK3PfW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 30 Nov 2021 10:35:22 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="216931467"
+        id S234991AbhK3PgE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 30 Nov 2021 10:36:04 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="216253830"
 X-IronPort-AV: E=Sophos;i="5.87,276,1631602800"; 
-   d="scan'208";a="216931467"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 07:31:59 -0800
+   d="scan'208";a="216253830"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 07:32:28 -0800
 X-IronPort-AV: E=Sophos;i="5.87,276,1631602800"; 
-   d="scan'208";a="477147533"
+   d="scan'208";a="540446767"
 Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 07:31:57 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 07:32:27 -0800
 Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 39C2320A03;
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 4565E20A45;
         Tue, 30 Nov 2021 17:31:52 +0200 (EET)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
         (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1ms57i-003vRX-HX; Tue, 30 Nov 2021 17:32:50 +0200
+        id 1ms57i-003vRb-J8; Tue, 30 Nov 2021 17:32:50 +0200
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com,
         rafael@kernel.org,
         /tmp/small/0000-cover-letter.patch@punajuuri.localdomain
-Subject: [PATCH 6/7] device property: Use fwnode_graph_for_each_endpoint() macro
-Date:   Tue, 30 Nov 2021 17:32:49 +0200
-Message-Id: <20211130153250.935726-6-sakari.ailus@linux.intel.com>
+Subject: [PATCH 7/7] device property: Drop fwnode_graph_get_remote_node()
+Date:   Tue, 30 Nov 2021 17:32:50 +0200
+Message-Id: <20211130153250.935726-7-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211130153250.935726-1-sakari.ailus@linux.intel.com>
 References: <20211130153250.935726-1-sakari.ailus@linux.intel.com>
@@ -43,46 +43,112 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that we have fwnode_graph_for_each_endpoint() macro, use it instead of
-calling fwnode_graph_get_next_endpoint() directly. It manages the iterator
-variable for the user without manual intervention.
+fwnode_graph_get_remote_node() is only used by the tegra-video driver.
+Convert it to use newer fwnode_graph_get_endpoint_by_id() and drop
+now-unused fwnode_graph_get_remote_node().
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- drivers/base/property.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/base/property.c                | 38 --------------------------
+ drivers/staging/media/tegra-video/vi.c | 12 +++++---
+ include/linux/property.h               |  3 --
+ 3 files changed, 8 insertions(+), 45 deletions(-)
 
 diff --git a/drivers/base/property.c b/drivers/base/property.c
-index 248034553005f..ba35d16e7f1f2 100644
+index ba35d16e7f1f2..afe61263daa9d 100644
 --- a/drivers/base/property.c
 +++ b/drivers/base/property.c
-@@ -1072,9 +1072,9 @@ struct fwnode_handle *
- fwnode_graph_get_remote_node(const struct fwnode_handle *fwnode, u32 port_id,
- 			     u32 endpoint_id)
+@@ -1059,44 +1059,6 @@ fwnode_graph_get_remote_endpoint(const struct fwnode_handle *fwnode)
+ }
+ EXPORT_SYMBOL_GPL(fwnode_graph_get_remote_endpoint);
+ 
+-/**
+- * fwnode_graph_get_remote_node - get remote parent node for given port/endpoint
+- * @fwnode: pointer to parent fwnode_handle containing graph port/endpoint
+- * @port_id: identifier of the parent port node
+- * @endpoint_id: identifier of the endpoint node
+- *
+- * Return: Remote fwnode handle associated with remote endpoint node linked
+- *	   to @node. Use fwnode_node_put() on it when done.
+- */
+-struct fwnode_handle *
+-fwnode_graph_get_remote_node(const struct fwnode_handle *fwnode, u32 port_id,
+-			     u32 endpoint_id)
+-{
+-	struct fwnode_handle *endpoint;
+-
+-	fwnode_graph_for_each_endpoint(fwnode, endpoint) {
+-		struct fwnode_endpoint fwnode_ep;
+-		struct fwnode_handle *remote;
+-		int ret;
+-
+-		ret = fwnode_graph_parse_endpoint(endpoint, &fwnode_ep);
+-		if (ret < 0)
+-			continue;
+-
+-		if (fwnode_ep.port != port_id || fwnode_ep.id != endpoint_id)
+-			continue;
+-
+-		remote = fwnode_graph_get_remote_port_parent(endpoint);
+-		if (!remote)
+-			return NULL;
+-
+-		return fwnode_device_is_available(remote) ? remote : NULL;
+-	}
+-
+-	return NULL;
+-}
+-EXPORT_SYMBOL_GPL(fwnode_graph_get_remote_node);
+-
+ static bool fwnode_graph_remote_available(struct fwnode_handle *ep)
  {
--	struct fwnode_handle *endpoint = NULL;
-+	struct fwnode_handle *endpoint;
+ 	struct fwnode_handle *dev_node;
+diff --git a/drivers/staging/media/tegra-video/vi.c b/drivers/staging/media/tegra-video/vi.c
+index 69d9787d53384..d1f43f465c224 100644
+--- a/drivers/staging/media/tegra-video/vi.c
++++ b/drivers/staging/media/tegra-video/vi.c
+@@ -1845,7 +1845,6 @@ static int tegra_vi_graph_init(struct tegra_vi *vi)
+ 	struct tegra_vi_channel *chan;
+ 	struct fwnode_handle *fwnode = dev_fwnode(vi->dev);
+ 	int ret;
+-	struct fwnode_handle *remote = NULL;
  
--	while ((endpoint = fwnode_graph_get_next_endpoint(fwnode, endpoint))) {
-+	fwnode_graph_for_each_endpoint(fwnode, endpoint) {
- 		struct fwnode_endpoint fwnode_ep;
- 		struct fwnode_handle *remote;
- 		int ret;
-@@ -1133,12 +1133,12 @@ struct fwnode_handle *
- fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
- 				u32 port, u32 endpoint, unsigned long flags)
+ 	/*
+ 	 * Walk the links to parse the full graph. Each channel will have
+@@ -1857,11 +1856,16 @@ static int tegra_vi_graph_init(struct tegra_vi *vi)
+ 	 * next channels.
+ 	 */
+ 	list_for_each_entry(chan, &vi->vi_chans, list) {
+-		remote = fwnode_graph_get_remote_node(fwnode, chan->portnos[0],
+-						      0);
+-		if (!remote)
++		struct fwnode_handle *ep, *remote;
++
++		ep = fwnode_graph_get_endpoint_by_id(fwnode,
++						     chan->portnos[0], 0, 0);
++		if (!ep)
+ 			continue;
+ 
++		remote = fwnode_graph_get_remote_port_parent(ep);
++		fwnode_handle_put(ep);
++
+ 		ret = tegra_vi_graph_parse_one(chan, remote);
+ 		fwnode_handle_put(remote);
+ 		if (ret < 0 || list_empty(&chan->notifier.asd_list))
+diff --git a/include/linux/property.h b/include/linux/property.h
+index e32b95f42c9db..3a31765895c11 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -401,9 +401,6 @@ struct fwnode_handle *fwnode_graph_get_remote_port(
+ 	const struct fwnode_handle *fwnode);
+ struct fwnode_handle *fwnode_graph_get_remote_endpoint(
+ 	const struct fwnode_handle *fwnode);
+-struct fwnode_handle *
+-fwnode_graph_get_remote_node(const struct fwnode_handle *fwnode, u32 port,
+-			     u32 endpoint);
+ 
+ static inline bool fwnode_graph_is_endpoint(struct fwnode_handle *fwnode)
  {
--	struct fwnode_handle *ep = NULL, *best_ep = NULL;
-+	struct fwnode_handle *ep, *best_ep = NULL;
- 	unsigned int best_ep_id = 0;
- 	bool endpoint_next = flags & FWNODE_GRAPH_ENDPOINT_NEXT;
- 	bool enabled_only = !(flags & FWNODE_GRAPH_DEVICE_DISABLED);
- 
--	while ((ep = fwnode_graph_get_next_endpoint(fwnode, ep))) {
-+	fwnode_graph_for_each_endpoint(fwnode, ep) {
- 		struct fwnode_endpoint fwnode_ep = { 0 };
- 		int ret;
- 
 -- 
 2.30.2
 
