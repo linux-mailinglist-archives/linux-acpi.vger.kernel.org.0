@@ -2,65 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6333846314E
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Nov 2021 11:42:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F2DC46326C
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Nov 2021 12:31:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235033AbhK3Kph (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Nov 2021 05:45:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58508 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235109AbhK3Kpg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Nov 2021 05:45:36 -0500
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7CBC061574
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Nov 2021 02:42:17 -0800 (PST)
-Received: by mail-oi1-x232.google.com with SMTP id n66so40394386oia.9
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Nov 2021 02:42:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=YYm62Oqzah+993ClMuw78e8Z6Og/dhaaCjbKBqM0amo=;
-        b=jv+PsKjPxGYTJH9ZegIkO9VSIDFMh1n1T4DMxgMMu5hzsVoqFtOxBDxokR5OKyqei2
-         HmIlVLSdvJbS+UUYGIAJVV4KMaWsfeJ/bCVCHgLxWKtfdO6Bj0b0NE59zDUZeF8IWVjg
-         LA9CAPYuovPbTr+uDGdAJ+qWdaqqawNeJn/WRNvqV98J0UoQv2ZoiLW7hcZ4ggVB5Dtb
-         mjDcO7aG01g5G6BmLXpubt31nI1O2v3sOecdGRCsXPkvRFR7IuQ8X/kGWDV/VBf//UVv
-         q19z5rEu0Bh2hW0sk+MCAV1oGXquU0RcKozCG980yBijo6F/6uj7XHOgrh2uTe8Lxwm8
-         5mug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=YYm62Oqzah+993ClMuw78e8Z6Og/dhaaCjbKBqM0amo=;
-        b=WZpLChM9WvuyzEHCtSTY4YcX25MVS3Um9uz5DPcB75CQrWqoh/WkG/W7Xe91ahtgf3
-         XEbLd5h7t9dsaALas43qWzpxV9/101lBpIrRrcGnIvx3sG7MSch7j8z4HukjBlbYOnTN
-         QstCnCOHC64s+iipSEMvKg7vd8/uEOqYy5h0rdw7WrB6T5114k3WZRWML38DEjdXR5xS
-         AUXU0smI9wKN2Kr5aF5NK2IQQGEN2SeKANF9piXasbKCKs1KYvLMFjRw4/LX9xW9KNQv
-         QV81SuIzRcV7GddgNtQ04hmyoUh5drkKan1xJzbfzzNKa5GQHj5kEfnFct3SBuhyl+II
-         suxg==
-X-Gm-Message-State: AOAM532vjjfDjW+zWo2412fZalLVO1aHJqDJbmRBtRIy5wTSQIuoekJL
-        Ua6ZaOv5orANcGaLHzP4UI/yEMazDNiyghilaaY=
-X-Google-Smtp-Source: ABdhPJwEutV5Cr7XGQGoKqFDgMrE4IT3gFj/dsZSXyCBLYRBTcQQR8/IYnE/PKLstWBlCOI6i5ncU7MplY12fBSrAnQ=
-X-Received: by 2002:a05:6808:301e:: with SMTP id ay30mr3342205oib.36.1638268936668;
- Tue, 30 Nov 2021 02:42:16 -0800 (PST)
+        id S236835AbhK3LfM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Nov 2021 06:35:12 -0500
+Received: from szxga02-in.huawei.com ([45.249.212.188]:16323 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232569AbhK3LfM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 30 Nov 2021 06:35:12 -0500
+Received: from canpemm500009.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4J3KmR72RPz91QC;
+        Tue, 30 Nov 2021 19:31:19 +0800 (CST)
+Received: from [10.67.102.169] (10.67.102.169) by
+ canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Tue, 30 Nov 2021 19:31:51 +0800
+CC:     <yangyicong@hisilicon.com>,
+        "Zengtao (B)" <prime.zeng@hisilicon.com>
+From:   Yicong Yang <yangyicong@hisilicon.com>
+Subject: [Issue] PCIe AER/Hotplug is disabled when pcie_aspm=off
+To:     <bhelgaas@google.com>, <rafael@kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>
+Message-ID: <4d5943c3-1951-767a-5b03-46f527e6ab3a@hisilicon.com>
+Date:   Tue, 30 Nov 2021 19:31:51 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-Received: by 2002:a05:6839:2a11:0:0:0:0 with HTTP; Tue, 30 Nov 2021 02:42:16
- -0800 (PST)
-Reply-To: s7jamesl@gmail.com
-From:   "James L. Smith" <lawyerokonesq@gmail.com>
-Date:   Tue, 30 Nov 2021 10:42:16 +0000
-Message-ID: <CAHuN8_Tn4nSmtxBiHFHNojPK4GB1fnhVcj0nvyRYGsi5YRnocw@mail.gmail.com>
-Subject: re: My greetings
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.102.169]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ canpemm500009.china.huawei.com (7.192.105.203)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello,
+Hi Bjorn and Rafael,
 
-My greetings to you. Please, kindly let me know your thoughts towards
-project funding.
+Our test found that if set pcie_aspm=off in cmdline, the AER and hotplug is also disabled without
+negotiating with firmware through _OSC. Driver regards ASPM as a requirement of PCIe support and
+if it's disabled, we'll not enable other advanced services like AER and hotplug at all.
 
-Best regards,
-James L. Smith
-Accredited Broker
+Any reason for binding ASPM with other PCIe services? There is an attempt to split ASPM with other
+services [1] but the patch is not accepted. The original patch [2] makes ASPM a necessity related
+a bugzilla report but I didn't figure out the detailed reason for doing so.
+
+Can we add some detailed reasons in the code why regards ASPM a necessity?
+or shall we split ASPM and other services as they are independent?
+
+[1] https://lore.kernel.org/linux-pci/20190702201318.GC128603@google.com/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=415e12b23792
+
+Thanks,
+Yicong
