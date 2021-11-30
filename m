@@ -2,153 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 713C5463A21
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Nov 2021 16:32:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6006D463ABD
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Nov 2021 16:57:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235071AbhK3PgH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 30 Nov 2021 10:36:07 -0500
-Received: from mga12.intel.com ([192.55.52.136]:53792 "EHLO mga12.intel.com"
+        id S243122AbhK3QAU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 30 Nov 2021 11:00:20 -0500
+Received: from mga07.intel.com ([134.134.136.100]:35931 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234991AbhK3PgE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 30 Nov 2021 10:36:04 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="216253830"
+        id S243132AbhK3QAQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 30 Nov 2021 11:00:16 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="299636611"
 X-IronPort-AV: E=Sophos;i="5.87,276,1631602800"; 
-   d="scan'208";a="216253830"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 07:32:28 -0800
+   d="scan'208";a="299636611"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 07:56:57 -0800
 X-IronPort-AV: E=Sophos;i="5.87,276,1631602800"; 
-   d="scan'208";a="540446767"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 07:32:27 -0800
-Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 4565E20A45;
-        Tue, 30 Nov 2021 17:31:52 +0200 (EET)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
-        (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1ms57i-003vRb-J8; Tue, 30 Nov 2021 17:32:50 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com,
+   d="scan'208";a="609177366"
+Received: from smile.fi.intel.com ([10.237.72.184])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2021 07:56:56 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ms5U0-000bIp-AD;
+        Tue, 30 Nov 2021 17:55:52 +0200
+Date:   Tue, 30 Nov 2021 17:55:52 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     linux-acpi@vger.kernel.org, heikki.krogerus@linux.intel.com,
         rafael@kernel.org,
         /tmp/small/0000-cover-letter.patch@punajuuri.localdomain
-Subject: [PATCH 7/7] device property: Drop fwnode_graph_get_remote_node()
-Date:   Tue, 30 Nov 2021 17:32:50 +0200
-Message-Id: <20211130153250.935726-7-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211130153250.935726-1-sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH 3/7] Documentation: ACPI: Fix data node reference
+ documentation
+Message-ID: <YaZJiAYTFOGgoCAt@smile.fi.intel.com>
 References: <20211130153250.935726-1-sakari.ailus@linux.intel.com>
+ <20211130153250.935726-3-sakari.ailus@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211130153250.935726-3-sakari.ailus@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-fwnode_graph_get_remote_node() is only used by the tegra-video driver.
-Convert it to use newer fwnode_graph_get_endpoint_by_id() and drop
-now-unused fwnode_graph_get_remote_node().
+On Tue, Nov 30, 2021 at 05:32:46PM +0200, Sakari Ailus wrote:
+> The data node reference documentation was missing a package that must
+> contain the property values, instead property name and multiple values
+> being present in a single package. This is not aligned with the _DSD spec.
+> Fix it by adding the package for the values.
+> 
+> Also add the missing "reg" properties to two numbered nodes.
+> 
+> Fixes: b10134a3643d ("ACPI: property: Document hierarchical data extension references")
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+>  .../firmware-guide/acpi/dsd/data-node-references.rst      | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+> index b7ad47df49de0..166bf9a944bc8 100644
+> --- a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+> +++ b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+> @@ -5,7 +5,7 @@
+>  Referencing hierarchical data nodes
+>  ===================================
+>  
+> -:Copyright: |copy| 2018 Intel Corporation
+> +:Copyright: |copy| 2018, 2021 Intel Corporation
+>  :Author: Sakari Ailus <sakari.ailus@linux.intel.com>
+>  
+>  ACPI in general allows referring to device objects in the tree only.
+> @@ -52,12 +52,14 @@ the ANOD object which is also the final target node of the reference.
+>  	    Name (NOD0, Package() {
+>  		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>  		Package () {
+> +		    Package () { "reg", 0 },
+>  		    Package () { "random-property", 3 },
+>  		}
+>  	    })
+>  	    Name (NOD1, Package() {
+>  		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
+>  		Package () {
+> +		    Package () { "reg", 1 },
+>  		    Package () { "anothernode", "ANOD" },
+>  		}
+>  	    })
+> @@ -74,7 +76,9 @@ the ANOD object which is also the final target node of the reference.
+>  	    Name (_DSD, Package () {
+>  		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>  		Package () {
+> -		    Package () { "reference", ^DEV0, "node@1", "anothernode" },
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
- drivers/base/property.c                | 38 --------------------------
- drivers/staging/media/tegra-video/vi.c | 12 +++++---
- include/linux/property.h               |  3 --
- 3 files changed, 8 insertions(+), 45 deletions(-)
+> +		    Package () { "reference",
+> +				 Package () { ^DEV0,
+> +					      "node@1", "anothernode" } },
 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index ba35d16e7f1f2..afe61263daa9d 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -1059,44 +1059,6 @@ fwnode_graph_get_remote_endpoint(const struct fwnode_handle *fwnode)
- }
- EXPORT_SYMBOL_GPL(fwnode_graph_get_remote_endpoint);
- 
--/**
-- * fwnode_graph_get_remote_node - get remote parent node for given port/endpoint
-- * @fwnode: pointer to parent fwnode_handle containing graph port/endpoint
-- * @port_id: identifier of the parent port node
-- * @endpoint_id: identifier of the endpoint node
-- *
-- * Return: Remote fwnode handle associated with remote endpoint node linked
-- *	   to @node. Use fwnode_node_put() on it when done.
-- */
--struct fwnode_handle *
--fwnode_graph_get_remote_node(const struct fwnode_handle *fwnode, u32 port_id,
--			     u32 endpoint_id)
--{
--	struct fwnode_handle *endpoint;
--
--	fwnode_graph_for_each_endpoint(fwnode, endpoint) {
--		struct fwnode_endpoint fwnode_ep;
--		struct fwnode_handle *remote;
--		int ret;
--
--		ret = fwnode_graph_parse_endpoint(endpoint, &fwnode_ep);
--		if (ret < 0)
--			continue;
--
--		if (fwnode_ep.port != port_id || fwnode_ep.id != endpoint_id)
--			continue;
--
--		remote = fwnode_graph_get_remote_port_parent(endpoint);
--		if (!remote)
--			return NULL;
--
--		return fwnode_device_is_available(remote) ? remote : NULL;
--	}
--
--	return NULL;
--}
--EXPORT_SYMBOL_GPL(fwnode_graph_get_remote_node);
--
- static bool fwnode_graph_remote_available(struct fwnode_handle *ep)
- {
- 	struct fwnode_handle *dev_node;
-diff --git a/drivers/staging/media/tegra-video/vi.c b/drivers/staging/media/tegra-video/vi.c
-index 69d9787d53384..d1f43f465c224 100644
---- a/drivers/staging/media/tegra-video/vi.c
-+++ b/drivers/staging/media/tegra-video/vi.c
-@@ -1845,7 +1845,6 @@ static int tegra_vi_graph_init(struct tegra_vi *vi)
- 	struct tegra_vi_channel *chan;
- 	struct fwnode_handle *fwnode = dev_fwnode(vi->dev);
- 	int ret;
--	struct fwnode_handle *remote = NULL;
- 
- 	/*
- 	 * Walk the links to parse the full graph. Each channel will have
-@@ -1857,11 +1856,16 @@ static int tegra_vi_graph_init(struct tegra_vi *vi)
- 	 * next channels.
- 	 */
- 	list_for_each_entry(chan, &vi->vi_chans, list) {
--		remote = fwnode_graph_get_remote_node(fwnode, chan->portnos[0],
--						      0);
--		if (!remote)
-+		struct fwnode_handle *ep, *remote;
-+
-+		ep = fwnode_graph_get_endpoint_by_id(fwnode,
-+						     chan->portnos[0], 0, 0);
-+		if (!ep)
- 			continue;
- 
-+		remote = fwnode_graph_get_remote_port_parent(ep);
-+		fwnode_handle_put(ep);
-+
- 		ret = tegra_vi_graph_parse_one(chan, remote);
- 		fwnode_handle_put(remote);
- 		if (ret < 0 || list_empty(&chan->notifier.asd_list))
-diff --git a/include/linux/property.h b/include/linux/property.h
-index e32b95f42c9db..3a31765895c11 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -401,9 +401,6 @@ struct fwnode_handle *fwnode_graph_get_remote_port(
- 	const struct fwnode_handle *fwnode);
- struct fwnode_handle *fwnode_graph_get_remote_endpoint(
- 	const struct fwnode_handle *fwnode);
--struct fwnode_handle *
--fwnode_graph_get_remote_node(const struct fwnode_handle *fwnode, u32 port,
--			     u32 endpoint);
- 
- static inline bool fwnode_graph_is_endpoint(struct fwnode_handle *fwnode)
- {
+Can it be rather this
+
+		    Package () {
+		        "reference", Package () { ^DEV0, "node@1", "anothernode" }
+		    },
+
+or this way
+
+		    Package () {
+		        "reference", Package () {
+			   ^DEV0, "node@1", "anothernode"
+			}
+		    },
+
+?
+
+>  		}
+>  	    })
+>  	}
+> -- 
+> 2.30.2
+> 
+
 -- 
-2.30.2
+With Best Regards,
+Andy Shevchenko
+
 
