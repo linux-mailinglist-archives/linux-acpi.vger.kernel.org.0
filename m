@@ -2,77 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AC18464CC0
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Dec 2021 12:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E821F464E4D
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Dec 2021 13:58:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243160AbhLALh1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 1 Dec 2021 06:37:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33458 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348952AbhLALhY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 1 Dec 2021 06:37:24 -0500
-Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C45BC061763
-        for <linux-acpi@vger.kernel.org>; Wed,  1 Dec 2021 03:34:00 -0800 (PST)
-Received: by mail-ua1-x92c.google.com with SMTP id n6so48280046uak.1
-        for <linux-acpi@vger.kernel.org>; Wed, 01 Dec 2021 03:34:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
-        b=nKE9e+4jEQRb21OhoYPSbxPLfJ2IuSmNXU0U6wmcP4ykCacrWpdbtE0jjuz/hSLLGi
-         3CHjeG+lFmWzoULwCsmlhVFgDEk5dLFaYb51pw7bXGjZ9H8t0j91dP9aL17MRQYkMPZK
-         Snvty/Yp8/ZrWZr2EuFXHqBxUdbU8X39ik45viERJ1Dn7qW8BPCFp2vlafV2okU0kn5j
-         QPTIDY8QJSy8zAVbK10d6+AY0lky+mrQRAAg0uS1DacQStzD/dQtt/uBz/RlGIdZCai/
-         BHep24kmiLdl1nvBvHYMFonu8NoJvJlErv7lbZlg2+2c277BpkzmDA4WwPZoxzlIf0Mh
-         Af5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
-        b=TcMyzFm5ZCUDEtEJplPHNZszxvgYuS2z4Dq2Kof9ZdTTX+0Rd0Z8HKE0KFYcutAdla
-         DDbFsEr6/I7yeoR9YSp7Qxle+619Ahnq/wxll6dw6W9VgzWkb9s1M0Eq3XX6RLQrhkO/
-         rywSB3j3rZUaKpTcBn3CKfO3FC5dno7ijSTIJqjIipGn2Nbz1LfR0zOsJxzc1amMjnQZ
-         uztUW3u1elydmFtcToWv+JgBvc2bkc3kUes1X2NltRQRL6abVddzc3WR7FM9wxQyzvOF
-         +3GQDObdwOBXtfvkHg8GtCCGA9byeN9lXHhGQf8eKBoJYDELPSFRyl+pcivo++6e6Xml
-         tSMQ==
-X-Gm-Message-State: AOAM530idvn+FWhRavxrKXQucgSU3VgH9SmL1jyqAtsN6Th3OghjFxPF
-        usC55rWmfWwukYRhuytQ7D1HBpOv7FsGxMQK/mQ=
-X-Google-Smtp-Source: ABdhPJwK+H50pzFgfv5CJPfAwBzUdMqIKHh+Ckkuju2lG2knVlJrzqINPiiwPjc/Uz6xuSJez7Fkn5YZPcfa5CPpvro=
-X-Received: by 2002:a67:ef4d:: with SMTP id k13mr6266305vsr.4.1638358439020;
- Wed, 01 Dec 2021 03:33:59 -0800 (PST)
+        id S1349436AbhLANCB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 1 Dec 2021 08:02:01 -0500
+Received: from mga06.intel.com ([134.134.136.31]:2470 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244869AbhLANB7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 1 Dec 2021 08:01:59 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10184"; a="297252705"
+X-IronPort-AV: E=Sophos;i="5.87,278,1631602800"; 
+   d="scan'208";a="297252705"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2021 04:58:37 -0800
+X-IronPort-AV: E=Sophos;i="5.87,278,1631602800"; 
+   d="scan'208";a="596320511"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2021 04:58:36 -0800
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 74DE3206DC;
+        Wed,  1 Dec 2021 14:58:34 +0200 (EET)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
+        (envelope-from <sakari.ailus@linux.intel.com>)
+        id 1msPCw-003vl2-Ow; Wed, 01 Dec 2021 14:59:34 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com,
+        rafael@kernel.org
+Subject: [PATCH v2 0/7] Small device property fixes and improvements
+Date:   Wed,  1 Dec 2021 14:59:28 +0200
+Message-Id: <20211201125934.936953-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Sender: unitednationawardwinner@gmail.com
-Received: by 2002:ab0:6c55:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 03:33:58 -0800 (PST)
-From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
-Date:   Wed, 1 Dec 2021 03:33:58 -0800
-X-Google-Sender-Auth: uTQ_nfkzXaWGWaTWp1BSFqK3Ucs
-Message-ID: <CAJ4dHaSrD-X=xpfKNZV-hXSiMV6mNYrgy5vWCNkKm6iu5RQStg@mail.gmail.com>
-Subject: Your long awaited part payment of $2.5.000.00Usd
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Attention: Beneficiary, Your long awaited part payment of
-$2.5.000.00Usd (TWO MILLION FIVE Hundred Thousand United State
-Dollars) is ready for immediate release to you, and it was
-electronically credited into an ATM Visa Card for easy delivery.
+Hello everyone,
 
-Your new Payment Reference No.- 6363836,
-Pin Code No: 1787
-Your Certificate of Merit Payment No: 05872,
+Here's a few small fixes and improvements for device properties.
 
-Your Names: |
-Address: |
+since v1:
 
-Person to Contact:MR KELLY HALL the Director of the International
-Audit unit ATM Payment Center,
+- Use labelled references.
 
-Email: uba-bf@e-ubabf.com
-TELEPHONE: +226 64865611 You can whatsApp the bank
+- Avoid using continue in fwnode_graph_get_endpoint_count().
 
-Regards.
-Mrs ORGIL BAATAR
+- Rewrap lines in data node reference example.
+
+Sakari Ailus (7):
+  device property: Fix fwnode_graph_devcon_match() fwnode leak
+  device property: Fix documentation for FWNODE_GRAPH_DEVICE_DISABLED
+  Documentation: ACPI: Fix data node reference documentation
+  Documentation: ACPI: Update references
+  device property: Implement fwnode_graph_get_endpoint_count()
+  device property: Use fwnode_graph_for_each_endpoint() macro
+  device property: Drop fwnode_graph_get_remote_node()
+
+ .../acpi/dsd/data-node-references.rst         | 28 +++---
+ .../firmware-guide/acpi/dsd/graph.rst         | 40 ++++-----
+ .../firmware-guide/acpi/dsd/leds.rst          | 40 ++++-----
+ Documentation/firmware-guide/acpi/dsd/phy.rst | 28 +++---
+ drivers/base/property.c                       | 89 +++++++++----------
+ drivers/staging/media/tegra-video/vi.c        | 12 ++-
+ include/linux/property.h                      |  8 +-
+ 7 files changed, 119 insertions(+), 126 deletions(-)
+
+-- 
+2.30.2
+
