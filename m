@@ -2,37 +2,37 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49D6D464E4F
+	by mail.lfdr.de (Postfix) with ESMTP id 4427A464E4E
 	for <lists+linux-acpi@lfdr.de>; Wed,  1 Dec 2021 13:58:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244869AbhLANCB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        id S1349435AbhLANCB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
         Wed, 1 Dec 2021 08:02:01 -0500
-Received: from mga03.intel.com ([134.134.136.65]:14072 "EHLO mga03.intel.com"
+Received: from mga03.intel.com ([134.134.136.65]:14076 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349435AbhLANCA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        id S1349438AbhLANCA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
         Wed, 1 Dec 2021 08:02:00 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10184"; a="236395262"
+X-IronPort-AV: E=McAfee;i="6200,9189,10184"; a="236395264"
 X-IronPort-AV: E=Sophos;i="5.87,278,1631602800"; 
-   d="scan'208";a="236395262"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2021 04:58:37 -0800
+   d="scan'208";a="236395264"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2021 04:58:38 -0800
 X-IronPort-AV: E=Sophos;i="5.87,278,1631602800"; 
-   d="scan'208";a="512008569"
+   d="scan'208";a="540816522"
 Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2021 04:58:36 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2021 04:58:36 -0800
 Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 62A1E2036B;
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id A2A652093F;
         Wed,  1 Dec 2021 14:58:34 +0200 (EET)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.94.2)
         (envelope-from <sakari.ailus@linux.intel.com>)
-        id 1msPCw-003vl7-Rl; Wed, 01 Dec 2021 14:59:34 +0200
+        id 1msPCw-003vlA-Td; Wed, 01 Dec 2021 14:59:34 +0200
 From:   Sakari Ailus <sakari.ailus@linux.intel.com>
 To:     linux-acpi@vger.kernel.org
 Cc:     andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com,
         rafael@kernel.org
-Subject: [PATCH v2 2/7] device property: Fix documentation for FWNODE_GRAPH_DEVICE_DISABLED
-Date:   Wed,  1 Dec 2021 14:59:30 +0200
-Message-Id: <20211201125934.936953-3-sakari.ailus@linux.intel.com>
+Subject: [PATCH v2 3/7] Documentation: ACPI: Fix data node reference documentation
+Date:   Wed,  1 Dec 2021 14:59:31 +0200
+Message-Id: <20211201125934.936953-4-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211201125934.936953-1-sakari.ailus@linux.intel.com>
 References: <20211201125934.936953-1-sakari.ailus@linux.intel.com>
@@ -42,50 +42,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-FWNODE_GRAPH_DEVICE_DISABLED flag was meant for also returning endpoints
-connected to disabled devices, but it also may return endpoints that are
-not connected. Fix this in documentation. Also
-fwnode_graph_get_endpoint_by_id() was affeced by this.
+The data node reference documentation was missing a package that must
+contain the property values, instead property name and multiple values
+being present in a single package. This is not aligned with the _DSD spec.
+Fix it by adding the package for the values.
 
-Also improve the language a little bit.
+Also add the missing "reg" properties to two numbered nodes.
 
-Fixes: 0fcc2bdc8aff ("device property: Add fwnode_graph_get_endpoint_by_id()")
+Fixes: b10134a3643d ("ACPI: property: Document hierarchical data extension references")
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/base/property.c  | 4 ++--
- include/linux/property.h | 3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ .../firmware-guide/acpi/dsd/data-node-references.rst   | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index 6df99e526ab0f..ecc4e2eb10678 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -1111,8 +1111,8 @@ EXPORT_SYMBOL_GPL(fwnode_graph_get_remote_node);
-  * has not been found, look for the closest endpoint ID greater than the
-  * specified one and return the endpoint that corresponds to it, if present.
-  *
-- * Do not return endpoints that belong to disabled devices, unless
-- * FWNODE_GRAPH_DEVICE_DISABLED is passed in @flags.
-+ * Does not return endpoints that belong to disabled devices or endpoints that
-+ * are unconnected, unless FWNODE_GRAPH_DEVICE_DISABLED is passed in @flags.
-  *
-  * The returned endpoint needs to be released by calling fwnode_handle_put() on
-  * it when it is not needed any more.
-diff --git a/include/linux/property.h b/include/linux/property.h
-index 88fa726a76df7..af5a7e512c86f 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -418,7 +418,8 @@ static inline bool fwnode_graph_is_endpoint(struct fwnode_handle *fwnode)
-  *				one.
-  * @FWNODE_GRAPH_DEVICE_DISABLED: That the device to which the remote
-  *				  endpoint of the given endpoint belongs to,
-- *				  may be disabled.
-+ *				  may be disabled, or that the endpoint is not
-+ *				  connected.
-  */
- #define FWNODE_GRAPH_ENDPOINT_NEXT	BIT(0)
- #define FWNODE_GRAPH_DEVICE_DISABLED	BIT(1)
+diff --git a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+index b7ad47df49de0..8b65b32e6e40e 100644
+--- a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
++++ b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+@@ -5,7 +5,7 @@
+ Referencing hierarchical data nodes
+ ===================================
+ 
+-:Copyright: |copy| 2018 Intel Corporation
++:Copyright: |copy| 2018, 2021 Intel Corporation
+ :Author: Sakari Ailus <sakari.ailus@linux.intel.com>
+ 
+ ACPI in general allows referring to device objects in the tree only.
+@@ -52,12 +52,14 @@ the ANOD object which is also the final target node of the reference.
+ 	    Name (NOD0, Package() {
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
++		    Package () { "reg", 0 },
+ 		    Package () { "random-property", 3 },
+ 		}
+ 	    })
+ 	    Name (NOD1, Package() {
+ 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
+ 		Package () {
++		    Package () { "reg", 1 },
+ 		    Package () { "anothernode", "ANOD" },
+ 		}
+ 	    })
+@@ -74,7 +76,11 @@ the ANOD object which is also the final target node of the reference.
+ 	    Name (_DSD, Package () {
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
+-		    Package () { "reference", ^DEV0, "node@1", "anothernode" },
++		    Package () {
++			"reference", Package () {
++			    ^DEV0, "node@1", "anothernode"
++			}
++		    },
+ 		}
+ 	    })
+ 	}
 -- 
 2.30.2
 
