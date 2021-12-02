@@ -2,95 +2,193 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CBC3465F62
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Dec 2021 09:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B316D466029
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Dec 2021 10:10:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356148AbhLBIc7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Dec 2021 03:32:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38120 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356119AbhLBIc4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Dec 2021 03:32:56 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E015C061574
-        for <linux-acpi@vger.kernel.org>; Thu,  2 Dec 2021 00:29:34 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id p8so39822847ljo.5
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Dec 2021 00:29:34 -0800 (PST)
+        id S1345873AbhLBJN1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Dec 2021 04:13:27 -0500
+Received: from mail-dm6nam10on2088.outbound.protection.outlook.com ([40.107.93.88]:61153
+        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S240990AbhLBJN1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 2 Dec 2021 04:13:27 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HoOVTihw6++h/vjlhyD6zXFzDVS8MluD3N0bLlM5YU/FLra9PKyvaWinwCC4Q8AxOOuU7z/Thrf9AtoyHmsfDyY3dFHJ9wPXsF7Xdv9h24ASWqMToRbb6xd/ifjbMzv6SkKCrIGBALJp2v+vmGJ+QHP90crxqRCHQk4bkq726S30zrPCELiMFceboYaNrBiVXY7yHhOMTKmwdeLZnO73tXcQxYG0kkAsE0kA+idIOadmo0KJd0Rq0tni3yJ9Mam1pkVFgzSGvcNTo/7wXJBozaX/de4UcVvUQXgIQiUmRI9uZtJ5nKuTCknZJLqIOEGhPxkc5XJaLSKKCO3eTU9CHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9AEWuV9OqALxtKGafvvmuWBT694n074L5gTembkazGU=;
+ b=KhwUqQCHFYp7i3De3Z+BQi9nN3XqBwHAnrLbVmDERVQI9DDd/olsPCmZF9vc9f6QoK9XM87qXQi3QAcAe6jS0CrJvH+UgTCYxwWAKIc0TC+r7FwQqAKTNtI2Pt4y+VLp2gM7kUX6RGzJLOLjRqCTdo9enbhDmHkjnaLWSTqTuqKINIw9gCQdcJQEytZFBWTTRfYY6QPYLgAsVzxS4HGg4TVlPFXAiVNB+G1XCBZKksjDveJXjGwF3ylFutDrpm4Ak4SFeC/cDhUMqSP6NHxU773sh5cnltzoNuYoHi7n3ksLbU4GzYXosY2C7+KN+MTw99nvHZZaiJXoQb/esK9+/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
+ dkim=pass header.d=xilinx.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=VOzNSXRNHMc5MOS4B5K3kOYpzZOVF7ZsgyKSu3O9LlA=;
-        b=LhwZtsDjXL3kOk3BjUm9bld/BlVup/WBXtUTVql3LUg9XKcqrVV/+W7+0Ss+f4dOrP
-         4LCxFu6SuSxPonTH/97uqwhefrpjS0kNyept2RaR+r1ZU2zWL7w0X8TTXdOYvTH++Z4l
-         WhdcKz5AWxAY1+0SrR6O1uCFV8zonfHvmcoDzlmu9gsMlxgZMEGM07I/uhIDR+T/kKFQ
-         t9lqTffHXoOxBauAX/IxT/tsoH+y0ip2MnzuHT8NB/cqMA3LVEmyhOLc7RWJM9PkP4YJ
-         UiGpCaGNTNr/8fnOjHDulnfA2QIMur6oUgREDufiU63CirkScYRH50K/9SIui2YuJQS1
-         D+oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=VOzNSXRNHMc5MOS4B5K3kOYpzZOVF7ZsgyKSu3O9LlA=;
-        b=73y3gXEFtcbmcQFHE1Bz//0bc0iNeqeF5lxdj96e73AVP8y1aRJGoHf5JCyJNsfoQU
-         pe5iBABy3w1CJa2smto/PEhpLUzpzcWUR8dkXO585j2tm/tVi2ZvesQjcA6s8wv2hbgC
-         gxU/QeofqjFHfsIcSVN3kYGalOhdCgOA1Z8Yul2UARAAYuaQ6+p+3hkcr8j4ecrKqos0
-         IMLDUn6cnk8ZsxSVuSXytpOs8UQiAd5q9qznHHlYsKhXfvkdMhau6Y9vFc/reOf48y9Q
-         oUrbv7Trx14UY/1aMNr0OWhECczonNR+Dk/SndphAo7Be3UX05YXsxoIkByYeCWspTsv
-         YQBw==
-X-Gm-Message-State: AOAM531IEypiY8Jbdnr2PrQUmHcPd0pFdJPpgWqRTke+H/fUMmNeR1EH
-        YKa6avlvxXPWYv3EpJ3bHg+yvacPBukX7jCQkIs=
-X-Google-Smtp-Source: ABdhPJw8lEFNjxP/uVKwv5NYoxrQwmy5L8zW6W52MjcGPoOqK/4x5XqNZ8mAX3xmMoeChj8KniMICxYhRggbax/rLug=
-X-Received: by 2002:a2e:3a09:: with SMTP id h9mr10778797lja.141.1638433772493;
- Thu, 02 Dec 2021 00:29:32 -0800 (PST)
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9AEWuV9OqALxtKGafvvmuWBT694n074L5gTembkazGU=;
+ b=LD3zD0PUlla2BdVXWiU4lS1m9GZXqo5iSUwEMTqFdacQohs48njvK6VrhQ+MzuiPowlRCV3bX1FjzJ98GFylkiFTPM5c+cWPypF1FSGmi8E1XrBoUl/nSK7bmX4QQPXjbAHh8P2k5D8NY7GTGl+q/Y6YvkShqN2g9JGi48VMYSA=
+Received: from BY5PR02MB6916.namprd02.prod.outlook.com (2603:10b6:a03:234::18)
+ by BYAPR02MB4632.namprd02.prod.outlook.com (2603:10b6:a03:5e::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.11; Thu, 2 Dec
+ 2021 09:10:02 +0000
+Received: from BY5PR02MB6916.namprd02.prod.outlook.com
+ ([fe80::8151:8728:8d6b:c3dc]) by BY5PR02MB6916.namprd02.prod.outlook.com
+ ([fe80::8151:8728:8d6b:c3dc%5]) with mapi id 15.20.4755.016; Thu, 2 Dec 2021
+ 09:10:02 +0000
+From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>
+Subject: RE: [PATCH v11 1/5] device property: Add fwnode_iomap()
+Thread-Topic: [PATCH v11 1/5] device property: Add fwnode_iomap()
+Thread-Index: AQHX4YZBUvFrfnFzmkK2bRDvVWcrV6wUH/KAgAgekICAArbIYA==
+Date:   Thu, 2 Dec 2021 09:10:02 +0000
+Message-ID: <BY5PR02MB6916F7BC6ACE5326DB92DB2BA9699@BY5PR02MB6916.namprd02.prod.outlook.com>
+References: <20211124225407.17793-1-anand.ashok.dumbre@xilinx.com>
+ <20211124225407.17793-2-anand.ashok.dumbre@xilinx.com>
+ <YZ92mTURrFWZPUXp@smile.fi.intel.com>
+ <DM6PR02MB69236DAEBED675DB929BB8ACA9679@DM6PR02MB6923.namprd02.prod.outlook.com>
+In-Reply-To: <DM6PR02MB69236DAEBED675DB929BB8ACA9679@DM6PR02MB6923.namprd02.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=xilinx.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 0d6e5f26-b8a1-45c7-5e73-08d9b5738625
+x-ms-traffictypediagnostic: BYAPR02MB4632:
+x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
+x-microsoft-antispam-prvs: <BYAPR02MB4632CF5EDE3C66C374B0530BA9699@BYAPR02MB4632.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: PEZrSwlk3ZWMs5EV3YJXxAEvLFsV/jazpF5YJYhbJuYBd6xkXL0kU/fh9e/5f0bcm70rEcDZ88BD05dxnjJOMc64evchEpzSGrqll/Zn5yo9PzZe0Fvg03MmgTWvGYh7rlmqyS/3oVIiH9F3/X4JSi32D5vmCylSDaRPtXtlPubt9nvy16YP4AFlsLLWbhDFZXTldCRfenm6x5SDO7ck7G9iwdXKS1cdsRbsJUiHtUI4ybO3kUvsRnWGL3UL4jenx59xTyo/1jaL2QXlggqJjrxKIryKUsUO1PkTHWf9Mxe8f4gxMTnvHZpg++tss70HfKLCtTvR8UknvvERP6ryHTImjd81nFW6lQDw6NNDPSk6TtxKQprTj2VtLK81kbArEGeF5g7TJZHHhVm0bBv3ZBbfDMLkdFU9Xx5AbJVsBqkQc4ir6A/aqMwK1Joc3Uhd7m9oYJg5r4LiNoAtliAFe6RAGezCwozC1ZPd91dn4DhkpiO75MfbHWSXAILyaBBliEWNqVnAuDAG7OiPeF0nYPMgWXJdTaH7knxavKm0jOhpwVWK5kmQ/56XowPlHOaxuU+JZDDJfGzdTxh7FnXlDhlCsSwym+Ax1CvuEWjLz7stmyDgYyDUME6gu0z6T6cYCQfqxe4RBOXFh0pBrtgq+ZhQGCos1XEBySWWPpzQ/lhbRJNfGlK8WiYGDsHTfG8uWtEGYmXiUuPNlaZvyP1Jpw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6916.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(83380400001)(38070700005)(66446008)(38100700002)(122000001)(33656002)(316002)(8676002)(6916009)(66946007)(66476007)(64756008)(8936002)(66556008)(7696005)(2906002)(54906003)(76116006)(55016003)(53546011)(26005)(186003)(9686003)(86362001)(71200400001)(4326008)(7416002)(52536014)(6506007)(508600001)(5660300002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?p3WYWkl301AWsNNZ1kZi6+660gNPx+Q4pJeWcatJZwixMYsvHPWDtiI8m/Z/?=
+ =?us-ascii?Q?5MAZDhuQraGts82AGUeF65QkId2v0yGIhFp5tgOQ3vFm897fg0wHvTtJWgPA?=
+ =?us-ascii?Q?nsoBWm6w+gDv/5QirxAjKt3zcC8E2xC7U32DMpbcHohT13GEHEFzC0M7NjcJ?=
+ =?us-ascii?Q?AeUqoOJSFnH4wFFsEDDKaLCZlPNDq2y4VH6Blg0RheU9SbtXM3R0RpcNb5xV?=
+ =?us-ascii?Q?5/8I26KmIKMl0Lkzri46JkBDZOKVDvW/tYMcAHSUkOfuDZZ122d2KApybb1E?=
+ =?us-ascii?Q?0k4QvzOJiTJBVFJKJ47XCFEpSHjbSO+WW5GLe8s7sY1pHCRNp0kFfukNQ33z?=
+ =?us-ascii?Q?0AOOFQXIkNcFvHR8gx5o6IQlbPFvaitQlsEHK1sEdvQtWjQ6qOYjBQI0OU/7?=
+ =?us-ascii?Q?p0G2KsuZLwkkQdPEiBfvlNvCnQ/w01kzdxmKOdeAhFD93CNxnFxdjCizMYpi?=
+ =?us-ascii?Q?oC0EsSrA9jpxdaGha7w4Sw9l8DiRQNh8tJjSXPihNUUV4deleP3ZZ5wwPx2v?=
+ =?us-ascii?Q?ssqJzj0jj3LSv3lvbwf0OC9Xpimd+I9gkWN8nb+PnbL/Zbz3DQCPtoRUwPRU?=
+ =?us-ascii?Q?IqLdq+bVrNIIDcLpuAOJOBVT2JhFprylq23kMP4HQrZQo3JKEkeCnOad+hpG?=
+ =?us-ascii?Q?dXcrh0GG0IVi/izq++wxEsoaAEZV20ukVQGQwyxaTxxUtr3806C8cbE3xF8x?=
+ =?us-ascii?Q?o8QMJHSMJ0nyc9l9sk88bahHFap5Kkcyocr4dMpGnzyvHLzzDE58siLWRa7Q?=
+ =?us-ascii?Q?igNYf4Mxjj1ma1clz7dwzPOkt/chNgxr3ntVIiVx60TKDbbeFgkDOTv05nkN?=
+ =?us-ascii?Q?/Kn3GpcW2qjAxUL8NU4+RPhrbLZOlusyBoEc1MEkrn2uzZVfZjXZYP9GD5nN?=
+ =?us-ascii?Q?S2S6mS8ZqQAiKe0B4baKB7oMhwHyAxiOfYOBBcZ36QB6BsWuwbIuu6fTJwcT?=
+ =?us-ascii?Q?mmhzUUYZf2UszjpoG3FN098tJ6SH76Gb/YRx3STnQiq/xurhQKDfXhVplMga?=
+ =?us-ascii?Q?RtVBQJW91qHbmPi3mLvQzWcvNglyGvT1edCAZ59Chp8lGtG2wtOzO2gGUzji?=
+ =?us-ascii?Q?BFg/4mwmX2QFT1eDnvRSTCGQfOBUp4Rp5b0zUPi1KatTzLsimQ39tE/i5dDh?=
+ =?us-ascii?Q?LBkboY6KYAOYuHjNZZuutCn3tS7Y0+o3Ls2qnIoxNuDyoZJ9fFMZcL3jMCq8?=
+ =?us-ascii?Q?8oE2N4NZoMYgBYLM+xA4vYJAL24FZzQ4Hnvczw+bZKdxjr8aYT+lfeWGTg50?=
+ =?us-ascii?Q?40+IEgYLMDtzuAWftjaCSVGJA2nUI9e4ttj1qGUac6pxykQPupjBG9htCDQq?=
+ =?us-ascii?Q?BePeVh/Y0rnfzSrtVa1kOf4iChkuB3gkCIJjPvMrJ5X6JSl6acZY8irBE6U2?=
+ =?us-ascii?Q?8zSPKZSsnzLaoJdEvvC4x8TAO999mNMqfx+bOtAihaYKUQzv76uEclBQSqSj?=
+ =?us-ascii?Q?hYTlD3gLeirI/95ACMAdH/1dmNTh+JMcoM1PvAnAwi4fX8op+CMyUKS4663n?=
+ =?us-ascii?Q?SNsmpBpWavwVkeyNVb9nEgt0hVGb9LoPcKMC7W+D63yJfZOkH2wUuzfiQEsz?=
+ =?us-ascii?Q?dMJxmJOFwcpLoo+ZWyBcSTj+Sd2lSASTwtvM0iSqwPSni+KBI64FQzLigtGD?=
+ =?us-ascii?Q?8Q=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Received: by 2002:a05:6512:22d3:0:0:0:0 with HTTP; Thu, 2 Dec 2021 00:29:32
- -0800 (PST)
-Reply-To: drrhamadavidbenson@gmail.com
-From:   Dr Rhama David Benson <bensondrdrrhamadavid333@gmail.com>
-Date:   Thu, 2 Dec 2021 00:29:32 -0800
-Message-ID: <CAE14d7unMi_yyGt7n=ZKAxpHR+8oSW0msY0skpA+F33ZZsBQEg@mail.gmail.com>
-Subject: PLEASE URGENT RESPOND
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6916.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d6e5f26-b8a1-45c7-5e73-08d9b5738625
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2021 09:10:02.5004
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: i0+efaiNs8JJvRNgy/wuq78UsNsiVaSLQjr/GNw97USRErjj16fuxQSzbQUOdaGYHOPAkQpLjz2KG0qosIjiTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB4632
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Dr Rhama David Benson,
+Hi Andy,
 
-Please read carefully,
+> -----Original Message-----
+> From: Anand Ashok Dumbre <ANANDASH@xilinx.com>
+> Sent: Tuesday 30 November 2021 9:58 PM
+> To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: linux-kernel@vger.kernel.org; jic23@kernel.org; lars@metafoo.de; linu=
+x-
+> iio@vger.kernel.org; git <git@xilinx.com>; Michal Simek
+> <michals@xilinx.com>; gregkh@linuxfoundation.org; rafael@kernel.org;
+> linux-acpi@vger.kernel.org; heikki.krogerus@linux.intel.com
+> Subject: RE: [PATCH v11 1/5] device property: Add fwnode_iomap()
+>=20
+> Hi Andy,
+>=20
+> Thanks for the review.
+>=20
+> > -----Original Message-----
+> > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Sent: Thursday 25 November 2021 11:42 AM
+> > To: Anand Ashok Dumbre <ANANDASH@xilinx.com>
+> > Cc: linux-kernel@vger.kernel.org; jic23@kernel.org; lars@metafoo.de;
+> > linux- iio@vger.kernel.org; git <git@xilinx.com>; Michal Simek
+> > <michals@xilinx.com>; gregkh@linuxfoundation.org; rafael@kernel.org;
+> > linux-acpi@vger.kernel.org; heikki.krogerus@linux.intel.com
+> > Subject: Re: [PATCH v11 1/5] device property: Add fwnode_iomap()
+> >
+> > On Wed, Nov 24, 2021 at 10:54:03PM +0000, Anand Ashok Dumbre wrote:
+> > > This patch introduces a new helper routine - fwnode_iomap(), which
+> > > allows to map the memory mapped IO for a given device node.
+> > >
+> > > This implementation does not cover the ACPI case and may be expanded
+> > > in the future. The main purpose here is to be able to develop
+> > > resource provider agnostic drivers.
+> >
+> > ...
+> >
+> > > +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int
+> > index) {
+> >
+> > > +	if (is_of_node(fwnode))
+> > > +		return of_iomap(to_of_node(fwnode), index);
+> >
+> > It seems this part should be wrapped in some ifdeffery according to
+> > kbuild bot report.
+>=20
+> I see that of_iomap is wrapped in #ifdef I will fix that and send a new p=
+atch.
 
-This message might meet you in utmost surprise. However, it's just my
-urgent need for foreign partner that made me to contact you for this
-transaction. I got your contact from yahoo tourist search while I was
-searching for a foreign partner. I am assured of your capability and
-reliability to champion this business opportunity when I prayed about
-you.
+I am unable to reproduce the conditions for the error shown by the kernel b=
+ot.
+Not sure if I am doing something wrong. Any help/suggestion would be apprec=
+iated to fix this issue.
 
-I am a banker by profession in Burkina-Faso, West Africa and currently
-holding the post of manager in account and auditing department in our
-bank. I have the opportunity of transferring the left over funds ($5.5
-Million Dollars) belonging to our deceased customer who died along
-with his entire family in a plane crash Hence; I am inviting you for a
-business deal where this money can be shared between us in the ratio
-of 60/40 if you agree to my business proposal.
+>=20
+> >
+> > > +	return NULL;
+> > > +}
+> > > +EXPORT_SYMBOL(fwnode_iomap);
+> >
+> > --
+> > With Best Regards,
+> > Andy Shevchenko
+> >
+>=20
+> Thanks,
+> Anand
 
-Further details of the transfer will be forwarded to you as
-soon as I receive your return mail as soon as you receive this letter.
-
-Please indicate your willingness by sending the below information for
-more clarification and easy communication.
-For more details, Contact me for more details.
-
-(1) YOUR FULL NAME...............................
-(2) YOUR AGE AND SEX............................
-(3) YOUR CONTACT ADDRESS..................
-(4) YOUR PRIVATE PHONE N0..........
-(5) FAX NUMBER..............
-(6) YOUR COUNTRY OF ORIGIN..................
-(7) YOUR OCCUPATION.........................
-
-Trusting to hear from you immediately.
-
-Thanks & Best Regards,
-Dr Rhama David Benson.
+Thanks and Regards,
+Anand
