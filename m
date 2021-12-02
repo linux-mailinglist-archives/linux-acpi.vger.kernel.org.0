@@ -2,802 +2,539 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0D7D4667D2
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Dec 2021 17:25:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79A17466866
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Dec 2021 17:32:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359431AbhLBQ2f (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Dec 2021 11:28:35 -0500
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:27000 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1359356AbhLBQ2c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Dec 2021 11:28:32 -0500
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1B21RQLk001056;
-        Thu, 2 Dec 2021 10:25:00 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=PODMain02222019;
- bh=WthyCW/E5S+GPAodK+ozsdsnUdmSep4hXzD10jB54ME=;
- b=KBA6ysJQpj+S9wTj1bSqnwCo1mxvDwJ3UDEJSGIlQDvNtKVulPSotJWybwTOQXhLiyBC
- EYRYCRb0mxM9AoA6Gp1byDKFMBmUzqzW1s3yVWGgeT6DjNKJhyOnbg1iI0ClL6gyWrBk
- HICgELJb79WhOSl6LOo9PyyY5PvsmFb9PFwo/EEPbjIsDzCa3VDy+OEZSpX5azV6HMPU
- BG8+9JnKpwRSuMiV2YGEYv4om/xqswDx/01Xx03iF8pMeVPBj4t8UXNoCUVPOD37YdgO
- 3X3AQJ1sLiQ/d409hogucTTTAWgC6NaC95W9n9fTMTuQEja3svuXnlNL5R/yf5ntZEwm MQ== 
-Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3cp6c89wp5-2
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 02 Dec 2021 10:25:00 -0600
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Thu, 2 Dec
- 2021 16:24:57 +0000
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.17 via Frontend
- Transport; Thu, 2 Dec 2021 16:24:57 +0000
-Received: from LONN2DGDQ73.ad.cirrus.com (unknown [198.90.238.136])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 80CBCB13;
-        Thu,  2 Dec 2021 16:24:57 +0000 (UTC)
-From:   Stefan Binding <sbinding@opensource.cirrus.com>
-To:     Mark Brown <broonie@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>,
-        <patches@opensource.cirrus.com>,
-        Stefan Binding <sbinding@opensource.cirrus.com>
-Subject: [PATCH 3/3] platform/x86: Support Spi in i2c-multi-instantiate driver
-Date:   Thu, 2 Dec 2021 16:24:21 +0000
-Message-ID: <20211202162421.7628-3-sbinding@opensource.cirrus.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211202162421.7628-1-sbinding@opensource.cirrus.com>
-References: <20211202162421.7628-1-sbinding@opensource.cirrus.com>
+        id S1348247AbhLBQgA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Dec 2021 11:36:00 -0500
+Received: from mail-co1nam11on2041.outbound.protection.outlook.com ([40.107.220.41]:14561
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1348040AbhLBQgA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 2 Dec 2021 11:36:00 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MeAyEd9spInw7nEFWVaO0MI9cwv/KOx6kOInbvgBKvKyXZw1sEXGpfNeHWzxKbTj0cap06KOcG4QiFZ4eHCEzDcQ4cWIJJqbN/jGY9r5GZPV3tP0vmKf4rkHbpY22grk46ZSQDBjzIq0eSHCLXrueb1whJrBE2urKUxeKt1uF7Ef1ttb7CTdlz7cwKGk+d4favRqDYmAeo//3pVCG53nO4UsL5wDbXJOXvyR8OhITmf0gzWCajBAUrw1Gz4TjefyZqER7IlP3J8s2wwhxiZ87Oe26ytRIiGEblQNVedgx6GFF4GBFv5GQ7HYhYI8pe3THsw4A7kKbVSdCfxGU4uJSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ilK9o7/7SCNnpomZaqqTRpr6u0vMrcHAZvL/P7tU3p4=;
+ b=b0+NqtW4AfyYqTe/59oPa6Q165sRxB46ZYPWb1rCsvdWTH7+zkQRdLStZjjsNoJrmbF6VLxwjX7duxZ8BxuoaaWi3/xddDKZ+/I3463zDNLTiuWVyut5GzycWo0pN1T8wdXa/kuVx47QligOTuShRgPucJ6yyIug4q00P6c0fEMP5Jxs4kL6dClyToOvUArH2nH7DWPLsYUqRuVAuDlfGrwmKMmGz3L1M72GbKgvvwpq8Je5quew12qloP2WATZ3JGvJlOSqn8IqSfBn1VKJ8JH728lw//u6vadj1VJbanjFAyquEprkptrNP/62BJpo7P2NGoOFGn7TNj29vYX+SA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
+ dkim=pass header.d=xilinx.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ilK9o7/7SCNnpomZaqqTRpr6u0vMrcHAZvL/P7tU3p4=;
+ b=FJhDQvPgTpIDsi4RawInwrEaeNbA19gsFwJgOJGsVfddTpOm1qxckyuAFzMNtgsT21iGXUG1dbYjKMtaRAF2DEBoMyBQo5xhStJbTdRUTEyIOcIwaRE0ut3hJGbRgQ7A7P4ppqMfNYQhEERydf883eLXxpNiDZ/53q4YQC+clMA=
+Received: from BY5PR02MB6916.namprd02.prod.outlook.com (2603:10b6:a03:234::18)
+ by BYAPR02MB5144.namprd02.prod.outlook.com (2603:10b6:a03:6f::31) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4734.23; Thu, 2 Dec
+ 2021 16:32:33 +0000
+Received: from BY5PR02MB6916.namprd02.prod.outlook.com
+ ([fe80::8151:8728:8d6b:c3dc]) by BY5PR02MB6916.namprd02.prod.outlook.com
+ ([fe80::8151:8728:8d6b:c3dc%5]) with mapi id 15.20.4755.016; Thu, 2 Dec 2021
+ 16:32:33 +0000
+From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
+        Manish Narani <MNARANI@xilinx.com>
+Subject: RE: [PATCH v11 3/5] iio: adc: Add Xilinx AMS driver
+Thread-Topic: [PATCH v11 3/5] iio: adc: Add Xilinx AMS driver
+Thread-Index: AQHX4YY/MTM37/bNtkClNWx00Bidc6wUKOqAgAs8+uA=
+Date:   Thu, 2 Dec 2021 16:32:33 +0000
+Message-ID: <BY5PR02MB69163D602A61CE502527CE11A9699@BY5PR02MB6916.namprd02.prod.outlook.com>
+References: <20211124225407.17793-1-anand.ashok.dumbre@xilinx.com>
+ <20211124225407.17793-4-anand.ashok.dumbre@xilinx.com>
+ <YZ9+HxSRmT1XHld2@smile.fi.intel.com>
+In-Reply-To: <YZ9+HxSRmT1XHld2@smile.fi.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=xilinx.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: d2056ee0-43d4-4cc4-cd1e-08d9b5b157d3
+x-ms-traffictypediagnostic: BYAPR02MB5144:
+x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
+x-microsoft-antispam-prvs: <BYAPR02MB514474CB6582361148BD575BA9699@BYAPR02MB5144.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: bBrVCl7Shhs0BcMYZY5KsM8PkvIQBq4HoIH14z6GFbWtSuNL+LFO9mJVacIuU3PCK6lEVZ/aaUiirhS1FtrQOpEt5f2CP/SZ+fpVmOzG2QolJb5huDskvawlUy1juR0mkhdPhhZEWqRr0wkJepYQnMuNHKtK8DayQThvYIJeVmQl4I6iERnFRWdFjc/D43g/uQIWGjtIfhloZDQbEbarugQL9rjB4Ym07y9R0VUz3OHS3LIPOpEWnkw1HdPgRaK+nUH3qHuKAixyWKaaD4CW4bK95W6o4+ldF2VqSKR46QY9DIMGJkDp9g7xhtSvLHW6fIp4GXBSKpqO62gaGb3KdNAU6lnOEIaEoV+Trn2tLYrRxjwiSf7MY4tt4wMTr/fKenr0krTLCo+9kl5pwWenI2i7hBjc6AEBXskOPtjyhCiLnuhCHS2wQf8pFk35UvZXcpWxFMeqxBAP2JuVquemL3IMIwCUqz6f1MsoNQB4vNixsoKtAw8VbomPs0wI2GIANTViCQQPJgOTvjSj6zDjeysxYMannZMI5iDrt2AOoDC1aDVU1c8v6HYMgDLJuiH9jXNeW5yQQ5yC/soitE/Z0TR/dMr+JIcoL2lgBPxTLeV1L+b3VGPdvIz0Bnwhmj/Nb6Kdn9STUU8GjTWXxbteWP7u05WlUWS6iN92eowp5SioIuPlTgIx8yAs/NQ31GxjY6k9WkiU5Z4D+K2h7qOesg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6916.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(8936002)(4326008)(54906003)(66476007)(6506007)(66556008)(52536014)(6916009)(8676002)(2906002)(66446008)(64756008)(5660300002)(71200400001)(508600001)(7416002)(38100700002)(55016003)(316002)(38070700005)(186003)(7696005)(26005)(76116006)(33656002)(122000001)(66946007)(107886003)(9686003)(86362001)(83380400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?3SaDqy7+rtDz32anuuWEa8YBXFoc9vfj23eSmehHXS/t4lhqF6+aUz/q5I74?=
+ =?us-ascii?Q?Ks4o3dncwTraahCX8SEHoqPPOlym1kmVnR1ZgFwsS3tMXHVJhFpBtu0jgB2s?=
+ =?us-ascii?Q?gZOcZycAGvI+jor0AmBA9SG9QHTFrFmrDjbYnN+dRAipTxNfcDmdxxhZSc8V?=
+ =?us-ascii?Q?rmhJxUUn1q/6NRg3aI60M57FdxV7Q7aArZGYLv1c80v/hjqECg1M5yr1cgS2?=
+ =?us-ascii?Q?zI+KGziIUy2aP/oJMZ7rSHysZXM4qd9khhb6T16Y4naaDcrYw3IDVCKqgt8R?=
+ =?us-ascii?Q?9EC0d4OtL4QhhiivKRyRhqBkqe/+5BubPlgf94orL+hHqEkVJABoOi/xI4q0?=
+ =?us-ascii?Q?yAAuxtbgTCaAaiUNEXQ+XgGyvCcXWtNBpnkSQS0JriTBFlGaZ8Gj+Yi16Oaw?=
+ =?us-ascii?Q?1fQUkhg2LrVZxjW2AU6zWnVvAjYThQKpXbt8o0C7719OdmWGMZ+/uet7AAVz?=
+ =?us-ascii?Q?/RDbM6+sHBvJbGY7MlrEdsIeIjCHa5u1niWmm3YZbiSJXT958JONSo7ezx4m?=
+ =?us-ascii?Q?JByE0OYAIV5peCipW3vP90IXMLi+nZRh//GSF4WmWnezXLcfCo71TeE7yTrm?=
+ =?us-ascii?Q?NrT5LZr5S0hiCEULGKao4bg5QFAQ28ft6CPJbQu6sTMe5ajtZlJGfq/FFP2V?=
+ =?us-ascii?Q?lTR0FV2RXY3nvxq7QH/PJ6WtXc1fR22g1Ct3/13G4Fr3Z0LFTe3cIVVHhTQC?=
+ =?us-ascii?Q?Nux8omnSwfKAAsBdzvtKTVJwo6hqC6ZkZxaaUwIru8DRZPWp3eTpmzv4q1+U?=
+ =?us-ascii?Q?Db6fgVF1tUT77E21sdd552i1e/7C5y6HmlHtKWpLhcEtLuacT+mVjW25Y58s?=
+ =?us-ascii?Q?iv0ySICNXbg36UOxEs9Zqx/VlwzgES0p30D56LeGsvEiTq2LNuO2QEJ8xUEH?=
+ =?us-ascii?Q?Zor96mM6kLUh64z7JRCg9h1W4VshQAuMH+3Fi4R7gS9CwhvkZSG/Rolgdw+6?=
+ =?us-ascii?Q?P3lDiXlzh+3fze3Sn8QLsqWSZkG8Nia7qwtohAUM7LCJb5LIi67PVuYSOq8F?=
+ =?us-ascii?Q?Cdd/+RTal4koydyiCCXUDDwSvINLnKgoBjdwbjV7XdtUIh0IrMGU1SfkmY+b?=
+ =?us-ascii?Q?Ys74bRDsDyCuInMpS8VJM7SLgSx2UOqFoT20uUyn3kAt2yEgKtitEn+EAO8J?=
+ =?us-ascii?Q?kdjevOuHF2hT9ItaycsIZDQtn7vU1/OHZKKyOhQkyZhcrqLUasxvBjwJ70dn?=
+ =?us-ascii?Q?mbpUrnEEHD8huUZomq9DqNx69iGy28JNsYfKUko6ZQ2bi13enjKQ6/Zwsm8z?=
+ =?us-ascii?Q?HQkADWaz7PAafiRklqk1TXBGmpEu1rFw2Tn+IhU0CHY6IQxkHRuXy/JnI9co?=
+ =?us-ascii?Q?1OsV2ZneZywo66RVTF+2YZQxSflze4oxpjk1qO8GORhUa+2an2xZV/KHt8ww?=
+ =?us-ascii?Q?YRojtwxBgCs8SkcCSZ3tw+1VPGj05cT5jngC5k8E4t30DJNZBnsxlgqhE0Fr?=
+ =?us-ascii?Q?V/A3cUcvSeN5BQ3GlbwFLERhYfuxMPRkJsGtkVRyplcSyOiqEhBc0eX16uqI?=
+ =?us-ascii?Q?WM/24HUVRDPBzzFMJ2Bi/m4pIdXLOk8LhDdeIv6Ir+7kfGtz5GQyQk+kZK6U?=
+ =?us-ascii?Q?EJSidT2tXp17XZyROmWNBZp2vtmdXC69m2bHW/k+Px0q+OLWd94vvkaBCXXQ?=
+ =?us-ascii?Q?fw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: Im-yIjRMkcAOJ9LGW5Kk4OUHPY3I6YPx
-X-Proofpoint-GUID: Im-yIjRMkcAOJ9LGW5Kk4OUHPY3I6YPx
-X-Proofpoint-Spam-Reason: safe
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6916.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2056ee0-43d4-4cc4-cd1e-08d9b5b157d3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2021 16:32:33.5567
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JEUpcVoJ/ASf6FLR0ipnSAL5YLQ+fYuC4/TlAKh7u3JGvLNUoMjP5G/UXU9ojTT0vqz5yW8Ua3ivBDFM49Lk6w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB5144
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add support for spi bus in i2c-multi-instantiate driver
-and rename it for a multiple purpose driver name
-By adding spi support into this driver enables devices
-to use the same _HID string for i2c and spi uses and
-minimize the support for two drivers doing the same thing
-for different busses
+Hi Andy,
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
----
- MAINTAINERS                                  |   4 +-
- drivers/acpi/scan.c                          |  19 +-
- drivers/platform/x86/Kconfig                 |  14 +-
- drivers/platform/x86/Makefile                |   2 +-
- drivers/platform/x86/bus-multi-instantiate.c | 432 +++++++++++++++++++
- drivers/platform/x86/i2c-multi-instantiate.c | 174 --------
- 6 files changed, 452 insertions(+), 193 deletions(-)
- create mode 100644 drivers/platform/x86/bus-multi-instantiate.c
- delete mode 100644 drivers/platform/x86/i2c-multi-instantiate.c
+Thanks for the review.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b1e79f8e3d8..f75600d917bc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -387,11 +387,11 @@ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
- F:	drivers/acpi/arm64
- 
--ACPI I2C MULTI INSTANTIATE DRIVER
-+ACPI BUS MULTI INSTANTIATE DRIVER
- M:	Hans de Goede <hdegoede@redhat.com>
- L:	platform-driver-x86@vger.kernel.org
- S:	Maintained
--F:	drivers/platform/x86/i2c-multi-instantiate.c
-+F:	drivers/platform/x86/bus-multi-instantiate.c
- 
- ACPI PCC(Platform Communication Channel) MAILBOX DRIVER
- M:	Sudeep Holla <sudeep.holla@arm.com>
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 5991dddbc9ce..2f7da1a08112 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1696,14 +1696,15 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
- 	struct list_head resource_list;
- 	bool is_serial_bus_slave = false;
- 	/*
--	 * These devices have multiple I2cSerialBus resources and an i2c-client
--	 * must be instantiated for each, each with its own i2c_device_id.
--	 * Normally we only instantiate an i2c-client for the first resource,
--	 * using the ACPI HID as id. These special cases are handled by the
--	 * drivers/platform/x86/i2c-multi-instantiate.c driver, which knows
--	 * which i2c_device_id to use for each resource.
-+	 * These devices have multiple I2cSerialBus/SpiSerialBusV2 resources
-+	 * and an (i2c/spi)-client must be instantiated for each, each with
-+	 * its own i2c_device_id/spi_device_id.
-+	 * Normally we only instantiate an (i2c/spi)-client for the first
-+	 * resource, using the ACPI HID as id. These special cases are handled
-+	 * by the drivers/platform/x86/bus-multi-instantiate.c driver, which
-+	 * knows which i2c_device_id or spi_device_id to use for each resource.
- 	 */
--	static const struct acpi_device_id i2c_multi_instantiate_ids[] = {
-+	static const struct acpi_device_id bus_multi_instantiate_ids[] = {
- 		{"BSG1160", },
- 		{"BSG2150", },
- 		{"INT33FE", },
-@@ -1721,8 +1722,8 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
- 	     fwnode_property_present(&device->fwnode, "baud")))
- 		return true;
- 
--	/* Instantiate a pdev for the i2c-multi-instantiate drv to bind to */
--	if (!acpi_match_device_ids(device, i2c_multi_instantiate_ids))
-+	/* Instantiate a pdev for the bus-multi-instantiate drv to bind to */
-+	if (!acpi_match_device_ids(device, bus_multi_instantiate_ids))
- 		return false;
- 
- 	INIT_LIST_HEAD(&resource_list);
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index 97e87628eb35..5a413b123c01 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -958,16 +958,16 @@ config TOPSTAR_LAPTOP
- 
- 	  If you have a Topstar laptop, say Y or M here.
- 
--config I2C_MULTI_INSTANTIATE
--	tristate "I2C multi instantiate pseudo device driver"
--	depends on I2C && ACPI
-+config BUS_MULTI_INSTANTIATE
-+	tristate "Bus multi instantiate pseudo device driver"
-+	depends on I2C && SPI && ACPI
- 	help
--	  Some ACPI-based systems list multiple i2c-devices in a single ACPI
--	  firmware-node. This driver will instantiate separate i2c-clients
--	  for each device in the firmware-node.
-+	  Some ACPI-based systems list multiple i2c/spi devices in a
-+	  single ACPI firmware-node. This driver will instantiate separate
-+	  i2c-clients or spi-devices for each device in the firmware-node.
- 
- 	  To compile this driver as a module, choose M here: the module
--	  will be called i2c-multi-instantiate.
-+	  will be called bus-multi-instantiate.
- 
- config MLX_PLATFORM
- 	tristate "Mellanox Technologies platform support"
-diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Makefile
-index 219478061683..639a50af0bec 100644
---- a/drivers/platform/x86/Makefile
-+++ b/drivers/platform/x86/Makefile
-@@ -108,7 +108,7 @@ obj-$(CONFIG_TOPSTAR_LAPTOP)	+= topstar-laptop.o
- 
- # Platform drivers
- obj-$(CONFIG_FW_ATTR_CLASS)		+= firmware_attributes_class.o
--obj-$(CONFIG_I2C_MULTI_INSTANTIATE)	+= i2c-multi-instantiate.o
-+obj-$(CONFIG_BUS_MULTI_INSTANTIATE)	+= bus-multi-instantiate.o
- obj-$(CONFIG_MLX_PLATFORM)		+= mlx-platform.o
- obj-$(CONFIG_TOUCHSCREEN_DMI)		+= touchscreen_dmi.o
- obj-$(CONFIG_WIRELESS_HOTKEY)		+= wireless-hotkey.o
-diff --git a/drivers/platform/x86/bus-multi-instantiate.c b/drivers/platform/x86/bus-multi-instantiate.c
-new file mode 100644
-index 000000000000..1b55380a2057
---- /dev/null
-+++ b/drivers/platform/x86/bus-multi-instantiate.c
-@@ -0,0 +1,432 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Bus multi-instantiate driver, pseudo driver to instantiate multiple
-+ * i2c-clients or spi-devices from a single fwnode.
-+ *
-+ * Copyright 2018 Hans de Goede <hdegoede@redhat.com>
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/bits.h>
-+#include <linux/i2c.h>
-+#include <linux/interrupt.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/spi/spi.h>
-+#include <linux/types.h>
-+
-+#define IRQ_RESOURCE_TYPE		GENMASK(1, 0)
-+#define IRQ_RESOURCE_NONE		0
-+#define IRQ_RESOURCE_GPIO		1
-+#define IRQ_RESOURCE_APIC		2
-+#define MAX_RESOURCE_SOURCE_CHAR	30
-+
-+struct inst_data {
-+	const char *type;
-+	unsigned int flags;
-+	int irq_idx;
-+};
-+
-+struct multi_inst_data {
-+	int i2c_num;
-+	int spi_num;
-+	struct spi_device **spi_devs;
-+	struct i2c_client **i2c_devs;
-+};
-+
-+struct spi_acpi_data {
-+	char resource_source[MAX_RESOURCE_SOURCE_CHAR];
-+	struct acpi_resource_spi_serialbus sb;
-+};
-+
-+struct spi_serialbus_acpi_data {
-+	int count;
-+	struct spi_acpi_data acpi_data[];
-+};
-+
-+static int spi_count(struct acpi_resource *ares, void *data)
-+{
-+	struct acpi_resource_spi_serialbus *sb;
-+	int *count = data;
-+
-+	if (ares->type != ACPI_RESOURCE_TYPE_SERIAL_BUS)
-+		return 1;
-+
-+	sb = &ares->data.spi_serial_bus;
-+	if (sb->type != ACPI_RESOURCE_SERIAL_TYPE_SPI)
-+		return 1;
-+
-+	*count = *count + 1;
-+	return 1;
-+}
-+
-+static int spi_count_resources(struct acpi_device *adev)
-+{
-+	LIST_HEAD(r);
-+	int count = 0;
-+	int ret;
-+
-+	ret = acpi_dev_get_resources(adev, &r, spi_count, &count);
-+	if (ret < 0)
-+		return ret;
-+
-+	acpi_dev_free_resource_list(&r);
-+	return count;
-+}
-+
-+static int spi_save_res(struct acpi_resource *ares, void *data)
-+{
-+	struct acpi_resource_spi_serialbus *sb;
-+	struct spi_serialbus_acpi_data *resources = data;
-+
-+	if (ares->type != ACPI_RESOURCE_TYPE_SERIAL_BUS)
-+		return 1;
-+
-+	sb = &ares->data.spi_serial_bus;
-+	if (sb->type != ACPI_RESOURCE_SERIAL_TYPE_SPI)
-+		return 1;
-+
-+	memcpy(&resources->acpi_data[resources->count].sb, sb, sizeof(*sb));
-+	strscpy(resources->acpi_data[resources->count].resource_source,
-+		sb->resource_source.string_ptr,
-+		sizeof(resources->acpi_data[resources->count].resource_source));
-+	resources->count++;
-+
-+	return 1;
-+}
-+
-+static struct spi_serialbus_acpi_data *spi_get_resources(struct device *dev,
-+							 struct acpi_device *adev, int count)
-+{
-+	struct spi_serialbus_acpi_data *resources;
-+	LIST_HEAD(r);
-+	int ret;
-+
-+	resources = kmalloc(struct_size(resources, acpi_data, count), GFP_KERNEL);
-+	if (!resources)
-+		return NULL;
-+
-+	ret = acpi_dev_get_resources(adev, &r, spi_save_res, resources);
-+	if (ret < 0)
-+		goto error;
-+
-+	acpi_dev_free_resource_list(&r);
-+
-+	return resources;
-+
-+error:
-+	kfree(resources);
-+	return NULL;
-+}
-+
-+static struct spi_controller *find_spi_controller(char *path)
-+{
-+	struct spi_controller *ctlr;
-+	acpi_handle parent_handle;
-+	acpi_status status;
-+	int i;
-+
-+	status = acpi_get_handle(NULL, path, &parent_handle);
-+	if (ACPI_FAILURE(status))
-+		return NULL;
-+
-+	/* There will be not more than 10 spi controller for a device */
-+	for (i = 0 ; i < 10 ; i++) {
-+		ctlr = spi_busnum_to_master(i);
-+		if (ctlr && ACPI_HANDLE(ctlr->dev.parent) == parent_handle)
-+			return ctlr;
-+	}
-+
-+	return NULL;
-+}
-+
-+static int spi_multi_inst_probe(struct platform_device *pdev, struct acpi_device *adev,
-+				const struct inst_data *inst_data, int count)
-+{
-+	struct spi_serialbus_acpi_data *acpi_data;
-+	struct device *dev = &pdev->dev;
-+	struct multi_inst_data *multi;
-+	struct spi_controller *ctlr;
-+	struct spi_device *spi_dev;
-+	char name[50];
-+	int i, ret;
-+
-+	multi = devm_kzalloc(dev, sizeof(*multi), GFP_KERNEL);
-+	if (!multi)
-+		return -ENOMEM;
-+
-+	multi->spi_devs = devm_kcalloc(dev, count, sizeof(*multi->spi_devs), GFP_KERNEL);
-+	if (!multi->spi_devs)
-+		return -ENOMEM;
-+
-+	acpi_data = spi_get_resources(dev, adev, count);
-+	if (!acpi_data)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < count && inst_data[i].type; i++) {
-+		ctlr = find_spi_controller(acpi_data->acpi_data[i].resource_source);
-+		if (!ctlr) {
-+			ret = -EPROBE_DEFER;
-+			goto probe_error;
-+		}
-+
-+		spi_dev = spi_alloc_device(ctlr);
-+		if (!spi_dev) {
-+			dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
-+				dev_name(&adev->dev));
-+			ret = -ENOMEM;
-+			goto probe_error;
-+		}
-+
-+		strscpy(spi_dev->modalias, inst_data[i].type, sizeof(spi_dev->modalias));
-+
-+		if (ctlr->fw_translate_cs) {
-+			int cs = ctlr->fw_translate_cs(ctlr,
-+					acpi_data->acpi_data[i].sb.device_selection);
-+			if (cs < 0) {
-+				ret = cs;
-+				goto probe_error;
-+			}
-+			spi_dev->chip_select = cs;
-+		} else {
-+			spi_dev->chip_select = acpi_data->acpi_data[i].sb.device_selection;
-+		}
-+
-+		spi_dev->max_speed_hz = acpi_data->acpi_data[i].sb.connection_speed;
-+		spi_dev->bits_per_word = acpi_data->acpi_data[i].sb.data_bit_length;
-+
-+		if (acpi_data->acpi_data[i].sb.clock_phase == ACPI_SPI_SECOND_PHASE)
-+			spi_dev->mode |= SPI_CPHA;
-+		if (acpi_data->acpi_data[i].sb.clock_polarity == ACPI_SPI_START_HIGH)
-+			spi_dev->mode |= SPI_CPOL;
-+		if (acpi_data->acpi_data[i].sb.device_polarity == ACPI_SPI_ACTIVE_HIGH)
-+			spi_dev->mode |= SPI_CS_HIGH;
-+
-+		switch (inst_data[i].flags & IRQ_RESOURCE_TYPE) {
-+		case IRQ_RESOURCE_GPIO:
-+			ret = acpi_dev_gpio_irq_get(adev, inst_data[i].irq_idx);
-+			if (ret < 0) {
-+				if (ret != -EPROBE_DEFER)
-+					dev_err(dev, "Error requesting irq at index %d: %d\n",
-+						inst_data[i].irq_idx, ret);
-+				goto probe_error;
-+			}
-+			spi_dev->irq = ret;
-+			break;
-+		case IRQ_RESOURCE_APIC:
-+			ret = platform_get_irq(pdev, inst_data[i].irq_idx);
-+			if (ret < 0) {
-+				dev_dbg(dev, "Error requesting irq at index %d: %d\n",
-+					inst_data[i].irq_idx, ret);
-+				goto probe_error;
-+			}
-+			spi_dev->irq = ret;
-+			break;
-+		default:
-+			spi_dev->irq = 0;
-+			break;
-+		}
-+
-+		snprintf(name, sizeof(name), "%s.%u-%s-%s.%d", dev_name(&ctlr->dev),
-+			 spi_dev->chip_select, dev_name(dev), inst_data[i].type, i);
-+		spi_dev->dev.init_name = name;
-+
-+		if (spi_add_device(spi_dev)) {
-+			dev_err(&ctlr->dev, "failed to add SPI device %s from ACPI\n",
-+				dev_name(&adev->dev));
-+			spi_dev_put(spi_dev);
-+			goto probe_error;
-+		}
-+
-+		multi->spi_devs[i] = spi_dev;
-+		multi->spi_num++;
-+	}
-+
-+	if (multi->spi_num < count) {
-+		dev_err(dev, "Error finding driver, idx %d\n", i);
-+		ret = -ENODEV;
-+		goto probe_error;
-+	}
-+
-+	dev_info(dev, "Instantiate %d devices.\n", multi->spi_num);
-+	platform_set_drvdata(pdev, multi);
-+	kfree(acpi_data);
-+
-+	return 0;
-+
-+probe_error:
-+	while (--i >= 0)
-+		spi_unregister_device(multi->spi_devs[i]);
-+
-+	kfree(acpi_data);
-+	return ret;
-+}
-+
-+static int i2c_multi_inst_probe(struct platform_device *pdev, struct acpi_device *adev,
-+				const struct inst_data *inst_data, int count)
-+{
-+	struct i2c_board_info board_info = {};
-+	struct device *dev = &pdev->dev;
-+	struct multi_inst_data *multi;
-+	char name[32];
-+	int i, ret;
-+
-+	multi = devm_kzalloc(dev, sizeof(*multi), GFP_KERNEL);
-+	if (!multi)
-+		return -ENOMEM;
-+
-+	multi->i2c_devs = devm_kcalloc(dev, count, sizeof(*multi->i2c_devs), GFP_KERNEL);
-+	if (!multi->i2c_devs)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < count && inst_data[i].type; i++) {
-+		memset(&board_info, 0, sizeof(board_info));
-+		strscpy(board_info.type, inst_data[i].type, I2C_NAME_SIZE);
-+		snprintf(name, sizeof(name), "%s-%s.%d", dev_name(dev), inst_data[i].type, i);
-+		board_info.dev_name = name;
-+		switch (inst_data[i].flags & IRQ_RESOURCE_TYPE) {
-+		case IRQ_RESOURCE_GPIO:
-+			ret = acpi_dev_gpio_irq_get(adev, inst_data[i].irq_idx);
-+			if (ret < 0) {
-+				if (ret != -EPROBE_DEFER)
-+					dev_err(dev, "Error requesting irq at index %d: %d\n",
-+						inst_data[i].irq_idx, ret);
-+				goto error;
-+			}
-+			board_info.irq = ret;
-+			break;
-+		case IRQ_RESOURCE_APIC:
-+			ret = platform_get_irq(pdev, inst_data[i].irq_idx);
-+			if (ret < 0) {
-+				dev_dbg(dev, "Error requesting irq at index %d: %d\n",
-+					inst_data[i].irq_idx, ret);
-+				goto error;
-+			}
-+			board_info.irq = ret;
-+			break;
-+		default:
-+			board_info.irq = 0;
-+			break;
-+		}
-+		multi->i2c_devs[i] = i2c_acpi_new_device(dev, i, &board_info);
-+		if (IS_ERR(multi->i2c_devs[i])) {
-+			ret = dev_err_probe(dev, PTR_ERR(multi->i2c_devs[i]),
-+					    "Error creating i2c-client, idx %d\n", i);
-+			goto error;
-+		}
-+		multi->i2c_num++;
-+	}
-+	if (multi->i2c_num < count) {
-+		dev_err(dev, "Error finding driver, idx %d\n", i);
-+		ret = -ENODEV;
-+		goto error;
-+	}
-+
-+	dev_info(dev, "Instantiate %d devices.\n", multi->i2c_num);
-+	platform_set_drvdata(pdev, multi);
-+
-+	return 0;
-+
-+error:
-+	while (--i >= 0)
-+		i2c_unregister_device(multi->i2c_devs[i]);
-+
-+	return ret;
-+}
-+
-+static int bus_multi_inst_probe(struct platform_device *pdev)
-+{
-+	const struct inst_data *inst_data;
-+	struct device *dev = &pdev->dev;
-+	struct acpi_device *adev;
-+	int count;
-+
-+	inst_data = device_get_match_data(dev);
-+	if (!inst_data) {
-+		dev_err(dev, "Error ACPI match data is missing\n");
-+		return -ENODEV;
-+	}
-+
-+	adev = ACPI_COMPANION(dev);
-+
-+	/* Count number of i2c clients to instantiate */
-+	count = i2c_acpi_client_count(adev);
-+	if (count > 0)
-+		return i2c_multi_inst_probe(pdev, adev, inst_data, count);
-+	else if (count < 0)
-+		dev_warn(dev, "I2C multi instantiate error %d\n", count);
-+
-+	/* Count number of spi devices to instantiate */
-+	count = spi_count_resources(adev);
-+	if (count > 0)
-+		return spi_multi_inst_probe(pdev, adev, inst_data, count);
-+	else if (count < 0)
-+		dev_warn(dev, "SPI multi instantiate error %d\n", count);
-+
-+	return -ENODEV;
-+}
-+
-+static int bus_multi_inst_remove(struct platform_device *pdev)
-+{
-+	struct multi_inst_data *multi = platform_get_drvdata(pdev);
-+	int i;
-+
-+	for (i = 0; i < multi->i2c_num; i++)
-+		i2c_unregister_device(multi->i2c_devs[i]);
-+
-+	for (i = 0; i < multi->spi_num; i++)
-+		spi_unregister_device(multi->spi_devs[i]);
-+
-+	return 0;
-+}
-+
-+static const struct inst_data bsg1160_data[]  = {
-+	{ "bmc150_accel", IRQ_RESOURCE_GPIO, 0 },
-+	{ "bmc150_magn" },
-+	{ "bmg160" },
-+	{}
-+};
-+
-+static const struct inst_data bsg2150_data[]  = {
-+	{ "bmc150_accel", IRQ_RESOURCE_GPIO, 0 },
-+	{ "bmc150_magn" },
-+	/* The resources describe a 3th client, but it is not really there. */
-+	{ "bsg2150_dummy_dev" },
-+	{}
-+};
-+
-+static const struct inst_data int3515_data[]  = {
-+	{ "tps6598x", IRQ_RESOURCE_APIC, 0 },
-+	{ "tps6598x", IRQ_RESOURCE_APIC, 1 },
-+	{ "tps6598x", IRQ_RESOURCE_APIC, 2 },
-+	{ "tps6598x", IRQ_RESOURCE_APIC, 3 },
-+	{}
-+};
-+
-+/*
-+ * Note new device-ids must also be added to bus_multi_instantiate_ids in
-+ * drivers/acpi/scan.c: acpi_device_enumeration_by_parent().
-+ */
-+static const struct acpi_device_id bus_multi_inst_acpi_ids[] = {
-+	{ "BSG1160", (unsigned long)bsg1160_data },
-+	{ "BSG2150", (unsigned long)bsg2150_data },
-+	{ "INT3515", (unsigned long)int3515_data },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, bus_multi_inst_acpi_ids);
-+
-+static struct platform_driver bus_multi_inst_driver = {
-+	.driver	= {
-+		.name = "Bus multi instantiate pseudo device driver",
-+		.acpi_match_table = bus_multi_inst_acpi_ids,
-+	},
-+	.probe = bus_multi_inst_probe,
-+	.remove = bus_multi_inst_remove,
-+};
-+module_platform_driver(bus_multi_inst_driver);
-+
-+MODULE_DESCRIPTION("Bus multi instantiate pseudo device driver");
-+MODULE_AUTHOR("Hans de Goede <hdegoede@redhat.com>");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/platform/x86/i2c-multi-instantiate.c b/drivers/platform/x86/i2c-multi-instantiate.c
-deleted file mode 100644
-index 4956a1df5b90..000000000000
---- a/drivers/platform/x86/i2c-multi-instantiate.c
-+++ /dev/null
-@@ -1,174 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0+
--/*
-- * I2C multi-instantiate driver, pseudo driver to instantiate multiple
-- * i2c-clients from a single fwnode.
-- *
-- * Copyright 2018 Hans de Goede <hdegoede@redhat.com>
-- */
--
--#include <linux/acpi.h>
--#include <linux/bits.h>
--#include <linux/i2c.h>
--#include <linux/interrupt.h>
--#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/platform_device.h>
--#include <linux/property.h>
--#include <linux/types.h>
--
--#define IRQ_RESOURCE_TYPE	GENMASK(1, 0)
--#define IRQ_RESOURCE_NONE	0
--#define IRQ_RESOURCE_GPIO	1
--#define IRQ_RESOURCE_APIC	2
--
--struct i2c_inst_data {
--	const char *type;
--	unsigned int flags;
--	int irq_idx;
--};
--
--struct i2c_multi_inst_data {
--	int num_clients;
--	struct i2c_client *clients[];
--};
--
--static int i2c_multi_inst_probe(struct platform_device *pdev)
--{
--	struct i2c_multi_inst_data *multi;
--	const struct i2c_inst_data *inst_data;
--	struct i2c_board_info board_info = {};
--	struct device *dev = &pdev->dev;
--	struct acpi_device *adev;
--	char name[32];
--	int i, ret;
--
--	inst_data = device_get_match_data(dev);
--	if (!inst_data) {
--		dev_err(dev, "Error ACPI match data is missing\n");
--		return -ENODEV;
--	}
--
--	adev = ACPI_COMPANION(dev);
--
--	/* Count number of clients to instantiate */
--	ret = i2c_acpi_client_count(adev);
--	if (ret < 0)
--		return ret;
--
--	multi = devm_kmalloc(dev, struct_size(multi, clients, ret), GFP_KERNEL);
--	if (!multi)
--		return -ENOMEM;
--
--	multi->num_clients = ret;
--
--	for (i = 0; i < multi->num_clients && inst_data[i].type; i++) {
--		memset(&board_info, 0, sizeof(board_info));
--		strlcpy(board_info.type, inst_data[i].type, I2C_NAME_SIZE);
--		snprintf(name, sizeof(name), "%s-%s.%d", dev_name(dev),
--			 inst_data[i].type, i);
--		board_info.dev_name = name;
--		switch (inst_data[i].flags & IRQ_RESOURCE_TYPE) {
--		case IRQ_RESOURCE_GPIO:
--			ret = acpi_dev_gpio_irq_get(adev, inst_data[i].irq_idx);
--			if (ret < 0) {
--				dev_err(dev, "Error requesting irq at index %d: %d\n",
--					inst_data[i].irq_idx, ret);
--				goto error;
--			}
--			board_info.irq = ret;
--			break;
--		case IRQ_RESOURCE_APIC:
--			ret = platform_get_irq(pdev, inst_data[i].irq_idx);
--			if (ret < 0) {
--				dev_dbg(dev, "Error requesting irq at index %d: %d\n",
--					inst_data[i].irq_idx, ret);
--				goto error;
--			}
--			board_info.irq = ret;
--			break;
--		default:
--			board_info.irq = 0;
--			break;
--		}
--		multi->clients[i] = i2c_acpi_new_device(dev, i, &board_info);
--		if (IS_ERR(multi->clients[i])) {
--			ret = dev_err_probe(dev, PTR_ERR(multi->clients[i]),
--					    "Error creating i2c-client, idx %d\n", i);
--			goto error;
--		}
--	}
--	if (i < multi->num_clients) {
--		dev_err(dev, "Error finding driver, idx %d\n", i);
--		ret = -ENODEV;
--		goto error;
--	}
--
--	platform_set_drvdata(pdev, multi);
--	return 0;
--
--error:
--	while (--i >= 0)
--		i2c_unregister_device(multi->clients[i]);
--
--	return ret;
--}
--
--static int i2c_multi_inst_remove(struct platform_device *pdev)
--{
--	struct i2c_multi_inst_data *multi = platform_get_drvdata(pdev);
--	int i;
--
--	for (i = 0; i < multi->num_clients; i++)
--		i2c_unregister_device(multi->clients[i]);
--
--	return 0;
--}
--
--static const struct i2c_inst_data bsg1160_data[]  = {
--	{ "bmc150_accel", IRQ_RESOURCE_GPIO, 0 },
--	{ "bmc150_magn" },
--	{ "bmg160" },
--	{}
--};
--
--static const struct i2c_inst_data bsg2150_data[]  = {
--	{ "bmc150_accel", IRQ_RESOURCE_GPIO, 0 },
--	{ "bmc150_magn" },
--	/* The resources describe a 3th client, but it is not really there. */
--	{ "bsg2150_dummy_dev" },
--	{}
--};
--
--static const struct i2c_inst_data int3515_data[]  = {
--	{ "tps6598x", IRQ_RESOURCE_APIC, 0 },
--	{ "tps6598x", IRQ_RESOURCE_APIC, 1 },
--	{ "tps6598x", IRQ_RESOURCE_APIC, 2 },
--	{ "tps6598x", IRQ_RESOURCE_APIC, 3 },
--	{}
--};
--
--/*
-- * Note new device-ids must also be added to i2c_multi_instantiate_ids in
-- * drivers/acpi/scan.c: acpi_device_enumeration_by_parent().
-- */
--static const struct acpi_device_id i2c_multi_inst_acpi_ids[] = {
--	{ "BSG1160", (unsigned long)bsg1160_data },
--	{ "BSG2150", (unsigned long)bsg2150_data },
--	{ "INT3515", (unsigned long)int3515_data },
--	{ }
--};
--MODULE_DEVICE_TABLE(acpi, i2c_multi_inst_acpi_ids);
--
--static struct platform_driver i2c_multi_inst_driver = {
--	.driver	= {
--		.name = "I2C multi instantiate pseudo device driver",
--		.acpi_match_table = i2c_multi_inst_acpi_ids,
--	},
--	.probe = i2c_multi_inst_probe,
--	.remove = i2c_multi_inst_remove,
--};
--module_platform_driver(i2c_multi_inst_driver);
--
--MODULE_DESCRIPTION("I2C multi instantiate pseudo device driver");
--MODULE_AUTHOR("Hans de Goede <hdegoede@redhat.com>");
--MODULE_LICENSE("GPL");
--- 
-2.25.1
+...
+>=20
+> > +#define AMS_IDR_1			0x02c
+> ...
+> > +#define AMS_VCC_PSPLL3			0x06C
+> ...
+> > +#define AMS_VCCBRAM			0x07C
+> ...
+> > +#define AMS_PSINTFPDDR			0x09C
+> ...and so on
+>=20
+> Be consistent with the capitalization in the hex values.
+
+Yes. Will fix all instances in next patch.
+
+>=20
+> ...
+>=20
+> > +#define AMS_INIT_POLL_TIME		200
+>=20
+> Does it need unit?
+>=20
+> > +#define AMS_SUPPLY_SCALE_1VOLT		1000
+> > +#define AMS_SUPPLY_SCALE_3VOLT		3000
+> > +#define AMS_SUPPLY_SCALE_6VOLT		6000
+>=20
+> I would rather make units with these:
+>=20
+> #define AMS_SUPPLY_SCALE_1VOLT_mV		1000
+> #define AMS_SUPPLY_SCALE_3VOLT_mV		3000
+> #define AMS_SUPPLY_SCALE_6VOLT_mV		6000
+>=20
+
+Will do.=20
+
+> ...
+>=20
+> > +#define AMS_PL_AUX_CHAN_VOLTAGE(_auxno) \
+>=20
+> > +	AMS_CHAN_VOLTAGE(PL_SEQ(AMS_SEQ(_auxno)), \
+> > +			AMS_REG_VAUX(_auxno), false)
+>=20
+> One line?
+>=20
+> > +#define AMS_CTRL_CHAN_VOLTAGE(_scan_index, _addr) \
+>=20
+> > +
+> 	AMS_CHAN_VOLTAGE(PL_SEQ(AMS_SEQ(AMS_SEQ(_scan_index)))
+> , \
+> > +			_addr, false)
+>=20
+> Ditto.
+
+Will do.
+
+>=20
+> ...
+>=20
+> > +/**
+> > + * struct ams - Driver data for xilinx-ams
+> > + * @base: physical base address of device
+> > + * @ps_base: physical base address of PS device
+> > + * @pl_base: physical base address of PL device
+> > + * @clk: clocks associated with the device
+> > + * @dev: pointer to device struct
+> > + * @lock: to handle multiple user interaction
+> > + * @intr_lock: to protect interrupt mask values
+> > + * @alarm_mask: alarm configuration
+> > + * @current_masked_alarm: currently masked due to alarm
+> > + * @intr_mask: interrupt configuration
+> > + * @ams_unmask_work: re-enables event once the event condition
+> > +disappears
+>=20
+> > + * This structure contains necessary state for Sysmon driver to
+> > + operate
+>=20
+> Shouldn't be this "state for Sysmon driver to operate" a summary above?
+
+I don't understand.=20
+
+>=20
+> > + */
+>=20
+> ...
+>=20
+> > +	u32 reg, value;
+> > +	u32 expect =3D AMS_PS_CSTS_PS_READY;
+> > +	int ret;
+>=20
+> 	u32 expect =3D AMS_PS_CSTS_PS_READY;
+> 	u32 reg, value;
+> 	int ret;
+>=20
+> ...
+>=20
+> > +	u32 reg;
+> > +	u32 expect =3D AMS_ISR1_EOC_MASK;
+> > +	int ret;
+>=20
+> Ditto.
+>=20
+
+Will fix.
+
+> ...
+>=20
+> > +	ret =3D readl_poll_timeout(ams->base + AMS_ISR_1, reg,
+> > +				 (reg & expect), AMS_INIT_POLL_TIME,
+> AMS_INIT_TIMEOUT_US);
+>=20
+> Something wrong with line lengths... There is enough space on previous li=
+ne
+> for one parameter.
+
+Accepted.
+
+>=20
+> > +	if (ret)
+> > +		return ret;
+>=20
+> ...
+>=20
+> > +	case IIO_CHAN_INFO_RAW:
+> > +		mutex_lock(&ams->lock);
+> > +		if (chan->scan_index >=3D AMS_CTRL_SEQ_BASE) {
+> > +			ret =3D ams_read_vcc_reg(ams, chan->address, val);
+> > +			if (ret) {
+>=20
+> > +				mutex_unlock(&ams->lock);
+> > +				return ret;
+>=20
+> Can it be
+> 				goto out_unlock;
+>=20
+> > +			}
+> > +			ams_enable_channel_sequence(indio_dev);
+> > +		} else if (chan->scan_index >=3D AMS_PS_SEQ_MAX)
+> > +			*val =3D readl(ams->pl_base + chan->address);
+> > +		else
+> > +			*val =3D readl(ams->ps_base + chan->address);
+>=20
+> 		ret =3D IIO_VAL_INT;
+> out_unlock:
+>=20
+> > +		mutex_unlock(&ams->lock);
+> > +
+> > +		return IIO_VAL_INT;
+>=20
+> 		mutex_unlock(&ams->lock);
+> 		return ret;
+>=20
+> ?
+
+Sure. That looks good.
+
+>=20
+> Also the question, why mutex only against INFO_RAW case?
+
+All other cases return static values and don't have register configuration =
+involved.
+
+>=20
+> ...
+>=20
+> > +		switch (chan->type) {
+> > +		case IIO_VOLTAGE:
+> > +			if (chan->scan_index < AMS_PS_SEQ_MAX) {
+> > +				switch (chan->address) {
+> > +				case AMS_SUPPLY1:
+> > +				case AMS_SUPPLY2:
+> > +				case AMS_SUPPLY3:
+> > +				case AMS_SUPPLY4:
+> > +				case AMS_SUPPLY9:
+> > +				case AMS_SUPPLY10:
+> > +				case AMS_VCCAMS:
+> > +					*val =3D AMS_SUPPLY_SCALE_3VOLT;
+> > +					break;
+> > +				case AMS_SUPPLY5:
+> > +				case AMS_SUPPLY6:
+> > +				case AMS_SUPPLY7:
+> > +				case AMS_SUPPLY8:
+> > +					*val =3D AMS_SUPPLY_SCALE_6VOLT;
+> > +					break;
+> > +				default:
+> > +					*val =3D AMS_SUPPLY_SCALE_1VOLT;
+> > +					break;
+> > +				}
+> > +			} else if (chan->scan_index >=3D AMS_PS_SEQ_MAX
+> &&
+> > +				   chan->scan_index < AMS_CTRL_SEQ_BASE)
+> {
+> > +				switch (chan->address) {
+> > +				case AMS_SUPPLY1:
+> > +				case AMS_SUPPLY2:
+> > +				case AMS_SUPPLY3:
+> > +				case AMS_SUPPLY4:
+> > +				case AMS_SUPPLY5:
+> > +				case AMS_SUPPLY6:
+> > +				case AMS_VCCAMS:
+> > +				case AMS_VREFP:
+> > +				case AMS_VREFN:
+> > +					*val =3D AMS_SUPPLY_SCALE_3VOLT;
+> > +					break;
+> > +				case AMS_SUPPLY7:
+> > +					regval =3D readl(ams->pl_base +
+> AMS_REG_CONFIG4);
+> > +					if (FIELD_GET(AMS_VUSER0_MASK,
+> regval))
+> > +						*val =3D
+> AMS_SUPPLY_SCALE_6VOLT;
+> > +					else
+> > +						*val =3D
+> AMS_SUPPLY_SCALE_3VOLT;
+> > +					break;
+> > +				case AMS_SUPPLY8:
+> > +					regval =3D readl(ams->pl_base +
+> AMS_REG_CONFIG4);
+> > +					if (FIELD_GET(AMS_VUSER1_MASK,
+> regval))
+> > +						*val =3D
+> AMS_SUPPLY_SCALE_6VOLT;
+> > +					else
+> > +						*val =3D
+> AMS_SUPPLY_SCALE_3VOLT;
+> > +					break;
+> > +				case AMS_SUPPLY9:
+> > +					regval =3D readl(ams->pl_base +
+> AMS_REG_CONFIG4);
+> > +					if (FIELD_GET(AMS_VUSER2_MASK,
+> regval))
+> > +						*val =3D
+> AMS_SUPPLY_SCALE_6VOLT;
+> > +					else
+> > +						*val =3D
+> AMS_SUPPLY_SCALE_3VOLT;
+> > +					break;
+> > +				case AMS_SUPPLY10:
+> > +					regval =3D readl(ams->pl_base +
+> AMS_REG_CONFIG4);
+> > +					if (FIELD_GET(AMS_VUSER3_MASK,
+> regval))
+> > +						*val =3D
+> AMS_SUPPLY_SCALE_6VOLT;
+> > +					else
+> > +						*val =3D
+> AMS_SUPPLY_SCALE_3VOLT;
+> > +					break;
+> > +				case AMS_VP_VN:
+> > +				case AMS_REG_VAUX(0) ...
+> AMS_REG_VAUX(15):
+> > +					*val =3D AMS_SUPPLY_SCALE_1VOLT;
+> > +					break;
+> > +				default:
+> > +					*val =3D AMS_SUPPLY_SCALE_1VOLT;
+> > +					break;
+> > +				}
+> > +			} else {
+> > +				switch (chan->address) {
+> > +				case AMS_VCC_PSPLL0:
+> > +				case AMS_VCC_PSPLL3:
+> > +				case AMS_VCCINT:
+> > +				case AMS_VCCBRAM:
+> > +				case AMS_VCCAUX:
+> > +				case AMS_PSDDRPLL:
+> > +				case AMS_PSINTFPDDR:
+> > +					*val =3D AMS_SUPPLY_SCALE_3VOLT;
+> > +					break;
+> > +				default:
+> > +					*val =3D AMS_SUPPLY_SCALE_1VOLT;
+> > +					break;
+> > +				}
+> > +			}
+> > +			*val2 =3D AMS_SUPPLY_SCALE_DIV_BIT;
+> > +			return IIO_VAL_FRACTIONAL_LOG2;
+> > +		case IIO_TEMP:
+> > +			*val =3D AMS_TEMP_SCALE;
+> > +			*val2 =3D AMS_TEMP_SCALE_DIV_BIT;
+> > +			return IIO_VAL_FRACTIONAL_LOG2;
+> > +		default:
+> > +			return -EINVAL;
+> > +		}
+>=20
+> Isn't it a bit too looong for a single switch case?
+
+I agree. Will move them to smaller functions.
+
+>=20
+> ...
+>=20
+> > +/**
+> > + * ams_unmask_worker - ams alarm interrupt unmask worker
+>=20
+> > + * @work :		work to be done
+>=20
+> Be consistent with a style on how you describe parameters in the kernel d=
+oc.
+
+Will fix it.
+
+>=20
+> > + * The ZynqMP threshold interrupts are level sensitive. Since we
+> > + can't make the
+> > + * threshold condition go way from within the interrupt handler, this
+> > + means as
+> > + * soon as a threshold condition is present we would enter the
+> > + interrupt handler
+> > + * again and again. To work around this we mask all active threshold
+> > + interrupts
+> > + * in the interrupt handler and start a timer. In this timer we poll
+> > + the
+> > + * interrupt status and only if the interrupt is inactive we unmask it=
+ again.
+> > + */
+>=20
+> ...
+>=20
+> > +	fwnode_for_each_child_node(chan_node, child) {
+> > +		ret =3D fwnode_property_read_u32(child, "reg", &reg);
+> > +		if (ret || reg > AMS_PL_MAX_EXT_CHANNEL + 30)
+> > +			continue;
+> > +
+> > +		chan =3D &channels[num_channels];
+> > +		ext_chan =3D reg + AMS_PL_MAX_FIXED_CHANNEL - 30;
+> > +		memcpy(chan, &ams_pl_channels[ext_chan],
+> sizeof(*channels));
+> > +
+> > +		if (fwnode_property_read_bool(child, "xlnx,bipolar"))
+> > +			chan->scan_type.sign =3D	's';
+>=20
+> Needless double spacing.
+>=20
+
+Agreed.
+
+> > +		num_channels++;
+> > +	}
+>=20
+> ...
+>=20
+> > +		/* add PS channels to iio device channels */
+> > +		memcpy(channels, ams_ps_channels,
+> > +		       sizeof(ams_ps_channels));
+>=20
+> One line.
+>=20
+> ...
+>=20
+> > +		/* Copy only first 10 fix channels */
+>=20
+> Be consistent with one line comments (pay attention to the capitalization=
+,
+> compare to the above).
+>=20
+> > +		memcpy(channels, ams_pl_channels,
+> > +		       AMS_PL_MAX_FIXED_CHANNEL * sizeof(*channels));
+>=20
+> One line?
+>=20
+> ...
+>=20
+> > +		/* add AMS channels to iio device channels */
+> > +		memcpy(channels, ams_ctrl_channels,
+> > +		       sizeof(ams_ctrl_channels));
+>=20
+> One line.
+>=20
+> ...
+>=20
+> > +	fwnode_for_each_child_node(fwnode, child) {
+> > +		if (fwnode_device_is_available(child)) {
+>=20
+> > +			ret =3D ams_init_module(indio_dev, child,
+> > +					      ams_channels + num_channels);
+>=20
+> One line?
+>=20
+> > +			if (ret < 0) {
+> > +				fwnode_handle_put(child);
+> > +				return ret;
+> > +			}
+> > +
+> > +			num_channels +=3D ret;
+> > +		}
+> > +	}
+>=20
+
+Will fix as many one liners as I can see in the code.
+
+> ...
+>=20
+> > +	dev_size =3D sizeof(*dev_channels) * num_channels;
+>=20
+> Here you need to have an array_size(). Or introduce a
+> devm_krealloc_array().
+
+Oh yes, you are right.
+
+>=20
+> > +	dev_channels =3D devm_krealloc(dev, ams_channels, dev_size,
+> GFP_KERNEL);
+> > +	if (!dev_channels)
+> > +		ret =3D -ENOMEM;
+>=20
+>=20
+> --
+> With Best Regards,
+> Andy Shevchenko
+>=20
+
+Thanks,
+Anand
 
