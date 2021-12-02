@@ -2,92 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD814668AC
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Dec 2021 17:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 662BE4668B2
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Dec 2021 17:53:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359762AbhLBQz7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Dec 2021 11:55:59 -0500
-Received: from mga02.intel.com ([134.134.136.20]:29754 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1347848AbhLBQz7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 Dec 2021 11:55:59 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10185"; a="223982987"
-X-IronPort-AV: E=Sophos;i="5.87,282,1631602800"; 
-   d="scan'208";a="223982987"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2021 08:52:33 -0800
-X-IronPort-AV: E=Sophos;i="5.87,282,1631602800"; 
-   d="scan'208";a="541288981"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2021 08:52:30 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mspIs-001SXx-Vt;
-        Thu, 02 Dec 2021 18:51:26 +0200
-Date:   Thu, 2 Dec 2021 18:51:26 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Anand Ashok Dumbre <ANANDASH@xilinx.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
-        Manish Narani <MNARANI@xilinx.com>
-Subject: Re: [PATCH v11 3/5] iio: adc: Add Xilinx AMS driver
-Message-ID: <Yaj5jnRzAUvGxeFq@smile.fi.intel.com>
-References: <20211124225407.17793-1-anand.ashok.dumbre@xilinx.com>
- <20211124225407.17793-4-anand.ashok.dumbre@xilinx.com>
- <YZ9+HxSRmT1XHld2@smile.fi.intel.com>
- <BY5PR02MB69163D602A61CE502527CE11A9699@BY5PR02MB6916.namprd02.prod.outlook.com>
+        id S1359773AbhLBQ4n (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Dec 2021 11:56:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1359757AbhLBQ4f (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Dec 2021 11:56:35 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4591C06174A;
+        Thu,  2 Dec 2021 08:53:12 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 657F662754;
+        Thu,  2 Dec 2021 16:53:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E453C00446;
+        Thu,  2 Dec 2021 16:53:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638463990;
+        bh=Xm0WA4hHGXe4BK5HdH6TJWZ1ld/3ywHizG+gb1ycEfw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=pl5pToVZMFSh3GNT/vOudFUnvrWcu225AOeSTkrKmyw8mZvJmllgoFNYKGZPw5X+9
+         8i0QgajcuRxuLn/AocXNpwxmWotnCOK89JAyq0/qmTTV9e7++72FcESxHaxuUhLiUu
+         3LLdvZJCNcyKoL25wc+Ju2wU7YwqLm8MKoo64iJSV7CDKh2lXIiEzMQgs4nPoGiAO8
+         aH84xILN5641zYKu7UHHNoi9pDlTQqQirItbdpn3SIRrAIPKNVFCyjfesOA65MTt03
+         gvKkfSWY5xIqis0XM3km2d0/CZCMCTgQXtt5e3LMHA2F1HjXzuNDvrX7egbLVhdAup
+         sDmOTLuW6WN7g==
+Date:   Thu, 2 Dec 2021 16:53:05 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Stefan Binding <sbinding@opensource.cirrus.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        Lucas Tanure <tanureal@opensource.cirrus.com>
+Subject: Re: [PATCH 1/3] spi: Revert "spi: Remove unused function
+ spi_busnum_to_master()"
+Message-ID: <Yaj58Znf7ioGSLLm@sirena.org.uk>
+References: <20211202162421.7628-1-sbinding@opensource.cirrus.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4B24liYr2woZhgQ9"
 Content-Disposition: inline
-In-Reply-To: <BY5PR02MB69163D602A61CE502527CE11A9699@BY5PR02MB6916.namprd02.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20211202162421.7628-1-sbinding@opensource.cirrus.com>
+X-Cookie: Put no trust in cryptic comments.
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 02, 2021 at 04:32:33PM +0000, Anand Ashok Dumbre wrote:
 
-...
+--4B24liYr2woZhgQ9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > > +/**
+On Thu, Dec 02, 2021 at 04:24:19PM +0000, Stefan Binding wrote:
+> From: Lucas Tanure <tanureal@opensource.cirrus.com>
+>=20
+> Revert commit bdc7ca008e1f ("spi: Remove unused function
+> spi_busnum_to_master()")
+> This function is needed for the spi version of i2c multi
+> instantiate driver.
 
-> > > + * struct ams - Driver data for xilinx-ams
+If we're going to restore this API we should rename it to _controller()
+while we're at it.
 
-(1)
+--4B24liYr2woZhgQ9
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> > > + * @base: physical base address of device
-> > > + * @ps_base: physical base address of PS device
-> > > + * @pl_base: physical base address of PL device
-> > > + * @clk: clocks associated with the device
-> > > + * @dev: pointer to device struct
-> > > + * @lock: to handle multiple user interaction
-> > > + * @intr_lock: to protect interrupt mask values
-> > > + * @alarm_mask: alarm configuration
-> > > + * @current_masked_alarm: currently masked due to alarm
-> > > + * @intr_mask: interrupt configuration
-> > > + * @ams_unmask_work: re-enables event once the event condition
-> > > +disappears
-> > 
-> > > + * This structure contains necessary state for Sysmon driver to
-> > > + operate
-> > 
-> > Shouldn't be this "state for Sysmon driver to operate" a summary above?
-> 
-> I don't understand.
+-----BEGIN PGP SIGNATURE-----
 
-(1) is not so informative, this one is better.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGo+fAACgkQJNaLcl1U
+h9Dwjwf/dUAC8fE1p6xCqErlc7IgO1UeO5bMU/AEJiPSfUUXCWTtxIuK8mVfk3w/
+4mxz36WI/UGrbK93y+38ONgwU7HOlLOftixSdjciDYWM9GKz2OZeYOVTCEkAYB3e
+cgZmcTQ/Mfm8kOjrth5wTswqhBc3k/08IKIqlENZ+aQioQWab86DOhFGWWfT1OsR
+VMK9VZ74yCsNVk0Xa4DkIX/y8RVdGteJoEXK0HcwBVqXzXHxSga+WfavRdDJxnvP
+xCEJN9iSeYoe+xoJ2yLfJFCg3o+yAuA7UstYlwE5EdWp2zE5GW4BBxSzIvQkUF3/
+fpooMbekY7XxxZQ26KJ1P74a95Gwgw==
+=x5pV
+-----END PGP SIGNATURE-----
 
-> > > + */
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--4B24liYr2woZhgQ9--
