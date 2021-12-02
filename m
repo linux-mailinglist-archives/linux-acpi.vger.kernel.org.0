@@ -2,90 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8F0646608D
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Dec 2021 10:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36BEE466156
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Dec 2021 11:18:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345964AbhLBJlh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Dec 2021 04:41:37 -0500
-Received: from mga06.intel.com ([134.134.136.31]:25482 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345914AbhLBJlg (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 2 Dec 2021 04:41:36 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10185"; a="297469623"
-X-IronPort-AV: E=Sophos;i="5.87,281,1631602800"; 
-   d="scan'208";a="297469623"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2021 01:38:14 -0800
-X-IronPort-AV: E=Sophos;i="5.87,281,1631602800"; 
-   d="scan'208";a="609920216"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2021 01:38:10 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1msiWZ-001LKK-It;
-        Thu, 02 Dec 2021 11:37:07 +0200
-Date:   Thu, 2 Dec 2021 11:37:07 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Anand Ashok Dumbre <ANANDASH@xilinx.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH v11 1/5] device property: Add fwnode_iomap()
-Message-ID: <YaiTw1RVgxkOvFj8@smile.fi.intel.com>
-References: <20211124225407.17793-1-anand.ashok.dumbre@xilinx.com>
- <20211124225407.17793-2-anand.ashok.dumbre@xilinx.com>
- <YZ92mTURrFWZPUXp@smile.fi.intel.com>
- <DM6PR02MB69236DAEBED675DB929BB8ACA9679@DM6PR02MB6923.namprd02.prod.outlook.com>
- <BY5PR02MB6916F7BC6ACE5326DB92DB2BA9699@BY5PR02MB6916.namprd02.prod.outlook.com>
+        id S1346104AbhLBKWO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Dec 2021 05:22:14 -0500
+Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:48967 "EHLO
+        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240883AbhLBKWO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Dec 2021 05:22:14 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R631e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0UzAdIBL_1638440313;
+Received: from 30.240.95.24(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0UzAdIBL_1638440313)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Thu, 02 Dec 2021 18:18:50 +0800
+Message-ID: <18bf9b21-9926-d7c6-5827-4cf69732131c@linux.alibaba.com>
+Date:   Thu, 2 Dec 2021 18:18:33 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BY5PR02MB6916F7BC6ACE5326DB92DB2BA9699@BY5PR02MB6916.namprd02.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: Question: How to trigger RAM address when injecting memory error
+To:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "Luck, Tony" <tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        graeme.gregory@linaro.org, will.deacon@arm.com,
+        myron.stowe@redhat.com, len.brown@intel.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 02, 2021 at 09:10:02AM +0000, Anand Ashok Dumbre wrote:
-> > From: Anand Ashok Dumbre <ANANDASH@xilinx.com>
-> > Sent: Tuesday 30 November 2021 9:58 PM
-> > > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Sent: Thursday 25 November 2021 11:42 AM
-> > > On Wed, Nov 24, 2021 at 10:54:03PM +0000, Anand Ashok Dumbre wrote:
+On our platform, firmware relies on kernel to trigger an injected error.
+Specifically, it populates trigger_tab with the injected physical memory
+address, which is set in param1. It is expected to map the RAM address and
+run read action. And the execution path is as follows:
 
-...
+    __einj_error_trigger
+        => apei_resources_request
+            => apei_exec_pre_map_gars
+                => apei_exec_run
 
-> > > > +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int
-> > > index) {
-> > >
-> > > > +	if (is_of_node(fwnode))
-> > > > +		return of_iomap(to_of_node(fwnode), index);
-> > >
-> > > It seems this part should be wrapped in some ifdeffery according to
-> > > kbuild bot report.
-> > 
-> > I see that of_iomap is wrapped in #ifdef I will fix that and send a new patch.
-> 
-> I am unable to reproduce the conditions for the error shown by the kernel bot.
-> Not sure if I am doing something wrong. Any help/suggestion would be appreciated to fix this issue.
+If injecting at physical memory address, e.g. 0x92f033038, used by a
+user space process, the following error will be reported in dmesg:
 
-Kbuild bot gives you a config file and command line with which it tried to
-build. It's quite rare that it gives you false positives (and here it's not
-the case, because you need to have ifdeffery like other APIs in this category
-have).
+    ACPI: [Firmware Bug]: requested region covers kernel memory @ 0x000000092f033038
 
-> > > > +	return NULL;
-> > > > +}
+This is because the injected physical memory address is
+EFI_CONVENTIONAL_MEMORY and memblock_is_map_memory is true
+(arch/arm64/kernel/acpi.c).
 
+        case EFI_CONVENTIONAL_MEMORY:
+        case EFI_PERSISTENT_MEMORY:
+            if (memblock_is_map_memory(phys) ||
+                !memblock_is_region_memory(phys, size)) {
+                pr_warn(FW_BUG "requested region covers kernel memory @ %pa\n", &phys);
+                return NULL;
+            }
 
--- 
-With Best Regards,
-Andy Shevchenko
+As a result, the error could not be triggered.
+
+A normal workflow maps Generic Address Register (GAR) by acpi_os_ioremap
+and add its virtual address into acpi_ioremaps. The execution path is as
+follows:
+
+    apei_exec_pre_map_gars
+        => pre_map_gar_callback
+            => apei_map_generic_address
+                => acpi_os_map_generic_address
+                    => acpi_os_map_iomem    /* add mapped VA into acpi_ioremaps */
+                        =>    acpi_map
+                            => acpi_os_ioremap /**/
+
+Then, a read or write action is taken. It will check if the physical
+address is mapped from acpi_ioremap. If yes, the value is read directly.
+Otherwise, acpi_os_ioremap the physical address first. The execution path
+is as follows:
+
+    __apei_exec_run
+        => apei_exec_read_register
+            => apei_read
+                => acpi_os_read_memory
+                    => acpi_map_vaddr_lookup    /* lookup VA of PA from acpi_ioremap */
+                    => acpi_os_ioremap
+
+It works well for reserved memory, but not for our case.
+
+Commit fdea163d8c17 ("ACPI, APEI, EINJ, Fix resource conflict on some
+machine") removes the injecting memory address range which conflits with
+regular memory from trigger table resources. It make sense when calling
+apei_resources_request(). However, the actual mapping operation in
+apei_exec_pre_map_gars() with trigger_ctx. And the conflit physical address
+is still in trigger_ctx.
+
+Commit ba242d5b1a84 ("ACPI, APEI: Add RAM mapping support to ACPI")add RAM
+support with kmap. But after commit aafc65c731fe ("ACPI: add arm64 to the
+platforms that use ioremap"), ioremap is used to map memory. However, the
+ioremap implementation (arch/arm64/mm/ioremap.c) not allowed to map RAM at
+all.
+
+    /*
+     * Don't allow RAM to be mapped.
+     */
+    if (WARN_ON(pfn_valid(__phys_to_pfn(phys_addr))))
+        return NULL;
+
+A hacking way to address this issue is that map RAM memory with kmap
+instead of apei_exec_pre_map_gars, and read it directly instead of
+apei_exec_run.
+-       rc = apei_exec_pre_map_gars(&trigger_ctx);
+-       if (rc)
+-               goto out_release;
++       volatile long *ptr;
++       long tmp;
++       unsigned long pfn;
++       pfn = param1 >> PAGE_SHIFT;
+
+-       rc = apei_exec_run(&trigger_ctx, ACPI_EINJ_TRIGGER_ERROR);
++       ptr = kmap(pfn_to_page(pfn));
++       tmp = *(ptr + (param1 & ~ PAGE_MASK));
+
+-       apei_exec_post_unmap_gars(&trigger_ctx);
+
+I am wondering that should we use kmap to map RAM in acpi_map or add a
+another path to address this issue? Any comment is welcomed.
 
 
