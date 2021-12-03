@@ -2,196 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B1D34674B0
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Dec 2021 11:21:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 569E44674CD
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Dec 2021 11:29:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379835AbhLCKYv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Dec 2021 05:24:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:49968 "EHLO
+        id S1379883AbhLCKch (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Dec 2021 05:32:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:50649 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1379844AbhLCKYr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Dec 2021 05:24:47 -0500
+        by vger.kernel.org with ESMTP id S1379869AbhLCKcf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Dec 2021 05:32:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1638526880;
+        s=mimecast20190719; t=1638527351;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=16tCcBN6A3Kz/QH+fwsigWZzWp8j5LhPyBwzqPVfU+s=;
-        b=XDiVye4NHAeEYwtI08iauyqBMQ9igNTDxN05rx4eSiiUpaAUQg+SwnJoTRfAhTVKVNv91e
-        SVNvMM4cbiR/xLt+o+AOpjMs+RcmiPLWXhosP78niNajktNWuJzH3Trp6qRsXlLQDholD/
-        V3sgbasyXE2fLTsxHaH9KL4zOhnBDAo=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=SXSYEyTFExfkT+47FFAoVWPySgULFdvjPMdkzFGphKU=;
+        b=YXjaaEXlv0l828HTXcagaqhl+X3gOutyhTBIDysryERDf3sSB7o85M9DSwYY33j/lSTxfH
+        cvJhPZKopVpCzkuDq1M2UBw9GYX09pig4TUxOxJrEIu4SOw4JVxZ1nU6tGb6D+TwHa+KBa
+        WoqlYuZOa0+6ZbMyrDKz9HmR1FhVOwA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-463-a1eEI9O_NoKAgGltWlqN1A-1; Fri, 03 Dec 2021 05:21:19 -0500
-X-MC-Unique: a1eEI9O_NoKAgGltWlqN1A-1
-Received: by mail-ed1-f69.google.com with SMTP id p4-20020aa7d304000000b003e7ef120a37so2136493edq.16
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Dec 2021 02:21:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:from:to:cc:references:in-reply-to
-         :content-transfer-encoding;
-        bh=16tCcBN6A3Kz/QH+fwsigWZzWp8j5LhPyBwzqPVfU+s=;
-        b=RhhTxoljsqc2Kr15EH+y+CnCcyxctXE+UT1XdzSui+pbYA+bd49jR5KyiHi4l9rTqs
-         JG047j5TUAw+yATfIlq9hO7ImI9v9pDnweTyTwMZ5iEv/VCi+KlTGHT6kchRcSrm7fIs
-         3croeO6DD8u14qe5Zn5250gEBPoXPFUIMFIKTaXsaLFz1c7oGvTC73iO7PEa/lcmu/rL
-         pcNlztIUl9Ut2loTxAz4h8ZoAiaI+MKKdUp8kSfwS2q46ulArh7DIDpcyz066bqQu1rM
-         eXTfSPkuO4bIHrONISkX5+2tfNLML7/JyrQwV5iq7kHkHX75JNq1RF0Bkn4HlnpmEoOf
-         RE7g==
-X-Gm-Message-State: AOAM5307sUy1s1tA2AQZEwnfxEMFApFnyB7X/0U4SSi7ws/FVkca/10/
-        P0XuFzeVSdsczcafqFjiGj9qBfwH6BYHHEcDfrfxW00BBpEaqaoZjoGx7CVk+0lbkzATcskVUEz
-        iccb7DiSqfwRMOyGDtK1odw==
-X-Received: by 2002:a17:906:1290:: with SMTP id k16mr21809407ejb.566.1638526878107;
-        Fri, 03 Dec 2021 02:21:18 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzfDVxFlYIQsj184u1/mFOHQafz2Rc5BDIkEaP4xxF7HrxkWS23R3eWGG8P7RWdWV8e7yqKbg==
-X-Received: by 2002:a17:906:1290:: with SMTP id k16mr21809366ejb.566.1638526877844;
-        Fri, 03 Dec 2021 02:21:17 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id d18sm1634905edj.23.2021.12.03.02.21.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Dec 2021 02:21:17 -0800 (PST)
-Message-ID: <724ab9d5-7ba1-dae6-49b9-831bafca5b84@redhat.com>
-Date:   Fri, 3 Dec 2021 11:21:16 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v6 07/15] platform/x86: int3472: Enable I2c daisy chain
-Content-Language: en-US
+ us-mta-546-vqzkYx5_MIyrfVN2DLzfOw-1; Fri, 03 Dec 2021 05:29:06 -0500
+X-MC-Unique: vqzkYx5_MIyrfVN2DLzfOw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DC0B981CCB5;
+        Fri,  3 Dec 2021 10:29:03 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.194.90])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 592E7694BF;
+        Fri,  3 Dec 2021 10:28:58 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
-To:     Daniel Scally <djrscally@gmail.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Mark Gross <markgross@kernel.org>,
         Andy Shevchenko <andy@infradead.org>,
         Wolfram Sang <wsa@the-dreams.de>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Len Brown <lenb@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
         linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
-        linux-clk@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-References: <20211125165412.535063-1-hdegoede@redhat.com>
- <20211125165412.535063-8-hdegoede@redhat.com>
- <YaAel9HuAvemRg2s@pendragon.ideasonboard.com>
- <03306e12-40ec-39ab-3b40-42b0395e1b65@redhat.com>
- <4ab5efa7-65b0-009c-293a-d7a49776e78d@gmail.com>
- <2fd5400e-e587-54d2-1071-ad8df49a8a68@redhat.com>
-In-Reply-To: <2fd5400e-e587-54d2-1071-ad8df49a8a68@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        linux-clk@vger.kernel.org
+Subject: [PATCH v7 00/14] Add support for X86/ACPI camera sensor/PMIC setup with clk and regulator platform data
+Date:   Fri,  3 Dec 2021 11:28:43 +0100
+Message-Id: <20211203102857.44539-1-hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi All,
 
-On 11/26/21 12:45, Hans de Goede wrote:
-> Hi,
-> 
-> On 11/26/21 12:39, Daniel Scally wrote:
->> Hello
->>
->> On 26/11/2021 11:30, Hans de Goede wrote:
->>> Hi,
->>>
->>> On 11/26/21 00:39, Laurent Pinchart wrote:
->>>> Hi Hans,
->>>>
->>>> Thank you for the patch.
->>>>
->>>> On Thu, Nov 25, 2021 at 05:54:04PM +0100, Hans de Goede wrote:
->>>>> From: Daniel Scally <djrscally@gmail.com>
->>>>>
->>>>> The TPS68470 PMIC has an I2C passthrough mode through which I2C traffic
->>>>> can be forwarded to a device connected to the PMIC as though it were
->>>>> connected directly to the system bus. Enable this mode when the chip
->>>>> is initialised.
->>>> Is there any drawback doing this unconditionally, if nothing is
->>>> connected to the bus on the other side (including no pull-ups) ?
->>> I actually never took a really close look at this patch, I just
->>> sorta inherited it from Daniel.
->>>
->>> Now that I have taken a close look, I see that it is setting the
->>> exact same bits as which get set when enabling the VSIO regulator.
->>>
->>> The idea here is that the I2C-passthrough only gets enabled when
->>> the VSIO regulator is turned on, because some sensors end up
->>> shorting the I2C pins to ground when the sensor is not powered.
->>>
->>> Since we set these bits when powering up the VSIO regulator
->>> and since we do that before trying to talk to the sensor
->>> I don't think that we need this (hack) anymore.
->>>
->>> I will give things a try without this change and if things
->>> still work I will drop this patch from the set.
->>>
->>> Daniel, what do you think?
->>
->>
->> Humm, we're only using the VSIO regulator with the VCM though right?
-> 
-> Nope, there is a mapping from VSIO to dovdd for the ov8865 in the
-> board_data; and I'm pretty sure I copied that from your earlier
-> attempts at getting regulator lookups registered :)
-> 
-> And even if the VSIO regulator was only used by the VCM, then it would
-> get turned off after probing the VCM, clearing the 2 bits which this
-> commit sets. Which would break things if we did not re-enable it when
-> the ov8865 needs it.
-> 
->> Which might not be on when the ov8865 tries to probe. I haven't tried
->> without this patch to be honest; I set it because that was what Windows
->> does when powering on the PMIC.
-> 
-> See above, I'm pretty sure we can do without this patch which means
-> that the INT3472 code will no longer be poking at the PMIC directly
-> itself, which is good :)
-> 
-> Anyways I'll give this a try sometime next week and then drop the
-> patch.
+Here is v7 of my patch-set adding support for camera sensor connected to a
+TPS68470 PMIC on x86/ACPI devices.
 
-I can confirm that this patch indeed is no longer necessary with
-the current regulator code already taking care of this.
+Changes in v7:
+- Drop "platform/x86: int3472: Enable I2c daisy chain" this workaround is
+  no longer necessary (the regulator code now takes care of this)
+- Fix using PTR_ERR(data->clk) instead of PTR_ERR(rdev) to log an error
+  code in "regulator: Introduce tps68470-regulator driver"
 
-I will post version 7 of this patch-set soon, with this patch dropped.
+Changes in v6:
+- Add support for the VCM (Voice Coil Motor) controlling the focus of
+  the back/main sensor camera lens:
+  - Patch 3 and patches 13-15 are new patches for this
+  - While working on this I learned that the VIO regulator is an always on
+    regulator and must be configured at the same voltage as VSIO, the
+    tps68470-regulator driver and the constraints have been updated for this
+- Addressed clk-tps68470 driver review-remarks
+- Some minor tweaks based on review-remarks from Andy
+- Add Andy's Reviewed-by to all patches which were also in v5
+
+I'm quite happy with how this works now, so from my pov this is ready
+for merging now.
+
+Patch 2 and 3 already have acks for merging through another tree.
+
+I believe the best way to merge this is that I create an IM branch with
+patches 1-4 + 7-11 (with Rafael's ack for 1) and then the clk / regulator /
+media maintainers merge my IM branch + their resp. patches
+
+This assumes that Rafael does not foresee any conflicts caused by the few
+small ACPI changes in patch 1. Rafael is this ok with you ? You did already
+Ack patch 1 but IIRC that was not specifically for merging it through
+another tree, may I have your ack for moving forward with this plan ?
 
 Regards,
 
 Hans
 
 
+Hans de Goede (14):
+  ACPI: delay enumeration of devices with a _DEP pointing to an INT3472
+    device
+  i2c: acpi: Use acpi_dev_ready_for_enumeration() helper
+  i2c: acpi: Add i2c_acpi_new_device_by_fwnode() function
+  platform_data: Add linux/platform_data/tps68470.h file
+  regulator: Introduce tps68470-regulator driver
+  clk: Introduce clk-tps68470 driver
+  platform/x86: int3472: Split into 2 drivers
+  platform/x86: int3472: Add get_sensor_adev_and_name() helper
+  platform/x86: int3472: Pass tps68470_clk_platform_data to the
+    tps68470-regulator MFD-cell
+  platform/x86: int3472: Pass tps68470_regulator_platform_data to the
+    tps68470-regulator MFD-cell
+  platform/x86: int3472: Deal with probe ordering issues
+  media: ipu3-cio2: Defer probing until the PMIC is fully setup
+  media: ipu3-cio2: Call cio2_bridge_init() before anything else
+  media: ipu3-cio2: Add support for instantiating i2c-clients for VCMs
 
->>>>> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
->>>>> Signed-off-by: Daniel Scally <djrscally@gmail.com>
->>>>> ---
->>>>>  .../x86/intel/int3472/intel_skl_int3472_tps68470.c         | 7 +++++++
->>>>>  1 file changed, 7 insertions(+)
->>>>>
->>>>> diff --git a/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c b/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c
->>>>> index c05b4cf502fe..42e688f4cad4 100644
->>>>> --- a/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c
->>>>> +++ b/drivers/platform/x86/intel/int3472/intel_skl_int3472_tps68470.c
->>>>> @@ -45,6 +45,13 @@ static int tps68470_chip_init(struct device *dev, struct regmap *regmap)
->>>>>  		return ret;
->>>>>  	}
->>>>>  
->>>>> +	/* Enable I2C daisy chain */
->>>>> +	ret = regmap_write(regmap, TPS68470_REG_S_I2C_CTL, 0x03);
->>>>> +	if (ret) {
->>>>> +		dev_err(dev, "Failed to enable i2c daisy chain\n");
->>>>> +		return ret;
->>>>> +	}
->>>>> +
->>>>>  	dev_info(dev, "TPS68470 REVID: 0x%02x\n", version);
->>>>>  
->>>>>  	return 0;
->>
+ drivers/acpi/scan.c                           |  37 ++-
+ drivers/clk/Kconfig                           |   8 +
+ drivers/clk/Makefile                          |   1 +
+ drivers/clk/clk-tps68470.c                    | 261 ++++++++++++++++++
+ drivers/i2c/i2c-core-acpi.c                   |  22 +-
+ drivers/media/pci/intel/ipu3/cio2-bridge.c    |  92 ++++++
+ drivers/media/pci/intel/ipu3/cio2-bridge.h    |  16 +-
+ drivers/media/pci/intel/ipu3/ipu3-cio2-main.c |  10 +-
+ drivers/platform/x86/intel/int3472/Makefile   |   9 +-
+ ...lk_and_regulator.c => clk_and_regulator.c} |   2 +-
+ drivers/platform/x86/intel/int3472/common.c   |  82 ++++++
+ .../{intel_skl_int3472_common.h => common.h}  |   6 +-
+ ...ntel_skl_int3472_discrete.c => discrete.c} |  51 ++--
+ .../intel/int3472/intel_skl_int3472_common.c  | 106 -------
+ ...ntel_skl_int3472_tps68470.c => tps68470.c} |  92 +++++-
+ drivers/platform/x86/intel/int3472/tps68470.h |  25 ++
+ .../x86/intel/int3472/tps68470_board_data.c   | 145 ++++++++++
+ drivers/regulator/Kconfig                     |   9 +
+ drivers/regulator/Makefile                    |   1 +
+ drivers/regulator/tps68470-regulator.c        | 201 ++++++++++++++
+ include/acpi/acpi_bus.h                       |   5 +-
+ include/linux/i2c.h                           |  17 +-
+ include/linux/mfd/tps68470.h                  |  11 +
+ include/linux/platform_data/tps68470.h        |  35 +++
+ 24 files changed, 1076 insertions(+), 168 deletions(-)
+ create mode 100644 drivers/clk/clk-tps68470.c
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_clk_and_regulator.c => clk_and_regulator.c} (99%)
+ create mode 100644 drivers/platform/x86/intel/int3472/common.c
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_common.h => common.h} (94%)
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_discrete.c => discrete.c} (91%)
+ delete mode 100644 drivers/platform/x86/intel/int3472/intel_skl_int3472_common.c
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_tps68470.c => tps68470.c} (56%)
+ create mode 100644 drivers/platform/x86/intel/int3472/tps68470.h
+ create mode 100644 drivers/platform/x86/intel/int3472/tps68470_board_data.c
+ create mode 100644 drivers/regulator/tps68470-regulator.c
+ create mode 100644 include/linux/platform_data/tps68470.h
+
+-- 
+2.33.1
 
