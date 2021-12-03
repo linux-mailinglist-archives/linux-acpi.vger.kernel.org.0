@@ -2,83 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 323CF4676A1
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Dec 2021 12:36:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50DA4467A6D
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Dec 2021 16:38:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380506AbhLCLkO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Dec 2021 06:40:14 -0500
-Received: from mga06.intel.com ([134.134.136.31]:1872 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1380494AbhLCLkN (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 3 Dec 2021 06:40:13 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10186"; a="297755269"
-X-IronPort-AV: E=Sophos;i="5.87,284,1631602800"; 
-   d="scan'208";a="297755269"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2021 03:36:49 -0800
-X-IronPort-AV: E=Sophos;i="5.87,284,1631602800"; 
-   d="scan'208";a="678068982"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2021 03:36:46 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1mt6qu-001kLf-EV;
-        Fri, 03 Dec 2021 13:35:44 +0200
-Date:   Fri, 3 Dec 2021 13:35:44 +0200
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Stefan Binding <sbinding@opensource.cirrus.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        patches@opensource.cirrus.com
-Subject: Re: [PATCH 3/3] platform/x86: Support Spi in i2c-multi-instantiate
- driver
-Message-ID: <YaoBEKJtuAb9xUAk@smile.fi.intel.com>
-References: <20211202162421.7628-1-sbinding@opensource.cirrus.com>
- <20211202162421.7628-3-sbinding@opensource.cirrus.com>
+        id S1381860AbhLCPlt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Dec 2021 10:41:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1381855AbhLCPls (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Dec 2021 10:41:48 -0500
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A288BC061359
+        for <linux-acpi@vger.kernel.org>; Fri,  3 Dec 2021 07:38:24 -0800 (PST)
+Received: by mail-il1-x134.google.com with SMTP id r2so3057967ilb.10
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Dec 2021 07:38:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=pwbl6muZq4xdBraxBG8aU3jWaXd4qzbaLprt5Xr+UEA=;
+        b=NCC8FjSufhc/W58tMZWrUXJF18vWXZjo1bHoFF1+5KNoPFPMaAiokz96YzILB1FEND
+         fqLwWlPcomFnyqgoH2ar39edgvW+z8GV0UxcJFyxp1OTjigwE7wtRCu93m6gFxSjbN9a
+         zJieWq3AG2XiuKuKbUV0MmrN9Z2+/l+LjktvMMU8qDK8zEiqhfVFcz4Uvli+evxPO94y
+         bvCasquLAElYK803iSeuot69QOh9FCWwOMC2cLsEeZoMizk0RRjVFdsk6GYQIad3dJs1
+         NfUECIo5Y1iIZlKDEbsQPDXrP0JeKqV+RXDbIp1fyv5RsPlMki9sPm2Eok5sNemdM3Vp
+         VXjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=pwbl6muZq4xdBraxBG8aU3jWaXd4qzbaLprt5Xr+UEA=;
+        b=kTSBvaTV8I6plCaKI/rFMb9PfWiNDz9Z4rUUGueCL5Db9//koPdBHOc+nuNGX3r69l
+         nvkvIzC3O5Dz6YekdjLw23Cr/s9+xtiJlbnKxsJ+0U6MP9JsnDCGpH4ep5slncgcibtK
+         FWaPVnH8arFumDmrIITvnqKBxrnvtp8F/d7mJb0Nog57/H/vBb4ZTDKO89t70WqO0q2+
+         n4Shxh+49nDZ3U91L7e4uesBg3Os3fOOZC7TJ8FxxGvTOimaS2In4/pqtalji1OYcpFH
+         fq6qpu8B5Gjp7xECawGSyVum07sjEs1vVGVn8/modv1d56NatEbXZxibsiu2di8t03Uu
+         1I1w==
+X-Gm-Message-State: AOAM530eBBgMzxFEdGl+7ZgCRX9gxKUnCgXn4DkYZgw129nmtHjXnCbO
+        3Qj1nn4Corpft+tyeSeR+57JhRkkFptx3GKvJFs=
+X-Google-Smtp-Source: ABdhPJzi/eosnNIxB3/env4vxReYsJoIusdpjmGywTmz6+N1pgoQep2boilJPkeOq8/rphY1VZIK0jDWF5JmyZKatWY=
+X-Received: by 2002:a92:cd51:: with SMTP id v17mr19216304ilq.191.1638545904037;
+ Fri, 03 Dec 2021 07:38:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211202162421.7628-3-sbinding@opensource.cirrus.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Received: by 2002:a05:6638:d4f:0:0:0:0 with HTTP; Fri, 3 Dec 2021 07:38:23
+ -0800 (PST)
+Reply-To: jeai2nasri@yahoo.com
+From:   jean nasri <1987had@gmail.com>
+Date:   Fri, 3 Dec 2021 16:38:23 +0100
+Message-ID: <CAD13MMMM_p0Zk5NjOuHXRpEKm7gPcLhbRE9jQG+G1-0yiDQbXw@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 02, 2021 at 04:24:21PM +0000, Stefan Binding wrote:
-> Add support for spi bus in i2c-multi-instantiate driver
-> and rename it for a multiple purpose driver name
-> By adding spi support into this driver enables devices
-> to use the same _HID string for i2c and spi uses and
-> minimize the support for two drivers doing the same thing
-> for different busses
+Can you receive a donation  money?
 
-Please take care about periods at the end of sentences.
-But this is minor in comparison to the following issues:
-
- - you enable this for existing I²C multi-instantiate devices,
-   are you sure it is fine?
-
- - continuing above, how can you guarantee that the same ID would
-   be used I²C and SPI versions of the same chip and not, let's say,
-   for UART?
-
- - or other way around, how do we know that the same component will
-   have the same ID for different bus types? (Yes, I understand that
-   this is logically appropriate assumption, but you never know OEMs
-   and others in their ways to (ab)use ACPI specifications and common
-   sense)
-
- - if we even go this way, it should be under drivers/acpi
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+=C2=BFPuedes recibir un dinero de donaci=C3=B3n?
