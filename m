@@ -2,131 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2937466E02
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Dec 2021 00:49:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5652F467021
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Dec 2021 03:44:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349681AbhLBXwL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 2 Dec 2021 18:52:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51168 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377625AbhLBXwK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 2 Dec 2021 18:52:10 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46156C06174A;
-        Thu,  2 Dec 2021 15:48:47 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638488924;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=5q90D0mcSKeapelm6wFaiR6ZRDLoVIIybSkt7RG4TXA=;
-        b=HVFKNgAmw8BpXnSaXm6dFdAPqCkbeylbedN2Db6encPLZZF1WTUOFc1hT7OTNqRFBqi2ja
-        HuNDUMebJkw5CbR9kQItS/7RPMxCEs38lmlsFaadF+nTukDGTmFmWiJ7UCYBWEpkSgKIPS
-        zj9Xj6SIGep3Nku7VpeyDZM4WXKM023cucgvW62ErLO9pBqg6OZELI5GuYAykzx9vspRD0
-        A78XvX6dPZV0CMK2uZCjuFfKnzvspHuSuRi4on/cAMWxr7pR3z4JIU/kFD+TtLtZIsWygY
-        08S+SGsDaP45NBmhfg4mrGIx0li34VB0ezuuONNVnRCADlIz2QfWJuBiNhch1g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638488924;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=5q90D0mcSKeapelm6wFaiR6ZRDLoVIIybSkt7RG4TXA=;
-        b=BZTi2VWIYlscz72ONISvig/5FIrXyD1ipJCY35f2BaYWpU95nt3gG+RtzTboK/uGCDqJpa
-        lZJIY7ORK2FjuJDw==
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        "H . Peter Anvin" <hpa@zytor.com>, Tony Luck <tony.luck@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2] x86: Skip WBINVD instruction for VM guest
-In-Reply-To: <20211202222109.pcsgm2jska3obvmx@black.fi.intel.com>
-References: <YZPbQVwWOJCrAH78@zn.tnic>
- <20211119040330.4013045-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <87pmqpjcef.ffs@tglx> <20211202222109.pcsgm2jska3obvmx@black.fi.intel.com>
-Date:   Fri, 03 Dec 2021 00:48:43 +0100
-Message-ID: <87lf126010.ffs@tglx>
-MIME-Version: 1.0
+        id S1350748AbhLCCrX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 2 Dec 2021 21:47:23 -0500
+Received: from mail-bn8nam11on2091.outbound.protection.outlook.com ([40.107.236.91]:13280
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S234870AbhLCCrW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 2 Dec 2021 21:47:22 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Zx89z0xzY8Ab1WYdqo1aMp5sVnNsp5MKh7YxaNYubciqumdD4pIhvnmkpfn71AOZDqQAaEVmmfyKEiP8whjqvkShY41C/WJc8h9waut6A9iFRsFNOaqliVn/oQ4rq9PJBsc3wyqXzhGOQx2UkdGj0a9dkTPjgKsDyDrVcrYFbrGKxVb3unparDt0N1Yu+2OnGXWKDR0MsYkAWpVi5gY+egIng/o4KA4L6xgNtjcFynY2dQaqYCs5G8W+EZATpWyHI/OOgLcITWvkow9efd8gOyIMTIs3mQtTjI5pgyn00vIQhn69brdECCS7jTr8wz/oaUqa05e7+x2CgOgH6lDxGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KZuZReZQN0wIE2Qekg/UR9ccyTuYjc7DYVnDFzVRe+g=;
+ b=F2IAtVe4Evu9THvbBdKToYCGgqJYJN46PztwdZpHsP0hiZCoXyVS93bRb8yl8t/gVaVn/ew47l7hLdS9nq52nLP1QTeM6r6p1ory2W9x0lkAlIsIzzNq4Fro42PLvJnh4YqndzOqkm+9Yce0Gi8jT0RzqpHVWE/uajetxAvlpSIkGK0IUrFgiWXb7QQdcVFBm2scO3YGw+MB1EIs/+vqDU8eNv101N9QyF6FRaussZon8Ev11JtasyO7iApSr+5rP4DaKdxWjY3E30IguaEfQsXrfd8PnLm2i7o9JZyHy4BUB3bEEH+CboZXNNXt/PrIoREuL9gsSe1T3/B4Irw6Wg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KZuZReZQN0wIE2Qekg/UR9ccyTuYjc7DYVnDFzVRe+g=;
+ b=UxfmiWStfS8L8vqUVu6tngClDqsVQm/q0TQOkdXjcjgVBeNJh6INI3OrzU67sUqpsXSMPNMk1Aho+5oCK6WKck6DDXdp4XXTd2hTtsLJ9a5RjydVGyJ1m0WM60MhbUPlWoZoBv0rdE+uM3ozjztS6evubD8A9NKYUnpZxgtvNaA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from DM5PR0102MB3590.prod.exchangelabs.com (2603:10b6:4:a4::25) by
+ DM5PR01MB2412.prod.exchangelabs.com (2603:10b6:3:3e::9) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4755.14; Fri, 3 Dec 2021 02:43:55 +0000
+Received: from DM5PR0102MB3590.prod.exchangelabs.com
+ ([fe80::d93b:cd3c:bb56:33a2]) by DM5PR0102MB3590.prod.exchangelabs.com
+ ([fe80::d93b:cd3c:bb56:33a2%5]) with mapi id 15.20.4734.028; Fri, 3 Dec 2021
+ 02:43:55 +0000
+From:   Ilkka Koskinen <ilkka@os.amperecomputing.com>
+To:     lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com
+Cc:     rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, devel@acpica.org,
+        patches@amperecomputing.com, scott@os.amperecomputing.com,
+        darren@os.amperecomputing.com
+Subject: [PATCH 0/2] ACPI: Arm Generic Diagnostic Dump and Reset device
+Date:   Thu,  2 Dec 2021 18:43:09 -0800
+Message-Id: <20211203024311.49865-1-ilkka@os.amperecomputing.com>
+X-Mailer: git-send-email 2.17.1
 Content-Type: text/plain
+X-ClientProxiedBy: CH0PR03CA0312.namprd03.prod.outlook.com
+ (2603:10b6:610:118::21) To DM5PR0102MB3590.prod.exchangelabs.com
+ (2603:10b6:4:a4::25)
+MIME-Version: 1.0
+Received: from eng01sys-r111.scc-lab.amperecomputing.com (4.28.12.214) by CH0PR03CA0312.namprd03.prod.outlook.com (2603:10b6:610:118::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.17 via Frontend Transport; Fri, 3 Dec 2021 02:43:54 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 62783a54-9b6b-4b34-d49b-08d9b606bfc8
+X-MS-TrafficTypeDiagnostic: DM5PR01MB2412:
+X-Microsoft-Antispam-PRVS: <DM5PR01MB241288D6F6FC036AA9C8FB169D6A9@DM5PR01MB2412.prod.exchangelabs.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Bg+WkY+aXrvJg5cJ3RktOAD/CNDUjn/BGrXmeMsCnbwudj9/r62sJQmXrRxIp510cndglAq0xBn9D95IIWjz1Ovno5YRbdF0Rj4WjlbckHtl/b9ylT0XQkZGkZcMoM/9OOlC8FxKRL7FrtQMEGYP8n2MlrV3R5sTYMGsxvjRfxwgMdhoez0AeFEq3Y1HjKCy5am3T/lxTQHtOuY3Vv8v/95BOhssf9cLdWg9l66q9vSMT6W5IsVRvgyZOObHJ0m5aFPxKny4BPLbKr/aVFEHAKVL8sOiihQxT5kINUBheobwmytX7JVzxjrzXokQuHcLabu0Ccewersx2uN4ExoTkeoqLz67r2BXNsg7B2Xy2qsgCNlWE/6kiVD752Zzh2Sx9w871lDVyuWR6P9bMU2kPy0OA4qrn7nl/4VIJql31zX4HeqY/Udmmkwn6wkR+7Bn0Nzc5OiBo4zZSmKYVoSZ/MEFfQ+6GLdJi2hSNAxIPilORtOPoPnk4GVGjbsvDIpAsmfDlLRDYCF5Wrk+6PnmK8DmaNdJ1iIFszM51EcROnBQsuNJAqjvZYo1V1/GrrnJgs9omSqPCRSDtVHf0/0SnVt7ZbWsAc2MixlMxPLqS5JsKLXC0AI2qfVOeLz0t5sOsRz9QpupHLRdg8DXTsu24olL+3NLKn/zjSJx9wZ1IyLVuv+x/D2TZdooaxBZPT7EnzshLVUlAZpVZftynXlG4Ypm4AeiSZnHA3j2D76FgcwSfY73yndip0DD9XCkejtD0KR1fGnq9A9so0hTsa6T4NlzcJzFZegUuVrn+dbcYATtnUKWi0ievu+2F9CLqk0P
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR0102MB3590.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(8676002)(2616005)(966005)(6506007)(6666004)(66476007)(66946007)(6486002)(7416002)(1076003)(956004)(2906002)(8936002)(5660300002)(508600001)(26005)(66556008)(86362001)(4326008)(52116002)(186003)(38100700002)(6512007)(316002)(83380400001)(38350700002)(107886003)(41533002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?IZ9fc5vdpJOH4DK8ugKEGTtJBHiYavweOzUOju6w7lVi9S07HnAc5x92WV4o?=
+ =?us-ascii?Q?1nlb4Uj3v0fGYQL7370IiS495kgT//LoHIz7yad8uU7uJrd+O2qamMPpq2bv?=
+ =?us-ascii?Q?mzsILFJ8aTgR2E7zcaCUmAZXq1HVCosB2FWnWgE05A6CYdaZ+ZMWVCvxwHk0?=
+ =?us-ascii?Q?kQIo7OkRwAv7s4EeM0jLHuUhl01ArHQTG1CXS8dVkE1VG0bFX/lEUkKHrP3M?=
+ =?us-ascii?Q?m0pOjdW1urnf8d3zy4dZf+PRhujsOyWDQxRx5vNquchw3607S0IJbXhKAvxn?=
+ =?us-ascii?Q?WmmMf+BscZ3YP6Zcwf5a0UpEc9dAmPsaLWMuu9ybVJC0mxKWODLiUfI4g0Zp?=
+ =?us-ascii?Q?Wwi6R6MlPwgkSKSp2CvUKk/WV9eadCOA+vyYa6C/U0sLJPxJyKViEVEMkD7P?=
+ =?us-ascii?Q?kdgQXbWQ1n1P3KP/PB/TRu6g2U+yi/k7GOPlFg+5FogSjb5jINmz1yqnP6hA?=
+ =?us-ascii?Q?6mZJyyW/9hxOpxijAP8hAnbA5biNAIfNIoEb6gTGLz35pNFeypwmXlxruutk?=
+ =?us-ascii?Q?4sHORWgTQ1PcIMNI3h/jAqcaUz8WXZ5ZYiEpzRobyKDTJt/8H8heYuwr6hfC?=
+ =?us-ascii?Q?Tg8CAjlflQJqNbal/tZSxfpECErISvdM77Z0FgJ2ajFzlZgqF9Z439bDavQv?=
+ =?us-ascii?Q?XgIZKAm+iGs+i0sSbbhP686YaoIiPRm28n7IqSBqOHQ3Dqfdq6ymeMhtB+Rf?=
+ =?us-ascii?Q?pdDsTqWyIcloVPMXRkr1hQVRGp2nwBb3izALJK92lwJ+xDEX6mlrwnCJpExo?=
+ =?us-ascii?Q?HGVQHHweYCK8vuA68axlaMv/gOBCr90oAVoB11Iqq0sB0JidfVa8JZOhSH59?=
+ =?us-ascii?Q?72Q8iGaffryuHaB9JpI7xtDSa6YeuOAZxOl62BHeqV1jxl+mkNJUrWKuLGlf?=
+ =?us-ascii?Q?PYgmosTOoOvjnjs3py6O/kVAhTdktVIw33zwnRMNM/nfqanZcOO7k2z4gNDn?=
+ =?us-ascii?Q?KF0AX9A2q8Y8elvsEIoW01stmIQy01PAhzZmEl/KvndVdgQnSO14XQ2aHg73?=
+ =?us-ascii?Q?hHlxu5WyrtLzQbobWXiwulOK8gxpuntPKyjTPGkhK5LeWTgKWr0lIfs4/3hb?=
+ =?us-ascii?Q?IRL4T07i+S6qR8WWli6XJq4fl6/yruxSFNpgRcjykRDMxG32eG1cpXwCHCIv?=
+ =?us-ascii?Q?37CAYWJFPyIzCLpiB0Jl40tp3WCWqOoDRjQhlrgNm1EFSGIXiu433mAODVTq?=
+ =?us-ascii?Q?MFPBcBLYvnpATsbCZCRdlXtBOLhN+WHpH+kai4V0P8A+2AGQVZXSzeYFi24/?=
+ =?us-ascii?Q?pFdWji6GbZXFOBNKdg85qACpkONN1GOHZYQ+HD6hXPkRJqfMKGBRXBPZhLoo?=
+ =?us-ascii?Q?ekStOfNmK+bXMtrinQ9GmxAO1kMBV4bx/GpgmV1xTPiybZfGMYPwpP+OI1T9?=
+ =?us-ascii?Q?EeewIGTTCzFetz3xq9dHA0EO2GtMmy0sv3sGBm9zJ5/QkEhlSmw1AGpzirIo?=
+ =?us-ascii?Q?6IZ2caTsliC0JqV2ccjV2VUQNvz5NZ5vuf6SFFOQleo1gisWHH7hTJcBAF7G?=
+ =?us-ascii?Q?dAP16BQT8VLt6lRx3ZBFrC/CTohYoBgATrV4PeKB/kACmZu7Hpqe0mIEJA+a?=
+ =?us-ascii?Q?gT4tyYLeSKmBTX+um21a+knsmthW1MywgZ7kcJSpxFSsYSxpwLS8cPsI6jcD?=
+ =?us-ascii?Q?Hc6PfV6IVr0hGXpTE+sYNUlHkJwASsXjdK7wBQ7hhpn3D5xENKp4RbiA/1d7?=
+ =?us-ascii?Q?wyy9OmzOk44p+32Q8o1eovl8pdtmarAXTZzfrq/V3pt+HAVTchrope204PgQ?=
+ =?us-ascii?Q?UpU8qU/gIg=3D=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62783a54-9b6b-4b34-d49b-08d9b606bfc8
+X-MS-Exchange-CrossTenant-AuthSource: DM5PR0102MB3590.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2021 02:43:55.7302
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lZFGC/VZUv9seS6d0Mwx3k4rIEKMDSrNSbmiFhi/s8Wc83BwR8vQueLure4wk1cyZiK+tRYXwmx1RdIWHVkADViP/4Yif+cump1DldthIj6qnap8Opx7Rg1CsGjfw1eT
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR01MB2412
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Kirill,
+Arm Generic Diagnostic Dump and Reset device enables a maintainer to
+request OS to perform a diagnostic dump and reset a system via SDEI
+event or an interrupt. This patchset adds support for the SDEI path.
 
-On Fri, Dec 03 2021 at 01:21, Kirill A. Shutemov wrote:
-> On Thu, Nov 25, 2021 at 01:40:24AM +0100, Thomas Gleixner wrote:
->> Kuppuswamy,
->> Either that or you provide patches with arguments which are based on
->> proper analysis and not on 'appears to' observations.
->
-> I think the right solution to the WBINVD would be to add a #VE handler
-> that does nothing. We don't have a reasonable way to handle it from within
-> the guest. We can call the VMM in hope that it would handle it, but VMM is
-> untrusted and it can ignore the request.
->
-> Dave suggested that we need to do code audit to make sure that there's no
-> user inside TDX guest environment that relies on WBINVD to work correctly.
->
-> Below is full call tree of WBINVD. It is substantially larger than I
-> anticipated from initial grep.
->
-> Conclusions:
->
->   - Most of callers are in ACPI code on changing S-states. Ignoring cache
->     flush for S-state change on virtual machine should be safe.
->
->   - The only WBINVD I was able to trigger is on poweroff from ACPI code.
->     Reboot also should trigger it, but for some reason I don't see it.
->
->   - Few caller in CPU offline code. TDX does not allowed to offline CPU as
->     we cannot bring it back -- we don't have SIPI. And even if offline
->     works for vCPU it should be safe to ignore WBINVD there.
->
->   - NVDIMMs are not supported inside TDX. If it will change we would need
->     to deal with cache flushing for this case. Hopefully, we would be able
->     to avoid WBINVD.
->
->   - Cache QoS and MTRR use WBINVD. They are disabled in TDX, but it is
->     controlled by VMM if the feature is advertised. We would need to
->     filter CPUID/MSRs to make sure VMM would not mess with them.
->
-> Is it good enough justification for do-nothing #VE WBINVD handler?
+I do have a patch to enable the interrupt path as well but I'm holding
+it back since AGDI table is missing interrupt configuration fields
+(trigger type etc.).
 
-first of all thank you very much for this very profound analysis.
+The recently published specification is available at
+https://developer.arm.com/documentation/den0093/latest
 
-This is really what I was asking for and you probably went even a step
-deeper than that. Very appreciated.
+The patchset was tested on Ampere Altra/Mt. Jade.
 
-What we should do instead of doing a wholesale let's ignore WBINVD is to
-have a separate function/macro:
+The patchset applies on top of
+  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm master
+  git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
 
- ACPI_FLUSH_CPU_CACHE_PHYS()
 
-and invoke that from the functions which are considered to be safe.
+What's the process with new ACPI tables? Should I submit a patch to
+ACPICA at first or is this fine?
 
-That would default to ACPI_FLUSH_CPU_CACHE() for other architecures
-obviously.
 
-Then you can rightfully do:
+Ilkka Koskinen (2):
+  ACPI: AGDI: Add AGDI tables to drivers/acpi
+  ACPI: AGDI: Add driver for Arm Generic Diagnostic Dump and Reset
+    device
 
-#define ACPI_FLUSH_CPU_CACHE_PHYS()     \
-        if (!cpu_feature_enabled(XXX))	\
-        	wbinvd();               \              
-                
-where $XXX might be FEATURE_TDX_GUEST for paranoia sake and then
-extended to X86_FEATURE_HYPERVISOR if everyone agrees.
+ drivers/acpi/arm64/Kconfig  |   8 +++
+ drivers/acpi/arm64/Makefile |   1 +
+ drivers/acpi/arm64/agdi.c   | 133 ++++++++++++++++++++++++++++++++++++
+ drivers/acpi/tables.c       |   2 +-
+ include/acpi/actbl2.h       |  20 ++++++
+ 5 files changed, 163 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/acpi/arm64/agdi.c
 
-Then you have the #VE handler which just acts on any other wbinvd
-invocation via warn, panic, whatever, no?
-
-Thanks,
-
-        tglx
+-- 
+2.17.1
 
