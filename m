@@ -2,140 +2,225 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67757467F3E
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Dec 2021 22:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9B2B4680EA
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Dec 2021 00:49:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383220AbhLCV1o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Dec 2021 16:27:44 -0500
-Received: from mail-mw2nam10on2084.outbound.protection.outlook.com ([40.107.94.84]:14113
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1383199AbhLCV1l (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 3 Dec 2021 16:27:41 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y5/y/7c0jNzW9MSlOIsDbSivc0XwROuvjOIf4GbYnHloDWRIjPYb1CxVNh76mtxAZTryzuUueRpFrq5JNWOZv5oPYeS3cwPOE+G7ycfHRfQSGyEZ56KmuU4jt/4kFn7e8DI+vynQwyB7DJXH1V2d5FsMm8rSqMAE92Mp2Rs7lWgjlDZ8OxpnNF1uqNOXFP0vbNJujpOiiit3+Y5Ws07BzdwYQd2jc3rlbp1Rf6zatDik9XL19m4LcoDEj/4uC5+jPGNsMO04hS/YFCp2ygmvQywCiitXrmiWwrShyghnopGJmL933K8ySgHtXjkEJh2o3SuvZ92JOX6/+nNY5HyBog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=my1jnLT6TU7SwBAdjPq4jOjjxnFQpEyXvE7/nxVtu3M=;
- b=PkJJe24FL65OMLnum/FHyJ1oMm2dT0D7tJgjLiC1WJ+HVtAC0B68vZYL6ubFGLGCyA3SiKLxhMA9OqNiUYd+LYtsLiqrUjBoBch2NTEl+jLUBQWtH/ATnq4xz7Um/A159PgB+dOBhdjuNBYNFxT5uQhoGX1HcdNY8jdgTxyPX2DxgiNANZMMLcGZOgdDtJt7ggBsnyEIv3u3Wz4s2wFXcSeizIyuSyYc87rAi/r5f1F542xyxKWv9RkZqltwkSYcRCl9TrEqH5eGxChJkF+lxTD1FjflRQEKwAVhXFlhnGAfplIPIUB8ViUzw3t4YrCnIxc3WlFYftfRqJo1lkEjXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.80.198) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=xilinx.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=my1jnLT6TU7SwBAdjPq4jOjjxnFQpEyXvE7/nxVtu3M=;
- b=H1307kaGvPHrmW+CC1NXavjbhhoGR39dUmKUR6RrdhXm1JrukNzZBiAUMiLq6vkeTNblB0WG83W4gRZF4nAEdAjW81V8XvQZV66VSusoeoJjW8KHfF//fiLrCwRATyqGvLZHlULjPbaylvQc3VHxml7vsXTg0IvO36WJbR9/+uE=
-Received: from SN7PR04CA0032.namprd04.prod.outlook.com (2603:10b6:806:120::7)
- by DM6PR02MB5964.namprd02.prod.outlook.com (2603:10b6:5:157::32) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.15; Fri, 3 Dec
- 2021 21:24:15 +0000
-Received: from SN1NAM02FT0034.eop-nam02.prod.protection.outlook.com
- (2603:10b6:806:120:cafe::fc) by SN7PR04CA0032.outlook.office365.com
- (2603:10b6:806:120::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.11 via Frontend
- Transport; Fri, 3 Dec 2021 21:24:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.80.198)
- smtp.mailfrom=xilinx.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.80.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.80.198; helo=xir-pvapexch01.xlnx.xilinx.com;
-Received: from xir-pvapexch01.xlnx.xilinx.com (149.199.80.198) by
- SN1NAM02FT0034.mail.protection.outlook.com (10.97.5.90) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4755.13 via Frontend Transport; Fri, 3 Dec 2021 21:24:14 +0000
-Received: from xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) by
- xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.14; Fri, 3 Dec 2021 21:24:10 +0000
-Received: from smtp.xilinx.com (172.21.105.197) by
- xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) with Microsoft SMTP Server id
- 15.1.2176.14 via Frontend Transport; Fri, 3 Dec 2021 21:24:09 +0000
-Envelope-to: anand.ashok.dumbre@xilinx.com,
- git@xilinx.com,
- michals@xilinx.com,
- linux-kernel@vger.kernel.org,
- jic23@kernel.org,
- lars@metafoo.de,
- linux-iio@vger.kernel.org,
- gregkh@linuxfoundation.org,
- rafael@kernel.org,
- linux-acpi@vger.kernel.org,
- heikki.krogerus@linux.intel.com
-Received: from [10.71.188.1] (port=14741 helo=xiranandash40.xilinx.com)
-        by smtp.xilinx.com with esmtp (Exim 4.90)
-        (envelope-from <anand.ashok.dumbre@xilinx.com>)
-        id 1mtG2C-0005F8-CD; Fri, 03 Dec 2021 21:24:00 +0000
-From:   Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-To:     <linux-kernel@vger.kernel.org>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <linux-iio@vger.kernel.org>, <git@xilinx.com>,
-        <michals@xilinx.com>, <gregkh@linuxfoundation.org>,
-        <rafael@kernel.org>, <linux-acpi@vger.kernel.org>,
-        <heikki.krogerus@linux.intel.com>
-CC:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Subject: [PATCH v12 5/5] MAINTAINERS: Add maintainer for xilinx-ams
-Date:   Fri, 3 Dec 2021 21:23:58 +0000
-Message-ID: <20211203212358.31444-6-anand.ashok.dumbre@xilinx.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211203212358.31444-1-anand.ashok.dumbre@xilinx.com>
-References: <20211203212358.31444-1-anand.ashok.dumbre@xilinx.com>
+        id S1354313AbhLCXwi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Dec 2021 18:52:38 -0500
+Received: from mga02.intel.com ([134.134.136.20]:34164 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1354258AbhLCXwh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 3 Dec 2021 18:52:37 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10187"; a="224326913"
+X-IronPort-AV: E=Sophos;i="5.87,284,1631602800"; 
+   d="scan'208";a="224326913"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2021 15:49:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,284,1631602800"; 
+   d="scan'208";a="501371384"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 03 Dec 2021 15:49:09 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+        id 21A1C109; Sat,  4 Dec 2021 01:49:15 +0200 (EET)
+Date:   Sat, 4 Dec 2021 02:49:15 +0300
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        "H . Peter Anvin" <hpa@zytor.com>, Tony Luck <tony.luck@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2] x86: Skip WBINVD instruction for VM guest
+Message-ID: <20211203234915.jw6kdd2qnfrionch@black.fi.intel.com>
+References: <YZPbQVwWOJCrAH78@zn.tnic>
+ <20211119040330.4013045-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <87pmqpjcef.ffs@tglx>
+ <20211202222109.pcsgm2jska3obvmx@black.fi.intel.com>
+ <87lf126010.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8782428e-5c48-4c13-c8b4-08d9b6a341fa
-X-MS-TrafficTypeDiagnostic: DM6PR02MB5964:
-X-Microsoft-Antispam-PRVS: <DM6PR02MB596423C0C7A67C54E33BAF0EA96A9@DM6PR02MB5964.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:1079;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wlkeh6e50w7hYDsYb4Q8+ncoS0HZyu4hiYT4nnPehott3d0gXnuJGlAIsWc66YoMuytRgmolNOl34jt7i/amkXn73nKgBO7eptuEt9gFLJyCGgsj3QcrqoOB7fZr9uqcJlUNT7F7sEB6Odhkt3nt++I4DyVlfv4PmS+xmE+ClxU4EQYH59UN/XiHhN2SAyjfUNqgUFPvYdLurQkbiOpsvJAsjF6GbeqEEwRA0Q0hqTcYAYspuZ6hauenKBivdEzdmLsq787ElO8SPYRwdmoBHs5uPyLfewAuEhe5MPkxdaVrCOaywPmR+b/hgS4M8azhvj95P5KN6opTdWmH7QLA+/YDb2UsyGokhsraeyiCqxRU7yeC2pNqwuFstebE8AudPTAEwZDFHJN3+wGE/FQTIyvz8ibJi7JuiJ2ayzus+RFiM3VkeWLFqJ4BDlF4Bds/6/L3BaiAPS61UFflUFeQ+3bWvTowXYnd2hho6CijJiXA79zjCES5R6a432dh6ER0z9rkQTNChAHOxp2Cw9k43UFSBKkGl/Kuwggfac6RGgxCj1zWiUxh9XjCHd4QwgvIKqDdQfLTtPasuBRX7OdvWUCjj/J3gjcI34cAB8msu8qIIPbnRP39lJKj0DtcdrLfsLVekijUQC9e3mZylb0K0aoyOmuWaiUbOfjxcIm1EV11eCS3adFh7Z1R3rOPYuyvDcn1PBGGgnSoHCfpGY4l2Q8Z1+AHp7nHNzSd/sWS4wjW2V6WgpUf2ao26Ys/2GG4HKrtUX/KL9a1/073HEPE8vbWlTebgZ9vUUgi0n7AgqA=
-X-Forefront-Antispam-Report: CIP:149.199.80.198;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:xir-pvapexch01.xlnx.xilinx.com;PTR:unknown-80-198.xilinx.com;CAT:NONE;SFS:(36840700001)(46966006)(70206006)(2616005)(70586007)(107886003)(47076005)(4744005)(186003)(26005)(2906002)(9786002)(8676002)(508600001)(103116003)(8936002)(336012)(426003)(82310400004)(7636003)(1076003)(356005)(110136005)(5660300002)(4326008)(316002)(36860700001)(921005)(36756003)(7696005)(102446001)(2101003)(83996005);DIR:OUT;SFP:1101;
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2021 21:24:14.9858
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8782428e-5c48-4c13-c8b4-08d9b6a341fa
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.80.198];Helo=[xir-pvapexch01.xlnx.xilinx.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1NAM02FT0034.eop-nam02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB5964
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87lf126010.ffs@tglx>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add maintaner entry for xilinx-ams driver.
+On Fri, Dec 03, 2021 at 12:48:43AM +0100, Thomas Gleixner wrote:
+> Kirill,
+> 
+> On Fri, Dec 03 2021 at 01:21, Kirill A. Shutemov wrote:
+> > On Thu, Nov 25, 2021 at 01:40:24AM +0100, Thomas Gleixner wrote:
+> >> Kuppuswamy,
+> >> Either that or you provide patches with arguments which are based on
+> >> proper analysis and not on 'appears to' observations.
+> >
+> > I think the right solution to the WBINVD would be to add a #VE handler
+> > that does nothing. We don't have a reasonable way to handle it from within
+> > the guest. We can call the VMM in hope that it would handle it, but VMM is
+> > untrusted and it can ignore the request.
+> >
+> > Dave suggested that we need to do code audit to make sure that there's no
+> > user inside TDX guest environment that relies on WBINVD to work correctly.
+> >
+> > Below is full call tree of WBINVD. It is substantially larger than I
+> > anticipated from initial grep.
+> >
+> > Conclusions:
+> >
+> >   - Most of callers are in ACPI code on changing S-states. Ignoring cache
+> >     flush for S-state change on virtual machine should be safe.
+> >
+> >   - The only WBINVD I was able to trigger is on poweroff from ACPI code.
+> >     Reboot also should trigger it, but for some reason I don't see it.
+> >
+> >   - Few caller in CPU offline code. TDX does not allowed to offline CPU as
+> >     we cannot bring it back -- we don't have SIPI. And even if offline
+> >     works for vCPU it should be safe to ignore WBINVD there.
+> >
+> >   - NVDIMMs are not supported inside TDX. If it will change we would need
+> >     to deal with cache flushing for this case. Hopefully, we would be able
+> >     to avoid WBINVD.
+> >
+> >   - Cache QoS and MTRR use WBINVD. They are disabled in TDX, but it is
+> >     controlled by VMM if the feature is advertised. We would need to
+> >     filter CPUID/MSRs to make sure VMM would not mess with them.
+> >
+> > Is it good enough justification for do-nothing #VE WBINVD handler?
+> 
+> first of all thank you very much for this very profound analysis.
+> 
+> This is really what I was asking for and you probably went even a step
+> deeper than that. Very appreciated.
+> 
+> What we should do instead of doing a wholesale let's ignore WBINVD is to
+> have a separate function/macro:
+> 
+>  ACPI_FLUSH_CPU_CACHE_PHYS()
+> 
+> and invoke that from the functions which are considered to be safe.
+> 
+> That would default to ACPI_FLUSH_CPU_CACHE() for other architecures
+> obviously.
+> 
+> Then you can rightfully do:
+> 
+> #define ACPI_FLUSH_CPU_CACHE_PHYS()     \
+>         if (!cpu_feature_enabled(XXX))	\
+>         	wbinvd();               \              
+>                 
+> where $XXX might be FEATURE_TDX_GUEST for paranoia sake and then
+> extended to X86_FEATURE_HYPERVISOR if everyone agrees.
+> 
+> Then you have the #VE handler which just acts on any other wbinvd
+> invocation via warn, panic, whatever, no?
 
-Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+I found another angle at the problem. According to the ACPI spec v6.4
+section 16.2 cache flushing is required on the way to S1, S2 and S3.
+And according to 8.2 it also is required on the way to C3.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7a2345ce8521..64d6a06b22f0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20862,6 +20862,13 @@ F:	fs/xfs/
- F:	include/uapi/linux/dqblk_xfs.h
- F:	include/uapi/linux/fsmap.h
+TDX doesn't support these S- and C-states. TDX is only supports S0 and S5.
+
+Adjusting code to match the spec would make TDX work automagically.
+
+Any opinions on the patch below?
+
+I didn't touch ACPI_FLUSH_CPU_CACHE() users in cpufreq/longhaul.c because
+it might be outside of ACPI spec, I donno.
+
+diff --git a/drivers/acpi/acpica/hwesleep.c b/drivers/acpi/acpica/hwesleep.c
+index 808fdf54aeeb..b004a72a426e 100644
+--- a/drivers/acpi/acpica/hwesleep.c
++++ b/drivers/acpi/acpica/hwesleep.c
+@@ -104,7 +104,8 @@ acpi_status acpi_hw_extended_sleep(u8 sleep_state)
  
-+XILINX AMS DRIVER
-+M:	Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
-+F:	drivers/iio/adc/xilinx-ams.c
+ 	/* Flush caches, as per ACPI specification */
+ 
+-	ACPI_FLUSH_CPU_CACHE();
++	if (sleep_state >= ACPI_STATE_S1 && sleep_state <= ACPI_STATE_S3)
++		ACPI_FLUSH_CPU_CACHE();
+ 
+ 	status = acpi_os_enter_sleep(sleep_state, sleep_control, 0);
+ 	if (status == AE_CTRL_TERMINATE) {
+diff --git a/drivers/acpi/acpica/hwsleep.c b/drivers/acpi/acpica/hwsleep.c
+index 34a3825f25d3..bfcd66efeb48 100644
+--- a/drivers/acpi/acpica/hwsleep.c
++++ b/drivers/acpi/acpica/hwsleep.c
+@@ -110,7 +110,8 @@ acpi_status acpi_hw_legacy_sleep(u8 sleep_state)
+ 
+ 	/* Flush caches, as per ACPI specification */
+ 
+-	ACPI_FLUSH_CPU_CACHE();
++	if (sleep_state >= ACPI_STATE_S1 && sleep_state <= ACPI_STATE_S3)
++		ACPI_FLUSH_CPU_CACHE();
+ 
+ 	status = acpi_os_enter_sleep(sleep_state, pm1a_control, pm1b_control);
+ 	if (status == AE_CTRL_TERMINATE) {
+diff --git a/drivers/acpi/acpica/hwxfsleep.c b/drivers/acpi/acpica/hwxfsleep.c
+index e4cde23a2906..ba77598ee43e 100644
+--- a/drivers/acpi/acpica/hwxfsleep.c
++++ b/drivers/acpi/acpica/hwxfsleep.c
+@@ -162,8 +162,6 @@ acpi_status acpi_enter_sleep_state_s4bios(void)
+ 		return_ACPI_STATUS(status);
+ 	}
+ 
+-	ACPI_FLUSH_CPU_CACHE();
+-
+ 	status = acpi_hw_write_port(acpi_gbl_FADT.smi_command,
+ 				    (u32)acpi_gbl_FADT.s4_bios_request, 8);
+ 	if (ACPI_FAILURE(status)) {
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 76ef1bcc8848..01495aca850e 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -567,7 +567,8 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
+ {
+ 	struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
+ 
+-	ACPI_FLUSH_CPU_CACHE();
++	if (cx->type == ACPI_STATE_C3)
++		ACPI_FLUSH_CPU_CACHE();
+ 
+ 	while (1) {
+ 
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index eaa47753b758..a81d08b762c2 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -73,7 +73,9 @@ static int acpi_sleep_prepare(u32 acpi_state)
+ 		acpi_set_waking_vector(acpi_wakeup_address);
+ 
+ 	}
+-	ACPI_FLUSH_CPU_CACHE();
 +
- XILINX AXI ETHERNET DRIVER
- M:	Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>
- S:	Maintained
++	if (acpi_state >= ACPI_STATE_S1 && acpi_state <= ACPI_STATE_S3)
++		ACPI_FLUSH_CPU_CACHE();
+ #endif
+ 	pr_info("Preparing to enter system sleep state S%d\n", acpi_state);
+ 	acpi_enable_wakeup_devices(acpi_state);
+@@ -566,7 +568,8 @@ static int acpi_suspend_enter(suspend_state_t pm_state)
+ 	u32 acpi_state = acpi_target_sleep_state;
+ 	int error;
+ 
+-	ACPI_FLUSH_CPU_CACHE();
++	if (acpi_state >= ACPI_STATE_S1 && acpi_state <= ACPI_STATE_S3)
++		ACPI_FLUSH_CPU_CACHE();
+ 
+ 	trace_suspend_resume(TPS("acpi_suspend"), acpi_state, true);
+ 	switch (acpi_state) {
+@@ -903,8 +906,6 @@ static int acpi_hibernation_enter(void)
+ {
+ 	acpi_status status = AE_OK;
+ 
+-	ACPI_FLUSH_CPU_CACHE();
+-
+ 	/* This shouldn't return.  If it returns, we have a problem */
+ 	status = acpi_enter_sleep_state(ACPI_STATE_S4);
+ 	/* Reprogram control registers */
 -- 
-2.17.1
-
+ Kirill A. Shutemov
