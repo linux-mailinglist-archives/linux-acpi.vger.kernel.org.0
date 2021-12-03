@@ -2,434 +2,292 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F0CA467B8C
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Dec 2021 17:37:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF3F1467D2C
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Dec 2021 19:21:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382078AbhLCQkz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 3 Dec 2021 11:40:55 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:42014 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382075AbhLCQky (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Dec 2021 11:40:54 -0500
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 3.0.1)
- id af30dad34f8a4c6f; Fri, 3 Dec 2021 17:37:29 +0100
-Received: from kreacher.localnet (unknown [213.134.175.202])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id ABD6766AD69;
-        Fri,  3 Dec 2021 17:37:28 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 2/2] ACPI: Use acpi_fetch_acpi_dev() instead of acpi_bus_get_device()
-Date:   Fri, 03 Dec 2021 17:37:10 +0100
-Message-ID: <10019174.nUPlyArG6x@kreacher>
-In-Reply-To: <2828957.e9J7NaK4W3@kreacher>
-References: <2828957.e9J7NaK4W3@kreacher>
+        id S1382559AbhLCSYe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 3 Dec 2021 13:24:34 -0500
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:40810 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1382531AbhLCSYe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 3 Dec 2021 13:24:34 -0500
+Received: by mail-ot1-f54.google.com with SMTP id v15-20020a9d604f000000b0056cdb373b82so4374958otj.7;
+        Fri, 03 Dec 2021 10:21:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8aR/ePfeH8SZCsR0u6Fq5Cd4+fUSZxl31ja5HBnpdJk=;
+        b=SbAz/yjtAQPKhDVYKjgo1eAEwlUNRq4fvIuQz836veR5b/LQkow5Gsu78iyqqjILou
+         xaSsY3MriF1s6t9Rw33O58M6Hm4cRTg35BUiLL5tUoJGSYSIpoCBBolpSVNRI53YEI7u
+         WfEM3R4Wwn28D4FYP589P1gW3KwgwkSmXJ6Kq4hPoWPnXVD+Gd8IhAo68tcyotk5cXq6
+         Ohne60KQ9UDIHbGxP2FrgcR2wdtH8LLr2Jpk9k4JZOMQ42qyg2HQcNAlZpaTXTzEti5O
+         BbmLIF+QrbGydUjhoLUOMqT1300laYw3OlnSnoIChsfmQtHDPHDKJy/ej+zA/GxksW9x
+         bU7Q==
+X-Gm-Message-State: AOAM533EAknQ6QY6NW4M4VFBViAsyVIXIgAywVpN+ITfTS+ySTbUmDaq
+        eLDs/BQaDXyg+WvBBe9TdFMZ9z5dYHnKIINzk8g=
+X-Google-Smtp-Source: ABdhPJzy9knuAYlk6AtNOv+Y+i94nixQ52AbrpYzyGiTk7CSQSduZwCCOkNUuECq+ySBG7+w+dLbWxLm04YW6W4kiiY=
+X-Received: by 2002:a05:6830:348f:: with SMTP id c15mr18082042otu.254.1638555669383;
+ Fri, 03 Dec 2021 10:21:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <cover.1637505679.git.yu.c.chen@intel.com> <6774dd4cce68a68b1ac54df3dfd295bb4b04bf2b.1637505679.git.yu.c.chen@intel.com>
+In-Reply-To: <6774dd4cce68a68b1ac54df3dfd295bb4b04bf2b.1637505679.git.yu.c.chen@intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 3 Dec 2021 19:20:58 +0100
+Message-ID: <CAJZ5v0j2m8EOVM2EDWtff3tZ9V0eaw3PhA8-bXR-kdMyCfHyHg@mail.gmail.com>
+Subject: Re: [PATCH v11 1/4] efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
+ and corresponding structures
+To:     Chen Yu <yu.c.chen@intel.com>, Ard Biesheuvel <ardb@kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.175.202
-X-CLIENT-HOSTNAME: 213.134.175.202
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrieejgdelgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdejlefghfeiudektdelkeekvddugfeghffggeejgfeukeejleevgffgvdeluddtnecukfhppedvudefrddufeegrddujeehrddvtddvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudejhedrvddtvddphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohephhguvghgohgvuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohep
- lhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrkhgrrhhirdgrihhluhhssehlihhnuhigrdhinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Sun, Nov 21, 2021 at 4:17 PM Chen Yu <yu.c.chen@intel.com> wrote:
+>
+> Platform Firmware Runtime Update image starts with UEFI headers, and the
+> headers are defined in UEFI specification, but some of them have not been
+> defined in the kernel yet.
+>
+> For example, the header layout of a capsule file looks like this:
+>
+> EFI_CAPSULE_HEADER
+> EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER
+> EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER
+> EFI_FIRMWARE_IMAGE_AUTHENTICATION
+>
+> These structures would be used by the Platform Firmware Runtime Update
+> driver to parse the format of capsule file to verify if the corresponding
+> version number is valid. In this way, if the user provides an invalid
+> capsule image, the kernel could be used as a guard to reject it, without
+> switching to the Management Mode (which might be costly).
+>
+> EFI_CAPSULE_HEADER has been defined in the kernel, but the other
+> structures have not been defined yet, so do that. Besides,
+> EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and
+> EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER are required to be packed
+> in the uefi specification. For this reason, use the __packed attribute
+> to indicate to the compiler that the entire structure can appear
+> misaligned in memory (as suggested by Ard) in case one of them follows
+> the other directly in a capsule header.
+>
+> Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> ---
+> v11:Add explanation on why version check is introduced
+>     in kernel rather than letting Management Mode to do it.
+>     (Rafael J. Wysocki)
+>     Revise the commit log to better describe the pack attribute.
+>     (Rafael J. Wysocki)
+>     Refine the comment for hw_ins and capsule_support.
+>     (Rafael J. Wysocki)
+> v10:Remove the explicit assignment of the last item of enum.
+>     (Andy Shevchenko)
+> v9: Use GUID_INIT() instead of guid_parse() during boot up.
+>     (Andy Shevchenko)
+>     Drop uuid, code_uuid, drv_uuid in struct pfru_device as they
+>     are not needed. (Andy Shevchenko)
+>     Drop type casting from void * in valid_version().
+>     (Andy Shevchenko)
+>     Use kfree() instead of ACPI_FREE() in non-ACPICA usage.
+>     (Andy Shevchenko)
+>     Use sizeof(rev) instead of sizeof(u32) in copy_from_user().
+>     (Andy Shevchenko)
+>     Generate physical address from MSB part to LSB.
+>     (Andy Shevchenko)
+>     Use devm_add_action_or_reset() to add ida release into dev resource
+>     management. (Andy Shevchenko)
+>     Use devm_kasprintf() instead of kasprintf() to format the
+>     pfru_dev name.(Andy Shevchenko)
+>     Remove redundant 0 in acpi_pfru_ids. (Andy Shevchenko)
+>     Adjust the order of included headers in pfru.h.
+>     (Andy Shevchenko)
+>     Replace PFRU_MAGIC with PFRU_MAGIC_FOR_IOCTL in uapi file.
+>     (Andy Shevchenko)
+> v8: Remove the variable-length array in struct pfru_update_cap_info, and
+>     copy the non-variable-length struct pfru_update_cap_info to userspace
+>     directly. (Greg Kroah-Hartman)
+>     Change the type of rev_id from int to u32, because this data will
+>     be copied between kernel and userspace. (Greg Kroah-Hartman)
+>     Add a prefix for dev in struct pfru_device to parent_dev, so as
+>     to indicate that this filed is the parent of the created miscdev.
+>     (Greg Kroah-Hartman)
+>     Use blank lines between different macro sections. (Greg Kroah-Hartman)
+>     Illusatrate the possible errno for each ioctl interface.
+>     (Greg Kroah-Hartman)
+>     Remove pfru_valid_revid() from uapi header to avoid poluting the global
+>     namespace.(Greg Kroah-Hartman)
+>     Assign the value to the enum type explicitly.(Greg Kroah-Hartman)
+>     Change the guid_t to efi_guid_t when parsing image header in get_image_type()
+>     (Greg Kroah-Hartman)
+>     Remove the void * to other type casting in valid_version(). (Andy Shevchenko)
+>     Combined the assignment of variables with definitions. (Andy Shevchenko)
+>     Define this magic for revision ID. (Andy Shevchenko)
+>     Make the labeling consistent for error handling. (Andy Shevchenko)
+>     Replace the UUID_SIZE in uapi with 16 directly. (Andy Shevchenko)
+>     Add blank line between generic include header and uapi header.
+>     (Andy Shevchenko)
+>     Arrange the order between devm_kzalloc() and normal allocation in
+>     acpi_pfru_probe() that, the former should always be ahead of the
+>     latter. (Andy Shevchenko)
+>     Move the UUID from uapi header to the c file. (Andy Shevchenko)
+> v7: Use ida_alloc() to allocate a ID, and release the ID when
+>     device is removed. (Greg Kroah-Hartman)
+>     Check the _DSM method at early stage, before allocate or parse
+>     anything in acpi_pfru_probe(). (Greg Kroah-Hartman)
+>     Set the parent of the misc device. (Greg Kroah-Hartman)
+>     Use module_platform_driver() instead of platform_driver_register()
+>     in module_init(). Separate pfru driver and pfru_telemetry driver
+>     to two files. (Greg Kroah-Hartman)
+> v6: Use Link: tag to add the specification download address.
+>     (Andy Shevchenko)
+>     Remove linux/uuid.h and use raw buffers to contain uuid.
+>     (Andy Shevchenko)
+>     Drop comma for each terminator entry in the enum structure.
+>     (Andy Shevchenko)
+>     Remove redundant 'else' in get_image_type().
+>     (Andy Shevchenko)
+>     Directly return results from the switch cases in adjust_efi_size()
+>     and pfru_ioctl().(Andy Shevchenko)
+>     Keep comment style consistent by removing the period for
+>     one line comment.
+>     (Andy Shevchenko)
+>     Remove devm_kfree() if .probe() failed.
+>     (Andy Shevchenko)
+> v5: Remove Documentation/ABI/pfru, and move the content to kernel doc
+>     in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
+>     Shrink the range of ioctl numbers declared in
+>     Documentation/userspace-api/ioctl/ioctl-number.rst
+>     from 16 to 8. (Greg Kroah-Hartman)
+>     Change global variable struct pfru_device *pfru_dev to
+>     per ACPI device. (Greg Kroah-Hartman)
+>     Unregister the misc device in acpi_pfru_remove().
+>     (Greg Kroah-Hartman)
+>     Convert the kzalloc() to devm_kzalloc() in the driver so
+>     as to avoid freeing the memory. (Greg Kroah-Hartman)
+>     Fix the compile error by declaring the pfru_log_ioctl() as
+>     static. (kernel test robot LKP)
+>     Change to global variable misc_device to per ACPI device.
+>     (Greg Kroah-Hartman)
+> v4: Replace all pr_err() with dev_dbg() (Greg Kroah-Hartman,
+>     Rafael J. Wysocki)
+>     Returns ENOTTY rather than ENOIOCTLCMD if invalid ioctl command
+>     is provided. (Greg Kroah-Hartman)
+>     Remove compat ioctl. (Greg Kroah-Hartman)
+>     Rename /dev/pfru/pfru_update to /dev/acpi_pfru (Greg Kroah-Hartman)
+>     Simplify the check for element of the package in query_capability()
+>     (Rafael J. Wysocki)
+>     Remove the loop in query_capability(), query_buffer() and query
+>     the package elemenet directly. (Rafael J. Wysocki)
+>     Check the the number of elements in case the number of package
+>     elements is too small. (Rafael J. Wysocki)
+>     Doing the assignment as initialization in get_image_type().
+>     Meanwhile, returns the type or a negative error code in
+>     get_image_type(). (Rafael J. Wysocki)
+>     Put the comments inside the function. (Rafael J. Wysocki)
+>     Returns the size or a negative error code in adjust_efi_size()
+>     (Rafael J. Wysocki)
+>     Fix the return value from EFAULT to EINVAL if pfru_valid_revid()
+>     does not pass. (Rafael J. Wysocki)
+>     Change the write() to be the code injection/update, the read() to
+>     be telemetry retrieval and all of the rest to be ioctl()s under
+>     one special device file.(Rafael J. Wysocki)
+>     Putting empty code lines after an if () statement that is not
+>     followed by a block. (Rafael J. Wysocki)
+>     Remove "goto" tags to make the code more readable. (Rafael J. Wysocki)
+> v3: Use __u32 instead of int and __64 instead of unsigned long
+>     in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
+>     Rename the structure in uapi to start with a prefix pfru so as
+>     to avoid confusing in the global namespace. (Greg Kroah-Hartman)
+> v2: Add sanity check for duplicated instance of ACPI device.
+>     Update the driver to work with allocated pfru_device objects.
+>     (Mike Rapoport)
+>     For each switch case pair, get rid of the magic case numbers
+>     and add a default clause with the error handling.
+>     (Mike Rapoport)
+>     Move the obj->type checks outside the switch to reduce redundancy.
+>     (Mike Rapoport)
+>     Parse the code_inj_id and drv_update_id at driver initialization time
+>     to reduce the re-parsing at runtime.(Mike Rapoport)
+>     Explain in detail how the size needs to be adjusted when doing
+>     version check.(Mike Rapoport)
+>     Rename parse_update_result() to dump_update_result()(Mike Rapoport)
+>     Remove redundant return.(Mike Rapoport)
+>     Do not expose struct capsulate_buf_info to uapi, since it is
+>     not needed in userspace.(Mike Rapoport)
+> ---
 
-Modify the ACPI code to use acpi_fetch_acpi_dev() instead of
-acpi_bus_get_device() where applicable.
+OK, this is simple enough.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/acpi_video.c       |    5 ++---
- drivers/acpi/device_pm.c        |   31 +++++++++++++------------------
- drivers/acpi/dock.c             |    3 +--
- drivers/acpi/pci_link.c         |   12 ++++--------
- drivers/acpi/pci_root.c         |   10 ++++------
- drivers/acpi/power.c            |    7 +++----
- drivers/acpi/processor_driver.c |   10 +++++++---
- drivers/acpi/processor_idle.c   |    2 +-
- drivers/acpi/property.c         |   11 +++++------
- drivers/acpi/resource.c         |    4 ++--
- drivers/acpi/thermal.c          |    9 ++++-----
- drivers/acpi/video_detect.c     |    6 ++----
- drivers/acpi/x86/s2idle.c       |    4 ++--
- 13 files changed, 50 insertions(+), 64 deletions(-)
+Ard, any concerns?
 
-Index: linux-pm/drivers/acpi/acpi_video.c
-===================================================================
---- linux-pm.orig/drivers/acpi/acpi_video.c
-+++ linux-pm/drivers/acpi/acpi_video.c
-@@ -1733,13 +1733,12 @@ acpi_video_bus_match(acpi_handle handle,
- {
- 	struct acpi_device *device = context;
- 	struct acpi_device *sibling;
--	int result;
- 
- 	if (handle == device->handle)
- 		return AE_CTRL_TERMINATE;
- 
--	result = acpi_bus_get_device(handle, &sibling);
--	if (result)
-+	sibling = acpi_fetch_acpi_dev(handle);
-+	if (!sibling)
- 		return AE_OK;
- 
- 	if (!strcmp(acpi_device_name(sibling), ACPI_VIDEO_BUS_NAME))
-Index: linux-pm/drivers/acpi/device_pm.c
-===================================================================
---- linux-pm.orig/drivers/acpi/device_pm.c
-+++ linux-pm/drivers/acpi/device_pm.c
-@@ -285,14 +285,12 @@ EXPORT_SYMBOL(acpi_device_set_power);
- 
- int acpi_bus_set_power(acpi_handle handle, int state)
- {
--	struct acpi_device *device;
--	int result;
-+	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 
--	result = acpi_bus_get_device(handle, &device);
--	if (result)
--		return result;
-+	if (device)
-+		return acpi_device_set_power(device, state);
- 
--	return acpi_device_set_power(device, state);
-+	return -ENODEV;
- }
- EXPORT_SYMBOL(acpi_bus_set_power);
- 
-@@ -410,21 +408,20 @@ EXPORT_SYMBOL_GPL(acpi_device_update_pow
- 
- int acpi_bus_update_power(acpi_handle handle, int *state_p)
- {
--	struct acpi_device *device;
--	int result;
-+	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 
--	result = acpi_bus_get_device(handle, &device);
--	return result ? result : acpi_device_update_power(device, state_p);
-+	if (device)
-+		return acpi_device_update_power(device, state_p);
-+
-+	return -ENODEV;
- }
- EXPORT_SYMBOL_GPL(acpi_bus_update_power);
- 
- bool acpi_bus_power_manageable(acpi_handle handle)
- {
--	struct acpi_device *device;
--	int result;
-+	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 
--	result = acpi_bus_get_device(handle, &device);
--	return result ? false : device->flags.power_manageable;
-+	return device && device->flags.power_manageable;
- }
- EXPORT_SYMBOL(acpi_bus_power_manageable);
- 
-@@ -543,11 +540,9 @@ acpi_status acpi_remove_pm_notifier(stru
- 
- bool acpi_bus_can_wakeup(acpi_handle handle)
- {
--	struct acpi_device *device;
--	int result;
-+	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 
--	result = acpi_bus_get_device(handle, &device);
--	return result ? false : device->wakeup.flags.valid;
-+	return device && device->wakeup.flags.valid;
- }
- EXPORT_SYMBOL(acpi_bus_can_wakeup);
- 
-Index: linux-pm/drivers/acpi/dock.c
-===================================================================
---- linux-pm.orig/drivers/acpi/dock.c
-+++ linux-pm/drivers/acpi/dock.c
-@@ -489,9 +489,8 @@ static ssize_t docked_show(struct device
- 			   struct device_attribute *attr, char *buf)
- {
- 	struct dock_station *dock_station = dev->platform_data;
--	struct acpi_device *adev = NULL;
-+	struct acpi_device *adev = acpi_fetch_acpi_dev(dock_station->handle);
- 
--	acpi_bus_get_device(dock_station->handle, &adev);
- 	return sysfs_emit(buf, "%u\n", acpi_device_enumerated(adev));
- }
- static DEVICE_ATTR_RO(docked);
-Index: linux-pm/drivers/acpi/pci_link.c
-===================================================================
---- linux-pm.orig/drivers/acpi/pci_link.c
-+++ linux-pm/drivers/acpi/pci_link.c
-@@ -606,12 +606,10 @@ static int acpi_pci_link_allocate(struct
- int acpi_pci_link_allocate_irq(acpi_handle handle, int index, int *triggering,
- 			       int *polarity, char **name)
- {
--	int result;
--	struct acpi_device *device;
-+	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 	struct acpi_pci_link *link;
- 
--	result = acpi_bus_get_device(handle, &device);
--	if (result) {
-+	if (!device) {
- 		acpi_handle_err(handle, "Invalid link device\n");
- 		return -1;
- 	}
-@@ -658,12 +656,10 @@ int acpi_pci_link_allocate_irq(acpi_hand
-  */
- int acpi_pci_link_free_irq(acpi_handle handle)
- {
--	struct acpi_device *device;
-+	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 	struct acpi_pci_link *link;
--	acpi_status result;
- 
--	result = acpi_bus_get_device(handle, &device);
--	if (result) {
-+	if (!device) {
- 		acpi_handle_err(handle, "Invalid link device\n");
- 		return -1;
- 	}
-Index: linux-pm/drivers/acpi/pci_root.c
-===================================================================
---- linux-pm.orig/drivers/acpi/pci_root.c
-+++ linux-pm/drivers/acpi/pci_root.c
-@@ -67,11 +67,10 @@ static struct acpi_scan_handler pci_root
-  */
- int acpi_is_root_bridge(acpi_handle handle)
- {
-+	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 	int ret;
--	struct acpi_device *device;
- 
--	ret = acpi_bus_get_device(handle, &device);
--	if (ret)
-+	if (!device)
- 		return 0;
- 
- 	ret = acpi_match_device_ids(device, root_device_ids);
-@@ -215,11 +214,10 @@ static acpi_status acpi_pci_query_osc(st
- 
- struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
- {
-+	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 	struct acpi_pci_root *root;
--	struct acpi_device *device;
- 
--	if (acpi_bus_get_device(handle, &device) ||
--	    acpi_match_device_ids(device, root_device_ids))
-+	if (!device || acpi_match_device_ids(device, root_device_ids))
- 		return NULL;
- 
- 	root = acpi_driver_data(device);
-Index: linux-pm/drivers/acpi/power.c
-===================================================================
---- linux-pm.orig/drivers/acpi/power.c
-+++ linux-pm/drivers/acpi/power.c
-@@ -81,9 +81,9 @@ struct acpi_power_resource *to_power_res
- 
- static struct acpi_power_resource *acpi_power_get_context(acpi_handle handle)
- {
--	struct acpi_device *device;
-+	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 
--	if (acpi_bus_get_device(handle, &device))
-+	if (!device)
- 		return NULL;
- 
- 	return to_power_resource(device);
-@@ -928,15 +928,14 @@ static void acpi_power_add_resource_to_l
- 
- struct acpi_device *acpi_add_power_resource(acpi_handle handle)
- {
-+	struct acpi_device *device = acpi_fetch_acpi_dev(handle);
- 	struct acpi_power_resource *resource;
--	struct acpi_device *device = NULL;
- 	union acpi_object acpi_object;
- 	struct acpi_buffer buffer = { sizeof(acpi_object), &acpi_object };
- 	acpi_status status;
- 	u8 state_dummy;
- 	int result;
- 
--	acpi_bus_get_device(handle, &device);
- 	if (device)
- 		return device;
- 
-Index: linux-pm/drivers/acpi/processor_driver.c
-===================================================================
---- linux-pm.orig/drivers/acpi/processor_driver.c
-+++ linux-pm/drivers/acpi/processor_driver.c
-@@ -98,8 +98,13 @@ static int acpi_soft_cpu_online(unsigned
- 	struct acpi_processor *pr = per_cpu(processors, cpu);
- 	struct acpi_device *device;
- 
--	if (!pr || acpi_bus_get_device(pr->handle, &device))
-+	if (!pr)
- 		return 0;
-+
-+	device = acpi_fetch_acpi_dev(pr->handle);
-+	if (!device)
-+		return 0;
-+
- 	/*
- 	 * CPU got physically hotplugged and onlined for the first time:
- 	 * Initialize missing things.
-@@ -125,9 +130,8 @@ static int acpi_soft_cpu_online(unsigned
- static int acpi_soft_cpu_dead(unsigned int cpu)
- {
- 	struct acpi_processor *pr = per_cpu(processors, cpu);
--	struct acpi_device *device;
- 
--	if (!pr || acpi_bus_get_device(pr->handle, &device))
-+	if (!pr || !acpi_fetch_acpi_dev(pr->handle))
- 		return 0;
- 
- 	acpi_processor_reevaluate_tstate(pr, true);
-Index: linux-pm/drivers/acpi/processor_idle.c
-===================================================================
---- linux-pm.orig/drivers/acpi/processor_idle.c
-+++ linux-pm/drivers/acpi/processor_idle.c
-@@ -1099,7 +1099,7 @@ static int acpi_processor_get_lpi_info(s
- 
- 	status = acpi_get_parent(handle, &pr_ahandle);
- 	while (ACPI_SUCCESS(status)) {
--		acpi_bus_get_device(pr_ahandle, &d);
-+		d = acpi_fetch_acpi_dev(pr_ahandle);
- 		handle = pr_ahandle;
- 
- 		if (strcmp(acpi_device_hid(d), ACPI_PROCESSOR_CONTAINER_HID))
-Index: linux-pm/drivers/acpi/property.c
-===================================================================
---- linux-pm.orig/drivers/acpi/property.c
-+++ linux-pm/drivers/acpi/property.c
-@@ -687,9 +687,9 @@ int __acpi_node_get_property_reference(c
- 		if (index)
- 			return -EINVAL;
- 
--		ret = acpi_bus_get_device(obj->reference.handle, &device);
--		if (ret)
--			return ret == -ENODEV ? -EINVAL : ret;
-+		device = acpi_fetch_acpi_dev(obj->reference.handle);
-+		if (!device)
-+			return -EINVAL;
- 
- 		args->fwnode = acpi_fwnode_handle(device);
- 		args->nargs = 0;
-@@ -719,9 +719,8 @@ int __acpi_node_get_property_reference(c
- 		if (element->type == ACPI_TYPE_LOCAL_REFERENCE) {
- 			struct fwnode_handle *ref_fwnode;
- 
--			ret = acpi_bus_get_device(element->reference.handle,
--						  &device);
--			if (ret)
-+			device = acpi_fetch_acpi_dev(element->reference.handle);
-+			if (!device)
- 				return -EINVAL;
- 
- 			nargs = 0;
-Index: linux-pm/drivers/acpi/resource.c
-===================================================================
---- linux-pm.orig/drivers/acpi/resource.c
-+++ linux-pm/drivers/acpi/resource.c
-@@ -791,9 +791,9 @@ static acpi_status acpi_res_consumer_cb(
- {
- 	struct resource *res = context;
- 	struct acpi_device **consumer = (struct acpi_device **) ret;
--	struct acpi_device *adev;
-+	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
- 
--	if (acpi_bus_get_device(handle, &adev))
-+	if (!adev)
- 		return AE_OK;
- 
- 	if (acpi_dev_consumes_res(adev, res)) {
-Index: linux-pm/drivers/acpi/thermal.c
-===================================================================
---- linux-pm.orig/drivers/acpi/thermal.c
-+++ linux-pm/drivers/acpi/thermal.c
-@@ -697,7 +697,6 @@ static int acpi_thermal_cooling_device_c
- 	struct acpi_device *device = cdev->devdata;
- 	struct acpi_thermal *tz = thermal->devdata;
- 	struct acpi_device *dev;
--	acpi_status status;
- 	acpi_handle handle;
- 	int i;
- 	int j;
-@@ -715,8 +714,8 @@ static int acpi_thermal_cooling_device_c
- 		for (i = 0; i < tz->trips.passive.devices.count;
- 		    i++) {
- 			handle = tz->trips.passive.devices.handles[i];
--			status = acpi_bus_get_device(handle, &dev);
--			if (ACPI_FAILURE(status) || dev != device)
-+			dev = acpi_fetch_acpi_dev(handle);
-+			if (dev != device)
- 				continue;
- 			if (bind)
- 				result =
-@@ -741,8 +740,8 @@ static int acpi_thermal_cooling_device_c
- 		    j < tz->trips.active[i].devices.count;
- 		    j++) {
- 			handle = tz->trips.active[i].devices.handles[j];
--			status = acpi_bus_get_device(handle, &dev);
--			if (ACPI_FAILURE(status) || dev != device)
-+			dev = acpi_fetch_acpi_dev(handle);
-+			if (dev != device)
- 				continue;
- 			if (bind)
- 				result = thermal_zone_bind_cooling_device
-Index: linux-pm/drivers/acpi/video_detect.c
-===================================================================
---- linux-pm.orig/drivers/acpi/video_detect.c
-+++ linux-pm/drivers/acpi/video_detect.c
-@@ -59,18 +59,16 @@ static void acpi_video_parse_cmdline(voi
- static acpi_status
- find_video(acpi_handle handle, u32 lvl, void *context, void **rv)
- {
-+	struct acpi_device *acpi_dev = acpi_fetch_acpi_dev(handle);
- 	long *cap = context;
- 	struct pci_dev *dev;
--	struct acpi_device *acpi_dev;
- 
- 	static const struct acpi_device_id video_ids[] = {
- 		{ACPI_VIDEO_HID, 0},
- 		{"", 0},
- 	};
--	if (acpi_bus_get_device(handle, &acpi_dev))
--		return AE_OK;
- 
--	if (!acpi_match_device_ids(acpi_dev, video_ids)) {
-+	if (acpi_dev && !acpi_match_device_ids(acpi_dev, video_ids)) {
- 		dev = acpi_get_pci_dev(handle);
- 		if (!dev)
- 			return AE_OK;
-Index: linux-pm/drivers/acpi/x86/s2idle.c
-===================================================================
---- linux-pm.orig/drivers/acpi/x86/s2idle.c
-+++ linux-pm/drivers/acpi/x86/s2idle.c
-@@ -293,9 +293,9 @@ static void lpi_check_constraints(void)
- 
- 	for (i = 0; i < lpi_constraints_table_size; ++i) {
- 		acpi_handle handle = lpi_constraints_table[i].handle;
--		struct acpi_device *adev;
-+		struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
- 
--		if (!handle || acpi_bus_get_device(handle, &adev))
-+		if (!adev)
- 			continue;
- 
- 		acpi_handle_debug(handle,
-
-
-
+>  include/linux/efi.h | 46 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+>
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index dbd39b20e034..80e970f7e6f8 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -148,6 +148,52 @@ typedef struct {
+>         u32 imagesize;
+>  } efi_capsule_header_t;
+>
+> +/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER */
+> +struct efi_manage_capsule_header {
+> +       u32 ver;
+> +       u16 emb_drv_cnt;
+> +       u16 payload_cnt;
+> +       /*
+> +        * Variable-size array of the size given by the sum of
+> +        * emb_drv_cnt and payload_cnt.
+> +        */
+> +       u64 offset_list[];
+> +} __packed;
+> +
+> +/* EFI_FIRMWARE_MANAGEMENT_CAPSULE_IMAGE_HEADER */
+> +struct efi_manage_capsule_image_header {
+> +       u32 ver;
+> +       efi_guid_t image_type_id;
+> +       u8 image_index;
+> +       u8 reserved_bytes[3];
+> +       u32 image_size;
+> +       u32 vendor_code_size;
+> +       /* hw_ins was introduced in version 2 */
+> +       u64 hw_ins;
+> +       /* capsule_support was introduced in version 3 */
+> +       u64 capsule_support;
+> +} __packed;
+> +
+> +/* WIN_CERTIFICATE */
+> +struct win_cert {
+> +       u32 len;
+> +       u16 rev;
+> +       u16 cert_type;
+> +};
+> +
+> +/* WIN_CERTIFICATE_UEFI_GUID */
+> +struct win_cert_uefi_guid {
+> +       struct win_cert hdr;
+> +       efi_guid_t cert_type;
+> +       u8 cert_data[];
+> +};
+> +
+> +/* EFI_FIRMWARE_IMAGE_AUTHENTICATION */
+> +struct efi_image_auth {
+> +       u64 mon_count;
+> +       struct win_cert_uefi_guid auth_info;
+> +};
+> +
+>  /*
+>   * EFI capsule flags
+>   */
+> --
+> 2.25.1
+>
