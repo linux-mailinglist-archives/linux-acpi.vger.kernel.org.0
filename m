@@ -2,58 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94A23468468
-	for <lists+linux-acpi@lfdr.de>; Sat,  4 Dec 2021 12:16:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02FF5468665
+	for <lists+linux-acpi@lfdr.de>; Sat,  4 Dec 2021 18:04:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232507AbhLDLTs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 4 Dec 2021 06:19:48 -0500
-Received: from www007.woo.ne.jp ([211.125.124.39]:51251 "HELO www007.woo.ne.jp"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with SMTP
-        id S229546AbhLDLTq (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 4 Dec 2021 06:19:46 -0500
-X-Greylist: delayed 400 seconds by postgrey-1.27 at vger.kernel.org; Sat, 04 Dec 2021 06:19:46 EST
-Received: (qmail 25290 invoked by uid 48); 4 Dec 2021 20:09:38 +0900
-To:     linux-acpi@vger.kernel.org
-Subject: =?ISO-2022-JP?B?GyRCIVozdDwwMnE8UiUkJWslKyFbJCpMZCQkOWckOyQiJGokLCRIJCYkNCQ2JCQkXiQ3JD8hIxsoQg==?=
-Date:   Sat, 4 Dec 2021 11:09:38 +0000
-From:   =?ISO-2022-JP?B?GyRCM3Q8MDJxPFIlJCVrJSsbKEI=?= 
-        <iruka@kk-iruka.co.jp>
-Message-ID: <f68da9deca3174d2f6a64cf94974a37d@www.kk-iruka.jp>
-X-Priority: 3
-X-Mailer: PHPMailer 5.2.1 (http://code.google.com/a/apache-extras.org/p/phpmailer/)
+        id S1355552AbhLDRH5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 4 Dec 2021 12:07:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39676 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345234AbhLDRH5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Dec 2021 12:07:57 -0500
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479C8C0613F8
+        for <linux-acpi@vger.kernel.org>; Sat,  4 Dec 2021 09:04:31 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id x15so24908730edv.1
+        for <linux-acpi@vger.kernel.org>; Sat, 04 Dec 2021 09:04:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=R+IHFqT+1cIu4d25MxA/33I5hw37sbqf3L8hQmO39cs=;
+        b=gdi/hrEsdJa+MtfK1vcA4icU4vcH7+xTuMkSP1+Kea3LWAERjc6zptW/sunycSyp5v
+         7GO/CviYc2t+irIBL4f5IVweYDR37BBXHv0XPvKNO3yTVOTfhx3PLAdMKNBU8l/5h01P
+         gMrZXiGARkAf9jAbSY4vCAHvvk4TJ3KY/gPhk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=R+IHFqT+1cIu4d25MxA/33I5hw37sbqf3L8hQmO39cs=;
+        b=GM5Gu1XIhIDN83VUWGzVi9egfBdpqQ3KiIrp31C9oVf/XBcWAMQ17NmtiIiZVqiUsP
+         K/YYnBH/UMcamGMLkuJviUVwcsrwZ1NPUn8BiMTEIhk3gY6aJqIDYNH3M7YMn3erdahe
+         QoWnMXbZGpFrnmXJxzofx0PrqCDsZGF74TwKvZ3+KnM4Sr+FSBAOUZuGPfl/8ZoJXSyt
+         0DS41SjMJ2uq6PkyquqPwMHEyLihnWMIce83KTymLGBM8F0OTGj4cVmUuq8Tf6LdQ/tw
+         u2e6V6BKqzGoaQV4eX1U4xCKxZo/9SUzDMZnpL3Mcf3S9lq9tq4ZNaXBMfhdPbi222sN
+         ohmQ==
+X-Gm-Message-State: AOAM533Z7EkdEofi3q9fJXp8GYGYPji8fOMwC4KzhZ/UcTeBpoxLoBR+
+        aFqT13bflo2DlYGLNPevtzDnhC4n7/vDaldM
+X-Google-Smtp-Source: ABdhPJzCWRDjRnobSGieb+avx8ArXpAhaRw0MNj5vEt/NOK7G016dkX53tDYltwXNziQguMgosIDFA==
+X-Received: by 2002:aa7:d695:: with SMTP id d21mr36673979edr.378.1638637469348;
+        Sat, 04 Dec 2021 09:04:29 -0800 (PST)
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com. [209.85.221.50])
+        by smtp.gmail.com with ESMTPSA id r24sm4148821edv.18.2021.12.04.09.04.28
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 04 Dec 2021 09:04:28 -0800 (PST)
+Received: by mail-wr1-f50.google.com with SMTP id j3so12801150wrp.1
+        for <linux-acpi@vger.kernel.org>; Sat, 04 Dec 2021 09:04:28 -0800 (PST)
+X-Received: by 2002:adf:f8c3:: with SMTP id f3mr30048229wrq.495.1638637467944;
+ Sat, 04 Dec 2021 09:04:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="ISO-2022-JP"
+References: <CAJZ5v0hQaF-ANLc4JO=Ub_JMsqLFpZev_gmpb=NPpg=zmqcauA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hQaF-ANLc4JO=Ub_JMsqLFpZev_gmpb=NPpg=zmqcauA@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat, 4 Dec 2021 09:04:12 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wiGbtmc+FoUjcgaQRavL=B=rfTmA_VhTtGpmhmk2873cA@mail.gmail.com>
+Message-ID: <CAHk-=wiGbtmc+FoUjcgaQRavL=B=rfTmA_VhTtGpmhmk2873cA@mail.gmail.com>
+Subject: Re: [GIT PULL] ACPI fixes for v5.16-rc3
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-889q5yo様
+On Fri, Nov 26, 2021 at 11:38 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+>  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+>  acpi-5.16-rc3
 
-この度は株式会社イルカへのお問い合せを頂き、誠にありがとうございます。
+Hmm. This may be unrelated, but I don't think I've seen this before..
+On my laptop, I get
 
-以下は送信いただいた内容となります。
-ご確認ください。
+  WARNING: CPU: 4 PID: 95940 at kernel/workqueue.c:1441 __queue_work+0x2f9/0x3b0
+  Workqueue: kec_query acpi_ec_event_processor
+  ..
+  Call Trace:
+   <TASK>
+   queue_work_on+0x20/0x30
+   advance_transaction+0x1a1/0x500
+   acpi_ec_transaction+0x15c/0x410
+   acpi_ec_space_handler+0xd2/0x270
+   acpi_ev_address_space_dispatch+0x216/0x2a3
+   ? acpi_ec_resume+0x20/0x20
+   acpi_ex_access_region+0x1dc/0x255
+   ? acpi_os_wait_semaphore+0x48/0x70
+   acpi_ex_field_datum_io+0xfd/0x178
+   acpi_ex_read_data_from_field+0x12e/0x171
+   acpi_ex_resolve_node_to_value+0x1fe/0x281
+   acpi_ds_evaluate_name_path+0x75/0xe9
+   acpi_ds_exec_end_op+0x8f/0x411
+   acpi_ps_parse_loop+0x495/0x5bc
+   acpi_ps_parse_aml+0x94/0x2c2
+   acpi_ps_execute_method+0x15e/0x193
+   acpi_ns_evaluate+0x1c6/0x25d
+   acpi_evaluate_object+0x12e/0x226
+   acpi_ec_event_processor+0x63/0x90
+   process_one_work+0x217/0x3c0
 
-数日経っても弊社からの連絡がない場合は、メールが届いていない可能性がありますのでお電話にてご連絡ください。
+and it seems to be happening at resume time.
 
-メッセージ本文--------------------------
-■お問い合せの種類：その他お問い合せ
-■会社名：?? Alice want to meet you! Click Here: http://bit.do/fSMvk?d3k1 ??
-■お名前（担当者名）：889q5yo
-■お電話番号：897819799242
-■メールアドレス：linux-acpi@vger.kernel.org
-■お問い合わせ内容
-v7gluosa
------------------------------------------------
+This was when running a51e3ac43ddb, so not the very latest git tree,
+but recent.
 
+Maybe I've missed a report of this?
 
-株式会社　イルカ
-■岡山本社
-岡山県岡山市中区桑野131-29
-TEL 086-274-0880
-
-■大阪営業所
-大阪府大阪市淀川区西中島3丁目12-15-502
-TEL 06-6195-9898
-
+               Linus
