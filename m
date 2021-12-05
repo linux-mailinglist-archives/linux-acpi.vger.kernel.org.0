@@ -2,72 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25FE846892E
-	for <lists+linux-acpi@lfdr.de>; Sun,  5 Dec 2021 05:51:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8D39468CDF
+	for <lists+linux-acpi@lfdr.de>; Sun,  5 Dec 2021 19:56:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231635AbhLEEzJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 4 Dec 2021 23:55:09 -0500
-Received: from mail1.bemta31.messagelabs.com ([67.219.246.113]:35033 "EHLO
-        mail1.bemta31.messagelabs.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231550AbhLEEzI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 4 Dec 2021 23:55:08 -0500
-Received: from [100.114.1.131] (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256 bits))
-        by server-5.bemta.az-a.us-east-1.aws.ess.symcld.net id D9/30-00473-6554CA16; Sun, 05 Dec 2021 04:51:34 +0000
-X-Brightmail-Tracker: H4sIAAAAAAAAA1WTe0xTZxjG+c7p6elmy2px4Ygsw5q5TWzXwiI
-  vbCwOxZzpso0s2eayDQ9SaB0tpC0Bly0jgDLYIojInU46rFwVLJFrcdwkgECkA5EhFwFRoVws
-  CxsDu1anY//88uR93jzf88f7cXCBje3GkcVqZWoVEyFkP8/yX95mEH0SWM5IbrV7QZY+iYCxj
-  tdgxlCFYLjIyIbzdxoQGAuGSbg5bENwM8FGwnJeExtsU/EIklbOYxC3bsCg7UYaAfnZfQQkx7
-  ciONmsI2EwbxwHY8YVFlSYO3G4ltZMwuJ6Ag69mSUELGQn4XD3YQ4J8ZZ0BPWZNBTfqEbQdVo
-  EE7VnCbCWjxOgv51PQHvjABtWLk5j8IOtCIPe7n1QaF1gw2B9I4KW35pxWL93B4Mk3TSC2aQB
-  HDJHLQiSG5sIMGY1EGDJPYXgj9olAi40pSKwPLyKwJA4S8L8FSO514v+uXSCRacU+NLNtksYX
-  TmyStCFRWaMTlv8nj6pKyDostJijH60WmrH5TKSnk+tYdOPGkYRfcHQRdBdk6/TP1Z3Itqkqy
-  c/2vU5oVCFRMYeIeTFc9eJqDUU23u2HYtDAygFPccR8CsQVWxWOzSL70nZTL+zHJrN96fis3q
-  IFMSx7+yghsbDHWMXvoAa+nUJd2ge34dqy6kjHBrnv0qt6frxJ/plqsaS/+/OZqozZ4rliKH4
-  HlRex2HHmOLvoe6l55AOvYXvThXkTRJpiJu7ISl3Q1LuhqRzCC9FfiFqRbhcq2QUESKpRCKSS
-  t8U+YikPnvEzDciRhytEckYjVYkFTMxGrFMoxFrjiuPRoSKVTLtZWS/s1A1WVmLdD/9JW5BWz
-  mY8EWebaSMETiHRIYelzMaebA6OkKmaUHuHI6Q4nn6ljOCzWpZuCw2TBFhv9anNsXhCrfwnPb
-  bbZ4milFqFOFPrC4UxIm/X6DHOVXtOjtrHvPaY06XFtl5v85Bi4MClipSJXNz5Q3vswfxHUHy
-  aNWzZ57+i370kpsLDzk5OQm4UTK1UqH9v/8AuXKQ0IU3EWBP4SpU2mdtHtiLYvaiX6SWOYpqm
-  f8stzhMaOJ2zma9ETf0tj7Gtnp6E7tvhObFsErKEwP4ia9U7PRN1imzLda+c0YPpcLC1u08cF
-  XmOjT2nt4c8C4KM+OTGSXfFboZYlvfif76z90Jpp4M098d/sTdxY7qusBDM/jMtyNRybFetNd
-  R55U1z6kdQYl5ErJvwW9Ol0JetIhMR6x6fU3dqkl7oKdR0uZ3eH+KOSS31QPf3fTV7AdG695l
-  81uY4eBSf1Vg99yY6UMJJa/0Nnsd27Q9wfl62KHgqoODA5/l5UbUOQdXtQd9PD068YJ+/ZcTt
-  y3iEzLcL1XFjevkbZV7bxv/0j2z/9NbxrV0YZE3furM+ytnLnVnHLPOC1kaOSPdhas1zD9MYv
-  xrkgQAAA==
-X-Env-Sender: chew_lh@biomesciltlight.com
-X-Msg-Ref: server-7.tower-706.messagelabs.com!1638679893!32675!1
-X-Originating-IP: [61.244.27.166]
-X-SYMC-ESS-Client-Auth: outbound-route-from=pass
-X-StarScan-Received: 
-X-StarScan-Version: 9.81.7; banners=biomesciltlight.com,-,-
-X-VirusChecked: Checked
-Received: (qmail 10704 invoked from network); 5 Dec 2021 04:51:34 -0000
-Received: from mail.merkur-ltd.com (HELO mail.merkur-ltd.com) (61.244.27.166)
-  by server-7.tower-706.messagelabs.com with SMTP; 5 Dec 2021 04:51:34 -0000
-Received: from mail.merkur-ltd.com (mail.merkur-ltd.com [61.244.27.166])
-        by mail.merkur-ltd.com (Postfix) with ESMTP id 2E86A134CE8D;
-        Sun,  5 Dec 2021 12:51:27 +0800 (HKT)
-Date:   Sun, 05 Dec 2021 12:51:27 +0800 (HKT)
-From:   World Health Organization <chew_lh@biomesciltlight.com>
-Reply-To: attorneyvicrayk@gmail.com
-Subject: Good News
-Message-ID: <5d919725-dd45-485f-b418-45f90cbaf59f@mail>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+        id S237438AbhLES7X (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 5 Dec 2021 13:59:23 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:58042 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237264AbhLES7W (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 5 Dec 2021 13:59:22 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 651F66111D;
+        Sun,  5 Dec 2021 18:55:54 +0000 (UTC)
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp.kernel.org (Postfix) with ESMTPSA id 9AB8BC00446;
+        Sun,  5 Dec 2021 18:55:51 +0000 (UTC)
+Date:   Sun, 5 Dec 2021 19:01:01 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, jonathan.cameron@huawei.com
+Subject: RFC: Should we have a device_for_each_available_child_node()?
+Message-ID: <20211205190101.26de4a57@jic23-huawei>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-Originating-IP: [102.89.3.147]
-X-Mailer: Zimbra 7.1.0_GA_3140 (zclient/7.1.0_GA_3140)
-To:     undisclosed-recipients:;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi All,
+
+This came up in review of
+https://lore.kernel.org/linux-iio/20210725172458.487343-1-jic23@kernel.org/
+which is a series converting a dt only driver over to generic properties.
+I'm sending a separate email to raise the profile of the question rather
+higher than it was buried in a driver review.
+
+The original code used for_each_available_child_of_node(np, child) 
+and the patch converted it to device_for_each_child_node().
+
+Andy raised the question of whether it should have been
+device_for_each_available_child_node() but that doesn't exist currently.
+
+Things get more interesting when you look at the implementation of
+device_for_each_child_node() which uses device_get_next_child_node()
+which in turn calls fwnode_get_next_child_node() which calls
+the get_next_child_node() op and for of that is
+of_fwnode_get_next_child_node() which uses of_get_next_available_child()
+rather than of_get_next_child().
+
+So I think under the hood device_for_each_child_node() on of_ is going to
+end up checking the node is available anyway.
+
+So this all seemed a little odd given there were obvious calls to use
+if we wanted to separate the two cases for device tree and they weren't
+the ones used.  However, if we conclude that there is a bug here and
+the two cases should be handled separately then it will be really hard
+to be sure no driver is relying on this behaviour.
+
+So, ultimately the question is:  Should I add a
+device_for_each_available_child_node()?  It will be something like:
+
+struct fwnode_handle *device_get_next_child_node(struct device *dev,
+						 struct fwnode_handle *child)
+{
+	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+	struct fwnode_handle *next;
+
+	/* Try to find a child in primary fwnode */
+	next = fwnode_get_next_available_child_node(fwnode, child);
+	if (next)
+		return next;
+
+	/* When no more children in primary, continue with secondary */
+	if (fwnode && !IS_ERR_OR_NULL(fwnode->secondary))
+		next = fwnode_get_next_available_child_node(fwnode->secondary, child);
+
+	return next;
+}
+
+#define device_for_each_child_node(dev, child)				\
+	for (child = device_get_next_available_child_node(dev, NULL); child;	\
+	     child = device_get_next_avaialble_child_node(dev, child))
+
+As far as I can tell it doesn't make any difference for my particular bit
+of refactoring in the sense of I won't break anything that currently
+works by using device_for_each_child_node() but it may cause issues with
+other firmware by enumerating disabled child nodes.
+
+Jonathan
 
 
-The World Health Organization has listed you among the 10 people to receive a corona relief fund of $500,000.00 USD. Send your full details
- including your mobile number through the email address below: attorneyvicrayk@gmail.com  for more information.
 
-______________________________________________________________________
-This email has been scanned by the Symantec Email Security.cloud service.
-For more information please visit http://www.symanteccloud.com
-______________________________________________________________________
+
+
