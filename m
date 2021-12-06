@@ -2,87 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CF00469AE9
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Dec 2021 16:08:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D503F469EF5
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Dec 2021 16:42:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346042AbhLFPLr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Dec 2021 10:11:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53782 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346705AbhLFPI4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Dec 2021 10:08:56 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485A5C08E883;
-        Mon,  6 Dec 2021 07:03:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=wNn6STBGSbysAtU5JC3MnsHm5l02eeC/MfBuC41IsiY=; b=qoUbaSRA9E2Kh79X/z4KamvMTo
-        eEwiCHon5SGJzEYdCA58yv0B6C5DkJPsf+RdLtD4YXZKUnCFnO62LesRMFoFo3Mu1+iP7Fpy2yVgx
-        NxSw9Lv+kwNqn0Zfs/BBFpdVkxCJ7+B4h6f80QWUS30oRwQiqFS635rvtJYrcrJuI1YP01BZ63Jwe
-        KQqI8+wtoDQdkHRLkzjic8/zLq/9M27xkucTzFJi1WueD4tDda3QlyEsQymgNHWW2Ybux3kJrT763
-        j8ymrYGHB3iHHFz0Uo0iOZO31m5v4JujhOw3aaPdTmk7iH79f7P5L7tTaMejoJWf4JNIT1cgJ1ozn
-        3CO5Tj/w==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1muFWp-004yVc-7h; Mon, 06 Dec 2021 15:03:44 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 97AA9300362;
-        Mon,  6 Dec 2021 16:03:42 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 754CA202420BC; Mon,  6 Dec 2021 16:03:42 +0100 (CET)
-Date:   Mon, 6 Dec 2021 16:03:42 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
+        id S1358535AbhLFPo4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Dec 2021 10:44:56 -0500
+Received: from mga17.intel.com ([192.55.52.151]:62060 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1356036AbhLFPix (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 6 Dec 2021 10:38:53 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10189"; a="218022776"
+X-IronPort-AV: E=Sophos;i="5.87,291,1631602800"; 
+   d="scan'208";a="218022776"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2021 07:35:23 -0800
+X-IronPort-AV: E=Sophos;i="5.87,291,1631602800"; 
+   d="scan'208";a="579403964"
+Received: from svelidan-mobl.amr.corp.intel.com (HELO [10.209.112.71]) ([10.209.112.71])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2021 07:35:21 -0800
+Subject: Re: [PATCH v2] x86: Skip WBINVD instruction for VM guest
 To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     rafael@kernel.org, ak@linux.intel.com, bp@alien8.de,
-        dan.j.williams@intel.com, dave.hansen@linux.intel.com,
-        hpa@zytor.com, knsathya@kernel.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mingo@redhat.com, rjw@rjwysocki.net,
-        sathyanarayanan.kuppuswamy@linux.intel.com, tglx@linutronix.de,
-        tony.luck@intel.com, x86@kernel.org
-Subject: Re: [PATCH 3/4] ACPI: processor idle: Only flush cache on entering C3
-Message-ID: <Ya4mTij+eQPq8dnu@hirez.programming.kicks-ass.net>
-References: <CAJZ5v0gLwSvPfWzYwiZXee8SiPiQQoxjfKfVn4jx6wK_9VVEeg@mail.gmail.com>
- <20211206122952.74139-1-kirill.shutemov@linux.intel.com>
- <20211206122952.74139-4-kirill.shutemov@linux.intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        "H . Peter Anvin" <hpa@zytor.com>, Tony Luck <tony.luck@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <YZPbQVwWOJCrAH78@zn.tnic>
+ <20211119040330.4013045-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <87pmqpjcef.ffs@tglx> <20211202222109.pcsgm2jska3obvmx@black.fi.intel.com>
+ <87lf126010.ffs@tglx> <20211203234915.jw6kdd2qnfrionch@black.fi.intel.com>
+ <2519e6b6-4f74-e2f8-c428-0fceb0e16472@intel.com>
+ <20211204005427.ccinxlwwab3jsuct@black.fi.intel.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+ z5cecg==
+Message-ID: <5bc40889-445d-5cac-3396-d39d53ee92c7@intel.com>
+Date:   Mon, 6 Dec 2021 07:35:18 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211206122952.74139-4-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20211204005427.ccinxlwwab3jsuct@black.fi.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Dec 06, 2021 at 03:29:51PM +0300, Kirill A. Shutemov wrote:
-> According to the ACPI spec v6.4, section 8.2, cache flushing required
-> on entering C3 power state.
+On 12/3/21 4:54 PM, Kirill A. Shutemov wrote:
+> On Fri, Dec 03, 2021 at 04:20:34PM -0800, Dave Hansen wrote:
+>>> TDX doesn't support these S- and C-states. TDX is only supports S0 and S5.
+>>
+>> This makes me a bit nervous.  Is this "the first TDX implementation
+>> supports..." or "the TDX architecture *prohibits* supporting S1 (or
+>> whatever"?
 > 
-> Avoid flushing cache on entering other power states.
+> TDX Virtual Firmware Design Guide only states that "ACPI S3 (not supported
+> by TDX guests)".
 > 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> ---
->  drivers/acpi/processor_idle.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-> index 76ef1bcc8848..01495aca850e 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -567,7 +567,8 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
->  {
->  	struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
->  
-> -	ACPI_FLUSH_CPU_CACHE();
-> +	if (cx->type == ACPI_STATE_C3)
-> +		ACPI_FLUSH_CPU_CACHE();
->  
+> Kernel reports in dmesg "ACPI: PM: (supports S0 S5)".
 
-acpi_idle_enter() already does this, acpi_idle_enter_s2idle() has it
-confused again,
+Those describe the current firmware implementation, not a guarantee
+provided by the TDX architecture forever.
 
-Also, I think acpi_idle_enter() does it too late; consider
-acpi_idle_enter_mb(). Either that or the BM crud needs more comments.
+> But I don't see how any state beyond S0 and S5 make sense in TDX context.
+> Do you?
+
+Do existing (non-TDX) VMs use anything other than S0 and S5?  If so, I'd
+say yes.
+
+>> I really think we need some kind of architecture guarantee.  Without
+>> that, we risk breaking things if someone at our employer simply changes
+>> their mind.
+> 
+> Guarantees are hard.
+> 
+> If somebody change their mind we will get unexpected #VE and crash.
+> I think it is acceptable way to handle unexpected change in confidential
+> computing environment.
+
+Architectural guarantees are quite easy, actually.  They're just a
+contract that two parties agree to.  In this case, the contract would be
+that TDX firmware *PROMISES* not to enumerate support for additional
+sleep states over what the implementation does today.  If future
+firmware breaks that promise (and the kernel crashes) we get to come
+after them with torches and pitchforks to fix the firmware.
+
+The contract let's us do things in the OS like:
+
+	WARN_ON(sleep_states[ACPI_STATE_S3]);
+
+We also don't need *formal* documentation of such things.  We really
+just need to have a chat.
+
+It would be perfectly sufficient if we go bug Intel's TDX architecture
+folks and say, "Hey, Linux is going to crash if you ever implement any
+actual sleep states.  The current implementation is fine here, but is it
+OK if future implementations are restricted from doing this?"
+
+But, the trick is that we need a contract.  A contract requires a
+"meeting of the minds" first.
