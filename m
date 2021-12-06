@@ -2,117 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D3094692CD
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Dec 2021 10:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46F564695B0
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Dec 2021 13:30:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241340AbhLFJjW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Dec 2021 04:39:22 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:48252 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S241179AbhLFJjI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Dec 2021 04:39:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1638783340;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UJ60w9l5x9z7ezkDeL8gMwQfAMNkzdnrdHE2RsyKQDs=;
-        b=W+zg+Xdc9rd7NHRlGauq6FblJmsjwpIXLqt7576v79oTcgh2zHdz9gahSmK8AKEMbB/rXJ
-        4KQsF/PlRMNRhkbHCxY8CuOfOJV2SFN63epkTs7nPiQ5QcMW9cnycYF7iQ8upmnMEQcMRy
-        snwp/jlyC4wwxhKiI/LgAcA8zDoh7oc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-215-wAupVm9qOCuQ-sKq7nCHaA-1; Mon, 06 Dec 2021 04:35:34 -0500
-X-MC-Unique: wAupVm9qOCuQ-sKq7nCHaA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9E585835B47;
-        Mon,  6 Dec 2021 09:35:31 +0000 (UTC)
-Received: from x1.localdomain.com (unknown [10.39.194.76])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 184D75DAA5;
-        Mon,  6 Dec 2021 09:35:27 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: [PATCH v4 20/20] extcon: intel-cht-wc: Report RID_A for ACA adapters
-Date:   Mon,  6 Dec 2021 10:33:18 +0100
-Message-Id: <20211206093318.45214-21-hdegoede@redhat.com>
-In-Reply-To: <20211206093318.45214-1-hdegoede@redhat.com>
-References: <20211206093318.45214-1-hdegoede@redhat.com>
+        id S243143AbhLFMdg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Dec 2021 07:33:36 -0500
+Received: from mga12.intel.com ([192.55.52.136]:62519 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243132AbhLFMdf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 6 Dec 2021 07:33:35 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10189"; a="217329018"
+X-IronPort-AV: E=Sophos;i="5.87,291,1631602800"; 
+   d="scan'208";a="217329018"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2021 04:30:05 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,291,1631602800"; 
+   d="scan'208";a="748024789"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga006.fm.intel.com with ESMTP; 06 Dec 2021 04:30:01 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+        id 5BCF4144; Mon,  6 Dec 2021 14:30:07 +0200 (EET)
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     rafael@kernel.org
+Cc:     ak@linux.intel.com, bp@alien8.de, dan.j.williams@intel.com,
+        dave.hansen@linux.intel.com, hpa@zytor.com,
+        kirill.shutemov@linux.intel.com, knsathya@kernel.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mingo@redhat.com, rjw@rjwysocki.net,
+        sathyanarayanan.kuppuswamy@linux.intel.com, tglx@linutronix.de,
+        tony.luck@intel.com, x86@kernel.org
+Subject: [PATCH 0/4] ACPI/ACPICA: Only flush caches on S1/S2/S3 and C3
+Date:   Mon,  6 Dec 2021 15:29:48 +0300
+Message-Id: <20211206122952.74139-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <CAJZ5v0gLwSvPfWzYwiZXee8SiPiQQoxjfKfVn4jx6wK_9VVEeg@mail.gmail.com>
+References: <CAJZ5v0gLwSvPfWzYwiZXee8SiPiQQoxjfKfVn4jx6wK_9VVEeg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Make cht_wc_extcon_get_id() report RID_A for ACA adapters, instead of
-reporting ID_FLOAT.
+Does it look like you want?
 
-According to the spec. we should read the USB-ID pin ADC value
-to determine the resistance of the used pull-down resister and
-then return RID_A / RID_B / RID_C based on this. But all "Accessory
-Charger Adapter"s (ACAs) which users can actually buy always use
-a combination of a charging port with one or more USB-A ports, so
-they should always use a resistor indicating RID_A. But the spec
-is hard to read / badly-worded so some of them actually indicate
-they are a RID_B ACA even though they clearly are a RID_A ACA.
+Kirill A. Shutemov (4):
+  ACPICA: Do not flush cache for on entering S4 and S5
+  ACPI: PM: Remove redundant cache flushing
+  ACPI: processor idle: Only flush cache on entering C3
+  ACPI: PM: Avoid cache flush on entering S4
 
-To workaround this simply always return INTEL_USB_RID_A, which
-matches all the ACAs which users can actually buy.
+ drivers/acpi/acpica/hwesleep.c  | 3 ++-
+ drivers/acpi/acpica/hwsleep.c   | 3 ++-
+ drivers/acpi/acpica/hwxfsleep.c | 2 --
+ drivers/acpi/processor_idle.c   | 3 ++-
+ drivers/acpi/sleep.c            | 9 +++------
+ 5 files changed, 9 insertions(+), 11 deletions(-)
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/extcon/extcon-intel-cht-wc.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/extcon/extcon-intel-cht-wc.c b/drivers/extcon/extcon-intel-cht-wc.c
-index 144cb5d8cd47..2a8d41cbf41c 100644
---- a/drivers/extcon/extcon-intel-cht-wc.c
-+++ b/drivers/extcon/extcon-intel-cht-wc.c
-@@ -121,13 +121,21 @@ static int cht_wc_extcon_get_id(struct cht_wc_extcon_data *ext, int pwrsrc_sts)
- 		return INTEL_USB_ID_GND;
- 	case CHT_WC_PWRSRC_RID_FLOAT:
- 		return INTEL_USB_ID_FLOAT;
-+	/*
-+	 * According to the spec. we should read the USB-ID pin ADC value here
-+	 * to determine the resistance of the used pull-down resister and then
-+	 * return RID_A / RID_B / RID_C based on this. But all "Accessory
-+	 * Charger Adapter"s (ACAs) which users can actually buy always use
-+	 * a combination of a charging port with one or more USB-A ports, so
-+	 * they should always use a resistor indicating RID_A. But the spec
-+	 * is hard to read / badly-worded so some of them actually indicate
-+	 * they are a RID_B ACA evnen though they clearly are a RID_A ACA.
-+	 * To workaround this simply always return INTEL_USB_RID_A, which
-+	 * matches all the ACAs which users can actually buy.
-+	 */
- 	case CHT_WC_PWRSRC_RID_ACA:
-+		return INTEL_USB_RID_A;
- 	default:
--		/*
--		 * Once we have IIO support for the GPADC we should read
--		 * the USBID GPADC channel here and determine ACA role
--		 * based on that.
--		 */
- 		return INTEL_USB_ID_FLOAT;
- 	}
- }
 -- 
-2.33.1
+2.32.0
 
