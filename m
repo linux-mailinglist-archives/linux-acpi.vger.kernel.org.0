@@ -2,159 +2,151 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 745DE46A4AC
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Dec 2021 19:33:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC24346A65E
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Dec 2021 20:58:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237605AbhLFShJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 6 Dec 2021 13:37:09 -0500
-Received: from mail-dm6nam10hn2246.outbound.protection.outlook.com ([52.100.156.246]:41185
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S237265AbhLFShJ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 6 Dec 2021 13:37:09 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T+MjMXqbqfdRR8NtXtw/FXDU+UOBuXlwYWbgSiZziNtwznO2t9x/2HNt1YEf0lOwz+41S3z0Rp2CSALZj43tz0vDWvWVnhAeFz7ol+luIRj8p50SvDqBPU1663Mq+uR4pxb72NNfbHSGITKTSEX3cXyJgBq2X+ert09S1YTEJb4qAucGMgIztO1OaMEmS4TMOsl3edmUgk3ejaQQAH1U+RtIIJsfhQuscKuHoobD+9NZiyz4va7Hkb8i9YNVqcBTHnmFQhZPgXgueiLNLZ9hFAJF+UCKZ4vxsJMTDRMy/DhTCWYq9o7iHu+7kNLloXY7kRt4IfHU3vXjjCXkygsYew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NTkULZ5UHExQp4+lt+mjKcEqTWLs4cv4821EJcQtSYE=;
- b=gpNMYY8t4GSpk25k40i0XnnnxfiCjjvTHyTg3YRW5aEf2vvWzicwPoQ+bMRhL04BURKMToMo0u/6IADkLme5XbO+3joDvqrzLTwRlHEIRDgsrBia0PYt530Jk0zujtVaI2CovhOPiOsoA/7EyGpKzLhICIj/ui8n9wfdMkzr5qJHQz50rUDM32wVzpMvVQVZ9Y+uPriGiUh2XrRQa6rXAzhV0Bd3bCptZNNZEI1vyaa2xAeu0UWNv3MM05zHkGbiB1frCTILM/t460T+IAbbYozVGdnuCGi/Ql3EsA9qF73bZFpaKIK8gtxh1UzNEmKv7f0iA7+9XGzMSEmJl/MhCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 146.201.107.145) smtp.rcpttodomain=reddit.com smtp.mailfrom=msn.com;
- dmarc=fail (p=none sp=quarantine pct=100) action=none header.from=msn.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fsu.onmicrosoft.com;
- s=selector2-fsu-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NTkULZ5UHExQp4+lt+mjKcEqTWLs4cv4821EJcQtSYE=;
- b=PtvofrQIB2zd3qIRfIn0/+lNIewrNyW6mkXpeGuj346l4rH0Gjwr2pBew4ykBMDhhjWf+Baeh6qoSQONn0+osPxrM3W0MGO54WoGoKRrkDVbJIOT1ACfEStHTjZGa31fGcBTvZDzhdle4o40IH+XX49aEIhKJboLtCd8Poo4VWE=
-Received: from BN9PR03CA0939.namprd03.prod.outlook.com (2603:10b6:408:108::14)
- by PH0P220MB0569.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:e3::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.20; Mon, 6 Dec
- 2021 18:33:31 +0000
-Received: from BN8NAM04FT016.eop-NAM04.prod.protection.outlook.com
- (2603:10b6:408:108:cafe::da) by BN9PR03CA0939.outlook.office365.com
- (2603:10b6:408:108::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.20 via Frontend
- Transport; Mon, 6 Dec 2021 18:33:31 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
- 146.201.107.145) smtp.mailfrom=msn.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=msn.com;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- msn.com discourages use of 146.201.107.145 as permitted sender)
-Received: from mailrelay03.its.fsu.edu (146.201.107.145) by
- BN8NAM04FT016.mail.protection.outlook.com (10.13.161.57) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4755.13 via Frontend Transport; Mon, 6 Dec 2021 18:33:31 +0000
-Received: from [10.0.0.200] (ani.stat.fsu.edu [128.186.4.119])
-        by mailrelay03.its.fsu.edu (Postfix) with ESMTP id 7F293951A0;
-        Mon,  6 Dec 2021 13:32:57 -0500 (EST)
-Content-Type: text/plain; charset="utf-8"
+        id S1349175AbhLFUBU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 6 Dec 2021 15:01:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40638 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349551AbhLFUBC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 6 Dec 2021 15:01:02 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674A6C0698C3;
+        Mon,  6 Dec 2021 11:57:32 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id z5so48110916edd.3;
+        Mon, 06 Dec 2021 11:57:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MDbD429x7EGhGMhsVDh9494mFqKE/H+dYpI7efBswy4=;
+        b=qyHAG2uEzGWAT0b3t0AT1UWTaT7NTaH8qGdIPfOphRXY0HMHmVtRT9PMuxqeZU4i7t
+         vDUVGwg+8WtDOjZ2/hghyXXhffb6oVw184AaM/Ib4u3T3hPhXJAaS/0cdsWUI3xGT3hX
+         BfZ0/qeiHd3FOLdK4PIe3izOUqYYK2W+bnY1/FKdscbcvQ9gt/vXZay3kbkZwuRArqPD
+         upUx6fnXzcThe1hfrh+04gD60srBXbRI5Xt4MERGIvIlYxKLC3lXPac+Tw7Wg6WrrjJj
+         e1cRzJcTYVtillCjhTHiFqHhs+fehdvFPxUtI6qbT7Naf1Ph9v0PCawauveywl8bfngc
+         F/Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MDbD429x7EGhGMhsVDh9494mFqKE/H+dYpI7efBswy4=;
+        b=AP9qe8mARfaLgXHIeGMyyastGGGZS/R+llUvtlBAW3OLyIPLV8l9GLyMgSqkxeg4CQ
+         OeSmKYNDzRw4T9LEN3zxCcEJ/Un3/Ei/7LGurhr6G/zeORiwVVM29SKAzV+IPDL16nI1
+         tTmSaJRK35F9AlWbN2SUIQt4uD4lhFlgSGEuTLiJ5xYPofwzFFW9DMPxOVjoq7Okb4AD
+         jwMAi1KHuAuN02fcAKRlbcXUDvHXGe34PsS+HVSaubyNxew7R41+51fTifpTvUcbZ2Cp
+         7vopiLZC+tv42YCVLc0fpPiqAADdP28FSp9Z+WtDKx72u97TPwAN811MaYXDJ3agPPxp
+         ifEA==
+X-Gm-Message-State: AOAM532HDfRr2DV8ZlArgJvF9H4NYxLjUY8CNp3ycr2vDgZCXDux3Ee8
+        TdlGbdk6+gLBOu14PSKdUjilEsmSO48nb5EqBas=
+X-Google-Smtp-Source: ABdhPJzWAtk+egcPYv+YJzS0Q5UW6JXgWqCbk4YgT7bZZlKPZAsHB+shis4xeMBPhZKqn9hbkv+BiK/vOUsqe4ZlBEg=
+X-Received: by 2002:a17:907:869e:: with SMTP id qa30mr45495850ejc.356.1638820650915;
+ Mon, 06 Dec 2021 11:57:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Re: From Fred!
-To:     Recipients <fred128@msn.com>
-From:   "Fred Gamba." <fred128@msn.com>
-Date:   Mon, 06 Dec 2021 19:32:16 +0100
-Reply-To: fred_gamba@yahoo.co.jp
-Message-ID: <3044fa8b-c7bf-49d3-bc40-a44918a978aa@BN8NAM04FT016.eop-NAM04.prod.protection.outlook.com>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 9cf24cc9-08e2-46a2-fd27-08d9b8e6e796
-X-MS-TrafficTypeDiagnostic: PH0P220MB0569:EE_
-X-Microsoft-Antispam-PRVS: <PH0P220MB0569DA6E51B931CC30636C4FEB6D9@PH0P220MB0569.NAMP220.PROD.OUTLOOK.COM>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 2
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Forefront-Antispam-Report: CIP:146.201.107.145;CTRY:US;LANG:en;SCL:5;SRV:;IPV:CAL;SFV:SPM;H:mailrelay03.its.fsu.edu;PTR:mailrelay03.its.fsu.edu;CAT:OSPM;SFS:(4636009)(84050400002)(46966006)(40470700001)(786003)(316002)(356005)(6666004)(35950700001)(31686004)(2906002)(83380400001)(26005)(6266002)(86362001)(70206006)(336012)(31696002)(5660300002)(7406005)(7596003)(7366002)(2860700004)(6200100001)(9686003)(70586007)(82202003)(47076005)(7116003)(6862004)(3480700007)(8676002)(8936002)(7416002)(508600001)(82310400004)(956004)(40460700001)(480584002);DIR:OUT;SFP:1501;
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SzFFdUlyTzlRbktsV0czckRteWhuejVHVjJ6Kzlnc3pOVS9LbUVwbGNiWE1l?=
- =?utf-8?B?eERFaU04NWY0RDY3S3pPWjVtOFFNQVdSTld1amt0RXJlRnVPS2tidGZoMU1D?=
- =?utf-8?B?MStqS2xpa0x3d201YUtmNmI1d3NodzRMVmp0cmhTT1p5dHpBS0NuMmVXRUdJ?=
- =?utf-8?B?VWxkVjdvQ2NFTU9ISm1yc2xFTkdkWnQvdFJjNWhkQ3Y2d3lHenQ4NjRXN00z?=
- =?utf-8?B?bnc2bStyN2ZmSGpEdUVCMGV4TGRGVUVrVEJjM0FCUGtwSUdiV2R6bWxHSFhU?=
- =?utf-8?B?Q3dLdzZmR1ZnM3hiemxoL1F1b3FvUWtUR24yK0xRblJtNEI5dXFncHZDMjRE?=
- =?utf-8?B?aXV3aDlMZ0daWS9wcEdHbFBCaXJGaUttUWZyZWF1R0NLaFNhOWZVSjdGRzFm?=
- =?utf-8?B?QkJNSWRLUi83clpzRVdSNStlZmlLZS9yNW1IVFE2QThDdHFDNnA0MW1OSk45?=
- =?utf-8?B?YTdjcGFsQlhuck5lTUlSaG4zNjN2MjI3emlKWGJjMFVTak9xcFVPM3pjeUVi?=
- =?utf-8?B?a2dNYS9SMld5Y1NkRTByUkdkSmYvSkM4eXRreUl0OFZyUjRNQkV4dTkxZ1pi?=
- =?utf-8?B?OWNqSmxIeU1oWlZtc0xtUWI1NHhRak9SRUdtYkxoWXU2Rldib3MvcDNRazJ5?=
- =?utf-8?B?UDBBZ084MHFPbVhiVU1YRzdweWI3ZHpydzhyOXZRUjRYais4Zyt6NEhhRjRh?=
- =?utf-8?B?dzdUWEpjQWg3WnU2Si9lQ1E2bXR1Z25aamVudHRYdC82L3lWR29WZEdEMUxY?=
- =?utf-8?B?cEJFT2FyeHFiRDIxSVNkSjJxOHVBMW9RTWJGcDhTS2FzRW5qNE0yNkJVSkc5?=
- =?utf-8?B?WXBMZ2dIQzBvTEc0aGhKdjNHTk1ablVkU2RFVVc3Z3VEN25Xci8ya04rUFR4?=
- =?utf-8?B?OEZXWmpxYkdUaUllallYOEhLOVNBSW1rQzNKTUpBZWhobEdDVGVYK2ZmTHV5?=
- =?utf-8?B?VGk2Z3FOc29SRmxHZFUvbTA2cTBqSXg1bkUzOWxZRWVob3Z2R1F2WjV6WnFa?=
- =?utf-8?B?b0F2RFJiUXdIaXkrdEhNSEhnUTNYNlpaaW5qQXRMcjZOVTFsUmlYNW80MUpT?=
- =?utf-8?B?VVBGSFdIMklSSFJQWE42MzBwOUszcStNQjc0MklsTWVpRzN5OU1NT2FmbE4r?=
- =?utf-8?B?NFVFRmN1ZnFHR29LTmFDd05xdjBMNjBXdXdBczRHdCtUWFl2eHBRa1dXUk8x?=
- =?utf-8?B?YVk0UGI4ejRCZWtYLzNCRnBGOFlFS3FuMDlaN3crRjN6RExBdWlocVpQNnhS?=
- =?utf-8?B?YjI5dC9yaUY0VGxlZm41cHJnYS8zeVl5SzR0TU1qL1VLeTRKaFhoQ0FtdjhE?=
- =?utf-8?B?aGg5UHRrYlNCOUJFK2ZQL1h0RitYV2JSRmdYenY3UjB1S0R4YzUyT1JqYzRU?=
- =?utf-8?B?ZjdEMFUyS0tOeGxOL3dwd3JSNFVXVVFwbDRXYkZBM2pVZ2ExR3EvMHY3VG44?=
- =?utf-8?Q?fakNZXqy?=
-X-OriginatorOrg: fsu.edu
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2021 18:33:31.6119
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9cf24cc9-08e2-46a2-fd27-08d9b8e6e796
-X-MS-Exchange-CrossTenant-Id: a36450eb-db06-42a7-8d1b-026719f701e3
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=a36450eb-db06-42a7-8d1b-026719f701e3;Ip=[146.201.107.145];Helo=[mailrelay03.its.fsu.edu]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM04FT016.eop-NAM04.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0P220MB0569
+References: <20211206093318.45214-1-hdegoede@redhat.com> <20211206093318.45214-15-hdegoede@redhat.com>
+In-Reply-To: <20211206093318.45214-15-hdegoede@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 6 Dec 2021 21:55:56 +0200
+Message-ID: <CAHp75Vc+z0nqUXbqrX9YXi2+rzz4BKT7maFipyB8QgOEKQ9SPw@mail.gmail.com>
+Subject: Re: [PATCH v4 14/20] mfd: intel_soc_pmic_chtwc: Add cht_wc_model data
+ to struct intel_soc_pmic
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Yauhen Kharuzhy <jekhor@gmail.com>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello,
+On Mon, Dec 6, 2021 at 11:35 AM Hans de Goede <hdegoede@redhat.com> wrote:
+>
+> Tablet / laptop designs using an Intel Cherry Trail x86 main SoC with
+> an Intel Whiskey Cove PMIC do not use a single standard setup for
+> the charger, fuel-gauge and other chips surrounding the PMIC /
+> charging+data USB port.
+>
+> Unlike what is normal on x86 this diversity in designs is not handled
+> by the ACPI tables. On 2 of the 3 known designs there are no standard
+> (PNP0C0A) ACPI battery devices and on the 3th design the ACPI battery
+> device does not work under Linux due to it requiring non-standard
+> and undocumented ACPI behavior.
+>
+> So to make things work under Linux we use native charger and fuel-gauge
+> drivers on these devices, re-using the native drivers used on ARM boards
+> with the same charger / fuel-gauge ICs.
+>
+> This requires various MFD-cell drivers for the CHT-WC PMIC cells to
+> know which model they are exactly running on so that they can e.g.
+> instantiate an I2C-client for the right model charger-IC (the charger
+> is connected to an I2C-controller which is part of the PMIC).
+>
+> Rather then duplicating DMI-id matching to check which model we are
+> running on in each MFD-cell driver, add a check for this to the
+> shared drivers/mfd/intel_soc_pmic_chtwc.c code by using a
+> DMI table for all 3 known models:
+>
+> 1. The GPD Win and GPD Pocket mini-laptops, these are really 2 models
+> but the Pocket re-uses the GPD Win's design in a different housing:
+>
+> The WC PMIC is connected to a TI BQ24292i charger, paired with
+> a Maxim MAX17047 fuelgauge + a FUSB302 USB Type-C Controller +
+> a PI3USB30532 USB switch, for a fully functional Type-C port.
+>
+> 2. The Xiaomi Mi Pad 2:
+>
+> The WC PMIC is connected to a TI BQ25890 charger, paired with
+> a TI BQ27520 fuelgauge, using the TI BQ25890 for BC1.2 charger type
+> detection, for a USB-2 only Type-C port without PD.
+>
+> 3. The Lenovo Yoga Book YB1-X90 / Lenovo Yoga Book YB1-X91 series:
+>
+> The WC PMIC is connected to a TI BQ25892 charger, paired with
+> a TI BQ27542 fuelgauge, using the WC PMIC for BC1.2 charger type
+> detection and using the BQ25892's Mediatek Pump Express+ (1.0)
+> support to enable charging with up to 12V through a micro-USB port.
 
-I decided to write you this proposal in good faith, believing that you will=
- not betray me. I have been in search of someone with the same last name of=
- our late customer and close friend of mine (Mr. Richard), heence I contact=
-ed you Because both of you bear the same surname and coincidentally from th=
-e same country, and I was pushed to contact you and see how best we can ass=
-ist each other. Meanwhile I am Mr. Fred Gamba, a reputable banker here in A=
-ccra Ghana.
+...
 
-On the 15 January 2009, the young millionaire (Mr. Richard) a citizen of yo=
-ur country and Crude Oil dealer made a fixed deposit with my bank for 60 ca=
-lendar months, valued at US $ 6,500,000.00 (Six Million, Five Hundred Thous=
-and US Dollars) and The mature date for this deposit contract was on 15th o=
-f January, 2015. But sadly he was among the death victims in the 03 March 2=
-011, Earthquake disaster in Japan that killed over 20,000 people including =
-him. Because he was in Japan on a business trip and that was how he met his=
- end.
+> +enum intel_cht_wc_models {
+> +       INTEL_CHT_WC_UNKNOWN,
+> +       INTEL_CHT_WC_GPD_WIN_POCKET,
+> +       INTEL_CHT_WC_XIAOMI_MIPAD2,
+> +       INTEL_CHT_WC_LENOVO_YOGABOOK1,
+> +};
 
-My bank management is yet to know about his death, but I knew about it beca=
-use he was my friend and I am his Account Relationship Officer, and he did =
-not mention any Next of Kin / Heir when the account was opened, because he =
-was not married and no children. Last week my Bank Management reminded me a=
-gain requested that Mr. Richard should give instructions on what to do abou=
-t his funds, if to renew the contract or not.
+...
 
-I know this will happen and that is why I have been looking for a means to =
-handle the situation, because if my Bank Directors happens to know that he =
-is dead and do not have any Heir, they will take the funds for their person=
-al use, That is why I am seeking your co-operation to present you as the Ne=
-xt of Kin / Heir to the account, since you bear same last name with the dec=
-eased customer.
+> +       enum intel_cht_wc_models cht_wc_model;
 
-There is no risk involved; the transaction will be executed under a legitim=
-ate arrangement that will protect you from any breach of law okay. So It's =
-better that we claim the money, than allowing the Bank Directors to take it=
-, they are rich already. I am not a greedy person, so I am suggesting we sh=
-are the funds in this ratio, 50% 50, ie equal.
+I'm wondering what will you do when something similar will be needed
+for another PMIC?
 
-Let me know your mind on this and please do treat this information highly c=
-onfidential.
+I see possible solutions to eliminate additional churn:
+- make just one enum for all models (can be done now, can be renamed later)
+- make a union if we have such situation
 
-I will review further information to you as soon as I receive your
-positive response.
+because I wouldn't like to have another field for each possible
+variant of PMIC in the generic structure.
 
-Have a nice day and I anticipating your communication.
+Hence the question, does it make sense to just name it (enum and
+member) less cht_wc oriented?
 
-With Regards,
-Fred Gamba.
+-- 
+With Best Regards,
+Andy Shevchenko
