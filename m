@@ -2,154 +2,244 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1707246C672
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Dec 2021 22:12:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ABFF46CAC3
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Dec 2021 03:20:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237176AbhLGVQU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 7 Dec 2021 16:16:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57930 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229812AbhLGVQU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 7 Dec 2021 16:16:20 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 478D7C061574;
-        Tue,  7 Dec 2021 13:12:49 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 09BF6B81E80;
-        Tue,  7 Dec 2021 21:12:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC890C341C6;
-        Tue,  7 Dec 2021 21:12:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638911566;
-        bh=Wk563gZgYgtu8GxzZ2NAZJQhdfrVeMSvAYGKU1N9DE0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=JQkZ9L3UE9lbs0DFU/Lg/0MmVArCZnlgeW+h2yJsXPE+IPi0BPwCt5E/BYzZeJkBp
-         1ibnWEIMh7pRmm1QDkBU7YczYjb87snQTkTaS9/mmPgXckkYQ4sUv0hZc1V6OhPO2/
-         Pe06up8EmdtFB8o9iu6Vcm0YoVQfXIo0j2ymROzCnRl7SFMNjtdY3R2YdaYiUtyFen
-         QgUj42WXSTFqgvHq2RHVtJxKqqb9+HT6sdVTcO+0Lkxds9x9NrPe2cWUNZOMmUs6Rr
-         nP+eD3Us+mwqJ6gIuFSZFL6p4WJ0aaZ0cxMZRv2QByUK66sVwk2B8EGy+T2v2hXFEW
-         Ha2PnoGPSAclw==
-Received: by mail-ed1-f50.google.com with SMTP id r25so1044924edq.7;
-        Tue, 07 Dec 2021 13:12:46 -0800 (PST)
-X-Gm-Message-State: AOAM533mFye894/m7HyuKvLFRRIsX0L2cKEczWrvxkYwNHuPQlzb5vNc
-        LSG2KFO6EzlurlFVayBoucRH8FHTq9QT64qwMg==
-X-Google-Smtp-Source: ABdhPJx3pCJatQo5ZDkz+iIedAgS5UWQ9f5rZvjfx/ywhKjZj5zkYicvAVXLgX7lYzmOtFWx/7Hpe2W/ubuaXnj3eiE=
-X-Received: by 2002:a05:6402:440f:: with SMTP id y15mr13101561eda.22.1638911564955;
- Tue, 07 Dec 2021 13:12:44 -0800 (PST)
+        id S234690AbhLHCX4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 7 Dec 2021 21:23:56 -0500
+Received: from mga17.intel.com ([192.55.52.151]:10874 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229481AbhLHCXz (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 7 Dec 2021 21:23:55 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10191"; a="218423007"
+X-IronPort-AV: E=Sophos;i="5.87,296,1631602800"; 
+   d="scan'208";a="218423007"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2021 18:20:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,296,1631602800"; 
+   d="scan'208";a="679710415"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 07 Dec 2021 18:20:21 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mumZA-000NFi-Uw; Wed, 08 Dec 2021 02:20:20 +0000
+Date:   Wed, 08 Dec 2021 10:19:54 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 3a18d25cb8362cb785028df7691a63325aaba356
+Message-ID: <61b0164a.YhQfoJfTzjE5l8Ct%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20211205190101.26de4a57@jic23-huawei> <CAHp75VeqVTnMyjbmfKhvgTVaj1G+gq6FXfVR4EZjXLjSdO7ETA@mail.gmail.com>
-In-Reply-To: <CAHp75VeqVTnMyjbmfKhvgTVaj1G+gq6FXfVR4EZjXLjSdO7ETA@mail.gmail.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 7 Dec 2021 15:12:33 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKdMjVbMcK5k5c9YEKAzcOTK6JXLWzxHbxPSdUgvM=m8A@mail.gmail.com>
-Message-ID: <CAL_JsqKdMjVbMcK5k5c9YEKAzcOTK6JXLWzxHbxPSdUgvM=m8A@mail.gmail.com>
-Subject: Re: RFC: Should we have a device_for_each_available_child_node()?
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Dec 5, 2021 at 1:48 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> I think we need Rob here (or anybody with DT API knowledge) to explain
-> this subtle detail you found, i.e. checking node for availability in
-> of_fwnode_get_next_child_node(). This raises another question why do
-> we have for_each_available_child_of_node() in the first place if it's
-> equivalent (is it?) to for_each_child_of_node()/
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 3a18d25cb8362cb785028df7691a63325aaba356  Merge branches 'thermal-int340x' and 'thermal-tools' into linux-next
 
-It's not equivalent, but in an ideal world they would have been. Most
-of the time, one should be using for_each_available_child_of_node() as
-that treats disabled nodes as if they were non-existent.
-Unfortunately, there are some cases where walking the disabled nodes
-is desirable/needed. On !Arm, disabled CPU nodes are ones that are
-offline for example.
+elapsed time: 736m
 
-Ideally, we would have had for_each_child_of_node() and
-for_each_yes_I_really_want_disabled_child_of_node() instead.
+configs tested: 183
+configs skipped: 3
 
-> On Sun, Dec 5, 2021 at 8:55 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > Hi All,
-> >
-> > This came up in review of
-> > https://lore.kernel.org/linux-iio/20210725172458.487343-1-jic23@kernel.org/
-> > which is a series converting a dt only driver over to generic properties.
-> > I'm sending a separate email to raise the profile of the question rather
-> > higher than it was buried in a driver review.
-> >
-> > The original code used for_each_available_child_of_node(np, child)
-> > and the patch converted it to device_for_each_child_node().
-> >
-> > Andy raised the question of whether it should have been
-> > device_for_each_available_child_node() but that doesn't exist currently.
-> >
-> > Things get more interesting when you look at the implementation of
-> > device_for_each_child_node() which uses device_get_next_child_node()
-> > which in turn calls fwnode_get_next_child_node() which calls
-> > the get_next_child_node() op and for of that is
-> > of_fwnode_get_next_child_node() which uses of_get_next_available_child()
-> > rather than of_get_next_child().
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-That may have been based on my feedback so that fwnode has the 'right'
-interface...
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211207
+arm                         axm55xx_defconfig
+sh                         microdev_defconfig
+mips                     loongson1c_defconfig
+s390                             allmodconfig
+sh                     sh7710voipgw_defconfig
+powerpc                  iss476-smp_defconfig
+m68k                             alldefconfig
+arc                           tb10x_defconfig
+arm                           tegra_defconfig
+powerpc                 mpc837x_rdb_defconfig
+csky                                defconfig
+h8300                            allyesconfig
+h8300                     edosk2674_defconfig
+mips                           rs90_defconfig
+mips                      maltasmvp_defconfig
+nds32                            alldefconfig
+powerpc                     redwood_defconfig
+sh                          sdk7786_defconfig
+arm                           h5000_defconfig
+powerpc                mpc7448_hpc2_defconfig
+powerpc                     ppa8548_defconfig
+mips                         tb0287_defconfig
+sh                                  defconfig
+powerpc                    mvme5100_defconfig
+sh                            shmin_defconfig
+mips                        bcm63xx_defconfig
+sh                           se7705_defconfig
+mips                           xway_defconfig
+powerpc                      cm5200_defconfig
+sparc64                             defconfig
+powerpc                         wii_defconfig
+sh                        apsh4ad0a_defconfig
+arm                         lpc32xx_defconfig
+h8300                    h8300h-sim_defconfig
+sh                   rts7751r2dplus_defconfig
+powerpc                   motionpro_defconfig
+parisc                           alldefconfig
+arm                           h3600_defconfig
+mips                      loongson3_defconfig
+sh                  sh7785lcr_32bit_defconfig
+mips                           ip22_defconfig
+arm                        shmobile_defconfig
+powerpc                 mpc8313_rdb_defconfig
+arm                           omap1_defconfig
+powerpc                       holly_defconfig
+arm                      pxa255-idp_defconfig
+mips                        workpad_defconfig
+sh                             espt_defconfig
+arm                      footbridge_defconfig
+powerpc                      acadia_defconfig
+sh                           se7721_defconfig
+arm                        mvebu_v7_defconfig
+riscv             nommu_k210_sdcard_defconfig
+sh                         ecovec24_defconfig
+arm                         orion5x_defconfig
+sh                           se7780_defconfig
+powerpc                    ge_imp3a_defconfig
+powerpc                   microwatt_defconfig
+mips                         tb0226_defconfig
+arm                          pxa910_defconfig
+i386                             allyesconfig
+mips                         db1xxx_defconfig
+arc                            hsdk_defconfig
+powerpc                      katmai_defconfig
+s390                                defconfig
+powerpc                      tqm8xx_defconfig
+parisc                generic-64bit_defconfig
+sparc64                          alldefconfig
+arm                         mv78xx0_defconfig
+mips                          ath79_defconfig
+arm                          pcm027_defconfig
+m68k                          sun3x_defconfig
+m68k                        m5272c3_defconfig
+mips                     decstation_defconfig
+powerpc                        fsp2_defconfig
+powerpc                 mpc836x_mds_defconfig
+xtensa                  nommu_kc705_defconfig
+powerpc                     powernv_defconfig
+arc                      axs103_smp_defconfig
+mips                     cu1000-neo_defconfig
+arm                        cerfcube_defconfig
+arm                  colibri_pxa270_defconfig
+powerpc                 mpc836x_rdk_defconfig
+arm                       omap2plus_defconfig
+sh                           se7722_defconfig
+arm                          moxart_defconfig
+m68k                            q40_defconfig
+nds32                             allnoconfig
+powerpc                     tqm8548_defconfig
+sh                        sh7757lcr_defconfig
+nios2                            allyesconfig
+sh                 kfr2r09-romimage_defconfig
+arm                         at91_dt_defconfig
+sparc                               defconfig
+mips                       rbtx49xx_defconfig
+arm                  randconfig-c002-20211207
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20211207
+x86_64               randconfig-a005-20211207
+x86_64               randconfig-a001-20211207
+x86_64               randconfig-a002-20211207
+x86_64               randconfig-a004-20211207
+x86_64               randconfig-a003-20211207
+i386                 randconfig-a001-20211207
+i386                 randconfig-a005-20211207
+i386                 randconfig-a002-20211207
+i386                 randconfig-a003-20211207
+i386                 randconfig-a006-20211207
+i386                 randconfig-a004-20211207
+x86_64               randconfig-a016-20211208
+x86_64               randconfig-a011-20211208
+x86_64               randconfig-a013-20211208
+x86_64               randconfig-a012-20211208
+x86_64               randconfig-a015-20211208
+x86_64               randconfig-a014-20211208
+arc                  randconfig-r043-20211207
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
 
-> > So I think under the hood device_for_each_child_node() on of_ is going to
-> > end up checking the node is available anyway.
-> >
-> > So this all seemed a little odd given there were obvious calls to use
-> > if we wanted to separate the two cases for device tree and they weren't
-> > the ones used.  However, if we conclude that there is a bug here and
-> > the two cases should be handled separately then it will be really hard
-> > to be sure no driver is relying on this behaviour.
-> >
-> > So, ultimately the question is:  Should I add a
-> > device_for_each_available_child_node()?  It will be something like:
-> >
-> > struct fwnode_handle *device_get_next_child_node(struct device *dev,
-> >                                                  struct fwnode_handle *child)
-> > {
-> >         const struct fwnode_handle *fwnode = dev_fwnode(dev);
-> >         struct fwnode_handle *next;
-> >
-> >         /* Try to find a child in primary fwnode */
-> >         next = fwnode_get_next_available_child_node(fwnode, child);
-> >         if (next)
-> >                 return next;
-> >
-> >         /* When no more children in primary, continue with secondary */
-> >         if (fwnode && !IS_ERR_OR_NULL(fwnode->secondary))
-> >                 next = fwnode_get_next_available_child_node(fwnode->secondary, child);
-> >
-> >         return next;
-> > }
-> >
-> > #define device_for_each_child_node(dev, child)                          \
-> >         for (child = device_get_next_available_child_node(dev, NULL); child;    \
-> >              child = device_get_next_avaialble_child_node(dev, child))
-> >
-> > As far as I can tell it doesn't make any difference for my particular bit
-> > of refactoring in the sense of I won't break anything that currently
-> > works by using device_for_each_child_node() but it may cause issues with
-> > other firmware by enumerating disabled child nodes.
-> >
-> > Jonathan
-> >
-> >
-> >
-> >
-> >
->
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+clang tested configs:
+x86_64               randconfig-c007-20211207
+arm                  randconfig-c002-20211207
+riscv                randconfig-c006-20211207
+mips                 randconfig-c004-20211207
+i386                 randconfig-c001-20211207
+powerpc              randconfig-c003-20211207
+s390                 randconfig-c005-20211207
+x86_64               randconfig-a016-20211207
+x86_64               randconfig-a011-20211207
+x86_64               randconfig-a013-20211207
+x86_64               randconfig-a014-20211207
+x86_64               randconfig-a015-20211207
+x86_64               randconfig-a012-20211207
+i386                 randconfig-a016-20211207
+i386                 randconfig-a013-20211207
+i386                 randconfig-a011-20211207
+i386                 randconfig-a014-20211207
+i386                 randconfig-a012-20211207
+i386                 randconfig-a015-20211207
+hexagon              randconfig-r045-20211207
+s390                 randconfig-r044-20211207
+riscv                randconfig-r042-20211207
+hexagon              randconfig-r041-20211207
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
