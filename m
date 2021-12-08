@@ -2,61 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3689146D5DF
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Dec 2021 15:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 463E046D5E1
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Dec 2021 15:37:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231708AbhLHOlM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Dec 2021 09:41:12 -0500
-Received: from mail-oi1-f176.google.com ([209.85.167.176]:40839 "EHLO
-        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbhLHOlM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Dec 2021 09:41:12 -0500
-Received: by mail-oi1-f176.google.com with SMTP id bk14so4362516oib.7
-        for <linux-acpi@vger.kernel.org>; Wed, 08 Dec 2021 06:37:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Fb7IbPviEYmH8VHKgSN3rqfV+7O0S1aNR8xN78V2ehA=;
-        b=6XwX2JDnqvW5WOH4LTNdKgrO2eHZ9H7CK61kp0F8E3iY/cNMr/eO3UZHXn7AxaW8wD
-         JnH2H9d91P9oYt25uQ2IeEfGWo9bwgtEw/Obwg/fA4HGHmnjhxyNmcmTawGDOLXZvvYs
-         pgxDQA1cyS5tBto8UByXeEqFoVHth8c/IotbwSgr5OhUTfMPnCc5UTrV2xVkXxzFV6BH
-         XcXizW+PtVtIgGyrzJFqEodH2ju5O0BnTt9MSUBYHIonYPeT34NfrAvY72nTNpflB+kY
-         w/HhMuwR0yoMg2JdgqqU4XRwhaGw8RVonCFLe4AOCO2cPcLHTVzY+fnQKITxsBmmjD/k
-         6OkQ==
-X-Gm-Message-State: AOAM533xMwVVGLD5hcpMjIFWuaJBtiIMOtAyhgdpddkElB1od+nq7htO
-        y/D2Kn2XHRGeSw2ApJ6jhBD2eWGHLuBTDrUbRvo=
-X-Google-Smtp-Source: ABdhPJz7aGbICzMNWSQMZc6LfyC6qzhDvFv/1xDW8BBezl6HOoiCkmNCSC1MDoladpt0WOvzYIgfxrE4FNLO6oKCZ3g=
-X-Received: by 2002:a05:6808:1454:: with SMTP id x20mr1638483oiv.166.1638974260131;
- Wed, 08 Dec 2021 06:37:40 -0800 (PST)
+        id S235258AbhLHOl1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Dec 2021 09:41:27 -0500
+Received: from foss.arm.com ([217.140.110.172]:33218 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229611AbhLHOl0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 8 Dec 2021 09:41:26 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D50D3101E;
+        Wed,  8 Dec 2021 06:37:54 -0800 (PST)
+Received: from [10.57.34.58] (unknown [10.57.34.58])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D25543F73B;
+        Wed,  8 Dec 2021 06:37:52 -0800 (PST)
+Message-ID: <b268f857-52a4-62fb-c748-176dc86769fb@arm.com>
+Date:   Wed, 8 Dec 2021 14:37:49 +0000
 MIME-Version: 1.0
-References: <20211126152109.230986-1-hdegoede@redhat.com> <YaEA61kEgkneyOlH@smile.fi.intel.com>
-In-Reply-To: <YaEA61kEgkneyOlH@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 8 Dec 2021 15:37:29 +0100
-Message-ID: <CAJZ5v0hcQyn7K8VZ6K_nRUBLK6wLLMDyL9CSjCD7uwYgGqY8eg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ACPI: PMIC: constify all struct intel_pmic_opregion_data
- declarations
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Andy Shevchenko <andy@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: [PATCH v7 2/9] ACPI/IORT: Add support for RMR node parsing
+Content-Language: en-GB
+To:     Jon Nettleton <jon@solid-run.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux IOMMU <iommu@lists.linux-foundation.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        Steven Price <steven.price@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        yangyicong <yangyicong@huawei.com>,
+        Sami Mujawar <Sami.Mujawar@arm.com>,
+        Will Deacon <will@kernel.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>
+References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
+ <20210805080724.480-3-shameerali.kolothum.thodi@huawei.com>
+ <e24df2a9-1332-0eb3-b52a-230662fe46ba@arm.com>
+ <CABdtJHvY5XnQN7wgQ9D8Zcu-NgHRmaUMFPgaPGZwM+AhmVpULw@mail.gmail.com>
+ <3225875e-ebd9-6378-e92c-ed3894d8aedc@arm.com>
+ <CABdtJHsOShKrRMp33JvbVKuTMLEcHQKaDw0wtZ0igoeGeWJTQg@mail.gmail.com>
+ <20211208121854.GA7317@e123427-lin.cambridge.arm.com>
+ <CABdtJHvOo+xG3pp0U1LyEAKqeUdU68tXNFN3PZBhgKVe0N=fUA@mail.gmail.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <CABdtJHvOo+xG3pp0U1LyEAKqeUdU68tXNFN3PZBhgKVe0N=fUA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 26, 2021 at 4:50 PM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
->
-> On Fri, Nov 26, 2021 at 04:21:07PM +0100, Hans de Goede wrote:
-> > The struct intel_pmic_opregion_data declarations never change,
-> > constify them all.
->
-> Makes sense!
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Jon,
 
-Applied as 5.17 material along with the [2-3/3], thanks!
+On 2021-12-08 13:26, Jon Nettleton wrote:
+[...]
+>>> Even marking them as IOMMU_READ/WRITE is as much of an assumption as
+>>> using IOMMU_MMIO or IOMMU_CACHE. It just seems IOMMU_MMIO is the most
+>>> popular since all the examples use it for MSI doorbells in the
+>>> documentation.
+>>
+>> We don't merge code based on assumptions that can easily break because
+>> the specifications don't contemplate the details that are required.
+>>
+>>> I am interested why this concern is only being brought up at this point
+>>> on a patchset that has been on the mailing list for 8+ months?
+>>
+>> See above. We don't merge code that we know can break and is based on
+>> assumptions, we need to update the IORT specifications to make them
+>> cover all the use cases - in a predictable way - and that's what we are
+>> working on.
+> 
+> This is not really an answer to the question.  The latest version of the
+> IORT RMR spec was published in Feb 2021. Why was this issue not
+> brought up with Rev 1 of this patchset? Instead you have wasted
+> 10 months of developer and customer time. This could have easily been
+> turned into a code first spec change request, which is a valid option
+> for ACPI changes.
+
+It was only on v5 of the patchset - *six months* after the original RFC 
+posting - that anyone even first started to question the initial 
+assumptions made about attributes[1], and even then somebody familiar 
+countered that it didn't appear to matter[2]. Sorry, but you don't get 
+to U-turn and throw unjust shade at Arm for not being prescient.
+
+Yes, when those of us within Arm set out the initial RMR spec, an 
+assumption was made that it seemed reasonable for an OS to simply pick 
+some default strong memory type (Device or Normal-NC) and full 
+permissions if it did need to map RMRs at stage 1. That spec was 
+reviewed and published externally and no interested parties came forth 
+asking "hey, what about attributes?". Linux patches were written around 
+that assumption and proceeded through many rounds of review until we 
+eventually received sufficient feedback to demonstrate that the 
+assumption did not in fact hold well enough in general and there seemed 
+to be a genuine need for RMR attributes, and at that point we started 
+work on revising the spec.
+
+In the meantime, these patches have sat at v7 for four months - the 
+*other* outstanding review comments have not been addressed; I still 
+don't recall seeing an answer about whether LX2160 or anything else 
+currently deployed actually *needs* cacheable mappings or whether it 
+could muddle through with the IOMMU_MMIO assumption until proper "RMR 
+v2" support arrived later; even if so, an interim workaround specific to 
+LX2160 could have been proposed but hasn't. It is hardly reasonable to 
+pretend that Arm or the upstream maintainers are responsible for a lack 
+of development activity on the part of the submitters, no matter how 
+much blatant misinformation is repeated on Twitter.
+
+Regards,
+Robin.
+
+[1] 
+https://lore.kernel.org/linux-iommu/13c2499e-cc0c-d395-0d60-6c3437f206ac@nxp.com/
+[2] 
+https://lore.kernel.org/linux-iommu/CABdtJHv2QBHNoWTyp51H-J_apc75imPj0FbrV70Tm8xuNjpiTA@mail.gmail.com/
+
+>>
+>>> This is based on a spec that has existed from Arm since 2020 with the
+>>> most recent revisions published in Feb 2021.  The lack of RMR support
+>>> in the kernel is affecting real world products, and the ability for
+>>> SystemReady ES certified systems from just fully working with recent
+>>> distributions.
+>>
+>> I answered above - if you have any questions please ask them, here,
+>> as far as Linux code is concerned.
+>>
+>> I understand this is taking a long time, it is also helping us
+>> understand all the possible use cases and how to cover them in
+>> a way that is maintainable in the long run.
+> 
+> Every month that this patchset has sat being unattended by the
+> maintainers is another kernel dev cycle missed, it is another
+> another distribution release where users need to add hackish
+> kernel command-line options to disable security features that
+> were forced on by default. Not to mention Linux is just one
+> platform. What if other platforms have already adopted the
+> existing spec? These are Arm specs and Arm maintainers and
+> yet nobody seems to agree on anything and absolutely nothing
+> has been achieved except wasting the time of Shameer, myself,
+> our companies, and our customers.
+> 
+> -Jon
+> 
+>>
+>> Thanks,
+>> Lorenzo
+>>
+>>> Even worse, is that without this patchset customers are forced to jump
+>>> through hoops to purposefully re-enable smmu bypass making their
+>>> systems less secure.
+>>>
+>>> How is this a good experience for customers of SystemReady hardware
+>>> when for any mainline distribution to work the first thing they have
+>>> to do is make their system less secure?
+>>>
+>>> -Jon
+>>>
+>>>>
+>>>> Thanks,
+>>>> Robin.
+>>>
