@@ -2,163 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 463E046D5E1
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Dec 2021 15:37:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9098B46D647
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Dec 2021 15:58:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235258AbhLHOl1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Dec 2021 09:41:27 -0500
-Received: from foss.arm.com ([217.140.110.172]:33218 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229611AbhLHOl0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 8 Dec 2021 09:41:26 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D50D3101E;
-        Wed,  8 Dec 2021 06:37:54 -0800 (PST)
-Received: from [10.57.34.58] (unknown [10.57.34.58])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D25543F73B;
-        Wed,  8 Dec 2021 06:37:52 -0800 (PST)
-Message-ID: <b268f857-52a4-62fb-c748-176dc86769fb@arm.com>
-Date:   Wed, 8 Dec 2021 14:37:49 +0000
+        id S235720AbhLHPCL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Dec 2021 10:02:11 -0500
+Received: from mail-oi1-f176.google.com ([209.85.167.176]:36683 "EHLO
+        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235633AbhLHPCJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Dec 2021 10:02:09 -0500
+Received: by mail-oi1-f176.google.com with SMTP id t23so4492178oiw.3;
+        Wed, 08 Dec 2021 06:58:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pYgHMZyP/SCresb9+R/6+9a+5haS0Ujj/DJvPk9PiVU=;
+        b=Jsrh8Xb/rlKz7q8oBpVQhX+svRWmoYrg5NttbPzaTpBM0jKuvvBRzcIppzwy/X4Z4h
+         Wy2lbV2Givs2fTExb/VUJp0PwePPBlcz8Y7ov1ySHFI/uKMQnWo7fMcxJ9TWAedRyn8A
+         HZNwCGQvh46qx9hdbTvt3HNAYVAD9ObCtKIhqf5dLvyciFkpmy4cRrtnv9hiWhHLeepS
+         wQaXiW4OmtLd/N77YhT+3WsYmwS/nAJ8AH5SMZCxB2HHEme055dG18cGFmDSoW+BiZeU
+         pwmcub/va9+LDXowVzrCfr5pZAdH0Y7WJOSSBgtHacaUviDFrVpoIrihac0IHU5quVKx
+         NJRg==
+X-Gm-Message-State: AOAM53244/L6fgJczoeXqTcxWmrwVmGmct04yoXnF8Mav42vg9dIHR5C
+        Jg3UJo8qEIxdOscccfaHh+PxVUBjhZsSvYc4qm4i7iof
+X-Google-Smtp-Source: ABdhPJzJLywQoA8bmDyhHvJ14lg4mSgPhruhShHGSHHoBi0bd0BNCOXk+BeElaOWsKWqMPX8ftAfkd67Ps38ExQYCcw=
+X-Received: by 2002:aca:eb0b:: with SMTP id j11mr12009677oih.51.1638975517572;
+ Wed, 08 Dec 2021 06:58:37 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: [PATCH v7 2/9] ACPI/IORT: Add support for RMR node parsing
-Content-Language: en-GB
-To:     Jon Nettleton <jon@solid-run.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Cc:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+References: <CAJZ5v0gLwSvPfWzYwiZXee8SiPiQQoxjfKfVn4jx6wK_9VVEeg@mail.gmail.com>
+ <20211206122952.74139-1-kirill.shutemov@linux.intel.com> <20211206122952.74139-2-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20211206122952.74139-2-kirill.shutemov@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 8 Dec 2021 15:58:26 +0100
+Message-ID: <CAJZ5v0g4bCYJHrbWXrQWwhYa9QNCAFfia4gB6e7PWWXeuVycAQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] ACPICA: Do not flush cache for on entering S4 and S5
+To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Robert Moore <robert.moore@intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux IOMMU <iommu@lists.linux-foundation.org>,
-        Linuxarm <linuxarm@huawei.com>,
-        Steven Price <steven.price@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        yangyicong <yangyicong@huawei.com>,
-        Sami Mujawar <Sami.Mujawar@arm.com>,
-        Will Deacon <will@kernel.org>,
-        wanghuiqiang <wanghuiqiang@huawei.com>
-References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
- <20210805080724.480-3-shameerali.kolothum.thodi@huawei.com>
- <e24df2a9-1332-0eb3-b52a-230662fe46ba@arm.com>
- <CABdtJHvY5XnQN7wgQ9D8Zcu-NgHRmaUMFPgaPGZwM+AhmVpULw@mail.gmail.com>
- <3225875e-ebd9-6378-e92c-ed3894d8aedc@arm.com>
- <CABdtJHsOShKrRMp33JvbVKuTMLEcHQKaDw0wtZ0igoeGeWJTQg@mail.gmail.com>
- <20211208121854.GA7317@e123427-lin.cambridge.arm.com>
- <CABdtJHvOo+xG3pp0U1LyEAKqeUdU68tXNFN3PZBhgKVe0N=fUA@mail.gmail.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <CABdtJHvOo+xG3pp0U1LyEAKqeUdU68tXNFN3PZBhgKVe0N=fUA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Jon,
+On Mon, Dec 6, 2021 at 1:30 PM Kirill A. Shutemov
+<kirill.shutemov@linux.intel.com> wrote:
+>
+> According to the ACPI spec v6.4, section 16.2 the cache flushing is
+> required on entering to S1, S2, and S3. ACPICA code flushes cache
+> regardless of the sleep state.
+>
+> Blind cache flush on entering S5 causes problems for TDX. Flushing
+> happens with WBINVD that is not supported in the TDX environment.
+>
+> TDX only supports S5 and adjusting ACPICA code to conform to the spec
+> fixes the issue.
+>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-On 2021-12-08 13:26, Jon Nettleton wrote:
-[...]
->>> Even marking them as IOMMU_READ/WRITE is as much of an assumption as
->>> using IOMMU_MMIO or IOMMU_CACHE. It just seems IOMMU_MMIO is the most
->>> popular since all the examples use it for MSI doorbells in the
->>> documentation.
->>
->> We don't merge code based on assumptions that can easily break because
->> the specifications don't contemplate the details that are required.
->>
->>> I am interested why this concern is only being brought up at this point
->>> on a patchset that has been on the mailing list for 8+ months?
->>
->> See above. We don't merge code that we know can break and is based on
->> assumptions, we need to update the IORT specifications to make them
->> cover all the use cases - in a predictable way - and that's what we are
->> working on.
-> 
-> This is not really an answer to the question.  The latest version of the
-> IORT RMR spec was published in Feb 2021. Why was this issue not
-> brought up with Rev 1 of this patchset? Instead you have wasted
-> 10 months of developer and customer time. This could have easily been
-> turned into a code first spec change request, which is a valid option
-> for ACPI changes.
+I've converted this patch to the upstream ACPICA code base format and
+submitted a pull request with it to the upstream project.
 
-It was only on v5 of the patchset - *six months* after the original RFC 
-posting - that anyone even first started to question the initial 
-assumptions made about attributes[1], and even then somebody familiar 
-countered that it didn't appear to matter[2]. Sorry, but you don't get 
-to U-turn and throw unjust shade at Arm for not being prescient.
+Thanks!
 
-Yes, when those of us within Arm set out the initial RMR spec, an 
-assumption was made that it seemed reasonable for an OS to simply pick 
-some default strong memory type (Device or Normal-NC) and full 
-permissions if it did need to map RMRs at stage 1. That spec was 
-reviewed and published externally and no interested parties came forth 
-asking "hey, what about attributes?". Linux patches were written around 
-that assumption and proceeded through many rounds of review until we 
-eventually received sufficient feedback to demonstrate that the 
-assumption did not in fact hold well enough in general and there seemed 
-to be a genuine need for RMR attributes, and at that point we started 
-work on revising the spec.
-
-In the meantime, these patches have sat at v7 for four months - the 
-*other* outstanding review comments have not been addressed; I still 
-don't recall seeing an answer about whether LX2160 or anything else 
-currently deployed actually *needs* cacheable mappings or whether it 
-could muddle through with the IOMMU_MMIO assumption until proper "RMR 
-v2" support arrived later; even if so, an interim workaround specific to 
-LX2160 could have been proposed but hasn't. It is hardly reasonable to 
-pretend that Arm or the upstream maintainers are responsible for a lack 
-of development activity on the part of the submitters, no matter how 
-much blatant misinformation is repeated on Twitter.
-
-Regards,
-Robin.
-
-[1] 
-https://lore.kernel.org/linux-iommu/13c2499e-cc0c-d395-0d60-6c3437f206ac@nxp.com/
-[2] 
-https://lore.kernel.org/linux-iommu/CABdtJHv2QBHNoWTyp51H-J_apc75imPj0FbrV70Tm8xuNjpiTA@mail.gmail.com/
-
->>
->>> This is based on a spec that has existed from Arm since 2020 with the
->>> most recent revisions published in Feb 2021.  The lack of RMR support
->>> in the kernel is affecting real world products, and the ability for
->>> SystemReady ES certified systems from just fully working with recent
->>> distributions.
->>
->> I answered above - if you have any questions please ask them, here,
->> as far as Linux code is concerned.
->>
->> I understand this is taking a long time, it is also helping us
->> understand all the possible use cases and how to cover them in
->> a way that is maintainable in the long run.
-> 
-> Every month that this patchset has sat being unattended by the
-> maintainers is another kernel dev cycle missed, it is another
-> another distribution release where users need to add hackish
-> kernel command-line options to disable security features that
-> were forced on by default. Not to mention Linux is just one
-> platform. What if other platforms have already adopted the
-> existing spec? These are Arm specs and Arm maintainers and
-> yet nobody seems to agree on anything and absolutely nothing
-> has been achieved except wasting the time of Shameer, myself,
-> our companies, and our customers.
-> 
-> -Jon
-> 
->>
->> Thanks,
->> Lorenzo
->>
->>> Even worse, is that without this patchset customers are forced to jump
->>> through hoops to purposefully re-enable smmu bypass making their
->>> systems less secure.
->>>
->>> How is this a good experience for customers of SystemReady hardware
->>> when for any mainline distribution to work the first thing they have
->>> to do is make their system less secure?
->>>
->>> -Jon
->>>
->>>>
->>>> Thanks,
->>>> Robin.
->>>
+> ---
+>  drivers/acpi/acpica/hwesleep.c  | 3 ++-
+>  drivers/acpi/acpica/hwsleep.c   | 3 ++-
+>  drivers/acpi/acpica/hwxfsleep.c | 2 --
+>  3 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/acpi/acpica/hwesleep.c b/drivers/acpi/acpica/hwesleep.c
+> index 808fdf54aeeb..ceb5a4292efa 100644
+> --- a/drivers/acpi/acpica/hwesleep.c
+> +++ b/drivers/acpi/acpica/hwesleep.c
+> @@ -104,7 +104,8 @@ acpi_status acpi_hw_extended_sleep(u8 sleep_state)
+>
+>         /* Flush caches, as per ACPI specification */
+>
+> -       ACPI_FLUSH_CPU_CACHE();
+> +       if (sleep_state < ACPI_STATE_S4)
+> +               ACPI_FLUSH_CPU_CACHE();
+>
+>         status = acpi_os_enter_sleep(sleep_state, sleep_control, 0);
+>         if (status == AE_CTRL_TERMINATE) {
+> diff --git a/drivers/acpi/acpica/hwsleep.c b/drivers/acpi/acpica/hwsleep.c
+> index 34a3825f25d3..ee094a3aaaab 100644
+> --- a/drivers/acpi/acpica/hwsleep.c
+> +++ b/drivers/acpi/acpica/hwsleep.c
+> @@ -110,7 +110,8 @@ acpi_status acpi_hw_legacy_sleep(u8 sleep_state)
+>
+>         /* Flush caches, as per ACPI specification */
+>
+> -       ACPI_FLUSH_CPU_CACHE();
+> +       if (sleep_state < ACPI_STATE_S4)
+> +               ACPI_FLUSH_CPU_CACHE();
+>
+>         status = acpi_os_enter_sleep(sleep_state, pm1a_control, pm1b_control);
+>         if (status == AE_CTRL_TERMINATE) {
+> diff --git a/drivers/acpi/acpica/hwxfsleep.c b/drivers/acpi/acpica/hwxfsleep.c
+> index e4cde23a2906..ba77598ee43e 100644
+> --- a/drivers/acpi/acpica/hwxfsleep.c
+> +++ b/drivers/acpi/acpica/hwxfsleep.c
+> @@ -162,8 +162,6 @@ acpi_status acpi_enter_sleep_state_s4bios(void)
+>                 return_ACPI_STATUS(status);
+>         }
+>
+> -       ACPI_FLUSH_CPU_CACHE();
+> -
+>         status = acpi_hw_write_port(acpi_gbl_FADT.smi_command,
+>                                     (u32)acpi_gbl_FADT.s4_bios_request, 8);
+>         if (ACPI_FAILURE(status)) {
+> --
+> 2.32.0
+>
