@@ -2,102 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A099246CE42
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Dec 2021 08:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0691246D216
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Dec 2021 12:23:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244480AbhLHHYM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Dec 2021 02:24:12 -0500
-Received: from mga09.intel.com ([134.134.136.24]:7164 "EHLO mga09.intel.com"
+        id S229616AbhLHL1R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Dec 2021 06:27:17 -0500
+Received: from mga11.intel.com ([192.55.52.93]:3531 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236023AbhLHHYL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 8 Dec 2021 02:24:11 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10191"; a="237581905"
-X-IronPort-AV: E=Sophos;i="5.87,296,1631602800"; 
-   d="scan'208";a="237581905"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2021 23:20:38 -0800
-X-IronPort-AV: E=Sophos;i="5.87,296,1631602800"; 
-   d="scan'208";a="515652550"
-Received: from chenyu-desktop.sh.intel.com (HELO chenyu-desktop) ([10.239.158.186])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2021 23:20:35 -0800
-Date:   Wed, 8 Dec 2021 15:20:22 +0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        id S230037AbhLHL1R (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 8 Dec 2021 06:27:17 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10191"; a="235322839"
+X-IronPort-AV: E=Sophos;i="5.87,297,1631602800"; 
+   d="scan'208";a="235322839"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2021 03:23:45 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,297,1631602800"; 
+   d="scan'208";a="658155269"
+Received: from kuha.fi.intel.com ([10.237.72.166])
+  by fmsmga001.fm.intel.com with SMTP; 08 Dec 2021 03:23:42 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 08 Dec 2021 13:23:41 +0200
+Date:   Wed, 8 Dec 2021 13:23:41 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Robert Moore <robert.moore@intel.com>
-Subject: Re: [PATCH v11 4/4] tools: Introduce power/acpi/tools/pfru
-Message-ID: <20211208072022.GB261963@chenyu-desktop>
-References: <cover.1637505679.git.yu.c.chen@intel.com>
- <a1f688cd4ade1257e96d13c91eba72a1aeef5d59.1637505679.git.yu.c.chen@intel.com>
- <CAJZ5v0gLXxvzKcjSFH0Coq_VRE9fiT9AiCD_vsg7x1Gaq62V+A@mail.gmail.com>
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Prashant Malani <pmalani@chromium.org>,
+        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/5] usb: typec: port-mapper: Convert to the component
+ framework
+Message-ID: <YbCVvVMjf7Q9Y0og@kuha.fi.intel.com>
+References: <20211207143757.21895-1-heikki.krogerus@linux.intel.com>
+ <20211207143757.21895-5-heikki.krogerus@linux.intel.com>
+ <Ya+BvnS8XqW9NpNc@smile.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0gLXxvzKcjSFH0Coq_VRE9fiT9AiCD_vsg7x1Gaq62V+A@mail.gmail.com>
+In-Reply-To: <Ya+BvnS8XqW9NpNc@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 07, 2021 at 08:52:03PM +0100, Rafael J. Wysocki wrote:
-> On Sun, Nov 21, 2021 at 4:18 PM Chen Yu <yu.c.chen@intel.com> wrote:
-> >
-> > Introduce a user space tool to make use of the interface exposed by
-> > Platform Firmware Runtime Update and Telemetry drivers. The users
-> > can use this tool to do firmware code injection, driver update and
-> > to retrieve the telemetry data.
-> >
-> > Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-> > ---
-> > v11:No change since v10.
-> > v10:No change since v9.
-> > v9: Add this tool into tools/power/acpi build infrastructure.
-> >     (Andy Shevchenko)
-> > v8: Print the length of OEM information if requested.
-> > v7: No change since v6.
-> > v6: Simplify the userspace tool to use while loop for getopt_long().
-> >     (Andy Shevchenko)
-> > v5: Replace the read() with mmap() so that the userspace
-> >     could mmap once, and read multiple times. (Greg Kroah-Hartman)
-> > ---
-> >  tools/power/acpi/.gitignore          |   1 +
-> >  tools/power/acpi/Makefile            |  16 +-
-> >  tools/power/acpi/Makefile.rules      |   2 +-
-> >  tools/power/acpi/man/pfru.8          | 137 +++++++++
+On Tue, Dec 07, 2021 at 05:46:06PM +0200, Andy Shevchenko wrote:
+> On Tue, Dec 07, 2021 at 05:37:56PM +0300, Heikki Krogerus wrote:
+> > Instead of trying to keep track of the connections to the
+> > USB Type-C connectors separately, letting the component
+> > framework take care of that.
+> > 
+> > From now on every USB Type-C connector will register itself
+> > as "aggregate" - component master - and anything that can be
+> > connected to it can then simply register itself as a generic
+> > component.
+> > 
+> > The matching of the components and the connector shall rely
+> > on ACPI _PLD initially. Before registering itself as the
+> > aggregate, the connector will check the list of other
+> > devices that share the same ACPI _PLD with it, and add a
+> > component match entry for each one of them. Because only
+> > ACPI is supported for now, the driver shall only be build
+> > when ACPI is supported.
+> > 
+> > This removes the need for the custom API that the driver
+> > exposed. The components and the connector can therefore
+> > exist completely independently of each other. The order in
+> > which they are registered, as well as are they modules or
+> > not, is now irrelevant.
 > 
-> I would call it pfrut, because it is for both the update and telemetry
-> retrieval.
->
-Ok, will change it. 
-[cut]
-> > diff --git a/tools/power/acpi/tools/pfru/pfru.c b/tools/power/acpi/tools/pfru/pfru.c
-> > new file mode 100644
-> > index 000000000000..eeec5043f825
-> > --- /dev/null
-> > +++ b/tools/power/acpi/tools/pfru/pfru.c
-> > @@ -0,0 +1,417 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Platform Firmware Runtime Update tool to do Management
-> > + * Mode code injection/driver update and telemetry retrieval.
+> ...
 > 
-> I would be good to say a bit more here, like what interfaces are used
-> by this tool etc.
->
-Ok, will do. 
-> > +}
-> > --
-[cut]
+> > +static int typec_port_compare(struct device *dev, void *fwnode)
+> >  {
 > 
-> Please adjust the patch for the build fixes sent separately.
+> > +	return dev_fwnode(dev) == fwnode;
+> >  }
 > 
-> Otherwise it is fine with me.
-Ok, that patch has been sent separately.
+> NIH device_match_fwnode()
+> 
+> ...
+> 
+> > +	/* Component match for every device that shares the same _PLD. */
+> > +	list_for_each_entry(adev, &location->devices, location_list) {
+> 
+> > +		if (adev == ACPI_COMPANION(&con->dev))
+> 
+> 	device_match_acpi_dev()
 
-thanks,
-Chenyu
+Ah, both look like great helpers. I'll this in v2. Thanks.
+
+-- 
+heikki
