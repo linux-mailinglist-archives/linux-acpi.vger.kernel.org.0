@@ -2,44 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D8B946D7DF
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Dec 2021 17:16:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27EE246D817
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Dec 2021 17:26:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231381AbhLHQTy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 8 Dec 2021 11:19:54 -0500
-Received: from mail-oo1-f51.google.com ([209.85.161.51]:43818 "EHLO
-        mail-oo1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232824AbhLHQTy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Dec 2021 11:19:54 -0500
-Received: by mail-oo1-f51.google.com with SMTP id w5-20020a4a2745000000b002c2649b8d5fso953181oow.10;
-        Wed, 08 Dec 2021 08:16:22 -0800 (PST)
+        id S232691AbhLHQ3z (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 8 Dec 2021 11:29:55 -0500
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:39635 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232478AbhLHQ3z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 8 Dec 2021 11:29:55 -0500
+Received: by mail-oi1-f178.google.com with SMTP id bf8so4792500oib.6;
+        Wed, 08 Dec 2021 08:26:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=DwFWtoKE4vVog1yGDsJGm0AcWb/VEx+43Ax3eUNTpkU=;
-        b=dNvtoHHv6IVKLTYQG5hKmurSsQA8EX7eeJGm+Gwhj+X7/42LoIxiCPixWgYBraX8EY
-         ICjjHvSy4kqlfKAsvhERIYLlrCyEC+mpAwRPI/2Kc/blEFLvU5CvsAYLYokjywgsmBtL
-         IGROG52hujN43BCcsz9BnqtjmzJZPgxck9/znsRHfeo/bf5NIpXHwK3mq9YIE0Tj2nQd
-         pDp6AN+VJI+jifOffguCRxQt6mkK6aBnpftq58t6PlN40xAbW+mjgzxrNftGOuTJFFa2
-         4MP9bqsovPeBNz+yhxNJeUA60J8R4WVntkbZCF/imzOipcN/E/uH4V/P8guJbdsJ9jh+
-         cHEw==
-X-Gm-Message-State: AOAM532LyHM8jsfBDDVDfx6t914uZvCk9fRLDfGq2hoUtBwrmifWvbEc
-        Acmj8RHvQjXs+41cm//ZgYSCNq+DDig7xxEPWPI=
-X-Google-Smtp-Source: ABdhPJxHhipy1K98dWWjyZf8/N1uXhF3mAOMhZoUsYZ30DhMHuuY8PxnGuUdDNVqs7mu/uwsJA5hDb8mwHcpACa9h7k=
-X-Received: by 2002:a4a:ead8:: with SMTP id s24mr282257ooh.89.1638980182205;
- Wed, 08 Dec 2021 08:16:22 -0800 (PST)
+        bh=2QlMufJTFNT9Vlv4+AjFEwWUWEtafIKRof1v70zz+CQ=;
+        b=zi0yp4MpYrYKTuLziNNrXxwj5OYTHR48Nxo4N9q9g4zDgwrhdrIqIFucjOlPSrBiPH
+         tTSXosVebp3zraHBtelvB1/JFNglmO6S1sA4d0tZ56oONd5BfupByqUchoRXzYdYEa0n
+         MHatpkfA9n00tMJcLVXvOCHYzKcFPRMeYXGJG8+rGelA6/9HlGmkv7BtvU9N5AskVWE5
+         twMTkxqBOxRhmC0FsZrtYykAwjjjjt3F9Rxqoxc3EKnSyPrnEXamiqrJ7QgdxH6vLD1L
+         tafQAuOyOwwbNH4311fzcltLUnrrBsNGKQ13m5UMAcnGYeSe+rrGblqYGi5y6uymTKT7
+         D+Qw==
+X-Gm-Message-State: AOAM530SO0SeY+4ejl41UwSuQyKXU8IAdHqOhTq/L04ZECPwYNQQnTUy
+        l3+ilyatWLn/w7fYVRDjIwl7B2IZbiPvenycSTk=
+X-Google-Smtp-Source: ABdhPJxJ3fAV2TWfgdNnVCyB2a7/UMGSRKzTH2CjKdQVUDpC8XZGb/+27um+mGrUKok9PraxdxDiW+Bd1hsbgLUSOA4=
+X-Received: by 2002:a05:6808:1454:: with SMTP id x20mr409139oiv.166.1638980783303;
+ Wed, 08 Dec 2021 08:26:23 -0800 (PST)
 MIME-Version: 1.0
 References: <CAJZ5v0gLwSvPfWzYwiZXee8SiPiQQoxjfKfVn4jx6wK_9VVEeg@mail.gmail.com>
- <20211206122952.74139-1-kirill.shutemov@linux.intel.com> <20211206122952.74139-5-kirill.shutemov@linux.intel.com>
- <CAJZ5v0iH_CQC-ak_NQC5yONT-tFVC1iikSsfVWFh+z+QL5FKdg@mail.gmail.com> <20211208160450.3hplhtikjjvfrhts@black.fi.intel.com>
-In-Reply-To: <20211208160450.3hplhtikjjvfrhts@black.fi.intel.com>
+ <20211206122952.74139-1-kirill.shutemov@linux.intel.com> <20211206122952.74139-4-kirill.shutemov@linux.intel.com>
+ <Ya4mTij+eQPq8dnu@hirez.programming.kicks-ass.net>
+In-Reply-To: <Ya4mTij+eQPq8dnu@hirez.programming.kicks-ass.net>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 8 Dec 2021 17:16:11 +0100
-Message-ID: <CAJZ5v0ghpZuDF0xpJ5ADVx-y8O_n5SM8VNP2O9OiXaUuFC2zsQ@mail.gmail.com>
-Subject: Re: [PATCH 4/4] ACPI: PM: Avoid cache flush on entering S4
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+Date:   Wed, 8 Dec 2021 17:26:12 +0100
+Message-ID: <CAJZ5v0hjcKn0g=Tc90aK_EchOG+sWi8na1HVb0GdtQsYn7sAKQ@mail.gmail.com>
+Subject: Re: [PATCH 3/4] ACPI: processor idle: Only flush cache on entering C3
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Andi Kleen <ak@linux.intel.com>,
         Borislav Petkov <bp@alien8.de>,
         Dan Williams <dan.j.williams@intel.com>,
@@ -60,44 +61,42 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 8, 2021 at 5:04 PM Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
+On Mon, Dec 6, 2021 at 4:03 PM Peter Zijlstra <peterz@infradead.org> wrote:
 >
-> On Wed, Dec 08, 2021 at 04:10:52PM +0100, Rafael J. Wysocki wrote:
-> > On Mon, Dec 6, 2021 at 1:30 PM Kirill A. Shutemov
-> > <kirill.shutemov@linux.intel.com> wrote:
-> > >
-> > > According to the ACPI spec v6.4, section 16.2 the cache flushing
-> > > required on entering to S1, S2, and S3.
-> > >
-> > > No need to flush caches on hibernation (S4).
-> > >
-> > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > > ---
-> > >  drivers/acpi/sleep.c | 2 --
-> > >  1 file changed, 2 deletions(-)
-> > >
-> > > diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> > > index 14e8df0ac762..8166d863ed6b 100644
-> > > --- a/drivers/acpi/sleep.c
-> > > +++ b/drivers/acpi/sleep.c
-> > > @@ -902,8 +902,6 @@ static int acpi_hibernation_enter(void)
-> > >  {
-> > >         acpi_status status = AE_OK;
-> > >
-> > > -       ACPI_FLUSH_CPU_CACHE();
-> > > -
-> > >         /* This shouldn't return.  If it returns, we have a problem */
-> > >         status = acpi_enter_sleep_state(ACPI_STATE_S4);
-> > >         /* Reprogram control registers */
-> > > --
+> On Mon, Dec 06, 2021 at 03:29:51PM +0300, Kirill A. Shutemov wrote:
+> > According to the ACPI spec v6.4, section 8.2, cache flushing required
+> > on entering C3 power state.
 > >
-> > Applied (with some edits in the subject and changelog) as 5.17 material, thanks!
+> > Avoid flushing cache on entering other power states.
+> >
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  drivers/acpi/processor_idle.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> > index 76ef1bcc8848..01495aca850e 100644
+> > --- a/drivers/acpi/processor_idle.c
+> > +++ b/drivers/acpi/processor_idle.c
+> > @@ -567,7 +567,8 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
+> >  {
+> >       struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
+> >
+> > -     ACPI_FLUSH_CPU_CACHE();
+> > +     if (cx->type == ACPI_STATE_C3)
+> > +             ACPI_FLUSH_CPU_CACHE();
+> >
 >
-> Is it for the series or only 4/4?
+> acpi_idle_enter() already does this, acpi_idle_enter_s2idle() has it
+> confused again,
 
-Just for the [4/4].
+No, they do the same thing: acpi_idle_enter_bm() if flags.bm_check is set.
 
-> Do I need to do something for 2/4 and 3/4?
+> Also, I think acpi_idle_enter() does it too late; consider
+> acpi_idle_enter_mb(). Either that or the BM crud needs more comments.
 
-For [2/4] you do as per the comment and let me reply to the [3/4].
+I think the latter.
+
+Evidently, acpi_idle_play_dead(() doesn't support FFH and the BM
+thing, so it is only necessary to flush the cache when using
+ACPI_CSTATE_SYSTEMIO and when cx->type is C3.
