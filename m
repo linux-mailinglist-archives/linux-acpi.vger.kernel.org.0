@@ -2,135 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B55546E624
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Dec 2021 11:06:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74C2846E92D
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Dec 2021 14:32:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232255AbhLIKJp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Dec 2021 05:09:45 -0500
-Received: from mga03.intel.com ([134.134.136.65]:45972 "EHLO mga03.intel.com"
+        id S229710AbhLINft (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Dec 2021 08:35:49 -0500
+Received: from mga02.intel.com ([134.134.136.20]:20047 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232080AbhLIKJo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 9 Dec 2021 05:09:44 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10192"; a="238007233"
+        id S229521AbhLINft (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 Dec 2021 08:35:49 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10192"; a="225362523"
 X-IronPort-AV: E=Sophos;i="5.88,192,1635231600"; 
-   d="scan'208";a="238007233"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2021 02:06:11 -0800
+   d="scan'208";a="225362523"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2021 05:32:15 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,192,1635231600"; 
-   d="scan'208";a="658709770"
-Received: from kuha.fi.intel.com ([10.237.72.166])
-  by fmsmga001.fm.intel.com with SMTP; 09 Dec 2021 02:06:07 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 09 Dec 2021 12:06:06 +0200
-Date:   Thu, 9 Dec 2021 12:06:06 +0200
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Prashant Malani <pmalani@chromium.org>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/5] acpi: Store _PLD information and convert users
-Message-ID: <YbHVDikM6eodP/MR@kuha.fi.intel.com>
-References: <20211207143757.21895-1-heikki.krogerus@linux.intel.com>
- <CACeCKaf3_sqGbqh22Qe+7xEcajCTZt=WziqtPuzgGxW=-TPXbg@mail.gmail.com>
+   d="scan'208";a="462131671"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga003.jf.intel.com with ESMTP; 09 Dec 2021 05:32:11 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+        id D42A9329; Thu,  9 Dec 2021 15:32:17 +0200 (EET)
+Date:   Thu, 9 Dec 2021 16:32:17 +0300
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Andi Kleen <ak@linux.intel.com>, Borislav Petkov <bp@alien8.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        the arch/x86 maintainers <x86@kernel.org>
+Subject: Re: [PATCH 2/4] ACPI: PM: Remove redundant cache flushing
+Message-ID: <20211209133217.omm3mzchsfippwjc@black.fi.intel.com>
+References: <CAJZ5v0gLwSvPfWzYwiZXee8SiPiQQoxjfKfVn4jx6wK_9VVEeg@mail.gmail.com>
+ <20211206122952.74139-1-kirill.shutemov@linux.intel.com>
+ <20211206122952.74139-3-kirill.shutemov@linux.intel.com>
+ <CAJZ5v0hGnvX2a1bsoUSqV4Vf0LE6P6wTjk4ZPT7JTLvSAL7z_g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACeCKaf3_sqGbqh22Qe+7xEcajCTZt=WziqtPuzgGxW=-TPXbg@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hGnvX2a1bsoUSqV4Vf0LE6P6wTjk4ZPT7JTLvSAL7z_g@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Tue, Dec 07, 2021 at 05:35:38PM +0100, Rafael J. Wysocki wrote:
+> I don't think this is needed for S2, because the function doesn't do
+> anything low-level in that case and simply returns (IOW, S2 isn't
+> really supported).
 
-Thanks for testing these..
+Updated patch is below. Does it look good?
 
-On Wed, Dec 08, 2021 at 07:45:26PM -0800, Prashant Malani wrote:
-> Hi Heikki,
-> 
-> On Tue, Dec 7, 2021 at 6:37 AM Heikki Krogerus
-> <heikki.krogerus@linux.intel.com> wrote:
-> >
-> > Hi,
-> >
-> > This removes the need for the drivers to always separately evaluate
-> > the _PLD. With the USB Type-C connector and USB port mapping this
-> > allows us to start using the component framework and remove the custom
-> > APIs.
-> >
-> > So far the only users of the _PLD information have been the USB
-> > drivers, but it seems it will be used also at least in some camera
-> > drivers later. These nevertheless touch mostly USB drivers.
-> >
-> > Rafael, is it still OK if Greg takes these?
-> >
-> > Prashant, can you test these?
-> 
-> I've applied the patches to a system with the requisite _PLD entries
-> in firmware, and I'm not sure I can see the connectors getting created
-> correctly.
-> 
-> My setup is:
-> 
-> Chromebook ------> Dell WD19TB dock (in USB+DisplayPort Alternate
-> Mode) ----> USB Thumb drive.
-> 
-> Here is the lsusb -t output before connecting the dock (omitting
-> unrelated busses):
-> localhost ~ # lsusb -t
-> /:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/3p, 10000M/x2
-> 
-> Here is the lsusb -t output (omitting unrelated busses):
-> localhost ~ # lsusb -t
-> /:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/3p, 10000M/x2
->     |__ Port 2: Dev 15, If 0, Class=Hub, Driver=hub/4p, 10000M
->         |__ Port 3: Dev 16, If 0, Class=Hub, Driver=hub/4p, 5000M
->             |__ Port 3: Dev 18, If 0, Class=Mass Storage,
-> Driver=usb-storage, 5000M
->         |__ Port 4: Dev 17, If 0, Class=Vendor Specific Class,
-> Driver=r8152, 5000M
-> 
-> I see the connector symlink for the root hub:
-> 
-> localhost ~ # cd /sys/bus/usb/devices
-> localhost /sys/bus/usb/devices # ls 2-2/port/connector
-> data_role  device  firmware_node  port1-cable  port1-partner  power
-> power_operation_mode  power_role  preferred_role  subsystem
-> supported_accessory_modes  uevent  usb2-port2  usb3-port2
-> usb_power_delivery_revision  usb_typec_revision  vconn_source
-> 
-> But for none of the children devices:
-> 
-> localhost /sys/bus/usb/devices # ls 2-2.3/port/connector
-> ls: cannot access '2-2.3/port/connector': No such file or directory
-> localhost /sys/bus/usb/devices # ls 2-2.3.3/port/connector
-> ls: cannot access '2-2.3.3/port/connector': No such file or directory
-> localhost /sys/bus/usb/devices # ls 2-2.3\:1.0/port/connector
-> ls: cannot access '2-2.3:1.0/port/connector': No such file or directory
-> localhost /sys/bus/usb/devices # ls 2-2.3.3\:1.0/port/connector
-> ls: cannot access '2-2.3.3:1.0/port/connector': No such file or directory
-> 
-> Is this as you intended with the series? My interpretation was that
-> each connected usb device would get a "connector" symlink, but I may
-> have misinterpreted this.
+From 5eb4ec7d8dd463ba186b779dcef2a802d999c59c Mon Sep 17 00:00:00 2001
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Date: Thu, 9 Dec 2021 16:08:02 +0300
+Subject: [PATCH 1/2] ACPI: PM: Remove redundant cache flushing
 
-It is as intended. The usb ports on the board will have the connector
-symlink, not the devices attached to them - the firmware is only aware
-of the connectors on the board of course. It looks like this series is
-working as it should.
+ACPICA code takes care about cache flushing on S1/S2/S3 in
+acpi_hw_extended_sleep() and acpi_hw_legacy_sleep().
 
-If you want to extend this solution so that also every device in the
-usb topology will have the link to the connector on board, then that
-should be now possible, but that is out side of the scope of this
-series. You need to propose that separately.
+acpi_suspend_enter() calls into ACPICA code via acpi_enter_sleep_state()
+for S1 or x86_acpi_suspend_lowlevel() for S3.
 
-But I must ask, why can't you just walk down the topology until you
-reach the on-board ports that will have the connector links?
+acpi_sleep_prepare() call tree:
+  __acpi_pm_prepare()
+    acpi_pm_prepare()
+      acpi_suspend_ops::prepare_late()
+      acpi_hibernation_ops::pre_snapshot()
+      acpi_hibernation_ops::prepare()
+    acpi_suspend_begin_old()
+      acpi_suspend_begin_old::begin()
+  acpi_hibernation_begin_old()
+    acpi_hibernation_ops_old::acpi_hibernation_begin_old()
+  acpi_power_off_prepare()
+    pm_power_off_prepare()
 
+Hibernation (S4) and Power Off (S5) don't require cache flushing. So,
+the only interesting callsites are acpi_suspend_ops::prepare_late() and
+acpi_suspend_begin_old::begin(). Both of them have cache flush on
+->enter() operation in acpi_suspend_enter().
 
-thanks,
+Remove redundant ACPI_FLUSH_CPU_CACHE() in acpi_sleep_prepare() and
+acpi_suspend_enter().
 
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ drivers/acpi/sleep.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index eaa47753b758..5ca6c223ba3d 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -73,7 +73,6 @@ static int acpi_sleep_prepare(u32 acpi_state)
+ 		acpi_set_waking_vector(acpi_wakeup_address);
+ 
+ 	}
+-	ACPI_FLUSH_CPU_CACHE();
+ #endif
+ 	pr_info("Preparing to enter system sleep state S%d\n", acpi_state);
+ 	acpi_enable_wakeup_devices(acpi_state);
+@@ -566,8 +565,6 @@ static int acpi_suspend_enter(suspend_state_t pm_state)
+ 	u32 acpi_state = acpi_target_sleep_state;
+ 	int error;
+ 
+-	ACPI_FLUSH_CPU_CACHE();
+-
+ 	trace_suspend_resume(TPS("acpi_suspend"), acpi_state, true);
+ 	switch (acpi_state) {
+ 	case ACPI_STATE_S1:
 -- 
-heikki
+ Kirill A. Shutemov
