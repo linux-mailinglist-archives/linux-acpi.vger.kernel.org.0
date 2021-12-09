@@ -2,97 +2,135 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 301D546E567
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Dec 2021 10:21:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B55546E624
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Dec 2021 11:06:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231635AbhLIJZZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Dec 2021 04:25:25 -0500
-Received: from foss.arm.com ([217.140.110.172]:52226 "EHLO foss.arm.com"
+        id S232255AbhLIKJp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Dec 2021 05:09:45 -0500
+Received: from mga03.intel.com ([134.134.136.65]:45972 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231508AbhLIJZZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 9 Dec 2021 04:25:25 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 145741474;
-        Thu,  9 Dec 2021 01:21:52 -0800 (PST)
-Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 496A93F73B;
-        Thu,  9 Dec 2021 01:21:51 -0800 (PST)
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Justin He <justin.he@arm.com>
-Subject: [PATCH] mailbox: pcc: Handle all PCC subtypes correctly in pcc_mbox_irq
-Date:   Thu,  9 Dec 2021 09:21:46 +0000
-Message-Id: <20211209092146.620024-1-sudeep.holla@arm.com>
-X-Mailer: git-send-email 2.25.1
+        id S232080AbhLIKJo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 Dec 2021 05:09:44 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10192"; a="238007233"
+X-IronPort-AV: E=Sophos;i="5.88,192,1635231600"; 
+   d="scan'208";a="238007233"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2021 02:06:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,192,1635231600"; 
+   d="scan'208";a="658709770"
+Received: from kuha.fi.intel.com ([10.237.72.166])
+  by fmsmga001.fm.intel.com with SMTP; 09 Dec 2021 02:06:07 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 09 Dec 2021 12:06:06 +0200
+Date:   Thu, 9 Dec 2021 12:06:06 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Prashant Malani <pmalani@chromium.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/5] acpi: Store _PLD information and convert users
+Message-ID: <YbHVDikM6eodP/MR@kuha.fi.intel.com>
+References: <20211207143757.21895-1-heikki.krogerus@linux.intel.com>
+ <CACeCKaf3_sqGbqh22Qe+7xEcajCTZt=WziqtPuzgGxW=-TPXbg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACeCKaf3_sqGbqh22Qe+7xEcajCTZt=WziqtPuzgGxW=-TPXbg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Commit c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC
-subspaces(type 3/4)") enabled the type3/4 of PCCT, but the change in
-pcc_mbox_irq breaks the other PCC subtypes.
+Hi,
 
-The kernel reports a warning on an Ampere eMag server
+Thanks for testing these..
 
--->8
- CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.16.0-rc4 #127
- Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
- Call trace:
-  dump_backtrace+0x0/0x200
-  show_stack+0x20/0x30
-  dump_stack_lvl+0x68/0x84
-  dump_stack+0x18/0x34
-  __report_bad_irq+0x54/0x17c
-  note_interrupt+0x330/0x428
-  handle_irq_event_percpu+0x90/0x98
-  handle_irq_event+0x4c/0x148
-  handle_fasteoi_irq+0xc4/0x188
-  generic_handle_domain_irq+0x44/0x68
-  gic_handle_irq+0x84/0x2ec
-  call_on_irq_stack+0x28/0x34
-  do_interrupt_handler+0x88/0x90
-  el1_interrupt+0x48/0xb0
-  el1h_64_irq_handler+0x18/0x28
-  el1h_64_irq+0x7c/0x80
----
+On Wed, Dec 08, 2021 at 07:45:26PM -0800, Prashant Malani wrote:
+> Hi Heikki,
+> 
+> On Tue, Dec 7, 2021 at 6:37 AM Heikki Krogerus
+> <heikki.krogerus@linux.intel.com> wrote:
+> >
+> > Hi,
+> >
+> > This removes the need for the drivers to always separately evaluate
+> > the _PLD. With the USB Type-C connector and USB port mapping this
+> > allows us to start using the component framework and remove the custom
+> > APIs.
+> >
+> > So far the only users of the _PLD information have been the USB
+> > drivers, but it seems it will be used also at least in some camera
+> > drivers later. These nevertheless touch mostly USB drivers.
+> >
+> > Rafael, is it still OK if Greg takes these?
+> >
+> > Prashant, can you test these?
+> 
+> I've applied the patches to a system with the requisite _PLD entries
+> in firmware, and I'm not sure I can see the connectors getting created
+> correctly.
+> 
+> My setup is:
+> 
+> Chromebook ------> Dell WD19TB dock (in USB+DisplayPort Alternate
+> Mode) ----> USB Thumb drive.
+> 
+> Here is the lsusb -t output before connecting the dock (omitting
+> unrelated busses):
+> localhost ~ # lsusb -t
+> /:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/3p, 10000M/x2
+> 
+> Here is the lsusb -t output (omitting unrelated busses):
+> localhost ~ # lsusb -t
+> /:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=xhci_hcd/3p, 10000M/x2
+>     |__ Port 2: Dev 15, If 0, Class=Hub, Driver=hub/4p, 10000M
+>         |__ Port 3: Dev 16, If 0, Class=Hub, Driver=hub/4p, 5000M
+>             |__ Port 3: Dev 18, If 0, Class=Mass Storage,
+> Driver=usb-storage, 5000M
+>         |__ Port 4: Dev 17, If 0, Class=Vendor Specific Class,
+> Driver=r8152, 5000M
+> 
+> I see the connector symlink for the root hub:
+> 
+> localhost ~ # cd /sys/bus/usb/devices
+> localhost /sys/bus/usb/devices # ls 2-2/port/connector
+> data_role  device  firmware_node  port1-cable  port1-partner  power
+> power_operation_mode  power_role  preferred_role  subsystem
+> supported_accessory_modes  uevent  usb2-port2  usb3-port2
+> usb_power_delivery_revision  usb_typec_revision  vconn_source
+> 
+> But for none of the children devices:
+> 
+> localhost /sys/bus/usb/devices # ls 2-2.3/port/connector
+> ls: cannot access '2-2.3/port/connector': No such file or directory
+> localhost /sys/bus/usb/devices # ls 2-2.3.3/port/connector
+> ls: cannot access '2-2.3.3/port/connector': No such file or directory
+> localhost /sys/bus/usb/devices # ls 2-2.3\:1.0/port/connector
+> ls: cannot access '2-2.3:1.0/port/connector': No such file or directory
+> localhost /sys/bus/usb/devices # ls 2-2.3.3\:1.0/port/connector
+> ls: cannot access '2-2.3.3:1.0/port/connector': No such file or directory
+> 
+> Is this as you intended with the series? My interpretation was that
+> each connected usb device would get a "connector" symlink, but I may
+> have misinterpreted this.
 
-The main reason for that is the command complete register is read as 0
-if the GAS register doesn't exist for the same which is the case for
-PCC subtypes 0-2. Fix it by checking for non-zero value before masking
-with the status flag and checking for command completion.
+It is as intended. The usb ports on the board will have the connector
+symlink, not the devices attached to them - the firmware is only aware
+of the connectors on the board of course. It looks like this series is
+working as it should.
 
-Fixes: c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)")
-Cc: Jassi Brar <jassisinghbrar@gmail.com>
-Reported-by: Justin He <justin.he@arm.com>
-Tested-by: Justin He <justin.he@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
----
- drivers/mailbox/pcc.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+If you want to extend this solution so that also every device in the
+usb topology will have the link to the connector on board, then that
+should be now possible, but that is out side of the scope of this
+series. You need to propose that separately.
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index e0a1ab3861f0..ed18936b8ce6 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -241,9 +241,11 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	if (ret)
- 		return IRQ_NONE;
- 
--	val &= pchan->cmd_complete.status_mask;
--	if (!val)
--		return IRQ_NONE;
-+	if (val) { /* Ensure GAS exists and value is non-zero */
-+		val &= pchan->cmd_complete.status_mask;
-+		if (!val)
-+			return IRQ_NONE;
-+	}
- 
- 	ret = pcc_chan_reg_read(&pchan->error, &val);
- 	if (ret)
+But I must ask, why can't you just walk down the topology until you
+reach the on-board ports that will have the connector links?
+
+
+thanks,
+
 -- 
-2.25.1
-
+heikki
