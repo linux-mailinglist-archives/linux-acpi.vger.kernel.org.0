@@ -2,63 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 054D746EAEA
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Dec 2021 16:12:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA28646ED34
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Dec 2021 17:36:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229604AbhLIPQQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Dec 2021 10:16:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43796 "EHLO
+        id S239464AbhLIQkE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Dec 2021 11:40:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234635AbhLIPQP (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Dec 2021 10:16:15 -0500
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDA89C061D5E
-        for <linux-acpi@vger.kernel.org>; Thu,  9 Dec 2021 07:12:41 -0800 (PST)
-Received: by mail-lj1-x243.google.com with SMTP id u22so9447825lju.7
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Dec 2021 07:12:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=QCG68ObPoGQ126FjMJ8YjZpzkjBTmbsGv489REpxv3o=;
-        b=qMLi6lU8sqxt2XEJ+IYaWiblebdJduy944IO/8F5E2TYFpubDcq+tU37BC/qgyBK+F
-         ZCJnJhDhtQFE1HbRySkP+GUnFY9dlWYucIr0FGOY+ueset1TsPpeJ5o9ROFhzjtPZri+
-         A73m7fmdPjxaV2N7yVGOnOe10hiV2yqguY6xB00OFTnniJImuJl7/hCP/wIVxtugRewK
-         LnQLxxzi/Nk3wiauj3C80qIixPxoZuqve+DkeJDmEOqlxboWq7HPfR71I4YPStGsNM6t
-         ytgQ/fXY70XGDl9Q+yob93CNeFUjy2k4n9vijd+TpvwmASWkKwAnVtGN3TZEFqkWrAUX
-         QjSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=QCG68ObPoGQ126FjMJ8YjZpzkjBTmbsGv489REpxv3o=;
-        b=dPkpyBVE8xOaUk/xZoYCr2f+GCFwKtJBHc0YLhdPR9Pt7mqD0IxxWKGBYe7s3VmuF5
-         EsH2BHxYj2DJt5j/XmKp724qB9wVgz3Hd6y12E7WC7TeAVkMMlwb8DdK7XvNMnFmsISz
-         suGtrCn3S119cygt8Uu2gbi87vJ0nN1DncgJ0ucxmdGqf9Zz524J6mwUFre9xGuhHfFX
-         bbCnzW4o87MTKMoT0I8xjsxuWl391w8TDdYw7S9LE1f/2T0n2xMvANpqergswYi89/5C
-         YCbcdsFGItCmKA1f/9AEN4T2aQNVUrLgaQkQKagSzYQu6bK6K2uPY1V2Czy7eFzSkkw8
-         uSkA==
-X-Gm-Message-State: AOAM533BfR7Nb173k+4v78Q33D3D6RQvNT4siDS42+gkP4nQfoF8FcBi
-        1AtPR1YwzlxdYeWl3a539qpN70WN/ufsCaSm2Yo=
-X-Google-Smtp-Source: ABdhPJyULCC5sw24g2Cj2bLDQ6N5Am3KKGeKiDnLKiSXDO24MVqBskY7O/DyH2ULVEvvs5XbVHnotgl/3cH/usecS9o=
-X-Received: by 2002:a2e:9753:: with SMTP id f19mr6849375ljj.41.1639062759841;
- Thu, 09 Dec 2021 07:12:39 -0800 (PST)
+        with ESMTP id S232484AbhLIQkE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 9 Dec 2021 11:40:04 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F1CC061746;
+        Thu,  9 Dec 2021 08:36:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=EX9CGudp8dcrlnGUunc7sBtpaUqex0FFLoIEdm/NNQU=; b=1AYxprNzJk2VftgVMiVW/BLBep
+        vIpgmJxPO2bvW0MGvbcaflTRDzV3VdEwGaxvKeLiIqzyWgfv12g6XBir6C9JaDHZRFhbX0inyyPDt
+        qp7Tza9iJpPjLuokDAtbqlRz8mQILYqgr9QnQshPKNXjWtCqLF/F2UHFfoPk3DayCYn87+DozNeDE
+        hnU165KADK8FXw58uYX74kau994C0SqWf2EJ4sxRgR/DSe16iOTfu2/ocE0pBLv4n3zTPy41Ackkh
+        0cEltJltMwnwi3KbVfUIe4Hvnz2Qj31D0Plu5TsnqPyLja/0iI/zU/+tnj0cS9sEGsA5nb6/k3LHu
+        ORUe9O0g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56206)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1mvMP5-0000Es-DK; Thu, 09 Dec 2021 16:36:19 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1mvMP1-0007Lr-Uo; Thu, 09 Dec 2021 16:36:15 +0000
+Date:   Thu, 9 Dec 2021 16:36:15 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Cc:     lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
+        sudeep.holla@arm.com, rafael@kernel.org, lenb@kernel.org,
+        robert.moore@intel.com, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        devel@acpica.org, patches@amperecomputing.com,
+        scott@os.amperecomputing.com, darren@os.amperecomputing.com
+Subject: Re: [PATCH 2/2] ACPI: AGDI: Add driver for Arm Generic Diagnostic
+ Dump and Reset device
+Message-ID: <YbIwfzND2R4WyQO7@shell.armlinux.org.uk>
+References: <20211203024311.49865-1-ilkka@os.amperecomputing.com>
+ <20211203024311.49865-3-ilkka@os.amperecomputing.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6504:10cd:0:0:0:0 with HTTP; Thu, 9 Dec 2021 07:12:39
- -0800 (PST)
-Reply-To: deborahkouassi011@gmail.com
-From:   Deborah Kouassi <dk3300220@gmail.com>
-Date:   Thu, 9 Dec 2021 15:12:39 +0000
-Message-ID: <CAG=MyZ1daGs8LVQNxfmww1Nemf04ZAw-uFnzhfSuN2o4vd4xww@mail.gmail.com>
-Subject: Hello Dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211203024311.49865-3-ilkka@os.amperecomputing.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-.
-I will like to disclose something very important to you,
-get back to me for more details please.
+Hi,
 
-Regards.
-Mrs Deborah Kouassi.
+On Thu, Dec 02, 2021 at 06:43:11PM -0800, Ilkka Koskinen wrote:
+> +static int __init agdi_init(void)
+> +{
+> +	int ret;
+> +	acpi_status status;
+> +	struct acpi_table_agdi *agdi_table;
+> +	struct agdi_data *pdata;
+> +	struct platform_device *pdev;
+> +
+> +	if (acpi_disabled)
+> +		return 0;
+> +
+> +	status = acpi_get_table(ACPI_SIG_AGDI, 0,
+> +				(struct acpi_table_header **) &agdi_table);
+> +	if (ACPI_FAILURE(status))
+> +		return -ENODEV;
+> +
+> +	pdata = kzalloc(sizeof(*pdata), GFP_ATOMIC);
+
+Why does this need to be GFP_ATOMIC? Also, struct agdi_data is a single
+int in size, why do you need to kzalloc() it?
+
+> +	if (!pdata) {
+> +		ret = -ENOMEM;
+> +		goto err_put_table;
+> +	}
+> +
+> +	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE) {
+> +		pr_warn("Interrupt signaling is not supported");
+> +		ret = -ENODEV;
+> +		goto err_free_pdata;
+> +	}
+> +
+> +	pdata->sdei_event = agdi_table->sdei_event;
+> +
+> +	pdev = platform_device_register_data(NULL, "agdi", 0, pdata, sizeof(*pdata));
+
+platform_device_register_data() uses kmemdup() internally with the
+platform data, meaning it takes a copy of the platform data. There is
+no need for the pdata allocation to persist past this point. Hence,
+given that it is a single int in size, you may as well put
+"struct agdi_data" on the stack.
+
+Thanks.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
