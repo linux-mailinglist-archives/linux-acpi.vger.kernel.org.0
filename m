@@ -2,29 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B2C146E412
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Dec 2021 09:22:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 301D546E567
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Dec 2021 10:21:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230064AbhLIIZ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 9 Dec 2021 03:25:27 -0500
-Received: from foss.arm.com ([217.140.110.172]:51086 "EHLO foss.arm.com"
+        id S231635AbhLIJZZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 9 Dec 2021 04:25:25 -0500
+Received: from foss.arm.com ([217.140.110.172]:52226 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234667AbhLIIZ0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 9 Dec 2021 03:25:26 -0500
+        id S231508AbhLIJZZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 9 Dec 2021 04:25:25 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3EB011FB;
-        Thu,  9 Dec 2021 00:21:52 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 145741474;
+        Thu,  9 Dec 2021 01:21:52 -0800 (PST)
 Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CEF4E3F5A1;
-        Thu,  9 Dec 2021 00:21:51 -0800 (PST)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 496A93F73B;
+        Thu,  9 Dec 2021 01:21:51 -0800 (PST)
 From:   Sudeep Holla <sudeep.holla@arm.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
         Jassi Brar <jassisinghbrar@gmail.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: [PATCH] mailbox: pcc: Avoid using the uninitialized variable 'dev'
-Date:   Thu,  9 Dec 2021 08:21:43 +0000
-Message-Id: <20211209082143.619354-1-sudeep.holla@arm.com>
+        Justin He <justin.he@arm.com>
+Subject: [PATCH] mailbox: pcc: Handle all PCC subtypes correctly in pcc_mbox_irq
+Date:   Thu,  9 Dec 2021 09:21:46 +0000
+Message-Id: <20211209092146.620024-1-sudeep.holla@arm.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -32,35 +32,67 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Smatch static checker warns:
+Commit c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC
+subspaces(type 3/4)") enabled the type3/4 of PCCT, but the change in
+pcc_mbox_irq breaks the other PCC subtypes.
 
-  |  drivers/mailbox/pcc.c:292 pcc_mbox_request_channel()
-  |  error: uninitialized symbol 'dev'.
+The kernel reports a warning on an Ampere eMag server
 
-Fix the same by using pr_err instead of dev_err as the variable 'dev'
-is uninitialized at that stage.
+-->8
+ CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.16.0-rc4 #127
+ Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
+ Call trace:
+  dump_backtrace+0x0/0x200
+  show_stack+0x20/0x30
+  dump_stack_lvl+0x68/0x84
+  dump_stack+0x18/0x34
+  __report_bad_irq+0x54/0x17c
+  note_interrupt+0x330/0x428
+  handle_irq_event_percpu+0x90/0x98
+  handle_irq_event+0x4c/0x148
+  handle_fasteoi_irq+0xc4/0x188
+  generic_handle_domain_irq+0x44/0x68
+  gic_handle_irq+0x84/0x2ec
+  call_on_irq_stack+0x28/0x34
+  do_interrupt_handler+0x88/0x90
+  el1_interrupt+0x48/0xb0
+  el1h_64_irq_handler+0x18/0x28
+  el1h_64_irq+0x7c/0x80
+---
 
-Fixes: ce028702ddbc ("mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe")
+The main reason for that is the command complete register is read as 0
+if the GAS register doesn't exist for the same which is the case for
+PCC subtypes 0-2. Fix it by checking for non-zero value before masking
+with the status flag and checking for command completion.
+
+Fixes: c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)")
 Cc: Jassi Brar <jassisinghbrar@gmail.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Reported-by: Justin He <justin.he@arm.com>
+Tested-by: Justin He <justin.he@arm.com>
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 ---
- drivers/mailbox/pcc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/pcc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 887a3704c12e..e0a1ab3861f0 100644
+index e0a1ab3861f0..ed18936b8ce6 100644
 --- a/drivers/mailbox/pcc.c
 +++ b/drivers/mailbox/pcc.c
-@@ -289,7 +289,7 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
- 	pchan = chan_info + subspace_id;
- 	chan = pchan->chan.mchan;
- 	if (IS_ERR(chan) || chan->cl) {
--		dev_err(dev, "Channel not found for idx: %d\n", subspace_id);
-+		pr_err("Channel not found for idx: %d\n", subspace_id);
- 		return ERR_PTR(-EBUSY);
- 	}
- 	dev = chan->mbox->dev;
+@@ -241,9 +241,11 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 	if (ret)
+ 		return IRQ_NONE;
+ 
+-	val &= pchan->cmd_complete.status_mask;
+-	if (!val)
+-		return IRQ_NONE;
++	if (val) { /* Ensure GAS exists and value is non-zero */
++		val &= pchan->cmd_complete.status_mask;
++		if (!val)
++			return IRQ_NONE;
++	}
+ 
+ 	ret = pcc_chan_reg_read(&pchan->error, &val);
+ 	if (ret)
 -- 
 2.25.1
 
