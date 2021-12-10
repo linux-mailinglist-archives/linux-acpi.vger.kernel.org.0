@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F99947095C
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 19:52:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 116A347096F
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 19:54:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245603AbhLJSzm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Dec 2021 13:55:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34724 "EHLO
+        id S245641AbhLJS56 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Dec 2021 13:57:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245600AbhLJSzm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 13:55:42 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C255C0617A1;
-        Fri, 10 Dec 2021 10:52:06 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id b1so19598432lfs.13;
-        Fri, 10 Dec 2021 10:52:06 -0800 (PST)
+        with ESMTP id S245647AbhLJS55 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 13:57:57 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC0E3C0617A1;
+        Fri, 10 Dec 2021 10:54:21 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id u3so19759874lfl.2;
+        Fri, 10 Dec 2021 10:54:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=j1hvlB2w2BrWNScbCJyLwX4oBGKG9hr6NJqtvFkNM/U=;
-        b=DpLCPmMgrOty3y0HrpqopSxxp/qGs/dwG/CgN0apuyA6on28PorJtUybksa6iWzXUQ
-         1nC+svp1ZReaFc8Ho69TZxII0UpyuP8U7xwSjZaJzyMIRrgh64VdMWwWLpT7FD5pRO3K
-         REVQTxyYOO3tzHZOXPhjO1pz+wC6sFrKKUXdbaxaG08xMkm/2y6DNn/B8j1qrJKM7+bp
-         P06T1NhQFOSTeILIcDdZiYIbm1FILYdO04vFRszXD6zy1FhLrwMPIaNrfLI1p4FempaK
-         JIbIyvDEnU7xy4tOpOMAsYn+ngt9JZU69+QjylTYb0y426O41rF96XAtvzhN80gJmNuF
-         j5Ug==
+        bh=IKf1m11e2CmLOphgB5tXRwG67Tf75LBrlnq5Vg7yJZw=;
+        b=IxhbpvG2CFXB3xmkjVMdWRMntYmHOq8xg7eP7zr/AbSS5vu1B9sdxo5o91nGOD2995
+         QQ3KG6tw48EY7IhOrAyb30j6v2PDl8KJF+jKSnPayvNkG1XmqZAU+fLfW7OnlwsZZOnn
+         0A9elkL050dIg2mh2nAMxrCkv1StUF1LjCWn+NlhosKjCmIUCMa0MKcmxWQ+/W+IgKI6
+         i8CNkkus5bglRUlOxac8XP3LVuSzA40MUvRiA2U0B7IAsHpJ1AsKj9N6snoJl+u70szG
+         pZzPqoOnQIc/elfvbeQCxFa9JUiQLy0NMI8wwjD0fM288MJ0ySJSpfHIgwDyPyb7i3mv
+         C2Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=j1hvlB2w2BrWNScbCJyLwX4oBGKG9hr6NJqtvFkNM/U=;
-        b=3ZsJMtkoZirHmHbtWCQWjhyEWlHvgvc8zux5rplsI9f4VOHxw/aUt1EPe2jrX/LnQp
-         iqLWzV9X1NXHQqau+xX+rRCY+eyWx4oU8shnVGgz2tyzr681RM67MfEL/2w4lyurWgz5
-         lsJrpyvN3zb6gLWtGLs0pIg8Y8aYynF2t+PuERKIIGVKeStOU7L0Y5Ve68LaBTnxxefy
-         XeLOdq2eFXaVhNzm+FziWbE2TZZb5bacFlSH0A7RigNlUH+JhtpAGkMHk2/cdLXfX4Mf
-         L3tKKCVYymwgvo5vW1bxbvzgmzpWwQktWMJOxsiintkRkoycTpYBTrLf7o3C8RIECId6
-         l0OA==
-X-Gm-Message-State: AOAM533OFt8HpoXb56XjtNLLrkUp0Ra6BVbqLH/VeqySuEhONEhfk6Un
-        8wvuBWjdzYaDeJzyM081iTTuLj50f7A=
-X-Google-Smtp-Source: ABdhPJwwyZAuw0wQQ6Dju/0DgEoENSIDq2aqqR4iP7Vldq5bfh8DtMEIrZOS6poEr19ZPeaYgjpDkg==
-X-Received: by 2002:ac2:58d9:: with SMTP id u25mr14351127lfo.514.1639162324540;
-        Fri, 10 Dec 2021 10:52:04 -0800 (PST)
+        bh=IKf1m11e2CmLOphgB5tXRwG67Tf75LBrlnq5Vg7yJZw=;
+        b=ATBGtFOO9lS2ZkdI/AuSuu9PS+Inp2r31yRXHU5hBPIbkJraYoSCJQiS5QSFJSHd4l
+         RE/1wrOzGq8p62AsHN47zvzncKuqJSSr8b2quBV3WTC7vNHfFFTCmSdbGACDoxVpqbXV
+         gE1a/W6xHU0FprSZVOBV3Ra5eFwJGj5GOrDzAGFC/BPbvrOmqinJlRrT/ike9x1BJ3Ba
+         47CAoEPGLwk69X7nJOdmh1GtOAJMpTlpTif21ZP9IlfQWPC6TdBl7febG80bQoaPVqE4
+         ++Bp6JfwnjKLKAeMmsVcObJ+fhmIG4rR5oUHU6xu5f9V+4UA0hAoNlTZvd5jl8dnASz+
+         VbgA==
+X-Gm-Message-State: AOAM532GRf235Gc/nZSzObeM/gPYVNzr/bw39oK3E5iqx7wj0vVcCfJF
+        rs6WcM7pUziox9KLl2aduEJjuJBVTwg=
+X-Google-Smtp-Source: ABdhPJyNtPZVq+j4jRpVe2vNWn4eVPA/mLyRKU7MjcAV9J6qXLR8NEClMh21SuEPG0vCBnH7Acz/0w==
+X-Received: by 2002:ac2:4c4d:: with SMTP id o13mr13668768lfk.196.1639162460068;
+        Fri, 10 Dec 2021 10:54:20 -0800 (PST)
 Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru. [94.29.46.111])
-        by smtp.googlemail.com with ESMTPSA id c21sm387216lfv.29.2021.12.10.10.52.02
+        by smtp.googlemail.com with ESMTPSA id v15sm390403ljj.5.2021.12.10.10.54.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Dec 2021 10:52:04 -0800 (PST)
-Subject: Re: [PATCH v4 03/25] notifier: Add
- atomic/blocking_notifier_has_unique_priority()
+        Fri, 10 Dec 2021 10:54:19 -0800 (PST)
+Subject: Re: [PATCH v4 06/25] reboot: Warn if unregister_restart_handler()
+ fails
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -108,15 +108,15 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Linux PM <linux-pm@vger.kernel.org>,
         linux-tegra <linux-tegra@vger.kernel.org>
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-4-digetx@gmail.com>
- <CAJZ5v0jTJ3f7oUUR690PGaPJsxA8yzua9XDa8MONBHMzHnDfOQ@mail.gmail.com>
+ <20211126180101.27818-7-digetx@gmail.com>
+ <CAJZ5v0ii7tGRDbxw+5GqdyONXvRPznXUqBZd03+pdoAd+pH=JQ@mail.gmail.com>
 From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <e6ff1cea-a168-1cb0-25c5-fb16c681cf4a@gmail.com>
-Date:   Fri, 10 Dec 2021 21:52:01 +0300
+Message-ID: <c518ce36-09d2-16a3-cec2-6bab8260e3cf@gmail.com>
+Date:   Fri, 10 Dec 2021 21:54:17 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0jTJ3f7oUUR690PGaPJsxA8yzua9XDa8MONBHMzHnDfOQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0ii7tGRDbxw+5GqdyONXvRPznXUqBZd03+pdoAd+pH=JQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -124,53 +124,38 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-10.12.2021 21:19, Rafael J. Wysocki пишет:
-...
->> +bool atomic_notifier_has_unique_priority(struct atomic_notifier_head *nh,
->> +               struct notifier_block *n)
->> +{
->> +       unsigned long flags;
->> +       bool ret;
->> +
->> +       spin_lock_irqsave(&nh->lock, flags);
->> +       ret = notifier_has_unique_priority(&nh->head, n);
->> +       spin_unlock_irqrestore(&nh->lock, flags);
+10.12.2021 21:32, Rafael J. Wysocki пишет:
+> On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>>
+>> Emit warning if unregister_restart_handler() fails since it never should
+>> fail. This will ease further API development by catching mistakes early.
+>>
+>> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+>> ---
+>>  kernel/reboot.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/kernel/reboot.c b/kernel/reboot.c
+>> index e6659ae329f1..f0e7b9c13f6b 100644
+>> --- a/kernel/reboot.c
+>> +++ b/kernel/reboot.c
+>> @@ -210,7 +210,7 @@ EXPORT_SYMBOL(register_restart_handler);
+>>   */
+>>  int unregister_restart_handler(struct notifier_block *nb)
+>>  {
+>> -       return atomic_notifier_chain_unregister(&restart_handler_list, nb);
+>> +       return WARN_ON(atomic_notifier_chain_unregister(&restart_handler_list, nb));
 > 
-> This only works if the caller can prevent new entries from being added
-> to the list at this point or if the caller knows that they cannot be
-> added for some reason, but the kerneldoc doesn't mention this
-> limitation.
+> The only reason why it can fail is if the object pointed to by nb is
+> not in the chain.
 
-I'll update the comment.
+I had exactly this case where object wasn't in the chain due to a bug
+and this warning was very helpful.
 
-..
->> +bool blocking_notifier_has_unique_priority(struct blocking_notifier_head *nh,
->> +               struct notifier_block *n)
->> +{
->> +       bool ret;
->> +
->> +       /*
->> +        * This code gets used during boot-up, when task switching is
->> +        * not yet working and interrupts must remain disabled. At such
->> +        * times we must not call down_read().
->> +        */
->> +       if (system_state != SYSTEM_BOOTING)
-> 
-> No, please don't do this, it makes the whole thing error-prone.
+>  Why WARN() about this?  And what about systems with
+> panic_on_warn set?
 
-What should I do then?
+That warning condition will never happen normally, only when something
+is seriously wrong.
 
->> +               down_read(&nh->rwsem);
->> +
->> +       ret = notifier_has_unique_priority(&nh->head, n);
->> +
->> +       if (system_state != SYSTEM_BOOTING)
->> +               up_read(&nh->rwsem);
-> 
-> And still what if a new entry with a non-unique priority is added to
-> the chain at this point?
-
-If entry with a non-unique priority is added after the check, then
-obviously it won't be detected. I don't understand the question. These
-down/up_read() are the locks that prevent the race, if that's the question.
-
+Those systems with panic_on_warn will get what was they asked for.
