@@ -2,41 +2,41 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 142214709C1
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 20:05:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03A6F4709D5
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 20:08:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238538AbhLJTJV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 10 Dec 2021 14:09:21 -0500
-Received: from mail-oi1-f178.google.com ([209.85.167.178]:44617 "EHLO
-        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230463AbhLJTJU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 14:09:20 -0500
-Received: by mail-oi1-f178.google.com with SMTP id be32so14445880oib.11;
-        Fri, 10 Dec 2021 11:05:44 -0800 (PST)
+        id S242211AbhLJTMJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 10 Dec 2021 14:12:09 -0500
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:42606 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242205AbhLJTMI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 14:12:08 -0500
+Received: by mail-ot1-f54.google.com with SMTP id 47-20020a9d0332000000b005798ac20d72so10545520otv.9;
+        Fri, 10 Dec 2021 11:08:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=c+Gg3IcBrVO+p3DERDiz2wIK2rZh3JBEUqlmxz2Wt9w=;
-        b=KF02GmbhAy9o852cKAkWGRsQiFbgHC75Qjm16bI7ZSmAfyJfROZofbcH5jI8CJ/ve+
-         eHhgitsnexLUIDGw5//Gk3z+Ok9evNj4B9kvpHUljhuupzNnGZFu5aFXSsX81N0DYWnQ
-         IaBXbFwEerwNO3snRUpagshSzYMbeSIiztCbLnK54Zt/2TVaC3wOPO8BVEK8I1B434i9
-         jEc6iUXt9xaEyYM6x5//wTvcOkDy/tLV52Sdv83wiI5s/7cNfq7VeKJ7PH5p5hyHH/1h
-         /CbxkevGDaw6vPTu14r/Zn3poSjqgobQdPA5+G75/glByywxNMFAgRWya2D4H+Hw9B5o
-         Jl1w==
-X-Gm-Message-State: AOAM5333zryiN0f+sbmHmz1C8Wb+kAiv8RDMW2PlfbHCFvYf5HhFNokx
-        4ByWa50hvEfayrUN+aS2O+/98uHRohqSF0ta+/8=
-X-Google-Smtp-Source: ABdhPJyFnxvuCdo/SAuZsTrbeFY0ttrM6VIAZMHiyNGyFieUXOlcjM/63kmCFhhj1nwi5THbS12OxkRKZ5ROskKDe+g=
-X-Received: by 2002:aca:eb0b:: with SMTP id j11mr14151206oih.51.1639163143930;
- Fri, 10 Dec 2021 11:05:43 -0800 (PST)
+        bh=eV+MT/c+cWty36yyN1k88RcKH0yc2be+fuKXycnWnqs=;
+        b=exKaGehlY8xaMtP30PH4cG0S1J8NmRM0ykI8oMJnCMSSr0LXZo71fVwZtu55xr6urS
+         zZ+Io6U/8jGRFD8i2oewh+VF0rexVXTi3r63CYMyuuECT5fjl8Xgm5RUWdGbOgQynRZO
+         cmGWGHNxrgKNF2esHMj0ZOGx+Gol1yIyBpiFc5Jk50K+6TRKluOIINIOkG/7Rk77PGE/
+         s6TdWs6Cg3VM72SmlTjNfL9EcR9a/BZb7R04pypw4rK0SSjek+7rG1cjhi+05Gok8tcA
+         LPeJb1qTTtmVewjjTQKvOy7AGeyLZHypZ0lQttZwvnSrmWn2KpWGaykMXyK7QHFCuL/N
+         2SZQ==
+X-Gm-Message-State: AOAM532/aBdX7TOhwoqrQ3S79yZ7K63IKo7NZLLK3swMkdbQqA3014oJ
+        /SHGKRp3jkYvRRKxHlWFN3XkSf3XxH12MiwlNHE=
+X-Google-Smtp-Source: ABdhPJz3WnXJDp9MR1neaOhkZU7y1rSVa1ldfWi3aUs9lzZU+HiO7VfKdE35iqJJyDqw6NIr5Fwr8foXDpr2Xp5/alg=
+X-Received: by 2002:a05:6830:1e57:: with SMTP id e23mr12553404otj.16.1639163312676;
+ Fri, 10 Dec 2021 11:08:32 -0800 (PST)
 MIME-Version: 1.0
-References: <20211126180101.27818-1-digetx@gmail.com> <20211126180101.27818-4-digetx@gmail.com>
- <CAJZ5v0jTJ3f7oUUR690PGaPJsxA8yzua9XDa8MONBHMzHnDfOQ@mail.gmail.com> <e6ff1cea-a168-1cb0-25c5-fb16c681cf4a@gmail.com>
-In-Reply-To: <e6ff1cea-a168-1cb0-25c5-fb16c681cf4a@gmail.com>
+References: <20211126180101.27818-1-digetx@gmail.com> <20211126180101.27818-7-digetx@gmail.com>
+ <CAJZ5v0ii7tGRDbxw+5GqdyONXvRPznXUqBZd03+pdoAd+pH=JQ@mail.gmail.com> <c518ce36-09d2-16a3-cec2-6bab8260e3cf@gmail.com>
+In-Reply-To: <c518ce36-09d2-16a3-cec2-6bab8260e3cf@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 10 Dec 2021 20:05:32 +0100
-Message-ID: <CAJZ5v0gwnY07vg71_NB8RDWyv84FtMsmx7UTDd8TkUd7vFzc6A@mail.gmail.com>
-Subject: Re: [PATCH v4 03/25] notifier: Add atomic/blocking_notifier_has_unique_priority()
+Date:   Fri, 10 Dec 2021 20:08:21 +0100
+Message-ID: <CAJZ5v0iP_VnNW3ChmdvRFg1gvwvkDGmqtGnf1oVwQxXY303RkQ@mail.gmail.com>
+Subject: Re: [PATCH v4 06/25] reboot: Warn if unregister_restart_handler() fails
 To:     Dmitry Osipenko <digetx@gmail.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
@@ -101,71 +101,45 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Dec 10, 2021 at 7:52 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+On Fri, Dec 10, 2021 at 7:54 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 >
-> 10.12.2021 21:19, Rafael J. Wysocki пишет:
-> ...
-> >> +bool atomic_notifier_has_unique_priority(struct atomic_notifier_head *nh,
-> >> +               struct notifier_block *n)
-> >> +{
-> >> +       unsigned long flags;
-> >> +       bool ret;
-> >> +
-> >> +       spin_lock_irqsave(&nh->lock, flags);
-> >> +       ret = notifier_has_unique_priority(&nh->head, n);
-> >> +       spin_unlock_irqrestore(&nh->lock, flags);
+> 10.12.2021 21:32, Rafael J. Wysocki пишет:
+> > On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+> >>
+> >> Emit warning if unregister_restart_handler() fails since it never should
+> >> fail. This will ease further API development by catching mistakes early.
+> >>
+> >> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> >> ---
+> >>  kernel/reboot.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/kernel/reboot.c b/kernel/reboot.c
+> >> index e6659ae329f1..f0e7b9c13f6b 100644
+> >> --- a/kernel/reboot.c
+> >> +++ b/kernel/reboot.c
+> >> @@ -210,7 +210,7 @@ EXPORT_SYMBOL(register_restart_handler);
+> >>   */
+> >>  int unregister_restart_handler(struct notifier_block *nb)
+> >>  {
+> >> -       return atomic_notifier_chain_unregister(&restart_handler_list, nb);
+> >> +       return WARN_ON(atomic_notifier_chain_unregister(&restart_handler_list, nb));
 > >
-> > This only works if the caller can prevent new entries from being added
-> > to the list at this point or if the caller knows that they cannot be
-> > added for some reason, but the kerneldoc doesn't mention this
-> > limitation.
+> > The only reason why it can fail is if the object pointed to by nb is
+> > not in the chain.
 >
-> I'll update the comment.
+> I had exactly this case where object wasn't in the chain due to a bug
+> and this warning was very helpful.
+
+During the development.  In production it would be rather annoying.
+
+> >  Why WARN() about this?  And what about systems with
+> > panic_on_warn set?
 >
-> ..
-> >> +bool blocking_notifier_has_unique_priority(struct blocking_notifier_head *nh,
-> >> +               struct notifier_block *n)
-> >> +{
-> >> +       bool ret;
-> >> +
-> >> +       /*
-> >> +        * This code gets used during boot-up, when task switching is
-> >> +        * not yet working and interrupts must remain disabled. At such
-> >> +        * times we must not call down_read().
-> >> +        */
-> >> +       if (system_state != SYSTEM_BOOTING)
-> >
-> > No, please don't do this, it makes the whole thing error-prone.
+> That warning condition will never happen normally, only when something
+> is seriously wrong.
 >
-> What should I do then?
+> Those systems with panic_on_warn will get what was they asked for.
 
-First of all, do you know of any users who may want to call this
-during early initialization?  If so, then why may they want to do
-that?
-
-Depending on the above, I would consider adding a special mechanism for them.
-
-> >> +               down_read(&nh->rwsem);
-> >> +
-> >> +       ret = notifier_has_unique_priority(&nh->head, n);
-> >> +
-> >> +       if (system_state != SYSTEM_BOOTING)
-> >> +               up_read(&nh->rwsem);
-> >
-> > And still what if a new entry with a non-unique priority is added to
-> > the chain at this point?
->
-> If entry with a non-unique priority is added after the check, then
-> obviously it won't be detected.
-
-Why isn't this a problem?
-
-> I don't understand the question. These
-> down/up_read() are the locks that prevent the race, if that's the question.
-
-Not really, they only prevent the race from occurring while
-notifier_has_unique_priority() is running.
-
-If anyone depends on this check for correctness, they need to lock the
-rwsem, do the check, do the thing depending on the check while holding
-the rwsem and then release the rwsem.  Otherwise it is racy.
+They may not be asking for panicking on bugs in the reboot notifier
+code, though.  That's what your change is making them panic on.
