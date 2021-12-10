@@ -2,42 +2,44 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 875324708D2
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 19:32:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51A994708EA
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 19:35:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231611AbhLJSgO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Dec 2021 13:36:14 -0500
-Received: from mail-ot1-f49.google.com ([209.85.210.49]:34439 "EHLO
-        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232658AbhLJSgO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 13:36:14 -0500
-Received: by mail-ot1-f49.google.com with SMTP id x19-20020a9d7053000000b0055c8b39420bso10512528otj.1;
-        Fri, 10 Dec 2021 10:32:38 -0800 (PST)
+        id S236328AbhLJSjC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 10 Dec 2021 13:39:02 -0500
+Received: from mail-oi1-f174.google.com ([209.85.167.174]:33614 "EHLO
+        mail-oi1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229502AbhLJSjA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 13:39:00 -0500
+Received: by mail-oi1-f174.google.com with SMTP id q25so14506367oiw.0;
+        Fri, 10 Dec 2021 10:35:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XYFeMefDtygzQHG6cGasFJft83PyhMCvIHgML7JQ1W8=;
-        b=BT8rQ4Lwys6f0lHis7r+7jzL1KmTsfZlI2M6WpJdgfDrW3ZbR5zdfZwpIlyp3Hp6RS
-         pk3HfiMPTZPvnPYMsNynL64Vew06v83zWSayDb2GcA2Kv3BmS9uxJuRCg9iBWb9mMErO
-         tNlccmuVurJkG5/Ykst8sU6MiwvbV6Md0TZp5DcCcSlEFyeA51i9kzNaeyEjQBwakkNc
-         Hhldlrgl/1v3LWbWLFmC7fKf6hnNdAECtE7mNXhCwU0p/SIgT2QGrEQswtJ+GrFP3auU
-         oCFP/ayzlf+HGIsoP/YBFB/MWEoZoczZUBvb5HjKLP7kS8lkOVhqPGve8FS96GEK2rws
-         m/Yg==
-X-Gm-Message-State: AOAM532QPLjoi1gQbvHvSzI9O8ifmbE8jvJ0y7c+iB2plRn4xo272OkU
-        TnDYvx/sJYHs/OI68cqHvO7dlLh2t5NpN6wVLp8=
-X-Google-Smtp-Source: ABdhPJy/ApH2I9ley83OfAtDiEoSWuJBoE9Gqun3QKF0IviB+39TRacgd3bR+5yVv4MXsqS5F4aemy99lcaDR84MB0I=
-X-Received: by 2002:a05:6830:348f:: with SMTP id c15mr12642134otu.254.1639161158278;
- Fri, 10 Dec 2021 10:32:38 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=cmWwBA8Prvw8yKg8YllQ7/9D+dqLH//9VzjE/Uy0t0I=;
+        b=T1/HWPpmCqjZoOXrPzArHnW6919486jnuwLeXg0jqas0Gw7pOfSxrEQM69M5iCruoD
+         aLPx6pLlMhKwqECaWRolng+5QRNmPPFTyUWLNcfdZp2emOXkatLQKphpMSeNMigcKekI
+         0282gYYmG6v99S5rkbDXrKXN0xO0I79/FHY/Z8CQK/6lKKLc8WE2grdbCSI7NU7+Ox2c
+         gLf3QgLblpk8wn9dZv8zj5ZZRZjqtTksyAJGNvRYzBbIzbdYmrV5NEFu24aMF7duygQQ
+         WDbiVOIcvdytyH6sD38xY5pElpHdQJSlO7kEVqN7ol0Xl55TkYevA19mim8hgFSmDUdS
+         rFDQ==
+X-Gm-Message-State: AOAM530/atxOoYcEaBTGvUMhUD8wvOV1VGjK4hwfRYcDkt17vqKu8v6r
+        RMRM5BBdjUBVljaoZLY0WiTrXWxUJvTPv5CANl8=
+X-Google-Smtp-Source: ABdhPJy55tGpIDxF+0NXDym/GuLq/jPswo3lW9bQPH3JZ5naSMZQfeBVB0yUiflqPmuJ6rchV13JR6onKlnNSicDR4M=
+X-Received: by 2002:aca:eb0b:: with SMTP id j11mr14005588oih.51.1639161324582;
+ Fri, 10 Dec 2021 10:35:24 -0800 (PST)
 MIME-Version: 1.0
-References: <20211126180101.27818-1-digetx@gmail.com> <20211126180101.27818-7-digetx@gmail.com>
-In-Reply-To: <20211126180101.27818-7-digetx@gmail.com>
+References: <20211126180101.27818-1-digetx@gmail.com> <20211126180101.27818-8-digetx@gmail.com>
+ <CAJZ5v0i=zgubEtF5-Wnaqa5FMnfVUdSnEmD11-LAuYCH8ZCwrA@mail.gmail.com> <acf8289e-6ab8-6eda-ec06-e9044ddd9a92@gmail.com>
+In-Reply-To: <acf8289e-6ab8-6eda-ec06-e9044ddd9a92@gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 10 Dec 2021 19:32:27 +0100
-Message-ID: <CAJZ5v0ii7tGRDbxw+5GqdyONXvRPznXUqBZd03+pdoAd+pH=JQ@mail.gmail.com>
-Subject: Re: [PATCH v4 06/25] reboot: Warn if unregister_restart_handler() fails
+Date:   Fri, 10 Dec 2021 19:35:13 +0100
+Message-ID: <CAJZ5v0gvuteY4EtXWTKmh4-Wt-Z_dPcqfDLwc-ja1uovbV3rpw@mail.gmail.com>
+Subject: Re: [PATCH v4 07/25] reboot: Remove extern annotation from function prototypes
 To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -69,7 +71,6 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Boris Ostrovsky <boris.ostrovsky@oracle.com>,
         Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Santosh Shilimkar <ssantosh@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
@@ -95,38 +96,33 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Linux PM <linux-pm@vger.kernel.org>,
         linux-tegra <linux-tegra@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+On Fri, Dec 10, 2021 at 7:16 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 >
-> Emit warning if unregister_restart_handler() fails since it never should
-> fail. This will ease further API development by catching mistakes early.
+> 10.12.2021 21:09, Rafael J. Wysocki пишет:
+> > On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+> >>
+> >> There is no need to annotate function prototypes with 'extern', it makes
+> >> code less readable. Remove unnecessary annotations from <reboot.h>.
+> >>
+> >> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> >
+> > I'm not sure that this is really useful.
+> >
+> > Personally, I tend to respect the existing conventions like this.
+> >
+> > Surely, this change is not required for the rest of the series to work.
 >
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-> ---
->  kernel/reboot.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Problem that such things start to spread all over the kernel with a
+> copy-paste approach if there is nobody to clean up the code.
 >
-> diff --git a/kernel/reboot.c b/kernel/reboot.c
-> index e6659ae329f1..f0e7b9c13f6b 100644
-> --- a/kernel/reboot.c
-> +++ b/kernel/reboot.c
-> @@ -210,7 +210,7 @@ EXPORT_SYMBOL(register_restart_handler);
->   */
->  int unregister_restart_handler(struct notifier_block *nb)
->  {
-> -       return atomic_notifier_chain_unregister(&restart_handler_list, nb);
-> +       return WARN_ON(atomic_notifier_chain_unregister(&restart_handler_list, nb));
+> This is not a common convention and sometimes it's getting corrected [1].
+>
+> [1] https://git.kernel.org/linus/6d7434931
 
-The only reason why it can fail is if the object pointed to by nb is
-not in the chain.  Why WARN() about this?  And what about systems with
-panic_on_warn set?
-
->  }
->  EXPORT_SYMBOL(unregister_restart_handler);
->
-> --
-> 2.33.1
->
+In separate patches outside of series adding new features, if one is
+so inclined.
