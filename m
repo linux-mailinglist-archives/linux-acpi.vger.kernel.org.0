@@ -2,56 +2,43 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99E034709AF
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 20:04:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 142214709C1
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 20:05:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245754AbhLJTIK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Dec 2021 14:08:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37694 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241625AbhLJTIH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 14:08:07 -0500
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4803CC0617A1;
-        Fri, 10 Dec 2021 11:04:32 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id d10so19750769lfg.6;
-        Fri, 10 Dec 2021 11:04:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=rvbAWOjnQ4iiK2qTm1VE6lQGOrcjLKyz5OxaYJHSlms=;
-        b=TjeoyxCasR5FMVdl/A0tp1mA72HfZpG7IA3P7NymDxwSTTW3+ca77Hp0RW3fNn90V6
-         BsHjIyUl7Vlp+L39rylawnkVapGjnUQqVeWKvetFiA7uvJFxyv0GjUpcVXKt0X+55JJr
-         xqXdSvj9BdLL7KX3hwRLKx+qpMEtqmR2FUek4bTb6sXBna+eG0YWGMxM64DOjx5RNWe4
-         HoiJuPojsDMo1meIr/+QThmv79vJf2KZerbGrOUNNaqfzynbYTAS2muusrYdRhnsIt5A
-         B24OARH3dPFHv5rk46GLF+MM2vVZfTdlA9nyGZ9hBzpvwzg8kPFwKLRgebHs+PEO+1Iq
-         vobA==
+        id S238538AbhLJTJV convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 10 Dec 2021 14:09:21 -0500
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:44617 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230463AbhLJTJU (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 14:09:20 -0500
+Received: by mail-oi1-f178.google.com with SMTP id be32so14445880oib.11;
+        Fri, 10 Dec 2021 11:05:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=rvbAWOjnQ4iiK2qTm1VE6lQGOrcjLKyz5OxaYJHSlms=;
-        b=2AnLLKMYY9h33CHEReDkueoANUm2gzmm/2WVoyOxc1+W2EEMK2IZnUyyDvdTghts6V
-         IjAxJqrviJAt7VXiVdQdFKeupX4UPh3mt82zLoi2OcOJrteQGyFUsNQ2GIJdvKYWo9St
-         5l34yRXkOtT1ayOQWalhHcRGoqd1upbajBqZZvSIyClAi4AlMPSIVSWIDLFhD/INTsEM
-         MytSD92t6PKTbcQjXf+QqCCYR2KHo8JkKIVH0+2IKNtwPWUO8Tm7dVmXNGUabHpv/T1Q
-         QVyeA0LS3dvKGrRBGSXBcYTqw5C/3rPFt5/0S84ZlY4oJ4c+jKXkaEnM0omUhIOpUAq5
-         dCSA==
-X-Gm-Message-State: AOAM532SKxdXzz2NRggWRQJDQmeeMCyelnMXh8pmePKtWo7Hks19Zd2n
-        LxgNAGS/OYYAi6TpCQyO9saOLIP8MEY=
-X-Google-Smtp-Source: ABdhPJyGg6V6axU9mPpKq+4o9ssjbFc0zNzIldal4eICWlLYfWsm94H3hqPTZ3hkXuJwkEExqxjrPg==
-X-Received: by 2002:a05:6512:3f84:: with SMTP id x4mr14257818lfa.346.1639163070363;
-        Fri, 10 Dec 2021 11:04:30 -0800 (PST)
-Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru. [94.29.46.111])
-        by smtp.googlemail.com with ESMTPSA id k27sm385556ljc.129.2021.12.10.11.04.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Dec 2021 11:04:29 -0800 (PST)
-Subject: Re: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated
- priority
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=c+Gg3IcBrVO+p3DERDiz2wIK2rZh3JBEUqlmxz2Wt9w=;
+        b=KF02GmbhAy9o852cKAkWGRsQiFbgHC75Qjm16bI7ZSmAfyJfROZofbcH5jI8CJ/ve+
+         eHhgitsnexLUIDGw5//Gk3z+Ok9evNj4B9kvpHUljhuupzNnGZFu5aFXSsX81N0DYWnQ
+         IaBXbFwEerwNO3snRUpagshSzYMbeSIiztCbLnK54Zt/2TVaC3wOPO8BVEK8I1B434i9
+         jEc6iUXt9xaEyYM6x5//wTvcOkDy/tLV52Sdv83wiI5s/7cNfq7VeKJ7PH5p5hyHH/1h
+         /CbxkevGDaw6vPTu14r/Zn3poSjqgobQdPA5+G75/glByywxNMFAgRWya2D4H+Hw9B5o
+         Jl1w==
+X-Gm-Message-State: AOAM5333zryiN0f+sbmHmz1C8Wb+kAiv8RDMW2PlfbHCFvYf5HhFNokx
+        4ByWa50hvEfayrUN+aS2O+/98uHRohqSF0ta+/8=
+X-Google-Smtp-Source: ABdhPJyFnxvuCdo/SAuZsTrbeFY0ttrM6VIAZMHiyNGyFieUXOlcjM/63kmCFhhj1nwi5THbS12OxkRKZ5ROskKDe+g=
+X-Received: by 2002:aca:eb0b:: with SMTP id j11mr14151206oih.51.1639163143930;
+ Fri, 10 Dec 2021 11:05:43 -0800 (PST)
+MIME-Version: 1.0
+References: <20211126180101.27818-1-digetx@gmail.com> <20211126180101.27818-4-digetx@gmail.com>
+ <CAJZ5v0jTJ3f7oUUR690PGaPJsxA8yzua9XDa8MONBHMzHnDfOQ@mail.gmail.com> <e6ff1cea-a168-1cb0-25c5-fb16c681cf4a@gmail.com>
+In-Reply-To: <e6ff1cea-a168-1cb0-25c5-fb16c681cf4a@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 10 Dec 2021 20:05:32 +0100
+Message-ID: <CAJZ5v0gwnY07vg71_NB8RDWyv84FtMsmx7UTDd8TkUd7vFzc6A@mail.gmail.com>
+Subject: Re: [PATCH v4 03/25] notifier: Add atomic/blocking_notifier_has_unique_priority()
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         Russell King <linux@armlinux.org.uk>,
@@ -79,7 +66,7 @@ Cc:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
         "H. Peter Anvin" <hpa@zytor.com>,
         Boris Ostrovsky <boris.ostrovsky@oracle.com>,
         Juergen Gross <jgross@suse.com>,
@@ -108,111 +95,77 @@ Cc:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux PM <linux-pm@vger.kernel.org>,
         linux-tegra <linux-tegra@vger.kernel.org>
-References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-6-digetx@gmail.com> <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl>
- <033ddf2a-6223-1a82-ec64-30f17c891f67@gmail.com>
- <YaQeQgbW+CjEdsqG@qmqm.qmqm.pl>
- <091321ea-4919-0579-88a8-23d05871575d@gmail.com>
- <CAJZ5v0jMvdhfBqjY+V9h_Z6EH1ohuJH+KjuGiOw_Jor1Tnp7vg@mail.gmail.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <45025b2d-4be1-f694-be61-31903795cf5d@gmail.com>
-Date:   Fri, 10 Dec 2021 22:04:27 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0jMvdhfBqjY+V9h_Z6EH1ohuJH+KjuGiOw_Jor1Tnp7vg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-10.12.2021 21:27, Rafael J. Wysocki пишет:
-> On Mon, Nov 29, 2021 at 12:34 PM Dmitry Osipenko <digetx@gmail.com> wrote:
->>
->> 29.11.2021 03:26, Michał Mirosław пишет:
->>> On Mon, Nov 29, 2021 at 12:06:19AM +0300, Dmitry Osipenko wrote:
->>>> 28.11.2021 03:28, Michał Mirosław пишет:
->>>>> On Fri, Nov 26, 2021 at 09:00:41PM +0300, Dmitry Osipenko wrote:
->>>>>> Add sanity check which ensures that there are no two restart handlers
->>>>>> registered with the same priority. Normally it's a direct sign of a
->>>>>> problem if two handlers use the same priority.
->>>>>
->>>>> The patch doesn't ensure the property that there are no duplicated-priority
->>>>> entries on the chain.
->>>>
->>>> It's not the exact point of this patch.
->>>>
->>>>> I'd rather see a atomic_notifier_chain_register_unique() that returns
->>>>> -EBUSY or something istead of adding an entry with duplicate priority.
->>>>> That way it would need only one list traversal unless you want to
->>>>> register the duplicate anyway (then you would call the older
->>>>> atomic_notifier_chain_register() after reporting the error).
->>>>
->>>> The point of this patch is to warn developers about the problem that
->>>> needs to be fixed. We already have such troubling drivers in mainline.
->>>>
->>>> It's not critical to register different handlers with a duplicated
->>>> priorities, but such cases really need to be corrected. We shouldn't
->>>> break users' machines during transition to the new API, meanwhile
->>>> developers should take action of fixing theirs drivers.
->>>>
->>>>> (Or you could return > 0 when a duplicate is registered in
->>>>> atomic_notifier_chain_register() if the callers are prepared
->>>>> for that. I don't really like this way, though.)
->>>>
->>>> I had a similar thought at some point before and decided that I'm not in
->>>> favor of this approach. It's nicer to have a dedicated function that
->>>> verifies the uniqueness, IMO.
->>>
->>> I don't like the part that it traverses the list second time to check
->>> the uniqueness. But actually you could avoid that if
->>> notifier_chain_register() would always add equal-priority entries in
->>> reverse order:
->>>
->>>  static int notifier_chain_register(struct notifier_block **nl,
->>>               struct notifier_block *n)
->>>  {
->>>       while ((*nl) != NULL) {
->>>               if (unlikely((*nl) == n)) {
->>>                       WARN(1, "double register detected");
->>>                       return 0;
->>>               }
->>> -             if (n->priority > (*nl)->priority)
->>> +             if (n->priority >= (*nl)->priority)
->>>                       break;
->>>               nl = &((*nl)->next);
->>>       }
->>>       n->next = *nl;
->>>       rcu_assign_pointer(*nl, n);
->>>       return 0;
->>>  }
->>>
->>> Then the check for uniqueness after adding would be:
->>>
->>>  WARN(nb->next && nb->priority == nb->next->priority);
->>
->> We can't just change the registration order because invocation order of
->> the call chain depends on the registration order
-> 
-> It doesn't if unique priorities are required and isn't that what you want?
-> 
->> and some of current
->> users may rely on that order. I'm pretty sure that changing the order
->> will have unfortunate consequences.
-> 
-> Well, the WARN() doesn't help much then.
-> 
-> Either you can make all of the users register with unique priorities,
-> and then you can make the registration reject non-unique ones, or you
-> cannot assume them to be unique.
+On Fri, Dec 10, 2021 at 7:52 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>
+> 10.12.2021 21:19, Rafael J. Wysocki пишет:
+> ...
+> >> +bool atomic_notifier_has_unique_priority(struct atomic_notifier_head *nh,
+> >> +               struct notifier_block *n)
+> >> +{
+> >> +       unsigned long flags;
+> >> +       bool ret;
+> >> +
+> >> +       spin_lock_irqsave(&nh->lock, flags);
+> >> +       ret = notifier_has_unique_priority(&nh->head, n);
+> >> +       spin_unlock_irqrestore(&nh->lock, flags);
+> >
+> > This only works if the caller can prevent new entries from being added
+> > to the list at this point or if the caller knows that they cannot be
+> > added for some reason, but the kerneldoc doesn't mention this
+> > limitation.
+>
+> I'll update the comment.
+>
+> ..
+> >> +bool blocking_notifier_has_unique_priority(struct blocking_notifier_head *nh,
+> >> +               struct notifier_block *n)
+> >> +{
+> >> +       bool ret;
+> >> +
+> >> +       /*
+> >> +        * This code gets used during boot-up, when task switching is
+> >> +        * not yet working and interrupts must remain disabled. At such
+> >> +        * times we must not call down_read().
+> >> +        */
+> >> +       if (system_state != SYSTEM_BOOTING)
+> >
+> > No, please don't do this, it makes the whole thing error-prone.
+>
+> What should I do then?
 
-There is no strong requirement for priorities to be unique, the reboot.c
-code will work properly.
+First of all, do you know of any users who may want to call this
+during early initialization?  If so, then why may they want to do
+that?
 
-The potential problem is on the user's side and the warning is intended
-to aid the user.
+Depending on the above, I would consider adding a special mechanism for them.
 
-We can make it a strong requirement, but only after converting and
-testing all kernel drivers. I'll consider to add patches for that.
+> >> +               down_read(&nh->rwsem);
+> >> +
+> >> +       ret = notifier_has_unique_priority(&nh->head, n);
+> >> +
+> >> +       if (system_state != SYSTEM_BOOTING)
+> >> +               up_read(&nh->rwsem);
+> >
+> > And still what if a new entry with a non-unique priority is added to
+> > the chain at this point?
+>
+> If entry with a non-unique priority is added after the check, then
+> obviously it won't be detected.
+
+Why isn't this a problem?
+
+> I don't understand the question. These
+> down/up_read() are the locks that prevent the race, if that's the question.
+
+Not really, they only prevent the race from occurring while
+notifier_has_unique_priority() is running.
+
+If anyone depends on this check for correctness, they need to lock the
+rwsem, do the check, do the thing depending on the check while holding
+the rwsem and then release the rwsem.  Otherwise it is racy.
