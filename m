@@ -2,94 +2,196 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 468674707F5
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 18:59:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A97D947081A
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 19:09:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244921AbhLJSDL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Dec 2021 13:03:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235392AbhLJSDK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 13:03:10 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB7DC061746;
-        Fri, 10 Dec 2021 09:59:35 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 658E6B82914;
-        Fri, 10 Dec 2021 17:59:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D356DC00446;
-        Fri, 10 Dec 2021 17:59:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639159173;
-        bh=bBSxjH8QSMhD8e8s4DODPS6gWJiodf4WX7lpdz2HSMA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OiKf/ACo3eK481gfwEHBK3uNNsW40hy0NGBNshjiFMHwPpx6FlOehXX/TgmvrkOxQ
-         K4LleamkRphnEtJgu85JApyoeL3gBO3kPypZMGPlFVGRZ2u3O4zgrJ0JW0rK8Hc/Ph
-         sMD8XqcKGiFwGjudkNh2j316R0ZU6jnaew3f+kMxV7SU75i78UA0yaH+I/YbBOk7IF
-         o+JOPtxpNDEV44KEWEOnKbq13+rCR4lrtmQf8xw73nH4i4HJ+ywvv53UaehUJaPW5n
-         bE8oHNK8yNKlbEfGUP1Ka/zsWA3r80WZNnSK08tKkPLDJpvOyPF8SjfC52RnNKCjMx
-         L5HJLmkBfYMEg==
-Date:   Fri, 10 Dec 2021 17:59:27 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Stefan Binding <sbinding@opensource.cirrus.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        Lucas Tanure <tanureal@opensource.cirrus.com>
-Subject: Re: [PATCH v2 3/6] platform/x86: i2c-multi-instantiate: Move it to
- drivers/acpi folder
-Message-ID: <YbOVf5eGwCqJDgvv@sirena.org.uk>
-References: <20211210154050.3713-1-sbinding@opensource.cirrus.com>
- <20211210154050.3713-4-sbinding@opensource.cirrus.com>
+        id S241325AbhLJSNI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Dec 2021 13:13:08 -0500
+Received: from mail-oo1-f45.google.com ([209.85.161.45]:44884 "EHLO
+        mail-oo1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230284AbhLJSNI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 13:13:08 -0500
+Received: by mail-oo1-f45.google.com with SMTP id t9-20020a4a8589000000b002c5c4d19723so2576190ooh.11;
+        Fri, 10 Dec 2021 10:09:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bnSiIIEAxVbWb5ME0b4EjQTIeMlzMMlMKVBEVEKFmvo=;
+        b=YI1kQA1tXM8B0BX24su8AbH2RzLXy9vgc9pDId6WATq1J6nWZdFuqMyXfmiybyrhgS
+         T/9Bx98nvJDR2c/KIDCHqf7gLnpfT7gxpQhAnZf6X6aPLiUpN+zVNupoefmXZjjYCP4c
+         k8K5tTzJGsrknUJQ6DYoKi2wVL/5VHLSSBDqNPj/BuQmcE7vL39ESatxNbsddEcxWmdL
+         BOWdBHckq54xn28VHK5H2N6FwUCrHm4eYMQ4HMlF5dNZv2RDcSle1EBlXYXuEe0BNCkz
+         iULn2CYkGgAGFaLJ8BcZ1P2ZFkbyPJz6FnAa/OQn/eKOSqVVGqFCQm/MbA3j9YBVYlvp
+         iz/Q==
+X-Gm-Message-State: AOAM530zi3fsHOqr0XImH1ZyQnV63iw1997YtO2H/W5mTSb8hBbmGG8Z
+        a/lwzK/qXhnTGZMXWUm06pAMQEvRoXx3B0dDAYc=
+X-Google-Smtp-Source: ABdhPJylQaHxxBjvxLDdejK26dmax8gF5GO2emXKWarqrtdmHFUWV4Injg4wQQswc1tWUgMSYyPwJPfech+QMe2lThI=
+X-Received: by 2002:a05:6820:388:: with SMTP id r8mr9365162ooj.0.1639159771506;
+ Fri, 10 Dec 2021 10:09:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qOlWQJXGoEsgX6ji"
-Content-Disposition: inline
-In-Reply-To: <20211210154050.3713-4-sbinding@opensource.cirrus.com>
-X-Cookie: One picture is worth 128K words.
+References: <20211126180101.27818-1-digetx@gmail.com> <20211126180101.27818-8-digetx@gmail.com>
+In-Reply-To: <20211126180101.27818-8-digetx@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 10 Dec 2021 19:09:20 +0100
+Message-ID: <CAJZ5v0i=zgubEtF5-Wnaqa5FMnfVUdSnEmD11-LAuYCH8ZCwrA@mail.gmail.com>
+Subject: Re: [PATCH v4 07/25] reboot: Remove extern annotation from function prototypes
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
+        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv@lists.infradead.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>
+> There is no need to annotate function prototypes with 'extern', it makes
+> code less readable. Remove unnecessary annotations from <reboot.h>.
+>
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 
---qOlWQJXGoEsgX6ji
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm not sure that this is really useful.
 
-On Fri, Dec 10, 2021 at 03:40:47PM +0000, Stefan Binding wrote:
-> From: Lucas Tanure <tanureal@opensource.cirrus.com>
->=20
-> Moving I2C multi instantiate driver to drivers/acpi folder for
-> upcoming conversion into a generic bus multi instantiate
-> driver for SPI and I2C
->=20
-> Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
+Personally, I tend to respect the existing conventions like this.
+
+Surely, this change is not required for the rest of the series to work.
+
 > ---
-
-You've not provided a Signed-off-by for this so people can't do anything
-with it, please see Documentation/process/submitting-patches.rst for
-details on what this is and why it's important.
-
---qOlWQJXGoEsgX6ji
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGzlX8ACgkQJNaLcl1U
-h9BVCgf/Q0C7sSyuSXNPjiKUn5rnye0V4Bkv3GXGXSTyI4fbTgAwNTN8b89uE+M/
-yVAyerexUJ9PbtoerGU3mfsCVeVnZCpfDExkTzTGriphmnx+X7QrwAGcWEWiKihk
-hcw1VXZzsxijPqJAPWAC7Vm22X61oB79lT33goMPNQyooklcsGqLVFKtXREx2tGw
-qCWDZEu6OSqgOqJJxX9MiBUAzfRU2s57EXyYPZya8j+vqNdI9yzKuGoUkvWiB0aH
-j1K/luBUzgmhlzj3zPkRdQs4dc8PGc8/tdYNaRaqKAqFbOoDlYO6q+CCkbJBgrNY
-Gqhn32bNKvV9KUZpYGj4IdzHB+mbAQ==
-=a2Q9
------END PGP SIGNATURE-----
-
---qOlWQJXGoEsgX6ji--
+>  include/linux/reboot.h | 38 +++++++++++++++++++-------------------
+>  1 file changed, 19 insertions(+), 19 deletions(-)
+>
+> diff --git a/include/linux/reboot.h b/include/linux/reboot.h
+> index 7c288013a3ca..b7fa25726323 100644
+> --- a/include/linux/reboot.h
+> +++ b/include/linux/reboot.h
+> @@ -40,36 +40,36 @@ extern int reboot_cpu;
+>  extern int reboot_force;
+>
+>
+> -extern int register_reboot_notifier(struct notifier_block *);
+> -extern int unregister_reboot_notifier(struct notifier_block *);
+> +int register_reboot_notifier(struct notifier_block *);
+> +int unregister_reboot_notifier(struct notifier_block *);
+>
+> -extern int devm_register_reboot_notifier(struct device *, struct notifier_block *);
+> +int devm_register_reboot_notifier(struct device *, struct notifier_block *);
+>
+> -extern int register_restart_handler(struct notifier_block *);
+> -extern int unregister_restart_handler(struct notifier_block *);
+> -extern void do_kernel_restart(char *cmd);
+> +int register_restart_handler(struct notifier_block *);
+> +int unregister_restart_handler(struct notifier_block *);
+> +void do_kernel_restart(char *cmd);
+>
+>  /*
+>   * Architecture-specific implementations of sys_reboot commands.
+>   */
+>
+> -extern void migrate_to_reboot_cpu(void);
+> -extern void machine_restart(char *cmd);
+> -extern void machine_halt(void);
+> -extern void machine_power_off(void);
+> +void migrate_to_reboot_cpu(void);
+> +void machine_restart(char *cmd);
+> +void machine_halt(void);
+> +void machine_power_off(void);
+>
+> -extern void machine_shutdown(void);
+> +void machine_shutdown(void);
+>  struct pt_regs;
+> -extern void machine_crash_shutdown(struct pt_regs *);
+> +void machine_crash_shutdown(struct pt_regs *);
+>
+>  /*
+>   * Architecture independent implementations of sys_reboot commands.
+>   */
+>
+> -extern void kernel_restart_prepare(char *cmd);
+> -extern void kernel_restart(char *cmd);
+> -extern void kernel_halt(void);
+> -extern void kernel_power_off(void);
+> +void kernel_restart_prepare(char *cmd);
+> +void kernel_restart(char *cmd);
+> +void kernel_halt(void);
+> +void kernel_power_off(void);
+>
+>  extern int C_A_D; /* for sysctl */
+>  void ctrl_alt_del(void);
+> @@ -77,15 +77,15 @@ void ctrl_alt_del(void);
+>  #define POWEROFF_CMD_PATH_LEN  256
+>  extern char poweroff_cmd[POWEROFF_CMD_PATH_LEN];
+>
+> -extern void orderly_poweroff(bool force);
+> -extern void orderly_reboot(void);
+> +void orderly_poweroff(bool force);
+> +void orderly_reboot(void);
+>  void hw_protection_shutdown(const char *reason, int ms_until_forced);
+>
+>  /*
+>   * Emergency restart, callable from an interrupt handler.
+>   */
+>
+> -extern void emergency_restart(void);
+> +void emergency_restart(void);
+>  #include <asm/emergency-restart.h>
+>
+>  #endif /* _LINUX_REBOOT_H */
+> --
+> 2.33.1
+>
