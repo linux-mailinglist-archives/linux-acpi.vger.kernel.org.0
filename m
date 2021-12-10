@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E85647084D
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 19:16:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC77470866
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 19:19:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237012AbhLJSTh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Dec 2021 13:19:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54380 "EHLO
+        id S234418AbhLJSXK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 10 Dec 2021 13:23:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236984AbhLJSTh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 13:19:37 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B752C061746;
-        Fri, 10 Dec 2021 10:16:01 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id k37so19614350lfv.3;
-        Fri, 10 Dec 2021 10:16:01 -0800 (PST)
+        with ESMTP id S229649AbhLJSXJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 13:23:09 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 011ACC0617A1;
+        Fri, 10 Dec 2021 10:19:34 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id cf39so7458354lfb.8;
+        Fri, 10 Dec 2021 10:19:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=bcvtGiLbR5hJWeiVCch89vaOnPBEjfgkGhnDVgGToIE=;
-        b=G0qTQ3KGFrwps8qADsCL0qK6agYLp7ivalOB/mF7ukTMqKqODRUNPClBA+tjj958iZ
-         zDP5ALcBXKrVg0xx9H2ws3hyb3r6CIVdqsbS/GVCsvrWbnNO0HGlLBE864udH5VLQpzA
-         E4ZCGQvWrQ3sm3YxkToWB7AGuZSE/qHZ86M8KsEpcZTMCU4IFoRlulk9U2f7fjt0DgcE
-         dievaYp3/3GIUU6nMVScS6FhLqdlOsaTCJ8+eRNM/gp2aIGsGid35kag1Oq9XwyLJEZe
-         Lsdj6NoONSIfbrp21Zrfz1ZI08pSDTMKtV8ZG3ySXOqe/j3lBC+KMsiD//GTJ5tyuvfx
-         eTTw==
+        bh=EXOlhuwO6PwxX2A+xhcTtBM4hDyUpnAJiexjEXDAvCY=;
+        b=AqjAg4O7giyzVdt+tBG9uHdplJtifqxLx/yVu+cgoY6plA3iYDA6wXW+lamp4aSGK0
+         JtAw3aPoKL/gydUbbFYOf1pi7KNgtnB7CRHE+MknWMiFR30YU057EAppHMp3RQPfHd8d
+         06yVvqsThCCunZ4BRns7COFfMth1pjRjda7taFbydUf0oWJrqvgB05orw4q9ScnuxSKa
+         RGrhlOCs187IEnib8HCpTe8JzWEZV9cVroOWHPffKJtOeT7C/Fogm7PG4qgUyWMygMmF
+         ds56Fkt5Zck/MXhrzJhxcRgHcy1bwpmNWqyftpmBQa7CL/iiV+9v5OptrusSns2ZXc73
+         k16Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=bcvtGiLbR5hJWeiVCch89vaOnPBEjfgkGhnDVgGToIE=;
-        b=B2YaX8YchuIOTbrMehsC8kvH1WDukRXWmKM/NjZzZf2bG7U0CtW8eQFXVK3/7uvgWg
-         qEK8RGw3yDV9SJkp4TD/joABG62bY9gzvjgblarNqYbYPpegazx1kOGEwa7JVaz2IiuY
-         1wirpF5/gH91VKw9uV4CL/uPMdEHMHESfu7gGipU7nvJQiP5FJJ0+EroS3DV1ssYZ39f
-         dFA9XuSPZcHi3+mfLPEN1zbcTIwhZtzmxhYPKCX4JWjMAO7C9PcpdR5LPg2PFB9QxRqE
-         B36HdnvymmZbyyJb3v3ALJbLqWkUj2OB9XQgF/DIp0WL0PdojBU/J44dGQ60VHrWKo/C
-         aKUg==
-X-Gm-Message-State: AOAM530/TtTLYYq0CMMDvbzTaHhY/owTeaOZ3C4fSWYH8NVm6WlU3wFH
-        /SB/CiCM6eA1+sFTwcXXVAZZZCYDAHg=
-X-Google-Smtp-Source: ABdhPJwR/4XeF0n78EyaU8daj5gqPU1YI5WhyixXiCZ/1XxnYO6fYoSxPShwkvEp5UZp5BYd303wDQ==
-X-Received: by 2002:a05:6512:40b:: with SMTP id u11mr13847699lfk.377.1639160159550;
-        Fri, 10 Dec 2021 10:15:59 -0800 (PST)
+        bh=EXOlhuwO6PwxX2A+xhcTtBM4hDyUpnAJiexjEXDAvCY=;
+        b=7tVkM+vuEN0j1gYFKHmvcECD6Aww9y0zPv/I6cZUrdE7uEdwsSbiYC0706zMCfVROV
+         Yamk61+tZRnxyulZ9HYNB2binKujk/82ROJX6pIVG3PL15MfZB3g4R+9JQ80/wuL+u1H
+         OSbk/Oy6D58pFUCA86HfA/P8bOUEfSs14HbmC6k0md6D6gqjOS0viCmm9nXCf28zSU6S
+         udOklyoWQ0yCsb9RA+FD/xjZ4941S4twpu7SmqfAwvX+rUEwDeKESKAWqFYuJq47imRo
+         75HzGCuRmI1ScucSlUUHL43di7imJv6wzaqWY/U2VTkVvwilVOdVofR2aLHSiXT647wt
+         ByzQ==
+X-Gm-Message-State: AOAM533NNfhm0o6Itw/bggo5+mY9qKlcOngIEon6chJNHhTfbyc/8flw
+        FJmrmNf5bLywnfrZXyLbT0s29kev7Ao=
+X-Google-Smtp-Source: ABdhPJzMrOyS+fXdy9iuUu0OwY3ayky869D80K4hHhkf8whZoWRjpK8Gq06BVfaBtvKTtjzQFmSyrg==
+X-Received: by 2002:a05:6512:2603:: with SMTP id bt3mr13366040lfb.202.1639160372149;
+        Fri, 10 Dec 2021 10:19:32 -0800 (PST)
 Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru. [94.29.46.111])
-        by smtp.googlemail.com with ESMTPSA id q15sm379095lfp.32.2021.12.10.10.15.57
+        by smtp.googlemail.com with ESMTPSA id u16sm379604lfu.42.2021.12.10.10.19.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Dec 2021 10:15:59 -0800 (PST)
-Subject: Re: [PATCH v4 07/25] reboot: Remove extern annotation from function
- prototypes
+        Fri, 10 Dec 2021 10:19:31 -0800 (PST)
+Subject: Re: [PATCH v4 02/25] notifier: Add
+ blocking_notifier_call_chain_is_empty()
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -108,15 +108,15 @@ Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Linux PM <linux-pm@vger.kernel.org>,
         linux-tegra <linux-tegra@vger.kernel.org>
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-8-digetx@gmail.com>
- <CAJZ5v0i=zgubEtF5-Wnaqa5FMnfVUdSnEmD11-LAuYCH8ZCwrA@mail.gmail.com>
+ <20211126180101.27818-3-digetx@gmail.com>
+ <CAJZ5v0gy5M5yYT7k5CY0JtW4MvsgKq4psBEw81UKz=pjGo0xPw@mail.gmail.com>
 From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <acf8289e-6ab8-6eda-ec06-e9044ddd9a92@gmail.com>
-Date:   Fri, 10 Dec 2021 21:15:57 +0300
+Message-ID: <9307a684-0b0b-0488-75be-7845d9b973a1@gmail.com>
+Date:   Fri, 10 Dec 2021 21:19:29 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0i=zgubEtF5-Wnaqa5FMnfVUdSnEmD11-LAuYCH8ZCwrA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gy5M5yYT7k5CY0JtW4MvsgKq4psBEw81UKz=pjGo0xPw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -124,23 +124,58 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-10.12.2021 21:09, Rafael J. Wysocki пишет:
-> On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+10.12.2021 21:14, Rafael J. Wysocki пишет:
+> On Fri, Nov 26, 2021 at 7:01 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 >>
->> There is no need to annotate function prototypes with 'extern', it makes
->> code less readable. Remove unnecessary annotations from <reboot.h>.
+>> Add blocking_notifier_call_chain_is_empty() that returns true if call
+>> chain is empty.
 >>
 >> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+>> ---
+>>  include/linux/notifier.h |  2 ++
+>>  kernel/notifier.c        | 14 ++++++++++++++
+>>  2 files changed, 16 insertions(+)
+>>
+>> diff --git a/include/linux/notifier.h b/include/linux/notifier.h
+>> index 4b80a815b666..924c9d7c8e73 100644
+>> --- a/include/linux/notifier.h
+>> +++ b/include/linux/notifier.h
+>> @@ -173,6 +173,8 @@ int blocking_notifier_call_chain_robust(struct blocking_notifier_head *nh,
+>>  int raw_notifier_call_chain_robust(struct raw_notifier_head *nh,
+>>                 unsigned long val_up, unsigned long val_down, void *v);
+>>
+>> +bool blocking_notifier_call_chain_is_empty(struct blocking_notifier_head *nh);
+>> +
+>>  #define NOTIFY_DONE            0x0000          /* Don't care */
+>>  #define NOTIFY_OK              0x0001          /* Suits me */
+>>  #define NOTIFY_STOP_MASK       0x8000          /* Don't call further */
+>> diff --git a/kernel/notifier.c b/kernel/notifier.c
+>> index b8251dc0bc0f..b20cb7b9b1f0 100644
+>> --- a/kernel/notifier.c
+>> +++ b/kernel/notifier.c
+>> @@ -322,6 +322,20 @@ int blocking_notifier_call_chain(struct blocking_notifier_head *nh,
+>>  }
+>>  EXPORT_SYMBOL_GPL(blocking_notifier_call_chain);
+>>
+>> +/**
+>> + *     blocking_notifier_call_chain_is_empty - Check whether notifier chain is empty
+>> + *     @nh: Pointer to head of the blocking notifier chain
+>> + *
+>> + *     Checks whether notifier chain is empty.
+>> + *
+>> + *     Returns true is notifier chain is empty, false otherwise.
+>> + */
+>> +bool blocking_notifier_call_chain_is_empty(struct blocking_notifier_head *nh)
+>> +{
+>> +       return !rcu_access_pointer(nh->head);
+>> +}
+>> +EXPORT_SYMBOL_GPL(blocking_notifier_call_chain_is_empty);
 > 
-> I'm not sure that this is really useful.
+> The check is not reliable (racy) without locking, so I wouldn't export
+> anything like this to modules.
 > 
-> Personally, I tend to respect the existing conventions like this.
+> At least IMO it should be added along with a user.
 > 
-> Surely, this change is not required for the rest of the series to work.
 
-Problem that such things start to spread all over the kernel with a
-copy-paste approach if there is nobody to clean up the code.
-
-This is not a common convention and sometimes it's getting corrected [1].
-
-[1] https://git.kernel.org/linus/6d7434931
+I'll remove the export since it's indeed not obvious how other users may
+want to use this function.
