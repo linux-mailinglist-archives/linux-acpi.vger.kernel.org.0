@@ -2,154 +2,182 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98A5547088F
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 19:22:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B04924708AE
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Dec 2021 19:28:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238381AbhLJS00 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 10 Dec 2021 13:26:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:48998 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232317AbhLJS00 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 10 Dec 2021 13:26:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1639160570;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nZEdGnstxQ8PoTabR6E6wRag+oPqL+RCSE7JPAUHZTU=;
-        b=ekoEHwa0TuOrQ5vnyq1bIQIEO7gbyMww9VEkh0bKPi9jMRqIp39HV3CVvzlACeBIrJmkWN
-        plDhQg5k0GmDyb1GP8KrCeyJZgo41jgg+OHI/Bt3pnA1+PjH+em19oK4Tpztv03MXVo5dD
-        E20XcsJ443LTnoCCPBDgcEsRz7Bj/vQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-444-43TWk63LNrGNowg1GuuTXw-1; Fri, 10 Dec 2021 13:22:49 -0500
-X-MC-Unique: 43TWk63LNrGNowg1GuuTXw-1
-Received: by mail-wr1-f69.google.com with SMTP id q15-20020adfbb8f000000b00191d3d89d09so2610990wrg.3
-        for <linux-acpi@vger.kernel.org>; Fri, 10 Dec 2021 10:22:49 -0800 (PST)
+        id S245335AbhLJSbn convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 10 Dec 2021 13:31:43 -0500
+Received: from mail-ot1-f46.google.com ([209.85.210.46]:34439 "EHLO
+        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244333AbhLJSbn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 10 Dec 2021 13:31:43 -0500
+Received: by mail-ot1-f46.google.com with SMTP id x19-20020a9d7053000000b0055c8b39420bso10500284otj.1;
+        Fri, 10 Dec 2021 10:28:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=nZEdGnstxQ8PoTabR6E6wRag+oPqL+RCSE7JPAUHZTU=;
-        b=auRwQwgOC7cpjnAF0lKEpKW4hJ2xeVmj81BQL93NxQIdEnVJCpHCeHHBhYuwI0JL15
-         fQtsr62VULviuvdmHUDsRCEOXkaAZCHYRayHUR7LXq4c6DcPKv0H9lwGp0z/f0F+n64U
-         m8QCvEl3HTOxH8H/i8sMIQZAbiR3jKeSJ3KWwoJYpSQnJOOnF+p5F//53nKAL5SfQ1Uq
-         F5f7CZnj8plNg013kL8j3vFuvCnS2g2fu8NseX4Ytl9l1de/petfZpBs6uoowd4diqtk
-         v8nrOu4w7Ff6cH6ERI9rUJJrSqUXKj5xLxAP75JTd95USdf8bQR3xnaQ6Ge399RAVkFg
-         rwhA==
-X-Gm-Message-State: AOAM533pCrcgImkdUQN+t5OUxNn4cenYipzKEk8OZG+4645A7kGCxbGk
-        2a31ICne8pX0SsED0XetmEOq2tk0mympHnkeUCBgWjIdlJXpKzcNKS8T25csL9Bbv4RU4JDDYK4
-        milmM4c5vjajGSmQwYeuSxQ==
-X-Received: by 2002:adf:eac4:: with SMTP id o4mr713927wrn.690.1639160568198;
-        Fri, 10 Dec 2021 10:22:48 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJz6nhHXYerqIXAuvpATTJJeDQXMUHYl68D08WgHnAzNZ7gCdpfn4qi7oHPJKgkEEBsrCS8LsQ==
-X-Received: by 2002:adf:eac4:: with SMTP id o4mr713883wrn.690.1639160567889;
-        Fri, 10 Dec 2021 10:22:47 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id a1sm4209149wri.89.2021.12.10.10.22.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Dec 2021 10:22:47 -0800 (PST)
-Message-ID: <628226e2-6e1c-a05d-fc00-82c7496da38d@redhat.com>
-Date:   Fri, 10 Dec 2021 19:22:46 +0100
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=O1tFpICrUp02/Rz91q5M3zJOsfP+AsepTWSxKHsDYko=;
+        b=e4l+vmem4SND0L+G+5Ie3RFxLLrXrvGMyPAJZbzg67/hkNdsI0J8GGtWdoybu64vTO
+         NOD0lUXp6bg1pULIqlbPxcn15HhDegqmP7nO/DzORFIdQJ+6xazYPxXStdfEyP5bP+IY
+         0tw1Y20fymF3QMLTailjTekPbTaVnfXXXCgYUJ8DVO0RTV6XMMlpXfZDGYO8go57Mh1p
+         IhMV2zteDX1s7wGWnAwx1ljAC/0CkvaDXIALZkFDPWH3QnrbJXn6EJFnv+jgFEAWB5Iz
+         ++xp6ICQ0w4BDfUWNwwQY2nD0zwTXE8EaCgecUywvaFwvsf8p9jrPRFBBHE+sjqEyv6+
+         uJtQ==
+X-Gm-Message-State: AOAM531hx3uTngXqUJICMRO2ubqpJ3P0ao+xuVAay/4KZQE+9meZIJPk
+        O9Z+hufVcSObAxbo0/igSBFnTIfDc6Fvi8tY2sM=
+X-Google-Smtp-Source: ABdhPJyYCS/8s4tkJCG4AWTeWKT+d6o4I/cnaoDS1n1/MlonZY2Ew73o7SGhiWkpQrPntkE0d8ozu+9C4WKQVKYTs8M=
+X-Received: by 2002:a9d:4c10:: with SMTP id l16mr12535470otf.198.1639160886984;
+ Fri, 10 Dec 2021 10:28:06 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH 1/3] spi: Revert "spi: Remove unused function
- spi_busnum_to_master()"
-Content-Language: en-US
-To:     Lucas tanure <tanureal@opensource.cirrus.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Stefan Binding <sbinding@opensource.cirrus.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        patches@opensource.cirrus.com
-References: <20211202162421.7628-1-sbinding@opensource.cirrus.com>
- <Yan6JVpS50keP2Pl@smile.fi.intel.com>
- <a1f546c2-5c63-573a-c032-603c792f3f7c@redhat.com>
- <85e9e11d-a4fc-44a9-55c2-3a4d2de7769d@opensource.cirrus.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <85e9e11d-a4fc-44a9-55c2-3a4d2de7769d@opensource.cirrus.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20211126180101.27818-1-digetx@gmail.com> <20211126180101.27818-6-digetx@gmail.com>
+ <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl> <033ddf2a-6223-1a82-ec64-30f17c891f67@gmail.com>
+ <YaQeQgbW+CjEdsqG@qmqm.qmqm.pl> <091321ea-4919-0579-88a8-23d05871575d@gmail.com>
+In-Reply-To: <091321ea-4919-0579-88a8-23d05871575d@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 10 Dec 2021 19:27:55 +0100
+Message-ID: <CAJZ5v0jMvdhfBqjY+V9h_Z6EH1ohuJH+KjuGiOw_Jor1Tnp7vg@mail.gmail.com>
+Subject: Re: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated priority
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
+        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv@lists.infradead.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Mon, Nov 29, 2021 at 12:34 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>
+> 29.11.2021 03:26, Michał Mirosław пишет:
+> > On Mon, Nov 29, 2021 at 12:06:19AM +0300, Dmitry Osipenko wrote:
+> >> 28.11.2021 03:28, Michał Mirosław пишет:
+> >>> On Fri, Nov 26, 2021 at 09:00:41PM +0300, Dmitry Osipenko wrote:
+> >>>> Add sanity check which ensures that there are no two restart handlers
+> >>>> registered with the same priority. Normally it's a direct sign of a
+> >>>> problem if two handlers use the same priority.
+> >>>
+> >>> The patch doesn't ensure the property that there are no duplicated-priority
+> >>> entries on the chain.
+> >>
+> >> It's not the exact point of this patch.
+> >>
+> >>> I'd rather see a atomic_notifier_chain_register_unique() that returns
+> >>> -EBUSY or something istead of adding an entry with duplicate priority.
+> >>> That way it would need only one list traversal unless you want to
+> >>> register the duplicate anyway (then you would call the older
+> >>> atomic_notifier_chain_register() after reporting the error).
+> >>
+> >> The point of this patch is to warn developers about the problem that
+> >> needs to be fixed. We already have such troubling drivers in mainline.
+> >>
+> >> It's not critical to register different handlers with a duplicated
+> >> priorities, but such cases really need to be corrected. We shouldn't
+> >> break users' machines during transition to the new API, meanwhile
+> >> developers should take action of fixing theirs drivers.
+> >>
+> >>> (Or you could return > 0 when a duplicate is registered in
+> >>> atomic_notifier_chain_register() if the callers are prepared
+> >>> for that. I don't really like this way, though.)
+> >>
+> >> I had a similar thought at some point before and decided that I'm not in
+> >> favor of this approach. It's nicer to have a dedicated function that
+> >> verifies the uniqueness, IMO.
+> >
+> > I don't like the part that it traverses the list second time to check
+> > the uniqueness. But actually you could avoid that if
+> > notifier_chain_register() would always add equal-priority entries in
+> > reverse order:
+> >
+> >  static int notifier_chain_register(struct notifier_block **nl,
+> >               struct notifier_block *n)
+> >  {
+> >       while ((*nl) != NULL) {
+> >               if (unlikely((*nl) == n)) {
+> >                       WARN(1, "double register detected");
+> >                       return 0;
+> >               }
+> > -             if (n->priority > (*nl)->priority)
+> > +             if (n->priority >= (*nl)->priority)
+> >                       break;
+> >               nl = &((*nl)->next);
+> >       }
+> >       n->next = *nl;
+> >       rcu_assign_pointer(*nl, n);
+> >       return 0;
+> >  }
+> >
+> > Then the check for uniqueness after adding would be:
+> >
+> >  WARN(nb->next && nb->priority == nb->next->priority);
+>
+> We can't just change the registration order because invocation order of
+> the call chain depends on the registration order
 
-On 12/10/21 19:10, Lucas tanure wrote:
-> On 12/3/21 11:14, Hans de Goede wrote:
->> Hi,
->>
->> On 12/3/21 12:06, Andy Shevchenko wrote:
->>> On Thu, Dec 02, 2021 at 04:24:19PM +0000, Stefan Binding wrote:
->>>> From: Lucas Tanure <tanureal@opensource.cirrus.com>
->>>>
->>>> Revert commit bdc7ca008e1f ("spi: Remove unused function
->>>> spi_busnum_to_master()")
->>>> This function is needed for the spi version of i2c multi
->>>> instantiate driver.
->>>
->>> I understand the intention, but I have no clue from this series (it lacks of
->>> proper cover letter, it lacks of much better and justified commit message in
->>> the patch 3) what is the actual issue. Without these to be provided it's no go
->>> for the series. Please, provide much better description what is the actual
->>> issue you are trying to solve (from patch 3 my guts telling me that this can
->>> be achieved differently without this code being involved).
->>
->> Yes I assume that eventually there will be a follow-up which will
->> actually add some new ACPI HIDs to the new bus-multi-instantiate.c file ?
->>
-> Yes, we are developing an HDA sound driver for the HID CSC3551,
-> which is used for laptops that use SPI or I2C.
-> And in that series is where we plan to put a patch to add that HID.
-> 
->> Can we please have (some of) those patches as part of the next
->> version, so that we can see how you will actually use this?
-> The series is this one https://lkml.org/lkml/2021/11/23/723, but
-> the SPI HID was not ready to be sent in that version, but will be
-> part of the next submission.
-> 
->>
->> Also I'm wondering is this actually about ACPI device's having multiple
->> SpiSerialBusV2 resources in a single _CRS resource list ?
-> yes, a single _CRS with 2 or 4 SpiSerialBusV2 inside.
-> 
->>
->> Or do you plan to use this for devices with only a single
->> I2cSerialBusV2 or SpiSerialBusV2 resource to e.g. share IRQ lookup
->> code between the 2 cases ?
-> No, the minimum number SpiSerialBusV2 or I2cSerialBusV2 inside the
-> _CRS is two.
-> 
->>
->> If you plan to use this for devices with only a single
->> I2cSerialBusV2 or SpiSerialBusV2 resource, then I'm going to have to
->> nack this.
->>
->> Each ACPI HID which needs to be handled in this code also needs an
->> entry in the i2c_multi_instantiate_ids[] list in drivers/acpi/scan.c
->> which is code which ends up loaded on every single ACPI system, so
->> we really only want to add HIDs there for the special case of having
->> multiple I2cSerialBusV2 or SpiSerialBusV2 resources in a single
->> ACPI Device / ACPI fwnode.
->>
->> If you are looking to use this as a way to share code for other reasons
->> (which is a good goal to strive for!) please find another way, such
->> as e.g. adding some helper functions to drivers/gpio/gpiolib-acpi.c
->> (note there already are a couple of helpers there which you may use).
-> No, we only want to multi instantiate SPI or I2C devices from a single _CRS.
+It doesn't if unique priorities are required and isn't that what you want?
 
-Ok, that is fine, thank you for clarifying things.
+> and some of current
+> users may rely on that order. I'm pretty sure that changing the order
+> will have unfortunate consequences.
 
-Regards,
+Well, the WARN() doesn't help much then.
 
-Hans
-
+Either you can make all of the users register with unique priorities,
+and then you can make the registration reject non-unique ones, or you
+cannot assume them to be unique.
