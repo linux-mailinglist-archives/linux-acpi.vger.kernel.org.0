@@ -2,103 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA280472C01
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Dec 2021 13:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A602547363E
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Dec 2021 21:46:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233524AbhLMMLH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 13 Dec 2021 07:11:07 -0500
-Received: from mga01.intel.com ([192.55.52.88]:25736 "EHLO mga01.intel.com"
+        id S242292AbhLMUqc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 13 Dec 2021 15:46:32 -0500
+Received: from mga07.intel.com ([134.134.136.100]:37012 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231405AbhLMMLH (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 13 Dec 2021 07:11:07 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10196"; a="262844164"
-X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
-   d="scan'208";a="262844164"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 04:11:07 -0800
-X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
-   d="scan'208";a="681613560"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 04:11:04 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mwk9f-005bkK-P9;
-        Mon, 13 Dec 2021 14:10:07 +0200
-Date:   Mon, 13 Dec 2021 14:10:07 +0200
+        id S236136AbhLMUqc (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 13 Dec 2021 15:46:32 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10197"; a="302207548"
+X-IronPort-AV: E=Sophos;i="5.88,203,1635231600"; 
+   d="scan'208";a="302207548"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 12:46:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,203,1635231600"; 
+   d="scan'208";a="660986846"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 13 Dec 2021 12:46:29 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 11196144; Mon, 13 Dec 2021 22:46:35 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] acpi: Store _PLD information and convert users
-Message-ID: <Ybc4H2/eOSyAavjM@smile.fi.intel.com>
-References: <20211213103243.33657-1-heikki.krogerus@linux.intel.com>
+To:     Dan Williams <dan.j.williams@intel.com>, nvdimm@lists.linux.dev,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] ACPI: NFIT: Import GUID before use
+Date:   Mon, 13 Dec 2021 22:46:32 +0200
+Message-Id: <20211213204632.56735-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211213103243.33657-1-heikki.krogerus@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Dec 13, 2021 at 01:32:38PM +0300, Heikki Krogerus wrote:
-> Hi,
-> 
-> I'm now using the helpers device_match_acpi_dev() and
-> device_match_fwnode() like Andy suggested. No other changes.
+Strictly speaking the comparison between guid_t and raw buffer
+is not correct. Import GUID to variable of guid_t type and then
+compare.
 
-FWIW,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/nfit/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> The original cover letter:
-> 
-> This removes the need for the drivers to always separately evaluate
-> the _PLD. With the USB Type-C connector and USB port mapping this
-> allows us to start using the component framework and remove the custom
-> APIs.
-> 
-> So far the only users of the _PLD information have been the USB
-> drivers, but it seems it will be used also at least in some camera
-> drivers later. These nevertheless touch mostly USB drivers.
-> 
-> Rafael, is it still OK if Greg takes these?
-> 
-> Prashant, can you test these?
-> 
-> thanks,
-> 
-> 
-> Heikki Krogerus (5):
->   acpi: Store the Physical Location of Device (_PLD) information
->   usb: Use the cached ACPI _PLD entry
->   usb: Link the ports to the connectors they are attached to
->   usb: typec: port-mapper: Convert to the component framework
->   usb: Remove usb_for_each_port()
-> 
->  Documentation/ABI/testing/sysfs-bus-usb |   9 +
->  drivers/acpi/scan.c                     |  79 +++++++
->  drivers/usb/core/port.c                 |  32 +++
->  drivers/usb/core/usb-acpi.c             |  17 +-
->  drivers/usb/core/usb.c                  |  46 ----
->  drivers/usb/typec/Makefile              |   3 +-
->  drivers/usb/typec/class.c               |   2 -
->  drivers/usb/typec/class.h               |  10 +-
->  drivers/usb/typec/port-mapper.c         | 280 +++---------------------
->  include/acpi/acpi_bus.h                 |  14 ++
->  include/linux/usb.h                     |   9 -
->  include/linux/usb/typec.h               |  12 -
->  12 files changed, 184 insertions(+), 329 deletions(-)
-> 
-> -- 
-> 2.33.0
-> 
-
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 7dd80acf92c7..e5d7f2bda13f 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -678,10 +678,12 @@ static const char *spa_type_name(u16 type)
+ 
+ int nfit_spa_type(struct acpi_nfit_system_address *spa)
+ {
++	guid_t guid;
+ 	int i;
+ 
++	import_guid(&guid, spa->range_guid);
+ 	for (i = 0; i < NFIT_UUID_MAX; i++)
+-		if (guid_equal(to_nfit_uuid(i), (guid_t *)&spa->range_guid))
++		if (guid_equal(to_nfit_uuid(i), &guid))
+ 			return i;
+ 	return -1;
+ }
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.33.0
 
