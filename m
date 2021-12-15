@@ -2,287 +2,141 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE99475D7C
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Dec 2021 17:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A0C84764F6
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Dec 2021 22:52:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244829AbhLOQdu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Dec 2021 11:33:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:38289 "EHLO
+        id S230197AbhLOVw2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Dec 2021 16:52:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:58406 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233170AbhLOQdu (ORCPT
+        by vger.kernel.org with ESMTP id S230194AbhLOVw1 (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 15 Dec 2021 11:33:50 -0500
+        Wed, 15 Dec 2021 16:52:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1639586027;
+        s=mimecast20190719; t=1639605147;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rTWRI7IQ5pBShV73sl2YszfEDD/jUEjZHLTeNinnSZ4=;
-        b=BIn6rTH+ZejUeNswsnbOc/bNoWXpKoJsuwsIuoifYDYktcjjFNkGLEbT8xKSDstC3H8C7n
-        0rfQkdI0BdnAtwgVyD6Gd6cC+yeRTGqWNPsN9PlVkpS2hgT/RkyqGdxAKTz7wOojrvsbrG
-        OfG8RE4yh4hlohyc3IpPTzd5MDtzFyk=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=d8Xx3zTekrihbvJfhZhhSli7JDX8raqst1ZSqjxf0vI=;
+        b=VyAnZa5Ea2e6Tvem5EeUyB/Ln5eecw4ryau+VGyce+TL+Rf8ocMmrDs4/GEJRGRKoM88gg
+        FML1z97KpCOSLyTSYLsd06CTDjAFDvK3qJZh0Ja/lgphy9b+5oJiPkl8RkzrL61X61hgTK
+        0rY5w3VYozSlJh4aDpzzG3WmH+V86UI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-437-MX5W6fITPJ-OaZe39sb6VQ-1; Wed, 15 Dec 2021 11:33:46 -0500
-X-MC-Unique: MX5W6fITPJ-OaZe39sb6VQ-1
-Received: by mail-ed1-f70.google.com with SMTP id v22-20020a50a456000000b003e7cbfe3dfeso20651834edb.11
-        for <linux-acpi@vger.kernel.org>; Wed, 15 Dec 2021 08:33:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=rTWRI7IQ5pBShV73sl2YszfEDD/jUEjZHLTeNinnSZ4=;
-        b=HkewbTiZ3h00LNWy+6gktBz0HyV409mDdNmlIlzUbRQeLK14z2zOR3oWMiVQkuwbQl
-         6+o3TI6ekQuav72GsaOxmyWttlCWG5Ect0C3DyGfn3OOA6Al4bE0aBPTuY5Wn1WxbMZn
-         SlpoIDayLXeEcu4C+6uirz9fV9HNlcSVn6ONY/ufzQTNJhDfOtDgtQp7VVTqb/jZ35lP
-         QM7VAwKGTwWTsHMTSjACiDys/VX/1K9aOi0iLvjRCF2eeX9iFYLmgMtO2z6MlBXZdW2Z
-         8VOtFXTvFY1A6RNzhNK6XY6xq88h1O70k4Z5KDW+mzWBzvq4+woGbfgVlzZmGJhXbrVJ
-         uM+w==
-X-Gm-Message-State: AOAM5309kyCCsi+OsXiJ0C6hRXoY5XYSqnywCTQ8EWaeE6wtscDrPRnu
-        pV4cdwst3EzCM4BLEHrzawIp1dL+ywPlu/vAmiSVu6ZbQOTYjscXMSFaTDx6R8A1QLYjzBZPgE2
-        F1BbS0rQqHD27Q8zXCJPfPQ==
-X-Received: by 2002:a17:906:3a59:: with SMTP id a25mr11616007ejf.762.1639586024898;
-        Wed, 15 Dec 2021 08:33:44 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxBRcoWA/8+jmGqvNy+vOjrnVcNvuUG8Ih8zM6qxxp40c/111cdvP54IEIraKW+KE04Y1TNpw==
-X-Received: by 2002:a17:906:3a59:: with SMTP id a25mr11615977ejf.762.1639586024577;
-        Wed, 15 Dec 2021 08:33:44 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id i5sm871712ejw.121.2021.12.15.08.33.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Dec 2021 08:33:44 -0800 (PST)
-Message-ID: <cf988af8-64b3-c639-0ef2-678f8c08c52a@redhat.com>
-Date:   Wed, 15 Dec 2021 17:33:43 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v5 1/2] x86/PCI: Ignore E820 reservations for bridge
- windows on newer systems
-Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, stable@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-References: <20211215160145.GA695366@bhelgaas>
+ us-mta-604-PMyltjrkMS6PmpVo4bzuhQ-1; Wed, 15 Dec 2021 16:52:23 -0500
+X-MC-Unique: PMyltjrkMS6PmpVo4bzuhQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D18E7190B2A3;
+        Wed, 15 Dec 2021 21:52:20 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.192.60])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D67DF78DE6;
+        Wed, 15 Dec 2021 21:52:13 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20211215160145.GA695366@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Wolfram Sang <wsa@the-dreams.de>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kate Hsuan <hpa@redhat.com>, linux-media@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: [GIT PULL] Immutable branch with INT3472 ACPI/i2c + pdx86 patches
+Date:   Wed, 15 Dec 2021 22:52:12 +0100
+Message-Id: <20211215215212.321235-1-hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Bjorn,
+Hello clk, regulator and media maintainers,
 
-On 12/15/21 17:01, Bjorn Helgaas wrote:
-> On Tue, Dec 07, 2021 at 05:52:40PM +0100, Hans de Goede wrote:
->> On 11/10/21 14:05, Hans de Goede wrote:
->>> On 11/10/21 09:45, Hans de Goede wrote:
->>>> On 11/9/21 23:07, Bjorn Helgaas wrote:
->>>>> On Sat, Nov 06, 2021 at 11:15:07AM +0100, Hans de Goede wrote:
->>>>>> On 10/20/21 23:14, Bjorn Helgaas wrote:
->>>>>>> On Wed, Oct 20, 2021 at 12:23:26PM +0200, Hans de Goede wrote:
->>>>>>>> On 10/19/21 23:52, Bjorn Helgaas wrote:
->>>>>>>>> On Thu, Oct 14, 2021 at 08:39:42PM +0200, Hans de Goede wrote:
->>>>>>>>>> Some BIOS-es contain a bug where they add addresses which map to system
->>>>>>>>>> RAM in the PCI host bridge window returned by the ACPI _CRS method, see
->>>>>>>>>> commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
->>>>>>>>>> space").
->>>>>>>>>>
->>>>>>>>>> To work around this bug Linux excludes E820 reserved addresses when
->>>>>>>>>> allocating addresses from the PCI host bridge window since 2010.
->>>>>>>>>> ...
->>>>>>>
->>>>>>>>> I haven't seen anybody else eager to merge this, so I guess I'll stick
->>>>>>>>> my neck out here.
->>>>>>>>>
->>>>>>>>> I applied this to my for-linus branch for v5.15.
->>>>>>>>
->>>>>>>> Thank you, and sorry about the build-errors which the lkp
->>>>>>>> kernel-test-robot found.
->>>>>>>>
->>>>>>>> I've just send out a patch which fixes these build-errors
->>>>>>>> (verified with both .config-s from the lkp reports).
->>>>>>>> Feel free to squash this into the original patch (or keep
->>>>>>>> them separate, whatever works for you).
->>>>>>>
->>>>>>> Thanks, I squashed the fix in.
->>>>>>>
->>>>>>> HOWEVER, I think it would be fairly risky to push this into v5.15.
->>>>>>> We would be relying on the assumption that current machines have all
->>>>>>> fixed the BIOS defect that 4dc2287c1805 addressed, and we have little
->>>>>>> evidence for that.
->>>>>>>
->>>>>>> I'm not sure there's significant benefit to having this in v5.15.
->>>>>>> Yes, the mainline v5.15 kernel would work on the affected machines,
->>>>>>> but I suspect most people with those machines are running distro
->>>>>>> kernels, not mainline kernels.
->>>>>>
->>>>>> I understand that you were reluctant to add this to 5.15 so close
->>>>>> near the end of the 5.15 cycle, but can we please get this into
->>>>>> 5.16 now ?
->>>>>>
->>>>>> I know you ultimately want to see if there is a better fix,
->>>>>> but this is hitting a *lot* of users right now and if we come up
->>>>>> with a better fix we can always use that to replace this one
->>>>>> later.
->>>>>
->>>>> I don't know whether there's a "better" fix, but I do know that if we
->>>>> merge what we have right now, nobody will be looking for a better
->>>>> one.
->>>>>
->>>>> We're in the middle of the merge window, so the v5.16 development
->>>>> cycle is over.  The v5.17 cycle is just starting, so we have time to
->>>>> hit that.  Obviously a fix can be backported to older kernels as
->>>>> needed.
->>>>>
->>>>>> So can we please just go with this fix now, so that we can
->>>>>> fix the issues a lot of users are seeing caused by the current
->>>>>> *wrong* behavior of taking the e820 reservations into account ?
->>>>>
->>>>> I think the fix on the table is "ignore E820 for BIOS date >= 2018"
->>>>> plus the obvious parameters to force it both ways.
->>>>
->>>> Correct.
->>>>
->>>>> The thing I don't like is that this isn't connected at all to the
->>>>> actual BIOS defect.  We have no indication that current BIOSes have
->>>>> fixed the defect,
->>>>
->>>> We also have no indication that that defect from 10 years ago, from
->>>> pre UEFI firmware is still present in modern day UEFI firmware which
->>>> is basically an entire different code-base.
->>>>
->>>> And even 10 years ago the problem was only happening to a single
->>>> family of laptop models (Dell Precision laptops) so this clearly
->>>> was a bug in that specific implementation and not some generic
->>>> issue which is likely to be carried forward.
->>>>
->>>>> and we have no assurance that future ones will not
->>>>> have the defect.  It would be better if we had some algorithmic way of
->>>>> figuring out what to do.
->>>>
->>>> You yourself have said that in hindsight taking E820 reservations
->>>> into account for PCI bridge host windows was a mistake. So what
->>>> the "ignore E820 for BIOS date >= 2018" is doing is letting the
->>>> past be the past (without regressing on older models) while fixing
->>>> that mistake on any hardware going forward.
->>>>
->>>> In the unlikely case that we hit that BIOS bug again on 1 or 2 models,
->>>> we can simply DMI quirk those models, as we do for countless other
->>>> BIOS issues.
->>>>
->>>>> Thank you very much for chasing down the dmesg log archive
->>>>> (https://github.com/linuxhw/Dmesg; see
->>>>> https://lore.kernel.org/r/82035130-d810-9f0b-259e-61280de1d81f@redhat.com).
->>>>> Unfortunately I haven't had time to look through it myself, and I
->>>>> haven't heard of anybody else doing it either.
->>>>
->>>> Right, I'm afraid that I already have spend way too much time on this
->>>> myself. Note that I've been working with users on this bug on and off
->>>> for over a year now.
->>>>
->>>> This is hitting many users and now that we have a viable fix, this
->>>> really needs to be fixed now.
->>>>
->>>> I believe that the "ignore E820 for BIOS date >= 2018" fix is good
->>>> enough and that you are letting perfect be the enemy of good here.
->>>>
->>>> As an upstream kernel maintainer myself, I'm sorry to say this,
->>>> but if we don't get some fix for this merged soon you are leaving
->>>> my no choice but to add my fix to the Fedora kernels as a downstream
->>>> patch (and to advise other distros to do the same).
->>>>
->>>> Note that if you are still afraid of regressions going the downstream
->>>> route is also an opportunity, Fedora will start testing moving users
->>>> to 5.15.y soon, so I could add the patch to Fedora's 5.15.y builds and
->>>> see how that goes ?
->>>
->>> So I've discussed this with the Fedora kernel maintainers and they have
->>> agreed to add the patch to the Fedora 5.15 kernels, which we will ask
->>> our users to start testing soon (we first run some voluntary testing
->>> before eventually moving all users over).
->>>
->>> This will provide us with valuable feedback wrt this patch causing
->>> regressions as you are worried about, or not.
->>>
->>> Assuming no regressions show up I hope that this will give you
->>> some assurance that there the patch causes no regressions and that
->>> you will then be willing to pick this up later during the 5.16
->>> cycle so that Fedora only deviates from upstream for 1 cycle.
->>
->> 5.15.y kernels with this patch added have been in Fedora's
->> stable updates repo for a while now without any reports of the
->> regressions you feared this may cause.
->>
->> Bjorn, I hope that you are willing to merge this patch now that it has
->> seen some more wide spread testing ?
-> 
-> I'm still not happy about the idea of basing this on BIOS dates.  I
-> did this with 7bc5e3f2be32 ("x86/PCI: use host bridge _CRS info by
-> default on 2008 and newer machines"), and it was a mistake.
-> 
-> Because of that mistake, we now have the use_crs/nocrs kernel
-> parameters, which confuse users and lead to them being passed around
-> as "fixes" on random bulletin boards.
-> 
-> Adding another BIOS date check and use_e820/no_e820 kernel parameters
-> feels like it's layering on more complexity to cover up another major
-> mistake I made, 4dc2287c1805 ("x86: avoid E820 regions when allocating
-> address space").
-> 
-> I think it would be better for the code to recognize the situation
-> addressed by 4dc2287c1805 and deal with it directly.  Is that
-> possible?  I dunno; I don't think we've really tried.
+As discussed here is a pull-req from an immutable branch based on 5.16-rc1
+with the ACPI/i2c, tps68470 and pdx86/INT3472 changes necessary as a base
+to merge the remaining clk / regulator / media changes from my
+[PATCH v7 00/14] Add support for X86/ACPI camera sensor/PMIC setup with clk and regulator platform data
+series. The remaining changes are:
 
-So we are just going to leave a ton of users systems broken *for years*
-until someone has the time to try ? I've not seen anyone step up to
-try and address the issue worked around by 4dc2287c1805 (and no I'm not
-volunteering).
+[PATCH v7 05/14] regulator: Introduce tps68470-regulator driver
+[PATCH v7 06/14] clk: Introduce clk-tps68470 driver
+[PATCH v7 12/14] media: ipu3-cio2: Defer probing until the PMIC is fully setup
+[PATCH v7 13/14] media: ipu3-cio2: Call cio2_bridge_init() before anything else
+[PATCH v7 14/14] media: ipu3-cio2: Add support for instantiating i2c-clients for VCMs
 
-Also how are we going to come up with another fix for that without any
-of the hardware which was affected by the issue back then to test on?
-
-AFAIK we agree that:
-
-1. In hindsight commit 4dc2287c1805 was not a good idea.
-2. We cannot just revert it without causing regressions
-
-So given these 2 things, disabling the problematic behavior introduced
-by commit 4dc2287c1805 on newer machines, to avoid the older machines
-which need it from regressions really seems like the obvious fix to me ?
-
-Especially since replacing commit 4dc2287c1805 seems impossible to me
-without access to the originally affected hardware to verify any fix.
-
-AFAIK there are a number of other places in the kernel where
-BIOS date checks are used, to e.g. not use ACPI on really early
-buggy ACPI implementations, so this is not unheard of.
-
-You seem to mainly be concerned about users cargo-culting
-the use_e820/no_e820 kernel parameters as workaround for issues
-which have a completely different root cause.
-
-Would my solution to disable the troublesome workaround from
-4dc2287c1805 be acceptable if I drop the new commandline options?
-
-I added those just in case, but so far no Fedora users have
-needed them, so I would be happy to drop them ?
+Please pull this immutable branch into your tree and then merge the
+remaining patches relevant for your tree on top.
 
 Regards,
 
 Hans
+
+
+The following changes since commit fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf:
+
+  Linux 5.16-rc1 (2021-11-14 13:56:52 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git tags/platform-drivers-x86-int3472-1
+
+for you to fetch changes up to 97c2259ec7757ec24a90f0ef8fc5ea7fa1c6acca:
+
+  platform/x86: int3472: Deal with probe ordering issues (2021-12-13 11:44:51 +0100)
+
+----------------------------------------------------------------
+Signed tag for the immutable platform-drivers-x86-int3472 branch
+
+This branch contains 5.16-rc1 + the pending ACPI/i2c, tps68570 platform_data
+and INT3472 driver patches.
+
+----------------------------------------------------------------
+Hans de Goede (9):
+      ACPI: delay enumeration of devices with a _DEP pointing to an INT3472 device
+      i2c: acpi: Use acpi_dev_ready_for_enumeration() helper
+      i2c: acpi: Add i2c_acpi_new_device_by_fwnode() function
+      platform_data: Add linux/platform_data/tps68470.h file
+      platform/x86: int3472: Split into 2 drivers
+      platform/x86: int3472: Add get_sensor_adev_and_name() helper
+      platform/x86: int3472: Pass tps68470_clk_platform_data to the tps68470-regulator MFD-cell
+      platform/x86: int3472: Pass tps68470_regulator_platform_data to the tps68470-regulator MFD-cell
+      platform/x86: int3472: Deal with probe ordering issues
+
+ drivers/acpi/scan.c                                |  37 +++++-
+ drivers/i2c/i2c-core-acpi.c                        |  22 +++-
+ drivers/platform/x86/intel/int3472/Makefile        |   9 +-
+ ...472_clk_and_regulator.c => clk_and_regulator.c} |   2 +-
+ drivers/platform/x86/intel/int3472/common.c        |  82 ++++++++++++
+ .../{intel_skl_int3472_common.h => common.h}       |   6 +-
+ .../{intel_skl_int3472_discrete.c => discrete.c}   |  51 +++++---
+ .../x86/intel/int3472/intel_skl_int3472_common.c   | 106 ---------------
+ .../{intel_skl_int3472_tps68470.c => tps68470.c}   |  92 +++++++++++--
+ drivers/platform/x86/intel/int3472/tps68470.h      |  25 ++++
+ .../x86/intel/int3472/tps68470_board_data.c        | 145 +++++++++++++++++++++
+ include/acpi/acpi_bus.h                            |   5 +-
+ include/linux/i2c.h                                |  17 ++-
+ include/linux/platform_data/tps68470.h             |  35 +++++
+ 14 files changed, 473 insertions(+), 161 deletions(-)
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_clk_and_regulator.c => clk_and_regulator.c} (99%)
+ create mode 100644 drivers/platform/x86/intel/int3472/common.c
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_common.h => common.h} (94%)
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_discrete.c => discrete.c} (91%)
+ delete mode 100644 drivers/platform/x86/intel/int3472/intel_skl_int3472_common.c
+ rename drivers/platform/x86/intel/int3472/{intel_skl_int3472_tps68470.c => tps68470.c} (56%)
+ create mode 100644 drivers/platform/x86/intel/int3472/tps68470.h
+ create mode 100644 drivers/platform/x86/intel/int3472/tps68470_board_data.c
+ create mode 100644 include/linux/platform_data/tps68470.h
 
