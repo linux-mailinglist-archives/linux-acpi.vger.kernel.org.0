@@ -2,98 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F2AA4758AE
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Dec 2021 13:18:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40AFA47595B
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Dec 2021 14:08:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237193AbhLOMSH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 15 Dec 2021 07:18:07 -0500
-Received: from mail-oo1-f53.google.com ([209.85.161.53]:38818 "EHLO
-        mail-oo1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237191AbhLOMSF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 15 Dec 2021 07:18:05 -0500
-Received: by mail-oo1-f53.google.com with SMTP id w15-20020a4a9d0f000000b002c5cfa80e84so5849843ooj.5;
-        Wed, 15 Dec 2021 04:18:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3XfuAuI8r8gMaaT/FK+NBfoQJrnloschflDHzdC5Epg=;
-        b=r0+74mzaJCfIy3TSukbnGiiQX3R2DkWIHlyyrJXayqgICuR/HKmiH/0ZaBjoF6xGgr
-         eVAtq1VX4J3nZPncvwGiVDdECIjx3H7j0NMS9v4JaTF/YxucuGwc69tS+tInw6z8pm8h
-         1dYBm5gDJT2n+3epDOy3o2aJS+jVQw9UagpA9B0+psfzCClz5SMRVzz40cEn6PxqvsPu
-         XDWgevZ3LBRJXJFjfNKdIBRZwswozyRsS3p2A+LC+XTOSD5LrRtJnbi2FtlPlvJaGmJz
-         ZTJZmN7zu7CukiHrJNtsP4as2RBBt7W0N5f8UG75IgYlnqVIKrZ5dcM75oIRczZqFZo+
-         5YmQ==
-X-Gm-Message-State: AOAM530MIq89cOu3kOeMg5+rbWdyDVL/ULZUcvl6zabHCn8/Rbc96K2p
-        Ru96svpB0nZMN/Efbof4t30uuCCqpF8GStOi0+Y=
-X-Google-Smtp-Source: ABdhPJwumDoqqi/fTVhsrj0sGJloO+psYXPTBFmlg4pq4svwED4dTqZ4uQlNYP9XVfPRwUiwGOjtmCwUO6v7+eFxY6o=
-X-Received: by 2002:a4a:1d82:: with SMTP id 124mr6908688oog.91.1639570684529;
- Wed, 15 Dec 2021 04:18:04 -0800 (PST)
-MIME-Version: 1.0
-References: <20211214044036.48245-1-ilkka@os.amperecomputing.com> <20211214044036.48245-2-ilkka@os.amperecomputing.com>
-In-Reply-To: <20211214044036.48245-2-ilkka@os.amperecomputing.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 15 Dec 2021 13:17:53 +0100
-Message-ID: <CAJZ5v0jiLfL0k12y5RZ+9LjLqiBMPqRHrqNQGqQ5Le2yOv7QWQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ACPI: AGDI: Add AGDI tables to drivers/acpi
-To:     Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
+        id S242711AbhLONIj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 15 Dec 2021 08:08:39 -0500
+Received: from mga02.intel.com ([134.134.136.20]:32018 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242723AbhLONIf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 15 Dec 2021 08:08:35 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10198"; a="226502542"
+X-IronPort-AV: E=Sophos;i="5.88,207,1635231600"; 
+   d="scan'208";a="226502542"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2021 05:08:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,207,1635231600"; 
+   d="scan'208";a="661915754"
+Received: from kuha.fi.intel.com ([10.237.72.166])
+  by fmsmga001.fm.intel.com with SMTP; 15 Dec 2021 05:08:28 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 15 Dec 2021 15:08:27 +0200
+Date:   Wed, 15 Dec 2021 15:08:27 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Prashant Malani <pmalani@chromium.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
-        patches@amperecomputing.com, scott@os.amperecomputing.com,
-        darren@os.amperecomputing.com
-Content-Type: text/plain; charset="UTF-8"
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/5] acpi: Store the Physical Location of Device
+ (_PLD) information
+Message-ID: <Ybnoy9e6VvFsJ4b1@kuha.fi.intel.com>
+References: <20211213103243.33657-1-heikki.krogerus@linux.intel.com>
+ <20211213103243.33657-2-heikki.krogerus@linux.intel.com>
+ <CAJZ5v0jq5ve9+V3k5Vi=vJAheSyQbAsNmi6An9=oKxkyVed5bw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0jq5ve9+V3k5Vi=vJAheSyQbAsNmi6An9=oKxkyVed5bw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 14, 2021 at 5:41 AM Ilkka Koskinen
-<ilkka@os.amperecomputing.com> wrote:
->
-> ACPI for Arm Components 1.1 Platform Design Document v1.1 [0] specifices
-> Arm Generic Diagnostic Device Interface (AGDI). It allows an admin to
-> issue diagnostic dump and reset via an SDEI event or an interrupt. This
-> patch adds support to ACPI/AGDI tables.
->
-> [0] https://developer.arm.com/documentation/den0093/latest/
->
-> Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-> ---
->  drivers/acpi/tables.c |  2 +-
->  include/acpi/actbl2.h | 20 ++++++++++++++++++++
->  2 files changed, 21 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-> index 71419eb16e09..5e3169bcb9fb 100644
-> --- a/drivers/acpi/tables.c
-> +++ b/drivers/acpi/tables.c
-> @@ -500,7 +500,7 @@ static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst = {
->         ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
->         ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
->         ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
-> -       ACPI_SIG_NHLT };
-> +       ACPI_SIG_NHLT, ACPI_SIG_AGDI };
->
->  #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
->
-> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-> index 71ca090fd61b..66ca85b9f5fe 100644
-> --- a/include/acpi/actbl2.h
-> +++ b/include/acpi/actbl2.h
+Hi Rafael,
 
-The changes in actbl2.h are ACPICA material and so they need to be
-routed through the upstream ACPICA project.
+On Wed, Dec 15, 2021 at 12:43:48PM +0100, Rafael J. Wysocki wrote:
+> One overall problem I see here is that it potentially stores a bunch
+> of _PLD buffers that will never be used, which is a waste of memory.
+> 
+> It may be better to make acpi_device_get_location() evaluate _PLD for
+> the target device if it cannot be found in the list and either update
+> one of the existing entries if the crc matches and return the pld data
+> from there, or add a new item to the list and return its pld data.
 
-Moreover, you have already submitted a pull request with them to the
-upstream: https://github.com/acpica/acpica/pull/737/commits/cf36a6d658ca5aa8c329c2edfc3322c095ffd844
+The primary goal of this series is actually to see the other devices
+that share a fixed location with our device. The _PLD buffer cache
+would be nice, but not necessary. We don't have to store the _PLD
+buffer itself as part of the location structure at all if that's a
+problem.
 
-Please wait until this gets integrated and repost the rest of the
-patches as incremental changes on top of that.
+I'll make the change.
+
+thanks,
+
+-- 
+heikki
