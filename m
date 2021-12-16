@@ -2,152 +2,228 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1EE4770EE
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Dec 2021 12:45:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8ED847733C
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Dec 2021 14:35:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234052AbhLPLo7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Dec 2021 06:44:59 -0500
-Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:65144 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234549AbhLPLoj (ORCPT
+        id S237593AbhLPNfC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Dec 2021 08:35:02 -0500
+Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:57837 "EHLO
+        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232211AbhLPNfC (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Dec 2021 06:44:39 -0500
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1BG81ZNs010099;
-        Thu, 16 Dec 2021 05:43:42 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=PODMain02222019;
- bh=jXDNKFPYOs58wajQgaQSSQ3pg1rBTfuJ2kGHM7w4uWE=;
- b=ZE5KvTOYRNGOS6qDCGlgoVZ20LrzJRhwqUBPxKARHvuh1DqtuVphvilm6BYYhK3lfoF/
- SQiXmmN7HMJHZDS+wPWKqihUxVTTx7NyzmRqIA/su7fNkndVl29I+6ARgHBTUC2b1au1
- oQfHT6+99d8MBle3K8fZStCHQqSX5xW1GE5JNJhveE6svVj6caMqVhxBM6hWA6oHEPg9
- uENKJpO9FaVFXpe/AzPE3rt1qB1HGU6d6U+QqBZYwLmupHeuhzuyqHdFlxni8T0AXh9k
- WSSjOfoeMBy7FZKxj+NiHJr0AIuv613AmWkmZQogu57Y9oH58jQceyJAzlHjT1B/uR1H FA== 
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3cygdq9c3f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 16 Dec 2021 05:43:41 -0600
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Thu, 16 Dec
- 2021 11:43:40 +0000
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.17 via Frontend
- Transport; Thu, 16 Dec 2021 11:43:40 +0000
-Received: from aryzen.ad.cirrus.com (unknown [198.61.64.39])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id DAA36B13;
-        Thu, 16 Dec 2021 11:43:39 +0000 (UTC)
-From:   Lucas Tanure <tanureal@opensource.cirrus.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>
-CC:     <alsa-devel@alsa-project.org>, <linux-acpi@vger.kernel.org>,
-        <patches@opensource.cirrus.com>,
-        <platform-driver-x86@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Stefan Binding <sbinding@opensource.cirrus.com>,
-        Lucas Tanure <tanureal@opensource.cirrus.com>
-Subject: [PATCH v5 10/10] ALSA: hda/realtek: Add CS35L41 support for Thinkpad laptops
-Date:   Thu, 16 Dec 2021 11:43:32 +0000
-Message-ID: <20211216114332.153409-11-tanureal@opensource.cirrus.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211216114332.153409-1-tanureal@opensource.cirrus.com>
-References: <20211216114332.153409-1-tanureal@opensource.cirrus.com>
+        Thu, 16 Dec 2021 08:35:02 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R651e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0V-oyvtY_1639661697;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V-oyvtY_1639661697)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Thu, 16 Dec 2021 21:34:59 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
+        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
+        xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+        helgaas@kernel.org
+Subject: [RESEND PATCH v4] ACPI: Move sdei_init and ghes_init ahead to handle platform errors earlier
+Date:   Thu, 16 Dec 2021 21:34:56 +0800
+Message-Id: <20211216133456.21002-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.30.1 (Apple Git-130)
+In-Reply-To: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
+References: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: MSL8FsqCjFVZLeGciaBmzw5bHkUuDPGq
-X-Proofpoint-GUID: MSL8FsqCjFVZLeGciaBmzw5bHkUuDPGq
-X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+On an ACPI system, ACPI is initialised very early from a subsys_initcall(),
+while SDEI is not ready until a subsys_initcall_sync().
 
-Add support for two CS35L41 using I2C bus and the component
-binding method
+The SDEI driver provides functions (e.g. apei_sdei_register_ghes,
+apei_sdei_unregister_ghes) to register or unregister event callback for
+dispatcher in firmware. When the GHES driver probing, it registers the
+corresponding callback according to the notification type specified by
+GHES. If the GHES notification type is SDEI, the GHES driver will call
+apei_sdei_register_ghes to register event call.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
+When the firmware emits an event, it migrates the handling of the event
+into the kernel at the registered entry-point __sdei_asm_handler. And
+finally, the kernel will call the registered event callback and return
+status_code to indicate the status of event handling. SDEI_EV_FAILED
+indicates that the kernel failed to handle the event.
+
+Consequently, when an error occurs during kernel booting, the kernel is
+unable to handle and report errors until the GHES driver is initialized by
+device_initcall(), in which the event callback is registered. All errors
+that occurred before GHES initialization are missed and there is no chance
+to report and find them again.
+
+From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
+memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
+the estatus memory pool. On the other hand, ghes_init() relies on
+sdei_init() to detect the SDEI version and the framework for registering
+and unregistering events. By the way, I don't figure out why acpi_hest_init
+is called in acpi_pci_root_init, it don't rely on any other thing. May it
+could be moved further, following acpi_iort_init in acpi_init.
+
+sdei_init() relies on ACPI table which is initialized subsys_initcall():
+acpi_init(), acpi_bus_init(), acpi_load_tables(), acpi_tb_laod_namespace().
+May it should be also moved further, after acpi_load_tables.
+
+In this patch, move sdei_init and ghes_init as far ahead as possible, right
+after acpi_hest_init().
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 ---
- sound/pci/hda/patch_realtek.c | 37 +++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ drivers/acpi/apei/ghes.c    | 18 ++++++++----------
+ drivers/acpi/pci_root.c     |  5 ++++-
+ drivers/firmware/arm_sdei.c | 13 ++-----------
+ include/acpi/apei.h         |  2 ++
+ include/linux/arm_sdei.h    |  2 ++
+ 5 files changed, 18 insertions(+), 22 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 7299e6388900..af9f8d70dbce 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6552,6 +6552,35 @@ static void comp_generic_playback_hook(struct hda_pcm_stream *hinfo, struct hda_
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 0c8330ed1ffd..b11e46fb4b3d 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1457,27 +1457,26 @@ static struct platform_driver ghes_platform_driver = {
+ 	.remove		= ghes_remove,
+ };
+ 
+-static int __init ghes_init(void)
++void __init ghes_init(void)
+ {
+ 	int rc;
+ 
+ 	if (acpi_disabled)
+-		return -ENODEV;
++		return;
+ 
+ 	switch (hest_disable) {
+ 	case HEST_NOT_FOUND:
+-		return -ENODEV;
++		pr_info(GHES_PFX "HEST is not found!\n");
++		return;
+ 	case HEST_DISABLED:
+ 		pr_info(GHES_PFX "HEST is not enabled!\n");
+-		return -EINVAL;
++		return;
+ 	default:
+ 		break;
  	}
+ 
+-	if (ghes_disable) {
++	if (ghes_disable)
+ 		pr_info(GHES_PFX "GHES is not enabled!\n");
+-		return -EINVAL;
+-	}
+ 
+ 	ghes_nmi_init_cxt();
+ 
+@@ -1495,8 +1494,7 @@ static int __init ghes_init(void)
+ 	else
+ 		pr_info(GHES_PFX "Failed to enable APEI firmware first mode.\n");
+ 
+-	return 0;
++	return;
+ err:
+-	return rc;
++	ghes_disable = 1;
+ }
+-device_initcall(ghes_init);
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index ab2f7dfb0c44..1260bb556184 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -23,7 +23,7 @@
+ #include <linux/dmi.h>
+ #include <linux/platform_data/x86/apple.h>
+ #include <acpi/apei.h>	/* for acpi_hest_init() */
+-
++#include <linux/arm_sdei.h> /* for sdei_init() */
+ #include "internal.h"
+ 
+ #define ACPI_PCI_ROOT_CLASS		"pci_bridge"
+@@ -946,6 +946,9 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+ void __init acpi_pci_root_init(void)
+ {
+ 	acpi_hest_init();
++	sdei_init();
++	ghes_init();
++
+ 	if (acpi_pci_disabled)
+ 		return;
+ 
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index a7e762c352f9..1e1a51510e83 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -1059,14 +1059,14 @@ static bool __init sdei_present_acpi(void)
+ 	return true;
  }
  
-+static void cs35l41_generic_fixup(struct hda_codec *cdc, int action, const char *bus,
-+				  const char *hid, int count)
-+{
-+	struct device *dev = hda_codec_dev(cdc);
-+	struct alc_spec *spec = cdc->spec;
-+	char *name;
-+	int ret, i;
-+
-+	switch (action) {
-+	case HDA_FIXUP_ACT_PRE_PROBE:
-+		for (i = 0; i < count; i++) {
-+			name = devm_kasprintf(dev, GFP_KERNEL,
-+					      "%s-%s:00-cs35l41-hda.%d", bus, hid, i);
-+			component_match_add(dev, &spec->match, comp_match_dev_name, name);
-+		}
-+		ret = component_master_add_with_match(dev, &comp_master_ops, spec->match);
-+		if (ret)
-+			codec_err(cdc, "Fail to register component aggregator %d\n", ret);
-+		else
-+			spec->gen.pcm_playback_hook = comp_generic_playback_hook;
-+		break;
-+	}
-+}
-+
-+static void cs35l41_fixup_i2c_two(struct hda_codec *cdc, const struct hda_fixup *fix, int action)
-+{
-+	cs35l41_generic_fixup(cdc, action, "i2c", "CSC3551", 2);
-+}
-+
- static void alc287_legion_16achg6_playback_hook(struct hda_pcm_stream *hinfo, struct hda_codec *cdc,
- 						struct snd_pcm_substream *sub, int action)
+-static int __init sdei_init(void)
++void __init sdei_init(void)
  {
-@@ -6868,6 +6897,7 @@ enum {
- 	ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE,
- 	ALC233_FIXUP_NO_AUDIO_JACK,
- 	ALC287_FIXUP_LEGION_16ACHG6,
-+	ALC287_FIXUP_CS35L41_I2C_2,
- };
+ 	struct platform_device *pdev;
+ 	int ret;
  
- static const struct hda_fixup alc269_fixups[] = {
-@@ -8596,6 +8626,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc287_fixup_legion_16achg6_speakers,
- 	},
-+	[ALC287_FIXUP_CS35L41_I2C_2] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cs35l41_fixup_i2c_two,
-+	},
- };
+ 	ret = platform_driver_register(&sdei_driver);
+ 	if (ret || !sdei_present_acpi())
+-		return ret;
++		return;
  
- static const struct snd_pci_quirk alc269_fixup_tbl[] = {
-@@ -9006,6 +9040,9 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3843, "Yoga 9i", ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP),
- 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3847, "Legion 7 16ACHG6", ALC287_FIXUP_LEGION_16ACHG6),
-+	SND_PCI_QUIRK(0x17aa, 0x22F1, "Thinkpad", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x22F2, "Thinkpad", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x22F3, "Thinkpad", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x3852, "Lenovo Yoga 7 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3819, "Lenovo 13s Gen2 ITL", ALC287_FIXUP_13S_GEN2_SPEAKERS),
+ 	pdev = platform_device_register_simple(sdei_driver.driver.name,
+ 					       0, NULL, 0);
+@@ -1076,17 +1076,8 @@ static int __init sdei_init(void)
+ 		pr_info("Failed to register ACPI:SDEI platform device %d\n",
+ 			ret);
+ 	}
+-
+-	return ret;
+ }
+ 
+-/*
+- * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
+- * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
+- * by device_initcall(). We want to be called in the middle.
+- */
+-subsys_initcall_sync(sdei_init);
+-
+ int sdei_event_handler(struct pt_regs *regs,
+ 		       struct sdei_registered_event *arg)
+ {
+diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+index ece0a8af2bae..7dbd6363fda7 100644
+--- a/include/acpi/apei.h
++++ b/include/acpi/apei.h
+@@ -27,8 +27,10 @@ extern int hest_disable;
+ extern int erst_disable;
+ #ifdef CONFIG_ACPI_APEI_GHES
+ extern bool ghes_disable;
++void __init ghes_init(void);
+ #else
+ #define ghes_disable 1
++static inline void ghes_init(void) { return; }
+ #endif
+ 
+ #ifdef CONFIG_ACPI_APEI
+diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
+index 0a241c5c911d..9c987188b692 100644
+--- a/include/linux/arm_sdei.h
++++ b/include/linux/arm_sdei.h
+@@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
+ /* For use by arch code when CPU hotplug notifiers are not appropriate. */
+ int sdei_mask_local_cpu(void);
+ int sdei_unmask_local_cpu(void);
++void __init sdei_init(void);
+ #else
+ static inline int sdei_mask_local_cpu(void) { return 0; }
+ static inline int sdei_unmask_local_cpu(void) { return 0; }
++static inline void sdei_init(void) { return ; }
+ #endif /* CONFIG_ARM_SDE_INTERFACE */
+ 
+ 
 -- 
-2.34.1
+2.20.1.12.g72788fdb
 
