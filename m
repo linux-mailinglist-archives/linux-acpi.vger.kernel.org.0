@@ -2,756 +2,229 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79249477697
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Dec 2021 17:04:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B3EE477FCE
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Dec 2021 23:05:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232823AbhLPQEp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Dec 2021 11:04:45 -0500
-Received: from mga12.intel.com ([192.55.52.136]:28482 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237369AbhLPQEp (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Dec 2021 11:04:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639670685; x=1671206685;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Buu0F16i5nlfWpWP8+skgIBREnjSvlSTx9MOK6fyUz8=;
-  b=KTbW6Vgh9zlUf+0yzK7JmRsjvtXdAPQJYFzO1d/nx1a5CMB1T7ZhoEJf
-   LQ9s515jBQCjHOIi8mDFezVi82eSygntIoFG8vyG86RcE3QSAwGcQ3Mgt
-   MdsRnKOTlhidZvjqn2naU6Y+kkd0WSghQ1E6ZiJXPfJGTzNbv5MID6Hhq
-   JftkUUk2tmFzXzrRCcY0OGWk95kSlqS3DxIdTtam9H2HsyK9YmQZa+VW1
-   GdHE8iQ+8+fOcESsvnJ94K2y/ES+AAoCHDPjwrxYXEk5wgwvoQYdJdfKs
-   J2zEDd2fEOtNktgHUe3gM8XCx7KpoYokW1huWTBya3Rl/Kpxc3LyUqhJX
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10199"; a="219541465"
-X-IronPort-AV: E=Sophos;i="5.88,211,1635231600"; 
-   d="scan'208";a="219541465"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2021 08:04:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,211,1635231600"; 
-   d="scan'208";a="662493613"
-Received: from chenyu-desktop.sh.intel.com ([10.239.158.186])
-  by fmsmga001.fm.intel.com with ESMTP; 16 Dec 2021 08:04:38 -0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Mike Rapoport <rppt@kernel.org>, Chen Yu <yu.c.chen@intel.com>,
-        linux-kernel@vger.kernel.org, Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v12 4/4] tools: Introduce power/acpi/tools/pfrut
-Date:   Fri, 17 Dec 2021 00:04:14 +0800
-Message-Id: <91084d52f15fc85d00551f83925f268279b57017.1639669829.git.yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1639669829.git.yu.c.chen@intel.com>
-References: <cover.1639669829.git.yu.c.chen@intel.com>
+        id S237406AbhLPWF1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Dec 2021 17:05:27 -0500
+Received: from mail-bn8nam12on2109.outbound.protection.outlook.com ([40.107.237.109]:8320
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S236958AbhLPWF0 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 16 Dec 2021 17:05:26 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IGH9dtRjbOxsC2JFrjE9o1oP2S0aSmwuCtcGM1BQXk8wCcZaRbZtay0LuwX0BP1znPyM/hfPhbtE0Z6oztbNWlP3YoF70GZXw80svDo3+T7D/ZUWaD6pkiJOoAN4zVg6qjnBx8SUjlLaUIQjTPtQYUtRgau4/FYU1InIltzKMcKIG/etpwypDqbWT0VRV1/SvYFOJhSeMIFLhCcqGzK/G6gIyW5EufHlgWBm1oPk+Af3EMadPrm7BkyVldZcYlkdyZyWxPaKWAPw6BH1y6i5doXf310Ro6zcok+L/kI2cKPG0cOVSdFTyucl0yPq1BBFwOGwspWklhO1xerPGjgyHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IWS6uHSJXacYRHNgeCP5729XcNNQ730ntu/Zo5Lw9t4=;
+ b=OMBnGDtsitDCR8/y/MYmbCRR5B0dozKoKD1ip/hIe0sc1jck2m23EpkjVyvj+444pSQ76EaoPxWEd2uQcaWZFIvyggVnALMH1YE1Gk+b3b6GLOirnIAC74g82ZjN9CzuDSjjvIeNngdo1Z/RL1ht2dm6B5L6e0XpzBPIB+/4c6daQfBlxQtgTE1T3VqRHsqHPnVePuleWcJSjnXISP1QGDWWAE02T6KEYYJLuqfCEbOLzWZtBqX0fDWO106piOCrYV3N7142ic6bImO6Yyoeji39AKHyuPW43BdikcELBLsFxwP0qzSBefojRUaqzA8ABziWzCBBITwaQPFmL/7nCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=amperemail.onmicrosoft.com; dkim=pass
+ header.d=amperemail.onmicrosoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IWS6uHSJXacYRHNgeCP5729XcNNQ730ntu/Zo5Lw9t4=;
+ b=uPpJWmjTCbPI1henuPUSvp4s4HFYTmPH4arN/ogzS6/7r/+bz2LEg59tgFTFFbHAZ3QgOqmCm7sJV44KRRwPV2Qkv/qjcrhxJ5TppXg5Oh/d6sg6jNOGH3KpZ2L8orXWLjxTZ93GPfMhcDrK91I8TlkHixNSjrn42SFVSTujEGM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
+Received: from CH0PR01MB7033.prod.exchangelabs.com (2603:10b6:610:107::16) by
+ CH2PR01MB6039.prod.exchangelabs.com (2603:10b6:610:43::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4778.15; Thu, 16 Dec 2021 22:05:21 +0000
+Received: from CH0PR01MB7033.prod.exchangelabs.com
+ ([fe80::c8fb:e830:d7e5:bdf7]) by CH0PR01MB7033.prod.exchangelabs.com
+ ([fe80::c8fb:e830:d7e5:bdf7%9]) with mapi id 15.20.4778.018; Thu, 16 Dec 2021
+ 22:05:21 +0000
+Message-ID: <addaf134-d5c0-65de-62ca-76950d6460ab@amperemail.onmicrosoft.com>
+Date:   Thu, 16 Dec 2021 17:05:15 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH 1/2] ACPI/AEST: Initial AEST driver
+Content-Language: en-US
+To:     Darren Hart <darren@os.amperecomputing.com>,
+        Marc Zyngier <maz@kernel.org>, lorenzo.pieralisi@arm.com,
+        guohanjun@huawei.com, sudeep.holla@arm.com
+Cc:     Tyler Baicar <baicar@os.amperecomputing.com>,
+        patches@amperecomputing.com, abdulhamid@os.amperecomputing.com,
+        catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com,
+        alexandru.elisei@arm.com, suzuki.poulose@arm.com,
+        rafael@kernel.org, lenb@kernel.org, tony.luck@intel.com,
+        bp@alien8.de, mark.rutland@arm.com, anshuman.khandual@arm.com,
+        vincenzo.frascino@arm.com, tabba@google.com, marcan@marcan.st,
+        keescook@chromium.org, masahiroy@kernel.org,
+        samitolvanen@google.com, john.garry@huawei.com,
+        daniel.lezcano@linaro.org, gor@linux.ibm.com,
+        zhangshaokun@hisilicon.com, tmricht@linux.ibm.com,
+        dchinner@redhat.com, tglx@linutronix.de,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        kvmarm@lists.cs.columbia.edu, linux-acpi@vger.kernel.org,
+        linux-edac@vger.kernel.org, ishii.shuuichir@fujitsu.com,
+        Vineeth.Pillai@microsoft.com
+References: <20211124170708.3874-1-baicar@os.amperecomputing.com>
+ <20211124170708.3874-2-baicar@os.amperecomputing.com>
+ <87czmpcto5.wl-maz@kernel.org> <YaU6eyGM+bX/bEhG@fedora>
+ <87h7bum0xh.wl-maz@kernel.org> <YaZUL+cftvNYgx1j@fedora>
+From:   Tyler Baicar <baicar@amperemail.onmicrosoft.com>
+In-Reply-To: <YaZUL+cftvNYgx1j@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR04CA0010.namprd04.prod.outlook.com
+ (2603:10b6:610:76::15) To CH0PR01MB7033.prod.exchangelabs.com
+ (2603:10b6:610:107::16)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: ac015fab-da78-4097-a25f-08d9c0e02750
+X-MS-TrafficTypeDiagnostic: CH2PR01MB6039:EE_
+X-Microsoft-Antispam-PRVS: <CH2PR01MB603987CFC4F118063D4FEE55E3779@CH2PR01MB6039.prod.exchangelabs.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 1OCWa3xx8gONdgywxLHhei2ncrDm+Mw9KxHsYCq5KaibRSAZzRs5XUy1N4NW9RbCGan8wQ0vsk7qfqo01GVGRGz4P1Be6sscRvSpbqaBs0XWq8e3vkybiZyZ3fMtMxAPA9OOD1VKpCKLDbQJes+wdE4MenPu/tstjHcaptruige4vv5mUZ9DZOgZvV+ZL80OJFy8UqhefwcBeV4Ih4TurrPm9V1y3jY6BTtGIH6DyyVDZ2zVkP97tKHsdiSqUkaWg5dsrzUQwK4Okc7T/WGEwFK6lxIxEB5wDklJ+kClresi3Ylz/SrLTy5hhYpVnzVDV5y4fDsueN3Cu88Vpj2r8s0llmWKZdZp72ZlDbjJGVK/a3P47cNZ4mdezo0spmuZJvXbB/46YByR5wsrerI1ajoigpQZml0id7Wuuscq2jFl0bEuhBcTQnuPIWSIow8wC/F/ooWDmvaKD8bcgmJl9940ZUP6OKBbTwRwXcOr9b+9K9XGkI6KkD23M4gkOCdgojLtF41GzpqC+zSqmZ6bZkWe8COtygIoAWnry93AM0F4A32MiUuAVJbv+sXzG54T91ycto88+26tpUQ40CfuExJ+vPdWH/Hz7ZRWrILQDFoSnOBY1BQ+tPW4akJc/oGY5Jag0wIqiY1Iul0vs5LlpjcsryptkvUUdFb0f5QWwqh4G1yqYBaKcAgKE5+fDjcSOevyNy4PbmCK6Hm60WtghU/eE/ydIt28KLzsS52Y1Ir9kmFDAU9eU0z3wt5ZToTQ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB7033.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(83380400001)(66476007)(4326008)(6666004)(38350700002)(186003)(6512007)(2616005)(52116002)(8676002)(6506007)(26005)(8936002)(31686004)(53546011)(508600001)(38100700002)(83170400001)(7406005)(31696002)(2906002)(66556008)(7416002)(6486002)(5660300002)(316002)(42882007)(66946007)(110136005)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?LzlxamdqWlhPSnJwUGswRFZHL0l6TU5CYTFSRW11Z1ZYNlVwTjlQSGt3N0Nh?=
+ =?utf-8?B?ZE1LZlNlaG8rV3ZuUVRJZUNrZnBVUTVCZlFvRzQzNVB1NG54VTdmZHZvemwy?=
+ =?utf-8?B?RThuaVdjR2xIdndBZEN1N0lIU2NYV3Mvb2VVVEZ1bWtVZU13MkttNlhOSTlJ?=
+ =?utf-8?B?Qlh0cnBEYlFIeVdwMlhuVWJ2RjFFcGlReFJucGNTYjRlQ3AzaTBwaDB2cTIx?=
+ =?utf-8?B?ZG1pNjdDSnFLdHY2UnE0czBDQ2hnV0JFaFcvWE9Zdi9CK0duOVk5Z1FRMTJ5?=
+ =?utf-8?B?T3RPcnBaQlJpb2pTUVlVdWNNTVpnNUc4eko5SDB0LzBVcEtJeEg5WEhYUVZ3?=
+ =?utf-8?B?V0Z0c3BOU2drbnlreG01V05RSVZtb0NlZXVtS3hHVEtBN00zZ2JYa2xsVU5Z?=
+ =?utf-8?B?aThZMVJRTEVsa0t5T0pHdFhpQTBvYldyRFhzWmh6c3p3U3VhdVA0N2tmcExo?=
+ =?utf-8?B?K0p4aGtEdHl5WTllazdER2lRbEZQUnVPcnU2M0I5akhwcHNhSjVtOUNFbVor?=
+ =?utf-8?B?N3ZBVzZGMXlhcHdycVI2NHBWZUlXcGRRUDRTM2VRcDVpUHVXZW0rN3A3VWxn?=
+ =?utf-8?B?N2VybUNwM0JmN2JaQWNDV0JqQ0xPb05Hb1Y3aGVJUGNUL0FBTWZlay9TaVJp?=
+ =?utf-8?B?dnI5VVZUTjJaSWRkUlVNUWFpNUhrVjFoQmh4bkhMRGxoQ0ZsUHBuU1NDZzhX?=
+ =?utf-8?B?Ykdxd0RXSW9JTC9vd3ZxT2VmNmlTTmRCZzJPRVNEeHgrM215bkFIK3EzUGdw?=
+ =?utf-8?B?aCtCOXdQOVZPV2V2bVFmTExpSzlmd0hRMVFKQUhOdEloaHIwYWdqVUtSejZ5?=
+ =?utf-8?B?blp0bkVkSnROc2EvdDB2MCs3bjNZUEEyREpWR0hPb2VGdW9jZHhYcUlvWHNQ?=
+ =?utf-8?B?WUwwUnNYVWprSldCdU9pV3YrYzdLTlp5TzV2QUUxL0x1SkFxL3U3dUNmeU9x?=
+ =?utf-8?B?MUhLRmVuZFpqZU1DY2g1bVhmVXlaZUI5ZDdUT1JqRmt4bnV1eUFmR01VRGtl?=
+ =?utf-8?B?eklzTGdWTUg3V0VUNW9XU3U1WFBXM203WHNkUWpsU0pLOUozcjVyS084RldZ?=
+ =?utf-8?B?cXlTdU44NkZrR1JZK1FrK0c1c21yZWxzQmE3RU42L3VXQ05tV0hKSWlWVVBP?=
+ =?utf-8?B?eDQ5M2doMmF4ejcxNTgrQ3M0bTlETHhMV2xEQkpEU0VWOERZYWEzeHIrYlVJ?=
+ =?utf-8?B?aVJWdlJUeHNxWHhoOWpVYy95eE1LcXRlYWlhUTZ3TWk2M0UyTElnN1FUd0dy?=
+ =?utf-8?B?Z1JuRmsvbnZMTGZvTDJnWlJMM0VOa3R4eGRVUFhETDM0dGVlMi8vUDdjWGIw?=
+ =?utf-8?B?cEhyRmI5ZzNHcFVtWVNsSStyUEVOT3dKT0s4UWE0eFhoSXg4K3NaSjc2OUFQ?=
+ =?utf-8?B?TE9GZ29DaG9lYjFIdWFQalBDeno0TmdXb2lKaHd6Tmc1d1dkTzM4SU56ZExQ?=
+ =?utf-8?B?cHNIWVNXa01qeXh1MUpXcVVlNUVOS0VPRHFadWlxZ0pMT0swYnBsL00xN3Vi?=
+ =?utf-8?B?aHV4UmRhd3BRbXk3U085U1hrVXFnZ2Ivb0VlYy84ZXg2ZWdRd2d2M2VLQ1dm?=
+ =?utf-8?B?NnhxK2VTWFlsemlBTUtxS28xMTE5cEovRlU2Z2I2UXJ1ZVlNUjRXajRIYjh2?=
+ =?utf-8?B?ZmNFSFFzQXlLSWJxQ1FlZ3N2YzBXMzgzTGNDVlJFQWtvYldDa29zelo0NGJ5?=
+ =?utf-8?B?STYzMWl2MTh3aVRRTVJmTTdIRnRWeU9wUjB1UzVuYjQ5WW1MU2ZIbGgzV0pH?=
+ =?utf-8?B?TmFEWUozblRsZ01UdXg2eVRxcGY2Qkk1QkR1SUkwSTFpTFRmcDlJbGRqaXdF?=
+ =?utf-8?B?d0V2YjJ5ZjUydW5BMGlBY1hVME5FdUIyai90cHdWUzF6c2MzRGl5SHZqTy8y?=
+ =?utf-8?B?NGRSSDM2MlVMR2ZkOVJYcGRCQmR2cFhnenJyTHRYZ1pXMDVnYWJET1V0V1hE?=
+ =?utf-8?B?THgwSWFHSWpxcFlRdVlEKzA1bDlRcDZJU1lQdUdGWGxKNnovYVZkNHdQRFZi?=
+ =?utf-8?B?empmSXZxL2dmbjZ1bUx3L045dWNsRExSZ0p4dzk3WlZjTFNUTUpFaFd3Zlkx?=
+ =?utf-8?B?NVlBQU0vNE5GdTlZdmtPMXM1UFk3Ly94Q0JYUHdBNE05ZXUwaE1VM01OMEhS?=
+ =?utf-8?B?QUlzWFN0Q29UWWRTc1NndFlXRDVVeHhmUkl4aVg3NG1RcW5FdXkydE5EcEtE?=
+ =?utf-8?B?U2lOUWZ6cDlHdGVHam9LVXY0b2E5dVhrUVkxcUhaWm95djVYY3hMT2FDSDZy?=
+ =?utf-8?B?d2lGOEFzcnNxMXYxZjVzQ0VCSlowZnpCT0VqdHFGODlPcjEvczJ2ZjlGK09O?=
+ =?utf-8?B?dkxTaldYTzFsYXFDY0NycWlSRVJBczdBblg3RlpSaVB3Zkhtb0xsUT09?=
+X-OriginatorOrg: amperemail.onmicrosoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac015fab-da78-4097-a25f-08d9c0e02750
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB7033.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2021 22:05:21.7563
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1i7FfdJfryjmneEQpSuZMaEBYxYixbtcKimg9v6lPSCnD+A+9yu4uso9wFzo6216VhT4lMz4Sxt2EXGAI7keA/IcINQsb+azh7+9H1btFWc08vd41FVkUGW7elP0ELsg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR01MB6039
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Introduce a user space tool to make use of the interface exposed by
-Platform Firmware Runtime Update and Telemetry drivers. The users
-can use this tool to do firmware code injection, driver update and
-to retrieve the telemetry data.
+-Moved ACPI for ARM64 maintainers to "to:"
 
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ashok Raj <ashok.raj@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
-v12:Rename tool name from pfru to pfrut, and adjust all
-    corresponding naming.(Rafael J. Wysocki)
-    Add what interfaces are used by this tool at the
-    beginning of the source code.
-    (Rafael J. Wysocki)
-v11:No change since v10.
-v10:No change since v9.
-v9: Add this tool into tools/power/acpi build infrastructure.
-    (Andy Shevchenko)
-v8: Print the length of OEM information if requested.
-v7: No change since v6.
-v6: Simplify the userspace tool to use while loop for getopt_long().
-    (Andy Shevchenko)
-v5: Replace the read() with mmap() so that the userspace
-    could mmap once, and read multiple times. (Greg Kroah-Hartman)
----
- tools/power/acpi/.gitignore           |   1 +
- tools/power/acpi/Makefile             |  16 +-
- tools/power/acpi/Makefile.rules       |   2 +-
- tools/power/acpi/man/pfrut.8          | 137 +++++++++
- tools/power/acpi/tools/pfrut/Makefile |  23 ++
- tools/power/acpi/tools/pfrut/pfrut.c  | 424 ++++++++++++++++++++++++++
- 6 files changed, 594 insertions(+), 9 deletions(-)
- create mode 100644 tools/power/acpi/man/pfrut.8
- create mode 100644 tools/power/acpi/tools/pfrut/Makefile
- create mode 100644 tools/power/acpi/tools/pfrut/pfrut.c
+Hi Marc, Darren,
 
-diff --git a/tools/power/acpi/.gitignore b/tools/power/acpi/.gitignore
-index 0b319fc8bb17..eada0297ef88 100644
---- a/tools/power/acpi/.gitignore
-+++ b/tools/power/acpi/.gitignore
-@@ -2,4 +2,5 @@
- /acpidbg
- /acpidump
- /ec
-+/pfrut
- /include/
-diff --git a/tools/power/acpi/Makefile b/tools/power/acpi/Makefile
-index a249c50ebf55..5ff1d9c864d0 100644
---- a/tools/power/acpi/Makefile
-+++ b/tools/power/acpi/Makefile
-@@ -9,18 +9,18 @@ include ../../scripts/Makefile.include
- 
- .NOTPARALLEL:
- 
--all: acpidbg acpidump ec
--clean: acpidbg_clean acpidump_clean ec_clean
--install: acpidbg_install acpidump_install ec_install
--uninstall: acpidbg_uninstall acpidump_uninstall ec_uninstall
-+all: acpidbg acpidump ec pfrut
-+clean: acpidbg_clean acpidump_clean ec_clean pfrut_clean
-+install: acpidbg_install acpidump_install ec_install pfrut_install
-+uninstall: acpidbg_uninstall acpidump_uninstall ec_uninstall pfrut_uninstall
- 
--acpidbg acpidump ec: FORCE
-+acpidbg acpidump ec pfrut: FORCE
- 	$(call descend,tools/$@,all)
--acpidbg_clean acpidump_clean ec_clean:
-+acpidbg_clean acpidump_clean ec_clean pfrut_clean:
- 	$(call descend,tools/$(@:_clean=),clean)
--acpidbg_install acpidump_install ec_install:
-+acpidbg_install acpidump_install ec_install pfrut_install:
- 	$(call descend,tools/$(@:_install=),install)
--acpidbg_uninstall acpidump_uninstall ec_uninstall:
-+acpidbg_uninstall acpidump_uninstall ec_uninstall pfrut_uninstall:
- 	$(call descend,tools/$(@:_uninstall=),uninstall)
- 
- .PHONY: FORCE
-diff --git a/tools/power/acpi/Makefile.rules b/tools/power/acpi/Makefile.rules
-index 1d7616f5d0ae..b71aada77688 100644
---- a/tools/power/acpi/Makefile.rules
-+++ b/tools/power/acpi/Makefile.rules
-@@ -9,7 +9,7 @@ objdir := $(OUTPUT)tools/$(TOOL)/
- toolobjs := $(addprefix $(objdir),$(TOOL_OBJS))
- $(OUTPUT)$(TOOL): $(toolobjs) FORCE
- 	$(ECHO) "  LD      " $(subst $(OUTPUT),,$@)
--	$(QUIET) $(LD) $(CFLAGS) $(LDFLAGS) $(toolobjs) -L$(OUTPUT) -o $@
-+	$(QUIET) $(LD) $(CFLAGS) $(toolobjs) $(LDFLAGS) -L$(OUTPUT) -o $@
- 	$(ECHO) "  STRIP   " $(subst $(OUTPUT),,$@)
- 	$(QUIET) $(STRIPCMD) $@
- 
-diff --git a/tools/power/acpi/man/pfrut.8 b/tools/power/acpi/man/pfrut.8
-new file mode 100644
-index 000000000000..3db574770e8d
---- /dev/null
-+++ b/tools/power/acpi/man/pfrut.8
-@@ -0,0 +1,137 @@
-+.TH "PFRUT" "8" "October 2021" "pfrut 1.0" ""
-+.hy
-+.SH Name
-+.PP
-+pfrut \- Platform Firmware Runtime Update and Telemetry tool
-+.SH SYNOPSIS
-+.PP
-+\f[B]pfrut\f[R] [\f[I]Options\f[R]]
-+.SH DESCRIPTION
-+.PP
-+The PFRUT(Platform Firmware Runtime Update and Telemetry) kernel interface is designed
-+to
-+.PD 0
-+.P
-+.PD
-+interact with the platform firmware interface defined in the
-+.PD 0
-+.P
-+.PD
-+Management Mode Firmware Runtime
-+Update (https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf)
-+.PD 0
-+.P
-+.PD
-+\f[B]pfrut\f[R] is the tool to interact with the kernel interface.
-+.PD 0
-+.P
-+.PD
-+.SH OPTIONS
-+.TP
-+.B \f[B]\-h\f[R], \f[B]\-\-help\f[R]
-+Display helper information.
-+.TP
-+.B \f[B]\-l\f[R], \f[B]\-\-load\f[R]
-+Load the capsule file into the system.
-+To be more specific, the capsule file will be copied to the
-+communication buffer.
-+.TP
-+.B \f[B]\-s\f[R], \f[B]\-\-stage\f[R]
-+Stage the capsule image from communication buffer into Management Mode
-+and perform authentication.
-+.TP
-+.B \f[B]\-a\f[R], \f[B]\-\-activate\f[R]
-+Activate a previous staged capsule image.
-+.TP
-+.B \f[B]\-u\f[R], \f[B]\-\-update\f[R]
-+Perform both stage and activation actions.
-+.TP
-+.B \f[B]\-q\f[R], \f[B]\-\-query\f[R]
-+Query the update capability.
-+.TP
-+.B \f[B]\-d\f[R], \f[B]\-\-setrev\f[R]
-+Set the revision ID of code injection/driver update.
-+.TP
-+.B \f[B]\-D\f[R], \f[B]\-\-setrevlog\f[R]
-+Set the revision ID of telemetry.
-+.TP
-+.B \f[B]\-G\f[R], \f[B]\-\-getloginfo\f[R]
-+Get telemetry log information and print it out.
-+.TP
-+.B \f[B]\-T\f[R], \f[B]\-\-type\f[R]
-+Set the telemetry log data type.
-+.TP
-+.B \f[B]\-L\f[R], \f[B]\-\-level\f[R]
-+Set the telemetry log level.
-+.TP
-+.B \f[B]\-R\f[R], \f[B]\-\-read\f[R]
-+Read all the telemetry data and print it out.
-+.SH EXAMPLES
-+.PP
-+\f[B]pfrut \-G\f[R]
-+.PP
-+log_level:4
-+.PD 0
-+.P
-+.PD
-+log_type:0
-+.PD 0
-+.P
-+.PD
-+log_revid:2
-+.PD 0
-+.P
-+.PD
-+max_data_size:65536
-+.PD 0
-+.P
-+.PD
-+chunk1_size:0
-+.PD 0
-+.P
-+.PD
-+chunk2_size:1401
-+.PD 0
-+.P
-+.PD
-+rollover_cnt:0
-+.PD 0
-+.P
-+.PD
-+reset_cnt:4
-+.PP
-+\f[B]pfru \-q\f[R]
-+.PP
-+code injection image type:794bf8b2\-6e7b\-454e\-885f\-3fb9bb185402
-+.PD 0
-+.P
-+.PD
-+fw_version:0
-+.PD 0
-+.P
-+.PD
-+code_rt_version:1
-+.PD 0
-+.P
-+.PD
-+driver update image type:0e5f0b14\-f849\-7945\-ad81\-bc7b6d2bb245
-+.PD 0
-+.P
-+.PD
-+drv_rt_version:0
-+.PD 0
-+.P
-+.PD
-+drv_svn:0
-+.PD 0
-+.P
-+.PD
-+platform id:39214663\-b1a8\-4eaa\-9024\-f2bb53ea4723
-+.PD 0
-+.P
-+.PD
-+oem id:a36db54f\-ea2a\-e14e\-b7c4\-b5780e51ba3d
-+.PP
-+\f[B]pfrut \-l yours.cap \-u \-T 1 \-L 4\f[R]
-+.SH AUTHORS
-+Chen Yu.
-diff --git a/tools/power/acpi/tools/pfrut/Makefile b/tools/power/acpi/tools/pfrut/Makefile
-new file mode 100644
-index 000000000000..61c1a96fd433
---- /dev/null
-+++ b/tools/power/acpi/tools/pfrut/Makefile
-@@ -0,0 +1,23 @@
-+# SPDX-License-Identifier: GPL-2.0+
-+
-+include ../../Makefile.config
-+
-+TOOL = pfrut
-+EXTRA_INSTALL = install-man
-+EXTRA_UNINSTALL = uninstall-man
-+
-+CFLAGS += -Wall -O2
-+CFLAGS += -DPFRUT_HEADER='"../../../../../include/uapi/linux/pfrut.h"'
-+LDFLAGS += -luuid
-+
-+TOOL_OBJS = \
-+	pfrut.o
-+
-+include ../../Makefile.rules
-+
-+install-man: $(srctree)/man/pfrut.8
-+	$(ECHO) "  INST    " pfrut.8
-+	$(QUIET) $(INSTALL_DATA) -D $< $(DESTDIR)$(mandir)/man8/pfrut.8
-+uninstall-man:
-+	$(ECHO) "  UNINST  " pfrut.8
-+	$(QUIET) rm -f $(DESTDIR)$(mandir)/man8/pfrut.8
-diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
-new file mode 100644
-index 000000000000..d79c335594b2
---- /dev/null
-+++ b/tools/power/acpi/tools/pfrut/pfrut.c
-@@ -0,0 +1,424 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Platform Firmware Runtime Update tool to do Management
-+ * Mode code injection/driver update and telemetry retrieval.
-+ *
-+ * This tool uses the interfaces provided by pfr_update and
-+ * pfr_telemetry drivers. These interfaces are exposed via
-+ * /dev/pfr_update and /dev/pfr_telemetry. Write operation
-+ * on the /dev/pfr_update is to load the EFI capsule into
-+ * kernel space. Mmap/read operations on /dev/pfr_telemetry
-+ * could be used to read the telemetry data to user space.
-+ */
-+#define _GNU_SOURCE
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <getopt.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <uuid/uuid.h>
-+#include PFRUT_HEADER
-+
-+char *capsule_name;
-+int action, query_cap, log_type, log_level, log_read, log_getinfo,
-+	revid, log_revid;
-+int set_log_level, set_log_type,
-+	set_revid, set_log_revid;
-+
-+char *progname;
-+
-+#define LOG_ERR		0
-+#define LOG_WARN	1
-+#define LOG_INFO	2
-+#define LOG_VERB	4
-+#define LOG_EXEC_IDX	0
-+#define LOG_HISTORY_IDX	1
-+#define REVID_1		1
-+#define REVID_2		2
-+
-+static int valid_log_level(int level)
-+{
-+	return level == LOG_ERR || level == LOG_WARN ||
-+	       level == LOG_INFO || level == LOG_VERB;
-+}
-+
-+static int valid_log_type(int type)
-+{
-+	return type == LOG_EXEC_IDX || type == LOG_HISTORY_IDX;
-+}
-+
-+static inline int valid_log_revid(int id)
-+{
-+	return id == REVID_1 || id == REVID_2;
-+}
-+
-+static void help(void)
-+{
-+	fprintf(stderr,
-+		"usage: %s [OPTIONS]\n"
-+		" code injection:\n"
-+		"  -l, --load\n"
-+		"  -s, --stage\n"
-+		"  -a, --activate\n"
-+		"  -u, --update [stage and activate]\n"
-+		"  -q, --query\n"
-+		"  -d, --revid update\n"
-+		" telemetry:\n"
-+		"  -G, --getloginfo\n"
-+		"  -T, --type(0:execution, 1:history)\n"
-+		"  -L, --level(0, 1, 2, 4)\n"
-+		"  -R, --read\n"
-+		"  -D, --revid log\n",
-+		progname);
-+}
-+
-+char *option_string = "l:sauqd:GT:L:RD:h";
-+static struct option long_options[] = {
-+	{"load", required_argument, 0, 'l'},
-+	{"stage", no_argument, 0, 's'},
-+	{"activate", no_argument, 0, 'a'},
-+	{"update", no_argument, 0, 'u'},
-+	{"query", no_argument, 0, 'q'},
-+	{"getloginfo", no_argument, 0, 'G'},
-+	{"type", required_argument, 0, 'T'},
-+	{"level", required_argument, 0, 'L'},
-+	{"read", no_argument, 0, 'R'},
-+	{"setrev", required_argument, 0, 'd'},
-+	{"setrevlog", required_argument, 0, 'D'},
-+	{"help", no_argument, 0, 'h'},
-+	{}
-+};
-+
-+static void parse_options(int argc, char **argv)
-+{
-+	int option_index = 0;
-+	char *pathname;
-+	int opt;
-+
-+	pathname = strdup(argv[0]);
-+	progname = basename(pathname);
-+
-+	while ((opt = getopt_long_only(argc, argv, option_string,
-+				       long_options, &option_index)) != -1) {
-+		switch (opt) {
-+		case 'l':
-+			capsule_name = optarg;
-+			break;
-+		case 's':
-+			action = 1;
-+			break;
-+		case 'a':
-+			action = 2;
-+			break;
-+		case 'u':
-+			action = 3;
-+			break;
-+		case 'q':
-+			query_cap = 1;
-+			break;
-+		case 'G':
-+			log_getinfo = 1;
-+			break;
-+		case 'T':
-+			log_type = atoi(optarg);
-+			set_log_type = 1;
-+			break;
-+		case 'L':
-+			log_level = atoi(optarg);
-+			set_log_level = 1;
-+			break;
-+		case 'R':
-+			log_read = 1;
-+			break;
-+		case 'd':
-+			revid = atoi(optarg);
-+			set_revid = 1;
-+			break;
-+		case 'D':
-+			log_revid = atoi(optarg);
-+			set_log_revid = 1;
-+			break;
-+		case 'h':
-+			help();
-+			exit(0);
-+		default:
-+			break;
-+		}
-+	}
-+}
-+
-+void print_cap(struct pfru_update_cap_info *cap)
-+{
-+	char *uuid;
-+
-+	uuid = malloc(37);
-+	if (!uuid) {
-+		perror("Can not allocate uuid buffer\n");
-+		exit(1);
-+	}
-+
-+	uuid_unparse(cap->code_type, uuid);
-+	printf("code injection image type:%s\n", uuid);
-+	printf("fw_version:%d\n", cap->fw_version);
-+	printf("code_rt_version:%d\n", cap->code_rt_version);
-+
-+	uuid_unparse(cap->drv_type, uuid);
-+	printf("driver update image type:%s\n", uuid);
-+	printf("drv_rt_version:%d\n", cap->drv_rt_version);
-+	printf("drv_svn:%d\n", cap->drv_svn);
-+
-+	uuid_unparse(cap->platform_id, uuid);
-+	printf("platform id:%s\n", uuid);
-+	uuid_unparse(cap->oem_id, uuid);
-+	printf("oem id:%s\n", uuid);
-+	printf("oem information length:%d\n", cap->oem_info_len);
-+
-+	free(uuid);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int fd_update, fd_update_log, fd_capsule;
-+	struct pfrt_log_data_info data_info;
-+	struct pfrt_log_info info;
-+	struct pfru_update_cap_info cap;
-+	void *addr_map_capsule;
-+	struct stat st;
-+	char *log_buf;
-+	int ret = 0;
-+
-+	if (getuid() != 0) {
-+		printf("Please run the tool as root - Exiting.\n");
-+		return 1;
-+	}
-+
-+	parse_options(argc, argv);
-+
-+	fd_update = open("/dev/acpi_pfr_update0", O_RDWR);
-+	if (fd_update < 0) {
-+		printf("PFRU device not supported - Quit...\n");
-+		return 1;
-+	}
-+
-+	fd_update_log = open("/dev/acpi_pfr_telemetry0", O_RDWR);
-+	if (fd_update_log < 0) {
-+		printf("PFRT device not supported - Quit...\n");
-+		return 1;
-+	}
-+
-+	if (query_cap) {
-+		ret = ioctl(fd_update, PFRU_IOC_QUERY_CAP, &cap);
-+		if (ret)
-+			perror("Query Update Capability info failed.");
-+		else
-+			print_cap(&cap);
-+
-+		close(fd_update);
-+		close(fd_update_log);
-+
-+		return ret;
-+	}
-+
-+	if (log_getinfo) {
-+		ret = ioctl(fd_update_log, PFRT_LOG_IOC_GET_DATA_INFO, &data_info);
-+		if (ret) {
-+			perror("Get telemetry data info failed.");
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		ret = ioctl(fd_update_log, PFRT_LOG_IOC_GET_INFO, &info);
-+		if (ret) {
-+			perror("Get telemetry info failed.");
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		printf("log_level:%d\n", info.log_level);
-+		printf("log_type:%d\n", info.log_type);
-+		printf("log_revid:%d\n", info.log_revid);
-+		printf("max_data_size:%d\n", data_info.max_data_size);
-+		printf("chunk1_size:%d\n", data_info.chunk1_size);
-+		printf("chunk2_size:%d\n", data_info.chunk2_size);
-+		printf("rollover_cnt:%d\n", data_info.rollover_cnt);
-+		printf("reset_cnt:%d\n", data_info.reset_cnt);
-+
-+		return 0;
-+	}
-+
-+	info.log_level = -1;
-+	info.log_type = -1;
-+	info.log_revid = -1;
-+
-+	if (set_log_level) {
-+		if (!valid_log_level(log_level)) {
-+			printf("Invalid log level %d\n",
-+			       log_level);
-+		} else {
-+			info.log_level = log_level;
-+		}
-+	}
-+
-+	if (set_log_type) {
-+		if (!valid_log_type(log_type)) {
-+			printf("Invalid log type %d\n",
-+			       log_type);
-+		} else {
-+			info.log_type = log_type;
-+		}
-+	}
-+
-+	if (set_log_revid) {
-+		if (!valid_log_revid(log_revid)) {
-+			printf("Invalid log revid %d, unchanged.\n",
-+			       log_revid);
-+		} else {
-+			info.log_revid = log_revid;
-+		}
-+	}
-+
-+	ret = ioctl(fd_update_log, PFRT_LOG_IOC_SET_INFO, &info);
-+	if (ret) {
-+		perror("Log information set failed.(log_level, log_type, log_revid)");
-+		close(fd_update);
-+		close(fd_update_log);
-+
-+		return 1;
-+	}
-+
-+	if (set_revid) {
-+		ret = ioctl(fd_update, PFRU_IOC_SET_REV, &revid);
-+		if (ret) {
-+			perror("pfru update revid set failed");
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		printf("pfru update revid set to %d\n", revid);
-+	}
-+
-+	if (capsule_name) {
-+		fd_capsule = open(capsule_name, O_RDONLY);
-+		if (fd_capsule < 0) {
-+			perror("Can not open capsule file...");
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		if (fstat(fd_capsule, &st) < 0) {
-+			perror("Can not fstat capsule file...");
-+			close(fd_capsule);
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		addr_map_capsule = mmap(NULL, st.st_size, PROT_READ, MAP_SHARED,
-+					fd_capsule, 0);
-+		if (addr_map_capsule == MAP_FAILED) {
-+			perror("Failed to mmap capsule file.");
-+			close(fd_capsule);
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		ret = write(fd_update, (char *)addr_map_capsule, st.st_size);
-+		printf("Load %d bytes of capsule file into the system\n",
-+		       ret);
-+
-+		if (ret == -1) {
-+			perror("Failed to load capsule file");
-+			close(fd_capsule);
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		munmap(addr_map_capsule, st.st_size);
-+		close(fd_capsule);
-+		printf("Load done.\n");
-+	}
-+
-+	if (action) {
-+		if (action == 1) {
-+			ret = ioctl(fd_update, PFRU_IOC_STAGE, NULL);
-+		} else if (action == 2) {
-+			ret = ioctl(fd_update, PFRU_IOC_ACTIVATE, NULL);
-+		} else if (action == 3) {
-+			ret = ioctl(fd_update, PFRU_IOC_STAGE_ACTIVATE, NULL);
-+		} else {
-+			close(fd_update);
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+		printf("Update finished, return %d\n", ret);
-+	}
-+
-+	close(fd_update);
-+
-+	if (log_read) {
-+		void *p_mmap;
-+		int max_data_sz;
-+
-+		ret = ioctl(fd_update_log, PFRT_LOG_IOC_GET_DATA_INFO, &data_info);
-+		if (ret) {
-+			perror("Get telemetry data info failed.");
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		max_data_sz = data_info.max_data_size;
-+		if (!max_data_sz) {
-+			printf("No telemetry data available.\n");
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		log_buf = malloc(max_data_sz + 1);
-+		if (!log_buf) {
-+			perror("log_buf allocate failed.");
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		p_mmap = mmap(NULL, max_data_sz, PROT_READ, MAP_SHARED, fd_update_log, 0);
-+		if (p_mmap == MAP_FAILED) {
-+			perror("mmap error.");
-+			close(fd_update_log);
-+
-+			return 1;
-+		}
-+
-+		memcpy(log_buf, p_mmap, max_data_sz);
-+		log_buf[max_data_sz] = '\0';
-+		printf("%s\n", log_buf);
-+		free(log_buf);
-+
-+		munmap(p_mmap, max_data_sz);
-+	}
-+
-+	close(fd_update_log);
-+
-+	return 0;
-+}
--- 
-2.25.1
+On 11/30/2021 11:41 AM, Darren Hart wrote:
+> On Tue, Nov 30, 2021 at 09:45:46AM +0000, Marc Zyngier wrote:
+>> Hi Darren,
+>>
+>> On Mon, 29 Nov 2021 20:39:23 +0000,
+>> Darren Hart <darren@os.amperecomputing.com> wrote:
+>>> On Wed, Nov 24, 2021 at 06:09:14PM +0000, Marc Zyngier wrote:
+>>>> On Wed, 24 Nov 2021 17:07:07 +0000,
+>>>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>>>> index 5250298d2817..aa0483726606 100644
+>>>>> --- a/MAINTAINERS
+>>>>> +++ b/MAINTAINERS
+>>>>> @@ -382,6 +382,7 @@ ACPI FOR ARM64 (ACPI/arm64)
+>>>>>   M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+>>>>>   M:	Hanjun Guo <guohanjun@huawei.com>
+>>>>>   M:	Sudeep Holla <sudeep.holla@arm.com>
+>>>>> +R:	Tyler Baicar <baicar@os.amperecomputing.com>
+>>>>>   L:	linux-acpi@vger.kernel.org
+>>>>>   L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>>>>>   S:	Maintained
+>>>> Isn't this a bit premature? This isn't even mentioned in the commit
+>>>> message, only in passing in the cover letter.
+>>>>
+>>> Hi Marc,
+>>>
+>>> This was something I encouraged Tyler to add during internal review,
+>>> both in response to the checkpatch.pl warning about adding new drivers
+>>> as well as our interest in reviewing any future changes to the aest
+>>> driver. Since refactoring is common, this level made sense to me - but
+>>> would it be preferable to add a new entry for just the new driver Tyler
+>>> added?
+>> Adding someone as the co-maintainer/co-reviewer of a whole subsystem
+>> (ACPI/arm64 in this case) comes, IMO, with a number of pre-requisites:
+>> has the proposed co-{maintainer,reviewer} contributed and/or reviewed
+>> a significant number of patches to that subsystem and/or actively
+>> participated in the public discussions on the design and the
+>> maintenance of the subsystem, so that their reviewing is authoritative
+>> enough? I won't be judge of this, but it is definitely something to
+>> consider.
+> Hi Marc,
+>
+> Agreed. I applied similar criteria when considering sub maintainers for
+> the platform/x86 subsystem while I maintained it.
+>
+>> I don't think preemptively adding someone to the MAINTAINERS entry to
+>> indicate an interest in a whole subsystem is the right way to do it.
+>> One could argue that this is what a mailing list is for! ;-) On the
+>> other hand, an active participation to the review process is the
+>> perfect way to engage with fellow developers and to grow a profile. It
+>> is at this stage that adding oneself as an upstream reviewer makes a
+>> lot of sense.
+> Also generally agree. In this specific case, our interest was in the
+> driver itself, and we had to decide between the whole subsystem or
+> adding another F: entry in MAINTAINERS for the specific driver. Since
+> drivers/acpi/arm64 only has 3 .c files in it, adding another entry
+> seemed premature and overly granular. Certainly a subjective thing and
+> we have no objection to adding the extra line if that's preferred. This
+> should have been noted in the commit message.
+
+Thank you for the feedback here, I will make sure to add this to the 
+commit message and cover letter in the next version.
+
+Hi Lorenzo, Hanjun, Sudeep,
+
+As for adding myself as a reviewer under ACPI for ARM64 or adding 
+another F: entry, do you have a preference or guidance on what I should 
+do here?
+
+Thanks,
+
+Tyler
+
+>> Alternatively, adding a MAINTAINERS entry for a specific driver is
+>> definitely helpful and will certainly result in the listed maintainer
+>> to be Cc'd on changes affecting it. But I would really like this
+>> maintainer to actively engage with upstream, rather than simply be on
+>> the receiving end of a stream of changes.
+> Agree for subsystems. For individual drivers, I think having the author
+> as a reviewer is appropriate and should result in more patch reviews,
+> which moves us in the direction of more community participation which we
+> all want to see.
+>
+> Thanks,
 
