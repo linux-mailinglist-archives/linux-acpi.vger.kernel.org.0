@@ -2,138 +2,318 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17303477387
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Dec 2021 14:48:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24FCF477681
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Dec 2021 17:00:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbhLPNsf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Dec 2021 08:48:35 -0500
-Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130]:40102 "EHLO
-        out30-130.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234844AbhLPNse (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Dec 2021 08:48:34 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R551e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0V-pCnil_1639662510;
-Received: from 30.240.114.88(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V-pCnil_1639662510)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Thu, 16 Dec 2021 21:48:31 +0800
-Message-ID: <71f0b340-1014-9ecd-663c-0bbdca63332c@linux.alibaba.com>
-Date:   Thu, 16 Dec 2021 21:48:29 +0800
+        id S238721AbhLPQAl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Dec 2021 11:00:41 -0500
+Received: from mga02.intel.com ([134.134.136.20]:24598 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238661AbhLPQAl (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 16 Dec 2021 11:00:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1639670441; x=1671206441;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=shQ4McJUzi6V9J86Nq946S2UqJaLPSSonc42D0P3ges=;
+  b=dAbqiqyHrOzOADBfH32b/xc+mCLGjwyJJRDX3omAAEPRQiEB3b2wBPu9
+   tO+42XUsDiyp5ZRn5WBZ4N5T4wou7SoCmiVvJ4ogF23jqdtC+5jhtskcD
+   QzC2J1uNHVqYFhl/h2uVe8KCKKEIk9zoi0sRSnaOA8VPb2PjR/rDKta6F
+   tH0Oie1mIn6QpuCn3Zxfk/Ptq0X6unqp0/7kmbADEnqIZE+6ym2ChmbaP
+   J9vW90093S2olTLlGGU54FYcoKVpNmQvVYL8l8B9IBuf3Dqsp3Su54bnj
+   PTB1S03WySX+tFi9gjOH8ws8dpCIrswkUGg1kfAU9vCqVNgQYy0ht9NLE
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10199"; a="226810785"
+X-IronPort-AV: E=Sophos;i="5.88,211,1635231600"; 
+   d="scan'208";a="226810785"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2021 08:00:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,211,1635231600"; 
+   d="scan'208";a="519306520"
+Received: from chenyu-desktop.sh.intel.com ([10.239.158.186])
+  by orsmga008.jf.intel.com with ESMTP; 16 Dec 2021 08:00:36 -0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Mike Rapoport <rppt@kernel.org>, Chen Yu <yu.c.chen@intel.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v12 0/4] Introduce Platform Firmware Runtime Update and Telemetry drivers
+Date:   Fri, 17 Dec 2021 00:00:10 +0800
+Message-Id: <cover.1639669829.git.yu.c.chen@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.3.2
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-Subject: RESEND: Question: How to trigger RAM address when injecting memory
- error
-To:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "Luck, Tony" <tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        graeme.gregory@linaro.org, will.deacon@arm.com,
-        myron.stowe@redhat.com, len.brown@intel.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi folks,
+The PFRUT(Platform Firmware Runtime Update and Telemetry) kernel interface
+is designed to interact with the platform firmware interface defined in the
+`Management Mode Firmware Runtime Update
+<https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf>`
+specification. The primary function of PFRUT is to carry out runtime
+updates of the platform firmware, which doesn't require the system to
+be restarted. It also allows telemetry data to be retrieved from the
+platform firmware.
 
-How to trigger RAM address when injecting memory error on firmware which access
-target address specified in param1 to trigger the error?
+=============
+- Change from v11 to v12:
+  - Rename the driver from pfru_update to pfr_update, and the
+    telemetry part to pfr_telementry for symmetry.
+    (Rafael J. Wysocki)
+  - Rename the "capsule file" to "EFI capsule".
+    (Rafael J. Wysocki)
+  - Revise the commit log. (Rafael J. Wysocki)
+  - Add the reason in the commit log that explains why it is
+    a good idea to add this driver to the kernel.
+    (Rafael J. Wysocki)
+  - Rename pfru.h to pfrut.h (Rafael J. Wysocki)
+  - Rename the CONFIG_ACPI_PFRU to CONFIG_ACPI_PFRUT
+    (Rafael J. Wysocki)
+  - Rename the Kconfig name to "ACPI Platform Firmware Runtime
+    Update and Telemetry"
+    (Rafael J. Wysocki)
+  - Revise the Kconfig help message (Rafael J. Wysocki)
+  - Describe what the driver is for briefly in the beginning of
+    the source code file.
+    (Rafael J. Wysocki)
+  - Add a comment pointing to the definitions of the GUIDs and
+    explain briefly what they are for.
+    (Rafael J. Wysocki)
+  - Reduce redundant memory updates by doing all of the checks
+    upfront. (Rafael J. Wysocki)
+  - Rename valid_version() to applicable_image(), and revise the
+    comment.(Rafael J. Wysocki)
+  - Remove Redundant else in applicable_image().(Rafael J. Wysocki)
+  - Rename dump_update_result() to print_ipdate_debug_info().
+    (Rafael J. Wysocki)
+  - Rename start_acpi_update() to start_update()(Rafael J. Wysocki)
+    Add a blank line before each "case xxx:"(Rafael J. Wysocki)
+  - Move status check into query_capability() and returns -EBUSY if
+    fails(Rafael J. Wysocki)
+  - Rename the device node name from "acpi_pfru%d" to "acpi_pfr_update%d"
+    (Rafael J. Wysocki)
+  - Rename the drive name from "pfru_update" to "pfr_update"
+    (Rafael J. Wysocki)
+  - Rename PFRU_MAGIC_FOR_IOCTL to PFRUT_IOCTL_MAGIC(Rafael J. Wysocki)
+    Fix grammar errors in the comments.(Rafael J. Wysocki)
+- Change from v10 to v11:
+  - Revise the commit log to explain why version check is introduced
+    in kernel rather than letting Management Mode to do it.
+    (Rafael J. Wysocki)
+  - Revise the commit log to better describe the pack attribute.
+    (Rafael J. Wysocki)
+  - Refine the comment for hw_ins and capsule_support.
+    (Rafael J. Wysocki)
+- Change from v9 to v10:
+  - Remove the explicit assignment of the last item of enum.
+    (Andy Shevchenko)
+- Change from v8 to v9:
+  - Use GUID_INIT() instead of guid_parse() during boot up.
+    (Andy Shevchenko)
+  - Drop uuid, code_uuid, drv_uuid in struct pfru_device as they
+    are not needed. (Andy Shevchenko)
+  - Drop type casting from void * in valid_version().
+    (Andy Shevchenko)
+  - Use kfree() instead of ACPI_FREE() in non-ACPICA usage.
+    (Andy Shevchenko)
+  - Use sizeof(rev) instead of sizeof(u32) in copy_from_user().
+    (Andy Shevchenko)
+  - Generate physical address from MSB part to LSB.
+    (Andy Shevchenko)
+  - Use devm_add_action_or_reset() to add ida release into dev resource
+    management. (Andy Shevchenko)
+  - Use devm_kasprintf() instead of kasprintf() to format the
+    pfru_dev name.(Andy Shevchenko)
+  - Remove redundant 0 in acpi_pfru_ids. (Andy Shevchenko)
+  - Adjust the order of included headers in pfru.h.
+    (Andy Shevchenko)
+  - Replace PFRU_MAGIC with PFRU_MAGIC_FOR_IOCTL in uapi file.
+    (Andy Shevchenko)
+    Use devm_kasprintf() instead of kasprintf() to format the
+    pfru_log_dev name.(Andy Shevchenko)
+    Remove redundant 0 in acpi_pfru_log_ids. (Andy Shevchenko)
+- Change from v7 to v8:
+  - Remove the variable-length array in struct pfru_update_cap_info, and
+    copy the non-variable-length struct pfru_update_cap_info to userspace
+    directly. (Greg Kroah-Hartman)
+  - Use efi_guid_t instead of guid_t when parsing capsule file.
+    (Andy Shevchenko)
+  - Change the type of rev_id from int to u32, because this data will
+    be copied between kernel and userspace. (Greg Kroah-Hartman)
+  - Add a prefix for dev in struct pfru_device to parent_dev, so as
+    to indicate that this filed is the parent of the created miscdev.
+    (Greg Kroah-Hartman)
+  - Use blank lines between different macro sections. (Greg Kroah-Hartman)
+    Illusatrate the possible errno for each ioctl interface.
+    (Greg Kroah-Hartman)
+  - Remove pfru_valid_revid() from uapi header to avoid poluting the global
+    namespace.(Greg Kroah-Hartman)
+  - Assign the value to the enum type explicitly.(Greg Kroah-Hartman)
+  - Change the guid_t to efi_guid_t when parsing image header in get_image_type()
+    (Greg Kroah-Hartman)
+  - Remove the void * to other type casting in valid_version(). (Andy Shevchenko)
+  - Combined the assignment of variables with definitions. (Andy Shevchenko)
+  - Define this magic for revision ID. (Andy Shevchenko)
+  - Make the labeling consistent for error handling. (Andy Shevchenko)
+  - Replace the UUID_SIZE in uapi with 16 directly. (Andy Shevchenko)
+  - Add blank line between generic include header and uapi header.
+    (Andy Shevchenko)
+  - Arrange the order between devm_kzalloc() and normal allocation in
+    acpi_pfru_probe() that, the former should always be ahead of the
+    latter. (Andy Shevchenko)
+- Change from v6 to v7:
+  - Use __packed instead of pragma pack(1).
+    (Greg Kroah-Hartman, Ard Biesheuve)
+  - Use ida_alloc() to allocate a ID, and release the ID when
+    device is removed. (Greg Kroah-Hartman)
+  - Check the _DSM method at early stage, before allocate or parse
+    anything in acpi_pfru_[log_]probe(). (Greg Kroah-Hartman)
+  - Set the parent of the misc device. (Greg Kroah-Hartman)
+  - Use module_platform_driver() instead of platform_driver_register()
+    in module_init(). Separate pfru driver and pfru_telemetry driver
+    to two files. (Greg Kroah-Hartman) 
+- Change from v5 to v6:
+  - Use Link: tag to add the specification download address.
+    (Andy Shevchenko)
+  - Drop comma for each terminator entry in the enum structure.
+    (Andy Shevchenko)
+  - Remove redundant 'else' in get_image_type().
+    (Andy Shevchenko)
+  - Directly return results from the switch cases in adjust_efi_size()
+    and pfru_ioctl().(Andy Shevchenko)
+  - Keep comment style consistency by removing the period for
+    one line comment.
+    (Andy Shevchenko)
+  - Remove devm_kfree() if .probe() failed. 
+    (Andy Shevchenko)
+  - Remove linux/uuid.h and use raw buffers to contain uuid.
+    (Andy Shevchenko)
+  - Include types.h in pfru.h. (Andy Shevchenko)
+  - Use __u8[16] instead of uuid_t. (Andy Shevchenko)
+  - Replace enum in pfru.h with __u32 as enum size is not the
+    same size on all possible architectures.
+    (Andy Shevchenko)
+  - Simplify the userspace tool to use while loop for getopt_long().
+    (Andy Shevchenko)
+- Change from v4 to v5:
+  - Remove Documentation/ABI/pfru, and move the content to kernel doc
+    in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
+  - Shrink the range of ioctl numbers declared in
+    Documentation/userspace-api/ioctl/ioctl-number.rst
+    from 16 to 8. (Greg Kroah-Hartman)
+  - Change global variable struct pfru_device *pfru_dev to
+    per PFRU device. (Greg Kroah-Hartman)
+  - Unregister the misc device in acpi_pfru_remove().
+    (Greg Kroah-Hartman)
+  - Convert the kzalloc() to devm_kzalloc() in the driver so
+    as to avoid freeing the memory. (Greg Kroah-Hartman)
+  - Fix the compile warning by declaring the pfru_log_ioctl() as
+    static. (kernel test robot LKP)
+  - Change to global variable misc_device to per PFRU device.
+    (Greg Kroah-Hartman)
+  - Remove the telemetry output in commit log. (Greg Kroah-Hartman)
+  - Add link for corresponding userspace tool in the commit log.
+    (Greg Kroah-Hartman)
+  - Replace the telemetry .read() with .mmap() so that the userspace
+    could mmap once, and read multiple times. (Greg Kroah-Hartman)
+- Change from v3 to v4:
+  - Add Documentation/ABI/testing/pfru to document the ABI and
+    remove Documentation/x86/pfru.rst (Rafael J. Wysocki)
+  - Replace all pr_err() with dev_dbg() (Greg Kroah-Hartman,
+    Rafael J. Wysocki)
+  - returns ENOTTY rather than ENOIOCTLCMD if invalid ioctl command
+    is provided. (Greg Kroah-Hartman)
+  - Remove compat ioctl. (Greg Kroah-Hartman)
+  - Rename /dev/pfru/pfru_update to /dev/acpi_pfru (Greg Kroah-Hartman)
+  - Simplify the check for element of the package in query_capability()
+    (Rafael J. Wysocki)
+  - Remove the loop in query_capability(), query_buffer() and query
+    the package elemenet directly. (Rafael J. Wysocki)
+  - Check the number of elements in case the number of package
+    elements is too small. (Rafael J. Wysocki)
+  - Doing the assignment as initialization in get_image_type().
+    Meanwhile, returns the type or a negative error code in
+    get_image_type(). (Rafael J. Wysocki)
+  - Put the comments inside the function. (Rafael J. Wysocki)
+  - Returns the size or a negative error code in adjust_efi_size()
+    (Rafael J. Wysocki)
+  - Fix the return value from EFAULT to EINVAL if pfru_valid_revid()
+    does not pass. (Rafael J. Wysocki)
+  - Change the write() to be the code injection/update, the read() to
+    be telemetry retrieval and all of the rest to be ioctl()s under
+    one special device file.(Rafael J. Wysocki)
+  - Remove redundant parens. (Rafael J. Wysocki)
+  - Putting empty code lines after an if () statement that is not
+    followed by a block. (Rafael J. Wysocki)
+  - Remove "goto" tags to make the code more readable. (Rafael J. Wysocki)
+- Change from v2 to v3:
+  - Use valid types for structures that cross the user/kernel boundary
+    in the uapi header. (Greg Kroah-Hartman)
+  - Rename the structure in uapi to start with a prefix pfru so as
+    to avoid confusing in the global namespace. (Greg Kroah-Hartman)
+- Change from v1 to v2:
+  - Add a spot in index.rst so it becomes part of the docs build
+    (Jonathan Corbet).
+  - Sticking to the 80-column limit(Jonathan Corbet).
+  - Underline lengths should match the title text(Jonathan Corbet).
+  - Use literal blocks for the code samples(Jonathan Corbet).
+  - Add sanity check for duplicated instance of ACPI device.
+  - Update the driver to work with allocated pfru_device objects.
+    (Mike Rapoport)
+  - For each switch case pair, get rid of the magic case numbers
+    and add a default clause with the error handling.(Mike Rapoport)
+  - Move the obj->type checks outside the switch to reduce redundancy.
+    (Mike Rapoport)
+  - Parse the code_inj_id and drv_update_id at driver initialization time
+    to reduce the re-parsing at runtime. (Mike Rapoport)
+  - Explain in detail how the size needs to be adjusted when doing
+    version check. (Mike Rapoport)
+  - Rename parse_update_result() to dump_update_result()
+    (Mike Rapoport)
+  - Remove redundant return.(Mike Rapoport)
+  - Do not expose struct capsulate_buf_info to uapi, since it is
+    not needed in userspace. (Mike Rapoport)
+  - Do not allow non-root user to run this test.(Shuah Khan)
+  - Test runs on platform without pfru_telemetry should skip
+    instead of reporting failure/error.(Shuah Khan)
+  - Reuse uapi/linux/pfru.h instead of copying it into the test
+    directory. (Mike Rapoport)
 
-On our platform, firmware relies on kernel to trigger an injected error.
-Specifically, it populates trigger_tab with the injected physical memory
-address, which is set in param1. It is expected to map the RAM address and
-run read action. And the execution path is as follows:
+Chen Yu (4):
+  efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and
+    corresponding structures
+  drivers/acpi: Introduce Platform Firmware Runtime Update device driver
+  drivers/acpi: Introduce Platform Firmware Runtime Telemetry
+  tools: Introduce power/acpi/tools/pfrut
 
-    __einj_error_trigger
-        => apei_resources_request
-            => apei_exec_pre_map_gars
-                => apei_exec_run
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ drivers/acpi/Kconfig                          |  22 +
+ drivers/acpi/Makefile                         |   1 +
+ drivers/acpi/pfr_telemetry.c                  | 433 ++++++++++++++
+ drivers/acpi/pfr_update.c                     | 558 ++++++++++++++++++
+ include/linux/efi.h                           |  46 ++
+ include/uapi/linux/pfrut.h                    | 262 ++++++++
+ tools/power/acpi/.gitignore                   |   1 +
+ tools/power/acpi/Makefile                     |  16 +-
+ tools/power/acpi/Makefile.rules               |   2 +-
+ tools/power/acpi/man/pfrut.8                  | 137 +++++
+ tools/power/acpi/tools/pfrut/Makefile         |  23 +
+ tools/power/acpi/tools/pfrut/pfrut.c          | 424 +++++++++++++
+ 13 files changed, 1917 insertions(+), 9 deletions(-)
+ create mode 100644 drivers/acpi/pfr_telemetry.c
+ create mode 100644 drivers/acpi/pfr_update.c
+ create mode 100644 include/uapi/linux/pfrut.h
+ create mode 100644 tools/power/acpi/man/pfrut.8
+ create mode 100644 tools/power/acpi/tools/pfrut/Makefile
+ create mode 100644 tools/power/acpi/tools/pfrut/pfrut.c
 
-If injecting at physical memory address, e.g. 0x92f033038, used by a
-user space process, the following error will be reported in dmesg:
+-- 
+2.25.1
 
-    ACPI: [Firmware Bug]: requested region covers kernel memory @ 0x000000092f033038
-
-This is because the injected physical memory address is
-EFI_CONVENTIONAL_MEMORY and memblock_is_map_memory is true
-(arch/arm64/kernel/acpi.c).
-
-        case EFI_CONVENTIONAL_MEMORY:
-        case EFI_PERSISTENT_MEMORY:
-            if (memblock_is_map_memory(phys) ||
-                !memblock_is_region_memory(phys, size)) {
-                pr_warn(FW_BUG "requested region covers kernel memory @ %pa\n", &phys);
-                return NULL;
-            }
-
-As a result, the error could not be triggered.
-
-A normal workflow maps Generic Address Register (GAR) by acpi_os_ioremap
-and add its virtual address into acpi_ioremaps. The execution path is as
-follows:
-
-    apei_exec_pre_map_gars
-        => pre_map_gar_callback
-            => apei_map_generic_address
-                => acpi_os_map_generic_address
-                    => acpi_os_map_iomem    /* add mapped VA into acpi_ioremaps */
-                        =>    acpi_map
-                            => acpi_os_ioremap /**/
-
-Then, a read or write action is taken. It will check if the physical
-address is mapped from acpi_ioremap. If yes, the value is read directly.
-Otherwise, acpi_os_ioremap the physical address first. The execution path
-is as follows:
-
-    __apei_exec_run
-        => apei_exec_read_register
-            => apei_read
-                => acpi_os_read_memory
-                    => acpi_map_vaddr_lookup    /* lookup VA of PA from acpi_ioremap */
-                    => acpi_os_ioremap
-
-It works well for reserved memory, but not for our case.
-
-Commit fdea163d8c17 ("ACPI, APEI, EINJ, Fix resource conflict on some
-machine") removes the injecting memory address range which conflits with
-regular memory from trigger table resources. It make sense when calling
-apei_resources_request(). However, the actual mapping operation in
-apei_exec_pre_map_gars() with trigger_ctx. And the conflit physical address
-is still in trigger_ctx.
-
-Commit ba242d5b1a84 ("ACPI, APEI: Add RAM mapping support to ACPI")add RAM
-support with kmap. But after commit aafc65c731fe ("ACPI: add arm64 to the
-platforms that use ioremap"), ioremap is used to map memory. However, the
-ioremap implementation (arch/arm64/mm/ioremap.c) not allowed to map RAM at
-all.
-
-    /*
-     * Don't allow RAM to be mapped.
-     */
-    if (WARN_ON(pfn_valid(__phys_to_pfn(phys_addr))))
-        return NULL;
-
-A hacking way to address this issue is that map RAM memory with kmap
-instead of apei_exec_pre_map_gars, and read it directly instead of
-apei_exec_run.
--       rc = apei_exec_pre_map_gars(&trigger_ctx);
--       if (rc)
--               goto out_release;
-+       volatile long *ptr;
-+       long tmp;
-+       unsigned long pfn;
-+       pfn = param1 >> PAGE_SHIFT;
-
--       rc = apei_exec_run(&trigger_ctx, ACPI_EINJ_TRIGGER_ERROR);
-+       ptr = kmap(pfn_to_page(pfn));
-+       tmp = *(ptr + (param1 & ~ PAGE_MASK));
-
--       apei_exec_post_unmap_gars(&trigger_ctx);
-
-I am wondering that should we use kmap to map RAM in acpi_map or add a
-another path to address this issue? Any comment is welcomed.
