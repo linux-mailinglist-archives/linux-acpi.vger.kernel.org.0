@@ -2,88 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4E81476E6B
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Dec 2021 10:58:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7600B47702E
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Dec 2021 12:27:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230423AbhLPJ6o (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Dec 2021 04:58:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:57898 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230155AbhLPJ6n (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Dec 2021 04:58:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1639648722;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=2f+bwQ9A8rkOTgyO9IFV+HcP21W3Lh3xDiL5aWysAWI=;
-        b=A5xszYxTfg8PGsHU3jnlx5LVr4AwC3ednwswzM0+BY3zMfNPK1A7xsUt1ZJSPEP70saKXX
-        7w4xNgh3Kqi7SJVebc3chgwu9ifyuvtLSSvBwsQ9jmiSypReZPeWFez3nQRaUfb00uOFWj
-        57yK+7VIJEc1m73F4GlCCMzEgFtStyA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-327-ZVZMLZbWPui4OMDFzmwJeQ-1; Thu, 16 Dec 2021 04:58:41 -0500
-X-MC-Unique: ZVZMLZbWPui4OMDFzmwJeQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S236555AbhLPL1t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Dec 2021 06:27:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56690 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231423AbhLPL1s (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 16 Dec 2021 06:27:48 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA40AC061574;
+        Thu, 16 Dec 2021 03:27:48 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D916581CCB8;
-        Thu, 16 Dec 2021 09:58:39 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.40.195.160])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5935410A48AD;
-        Thu, 16 Dec 2021 09:58:27 +0000 (UTC)
-From:   Vitaly Kuznetsov <vkuznets@redhat.com>
-To:     linux-acpi@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Igor Mammedov <imammedo@redhat.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: NUMA: Process hotpluggable memblocks when !CONFIG_MEMORY_HOTPLUG
-Date:   Thu, 16 Dec 2021 10:58:26 +0100
-Message-Id: <20211216095826.297912-1-vkuznets@redhat.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AAB561D74;
+        Thu, 16 Dec 2021 11:27:48 +0000 (UTC)
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp.kernel.org (Postfix) with ESMTPSA id 108F6C36AE2;
+        Thu, 16 Dec 2021 11:27:44 +0000 (UTC)
+Date:   Thu, 16 Dec 2021 11:33:10 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     <linux-kernel@vger.kernel.org>, <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, <git@xilinx.com>,
+        <michals@xilinx.com>, <gregkh@linuxfoundation.org>,
+        <rafael@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <heikki.krogerus@linux.intel.com>
+Subject: Re: [PATCH v12 1/5] device property: Add fwnode_iomap()
+Message-ID: <20211216113310.2da9f8d2@jic23-huawei>
+In-Reply-To: <20211203212358.31444-2-anand.ashok.dumbre@xilinx.com>
+References: <20211203212358.31444-1-anand.ashok.dumbre@xilinx.com>
+        <20211203212358.31444-2-anand.ashok.dumbre@xilinx.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Some systems (e.g. Hyper-V guests) have all their memory marked as
-hotpluggable in SRAT. acpi_numa_memory_affinity_init(), however,
-ignores all such regions when !CONFIG_MEMORY_HOTPLUG and this is
-unfortunate as memory affinity (NUMA) information gets lost.
+On Fri, 3 Dec 2021 21:23:54 +0000
+Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com> wrote:
 
-'Hot Pluggable' flag in SRAT only means that "system hardware supports
-hot-add and hot-remove of this memory region", it doesn't prevent
-memory from being cold-plugged there.
+> This patch introduces a new helper routine - fwnode_iomap(), which
+> allows to map the memory mapped IO for a given device node.
+> 
+> This implementation does not cover the ACPI case and may be expanded
+> in the future. The main purpose here is to be able to develop resource
+> provider agnostic drivers.
+> 
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Ignore 'Hot Pluggable' bit instead of skipping the whole memory
-affinity information when !CONFIG_MEMORY_HOTPLUG.
+This is one of those corners of the kernel where I'm not sure whose
+Acks etc I should be looking for. Maintainers would put it firmly
+in Greg's territory but seems we've been flexible around this
+particular file at times.
 
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
----
- drivers/acpi/numa/srat.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+History seems to suggest maybe Greg or Rafael?
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index b8795fc49097..6c884f3e8332 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -254,9 +254,8 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
- 	}
- 	if ((ma->flags & ACPI_SRAT_MEM_ENABLED) == 0)
- 		goto out_err;
--	hotpluggable = ma->flags & ACPI_SRAT_MEM_HOT_PLUGGABLE;
--	if (hotpluggable && !IS_ENABLED(CONFIG_MEMORY_HOTPLUG))
--		goto out_err;
-+	hotpluggable = IS_ENABLED(CONFIG_MEMORY_HOTPLUG) &&
-+		(ma->flags & ACPI_SRAT_MEM_HOT_PLUGGABLE);
- 
- 	start = ma->base_address;
- 	end = start + ma->length;
--- 
-2.33.1
+If either of you have time to sanity check this that would be great!
+
+Thanks,
+
+Jonathan
+
+
+> ---
+>  drivers/base/property.c  | 16 ++++++++++++++++
+>  include/linux/property.h |  2 ++
+>  2 files changed, 18 insertions(+)
+> 
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index f1f35b48ab8b..ed4470410030 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -958,6 +958,22 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+>  }
+>  EXPORT_SYMBOL(fwnode_irq_get);
+>  
+> +/**
+> + * fwnode_iomap - Maps the memory mapped IO for a given fwnode
+> + * @fwnode:	Pointer to the firmware node
+> + * @index:	Index of the IO range
+> + *
+> + * Returns a pointer to the mapped memory.
+> + */
+> +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
+> +{
+> +	if (IS_ENABLED(CONFIG_OF_ADDRESS) && is_of_node(fwnode))
+> +		return of_iomap(to_of_node(fwnode), index);
+> +
+> +	return NULL;
+> +}
+> +EXPORT_SYMBOL(fwnode_iomap);
+> +
+>  /**
+>   * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
+>   * @fwnode: Pointer to the parent firmware node
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 88fa726a76df..6670d5a1ec2a 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -122,6 +122,8 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
+>  
+>  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+>  
+> +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
+> +
+>  unsigned int device_get_child_node_count(struct device *dev);
+>  
+>  static inline bool device_property_read_bool(struct device *dev,
 
