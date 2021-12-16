@@ -2,228 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8ED847733C
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Dec 2021 14:35:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17303477387
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Dec 2021 14:48:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237593AbhLPNfC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Dec 2021 08:35:02 -0500
-Received: from out30-45.freemail.mail.aliyun.com ([115.124.30.45]:57837 "EHLO
-        out30-45.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232211AbhLPNfC (ORCPT
+        id S229917AbhLPNsf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 16 Dec 2021 08:48:35 -0500
+Received: from out30-130.freemail.mail.aliyun.com ([115.124.30.130]:40102 "EHLO
+        out30-130.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234844AbhLPNse (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Dec 2021 08:35:02 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R651e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0V-oyvtY_1639661697;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V-oyvtY_1639661697)
+        Thu, 16 Dec 2021 08:48:34 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R551e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0V-pCnil_1639662510;
+Received: from 30.240.114.88(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V-pCnil_1639662510)
           by smtp.aliyun-inc.com(127.0.0.1);
-          Thu, 16 Dec 2021 21:34:59 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
-        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
-        xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com
-Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-        helgaas@kernel.org
-Subject: [RESEND PATCH v4] ACPI: Move sdei_init and ghes_init ahead to handle platform errors earlier
-Date:   Thu, 16 Dec 2021 21:34:56 +0800
-Message-Id: <20211216133456.21002-1-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.30.1 (Apple Git-130)
-In-Reply-To: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
-References: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
+          Thu, 16 Dec 2021 21:48:31 +0800
+Message-ID: <71f0b340-1014-9ecd-663c-0bbdca63332c@linux.alibaba.com>
+Date:   Thu, 16 Dec 2021 21:48:29 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: RESEND: Question: How to trigger RAM address when injecting memory
+ error
+To:     "rjw@rjwysocki.net" <rjw@rjwysocki.net>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "james.morse@arm.com" <james.morse@arm.com>,
+        "Luck, Tony" <tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        graeme.gregory@linaro.org, will.deacon@arm.com,
+        myron.stowe@redhat.com, len.brown@intel.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On an ACPI system, ACPI is initialised very early from a subsys_initcall(),
-while SDEI is not ready until a subsys_initcall_sync().
+Hi folks,
 
-The SDEI driver provides functions (e.g. apei_sdei_register_ghes,
-apei_sdei_unregister_ghes) to register or unregister event callback for
-dispatcher in firmware. When the GHES driver probing, it registers the
-corresponding callback according to the notification type specified by
-GHES. If the GHES notification type is SDEI, the GHES driver will call
-apei_sdei_register_ghes to register event call.
+How to trigger RAM address when injecting memory error on firmware which access
+target address specified in param1 to trigger the error?
 
-When the firmware emits an event, it migrates the handling of the event
-into the kernel at the registered entry-point __sdei_asm_handler. And
-finally, the kernel will call the registered event callback and return
-status_code to indicate the status of event handling. SDEI_EV_FAILED
-indicates that the kernel failed to handle the event.
+On our platform, firmware relies on kernel to trigger an injected error.
+Specifically, it populates trigger_tab with the injected physical memory
+address, which is set in param1. It is expected to map the RAM address and
+run read action. And the execution path is as follows:
 
-Consequently, when an error occurs during kernel booting, the kernel is
-unable to handle and report errors until the GHES driver is initialized by
-device_initcall(), in which the event callback is registered. All errors
-that occurred before GHES initialization are missed and there is no chance
-to report and find them again.
+    __einj_error_trigger
+        => apei_resources_request
+            => apei_exec_pre_map_gars
+                => apei_exec_run
 
-From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
-memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
-the estatus memory pool. On the other hand, ghes_init() relies on
-sdei_init() to detect the SDEI version and the framework for registering
-and unregistering events. By the way, I don't figure out why acpi_hest_init
-is called in acpi_pci_root_init, it don't rely on any other thing. May it
-could be moved further, following acpi_iort_init in acpi_init.
+If injecting at physical memory address, e.g. 0x92f033038, used by a
+user space process, the following error will be reported in dmesg:
 
-sdei_init() relies on ACPI table which is initialized subsys_initcall():
-acpi_init(), acpi_bus_init(), acpi_load_tables(), acpi_tb_laod_namespace().
-May it should be also moved further, after acpi_load_tables.
+    ACPI: [Firmware Bug]: requested region covers kernel memory @ 0x000000092f033038
 
-In this patch, move sdei_init and ghes_init as far ahead as possible, right
-after acpi_hest_init().
+This is because the injected physical memory address is
+EFI_CONVENTIONAL_MEMORY and memblock_is_map_memory is true
+(arch/arm64/kernel/acpi.c).
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c    | 18 ++++++++----------
- drivers/acpi/pci_root.c     |  5 ++++-
- drivers/firmware/arm_sdei.c | 13 ++-----------
- include/acpi/apei.h         |  2 ++
- include/linux/arm_sdei.h    |  2 ++
- 5 files changed, 18 insertions(+), 22 deletions(-)
+        case EFI_CONVENTIONAL_MEMORY:
+        case EFI_PERSISTENT_MEMORY:
+            if (memblock_is_map_memory(phys) ||
+                !memblock_is_region_memory(phys, size)) {
+                pr_warn(FW_BUG "requested region covers kernel memory @ %pa\n", &phys);
+                return NULL;
+            }
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 0c8330ed1ffd..b11e46fb4b3d 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1457,27 +1457,26 @@ static struct platform_driver ghes_platform_driver = {
- 	.remove		= ghes_remove,
- };
- 
--static int __init ghes_init(void)
-+void __init ghes_init(void)
- {
- 	int rc;
- 
- 	if (acpi_disabled)
--		return -ENODEV;
-+		return;
- 
- 	switch (hest_disable) {
- 	case HEST_NOT_FOUND:
--		return -ENODEV;
-+		pr_info(GHES_PFX "HEST is not found!\n");
-+		return;
- 	case HEST_DISABLED:
- 		pr_info(GHES_PFX "HEST is not enabled!\n");
--		return -EINVAL;
-+		return;
- 	default:
- 		break;
- 	}
- 
--	if (ghes_disable) {
-+	if (ghes_disable)
- 		pr_info(GHES_PFX "GHES is not enabled!\n");
--		return -EINVAL;
--	}
- 
- 	ghes_nmi_init_cxt();
- 
-@@ -1495,8 +1494,7 @@ static int __init ghes_init(void)
- 	else
- 		pr_info(GHES_PFX "Failed to enable APEI firmware first mode.\n");
- 
--	return 0;
-+	return;
- err:
--	return rc;
-+	ghes_disable = 1;
- }
--device_initcall(ghes_init);
-diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-index ab2f7dfb0c44..1260bb556184 100644
---- a/drivers/acpi/pci_root.c
-+++ b/drivers/acpi/pci_root.c
-@@ -23,7 +23,7 @@
- #include <linux/dmi.h>
- #include <linux/platform_data/x86/apple.h>
- #include <acpi/apei.h>	/* for acpi_hest_init() */
--
-+#include <linux/arm_sdei.h> /* for sdei_init() */
- #include "internal.h"
- 
- #define ACPI_PCI_ROOT_CLASS		"pci_bridge"
-@@ -946,6 +946,9 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
- void __init acpi_pci_root_init(void)
- {
- 	acpi_hest_init();
-+	sdei_init();
-+	ghes_init();
-+
- 	if (acpi_pci_disabled)
- 		return;
- 
-diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
-index a7e762c352f9..1e1a51510e83 100644
---- a/drivers/firmware/arm_sdei.c
-+++ b/drivers/firmware/arm_sdei.c
-@@ -1059,14 +1059,14 @@ static bool __init sdei_present_acpi(void)
- 	return true;
- }
- 
--static int __init sdei_init(void)
-+void __init sdei_init(void)
- {
- 	struct platform_device *pdev;
- 	int ret;
- 
- 	ret = platform_driver_register(&sdei_driver);
- 	if (ret || !sdei_present_acpi())
--		return ret;
-+		return;
- 
- 	pdev = platform_device_register_simple(sdei_driver.driver.name,
- 					       0, NULL, 0);
-@@ -1076,17 +1076,8 @@ static int __init sdei_init(void)
- 		pr_info("Failed to register ACPI:SDEI platform device %d\n",
- 			ret);
- 	}
--
--	return ret;
- }
- 
--/*
-- * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
-- * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
-- * by device_initcall(). We want to be called in the middle.
-- */
--subsys_initcall_sync(sdei_init);
--
- int sdei_event_handler(struct pt_regs *regs,
- 		       struct sdei_registered_event *arg)
- {
-diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-index ece0a8af2bae..7dbd6363fda7 100644
---- a/include/acpi/apei.h
-+++ b/include/acpi/apei.h
-@@ -27,8 +27,10 @@ extern int hest_disable;
- extern int erst_disable;
- #ifdef CONFIG_ACPI_APEI_GHES
- extern bool ghes_disable;
-+void __init ghes_init(void);
- #else
- #define ghes_disable 1
-+static inline void ghes_init(void) { return; }
- #endif
- 
- #ifdef CONFIG_ACPI_APEI
-diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
-index 0a241c5c911d..9c987188b692 100644
---- a/include/linux/arm_sdei.h
-+++ b/include/linux/arm_sdei.h
-@@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
- /* For use by arch code when CPU hotplug notifiers are not appropriate. */
- int sdei_mask_local_cpu(void);
- int sdei_unmask_local_cpu(void);
-+void __init sdei_init(void);
- #else
- static inline int sdei_mask_local_cpu(void) { return 0; }
- static inline int sdei_unmask_local_cpu(void) { return 0; }
-+static inline void sdei_init(void) { return ; }
- #endif /* CONFIG_ARM_SDE_INTERFACE */
- 
- 
--- 
-2.20.1.12.g72788fdb
+As a result, the error could not be triggered.
 
+A normal workflow maps Generic Address Register (GAR) by acpi_os_ioremap
+and add its virtual address into acpi_ioremaps. The execution path is as
+follows:
+
+    apei_exec_pre_map_gars
+        => pre_map_gar_callback
+            => apei_map_generic_address
+                => acpi_os_map_generic_address
+                    => acpi_os_map_iomem    /* add mapped VA into acpi_ioremaps */
+                        =>    acpi_map
+                            => acpi_os_ioremap /**/
+
+Then, a read or write action is taken. It will check if the physical
+address is mapped from acpi_ioremap. If yes, the value is read directly.
+Otherwise, acpi_os_ioremap the physical address first. The execution path
+is as follows:
+
+    __apei_exec_run
+        => apei_exec_read_register
+            => apei_read
+                => acpi_os_read_memory
+                    => acpi_map_vaddr_lookup    /* lookup VA of PA from acpi_ioremap */
+                    => acpi_os_ioremap
+
+It works well for reserved memory, but not for our case.
+
+Commit fdea163d8c17 ("ACPI, APEI, EINJ, Fix resource conflict on some
+machine") removes the injecting memory address range which conflits with
+regular memory from trigger table resources. It make sense when calling
+apei_resources_request(). However, the actual mapping operation in
+apei_exec_pre_map_gars() with trigger_ctx. And the conflit physical address
+is still in trigger_ctx.
+
+Commit ba242d5b1a84 ("ACPI, APEI: Add RAM mapping support to ACPI")add RAM
+support with kmap. But after commit aafc65c731fe ("ACPI: add arm64 to the
+platforms that use ioremap"), ioremap is used to map memory. However, the
+ioremap implementation (arch/arm64/mm/ioremap.c) not allowed to map RAM at
+all.
+
+    /*
+     * Don't allow RAM to be mapped.
+     */
+    if (WARN_ON(pfn_valid(__phys_to_pfn(phys_addr))))
+        return NULL;
+
+A hacking way to address this issue is that map RAM memory with kmap
+instead of apei_exec_pre_map_gars, and read it directly instead of
+apei_exec_run.
+-       rc = apei_exec_pre_map_gars(&trigger_ctx);
+-       if (rc)
+-               goto out_release;
++       volatile long *ptr;
++       long tmp;
++       unsigned long pfn;
++       pfn = param1 >> PAGE_SHIFT;
+
+-       rc = apei_exec_run(&trigger_ctx, ACPI_EINJ_TRIGGER_ERROR);
++       ptr = kmap(pfn_to_page(pfn));
++       tmp = *(ptr + (param1 & ~ PAGE_MASK));
+
+-       apei_exec_post_unmap_gars(&trigger_ctx);
+
+I am wondering that should we use kmap to map RAM in acpi_map or add a
+another path to address this issue? Any comment is welcomed.
