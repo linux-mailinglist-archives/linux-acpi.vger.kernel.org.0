@@ -2,135 +2,296 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB61347921A
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 17:57:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 614A9479246
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 18:02:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239481AbhLQQ5P (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Dec 2021 11:57:15 -0500
-Received: from foss.arm.com ([217.140.110.172]:60194 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239476AbhLQQ5P (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 17 Dec 2021 11:57:15 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9D84C1042;
-        Fri, 17 Dec 2021 08:57:14 -0800 (PST)
-Received: from [10.57.34.58] (unknown [10.57.34.58])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EBED83F774;
-        Fri, 17 Dec 2021 08:57:12 -0800 (PST)
-Message-ID: <881f056d-d1ed-c6de-c09d-6e84d8b14530@arm.com>
-Date:   Fri, 17 Dec 2021 16:57:07 +0000
+        id S238722AbhLQRCA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Dec 2021 12:02:00 -0500
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:46940 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233965AbhLQRCA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Dec 2021 12:02:00 -0500
+Received: by mail-ot1-f44.google.com with SMTP id x3-20020a05683000c300b0057a5318c517so3599400oto.13;
+        Fri, 17 Dec 2021 09:02:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8g5Lsj8WxuGD8LrSO5qJLGi0ggNwHZB9aqoikJwvsGM=;
+        b=KO4uFyORxaMYbXteyVLfmhZ4Js/XvFIlD/sJAjaZVfmqbFTEn1sV6eqMP6Sz/jgNQC
+         GEh8HZ8fzGbye8rGsDyHy2FL1XYNsDLB0D1oluzYS7yKrcD6Yx9rl+3e6E25FkH8AOOx
+         3cXLceYbbnP9vXrAsJxhUBiMBJn7POe5Paj436Qj4EesMLYdr9njtk0sbtnnRUGkbBcx
+         l4/BY0jn6jFiqlCnZPRNc1TB1IzAfj0SWdI9imI8nooFRyPdJtnMzdHRRAoL9BG0ltGV
+         tKstzGUMyVdxTYgMGb2UYYsYmY+AC7+bGO66BO3/J5GwCRd79bhebAgI7Q4d209rsNSe
+         Fs8Q==
+X-Gm-Message-State: AOAM5332aVUNydJRdTMGinSYmVmTgAYgaCf7fP1Tdq0igmAL6zEW3wJ0
+        cuRnkT/qtpaRRkWykl4SpZao4bnXJhybJsIvpuM=
+X-Google-Smtp-Source: ABdhPJwYEwhOV1FAjDGBz5u0mu36ruUQNLhy02Bhf107/bjVVJgot/56+62cFieV+LFNasSTESlUDOc+3LqFR5rbG4I=
+X-Received: by 2002:a05:6830:348f:: with SMTP id c15mr2890397otu.254.1639760519595;
+ Fri, 17 Dec 2021 09:01:59 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH 2/6] cacheinfo: Set cache 'id' based on DT data
-Content-Language: en-GB
-To:     Rob Herring <robh@kernel.org>,
+References: <20211217132415.39726-1-heikki.krogerus@linux.intel.com> <20211217132415.39726-2-heikki.krogerus@linux.intel.com>
+In-Reply-To: <20211217132415.39726-2-heikki.krogerus@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 17 Dec 2021 18:01:48 +0100
+Message-ID: <CAJZ5v0g9HjLr8n3OQwMY0EK5GdCc+8CJnO3mEUXom3g2sz9jXQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] acpi: Store the known device locations
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Morse <james.morse@arm.com>,
-        Jeremy Linton <jeremy.linton@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-References: <20211216233125.1130793-1-robh@kernel.org>
- <20211216233125.1130793-3-robh@kernel.org>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <20211216233125.1130793-3-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Prashant Malani <pmalani@chromium.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rob,
+On Fri, Dec 17, 2021 at 2:24 PM Heikki Krogerus
+<heikki.krogerus@linux.intel.com> wrote:
+>
+> This adds a list that will hold all the detected device
+> locations. The location of a device is known if it has
+> Physical Location of Device (_PLD) object within its scope.
 
-On 2021-12-16 23:31, Rob Herring wrote:
-> Use the minimum CPU h/w id of the CPUs associated with the cache for the
-> cache 'id'. This will provide a stable id value for a given system. As
-> we need to check all possible CPUs, we can't use the shared_cpu_map
-> which is just online CPUs. There's not a cache to CPUs mapping in DT, so
-> we have to walk all CPU nodes and then walk cache levels.
+This paragraph isn't really accurate any more, because the location
+information is not stored in that list.
 
-I believe another expected use of the cache ID exposed in sysfs is to 
-program steering tags for cache stashing (typically in VFIO-based 
-userspace drivers like DPDK so we can't realistically mediate it any 
-other way). There were plans afoot last year to ensure that ACPI PPTT 
-could provide the necessary ID values for arm64 systems which will 
-typically be fairly arbitrary (but unique) due to reflecting underlying 
-interconnect routing IDs. Assuming that there will eventually be some 
-interest in cache stashing on DT-based systems too, we probably want to 
-allow for an explicit ID property on DT cache nodes in a similar manner.
+To be precise, the new list is a list of entries that each contain a
+list of devices sharing the same physical location information (and
+thus presumably being physically located in the same place or
+physically overlapping so to speak).
 
-That said, I think it does make sense to have some kind of 
-auto-generated fallback scheme *as well*, since I'm sure there will be 
-plenty systems which care about MPAM but don't support stashing, and 
-therefore wouldn't have a meaningful set of IDs to populate their DT 
-with. Conversely I think that might also matter for ACPI too - one point 
-I remember from previous discussions is that PPTT may use a compact 
-representation where a single entry represents all equivalent caches at 
-that level, so I'm not sure we can necessarily rely on IDs out of that 
-path being unique either.
+Honestly, I would change the terminology and naming  to reflect that
+concept (see below).
 
-Robin.
-
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Signed-off-by: Rob Herring <robh@kernel.org>
+> Each entry in the list represents a known location, and each
+> of those locations can then have a list of devices that are
+> currently assigned to those locations.
+>
+> The location entry that contains the current location of a
+> device can be acquired with a new function
+> acpi_device_get_location(). The location structure returned
+> by this function contains the list of devices sharing it.
+>
+> The knowledge of the other devices that share a location
+> can be used in device drivers that need to know the
+> connections to other components inside a system. USB3 ports
+> will for example always share their location with a USB2
+> port.
+>
+> For now, the device locations can not be updated, so they
+> will only contain lists the devices that are initially in
+> those locations. But that can later be easily changed if
+> needed by adding API that can be used to update the
+> locations.
+>
+> Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 > ---
-> v2:
->   - Loop with for_each_possible_cpu instead of for_each_of_cpu_node as
->     we will need the logical cpu numbers.
-> ---
->   drivers/base/cacheinfo.c | 31 +++++++++++++++++++++++++++++++
->   1 file changed, 31 insertions(+)
-> 
-> diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-> index 66d10bdb863b..21accddf8f5f 100644
-> --- a/drivers/base/cacheinfo.c
-> +++ b/drivers/base/cacheinfo.c
-> @@ -136,6 +136,36 @@ static bool cache_node_is_unified(struct cacheinfo *this_leaf,
->   	return of_property_read_bool(np, "cache-unified");
->   }
->   
-> +static void cache_of_set_id(struct cacheinfo *this_leaf, struct device_node *np)
+>  drivers/acpi/scan.c     | 77 +++++++++++++++++++++++++++++++++++++++++
+>  include/acpi/acpi_bus.h | 19 ++++++++++
+>  2 files changed, 96 insertions(+)
+>
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 5991dddbc9ceb..f147c0ad5f944 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/dma-map-ops.h>
+>  #include <linux/platform_data/x86/apple.h>
+>  #include <linux/pgtable.h>
+> +#include <linux/crc32.h>
+>
+>  #include "internal.h"
+>
+> @@ -42,6 +43,8 @@ static LIST_HEAD(acpi_scan_handlers_list);
+>  DEFINE_MUTEX(acpi_device_lock);
+>  LIST_HEAD(acpi_wakeup_device_list);
+>  static DEFINE_MUTEX(acpi_hp_context_lock);
+> +static LIST_HEAD(acpi_location_list);
+
+I would call this "acpi_location_sharing_list".
+
+> +static DEFINE_MUTEX(acpi_location_lock);
+
+And this "acpi_location_sharing_lock".
+
+>
+>  /*
+>   * The UART device described by the SPCR table is the only object which needs
+> @@ -485,6 +488,7 @@ static void acpi_device_del(struct acpi_device *device)
+>                         break;
+>                 }
+>
+> +       list_del(&device->location_list);
+>         list_del(&device->wakeup_list);
+>         mutex_unlock(&acpi_device_lock);
+>
+> @@ -654,6 +658,76 @@ static int acpi_tie_acpi_dev(struct acpi_device *adev)
+>         return 0;
+>  }
+>
+> +static void acpi_store_device_location(struct acpi_device *adev)
+
+This can be called "acpi_dev_save_location_sharing_info()".
+
 > +{
-> +	int cpu;
-> +	unsigned long min_id = ~0UL;
+> +       struct acpi_device_location *location;
+> +       struct acpi_pld_info *pld;
+> +       acpi_status status;
+> +       u32 crc;
 > +
-> +	for_each_possible_cpu(cpu) {
-> +		u64 id;
-> +		struct device_node *cache_node, *cpu_node;
+> +       status = acpi_get_physical_device_location(adev->handle, &pld);
+> +       if (ACPI_FAILURE(status))
+> +               return;
 > +
-> +		cache_node = cpu_node = of_get_cpu_node(cpu, NULL);
-> +		id = of_get_cpu_hwid(cpu_node, 0);
-> +		while ((cache_node = of_find_next_cache_node(cache_node))) {
-> +			if (cache_node == np) {
-> +				if (id < min_id) {
-> +					min_id = id;
-> +					of_node_put(cache_node);
-> +					break;
-> +				}
-> +			}
-> +			of_node_put(cache_node);
-> +		}
-> +		of_node_put(cpu_node);
-> +	}
+> +       crc = crc32(~0, pld, sizeof(*pld));
 > +
-> +	if (min_id != ~0UL) {
-> +		this_leaf->id = min_id;
-> +		this_leaf->attributes |= CACHE_ID;
-> +	}
+> +       mutex_lock(&acpi_location_lock);
+> +
+> +       list_for_each_entry(location, &acpi_location_list, node)
+> +               if (location->pld_crc == crc)
+> +                       goto out_add_to_location;
+> +
+> +       /* The location does not exist yet so creating it. */
+> +
+> +       location = kzalloc(sizeof(*location), GFP_KERNEL);
+> +       if (!location) {
+> +               acpi_handle_err(adev->handle, "Unable to store location\n");
+> +               goto err_unlock;
+> +       }
+> +
+> +       list_add_tail(&location->node, &acpi_location_list);
+> +       INIT_LIST_HEAD(&location->devices);
+> +       location->pld_crc = crc;
+> +
+> +out_add_to_location:
+> +       list_add_tail(&adev->location_list, &location->devices);
+> +
+> +err_unlock:
+> +       ACPI_FREE(pld);
+> +       mutex_unlock(&acpi_location_lock);
 > +}
 > +
->   static void cache_of_set_props(struct cacheinfo *this_leaf,
->   			       struct device_node *np)
->   {
-> @@ -151,6 +181,7 @@ static void cache_of_set_props(struct cacheinfo *this_leaf,
->   	cache_get_line_size(this_leaf, np);
->   	cache_nr_sets(this_leaf, np);
->   	cache_associativity(this_leaf);
-> +	cache_of_set_id(this_leaf, np);
->   }
->   
->   static int cache_setup_of_node(unsigned int cpu)
+> +/**
+> + * acpi_device_get_location - Get the device location
+> + * @adev: ACPI device handle
+> + *
+> + * Return a pointer to a struct acpi_device_location object containing the
+> + * location information obtained by evaluating _PLD (Physical Location of
+> + * Device) for @adev when it is available, along with the list of devices
+> + * sharing the same location information (if any), or NULL otherwise.
+> + */
+> +struct acpi_device_location *acpi_device_get_location(struct acpi_device *adev)
+
+And this "acpi_dev_get_location_sharing_info()".
+
+> +{
+> +       struct acpi_device_location *location;
+> +       struct list_head *tmp;
+> +
+> +       mutex_lock(&acpi_location_lock);
+> +
+> +       list_for_each_entry(location, &acpi_location_list, node) {
+> +               list_for_each(tmp, &location->devices) {
+> +                       if (tmp == &adev->location_list)
+> +                               goto out_unlock;
+> +               }
+> +       }
+> +       location = NULL;
+> +
+> +out_unlock:
+> +       mutex_unlock(&acpi_location_lock);
+> +
+> +       return location;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_device_get_location);
+> +
+>  static int __acpi_device_add(struct acpi_device *device,
+>                              void (*release)(struct device *))
+>  {
+> @@ -670,6 +744,7 @@ static int __acpi_device_add(struct acpi_device *device,
+>         INIT_LIST_HEAD(&device->wakeup_list);
+>         INIT_LIST_HEAD(&device->physical_node_list);
+>         INIT_LIST_HEAD(&device->del_list);
+> +       INIT_LIST_HEAD(&device->location_list);
+>         mutex_init(&device->physical_node_lock);
+>
+>         mutex_lock(&acpi_device_lock);
+> @@ -712,6 +787,8 @@ static int __acpi_device_add(struct acpi_device *device,
+>         if (device->wakeup.flags.valid)
+>                 list_add_tail(&device->wakeup_list, &acpi_wakeup_device_list);
+>
+> +       acpi_store_device_location(device);
+> +
+>         mutex_unlock(&acpi_device_lock);
+>
+>         if (device->parent)
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index d6fe27b695c3d..9123884e4e7ec 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -354,6 +354,18 @@ struct acpi_device_data {
+>         struct list_head subnodes;
+>  };
+>
+> +/*
+> + * struct acpi_device_location - Device location based on _PLD
+> + * @devices: List of devices that share this location
+> + * @node: Entry in the internal list of locations
+> + * @pld_crc: CRC-32 hash of the _PLD
+> + */
+> +struct acpi_device_location {
+
+"acpi_dev_location_sharing_info" ?
+
+> +       struct list_head devices;
+> +       struct list_head node;
+> +       u32 pld_crc;
+> +};
+> +
+>  struct acpi_gpio_mapping;
+>
+>  /* Device */
+> @@ -366,6 +378,7 @@ struct acpi_device {
+>         struct list_head node;
+>         struct list_head wakeup_list;
+>         struct list_head del_list;
+> +       struct list_head location_list;
+
+"location_sharing_list" ?
+
+>         struct acpi_device_status status;
+>         struct acpi_device_flags flags;
+>         struct acpi_device_pnp pnp;
+> @@ -731,11 +744,17 @@ static inline void acpi_bus_put_acpi_device(struct acpi_device *adev)
+>  {
+>         acpi_dev_put(adev);
+>  }
+> +
+> +struct acpi_device_location *acpi_device_get_location(struct acpi_device *adev);
+>  #else  /* CONFIG_ACPI */
+>
+>  static inline int register_acpi_bus_type(void *bus) { return 0; }
+>  static inline int unregister_acpi_bus_type(void *bus) { return 0; }
+>
+> +static inline struct acpi_device_location *acpi_device_get_location(struct acpi_device *adev)
+> +{
+> +       return NULL;
+> +}
+>  #endif                         /* CONFIG_ACPI */
+>
+>  #endif /*__ACPI_BUS_H__*/
+> --
+
+And overall I'm wondering if this can be achieved by storing the
+pld_crc directly in struct acpi_device and doing a
+bus_for_each_dev(&acpi_bus_type, ...) walk every time a list of
+devices sharing a _PLD is needed?
+
+It looks like typec_link_ports() is the only user of this and it can
+easily afford doing a walk like the above if I'm not mistaken.
