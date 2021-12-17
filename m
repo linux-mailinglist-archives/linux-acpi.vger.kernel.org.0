@@ -2,101 +2,251 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C42004793A1
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 19:14:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D482E4793DB
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 19:18:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236337AbhLQSOh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Dec 2021 13:14:37 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:49400 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232582AbhLQSOg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Dec 2021 13:14:36 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 717E662360;
-        Fri, 17 Dec 2021 18:14:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB02CC36AEB;
-        Fri, 17 Dec 2021 18:14:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639764875;
-        bh=fDfjsiKClj8l5BPQYrleynPJWBgNe30LnZ5VqOldyMA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KsDa9UrujiNscLmwitieTOYsx1aMEiWxwLIg/9X0W8DRp/7uWEoromcx1JbNhb8JL
-         3Brk265D81bULlTzY2nA4RbmgI2upfefhSwSeWVpGqem0KW+IaDwiXW8p+m9KfUN/F
-         0ZFpnlCBZez2w0FkS8M6gYXAzqeE7YcoEw7daeXQsV/Ht9OrS4JyRGvylLiVPmk7w/
-         qTyJ8dwJ6EVbVW69l0ndYADTBp4jbFqIl2PF8AVYLuOkmZ/lnrL3pTvovx5rhia/HG
-         uLIBp8NuUri7BrliqchGmpJz3kgA04hSXBxfAB81emSJRv/+skZ/G+L+kGkRVr5HWN
-         985st7nDizmkw==
-Received: by mail-ed1-f54.google.com with SMTP id b7so11007955edd.6;
-        Fri, 17 Dec 2021 10:14:35 -0800 (PST)
-X-Gm-Message-State: AOAM532PyPSKRFO12Fo0JaLQf9SzKj5lxltmKvj9rkRhcLPQ1JVgy49N
-        re/+p++f4JyrHYAZpBrYGUPqjglsUdMdQQURug==
-X-Google-Smtp-Source: ABdhPJyJDFeaigNXZBdGadznG3V/KXWaK7xMlTQRM2k9AN1d/4Q2rzCU2p6RLWWZg+/CKAXs3U5kWAhRg2Yk94NtO5w=
-X-Received: by 2002:a17:906:5284:: with SMTP id c4mr3323018ejm.423.1639764874168;
- Fri, 17 Dec 2021 10:14:34 -0800 (PST)
+        id S240375AbhLQSSY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Dec 2021 13:18:24 -0500
+Received: from mail-oo1-f53.google.com ([209.85.161.53]:38588 "EHLO
+        mail-oo1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240308AbhLQSSH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Dec 2021 13:18:07 -0500
+Received: by mail-oo1-f53.google.com with SMTP id w15-20020a4a9d0f000000b002c5cfa80e84so962274ooj.5;
+        Fri, 17 Dec 2021 10:18:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DUagVimgw1ApcmF6AvhiSrgCHf1EYrO6dU3mHWhYaBI=;
+        b=J7fe+K5+xEvEjNjYqf1Iqz2/hCraAfWe6GelGAjVek3VirPIaRQ2K6kXX5GsOY699v
+         pk2WfWz2rMZS9u4JVrzg6FBOhwww0vsZBG8Jgkwfx0cDt7JCStzqoILn1HAyoddPyKgb
+         +6u58OratXKaMeSzz1glA6OUmWz368MBiURT36VOeag/IPV0o6hh/NKqt3wnbbOfL+aE
+         NeP7O8b/U7gKby6Z0zEADHcahwkN/5lLB+0gIFTHC28pbRsdD3kK6r6xK7ESsIQvBrmH
+         hvttru4xR/Kzb1OMS5KtPZ6Obs/Xc1crSZBTk0aHrIZiSLAJdbC1o+sZfVI9KHqrRD6X
+         HK3w==
+X-Gm-Message-State: AOAM533E3VSbK+00v3MNKzr32MPm1lckbRvTV59hSfU4e81bFc/M6V0P
+        XEGeJBWZLSlT12t+FG9nX60bcuwMVtLIb7e0OcE=
+X-Google-Smtp-Source: ABdhPJxdtHox8im6N2bQJtox/rqL0AaE1E1T54JWTcRsHYfMYCuIHuossNZx+mCc+saoVsCXQ5Btp2rpBHdTG5WMq9c=
+X-Received: by 2002:a4a:ead8:: with SMTP id s24mr2769632ooh.89.1639765086838;
+ Fri, 17 Dec 2021 10:18:06 -0800 (PST)
 MIME-Version: 1.0
-References: <20211216233125.1130793-1-robh@kernel.org> <20211216233125.1130793-3-robh@kernel.org>
- <881f056d-d1ed-c6de-c09d-6e84d8b14530@arm.com>
-In-Reply-To: <881f056d-d1ed-c6de-c09d-6e84d8b14530@arm.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Fri, 17 Dec 2021 12:14:22 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKKx5-ep5=FVA5OHM+t=T-9GTuf6Sf9P6ZDUs7RD9=c8g@mail.gmail.com>
-Message-ID: <CAL_JsqKKx5-ep5=FVA5OHM+t=T-9GTuf6Sf9P6ZDUs7RD9=c8g@mail.gmail.com>
-Subject: Re: [PATCH 2/6] cacheinfo: Set cache 'id' based on DT data
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        James Morse <james.morse@arm.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org,
-        "open list:ACPI FOR ARM64 (ACPI/arm64)" <linux-acpi@vger.kernel.org>
+References: <20211126070422.73234-1-xueshuai@linux.alibaba.com> <20211216133456.21002-1-xueshuai@linux.alibaba.com>
+In-Reply-To: <20211216133456.21002-1-xueshuai@linux.alibaba.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 17 Dec 2021 19:17:56 +0100
+Message-ID: <CAJZ5v0jOnA90BX0ZisY4Gm4tKTjQMcxOqEOa2FVZsuec0e_mSw@mail.gmail.com>
+Subject: Re: [RESEND PATCH v4] ACPI: Move sdei_init and ghes_init ahead to
+ handle platform errors earlier
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
+        James Morse <james.morse@arm.com>, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        luanshi <zhangliguang@linux.alibaba.com>,
+        zhuo.song@linux.alibaba.com,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Dec 17, 2021 at 10:57 AM Robin Murphy <robin.murphy@arm.com> wrote:
+On Thu, Dec 16, 2021 at 2:35 PM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
 >
-> Hi Rob,
+> On an ACPI system, ACPI is initialised very early from a subsys_initcall(),
+> while SDEI is not ready until a subsys_initcall_sync().
 >
-> On 2021-12-16 23:31, Rob Herring wrote:
-> > Use the minimum CPU h/w id of the CPUs associated with the cache for the
-> > cache 'id'. This will provide a stable id value for a given system. As
-> > we need to check all possible CPUs, we can't use the shared_cpu_map
-> > which is just online CPUs. There's not a cache to CPUs mapping in DT, so
-> > we have to walk all CPU nodes and then walk cache levels.
+> The SDEI driver provides functions (e.g. apei_sdei_register_ghes,
+> apei_sdei_unregister_ghes) to register or unregister event callback for
+> dispatcher in firmware. When the GHES driver probing, it registers the
+> corresponding callback according to the notification type specified by
+> GHES. If the GHES notification type is SDEI, the GHES driver will call
+> apei_sdei_register_ghes to register event call.
 >
-> I believe another expected use of the cache ID exposed in sysfs is to
-> program steering tags for cache stashing (typically in VFIO-based
-> userspace drivers like DPDK so we can't realistically mediate it any
-> other way). There were plans afoot last year to ensure that ACPI PPTT
-> could provide the necessary ID values for arm64 systems which will
-> typically be fairly arbitrary (but unique) due to reflecting underlying
-> interconnect routing IDs. Assuming that there will eventually be some
-> interest in cache stashing on DT-based systems too, we probably want to
-> allow for an explicit ID property on DT cache nodes in a similar manner.
+> When the firmware emits an event, it migrates the handling of the event
+> into the kernel at the registered entry-point __sdei_asm_handler. And
+> finally, the kernel will call the registered event callback and return
+> status_code to indicate the status of event handling. SDEI_EV_FAILED
+> indicates that the kernel failed to handle the event.
+>
+> Consequently, when an error occurs during kernel booting, the kernel is
+> unable to handle and report errors until the GHES driver is initialized by
+> device_initcall(), in which the event callback is registered. All errors
+> that occurred before GHES initialization are missed and there is no chance
+> to report and find them again.
+>
+> From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
+> memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
+> the estatus memory pool. On the other hand, ghes_init() relies on
+> sdei_init() to detect the SDEI version and the framework for registering
+> and unregistering events. By the way, I don't figure out why acpi_hest_init
+> is called in acpi_pci_root_init, it don't rely on any other thing. May it
+> could be moved further, following acpi_iort_init in acpi_init.
+>
+> sdei_init() relies on ACPI table which is initialized subsys_initcall():
+> acpi_init(), acpi_bus_init(), acpi_load_tables(), acpi_tb_laod_namespace().
+> May it should be also moved further, after acpi_load_tables.
+>
+> In this patch, move sdei_init and ghes_init as far ahead as possible, right
+> after acpi_hest_init().
+>
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
 
-If you have a suggestion for ID values that correspond to the h/w,
-then we can add them. I'd like a bit more than just trusting that ID
-is something real.
+This needs ACKs from Bjorn and Boris/Tony/James/.
 
-While the ACPI folks may be willing to take an arbitrary index, it's
-something we (mostly) avoid for DT.
-
-> That said, I think it does make sense to have some kind of
-> auto-generated fallback scheme *as well*, since I'm sure there will be
-> plenty systems which care about MPAM but don't support stashing, and
-> therefore wouldn't have a meaningful set of IDs to populate their DT
-> with. Conversely I think that might also matter for ACPI too - one point
-> I remember from previous discussions is that PPTT may use a compact
-> representation where a single entry represents all equivalent caches at
-> that level, so I'm not sure we can necessarily rely on IDs out of that
-> path being unique either.
-
-AIUI, cache ids break the compact representation.
-
-Rob
+> ---
+>  drivers/acpi/apei/ghes.c    | 18 ++++++++----------
+>  drivers/acpi/pci_root.c     |  5 ++++-
+>  drivers/firmware/arm_sdei.c | 13 ++-----------
+>  include/acpi/apei.h         |  2 ++
+>  include/linux/arm_sdei.h    |  2 ++
+>  5 files changed, 18 insertions(+), 22 deletions(-)
+>
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 0c8330ed1ffd..b11e46fb4b3d 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -1457,27 +1457,26 @@ static struct platform_driver ghes_platform_driver = {
+>         .remove         = ghes_remove,
+>  };
+>
+> -static int __init ghes_init(void)
+> +void __init ghes_init(void)
+>  {
+>         int rc;
+>
+>         if (acpi_disabled)
+> -               return -ENODEV;
+> +               return;
+>
+>         switch (hest_disable) {
+>         case HEST_NOT_FOUND:
+> -               return -ENODEV;
+> +               pr_info(GHES_PFX "HEST is not found!\n");
+> +               return;
+>         case HEST_DISABLED:
+>                 pr_info(GHES_PFX "HEST is not enabled!\n");
+> -               return -EINVAL;
+> +               return;
+>         default:
+>                 break;
+>         }
+>
+> -       if (ghes_disable) {
+> +       if (ghes_disable)
+>                 pr_info(GHES_PFX "GHES is not enabled!\n");
+> -               return -EINVAL;
+> -       }
+>
+>         ghes_nmi_init_cxt();
+>
+> @@ -1495,8 +1494,7 @@ static int __init ghes_init(void)
+>         else
+>                 pr_info(GHES_PFX "Failed to enable APEI firmware first mode.\n");
+>
+> -       return 0;
+> +       return;
+>  err:
+> -       return rc;
+> +       ghes_disable = 1;
+>  }
+> -device_initcall(ghes_init);
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index ab2f7dfb0c44..1260bb556184 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -23,7 +23,7 @@
+>  #include <linux/dmi.h>
+>  #include <linux/platform_data/x86/apple.h>
+>  #include <acpi/apei.h> /* for acpi_hest_init() */
+> -
+> +#include <linux/arm_sdei.h> /* for sdei_init() */
+>  #include "internal.h"
+>
+>  #define ACPI_PCI_ROOT_CLASS            "pci_bridge"
+> @@ -946,6 +946,9 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+>  void __init acpi_pci_root_init(void)
+>  {
+>         acpi_hest_init();
+> +       sdei_init();
+> +       ghes_init();
+> +
+>         if (acpi_pci_disabled)
+>                 return;
+>
+> diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+> index a7e762c352f9..1e1a51510e83 100644
+> --- a/drivers/firmware/arm_sdei.c
+> +++ b/drivers/firmware/arm_sdei.c
+> @@ -1059,14 +1059,14 @@ static bool __init sdei_present_acpi(void)
+>         return true;
+>  }
+>
+> -static int __init sdei_init(void)
+> +void __init sdei_init(void)
+>  {
+>         struct platform_device *pdev;
+>         int ret;
+>
+>         ret = platform_driver_register(&sdei_driver);
+>         if (ret || !sdei_present_acpi())
+> -               return ret;
+> +               return;
+>
+>         pdev = platform_device_register_simple(sdei_driver.driver.name,
+>                                                0, NULL, 0);
+> @@ -1076,17 +1076,8 @@ static int __init sdei_init(void)
+>                 pr_info("Failed to register ACPI:SDEI platform device %d\n",
+>                         ret);
+>         }
+> -
+> -       return ret;
+>  }
+>
+> -/*
+> - * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
+> - * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
+> - * by device_initcall(). We want to be called in the middle.
+> - */
+> -subsys_initcall_sync(sdei_init);
+> -
+>  int sdei_event_handler(struct pt_regs *regs,
+>                        struct sdei_registered_event *arg)
+>  {
+> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+> index ece0a8af2bae..7dbd6363fda7 100644
+> --- a/include/acpi/apei.h
+> +++ b/include/acpi/apei.h
+> @@ -27,8 +27,10 @@ extern int hest_disable;
+>  extern int erst_disable;
+>  #ifdef CONFIG_ACPI_APEI_GHES
+>  extern bool ghes_disable;
+> +void __init ghes_init(void);
+>  #else
+>  #define ghes_disable 1
+> +static inline void ghes_init(void) { return; }
+>  #endif
+>
+>  #ifdef CONFIG_ACPI_APEI
+> diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
+> index 0a241c5c911d..9c987188b692 100644
+> --- a/include/linux/arm_sdei.h
+> +++ b/include/linux/arm_sdei.h
+> @@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
+>  /* For use by arch code when CPU hotplug notifiers are not appropriate. */
+>  int sdei_mask_local_cpu(void);
+>  int sdei_unmask_local_cpu(void);
+> +void __init sdei_init(void);
+>  #else
+>  static inline int sdei_mask_local_cpu(void) { return 0; }
+>  static inline int sdei_unmask_local_cpu(void) { return 0; }
+> +static inline void sdei_init(void) { return ; }
+>  #endif /* CONFIG_ARM_SDE_INTERFACE */
+>
+>
+> --
+> 2.20.1.12.g72788fdb
+>
