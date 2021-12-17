@@ -2,119 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F7E7478C6C
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 14:36:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A1DD478D1B
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 15:12:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232575AbhLQNg6 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 17 Dec 2021 08:36:58 -0500
-Received: from pout.email.it ([77.93.251.230]:47444 "EHLO pout.email.it"
+        id S232804AbhLQOMe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Dec 2021 09:12:34 -0500
+Received: from mga07.intel.com ([134.134.136.100]:40646 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231836AbhLQNg5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 17 Dec 2021 08:36:57 -0500
-X-Greylist: delayed 336 seconds by postgrey-1.27 at vger.kernel.org; Fri, 17 Dec 2021 08:36:57 EST
-Received: from localhost (localhost [127.0.0.1])
-        by pout.email.it (Postfix) with ESMTP id A1680A54BE;
-        Fri, 17 Dec 2021 14:31:19 +0100 (CET)
-Received: from pout.email.it ([127.0.0.1])
-        by localhost (ir-mtaout02.email.it [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id om7RZFOX3haw; Fri, 17 Dec 2021 14:31:15 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by pout.email.it (Postfix) with ESMTP id 09633A54BF;
-        Fri, 17 Dec 2021 14:31:15 +0100 (CET)
-X-Virus-Scanned: amavisd-new at ir-mtaout02.email.it
-Received: from pout.email.it ([127.0.0.1])
-        by localhost (ir-mtaout02.email.it [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id RHvUWAiN1GIS; Fri, 17 Dec 2021 14:31:14 +0100 (CET)
-Received: from ir-zstore42.email.it (unknown [192.168.25.42])
-        by pout.email.it (Postfix) with ESMTP id D40E5A54BE;
-        Fri, 17 Dec 2021 14:31:13 +0100 (CET)
-Date:   Fri, 17 Dec 2021 14:31:13 +0100 (CET)
-From:   blinkin@email.it
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        linux-acpi <linux-acpi@vger.kernel.org>
-Message-ID: <1554340286.2521703.1639747873475.JavaMail.zimbra@email.it>
-Subject: Re: Bug report for kernel v4.15-rc8+
+        id S229599AbhLQOMe (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 17 Dec 2021 09:12:34 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10200"; a="303135892"
+X-IronPort-AV: E=Sophos;i="5.88,213,1635231600"; 
+   d="scan'208";a="303135892"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2021 06:12:34 -0800
+X-IronPort-AV: E=Sophos;i="5.88,213,1635231600"; 
+   d="scan'208";a="683401263"
+Received: from smile.fi.intel.com ([10.237.72.184])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2021 06:12:31 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1myDxQ-007Rmr-5V;
+        Fri, 17 Dec 2021 16:11:36 +0200
+Date:   Fri, 17 Dec 2021 16:11:35 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Prashant Malani <pmalani@chromium.org>,
+        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] acpi: Store _PLD information and convert users
+Message-ID: <Ybyal+QmjEQWI+hh@smile.fi.intel.com>
+References: <20211217132415.39726-1-heikki.krogerus@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [93.146.250.201]
-X-Mailer: Zimbra 8.8.15_GA_4173 (ZimbraWebClient - GC96 (Linux)/8.8.15_GA_4173)
-Thread-Index: 0h6WKYAZX0mbI/bojPTMX5RwDzyHlw==
-Thread-Topic: Bug report for kernel v4.15-rc8+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211217132415.39726-1-heikki.krogerus@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-hello, any news on this?
+On Fri, Dec 17, 2021 at 04:24:11PM +0300, Heikki Krogerus wrote:
+> Hi,
+> 
+> The _PLD buffer is no longer stored as requested by Rafael, so the
+> drivers will need to continue to evaluate the _PLD if they need it.
+> 
+> The stored locations will therefore only contain the list of other
+> devices that share the location, but that is most important, and in
+> practice the main goal of the series in any case.
+> 
+> 
+> v2 cover letter:
+> 
+> I'm now using the helpers device_match_acpi_dev() and
+> device_match_fwnode() like Andy suggested. No other changes.
+> 
+> 
+> The original cover letter:
+> 
+> This removes the need for the drivers to always separately evaluate
+> the _PLD. With the USB Type-C connector and USB port mapping this
+> allows us to start using the component framework and remove the custom
+> APIs.
+> 
+> So far the only users of the _PLD information have been the USB
+> drivers, but it seems it will be used also at least in some camera
+> drivers later. These nevertheless touch mostly USB drivers.
+> 
+> Rafael, is it still OK if Greg takes these?
+> 
+> Prashant, can you test these?
 
------ Messaggio originale -----
-Da: "Thomas Gleixner" <tglx@linutronix.de>
-A: blinkin@email.it
-Cc: "linux-kernel" <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Inviato: Mercoledì, 11 agosto 2021 16:20:41
-Oggetto: Re: Bug report for kernel v4.15-rc8+
+I guess I have given tag, anyway here we are, FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-On Wed, Aug 11 2021 at 15:51, blinkin@email.it wrote:
-> 1) You're booting with an out of tree module
->
->   Uninstalled virtualbox, reproduced same behavior without the module.
->   dmesg outputs attached with and without the workaround
->   (dmesg_novboxdrv_clean.txt and dmesg_novboxdrv_irqaffinity0.txt)
+P.S. AFAICS only the first patch was slightly changed.
 
-Ok.
 
-> 2) Please provide information what is consuming 90% of a CPU
->
->   top shows a kworker process consistently at 50% without the
->   workaround, 60% with the workaround. No significant activity amounts
->   from other processes.  Sometimes that 50% is split between two
->   kworker processes for a short time.  CPU core #0 activity is a
->   constant 60% without the workaround, 90% with the workaround
+> Heikki Krogerus (4):
+>   acpi: Store the known device locations
+>   usb: Link the ports to the connectors they are attached to
+>   usb: typec: port-mapper: Convert to the component framework
+>   usb: Remove usb_for_each_port()
+> 
+>  Documentation/ABI/testing/sysfs-bus-usb |   9 +
+>  drivers/acpi/scan.c                     |  77 +++++++
+>  drivers/usb/core/port.c                 |  32 +++
+>  drivers/usb/core/usb.c                  |  46 ----
+>  drivers/usb/typec/Makefile              |   3 +-
+>  drivers/usb/typec/class.c               |   2 -
+>  drivers/usb/typec/class.h               |  10 +-
+>  drivers/usb/typec/port-mapper.c         | 280 +++---------------------
+>  include/acpi/acpi_bus.h                 |  19 ++
+>  include/linux/usb.h                     |   9 -
+>  include/linux/usb/typec.h               |  12 -
+>  11 files changed, 180 insertions(+), 319 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
 
-That's broken. /proc/interrupts gives some hint:
+-- 
+With Best Regards,
+Andy Shevchenko
 
-1) Stock kernel
 
->             CPU0       CPU1       CPU2       CPU3       
->    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
->    1:          0          0          0          9  IR-IO-APIC    1-edge      i8042
->    8:          0          1          0          0  IR-IO-APIC    8-edge      rtc0
->    9:          0     923411          0          0  IR-IO-APIC    9-fasteoi   acpi
-
-900k ACPI interrupts right after boot
-
->             CPU0       CPU1       CPU2       CPU3       
->    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
->    1:          0          0          0         11  IR-IO-APIC    1-edge      i8042
->    8:          0          1          0          0  IR-IO-APIC    8-edge      rtc0
->    9:          0    4869059          0          0  IR-IO-APIC    9-fasteoi   acpi
-
-One minute later it's 4.8M
-
-With affinity forced to CPU0 it's even more:
-
->             CPU0       CPU1       CPU2       CPU3       
->    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
->    1:          9          0          0          0  IR-IO-APIC    1-edge      i8042
->    8:          1          0          0          0  IR-IO-APIC    8-edge      rtc0
->    9:    7576456          0          0          0  IR-IO-APIC    9-fasteoi   acpi
-
-7.5M right after boot
-
->             CPU0       CPU1       CPU2       CPU3       
->    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
->    1:         11          0          0          0  IR-IO-APIC    1-edge      i8042
->    8:          1          0          0          0  IR-IO-APIC    8-edge      rtc0
->    9:   10992420          0          0          0  IR-IO-APIC    9-fasteoi   acpi
-
-10.9M after one minute. Though the delta between right after boot and 1
-minute later is in the same ballpark.
-
-Cc'ed the ACPI people for clues.
-
-Thanks,
-
-        tglx
