@@ -2,130 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82743478C37
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 14:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7E7478C6C
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 14:36:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236664AbhLQNYY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Dec 2021 08:24:24 -0500
-Received: from mga17.intel.com ([192.55.52.151]:36394 "EHLO mga17.intel.com"
+        id S232575AbhLQNg6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 17 Dec 2021 08:36:58 -0500
+Received: from pout.email.it ([77.93.251.230]:47444 "EHLO pout.email.it"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236692AbhLQNYV (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 17 Dec 2021 08:24:21 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10200"; a="220433352"
-X-IronPort-AV: E=Sophos;i="5.88,213,1635231600"; 
-   d="scan'208";a="220433352"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2021 05:24:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,213,1635231600"; 
-   d="scan'208";a="662843773"
-Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 17 Dec 2021 05:24:19 -0800
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 4/4] usb: Remove usb_for_each_port()
-Date:   Fri, 17 Dec 2021 16:24:15 +0300
-Message-Id: <20211217132415.39726-5-heikki.krogerus@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211217132415.39726-1-heikki.krogerus@linux.intel.com>
-References: <20211217132415.39726-1-heikki.krogerus@linux.intel.com>
+        id S231836AbhLQNg5 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 17 Dec 2021 08:36:57 -0500
+X-Greylist: delayed 336 seconds by postgrey-1.27 at vger.kernel.org; Fri, 17 Dec 2021 08:36:57 EST
+Received: from localhost (localhost [127.0.0.1])
+        by pout.email.it (Postfix) with ESMTP id A1680A54BE;
+        Fri, 17 Dec 2021 14:31:19 +0100 (CET)
+Received: from pout.email.it ([127.0.0.1])
+        by localhost (ir-mtaout02.email.it [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id om7RZFOX3haw; Fri, 17 Dec 2021 14:31:15 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by pout.email.it (Postfix) with ESMTP id 09633A54BF;
+        Fri, 17 Dec 2021 14:31:15 +0100 (CET)
+X-Virus-Scanned: amavisd-new at ir-mtaout02.email.it
+Received: from pout.email.it ([127.0.0.1])
+        by localhost (ir-mtaout02.email.it [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id RHvUWAiN1GIS; Fri, 17 Dec 2021 14:31:14 +0100 (CET)
+Received: from ir-zstore42.email.it (unknown [192.168.25.42])
+        by pout.email.it (Postfix) with ESMTP id D40E5A54BE;
+        Fri, 17 Dec 2021 14:31:13 +0100 (CET)
+Date:   Fri, 17 Dec 2021 14:31:13 +0100 (CET)
+From:   blinkin@email.it
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        linux-acpi <linux-acpi@vger.kernel.org>
+Message-ID: <1554340286.2521703.1639747873475.JavaMail.zimbra@email.it>
+Subject: Re: Bug report for kernel v4.15-rc8+
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [93.146.250.201]
+X-Mailer: Zimbra 8.8.15_GA_4173 (ZimbraWebClient - GC96 (Linux)/8.8.15_GA_4173)
+Thread-Index: 0h6WKYAZX0mbI/bojPTMX5RwDzyHlw==
+Thread-Topic: Bug report for kernel v4.15-rc8+
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are no more users for the function.
+hello, any news on this?
 
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
- drivers/usb/core/usb.c | 46 ------------------------------------------
- include/linux/usb.h    |  9 ---------
- 2 files changed, 55 deletions(-)
+----- Messaggio originale -----
+Da: "Thomas Gleixner" <tglx@linutronix.de>
+A: blinkin@email.it
+Cc: "linux-kernel" <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Inviato: Mercoledì, 11 agosto 2021 16:20:41
+Oggetto: Re: Bug report for kernel v4.15-rc8+
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 62368c4ed37af..2ce3667ec6fae 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -398,52 +398,6 @@ int usb_for_each_dev(void *data, int (*fn)(struct usb_device *, void *))
- }
- EXPORT_SYMBOL_GPL(usb_for_each_dev);
- 
--struct each_hub_arg {
--	void *data;
--	int (*fn)(struct device *, void *);
--};
--
--static int __each_hub(struct usb_device *hdev, void *data)
--{
--	struct each_hub_arg *arg = (struct each_hub_arg *)data;
--	struct usb_hub *hub;
--	int ret = 0;
--	int i;
--
--	hub = usb_hub_to_struct_hub(hdev);
--	if (!hub)
--		return 0;
--
--	mutex_lock(&usb_port_peer_mutex);
--
--	for (i = 0; i < hdev->maxchild; i++) {
--		ret = arg->fn(&hub->ports[i]->dev, arg->data);
--		if (ret)
--			break;
--	}
--
--	mutex_unlock(&usb_port_peer_mutex);
--
--	return ret;
--}
--
--/**
-- * usb_for_each_port - interate over all USB ports in the system
-- * @data: data pointer that will be handed to the callback function
-- * @fn: callback function to be called for each USB port
-- *
-- * Iterate over all USB ports and call @fn for each, passing it @data. If it
-- * returns anything other than 0, we break the iteration prematurely and return
-- * that value.
-- */
--int usb_for_each_port(void *data, int (*fn)(struct device *, void *))
--{
--	struct each_hub_arg arg = {data, fn};
--
--	return usb_for_each_dev(&arg, __each_hub);
--}
--EXPORT_SYMBOL_GPL(usb_for_each_port);
--
- /**
-  * usb_release_dev - free a usb device structure when all users of it are finished.
-  * @dev: device that's been disconnected
-diff --git a/include/linux/usb.h b/include/linux/usb.h
-index 7ccaa76a9a968..200b7b79acb56 100644
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -875,15 +875,6 @@ extern struct usb_host_interface *usb_find_alt_setting(
- 		unsigned int iface_num,
- 		unsigned int alt_num);
- 
--#if IS_REACHABLE(CONFIG_USB)
--int usb_for_each_port(void *data, int (*fn)(struct device *, void *));
--#else
--static inline int usb_for_each_port(void *data, int (*fn)(struct device *, void *))
--{
--	return 0;
--}
--#endif
--
- /* port claiming functions */
- int usb_hub_claim_port(struct usb_device *hdev, unsigned port1,
- 		struct usb_dev_state *owner);
--- 
-2.34.1
+On Wed, Aug 11 2021 at 15:51, blinkin@email.it wrote:
+> 1) You're booting with an out of tree module
+>
+>   Uninstalled virtualbox, reproduced same behavior without the module.
+>   dmesg outputs attached with and without the workaround
+>   (dmesg_novboxdrv_clean.txt and dmesg_novboxdrv_irqaffinity0.txt)
 
+Ok.
+
+> 2) Please provide information what is consuming 90% of a CPU
+>
+>   top shows a kworker process consistently at 50% without the
+>   workaround, 60% with the workaround. No significant activity amounts
+>   from other processes.  Sometimes that 50% is split between two
+>   kworker processes for a short time.  CPU core #0 activity is a
+>   constant 60% without the workaround, 90% with the workaround
+
+That's broken. /proc/interrupts gives some hint:
+
+1) Stock kernel
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:          0          0          0          9  IR-IO-APIC    1-edge      i8042
+>    8:          0          1          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:          0     923411          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+900k ACPI interrupts right after boot
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:          0          0          0         11  IR-IO-APIC    1-edge      i8042
+>    8:          0          1          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:          0    4869059          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+One minute later it's 4.8M
+
+With affinity forced to CPU0 it's even more:
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:          9          0          0          0  IR-IO-APIC    1-edge      i8042
+>    8:          1          0          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:    7576456          0          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+7.5M right after boot
+
+>             CPU0       CPU1       CPU2       CPU3       
+>    0:         10          0          0          0  IR-IO-APIC    2-edge      timer
+>    1:         11          0          0          0  IR-IO-APIC    1-edge      i8042
+>    8:          1          0          0          0  IR-IO-APIC    8-edge      rtc0
+>    9:   10992420          0          0          0  IR-IO-APIC    9-fasteoi   acpi
+
+10.9M after one minute. Though the delta between right after boot and 1
+minute later is in the same ballpark.
+
+Cc'ed the ACPI people for clues.
+
+Thanks,
+
+        tglx
