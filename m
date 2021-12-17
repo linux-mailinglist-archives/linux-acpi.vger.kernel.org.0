@@ -2,135 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFAAD47937D
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 19:04:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB65447938A
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 19:07:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235303AbhLQSEm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Dec 2021 13:04:42 -0500
-Received: from mail-oi1-f173.google.com ([209.85.167.173]:44931 "EHLO
-        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232748AbhLQSEl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Dec 2021 13:04:41 -0500
-Received: by mail-oi1-f173.google.com with SMTP id be32so4747313oib.11;
-        Fri, 17 Dec 2021 10:04:41 -0800 (PST)
+        id S236574AbhLQSHF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Dec 2021 13:07:05 -0500
+Received: from mail-oi1-f176.google.com ([209.85.167.176]:41938 "EHLO
+        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240115AbhLQSHD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Dec 2021 13:07:03 -0500
+Received: by mail-oi1-f176.google.com with SMTP id u74so4776343oie.8;
+        Fri, 17 Dec 2021 10:07:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=AH97IwBNJIJm9oc3jMyoL+svzU4PCiOwNagYFbvofyA=;
-        b=2Et8OwygE1L10RBck00k7sVUQaWiFSYSRYFVhd3b2x/tp2yV+WlFQgKpLYIgaX0v+2
-         i85c035HAWmK7EeTCgeQ+AqNPBWpOiXiyuEffZEfXm35htnHbe1hqTm1ARKtYMXMZ8LS
-         qtcDMqKU16EIUAW3nnyBkeg6xrpUURbriuT0f1mF+LplX8GMfz1uE8Sy0UHBDTC6MZ6h
-         fTUJfvphaiWftPLlDOVgLiQrfy3eL/ENPzTMl0sAkZL8u6edMBsezmQpKZs+Rl268bhr
-         gDhIAifNw9Fvs53yUF2EIAIgs2i/eMLYOkn6nRGBLLUhUHD4hTdocsKqZPRpqVd726w1
-         VxeA==
-X-Gm-Message-State: AOAM530G1p1lDh9/z+9gSvXZGlVHQhFQFPHwlig0NtXymJqvCn6D/tuT
-        febMlys02jzcCLZ+IU6VrViorXGr9/8qcKkpp0gX4OtF
-X-Google-Smtp-Source: ABdhPJwRHo+5sgFP4kB/Ch4fx9oQJANf8NwGSAyEUculPGz+k7dGdG/jGUuGpxoQUvCwgT1+eQSVEJdX9fu9fhUPSHg=
-X-Received: by 2002:a05:6808:1454:: with SMTP id x20mr3061880oiv.166.1639764281033;
- Fri, 17 Dec 2021 10:04:41 -0800 (PST)
+        bh=ybob68Tao9npH1BMjhdNd68JxeiPcth51L+wtZEs48k=;
+        b=muXBkQse5IeSpo3XYnO6SLnpag4cfdZDUGNx6rUrn3EkkFrkX1PwAbacygMD2Ksoze
+         EVAGtUQ1uPhEYpE3udr+75JmH20Ucy01fnyHUEVPHc6N9fmoBnfKIiMByxkMyTOP0Zy4
+         VfYeBq0asmmMtcGU1cFLJ+iTXxgLFahFWYHyTHF/4Mz6d7JukEp0kOrvE9AA4tPUAscC
+         JU8oAEYc1QbDFPEX9/XTgtl7agGT4FOq77ktBoMeAtmCBAWTMZCaWio8X2RwrKwlneJ/
+         8e9vB02PND7dTNf+TGHrfAEXFwe5d189AVGcK2AhTVS8q9TR2oEVQl1PT96OXXqZtbqK
+         vMEw==
+X-Gm-Message-State: AOAM531Z461jy2MmbSFB0oWZhnpi0hg5SFEXuBCL+ortMVfZpeewT1qZ
+        /rG8X5mlNhsEFmBWYt+hc95sgT1aEQMfEZLVuBn73w2w
+X-Google-Smtp-Source: ABdhPJwz8SBCJ/kWQwVPYisKaxbuW9fnlDJJnbLw64UAhwyucU9qETSQ6Fmcm3CH2NdzoDLV3QvSEsoCPgPnTimP96U=
+X-Received: by 2002:a05:6808:1454:: with SMTP id x20mr3072060oiv.166.1639764422647;
+ Fri, 17 Dec 2021 10:07:02 -0800 (PST)
 MIME-Version: 1.0
-References: <CAJZ5v0gLwSvPfWzYwiZXee8SiPiQQoxjfKfVn4jx6wK_9VVEeg@mail.gmail.com>
- <20211206122952.74139-1-kirill.shutemov@linux.intel.com> <20211206122952.74139-3-kirill.shutemov@linux.intel.com>
- <CAJZ5v0hGnvX2a1bsoUSqV4Vf0LE6P6wTjk4ZPT7JTLvSAL7z_g@mail.gmail.com> <20211209133217.omm3mzchsfippwjc@black.fi.intel.com>
-In-Reply-To: <20211209133217.omm3mzchsfippwjc@black.fi.intel.com>
+References: <20211212180527.1641362-1-AjitKumar.Pandey@amd.com> <20211212180527.1641362-3-AjitKumar.Pandey@amd.com>
+In-Reply-To: <20211212180527.1641362-3-AjitKumar.Pandey@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 17 Dec 2021 19:04:30 +0100
-Message-ID: <CAJZ5v0i2Le1id20qeMk6ENyBLU2FwOQJKXLLr_jOsPaaBrrAvg@mail.gmail.com>
-Subject: Re: [PATCH 2/4] ACPI: PM: Remove redundant cache flushing
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Luck <tony.luck@intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>
+Date:   Fri, 17 Dec 2021 19:06:51 +0100
+Message-ID: <CAJZ5v0i=LVsz2ZRBB5HzLpw8eR-zLAKtJyc3PFWu_kKCzjzZWw@mail.gmail.com>
+Subject: Re: [PATCH v5 2/5] drivers: acpi: acpi_apd: Remove unused device
+ property "is-rv"
+To:     Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
+Cc:     Stephen Boyd <sboyd@kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>, Vijendar.Mukunda@amd.com,
+        Alex Deucher <Alexander.Deucher@amd.com>,
+        Basavaraj.Hiregoudar@amd.com, Sunil-kumar.Dommati@amd.com,
+        Mario Limonciello <Mario.Limonciello@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 9, 2021 at 2:32 PM Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
+On Sun, Dec 12, 2021 at 7:06 PM Ajit Kumar Pandey
+<AjitKumar.Pandey@amd.com> wrote:
 >
-> On Tue, Dec 07, 2021 at 05:35:38PM +0100, Rafael J. Wysocki wrote:
-> > I don't think this is needed for S2, because the function doesn't do
-> > anything low-level in that case and simply returns (IOW, S2 isn't
-> > really supported).
+> Initially "is-rv" device property is added for 48MHz fixed clock
+> support on Raven or RV architecture. It's unused now as we moved
+> to pci device_id based selection to extend such support on other
+> architectures. This change removed unused code from acpi driver.
 >
-> Updated patch is below. Does it look good?
+> Signed-off-by: Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
+> Reviewed-by: Mario Limonciello <Mario.Limonciello@amd.com>
 
-It does, and so applied as 5.17 material with some minor edits in the changelog.
+Does this or the next patch depend on the rest of the series, or can I
+simply apply them both?
 
-Thanks!
-
-> From 5eb4ec7d8dd463ba186b779dcef2a802d999c59c Mon Sep 17 00:00:00 2001
-> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> Date: Thu, 9 Dec 2021 16:08:02 +0300
-> Subject: [PATCH 1/2] ACPI: PM: Remove redundant cache flushing
->
-> ACPICA code takes care about cache flushing on S1/S2/S3 in
-> acpi_hw_extended_sleep() and acpi_hw_legacy_sleep().
->
-> acpi_suspend_enter() calls into ACPICA code via acpi_enter_sleep_state()
-> for S1 or x86_acpi_suspend_lowlevel() for S3.
->
-> acpi_sleep_prepare() call tree:
->   __acpi_pm_prepare()
->     acpi_pm_prepare()
->       acpi_suspend_ops::prepare_late()
->       acpi_hibernation_ops::pre_snapshot()
->       acpi_hibernation_ops::prepare()
->     acpi_suspend_begin_old()
->       acpi_suspend_begin_old::begin()
->   acpi_hibernation_begin_old()
->     acpi_hibernation_ops_old::acpi_hibernation_begin_old()
->   acpi_power_off_prepare()
->     pm_power_off_prepare()
->
-> Hibernation (S4) and Power Off (S5) don't require cache flushing. So,
-> the only interesting callsites are acpi_suspend_ops::prepare_late() and
-> acpi_suspend_begin_old::begin(). Both of them have cache flush on
-> ->enter() operation in acpi_suspend_enter().
->
-> Remove redundant ACPI_FLUSH_CPU_CACHE() in acpi_sleep_prepare() and
-> acpi_suspend_enter().
->
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > ---
->  drivers/acpi/sleep.c | 3 ---
->  1 file changed, 3 deletions(-)
+>  drivers/acpi/acpi_apd.c               | 3 ---
+>  include/linux/platform_data/clk-fch.h | 1 -
+>  2 files changed, 4 deletions(-)
 >
-> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-> index eaa47753b758..5ca6c223ba3d 100644
-> --- a/drivers/acpi/sleep.c
-> +++ b/drivers/acpi/sleep.c
-> @@ -73,7 +73,6 @@ static int acpi_sleep_prepare(u32 acpi_state)
->                 acpi_set_waking_vector(acpi_wakeup_address);
+> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+> index 6e02448d15d9..6913e9712852 100644
+> --- a/drivers/acpi/acpi_apd.c
+> +++ b/drivers/acpi/acpi_apd.c
+> @@ -87,9 +87,6 @@ static int fch_misc_setup(struct apd_private_data *pdata)
+>         if (ret < 0)
+>                 return -ENOENT;
 >
->         }
-> -       ACPI_FLUSH_CPU_CACHE();
->  #endif
->         pr_info("Preparing to enter system sleep state S%d\n", acpi_state);
->         acpi_enable_wakeup_devices(acpi_state);
-> @@ -566,8 +565,6 @@ static int acpi_suspend_enter(suspend_state_t pm_state)
->         u32 acpi_state = acpi_target_sleep_state;
->         int error;
->
-> -       ACPI_FLUSH_CPU_CACHE();
+> -       if (!acpi_dev_get_property(adev, "is-rv", ACPI_TYPE_INTEGER, &obj))
+> -               clk_data->is_rv = obj->integer.value;
 > -
->         trace_suspend_resume(TPS("acpi_suspend"), acpi_state, true);
->         switch (acpi_state) {
->         case ACPI_STATE_S1:
+>         list_for_each_entry(rentry, &resource_list, node) {
+>                 clk_data->base = devm_ioremap(&adev->dev, rentry->res->start,
+>                                               resource_size(rentry->res));
+> diff --git a/include/linux/platform_data/clk-fch.h b/include/linux/platform_data/clk-fch.h
+> index b9f682459f08..850ca776156d 100644
+> --- a/include/linux/platform_data/clk-fch.h
+> +++ b/include/linux/platform_data/clk-fch.h
+> @@ -12,7 +12,6 @@
+>
+>  struct fch_clk_data {
+>         void __iomem *base;
+> -       u32 is_rv;
+>  };
+>
+>  #endif /* __CLK_FCH_H */
 > --
->  Kirill A. Shutemov
+> 2.25.1
+>
