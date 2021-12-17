@@ -2,150 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D7AA478865
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 11:09:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31CD2478AA3
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 12:58:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234693AbhLQKJI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 17 Dec 2021 05:09:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38382 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234669AbhLQKJH (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 17 Dec 2021 05:09:07 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCAC6C06173F
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Dec 2021 02:09:06 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id r17so2676788wrc.3
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Dec 2021 02:09:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=n+YbVGAkqXP7PNsKwcT3CjJ8IfCXro/+lbWQf9Na6IY=;
-        b=YQPToKZO2L1+/Jp9JTCHBiTeUenosTzut1YioFA8go6CfazZ1hb01A+c+NnddYSLka
-         6kXt/3yBtLzSNddXvU9qGnfFwQfkjfX3kc9iAP6kVuJxDE4+8v9vbnsoc4AdyOfq8VcU
-         mKSxeV8lN7S4Ynswm4g9hAgObhvAMEfF961NfHxvQrMAUXhtVx7x5N6BiwQlIkHDEF6M
-         naPoLVi8HpUQ/3U8z89bbmg8LF1liWCFGkQHj2sMcPWl5aKrVViXgY7onGzAavfAr9z6
-         KQOjTF1ykpsaF86ksZEMfmZo9zjgaHs7GeL5a5nXbbrzYGKmV8X6GR0BKmjsp4/OTttW
-         uNeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=n+YbVGAkqXP7PNsKwcT3CjJ8IfCXro/+lbWQf9Na6IY=;
-        b=eCZ6HZXkLf2vo5LciuDxQ6wn6Tv3WHTbu31rq+eS5+A/vZ1VX9jbSjXuZdVtTBw7Ue
-         beXloCnvbuPGOUhf0inxmT2xLASj/OEPAJWBB5l7XdjPQXPrMNcBJxZofJ7+cN6MJ6fA
-         qx0qaPa+YtpPqI/UK77rvMeEMWit0znTK37anPHIsogmQm9U/akP8EzcwKi2x2jK7bFd
-         Rnwzl3RnbS8NWtZQrsxZuzCZq8j5obJtvUG/MaJyGXntMsqz4y3n2l5KMcT0SER4t61o
-         Kh5BEOIE0UeZcAQL7/gwaeKiB72Dh2oU5Mx/xLrTkGUZ3Fj5AbOsVYYHLl/7YeSze+jK
-         FtNg==
-X-Gm-Message-State: AOAM532b8hkiuS1rqu41KPpiDzU47vnpIXp20oVw/fFnIQEtL95T1mFV
-        gSQbBbTOwzNlFQzeWl+6T9u6IA==
-X-Google-Smtp-Source: ABdhPJyeYq83KgmGcHrxXJdvJn8Xm3CjiDEwUAwqxGagBcrQ+NX6Ld1B/KV07XAB9B48wvadGO120g==
-X-Received: by 2002:adf:906d:: with SMTP id h100mr1833018wrh.259.1639735745366;
-        Fri, 17 Dec 2021 02:09:05 -0800 (PST)
-Received: from google.com ([2.31.167.18])
-        by smtp.gmail.com with ESMTPSA id o4sm5301113wry.80.2021.12.17.02.09.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Dec 2021 02:09:04 -0800 (PST)
-Date:   Fri, 17 Dec 2021 10:09:02 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        id S235880AbhLQL6e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Dec 2021 06:58:34 -0500
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:18860 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235953AbhLQL6N (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 17 Dec 2021 06:58:13 -0500
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1BH8Oppf016817;
+        Fri, 17 Dec 2021 05:57:21 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=PODMain02222019;
+ bh=iGpzReHZyHBG3ZWw3aYZlYLVq98QdfPHOZmwdb+XdNQ=;
+ b=B10mronPYEWIFVibRBx6IrbvK30QPyEly9lasmrq52FNtsyn0VByqDURU+bD4LP9ONgs
+ 1jq1/fMhkzWL8Fc41XJUfvHvdz8W8caisjpEU7qo9pL3OLrH0nccshdEBMSDCp2SZdjo
+ hDFi7FaopO0yG8IEGBPcVDYColiUETVOyHZL//DqcwCwQZZEUYRvbzoy2HquFFiCUdtn
+ L/UsHUWPLqS3q83HzrxSPRjglTGup+PHcrR8qOCKgrkICH0TyDbGoWBUVgvTmeLCp11h
+ V+Dm2wUcgf5/O58U0SC0rvygt4rwFkPhjGYXN8i9TwrMtJkIs0cVDDHKF8M+9wxcvu2v Kw== 
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3d0q0m06ka-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Fri, 17 Dec 2021 05:57:21 -0600
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Fri, 17 Dec
+ 2021 11:57:20 +0000
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.17 via Frontend
+ Transport; Fri, 17 Dec 2021 11:57:20 +0000
+Received: from aryzen.ad.cirrus.com (unknown [198.61.64.39])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 97C18B10;
+        Fri, 17 Dec 2021 11:57:19 +0000 (UTC)
+From:   Lucas Tanure <tanureal@opensource.cirrus.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
         Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Wolfram Sang <wsa@the-dreams.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: Re: [PATCH v4 14/20] mfd: intel_soc_pmic_chtwc: Add cht_wc_model
- data to struct intel_soc_pmic
-Message-ID: <Ybxhvk5rB+82WaU5@google.com>
-References: <20211206093318.45214-1-hdegoede@redhat.com>
- <20211206093318.45214-15-hdegoede@redhat.com>
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>
+CC:     <alsa-devel@alsa-project.org>, <linux-acpi@vger.kernel.org>,
+        <patches@opensource.cirrus.com>,
+        <platform-driver-x86@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Lucas Tanure <tanureal@opensource.cirrus.com>
+Subject: [PATCH v6 00/10] Add support for CS35L41 in HDA systems
+Date:   Fri, 17 Dec 2021 11:56:58 +0000
+Message-ID: <20211217115708.882525-1-tanureal@opensource.cirrus.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211206093318.45214-15-hdegoede@redhat.com>
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: ntGAQ9zuKPsuD8ushoKhdDHS5ks-qg4r
+X-Proofpoint-GUID: ntGAQ9zuKPsuD8ushoKhdDHS5ks-qg4r
+X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, 06 Dec 2021, Hans de Goede wrote:
+Add support for laptops that have CS35L41 connected to an HDA
+codec by I2S and direct I2C connection to the CPU.
 
-> Tablet / laptop designs using an Intel Cherry Trail x86 main SoC with
-> an Intel Whiskey Cove PMIC do not use a single standard setup for
-> the charger, fuel-gauge and other chips surrounding the PMIC /
-> charging+data USB port.
-> 
-> Unlike what is normal on x86 this diversity in designs is not handled
-> by the ACPI tables. On 2 of the 3 known designs there are no standard
-> (PNP0C0A) ACPI battery devices and on the 3th design the ACPI battery
-> device does not work under Linux due to it requiring non-standard
-> and undocumented ACPI behavior.
-> 
-> So to make things work under Linux we use native charger and fuel-gauge
-> drivers on these devices, re-using the native drivers used on ARM boards
-> with the same charger / fuel-gauge ICs.
-> 
-> This requires various MFD-cell drivers for the CHT-WC PMIC cells to
-> know which model they are exactly running on so that they can e.g.
-> instantiate an I2C-client for the right model charger-IC (the charger
-> is connected to an I2C-controller which is part of the PMIC).
-> 
-> Rather then duplicating DMI-id matching to check which model we are
-> running on in each MFD-cell driver, add a check for this to the
-> shared drivers/mfd/intel_soc_pmic_chtwc.c code by using a
-> DMI table for all 3 known models:
-> 
-> 1. The GPD Win and GPD Pocket mini-laptops, these are really 2 models
-> but the Pocket re-uses the GPD Win's design in a different housing:
-> 
-> The WC PMIC is connected to a TI BQ24292i charger, paired with
-> a Maxim MAX17047 fuelgauge + a FUSB302 USB Type-C Controller +
-> a PI3USB30532 USB switch, for a fully functional Type-C port.
-> 
-> 2. The Xiaomi Mi Pad 2:
-> 
-> The WC PMIC is connected to a TI BQ25890 charger, paired with
-> a TI BQ27520 fuelgauge, using the TI BQ25890 for BC1.2 charger type
-> detection, for a USB-2 only Type-C port without PD.
-> 
-> 3. The Lenovo Yoga Book YB1-X90 / Lenovo Yoga Book YB1-X91 series:
-> 
-> The WC PMIC is connected to a TI BQ25892 charger, paired with
-> a TI BQ27542 fuelgauge, using the WC PMIC for BC1.2 charger type
-> detection and using the BQ25892's Mediatek Pump Express+ (1.0)
-> support to enable charging with up to 12V through a micro-USB port.
-> 
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v4:
-> - Put '{' and comment of DMI entries on separate lines (requested by Lee)
-> - Drop comment on terminating empty entry in DMI table
-> 
-> Changes in v3:
-> - Store the model in struct intel_soc_pmic instead of adding a helper
->   function to retreive it
-> 
-> Changes in v2:
-> - New patch in v2 of this patch-set
-> ---
->  drivers/mfd/intel_soc_pmic_chtwc.c | 40 ++++++++++++++++++++++++++++++
->  include/linux/mfd/intel_soc_pmic.h |  8 ++++++
->  2 files changed, 48 insertions(+)
+Laptops that use CS35L41 and are SPI will be added in the future,
+after the support for it is resolved at i2c-multi-instantiate driver.
+i2c-multi-instantiate thread: https://lkml.org/lkml/2021/12/10/557
 
-Acked-by: Lee Jones <lee.jones@linaro.org>
+Hardware:
+ - Some laptops have two CS35L41 amplifiers, connected to Realtek ALC287
+   by an I2S bus and by and direct I2C to the CPU.
+ - The ALC287 codec is connected to the CPU by an HDA bus.
+ - The CS35L41 has a DSP which will require firmware to be loaded.
+
+Architecture:
+ - Creation of a library of shared functions for CS35L41 ASoC and HDA
+ - HDA codec driver (RealTek) and CS35L41 HDA driver are combined
+ by using component binding, where it uses device names to find the
+ components and bind to the master
+ - The HDA CS35L41 driver applies pre-defined registers sequences
+ for each action in playback for HDA Sound card
+
+Changes from V5:
+ - Fix build issues reported by Intel Test Bot
+ - Check devm_kasprintf return
+ - Add ACPI dependency to HDA drivers
+V5: https://lkml.org/lkml/2021/12/16/430
+
+Changes from V4:
+ - Save index received from ACPI for latter use in DSP Support
+ - Move CS35L41_DSP1_CCM_CORE_CTRL to regmap_write so doesn't
+affect DSP hibernation feature
+V4: https://lkml.org/lkml/2021/12/14/487
+
+Changes from V3:
+ - SPI bus driver starter added
+ - Use separate modules approach instead of liking library
+ - Add CSC3551 ACPI _HID for more I2C laptops
+ - Removed regulators from HDA driver
+ - Add note about Non-conforming _HID
+V3: https://lkml.org/lkml/2021/11/23/723
+
+Changes from V2:
+ - Not an RFC
+ - Create a new HDA driver for CS35L41 instead of using the ASoC one
+ - Use component binding and device names to find the CS35L41 driver
+ - Create a shared library for ASoC and HDA CS35L41 drivers
+v2: https://lkml.org/lkml/2021/10/8/344
+
+Lucas Tanure (9):
+  ASoC: cs35l41: Convert tables to shared source code
+  ASoC: cs35l41: Move cs35l41_otp_unpack to shared code
+  ASoC: cs35l41: Move power initializations to reg_sequence
+  ASoC: cs35l41: Create shared function for errata patches
+  ASoC: cs35l41: Create shared function for setting channels
+  ASoC: cs35l41: Create shared function for boost configuration
+  hda: cs35l41: Add support for CS35L41 in HDA systems
+  ACPI / scan: Create platform device for CLSA0100 and CSC3551 ACPI
+    nodes
+  ALSA: hda/realtek: Add support for Legion 7 16ACHg6 laptop
+
+Stefan Binding (1):
+  ALSA: hda/realtek: Add CS35L41 support for Thinkpad laptops
+
+ MAINTAINERS                                   |   2 +
+ drivers/acpi/scan.c                           |   3 +
+ drivers/platform/x86/i2c-multi-instantiate.c  |  11 +
+ include/sound/cs35l41.h                       | 739 ++++++++++++++++++
+ sound/pci/hda/Kconfig                         |  29 +
+ sound/pci/hda/Makefile                        |  10 +
+ sound/pci/hda/cs35l41_hda.c                   | 527 +++++++++++++
+ sound/pci/hda/cs35l41_hda.h                   |  69 ++
+ sound/pci/hda/cs35l41_hda_i2c.c               |  66 ++
+ sound/pci/hda/cs35l41_hda_spi.c               |  63 ++
+ sound/pci/hda/hda_component.h                 |  20 +
+ sound/pci/hda/patch_realtek.c                 | 146 ++++
+ sound/soc/codecs/Kconfig                      |  11 +-
+ sound/soc/codecs/Makefile                     |   4 +-
+ sound/soc/codecs/cs35l41-i2c.c                |   1 -
+ .../{cs35l41-tables.c => cs35l41-lib.c}       | 355 ++++++++-
+ sound/soc/codecs/cs35l41-spi.c                |   1 -
+ sound/soc/codecs/cs35l41.c                    | 360 +--------
+ sound/soc/codecs/cs35l41.h                    | 734 -----------------
+ 19 files changed, 2055 insertions(+), 1096 deletions(-)
+ create mode 100644 sound/pci/hda/cs35l41_hda.c
+ create mode 100644 sound/pci/hda/cs35l41_hda.h
+ create mode 100644 sound/pci/hda/cs35l41_hda_i2c.c
+ create mode 100644 sound/pci/hda/cs35l41_hda_spi.c
+ create mode 100644 sound/pci/hda/hda_component.h
+ rename sound/soc/codecs/{cs35l41-tables.c => cs35l41-lib.c} (71%)
 
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.34.1
+
