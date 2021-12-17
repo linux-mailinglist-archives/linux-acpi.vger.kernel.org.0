@@ -2,151 +2,61 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E8C4780CA
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 00:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48B94478467
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Dec 2021 06:23:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229561AbhLPXmU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 16 Dec 2021 18:42:20 -0500
-Received: from foss.arm.com ([217.140.110.172]:49936 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229511AbhLPXmT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 16 Dec 2021 18:42:19 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 479E012FC;
-        Thu, 16 Dec 2021 15:42:19 -0800 (PST)
-Received: from bogus (unknown [10.57.33.218])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B62073F73B;
-        Thu, 16 Dec 2021 15:42:11 -0800 (PST)
-Date:   Thu, 16 Dec 2021 23:42:08 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Tyler Baicar <baicar@amperemail.onmicrosoft.com>,
-        Marc Zyngier <maz@kernel.org>
-Cc:     Darren Hart <darren@os.amperecomputing.com>,
-        lorenzo.pieralisi@arm.com, guohanjun@huawei.com,
-        Tyler Baicar <baicar@os.amperecomputing.com>,
-        patches@amperecomputing.com, abdulhamid@os.amperecomputing.com,
-        catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com,
-        alexandru.elisei@arm.com, suzuki.poulose@arm.com,
-        rafael@kernel.org, lenb@kernel.org, tony.luck@intel.com,
-        bp@alien8.de, mark.rutland@arm.com, anshuman.khandual@arm.com,
-        vincenzo.frascino@arm.com, tabba@google.com, marcan@marcan.st,
-        keescook@chromium.org, masahiroy@kernel.org,
-        samitolvanen@google.com, john.garry@huawei.com,
-        daniel.lezcano@linaro.org, gor@linux.ibm.com,
-        zhangshaokun@hisilicon.com, tmricht@linux.ibm.com,
-        dchinner@redhat.com, tglx@linutronix.de,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kvmarm@lists.cs.columbia.edu, linux-acpi@vger.kernel.org,
-        linux-edac@vger.kernel.org, ishii.shuuichir@fujitsu.com,
-        Vineeth.Pillai@microsoft.com
-Subject: Re: [PATCH 1/2] ACPI/AEST: Initial AEST driver
-Message-ID: <20211216234208.hszjx5lpurdjmftj@bogus>
-References: <20211124170708.3874-1-baicar@os.amperecomputing.com>
- <20211124170708.3874-2-baicar@os.amperecomputing.com>
- <87czmpcto5.wl-maz@kernel.org>
- <YaU6eyGM+bX/bEhG@fedora>
- <87h7bum0xh.wl-maz@kernel.org>
- <YaZUL+cftvNYgx1j@fedora>
- <addaf134-d5c0-65de-62ca-76950d6460ab@amperemail.onmicrosoft.com>
+        id S232770AbhLQFXD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 17 Dec 2021 00:23:03 -0500
+Received: from a27-38.smtp-out.us-west-2.amazonses.com ([54.240.27.38]:60437
+        "EHLO a27-38.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231703AbhLQFXD (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 17 Dec 2021 00:23:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=7v7vs6w47njt4pimodk5mmttbegzsi6n; d=amazonses.com; t=1639718582;
+        h=From:Reply-To:To:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID:Date:Feedback-ID;
+        bh=ISCvltIR06bXj/A5EAgRD6z/gFVUpxrPuLaPAwpD3qs=;
+        b=Ckg2Ilf0p7t1xF8BmLksCg22l4JWeWC3vGoLGAxaAq/BQj+aQS+fv6QepZtKVYko
+        +Q9WBmHmAzRNF02aEMAUQ3qwRCSDkJ1lDHfVe7o54yZR0dYF8KikhEJt55WzgwbioMb
+        SwNDbEfFMZnX4GR4lWeuAHtauprWff7LdC1XpGrg=
+From:   =?UTF-8?B?44OX44Ot44K044Oz?= <info@knocknote.jp>
+Reply-To: info@knocknote.jp
+To:     linux-acpi@vger.kernel.org
+Subject: =?UTF-8?B?44CQ44OX44Ot44K044Oz44CR44OX44Ot44K044Oz44Gr5Luu55m76Yyy?=
+ =?UTF-8?B?44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ?=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <addaf134-d5c0-65de-62ca-76950d6460ab@amperemail.onmicrosoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+Message-ID: <0101017dc6d7f7f4-22cfc4dc-c0a9-4e74-aea2-c23b8f661940-000000@us-west-2.amazonses.com>
+Date:   Fri, 17 Dec 2021 05:23:02 +0000
+Feedback-ID: 1.us-west-2.OEGwgRenBOxZEsPjrdv3DLmqyvU4Kj4zPnwrl9EivLs=:AmazonSES
+X-SES-Outgoing: 2021.12.17-54.240.27.38
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 16, 2021 at 05:05:15PM -0500, Tyler Baicar wrote:
-> -Moved ACPI for ARM64 maintainers to "to:"
-> 
-> Hi Marc, Darren,
-> 
-> On 11/30/2021 11:41 AM, Darren Hart wrote:
-> > On Tue, Nov 30, 2021 at 09:45:46AM +0000, Marc Zyngier wrote:
-> > > Hi Darren,
-> > > 
-> > > On Mon, 29 Nov 2021 20:39:23 +0000,
-> > > Darren Hart <darren@os.amperecomputing.com> wrote:
-> > > > On Wed, Nov 24, 2021 at 06:09:14PM +0000, Marc Zyngier wrote:
-> > > > > On Wed, 24 Nov 2021 17:07:07 +0000,
-> > > > > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > > > > index 5250298d2817..aa0483726606 100644
-> > > > > > --- a/MAINTAINERS
-> > > > > > +++ b/MAINTAINERS
-> > > > > > @@ -382,6 +382,7 @@ ACPI FOR ARM64 (ACPI/arm64)
-> > > > > >   M:	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> > > > > >   M:	Hanjun Guo <guohanjun@huawei.com>
-> > > > > >   M:	Sudeep Holla <sudeep.holla@arm.com>
-> > > > > > +R:	Tyler Baicar <baicar@os.amperecomputing.com>
-> > > > > >   L:	linux-acpi@vger.kernel.org
-> > > > > >   L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-> > > > > >   S:	Maintained
-> > > > > Isn't this a bit premature? This isn't even mentioned in the commit
-> > > > > message, only in passing in the cover letter.
-> > > > > 
-> > > > Hi Marc,
-> > > > 
-> > > > This was something I encouraged Tyler to add during internal review,
-> > > > both in response to the checkpatch.pl warning about adding new drivers
-> > > > as well as our interest in reviewing any future changes to the aest
-> > > > driver. Since refactoring is common, this level made sense to me - but
-> > > > would it be preferable to add a new entry for just the new driver Tyler
-> > > > added?
-> > > Adding someone as the co-maintainer/co-reviewer of a whole subsystem
-> > > (ACPI/arm64 in this case) comes, IMO, with a number of pre-requisites:
-> > > has the proposed co-{maintainer,reviewer} contributed and/or reviewed
-> > > a significant number of patches to that subsystem and/or actively
-> > > participated in the public discussions on the design and the
-> > > maintenance of the subsystem, so that their reviewing is authoritative
-> > > enough? I won't be judge of this, but it is definitely something to
-> > > consider.
-> > Hi Marc,
-> > 
-> > Agreed. I applied similar criteria when considering sub maintainers for
-> > the platform/x86 subsystem while I maintained it.
-> > 
-> > > I don't think preemptively adding someone to the MAINTAINERS entry to
-> > > indicate an interest in a whole subsystem is the right way to do it.
-> > > One could argue that this is what a mailing list is for! ;-) On the
-> > > other hand, an active participation to the review process is the
-> > > perfect way to engage with fellow developers and to grow a profile. It
-> > > is at this stage that adding oneself as an upstream reviewer makes a
-> > > lot of sense.
-> > Also generally agree. In this specific case, our interest was in the
-> > driver itself, and we had to decide between the whole subsystem or
-> > adding another F: entry in MAINTAINERS for the specific driver. Since
-> > drivers/acpi/arm64 only has 3 .c files in it, adding another entry
-> > seemed premature and overly granular. Certainly a subjective thing and
-> > we have no objection to adding the extra line if that's preferred. This
-> > should have been noted in the commit message.
-> 
-> Thank you for the feedback here, I will make sure to add this to the commit
-> message and cover letter in the next version.
-
-Hi Marc,
-
-Thanks for responding and providing all the necessary details.
-
-> 
-> Hi Lorenzo, Hanjun, Sudeep,
-> 
-> As for adding myself as a reviewer under ACPI for ARM64 or adding another F:
-> entry, do you have a preference or guidance on what I should do here?
->
-
-I prefer to start with an entry specific to the $subject driver for all
-the reasons Marc has already stated. It may also add confusion and provide
-misleading reference to others who want to maintain specific drivers like
-this in the future. Further it will result in this list to grow even though
-not all in that will be interested in reviewing or maintaining ARM64
-ACPI subsystem if we take the approach in this patch and more confusion
-to the developers.
-
-Ofcourse if you are interested and get engaged in the review of ARM64
-ACPI in the future we can always revisit and update accordingly.
-
-Hope this helps and provides clarification you are looking for.
-
--- 
-Regards,
-Sudeep
+CuKdpO+4jyBOYXRhbGllIGlzIGludGVyZXN0ZWQgaW4geW91ciBwcm9maWxlISBDbGljayBIZXJl
+OiBodHRwczovL2JpdC5seS8zeXpJVzlSPzRiZm4g4p2k77iP5qeYCgrjgZPjga7luqbjga/jgIzj
+g5fjg63jgrTjg7PjgI3jgavku67nmbvpjLLjgYTjgZ/jgaDjgY3jgIHoqqDjgavjgYLjgorjgYzj
+gajjgYbjgZTjgZbjgYTjgb7jgZnjgIIKCuOBiuWuouanmOOBjOihjOOCj+OCjOOBvuOBl+OBn+S7
+rueZu+mMsuOBiueUs+OBl+i+vOOBv+OCkuaJv+OCiuOBvuOBl+OBn+OAggrjg5Hjgrnjg6/jg7zj
+g4njga/nmbvpjLLlhoXlrrnjga7lpInmm7TjgIHlj5bjgormtojjgZfjga7pmpvjgavlv4XopoHj
+gajjgarjgorjgb7jgZnjga7jgafjgIHjg6Hjg6LjgarjganjgavmjqfjgYjjgabjgYTjgZ/jgaDj
+gY/jgojjgYbjgYrpoZjjgYTjgYTjgZ/jgZfjgb7jgZnjgIIK44OR44K544Ov44O844OJ44Gv5a6a
+5pyf55qE44Gr5aSJ5pu044GX44Gm44GE44Gf44Gg44GP44GT44Go44KS44GK5Yun44KB44GX44G+
+44GZ44CCCgrjg6bjg7zjgrbjg7zlkI06IOKdpO+4jyBOYXRhbGllIGlzIGludGVyZXN0ZWQgaW4g
+eW91ciBwcm9maWxlISBDbGljayBIZXJlOiBodHRwczovL2JpdC5seS8zeXpJVzlSPzRiZm4g4p2k
+77iPCuODkeOCueODr+ODvOODiTogT1AyNlN1NkhPNmJUCgpb44GK6aGY44GEXQrkuIroqJjjga7j
+g5fjg63jgrTjg7Pku67nmbvpjLLjga7jgYrnlLPjgZfovrzjgb/miYvntprjgY3jgpLjgZfjgZ/o
+pprjgYjjgYzjgarjgYTloLTlkIjjgIHoqqTnmbvpjLLjga7lj6/og73mgKfjgYzjgYLjgorjgb7j
+gZnjgILjgZPjga7jgojjgYbjgarloLTlkIjjga/jgIHjgYrmiYvmlbDjgafjgZnjgYzkuIvoqJjj
+g6Hjg7zjg6vlrpvjgavjgZTpgKPntaHjgY/jgaDjgZXjgYTjgb7jgZnjgojjgYbjgYrpoZjjgYTj
+gYTjgZ/jgZfjgb7jgZnjgIIKCk1BSUwgOiBwcm9nb25Aa25vY2tub3RlLmpwCgrjgb7jgZ/jgZTk
+uI3mmI7jgarngrnjgavjgaTjgY3jgb7jgZfjgabjgoLjg6Hjg7zjg6vjgavjgabjgYrmsJfou73j
+gavjgYrllY/jgYTlkIjjgo/jgZvkuIvjgZXjgYTjgIIKCuOCiOOCjeOBl+OBj+OBiumhmOOBhOOB
+hOOBn+OBl+OBvuOBmeOAggoK4peH4peH4peH44O844O844O844O844O844O844O844O844O844O8
+44O844O844O844O844O844O844O8CuagquW8j+S8muekvktub2Nrbm90ZSjjg47jg4Pjgq/jg47j
+g7zjg4gpCuOAkjE2MC0wMDA3IOadseS6rOmDveaWsOWuv+WMuuiNkuacqOeUujktNyDjg4rjgqrj
+g5Pjg6sy6ZqOClRFTCA6IDAzLTY3MDktODcyNSBGQVggOiAwMy02NzA5LTg3MjYKTUFJTDogaW5m
+b0Brbm9ja25vdGUuanAKVVJMIDoga25vY2tub3RlLmpwCuODvOODvOODvOODvOODvOODvOODvOOD
+vOODvOODvOODvOODvOODvOODvOODvOODvOODvOKXh+KXh+KXhwo=
