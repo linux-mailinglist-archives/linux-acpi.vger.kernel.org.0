@@ -2,138 +2,190 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0E15479A53
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Dec 2021 11:33:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95053479C01
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Dec 2021 19:24:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbhLRKdK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 18 Dec 2021 05:33:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57574 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbhLRKdJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 18 Dec 2021 05:33:09 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87A5FC061574;
-        Sat, 18 Dec 2021 02:33:09 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F0F460A5C;
-        Sat, 18 Dec 2021 10:33:08 +0000 (UTC)
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id CD4BDC36AE5;
-        Sat, 18 Dec 2021 10:33:03 +0000 (UTC)
-Date:   Sat, 18 Dec 2021 10:38:24 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, git@xilinx.com, michals@xilinx.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v12 1/5] device property: Add fwnode_iomap()
-Message-ID: <20211218103824.67099464@jic23-huawei>
-In-Reply-To: <CAJZ5v0hG409ffmAiOO5j4O9iPN_qGp4Wnw8eNPKjm5kvncwRLA@mail.gmail.com>
-References: <20211203212358.31444-1-anand.ashok.dumbre@xilinx.com>
-        <20211203212358.31444-2-anand.ashok.dumbre@xilinx.com>
-        <CAJZ5v0hG409ffmAiOO5j4O9iPN_qGp4Wnw8eNPKjm5kvncwRLA@mail.gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S232088AbhLRSY4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 18 Dec 2021 13:24:56 -0500
+Received: from mga07.intel.com ([134.134.136.100]:19918 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229729AbhLRSY4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Sat, 18 Dec 2021 13:24:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1639851896; x=1671387896;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TymOUnAh3bsvcbuLs0xfgEhg4jnfOW/+Xa6YQ+6mURI=;
+  b=WwSxez4pt1tpp+835n7pe3dzCmLBtYXy/knwU4dIfrLDm6/8ho9yd9k2
+   3SV3HiPDIiM4vuzR/jCLGAwLrkyOeEr4XqH1ffuhz8hUfwpohkO/hrBSy
+   cTUWcoSlFP+36nRjmtZYtk6RMBm/7ZYhUAuA6MKzKDzTHtHF8PSyKDISq
+   hS3tIcQrzuRQuSPLlRpF2D5s0YraTjeCbPu+O57E1SEjCtbr2kw8ohIOe
+   jwRSHzBzgDow91+E0FtfhJ+AvdZziULaoD936s4paHPjkz2GFPExQxylc
+   ylmbBmmZ2OyN9AyUGYec+8+94NmKrislXxzZ2b0Zwj32XCPeWgmNXDHoy
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10202"; a="303315814"
+X-IronPort-AV: E=Sophos;i="5.88,216,1635231600"; 
+   d="scan'208";a="303315814"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2021 10:24:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,216,1635231600"; 
+   d="scan'208";a="683755892"
+Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 18 Dec 2021 10:24:54 -0800
+Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1myeO5-0006I3-CF; Sat, 18 Dec 2021 18:24:53 +0000
+Date:   Sun, 19 Dec 2021 02:24:02 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 13500db7a43ad5848884273e6c647633c93db266
+Message-ID: <61be2742.DfMPO2sk93xjEQ7y%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 17 Dec 2021 18:52:00 +0100
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 13500db7a43ad5848884273e6c647633c93db266  Merge branch 'pm-core' into bleeding-edge
 
-> On Fri, Dec 3, 2021 at 10:24 PM Anand Ashok Dumbre
-> <anand.ashok.dumbre@xilinx.com> wrote:
-> >
-> > This patch introduces a new helper routine - fwnode_iomap(), which
-> > allows to map the memory mapped IO for a given device node.
-> >
-> > This implementation does not cover the ACPI case and may be expanded
-> > in the future. The main purpose here is to be able to develop resource
-> > provider agnostic drivers.
-> >
-> > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > ---
-> >  drivers/base/property.c  | 16 ++++++++++++++++
-> >  include/linux/property.h |  2 ++
-> >  2 files changed, 18 insertions(+)
-> >
-> > diff --git a/drivers/base/property.c b/drivers/base/property.c
-> > index f1f35b48ab8b..ed4470410030 100644
-> > --- a/drivers/base/property.c
-> > +++ b/drivers/base/property.c
-> > @@ -958,6 +958,22 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
-> >  }
-> >  EXPORT_SYMBOL(fwnode_irq_get);
-> >
-> > +/**
-> > + * fwnode_iomap - Maps the memory mapped IO for a given fwnode
-> > + * @fwnode:    Pointer to the firmware node
-> > + * @index:     Index of the IO range
-> > + *
-> > + * Returns a pointer to the mapped memory.
-> > + */
-> > +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
-> > +{
-> > +       if (IS_ENABLED(CONFIG_OF_ADDRESS) && is_of_node(fwnode))
-> > +               return of_iomap(to_of_node(fwnode), index);
-> > +
-> > +       return NULL;
-> > +}
-> > +EXPORT_SYMBOL(fwnode_iomap);  
-> 
-> So why is this EXPORT_SYMBOL() and not EXPORT_SYMBOL_GPL()?
+elapsed time: 1168m
 
-Good question.  I'm guessing this is because of_iomap is EXPORT_SYMBOL()
-and we don't want to discourage use of this function in preference to it.
+configs tested: 118
+configs skipped: 3
 
-Series applied to the togreg branch of iio.git but initially pushed out
-as testing to let 0-day see if it can find anything we broke.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Note I can still rebase if people would prefer _GPL() so feel free to
-discuss further. +CC Rob Herring and DT list.
+gcc tested configs:
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+arm64                            allyesconfig
+i386                 randconfig-c001-20211216
+mips                            ar7_defconfig
+m68k                       bvme6000_defconfig
+powerpc                mpc7448_hpc2_defconfig
+arm                              alldefconfig
+powerpc                 mpc8560_ads_defconfig
+nios2                            alldefconfig
+powerpc                      pasemi_defconfig
+m68k                        m5407c3_defconfig
+arm                       netwinder_defconfig
+powerpc                      pmac32_defconfig
+arm                         hackkit_defconfig
+arc                        nsim_700_defconfig
+arm                          pxa168_defconfig
+openrisc                 simple_smp_defconfig
+ia64                          tiger_defconfig
+mips                        omega2p_defconfig
+arm                         lubbock_defconfig
+arm                        magician_defconfig
+sh                           se7721_defconfig
+powerpc               mpc834x_itxgp_defconfig
+powerpc                      walnut_defconfig
+mips                         rt305x_defconfig
+arm                         axm55xx_defconfig
+parisc                           alldefconfig
+m68k                          amiga_defconfig
+m68k                        mvme147_defconfig
+sh                        sh7757lcr_defconfig
+arm                  randconfig-c002-20211218
+ia64                                defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+csky                                defconfig
+alpha                               defconfig
+nds32                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+s390                             allmodconfig
+s390                                defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+i386                             allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+sparc                            allyesconfig
+mips                             allmodconfig
+mips                             allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+i386                 randconfig-a002-20211218
+i386                 randconfig-a001-20211218
+i386                 randconfig-a003-20211218
+i386                 randconfig-a004-20211218
+i386                 randconfig-a005-20211218
+i386                 randconfig-a006-20211218
+i386                 randconfig-a013-20211217
+i386                 randconfig-a011-20211217
+i386                 randconfig-a012-20211217
+i386                 randconfig-a016-20211217
+i386                 randconfig-a014-20211217
+i386                 randconfig-a015-20211217
+arc                  randconfig-r043-20211216
+x86_64               randconfig-a001-20211216
+x86_64               randconfig-a002-20211216
+x86_64               randconfig-a003-20211216
+x86_64               randconfig-a004-20211216
+x86_64               randconfig-a006-20211216
+x86_64               randconfig-a005-20211216
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                           allyesconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
 
-Thanks,
+clang tested configs:
+x86_64               randconfig-a011-20211216
+x86_64               randconfig-a014-20211216
+x86_64               randconfig-a012-20211216
+x86_64               randconfig-a013-20211216
+x86_64               randconfig-a015-20211216
+x86_64               randconfig-a016-20211216
+i386                 randconfig-a011-20211216
+i386                 randconfig-a014-20211216
+i386                 randconfig-a012-20211216
+i386                 randconfig-a013-20211216
+i386                 randconfig-a015-20211216
+i386                 randconfig-a016-20211216
+hexagon              randconfig-r045-20211216
+s390                 randconfig-r044-20211216
+riscv                randconfig-r042-20211216
+hexagon              randconfig-r041-20211216
 
-Jonathan
-
-
-> 
-> Other than this I'm not an OF_ expert, but I trust Andy, so with the
-> above addressed:
-> 
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> > +
-> >  /**
-> >   * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
-> >   * @fwnode: Pointer to the parent firmware node
-> > diff --git a/include/linux/property.h b/include/linux/property.h
-> > index 88fa726a76df..6670d5a1ec2a 100644
-> > --- a/include/linux/property.h
-> > +++ b/include/linux/property.h
-> > @@ -122,6 +122,8 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
-> >
-> >  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
-> >
-> > +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
-> > +
-> >  unsigned int device_get_child_node_count(struct device *dev);
-> >
-> >  static inline bool device_property_read_bool(struct device *dev,
-> > --
-> > 2.17.1
-> >  
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
