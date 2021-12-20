@@ -2,257 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E93479F0F
-	for <lists+linux-acpi@lfdr.de>; Sun, 19 Dec 2021 05:04:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D17247A773
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Dec 2021 10:53:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235184AbhLSEEo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 18 Dec 2021 23:04:44 -0500
-Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:52739 "EHLO
-        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235181AbhLSEEn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 18 Dec 2021 23:04:43 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0V.0OBJf_1639886679;
-Received: from 30.30.108.164(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V.0OBJf_1639886679)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Sun, 19 Dec 2021 12:04:40 +0800
-Message-ID: <91fb8cb3-71fa-e8d7-163f-f88c4ff3357f@linux.alibaba.com>
-Date:   Sun, 19 Dec 2021 12:04:38 +0800
+        id S230211AbhLTJxD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 20 Dec 2021 04:53:03 -0500
+Received: from mga01.intel.com ([192.55.52.88]:38165 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229831AbhLTJxD (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 20 Dec 2021 04:53:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1639993983; x=1671529983;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cO9crrlC+QfPg9ba/8m5FFVy6MdpSNm+TSKCAjH3juQ=;
+  b=Gsn1GM6ihdReikx11O12KCxOHgW9Bo2f2e4tmdb30oc7j4Hmo6wZurDN
+   aDeEqJ6ZBTX2T30zFjrKx8eWPXMTIKU+gNeQ6bcxwdk8JoARPNSnO4V8U
+   7ivWPDGamVnaMeBCCZ1IWIV6z7ET34hJCrTI46pZb7j0GdtyTrMTYxa0h
+   MNjidLjOv6Q1cQJD7daPzcnz/hEEcLXwPRsQIK868opFiS0vtVWxUpBPG
+   AFBlAHutYezh7pQ2po8appjui8lLGVNfWeUFKh/gNqxtDhm0Vsottse5w
+   bbQmtmMCGAiYM0Y6D7WmeKpdi5SIeFZoUFRWb36g3X73/yz+VQzXf9bV7
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10203"; a="264318481"
+X-IronPort-AV: E=Sophos;i="5.88,220,1635231600"; 
+   d="scan'208";a="264318481"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2021 01:53:02 -0800
+X-IronPort-AV: E=Sophos;i="5.88,220,1635231600"; 
+   d="scan'208";a="684213078"
+Received: from chenyu-desktop.sh.intel.com (HELO chenyu-desktop) ([10.239.158.186])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2021 01:53:00 -0800
+Date:   Mon, 20 Dec 2021 17:52:40 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org,
+        Hongyu Ning <hongyu.ning@intel.com>
+Subject: Re: [PATCH v12 2/4] drivers/acpi: Introduce Platform Firmware
+ Runtime Update device driver
+Message-ID: <20211220095240.GA582440@chenyu-desktop>
+References: <cover.1639669829.git.yu.c.chen@intel.com>
+ <11441d3b36608e0840c46eb45e6d75ffc1c020ec.1639669829.git.yu.c.chen@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.3.2
-Subject: Re: [RESEND PATCH v4] ACPI: Move sdei_init and ghes_init ahead to
- handle platform errors earlier
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
-        James Morse <james.morse@arm.com>, Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        luanshi <zhangliguang@linux.alibaba.com>,
-        zhuo.song@linux.alibaba.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>
-References: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
- <20211216133456.21002-1-xueshuai@linux.alibaba.com>
- <CAJZ5v0jOnA90BX0ZisY4Gm4tKTjQMcxOqEOa2FVZsuec0e_mSw@mail.gmail.com>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <CAJZ5v0jOnA90BX0ZisY4Gm4tKTjQMcxOqEOa2FVZsuec0e_mSw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <11441d3b36608e0840c46eb45e6d75ffc1c020ec.1639669829.git.yu.c.chen@intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rafeal,
-
-Thank you for your reply.
-
-On 2021/12/18 AM2:17, Rafael J. Wysocki wrote:
-> On Thu, Dec 16, 2021 at 2:35 PM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
->>
->> On an ACPI system, ACPI is initialised very early from a subsys_initcall(),
->> while SDEI is not ready until a subsys_initcall_sync().
->>
->> The SDEI driver provides functions (e.g. apei_sdei_register_ghes,
->> apei_sdei_unregister_ghes) to register or unregister event callback for
->> dispatcher in firmware. When the GHES driver probing, it registers the
->> corresponding callback according to the notification type specified by
->> GHES. If the GHES notification type is SDEI, the GHES driver will call
->> apei_sdei_register_ghes to register event call.
->>
->> When the firmware emits an event, it migrates the handling of the event
->> into the kernel at the registered entry-point __sdei_asm_handler. And
->> finally, the kernel will call the registered event callback and return
->> status_code to indicate the status of event handling. SDEI_EV_FAILED
->> indicates that the kernel failed to handle the event.
->>
->> Consequently, when an error occurs during kernel booting, the kernel is
->> unable to handle and report errors until the GHES driver is initialized by
->> device_initcall(), in which the event callback is registered. All errors
->> that occurred before GHES initialization are missed and there is no chance
->> to report and find them again.
->>
->> From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
->> memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
->> the estatus memory pool. On the other hand, ghes_init() relies on
->> sdei_init() to detect the SDEI version and the framework for registering
->> and unregistering events. By the way, I don't figure out why acpi_hest_init
->> is called in acpi_pci_root_init, it don't rely on any other thing. May it
->> could be moved further, following acpi_iort_init in acpi_init.
->>
->> sdei_init() relies on ACPI table which is initialized subsys_initcall():
->> acpi_init(), acpi_bus_init(), acpi_load_tables(), acpi_tb_laod_namespace().
->> May it should be also moved further, after acpi_load_tables.
->>
->> In this patch, move sdei_init and ghes_init as far ahead as possible, right
->> after acpi_hest_init().
->>
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+On Fri, Dec 17, 2021 at 12:03:02AM +0800, Chen Yu wrote:
+> Introduce the pfr_update driver which can be used for Platform Firmware
+> Runtime code injection and driver update [1]. The user is expected to
+> provide the EFI capsule, and pass it to the driver by writing the capsule
+> to a device special file. The capsule is transferred by the driver to the
+> platform firmware with the help of an ACPI _DSM method under the special
+> ACPI Platform Firmware Runtime Update device (INTC1080), and the actual
+> firmware update is carried out by the low-level Management Mode code in
+> the platform firmware.
 > 
-> This needs ACKs from Bjorn and Boris/Tony/James/.
+> This patch allows certain pieces of the platform firmware to be
+> updated on the fly while the system is running (runtime) without the
+> need to restart it, which is key in the cases when the system needs to
+> be available 100% of the time and it cannot afford the downtime related
+> to restarting it, or when the work carried out by the system is
+> particularly important, so it cannot be interrupted, and it is not
+> practical to wait until it is complete.
+> 
+> Link: https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf # [1]
+> Cc: Andy Shevchenko <andriy.shevchenko@intel.com>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Ashok Raj <ashok.raj@intel.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+> +
+[cut]
+> +static int start_update(int action, struct pfru_device *pfru_dev)
+> +{
+> +	union acpi_object *out_obj, in_obj, in_buf;
+> +	struct pfru_updated_result update_result;
+> +	acpi_handle handle;
+> +	int ret = -EINVAL;
+> +
+> +	memset(&in_obj, 0, sizeof(in_obj));
+> +	memset(&in_buf, 0, sizeof(in_buf));
+> +	in_obj.type = ACPI_TYPE_PACKAGE;
+> +	in_obj.package.count = 1;
+> +	in_obj.package.elements = &in_buf;
+> +	in_buf.type = ACPI_TYPE_INTEGER;
+> +	in_buf.integer.value = action;
+> +
+> +	handle = ACPI_HANDLE(pfru_dev->parent_dev);
+> +	out_obj = acpi_evaluate_dsm_typed(handle, &pfru_guid,
+> +					  pfru_dev->rev_id, PFRU_FUNC_START,
+> +					  &in_obj, ACPI_TYPE_PACKAGE);
+> +	if (!out_obj)
+> +		return ret;
+> +
+> +	if (out_obj->package.count < UPDATE_NR_IDX ||
+> +	    out_obj->package.elements[UPDATE_STATUS_IDX].type != ACPI_TYPE_INTEGER ||
+> +	    out_obj->package.elements[UPDATE_EXT_STATUS_IDX].type != ACPI_TYPE_INTEGER ||
+> +	    out_obj->package.elements[UPDATE_AUTH_TIME_LOW_IDX].type != ACPI_TYPE_INTEGER ||
+> +	    out_obj->package.elements[UPDATE_AUTH_TIME_HI_IDX].type != ACPI_TYPE_INTEGER ||
+> +	    out_obj->package.elements[UPDATE_EXEC_TIME_LOW_IDX].type != ACPI_TYPE_INTEGER ||
+> +	    out_obj->package.elements[UPDATE_EXEC_TIME_HI_IDX].type != ACPI_TYPE_INTEGER)
+> +		goto free_acpi_buffer;
+> +
+> +	update_result.status =
+> +		out_obj->package.elements[UPDATE_STATUS_IDX].integer.value;
+Thanks for Hongyu's testing, the status should be cascaded to user space.
+Will fix it in next version.
 
-OK, I will keep an eye on their response.
-I am wondering that do you have any comments for revision?
-
-Thank you.
-
-Best Regrads,
-Shuai
-
->> ---
->>  drivers/acpi/apei/ghes.c    | 18 ++++++++----------
->>  drivers/acpi/pci_root.c     |  5 ++++-
->>  drivers/firmware/arm_sdei.c | 13 ++-----------
->>  include/acpi/apei.h         |  2 ++
->>  include/linux/arm_sdei.h    |  2 ++
->>  5 files changed, 18 insertions(+), 22 deletions(-)
->>
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index 0c8330ed1ffd..b11e46fb4b3d 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -1457,27 +1457,26 @@ static struct platform_driver ghes_platform_driver = {
->>         .remove         = ghes_remove,
->>  };
->>
->> -static int __init ghes_init(void)
->> +void __init ghes_init(void)
->>  {
->>         int rc;
->>
->>         if (acpi_disabled)
->> -               return -ENODEV;
->> +               return;
->>
->>         switch (hest_disable) {
->>         case HEST_NOT_FOUND:
->> -               return -ENODEV;
->> +               pr_info(GHES_PFX "HEST is not found!\n");
->> +               return;
->>         case HEST_DISABLED:
->>                 pr_info(GHES_PFX "HEST is not enabled!\n");
->> -               return -EINVAL;
->> +               return;
->>         default:
->>                 break;
->>         }
->>
->> -       if (ghes_disable) {
->> +       if (ghes_disable)
->>                 pr_info(GHES_PFX "GHES is not enabled!\n");
->> -               return -EINVAL;
->> -       }
->>
->>         ghes_nmi_init_cxt();
->>
->> @@ -1495,8 +1494,7 @@ static int __init ghes_init(void)
->>         else
->>                 pr_info(GHES_PFX "Failed to enable APEI firmware first mode.\n");
->>
->> -       return 0;
->> +       return;
->>  err:
->> -       return rc;
->> +       ghes_disable = 1;
->>  }
->> -device_initcall(ghes_init);
->> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
->> index ab2f7dfb0c44..1260bb556184 100644
->> --- a/drivers/acpi/pci_root.c
->> +++ b/drivers/acpi/pci_root.c
->> @@ -23,7 +23,7 @@
->>  #include <linux/dmi.h>
->>  #include <linux/platform_data/x86/apple.h>
->>  #include <acpi/apei.h> /* for acpi_hest_init() */
->> -
->> +#include <linux/arm_sdei.h> /* for sdei_init() */
->>  #include "internal.h"
->>
->>  #define ACPI_PCI_ROOT_CLASS            "pci_bridge"
->> @@ -946,6 +946,9 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
->>  void __init acpi_pci_root_init(void)
->>  {
->>         acpi_hest_init();
->> +       sdei_init();
->> +       ghes_init();
->> +
->>         if (acpi_pci_disabled)
->>                 return;
->>
->> diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
->> index a7e762c352f9..1e1a51510e83 100644
->> --- a/drivers/firmware/arm_sdei.c
->> +++ b/drivers/firmware/arm_sdei.c
->> @@ -1059,14 +1059,14 @@ static bool __init sdei_present_acpi(void)
->>         return true;
->>  }
->>
->> -static int __init sdei_init(void)
->> +void __init sdei_init(void)
->>  {
->>         struct platform_device *pdev;
->>         int ret;
->>
->>         ret = platform_driver_register(&sdei_driver);
->>         if (ret || !sdei_present_acpi())
->> -               return ret;
->> +               return;
->>
->>         pdev = platform_device_register_simple(sdei_driver.driver.name,
->>                                                0, NULL, 0);
->> @@ -1076,17 +1076,8 @@ static int __init sdei_init(void)
->>                 pr_info("Failed to register ACPI:SDEI platform device %d\n",
->>                         ret);
->>         }
->> -
->> -       return ret;
->>  }
->>
->> -/*
->> - * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
->> - * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
->> - * by device_initcall(). We want to be called in the middle.
->> - */
->> -subsys_initcall_sync(sdei_init);
->> -
->>  int sdei_event_handler(struct pt_regs *regs,
->>                        struct sdei_registered_event *arg)
->>  {
->> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
->> index ece0a8af2bae..7dbd6363fda7 100644
->> --- a/include/acpi/apei.h
->> +++ b/include/acpi/apei.h
->> @@ -27,8 +27,10 @@ extern int hest_disable;
->>  extern int erst_disable;
->>  #ifdef CONFIG_ACPI_APEI_GHES
->>  extern bool ghes_disable;
->> +void __init ghes_init(void);
->>  #else
->>  #define ghes_disable 1
->> +static inline void ghes_init(void) { return; }
->>  #endif
->>
->>  #ifdef CONFIG_ACPI_APEI
->> diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
->> index 0a241c5c911d..9c987188b692 100644
->> --- a/include/linux/arm_sdei.h
->> +++ b/include/linux/arm_sdei.h
->> @@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
->>  /* For use by arch code when CPU hotplug notifiers are not appropriate. */
->>  int sdei_mask_local_cpu(void);
->>  int sdei_unmask_local_cpu(void);
->> +void __init sdei_init(void);
->>  #else
->>  static inline int sdei_mask_local_cpu(void) { return 0; }
->>  static inline int sdei_unmask_local_cpu(void) { return 0; }
->> +static inline void sdei_init(void) { return ; }
->>  #endif /* CONFIG_ARM_SDE_INTERFACE */
->>
->>
->> --
->> 2.20.1.12.g72788fdb
->>
+Thanks,
+Chenyu
