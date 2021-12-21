@@ -2,94 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03E9747BD1B
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 10:45:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D8947BD27
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 10:47:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231744AbhLUJpP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Dec 2021 04:45:15 -0500
-Received: from mga07.intel.com ([134.134.136.100]:59067 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231710AbhLUJpO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 21 Dec 2021 04:45:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640079914; x=1671615914;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=/uvKmkz952zDqvr2rf+02z0n2M4cj8bmt3XUsQVfh44=;
-  b=YT0BN2ySEkVCsMCtstGLJIMz6wKAhDUa27eYGpIujCr1HTKjSsiweeOp
-   awMMGeviJd4l/ThCuikkRgNaxEXV/qR/rfs14ZHu9fZWRRFSLx6B1DdJm
-   VDMDNsoeSoz2sfp69EcInf7m94d77h0RvjNsqhGpeNMH7yTHKmYKUzF/B
-   8VlHpTGrNJ1K94777EBblXfI+yLOFSX/pcRIxitNU2GKdR7CZhVH8tbCY
-   R8CrMhKY1LuME0Gj8UNzb/zOoOQeDSpFlQZVzIhvFmGs1cxHTPdpZQ5yk
-   0cAEvoAaIzSwqqsq907TLMoVEVOZoubuj8VYaw8Hv3io7t8Ce3FMtuU1w
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10204"; a="303732697"
-X-IronPort-AV: E=Sophos;i="5.88,223,1635231600"; 
-   d="scan'208";a="303732697"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 01:45:14 -0800
-X-IronPort-AV: E=Sophos;i="5.88,223,1635231600"; 
-   d="scan'208";a="616711939"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 01:45:06 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 2CE56201AA;
-        Tue, 21 Dec 2021 11:45:04 +0200 (EET)
-Date:   Tue, 21 Dec 2021 11:45:04 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Daniel Scally <djrscally@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
+        id S236570AbhLUJrd convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 21 Dec 2021 04:47:33 -0500
+Received: from relay9-d.mail.gandi.net ([217.70.183.199]:49637 "EHLO
+        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236559AbhLUJrd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Dec 2021 04:47:33 -0500
+Received: (Authenticated sender: clement.leger@bootlin.com)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 4A9DCFF810;
+        Tue, 21 Dec 2021 09:47:31 +0000 (UTC)
+Date:   Tue, 21 Dec 2021 10:46:59 +0100
+From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] software node: fix wrong node passed to find nargs_prop
-Message-ID: <YcGiIHAJS7/qXcJv@paasikivi.fi.intel.com>
+Message-ID: <20211221104659.2f8af03a@fixe.home>
+In-Reply-To: <d9f5b201-2a00-799d-3a0f-7c9709d77102@gmail.com>
 References: <20211220210533.3578678-1-clement.leger@bootlin.com>
  <CAHp75Vf+F2L4EFmokRYD+-M9hSuz+SbiiWnqHvFZttRyfKS-mg@mail.gmail.com>
  <d9f5b201-2a00-799d-3a0f-7c9709d77102@gmail.com>
- <YcGfky32lSXeABEF@kroah.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YcGfky32lSXeABEF@kroah.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Greg, Andy,
+Le Mon, 20 Dec 2021 23:37:07 +0000,
+Daniel Scally <djrscally@gmail.com> a écrit :
 
-On Tue, Dec 21, 2021 at 10:34:11AM +0100, Greg Kroah-Hartman wrote:
-> On Mon, Dec 20, 2021 at 11:37:07PM +0000, Daniel Scally wrote:
-> > Thanks Andy
-> > 
-> > On 20/12/2021 22:13, Andy Shevchenko wrote:
-> > > + Sakari, Dan
-> > > 
-> > > On Monday, December 20, 2021, Cl�ment L�ger <clement.leger@bootlin.com
-> > > <mailto:clement.leger@bootlin.com>> wrote:
-> > > 
-> > >     nargs_prop refers to a property located in the reference that is found
-> > >     within the nargs property.
-> > 
-> > I think this is right (it's not used in the ACPI version, and the OF
-> > version is quite convoluted so a bit hard to follow)...but also I note
-> > that none of the users of fwnode_property_get_reference_args() pass
-> > anything to nargs_prop anyway...do we even need this?
+> Thanks Andy
 > 
-> Looks like it is unused, please just remove it.
+> On 20/12/2021 22:13, Andy Shevchenko wrote:
+>  [...]  
+> 
+> I think this is right (it's not used in the ACPI version, and the OF
+> version is quite convoluted so a bit hard to follow)...but also I note
+> that none of the users of fwnode_property_get_reference_args() pass
+> anything to nargs_prop anyway...do we even need this?
 
-If you remove nargs_prop argument, then callers will have to use OF
-property API instead to parse references with property-defined number of
-arguments. The goal has been to cover all functionality in a
-firmware-independent way.
+Indeed, this is currently not used anywhere, nargs is always used
+instead of nargs_prop. The usage is meant to be (almost) the same as
+of_parse_phandle_with_args().
+
+ie:
+
+ ret = of_parse_phandle_with_args(node, "resets", "#reset-cells",
+				  index, &args);
+
+can be replaced by:
+
+ ret = fwnode_property_get_reference_args(node, "resets",
+					  "#reset-cells", 0 index,
+					  &args);
+
+I have some patches that uses that with software nodes and that will
+need this support.
+
+> 
+> Use the correct reference node in call to
+> >     property_entry_read_int_array() to retrieve the correct nargs value.
+> > 
+> >     Fixes: b06184acf751 ("software node: Add
+> >     software_node_get_reference_args()")  
+> 
+> I think this might have been introduced later...maybe 996b0830f95d1,
+> maybe e933bedd45099
+
+From what I saw, it was already in the original commit adding this but
+I can be wrong.
+
+> 
+> >     Signed-off-by: Clément Léger <clement.leger@bootlin.com
+> >     <mailto:clement.leger@bootlin.com>>
+> >     ---
+> >      drivers/base/swnode.c | 2 +-
+> >      1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> >     diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> >     index 4debcea4fb12..0a482212c7e8 100644
+> >     --- a/drivers/base/swnode.c
+> >     +++ b/drivers/base/swnode.c
+> >     @@ -529,7 +529,7 @@ software_node_get_reference_args(const struct
+> >     fwnode_handle *fwnode,
+> >                     return -ENOENT;
+> > 
+> >             if (nargs_prop) {
+> >     -               error =
+> >     property_entry_read_int_array(swnode->node->properties,
+> >     +               error =
+> >     property_entry_read_int_array(ref->node->properties,
+> >                                                           nargs_prop,
+> >     sizeof(u32),
+> >                                                          
+> >     &nargs_prop_val, 1);
+> >                     if (error)
+> >     -- 
+> >     2.34.1
+> > 
+> > 
+> > 
+> > -- 
+> > With Best Regards,
+> > Andy Shevchenko
+> > 
+> >   
+
+
 
 -- 
-Regards,
-
-Sakari Ailus
+Clément Léger,
+Embedded Linux and Kernel engineer at Bootlin
+https://bootlin.com
