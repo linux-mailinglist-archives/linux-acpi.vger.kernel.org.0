@@ -2,140 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E38E47C416
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 17:47:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F9AA47C62A
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 19:16:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239989AbhLUQrd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Dec 2021 11:47:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50392 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239972AbhLUQrd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Dec 2021 11:47:33 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F504C061401
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Dec 2021 08:47:33 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id f5so31310283edq.6
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Dec 2021 08:47:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=qgzoOjuixCPGD3DrGcfNRG0OiVFUDG2snsOsT7Z+aWs=;
-        b=GfZb8I6uUXmA3ugHIvVwpvC75DFWqQ9FTrkYC+xshHSAlo0PBtBwr7JyaJl6qNUSCK
-         /NZ6dgKqVNXMkHXcvp8keaHOhC9o7qT5Z9WQn7CLE9/9acgQ9bSYnrzfhgtyY4icBoFS
-         S47vPFEUe8cwXS+Xtn4fDGjQIFrraNgMjP/RQf4KV17CZAV6Gs6jpwglRvHOcqHDpJaL
-         5hGWYcKtbkA6Zh2tnyqRJAbPS1yb272ZLAfgQMP1sImvfwE59amNwt1QMBPS3ZrdCfQA
-         wgF9LuSmes4YJDeRDmkhDeZ+UoZ5SxTFUH9cTHgpFrJY/OB3ks5+8yfIUcc0dhJH3lWj
-         tiEQ==
+        id S241120AbhLUSQd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Dec 2021 13:16:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:38413 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236864AbhLUSQd (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 21 Dec 2021 13:16:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1640110592;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=oZeVhFboZslEu9Zvr6cMkBDRbTmY4fOX3foXx2jkBng=;
+        b=GEsNHl5EFwKNtMcA9mjvHSZVDKEB/penB+t0CtxJWNAk/2LwtB+1PeOR7J8XkSljEwhOiw
+        Iju989bYh6YsUkL/mTGFsq3eVi9JB2/CQW4EzesK8KbByU981U2M5wf3SwphMLBRNQ4K25
+        o2mWp2l+OdOYOsxb7YjPqXGATa3c5Ug=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-643-458acgUdMmqU3HtNs6UZ6g-1; Tue, 21 Dec 2021 13:16:31 -0500
+X-MC-Unique: 458acgUdMmqU3HtNs6UZ6g-1
+Received: by mail-ed1-f70.google.com with SMTP id z8-20020a056402274800b003f8580bfb99so5713872edd.11
+        for <linux-acpi@vger.kernel.org>; Tue, 21 Dec 2021 10:16:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=qgzoOjuixCPGD3DrGcfNRG0OiVFUDG2snsOsT7Z+aWs=;
-        b=76c7PMVycz4RsyfRRcfJN23rrRtMw1PL9q4BCRmXTGjqTivEV2hUTbLICKFDlz0hf3
-         g0cnWAgeOdgZNqJVZBsnEO+m7vm8qaiIgODXHf7+1h9qMvFP7s5Bm5sCotqWxxMHtyIK
-         VV7GujjK8p7haLd4eOzin5vxeyrpp6b1WXJFsFcBgLShktxibxaRehwwxn3k5BPKb1/R
-         InEtnVekefgxtC9nZkvXyQgIbgoz8y9a7+Z2Hgk6yOqy9oOs2tDYrfdSC+wyawyOFj4/
-         760YCnQMFNto8N70gWhOTS54q/y8FJIaRFCmkgu8KlxclFehWLVwo6jXqNxJkz+dbZpv
-         VnWA==
-X-Gm-Message-State: AOAM530Kdw01C3molhNw5Wu8senu5FBFM958K7UHxj4no4o4mE4cm3g0
-        fnmO/QW2MGHu9EsLuaFbMFxK9ghA85ElMawMDO/XBA==
-X-Google-Smtp-Source: ABdhPJwDLPCgB8Wi8VYCO/jFHJtdzGpyco8O0RmQmiFpE9YLdKzudzKph06jI7RIeEBybqsLVIoSLRUWzWUsqlZzMAA=
-X-Received: by 2002:a05:6402:1c08:: with SMTP id ck8mr4115171edb.32.1640105250601;
- Tue, 21 Dec 2021 08:47:30 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=oZeVhFboZslEu9Zvr6cMkBDRbTmY4fOX3foXx2jkBng=;
+        b=7lBK/IjXuZv9k4hrTz2ZsIlYfdvnM0FwbUr0hNw5pSxNGvGV8ga2m1w6SRL4XUeJpY
+         2YMuxXF9H282uHrz0X6wbWxpdR9tbseLr5uvuJJ69BnarZmtMqZ9P6g4nbzrzuhIAQ2i
+         mK67i6AXOnC+ZtaNAp6PW13rNMOqJvsrwgVByY38pJ70Jclxzc6A25wYv9EWuM9JmR4B
+         /8fGTy18jtp7Q266cSIWTuMoaJa8Zv/UFLxGNS4A4RuUm/spLj3fyhjS1pQZ9HX98xXC
+         GukLvk16jchEHclHmIjt28ONc2lW2PnHwwg19kJOzf0XPPptIPriO72tSWkIPhS1/xCk
+         TRfw==
+X-Gm-Message-State: AOAM532hx8Jg0TWZc8TRdkemspvKhlzipVYXWz+mh16mQIkWTIvPuTHm
+        M9ILxOqTFZCRINtSe2GUOYExp3KcjT851MF9uK/oNN+9Nuvxul2FUUf6DtMJnf6toptPiH5/vX6
+        Mo1EK9nVVTTQvEQYn5rXDQA==
+X-Received: by 2002:a05:6402:2891:: with SMTP id eg17mr4529285edb.33.1640110590002;
+        Tue, 21 Dec 2021 10:16:30 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJy1A8/D2KSPClN8mkwmxMpBeMDz35yUrtABXglLtrO/tH+rl/3zBn9FK8lB8DeMNNQQA0SHdg==
+X-Received: by 2002:a05:6402:2891:: with SMTP id eg17mr4529270edb.33.1640110589822;
+        Tue, 21 Dec 2021 10:16:29 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id hd36sm778579ejc.96.2021.12.21.10.16.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Dec 2021 10:16:29 -0800 (PST)
+Message-ID: <e387ed3f-8f8c-1fa9-e576-92bd3ab08671@redhat.com>
+Date:   Tue, 21 Dec 2021 19:16:28 +0100
 MIME-Version: 1.0
-References: <20211220210643.47842-1-pmenzel@molgen.mpg.de> <CAE_wzQ_Lg1ODV5sEqtW=SauhSXxi6+fh3msOuhnJy8-sNtORcg@mail.gmail.com>
-In-Reply-To: <CAE_wzQ_Lg1ODV5sEqtW=SauhSXxi6+fh3msOuhnJy8-sNtORcg@mail.gmail.com>
-From:   Guenter Roeck <groeck@google.com>
-Date:   Tue, 21 Dec 2021 08:47:19 -0800
-Message-ID: <CABXOdTeNy3jQ5aQijw9HTpwcNvkEJmddz9yf0Mk-Z+78bDDN-A@mail.gmail.com>
-Subject: Re: [PATCH] CHROMIUM: i2c: Add device property for probing
-To:     Dmitry Torokhov <dtor@chromium.org>
-Cc:     Paul Menzel <pmenzel@molgen.mpg.de>, Wolfram Sang <wsa@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Furquan Shaikh <furquan@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Tim Wawrzynczak <twawrzynczak@chromium.org>,
-        coreboot@coreboot.org, Matt DeVillier <matt.devillier@gmail.com>,
-        Felix Singer <felixsinger@posteo.net>,
-        Duncan Laurie <dlaurie@chromium.org>,
-        Benson Leung <bleung@chromium.org>,
-        Furquan Shaikh <furquan@chromium.org>,
-        Justin TerAvest <teravest@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>, linux-i2c@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" 
-        <devicetree@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v2 0/6] Support Spi in i2c-multi-instantiate driver
+Content-Language: en-US
+To:     Stefan Binding <sbinding@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        patches@opensource.cirrus.com
+References: <20211210154050.3713-1-sbinding@opensource.cirrus.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20211210154050.3713-1-sbinding@opensource.cirrus.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Dec 20, 2021 at 1:49 PM Dmitry Torokhov <dtor@chromium.org> wrote:
->
-> Hi Paul,
->
-> On Mon, Dec 20, 2021 at 1:07 PM Paul Menzel <pmenzel@molgen.mpg.de> wrote=
-:
-> >
-> > From: Furquan Shaikh <furquan@google.com>
-> >
-> > Dear Linux folks,
-> >
-> >
-> > Google Chromebooks are often built with devices sourced from different
-> > vendors. These need to be probed. To deal with this, the firmware =E2=
-=80=93 in
-> > this case coreboot =E2=80=93 tags such optional devices accordingly =E2=
-=80=93 I think
-> > this is commit fbf2c79b (drivers/i2c/generic: Add config for marking
-> > device as probed) =E2=80=93 and Chromium OS=E2=80=99 Linux kernel has t=
-he patch at hand
-> > applied to act accordingly. Right after the merge, Dmitry created a
-> > revert, which was actively discussed for two days but wasn=E2=80=99t ap=
-plied.
-> > That means, millions of devices shipped with such a firmware and Linux
-> > kernel. To support these devices with upstream Linux kernel, is there a=
-n
-> > alternative to applying the patch to the Linux kernel, and to support
-> > the shipped devices?
->
-> *sigh* I should have pushed harder, but I see it managed to
-> proliferate even into our newer kernels. Not having this patch should
-> not cause any problems, it can only hurt, because the i2c core has no
-> idea how to power up and reset the device properly. The only downside
-> of not having this patch is that we may have devices in sysfs that are
-> not connected to actual hardware. They do now cause any problems and
-> is how we have been shipping ARM-based devices where we also dual- and
-> triple-source components. However if we were to have a device that
-> switches between several addresses (let's say device in bootloader
-> mode uses 0x10 address and in normal mode 0x20) this "probing" may
-> result in device not being detected at all.
->
-> If we wanted to do this correctly, coreboot would have to implement
-> full power and reset control and also add drivers for I2C controllers
-> to be able to communicate with peripherals, and then adjust _STA
-> methods to report "not present" when the device is indeed absent. And
-> note that even in this case we would have issues with "morphing
-> devices", so coreboot would also need to know how to reset device out
-> of bootloader mode, and maybe flash firmware so device can work in
-> normal mode.
->
-> However coreboot does (or did?) not want to add code to handle i2c
-> controllers, and would like to push this knowledge to the kernel. And
-> the kernel does know how to handle peripherals properly, but that
-> knowledge lies in individual drivers, not i2c core.
->
-> We should remove "linux,probed" from coreboot and not propagate to
-> newer Chrome OS kernels, and keep it away from upstream.
->
+Hi Stefan,
 
-Revert from chromeos-5.15 is at
-https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/=
-3350347.
-Everyone please feel free to comment there.
+On 12/10/21 16:40, Stefan Binding wrote:
+> Add support for SPI bus in the ic2-multi-instantiate driver as
+> upcoming laptops will need to multi instantiate SPI devices from
+> a single device node, which has multiple SpiSerialBus entries at
+> the ACPI table.
+> 
+> With the new SPI support, i2c-multi-instantiate becomes
+> bus-multi-instantiate and is moved to the ACPI folder.
+> 
+> The intention is to support the SPI bus by re-using the current
+> I2C multi instantiate, instead of creating a new SPI multi
+> instantiate, to make it possible for peripherals that can be
+> controlled by I2C or SPI to have the same HID at the ACPI table.
+> 
+> The new driver (Bus multi instantiate, bmi) checks for the
+> hard-coded bus type and returns -ENODEV in case of zero devices
+> found for that bus. In the case of automatic bus detection, 
+> the driver will give preference to I2C.
+> 
+> The expectation is for a device node in the ACPI table to have
+> multiple I2cSerialBus only or multiple SpiSerialBus only, not
+> a mix of both; and for the case where there are both entries in
+> one device node, only the I2C ones would be probed.
+> 
+> This new bus multi instantiate will be used in CS35L41 HDA new
+> driver, being upstreamed:
+> https://lkml.org/lkml/2021/11/23/723
 
-Guenter
+Patches 1-5 look good to me and are:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Rafael, you may also consider this as my ack for merging this
+series through the ACPI subsys branches.
+
+But I do have some remarks on patch 6 which should be
+addressed first.
+
+Regards,
+
+Hans
+
+
+
+> 
+> Changes since V1:
+>  - Added Cover Letter
+>  - Split SPI patch into move, rename, reorganize and add
+>    SPI support
+>  - Hard coded BUS type for better decison making at bmi_probe
+>  - Driver moved to acpi folder
+>  - Change to use acpi_spi_find_controller_by_adev
+>  - New shared function bmi_get_irq for I2C and SPI
+> 
+> 
+> Lucas Tanure (3):
+>   platform/x86: i2c-multi-instantiate: Move it to drivers/acpi folder
+>   ACPI: i2c-multi-instantiate: Rename it for a generic bus driver name
+>   ACPI: bus-multi-instantiate: Reorganize I2C functions
+> 
+> Stefan Binding (3):
+>   spi: Export acpi_spi_find_controller_by_adev to be used externally
+>   spi: Make spi_alloc_device and spi_add_device public again
+>   ACPI: bus-multi-instantiate: Add SPI support
+> 
+>  MAINTAINERS                                  |   4 +-
+>  drivers/acpi/Kconfig                         |  11 +
+>  drivers/acpi/Makefile                        |   1 +
+>  drivers/acpi/bus-multi-instantiate.c         | 500 +++++++++++++++++++
+>  drivers/acpi/scan.c                          |  19 +-
+>  drivers/platform/x86/Kconfig                 |  11 -
+>  drivers/platform/x86/Makefile                |   1 -
+>  drivers/platform/x86/i2c-multi-instantiate.c | 174 -------
+>  drivers/spi/spi.c                            |   9 +-
+>  include/linux/spi/spi.h                      |  22 +
+>  10 files changed, 552 insertions(+), 200 deletions(-)
+>  create mode 100644 drivers/acpi/bus-multi-instantiate.c
+>  delete mode 100644 drivers/platform/x86/i2c-multi-instantiate.c
+> 
+
