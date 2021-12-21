@@ -2,127 +2,104 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94D8947BD27
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 10:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E1A647BF25
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 12:52:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236570AbhLUJrd convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 21 Dec 2021 04:47:33 -0500
-Received: from relay9-d.mail.gandi.net ([217.70.183.199]:49637 "EHLO
-        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236559AbhLUJrd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Dec 2021 04:47:33 -0500
-Received: (Authenticated sender: clement.leger@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 4A9DCFF810;
-        Tue, 21 Dec 2021 09:47:31 +0000 (UTC)
-Date:   Tue, 21 Dec 2021 10:46:59 +0100
-From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        id S237295AbhLULws (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Dec 2021 06:52:48 -0500
+Received: from meesny.iki.fi ([195.140.195.201]:39874 "EHLO meesny.iki.fi"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233650AbhLULws (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 21 Dec 2021 06:52:48 -0500
+Received: from hillosipuli.retiisi.eu (89-27-103-169.bb.dnainternet.fi [89.27.103.169])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sailus)
+        by meesny.iki.fi (Postfix) with ESMTPSA id DCE3C203BD;
+        Tue, 21 Dec 2021 13:52:42 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+        t=1640087563;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zDILul4DPdQ7u3FrvLmLVHQqmpPqTky0C1q7FxA7Zwk=;
+        b=jrzjLJBNlwnrwNALeYy1MAzhHCzyNfWA/BAjzdIv1Ozf70rSOdacq5lJwsOrIrvKF4V9Ys
+        4oxnC138JFkIt64jgElA/XR72JwqNi87/DwEr3o8huqD/4Nr5TMcGrpA0hQ6ZMQKrJNdc4
+        uGDvfJjzZUSgFhjdvPKiI969weSNwBw=
+Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 4B1CC634C90;
+        Tue, 21 Dec 2021 13:52:42 +0200 (EET)
+Date:   Tue, 21 Dec 2021 13:52:42 +0200
+From:   Sakari Ailus <sakari.ailus@iki.fi>
+To:     =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] software node: fix wrong node passed to find nargs_prop
-Message-ID: <20211221104659.2f8af03a@fixe.home>
-In-Reply-To: <d9f5b201-2a00-799d-3a0f-7c9709d77102@gmail.com>
+Message-ID: <YcHACtgpYcAWU68K@valkosipuli.retiisi.eu>
 References: <20211220210533.3578678-1-clement.leger@bootlin.com>
- <CAHp75Vf+F2L4EFmokRYD+-M9hSuz+SbiiWnqHvFZttRyfKS-mg@mail.gmail.com>
- <d9f5b201-2a00-799d-3a0f-7c9709d77102@gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211220210533.3578678-1-clement.leger@bootlin.com>
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1640087563; a=rsa-sha256; cv=none;
+        b=GTd8soqhhyq8Z/EwJxdFeK47O0j/aa1YgUAsF0iyauE4goHnvcS+vVwO1CrihvYoF6r4Dm
+        6W5icmoJ8tPOSCckwk1D0zbPFWwdyog3qbfU9F3Chh3Gg0qlvrG+pRGWpoGKKO9ICSotBB
+        HhnbGxWzIC16VG3HwU2tYcIM3VR9uek=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+        s=meesny; t=1640087563;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zDILul4DPdQ7u3FrvLmLVHQqmpPqTky0C1q7FxA7Zwk=;
+        b=MBwFYykErRw41yoNr2MNTqGy+jZxMnYFtrGzF5T+AfpoKn1l23Vt7DULSU5Tj070aJ0aOB
+        T8vnLxJoH/nIkWTQ4V4HFou5OqtIuJfi9zO/ar1684GCDfcuA7o1l0Zjx69hOlp/xmD4wm
+        Eowj+q8uWN4BF4AwoFVSRXr7zQhbZ3I=
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Le Mon, 20 Dec 2021 23:37:07 +0000,
-Daniel Scally <djrscally@gmail.com> a écrit :
-
-> Thanks Andy
+On Mon, Dec 20, 2021 at 10:05:33PM +0100, Cl�ment L�ger wrote:
+> nargs_prop refers to a property located in the reference that is found
+> within the nargs property. Use the correct reference node in call to
+> property_entry_read_int_array() to retrieve the correct nargs value.
 > 
-> On 20/12/2021 22:13, Andy Shevchenko wrote:
->  [...]  
+> Fixes: b06184acf751 ("software node: Add software_node_get_reference_args()")
+> Signed-off-by: Cl�ment L�ger <clement.leger@bootlin.com>
+
+Thank you (and thanks to Andy for cc'ing me).
+
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+> ---
+>  drivers/base/swnode.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> I think this is right (it's not used in the ACPI version, and the OF
-> version is quite convoluted so a bit hard to follow)...but also I note
-> that none of the users of fwnode_property_get_reference_args() pass
-> anything to nargs_prop anyway...do we even need this?
-
-Indeed, this is currently not used anywhere, nargs is always used
-instead of nargs_prop. The usage is meant to be (almost) the same as
-of_parse_phandle_with_args().
-
-ie:
-
- ret = of_parse_phandle_with_args(node, "resets", "#reset-cells",
-				  index, &args);
-
-can be replaced by:
-
- ret = fwnode_property_get_reference_args(node, "resets",
-					  "#reset-cells", 0 index,
-					  &args);
-
-I have some patches that uses that with software nodes and that will
-need this support.
-
-> 
-> Use the correct reference node in call to
-> >     property_entry_read_int_array() to retrieve the correct nargs value.
-> > 
-> >     Fixes: b06184acf751 ("software node: Add
-> >     software_node_get_reference_args()")  
-> 
-> I think this might have been introduced later...maybe 996b0830f95d1,
-> maybe e933bedd45099
-
-From what I saw, it was already in the original commit adding this but
-I can be wrong.
-
-> 
-> >     Signed-off-by: Clément Léger <clement.leger@bootlin.com
-> >     <mailto:clement.leger@bootlin.com>>
-> >     ---
-> >      drivers/base/swnode.c | 2 +-
-> >      1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> >     diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-> >     index 4debcea4fb12..0a482212c7e8 100644
-> >     --- a/drivers/base/swnode.c
-> >     +++ b/drivers/base/swnode.c
-> >     @@ -529,7 +529,7 @@ software_node_get_reference_args(const struct
-> >     fwnode_handle *fwnode,
-> >                     return -ENOENT;
-> > 
-> >             if (nargs_prop) {
-> >     -               error =
-> >     property_entry_read_int_array(swnode->node->properties,
-> >     +               error =
-> >     property_entry_read_int_array(ref->node->properties,
-> >                                                           nargs_prop,
-> >     sizeof(u32),
-> >                                                          
-> >     &nargs_prop_val, 1);
-> >                     if (error)
-> >     -- 
-> >     2.34.1
-> > 
-> > 
-> > 
-> > -- 
-> > With Best Regards,
-> > Andy Shevchenko
-> > 
-> >   
-
-
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index 4debcea4fb12..0a482212c7e8 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -529,7 +529,7 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
+>  		return -ENOENT;
+>  
+>  	if (nargs_prop) {
+> -		error = property_entry_read_int_array(swnode->node->properties,
+> +		error = property_entry_read_int_array(ref->node->properties,
+>  						      nargs_prop, sizeof(u32),
+>  						      &nargs_prop_val, 1);
+>  		if (error)
 
 -- 
-Clément Léger,
-Embedded Linux and Kernel engineer at Bootlin
-https://bootlin.com
+Sakari Ailus
