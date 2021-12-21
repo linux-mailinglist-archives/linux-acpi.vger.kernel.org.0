@@ -2,147 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B256847BFA6
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 13:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3099247C0C9
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 14:32:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237543AbhLUMYo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Dec 2021 07:24:44 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:57928 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237531AbhLUMYo (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Dec 2021 07:24:44 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8B3D6B81689;
-        Tue, 21 Dec 2021 12:24:42 +0000 (UTC)
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id 8F9E8C36AE2;
-        Tue, 21 Dec 2021 12:24:37 +0000 (UTC)
-Date:   Tue, 21 Dec 2021 12:30:12 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, git@xilinx.com, michals@xilinx.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v12 1/5] device property: Add fwnode_iomap()
-Message-ID: <20211221123012.0acecfb0@jic23-huawei>
-In-Reply-To: <20211218103824.67099464@jic23-huawei>
-References: <20211203212358.31444-1-anand.ashok.dumbre@xilinx.com>
-        <20211203212358.31444-2-anand.ashok.dumbre@xilinx.com>
-        <CAJZ5v0hG409ffmAiOO5j4O9iPN_qGp4Wnw8eNPKjm5kvncwRLA@mail.gmail.com>
-        <20211218103824.67099464@jic23-huawei>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S235218AbhLUNcy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Dec 2021 08:32:54 -0500
+Received: from mga06.intel.com ([134.134.136.31]:25104 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235204AbhLUNcx (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 21 Dec 2021 08:32:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640093573; x=1671629573;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SEuJ2PuemPrnmcu2w9PXAA6A8k1T5UjeeafKu5mrQfc=;
+  b=fMj9KD9DORQsgmnFlguu4lbU7jZlrjFneV3ZqR8Wy8yLsH7YPtbIoIyv
+   FuEngKybpAR5UZWZxx2cL5xzpqhZDckT0imkoksLbUlOyZex/eREhf4in
+   /pLo1ZFpG0qVDCqwryiw7RltWTCul5lNJoqz00tVtKvL/JhPr48RwlAT/
+   uf3Apy6/bFHENqKZ5SBGX8Qb0DLl/BVlWswt1Mthkx+qPe7HQUR6yqJOQ
+   HuQxlTde+SnMIvcbY7LSZcU+mt+j16a6cBarzmCWft9wIjvAFLcV788d0
+   /0Nk+uhTQ5qxrLXLW7IfRtqQQDaqzAEPM231pcN2qJ2MpJAkF8AAyOT5j
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10204"; a="301161499"
+X-IronPort-AV: E=Sophos;i="5.88,223,1635231600"; 
+   d="scan'208";a="301161499"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 05:32:53 -0800
+X-IronPort-AV: E=Sophos;i="5.88,223,1635231600"; 
+   d="scan'208";a="755810858"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 05:32:51 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mzfEj-000Reh-Ed;
+        Tue, 21 Dec 2021 15:31:25 +0200
+Date:   Tue, 21 Dec 2021 15:31:25 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sakari Ailus <sakari.ailus@iki.fi>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] software node: Update MAINTAINERS data base
+Message-ID: <YcHXLZwTfNEwC/9S@smile.fi.intel.com>
+References: <20211221071409.14361-1-andriy.shevchenko@linux.intel.com>
+ <YcHAkuyML0VLjxP/@valkosipuli.retiisi.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YcHAkuyML0VLjxP/@valkosipuli.retiisi.eu>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, 18 Dec 2021 10:38:24 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Tue, Dec 21, 2021 at 01:54:58PM +0200, Sakari Ailus wrote:
+> On Tue, Dec 21, 2021 at 09:14:09AM +0200, Andy Shevchenko wrote:
 
-> On Fri, 17 Dec 2021 18:52:00 +0100
-> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+> > +R:	Daniel Scally <djrscally@gmail.com>
 > 
-> > On Fri, Dec 3, 2021 at 10:24 PM Anand Ashok Dumbre
-> > <anand.ashok.dumbre@xilinx.com> wrote:  
-> > >
-> > > This patch introduces a new helper routine - fwnode_iomap(), which
-> > > allows to map the memory mapped IO for a given device node.
-> > >
-> > > This implementation does not cover the ACPI case and may be expanded
-> > > in the future. The main purpose here is to be able to develop resource
-> > > provider agnostic drivers.
-> > >
-> > > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > ---
-> > >  drivers/base/property.c  | 16 ++++++++++++++++
-> > >  include/linux/property.h |  2 ++
-> > >  2 files changed, 18 insertions(+)
-> > >
-> > > diff --git a/drivers/base/property.c b/drivers/base/property.c
-> > > index f1f35b48ab8b..ed4470410030 100644
-> > > --- a/drivers/base/property.c
-> > > +++ b/drivers/base/property.c
-> > > @@ -958,6 +958,22 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
-> > >  }
-> > >  EXPORT_SYMBOL(fwnode_irq_get);
-> > >
-> > > +/**
-> > > + * fwnode_iomap - Maps the memory mapped IO for a given fwnode
-> > > + * @fwnode:    Pointer to the firmware node
-> > > + * @index:     Index of the IO range
-> > > + *
-> > > + * Returns a pointer to the mapped memory.
-> > > + */
-> > > +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
-> > > +{
-> > > +       if (IS_ENABLED(CONFIG_OF_ADDRESS) && is_of_node(fwnode))
-> > > +               return of_iomap(to_of_node(fwnode), index);
-> > > +
-> > > +       return NULL;
-> > > +}
-> > > +EXPORT_SYMBOL(fwnode_iomap);    
-> > 
-> > So why is this EXPORT_SYMBOL() and not EXPORT_SYMBOL_GPL()?  
-> 
-> Good question.  I'm guessing this is because of_iomap is EXPORT_SYMBOL()
-> and we don't want to discourage use of this function in preference to it.
-> 
-> Series applied to the togreg branch of iio.git but initially pushed out
-> as testing to let 0-day see if it can find anything we broke.
-Note that I wrongly picked up the dtsi change so now dropped that.
-Also a trivial indentation fix that 0-day found and I've rolled into the
-original patch.
+> I wouldn't mind being added as reviewer, too. :-)
 
-Thanks,
+NP, I have just sent a v2 with your name included.
 
-Jonathan
-> 
-> Note I can still rebase if people would prefer _GPL() so feel free to
-> discuss further. +CC Rob Herring and DT list.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
-> > 
-> > Other than this I'm not an OF_ expert, but I trust Andy, so with the
-> > above addressed:
-> > 
-> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >   
-> > > +
-> > >  /**
-> > >   * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
-> > >   * @fwnode: Pointer to the parent firmware node
-> > > diff --git a/include/linux/property.h b/include/linux/property.h
-> > > index 88fa726a76df..6670d5a1ec2a 100644
-> > > --- a/include/linux/property.h
-> > > +++ b/include/linux/property.h
-> > > @@ -122,6 +122,8 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
-> > >
-> > >  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
-> > >
-> > > +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
-> > > +
-> > >  unsigned int device_get_child_node_count(struct device *dev);
-> > >
-> > >  static inline bool device_property_read_bool(struct device *dev,
-> > > --
-> > > 2.17.1
-> > >    
-> 
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
