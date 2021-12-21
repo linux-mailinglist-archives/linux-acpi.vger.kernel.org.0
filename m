@@ -2,89 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3534247BCE6
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 10:31:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 260CE47BCF0
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 10:34:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234557AbhLUJb0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Dec 2021 04:31:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33518 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232603AbhLUJb0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Dec 2021 04:31:26 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF1AC061574;
-        Tue, 21 Dec 2021 01:31:25 -0800 (PST)
+        id S233951AbhLUJeR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Dec 2021 04:34:17 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:50340 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233216AbhLUJeQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Dec 2021 04:34:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 900E26149F;
-        Tue, 21 Dec 2021 09:31:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727F5C36AE2;
-        Tue, 21 Dec 2021 09:31:24 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 2D0DDCE129D;
+        Tue, 21 Dec 2021 09:34:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB2DC36AE2;
+        Tue, 21 Dec 2021 09:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1640079085;
-        bh=yvxQ4XoLsMIX+Y8XPJ7+rWyqlktIq865SJFV9MrUjMw=;
+        s=korg; t=1640079253;
+        bh=S0liGZ/rrTWRVdA9HyNrsNhXjNGJ+JYhJzh98QoHfGI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0AESIwz7hKmjvdcscuowBfcbmlkCyOmIh8p/yvzZhhxcCb+qE23Y5FHXiIbRsqc7t
-         u5Q84KA0u48A/KK2dJo1ELvYhriAwI7ZfnGmvT0ZNLjtLIlT+wr7b5sxqs1jlRGupf
-         7oMl8kHKhTksuXTrlCVSfOXYocmwcZFhrBJTZ4Sc=
-Date:   Tue, 21 Dec 2021 10:31:22 +0100
+        b=hmR7lXKIcRmYcBOZFtreMCl4qB5kNvl7wYHMNeztXCOF++uhNzbqPdbgb4v+m3W68
+         mgcM4P4RcNKHyjk5Czvk1M2+vzN4BhMuygwHRP7ZJqlCHTmDmgb72JQfbkPSytaSKr
+         bmj96z7eglkDIMb4luXxJEDGfRBSysor5eRBJgZo=
+Date:   Tue, 21 Dec 2021 10:34:11 +0100
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     James Morse <james.morse@arm.com>,
-        Jeremy Linton <jeremy.linton@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, devicetree@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 0/6] cacheinfo: CPU affinity and Devicetree 'id' support
-Message-ID: <YcGe6prlqTknbYj6@kroah.com>
-References: <20211216233125.1130793-1-robh@kernel.org>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] software node: fix wrong node passed to find nargs_prop
+Message-ID: <YcGfky32lSXeABEF@kroah.com>
+References: <20211220210533.3578678-1-clement.leger@bootlin.com>
+ <CAHp75Vf+F2L4EFmokRYD+-M9hSuz+SbiiWnqHvFZttRyfKS-mg@mail.gmail.com>
+ <d9f5b201-2a00-799d-3a0f-7c9709d77102@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20211216233125.1130793-1-robh@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d9f5b201-2a00-799d-3a0f-7c9709d77102@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 16, 2021 at 05:31:19PM -0600, Rob Herring wrote:
-> For upcoming Arm MPAM support in resctrl, it is necessary to have the
-> cacheinfo 'id' for MPAM enabled caches. The 'id' is part of the resctrl
-> ABI. While this support already exists for ACPI based systems, it is
-> missing for DT. This series adds the support.
+On Mon, Dec 20, 2021 at 11:37:07PM +0000, Daniel Scally wrote:
+> Thanks Andy
 > 
-> The 'id' value used is the smallest CPU h/w id value associated with a
-> cache. This requires walking the cache hierarchy from every CPU node to
-> get all CPUs associated with a cache. As MPAM also needs to know this,
-> the CPU affinity is also saved to avoid reimplementing and walking the
-> firmware tables again.
+> On 20/12/2021 22:13, Andy Shevchenko wrote:
+> > + Sakari, Dan
+> > 
+> > On Monday, December 20, 2021, Clément Léger <clement.leger@bootlin.com
+> > <mailto:clement.leger@bootlin.com>> wrote:
+> > 
+> >     nargs_prop refers to a property located in the reference that is found
+> >     within the nargs property.
 > 
-> Patches 1 and 2 are v2 from the prior series[1]. The rest are new.
-> 
-> Tested on arm64 with DT. ACPI changes are untested. I don't have a
-> system with an appropriate PPTT nor do I know how to modify ACPI tables.
-> 
-> Rob
-> 
-> [1] https://lore.kernel.org/all/20211006164332.1981454-1-robh@kernel.org/
-> 
-> Rob Herring (6):
->   cacheinfo: Allow for >32-bit cache 'id'
->   cacheinfo: Set cache 'id' based on DT data
->   cacheinfo: Add cpu_affinity_map to store affinity for all CPUs
->   ACPI / PPTT: Populate the cacheinfo.cpu_affinity_map
->   cacheinfo: Use cpu_affinity_map for populating shared_cpu_map
->   cacheinfo: Add cacheinfo_get_cache_affinity() function
-> 
->  drivers/acpi/pptt.c       | 29 +++++++++++++++--
->  drivers/base/cacheinfo.c  | 65 ++++++++++++++++++++++++++-------------
->  include/linux/cacheinfo.h | 29 +++++++++++++++--
->  3 files changed, 97 insertions(+), 26 deletions(-)
-> 
-> -- 
-> 2.32.0
-> 
+> I think this is right (it's not used in the ACPI version, and the OF
+> version is quite convoluted so a bit hard to follow)...but also I note
+> that none of the users of fwnode_property_get_reference_args() pass
+> anything to nargs_prop anyway...do we even need this?
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Looks like it is unused, please just remove it.
+
+thanks,
+
+greg k-h
