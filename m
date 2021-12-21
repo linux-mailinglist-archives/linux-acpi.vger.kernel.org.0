@@ -2,98 +2,106 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 019A547BF49
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 13:04:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71E1C47BF9B
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 13:22:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237369AbhLUMEl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Dec 2021 07:04:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40352 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234244AbhLUMEl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Dec 2021 07:04:41 -0500
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4496C061574
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Dec 2021 04:04:40 -0800 (PST)
-Received: by mail-yb1-xb30.google.com with SMTP id j2so37979214ybg.9
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Dec 2021 04:04:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=CRvYsPeGacwtMAqnqDt7OdhTYd1/MFAd0Bf8vLmD430=;
-        b=bOVp60YDE/ojr+Ry3lLcpHulnyjHi5PuotRC3qJodw6C2KSe+2O2gXuNGH8FSV0oDG
-         g9WY9Ks9UJ+pjbC4GBUYlzu08CdOSSrIKwEh9sNkSwAVtEP6UP4BTXxeolJ5CsFKVW6B
-         oMSZMTrQICzE/mxPC4nV4RS5Bq79DaWcLria3OlFly9T4C2k/NyX28dPbZm4G2azIBLe
-         /ekXSBNeXQqPJUHytlNjTO7cM1tJTcO1NtaAscY6kD21Z1/2HmLvlPXQ85Gx0a9wxg+y
-         AXZmgRQlQ+fS9NkpAu/o72BjdJrfbQ8oom5HkLFri/A5TrLnHg/ok4u8LNzupYP6pwKT
-         bjnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=CRvYsPeGacwtMAqnqDt7OdhTYd1/MFAd0Bf8vLmD430=;
-        b=Am23eynw1LgPtYpW5lTaKH7o3Z1eDTCu895U/kI5yY+rc9vWujsCVDHhEOy1KhysRq
-         s+AdtQcQ5QWu6CtfyZW2NODNaJUccb8XP8a8PA+aoZpXTiGaQu6ca4qNxQZaBJ5gNi5Z
-         SmPntIbZD2jlT2sJWZKLZt3jQDtQ6nmv62402HA3UsmuyaJWoOS5iVmJTBZfSnnPbxDm
-         m9sG4jZSi2sNeDCkQOlUDiAVguAmE5V6p0KChgN1kimuYPqT2nEX0kic5Q2fOI4Vd0Xg
-         2afFfZ1WQpPZ6zQtkXX3OqVibPBruB/8JRYGE+IzQHNEG1ek79DhMMwKAM5ZBlvzIdFo
-         TMzw==
-X-Gm-Message-State: AOAM533pPYbDtNNVyKTXYBho1HHHjJVl9YoQ0IbCg4a4tBTF4gr+1phR
-        UgbdcLYVyhPP+6Gq5JBEolwhHUwQ2XFPUmcp1do=
-X-Google-Smtp-Source: ABdhPJzjHPDRHXVIF5KIdhdRl4YRL+3FmNr4+oD/Betk4OvoC/uCttGbWzkufIiwOBQTQixSySzM8lP+zAYAyE8r7PM=
-X-Received: by 2002:a25:e692:: with SMTP id d140mr4371029ybh.311.1640088280079;
- Tue, 21 Dec 2021 04:04:40 -0800 (PST)
+        id S233956AbhLUMWf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Dec 2021 07:22:35 -0500
+Received: from mga06.intel.com ([134.134.136.31]:20237 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230075AbhLUMWf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 21 Dec 2021 07:22:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640089355; x=1671625355;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KxjKTxfIDQIJ0L4wXu6WXYwtURw23ovXt86O0TxEARE=;
+  b=dBtO6WkMLA/W0Um2XmRJkrAfqCzVAH1PsdTbfOkl9kT0Lu2xx84nz2hs
+   8fggNaUeMfNeNj+4Zz56tUWu3qqmVgZxDWV1TnOROB1uiLVghzEg5mF9H
+   lryn730gmyNTAxlDmsJnHEvEnAzDUwJ37p4GK+Kn379dmCVZwrfPHUHvY
+   RfiICYGBn16+tKCAzj0D6VU7nNEo6lpUJIRHEKxHulEVewagy+woDt5Lk
+   LKl4AN/LgIBEqPBkiPxO8o3tVrVowYSSFlDQ4GeLcpu5kn90p8JFQgRBr
+   KfbSX6NkabvzYs850suFbVToj9EY3AnXw4CDek1n/PyJo9f0FOuGZT+mD
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10204"; a="301151824"
+X-IronPort-AV: E=Sophos;i="5.88,223,1635231600"; 
+   d="scan'208";a="301151824"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 04:22:34 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,223,1635231600"; 
+   d="scan'208";a="663932038"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 21 Dec 2021 04:22:31 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 21 Dec 2021 14:22:31 +0200
+Date:   Tue, 21 Dec 2021 14:22:31 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>
+Subject: Re: [PATCH v1 1/1] software node: Update MAINTAINERS data base
+Message-ID: <YcHHB82r7qT/yJmg@kuha.fi.intel.com>
+References: <20211221071409.14361-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Received: by 2002:a81:5755:0:0:0:0:0 with HTTP; Tue, 21 Dec 2021 04:04:39
- -0800 (PST)
-Reply-To: general.floradarpino50@yahoo.com
-From:   "general.flora" <mr.sohalarfan.latif888@gmail.com>
-Date:   Tue, 21 Dec 2021 04:04:39 -0800
-Message-ID: <CAJLrsjqtmP=Zw7WVSoE+pHX3TYJi9a1uJc1L9Bx5YC75xCodhg@mail.gmail.com>
-Subject: STRICTLY AND CONFIDENT.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211221071409.14361-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Dear Beloved.
-I am General.Flora from the USA working in the US Army but presently
-in Yemen, for a peacekeeping mission, I have something very important
-to discuss with you. Some money in various currencies where discovered
-in barrels at a farm house in the middle East during a rescue
-operation in Iraq  War and it was agreed by Sergeant Kenneth Buff and
-myself that some part of these money be shared between us, I was given
-a total of ($13.5 Million US Dollars) as my own share , I kept this
-money in a security company for a long while now which i declared and
-deposit as my personal and family  treasure and it has been secured
-and protected for years now with the security company.
+On Tue, Dec 21, 2021 at 09:14:09AM +0200, Andy Shevchenko wrote:
+> There are two updates to the MAINTAINERS regarding to software node API:
+> - add Dan Scally to be designated reviewer
+> - add rather tightly related device property files to the list
+> - adjust section name accordingly
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Now, the WAR in Iraq is over, and all possible problems that could
-have emanated from the shared money has been totally cleaned up and
-all files closed, all what was discovered in the Middle East is no
-more discussed, i am ready to retire from active services by the end
-of next month, but, i need a trustworthy person that can help me take
-possession of this funds and keep it safe while i work on my
-retirement letter to join you so that we could discuss possible
-business partnership together with the money. You can confirm the
-genuineness of the findings by clicking on this website.
+Another way would be to have a separate entry for the unified device
+property API, and that could then have you (Andy), Sakari and Daniel
+as the reviers. I don't think I have much to say about those parts -
+I'm only interested in the software nodes. But it's up to you. FWIW:
 
-http://news.bbc.co.uk/2/hi/middle_east/2988455.stm
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-I=E2=80=99m seeking your kind assistance to move the sum of($13.5 Million U=
-S
-Dollars) to you as long as you will assure me that the money will be
-safe in your care until I complete my service here in (Yemen) before
-the end of next month. The most important thing is; =E2=80=9CCan I Trust
-you=E2=80=9D?As an officer on  ACTIVE DUTY I am not allowed to have access =
-to
-money, therefore, I have declared the content of the consignment as
-personal and my treasure. I would like to deliver to you. You will be
-rewarded with 30% of this funds for your assistance, all that I
-require is your mutual trust between us. Don=E2=80=99t betray me when you
-receive the consignment.
+> ---
+> 
+> Based on the latest Dan's involvement and amount of patches seen recently
+> I went ahead and added his name to the list. Dan, please tell me if it's
+> not appropriate.
+> 
+>  MAINTAINERS | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8912b2c1260c..ccb4aa744540 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17666,12 +17666,16 @@ F:	drivers/firmware/arm_sdei.c
+>  F:	include/linux/arm_sdei.h
+>  F:	include/uapi/linux/arm_sdei.h
+>  
+> -SOFTWARE NODES
+> +SOFTWARE NODES AND DEVICE PROPERTIES
+>  R:	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>  R:	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> +R:	Daniel Scally <djrscally@gmail.com>
+>  L:	linux-acpi@vger.kernel.org
+>  S:	Maintained
+> +F:	drivers/base/property.c
+>  F:	drivers/base/swnode.c
+> +F:	include/linux/fwnode.h
+> +F:	include/linux/property.h
+>  
+>  SOFTWARE RAID (Multiple Disks) SUPPORT
+>  M:	Song Liu <song@kernel.org>
+> -- 
+> 2.34.1
 
-Sincerely,
-General.Flora.
+thanks,
+
+-- 
+heikki
