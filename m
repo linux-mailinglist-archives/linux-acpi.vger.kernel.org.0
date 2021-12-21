@@ -2,207 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C77447C84A
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 21:36:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B084447C90F
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 Dec 2021 23:08:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234235AbhLUUgB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Dec 2021 15:36:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47122 "EHLO
+        id S235166AbhLUWIq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Dec 2021 17:08:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234018AbhLUUgB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Dec 2021 15:36:01 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5701C06173F
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Dec 2021 12:36:00 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id z29so56608132edl.7
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Dec 2021 12:36:00 -0800 (PST)
+        with ESMTP id S234047AbhLUWIq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Dec 2021 17:08:46 -0500
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E9FC061574;
+        Tue, 21 Dec 2021 14:08:46 -0800 (PST)
+Received: by mail-wr1-x434.google.com with SMTP id v11so761972wrw.10;
+        Tue, 21 Dec 2021 14:08:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Cc6k9W/5KfQMrfyUUbcF3m3pmI+HBcvfTZyXhfKLqOs=;
-        b=h7MPCyL+EHZrC4Y/I7Y0lwFUgli6cxS3tAi+3LKS9vdzt4d14V1Cig7wPV/y9Z5IxT
-         PSkrkW9GaG9D1cOpBAErHINKSrWkxJjJHo3bQSKg3aqRSG4zKRjRITOKZ6EQA+e5qGxc
-         EyWREyrlqsi4RSyIgZ52fvR/3UVmUVGbW7f77ghn53LJbQYRymBnaI2G1nqRmVcv8gIn
-         qnuPu5xgDK2fiLpRIZasThv5XxXaabpG7PQVQrZc4GymdqYSYjl/+LEFF8EYXMPl9qr+
-         rqcD/eQTz6PZt0TcGJ0IkBQy86ohG3L3GPg/BO+VSEIa8+W5jAb/+oAqmIHsGFfQ3ueI
-         FRGQ==
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=q96MZHRchYCi4GEQczB2rYsWppR4uUY1vzFfkHdoZS0=;
+        b=F8WToSYtnhkKRuJoqFZgz0EDWjLNKs8GVy7x8WPxOftoVI4i1nuC+syP8egCi75WBw
+         IlqeiQTj4L+4gZb2zNftSF1Tifv2dXm6Mz4cKcABiba3Cu/FZXyPvWQPPhIlJovXEnhk
+         v+THjCfzPZz7tS799RkSNSreJEevPlutGONofqaoTubW8xzCSiZbW/t7MVO1Mv0AoQ2E
+         U9gAt7EAOTmuXlOvzO45HMJ12EehWQPcReQfgbCE4hEMsm8RfFfUpoIV5jQmA1TNTTrs
+         JKiwk4EklU5Ob6xcBT8A0QDrGcrOuGKDyuf1fi53HInodqO+1AZvZDK7r+dHvmZoFPJP
+         Jy4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Cc6k9W/5KfQMrfyUUbcF3m3pmI+HBcvfTZyXhfKLqOs=;
-        b=mnqcYUGzK15aLIwMBft3n/1z0Tkx/o0psi/hVGIefFX27v3Tl+bi9/YltjGVP8QB4V
-         d8fo1ZhK/E962fG4oisG8RWzjVRy3QzhRxT9R6u7gCHwxvQFHTA/GK7Cow4S0lKGn3Eq
-         EbzILk1DqZHEeC7SQgSgTo4sHsQ0ILUiaRWuGF9n6ouueyLtSTH0cLs7MNbQsJIeXv8M
-         qChIcOxPLD8Hl94p6ScdP5hWmvcQGK1cgDki+xYjkeuzh8PaW8AdizfFw8S1UH+cN+Qq
-         CHL/w3zy1Pw8p9K/Un0itHLERT4oMyTag/WYoo+q2+Duf5fgKh0S/caL0uH1IVQkB90d
-         PQtg==
-X-Gm-Message-State: AOAM531/GLGtWp4wyTnNGl86EG9nVBUlfnHnrjNWKznK1JUldU32K23C
-        grh0JAhmP37/xZXEFG6tboUcGP4NRZwJHJy/omnVDg==
-X-Google-Smtp-Source: ABdhPJw4NoxOta8RDzBYWeAyXef7SIR5pNNJsoCUsWvqRGDAGe1kmXiasiKHXPhhCOhcJCuU57vw3i0YMkGzEicUjGI=
-X-Received: by 2002:aa7:c513:: with SMTP id o19mr11315edq.41.1640118959010;
- Tue, 21 Dec 2021 12:35:59 -0800 (PST)
-MIME-Version: 1.0
-References: <20211220210643.47842-1-pmenzel@molgen.mpg.de> <CAE_wzQ_Lg1ODV5sEqtW=SauhSXxi6+fh3msOuhnJy8-sNtORcg@mail.gmail.com>
- <CABXOdTeNy3jQ5aQijw9HTpwcNvkEJmddz9yf0Mk-Z+78bDDN-A@mail.gmail.com> <8a7fad1b-b34d-88db-2f6b-462303fe03d9@molgen.mpg.de>
-In-Reply-To: <8a7fad1b-b34d-88db-2f6b-462303fe03d9@molgen.mpg.de>
-From:   Guenter Roeck <groeck@google.com>
-Date:   Tue, 21 Dec 2021 12:35:47 -0800
-Message-ID: <CABXOdTfB4M8AcCOVERpQwddr_N09gpKF67FxRO32S4M9JUaYEQ@mail.gmail.com>
-Subject: Re: [PATCH] CHROMIUM: i2c: Add device property for probing
-To:     Paul Menzel <pmenzel@molgen.mpg.de>
-Cc:     Dmitry Torokhov <dtor@chromium.org>, Wolfram Sang <wsa@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=q96MZHRchYCi4GEQczB2rYsWppR4uUY1vzFfkHdoZS0=;
+        b=0RA2/h+JeyBNRqj+bsl+aMEyx9uRDDHh24W4nANyCtgCco75C72sEBpOPJ0sIWApG7
+         0DaO+o8HXIUFBazndZqlGOAWta7NkpD4svZFf4ovSoACFxut7yXjpM4Ezk/m7uPi2rFD
+         veLRWKwhoVS7JLjwjAOSrKs6SrVR0c4Z19Zn+2m1bA1Me721LRTh5Z2W/UUaUuPx7fS3
+         m9oFhkc8NCR29Rscx73mlIxqnzvu/zjeaOOOWj57OiLFcq+kvN2fX2AAJvYfWuTMr7qp
+         lTn1a1xhzsUbEwZjJqvDiDuf7INVXPUYN6+r3e2/lqBcCJURroeRp5fln95japWBlZ4R
+         g5HQ==
+X-Gm-Message-State: AOAM533YrXT6qiWKEPXs3wp4qHWF+EKWyPgTSKX2PGgobfLkxzeQ/luf
+        GGms6+xfTC4PNhUFkYEsyJkwttdZw/M=
+X-Google-Smtp-Source: ABdhPJyCkkzcflx6faLOL4lQY7BAX9t0RpuoOO9ENfCbTtRAJPciqleyUwTPZ+0Z6SBOtqhSepoBXg==
+X-Received: by 2002:adf:f245:: with SMTP id b5mr138626wrp.506.1640124524627;
+        Tue, 21 Dec 2021 14:08:44 -0800 (PST)
+Received: from [192.168.0.16] (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net. [86.13.91.161])
+        by smtp.gmail.com with ESMTPSA id h14sm201963wrz.31.2021.12.21.14.08.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Dec 2021 14:08:44 -0800 (PST)
+Subject: Re: [PATCH] software node: fix wrong node passed to find nargs_prop
+To:     =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Tim Wawrzynczak <twawrzynczak@chromium.org>,
-        coreboot@coreboot.org, Matt DeVillier <matt.devillier@gmail.com>,
-        Felix Singer <felixsinger@posteo.net>,
-        Benson Leung <bleung@chromium.org>,
-        Justin TerAvest <teravest@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>, linux-i2c@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE" 
-        <devicetree@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-acpi@vger.kernel.org, Sangwon Jee <jeesw@melfas.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20211220210533.3578678-1-clement.leger@bootlin.com>
+ <CAHp75Vf+F2L4EFmokRYD+-M9hSuz+SbiiWnqHvFZttRyfKS-mg@mail.gmail.com>
+ <d9f5b201-2a00-799d-3a0f-7c9709d77102@gmail.com>
+ <20211221104659.2f8af03a@fixe.home>
+From:   Daniel Scally <djrscally@gmail.com>
+Message-ID: <36e29eb4-c3ab-af60-5106-04b289a87128@gmail.com>
+Date:   Tue, 21 Dec 2021 22:08:42 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <20211221104659.2f8af03a@fixe.home>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 21, 2021 at 11:42 AM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
->
-> Dear Guenter, dear Dmitry,
->
->
-> Am 21.12.21 um 17:47 schrieb Guenter Roeck:
-> > On Mon, Dec 20, 2021 at 1:49 PM Dmitry Torokhov <dtor@chromium.org> wro=
-te:
->
-> >> On Mon, Dec 20, 2021 at 1:07 PM Paul Menzel <pmenzel@molgen.mpg.de> wr=
-ote:
-> >>>
-> >>> From: Furquan Shaikh <furquan@google.com>
->
-> >>> Google Chromebooks are often built with devices sourced from differen=
-t
-> >>> vendors. These need to be probed. To deal with this, the firmware =E2=
-=80=93 in
-> >>> this case coreboot =E2=80=93 tags such optional devices accordingly =
-=E2=80=93 I think
-> >>> this is commit fbf2c79b (drivers/i2c/generic: Add config for marking
-> >>> device as probed) =E2=80=93 and Chromium OS=E2=80=99 Linux kernel has=
- the patch at hand
-> >>> applied to act accordingly. Right after the merge, Dmitry created a
-> >>> revert, which was actively discussed for two days but wasn=E2=80=99t =
-applied.
-> >>> That means, millions of devices shipped with such a firmware and Linu=
-x
-> >>> kernel. To support these devices with upstream Linux kernel, is there=
- an
-> >>> alternative to applying the patch to the Linux kernel, and to support
-> >>> the shipped devices?
-> >>
-> >> *sigh* I should have pushed harder, but I see it managed to
-> >> proliferate even into our newer kernels. Not having this patch should
-> >> not cause any problems, it can only hurt, because the i2c core has no
-> >> idea how to power up and reset the device properly. The only downside
-> >> of not having this patch is that we may have devices in sysfs that are
-> >> not connected to actual hardware. They do now cause any problems and
-> >> is how we have been shipping ARM-based devices where we also dual- and
-> >> triple-source components. However if we were to have a device that
-> >> switches between several addresses (let's say device in bootloader
-> >> mode uses 0x10 address and in normal mode 0x20) this "probing" may
-> >> result in device not being detected at all.
->
-> On google/sarien, the (upstream) Linux kernel sometimes detects the
-> Melfas touchscreen and sometimes not, but in never works. When it=E2=80=
-=99s
-> detected, the errors below are still shown.
->
-> ```
-> $ grep i2c voidlinux-linux-5.13.19-messages.txt
-> [    9.392598] i2c i2c-7: 2/2 memory slots populated (from DMI)
-> [    9.393108] i2c i2c-7: Successfully instantiated SPD at 0x50
-> [    9.622151] input: MELFAS MIP4 Touchscreen as
-> /devices/pci0000:00/0000:00:15.0/i2c_designware.0/i2c-8/i2c-MLFS0000:00/i=
-nput/input6
-> [    9.657964] cr50_i2c i2c-GOOG0005:00: cr50 TPM 2.0 (i2c 0x50 irq 114
-> id 0x28)
-> [    9.662309] elan_i2c i2c-ELAN0000:00: supply vcc not found, using
-> dummy regulator
-> [    9.773244] elan_i2c i2c-ELAN0000:00: Elan Touchpad: Module ID:
-> 0x00d6, Firmware: 0x0005, Sample: 0x0009, IAP: 0x0001
-> [    9.773349] input: Elan Touchpad as
-> /devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-9/i2c-ELAN0000:00/i=
-nput/input7
-> [   10.820307] i2c_designware i2c_designware.0: controller timed out
-> [   10.820359] mip4_ts i2c-MLFS0000:00: mip4_i2c_xfer - i2c_transfer
-> failed: -110 (-110)
-> [   11.844523] i2c_designware i2c_designware.0: controller timed out
-> [   11.844635] mip4_ts i2c-MLFS0000:00: mip4_i2c_xfer - i2c_transfer
-> failed: -110 (-110)
-> [   12.868376] i2c_designware i2c_designware.0: controller timed out
-> [   12.868488] mip4_ts i2c-MLFS0000:00: mip4_i2c_xfer - i2c_transfer
-> failed: -110 (-110)
-> [   12.868570] mip4_ts i2c-MLFS0000:00: Failed to read packet info: -110
-> ```
->
-> Is that related to the probing stuff?
->
+Hello
 
-Difficult to say without further testing. I can see two possible
-problems: The device may sometimes not be seen because it is powered
-off, and/or interrupt handling may not work properly.  You could apply
-the patch (commit 11cd1bd03f75 in chromeos-5.15) and see if it
-improves the situation. I would also suggest applying commit
-b4b55381e5cf ("CHROMIUM: Input: elants_i2c: Default to low level
-interrupt for Chromebooks") from chromeos-4.19.
+On 21/12/2021 09:46, Clément Léger wrote:
+> Le Mon, 20 Dec 2021 23:37:07 +0000,
+> Daniel Scally <djrscally@gmail.com> a écrit :
+> 
+>> Thanks Andy
+>>
+>> On 20/12/2021 22:13, Andy Shevchenko wrote:
+>>  [...]  
+>>
+>> I think this is right (it's not used in the ACPI version, and the OF
+>> version is quite convoluted so a bit hard to follow)...but also I note
+>> that none of the users of fwnode_property_get_reference_args() pass
+>> anything to nargs_prop anyway...do we even need this?
+> 
+> Indeed, this is currently not used anywhere, nargs is always used
+> instead of nargs_prop. The usage is meant to be (almost) the same as
+> of_parse_phandle_with_args().
+> 
+> ie:
+> 
+>  ret = of_parse_phandle_with_args(node, "resets", "#reset-cells",
+> 				  index, &args);
+> 
+> can be replaced by:
+> 
+>  ret = fwnode_property_get_reference_args(node, "resets",
+> 					  "#reset-cells", 0 index,
+> 					  &args);
+> 
+> I have some patches that uses that with software nodes and that will
+> need this support.
 
-Guenter
+Ok, in that case I think this is the right thing to do and you can have my:
 
-> >> If we wanted to do this correctly, coreboot would have to implement
-> >> full power and reset control and also add drivers for I2C controllers
-> >> to be able to communicate with peripherals, and then adjust _STA
-> >> methods to report "not present" when the device is indeed absent. And
-> >> note that even in this case we would have issues with "morphing
-> >> devices", so coreboot would also need to know how to reset device out
-> >> of bootloader mode, and maybe flash firmware so device can work in
-> >> normal mode.
->
-> What do you mean by =E2=80=9Cbootloader mode=E2=80=9D? coreboot also cann=
-ot flash
-> anything. That=E2=80=99s up to the payload, and even there support for fl=
-ashing
-> is rare.
->
-> Duncan wrote something about the ACPI _STA method idea, that ASL(?) and
-> I2C do not go well together.
->
-> >> However coreboot does (or did?) not want to add code to handle i2c
-> >> controllers, and would like to push this knowledge to the kernel. And
-> >> the kernel does know how to handle peripherals properly, but that
-> >> knowledge lies in individual drivers, not i2c core.
->
-> Excuse my ignorance, can you give an example driver? Does the Melfas
-> touchscreen driver (`drivers/input/touchscreen/melfas_mip4.c`) support it=
-?
->
-> >> We should remove "linux,probed" from coreboot and not propagate to
-> >> newer Chrome OS kernels, and keep it away from upstream.
-> >
-> > Revert from chromeos-5.15 is at
-> > https://chromium-review.googlesource.com/c/chromiumos/third_party/kerne=
-l/+/3350347.
-> > Everyone please feel free to comment there.
->
-> Guenther, thank you for your quick response. Note, that neither Furquan,
-> nor Aaron, nor Duncan work at Google anymore, so won=E2=80=99t comment.
-> Hopefully, others from the Chromium OS/coreboot folks can chime in.
->
->
-> Kind regards,
->
-> Paul
+Reviewed-by: Daniel Scally <djrscally@gmail.com>
+
+Might be nice to transfer the function comment from
+of_parse_phandle_with_args() to fwnode_property_get_reference_args(), as
+that's nice and clear.
+
+>>
+>> Use the correct reference node in call to
+>>>     property_entry_read_int_array() to retrieve the correct nargs value.
+>>>
+>>>     Fixes: b06184acf751 ("software node: Add
+>>>     software_node_get_reference_args()")  
+>>
+>> I think this might have been introduced later...maybe 996b0830f95d1,
+>> maybe e933bedd45099
+> 
+> From what I saw, it was already in the original commit adding this but
+> I can be wrong.
+
+You're right of course - sorry for the noise
+
+>>
+>>>     Signed-off-by: Clément Léger <clement.leger@bootlin.com
+>>>     <mailto:clement.leger@bootlin.com>>
+>>>     ---
+>>>      drivers/base/swnode.c | 2 +-
+>>>      1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>>     diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+>>>     index 4debcea4fb12..0a482212c7e8 100644
+>>>     --- a/drivers/base/swnode.c
+>>>     +++ b/drivers/base/swnode.c
+>>>     @@ -529,7 +529,7 @@ software_node_get_reference_args(const struct
+>>>     fwnode_handle *fwnode,
+>>>                     return -ENOENT;
+>>>
+>>>             if (nargs_prop) {
+>>>     -               error =
+>>>     property_entry_read_int_array(swnode->node->properties,
+>>>     +               error =
+>>>     property_entry_read_int_array(ref->node->properties,
+>>>                                                           nargs_prop,
+>>>     sizeof(u32),
+>>>                                                          
+>>>     &nargs_prop_val, 1);
+>>>                     if (error)
+>>>     -- 
+>>>     2.34.1
+>>>
+>>>
+>>>
+>>> -- 
+>>> With Best Regards,
+>>> Andy Shevchenko
+>>>
+>>>   
+> 
+> 
+> 
