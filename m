@@ -2,98 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C77F47D5DA
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 18:30:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C890147D6D9
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 19:29:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230385AbhLVRaa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Dec 2021 12:30:30 -0500
-Received: from mail-qv1-f54.google.com ([209.85.219.54]:45999 "EHLO
-        mail-qv1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229743AbhLVRa3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Dec 2021 12:30:29 -0500
-Received: by mail-qv1-f54.google.com with SMTP id a9so2912464qvd.12;
-        Wed, 22 Dec 2021 09:30:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6WxBE7Xhve5RqzvsBuOQen9R0baHuksdxA2HFZArSmo=;
-        b=7h1KC/r3Ulurpymx1yjQa3mkwITuRHy87R/a73CxglPDfv4vZRXS5IElUvvU7FyPoj
-         FfoMla3Crcz7eXhaylC5LKOzS5Xu5Nqi3MwUFurVtDmCCoZ6hYYvS8qK1ZL+wwXx7n8C
-         1I3aKT0RuEhCf3eMVkQbTg0jX9l68pTCR9c8QDPr+3qQ//45MXQyhEmK5dMDVyFa9Mhv
-         1onco/JReGYlifRA/U9qMLvwa8eHr4Rk7/i3dW69KSjddYlPI+bUoaTFw/Z3rOx+EeJR
-         QVHV7WN0/O8F8RyvtD6P/sPXTvTIGeBso0w9+yzGUNAvc7DMA22v2Hq2kSX/3oJILdde
-         /mWw==
-X-Gm-Message-State: AOAM531FVYxfN78uszHUKiV165ulmqg8J6rq9x9CiD4d7Ddt+JJKdQ+y
-        9FW/SKEvXigC/L6a60ltCqJ6hACqDSC0ZkAX59k=
-X-Google-Smtp-Source: ABdhPJw8AQW0Suyyun87LFUztcMqag7Gc7sRcNLWko5oX5Wr5XorKoQ4C3ycqFrHdjBNZnNJmKYAEO+beyXclG+SSnA=
-X-Received: by 2002:a05:6214:1c06:: with SMTP id u6mr3321258qvc.35.1640194229118;
- Wed, 22 Dec 2021 09:30:29 -0800 (PST)
+        id S1344785AbhLVS3q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Dec 2021 13:29:46 -0500
+Received: from mga02.intel.com ([134.134.136.20]:8331 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236569AbhLVS3p (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 Dec 2021 13:29:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640197785; x=1671733785;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5mB06axBALQGGpSMy3LM5SGDcRG0aHhmCGXrmMpFCXA=;
+  b=FM9ciw1CDHzTLpeO7JXnzuRa8kM71unVQivreYrGwVEIvyZFAn3BiNLu
+   RzZECHr72fRrE1m/ARDT+bJtB1kyFhIksVF5mrjt//yEKEiCueQzjh9DM
+   VPG+cnyPl+6EPjivmWshny8kRfrODcOf7Z1kNZe/VfsHXLQP6V0zs4uzD
+   xUw0+sd2xEtJm+l5gO4y2xxUjQsZDjMsUojTpZ/erxUTu/GYO7S6soO15
+   B6H2n47Ee3i89IVuZCk9mfVGw+KSVz8iGQMPIG2GdMKomOKreNRleZiPt
+   tV0HH7BHCk/6u1lp4bc8T9DDRxbxc1Ry91tPwlDA9GgmMn5ILP4yAneLX
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10206"; a="227984481"
+X-IronPort-AV: E=Sophos;i="5.88,227,1635231600"; 
+   d="scan'208";a="227984481"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 10:29:44 -0800
+X-IronPort-AV: E=Sophos;i="5.88,227,1635231600"; 
+   d="scan'208";a="508579148"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 10:29:42 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1n06LZ-000v0C-K3;
+        Wed, 22 Dec 2021 20:28:17 +0200
+Date:   Wed, 22 Dec 2021 20:28:17 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Prashant Malani <pmalani@chromium.org>,
+        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/5] acpi: Store CRC-32 hash of the _PLD in struct
+ acpi_device
+Message-ID: <YcNuQYfbMcxlRkSP@smile.fi.intel.com>
+References: <20211222143258.82305-1-heikki.krogerus@linux.intel.com>
+ <20211222143258.82305-3-heikki.krogerus@linux.intel.com>
 MIME-Version: 1.0
-References: <20211221133215.8447-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20211221133215.8447-1-andriy.shevchenko@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 22 Dec 2021 18:30:18 +0100
-Message-ID: <CAJZ5v0gX3RJ=evToKhFpQQTR3pAbQ=ybDFTuKSJ5Ku=SneROPA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] software node: Update MAINTAINERS data base
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sakari Ailus <sakari.ailus@iki.fi>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211222143258.82305-3-heikki.krogerus@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 21, 2021 at 2:32 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> There are two updates to the MAINTAINERS regarding to software node API:
-> - add Daniel Scally to be designated reviewer
-> - add Sakari Ailus to be designated reviewer
-> - add rather tightly related device property files to the list
-> - due to above adjust section name accordingly
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Acked-by: Daniel Scally <djrscally@gmail.com>
-> ---
->
-> v2: added tags (Daniel, Heikki), added Sakari to the reviewers (Sakari)
->
-> Rafael, I guess it's the best if you can pick this up.
+On Wed, Dec 22, 2021 at 05:32:55PM +0300, Heikki Krogerus wrote:
+> Storing CRC-32 hash of the Physical Location of Device
+> object (_PLD) with devices that have it. The hash is stored
+> to a new struct acpi_device member "pld_crc".
+> 
+> The hash makes it easier to find devices that share a
+> location, as there is no need to evaluate the entire object
+> every time. Knowledge about devices that share a location
+> can be used in device drivers that need to know the
+> connections to other components inside a system. USB3 ports
+> will for example always share their location with a USB2
+> port.
 
-Applied as 5.17 material, thanks!
+...
 
->  MAINTAINERS | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8912b2c1260c..e36497cb7f40 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17666,12 +17666,17 @@ F:    drivers/firmware/arm_sdei.c
->  F:     include/linux/arm_sdei.h
->  F:     include/uapi/linux/arm_sdei.h
->
-> -SOFTWARE NODES
-> +SOFTWARE NODES AND DEVICE PROPERTIES
->  R:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> +R:     Daniel Scally <djrscally@gmail.com>
->  R:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> +R:     Sakari Ailus <sakari.ailus@linux.intel.com>
->  L:     linux-acpi@vger.kernel.org
->  S:     Maintained
-> +F:     drivers/base/property.c
->  F:     drivers/base/swnode.c
-> +F:     include/linux/fwnode.h
-> +F:     include/linux/property.h
->
->  SOFTWARE RAID (Multiple Disks) SUPPORT
->  M:     Song Liu <song@kernel.org>
-> --
-> 2.34.1
->
+> @@ -739,7 +752,6 @@ static inline void acpi_bus_put_acpi_device(struct acpi_device *adev)
+>  
+>  static inline int register_acpi_bus_type(void *bus) { return 0; }
+>  static inline int unregister_acpi_bus_type(void *bus) { return 0; }
+> -
+>  #endif				/* CONFIG_ACPI */
+
+Looks like a stray change.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
