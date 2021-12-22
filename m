@@ -2,209 +2,111 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F26CE47CC73
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 06:21:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D09747CF58
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 10:35:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229509AbhLVFVi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Dec 2021 00:21:38 -0500
-Received: from mga07.intel.com ([134.134.136.100]:38764 "EHLO mga07.intel.com"
+        id S234463AbhLVJfE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Dec 2021 04:35:04 -0500
+Received: from mga02.intel.com ([134.134.136.20]:28482 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229493AbhLVFVh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 22 Dec 2021 00:21:37 -0500
+        id S229987AbhLVJfE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 Dec 2021 04:35:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640150497; x=1671686497;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=VwNmXX+4BJ1AN/HJF6sCMc+Q1DizaL01l6oxT4tLGYQ=;
-  b=L5qaunZYRO48bph0vAZFitKD2fY7W2HiAGT0+w6G9Qzfgb4Shu0SYJjY
-   KjDnz+VTf2IaNYHKX4fJCkkr+uk3H0p75J1Njs2Ha1uvMV4TD1qgE+I2k
-   CAgvRLrUWABFnJGGSq3zpgjIPxpf8e1h6BOPORI5eiZgSQ6nrpmdni+35
-   DyO4f+F6JP/lbnh3JMIxGIIstOCvMaSFDMc2vtlhOOefiWszNJiwRS0Lg
-   jKNRIchzq1obU6vhtEikBNOfMKzYMpVlFJQsojh6GurdT8n4330Y9NK08
-   mUFyKXqOqEkrh04P9Bia09RYfic7n9HGUOMW8tlCfUanxkm6bNmMrBevH
+  t=1640165704; x=1671701704;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=qZUDc1T9LV4wFwF8706CO5P2w8QLmoRAzlSwfpbYtGo=;
+  b=EdtrB2uIitEkMptxUmSWeQjhDQ0UiJYWYw1RMyPdSAG8ZXvaWXsHqYjw
+   OQ8iI0I1QnG5bC2oBSe0Z311ZaP5vE84M5tREH9m5QWhV8jpQp6C4d43d
+   jt47apMG0Z4ZP+g/fCy67/oVAZi33+r8SfPGLk+X8VLymUY1yHS4pgE8C
+   7iKo4aZ0dD3FYAAMPvcXJ05dVnfPE+r7/KMw3XVcCcvBWZGToVajAq+C7
+   pTbSQPRdxSICp0Qtz0W3DDZU96pCNmh1FC43U4z1QeTxc7SOooctMANW6
+   hk1CoCl1/OgPqDTzwcu8rwTrB7waujARc6NMGd6shQ71wJQiAmehiZTxl
    w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10205"; a="303918093"
-X-IronPort-AV: E=Sophos;i="5.88,225,1635231600"; 
-   d="scan'208";a="303918093"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 21:21:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,225,1635231600"; 
-   d="scan'208";a="617014112"
-Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 21 Dec 2021 21:21:35 -0800
-Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mzu4E-00009I-VD; Wed, 22 Dec 2021 05:21:34 +0000
-Date:   Wed, 22 Dec 2021 13:21:09 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- bd982f30deb7baab86095fc89f33954f10dcc387
-Message-ID: <61c2b5c5.9H1FqZT2VbxijcVs%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+X-IronPort-AV: E=McAfee;i="6200,9189,10205"; a="227881944"
+X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
+   d="scan'208";a="227881944"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 01:35:04 -0800
+X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
+   d="scan'208";a="586966983"
+Received: from paasikivi.fi.intel.com ([10.237.72.42])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 01:35:01 -0800
+Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
+        by paasikivi.fi.intel.com (Postfix) with ESMTP id 582C7201AA;
+        Wed, 22 Dec 2021 11:34:59 +0200 (EET)
+Date:   Wed, 22 Dec 2021 11:34:59 +0200
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Daniel Scally <djrscally@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] software node: fix wrong node passed to find nargs_prop
+Message-ID: <YcLxQ+X3I6hAJ9RY@paasikivi.fi.intel.com>
+References: <20211220210533.3578678-1-clement.leger@bootlin.com>
+ <CAHp75Vf+F2L4EFmokRYD+-M9hSuz+SbiiWnqHvFZttRyfKS-mg@mail.gmail.com>
+ <d9f5b201-2a00-799d-3a0f-7c9709d77102@gmail.com>
+ <YcGfky32lSXeABEF@kroah.com>
+ <YcGiIHAJS7/qXcJv@paasikivi.fi.intel.com>
+ <800d89c5-c9e3-d969-ea9a-08ec0362a90c@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <800d89c5-c9e3-d969-ea9a-08ec0362a90c@gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: bd982f30deb7baab86095fc89f33954f10dcc387  Merge branches 'thermal-tools' and 'thermal-int340x' into linux-next
+Hi Daniel,
 
-elapsed time: 722m
+On Tue, Dec 21, 2021 at 10:09:45PM +0000, Daniel Scally wrote:
+> Hi Sakari
+> 
+> On 21/12/2021 09:45, Sakari Ailus wrote:
+> > Hi Greg, Andy,
+> > 
+> > On Tue, Dec 21, 2021 at 10:34:11AM +0100, Greg Kroah-Hartman wrote:
+> >> On Mon, Dec 20, 2021 at 11:37:07PM +0000, Daniel Scally wrote:
+> >>> Thanks Andy
+> >>>
+> >>> On 20/12/2021 22:13, Andy Shevchenko wrote:
+> >>>> + Sakari, Dan
+> >>>>
+> >>>> On Monday, December 20, 2021, Clément Léger <clement.leger@bootlin.com
+> >>>> <mailto:clement.leger@bootlin.com>> wrote:
+> >>>>
+> >>>>     nargs_prop refers to a property located in the reference that is found
+> >>>>     within the nargs property.
+> >>>
+> >>> I think this is right (it's not used in the ACPI version, and the OF
+> >>> version is quite convoluted so a bit hard to follow)...but also I note
+> >>> that none of the users of fwnode_property_get_reference_args() pass
+> >>> anything to nargs_prop anyway...do we even need this?
+> >>
+> >> Looks like it is unused, please just remove it.
+> > 
+> > If you remove nargs_prop argument, then callers will have to use OF
+> > property API instead to parse references with property-defined number of
+> > arguments. The goal has been to cover all functionality in a
+> > firmware-independent way.
+> 
+> My mistake, I missed that of_parse_phandle_with_args() has a ton of
+> direct users. I guess we should try to replace those with
+> fwnode_property_get_reference_args() where appropriate.
 
-configs tested: 137
-configs skipped: 3
+I'd say at least when the code is otherwise using fwnode property API.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I guess most of the reference users are OF-based originally while cameras
+are perhaps a bit of an exception to this. :-)
 
-gcc tested configs:
-arm64                               defconfig
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                       imx_v4_v5_defconfig
-arm                          exynos_defconfig
-riscv                               defconfig
-powerpc                 mpc837x_mds_defconfig
-arm                          pxa910_defconfig
-mips                        bcm63xx_defconfig
-sh                             espt_defconfig
-mips                     loongson1c_defconfig
-arm                        realview_defconfig
-powerpc                  storcenter_defconfig
-sh                        edosk7705_defconfig
-arm                         cm_x300_defconfig
-mips                malta_qemu_32r6_defconfig
-sh                           se7712_defconfig
-m68k                       m5275evb_defconfig
-powerpc                      ppc44x_defconfig
-arm                              alldefconfig
-mips                         rt305x_defconfig
-mips                           gcw0_defconfig
-mips                       bmips_be_defconfig
-powerpc                     skiroot_defconfig
-mips                      maltaaprp_defconfig
-arm                          ixp4xx_defconfig
-mips                      bmips_stb_defconfig
-sh                            shmin_defconfig
-um                               alldefconfig
-nds32                             allnoconfig
-sh                           se7206_defconfig
-mips                        jmr3927_defconfig
-mips                       capcella_defconfig
-powerpc                 canyonlands_defconfig
-sh                        dreamcast_defconfig
-mips                           ci20_defconfig
-m68k                            q40_defconfig
-powerpc                   lite5200b_defconfig
-arm                          pcm027_defconfig
-powerpc                      katmai_defconfig
-arm                         assabet_defconfig
-arm                             pxa_defconfig
-powerpc                     pseries_defconfig
-m68k                          sun3x_defconfig
-sparc64                             defconfig
-powerpc                     tqm8540_defconfig
-um                                  defconfig
-sh                          urquell_defconfig
-sh                         microdev_defconfig
-arm                            mps2_defconfig
-sh                         ecovec24_defconfig
-arm                      jornada720_defconfig
-arm                            zeus_defconfig
-powerpc                    amigaone_defconfig
-s390                             alldefconfig
-powerpc                     mpc83xx_defconfig
-openrisc                    or1ksim_defconfig
-sh                           se7721_defconfig
-arm                  randconfig-c002-20211220
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a001-20211220
-x86_64               randconfig-a003-20211220
-x86_64               randconfig-a005-20211220
-x86_64               randconfig-a006-20211220
-x86_64               randconfig-a004-20211220
-x86_64               randconfig-a002-20211220
-i386                 randconfig-a006-20211220
-i386                 randconfig-a004-20211220
-i386                 randconfig-a002-20211220
-i386                 randconfig-a003-20211220
-i386                 randconfig-a005-20211220
-i386                 randconfig-a001-20211220
-arc                  randconfig-r043-20211220
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
+-- 
+Regards,
 
-clang tested configs:
-x86_64               randconfig-a013-20211220
-x86_64               randconfig-a015-20211220
-x86_64               randconfig-a014-20211220
-x86_64               randconfig-a012-20211220
-x86_64               randconfig-a011-20211220
-x86_64               randconfig-a016-20211220
-i386                 randconfig-a012-20211220
-i386                 randconfig-a011-20211220
-i386                 randconfig-a014-20211220
-i386                 randconfig-a016-20211220
-i386                 randconfig-a015-20211220
-i386                 randconfig-a013-20211220
-hexagon              randconfig-r041-20211220
-hexagon              randconfig-r045-20211220
-riscv                randconfig-r042-20211220
-s390                 randconfig-r044-20211220
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Sakari Ailus
