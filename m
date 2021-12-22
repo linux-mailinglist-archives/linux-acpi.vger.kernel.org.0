@@ -2,227 +2,321 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A2D047CAF5
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 02:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47E7F47CC1A
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 05:27:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241485AbhLVBwv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 21 Dec 2021 20:52:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33056 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241347AbhLVBwt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 21 Dec 2021 20:52:49 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04077C06173F
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Dec 2021 17:52:49 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id bt1so1737829lfb.13
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Dec 2021 17:52:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=PvpXSanHxWA1NlFuLepjdH5cmZWOnCjHjBgKWYYS9CA=;
-        b=irdgpDSaEGdOT/kET7iJz/biFGlel/L2LGBeBZmFuhPc1QnXUMW5LrVBkg2t8s47SD
-         r9YqZXCBpPfNkMrZLuQMR0CH8H3hjyWy0Fa1pF/EZNEVSAz11mT+fFD8vdBVB6aoYh+N
-         CDUy9ZO3yvd/66nBubIF/oFxG11HOI5G8hw9Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=PvpXSanHxWA1NlFuLepjdH5cmZWOnCjHjBgKWYYS9CA=;
-        b=rj7Pille5dXiSr9auvrmwJYHMK3CQHwx7fbTVZtBazj1yE22rtrlqxocuJDyk+Kfn0
-         cQwQZvr2Bww+/HDnVt5he8ZrmjEySLYqgCEv9hR0QVUI5IiBFMdcAiX9Y0Q9zpA76jaL
-         2HbiiV5kQCXQ2YhcQEKGvFbVPf2UtOzYdUtHpwZ+nBTr69g85KIuBf0U7oIQNpZ+YGPQ
-         s+qHd3avM6QoUVptYcNStvyenJdzLgqkoobvz+WtoJk1X3BPDa3KZ5eKDyJw8BR2ougb
-         rcIX27aVWhyP5JnK5yUeDsiRYV5BrU5vZUP4XQHMamgnDr0SzZV6H4llRbUvjDCwPe/z
-         el2g==
-X-Gm-Message-State: AOAM530YIjmToLV24N5WjIe2uKw2MTyaENaBQVuR8bKdZSUYyNERiXgE
-        SOjHuIAx5XfYh35b3Gkl6t18Ah4HtjNcw7K4ehw=
-X-Google-Smtp-Source: ABdhPJxZD3hQKWPdO53aecDO0ERz2OFzGMDilLdiLemvVbIdadoq4qrZc5SdtbT/TcPhFeVAJYm5KA==
-X-Received: by 2002:a05:6512:31d5:: with SMTP id j21mr765235lfe.669.1640137966872;
-        Tue, 21 Dec 2021 17:52:46 -0800 (PST)
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com. [209.85.208.177])
-        by smtp.gmail.com with ESMTPSA id s29sm59644lfc.227.2021.12.21.17.52.46
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Dec 2021 17:52:46 -0800 (PST)
-Received: by mail-lj1-f177.google.com with SMTP id m12so1232797ljj.6
-        for <linux-acpi@vger.kernel.org>; Tue, 21 Dec 2021 17:52:46 -0800 (PST)
-X-Received: by 2002:ac2:498c:: with SMTP id f12mr776217lfl.250.1640137540653;
- Tue, 21 Dec 2021 17:45:40 -0800 (PST)
+        id S242328AbhLVE1t (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 21 Dec 2021 23:27:49 -0500
+Received: from mga11.intel.com ([192.55.52.93]:36003 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235909AbhLVE1s (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 21 Dec 2021 23:27:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640147268; x=1671683268;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0TIZMez0AaaB4/Y9r+LvL8a6HExbFQe1IDLv+S//Gbg=;
+  b=lDraFwH9ccIwI/9SKrCVE8fYQ6J6IwcXLOsV8rL+grTKcvEhdbH38lgB
+   e2ndC7K+E9Hke9FyVIRZqlr2e+9yfZ8CpvSOQ0LT8O4lGHujHbp2OrhVD
+   8F9kNHpSl9ReWxUbO87htqAmTpvApEwu6G1DFzNoIQ0e6dILdQvjHdjqZ
+   /aqggZPxT7wLSORHA0X059+x2/CuievcJJetSKKXhvbusqV9rGeSVxiAF
+   GZbqjey3Xs68ymQcw4GC/GBaFeAhMY7M9uYVCyemqfDfKb/CAzVi/0F+w
+   JwDTooCWn2u2xJoaa4nxs05etz1Xm92VG+wwiOQ7lVItfunqKiMSXj16c
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10205"; a="238078939"
+X-IronPort-AV: E=Sophos;i="5.88,225,1635231600"; 
+   d="scan'208";a="238078939"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 20:27:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,225,1635231600"; 
+   d="scan'208";a="466539802"
+Received: from chenyu-desktop.sh.intel.com ([10.239.158.186])
+  by orsmga003.jf.intel.com with ESMTP; 21 Dec 2021 20:27:45 -0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     linux-acpi@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Mike Rapoport <rppt@kernel.org>, Chen Yu <yu.c.chen@intel.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v13 0/4] Introduce Platform Firmware Runtime Update and Telemetry drivers
+Date:   Wed, 22 Dec 2021 12:22:07 +0800
+Message-Id: <cover.1640007183.git.yu.c.chen@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20211220210643.47842-1-pmenzel@molgen.mpg.de> <CAE_wzQ_Lg1ODV5sEqtW=SauhSXxi6+fh3msOuhnJy8-sNtORcg@mail.gmail.com>
- <CABXOdTeNy3jQ5aQijw9HTpwcNvkEJmddz9yf0Mk-Z+78bDDN-A@mail.gmail.com> <8a7fad1b-b34d-88db-2f6b-462303fe03d9@molgen.mpg.de>
-In-Reply-To: <8a7fad1b-b34d-88db-2f6b-462303fe03d9@molgen.mpg.de>
-From:   Dmitry Torokhov <dtor@chromium.org>
-Date:   Tue, 21 Dec 2021 17:45:24 -0800
-X-Gmail-Original-Message-ID: <CAE_wzQ9+esd7WX0hFYVwAyWT_WjywRemPFhyWRmKQpx_4BmfcA@mail.gmail.com>
-Message-ID: <CAE_wzQ9+esd7WX0hFYVwAyWT_WjywRemPFhyWRmKQpx_4BmfcA@mail.gmail.com>
-Subject: Re: [PATCH] CHROMIUM: i2c: Add device property for probing
-To:     Paul Menzel <pmenzel@molgen.mpg.de>
-Cc:     Guenter Roeck <groeck@google.com>, Wolfram Sang <wsa@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Tim Wawrzynczak <twawrzynczak@chromium.org>,
-        coreboot@coreboot.org, Matt DeVillier <matt.devillier@gmail.com>,
-        Felix Singer <felixsinger@posteo.net>,
-        Benson Leung <bleung@chromium.org>,
-        Justin TerAvest <teravest@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>, linux-i2c@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Sangwon Jee <jeesw@melfas.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 21, 2021 at 11:42 AM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
->
-> Dear Guenter, dear Dmitry,
->
->
-> Am 21.12.21 um 17:47 schrieb Guenter Roeck:
-> > On Mon, Dec 20, 2021 at 1:49 PM Dmitry Torokhov <dtor@chromium.org> wro=
-te:
->
-> >> On Mon, Dec 20, 2021 at 1:07 PM Paul Menzel <pmenzel@molgen.mpg.de> wr=
-ote:
-> >>>
-> >>> From: Furquan Shaikh <furquan@google.com>
->
-> >>> Google Chromebooks are often built with devices sourced from differen=
-t
-> >>> vendors. These need to be probed. To deal with this, the firmware =E2=
-=80=93 in
-> >>> this case coreboot =E2=80=93 tags such optional devices accordingly =
-=E2=80=93 I think
-> >>> this is commit fbf2c79b (drivers/i2c/generic: Add config for marking
-> >>> device as probed) =E2=80=93 and Chromium OS=E2=80=99 Linux kernel has=
- the patch at hand
-> >>> applied to act accordingly. Right after the merge, Dmitry created a
-> >>> revert, which was actively discussed for two days but wasn=E2=80=99t =
-applied.
-> >>> That means, millions of devices shipped with such a firmware and Linu=
-x
-> >>> kernel. To support these devices with upstream Linux kernel, is there=
- an
-> >>> alternative to applying the patch to the Linux kernel, and to support
-> >>> the shipped devices?
-> >>
-> >> *sigh* I should have pushed harder, but I see it managed to
-> >> proliferate even into our newer kernels. Not having this patch should
-> >> not cause any problems, it can only hurt, because the i2c core has no
-> >> idea how to power up and reset the device properly. The only downside
-> >> of not having this patch is that we may have devices in sysfs that are
-> >> not connected to actual hardware. They do now cause any problems and
-> >> is how we have been shipping ARM-based devices where we also dual- and
-> >> triple-source components. However if we were to have a device that
-> >> switches between several addresses (let's say device in bootloader
-> >> mode uses 0x10 address and in normal mode 0x20) this "probing" may
-> >> result in device not being detected at all.
->
-> On google/sarien, the (upstream) Linux kernel sometimes detects the
-> Melfas touchscreen and sometimes not, but in never works. When it=E2=80=
-=99s
-> detected, the errors below are still shown.
->
-> ```
-> $ grep i2c voidlinux-linux-5.13.19-messages.txt
-> [    9.392598] i2c i2c-7: 2/2 memory slots populated (from DMI)
-> [    9.393108] i2c i2c-7: Successfully instantiated SPD at 0x50
-> [    9.622151] input: MELFAS MIP4 Touchscreen as
-> /devices/pci0000:00/0000:00:15.0/i2c_designware.0/i2c-8/i2c-MLFS0000:00/i=
-nput/input6
-> [    9.657964] cr50_i2c i2c-GOOG0005:00: cr50 TPM 2.0 (i2c 0x50 irq 114
-> id 0x28)
-> [    9.662309] elan_i2c i2c-ELAN0000:00: supply vcc not found, using
-> dummy regulator
-> [    9.773244] elan_i2c i2c-ELAN0000:00: Elan Touchpad: Module ID:
-> 0x00d6, Firmware: 0x0005, Sample: 0x0009, IAP: 0x0001
-> [    9.773349] input: Elan Touchpad as
-> /devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-9/i2c-ELAN0000:00/i=
-nput/input7
-> [   10.820307] i2c_designware i2c_designware.0: controller timed out
-> [   10.820359] mip4_ts i2c-MLFS0000:00: mip4_i2c_xfer - i2c_transfer
-> failed: -110 (-110)
-> [   11.844523] i2c_designware i2c_designware.0: controller timed out
-> [   11.844635] mip4_ts i2c-MLFS0000:00: mip4_i2c_xfer - i2c_transfer
-> failed: -110 (-110)
-> [   12.868376] i2c_designware i2c_designware.0: controller timed out
-> [   12.868488] mip4_ts i2c-MLFS0000:00: mip4_i2c_xfer - i2c_transfer
-> failed: -110 (-110)
-> [   12.868570] mip4_ts i2c-MLFS0000:00: Failed to read packet info: -110
-> ```
->
-> Is that related to the probing stuff?
+The PFRUT(Platform Firmware Runtime Update and Telemetry) kernel interface
+is designed to interact with the platform firmware interface defined in the
+`Management Mode Firmware Runtime Update
+<https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf>`
+specification. The primary function of PFRUT is to carry out runtime
+updates of the platform firmware, which doesn't require the system to
+be restarted. It also allows telemetry data to be retrieved from the
+platform firmware.
 
-So what happens is that there are Melfas and Elan (i2c-hid)
-touchscreens described in DSDT, both sharing the same reset line. So
-you get Melfas identified, and then i2c-hid comes along, does not find
-anything, and powers off/resets Melfas controller. Unfortunately
-coreboot does not implement logic for shared power resources here, so
-when I2C core thinks that it is powering off Elan it in fact powers
-off an unrelated device.
+=============
+- Change from v12 to v13:
+  - Print the _DSM failure result if invalid EFI capsule is provided.
+    (Hongyu Ning)
+- Change from v11 to v12:
+  - Rename the driver from pfru_update to pfr_update, and the
+    telemetry part to pfr_telementry for symmetry.
+    (Rafael J. Wysocki)
+  - Rename the "capsule file" to "EFI capsule".
+    (Rafael J. Wysocki)
+  - Revise the commit log. (Rafael J. Wysocki)
+  - Add the reason in the commit log that explains why it is
+    a good idea to add this driver to the kernel.
+    (Rafael J. Wysocki)
+  - Rename pfru.h to pfrut.h (Rafael J. Wysocki)
+  - Rename the CONFIG_ACPI_PFRU to CONFIG_ACPI_PFRUT
+    (Rafael J. Wysocki)
+  - Rename the Kconfig name to "ACPI Platform Firmware Runtime
+    Update and Telemetry"
+    (Rafael J. Wysocki)
+  - Revise the Kconfig help message (Rafael J. Wysocki)
+  - Describe what the driver is for briefly in the beginning of
+    the source code file.
+    (Rafael J. Wysocki)
+  - Add a comment pointing to the definitions of the GUIDs and
+    explain briefly what they are for.
+    (Rafael J. Wysocki)
+  - Reduce redundant memory updates by doing all of the checks
+    upfront. (Rafael J. Wysocki)
+  - Rename valid_version() to applicable_image(), and revise the
+    comment.(Rafael J. Wysocki)
+  - Remove Redundant else in applicable_image().(Rafael J. Wysocki)
+  - Rename dump_update_result() to print_ipdate_debug_info().
+    (Rafael J. Wysocki)
+  - Rename start_acpi_update() to start_update()(Rafael J. Wysocki)
+    Add a blank line before each "case xxx:"(Rafael J. Wysocki)
+  - Move status check into query_capability() and returns -EBUSY if
+    fails(Rafael J. Wysocki)
+  - Rename the device node name from "acpi_pfru%d" to "acpi_pfr_update%d"
+    (Rafael J. Wysocki)
+  - Rename the drive name from "pfru_update" to "pfr_update"
+    (Rafael J. Wysocki)
+  - Rename PFRU_MAGIC_FOR_IOCTL to PFRUT_IOCTL_MAGIC(Rafael J. Wysocki)
+    Fix grammar errors in the comments.(Rafael J. Wysocki)
+- Change from v10 to v11:
+  - Revise the commit log to explain why version check is introduced
+    in kernel rather than letting Management Mode to do it.
+    (Rafael J. Wysocki)
+  - Revise the commit log to better describe the pack attribute.
+    (Rafael J. Wysocki)
+  - Refine the comment for hw_ins and capsule_support.
+    (Rafael J. Wysocki)
+- Change from v9 to v10:
+  - Remove the explicit assignment of the last item of enum.
+    (Andy Shevchenko)
+- Change from v8 to v9:
+  - Use GUID_INIT() instead of guid_parse() during boot up.
+    (Andy Shevchenko)
+  - Drop uuid, code_uuid, drv_uuid in struct pfru_device as they
+    are not needed. (Andy Shevchenko)
+  - Drop type casting from void * in valid_version().
+    (Andy Shevchenko)
+  - Use kfree() instead of ACPI_FREE() in non-ACPICA usage.
+    (Andy Shevchenko)
+  - Use sizeof(rev) instead of sizeof(u32) in copy_from_user().
+    (Andy Shevchenko)
+  - Generate physical address from MSB part to LSB.
+    (Andy Shevchenko)
+  - Use devm_add_action_or_reset() to add ida release into dev resource
+    management. (Andy Shevchenko)
+  - Use devm_kasprintf() instead of kasprintf() to format the
+    pfru_dev name.(Andy Shevchenko)
+  - Remove redundant 0 in acpi_pfru_ids. (Andy Shevchenko)
+  - Adjust the order of included headers in pfru.h.
+    (Andy Shevchenko)
+  - Replace PFRU_MAGIC with PFRU_MAGIC_FOR_IOCTL in uapi file.
+    (Andy Shevchenko)
+    Use devm_kasprintf() instead of kasprintf() to format the
+    pfru_log_dev name.(Andy Shevchenko)
+    Remove redundant 0 in acpi_pfru_log_ids. (Andy Shevchenko)
+- Change from v7 to v8:
+  - Remove the variable-length array in struct pfru_update_cap_info, and
+    copy the non-variable-length struct pfru_update_cap_info to userspace
+    directly. (Greg Kroah-Hartman)
+  - Use efi_guid_t instead of guid_t when parsing capsule file.
+    (Andy Shevchenko)
+  - Change the type of rev_id from int to u32, because this data will
+    be copied between kernel and userspace. (Greg Kroah-Hartman)
+  - Add a prefix for dev in struct pfru_device to parent_dev, so as
+    to indicate that this filed is the parent of the created miscdev.
+    (Greg Kroah-Hartman)
+  - Use blank lines between different macro sections. (Greg Kroah-Hartman)
+    Illusatrate the possible errno for each ioctl interface.
+    (Greg Kroah-Hartman)
+  - Remove pfru_valid_revid() from uapi header to avoid poluting the global
+    namespace.(Greg Kroah-Hartman)
+  - Assign the value to the enum type explicitly.(Greg Kroah-Hartman)
+  - Change the guid_t to efi_guid_t when parsing image header in get_image_type()
+    (Greg Kroah-Hartman)
+  - Remove the void * to other type casting in valid_version(). (Andy Shevchenko)
+  - Combined the assignment of variables with definitions. (Andy Shevchenko)
+  - Define this magic for revision ID. (Andy Shevchenko)
+  - Make the labeling consistent for error handling. (Andy Shevchenko)
+  - Replace the UUID_SIZE in uapi with 16 directly. (Andy Shevchenko)
+  - Add blank line between generic include header and uapi header.
+    (Andy Shevchenko)
+  - Arrange the order between devm_kzalloc() and normal allocation in
+    acpi_pfru_probe() that, the former should always be ahead of the
+    latter. (Andy Shevchenko)
+- Change from v6 to v7:
+  - Use __packed instead of pragma pack(1).
+    (Greg Kroah-Hartman, Ard Biesheuve)
+  - Use ida_alloc() to allocate a ID, and release the ID when
+    device is removed. (Greg Kroah-Hartman)
+  - Check the _DSM method at early stage, before allocate or parse
+    anything in acpi_pfru_[log_]probe(). (Greg Kroah-Hartman)
+  - Set the parent of the misc device. (Greg Kroah-Hartman)
+  - Use module_platform_driver() instead of platform_driver_register()
+    in module_init(). Separate pfru driver and pfru_telemetry driver
+    to two files. (Greg Kroah-Hartman) 
+- Change from v5 to v6:
+  - Use Link: tag to add the specification download address.
+    (Andy Shevchenko)
+  - Drop comma for each terminator entry in the enum structure.
+    (Andy Shevchenko)
+  - Remove redundant 'else' in get_image_type().
+    (Andy Shevchenko)
+  - Directly return results from the switch cases in adjust_efi_size()
+    and pfru_ioctl().(Andy Shevchenko)
+  - Keep comment style consistency by removing the period for
+    one line comment.
+    (Andy Shevchenko)
+  - Remove devm_kfree() if .probe() failed. 
+    (Andy Shevchenko)
+  - Remove linux/uuid.h and use raw buffers to contain uuid.
+    (Andy Shevchenko)
+  - Include types.h in pfru.h. (Andy Shevchenko)
+  - Use __u8[16] instead of uuid_t. (Andy Shevchenko)
+  - Replace enum in pfru.h with __u32 as enum size is not the
+    same size on all possible architectures.
+    (Andy Shevchenko)
+  - Simplify the userspace tool to use while loop for getopt_long().
+    (Andy Shevchenko)
+- Change from v4 to v5:
+  - Remove Documentation/ABI/pfru, and move the content to kernel doc
+    in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
+  - Shrink the range of ioctl numbers declared in
+    Documentation/userspace-api/ioctl/ioctl-number.rst
+    from 16 to 8. (Greg Kroah-Hartman)
+  - Change global variable struct pfru_device *pfru_dev to
+    per PFRU device. (Greg Kroah-Hartman)
+  - Unregister the misc device in acpi_pfru_remove().
+    (Greg Kroah-Hartman)
+  - Convert the kzalloc() to devm_kzalloc() in the driver so
+    as to avoid freeing the memory. (Greg Kroah-Hartman)
+  - Fix the compile warning by declaring the pfru_log_ioctl() as
+    static. (kernel test robot LKP)
+  - Change to global variable misc_device to per PFRU device.
+    (Greg Kroah-Hartman)
+  - Remove the telemetry output in commit log. (Greg Kroah-Hartman)
+  - Add link for corresponding userspace tool in the commit log.
+    (Greg Kroah-Hartman)
+  - Replace the telemetry .read() with .mmap() so that the userspace
+    could mmap once, and read multiple times. (Greg Kroah-Hartman)
+- Change from v3 to v4:
+  - Add Documentation/ABI/testing/pfru to document the ABI and
+    remove Documentation/x86/pfru.rst (Rafael J. Wysocki)
+  - Replace all pr_err() with dev_dbg() (Greg Kroah-Hartman,
+    Rafael J. Wysocki)
+  - returns ENOTTY rather than ENOIOCTLCMD if invalid ioctl command
+    is provided. (Greg Kroah-Hartman)
+  - Remove compat ioctl. (Greg Kroah-Hartman)
+  - Rename /dev/pfru/pfru_update to /dev/acpi_pfru (Greg Kroah-Hartman)
+  - Simplify the check for element of the package in query_capability()
+    (Rafael J. Wysocki)
+  - Remove the loop in query_capability(), query_buffer() and query
+    the package elemenet directly. (Rafael J. Wysocki)
+  - Check the number of elements in case the number of package
+    elements is too small. (Rafael J. Wysocki)
+  - Doing the assignment as initialization in get_image_type().
+    Meanwhile, returns the type or a negative error code in
+    get_image_type(). (Rafael J. Wysocki)
+  - Put the comments inside the function. (Rafael J. Wysocki)
+  - Returns the size or a negative error code in adjust_efi_size()
+    (Rafael J. Wysocki)
+  - Fix the return value from EFAULT to EINVAL if pfru_valid_revid()
+    does not pass. (Rafael J. Wysocki)
+  - Change the write() to be the code injection/update, the read() to
+    be telemetry retrieval and all of the rest to be ioctl()s under
+    one special device file.(Rafael J. Wysocki)
+  - Remove redundant parens. (Rafael J. Wysocki)
+  - Putting empty code lines after an if () statement that is not
+    followed by a block. (Rafael J. Wysocki)
+  - Remove "goto" tags to make the code more readable. (Rafael J. Wysocki)
+- Change from v2 to v3:
+  - Use valid types for structures that cross the user/kernel boundary
+    in the uapi header. (Greg Kroah-Hartman)
+  - Rename the structure in uapi to start with a prefix pfru so as
+    to avoid confusing in the global namespace. (Greg Kroah-Hartman)
+- Change from v1 to v2:
+  - Add a spot in index.rst so it becomes part of the docs build
+    (Jonathan Corbet).
+  - Sticking to the 80-column limit(Jonathan Corbet).
+  - Underline lengths should match the title text(Jonathan Corbet).
+  - Use literal blocks for the code samples(Jonathan Corbet).
+  - Add sanity check for duplicated instance of ACPI device.
+  - Update the driver to work with allocated pfru_device objects.
+    (Mike Rapoport)
+  - For each switch case pair, get rid of the magic case numbers
+    and add a default clause with the error handling.(Mike Rapoport)
+  - Move the obj->type checks outside the switch to reduce redundancy.
+    (Mike Rapoport)
+  - Parse the code_inj_id and drv_update_id at driver initialization time
+    to reduce the re-parsing at runtime. (Mike Rapoport)
+  - Explain in detail how the size needs to be adjusted when doing
+    version check. (Mike Rapoport)
+  - Rename parse_update_result() to dump_update_result()
+    (Mike Rapoport)
+  - Remove redundant return.(Mike Rapoport)
+  - Do not expose struct capsulate_buf_info to uapi, since it is
+    not needed in userspace. (Mike Rapoport)
+  - Do not allow non-root user to run this test.(Shuah Khan)
+  - Test runs on platform without pfru_telemetry should skip
+    instead of reporting failure/error.(Shuah Khan)
+  - Reuse uapi/linux/pfru.h instead of copying it into the test
+    directory. (Mike Rapoport)
 
-I wonder if we should offer a language to better describe dual-sourced
-components/shared power resources so we would not get into this
-situation. I am still curious what powers up the devices in case we
-use
-i2c_new_scanned_device() path. Is it simply a happenstance? I have a
-Sarien with Melfas, I guess I can play with it a bit...
+Chen Yu (4):
+  efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and
+    corresponding structures
+  drivers/acpi: Introduce Platform Firmware Runtime Update device driver
+  drivers/acpi: Introduce Platform Firmware Runtime Telemetry
+  tools: Introduce power/acpi/tools/pfrut
 
-OK, I guess we've built more stuff on top of linux,probed and we will
-have to have it if we want to support current Google firmware. We need
-to have much stronger wording about what linux,probed property really
-means (i.e. we expect the device to be powered up by the firmware,
-executing proper power up timing sequence, and not being a "morphing"
-device) for this to work reliably.
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ drivers/acpi/Kconfig                          |  22 +
+ drivers/acpi/Makefile                         |   1 +
+ drivers/acpi/pfr_telemetry.c                  | 434 +++++++++++++
+ drivers/acpi/pfr_update.c                     | 575 ++++++++++++++++++
+ include/linux/efi.h                           |  46 ++
+ include/uapi/linux/pfrut.h                    | 262 ++++++++
+ tools/power/acpi/.gitignore                   |   1 +
+ tools/power/acpi/Makefile                     |  16 +-
+ tools/power/acpi/Makefile.rules               |   2 +-
+ tools/power/acpi/man/pfrut.8                  | 137 +++++
+ tools/power/acpi/tools/pfrut/Makefile         |  23 +
+ tools/power/acpi/tools/pfrut/pfrut.c          | 424 +++++++++++++
+ 13 files changed, 1935 insertions(+), 9 deletions(-)
+ create mode 100644 drivers/acpi/pfr_telemetry.c
+ create mode 100644 drivers/acpi/pfr_update.c
+ create mode 100644 include/uapi/linux/pfrut.h
+ create mode 100644 tools/power/acpi/man/pfrut.8
+ create mode 100644 tools/power/acpi/tools/pfrut/Makefile
+ create mode 100644 tools/power/acpi/tools/pfrut/pfrut.c
 
->
-> >> If we wanted to do this correctly, coreboot would have to implement
-> >> full power and reset control and also add drivers for I2C controllers
-> >> to be able to communicate with peripherals, and then adjust _STA
-> >> methods to report "not present" when the device is indeed absent. And
-> >> note that even in this case we would have issues with "morphing
-> >> devices", so coreboot would also need to know how to reset device out
-> >> of bootloader mode, and maybe flash firmware so device can work in
-> >> normal mode.
->
-> What do you mean by =E2=80=9Cbootloader mode=E2=80=9D?
+-- 
+2.25.1
 
-Modern touch controllers and other peripherals are pretty complex.
-They typically have R0 firmware (bootloader) and RW main firmware, and
-the controller might end up being in "bootloader" mode if RW firmware
-gets corrupted or because of power surge, or something else. Some
-controllers (for example Atmel) use different addresses on the bus
-when in bootloader mode vs normal mode.
-
-> coreboot also cannot flash
-> anything. That=E2=80=99s up to the payload, and even there support for fl=
-ashing
-> is rare.
->
-> Duncan wrote something about the ACPI _STA method idea, that ASL(?) and
-> I2C do not go well together.
-
-There would need to be arbitration between OS and firmware when
-accessing I2C controllers in this case so indeed this would be hard.
-Maybe coreboot would have to pre-scan the peripherals before booting
-the OS.
-
->
-> >> However coreboot does (or did?) not want to add code to handle i2c
-> >> controllers, and would like to push this knowledge to the kernel. And
-> >> the kernel does know how to handle peripherals properly, but that
-> >> knowledge lies in individual drivers, not i2c core.
->
-> Excuse my ignorance, can you give an example driver? Does the Melfas
-> touchscreen driver (`drivers/input/touchscreen/melfas_mip4.c`) support it=
-?
-
-Melfas has handling for its reset line, as well as Elan touch
-controllers (elants_i2c.c), Atmel (atmel_mxt_ts.c), Raydium, etc.
-
-Thanks,
-Dmitry
