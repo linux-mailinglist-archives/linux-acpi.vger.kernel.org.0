@@ -2,78 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1323A47D7C4
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 20:32:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65D7147D8A2
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 22:20:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345239AbhLVTcR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Dec 2021 14:32:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46532 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345206AbhLVTcQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 22 Dec 2021 14:32:16 -0500
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C025C061574
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Dec 2021 11:32:16 -0800 (PST)
-Received: by mail-lf1-x12a.google.com with SMTP id k21so7656773lfu.0
-        for <linux-acpi@vger.kernel.org>; Wed, 22 Dec 2021 11:32:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=/qCvdauRyN2z4WAX/IWpSl7E5xdxjoJMymI+F18Bw7Y=;
-        b=HkAyIz5in8en3tmDoRGYkJsU6ORNcsMf9e62Ou+GiUDCFyTHoorLLkPfenh3+7FV9A
-         LbrqTzXPmocFM/aRAZN9xIkvTbG0cy1mHSl4xW9g+hadG3+JPbnqoPkBH53otMNS5afx
-         +FSSfmuD9pA4Hja3po2QjxHqw2WeQbosNIW2gJYFiSQ6yRy1hHxusJT4JUQUSl5XR1oM
-         H4jJ8iO0gjKKBgwRg57rzVJcpkJUQ7Bufjula5C/lyEXSw2gi1pgqxoQmogHMHNWRT0v
-         N1RMHMszZ+ZU53e+wgHh+9nKz4cQlk0mfq/YEaGnwnBggBoSCczZpsIVObLU7C73kQov
-         klXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=/qCvdauRyN2z4WAX/IWpSl7E5xdxjoJMymI+F18Bw7Y=;
-        b=jflcxbH7bFR1aazHr3Rk39aEA69w5BWQ9eVL8q+zXq5+cxRsxuTIemiwp2KoRsI9o2
-         Ngw12oR3jr/CGBrSTyLV/eMAzBzvmjyEo3DJHG3JZg8ImEefgkZPz0tvaCDwxH6rczQJ
-         DLwvx/hGofwX7Hr3UgvK4n0VRo9rytZU6rvyM66plNLBM/PJ1t495686zUtHxEqIYJgN
-         Gao+WYamq9Bn70CtumkkC5H1gNEFQ7Y+UQ04pI6u1ztnpALznrmcT49r2Ho0OovgCDWH
-         UgkTFRcVCEVOCo2yP6cLyXLVtOGZG/C4zm0ZL7whJY10W6FviXwhixGe2jTY9Pve1svW
-         +2xw==
-X-Gm-Message-State: AOAM533c0UT3jXW2FnvkmkDS/iTWqQTQr3IwaeegPEq/AUK7pV0nmcVd
-        P11wCWD1Uk8pa6CKaC6Nzrazgc5Da+TR9Mxf1ac=
-X-Google-Smtp-Source: ABdhPJxJpI28PGLypedqBL9T6QM5dmV2LOrpcj44Fm/aIBkdQ5RzlHu4fA3h5KyXlNhsQOoDghp0XbuNzcDvP8l/uyY=
-X-Received: by 2002:ac2:4f86:: with SMTP id z6mr3363659lfs.412.1640201534489;
- Wed, 22 Dec 2021 11:32:14 -0800 (PST)
+        id S231577AbhLVVU3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Dec 2021 16:20:29 -0500
+Received: from todd.t-8ch.de ([159.69.126.157]:50571 "EHLO todd.t-8ch.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230115AbhLVVU2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 Dec 2021 16:20:28 -0500
+From:   =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=weissschuh.net;
+        s=mail; t=1640208026;
+        bh=aGCj4aiE4nMhMPOvZxmPkbOeYECl8rQcbNMEcl0EXbc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=RnBBWeyrJ/gnUz0yHX9jlR0geQv63Kx0+04Y7c+L0Xx6RJqDMVg3rWI/83H5HUlLD
+         alZG1UojE7+4TR7NwKfduFEw+5e54+7Mm1+0L3fOsp5Y4YH62M5N+ZAQxFWzJzYGS/
+         3vQ02nk84ZoOwF6RkvN/mTkzdf0LXRWcDhZqT6gg=
+To:     linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        linux-kernel@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org, markpearson@lenovo.com,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Ognjen Galic <smclt30p@gmail.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Bastien Nocera <hadess@hadess.net>,
+        David Zeuthen <davidz@redhat.com>,
+        Richard Hughes <richard@hughsie.com>
+Subject: [PATCH] ACPI: battery: Add the ThinkPad "Not Charging" quirk
+Date:   Wed, 22 Dec 2021 22:20:14 +0100
+Message-Id: <20211222212014.66971-1-linux@weissschuh.net>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Reply-To: martinafrancis022@gmail.com
-Sender: godfreynwauzor@gmail.com
-Received: by 2002:a05:6512:3f01:0:0:0:0 with HTTP; Wed, 22 Dec 2021 11:32:13
- -0800 (PST)
-From:   Martina Francis <martinafrancis61@gmail.com>
-Date:   Wed, 22 Dec 2021 11:32:13 -0800
-X-Google-Sender-Auth: 0KUCpI18Lo5WcHHTF9fXVzV2b2c
-Message-ID: <CAFTYJ_pfcnwLVjTb_HbU2bdKHfcVRo0KDcpVA3SO_Mfsm2NKWQ@mail.gmail.com>
-Subject: =?UTF-8?Q?Fondo_de_donaci=C3=B3n_de_la_Sra=2E_Martina_Francis?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1640208009; l=3639; s=20211113; h=from:subject; bh=aGCj4aiE4nMhMPOvZxmPkbOeYECl8rQcbNMEcl0EXbc=; b=V4ltAs5HbLZJuv0HJiA8DNFuaS6cA+TfkoXpftD66G0oI3+a1Lfi7nnTjpqoEuQAaZBuCi4Th6V0 4oQ4R+6YA0Sfey7NObJdrg37MQq3l5anJc0hWKgNIkOC4nW4d9GP
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519; pk=9LP6KM4vD/8CwHW7nouRBhWLyQLcK1MkP6aTZbzUlj4=
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---=20
-Buen dia, querido,
-=C2=BFC=C3=B3mo est=C3=A1 usted y su familia?
-Mi nombre es Sra. Martina Francis, una viuda enferma que escribe desde
-la cama del hospital sin un hijo. =C2=BFPuedo confiar en ti ?, tengo un
-fondo de donaci=C3=B3n de ($ 2,700,000.00 MILLONES USD) que quiero donar a
-trav=C3=A9s de ti para ayudar a la gente pobre, ni=C3=B1os abusados, menos
-privilegiados, iglesias, orfanatos y viudas que sufren en la sociedad.
+The EC/ACPI firmware on Lenovo ThinkPads used to report a status
+of "Unknown" when the battery is between the charge start and
+charge stop thresholds. On Windows, it reports "Not Charging"
+so the quirk has been added to also report correctly.
 
-Comun=C3=ADquese conmigo inmediatamente despu=C3=A9s de leer este mensaje p=
-ara
-obtener m=C3=A1s detalles sobre esta agenda humanitaria.
+Now the "status" attribute returns "Not Charging" when the
+battery on ThinkPads is not physicaly charging.
 
-Dios los bendiga mientras espero su respuesta.
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 
-Tu hermana.
-Sra. Martina Francis.
+---
+
+This is the same as: https://patchwork.kernel.org/patch/10205359/
+
+Previously this patch has been applied[0] but then reverted from -next
+because it caused a regression in UPower.
+This regression however has been fixed in UPower in late 2018[1],
+with the fixed version 0.99.10 released in early 2019 [2].
+So maybe it is now time to reintroduce this change.
+
+Ognen:
+
+As the patch was originally developed by you, could send a
+Signed-off-by-tag, so I can attribute you as co-developer?
+
+Or maybe the original patch could just be re-applied?
+
+The original patch had the following tags, which I'm not sure to handle
+for this case:
+
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Ognjen Galic <smclt30p@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+Also Cc-ing the UPower maintainers for their opinion:
+
+Cc: Bastien Nocera <hadess@hadess.net>
+Cc: David Zeuthen <davidz@redhat.com>
+Cc: Richard Hughes <richard@hughsie.com>
+
+[0] Applied as 91eea70e5e5ce12eb1c7cd922e561fab43e201bd
+[1] https://gitlab.freedesktop.org/upower/upower/-/merge_requests/19/commits
+[2] https://gitlab.freedesktop.org/upower/upower/-/commit/215049e7b80c5f24cb35cd229a445c6cf19bd381
+---
+ drivers/acpi/battery.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 8afa85d6eb6a..ead0114f27c9 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -53,6 +53,7 @@ static int battery_bix_broken_package;
+ static int battery_notification_delay_ms;
+ static int battery_ac_is_broken;
+ static int battery_check_pmic = 1;
++static int battery_quirk_notcharging;
+ static unsigned int cache_time = 1000;
+ module_param(cache_time, uint, 0644);
+ MODULE_PARM_DESC(cache_time, "cache time in milliseconds");
+@@ -217,6 +218,8 @@ static int acpi_battery_get_property(struct power_supply *psy,
+ 			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+ 		else if (acpi_battery_is_charged(battery))
+ 			val->intval = POWER_SUPPLY_STATUS_FULL;
++		else if (battery_quirk_notcharging)
++			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+ 		else
+ 			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+ 		break;
+@@ -1111,6 +1114,12 @@ battery_do_not_check_pmic_quirk(const struct dmi_system_id *d)
+ 	return 0;
+ }
+ 
++static int __init battery_quirk_not_charging(const struct dmi_system_id *d)
++{
++	battery_quirk_notcharging = 1;
++	return 0;
++}
++
+ static const struct dmi_system_id bat_dmi_table[] __initconst = {
+ 	{
+ 		/* NEC LZ750/LS */
+@@ -1155,6 +1164,19 @@ static const struct dmi_system_id bat_dmi_table[] __initconst = {
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "Lenovo MIIX 320-10ICR"),
+ 		},
+ 	},
++	{
++		/*
++		 * On Lenovo ThinkPads the BIOS specification defines
++		 * a state when the bits for charging and discharging
++		 * are both set to 0. That state is "Not Charging".
++		 */
++		.callback = battery_quirk_not_charging,
++		.ident = "Lenovo ThinkPad",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad"),
++		},
++	},
+ 	{},
+ };
+ 
+
+base-commit: fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf
+-- 
+2.34.1
+
