@@ -2,111 +2,87 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D09747CF58
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 10:35:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 702B547D0E1
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 12:19:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234463AbhLVJfE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Dec 2021 04:35:04 -0500
-Received: from mga02.intel.com ([134.134.136.20]:28482 "EHLO mga02.intel.com"
+        id S244587AbhLVLTc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Dec 2021 06:19:32 -0500
+Received: from mga05.intel.com ([192.55.52.43]:12651 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229987AbhLVJfE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 22 Dec 2021 04:35:04 -0500
+        id S232583AbhLVLTb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 Dec 2021 06:19:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640165704; x=1671701704;
+  t=1640171971; x=1671707971;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=qZUDc1T9LV4wFwF8706CO5P2w8QLmoRAzlSwfpbYtGo=;
-  b=EdtrB2uIitEkMptxUmSWeQjhDQ0UiJYWYw1RMyPdSAG8ZXvaWXsHqYjw
-   OQ8iI0I1QnG5bC2oBSe0Z311ZaP5vE84M5tREH9m5QWhV8jpQp6C4d43d
-   jt47apMG0Z4ZP+g/fCy67/oVAZi33+r8SfPGLk+X8VLymUY1yHS4pgE8C
-   7iKo4aZ0dD3FYAAMPvcXJ05dVnfPE+r7/KMw3XVcCcvBWZGToVajAq+C7
-   pTbSQPRdxSICp0Qtz0W3DDZU96pCNmh1FC43U4z1QeTxc7SOooctMANW6
-   hk1CoCl1/OgPqDTzwcu8rwTrB7waujARc6NMGd6shQ71wJQiAmehiZTxl
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10205"; a="227881944"
+  bh=25dCfEp2pAvKUokPJO2DqPPHDmETKVion+KXeY2z9Ss=;
+  b=NlzUTYJn/UKKNZNMxtDcTRS6WmTmQvXCgG2xgc0xTnKzy/+ooEbb9Nn6
+   2JPvvs2NOyK2z108bd5dr7+IXKqJk+QBADmsJgmATkiwN64Y/AcC5JTSS
+   PP6Um2GTlJK9Pt/rmFM90rrukQ7FVueXgeCRXay7XiIfSbdGZ+yaObdyq
+   JH+xAZ0FQIihhRR78yecNoWzB9Cj8OevO7gfv0qdzZC9ThBvmG/yHhNb6
+   WUeLTOIhj1Lv5CyZ81LnA9GLw9KTpIElK3UugSSo9Xly1fBjJbJogyESo
+   AoljR4ockmhfNUYnZie0N48khZGSAcE88YLr4ts+QK+UxkXYiGAKHLRif
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10205"; a="326902926"
 X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
-   d="scan'208";a="227881944"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 01:35:04 -0800
+   d="scan'208";a="326902926"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 03:19:31 -0800
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
-   d="scan'208";a="586966983"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 01:35:01 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with ESMTP id 582C7201AA;
-        Wed, 22 Dec 2021 11:34:59 +0200 (EET)
-Date:   Wed, 22 Dec 2021 11:34:59 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Daniel Scally <djrscally@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+   d="scan'208";a="664244330"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 22 Dec 2021 03:19:28 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 22 Dec 2021 13:19:27 +0200
+Date:   Wed, 22 Dec 2021 13:19:27 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] software node: fix wrong node passed to find nargs_prop
-Message-ID: <YcLxQ+X3I6hAJ9RY@paasikivi.fi.intel.com>
+Message-ID: <YcMJv3TvqZkrGSMG@kuha.fi.intel.com>
 References: <20211220210533.3578678-1-clement.leger@bootlin.com>
- <CAHp75Vf+F2L4EFmokRYD+-M9hSuz+SbiiWnqHvFZttRyfKS-mg@mail.gmail.com>
- <d9f5b201-2a00-799d-3a0f-7c9709d77102@gmail.com>
- <YcGfky32lSXeABEF@kroah.com>
- <YcGiIHAJS7/qXcJv@paasikivi.fi.intel.com>
- <800d89c5-c9e3-d969-ea9a-08ec0362a90c@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <800d89c5-c9e3-d969-ea9a-08ec0362a90c@gmail.com>
+In-Reply-To: <20211220210533.3578678-1-clement.leger@bootlin.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Daniel,
-
-On Tue, Dec 21, 2021 at 10:09:45PM +0000, Daniel Scally wrote:
-> Hi Sakari
+On Mon, Dec 20, 2021 at 10:05:33PM +0100, Clément Léger wrote:
+> nargs_prop refers to a property located in the reference that is found
+> within the nargs property. Use the correct reference node in call to
+> property_entry_read_int_array() to retrieve the correct nargs value.
 > 
-> On 21/12/2021 09:45, Sakari Ailus wrote:
-> > Hi Greg, Andy,
-> > 
-> > On Tue, Dec 21, 2021 at 10:34:11AM +0100, Greg Kroah-Hartman wrote:
-> >> On Mon, Dec 20, 2021 at 11:37:07PM +0000, Daniel Scally wrote:
-> >>> Thanks Andy
-> >>>
-> >>> On 20/12/2021 22:13, Andy Shevchenko wrote:
-> >>>> + Sakari, Dan
-> >>>>
-> >>>> On Monday, December 20, 2021, Clément Léger <clement.leger@bootlin.com
-> >>>> <mailto:clement.leger@bootlin.com>> wrote:
-> >>>>
-> >>>>     nargs_prop refers to a property located in the reference that is found
-> >>>>     within the nargs property.
-> >>>
-> >>> I think this is right (it's not used in the ACPI version, and the OF
-> >>> version is quite convoluted so a bit hard to follow)...but also I note
-> >>> that none of the users of fwnode_property_get_reference_args() pass
-> >>> anything to nargs_prop anyway...do we even need this?
-> >>
-> >> Looks like it is unused, please just remove it.
-> > 
-> > If you remove nargs_prop argument, then callers will have to use OF
-> > property API instead to parse references with property-defined number of
-> > arguments. The goal has been to cover all functionality in a
-> > firmware-independent way.
+> Fixes: b06184acf751 ("software node: Add software_node_get_reference_args()")
+> Signed-off-by: Clément Léger <clement.leger@bootlin.com>
+
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+>  drivers/base/swnode.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> My mistake, I missed that of_parse_phandle_with_args() has a ton of
-> direct users. I guess we should try to replace those with
-> fwnode_property_get_reference_args() where appropriate.
-
-I'd say at least when the code is otherwise using fwnode property API.
-
-I guess most of the reference users are OF-based originally while cameras
-are perhaps a bit of an exception to this. :-)
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index 4debcea4fb12..0a482212c7e8 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -529,7 +529,7 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
+>  		return -ENOENT;
+>  
+>  	if (nargs_prop) {
+> -		error = property_entry_read_int_array(swnode->node->properties,
+> +		error = property_entry_read_int_array(ref->node->properties,
+>  						      nargs_prop, sizeof(u32),
+>  						      &nargs_prop_val, 1);
+>  		if (error)
+> -- 
+> 2.34.1
 
 -- 
-Regards,
-
-Sakari Ailus
+heikki
