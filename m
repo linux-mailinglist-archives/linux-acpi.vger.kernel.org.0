@@ -2,81 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7573247D31B
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 14:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5B3547D359
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 Dec 2021 15:04:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245454AbhLVNk7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 22 Dec 2021 08:40:59 -0500
-Received: from foss.arm.com ([217.140.110.172]:45876 "EHLO foss.arm.com"
+        id S245577AbhLVOEy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 22 Dec 2021 09:04:54 -0500
+Received: from mga05.intel.com ([192.55.52.43]:24392 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245436AbhLVNk7 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 22 Dec 2021 08:40:59 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2729DD6E;
-        Wed, 22 Dec 2021 05:40:58 -0800 (PST)
-Received: from bogus (unknown [10.57.36.205])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ADFD33F5A1;
-        Wed, 22 Dec 2021 05:40:56 -0800 (PST)
-Date:   Wed, 22 Dec 2021 13:40:53 +0000
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     linux-kernel@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>
-Cc:     linux-acpi@vger.kernel.org, Justin He <justin.he@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [PATCH] mailbox: pcc: Handle all PCC subtypes correctly in
- pcc_mbox_irq
-Message-ID: <20211222134053.7yibtok42iluc5go@bogus>
-References: <20211209092146.620024-1-sudeep.holla@arm.com>
+        id S245574AbhLVOEv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 22 Dec 2021 09:04:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640181891; x=1671717891;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=giZfMnI/ds4gAO8fynsSE17x7sVTJ3UvzV6jf6hUKkY=;
+  b=jMFs2BGtXXC8PSRalNuPy8ExlJA4BXepPfo6bxgOEwP4w2PPauXS0Sok
+   FW6VoFaCUU4Dg0x5q11V1CqaRYla+ur4pZaTkRdF0fVoRMXNVVGWdXjny
+   yfkkFOb74LscVUfervIADeNQr33XmYs9rmUZjHoKu36s32ABCXOCGv+YF
+   FqAMhlNh6HdNx2Wyj2e5hl5WTObL5tkPl3yjdfTgDhiTJD7ufRzFyLVU6
+   ailGNnwNfKVqP5Qax50Jorft5YpwQdFCIKEXbfl+2MukEVgujX/9lHGOL
+   moLLCPNA/PypUWeJIQXaZJG+4C/FZG8953nik4b/ouNrNgLl5PWCt2Ccb
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10205"; a="326927684"
+X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
+   d="scan'208";a="326927684"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2021 06:04:50 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; 
+   d="scan'208";a="466673312"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga003.jf.intel.com with ESMTP; 22 Dec 2021 06:04:42 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id CF6AD23E; Wed, 22 Dec 2021 16:04:50 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] ACPI: CPPC: Amend documentation in the comments
+Date:   Wed, 22 Dec 2021 16:04:45 +0200
+Message-Id: <20211222140445.69689-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211209092146.620024-1-sudeep.holla@arm.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Jassi,
+Currently it's too hard to read the _CPC structure as it's commented.
+Reshuffle indentation and style to make it readable.
 
-On Thu, Dec 09, 2021 at 09:21:46AM +0000, Sudeep Holla wrote:
-> Commit c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC
-> subspaces(type 3/4)") enabled the type3/4 of PCCT, but the change in
-> pcc_mbox_irq breaks the other PCC subtypes.
-> 
-> The kernel reports a warning on an Ampere eMag server
-> 
-> -->8
->  CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.16.0-rc4 #127
->  Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 0.14 02/22/2019
->  Call trace:
->   dump_backtrace+0x0/0x200
->   show_stack+0x20/0x30
->   dump_stack_lvl+0x68/0x84
->   dump_stack+0x18/0x34
->   __report_bad_irq+0x54/0x17c
->   note_interrupt+0x330/0x428
->   handle_irq_event_percpu+0x90/0x98
->   handle_irq_event+0x4c/0x148
->   handle_fasteoi_irq+0xc4/0x188
->   generic_handle_domain_irq+0x44/0x68
->   gic_handle_irq+0x84/0x2ec
->   call_on_irq_stack+0x28/0x34
->   do_interrupt_handler+0x88/0x90
->   el1_interrupt+0x48/0xb0
->   el1h_64_irq_handler+0x18/0x28
->   el1h_64_irq+0x7c/0x80
-> ---
-> 
-> The main reason for that is the command complete register is read as 0
-> if the GAS register doesn't exist for the same which is the case for
-> PCC subtypes 0-2. Fix it by checking for non-zero value before masking
-> with the status flag and checking for command completion.
-> 
-> Fixes: c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/cppc_acpi.c | 59 ++++++++++++++--------------------------
+ 1 file changed, 21 insertions(+), 38 deletions(-)
 
-Can you take this patch and [1] for v5.17 ? This one is a bug fix and good
-to get it merged ASAP.
-
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index b62c87b8ce4a..182471f319fe 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -604,47 +604,30 @@ static bool is_cppc_supported(int revision, int num_ent)
+ /*
+  * An example CPC table looks like the following.
+  *
+- *	Name(_CPC, Package()
+- *			{
+- *			17,
+- *			NumEntries
+- *			1,
+- *			// Revision
+- *			ResourceTemplate(){Register(PCC, 32, 0, 0x120, 2)},
+- *			// Highest Performance
+- *			ResourceTemplate(){Register(PCC, 32, 0, 0x124, 2)},
+- *			// Nominal Performance
+- *			ResourceTemplate(){Register(PCC, 32, 0, 0x128, 2)},
+- *			// Lowest Nonlinear Performance
+- *			ResourceTemplate(){Register(PCC, 32, 0, 0x12C, 2)},
+- *			// Lowest Performance
+- *			ResourceTemplate(){Register(PCC, 32, 0, 0x130, 2)},
+- *			// Guaranteed Performance Register
+- *			ResourceTemplate(){Register(PCC, 32, 0, 0x110, 2)},
+- *			// Desired Performance Register
+- *			ResourceTemplate(){Register(SystemMemory, 0, 0, 0, 0)},
+- *			..
+- *			..
+- *			..
+- *
+- *		}
++ *  Name (_CPC, Package() {
++ *      17,							// NumEntries
++ *      1,							// Revision
++ *      ResourceTemplate() {Register(PCC, 32, 0, 0x120, 2)},	// Highest Performance
++ *      ResourceTemplate() {Register(PCC, 32, 0, 0x124, 2)},	// Nominal Performance
++ *      ResourceTemplate() {Register(PCC, 32, 0, 0x128, 2)},	// Lowest Nonlinear Performance
++ *      ResourceTemplate() {Register(PCC, 32, 0, 0x12C, 2)},	// Lowest Performance
++ *      ResourceTemplate() {Register(PCC, 32, 0, 0x130, 2)},	// Guaranteed Performance Register
++ *      ResourceTemplate() {Register(PCC, 32, 0, 0x110, 2)},	// Desired Performance Register
++ *      ResourceTemplate() {Register(SystemMemory, 0, 0, 0, 0)},
++ *      ...
++ *      ...
++ *      ...
++ *  }
+  * Each Register() encodes how to access that specific register.
+  * e.g. a sample PCC entry has the following encoding:
+  *
+- *	Register (
+- *		PCC,
+- *		AddressSpaceKeyword
+- *		8,
+- *		//RegisterBitWidth
+- *		8,
+- *		//RegisterBitOffset
+- *		0x30,
+- *		//RegisterAddress
+- *		9
+- *		//AccessSize (subspace ID)
+- *		0
+- *		)
+- *	}
++ *  Register (
++ *      PCC,	// AddressSpaceKeyword
++ *      8,	// RegisterBitWidth
++ *      8,	// RegisterBitOffset
++ *      0x30,	// RegisterAddress
++ *      9,	// AccessSize (subspace ID)
++ *  )
+  */
+ 
+ #ifndef init_freq_invariance_cppc
 -- 
-Regards,
-Sudeep
+2.34.1
 
-[1]  https://lore.kernel.org/r/20211209082143.619354-1-sudeep.holla@arm.com
