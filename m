@@ -2,96 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A55D47E192
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Dec 2021 11:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40AC047E1E3
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Dec 2021 12:00:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347758AbhLWKiI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Dec 2021 05:38:08 -0500
-Received: from mga14.intel.com ([192.55.52.115]:29250 "EHLO mga14.intel.com"
+        id S1347834AbhLWLAM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Dec 2021 06:00:12 -0500
+Received: from foss.arm.com ([217.140.110.172]:39522 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1347755AbhLWKiI (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 23 Dec 2021 05:38:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640255887; x=1671791887;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PuR52/Ba94yPsgQ4lSZpBqqDPD9qPXxRGfzZH9LoHw8=;
-  b=KmkPKtePD+ZbztE7IWV24FNuik5c78VLQn4XKsJfAI0Vim9De2oXzbpA
-   1gln9F/EuibwIRduI/p1vETqUGOA9MnFH6cGh+kKMmYIRwwmW5VaoX550
-   ZX5gFDCGDNir/9nK6qQXMBeD9o8LQi9ERTl/npU4rbv5wz+IGARKGzB9k
-   /9r2CLr+Mdkd0dqo2h6hUv1XAQjvHZ0M6rMjAfkeMiDYR8oEW3+ehybRE
-   yW7DlJ2n5TCTzVJ6o0kiEgKlQU/Y1LomgeV2Q4YPTJqCv0XqKr7HI4v1l
-   Z/oKKJEJ7goT79HPQWqtyQeYkfk6dSIlJofbtVXYYLPXBwyVjFhmpIN9u
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10206"; a="241027274"
-X-IronPort-AV: E=Sophos;i="5.88,229,1635231600"; 
-   d="scan'208";a="241027274"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2021 02:38:07 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,229,1635231600"; 
-   d="scan'208";a="664546190"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 23 Dec 2021 02:38:05 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id AD5ADD4; Thu, 23 Dec 2021 12:38:13 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     Hoan Tran <hoan@os.amperecomputing.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH v1 2/2] gpio: dwapb: Switch to use fwnode instead of of_node
-Date:   Thu, 23 Dec 2021 12:38:09 +0200
-Message-Id: <20211223103809.12343-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211223103809.12343-1-andriy.shevchenko@linux.intel.com>
-References: <20211223103809.12343-1-andriy.shevchenko@linux.intel.com>
+        id S1347830AbhLWLAL (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 23 Dec 2021 06:00:11 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E03131FB;
+        Thu, 23 Dec 2021 03:00:10 -0800 (PST)
+Received: from bogus (unknown [10.57.36.205])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D5693F718;
+        Thu, 23 Dec 2021 03:00:09 -0800 (PST)
+Date:   Thu, 23 Dec 2021 11:00:06 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        kbuild-all@lists.01.org, "Rafael J . Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH] ACPI: PCC: Implement OperationRegion handler for the PCC
+ Type 3 subtype
+Message-ID: <20211223110006.mgkuwojkhgofeety@bogus>
+References: <20211222190919.137550-1-sudeep.holla@arm.com>
+ <202112230517.xGNBVseT-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202112230517.xGNBVseT-lkp@intel.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-GPIO library now accepts fwnode as a firmware node, so
-switch the driver to use it and hence rectify the ACPI
-case which uses software nodes.
+On Thu, Dec 23, 2021 at 05:53:59AM +0800, kernel test robot wrote:
+> Hi Sudeep,
+> 
+> I love your patch! Yet something to improve:
+> 
+> [auto build test ERROR on rafael-pm/linux-next]
+> [also build test ERROR on linux/master linus/master v5.16-rc6 next-20211222]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Sudeep-Holla/ACPI-PCC-Implement-OperationRegion-handler-for-the-PCC-Type-3-subtype/20211223-030953
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+> config: arm64-randconfig-r034-20211222 (https://download.01.org/0day-ci/archive/20211223/202112230517.xGNBVseT-lkp@intel.com/config)
+> compiler: aarch64-linux-gcc (GCC) 11.2.0
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://github.com/0day-ci/linux/commit/d47183476e4a00211d39cd175b92fe5c11fbb65a
+>         git remote add linux-review https://github.com/0day-ci/linux
+>         git fetch --no-tags linux-review Sudeep-Holla/ACPI-PCC-Implement-OperationRegion-handler-for-the-PCC-Type-3-subtype/20211223-030953
+>         git checkout d47183476e4a00211d39cd175b92fe5c11fbb65a
+>         # save the config file to linux build tree
+>         mkdir build_dir
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/acpi/
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+>
 
-Note, in this case it's rather logical fix that doesn't
-affect functionality, thus no backporting required.
+Thanks for the report. As stated in the patch it depend on another series
+by Rafael @[1]. Sorry for rushing and posting this patch before the content
+of [1] appeared in linux-pm linux-next.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/gpio/gpio-dwapb.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/drivers/gpio/gpio-dwapb.c b/drivers/gpio/gpio-dwapb.c
-index ec0767d7800d..b0f3aca61974 100644
---- a/drivers/gpio/gpio-dwapb.c
-+++ b/drivers/gpio/gpio-dwapb.c
-@@ -15,7 +15,6 @@
- #include <linux/irq.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/property.h>
- #include <linux/reset.h>
-@@ -515,9 +514,7 @@ static int dwapb_gpio_add_port(struct dwapb_gpio *gpio,
- 		return err;
- 	}
- 
--#ifdef CONFIG_OF_GPIO
--	port->gc.of_node = to_of_node(pp->fwnode);
--#endif
-+	port->gc.fwnode = pp->fwnode;
- 	port->gc.ngpio = pp->ngpio;
- 	port->gc.base = pp->gpio_base;
- 
 -- 
-2.34.1
+Regards,
+Sudeep
 
+[1] https://lore.kernel.org/lkml/11889746.O9o76ZdvQC@kreacher
