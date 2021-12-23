@@ -2,152 +2,204 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A92C47E026
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Dec 2021 09:04:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 597C047E02F
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Dec 2021 09:11:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242795AbhLWIEn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Dec 2021 03:04:43 -0500
-Received: from mga06.intel.com ([134.134.136.31]:27737 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242745AbhLWIEn (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 23 Dec 2021 03:04:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640246683; x=1671782683;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=i+YD/pNRVPPsMYgsiZ0v66EnAsM8Wm2IxjTw8+56sVQ=;
-  b=eiktmwc+Kbnp4sTdFUComIRiv+UzjUnVQ3HS9uNy7+jBkPmI61Tc/d3c
-   yhSJ79drUIq5lLlfHy+lwpHfWUR9tU3z6h+wOXUw289aJmgGK4N78sIgR
-   IfrccaSNvjVIq9NSwSQpAC53LpLXfkJgT/sXkRlaiCFJ13YtwO7LCat0x
-   QoKgzEhplwGhmETbEgt239+F/W36AArLIpXdkggc1OhmsxZPCabVTe1NB
-   7eWcYn/kKNQIl49sK/3iZCKed6AmD9UROSldllBf9J6BOIiWeFSd7YNHR
-   INdRTpgXP7BI4yhqFGUeN+gDwIg+PU4UebvnzhapQ4E1Wh29SUSopvB5r
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10206"; a="301544454"
-X-IronPort-AV: E=Sophos;i="5.88,228,1635231600"; 
-   d="scan'208";a="301544454"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2021 00:04:42 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,228,1635231600"; 
-   d="scan'208";a="664513558"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 23 Dec 2021 00:04:38 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 23 Dec 2021 10:04:38 +0200
-Date:   Thu, 23 Dec 2021 10:04:38 +0200
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Prashant Malani <pmalani@chromium.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
-        <linux-usb@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 2/5] acpi: Store CRC-32 hash of the _PLD in struct
- acpi_device
-Message-ID: <YcQtlg5QtrMa4xzz@kuha.fi.intel.com>
-References: <20211222143258.82305-1-heikki.krogerus@linux.intel.com>
- <20211222143258.82305-3-heikki.krogerus@linux.intel.com>
- <CAJZ5v0iJhM2p+GDR+Ta0QZLdsvar=ybef8DnEHV1=-E-swdL0g@mail.gmail.com>
+        id S235156AbhLWILS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Dec 2021 03:11:18 -0500
+Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:45209 "EHLO
+        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S243034AbhLWILR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 23 Dec 2021 03:11:17 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0V.Wa1Z2_1640247072;
+Received: from 30.240.114.155(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V.Wa1Z2_1640247072)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Thu, 23 Dec 2021 16:11:14 +0800
+Message-ID: <8d415145-01bc-ce57-fd00-91ca63090caa@linux.alibaba.com>
+Date:   Thu, 23 Dec 2021 16:11:11 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0iJhM2p+GDR+Ta0QZLdsvar=ybef8DnEHV1=-E-swdL0g@mail.gmail.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.4.0
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: Re: [RESEND PATCH v4] ACPI: Move sdei_init and ghes_init ahead to
+ handle platform errors earlier
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
+        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
+        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
+References: <20211221231701.GA1125162@bhelgaas>
+Content-Language: en-US
+In-Reply-To: <20211221231701.GA1125162@bhelgaas>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 22, 2021 at 05:55:32PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Dec 22, 2021 at 3:33 PM Heikki Krogerus
-> <heikki.krogerus@linux.intel.com> wrote:
-> >
-> > Storing CRC-32 hash of the Physical Location of Device
-> > object (_PLD) with devices that have it. The hash is stored
-> > to a new struct acpi_device member "pld_crc".
-> >
-> > The hash makes it easier to find devices that share a
-> > location, as there is no need to evaluate the entire object
-> > every time. Knowledge about devices that share a location
-> > can be used in device drivers that need to know the
-> > connections to other components inside a system. USB3 ports
-> > will for example always share their location with a USB2
-> > port.
-> >
-> > Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> > ---
-> >  drivers/acpi/scan.c     | 16 ++++++++++++++++
-> >  include/acpi/acpi_bus.h | 14 +++++++++++++-
-> >  2 files changed, 29 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> > index 7ff55a197a583..113414c46b713 100644
-> > --- a/drivers/acpi/scan.c
-> > +++ b/drivers/acpi/scan.c
-> > @@ -19,6 +19,7 @@
-> >  #include <linux/dma-map-ops.h>
-> >  #include <linux/platform_data/x86/apple.h>
-> >  #include <linux/pgtable.h>
-> > +#include <linux/crc32.h>
-> >
-> >  #include "internal.h"
-> >
-> > @@ -667,6 +668,19 @@ static int acpi_tie_acpi_dev(struct acpi_device *adev)
-> >         return 0;
-> >  }
-> >
-> > +static void acpi_store_pld_crc(struct acpi_device *adev)
-> > +{
-> > +       struct acpi_pld_info *pld;
-> > +       acpi_status status;
-> > +
-> > +       status = acpi_get_physical_device_location(adev->handle, &pld);
-> > +       if (ACPI_FAILURE(status))
-> > +               return;
-> > +
-> > +       adev->pld_crc = crc32(~0, pld, sizeof(*pld));
-> > +       ACPI_FREE(pld);
-> > +}
-> > +
-> >  static int __acpi_device_add(struct acpi_device *device,
-> >                              void (*release)(struct device *))
-> >  {
-> > @@ -725,6 +739,8 @@ static int __acpi_device_add(struct acpi_device *device,
-> >         if (device->wakeup.flags.valid)
-> >                 list_add_tail(&device->wakeup_list, &acpi_wakeup_device_list);
-> >
-> > +       acpi_store_pld_crc(device);
-> > +
-> >         mutex_unlock(&acpi_device_lock);
-> >
-> >         if (device->parent)
-> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > index 8e87ead2af341..1977db19458ed 100644
-> > --- a/include/acpi/acpi_bus.h
-> > +++ b/include/acpi/acpi_bus.h
-> > @@ -356,10 +356,23 @@ struct acpi_device_data {
-> >         struct list_head subnodes;
-> >  };
-> >
-> > +/*
-> > + * struct acpi_device_location - Device location based on _PLD
-> > + * @devices: List of devices that share this location
-> > + * @node: Entry in the internal list of locations
-> > + * @pld_crc: CRC-32 hash of the _PLD
-> > + */
-> > +struct acpi_device_location {
-> > +       struct list_head devices;
-> > +       struct list_head node;
-> > +       u32 pld_crc;
-> > +};
+Hi, Bjorn,
+
+Thank you for your comments.
+
+在 2021/12/22 AM7:17, Bjorn Helgaas 写道:
+> On Thu, Dec 16, 2021 at 09:34:56PM +0800, Shuai Xue wrote:
+>> On an ACPI system, ACPI is initialised very early from a subsys_initcall(),
+>> while SDEI is not ready until a subsys_initcall_sync().
+>>
+>> The SDEI driver provides functions (e.g. apei_sdei_register_ghes,
+>> apei_sdei_unregister_ghes) to register or unregister event callback for
+>> dispatcher in firmware. When the GHES driver probing, it registers the
+>> corresponding callback according to the notification type specified by
+>> GHES. If the GHES notification type is SDEI, the GHES driver will call
+>> apei_sdei_register_ghes to register event call.
+>>
+>> When the firmware emits an event, it migrates the handling of the event
+>> into the kernel at the registered entry-point __sdei_asm_handler. And
+>> finally, the kernel will call the registered event callback and return
+>> status_code to indicate the status of event handling. SDEI_EV_FAILED
+>> indicates that the kernel failed to handle the event.
+>>
+>> Consequently, when an error occurs during kernel booting, the kernel is
+>> unable to handle and report errors until the GHES driver is initialized by
+>> device_initcall(), in which the event callback is registered. All errors
+>> that occurred before GHES initialization are missed and there is no chance
+>> to report and find them again.
+>>
+>> From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
+>> memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
+>> the estatus memory pool. On the other hand, ghes_init() relies on
+>> sdei_init() to detect the SDEI version and the framework for registering
+>> and unregistering events.
 > 
-> Does this get used anywhere or is it a leftover from the previous version?
+>> By the way, I don't figure out why acpi_hest_init is called in
+>> acpi_pci_root_init, it don't rely on any other thing. May it could
+>> be moved further, following acpi_iort_init in acpi_init.
+> 
+> I think you should drop the "By the way ..." text or move it after the
+> "---" at the bottom of your commit log.  It doesn't help understand
+> this patch.
 
-No. I'm sorry that was supposed to be removed. I'll resend.
+I will fix it in next version.
 
-thanks,
+>> sdei_init() relies on ACPI table which is initialized
+>> subsys_initcall(): acpi_init(), acpi_bus_init(), acpi_load_tables(),
+>> acpi_tb_laod_namespace().  May it should be also moved further,
+>> after acpi_load_tables.
+> 
+> This text also doesn't seem relevant to this patch.
 
--- 
-heikki
+I will delete it in next version.
+
+>> In this patch, move sdei_init and ghes_init as far ahead as
+>> possible, right after acpi_hest_init().
+> 
+> I'm having a hard time figuring out the reason for this patch.
+> 
+> Apparently the relevant parts are sdei_init() and ghes_init().
+> Today they are executed in that order:
+> 
+>   subsys_initcall_sync(sdei_init);
+>   device_initcall(ghes_init);
+> 
+> After this patch, they would be executed in the same order, but called
+> explicitly instead of as initcalls:
+> 
+>   acpi_pci_root_init()
+>   {
+>     acpi_hest_init();
+>     sdei_init();
+>     ghes_init();
+>     ...
+> 
+> Explicit calls are certainly better than initcalls, but that doesn't
+> seem to be the reason for this patch.
+> 
+> Does this patch fix a bug?  If so, what is the bug?
+
+Yes. When the kernel booting, the console logs many times from firmware
+before GHES drivers init:
+
+	Trip in MM PCIe RAS handle(Intr:910)
+  	Clean PE[1.1.1] ERR_STS:0x4000100 -> 0 INT_STS:F0000000
+	Find RP(98:1.0)
+	--Walk dev(98:1.0) CE:0 UCE:4000
+	...
+	ERROR:   sdei_dispatch_event(32a) ret:-1
+	--handler(910) end
+
+This is because the callback function has not been registered yet.
+Previously reported errors will be overwritten by new ones. Therefore,
+all errors that occurred before GHES initialization are missed
+and there is no chance to report and find them again.
+
+
+> You say that currently "errors that occur before GHES initialization
+> are missed".  Isn't that still true after this patch?  Does this patch
+> merely reduce the time before GHES initialization?  If so, I'm
+> dubious, because we have to tolerate an arbitrary amount of time
+> there.
+After this patch, there are still errors missing. As you mentioned,
+we have to tolerate it until the software reporting capability is built.
+
+Yes, this patch merely reduce the time before GHES initialization. The boot
+dmesg before this patch:
+
+	[    3.688586] HEST: Table parsing has been initialized.
+	...
+	[   33.204340] calling  sdei_init+0x0/0x120 @ 1
+	[   33.208645] sdei: SDEIv1.0 (0x0) detected in firmware.
+	...
+	[   36.005390] calling  ghes_init+0x0/0x11c @ 1
+	[   36.190021] GHES: APEI firmware first mode is enabled by APEI bit and WHEA _OSC.
+
+
+After this patch, the boot dmesg like bellow:
+
+	[    3.688664] HEST: Table parsing has been initialized.
+	[    3.688691] sdei: SDEIv1.0 (0x0) detected in firmware.
+	[    3.694557] GHES: APEI firmware first mode is enabled by APEI bit and WHEA _OSC.
+
+As we can see, the initialization of GHES is advanced by 33 seconds.
+So, in my opinion, this patch is necessary, right?
+(It should be noted that the effect of optimization varies with the platform.)
+
+> s/acpi_tb_laod_namespace/acpi_tb_load_namespace/
+
+> You use "()" after function names sometimes, but not always.  Please
+> do it consistently.
+
+Thank you for pointing this out. I will fix it in next version.
+
+
+>> -device_initcall(ghes_init);
+> 
+>>  void __init acpi_pci_root_init(void)
+>>  {
+>>  	acpi_hest_init();
+>> +	sdei_init();
+>> +	ghes_init();
+> 
+> What's the connection between PCI, SDEI, and GHES?  As far as I can
+> tell, SDEI and GHES are not PCI-specific, so it doesn't seem like they
+> should be initialized here in acpi_pci_root_init().
+
+The only reason is that acpi_hest_init() is initialized here.
+
+From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
+memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
+the estatus memory pool. On the other hand, ghes_init() relies on
+sdei_init() to detect the SDEI version and the framework for registering
+and unregistering events. The dependencies are as follows
+
+	ghes_init() => acpi_hest_init()
+	ghes_init() => sdei_init()
+
+I don't figure out why acpi_hest_init() is called in
+acpi_pci_root_init(), it don't rely on any other thing.
+I am wondering that should we moved all of them further? e.g.
+following acpi_iort_init() in acpi_init().
+
+Best Regards,
+Shuai
