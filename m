@@ -2,144 +2,168 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C529747E05F
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Dec 2021 09:24:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F187247E0C5
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Dec 2021 10:18:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347146AbhLWIYn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Dec 2021 03:24:43 -0500
-Received: from mga03.intel.com ([134.134.136.65]:35809 "EHLO mga03.intel.com"
+        id S1347382AbhLWJSh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Dec 2021 04:18:37 -0500
+Received: from mga05.intel.com ([192.55.52.43]:62382 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1347187AbhLWIY2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 23 Dec 2021 03:24:28 -0500
+        id S1347380AbhLWJSh (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 23 Dec 2021 04:18:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640247868; x=1671783868;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=r91At3LZD4Dka+efIxucm5+GDhsdmP3uafoJ8RM7pDw=;
-  b=mFPbj99m6hDFdblry92xhJVS94IjywzvH53bpEvFnuslMgKKK0rkTdAs
-   ATIXwk+67mXVMKR3TcH4q9X7q5J9S6xFjVFhCFnDS09Y7uFpu1SaMXW5P
-   f8ToPuZo5Z7ePqfDzuVvhEI0hfgsRFbycOFIDa4foI49AqyYy2qdOy/CM
-   Xq0Q2tYFrUvJ2QaWTGkTViE4lBX7QOSN8nRgpjU20xBARanpDkswz241t
-   ixhPlOEwQ5bkrYmduvj/U1Vhrcdz+mM5u9BLptmj0JFQe6DW3YkpYFeey
-   FFDthgir4QYqAJYr2jrs5gG82KtPNT06m5lIS2OH/dQoNbVg0/Zk+976i
+  t=1640251117; x=1671787117;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KgTzfJuw1PWM0ANJHJO8QFp8w9NyND/kbpTu0eJK1qo=;
+  b=eShiaa+RiJ9wMoQcQswNx7AnkBnYH1tbfauZRQc/Ft/+3amE/CfpcQXK
+   wQ2QQtJo4fU9M1JpVrnd96ZqQlAix/S+Xcc/pujJLxo8JOxK15+zR3U2P
+   m9K4G3g0WBS1KPXj4t0CdGB7w0b/TsmQp2op99NBeKktIdTRaNFFaiaaG
+   RmABbF5Cz9Zx0K8fLzw/vwHeSTx0WWLafv5+2PBT61qVW72awJCdgB28/
+   8YX3N6JbgUyzPdt+iDEHPLuk7IlsUEhM8WW81NN21KQ0zyJjNTI099qY6
+   5LYe5B/LhoEUEfRMzXqPSFUmUy+eUZzTHg4qP5r8CXUd0Rl8GqapUJSL9
    g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10206"; a="240735641"
-X-IronPort-AV: E=Sophos;i="5.88,228,1635231600"; 
-   d="scan'208";a="240735641"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2021 00:24:26 -0800
+X-IronPort-AV: E=McAfee;i="6200,9189,10206"; a="327100958"
+X-IronPort-AV: E=Sophos;i="5.88,229,1635231600"; 
+   d="scan'208";a="327100958"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2021 01:18:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,228,1635231600"; 
-   d="scan'208";a="664517221"
-Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 23 Dec 2021 00:24:23 -0800
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v5 5/5] usb: Remove usb_for_each_port()
-Date:   Thu, 23 Dec 2021 11:24:32 +0300
-Message-Id: <20211223082432.45653-1-heikki.krogerus@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211223081620.45479-1-heikki.krogerus@linux.intel.com>
-References: <20211223081620.45479-1-heikki.krogerus@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="5.88,229,1635231600"; 
+   d="scan'208";a="550632087"
+Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 23 Dec 2021 01:18:35 -0800
+Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1n0KF8-0001cz-GF; Thu, 23 Dec 2021 09:18:34 +0000
+Date:   Thu, 23 Dec 2021 17:17:54 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 58d53ba537f27d9ddcf2c94f5f5bd52b63246b95
+Message-ID: <61c43ec2.2mtTOn0Hn5ex2OIE%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are no more users for the function.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 58d53ba537f27d9ddcf2c94f5f5bd52b63246b95  Merge branch 'pm-core' into bleeding-edge
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+elapsed time: 854m
+
+configs tested: 96
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+arm64                            allyesconfig
+i386                 randconfig-c001-20211223
+arm                      pxa255-idp_defconfig
+arc                        nsimosci_defconfig
+sh                          sdk7786_defconfig
+mips                          ath25_defconfig
+mips                         tb0287_defconfig
+arm                       aspeed_g4_defconfig
+arm                          pxa3xx_defconfig
+sh                           se7722_defconfig
+mips                     cu1000-neo_defconfig
+powerpc                         wii_defconfig
+mips                            e55_defconfig
+arm                  randconfig-c002-20211223
+ia64                                defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+csky                                defconfig
+alpha                               defconfig
+nds32                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+s390                             allyesconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+sparc                               defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+x86_64               randconfig-a001-20211222
+x86_64               randconfig-a003-20211222
+x86_64               randconfig-a005-20211222
+x86_64               randconfig-a006-20211222
+x86_64               randconfig-a004-20211222
+x86_64               randconfig-a002-20211222
+i386                 randconfig-a002-20211222
+i386                 randconfig-a003-20211222
+i386                 randconfig-a001-20211222
+i386                 randconfig-a005-20211222
+i386                 randconfig-a006-20211222
+i386                 randconfig-a004-20211222
+x86_64               randconfig-a015-20211223
+x86_64               randconfig-a014-20211223
+x86_64               randconfig-a011-20211223
+x86_64               randconfig-a012-20211223
+x86_64               randconfig-a013-20211223
+x86_64               randconfig-a016-20211223
+i386                 randconfig-a012-20211223
+i386                 randconfig-a011-20211223
+i386                 randconfig-a013-20211223
+i386                 randconfig-a014-20211223
+i386                 randconfig-a015-20211223
+i386                 randconfig-a016-20211223
+arc                  randconfig-r043-20211222
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+
+clang tested configs:
+hexagon              randconfig-r045-20211222
+riscv                randconfig-r042-20211222
+s390                 randconfig-r044-20211222
+hexagon              randconfig-r041-20211222
+
 ---
- drivers/usb/core/usb.c | 46 ------------------------------------------
- include/linux/usb.h    |  9 ---------
- 2 files changed, 55 deletions(-)
-
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 62368c4ed37af..2ce3667ec6fae 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -398,52 +398,6 @@ int usb_for_each_dev(void *data, int (*fn)(struct usb_device *, void *))
- }
- EXPORT_SYMBOL_GPL(usb_for_each_dev);
- 
--struct each_hub_arg {
--	void *data;
--	int (*fn)(struct device *, void *);
--};
--
--static int __each_hub(struct usb_device *hdev, void *data)
--{
--	struct each_hub_arg *arg = (struct each_hub_arg *)data;
--	struct usb_hub *hub;
--	int ret = 0;
--	int i;
--
--	hub = usb_hub_to_struct_hub(hdev);
--	if (!hub)
--		return 0;
--
--	mutex_lock(&usb_port_peer_mutex);
--
--	for (i = 0; i < hdev->maxchild; i++) {
--		ret = arg->fn(&hub->ports[i]->dev, arg->data);
--		if (ret)
--			break;
--	}
--
--	mutex_unlock(&usb_port_peer_mutex);
--
--	return ret;
--}
--
--/**
-- * usb_for_each_port - interate over all USB ports in the system
-- * @data: data pointer that will be handed to the callback function
-- * @fn: callback function to be called for each USB port
-- *
-- * Iterate over all USB ports and call @fn for each, passing it @data. If it
-- * returns anything other than 0, we break the iteration prematurely and return
-- * that value.
-- */
--int usb_for_each_port(void *data, int (*fn)(struct device *, void *))
--{
--	struct each_hub_arg arg = {data, fn};
--
--	return usb_for_each_dev(&arg, __each_hub);
--}
--EXPORT_SYMBOL_GPL(usb_for_each_port);
--
- /**
-  * usb_release_dev - free a usb device structure when all users of it are finished.
-  * @dev: device that's been disconnected
-diff --git a/include/linux/usb.h b/include/linux/usb.h
-index 7ccaa76a9a968..200b7b79acb56 100644
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -875,15 +875,6 @@ extern struct usb_host_interface *usb_find_alt_setting(
- 		unsigned int iface_num,
- 		unsigned int alt_num);
- 
--#if IS_REACHABLE(CONFIG_USB)
--int usb_for_each_port(void *data, int (*fn)(struct device *, void *));
--#else
--static inline int usb_for_each_port(void *data, int (*fn)(struct device *, void *))
--{
--	return 0;
--}
--#endif
--
- /* port claiming functions */
- int usb_hub_claim_port(struct usb_device *hdev, unsigned port1,
- 		struct usb_dev_state *owner);
--- 
-2.34.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
