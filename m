@@ -2,335 +2,208 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A7547E455
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 Dec 2021 15:05:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FCDD47E670
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 Dec 2021 17:36:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231528AbhLWOF3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 23 Dec 2021 09:05:29 -0500
-Received: from mga03.intel.com ([134.134.136.65]:58168 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1348748AbhLWOFZ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 23 Dec 2021 09:05:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640268325; x=1671804325;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IKRumIOqdmyX4kxp66S/BEHTldRjTtMFth4Z+yjH9Nc=;
-  b=aiiYTL9cPudoCj3eQBaU8AFMJ1CBADDACrkSHm0/qi9yfesVfDf3ghzK
-   eLBeZTpyq0PewR+40PQ4Pm7AixyH5oElPMo91fHRWdRww5eQkynpQtYtA
-   bFg4P5EsFO8lu4PGiYhRHDA9CqGeJSxLk4ZxR2wbxPOLQYJ1SgESNzfDk
-   V4xOG/PQK7iqjiz3iUYUFI0yOhS/GlKrP5yV9UfBvqq9kbSxCI7SaUgtJ
-   M7hqHuSt2uwMoEWdp57Q4Thag4FRYJNLa84JuBipRSy+Ubm4pbXXK7zy1
-   POqV30i8PQ4C78VUxLEe+Y0URzUWRTR6afxoE5GBF2d41ZQmUfIZ+AnXS
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10206"; a="240781902"
-X-IronPort-AV: E=Sophos;i="5.88,229,1635231600"; 
-   d="scan'208";a="240781902"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2021 06:05:24 -0800
-X-IronPort-AV: E=Sophos;i="5.88,229,1635231600"; 
-   d="scan'208";a="508867977"
-Received: from chenyu-desktop.sh.intel.com (HELO chenyu-desktop) ([10.239.158.186])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2021 06:05:21 -0800
-Date:   Thu, 23 Dec 2021 22:04:59 +0800
-From:   Chen Yu <yu.c.chen@intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v13 0/4] Introduce Platform Firmware Runtime Update and
- Telemetry drivers
-Message-ID: <20211223140459.GB665673@chenyu-desktop>
-References: <cover.1640007183.git.yu.c.chen@intel.com>
- <CAJZ5v0jJgqtScVa7855X=e5sE++af3AiZ+C33ooA5WsQs_UV5A@mail.gmail.com>
+        id S1349253AbhLWQg2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 23 Dec 2021 11:36:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:22450 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S244252AbhLWQg2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 23 Dec 2021 11:36:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1640277387;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=VnMgFshQCk4H2aviO2aDotAcxDTpL1gsve23sQb3mus=;
+        b=COyr+qfeRNDZPF1C1Fq81yz7+GvGr0nkRG0c+owPy0kCP+a3E5mKjEoh35jXpiw/p2HXcR
+        XGYSVS60iPq9IloymslV7BZTagWvho+dd6b42OwqG9pQbYNJqzvB+Ne20KSj/MX1I8IklQ
+        Flf6MZCysyJ1BHPFXpyqZ6O0vIBnkKs=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-423-zh4apx28OFixylnyJWf1yg-1; Thu, 23 Dec 2021 11:36:26 -0500
+X-MC-Unique: zh4apx28OFixylnyJWf1yg-1
+Received: by mail-ed1-f70.google.com with SMTP id y10-20020a056402358a00b003f88b132849so5144791edc.0
+        for <linux-acpi@vger.kernel.org>; Thu, 23 Dec 2021 08:36:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=VnMgFshQCk4H2aviO2aDotAcxDTpL1gsve23sQb3mus=;
+        b=wHTi2t9koKBug/Yepntf77OEAjNtX+vPlvrHOfK5YWGlbRAKPVksCd7uCrNRBjlBKt
+         flr+eipVZYNA0g+FDmSADg3ZpQPvW49WdRg6+0y3omLgbPkzRfxQh3mZWvDzn4p0ww5l
+         xPf2SpEU7vBF9TJZgGa/PyCTB/tG9PwQCwNjHd+dBHNraduki9EmTh72K1XYeXXEL3j6
+         W/6WRNJcyZtmvkez62YaWGi0e3oiU8d3lgzMVUjHp4KNWLXr/hsIWgqiiAaLC/qWeh7G
+         oW1ffGZ0oOgqZjYYVntKwbGBLzObJ4TuQGhVhLnsPEj64GqdUSzBVn74UTjeWxAWh7J8
+         wSBQ==
+X-Gm-Message-State: AOAM5321rCGKlA5lqP4mQHSjBngv/Yi/9knNZTAsrRteF8OH10t//4oF
+        oKTZ5l5nhKVbF0wshvztwsoqlHiJYzh2oKy2ZhRJgqCn+/rILyIv0WDFx01tqLN7Gj2X8NNDF/o
+        SeLQZymwoRTmHGd18Duu4bg==
+X-Received: by 2002:a05:6402:4386:: with SMTP id o6mr2718882edc.47.1640277385412;
+        Thu, 23 Dec 2021 08:36:25 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJybYzBVsP6qb8DsgTwNs41sNtraY7y2+U2l4h5Ei5i/50HTzdvEGT1u4q5PFrTjOTqU1QpfDQ==
+X-Received: by 2002:a05:6402:4386:: with SMTP id o6mr2718865edc.47.1640277385250;
+        Thu, 23 Dec 2021 08:36:25 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id p7sm2134763edu.84.2021.12.23.08.36.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Dec 2021 08:36:24 -0800 (PST)
+Message-ID: <31a528b8-8318-dc09-3a06-80f76771744a@redhat.com>
+Date:   Thu, 23 Dec 2021 17:36:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0jJgqtScVa7855X=e5sE++af3AiZ+C33ooA5WsQs_UV5A@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] ACPI: battery: Add the ThinkPad "Not Charging" quirk
+Content-Language: en-US
+To:     =?UTF-8?Q?Thomas_Wei=c3=9fschuh?= <linux@weissschuh.net>,
+        linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+        platform-driver-x86@vger.kernel.org, markpearson@lenovo.com,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Ognjen Galic <smclt30p@gmail.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Bastien Nocera <hadess@hadess.net>,
+        David Zeuthen <davidz@redhat.com>,
+        Richard Hughes <richard@hughsie.com>
+References: <20211222212014.66971-1-linux@weissschuh.net>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20211222212014.66971-1-linux@weissschuh.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Dec 22, 2021 at 06:16:00PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Dec 22, 2021 at 5:27 AM Chen Yu <yu.c.chen@intel.com> wrote:
-> >
-> > The PFRUT(Platform Firmware Runtime Update and Telemetry) kernel interface
-> > is designed to interact with the platform firmware interface defined in the
-> > `Management Mode Firmware Runtime Update
-> > <https://uefi.org/sites/default/files/resources/Intel_MM_OS_Interface_Spec_Rev100.pdf>`
-> > specification. The primary function of PFRUT is to carry out runtime
-> > updates of the platform firmware, which doesn't require the system to
-> > be restarted. It also allows telemetry data to be retrieved from the
-> > platform firmware.
-> >
-> > =============
-> > - Change from v12 to v13:
-> >   - Print the _DSM failure result if invalid EFI capsule is provided.
-> >     (Hongyu Ning)
-> > - Change from v11 to v12:
-> >   - Rename the driver from pfru_update to pfr_update, and the
-> >     telemetry part to pfr_telementry for symmetry.
-> >     (Rafael J. Wysocki)
-> >   - Rename the "capsule file" to "EFI capsule".
-> >     (Rafael J. Wysocki)
-> >   - Revise the commit log. (Rafael J. Wysocki)
-> >   - Add the reason in the commit log that explains why it is
-> >     a good idea to add this driver to the kernel.
-> >     (Rafael J. Wysocki)
-> >   - Rename pfru.h to pfrut.h (Rafael J. Wysocki)
-> >   - Rename the CONFIG_ACPI_PFRU to CONFIG_ACPI_PFRUT
-> >     (Rafael J. Wysocki)
-> >   - Rename the Kconfig name to "ACPI Platform Firmware Runtime
-> >     Update and Telemetry"
-> >     (Rafael J. Wysocki)
-> >   - Revise the Kconfig help message (Rafael J. Wysocki)
-> >   - Describe what the driver is for briefly in the beginning of
-> >     the source code file.
-> >     (Rafael J. Wysocki)
-> >   - Add a comment pointing to the definitions of the GUIDs and
-> >     explain briefly what they are for.
-> >     (Rafael J. Wysocki)
-> >   - Reduce redundant memory updates by doing all of the checks
-> >     upfront. (Rafael J. Wysocki)
-> >   - Rename valid_version() to applicable_image(), and revise the
-> >     comment.(Rafael J. Wysocki)
-> >   - Remove Redundant else in applicable_image().(Rafael J. Wysocki)
-> >   - Rename dump_update_result() to print_ipdate_debug_info().
-> >     (Rafael J. Wysocki)
-> >   - Rename start_acpi_update() to start_update()(Rafael J. Wysocki)
-> >     Add a blank line before each "case xxx:"(Rafael J. Wysocki)
-> >   - Move status check into query_capability() and returns -EBUSY if
-> >     fails(Rafael J. Wysocki)
-> >   - Rename the device node name from "acpi_pfru%d" to "acpi_pfr_update%d"
-> >     (Rafael J. Wysocki)
-> >   - Rename the drive name from "pfru_update" to "pfr_update"
-> >     (Rafael J. Wysocki)
-> >   - Rename PFRU_MAGIC_FOR_IOCTL to PFRUT_IOCTL_MAGIC(Rafael J. Wysocki)
-> >     Fix grammar errors in the comments.(Rafael J. Wysocki)
-> > - Change from v10 to v11:
-> >   - Revise the commit log to explain why version check is introduced
-> >     in kernel rather than letting Management Mode to do it.
-> >     (Rafael J. Wysocki)
-> >   - Revise the commit log to better describe the pack attribute.
-> >     (Rafael J. Wysocki)
-> >   - Refine the comment for hw_ins and capsule_support.
-> >     (Rafael J. Wysocki)
-> > - Change from v9 to v10:
-> >   - Remove the explicit assignment of the last item of enum.
-> >     (Andy Shevchenko)
-> > - Change from v8 to v9:
-> >   - Use GUID_INIT() instead of guid_parse() during boot up.
-> >     (Andy Shevchenko)
-> >   - Drop uuid, code_uuid, drv_uuid in struct pfru_device as they
-> >     are not needed. (Andy Shevchenko)
-> >   - Drop type casting from void * in valid_version().
-> >     (Andy Shevchenko)
-> >   - Use kfree() instead of ACPI_FREE() in non-ACPICA usage.
-> >     (Andy Shevchenko)
-> >   - Use sizeof(rev) instead of sizeof(u32) in copy_from_user().
-> >     (Andy Shevchenko)
-> >   - Generate physical address from MSB part to LSB.
-> >     (Andy Shevchenko)
-> >   - Use devm_add_action_or_reset() to add ida release into dev resource
-> >     management. (Andy Shevchenko)
-> >   - Use devm_kasprintf() instead of kasprintf() to format the
-> >     pfru_dev name.(Andy Shevchenko)
-> >   - Remove redundant 0 in acpi_pfru_ids. (Andy Shevchenko)
-> >   - Adjust the order of included headers in pfru.h.
-> >     (Andy Shevchenko)
-> >   - Replace PFRU_MAGIC with PFRU_MAGIC_FOR_IOCTL in uapi file.
-> >     (Andy Shevchenko)
-> >     Use devm_kasprintf() instead of kasprintf() to format the
-> >     pfru_log_dev name.(Andy Shevchenko)
-> >     Remove redundant 0 in acpi_pfru_log_ids. (Andy Shevchenko)
-> > - Change from v7 to v8:
-> >   - Remove the variable-length array in struct pfru_update_cap_info, and
-> >     copy the non-variable-length struct pfru_update_cap_info to userspace
-> >     directly. (Greg Kroah-Hartman)
-> >   - Use efi_guid_t instead of guid_t when parsing capsule file.
-> >     (Andy Shevchenko)
-> >   - Change the type of rev_id from int to u32, because this data will
-> >     be copied between kernel and userspace. (Greg Kroah-Hartman)
-> >   - Add a prefix for dev in struct pfru_device to parent_dev, so as
-> >     to indicate that this filed is the parent of the created miscdev.
-> >     (Greg Kroah-Hartman)
-> >   - Use blank lines between different macro sections. (Greg Kroah-Hartman)
-> >     Illusatrate the possible errno for each ioctl interface.
-> >     (Greg Kroah-Hartman)
-> >   - Remove pfru_valid_revid() from uapi header to avoid poluting the global
-> >     namespace.(Greg Kroah-Hartman)
-> >   - Assign the value to the enum type explicitly.(Greg Kroah-Hartman)
-> >   - Change the guid_t to efi_guid_t when parsing image header in get_image_type()
-> >     (Greg Kroah-Hartman)
-> >   - Remove the void * to other type casting in valid_version(). (Andy Shevchenko)
-> >   - Combined the assignment of variables with definitions. (Andy Shevchenko)
-> >   - Define this magic for revision ID. (Andy Shevchenko)
-> >   - Make the labeling consistent for error handling. (Andy Shevchenko)
-> >   - Replace the UUID_SIZE in uapi with 16 directly. (Andy Shevchenko)
-> >   - Add blank line between generic include header and uapi header.
-> >     (Andy Shevchenko)
-> >   - Arrange the order between devm_kzalloc() and normal allocation in
-> >     acpi_pfru_probe() that, the former should always be ahead of the
-> >     latter. (Andy Shevchenko)
-> > - Change from v6 to v7:
-> >   - Use __packed instead of pragma pack(1).
-> >     (Greg Kroah-Hartman, Ard Biesheuve)
-> >   - Use ida_alloc() to allocate a ID, and release the ID when
-> >     device is removed. (Greg Kroah-Hartman)
-> >   - Check the _DSM method at early stage, before allocate or parse
-> >     anything in acpi_pfru_[log_]probe(). (Greg Kroah-Hartman)
-> >   - Set the parent of the misc device. (Greg Kroah-Hartman)
-> >   - Use module_platform_driver() instead of platform_driver_register()
-> >     in module_init(). Separate pfru driver and pfru_telemetry driver
-> >     to two files. (Greg Kroah-Hartman)
-> > - Change from v5 to v6:
-> >   - Use Link: tag to add the specification download address.
-> >     (Andy Shevchenko)
-> >   - Drop comma for each terminator entry in the enum structure.
-> >     (Andy Shevchenko)
-> >   - Remove redundant 'else' in get_image_type().
-> >     (Andy Shevchenko)
-> >   - Directly return results from the switch cases in adjust_efi_size()
-> >     and pfru_ioctl().(Andy Shevchenko)
-> >   - Keep comment style consistency by removing the period for
-> >     one line comment.
-> >     (Andy Shevchenko)
-> >   - Remove devm_kfree() if .probe() failed.
-> >     (Andy Shevchenko)
-> >   - Remove linux/uuid.h and use raw buffers to contain uuid.
-> >     (Andy Shevchenko)
-> >   - Include types.h in pfru.h. (Andy Shevchenko)
-> >   - Use __u8[16] instead of uuid_t. (Andy Shevchenko)
-> >   - Replace enum in pfru.h with __u32 as enum size is not the
-> >     same size on all possible architectures.
-> >     (Andy Shevchenko)
-> >   - Simplify the userspace tool to use while loop for getopt_long().
-> >     (Andy Shevchenko)
-> > - Change from v4 to v5:
-> >   - Remove Documentation/ABI/pfru, and move the content to kernel doc
-> >     in include/uapi/linux/pfru.h (Greg Kroah-Hartman)
-> >   - Shrink the range of ioctl numbers declared in
-> >     Documentation/userspace-api/ioctl/ioctl-number.rst
-> >     from 16 to 8. (Greg Kroah-Hartman)
-> >   - Change global variable struct pfru_device *pfru_dev to
-> >     per PFRU device. (Greg Kroah-Hartman)
-> >   - Unregister the misc device in acpi_pfru_remove().
-> >     (Greg Kroah-Hartman)
-> >   - Convert the kzalloc() to devm_kzalloc() in the driver so
-> >     as to avoid freeing the memory. (Greg Kroah-Hartman)
-> >   - Fix the compile warning by declaring the pfru_log_ioctl() as
-> >     static. (kernel test robot LKP)
-> >   - Change to global variable misc_device to per PFRU device.
-> >     (Greg Kroah-Hartman)
-> >   - Remove the telemetry output in commit log. (Greg Kroah-Hartman)
-> >   - Add link for corresponding userspace tool in the commit log.
-> >     (Greg Kroah-Hartman)
-> >   - Replace the telemetry .read() with .mmap() so that the userspace
-> >     could mmap once, and read multiple times. (Greg Kroah-Hartman)
-> > - Change from v3 to v4:
-> >   - Add Documentation/ABI/testing/pfru to document the ABI and
-> >     remove Documentation/x86/pfru.rst (Rafael J. Wysocki)
-> >   - Replace all pr_err() with dev_dbg() (Greg Kroah-Hartman,
-> >     Rafael J. Wysocki)
-> >   - returns ENOTTY rather than ENOIOCTLCMD if invalid ioctl command
-> >     is provided. (Greg Kroah-Hartman)
-> >   - Remove compat ioctl. (Greg Kroah-Hartman)
-> >   - Rename /dev/pfru/pfru_update to /dev/acpi_pfru (Greg Kroah-Hartman)
-> >   - Simplify the check for element of the package in query_capability()
-> >     (Rafael J. Wysocki)
-> >   - Remove the loop in query_capability(), query_buffer() and query
-> >     the package elemenet directly. (Rafael J. Wysocki)
-> >   - Check the number of elements in case the number of package
-> >     elements is too small. (Rafael J. Wysocki)
-> >   - Doing the assignment as initialization in get_image_type().
-> >     Meanwhile, returns the type or a negative error code in
-> >     get_image_type(). (Rafael J. Wysocki)
-> >   - Put the comments inside the function. (Rafael J. Wysocki)
-> >   - Returns the size or a negative error code in adjust_efi_size()
-> >     (Rafael J. Wysocki)
-> >   - Fix the return value from EFAULT to EINVAL if pfru_valid_revid()
-> >     does not pass. (Rafael J. Wysocki)
-> >   - Change the write() to be the code injection/update, the read() to
-> >     be telemetry retrieval and all of the rest to be ioctl()s under
-> >     one special device file.(Rafael J. Wysocki)
-> >   - Remove redundant parens. (Rafael J. Wysocki)
-> >   - Putting empty code lines after an if () statement that is not
-> >     followed by a block. (Rafael J. Wysocki)
-> >   - Remove "goto" tags to make the code more readable. (Rafael J. Wysocki)
-> > - Change from v2 to v3:
-> >   - Use valid types for structures that cross the user/kernel boundary
-> >     in the uapi header. (Greg Kroah-Hartman)
-> >   - Rename the structure in uapi to start with a prefix pfru so as
-> >     to avoid confusing in the global namespace. (Greg Kroah-Hartman)
-> > - Change from v1 to v2:
-> >   - Add a spot in index.rst so it becomes part of the docs build
-> >     (Jonathan Corbet).
-> >   - Sticking to the 80-column limit(Jonathan Corbet).
-> >   - Underline lengths should match the title text(Jonathan Corbet).
-> >   - Use literal blocks for the code samples(Jonathan Corbet).
-> >   - Add sanity check for duplicated instance of ACPI device.
-> >   - Update the driver to work with allocated pfru_device objects.
-> >     (Mike Rapoport)
-> >   - For each switch case pair, get rid of the magic case numbers
-> >     and add a default clause with the error handling.(Mike Rapoport)
-> >   - Move the obj->type checks outside the switch to reduce redundancy.
-> >     (Mike Rapoport)
-> >   - Parse the code_inj_id and drv_update_id at driver initialization time
-> >     to reduce the re-parsing at runtime. (Mike Rapoport)
-> >   - Explain in detail how the size needs to be adjusted when doing
-> >     version check. (Mike Rapoport)
-> >   - Rename parse_update_result() to dump_update_result()
-> >     (Mike Rapoport)
-> >   - Remove redundant return.(Mike Rapoport)
-> >   - Do not expose struct capsulate_buf_info to uapi, since it is
-> >     not needed in userspace. (Mike Rapoport)
-> >   - Do not allow non-root user to run this test.(Shuah Khan)
-> >   - Test runs on platform without pfru_telemetry should skip
-> >     instead of reporting failure/error.(Shuah Khan)
-> >   - Reuse uapi/linux/pfru.h instead of copying it into the test
-> >     directory. (Mike Rapoport)
-> >
-> > Chen Yu (4):
-> >   efi: Introduce EFI_FIRMWARE_MANAGEMENT_CAPSULE_HEADER and
-> >     corresponding structures
-> >   drivers/acpi: Introduce Platform Firmware Runtime Update device driver
-> >   drivers/acpi: Introduce Platform Firmware Runtime Telemetry
-> >   tools: Introduce power/acpi/tools/pfrut
-> >
-> >  .../userspace-api/ioctl/ioctl-number.rst      |   1 +
-> >  drivers/acpi/Kconfig                          |  22 +
-> >  drivers/acpi/Makefile                         |   1 +
-> >  drivers/acpi/pfr_telemetry.c                  | 434 +++++++++++++
-> >  drivers/acpi/pfr_update.c                     | 575 ++++++++++++++++++
-> >  include/linux/efi.h                           |  46 ++
-> >  include/uapi/linux/pfrut.h                    | 262 ++++++++
-> >  tools/power/acpi/.gitignore                   |   1 +
-> >  tools/power/acpi/Makefile                     |  16 +-
-> >  tools/power/acpi/Makefile.rules               |   2 +-
-> >  tools/power/acpi/man/pfrut.8                  | 137 +++++
-> >  tools/power/acpi/tools/pfrut/Makefile         |  23 +
-> >  tools/power/acpi/tools/pfrut/pfrut.c          | 424 +++++++++++++
-> >  13 files changed, 1935 insertions(+), 9 deletions(-)
-> >  create mode 100644 drivers/acpi/pfr_telemetry.c
-> >  create mode 100644 drivers/acpi/pfr_update.c
-> >  create mode 100644 include/uapi/linux/pfrut.h
-> >  create mode 100644 tools/power/acpi/man/pfrut.8
-> >  create mode 100644 tools/power/acpi/tools/pfrut/Makefile
-> >  create mode 100644 tools/power/acpi/tools/pfrut/pfrut.c
-> >
-> > --
-> 
-> I have one comment regarding the second patch (I'll send it
-> separately), but generally I'm inclined to pick up the patches in
-> their current form, barring any objections from Greg.
->
-Ok, thanks!
+Hi Thomas,
 
-Thanks,
-Chenyu 
-> Thanks!
+On 12/22/21 22:20, Thomas Weißschuh wrote:
+> The EC/ACPI firmware on Lenovo ThinkPads used to report a status
+> of "Unknown" when the battery is between the charge start and
+> charge stop thresholds. On Windows, it reports "Not Charging"
+> so the quirk has been added to also report correctly.
+> 
+> Now the "status" attribute returns "Not Charging" when the
+> battery on ThinkPads is not physicaly charging.
+> 
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+
+Thanks, patch looks good to me.
+
+As for the userspace issues in dealing with the
+POWER_SUPPLY_STATUS_NOT_CHARGING status, those indeed
+have long been fixed and this status is already returned
+acpi//battery.c from the acpi_battery_handle_discharging()
+function for a while no; and we have had no complaints
+about that:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
+
+
+> ---
+> 
+> This is the same as: https://patchwork.kernel.org/patch/10205359/
+> 
+> Previously this patch has been applied[0] but then reverted from -next
+> because it caused a regression in UPower.
+> This regression however has been fixed in UPower in late 2018[1],
+> with the fixed version 0.99.10 released in early 2019 [2].
+> So maybe it is now time to reintroduce this change.
+> 
+> Ognen:
+> 
+> As the patch was originally developed by you, could send a
+> Signed-off-by-tag, so I can attribute you as co-developer?
+> 
+> Or maybe the original patch could just be re-applied?
+> 
+> The original patch had the following tags, which I'm not sure to handle
+> for this case:
+> 
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Ognjen Galic <smclt30p@gmail.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Also Cc-ing the UPower maintainers for their opinion:
+> 
+> Cc: Bastien Nocera <hadess@hadess.net>
+> Cc: David Zeuthen <davidz@redhat.com>
+> Cc: Richard Hughes <richard@hughsie.com>
+> 
+> [0] Applied as 91eea70e5e5ce12eb1c7cd922e561fab43e201bd
+> [1] https://gitlab.freedesktop.org/upower/upower/-/merge_requests/19/commits
+> [2] https://gitlab.freedesktop.org/upower/upower/-/commit/215049e7b80c5f24cb35cd229a445c6cf19bd381
+> ---
+>  drivers/acpi/battery.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> 
+> base-commit: fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf
+> 
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 8afa85d6eb6a..ead0114f27c9 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -53,6 +53,7 @@ static int battery_bix_broken_package;
+>  static int battery_notification_delay_ms;
+>  static int battery_ac_is_broken;
+>  static int battery_check_pmic = 1;
+> +static int battery_quirk_notcharging;
+>  static unsigned int cache_time = 1000;
+>  module_param(cache_time, uint, 0644);
+>  MODULE_PARM_DESC(cache_time, "cache time in milliseconds");
+> @@ -217,6 +218,8 @@ static int acpi_battery_get_property(struct power_supply *psy,
+>  			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+>  		else if (acpi_battery_is_charged(battery))
+>  			val->intval = POWER_SUPPLY_STATUS_FULL;
+> +		else if (battery_quirk_notcharging)
+> +			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+>  		else
+>  			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+>  		break;
+> @@ -1111,6 +1114,12 @@ battery_do_not_check_pmic_quirk(const struct dmi_system_id *d)
+>  	return 0;
+>  }
+>  
+> +static int __init battery_quirk_not_charging(const struct dmi_system_id *d)
+> +{
+> +	battery_quirk_notcharging = 1;
+> +	return 0;
+> +}
+> +
+>  static const struct dmi_system_id bat_dmi_table[] __initconst = {
+>  	{
+>  		/* NEC LZ750/LS */
+> @@ -1155,6 +1164,19 @@ static const struct dmi_system_id bat_dmi_table[] __initconst = {
+>  			DMI_MATCH(DMI_PRODUCT_VERSION, "Lenovo MIIX 320-10ICR"),
+>  		},
+>  	},
+> +	{
+> +		/*
+> +		 * On Lenovo ThinkPads the BIOS specification defines
+> +		 * a state when the bits for charging and discharging
+> +		 * are both set to 0. That state is "Not Charging".
+> +		 */
+> +		.callback = battery_quirk_not_charging,
+> +		.ident = "Lenovo ThinkPad",
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+> +			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad"),
+> +		},
+> +	},
+>  	{},
+>  };
+>  
+> 
+
