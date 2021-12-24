@@ -2,73 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01AD247EDA4
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Dec 2021 10:15:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5073B47EDFF
+	for <lists+linux-acpi@lfdr.de>; Fri, 24 Dec 2021 10:48:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352166AbhLXJPG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Dec 2021 04:15:06 -0500
-Received: from mailgw.kylinos.cn ([123.150.8.42]:22905 "EHLO nksmu.kylinos.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1352165AbhLXJPG (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 24 Dec 2021 04:15:06 -0500
-X-UUID: 046f702daed34fef9d1d893f7cbc4d58-20211224
-X-CPASD-INFO: 34b417fd38014c059e2a55d60f022626@fIScVF5plJRfWHJ9g6Z7b1mWYpFlYYS
-        FcqBQYmBmXlaVhH5xTWJsXVKBfG5QZWNdYVN_eGpQYl9gZFB5i3-XblBgXoZgUZB3gnacVGFllg==
-X-CPASD-FEATURE: 0.0
-X-CLOUD-ID: 34b417fd38014c059e2a55d60f022626
-X-CPASD-SUMMARY: SIP:-1,APTIP:-2.0,KEY:0.0,FROMBLOCK:1,EXT:0.0,OB:0.0,URL:-5,T
-        VAL:173.0,ESV:0.0,ECOM:-5.0,ML:0.0,FD:0.0,CUTS:83.0,IP:-2.0,MAL:0.0,ATTNUM:0.
-        0,PHF:-5.0,PHC:-5.0,SPF:4.0,EDMS:-3,IPLABEL:4488.0,FROMTO:0,AD:0,FFOB:0.0,CFO
-        B:0.0,SPC:0.0,SIG:-5,AUF:101,DUF:27928,ACD:143,DCD:245,SL:0,AG:0,CFC:0.893,CF
-        SR:0.042,UAT:0,RAF:0,VERSION:2.3.4
-X-CPASD-ID: 046f702daed34fef9d1d893f7cbc4d58-20211224
-X-CPASD-BLOCK: 1000
-X-CPASD-STAGE: 1, 1
-X-UUID: 046f702daed34fef9d1d893f7cbc4d58-20211224
-X-User: yinxiujiang@kylinos.cn
-Received: from localhost.localdomain [(118.26.139.139)] by nksmu.kylinos.cn
-        (envelope-from <yinxiujiang@kylinos.cn>)
-        (Generic MTA)
-        with ESMTP id 1032329646; Fri, 24 Dec 2021 17:27:40 +0800
-From:   Yin Xiujiang <yinxiujiang@kylinos.cn>
-To:     rafael.j.wysocki@intel.com, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPICA: Remove initialization of static variables to 0
-Date:   Fri, 24 Dec 2021 17:14:58 +0800
-Message-Id: <20211224091458.693093-1-yinxiujiang@kylinos.cn>
-X-Mailer: git-send-email 2.30.0
+        id S1343906AbhLXJsY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 24 Dec 2021 04:48:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47342 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241614AbhLXJsX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Dec 2021 04:48:23 -0500
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE61C061757
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Dec 2021 01:48:23 -0800 (PST)
+Received: by mail-qt1-x844.google.com with SMTP id a1so7204313qtx.11
+        for <linux-acpi@vger.kernel.org>; Fri, 24 Dec 2021 01:48:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=DA2RfWm5BfTc8dY4tRUxJejPvziWb2AgHmDwtjqgqi8=;
+        b=C5q/mHWRgb2APqDruL/ApPdmB4lvChGRYugTbWKnfvrKxxGxBl3I53D+FnUAnFFKUB
+         YrGqBkW/FCQB9MP7wKBMOyXRXgsDTLGBOZYK0bTEPHvh+zhHlKk1SjR360xq4HU/4eNQ
+         DEC8vX16Ui23H90HKppBIYznNzS6aSenlfY82Uf/2YfoTp3vnaE8lBMd37f314LICUYG
+         zx192tUdnD1sb6Fq5fqhVBEYNCy4OyVrUnAlRcDV0A5UIL/ND9UhYd6nOn5oYGQUszkw
+         YWYXHzPUk1GiWBHVWN/gL6gdKlkdENU2fWvhfo/yUSenj+tD5yOJcMK7TI8tCDiilTKq
+         GpWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=DA2RfWm5BfTc8dY4tRUxJejPvziWb2AgHmDwtjqgqi8=;
+        b=o1HkEzL62Ok+TsCfU1UVeK+hZCK1bSBLqzQRJKBA5Gbte73H8Q3hnb+DQjr3o7qgG5
+         riLZMcWen9epNNeVKkmmYeXWKQVCCi3kwTQ7Ou5SK5rFEQoaQlNXYgLt2t2Dk5HGUfi/
+         ekerIjUn7FdiVZmINI03uXTcy+lRLOT1qnw2kp6+7K4lvafQqeRcZSa+0+gfgRQubdst
+         FbbWceQFIaxf5661vnPsNP/ItX0yFMBFX70p6jvUdPtbuqh0yeTm7fR/y8ft6f8+Ywrr
+         Rj+xVq1Sxa0nLoh6909sditpVgG39dWZq9C4NQGSCnL+w2v3wEv00FbRvfb528y0C972
+         swJA==
+X-Gm-Message-State: AOAM531fjscj0VnWLcYwE18qx2I4e/z9UC11fwbEH08mFx1PZy01ot+t
+        Bv26cixYTAQdkroLlY0zyJKQzVMnRK3anEEWQwU=
+X-Google-Smtp-Source: ABdhPJw02X0MQAyduLoLe4Wg/rQ+MFUaawPblP9xrq7UukH3Pjx3S8GNm9jzN8Intn58lN4vE4Y5sZEQ9QrjWGGdpQI=
+X-Received: by 2002:a05:622a:134f:: with SMTP id w15mr4898687qtk.561.1640339302619;
+ Fri, 24 Dec 2021 01:48:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ad4:5c62:0:0:0:0:0 with HTTP; Fri, 24 Dec 2021 01:48:22
+ -0800 (PST)
+Reply-To: williamsreneta2019@gmail.com
+From:   MISS WILLIAMS <info.turvateealfastar@gmail.com>
+Date:   Fri, 24 Dec 2021 01:48:22 -0800
+Message-ID: <CAM-qQYb=XRCQ348mnUh1mvzGuGV+t1_Hj4pAGA+UD99bQuuyZg@mail.gmail.com>
+Subject: Greetings Dearest One,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Remove the initialization of three static variables to 0 which is
-pointless
+Greetings Dearest One,
 
-Signed-off-by: Yin Xiujiang <yinxiujiang@kylinos.cn>
----
- drivers/acpi/acpica/dbhistry.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+How are you today, together with your family?Hope fine.I would like to
+use this opportunity to introduce myself to you. I am Miss Reneta
+Williams, From Benin Republic, West Africa. And my late parents are
+Mr. and Mrs. Dikko Williams; my father was a highly reputable business
+magnet who operated in Benin Republic during his days.
 
-diff --git a/drivers/acpi/acpica/dbhistry.c b/drivers/acpi/acpica/dbhistry.c
-index fd813c5d3952..60b77b11c0f2 100644
---- a/drivers/acpi/acpica/dbhistry.c
-+++ b/drivers/acpi/acpica/dbhistry.c
-@@ -24,9 +24,9 @@ typedef struct history_info {
- } HISTORY_INFO;
- 
- static HISTORY_INFO acpi_gbl_history_buffer[HISTORY_SIZE];
--static u16 acpi_gbl_lo_history = 0;
--static u16 acpi_gbl_num_history = 0;
--static u16 acpi_gbl_next_history_index = 0;
-+static u16 acpi_gbl_lo_history;
-+static u16 acpi_gbl_num_history;
-+static u16 acpi_gbl_next_history_index;
- 
- /*******************************************************************************
-  *
--- 
-2.30.0
+I am writing this mail to you with tears and sorrow from my heart.
+With due respect trust and humanity, I know this mail will come to you
+as a surprise since we haven't known or come across each other before,
+considering the fact that I sourced your email contact through the
+Internet in search of trusted person who can be trusted and will
+assist me.
 
+It is sad to say that he passed away mysteriously in France during one
+of his business trips abroad. Though his sudden death was linked or
+rather suspected to have been masterminded by an uncle of his who
+traveled with him at that time. But God knows the truth! My mother
+died when I was just 6yrs old, and since then my father took me so
+special.
+
+Before his death, he called me and informed me that he has the sum of
+Eighteen Million Five Hundred , United State Dollar
+(USD$18.500,000.00) left in fixed deposit account in one of the
+leading banks in Africa. He further told me that he deposited the
+money in my name, and also gave me all the necessary but legal
+documents to this fund with the bank.
+
+I am 21 years old and a university undergraduate and really don't know
+what to do. Now I want an account overseas where I can transfer this
+funds and after the transaction I will come and reside permanently in
+your country till such a time that it will be convenient for me to
+return back home if I so desire.
+
+The death of my father actually brought sorrow to my life. I also want
+to invest the fund under your care because I am ignorant of business
+world. I am in a sincere desire of your humble assistance in this
+regards. Your suggestions and ideas will be highly regarded.
+
+Now permit me to ask these few questions:
+
+1. Can you honestly help me from your heart?
+
+2. Can I completely trust you?
+
+3. What percentage of the total amount in question will be good for
+you after the money is in your account?
+
+Please, consider this and get back to me as soon as
+possible.Immediately and confirm your willingness on this my
+email(williamsreneta2019@gmail.com), here is one of my Picture and
+also i will inform you more details involved in this matter.
+
+Regards,
+
+Miss Reneta Williams.
