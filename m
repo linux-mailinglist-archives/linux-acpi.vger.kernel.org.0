@@ -2,116 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD7C47EF3F
-	for <lists+linux-acpi@lfdr.de>; Fri, 24 Dec 2021 14:47:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 354A847F611
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Dec 2021 10:41:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352742AbhLXNra (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 24 Dec 2021 08:47:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42602 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235783AbhLXNr3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 24 Dec 2021 08:47:29 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149A4C061401;
-        Fri, 24 Dec 2021 05:47:29 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id x7so19192341lfu.8;
-        Fri, 24 Dec 2021 05:47:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=afCIlcjFXpeKvqs8SychKCeXq2Sds3zEsMBHblNJTN8=;
-        b=JzsdVHfZYqcVTB1yGagX/EHlWkPXar/sg3v61Ep6VkhoE50ULNjB8cD+XAqmov15so
-         nn4zRg7SxZCw0YD6DqjPZ0wTDDvoua/hvoK8SBmGVyDLAakxPfm1Sb1trqcDtRHzJhTJ
-         ArTeSUH2NPBJbtXED7Ie41nQkpuUoWCgq1wER1+MpLfnEhA5XjXzqAlRnfBeRP8G10EQ
-         DOByg2GRTxJcx6fuLMaIYnwEnE2+j4iZZA2mVEMzJpMPyAJTT6N0TK5Fg5SAiUdSOhyj
-         gFm3Vrjlo3Nn5jXVtjH1X7MV2fiXyKztM5A9HnVer0uraQj81VFT+d9dQJRzXyr1Il1T
-         t49A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=afCIlcjFXpeKvqs8SychKCeXq2Sds3zEsMBHblNJTN8=;
-        b=JOua+5Gs3dgGq0U0ezr5y3heGLWRfK7X1I02TpsX0EzBgvDdNrrGxVRX6wsIiQeS19
-         yNVrGecrSWxsL3J2XASyRmFyW2jIcB38aVFvn8WI8kTfLfV9Nz8YFc2IUQe7p/slrH0l
-         5vTUKu7RAg1LH6asxI+1hC0xt9yZiOXLa0xHwhYhodPLrxUPTtN1JKXgiGLZ3aZS1HSa
-         R7DD6fK//NOy6CXGtjNnx7kQFEvhwFL334ZoRRFaBp72YSqYuMpeufEqWWcZlpMK7rOy
-         CF6rx3nues59cZFaVg/1F3Tcf+eOLJFfeTqnIWVLUC0UcpCK9N/qeKw+a53dZNRcpK+z
-         Xwsg==
-X-Gm-Message-State: AOAM5329us4BtZXt26vRllHmxwFrmbBuFI7HXfJF15yfCmcz0GMltDHW
-        /jExWbc1NTvDE+31y0WTsns=
-X-Google-Smtp-Source: ABdhPJz9GCrC1UyzH/vLs9fb2lYqZclxDnnUK+QdggBJ5s7bsuQPmVbu4X6vIlq24u2LvduMWRgDUA==
-X-Received: by 2002:a05:6512:472:: with SMTP id x18mr5187110lfd.566.1640353647407;
-        Fri, 24 Dec 2021 05:47:27 -0800 (PST)
-Received: from mobilestation ([95.79.218.126])
-        by smtp.gmail.com with ESMTPSA id d3sm811274lfg.116.2021.12.24.05.47.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Dec 2021 05:47:26 -0800 (PST)
-Date:   Fri, 24 Dec 2021 16:47:24 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org,
-        Hoan Tran <hoan@os.amperecomputing.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH v1 2/2] gpio: dwapb: Switch to use fwnode instead of
- of_node
-Message-ID: <20211224134724.klsfulobcwxojfi3@mobilestation>
-References: <20211223103809.12343-1-andriy.shevchenko@linux.intel.com>
- <20211223103809.12343-2-andriy.shevchenko@linux.intel.com>
+        id S233020AbhLZJlT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 26 Dec 2021 04:41:19 -0500
+Received: from slot0.jllresort.com ([62.197.136.5]:49283 "EHLO
+        slot0.jllresort.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233005AbhLZJlT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Dec 2021 04:41:19 -0500
+X-Greylist: delayed 702 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 Dec 2021 04:41:19 EST
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=jllresort.com;
+ h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=ele.mon@jllresort.com;
+ bh=DbaX3cxgijQ2YWGjKYPX7c8PVuQ=;
+ b=HpKGNEeHDUmlJdJWrOB01J6GUxCOx36jfjaruyJVn8TOmt7j85wsd7XaWGWOX9YoGgJBEqVy2Ziv
+   2uQYdfYihiipHD6yAf8fLj/E2eIirXws8icm6vNhpVdrzlF7qLcGcM71JfZ0hYerc+mG95lhwsSE
+   zuWXVH4OAs69Lr0R+O0kAMfFvTsSMvC4nivYKFKmoNvMtc64gU4VOurnPm+IhhtCV1PI9wnCSB0C
+   HcD81MuzS1Ds9dLYQmc+vwtO1dGKrt1c/i91cct6tiKzYxBgtvhvxwG4/nT9Y1fYlNE1MSNsnMyk
+   Usz9rBhiQ1qK6MwxZgN5rzPt6UdCBb04NrFrNw==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=jllresort.com;
+ b=sfCQYM4BbabeGGDYemm0ow3vI4n/5WmLLFMlSzCXdo5inFIC+LQyTJq/b5e5n0s03Aih2svmn1bq
+   szOKx15oSjlF/5gFFp3V66KzZxrR+EwUoA4SUn+v1Jfps1IJgwg0ife1qzVo69A9wbi+NvQP7E4C
+   cKIkShjkaKI9YMILt+l2cMMxfqW4RksSKHhvbrAksRmNZ/FFLy6A11Pgr6eTsyB016c8Th0WntdM
+   R+k0CkBlVNv7IHSodtfWcRp4J5cSGaThvzzQp5g0OYVUyde5zKEjuikxAB1569Xsm40apQWMa3RK
+   ZvhbsrLUw/p66s4x2ahCI7ZfqyY6V3yP9pws2g==;
+Reply-To: mustafa.ayvaz@ayvazburosu.com
+From:   ele.mon@jllresort.com
+To:     linux-acpi@vger.kernel.org
+Subject: Happy Weekend:
+Date:   26 Dec 2021 10:29:24 +0100
+Message-ID: <20211226102855.D1E84C1A3A63956B@jllresort.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211223103809.12343-2-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 23, 2021 at 12:38:09PM +0200, Andy Shevchenko wrote:
-> GPIO library now accepts fwnode as a firmware node, so
-> switch the driver to use it and hence rectify the ACPI
-> case which uses software nodes.
-> 
-> Note, in this case it's rather logical fix that doesn't
-> affect functionality, thus no backporting required.
+Greetings to you linux-acpi,
 
-Thanks for the patch.
-Acked-by: Serge Semin <fancer.lancer@gmail.com>
+I was wondering if you got my previous email? I have been trying=20
+to reach you by email linux-acpi@vger.kernel.org, kindly get back=20
+to me swiftly, it is very important and urgent.
 
--Sergey
-
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/gpio/gpio-dwapb.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/gpio/gpio-dwapb.c b/drivers/gpio/gpio-dwapb.c
-> index ec0767d7800d..b0f3aca61974 100644
-> --- a/drivers/gpio/gpio-dwapb.c
-> +++ b/drivers/gpio/gpio-dwapb.c
-> @@ -15,7 +15,6 @@
->  #include <linux/irq.h>
->  #include <linux/mod_devicetable.h>
->  #include <linux/module.h>
-> -#include <linux/of.h>
->  #include <linux/platform_device.h>
->  #include <linux/property.h>
->  #include <linux/reset.h>
-> @@ -515,9 +514,7 @@ static int dwapb_gpio_add_port(struct dwapb_gpio *gpio,
->  		return err;
->  	}
->  
-> -#ifdef CONFIG_OF_GPIO
-> -	port->gc.of_node = to_of_node(pp->fwnode);
-> -#endif
-> +	port->gc.fwnode = pp->fwnode;
->  	port->gc.ngpio = pp->ngpio;
->  	port->gc.base = pp->gpio_base;
->  
-> -- 
-> 2.34.1
-> 
+Thanks
+Mustafa Ayvaz
+Email: mustafa.ayvaz@ayvazburosu.com
