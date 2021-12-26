@@ -2,27 +2,30 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C31DF47F81E
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 Dec 2021 16:41:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACF5447F87C
+	for <lists+linux-acpi@lfdr.de>; Sun, 26 Dec 2021 19:28:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232897AbhLZPld (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 26 Dec 2021 10:41:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35516 "EHLO
+        id S233862AbhLZS23 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 26 Dec 2021 13:28:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232940AbhLZPlL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Dec 2021 10:41:11 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B97FC06175B;
-        Sun, 26 Dec 2021 07:41:11 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: hector@marcansoft.com)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 52E9344B2A;
-        Sun, 26 Dec 2021 15:41:02 +0000 (UTC)
-From:   Hector Martin <marcan@marcan.st>
-To:     Kalle Valo <kvalo@codeaurora.org>,
+        with ESMTP id S230465AbhLZS23 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 26 Dec 2021 13:28:29 -0500
+X-Greylist: delayed 493 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 26 Dec 2021 10:28:29 PST
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A063C06173E;
+        Sun, 26 Dec 2021 10:28:28 -0800 (PST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
+        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 3EC1B30000641;
+        Sun, 26 Dec 2021 19:20:12 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 226E02ECFFA; Sun, 26 Dec 2021 19:20:12 +0100 (CET)
+Date:   Sun, 26 Dec 2021 19:20:12 +0100
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Hector Martin <marcan@marcan.st>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -33,11 +36,11 @@ To:     Kalle Valo <kvalo@codeaurora.org>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
         Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-Cc:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Rafa?? Mi??ecki <zajec5@gmail.com>,
         Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Hans de Goede <hdegoede@redhat.com>,
@@ -48,108 +51,26 @@ Cc:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
-Subject: [PATCH 34/34] brcmfmac: common: Add support for external calibration blobs
-Date:   Mon, 27 Dec 2021 00:36:24 +0900
-Message-Id: <20211226153624.162281-35-marcan@marcan.st>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211226153624.162281-1-marcan@marcan.st>
+Subject: Re: [PATCH 15/34] ACPI / property: Support strings in Apple _DSM
+ props
+Message-ID: <20211226182012.GA5527@wunner.de>
 References: <20211226153624.162281-1-marcan@marcan.st>
+ <20211226153624.162281-16-marcan@marcan.st>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211226153624.162281-16-marcan@marcan.st>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The calibration blob for a chip is normally stored in SROM and loaded
-internally by the firmware. However, Apple ARM64 platforms instead store
-it as part of platform configuration data, and provide it via the Apple
-Device Tree. We forward this into the Linux DT in the bootloader.
+On Mon, Dec 27, 2021 at 12:36:05AM +0900, Hector Martin wrote:
+> The Wi-Fi module in Apple machines has a "module-instance" device
+> property that specifies the platform type and is used for firmware
+> selection. Its value is a string, so add support for string values in
+> acpi_extract_apple_properties().
+> 
+> Signed-off-by: Hector Martin <marcan@marcan.st>
 
-Add support for taking this blob from the DT and loading it into the
-dongle. The loading mechanism is the same as used for the CLM and TxCap
-blobs.
-
-Signed-off-by: Hector Martin <marcan@marcan.st>
----
- .../broadcom/brcm80211/brcmfmac/common.c      | 24 +++++++++++++++++++
- .../broadcom/brcm80211/brcmfmac/common.h      |  2 ++
- .../wireless/broadcom/brcm80211/brcmfmac/of.c |  8 +++++++
- 3 files changed, 34 insertions(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-index d65308c3f070..ad36e6b5dd47 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-@@ -218,6 +218,23 @@ static int brcmf_c_process_txcap_blob(struct brcmf_if *ifp)
- 	return err;
- }
- 
-+static int brcmf_c_process_cal_blob(struct brcmf_if *ifp)
-+{
-+	struct brcmf_pub *drvr = ifp->drvr;
-+	struct brcmf_mp_device *settings = drvr->settings;
-+	s32 err;
-+
-+	brcmf_dbg(TRACE, "Enter\n");
-+
-+	if (!settings->cal_blob || !settings->cal_size)
-+		return 0;
-+
-+	brcmf_info("Calibration blob provided by platform, loading\n");
-+	err = brcmf_c_download_blob(ifp, settings->cal_blob, settings->cal_size,
-+				    "calload", "calload_status");
-+	return err;
-+}
-+
- int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
- {
- 	struct brcmf_pub *drvr = ifp->drvr;
-@@ -291,6 +308,13 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
- 		goto done;
- 	}
- 
-+	/* Download external calibration blob, if available */
-+	err = brcmf_c_process_cal_blob(ifp);
-+	if (err < 0) {
-+		bphy_err(drvr, "download calibration blob file failed, %d\n", err);
-+		goto done;
-+	}
-+
- 	/* query for 'ver' to get version info from firmware */
- 	memset(buf, 0, sizeof(buf));
- 	err = brcmf_fil_iovar_data_get(ifp, "ver", buf, sizeof(buf));
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-index a88c4a9310f3..f321346edd01 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-@@ -51,6 +51,8 @@ struct brcmf_mp_device {
- 	struct brcmfmac_pd_cc *country_codes;
- 	const char	*board_type;
- 	const char	*antenna_sku;
-+	void		*cal_blob;
-+	int		cal_size;
- 	union {
- 		struct brcmfmac_sdio_pd sdio;
- 	} bus;
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index 453a6cda5abb..2f40d70fdbf1 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -85,6 +85,14 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 	if (!of_property_read_string(np, "apple,antenna-sku", &prop))
- 		settings->antenna_sku = devm_kstrdup(dev, prop, GFP_KERNEL);
- 
-+	/* The WLAN calibration blob is normally stored in SROM, but Apple
-+	 * ARM64 platforms pass it via the DT instead.
-+	 */
-+	prop = of_get_property(np, "brcm,cal-blob", &settings->cal_size);
-+	if (prop && settings->cal_size)
-+		settings->cal_blob = devm_kmemdup(dev, prop, settings->cal_size,
-+						  GFP_KERNEL);
-+
- 	/* Set board-type to the first string of the machine compatible prop */
- 	root = of_find_node_by_path("/");
- 	if (root && !settings->board_type) {
--- 
-2.33.0
-
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
