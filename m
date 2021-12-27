@@ -2,150 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E111347FC5A
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Dec 2021 12:53:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9BFD480182
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Dec 2021 17:18:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236538AbhL0Lxb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Dec 2021 06:53:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43378 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233640AbhL0Lxb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Dec 2021 06:53:31 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073DBC06173E;
-        Mon, 27 Dec 2021 03:53:30 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 51CFA419BC;
-        Mon, 27 Dec 2021 11:53:20 +0000 (UTC)
-Subject: Re: [RFC PATCH 00/34] brcmfmac: Support Apple T2 and M1 platforms
-To:     Hans de Goede <hdegoede@redhat.com>, Lukas Wunner <lukas@wunner.de>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        Rafa?? Mi??ecki <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20211226153624.162281-1-marcan@marcan.st>
- <20211226191728.GA687@wunner.de>
- <06e801a0-7580-48ed-cac2-227c32a74ec2@redhat.com>
-From:   Hector Martin <marcan@marcan.st>
-Message-ID: <0a028b79-01eb-b69f-79b2-c9588dd31ad1@marcan.st>
-Date:   Mon, 27 Dec 2021 20:53:14 +0900
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.1
+        id S233934AbhL0QSg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Dec 2021 11:18:36 -0500
+Received: from mail-qv1-f47.google.com ([209.85.219.47]:46708 "EHLO
+        mail-qv1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231254AbhL0QSe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Dec 2021 11:18:34 -0500
+Received: by mail-qv1-f47.google.com with SMTP id r6so14110969qvr.13;
+        Mon, 27 Dec 2021 08:18:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8gefXXdQomg2lMC26R9yB37lprOxns0H/Q3I88w1pc0=;
+        b=gtVR6W7ikJzw2dvMUOpVn3LQTt/KLLp3Cg777DRMLIqF8ytLlV456cK7KEdlvLxSG5
+         qfkW/DF1aO+QWX6ZxKsUMmSa6BEouunSm05VxaJHxFJ53ts/h/ozaDkFCRcjkZKz5vJh
+         jK14DX6ocH07VJIPU2PbBfdjQwD3UYpHCoP/P2DVUB4QMN62uC0HBm9W9kCd+dwyagu7
+         Ux1eXOWfOaGtLelFBJhaqv8Qd5GyvHxYJYcLPCwnhR8uTO6fxblsb38NyswQCQMVcsWu
+         ep1C7UI7tWWqvXxWGwB98ZCNOkSuy4D1aZa/tbqCI0/r5ou/CeivrGly1SFMw12nmIAS
+         BwjQ==
+X-Gm-Message-State: AOAM531+HCYYBmlV00uFoE48O1XLL5hFj+MCZtxydutVLBS7tGxcMX+E
+        G7a9LEH+roZ04h63iHl7l49GY7Ztj0u4AB2/CK4=
+X-Google-Smtp-Source: ABdhPJyZMQE+q0b7sLIZlcl0UDL23HMrfnC8oKMWtZvi2Rx0CrrigaC4GJ5Q+ydgTiYFPA82KU3vN6IA3v7v8iaKylA=
+X-Received: by 2002:a05:6214:1c06:: with SMTP id u6mr15692349qvc.35.1640621913901;
+ Mon, 27 Dec 2021 08:18:33 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <06e801a0-7580-48ed-cac2-227c32a74ec2@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20211223081620.45479-1-heikki.krogerus@linux.intel.com>
+In-Reply-To: <20211223081620.45479-1-heikki.krogerus@linux.intel.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 27 Dec 2021 17:18:16 +0100
+Message-ID: <CAJZ5v0jHQmNGsOu9TQhUJD3uoc6XijZwRD1K4GfV_KoD=Q79WA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/5] acpi: Store _PLD information and convert users
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Prashant Malani <pmalani@chromium.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2021/12/27 6:42, Hans de Goede wrote:
+On Thu, Dec 23, 2021 at 9:16 AM Heikki Krogerus
+<heikki.krogerus@linux.intel.com> wrote:
+>
 > Hi,
-> 
-> On 12/26/21 20:17, Lukas Wunner wrote:
->> On Mon, Dec 27, 2021 at 12:35:50AM +0900, Hector Martin wrote:
->>> # On firmware
->>>
->>> As you might expect, the firmware for these machines is not available
->>> under a redistributable license; however, every owner of one of these
->>> machines *is* implicitly licensed to posess the firmware, and the OS
->>> packages containing it are available under well-known URLs on Apple's
->>> CDN with no authentication.
->>
->> Apple's EFI firmware contains a full-fledged network stack for
->> downloading macOS images from osrecovery.apple.com.  I suspect
->> that it also contains wifi firmware.
->>
->> You may want to check if it's passed to the OS as an EFI property.
->> Using that would sidestep license issues.  There's EDID data,
->> Thunderbolt DROM data and whatnot in those properties, so I
->> wouldn't be surprised if it contained wifi stuff as well.
->>
->> Enable CONFIG_APPLE_PROPERTIES and pass "dump_apple_properties"
->> on the command line to see all EFI properties in dmesg.
->> Alternatively, check "ioreg -l" on macOS.  Generally, what's
->> available in the I/O registry should also be available on Linux
->> either as an ACPI or EFI property.
-> 
-> Interesting, note that even if the files are not available as
-> a property we also have CONFIG_EFI_EMBEDDED_FIRMWARE, see:
-> 
-> drivers/firmware/efi/embedded-firmware.c
-> Documentation/driver-api/firmware/fallback-mechanisms.rst
-> 
-> I wrote this to pry/dig out some touchscreen firmwares (where
-> we have been unable to get permission to redistribute) out of
-> EFI boot_services_code mem regions on tablets where
-> the touchsceen is supported under the EFI environment.
-> 
-> This may need some tweaks, but if there is an embedded copy
-> of the firmware files in the EFI mem regions somewhere it
-> should be possible to adjust this code to grab it and present
-> it to the firmware-loader mechanism as a fallback option.
+>
+> The last version (v4) was not properly cleaned up. Should be now OK.
 
-Note that this wouldn't work on M1 Macs anyway, since those don't have
-EFI (we provide EFI via U-Boot as a chained bootloader on those), and
-their bootloader doesn't support any networking (it doesn't even do USB
-or any kind of UI).
+It looks good to me, so
 
-Quick recap for those not familiar with the M1 boot process: the
-bootloader is iBoot, which is extremely simple (at least compared to
-EFI). All it can do is boot kernels from APFS volumes on internal NVMe.
-The boot selection menu and recovery options are implemented as macOS
-apps running from a recovery image (~1GB), and "USB boot" is implemented
-by copying the macOS equivalent of /boot to NVMe. There is a global
-recovery image as well as per-OS recovery image. The WiFi firmware is
-present in this image as well as on normal macOS root volumes.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Our Linux install script is actually mostly a macOS install script that
-sets up all the boot components that macOS would normally have,
-including the recovery image, minus the main root filesystem. This is
-all required to work properly within Apple's security and multi-boot
-framework. So, since we're installing the recovery image, we're already
-in an easy position to pull the firmware out and stick it in the EFI
-partition for Linux to easily use. The alternative would be for Linux
-userspace to read it from APFS directly, but that seems unlikely to be
-practical until linux-apfs is upstreamed.
+for the ACPI-related changes in this series and please feel free to
+route it through the USB tree if that's preferred.
 
-For T2 Macs I'm sure the firmware will be in EFI somewhere, but even if
-we can get it from there (I wouldn't be surprised if it's e.g. still
-compressed in the normal boot path that doesn't start network services),
-I'm not sure it's worth implementing yet another mechanism for those
-machines. Once we have the vendor-firmware mechanism implemented for M1,
-it's easy to just run the same script on T2s and get the proper firmware
-from macOS (which might even be different from the EFI firmware...).
-macOS definitely doesn't read the firmware from EFI on those machines,
-so a hack to do it by scanning the code would probably not be something
-we can rely on to continue working across firmware updates (and they do
-update WiFi firmware; it's a rather well known source of security
-issues... so then we'd have to play the update-the-sha256 cat and mouse
-game). I'm pretty sure there's no property containing the big firmware
-blob passed explicitly to the OS; it has its own copy.
+Thanks!
 
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+> v4 cover letter:
+>
+> Now only storing the crc hash to a new member in struct acpi_device,
+> just like proposed by Rafael. In port-mapper.c I'm then scanning the
+> acpi bus separately with every port in order to find the matching
+> devices.
+>
+>
+> v3 cover letter:
+>
+> The _PLD buffer is no longer stored as requested by Rafael, so the
+> drivers will need to continue to evaluate the _PLD if they need it.
+>
+> The stored locations will therefore only contain the list of other
+> devices that share the location, but that is most important, and in
+> practice the main goal of the series in any case.
+>
+>
+> v2 cover letter:
+>
+> I'm now using the helpers device_match_acpi_dev() and
+> device_match_fwnode() like Andy suggested. No other changes.
+>
+>
+> The original cover letter:
+>
+> This removes the need for the drivers to always separately evaluate
+> the _PLD. With the USB Type-C connector and USB port mapping this
+> allows us to start using the component framework and remove the custom
+> APIs.
+>
+> So far the only users of the _PLD information have been the USB
+> drivers, but it seems it will be used also at least in some camera
+> drivers later. These nevertheless touch mostly USB drivers.
+>
+> thanks,
+>
+> Heikki Krogerus (5):
+>   acpi: Export acpi_bus_type
+>   acpi: Store CRC-32 hash of the _PLD in struct acpi_device
+>   usb: Link the ports to the connectors they are attached to
+>   usb: typec: port-mapper: Convert to the component framework
+>   usb: Remove usb_for_each_port()
+>
+>  Documentation/ABI/testing/sysfs-bus-usb |   9 +
+>  drivers/acpi/bus.c                      |   1 +
+>  drivers/acpi/scan.c                     |  16 ++
+>  drivers/usb/core/port.c                 |  32 +++
+>  drivers/usb/core/usb.c                  |  46 ----
+>  drivers/usb/typec/Makefile              |   3 +-
+>  drivers/usb/typec/class.c               |   2 -
+>  drivers/usb/typec/class.h               |  10 +-
+>  drivers/usb/typec/port-mapper.c         | 279 ++++--------------------
+>  include/acpi/acpi_bus.h                 |   1 +
+>  include/linux/usb.h                     |   9 -
+>  include/linux/usb/typec.h               |  12 -
+>  12 files changed, 105 insertions(+), 315 deletions(-)
+>
+> --
+> 2.34.1
+>
