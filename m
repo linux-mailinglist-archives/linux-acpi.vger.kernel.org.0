@@ -2,153 +2,172 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41EF84802BB
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 Dec 2021 18:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9741C4802EA
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 Dec 2021 18:43:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbhL0RXP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 27 Dec 2021 12:23:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34038 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbhL0RXO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 27 Dec 2021 12:23:14 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B432C06173E;
-        Mon, 27 Dec 2021 09:23:14 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 79C56419BC;
-        Mon, 27 Dec 2021 17:23:05 +0000 (UTC)
-To:     Rob Herring <robh@kernel.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        id S230480AbhL0Rnu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 27 Dec 2021 12:43:50 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:23148 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S230351AbhL0Rnu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 27 Dec 2021 12:43:50 -0500
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1BRGfnE8012032;
+        Mon, 27 Dec 2021 17:43:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=LJPZ92dTRudeh24NKiz2/JbNNsiAVDg8RXKrt1Poe4c=;
+ b=Cr/0cattw/JUbNhN2BtjHLJolBLUQcBfh9ORCm+egtDcMF10J9erNlBOMgbiOGdkv8S+
+ cxql1HSMRVxTS7yXgfepJ5nEF87XOxVCKIc3qwgS0Z+FrS3I5yhC7GTh6GHemfG5JSrw
+ Zpsy9CvmmJHVZkhhW6UjS1Pl5Pzi++IiTSxG5xJatdaB/9vr6U5vXsrRhIFF1eCYqZgk
+ ixWxI8H42maozvLPrML38SyynKljUqnxIOI6kll0w8qAAQQkO3wVJZ/cuH/MJN8D5XDn
+ R1WxwH9aOXScJFAcktqZ3RnsSBjvSG8KoeUN3XpYZ+FthrbG3YL03xws49GYtGai0xF5 3w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3d7h7uh119-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 27 Dec 2021 17:43:14 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1BRHPbrs026485;
+        Mon, 27 Dec 2021 17:43:13 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 3d7h7uh110-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 27 Dec 2021 17:43:13 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+        by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1BRHgO0c027632;
+        Mon, 27 Dec 2021 17:43:11 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma06fra.de.ibm.com with ESMTP id 3d5tjjb2qt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 27 Dec 2021 17:43:11 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1BRHh9RB47644996
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 27 Dec 2021 17:43:09 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F047A42041;
+        Mon, 27 Dec 2021 17:43:08 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A8D6542042;
+        Mon, 27 Dec 2021 17:43:07 +0000 (GMT)
+Received: from sig-9-145-11-194.uk.ibm.com (unknown [9.145.11.194])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Mon, 27 Dec 2021 17:43:07 +0000 (GMT)
+Message-ID: <d1daba9437783ffca746ab7329fe4fbdd04d247f.camel@linux.ibm.com>
+Subject: Re: [RFC 03/32] ACPI: Kconfig: add HAS_IOPORT dependencies
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        John Garry <john.garry@huawei.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20211226153624.162281-1-marcan@marcan.st>
- <20211226153624.162281-2-marcan@marcan.st>
- <YcnrjySZ9mPbkidZ@robh.at.kernel.org>
-From:   Hector Martin <marcan@marcan.st>
-Subject: Re: [PATCH 01/34] dt-bindings: net: bcm4329-fmac: Add Apple
- properties & chips
-Message-ID: <1e5e88a1-5457-2211-dc08-fe98415ae21b@marcan.st>
-Date:   Tue, 28 Dec 2021 02:23:02 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Mon, 27 Dec 2021 18:43:07 +0100
+In-Reply-To: <CAJZ5v0htSMwM5SgSAaS-UB3G=99DC8ytQ5P4BfjDhdAoQ7pFdg@mail.gmail.com>
+References: <20211227164317.4146918-1-schnelle@linux.ibm.com>
+         <20211227164317.4146918-4-schnelle@linux.ibm.com>
+         <CAJZ5v0iBJ8NtQautnWnp_pXMfLy_rxys8j4+ugSTbNBb=wzy6A@mail.gmail.com>
+         <f9f698b44173c6906e49e17aa33a98e12da7f60b.camel@linux.ibm.com>
+         <CAJZ5v0iG=wqVtJULiTFsffMWqihA0Rk+abMzmfTcH+J9d5G+YA@mail.gmail.com>
+         <CAJZ5v0htSMwM5SgSAaS-UB3G=99DC8ytQ5P4BfjDhdAoQ7pFdg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 3eye2BZ5UPUn-S0QwdpBT27xFHxw80tM
+X-Proofpoint-ORIG-GUID: e__HM_n4SzUYF7nYZDFSUIgoIQiH_jGZ
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-In-Reply-To: <YcnrjySZ9mPbkidZ@robh.at.kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: es-ES
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-27_09,2021-12-24_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ phishscore=0 spamscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
+ adultscore=0 mlxscore=0 mlxlogscore=999 lowpriorityscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2112270085
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 28/12/2021 01.36, Rob Herring wrote:
-> On Mon, Dec 27, 2021 at 12:35:51AM +0900, Hector Martin wrote:
->> +  brcm,cal-blob:
->> +    $ref: /schemas/types.yaml#/definitions/uint8-array
->> +    description: A per-device calibration blob for the Wi-Fi radio. This
->> +      should be filled in by the bootloader from platform configuration
->> +      data, if necessary, and will be uploaded to the device if present.
->> +
->> +  apple,module-instance:
->> +    $ref: /schemas/types.yaml#/definitions/string
->> +    description: Module codename used to identify a specific board on
->> +      Apple platforms. This is used to build the firmware filenames, to allow
->> +      different platforms to have different firmware and/or NVRAM config.
->> +
->> +  apple,antenna-sku:
->> +    $def: /schemas/types.yaml#/definitions/string
->> +    description: Antenna SKU used to identify a specific antenna configuration
->> +      on Apple platforms. This is use to build firmware filenames, to allow
->> +      platforms with different antenna configs to have different firmware and/or
->> +      NVRAM. This would normally be filled in by the bootloader from platform
->> +      configuration data.
+On Mon, 2021-12-27 at 18:15 +0100, Rafael J. Wysocki wrote:
+> On Mon, Dec 27, 2021 at 6:12 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > On Mon, Dec 27, 2021 at 6:02 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
+> > > On Mon, 2021-12-27 at 17:47 +0100, Rafael J. Wysocki wrote:
+> > > > On Mon, Dec 27, 2021 at 5:44 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
+> > > > > In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+> > > > > not being declared. As ACPI always uses I/O port access
+> > > > 
+> > > > The ARM64 people may not agree with this.
+> > > 
+> > > Maybe my wording is bad. This is my rewording of what Arnd had in his
+> > > original mail: "The ACPI subsystem needs access to I/O ports, so that
+> > > also gets a dependency."(
+> > > https://lore.kernel.org/lkml/CAK8P3a0MNbx-iuzW_-=0ab6-TTZzwV-PT_6gAC1Gp5PgYyHcrA@mail.gmail.com/
+> > > ).
+> > 
+> > And my point is that on ARM64 the ACPI subsystem does not need to
+> > access IO ports.
+> > 
+> > It may not even need to access them on x86, but that depends on the
+> > platform firmware in use.
+
+Well at least it does compile code calling outb() in
+drivers/acpi/ec.c:acpi_ec_write_cmd(). Not sure if there is an
+alternative path at runtime if there is then we might want to instead
+use ifdefs to always use the non I/O port path if HAS_IOPORT is
+undefined.
+
+> > 
+> > If arm64 is going to set HAS_IOPORT, then fine, but is it (and this
+> > applies to ia64 too)?
+
+Yes x86, arm64 and ia64 that is all arches that set ACH_SUPPORTS_ACPI
+all select HAS_IOPORT too. See patch 02 or the summary in the cover
+letter which notes that only s390, nds32, um, h8300, nios2, openrisc,
+hexagon, csky, and xtensa do not select it.
+
+> > 
+> > > > > we depend on HAS_IOPORT unconditionally.
+> > > > > 
+> > > > > Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+> > > > > Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+> > > > > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> > > > > ---
+> > > > >  drivers/acpi/Kconfig | 1 +
+> > > > >  1 file changed, 1 insertion(+)
+> > > > > 
+> > > > > diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> > > > > index cdbdf68bd98f..b57f15817ede 100644
+> > > > > --- a/drivers/acpi/Kconfig
+> > > > > +++ b/drivers/acpi/Kconfig
+> > > > > @@ -9,6 +9,7 @@ config ARCH_SUPPORTS_ACPI
+> > > > >  menuconfig ACPI
+> > > > >         bool "ACPI (Advanced Configuration and Power Interface) Support"
+> > > > >         depends on ARCH_SUPPORTS_ACPI
 > 
-> Is there a known set of strings that can be defined?
+> Besides, I'm not sure why ARCH_SUPPORTS_ACPI cannot cover this new dependency.
 
-For apple,module-instance there is, though it will grow with every new
-machine. If you're happy with me pushing updates to this through
-asahi-soc I can keep it maintained as we add DTs and compatibles there.
+If you prefer to have the dependency there that should work too yes.
 
-I'm curious whether you prefer this approach or something like
-brcm,board-name instead. Right now we do:
+> 
+> > > > > +       depends on HAS_IOPORT
+> > > > >         select PNP
+> > > > >         select NLS
+> > > > >         default y if X86
+> > > > > --
+> > > > > 2.32.0
+> > > > > 
 
-apple,module-instance = "honshu"
-
-That gets converted to board_name="apple,honshu" in the code, which is
-what the firmwares are named after (plus extra info later appended, if
-the rest of the Apple data is available).
-
-But we could also do:
-
-brcm,board-name = "apple,honshu"
-
-The latter would be more generically useful for other platforms, since
-it would allow e.g. having DTs for different boards that use the same
-WiFi module/subsystem and thus a compatible NVRAM fw file alias to the
-same file name (right now this is done with symlinks in /lib/firmware,
-one for each equivalent board). For non-Apple platforms (i.e. if
-antenna-sku and/or the OTP aren't available to do the funky Apple
-firmware selection), this just ends up replacing what would normally be
-the OF root node compatible in the firmware filename.
-
-E.g. right now we have:
-
-brcmfmac43430-sdio.AP6212.txt
-brcmfmac43430-sdio.raspberrypi,3-model-b.txt
-brcmfmac43430-sdio.raspberrypi,model-zero-w.txt -> brcmfmac43430-sdio.raspberrypi,3-model-b.txt
-brcmfmac43430-sdio.sinovoip,bpi-m2-plus.txt -> brcmfmac43430-sdio.AP6212.txt
-brcmfmac43430-sdio.sinovoip,bpi-m2-ultra.txt -> brcmfmac43430-sdio.AP6212.txt
-brcmfmac43430-sdio.sinovoip,bpi-m2-zero.txt -> brcmfmac43430-sdio.AP6212.txt
-brcmfmac43430-sdio.sinovoip,bpi-m3.txt -> brcmfmac43430-sdio.AP6212.txt
-
-And this could allow the sinovoip.* DTs to say:
-	brcm,board-name = "AP6212";
-
-And the rPi zero one:
-	brcm,board-name = "raspberrypi,3-model-b";
-
-And avoid the symlinks.
-
-The antenna-sku thing is specific to the Apple firmware selection
-process and doesn't make sense as a more generic property.
-
-antenna-sku right now always seems to be one of "ID", "X0", "X2", "X3",
-though that could presumably change in the future. I can add this to the
-binding if you want, though since this will be filled in by the
-bootloader from platform data we wouldn't be validating it anyway. Not
-sure if it's worth it.
-
-> There's also the somewhat standard 'firmware-name' property that
-> serves similar purpose, but if there's multiple files, then I guess
-> this approach is fine.
-
-Yeah, and the firmware name is constructed using non-DT information too
-(and we have several attempted filenames times several firmware types),
-so it wouldn't be complete.
-
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
