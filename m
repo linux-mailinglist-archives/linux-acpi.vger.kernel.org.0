@@ -2,121 +2,137 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5564480977
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Dec 2021 14:14:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3924480ACD
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Dec 2021 16:20:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232300AbhL1NOf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Dec 2021 08:14:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39604 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231948AbhL1NOf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Dec 2021 08:14:35 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15863C061574;
-        Tue, 28 Dec 2021 05:14:35 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C668EB811EF;
-        Tue, 28 Dec 2021 13:14:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F1DC36AE8;
-        Tue, 28 Dec 2021 13:14:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1640697272;
-        bh=8jpFq1AYq4RbTwegXdsNwRM8niXpio96faqJOItKqDU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=fqkHnQqQu//4HxNkavBwcqWzCiCf8SAtsZw8sdCQDPSAyJ8TfceUyiGM38gPqMq7y
-         TLtotPhaGhKykMKK0wMa+K1gv27xsM0pdZ6lpxzJMvhSnOf7QBOR/HogHX73bZKnia
-         DpU0CkqiDbx+1JDz6fFULUI7aT+TQy2JyZ1yrQZw=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: sysfs: use default_groups in kobj_type
-Date:   Tue, 28 Dec 2021 14:14:23 +0100
-Message-Id: <20211228131423.249752-1-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.34.1
+        id S235065AbhL1PUQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Dec 2021 10:20:16 -0500
+Received: from mail-qv1-f42.google.com ([209.85.219.42]:46652 "EHLO
+        mail-qv1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232237AbhL1PUO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Dec 2021 10:20:14 -0500
+Received: by mail-qv1-f42.google.com with SMTP id r6so16635990qvr.13;
+        Tue, 28 Dec 2021 07:20:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5fY3FmhAa22/bq1K7vSBws2+S2Pg0+cIwqXDwc5lfsw=;
+        b=UCQFUY3wLUUmtLC9Ea6wcxv7CqvKjD3sGXV2mGca039w/lW5A2Czh2DzVDhXXJzQRi
+         CyVZ4QOtvVJSs2PxIOce5dpe0HQcOQ+NV9X+Yw2BN0OR8J35wsZPyFDcD+uwxL22o0Cg
+         Dm4JNU+lYrGqpoSnT4antbJkVfD9NmSH78hT4wlSrZCdUjAwgPeJJ+rZU0R3l8+oDCZl
+         mMlTeHbaeUwtZC6dmun78W3kyPkBH31r8j21ykWWT+mOCFp9qssNjZeaqT4UPUbNS8uU
+         J3+FXG0rKS1S0k7rXWDarDu+Iy6y14GeUJP1D3VkoqB9KAfILKjSiXMjGioOq9XraYB4
+         zPXA==
+X-Gm-Message-State: AOAM532qs0614pgFmCVeevk+e7Vkx1P9Z38YiCPtiI0PfiLPNSvxjYn+
+        ZgJqtlpqXVvXqS1Ismu8goorcrS8T7FXQPrIjwA=
+X-Google-Smtp-Source: ABdhPJwvMDI1hVWuwpeJm0z85bOJLHXSFIeaxxqnKp8rrJOftEJ2aVNhZWqV1CODEWkrk/+iaCoh31AJInvbc7cE4Gs=
+X-Received: by 2002:a05:6214:20a2:: with SMTP id 2mr19277943qvd.52.1640704813291;
+ Tue, 28 Dec 2021 07:20:13 -0800 (PST)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2639; h=from:subject; bh=8jpFq1AYq4RbTwegXdsNwRM8niXpio96faqJOItKqDU=; b=owGbwMvMwCRo6H6F97bub03G02pJDImnedcfMPgyZdv/vVpdtRvW8Jvt0GNKUpo+lfPZ2osbnqaV /zws3BHLwiDIxCArpsjyZRvP0f0VhxS9DG1Pw8xhZQIZwsDFKQATqUxhmCs/z2/ZTI7F+4Vs/vEUar 2u3CW2q41hvvPqFk2/kJCZIqWhqs0/z0/4PenWUQA=
-X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
-Content-Transfer-Encoding: 8bit
+References: <20211227164317.4146918-1-schnelle@linux.ibm.com>
+ <20211227164317.4146918-4-schnelle@linux.ibm.com> <CAJZ5v0iBJ8NtQautnWnp_pXMfLy_rxys8j4+ugSTbNBb=wzy6A@mail.gmail.com>
+ <f9f698b44173c6906e49e17aa33a98e12da7f60b.camel@linux.ibm.com>
+ <CAJZ5v0iG=wqVtJULiTFsffMWqihA0Rk+abMzmfTcH+J9d5G+YA@mail.gmail.com>
+ <CAJZ5v0htSMwM5SgSAaS-UB3G=99DC8ytQ5P4BfjDhdAoQ7pFdg@mail.gmail.com> <d1daba9437783ffca746ab7329fe4fbdd04d247f.camel@linux.ibm.com>
+In-Reply-To: <d1daba9437783ffca746ab7329fe4fbdd04d247f.camel@linux.ibm.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 28 Dec 2021 16:20:02 +0100
+Message-ID: <CAJZ5v0idJXf0dBctmCVxyp4rWsMp_MvnryibZa8hqvmjtKV5TQ@mail.gmail.com>
+Subject: Re: [RFC 03/32] ACPI: Kconfig: add HAS_IOPORT dependencies
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        John Garry <john.garry@huawei.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-There are currently 2 ways to create a set of sysfs files for a
-kobj_type, through the default_attrs field, and the default_groups
-field.  Move the ACPI sysfs code to use default_groups field which has
-been the preferred way since aa30f47cf666 ("kobject: Add support for
-default attribute groups to kobj_type") so that we can soon get rid of
-the obsolete default_attrs field.
+On Mon, Dec 27, 2021 at 6:43 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
+>
+> On Mon, 2021-12-27 at 18:15 +0100, Rafael J. Wysocki wrote:
+> > On Mon, Dec 27, 2021 at 6:12 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> > > On Mon, Dec 27, 2021 at 6:02 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
+> > > > On Mon, 2021-12-27 at 17:47 +0100, Rafael J. Wysocki wrote:
+> > > > > On Mon, Dec 27, 2021 at 5:44 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
+> > > > > > In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+> > > > > > not being declared. As ACPI always uses I/O port access
+> > > > >
+> > > > > The ARM64 people may not agree with this.
+> > > >
+> > > > Maybe my wording is bad. This is my rewording of what Arnd had in his
+> > > > original mail: "The ACPI subsystem needs access to I/O ports, so that
+> > > > also gets a dependency."(
+> > > > https://lore.kernel.org/lkml/CAK8P3a0MNbx-iuzW_-=0ab6-TTZzwV-PT_6gAC1Gp5PgYyHcrA@mail.gmail.com/
+> > > > ).
+> > >
+> > > And my point is that on ARM64 the ACPI subsystem does not need to
+> > > access IO ports.
+> > >
+> > > It may not even need to access them on x86, but that depends on the
+> > > platform firmware in use.
+>
+> Well at least it does compile code calling outb() in
+> drivers/acpi/ec.c:acpi_ec_write_cmd().
 
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/acpi/cppc_acpi.c    | 3 ++-
- drivers/acpi/device_sysfs.c | 3 ++-
- drivers/acpi/sysfs.c        | 3 ++-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+That's the EC driver which is not used on arm64 AFAICS and that driver
+itself can be made depend on HAS_IOPORT.
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index a85c351589be..d251b2a1cd15 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -179,10 +179,11 @@ static struct attribute *cppc_attrs[] = {
- 	&lowest_freq.attr,
- 	NULL
- };
-+ATTRIBUTE_GROUPS(cppc);
- 
- static struct kobj_type cppc_ktype = {
- 	.sysfs_ops = &kobj_sysfs_ops,
--	.default_attrs = cppc_attrs,
-+	.default_groups = cppc_groups,
- };
- 
- static int check_pcc_chan(int pcc_ss_id, bool chk_err_bit)
-diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-index 61271e61c307..d5d6403ba07b 100644
---- a/drivers/acpi/device_sysfs.c
-+++ b/drivers/acpi/device_sysfs.c
-@@ -53,6 +53,7 @@ static struct attribute *acpi_data_node_default_attrs[] = {
- 	&data_node_path.attr,
- 	NULL
- };
-+ATTRIBUTE_GROUPS(acpi_data_node_default);
- 
- #define to_data_node(k) container_of(k, struct acpi_data_node, kobj)
- #define to_attr(a) container_of(a, struct acpi_data_node_attr, attr)
-@@ -79,7 +80,7 @@ static void acpi_data_node_release(struct kobject *kobj)
- 
- static struct kobj_type acpi_data_node_ktype = {
- 	.sysfs_ops = &acpi_data_node_sysfs_ops,
--	.default_attrs = acpi_data_node_default_attrs,
-+	.default_groups = acpi_data_node_default_groups,
- 	.release = acpi_data_node_release,
- };
- 
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index 00c0ebaab29f..a4b638bea6f1 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -939,10 +939,11 @@ static struct attribute *hotplug_profile_attrs[] = {
- 	&hotplug_enabled_attr.attr,
- 	NULL
- };
-+ATTRIBUTE_GROUPS(hotplug_profile);
- 
- static struct kobj_type acpi_hotplug_profile_ktype = {
- 	.sysfs_ops = &kobj_sysfs_ops,
--	.default_attrs = hotplug_profile_attrs,
-+	.default_groups = hotplug_profile_groups,
- };
- 
- void acpi_sysfs_add_hotplug_profile(struct acpi_hotplug_profile *hotplug,
--- 
-2.34.1
+> Not sure if there is an
+> alternative path at runtime if there is then we might want to instead
+> use ifdefs to always use the non I/O port path if HAS_IOPORT is
+> undefined.
+>
+> > >
+> > > If arm64 is going to set HAS_IOPORT, then fine, but is it (and this
+> > > applies to ia64 too)?
+>
+> Yes x86, arm64 and ia64 that is all arches that set ACH_SUPPORTS_ACPI
+> all select HAS_IOPORT too. See patch 02 or the summary in the cover
+> letter which notes that only s390, nds32, um, h8300, nios2, openrisc,
+> hexagon, csky, and xtensa do not select it.
 
+If that is the case, there should be no need to add the extra
+dependency to CONFIG_ACPI.
+
+> > >
+> > > > > > we depend on HAS_IOPORT unconditionally.
+> > > > > >
+> > > > > > Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+> > > > > > Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+> > > > > > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> > > > > > ---
+> > > > > >  drivers/acpi/Kconfig | 1 +
+> > > > > >  1 file changed, 1 insertion(+)
+> > > > > >
+> > > > > > diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> > > > > > index cdbdf68bd98f..b57f15817ede 100644
+> > > > > > --- a/drivers/acpi/Kconfig
+> > > > > > +++ b/drivers/acpi/Kconfig
+> > > > > > @@ -9,6 +9,7 @@ config ARCH_SUPPORTS_ACPI
+> > > > > >  menuconfig ACPI
+> > > > > >         bool "ACPI (Advanced Configuration and Power Interface) Support"
+> > > > > >         depends on ARCH_SUPPORTS_ACPI
+> >
+> > Besides, I'm not sure why ARCH_SUPPORTS_ACPI cannot cover this new dependency.
+>
+> If you prefer to have the dependency there that should work too yes.
+
+I would prefer that.
+
+IMO, if ARCH_SUPPORTS_ACPI is set, all of the requisite dependencies
+should be met.
