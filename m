@@ -2,128 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0462480C6B
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Dec 2021 19:16:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1D49480D04
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Dec 2021 21:32:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236980AbhL1SQz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Dec 2021 13:16:55 -0500
-Received: from mail-qt1-f173.google.com ([209.85.160.173]:33654 "EHLO
-        mail-qt1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233411AbhL1SQv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Dec 2021 13:16:51 -0500
-Received: by mail-qt1-f173.google.com with SMTP id v4so14262363qtk.0;
-        Tue, 28 Dec 2021 10:16:51 -0800 (PST)
+        id S237280AbhL1Ucd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Dec 2021 15:32:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52104 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237275AbhL1Ucc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Dec 2021 15:32:32 -0500
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AE6C061746
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Dec 2021 12:32:30 -0800 (PST)
+Received: by mail-qk1-x733.google.com with SMTP id r139so17249962qke.9
+        for <linux-acpi@vger.kernel.org>; Tue, 28 Dec 2021 12:32:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=sMmOPgQIyLd5aJ7j0d85MpKh4rloNA22LakYrqgs2Uw=;
+        b=OLloR5gaT+9lPpeUlQYFuREt7VdJKdYe7wOgZysay9qPJbtRX5raSzj7pQU4nfZP01
+         Rg8eTs1XcT9C+DHHMHKh4opsZchy1Mum9XwDqhWPLzoOoZO+K+NEhaiok1MAQkenBo2U
+         CbXvxqI4iEPcA3i/WhVqOUEq9TNP3TQfxcYxg4MVpZhAbqCKpka4Xf+PpzAkLsZR6uv3
+         tNEuX7HQSsfFhdD2cqxpuqWgkZ6ekd4svMLpgVF3orBBZZI/D+knNhxy+RF0/m/Br3xQ
+         bVBwWoYuu5MyufXzByIvn996nveaas3SdGN0zOMdTIFVUuUEInGBu3mf+raeRn4x3q3W
+         4y1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9hPyQaAtpdsCwtq9cD65/s5Z3KHHM6Rn5LsO9cVRzow=;
-        b=mnFJ+BdH61WUAb36B0GP92zv8CSOP5Gq9Rgt4wX78jf9IYLmqaXxtFR9spX9q8YaFy
-         LEpfo0arxsxHzwPFUXQScctDPUrbJp9plSu8Ujy016bZ4Hog7/sfEFTPIfeqIwWhD6/K
-         PE2MDPXZ9TmVUFgVdZuRYTsrovgGCMLs0TUtDqqiEX4KYZq6lhxFBLuReKrokHUycPBi
-         G9z/9GPe4DC//B1WjM87Y4RpILrqM71ga8foajSwe7hdVhFqyLohT8+0xXHx2S00ZyAo
-         LWm2/Hpb0e88KYfHrv76Q49YivX/NqBuZN1XmKbLFoTmLrufHBwHPCrf2C26u8iSJdqJ
-         NseQ==
-X-Gm-Message-State: AOAM532I6Ob1qiZI9B+iyVFy/VQMButYEHyygkx9NmeBsJwLYs7lglWe
-        our0qlfLMyuSxc31tLsKPsLEdz2FEmzQaKq4ESUrwoTi
-X-Google-Smtp-Source: ABdhPJy0FQvrGDJagrmzJ0UpRfk/9sKYxxSpvUc6QZgwVhbcCzrxB30RickELfWkkghjclbA12JNzMbCyzTwEDfzI+g=
-X-Received: by 2002:ac8:5c91:: with SMTP id r17mr20319911qta.18.1640715410911;
- Tue, 28 Dec 2021 10:16:50 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=sMmOPgQIyLd5aJ7j0d85MpKh4rloNA22LakYrqgs2Uw=;
+        b=bAZ6ysbEnS2JqJbO0WNdgzlxaQdlSr3nTPrA644B6P9IlF4lQqgDiAJCRBd9x8Z0lO
+         FLj47Wha3xyYwI/OEIdrXMT9F3R6hx80pfTG2QBCjr3xkunO+fBkpOQ8ifqkLlnBu/lF
+         02+nlpmd4mN37pcfjmWP5VhcU1hb43OmyPUmBOVtrV0MNOxVdFE/pdFG0DbnsaENvMN9
+         ZgpLVfaltPSH9+YsAWB4tgS2xWDFbGa0WlSqRuYk05M+uUqiuYVCkJlNXKv///55A+0o
+         3VGNhwDKkhqy/biPmMrCh4mj3TydlyWD/MF+9xBR8c2ttL4jZZkRhDqpOow5K2aW0ysx
+         CEww==
+X-Gm-Message-State: AOAM530Pt3sTYG1iHz2xY0FF0Nb1L3Mib6D0WQaiikjppIPswDzIYr5e
+        0LpxrxGIekeME7Oo3JzBxUnPmosw8dX0gl7VYQI=
+X-Google-Smtp-Source: ABdhPJxSIQ8L1ETDNp4pl896J/J+/x6JDxE2DZYCH8V486ki67TJCHOx5Gs7IqY2vZzpv/yq4GhRa0I6n5CocagSldc=
+X-Received: by 2002:a05:620a:14a1:: with SMTP id x1mr16466340qkj.13.1640723548819;
+ Tue, 28 Dec 2021 12:32:28 -0800 (PST)
 MIME-Version: 1.0
-References: <20211228131423.249752-1-gregkh@linuxfoundation.org>
-In-Reply-To: <20211228131423.249752-1-gregkh@linuxfoundation.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 28 Dec 2021 19:16:40 +0100
-Message-ID: <CAJZ5v0jyuVjMeM4t+M28e6R9MYxh=nVU7i2tgvGWF3Y7PrB+rQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: sysfs: use default_groups in kobj_type
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Received: by 2002:ad4:5ce5:0:0:0:0:0 with HTTP; Tue, 28 Dec 2021 12:32:28
+ -0800 (PST)
+Reply-To: mitchellvivian03@gmail.com
+From:   Mitchell Vivian <lilianavalges@gmail.com>
+Date:   Tue, 28 Dec 2021 20:32:28 +0000
+Message-ID: <CACq2y7L35UM98ZUWTybBTCLjw0H0D6hhOi==y8LtRTwV1EhKrg@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Dec 28, 2021 at 2:14 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> There are currently 2 ways to create a set of sysfs files for a
-> kobj_type, through the default_attrs field, and the default_groups
-> field.  Move the ACPI sysfs code to use default_groups field which has
-> been the preferred way since aa30f47cf666 ("kobject: Add support for
-> default attribute groups to kobj_type") so that we can soon get rid of
-> the obsolete default_attrs field.
->
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: linux-acpi@vger.kernel.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Hello
 
-Applied as 5.17 material, thanks!
+My name is Miss Vivian Mitchell. I want to donate my fund $ 5.2
+million USD to you on a charity name to help the poor People.
 
-> ---
->  drivers/acpi/cppc_acpi.c    | 3 ++-
->  drivers/acpi/device_sysfs.c | 3 ++-
->  drivers/acpi/sysfs.c        | 3 ++-
->  3 files changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index a85c351589be..d251b2a1cd15 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -179,10 +179,11 @@ static struct attribute *cppc_attrs[] = {
->         &lowest_freq.attr,
->         NULL
->  };
-> +ATTRIBUTE_GROUPS(cppc);
->
->  static struct kobj_type cppc_ktype = {
->         .sysfs_ops = &kobj_sysfs_ops,
-> -       .default_attrs = cppc_attrs,
-> +       .default_groups = cppc_groups,
->  };
->
->  static int check_pcc_chan(int pcc_ss_id, bool chk_err_bit)
-> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-> index 61271e61c307..d5d6403ba07b 100644
-> --- a/drivers/acpi/device_sysfs.c
-> +++ b/drivers/acpi/device_sysfs.c
-> @@ -53,6 +53,7 @@ static struct attribute *acpi_data_node_default_attrs[] = {
->         &data_node_path.attr,
->         NULL
->  };
-> +ATTRIBUTE_GROUPS(acpi_data_node_default);
->
->  #define to_data_node(k) container_of(k, struct acpi_data_node, kobj)
->  #define to_attr(a) container_of(a, struct acpi_data_node_attr, attr)
-> @@ -79,7 +80,7 @@ static void acpi_data_node_release(struct kobject *kobj)
->
->  static struct kobj_type acpi_data_node_ktype = {
->         .sysfs_ops = &acpi_data_node_sysfs_ops,
-> -       .default_attrs = acpi_data_node_default_attrs,
-> +       .default_groups = acpi_data_node_default_groups,
->         .release = acpi_data_node_release,
->  };
->
-> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> index 00c0ebaab29f..a4b638bea6f1 100644
-> --- a/drivers/acpi/sysfs.c
-> +++ b/drivers/acpi/sysfs.c
-> @@ -939,10 +939,11 @@ static struct attribute *hotplug_profile_attrs[] = {
->         &hotplug_enabled_attr.attr,
->         NULL
->  };
-> +ATTRIBUTE_GROUPS(hotplug_profile);
->
->  static struct kobj_type acpi_hotplug_profile_ktype = {
->         .sysfs_ops = &kobj_sysfs_ops,
-> -       .default_attrs = hotplug_profile_attrs,
-> +       .default_groups = hotplug_profile_groups,
->  };
->
->  void acpi_sysfs_add_hotplug_profile(struct acpi_hotplug_profile *hotplug,
-> --
-> 2.34.1
->
+As soon as I read from you I will give you more details on how to
+achieve this goal and get this fund transferred into your bank
+account.
+
+Thanks have a nice day,
+Mrs.vivian
