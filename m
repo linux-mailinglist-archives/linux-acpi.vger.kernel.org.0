@@ -2,187 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C58B48087A
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 Dec 2021 11:40:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5564480977
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 Dec 2021 14:14:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231783AbhL1KkC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 28 Dec 2021 05:40:02 -0500
-Received: from mga14.intel.com ([192.55.52.115]:21436 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230112AbhL1KkC (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 28 Dec 2021 05:40:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1640688002; x=1672224002;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=tiRyDOyL5kkRwfgvPqclCj2b1zkGRkJfUXvHFTZE8Ek=;
-  b=PODAb+JdrsUEpy6fn1hfMSs26SRcbuLG66/8jNEqtMaECeXe0KqRrRw+
-   haYEI/eWpI/bV1wHSPe7RIUgRIGgcK/gFkMcSRBmY2lXlWams3l6fv5BM
-   twyj70+HHShbeI0dAttc1sdiE9xU5FA+L13zFVRX03yl3sZ+vjNebJRzG
-   lNFfY6PRLYPvWRYU5Tzv2Tg0HgTKs9hVun8BaMVTWBZV0JHrftDMmO7wh
-   ZCcvi/nPm8NNGvHHzwEMKCuHZJh0D/6IXSuXkq/Zi5ra3zsisvBiN6yR7
-   s4oOPT9uuL/8IufZzoPdrdWGQV42OylrjHHotYvqrN6f5ZyBAFp4/PGlt
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10210"; a="241563998"
-X-IronPort-AV: E=Sophos;i="5.88,242,1635231600"; 
-   d="scan'208";a="241563998"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2021 02:40:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,242,1635231600"; 
-   d="scan'208";a="469995176"
-Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 28 Dec 2021 02:40:00 -0800
-Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1n29tf-0007Uq-HW; Tue, 28 Dec 2021 10:39:59 +0000
-Date:   Tue, 28 Dec 2021 18:39:00 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING
- 86e4182dd2d1465f6446863dd26da97ea069c8a2
-Message-ID: <61cae944.Twod0fyG7mT0FqUV%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S232300AbhL1NOf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 28 Dec 2021 08:14:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39604 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231948AbhL1NOf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 28 Dec 2021 08:14:35 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15863C061574;
+        Tue, 28 Dec 2021 05:14:35 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C668EB811EF;
+        Tue, 28 Dec 2021 13:14:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F1DC36AE8;
+        Tue, 28 Dec 2021 13:14:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1640697272;
+        bh=8jpFq1AYq4RbTwegXdsNwRM8niXpio96faqJOItKqDU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fqkHnQqQu//4HxNkavBwcqWzCiCf8SAtsZw8sdCQDPSAyJ8TfceUyiGM38gPqMq7y
+         TLtotPhaGhKykMKK0wMa+K1gv27xsM0pdZ6lpxzJMvhSnOf7QBOR/HogHX73bZKnia
+         DpU0CkqiDbx+1JDz6fFULUI7aT+TQy2JyZ1yrQZw=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: sysfs: use default_groups in kobj_type
+Date:   Tue, 28 Dec 2021 14:14:23 +0100
+Message-Id: <20211228131423.249752-1-gregkh@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2639; h=from:subject; bh=8jpFq1AYq4RbTwegXdsNwRM8niXpio96faqJOItKqDU=; b=owGbwMvMwCRo6H6F97bub03G02pJDImnedcfMPgyZdv/vVpdtRvW8Jvt0GNKUpo+lfPZ2osbnqaV /zws3BHLwiDIxCArpsjyZRvP0f0VhxS9DG1Pw8xhZQIZwsDFKQATqUxhmCs/z2/ZTI7F+4Vs/vEUar 2u3CW2q41hvvPqFk2/kJCZIqWhqs0/z0/4PenWUQA=
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 86e4182dd2d1465f6446863dd26da97ea069c8a2  Merge branch 'acpi-pfrut' into bleeding-edge
+There are currently 2 ways to create a set of sysfs files for a
+kobj_type, through the default_attrs field, and the default_groups
+field.  Move the ACPI sysfs code to use default_groups field which has
+been the preferred way since aa30f47cf666 ("kobject: Add support for
+default attribute groups to kobj_type") so that we can soon get rid of
+the obsolete default_attrs field.
 
-Warning reports:
-
-https://lore.kernel.org/llvm/202112280907.gTYYYuB4-lkp@intel.com
-
-Warning in current branch:
-
-drivers/acpi/acpica/exregion.c:519:17: warning: performing pointer subtraction with a null pointer has undefined behavior [-Wnull-pointer-subtraction]
-
-Warning ids grouped by kconfigs:
-
-clang_recent_errors
-|-- i386-randconfig-a012-20211228
-|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
-`-- x86_64-randconfig-a015-20211228
-    `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
-
-elapsed time: 721m
-
-configs tested: 102
-configs skipped: 3
-
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm64                               defconfig
-arm64                            allyesconfig
-i386                 randconfig-c001-20211228
-powerpc                 mpc8540_ads_defconfig
-mips                        jmr3927_defconfig
-powerpc                   microwatt_defconfig
-sh                            shmin_defconfig
-powerpc                      obs600_defconfig
-powerpc                    amigaone_defconfig
-sparc                               defconfig
-arm                           spitz_defconfig
-sh                         ap325rxa_defconfig
-powerpc                  mpc866_ads_defconfig
-s390                             alldefconfig
-sh                              ul2_defconfig
-ia64                      gensparse_defconfig
-sh                            migor_defconfig
-powerpc                           allnoconfig
-powerpc                       eiger_defconfig
-powerpc                     tqm8548_defconfig
-arm                          ixp4xx_defconfig
-riscv                          rv32_defconfig
-sh                          urquell_defconfig
-arm                  randconfig-c002-20211228
-ia64                                defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                             allnoconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-alpha                               defconfig
-nds32                               defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-parisc                              defconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-s390                             allyesconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-sparc                            allyesconfig
-mips                             allmodconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64               randconfig-a001-20211228
-x86_64               randconfig-a003-20211228
-x86_64               randconfig-a002-20211228
-x86_64               randconfig-a005-20211228
-x86_64               randconfig-a004-20211228
-x86_64               randconfig-a006-20211228
-i386                 randconfig-a002-20211228
-i386                 randconfig-a003-20211228
-i386                 randconfig-a001-20211228
-i386                 randconfig-a005-20211228
-i386                 randconfig-a006-20211228
-i386                 randconfig-a004-20211228
-arc                  randconfig-r043-20211228
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-x86_64                    rhel-8.3-kselftests
-
-clang tested configs:
-x86_64               randconfig-a014-20211228
-x86_64               randconfig-a013-20211228
-x86_64               randconfig-a012-20211228
-x86_64               randconfig-a011-20211228
-x86_64               randconfig-a016-20211228
-x86_64               randconfig-a015-20211228
-i386                 randconfig-a012-20211228
-i386                 randconfig-a011-20211228
-i386                 randconfig-a013-20211228
-i386                 randconfig-a014-20211228
-i386                 randconfig-a016-20211228
-i386                 randconfig-a015-20211228
-hexagon              randconfig-r041-20211228
-riscv                randconfig-r042-20211228
-s390                 randconfig-r044-20211228
-hexagon              randconfig-r045-20211228
-
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/acpi/cppc_acpi.c    | 3 ++-
+ drivers/acpi/device_sysfs.c | 3 ++-
+ drivers/acpi/sysfs.c        | 3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index a85c351589be..d251b2a1cd15 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -179,10 +179,11 @@ static struct attribute *cppc_attrs[] = {
+ 	&lowest_freq.attr,
+ 	NULL
+ };
++ATTRIBUTE_GROUPS(cppc);
+ 
+ static struct kobj_type cppc_ktype = {
+ 	.sysfs_ops = &kobj_sysfs_ops,
+-	.default_attrs = cppc_attrs,
++	.default_groups = cppc_groups,
+ };
+ 
+ static int check_pcc_chan(int pcc_ss_id, bool chk_err_bit)
+diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+index 61271e61c307..d5d6403ba07b 100644
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -53,6 +53,7 @@ static struct attribute *acpi_data_node_default_attrs[] = {
+ 	&data_node_path.attr,
+ 	NULL
+ };
++ATTRIBUTE_GROUPS(acpi_data_node_default);
+ 
+ #define to_data_node(k) container_of(k, struct acpi_data_node, kobj)
+ #define to_attr(a) container_of(a, struct acpi_data_node_attr, attr)
+@@ -79,7 +80,7 @@ static void acpi_data_node_release(struct kobject *kobj)
+ 
+ static struct kobj_type acpi_data_node_ktype = {
+ 	.sysfs_ops = &acpi_data_node_sysfs_ops,
+-	.default_attrs = acpi_data_node_default_attrs,
++	.default_groups = acpi_data_node_default_groups,
+ 	.release = acpi_data_node_release,
+ };
+ 
+diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+index 00c0ebaab29f..a4b638bea6f1 100644
+--- a/drivers/acpi/sysfs.c
++++ b/drivers/acpi/sysfs.c
+@@ -939,10 +939,11 @@ static struct attribute *hotplug_profile_attrs[] = {
+ 	&hotplug_enabled_attr.attr,
+ 	NULL
+ };
++ATTRIBUTE_GROUPS(hotplug_profile);
+ 
+ static struct kobj_type acpi_hotplug_profile_ktype = {
+ 	.sysfs_ops = &kobj_sysfs_ops,
+-	.default_attrs = hotplug_profile_attrs,
++	.default_groups = hotplug_profile_groups,
+ };
+ 
+ void acpi_sysfs_add_hotplug_profile(struct acpi_hotplug_profile *hotplug,
+-- 
+2.34.1
+
