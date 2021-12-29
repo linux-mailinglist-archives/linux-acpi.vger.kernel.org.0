@@ -2,77 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39CA2481156
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Dec 2021 10:41:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DA8A481522
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 Dec 2021 17:38:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235118AbhL2JlN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Dec 2021 04:41:13 -0500
-Received: from mailgw.kylinos.cn ([123.150.8.42]:48075 "EHLO nksmu.kylinos.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S235116AbhL2JlM (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 29 Dec 2021 04:41:12 -0500
-X-UUID: 89a522aa61814586b5a8a5a2cfb8b7dd-20211229
-X-CPASD-INFO: 1cea0e763c304cf6a9061f90561160c4@erOfgV2XZWZfg3V8g6axcIFqYGZhkll
-        _d3BRYmRgj1SVhH5xTWJsXVKBfG5QZWNdYVN_eGpQYl9gZFB5i3-XblBhXoZgUZB3gKWfgWGTZw==
-X-CPASD-FEATURE: 0.0
-X-CLOUD-ID: 1cea0e763c304cf6a9061f90561160c4
-X-CPASD-SUMMARY: SIP:-1,APTIP:-2.0,KEY:0.0,FROMBLOCK:1,EXT:0.0,OB:1.0,URL:-5,T
-        VAL:198.0,ESV:0.0,ECOM:-5.0,ML:0.0,FD:0.0,CUTS:113.0,IP:-2.0,MAL:0.0,ATTNUM:0
-        .0,PHF:-5.0,PHC:-5.0,SPF:4.0,EDMS:-3,IPLABEL:-2.0,FROMTO:0,AD:0,FFOB:1.0,CFOB
-        :1.0,SPC:0.0,SIG:-5,AUF:70,DUF:28551,ACD:148,DCD:250,SL:0,AG:0,CFC:0.765,CFSR
-        :0.057,UAT:0,RAF:0,VERSION:2.3.4
-X-CPASD-ID: 89a522aa61814586b5a8a5a2cfb8b7dd-20211229
-X-CPASD-BLOCK: 1000
-X-CPASD-STAGE: 1, 1
-X-UUID: 89a522aa61814586b5a8a5a2cfb8b7dd-20211229
-X-User: shenzijun@kylinos.cn
-Received: from localhost.localdomain.localdomain [(172.17.127.14)] by nksmu.kylinos.cn
-        (envelope-from <shenzijun@kylinos.cn>)
-        (Generic MTA)
-        with ESMTP id 1016694055; Wed, 29 Dec 2021 17:53:36 +0800
-From:   shenzijun <shenzijun@kylinos.cn>
-To:     robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, devel@acpica.org,
-        linux-kernel@vger.kernel.org, jinzi120021@sina.com
-Subject: [PATCH] ACPICA: DEBUGGER: Add return value check to acpi_db_walk_for_fields()
-Date:   Thu, 30 Dec 2021 01:40:58 +0800
-Message-Id: <20211229174058.11350-1-shenzijun@kylinos.cn>
-X-Mailer: git-send-email 2.31.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S240809AbhL2Qiy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Dec 2021 11:38:54 -0500
+Received: from sibelius.xs4all.nl ([83.163.83.176]:50849 "EHLO
+        sibelius.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240794AbhL2Qiy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Dec 2021 11:38:54 -0500
+Received: from localhost (bloch.sibelius.xs4all.nl [local])
+        by bloch.sibelius.xs4all.nl (OpenSMTPD) with ESMTPA id 7e0a267d;
+        Wed, 29 Dec 2021 17:38:51 +0100 (CET)
+Date:   Wed, 29 Dec 2021 17:38:51 +0100 (CET)
+From:   Mark Kettenis <mark.kettenis@xs4all.nl>
+To:     Hector Martin <marcan@marcan.st>
+Cc:     robh@kernel.org, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, rafael@kernel.org, lenb@kernel.org,
+        aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
+        wright.feng@infineon.com, sven@svenpeter.dev, alyssa@rosenzweig.io,
+        kettenis@openbsd.org, zajec5@gmail.com,
+        pieter-paul.giesberts@broadcom.com, linus.walleij@linaro.org,
+        hdegoede@redhat.com, linville@tuxdriver.com,
+        sandals@crustytoothpaste.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+In-Reply-To: <1e5e88a1-5457-2211-dc08-fe98415ae21b@marcan.st> (message from
+        Hector Martin on Tue, 28 Dec 2021 02:23:02 +0900)
+Subject: Re: [PATCH 01/34] dt-bindings: net: bcm4329-fmac: Add Apple
+ properties & chips
+References: <20211226153624.162281-1-marcan@marcan.st>
+ <20211226153624.162281-2-marcan@marcan.st>
+ <YcnrjySZ9mPbkidZ@robh.at.kernel.org> <1e5e88a1-5457-2211-dc08-fe98415ae21b@marcan.st>
+Message-ID: <d3cb7aff430324ca@bloch.sibelius.xs4all.nl>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Zijun Shen <shenzijun@kylinos.cn>
+> From: Hector Martin <marcan@marcan.st>
+> Date: Tue, 28 Dec 2021 02:23:02 +0900
+> 
+> On 28/12/2021 01.36, Rob Herring wrote:
+> > On Mon, Dec 27, 2021 at 12:35:51AM +0900, Hector Martin wrote:
+> >> +  brcm,cal-blob:
+> >> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> >> +    description: A per-device calibration blob for the Wi-Fi radio. This
+> >> +      should be filled in by the bootloader from platform configuration
+> >> +      data, if necessary, and will be uploaded to the device if present.
+> >> +
+> >> +  apple,module-instance:
+> >> +    $ref: /schemas/types.yaml#/definitions/string
+> >> +    description: Module codename used to identify a specific board on
+> >> +      Apple platforms. This is used to build the firmware filenames, to allow
+> >> +      different platforms to have different firmware and/or NVRAM config.
+> >> +
+> >> +  apple,antenna-sku:
+> >> +    $def: /schemas/types.yaml#/definitions/string
+> >> +    description: Antenna SKU used to identify a specific antenna configuration
+> >> +      on Apple platforms. This is use to build firmware filenames, to allow
+> >> +      platforms with different antenna configs to have different firmware and/or
+> >> +      NVRAM. This would normally be filled in by the bootloader from platform
+> >> +      configuration data.
+> > 
+> > Is there a known set of strings that can be defined?
+> 
+> For apple,module-instance there is, though it will grow with every new
+> machine. If you're happy with me pushing updates to this through
+> asahi-soc I can keep it maintained as we add DTs and compatibles there.
+> 
+> I'm curious whether you prefer this approach or something like
+> brcm,board-name instead. Right now we do:
+> 
+> apple,module-instance = "honshu"
+> 
+> That gets converted to board_name="apple,honshu" in the code, which is
+> what the firmwares are named after (plus extra info later appended, if
+> the rest of the Apple data is available).
+> 
+> But we could also do:
+> 
+> brcm,board-name = "apple,honshu"
+> 
+> The latter would be more generically useful for other platforms, since
+> it would allow e.g. having DTs for different boards that use the same
+> WiFi module/subsystem and thus a compatible NVRAM fw file alias to the
+> same file name (right now this is done with symlinks in /lib/firmware,
+> one for each equivalent board). For non-Apple platforms (i.e. if
+> antenna-sku and/or the OTP aren't available to do the funky Apple
+> firmware selection), this just ends up replacing what would normally be
+> the OF root node compatible in the firmware filename.
+> 
+> E.g. right now we have:
+> 
+> brcmfmac43430-sdio.AP6212.txt
+> brcmfmac43430-sdio.raspberrypi,3-model-b.txt
+> brcmfmac43430-sdio.raspberrypi,model-zero-w.txt -> brcmfmac43430-sdio.raspberrypi,3-model-b.txt
+> brcmfmac43430-sdio.sinovoip,bpi-m2-plus.txt -> brcmfmac43430-sdio.AP6212.txt
+> brcmfmac43430-sdio.sinovoip,bpi-m2-ultra.txt -> brcmfmac43430-sdio.AP6212.txt
+> brcmfmac43430-sdio.sinovoip,bpi-m2-zero.txt -> brcmfmac43430-sdio.AP6212.txt
+> brcmfmac43430-sdio.sinovoip,bpi-m3.txt -> brcmfmac43430-sdio.AP6212.txt
+> 
+> And this could allow the sinovoip.* DTs to say:
+> 	brcm,board-name = "AP6212";
+> 
+> And the rPi zero one:
+> 	brcm,board-name = "raspberrypi,3-model-b";
+> 
+> And avoid the symlinks.
+> 
+> The antenna-sku thing is specific to the Apple firmware selection
+> process and doesn't make sense as a more generic property.
+> 
+> antenna-sku right now always seems to be one of "ID", "X0", "X2", "X3",
+> though that could presumably change in the future. I can add this to the
+> binding if you want, though since this will be filled in by the
+> bootloader from platform data we wouldn't be validating it anyway. Not
+> sure if it's worth it.
 
-The function acpi_db_walk_for_fields frees buffer.pointer by the
-first ACPI_FREE. And then uses the second ACPI_FREE to free
-buffer.pointer which may assigns again in acpi_evaluate_object.
-It's necessary to make sure that buffer.pointer get a block of
-memory in acpi_evaluate_object and acpi_evaluate_object return 0.
+Actually what Apple does here makes quite a bit of sense.  Typically
+WiFi chips are integrated with some analog components into a shielded
+module.  The AP6212 mentioned above is an example of such a module.  I
+suspect that the module defines some of the characteristics encoded in
+the "nvmram" files, but certainly not all because the connected
+antenna will also affect how the thing behaves.  Of course many SBCs
+come without an antenna so the actual antenna depends on whatever the
+user connects to the board.  So using a module-specific "nvram" file
+is probably the best one can do here.  So I think if you want to have
+a generic module name property, it should be called "brcm,module-name"
+instead of "brcm,board-name".  However...
 
-Signed-off-by: Zijun Shen <shenzijun@kylinos.cn>
----
- drivers/acpi/acpica/dbnames.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> > There's also the somewhat standard 'firmware-name' property that
+> > serves similar purpose, but if there's multiple files, then I guess
+> > this approach is fine.
+> 
+> Yeah, and the firmware name is constructed using non-DT information too
+> (and we have several attempted filenames times several firmware types),
+> so it wouldn't be complete.
 
-diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.c
-index 3615e1a6efd8..7a2d980cb2b8 100644
---- a/drivers/acpi/acpica/dbnames.c
-+++ b/drivers/acpi/acpica/dbnames.c
-@@ -550,7 +550,10 @@ acpi_db_walk_for_fields(acpi_handle obj_handle,
- 	ACPI_FREE(buffer.pointer);
- 
- 	buffer.length = ACPI_ALLOCATE_LOCAL_BUFFER;
--	acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
-+	status = acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
-+	if (ACPI_FAILURE(status)) {
-+		return (AE_OK);
-+	}
- 
- 	/*
- 	 * Since this is a field unit, surround the output in braces
--- 
-2.31.1
-
+...if the way the firmware name is constructed remains Apple-specific
+because of this non-DT information, keeping the "apple,xxx" properties
+has the benefit of signalling that firmware names constructed this way
+are desired.  Or rather, their absence can signal that the
+Apple-specific code in the driver should be skipped.
