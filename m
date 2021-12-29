@@ -2,152 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E626348152D
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 Dec 2021 17:42:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F1A5481779
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Dec 2021 00:14:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240858AbhL2QmU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 29 Dec 2021 11:42:20 -0500
-Received: from sibelius.xs4all.nl ([83.163.83.176]:50403 "EHLO
-        sibelius.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234322AbhL2QmU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 29 Dec 2021 11:42:20 -0500
-Received: from localhost (bloch.sibelius.xs4all.nl [local])
-        by bloch.sibelius.xs4all.nl (OpenSMTPD) with ESMTPA id 079f839a;
-        Wed, 29 Dec 2021 17:42:17 +0100 (CET)
-Date:   Wed, 29 Dec 2021 17:42:17 +0100 (CET)
-From:   Mark Kettenis <mark.kettenis@xs4all.nl>
-To:     Hector Martin <marcan@marcan.st>
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, kuba@kernel.org,
-        robh+dt@kernel.org, rafael@kernel.org, lenb@kernel.org,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
-        wright.feng@infineon.com, chung-hsien.hsu@infineon.com,
-        marcan@marcan.st, sven@svenpeter.dev, alyssa@rosenzweig.io,
-        kettenis@openbsd.org, zajec5@gmail.com,
-        pieter-paul.giesberts@broadcom.com, linus.walleij@linaro.org,
-        hdegoede@redhat.com, linville@tuxdriver.com, dekim@broadcom.com,
-        sandals@crustytoothpaste.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-In-Reply-To: <20211226153624.162281-2-marcan@marcan.st> (message from Hector
-        Martin on Mon, 27 Dec 2021 00:35:51 +0900)
-Subject: Re: [PATCH 01/34] dt-bindings: net: bcm4329-fmac: Add Apple properties & chips
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-2-marcan@marcan.st>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
+        id S232866AbhL2XOm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 29 Dec 2021 18:14:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:25613 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232844AbhL2XOl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 29 Dec 2021 18:14:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1640819680;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=w3GL8tFlo58OCqQkXwG1ZEQDk8vRPPWSObGz0xUB/fE=;
+        b=Y/zmJATr49M2WlX5FwvZdaoMolSvQOCJoKA6hh47Of6hOoWCIU37TNlJNB8/XpelUPl/MP
+        ucWmFTbfh/RYHnT06X4cPG3/xwugp5BT3APxcdMEggrbL+MdVmbZ+nwpqgkVuUUpW3foQT
+        9VDDMlRdU4IB4XgSmpvNOphdMxPAmTA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-643-Xsg4AYuHN-6SZqoRUK0KrQ-1; Wed, 29 Dec 2021 18:14:37 -0500
+X-MC-Unique: Xsg4AYuHN-6SZqoRUK0KrQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4EBB31023F4D;
+        Wed, 29 Dec 2021 23:14:35 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.192.20])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3EC311037F5B;
+        Wed, 29 Dec 2021 23:14:32 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Rob Herring <robh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-i2c@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
+        linux-serial@vger.kernel.org
+Subject: [PATCH 00/12] ACPI / pdx86: Add support for x86 Android tablets with broken DSDTs
+Date:   Thu, 30 Dec 2021 00:14:19 +0100
+Message-Id: <20211229231431.437982-1-hdegoede@redhat.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Message-ID: <d3cb7b3782b16029@bloch.sibelius.xs4all.nl>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> From: Hector Martin <marcan@marcan.st>
-> Cc: Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
->         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
->         Mark Kettenis <kettenis@openbsd.org>,
->         Rafał Miłecki <zajec5@gmail.com>,
->         Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
->         Linus Walleij <linus.walleij@linaro.org>,
->         Hans de Goede <hdegoede@redhat.com>,
->         "John W. Linville" <linville@tuxdriver.com>,
->         "Daniel (Deognyoun) Kim" <dekim@broadcom.com>,
->         "brian m. carlson" <sandals@crustytoothpaste.net>,
->         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
->         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
->         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
->         SHA-cyfmac-dev-list@infineon.com
-> Date: Mon, 27 Dec 2021 00:35:51 +0900
-> 
-> This binding is currently used for SDIO devices, but these chips are
-> also used as PCIe devices on DT platforms and may be represented in the
-> DT. Re-use the existing binding and add chip compatibles used by Apple
-> T2 and M1 platforms (the T2 ones are not known to be used in DT
-> platforms, but we might as well document them).
-> 
-> Then, add properties required for firmware selection and calibration on
-> M1 machines.
-> 
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
->  .../net/wireless/brcm,bcm4329-fmac.yaml       | 32 +++++++++++++++++--
->  1 file changed, 29 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> index c11f23b20c4c..2530ff3e7b90 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> @@ -4,7 +4,7 @@
->  $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-fmac.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
->  
-> -title: Broadcom BCM4329 family fullmac wireless SDIO devices
-> +title: Broadcom BCM4329 family fullmac wireless SDIO/PCIE devices
->  
->  maintainers:
->    - Arend van Spriel <arend@broadcom.com>
-> @@ -36,16 +36,22 @@ properties:
->                - brcm,bcm43455-fmac
->                - brcm,bcm43456-fmac
->                - brcm,bcm4354-fmac
-> +              - brcm,bcm4355c1-fmac
->                - brcm,bcm4356-fmac
->                - brcm,bcm4359-fmac
-> +              - brcm,bcm4364b2-fmac
-> +              - brcm,bcm4364b3-fmac
-> +              - brcm,bcm4377b3-fmac
-> +              - brcm,bcm4378b1-fmac
-> +              - brcm,bcm4387c2-fmac
->                - cypress,cyw4373-fmac
->                - cypress,cyw43012-fmac
->            - const: brcm,bcm4329-fmac
->        - const: brcm,bcm4329-fmac
+Hi All,
 
-I suppose this helps with validation of device trees.  However, nodes
-for PCI devices are not supposed to have a "compatible" property as
-the PCI vendor and device IDs are supposed to be used to identify a
-device.
+As a small(ish) hoppy project over the holidays I've been looking into
+getting some (somewhat older) x86 tablets which ship with Android as the
+only OS on their factory image working with the mainline kernel.
 
-That does raise the question how a schema for additional properties
-for PCI device nodes is supposed to be defined...
+These typically have pretty broken DSDTs since the Android image kernel
+just has everything hardcoded.
 
->    reg:
-> -    description: SDIO function number for the device, for most cases
-> -      this will be 1.
-> +    description: SDIO function number for the device (for most cases
-> +      this will be 1) or PCI device identifier.
->  
->    interrupts:
->      maxItems: 1
-> @@ -75,6 +81,26 @@ properties:
->      items:
->        pattern: '^[A-Z][A-Z]-[A-Z][0-9A-Z]-[0-9]+$'
->  
-> +  brcm,cal-blob:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    description: A per-device calibration blob for the Wi-Fi radio. This
-> +      should be filled in by the bootloader from platform configuration
-> +      data, if necessary, and will be uploaded to the device if present.
-> +
-> +  apple,module-instance:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: Module codename used to identify a specific board on
-> +      Apple platforms. This is used to build the firmware filenames, to allow
-> +      different platforms to have different firmware and/or NVRAM config.
-> +
-> +  apple,antenna-sku:
-> +    $def: /schemas/types.yaml#/definitions/string
-> +    description: Antenna SKU used to identify a specific antenna configuration
-> +      on Apple platforms. This is use to build firmware filenames, to allow
-> +      platforms with different antenna configs to have different firmware and/or
-> +      NVRAM. This would normally be filled in by the bootloader from platform
-> +      configuration data.
-> +
->  required:
->    - compatible
->    - reg
-> -- 
-> 2.33.0
-> 
-> 
+This patch-series makes most things on 3 of these tablets work with the
+mainline kernel and lays the groundwork for adding support for similar
+tablets.
+
+Since the ACPI tables on these devices clearly are buggy this series is
+written so as to add minimal changes to the ACPI core code, leaving all
+of the heavy lifting to the recently introduced (in linux-next)
+drivers/platform/x86/x86-android-tablets.c module, which when built as
+a module only autoloads on affected devices based on DMI matching.
+
+And when this module is disabled the added acpi_quirk_skip_*_enumeration()
+helpers are replaced by inline stubs and even the minimally added core
+code will be optimized away.
+
+The ACPI core changes are in patches 1-3 of this series. Since the
+i2c and serdev ACPI enumeration changes are very small and depend on
+patch 1, I believe it would be best for patches 1-3 to all be merged
+through Rafael's ACPI tree.
+
+Greg and Wolfram, may we have your acks for this please?
+
+I will take care of merging the rest of the series through the pdx86
+tree (these 2 parts of this series can be merged independenly without
+issues).
+
+Regards,
+
+Hans
+
+
+Hans de Goede (12):
+  ACPI / x86: Add acpi_quirk_skip_[i2c_client|serdev]_enumeration()
+    helpers
+  i2c: acpi: Do not instantiate I2C-clients on boards with known bogus
+    DSDT entries
+  serdev: Do not instantiate serdevs on boards with known bogus DSDT
+    entries
+  platform/x86: x86-android-tablets: Don't return -EPROBE_DEFER from a
+    non probe() function
+  platform/x86: x86-android-tablets: Add support for PMIC interrupts
+  platform/x86: x86-android-tablets: Add support for instantiating
+    platform-devs
+  platform/x86: x86-android-tablets: Add support for instantiating
+    serdevs
+  platform/x86: x86-android-tablets: Add support for registering GPIO
+    lookup tables
+  platform/x86: x86-android-tablets: Add support for preloading modules
+  platform/x86: x86-android-tablets: Add Asus TF103C data
+  platform/x86: x86-android-tablets: Add Asus MeMO Pad 7 ME176C data
+  platform/x86: x86-android-tablets: Add TM800A550L data
+
+ drivers/acpi/x86/utils.c                   |  96 ++++
+ drivers/i2c/i2c-core-acpi.c                |  17 +
+ drivers/platform/x86/Kconfig               |   2 +-
+ drivers/platform/x86/x86-android-tablets.c | 562 ++++++++++++++++++++-
+ drivers/tty/serdev/core.c                  |  14 +
+ include/acpi/acpi_bus.h                    |  16 +
+ 6 files changed, 698 insertions(+), 9 deletions(-)
+
+-- 
+2.33.1
+
