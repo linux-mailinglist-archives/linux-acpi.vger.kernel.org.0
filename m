@@ -2,257 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FEEC481E45
-	for <lists+linux-acpi@lfdr.de>; Thu, 30 Dec 2021 17:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7396481E54
+	for <lists+linux-acpi@lfdr.de>; Thu, 30 Dec 2021 17:47:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240352AbhL3Qjj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 30 Dec 2021 11:39:39 -0500
-Received: from mail-qk1-f171.google.com ([209.85.222.171]:39847 "EHLO
-        mail-qk1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240245AbhL3Qj1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Dec 2021 11:39:27 -0500
-Received: by mail-qk1-f171.google.com with SMTP id 69so23116065qkd.6;
-        Thu, 30 Dec 2021 08:39:27 -0800 (PST)
+        id S240315AbhL3Qri (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 30 Dec 2021 11:47:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41814 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240031AbhL3Qri (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 30 Dec 2021 11:47:38 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13B23C061574
+        for <linux-acpi@vger.kernel.org>; Thu, 30 Dec 2021 08:47:38 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id v11so51527366wrw.10
+        for <linux-acpi@vger.kernel.org>; Thu, 30 Dec 2021 08:47:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=colorfullife-com.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to;
+        bh=bmqMOqVCXRY2ZiAoe8nclv9yeJzG1mj+52WS9uZDouM=;
+        b=hpfzoo9MYf5/4mVWVusvXiVXUzuzni5tTTUjSwSkN5bzmtevYQS3OLh3GCxS/SaJD0
+         AV6+zMkzi5nSuqnhZ8jJ+5FI6u1ZD/2rHKblOGIsy4MuN7pdbDJdRm36ivjvr5AAvgih
+         kOSuzyC/psE6qhXRAO3AwlgZ/9N01PbhubWX/r/DuNHlX5CQTsKnfRlBOOYgGj9i9+bW
+         HtA9VDOq7PYqz8oS+AnlMbqhcvgPRvVeOwwg42Y2rrI/CVw6mR62qZMlHcMkS5KZsUH6
+         tvQg170qLEmwXz0p2rrDHZI3P6BKL2llkfJNM5+TVWdpYKI0KaxgpS/JHH7uzA8mMQQn
+         +u5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1bm7jaDM/1r+5Yl5UxNXTHdA2HASuhgHh1K8xe2yBSE=;
-        b=NqyQf/rnhuqkGDJ74AeNZkt49P0VUJExuqK7tYL6nUGFIKdBorbt9DiEsJTcrl75Xa
-         8IW2EfxlCdO2KA7OvdZppVekR56IZvi/6eK2RGgB3fYGcdeKRxrids/7CcetygmRF7zg
-         xzlCPGkSpZJi04v7YE+DMf1A7dSxgvlkQ3/Do004zoMtou5Dd/03GtzdDinsrXVoAlx/
-         BIoZXL5aX+T1ll0Jlb9J4qjJCYHEFNYDcvBrrDzM0AvfGRH64f+KdSSGA/NPwuzMwaFL
-         Ln9izzT7RV73DIDhc0bNnv8tyhL2GzCKxM3RQmPU0MU2qb+GCvlw2gxa3ZNhqfbVSqMk
-         PBfQ==
-X-Gm-Message-State: AOAM530QDN/1bxzsHHtRZYf+KQzfRrpZF7iP0M+/tshAtb/d95QtZIi3
-        CjJAm/eY2gbddyC91kgUehFYshfTvQzhl7VrbtdvSMPk
-X-Google-Smtp-Source: ABdhPJzo34GPmk3pOAgVa7wfeCxCIRR3GX8mHq4AzQd7Rd+nb3Gthj8t3a04HsfebZJFnetKP6EMXz4cjXxDO0hcKIg=
-X-Received: by 2002:a05:620a:4721:: with SMTP id bs33mr22880881qkb.8.1640882366655;
- Thu, 30 Dec 2021 08:39:26 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to;
+        bh=bmqMOqVCXRY2ZiAoe8nclv9yeJzG1mj+52WS9uZDouM=;
+        b=EMqMNArJ8vtLL8nJGQh51rIcmB9vzUpeZQ3dse9DpdlLtazyR9KECamolr7bLWdB6P
+         wcx7bFF+r8PdK6m/GcqsuuZmslqFeVVEep9tSCAQm/5ZRyHk49Fr5ze4f0kMIl4Q1nyz
+         uUej8ZUBm6iNWeZfv968IN+KsoJ/qNaGgbn/sSAKzW3aIyFBPSyFJVRD6RvAjfISkcWx
+         r5JwJlJCY0GNszPAEEWPp6jws3xXy7zvlckMqXTaPgn91cxOBDcq7GmVb9RC5eWbw2s9
+         RXiSNm78knOAIKHZwEEN/3J1IZxpc25kdVQQ+Uryu5oYYIHLtKrXm3OGFdZv6vI8EhRU
+         XiMg==
+X-Gm-Message-State: AOAM532RT8B3CIBn/kxhM76YtRE647+1rhFQIBRIoW06zRocCypHplB4
+        JE08mD2xXB+tNzUss4Q8inRAZQ==
+X-Google-Smtp-Source: ABdhPJy+OkrZ+oAW0pT+OxFrBfg5Ad23s6A3ubTVcWpH+rnx1T/qB/COWoY1W0xmu1EUV+HDhSOQeg==
+X-Received: by 2002:adf:f0c8:: with SMTP id x8mr26611959wro.404.1640882856610;
+        Thu, 30 Dec 2021 08:47:36 -0800 (PST)
+Received: from ?IPV6:2003:d9:9708:7100:bf30:d44a:7c:3046? (p200300d997087100bf30d44a007c3046.dip0.t-ipconnect.de. [2003:d9:9708:7100:bf30:d44a:7c:3046])
+        by smtp.googlemail.com with ESMTPSA id q14sm23641248wro.58.2021.12.30.08.47.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Dec 2021 08:47:36 -0800 (PST)
+Content-Type: multipart/mixed; boundary="------------g0r52Th8qxR28sMoy80DEOXz"
+Message-ID: <89ee198e-3c6b-db02-3eec-f2ae0e2b1971@colorfullife.com>
+Date:   Thu, 30 Dec 2021 17:47:32 +0100
 MIME-Version: 1.0
-References: <20211230141722.512395-1-hdegoede@redhat.com> <20211230141722.512395-2-hdegoede@redhat.com>
-In-Reply-To: <20211230141722.512395-2-hdegoede@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 30 Dec 2021 17:39:15 +0100
-Message-ID: <CAJZ5v0jw7jNq8FgMFcF9p=YYiuYj=RuV2MTPqGu62QoaG_O1MQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] ACPI / x86: Add acpi_quirk_skip_[i2c_client|serdev]_enumeration()
- helpers
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, Len Brown <lenb@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: drivers/acpi/processor_thermal.c: avoid cpufreq_get_policy()
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        linux-serial@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+        1vier1@web.de
+References: <20211222191411.13805-1-manfred@colorfullife.com>
+ <CAJZ5v0jJr=-O0UdXKj=nHtDv5oJwKWd_5het80QJZ5PBmzitPw@mail.gmail.com>
+From:   Manfred Spraul <manfred@colorfullife.com>
+In-Reply-To: <CAJZ5v0jJr=-O0UdXKj=nHtDv5oJwKWd_5het80QJZ5PBmzitPw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 30, 2021 at 3:17 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> x86 ACPI boards which ship with only Android as their factory image usually
-> declare a whole bunch of bogus I2C devs in their ACPI tables and sometimes
-> there are issues with serdev devices on these boards too, e.g. the resource
-> points to the wrong serdev_controller.
->
-> Instantiating I2C / serdev devs for these bogus devs causes various issues,
-> e.g. GPIO/IRQ resource conflicts because sometimes drivers do bind to them.
-> The Android x86 kernel fork shipped on these devices has some special code
-> to remove the bogus I2C clients (and serdevs are ignored completely).
->
-> Introduce acpi_quirk_skip_i2c_client_enumeration() and
-> acpi_quirk_skip_serdev_enumeration() helpers. Which can be used by the I2C/
-> serdev code to skip instantiating any I2C or serdev devs on broken boards.
->
-> These 2 helpers are added to drivers/acpi/x86/utils.c so that the DMI table
-> can be shared between the I2C and serdev code.
->
-> Note these boards typically do actually have I2C and serdev devices, just
-> different ones then the ones described in their DSDT. The devices which
-> are actually present are manually instantiated by the
-> drivers/platform/x86/x86-android-tablets.c kernel module.
->
-> The new helpers are only build if CONFIG_X86_ANDROID_TABLETS is enabled,
-> otherwise they are empty stubs to not unnecessarily grow the kernel size.
->
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v2:
-> - Move the i2c_acpi_known_good_ids[] list and checking into this patch /
->   into the new acpi_quirk_skip_i2c_client_enumeration() function
+This is a multi-part message in MIME format.
+--------------g0r52Th8qxR28sMoy80DEOXz
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi Rafael,
 
-or please let me know if you want me to take this series.
+On 12/30/21 17:23, Rafael J. Wysocki wrote:
+> On Wed, Dec 22, 2021 at 8:14 PM Manfred Spraul <manfred@colorfullife.com> wrote:
+>> cpu_has_cpufreq() stores a 'struct cpufreq_policy' on the stack.
+>> Unfortunately, with debugging options enabled, the structure can be
+>> larger than 1024 bytes, which causes a compiler warning/error.
+>>
+>> (actually observed: 1184 bytes).
+>>
+>> Therefore: Switch to cpufreq_cpu_get().
+>>
+>> Signed-off-by: Manfred Spraul <manfred@colorfullife.com>
+>>
+>> ---
+>>   drivers/acpi/processor_thermal.c | 15 ++++++++++++---
+>>   1 file changed, 12 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
+>> index a3d34e3f9f94..74210d63f62c 100644
+>> --- a/drivers/acpi/processor_thermal.c
+>> +++ b/drivers/acpi/processor_thermal.c
+>> @@ -53,10 +53,19 @@ static int phys_package_first_cpu(int cpu)
+>>
+>>   static int cpu_has_cpufreq(unsigned int cpu)
+>>   {
+>> -       struct cpufreq_policy policy;
+>> -       if (!acpi_processor_cpufreq_init || cpufreq_get_policy(&policy, cpu))
+>> +       struct cpufreq_policy *policy;
+>> +       int retval;
+> Why is this needed?
+You are right, this can be simplified. Updated patch is attached.
+>> +
+>> +       if (!acpi_processor_cpufreq_init)
+>>                  return 0;
+>> -       return 1;
+>> +
+>> +       retval = 0;
+>> +       policy = cpufreq_cpu_get(cpu);
+>> +       if (policy) {
+>> +               cpufreq_cpu_put(policy);
+> return 1;
+>
+>> +               retval = 1;
+>> +       }
+>> +       return retval;
+> return 0;
+>
+>>   }
+>>
+>>   static int cpufreq_get_max_state(unsigned int cpu)
+>> --
+>> 2.33.1
+>>
 
-Thanks!
+--------------g0r52Th8qxR28sMoy80DEOXz
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-drivers-acpi-processor_thermal.c-avoid-cpufreq_get_p.patch"
+Content-Disposition: attachment;
+ filename*0="0001-drivers-acpi-processor_thermal.c-avoid-cpufreq_get_p.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
 
-> ---
->  drivers/acpi/x86/utils.c | 111 +++++++++++++++++++++++++++++++++++++++
->  include/acpi/acpi_bus.h  |  16 ++++++
->  2 files changed, 127 insertions(+)
->
-> diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-> index a2ae1ac41319..375a0911f06d 100644
-> --- a/drivers/acpi/x86/utils.c
-> +++ b/drivers/acpi/x86/utils.c
-> @@ -10,6 +10,7 @@
->
->  #include <linux/acpi.h>
->  #include <linux/dmi.h>
-> +#include <linux/platform_device.h>
->  #include <asm/cpu_device_id.h>
->  #include <asm/intel-family.h>
->  #include "../internal.h"
-> @@ -208,3 +209,113 @@ bool force_storage_d3(void)
->  {
->         return x86_match_cpu(storage_d3_cpu_ids);
->  }
-> +
-> +#if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
-> +/*
-> + * x86 ACPI boards which ship with only Android as their factory image usually
-> + * declare a whole bunch of bogus I2C devices in their ACPI tables and sometimes
-> + * there are issues with serdev devices on these boards too, e.g. the resource
-> + * points to the wrong serdev_controller.
-> + *
-> + * Instantiating I2C / serdev devs for these bogus devs causes various issues,
-> + * e.g. GPIO/IRQ resource conflicts because sometimes drivers do bind to them.
-> + * The Android x86 kernel fork shipped on these devices has some special code
-> + * to remove the bogus I2C clients (and AFAICT serdevs are ignored completely).
-> + *
-> + * The acpi_quirk_skip_*_enumeration() functions below are used by the I2C or
-> + * serdev code to skip instantiating any I2C or serdev devs on broken boards.
-> + *
-> + * In case of I2C an exception is made for HIDs on the i2c_acpi_known_good_ids
-> + * list. These are known to always be correct (and in case of the audio-codecs
-> + * the drivers heavily rely on the codec being enumerated through ACPI).
-> + *
-> + * Note these boards typically do actually have I2C and serdev devices,
-> + * just different ones then the ones described in their DSDT. The devices
-> + * which are actually present are manually instantiated by the
-> + * drivers/platform/x86/x86-android-tablets.c kernel module.
-> + */
-> +#define ACPI_QUIRK_SKIP_I2C_CLIENTS                            BIT(0)
-> +#define ACPI_QUIRK_UART1_TTY_UART2_SKIP                                BIT(1)
-> +
-> +static const struct dmi_system_id acpi_skip_serial_bus_enumeration_ids[] = {
-> +       {
-> +               .matches = {
-> +                       DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> +                       DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ME176C"),
-> +               },
-> +               .driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-> +                                       ACPI_QUIRK_UART1_TTY_UART2_SKIP),
-> +       },
-> +       {
-> +               .matches = {
-> +                       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
-> +               },
-> +               .driver_data = (void *)ACPI_QUIRK_SKIP_I2C_CLIENTS,
-> +       },
-> +       {
-> +               /* Whitelabel (sold as various brands) TM800A550L */
-> +               .matches = {
-> +                       DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-> +                       DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
-> +                       /* Above strings are too generic, also match on BIOS version */
-> +                       DMI_MATCH(DMI_BIOS_VERSION, "ZY-8-BI-PX4S70VTR400-X423B-005-D"),
-> +               },
-> +               .driver_data = (void *)ACPI_QUIRK_SKIP_I2C_CLIENTS,
-> +       },
-> +       {}
-> +};
-> +
-> +static const struct acpi_device_id i2c_acpi_known_good_ids[] = {
-> +       { "10EC5640", 0 }, /* RealTek ALC5640 audio codec */
-> +       { "INT33F4", 0 },  /* X-Powers AXP288 PMIC */
-> +       { "INT33FD", 0 },  /* Intel Crystal Cove PMIC */
-> +       { "NPCE69A", 0 },  /* Asus Transformer keyboard dock */
-> +       {}
-> +};
-> +
-> +bool acpi_quirk_skip_i2c_client_enumeration(struct acpi_device *adev)
-> +{
-> +       const struct dmi_system_id *dmi_id;
-> +       long quirks;
-> +
-> +       dmi_id = dmi_first_match(acpi_skip_serial_bus_enumeration_ids);
-> +       if (!dmi_id)
-> +               return false;
-> +
-> +       quirks = (unsigned long)dmi_id->driver_data;
-> +       if (!(quirks & ACPI_QUIRK_SKIP_I2C_CLIENTS))
-> +               return false;
-> +
-> +       return acpi_match_device_ids(adev, i2c_acpi_known_good_ids);
-> +}
-> +EXPORT_SYMBOL_GPL(acpi_quirk_skip_i2c_client_enumeration);
-> +
-> +int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
-> +{
-> +       struct acpi_device *adev = ACPI_COMPANION(controller_parent);
-> +       const struct dmi_system_id *dmi_id;
-> +       long quirks = 0;
-> +
-> +       *skip = false;
-> +
-> +       /* !dev_is_platform() to not match on PNP enumerated debug UARTs */
-> +       if (!adev || !adev->pnp.unique_id || !dev_is_platform(controller_parent))
-> +               return 0;
-> +
-> +       dmi_id = dmi_first_match(acpi_skip_serial_bus_enumeration_ids);
-> +       if (dmi_id)
-> +               quirks = (unsigned long)dmi_id->driver_data;
-> +
-> +       if (quirks & ACPI_QUIRK_UART1_TTY_UART2_SKIP) {
-> +               if (!strcmp(adev->pnp.unique_id, "1"))
-> +                       return -ENODEV; /* Create tty cdev instead of serdev */
-> +
-> +               if (!strcmp(adev->pnp.unique_id, "2"))
-> +                       *skip = true;
-> +       }
-> +
-> +       return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(acpi_quirk_skip_serdev_enumeration);
-> +#endif
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 5895f6c7f6db..102b1cf433c7 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -624,6 +624,22 @@ static inline bool acpi_device_override_status(struct acpi_device *adev,
->  }
->  #endif
->
-> +#if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
-> +bool acpi_quirk_skip_i2c_client_enumeration(struct acpi_device *adev);
-> +int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip);
-> +#else
-> +static inline bool acpi_quirk_skip_i2c_client_enumeration(struct acpi_device *adev)
-> +{
-> +       return false;
-> +}
-> +static inline int
-> +acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
-> +{
-> +       *skip = false;
-> +       return 0;
-> +}
-> +#endif
-> +
->  #ifdef CONFIG_PM
->  void acpi_pm_wakeup_event(struct device *dev);
->  acpi_status acpi_add_pm_notifier(struct acpi_device *adev, struct device *dev,
-> --
-> 2.33.1
->
+RnJvbSBiNmE5ODg3NTFkOTM2OTIwMjZiNjI1MzFmMGI1NWE3ZmU2OWIxMDkyIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBNYW5mcmVkIFNwcmF1bCA8bWFuZnJlZEBjb2xvcmZ1
+bGxpZmUuY29tPgpEYXRlOiBXZWQsIDIyIERlYyAyMDIxIDE1OjA5OjMxICswMTAwClN1Ympl
+Y3Q6IFtQQVRDSF0gZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl90aGVybWFsLmM6IGF2b2lkIGNw
+dWZyZXFfZ2V0X3BvbGljeSgpCgpjcHVfaGFzX2NwdWZyZXEoKSBzdG9yZXMgYSAnc3RydWN0
+IGNwdWZyZXFfcG9saWN5JyBvbiB0aGUgc3RhY2suClVuZm9ydHVuYXRlbHksIHdpdGggZGVi
+dWdnaW5nIG9wdGlvbnMgZW5hYmxlZCwgdGhlIHN0cnVjdHVyZSBjYW4gYmUKbGFyZ2VyIHRo
+YW4gMTAyNCBieXRlcywgd2hpY2ggY2F1c2VzIGEgY29tcGlsZXIgd2FybmluZy9lcnJvci4K
+CihhY3R1YWxseSBvYnNlcnZlZDogMTE4NCBieXRlcykuCgpUaGVyZWZvcmU6IFN3aXRjaCB0
+byBjcHVmcmVxX2NwdV9nZXQoKS4KClNpZ25lZC1vZmYtYnk6IE1hbmZyZWQgU3ByYXVsIDxt
+YW5mcmVkQGNvbG9yZnVsbGlmZS5jb20+Ci0tLQogZHJpdmVycy9hY3BpL3Byb2Nlc3Nvcl90
+aGVybWFsLmMgfCAxMyArKysrKysrKysrLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTAgaW5zZXJ0
+aW9ucygrKSwgMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkvcHJv
+Y2Vzc29yX3RoZXJtYWwuYyBiL2RyaXZlcnMvYWNwaS9wcm9jZXNzb3JfdGhlcm1hbC5jCmlu
+ZGV4IGEzZDM0ZTNmOWY5NC4uZDhiMmRmY2Q1OWI1IDEwMDY0NAotLS0gYS9kcml2ZXJzL2Fj
+cGkvcHJvY2Vzc29yX3RoZXJtYWwuYworKysgYi9kcml2ZXJzL2FjcGkvcHJvY2Vzc29yX3Ro
+ZXJtYWwuYwpAQCAtNTMsMTAgKzUzLDE3IEBAIHN0YXRpYyBpbnQgcGh5c19wYWNrYWdlX2Zp
+cnN0X2NwdShpbnQgY3B1KQogCiBzdGF0aWMgaW50IGNwdV9oYXNfY3B1ZnJlcSh1bnNpZ25l
+ZCBpbnQgY3B1KQogewotCXN0cnVjdCBjcHVmcmVxX3BvbGljeSBwb2xpY3k7Ci0JaWYgKCFh
+Y3BpX3Byb2Nlc3Nvcl9jcHVmcmVxX2luaXQgfHwgY3B1ZnJlcV9nZXRfcG9saWN5KCZwb2xp
+Y3ksIGNwdSkpCisJc3RydWN0IGNwdWZyZXFfcG9saWN5ICpwb2xpY3k7CisKKwlpZiAoIWFj
+cGlfcHJvY2Vzc29yX2NwdWZyZXFfaW5pdCkKIAkJcmV0dXJuIDA7Ci0JcmV0dXJuIDE7CisK
+Kwlwb2xpY3kgPSBjcHVmcmVxX2NwdV9nZXQoY3B1KTsKKwlpZiAocG9saWN5KSB7CisJCWNw
+dWZyZXFfY3B1X3B1dChwb2xpY3kpOworCQlyZXR1cm4gMTsKKwl9CisJcmV0dXJuIDA7CiB9
+CiAKIHN0YXRpYyBpbnQgY3B1ZnJlcV9nZXRfbWF4X3N0YXRlKHVuc2lnbmVkIGludCBjcHUp
+Ci0tIAoyLjMzLjEKCg==
+--------------g0r52Th8qxR28sMoy80DEOXz--
+
