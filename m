@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E3D14829DA
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:01:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E08314829DD
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:02:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231663AbiABGBi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jan 2022 01:01:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41216 "EHLO
+        id S231682AbiABGCZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jan 2022 01:02:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230459AbiABGBi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:01:38 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972D3C06173E
-        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 22:01:37 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id g11so68589617lfu.2
-        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 22:01:37 -0800 (PST)
+        with ESMTP id S231678AbiABGCZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:02:25 -0500
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10563C061574
+        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 22:02:25 -0800 (PST)
+Received: by mail-lj1-x233.google.com with SMTP id k27so50972538ljc.4
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 22:02:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=++X+4IgLBv/570wWkxuv+d3gXkmfZziDfkCYW9h+SJs=;
-        b=knBJo7GhK2Jk/F9CsVp2X6EbhmF36fhL3Ch9zTgeJWn1Qy/LzVwy4JJyXgWT2b6f34
-         fbGzR2BPAh+MgNvWWWX/Iok78ZD1LQDE5V4M+uK/OuehMIb8hKWXE74T8o9RAmoScAi0
-         tou+kA0D69AKOyV8UPnna68NTE0to+xqItixTEtGW7vCsAulOkEoFC2XjvAKWGOY5dU4
-         1XLUs5ggyFU6Ub6rRRE1vTl4x9svgt0V0u1386If311tYtRluUwEqvR8sPVBKFPESCjn
-         fDvVaZZSqTcFA/Kf4a48EkM0VAms2sPyAh6oKCr+Mt9TORj1pdOrbuY5anyr9dKgV42L
-         WQGQ==
+        bh=Iv0K/OnJ4x9KfFHJ0rMuNgjAIOFFIZXtmp5GzA9pOGE=;
+        b=kbXmk9tr198z8pao9hHrPKf2/6KoiMTCjBYI5UoO7DR6FwK3vS+Y+F9/3Ze+BxLQvp
+         IfXT/GtwJfVx2IdtpbYiUqh460czkPgKS7BR+FuMiIZ0GHazwnFhrNzn6s71X0HRG0YS
+         YD0Cu0h0orwxGR5rbhIMnXonf/VBgml/3NcgoalHGzb23VlOsrUO0MNKCwpAyxAr0btU
+         SQhmKxoqUUVf252ZCFucZE1RDIFYSpqTAixbrZlc5Cy/Fl3bp5zJXlyHNj1u7DXAaH3w
+         VSH6H6Yl/P90PN2I/McvkhjudFH7wiLqxwV80iEyjv2SjFFj2ThhJ6DmPAOccSyu4Z7t
+         W6HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=++X+4IgLBv/570wWkxuv+d3gXkmfZziDfkCYW9h+SJs=;
-        b=WXQlVJKwsR3RExtlTURWPl4hOJMnXBYl1OKnP4JbnFYMVnS4yppMXL3heZWRyEI0qR
-         BVoLRW2UYagFqBV93JrAtHRRth7HSfCvbgkYygIMVYZCd/1f7RWUO+qVFh5Yd8WAz4Ww
-         P7+1F+MMKmUQnyCe7RwsrPpyrLDGkjTbCTdeKyKdKYEF/z2gOVhipicrRsrPj+kiwWrT
-         eQozLxhcw/csiXh6Q2HBHbIaQv8PjYB/MR3LkxL1CFh/czOxom0TxivczCAUXQnKtrym
-         9uYkCU31OF8ejHcGhDBs217+CqH1YSsrvACcHA9CXmkUxJ8yef2eMD3vHiqzGY1v9rBf
-         8CKA==
-X-Gm-Message-State: AOAM531aZxpPpODyteu2pKSRimff5QEhnfrupUJ9Fw/tDZcTEq5Syvq5
-        Gxz6Z4x86jv7s79xM8nuNNI8XJ7IgxgOJSBWON37Fw==
-X-Google-Smtp-Source: ABdhPJwo+jQV37pSOSt4QRaSzrw1bPUZLyT95BP9G5ewHKlFXkn162F6G0jabBIo80rL7nWLCT5J51HbvqCKRuYML6E=
-X-Received: by 2002:a05:6512:261f:: with SMTP id bt31mr20429087lfb.400.1641103295931;
- Sat, 01 Jan 2022 22:01:35 -0800 (PST)
+        bh=Iv0K/OnJ4x9KfFHJ0rMuNgjAIOFFIZXtmp5GzA9pOGE=;
+        b=mrxyJOeQ762GS5uF622AFurRwkTr+91bgLjt7l1u5UShJpimcgiFIUkOdTmWFDvJ5+
+         3P5bbXNLkikOnJykgxgnc9S4RS6Ies9FP8NJv5uKzp9leyVxjK3bqQwL7s696IAvsc12
+         T4P7GSRyHQgGQs3/xYyvcfsUGSCZkTJkv5P/JzWXpYEyIv2mLg8uLofsy916EocHwmWK
+         lq+PqNiE7OznPUVLZYMhpYmjtTz9ChrfKHXg5/s2PxZDjIsQOxou25uQzLH+jEmUPUpK
+         jnzTU4cYYyJobS27apah38HkpFbLvBqFasDuftmKESSMicg5GG2gMUInhkSwRkIXKxJu
+         Z8JA==
+X-Gm-Message-State: AOAM532HIjG7GEnmA8J1AKuIvxlIXyzA63gtJp+KRshZ11Hqije2gzdE
+        Sx04sqB/FFEhmeCtipDQoiDZws/toESheCIiUXgS7A==
+X-Google-Smtp-Source: ABdhPJxvaWFPeqjDxRtZ5GOTtcaUxjX5EavoTj/qbHCqCtmPBlJ1yLcjqFSF/5y/WvhdRwObdm85gUse1YdzqzD+y7I=
+X-Received: by 2002:a05:651c:623:: with SMTP id k35mr35551617lje.133.1641103343390;
+ Sat, 01 Jan 2022 22:02:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-20-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-20-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-21-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-21-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 07:01:23 +0100
-Message-ID: <CACRpkdYhs9_+5iwpB7nJT6xXJ0NBtjDd97_DAxvsMXXV_jg9cA@mail.gmail.com>
-Subject: Re: [PATCH 19/34] brcmfmac: pcie: Add IDs/properties for BCM4377
+Date:   Sun, 2 Jan 2022 07:02:11 +0100
+Message-ID: <CACRpkdY97WMk6KbQDT-_2=M7H7HrF5JDp3rPruc9oCXwm71k8w@mail.gmail.com>
+Subject: Re: [PATCH 20/34] brcmfmac: pcie: Perform correct BCM4364 firmware selection
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -83,12 +83,33 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Sun, Dec 26, 2021 at 4:39 PM Hector Martin <marcan@marcan.st> wrote:
 
-> This chip is present on at least these Apple T2 Macs:
+> This chip exists in two revisions (B2=r3 and B3=r4) on different
+> platforms, and was added without regard to doing proper firmware
+> selection or differentiating between them. Fix this to have proper
+> per-revision firmwares and support Apple NVRAM selection.
 >
-> * tahiti:  MacBook Pro 13" (2020, 2 TB3)
-> * formosa: MacBook Pro 13" (Touch/2019)
-> * fiji:    MacBook Air 13" (Scissor, 2020)
+> Revision B2 is present on at least these Apple T2 Macs:
 >
+> kauai:    MacBook Pro 15" (Touch/2018-2019)
+> maui:     MacBook Pro 13" (Touch/2018-2019)
+> lanai:    Mac mini (Late 2018)
+> ekans:    iMac Pro 27" (5K, Late 2017)
+>
+> And these non-T2 Macs:
+>
+> nihau:    iMac 27" (5K, 2019)
+>
+> Revision B3 is present on at least these Apple T2 Macs:
+>
+> bali:     MacBook Pro 16" (2019)
+> trinidad: MacBook Pro 13" (2020, 4 TB3)
+> borneo:   MacBook Pro 16" (2019, 5600M)
+> kahana:   Mac Pro (2019)
+> kahana:   Mac Pro (2019, Rack)
+> hanauma:  iMac 27" (5K, 2020)
+> kure:     iMac 27" (5K, 2020, 5700/XT)
+>
+> Fixes: 24f0bd136264 ("brcmfmac: add the BRCM 4364 found in MacBook Pro 15,2")
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
