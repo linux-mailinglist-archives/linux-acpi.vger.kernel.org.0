@@ -2,55 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF6F6482A09
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:15:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3EC7482A0E
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:16:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231822AbiABGPS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jan 2022 01:15:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44324 "EHLO
+        id S231839AbiABGQa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jan 2022 01:16:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231787AbiABGPR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:15:17 -0500
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FE73C061746
-        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 22:15:17 -0800 (PST)
-Received: by mail-lf1-x12a.google.com with SMTP id bp20so68543276lfb.6
-        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 22:15:17 -0800 (PST)
+        with ESMTP id S231834AbiABGQ3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:16:29 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 173EBC061746
+        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 22:16:29 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id p13so32235326lfh.13
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 22:16:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=NWErgVPSbPgPS0cot2KuzsoxPnk5t2poaH8xxZaNOfk=;
-        b=yDNjcq4g15xOFHBXQDmYyXN8EZZbyJUjHUrUfjBIRdjYkk4XhGgviRbuxzqnIhrwHI
-         IAixxYAZhkVclfTndwOLRDv2dL2UFC3tvno0yBgTm6Ci0hrA+ZdiWNzdktiKBRhGGkYC
-         E6EtUZpkyiqGeQxH0sK8EdwBlKyotxF5zzKj8h8sWvUTE2jqW5dOdb/cU1FUbkzE1IdF
-         EXtBDALv7qNHkEoUoNMY5LVZr8458hpNNGb+T3fSDdIxhFfzPOsMhhAX1BiB2CWnlNt5
-         SFU0ZapAjcGxfx6GhJHXVkO49P2FBilbj561vi4KXabYoyNo8z0uwThYrMZ7KFXNmePB
-         ioBg==
+        bh=7t9Pr6jwfjfvmwbkViT7Gt80229nnpeufsMcTvyLkrY=;
+        b=aWAbDq6TLpg9UXuIW4IVMEOEiUE/GNhSVGWq8iSmXMoCyl3DzT1/olWwlxg6RvtrI/
+         pBDTk6tbnc0wBFKnIgXkR80qRvTA4vqakhWSjl41C4uXBq5X2nXVr+F8ijaPujIs+Hxf
+         RMvCLBXPb52TppBGSrxid7/Ih3B4ayfFWFcYpewZa9mIGtNs4QIbSMXRoGLmC3vcKVNv
+         nZa631DV1Fv1erqUyWh6v/H7xKuwUCxc7E2YyQVWHqQvU+9BCW6DEtrP7W89lcZYzLmy
+         ajDHWku7NI+5+E93ksyq4rFxRAZNKDzavkOdv1PVguAiIHI/UgF7QsjoBSETJlA2/eI/
+         FmPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=NWErgVPSbPgPS0cot2KuzsoxPnk5t2poaH8xxZaNOfk=;
-        b=U9uuQxWHsvcJ/rpUaTK4DGNzSX57C7su4D3OiqD+IWmpbbUwqQ+11jrBA4F9y5vY7b
-         nZwn8PH9a81395DFVnFGE45B5wYzvzgT2fxZxcAzJuc6e56mPpYjisP6DY2+U/Rk+YQv
-         V7fMH/l0kVJ8ANRdNunc2MhjmsdZBoSqw+8+lg3mDJyOz3GFW3Pgk+mERRh0yMwaSJ2U
-         +8d6hinA9D6V2bdsW/yFQ83ohUSilBI9weMKQ8suOXWgZGPsZGGXkjq1IcyvhmVeTK+7
-         1W8zpBM+wZFN2r6+2hH05DFRetEh5LbCRsGGUx+PWMlSoZSuu8BTmE9N7R9fL9tKuObn
-         tLSQ==
-X-Gm-Message-State: AOAM530i0UJE28ODKhrf21/lKUZMkOhH/YBnqkHhszbyMO8/7LVEepYe
-        uYvwdxMxt32Gb6N4JeZ2mZxC7OmH7i/aWsgjLbzqAA==
-X-Google-Smtp-Source: ABdhPJxCopLUWq+4ft+NVnaS82/nys0iopBB2B2ZS6BEHXy52c/7c79JVhvvzJycZWI0WqHdXsCC4MjxOpz9+YpqrZs=
-X-Received: by 2002:a05:6512:750:: with SMTP id c16mr37650476lfs.622.1641104115576;
- Sat, 01 Jan 2022 22:15:15 -0800 (PST)
+        bh=7t9Pr6jwfjfvmwbkViT7Gt80229nnpeufsMcTvyLkrY=;
+        b=vkDjUJKRDLA5OcQKoxN8lUG4IVYaKxIlJpu1g2lA9EyT8GjRx56Z5qcebWzNynPpmR
+         C+qMulgMn4nHWCDDjAI3R8LDfaDHedj2T6jEnvuvrJkQVz+/sjlME/uRtKR7LbNw5nkR
+         Yi3ykQSxVyCV9NkA9fiU1ZfKV5P3qoGtmQOn2bB7F8baOl4w5A3Rw3uruGs+Wv04+dgt
+         ZpPJaabbyJWw5otGRPsPnmJWbubk53mGIzHNwXvvVUqM015LDMlS9eQt5aq06n7e3tay
+         E+Gf/Kq8MFDzEK4FWG/FJfMvHNRAX+X39ZEEjYo8weQ0QXwRatItvaExl48lWsv+83KG
+         ck5w==
+X-Gm-Message-State: AOAM5333H3PVZQyUT/77+CdOAHC5eWmcfgEM0Au7N7Z+1T6Yd32Cj5lc
+        QbE0LjtSlRjDTbyaFYfYPAHaWZV2aEolM1V+PvFkkQ==
+X-Google-Smtp-Source: ABdhPJz85XNekAyAFF4FYXbkslm7+HKbOb+zFhAEQIZ1/ehXrpVVgLTiVY/EyCJ8+Q9r6SqZ2SrR0iVbAthi380khuE=
+X-Received: by 2002:a05:6512:2303:: with SMTP id o3mr36815522lfu.362.1641104187407;
+ Sat, 01 Jan 2022 22:16:27 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-29-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-29-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-30-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-30-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 07:15:03 +0100
-Message-ID: <CACRpkdYGQkTEHFNtLB=gMV-jkPWiF8mjUVv_C_rTyd7bxrYcXA@mail.gmail.com>
-Subject: Re: [PATCH 28/34] brcmfmac: pcie: Replace brcmf_pcie_copy_mem_todev
- with memcpy_toio
+Date:   Sun, 2 Jan 2022 07:16:15 +0100
+Message-ID: <CACRpkdbSTN3u9=bCCCn0OYA9LtKLqbYUXjGDsoh-U=i7QBJfdA@mail.gmail.com>
+Subject: Re: [PATCH 29/34] brcmfmac: pcie: Read the console on init and shutdown
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -84,18 +83,11 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Sun, Dec 26, 2021 at 4:40 PM Hector Martin <marcan@marcan.st> wrote:
 
-> The alignment check was wrong (e.g. & 4 instead of & 3), and the logic
-> was also inefficient if the length was not a multiple of 4, since it
-> would needlessly fall back to copying the entire buffer bytewise.
+> This allows us to get console messages if the firmware crashed during
+> early init, or if an operation failed and we're about to shut down.
 >
-> We already have a perfectly good memcpy_toio function, so just call that
-> instead of rolling our own copy logic here. brcmf_pcie_init_ringbuffers
-> was already using it anyway.
->
-> Fixes: 9e37f045d5e7 ("brcmfmac: Adding PCIe bus layer support.")
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
-Excellent patch.
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
