@@ -2,102 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9AC148245C
-	for <lists+linux-acpi@lfdr.de>; Fri, 31 Dec 2021 15:40:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 600E9482953
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 06:32:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230209AbhLaOj6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 31 Dec 2021 09:39:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44732 "EHLO
+        id S230094AbiABFcZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jan 2022 00:32:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbhLaOj6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 31 Dec 2021 09:39:58 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B360C061574;
-        Fri, 31 Dec 2021 06:39:58 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D05A6617CA;
-        Fri, 31 Dec 2021 14:39:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DB0C36AEC;
-        Fri, 31 Dec 2021 14:39:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640961597;
-        bh=2W2cwR7BA+V3M91KMdo9uv7m6sBpz3dbJ6TOw8ZwOsA=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=LpTeI5wQiK+t9XWW6ufpzlYWGvsTw4AUlwbgInViIurwwMafKLp23FAprisyCSv9U
-         eoMY08kYN4K7IEkdcRQldz/YyC5xWYUc/4utxzIInEFn7U985MFiMbtJH7vyxsg3WY
-         Fb/Imbs69sQydoYq2vveay+TxlBx62f7IQA5oCtw+jNV4pQqw3d5O60WO0DXrA6+w/
-         WbVTdrRFloRlZkL40jIw4orqWi6z3ddIO/JENu3Nwvl4EkWtTnMo8A5qDaMeozrQhq
-         fhrdsIAs3OQ+Q2R6sVV1uOu9jF1FQt0eUxjzXkwqcO/1Luk1Bf28K8d2iXaSR4/7Bo
-         W/YpqxRWr82Yw==
-From:   Mark Brown <broonie@kernel.org>
-To:     Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>,
-        Takashi Iwai <tiwai@suse.com>,
-        Lucas Tanure <tanureal@opensource.cirrus.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-In-Reply-To: <20211217115708.882525-1-tanureal@opensource.cirrus.com>
-References: <20211217115708.882525-1-tanureal@opensource.cirrus.com>
-Subject: Re: (subset) [PATCH v6 00/10] Add support for CS35L41 in HDA systems
-Message-Id: <164096159451.2355590.17653987935012339046.b4-ty@kernel.org>
-Date:   Fri, 31 Dec 2021 14:39:54 +0000
+        with ESMTP id S229487AbiABFcZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 00:32:25 -0500
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03044C061574
+        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 21:32:25 -0800 (PST)
+Received: by mail-lj1-x22d.google.com with SMTP id h21so39044860ljh.3
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 21:32:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=eoiQ1KQCJ264ktaBoIMzabH4DC3BnHoyNUOH7R2xfGE=;
+        b=yYBSC5lysVvJJvnfgAikjlfcPvXtpBeSHCMXW02NeblK+R7M2cdUuXlPIQsC8hgj6S
+         m9MClDBjLME/csDB9yr+lu2tJAczUjiZQugxQKJKJ/Y85c0/CIZyIoPEUl5o83nLjsQd
+         yFYszFo2r81u/y51uN6O+HurpwmOo9M8TkZ4VgMSukjVAFnYKhDuS3QHNRSQ6xsYhBuU
+         X2cMVp6CObIuuli55848qIysWAP/7IrvkE4fhng5L0fYkpzLBfjbObzyYm21uv35RX2N
+         lmBWtfArOezp5xg7xGM6xXq9gv7w/3zSNrW+TqVYg/upO7oPZtc1kWklBnnTV0A7NqS3
+         h1Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eoiQ1KQCJ264ktaBoIMzabH4DC3BnHoyNUOH7R2xfGE=;
+        b=Fc9wVhRf8QEZot1TOmdo8U0T9aSgfDbJcbCv4PxU4lHLlC72MA4LI2Dw4WelEorCft
+         +QQKM3RNhpXYkuUOkh5rHlw/6EH8RnaFUC5bfh68ps99PgPn2B8jyHYqDj3DebbQUxyN
+         fygsMUJRmPD9V1JzpWXYBsL/j+j7AmSSk78EKBBuitQEyuPpQ0/7E9ucnKyceSwHFh/m
+         xDXOaiN6lKWX+AX7nzbHSOoQXFfoVTX5QsuJQzbaljtS1kft8aMY2fP8/qrRmITg+1Tp
+         EMj60ij2NmfEIKdPK9qIKmvBKKjpHl4g2+ZWIDsNczlpAxRIdAeqcLllHih5C+xBYuAZ
+         x6QQ==
+X-Gm-Message-State: AOAM531kj1cQI9GIIqk4FtEEAIXgvMTnKW5+JAj1RiucnYeIHjaYgIuB
+        P4f63KsarsTbMMkLxGPZWHfTYO+77Lj4dmeRksW5Iw==
+X-Google-Smtp-Source: ABdhPJw4xEaszeQin5r2Odu1gmvGU60LgLA3geDvlmTokl3LciZbSNZGYLPNPKmSyqjJHa3BrTln8FjKn/xFLZmC/AY=
+X-Received: by 2002:a2e:7c01:: with SMTP id x1mr33669767ljc.145.1641101543185;
+ Sat, 01 Jan 2022 21:32:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-4-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-4-marcan@marcan.st>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 2 Jan 2022 06:31:26 +0100
+Message-ID: <CACRpkdZc75XUJh7afPhcBNaVE63Ovby2HVBe+HObvURN8i84KQ@mail.gmail.com>
+Subject: Re: [PATCH 03/34] brcmfmac: firmware: Support having multiple alt paths
+To:     Hector Martin <marcan@marcan.st>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "Daniel (Deognyoun) Kim" <dekim@broadcom.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 17 Dec 2021 11:56:58 +0000, Lucas Tanure wrote:
-> Add support for laptops that have CS35L41 connected to an HDA
-> codec by I2S and direct I2C connection to the CPU.
-> 
-> Laptops that use CS35L41 and are SPI will be added in the future,
-> after the support for it is resolved at i2c-multi-instantiate driver.
-> i2c-multi-instantiate thread: https://lkml.org/lkml/2021/12/10/557
-> 
-> [...]
+On Sun, Dec 26, 2021 at 4:37 PM Hector Martin <marcan@marcan.st> wrote:
 
-Applied to
+> Apple platforms have firmware and config files identified with multiple
+> dimensions. We want to be able to find the most specific firmware
+> available for any given platform, progressively trying more general
+> firmwares.
+>
+> First, add support for having multiple alternate firmware paths.
+>
+> Signed-off-by: Hector Martin <marcan@marcan.st>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+This looks OK to me so FWIW:
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
-Thanks!
+Make sure Dmitry Osipenko gets to review this though, he has many
+valuable insights about how the FW is loaded and helped me out a
+lot when I patched this.
 
-[01/10] ASoC: cs35l41: Convert tables to shared source code
-        commit: a87d42227cf5614fe0040ddd1fe642c54298b42c
-[02/10] ASoC: cs35l41: Move cs35l41_otp_unpack to shared code
-        commit: fe120d4cb6f6cd03007239e7c578b8703fe6d336
-[03/10] ASoC: cs35l41: Move power initializations to reg_sequence
-        commit: 062ce0593315e22aac527389dd6dd4328c49f0fb
-[04/10] ASoC: cs35l41: Create shared function for errata patches
-        commit: 8b2278604b6de27329ec7ed82ca696c4751111b6
-[05/10] ASoC: cs35l41: Create shared function for setting channels
-        commit: 3bc3e3da657f17c14df8ae8fab58183407bd7521
-[06/10] ASoC: cs35l41: Create shared function for boost configuration
-        commit: e8e4fcc047c6e0c5411faeb8cc29aed2e5036a00
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Yours,
+Linus Walleij
