@@ -2,52 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C643482A49
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:38:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A5CE482A53
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:45:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231950AbiABGiS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jan 2022 01:38:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49564 "EHLO
+        id S232115AbiABGpe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jan 2022 01:45:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230374AbiABGiR (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:38:17 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 695EAC061574;
-        Sat,  1 Jan 2022 22:38:17 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id u22so51071452lju.7;
-        Sat, 01 Jan 2022 22:38:17 -0800 (PST)
+        with ESMTP id S230374AbiABGpe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:45:34 -0500
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD73EC061574;
+        Sat,  1 Jan 2022 22:45:33 -0800 (PST)
+Received: by mail-lf1-x129.google.com with SMTP id g26so68586310lfv.11;
+        Sat, 01 Jan 2022 22:45:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RY/U1mpEKxFZojyoZ97q8tWXTVzCIHhjBCHLYYMtIr8=;
-        b=nHsU7FKiC1V5YYqkluEY6hG4KFarKP2yzppwyAiIUjCKH4hfRxFWIPkkwtpVpBAWun
-         qviHdevED9XzS+i/3x9khk5Cs8Mtm7p6N4mdiOAGwkUTkAoN1xZlmU1VvYT3wGiKn3Ms
-         MfVs6LjuVO4ucTjgq3cF3NJA46bgiVZgTyW5M2ExUSbOVdQ/yD25oH5mCNxpr0eW18km
-         lX16cASexynWPol0RAQ9y6JRRK384Sjr0eeURq62k6buWgHIDj40traQnrPd3bn0Npej
-         DiMJCbkqkDRcswJSJS/Z/oqDS0ExkWOOPqToxroUBTbbOcs4TjnAm9NpAXC+ECVPj9bG
-         WjZg==
+        bh=yty7Sta3hpzZNIcplufgh0H88CRlJ0n+FdzdP67vzFo=;
+        b=js168AEYQcBxTfdJ1TUJXZWw12HLw9hLgPSCrzWoq1LYMv5sasn2BhZbjp5Ml1SwJz
+         18dlsdnm4fM+OdQLWXfc3RtVnsieAwEjBwJo3Pg8YbYeQZCrkyGs+UI1FzP2eERU4VKs
+         1CXx+gkwkAlbP9TLrDzrNcAglXGul9bVVMfNTcrF6bWPJm7ePEcVA7xpWNZ2bKl0/hrV
+         LGWuJD0U2PGSgTLvCo9VrxM8VY+/L7xUErM7NuK8DHc9Cn3bV+6LvXCFu1c9Rd6XZGNr
+         Cd7LIJAtbZMRg/A+q5mXztY/OMXCBGRSo/idypKLciGUyz4+1QjaWHhKWqgCoVtiiAzs
+         Qa/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=RY/U1mpEKxFZojyoZ97q8tWXTVzCIHhjBCHLYYMtIr8=;
-        b=eCSM/7YpN908ohBMmnFD5a8/XJw7yYM7PI0OuClZjGGEgRqp8zPlQaF4rbjsK7hxIk
-         1K/o0Cp0cD6AVQADxWd+2Pp+Prv8uVukY4NubxV6fq2qpQniylSpbnQ5NFNFIpfOXvwX
-         qX15SXIDxG2c+024PYVcLxVkHk3axSjbM+662xlfUqDgDn8sezDrHW7uNDxXdOk7YEXg
-         pSwxf/gFn6zcF+0SFFLXmTj1GzAJMfxXrSQzepxRKVb9C74CbsneC4b6RHI/0HxXt2TR
-         cqa1XKf8lKdkOCp4PV4RaNm0p3vNUkA1EALZ1186tEWtwNHcB0YvhzQT55HIPwO5Z6SD
-         c1vg==
-X-Gm-Message-State: AOAM531ZIbXN5cU5FmBrBcdpsc2+UVWNHjjdD2tj5VvjpSRr1vRRZekp
-        +the8XleZxd0ZuvJ4VDLIM4=
-X-Google-Smtp-Source: ABdhPJya1AJlz6j758QzPpJT+m/4CvnYx+/OXQX5TwjL0M+LEGylW6FcMTook3yFztb7fsQNkEY2jw==
-X-Received: by 2002:a05:651c:d5:: with SMTP id 21mr31546294ljr.433.1641105495746;
-        Sat, 01 Jan 2022 22:38:15 -0800 (PST)
+        bh=yty7Sta3hpzZNIcplufgh0H88CRlJ0n+FdzdP67vzFo=;
+        b=VPzhyOjvH9ywJ2APnRu62BuGk89khylH9b/CAsT84dh1GFyjFiipsXM+3m0Jj2e2YS
+         mhQKdI8dQWxK320Gkw3cV9RQAvDhxB+qSTXjCmi+HEU68X4hmD0rcZUXyI1vV+ni7e6t
+         UaTvl4nNYCjffjiva8vU9ma4opRiH1OVi2jYGnBTxosTSkjpFDkhgPMsfHxgsPJhw8qS
+         HkX/XG6dwesk/z5AL38TN7yYF3VB2EATY0wLFKyuNbh78quDqU/qz9FPsJhgp12TYSnY
+         nrTSqPbCrXcG2+LGx2xnCr19tenKbh783JeRwa202uHywjqs3ceCCmiklKeUBSZ+dkiU
+         /jHg==
+X-Gm-Message-State: AOAM532pGS4pMcyukrv5neXZTXRNAEEiaWlaRJR9n2L62frEB2c04ZHn
+        ZrpmeUSsGJvVZ8Ud8c5RT0s=
+X-Google-Smtp-Source: ABdhPJxJXE//HZ/SIC38dBVlNFzg+P1VU3bR0WokzjlaLYLg1VfZOWdcMABcYjoSzcMv96bd3RuixA==
+X-Received: by 2002:ac2:5507:: with SMTP id j7mr35496562lfk.635.1641105932136;
+        Sat, 01 Jan 2022 22:45:32 -0800 (PST)
 Received: from [192.168.2.145] (46-138-43-24.dynamic.spd-mgts.ru. [46.138.43.24])
-        by smtp.googlemail.com with ESMTPSA id p21sm2642428lfu.154.2022.01.01.22.38.14
+        by smtp.googlemail.com with ESMTPSA id v23sm967432lfg.289.2022.01.01.22.45.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Jan 2022 22:38:15 -0800 (PST)
+        Sat, 01 Jan 2022 22:45:31 -0800 (PST)
 Subject: Re: [PATCH 03/34] brcmfmac: firmware: Support having multiple alt
  paths
 To:     Hector Martin <marcan@marcan.st>,
@@ -80,8 +80,8 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
 References: <20211226153624.162281-1-marcan@marcan.st>
  <20211226153624.162281-4-marcan@marcan.st>
 From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <17b997d2-708e-4ed7-7e27-1c3e0cd5c428@gmail.com>
-Date:   Sun, 2 Jan 2022 09:38:13 +0300
+Message-ID: <8e99eb47-2bc1-7899-5829-96f2a515b2cb@gmail.com>
+Date:   Sun, 2 Jan 2022 09:45:30 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
@@ -94,73 +94,28 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 26.12.2021 18:35, Hector Martin пишет:
-> Apple platforms have firmware and config files identified with multiple
-> dimensions. We want to be able to find the most specific firmware
-> available for any given platform, progressively trying more general
-> firmwares.
-> 
-> First, add support for having multiple alternate firmware paths.
-> 
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
->  .../broadcom/brcm80211/brcmfmac/firmware.c    | 73 ++++++++++++++-----
->  1 file changed, 55 insertions(+), 18 deletions(-)
-
-...
 > -static char *brcm_alt_fw_path(const char *path, const char *board_type)
 > +static const char **brcm_alt_fw_paths(const char *path, const char *board_type)
-...
->  static int brcmf_fw_request_firmware(const struct firmware **fw,
->  				     struct brcmf_fw *fwctx)
 >  {
->  	struct brcmf_fw_item *cur = &fwctx->req->items[fwctx->curpos];
-> -	int ret;
-> +	int ret, i;
+>  	char alt_path[BRCMF_FW_NAME_LEN];
+> +	char **alt_paths;
+>  	char suffix[5];
 >  
->  	/* Files can be board-specific, first try a board-specific path */
->  	if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type) {
-> -		char *alt_path;
-> +		const char **alt_paths = brcm_alt_fw_paths(cur->path, fwctx);
+>  	strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
+> @@ -609,27 +612,46 @@ static char *brcm_alt_fw_path(const char *path, const char *board_type)
+>  	strlcat(alt_path, board_type, BRCMF_FW_NAME_LEN);
+>  	strlcat(alt_path, suffix, BRCMF_FW_NAME_LEN);
+>  
+> -	return kstrdup(alt_path, GFP_KERNEL);
+> +	alt_paths = kzalloc(sizeof(char *) * 2, GFP_KERNEL);
 
-The brcm_alt_fw_paths() takes "board_type" argument, while you're
-passing the "fwctx" to it. This patch doesn't compile.
+array_size()?
 
-If this code is changed by a further patch, then please use "git rebase
---exec" to compile-test all the patches.
+> +	alt_paths[0] = kstrdup(alt_path, GFP_KERNEL);
+> +
+> +	return (const char **)alt_paths;
 
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c: In function
-‘brcmf_fw_request_firmware’:
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:642:71:
-error: passing argument 2 of ‘brcm_alt_fw_paths’ from incompatible
-pointer type [-Werror=incompatible-pointer-types]
-  642 |                 const char **alt_paths =
-brcm_alt_fw_paths(cur->path, fwctx);
-      |
-      ^~~~~
-      |
-      |
-      |
-      struct brcmf_fw *
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:597:69:
-note: expected ‘const char *’ but argument is of type ‘struct brcmf_fw *’
-  597 | static const char **brcm_alt_fw_paths(const char *path, const
-char *board_type)
-      |
-~~~~~~~~~~~~^~~~~~~~~~
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c: In function
-‘brcmf_fw_get_firmwares’:
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:752:59:
-error: passing argument 2 of ‘brcm_alt_fw_paths’ from incompatible
-pointer type [-Werror=incompatible-pointer-types]
-  752 |         fwctx->alt_paths = brcm_alt_fw_paths(first->path, fwctx);
-      |                                                           ^~~~~
-      |                                                           |
-      |                                                           struct
-brcmf_fw *
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c:597:69:
-note: expected ‘const char *’ but argument is of type ‘struct brcmf_fw *’
-  597 | static const char **brcm_alt_fw_paths(const char *path, const
-char *board_type)
-      |
-~~~~~~~~~~~~^~~~~~~~~~
-cc1: some warnings being treated as errors
+Why this casting is needed?
+
+> +}
+
