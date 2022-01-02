@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D38F4829B9
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 06:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B892E4829C0
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 06:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231378AbiABFx2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jan 2022 00:53:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39330 "EHLO
+        id S231460AbiABFyH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jan 2022 00:54:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229883AbiABFx1 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 00:53:27 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09F2AC061574
-        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 21:53:27 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id x6so15630527lfa.5
-        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 21:53:26 -0800 (PST)
+        with ESMTP id S231488AbiABFyG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 00:54:06 -0500
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74360C061401
+        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 21:54:06 -0800 (PST)
+Received: by mail-lj1-x22a.google.com with SMTP id q8so35289738ljp.9
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 21:54:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=kN/N2rVxzZIMtOuMAHgQvn9VJQIKF/QJv0SmhaxabsE=;
-        b=aAO3Nsb+2goe0QtK+PU3kzXBJ+vF7zKe/y1uxGrsZkEtSQavHFyz9DJ730ecAAEPiX
-         0/9vG1Xj9qdCFJ7oyeTQ57wmKtRFtzc1kzecVEKn6A5+UhAGMB47NpBMK8jLCMv9Qwij
-         gp4V64XiQCtCyfHmDkQRxv88odYg4jfcyzWnGfkr7yLqz+tW+dtQgrJbQF1a0o3SzF2t
-         huMo+mJf0nWGzCrIBNTGUkQj7t3tttPK+jMDjPP6oubAXQM2lTYa2Y4Ut0On7Zj2ECvt
-         GHm9SW7oQFKWEYn+eotYRh4e4o8T9Y79pp5x/Ups/NKOXRB0A6ifdFA18LalhZalUuBt
-         kLAg==
+        bh=5EyGPGRrzaSpBH7dUGkqyF9/f5p7cVq7+HA/jLDDM8I=;
+        b=NNatE1smYg3/3sUUusjNfeQrxJfMermAT4Cr+qcdJB9VfFeSiT/RctY7FeEvuuY2QL
+         WtBAheXYk3l0zQstb37L7uXeyWycmJTXV1jEQeCypgyZkMS5atDR0NDpXspOV7Uyhbbz
+         hYIStWWr2kDbCZwX/MjNlKyb2jZNO5bCVahExgzESzpX7wOFam61Uk1+JOfIm5OcjPvk
+         mc5Kt6iRCEp67/Zo3UqYyUoNe/N+DpLXZSnDc3Zdf9oH2S50L8r28a0ycsEqszI9Sge1
+         swbTxRYIRa6ddQtuRe9q0ODrEIrSYqZ1vovoNnhRWvvnhSzp0bEaou45lJ4JBozMPnhF
+         fBOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=kN/N2rVxzZIMtOuMAHgQvn9VJQIKF/QJv0SmhaxabsE=;
-        b=zQ1UOK187m3nonixHTTpngsyP3yLDszpk4fp/iptnaQcrlBBrZPR0HeMjVYrPsNmCC
-         aSZ1JpIDQcOaNoA15ZKtOE+5P3gELI7EIiWd6CaX+LCZY0NWhOslmt9w5At5z+DseQ9v
-         N55axo4fKc+NCmo9RXLVqq+deK3tb+6yZ35VP5e8hbegxSCpnlD06Rok9IE7+SUhIXlu
-         2mUBP+0VFF2gajUyTxZOQQRpbuiE52uPnQWb5ZYHL1kBOIJqx4xSJVeVmuMuFs0z7Atv
-         JBXo9DEU5H5r0nwU9K6H7OIgBKar2cjVBriy8XaptaxSW4vvqu3FnX4nAJdueby9Z+/9
-         vslg==
-X-Gm-Message-State: AOAM532kRB1VnMRYqkml7Cdoibss5bnXV+0NI/roVFdOE0tH2DXCGKsD
-        DkH67P5XQ09dRlWuOzlLGJSe9FuDbJeIkMr5RrkQzg==
-X-Google-Smtp-Source: ABdhPJylWhyOHbTj5KdXcatouGqU6VlN+Ex8KSXONqXfEUf+0KJhJA5+rfp4hk+4n+4kIRy98MPV/jipmTrNjcARuIc=
-X-Received: by 2002:a05:6512:2304:: with SMTP id o4mr35027621lfu.563.1641102805229;
- Sat, 01 Jan 2022 21:53:25 -0800 (PST)
+        bh=5EyGPGRrzaSpBH7dUGkqyF9/f5p7cVq7+HA/jLDDM8I=;
+        b=Tc3dhhj5/2s/ne3HkOLc8KtORx8fZg78PneptC4vlXpRxGHeEoVF6v34D36Zexxb2L
+         WUluZZgCmghRZ0dbWayLB9zgT4eqZilzOQ4NaX3vcQjm9osv0wCWNV9u3a5hhwhUIOFZ
+         bM5SMua0EfagExFyqweNBJ6Zp30YPr1XeAIn756XMa7Khwe8k+8eozZPnKbPyzRdP1P1
+         9rZfCMUeFl1RPt9YjbIaFzQB/I1r2JH9n2lGb+x/Nyzlom90+9/WEj+tTT9pG8osT0ae
+         HU1wVdiDi0lXqof+F/vHsxnVKLKlD2YRrGAFY9WgUyZS268ZulmDKPPQ8q2ovTl1AE9r
+         /lTQ==
+X-Gm-Message-State: AOAM530F+Jgt4SA+eTLjJhX5IHvMPSb7n63+khhiXq3JsFMKAe8kH7F9
+        bz4zdq403kTACIx6AwgKmqd0BVUV/5ss1CApzVMJfw==
+X-Google-Smtp-Source: ABdhPJzHrjb1kHLwofScAQ778QMmEbV+rQRrvFiwAD7abFYA7z7oKl1vryfquMnaBTp/+07y5iST4GnsAT4OT1vodL4=
+X-Received: by 2002:a05:651c:1a1f:: with SMTP id by31mr26113708ljb.266.1641102844760;
+ Sat, 01 Jan 2022 21:54:04 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-14-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-14-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-15-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-15-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 06:53:12 +0100
-Message-ID: <CACRpkdYj1Fi5+jazp+MBsgSkHwq2CGcpBf86mYii7K5RzyO0pg@mail.gmail.com>
-Subject: Re: [PATCH 13/34] brcmfmac: pcie: Support PCIe core revisions >= 64
+Date:   Sun, 2 Jan 2022 06:53:52 +0100
+Message-ID: <CACRpkdZxKXMz9+PgsZCi4HEJMoM9XH1kYzGJZMrC4B_kK3zghw@mail.gmail.com>
+Subject: Re: [PATCH 14/34] brcmfmac: pcie: Add IDs/properties for BCM4378
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -83,10 +83,13 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Sun, Dec 26, 2021 at 4:38 PM Hector Martin <marcan@marcan.st> wrote:
 
-> These newer PCIe core revisions include new sets of registers that must
-> be used instead of the legacy ones. Introduce a brcmf_pcie_reginfo to
-> hold the specific register offsets and values to use for a given
-> platform, and change all the register accesses to indirect through it.
+> This chip is present on Apple M1 (t8103) platforms:
+>
+> * atlantisb (apple,j274): Mac mini (M1, 2020)
+> * honshu    (apple,j293): MacBook Pro (13-inch, M1, 2020)
+> * shikoku   (apple,j313): MacBook Air (M1, 2020)
+> * capri     (apple,j456): iMac (24-inch, 4x USB-C, M1, 2020)
+> * santorini (apple,j457): iMac (24-inch, 2x USB-C, M1, 2020)
 >
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
