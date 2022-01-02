@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8ADD482A1D
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:18:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90939482A20
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:19:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231869AbiABGSy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jan 2022 01:18:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45212 "EHLO
+        id S231888AbiABGT2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jan 2022 01:19:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231241AbiABGSy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:18:54 -0500
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E3E7C061746
-        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 22:18:53 -0800 (PST)
-Received: by mail-lj1-x22c.google.com with SMTP id q8so35351232ljp.9
-        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 22:18:53 -0800 (PST)
+        with ESMTP id S231374AbiABGT2 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:19:28 -0500
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A895BC061574
+        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 22:19:27 -0800 (PST)
+Received: by mail-lj1-x22d.google.com with SMTP id i11so38661171ljm.13
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 22:19:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4bIpZkSSwUqhTYMnQk3E9gHCYpVd9Az41cx0tuuegs8=;
-        b=OucrQEUNhyBWKSnCvR9D16DFgQtdfmnAf29tqqy6+HKU6EZirHATPRfr10cwmrj5xi
-         IPnUytEzWZkMLH+qlYRtqKr6tkjD2acjFa8Qdt31WUwJZ0Kno7EF8cJ5yqKKdl+mIdXk
-         ilZepGNn3QIJA9g9iha95KxYbhJAcndKTwo8OirDIHlUGnAdEFWHmw7J+zB2KAAyb0qA
-         DGpK0SR3rHZGaEmaOOxy+GPwhbI0G69v6YuwFCUy46a/hbaigcKMuTA7q+kBsz8VjjUC
-         YQCOT9EVAwprQARP6JU4KpdkQY/CElKrtyH6lZ4C2WTeJ9eL4ZP/uUI1VzPhZBo9NNGu
-         DaXg==
+        bh=ghFlkQwtpFZle9fRX3OIytUtB+LtWsXwrtzMbGq2Ook=;
+        b=QWaWYEkaiKHWtUPW5E9OP5/d0ezin7XI6byBRUim488xNn77UuTFsZ0PVzkpo6YUee
+         rLIO1nRF1ypdO545s1Q33dtUuCKlwXYWM5EgOv9EqY2DOfKPYvjEuc3cWzmO0gbc7Q4B
+         WVSsyxTB3Viyae+3WH6QQ/qeHpYkL5eyJuj6hHCq2mdleDa4HFyWSbZTiQlNT9lnhUS8
+         pizKj88ybEpzwDXgYudEk4BGAl2UQawkmEtJMTqaRhZjAuq0RErHTbzZav2p2MO5j6t8
+         Wz0nevKC9MWBVXh9i9ZcPxnd2vK6icI28cvW3lAnezfjFLOQjwrqjrhiZ0MSs9qPa0ac
+         cWog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4bIpZkSSwUqhTYMnQk3E9gHCYpVd9Az41cx0tuuegs8=;
-        b=fvGan8M4Y2cyYHpIqAvIi5waHivaf37eIFFSRwHLH5qJLGtFXBoFAIIUYLJUk5/q3t
-         6M8gEyElLdhcVyaZIfbpIkd4SvobAN2BvowYr32XjUTUuvwQ03TWLFf3KqaayFQ2bLuE
-         1hZ38k81XP6kWbsxUVLVE3inyGzE4ppN2mzZqQjUnAeNPzr+XRLX8uWJ+Nw1eZ1f14Ts
-         QJu5tu4mizFaGXa9XE3N1bzugJdPiLOinKwNOJLs34qzisqKZzUrQ2KEZyOhSCqMGgev
-         VM4ipDLKWigepREVSgSrF5LK8iYfU/Q+YOQdPy5R3qGigo+qSwBYhkuu9UGCPjyfgfR+
-         urJQ==
-X-Gm-Message-State: AOAM533qzokDAm4ljYj97QgHfw/E49bHP1aik59l8JrEbEvK7SF2XZF9
-        76P37Qd5mwAqtKwH9nC6olK7BWROQ+t+ynIPB+LwPQ==
-X-Google-Smtp-Source: ABdhPJzZTch5KFk/VIhETikoFA4AzemvKxIUlgqqKTF8a4qqacW7BOlB0kgbtiXPJUPQfLEeQYoq5Y6boyIoaHacTf0=
-X-Received: by 2002:a2e:b808:: with SMTP id u8mr24179798ljo.282.1641104331778;
- Sat, 01 Jan 2022 22:18:51 -0800 (PST)
+        bh=ghFlkQwtpFZle9fRX3OIytUtB+LtWsXwrtzMbGq2Ook=;
+        b=Mj1cuPTikBUjjhiDNY5+gIF2VfBO7M0WvnhDmss7U6NBlqHEy+Jim2noLLy9XCzftF
+         ESqpWxZ57TWdRq9WUFMYSiyOzkGfibjOUyMWpnKjxQ0FYIcKQlkkqDZo017TL9xa7XML
+         DNSu7X/LC76NdtH0B+FokiieK00gg+IY+c1ps3PTKcJg1YDF+e0p6W1b0FtUwkHsyWHa
+         er0GRaVMoEoW35nzqAFs7JrkvJOSl2XmbxVRxWulDKEmF+NDDy8d9qBhKUPYsSGrf4mA
+         Mo6vcwcr67PN7/W54xt9udQ7Bh4+6hT4bJ5ftOBtdCfI39r9mqOst9D1EQjK0juNEY+C
+         gT/w==
+X-Gm-Message-State: AOAM532b0ni4HZxVdkIZ4L1cc9nwM/evYtPH8ZfmArvpZr1oXTGOBTKD
+        dOWMUlMsoWuI/6XMQ3VyglXoZQPI7AEDWPi6H07NHw==
+X-Google-Smtp-Source: ABdhPJw4eXqQQgKISxZskwxOq4PpMVZbJLQ7rU1C/WPZxezRc07IeaL7/JZeSzY2fgnSTEU/0k0KWPsmQ++kmflw09Y=
+X-Received: by 2002:a2e:8810:: with SMTP id x16mr31143976ljh.78.1641104366005;
+ Sat, 01 Jan 2022 22:19:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-33-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-33-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-34-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-34-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 07:18:39 +0100
-Message-ID: <CACRpkdZJiizvQfhqyVefXNj+L8ajhY-QcvKXtfMy3BVVwC3Vsg@mail.gmail.com>
-Subject: Re: [PATCH 32/34] brcmfmac: common: Add support for downloading TxCap blobs
+Date:   Sun, 2 Jan 2022 07:19:13 +0100
+Message-ID: <CACRpkdYHN5_XQEMjY-PSmf_1sr4Wna7T-GQhSbP4aZaefaSvUA@mail.gmail.com>
+Subject: Re: [PATCH 33/34] brcmfmac: pcie: Load and provide TxCap blobs
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -81,14 +81,15 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Dec 26, 2021 at 4:40 PM Hector Martin <marcan@marcan.st> wrote:
+On Sun, Dec 26, 2021 at 4:41 PM Hector Martin <marcan@marcan.st> wrote:
 
-> The TxCap blobs are additional data blobs used on Apple devices, and
-> are uploaded analogously to CLM blobs. Add core support for doing this.
+> These blobs are named .txcap_blob, and exist alongside the existing
+> .clm_blob files. Use the existing firmware machinery to provide them to
+> the core.
 >
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
 Linus Walleij
