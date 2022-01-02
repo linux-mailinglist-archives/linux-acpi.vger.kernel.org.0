@@ -2,168 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93786482A78
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 08:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC9F1482B7C
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 15:13:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231286AbiABHUn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jan 2022 02:20:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58790 "EHLO
+        id S231689AbiABOM5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jan 2022 09:12:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbiABHUn (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 02:20:43 -0500
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86287C061574;
-        Sat,  1 Jan 2022 23:20:42 -0800 (PST)
-Received: by mail-lj1-x235.google.com with SMTP id h15so37796434ljh.12;
-        Sat, 01 Jan 2022 23:20:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=wygtrmPrIcz8i0paHqUL5GkSGBjvsBiEY6wm7+ulaec=;
-        b=HbPf8FzVFP44Fcl9nKWjpfS9tTcuwGy2aSkdZ2TiRVQU+f6s+aYHFybZlkKjEXzwBT
-         6UWne5eyeDZrsrwz6S2K3cmM368+cDT/1/eAztL4C463bNu+4x+ywyfhyAocYBAaI7+0
-         C9s3xsR/XpWj2oSXz2cQwQSKnrKKXpS9hZFarJmr21R23wKLDSdZqhF//iQW3adkdRlF
-         JqX78E4DSTR8YDupc2D+x5O2dYMIalNby0ND3+KOo2WEsYxqSchoA/StNBXvAoE0s9Lt
-         Wp0t2KGFBb9JRTAHXl7hQZf7kE8ETpCu2FyROUngGFBw+fDqMIJLHAvjr+xNE10Guao6
-         hdMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=wygtrmPrIcz8i0paHqUL5GkSGBjvsBiEY6wm7+ulaec=;
-        b=Luer4A5gF/A1dxKYC0JNi64n5R8/8545vnvHYpLZ9+DotVX7o8i9FQhq8AtJiVU6da
-         iFWlChQZi/Td+r/zq382P189otlH+XtUZp92FjeL0zTjN0aitPkT8si28QHrX/+1VbHV
-         Jh29FY6ZilgGo4B4rdxneHT8lNdEBf9uvbygA3ZLk1Qk0cbgt3TMEco4ud4TzrxOKKsJ
-         Y/Jb54moJuPDbu0bFVoUDYhWmEd5yQ94yTVtbBTY0qETkIj+rGMugp8y+GJH1PrmchKG
-         5wx9MPlLO03LluvcmhDHOTo+OYCEz5vPfT4//pudzIFVl6pNCgpbbFlZQp9UPaMGimXo
-         EgzA==
-X-Gm-Message-State: AOAM530507UChFlfbfqjYutUTPfbsw6QZ9RduY5ZLMs0CbfED7wyKZN2
-        1ttN61/QPyHr9UPvgmRxrSs=
-X-Google-Smtp-Source: ABdhPJybPZO6/p7tlkGMKGTRgin9OYNaVRwxSnNMCUQ+c1aTAZotEsgHfD+DdLK59Q1WLTpQ++zUrQ==
-X-Received: by 2002:a2e:b818:: with SMTP id u24mr26727559ljo.426.1641108040757;
-        Sat, 01 Jan 2022 23:20:40 -0800 (PST)
-Received: from [192.168.2.145] (46-138-43-24.dynamic.spd-mgts.ru. [46.138.43.24])
-        by smtp.googlemail.com with ESMTPSA id p29sm3265772lfa.27.2022.01.01.23.20.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Jan 2022 23:20:40 -0800 (PST)
-Subject: Re: [PATCH 03/34] brcmfmac: firmware: Support having multiple alt
- paths
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "Daniel (Deognyoun) Kim" <dekim@broadcom.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        with ESMTP id S229760AbiABOM5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 09:12:57 -0500
+Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF503C061761;
+        Sun,  2 Jan 2022 06:12:56 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id D446C4246F;
+        Sun,  2 Jan 2022 14:12:45 +0000 (UTC)
+Message-ID: <0efb9361-62da-f064-200a-eefe2d258b65@marcan.st>
+Date:   Sun, 2 Jan 2022 23:12:42 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.4.1
+Subject: Re: [PATCH 01/34] dt-bindings: net: bcm4329-fmac: Add Apple
+ properties & chips
+Content-Language: en-US
+To:     Mark Kettenis <mark.kettenis@xs4all.nl>
+Cc:     robh@kernel.org, kvalo@codeaurora.org, davem@davemloft.net,
+        kuba@kernel.org, rafael@kernel.org, lenb@kernel.org,
+        aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@infineon.com,
+        wright.feng@infineon.com, sven@svenpeter.dev, alyssa@rosenzweig.io,
+        kettenis@openbsd.org, zajec5@gmail.com,
+        pieter-paul.giesberts@broadcom.com, linus.walleij@linaro.org,
+        hdegoede@redhat.com, linville@tuxdriver.com,
+        sandals@crustytoothpaste.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20211226153624.162281-1-marcan@marcan.st>
- <20211226153624.162281-4-marcan@marcan.st>
- <c79d67af-2d4c-2c9d-bb7d-630faf9de175@gmail.com>
-Message-ID: <32eacaf1-77e7-3299-0d62-0248334ccfa2@gmail.com>
-Date:   Sun, 2 Jan 2022 10:20:39 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-MIME-Version: 1.0
-In-Reply-To: <c79d67af-2d4c-2c9d-bb7d-630faf9de175@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+ <20211226153624.162281-2-marcan@marcan.st>
+ <YcnrjySZ9mPbkidZ@robh.at.kernel.org>
+ <1e5e88a1-5457-2211-dc08-fe98415ae21b@marcan.st>
+ <d3cb7aff430324ca@bloch.sibelius.xs4all.nl>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <d3cb7aff430324ca@bloch.sibelius.xs4all.nl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-02.01.2022 10:08, Dmitry Osipenko пишет:
-> 26.12.2021 18:35, Hector Martin пишет:
->> +static void brcm_free_alt_fw_paths(const char **alt_paths)
->> +{
->> +	int i;
->> +
->> +	if (!alt_paths)
->> +		return;
->> +
->> +	for (i = 0; alt_paths[i]; i++)
->> +		kfree(alt_paths[i]);
->> +
->> +	kfree(alt_paths);
->>  }
->>  
->>  static int brcmf_fw_request_firmware(const struct firmware **fw,
->>  				     struct brcmf_fw *fwctx)
->>  {
->>  	struct brcmf_fw_item *cur = &fwctx->req->items[fwctx->curpos];
->> -	int ret;
->> +	int ret, i;
->>  
->>  	/* Files can be board-specific, first try a board-specific path */
->>  	if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type) {
->> -		char *alt_path;
->> +		const char **alt_paths = brcm_alt_fw_paths(cur->path, fwctx);
->>  
->> -		alt_path = brcm_alt_fw_path(cur->path, fwctx->req->board_type);
->> -		if (!alt_path)
->> +		if (!alt_paths)
->>  			goto fallback;
->>  
->> -		ret = request_firmware(fw, alt_path, fwctx->dev);
->> -		kfree(alt_path);
->> -		if (ret == 0)
->> -			return ret;
->> +		for (i = 0; alt_paths[i]; i++) {
->> +			ret = firmware_request_nowarn(fw, alt_paths[i], fwctx->dev);
->> +			if (ret == 0) {
->> +				brcm_free_alt_fw_paths(alt_paths);
->> +				return ret;
->> +			}
->> +		}
->> +		brcm_free_alt_fw_paths(alt_paths);
->>  	}
->>  
->>  fallback:
->> @@ -641,6 +663,9 @@ static void brcmf_fw_request_done(const struct firmware *fw, void *ctx)
->>  	struct brcmf_fw *fwctx = ctx;
->>  	int ret;
->>  
->> +	brcm_free_alt_fw_paths(fwctx->alt_paths);
->> +	fwctx->alt_paths = NULL;
+On 2021/12/30 1:38, Mark Kettenis wrote:
+>> From: Hector Martin <marcan@marcan.st>
+>> Date: Tue, 28 Dec 2021 02:23:02 +0900
+>>
+>> On 28/12/2021 01.36, Rob Herring wrote:
+>>> On Mon, Dec 27, 2021 at 12:35:51AM +0900, Hector Martin wrote:
+>>>> +  brcm,cal-blob:
+>>>> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+>>>> +    description: A per-device calibration blob for the Wi-Fi radio. This
+>>>> +      should be filled in by the bootloader from platform configuration
+>>>> +      data, if necessary, and will be uploaded to the device if present.
+>>>> +
+>>>> +  apple,module-instance:
+>>>> +    $ref: /schemas/types.yaml#/definitions/string
+>>>> +    description: Module codename used to identify a specific board on
+>>>> +      Apple platforms. This is used to build the firmware filenames, to allow
+>>>> +      different platforms to have different firmware and/or NVRAM config.
+>>>> +
+>>>> +  apple,antenna-sku:
+>>>> +    $def: /schemas/types.yaml#/definitions/string
+>>>> +    description: Antenna SKU used to identify a specific antenna configuration
+>>>> +      on Apple platforms. This is use to build firmware filenames, to allow
+>>>> +      platforms with different antenna configs to have different firmware and/or
+>>>> +      NVRAM. This would normally be filled in by the bootloader from platform
+>>>> +      configuration data.
+>>>
+>>> Is there a known set of strings that can be defined?
+>>
+>> For apple,module-instance there is, though it will grow with every new
+>> machine. If you're happy with me pushing updates to this through
+>> asahi-soc I can keep it maintained as we add DTs and compatibles there.
+>>
+>> I'm curious whether you prefer this approach or something like
+>> brcm,board-name instead. Right now we do:
+>>
+>> apple,module-instance = "honshu"
+>>
+>> That gets converted to board_name="apple,honshu" in the code, which is
+>> what the firmwares are named after (plus extra info later appended, if
+>> the rest of the Apple data is available).
+>>
+>> But we could also do:
+>>
+>> brcm,board-name = "apple,honshu"
+>>
+>> The latter would be more generically useful for other platforms, since
+>> it would allow e.g. having DTs for different boards that use the same
+>> WiFi module/subsystem and thus a compatible NVRAM fw file alias to the
+>> same file name (right now this is done with symlinks in /lib/firmware,
+>> one for each equivalent board). For non-Apple platforms (i.e. if
+>> antenna-sku and/or the OTP aren't available to do the funky Apple
+>> firmware selection), this just ends up replacing what would normally be
+>> the OF root node compatible in the firmware filename.
+>>
+>> E.g. right now we have:
+>>
+>> brcmfmac43430-sdio.AP6212.txt
+>> brcmfmac43430-sdio.raspberrypi,3-model-b.txt
+>> brcmfmac43430-sdio.raspberrypi,model-zero-w.txt -> brcmfmac43430-sdio.raspberrypi,3-model-b.txt
+>> brcmfmac43430-sdio.sinovoip,bpi-m2-plus.txt -> brcmfmac43430-sdio.AP6212.txt
+>> brcmfmac43430-sdio.sinovoip,bpi-m2-ultra.txt -> brcmfmac43430-sdio.AP6212.txt
+>> brcmfmac43430-sdio.sinovoip,bpi-m2-zero.txt -> brcmfmac43430-sdio.AP6212.txt
+>> brcmfmac43430-sdio.sinovoip,bpi-m3.txt -> brcmfmac43430-sdio.AP6212.txt
+>>
+>> And this could allow the sinovoip.* DTs to say:
+>> 	brcm,board-name = "AP6212";
+>>
+>> And the rPi zero one:
+>> 	brcm,board-name = "raspberrypi,3-model-b";
+>>
+>> And avoid the symlinks.
+>>
+>> The antenna-sku thing is specific to the Apple firmware selection
+>> process and doesn't make sense as a more generic property.
+>>
+>> antenna-sku right now always seems to be one of "ID", "X0", "X2", "X3",
+>> though that could presumably change in the future. I can add this to the
+>> binding if you want, though since this will be filled in by the
+>> bootloader from platform data we wouldn't be validating it anyway. Not
+>> sure if it's worth it.
 > 
-> It looks suspicious that fwctx->alt_paths isn't zero'ed by other code
-> paths. The brcm_free_alt_fw_paths() should take fwctx for the argument
-> and fwctx->alt_paths should be set to NULL there.
+> Actually what Apple does here makes quite a bit of sense.  Typically
+> WiFi chips are integrated with some analog components into a shielded
+> module.  The AP6212 mentioned above is an example of such a module.  I
+> suspect that the module defines some of the characteristics encoded in
+> the "nvmram" files, but certainly not all because the connected
+> antenna will also affect how the thing behaves.  Of course many SBCs
+> come without an antenna so the actual antenna depends on whatever the
+> user connects to the board.  So using a module-specific "nvram" file
+> is probably the best one can do here.  So I think if you want to have
+> a generic module name property, it should be called "brcm,module-name"
+> instead of "brcm,board-name".  However...
 > 
-> On the other hand, I'd change the **alt_paths to a fixed-size array.
-> This should simplify the code, making it easier to follow and maintain.
+>>> There's also the somewhat standard 'firmware-name' property that
+>>> serves similar purpose, but if there's multiple files, then I guess
+>>> this approach is fine.
+>>
+>> Yeah, and the firmware name is constructed using non-DT information too
+>> (and we have several attempted filenames times several firmware types),
+>> so it wouldn't be complete.
 > 
-> -	const char **alt_paths;
-> +	char *alt_paths[BRCM_MAX_ALT_FW_PATHS];
+> ...if the way the firmware name is constructed remains Apple-specific
+> because of this non-DT information, keeping the "apple,xxx" properties
+> has the benefit of signalling that firmware names constructed this way
+> are desired.  Or rather, their absence can signal that the
+> Apple-specific code in the driver should be skipped.
+> 
 
-Although, the const should be kept.
+The current logic is that if all the information is available (OTP,
+antenna-sku, board-name but that always gets filled in by default from
+DT/DMI global info) it will use the Apple mechanism, otherwise it will
+use the standard one. So in this case we could still use
+brcm,board-name/module-name for Apple devices, and we'd keep
+apple,antenna-sku as one of the two triggers to do Apple firmware
+selection. Other devices may use nothing (use default DMI or DT device
+name/compatible as module-name) or specify an override, and they will
+still get firmwares with that name in them and a fallback to generic
+firmware, which is the current behavior.
 
-const char *alt_paths[BRCM_MAX_ALT_FW_PATHS];
-
-> 
-> Then you also won't need to NULL-terminate the array, which is a common
-> source of bugs in kernel.
-> 
-
+-- 
+Hector Martin (marcan@marcan.st)
+Public Key: https://mrcn.st/pub
