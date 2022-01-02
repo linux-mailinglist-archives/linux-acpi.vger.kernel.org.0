@@ -2,54 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A58A1482A02
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:14:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF6F6482A09
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:15:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231802AbiABGOA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jan 2022 01:14:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44024 "EHLO
+        id S231822AbiABGPS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jan 2022 01:15:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231787AbiABGOA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:14:00 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A6F8C061746
-        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 22:13:59 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id g11so68632874lfu.2
-        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 22:13:59 -0800 (PST)
+        with ESMTP id S231787AbiABGPR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:15:17 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FE73C061746
+        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 22:15:17 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id bp20so68543276lfb.6
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 22:15:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=7sMkTbPGbS0cdXIJfh5+hY6EL0S/5OB7ShD5HL8BaBM=;
-        b=rmQuPjCG2uqpfl7GAsWopsTum5R+urfC4iVA+Jw2YDMc4nMNlQVXZ98SoTT19ykAyM
-         bENJgReEL1K3Q1ZQthPkm0blthX4P2W394ZPBBSpZRyaQ0WCnmdIpXcLd5qbWrupAzK1
-         IRTY3defpG+7cQ4fyHKq0MS3fx7QrQxlk+wI7qq9MYAdR2KRMnGpzcQrs6Yqs5QViaUM
-         HTsGMetzCPWjjVpkJxhChVR2gbSwuh8HzDZdxeTHBgJwGdxPmWPf+AQxRYcyW+9yAMJ1
-         xjOrEVGTY4uvbPyeoqUqrwW4KEWYRxk60EmoBcNZcvXlWJ7rAd7UXDb4y3frdrpemIhR
-         Sqfg==
+        bh=NWErgVPSbPgPS0cot2KuzsoxPnk5t2poaH8xxZaNOfk=;
+        b=yDNjcq4g15xOFHBXQDmYyXN8EZZbyJUjHUrUfjBIRdjYkk4XhGgviRbuxzqnIhrwHI
+         IAixxYAZhkVclfTndwOLRDv2dL2UFC3tvno0yBgTm6Ci0hrA+ZdiWNzdktiKBRhGGkYC
+         E6EtUZpkyiqGeQxH0sK8EdwBlKyotxF5zzKj8h8sWvUTE2jqW5dOdb/cU1FUbkzE1IdF
+         EXtBDALv7qNHkEoUoNMY5LVZr8458hpNNGb+T3fSDdIxhFfzPOsMhhAX1BiB2CWnlNt5
+         SFU0ZapAjcGxfx6GhJHXVkO49P2FBilbj561vi4KXabYoyNo8z0uwThYrMZ7KFXNmePB
+         ioBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7sMkTbPGbS0cdXIJfh5+hY6EL0S/5OB7ShD5HL8BaBM=;
-        b=URiRpc7eQ69CxqFQpgQUGy5BKfe8fx+Bzetn7MOYeAVJTF5DV/CjZZMKv7O64ehMp/
-         uo4Se8d+Rn4cP0m4UtIC5i+qrYcS4wIN9hsM/k7VR1osB0z/PwBNQ7V386JoeJrmR+AT
-         jwXdm+qjP/QSLqaGUNJ5P7x8NhoPf/5Dj+IRhaZeg2WLKqCNeWxxMD9qZjR+p+eZ9B6L
-         8TwSWTuGvFRKYHMq+f/QhGO4tiIYjg1+8IB9rPuaAJT3xV5oGkTzAl04jlOEDEaqq4yj
-         liKVavDx8LNdXnbYNepN1GJwg9WmreVanCsTaJpyy1yxnkixLKZDKTiWUEkVlL/yumdn
-         rMew==
-X-Gm-Message-State: AOAM533foOlHfKS+EJJTujglE9w/FwFRozEMuKPDWFOsj/D5X8IqNR/d
-        Ed+XjDIyYy0nDySfFQ/bRzBqDjvTzCCDm42PL0Cwpw==
-X-Google-Smtp-Source: ABdhPJyCazaSB74rZNFvZ78lLcqbHNTpihP04lLu4fdMubHBanaKA0y68FD4EU6Z5Gy/QZM4n49VaW3rXzl4eiRD8EE=
-X-Received: by 2002:a05:6512:118d:: with SMTP id g13mr36266419lfr.591.1641104037812;
- Sat, 01 Jan 2022 22:13:57 -0800 (PST)
+        bh=NWErgVPSbPgPS0cot2KuzsoxPnk5t2poaH8xxZaNOfk=;
+        b=U9uuQxWHsvcJ/rpUaTK4DGNzSX57C7su4D3OiqD+IWmpbbUwqQ+11jrBA4F9y5vY7b
+         nZwn8PH9a81395DFVnFGE45B5wYzvzgT2fxZxcAzJuc6e56mPpYjisP6DY2+U/Rk+YQv
+         V7fMH/l0kVJ8ANRdNunc2MhjmsdZBoSqw+8+lg3mDJyOz3GFW3Pgk+mERRh0yMwaSJ2U
+         +8d6hinA9D6V2bdsW/yFQ83ohUSilBI9weMKQ8suOXWgZGPsZGGXkjq1IcyvhmVeTK+7
+         1W8zpBM+wZFN2r6+2hH05DFRetEh5LbCRsGGUx+PWMlSoZSuu8BTmE9N7R9fL9tKuObn
+         tLSQ==
+X-Gm-Message-State: AOAM530i0UJE28ODKhrf21/lKUZMkOhH/YBnqkHhszbyMO8/7LVEepYe
+        uYvwdxMxt32Gb6N4JeZ2mZxC7OmH7i/aWsgjLbzqAA==
+X-Google-Smtp-Source: ABdhPJxCopLUWq+4ft+NVnaS82/nys0iopBB2B2ZS6BEHXy52c/7c79JVhvvzJycZWI0WqHdXsCC4MjxOpz9+YpqrZs=
+X-Received: by 2002:a05:6512:750:: with SMTP id c16mr37650476lfs.622.1641104115576;
+ Sat, 01 Jan 2022 22:15:15 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-28-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-28-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-29-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-29-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 07:13:45 +0100
-Message-ID: <CACRpkdarpOowF79TjcT_Wh5uiOzTTAL_-mxZ+tPvY0DhShAAHw@mail.gmail.com>
-Subject: Re: [PATCH 27/34] brcmfmac: pcie: Add IDs/properties for BCM4387
+Date:   Sun, 2 Jan 2022 07:15:03 +0100
+Message-ID: <CACRpkdYGQkTEHFNtLB=gMV-jkPWiF8mjUVv_C_rTyd7bxrYcXA@mail.gmail.com>
+Subject: Re: [PATCH 28/34] brcmfmac: pcie: Replace brcmf_pcie_copy_mem_todev
+ with memcpy_toio
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -83,15 +84,18 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Sun, Dec 26, 2021 at 4:40 PM Hector Martin <marcan@marcan.st> wrote:
 
-> This chip is present on Apple M1 Pro/Max (t600x) platforms:
+> The alignment check was wrong (e.g. & 4 instead of & 3), and the logic
+> was also inefficient if the length was not a multiple of 4, since it
+> would needlessly fall back to copying the entire buffer bytewise.
 >
-> * maldives   (apple,j314s): MacBook Pro (14-inch, M1 Pro, 2021)
-> * maldives   (apple,j314c): MacBook Pro (14-inch, M1 Max, 2021)
-> * madagascar (apple,j316s): MacBook Pro (16-inch, M1 Pro, 2021)
-> * madagascar (apple,j316c): MacBook Pro (16-inch, M1 Max, 2021)
+> We already have a perfectly good memcpy_toio function, so just call that
+> instead of rolling our own copy logic here. brcmf_pcie_init_ringbuffers
+> was already using it anyway.
 >
+> Fixes: 9e37f045d5e7 ("brcmfmac: Adding PCIe bus layer support.")
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
+Excellent patch.
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,
