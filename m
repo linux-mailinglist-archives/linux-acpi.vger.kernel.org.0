@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AAFF482A2B
-	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BB2482A3C
+	for <lists+linux-acpi@lfdr.de>; Sun,  2 Jan 2022 07:24:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231939AbiABGU5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jan 2022 01:20:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45726 "EHLO
+        id S231968AbiABGYj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 2 Jan 2022 01:24:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231902AbiABGU5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:20:57 -0500
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A054FC061574
-        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 22:20:56 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id r4so25348618lfe.7
-        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 22:20:56 -0800 (PST)
+        with ESMTP id S231978AbiABGYf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 01:24:35 -0500
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF041C061401
+        for <linux-acpi@vger.kernel.org>; Sat,  1 Jan 2022 22:24:34 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id h2so58001913lfv.9
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Jan 2022 22:24:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=iZfVXMnlFKiRYFSBtV5QUvN00BNnqV5JOXQJdrR8Sew=;
-        b=sdBIgE+VYwC06bsPhTHjM+UfcUy1tLJ2op+ZavumxCT6zdSzTUST7hlfJDtZPO5CGd
-         0SABlupThnCzBE3gLGBg6MmuJGpi4Fx6BEmFGcdGN84KLvETqTDHpC4wWybZ3Xni3For
-         21dPXKBxBAChu7D1owrHM8L94avJF8Mnn2PWLFeboCUo8vQutvpMX4YdNxr+qysJDwzE
-         jtlgIcTmaCb7gs6Iyv4w6WxKaaB0w4vTv4EwYCJBNZYUVU7ederPyCSmSONF5DSYmgF/
-         O1YZV0Hr5Dvyg5S+bzHkwtPlkuN0hFYS7bT7BlhztciDo1kH7leWW0vNZWNHZPNgzvIL
-         e6hw==
+        bh=MRIzYog0oG8YRBJV8uYe7Ak+u+xDADrXSEkgE2V9/cA=;
+        b=Vv9nOjvk1PmOvu+nhkp0vkMMvNEObC3EdUeBHAokuzh0QsGErUT7xGI37XarqLfv8F
+         VLPMk920zs4ek63TJn2NMktfyLT0Wi4YDFZ7Zd2VpzeZlRMit1KDDmoajQFDtnVnn9mT
+         1ZFn0RNhUlHuDafCoIOygKq4ar+sxgXGAWUmU4jPGXUfjMJqgX78cqZo1hJzeMGQnkXT
+         sCtCAas0c9d3L3MAeCGceGmZdwinw3rrjSnRCSbUaXncvpXIg7PFi5ZYToxhYh8l+22I
+         mwkcjsJMhWYCx8czT7W9mgfRTNxE5JQbwuPnpXkWoiHvpLHZ8LMmFymMszo4D4EkwBEp
+         PLIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=iZfVXMnlFKiRYFSBtV5QUvN00BNnqV5JOXQJdrR8Sew=;
-        b=D48fCkpkHlME1zXnNzVDZeDm5aEkdOz+fh59NdALHCJ+wfF1CFiVe1NHiobYzFb9bF
-         h3PmgOFYH/bTFz6EC+fQS6jdbQBG/FzT3iL3fj2tEB3bi0eRhRbq/BO4ZXYaree7yX10
-         epPBDYmtaF9ZV9PKVuDWVvHyBRsadGK/6FZDPksX3jNx4wGqbiZ9WcizdZbBOGIEdZHe
-         mYg5QjCk3FigNKZrOKSlWCUxCl/bekr1E4KQZcm3oyVGGqF/yLyOaTVZ0Qcdp3dqEabk
-         8VzzxMSiH/6SPvxemQkKYSQtFyGCefQYITTDQ7CqH9oi8tccgXudXErYo9V9cz5Yl5NV
-         VeqA==
-X-Gm-Message-State: AOAM53000AuNikiLxG1N8ilr4t4oa2r4VqqINartLgsD0Ps2KpWKUvlo
-        rGerI2dZ+G0dBV6WhWR0frD6HxsBS5EXKX1lVpnY6A==
-X-Google-Smtp-Source: ABdhPJwGf3GpaIdTpmfU98rgqH5l8olR5k/M9CUek/1KS0aQHfgaFJavl8RBOhO7emZSxB4N+8M/uzkY9ewCBSwILQg=
-X-Received: by 2002:a05:6512:39ce:: with SMTP id k14mr19074277lfu.508.1641104454979;
- Sat, 01 Jan 2022 22:20:54 -0800 (PST)
+        bh=MRIzYog0oG8YRBJV8uYe7Ak+u+xDADrXSEkgE2V9/cA=;
+        b=gm5oL/j0kWbwJ/lRg9biGOC+59XA1DSqbiXf8KpS+58COtly/FjHSjKZDD7Llqn0tR
+         1GtYt7Jl5NO8FQxOldsA9XO1Usfefaxp2fWCHHCi/8lf26J5MrSN12K//abUlNBXoPrj
+         I9v+5alnBj1PJJMm4fCDRyLC+f4Vru2nTZp97GyBwH/v5xrCDxN9l/1+CaYLp2SnBe9E
+         e+4xBSEoFirHBydkMaNwJvedxd/2WkbWx6YLolgtkOfnG7+W2fhyxLRaE4x2mDaoeY2g
+         SJiEI0KoXNGVEdtyVJZiZOnaZ39N0dg2UuRHHZ1QzNw3fuQzi0pCFZ2wDrTIe4fZDbsr
+         iYkQ==
+X-Gm-Message-State: AOAM530/wieONzjh3kjs6DHl2kU0yFmkYrCkd3RuyIK9goOII6lBeqcs
+        J3Fc4Jt5HOAZC7gUt1YMbfNQdRdSH05yqF1s4VIAMA==
+X-Google-Smtp-Source: ABdhPJzgcYPpsyuWAu1d8IqDIVcu9MuInByUpnzzNH4wf+Sm5vBNJ55cR8YJ26jVqSxrIb8utAPv1mkfQu8oqSQTWlY=
+X-Received: by 2002:a05:6512:2304:: with SMTP id o4mr35088210lfu.563.1641104673024;
+ Sat, 01 Jan 2022 22:24:33 -0800 (PST)
 MIME-Version: 1.0
-References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-16-marcan@marcan.st>
-In-Reply-To: <20211226153624.162281-16-marcan@marcan.st>
+References: <20211226153624.162281-1-marcan@marcan.st> <20211226153624.162281-5-marcan@marcan.st>
+In-Reply-To: <20211226153624.162281-5-marcan@marcan.st>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 07:20:42 +0100
-Message-ID: <CACRpkdYkRjzNnudcrroXxdkxEF-PvTgqgy25HidhY9KsFapJsg@mail.gmail.com>
-Subject: Re: [PATCH 15/34] ACPI / property: Support strings in Apple _DSM props
+Date:   Sun, 2 Jan 2022 07:21:32 +0100
+Message-ID: <CACRpkdYHkX2Thi26sa-6rtzL9i-LU1X6GQNpGF7yqZmHNv6fzQ@mail.gmail.com>
+Subject: Re: [PATCH 04/34] brcmfmac: firmware: Handle per-board clm_blob files
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -81,12 +81,13 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Dec 26, 2021 at 4:38 PM Hector Martin <marcan@marcan.st> wrote:
+On Sun, Dec 26, 2021 at 4:37 PM Hector Martin <marcan@marcan.st> wrote:
 
-> The Wi-Fi module in Apple machines has a "module-instance" device
-> property that specifies the platform type and is used for firmware
-> selection. Its value is a string, so add support for string values in
-> acpi_extract_apple_properties().
+> Teach brcm_alt_fw_paths to correctly split off variable length
+> extensions, and enable alt firmware lookups for the CLM blob firmware
+> requests.
+>
+> Apple platforms have per-board CLM blob files.
 >
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 
