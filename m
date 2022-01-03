@@ -2,56 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA562482D69
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jan 2022 02:26:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A994D482E39
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jan 2022 06:42:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231308AbiACB0V (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 2 Jan 2022 20:26:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37918 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230110AbiACB0U (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 2 Jan 2022 20:26:20 -0500
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30BC3C061761;
-        Sun,  2 Jan 2022 17:26:20 -0800 (PST)
-Received: by mail-lf1-x12a.google.com with SMTP id x7so72091430lfu.8;
-        Sun, 02 Jan 2022 17:26:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=LOG+LRnFpNPHGcbZgexu8NnNf42wYWPGSEjdgT8j34Y=;
-        b=LDuf7jp1iGCDGF/Phth7mxhqpRpg6gEA869QeS6uWzxl7NG5QOemxoHXNMjYvowX1I
-         MmOlEwTe46SDzM2b8blgf6TFvb9IV14yOW23g4r1ZG4h/WNl25rAggVGIHNa/GjwKj3s
-         dBDEyAYkBUsY5J/87asojbXG+B5Ypa8BE/vLL0z0xtyAJ2SGWDtnq4q1p+0XzC7lhJ52
-         75aaf0dMceQClHkqHB9lDV2cqHZGVnRnbVrmM049bKvYznmK6Ps54XaXRUi3/NpfLbO2
-         hjCohLxihMTAfPLPIEnE5ka6I857i8Ry5KUe7P5dQT9EqHGvndZ7evUfLb6pj6f7pvrW
-         EOnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=LOG+LRnFpNPHGcbZgexu8NnNf42wYWPGSEjdgT8j34Y=;
-        b=2CVnR/P6eD7TUTLWfj1II7JVMoijQc7R5BBXNFsgwixFEoiwYqBrVJhaEEnXorealH
-         IkZ0rJdVzS3JyMLwDWDiE9EdNcKXOWrb5H24BBFZFPjcTa+YVznQVOq7csGk7//oh3s5
-         UHaYslIrB/yjTb8FmFKKXcSo0NL7t2vu10x5Rip1i0MJvtuKasu6YUeG5hYUZ/LQYkJF
-         yYxfuR0XyA8mn2ttLV0QFl99yFh/CP7DR9DL8+tOMOsS0lwlutdng9P8rQUaaIYOjwXu
-         YnQKm91YqsW1aMLW2m/251B85HHOOY8XCzwB7+/OGqqBrpfAynHItDxmufAtjfjJ+5KD
-         qwWA==
-X-Gm-Message-State: AOAM532N54gFhOE8eG+ZYD2qmfKAb1oFCeRbb6T/fCLMq0qPEdfunLCh
-        XeSzMLj2JNPHpLX+K0qfTag=
-X-Google-Smtp-Source: ABdhPJyEa/GRkFoaZ/6C94axN4nLg9bDFQsbmGsslW3JBM0Y64w0IUKXjq3OOgLvP86NJtfc2P1zyw==
-X-Received: by 2002:a05:6512:2305:: with SMTP id o5mr39533999lfu.564.1641173178486;
-        Sun, 02 Jan 2022 17:26:18 -0800 (PST)
-Received: from [192.168.2.145] (46-138-43-24.dynamic.spd-mgts.ru. [46.138.43.24])
-        by smtp.googlemail.com with ESMTPSA id p14sm3442104ljj.12.2022.01.02.17.26.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Jan 2022 17:26:18 -0800 (PST)
-Subject: Re: [PATCH 03/34] brcmfmac: firmware: Support having multiple alt
- paths
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        id S231701AbiACFmv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jan 2022 00:42:51 -0500
+Received: from marcansoft.com ([212.63.210.85]:55962 "EHLO mail.marcansoft.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229527AbiACFmv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 3 Jan 2022 00:42:51 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 9BCA4424D9;
+        Mon,  3 Jan 2022 05:42:41 +0000 (UTC)
+Message-ID: <f6d7bc13-06ac-b4da-bfde-c115e702b8a8@marcan.st>
+Date:   Mon, 3 Jan 2022 14:42:38 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.4.1
+Subject: Re: [PATCH 10/34] brcmfmac: firmware: Allow platform to override
+ macaddr
+Content-Language: en-US
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -61,13 +37,12 @@ To:     Hector Martin <marcan@marcan.st>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
+        Wright Feng <wright.feng@infineon.com>,
+        Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Mark Kettenis <kettenis@openbsd.org>,
         =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
         Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
         Hans de Goede <hdegoede@redhat.com>,
         "John W. Linville" <linville@tuxdriver.com>,
         "brian m. carlson" <sandals@crustytoothpaste.net>,
@@ -76,53 +51,54 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20211226153624.162281-1-marcan@marcan.st>
- <20211226153624.162281-4-marcan@marcan.st>
- <8e99eb47-2bc1-7899-5829-96f2a515b2cb@gmail.com>
- <e9ecbd0b-8741-1e7d-ae7a-f839287cb5c9@marcan.st>
- <48f16559-6891-9401-dd8e-762c7573304c@gmail.com>
- <d96fe60e-c029-b400-9c29-0f95c3632301@marcan.st>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <4a307f13-0bd3-5fa5-dd51-9cd1d39eaa33@gmail.com>
-Date:   Mon, 3 Jan 2022 04:26:17 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-MIME-Version: 1.0
-In-Reply-To: <d96fe60e-c029-b400-9c29-0f95c3632301@marcan.st>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+ <20211226153624.162281-11-marcan@marcan.st>
+ <CACRpkdbviGvBoAOLfLPe-auabYd-iMmpxerTiB4whQ3r+QTMeg@mail.gmail.com>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <CACRpkdbviGvBoAOLfLPe-auabYd-iMmpxerTiB4whQ3r+QTMeg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-03.01.2022 03:41, Hector Martin пишет:
->> There is indeed no need for the castings in such cases, it's a typical
->> code pattern in kernel. You would need to do the casting for the other
->> way around, i.e. if char ** was returned and **alt_paths was a const.
-> You do need to do the cast. Try it.
+On 2022/01/02 14:50, Linus Walleij wrote:
+> On Sun, Dec 26, 2021 at 4:37 PM Hector Martin <marcan@marcan.st> wrote:
 > 
-> $ cat test.c
-> int main() {
->         char *foo[1];
->         const char **bar = foo;
+>> On Device Tree platforms, it is customary to be able to set the MAC
+>> address via the Device Tree, as it is often stored in system firmware.
+>> This is particularly relevant for Apple ARM64 platforms, where this
+>> information comes from system configuration and passed through by the
+>> bootloader into the DT.
+>>
+>> Implement support for this by fetching the platform MAC address and
+>> adding or replacing the macaddr= property in nvram. This becomes the
+>> dongle's default MAC address.
+>>
+>> On platforms with an SROM MAC address, this overrides it. On platforms
+>> without one, such as Apple ARM64 devices, this is required for the
+>> firmware to boot (it will fail if it does not have a valid MAC at all).
+>>
+>> Signed-off-by: Hector Martin <marcan@marcan.st>
 > 
->         return 0;
-> }
+> This looks very helpful.
 > 
-> $ gcc test.c
-> test.c: In function ‘main’:
-> test.c:4:28: warning: initialization of ‘const char **’ from
-> incompatible pointer type ‘char **’ [-Wincompatible-pointer-types]
->     4 |         const char **bar = foo;
->       |
+>> +       /* Add space for properties we may add */
+>> +       size += strlen(BRCMF_FW_DEFAULT_BOARDREV) + 1;
+>> +       size += BRCMF_FW_MACADDR_LEN + 1;
 > 
-> You can implicitly cast char* to const char*, but you *cannot*
-> impliclicitly cast char** to const char** for the reason I explained. It
-> requires a cast.
+> Add some note to the commit log why you also make space for
+> boardrev? (Looks useful.) Is the boardrev spacing in the right
+> patch?
 
-Right, I read it as "char * const *". The "const char **" vs "char *
-const *" always confuses me.
+Ah, that was a drive-by fix. While adding the MACADDR space I noticed we
+weren't allocating space for BOARDREV... not sure if any platforms hit
+this; it would cause an overflow if there are platforms with no
+board_rev in the nvram that also don't have enough comments/junk to
+otherwise make space for it.
 
-Hence you should've written "const char **alt_paths;" in
-brcm_alt_fw_paths() in the first place and then casting wouldn't have
-been needed.
+I'll move it to another patch so it's more evident, and it should get a
+Fixes: too.
+
+-- 
+Hector Martin (marcan@marcan.st)
+Public Key: https://mrcn.st/pub
