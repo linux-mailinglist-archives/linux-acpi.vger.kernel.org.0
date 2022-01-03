@@ -2,151 +2,402 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B20244830AB
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jan 2022 12:42:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B106483470
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jan 2022 16:57:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233064AbiACLmh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jan 2022 06:42:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:32658 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233055AbiACLmg (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jan 2022 06:42:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1641210155;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=gSNOI5ql8oXZVvuzD0ppCtwWNeddD2uNEOgMzwq7yWs=;
-        b=cmdow/FWHRgbM6aSxs/xTctjtcIMiH4QlG036cY7wdoBRm6ldaHP0OiJawl8UnBYAfPjg8
-        3QCKr8q83OcMsDq0Gtq9lUwnS1d4UI653YmVrg5G4b+E4dm6YYLafARmZTqxDDDxuCLK4B
-        qWD+nQk1TC7MUQtw2DciR0i99U9buqA=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-345-c3cmxtBNM7mYPCcrhZyP2w-1; Mon, 03 Jan 2022 06:42:34 -0500
-X-MC-Unique: c3cmxtBNM7mYPCcrhZyP2w-1
-Received: by mail-ed1-f72.google.com with SMTP id q15-20020a056402518f00b003f87abf9c37so22619532edd.15
-        for <linux-acpi@vger.kernel.org>; Mon, 03 Jan 2022 03:42:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=gSNOI5ql8oXZVvuzD0ppCtwWNeddD2uNEOgMzwq7yWs=;
-        b=s3KvbekodvF9mc6Mnk4Vnv+QWfUcBMFK4vrm8tiLj6d1TFxSYdUAI5bXPZ6A81YxdD
-         DY2cmQfEqFcsNYeu2n2m7tci89FZrG8oo8IOAQqxvYoquxvnMQjB1g4cDW3mK9e4W6cl
-         SWqmV6LwoNKKo3NRuL8ERuu3G/WcQ2CzGa5xuSZhAFp6ma9dzq8JsajgpHFb1t1VcbZI
-         r/kREfkq/GFByjoCrfECwVGvLjYPWt9dASoYV2k8o375+mLxGKwjFrU7q2RuUf+pr7A6
-         3/OLoSIpqSfSJa3R2Azw3yzOl0QXQK9b9HZ7tmJ2/w+Cv8dXLx9xIAo5qnw+Mfsy7Tt5
-         m0Ug==
-X-Gm-Message-State: AOAM530h5fC1i/duEsjeUEmo/CkGrKdhIO9wKB5VPg4k0mpmXzmGWCKm
-        U7AtRmxACrvBKFprUtzIkHzP/7fJX/9GPujEcNhZqS1FQvqQxA/R4/yPSEDT85M9JBssjKc72hE
-        j8E42tJSRQQi7cx1E3F2m0A==
-X-Received: by 2002:a17:906:9491:: with SMTP id t17mr34874595ejx.667.1641210153016;
-        Mon, 03 Jan 2022 03:42:33 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyIi4yBcIp+Imi4nqsCAFS4wrZ7x5Z4CdDD0XwShkPowGrJPzk/hjb7Xh+egDpsRHbtUE5ZNA==
-X-Received: by 2002:a17:906:9491:: with SMTP id t17mr34874574ejx.667.1641210152871;
-        Mon, 03 Jan 2022 03:42:32 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id sc7sm10590939ejc.87.2022.01.03.03.42.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Jan 2022 03:42:32 -0800 (PST)
-Message-ID: <464b14f9-3df8-5651-7268-80f9fe0df3d4@redhat.com>
-Date:   Mon, 3 Jan 2022 12:42:31 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH 00/12] ACPI / pdx86: Add support for x86 Android tablets
- with broken DSDTs
+        id S232490AbiACP5q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jan 2022 10:57:46 -0500
+Received: from mga02.intel.com ([134.134.136.20]:29066 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229545AbiACP5q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 3 Jan 2022 10:57:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1641225466; x=1672761466;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Ku6OJ/eOSbO2say2fzou5NIOMwMcQ2AC6UIQUi6q3hQ=;
+  b=M8EafplMPUk6vEN1iubrBydppx8JMNgqG/5FOQEmQ+8Opp/W7wSPyltu
+   sRuLZp+NITTVy4UCzhPZobAlPwy/gOAS+WnS6cUrd2v6u2QRznt/IPX9V
+   5j32/x3vZkc4std5Mw7CUk8OhXvdjIWFdykUKu3sXekmIyFOe0Iq9QS1Y
+   GsqyiE3sgt1AprjP+apMIPLGzYnFNXr40oEeYm4a/p5qjhRqgV5c180UV
+   9jBdIY1QpHvdyHnv6YDkSWOzuiP4h7ccEep4KIrXcCJunloplGEJtY3mG
+   +22wXyJLyUDMaQYQtfO85i/NPA4D5OtLewGaa9cUE4lyUl90cp3BvXgR4
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10215"; a="229391408"
+X-IronPort-AV: E=Sophos;i="5.88,258,1635231600"; 
+   d="scan'208";a="229391408"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2022 07:57:45 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,258,1635231600"; 
+   d="scan'208";a="620342375"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orsmga004.jf.intel.com with ESMTP; 03 Jan 2022 07:57:45 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Mon, 3 Jan 2022 07:57:45 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Mon, 3 Jan 2022 07:57:45 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20 via Frontend Transport; Mon, 3 Jan 2022 07:57:45 -0800
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.47) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2308.20; Mon, 3 Jan 2022 07:57:44 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OziKVH2bArXrePPNvdnulLc2eKJS2S/9VOU+nt39JASzYAb0KKVW4qLI7UHpmoo2LO89w68tgYFq0xsx7hklVWuUf9IqB44SvN3ULXVHO1RuYysOTHk1qDRQORsDK3dfLUex6H7pPXPBNOOjYsbSKRiDObbUtWplm/TEsvnTo/cP5ITt11Kn50YDqKw+Jcay5Pn0XWLeRnTfydlBexQ2qgJxEqAt32iIWOWBeNYL1OJQRaK38MXJ57wKyPbCu1GTWtzaSPkvuRkhlbZA5MYk0VelkUNeyaxBH4ixph9bsD5+k+x+sSSAkbPRHwQCEvSXyKfATcxG1+eWB7qknG7fcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XNOe8SF7KXer7juVtKN3fysqhH2aQnm1+RT79AsYijg=;
+ b=RAI8VWlSPcmuSGBO2VQqo91ovDESc9QXXPGqw3ykEE54oJx/wTeWvHTP0OxUyOAjtPf8/OqoEa9R9qFRo+UF4AKiamU3v86Ivsp0d34MVVlCXB2zxMF1IrTzt+HP8AwCKZq0X7fjdOEQZ6jhkYmEi/xxVErW+FN8rikciSkzoWcL5vulkvcPoTc3KxF6tO2otDL9k/VhaBbuKEeumF1Reh+OwhmBtz2ok9bCWFjI78PjbbX76pALZMhGPRY7sgFb4dRMFsBx1Ik2GAsZ7dxjSb64nJHxtaW8oNaQgtpWcl9duQoKXe7AiVtM2aPvY/6gFZBnUU8u4jv+VmnCp6bj2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BYAPR11MB3256.namprd11.prod.outlook.com (2603:10b6:a03:76::19)
+ by SJ0PR11MB4877.namprd11.prod.outlook.com (2603:10b6:a03:2d9::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4844.14; Mon, 3 Jan
+ 2022 15:57:42 +0000
+Received: from BYAPR11MB3256.namprd11.prod.outlook.com
+ ([fe80::6d1b:52fc:309a:bff7]) by BYAPR11MB3256.namprd11.prod.outlook.com
+ ([fe80::6d1b:52fc:309a:bff7%5]) with mapi id 15.20.4844.016; Mon, 3 Jan 2022
+ 15:57:42 +0000
+From:   "Moore, Robert" <robert.moore@intel.com>
+To:     lkp <lkp@intel.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: RE: [Devel] [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING
+ 8d681a5245f0a5cfb20326b4f6578af1adb8676b
+Thread-Topic: [Devel] [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING
+ 8d681a5245f0a5cfb20326b4f6578af1adb8676b
+Thread-Index: AQHX/H2m2F4SRWODu0u8RazBbhdytaxRfDHQ
+Date:   Mon, 3 Jan 2022 15:57:42 +0000
+Message-ID: <BYAPR11MB32566B65A82D815C214720E487499@BYAPR11MB3256.namprd11.prod.outlook.com>
+References: <61cc007a.mWwpG8hntz2tC9i6%lkp@intel.com>
+In-Reply-To: <61cc007a.mWwpG8hntz2tC9i6%lkp@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-i2c@vger.kernel.org,
-        Stephan Gerhold <stephan@gerhold.net>,
-        linux-serial@vger.kernel.org
-References: <20211229231431.437982-1-hdegoede@redhat.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20211229231431.437982-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.6.200.16
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: dafd8301-f086-4065-5d67-08d9ced1c6a9
+x-ms-traffictypediagnostic: SJ0PR11MB4877:EE_
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-microsoft-antispam-prvs: <SJ0PR11MB4877B947EEFDF7FE4C2D5C0687499@SJ0PR11MB4877.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:43;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 46gxumntrPnk5ARqtei4/L5bvViXe4vPvUZrVFqOlcmF7iLfPI4ThdkoLsF0bjAlN9ATLmqpNCz3O/9FJltO1Ry3hcryYiviboSzHaZDl3/wpmgpW2T0cMXibsOJ3Fva6nAnj+LBeAp4X1/k70lVfFX1iSg/2E1O+/u+Gvgmi+tCoYfWe+1YhKdFU1X3w1y/B4bt9esZi7TeXUUEDUjopguEblTQxVTruQ8G9EdAmwInsR/BOOMkT6zVnpQ+jarHgLvUKk89IYVqNcHv0R1T4tYeHMbMYjIxmZbIv18zTAjMe4FtbG37/vjUZ86DF2yeDKDERZJsfdtrSqPxYzUhB7a2oUNfaMHmSq3ukCzJ/vbUhEf2YCKNxkgYjK1FW3Up1oY6VS+iVe1b9w/Zc0UFR1qSpGCpUaTClJM3aucrf3/GPbOl1y5pOFvo5hEFX5cyM+Qc85xgrkswRZeoBjFPgingS5qELPluiNEq1ecfM8X+AV6WN67uMZZYuE+ni+Nlq7GoULMybMlxVpI2fwhAe13pWTqjAg4WgHkn250nqXdy7Ci6Tv4JULk57OQxZZL9srSc4s+RRclGGcKd3MDKzMaPAyLHTTSgyi5YGJ+ptt4so0HsSRVblDwNzXb+mRuCDUeqDFcWypoMvxTmnHcNHMZ8Rdv8H6ew/YDfkanqZAaMPyNJ2f4L4u47RbaRSQaJBzWgmJJJoziBsE5rshGsNTlwFStWcGCnGg3on1Yq6nGNI8snswRybybYcI45yUEYH6CjtTHYHfnSb0rQwO8n8Yr06NHCucKhTzZLvqDbDIk8QuuEQerSTpggQBMNhvyugdOHplpQS8o5ewvQo2h4XA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3256.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(2906002)(38070700005)(9686003)(82960400001)(52536014)(83380400001)(4326008)(316002)(122000001)(38100700002)(71200400001)(5660300002)(508600001)(966005)(54906003)(110136005)(76116006)(86362001)(66446008)(64756008)(66476007)(66946007)(6506007)(66556008)(8676002)(8936002)(26005)(186003)(55016003)(53546011)(33656002)(7696005);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?e4c2BVh7r8nPTvxKD5RubW2HUJAX6lyOPhdBXfXgjPGNQTy/mPC1IREf4n7i?=
+ =?us-ascii?Q?L2HGxymq+Y8aFnGP2koWr432CCBcf6tp1KoP3wVBm1mID9l7Vy++9Z6Rnezu?=
+ =?us-ascii?Q?ORCzmFQ7bIEv3R2i8245aeA0lKuUGTljvgv3bnmXz/Nibk94xuzBsApyBUPB?=
+ =?us-ascii?Q?23/Up5/sqD1Io7MFSt3MCS7yH7fDpAJ7B2ZP8AMt5qEvurJ3mVK3F750hb0F?=
+ =?us-ascii?Q?ybznxm6MKGu/ghl7hnwotWBZ0a6+cHt3jBIPEnyqGFNLwcDqnfvlT9/qQeuF?=
+ =?us-ascii?Q?4y+II5c6F8n33vnTWxdbef+Qm7I0fntDWXyHz9zABmk74qQW6EsUB+ggj77Z?=
+ =?us-ascii?Q?AuBvWoVy3e/NmWxV2JtmB2yKztM+SbRfabw1NJDeAGofIHWvV7tnMwP8G2I5?=
+ =?us-ascii?Q?HbppqLu2mwGo39XEiKW01yk2XXCRrR++pJvJ7XLeJx2OiGM3OrM4GfUmYxBr?=
+ =?us-ascii?Q?SVA8fd7vlmqd1Sj1teLdlrl8BmEvv1pkpnGn+NLN2qfAOq18Rpw+zlwyzOoO?=
+ =?us-ascii?Q?wlhDQWXVutIFdDlHIa4C44/89GH2FqrQiDfKSBQlTAkS/pKFMocC9FmT+9Ua?=
+ =?us-ascii?Q?yVOxaJai/cQNe7iYG+D/OLbKn82l/DV6lacMRjKmfBThNWxm7LeM6oJqynvR?=
+ =?us-ascii?Q?lPln7qxNlzSl3EsBVkNov45/3XtnvQhP67KCK5oCyvDFMAC2gWLphMO+ZEzq?=
+ =?us-ascii?Q?6/7O2Nqe464TRPmUC7z1BcLA8r9dxerheta6vqQmMDxHj5U1rBQVQIj7iGDW?=
+ =?us-ascii?Q?QXaKuVU/Gl/F6HoAiGkm40dJ4ebFLiPNA+X/ScIk8USjz7I4sjiAZMKGJNNl?=
+ =?us-ascii?Q?nV/VAz9lE6gvMi7asrUByAbscVeHwDZo/eOwV3kKSzd4L2rlanVPx2c5kvk8?=
+ =?us-ascii?Q?GECqkHhBm/eCGzEla0cc/Gfxr8MWS2LRo2P6cgcH39igUn3lTJyklESEt5Qa?=
+ =?us-ascii?Q?CWfpkYak7LG/1SbktBjADO8S6xhBN7J5k+uSVfeTDg1ul/UsYEcXWo8nJB+3?=
+ =?us-ascii?Q?RzZ+G2TIuGmXBZu33WA0AtOSBD3zgIA+Ac+a8GPPhokTIPsPAhvTz5t2lF3/?=
+ =?us-ascii?Q?BJsoqRy2EwWX7lAu6Xx++ysno2fUn6JvoymPsj+Eb4YyDTCt7rtfaxCrgzkg?=
+ =?us-ascii?Q?LHRH5Ay2ULI+uJtqm0J6roIKQlK4SbDwARQlWlx1QVijiScaC4woRz/M3vOd?=
+ =?us-ascii?Q?YQVYGaw/lDXksHC5GboZfYQsV/0vIt3xHDFR4DZXfvOq5R2wji4+xPVasVtt?=
+ =?us-ascii?Q?RiDgf7sIAwxYcH25qCpsWpeBJ0X2uE2FjBfUtMKXNXAl+R7/Nr+O6tFtKzmx?=
+ =?us-ascii?Q?PSeHXkCiVftPinnS5VTYT5RZLvPTSMSj6/wWqbdI2cJp6UbBYlI0qFy2JGhq?=
+ =?us-ascii?Q?Ill3i4T2sxOD6Cmo1Nb9uR4sv0PmTdEz7y0WzdR5Tm5mKmR9nn1A9pEW2HJc?=
+ =?us-ascii?Q?3dOBs3GrC6iHBXpzNYrbVSpGZPODE5FJdYPt+/ZNKNAEF328S2tRqlouXk6Z?=
+ =?us-ascii?Q?KeGVV0o5gq19LLnZaBSbX734hD8lfNy8l5d9hkW7T66eupj0ItUwSvh2GRYx?=
+ =?us-ascii?Q?7sqUILx2msDOwqE2qY2oZnwKbujq926LJTGKvTos07X1Z+zsTJvVdI0r6Z10?=
+ =?us-ascii?Q?YpEk9kew5LNPh6KIGGwWYK8=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3256.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dafd8301-f086-4065-5d67-08d9ced1c6a9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jan 2022 15:57:42.4704
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Yvib+RxDHl+2U+uDCtUYAnpWl9ynbZSopFmjO5Ec5HFyBl9KRGZyDUkfVKM7EVJcVXd7pWX+xFNe18IrdIzg6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4877
+X-OriginatorOrg: intel.com
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
-
-On 12/30/21 00:14, Hans de Goede wrote:
-> Hi All,
-> 
-> As a small(ish) hoppy project over the holidays I've been looking into
-> getting some (somewhat older) x86 tablets which ship with Android as the
-> only OS on their factory image working with the mainline kernel.
-> 
-> These typically have pretty broken DSDTs since the Android image kernel
-> just has everything hardcoded.
-> 
-> This patch-series makes most things on 3 of these tablets work with the
-> mainline kernel and lays the groundwork for adding support for similar
-> tablets.
-> 
-> Since the ACPI tables on these devices clearly are buggy this series is
-> written so as to add minimal changes to the ACPI core code, leaving all
-> of the heavy lifting to the recently introduced (in linux-next)
-> drivers/platform/x86/x86-android-tablets.c module, which when built as
-> a module only autoloads on affected devices based on DMI matching.
-> 
-> And when this module is disabled the added acpi_quirk_skip_*_enumeration()
-> helpers are replaced by inline stubs and even the minimally added core
-> code will be optimized away.
-> 
-> The ACPI core changes are in patches 1-3 of this series. Since the
-> i2c and serdev ACPI enumeration changes are very small and depend on
-> patch 1, I believe it would be best for patches 1-3 to all be merged
-> through Rafael's ACPI tree.
-
-I've added patches 4-12 to my pdx86/review-hans (soon to be for-next)
-branch now.
-
-Regards,
-
-Hans
+Are these new warnings, or legacy warnings?
 
 
-> Hans de Goede (12):
->   ACPI / x86: Add acpi_quirk_skip_[i2c_client|serdev]_enumeration()
->     helpers
->   i2c: acpi: Do not instantiate I2C-clients on boards with known bogus
->     DSDT entries
->   serdev: Do not instantiate serdevs on boards with known bogus DSDT
->     entries
->   platform/x86: x86-android-tablets: Don't return -EPROBE_DEFER from a
->     non probe() function
->   platform/x86: x86-android-tablets: Add support for PMIC interrupts
->   platform/x86: x86-android-tablets: Add support for instantiating
->     platform-devs
->   platform/x86: x86-android-tablets: Add support for instantiating
->     serdevs
->   platform/x86: x86-android-tablets: Add support for registering GPIO
->     lookup tables
->   platform/x86: x86-android-tablets: Add support for preloading modules
->   platform/x86: x86-android-tablets: Add Asus TF103C data
->   platform/x86: x86-android-tablets: Add Asus MeMO Pad 7 ME176C data
->   platform/x86: x86-android-tablets: Add TM800A550L data
-> 
->  drivers/acpi/x86/utils.c                   |  96 ++++
->  drivers/i2c/i2c-core-acpi.c                |  17 +
->  drivers/platform/x86/Kconfig               |   2 +-
->  drivers/platform/x86/x86-android-tablets.c | 562 ++++++++++++++++++++-
->  drivers/tty/serdev/core.c                  |  14 +
->  include/acpi/acpi_bus.h                    |  16 +
->  6 files changed, 698 insertions(+), 9 deletions(-)
-> 
+-----Original Message-----
+From: kernel test robot <lkp@intel.com>=20
+Sent: Tuesday, December 28, 2021 10:30 PM
+To: Rafael J. Wysocki <rjw@rjwysocki.net>
+Cc: linux-pm@vger.kernel.org; devel@acpica.org; linux-acpi@vger.kernel.org
+Subject: [Devel] [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING 8d681=
+a5245f0a5cfb20326b4f6578af1adb8676b
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-p=
+m.git bleeding-edge branch HEAD: 8d681a5245f0a5cfb20326b4f6578af1adb8676b  =
+Merge branch 'acpi-sysfs' into bleeding-edge
+
+Warning reports:
+
+https://lore.kernel.org/llvm/202112280907.gTYYYuB4-lkp@intel.com
+
+Warning in current branch:
+
+drivers/acpi/acpica/exregion.c:519:17: warning: performing pointer subtract=
+ion with a null pointer has undefined behavior [-Wnull-pointer-subtraction]
+
+Warning ids grouped by kconfigs:
+
+clang_recent_errors
+|-- i386-randconfig-a001-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a002-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a003-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a004-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a005-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a006-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a011-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a012-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a013-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a014-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a015-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a016-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a001-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a002-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a003-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a004-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a005-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a006-20211229
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a011-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a012-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a013-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a014-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a015-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a016-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-r012-20211228
+|   `--=20
+|drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+|ith-a-null-pointer-has-undefined-behavior
+`-- x86_64-randconfig-r024-20211228
+    `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtracti=
+on-with-a-null-pointer-has-undefined-behavior
+
+elapsed time: 725m
+
+configs tested: 104
+configs skipped: 3
+
+gcc tested configs:
+arm                              allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm64                               defconfig
+arm64                            allyesconfig
+i386                 randconfig-c001-20211228
+arm                           sama7_defconfig
+arc                        nsim_700_defconfig
+arm                            qcom_defconfig
+arm                          pxa3xx_defconfig
+powerpc                   bluestone_defconfig
+mips                      bmips_stb_defconfig
+arm                             ezx_defconfig
+sh                           se7343_defconfig
+powerpc                     skiroot_defconfig
+arm                         lpc18xx_defconfig
+arm                       imx_v6_v7_defconfig
+arm                          pxa910_defconfig
+powerpc                  mpc885_ads_defconfig
+powerpc                     pq2fads_defconfig
+arm                           sama5_defconfig
+arm                        shmobile_defconfig
+arc                    vdk_hs38_smp_defconfig
+csky                             alldefconfig
+riscv             nommu_k210_sdcard_defconfig
+arm                  randconfig-c002-20211229
+ia64                                defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+csky                                defconfig
+alpha                               defconfig
+nds32                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+s390                             allyesconfig
+i386                             allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+sparc                            allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+arc                  randconfig-r043-20211228
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+x86_64                    rhel-8.3-kselftests
+
+clang tested configs:
+x86_64               randconfig-a001-20211229
+x86_64               randconfig-a003-20211229
+x86_64               randconfig-a004-20211229
+x86_64               randconfig-a002-20211229
+x86_64               randconfig-a005-20211229
+x86_64               randconfig-a006-20211229
+i386                 randconfig-a002-20211229
+i386                 randconfig-a003-20211229
+i386                 randconfig-a001-20211229
+i386                 randconfig-a005-20211229
+i386                 randconfig-a006-20211229
+i386                 randconfig-a004-20211229
+x86_64               randconfig-a013-20211228
+x86_64               randconfig-a012-20211228
+x86_64               randconfig-a011-20211228
+x86_64               randconfig-a016-20211228
+x86_64               randconfig-a015-20211228
+x86_64               randconfig-a014-20211228
+i386                 randconfig-a012-20211228
+i386                 randconfig-a011-20211228
+i386                 randconfig-a013-20211228
+i386                 randconfig-a016-20211228
+i386                 randconfig-a014-20211228
+i386                 randconfig-a015-20211228
+hexagon              randconfig-r041-20211228
+riscv                randconfig-r042-20211228
+s390                 randconfig-r044-20211228
+hexagon              randconfig-r045-20211228
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation https://lists.01.org/hyperk=
+itty/list/kbuild-all@lists.01.org
+_______________________________________________
+Devel mailing list -- devel@acpica.org
+To unsubscribe send an email to devel-leave@acpica.org %(web_page_url)slist=
+info%(cgiext)s/%(_internal_name)s
