@@ -2,307 +2,340 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 127E7483473
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jan 2022 16:58:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0FEE48350F
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jan 2022 17:49:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232774AbiACP6q (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jan 2022 10:58:46 -0500
-Received: from foss.arm.com ([217.140.110.172]:44038 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229545AbiACP6q (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 3 Jan 2022 10:58:46 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4FCE6D;
-        Mon,  3 Jan 2022 07:58:45 -0800 (PST)
-Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id F3B303F774;
-        Mon,  3 Jan 2022 07:58:44 -0800 (PST)
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH v2] ACPI: PCC: Implement OperationRegion handler for the PCC Type 3 subtype
-Date:   Mon,  3 Jan 2022 15:58:38 +0000
-Message-Id: <20220103155838.616580-1-sudeep.holla@arm.com>
-X-Mailer: git-send-email 2.25.1
+        id S234632AbiACQtS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jan 2022 11:49:18 -0500
+Received: from mail-qk1-f176.google.com ([209.85.222.176]:34439 "EHLO
+        mail-qk1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231931AbiACQtS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jan 2022 11:49:18 -0500
+Received: by mail-qk1-f176.google.com with SMTP id b85so31846830qkc.1;
+        Mon, 03 Jan 2022 08:49:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=P5XLm7blW/qx7b/luF97YrO03ortKkqhxYqNga2al/I=;
+        b=Wubie3X2ZJBUOl+bNCZ+pjSbSFSHctBhosnSXd4zmXjST3jMu/EQnENNO9TlpfOnUj
+         Fmbb3UzqW+tDo/7L7Zm7kZcPqmlsaEbyZEzKsJ8vYxpq9WAb7uWKfAWEm1Cb8XtKj3u2
+         v8h8ReXGe/ZMNZmVq4dIaM2f9NmYGVgLme/yiTPGEDCA4NTb62htjlQwFcBb910OamCR
+         6E9KdVWFJDv2LJWPpktYvtBPIJUeWW2J4iYBmHUqeUkI3XCFbvYlMIwjfFkMrhqEK9Op
+         FeCB76kRlRXO81XKEJPoAkiP7tRoaLcEbynAjj03uE4QGSMTcwlwd4SGGuI05QruOWOt
+         hibQ==
+X-Gm-Message-State: AOAM530tbpVjTh3Eo+SqsZactDPDSa4V5Mq/eE8IthfU7KB7+Q4OyRNU
+        HA1QbGf76ZcuAiAJe9WWjUIYqaHRI7eWj730i94uRN5yM8k=
+X-Google-Smtp-Source: ABdhPJySwwd/GmduRwn9q0eTVHybZdJDmkL/qm2qBqrABak204hAqI2i6ykQIPjAdMpHP1Poca2hiKcpi1drsPpZbfk=
+X-Received: by 2002:a05:620a:40d1:: with SMTP id g17mr33403308qko.621.1641228557684;
+ Mon, 03 Jan 2022 08:49:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <61cc007a.mWwpG8hntz2tC9i6%lkp@intel.com> <BYAPR11MB32566B65A82D815C214720E487499@BYAPR11MB3256.namprd11.prod.outlook.com>
+In-Reply-To: <BYAPR11MB32566B65A82D815C214720E487499@BYAPR11MB3256.namprd11.prod.outlook.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 3 Jan 2022 17:49:06 +0100
+Message-ID: <CAJZ5v0gx70huuZ7tj_iMZR3ViFfzX9F2Zt4BxqcHk_9OdioP1Q@mail.gmail.com>
+Subject: Re: [Devel] [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING 8d681a5245f0a5cfb20326b4f6578af1adb8676b
+To:     "Moore, Robert" <robert.moore@intel.com>
+Cc:     lkp <lkp@intel.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "devel@acpica.org" <devel@acpica.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Arnd Bergmann <arnd@kernel.org>
+Content-Type: multipart/mixed; boundary="0000000000002dc0fb05d4b04d79"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-PCC OpRegion provides a mechanism to communicate with the platform
-directly from the AML. PCCT provides the list of PCC channel available
-in the platform, a subset or all of them can be used in PCC Opregion.
+--0000000000002dc0fb05d4b04d79
+Content-Type: text/plain; charset="UTF-8"
 
-This patch registers the PCC OpRegion handler before ACPI tables are
-loaded. This relies on the special context data passed to identify and
-set up the PCC channel before the OpRegion handler is executed for the
-first time.
+On Mon, Jan 3, 2022 at 4:57 PM Moore, Robert <robert.moore@intel.com> wrote:
+>
+> Are these new warnings, or legacy warnings?
 
-Typical PCC Opregion declaration looks like this:
+They are new, but AFAICS they appear because an old macro,
+ACPI_PTR_DIFF(), has been used for defining a new one,
+ACPI_PTR_TO_PHYSADDR(), which is now triggering the old warning in a
+new way.
 
-OperationRegion (PFRM, PCC, 2, 0x74)
-Field (PFRM, ByteAcc, NoLock, Preserve)
-{
-    SIGN,   32,
-    FLGS,   32,
-    LEN,    32,
-    CMD,    32,
-    DATA,   800
-}
+I guess this could be addressed by applying the Arnd's patch at
+https://patchwork.kernel.org/project/linux-acpi/patch/20210927121338.938994-1-arnd@kernel.org/
+, but that's problematic for the upstream.
 
-It contains four named double words followed by 100 bytes of buffer
-names DATA.
+However, I'm wondering if we can do something like the attached patch instead.
 
-ASL can fill out the buffer something like:
 
-    /* Create global or local buffer */
-    Name (BUFF, Buffer (0x0C){})
-    /* Create double word fields over the buffer */
-    CreateDWordField (BUFF, 0x0, WD0)
-    CreateDWordField (BUFF, 0x04, WD1)
-    CreateDWordField (BUFF, 0x08, WD2)
 
-    /* Fill the named fields */
-    WD0 = 0x50434300
-    SIGN = BUFF
-    WD0 = 1
-    FLGS = BUFF
-    WD0 = 0x10
-    LEN = BUFF
+> -----Original Message-----
+> From: kernel test robot <lkp@intel.com>
+> Sent: Tuesday, December 28, 2021 10:30 PM
+> To: Rafael J. Wysocki <rjw@rjwysocki.net>
+> Cc: linux-pm@vger.kernel.org; devel@acpica.org; linux-acpi@vger.kernel.org
+> Subject: [Devel] [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING 8d681a5245f0a5cfb20326b4f6578af1adb8676b
+>
+> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge branch HEAD: 8d681a5245f0a5cfb20326b4f6578af1adb8676b  Merge branch 'acpi-sysfs' into bleeding-edge
+>
+> Warning reports:
+>
+> https://lore.kernel.org/llvm/202112280907.gTYYYuB4-lkp@intel.com
+>
+> Warning in current branch:
+>
+> drivers/acpi/acpica/exregion.c:519:17: warning: performing pointer subtraction with a null pointer has undefined behavior [-Wnull-pointer-subtraction]
+>
+> Warning ids grouped by kconfigs:
+>
+> clang_recent_errors
+> |-- i386-randconfig-a001-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a002-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a003-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a004-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a005-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a006-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a011-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a012-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a013-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a014-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a015-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- i386-randconfig-a016-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a001-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a002-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a003-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a004-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a005-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a006-20211229
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a011-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a012-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a013-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a014-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a015-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-a016-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> |-- x86_64-randconfig-r012-20211228
+> |   `--
+> |drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-w
+> |ith-a-null-pointer-has-undefined-behavior
+> `-- x86_64-randconfig-r024-20211228
+>     `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+>
+> elapsed time: 725m
+>
+> configs tested: 104
+> configs skipped: 3
+>
+> gcc tested configs:
+> arm                              allyesconfig
+> arm                              allmodconfig
+> arm                                 defconfig
+> arm64                               defconfig
+> arm64                            allyesconfig
+> i386                 randconfig-c001-20211228
+> arm                           sama7_defconfig
+> arc                        nsim_700_defconfig
+> arm                            qcom_defconfig
+> arm                          pxa3xx_defconfig
+> powerpc                   bluestone_defconfig
+> mips                      bmips_stb_defconfig
+> arm                             ezx_defconfig
+> sh                           se7343_defconfig
+> powerpc                     skiroot_defconfig
+> arm                         lpc18xx_defconfig
+> arm                       imx_v6_v7_defconfig
+> arm                          pxa910_defconfig
+> powerpc                  mpc885_ads_defconfig
+> powerpc                     pq2fads_defconfig
+> arm                           sama5_defconfig
+> arm                        shmobile_defconfig
+> arc                    vdk_hs38_smp_defconfig
+> csky                             alldefconfig
+> riscv             nommu_k210_sdcard_defconfig
+> arm                  randconfig-c002-20211229
+> ia64                                defconfig
+> ia64                             allmodconfig
+> ia64                             allyesconfig
+> m68k                             allmodconfig
+> m68k                                defconfig
+> m68k                             allyesconfig
+> nds32                             allnoconfig
+> nios2                               defconfig
+> arc                              allyesconfig
+> csky                                defconfig
+> alpha                               defconfig
+> nds32                               defconfig
+> alpha                            allyesconfig
+> nios2                            allyesconfig
+> arc                                 defconfig
+> sh                               allmodconfig
+> h8300                            allyesconfig
+> xtensa                           allyesconfig
+> parisc                              defconfig
+> s390                             allmodconfig
+> parisc                           allyesconfig
+> s390                                defconfig
+> s390                             allyesconfig
+> i386                             allyesconfig
+> sparc                               defconfig
+> i386                                defconfig
+> i386                   debian-10.3-kselftests
+> i386                              debian-10.3
+> sparc                            allyesconfig
+> mips                             allyesconfig
+> mips                             allmodconfig
+> powerpc                           allnoconfig
+> powerpc                          allmodconfig
+> powerpc                          allyesconfig
+> arc                  randconfig-r043-20211228
+> riscv                    nommu_k210_defconfig
+> riscv                            allyesconfig
+> riscv                    nommu_virt_defconfig
+> riscv                             allnoconfig
+> riscv                               defconfig
+> riscv                          rv32_defconfig
+> riscv                            allmodconfig
+> um                           x86_64_defconfig
+> um                             i386_defconfig
+> x86_64                           allyesconfig
+> x86_64                              defconfig
+> x86_64                               rhel-8.3
+> x86_64                          rhel-8.3-func
+> x86_64                                  kexec
+> x86_64                    rhel-8.3-kselftests
+>
+> clang tested configs:
+> x86_64               randconfig-a001-20211229
+> x86_64               randconfig-a003-20211229
+> x86_64               randconfig-a004-20211229
+> x86_64               randconfig-a002-20211229
+> x86_64               randconfig-a005-20211229
+> x86_64               randconfig-a006-20211229
+> i386                 randconfig-a002-20211229
+> i386                 randconfig-a003-20211229
+> i386                 randconfig-a001-20211229
+> i386                 randconfig-a005-20211229
+> i386                 randconfig-a006-20211229
+> i386                 randconfig-a004-20211229
+> x86_64               randconfig-a013-20211228
+> x86_64               randconfig-a012-20211228
+> x86_64               randconfig-a011-20211228
+> x86_64               randconfig-a016-20211228
+> x86_64               randconfig-a015-20211228
+> x86_64               randconfig-a014-20211228
+> i386                 randconfig-a012-20211228
+> i386                 randconfig-a011-20211228
+> i386                 randconfig-a013-20211228
+> i386                 randconfig-a016-20211228
+> i386                 randconfig-a014-20211228
+> i386                 randconfig-a015-20211228
+> hexagon              randconfig-r041-20211228
+> riscv                randconfig-r042-20211228
+> s390                 randconfig-r044-20211228
+> hexagon              randconfig-r045-20211228
+>
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> _______________________________________________
+> Devel mailing list -- devel@acpica.org
+> To unsubscribe send an email to devel-leave@acpica.org %(web_page_url)slistinfo%(cgiext)s/%(_internal_name)s
 
-    /* Fill the payload in the DATA buffer */
-    WD0 = 0
-    WD1 = 0x08
-    WD2 = 0
-    DATA = BUFF
+--0000000000002dc0fb05d4b04d79
+Content-Type: text/x-patch; charset="US-ASCII"; name="acpica-build.patch"
+Content-Disposition: attachment; filename="acpica-build.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_kxywsiy50>
+X-Attachment-Id: f_kxywsiy50
 
-    /* Write to CMD field to trigger handler */
-    WD0 = 0x4404
-    CMD = BUFF
-
-This buffer is received by acpi_pcc_opregion_space_handler. This
-handler will fetch the complete buffer via internal_pcc_buffer.
-
-The setup handler will receive the special PCC context data which will
-contain the PCC channel index which used to set up the channel. The
-buffer pointer and length is saved in region context which is then used
-in the handler.
-
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
----
- drivers/acpi/Kconfig    |  17 ++++++
- drivers/acpi/Makefile   |   1 +
- drivers/acpi/acpi_pcc.c | 120 ++++++++++++++++++++++++++++++++++++++++
- drivers/acpi/bus.c      |   1 +
- include/linux/acpi.h    |   6 ++
- 5 files changed, 145 insertions(+)
- create mode 100644 drivers/acpi/acpi_pcc.c
-
-v1[0]-v2:
-	- Addressed all the comments from Rafael[1]
-
-[0] https://lore.kernel.org/r/20211222190919.137550-1-sudeep.holla@arm.com/
-[1] https://lore.kernel.org/r/CAJZ5v0jWJVSFS3KTavfCTzxWq-Q361nGDCWf+VLXRu-9Z4MJsQ@mail.gmail.com
-
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index 91f1da16934d..8cdc7860b6e6 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -546,6 +546,23 @@ config ACPI_PPTT
- 	bool
- endif
-
-+config ACPI_PCC
-+	bool "ACPI PCC Address Space"
-+	depends on PCC
-+	default y
-+	help
-+	  The PCC Address Space also referred as PCC Operation Region pertains
-+	  to the region of PCC subspace that succeeds the PCC signature.
-+
-+	  The PCC Operation Region works in conjunction with the PCC Table
-+	  (Platform Communications Channel Table). PCC subspaces that are
-+	  marked for use as PCC Operation Regions must not be used as PCC
-+	  subspaces for the standard ACPI features such as CPPC, RASF, PDTT and
-+	  MPST. These standard features must always use the PCC Table instead.
-+
-+	  Enable this feature if you want to set up and install the PCC Address
-+	  Space handler to handle PCC OpRegion in the firmware.
-+
- source "drivers/acpi/pmic/Kconfig"
-
- config ACPI_VIOT
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index d3dc79298ce3..f47032769f69 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -67,6 +67,7 @@ acpi-$(CONFIG_ACPI_LPIT)	+= acpi_lpit.o
- acpi-$(CONFIG_ACPI_GENERIC_GSI) += irq.o
- acpi-$(CONFIG_ACPI_WATCHDOG)	+= acpi_watchdog.o
- acpi-$(CONFIG_ACPI_PRMT)	+= prmt.o
-+acpi-$(CONFIG_ACPI_PCC)		+= acpi_pcc.o
-
- # Address translation
- acpi-$(CONFIG_ACPI_ADXL)	+= acpi_adxl.o
-diff --git a/drivers/acpi/acpi_pcc.c b/drivers/acpi/acpi_pcc.c
-new file mode 100644
-index 000000000000..64552fdb7347
---- /dev/null
-+++ b/drivers/acpi/acpi_pcc.c
-@@ -0,0 +1,120 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Author: Sudeep Holla <sudeep.holla@arm.com>
-+ * Copyright 2021 Arm Limited
-+ *
-+ * The PCC Address Space also referred as PCC Operation Region pertains to the
-+ * region of PCC subspace that succeeds the PCC signature. The PCC Operation
-+ * Region works in conjunction with the PCC Table(Platform Communications
-+ * Channel Table). PCC subspaces that are marked for use as PCC Operation
-+ * Regions must not be used as PCC subspaces for the standard ACPI features
-+ * such as CPPC, RASF, PDTT and MPST. These standard features must always use
-+ * the PCC Table instead.
-+ *
-+ * This driver sets up the PCC Address Space and installs an handler to enable
-+ * handling of PCC OpRegion in the firmware.
-+ *
-+ */
-+#include <linux/kernel.h>
-+#include <linux/acpi.h>
-+#include <linux/completion.h>
-+#include <linux/idr.h>
-+#include <linux/io.h>
-+
-+#include <acpi/pcc.h>
-+
-+struct pcc_data {
-+	struct pcc_mbox_chan *pcc_chan;
-+	void __iomem *pcc_comm_addr;
-+	struct completion done;
-+	struct mbox_client cl;
-+	struct acpi_pcc_info ctx;
-+};
-+
-+struct acpi_pcc_info pcc_ctx;
-+
-+static void pcc_rx_callback(struct mbox_client *cl, void *m)
-+{
-+	struct pcc_data *data = container_of(cl, struct pcc_data, cl);
-+
-+	complete(&data->done);
-+}
-+
-+static acpi_status
-+acpi_pcc_address_space_setup(acpi_handle region_handle, u32 function,
-+			     void *handler_context,  void **region_context)
-+{
-+	struct pcc_data *data;
-+	struct acpi_pcc_info *ctx = handler_context;
-+	struct pcc_mbox_chan *pcc_chan;
-+
-+	data = kzalloc(sizeof(*data), GFP_KERNEL);
-+	if (!data)
-+		return_ACPI_STATUS(AE_NO_MEMORY);
-+
-+	data->cl.rx_callback = pcc_rx_callback;
-+	data->cl.knows_txdone = true;
-+	data->ctx.length = ctx->length;
-+	data->ctx.subspace_id = ctx->subspace_id;
-+	data->ctx.internal_buffer = ctx->internal_buffer;
-+
-+	init_completion(&data->done);
-+	data->pcc_chan = pcc_mbox_request_channel(&data->cl, ctx->subspace_id);
-+	if (IS_ERR(data->pcc_chan)) {
-+		pr_err("Failed to find PCC channel for subspace %d\n",
-+		       ctx->subspace_id);
-+		return_ACPI_STATUS(AE_NOT_FOUND);
-+	}
-+
-+	pcc_chan = data->pcc_chan;
-+	data->pcc_comm_addr = acpi_os_ioremap(pcc_chan->shmem_base_addr,
-+					      pcc_chan->shmem_size);
-+	if (!data->pcc_comm_addr) {
-+		pr_err("Failed to ioremap PCC comm region mem for %d\n",
-+		       ctx->subspace_id);
-+		return_ACPI_STATUS(AE_NO_MEMORY);
-+	}
-+
-+	*region_context = data;
-+	return_ACPI_STATUS(AE_OK);
-+}
-+
-+static acpi_status
-+acpi_pcc_address_space_handler(u32 function, acpi_physical_address addr,
-+			       u32 bits, acpi_integer *value,
-+			       void *handler_context, void *region_context)
-+{
-+	int ret;
-+	struct pcc_data *data = region_context;
-+
-+	reinit_completion(&data->done);
-+
-+	/* Write to Shared Memory */
-+	memcpy_toio(data->pcc_comm_addr, (void *)value, data->ctx.length);
-+
-+	ret = mbox_send_message(data->pcc_chan->mchan, NULL);
-+	if (ret < 0)
-+		return_ACPI_STATUS(AE_ERROR);
-+
-+	if (data->pcc_chan->mchan->mbox->txdone_irq)
-+		wait_for_completion(&data->done);
-+
-+	mbox_client_txdone(data->pcc_chan->mchan, ret);
-+
-+	memcpy_fromio(value, data->pcc_comm_addr, data->ctx.length);
-+
-+	return_ACPI_STATUS(AE_OK);
-+}
-+
-+void __init acpi_init_pcc(void)
-+{
-+	acpi_status status;
-+
-+	status = acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
-+						    ACPI_ADR_SPACE_PLATFORM_COMM,
-+						    &acpi_pcc_address_space_handler,
-+						    &acpi_pcc_address_space_setup,
-+						    &pcc_ctx);
-+	if (ACPI_FAILURE(status))
-+		pr_alert("OperationRegion handler could not be installed\n");
-+}
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index dd535b4b9a16..75a61626eddd 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1320,6 +1320,7 @@ static int __init acpi_init(void)
- 		pr_debug("%s: kset create error\n", __func__);
-
- 	init_prmt();
-+	acpi_init_pcc();
- 	result = acpi_bus_init();
- 	if (result) {
- 		kobject_put(acpi_kobj);
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 6c0798db6bde..eaeb4b9255bc 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1389,6 +1389,12 @@ static inline int find_acpi_cpu_cache_topology(unsigned int cpu, int level)
- }
- #endif
-
-+#ifdef CONFIG_ACPI_PCC
-+void acpi_init_pcc(void);
-+#else
-+static inline void acpi_init_pcc(void) { }
-+#endif
-+
- #ifdef CONFIG_ACPI
- extern void acpi_device_notify(struct device *dev);
- extern void acpi_device_notify_remove(struct device *dev);
---
-2.25.1
-
+LS0tCiBpbmNsdWRlL2FjcGkvYWN0eXBlcy5oICAgICAgICAgIHwgICAgNCArKysrCiBpbmNsdWRl
+L2FjcGkvcGxhdGZvcm0vYWNsaW51eC5oIHwgICAgNSArKysrKwogMiBmaWxlcyBjaGFuZ2VkLCA5
+IGluc2VydGlvbnMoKykKCkluZGV4OiBsaW51eC1wbS9pbmNsdWRlL2FjcGkvcGxhdGZvcm0vYWNs
+aW51eC5oCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT0KLS0tIGxpbnV4LXBtLm9yaWcvaW5jbHVkZS9hY3BpL3BsYXRmb3Jt
+L2FjbGludXguaAorKysgbGludXgtcG0vaW5jbHVkZS9hY3BpL3BsYXRmb3JtL2FjbGludXguaApA
+QCAtMjEzLDQgKzIxMyw5IEBACiAKICNlbmRpZgkJCQkvKiBfX0tFUk5FTF9fICovCiAKKyNkZWZp
+bmUgYWNwaV91aW50cHRyX3QJCXVpbnRwdHJfdAorCisjZGVmaW5lIEFDUElfVE9fSU5URUdFUihw
+KQkoKHVpbnRwdHJfdCkocCkpCisjZGVmaW5lIEFDUElfT0ZGU0VUKGQsIGYpCW9mZnNldG9mKGQs
+IGYpCisKICNlbmRpZgkJCQkvKiBfX0FDTElOVVhfSF9fICovCkluZGV4OiBsaW51eC1wbS9pbmNs
+dWRlL2FjcGkvYWN0eXBlcy5oCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KLS0tIGxpbnV4LXBtLm9yaWcvaW5jbHVkZS9h
+Y3BpL2FjdHlwZXMuaAorKysgbGludXgtcG0vaW5jbHVkZS9hY3BpL2FjdHlwZXMuaApAQCAtNTA3
+LDggKzUwNywxMiBAQCB0eXBlZGVmIHU2NCBhY3BpX2ludGVnZXI7CiAvKiBQb2ludGVyL0ludGVn
+ZXIgdHlwZSBjb252ZXJzaW9ucyAqLwogCiAjZGVmaW5lIEFDUElfVE9fUE9JTlRFUihpKSAgICAg
+ICAgICAgICAgQUNQSV9DQVNUX1BUUiAodm9pZCwgKGFjcGlfc2l6ZSkgKGkpKQorI2lmbmRlZiBB
+Q1BJX1RPX0lOVEVHRVIKICNkZWZpbmUgQUNQSV9UT19JTlRFR0VSKHApICAgICAgICAgICAgICBB
+Q1BJX1BUUl9ESUZGIChwLCAodm9pZCAqKSAwKQorI2VuZGlmCisjaWZuZGVmIEFDUElfT0ZGU0VU
+CiAjZGVmaW5lIEFDUElfT0ZGU0VUKGQsIGYpICAgICAgICAgICAgICAgQUNQSV9QVFJfRElGRiAo
+JigoKGQgKikgMCktPmYpLCAodm9pZCAqKSAwKQorI2VuZGlmCiAjZGVmaW5lIEFDUElfUFRSX1RP
+X1BIWVNBRERSKGkpICAgICAgICAgQUNQSV9UT19JTlRFR0VSKGkpCiAKIC8qIE9wdGltaXphdGlv
+bnMgZm9yIDQtY2hhcmFjdGVyICgzMi1iaXQpIGFjcGlfbmFtZSBtYW5pcHVsYXRpb24gKi8K
+--0000000000002dc0fb05d4b04d79--
