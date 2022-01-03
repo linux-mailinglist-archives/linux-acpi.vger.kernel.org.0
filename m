@@ -2,54 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DCD3482FC1
-	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jan 2022 11:05:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4E70482FC4
+	for <lists+linux-acpi@lfdr.de>; Mon,  3 Jan 2022 11:07:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232474AbiACKFj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 3 Jan 2022 05:05:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37318 "EHLO
+        id S232588AbiACKHC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 3 Jan 2022 05:07:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbiACKFj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jan 2022 05:05:39 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2EEC061761
-        for <linux-acpi@vger.kernel.org>; Mon,  3 Jan 2022 02:05:38 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id b13so133863364edd.8
-        for <linux-acpi@vger.kernel.org>; Mon, 03 Jan 2022 02:05:38 -0800 (PST)
+        with ESMTP id S232585AbiACKHC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 3 Jan 2022 05:07:02 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D4AC061761
+        for <linux-acpi@vger.kernel.org>; Mon,  3 Jan 2022 02:07:01 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id y22so134002062edq.2
+        for <linux-acpi@vger.kernel.org>; Mon, 03 Jan 2022 02:07:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=zyqrhqFrOjKgAQ/NgiI6myye+ZTSj+oGpoQCEyxK7I8=;
-        b=hh82xL5h3iuQi0w0UWmziHKDei2V7WmW8Q1scEW+3QAUMeU9NQzjI4tQbE7SdjFtf1
-         jSJxTC6JXmJC30t8UiD4KSbWgFjgI5vzj/f4kgXCMMF1cXpyBUaEbmKaciHqvMxsbzsA
-         s6srxiCjzdc1gKO+ggXM4XDCqtT2PwzGVzkb/jUr2J2ZhWo5kOfS2MJEdIdlgYONwV+r
-         8UXM2kZvxf61JNCPztpCEKlCSclwA8LLCiKZq9s5TG2Hj+M4q7kIxpkcgP2mbBpk/j8b
-         XueqCMflL2VGG7B2jaKdv/ucS5zBVJXPEWQ01p2ABMjOQzlW4lcBw20nefVTfWSS2F8G
-         U11g==
+        bh=HDDNrbo94yGf/mFPUSwm53ZPq2DtpQ/AKgaZuhvvG3E=;
+        b=uDZejrRMI89xz8mKDplRD8+MVXUW3LjgL0hyxTBzUazxljJmOZBruVG81LZdhMVGWL
+         bEJbh3791y8SEiOtnJd+rN5rtbJ5bR9huauO3s8vN5HoKNyAb5Ef2DCwCDFEmb0Kl40/
+         Z5RwO0I5MV6Fa5I8rbm0VfogoOJWWy0sE4YBhl954dEhj6cQbGKA55tSV+ht3G8oSOpu
+         8ZucOpJuro6X9/9zY8erAKIIYoBVT0agTTfCZLqWlLqFs8UPnf12iBQQJoQmU62vTwgH
+         Q+XC6JthkDC4QEO7ZQUrUPZyM/WsNiQHmMS6j9a4Xtv8QxHJzDBMCaTGewIwrZnqQSh9
+         gZHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=zyqrhqFrOjKgAQ/NgiI6myye+ZTSj+oGpoQCEyxK7I8=;
-        b=d6B75+WfmvL1owePLCZhWzVAOCDqOWD5P7gBbW0iDHRfP9fSWs2lEq497zcI70HtTl
-         fR5/Ahk7aWFy/w8FhipTx9TcFdSQn+vHtsOmOb+AzYo6+TDexKTWmxoGmsWvAbY7s3xJ
-         HVrsFEEn35AyVBJ1jFfQNOdHZb4hRsayWGXaiQLciArpBPtzMBGk+dX8BB70le/tGldv
-         o9XhXeHYSjvboxT0jiVn9qvP/TA0QFXt7yYqOQZNuDcCxnAcb8vPALgOp2wm8JqOrbv9
-         m+0MKJquPNYoswBbqmAYmV3X8QWessk41EnGfdXE9A7pxkfPfqKdqBOw9grtQPCFHuOR
-         xw1Q==
-X-Gm-Message-State: AOAM533DGv53pZLb8T9Cstud602DoTaA7nM/mDk6fyqajxi9NG+yvH/I
-        m7Ia8YWAnTZu/sJkstBLAqSqe6vzy7e6Hd1h8tX3VQ==
-X-Google-Smtp-Source: ABdhPJz0LLpdg5ZlhYjWS1ccr4u0SOQqQpZlRsNizsQSMtlQ61aLAXVlFvutkF5sr+/qADHHxZmu4uWBVmQTZlrVwhI=
-X-Received: by 2002:a50:9556:: with SMTP id v22mr43073644eda.69.1641204336956;
- Mon, 03 Jan 2022 02:05:36 -0800 (PST)
+        bh=HDDNrbo94yGf/mFPUSwm53ZPq2DtpQ/AKgaZuhvvG3E=;
+        b=u1zHfGyJ9a4tJ8Q4q+mvkAiRygm3me+PPHg1jp7UWog+3S8JKqwLJdZrk7FdWdFdIQ
+         /Th/kDs1J0ataujoYv29waOK2vtUahOhFuB8i/VTjJJwK1lZ8BnYtRgI1TCFOwyAjzpP
+         IrrZ5t4ztkBI8kGQ2JmJ0umTS68hsMlNa4TJQbRYPFrVTxjeV5aGPVZp0KhhuUeKUKy3
+         K/zSDe+06c8zzAWgdTOtizaPtyc1mf6MwJ7GmhhRElr+Z7AP3XYih7YfuNC/rVGVff6Y
+         e6mGCPBz6ph3LZLYNdqynb6sLeKD+dIIoFsxPbsvcvrvIGmbndafGUW8JNRcIw91Z7i2
+         0UnQ==
+X-Gm-Message-State: AOAM531UQykNlft/Aop/W6taC4acRd3V685TCprPzzwLKH0pVeb4M+Ri
+        yyZ9yFf0TD88TsyJmMx8DBFENi34qMtqXri+PHOLYg==
+X-Google-Smtp-Source: ABdhPJxSo0bFqOkD1JphB5Ji1q1GKjtA/igTEwlGcc4AoWZL9cWg+AN1uhSA2irsbSx/M7ObRkZLjJZTp3a9i2hMJ/Q=
+X-Received: by 2002:aa7:dd59:: with SMTP id o25mr43212393edw.288.1641204420348;
+ Mon, 03 Jan 2022 02:07:00 -0800 (PST)
 MIME-Version: 1.0
-References: <20211223103809.12343-1-andriy.shevchenko@linux.intel.com> <20211223103809.12343-2-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20211223103809.12343-2-andriy.shevchenko@linux.intel.com>
+References: <20211223103809.12343-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20211223103809.12343-1-andriy.shevchenko@linux.intel.com>
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 3 Jan 2022 11:05:26 +0100
-Message-ID: <CAMRc=MfCu8Z-FLdyz8eAqjj+soARUk3zoL8jDFpe2VyLCd2r5Q@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] gpio: dwapb: Switch to use fwnode instead of of_node
+Date:   Mon, 3 Jan 2022 11:06:49 +0100
+Message-ID: <CAMRc=McKS5CM-9ioQGVkEn4Oct6uxAiNKAm-y6S4FBOU3WDtVg@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] gpiolib: acpi: make fwnode take precedence in
+ struct gpio_chip
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -66,12 +67,11 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 On Thu, Dec 23, 2021 at 11:38 AM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 >
-> GPIO library now accepts fwnode as a firmware node, so
-> switch the driver to use it and hence rectify the ACPI
-> case which uses software nodes.
+> If the driver sets the fwnode in struct gpio_chip, let it take
+> precedence over the parent's fwnode.
 >
-> Note, in this case it's rather logical fix that doesn't
-> affect functionality, thus no backporting required.
+> This is a follow up to the commit 9126a738edc1 ("gpiolib: of: make
+> fwnode take precedence in struct gpio_chip").
 >
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
