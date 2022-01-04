@@ -2,215 +2,319 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C68B74848C3
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 20:46:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58DA44848F6
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 20:51:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231234AbiADTqi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jan 2022 14:46:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43418 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231219AbiADTqh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jan 2022 14:46:37 -0500
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E19C061799
-        for <linux-acpi@vger.kernel.org>; Tue,  4 Jan 2022 11:46:37 -0800 (PST)
-Received: by mail-pf1-x429.google.com with SMTP id b22so33100097pfb.5
-        for <linux-acpi@vger.kernel.org>; Tue, 04 Jan 2022 11:46:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=from:to:cc:date:message-id:in-reply-to:references:user-agent
-         :subject:mime-version;
-        bh=R062qPdjE6UwoRnR/QRKCrj9OcrWfCfFaTFGtDlD9PU=;
-        b=GZqSfSaAeA4W/6tnMvDPHxEVFYvbEzFSFvDMjjO65R33e6ArEtMHjNZolUumlHz3sO
-         K9o0rXGAY4+nFtDWioCb4xdwBuR8bsc5Wl1Giqjk950CJTZhxNx/pY+ZL3Dqo1VCDIpP
-         Be7/ckfm9yilWclTZTCUlUl5VItITJNFvMyNE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:date:message-id:in-reply-to
-         :references:user-agent:subject:mime-version;
-        bh=R062qPdjE6UwoRnR/QRKCrj9OcrWfCfFaTFGtDlD9PU=;
-        b=c0MvivK9BopFnkJrrSWw15+tvAYPEe4zzW2JBkBDk0pm7PvPB7M7Pvz6vOLjbeBEeE
-         iOzrLs8JFmVEw6pTBC1yp0j1nKF3MxBl40QR0kaN+QIQr6kUNJbcr7SMiSWgYFp7W3vt
-         hm5F0Cr1m45MYjLvsjcjiiAWtUc3jn/uManTgl7kVY2T9uwXqIFJdJUZ6qVhYc8S6KtL
-         LGp5DN2hwY1fZ1bsPBjqmm97XT6i99sQr9gfzYz0vksvDC5/gYWcO0qPTC5vmKAg7m0v
-         LRf2246ofotVPcnY7tHNUk+JuVHM9LGDfyhckRmAjJgMo5iOFDEo/f+zoz4hoaMcAN5D
-         zQ1w==
-X-Gm-Message-State: AOAM5323rNArWfxnRkge1F1fCbpSu7WOCsKfdDQm4OhOYJ+ugaOtOMHP
-        +ByrD/dq92gtXqU3b6vtud2Jyg==
-X-Google-Smtp-Source: ABdhPJzcn8Mg+FCPER4ceqy8hmq+FlExP4+JejlJRWDRdiFfMNc5K5/YFJFCq0oj95NxB8BxbqhMhg==
-X-Received: by 2002:a05:6a00:18a9:b0:4ba:cba6:868e with SMTP id x41-20020a056a0018a900b004bacba6868emr51578435pfh.20.1641325596823;
-        Tue, 04 Jan 2022 11:46:36 -0800 (PST)
-Received: from [192.168.178.38] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id s34sm45209428pfg.198.2022.01.04.11.46.27
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 04 Jan 2022 11:46:35 -0800 (PST)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        "Chi-hsien Lin" <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-CC:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        "Pieter-Paul Giesberts" <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>
-Date:   Tue, 04 Jan 2022 20:46:24 +0100
-Message-ID: <17e26a0de80.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20220104072658.69756-24-marcan@marcan.st>
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-24-marcan@marcan.st>
-User-Agent: AquaMail/1.33.0 (build: 103300102)
-Subject: Re: [PATCH v2 23/35] brcmfmac: cfg80211: Add support for scan params v2
+        id S231575AbiADTvQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jan 2022 14:51:16 -0500
+Received: from foss.arm.com ([217.140.110.172]:34988 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231462AbiADTvQ (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 4 Jan 2022 14:51:16 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 76D9E1FB;
+        Tue,  4 Jan 2022 11:51:15 -0800 (PST)
+Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id AABDF3F66F;
+        Tue,  4 Jan 2022 11:51:14 -0800 (PST)
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Sudeep Holla <sudeep.holla@arm.com>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH v3] ACPI: PCC: Implement OperationRegion handler for the PCC Type 3 subtype
+Date:   Tue,  4 Jan 2022 19:51:08 +0000
+Message-Id: <20220104195108.995359-1-sudeep.holla@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000002dfcfd05d4c6e577"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---0000000000002dfcfd05d4c6e577
-Content-Type: text/plain; format=flowed; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+PCC OpRegion provides a mechanism to communicate with the platform
+directly from the AML. PCCT provides the list of PCC channel available
+in the platform, a subset or all of them can be used in PCC Opregion.
 
-On January 4, 2022 8:30:51 AM Hector Martin <marcan@marcan.st> wrote:
+This patch registers the PCC OpRegion handler before ACPI tables are
+loaded. This relies on the special context data passed to identify and
+set up the PCC channel before the OpRegion handler is executed for the
+first time.
 
-> This new API version is required for at least the BCM4387 firmware. Add
-> support for it, with a fallback to the v1 API.
->
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
-> .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 113 ++++++++++++++----
-> .../broadcom/brcm80211/brcmfmac/feature.c     |   1 +
-> .../broadcom/brcm80211/brcmfmac/feature.h     |   4 +-
-> .../broadcom/brcm80211/brcmfmac/fwil_types.h  |  49 +++++++-
-> 4 files changed, 145 insertions(+), 22 deletions(-)
+Typical PCC Opregion declaration looks like this:
 
-Compiling this patch with C=2 gives following warnings:
+OperationRegion (PFRM, PCC, 2, 0x74)
+Field (PFRM, ByteAcc, NoLock, Preserve)
+{
+    SIGN,   32,
+    FLGS,   32,
+    LEN,    32,
+    CMD,    32,
+    DATA,   800
+}
 
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1086:28: 
-warning: incorrect type in assignment (different base types)
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1086:28: 
-expected restricted __le16 [usertype] version
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1086:28: got int
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1148:38: 
-warning: incorrect type in assignment (different base types)
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1148:38: 
-expected restricted __le32 [usertype] scan_type
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1148:38: got int
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:789:30: 
-warning: incorrect type in assignment (different base types)
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:789:30: 
-expected unsigned char [usertype] scan_type
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:789:30: got 
-restricted __le32 [usertype] scan_type
+It contains four named double words followed by 100 bytes of buffer
+names DATA.
 
-Will check if this is a valid warning.
+ASL can fill out the buffer something like:
 
-Regards,
-Arend
+    /* Create global or local buffer */
+    Name (BUFF, Buffer (0x0C){})
+    /* Create double word fields over the buffer */
+    CreateDWordField (BUFF, 0x0, WD0)
+    CreateDWordField (BUFF, 0x04, WD1)
+    CreateDWordField (BUFF, 0x08, WD2)
 
+    /* Fill the named fields */
+    WD0 = 0x50434300
+    SIGN = BUFF
+    WD0 = 1
+    FLGS = BUFF
+    WD0 = 0x10
+    LEN = BUFF
 
+    /* Fill the payload in the DATA buffer */
+    WD0 = 0
+    WD1 = 0x08
+    WD2 = 0
+    DATA = BUFF
 
+    /* Write to CMD field to trigger handler */
+    WD0 = 0x4404
+    CMD = BUFF
 
---0000000000002dfcfd05d4c6e577
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+This buffer is received by acpi_pcc_opregion_space_handler. This
+handler will fetch the complete buffer via internal_pcc_buffer.
 
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDMZS4qo7HamO7EirlF
-37pLdoRZTyh1WCIYmWHKDBOzfTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMDQxOTQ2MzdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYjvAh/SVAZS21nzQHFPLM+O8amS1JAYCVmSa
-h1XXVka5Esh/l7U86HFRSiNQsaSpnG7g9NGbAd+P744qG9TVfMBp07jAPYuEntGaPksBjAFJ1VVP
-c/H9PvK26+9fHFHTwtSNNolBW5huY2JSoJyRrp7VE4l/N1RMutnGcepDs+ca+6J63iwsZt0XyAYN
-Y9n98ho8SsV4g7W+CBSO032u21NB+cwYqC6pUkbWnQdUs+0F+AFLkiN0MF/7WHH3iF0aFpHX5h2Q
-nba1fNnEm4vv+IVzmZmHcno+Mj6RSON63qXENIeVC4f2Y+tXKENc14ri2JatgEzpFxQb3KtbfExX
-+w==
---0000000000002dfcfd05d4c6e577--
+The setup handler will receive the special PCC context data which will
+contain the PCC channel index which used to set up the channel. The
+buffer pointer and length is saved in region context which is then used
+in the handler.
+
+(kernel test robot: Build failure with CONFIG_ACPI_DEBUGGER)
+Link: https://lore.kernel.org/r/202201041539.feAV0l27-lkp@intel.com
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+ drivers/acpi/Kconfig    |  17 ++++++
+ drivers/acpi/Makefile   |   1 +
+ drivers/acpi/acpi_pcc.c | 120 ++++++++++++++++++++++++++++++++++++++++
+ drivers/acpi/bus.c      |   1 +
+ include/linux/acpi.h    |   6 ++
+ 5 files changed, 145 insertions(+)
+ create mode 100644 drivers/acpi/acpi_pcc.c
+
+v2[2]-v3:
+	- Fixed build with CONFIG_ACPI_DEBUGGER enabled
+	  Looks like return_ACPI_STATUS is supposed to be used only
+	  in core ACPICA
+
+v1[0]-v2[2]:
+	- Addressed all the comments from Rafael[1]
+
+[0] https://lore.kernel.org/r/20211222190919.137550-1-sudeep.holla@arm.com/
+[1] https://lore.kernel.org/r/CAJZ5v0jWJVSFS3KTavfCTzxWq-Q361nGDCWf+VLXRu-9Z4MJsQ@mail.gmail.com
+[2] https://lore.kernel.org/r/20220103155838.616580-1-sudeep.holla@arm.com
+
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index 91f1da16934d..8cdc7860b6e6 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -546,6 +546,23 @@ config ACPI_PPTT
+ 	bool
+ endif
+ 
++config ACPI_PCC
++	bool "ACPI PCC Address Space"
++	depends on PCC
++	default y
++	help
++	  The PCC Address Space also referred as PCC Operation Region pertains
++	  to the region of PCC subspace that succeeds the PCC signature.
++
++	  The PCC Operation Region works in conjunction with the PCC Table
++	  (Platform Communications Channel Table). PCC subspaces that are
++	  marked for use as PCC Operation Regions must not be used as PCC
++	  subspaces for the standard ACPI features such as CPPC, RASF, PDTT and
++	  MPST. These standard features must always use the PCC Table instead.
++
++	  Enable this feature if you want to set up and install the PCC Address
++	  Space handler to handle PCC OpRegion in the firmware.
++
+ source "drivers/acpi/pmic/Kconfig"
+ 
+ config ACPI_VIOT
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index d3dc79298ce3..f47032769f69 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -67,6 +67,7 @@ acpi-$(CONFIG_ACPI_LPIT)	+= acpi_lpit.o
+ acpi-$(CONFIG_ACPI_GENERIC_GSI) += irq.o
+ acpi-$(CONFIG_ACPI_WATCHDOG)	+= acpi_watchdog.o
+ acpi-$(CONFIG_ACPI_PRMT)	+= prmt.o
++acpi-$(CONFIG_ACPI_PCC)		+= acpi_pcc.o
+ 
+ # Address translation
+ acpi-$(CONFIG_ACPI_ADXL)	+= acpi_adxl.o
+diff --git a/drivers/acpi/acpi_pcc.c b/drivers/acpi/acpi_pcc.c
+new file mode 100644
+index 000000000000..41e3ebd204ff
+--- /dev/null
++++ b/drivers/acpi/acpi_pcc.c
+@@ -0,0 +1,120 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Author: Sudeep Holla <sudeep.holla@arm.com>
++ * Copyright 2021 Arm Limited
++ *
++ * The PCC Address Space also referred as PCC Operation Region pertains to the
++ * region of PCC subspace that succeeds the PCC signature. The PCC Operation
++ * Region works in conjunction with the PCC Table(Platform Communications
++ * Channel Table). PCC subspaces that are marked for use as PCC Operation
++ * Regions must not be used as PCC subspaces for the standard ACPI features
++ * such as CPPC, RASF, PDTT and MPST. These standard features must always use
++ * the PCC Table instead.
++ *
++ * This driver sets up the PCC Address Space and installs an handler to enable
++ * handling of PCC OpRegion in the firmware.
++ *
++ */
++#include <linux/kernel.h>
++#include <linux/acpi.h>
++#include <linux/completion.h>
++#include <linux/idr.h>
++#include <linux/io.h>
++
++#include <acpi/pcc.h>
++
++struct pcc_data {
++	struct pcc_mbox_chan *pcc_chan;
++	void __iomem *pcc_comm_addr;
++	struct completion done;
++	struct mbox_client cl;
++	struct acpi_pcc_info ctx;
++};
++
++struct acpi_pcc_info pcc_ctx;
++
++static void pcc_rx_callback(struct mbox_client *cl, void *m)
++{
++	struct pcc_data *data = container_of(cl, struct pcc_data, cl);
++
++	complete(&data->done);
++}
++
++static acpi_status
++acpi_pcc_address_space_setup(acpi_handle region_handle, u32 function,
++			     void *handler_context,  void **region_context)
++{
++	struct pcc_data *data;
++	struct acpi_pcc_info *ctx = handler_context;
++	struct pcc_mbox_chan *pcc_chan;
++
++	data = kzalloc(sizeof(*data), GFP_KERNEL);
++	if (!data)
++		return AE_NO_MEMORY;
++
++	data->cl.rx_callback = pcc_rx_callback;
++	data->cl.knows_txdone = true;
++	data->ctx.length = ctx->length;
++	data->ctx.subspace_id = ctx->subspace_id;
++	data->ctx.internal_buffer = ctx->internal_buffer;
++
++	init_completion(&data->done);
++	data->pcc_chan = pcc_mbox_request_channel(&data->cl, ctx->subspace_id);
++	if (IS_ERR(data->pcc_chan)) {
++		pr_err("Failed to find PCC channel for subspace %d\n",
++		       ctx->subspace_id);
++		return AE_NOT_FOUND;
++	}
++
++	pcc_chan = data->pcc_chan;
++	data->pcc_comm_addr = acpi_os_ioremap(pcc_chan->shmem_base_addr,
++					      pcc_chan->shmem_size);
++	if (!data->pcc_comm_addr) {
++		pr_err("Failed to ioremap PCC comm region mem for %d\n",
++		       ctx->subspace_id);
++		return AE_NO_MEMORY;
++	}
++
++	*region_context = data;
++	return AE_OK;
++}
++
++static acpi_status
++acpi_pcc_address_space_handler(u32 function, acpi_physical_address addr,
++			       u32 bits, acpi_integer *value,
++			       void *handler_context, void *region_context)
++{
++	int ret;
++	struct pcc_data *data = region_context;
++
++	reinit_completion(&data->done);
++
++	/* Write to Shared Memory */
++	memcpy_toio(data->pcc_comm_addr, (void *)value, data->ctx.length);
++
++	ret = mbox_send_message(data->pcc_chan->mchan, NULL);
++	if (ret < 0)
++		return AE_ERROR;
++
++	if (data->pcc_chan->mchan->mbox->txdone_irq)
++		wait_for_completion(&data->done);
++
++	mbox_client_txdone(data->pcc_chan->mchan, ret);
++
++	memcpy_fromio(value, data->pcc_comm_addr, data->ctx.length);
++
++	return AE_OK;
++}
++
++void __init acpi_init_pcc(void)
++{
++	acpi_status status;
++
++	status = acpi_install_address_space_handler(ACPI_ROOT_OBJECT,
++						    ACPI_ADR_SPACE_PLATFORM_COMM,
++						    &acpi_pcc_address_space_handler,
++						    &acpi_pcc_address_space_setup,
++						    &pcc_ctx);
++	if (ACPI_FAILURE(status))
++		pr_alert("OperationRegion handler could not be installed\n");
++}
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index dd535b4b9a16..75a61626eddd 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -1320,6 +1320,7 @@ static int __init acpi_init(void)
+ 		pr_debug("%s: kset create error\n", __func__);
+ 
+ 	init_prmt();
++	acpi_init_pcc();
+ 	result = acpi_bus_init();
+ 	if (result) {
+ 		kobject_put(acpi_kobj);
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 6c0798db6bde..eaeb4b9255bc 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -1389,6 +1389,12 @@ static inline int find_acpi_cpu_cache_topology(unsigned int cpu, int level)
+ }
+ #endif
+ 
++#ifdef CONFIG_ACPI_PCC
++void acpi_init_pcc(void);
++#else
++static inline void acpi_init_pcc(void) { }
++#endif
++
+ #ifdef CONFIG_ACPI
+ extern void acpi_device_notify(struct device *dev);
+ extern void acpi_device_notify_remove(struct device *dev);
+
+base-commit: 7a716cec17d19211715a34b426aafc3fadb22de6
+-- 
+2.25.1
+
