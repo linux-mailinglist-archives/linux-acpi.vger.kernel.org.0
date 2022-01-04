@@ -2,103 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AEE0484216
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 14:07:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92449484321
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 15:14:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230512AbiADNHx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jan 2022 08:07:53 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:36138 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233279AbiADNHx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jan 2022 08:07:53 -0500
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id C9A2E1F386;
-        Tue,  4 Jan 2022 13:07:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1641301671; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=tfjSgIg7XepgSJUbid2VyHDg323VjNL4qJ6wgeEpvuQ=;
-        b=t7B0BcFicuUynr5x7AL1eNGg49zlmxTbJGJWyp+rHuWH4GiimczcFtLkcPCqyO2UNi45fj
-        fREFdToDToGMwEG44vhKqQ7+dN/Oy0i3GLz+3u2g+gWs4MAjKuo9IeXQvzNBn4YAHOOcvl
-        A1Wj9z/0N2U5/HTx4xzbBZD4KZL01Ws=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1641301671;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=tfjSgIg7XepgSJUbid2VyHDg323VjNL4qJ6wgeEpvuQ=;
-        b=zmqNWuIrK+SlApL8VKqldEqu7JoA4V2VkwBHfKAJv5Thu/nsFs6+lWBfnIjhzof9dHSD7b
-        nqRpRFosyVxpHrBQ==
-Received: from alsa1.suse.de (alsa1.suse.de [10.160.4.42])
-        by relay2.suse.de (Postfix) with ESMTP id A89A0A3B83;
-        Tue,  4 Jan 2022 13:07:51 +0000 (UTC)
-Date:   Tue, 04 Jan 2022 14:07:51 +0100
-Message-ID: <s5h35m3lkd4.wl-tiwai@suse.de>
-From:   Takashi Iwai <tiwai@suse.de>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>,
-        Takashi Iwai <tiwai@suse.com>,
-        Lucas Tanure <tanureal@opensource.cirrus.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
+        id S232635AbiADOOk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jan 2022 09:14:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50742 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230361AbiADOOk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jan 2022 09:14:40 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2430C061761;
+        Tue,  4 Jan 2022 06:14:39 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id n30so36904178eda.13;
+        Tue, 04 Jan 2022 06:14:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2JWj20KokVmbJ1KQKxKTcG8eJrd73Z/FrzXrGHNXIYQ=;
+        b=imO7AvZwhSqnGrvwQeVkNBV4cnKH740zTDdLNAdNiGGp8f1uzMHM0ttEykYxr4BWkl
+         EkpRaK27dAFloGoRxR/z3ktW/nI2W1fjbRqdG/vW2Rzbz8W5GsA8BmfeRrBxDuIF6YAc
+         gsobO4KfR1xNVt8kv6nGcpxJJ9MlEx03qb2MIeox+TvS6rChq2QG/jh5F3+3fjer/OWF
+         EXugqwqpk99xC2zv8OvQkthpwRisIS48WSh2YJBvH28BpBkjlc+TAK11GHvyd2Zgw62T
+         cNZrAoybRhVa0DH0GWIto1H1D3kAStNkvi9lWPyoQ8gZFkO8lzTMRwINGVlA8fhIRLo5
+         s7bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2JWj20KokVmbJ1KQKxKTcG8eJrd73Z/FrzXrGHNXIYQ=;
+        b=DsR2lMJofNzmgKf1icbosWwLFoDU5EA1iP/BLYwce7Gs8F8k+ODTbPYDJ4D5dUMNBv
+         snPZ2mW0lnfJ9s6lMN0Pf++HGEl1AVUl2P4MZtMUDLqLB6GdCGTZeuG9V/vr/Ar5MgH0
+         4IaOQWJ7E1TLR5zmnTkIHXgo856wdbGfQ5xlDooU9YN7W7PLtoUngsuAmFiJcrvSjpD1
+         Oh/8HBSekFOlzBQdyYNJ28o0p4qA9mJr/ACl7tYfsx16R0uVe6tYMEF7P/owj+JrOF5L
+         6irrro/Ik99nlufHghTL2OV11SRQgGfd+QJYU+rA4pg0OUBo7f7VGhlG46sziA+YjgiR
+         RPUw==
+X-Gm-Message-State: AOAM530IuWULbuDyBpNdWwR66K/MoKJyT0pMZFzegVfg/nX0wL6Ezk+C
+        PKc54qvtZ9udkQRsI+bpTR9nwHlVBPHEkcopBN0=
+X-Google-Smtp-Source: ABdhPJxFlwpFpUZdQ6bUszycW6INa0R+GLudK5872rFm8RVazA48OfXiqtyIAKFwq0RNQGHYzU8rSvivGo46xnrW/5g=
+X-Received: by 2002:a17:906:3ed0:: with SMTP id d16mr38660386ejj.636.1641305678365;
+ Tue, 04 Jan 2022 06:14:38 -0800 (PST)
+MIME-Version: 1.0
+References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-13-marcan@marcan.st>
+In-Reply-To: <20220104072658.69756-13-marcan@marcan.st>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 4 Jan 2022 16:12:47 +0200
+Message-ID: <CAHp75VdeNhmRUW1mFY-H5vyzTRHZ9Y2dv03eo+rfcTQKjn9tuQ@mail.gmail.com>
+Subject: Re: [PATCH v2 12/35] brcmfmac: pcie: Fix crashes due to early IRQs
+To:     Hector Martin <marcan@marcan.st>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Hans de Goede <hdegoede@redhat.com>,
-        patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: (subset) [PATCH v6 00/10] Add support for CS35L41 in HDA systems
-In-Reply-To: <164096159451.2355590.17653987935012339046.b4-ty@kernel.org>
-References: <20211217115708.882525-1-tanureal@opensource.cirrus.com>
-        <164096159451.2355590.17653987935012339046.b4-ty@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
- FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
- (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
-Content-Type: text/plain; charset=US-ASCII
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, 31 Dec 2021 15:39:54 +0100,
-Mark Brown wrote:
-> 
-> On Fri, 17 Dec 2021 11:56:58 +0000, Lucas Tanure wrote:
-> > Add support for laptops that have CS35L41 connected to an HDA
-> > codec by I2S and direct I2C connection to the CPU.
-> > 
-> > Laptops that use CS35L41 and are SPI will be added in the future,
-> > after the support for it is resolved at i2c-multi-instantiate driver.
-> > i2c-multi-instantiate thread: https://lkml.org/lkml/2021/12/10/557
-> > 
-> > [...]
-> 
-> Applied to
-> 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-> 
-> Thanks!
-> 
-> [01/10] ASoC: cs35l41: Convert tables to shared source code
->         commit: a87d42227cf5614fe0040ddd1fe642c54298b42c
-> [02/10] ASoC: cs35l41: Move cs35l41_otp_unpack to shared code
->         commit: fe120d4cb6f6cd03007239e7c578b8703fe6d336
-> [03/10] ASoC: cs35l41: Move power initializations to reg_sequence
->         commit: 062ce0593315e22aac527389dd6dd4328c49f0fb
-> [04/10] ASoC: cs35l41: Create shared function for errata patches
->         commit: 8b2278604b6de27329ec7ed82ca696c4751111b6
-> [05/10] ASoC: cs35l41: Create shared function for setting channels
->         commit: 3bc3e3da657f17c14df8ae8fab58183407bd7521
-> [06/10] ASoC: cs35l41: Create shared function for boost configuration
->         commit: e8e4fcc047c6e0c5411faeb8cc29aed2e5036a00
+On Tue, Jan 4, 2022 at 9:29 AM Hector Martin <marcan@marcan.st> wrote:
+>
+> The driver was enabling IRQs before the message processing was
+> initialized. This could cause IRQs to come in too early and crash the
+> driver. Instead, move the IRQ enable and hostready to a bus preinit
+> function, at which point everything is properly initialized.
+>
+> Fixes: 9e37f045d5e7 ("brcmfmac: Adding PCIe bus layer support.")
 
-Mark, could you send a PR including those for 5.17?
-The rest HD-audio part of the patch set depends on this new ASoC codec
-stuff (at least Kconfig), so I can't apply the patches before merging
-those.  The ACPI patch might be still not applicable through my tree,
-but it can be taken independently.
+You should gather fixes at the beginning of the series, and even
+possible to send them as a separate series. In the current state it's
+unclear if there are dependencies on your new feature (must not be for
+fixes that meant to be backported).
 
-
-thanks,
-
-Takashi
+-- 
+With Best Regards,
+Andy Shevchenko
