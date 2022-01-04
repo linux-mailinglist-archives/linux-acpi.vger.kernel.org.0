@@ -2,152 +2,335 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0530483CF2
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 08:32:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 791ED483D9C
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 09:03:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230139AbiADHcm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jan 2022 02:32:42 -0500
-Received: from marcansoft.com ([212.63.210.85]:47772 "EHLO mail.marcansoft.com"
+        id S230465AbiADIDU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jan 2022 03:03:20 -0500
+Received: from mga03.intel.com ([134.134.136.65]:36681 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233730AbiADHc1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 4 Jan 2022 02:32:27 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: hector@marcansoft.com)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 0E57A41F5D;
-        Tue,  4 Jan 2022 07:32:17 +0000 (UTC)
-From:   Hector Martin <marcan@marcan.st>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-Subject: [PATCH v2 35/35] brcmfmac: common: Add support for external calibration blobs
-Date:   Tue,  4 Jan 2022 16:26:58 +0900
-Message-Id: <20220104072658.69756-36-marcan@marcan.st>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20220104072658.69756-1-marcan@marcan.st>
-References: <20220104072658.69756-1-marcan@marcan.st>
+        id S233940AbiADIDT (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 4 Jan 2022 03:03:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1641283399; x=1672819399;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fXwH3SxAg7pN0nTSPRYlxNHNuc3ldtTKbuPyVaIfvkM=;
+  b=NyuZQAfmnN4yQH3/dDFz3z57uKsJGpqgWNLRgPHpLCOGtowb55tAf1SG
+   d290Aa5TqP3TAsObNWkFDVnvdPn3WhTCBekNr9eHTmHl7GTxRXVgUhuu6
+   HCQi1a02rf3BHjluYjnMii/tKovjSCIk+ldKfIAWOFiBiGQVtUMuLmsfe
+   gOVrDyO6NFT/mUUpH787mNhbBAw24N2xjwgzA6TG+XDg0oCm8dfkb9Aqt
+   EF/liCfHrGUwqay/gH9TgxlChqRkXmdKkSuaL59QaeQQ1qfcThpdVpGP9
+   xOkP0zi0Q+hQIuK2oDdcJSbhl95e5m9Y15eAuNjF/6dhlqSicsvzrKOVo
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10216"; a="242133691"
+X-IronPort-AV: E=Sophos;i="5.88,260,1635231600"; 
+   d="scan'208";a="242133691"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2022 00:02:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,260,1635231600"; 
+   d="scan'208";a="556090074"
+Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 04 Jan 2022 00:02:39 -0800
+Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1n4emE-000F4U-Lg; Tue, 04 Jan 2022 08:02:38 +0000
+Date:   Tue, 4 Jan 2022 16:01:45 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Sudeep Holla <sudeep.holla@arm.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     kbuild-all@lists.01.org, Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v2] ACPI: PCC: Implement OperationRegion handler for the
+ PCC Type 3 subtype
+Message-ID: <202201041539.feAV0l27-lkp@intel.com>
+References: <20220103155838.616580-1-sudeep.holla@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220103155838.616580-1-sudeep.holla@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The calibration blob for a chip is normally stored in SROM and loaded
-internally by the firmware. However, Apple ARM64 platforms instead store
-it as part of platform configuration data, and provide it via the Apple
-Device Tree. We forward this into the Linux DT in the bootloader.
+Hi Sudeep,
 
-Add support for taking this blob from the DT and loading it into the
-dongle. The loading mechanism is the same as used for the CLM and TxCap
-blobs.
+I love your patch! Yet something to improve:
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Hector Martin <marcan@marcan.st>
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on linux/master linus/master v5.16-rc8 next-20211224]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/0day-ci/linux/commits/Sudeep-Holla/ACPI-PCC-Implement-OperationRegion-handler-for-the-PCC-Type-3-subtype/20220104-000003
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+config: i386-allyesconfig (https://download.01.org/0day-ci/archive/20220104/202201041539.feAV0l27-lkp@intel.com/config)
+compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
+reproduce (this is a W=1 build):
+        # https://github.com/0day-ci/linux/commit/1dbcdc47eadc8c55659410fc03d067f3438a386a
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Sudeep-Holla/ACPI-PCC-Implement-OperationRegion-handler-for-the-PCC-Type-3-subtype/20220104-000003
+        git checkout 1dbcdc47eadc8c55659410fc03d067f3438a386a
+        # save the config file to linux build tree
+        mkdir build_dir
+        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/acpi/acpi.h:29,
+                    from include/linux/acpi.h:22,
+                    from drivers/acpi/acpi_pcc.c:19:
+   drivers/acpi/acpi_pcc.c: In function 'acpi_pcc_address_space_setup':
+>> include/acpi/acoutput.h:398:19: error: implicit declaration of function 'acpi_ut_status_exit'; did you mean 'acpi_irq_stats_init'? [-Werror=implicit-function-declaration]
+     398 |  ACPI_TRACE_EXIT (acpi_ut_status_exit, acpi_status, status)
+         |                   ^~~~~~~~~~~~~~~~~~~
+   include/acpi/acoutput.h:281:44: note: in definition of macro 'ACPI_DO_WHILE0'
+     281 | #define ACPI_DO_WHILE0(a)               do a while(0)
+         |                                            ^
+   include/acpi/acoutput.h:398:2: note: in expansion of macro 'ACPI_TRACE_EXIT'
+     398 |  ACPI_TRACE_EXIT (acpi_ut_status_exit, acpi_status, status)
+         |  ^~~~~~~~~~~~~~~
+   drivers/acpi/acpi_pcc.c:53:3: note: in expansion of macro 'return_ACPI_STATUS'
+      53 |   return_ACPI_STATUS(AE_NO_MEMORY);
+         |   ^~~~~~~~~~~~~~~~~~
+>> include/acpi/acoutput.h:258:36: error: '_acpi_module_name' undeclared (first use in this function); did you mean 'acpi_dev_name'?
+     258 |  __LINE__, ACPI_GET_FUNCTION_NAME, _acpi_module_name, _COMPONENT
+         |                                    ^~~~~~~~~~~~~~~~~
+   include/acpi/acoutput.h:281:44: note: in definition of macro 'ACPI_DO_WHILE0'
+     281 | #define ACPI_DO_WHILE0(a)               do a while(0)
+         |                                            ^
+   include/acpi/acoutput.h:375:13: note: in expansion of macro 'ACPI_DEBUG_PARAMETERS'
+     375 |   function (ACPI_DEBUG_PARAMETERS, _param); \
+         |             ^~~~~~~~~~~~~~~~~~~~~
+   include/acpi/acoutput.h:398:2: note: in expansion of macro 'ACPI_TRACE_EXIT'
+     398 |  ACPI_TRACE_EXIT (acpi_ut_status_exit, acpi_status, status)
+         |  ^~~~~~~~~~~~~~~
+   drivers/acpi/acpi_pcc.c:53:3: note: in expansion of macro 'return_ACPI_STATUS'
+      53 |   return_ACPI_STATUS(AE_NO_MEMORY);
+         |   ^~~~~~~~~~~~~~~~~~
+   include/acpi/acoutput.h:258:36: note: each undeclared identifier is reported only once for each function it appears in
+     258 |  __LINE__, ACPI_GET_FUNCTION_NAME, _acpi_module_name, _COMPONENT
+         |                                    ^~~~~~~~~~~~~~~~~
+   include/acpi/acoutput.h:281:44: note: in definition of macro 'ACPI_DO_WHILE0'
+     281 | #define ACPI_DO_WHILE0(a)               do a while(0)
+         |                                            ^
+   include/acpi/acoutput.h:375:13: note: in expansion of macro 'ACPI_DEBUG_PARAMETERS'
+     375 |   function (ACPI_DEBUG_PARAMETERS, _param); \
+         |             ^~~~~~~~~~~~~~~~~~~~~
+   include/acpi/acoutput.h:398:2: note: in expansion of macro 'ACPI_TRACE_EXIT'
+     398 |  ACPI_TRACE_EXIT (acpi_ut_status_exit, acpi_status, status)
+         |  ^~~~~~~~~~~~~~~
+   drivers/acpi/acpi_pcc.c:53:3: note: in expansion of macro 'return_ACPI_STATUS'
+      53 |   return_ACPI_STATUS(AE_NO_MEMORY);
+         |   ^~~~~~~~~~~~~~~~~~
+>> include/acpi/acoutput.h:258:55: error: '_COMPONENT' undeclared (first use in this function)
+     258 |  __LINE__, ACPI_GET_FUNCTION_NAME, _acpi_module_name, _COMPONENT
+         |                                                       ^~~~~~~~~~
+   include/acpi/acoutput.h:281:44: note: in definition of macro 'ACPI_DO_WHILE0'
+     281 | #define ACPI_DO_WHILE0(a)               do a while(0)
+         |                                            ^
+   include/acpi/acoutput.h:375:13: note: in expansion of macro 'ACPI_DEBUG_PARAMETERS'
+     375 |   function (ACPI_DEBUG_PARAMETERS, _param); \
+         |             ^~~~~~~~~~~~~~~~~~~~~
+   include/acpi/acoutput.h:398:2: note: in expansion of macro 'ACPI_TRACE_EXIT'
+     398 |  ACPI_TRACE_EXIT (acpi_ut_status_exit, acpi_status, status)
+         |  ^~~~~~~~~~~~~~~
+   drivers/acpi/acpi_pcc.c:53:3: note: in expansion of macro 'return_ACPI_STATUS'
+      53 |   return_ACPI_STATUS(AE_NO_MEMORY);
+         |   ^~~~~~~~~~~~~~~~~~
+   drivers/acpi/acpi_pcc.c: In function 'acpi_pcc_address_space_handler':
+>> include/acpi/acoutput.h:258:36: error: '_acpi_module_name' undeclared (first use in this function); did you mean 'acpi_dev_name'?
+     258 |  __LINE__, ACPI_GET_FUNCTION_NAME, _acpi_module_name, _COMPONENT
+         |                                    ^~~~~~~~~~~~~~~~~
+   include/acpi/acoutput.h:281:44: note: in definition of macro 'ACPI_DO_WHILE0'
+     281 | #define ACPI_DO_WHILE0(a)               do a while(0)
+         |                                            ^
+   include/acpi/acoutput.h:375:13: note: in expansion of macro 'ACPI_DEBUG_PARAMETERS'
+     375 |   function (ACPI_DEBUG_PARAMETERS, _param); \
+         |             ^~~~~~~~~~~~~~~~~~~~~
+   include/acpi/acoutput.h:398:2: note: in expansion of macro 'ACPI_TRACE_EXIT'
+     398 |  ACPI_TRACE_EXIT (acpi_ut_status_exit, acpi_status, status)
+         |  ^~~~~~~~~~~~~~~
+   drivers/acpi/acpi_pcc.c:97:3: note: in expansion of macro 'return_ACPI_STATUS'
+      97 |   return_ACPI_STATUS(AE_ERROR);
+         |   ^~~~~~~~~~~~~~~~~~
+>> include/acpi/acoutput.h:258:55: error: '_COMPONENT' undeclared (first use in this function)
+     258 |  __LINE__, ACPI_GET_FUNCTION_NAME, _acpi_module_name, _COMPONENT
+         |                                                       ^~~~~~~~~~
+   include/acpi/acoutput.h:281:44: note: in definition of macro 'ACPI_DO_WHILE0'
+     281 | #define ACPI_DO_WHILE0(a)               do a while(0)
+         |                                            ^
+   include/acpi/acoutput.h:375:13: note: in expansion of macro 'ACPI_DEBUG_PARAMETERS'
+     375 |   function (ACPI_DEBUG_PARAMETERS, _param); \
+         |             ^~~~~~~~~~~~~~~~~~~~~
+   include/acpi/acoutput.h:398:2: note: in expansion of macro 'ACPI_TRACE_EXIT'
+     398 |  ACPI_TRACE_EXIT (acpi_ut_status_exit, acpi_status, status)
+         |  ^~~~~~~~~~~~~~~
+   drivers/acpi/acpi_pcc.c:97:3: note: in expansion of macro 'return_ACPI_STATUS'
+      97 |   return_ACPI_STATUS(AE_ERROR);
+         |   ^~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +398 include/acpi/acoutput.h
+
+50df4d8b0f6e19 Bob Moore      2008-12-31  252  
+50df4d8b0f6e19 Bob Moore      2008-12-31  253  /*
+50df4d8b0f6e19 Bob Moore      2008-12-31  254   * Common parameters used for debug output functions:
+50df4d8b0f6e19 Bob Moore      2008-12-31  255   * line number, function name, module(file) name, component ID
+50df4d8b0f6e19 Bob Moore      2008-12-31  256   */
+ad5a06f2969763 Bob Moore      2012-12-31  257  #define ACPI_DEBUG_PARAMETERS \
+ad5a06f2969763 Bob Moore      2012-12-31 @258  	__LINE__, ACPI_GET_FUNCTION_NAME, _acpi_module_name, _COMPONENT
+50df4d8b0f6e19 Bob Moore      2008-12-31  259  
+e81a52b8b642aa Bob Moore      2012-12-31  260  /* Check if debug output is currently dynamically enabled */
+e81a52b8b642aa Bob Moore      2012-12-31  261  
+e81a52b8b642aa Bob Moore      2012-12-31  262  #define ACPI_IS_DEBUG_ENABLED(level, component) \
+e81a52b8b642aa Bob Moore      2012-12-31  263  	((level & acpi_dbg_level) && (component & acpi_dbg_layer))
+e81a52b8b642aa Bob Moore      2012-12-31  264  
+50df4d8b0f6e19 Bob Moore      2008-12-31  265  /*
+50df4d8b0f6e19 Bob Moore      2008-12-31  266   * Master debug print macros
+50df4d8b0f6e19 Bob Moore      2008-12-31  267   * Print message if and only if:
+50df4d8b0f6e19 Bob Moore      2008-12-31  268   *    1) Debug print for the current component is enabled
+50df4d8b0f6e19 Bob Moore      2008-12-31  269   *    2) Debug error level or trace level for the print statement is enabled
+ad5a06f2969763 Bob Moore      2012-12-31  270   *
+ad5a06f2969763 Bob Moore      2012-12-31  271   * November 2012: Moved the runtime check for whether to actually emit the
+ad5a06f2969763 Bob Moore      2012-12-31  272   * debug message outside of the print function itself. This improves overall
+ad5a06f2969763 Bob Moore      2012-12-31  273   * performance at a relatively small code cost. Implementation involves the
+ad5a06f2969763 Bob Moore      2012-12-31  274   * use of variadic macros supported by C99.
+6e1888fdcaad17 Bob Moore      2013-01-08  275   *
+6e1888fdcaad17 Bob Moore      2013-01-08  276   * Note: the ACPI_DO_WHILE0 macro is used to prevent some compilers from
+6e1888fdcaad17 Bob Moore      2013-01-08  277   * complaining about these constructs. On other compilers the do...while
+6e1888fdcaad17 Bob Moore      2013-01-08  278   * adds some extra code, so this feature is optional.
+50df4d8b0f6e19 Bob Moore      2008-12-31  279   */
+6e1888fdcaad17 Bob Moore      2013-01-08  280  #ifdef ACPI_USE_DO_WHILE_0
+6e1888fdcaad17 Bob Moore      2013-01-08  281  #define ACPI_DO_WHILE0(a)               do a while(0)
+6e1888fdcaad17 Bob Moore      2013-01-08  282  #else
+6e1888fdcaad17 Bob Moore      2013-01-08  283  #define ACPI_DO_WHILE0(a)               a
+6e1888fdcaad17 Bob Moore      2013-01-08  284  #endif
+ad5a06f2969763 Bob Moore      2012-12-31  285  
+ad5a06f2969763 Bob Moore      2012-12-31  286  /* DEBUG_PRINT functions */
+ad5a06f2969763 Bob Moore      2012-12-31  287  
+7b09d8fdede65e Lv Zheng       2015-07-01  288  #ifndef COMPILER_VA_MACRO
+7b09d8fdede65e Lv Zheng       2015-07-01  289  
+7b09d8fdede65e Lv Zheng       2015-07-01  290  #define ACPI_DEBUG_PRINT(plist)         acpi_debug_print plist
+7b09d8fdede65e Lv Zheng       2015-07-01  291  #define ACPI_DEBUG_PRINT_RAW(plist)     acpi_debug_print_raw plist
+7b09d8fdede65e Lv Zheng       2015-07-01  292  
+7b09d8fdede65e Lv Zheng       2015-07-01  293  #else
+ad5a06f2969763 Bob Moore      2012-12-31  294  
+ad5a06f2969763 Bob Moore      2012-12-31  295  /* Helper macros for DEBUG_PRINT */
+ad5a06f2969763 Bob Moore      2012-12-31  296  
+6e1888fdcaad17 Bob Moore      2013-01-08  297  #define ACPI_DO_DEBUG_PRINT(function, level, line, filename, modulename, component, ...) \
+6e1888fdcaad17 Bob Moore      2013-01-08  298  	ACPI_DO_WHILE0 ({ \
+ad5a06f2969763 Bob Moore      2012-12-31  299  		if (ACPI_IS_DEBUG_ENABLED (level, component)) \
+ad5a06f2969763 Bob Moore      2012-12-31  300  		{ \
+ad5a06f2969763 Bob Moore      2012-12-31  301  			function (level, line, filename, modulename, component, __VA_ARGS__); \
+6e1888fdcaad17 Bob Moore      2013-01-08  302  		} \
+6e1888fdcaad17 Bob Moore      2013-01-08  303  	})
+ad5a06f2969763 Bob Moore      2012-12-31  304  
+ad5a06f2969763 Bob Moore      2012-12-31  305  #define ACPI_ACTUAL_DEBUG(level, line, filename, modulename, component, ...) \
+6e1888fdcaad17 Bob Moore      2013-01-08  306  	ACPI_DO_DEBUG_PRINT (acpi_debug_print, level, line, \
+6e1888fdcaad17 Bob Moore      2013-01-08  307  		filename, modulename, component, __VA_ARGS__)
+ad5a06f2969763 Bob Moore      2012-12-31  308  
+ad5a06f2969763 Bob Moore      2012-12-31  309  #define ACPI_ACTUAL_DEBUG_RAW(level, line, filename, modulename, component, ...) \
+6e1888fdcaad17 Bob Moore      2013-01-08  310  	ACPI_DO_DEBUG_PRINT (acpi_debug_print_raw, level, line, \
+6e1888fdcaad17 Bob Moore      2013-01-08  311  		filename, modulename, component, __VA_ARGS__)
+50df4d8b0f6e19 Bob Moore      2008-12-31  312  
+7b09d8fdede65e Lv Zheng       2015-07-01  313  #define ACPI_DEBUG_PRINT(plist)         ACPI_ACTUAL_DEBUG plist
+7b09d8fdede65e Lv Zheng       2015-07-01  314  #define ACPI_DEBUG_PRINT_RAW(plist)     ACPI_ACTUAL_DEBUG_RAW plist
+7b09d8fdede65e Lv Zheng       2015-07-01  315  
+7b09d8fdede65e Lv Zheng       2015-07-01  316  #endif
+7b09d8fdede65e Lv Zheng       2015-07-01  317  
+0377b5acba2f25 Bob Moore      2012-12-31  318  /*
+0377b5acba2f25 Bob Moore      2012-12-31  319   * Function entry tracing
+0377b5acba2f25 Bob Moore      2012-12-31  320   *
+0377b5acba2f25 Bob Moore      2012-12-31  321   * The name of the function is emitted as a local variable that is
+0377b5acba2f25 Bob Moore      2012-12-31  322   * intended to be used by both the entry trace and the exit trace.
+0377b5acba2f25 Bob Moore      2012-12-31  323   */
+0377b5acba2f25 Bob Moore      2012-12-31  324  
+0377b5acba2f25 Bob Moore      2012-12-31  325  /* Helper macro */
+0377b5acba2f25 Bob Moore      2012-12-31  326  
+fd1af7126fb626 Bob Moore      2013-03-08  327  #define ACPI_TRACE_ENTRY(name, function, type, param) \
+0377b5acba2f25 Bob Moore      2012-12-31  328  	ACPI_FUNCTION_NAME (name) \
+fd1af7126fb626 Bob Moore      2013-03-08  329  	function (ACPI_DEBUG_PARAMETERS, (type) (param))
+0377b5acba2f25 Bob Moore      2012-12-31  330  
+0377b5acba2f25 Bob Moore      2012-12-31  331  /* The actual entry trace macros */
+0377b5acba2f25 Bob Moore      2012-12-31  332  
+0377b5acba2f25 Bob Moore      2012-12-31  333  #define ACPI_FUNCTION_TRACE(name) \
+0377b5acba2f25 Bob Moore      2012-12-31  334  	ACPI_FUNCTION_NAME(name) \
+0377b5acba2f25 Bob Moore      2012-12-31  335  	acpi_ut_trace (ACPI_DEBUG_PARAMETERS)
+0377b5acba2f25 Bob Moore      2012-12-31  336  
+0377b5acba2f25 Bob Moore      2012-12-31  337  #define ACPI_FUNCTION_TRACE_PTR(name, pointer) \
+fd1af7126fb626 Bob Moore      2013-03-08  338  	ACPI_TRACE_ENTRY (name, acpi_ut_trace_ptr, void *, pointer)
+0377b5acba2f25 Bob Moore      2012-12-31  339  
+0377b5acba2f25 Bob Moore      2012-12-31  340  #define ACPI_FUNCTION_TRACE_U32(name, value) \
+fd1af7126fb626 Bob Moore      2013-03-08  341  	ACPI_TRACE_ENTRY (name, acpi_ut_trace_u32, u32, value)
+0377b5acba2f25 Bob Moore      2012-12-31  342  
+0377b5acba2f25 Bob Moore      2012-12-31  343  #define ACPI_FUNCTION_TRACE_STR(name, string) \
+4857a94de17a3c Jung-uk Kim    2016-08-04  344  	ACPI_TRACE_ENTRY (name, acpi_ut_trace_str, const char *, string)
+0377b5acba2f25 Bob Moore      2012-12-31  345  
+0377b5acba2f25 Bob Moore      2012-12-31  346  #define ACPI_FUNCTION_ENTRY() \
+0377b5acba2f25 Bob Moore      2012-12-31  347  	acpi_ut_track_stack_ptr()
+0377b5acba2f25 Bob Moore      2012-12-31  348  
+0377b5acba2f25 Bob Moore      2012-12-31  349  /*
+0377b5acba2f25 Bob Moore      2012-12-31  350   * Function exit tracing
+0377b5acba2f25 Bob Moore      2012-12-31  351   *
+0377b5acba2f25 Bob Moore      2012-12-31  352   * These macros include a return statement. This is usually considered
+0377b5acba2f25 Bob Moore      2012-12-31  353   * bad form, but having a separate exit macro before the actual return
+0377b5acba2f25 Bob Moore      2012-12-31  354   * is very ugly and difficult to maintain.
+0377b5acba2f25 Bob Moore      2012-12-31  355   *
+0377b5acba2f25 Bob Moore      2012-12-31  356   * One of the FUNCTION_TRACE macros above must be used in conjunction
+0377b5acba2f25 Bob Moore      2012-12-31  357   * with these macros so that "_AcpiFunctionName" is defined.
+fd1af7126fb626 Bob Moore      2013-03-08  358   *
+fd1af7126fb626 Bob Moore      2013-03-08  359   * There are two versions of most of the return macros. The default version is
+fd1af7126fb626 Bob Moore      2013-03-08  360   * safer, since it avoids side-effects by guaranteeing that the argument will
+fd1af7126fb626 Bob Moore      2013-03-08  361   * not be evaluated twice.
+fd1af7126fb626 Bob Moore      2013-03-08  362   *
+fd1af7126fb626 Bob Moore      2013-03-08  363   * A less-safe version of the macros is provided for optional use if the
+fd1af7126fb626 Bob Moore      2013-03-08  364   * compiler uses excessive CPU stack (for example, this may happen in the
+e527db8f39d4c7 Colin Ian King 2021-04-06  365   * debug case if code optimization is disabled.)
+0377b5acba2f25 Bob Moore      2012-12-31  366   */
+0377b5acba2f25 Bob Moore      2012-12-31  367  
+0377b5acba2f25 Bob Moore      2012-12-31  368  /* Exit trace helper macro */
+0377b5acba2f25 Bob Moore      2012-12-31  369  
+fd1af7126fb626 Bob Moore      2013-03-08  370  #ifndef ACPI_SIMPLE_RETURN_MACROS
+fd1af7126fb626 Bob Moore      2013-03-08  371  
+fd1af7126fb626 Bob Moore      2013-03-08  372  #define ACPI_TRACE_EXIT(function, type, param) \
+fd1af7126fb626 Bob Moore      2013-03-08  373  	ACPI_DO_WHILE0 ({ \
+fd1af7126fb626 Bob Moore      2013-03-08  374  		register type _param = (type) (param); \
+fd1af7126fb626 Bob Moore      2013-03-08  375  		function (ACPI_DEBUG_PARAMETERS, _param); \
+fd1af7126fb626 Bob Moore      2013-03-08  376  		return (_param); \
+fd1af7126fb626 Bob Moore      2013-03-08  377  	})
+fd1af7126fb626 Bob Moore      2013-03-08  378  
+fd1af7126fb626 Bob Moore      2013-03-08  379  #else				/* Use original less-safe macros */
+fd1af7126fb626 Bob Moore      2013-03-08  380  
+fd1af7126fb626 Bob Moore      2013-03-08  381  #define ACPI_TRACE_EXIT(function, type, param) \
+0377b5acba2f25 Bob Moore      2012-12-31  382  	ACPI_DO_WHILE0 ({ \
+fd1af7126fb626 Bob Moore      2013-03-08  383  		function (ACPI_DEBUG_PARAMETERS, (type) (param)); \
+fd1af7126fb626 Bob Moore      2013-03-08  384  		return (param); \
+0377b5acba2f25 Bob Moore      2012-12-31  385  	})
+0377b5acba2f25 Bob Moore      2012-12-31  386  
+fd1af7126fb626 Bob Moore      2013-03-08  387  #endif				/* ACPI_SIMPLE_RETURN_MACROS */
+fd1af7126fb626 Bob Moore      2013-03-08  388  
+0377b5acba2f25 Bob Moore      2012-12-31  389  /* The actual exit macros */
+0377b5acba2f25 Bob Moore      2012-12-31  390  
+0377b5acba2f25 Bob Moore      2012-12-31  391  #define return_VOID \
+0377b5acba2f25 Bob Moore      2012-12-31  392  	ACPI_DO_WHILE0 ({ \
+0377b5acba2f25 Bob Moore      2012-12-31  393  		acpi_ut_exit (ACPI_DEBUG_PARAMETERS); \
+0377b5acba2f25 Bob Moore      2012-12-31  394  		return; \
+0377b5acba2f25 Bob Moore      2012-12-31  395  	})
+0377b5acba2f25 Bob Moore      2012-12-31  396  
+0377b5acba2f25 Bob Moore      2012-12-31  397  #define return_ACPI_STATUS(status) \
+fd1af7126fb626 Bob Moore      2013-03-08 @398  	ACPI_TRACE_EXIT (acpi_ut_status_exit, acpi_status, status)
+0377b5acba2f25 Bob Moore      2012-12-31  399  
+
 ---
- .../broadcom/brcm80211/brcmfmac/common.c      | 24 +++++++++++++++++++
- .../broadcom/brcm80211/brcmfmac/common.h      |  2 ++
- .../wireless/broadcom/brcm80211/brcmfmac/of.c |  8 +++++++
- 3 files changed, 34 insertions(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-index d65308c3f070..ad36e6b5dd47 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-@@ -218,6 +218,23 @@ static int brcmf_c_process_txcap_blob(struct brcmf_if *ifp)
- 	return err;
- }
- 
-+static int brcmf_c_process_cal_blob(struct brcmf_if *ifp)
-+{
-+	struct brcmf_pub *drvr = ifp->drvr;
-+	struct brcmf_mp_device *settings = drvr->settings;
-+	s32 err;
-+
-+	brcmf_dbg(TRACE, "Enter\n");
-+
-+	if (!settings->cal_blob || !settings->cal_size)
-+		return 0;
-+
-+	brcmf_info("Calibration blob provided by platform, loading\n");
-+	err = brcmf_c_download_blob(ifp, settings->cal_blob, settings->cal_size,
-+				    "calload", "calload_status");
-+	return err;
-+}
-+
- int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
- {
- 	struct brcmf_pub *drvr = ifp->drvr;
-@@ -291,6 +308,13 @@ int brcmf_c_preinit_dcmds(struct brcmf_if *ifp)
- 		goto done;
- 	}
- 
-+	/* Download external calibration blob, if available */
-+	err = brcmf_c_process_cal_blob(ifp);
-+	if (err < 0) {
-+		bphy_err(drvr, "download calibration blob file failed, %d\n", err);
-+		goto done;
-+	}
-+
- 	/* query for 'ver' to get version info from firmware */
- 	memset(buf, 0, sizeof(buf));
- 	err = brcmf_fil_iovar_data_get(ifp, "ver", buf, sizeof(buf));
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-index a88c4a9310f3..f321346edd01 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h
-@@ -51,6 +51,8 @@ struct brcmf_mp_device {
- 	struct brcmfmac_pd_cc *country_codes;
- 	const char	*board_type;
- 	const char	*antenna_sku;
-+	void		*cal_blob;
-+	int		cal_size;
- 	union {
- 		struct brcmfmac_sdio_pd sdio;
- 	} bus;
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index 085d34176b78..6f885c3210c3 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -78,6 +78,14 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 	if (!of_property_read_string(np, "apple,antenna-sku", &prop))
- 		settings->antenna_sku = devm_kstrdup(dev, prop, GFP_KERNEL);
- 
-+	/* The WLAN calibration blob is normally stored in SROM, but Apple
-+	 * ARM64 platforms pass it via the DT instead.
-+	 */
-+	prop = of_get_property(np, "brcm,cal-blob", &settings->cal_size);
-+	if (prop && settings->cal_size)
-+		settings->cal_blob = devm_kmemdup(dev, prop, settings->cal_size,
-+						  GFP_KERNEL);
-+
- 	/* Set board-type to the first string of the machine compatible prop */
- 	root = of_find_node_by_path("/");
- 	if (root && !settings->board_type) {
--- 
-2.33.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
