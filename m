@@ -2,109 +2,70 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D687D4840DE
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 12:30:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2B6648417B
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 13:07:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232281AbiADLah (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jan 2022 06:30:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40914 "EHLO
+        id S232854AbiADMHu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jan 2022 07:07:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229964AbiADLah (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jan 2022 06:30:37 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E829C061761;
-        Tue,  4 Jan 2022 03:30:36 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id q14so139440733edi.3;
-        Tue, 04 Jan 2022 03:30:36 -0800 (PST)
+        with ESMTP id S231542AbiADMHu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jan 2022 07:07:50 -0500
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29417C061784
+        for <linux-acpi@vger.kernel.org>; Tue,  4 Jan 2022 04:07:50 -0800 (PST)
+Received: by mail-oi1-x242.google.com with SMTP id be32so59112247oib.11
+        for <linux-acpi@vger.kernel.org>; Tue, 04 Jan 2022 04:07:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0yty/Vql/ha5wH7OZotX+MYGyccXlZrjOYzGRLc8osI=;
-        b=Ob1v2V/1KmrPCwBo+PVBUCo0h9Yl9nquFidnZ8qBujjcJn1jOUUljpHnQMqCS7tPci
-         HLE7SFA0YHB334q34rR9tA8qGWWO4Ln2svhzpOTrj20UxtANmtpCZwCbZQ5UhvXQQC9E
-         Ve98gHi3SaDehDkyPzU5f88IztLdsJgRrbHNvKbXU1V1pzJV4OHgbOFmUG9H04JqpxlW
-         1aVJ1SxwLbAkxqS4REP4JvObUEJw1uppLw1yJnz4LMLzKPGx0OC+OugT4oNW4R/uvgw1
-         N2RfLJ7hUflX7cmDAffiCRRY+vkvO9OF0tD1Iv83TBSk/9a0j4XubYzDuvlW+qfak3pp
-         0AhA==
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=+zB79ok8+scrzrgYKxLKHdTPGXHaNMs4/kAV8iB60HM=;
+        b=VVFepDT83zjrW3/ARYiIYvKOHCMAXvhqFvTtfcNILsA6cKLWH85l93sld6hieTSpgL
+         82P8KEhsPU4KnITc/PPgVQjvgeTHuiTOGShEL08ODTMUP4iNF0K81eGTHMI1qG1XTTBM
+         i82h3lSz1w5o+3caLuUEisUundMP0u54v+agZF0rN+4sLxvuViV1YWXSKbl5PDfeZF/g
+         kxJohkewCT1ujAlzr5nt+8fwjbyUGIhT4BcoO//SsqLBHoU9k5T2CV1D4vbbQ1oU47YD
+         afybIMnvmUagP6e7tNKIKaDG6NjF5xbFL/pAH0AV3dhldq7TRieC10uNy4SLAxSOSB+r
+         OJtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0yty/Vql/ha5wH7OZotX+MYGyccXlZrjOYzGRLc8osI=;
-        b=z900lw44t4Kt7PtqiyLHo5IHVL9je4y60XXOK9BjlcUfK5rZ4/12Na+6aJWt6n/Qih
-         tkpoGmQjrxpgbIL4MdBMRQZB5zsYJUlAZTzv98+3XYCOw6ua8jTiuc0HAxdHqAtwL9nP
-         eQMR41IaoIeFJ6M2U/0kxcc+NXiDUMusyKJ51JDgnHMqUUvraAX5wF44vpKQSSGHr9hD
-         clvtDUYBAUVHHXo7TMopuWKS2DYjl621/I9bNeugFjkNYRydNxb1ojTmlcS3mhkJ42Ux
-         6s9fn+UbaT2dzmzh0kg75m/ZBEPcn8M+9fYaKxtvWTYRaV2/G50b3Zw/vXqEvRK/v4uD
-         ekZg==
-X-Gm-Message-State: AOAM5313Zrx+jeXDuaT5H63MaKQBJ0f8LJgUsqD3VixaFWzOWWk6P3U8
-        g0fBHFlmGEQf13t2ABaDCrSNBWSpYsGwyYx5vTY=
-X-Google-Smtp-Source: ABdhPJzstuNjGXH7i4SJZO7W6jJ03BLb3g5gKSn1e6dIAouguCI/zvBRkWCkEcva7qTCxiSiFsVGFOqOCRh/YPwjBtU=
-X-Received: by 2002:a17:906:3ed0:: with SMTP id d16mr38212898ejj.636.1641295835170;
- Tue, 04 Jan 2022 03:30:35 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=+zB79ok8+scrzrgYKxLKHdTPGXHaNMs4/kAV8iB60HM=;
+        b=G96Go3z/4fU4zB00OFy8C3eTKEX1vpgongOMMPdZD4ORUGu8ZUmW8K9TcVABokytOi
+         CqN3pm/bduX5UQDD6okXsHrKDjK6Yy3+hCIMd5q1250MWXNkVtbkMzu6N4JCIRooLgj6
+         RSAWLjt4Be2q2arJMzKy55nMsHau8gct3ivFwXb2GXyfl+6mFsvgMQmumdTu4aUjFSLq
+         0vJIOoXJyRSfpglaZSK1uLKwCnr5EJkoS3iGgrl2LkAIjXGLn+adaZJrADCqcCrVjlpa
+         D4RDrqWlbXcxX8995eJeqyO3tA2D3Us6wNFk1nCGKgcl5LpXR4jN6q5ggKqWadwKHgf6
+         tOAQ==
+X-Gm-Message-State: AOAM5306o7acRl3D3QfTRSri5esssPzpRvmz+31ckylO9c7+UPYKuxZi
+        zYbVGt3IN5lt9QafID/cT0L2ncM9yWIUn3xkkOA=
+X-Google-Smtp-Source: ABdhPJxVkSS0wkk4hN8KIj88o3MRG2ycVx7ULBlkZRaiBZIYuLUbBsVRKrREuFDdXoHaKtNidku/NI5G39iggWru+mc=
+X-Received: by 2002:a05:6808:f8e:: with SMTP id o14mr39894043oiw.79.1641298069414;
+ Tue, 04 Jan 2022 04:07:49 -0800 (PST)
 MIME-Version: 1.0
-References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-7-marcan@marcan.st>
-In-Reply-To: <20220104072658.69756-7-marcan@marcan.st>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 4 Jan 2022 13:28:44 +0200
-Message-ID: <CAHp75VcXgVTZhPiPmbpAJr21xUopRXU6yi=wvyzs6ByR8C+rzw@mail.gmail.com>
-Subject: Re: [PATCH v2 06/35] brcmfmac: firmware: Support passing in multiple board_types
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
+Reply-To: avas58158@gmail.com
+Sender: friederikerebmann915@gmail.com
+Received: by 2002:a05:6830:442c:0:0:0:0 with HTTP; Tue, 4 Jan 2022 04:07:48
+ -0800 (PST)
+From:   Ava Smith <avas58158@gmail.com>
+Date:   Tue, 4 Jan 2022 04:07:48 -0800
+X-Google-Sender-Auth: eJfsVwbZbFAVNWOE0kl2R-lImyc
+Message-ID: <CA+xNjeq1Ete=CFTt5spztLMRXkwY9HkeY2SKxPOAxsW=zpgfVg@mail.gmail.com>
+Subject: From Ava
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 4, 2022 at 9:28 AM Hector Martin <marcan@marcan.st> wrote:
->
-> In order to make use of the multiple alt_path functionality, change
-> board_type to an array. Bus drivers can pass in a NULL-terminated list
-> of board type strings to try for the firmware fetch.
+Hello Dear,
 
-> +               /* strip extension at the end */
-> +               strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
-> +               alt_path[suffix - path] = 0;
->
-> -       alt_paths[0] = kstrdup(alt_path, GFP_KERNEL);
-> +               strlcat(alt_path, ".", BRCMF_FW_NAME_LEN);
-> +               strlcat(alt_path, board_types[i], BRCMF_FW_NAME_LEN);
-> +               strlcat(alt_path, suffix, BRCMF_FW_NAME_LEN);
-> +
-> +               alt_paths[i] = kstrdup(alt_path, GFP_KERNEL);
-> +               brcmf_dbg(TRACE, "FW alt path: %s\n", alt_paths[i]);
+My name is Ava Smith from United States. I am a French and American
+national (dual) living in the U.S and sometimes in the U.K for the
+Purpose of Work. I hope you consider my friend request and consider me
+Worthy to be your friend. I will share some of my pics and more
+details about myself when i get your response.
 
-Consider replacing these string manipulations with kasprintf().
+Thanks
 
--- 
-With Best Regards,
-Andy Shevchenko
+Ava Smith
