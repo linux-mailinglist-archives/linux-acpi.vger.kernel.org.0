@@ -2,32 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AEC13484061
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 12:01:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DBAC4840A8
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 12:19:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229566AbiADLBG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jan 2022 06:01:06 -0500
-Received: from marcansoft.com ([212.63.210.85]:43322 "EHLO mail.marcansoft.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229486AbiADLBF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Tue, 4 Jan 2022 06:01:05 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id EED7741982;
-        Tue,  4 Jan 2022 11:00:53 +0000 (UTC)
-Message-ID: <58f87db9-385e-0b8c-fa83-ed730731273c@marcan.st>
-Date:   Tue, 4 Jan 2022 20:00:51 +0900
+        id S230510AbiADLTK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jan 2022 06:19:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38290 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229568AbiADLTJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jan 2022 06:19:09 -0500
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AACCC061761;
+        Tue,  4 Jan 2022 03:19:09 -0800 (PST)
+Received: by mail-ed1-x52c.google.com with SMTP id q14so139322036edi.3;
+        Tue, 04 Jan 2022 03:19:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lTvvZvpgX/vMIJJvqels0YTYJ/RzgUp78mB3uAv5t48=;
+        b=guqAN97V1EFMOLp5JRip/DLcahRtsUID8oiL7la/5kcSYwWnJbX4NwC8VVkAAZpkLV
+         RpdzSbAFaTH92n3f02GlLe57NS50744mmcpsU41IiLca3joB/G5Klz53cQUjYW+3MhSj
+         k5OkMQxepoZh2XDsHIlR74xE3t7agQQPxC6nm8JLuLI32TTA+OaV2WapLeo38+olWTFO
+         FV/dIFxYXZ+rjX6U97yLwnV8ZBSx0n/qJ+MDhjf6/Xxk1Kjqq7Zl6AqoyZLYBSCD3jjL
+         L4q5jW+x/+6yJMaHQLxZCR5wKadZ1ivA1TZudZ5Nw2ucE8FCtYt5bxVIHK6p8c4cFFy1
+         ZeNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lTvvZvpgX/vMIJJvqels0YTYJ/RzgUp78mB3uAv5t48=;
+        b=BsUVlONA81a4BEXmd8G+ETJjqikHHsZC5blCq6qd4hMR9Lz5KUpEQ8znNNRYUNIAQT
+         lKBvhphsXvkcgxDzvoWvHrPNhmfHuA7hsSN3AuT1ngRPydSgI1GMBqNPLfAwAczmmSEt
+         BPGZyox68W7g5kTesCw1KrAlfOr6Z4GCqMZPp9rWlRsXkVUDwvKQUylWuYax/nTzzJWY
+         Tcoe0ME/oRSH24r3YBANiRSVkv9jCqPNWnKs4Eky1Nl4xwfgh2srexwdQLCjSYqNfJhV
+         rG/THVDML5+kBU3BQVAWBLlKSYkCiWOeSJJESDYaEh+5PCI8ZvjK+v+nHOQ6sPUlPN+B
+         5apQ==
+X-Gm-Message-State: AOAM532xborQLwELhBnVWWlSilD3r+5AIPA3e8t9eZkUs6JplakSy0TH
+        /hr7OZw5LiGJv8SES4wJw0J5Qfw5nkRC+pzzI7s=
+X-Google-Smtp-Source: ABdhPJy+flb1KMKQX3i7pLtxvOmocpRTp1HRyAjw+R78xUAB+Gs3HcHq38H402Nh2lWxXaNpSko1AXe5ewxEpyl57Wg=
+X-Received: by 2002:a05:6402:795:: with SMTP id d21mr13341722edy.270.1641295148030;
+ Tue, 04 Jan 2022 03:19:08 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH v2 16/35] brcmfmac: acpi: Add support for fetching Apple
- ACPI properties
-Content-Language: en-US
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-9-marcan@marcan.st>
+In-Reply-To: <20220104072658.69756-9-marcan@marcan.st>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 4 Jan 2022 13:17:17 +0200
+Message-ID: <CAHp75Ve4N7qOtMhvwGWmQ7VF9guYP6YuvFvBqDY_aXbiCsO0vA@mail.gmail.com>
+Subject: Re: [PATCH v2 08/35] brcmfmac: of: Fetch Apple properties
+To:     Hector Martin <marcan@marcan.st>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -38,8 +62,8 @@ To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
         Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Mark Kettenis <kettenis@openbsd.org>,
         =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
@@ -48,87 +72,44 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         Hans de Goede <hdegoede@redhat.com>,
         "John W. Linville" <linville@tuxdriver.com>,
         "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
         SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-17-marcan@marcan.st>
- <a50d7d46-9298-3d4b-049d-4b3360c6efa7@broadcom.com>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <a50d7d46-9298-3d4b-049d-4b3360c6efa7@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022/01/04 19:21, Arend van Spriel wrote:
-> On 1/4/2022 8:26 AM, Hector Martin wrote:
->> On DT platforms, the module-instance and antenna-sku-info properties
->> are passed in the DT. On ACPI platforms, module-instance is passed via
->> the analogous Apple device property mechanism, while the antenna SKU
->> info is instead obtained via an ACPI method that grabs it from
->> non-volatile storage.
->>
->> Add support for this, to allow proper firmware selection on Apple
->> platforms.
->>
->> Signed-off-by: Hector Martin <marcan@marcan.st>
->> ---
->>   .../broadcom/brcm80211/brcmfmac/Makefile      |  2 +
->>   .../broadcom/brcm80211/brcmfmac/acpi.c        | 47 +++++++++++++++++++
->>   .../broadcom/brcm80211/brcmfmac/common.c      |  1 +
->>   .../broadcom/brcm80211/brcmfmac/common.h      |  9 ++++
->>   4 files changed, 59 insertions(+)
->>   create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
->>
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile
->> index 13c13504a6e8..19009eb9db93 100644
->> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile
->> @@ -47,3 +47,5 @@ brcmfmac-$(CONFIG_OF) += \
->>   		of.o
->>   brcmfmac-$(CONFIG_DMI) += \
->>   		dmi.o
->> +brcmfmac-$(CONFIG_ACPI) += \
->> +		acpi.o
->> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
->> new file mode 100644
->> index 000000000000..2b1a4448b291
->> --- /dev/null
->> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
->> @@ -0,0 +1,47 @@
->> +// SPDX-License-Identifier: ISC
->> +/*
->> + * Copyright The Asahi Linux Contributors
->> + */
-> 
-> Common format for copyright statement (in this folder) seems to be:
-> 
-> Copyright (c) <YEAR> <COPYRIGHT_HOLDER>
-> 
-> Regards,
-> Arend
+On Tue, Jan 4, 2022 at 9:28 AM Hector Martin <marcan@marcan.st> wrote:
+>
+> On Apple ARM64 platforms, firmware selection requires two properties
+> that come from system firmware: the module-instance (aka "island", a
+> codename representing a given hardware platform) and the antenna-sku.
+> We map Apple's module codenames to board_types in the form
+> "apple,<module-instance>".
+>
+> The mapped board_type is added to the DTS file in that form, while the
+> antenna-sku is forwarded by our bootloader from the Apple Device Tree
+> into the FDT. Grab them from the DT so firmware selection can use
+> them.
 
-I get this every time I submit a patch to a new subsystem :-)
+> +       /* Apple ARM64 platforms have their own idea of board type, passed in
+> +        * via the device tree. They also have an antenna SKU parameter
+> +        */
+> +       if (!of_property_read_string(np, "brcm,board-type", &prop))
+> +               settings->board_type = devm_kstrdup(dev, prop, GFP_KERNEL);
+> +
+> +       if (!of_property_read_string(np, "apple,antenna-sku", &prop))
+> +               settings->antenna_sku = devm_kstrdup(dev, prop, GFP_KERNEL);
 
-This is based on this best practice:
-
-https://www.linuxfoundation.org/blog/copyright-notices-in-open-source-software-projects/
-
-Basically, the year format quickly becomes outdated and is rather
-useless, and listing specific names also ends up missing every
-subsequent contributor, so more general copyright statements work better
-for this kind of use case. In the end we all know git history is the
-proper record of copyright status.
-
-I don't have a super strong opinion here, but we've been trying to
-standardize on this format for contributions coming from our subproject,
-and it feels more useful than a random contributor's name with a date 5
-years in the past :)
+No error checks?
+But hold on, why do you need to copy them? Are you expecting this to be in DTO?
 
 -- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+With Best Regards,
+Andy Shevchenko
