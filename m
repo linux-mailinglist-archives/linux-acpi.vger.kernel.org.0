@@ -2,140 +2,159 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 884CE484915
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 21:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31102484A77
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 23:09:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231672AbiADUDa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jan 2022 15:03:30 -0500
-Received: from mail-qk1-f178.google.com ([209.85.222.178]:42847 "EHLO
-        mail-qk1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbiADUDa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jan 2022 15:03:30 -0500
-Received: by mail-qk1-f178.google.com with SMTP id r139so35095454qke.9
-        for <linux-acpi@vger.kernel.org>; Tue, 04 Jan 2022 12:03:30 -0800 (PST)
+        id S235133AbiADWJy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jan 2022 17:09:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48060 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231725AbiADWJw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jan 2022 17:09:52 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC23AC061761;
+        Tue,  4 Jan 2022 14:09:51 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id k21so84827972lfu.0;
+        Tue, 04 Jan 2022 14:09:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=J+tOL9aMBTynfbO5F5IU1d3i5H7vwKI9tttVAfJxxGo=;
+        b=aS5gsRuJvKrVBvBjl/Qv/73+UDYrsukVayLyAFFOTjh2wUnczIUFg74tLFKjdTJfwB
+         NS/KZDlQDwovNy6XOSuAR78XSWkLRk3REZu0ij+7yHv7svkVMuLBsFLGz6StWpU+mR7u
+         1FVMTYxfdUo/w6ayUpQFW49HF/a7RCw3PqL+NIBzx5j+t1GP+WxsvFpzj9K4sRBq2Xvz
+         QKsgHULpYQHouP+gyBJgF4n/8UtfD52kL/00MaQzEHSerZ60+9Lnf8+h6lPR6EuFhT3L
+         DVjvsXXlM/IZmWKwQvYWQsMg78FPo7ORO+JsfCjUhqPIUN8RHMGS4Q4vawxQ6g7zHwmv
+         at5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TRmGFuyIC8DFPxodp5uo3EazNSa5oGwJmTBdv13c2Ik=;
-        b=Iv2Gg/+vRCPTUu3gIOgIJRCYVINNCqZVYnhM1tIHk+jhuLG1KgygmG2LejXPb2RoEq
-         CWpnLiFtQGdvWba9DwBKEYre3CQ7bshn5mPQAfSx8xg/urAFxkKnCXVUqLbWyCz9LV/E
-         2Yatjf0Fi15Xc8+L4te/ahdkc3kD9QHmL4ruOOqH6SlunpB2r3tTE0oaSibV7ll1Fq9o
-         Vt3WflnVk6dEs8Z1e7ynZi2MuK2grULigSmNal7peNkI3OYka6McQZ0utNxuLBilb8B8
-         G1vvOthAz5OUAMCBXc6jsDE5wgVeb8RJUKTEPLr68uh6AXoKzDq+3FkROK07DgEY7UF2
-         XlpQ==
-X-Gm-Message-State: AOAM530eZMiBfv8j82DsGxIazTGcGYPKwPbJrO/I8/irN7fFUgR8oGvL
-        Iezow4KI+nEyCsHwViUa4OVsomF15h7Y0UTWFPJELvcV
-X-Google-Smtp-Source: ABdhPJwd+WA6SesZf2tvcDnSLua8hSpXRQXywSvw7jxgvlWdHFVxNgdDqH9v94h7GeEmWMFhvhUaKK3ZbqUxXZtvSxM=
-X-Received: by 2002:a05:620a:40d1:: with SMTP id g17mr37243034qko.621.1641326609653;
- Tue, 04 Jan 2022 12:03:29 -0800 (PST)
-MIME-Version: 1.0
-References: <20211230193120.589337-1-hdegoede@redhat.com> <CAJZ5v0ihpNHZxJBRDGDFGME+Z+PZ8p5qzZ+ck3DAL=UsfT_p2g@mail.gmail.com>
- <df517ead-3535-c191-32e4-abbca0358ec0@redhat.com>
-In-Reply-To: <df517ead-3535-c191-32e4-abbca0358ec0@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 4 Jan 2022 21:03:18 +0100
-Message-ID: <CAJZ5v0g545AoFd1Z==gzJe4cR_n-7PTCUn8QBiLcV1GtUxvW2Q@mail.gmail.com>
-Subject: Re: [PATCH 0/2] ACPI / x86: ac and battery device quirk work
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=J+tOL9aMBTynfbO5F5IU1d3i5H7vwKI9tttVAfJxxGo=;
+        b=qCKoqU+16a3wuAKcm5XcMmpApH8tLFvTLvXJaY+Xt4L6sTnQSNVEiw/mFrC8gPem4o
+         Dpfb7C69f47cyS/QtcDT/yUBdEeNeaWjQb8OE2N9yvHKpMlNBXfdcolpRxIPadlx4cPQ
+         FmMHSwh7mUTqUk+dOHRD+aMRQMvV8Mxo8++CjmnRSl4aGv/8nGyT2V6Yc/GwBl0sRfp3
+         K1lFe8Ca65xfUrkbtM1vg6ePAwvjD4dc0rDhITkt782EOHSAlisf9NzXuC2gWA2be47X
+         bsvlNG8F66TWEiBToAQs+RYsoxYfXp4Z3cJ45LO23J1DhZTPkKDkT7v+f6vgTLtXl0vV
+         GM3w==
+X-Gm-Message-State: AOAM533hfGnPyqgMHX4lRd3QH/a3KX7AFe/1ofJpixdR1hwX4KR6OQ+l
+        +3WTsQ/bU1ZlHOqZ9E7Rahc=
+X-Google-Smtp-Source: ABdhPJwJjIwEF+zefQ2eGIPjV+eC1WWmcKPEqDAXegj0HkQephGbAVfsgOqZwbildelu2ACZAt/Yvw==
+X-Received: by 2002:a05:6512:3d8b:: with SMTP id k11mr44058704lfv.212.1641334190236;
+        Tue, 04 Jan 2022 14:09:50 -0800 (PST)
+Received: from [192.168.2.145] (46-138-43-24.dynamic.spd-mgts.ru. [46.138.43.24])
+        by smtp.googlemail.com with ESMTPSA id t16sm3593004ljk.28.2022.01.04.14.09.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Jan 2022 14:09:49 -0800 (PST)
+Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt
+ paths
+To:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Stephan Gerhold <stephan@gerhold.net>
-Content-Type: text/plain; charset="UTF-8"
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>
+Cc:     Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220104072658.69756-1-marcan@marcan.st>
+ <20220104072658.69756-5-marcan@marcan.st>
+ <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com>
+ <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com>
+Date:   Wed, 5 Jan 2022 01:09:45 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 4, 2022 at 4:08 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi Rafael,
->
-> On 1/4/22 15:52, Rafael J. Wysocki wrote:
-> > On Thu, Dec 30, 2021 at 8:31 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> >>
-> >> Hi Rafael,
-> >>
-> >> Here are 2 patches for ACPI ac and battery device quirk handling on x86,
-> >> the first one refactors the almost identical quirk handling in ac.c and
-> >> battery.c out into a shared helper.
-> >>
-> >> And the 2nd patch then uses the now shared code to also skip / ignore
-> >> ac and battery devices on x86 Android tablets with known broken DSDTs.
-> >>
-> >> Note this applies on top of my:
-> >> "[PATCH v2 0/3] ACPI / pdx86: Add support for x86 Android tablets with broken DSDTs"
-> >> series which you've just merged into your bleeding edge branch.
-> >>
-> >> Regards,
-> >>
-> >> Hans
-> >>
-> >>
-> >> Hans de Goede (2):
-> >>   ACPI / x86: Introduce an acpi_quirk_skip_acpi_ac_and_battery() helper
-> >>   ACPI / x86: Skip ac and battery devices on x86 Android tablets with
-> >>     broken DSDTs
-> >>
-> >>  drivers/acpi/ac.c        | 43 ++------------------
-> >>  drivers/acpi/battery.c   | 42 ++------------------
-> >>  drivers/acpi/x86/utils.c | 86 ++++++++++++++++++++++++++++++++++++----
-> >>  include/acpi/acpi_bus.h  |  5 +++
-> >>  4 files changed, 90 insertions(+), 86 deletions(-)
-> >
-> > Applied as 5.17 material.
-> >
-> > Note that the changes here clashed with some recent battery driver
-> > changes, so I needed to resolve the merge conflict.  Please double
-> > check the result.
->
-> Sorry about the conflict.
->
-> I just checked and something indeed went wrong with the merge.
->
-> Checking drivers/acpi/battery.c from your bleeding-edge
-> branch there a bunch of now dead code still present there
-> related to setting the now never checked battery_check_pmic
-> global quirk flag:
->
-> Line 55: "static int battery_check_pmic = 1;"
->
-> Line 1105-1111:
->
-> """
-> static int __init
-> battery_do_not_check_pmic_quirk(const struct dmi_system_id *d)
+04.01.2022 11:43, Hector Martin пишет:
+>>> +static int brcm_alt_fw_paths(const char *path, const char *board_type,
+>>> +			     const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS])>  {
+>>>  	char alt_path[BRCMF_FW_NAME_LEN];
+>>>  	const char *suffix;
+>>>  
+>>> +	memset(alt_paths, 0, array_size(sizeof(*alt_paths),
+>>> +					BRCMF_FW_MAX_ALT_PATHS));
+>> You don't need to use array_size() since size of a fixed array is
+>> already known.
+>>
+>> memset(alt_paths, 0, sizeof(alt_paths));
+> It's a function argument, so that doesn't work and actually throws a
+> warning. Array function argument notation is informative only; they
+> behave strictly equivalent to pointers. Try it:
+> 
+> $ cat test.c
+> #include <stdio.h>
+> 
+> void foo(char x[42])
 > {
->         battery_check_pmic = 0;
->         return 0;
+> 	printf("%ld\n", sizeof(x));
 > }
->
-> """
->
-> Line 1146-1161:
->
-> """
->         {
->                 /* ECS EF20EA, AXP288 PMIC but uses separate fuel-gauge */
->                 .callback = battery_do_not_check_pmic_quirk,
->                 .matches = {
->                         DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
->                 },
->         },
->         {
->                 /* Lenovo Ideapad Miix 320, AXP288 PMIC, separate fuel-gauge */
->                 .callback = battery_do_not_check_pmic_quirk,
->                 .matches = {
->                         DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
->                         DMI_MATCH(DMI_PRODUCT_NAME, "80XF"),
->                         DMI_MATCH(DMI_PRODUCT_VERSION, "Lenovo MIIX 320-10ICR"),
->                 },
->         },
-> """
->
-> Since this all just sets the now no longer checked battery_check_pmic flag, it
-> is harmless, but all of this can be removed.
+> 
+> int main() {
+> 	char x[42];
+> 
+> 	foo(x);
+> }
+> $ gcc test.c
+> test.c: In function ‘foo’:
+> test.c:5:31: warning: ‘sizeof’ on array function parameter ‘x’ will
+> return size of ‘char *’ [-Wsizeof-array-argument]
+>     5 |         printf("%ld\n", sizeof(x));
+>       |                               ^
+> test.c:3:15: note: declared here
+>     3 | void foo(char x[42])
+>       |          ~~~~~^~~~~
+> $ ./a.out
+> 8
 
-OK, I redid the merge, please check again.
+Then please use "const char **alt_paths" for the function argument to
+make code cleaner and add another argument to pass the number of array
+elements.
 
-Thanks!
+static int brcm_alt_fw_paths(const char *path, const char *board_type,
+			     const char **alt_paths, unsigned int num_paths)
+{
+	size_t alt_paths_size = array_size(sizeof(*alt_paths), num_paths);
+	
+	memset(alt_paths, 0, alt_paths_size);
+}
+
+...
+
+Maybe even better create a dedicated struct for the alt_paths:
+
+struct brcmf_fw_alt_paths {
+	const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS];
+	unsigned int index;
+};
+
+and then use the ".index" in the brcm_free_alt_fw_paths(). I suppose
+this will make code a bit nicer and easier to follow.
