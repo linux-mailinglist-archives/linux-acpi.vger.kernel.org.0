@@ -2,27 +2,26 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 406F048537E
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jan 2022 14:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3CD248538D
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jan 2022 14:26:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240309AbiAENWl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Jan 2022 08:22:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55260 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235186AbiAENWd (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jan 2022 08:22:33 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 139DBC061784;
-        Wed,  5 Jan 2022 05:22:31 -0800 (PST)
+        id S240353AbiAEN04 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Jan 2022 08:26:56 -0500
+Received: from marcansoft.com ([212.63.210.85]:43092 "EHLO mail.marcansoft.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236846AbiAEN04 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 5 Jan 2022 08:26:56 -0500
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
         (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 6DA8541F4A;
-        Wed,  5 Jan 2022 13:22:22 +0000 (UTC)
-To:     Dmitry Osipenko <digetx@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        by mail.marcansoft.com (Postfix) with ESMTPSA id CAEB441F4A;
+        Wed,  5 Jan 2022 13:26:46 +0000 (UTC)
+Subject: Re: [PATCH v2 10/35] brcmfmac: firmware: Allow platform to override
+ macaddr
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -32,8 +31,9 @@ To:     Dmitry Osipenko <digetx@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Mark Kettenis <kettenis@openbsd.org>,
         =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
@@ -42,112 +42,95 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         Hans de Goede <hdegoede@redhat.com>,
         "John W. Linville" <linville@tuxdriver.com>,
         "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-5-marcan@marcan.st>
- <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com>
- <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
- <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com>
+ <20220104072658.69756-11-marcan@marcan.st>
+ <CAHp75VcU1vVSucvegmSiMLoKBoPoGW5XLmqVUG0vXGdeafm2Jw@mail.gmail.com>
 From:   Hector Martin <marcan@marcan.st>
-Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt
- paths
-Message-ID: <6a936aea-ada4-fe2d-7ce6-7a42788e4d63@marcan.st>
-Date:   Wed, 5 Jan 2022 22:22:19 +0900
+Message-ID: <b4f50489-fa4b-2c40-31ad-1b74e916cdb4@marcan.st>
+Date:   Wed, 5 Jan 2022 22:26:44 +0900
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com>
+In-Reply-To: <CAHp75VcU1vVSucvegmSiMLoKBoPoGW5XLmqVUG0vXGdeafm2Jw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: es-ES
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 05/01/2022 07.09, Dmitry Osipenko wrote:
-> 04.01.2022 11:43, Hector Martin пишет:
->>>> +static int brcm_alt_fw_paths(const char *path, const char *board_type,
->>>> +			     const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS])>  {
->>>>  	char alt_path[BRCMF_FW_NAME_LEN];
->>>>  	const char *suffix;
->>>>  
->>>> +	memset(alt_paths, 0, array_size(sizeof(*alt_paths),
->>>> +					BRCMF_FW_MAX_ALT_PATHS));
->>> You don't need to use array_size() since size of a fixed array is
->>> already known.
->>>
->>> memset(alt_paths, 0, sizeof(alt_paths));
->> It's a function argument, so that doesn't work and actually throws a
->> warning. Array function argument notation is informative only; they
->> behave strictly equivalent to pointers. Try it:
+On 04/01/2022 23.23, Andy Shevchenko wrote:
+> On Tue, Jan 4, 2022 at 9:29 AM Hector Martin <marcan@marcan.st> wrote:
 >>
->> $ cat test.c
->> #include <stdio.h>
+>> On Device Tree platforms, it is customary to be able to set the MAC
+>> address via the Device Tree, as it is often stored in system firmware.
+>> This is particularly relevant for Apple ARM64 platforms, where this
+>> information comes from system configuration and passed through by the
+>> bootloader into the DT.
 >>
->> void foo(char x[42])
->> {
->> 	printf("%ld\n", sizeof(x));
->> }
+>> Implement support for this by fetching the platform MAC address and
+>> adding or replacing the macaddr= property in nvram. This becomes the
+>> dongle's default MAC address.
 >>
->> int main() {
->> 	char x[42];
->>
->> 	foo(x);
->> }
->> $ gcc test.c
->> test.c: In function ‘foo’:
->> test.c:5:31: warning: ‘sizeof’ on array function parameter ‘x’ will
->> return size of ‘char *’ [-Wsizeof-array-argument]
->>     5 |         printf("%ld\n", sizeof(x));
->>       |                               ^
->> test.c:3:15: note: declared here
->>     3 | void foo(char x[42])
->>       |          ~~~~~^~~~~
->> $ ./a.out
->> 8
-> 
-> Then please use "const char **alt_paths" for the function argument to
-> make code cleaner and add another argument to pass the number of array
-> elements.
-
-So you want me to do the ARRAY_SIZE at the caller side then?
-
-> 
-> static int brcm_alt_fw_paths(const char *path, const char *board_type,
-> 			     const char **alt_paths, unsigned int num_paths)
-> {
-> 	size_t alt_paths_size = array_size(sizeof(*alt_paths), num_paths);
-> 	
-> 	memset(alt_paths, 0, alt_paths_size);
-> }
+>> On platforms with an SROM MAC address, this overrides it. On platforms
+>> without one, such as Apple ARM64 devices, this is required for the
+>> firmware to boot (it will fail if it does not have a valid MAC at all).
 > 
 > ...
 > 
-> Maybe even better create a dedicated struct for the alt_paths:
+>> +#define BRCMF_FW_MACADDR_FMT                   "macaddr=%pM"
+>> +#define BRCMF_FW_MACADDR_LEN                   (7 + ETH_ALEN * 3)
 > 
-> struct brcmf_fw_alt_paths {
-> 	const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS];
-> 	unsigned int index;
-> };
+> ...
 > 
-> and then use the ".index" in the brcm_free_alt_fw_paths(). I suppose
-> this will make code a bit nicer and easier to follow.
+>>                 if (strncmp(&nvp->data[nvp->entry], "boardrev", 8) == 0)
+>>                         nvp->boardrev_found = true;
+>> +               /* strip macaddr if platform MAC overrides */
+>> +               if (nvp->strip_mac &&
+>> +                   strncmp(&nvp->data[nvp->entry], "macaddr", 7) == 0)
+> 
+> If it has no side effects, I would rather swap the operands of && so
+> you match string first (it will be in align with above code at least,
+> although I haven't checked bigger context).
+
+I usually check for trivial flags before calling more expensive
+functions because it's more efficient in the common case. Obviously here
+performance doesn't matter though.
+
+> 
+> ....
+> 
+>> +static void brcmf_fw_add_macaddr(struct nvram_parser *nvp, u8 *mac)
+>> +{
+>> +       snprintf(&nvp->nvram[nvp->nvram_len], BRCMF_FW_MACADDR_LEN + 1,
+>> +                BRCMF_FW_MACADDR_FMT, mac);
+> 
+> Please, avoid using implict format string, it's dangerous from security p.o.v.
+
+What do you mean by implicit format string? The format string is at the
+top of the file and its length is right next to it, which makes it
+harder for them to accidentally fall out of sync.
+
++#define BRCMF_FW_MACADDR_FMT			"macaddr=%pM"
++#define BRCMF_FW_MACADDR_LEN			(7 + ETH_ALEN * 3)
+
+> 
+>> +       nvp->nvram_len += BRCMF_FW_MACADDR_LEN + 1;
+> 
+> Also, with temporary variable the code can be better to read
+> 
+> size_t mac_len = ...;
 > 
 
-I'm confused; the array size is constant. What would index contain and
-why would would brcm_free_alt_fw_paths use it? Just as an iterator
-variable instead of using a local variable? Or do you mean count?
-
-Though, to be honest, at this point I'm considering rethinking the whole
-patch for this mechanism because I'm not terribly happy with the current
-approach and clearly you aren't either :-) Maybe it makes more sense to
-stop trying to compute all the alt_paths ahead of time, and just have
-the function compute a single one to be used just-in-time at firmware
-request time, and just iterate over board_types.
+Sure.
 
 -- 
 Hector Martin (marcan@marcan.st)
