@@ -2,136 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3CD248538D
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jan 2022 14:26:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB44D4856B2
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jan 2022 17:32:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240353AbiAEN04 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 5 Jan 2022 08:26:56 -0500
-Received: from marcansoft.com ([212.63.210.85]:43092 "EHLO mail.marcansoft.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236846AbiAEN04 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 5 Jan 2022 08:26:56 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id CAEB441F4A;
-        Wed,  5 Jan 2022 13:26:46 +0000 (UTC)
-Subject: Re: [PATCH v2 10/35] brcmfmac: firmware: Allow platform to override
- macaddr
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        id S241936AbiAEQcj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 5 Jan 2022 11:32:39 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:57546 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241912AbiAEQci (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 5 Jan 2022 11:32:38 -0500
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id F2AE21F37F;
+        Wed,  5 Jan 2022 16:32:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1641400357; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=13XVbwWKMxc4zrZoBn7bnud/V8lnA2Mx9huBGxorA+U=;
+        b=1mwgH6B5GRx6oG8T5GGra2JmjVMvnbNBaLaRBDfPOtb4y4Xh0GWeV13MCBzMN0KTpYfUf2
+        azQz7/DJXRbYIsGYtZaR+M4LVm18oHUnRRpzDKDGjoYqgMaVaCkmWVGihr259F0wlX4Wbq
+        plEh57FHjE1uGZfqm1bQS/2jeGiUy/U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1641400357;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=13XVbwWKMxc4zrZoBn7bnud/V8lnA2Mx9huBGxorA+U=;
+        b=I6/ExtKhBsjHTy/LkhjZZ3Wxuw7m5Fb+DTCI6Z4f9kQT38cwZnKK5Q5Wve2CA58SqpM+XZ
+        QeMCqFDLhbXKqgDA==
+Received: from alsa1.suse.de (alsa1.suse.de [10.160.4.42])
+        by relay2.suse.de (Postfix) with ESMTP id D4402A3B89;
+        Wed,  5 Jan 2022 16:32:36 +0000 (UTC)
+Date:   Wed, 05 Jan 2022 17:32:36 +0100
+Message-ID: <s5hczl6i1nf.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Lucas Tanure <tanureal@opensource.cirrus.com>
+Cc:     Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+        Mark Gross <markgross@kernel.org>,
+        Takashi Iwai <tiwai@suse.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
         Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-11-marcan@marcan.st>
- <CAHp75VcU1vVSucvegmSiMLoKBoPoGW5XLmqVUG0vXGdeafm2Jw@mail.gmail.com>
-From:   Hector Martin <marcan@marcan.st>
-Message-ID: <b4f50489-fa4b-2c40-31ad-1b74e916cdb4@marcan.st>
-Date:   Wed, 5 Jan 2022 22:26:44 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <CAHp75VcU1vVSucvegmSiMLoKBoPoGW5XLmqVUG0vXGdeafm2Jw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: es-ES
-Content-Transfer-Encoding: 7bit
+        patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: (subset) [PATCH v6 00/10] Add support for CS35L41 in HDA systems
+In-Reply-To: <s5h35m3lkd4.wl-tiwai@suse.de>
+References: <20211217115708.882525-1-tanureal@opensource.cirrus.com>
+        <164096159451.2355590.17653987935012339046.b4-ty@kernel.org>
+        <s5h35m3lkd4.wl-tiwai@suse.de>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 04/01/2022 23.23, Andy Shevchenko wrote:
-> On Tue, Jan 4, 2022 at 9:29 AM Hector Martin <marcan@marcan.st> wrote:
->>
->> On Device Tree platforms, it is customary to be able to set the MAC
->> address via the Device Tree, as it is often stored in system firmware.
->> This is particularly relevant for Apple ARM64 platforms, where this
->> information comes from system configuration and passed through by the
->> bootloader into the DT.
->>
->> Implement support for this by fetching the platform MAC address and
->> adding or replacing the macaddr= property in nvram. This becomes the
->> dongle's default MAC address.
->>
->> On platforms with an SROM MAC address, this overrides it. On platforms
->> without one, such as Apple ARM64 devices, this is required for the
->> firmware to boot (it will fail if it does not have a valid MAC at all).
+On Tue, 04 Jan 2022 14:07:51 +0100,
+Takashi Iwai wrote:
 > 
-> ...
+> On Fri, 31 Dec 2021 15:39:54 +0100,
+> Mark Brown wrote:
+> > 
+> > On Fri, 17 Dec 2021 11:56:58 +0000, Lucas Tanure wrote:
+> > > Add support for laptops that have CS35L41 connected to an HDA
+> > > codec by I2S and direct I2C connection to the CPU.
+> > > 
+> > > Laptops that use CS35L41 and are SPI will be added in the future,
+> > > after the support for it is resolved at i2c-multi-instantiate driver.
+> > > i2c-multi-instantiate thread: https://lkml.org/lkml/2021/12/10/557
+> > > 
+> > > [...]
+> > 
+> > Applied to
+> > 
+> >    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+> > 
+> > Thanks!
+> > 
+> > [01/10] ASoC: cs35l41: Convert tables to shared source code
+> >         commit: a87d42227cf5614fe0040ddd1fe642c54298b42c
+> > [02/10] ASoC: cs35l41: Move cs35l41_otp_unpack to shared code
+> >         commit: fe120d4cb6f6cd03007239e7c578b8703fe6d336
+> > [03/10] ASoC: cs35l41: Move power initializations to reg_sequence
+> >         commit: 062ce0593315e22aac527389dd6dd4328c49f0fb
+> > [04/10] ASoC: cs35l41: Create shared function for errata patches
+> >         commit: 8b2278604b6de27329ec7ed82ca696c4751111b6
+> > [05/10] ASoC: cs35l41: Create shared function for setting channels
+> >         commit: 3bc3e3da657f17c14df8ae8fab58183407bd7521
+> > [06/10] ASoC: cs35l41: Create shared function for boost configuration
+> >         commit: e8e4fcc047c6e0c5411faeb8cc29aed2e5036a00
 > 
->> +#define BRCMF_FW_MACADDR_FMT                   "macaddr=%pM"
->> +#define BRCMF_FW_MACADDR_LEN                   (7 + ETH_ALEN * 3)
-> 
-> ...
-> 
->>                 if (strncmp(&nvp->data[nvp->entry], "boardrev", 8) == 0)
->>                         nvp->boardrev_found = true;
->> +               /* strip macaddr if platform MAC overrides */
->> +               if (nvp->strip_mac &&
->> +                   strncmp(&nvp->data[nvp->entry], "macaddr", 7) == 0)
-> 
-> If it has no side effects, I would rather swap the operands of && so
-> you match string first (it will be in align with above code at least,
-> although I haven't checked bigger context).
+> Mark, could you send a PR including those for 5.17?
+> The rest HD-audio part of the patch set depends on this new ASoC codec
+> stuff (at least Kconfig), so I can't apply the patches before merging
+> those.  The ACPI patch might be still not applicable through my tree,
+> but it can be taken independently.
 
-I usually check for trivial flags before calling more expensive
-functions because it's more efficient in the common case. Obviously here
-performance doesn't matter though.
+Now I merged Mark's asoc tree, and applied the patches 7, 9 and 10.
+  ALSA: hda: cs35l41: Add support for CS35L41 in HDA systems
+  ALSA: hda/realtek: Add support for Legion 7 16ACHg6 laptop
+  ALSA: hda/realtek: Add CS35L41 support for Thinkpad laptops
 
-> 
-> ....
-> 
->> +static void brcmf_fw_add_macaddr(struct nvram_parser *nvp, u8 *mac)
->> +{
->> +       snprintf(&nvp->nvram[nvp->nvram_len], BRCMF_FW_MACADDR_LEN + 1,
->> +                BRCMF_FW_MACADDR_FMT, mac);
-> 
-> Please, avoid using implict format string, it's dangerous from security p.o.v.
+The patches 9 and 10 have been slightly modified to adjust the quirk
+entry positions.
 
-What do you mean by implicit format string? The format string is at the
-top of the file and its length is right next to it, which makes it
-harder for them to accidentally fall out of sync.
+The only missing patch is the ACPI patch.  I'm open in which way to
+take; it's fine to be applied via other trees.
 
-+#define BRCMF_FW_MACADDR_FMT			"macaddr=%pM"
-+#define BRCMF_FW_MACADDR_LEN			(7 + ETH_ALEN * 3)
+Let me know your favorite.
 
-> 
->> +       nvp->nvram_len += BRCMF_FW_MACADDR_LEN + 1;
-> 
-> Also, with temporary variable the code can be better to read
-> 
-> size_t mac_len = ...;
-> 
 
-Sure.
+thanks,
 
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+Takashi
