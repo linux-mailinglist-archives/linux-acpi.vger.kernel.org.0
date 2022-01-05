@@ -2,104 +2,236 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A0B5484AD0
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jan 2022 23:38:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13210484C23
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jan 2022 02:35:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235609AbiADWiw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 4 Jan 2022 17:38:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54728 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235613AbiADWiw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jan 2022 17:38:52 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 844C6C061761;
-        Tue,  4 Jan 2022 14:38:51 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id bp20so84919265lfb.6;
-        Tue, 04 Jan 2022 14:38:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ltp8LALALJteT6noWWok492G/OMAgatm1CDGi/K+eLI=;
-        b=h+/IOsru5P7OYh1PfOWHFlhgLEOIzWl+bNQxEPvgggaydWshTCfq5FPyeeI5X6Q14m
-         FiGzeAz626D9ZmL4GdW0gH79tNctOCD4vElNcP3ceb8TXhTstP3T9srSmzuiEsTbIpXY
-         lbhq5M9j6cgRbgKREN+PQD8c3kEnEPN97S0yPCFWRjNc2T9IUOl8TMVnkNPHbc0BN3bH
-         dQXLJegBXhlxjU2kwceyavjWqjK28FDtHB4q5JnrBMW2LfZWAaRjYVvms6y/QM5i4gqS
-         Dr/5yyDm0mNTVdIxUkJWTOI9tON4UwAD+931M2ch4E3aBYbnofgfAER2UyMRtabhJl/y
-         692g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ltp8LALALJteT6noWWok492G/OMAgatm1CDGi/K+eLI=;
-        b=1BWR1yA33OWqiesASkpljX2m8lw4zhx0HPbo3GSlqCVZSMoAuaCxbP32rICwkpAl8r
-         b64+hF3pzzaeWIY0Fey52CsmEDqNPpEL0l9pv9Epdkj0X3ry/WjyyzBMImyYgMhuvHx/
-         0Ip3ZjpVmenuvPaEeSWMLI/m2Jpp79fCQPDGxNSjPWoX1Kokcmk+b9sXi+zuklXr4wTj
-         NloYyKiGOeO9KmVRgelc90Ki3SVS9e8uUdI1VXelDgjM3ZfGJsYdSeDdjBFlHfhXRd4o
-         BnmWQSQtHH3NmGlJ1zoi9wsTS1FsEJNNjkUYAFs7KgIHUC0pYdZHl2ux95RJIT1+FkEK
-         S0Ew==
-X-Gm-Message-State: AOAM5324NHnsC680jHkk3AWMgY2S3/jRXrPDDIRcCKsjnaQQ3Cw461KV
-        KOsonFm/Et+yMQ64FdUNcsg=
-X-Google-Smtp-Source: ABdhPJwzMivr9lO9qHzC3ODAHRJzhhdx/OjIM55OwP6/sJjhsn9GbAEmtEYlY8MTXz9TyyLP7kEwiQ==
-X-Received: by 2002:a05:6512:118b:: with SMTP id g11mr9776235lfr.570.1641335929880;
-        Tue, 04 Jan 2022 14:38:49 -0800 (PST)
-Received: from [192.168.2.145] (46-138-43-24.dynamic.spd-mgts.ru. [46.138.43.24])
-        by smtp.googlemail.com with ESMTPSA id u19sm3138690ljd.94.2022.01.04.14.38.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Jan 2022 14:38:49 -0800 (PST)
-Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt
- paths
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-5-marcan@marcan.st>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <226a78e1-fa51-1f1b-c547-636797d831e4@gmail.com>
-Date:   Wed, 5 Jan 2022 01:38:46 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S236795AbiAEBfB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 4 Jan 2022 20:35:01 -0500
+Received: from szxga01-in.huawei.com ([45.249.212.187]:34875 "EHLO
+        szxga01-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234314AbiAEBfB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 4 Jan 2022 20:35:01 -0500
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4JTBq538Nnzcbxj;
+        Wed,  5 Jan 2022 09:34:25 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (7.185.36.229) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Wed, 5 Jan 2022 09:34:58 +0800
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Wed, 5 Jan 2022 09:34:58 +0800
+Subject: Re: [PATCH v3 2/2] ACPI: AGDI: Add driver for Arm Generic Diagnostic
+ Dump and Reset device
+To:     Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+        <lorenzo.pieralisi@arm.com>, <sudeep.holla@arm.com>,
+        <rafael@kernel.org>, <linux@armlinux.org.uk>
+CC:     <lenb@kernel.org>, <robert.moore@intel.com>,
+        <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <patches@amperecomputing.com>,
+        <scott@os.amperecomputing.com>, <darren@os.amperecomputing.com>
+References: <20211231033725.21109-1-ilkka@os.amperecomputing.com>
+ <20211231033725.21109-3-ilkka@os.amperecomputing.com>
+From:   Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <f0fecf95-0b7d-eeec-94fd-76bea61fdd0f@huawei.com>
+Date:   Wed, 5 Jan 2022 09:34:57 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20220104072658.69756-5-marcan@marcan.st>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211231033725.21109-3-ilkka@os.amperecomputing.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-04.01.2022 10:26, Hector Martin пишет:
-> +static int brcm_alt_fw_paths(const char *path, const char *board_type,
-> +			     const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS])
->  {
-...
-> +static void
-> +brcm_free_alt_fw_paths(const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS])
-> +{
+Hi Ilkka,
 
-I'd rename this funcs to brcm_init/deinit_alt_fw_paths(), for
-consistency and clarity.
+On 2021/12/31 11:37, Ilkka Koskinen wrote:
+> ACPI for Arm Components 1.1 Platform Design Document v1.1 [0] specifices
+> Arm Generic Diagnostic Device Interface (AGDI). It allows an admin to
+> issue diagnostic dump and reset via an SDEI event or an interrupt.
+> This patch implements SDEI path.
+> 
+> [0] https://developer.arm.com/documentation/den0093/latest/
+> 
+> Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+> ---
+>   drivers/acpi/arm64/Kconfig  |   8 +++
+>   drivers/acpi/arm64/Makefile |   1 +
+>   drivers/acpi/arm64/agdi.c   | 125 ++++++++++++++++++++++++++++++++++++
+>   3 files changed, 134 insertions(+)
+>   create mode 100644 drivers/acpi/arm64/agdi.c
+> 
+> diff --git a/drivers/acpi/arm64/Kconfig b/drivers/acpi/arm64/Kconfig
+> index 6dba187f4f2e..24869ba5b365 100644
+> --- a/drivers/acpi/arm64/Kconfig
+> +++ b/drivers/acpi/arm64/Kconfig
+> @@ -8,3 +8,11 @@ config ACPI_IORT
+>   
+>   config ACPI_GTDT
+>   	bool
+> +
+> +config ACPI_AGDI
+> +	bool "Arm Generic Diagnostic Dump and Reset Device Interface"
+> +	depends on ARM_SDE_INTERFACE
+> +	help
+> +	  Arm Generic Diagnostic Dump and Reset Device Interface (AGDI) is
+> +	  a standard that enables issuing a non-maskable diagnostic dump and
+> +	  reset command.
+> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
+> index 66acbe77f46e..7b9e4045659d 100644
+> --- a/drivers/acpi/arm64/Makefile
+> +++ b/drivers/acpi/arm64/Makefile
+> @@ -1,4 +1,5 @@
+>   # SPDX-License-Identifier: GPL-2.0-only
+> +obj-$(CONFIG_ACPI_AGDI) 	+= agdi.o
+>   obj-$(CONFIG_ACPI_IORT) 	+= iort.o
+>   obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
+>   obj-y				+= dma.o
+> diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+> new file mode 100644
+> index 000000000000..6525ccbae5c1
+> --- /dev/null
+> +++ b/drivers/acpi/arm64/agdi.c
+> @@ -0,0 +1,125 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * This file implements handling of
+> + * Arm Generic Diagnostic Dump and Reset Interface table (AGDI)
+> + *
+> + * Copyright (c) 2021, Ampere Computing LLC
+> + */
+> +
+> +#define pr_fmt(fmt) "ACPI: AGDI: " fmt
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/slab.h>
+> +#include <linux/module.h>
+> +#include <linux/kernel.h>
+> +#include <linux/acpi.h>
+> +#include <linux/arm_sdei.h>
+> +#include <linux/io.h>
+
+Please keep the head files in alphabetical order.
+
+> +
+> +struct agdi_data {
+> +	int sdei_event;
+> +};
+> +
+> +static int agdi_sdei_handler(u32 sdei_event, struct pt_regs *regs, void *arg)
+> +{
+> +	nmi_panic(regs, "Arm Generic Diagnostic Dump and Reset SDEI event issued");
+> +	return 0;
+> +}
+> +
+> +static int agdi_sdei_probe(struct platform_device *pdev,
+> +			   struct agdi_data *adata)
+> +{
+> +	int err;
+> +
+> +	err = sdei_event_register(adata->sdei_event, agdi_sdei_handler, pdev);
+> +	if (err) {
+> +		dev_err(&pdev->dev, "Failed to register for SDEI event %d",
+> +			adata->sdei_event);
+> +		return err;
+> +	}
+> +
+> +	err = sdei_event_enable(adata->sdei_event);
+> +	if (err)  {
+> +		sdei_event_unregister(adata->sdei_event);
+> +		dev_err(&pdev->dev, "Failed to enable event %d\n",
+> +			adata->sdei_event);
+> +		return err;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int agdi_probe(struct platform_device *pdev)
+> +{
+> +	struct agdi_data *adata;
+> +
+> +	adata = dev_get_platdata(&pdev->dev);
+> +	if (!adata)
+> +		return -EINVAL;
+> +
+> +	return agdi_sdei_probe(pdev, adata);
+> +}
+> +
+> +static int agdi_remove(struct platform_device *pdev)
+> +{
+> +	struct agdi_data *adata = platform_get_drvdata(pdev);
+> +
+> +	sdei_event_disable(adata->sdei_event);
+> +	sdei_event_unregister(adata->sdei_event);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver agdi_driver = {
+> +	.driver = {
+> +		.name = "agdi",
+> +	},
+> +	.probe = agdi_probe,
+> +	.remove = agdi_remove,
+> +};
+> +
+> +static int __init agdi_init(void)
+> +{
+> +	int ret;
+> +	acpi_status status;
+> +	struct acpi_table_agdi *agdi_table;
+> +	struct agdi_data pdata;
+> +	struct platform_device *pdev;
+> +
+> +	if (acpi_disabled)
+> +		return 0;
+> +
+> +	status = acpi_get_table(ACPI_SIG_AGDI, 0,
+> +				(struct acpi_table_header **) &agdi_table);
+> +	if (ACPI_FAILURE(status))
+> +		return -ENODEV;
+> +
+> +	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE) {
+> +		pr_warn("Interrupt signaling is not supported");
+> +		ret = -ENODEV;
+> +		goto err_put_table;
+> +	}
+> +
+> +	pdata.sdei_event = agdi_table->sdei_event;
+> +
+> +	pdev = platform_device_register_data(NULL, "agdi", 0, &pdata, sizeof(pdata));
+> +	if (IS_ERR(pdev)) {
+> +		ret = PTR_ERR(pdev);
+> +		goto err_put_table;
+> +	}
+> +
+> +	ret = platform_driver_register(&agdi_driver);
+> +	if (ret)
+> +		goto err_device_unregister;
+> +
+> +	acpi_put_table((struct acpi_table_header *)agdi_table);
+> +	return 0;
+> +
+> +err_device_unregister:
+> +	platform_device_unregister(pdev);
+> +err_put_table:
+> +	acpi_put_table((struct acpi_table_header *)agdi_table);
+> +	return ret;
+> +}
+> +device_initcall(agdi_init);
+
+The rest are looking good to me.
+
+Thanks
+Hanjun
