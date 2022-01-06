@@ -2,32 +2,32 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF749486354
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jan 2022 12:00:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1C4486380
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jan 2022 12:11:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238219AbiAFLAA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jan 2022 06:00:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38264 "EHLO
+        id S238137AbiAFLLF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jan 2022 06:11:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238102AbiAFK77 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 05:59:59 -0500
+        with ESMTP id S238090AbiAFLLE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 06:11:04 -0500
 Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C3C9C061245;
-        Thu,  6 Jan 2022 02:59:59 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34D29C061245;
+        Thu,  6 Jan 2022 03:11:04 -0800 (PST)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
         (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 1413A41F5D;
-        Thu,  6 Jan 2022 10:59:47 +0000 (UTC)
-Message-ID: <c23cb138-e32f-d770-6fab-4a3ae5c23ea1@marcan.st>
-Date:   Thu, 6 Jan 2022 19:59:44 +0900
+        by mail.marcansoft.com (Postfix) with ESMTPSA id A50A941F55;
+        Thu,  6 Jan 2022 11:10:53 +0000 (UTC)
+Message-ID: <6a54eabe-1013-0e3c-024d-971178278dc9@marcan.st>
+Date:   Thu, 6 Jan 2022 20:10:51 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
  Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH v2 03/35] brcmfmac: firmware: Handle per-board clm_blob
- files
+Subject: Re: [PATCH v2 02/35] brcmfmac: pcie: Declare missing firmware files
+ in pcie.c
 Content-Language: en-US
 To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -57,61 +57,34 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-4-marcan@marcan.st>
- <955f3b68-f1aa-767c-2539-7b8362372a60@broadcom.com>
+ <20220104072658.69756-3-marcan@marcan.st>
+ <3268b423-09eb-e7d9-b427-fc964d217087@broadcom.com>
 From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <955f3b68-f1aa-767c-2539-7b8362372a60@broadcom.com>
+In-Reply-To: <3268b423-09eb-e7d9-b427-fc964d217087@broadcom.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022/01/06 19:19, Arend van Spriel wrote:
+On 2022/01/06 18:56, Arend van Spriel wrote:
 > On 1/4/2022 8:26 AM, Hector Martin wrote:
->> Teach brcm_alt_fw_paths to correctly split off variable length
->> extensions, and enable alt firmware lookups for the CLM blob firmware
->> requests.
->>
->> Apple platforms have per-board CLM blob files.
+>> Move one of the declarations from sdio.c to pcie.c, since it makes no
+>> sense in the former (SDIO support is optional), and add missing ones.
 > 
-> Are you sure? I am not involved in development for Apple platforms, but 
-> in general we build a CLM blob specific for a chip revision. As always 
-> with the blobs they are created at a certain point in time and that is 
-> mostly why you need another one for a newer platform. Apple tends to do 
-> things a bit different so you could be right though. Anyway, despite my 
-> doubts on this it does not change the need for per-board firmware files.
+> Actually, any bus is optional so each bus should indeed declare the 
+> applicable firmware names/patterns.
 
-Yup, I'm sure. The 2021 MacBook Pro 14" and the MacBook Pro 16", both
-using BCM4387 and both released simultaneously, have different CLM
-blobs; they're even a significantly different size. Running `strings` on
-the files yields:
+Of course; I didn't mean *only* SDIO support is optional :)
 
-CLM DATA
-Oly.Maldives
-1.61.4
-ClmImport: 1.63.1
-v3 Final 210923
+>> +/* firmware config files */
+>> +MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-pcie.txt");
+> 
+> what is this one for? Those would be covered by the specific 
+> BRCMF_FW_DEF() macro instances, no?
 
-CLM DATA
-Oly.Madagascar
-1.61.4
-ClmImport: 1.63.1
-v4 Final 210923
-
-The data shows significant differences and since the file format is
-opaque I can't know what's going on. Even if it's safe to use one file
-for both, unless there is some way for me to programmatically identify
-this fact so I can incorporate that logic into my firmware copier, I
-would much rather just keep them separate like Apple does.
-
-> So all firmware files are attempted with board-specific path now.
-
-Yes, I figured I'd keep things uniform. Technically for Apple platforms
-the CLM blob and firmware are only per-board and possibly per-antenna
-(they don't need the module variants, those are for nvram only), but
-there's no real harm in unifying it and using the same firmware naming
-alt path list for everything.
+The BRCMF_FW_DEF() macro only declares the .bin file; BRCMF_FW_CLM_DEF
+declares that and the .clm_blob. Neither declare the NVRAM .txt.
 
 -- 
 Hector Martin (marcan@marcan.st)
