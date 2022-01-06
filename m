@@ -2,83 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5B60486937
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jan 2022 18:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3A91486949
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jan 2022 18:59:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242447AbiAFRzW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jan 2022 12:55:22 -0500
-Received: from mail-qt1-f182.google.com ([209.85.160.182]:37815 "EHLO
-        mail-qt1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241987AbiAFRzW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 12:55:22 -0500
-Received: by mail-qt1-f182.google.com with SMTP id c15so2659623qtc.4;
-        Thu, 06 Jan 2022 09:55:21 -0800 (PST)
+        id S242318AbiAFR7R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jan 2022 12:59:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48384 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242232AbiAFR7Q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 12:59:16 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90101C061245;
+        Thu,  6 Jan 2022 09:59:15 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id w16so12398542edc.11;
+        Thu, 06 Jan 2022 09:59:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Xu3gtBGXL1jf6kCxzSaeWpzGpdunrBP5nIzH9T+JX7A=;
+        b=QABhckc492awaaxXuAXNmNQu84OS4dvWLO16RonMxReG9y4I9SOXpp9WNwch9Fu6UD
+         wmm3heRhU9A29LYtvo6Fn7aozoN+g991Jwt9RQ7xtA5tdoKYkbngv0/w3NI4ZVAmWjEe
+         Qf4FaRnSLHeLAijAeS/SW44fLuapJUWTDIGRkFNvJpXa8kJPYZ+hODXTxDEvfvkWa3zg
+         T6+U8IghcX2VT+PrROhDOtA9Sc5BZrHyPtOxSVkXOiPtglKvyuZManVi2xWmII9unYNd
+         sqJ+ex5Wb8WXfDFg6t08ESunjSYjwNDofHokjRvAm3QXtSggwSxZDRb7FLTRRDuEpWPv
+         48Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ox3rPC9dAJrohl85LiIr9TxRU2+Tpf4TawpkA4ZLMwY=;
-        b=yKaLSYq02AjsfK125WQSrda6ZzeuJe4vCJq2WiYs5qkpEKg+BisqCw0CyS3p32YEfp
-         Hnm8M+feS1N2z5MPr8k59iNItCT/7fgpspWK3SEywnsf35OgZtPcnec6mH00jbQd7sM9
-         V6jJAfn8EkWCxgky/mut1CzWs/u2SfxB2Hh30O1fYhSTR+8MQa6x2ydwQYU1JZdgPKlQ
-         +3CbmGgv6PHdLAURgonJNj5jCTlxyngE2M2jWWex3OhxDKT2ymFYUrA2+5vLkNpNP4Wd
-         tJRo8hckIq13Bv/Zz37gio55rYbwnuUlD4NjxIiGmPfDECmjKvvDT01MAtAx3oThjbh5
-         ZEyA==
-X-Gm-Message-State: AOAM5314DIS5+D5LCxaKR97e+I/6TfTWfAy5OkdXkbA00HEGOJ6qETKf
-        Ri5Y94hSwahooybMhfDh7ZYpvzf4KRYSyh5igNc=
-X-Google-Smtp-Source: ABdhPJwYNeFYQxoDVUz//hM8GmP2HPaR/FE+YwTYKJG9R5D++RSQa6alF+L3/8lQypXXDtVMhzwdPBKoUAqNnnVW8So=
-X-Received: by 2002:ac8:7c4e:: with SMTP id o14mr52864128qtv.80.1641491721157;
- Thu, 06 Jan 2022 09:55:21 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Xu3gtBGXL1jf6kCxzSaeWpzGpdunrBP5nIzH9T+JX7A=;
+        b=V5MWU30OhNB7Epl0PXpk98tB9JE17mQCpHrrwl6U7KSQQ8ZkA3X2zSHEdu7jFAwV6E
+         axKGcgcFZimeC6sl6E0nlsJcYykwzK8GuQ7HLPVg5BPQFu8HjA1QJ4G2iSUCUHOY6/0h
+         JB4eEmR1vjfsMUkobX6EbpyrQkr903BtDCdVskkgs5roFD9rLlciFtTrwfbsv/UBisrw
+         cehX9FsOXGZntjrgZmRMm9lua0H1WAbG1TehKQmo3N9CGxiQBILEnmp4ObhIGmQ+ZSgk
+         b8bC2DcDs/LRASQLI5tyzpDkzSJxlxM2gROn99L9x2bshrT7RVDs+CX7ahV6PpVFrcl2
+         PyzA==
+X-Gm-Message-State: AOAM533BhJ8y7qI86syCGmfFVbA9Ms97BYonjU6DAngL5HBFqDLtXlFw
+        i923WQzGlF8/PP44OsHnPsq7BDmUJZUiTBJiuSbZ7hP1hiE=
+X-Google-Smtp-Source: ABdhPJzBNWHoXSccLNv4/kXTZMpIBFu2W7xWcOFWFZ0eKIGCw7v4B7Ac94VkJf5xLM106JYy95MA0G2b5DDQhfv1iuU=
+X-Received: by 2002:a05:6402:d51:: with SMTP id ec17mr7460258edb.296.1641491954182;
+ Thu, 06 Jan 2022 09:59:14 -0800 (PST)
 MIME-Version: 1.0
-References: <20220106075448.3215141-1-yangyingliang@huawei.com> <20220106084207.GA865257@chenyu-desktop>
-In-Reply-To: <20220106084207.GA865257@chenyu-desktop>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 6 Jan 2022 18:55:10 +0100
-Message-ID: <CAJZ5v0iDVLhDbJZXsoOQ915O4X3MVxHeQx=3Y=1+AYYa5=WgPw@mail.gmail.com>
-Subject: Re: [PATCH -next] ACPI: pfr_update: Fix return value check in pfru_write()
-To:     Chen Yu <yu.c.chen@intel.com>,
-        Yang Yingliang <yangyingliang@huawei.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-5-marcan@marcan.st>
+ <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com> <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
+ <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com> <6a936aea-ada4-fe2d-7ce6-7a42788e4d63@marcan.st>
+ <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com>
+In-Reply-To: <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 6 Jan 2022 19:58:37 +0200
+Message-ID: <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
+Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt paths
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 6, 2022 at 9:42 AM Chen Yu <yu.c.chen@intel.com> wrote:
->
-> On Thu, Jan 06, 2022 at 03:54:48PM +0800, Yang Yingliang wrote:
-> > In case of error, memremap() returns NULL pointer not
-> > ERR_PTR(). The IS_ERR() test in the return value check
-> > should be replaced with NULL test.
-> >
-> > Fixes: 0db89fa243e5 ("ACPI: Introduce Platform Firmware Runtime Update device driver")
-> > Reported-by: Hulk Robot <hulkci@huawei.com>
-> > Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> > ---
-> >  drivers/acpi/pfr_update.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/acpi/pfr_update.c b/drivers/acpi/pfr_update.c
-> > index 149b5b2530b9..6bb0b778b5da 100644
-> > --- a/drivers/acpi/pfr_update.c
-> > +++ b/drivers/acpi/pfr_update.c
-> > @@ -460,8 +460,8 @@ static ssize_t pfru_write(struct file *file, const char __user *buf,
-> >       /* map the communication buffer */
-> >       phy_addr = (phys_addr_t)((buf_info.addr_hi << 32) | buf_info.addr_lo);
-> >       buf_ptr = memremap(phy_addr, buf_info.buf_size, MEMREMAP_WB);
-> > -     if (IS_ERR(buf_ptr))
-> > -             return PTR_ERR(buf_ptr);
-> > +     if (!buf_ptr)
-> > +             return -ENOMEM;
-> >
-> >       if (!copy_from_iter_full(buf_ptr, len, &iter)) {
-> >               ret = -EINVAL;
-> > --
-> > 2.25.1
-> >
-> Acked-by: Chen Yu <yu.c.chen@intel.com>
+On Thu, Jan 6, 2022 at 7:40 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+> 05.01.2022 16:22, Hector Martin =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+> > On 05/01/2022 07.09, Dmitry Osipenko wrote:
 
-Applied, thanks!
+...
+
+> > I'm confused; the array size is constant. What would index contain and
+> > why would would brcm_free_alt_fw_paths use it? Just as an iterator
+> > variable instead of using a local variable? Or do you mean count?
+>
+> Yes, use index for the count of active entries in the alt_paths[].
+>
+> for (i =3D 0; i < alt_paths.index; i++)
+>         kfree(alt_paths.path[i]);
+>
+> alt_paths.index =3D 0;
+>
+> or
+>
+> while (alt_paths.index)
+>         kfree(alt_paths.path[--alt_paths.index]);
+
+Usual pattern is
+
+  while (x--)
+    kfree(x);
+
+easier to read, extend (if needed).
+
+--=20
+With Best Regards,
+Andy Shevchenko
