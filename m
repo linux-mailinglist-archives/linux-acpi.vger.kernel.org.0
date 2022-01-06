@@ -2,424 +2,268 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B68EA486461
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jan 2022 13:30:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61AA9486471
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jan 2022 13:37:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238809AbiAFMai (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jan 2022 07:30:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58416 "EHLO
+        id S238928AbiAFMhX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jan 2022 07:37:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238780AbiAFMah (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 07:30:37 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74194C061245;
-        Thu,  6 Jan 2022 04:30:37 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id f5so8816225edq.6;
-        Thu, 06 Jan 2022 04:30:37 -0800 (PST)
+        with ESMTP id S238921AbiAFMhW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 07:37:22 -0500
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA20C061245
+        for <linux-acpi@vger.kernel.org>; Thu,  6 Jan 2022 04:37:22 -0800 (PST)
+Received: by mail-pj1-x102c.google.com with SMTP id 59-20020a17090a09c100b001b34a13745eso1003999pjo.5
+        for <linux-acpi@vger.kernel.org>; Thu, 06 Jan 2022 04:37:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gFGJZ+qYaX9WjgpaHo1bAO566jEroMdTTAgFJDWQLnc=;
-        b=YFor2MAkOEENOE+DYRzv7K50sr/yzfmQ1perqYtU9y9a6762KGmzFB26MLtk9pag82
-         JquwbhgQzmRn7tHJlevgLQ60AoLNs21xr8UPzJO13cjjZffPc/9rxC3AAHFnV8xNN9kt
-         XakplBvSqykUYhvXd59g7Q49CTlsM5jL8vWMCL2JaLmfpETRGgt+i09XGt5KMvc2uSbg
-         Z3TncrbOLtlqDBGeakutlzhvlq5hHX312x8nIW0GRQUd2Ggqp6i+qRWH5HH4u+lMlpa5
-         ICWoZ1E85Q94kMnkBHn4h9aLszqf/uga6gUUskLihxzk+o2Hdachs2o0CtOEcjyUVxvt
-         r7mg==
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to;
+        bh=StMP10z7zm9LL0ZUMjni/3sWef0kv5MxT/96AEXXmOQ=;
+        b=ERpjLqKy7shFyf0ek3iAiRjmrHr6s3HXGGB4GGyjVdo6s3J4EGNbTbt08HGMffo/pT
+         3aOj+HFjKAIZ0I29hZyzhkuI8rroIiY5QkC0Akz+nve83RZY3km+LWECpHOKc9YLVpdR
+         bVu4DJp5bvJuN+Q8H4ZSiaGhWPj5bhNtpS79A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gFGJZ+qYaX9WjgpaHo1bAO566jEroMdTTAgFJDWQLnc=;
-        b=CIaBixdavsto1jYz8/TMUdy3nmQi8M5jypel01k+1o+6EAZdsfNVauVU1SaMucCXwr
-         eZ3PDWHV3X0xRIxiydzsSHvQzJonWchm+wu3Ewd39efXwuqv9LwRV1FIOxom/X7kqAw6
-         HqI66z8b/enDs1FPQYvo9BdRkmOe5vEWKjC+EMl3ofoXI2MdOeFK/i6xrcpdAFmc3MmR
-         LX7EELDL/HkLoiE7FkmZrevdGi/tMP7cTSxs42Ej7iLqkX+o5dAnKEE26czoQr1ztdMn
-         zbYyHJf3TM6WHnCYgf3ApOncJ6CUflYVnvonVnXJTL96LJmSHKefPoLmssenH5M3fHr1
-         OZuA==
-X-Gm-Message-State: AOAM530DtknTn+056ObnPCTMmHK/XIO669teK6uyg9gn6XSY87jjTFWp
-        NC+Pk42Zi6e+4lMJg8lBo2XGxwIJBDPUvE+kN10L9JRa8+4=
-X-Google-Smtp-Source: ABdhPJwBbBJj7F7XUG5NXraQKqZ4jxenzMd7Wsy6mPKSpuTEWns8Lpea9/VmYMm0gwGhLZiVhCdJpHtzMld0zAHizkM=
-X-Received: by 2002:a17:907:2a95:: with SMTP id fl21mr1515474ejc.639.1641472235342;
- Thu, 06 Jan 2022 04:30:35 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :to:cc:references:from:in-reply-to;
+        bh=StMP10z7zm9LL0ZUMjni/3sWef0kv5MxT/96AEXXmOQ=;
+        b=xp8rHMvWfLGGETiNpDxlDUtTVZ6dmfo+axCHW1X39LiX4VuTmOQHNy5rrVOCDFYvgN
+         togZoPnKtAN4Op72rizNvPvhV5VT43pdgac+feaqc2pErN0iATKrWeznY1gCdiClUL3+
+         puMOmlNbGRUphnXa6WnTeZ7eEpDzH/yUvosUkJoua5nqx/z9F1xILYYPWMmS/qpnxARZ
+         2eBnMVYsqPvk+EX/418hl1qRrDR1EzqUhHtgNG5/PJjqldm97ICUJsjWqJso4DWAxblG
+         XJyVhpQK5dufhYrkPMvBNHdiHLR4dpes/jLHvTxMoYpuYhGuVDAvZfM6BOQB0KAIOmWE
+         Bheg==
+X-Gm-Message-State: AOAM5308rNKJSjNfOe1MlkHYSICKnD6t5QdItnAqODV+M8KSL5aIPSdw
+        9afi4gQTzu2a39wtNypu/yfRTQ==
+X-Google-Smtp-Source: ABdhPJwUvuDg/GlVO/nYV2qck27f6jzXfGtqzuc/w6pNYyNbCSjeqKhdYsDx6DNPcHglp9D/t+K+VA==
+X-Received: by 2002:a17:903:234a:b0:148:a94a:7e3c with SMTP id c10-20020a170903234a00b00148a94a7e3cmr59304992plh.121.1641472641672;
+        Thu, 06 Jan 2022 04:37:21 -0800 (PST)
+Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id y11sm2395995pfn.7.2022.01.06.04.37.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Jan 2022 04:37:21 -0800 (PST)
+Message-ID: <3dfb1a06-4474-4614-08e5-b09f0977e03c@broadcom.com>
+Date:   Thu, 6 Jan 2022 13:37:12 +0100
 MIME-Version: 1.0
-References: <20211217115708.882525-1-tanureal@opensource.cirrus.com> <20211217115708.882525-8-tanureal@opensource.cirrus.com>
-In-Reply-To: <20211217115708.882525-8-tanureal@opensource.cirrus.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 6 Jan 2022 14:29:58 +0200
-Message-ID: <CAHp75VdQGBixkUStPiq3VuoL+9TJo946ObfRA-L-D72DaFHnrw@mail.gmail.com>
-Subject: Re: [PATCH v6 07/10] hda: cs35l41: Add support for CS35L41 in HDA systems
-To:     Lucas Tanure <tanureal@opensource.cirrus.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v2 07/35] brcmfmac: pcie: Read Apple OTP information
+To:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        patches@opensource.cirrus.com,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220104072658.69756-1-marcan@marcan.st>
+ <20220104072658.69756-8-marcan@marcan.st>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <20220104072658.69756-8-marcan@marcan.st>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000bb91ba05d4e9219c"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Dec 17, 2021 at 5:45 PM Lucas Tanure
-<tanureal@opensource.cirrus.com> wrote:
->
-> Add support for CS35L41 using a new separated driver
-> that can be used in all upcoming designs
+--000000000000bb91ba05d4e9219c
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 1/4/2022 8:26 AM, Hector Martin wrote:
+> On Apple platforms, the One Time Programmable ROM in the Broadcom chips
+> contains information about the specific board design (module, vendor,
+> version) that is required to select the correct NVRAM file. Parse this
+> OTP ROM and extract the required strings.
+> 
+> Note that the user OTP offset/size is per-chip. This patch does not add
+> any chips yet.
 
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Hector Martin <marcan@marcan.st>
+> ---
+>   .../broadcom/brcm80211/brcmfmac/pcie.c        | 219 ++++++++++++++++++
+>   include/linux/bcma/bcma_driver_chipcommon.h   |   1 +
+>   2 files changed, 220 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> index a52a6f8081eb..74c9a4f74813 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 
-> +config SND_HDA_SCODEC_CS35L41_I2C
-> +       tristate "Build CS35L41 HD-audio side codec support for I2C Bus"
-> +       depends on ACPI
-> +       select SND_HDA_GENERIC
-> +       select SND_SOC_CS35L41_LIB
-> +       select SND_HDA_SCODEC_CS35L41
-> +       help
-> +         Say Y or M here to include CS35L41 I2C HD-audio side codec support
-> +         in snd-hda-intel driver, such as ALC287.
-> +
-> +comment "Set to Y if you want auto-loading the side codec driver"
-> +       depends on SND_HDA=y && SND_HDA_SCODEC_CS35L41_I2C=m
-> +
-> +config SND_HDA_SCODEC_CS35L41_SPI
-> +       tristate "Build CS35L41 HD-audio codec support for SPI Bus"
-> +       depends on ACPI
-> +       select SND_HDA_GENERIC
-> +       select SND_SOC_CS35L41_LIB
-> +       select SND_HDA_SCODEC_CS35L41
-> +       help
-> +         Say Y or M here to include CS35L41 SPI HD-audio side codec support
-> +         in snd-hda-intel driver, such as ALC287.
+[...]
 
-...
-
-> +// cs35l41.c -- CS35l41 ALSA HDA audio driver
-
-It's an additional burden in case the file will be renamed. i..o.w.
-drop the names of the files from the files.
-
-
-> +#include <linux/acpi.h>
-> +#include <linux/module.h>
-> +#include <sound/hda_codec.h>
-> +#include "hda_local.h"
-> +#include "hda_auto_parser.h"
-> +#include "hda_jack.h"
-> +#include "hda_generic.h"
-> +#include "hda_component.h"
-> +#include "cs35l41_hda.h"
-
-...
-
-> +       { CS35L41_PWR_CTRL1,            0x00000001, 2000 }, //GLOBAL_EN = 1
-
-Here and everywhere else, missed space after //
-
-...
-
-> +static void cs35l41_hda_playback_hook(struct device *dev, int action)
+> +static int brcmf_pcie_read_otp(struct brcmf_pciedev_info *devinfo)
 > +{
-> +       struct cs35l41_hda *cs35l41 = dev_get_drvdata(dev);
-> +       const struct cs35l41_hda_reg_sequence *reg_seq = cs35l41->reg_seq;
-> +       struct regmap *reg = cs35l41->regmap;
-> +       int ret = 0;
+> +	const struct pci_dev *pdev = devinfo->pdev;
+> +	struct brcmf_bus *bus = dev_get_drvdata(&pdev->dev);
+> +	u32 coreid, base, words, idx, sromctl;
+> +	u16 *otp;
+> +	struct brcmf_core *core;
+> +	int ret;
 > +
-> +       switch (action) {
-> +       case HDA_GEN_PCM_ACT_OPEN:
-> +               if (reg_seq->open)
-> +                       ret = regmap_multi_reg_write(reg, reg_seq->open, reg_seq->num_open);
-> +               break;
-> +       case HDA_GEN_PCM_ACT_PREPARE:
-> +               if (reg_seq->prepare)
-> +                       ret = regmap_multi_reg_write(reg, reg_seq->prepare, reg_seq->num_prepare);
-> +               break;
-> +       case HDA_GEN_PCM_ACT_CLEANUP:
-> +               if (reg_seq->cleanup)
-> +                       ret = regmap_multi_reg_write(reg, reg_seq->cleanup, reg_seq->num_cleanup);
-> +               break;
-> +       case HDA_GEN_PCM_ACT_CLOSE:
-> +               if (reg_seq->close)
-> +                       ret = regmap_multi_reg_write(reg, reg_seq->close, reg_seq->num_close);
-> +               break;
+> +	switch (devinfo->ci->chip) {
+> +	default:
+> +		/* OTP not supported on this chip */
+> +		return 0;
+> +	}
 
-default case?
+Does not seem this code is put to work yet. Will dive into it later on.
 
-> +       }
+> +	core = brcmf_chip_get_core(devinfo->ci, coreid);
+> +	if (!core) {
+> +		brcmf_err(bus, "No OTP core\n");
+> +		return -ENODEV;
+> +	}
 > +
-> +       if (ret)
-> +               dev_warn(cs35l41->dev, "Failed to apply multi reg write: %d\n", ret);
-
+> +	if (coreid == BCMA_CORE_CHIPCOMMON) {
+> +		/* Chips with OTP accessed via ChipCommon need additional
+> +		 * handling to access the OTP
+> +		 */
+> +		brcmf_pcie_select_core(devinfo, coreid);
+> +		sromctl = READCC32(devinfo, sromcontrol);
 > +
+> +		if (!(sromctl & BCMA_CC_SROM_CONTROL_OTP_PRESENT)) {
+> +			/* Chip lacks OTP, try without it... */
+> +			brcmf_err(bus,
+> +				  "OTP unavailable, using default firmware\n");
+> +			return 0;
+> +		}
+> +
+> +		/* Map OTP to shadow area */
+> +		WRITECC32(devinfo, sromcontrol,
+> +			  sromctl | BCMA_CC_SROM_CONTROL_OTPSEL);
+> +	}
+> +
+> +	otp = kzalloc(sizeof(u16) * words, GFP_KERNEL);
+> +
+> +	/* Map bus window to SROM/OTP shadow area in core */
+> +	base = brcmf_pcie_buscore_prep_addr(devinfo->pdev, base + core->base);
 
-Redundant blank line.
+I guess this changes the bar window...
 
+> +	brcmf_dbg(PCIE, "OTP data:\n");
+> +	for (idx = 0; idx < words; idx++) {
+> +		otp[idx] = brcmf_pcie_read_reg16(devinfo, base + 2 * idx);
+> +		brcmf_dbg(PCIE, "[%8x] 0x%04x\n", base + 2 * idx, otp[idx]);
+> +	}
+> +
+> +	if (coreid == BCMA_CORE_CHIPCOMMON) {
+> +		brcmf_pcie_select_core(devinfo, coreid);
+
+... which is why you need to reselect the core. Otherwise it makes no 
+sense to me.
+
+> +		WRITECC32(devinfo, sromcontrol, sromctl);
+> +	}
+> +
+> +	ret = brcmf_pcie_parse_otp(devinfo, (u8 *)otp, 2 * words);
+> +	kfree(otp);
+> +
+> +	return ret;
 > +}
 
-
-...
-
-> +       if (comps && cs35l41->index >= 0 && cs35l41->index < HDA_MAX_COMPONENTS)
-> +               comps = &comps[cs35l41->index];
-> +       else
-> +               return -EINVAL;
-
-Can you check first? In such a case you won't need the 'else' branch at all.
-
-...
-
-> +       if (!comps->dev) {
-
-Why not a positive check and standard pattern as per above?
-
-
-> +               comps->dev = dev;
-> +               strscpy(comps->name, dev_name(dev), sizeof(comps->name));
-> +               comps->playback_hook = cs35l41_hda_playback_hook;
-> +               comps->set_channel_map = cs35l41_hda_channel_map;
-> +               return 0;
-> +       }
-> +
-> +       return -EBUSY;
-> +}
-
-...
-
-> +       switch (hw_cfg->gpio1_func) {
-> +       case CS35l41_VSPK_SWITCH:
-> +               regmap_update_bits(cs35l41->regmap, CS35L41_GPIO_PAD_CONTROL,
-> +                                  CS35L41_GPIO1_CTRL_MASK, 1 << CS35L41_GPIO1_CTRL_SHIFT);
-> +               break;
-> +       case CS35l41_SYNC:
-> +               regmap_update_bits(cs35l41->regmap, CS35L41_GPIO_PAD_CONTROL,
-> +                                  CS35L41_GPIO1_CTRL_MASK, 2 << CS35L41_GPIO1_CTRL_SHIFT);
-> +               break;
-
-default case?
-
-Same for all switch-cases in your code.
-
-> +       }
-
-...
-
-> +       ret = cs35l41_hda_channel_map(cs35l41->dev, 0, NULL, 1, (unsigned int *)&hw_cfg->spk_pos);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return 0;
-
-return cs35l41_hda_...(...);
-
-...
-
-> +       property = "cirrus,dev-index";
-> +       ret = device_property_count_u32(acpi_dev, property);
-
-Please, name adev the pointer to ACPI device. Ah, what a mess, you
-have named acpi_dev the pointer to the struct device. Please, find a
-better name, like dev, or physdev or so.
-
-> +       if (ret <= 0)
-
-Shouldn't you override the error code for the 0 case?
-
-> +               goto no_acpi_dsd;
-
-...
-
-> +       if (ret > ARRAY_SIZE(values)) {
-> +               ret = -EINVAL;
-> +               goto err;
-> +       }
-
-Is it really the issue? I would expect the issue when you have less
-than expected, and not otherwise.
-
-...
-
-> +       /* No devm_ version as CLSA0100, in no_acpi_dsd case, can't use devm version */
-
-Can you elaborate why devm can't be used?
-
-> +       cs35l41->reset_gpio = fwnode_gpiod_get_index(&adev->fwnode, "reset", cs35l41->index,
-
-Please, do not dereference fwnode pointers.
-Also, why can't you use the device instead of fwnode?
-
-> +                                                    GPIOD_OUT_LOW, "cs35l41-reset");
-
-...
-
-> +       hw_cfg = kzalloc(sizeof(*hw_cfg), GFP_KERNEL);
-
-Why not devm?
-
-> +       if (!hw_cfg) {
-> +               ret = -ENOMEM;
-> +               goto err;
-> +       }
-
-...
-
-> +       property = "cirrus,speaker-position";
-> +       ret = device_property_read_u32_array(acpi_dev, property, values, nval);
-> +       if (ret)
-> +               goto err_free;
-> +       hw_cfg->spk_pos = values[cs35l41->index];
-
-This and further is weird. Why do you need to retrieve all values for
-just one? Use indexed APIs for that. If there are none, create them.
-
-...
-
-> +no_acpi_dsd:
-> +       /*
-> +        * Device CLSA0100 doesn't have _DSD so a gpiod_get by the label reset won't work.
-
-So, you need to add mapping tables and switch to regular APIs, tell
-me, why it won't work.
-
-> +        * And devices created by i2c-multi-instantiate don't have their device struct pointing to
-> +        * the correct fwnode, so acpi_dev must be used here
-> +        * And devm functions expect that the device requesting the resource has the correct
-> +        * fwnode
-
-You missed grammar periods and what else? Please, update your comments
-to use proper English grammar.
-
-> +        */
-> +       if (strncmp(hid, "CLSA0100", 8) != 0)
-> +               return ERR_PTR(-EINVAL);
-> +
-> +       /* check I2C address to assign the index */
-> +       cs35l41->index = id == 0x40 ? 0 : 1;
-> +       cs35l41->reset_gpio = gpiod_get_index(acpi_dev, NULL, 0, GPIOD_OUT_HIGH);
-> +       cs35l41->vspk_always_on = true;
-> +       put_device(acpi_dev);
-> +
-> +       return NULL;
-> +}
-
-...
-
-> +int cs35l41_hda_probe(struct device *dev, const char *device_name, int id, int irq,
-> +                     struct regmap *regmap)
-
-> +       if (IS_ERR(regmap))
-> +               return PTR_ERR(regmap);
-
-Why?
-
-...
-
-> +       if (IS_ERR(cs35l41->reset_gpio)) {
-
-You should use _optinal variants instead,
-
-> +               ret = PTR_ERR(cs35l41->reset_gpio);
-> +               cs35l41->reset_gpio = NULL;
-> +               if (ret == -EBUSY) {
-> +                       dev_info(cs35l41->dev, "Reset line busy, assuming shared reset\n");
-> +               } else {
-> +                       if (ret != -EPROBE_DEFER)
-> +                               dev_err(cs35l41->dev, "Failed to get reset GPIO: %d\n", ret);
-> +                       goto err;
-
-We have dev_err_probe() for a few releases already.
-
-> +               }
-> +       }
-
-...
-
-> +       ret = regmap_read(cs35l41->regmap, CS35L41_IRQ1_STATUS3, &int_sts);
-> +       if (ret || (int_sts & CS35L41_OTP_BOOT_ERR)) {
-> +               dev_err(cs35l41->dev, "OTP Boot error\n");
-> +               ret = -EIO;
-
-Why shadowing error code?
-Why not use dev_err_probe()?
-
-> +               goto err;
-> +       }
-
-...
-
-> +EXPORT_SYMBOL_GPL(cs35l41_hda_probe);
-
-Please, use the namespace variant and avoid polluting the global
-namespace with  your symbols.
-
-...
-
-> + * cs35l41_hda.h -- CS35L41 ALSA HDA audio driver
-
-No file names in the files.
-
-...
-
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/device.h>
-> +#include <sound/cs35l41.h>
-
-Please revisit this. You need to add here only the headers that you
-are a direct user of (or in some cases their top level ones, like
-types.h for compiler_attributes.h).
-
-...
-
-> +#ifdef CONFIG_ACPI
-
-Drop this ugliness.
-
-> +static const struct acpi_device_id cs35l41_acpi_hda_match[] = {
-> +       {"CLSA0100", 0 },
-> +       {"CSC3551", 0 },
-
-I believe these IDs are officially allocated by the Cirrus Logic, right?
-
-> +       { },
-
-No comma for terminator line here and everywhere else where it's the case.
-
-> +};
-> +MODULE_DEVICE_TABLE(acpi, cs35l41_acpi_hda_match);
-> +#endif
-> +
-> +static struct i2c_driver cs35l41_i2c_driver = {
-> +       .driver = {
-> +               .name           = "cs35l41-hda",
-> +               .acpi_match_table = ACPI_PTR(cs35l41_acpi_hda_match),
-
-ACPI_PTR() as well.
-
-> +       },
-> +       .id_table       = cs35l41_hda_i2c_id,
-> +       .probe          = cs35l41_hda_i2c_probe,
-> +       .remove         = cs35l41_hda_i2c_remove,
-> +};
-
-> +
-
-No need to have a blank line here.
-
-> +module_i2c_driver(cs35l41_i2c_driver);
-
-I stopped here, so this code needs more work and can't be applied like this.
-
-I believe that current Cirrus Logic drivers are written in the same
-(semi-) bad style and have to be fixed in the future. Put this to your
-TODO list, please.
-
--- 
-With Best Regards,
-Andy Shevchenko
+--000000000000bb91ba05d4e9219c
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAwCLuTWPDd6sJ1aedc
+3QzshqKorWL5BuFxaC4OsLLOHDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMDYxMjM3MjFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAAXVT2jdlmW5hTCUkLIwngMADNcY8TQ11Gw5f
+54RhV1LapqTigM4h+HZFZ8EDRyjUhIgMKnEQw8BH1m24dj3mGyhXZNHSIU//h3QBtbbyvAUFrq7m
+E7q9QsWH0iRYHwy3B6tp1c25uODSzM5vI/gm7I0ofhZFUV70UK4cyg4T9QgkVWYiD9cw4tNutUiB
+D1wcAwKsE4hb7dlxh4dcX1CY1LXqmXqTjkMqQ5m7Iov8vykJ2EXbE43OsVtnT/XA3ueCAthVrtsz
++s2Z+cFZcEJ0lWbvlltUBIBIlfCOffnC10UqFvFfmm7atHeEVTLIcQ3pzh5yI6YqRvTvCZvuitMb
+Vg==
+--000000000000bb91ba05d4e9219c--
