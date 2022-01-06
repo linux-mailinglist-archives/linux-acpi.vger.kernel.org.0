@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 233004862D0
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jan 2022 11:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A1648630F
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jan 2022 11:43:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237828AbiAFKTu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jan 2022 05:19:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57448 "EHLO
+        id S238049AbiAFKnL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jan 2022 05:43:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233080AbiAFKTt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 05:19:49 -0500
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17209C061212
-        for <linux-acpi@vger.kernel.org>; Thu,  6 Jan 2022 02:19:49 -0800 (PST)
-Received: by mail-pg1-x52d.google.com with SMTP id s1so2180668pga.5
-        for <linux-acpi@vger.kernel.org>; Thu, 06 Jan 2022 02:19:49 -0800 (PST)
+        with ESMTP id S238029AbiAFKnK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 05:43:10 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD568C0611FD
+        for <linux-acpi@vger.kernel.org>; Thu,  6 Jan 2022 02:43:09 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id a83-20020a1c9856000000b00344731e044bso952005wme.1
+        for <linux-acpi@vger.kernel.org>; Thu, 06 Jan 2022 02:43:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=message-id:date:mime-version:user-agent:subject:to:cc:references
          :from:in-reply-to;
-        bh=VKBaGn21uti7hBx9emHc5lAXS/kmP5qPBMOvIWNC/3g=;
-        b=UnL8rFgoveQqFZleXXdM+OF0T1bVe/CHZsRAgRWZpFZ0GytFkUFZS6H3c7gfMyvhkB
-         NP9b1Bn3wYZqadA3eB9LX+0EQC5Ie9fy268kFln5M2VT5og7mNCY3Bd3cu4DZPBfc5nP
-         UqaLMNMzB114U2QAzou5t0u7cqLfWeuHjPCpI=
+        bh=8Hq0JSsGPNNZe+gcPfssyJqDz70WDkSx1gEh1TbPVGU=;
+        b=Y4BPwArJbx+IWrgTvElhXDe3pFXDbQFrkdtbhBm1nIA1hAGNnr3Ek45ciHmATQsGGV
+         BMQZ6T9H7Sn6bgcLM6QPQTuoHySUTpBrDyHWIwM9842KZ1SYYcBsMr5n6yIc8zsQh4CI
+         RWiunfoOWGIs1bZU0IrmdFxQYcf9t0pRwg320=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :to:cc:references:from:in-reply-to;
-        bh=VKBaGn21uti7hBx9emHc5lAXS/kmP5qPBMOvIWNC/3g=;
-        b=fcmpvOS6n1UKBYoWlk0w8TBU2Q3U9OKzcgPR9EC2dAaEwFDAf3iVhMIccMXF/3lhCs
-         P+0P0H2UiNnJ1l95LTTPPl54eCnAVXWx8yMuMwPA+NPXMfR51sEeUrLtLge+OWD6sQQN
-         X//2T1jDWd7gPMI0Vtv1CBgsR3W3qxo82Zju0ZU1i0zBkHvazyHoKs9n1nJ2swShjNHI
-         nPXMgpGmbV5UlHjLdP3tzEJwp4PMusgHqwyUNWEpkMQ8o+mLN3AYOnMrRxJWESNbb9Nd
-         7nOq/av4A2q9NpJzL7MrZAbLg4yEohEA+7cy04Xgnch88XrWqQ57vT6SuU7ZnUgygqaG
-         gx3g==
-X-Gm-Message-State: AOAM533NqG52GFyI4g10izfp0k43Fs7rHoE/LgKNvdqScGlnc5aUJMTf
-        v3YULD3466RRxmGiVpHQcHydUQ==
-X-Google-Smtp-Source: ABdhPJzaIwbSUzfGeaBNzaAy0Ao78nCs1pWvv5LGZyfKb8/eU32lEDlbDuzF+xmGUNIQU8qexaqLXw==
-X-Received: by 2002:a05:6a00:1349:b0:4ba:fd72:64da with SMTP id k9-20020a056a00134900b004bafd7264damr60159868pfu.69.1641464388363;
-        Thu, 06 Jan 2022 02:19:48 -0800 (PST)
+        bh=8Hq0JSsGPNNZe+gcPfssyJqDz70WDkSx1gEh1TbPVGU=;
+        b=1eJfVxL3/RYt5yt5jfUJB0z+dR22JwAI+7qSU9G2G97DR9Y46o2EyKSu5aSuPjpwaP
+         6ouwKcB85K6mKdsLhnHpoZe0ANIIgf4d/y4/1/c3J5wNgTMOQMOB+K1HdEFXYdB/FfAO
+         hV29gYk7H926dVgThLH82aPsHnVkvxy6boCb96jf9vXrNUxdTKIkGUf4ZKqxgK7o80Eo
+         V/GGHl0AKUk+5Lu6gFwWtWyUKFknXTUrUN4TMweu+uHgyBKRgCH7mvspSLeZWTRHSqCw
+         wDUeZXnCLXqL2N0WOFF3hNIwb9isNN6w86Fd8xAGXThIIN7OH876KWQTovFHlwxrr1PV
+         0gEw==
+X-Gm-Message-State: AOAM5305SLqPm3dwxzCWyAgyDn3PkhunyTCS/HBMKB44+aYnil51n0o2
+        dVHf4sVxad5FTNo42MdNRXmkbQ==
+X-Google-Smtp-Source: ABdhPJx9zwGFxYdLiDGT1T6vU7KlJ1fkzoZRSUQYtbDiiOgtszxwLRJ+u7xXPdQOkVYn1urb/6yt0g==
+X-Received: by 2002:a7b:c194:: with SMTP id y20mr6522016wmi.79.1641465788058;
+        Thu, 06 Jan 2022 02:43:08 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id k10sm1851604pfi.52.2022.01.06.02.19.40
+        by smtp.gmail.com with ESMTPSA id az15sm1363805wmb.47.2022.01.06.02.43.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Jan 2022 02:19:47 -0800 (PST)
-Message-ID: <955f3b68-f1aa-767c-2539-7b8362372a60@broadcom.com>
-Date:   Thu, 6 Jan 2022 11:19:38 +0100
+        Thu, 06 Jan 2022 02:43:06 -0800 (PST)
+Message-ID: <fd95636e-b879-0c82-a7ba-a5c239f4f611@broadcom.com>
+Date:   Thu, 6 Jan 2022 11:43:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.0
-Subject: Re: [PATCH v2 03/35] brcmfmac: firmware: Handle per-board clm_blob
- files
+Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt
+ paths
 To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -79,82 +79,208 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-4-marcan@marcan.st>
+ <20220104072658.69756-5-marcan@marcan.st>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20220104072658.69756-4-marcan@marcan.st>
+In-Reply-To: <20220104072658.69756-5-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000cd540005d4e735b8"
+        boundary="0000000000003af71c05d4e789fd"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---000000000000cd540005d4e735b8
+--0000000000003af71c05d4e789fd
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/4/2022 8:26 AM, Hector Martin wrote:
-> Teach brcm_alt_fw_paths to correctly split off variable length
-> extensions, and enable alt firmware lookups for the CLM blob firmware
-> requests.
+> Apple platforms have firmware and config files identified with multiple
+> dimensions. We want to be able to find the most specific firmware
+> available for any given platform, progressively trying more general
+> firmwares.
 > 
-> Apple platforms have per-board CLM blob files.
-
-Are you sure? I am not involved in development for Apple platforms, but 
-in general we build a CLM blob specific for a chip revision. As always 
-with the blobs they are created at a certain point in time and that is 
-mostly why you need another one for a newer platform. Apple tends to do 
-things a bit different so you could be right though. Anyway, despite my 
-doubts on this it does not change the need for per-board firmware files.
+> First, add support for having multiple alternate firmware paths.
 
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Acked-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   .../broadcom/brcm80211/brcmfmac/firmware.c       | 16 ++++++++--------
->   1 file changed, 8 insertions(+), 8 deletions(-)
+>   .../broadcom/brcm80211/brcmfmac/firmware.c    | 75 ++++++++++++++-----
+>   .../broadcom/brcm80211/brcmfmac/firmware.h    |  2 +
+>   2 files changed, 59 insertions(+), 18 deletions(-)
 > 
 > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> index 0eb13e5df517..0497b721136a 100644
+> index 0497b721136a..7570dbf22cdd 100644
 > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
 > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-> @@ -595,16 +595,16 @@ static int brcmf_fw_complete_request(const struct firmware *fw,
->   static char *brcm_alt_fw_path(const char *path, const char *board_type)
+> @@ -427,6 +427,8 @@ void brcmf_fw_nvram_free(void *nvram)
+>   struct brcmf_fw {
+>   	struct device *dev;
+>   	struct brcmf_fw_request *req;
+> +	const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS];
+> +	int alt_index;
+>   	u32 curpos;
+>   	void (*done)(struct device *dev, int err, struct brcmf_fw_request *req);
+>   };
+> @@ -592,14 +594,18 @@ static int brcmf_fw_complete_request(const struct firmware *fw,
+>   	return (cur->flags & BRCMF_FW_REQF_OPTIONAL) ? 0 : ret;
+>   }
+>   
+> -static char *brcm_alt_fw_path(const char *path, const char *board_type)
+> +static int brcm_alt_fw_paths(const char *path, const char *board_type,
+> +			     const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS])
 >   {
 >   	char alt_path[BRCMF_FW_NAME_LEN];
-> -	char suffix[5];
-> +	const char *suffix;
+>   	const char *suffix;
 >   
-> -	strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
-> -	/* At least one character + suffix */
-> -	if (strlen(alt_path) < 5)
-> +	suffix = strrchr(path, '.');
-> +	if (!suffix || suffix == path)
->   		return NULL;
->   
-> -	/* strip .txt or .bin at the end */
-> -	strscpy(suffix, alt_path + strlen(alt_path) - 4, 5);
-> -	alt_path[strlen(alt_path) - 4] = 0;
-> +	/* strip extension at the end */
-> +	strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
-> +	alt_path[suffix - path] = 0;
+> +	memset(alt_paths, 0, array_size(sizeof(*alt_paths),
+> +					BRCMF_FW_MAX_ALT_PATHS));
 > +
->   	strlcat(alt_path, ".", BRCMF_FW_NAME_LEN);
+>   	suffix = strrchr(path, '.');
+>   	if (!suffix || suffix == path)
+> -		return NULL;
+> +		return -EINVAL;
+>   
+>   	/* strip extension at the end */
+>   	strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
+> @@ -609,7 +615,18 @@ static char *brcm_alt_fw_path(const char *path, const char *board_type)
 >   	strlcat(alt_path, board_type, BRCMF_FW_NAME_LEN);
 >   	strlcat(alt_path, suffix, BRCMF_FW_NAME_LEN);
-> @@ -619,7 +619,7 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
+>   
+> -	return kstrdup(alt_path, GFP_KERNEL);
+> +	alt_paths[0] = kstrdup(alt_path, GFP_KERNEL);
+> +
+> +	return 0;
+> +}
+> +
+> +static void
+> +brcm_free_alt_fw_paths(const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS])
+> +{
+> +	unsigned int i;
+> +
+> +	for (i = 0; alt_paths[i]; i++)
+> +		kfree(alt_paths[i]);
+>   }
+>   
+>   static int brcmf_fw_request_firmware(const struct firmware **fw,
+> @@ -617,19 +634,25 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
+>   {
+>   	struct brcmf_fw_item *cur = &fwctx->req->items[fwctx->curpos];
 >   	int ret;
+> +	unsigned int i;
 >   
 >   	/* Files can be board-specific, first try a board-specific path */
-> -	if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type) {
-> +	if (fwctx->req->board_type) {
->   		char *alt_path;
+>   	if (fwctx->req->board_type) {
+> -		char *alt_path;
+> +		const char *alt_paths[BRCMF_FW_MAX_ALT_PATHS];
 >   
->   		alt_path = brcm_alt_fw_path(cur->path, fwctx->req->board_type);
+> -		alt_path = brcm_alt_fw_path(cur->path, fwctx->req->board_type);
+> -		if (!alt_path)
+> +		if (brcm_alt_fw_paths(cur->path, fwctx->req->board_type,
+> +				      alt_paths) != 0)
+>   			goto fallback;
+>   
+> -		ret = request_firmware(fw, alt_path, fwctx->dev);
+> -		kfree(alt_path);
+> -		if (ret == 0)
+> -			return ret;
+> +		for (i = 0; i < BRCMF_FW_MAX_ALT_PATHS && alt_paths[i]; i++) {
+> +			ret = firmware_request_nowarn(fw, alt_paths[i],
+> +						      fwctx->dev);
+> +			if (ret == 0) {
+> +				brcm_free_alt_fw_paths(alt_paths);
+> +				return ret;
+> +			}
+> +		}
+> +		brcm_free_alt_fw_paths(alt_paths);
+>   	}
+>   
+>   fallback:
+> @@ -641,6 +664,8 @@ static void brcmf_fw_request_done(const struct firmware *fw, void *ctx)
+>   	struct brcmf_fw *fwctx = ctx;
+>   	int ret;
+>   
+> +	brcm_free_alt_fw_paths(fwctx->alt_paths);
+> +
+>   	ret = brcmf_fw_complete_request(fw, fwctx);
+>   
+>   	while (ret == 0 && ++fwctx->curpos < fwctx->req->n_items) {
+> @@ -662,13 +687,27 @@ static void brcmf_fw_request_done_alt_path(const struct firmware *fw, void *ctx)
+>   	struct brcmf_fw_item *first = &fwctx->req->items[0];
+>   	int ret = 0;
+>   
+> -	/* Fall back to canonical path if board firmware not found */
+> -	if (!fw)
+> +	if (fw) {
+> +		brcmf_fw_request_done(fw, ctx);
+> +		return;
+> +	}
+> +
+> +	fwctx->alt_index++;
+> +	if (fwctx->alt_index < BRCMF_FW_MAX_ALT_PATHS &&
+> +	    fwctx->alt_paths[fwctx->alt_index]) {
+> +		/* Try the next alt firmware */
+> +		ret = request_firmware_nowait(THIS_MODULE, true,
+> +					      fwctx->alt_paths[fwctx->alt_index],
+> +					      fwctx->dev, GFP_KERNEL, fwctx,
+> +					      brcmf_fw_request_done_alt_path);
+> +	} else {
+> +		/* Fall back to canonical path if board firmware not found */
+>   		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
+>   					      fwctx->dev, GFP_KERNEL, fwctx,
+>   					      brcmf_fw_request_done);
+> +	}
+>   
+> -	if (fw || ret < 0)
+> +	if (ret < 0)
+>   		brcmf_fw_request_done(fw, ctx);
+>   }
+>   
+> @@ -693,7 +732,6 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
+>   {
+>   	struct brcmf_fw_item *first = &req->items[0];
+>   	struct brcmf_fw *fwctx;
+> -	char *alt_path;
+>   	int ret;
+>   
+>   	brcmf_dbg(TRACE, "enter: dev=%s\n", dev_name(dev));
+> @@ -712,12 +750,13 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
+>   	fwctx->done = fw_cb;
+>   
+>   	/* First try alternative board-specific path if any */
+> -	alt_path = brcm_alt_fw_path(first->path, fwctx->req->board_type);
+> -	if (alt_path) {
+> -		ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
+> +	if (brcm_alt_fw_paths(first->path, req->board_type,
+> +			      fwctx->alt_paths) == 0) {
+> +		fwctx->alt_index = 0;
+> +		ret = request_firmware_nowait(THIS_MODULE, true,
+> +					      fwctx->alt_paths[0],
+>   					      fwctx->dev, GFP_KERNEL, fwctx,
+>   					      brcmf_fw_request_done_alt_path);
+> -		kfree(alt_path);
+>   	} else {
+>   		ret = request_firmware_nowait(THIS_MODULE, true, first->path,
+>   					      fwctx->dev, GFP_KERNEL, fwctx,
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
+> index e290dec9c53d..7f4e6e359c82 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
+> @@ -11,6 +11,8 @@
+>   
+>   #define BRCMF_FW_DEFAULT_PATH		"brcm/"
+>   
+> +#define BRCMF_FW_MAX_ALT_PATHS	8
+> +
 
-So all firmware files are attempted with board-specific path now.
+Any motivation to have 8 here today? In patch #9 I see a list of 6 paths 
+in the commit message so you need 6 and rounded up here to power of 2?
 
---000000000000cd540005d4e735b8
+>   /**
+>    * struct brcmf_firmware_mapping - Used to map chipid/revmask to firmware
+>    *	filename and nvram filename. Each bus type implementation should create
+
+--0000000000003af71c05d4e789fd
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -225,14 +351,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCojDaRSiiEJ9alzVae
-d6iGjmZAhiJafJ0IOPslQlHrXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMDYxMDE5NDhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCCE73TES+MMIPKnpZ6
+5k/QH8UTo72Ep3J3yefwV0lxjzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMDYxMDQzMDhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAfFPmQ10lJQhlDWnHgAcOexKGE6P4v5tOhBuc
-EWWk5e4LEbz9yGYWgan5UAg9gQPxGoHUiHM2Jfy6GDtfUBrTKqtWD/V1Tvd35IWHPpzkaOBJ4AFp
-wczhpqHgWovOfA8FksBxaePxs3P9oBDwlM6jONauEvlGTAcVUJfVfoopMwvKlrDxMpN7jfWB5hF2
-ElMK3STSy1rRMFCp4gIUrwMP/Yje2UsTXfB5E7m1wN4TElyt9cgKNI/1liKf/8w1gc12E4k6T0fd
-tvFeBMLTdhosDww2WvhMct+rUmreTIyA95xhHwZoOiq06dTjD9tUvP3Bnbrt+ueph5bWdaimOObw
-5g==
---000000000000cd540005d4e735b8--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAfnYo3BnBX2+xJrrn1s38h5d4zgZV3N6WCREs
+JpI5KycqenxSqBufPqM/oO5AmOhkgIXkK9/uNHUVcutFsjtZ4K6l5UCfZDvNE8zjlq61Elf2ZQ43
+nnK/qI9DBO2BYzwT9oOYc5vQaMENcPfu67YPaFalHQiwmArqdp7Wm8aCA/EuyzhSn+Emr1WmqcWD
+ff5zFdmc/b3WZbHIhbdywS7yTQTiCFE7wIGw/m8P/Aa2radLtcgOFSBtFzVoVe/vwLfPmVuZ1biv
+r3lhU1sRsEwcdZKjzFoSaBo3B5T2CJ+BqF5+dA1jb/GBxR4hpLIIJJuywCyiUEj1rt6Z14u7rp6Z
++w==
+--0000000000003af71c05d4e789fd--
