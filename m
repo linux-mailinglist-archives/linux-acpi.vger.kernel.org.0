@@ -2,169 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 964C648739A
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jan 2022 08:34:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 146BA487518
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jan 2022 10:55:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344426AbiAGHe1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Jan 2022 02:34:27 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:20220 "EHLO
-        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344595AbiAGHe0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Jan 2022 02:34:26 -0500
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2073Hfu2014505;
-        Fri, 7 Jan 2022 07:34:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : content-type : mime-version; s=corp-2021-07-09;
- bh=KtWka6YYZ4VBdwmXEq0PNM4GBSIOfWsKW/+brqgHpwE=;
- b=LgVXzc0Ep38RoSA5Qo3gsxauItpL+ugFEYZwQQvBi5GnUPkL7U+rg/mcvy0DmfPFOBT/
- jwxJ0wCS1e4ZBjlGFhiZOnJ9tmxD5YQJSWHtickFJqeTYDGv4OfxaCX9nr+LOincELiM
- NL/gs8Yk8Tc2rzNkatOOj2dHLm8E1JMNiwBp1aokhbTeqHHeXXKuH4J9cWE+p3sRPxyp
- IHKvb8zdFGBKPT8FWOk+JlfSL2NbGhUwOg+UejJZyTEqmLAvfBv3woyKNiuaT0fmBDNk
- uhgKVXXXEghPIb1npfstiv7OAO9NacFxOxzRYo9GfttWbyCxlOKw9kHfXAPBIWzQT69p 3w== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3de4v8ha8u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jan 2022 07:34:22 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 2077VOO2142220;
-        Fri, 7 Jan 2022 07:34:21 GMT
-Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam08lp2041.outbound.protection.outlook.com [104.47.74.41])
-        by userp3020.oracle.com with ESMTP id 3de4vn88jx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jan 2022 07:34:21 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mIJcLEavEVIdVCIpqapF+zmMMQVjXIIfISz/J1MDd+NVDMub9P+daNpgZ7imuzWxMwbw9V1fx+QXzjce+p6VD3trgUpvYlHLBbZjfyIIoj/CDHc15u/A7d+9GTmrmPpI6Me8Q6D8IuPGjrwVJVl6YKOGbnLKWUW0zODGbkAGJUFJ7rtiJHT4GZDAWXWib4oMLoJoS+0YgZ6T0CMJm54sT/LtRBlg3PDbO4tLnBsHH666INx2gcWBXFs2WxJNg3b2jP5VMrgudYKGSeKppJg2rNrWC11Ah91Fj/HAWYWc5BJlW7ITBUMvnvsxTcekEn6GEyfCfVV5ovmce7cmnyaCEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KtWka6YYZ4VBdwmXEq0PNM4GBSIOfWsKW/+brqgHpwE=;
- b=kA1B741hgEQBTyoxDM9K8CcU/3tjeP0xt2L0Gwsaxgc/yPSy725Jx6LWnn4ZvR/tK/+nRI7WqLYBkEkg9cpUsLFPXwplxxROo8V29Ix/6M8ir1TCh9DlcK4ramlcLmXvmAXTpYWRymU+nduCR8PiWCWvQiUL8ZR0ZkOyXZtwqgIen0doInzY/+bJHecnU8NsCfY4JLTBjxehOUEQC7HRmCXP6L4vomUziW+APQIG28bZSnvAUoSGTy8gwKHYDKiA9UDJgd5e60KQTlSAU1zveCMAW0+gy78BEI5EIAltzSeRTTjtBlU8CRQWpBdz6Xbu4FbIpgwAQlpQLb6mOSJeuA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        id S1346611AbiAGJzu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Jan 2022 04:55:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38598 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237113AbiAGJzr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Jan 2022 04:55:47 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3D0C061245;
+        Fri,  7 Jan 2022 01:55:47 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id w16so19963928edc.11;
+        Fri, 07 Jan 2022 01:55:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KtWka6YYZ4VBdwmXEq0PNM4GBSIOfWsKW/+brqgHpwE=;
- b=KUAq+2QWs2lnYBl431KPoPVuyQSsA7UwREEB2CkyCWhsesmtZtFQwupNMDaPTZBAkP/yEGzaI4zls9cfPaxwYxjyoJZ4Pi2JaR3uzKQXxN92MpJdun+OScbx2WcBz8SA6pcFEzZbmXws9AUasDrydDeQie5k2bMjcejlT0yq1hs=
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by MW4PR10MB5752.namprd10.prod.outlook.com
- (2603:10b6:303:18d::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4844.15; Fri, 7 Jan
- 2022 07:34:18 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::b889:5c86:23c0:82b8]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::b889:5c86:23c0:82b8%4]) with mapi id 15.20.4867.011; Fri, 7 Jan 2022
- 07:34:18 +0000
-Date:   Fri, 7 Jan 2022 10:34:07 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Chen Yu <yu.c.chen@intel.com>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] ACPI: pfr_telemetry: Fix info leak in pfrt_log_ioctl()
-Message-ID: <20220107073407.GG22086@kili>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: ZR0P278CA0184.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:44::19) To MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28)
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=ooscPa9TOlryt6N2qyAjoWJG3ETCPGiTW3k86Hswt4s=;
+        b=cks1zYcs1Xgs5V1uOxCxOR/Qf1h3YplePHLQt8PrFB2csgVE4qG07afD/fyjCaGyzl
+         1WD7t+TBP31vbykr5v82qNPkwItSkh5TD7OkW8rLgrqDrBW4vt9LwZfppqrYmXtcZoGR
+         pi8XMTOHozBg7Am5I9HMsNAGfqbe68i3T8Ytvx47Ueot+iht4SELH1YhT6VKYZulNBAY
+         0sZRwJJi/r5pYjrZ0j6jeUPMzPzGpVWt/HPZYGiKVfWnI4BA3JCMo1lLG2XPwKpipJ+5
+         Dtwto3PdHvkXi3e6bsp1hoM4ZSRZvkbqCcyuKtAgcEtQhD4zTpYOv6A/lHpE61aa+Kgx
+         +RPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ooscPa9TOlryt6N2qyAjoWJG3ETCPGiTW3k86Hswt4s=;
+        b=wcPi0OkYHbvoxpPydP1k/PEoB/2jK+h0BP9Gdi/o6Yj0bu0oPteK8az95QCAeqAYI1
+         GXKI0r+br6J7AuKhHn95aenr5u6nTc+8bqEyg9USQNJnF6V0sugOwpHi58FBBBc1XLsP
+         8cIPwwrrou9X1mSpDW2ibNeFUxqRbdWxASPQMLaUWQA+Yl5EbCXcnWIQu0KPcpB9rp3x
+         +zmHeKVBr30tX5SHtl+GnvZRBVIq9c0sRzseO61PSRq0MV0XHgrunO9W+K0l8IPIUoLL
+         +Y8CRuuBxYh7rsgNNUZs4xImNIBewsKu84ZL1ECEIgP2YjqbY0MGDG6OT4Mu8cTTCSBG
+         uCSA==
+X-Gm-Message-State: AOAM533YLE9H6ztzuDzj1wQee/7OskkMAnrPepGEi7XCc4HKI3WANd16
+        XWbjJ6cZAkE697TwtZrTnPcpRsulYDLquCY/MLY=
+X-Google-Smtp-Source: ABdhPJyB4zmiPw+DT/UfLBkSbY7FHKdVrFhtBv4VRloJ0St9kcs4gSdd/nWXaQV+hqqHdpMvkryUkooa/wovLjUVVQQ=
+X-Received: by 2002:a17:907:6d8d:: with SMTP id sb13mr50102935ejc.132.1641549345664;
+ Fri, 07 Jan 2022 01:55:45 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f3d98a26-1fdc-4e22-2942-08d9d1b01d3e
-X-MS-TrafficTypeDiagnostic: MW4PR10MB5752:EE_
-X-Microsoft-Antispam-PRVS: <MW4PR10MB5752D7CD0DFB6402057441318E4D9@MW4PR10MB5752.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: iDCnhHFM/zJBViTznO333zdfjv44qPB2sHdKJfz4dxqVJ2TN6XqPRKD8rNBQw3tPY4DpcHGXG7f6rcIcdPOFRjhQCFPUq1MeeuG51+kX3jlvXlFdC3c7rM1e+SOuhPc/leIJmfj6e5Ekgc5GlATeY6RYQqtx+boueF75uXaF4eOXDlCl1zq7KtjgDpf6oO9M+ZQm4uJCxghdVYazS++c05d5XQPorKebgdYHxRHalSmj1uuUvZHmeTKj4CrWdHxEwTTlqnlB7/IjDZGnUqTKlSVM7vM+c8tIjdZ24I+y3X2Q6g9FzHbgptcrC+HzVAv1CUqv9XE5P1E+iPbLR0KZ21D5IFuORMWxRUs05xlEexRQbRBRHe3Ejvd9kz9a1KSsdL6l9qpR0Kt140oLK2+z2n+krfihMDWH6rTg1y3VIkB/ofWPvGMe5z04vmnAX/dU6MTDvRHSPYFP6mrPGrmzWaTLkyoiuFeUAB+b68G3g6oLRmDsIgsgOPkyButqpwU6FHD/AJh3tktzpYKG3waDJl5vKm5DnZ2QAF0jNxkQB1ljra7Mg3JeM9cUfzafHEhkoqaVK95jrD+3rMscdkp4lJpdoBch1cfHwMuRTa1sDcGq9HuxfhOasi/g6psNUHtO5zCheF0beGT0IITA/7WVC3C+g3aDDVeFR6SYNoIFRYH4r3JIAVe6+59LFp10wMrGGI4CXTVl4gop6/8ttkfJ5w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(366004)(66946007)(6486002)(8936002)(6666004)(2906002)(186003)(4326008)(33716001)(1076003)(5660300002)(33656002)(44832011)(9686003)(6512007)(316002)(52116002)(508600001)(110136005)(38100700002)(38350700002)(66556008)(6506007)(86362001)(66476007)(26005)(8676002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?dnHlmsr628+T7sCDgD4KvgLKVMpYG2MkZIQbkjbFlesbfJ4wSqNvJIQvOpTk?=
- =?us-ascii?Q?C/ZsTafTEEzw6qJD3ZY2hBo9MTBbVzA+kWWakBrlGtnTc5uXZIafG9VghiQ9?=
- =?us-ascii?Q?jEvD6vaZJZkw6KdX+5XT1m+oQFikzGrm87O+RPHgRoqOlaszr1xp2LLriEHv?=
- =?us-ascii?Q?pyAaNekKAZZMKOR5zJ/1VuSmWUav075G115SDedx2T5hudf0yhILJzLAQUin?=
- =?us-ascii?Q?CNBPjPgobbjNPHmbmCPDy3KsRM17f1qEEYQCYV2VXSILgoH3U1jCgjwArjWn?=
- =?us-ascii?Q?GRIvyBcHz9qJr4vojyKbIsh4LWsI5ORJvo0d5IuKuEuUBBG6WOvetIjaUMft?=
- =?us-ascii?Q?sXITj73iMVTo4VXjinkGEaMrtwfpDHdK0tzL1JsxDhnq1fZRcfpOvsQjArKX?=
- =?us-ascii?Q?+kZSbB6z6vsTcvlSCDwtPvUxQbar9gYcAEJ1ZF7v65lo2zGJ72ckNXUoZWTf?=
- =?us-ascii?Q?/fnycE8pB10Klw312MMG8II8QXDn92OghAS8khIFSCSeGgB01VJos27hAVOn?=
- =?us-ascii?Q?WhvMc6R+aRwsaOXhpTTed2XfCQ6SdDYtxpUfAg9F/QeeErfIy56zOh6MVZRZ?=
- =?us-ascii?Q?gyp2nSRtl+gYsIbAmfDmUxGJPrhgQdX5o8DGrrPKhD9hJSD5pI1Ny+T0nqSB?=
- =?us-ascii?Q?FCvziN3NPBPwtO7yFeze+GyFOasK5FFPf9hHzh9aVBYwPIqXuWYn8C04smwV?=
- =?us-ascii?Q?IqsSS5Gmx/unlQB3NU9FqTUvvmfGlLCmgekTcSOwiuTsYlLij29cM5bNHXod?=
- =?us-ascii?Q?RWlH5/Sfe7aMPdQY6P6Ur3EfSWr967gXBiLBmwNY2r334cwu4iUL4ttj4I4t?=
- =?us-ascii?Q?V5mZp8Ho9eRtg4aMzJO1ma6CR+Iz3Y8QeE4Lk302fqESJzNl86CvXCwBcOKe?=
- =?us-ascii?Q?wCsMJUrKQ6DBhFKf9ketBtHAM0TChzM+ZSk6wqaOyl+IBajvmZdIqXj/WGl1?=
- =?us-ascii?Q?b9ZILDqmyLwZxNIvqjkAGA//eBTEPIUujmKvqyuL77rL5Wq4rcKtUzB/Lwek?=
- =?us-ascii?Q?AKnF/Hkj/69qjhF7zUyR5ddZmq+mw9NVdeYjtQzAU3zjz8fy6AqBX7oKGnA0?=
- =?us-ascii?Q?ONKPRiKgVaakaUlaeVYJXLPCJNAou/EaV+yqp3TNO4FipuNuW+RS1LiJklnc?=
- =?us-ascii?Q?put4QxcxwT/sUr1XnFL7iIAlmBPv0UyQd5gxfAUv+KH77pPuhb0uyEDur+Nj?=
- =?us-ascii?Q?XqFt3O+46i8GUaysto4mGZeuB6rBteW5CbGuEyF4KjaIC6r/OaxW4bXLpQLA?=
- =?us-ascii?Q?TptbZvXrAWpNK3MPVHkXh7mQS/y8Vd8duAiou0zXb8KTGTb3e6GoxwEU8hQt?=
- =?us-ascii?Q?kob3pa+pxiOvVGvkZnMCwLrFPuu2qE8udarXPBlH409q9McH6+AgX/h3kn0d?=
- =?us-ascii?Q?rdL1dnCNkgpGj3nKNz/5Z1n06m06POfqcuMCqEAPWyJPfxrzkGFre7zB9isw?=
- =?us-ascii?Q?DtzGhEjyPleAVLatLisJMyi6MoFOXzoYWbG1Iqp0rzythsofpt6bgA5zs7RF?=
- =?us-ascii?Q?mVU5S4/wDx22H4XthkWLccV1hi5ltWKZyXgWlmjhOORKljHO9/RA4+h1sr2Q?=
- =?us-ascii?Q?u0mGRBAdkfpI4vFm9GqOjJ00MAprY87KWHMM1BEGEsy/Z3JSqKU0iqfvcbej?=
- =?us-ascii?Q?KLA3ddh1yBoG+Q4H5eGhfR5/QDfwlOiQyHCIhLEgi27v5mvfueYZZCjGUWLL?=
- =?us-ascii?Q?fpuXMS09G26+ZbFqf4pShFRdH1Y=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3d98a26-1fdc-4e22-2942-08d9d1b01d3e
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2022 07:34:18.5635
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tDToMSzQEX+T7gbw7vdB/g3XRIFkcq29VYbNZ0K8XmrdnnO2Z0K5BU1H/npLzXPJJHnahevuazbSWqNH0k6JTMbscY7wAYycT6ZDkt5GGIM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB5752
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10219 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 malwarescore=0
- mlxlogscore=999 adultscore=0 suspectscore=0 mlxscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2201070053
-X-Proofpoint-ORIG-GUID: y0EA88hfT8teSFG4j_1XdOPq8cAF05Rv
-X-Proofpoint-GUID: y0EA88hfT8teSFG4j_1XdOPq8cAF05Rv
+References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-5-marcan@marcan.st>
+ <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com> <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
+ <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com> <6a936aea-ada4-fe2d-7ce6-7a42788e4d63@marcan.st>
+ <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com> <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
+ <d608ab82-cffe-0d66-99d2-d0abd214dd0d@gmail.com>
+In-Reply-To: <d608ab82-cffe-0d66-99d2-d0abd214dd0d@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 7 Jan 2022 11:55:09 +0200
+Message-ID: <CAHp75VfCJhMi35OnnE+hxp43PjpGYN1vteuMqX0J+1xZ+=az5w@mail.gmail.com>
+Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt paths
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The "data_info" struct is copied to the user.  It has a 4 byte struct
-hole after the last struct member so we need to memset that to avoid
-copying uninitialized stack data to the user.
+On Fri, Jan 7, 2022 at 5:12 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+> 06.01.2022 20:58, Andy Shevchenko =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+> > On Thu, Jan 6, 2022 at 7:40 PM Dmitry Osipenko <digetx@gmail.com> wrote=
+:
+> >> 05.01.2022 16:22, Hector Martin =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
 
-Fixes: b0013e037a8b ("ACPI: Introduce Platform Firmware Runtime Telemetry driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-When you're adding a new driver to the kernel then please use the new
-driver's prefix instead of just the subsystem prefix.
+...
 
- Bad: ACPI: Introduce Platform Firmware Runtime Telemetry driver
-Good: ACPI / pfr_telemetry: Introduce Platform Firmware Runtime Telemetry driver
+> >> while (alt_paths.index)
+> >>         kfree(alt_paths.path[--alt_paths.index]);
+> >
+> > Usual pattern is
+> >
+> >   while (x--)
+> >     kfree(x);
 
-Otherwise it's just up to me to guess what prefix you wanted.
+I have to elaborate that my point is to have postdecrement in the
+while() instead of doing predecrement in its body. So the above
+example will look
 
- drivers/acpi/pfr_telemetry.c | 1 +
- 1 file changed, 1 insertion(+)
+  while (alt_paths.index--)
+    kfree(alt_paths.path[alt_paths.index]);
 
-diff --git a/drivers/acpi/pfr_telemetry.c b/drivers/acpi/pfr_telemetry.c
-index da50dd80192c..9abf350bd7a5 100644
---- a/drivers/acpi/pfr_telemetry.c
-+++ b/drivers/acpi/pfr_telemetry.c
-@@ -83,6 +83,7 @@ static int get_pfrt_log_data_info(struct pfrt_log_data_info *data_info,
- 	union acpi_object *out_obj, in_obj, in_buf;
- 	int ret = -EBUSY;
- 
-+	memset(data_info, 0, sizeof(*data_info));
- 	memset(&in_obj, 0, sizeof(in_obj));
- 	memset(&in_buf, 0, sizeof(in_buf));
- 	in_obj.type = ACPI_TYPE_PACKAGE;
--- 
-2.20.1
+> > easier to read, extend (if needed).
+>
+> That is indeed a usual patter for the driver removal code paths. I
+> didn't like to have index of struct brcmf_fw underflowed, but I see now
+> that fwctx is dynamically created and freed during driver probe, so it
+> should be fine to use that usual pattern here too.
 
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
