@@ -2,126 +2,251 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 146BA487518
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jan 2022 10:55:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 216A14875E6
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jan 2022 11:50:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346611AbiAGJzu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 7 Jan 2022 04:55:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38598 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237113AbiAGJzr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 7 Jan 2022 04:55:47 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3D0C061245;
-        Fri,  7 Jan 2022 01:55:47 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id w16so19963928edc.11;
-        Fri, 07 Jan 2022 01:55:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ooscPa9TOlryt6N2qyAjoWJG3ETCPGiTW3k86Hswt4s=;
-        b=cks1zYcs1Xgs5V1uOxCxOR/Qf1h3YplePHLQt8PrFB2csgVE4qG07afD/fyjCaGyzl
-         1WD7t+TBP31vbykr5v82qNPkwItSkh5TD7OkW8rLgrqDrBW4vt9LwZfppqrYmXtcZoGR
-         pi8XMTOHozBg7Am5I9HMsNAGfqbe68i3T8Ytvx47Ueot+iht4SELH1YhT6VKYZulNBAY
-         0sZRwJJi/r5pYjrZ0j6jeUPMzPzGpVWt/HPZYGiKVfWnI4BA3JCMo1lLG2XPwKpipJ+5
-         Dtwto3PdHvkXi3e6bsp1hoM4ZSRZvkbqCcyuKtAgcEtQhD4zTpYOv6A/lHpE61aa+Kgx
-         +RPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ooscPa9TOlryt6N2qyAjoWJG3ETCPGiTW3k86Hswt4s=;
-        b=wcPi0OkYHbvoxpPydP1k/PEoB/2jK+h0BP9Gdi/o6Yj0bu0oPteK8az95QCAeqAYI1
-         GXKI0r+br6J7AuKhHn95aenr5u6nTc+8bqEyg9USQNJnF6V0sugOwpHi58FBBBc1XLsP
-         8cIPwwrrou9X1mSpDW2ibNeFUxqRbdWxASPQMLaUWQA+Yl5EbCXcnWIQu0KPcpB9rp3x
-         +zmHeKVBr30tX5SHtl+GnvZRBVIq9c0sRzseO61PSRq0MV0XHgrunO9W+K0l8IPIUoLL
-         +Y8CRuuBxYh7rsgNNUZs4xImNIBewsKu84ZL1ECEIgP2YjqbY0MGDG6OT4Mu8cTTCSBG
-         uCSA==
-X-Gm-Message-State: AOAM533YLE9H6ztzuDzj1wQee/7OskkMAnrPepGEi7XCc4HKI3WANd16
-        XWbjJ6cZAkE697TwtZrTnPcpRsulYDLquCY/MLY=
-X-Google-Smtp-Source: ABdhPJyB4zmiPw+DT/UfLBkSbY7FHKdVrFhtBv4VRloJ0St9kcs4gSdd/nWXaQV+hqqHdpMvkryUkooa/wovLjUVVQQ=
-X-Received: by 2002:a17:907:6d8d:: with SMTP id sb13mr50102935ejc.132.1641549345664;
- Fri, 07 Jan 2022 01:55:45 -0800 (PST)
+        id S237739AbiAGKuz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 7 Jan 2022 05:50:55 -0500
+Received: from mga05.intel.com ([192.55.52.43]:39388 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232217AbiAGKuy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 7 Jan 2022 05:50:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1641552654; x=1673088654;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZfNHIJudR1ILB87w3a2Yaf41Qr6TJ+x0txFoNiMPGA4=;
+  b=lBz2YmYhhQ8+tsG/uBGqJWwmUmfSzB8bVKqlfR62NwqE2m+3GT0POVeF
+   9ypPvxfL4hM8iTR+1bWmLeQ9ZWIRphbh2vD/c9xYSK5a9fFEIbRELafbg
+   PotQZyfXMTya3CwwAyKAKTv/0A0GTJyDYuk1Zad8U6h6I0HigQDpUXq5k
+   fnNWzM9z4KdPry5fkmi6jRAuOFozhiq7j5o1lwB0f7bzvg2ZQ01WWK1gE
+   xs3GwEYYdWGyDtLR6yYKfrCtEcrEIYlC3I33EYmSFKnh42QV5r3g+yC39
+   Vss3O+PcItnephysAykwpCayC2fyF2jiUAd4ki8P7/s4sL4G6ElW4F/5P
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10219"; a="329192491"
+X-IronPort-AV: E=Sophos;i="5.88,269,1635231600"; 
+   d="scan'208";a="329192491"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2022 02:50:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,269,1635231600"; 
+   d="scan'208";a="489257204"
+Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 07 Jan 2022 02:50:52 -0800
+Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1n5mpf-000IZX-CF; Fri, 07 Jan 2022 10:50:51 +0000
+Date:   Fri, 07 Jan 2022 18:50:19 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
+        linux-acpi@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS WITH WARNING
+ f099fd60c342d8d8265202ce01b4375358913072
+Message-ID: <61d81aeb.IipLiV6Q1X7uzVAE%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220104072658.69756-1-marcan@marcan.st> <20220104072658.69756-5-marcan@marcan.st>
- <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com> <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
- <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com> <6a936aea-ada4-fe2d-7ce6-7a42788e4d63@marcan.st>
- <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com> <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
- <d608ab82-cffe-0d66-99d2-d0abd214dd0d@gmail.com>
-In-Reply-To: <d608ab82-cffe-0d66-99d2-d0abd214dd0d@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 7 Jan 2022 11:55:09 +0200
-Message-ID: <CAHp75VfCJhMi35OnnE+hxp43PjpGYN1vteuMqX0J+1xZ+=az5w@mail.gmail.com>
-Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt paths
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 7, 2022 at 5:12 AM Dmitry Osipenko <digetx@gmail.com> wrote:
-> 06.01.2022 20:58, Andy Shevchenko =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
-> > On Thu, Jan 6, 2022 at 7:40 PM Dmitry Osipenko <digetx@gmail.com> wrote=
-:
-> >> 05.01.2022 16:22, Hector Martin =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: f099fd60c342d8d8265202ce01b4375358913072  Merge branch 'acpi-pfrut' into linux-next
 
-...
+Warning reports:
 
-> >> while (alt_paths.index)
-> >>         kfree(alt_paths.path[--alt_paths.index]);
-> >
-> > Usual pattern is
-> >
-> >   while (x--)
-> >     kfree(x);
+https://lore.kernel.org/llvm/202112280907.gTYYYuB4-lkp@intel.com
 
-I have to elaborate that my point is to have postdecrement in the
-while() instead of doing predecrement in its body. So the above
-example will look
+Warning in current branch:
 
-  while (alt_paths.index--)
-    kfree(alt_paths.path[alt_paths.index]);
+drivers/acpi/acpica/exregion.c:519:17: warning: performing pointer subtraction with a null pointer has undefined behavior [-Wnull-pointer-subtraction]
 
-> > easier to read, extend (if needed).
->
-> That is indeed a usual patter for the driver removal code paths. I
-> didn't like to have index of struct brcmf_fw underflowed, but I see now
-> that fwctx is dynamically created and freed during driver probe, so it
-> should be fine to use that usual pattern here too.
+Warning ids grouped by kconfigs:
 
+clang_recent_errors
+|-- i386-randconfig-a011-20220107
+|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a012-20220107
+|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a013-20220107
+|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-a014-20220107
+|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+|-- i386-randconfig-r014-20220107
+|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a011-20220107
+|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a012-20220107
+|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a013-20220107
+|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a014-20220107
+|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+|-- x86_64-randconfig-a015-20220107
+|   `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
+`-- x86_64-randconfig-a016-20220107
+    `-- drivers-acpi-acpica-exregion.c:warning:performing-pointer-subtraction-with-a-null-pointer-has-undefined-behavior
 
+elapsed time: 733m
 
---=20
-With Best Regards,
-Andy Shevchenko
+configs tested: 145
+configs skipped: 4
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20220107
+parisc                           alldefconfig
+arm                           stm32_defconfig
+mips                        bcm47xx_defconfig
+powerpc                      ppc40x_defconfig
+arm                       omap2plus_defconfig
+arm                            lart_defconfig
+sh                        sh7763rdp_defconfig
+sh                           se7343_defconfig
+sh                           se7721_defconfig
+sh                     sh7710voipgw_defconfig
+m68k                        mvme147_defconfig
+sh                          lboxre2_defconfig
+powerpc                      chrp32_defconfig
+powerpc                      mgcoge_defconfig
+mips                           jazz_defconfig
+arm                           viper_defconfig
+m68k                       m5275evb_defconfig
+xtensa                  cadence_csp_defconfig
+arc                        nsimosci_defconfig
+xtensa                    smp_lx200_defconfig
+sparc64                          alldefconfig
+arm                           h5000_defconfig
+arm                          badge4_defconfig
+sh                        dreamcast_defconfig
+m68k                       m5208evb_defconfig
+m68k                          sun3x_defconfig
+sh                            migor_defconfig
+mips                         cobalt_defconfig
+sh                          polaris_defconfig
+m68k                       m5475evb_defconfig
+openrisc                            defconfig
+arm                        realview_defconfig
+powerpc                       ppc64_defconfig
+arm                        trizeps4_defconfig
+arm                  randconfig-c002-20220107
+arm                  randconfig-c002-20220106
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+i386                             allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a005-20220107
+x86_64               randconfig-a001-20220107
+x86_64               randconfig-a004-20220107
+x86_64               randconfig-a006-20220107
+x86_64               randconfig-a002-20220107
+x86_64               randconfig-a003-20220107
+i386                 randconfig-a003-20220107
+i386                 randconfig-a005-20220107
+i386                 randconfig-a004-20220107
+i386                 randconfig-a006-20220107
+i386                 randconfig-a002-20220107
+i386                 randconfig-a001-20220107
+arc                  randconfig-r043-20220107
+s390                 randconfig-r044-20220106
+arc                  randconfig-r043-20220106
+riscv                randconfig-r042-20220106
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+mips                 randconfig-c004-20220107
+arm                  randconfig-c002-20220107
+i386                 randconfig-c001-20220107
+riscv                randconfig-c006-20220107
+powerpc              randconfig-c003-20220107
+x86_64               randconfig-c007-20220107
+arm                          moxart_defconfig
+arm                      tct_hammer_defconfig
+arm                        spear3xx_defconfig
+mips                      malta_kvm_defconfig
+arm                      pxa255-idp_defconfig
+mips                       lemote2f_defconfig
+mips                        qi_lb60_defconfig
+arm                          collie_defconfig
+powerpc                          allyesconfig
+arm                         s5pv210_defconfig
+arm                         palmz72_defconfig
+powerpc                 xes_mpc85xx_defconfig
+mips                         tb0219_defconfig
+s390                             alldefconfig
+i386                 randconfig-a003-20220106
+i386                 randconfig-a005-20220106
+i386                 randconfig-a006-20220106
+i386                 randconfig-a002-20220106
+i386                 randconfig-a001-20220106
+x86_64               randconfig-a012-20220107
+x86_64               randconfig-a015-20220107
+x86_64               randconfig-a014-20220107
+x86_64               randconfig-a013-20220107
+x86_64               randconfig-a011-20220107
+x86_64               randconfig-a016-20220107
+i386                 randconfig-a012-20220107
+i386                 randconfig-a016-20220107
+i386                 randconfig-a014-20220107
+i386                 randconfig-a015-20220107
+i386                 randconfig-a011-20220107
+i386                 randconfig-a013-20220107
+hexagon              randconfig-r041-20220107
+hexagon              randconfig-r045-20220107
+riscv                randconfig-r042-20220107
+s390                 randconfig-r044-20220107
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
