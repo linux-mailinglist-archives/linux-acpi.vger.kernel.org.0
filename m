@@ -2,35 +2,57 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 879DD4870C2
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jan 2022 03:50:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4B37487113
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jan 2022 04:12:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345574AbiAGCun (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jan 2022 21:50:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57228 "EHLO
+        id S1344747AbiAGDMr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jan 2022 22:12:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344814AbiAGCum (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 21:50:42 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C0A1C061245;
-        Thu,  6 Jan 2022 18:50:42 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id A6A7E4388F;
-        Fri,  7 Jan 2022 02:50:22 +0000 (UTC)
-Message-ID: <e2ac1706-6471-0188-00d8-1c68735d24f7@marcan.st>
-Date:   Fri, 7 Jan 2022 11:50:20 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH v2 06/35] brcmfmac: firmware: Support passing in multiple
- board_types
-Content-Language: en-US
+        with ESMTP id S229769AbiAGDMq (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 22:12:46 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB61C061245;
+        Thu,  6 Jan 2022 19:12:46 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id k21so10819319lfu.0;
+        Thu, 06 Jan 2022 19:12:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=A7Z4QRcMvrmjlPeHV4GkEs76XEk9AgjLCHWeAaK4KqI=;
+        b=ElDNw1cPek0Kf7E4LomCE17N63Q6E1qVcxOWExxLE8F3XGOZ0rIx7UdsZg74McZ4tq
+         buNog03fKRLlt7iaBaAaNf2fUWtdmdQKegsE5NORsfMhU76iHvvh0bSNioX4hXIXZidG
+         aMDcL9ajmwPg7vX8DvR8kZUHHQZ4OZ4J0CONG1exFtIPaalbiPwY4WHRi6G5bIMO8/iy
+         9L3DgOHcyZAlOlNCVdVeYSPTjQbqQn5IaFSEW48PdI7FeVvaQrXfB6j7/AzWctQt2SsN
+         jz8KfIZLyGS5Lvbo7B3Z40UhgZjwZAUBlFPiBF/N34mqJx1EGKYABJMqrSjZazuLp0ob
+         zSmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=A7Z4QRcMvrmjlPeHV4GkEs76XEk9AgjLCHWeAaK4KqI=;
+        b=yPXq8px53ktMxwQIFXS63tbKgHlkDkWTEOcGb5/BMZOA0HSkVwooixsTKkv+uyFYqH
+         P9hgwQWxNEJ/jhiW3errm5uCdB4NdrYJoeWwHCXztBULSvgshN8LKePPY1zTKZXCSDQ7
+         13yLaLOwKKk4KtRXp6djQjKVitXQ8aFSJqJfAxJrUZt6ryUDPmzGfB0kP6xannG/NhpD
+         ZfNKY78JQCy0xLxvtrksoM68jQPwqfzLKVSJGjKTAryxL3jSLdBR4moF5ScGNVKdH5jv
+         DlCvRIFveFUivmpMyOiPWSfS7btMdvqe4YsTXnV7UA/vGKAGbxEf0AOYvjwkNlqIwrvd
+         CKUA==
+X-Gm-Message-State: AOAM533yuNSn2meLsA0XWJdvlVtk5EbMzS97jnF3jpqzuOh1k1dC7Ux2
+        GVwnRwdLCdMne7FNApU6aBo=
+X-Google-Smtp-Source: ABdhPJxHXV0k57MxWhuqfwmKFIiBmrRHiyLSJvJehH8MQgm0fNUeowax2AmLxwXnW0uI0iduRkbzBg==
+X-Received: by 2002:ac2:5f8b:: with SMTP id r11mr54565777lfe.44.1641525164286;
+        Thu, 06 Jan 2022 19:12:44 -0800 (PST)
+Received: from [192.168.2.145] (94-29-46-141.dynamic.spd-mgts.ru. [94.29.46.141])
+        by smtp.googlemail.com with ESMTPSA id p18sm402828ljn.65.2022.01.06.19.12.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Jan 2022 19:12:43 -0800 (PST)
+Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt
+ paths
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -41,7 +63,6 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
         Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
         Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Mark Kettenis <kettenis@openbsd.org>,
@@ -60,40 +81,59 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         <brcm80211-dev-list.pdl@broadcom.com>,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-7-marcan@marcan.st>
- <CAHp75VcXgVTZhPiPmbpAJr21xUopRXU6yi=wvyzs6ByR8C+rzw@mail.gmail.com>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <CAHp75VcXgVTZhPiPmbpAJr21xUopRXU6yi=wvyzs6ByR8C+rzw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20220104072658.69756-5-marcan@marcan.st>
+ <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com>
+ <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
+ <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com>
+ <6a936aea-ada4-fe2d-7ce6-7a42788e4d63@marcan.st>
+ <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com>
+ <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <d608ab82-cffe-0d66-99d2-d0abd214dd0d@gmail.com>
+Date:   Fri, 7 Jan 2022 06:12:42 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022/01/04 20:28, Andy Shevchenko wrote:
-> On Tue, Jan 4, 2022 at 9:28 AM Hector Martin <marcan@marcan.st> wrote:
->>
->> In order to make use of the multiple alt_path functionality, change
->> board_type to an array. Bus drivers can pass in a NULL-terminated list
->> of board type strings to try for the firmware fetch.
+06.01.2022 20:58, Andy Shevchenko пишет:
+> On Thu, Jan 6, 2022 at 7:40 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>> 05.01.2022 16:22, Hector Martin пишет:
+>>> On 05/01/2022 07.09, Dmitry Osipenko wrote:
 > 
->> +               /* strip extension at the end */
->> +               strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
->> +               alt_path[suffix - path] = 0;
->>
->> -       alt_paths[0] = kstrdup(alt_path, GFP_KERNEL);
->> +               strlcat(alt_path, ".", BRCMF_FW_NAME_LEN);
->> +               strlcat(alt_path, board_types[i], BRCMF_FW_NAME_LEN);
->> +               strlcat(alt_path, suffix, BRCMF_FW_NAME_LEN);
->> +
->> +               alt_paths[i] = kstrdup(alt_path, GFP_KERNEL);
->> +               brcmf_dbg(TRACE, "FW alt path: %s\n", alt_paths[i]);
+> ...
 > 
-> Consider replacing these string manipulations with kasprintf().
+>>> I'm confused; the array size is constant. What would index contain and
+>>> why would would brcm_free_alt_fw_paths use it? Just as an iterator
+>>> variable instead of using a local variable? Or do you mean count?
+>>
+>> Yes, use index for the count of active entries in the alt_paths[].
+>>
+>> for (i = 0; i < alt_paths.index; i++)
+>>         kfree(alt_paths.path[i]);
+>>
+>> alt_paths.index = 0;
+>>
+>> or
+>>
+>> while (alt_paths.index)
+>>         kfree(alt_paths.path[--alt_paths.index]);
+> 
+> Usual pattern is
+> 
+>   while (x--)
+>     kfree(x);
+> 
+> easier to read, extend (if needed).
 > 
 
-Done, thanks!
-
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+That is indeed a usual patter for the driver removal code paths. I
+didn't like to have index of struct brcmf_fw underflowed, but I see now
+that fwctx is dynamically created and freed during driver probe, so it
+should be fine to use that usual pattern here too.
