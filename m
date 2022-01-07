@@ -2,138 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4B37487113
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jan 2022 04:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7053E487143
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jan 2022 04:35:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344747AbiAGDMr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jan 2022 22:12:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34086 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229769AbiAGDMq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 22:12:46 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB61C061245;
-        Thu,  6 Jan 2022 19:12:46 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id k21so10819319lfu.0;
-        Thu, 06 Jan 2022 19:12:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=A7Z4QRcMvrmjlPeHV4GkEs76XEk9AgjLCHWeAaK4KqI=;
-        b=ElDNw1cPek0Kf7E4LomCE17N63Q6E1qVcxOWExxLE8F3XGOZ0rIx7UdsZg74McZ4tq
-         buNog03fKRLlt7iaBaAaNf2fUWtdmdQKegsE5NORsfMhU76iHvvh0bSNioX4hXIXZidG
-         aMDcL9ajmwPg7vX8DvR8kZUHHQZ4OZ4J0CONG1exFtIPaalbiPwY4WHRi6G5bIMO8/iy
-         9L3DgOHcyZAlOlNCVdVeYSPTjQbqQn5IaFSEW48PdI7FeVvaQrXfB6j7/AzWctQt2SsN
-         jz8KfIZLyGS5Lvbo7B3Z40UhgZjwZAUBlFPiBF/N34mqJx1EGKYABJMqrSjZazuLp0ob
-         zSmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=A7Z4QRcMvrmjlPeHV4GkEs76XEk9AgjLCHWeAaK4KqI=;
-        b=yPXq8px53ktMxwQIFXS63tbKgHlkDkWTEOcGb5/BMZOA0HSkVwooixsTKkv+uyFYqH
-         P9hgwQWxNEJ/jhiW3errm5uCdB4NdrYJoeWwHCXztBULSvgshN8LKePPY1zTKZXCSDQ7
-         13yLaLOwKKk4KtRXp6djQjKVitXQ8aFSJqJfAxJrUZt6ryUDPmzGfB0kP6xannG/NhpD
-         ZfNKY78JQCy0xLxvtrksoM68jQPwqfzLKVSJGjKTAryxL3jSLdBR4moF5ScGNVKdH5jv
-         DlCvRIFveFUivmpMyOiPWSfS7btMdvqe4YsTXnV7UA/vGKAGbxEf0AOYvjwkNlqIwrvd
-         CKUA==
-X-Gm-Message-State: AOAM533yuNSn2meLsA0XWJdvlVtk5EbMzS97jnF3jpqzuOh1k1dC7Ux2
-        GVwnRwdLCdMne7FNApU6aBo=
-X-Google-Smtp-Source: ABdhPJxHXV0k57MxWhuqfwmKFIiBmrRHiyLSJvJehH8MQgm0fNUeowax2AmLxwXnW0uI0iduRkbzBg==
-X-Received: by 2002:ac2:5f8b:: with SMTP id r11mr54565777lfe.44.1641525164286;
-        Thu, 06 Jan 2022 19:12:44 -0800 (PST)
-Received: from [192.168.2.145] (94-29-46-141.dynamic.spd-mgts.ru. [94.29.46.141])
-        by smtp.googlemail.com with ESMTPSA id p18sm402828ljn.65.2022.01.06.19.12.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Jan 2022 19:12:43 -0800 (PST)
-Subject: Re: [PATCH v2 04/35] brcmfmac: firmware: Support having multiple alt
- paths
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-5-marcan@marcan.st>
- <5ddde705-f3fa-ff78-4d43-7a02d6efaaa6@gmail.com>
- <7c8d5655-a041-e291-95c1-be200233f87f@marcan.st>
- <8394dbcd-f500-b1ae-fcd8-15485d8c0888@gmail.com>
- <6a936aea-ada4-fe2d-7ce6-7a42788e4d63@marcan.st>
- <57716712-024d-af7e-394b-72ca9cb008d0@gmail.com>
- <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <d608ab82-cffe-0d66-99d2-d0abd214dd0d@gmail.com>
-Date:   Fri, 7 Jan 2022 06:12:42 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S1345856AbiAGDfm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jan 2022 22:35:42 -0500
+Received: from smtp21.cstnet.cn ([159.226.251.21]:43090 "EHLO cstnet.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1345090AbiAGDfm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 6 Jan 2022 22:35:42 -0500
+Received: from localhost.localdomain (unknown [124.16.138.126])
+        by APP-01 (Coremail) with SMTP id qwCowABnb5_1tNdheOrxBQ--.38987S2;
+        Fri, 07 Jan 2022 11:35:17 +0800 (CST)
+From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
+To:     rjw@rjwysocki.net, lenb@kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Subject: [PATCH] ACPI: APD: Check for null pointer after calling devm_ioremap
+Date:   Fri,  7 Jan 2022 11:35:16 +0800
+Message-Id: <20220107033516.3611664-1-jiasheng@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VdXk87x7oDT1O5Q32ZsL4n0HYt-fijeiXw8n9fgypkOgg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qwCowABnb5_1tNdheOrxBQ--.38987S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Xw4UZry8tw1UCFWDZFyfCrg_yoWDJrX_Wa
+        n7uF1fXay5Gr1Fk3W7ArnxuFySyrsxWr1kuws5Ka9aya48Xw13G34UZ34Yvr1DC34rGrZx
+        ua4vvr43uw1agjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUb48FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+        Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+        0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+        2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc2xSY4AK67AK6r48
+        MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
+        0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0E
+        wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJV
+        W8JwCI42IY6xAIw20EY4v20xvaj40_Wr1j6rW3Jr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+        IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUj8uctUUUU
+        U==
+X-Originating-IP: [124.16.138.126]
+X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-06.01.2022 20:58, Andy Shevchenko пишет:
-> On Thu, Jan 6, 2022 at 7:40 PM Dmitry Osipenko <digetx@gmail.com> wrote:
->> 05.01.2022 16:22, Hector Martin пишет:
->>> On 05/01/2022 07.09, Dmitry Osipenko wrote:
-> 
-> ...
-> 
->>> I'm confused; the array size is constant. What would index contain and
->>> why would would brcm_free_alt_fw_paths use it? Just as an iterator
->>> variable instead of using a local variable? Or do you mean count?
->>
->> Yes, use index for the count of active entries in the alt_paths[].
->>
->> for (i = 0; i < alt_paths.index; i++)
->>         kfree(alt_paths.path[i]);
->>
->> alt_paths.index = 0;
->>
->> or
->>
->> while (alt_paths.index)
->>         kfree(alt_paths.path[--alt_paths.index]);
-> 
-> Usual pattern is
-> 
->   while (x--)
->     kfree(x);
-> 
-> easier to read, extend (if needed).
-> 
+As the possible failure of the devres_alloc(), the devm_ioremap() may
+return NULL pointer.
+And then, the 'clk_data->base' will be assigned to clkdev->data->base in
+platform_device_register_data().
+And the PTR_ERR_OR_ZERO() can not detect the 'base'.
+Therefore, it should be better to add the check in order to guarantee
+the success of the setup.
 
-That is indeed a usual patter for the driver removal code paths. I
-didn't like to have index of struct brcmf_fw underflowed, but I see now
-that fwctx is dynamically created and freed during driver probe, so it
-should be fine to use that usual pattern here too.
+Fixes: 3f4ba94e3615 ("ACPI: APD: Add AMD misc clock handler support")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+---
+ drivers/acpi/acpi_apd.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index 6e02448d15d9..9db6409ecb47 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -95,6 +95,8 @@ static int fch_misc_setup(struct apd_private_data *pdata)
+ 					      resource_size(rentry->res));
+ 		break;
+ 	}
++	if (!clk_data->base)
++		return -ENOMEM;
+ 
+ 	acpi_dev_free_resource_list(&resource_list);
+ 
+-- 
+2.25.1
+
