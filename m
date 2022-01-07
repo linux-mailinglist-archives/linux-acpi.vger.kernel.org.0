@@ -2,78 +2,307 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7053E487143
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jan 2022 04:35:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03EB5487180
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jan 2022 04:53:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345856AbiAGDfm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 6 Jan 2022 22:35:42 -0500
-Received: from smtp21.cstnet.cn ([159.226.251.21]:43090 "EHLO cstnet.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1345090AbiAGDfm (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 6 Jan 2022 22:35:42 -0500
-Received: from localhost.localdomain (unknown [124.16.138.126])
-        by APP-01 (Coremail) with SMTP id qwCowABnb5_1tNdheOrxBQ--.38987S2;
-        Fri, 07 Jan 2022 11:35:17 +0800 (CST)
-From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
-To:     rjw@rjwysocki.net, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Subject: [PATCH] ACPI: APD: Check for null pointer after calling devm_ioremap
-Date:   Fri,  7 Jan 2022 11:35:16 +0800
-Message-Id: <20220107033516.3611664-1-jiasheng@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+        id S230353AbiAGDxi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 6 Jan 2022 22:53:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43184 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230197AbiAGDxh (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 6 Jan 2022 22:53:37 -0500
+Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F64BC061245;
+        Thu,  6 Jan 2022 19:53:37 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id F13F24212E;
+        Fri,  7 Jan 2022 03:53:26 +0000 (UTC)
+Message-ID: <4625b434-ed73-d266-0340-76c8bd8fd46e@marcan.st>
+Date:   Fri, 7 Jan 2022 12:53:24 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qwCowABnb5_1tNdheOrxBQ--.38987S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Xw4UZry8tw1UCFWDZFyfCrg_yoWDJrX_Wa
-        n7uF1fXay5Gr1Fk3W7ArnxuFySyrsxWr1kuws5Ka9aya48Xw13G34UZ34Yvr1DC34rGrZx
-        ua4vvr43uw1agjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb48FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-        Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-        0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-        2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc2xSY4AK67AK6r48
-        MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
-        0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0E
-        wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJV
-        W8JwCI42IY6xAIw20EY4v20xvaj40_Wr1j6rW3Jr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-        IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUj8uctUUUU
-        U==
-X-Originating-IP: [124.16.138.126]
-X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.4.1
+Subject: Re: [PATCH v2 07/35] brcmfmac: pcie: Read Apple OTP information
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220104072658.69756-1-marcan@marcan.st>
+ <20220104072658.69756-8-marcan@marcan.st>
+ <CAHp75VcHjGAVog31AHaVLAq452=h=tqEN-1GNm_Aiu3113oTLA@mail.gmail.com>
+From:   Hector Martin <marcan@marcan.st>
+In-Reply-To: <CAHp75VcHjGAVog31AHaVLAq452=h=tqEN-1GNm_Aiu3113oTLA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-As the possible failure of the devres_alloc(), the devm_ioremap() may
-return NULL pointer.
-And then, the 'clk_data->base' will be assigned to clkdev->data->base in
-platform_device_register_data().
-And the PTR_ERR_OR_ZERO() can not detect the 'base'.
-Therefore, it should be better to add the check in order to guarantee
-the success of the setup.
+On 2022/01/04 20:26, Andy Shevchenko wrote:
+> On Tue, Jan 4, 2022 at 9:28 AM Hector Martin <marcan@marcan.st> wrote:
+>>
+>> On Apple platforms, the One Time Programmable ROM in the Broadcom chips
+>> contains information about the specific board design (module, vendor,
+>> version) that is required to select the correct NVRAM file. Parse this
+>> OTP ROM and extract the required strings.
+>>
+>> Note that the user OTP offset/size is per-chip. This patch does not add
+>> any chips yet.
+> 
+> ...
+> 
+>> +static int
+>> +brcmf_pcie_parse_otp_sys_vendor(struct brcmf_pciedev_info *devinfo,
+>> +                               u8 *data, size_t size)
+>> +{
+>> +       int idx = 4;
+> 
+> Can you rather have a structure
+> 
+> struct my_cool_and_strange_blob {
+> __le32 hdr;
+> const char ...[];
+> ...
+> }
+> 
+> and then cast your data to this struct?
 
-Fixes: 3f4ba94e3615 ("ACPI: APD: Add AMD misc clock handler support")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
----
- drivers/acpi/acpi_apd.c | 2 ++
- 1 file changed, 2 insertions(+)
+That would mean I need to copy, since the original data is not aligned.
+Since it's just one u32 header (which we don't even truly know the
+interpretation of), it seems get_unaligned_le32 is easier.
 
-diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-index 6e02448d15d9..9db6409ecb47 100644
---- a/drivers/acpi/acpi_apd.c
-+++ b/drivers/acpi/acpi_apd.c
-@@ -95,6 +95,8 @@ static int fch_misc_setup(struct apd_private_data *pdata)
- 					      resource_size(rentry->res));
- 		break;
- 	}
-+	if (!clk_data->base)
-+		return -ENOMEM;
- 
- 	acpi_dev_free_resource_list(&resource_list);
- 
+> 
+>> +       const char *chip_params;
+>> +       const char *board_params;
+>> +       const char *p;
+>> +
+>> +       /* 4-byte header and two empty strings */
+>> +       if (size < 6)
+>> +               return -EINVAL;
+>> +
+>> +       if (get_unaligned_le32(data) != BRCMF_OTP_VENDOR_HDR)
+>> +               return -EINVAL;
+>> +
+>> +       chip_params = &data[idx];
+> 
+>> +       /* Skip first string, including terminator */
+>> +       idx += strnlen(chip_params, size - idx) + 1;
+> 
+> strsep() ?
+
+We're splitting on \0 here, so that won't work.
+
+> 
+>> +       if (idx >= size)
+>> +               return -EINVAL;
+>> +
+>> +       board_params = &data[idx];
+>> +
+>> +       /* Skip to terminator of second string */
+>> +       idx += strnlen(board_params, size - idx);
+>> +       if (idx >= size)
+>> +               return -EINVAL;
+>> +
+>> +       /* At this point both strings are guaranteed NUL-terminated */
+>> +       brcmf_dbg(PCIE, "OTP: chip_params='%s' board_params='%s'\n",
+>> +                 chip_params, board_params);
+>> +
+>> +       p = board_params;
+>> +       while (*p) {
+>> +               char tag = *p++;
+>> +               const char *end;
+>> +               size_t len;
+>> +
+>> +               if (tag == ' ') /* Skip extra spaces */
+>> +                       continue;
+> 
+> skip_spaces()
+
+Sure.
+
+> 
+>> +
+>> +               if (*p++ != '=') /* implicit NUL check */
+>> +                       return -EINVAL;
+> 
+> Have you checked the next_arg() implementation?
+
+That function has a lot more logic (handling quotes, etc) and no other
+hardware drivers use it. I'm not sure I feel comfortable using it to
+parse untrusted data from a potentially compromised device. The parsing
+we need to do here is much simpler.
+
+> 
+>> +               /* *p might be NUL here, if so end == p and len == 0 */
+>> +               end = strchrnul(p, ' ');
+>> +               len = end - p;
+>> +
+>> +               /* leave 1 byte for NUL in destination string */
+>> +               if (len > (BRCMF_OTP_MAX_PARAM_LEN - 1))
+>> +                       return -EINVAL;
+>> +
+>> +               /* Copy len characters plus a NUL terminator */
+>> +               switch (tag) {
+>> +               case 'M':
+>> +                       strscpy(devinfo->otp.module, p, len + 1);
+>> +                       break;
+>> +               case 'V':
+>> +                       strscpy(devinfo->otp.vendor, p, len + 1);
+>> +                       break;
+>> +               case 'm':
+>> +                       strscpy(devinfo->otp.version, p, len + 1);
+>> +                       break;
+>> +               }
+>> +
+>> +               /* Skip to space separator or NUL */
+>> +               p = end;
+>> +       }
+>> +
+>> +       brcmf_dbg(PCIE, "OTP: module=%s vendor=%s version=%s\n",
+>> +                 devinfo->otp.module, devinfo->otp.vendor,
+>> +                 devinfo->otp.version);
+>> +
+>> +       if (!devinfo->otp.module ||
+>> +           !devinfo->otp.vendor ||
+>> +           !devinfo->otp.version)
+>> +               return -EINVAL;
+>> +
+>> +       devinfo->otp.valid = true;
+>> +       return 0;
+>> +}
+>> +
+>> +static int
+>> +brcmf_pcie_parse_otp(struct brcmf_pciedev_info *devinfo, u8 *otp, size_t size)
+>> +{
+>> +       int p = 0;
+> 
+>> +       int ret = -1;
+> 
+> Use proper error codes.
+
+Ack.
+
+> 
+>> +       brcmf_dbg(PCIE, "parse_otp size=%ld\n", size);
+>> +
+>> +       while (p < (size - 1)) {
+> 
+> too many parentheses
+
+Really? I see this is all over kernel code. I know it's redundant, but I
+find parentheses around expressions used for one side of a comparison to
+be a lot more readable since you don't have to start doubting whether
+that particular operator has higher precedence than the comparison (+
+does but & does not).
+
+> 
+>> +               u8 type = otp[p];
+>> +               u8 length = otp[p + 1];
+>> +
+>> +               if (type == 0)
+>> +                       break;
+>> +
+>> +               if ((p + 2 + length) > size)
+>> +                       break;
+>> +
+>> +               switch (type) {
+>> +               case BRCMF_OTP_SYS_VENDOR:
+>> +                       brcmf_dbg(PCIE, "OTP @ 0x%x (0x%x): SYS_VENDOR\n",
+> 
+> length as hex a bit harder to parse
+
+Not so sure about that, especially if you're trying to mentally add it
+to offsets... but sure, I can make it decimal.
+
+> 
+>> +                                 p, length);
+>> +                       ret = brcmf_pcie_parse_otp_sys_vendor(devinfo,
+>> +                                                             &otp[p + 2],
+>> +                                                             length);
+>> +                       break;
+>> +               case BRCMF_OTP_BRCM_CIS:
+>> +                       brcmf_dbg(PCIE, "OTP @ 0x%x (0x%x): BRCM_CIS\n",
+>> +                                 p, length);
+>> +                       break;
+>> +               default:
+>> +                       brcmf_dbg(PCIE, "OTP @ 0x%x (0x%x): Unknown type 0x%x\n",
+>> +                                 p, length, type);
+>> +                       break;
+>> +               }
+> 
+>> +               p += 2 + length;
+> 
+> 
+> length + 2 is easier to read.
+
+I was following the data order here; 2 header bytes and then length
+payload bytes. Same reason I used p + 2 + length above.
+
+> 
+>> +       }
+>> +
+>> +       return ret;
+>> +}
+> 
+> ...
+> 
+>> +               /* Map OTP to shadow area */
+>> +               WRITECC32(devinfo, sromcontrol,
+>> +                         sromctl | BCMA_CC_SROM_CONTROL_OTPSEL);
+> 
+> One line?
+
+That exceeds 80 chars, which seems to be the standard in this file which
+I'm trying to stick to. If people are okay with pushing to 100 lines,
+there are lots of other places I could unwrap lines in this series.
+
+> 
+> ...
+> 
+>> +       otp = kzalloc(sizeof(u16) * words, GFP_KERNEL);
+> 
+> No check, why? I see in many places you forgot to check for NULL from
+> allocator functions.
+
+I think at some point something convinced me that kzalloc and friends
+don't fail with GFP_KERNEL... which they rarely do, but they do. I'll
+fix it, and add a few missing checks to the existing code while I'm at it.
+
+> Moreover here you should use kzalloc() which does overflow protection.
+words is a constant from the switch statement so this could never
+overflow anyway, but sure.
+
 -- 
-2.25.1
-
+Hector Martin (marcan@marcan.st)
+Public Key: https://mrcn.st/pub
