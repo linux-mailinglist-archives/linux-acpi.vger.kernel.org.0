@@ -2,250 +2,271 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D9C54897B5
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 12:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68B4E489833
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 13:02:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244869AbiAJLmu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jan 2022 06:42:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:28661 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S244922AbiAJLln (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 10 Jan 2022 06:41:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1641814901;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=SsWQC8aTb+0uRe3yU+LwCtHB9iia3Osu0BBlRAz4Dj0=;
-        b=futY8jD0bx8u3ZSMnv4xgVIkFqrhmEe+8+MLM0VPZ3PsOL/6dk0pboyomFGeZd1a74uiu0
-        m+FwRJZPjaSuc8phiWgxZo3dFjL4tLc7fKpsb2qqPFc6SubbUA9M7f3crgEtNdlRCHF1ei
-        tNY8L593iJCCbF0goOuMUNWzHjTpnEA=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-266-StxOlSaEMg2x_ml630VOzw-1; Mon, 10 Jan 2022 06:41:40 -0500
-X-MC-Unique: StxOlSaEMg2x_ml630VOzw-1
-Received: by mail-ed1-f72.google.com with SMTP id o20-20020a056402439400b003f83cf1e472so9893695edc.18
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 03:41:40 -0800 (PST)
+        id S245161AbiAJMCX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jan 2022 07:02:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56518 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245169AbiAJMCS (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 07:02:18 -0500
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23C94C06175A
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 04:02:17 -0800 (PST)
+Received: by mail-pl1-x62d.google.com with SMTP id h1so11575614pls.11
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 04:02:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to;
+        bh=2hiQWSBJ5vvXVEsTMU5vdepNMr4vMqc7+7OP+LZTy1s=;
+        b=OvjxNoe+vXugsuYUMS9t4FTz0PAPjRc1Li9NphXi7kURgzBfWHZZ4ljfuOPItyTQZJ
+         bH0nc+tQ+QvQP7JQY81J5kfr+yEl7CoKzV0qNfOI6gPw42xAML00hvyx17qAkpxWfN06
+         Z0fJ615twbiNj+r/KBD6bo8SLUT8LTV2RD9xo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=SsWQC8aTb+0uRe3yU+LwCtHB9iia3Osu0BBlRAz4Dj0=;
-        b=32lG88xvxMHP1nSv7F+B0AwP8QvVFFkN2lKO245eJoTZNkrFeBJJtwCnmIjCZ/ACpj
-         /92sUOOIv4TQMquXnMWuf9Aq9iwugbpIpwcAKUQb6TJr85gJZ7HVoJpGKzPAnj7xGbuQ
-         dbm4ZQjiswevozMyRxd6vAYTSQx4iDP6deVhty7Bfeu+ZbLY7V3oAuOsm1v86sHuAasr
-         w/yyWsy8hAU6ILiJelXUbyb9qn6Jn/JAEvZ2MK18P+MVlzTZgbXYmgN/1UjwpDa2r+RZ
-         M8VcDGu/6xr5iu/uguknd4iks8dwdoQhC0vls+37BVd2X9BUg03JbbSnvBqdz+a894ef
-         +15w==
-X-Gm-Message-State: AOAM530dheqUud4QSTpzaqh+GEO2J3u65ObpSowQGXu/fSlvvRs1Fa6S
-        Ee9C0qwaJVYmnXpA7owb3hVUamAdO6SkMkH4UaHzlp1cDB0JsPW2sQoAx0i3BPHt61RGTsTZZfQ
-        mGO2y9qJ8VwmLD/L4vd2u/w==
-X-Received: by 2002:a17:907:a420:: with SMTP id sg32mr1390943ejc.310.1641814899128;
-        Mon, 10 Jan 2022 03:41:39 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwa47UJCAu9cZOZqhb8987Jy+Gr9KRUjqDbs/oRBNFOeATkg186ylFpwptic1AlmBR/yUCuXg==
-X-Received: by 2002:a17:907:a420:: with SMTP id sg32mr1390927ejc.310.1641814898923;
-        Mon, 10 Jan 2022 03:41:38 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id j21sm2321879ejj.133.2022.01.10.03.41.38
+         :to:cc:references:from:in-reply-to;
+        bh=2hiQWSBJ5vvXVEsTMU5vdepNMr4vMqc7+7OP+LZTy1s=;
+        b=P8IcVeX+WoxHNtgap8SHcC9sigBO1XZGdKFWajMD5tNyZuNCpwRjSAP+Y4a+5ZHQ2D
+         DqiFL7IsQ4Iu0+v6AsuKLgjoY2QQM342ECgnVKX4YP1fr0flzWBELR2BJvljy2EDae4l
+         txZ79xzMBOR1LRx5uOuk/1D+ZDepgQlJtPTx/sneBRJX04gScp0OMGlTxRJJ1sw5a5q5
+         0Bx/hBans2LpCXl9WDAXbJMSZBwN6XTZ6DreoUkHlz5NrylEzACLXQ7C42DdH5JOOVZq
+         mxoBPvZRJQe4GTYVztsCPhgFkSFvfXGhkCuroLh4xx/Ei4sjlfnFLx3hdfAAOTuMxV5W
+         dIsA==
+X-Gm-Message-State: AOAM532/iHSJVWElYpQJzaS0+I7q+yR9ue1E3z7wpsTP29VSIkWXYFT3
+        j0Q0TOoX+OX35gdkdAknW+DfAw==
+X-Google-Smtp-Source: ABdhPJwpfi2x//kTn5qs9QhtBs43L9cZ/U4cVcMBKdaNYw7luORWgC6LvKRBO4yFOXt8zrsfFNoBdw==
+X-Received: by 2002:a17:902:da8c:b0:148:a2e8:2759 with SMTP id j12-20020a170902da8c00b00148a2e82759mr74062202plx.96.1641816136437;
+        Mon, 10 Jan 2022 04:02:16 -0800 (PST)
+Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id t27sm7203261pfg.41.2022.01.10.04.02.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jan 2022 03:41:38 -0800 (PST)
-Message-ID: <c992ece7-6878-a39e-0386-5a499265c4cb@redhat.com>
-Date:   Mon, 10 Jan 2022 12:41:37 +0100
+        Mon, 10 Jan 2022 04:02:15 -0800 (PST)
+Message-ID: <ba7fa453-2bc0-cba4-e7f2-48e2e94aa408@broadcom.com>
+Date:   Mon, 10 Jan 2022 13:02:06 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v6] x86/PCI: Ignore E820 reservations for bridge windows
- on newer systems
-Content-Language: en-US
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>
-Cc:     linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, stable@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-References: <20211217141348.379461-1-hdegoede@redhat.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20211217141348.379461-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v2 20/35] brcmfmac: pcie: Perform correct BCM4364 firmware
+ selection
+To:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220104072658.69756-1-marcan@marcan.st>
+ <20220104072658.69756-21-marcan@marcan.st>
+ <3a957aa1-07f9-dff2-563e-656fffa0db6c@broadcom.com>
+ <fc945ba3-94b7-773d-4537-3408b10bfe92@marcan.st>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <fc945ba3-94b7-773d-4537-3408b10bfe92@marcan.st>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="0000000000009f4b5d05d5391bb3"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+--0000000000009f4b5d05d5391bb3
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 12/17/21 15:13, Hans de Goede wrote:
-> Some BIOS-es contain a bug where they add addresses which map to system
-> RAM in the PCI host bridge window returned by the ACPI _CRS method, see
-> commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
-> space").
+On 1/10/2022 12:20 PM, Hector Martin wrote:
+> On 2022/01/10 18:12, Arend van Spriel wrote:
+>> On 1/4/2022 8:26 AM, Hector Martin wrote:
+>>> This chip exists in two revisions (B2=r3 and B3=r4) on different
+>>> platforms, and was added without regard to doing proper firmware
+>>> selection or differentiating between them. Fix this to have proper
+>>> per-revision firmwares and support Apple NVRAM selection.
+>>>
+>>> Revision B2 is present on at least these Apple T2 Macs:
+>>>
+>>> kauai:    MacBook Pro 15" (Touch/2018-2019)
+>>> maui:     MacBook Pro 13" (Touch/2018-2019)
+>>> lanai:    Mac mini (Late 2018)
+>>> ekans:    iMac Pro 27" (5K, Late 2017)
+>>>
+>>> And these non-T2 Macs:
+>>>
+>>> nihau:    iMac 27" (5K, 2019)
+>>>
+>>> Revision B3 is present on at least these Apple T2 Macs:
+>>>
+>>> bali:     MacBook Pro 16" (2019)
+>>> trinidad: MacBook Pro 13" (2020, 4 TB3)
+>>> borneo:   MacBook Pro 16" (2019, 5600M)
+>>> kahana:   Mac Pro (2019)
+>>> kahana:   Mac Pro (2019, Rack)
+>>> hanauma:  iMac 27" (5K, 2020)
+>>> kure:     iMac 27" (5K, 2020, 5700/XT)
+>>>
+>>> Fixes: 24f0bd136264 ("brcmfmac: add the BRCM 4364 found in MacBook Pro 15,2")
+>>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>>> Signed-off-by: Hector Martin <marcan@marcan.st>
+>>> ---
+>>>    .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 11 +++++++++--
+>>>    1 file changed, 9 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>>> index 87daabb15cd0..e4f2aff3c0d5 100644
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+>>> @@ -54,7 +54,8 @@ BRCMF_FW_CLM_DEF(4356, "brcmfmac4356-pcie");
+>>>    BRCMF_FW_CLM_DEF(43570, "brcmfmac43570-pcie");
+>>>    BRCMF_FW_DEF(4358, "brcmfmac4358-pcie");
+>>>    BRCMF_FW_DEF(4359, "brcmfmac4359-pcie");
+>>> -BRCMF_FW_DEF(4364, "brcmfmac4364-pcie");
+>>> +BRCMF_FW_CLM_DEF(4364B2, "brcmfmac4364b2-pcie");
+>>> +BRCMF_FW_CLM_DEF(4364B3, "brcmfmac4364b3-pcie");
+>>
+>> would this break things for people. Maybe better to keep the old name
+>> for the B2 variant.
 > 
-> To work around this bug Linux excludes E820 reserved addresses when
-> allocating addresses from the PCI host bridge window since 2010.
+> Or the B3 variant... people have been using random copied firmwares with
+> the same name, I guess. Probably even the wrong NVRAMs in some cases.
+> And then I'd have to add a special case to the firmware extraction
+> script to rename one of these two to not include the revision...
 > 
-> Recently (2019) some systems have shown-up with E820 reservations which
-> cover the entire _CRS returned PCI bridge memory window, causing all
-> attempts to assign memory to PCI BARs which have not been setup by the
-> BIOS to fail. For example here are the relevant dmesg bits from a
-> Lenovo IdeaPad 3 15IIL 81WE:
+> Plus, newer firmwares require the random blob, so this only ever worked
+> with old, obsolete firmwares... which I think have security
+> vulnerabilities (there was an AWDL exploit recently IIRC).
 > 
->  [mem 0x000000004bc50000-0x00000000cfffffff] reserved
->  pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
+> Honestly though, there are probably rather few people using upstream
+> kernels on T2s. Certainly on the MacBooks, since the keyboard/touchpad
+> aren't supported upstream yet... plus given that there was never any
+> "official" firmware distributed under the revision-less name, none of
+> this would work out of the box with upstream kernels anyway.
 > 
-> The ACPI specifications appear to allow this new behavior:
-> 
-> The relationship between E820 and ACPI _CRS is not really very clear.
-> ACPI v6.3, sec 15, table 15-374, says AddressRangeReserved means:
-> 
->   This range of addresses is in use or reserved by the system and is
->   not to be included in the allocatable memory pool of the operating
->   system's memory manager.
-> 
-> and it may be used when:
-> 
->   The address range is in use by a memory-mapped system device.
-> 
-> Furthermore, sec 15.2 says:
-> 
->   Address ranges defined for baseboard memory-mapped I/O devices, such
->   as APICs, are returned as reserved.
-> 
-> A PCI host bridge qualifies as a baseboard memory-mapped I/O device,
-> and its apertures are in use and certainly should not be included in
-> the general allocatable pool, so the fact that some BIOS-es reports
-> the PCI aperture as "reserved" in E820 doesn't seem like a BIOS bug.
-> 
-> So it seems that the excluding of E820 reserved addresses is a mistake.
-> 
-> Ideally Linux would fully stop excluding E820 reserved addresses,
-> but then the old systems this was added for will regress.
-> Instead keep the old behavior for old systems, while ignoring
-> the E820 reservations for any systems from now on.
-> 
-> Old systems are defined here as BIOS year < 2018, this was chosen to make
-> sure that E820 reservations will not be used on the currently affected
-> systems, while at the same time also taking into account that the systems
-> for which the E820 checking was originally added may have received BIOS
-> updates for quite a while (esp. CVE related ones), giving them a more
-> recent BIOS year then 2010.
-> 
-> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
-> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
-> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
-> BugLink: https://bugs.launchpad.net/bugs/1878279
-> BugLink: https://bugs.launchpad.net/bugs/1931715
-> BugLink: https://bugs.launchpad.net/bugs/1932069
-> BugLink: https://bugs.launchpad.net/bugs/1921649
-> Cc: Benoit Grégoire <benoitg@coeus.ca>
-> Cc: Hui Wang <hui.wang@canonical.com>
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
-> Changes in v6:
-> - Remove the possibility to change the behavior from the commandline
->   because of worries that users may use this to paper over other problems
+> FWIW, I've been in contact with the t2linux folks and users have been
+> testing this patchset (that's how I got it tested on all the chips), so
+> at least some people are already aware of the story and how to get the
+> firmware named properly :-)
 
-ping ?
+Ok. When there is no brcmfmac4364-pcie.bin in linux-firmware repo we can 
+safely rename.
 
-Regards,
-
-Hans
-
-
-
-
-
-
-
-> Changes in v5:
-> - Drop mention of Windows behavior from the commit msg, replace with a
->   reference to the specs
-> - Improve documentation in Documentation/admin-guide/kernel-parameters.txt
-> - Reword the big comment added, use "PCI host bridge window" in it and drop
->   all refences to Windows
+>>> -	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0xFFFFFFFF, 4364),
+>>> +	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0x0000000F, 4364B2), /* 3 */
+>>> +	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0xFFFFFFF0, 4364B3), /* 4 */
+>>
+>> okay. so it is the numerical chip revision. If so, please drop that comment.
+>>
 > 
-> Changes in v4:
-> - Rewrap the big comment block to fit in 80 columns
-> - Add Rafael's Acked-by
-> - Add Cc: stable@vger.kernel.org
-> 
-> Changes in v3:
-> - Commit msg tweaks (drop dmesg timestamps, typo fix)
-> - Use "defined(CONFIG_...)" instead of "defined CONFIG_..."
-> - Add Mika's Reviewed-by
-> 
-> Changes in v2:
-> - Replace the per model DMI quirk approach with disabling E820 reservations
->   checking for all systems with a BIOS year >= 2018
-> - Add documentation for the new kernel-parameters to
->   Documentation/admin-guide/kernel-parameters.txt
-> ---
-> Other patches trying to address the same issue:
-> https://lore.kernel.org/r/20210624095324.34906-1-hui.wang@canonical.com
-> https://lore.kernel.org/r/20200617164734.84845-1-mika.westerberg@linux.intel.com
-> V1 patch:
-> https://lore.kernel.org/r/20211005150956.303707-1-hdegoede@redhat.com
-> ---
->  arch/x86/kernel/resource.c | 23 ++++++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
-> index 9b9fb7882c20..9ae64f9af956 100644
-> --- a/arch/x86/kernel/resource.c
-> +++ b/arch/x86/kernel/resource.c
-> @@ -1,4 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0
-> +#include <linux/dmi.h>
->  #include <linux/ioport.h>
->  #include <asm/e820/api.h>
->  
-> @@ -23,11 +24,31 @@ static void resource_clip(struct resource *res, resource_size_t start,
->  		res->start = end + 1;
->  }
->  
-> +/*
-> + * Some BIOS-es contain a bug where they add addresses which map to
-> + * system RAM in the PCI host bridge window returned by the ACPI _CRS
-> + * method, see commit 4dc2287c1805 ("x86: avoid E820 regions when
-> + * allocating address space"). To avoid this Linux by default excludes
-> + * E820 reservations when allocating addresses since 2010.
-> + * In 2019 some systems have shown-up with E820 reservations which cover
-> + * the entire _CRS returned PCI host bridge window, causing all attempts
-> + * to assign memory to PCI BARs to fail if Linux uses E820 reservations.
-> + *
-> + * Ideally Linux would fully stop using E820 reservations, but then
-> + * the old systems this was added for will regress.
-> + * Instead keep the old behavior for old systems, while ignoring the
-> + * E820 reservations for any systems from now on.
-> + */
->  static void remove_e820_regions(struct resource *avail)
->  {
-> -	int i;
-> +	int i, year = dmi_get_bios_year();
->  	struct e820_entry *entry;
->  
-> +	if (year >= 2018)
-> +		return;
-> +
-> +	pr_info_once("PCI: Removing E820 reservations from host bridge windows\n");
-> +
->  	for (i = 0; i < e820_table->nr_entries; i++) {
->  		entry = &e820_table->entries[i];
->  
-> 
+> I figured it would be useful to document this somewhere, since the
+> alphanumeric code -> rev number mapping doesn't seem to be consistent
+> from chip to chip, and we might have to add a new revision in the future
+> for an existing chip (which would require knowing the rev for the old
+> one). Do you have any ideas?
 
+Indeed the alphanumeric code differs from chip to chip depending on how 
+much respins are necessary and what type of respin. We start a 'a0' aka 
+numeric rev 0. For minor fixes we increase the digit, but for major 
+fixes or new functionality we move to the next letter whereas the 
+numeric revision simply increases.
+
+--0000000000009f4b5d05d5391bb3
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIIQdwYJKoZIhvcNAQcCoIIQaDCCEGQCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+gg3OMIIFDTCCA/WgAwIBAgIQeEqpED+lv77edQixNJMdADANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMDA5MTYwMDAwMDBaFw0yODA5MTYwMDAwMDBaMFsxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBS
+MyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
+vbCmXCcsbZ/a0fRIQMBxp4gJnnyeneFYpEtNydrZZ+GeKSMdHiDgXD1UnRSIudKo+moQ6YlCOu4t
+rVWO/EiXfYnK7zeop26ry1RpKtogB7/O115zultAz64ydQYLe+a1e/czkALg3sgTcOOcFZTXk38e
+aqsXsipoX1vsNurqPtnC27TWsA7pk4uKXscFjkeUE8JZu9BDKaswZygxBOPBQBwrA5+20Wxlk6k1
+e6EKaaNaNZUy30q3ArEf30ZDpXyfCtiXnupjSK8WU2cK4qsEtj09JS4+mhi0CTCrCnXAzum3tgcH
+cHRg0prcSzzEUDQWoFxyuqwiwhHu3sPQNmFOMwIDAQABo4IB2jCCAdYwDgYDVR0PAQH/BAQDAgGG
+MGAGA1UdJQRZMFcGCCsGAQUFBwMCBggrBgEFBQcDBAYKKwYBBAGCNxQCAgYKKwYBBAGCNwoDBAYJ
+KwYBBAGCNxUGBgorBgEEAYI3CgMMBggrBgEFBQcDBwYIKwYBBQUHAxEwEgYDVR0TAQH/BAgwBgEB
+/wIBADAdBgNVHQ4EFgQUljPR5lgXWzR1ioFWZNW+SN6hj88wHwYDVR0jBBgwFoAUj/BLf6guRSSu
+TVD6Y5qL3uLdG7wwegYIKwYBBQUHAQEEbjBsMC0GCCsGAQUFBzABhiFodHRwOi8vb2NzcC5nbG9i
+YWxzaWduLmNvbS9yb290cjMwOwYIKwYBBQUHMAKGL2h0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5j
+b20vY2FjZXJ0L3Jvb3QtcjMuY3J0MDYGA1UdHwQvMC0wK6ApoCeGJWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vcm9vdC1yMy5jcmwwWgYDVR0gBFMwUTALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgEo
+CjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAN
+BgkqhkiG9w0BAQsFAAOCAQEAdAXk/XCnDeAOd9nNEUvWPxblOQ/5o/q6OIeTYvoEvUUi2qHUOtbf
+jBGdTptFsXXe4RgjVF9b6DuizgYfy+cILmvi5hfk3Iq8MAZsgtW+A/otQsJvK2wRatLE61RbzkX8
+9/OXEZ1zT7t/q2RiJqzpvV8NChxIj+P7WTtepPm9AIj0Keue+gS2qvzAZAY34ZZeRHgA7g5O4TPJ
+/oTd+4rgiU++wLDlcZYd/slFkaT3xg4qWDepEMjT4T1qFOQIL+ijUArYS4owpPg9NISTKa1qqKWJ
+jFoyms0d0GwOniIIbBvhI2MJ7BSY9MYtWVT5jJO3tsVHwj4cp92CSFuGwunFMzCCA18wggJHoAMC
+AQICCwQAAAAAASFYUwiiMA0GCSqGSIb3DQEBCwUAMEwxIDAeBgNVBAsTF0dsb2JhbFNpZ24gUm9v
+dCBDQSAtIFIzMRMwEQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpHbG9iYWxTaWduMB4XDTA5
+MDMxODEwMDAwMFoXDTI5MDMxODEwMDAwMFowTDEgMB4GA1UECxMXR2xvYmFsU2lnbiBSb290IENB
+IC0gUjMxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMTCkdsb2JhbFNpZ24wggEiMA0GCSqG
+SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDMJXaQeQZ4Ihb1wIO2hMoonv0FdhHFrYhy/EYCQ8eyip0E
+XyTLLkvhYIJG4VKrDIFHcGzdZNHr9SyjD4I9DCuul9e2FIYQebs7E4B3jAjhSdJqYi8fXvqWaN+J
+J5U4nwbXPsnLJlkNc96wyOkmDoMVxu9bi9IEYMpJpij2aTv2y8gokeWdimFXN6x0FNx04Druci8u
+nPvQu7/1PQDhBjPogiuuU6Y6FnOM3UEOIDrAtKeh6bJPkC4yYOlXy7kEkmho5TgmYHWyn3f/kRTv
+riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
+QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
+UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
+M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
+Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
+14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
+a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
+XzCCBVYwggQ+oAMCAQICDDEp2IfSf0SOoLB27jANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
+RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
+UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMTAyMjIwNzQ0MjBaFw0yMjA5MDUwNzU0MjJaMIGV
+MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
+BgNVBAoTDUJyb2FkY29tIEluYy4xGTAXBgNVBAMTEEFyZW5kIFZhbiBTcHJpZWwxKzApBgkqhkiG
+9w0BCQEWHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IB
+DwAwggEKAoIBAQCk4MT79XIz7iNEpTGuhXGSqyRQpztUN1sWBVx/wStC1VrFGgbpD1o8BotGl4zf
+9f8V8oZn4DA0tTWOOJdhPNtxa/h3XyRV5fWCDDhHAXK4fYeh1hJZcystQwfXnjtLkQB13yCEyaNl
+7yYlPUsbagt6XI40W6K5Rc3zcTQYXq+G88K2n1C9ha7dwK04XbIbhPq8XNopPTt8IM9+BIDlfC/i
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAfK5EiiyV1npyn1PC1
+SjcDUOGpFT1lOonhkBimvUIKwTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMTAxMjAyMTZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFPEddhIgS0nS0XXEclvHZnF+39G7+Gh10Nm/
+MgYig5DMcr6U2d3W8xW+oxcK+NhfT44AXgZujCNLAt0Wie479xu1HWo5VbM+ugRrIYjLg3y28f/H
+TGq2i0meNwodhaI7jEYb/gGUQC5fVJw4pY545yBSJMf9DnC1loP+nPKFPqnXrST/aRJzkM74yepl
+EdrA74aTeMEMC1p6zHalHThoKHQskmoEDprvfeM5BcrkORBqXbJi6JdYJHr3jySa9NYGsiACsgiW
+4MtbrAGKVFuwRHSNVVc1KsvtC5BmPGKZYsDPA1Xbo1atzELXCVxLuyBJwdWbUNU7IMz7RsFE4qEi
+qw==
+--0000000000009f4b5d05d5391bb3--
