@@ -2,120 +2,344 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2038489FB0
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 19:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EE44489FF4
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 20:13:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242655AbiAJS4j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jan 2022 13:56:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40542 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242640AbiAJS4f (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 13:56:35 -0500
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FC11C061751
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 10:56:35 -0800 (PST)
-Received: by mail-pl1-x633.google.com with SMTP id g5so4189691plo.12
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 10:56:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=F3TJb2qvODPhHuRvG+TSwWDhsfj5NbPsF0sZDWvDjV8=;
-        b=VVrxc6G1UyjfjixQPFTXAnXytT0rtVC0yUleq43ySfEpyI5PXPj++eTsnK+1xNNqEj
-         LRkCIdKxZvhDw5Mrzzede2zM3/eN0NUWuhXDygJyroL7kbEPLJHJezJmLnz4wtHiCAbo
-         1+SO/K8OuCdYH4Pb4LKWaVOz8WzGpLCgl5L5MUMYIDvoj3sxzZaZY1ndkN3640F0GMY1
-         NNoAnWdTQJFyda53AFffCr8zzLio8VOkmarztNO3E7IDdlLkd3GVqG3ypkil2mOpn7AN
-         QpyB15xSueh/orIaGVePALu3OyubyN6/Xgladb9OsSJqkO35n4yzWwyqJgi5QRc2sPe3
-         LTkw==
+        id S240994AbiAJTNW convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 10 Jan 2022 14:13:22 -0500
+Received: from mail-qt1-f170.google.com ([209.85.160.170]:41589 "EHLO
+        mail-qt1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240490AbiAJTNV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 14:13:21 -0500
+Received: by mail-qt1-f170.google.com with SMTP id f17so13074876qtf.8;
+        Mon, 10 Jan 2022 11:13:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=F3TJb2qvODPhHuRvG+TSwWDhsfj5NbPsF0sZDWvDjV8=;
-        b=51LjXwzkZ4cIXWKaIxP/67i14Xs1YITkmhFNoVRhuqjmYt6AhEGzxLvuJQWYAxGFbb
-         64KwpaA3zDOXN+Jurp5lux8GV93zlyYVqZgslY/7NNUOnVQyZyymyO5H/Kw4b7VAGfSi
-         Wr0sNp+21Bn4S8fQ0nV/aSsvJSWqFM/epXblGHUsd40NBn0cjpDMyO3f/w8jxSNz5/u/
-         tr+GXhKXByeyGVCoZFlCvIgvp72B2AxSUT97gwhQw1baJGkmQCLc6hZ0SgGpApdr+nOd
-         4HwOnq8TLnU/FKepOx/mIBt5VACIV0iN7hRMY5aMijjPsLdNYB5KMD/a1x3ceJRLBtwZ
-         2UBA==
-X-Gm-Message-State: AOAM530jdgfQCG9XqDqTAF6hTEAT87mNR3RFF3XYJ/yXOkmtut9xLSlt
-        hWkP47+RD409KX/Ft9Em6qe5Q5z2OSYhqj8jHce//Q==
-X-Google-Smtp-Source: ABdhPJx0ER/XnFGs6RwNR0p32T+YpaO4KIdMZAv76wC88OXH6TXAMO8VMymRinLrAmzAvnuo5aYWEunKKvriNsas24c=
-X-Received: by 2002:a17:90a:bb05:: with SMTP id u5mr16623129pjr.64.1641840994602;
- Mon, 10 Jan 2022 10:56:34 -0800 (PST)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
+         :content-transfer-encoding;
+        bh=VuVoeNojOMOjjk/QESFHUzqMVanwVWoLBdUwgl83MrY=;
+        b=crsvxWs4nJv6agsj6nwUyMgk+w94Uz7jvrJiwwgIe+V1ta2HYDAIXVV7d+Fq7ff8/j
+         GbPO3KRfzTZSJYMr7R+zmGeg8WVIu3ouJ72Fc7h0Qj+6eXXEfAzBNStwJ4CWTUfSIDqc
+         BdmxW4xCgVoke5aMBSP0LKbREeBDbPUhOYqjRrasd5VJF6KLKzkMkijAM99H6b5T3A7o
+         7v3TDa8GZv0TyzKQ6pjTxuAzkAMAoms++zMn/De0ee9kuVjUR7p/v9t8PMhVoT7ww5zi
+         qt03kcN4eC/gAKBw528pBMNGOiYsRj0XLeUajZvxw1WEroR0GEI/xoeawksFP1RKHs2a
+         arfw==
+X-Gm-Message-State: AOAM531pKtAee63m9oruXOfR1wRJ6T0eqPAc1D8xlmOgZLhyt7SiUg2k
+        OYUq+0d9IwNsfk+/OFCOSAVTIeSivFu9EY5TwhHaqewzBvg=
+X-Google-Smtp-Source: ABdhPJy9aHsiiQBlM7rUBjqviuU+TYyHYeUiirlZKGrfhR2TL8br/M45zOvxUD44PeFbrgsd6+fCiJsQAcEQ1vs7ESM=
+X-Received: by 2002:ac8:5c89:: with SMTP id r9mr1023019qta.612.1641841998663;
+ Mon, 10 Jan 2022 11:13:18 -0800 (PST)
 MIME-Version: 1.0
-References: <20210210230800.30291-2-sakari.ailus@linux.intel.com>
- <20211007022527.2448652-1-rajatja@google.com> <YW3XwDxwBsJdFslA@paasikivi.fi.intel.com>
-In-Reply-To: <YW3XwDxwBsJdFslA@paasikivi.fi.intel.com>
-From:   Rajat Jain <rajatja@google.com>
-Date:   Mon, 10 Jan 2022 10:55:58 -0800
-Message-ID: <CACK8Z6FcBusdMMsu2vKZT8vx6yvcWS7Gh7bDyYqdB1ikspEHDA@mail.gmail.com>
-Subject: Re: ACPI: scan: Obtain device's desired enumeration power state
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org, rajatxjain@gmail.com
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 10 Jan 2022 20:13:07 +0100
+Message-ID: <CAJZ5v0hHd+um2KOmHvLuixMUoTSmD3=OdcGuXz0oLizJ0m3B=g@mail.gmail.com>
+Subject: [GIT PULL] ACPI updates for v5.17-rc1
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-+Bingbu Cao +arec.kao@intel.com
+Hi Linus,
 
-Hello Sakari,
+Please pull from the tag
 
-On Mon, Oct 18, 2021 at 1:23 PM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Rajit,
->
-> On Wed, Oct 06, 2021 at 07:25:27PM -0700, Rajat Jain wrote:
-> >
-> > Hello,
-> >
-> > Now that we have landed the ACPI object for _DSC in the spec:
-> > https://lore.kernel.org/linux-acpi/CAJZ5v0gwDEjC9T7wfCqDr7R0q_ptz2nVU52_8i8noXHPEign1g@mail.gmail.com/T/
-> >
-> > I was wondering what is happening with the corresponding kernel patchset:
-> > https://lore.kernel.org/linux-acpi/20210210230800.30291-1-sakari.ailus@linux.intel.com/T/#m24e9f51119cbe6eb39f31c097ea3941d00a0baeb
-> >
-> > I didn't see any pending comments, so is there a reason it did not land?
->
-> Thanks for the ping.
->
-> I've rebased the set and switched to _DSC so I believe it is ready to be
-> merged now:
->
->         <URL:https://lore.kernel.org/linux-media/20211018121729.6357-1-sakari.ailus@linux.intel.com/T/#t>
->
-> I dropped the ov5670 patch from the set to avoid a conflict, I'll get this
-> merged through the media tree when the rest have landed there.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.17-rc1
+
+with top-most commit 70df8e1bdc941431af2370270f5140291dcbb282
+
+ Merge branches 'acpi-tables', 'acpi-numa', 'acpi-sysfs', 'acpi-cppc',
+'acpi-thermal' and 'acpi-battery'
+
+on top of commit fc74e0a40e4f9fd0468e34045b0c45bba11dcbb2
+
+ Linux 5.16-rc7
+
+to receive ACPI updates for 5.17-rc1.
+
+These are usual ACPICA code updates (although there are more of them
+than in the last few releases), a noticeable EC driver update (which
+mostly consists of cleanups, though), the device enumeration quirks
+handling rework from Hans, some updates eliminating unnecessary CPU
+cache flushing in some places (processor idle and system-wide PM
+code) and a bunch of assorted cleanups and fixes.
+
+Specifics:
+
+ - Update ACPICA code in the kernel to the 20211217 upstream release
+   including the following changes:
+
+   * iASL/Disassembler: Additional support for NHLT table (Bob Moore).
+   * Change a return_ACPI_STATUS (AE_BAD_PARAMETER) (Bob Moore).
+   * Fix a couple of warnings under MSVC (Bob Moore).
+   * iASL: Add TDEL table to both compiler/disassembler (Bob Moore).
+   * iASL/NHLT table: "Specific Data" field support (Bob Moore).
+   * Use original data_table_region pointer for accesses (Jessica
+     Clarke).
+   * Use original pointer for virtual origin tables (Jessica Clarke).
+   * Macros: Remove ACPI_PHYSADDR_TO_PTR (Jessica Clarke).
+   * Avoid subobject buffer overflow when validating RSDP signature
+     (Jessica Clarke).
+   * iASL: Add suppport for AGDI table (Ilkka Koskinen).
+   * Hardware: Do not flush CPU cache when entering S4 and S5 (Kirill
+     A. Shutemov).
+   * Expand the ACPI_ACCESS_ definitions (Mark Langsdorf).
+   * Utilities: Avoid deleting the same object twice in a row (Rafael
+     Wysocki).
+   * Executer: Fix REFCLASS_REFOF case in acpi_ex_opcode_1A_0T_1R()
+     (Rafael Wysocki).
+   * Fix AEST Processor generic resource substructure data field byte
+     length (Shuuichirou Ishii).
+   * Fix wrong interpretation of PCC address (Sudeep Holla).
+   * Add support for PCC Opregion special context data (Sudeep Holla).
+
+ - Implement OperationRegion handler for PCC Type 3 subtype (Sudeep
+   Holla).
+
+ - Introduce acpi_fetch_acpi_dev() as a replacement for
+   acpi_bus_get_device() and use it in the ACPI subsystem (Rafael
+   Wysocki).
+
+ - Avoid using _CID for device enumeration if _HID is missing or
+   invalid (Rafael Wysocki).
+
+ - Rework quirk handling during ACPI device enumeration and add some
+   new quirks for known broken platforms (Hans de Goede).
+
+ - Avoid unnecessary or redundant CPU cache flushing during system
+   PM transitions (Kirill A. Shutemov).
+
+ - Add PM debug messages related to power resources (Rafael Wysocki).
+
+ - Fix kernel-doc comment in the PCI host bridge ACPI driver (Yang Li).
+
+ - Rework flushing of EC work while suspended to idle and clean up
+   the handling of events in the ACPI EC driver (Rafael Wysocki).
+
+ - Prohibit ec_sys module parameter write_support from being used
+   when the system is locked down (Hans de Goede).
+
+ - Make the ACPI processor thermal driver use cpufreq_cpu_get() to
+   check for presence of cpufreq policy (Manfred Spraul).
+
+ - Avoid unnecessary CPU cache flushing in the ACPI processor idle
+   driver (Kirill A. Shutemov).
+
+ - Replace kernel.h with the necessary inclusions in the ACPI
+   processor driver (Andy Shevchenko).
+
+ - Use swap() instead of open coding it in the ACPI processor idle
+   driver (Guo Zhengkui).
+
+ - Fix the handling of defective LPAT in the ACPI xpower PMIC driver
+   and clean up some definitions of PMIC data structures (Hans de
+   Goede).
+
+ - Fix outdated comment in the ACPI DPTF driver (Sumeet Pawnikar).
+
+ - Add AEST to the list of known ACPI table signatures (Shuuichirou
+   Ishii).
+
+ - Make ACPI NUMA code take hotpluggable memblocks into account when
+   CONFIG_MEMORY_HOTPLUG is not set (Vitaly Kuznetsov).
+
+ - Use default_groups in kobj_type in the ACPI sysfs code (Greg
+   Kroah-Hartman).
+
+ - Rearrange _CPC structure documentation (Andy Shevchenko).
+
+ - Drop an always true check from the ACPI thermal driver (Adam
+   Borowski).
+
+ - Add new "not charging" quirk for Lenovo ThinkPads to the ACPI
+   battery driver (Thomas Weißschuh).
+
+Thanks!
 
 
-Thanks, I see that your patches series has been merged. Can you please
-also line up this follow up series by Bingbu for inclusion into the
-mainline kernel?
+---------------
 
-https://patchwork.kernel.org/project/linux-media/list/?series=595925
+Adam Borowski (1):
+      ACPI: thermal: drop an always true check
 
-Thanks,
+Andy Shevchenko (2):
+      ACPI: processor: Replace kernel.h with the necessary inclusions
+      ACPI: CPPC: Amend documentation in the comments
 
-Rajat
+Bob Moore (6):
+      ACPICA: iASL/Disassembler: Additional support for NHLT table
+      ACPICA: Change a return_ACPI_STATUS (AE_BAD_PARAMETER)
+      ACPICA: Fixed a couple of warnings under MSVC
+      ACPICA: iASL: Add TDEL table to both compiler/disassembler
+      ACPICA: iASL/NHLT table: "Specific Data" field support
+      ACPICA: Update version to 20211217
 
+Greg Kroah-Hartman (1):
+      ACPI: sysfs: use default_groups in kobj_type
 
->
-> --
-> Regards,
->
-> Sakari Ailus
+Guo Zhengkui (1):
+      ACPI: processor idle: Use swap() instead of open coding it
+
+Hans de Goede (17):
+      ACPI / x86: Drop PWM2 device on Lenovo Yoga Book from always present table
+      ACPI: Change acpi_device_always_present() into
+acpi_device_override_status()
+      ACPI / x86: Allow specifying acpi_device_override_status() quirks by path
+      ACPI / x86: Add not-present quirk for the PCI0.SDHB.BRC1 device
+on the GPD win
+      ACPI / x86: Add PWM2 on the Xiaomi Mi Pad 2 to the always_present list
+      mmc: sdhci-acpi: Remove special handling for GPD win/pocket devices
+      mmc: sdhci-acpi: Use the new soc_intel_is_byt() helper
+      ACPI: EC: Mark the ec_sys write_support param as module_param_hw()
+      ACPI: PMIC: constify all struct intel_pmic_opregion_data declarations
+      ACPI: PMIC: allow drivers to provide a custom lpat_raw_to_temp() function
+      ACPI: PMIC: xpower: Fix _TMP ACPI errors
+      ACPI: scan: Create platform device for BCM4752 and LNV4752 ACPI nodes
+      ACPI / x86: Add acpi_quirk_skip_[i2c_client|serdev]_enumeration() helpers
+      i2c: acpi: Do not instantiate I2C-clients on boards with known
+bogus DSDT entries
+      serdev: Do not instantiate serdevs on boards with known bogus DSDT entries
+      ACPI / x86: Introduce an acpi_quirk_skip_acpi_ac_and_battery() helper
+      ACPI / x86: Skip AC and battery devices on x86 Android tablets
+with broken DSDTs
+
+Ilkka Koskinen (1):
+      ACPICA: iASL: Add support for AGDI table
+
+Jessica Clarke (4):
+      ACPICA: Use original data_table_region pointer for accesses
+      ACPICA: Use original pointer for virtual origin tables
+      ACPICA: Macros: Remove ACPI_PHYSADDR_TO_PTR
+      ACPICA: Avoid subobject buffer overflow when validating RSDP signature
+
+Kirill A. Shutemov (4):
+      ACPI: PM: Avoid CPU cache flush when entering S4
+      ACPI: processor: idle: Only flush cache on entering C3
+      ACPI: PM: Remove redundant cache flushing
+      ACPICA: Hardware: Do not flush CPU cache when entering S4 and S5
+
+Manfred Spraul (1):
+      ACPI: processor: thermal: avoid cpufreq_get_policy()
+
+Mark Langsdorf (1):
+      ACPICA: actypes.h: Expand the ACPI_ACCESS_ definitions
+
+Rafael J. Wysocki (16):
+      ACPI: PM: Emit debug messages when enabling/disabling wakeup power
+      ACPI: scan: Do not add device IDs from _CID if _HID is not valid
+      ACPI: EC: Rework flushing of EC work while suspended to idle
+      ACPI: EC: Call advance_transaction() from acpi_ec_dispatch_gpe()
+      ACPI: EC: Pass one argument to acpi_ec_query()
+      ACPI: EC: Fold acpi_ec_check_event() into acpi_ec_event_handler()
+      ACPI: EC: Rearrange the loop in acpi_ec_event_handler()
+      ACPI: EC: Simplify locking in acpi_ec_event_handler()
+      ACPI: EC: Rename three functions
+      ACPI: EC: Avoid queuing unnecessary work in acpi_ec_submit_event()
+      ACPI: EC: Make the event work state machine visible
+      ACPI: EC: Relocate acpi_ec_create_query() and drop acpi_ec_delete_query()
+      ACPI: scan: Introduce acpi_fetch_acpi_dev()
+      ACPI: Use acpi_fetch_acpi_dev() instead of acpi_bus_get_device()
+      ACPICA: Utilities: Avoid deleting the same object twice in a row
+      ACPICA: Executer: Fix the REFCLASS_REFOF case in acpi_ex_opcode_1A_0T_1R()
+
+Shuuichirou Ishii (2):
+      ACPI: tables: Add AEST to the list of known table signatures
+      ACPICA: Fix AEST Processor generic resource substructure data
+field byte length
+
+Sudeep Holla (3):
+      ACPICA: Fix wrong interpretation of PCC address
+      ACPICA: Add support for PCC Opregion special context data
+      ACPI: PCC: Implement OperationRegion handler for the PCC Type 3 subtype
+
+Sumeet Pawnikar (1):
+      ACPI: DPTF: Update device ID in a comment
+
+Thomas Weißschuh (1):
+      ACPI: battery: Add the ThinkPad "Not Charging" quirk
+
+Vitaly Kuznetsov (1):
+      ACPI: NUMA: Process hotpluggable memblocks when !CONFIG_MEMORY_HOTPLUG
+
+Yang Li (1):
+      PCI/ACPI: Fix acpi_pci_osc_control_set() kernel-doc comment
+
+---------------
+
+ drivers/acpi/Kconfig                    |  17 ++
+ drivers/acpi/Makefile                   |   1 +
+ drivers/acpi/ac.c                       |  43 +----
+ drivers/acpi/acpi_pcc.c                 | 120 ++++++++++++
+ drivers/acpi/acpi_video.c               |   5 +-
+ drivers/acpi/acpica/acevents.h          |   5 +
+ drivers/acpi/acpica/acobject.h          |   1 +
+ drivers/acpi/acpica/actables.h          |   8 +-
+ drivers/acpi/acpica/dsopcode.c          |   1 +
+ drivers/acpi/acpica/evhandler.c         |   2 +-
+ drivers/acpi/acpica/evregion.c          |  10 +
+ drivers/acpi/acpica/evrgnini.c          |  52 ++++++
+ drivers/acpi/acpica/exconfig.c          |   2 +-
+ drivers/acpi/acpica/excreate.c          |   1 +
+ drivers/acpi/acpica/exfield.c           |   7 +-
+ drivers/acpi/acpica/exoparg1.c          |   3 +-
+ drivers/acpi/acpica/exregion.c          |  15 +-
+ drivers/acpi/acpica/hwesleep.c          |   4 +-
+ drivers/acpi/acpica/hwsleep.c           |   4 +-
+ drivers/acpi/acpica/hwxfsleep.c         |   2 -
+ drivers/acpi/acpica/tbdata.c            |  93 +++++++---
+ drivers/acpi/acpica/tbfadt.c            |   6 +-
+ drivers/acpi/acpica/tbinstal.c          |  15 +-
+ drivers/acpi/acpica/tbprint.c           |   3 +-
+ drivers/acpi/acpica/tbutils.c           |   2 +-
+ drivers/acpi/acpica/tbxfload.c          |  52 ++++--
+ drivers/acpi/acpica/utdelete.c          |   1 +
+ drivers/acpi/battery.c                  |  46 ++---
+ drivers/acpi/bus.c                      |   5 +-
+ drivers/acpi/cppc_acpi.c                |  62 +++----
+ drivers/acpi/device_pm.c                |  31 ++--
+ drivers/acpi/device_sysfs.c             |   3 +-
+ drivers/acpi/dock.c                     |   3 +-
+ drivers/acpi/dptf/dptf_pch_fivr.c       |   2 +-
+ drivers/acpi/ec.c                       | 317 ++++++++++++++++++--------------
+ drivers/acpi/ec_sys.c                   |   2 +-
+ drivers/acpi/internal.h                 |  12 +-
+ drivers/acpi/numa/srat.c                |   5 +-
+ drivers/acpi/pci_link.c                 |  12 +-
+ drivers/acpi/pci_root.c                 |  12 +-
+ drivers/acpi/pmic/intel_pmic.c          |  14 +-
+ drivers/acpi/pmic/intel_pmic.h          |   8 +-
+ drivers/acpi/pmic/intel_pmic_bxtwc.c    |   3 +-
+ drivers/acpi/pmic/intel_pmic_bytcrc.c   |   3 +-
+ drivers/acpi/pmic/intel_pmic_chtcrc.c   |   3 +-
+ drivers/acpi/pmic/intel_pmic_chtdc_ti.c |   3 +-
+ drivers/acpi/pmic/intel_pmic_chtwc.c    |   3 +-
+ drivers/acpi/pmic/intel_pmic_xpower.c   |  24 ++-
+ drivers/acpi/power.c                    |  19 +-
+ drivers/acpi/processor_driver.c         |  10 +-
+ drivers/acpi/processor_idle.c           |  11 +-
+ drivers/acpi/processor_thermal.c        |  13 +-
+ drivers/acpi/property.c                 |  11 +-
+ drivers/acpi/resource.c                 |   4 +-
+ drivers/acpi/scan.c                     |  57 ++++--
+ drivers/acpi/sleep.c                    |   5 -
+ drivers/acpi/sysfs.c                    |   3 +-
+ drivers/acpi/tables.c                   |   6 +-
+ drivers/acpi/thermal.c                  |  11 +-
+ drivers/acpi/video_detect.c             |   6 +-
+ drivers/acpi/x86/s2idle.c               |   4 +-
+ drivers/acpi/x86/utils.c                | 305 ++++++++++++++++++++++++++----
+ drivers/i2c/i2c-core-acpi.c             |   7 +
+ drivers/mmc/host/sdhci-acpi.c           |  78 +-------
+ drivers/tty/serdev/core.c               |  14 ++
+ include/acpi/acpi_bus.h                 |  27 ++-
+ include/acpi/acpi_numa.h                |   1 -
+ include/acpi/acpixf.h                   |   8 +-
+ include/acpi/actbl2.h                   | 116 ++++++++----
+ include/acpi/actypes.h                  |  23 ++-
+ include/acpi/processor.h                |   7 +-
+ include/linux/acpi.h                    |   6 +
+ 72 files changed, 1210 insertions(+), 590 deletions(-)
