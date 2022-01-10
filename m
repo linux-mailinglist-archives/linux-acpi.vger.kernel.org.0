@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04C96489099
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 08:17:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 798594890A2
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 08:20:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235137AbiAJHRx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jan 2022 02:17:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
+        id S239199AbiAJHUI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jan 2022 02:20:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233484AbiAJHRx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 02:17:53 -0500
+        with ESMTP id S239187AbiAJHUG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 02:20:06 -0500
 Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B975DC061751
-        for <linux-acpi@vger.kernel.org>; Sun,  9 Jan 2022 23:17:52 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id z22so4653841edd.12
-        for <linux-acpi@vger.kernel.org>; Sun, 09 Jan 2022 23:17:52 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAA55C06173F
+        for <linux-acpi@vger.kernel.org>; Sun,  9 Jan 2022 23:20:05 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id u25so49818984edf.1
+        for <linux-acpi@vger.kernel.org>; Sun, 09 Jan 2022 23:20:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=message-id:date:mime-version:user-agent:subject:to:cc:references
          :from:in-reply-to;
-        bh=tU3UaxfMdRIRWIsVvVUJhVFvlvCxVFXiOY3kSYGjzhc=;
-        b=XlvwAbJbsuS0VWH39aq9zG10Xa/N3Kd2HGLZdUNAQut5s6PFIEYPHJCwxtknvnj2LB
-         xSpYabk8y21RRHxnVN5gQgwQnKbHWNhm3fYydeNc943K2S7s9Bz9wEtWQ2Tp7yKJVB26
-         q8UbacDENae80FrEaZmH3oAJIaKMaRAYMQtz0=
+        bh=iJNvxyX+OYbikyS42sKafixxwqveysyi2NgdRmTJpxw=;
+        b=hJjOM+BfMiGFbeeinRbGOUK/obBehpw9hGTCvuTnAYOdq85YlMQOs3PGNFb/1Ew4lT
+         F818jEYfi2q0dkI24wMXdPNRHIx6zGqkaq7EO42mPut4Lt2lMiwfkZDcbm2iGf1Zn94S
+         JWzt34x6kNYjccVD6v+BNwRYhAHzhK9qkdorM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :to:cc:references:from:in-reply-to;
-        bh=tU3UaxfMdRIRWIsVvVUJhVFvlvCxVFXiOY3kSYGjzhc=;
-        b=v14CmzjEVIg9hPVPbQsOFI9ylbQMvUPIF5j6cqeej2UuuTNXwDhv6YieiCsVg732fm
-         cvXI1Jbtp2n+1SIP2ql3Kt9C6bcobayIQkwnIfMyMse7WWJSnBSRUr+S5oi9xIZrUHDL
-         XHn/v0d8KoHbrj1eSdn3WoVKXySb4gNlpSqYrVyXHw6VD/RLmVUq3jhTQlbwxSZSazbU
-         7tW1DozkZUUrWrQuTeCJym7i34MMkeR2Vl5qzklxL6a9rvRfn7UB2XpefWuCNwsR5O/A
-         c75eM6VciStuugHnyFC76ysaufWPgsMNrjuIkxB3wXur/k9rk5iKqN8mqQ5d4AtDV7yf
-         +paA==
-X-Gm-Message-State: AOAM531B1hzDwVQXATOI2/eA3Ku5Ksq+X6pfRZ/ABgV4JWPwJwDfsNA+
-        vphuKPYVXW06kp44oLiCLtW/3Q==
-X-Google-Smtp-Source: ABdhPJyFMgEvYTbiRugXRq8vJU/CQzriOWyDG+g4TE/mFifIEJqyJLuz89XflrIWwT5skR4RF/sFcw==
-X-Received: by 2002:a17:906:6456:: with SMTP id l22mr13814628ejn.318.1641799071222;
-        Sun, 09 Jan 2022 23:17:51 -0800 (PST)
+        bh=iJNvxyX+OYbikyS42sKafixxwqveysyi2NgdRmTJpxw=;
+        b=q52lLQEX62AnxaUjArvi2rll+DLwcl+X037EnCYUglQEQ6ZyaTdluSzZihzV+LlmvX
+         g+dl7Jj68zrVwVU+RBUBVU+o5BGPXxsG77E30b0uCcyhIohLkMczmMQrcKaAuLFxFMOv
+         ++jzmjC9Ko+0OesCddtk8RERMnhxtjCmBxPmVfSNFcubVHWOjEghaaYknz226AFZZqa5
+         WKMS3oiktpGA8rInIgDHk7HTBR8pf06cdC6f6i9eWXfWyU1ZMrrd61MxSmKXVaGxYXvP
+         rSvdGtCJ3qMRw+Y4IduUWa9ffEYbKAnNFOg6z9/x7Kl4badg7iMcqSVK7QAcmpr97Sts
+         l9bA==
+X-Gm-Message-State: AOAM531OvUXCps3OZxQ8kpT6Vc4/dcPImB3YZDnvSdrfFw0r+3UCCdod
+        jhX+RCxSMuxdZFZpMNuGT/1hXQ==
+X-Google-Smtp-Source: ABdhPJy6IkVQq9Ut+jv+LXMhrWevGOkCRI0Uq6Vg/wnrJ6Pv/2rXsWOwpoNqXSvFBKQk25UGFPJgWA==
+X-Received: by 2002:a17:907:7f01:: with SMTP id qf1mr2885716ejc.240.1641799204328;
+        Sun, 09 Jan 2022 23:20:04 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id p7sm3106551edu.84.2022.01.09.23.17.49
+        by smtp.gmail.com with ESMTPSA id q18sm3112682eds.11.2022.01.09.23.20.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Jan 2022 23:17:49 -0800 (PST)
-Message-ID: <800e121f-5fb7-0901-f113-57dcbbc886c5@broadcom.com>
-Date:   Mon, 10 Jan 2022 08:17:46 +0100
+        Sun, 09 Jan 2022 23:20:03 -0800 (PST)
+Message-ID: <3220ccb8-0b24-af9d-83b6-489c74c26ddc@broadcom.com>
+Date:   Mon, 10 Jan 2022 08:19:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.0
-Subject: Re: [PATCH v2 11/35] brcmfmac: msgbuf: Increase RX ring sizes to 1024
+Subject: Re: [PATCH v2 12/35] brcmfmac: pcie: Fix crashes due to early IRQs
 To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -78,34 +78,35 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-12-marcan@marcan.st>
+ <20220104072658.69756-13-marcan@marcan.st>
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20220104072658.69756-12-marcan@marcan.st>
+In-Reply-To: <20220104072658.69756-13-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000071f31e05d5352275"
+        boundary="00000000000061cac505d5352a19"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---00000000000071f31e05d5352275
+--00000000000061cac505d5352a19
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/4/2022 8:26 AM, Hector Martin wrote:
-> Newer chips used on Apple platforms have a max_rxbufpost greater than
-> 512, which causes warnings when brcmf_msgbuf_rxbuf_data_fill tries to
-> put more entries in the ring than will fit. Increase the ring sizes
-> to 1024.
-
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> The driver was enabling IRQs before the message processing was
+> initialized. This could cause IRQs to come in too early and crash the
+> driver. Instead, move the IRQ enable and hostready to a bus preinit
+> function, at which point everything is properly initialized.
+> 
+> Fixes: 9e37f045d5e7 ("brcmfmac: Adding PCIe bus layer support.")
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.h | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   .../wireless/broadcom/brcm80211/brcmfmac/pcie.c  | 16 +++++++++++++---
+>   1 file changed, 13 insertions(+), 3 deletions(-)
 
---00000000000071f31e05d5352275
+--00000000000061cac505d5352a19
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -176,14 +177,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDGU/LlzJXCdePJAiVN
-tsrX/CQM2f4OTukBSoAbhXsO3jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTAwNzE3NTFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCC+yU4sIy/T0gqsfZsP
+6fyc9mZau2oqbLkTgtX1F5hx1jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMTAwNzIwMDRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEASqRscr3acBvn/Ihd85ByceOaYFl4QT4ecqYW
-FqUsxjWw+gpS9Nand97v9KzlE79W9NuS2vivGrv+HmuhCYwnifw/ZC/b3qSTGmRBYTrtgbVN5I63
-eJ4unE0sDtLBjd4lSqTJb8S98jLtNgYOfNuc1RsKBNkeiGl5wsM9U5H7s7TyzRkzxP0V7OIpuSgi
-OEG+O2dNnapZaZtbHeWQla/kMtmJkPcOD6uLrH2tAqMUl1Yg0YjTsppvprMXirNAiLtnEejXQyp/
-wGr5N+QZ7vIA7GAs8E1kcgAW15TByWqCXm+ce0F/wMXTbvOdH73xRJFb/KVMJMfdC/8lU9Hn/GBW
-PQ==
---00000000000071f31e05d5352275--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEATCOWYpiTcEMXm84f8IbU3ElWNscGhgv92u9f
++q7/jN85EvlFZiKE7BozxpELguD59cqe7+xuM8Bm5a26ZW4g6mKQTgbJooNJveqHVDL6SZILsRip
+F42G/KIGr2NzLQIC3w3QoAgQ9VM4CZmsVDp3CHuoVwUOnAOelNb9/SS2Dfoi6xh4xau8QJTFG820
+1rfcw1SjHKW3wquVshByuxx+8xZ+1UTSa1ybbXAkHzHF620cu4PeI0jA+rpLd8yv2WxNscCAJ8pH
+ZNK3bQfBDH5BMiilSDOi1Bl5n6aezLW8EmziKvu3ctoL05iBcNDrIAzUOOeDFhnq4dvLvUGn6Ox4
+Qg==
+--00000000000061cac505d5352a19--
