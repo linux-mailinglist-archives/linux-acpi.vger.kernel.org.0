@@ -2,34 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18D67489740
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 12:21:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C75A489761
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 12:26:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244610AbiAJLVT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jan 2022 06:21:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46964 "EHLO
+        id S244700AbiAJL0e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jan 2022 06:26:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244598AbiAJLVQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 06:21:16 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF25C06173F;
-        Mon, 10 Jan 2022 03:21:16 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id B8FCA41AC8;
-        Mon, 10 Jan 2022 11:21:05 +0000 (UTC)
-Message-ID: <5226bf9f-fb0f-5dc5-3b82-2125fc229526@marcan.st>
-Date:   Mon, 10 Jan 2022 20:21:03 +0900
+        with ESMTP id S244686AbiAJL0Z (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 06:26:25 -0500
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5003AC06175A
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 03:26:21 -0800 (PST)
+Received: by mail-pg1-x530.google.com with SMTP id e17so2348437pgg.6
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 03:26:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to;
+        bh=OL7m8t6NlnTCV2fiIqfeZrg8v9M6YRcJHv7RZPCMAwI=;
+        b=Gmt1qOAFMj5WzhsRA6ukLCbPdFh76fvUY7Ux1TXSrPB8ZZp+1UEvfDfqnvjqYoMx3z
+         E+Z7k9Z4FOkcK+9n6CYSGR1bHAMZMJCdfg9H2oICdGpUr80Wwe8wz1F6FJlssvA9C1j4
+         i+MSmZxo6WBJlgzkS5ip4iwqDT8uT+PAPxIV8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :to:cc:references:from:in-reply-to;
+        bh=OL7m8t6NlnTCV2fiIqfeZrg8v9M6YRcJHv7RZPCMAwI=;
+        b=wkaz9Rj9fU3/sl3d60263CHpevFdookTifc0kPVkEDLjR0i+/rZk+jgqeT7tX8Cgm8
+         IsNT0jaov1qAmZQNEp7ddbyP5KaD/J5GK9shcGQU8pGbL15mXYXCaC/dQZ45du5Gmq6F
+         GN1ySLGkQG9IfNysRd8ZU0ajsV7hClZ4k7tsWaoj4LWg7haX4igGnvUc1Py2l6vfywmr
+         IukcfzOsF43BuNeTNkPpBbw+OFd3fqV5cXdpgI+aE2YkQzse0ZquKYhE7Ign22BpzlJ9
+         qy9o8avW0NFlYo+2eO8YtO12G/9h+lwQhpt4738CMoZ5Rs/yQbUHC70EQAEhIsZnIn4P
+         oUrA==
+X-Gm-Message-State: AOAM532ISh3oLtTQn/ilceGc0yseKzLuJW23HgFBN2eE0fZyRcnA5E+V
+        nx7QDvE8eG4JJS6zvPReXVk9YA==
+X-Google-Smtp-Source: ABdhPJyLgj9HvtdqraoJgeK9Kc2v7CG2uiPxLxoBQVj1I3D4oJ38HdSEziC+h3mCqyYZEtQsQlDSvg==
+X-Received: by 2002:a05:6a00:14c9:b0:4bb:62ca:4e1c with SMTP id w9-20020a056a0014c900b004bb62ca4e1cmr74467264pfu.28.1641813980682;
+        Mon, 10 Jan 2022 03:26:20 -0800 (PST)
+Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id s30sm6594384pfw.195.2022.01.10.03.26.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Jan 2022 03:26:18 -0800 (PST)
+Message-ID: <bdee859c-35fd-0ded-6a87-3948f6e792e2@broadcom.com>
+Date:   Mon, 10 Jan 2022 12:26:09 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH v2 00/35] brcmfmac: Support Apple T2 and M1 platforms
-Content-Language: en-US
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v2 16/35] brcmfmac: acpi: Add support for fetching Apple
+ ACPI properties
+To:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -39,8 +63,8 @@ Cc:     "David S. Miller" <davem@davemloft.net>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
         Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Mark Kettenis <kettenis@openbsd.org>,
         =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
@@ -55,52 +79,182 @@ Cc:     "David S. Miller" <davem@davemloft.net>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <87tuebvqw4.fsf@kernel.org>
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <87tuebvqw4.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20220104072658.69756-17-marcan@marcan.st>
+ <d72bf3e4-1a49-d354-9439-5f52334d2698@broadcom.com>
+ <908a6ded-08fb-647f-ffa2-1a5182d2f075@marcan.st>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <908a6ded-08fb-647f-ffa2-1a5182d2f075@marcan.st>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="00000000000020685805d5389bbb"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 2022/01/10 19:14, Kalle Valo wrote:
-> Hector Martin <marcan@marcan.st> writes:
-> 
->> Hi everyone,
+--00000000000020685805d5389bbb
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 1/10/2022 12:07 PM, Hector Martin wrote:
+> On 2022/01/10 18:11, Arend van Spriel wrote:
+>> On 1/4/2022 8:26 AM, Hector Martin wrote:
+>>> On DT platforms, the module-instance and antenna-sku-info properties
+>>> are passed in the DT. On ACPI platforms, module-instance is passed via
+>>> the analogous Apple device property mechanism, while the antenna SKU
+>>> info is instead obtained via an ACPI method that grabs it from
+>>> non-volatile storage.
+>>>
+>>> Add support for this, to allow proper firmware selection on Apple
+>>> platforms.
+>>>
+>>> Signed-off-by: Hector Martin <marcan@marcan.st>
+>>> ---
+>>>    .../broadcom/brcm80211/brcmfmac/Makefile      |  2 +
+>>>    .../broadcom/brcm80211/brcmfmac/acpi.c        | 47 +++++++++++++++++++
+>>>    .../broadcom/brcm80211/brcmfmac/common.c      |  1 +
+>>>    .../broadcom/brcm80211/brcmfmac/common.h      |  9 ++++
+>>>    4 files changed, 59 insertions(+)
+>>>    create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
 >>
->> Happy new year! This 35-patch series adds proper support for the
->> Broadcom FullMAC chips used on Apple T2 and M1 platforms:
+>> [...]
 >>
->> - BCM4355C1
->> - BCM4364B2/B3
->> - BCM4377B3
->> - BCM4378B1
->> - BCM4387C2
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
+>>> new file mode 100644
+>>> index 000000000000..2b1a4448b291
+>>> --- /dev/null
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/acpi.c
+>>> @@ -0,0 +1,47 @@
+>>> +// SPDX-License-Identifier: ISC
+>>> +/*
+>>> + * Copyright The Asahi Linux Contributors
+>>> + */
+>>> +
+>>> +#include <linux/acpi.h>
+>>> +#include "debug.h"
+>>> +#include "core.h"
+>>> +#include "common.h"
+>>> +
+>>> +void brcmf_acpi_probe(struct device *dev, enum brcmf_bus_type bus_type,
+>>> +		      struct brcmf_mp_device *settings)
+>>> +{
+>>> +	acpi_status status;
+>>> +	const union acpi_object *o;
+>>> +	struct acpi_buffer buf = {ACPI_ALLOCATE_BUFFER, NULL};
+>>> +	struct acpi_device *adev = ACPI_COMPANION(dev);
+>>> +
+>>> +	if (!adev)
+>>> +		return;
+>>> +
+>>> +	if (!ACPI_FAILURE(acpi_dev_get_property(adev, "module-instance",
+>>> +						ACPI_TYPE_STRING, &o))) {
+>>> +		brcmf_dbg(INFO, "ACPI module-instance=%s\n", o->string.pointer);
+>>> +		settings->board_type = devm_kasprintf(dev, GFP_KERNEL,
+>>> +						      "apple,%s",
+>>> +						      o->string.pointer);
+>>> +	} else {
+>>> +		brcmf_dbg(INFO, "No ACPI module-instance\n");
+>>
+>> Do you need to obtain the antenna-sku when there is no module-instance?
 > 
-> 35 patches is a lot to review. It would make things easier for reviewers
-> if you can split this into smaller patchsets, 10-12 patches per set is
-> what I usually recommend. More info in the wiki link below.
+> In principle I don't think any machines would have antenna-sku and no
+> module-instance, though the firmware selection will still work without
+> it (it'll just end up using the DMI machine name instead).
 
-The patches are already split into logical groupings, so I think there
-isn't much more to be gained by sending them separately. As I described
-in the cover letter:
+Right. That was my assumption as well. I would bail out here and skip 
+obtaining the antenna-sku.
 
-01~09: Firmware selection stuff
-10~14: Add support for BCM4378
-15~20: Add BCM4355/4364/4377 on top
-21~27: Add BCM4387 and its newer requirements
-28~32: Misc fixes
-33~35: TxCap & calibration support
+>>
+>>> +	}
+>>> +
+>>> +	status = acpi_evaluate_object(adev->handle, "RWCV", NULL, &buf);
+>>
+>> Can you clarify what the above does? What does the "RWCV" mean?
+> 
+> No idea what it *means* :-)
+> 
+> What it is, though, is the ACPI method name to get the antenna-sku.
 
-If you want to review the series piecemeal, feel free to stop at any of
-those boundaries; the series will still make sense and is useful at any
-of those stopping points.
+Wow. So much for meaning-full naming ;-)
 
-Note that the firmware selection stuff (in particular patches #4 and #6)
-will change quite a bit in v3 from the review feedback so far, so you
-might want to skip reviewing those in detail for v2.
+--00000000000020685805d5389bbb
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCApPVUj9EIxJasExeeD
+R9dddmi5PnKi4nLzM8C1Y/2CyTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMTAxMTI2MjFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAT7gq4iK9XoXCGevdYJYT2A31WqRkFNaQNjkv
+KUzjO/lAZuKx9d78m0pn1JvU5LMRgUN5imTXSvhJ79l295WwRqzwzDFiF0j1B0zSVXTaXm4Ana3m
+BDWagAzHVkufOXN36lnBIPidWAAVoej4+i1ZA0wsT+/GjGWgXbTTrppFT88s6erKSwQbEz07GXId
+8d0SK4YOc2qQJaxMNhLFDP3lZoHBhFfvl9LHkc0BsFLe8hyibHyoll9f5YqEBh7lAq9KO1ibmS7s
+LiHbeBA4PE7VYSO8C2Q8C+gWITMhlJ+6PGCyRI30qYqvmiTOaYjiTa/w9kP4ysu25tJyyB3GITA5
+Eg==
+--00000000000020685805d5389bbb--
