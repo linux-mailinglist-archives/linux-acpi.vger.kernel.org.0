@@ -2,55 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CFBA489204
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 08:43:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B05C4894C3
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 10:11:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241387AbiAJHhj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jan 2022 02:37:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50668 "EHLO
+        id S242461AbiAJJLF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jan 2022 04:11:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241675AbiAJHgD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 02:36:03 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780AEC02526D
-        for <linux-acpi@vger.kernel.org>; Sun,  9 Jan 2022 23:31:18 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id m4so8351248edb.10
-        for <linux-acpi@vger.kernel.org>; Sun, 09 Jan 2022 23:31:18 -0800 (PST)
+        with ESMTP id S242518AbiAJJLC (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 04:11:02 -0500
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5CF5C061757
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 01:11:01 -0800 (PST)
+Received: by mail-pg1-x534.google.com with SMTP id i8so10581970pgt.13
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 01:11:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :from:in-reply-to;
-        bh=4u3C2vNCBODGDMvuLRQ1i5yQQbniBMMvKEoYoI8bnaw=;
-        b=KP/uPWIS4A2BbGkpd08f/bhjRLOzeoYggTJo8lSMbbR9I45jmpf7+xAWv4CaLE4+IK
-         RunvLExRj7TQFrN8oQZbpQgXe4p+KIw7IUoWm8VbByEYjbA7b4OnsWc9NmcYDaZo07A5
-         EK+7Z7666cOuWxfNNlEmHykyZwC+udMrMqEaU=
+        h=message-id:date:mime-version:user-agent:from:subject:to:cc
+         :references:in-reply-to;
+        bh=JmrOgOYMCuLWHTZimJJA7ENUoOya37irbyc/B5iKr6w=;
+        b=hQgRXosOhFpcisWxIEglfknnrBpfHILz5EuJgref8Rc+OGIUcx8lY1H/srNJkV3kgD
+         cVFZh0e3ZLZh8yu6jojsRJF2wxAWhKPUgr9BA1SBXrxOkri7blcXWo7rcG/W9UrvkQI7
+         8SelDYPWm9Kg8hVy+vW8wdvfM8sdsuTdXnsv0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:from:in-reply-to;
-        bh=4u3C2vNCBODGDMvuLRQ1i5yQQbniBMMvKEoYoI8bnaw=;
-        b=0VCR6eH2LYu0STIMq9vCZQCRVvWF07vRAkeh+doc0akW7C1gPuA7TrX2fQQpEyocT0
-         IdR66y6LSKDeezHFEc2uVSeG/HoIvHO5KfenqaNTeCXwfUGkS/c2F90PpN6nGJhO6Zwi
-         m8ks6A4kJpiGyiVoa6tk2cgcnkBa8d0Pc+2ALwgaOsa72TdEF+cNntgOCTmkdU/gIlDR
-         6ws9ad1gv8EUPlsFoT5b5T1NC8nDeMNwQvUNndh2GetniSzmP+wwrN8ynM6jhhJCdSIX
-         OMDBytxz8McBl6kbqUL17+jQbmSm7CyZ7yzTEAJREcPTlhhVdsDj8UNFGj8Y+X3PUYgg
-         dcIA==
-X-Gm-Message-State: AOAM532k2d2UHOEzvBFfdSAr1tKHirLNMeX/rosKprl860VnhOB9EKhN
-        MU/YnsIsVHe66qqMlGXjSUs9kg==
-X-Google-Smtp-Source: ABdhPJzcqUFUcyau+JE99UOL3CsWj/phSfOLhbnr8767xEwydrl/xib9+q0VG6B1t0ak4+R9Rh3Bmg==
-X-Received: by 2002:a17:907:7fa9:: with SMTP id qk41mr59746482ejc.422.1641799876948;
-        Sun, 09 Jan 2022 23:31:16 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:from
+         :subject:to:cc:references:in-reply-to;
+        bh=JmrOgOYMCuLWHTZimJJA7ENUoOya37irbyc/B5iKr6w=;
+        b=BxKDcZHQu0JuFykK3pNQwrUDmVWAsSjVWLV2H1uHGRE6P+qCHe2iRLhJXlDoN/VI/F
+         tEI9re3MdmhGI/LMHJXZMtd+qXmWGHQVQGjQHpxqtUUYvtXi8GeAyKiWFu/wv8E4NUHr
+         x1FCuwyz7cgg4BmxEkSzWbDwlQX8Btujj1smKjLUk09ZpmwIjxIlXPpwvJWVY+9nbW9a
+         WYKxULKPe01HdDRSjqWUqpFcRQr9YgCt3fozC5zszAuB5cq8Mh5uRrrg3Nt1OlJTdi6N
+         kzm+b+JdjgrHN8xJvCjmcEJuCK26wpPywUHP84BbMFUzNYbxe8jAi6HZ+2RRCh+tSEuI
+         TM8w==
+X-Gm-Message-State: AOAM5327EkDwxUcgslOsnWg4xxPWNaa7a7xyH5zDzRbcZ1D6fPaeI1lR
+        MXX42qq+Y4YfYclyshtAcmO3nA==
+X-Google-Smtp-Source: ABdhPJwJNOfWpwtoDOvscRB2ZxXYN1zpQP7w9untHAVM+kD4vhwTsg2uFMEvtSKGaZbw0WYPry4CAA==
+X-Received: by 2002:a63:a741:: with SMTP id w1mr12091214pgo.620.1641805861004;
+        Mon, 10 Jan 2022 01:11:01 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id sc3sm2106026ejc.93.2022.01.09.23.31.14
+        by smtp.gmail.com with ESMTPSA id e20sm6076038pfv.219.2022.01.10.01.10.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Jan 2022 23:31:15 -0800 (PST)
-Message-ID: <1224597a-960c-71dd-817b-9f857697c9c6@broadcom.com>
-Date:   Mon, 10 Jan 2022 08:31:12 +0100
+        Mon, 10 Jan 2022 01:11:00 -0800 (PST)
+Message-ID: <b652e98b-1b09-4639-95c4-779fb6cc989f@broadcom.com>
+Date:   Mon, 10 Jan 2022 10:10:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.0
-Subject: Re: [PATCH v2 13/35] brcmfmac: pcie: Support PCIe core revisions >=
- 64
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: Re: [PATCH v2 14/35] brcmfmac: pcie: Add IDs/properties for BCM4378
 To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -79,86 +79,64 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-14-marcan@marcan.st>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20220104072658.69756-14-marcan@marcan.st>
+ <20220104072658.69756-15-marcan@marcan.st>
+In-Reply-To: <20220104072658.69756-15-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000079cbc505d535526b"
+        boundary="00000000000027b29505d536b727"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---00000000000079cbc505d535526b
+--00000000000027b29505d536b727
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/4/2022 8:26 AM, Hector Martin wrote:
-> These newer PCIe core revisions include new sets of registers that must
-> be used instead of the legacy ones. Introduce a brcmf_pcie_reginfo to
-> hold the specific register offsets and values to use for a given
-> platform, and change all the register accesses to indirect through it.
+> This chip is present on Apple M1 (t8103) platforms:
+> 
+> * atlantisb (apple,j274): Mac mini (M1, 2020)
+> * honshu    (apple,j293): MacBook Pro (13-inch, M1, 2020)
+> * shikoku   (apple,j313): MacBook Air (M1, 2020)
+> * capri     (apple,j456): iMac (24-inch, 4x USB-C, M1, 2020)
+> * santorini (apple,j457): iMac (24-inch, 2x USB-C, M1, 2020)
 
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   .../broadcom/brcm80211/brcmfmac/pcie.c        | 125 +++++++++++++++---
->   1 file changed, 105 insertions(+), 20 deletions(-)
-> 
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c   | 2 ++
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 8 ++++++++
+>   .../net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 2 ++
+>   3 files changed, 12 insertions(+)
+
+[...]
+
 > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index 595815164e18..f3744e806157 100644
+> index f3744e806157..cc76f00724e6 100644
 > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> @@ -118,6 +118,12 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
->   #define BRCMF_PCIE_PCIE2REG_H2D_MAILBOX_0	0x140
->   #define BRCMF_PCIE_PCIE2REG_H2D_MAILBOX_1	0x144
+> @@ -58,6 +58,7 @@ BRCMF_FW_DEF(4365C, "brcmfmac4365c-pcie");
+>   BRCMF_FW_DEF(4366B, "brcmfmac4366b-pcie");
+>   BRCMF_FW_DEF(4366C, "brcmfmac4366c-pcie");
+>   BRCMF_FW_DEF(4371, "brcmfmac4371-pcie");
+> +BRCMF_FW_CLM_DEF(4378B1, "brcmfmac4378b1-pcie");
 >   
-> +#define BRCMF_PCIE_64_PCIE2REG_INTMASK		0xC14
-> +#define BRCMF_PCIE_64_PCIE2REG_MAILBOXINT	0xC30
-> +#define BRCMF_PCIE_64_PCIE2REG_MAILBOXMASK	0xC34
-> +#define BRCMF_PCIE_64_PCIE2REG_H2D_MAILBOX_0	0xA20
-> +#define BRCMF_PCIE_64_PCIE2REG_H2D_MAILBOX_1	0xA24
-> +
->   #define BRCMF_PCIE2_INTA			0x01
->   #define BRCMF_PCIE2_INTB			0x02
+>   /* firmware config files */
+>   MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-pcie.txt");
+> @@ -87,6 +88,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
+>   	BRCMF_FW_ENTRY(BRCM_CC_43664_CHIP_ID, 0xFFFFFFF0, 4366C),
+>   	BRCMF_FW_ENTRY(BRCM_CC_43666_CHIP_ID, 0xFFFFFFF0, 4366C),
+>   	BRCMF_FW_ENTRY(BRCM_CC_4371_CHIP_ID, 0xFFFFFFFF, 4371),
+> +	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0xFFFFFFFF, 4378B1), /* 3 */
+
+what does the trailing comment reflect?
+
+>   };
 >   
-> @@ -137,6 +143,8 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
->   #define	BRCMF_PCIE_MB_INT_D2H3_DB0		0x400000
->   #define	BRCMF_PCIE_MB_INT_D2H3_DB1		0x800000
->   
-> +#define BRCMF_PCIE_MB_INT_FN0			(BRCMF_PCIE_MB_INT_FN0_0 | \
-> +						 BRCMF_PCIE_MB_INT_FN0_1)
->   #define BRCMF_PCIE_MB_INT_D2H_DB		(BRCMF_PCIE_MB_INT_D2H0_DB0 | \
->   						 BRCMF_PCIE_MB_INT_D2H0_DB1 | \
->   						 BRCMF_PCIE_MB_INT_D2H1_DB0 | \
-> @@ -146,6 +154,40 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
->   						 BRCMF_PCIE_MB_INT_D2H3_DB0 | \
->   						 BRCMF_PCIE_MB_INT_D2H3_DB1)
->   
-> +#define	BRCMF_PCIE_64_MB_INT_D2H0_DB0		0x1
-> +#define	BRCMF_PCIE_64_MB_INT_D2H0_DB1		0x2
-> +#define	BRCMF_PCIE_64_MB_INT_D2H1_DB0		0x4
-> +#define	BRCMF_PCIE_64_MB_INT_D2H1_DB1		0x8
-> +#define	BRCMF_PCIE_64_MB_INT_D2H2_DB0		0x10
-> +#define	BRCMF_PCIE_64_MB_INT_D2H2_DB1		0x20
-> +#define	BRCMF_PCIE_64_MB_INT_D2H3_DB0		0x40
-> +#define	BRCMF_PCIE_64_MB_INT_D2H3_DB1		0x80
+>   #define BRCMF_PCIE_FW_UP_TIMEOUT		5000 /* msec */
 
-Just an observation. So these are legacy ones with a 16 bit right shift...
-
-> +#define	BRCMF_PCIE_64_MB_INT_D2H4_DB0		0x100
-> +#define	BRCMF_PCIE_64_MB_INT_D2H4_DB1		0x200
-> +#define	BRCMF_PCIE_64_MB_INT_D2H5_DB0		0x400
-> +#define	BRCMF_PCIE_64_MB_INT_D2H5_DB1		0x800
-> +#define	BRCMF_PCIE_64_MB_INT_D2H6_DB0		0x1000
-> +#define	BRCMF_PCIE_64_MB_INT_D2H6_DB1		0x2000
-> +#define	BRCMF_PCIE_64_MB_INT_D2H7_DB0		0x4000
-> +#define	BRCMF_PCIE_64_MB_INT_D2H7_DB1		0x8000
-
-...and these are new doorbell interrupts.
-
---00000000000079cbc505d535526b
+--00000000000027b29505d536b727
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -229,14 +207,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCC8jysogIQKI0Bvql0
-tk7WdbpnA/BKmufIVcbxPsoO7TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTAwNzMxMTdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDCLj6agJAZCEXFxTsF
+N7JlNDLKDKgeBDB7TD8pkUxkKDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMTAwOTExMDFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAjxt2/L6igEP+CMWj0XQbPBtjGO9v5Qj6CP6y
-3vhx0WFW7B3ZmXjSkYX24PPv1ehrC2LZmMWzWw3TZjrrcZpbcYC2BpJhc2auRZtki+CKzzrggPqp
-HjBD6ThNjbUT/iNe8osf/wX1SmI07QUAxRip7MOHeb5EqfNCxo77/gktEwcvOT4Lz3NHIMLB4Fhx
-bWjmrSY1yIvrFtkeHye/ljb1CEZp31VYVecxulpKzbrPD6rawGP9ig6rO/yURSEY6pY8euuu1wQm
-/QTtZCFazzVWpaDX9+rFIVr3V7U796ZcCmi1tcFANLL1MUYmIBxO/8mRRkYJXguCTv9WaJheWBXa
-Mw==
---00000000000079cbc505d535526b--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAdaArcvG2iJjF3qvav9eq1Wz/XeBQlfeFoQX1
+cQwgZRJJrJ3kKZCbUgXcwJQyysbc8rF2wLXpOd1NlBmxbHr3FJzXOkk0GH8QWZnKCZashY1E7uNW
+FqwJRJzjRLx2A1iVjclNfPPWiCq3zt0gWPUD4VVd43SBRrZ+b1O/cF+meni/4Wd+qkoURMldU+0E
+s0PxHZLmQGCbmj6zv2Afh/pUBTmFdLzwfYS3Uj/8eFR3IfALkefiQ1rrypkmlL36JIdz3P7M7wID
+Q5y6S/zEbo16n3TlIlZMRXXrJ+UH5XExm/Bgb4r12mhZtC+KNyFdZZ24n2BLkrYe5F16y63GLeeJ
+Ng==
+--00000000000027b29505d536b727--
