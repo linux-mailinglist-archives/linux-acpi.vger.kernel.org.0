@@ -2,271 +2,270 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68B4E489833
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 13:02:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B48A489A28
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 14:39:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245161AbiAJMCX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jan 2022 07:02:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56518 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245169AbiAJMCS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 07:02:18 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23C94C06175A
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 04:02:17 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id h1so11575614pls.11
-        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 04:02:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :from:in-reply-to;
-        bh=2hiQWSBJ5vvXVEsTMU5vdepNMr4vMqc7+7OP+LZTy1s=;
-        b=OvjxNoe+vXugsuYUMS9t4FTz0PAPjRc1Li9NphXi7kURgzBfWHZZ4ljfuOPItyTQZJ
-         bH0nc+tQ+QvQP7JQY81J5kfr+yEl7CoKzV0qNfOI6gPw42xAML00hvyx17qAkpxWfN06
-         Z0fJ615twbiNj+r/KBD6bo8SLUT8LTV2RD9xo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:from:in-reply-to;
-        bh=2hiQWSBJ5vvXVEsTMU5vdepNMr4vMqc7+7OP+LZTy1s=;
-        b=P8IcVeX+WoxHNtgap8SHcC9sigBO1XZGdKFWajMD5tNyZuNCpwRjSAP+Y4a+5ZHQ2D
-         DqiFL7IsQ4Iu0+v6AsuKLgjoY2QQM342ECgnVKX4YP1fr0flzWBELR2BJvljy2EDae4l
-         txZ79xzMBOR1LRx5uOuk/1D+ZDepgQlJtPTx/sneBRJX04gScp0OMGlTxRJJ1sw5a5q5
-         0Bx/hBans2LpCXl9WDAXbJMSZBwN6XTZ6DreoUkHlz5NrylEzACLXQ7C42DdH5JOOVZq
-         mxoBPvZRJQe4GTYVztsCPhgFkSFvfXGhkCuroLh4xx/Ei4sjlfnFLx3hdfAAOTuMxV5W
-         dIsA==
-X-Gm-Message-State: AOAM532/iHSJVWElYpQJzaS0+I7q+yR9ue1E3z7wpsTP29VSIkWXYFT3
-        j0Q0TOoX+OX35gdkdAknW+DfAw==
-X-Google-Smtp-Source: ABdhPJwpfi2x//kTn5qs9QhtBs43L9cZ/U4cVcMBKdaNYw7luORWgC6LvKRBO4yFOXt8zrsfFNoBdw==
-X-Received: by 2002:a17:902:da8c:b0:148:a2e8:2759 with SMTP id j12-20020a170902da8c00b00148a2e82759mr74062202plx.96.1641816136437;
-        Mon, 10 Jan 2022 04:02:16 -0800 (PST)
-Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id t27sm7203261pfg.41.2022.01.10.04.02.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jan 2022 04:02:15 -0800 (PST)
-Message-ID: <ba7fa453-2bc0-cba4-e7f2-48e2e94aa408@broadcom.com>
-Date:   Mon, 10 Jan 2022 13:02:06 +0100
+        id S232808AbiAJNj4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jan 2022 08:39:56 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4377 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232695AbiAJNj4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 08:39:56 -0500
+Received: from fraeml735-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JXZgr64Tqz688s4;
+        Mon, 10 Jan 2022 21:39:52 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml735-chm.china.huawei.com (10.206.15.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Mon, 10 Jan 2022 14:39:53 +0100
+Received: from localhost (10.47.90.214) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 10 Jan
+ 2022 13:39:52 +0000
+Date:   Mon, 10 Jan 2022 13:39:57 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Anand Ashok Dumbre <ANANDASH@xilinx.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        'Anand Dumbre' <ananddumbre8@gmail.com>
+Subject: Re: [PATCH v12 0/5] Add Xilinx AMS Driver
+Message-ID: <20220110133957.00005728@Huawei.com>
+In-Reply-To: <BY5PR02MB6916F611A1B0511B814D840EA9509@BY5PR02MB6916.namprd02.prod.outlook.com>
+References: <20211203212358.31444-1-anand.ashok.dumbre@xilinx.com>
+        <BY5PR02MB691657682B94F4D3DBDA007EA9769@BY5PR02MB6916.namprd02.prod.outlook.com>
+        <20211216113717.1c0e43dc@jic23-huawei>
+        <BY5PR02MB6916F611A1B0511B814D840EA9509@BY5PR02MB6916.namprd02.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH v2 20/35] brcmfmac: pcie: Perform correct BCM4364 firmware
- selection
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-21-marcan@marcan.st>
- <3a957aa1-07f9-dff2-563e-656fffa0db6c@broadcom.com>
- <fc945ba3-94b7-773d-4537-3408b10bfe92@marcan.st>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <fc945ba3-94b7-773d-4537-3408b10bfe92@marcan.st>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000009f4b5d05d5391bb3"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.90.214]
+X-ClientProxiedBy: lhreml728-chm.china.huawei.com (10.201.108.79) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---0000000000009f4b5d05d5391bb3
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Mon, 10 Jan 2022 05:17:26 +0000
+Anand Ashok Dumbre <ANANDASH@xilinx.com> wrote:
 
-On 1/10/2022 12:20 PM, Hector Martin wrote:
-> On 2022/01/10 18:12, Arend van Spriel wrote:
->> On 1/4/2022 8:26 AM, Hector Martin wrote:
->>> This chip exists in two revisions (B2=r3 and B3=r4) on different
->>> platforms, and was added without regard to doing proper firmware
->>> selection or differentiating between them. Fix this to have proper
->>> per-revision firmwares and support Apple NVRAM selection.
->>>
->>> Revision B2 is present on at least these Apple T2 Macs:
->>>
->>> kauai:    MacBook Pro 15" (Touch/2018-2019)
->>> maui:     MacBook Pro 13" (Touch/2018-2019)
->>> lanai:    Mac mini (Late 2018)
->>> ekans:    iMac Pro 27" (5K, Late 2017)
->>>
->>> And these non-T2 Macs:
->>>
->>> nihau:    iMac 27" (5K, 2019)
->>>
->>> Revision B3 is present on at least these Apple T2 Macs:
->>>
->>> bali:     MacBook Pro 16" (2019)
->>> trinidad: MacBook Pro 13" (2020, 4 TB3)
->>> borneo:   MacBook Pro 16" (2019, 5600M)
->>> kahana:   Mac Pro (2019)
->>> kahana:   Mac Pro (2019, Rack)
->>> hanauma:  iMac 27" (5K, 2020)
->>> kure:     iMac 27" (5K, 2020, 5700/XT)
->>>
->>> Fixes: 24f0bd136264 ("brcmfmac: add the BRCM 4364 found in MacBook Pro 15,2")
->>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->>> Signed-off-by: Hector Martin <marcan@marcan.st>
->>> ---
->>>    .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c   | 11 +++++++++--
->>>    1 file changed, 9 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->>> index 87daabb15cd0..e4f2aff3c0d5 100644
->>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
->>> @@ -54,7 +54,8 @@ BRCMF_FW_CLM_DEF(4356, "brcmfmac4356-pcie");
->>>    BRCMF_FW_CLM_DEF(43570, "brcmfmac43570-pcie");
->>>    BRCMF_FW_DEF(4358, "brcmfmac4358-pcie");
->>>    BRCMF_FW_DEF(4359, "brcmfmac4359-pcie");
->>> -BRCMF_FW_DEF(4364, "brcmfmac4364-pcie");
->>> +BRCMF_FW_CLM_DEF(4364B2, "brcmfmac4364b2-pcie");
->>> +BRCMF_FW_CLM_DEF(4364B3, "brcmfmac4364b3-pcie");
->>
->> would this break things for people. Maybe better to keep the old name
->> for the B2 variant.
+> Hi Cameron,
 > 
-> Or the B3 variant... people have been using random copied firmwares with
-> the same name, I guess. Probably even the wrong NVRAMs in some cases.
-> And then I'd have to add a special case to the firmware extraction
-> script to rename one of these two to not include the revision...
+> I see in the patchwork that the patches have been accepted. 
+> When can I expect to see the driver in mainline?
+
+The merge window just opened today, and these were in a pull request
+to Greg, so he has them in his char-misc tree.
+
+So, now we just have to wait for Greg to send a pull request to Linus
+and Linus to pull it. That should happen sometime in next 2 weeks in
+time for rc1.
+
+Jonathan
+
 > 
-> Plus, newer firmwares require the random blob, so this only ever worked
-> with old, obsolete firmwares... which I think have security
-> vulnerabilities (there was an AWDL exploit recently IIRC).
+> Thanks,
+> Anand
 > 
-> Honestly though, there are probably rather few people using upstream
-> kernels on T2s. Certainly on the MacBooks, since the keyboard/touchpad
-> aren't supported upstream yet... plus given that there was never any
-> "official" firmware distributed under the revision-less name, none of
-> this would work out of the box with upstream kernels anyway.
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Thursday 16 December 2021 5:07 PM
+> > To: Anand Ashok Dumbre <ANANDASH@xilinx.com>
+> > Cc: linux-kernel@vger.kernel.org; lars@metafoo.de; linux-
+> > iio@vger.kernel.org; git <git@xilinx.com>; Michal Simek
+> > <michals@xilinx.com>; gregkh@linuxfoundation.org; rafael@kernel.org;
+> > linux-acpi@vger.kernel.org; heikki.krogerus@linux.intel.com; Andy
+> > Shevchenko <andriy.shevchenko@linux.intel.com>; 'Anand Dumbre'
+> > <ananddumbre8@gmail.com>
+> > Subject: Re: [PATCH v12 0/5] Add Xilinx AMS Driver
+> > 
+> > On Wed, 15 Dec 2021 12:11:21 +0000
+> > Anand Ashok Dumbre <ANANDASH@xilinx.com> wrote:
+> >   
+> > > Ping!  
+> > 
+> > Other than ideally getting a few more eyes on the stuff in drivers/base I'm
+> > fine with this series.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> >   
+> > >  
+> > > > -----Original Message-----
+> > > > From: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+> > > > Sent: Friday 3 December 2021 9:24 PM
+> > > > To: linux-kernel@vger.kernel.org; jic23@kernel.org; lars@metafoo.de;
+> > > > linux- iio@vger.kernel.org; git <git@xilinx.com>; Michal Simek
+> > > > <michals@xilinx.com>; gregkh@linuxfoundation.org; rafael@kernel.org;
+> > > > linux-acpi@vger.kernel.org; heikki.krogerus@linux.intel.com
+> > > > Cc: Anand Ashok Dumbre <ANANDASH@xilinx.com>
+> > > > Subject: [PATCH v12 0/5] Add Xilinx AMS Driver
+> > > >
+> > > > Add Xilinx AMS driver which is used for Xilinx's ZynqMP AMS controller.
+> > > > This AMS driver is used to report various interface voltages and
+> > > > temperatures across the system.
+> > > > This driver will be used by iio-hwmon to repport voltages and
+> > > > temperatures across the system by using various channel interfaces.
+> > > > This driver handles AMS module including PS-Sysmon & PL-Sysmon. The
+> > > > binding documentation is added for understanding of AMS, PS, PL
+> > > > Sysmon Channels.
+> > > >
+> > > > Changes in v2:
+> > > > 	- Added documentation for sysfs (Patch-2)
+> > > > 	- Addressed code style review comments
+> > > > 	- Patch-2 (Now it is Patch-3)
+> > > > 		- Arranged the includes in alphabetical order
+> > > > 		- Removed the wrapper 'ams_pl_write_reg()' and used writel
+> > > > 		  instead
+> > > > 		- Removed the unnecessary delay of 1ms and used polling of  
+> > EOC  
+> > > > 		  instead
+> > > > 		- Removed spin_lock and used mutex only.
+> > > > 		- Used request_irq() instead of devm_request_irq() and  
+> > handled  
+> > > > 		  respective error conditions
+> > > > 		- Moved contents of xilinx-ams.h to inline with xilinx-ams.c
+> > > > 	- Patch-1
+> > > > 		- Addressed Documentation style comments
+> > > >
+> > > > Changes in v3:
+> > > > 	- Updated bindings document with the suggested modification in v2
+> > > > review
+> > > > 	- Removed documentation for sysfs
+> > > > 	- Removed extended names for channels in the Xilinx AMS driver
+> > > > 	- Modified dts to use ranges for child nodes
+> > > > 	- Reduced address and size cells to 32-bit instead of 64-bit
+> > > >
+> > > > Changes in v4:
+> > > > 	- Updated bindings document with the suggested modification in v3
+> > > > review
+> > > > 	- Changed the Device Tree property 'ranges' for child nodes
+> > > > 	- Used Channel Numbers as 'reg' value in DT to avoid confusion
+> > > > 	- Removed unused NULL arguments as suggested in v3 patch review
+> > > > 	- Addressed comments on Device Tree property naming
+> > > >
+> > > > Changes in v5:
+> > > > 	- Updated bindings document to the YAML format
+> > > > 	- Updated bindings document with the suggested modification in v4
+> > > > review
+> > > > 	- Renamed iio_pl_info struct to iio_ams_info in Xilinx AMS driver
+> > > > 	- Updated the Xilinx AMS driver to not use iio_priv_to_dev function
+> > > > 	- Updated Xilinx AMS node to reflect the changes in bindings
+> > > > document
+> > > > 	- Update MAINTAINERS file
+> > > >
+> > > > Changes in v6:
+> > > > 	- Removed all tabs from bindings document.
+> > > > 	- Removed the xlnx,ext-channels node from the device tree since
+> > > > 	  it is not neeeded.
+> > > > 	- Fixed unit addresses for ps-ams and pl-ams.
+> > > > 	- Removed the names property from bindings.
+> > > > 	- Fixed warnings from checkpatch.pl in the driver.
+> > > > 	- devm_add_action_or_reset() used for exit/error path.
+> > > > 	- devm_request_irq() for managed irq request instead of
+> > > > 	  request_irq()
+> > > >
+> > > > Changes in v7:
+> > > > 	- Added use of FIELD_PREP and FIELD_GET.
+> > > > 	- Added the spinlocks back the v1 which were removed in v2 for
+> > > > 	  no justifiable reason and replaced with the same mutex. This
+> > > > 	  caused deadlocks.
+> > > > 	- Removed the buffered mode information from channel config.
+> > > > 	- Usage of wrapper functions for devm_add_action_or_reset
+> > > > 	  callbacks to avoid typecasting functions.
+> > > > 	- Usage of devm_platform_iremap_resource().
+> > > > 	- Handled platform_get_irq() return values.
+> > > > 	- Removed the remove() callback.
+> > > > 	- Fixed the dt-bindings.
+> > > >
+> > > > Changes in v8:
+> > > > 	- Replaced *_of_() APIs with fwnode.
+> > > > 	- Added missing headers.
+> > > > 	- Fixed documentation.
+> > > > 	- Added devm_add_action_or_reset() for iounmap.
+> > > > 	- Restructured read_raw function.
+> > > > 	- Added helper functions.
+> > > > 	- Usage of GENMASK for all masks.
+> > > > 	- Added defaults for most switch cases. Some can't be added
+> > > > 	  since the default will never occur.
+> > > >
+> > > > Changes in v9:
+> > > > 	- Added a fwnode_iomap().
+> > > > 	- Fixed Kconfig indentation.
+> > > > 	- Added the overflow checks before memory allocation.
+> > > > 	- Usage of fwnode_iomap() instead of iomap().
+> > > > 	- Rename ams_parse_dt() to ams_parse_firmware().
+> > > >
+> > > > Changes in v10:
+> > > > 	- Fixed licence in zynqmp.dtsi.
+> > > > 	- Changed the macros to use BIT().
+> > > > 	- Realign some code to fit within 100 chars.
+> > > > 	- Modified readl_poll_timeout usage.
+> > > > 	- Usage of array_size() instead of check_mul_overflow().
+> > > > 	- Usage of dev_err_probe() instead of dev_err().
+> > > > 	- Usage of kcalloc instead of kzalloc()
+> > > >
+> > > > Changes in v11:
+> > > > 	- Added missing bitfield.h.
+> > > > 	- Fixed AMS_ALARM_THR_MIN macro.
+> > > > 	- Added terminators to enums where necessary.
+> > > > 	- Added explicit values as suggested to enums.
+> > > > 	- Removed redundant macros.
+> > > > 	- Added delay value for readl_poll_timeout.
+> > > > 	- Corrected shadowed error return.
+> > > > 	- Corrected formatting errors.
+> > > > 	- Added default cases where missing.
+> > > > 	- Made ams_parse_firmware() a single parameter functions.
+> > > > 	- Usage of devm_kcalloc() and devm_krealloc().
+> > > > 	- Directly returning from dev_err_probe().
+> > > > 	- Renamed masked_alarm to current_masked_alarm.
+> > > >
+> > > > Changes in v12:
+> > > > 	- GENMASK_ULL usage for 64bit values.
+> > > > 	- Added ams_iounmap_ps and amsiomap_pl instead of generic
+> > > > 	  function.
+> > > > 	- Hex values to use all capital letters.
+> > > > 	- Fixed a case of wrong kernel doc.
+> > > > 	- Modified macro voltage names to reflect the scale.
+> > > > 	- Maximize single line usage wherever possible.
+> > > > 	- Handling of fwnode_iomap when CONFIG_OF_ADDRESS is not
+> > > > 	  enabled.
+> > > > 	- ams_read_raw() - Reduce the size of switch statements by
+> > > > 	  using helper functions for IIO_CHAN_INFO_SCALE.
+> > > > 	- ams_read_raw() - Mutex unlocking in a single place using goto.
+> > > >
+> > > > Anand Ashok Dumbre (5):
+> > > >   device property: Add fwnode_iomap()
+> > > >   arm64: zynqmp: DT: Add Xilinx AMS node
+> > > >   iio: adc: Add Xilinx AMS driver
+> > > >   dt-bindings: iio: adc: Add Xilinx AMS binding documentation
+> > > >   MAINTAINERS: Add maintainer for xilinx-ams
+> > > >
+> > > >  .../bindings/iio/adc/xlnx,zynqmp-ams.yaml     |  227 +++
+> > > >  MAINTAINERS                                   |    7 +
+> > > >  arch/arm64/boot/dts/xilinx/zynqmp.dtsi        |   24 +
+> > > >  drivers/base/property.c                       |   16 +
+> > > >  drivers/iio/adc/Kconfig                       |   15 +
+> > > >  drivers/iio/adc/Makefile                      |    1 +
+> > > >  drivers/iio/adc/xilinx-ams.c                  | 1450 +++++++++++++++++
+> > > >  include/linux/property.h                      |    2 +
+> > > >  8 files changed, 1742 insertions(+)  create mode 100644
+> > > > Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> > > >  create mode 100644 drivers/iio/adc/xilinx-ams.c
+> > > >
+> > > > --
+> > > > 2.17.1  
+> > >  
 > 
-> FWIW, I've been in contact with the t2linux folks and users have been
-> testing this patchset (that's how I got it tested on all the chips), so
-> at least some people are already aware of the story and how to get the
-> firmware named properly :-)
 
-Ok. When there is no brcmfmac4364-pcie.bin in linux-firmware repo we can 
-safely rename.
-
->>> -	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0xFFFFFFFF, 4364),
->>> +	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0x0000000F, 4364B2), /* 3 */
->>> +	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0xFFFFFFF0, 4364B3), /* 4 */
->>
->> okay. so it is the numerical chip revision. If so, please drop that comment.
->>
-> 
-> I figured it would be useful to document this somewhere, since the
-> alphanumeric code -> rev number mapping doesn't seem to be consistent
-> from chip to chip, and we might have to add a new revision in the future
-> for an existing chip (which would require knowing the rev for the old
-> one). Do you have any ideas?
-
-Indeed the alphanumeric code differs from chip to chip depending on how 
-much respins are necessary and what type of respin. We start a 'a0' aka 
-numeric rev 0. For minor fixes we increase the digit, but for major 
-fixes or new functionality we move to the next letter whereas the 
-numeric revision simply increases.
-
---0000000000009f4b5d05d5391bb3
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAfK5EiiyV1npyn1PC1
-SjcDUOGpFT1lOonhkBimvUIKwTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTAxMjAyMTZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFPEddhIgS0nS0XXEclvHZnF+39G7+Gh10Nm/
-MgYig5DMcr6U2d3W8xW+oxcK+NhfT44AXgZujCNLAt0Wie479xu1HWo5VbM+ugRrIYjLg3y28f/H
-TGq2i0meNwodhaI7jEYb/gGUQC5fVJw4pY545yBSJMf9DnC1loP+nPKFPqnXrST/aRJzkM74yepl
-EdrA74aTeMEMC1p6zHalHThoKHQskmoEDprvfeM5BcrkORBqXbJi6JdYJHr3jySa9NYGsiACsgiW
-4MtbrAGKVFuwRHSNVVc1KsvtC5BmPGKZYsDPA1Xbo1atzELXCVxLuyBJwdWbUNU7IMz7RsFE4qEi
-qw==
---0000000000009f4b5d05d5391bb3--
