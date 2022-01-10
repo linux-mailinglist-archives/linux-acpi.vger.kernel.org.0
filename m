@@ -2,38 +2,36 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D72A4489A71
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 14:46:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E68C489AE2
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 14:55:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbiAJNq6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jan 2022 08:46:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52578 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232889AbiAJNq4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 08:46:56 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC882C06173F;
-        Mon, 10 Jan 2022 05:46:55 -0800 (PST)
+        id S234728AbiAJNzJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jan 2022 08:55:09 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:41362 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234685AbiAJNzH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 08:55:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 397D9B81657;
-        Mon, 10 Jan 2022 13:46:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0887BC36AE3;
-        Mon, 10 Jan 2022 13:46:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CFE8DB81654;
+        Mon, 10 Jan 2022 13:55:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBDDC36AE5;
+        Mon, 10 Jan 2022 13:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641822413;
-        bh=oq2ENPhcfVsV9txVSXFBcujEFmcA6SmT2Sowk/OZKJo=;
+        s=k20201202; t=1641822904;
+        bh=rj4fKmBFoTHA0iE6ZmISK6tpcbjzpc6k3C0OppRQfXI=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=FAvyCWn4JyvlnEiHTfcqGoiit/WTZe4LvsO0SW4KXu3bN+k+dF+tvzn+K0Ne/vYu3
-         HIlZkRbctTuJXDXzU0aMwL2V8FPXA9abPbHJyRt1AYRBPkD3Rcx4OCuzv7Ft+3A+lf
-         eixOoFI+hTS1XRvzRu5MCdO+RF2V1/JFFMtjR3GP/ltH8WsTltrhzr9LlGQYCmQV5w
-         kWrJm3ct/ggpLXWoR41QxV763wf5lk87wfXujSox0A7mfcxCadj4eCm004tHdGEX7c
-         t/9fplGMazuDNsuu6103Il8ofvMe4l2ndvmoetmQ2/dIl2tN0UaYSv6wBY0H+3o184
-         GYLJRM9HFmlNg==
+        b=mLOFKpfG5t6VcVdIo8HnBo4TNSUN0tKjo69CxcZVSODX4E/wp4Qq2JAJ/RDV2iBbg
+         18oBED1NTpckFJA7zbUwmTe1QZE4Wrro1ocg82W3n7wpQftGoLJTQU3AGP/LJ9nGtl
+         Q1izKRVSRFl6rZoA9r+DPbZMSAWeVNeOvLI1TwuOkyOMR0Vxizmi4PdQpSPxz5GxbU
+         IUGNwPnsHWCL6bNde0DXS2J3fJM+zoTRiiZyZjjXvYXH9EbYJcQEeV9hygDLBG7CEx
+         yorgSW3rmF3Zs+Ti399XXtPitqyOhR30/IelIneFxcNpCUNwpdPhrkyTKHSXYqYfRA
+         etY7UfhX/G3nQ==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     Hector Martin <marcan@marcan.st>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -53,19 +51,23 @@ Cc:     "David S. Miller" <davem@davemloft.net>,
         Hans de Goede <hdegoede@redhat.com>,
         "John W. Linville" <linville@tuxdriver.com>,
         "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        "open list\:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list\:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
         SHA-cyfmac-dev-list@infineon.com
-Subject: Re: [PATCH v2 00/35] brcmfmac: Support Apple T2 and M1 platforms
+Subject: Re: [PATCH v2 12/35] brcmfmac: pcie: Fix crashes due to early IRQs
 References: <20220104072658.69756-1-marcan@marcan.st>
-        <87tuebvqw4.fsf@kernel.org>
-        <5226bf9f-fb0f-5dc5-3b82-2125fc229526@marcan.st>
-Date:   Mon, 10 Jan 2022 15:46:45 +0200
-In-Reply-To: <5226bf9f-fb0f-5dc5-3b82-2125fc229526@marcan.st> (Hector Martin's
-        message of "Mon, 10 Jan 2022 20:21:03 +0900")
-Message-ID: <87fspvln3u.fsf@tynnyri.adurom.net>
+        <20220104072658.69756-13-marcan@marcan.st>
+        <CAHp75VdeNhmRUW1mFY-H5vyzTRHZ9Y2dv03eo+rfcTQKjn9tuQ@mail.gmail.com>
+        <759f46bd-bfc2-62c6-6257-a2a0d702e2b6@marcan.st>
+Date:   Mon, 10 Jan 2022 15:54:54 +0200
+In-Reply-To: <759f46bd-bfc2-62c6-6257-a2a0d702e2b6@marcan.st> (Hector Martin's
+        message of "Thu, 6 Jan 2022 22:10:45 +0900")
+Message-ID: <87bl0jlmq9.fsf@tynnyri.adurom.net>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -75,42 +77,28 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hector Martin <marcan@marcan.st> writes:
 
-> On 2022/01/10 19:14, Kalle Valo wrote:
->> Hector Martin <marcan@marcan.st> writes:
->> 
->>> Hi everyone,
+> On 04/01/2022 23.12, Andy Shevchenko wrote:
+>> On Tue, Jan 4, 2022 at 9:29 AM Hector Martin <marcan@marcan.st> wrote:
 >>>
->>> Happy new year! This 35-patch series adds proper support for the
->>> Broadcom FullMAC chips used on Apple T2 and M1 platforms:
+>>> The driver was enabling IRQs before the message processing was
+>>> initialized. This could cause IRQs to come in too early and crash the
+>>> driver. Instead, move the IRQ enable and hostready to a bus preinit
+>>> function, at which point everything is properly initialized.
 >>>
->>> - BCM4355C1
->>> - BCM4364B2/B3
->>> - BCM4377B3
->>> - BCM4378B1
->>> - BCM4387C2
+>>> Fixes: 9e37f045d5e7 ("brcmfmac: Adding PCIe bus layer support.")
 >> 
->> 35 patches is a lot to review. It would make things easier for reviewers
->> if you can split this into smaller patchsets, 10-12 patches per set is
->> what I usually recommend. More info in the wiki link below.
+>> You should gather fixes at the beginning of the series, and even
+>> possible to send them as a separate series. In the current state it's
+>> unclear if there are dependencies on your new feature (must not be for
+>> fixes that meant to be backported).
+>> 
 >
-> The patches are already split into logical groupings, so I think there
-> isn't much more to be gained by sending them separately. As I described
-> in the cover letter:
->
-> 01~09: Firmware selection stuff
-> 10~14: Add support for BCM4378
-> 15~20: Add BCM4355/4364/4377 on top
-> 21~27: Add BCM4387 and its newer requirements
-> 28~32: Misc fixes
-> 33~35: TxCap & calibration support
->
-> If you want to review the series piecemeal, feel free to stop at any of
-> those boundaries; the series will still make sense and is useful at any
-> of those stopping points.
+> Thanks, I wasn't sure what order you wanted those in. I'll put them at
+> the top for v3. I think none of those should have any dependencies on
+> the rest of the patches, modulo some trivial rebase wrangling.
 
-Really, having smaller patchsets makes the patch flow so much smoother
-for everyone. If you want to submit huge patchsets then go ahead, but
-that will automatically drop the patches to the bottom of my queue.
+If there are no dependencies, please send the brcmfmac fixes separately
+so that I can apply them earlier.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
