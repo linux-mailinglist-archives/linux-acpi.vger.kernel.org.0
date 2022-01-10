@@ -2,143 +2,120 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC1B8489E14
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 18:11:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2038489FB0
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 19:56:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237934AbiAJRL3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jan 2022 12:11:29 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:49110 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232637AbiAJRL3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 12:11:29 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id D620CCE1677;
-        Mon, 10 Jan 2022 17:11:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 069ADC36AE3;
-        Mon, 10 Jan 2022 17:11:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641834685;
-        bh=X4tXoAGC6EqJ6PYEuG6VCZ/OpyF8blgVmWjeySllZjQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=empKVpZSr2IPSLiNwSMhcQyNj0YdWaPaD1kHUE2YOI95Bc0/xHllJHIJ2w1eEzItk
-         /Ag9iEjQ3tvNVUjQAshIVIgB45mBrjIjVtKRi8YNTDjz+bQBRZ5zhIrAEbIfK2cl/O
-         nV/x3qj6KAdajx7F49Vj2GjPUATphHfNsrWBQDLX+v9iT6ERZGqZAYtL/h0G7KN8d2
-         rNnds4Y5qmTQl76eEdPBPUi5zK+i2Wv/Vrn1khMtXibf5x9NkOZuT+e5ti4YCF7yAT
-         V2HXSP8zsyVFd650EoK0kLpV1tLdSy+ICmWVXJYdIw1fKPjUe886ijAQihynoApjBy
-         jEAvK1ta7unvg==
-Date:   Mon, 10 Jan 2022 11:11:23 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org,
-        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, stable@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH v6] x86/PCI: Ignore E820 reservations for bridge windows
- on newer systems
-Message-ID: <20220110171123.GA60297@bhelgaas>
+        id S242655AbiAJS4j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jan 2022 13:56:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40542 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242640AbiAJS4f (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 10 Jan 2022 13:56:35 -0500
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FC11C061751
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 10:56:35 -0800 (PST)
+Received: by mail-pl1-x633.google.com with SMTP id g5so4189691plo.12
+        for <linux-acpi@vger.kernel.org>; Mon, 10 Jan 2022 10:56:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=F3TJb2qvODPhHuRvG+TSwWDhsfj5NbPsF0sZDWvDjV8=;
+        b=VVrxc6G1UyjfjixQPFTXAnXytT0rtVC0yUleq43ySfEpyI5PXPj++eTsnK+1xNNqEj
+         LRkCIdKxZvhDw5Mrzzede2zM3/eN0NUWuhXDygJyroL7kbEPLJHJezJmLnz4wtHiCAbo
+         1+SO/K8OuCdYH4Pb4LKWaVOz8WzGpLCgl5L5MUMYIDvoj3sxzZaZY1ndkN3640F0GMY1
+         NNoAnWdTQJFyda53AFffCr8zzLio8VOkmarztNO3E7IDdlLkd3GVqG3ypkil2mOpn7AN
+         QpyB15xSueh/orIaGVePALu3OyubyN6/Xgladb9OsSJqkO35n4yzWwyqJgi5QRc2sPe3
+         LTkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F3TJb2qvODPhHuRvG+TSwWDhsfj5NbPsF0sZDWvDjV8=;
+        b=51LjXwzkZ4cIXWKaIxP/67i14Xs1YITkmhFNoVRhuqjmYt6AhEGzxLvuJQWYAxGFbb
+         64KwpaA3zDOXN+Jurp5lux8GV93zlyYVqZgslY/7NNUOnVQyZyymyO5H/Kw4b7VAGfSi
+         Wr0sNp+21Bn4S8fQ0nV/aSsvJSWqFM/epXblGHUsd40NBn0cjpDMyO3f/w8jxSNz5/u/
+         tr+GXhKXByeyGVCoZFlCvIgvp72B2AxSUT97gwhQw1baJGkmQCLc6hZ0SgGpApdr+nOd
+         4HwOnq8TLnU/FKepOx/mIBt5VACIV0iN7hRMY5aMijjPsLdNYB5KMD/a1x3ceJRLBtwZ
+         2UBA==
+X-Gm-Message-State: AOAM530jdgfQCG9XqDqTAF6hTEAT87mNR3RFF3XYJ/yXOkmtut9xLSlt
+        hWkP47+RD409KX/Ft9Em6qe5Q5z2OSYhqj8jHce//Q==
+X-Google-Smtp-Source: ABdhPJx0ER/XnFGs6RwNR0p32T+YpaO4KIdMZAv76wC88OXH6TXAMO8VMymRinLrAmzAvnuo5aYWEunKKvriNsas24c=
+X-Received: by 2002:a17:90a:bb05:: with SMTP id u5mr16623129pjr.64.1641840994602;
+ Mon, 10 Jan 2022 10:56:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c992ece7-6878-a39e-0386-5a499265c4cb@redhat.com>
+References: <20210210230800.30291-2-sakari.ailus@linux.intel.com>
+ <20211007022527.2448652-1-rajatja@google.com> <YW3XwDxwBsJdFslA@paasikivi.fi.intel.com>
+In-Reply-To: <YW3XwDxwBsJdFslA@paasikivi.fi.intel.com>
+From:   Rajat Jain <rajatja@google.com>
+Date:   Mon, 10 Jan 2022 10:55:58 -0800
+Message-ID: <CACK8Z6FcBusdMMsu2vKZT8vx6yvcWS7Gh7bDyYqdB1ikspEHDA@mail.gmail.com>
+Subject: Re: ACPI: scan: Obtain device's desired enumeration power state
+To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Wolfram Sang <wsa@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bingbu Cao <bingbu.cao@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
+        Hyungwoo Yang <hyungwoo.yang@intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Robert Moore <robert.moore@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
+        devel@acpica.org, rajatxjain@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 10, 2022 at 12:41:37PM +0100, Hans de Goede wrote:
-> Hi All,
-> 
-> On 12/17/21 15:13, Hans de Goede wrote:
-> > Some BIOS-es contain a bug where they add addresses which map to system
-> > RAM in the PCI host bridge window returned by the ACPI _CRS method, see
-> > commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address
-> > space").
-> > 
-> > To work around this bug Linux excludes E820 reserved addresses when
-> > allocating addresses from the PCI host bridge window since 2010.
-> > 
-> > Recently (2019) some systems have shown-up with E820 reservations which
-> > cover the entire _CRS returned PCI bridge memory window, causing all
-> > attempts to assign memory to PCI BARs which have not been setup by the
-> > BIOS to fail. For example here are the relevant dmesg bits from a
-> > Lenovo IdeaPad 3 15IIL 81WE:
-> > 
-> >  [mem 0x000000004bc50000-0x00000000cfffffff] reserved
-> >  pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
-> > 
-> > The ACPI specifications appear to allow this new behavior:
-> > 
-> > The relationship between E820 and ACPI _CRS is not really very clear.
-> > ACPI v6.3, sec 15, table 15-374, says AddressRangeReserved means:
-> > 
-> >   This range of addresses is in use or reserved by the system and is
-> >   not to be included in the allocatable memory pool of the operating
-> >   system's memory manager.
-> > 
-> > and it may be used when:
-> > 
-> >   The address range is in use by a memory-mapped system device.
-> > 
-> > Furthermore, sec 15.2 says:
-> > 
-> >   Address ranges defined for baseboard memory-mapped I/O devices, such
-> >   as APICs, are returned as reserved.
-> > 
-> > A PCI host bridge qualifies as a baseboard memory-mapped I/O device,
-> > and its apertures are in use and certainly should not be included in
-> > the general allocatable pool, so the fact that some BIOS-es reports
-> > the PCI aperture as "reserved" in E820 doesn't seem like a BIOS bug.
-> > 
-> > So it seems that the excluding of E820 reserved addresses is a mistake.
-> > 
-> > Ideally Linux would fully stop excluding E820 reserved addresses,
-> > but then the old systems this was added for will regress.
-> > Instead keep the old behavior for old systems, while ignoring
-> > the E820 reservations for any systems from now on.
-> > 
-> > Old systems are defined here as BIOS year < 2018, this was chosen to make
-> > sure that E820 reservations will not be used on the currently affected
-> > systems, while at the same time also taking into account that the systems
-> > for which the E820 checking was originally added may have received BIOS
-> > updates for quite a while (esp. CVE related ones), giving them a more
-> > recent BIOS year then 2010.
-> > 
-> > BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
-> > BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
-> > BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
-> > BugLink: https://bugs.launchpad.net/bugs/1878279
-> > BugLink: https://bugs.launchpad.net/bugs/1931715
-> > BugLink: https://bugs.launchpad.net/bugs/1932069
-> > BugLink: https://bugs.launchpad.net/bugs/1921649
-> > Cc: Benoit Grégoire <benoitg@coeus.ca>
-> > Cc: Hui Wang <hui.wang@canonical.com>
-> > Cc: stable@vger.kernel.org
-> > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-> > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> > ---
-> > Changes in v6:
-> > - Remove the possibility to change the behavior from the commandline
-> >   because of worries that users may use this to paper over other problems
-> 
-> ping ?
++Bingbu Cao +arec.kao@intel.com
 
-Thanks, Hans.  Maybe I'm quixotic, but I'm still hoping for an
-approach based on firmware behavior instead of firmware date.  If
-nobody else tries, I will eventually try myself, but I don't have any
-ETA.
+Hello Sakari,
 
-Bjorn
+On Mon, Oct 18, 2021 at 1:23 PM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Hi Rajit,
+>
+> On Wed, Oct 06, 2021 at 07:25:27PM -0700, Rajat Jain wrote:
+> >
+> > Hello,
+> >
+> > Now that we have landed the ACPI object for _DSC in the spec:
+> > https://lore.kernel.org/linux-acpi/CAJZ5v0gwDEjC9T7wfCqDr7R0q_ptz2nVU52_8i8noXHPEign1g@mail.gmail.com/T/
+> >
+> > I was wondering what is happening with the corresponding kernel patchset:
+> > https://lore.kernel.org/linux-acpi/20210210230800.30291-1-sakari.ailus@linux.intel.com/T/#m24e9f51119cbe6eb39f31c097ea3941d00a0baeb
+> >
+> > I didn't see any pending comments, so is there a reason it did not land?
+>
+> Thanks for the ping.
+>
+> I've rebased the set and switched to _DSC so I believe it is ready to be
+> merged now:
+>
+>         <URL:https://lore.kernel.org/linux-media/20211018121729.6357-1-sakari.ailus@linux.intel.com/T/#t>
+>
+> I dropped the ov5670 patch from the set to avoid a conflict, I'll get this
+> merged through the media tree when the rest have landed there.
+
+
+Thanks, I see that your patches series has been merged. Can you please
+also line up this follow up series by Bingbu for inclusion into the
+mainline kernel?
+
+https://patchwork.kernel.org/project/linux-media/list/?series=595925
+
+Thanks,
+
+Rajat
+
+
+>
+> --
+> Regards,
+>
+> Sakari Ailus
