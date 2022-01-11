@@ -2,79 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 337D348B0FD
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jan 2022 16:37:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FF9448B112
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jan 2022 16:41:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349546AbiAKPhA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Jan 2022 10:37:00 -0500
-Received: from mail-qk1-f173.google.com ([209.85.222.173]:45037 "EHLO
-        mail-qk1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243782AbiAKPg6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Jan 2022 10:36:58 -0500
-Received: by mail-qk1-f173.google.com with SMTP id q192so3359579qke.11;
-        Tue, 11 Jan 2022 07:36:58 -0800 (PST)
+        id S239797AbiAKPlO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Jan 2022 10:41:14 -0500
+Received: from mail-qv1-f52.google.com ([209.85.219.52]:37766 "EHLO
+        mail-qv1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240342AbiAKPlO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Jan 2022 10:41:14 -0500
+Received: by mail-qv1-f52.google.com with SMTP id fo11so18692242qvb.4
+        for <linux-acpi@vger.kernel.org>; Tue, 11 Jan 2022 07:41:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=TKbMPGSxsZYgRIJnEQcbNOJrCU9g0etr89yBb4AmgEU=;
-        b=qi6yziUIF+UGmsiMTZHD4ctUDVdooz2vOB/rma36r6ZlQWXlX7hIPQXd4in2YeTaie
-         RsTBYOA2A0TelOUQe/T/qI5rR1VS82Cw4poGG0R6XEwIOyWWwarg5w4JfBsCObT5ezb3
-         VlS6148q7GuLaEgIadXbtY6bxw5Wk9jMlFxoMwjtF5ZfDCxLBu/jauM5x7OWy//6KhGw
-         b4W9bPvP1qj4Ndkg1Q22hfFAP7Geiw4ekYW3xN2tNwKYT7X5fDgYeeF7mCBCqiVQqsaS
-         81ukhIeYhM7puiO1O3gp3OBHQqXx34+ZfVzvkRyfIrYpfZ886dDaV2NErrMDvWAyXWqK
-         S/pg==
-X-Gm-Message-State: AOAM533xKIyBXjDBbmdFBzEzEAGVoaZGV7x5xgRRKtBFk8nKMP47RDMa
-        MsdVBHjHXA+kywN18m4A01z8DlRyV4FSTu7Himo=
-X-Google-Smtp-Source: ABdhPJwANupgS7MNSWqY2eYVMNKeo+Ocyd4789CrYkao9qs8ATSZZtXuJkxq0CXenMAIhEzvvxhmBVh7prdrhV4szQU=
-X-Received: by 2002:a05:620a:1a97:: with SMTP id bl23mr3548929qkb.621.1641915418130;
- Tue, 11 Jan 2022 07:36:58 -0800 (PST)
+        bh=nVWe3LtF0BYJTdqqHf1HISednEA4SAbVZxMHIuyMMrg=;
+        b=owSpxoZGgiKWQ+5h4t7ocvsugL097gDwvvGUENiWMV+974LaEmS4sEnt+YvSM27xPl
+         xqdELPvTjwY05KajkzTQQQzN4kAqQcjIGIjfH2rR0wbNSYPfIvFJr89nJAK6aHb8D/Mg
+         MVOUByVPAMmKYjKbDGoeFJl3TFcOe0a4zmCTP+McXxA1xOmK9OHSseCdcHfnSInhkXbM
+         45vEpS/kFmJGrJCo7R3yKLuTA/aYWMTijvPKax0gtEVRHHgu3ptaysKruKfOiCaalRxP
+         DUaYrwBe7bbUp8rHpbfM/YkoSjOGjGYoa46SA1nuCYUQHzgetSQz98x80Di6OpzzKiCI
+         gY2Q==
+X-Gm-Message-State: AOAM53379CBjwlBt1cBCF/ce1jwI91PcuN+xVpFXBBBdyJOHofM0+Hb2
+        1BzafUEkQDnMXN881QcM/tnhCBG9rBIw+S4ypM5nDPL9
+X-Google-Smtp-Source: ABdhPJy0Ub+gNZSgkZ+GrcJSaIONU1xemHOZfiL7RrGEDqINL63Y9MLdI7MmevxbZk4z6Z+NyYVYMmm/dzMB3h1BrI8=
+X-Received: by 2002:a05:6214:508b:: with SMTP id kk11mr4313064qvb.61.1641915673148;
+ Tue, 11 Jan 2022 07:41:13 -0800 (PST)
 MIME-Version: 1.0
-References: <20220107033516.3611664-1-jiasheng@iscas.ac.cn>
-In-Reply-To: <20220107033516.3611664-1-jiasheng@iscas.ac.cn>
+References: <20220105174714.15723-1-mlangsdo@redhat.com>
+In-Reply-To: <20220105174714.15723-1-mlangsdo@redhat.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 11 Jan 2022 16:36:47 +0100
-Message-ID: <CAJZ5v0i8JgHk9R2_NsS=5joyhnng9g8eePZox7gsqC9yHpcvLA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APD: Check for null pointer after calling devm_ioremap
-To:     Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Tue, 11 Jan 2022 16:41:02 +0100
+Message-ID: <CAJZ5v0gYKCtFLb+CtR4aSXcbhuNNY45JdosSNkcuCifjQXgU0w@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: SPCR: check if table->serial_port.access_width is
+ too wide
+To:     Mark Langsdorf <mlangsdo@redhat.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 7, 2022 at 4:35 AM Jiasheng Jiang <jiasheng@iscas.ac.cn> wrote:
+On Wed, Jan 5, 2022 at 6:47 PM Mark Langsdorf <mlangsdo@redhat.com> wrote:
 >
-> As the possible failure of the devres_alloc(), the devm_ioremap() may
-> return NULL pointer.
-> And then, the 'clk_data->base' will be assigned to clkdev->data->base in
-> platform_device_register_data().
-> And the PTR_ERR_OR_ZERO() can not detect the 'base'.
-> Therefore, it should be better to add the check in order to guarantee
-> the success of the setup.
+> If table->serial_port.access_width is more than 29, it causes
+> undefined behavior when ACPI_ACCESS_BIT_WIDTH shifts it to
+> (1 << ((size) + 2)):
 >
-> Fixes: 3f4ba94e3615 ("ACPI: APD: Add AMD misc clock handler support")
-> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+> [    0.000000] UBSAN: Undefined behaviour in drivers/acpi/spcr.c:114:11
+> [    0.000000] shift exponent 102 is too large for 32-bit type 'int'
+>
+> Use the new ACPI_ACCESS_ defines to test that serial_port.access_width
+> is less than 30 and set it to 6 if it is not.
+>
+> Signed-off-by: Mark Langsdorf <mlangsdo@redhat.com>
 > ---
->  drivers/acpi/acpi_apd.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/acpi/spcr.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-> index 6e02448d15d9..9db6409ecb47 100644
-> --- a/drivers/acpi/acpi_apd.c
-> +++ b/drivers/acpi/acpi_apd.c
-> @@ -95,6 +95,8 @@ static int fch_misc_setup(struct apd_private_data *pdata)
->                                               resource_size(rentry->res));
->                 break;
->         }
-> +       if (!clk_data->base)
-> +               return -ENOMEM;
+> diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
+> index 25c2d0be953e..d589543875b8 100644
+> --- a/drivers/acpi/spcr.c
+> +++ b/drivers/acpi/spcr.c
+> @@ -107,8 +107,13 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
+>                 pr_info("SPCR table version %d\n", table->header.revision);
 >
->         acpi_dev_free_resource_list(&resource_list);
->
+>         if (table->serial_port.space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+> -               switch (ACPI_ACCESS_BIT_WIDTH((
+> -                       table->serial_port.access_width))) {
+> +               u32 bit_width = table->serial_port.access_width;
+> +
+> +               if (bit_width > ACPI_ACCESS_BIT_MAX) {
+> +                       pr_err("Unacceptable wide SPCR Access Width.  Defaulting to byte size\n");
+> +                       bit_width = ACPI_ACCESS_BIT_DEFAULT;
+> +               }
+> +               switch (ACPI_ACCESS_BIT_WIDTH((bit_width))) {
+>                 default:
+>                         pr_err("Unexpected SPCR Access Width.  Defaulting to byte size\n");
+>                         fallthrough;
 > --
 
-Applied as 5.17-rc material with a rewritten changelog, thanks!
+Applied as 5.17-rc material, thanks!
