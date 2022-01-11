@@ -2,229 +2,288 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A43848A9D2
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jan 2022 09:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF06148AA56
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jan 2022 10:20:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236809AbiAKIuu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Jan 2022 03:50:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35290 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236731AbiAKIut (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Jan 2022 03:50:49 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0754EC061756
-        for <linux-acpi@vger.kernel.org>; Tue, 11 Jan 2022 00:50:47 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id q141-20020a1ca793000000b00347b48dfb53so1384421wme.0
-        for <linux-acpi@vger.kernel.org>; Tue, 11 Jan 2022 00:50:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :from:in-reply-to;
-        bh=KWTiqSPGsddfIsMV+nciwJeJU1djeAXQVKl5BMxyFio=;
-        b=SRKVCQbHz686I4C/JMipcEgKz1uu3/kD+zM7fIPlCLP5li3ZVomd0ShjPnt6F03IZa
-         h7OhIYBr/gMTpiurNi7uJTEB7RSO2wtHYSSb0z1gIa4fww6IDZFjDPCV7uy5O+g6ia8y
-         sBT1jGVkB2wkfhlnaSpySjLpe3qAdkIV4Wskk=
+        id S1349239AbiAKJUk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Jan 2022 04:20:40 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:42444 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1349228AbiAKJUi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 11 Jan 2022 04:20:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1641892838;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uJ1YqPO7Xit3OrTXhT/TYDES9bJJk2fXlWiLmQ/iCOQ=;
+        b=irrRj5IBTgFCw1FGWFFAsRdn+4KcNsPgfKkekt5xbxexi2V761sdKHmFuY+wy/FynwogEg
+        LYJck1MR9YSQ4VW423NYgx4ruef5ACM76JhJVOuwnCMw5HPkvznR0Qe8yxQ/yC/Z6OFYx6
+        m/PnRIxsBWWZWc2VxYy+aEfSkZsu+NY=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-224-GONfctBlNOOangNA8Zn5HQ-1; Tue, 11 Jan 2022 04:20:37 -0500
+X-MC-Unique: GONfctBlNOOangNA8Zn5HQ-1
+Received: by mail-ed1-f71.google.com with SMTP id z10-20020a05640235ca00b003f8efab3342so12746274edc.2
+        for <linux-acpi@vger.kernel.org>; Tue, 11 Jan 2022 01:20:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:from:in-reply-to;
-        bh=KWTiqSPGsddfIsMV+nciwJeJU1djeAXQVKl5BMxyFio=;
-        b=C0iyNQHo8IDXqqDsShuj2iciitGkjG4hYXmmTCQP6BJ8TN0QOIGKm0r36M1KSXf5ad
-         20XOYqJc+m3PGq7j7juH3RtITMAJEZsHIuI1+mMnjTBkLj1Nx68+belE4Ta7iWdo/mbf
-         tCtUv7OYp5msbDyTC9Bncjf2/wMXQeCZBVdvX4OkI2+LmFGiaWPKn+fp0IJQLSU0EDFL
-         uvJZhA/lhR3tfI9pmdM5WqI/wowQeUrDJixNcRrzBhfy8PO1F7FjcgdCXC/T+xj9KPkh
-         WwnxMW0IZgVIOG+XBpL9mEVGcNjR4G6ZVvniW963yCNd1DrmjpF944UZW7qJ0TWY+sIa
-         r84Q==
-X-Gm-Message-State: AOAM531nV7mRPeWkTQlOBt8S6aBdFF251dw5DqTaIR7t30LBb9DoM1Aa
-        prTKrSFX82cZ0ULqeKz637zQCQ==
-X-Google-Smtp-Source: ABdhPJxnxGduMhez0BYSqOu0bR1mpIuIZGwKD9XZvErblseYvpXlQfU2/MqRRifmu20EjYazoHOUEQ==
-X-Received: by 2002:a05:600c:4e4b:: with SMTP id e11mr1485232wmq.28.1641891046192;
-        Tue, 11 Jan 2022 00:50:46 -0800 (PST)
-Received: from [10.230.32.81] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id v8sm3258095wrt.116.2022.01.11.00.50.43
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=uJ1YqPO7Xit3OrTXhT/TYDES9bJJk2fXlWiLmQ/iCOQ=;
+        b=6MOx3G8xhhJCKyDidMfXf4nrU/4jDqFh0APXGaC7A4rb3HEHFOc+qG3mgZ2+OQ7DqW
+         ZoxKXy/SDhpfCgpSbJNejb3F1UeUzOlVgWzRzyjUQI9CdNIs6gtbLZkYYvAZNuelbAob
+         LwF1zX7wdvMHHuUazn5cJYwWQ14Q+JljwWrcJGhAPFTdlTD6XGSt2fniVYglBq0pUHHN
+         khic/ihG9Y4bODyo5r8/drihKyAVg8TdjMBJlKgs2+020oGf/UoEcgB2KCyKVuktjK9x
+         zeSFyFDBoMGrr0dtsl2eLVtCb41dECZVRhdixT0C/GnH2hmC4xSPQx3DxhyUN/Ec4lVH
+         hYOw==
+X-Gm-Message-State: AOAM531dH+GkcRFedmd06gcENqA6roxIUkMOk0bCRtfz+xtoEDNPhfgG
+        r6TrDghpicMqgqEBXIjZYF2wwGi7mQpnUiSVtatvwPAAu+FpXZjy0YWrKju+S3slsJEytAhtJC/
+        j3HjcARas4lv6XA9dRMCs6g==
+X-Received: by 2002:a17:906:4fd6:: with SMTP id i22mr2843868ejw.70.1641892835806;
+        Tue, 11 Jan 2022 01:20:35 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwXuRWJ4cHHSS27BhJ/iVwz/12FvR8jmZfdmnIZZPxYco9NzHX7vZnxSjKW05qyZhnGf2vOKg==
+X-Received: by 2002:a17:906:4fd6:: with SMTP id i22mr2843853ejw.70.1641892835568;
+        Tue, 11 Jan 2022 01:20:35 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id kv11sm2255731ejc.156.2022.01.11.01.20.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Jan 2022 00:50:44 -0800 (PST)
-Message-ID: <f909828f-ad8d-a7d6-0e21-7f34ee713da5@broadcom.com>
-Date:   Tue, 11 Jan 2022 09:50:42 +0100
+        Tue, 11 Jan 2022 01:20:35 -0800 (PST)
+Message-ID: <a066f0bc-7b27-771c-544d-cacd15aa2374@redhat.com>
+Date:   Tue, 11 Jan 2022 10:20:34 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH v2 23/35] brcmfmac: cfg80211: Add support for scan params
- v2
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-24-marcan@marcan.st>
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-In-Reply-To: <20220104072658.69756-24-marcan@marcan.st>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000097c61505d54a8ce5"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v2 6/6] ACPI: bus-multi-instantiate: Add SPI support
+Content-Language: en-US
+To:     Stefan Binding <sbinding@opensource.cirrus.com>,
+        'Mark Brown' <broonie@kernel.org>,
+        "'Rafael J . Wysocki'" <rafael@kernel.org>,
+        'Len Brown' <lenb@kernel.org>,
+        'Mark Gross' <markgross@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        patches@opensource.cirrus.com
+References: <20211210154050.3713-1-sbinding@opensource.cirrus.com>
+ <20211210154050.3713-7-sbinding@opensource.cirrus.com>
+ <c311642f-38ab-4914-cf92-852e6a20cfc9@redhat.com>
+ <00af01d8062f$75aed010$610c7030$@opensource.cirrus.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <00af01d8062f$75aed010$610c7030$@opensource.cirrus.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---00000000000097c61505d54a8ce5
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi,
 
-On 1/4/2022 8:26 AM, Hector Martin wrote:
-> This new API version is required for at least the BCM4387 firmware. Add
-> support for it, with a fallback to the v1 API.
-
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
->   .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 113 ++++++++++++++----
->   .../broadcom/brcm80211/brcmfmac/feature.c     |   1 +
->   .../broadcom/brcm80211/brcmfmac/feature.h     |   4 +-
->   .../broadcom/brcm80211/brcmfmac/fwil_types.h  |  49 +++++++-
->   4 files changed, 145 insertions(+), 22 deletions(-)
+On 1/10/22 15:36, Stefan Binding wrote:
+> Hi,
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> index fb727778312c..71e932a8302c 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> @@ -769,12 +769,50 @@ void brcmf_set_mpc(struct brcmf_if *ifp, int mpc)
->   	}
->   }
->   
-> +static void brcmf_escan_prep(struct brcmf_cfg80211_info *cfg,
-> +			     struct brcmf_scan_params_v2_le *params_le,
-> +			     struct cfg80211_scan_request *request);
+>> -----Original Message-----
+>> From: Hans de Goede <hdegoede@redhat.com>
+>> Sent: 21 December 2021 18:32
+>> To: Stefan Binding <sbinding@opensource.cirrus.com>; Mark Brown
+>> <broonie@kernel.org>; Rafael J . Wysocki <rafael@kernel.org>; Len Brown
+>> <lenb@kernel.org>; Mark Gross <markgross@kernel.org>
+>> Cc: linux-kernel@vger.kernel.org; linux-spi@vger.kernel.org; linux-
+>> acpi@vger.kernel.org; platform-driver-x86@vger.kernel.org;
+>> patches@opensource.cirrus.com
+>> Subject: Re: [PATCH v2 6/6] ACPI: bus-multi-instantiate: Add SPI support
+> 
+>>> +	ret = bmi_spi_count_resources(adev);
+>>> +	if (ret <= 0)
+>>> +		return ret;
+>>> +	count = ret;
+>>
+>> Ok, so why not do the following here instead (and drop a whole bunch of
+>> functions above):
+>>
+>> 	ret = acpi_dev_get_resources(adev, &r, bmi_spi_count, &count);
+>> 	if (ret < 0)
+>> 		return ret;
+>>
+>> 	if (count <= 0) {
+>> 		acpi_dev_free_resource_list(&r);
+>> 		return count;
+>> 	}
+>>
+>> 	/* Note we are not freeing the resource list yet here !!! */
+>>
+>>> +
+>>> +	bmi->spi_devs = devm_kcalloc(dev, count, sizeof(*bmi->spi_devs),
+>> GFP_KERNEL);
+>>> +	if (!bmi->spi_devs)
+>>> +		return -ENOMEM;
+>>> +
+>>> +	acpi_data = bmi_spi_get_resources(dev, adev, count);
+>>> +	if (!acpi_data)
+>>> +		return -ENOMEM;
+>>
+>> Remove the bmi_spi_get_resources() call here.
+>>
+>>> +
+>>> +	for (i = 0; i < count && inst_array[i].type; i++) {
+>>
+>> Write a new:
+>>
+>> int bmi_get_spi_resource_by_index(list_head *resource_list, struct
+>> acpi_resource_spi_serialbus *sb_ret, int index)
+>> {}
+>>
+>> Helper which walks the list and fills in *sb_ret with the Nth (matching index)
+>> SpiSerialBus resource found in the
+>> list.
+>>
+>> And then do:
+>>
+>> 		ret = bmi_get_spi_resource_by_index(&r, &sb, i);
+>> 		if (ret)
+>> 			return ret;
+>>
+>> 		ctrl =
+>> bmi_find_spi_controller(sb.resource_source.string_ptr);
+>>
+>>
+>>> +		ctlr = bmi_find_spi_controller(acpi_data-
+>>> acpi_data[i].resource_source);
+>>> +		if (!ctlr) {
+>>> +			ret = -EPROBE_DEFER;
+>>> +			goto error;
+>>> +		}
+>>> +
+>>> +		spi_dev = spi_alloc_device(ctlr);
+>>> +		if (!spi_dev) {
+>>> +			dev_err(&ctlr->dev, "failed to allocate SPI device for
+>> %s\n",
+>>> +				dev_name(&adev->dev));
+>>> +			ret = -ENOMEM;
+>>> +			goto error;
+>>> +		}
+>>> +
+>>> +		strscpy(spi_dev->modalias, inst_array[i].type,
+>> sizeof(spi_dev->modalias));
+>>> +
+>>
+>> And replace all the "acpi_data->acpi_data[i].sb." reference below with
+>> simple "sb.".
+>>
+>>
+>>> +		if (ctlr->fw_translate_cs) {
+>>> +			ret = ctlr->fw_translate_cs(ctlr,
+>>> +						    acpi_data-
+>>> acpi_data[i].sb.device_selection);
+>>> +			if (ret < 0) {
+>>> +				spi_dev_put(spi_dev);
+>>> +				goto error;
+>>> +			}
+>>> +			spi_dev->chip_select = ret;
+>>> +		} else {
+>>> +			spi_dev->chip_select = acpi_data-
+>>> acpi_data[i].sb.device_selection;
+>>> +		}
+>>> +
+>>> +		spi_dev->max_speed_hz = acpi_data-
+>>> acpi_data[i].sb.connection_speed;
+>>> +		spi_dev->bits_per_word = acpi_data-
+>>> acpi_data[i].sb.data_bit_length;
+>>> +
+>>> +		if (acpi_data->acpi_data[i].sb.clock_phase ==
+>> ACPI_SPI_SECOND_PHASE)
+>>> +			spi_dev->mode |= SPI_CPHA;
+>>> +		if (acpi_data->acpi_data[i].sb.clock_polarity ==
+>> ACPI_SPI_START_HIGH)
+>>> +			spi_dev->mode |= SPI_CPOL;
+>>> +		if (acpi_data->acpi_data[i].sb.device_polarity ==
+>> ACPI_SPI_ACTIVE_HIGH)
+>>> +			spi_dev->mode |= SPI_CS_HIGH;
+>>> +
+>>> +		ret = bmi_get_irq(pdev, adev, &inst_array[i]);
+>>> +		if (ret < 0) {
+>>> +			spi_dev_put(spi_dev);
+>>> +			goto error;
+>>> +		}
+>>> +		spi_dev->irq = ret;
+>>> +
+>>> +		snprintf(name, sizeof(name), "%s-%s-%s.%d",
+>> dev_name(&ctlr->dev), dev_name(dev),
+>>> +			 inst_array[i].type, i);
+>>> +		spi_dev->dev.init_name = name;
+>>> +
+>>> +		ret = spi_add_device(spi_dev);
+>>> +		if (ret) {
+>>> +			dev_err(&ctlr->dev, "failed to add SPI device %s from
+>> ACPI: %d\n",
+>>> +				dev_name(&adev->dev), ret);
+>>> +			spi_dev_put(spi_dev);
+>>> +			goto error;
+>>> +		}
+>>> +
+>>> +		dev_dbg(dev, "SPI device %s using chip select %u", name,
+>> spi_dev->chip_select);
+>>> +
+>>> +		bmi->spi_devs[i] = spi_dev;
+>>> +		bmi->spi_num++;
+>>> +	}
+>>> +
+>>> +	if (bmi->spi_num < count) {
+>>> +		dev_err(dev, "Error finding driver, idx %d\n", i);
+>>> +		ret = -ENODEV;
+>>> +		goto error;
+>>> +	}
+>>> +
+>>> +	dev_info(dev, "Instantiate %d SPI devices.\n", bmi->spi_num);
+>>
+>> And here replace the bmi_spi_res_free(acpi_data); call in both exit paths
+>> with:
+>> acpi_dev_free_resource_list(&r); .
+>>
+>> To me this way, simply using the already allocated resources from the list,
+>> rather then making a temp copy of them and throwing that away seems like
+>> a simpler solution ?
+>>
+>> If you go this route, please also remove the struct bmi_spi_acpi and
+>> struct bmi_spi_sb_acpi data types which you now no longer need.
+>>
+> 
+> I tried to implement this idea, and reuse the resource list, but I hit an issue. 
+> The resources saved in the list are not "struct acpi_resource", but instead the 
+> generic "struct resource".
+> We need the acpi_resource structure to pull the parameters from to be able to
+> create the spi devices.
+> As far as I know there is no way to convert the "struct resource" into a
+> "struct acpi_resource". Is there another way to do this?
 
-I am not a fan of function prototypes so if it can be avoided by simply 
-moving the function that would be preferred over this.
+Ugh, you're right. Sorry about that. I still don't realy like the code
+from your original v2 patch for this.
 
-> +static void brcmf_scan_params_v2_to_v1(struct brcmf_scan_params_v2_le *params_v2_le,
-> +				       struct brcmf_scan_params_le *params_le)
-> +{
+So maybe this comment from my second reply on this patch can help
+clean things up:
 
-[...]
+"So thinking a bit more about this, then looking up the nth SpiSerialBus
+resource, and then turning that into a spi_client is something which
+the SPI core ACPI code should already be doing for index==0. So I think
+that you should be able to modify the SPI core ACPI code to take index
+as a parameter and then have it export a helper for this which you
+can use rather then duplicate the SPI core ACPI code  ? Note this is
+also what the I2C code is already doing.
 
-> +	if (!brcmf_feat_is_enabled(ifp, BRCMF_FEAT_SCAN_V2)) {
+And if you go that route you may also want to consider to add the SPI
+equivalent of the i2c_acpi_client_count() helper."
 
-Okay. So it is not really a fallback. Phew!
+Maybe that is a possible route to go to clean this up?
 
-> +		struct brcmf_escan_params_le *params_v1;
-> +
-> +		params_size -= BRCMF_SCAN_PARAMS_V2_FIXED_SIZE;
-> +		params_size += BRCMF_SCAN_PARAMS_FIXED_SIZE;
-> +		params_v1 = kzalloc(params_size, GFP_KERNEL);
-> +		params_v1->version = cpu_to_le32(BRCMF_ESCAN_REQ_VERSION);
-> +		brcmf_scan_params_v2_to_v1(&params->params_v2_le, &params_v1->params_le);
-> +		kfree(params);
-> +		params = params_v1;
-> +	}
-> +
->   	params->action = cpu_to_le16(WL_ESCAN_ACTION_START);
->   	params->sync_id = cpu_to_le16(0x1234);
+Note there are also 2 other small remarks pending:
 
---00000000000097c61505d54a8ce5
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+1. My comment about adding the _t_ at the end of detect
+2. + Mark's remark about patch 3/6 missing your Signed-off-by.
 
-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
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCkOtdaQhfLDrVoi2Wv
-EuDNjZmGJg+mPL5xjQIwDCxUtjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTEwODUwNDZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAPd8N1MtWiuTg+qsLH76TbsrnWUsMpa2p0vRU
-Sd/qfxqPzxKZtsKqM+26yhJj//tEJAz+d3NV0uw+rAE6+hOmm8whnWj+Ej2rvfpG9DCHWNZw9mN6
-p/Yr/oxSRcI/t25mF8xXQ+xS91skM+4pmuugsLM8kzZCIvRVqUaYp7Z6697sCfitwJIusGtfogig
-OzfXDd2CGV04fbJAA06VIjrf8lYRHIxym5gx/y5dXPMg4kV+PlCaKcAyFkeMrkHQxtwJd88KAx+9
-0USzuhz73zJ8o4bILLmfAh9JDWzEBzhf2xzbpT44GQcLVdXipQ2IjUjwv1Vq7mY8XTXriepU7Yh5
-ng==
---00000000000097c61505d54a8ce5--
+Regards,
+
+Hans
+
