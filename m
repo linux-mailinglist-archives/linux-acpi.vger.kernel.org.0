@@ -2,105 +2,98 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A16748A2D2
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jan 2022 23:32:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D9348A496
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jan 2022 01:56:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240966AbiAJWcA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 10 Jan 2022 17:32:00 -0500
-Received: from mga06.intel.com ([134.134.136.31]:34627 "EHLO mga06.intel.com"
+        id S1346011AbiAKA4i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 10 Jan 2022 19:56:38 -0500
+Received: from mga05.intel.com ([192.55.52.43]:62857 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238635AbiAJWcA (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 10 Jan 2022 17:32:00 -0500
+        id S229701AbiAKA4i (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 10 Jan 2022 19:56:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1641853920; x=1673389920;
+  t=1641862598; x=1673398598;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=6euwceMmdMz5mhSCD5eQOfqFem+JFeSm6tECMTbt/aM=;
-  b=ay6Gbbiav6hrJbTRyTcDpW7GL2xqsX4WFJ7yxw3b0NLAYc4DuV7gamGx
-   TitNyqWW5cPUJLoboLWKNR6vbt9mYt+j0jDVIYiQy2d8M1cZ0Vio4/BRL
-   oddGyNDv2MR8jQGdg4ubUOsiNA9Hkdypbf6bDJF3gcMzp3FwiH0ZHAV7+
-   APJvL4nSOXQOVKYVAaQHdmMHUVH8D+v9/MFNZ7G5BvJOCqBP5ZH9XaDHb
-   YqBHvPcWAwqMunALo8fiiKmGX6JhSNxirvMsI39/b79MgqHb4EiSFd8hW
-   862FBzukXFO+jQryVU/Q/AEhBAlrcypo2Fg2vG8mNyR/1vEU10vCUagtI
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10223"; a="304084379"
+  bh=HFUd3/d50X45y8Ud4VwrANlmEf9WLntADXATJ1Z091Y=;
+  b=ELGGsFlEPHOL+TuqxgDtqoJANgUxs3qb7rdYN32a51JkpVCNiOS7hdHQ
+   Jjra1ohOZu+IGr2q9262gBi5oPct6oTra7CnuH+DYSvVNsUTuYBcwsLKI
+   DNttmdnqeeV0UYAKdOlyT+QmUzGBth/g7sjV+IcmTjwsHQS/x11fTOWgY
+   Hxg+ke0EUUMa7xPr46oa9XZuSznTRGXOD9cUqX1XRpG2bKEWuwBCGG12z
+   qHurW82ym+t/cqCrokM103jOzwzzU2ceguSxeuXft+8nLT75z4KnySCId
+   Q0jHnXY6cipYYa1A9Wa0/fj3WhihXtslSgs8B+wrUxUTsg6pfr8yZex4M
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10223"; a="329713752"
 X-IronPort-AV: E=Sophos;i="5.88,278,1635231600"; 
-   d="scan'208";a="304084379"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 14:31:58 -0800
+   d="scan'208";a="329713752"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 16:56:37 -0800
 X-IronPort-AV: E=Sophos;i="5.88,278,1635231600"; 
-   d="scan'208";a="558142856"
-Received: from paasikivi.fi.intel.com ([10.237.72.42])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 14:31:54 -0800
-Received: from paasikivi.fi.intel.com (localhost [127.0.0.1])
-        by paasikivi.fi.intel.com (Postfix) with SMTP id 9C75D2043C;
-        Tue, 11 Jan 2022 00:31:52 +0200 (EET)
-Date:   Tue, 11 Jan 2022 00:31:52 +0200
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Rajat Jain <rajatja@google.com>
+   d="scan'208";a="622876040"
+Received: from chenyu-desktop.sh.intel.com (HELO chenyu-desktop) ([10.239.158.186])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 16:56:36 -0800
+Date:   Tue, 11 Jan 2022 08:56:02 +0800
+From:   Chen Yu <yu.c.chen@intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Hyungwoo Yang <hyungwoo.yang@intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Robert Moore <robert.moore@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
-        devel@acpica.org, rajatxjain@gmail.com
-Subject: Re: ACPI: scan: Obtain device's desired enumeration power state
-Message-ID: <Ydyz2HSbLLbVc9ql@paasikivi.fi.intel.com>
-References: <20210210230800.30291-2-sakari.ailus@linux.intel.com>
- <20211007022527.2448652-1-rajatja@google.com>
- <YW3XwDxwBsJdFslA@paasikivi.fi.intel.com>
- <CACK8Z6FcBusdMMsu2vKZT8vx6yvcWS7Gh7bDyYqdB1ikspEHDA@mail.gmail.com>
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] ACPI: pfr_telemetry: Fix info leak in pfrt_log_ioctl()
+Message-ID: <20220111005602.GA987335@chenyu-desktop>
+References: <20220107073407.GG22086@kili>
+ <20220107134617.GA895400@chenyu-desktop>
+ <20220110061713.GA1951@kadam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACK8Z6FcBusdMMsu2vKZT8vx6yvcWS7Gh7bDyYqdB1ikspEHDA@mail.gmail.com>
+In-Reply-To: <20220110061713.GA1951@kadam>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Rajat,
-
-On Mon, Jan 10, 2022 at 10:55:58AM -0800, Rajat Jain wrote:
-> > > https://lore.kernel.org/linux-acpi/CAJZ5v0gwDEjC9T7wfCqDr7R0q_ptz2nVU52_8i8noXHPEign1g@mail.gmail.com/T/
-> > >
-> > > I was wondering what is happening with the corresponding kernel patchset:
-> > > https://lore.kernel.org/linux-acpi/20210210230800.30291-1-sakari.ailus@linux.intel.com/T/#m24e9f51119cbe6eb39f31c097ea3941d00a0baeb
-> > >
-> > > I didn't see any pending comments, so is there a reason it did not land?
-> >
-> > Thanks for the ping.
-> >
-> > I've rebased the set and switched to _DSC so I believe it is ready to be
-> > merged now:
-> >
-> >         <URL:https://lore.kernel.org/linux-media/20211018121729.6357-1-sakari.ailus@linux.intel.com/T/#t>
-> >
-> > I dropped the ov5670 patch from the set to avoid a conflict, I'll get this
-> > merged through the media tree when the rest have landed there.
+On Mon, Jan 10, 2022 at 09:17:13AM +0300, Dan Carpenter wrote:
+> On Fri, Jan 07, 2022 at 09:46:17PM +0800, Chen Yu wrote:
+> > On Fri, Jan 07, 2022 at 10:34:07AM +0300, Dan Carpenter wrote:
+> > > The "data_info" struct is copied to the user.  It has a 4 byte struct
+> > > hole after the last struct member so we need to memset that to avoid
+> > > copying uninitialized stack data to the user.
+> > > 
+> > > Fixes: b0013e037a8b ("ACPI: Introduce Platform Firmware Runtime Telemetry driver")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > ---
+> > > When you're adding a new driver to the kernel then please use the new
+> > > driver's prefix instead of just the subsystem prefix.
+> > > 
+> > >  Bad: ACPI: Introduce Platform Firmware Runtime Telemetry driver
+> > > Good: ACPI / pfr_telemetry: Introduce Platform Firmware Runtime Telemetry driver
+> > > 
+> > Thanks for pointing this out.
+> > > Otherwise it's just up to me to guess what prefix you wanted.
+> > > 
+> > >  drivers/acpi/pfr_telemetry.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/drivers/acpi/pfr_telemetry.c b/drivers/acpi/pfr_telemetry.c
+> > > index da50dd80192c..9abf350bd7a5 100644
+> > > --- a/drivers/acpi/pfr_telemetry.c
+> > > +++ b/drivers/acpi/pfr_telemetry.c
+> > > @@ -83,6 +83,7 @@ static int get_pfrt_log_data_info(struct pfrt_log_data_info *data_info,
+> > >  	union acpi_object *out_obj, in_obj, in_buf;
+> > >  	int ret = -EBUSY;
+> > >  
+> > > +	memset(data_info, 0, sizeof(*data_info));
+> > Just one minor question, how about moving above before:
+> > data_info->status = out_obj->package.elements[LOG_STATUS_IDX].integer.value;
+> > after the sanity check of the _DSM result?
 > 
+> I guess I wanted to keep all the memsets together.  I feel like if the
+> data is invalid, then it's going to be a slow path and it's not worth
+> optimizing that case.  If the data is invalid then a little slow down is
+> the least of our concerns.
+>
+Ok, got it.
+
+thanks,
+Chenyu 
 > 
-> Thanks, I see that your patches series has been merged. Can you please
-> also line up this follow up series by Bingbu for inclusion into the
-> mainline kernel?
-> 
-> https://patchwork.kernel.org/project/linux-media/list/?series=595925
-
-These patches are in media tree master:
-
-<URL:https://git.linuxtv.org/media_tree.git/log/>
-
-I'd expect to see these in Linux 5.17.
-
--- 
-Kind regards,
-
-Sakari Ailus
