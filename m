@@ -2,75 +2,93 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56EBB48B157
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jan 2022 16:53:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CA9748B167
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jan 2022 16:55:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349693AbiAKPw6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 11 Jan 2022 10:52:58 -0500
-Received: from mail-qv1-f48.google.com ([209.85.219.48]:41848 "EHLO
-        mail-qv1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229868AbiAKPw6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Jan 2022 10:52:58 -0500
-Received: by mail-qv1-f48.google.com with SMTP id hu2so18747506qvb.8
-        for <linux-acpi@vger.kernel.org>; Tue, 11 Jan 2022 07:52:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nynSAccmbpFQXMIOtbvj7qX+Qb+l9/00fgfzXa3Y82w=;
-        b=T3n/gl/7nm2HLYSXMgBJN+oeidrQvWTOZvS1bD80AQR7Sb+l5n9IRx9mef9u9LnaEe
-         JPI9QIPYIghViDiBWN9fJB7UlU/y5r+pdP2uSWWauh2J8ZFcUUcf5XhI0+naAqDWeLRb
-         WqGm6q6pEHffwckPRD63LrzuUI3q1FzVC/cgIHSuWT8PwB67jZ6C0XgrJ8Cg+LJuJuRo
-         6Fx9w8XpU2FGS/rSCNr5KY+hDs0K3FM4oyK2Z4vmai4msWY+Nv3X80pR/lNDUfk2XtA3
-         FWt5wFtyg8kCnibLiOa/qZBgvZ+rhkEloVaN8FOvhPSrNa/upvaNZDeEPHSjVh8iqJP5
-         RMgg==
-X-Gm-Message-State: AOAM531Lqaa2lQiOSIL5gnM8DtU1OVvMVq2KFXETNlrLQsJfdEU1JjZz
-        tl06KfG9Mo/0SagqAxo+t8PkLPN7aP948oIxOZw=
-X-Google-Smtp-Source: ABdhPJyckBmy6Kkb2GE+4cFicmBDqEXBb233At9WH01P3w93SryGE+74gudOh9sd76uscUkqDMKbpdobqI3LBnhP4t8=
-X-Received: by 2002:a05:6214:508b:: with SMTP id kk11mr4357485qvb.61.1641916377930;
- Tue, 11 Jan 2022 07:52:57 -0800 (PST)
+        id S1349747AbiAKPz3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 11 Jan 2022 10:55:29 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:56576 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349717AbiAKPz3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 11 Jan 2022 10:55:29 -0500
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 4.0.0)
+ id 4cd268dabde6e4c3; Tue, 11 Jan 2022 16:55:27 +0100
+Received: from kreacher.localnet (unknown [213.134.181.61])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 6BF5C66B107;
+        Tue, 11 Jan 2022 16:55:26 +0100 (CET)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Bob Moore <robert.moore@intel.com>,
+        Arnd Bergmann <arnd@kernel.org>
+Subject: [PATCH] ACPICA: Use uintptr_t and offsetof() in Linux kernel builds
+Date:   Tue, 11 Jan 2022 16:55:25 +0100
+Message-ID: <2614912.mvXUDI8C0e@kreacher>
 MIME-Version: 1.0
-References: <20220105193910.25678-1-mario.limonciello@amd.com>
-In-Reply-To: <20220105193910.25678-1-mario.limonciello@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 11 Jan 2022 16:52:47 +0100
-Message-ID: <CAJZ5v0g-q4SLfK65bvWum7+OQZgbNQs47Pu3y-BCs9Px2C3Jag@mail.gmail.com>
-Subject: Re: [PATCH 0/3] On AMD platforms only offer s2idle w/ proper FW
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.181.61
+X-CLIENT-HOSTNAME: 213.134.181.61
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrudehfedgkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvvefgteeuteehkeduuedvudetleevffdtffdtjeejueekffetieekgfeigfehudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvudefrddufeegrddukedurdeiudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukedurdeiuddphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgsvghrthdrmhhoohhrvgesihhnthgvlhdrtghomhdprhgtphhtthhopegrrhhnugeskhgvrhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 5, 2022 at 8:39 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> Currently the Linux kernel will offer s2idle regardless of whether the FADT
-> indicates the system should use or on X86 if the LPS0 ACPI device has been
-> activated.
->
-> On some non-AMD platforms s2idle can be offered even without proper
-> firmware support.  The power consumption may be higher in these instances
-> but the system otherwise properly suspends and resumes.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Well, the idea is that s2idle should not require FW support at all.
+To avoid "performing pointer subtraction with a null pointer has
+undefined behavior" compiler warnings, use uintptr_t and offsetof()
+that are always available during Linux kernel builds to define
+acpi_uintptr_t and the ACPI_TO_INTEGER() and ACPI_OFFSET() macros.
 
-It may not be possible to reach the minimum power level of the
-platform without FW support, but that should not prevent s2idle from
-being used.
+Based on earlier proposal from Arnd Bergmann.
 
-> On AMD platforms however when the FW has been configured not to offer
-> s2idle some different hardware initialization has occurred such that the
-> system won't properly resume.
+Link: https://lore.kernel.org/linux-acpi/20210927121338.938994-1-arnd@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ include/acpi/actypes.h          |    4 ++++
+ include/acpi/platform/aclinux.h |    5 +++++
+ 2 files changed, 9 insertions(+)
 
-That's rather unfortunate.
+Index: linux-pm/include/acpi/platform/aclinux.h
+===================================================================
+--- linux-pm.orig/include/acpi/platform/aclinux.h
++++ linux-pm/include/acpi/platform/aclinux.h
+@@ -114,6 +114,11 @@
+ #define acpi_raw_spinlock                   raw_spinlock_t *
+ #define acpi_cpu_flags                      unsigned long
+ 
++#define acpi_uintptr_t                      uintptr_t
++
++#define ACPI_TO_INTEGER(p)                  ((uintptr_t)(p))
++#define ACPI_OFFSET(d, f)                   offsetof(d, f)
++
+ /* Use native linux version of acpi_os_allocate_zeroed */
+ 
+ #define USE_NATIVE_ALLOCATE_ZEROED
+Index: linux-pm/include/acpi/actypes.h
+===================================================================
+--- linux-pm.orig/include/acpi/actypes.h
++++ linux-pm/include/acpi/actypes.h
+@@ -507,8 +507,12 @@ typedef u64 acpi_integer;
+ /* Pointer/Integer type conversions */
+ 
+ #define ACPI_TO_POINTER(i)              ACPI_CAST_PTR (void, (acpi_size) (i))
++#ifndef ACPI_TO_INTEGER
+ #define ACPI_TO_INTEGER(p)              ACPI_PTR_DIFF (p, (void *) 0)
++#endif
++#ifndef ACPI_OFFSET
+ #define ACPI_OFFSET(d, f)               ACPI_PTR_DIFF (&(((d *) 0)->f), (void *) 0)
++#endif
+ #define ACPI_PTR_TO_PHYSADDR(i)         ACPI_TO_INTEGER(i)
+ 
+ /* Optimizations for 4-character (32-bit) acpi_name manipulation */
 
-Can you please share some details on what's going on in those cases?
 
-Technically, without FW support there should be no difference between
-the platform state reachable via s2idle and the platform state
-reachable via runtime idle.
+
