@@ -2,90 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EFCC48C87F
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 17:34:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5AD048CAF7
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 19:28:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240243AbiALQev (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jan 2022 11:34:51 -0500
-Received: from mail-qk1-f170.google.com ([209.85.222.170]:42909 "EHLO
-        mail-qk1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349922AbiALQeO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 11:34:14 -0500
-Received: by mail-qk1-f170.google.com with SMTP id c190so1532401qkg.9;
-        Wed, 12 Jan 2022 08:34:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0N0dPN3O3RZBULsdprAK0TPmoiFmNasZOU3EoQJ8BQo=;
-        b=p+mSBlVeeDYomG0z0/5alW2pGuSgGnm0qnbZh0OZMRtvVTq5ZOwQDeQ891qhHTiJnh
-         YfM3LkfHfMgXiNLUa/v7hQsRRLrmdgyNsSZsrWbsmgaDcr+LuEWj/PIR06AFZkxptvWa
-         BiSNZ99ogigV92Q+9f6OkE9huytWl+E+qcIi5zYqXF+IF0o/VF5xPpbzjgvOtP8hUMgG
-         iYQGRYDyukm8v5dgvGf+df3ci43JqyLPt2LQD7hKRAUUp+MEzKRvfvnQtyjo7bkfkMg5
-         BA1nWPQX/E3X6UNfLhiPSYWwa7VnTlKW6+XTPJipNbjqxwjLzD7oTCxnVrteliKth3qo
-         X2uQ==
-X-Gm-Message-State: AOAM533cET0hqCjEms5FrCULBd86VUo2S4HEGLx3VuQnO7Mr9JA2J+at
-        wXZzNgbwYwBlbehc61c1PKxskwU8y9uIcz3WWK4pUpj1
-X-Google-Smtp-Source: ABdhPJzjopvb12tK07oUFeqfdMnPiZhPPatJI4OEBTP9c5OaTnk5QUzQYpFLSvTxCVZiIabjRFyDFjoqJnHhstBxpO0=
-X-Received: by 2002:a37:b702:: with SMTP id h2mr391026qkf.135.1642005253779;
- Wed, 12 Jan 2022 08:34:13 -0800 (PST)
+        id S1356187AbiALS2H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jan 2022 13:28:07 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:47072 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343881AbiALS2F (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 13:28:05 -0500
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 4.0.0)
+ id 12aeb42eed6a52ae; Wed, 12 Jan 2022 19:28:04 +0100
+Received: from kreacher.localnet (unknown [213.134.181.123])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id C101866B132;
+        Wed, 12 Jan 2022 19:28:03 +0100 (CET)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Steven Noonan <steven@valvesoftware.com>,
+        Huang Rui <ray.huang@amd.com>
+Subject: [PATCH v1 0/2] ACPI: CPPC: Fix I/O port reads on big endian and clean up code in cpc_read()
+Date:   Wed, 12 Jan 2022 19:25:27 +0100
+Message-ID: <11905930.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-References: <20220112080155.666868-1-chi.minghao@zte.com.cn>
-In-Reply-To: <20220112080155.666868-1-chi.minghao@zte.com.cn>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 12 Jan 2022 17:34:02 +0100
-Message-ID: <CAJZ5v0iipOm6DX3Fd8iNKF_LC6kJWCy=1LxFsh47z01UYDrRow@mail.gmail.com>
-Subject: Re: [PATCH] drivers/acpi/apei: remove redundant rc variable
-To:     cgel.zte@gmail.com
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.181.123
+X-CLIENT-HOSTNAME: 213.134.181.123
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrtddugdekkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhephfegtdffjeehkeegleejveevtdeugfffieeijeduuddtkefgjedvheeujeejtedvnecukfhppedvudefrddufeegrddukedurdduvdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekuddruddvfedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnrdgtrghrphgvnhhtvghrsehorhgrtghlvgdrtghomhdprhgtphhtthhopehsthgvvhgvnhesvhgrlhhvvghsohhfthifrghrvgdrtghomhdprhgtphht
+ thhopehrrgihrdhhuhgrnhhgsegrmhgurdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 12, 2022 at 9:02 AM <cgel.zte@gmail.com> wrote:
->
-> From: Minghao Chi <chi.minghao@zte.com.cn>
->
-> Return value from apei_exec_write_register() directly instead
-> of taking this in another redundant variable.
->
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
-> Signed-off-by: CGEL ZTE <cgel.zte@gmail.com>
+Hi All,
 
-Well, this doesn't look like an e-mail address of a physical person
-which is required for S-o-b tags.
+These patches address a bug report against new code in cpc_read() and clean it
+up on top of that.
 
-> ---
->  drivers/acpi/apei/apei-base.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
->
-> diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
-> index c7fdb12c3310..87145b6b89aa 100644
-> --- a/drivers/acpi/apei/apei-base.c
-> +++ b/drivers/acpi/apei/apei-base.c
-> @@ -125,12 +125,9 @@ EXPORT_SYMBOL_GPL(apei_exec_write_register);
->  int apei_exec_write_register_value(struct apei_exec_context *ctx,
->                                    struct acpi_whea_header *entry)
->  {
-> -       int rc;
-> -
->         ctx->value = entry->value;
-> -       rc = apei_exec_write_register(ctx, entry);
-> +       return apei_exec_write_register(ctx, entry);
->
-> -       return rc;
->  }
->  EXPORT_SYMBOL_GPL(apei_exec_write_register_value);
->
-> --
-> 2.25.1
->
+Thanks!
+
+
+
