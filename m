@@ -2,62 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28DCC48CB28
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 19:42:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D7F848CCD7
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 21:07:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356388AbiALSmP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jan 2022 13:42:15 -0500
-Received: from mail-qk1-f173.google.com ([209.85.222.173]:39497 "EHLO
-        mail-qk1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356384AbiALSmO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 13:42:14 -0500
-Received: by mail-qk1-f173.google.com with SMTP id 69so4314732qkd.6;
-        Wed, 12 Jan 2022 10:42:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JmfYPB11Ou5DTZdDH8mTQHFm0SLlZ8h38q0aVdDysic=;
-        b=G+qh8T4jsQjlJuj0Anf1C4YzujKeYu/78+AGu8kEsRbelwScb/x82HXY3/QPAW1KL6
-         NKttT1g5NJCES1rF6MPBx3PvOmWTCoMJuDnm4U63mWo4qMlWNs+bi77HuHB1/exo+8wm
-         y4KSw2983JmeHr5fchvqP/nyhUDW+WZEyPohH0GVQkCny66uhoXoYnlIvfYJn1UoaZ6b
-         dMvWICfzIh+fvQB0/hByZ3W+YiUVz0+wH1glkiwNU4fGsBYsKHhrriVctedDbq/YhxtX
-         lbpQ2cB6vv7+MOz+3CLT9aTIQpKLvRAi9JO+gjHpOyznIJGoFek8VxZ83TrehIoO6SVY
-         De4g==
-X-Gm-Message-State: AOAM533Vexwr8JK9ONNRpG95RYPg4+32CrJ13LvjkG4BtM1VG7TnqxZu
-        Fve9UZ1TAl/imBdX7hWCOzyaPBf2oNfWKVqvGTfO9xgw
-X-Google-Smtp-Source: ABdhPJx3uptLFabDUOylc68jm5c+2NFmXEkPVdtXcBIzVMWhVjtUe9ctWyrfGxVMTHX82SzVfpT6yMQykXXMYzjjyj4=
-X-Received: by 2002:a37:dc45:: with SMTP id v66mr799997qki.516.1642012933392;
- Wed, 12 Jan 2022 10:42:13 -0800 (PST)
+        id S1357242AbiALUHD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jan 2022 15:07:03 -0500
+Received: from neo-zeon.de ([70.229.12.130]:38110 "EHLO neo-zeon.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235331AbiALUGt (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Jan 2022 15:06:49 -0500
+X-Greylist: delayed 400 seconds by postgrey-1.27 at vger.kernel.org; Wed, 12 Jan 2022 15:06:49 EST
+Received: from neo-zeon.de (localhost [127.0.0.1])
+        by neo-zeon.de (OpenSMTPD) with ESMTP id 9f1b631d;
+        Wed, 12 Jan 2022 12:00:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=neo-zeon.de; h=message-id
+        :date:mime-version:subject:to:cc:references:from:in-reply-to
+        :content-type:content-transfer-encoding; s=1; bh=LsQgZUAtXz/CTWd
+        vR+KQLZhrZLQ=; b=wsOGnqtYjqstNcf7G/2jAkEC5VZEL5+9SHA5IVcodgyQTje
+        X676QXMnB6oKzRNX6sOBC//iyw3Le/JUTIZ2cMtnaCBm7gvWBQ8/Z4cGOpvShGxf
+        p/1OYtuujlRWI93qlm8afXMHk6gt5kgsIM9ARZEjWKXQ+m3IagHUILEZ80Rc=
+Received: by neo-zeon.de (OpenSMTPD) with ESMTPSA id 04d3b972 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Wed, 12 Jan 2022 12:00:07 -0800 (PST)
+Message-ID: <3f042293-05de-d472-dd6e-ce5ca3a8331b@neo-zeon.de>
+Date:   Wed, 12 Jan 2022 12:00:06 -0800
 MIME-Version: 1.0
-References: <20220103155838.616580-1-sudeep.holla@arm.com> <20220105174554.GA29945@1e936cf764ba>
- <20220106141230.qddcwyycefxlbrma@bogus>
-In-Reply-To: <20220106141230.qddcwyycefxlbrma@bogus>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 12 Jan 2022 19:42:02 +0100
-Message-ID: <CAJZ5v0iG0-O1m2hS62yXMNW4p1JhWhxXZCDQc=mxKc50mU7GZw@mail.gmail.com>
-Subject: Re: [RFC PATCH] ACPI: PCC: pcc_ctx can be static
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     kernel test robot <lkp@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>, kbuild-all@lists.01.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.1
+Subject: Re: [PATCH v6 08/10] ACPI / scan: Create platform device for CLSA0100
+ and CSC3551 ACPI nodes
+Content-Language: en-US
+To:     Lucas tanure <tanureal@opensource.cirrus.com>,
+        Stefan Binding <sbinding@opensource.cirrus.com>,
+        'Hans de Goede' <hdegoede@redhat.com>,
+        "'Rafael J. Wysocki'" <rafael@kernel.org>
+Cc:     "'moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM...'" 
+        <alsa-devel@alsa-project.org>,
+        'Liam Girdwood' <lgirdwood@gmail.com>,
+        patches@opensource.cirrus.com, 'Takashi Iwai' <tiwai@suse.com>,
+        'Mark Gross' <markgross@kernel.org>,
+        'ACPI Devel Maling List' <linux-acpi@vger.kernel.org>,
+        'Mark Brown' <broonie@kernel.org>,
+        'Platform Driver' <platform-driver-x86@vger.kernel.org>,
+        'Linux Kernel Mailing List' <linux-kernel@vger.kernel.org>,
+        'Len Brown' <lenb@kernel.org>
+References: <20211217115708.882525-1-tanureal@opensource.cirrus.com>
+ <20211217115708.882525-9-tanureal@opensource.cirrus.com>
+ <CAJZ5v0jTELqFeO6q6w_mYNo_yf1R9SX66RrEz0ZSe27w7E6kog@mail.gmail.com>
+ <4b5506b1-20c6-3983-d541-86dc2388b2a7@redhat.com>
+ <004001d7f5c6$7329d4d0$597d7e70$@opensource.cirrus.com>
+ <e2d39d52-c139-a94a-94cc-88841d3638e3@opensource.cirrus.com>
+From:   Cameron Berkenpas <cam@neo-zeon.de>
+In-Reply-To: <e2d39d52-c139-a94a-94cc-88841d3638e3@opensource.cirrus.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 6, 2022 at 3:12 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
->
-> Hi,
->
-> On Thu, Jan 06, 2022 at 01:45:56AM +0800, kernel test robot wrote:
-> > drivers/acpi/acpi_pcc.c:34:22: warning: symbol 'pcc_ctx' was not declared. Should it be static?
-> >
-> > Reported-by: kernel test robot <lkp@intel.com>
->
-> Thanks for the fix and sorry for not noticing this before it was merged.
->
-> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Hello,
 
-Applied, thanks!
+Will this also include adding support for ID's matching CLSA0101?
+
+Thanks,
+
+-Cameron
+
+On 1/12/22 05:05, Lucas tanure wrote:
+> As the ic2-multi-instantiate patch chain is still being worked out, we 
+> would like to submit a new chain for CLSA0100 id and a few fixes for 
+> the HDA cs35l41 driver.
+> And to avoid conflicts the ic2-multi-instantiate patch chain will wait 
+> for this new patch chain to be merged.
+>
+> Thanks,
+> Lucas Tanure 
+
