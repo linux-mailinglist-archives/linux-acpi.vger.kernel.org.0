@@ -2,107 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8845C48CB05
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 19:31:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28DCC48CB28
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 19:42:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356257AbiALSby (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jan 2022 13:31:54 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:59570 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356231AbiALSbv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 13:31:51 -0500
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 4.0.0)
- id ff3f166587abe54b; Wed, 12 Jan 2022 19:31:49 +0100
-Received: from kreacher.localnet (unknown [213.134.181.123])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id 3EDB766B132;
-        Wed, 12 Jan 2022 19:31:49 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@gmail.com>
-Subject: [PATCH] ACPI: OSL: Fix and clean up acpi_os_read/write_port()
-Date:   Wed, 12 Jan 2022 19:31:48 +0100
-Message-ID: <1809721.tdWV9SEqCh@kreacher>
+        id S1356388AbiALSmP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jan 2022 13:42:15 -0500
+Received: from mail-qk1-f173.google.com ([209.85.222.173]:39497 "EHLO
+        mail-qk1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1356384AbiALSmO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 13:42:14 -0500
+Received: by mail-qk1-f173.google.com with SMTP id 69so4314732qkd.6;
+        Wed, 12 Jan 2022 10:42:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JmfYPB11Ou5DTZdDH8mTQHFm0SLlZ8h38q0aVdDysic=;
+        b=G+qh8T4jsQjlJuj0Anf1C4YzujKeYu/78+AGu8kEsRbelwScb/x82HXY3/QPAW1KL6
+         NKttT1g5NJCES1rF6MPBx3PvOmWTCoMJuDnm4U63mWo4qMlWNs+bi77HuHB1/exo+8wm
+         y4KSw2983JmeHr5fchvqP/nyhUDW+WZEyPohH0GVQkCny66uhoXoYnlIvfYJn1UoaZ6b
+         dMvWICfzIh+fvQB0/hByZ3W+YiUVz0+wH1glkiwNU4fGsBYsKHhrriVctedDbq/YhxtX
+         lbpQ2cB6vv7+MOz+3CLT9aTIQpKLvRAi9JO+gjHpOyznIJGoFek8VxZ83TrehIoO6SVY
+         De4g==
+X-Gm-Message-State: AOAM533Vexwr8JK9ONNRpG95RYPg4+32CrJ13LvjkG4BtM1VG7TnqxZu
+        Fve9UZ1TAl/imBdX7hWCOzyaPBf2oNfWKVqvGTfO9xgw
+X-Google-Smtp-Source: ABdhPJx3uptLFabDUOylc68jm5c+2NFmXEkPVdtXcBIzVMWhVjtUe9ctWyrfGxVMTHX82SzVfpT6yMQykXXMYzjjyj4=
+X-Received: by 2002:a37:dc45:: with SMTP id v66mr799997qki.516.1642012933392;
+ Wed, 12 Jan 2022 10:42:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20220103155838.616580-1-sudeep.holla@arm.com> <20220105174554.GA29945@1e936cf764ba>
+ <20220106141230.qddcwyycefxlbrma@bogus>
+In-Reply-To: <20220106141230.qddcwyycefxlbrma@bogus>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 12 Jan 2022 19:42:02 +0100
+Message-ID: <CAJZ5v0iG0-O1m2hS62yXMNW4p1JhWhxXZCDQc=mxKc50mU7GZw@mail.gmail.com>
+Subject: Re: [RFC PATCH] ACPI: PCC: pcc_ctx can be static
+To:     Sudeep Holla <sudeep.holla@arm.com>
+Cc:     kernel test robot <lkp@intel.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>, kbuild-all@lists.01.org
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.181.123
-X-CLIENT-HOSTNAME: 213.134.181.123
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrtddugdeklecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhephfegtdffjeehkeegleejveevtdeugfffieeijeduuddtkefgjedvheeujeejtedvnecukfhppedvudefrddufeegrddukedurdduvdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudekuddruddvfedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepfedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnrdgtrghrphgvnhhtvghrsehgmhgrihhlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Thu, Jan 6, 2022 at 3:12 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
+>
+> Hi,
+>
+> On Thu, Jan 06, 2022 at 01:45:56AM +0800, kernel test robot wrote:
+> > drivers/acpi/acpi_pcc.c:34:22: warning: symbol 'pcc_ctx' was not declared. Should it be static?
+> >
+> > Reported-by: kernel test robot <lkp@intel.com>
+>
+> Thanks for the fix and sorry for not noticing this before it was merged.
+>
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 
-First, remove type casts that make acpi_os_read_port() only work on
-little endian and are generally not needed.
-
-Second, avoid clearing the memory pointed to by the value return
-pointer in acpi_os_read_port() if it is the dummy on the stack (in
-which case clearing it is not necessary).
-
-Finally, prevent both acpi_os_read_port() and acpi_os_write_port()
-from crashing the kernel when they receive an unsupported width
-value and make them print a debug message and return an error instead.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/osl.c |   19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
-
-Index: linux-pm/drivers/acpi/osl.c
-===================================================================
---- linux-pm.orig/drivers/acpi/osl.c
-+++ linux-pm/drivers/acpi/osl.c
-@@ -642,22 +642,24 @@ u64 acpi_os_get_timer(void)
- 		(ACPI_100NSEC_PER_SEC / HZ);
- }
- 
--acpi_status acpi_os_read_port(acpi_io_address port, u32 * value, u32 width)
-+acpi_status acpi_os_read_port(acpi_io_address port, u32 *value, u32 width)
- {
- 	u32 dummy;
- 
--	if (!value)
-+	if (value)
-+		*value = 0;
-+	else
- 		value = &dummy;
- 
--	*value = 0;
- 	if (width <= 8) {
--		*(u8 *) value = inb(port);
-+		*value = inb(port);
- 	} else if (width <= 16) {
--		*(u16 *) value = inw(port);
-+		*value = inw(port);
- 	} else if (width <= 32) {
--		*(u32 *) value = inl(port);
-+		*value = inl(port);
- 	} else {
--		BUG();
-+		pr_debug("%s: Access width %d not supported\n", __func__, width);
-+		return AE_BAD_PARAMETER;
- 	}
- 
- 	return AE_OK;
-@@ -674,7 +676,8 @@ acpi_status acpi_os_write_port(acpi_io_a
- 	} else if (width <= 32) {
- 		outl(value, port);
- 	} else {
--		BUG();
-+		pr_debug("%s: Access width %d not supported\n", __func__, width);
-+		return AE_BAD_PARAMETER;
- 	}
- 
- 	return AE_OK;
-
-
-
+Applied, thanks!
