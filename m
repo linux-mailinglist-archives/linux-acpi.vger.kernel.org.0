@@ -2,77 +2,95 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC71948C029
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 09:45:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58C5648C40E
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 13:33:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351724AbiALIpZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jan 2022 03:45:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53416 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351576AbiALIpZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 03:45:25 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB175C06173F;
-        Wed, 12 Jan 2022 00:45:24 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9357161862;
-        Wed, 12 Jan 2022 08:45:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00035C36AEA;
-        Wed, 12 Jan 2022 08:45:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641977124;
-        bh=A1BNQxX5hhN6LMUftJiJl5KYRUs0KN8/aVOTnWXXYEE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=YtDWqJopTi8jviRc3wrsKp2i58dyPAAacPWTNmfvJsYLhg20ixwBvu6ciqSN/NvFA
-         76k8b8sar7oSHJ0w8TuaTMMW5TuDZN1aocp3xbKoR3c/bzdXx8+WIlGRaK1LxX2h3i
-         KTXWK7A5Jiq7IKOv5QtOUZf1KvQ/v896s+couNJ7bL2mclgnT5zERTYN2Kk/8a4jYn
-         W6HIh/1LNlGyd812cCTJdK2+C0nnOdEOqWcGIxnTVMYE+q6QUxZxFtyLxd9tNQ+uX0
-         +Qjcj5Nj9PB7ur65/ZsiBKjqN1Xo6agOweoUB1Pwx/nwQDgOGirO/hSD+HSiknWR0G
-         fwfJcfo4v5yAA==
-Received: by mail-wr1-f50.google.com with SMTP id t28so2832595wrb.4;
-        Wed, 12 Jan 2022 00:45:23 -0800 (PST)
-X-Gm-Message-State: AOAM530KWev2uG6v8q2pHdmcOuYdgCr8/FYLwlp6l1oSbG/kzOg27x1V
-        CsdeM9vJTevgRs4uf+aYEhr45OTOpbMolSywTVU=
-X-Google-Smtp-Source: ABdhPJy/lXKvM9dFCXSNNlMl0JeSwIZoPOICLPOHEfMVTypdxjTEaJq8GTTZpUx+/HM3IC5VCKqn5doJTSNL1xkusGU=
-X-Received: by 2002:adf:fd46:: with SMTP id h6mr7059333wrs.192.1641977122328;
- Wed, 12 Jan 2022 00:45:22 -0800 (PST)
+        id S240657AbiALMdd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jan 2022 07:33:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:44932 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S239562AbiALMdc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 12 Jan 2022 07:33:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1641990811;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=86h8CwPQPMIrhzzEiKJNUVRKLUq1ncybMybMxirp2aU=;
+        b=C3uxInoB5UJD5yv5Ocy+GtQvzUmc4DPa3fo/Jr+ujmzhJav94T7FlewecHNa22ICj9Gysd
+        l8rtqFicZxfBou8CcbJeiOaulitOQ9jgEVy1KzxrFd4VEkN+duojc4X7IdJLtRljsm3isL
+        h7tummHmfR6/UtM/1ZLAdVHdmg1TzOc=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-350-RzIzao3YN8SK8I0THhJV2Q-1; Wed, 12 Jan 2022 07:33:30 -0500
+X-MC-Unique: RzIzao3YN8SK8I0THhJV2Q-1
+Received: by mail-ed1-f69.google.com with SMTP id s7-20020a056402520700b003f841380832so2147264edd.5
+        for <linux-acpi@vger.kernel.org>; Wed, 12 Jan 2022 04:33:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=86h8CwPQPMIrhzzEiKJNUVRKLUq1ncybMybMxirp2aU=;
+        b=iZC546rYfBlj8xcUOpSokBp+Mc2d9fQT43CEna/vEOk+SvHL095m91I19oL3+Sb+vb
+         MMT7OsrYPxt9OK3sLZEt3Ue1qL2Z48/lqwASlQE5iHrY2ocrpXFk4V/914HapiciRZgt
+         VNs7m7PgAZTJ33sUB4g6eQRowzYrivF1H1wwv5DaHXoDr4DIETeMu0V+ee826c+MU+Sm
+         m3iaBH4wx6Zk5YrCdZnRuK221T2uKopk+9Q9gsREuCy+KbYf0bB9zqT8nn1fm/fbI1tC
+         /CnYlsxfzIufciLUkxAnxp9UNg09MZrDnGlrmCydaWTKUgDo7b1cAMVM/K765r2iOa+r
+         bTLQ==
+X-Gm-Message-State: AOAM531H8cblBqvGkl8Vub7IUKvATEO/qhYpjyuZriIY7z2qUXZTH6Om
+        E/XarEyYmwHhBnwM0SgOaqz1PdzY4zOBiMXH8MF77Je/eNa2VWwkCVk8f+/2gTzEwmttZpzqhKn
+        +yIn3aSPiXb6InTrWQgffyw==
+X-Received: by 2002:a17:906:9f06:: with SMTP id fy6mr4739831ejc.38.1641990809093;
+        Wed, 12 Jan 2022 04:33:29 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzUFdB9Pa3Ubqwb8xawYhNP+GITG9uWRJ1R+Hx1+LprehkzN7Pb+68pKWDGU2VrqYPQfNhKuA==
+X-Received: by 2002:a17:906:9f06:: with SMTP id fy6mr4739820ejc.38.1641990808904;
+        Wed, 12 Jan 2022 04:33:28 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id z11sm6089208edr.72.2022.01.12.04.33.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Jan 2022 04:33:28 -0800 (PST)
+Message-ID: <7e897fe1-10ba-85ca-dfda-183454177730@redhat.com>
+Date:   Wed, 12 Jan 2022 13:33:28 +0100
 MIME-Version: 1.0
-References: <2614912.mvXUDI8C0e@kreacher>
-In-Reply-To: <2614912.mvXUDI8C0e@kreacher>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Wed, 12 Jan 2022 09:45:06 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1vQj10a4ztj8KfSuxGkOfooB=6q0xj_s5pmhzoS00S1w@mail.gmail.com>
-Message-ID: <CAK8P3a1vQj10a4ztj8KfSuxGkOfooB=6q0xj_s5pmhzoS00S1w@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Use uintptr_t and offsetof() in Linux kernel builds
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bob Moore <robert.moore@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v1 0/3] ACPI: scan: acpi_scan_init() updates
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+References: <11903300.O9o76ZdvQC@kreacher>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <11903300.O9o76ZdvQC@kreacher>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 11, 2022 at 4:55 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> To avoid "performing pointer subtraction with a null pointer has
-> undefined behavior" compiler warnings, use uintptr_t and offsetof()
-> that are always available during Linux kernel builds to define
-> acpi_uintptr_t and the ACPI_TO_INTEGER() and ACPI_OFFSET() macros.
->
-> Based on earlier proposal from Arnd Bergmann.
->
-> Link: https://lore.kernel.org/linux-acpi/20210927121338.938994-1-arnd@kernel.org
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi,
 
-Thanks for the follow-up. I can't easily test this at the moment, but
-it looks correct to
-me. I had a different approach that I had planned to eventually
-submit, but yours
-looks better anyway, so let's go with this.
+On 1/11/22 17:45, Rafael J. Wysocki wrote:
+> Hi All,
+> 
+> There are some minor defects in acpi_scan_init() and because recent changes
+> cause static checkers to catch them, it is better to address them right away.
+> 
+> Please see patch changelogs for the details.
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+The entire series looks good to me:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+for the series.
+
+Regards,
+
+Hans
+
