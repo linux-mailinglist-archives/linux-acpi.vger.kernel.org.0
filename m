@@ -2,54 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D014048C770
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 16:43:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E9B48C795
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 16:50:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245718AbiALPm5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jan 2022 10:42:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36504 "EHLO
+        id S1354789AbiALPuY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jan 2022 10:50:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242234AbiALPm4 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 10:42:56 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A194C06173F;
-        Wed, 12 Jan 2022 07:42:56 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id u21so11596431edd.5;
-        Wed, 12 Jan 2022 07:42:56 -0800 (PST)
+        with ESMTP id S1354854AbiALPuH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 10:50:07 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA8EFC06173F;
+        Wed, 12 Jan 2022 07:50:06 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id m4so11576791edb.10;
+        Wed, 12 Jan 2022 07:50:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=pk9G/dsg1PMyd6CzhEC9GX6NcblEd21mpPVthjg3MLs=;
-        b=Vxd19zFFtTEat1uiYtqlhQV7EaP6I8hVYcJnMd6D1rH51e/Ti5Y4O+/H7dyC5bVm3Y
-         MtlzMck/g1LqI0dQZegrpQlgtSf08vQ2FBlUpESv19pTYWvUKqFJHD7yO/0yCTABBBGC
-         jf8jFuLUdZZmKQImTUg3P4iNXLynJkrf5KX3c2Pf6kmRYNVIkcXIcsozCRWziaG7A4xW
-         A7uPseDeLHARbb1byJRfcOncgnDCo8c5VEyFfel+Id6d0/ioSlmQaZdff3FNGKTnyTsi
-         JlSrzrJCOjlTeaxwQYsQhogf0cdhJdvy1/wczXL2A6OmSygHaE8267RTt7YVNqLioB3p
-         dKyw==
+        bh=TFgnthO3d7FtM/wAdBTZ92v0qtPDXktX81ZqG9bJ8fQ=;
+        b=oHnNrjevdOSf7DCrODGMrKZepHOtsK8oes2SyeUHeIt+wfP9iycEkNz1RsQGaRJrac
+         HogSgaWGQC0QrF8YPXmJ1GPRxJ56iWijWV7acvSETdim6p80qAVMvQwY80Xc+QCbxX7S
+         jn4X5Zd5SUF9rbltiPTehuSakvsgvoVBWIDB0Yfo19KYgBRN44GQM+C3FJgshYMBJEXO
+         jfnj649uZYEypaHs/XGOImVZC2jt5/8pKe6FlKNILwda6cjJY7xXaK2Mdu/5oDm4Zgjf
+         z7wcnuffcY0MRR2i6v0/tjQguZRLIfg7NvFSKmT+4HzC5uvzzA4J2LnTTiyViSvkNWc8
+         EZug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=pk9G/dsg1PMyd6CzhEC9GX6NcblEd21mpPVthjg3MLs=;
-        b=n5F/0MkReA/e84uudtaEKs01Iqwb9R0rARrcm0yA8SB1MpmL+Ek+QgD8tmm4wLnTCt
-         9mzLFVeZy3You3+A5q74Gq6BbRoBxzSXMxfCRBau2414yad+2MlYY890JkPhZzafAdHR
-         qgBk9g2SFUdc+W7QuFbobrWo96C3HStGwA8Mkp8OE60usUc46jjBE9O61/cTmw3HtpAl
-         0Qb3Z8A3GGVzJdqnApfq4aISRxnfX5QwkkmywoNqwT6Fl5ueJMj45SEzLiNr3sXJVvoy
-         0gS4wAcxKtRHueLbckty1DCvXjqxxB0KKnZ42WctdUJeqO3Ug1w0+6iWY7WCjd9RsALd
-         acuw==
-X-Gm-Message-State: AOAM531h4Fs4uqM8xIYI7IuV9EGgDbH/jznE0U6LZUNEG6OzuNrVPoQP
-        FkHQy5mw5VC5Opoju9lIf9+WVosJBS9Xg3w8zDY=
-X-Google-Smtp-Source: ABdhPJxKMGIxMdkdnYrPXoFEYoZXbMBp/Rzeh6pyOJszu097bd5j2k2qv6ZQGDXeWxHMQCHfzfb6AoGzHs0MIIZgIVo=
-X-Received: by 2002:a17:907:97cd:: with SMTP id js13mr222895ejc.497.1642002174794;
- Wed, 12 Jan 2022 07:42:54 -0800 (PST)
+        bh=TFgnthO3d7FtM/wAdBTZ92v0qtPDXktX81ZqG9bJ8fQ=;
+        b=EmX/PycxocwlamQxh4mE3C48mcHm8zhIo9W1/cg9yGpPJTZm+SNPwNMcNfjmxjbFMq
+         ATCnQiKBNOYUdtJWnKrqzHkQSi1AKS1gbxqIpi3xv8j13kXutSMIkqanxLSJcA7AA0BK
+         1hQDuSFkvxEt1g9jJXmrJJ1KhTnYYQwJHUcP6iDeSxKbXWdWwc5uFPwmYIbGO1hhYgK9
+         S3UWCCwdxcYiKjmpLcAaCh+ZXhPzZucMUrtqjQuzTnthOy7vEFjXh14NNNGI22lFu8yG
+         ROoNX7tUt9kMyBwT/BtFWtlTZs+6YQNJdvQKAM6foARs4bTNFI8t+wOioHIvu0J+yNnA
+         RIfg==
+X-Gm-Message-State: AOAM531zO2Lu5pkeoCrS1vgwnKAR2ej5sMWgxmhwPc+WWPRdhijDo/JU
+        KiOD9ank/W+SbxYNb+3yj1WjcdUD6yD6d+0tu5LXEfniveqcAQ==
+X-Google-Smtp-Source: ABdhPJzFVjXJLI/i85mTVwe5RLCXGOeh2iqt8RVc5alU8UFqmMzCpW8UorxBo0fdR0maPO19R/4OcBSn4B8y+jSYA18=
+X-Received: by 2002:a05:6402:4301:: with SMTP id m1mr225773edc.125.1642002605272;
+ Wed, 12 Jan 2022 07:50:05 -0800 (PST)
 MIME-Version: 1.0
-References: <1641996862-26960-1-git-send-email-akhilrajeev@nvidia.com> <1641996862-26960-4-git-send-email-akhilrajeev@nvidia.com>
-In-Reply-To: <1641996862-26960-4-git-send-email-akhilrajeev@nvidia.com>
+References: <1641996862-26960-1-git-send-email-akhilrajeev@nvidia.com> <1641996862-26960-3-git-send-email-akhilrajeev@nvidia.com>
+In-Reply-To: <1641996862-26960-3-git-send-email-akhilrajeev@nvidia.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 12 Jan 2022 17:41:08 +0200
-Message-ID: <CAHp75Vd=gxF9jFMvRw3qM9rfsxxCsO8qYXKVheuhjOV7ypU9og@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] i2c: smbus: Use device_*() functions instead of of_*()
+Date:   Wed, 12 Jan 2022 17:48:18 +0200
+Message-ID: <CAHp75VewfGiRuT4iBLWZ3YQZdmLfgGGPX180quVZu_NVjz7-cQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] docs: firmware-guide: ACPI: Add named interrupt doc
 To:     Akhil R <akhilrajeev@nvidia.com>
 Cc:     Christian Koenig <christian.koenig@amd.com>,
         Dmitry Osipenko <digetx@gmail.com>,
@@ -70,28 +70,76 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Wed, Jan 12, 2022 at 4:15 PM Akhil R <akhilrajeev@nvidia.com> wrote:
->
-> Change of_*() functions to device_*() for firmware agnostic usage.
-> This allows to have smbus_alert interrupt without any changes
 
-the smbus_alert
+Thanks for doing this, very helpful! My comments below.
 
-> in the controller drivers using ACPI table.
+> Added details and example for named interrupts in the ACPI Table
 
-the ACPI
+Table.
 
 ...
 
-This change reveals potential issue:
+> +Named Interrupts
+> +================
+> +
+> +Drivers with ACPI node can have names to interrupts in ACPI table which
+> +can be used to get the irq number in the driver.
 
-> -               irq = of_irq_get_byname(adapter->dev.of_node, "smbus_alert");
-> +               irq = device_irq_get_byname(adapter->dev.parent, "smbus_alert");
+IRQ
 
->                 if (irq <= 0)
+> +The interrupt name can be listed in _DSD as 'interrupt-names'. The names
+> +should be listed as an array of strings which will map to the Interrupt
+> +property in ACPI table corresponding to its index.
 
-I guess this '= 0' part should be fixed first.
+'Interrupt property' --> 'Interrupt() resource'
 
->                         return irq;
+the ACPI
+
+> +The table below shows an example of its usage::
+> +
+> +       Device (DEV0) {
+> +               ...
+> +               Name (_CRS, ResourceTemplate() {
+> +                       ...
+> +                       Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {
+> +                               0x20,
+> +                               0x24
+> +                       }
+> +               })
+> +
+> +               Name (_DSD, Package () {
+> +                       ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+> +                       Package () {
+> +                               Package () {"interrupt-names",
+> +                                       Package (2) {"default", "alert"}},
+> +                       }
+
+                       Package () {
+                               Package () {
+                                        "interrupt-names", Package ()
+{"default", "alert"}
+                               },
+                       }
+
+> +                       ...
+> +               })
+> +       }
+
+Please, drop the indentation to just 4 spaces.
+
+> +The interrupt name 'default' will correspond to 0x20 in Interrupt property
+
+Interrupt() resource
+
+> +and 'alert' to 0x24.
+> +
+> +The driver can call the function - device_irq_get_byname with the device
+
+device_irq_get_byname()
+
+> +and interrupt name as arguments to get the corresponding irq number.
+
+IRQ
 
 -- 
 With Best Regards,
