@@ -2,144 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECD6848C7FD
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 17:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EFCC48C87F
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 17:34:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343687AbiALQOH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jan 2022 11:14:07 -0500
-Received: from mail-qv1-f51.google.com ([209.85.219.51]:35567 "EHLO
-        mail-qv1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240511AbiALQOF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 11:14:05 -0500
-Received: by mail-qv1-f51.google.com with SMTP id a8so3459751qvx.2;
-        Wed, 12 Jan 2022 08:14:05 -0800 (PST)
+        id S240243AbiALQev (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jan 2022 11:34:51 -0500
+Received: from mail-qk1-f170.google.com ([209.85.222.170]:42909 "EHLO
+        mail-qk1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349922AbiALQeO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 11:34:14 -0500
+Received: by mail-qk1-f170.google.com with SMTP id c190so1532401qkg.9;
+        Wed, 12 Jan 2022 08:34:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=o7MEgpOOxGt54/hkpy3yNzHIxHgqeMXzxGl0QBEiqQ8=;
-        b=r/WgqwG1Jmawy6A9MQxbp5uWEL+1VzIUGyWlr+jJu7zm8hnrzUsiyXeuqwK7jECOd6
-         Q9ZogepWUIft+4mfZ3stJ4Bj6wyP5/66jOnp0wqK0jOlfb7jkUR0/ElymJG8nZ4RXlyb
-         vHG3JERoO2KyhktCMd8pCWe/9+WWHhj54mrqTHuRXkb0w6sStv0uMUZega01DsdIU3wt
-         bBgcCZDV5iz/C4wFZDrWPnU1P3GoGKzoPlpWzX4bQR6446uQIfn+aYiJOFpjs38FkWkm
-         sacJx2O5RPWaO3i6XfkxVWpiirjjEFwtrKoG72bOGfIKTpmt1rX5r5O8rIy4DqWX9uCw
-         E37w==
-X-Gm-Message-State: AOAM533lB3gfDKrzEYyQ3zIKzRCNDioHNItdqTt5BIMQ+UNMwjJtszi6
-        NE9AWitmKYv+Q2o+Eub2p2WCeX0c1AO1e0L0v+o=
-X-Google-Smtp-Source: ABdhPJyS2AnOwxzgQuWUygWNfan4PYFTyozxvPlJyBn/aWQsWTeqWLf8F7Jto6lKEcKdepyZTrOWftVBmhSNLmLn9d4=
-X-Received: by 2002:ad4:5c41:: with SMTP id a1mr425140qva.130.1642004044858;
- Wed, 12 Jan 2022 08:14:04 -0800 (PST)
+        bh=0N0dPN3O3RZBULsdprAK0TPmoiFmNasZOU3EoQJ8BQo=;
+        b=p+mSBlVeeDYomG0z0/5alW2pGuSgGnm0qnbZh0OZMRtvVTq5ZOwQDeQ891qhHTiJnh
+         YfM3LkfHfMgXiNLUa/v7hQsRRLrmdgyNsSZsrWbsmgaDcr+LuEWj/PIR06AFZkxptvWa
+         BiSNZ99ogigV92Q+9f6OkE9huytWl+E+qcIi5zYqXF+IF0o/VF5xPpbzjgvOtP8hUMgG
+         iYQGRYDyukm8v5dgvGf+df3ci43JqyLPt2LQD7hKRAUUp+MEzKRvfvnQtyjo7bkfkMg5
+         BA1nWPQX/E3X6UNfLhiPSYWwa7VnTlKW6+XTPJipNbjqxwjLzD7oTCxnVrteliKth3qo
+         X2uQ==
+X-Gm-Message-State: AOAM533cET0hqCjEms5FrCULBd86VUo2S4HEGLx3VuQnO7Mr9JA2J+at
+        wXZzNgbwYwBlbehc61c1PKxskwU8y9uIcz3WWK4pUpj1
+X-Google-Smtp-Source: ABdhPJzjopvb12tK07oUFeqfdMnPiZhPPatJI4OEBTP9c5OaTnk5QUzQYpFLSvTxCVZiIabjRFyDFjoqJnHhstBxpO0=
+X-Received: by 2002:a37:b702:: with SMTP id h2mr391026qkf.135.1642005253779;
+ Wed, 12 Jan 2022 08:34:13 -0800 (PST)
 MIME-Version: 1.0
-References: <1641996862-26960-1-git-send-email-akhilrajeev@nvidia.com> <1641996862-26960-2-git-send-email-akhilrajeev@nvidia.com>
-In-Reply-To: <1641996862-26960-2-git-send-email-akhilrajeev@nvidia.com>
+References: <20220112080155.666868-1-chi.minghao@zte.com.cn>
+In-Reply-To: <20220112080155.666868-1-chi.minghao@zte.com.cn>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 12 Jan 2022 17:13:53 +0100
-Message-ID: <CAJZ5v0hW-i8+hqkQtHG2H3X7zotABEx_bKei9OFkjBuFbL6JKw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] device property: Add device_irq_get_byname
-To:     Akhil R <akhilrajeev@nvidia.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
+Date:   Wed, 12 Jan 2022 17:34:02 +0100
+Message-ID: <CAJZ5v0iipOm6DX3Fd8iNKF_LC6kJWCy=1LxFsh47z01UYDrRow@mail.gmail.com>
+Subject: Re: [PATCH] drivers/acpi/apei: remove redundant rc variable
+To:     cgel.zte@gmail.com
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Borislav Petkov <bp@alien8.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 12, 2022 at 3:14 PM Akhil R <akhilrajeev@nvidia.com> wrote:
+On Wed, Jan 12, 2022 at 9:02 AM <cgel.zte@gmail.com> wrote:
 >
-> Get interrupt by name from ACPI table as well.
+> From: Minghao Chi <chi.minghao@zte.com.cn>
 >
-> Add option to use 'interrupt-names' in _DSD which can map to interrupt by
-> index. The implementation is similar to 'interrupt-names' in devicetree.
-> Also add a common routine to get irq by name from devicetree and ACPI
-> table.
+> Return value from apei_exec_write_register() directly instead
+> of taking this in another redundant variable.
 >
-> Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+> Signed-off-by: CGEL ZTE <cgel.zte@gmail.com>
+
+Well, this doesn't look like an e-mail address of a physical person
+which is required for S-o-b tags.
+
 > ---
->  drivers/base/property.c  | 35 +++++++++++++++++++++++++++++++++++
->  include/linux/property.h |  3 +++
->  2 files changed, 38 insertions(+)
+>  drivers/acpi/apei/apei-base.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 >
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index cbe4fa2..414c316 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -920,6 +920,41 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
->  EXPORT_SYMBOL(fwnode_irq_get);
+> diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
+> index c7fdb12c3310..87145b6b89aa 100644
+> --- a/drivers/acpi/apei/apei-base.c
+> +++ b/drivers/acpi/apei/apei-base.c
+> @@ -125,12 +125,9 @@ EXPORT_SYMBOL_GPL(apei_exec_write_register);
+>  int apei_exec_write_register_value(struct apei_exec_context *ctx,
+>                                    struct acpi_whea_header *entry)
+>  {
+> -       int rc;
+> -
+>         ctx->value = entry->value;
+> -       rc = apei_exec_write_register(ctx, entry);
+> +       return apei_exec_write_register(ctx, entry);
 >
->  /**
-> + * fwnode_irq_get_byname - Get IRQ from a fwnode using its name
-> + * @fwnode:    Pointer to the firmware node
-> + * @name:      IRQ name in interrupt-names property in fwnode
-> + *
-> + * Returns Linux IRQ number on success, errno otherwise.
-> + */
-> +int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name)
-> +{
-> +       int index;
-> +
-> +       if (unlikely(!name))
-> +               return -EINVAL;
-> +
-> +       index = fwnode_property_match_string(fwnode, "interrupt-names",  name);
-> +       if (index < 0)
-> +               return index;
-> +
-> +       return fwnode_irq_get(fwnode, index);
-> +}
-> +EXPORT_SYMBOL(fwnode_irq_get_byname);
-> +
-> +/**
-> + * device_irq_get_byname - Get IRQ of a device using interrupt name
-> + * @dev:       Device to get the interrupt
-> + * @name:      IRQ name in interrupt-names property in fwnode
-
-Which fwnode?
-
-> + *
-> + * Returns Linux IRQ number on success, errno otherwise.
-> + */
-> +int device_irq_get_byname(struct device *dev, const char *name)
-> +{
-> +       return fwnode_irq_get_byname(dev_fwnode(dev), name);
-> +}
-> +EXPORT_SYMBOL_GPL(device_irq_get_byname);
-
-This can be confusing, because it pretends to be super-generic and in
-fact it depends on an fwnode to be there.
-
-I guess I'd rather not have it at all, or use a more precise name for it.
-
-> +
-> +/**
->   * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
->   * @fwnode: Pointer to the parent firmware node
->   * @prev: Previous endpoint node or %NULL to get the first
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 16f736c..bc49350 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -121,6 +121,9 @@ struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
->  void fwnode_handle_put(struct fwnode_handle *fwnode);
->
->  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
-> +int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
-> +
-> +int device_irq_get_byname(struct device *dev, const char *name);
->
->  unsigned int device_get_child_node_count(struct device *dev);
+> -       return rc;
+>  }
+>  EXPORT_SYMBOL_GPL(apei_exec_write_register_value);
 >
 > --
-> 2.7.4
+> 2.25.1
 >
