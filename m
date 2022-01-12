@@ -2,98 +2,77 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAE3C48BF67
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 09:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC71948C029
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jan 2022 09:45:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351340AbiALICE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 12 Jan 2022 03:02:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43308 "EHLO
+        id S1351724AbiALIpZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 12 Jan 2022 03:45:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237577AbiALICD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 03:02:03 -0500
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16459C06173F;
-        Wed, 12 Jan 2022 00:02:03 -0800 (PST)
-Received: by mail-qt1-x832.google.com with SMTP id g21so2012743qtk.4;
-        Wed, 12 Jan 2022 00:02:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bEhlEuVXpzGCtr/OwoPqgO9LNAoq78aFIJRUYBfriOE=;
-        b=AH4uqnmv7cqZTsuuP153+QuDaAWzpO91OVVp8Uj3ocrysTdGhr5AiMSX0wFlGEdyBr
-         R1/Os8nz3J6Nmz0yYvSZAZZlx3bq9C/DADiua2VbqzaTMA6OQTGPjAacsZafqJYNZQ4v
-         EEe3XD1E2vPk5fV1A1d7sFjMr3HDI3kBtKa60xbhtPGCQRY73T4dISth2JZ02tb5E0ug
-         2FJ4pfJejv6q79f+35fm9WCl+ljtZvRSVo6mEEyxFIbh7ZMUHFirq2jnjj8+RrFHvvtX
-         /O5lN/Lt9MSSf5RYCPqI0tatxXUMl9HdfwmETA93zO6FgwV9Gko7uzaT8KFJ6l+5V6AX
-         wbYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bEhlEuVXpzGCtr/OwoPqgO9LNAoq78aFIJRUYBfriOE=;
-        b=MCjTRptHG1eKdBoDHvyTNOLet+5GbJrgL2Zld8/GTFV715Zrfqzlo1+tFI3RI1cXUs
-         /l5tXeSxqASwDPJVYQ2mGK/KKn2Va4OomJ7JNGp6d1OstzRrOLCkeODR6sXzFP3t79JC
-         Fc3Z9XBF80m9/BhrZNdX9awsJjlDFh1m1wzYj6tKZ0I8oWU7xbLORtciVcnIcIKaEvZO
-         lYwI++dI45TN1p/fSuOU+rs0OvKa5ChqYut25sPyfkzwS8pbQi5y0Rfupj8Grrt0yrdd
-         G885D8140IEJvTwtIwP17Q7PO48nFWJXiynUbqqxJ6wLKdkR1xWUiy+a9KJbp4HANcJA
-         yIQg==
-X-Gm-Message-State: AOAM533JpVAuH3D7dXFNzt42mviZh8fp8f6uyL2Vw25/Dq4FMVWXCQPv
-        +uSsl+PtRr4bZuZnVGqfO3w=
-X-Google-Smtp-Source: ABdhPJzjtFUsnPYP2mP0TlaxO87szbqn72Gor+1BUcFx/sdePe4veL5YpctAlIDekh97oT934wwRSg==
-X-Received: by 2002:a05:622a:1313:: with SMTP id v19mr1999704qtk.12.1641974522331;
-        Wed, 12 Jan 2022 00:02:02 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id h9sm8302224qkp.106.2022.01.12.00.01.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jan 2022 00:02:02 -0800 (PST)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To:     rafael@kernel.org
-Cc:     lenb@kernel.org, james.morse@arm.com, tony.luck@intel.com,
-        bp@alien8.de, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>, CGEL ZTE <cgel.zte@gmail.com>
-Subject: [PATCH] drivers/acpi/apei: remove redundant rc variable
-Date:   Wed, 12 Jan 2022 08:01:55 +0000
-Message-Id: <20220112080155.666868-1-chi.minghao@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S1351576AbiALIpZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 12 Jan 2022 03:45:25 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB175C06173F;
+        Wed, 12 Jan 2022 00:45:24 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9357161862;
+        Wed, 12 Jan 2022 08:45:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00035C36AEA;
+        Wed, 12 Jan 2022 08:45:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641977124;
+        bh=A1BNQxX5hhN6LMUftJiJl5KYRUs0KN8/aVOTnWXXYEE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=YtDWqJopTi8jviRc3wrsKp2i58dyPAAacPWTNmfvJsYLhg20ixwBvu6ciqSN/NvFA
+         76k8b8sar7oSHJ0w8TuaTMMW5TuDZN1aocp3xbKoR3c/bzdXx8+WIlGRaK1LxX2h3i
+         KTXWK7A5Jiq7IKOv5QtOUZf1KvQ/v896s+couNJ7bL2mclgnT5zERTYN2Kk/8a4jYn
+         W6HIh/1LNlGyd812cCTJdK2+C0nnOdEOqWcGIxnTVMYE+q6QUxZxFtyLxd9tNQ+uX0
+         +Qjcj5Nj9PB7ur65/ZsiBKjqN1Xo6agOweoUB1Pwx/nwQDgOGirO/hSD+HSiknWR0G
+         fwfJcfo4v5yAA==
+Received: by mail-wr1-f50.google.com with SMTP id t28so2832595wrb.4;
+        Wed, 12 Jan 2022 00:45:23 -0800 (PST)
+X-Gm-Message-State: AOAM530KWev2uG6v8q2pHdmcOuYdgCr8/FYLwlp6l1oSbG/kzOg27x1V
+        CsdeM9vJTevgRs4uf+aYEhr45OTOpbMolSywTVU=
+X-Google-Smtp-Source: ABdhPJy/lXKvM9dFCXSNNlMl0JeSwIZoPOICLPOHEfMVTypdxjTEaJq8GTTZpUx+/HM3IC5VCKqn5doJTSNL1xkusGU=
+X-Received: by 2002:adf:fd46:: with SMTP id h6mr7059333wrs.192.1641977122328;
+ Wed, 12 Jan 2022 00:45:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <2614912.mvXUDI8C0e@kreacher>
+In-Reply-To: <2614912.mvXUDI8C0e@kreacher>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Wed, 12 Jan 2022 09:45:06 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1vQj10a4ztj8KfSuxGkOfooB=6q0xj_s5pmhzoS00S1w@mail.gmail.com>
+Message-ID: <CAK8P3a1vQj10a4ztj8KfSuxGkOfooB=6q0xj_s5pmhzoS00S1w@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: Use uintptr_t and offsetof() in Linux kernel builds
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bob Moore <robert.moore@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Minghao Chi <chi.minghao@zte.com.cn>
+On Tue, Jan 11, 2022 at 4:55 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> To avoid "performing pointer subtraction with a null pointer has
+> undefined behavior" compiler warnings, use uintptr_t and offsetof()
+> that are always available during Linux kernel builds to define
+> acpi_uintptr_t and the ACPI_TO_INTEGER() and ACPI_OFFSET() macros.
+>
+> Based on earlier proposal from Arnd Bergmann.
+>
+> Link: https://lore.kernel.org/linux-acpi/20210927121338.938994-1-arnd@kernel.org
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Return value from apei_exec_write_register() directly instead
-of taking this in another redundant variable.
+Thanks for the follow-up. I can't easily test this at the moment, but
+it looks correct to
+me. I had a different approach that I had planned to eventually
+submit, but yours
+looks better anyway, so let's go with this.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
-Signed-off-by: CGEL ZTE <cgel.zte@gmail.com>
----
- drivers/acpi/apei/apei-base.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
-index c7fdb12c3310..87145b6b89aa 100644
---- a/drivers/acpi/apei/apei-base.c
-+++ b/drivers/acpi/apei/apei-base.c
-@@ -125,12 +125,9 @@ EXPORT_SYMBOL_GPL(apei_exec_write_register);
- int apei_exec_write_register_value(struct apei_exec_context *ctx,
- 				   struct acpi_whea_header *entry)
- {
--	int rc;
--
- 	ctx->value = entry->value;
--	rc = apei_exec_write_register(ctx, entry);
-+	return apei_exec_write_register(ctx, entry);
- 
--	return rc;
- }
- EXPORT_SYMBOL_GPL(apei_exec_write_register_value);
- 
--- 
-2.25.1
-
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
