@@ -2,65 +2,129 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C040F48D6C3
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jan 2022 12:38:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D819548D6CF
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jan 2022 12:44:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbiAMLio (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jan 2022 06:38:44 -0500
-Received: from mail-qv1-f41.google.com ([209.85.219.41]:39567 "EHLO
-        mail-qv1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232363AbiAMLio (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 13 Jan 2022 06:38:44 -0500
-Received: by mail-qv1-f41.google.com with SMTP id p12so6291812qvj.6
-        for <linux-acpi@vger.kernel.org>; Thu, 13 Jan 2022 03:38:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UyNZK+EBmGgdVhwBKX3XubAW7nsSSakp74tQxsMc3WI=;
-        b=vuLZhMkYODsV+porP57kpTHXegX0XoSRFPolxdW9CtcN7Keclydt1ZWb6i5YVQV5yi
-         pJe2bhaQSNNX7JAnp8lDaxAqLaV8QoX459KD+t0fkdEjQDzWMAsMvVERKYHNc77SSk0q
-         sqNQKZZP21jpsezZL/SjOLaAC4WstiM/Wh6mWeJrQXBn8XuqmgtFeoL1pS6rIWh/MNRe
-         TbDO2+Kz6HqDdKvnGHW89vqB507A5HuPiepyaY2nnYorOYmYB0eDPRe3YaqYVHZbX8Wt
-         d5gRIVKTq6HHjPjjh61zuaWdGL+ia+fUKq9lNiNf5KJ4ByMhjh/he9UYXKytkFj2ZSez
-         7s7g==
-X-Gm-Message-State: AOAM532Yx6L8CE36pO5a4Obccxshf7fUFYuDGEuKKv0qGudai8QQFnOH
-        zbbhlXwRehD6GWJegZbsIZJ3jd9+SkdRv2vRug6FJ5/4
-X-Google-Smtp-Source: ABdhPJwofNRw7BFlMllXlQ09Lm3rdOAAxE4RdHC2cH0DMANMjr5dNH23Vikx1SBh2NQQtQxtrLAaPNzVzVo3MBBsnH8=
-X-Received: by 2002:a05:6214:518e:: with SMTP id kl14mr3287768qvb.130.1642073923886;
- Thu, 13 Jan 2022 03:38:43 -0800 (PST)
+        id S232173AbiAMLoY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jan 2022 06:44:24 -0500
+Received: from mga07.intel.com ([134.134.136.100]:27867 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232038AbiAMLoY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 13 Jan 2022 06:44:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1642074264; x=1673610264;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=suzZ8EqddoFsx9Y4MQoKzgw94R2NGTJ7PLafmjJ4+hw=;
+  b=WlJTGTdQFKBhjvoQQdyTxmHDM4GybnPxdIfz1M9GJa8GAKs0UriXam0I
+   86Q9Is7ysuhwt8ODLW2XZcqb57FvHLfPGt7VZkiKFLV8dblcb7akipwGT
+   dffzZbxxAqfqo1l2/PAhVf43eiWNuDL6FbLju2XmqOepyBe8HfHbPYxzS
+   /4giSiUQrD8MmSkHw69SlEcmyc07iFFC3gKnIKlew/faoDV6dnp9hBY+k
+   Xyq+X4mj+nORHNE9cx7HihL0ydAl5Aw3SW17YAMMldmDez45DMWcMtzbp
+   IMQtQZbB1w/UGYOpN4FrVpJoQX9PZDIqEbvPHubI08EY3iIBzd2cW1/za
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10225"; a="307336360"
+X-IronPort-AV: E=Sophos;i="5.88,284,1635231600"; 
+   d="scan'208";a="307336360"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2022 03:44:23 -0800
+X-IronPort-AV: E=Sophos;i="5.88,284,1635231600"; 
+   d="scan'208";a="691773606"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2022 03:44:21 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1n7yVZ-00AAut-7i;
+        Thu, 13 Jan 2022 13:43:09 +0200
+Date:   Thu, 13 Jan 2022 13:43:08 +0200
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Yauhen Kharuzhy <jekhor@gmail.com>
+Subject: Re: [PATCH v2 3/3] pinctrl: cherryview: Ignore INT33FF UID 5 ACPI
+ device
+Message-ID: <YeAQTIRQeEuh+Dsv@smile.fi.intel.com>
+References: <20211118105650.207638-1-hdegoede@redhat.com>
+ <20211118105650.207638-3-hdegoede@redhat.com>
+ <YZY4wj5AHhzFSwdD@smile.fi.intel.com>
+ <YaEjqxg8rX0njW6z@smile.fi.intel.com>
+ <654fd7f2-6ac3-6c4b-9710-0e6360935aa0@redhat.com>
 MIME-Version: 1.0
-References: <198c0ae2-efdf-7f47-11c7-27e9a87b3f32@boldcoder.com>
-In-Reply-To: <198c0ae2-efdf-7f47-11c7-27e9a87b3f32@boldcoder.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 13 Jan 2022 12:38:32 +0100
-Message-ID: <CAJZ5v0gQhGEAdUte6wUQLr_7siL=yJ+YwwjNTMjrB6f41CXo0A@mail.gmail.com>
-Subject: Re: Patch: Make ACPI subsystem provide CEDT table
-To:     Robert Kiraly <me@boldcoder.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <654fd7f2-6ac3-6c4b-9710-0e6360935aa0@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Dan,
+On Sat, Nov 27, 2021 at 10:49:55PM +0100, Hans de Goede wrote:
+> On 11/26/21 19:12, Andy Shevchenko wrote:
+> > On Thu, Nov 18, 2021 at 01:28:02PM +0200, Andy Shevchenko wrote:
+> >> On Thu, Nov 18, 2021 at 11:56:50AM +0100, Hans de Goede wrote:
+> >>> Many Cherry Trail DSDTs have an extra INT33FF device with UID 5,
+> >>> the intel_pinctrl_get_soc_data() call will fail for this extra
+> >>> unknown UID, leading to the following error in dmesg:
+> >>>
+> >>>  cherryview-pinctrl: probe of INT33FF:04 failed with error -61
+> >>>
+> >>> Add a check for this extra UID and return -ENODEV for it to
+> >>> silence this false-positive error message.
+> >>
+> >> Hmm... Interesting. Why do they have it?
+> >> Give me some time to check this...
+> > 
+> > _DDN in ACPI describes this as Virtual GPIO. The only documentation at hand
+> > right now tells me that this is a "solution" to represent the "virtual GPIO"
+> > as fifth community (no connection to any pads, minimum configuration, etc).
+> > 
+> > The goal as far as I can see is "to convert a PME event generated by PCI device
+> > to a GPIO interrupt".
+> > 
+> > Seems like we better have a driver for it, but the only purpose of it is to
+> > generate interrupts based on PME.
+> > 
+> > I'll try to dig more may be next week, but for now I would like to postpone the
+> > patch. Do you agree?
+> 
+> Yes postponing merging this is fine. There is no hurry since this does
+> not fix anything broken. I just wanted to get rid of the annoying log message :)
 
-On Thu, Jan 13, 2022 at 12:16 AM Robert Kiraly <me@boldcoder.com> wrote:
->
-> This is a simple ACPI patch. I'm submitting a revised version to
-> linux-acpi as opposed to linux-pm at Rafael Wysocki's suggestion.
->
-> The patch adds ACPI_SIG_CEDT to table_sigs[] in "drivers/acpi/tables.c".
->
-> The change will probably be made by upstream later regardless. But I've
-> reviewed cxl-next and it doesn't seem to be present there yet.
->
-> Presently, CXL code isn't able to make use of the CEDT table. Subsequent
-> to the change, the CEDT table can be used.
->
-> If a developer plans to use the CEDT table to program the CXL ports,
-> this change is needed. Otherwise, it isn't expected to make a difference.
+So, documentation says the following.
 
-What do you think about this?
+  "Chassis GPIO does not support the notion of Virtual GPIOs. So a fifth GPIO
+   Community was added to provide virtual GPIOs. This virtual GPIO resides
+   inside PCU."
+
+  "Table 8‑19: Virtual GPIO Assignments in CHV
+   GPIO-V[x]	Usage
+   [7]		 Reserved for PMC usage
+   [6]		 PME handling
+   [5]		 Reserved for PMC usage
+   [4]		 OTG PME
+   [3:1]	 In VLV2, was used for tx_modphy_common_mode_en.
+		 In CHV, these are reserved for future use.
+   [0]		 SATA PME"
+
+IOAPIC mapping:
+
+  "108  GPIO_virtual"
+
+
+While at it, in case you want the mapping for direct IRQ:
+
+    1) GPIO North:  eight interrupts used, connected to IOxAPIC IRQ51 to IRQ58.
+    2) GPIO Southwest:  eight interrupts used, connected to IOxAPIC IRQ59 to IRQ66.
+    3) GPIO East:  all sixteen interrupts used, connected to IOxAPIC IRQ67 to IRQ82.
+    4) GPIO Southeast:  all sixteen interrupt used, connected to IOxAPIC IRQ92 to IRQ107.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
