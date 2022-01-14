@@ -2,45 +2,45 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 011D548F073
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jan 2022 20:29:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F42948F0F6
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jan 2022 21:28:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235252AbiANT3D (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Jan 2022 14:29:03 -0500
-Received: from mga09.intel.com ([134.134.136.24]:63219 "EHLO mga09.intel.com"
+        id S233518AbiANU2G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Jan 2022 15:28:06 -0500
+Received: from mga03.intel.com ([134.134.136.65]:34023 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232539AbiANT3D (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Jan 2022 14:29:03 -0500
+        id S232761AbiANU2G (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Jan 2022 15:28:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1642188543; x=1673724543;
+  t=1642192086; x=1673728086;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=5HzOZCZjnBGUrJVEJS7KrjjTa27VP4UpVAznmKydlzg=;
-  b=MxbSgJOGcIefJVkmQRg93NvqXn1aouWH1CcssvqciPsiWK0GlM1Psb+M
-   HvzAdV+fwnkODyh+bJn6GUJiBfq/Fy8gl35QHU2Y3KDltGcoBy3pJV8Ay
-   oWLHI7oki/POaAbxlevGeGf+kDsmdVEEFI74rBiecbJ+U1SsEzX287jJs
-   uXoHxddZV/4PPYTdiqXNB1lFdMLLGUq9F8bR2aT6J4+qN80xDM/RYgV36
-   Eh6my/Ikt7zz30VRcuVcKFbE1/FQUhdNug6soIB5/q2Fe+1R0NcrWY+1G
-   JmQcnLuCFjaZQWscmz8LLhGTfLOSNq6GFgb+yVGlp3vs8brdT7GV0vJEj
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10227"; a="244108481"
+  bh=NBtuZOCI/VvXKB7yr72RHMvqEhb3Bk1Y/6yE42Illw8=;
+  b=QHZbrroiDeONOBl7dBwTcp+I+r44QDann1p3FG/7kBACqJ9gq3L7eDbh
+   HQyPitoJaolmoFLHaJvrqMY8OkRRnzZ8ef18W5VOsAztE9VUbllADSp+A
+   lEWo7pkyI3/wLACOdE4qjYRR8uSane/xPDiBGlhcITOAFqWwPZ7cxg4Tk
+   s4PXRjkpJsWK+3wz0+/tlExJ/4qYToreMcV8ycJ219rdwRjeZ0oUsVusx
+   ScDNWNEXQpE81fMUJ4+yiplHLUVB4T7Cm1WhbLuhxY7GuSQlEbvgnuQCg
+   OuEkFApy7NPbl6ttbBlLLTaVQ3Ol2R7T15blQJFtasVM4PgEk/vQdav2I
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10227"; a="244282797"
 X-IronPort-AV: E=Sophos;i="5.88,289,1635231600"; 
-   d="scan'208";a="244108481"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2022 11:29:02 -0800
+   d="scan'208";a="244282797"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2022 12:28:05 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,289,1635231600"; 
-   d="scan'208";a="491620739"
+   d="scan'208";a="473767991"
 Received: from spandruv-desk.jf.intel.com ([10.54.75.8])
-  by orsmga002.jf.intel.com with ESMTP; 14 Jan 2022 11:29:02 -0800
+  by orsmga003.jf.intel.com with ESMTP; 14 Jan 2022 12:28:05 -0800
 From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 To:     rafael@kernel.org, lenb@kernel.org
 Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH v2] ACPI / fan: Properly handle fine grain control
-Date:   Fri, 14 Jan 2022 11:29:01 -0800
-Message-Id: <20220114192901.102223-1-srinivas.pandruvada@linux.intel.com>
+Subject: [UPDATE][PATCH v2] ACPI / fan: Properly handle fine grain control
+Date:   Fri, 14 Jan 2022 12:28:05 -0800
+Message-Id: <20220114202805.103233-1-srinivas.pandruvada@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -80,9 +80,15 @@ attribute is called "fan_speed_rpm".
 
 Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 ---
+v2-update
+Change log is missed for v2.
+Missed one kfree(obj) on failure.
+v2
+Fix for build issue as reported by Reported-by: kernel test robot <lkp@intel.com>
+
  .../acpi/fan_performance_states.rst           |  10 ++
- drivers/acpi/fan.c                            | 146 ++++++++++++++----
- 2 files changed, 129 insertions(+), 27 deletions(-)
+ drivers/acpi/fan.c                            | 142 ++++++++++++++----
+ 2 files changed, 125 insertions(+), 27 deletions(-)
 
 diff --git a/Documentation/admin-guide/acpi/fan_performance_states.rst b/Documentation/admin-guide/acpi/fan_performance_states.rst
 index 98fe5c333121..2a5988d747e5 100644
@@ -103,7 +109,7 @@ index 98fe5c333121..2a5988d747e5 100644
 +This speed is presented in the sysfs using the attribute "fan_speed_rpm",
 +in the same directory as performance states.
 diff --git a/drivers/acpi/fan.c b/drivers/acpi/fan.c
-index 5cd0ceb50bc8..863cd62422db 100644
+index 5cd0ceb50bc8..b1ca5530c16c 100644
 --- a/drivers/acpi/fan.c
 +++ b/drivers/acpi/fan.c
 @@ -64,12 +64,19 @@ struct acpi_fan_fif {
@@ -230,13 +236,13 @@ index 5cd0ceb50bc8..863cd62422db 100644
  	acpi_status status;
 +	u64 value = state;
 +	int max_state;
- 
--	if (state >= fan->fps_count)
++
 +	if (fan->fif.fine_grain_ctrl)
 +		max_state = 100 / (int)fan->fif.step_size;
 +	else
 +		max_state = fan->fps_count - 1;
-+
+ 
+-	if (state >= fan->fps_count)
 +	if (state > max_state)
  		return -EINVAL;
  
@@ -325,18 +331,12 @@ index 5cd0ceb50bc8..863cd62422db 100644
  	}
  
  	fan->fps_count = obj->package.count - 1; /* minus revision field */
-@@ -366,8 +449,17 @@ static int acpi_fan_get_fps(struct acpi_device *device)
- 		}
- 	}
+@@ -368,6 +451,11 @@ static int acpi_fan_get_fps(struct acpi_device *device)
  
-+	if (status)
-+		goto err;
-+
-+	return 0;
-+
  err:
  	kfree(obj);
-+
++	if (!status)
++		return 0;
 +rem_attr:
 +	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
 +
