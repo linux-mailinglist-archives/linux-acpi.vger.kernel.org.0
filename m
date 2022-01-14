@@ -2,342 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72E2548E0A3
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jan 2022 23:47:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B561948E277
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jan 2022 03:17:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231467AbiAMWrQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 13 Jan 2022 17:47:16 -0500
-Received: from mga05.intel.com ([192.55.52.43]:38198 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238106AbiAMWrP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 13 Jan 2022 17:47:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1642114035; x=1673650035;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=GHr99sUaS6FbIt+6PpfeffyY9527DwD06qutskOVWhw=;
-  b=I5rCqtB+SelPVaxZsGxHN8MS+QV9IH42p/PfnbTEzmep8B0TPH6rYoG7
-   /qJ3/TrN549+KFqBXdOCn4FoLWILrjWVHGsZLvLSJVlMcReTRmRHIvBK7
-   fPvswq2kv9YuqQp2umTc7X9i39bTEd+pcx+yeSZWQ67fJ9nynaWST8z4A
-   6ZRy4j+SKBhXgX+E2JY6SCR4nhrk+S30W7kZCdYtMrMphbt2lWYfP7SK+
-   biRS6pGvPGEEUUHJvnWtz8GGsim57aB5W0LWKukrfIeD4qBRdBMk+H+7s
-   F7BQ1IQHSDDdWiv4QoLOezqQqBIKd7kOzvyoGdFmKNWz/dPjYUVWI6qiQ
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10226"; a="330476747"
-X-IronPort-AV: E=Sophos;i="5.88,286,1635231600"; 
-   d="scan'208";a="330476747"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2022 14:47:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,286,1635231600"; 
-   d="scan'208";a="529885623"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.8])
-  by orsmga008.jf.intel.com with ESMTP; 13 Jan 2022 14:47:14 -0800
-From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     rafael@kernel.org, lenb@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH] ACPI / fan: Properly handle fine grain control
-Date:   Thu, 13 Jan 2022 14:47:13 -0800
-Message-Id: <20220113224713.90092-1-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
+        id S238815AbiANCRh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 13 Jan 2022 21:17:37 -0500
+Received: from mail-mw2nam12on2136.outbound.protection.outlook.com ([40.107.244.136]:22784
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229863AbiANCRf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 13 Jan 2022 21:17:35 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WWpeyNsKsSasIeABV5lVMBDwdXtmuyp9KOFfzqjBO2tC1dchntWRyeInDKfcfawMopi8NC+3R73Z2SEieqWZPCF2cl4CxTgB3MCwUOSPTyTh3OMr7mBK1y9ieY5ViBCfMm1tUjPaw9L3AX2EcJo9UQawv+ajVwTPB0os5CVHrQbAxf+aILZg78JJFOS9diHxhUF2g5Mugi3wccFbfPV8OCPgMITvXc/oTdO4xTXBghe8Z+vNi0TYlvWHtFW7IDwdE2a93E+4nsPxzIklaT6F6RQDjNDKhGjE+IvU6Ea0fj0Nlh2DljCsfZ6PwpvDP5QsIYLQ4Erq8BiJLntc7CAkEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lnwwctdqsggX53+aRh+i7NC1a+chXsW8dpNBCdAwHBw=;
+ b=BBDulWCoB3K/kyh4BkRlqejSak0PYV5wW4YqL7nxI3yMft7fhWYzcHvz83nWBSiqOu2bkaZ9ZdHNHk8DI5rOn422RKoEYYZsoTVyRuY9AJ/J0h/iliuqeiLNrpnRS87PDJdqQr5Nf7443I0QAiztM5HLsmYTO8u0GbnOoJPQJWSzQim+TJtZ7AFhT9X618dt69E1/g+QhJFCsxz3ntGtCvDr1NZCllKmXez2eyaP/zZg4VLjQ4WFHJIQHaQQ6Uc3vDZCtzD2ic6W+XLpOtXniELEpk7fTUNNk9AV3qhZADHCsqOwrrnJX0SDRsrXkHIoHWRQNOKjoBjh+fQPdjBCHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lnwwctdqsggX53+aRh+i7NC1a+chXsW8dpNBCdAwHBw=;
+ b=vtqZ5V1JqyKgq2Y39Bx5WgM9kj7ZHk40EbvgVcpswmE9KkI18wtHEQqEggFaM1ij9ipvbbSv3c7MZDY5uTwS34FxsXhrV8zwTq3GQo9w5KFrlW1uKCiAQxGLqJZ4V5plIyQs7is1ot82ptpqL4GbgpH2fNdA+w6r5b2FsoHI7Ww=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from DM5PR0102MB3590.prod.exchangelabs.com (2603:10b6:4:a4::25) by
+ DM5PR01MB2828.prod.exchangelabs.com (2603:10b6:3:f6::12) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4867.11; Fri, 14 Jan 2022 02:17:31 +0000
+Received: from DM5PR0102MB3590.prod.exchangelabs.com
+ ([fe80::7952:a45e:f5c:9a1d]) by DM5PR0102MB3590.prod.exchangelabs.com
+ ([fe80::7952:a45e:f5c:9a1d%6]) with mapi id 15.20.4888.011; Fri, 14 Jan 2022
+ 02:17:31 +0000
+Date:   Thu, 13 Jan 2022 18:17:13 -0800 (PST)
+From:   Ilkka Koskinen <ilkka@os.amperecomputing.com>
+X-X-Sender: ikoskine@ubuntu200401
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+cc:     guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
+        linux@armlinux.org.uk, lenb@kernel.org, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, patches@amperecomputing.com,
+        scott@os.amperecomputing.com, darren@os.amperecomputing.com,
+        james.morse@arm.com, Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Subject: Re: [PATCH v3 2/2] ACPI: AGDI: Add driver for Arm Generic Diagnostic
+ Dump and Reset device
+In-Reply-To: <alpine.DEB.2.22.394.2201051530290.2489@ubuntu200401>
+Message-ID: <alpine.DEB.2.22.394.2201131801380.3166@ubuntu200401>
+References: <20211231033725.21109-1-ilkka@os.amperecomputing.com> <20211231033725.21109-3-ilkka@os.amperecomputing.com> <20220105104602.GA4752@lpieralisi> <alpine.DEB.2.22.394.2201051530290.2489@ubuntu200401>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-ClientProxiedBy: MWHPR18CA0040.namprd18.prod.outlook.com
+ (2603:10b6:320:31::26) To DM5PR0102MB3590.prod.exchangelabs.com
+ (2603:10b6:4:a4::25)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 201b03aa-d7fe-4263-4196-08d9d70404b8
+X-MS-TrafficTypeDiagnostic: DM5PR01MB2828:EE_
+X-Microsoft-Antispam-PRVS: <DM5PR01MB282802620DC425CD5C3B8D1F9D549@DM5PR01MB2828.prod.exchangelabs.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 2e6V8oJ7hGU6wkK2SasfkdUnVFrZj0fZAXMOAvomjHXDO+DeErfq55a+Z8axDvbf6R9Qk3bvgL9j4wiFaCd5Ms7PoGhd2ZqHIV38ovMMFXYMrEpUKikaiuF81SYUWA+wgYsojJ6e3UmzE2KhctwvZN+8KyBBHnyx5MmA2abHNWxnXFe5J1RtRm/dBKgfPqFNiZ1k2g+SbTZBXWZsmPiwxL3nwui5m7rnTJNr0G1UXzeU5FnxIvMzWS1r+T0He7iY3Rtz0nd0NoZIANnBIcHuQXg2DhQLpfR8xSUOThJCT09ZX8rsoPBJAOUuvs9LtUkX3YQjR3xmQuWqJw5LT4Ubdwe6EUtxMZxv9qCGum0TR9RTIeTTK6XHvBKld8o03Y4KCHDztmaqU2cG41NZvgPWb37aRSsWQPwHLcO3aiO8Sx+C5r/4FOEM2t/RiMYCsagMzQWDNB4BwKVSNfobbZHtDHo9pNkwG7VyUWXQk4Ch2972lkK6y8hYInu9eD25MrLIOsVpOncWpuPGpwaVyGQzSi5AECaELI4A0OKPw7SJaoXRNZUt0/vZFOhVkKQWq75OfiaduFLIXSAPOnFua8w4Fh2dRU65Rw44y5Wpkfy95CT4wIXFR/onxsQ9+0d75il00x0p6zYttGDAGf03QxklPt4A+Vf++U9Gjt7MzcjukvyosbMdwGePr2BwoXKnsM/8DM0hmFJhfOC3fM4+jg87mWHPjwSwDQQtLog3MngvnzTXW4rMZaHN0JZOT0UnbpWY2M2dW4LFoQkH5uTvxBk8BEwDKCk/UL7KeTUb+qkLJwCbiNJ9Gjt+GudYss/60F7n
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR0102MB3590.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(4636009)(7916004)(366004)(8936002)(9686003)(6512007)(2906002)(8676002)(5660300002)(6916009)(316002)(38350700002)(7416002)(4326008)(6666004)(86362001)(38100700002)(66556008)(52116002)(6506007)(6486002)(186003)(26005)(107886003)(66476007)(83380400001)(508600001)(66946007)(966005)(33716001)(41533002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Woq/gpJb6CzSTV/YrhKda9hGMBqgQ4b2y3jXVt2QBrBz3Q6oAk1he8uusZz8?=
+ =?us-ascii?Q?D4PvmdiEkyEulxIM7cq/RuAJ5TRICjPRlAii3u9jRdPTvBJ/NZim4xOIfeNx?=
+ =?us-ascii?Q?ra8lxSLeszxLc1Qj/otr4xhxyOJL2Si1lHTm38fYoLYqsTjpnLWFPu+EA0i5?=
+ =?us-ascii?Q?Wkv9fqUb8gJpHWQmzNSsrzgsKkLs15mEuTAlsNs0okCM4g6AtYpzXPLMzY3Z?=
+ =?us-ascii?Q?tmQ0VzeoLGPKj+0eQ2tZdYNLkPtK8JmrhRCXMPxKHJnmHUphGiRZYPPAfKjO?=
+ =?us-ascii?Q?+yiYVeJDHptuGacSE+PeMelD6jWftvAg5w8yo4twvWP80FxsCapE73Lr1LmO?=
+ =?us-ascii?Q?ZaPnHre1ffSEs7JP2sw9p5M4BoUlnFRQWii1RguuLqON1tgYzoipJeTp0lvs?=
+ =?us-ascii?Q?WVdaNYw1kavY2kHLjADlTP7nTcZoKUZM94Qzd4T0+15xw/QGkDnU5rWMOPLm?=
+ =?us-ascii?Q?iMJMfXoajsNvDQbDydS/qAg0Apj3TlYZvBidI8njP4cpGyaWebz26wA4o37e?=
+ =?us-ascii?Q?q6LXbGfbriZ1lAqoOqbzCrdVkX6uLJypUBsVkAT1EyjBDsO+GnJjEOJiWema?=
+ =?us-ascii?Q?O7Qfyl9BA5bMdjQyRbhHFLi0X3g9kRloq0tNRnvFP4EwwTU67Oxlzvw7AaQ3?=
+ =?us-ascii?Q?ZiJ5mOI8WKJuSvFMr1KCTJTTQXITYuxintwlToS4WdsIYty9HniXnTyHBJ8T?=
+ =?us-ascii?Q?nYju+K9LMogoLL6s30gN97oHKVx2WITDZXSeEMMcSChbLW/7LnzE+MsG/Du7?=
+ =?us-ascii?Q?boqa/TCyZuwIYWSrMjTKq5onquDwZfvCzWbffxT/m5py60ZsRrIo/89fhR1X?=
+ =?us-ascii?Q?NJW+CfvxqaXV8212ot4VqQIvp2TYoJLJAtL3zMjk3FzW6zzDglZPe/9BZMGv?=
+ =?us-ascii?Q?8l9+4ncNRvMMRfzPXaqzYUOO6Ey8rWwLbhVYRVkU40HzbxFGlNXtKp7Af8/l?=
+ =?us-ascii?Q?brgL+gPKByO+i+WktoaY1VMIG08umofZZR72AOPoQ7TjN7cMHg/GNRfPpRLA?=
+ =?us-ascii?Q?rc6s/HakWcWOWN9X6Pi8XyHLretzjB4u6QjOFOZX72h8COKAj0AV2w06p7fG?=
+ =?us-ascii?Q?ugCAoE7QHLzwtjwp4QfNCEwdRoIaEdFEoWQcfSjBlrhqGD+FSHuOysAmg8p1?=
+ =?us-ascii?Q?ni0gRBU6jJktRrY7a5bLeuUB2dKQApcYxHNBsbYbMnpzoTUHw2XnxpP81ncS?=
+ =?us-ascii?Q?0dGm5lT2CGFAKoPHvQ9uJHuSuLv3GbFR4bqeVp+CxTzaUUdhBlxls8xw2T3/?=
+ =?us-ascii?Q?NrHgwKu9rPFnMAcnKCdLpMF8oiGPakY08vb1ApKkwUs41J6NVS4zOqULztnd?=
+ =?us-ascii?Q?3kZSPYyK9hBfoJ9tOYUzqNTvm57fmsam8ZR1w+RdpqHCWsauGaHI8weWAfbd?=
+ =?us-ascii?Q?Xl4kT2jQiqMxLly04CXdio+HTbXtjrJ1bl6xNdgF2foVgeC5r2Iyts/HMxD6?=
+ =?us-ascii?Q?nHkfp6gRLt0RXnKXxq2sm4OuTKfFB9mWW0N5OvH1IIXW41RbT+YqQvY4OH0+?=
+ =?us-ascii?Q?WBeuUnEk4YDSCwWltW5w4XW8EzRaSyPKVSxS0L+iUFgpkIu1z0wy7KWWQMyX?=
+ =?us-ascii?Q?r6vTLyNG8JASxk46JOxdGcIZSfoql5DyrevgwWmXw74/Z8fFNMEifOC2EJLk?=
+ =?us-ascii?Q?nASP6UON/Oe0jGizslinn0kWfWgrD1mzOfYZmArELp5p2XMY8jowIq6txdt9?=
+ =?us-ascii?Q?Kq4JHTgWlDscvg591/3VzaDDAXJTVHjwUe+TsWDkUAMMvpQAKTHxhxZ2Jb5k?=
+ =?us-ascii?Q?cJallptX8w=3D=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 201b03aa-d7fe-4263-4196-08d9d70404b8
+X-MS-Exchange-CrossTenant-AuthSource: DM5PR0102MB3590.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2022 02:17:31.3504
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kxhQYReU3OUGAyNQrp6D4TuTTpqDkrrbqy5YTnI8hvJAq+9VjY6H4Q0ohhHZpavSbi2o8fv4Pcz2twci+dmwcMTqrY/XryzT19bPDfazRTCIymzV7CKFnK9UgxZxGWS0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR01MB2828
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When _FIF object specifies support for fine grain control, then fan speed
-can be set from 0 to 100% with the recommended minimum "step size" via
-_FSL object. Here the control value doesn't need to match any value from
-_FPS object.
 
-Currently we have a simple solution implemented which just pick maximum
-control value from _FPS to display the actual state, but this is not
-optimal when there is a big window between two control values in
-_FPS. Also there is no way to set to any speed which doesn't match
-control values in _FPS. The system firmware can start the fan at speed
-which doesn't match any control value.
+Hi Lorenzo,
 
-To support fine grain control via thermal sysfs:
-- cooling device max state is not _FPS state count but it will be
-100 / _FIF.step_size
-- cooling device current state is 100 / _FIF.step_size
-- cooling device set state will set the control value
-curr_state * _FIF.step_size plus any adjustment for 100%.
-By the spec, when control value do not sum to 100% because of
-_FIF.step_size, OSPM may select an appropriate ending Level increment
-to reach 100%.
+On Wed, 5 Jan 2022, Ilkka Koskinen wrote:
+>
+> Hi Lorenzo,
+>
+> On Wed, 5 Jan 2022, Lorenzo Pieralisi wrote:
+>> [+James, for SDEI bits]
+>> 
+>> On Thu, Dec 30, 2021 at 07:37:25PM -0800, Ilkka Koskinen wrote:
+>>> ACPI for Arm Components 1.1 Platform Design Document v1.1 [0] specifices
+>>> Arm Generic Diagnostic Device Interface (AGDI). It allows an admin to
+>>> issue diagnostic dump and reset via an SDEI event or an interrupt.
+>>> This patch implements SDEI path.
+>>> 
+>>> [0] https://developer.arm.com/documentation/den0093/latest/
+>>> 
+>>> Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+>>> ---
+>>>  drivers/acpi/arm64/Kconfig  |   8 +++
+>>>  drivers/acpi/arm64/Makefile |   1 +
+>>>  drivers/acpi/arm64/agdi.c   | 125 ++++++++++++++++++++++++++++++++++++
+>>>  3 files changed, 134 insertions(+)
+>>>  create mode 100644 drivers/acpi/arm64/agdi.c
 
-Also publish the actual fan rpm in sysfs in the same place where
-_FIF objects are displayed. Knowing fan rpm is helpful to reduce noise
-level and use passive control instead. Also fan performance may not be
-same over time, so the same control value may not be enough to run the
-fan at a speed. So a feedback value of speed is helpful. This sysfs
-attribute is called "fan_speed_rpm".
+<snip>
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
----
-This is not a urgent patch for the current merge cycle.
+>>> diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+>>> new file mode 100644
+>>> index 000000000000..6525ccbae5c1
+>>> --- /dev/null
+>>> +++ b/drivers/acpi/arm64/agdi.c
 
- .../acpi/fan_performance_states.rst           |  10 ++
- drivers/acpi/fan.c                            | 137 ++++++++++++++----
- 2 files changed, 122 insertions(+), 25 deletions(-)
+<snip>
 
-diff --git a/Documentation/admin-guide/acpi/fan_performance_states.rst b/Documentation/admin-guide/acpi/fan_performance_states.rst
-index 98fe5c333121..2a5988d747e5 100644
---- a/Documentation/admin-guide/acpi/fan_performance_states.rst
-+++ b/Documentation/admin-guide/acpi/fan_performance_states.rst
-@@ -60,3 +60,13 @@ For example::
- 
- When a given field is not populated or its value provided by the platform
- firmware is invalid, the "not-defined" string is shown instead of the value.
-+
-+ACPI Fan Performance Feedback
-+=============================
-+
-+The optional _FST object provides status information for the fan device.
-+This includes field to provide current fan speed in revolutions per minute
-+at which the fan is rotating.
-+
-+This speed is presented in the sysfs using the attribute "fan_speed_rpm",
-+in the same directory as performance states.
-diff --git a/drivers/acpi/fan.c b/drivers/acpi/fan.c
-index 5cd0ceb50bc8..2fd3d22899b6 100644
---- a/drivers/acpi/fan.c
-+++ b/drivers/acpi/fan.c
-@@ -64,12 +64,19 @@ struct acpi_fan_fif {
- 	u64 low_speed_notification;
- };
- 
-+struct acpi_fan_fst {
-+	u64 revision;
-+	u64 control;
-+	u64 speed;
-+};
-+
- struct acpi_fan {
- 	bool acpi4;
- 	struct acpi_fan_fif fif;
- 	struct acpi_fan_fps *fps;
- 	int fps_count;
- 	struct thermal_cooling_device *cdev;
-+	struct device_attribute fst_speed;
- };
- 
- static struct platform_driver acpi_fan_driver = {
-@@ -89,20 +96,21 @@ static int fan_get_max_state(struct thermal_cooling_device *cdev, unsigned long
- 	struct acpi_device *device = cdev->devdata;
- 	struct acpi_fan *fan = acpi_driver_data(device);
- 
--	if (fan->acpi4)
-+	if (fan->fif.fine_grain_ctrl)
-+		*state = 100 / fan->fif.step_size;
-+	else if (fan->acpi4)
- 		*state = fan->fps_count - 1;
- 	else
- 		*state = 1;
-+
- 	return 0;
- }
- 
--static int fan_get_state_acpi4(struct acpi_device *device, unsigned long *state)
-+static int fan_get_fps(struct acpi_device *device, struct acpi_fan_fst *fst)
- {
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
--	struct acpi_fan *fan = acpi_driver_data(device);
- 	union acpi_object *obj;
- 	acpi_status status;
--	int control, i;
- 
- 	status = acpi_evaluate_object(device->handle, "_FST", NULL, &buffer);
- 	if (ACPI_FAILURE(status)) {
-@@ -119,31 +127,51 @@ static int fan_get_state_acpi4(struct acpi_device *device, unsigned long *state)
- 		goto err;
- 	}
- 
--	control = obj->package.elements[1].integer.value;
-+	fst->revision = obj->package.elements[0].integer.value;
-+	fst->control = obj->package.elements[1].integer.value;
-+	fst->speed = obj->package.elements[2].integer.value;
-+
-+	status = 0;
-+err:
-+	kfree(obj);
-+	return status;
-+}
-+
-+static int fan_get_state_acpi4(struct acpi_device *device, unsigned long *state)
-+{
-+	struct acpi_fan *fan = acpi_driver_data(device);
-+	struct acpi_fan_fst fst;
-+	int status;
-+	int control, i;
-+
-+	status = fan_get_fps(device, &fst);
-+	if (status)
-+		return status;
-+
-+	control = fst.control;
-+
-+	if (fan->fif.fine_grain_ctrl) {
-+		/* This control should be same what we set using _FSL by spec */
-+		if (control > 100) {
-+			dev_dbg(&device->dev, "Invalid control value returned\n");
-+			return -EINVAL;
-+		}
-+
-+		*state = control / fan->fif.step_size;
-+		return 0;
-+	}
-+
- 	for (i = 0; i < fan->fps_count; i++) {
--		/*
--		 * When Fine Grain Control is set, return the state
--		 * corresponding to maximum fan->fps[i].control
--		 * value compared to the current speed. Here the
--		 * fan->fps[] is sorted array with increasing speed.
--		 */
--		if (fan->fif.fine_grain_ctrl && control < fan->fps[i].control) {
--			i = (i > 0) ? i - 1 : 0;
--			break;
--		} else if (control == fan->fps[i].control) {
-+		if (control == fan->fps[i].control)
- 			break;
--		}
- 	}
- 	if (i == fan->fps_count) {
- 		dev_dbg(&device->dev, "Invalid control value returned\n");
--		status = -EINVAL;
--		goto err;
-+		return -EINVAL;
- 	}
- 
- 	*state = i;
- 
--err:
--	kfree(obj);
- 	return status;
- }
- 
-@@ -187,12 +215,36 @@ static int fan_set_state_acpi4(struct acpi_device *device, unsigned long state)
- {
- 	struct acpi_fan *fan = acpi_driver_data(device);
- 	acpi_status status;
-+	u64 value = state;
-+	int max_state;
-+
-+	if (fan->fif.fine_grain_ctrl)
-+		max_state = 100 / fan->fif.step_size;
-+	else
-+		max_state = fan->fps_count - 1;
- 
--	if (state >= fan->fps_count)
-+	if (state > max_state)
- 		return -EINVAL;
- 
--	status = acpi_execute_simple_method(device->handle, "_FSL",
--					    fan->fps[state].control);
-+	if (fan->fif.fine_grain_ctrl) {
-+		int rem;
-+
-+		value *= fan->fif.step_size;
-+
-+		/*
-+		 * In the event OSPM’s incremental selections of Level
-+		 * using the StepSize field value do not sum to 100%,
-+		 * OSPM may select an appropriate ending Level
-+		 * increment to reach 100%.
-+		 */
-+		rem = 100 - value;
-+		if (rem && rem < fan->fif.step_size)
-+			value = 100;
-+	} else {
-+		value = fan->fps[state].control;
-+	}
-+
-+	status = acpi_execute_simple_method(device->handle, "_FSL", value);
- 	if (ACPI_FAILURE(status)) {
- 		dev_dbg(&device->dev, "Failed to set state by _FSL\n");
- 		return status;
-@@ -258,6 +310,9 @@ static int acpi_fan_get_fif(struct acpi_device *device)
- 		status = -EINVAL;
- 	}
- 
-+	/* If there is a bug in step size and set as 0, change to 1 */
-+	if (!fan->fif.step_size)
-+		fan->fif.step_size = 1;
- err:
- 	kfree(obj);
- 	return status;
-@@ -303,6 +358,19 @@ static ssize_t show_state(struct device *dev, struct device_attribute *attr, cha
- 	return count;
- }
- 
-+static ssize_t show_fan_speed(struct device *dev, struct device_attribute *attr, char *buf)
-+{
-+	struct acpi_device *acpi_dev = container_of(dev, struct acpi_device, dev);
-+	struct acpi_fan_fst fst;
-+	int status;
-+
-+	status = fan_get_fps(acpi_dev, &fst);
-+	if (status)
-+		return status;
-+
-+	return sprintf(buf, "%lld\n", fst.speed);
-+}
-+
- static int acpi_fan_get_fps(struct acpi_device *device)
- {
- 	struct acpi_fan *fan = acpi_driver_data(device);
-@@ -311,15 +379,25 @@ static int acpi_fan_get_fps(struct acpi_device *device)
- 	acpi_status status;
- 	int i;
- 
-+	/* _FST is present if we are here */
-+	sysfs_attr_init(&fan->fst_speed.attr);
-+	fan->fst_speed.show = show_fan_speed;
-+	fan->fst_speed.store = NULL;
-+	fan->fst_speed.attr.name = "fan_speed_rpm";
-+	fan->fst_speed.attr.mode = 0444;
-+	status = sysfs_create_file(&device->dev.kobj, &fan->fst_speed.attr);
-+	if (status)
-+		return status;
-+
- 	status = acpi_evaluate_object(device->handle, "_FPS", NULL, &buffer);
- 	if (ACPI_FAILURE(status))
--		return status;
-+		goto rem_attr;
- 
- 	obj = buffer.pointer;
- 	if (!obj || obj->type != ACPI_TYPE_PACKAGE || obj->package.count < 2) {
- 		dev_err(&device->dev, "Invalid _FPS data\n");
- 		status = -EINVAL;
--		goto err;
-+		goto rem_attr;
- 	}
- 
- 	fan->fps_count = obj->package.count - 1; /* minus revision field */
-@@ -366,8 +444,17 @@ static int acpi_fan_get_fps(struct acpi_device *device)
- 		}
- 	}
- 
-+	if (status)
-+		goto err;
-+
-+	return 0;
-+
- err:
- 	kfree(obj);
-+
-+rem_attr:
-+	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
-+
- 	return status;
- }
- 
--- 
-2.25.1
+>>>
+>>> +static int __init agdi_init(void)
+>>> +{
+>>> +	int ret;
+>>> +	acpi_status status;
+>>> +	struct acpi_table_agdi *agdi_table;
+>>> +	struct agdi_data pdata;
+>>> +	struct platform_device *pdev;
+>>> +
+>>> +	if (acpi_disabled)
+>>> +		return 0;
+>> 
+>> Why don't we call agdi_init() from acpi_init() as we do for IORT/VIOT ?
+>> 
+>> I don't think it is necessary to add a device_initcall(), with related
+>> ordering dependencies.
+>
+> That's a good point. I change it.
 
+Actually, I looked at this more carefully. acpi_init() is called in 
+subsys_initcall() while sdei_init() is called in subsys_initcall_sync(). 
+That is, if I call this function in acpi_init(), SDEI driver won't be 
+ready and this driver fails to register the event.
+
+Cheers, Ilkka
