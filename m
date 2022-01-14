@@ -2,50 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7375048EA47
-	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jan 2022 14:05:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BFE948EDAC
+	for <lists+linux-acpi@lfdr.de>; Fri, 14 Jan 2022 17:08:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241148AbiANNFy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Jan 2022 08:05:54 -0500
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:43804 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S231283AbiANNFx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Jan 2022 08:05:53 -0500
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20EBvjTm005160;
-        Fri, 14 Jan 2022 07:05:02 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=PODMain02222019;
- bh=TzmqeEwb5dZEGYxeNsqWYPBQ8/lTz7W7c/lMNafBkAE=;
- b=NE7uZcgL93dqva6cCkPIprojSDGtV0/+e74HWFAECSMHG6VZ+mpGgRpyBCeVW6CC+ruG
- FiEKy5MmbT+yuFnNeJ8NOyadg89J7RvJZwaCMKdH1VQHXbF1Alw3ffU6lIBNnWR1S7eS
- m4CTtXq4M2pHXx4rWLnEcbGDq8rKaXQ+ifbYycz5xz8yv0APQfo/mhI83JzWQ0SvPshC
- 1kUPwRbL/IWHRFhLulIVpZ5Eogk0Hlo/6vUbHiyBsUuYbs/h/JB0iO6TW0WPdyX0sWqR
- szfTctW3FkqV7lHK3ld8hXLlp+MI+9l1D4AtDJKBSFgz1jJ004nydSbSGybYeKzdlosA Tg== 
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3djma118dv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 14 Jan 2022 07:05:02 -0600
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Fri, 14 Jan
- 2022 13:05:00 +0000
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.18 via Frontend
- Transport; Fri, 14 Jan 2022 13:05:00 +0000
-Received: from [198.61.65.50] (unknown [198.61.65.50])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 0A79F475;
-        Fri, 14 Jan 2022 13:05:00 +0000 (UTC)
-Message-ID: <360af696-8581-4461-4ea1-d182a98c0441@opensource.cirrus.com>
-Date:   Fri, 14 Jan 2022 13:04:59 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 4/5] ALSA: hda: cs35l41: Tidyup code and add default cases
+        id S243124AbiANQIz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Jan 2022 11:08:55 -0500
+Received: from mga03.intel.com ([134.134.136.65]:11530 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243113AbiANQIy (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 14 Jan 2022 11:08:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1642176534; x=1673712534;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=UJwOaZVYTNNeDdo80F3NS4Ei/8SHoPzXmB8++zQz1PY=;
+  b=BTu/VwNwclNcuhtrHzSvZdihlIpe6isBHjT9GQOyPStMZbJqKmkYfBVS
+   +E9zGQlItt5gaPgXnDaoWL5pHHSltOKHBWgTqyp4jjwb4Ymn/7D6LXRwW
+   DEURECjkxiPPAhq1FQC0ZZwweWVbiK11/yAsEITOLmW23l4itjpX5t5yd
+   MVDkekQ5SMnMbkLiRUnmuIsz96i/zshzh9YSba5IDF667UbkvhFntJw3C
+   kUQBrmQ3NoigTd8/rnJfJvEm67rKUvHqYnujxhTg0v/pTnCTnKm5PUYM2
+   KYn90S0VkLNTU4nKkOZxom7ax6+tErUlLTxxs3NZVHaeanIY+OxEqpWZ1
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10226"; a="244227651"
+X-IronPort-AV: E=Sophos;i="5.88,289,1635231600"; 
+   d="scan'208";a="244227651"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2022 08:08:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,289,1635231600"; 
+   d="scan'208";a="692256632"
+Received: from orsmsx606.amr.corp.intel.com ([10.22.229.19])
+  by orsmga005.jf.intel.com with ESMTP; 14 Jan 2022 08:07:08 -0800
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX606.amr.corp.intel.com (10.22.229.19) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Fri, 14 Jan 2022 08:07:07 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20 via Frontend Transport; Fri, 14 Jan 2022 08:07:07 -0800
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2308.20; Fri, 14 Jan 2022 08:07:06 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=i4/bBqRbBHILkt59F1nI2JptqL49ztrujmr2+z2iSXMbA6z68TRV9DjVjdy2n2J3yhRr/zKe0ZvMUj2mY7No1Yqg9amtOkk8/F4OJq9tou8oGzgxWJDK6iIOw2Rf+5c7vUITBbO+4syhecT+DhJGbxo9MbQlwiKfFFpbsV9g4HqRROYpUXQ/FWPF0to4+/ap4KyKgyVapdOhEBe06hWbiRwRDWV0E4/oUZ2X7+BA8RNsb9z+2/Wam4hpLSekKW/EHtme56vgcJHVkSFPfKSIM+xg/YH8IcdmtmBtlnzfGPnDmpLpcTvs0u/i+ApgeydLd7fCovZlWnYdHM1ORMfoGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+gzTKay7CfpeBCFQ94+G/2S66w7n4C1bDmN9bAjCNsI=;
+ b=Z4Z4HJ/7H4KgWZEaJSxBc0uV8uNtiqv2yg720ltCc5i+vxhHqAtmivHWtb84w2XW+jFW0wtY04eoaN2g8+P63kNenhcGAnmo/VV9a+TWuOtU44vGuW+bp+t9blSXq+/5I049LkK91XkMiPOm2M0x2V8SaXBZBUyNagyGf/SU+meymM8Ktg6L4yDLkO7l/9lOfy0GDQtXwmyWKskWxISI6H5aaV6Z8nK8cH13vvb0duuo+dfznT3lt7PlAhTex6iPpH7nEvWLrMZ+sibVniR3JPzsQSVlcqszEewM6g5WB7LA7/yH7zAl/y+q0l8KrafWkKUY2J2CiBE/n6GmZTTXhQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN6PR11MB4049.namprd11.prod.outlook.com (2603:10b6:405:7f::12)
+ by BN6PR11MB4068.namprd11.prod.outlook.com (2603:10b6:405:7c::31) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4888.11; Fri, 14 Jan
+ 2022 16:07:05 +0000
+Received: from BN6PR11MB4049.namprd11.prod.outlook.com
+ ([fe80::cce3:53d5:6124:be26]) by BN6PR11MB4049.namprd11.prod.outlook.com
+ ([fe80::cce3:53d5:6124:be26%4]) with mapi id 15.20.4888.012; Fri, 14 Jan 2022
+ 16:07:05 +0000
+Message-ID: <41dca7c3-2d82-ab8c-9025-547c30f67db8@intel.com>
+Date:   Fri, 14 Jan 2022 17:06:58 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Firefox/91.0 Thunderbird/91.3.0
+Subject: Re: [PATCH 1/5] ALSA: hda: cs35l41: Avoid overwriting register patch
 Content-Language: en-US
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+To:     Lucas Tanure <tanureal@opensource.cirrus.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Hans de Goede <hdegoede@redhat.com>,
         Mark Gross <markgross@kernel.org>,
@@ -53,367 +82,114 @@ To:     "Rafael J . Wysocki" <rafael@kernel.org>,
 CC:     <alsa-devel@alsa-project.org>, <linux-acpi@vger.kernel.org>,
         <patches@opensource.cirrus.com>,
         <platform-driver-x86@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+        <linux-kernel@vger.kernel.org>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>
 References: <20220113170728.1953559-1-tanureal@opensource.cirrus.com>
- <20220113170728.1953559-4-tanureal@opensource.cirrus.com>
-From:   Lucas tanure <tanureal@opensource.cirrus.com>
-In-Reply-To: <20220113170728.1953559-4-tanureal@opensource.cirrus.com>
+From:   Cezary Rojewski <cezary.rojewski@intel.com>
+In-Reply-To: <20220113170728.1953559-1-tanureal@opensource.cirrus.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: u7kJ9I4rsH9u7bHOMQLyy1_UPqsKPq9-
-X-Proofpoint-ORIG-GUID: u7kJ9I4rsH9u7bHOMQLyy1_UPqsKPq9-
-X-Proofpoint-Spam-Reason: safe
+X-ClientProxiedBy: FR0P281CA0077.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1e::16) To BN6PR11MB4049.namprd11.prod.outlook.com
+ (2603:10b6:405:7f::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: f5676451-6dab-4a7c-5cd9-08d9d777e849
+X-MS-TrafficTypeDiagnostic: BN6PR11MB4068:EE_
+X-Microsoft-Antispam-PRVS: <BN6PR11MB4068FC42D13A304EFE1A540EE3549@BN6PR11MB4068.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:274;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: qnBA5i94qsZ/VpJ9nsYxCQMP5+fSV0hexsAAn5DJsVh/TzxUlqitznyumxgbSpF68ql2P/K1/PDxwLpAh6TQ+Qs3bc9aymSpqMb69ws5bXuOj6CYVFnL4+4CsIZvfgfOoDqC6oERh513cuz19NS2iu45hKNZNVhDc6QgL+4S/8PNVqMqiuSV5YdRlOhuozgLigkYzg9ICB4vG0I2+sdCzY8+8yfiGdnQ1llSBwKV0VC9FcJ7wFsxjYCHcSFhBm84NkHmSgXJwno27Y3WhOgq5QNvdv5ny4gsEjz3TdNEeOh/iQBEUW7IyxmhRcrYT0l0AC/d+EPUbV8Z1W5Kv/qtwO6Vevc8IC3n5Zaq6jIpQbWSX55NAaEP1p4AynWzpUTp6MSWweLgkxOx1U8rz40jw0RCCTEJkIokSXM61CU3NeGXb6UXTWGvzNDdTjeOQB2D9hzHDLvCiHuGEZlS2so/ZTDSIe6p3gRtta2/Ceae+8YmzfkW5UBtX0spZmatIhw96l+zRDF67RZzunwgbPLbshwxOleVy43XTWaBPB6o5TOXw/s+fVKZ+2GDE3d93iELW++LcxRyqGNFGA+pWaRUbF2o3n2VhR4MpnVCUwPPei+GN8zyIfVgqvGHLBzwgMDSV4BmOyTDAP+IUEfwzL25PtPooGbAOkpkv/4k901RMSH4EyCbCiDBEb/gTzdCJGufZpOFmbvtkxtaFGQm6ivctKOj6mSIqMJ+SA0WSaZ4DaQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR11MB4049.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(53546011)(82960400001)(6666004)(186003)(36756003)(2616005)(38100700002)(26005)(6486002)(6512007)(7416002)(6506007)(31686004)(316002)(110136005)(8676002)(5660300002)(66556008)(66946007)(8936002)(44832011)(508600001)(31696002)(86362001)(83380400001)(66476007)(2906002)(4326008)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RTFNZ2I4WGlRV3ppaVRlOEJ1K2g5V3psK2k3QlVzUWJrMVZKbjdwdTc5YWJC?=
+ =?utf-8?B?ZkpSVmxuQ2kyQnJpWWJDUlhhY1dpWHBOdkFWSkFtRS9xSzlOZG9XTkp3U2dw?=
+ =?utf-8?B?SUkwSFFFQWMyWE1GS2hqZVBpajl3R1lmcUh2eER2WVR5SEVLSzE1N3ZqWnps?=
+ =?utf-8?B?empEeTdkbVBsT080RStSV2RONDFPdWNvc05neWRGMlI3b1U2a1RTcFFid0tX?=
+ =?utf-8?B?ZlVKWVpYdi8yR2gzalFndXQ0WEVtSXJQdk9LZnRkZmw5dmlpd01NQnRvVVVO?=
+ =?utf-8?B?c2Rzb1U2OURkejRvSDFlaTVNa3BsUWE4WWlBN29yYSs4SFRrenAvUDZUZU9D?=
+ =?utf-8?B?S2VWM0NnRE1GUlkrWm9rTG4wQnBWSTZTbXJXR2o3SnNsaEYyVGt2R1NoNm9D?=
+ =?utf-8?B?dnZSUCtmT1orRTd6bDRGNUVZa1QyV2laN2JQa0VvK2EyRlFMQnNKaXBMaW9a?=
+ =?utf-8?B?Z3NNNTVyaldickhmb0huUFBnSGwwcHJGYmhNZ0MwTWFucmdiQjJMWXhKTWE4?=
+ =?utf-8?B?aUU3bzEzY3VGdHFzUE0wZWZGVG9URlJ6cEFkTTRQaXlvN3ZldjI0eWJaTzY2?=
+ =?utf-8?B?Y2s1RFFzR3VaTmlYMEJHaXJIZzMzd3FMUG13UmViMmpuSW40dXptbTN6ZW5O?=
+ =?utf-8?B?SVErVHd0VVJxcEtMbEZtQkdYcXN3NDh5SDl5UERpOHdKL0NJSFdrSVpQOTUz?=
+ =?utf-8?B?UTFPcHpOUjUrb2VkcGdnQ2tSVFRGYmpUOS9JMU9mWXV4QUFzU3BMd2FvbUFv?=
+ =?utf-8?B?SUdmMEcyTzNLTUM4eDNudnJ3c2Z2ZG5mTTlXNHV2TnZvNGhJSmhTc0pPcjc0?=
+ =?utf-8?B?Nk5RNjUyUFVaWnpyYXR0N3dkR0pMbTcyaUhLOFZMajJ1WVc2NU5ob1g0dWNY?=
+ =?utf-8?B?STRId0pDMGtwbHRzQ0Q3azR0NTN5U3QrQUZiVHRNSVBXamFQQVlkaDVFbU8r?=
+ =?utf-8?B?N1VEUDd0T1gwTHM3aXNGMWtwdmR5SG9maE9JSWloc01LdHBFK0t0MmpIWVBY?=
+ =?utf-8?B?azdFdi9TNmMxZnE5OWQrZHU1Y2pWc0RhQnUxZ2ZYNHdma0V2Wkp0UE82emE3?=
+ =?utf-8?B?VnVEZkhDTHJlVlhZNzZBbXZZZkQ4ck1FN291NXlIRlJKOVdqVDY4cmNsencw?=
+ =?utf-8?B?RENwMENoWjNZdktFUlJCNytYUnZLT01GcDNtbUswbUFZbkhiV0psOG5xWXN2?=
+ =?utf-8?B?OTlkSG1ja2ZUbzVxT1VwOVdHWitKWU0xWUxWNXFCcWV5MHVzUHJRSENud284?=
+ =?utf-8?B?MTNDUlhvTmJqSlBYNUFHdFJYTzR2amtWQmZ4eGthbEJ4Q1AyWGFxZjRUSjJT?=
+ =?utf-8?B?V2dwdUdmb1ZPalVZV21EVVdaNzNBWWk1dVJNSHl4RnNDOGhIRFBIOEdKNGRi?=
+ =?utf-8?B?K3BzcGU1UDk5WUczQjdBNnRwZU9SNnZ4czlUVi9jdDMzRlNrMlVjaVpkK0Jn?=
+ =?utf-8?B?blZXQnpvVVN0NEhHNW0vZm9RM28rOWlnUEpMMW1yQ1ZpUFlINC9rVk4xN2Ju?=
+ =?utf-8?B?QkVGOVlOakFGeUpwNFlHdE1lTE5QcWgzS3lmU0c0bTlQNHlvb3JINms3dmRz?=
+ =?utf-8?B?YjE0OGxkcU9ieWU0cGxWNzBpUEpzL0d4WGg5dGV2S1VyNmQ4QW5IRzV2R2R0?=
+ =?utf-8?B?WndWNk9sNjNNeDlaM29vamFVUkQ0TGVmS1huZnBOL3oyZmpMY0p4aStsQ3ZD?=
+ =?utf-8?B?bHVwenZneVJIZ0ZraDlzSjhZYmplVnlCbXd6eU1qWnl6TTRDK3hKcnJzUkFV?=
+ =?utf-8?B?QytvTlk2c2FOV2Y4dGl4NjJqNjk0RUtrbEhZMWkxNFpIdXhrRTYybENDK2NX?=
+ =?utf-8?B?VEVNYllEZm5SV0QwUHVXVHRkekdqRU1scnU2UGkvU3Z1ZERNYzBPK0dqQUFG?=
+ =?utf-8?B?QWlGTHhLSXdBb2lkZmpmMko2dVVPT2R4NVZKMlJnY1c3dG9XclpBRWR0Q3dj?=
+ =?utf-8?B?bFFScW1XMmZ3bEZucS9qa1hZbjVoYjNYWWo1dnNkN0c1RXhZVUdycDhITndz?=
+ =?utf-8?B?OXBEek5jSEJRWERtMnpkeEhiUUFmYWZwT3NVK2FSVEZlYmVmRlJjbEFKQmp6?=
+ =?utf-8?B?eVp5bzdLV2JyVEh3QlBKN2haVVpNYWU1RXJyeFE1aHhKaHl3QkNjWkVGT3JU?=
+ =?utf-8?B?WGxkQnp4NkNSenhiK1lxQ2dSdVhHaDVTckJIMzhIdjUvOE95dmp6YVlUOGNa?=
+ =?utf-8?B?SFdqQjhQM0phSlJsMVFSaWtLMUVFY0NVV0NwaElSbjRyeXB2S2JPVlV0SllT?=
+ =?utf-8?B?MVRQY2U5a3VZRzh3bHNPMEpLQStnPT0=?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5676451-6dab-4a7c-5cd9-08d9d777e849
+X-MS-Exchange-CrossTenant-AuthSource: BN6PR11MB4049.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2022 16:07:05.0176
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Zf/zyg3+9hIlseaMzQZZuc2CjtWPOtkuTt9uGp7os7Hyk9bSoTGCnsQzizqsVxUQoafkzMKzb+KI7N9PKBV/vGbDev9Ab4Xx6tyvoJJg8NY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR11MB4068
+X-OriginatorOrg: intel.com
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 1/13/22 17:07, Lucas Tanure wrote:
-> Clean up the code, plus adding default cases for switch
-> and dev_err_probe use.
+On 2022-01-13 6:07 PM, Lucas Tanure wrote:
+> From: Charles Keepax <ckeepax@opensource.cirrus.com>
 > 
+> regmap_register_patch can't be used to apply the probe sequence as a
+> patch is already registers with the regmap by
+> cs35l41_register_errata_patch and only a single patch can be attached to
+> a single regmap. The driver doesn't currently rely on a cache sync to
+> re-apply this probe sequence so simply switch it to a multi write.
+> 
+> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 > Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
+
+Please correct me if I'm wrong, but this change looks like a fix for the 
+previously added commit:
+ALSA: hda: cs35l41: Add support for CS35L41 in HDA systems
+
+and so it would be good to append appropriate 'Fixes' tag here.
+
 > ---
->   sound/pci/hda/cs35l41_hda.c     | 109 ++++++++++++++++----------------
->   sound/pci/hda/cs35l41_hda.h     |   2 +-
->   sound/pci/hda/cs35l41_hda_i2c.c |   1 -
->   sound/pci/hda/cs35l41_hda_spi.c |   1 -
->   4 files changed, 57 insertions(+), 56 deletions(-)
+>   sound/pci/hda/cs35l41_hda.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
-> index c4f25e48dcc0..cb8331587c17 100644
+> index 30b40d865863..c47c5f0b4e59 100644
 > --- a/sound/pci/hda/cs35l41_hda.c
 > +++ b/sound/pci/hda/cs35l41_hda.c
-> @@ -1,6 +1,6 @@
->   // SPDX-License-Identifier: GPL-2.0
->   //
-> -// cs35l41.c -- CS35l41 ALSA HDA audio driver
-> +// CS35l41 ALSA HDA audio driver
->   //
->   // Copyright 2021 Cirrus Logic, Inc.
->   //
-> @@ -17,19 +17,19 @@
->   #include "cs35l41_hda.h"
->   
->   static const struct reg_sequence cs35l41_hda_config[] = {
-> -	{ CS35L41_PLL_CLK_CTRL,		0x00000430 }, //3200000Hz, BCLK Input, PLL_REFCLK_EN = 1
-> -	{ CS35L41_GLOBAL_CLK_CTRL,	0x00000003 }, //GLOBAL_FS = 48 kHz
-> -	{ CS35L41_SP_ENABLES,		0x00010000 }, //ASP_RX1_EN = 1
-> -	{ CS35L41_SP_RATE_CTRL,		0x00000021 }, //ASP_BCLK_FREQ = 3.072 MHz
-> -	{ CS35L41_SP_FORMAT,		0x20200200 }, //24 bits, I2S, BCLK Slave, FSYNC Slave
-> -	{ CS35L41_DAC_PCM1_SRC,		0x00000008 }, //DACPCM1_SRC = ASPRX1
-> -	{ CS35L41_AMP_DIG_VOL_CTRL,	0x00000000 }, //AMP_VOL_PCM  0.0 dB
-> -	{ CS35L41_AMP_GAIN_CTRL,	0x00000084 }, //AMP_GAIN_PCM 4.5 dB
-> -	{ CS35L41_PWR_CTRL2,		0x00000001 }, //AMP_EN = 1
-> +	{ CS35L41_PLL_CLK_CTRL,		0x00000430 }, // 3200000Hz, BCLK Input, PLL_REFCLK_EN = 1
-> +	{ CS35L41_GLOBAL_CLK_CTRL,	0x00000003 }, // GLOBAL_FS = 48 kHz
-> +	{ CS35L41_SP_ENABLES,		0x00010000 }, // ASP_RX1_EN = 1
-> +	{ CS35L41_SP_RATE_CTRL,		0x00000021 }, // ASP_BCLK_FREQ = 3.072 MHz
-> +	{ CS35L41_SP_FORMAT,		0x20200200 }, // 24 bits, I2S, BCLK Slave, FSYNC Slave
-> +	{ CS35L41_DAC_PCM1_SRC,		0x00000008 }, // DACPCM1_SRC = ASPRX1
-> +	{ CS35L41_AMP_DIG_VOL_CTRL,	0x00000000 }, // AMP_VOL_PCM  0.0 dB
-> +	{ CS35L41_AMP_GAIN_CTRL,	0x00000084 }, // AMP_GAIN_PCM 4.5 dB
-> +	{ CS35L41_PWR_CTRL2,		0x00000001 }, // AMP_EN = 1
->   };
->   
->   static const struct reg_sequence cs35l41_hda_start_bst[] = {
-> -	{ CS35L41_PWR_CTRL2,		0x00000021 }, //BST_EN = 10, AMP_EN = 1
-> +	{ CS35L41_PWR_CTRL2,		0x00000021 }, // BST_EN = 10, AMP_EN = 1
->   	{ CS35L41_PWR_CTRL1,		0x00000001, 3000}, // set GLOBAL_EN = 1
->   };
->   
-> @@ -60,7 +60,7 @@ static const struct reg_sequence cs35l41_stop_ext_vspk[] = {
->   	{ 0x00000040,			0x00000055 },
->   	{ 0x00000040,			0x000000AA },
->   	{ 0x00007438,			0x00585941 },
-> -	{ 0x00002014,			0x00000000, 3000}, //set GLOBAL_EN = 0
-> +	{ 0x00002014,			0x00000000, 3000}, // set GLOBAL_EN = 0
->   	{ 0x0000742C,			0x00000009 },
->   	{ 0x00007438,			0x00580941 },
->   	{ 0x00011008,			0x00000001 },
-> @@ -78,7 +78,7 @@ static const struct reg_sequence cs35l41_safe_to_active[] = {
->   	{ 0x0000742C,			0x0000000F },
->   	{ 0x0000742C,			0x00000079 },
->   	{ 0x00007438,			0x00585941 },
-> -	{ CS35L41_PWR_CTRL1,		0x00000001, 2000 }, //GLOBAL_EN = 1
-> +	{ CS35L41_PWR_CTRL1,		0x00000001, 2000 }, // GLOBAL_EN = 1
->   	{ 0x0000742C,			0x000000F9 },
->   	{ 0x00007438,			0x00580941 },
->   	{ 0x00000040,			0x000000CC },
-> @@ -89,8 +89,8 @@ static const struct reg_sequence cs35l41_active_to_safe[] = {
->   	{ 0x00000040,			0x00000055 },
->   	{ 0x00000040,			0x000000AA },
->   	{ 0x00007438,			0x00585941 },
-> -	{ CS35L41_AMP_DIG_VOL_CTRL,	0x0000A678 }, //AMP_VOL_PCM Mute
-> -	{ CS35L41_PWR_CTRL2,		0x00000000 }, //AMP_EN = 0
-> +	{ CS35L41_AMP_DIG_VOL_CTRL,	0x0000A678 }, // AMP_VOL_PCM Mute
-> +	{ CS35L41_PWR_CTRL2,		0x00000000 }, // AMP_EN = 0
->   	{ CS35L41_PWR_CTRL1,		0x00000000 },
->   	{ 0x0000742C,			0x00000009, 2000 },
->   	{ 0x00007438,			0x00580941 },
-> @@ -161,11 +161,13 @@ static void cs35l41_hda_playback_hook(struct device *dev, int action)
->   		if (reg_seq->close)
->   			ret = regmap_multi_reg_write(reg, reg_seq->close, reg_seq->num_close);
->   		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		break;
->   	}
->   
->   	if (ret)
->   		dev_warn(cs35l41->dev, "Failed to apply multi reg write: %d\n", ret);
-> -
->   }
->   
->   static int cs35l41_hda_channel_map(struct device *dev, unsigned int tx_num, unsigned int *tx_slot,
-> @@ -182,20 +184,19 @@ static int cs35l41_hda_bind(struct device *dev, struct device *master, void *mas
->   	struct cs35l41_hda *cs35l41 = dev_get_drvdata(dev);
->   	struct hda_component *comps = master_data;
->   
-> -	if (comps && cs35l41->index >= 0 && cs35l41->index < HDA_MAX_COMPONENTS)
-> -		comps = &comps[cs35l41->index];
-> -	else
-> +	if (!comps || cs35l41->index < 0 || cs35l41->index >= HDA_MAX_COMPONENTS)
->   		return -EINVAL;
->   
-> -	if (!comps->dev) {
-> -		comps->dev = dev;
-> -		strscpy(comps->name, dev_name(dev), sizeof(comps->name));
-> -		comps->playback_hook = cs35l41_hda_playback_hook;
-> -		comps->set_channel_map = cs35l41_hda_channel_map;
-> -		return 0;
-> -	}
-> +	comps = &comps[cs35l41->index];
-> +	if (comps->dev)
-> +		return -EBUSY;
-> +
-> +	comps->dev = dev;
-> +	strscpy(comps->name, dev_name(dev), sizeof(comps->name));
-> +	comps->playback_hook = cs35l41_hda_playback_hook;
-> +	comps->set_channel_map = cs35l41_hda_channel_map;
->   
-> -	return -EBUSY;
-> +	return 0;
->   }
->   
->   static void cs35l41_hda_unbind(struct device *dev, struct device *master, void *master_data)
-> @@ -235,6 +236,8 @@ static int cs35l41_hda_apply_properties(struct cs35l41_hda *cs35l41,
->   		regmap_update_bits(cs35l41->regmap, CS35L41_GPIO_PAD_CONTROL,
->   				   CS35L41_GPIO1_CTRL_MASK, 2 << CS35L41_GPIO1_CTRL_SHIFT);
->   		break;
-> +	default:
-> +		return -EINVAL;
->   	}
->   
->   	switch (hw_cfg->gpio2_func) {
-> @@ -242,6 +245,8 @@ static int cs35l41_hda_apply_properties(struct cs35l41_hda *cs35l41,
->   		regmap_update_bits(cs35l41->regmap, CS35L41_GPIO_PAD_CONTROL,
->   				   CS35L41_GPIO2_CTRL_MASK, 2 << CS35L41_GPIO2_CTRL_SHIFT);
->   		break;
-> +	default:
-> +		return -EINVAL;
-This default option introduces issues some laptops.
-A new version of this series will be sent.
-
->   	}
->   
->   	if (internal_boost) {
-> @@ -256,11 +261,7 @@ static int cs35l41_hda_apply_properties(struct cs35l41_hda *cs35l41,
->   		cs35l41->reg_seq = &cs35l41_hda_reg_seq_ext_bst;
->   	}
->   
-> -	ret = cs35l41_hda_channel_map(cs35l41->dev, 0, NULL, 1, (unsigned int *)&hw_cfg->spk_pos);
-> -	if (ret)
-> -		return ret;
-> -
-> -	return 0;
-> +	return cs35l41_hda_channel_map(cs35l41->dev, 0, NULL, 1, (unsigned int *)&hw_cfg->spk_pos);
->   }
->   
->   static struct cs35l41_hda_hw_config *cs35l41_hda_read_acpi(struct cs35l41_hda *cs35l41,
-> @@ -269,7 +270,7 @@ static struct cs35l41_hda_hw_config *cs35l41_hda_read_acpi(struct cs35l41_hda *c
->   	struct cs35l41_hda_hw_config *hw_cfg;
->   	u32 values[HDA_MAX_COMPONENTS];
->   	struct acpi_device *adev;
-> -	struct device *acpi_dev;
-> +	struct device *physdev;
->   	char *property;
->   	size_t nval;
->   	int i, ret;
-> @@ -280,11 +281,11 @@ static struct cs35l41_hda_hw_config *cs35l41_hda_read_acpi(struct cs35l41_hda *c
->   		return ERR_PTR(-ENODEV);
->   	}
->   
-> -	acpi_dev = get_device(acpi_get_first_physical_node(adev));
-> +	physdev = get_device(acpi_get_first_physical_node(adev));
->   	acpi_dev_put(adev);
->   
->   	property = "cirrus,dev-index";
-> -	ret = device_property_count_u32(acpi_dev, property);
-> +	ret = device_property_count_u32(physdev, property);
->   	if (ret <= 0)
->   		goto no_acpi_dsd;
->   
-> @@ -294,7 +295,7 @@ static struct cs35l41_hda_hw_config *cs35l41_hda_read_acpi(struct cs35l41_hda *c
->   	}
->   	nval = ret;
->   
-> -	ret = device_property_read_u32_array(acpi_dev, property, values, nval);
-> +	ret = device_property_read_u32_array(physdev, property, values, nval);
->   	if (ret)
->   		goto err;
->   
-> @@ -311,7 +312,9 @@ static struct cs35l41_hda_hw_config *cs35l41_hda_read_acpi(struct cs35l41_hda *c
->   		goto err;
->   	}
->   
-> -	/* No devm_ version as CLSA0100, in no_acpi_dsd case, can't use devm version */
-> +	/* To use the same release code for all laptop variants we can't use devm_ version of
-> +	 * gpiod_get here, as CLSA010* don't have a fully functional bios with an _DSD node
-> +	 */
->   	cs35l41->reset_gpio = fwnode_gpiod_get_index(&adev->fwnode, "reset", cs35l41->index,
->   						     GPIOD_OUT_LOW, "cs35l41-reset");
->   
-> @@ -322,46 +325,46 @@ static struct cs35l41_hda_hw_config *cs35l41_hda_read_acpi(struct cs35l41_hda *c
->   	}
->   
->   	property = "cirrus,speaker-position";
-> -	ret = device_property_read_u32_array(acpi_dev, property, values, nval);
-> +	ret = device_property_read_u32_array(physdev, property, values, nval);
->   	if (ret)
->   		goto err_free;
->   	hw_cfg->spk_pos = values[cs35l41->index];
->   
->   	property = "cirrus,gpio1-func";
-> -	ret = device_property_read_u32_array(acpi_dev, property, values, nval);
-> +	ret = device_property_read_u32_array(physdev, property, values, nval);
->   	if (ret)
->   		goto err_free;
->   	hw_cfg->gpio1_func = values[cs35l41->index];
->   
->   	property = "cirrus,gpio2-func";
-> -	ret = device_property_read_u32_array(acpi_dev, property, values, nval);
-> +	ret = device_property_read_u32_array(physdev, property, values, nval);
->   	if (ret)
->   		goto err_free;
->   	hw_cfg->gpio2_func = values[cs35l41->index];
->   
->   	property = "cirrus,boost-peak-milliamp";
-> -	ret = device_property_read_u32_array(acpi_dev, property, values, nval);
-> +	ret = device_property_read_u32_array(physdev, property, values, nval);
->   	if (ret == 0)
->   		hw_cfg->bst_ipk = values[cs35l41->index];
->   
->   	property = "cirrus,boost-ind-nanohenry";
-> -	ret = device_property_read_u32_array(acpi_dev, property, values, nval);
-> +	ret = device_property_read_u32_array(physdev, property, values, nval);
->   	if (ret == 0)
->   		hw_cfg->bst_ind = values[cs35l41->index];
->   
->   	property = "cirrus,boost-cap-microfarad";
-> -	ret = device_property_read_u32_array(acpi_dev, property, values, nval);
-> +	ret = device_property_read_u32_array(physdev, property, values, nval);
->   	if (ret == 0)
->   		hw_cfg->bst_cap = values[cs35l41->index];
->   
-> -	put_device(acpi_dev);
-> +	put_device(physdev);
->   
->   	return hw_cfg;
->   
->   err_free:
->   	kfree(hw_cfg);
->   err:
-> -	put_device(acpi_dev);
-> +	put_device(physdev);
->   	dev_err(cs35l41->dev, "Failed property %s: %d\n", property, ret);
->   
->   	return ERR_PTR(ret);
-> @@ -370,18 +373,18 @@ static struct cs35l41_hda_hw_config *cs35l41_hda_read_acpi(struct cs35l41_hda *c
->   	/*
->   	 * Device CLSA0100 doesn't have _DSD so a gpiod_get by the label reset won't work.
->   	 * And devices created by i2c-multi-instantiate don't have their device struct pointing to
-> -	 * the correct fwnode, so acpi_dev must be used here
-> +	 * the correct fwnode, so acpi_dev must be used here.
->   	 * And devm functions expect that the device requesting the resource has the correct
-> -	 * fwnode
-> +	 * fwnode.
->   	 */
->   	if (strncmp(hid, "CLSA0100", 8) != 0)
->   		return ERR_PTR(-EINVAL);
->   
->   	/* check I2C address to assign the index */
->   	cs35l41->index = id == 0x40 ? 0 : 1;
-> -	cs35l41->reset_gpio = gpiod_get_index(acpi_dev, NULL, 0, GPIOD_OUT_HIGH);
-> +	cs35l41->reset_gpio = gpiod_get_index(physdev, NULL, 0, GPIOD_OUT_HIGH);
->   	cs35l41->vspk_always_on = true;
-> -	put_device(acpi_dev);
-> +	put_device(physdev);
->   
->   	return NULL;
->   }
-> @@ -416,8 +419,7 @@ int cs35l41_hda_probe(struct device *dev, const char *device_name, int id, int i
->   		if (ret == -EBUSY) {
->   			dev_info(cs35l41->dev, "Reset line busy, assuming shared reset\n");
->   		} else {
-> -			if (ret != -EPROBE_DEFER)
-> -				dev_err(cs35l41->dev, "Failed to get reset GPIO: %d\n", ret);
-> +			dev_err_probe(cs35l41->dev, ret, "Failed to get reset GPIO: %d\n", ret);
->   			goto err;
->   		}
->   	}
-> @@ -437,7 +439,8 @@ int cs35l41_hda_probe(struct device *dev, const char *device_name, int id, int i
->   
->   	ret = regmap_read(cs35l41->regmap, CS35L41_IRQ1_STATUS3, &int_sts);
->   	if (ret || (int_sts & CS35L41_OTP_BOOT_ERR)) {
-> -		dev_err(cs35l41->dev, "OTP Boot error\n");
-> +		dev_err(cs35l41->dev, "OTP Boot status %x error: %d\n",
-> +			int_sts & CS35L41_OTP_BOOT_ERR, ret);
->   		ret = -EIO;
->   		goto err;
->   	}
-> @@ -489,7 +492,7 @@ int cs35l41_hda_probe(struct device *dev, const char *device_name, int id, int i
+> @@ -480,7 +480,7 @@ int cs35l41_hda_probe(struct device *dev, const char *device_name, int id, int i
+>   	acpi_hw_cfg = NULL;
 >   
 >   	if (cs35l41->reg_seq->probe) {
->   		ret = regmap_multi_reg_write(cs35l41->regmap, cs35l41->reg_seq->probe,
-> -					    cs35l41->reg_seq->num_probe);
-> +					     cs35l41->reg_seq->num_probe);
+> -		ret = regmap_register_patch(cs35l41->regmap, cs35l41->reg_seq->probe,
+> +		ret = regmap_multi_reg_write(cs35l41->regmap, cs35l41->reg_seq->probe,
+>   					    cs35l41->reg_seq->num_probe);
 >   		if (ret) {
 >   			dev_err(cs35l41->dev, "Fail to apply probe reg patch: %d\n", ret);
->   			goto err;
-> diff --git a/sound/pci/hda/cs35l41_hda.h b/sound/pci/hda/cs35l41_hda.h
-> index 76c69a8a22f6..640afc98b686 100644
-> --- a/sound/pci/hda/cs35l41_hda.h
-> +++ b/sound/pci/hda/cs35l41_hda.h
-> @@ -1,6 +1,6 @@
->   /* SPDX-License-Identifier: GPL-2.0
->    *
-> - * cs35l41_hda.h -- CS35L41 ALSA HDA audio driver
-> + * CS35L41 ALSA HDA audio driver
->    *
->    * Copyright 2021 Cirrus Logic, Inc.
->    *
-> diff --git a/sound/pci/hda/cs35l41_hda_i2c.c b/sound/pci/hda/cs35l41_hda_i2c.c
-> index eeb387853ee3..c2397dc53e78 100644
-> --- a/sound/pci/hda/cs35l41_hda_i2c.c
-> +++ b/sound/pci/hda/cs35l41_hda_i2c.c
-> @@ -58,7 +58,6 @@ static struct i2c_driver cs35l41_i2c_driver = {
->   	.probe		= cs35l41_hda_i2c_probe,
->   	.remove		= cs35l41_hda_i2c_remove,
->   };
-> -
->   module_i2c_driver(cs35l41_i2c_driver);
->   
->   MODULE_DESCRIPTION("HDA CS35L41 driver");
-> diff --git a/sound/pci/hda/cs35l41_hda_spi.c b/sound/pci/hda/cs35l41_hda_spi.c
-> index 15345a72b9d1..36815ab4e461 100644
-> --- a/sound/pci/hda/cs35l41_hda_spi.c
-> +++ b/sound/pci/hda/cs35l41_hda_spi.c
-> @@ -55,7 +55,6 @@ static struct spi_driver cs35l41_spi_driver = {
->   	.probe		= cs35l41_hda_spi_probe,
->   	.remove		= cs35l41_hda_spi_remove,
->   };
-> -
->   module_spi_driver(cs35l41_spi_driver);
->   
->   MODULE_DESCRIPTION("HDA CS35L41 driver");
-
+> 
