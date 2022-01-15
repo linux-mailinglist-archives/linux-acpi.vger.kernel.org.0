@@ -2,87 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B8FF48F2F8
-	for <lists+linux-acpi@lfdr.de>; Sat, 15 Jan 2022 00:25:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2E8348F36A
+	for <lists+linux-acpi@lfdr.de>; Sat, 15 Jan 2022 01:16:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229874AbiANXYt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 14 Jan 2022 18:24:49 -0500
-Received: from mga01.intel.com ([192.55.52.88]:33182 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229903AbiANXYr (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 14 Jan 2022 18:24:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1642202687; x=1673738687;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=aERjaKJcO3q8+3VbJzmZCF3NJVD1CcvNJXZcgR8QX+U=;
-  b=ntrahYGI8zhCmegsTzs8LC31d1ti/hKVVPAfkVVT2vXsiG8HjMIPC2q/
-   stVVknEqXBkj+KFhxRZcCJVdGeGhGcOfRsnApwALldz2hFmp4jBUxxe9c
-   dn2ykGPIkwgawUw0hgRtX5BtXtGkM+j5va3GEDGjE/upf49SxmmMC5sKB
-   1vcQ/eLzz+Nk+yT09i8WJsNrbeJllQNwX5jp+qMgFM7hm27X5ISGh6uaK
-   8hCqeYk+8UUb23Og8ELljlXfa1P2oOunPYWQXlW3FHPdKiVkPHBgug/po
-   PrrQoDxOmqPacP3kUTcyXwq+Yz7eRWLqbKuzcB8Ydj+OHghiuR8OIso6o
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10227"; a="268718352"
-X-IronPort-AV: E=Sophos;i="5.88,290,1635231600"; 
-   d="scan'208";a="268718352"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2022 15:24:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,290,1635231600"; 
-   d="scan'208";a="491682056"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.8])
-  by orsmga002.jf.intel.com with ESMTP; 14 Jan 2022 15:24:46 -0800
-From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     rafael@kernel.org, lenb@kernel.org, daniel.lezcano@linaro.org
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, amitk@kernel.org,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH 3/3] thermal: int340x: Add Raptor Lake PCI device id
-Date:   Fri, 14 Jan 2022 15:24:35 -0800
-Message-Id: <20220114232435.448340-4-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220114232435.448340-1-srinivas.pandruvada@linux.intel.com>
-References: <20220114232435.448340-1-srinivas.pandruvada@linux.intel.com>
+        id S231437AbiAOAQ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 14 Jan 2022 19:16:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43390 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230423AbiAOAQ1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 14 Jan 2022 19:16:27 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51E5C06173E
+        for <linux-acpi@vger.kernel.org>; Fri, 14 Jan 2022 16:16:26 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id k15so39666684edk.13
+        for <linux-acpi@vger.kernel.org>; Fri, 14 Jan 2022 16:16:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=YMjl+BxlkAj0ocutgxgneZ3nnXQxRxjy7+A3Hb6S6MM=;
+        b=gwjMmUAyK1GBKkWHyvVu/xpiD3h5QUoGKZHkfi/GNbhoRcGZgtJ6G2cJZNrw6PFEbk
+         ZfnuHgUF+YbnFIUfw73vXqakRjBml+BD1K5MNNoUf+aJAlGTozdLQFskh1C3Vmibmipl
+         QsZJamvr0/jzhnpyxpxfI1PaQBVGpqt/2HaEc+U1/kOz3aGCHvCJfFSHHw71YnzulfPs
+         M5h1tsShnmFgJGJdDyvLaq19ZAq+ieaui6JMHsx+SDmvdUEApmuxTIRAVsFl0Jbvh4kv
+         YbZGkkjG0rmlsG86Sb0UF0zT6fpNcAA+ggFhCmCJJfDtbtsVBmXboJNfohpUI2QtZdh2
+         3s2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=YMjl+BxlkAj0ocutgxgneZ3nnXQxRxjy7+A3Hb6S6MM=;
+        b=flcYBxnidTC2r0QaIck9Wl9zGT60mAdBX9ftBYPGbyyrRanc5PMCHUy0u3ALFWdfHz
+         KGXPbysoZHP0aAZVJxqe8wXshjlthiQ0AkGqc49Wu1R5/y0GSguQAvaaASdRItOLQxlC
+         YzvahpROe8mtPm08TVQX2BOli9Cba4XLvYbNjcnB+TIXpB0sNEriOCYst3yq11CGLQ1V
+         E5l3MatLUHdPPTmpcFrPNuc/cMlF2NJzw/G0ZTfv+vrLCPm9DTlkZprEbSZwNQgXHhqv
+         qtT5VeUG+DmpwygdrIfGYxHHjgTe5o6XAcSIdkAxjcsdkeH6nYfDKb0SWrTbSbTaCJlw
+         BjpA==
+X-Gm-Message-State: AOAM532+S+wI0LT+VCjXrGxQw2GLKGkShymqn99Q1FWp7zm0JJP77gqc
+        96Atn7Rq98TjqAzt72xQBc4avb7L9Xx5nyLNCebF/w==
+X-Google-Smtp-Source: ABdhPJwGD8I5X1TpOUXOIHpLfyEMYmXxOu6zyTxcLiks7tT8Zu+YtFx3OahdHMkXU/r/aM6sxcdmOzif5pcpDGMozNg=
+X-Received: by 2002:a05:6402:f02:: with SMTP id i2mr11194504eda.97.1642205785204;
+ Fri, 14 Jan 2022 16:16:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAAJ9+9fq1=EcOaSoo3oD_5QjYNAv6PPDjKS+gC9o7XDp2p1XpQ@mail.gmail.com>
+ <CAAJ9+9ct3+N0LyH+9N03ZQYUZnF23LFAyWFcnNK4bD7SvaohrQ@mail.gmail.com> <20220113092512.000011d6@Huawei.com>
+In-Reply-To: <20220113092512.000011d6@Huawei.com>
+From:   Zayd Qumsieh <zaydq@rivosinc.com>
+Date:   Fri, 14 Jan 2022 16:15:00 -0800
+Message-ID: <CAAJ9+9df5HCawwDJA2nJ2M=EXQ2LWhZQUSau0DPtFmD0zNoiDQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/2] cxl/mem: Add CDAT table reading from DOE
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     alison.schofield@intel.com, ben.widawsky@intel.com,
+        cbrowy@avery-design.com, dan.j.williams@intel.com,
+        f.fangjian@huawei.com, helgaas@kernel.org, ira.weiny@intel.com,
+        linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+        linux-pci@vger.kernel.org, linuxarm@huawei.com,
+        lorenzo.pieralisi@arm.com, vishal.l.verma@intel.com,
+        Dylan Reid <dylan@rivosinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Add Raptor Lake PCI ID for processor thermal device.
+On Thu, Jan 13, 2022 at 1:25 AM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Wed, 12 Jan 2022 14:16:18 -0800
+> Zayd Qumsieh <zaydq@rivosinc.com> wrote:
+>
+> > Hello all,
+> >
+> > Due to issues with vger.kernel.org marking HTML emails as spam, I'll
+> > be resending the email in plain text:
+> >
+> >
+> >
+> > Hello all, First off, thanks for your work on implementing PCI Data
+> > Object Exchange in QEMU and Linux.
+> >
+> > 1. Are these patches still being worked on? If not, I=E2=80=99ll try to=
+ get
+> > them rebased and finished.
+> >
+> > 2. Are there any notes not mentioned in the emails you feel are
+> > important to know about?
+> >
+> > 3. I'm particularly interested in the testing framework - the emails
+> > mention that a lot of testing has been done through QEMU but how can I
+> > carry out these tests on my own? What tools did you use?
+> >
+> > Thanks,
+> >
+> > Zayd
+>
+> https://lore.kernel.org/all/20211105235056.3711389-1-ira.weiny@intel.com/
+> Is the latest version of this.  For basic testing Ben's qemu branch shoul=
+d
+> work for you.
+> https://gitlab.com/bwidawsk/qemu/-/commits/cxl-2.0v4/
+>
+> Note there are some big questions over the approach used for integrating
+> this with the PCI subsystem (auxiliary bus vs library) which I'm not sure
+> we've reached a conclusion on yet.
+>
+> One minor thing on the wish list is lspci support to at least identify th=
+e
+> presence of a DOE.  I have patches for that and will send out fairly soon
+> once I've cleared a backlog of other stuff.
+>
+> My main focus right now is on resolving some of the opens around the
+> QEMU support for CXL emul in general, but I haven't touched the DOE stuff
+> beyond rebasing.  *fingers crossed* I should have an updated qemu tree
+> out sometime in next week or so.
+>
+> Thanks,
+>
+> Jonathan
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
----
- drivers/thermal/intel/int340x_thermal/processor_thermal_device.h | 1 +
- .../thermal/intel/int340x_thermal/processor_thermal_device_pci.c | 1 +
- 2 files changed, 2 insertions(+)
+Hey,
 
-diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.h b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.h
-index 9b2a64ef55d0..49932a68abac 100644
---- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.h
-+++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.h
-@@ -24,6 +24,7 @@
- #define PCI_DEVICE_ID_INTEL_HSB_THERMAL	0x0A03
- #define PCI_DEVICE_ID_INTEL_ICL_THERMAL	0x8a03
- #define PCI_DEVICE_ID_INTEL_JSL_THERMAL	0x4E03
-+#define PCI_DEVICE_ID_INTEL_RPL_THERMAL	0xA71D
- #define PCI_DEVICE_ID_INTEL_SKL_THERMAL	0x1903
- #define PCI_DEVICE_ID_INTEL_TGL_THERMAL	0x9A03
- 
-diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-index b4bcd3fe9eb2..ca40b0967cdd 100644
---- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-+++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-@@ -358,6 +358,7 @@ static SIMPLE_DEV_PM_OPS(proc_thermal_pci_pm, proc_thermal_pci_suspend,
- 
- static const struct pci_device_id proc_thermal_pci_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, ADL_THERMAL, PROC_THERMAL_FEATURE_RAPL | PROC_THERMAL_FEATURE_FIVR | PROC_THERMAL_FEATURE_DVFS | PROC_THERMAL_FEATURE_MBOX) },
-+	{ PCI_DEVICE_DATA(INTEL, RPL_THERMAL, PROC_THERMAL_FEATURE_RAPL | PROC_THERMAL_FEATURE_FIVR | PROC_THERMAL_FEATURE_DVFS | PROC_THERMAL_FEATURE_MBOX) },
- 	{ },
- };
- 
--- 
-2.34.1
+I did some experimenting with Ben's QEMU branch and integrated your
+patch locally. I'll be doing some testing of my own. If I run into
+anything noteworthy I'll let you know. Again, thank you for all your
+help! :)
 
+Thanks,
+Zayd
