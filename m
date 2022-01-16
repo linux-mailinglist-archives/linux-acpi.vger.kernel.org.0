@@ -2,24 +2,24 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 382AF48FA84
-	for <lists+linux-acpi@lfdr.de>; Sun, 16 Jan 2022 04:48:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A06D48FB64
+	for <lists+linux-acpi@lfdr.de>; Sun, 16 Jan 2022 08:36:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231519AbiAPDsU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Sat, 15 Jan 2022 22:48:20 -0500
-Received: from ec2-13-115-114-132.ap-northeast-1.compute.amazonaws.com ([13.115.114.132]:44102
+        id S234525AbiAPHgn convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Sun, 16 Jan 2022 02:36:43 -0500
+Received: from ec2-13-115-114-132.ap-northeast-1.compute.amazonaws.com ([13.115.114.132]:51422
         "EHLO mail.gunma-suigai-risk.jp" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231501AbiAPDsT (ORCPT
+        by vger.kernel.org with ESMTP id S234478AbiAPHgn (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 15 Jan 2022 22:48:19 -0500
-Received: from Unknown (unknown [177.91.130.66])
-        by mail.gunma-suigai-risk.jp (Postfix) with ESMTPA id E7B4325628B0;
-        Sat, 15 Jan 2022 23:05:13 +0000 (UTC)
-Message-ID: <383D8BD8D30729EA36337AC6C2655B4A@itwhhv>
+        Sun, 16 Jan 2022 02:36:43 -0500
+Received: from Unknown (unknown [177.93.72.130])
+        by mail.gunma-suigai-risk.jp (Postfix) with ESMTPA id 2F74C23B303C;
+        Sun, 16 Jan 2022 02:23:20 +0000 (UTC)
+Message-ID: <D0D563303BEFC102DEDB922E2AF054CE@yxhgq>
 Reply-To: "Fredrik Elvebakk" <fcresswell9@gmail.com>
 From:   "Fredrik Elvebakk" <investment@dnb.no>
 Subject: Re:
-Date:   Sat, 15 Jan 2022 15:05:07 -0800
+Date:   Sat, 15 Jan 2022 18:20:57 -0800
 MIME-Version: 1.0
 Content-Type: text/plain;
         format=flowed;
@@ -28,8 +28,8 @@ Content-Type: text/plain;
 Content-Transfer-Encoding: 8BIT
 X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5931
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.6157
+X-Mailer: Microsoft Windows Live Mail 16.4.3528.331
+X-MimeOLE: Produced By Microsoft MimeOLE V16.4.3528.331
 To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
