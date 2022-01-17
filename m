@@ -2,126 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06D9349063A
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jan 2022 11:48:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97A52490A4C
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jan 2022 15:30:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238727AbiAQKsa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Jan 2022 05:48:30 -0500
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:43590 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S233756AbiAQKs3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 17 Jan 2022 05:48:29 -0500
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20H7WQjK008705;
-        Mon, 17 Jan 2022 04:47:35 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=message-id : date :
- mime-version : from : to : subject : references : in-reply-to :
- content-type : content-transfer-encoding; s=PODMain02222019;
- bh=NWU+5VvMON2Rs3VaV3OVIvcyV57zKDXnVQdpixkc4ME=;
- b=m0n8apO1JSgS/k1JNJDxtkZdWhVTpOkLbPl0S4mHw9PLQRYMNYViovBSyze51UXDlVAV
- Qdmw0YZX+AfhoTMQLe/YFauKADYEsu0uHwHqhOBVDke+H2l536mSYtT9OIZWznJr0+bf
- hz4mdYABM7LSSXOBP8HYhWpuwRgn6gca8F6nLoF8PxWPGCis+S8pzu32BjSvAnOK+bMl
- 4Q/TjcUs27JGv4S56LFoIKliTIvyZ99kbV7T2ME8vGFRSqTKC+K/GLR6M1oWj4cJ8iyh
- S18yKp2QNmj8W+YMauaNTYg/C6miAwCamSZycYB4K0TJjTpi/wz9n8BaryQZKvcRdkRM RA== 
-Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-        by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3dkvj5a1rc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 17 Jan 2022 04:47:35 -0600
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Mon, 17 Jan
- 2022 10:47:33 +0000
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.18 via Frontend
- Transport; Mon, 17 Jan 2022 10:47:33 +0000
-Received: from [198.61.64.122] (unknown [198.61.64.122])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id B6133459;
-        Mon, 17 Jan 2022 10:47:32 +0000 (UTC)
-Message-ID: <605c6a69-0542-458c-2ea0-1ed26f6e28f5@opensource.cirrus.com>
-Date:   Mon, 17 Jan 2022 10:47:32 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-From:   <tanureal@opensource.cirrus.com>
-To:     Takashi Iwai <tiwai@suse.de>, Hans de Goede <hdegoede@redhat.com>,
+        id S238729AbiAQOaZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jan 2022 09:30:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38304 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238653AbiAQOaZ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jan 2022 09:30:25 -0500
+Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6A13C061574;
+        Mon, 17 Jan 2022 06:30:24 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: hector@marcansoft.com)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 19C1341AC8;
+        Mon, 17 Jan 2022 14:30:14 +0000 (UTC)
+From:   Hector Martin <marcan@marcan.st>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, moderated list:
-        "SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        <patches@opensource.cirrus.com>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, ;
-Illegal-Object: Syntax error in To: address found on vger.kernel.org:
-        To:     ;
-                        ^-missing semicolon to end mail group, extraneous tokens in mailbox, missing end of mailbox
-Subject: Re: [PATCH 5/5] ACPI / scan: Create platform device for CLSA0100
-References: <20220113170728.1953559-1-tanureal@opensource.cirrus.com>
- <20220113170728.1953559-5-tanureal@opensource.cirrus.com>
- <s5hee5a47et.wl-tiwai@suse.de>
- <CAJZ5v0ijGWNd9s-4mrFgK-QbPDhnj2K3DF+Z45t7ckV6ET0hpQ@mail.gmail.com>
- <55cb8127-65e2-4d56-5127-2722c5bfe11f@redhat.com>
- <s5hy23h32mq.wl-tiwai@suse.de>
-In-Reply-To: <s5hy23h32mq.wl-tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: oMlFO-dp5RMipIYl8hGjZOMBWtcZMljS
-X-Proofpoint-GUID: oMlFO-dp5RMipIYl8hGjZOMBWtcZMljS
-X-Proofpoint-Spam-Reason: safe
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+Subject: [PATCH v3 0/9] misc brcmfmac fixes (M1/T2 series spin-off)
+Date:   Mon, 17 Jan 2022 23:29:10 +0900
+Message-Id: <20220117142919.207370-1-marcan@marcan.st>
+X-Mailer: git-send-email 2.33.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 1/15/22 6:59 AM, Takashi Iwai <tiwai@suse.de> wrote:
-> On Fri, 14 Jan 2022 19:56:04 +0100,
-> Hans de Goede wrote:
-> >
-> > Hi,
-> >
-> > On 1/14/22 18:51, Rafael J. Wysocki wrote:
-> >> On Fri, Jan 14, 2022 at 5:19 PM Takashi Iwai <tiwai@suse.de> wrote:
-> >>>
-> >>> On Thu, 13 Jan 2022 18:07:28 +0100,
-> >>> Lucas Tanure wrote:
-> >>>>
-> >>>> The ACPI device with CLSA0100 is a sound card with
-> >>>> multiple instances of CS35L41 connected by I2C to
-> >>>> the main CPU.
-> >>>>
-> >>>> We add an ID to the i2c_multi_instantiate_idsi list
-> >>>> to enumerate all I2C slaves correctly.
-> >>>>
-> >>>> Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
-> >>>
-> >>> I think it's better to merge this from sound git tree together with
-> >>> others in the patch set, presumably for rc1.
-> >>>
-> >>> It'd be great if ACPI people can take a review and give an ack/nack.
-> >>
-> >> Hans, what do you think?
-> >
-> > This patch (5/5) applies on top of:
-> >
-> > https://lore.kernel.org/linux-acpi/20211210154050.3713-1-sbinding@opensource.cirrus.com/
-> >
-> > Which still needs some work and which really should be merged
-> > through the ACPI tree. IMHO it would be best to simply drop
-> > this (5/5) from this series and move it to the v3 of the
-> > series which I've linked to above.
-> >
-> > 1-4 can be merged through the alsa tree independently of 5/5 AFAIK.
-> 
-> OK, that's fine.
-> 
-> Lucas, could you submit v3 patches in the suggested way?
-Yes, we will do that.
-Thanks
-> 
-> 
-> thanks,
-> 
-> Takashi
-> 
+Hi everyone,
+
+This series contains just the fixes / misc improvements from the
+previously submitted series:
+
+brcmfmac: Support Apple T2 and M1 platforms
+
+Patches 8-9 aren't strictly bugfixes but rather just general
+improvements; they can be safely skipped, although patch 8 will be a
+dependency of the subsequent series to avoid a compile warning.
+
+Hector Martin (9):
+  brcmfmac: pcie: Release firmwares in the brcmf_pcie_setup error path
+  brcmfmac: firmware: Allocate space for default boardrev in nvram
+  brcmfmac: firmware: Do not crash on a NULL board_type
+  brcmfmac: pcie: Declare missing firmware files in pcie.c
+  brcmfmac: pcie: Replace brcmf_pcie_copy_mem_todev with memcpy_toio
+  brcmfmac: pcie: Fix crashes due to early IRQs
+  brcmfmac: of: Use devm_kstrdup for board_type & check for errors
+  brcmfmac: fwil: Constify iovar name arguments
+  brcmfmac: pcie: Read the console on init and shutdown
+
+ .../broadcom/brcm80211/brcmfmac/firmware.c    |  5 ++
+ .../broadcom/brcm80211/brcmfmac/fwil.c        | 34 ++++----
+ .../broadcom/brcm80211/brcmfmac/fwil.h        | 28 +++----
+ .../wireless/broadcom/brcm80211/brcmfmac/of.c |  8 +-
+ .../broadcom/brcm80211/brcmfmac/pcie.c        | 77 ++++++++-----------
+ .../broadcom/brcm80211/brcmfmac/sdio.c        |  1 -
+ 6 files changed, 72 insertions(+), 81 deletions(-)
+
+-- 
+2.33.0
+
