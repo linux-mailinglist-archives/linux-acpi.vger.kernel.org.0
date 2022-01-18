@@ -2,67 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E83E49206C
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 08:41:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EE1849209A
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 08:54:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245606AbiARHlw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Jan 2022 02:41:52 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:44602 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245617AbiARHlv (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jan 2022 02:41:51 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95AEB61387;
-        Tue, 18 Jan 2022 07:41:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0D96BC00446;
-        Tue, 18 Jan 2022 07:41:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642491711;
-        bh=iNIkWQPmpKD4eh7g0YAYJGDoyZOdku7nuquEp8Xokjs=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=uPBTXW0GKAOkxKk5xfn5yBh7cxQOC33btATNa40G6GPhQ3DfIFoQnUnM+CMcupjLS
-         q01/IukspSb6c5oepbHTE3zggS0VYm5kglhZX4NoRIsVkyL1i4VkA3imRTqMzS+yqu
-         BO1Etv2dd4kakHU18G7oXLB5H4ohrs42YEcxEnrG2AQLuNz8NrSkqx6CUGJzLSywmC
-         +x5n3LK8Ktl86hxrY1zy2fDIyiUsrfab5ura/LHixu2L+9rVDcMtsFglore4pWs58X
-         DV6fOZDKNbnChxTrGnKMOlJouQFfEGIr2h7ZX/1vO6w+9t0LbCKyE2A9+T9kDyYEfN
-         OYHfa4oLazdNg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id ED7E8F60797;
-        Tue, 18 Jan 2022 07:41:50 +0000 (UTC)
-Subject: Re: [GIT PULL] More ACPI updates for v5.17-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0iD_Ar15npwR8Cp2oEKF3DgPVo2KaKqfYax5RmTBkbZmg@mail.gmail.com>
-References: <CAJZ5v0iD_Ar15npwR8Cp2oEKF3DgPVo2KaKqfYax5RmTBkbZmg@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0iD_Ar15npwR8Cp2oEKF3DgPVo2KaKqfYax5RmTBkbZmg@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.17-rc1-2
-X-PR-Tracked-Commit-Id: e3daa2607b1f4bb1d09a5a8ad89ad9f7327a2e63
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 6a8d7fbf1c65034b85e7676b42449a56e4206bd3
-Message-Id: <164249171096.10229.6241357949791582942.pr-tracker-bot@kernel.org>
-Date:   Tue, 18 Jan 2022 07:41:50 +0000
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        id S232136AbiARHyA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Jan 2022 02:54:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49726 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231728AbiARHx7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jan 2022 02:53:59 -0500
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FE33C061574;
+        Mon, 17 Jan 2022 23:53:59 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id a21so7489183qkn.0;
+        Mon, 17 Jan 2022 23:53:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/V4lEbBAcAR5fcQnG+RzysQfpcULUErJrgq8Kr91tTU=;
+        b=ccheU2FUDwLcpBtRyNrmmvkUs4y7FotKRe9a7x7iUDPgBWDgRefvbweJo7wj+R6n/R
+         maMNa1K3bLde/Qh45jY/Y+fLaI4Tu27ykvAJd9nSsiXRSmVBjEOEHkqwsKsf/p6SCvNl
+         cdper/q1jWZME059w6hzCxeNvIO84g+E2mYDs3w2VmpHJzHlFHpSWIlpfaNmhth8IJUZ
+         LFOD83gKmW5zPHNfAXU9XuISj0J+W88azOchCHiQkKyZJMZd0MaC1cBgI7FhQ2NCawFi
+         GWGneV9FpQ2T9J+4kziCF+YZRxyCW8hMEQtZB2bGrRmg3k8PhlzMwy++iniiEanL6rX9
+         KJLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/V4lEbBAcAR5fcQnG+RzysQfpcULUErJrgq8Kr91tTU=;
+        b=fPCIMcqa6CcyiGnti6K9Q048wdXZgcuQ4xcn0eHiW/s1XBn00MfliuFSXxQIgDcPzL
+         Ee43JhoMp5z9WhN/WNJuFNcVszGop2d6XS53a5eK6I47lBqtpU+EWXNkAVFRyBIvYwAj
+         DAGq62lc99L77u+nVNkywxGaRvs1GWD/Rkg0K7z5CxrCdKUEszbINsznj4mG9+xnbjuk
+         ErlTWKU58/7TZ5RKFyBLixDybhOD7Ox1DunKmauvHso0v2uqi+eaH6ZDLjN9I+o47Eb6
+         3DgZYq58roTHUZ9AsTIOkQJnpC60d+XoComhuOgDXxObfb9nOPaKLbvi5itTK/3Mu4Fz
+         n9Vw==
+X-Gm-Message-State: AOAM530+o0l/KOGQ12M6lkkQqpnNo4vS3EQ3V6gMNPaMVYpjbPmRHVR/
+        OnBCopCTxWsNlZLv7pKfoAw=
+X-Google-Smtp-Source: ABdhPJygc9nU+a9M/8q+xjg0xzBBWJ8Yu7wn0GtZIzk+qIwIWWPC20lenQEWcQ+HFb8Cxpk/vhEDmQ==
+X-Received: by 2002:a05:620a:2847:: with SMTP id h7mr16220431qkp.295.1642492438478;
+        Mon, 17 Jan 2022 23:53:58 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id w63sm9673311qkd.88.2022.01.17.23.53.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Jan 2022 23:53:58 -0800 (PST)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To:     keescook@chromium.org
+Cc:     anton@enomsg.org, ccross@android.com, tony.luck@intel.com,
+        rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+        bp@alien8.de, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Minghao Chi <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>, CGEL ZTE <cgel.zte@gmail.com>
+Subject: [PATCH] drivers/acpi/apei/erst: remove unneeded rc variable
+Date:   Tue, 18 Jan 2022 07:53:49 +0000
+Message-Id: <20220118075349.925694-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The pull request you sent on Mon, 17 Jan 2022 19:09:53 +0100:
+From: Minghao Chi <chi.minghao@zte.com.cn>
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.17-rc1-2
+Return value from erst_get_record_id_begin() directly instead
+of taking this in another redundant variable.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/6a8d7fbf1c65034b85e7676b42449a56e4206bd3
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+Signed-off-by: CGEL ZTE <cgel.zte@gmail.com>
+---
+ drivers/acpi/apei/erst.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Thank you!
-
+diff --git a/drivers/acpi/apei/erst.c b/drivers/acpi/apei/erst.c
+index 242f3c2d5533..d9cf07b2a90b 100644
+--- a/drivers/acpi/apei/erst.c
++++ b/drivers/acpi/apei/erst.c
+@@ -952,14 +952,10 @@ static int reader_pos;
+ 
+ static int erst_open_pstore(struct pstore_info *psi)
+ {
+-	int rc;
+-
+ 	if (erst_disable)
+ 		return -ENODEV;
+ 
+-	rc = erst_get_record_id_begin(&reader_pos);
+-
+-	return rc;
++	return erst_get_record_id_begin(&reader_pos);
+ }
+ 
+ static int erst_close_pstore(struct pstore_info *psi)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.25.1
+
