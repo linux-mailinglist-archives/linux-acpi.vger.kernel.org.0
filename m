@@ -2,128 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8298A4923F4
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 11:45:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CE4E4928C6
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 15:54:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237818AbiARKo0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 18 Jan 2022 05:44:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32904 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbiARKoY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jan 2022 05:44:24 -0500
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D089C061574;
-        Tue, 18 Jan 2022 02:44:23 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id z22so77500782edd.12;
-        Tue, 18 Jan 2022 02:44:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CtzkMdSfCrnyPh2rB+DJtTILLwpvztUqax7V+OFUjMA=;
-        b=K01WJVgQUzeZ6CKQbjF+nfrEi+ppClBCVh8nFFlmgCEDOj9R5QixMRO4/W1GhXT1Y+
-         T025UDlZ+nepMZvwthUhn2ZOKcaER3u3V/Qt5Mt/kuzdWNTPq/67+oWp6lpj57JGe2fc
-         qYZC9ay1ucoiPEfM8OpG5V2ecPys5Dj8meQuQFFw/65m5zPAWMEpHBrO5TqHKv3cgcox
-         4Orr0DPD3n6CpBuJTafuhrECW893B/vYh7CS4GPafgB+Qz/gsInYxVw3ymlVPKt9E5t+
-         ukpl48IJ0snAQdsJZ+Lfvu8W6sT8rO40tJQeAr2rrZGG/8xPnyrEP8m7jKweaI+n3Q5G
-         hFlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CtzkMdSfCrnyPh2rB+DJtTILLwpvztUqax7V+OFUjMA=;
-        b=FXP67FqX5/m6G4gJ5bwvVsF11TUU6EBru1yNQ7aDWRj/mEpFnEJ8BAtrLu5HTZnJOP
-         ZMfT9dolyGWyyozEcme32aa1E5m4wU1uCR3f/jVHpSgMoklyh6UTeHZmAhJbAMNco2OR
-         2tfUYy+SVKoWk/kRmVjXMSYlNGRc6gti5TDfkEPBaAbwZJa8VgVN3zXMr57OcTdwJ1M7
-         wDWFpjOkzLQ5NvIfp+2NdxOF+wKei2tGIkVKSlCf6AI6E8W/DGGB9UpOG4QsrmOu00j1
-         gaZQi1wgCYpdP7WucVGiG1LgDjIWyjtk4hz3AcLJG5L7ZRuRRrggrQ1//QCYn+ab432y
-         4NxQ==
-X-Gm-Message-State: AOAM531ATB8wZJ0h/rEsf1nMnFBI15siJ9da7UpSbSs+4mjRZXXgRX+N
-        EWQ+70crr0NrvyAmVvAteS4AAvNkcH5XXgQQppA=
-X-Google-Smtp-Source: ABdhPJxgeM7o9nefOzSERVjljBgpf3R+t3ROjDf67G1rnP6X6BwJ1AEpf47/feUY2V3H93HBfSBtqRxRgX9m5Dq+68w=
-X-Received: by 2002:a05:6402:35d3:: with SMTP id z19mr10055100edc.29.1642502662119;
- Tue, 18 Jan 2022 02:44:22 -0800 (PST)
-MIME-Version: 1.0
-References: <20220117142919.207370-1-marcan@marcan.st>
-In-Reply-To: <20220117142919.207370-1-marcan@marcan.st>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 18 Jan 2022 12:43:45 +0200
-Message-ID: <CAHp75VfRiFokdTQ9cnEEH596mM7cb4FXQk4eXVt37cG4FcFMyA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/9] misc brcmfmac fixes (M1/T2 series spin-off)
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        id S1344505AbiAROyU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Jan 2022 09:54:20 -0500
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:61268 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1344189AbiAROxw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 18 Jan 2022 09:53:52 -0500
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20IA16xt003923;
+        Tue, 18 Jan 2022 08:53:29 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=PODMain02222019;
+ bh=oT71zYZrNYYAVg8RxuJrWoYyZlkJNB+Jr07bzKT9yzM=;
+ b=gkkinJg8iKrLsu5gefMkccLiXiaaF52vG01jOgeGPicGGgVTtknU5rW7kmtu8Wx6yU6A
+ iJV07uKpNyBrorvOiUEl8cMdbaONSKY58MdRNLrpQ7PHbe7zDi4qf95nRs47/nrSmBJB
+ dYJ7gLdClb4wIB3NWNI+4zKpLgnDCzT3Ou8rCEoKs5UvhCtvVF9Zg5I6t+pFG1UqlI7k
+ QuV9d5xg/7LbmbJMYLQs0kk9UUA9r2Uo+ldP4TBUbAcbYbzc7PkRvDoVKE+DOd0Sg/F9
+ mUZazc9L4r06Wzbptmt2HW5dgOQGVyYn8YH85nQ31P6VyhadYXAD2/+nTBhIOPudtsik tw== 
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3dn8k2s8sw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 18 Jan 2022 08:53:29 -0600
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Tue, 18 Jan
+ 2022 14:53:27 +0000
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.18 via Frontend
+ Transport; Tue, 18 Jan 2022 14:53:27 +0000
+Received: from LONN2DGDQ73.ad.cirrus.com (unknown [198.90.238.138])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id C0C01B13;
+        Tue, 18 Jan 2022 14:53:19 +0000 (UTC)
+From:   Stefan Binding <sbinding@opensource.cirrus.com>
+To:     Mark Brown <broonie@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
         Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com
-Content-Type: text/plain; charset="UTF-8"
+        Mark Gross <markgross@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        <patches@opensource.cirrus.com>,
+        Stefan Binding <sbinding@opensource.cirrus.com>
+Subject: [PATCH v3 00/10] Support Spi in i2c-multi-instantiate driver
+Date:   Tue, 18 Jan 2022 14:52:41 +0000
+Message-ID: <20220118145251.1548-1-sbinding@opensource.cirrus.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: zA00nyU-pN3X5N5JynvrPg8PJJY7TPPk
+X-Proofpoint-ORIG-GUID: zA00nyU-pN3X5N5JynvrPg8PJJY7TPPk
+X-Proofpoint-Spam-Reason: safe
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 17, 2022 at 4:30 PM Hector Martin <marcan@marcan.st> wrote:
->
-> Hi everyone,
->
-> This series contains just the fixes / misc improvements from the
-> previously submitted series:
->
-> brcmfmac: Support Apple T2 and M1 platforms
->
-> Patches 8-9 aren't strictly bugfixes but rather just general
-> improvements; they can be safely skipped, although patch 8 will be a
-> dependency of the subsequent series to avoid a compile warning.
+Add support for SPI bus in the i2c-multi-instantiate driver as
+upcoming laptops will need to multi instantiate SPI devices from
+a single device node, which has multiple SpiSerialBus entries at
+the ACPI table.
 
-Have I given you a tag? If so, I do not see it applied in the patches...
+With the new SPI support, i2c-multi-instantiate becomes
+bus-multi-instantiate and is moved to the ACPI folder.
 
-> Hector Martin (9):
->   brcmfmac: pcie: Release firmwares in the brcmf_pcie_setup error path
->   brcmfmac: firmware: Allocate space for default boardrev in nvram
->   brcmfmac: firmware: Do not crash on a NULL board_type
->   brcmfmac: pcie: Declare missing firmware files in pcie.c
->   brcmfmac: pcie: Replace brcmf_pcie_copy_mem_todev with memcpy_toio
->   brcmfmac: pcie: Fix crashes due to early IRQs
->   brcmfmac: of: Use devm_kstrdup for board_type & check for errors
->   brcmfmac: fwil: Constify iovar name arguments
->   brcmfmac: pcie: Read the console on init and shutdown
->
->  .../broadcom/brcm80211/brcmfmac/firmware.c    |  5 ++
->  .../broadcom/brcm80211/brcmfmac/fwil.c        | 34 ++++----
->  .../broadcom/brcm80211/brcmfmac/fwil.h        | 28 +++----
->  .../wireless/broadcom/brcm80211/brcmfmac/of.c |  8 +-
->  .../broadcom/brcm80211/brcmfmac/pcie.c        | 77 ++++++++-----------
->  .../broadcom/brcm80211/brcmfmac/sdio.c        |  1 -
->  6 files changed, 72 insertions(+), 81 deletions(-)
->
-> --
-> 2.33.0
->
+The intention is to support the SPI bus by re-using the current
+I2C multi instantiate, instead of creating a new SPI multi
+instantiate, to make it possible for peripherals that can be
+controlled by I2C or SPI to have the same HID at the ACPI table.
 
+The new driver (Bus multi instantiate, bmi) checks for the
+hard-coded bus type and returns -ENODEV in case of zero devices
+found for that bus. In the case of automatic bus detection, 
+the driver will give preference to I2C.
 
---
-With Best Regards,
-Andy Shevchenko
+The expectation is for a device node in the ACPI table to have
+multiple I2cSerialBus only or multiple SpiSerialBus only, not
+a mix of both; and for the case where there are both entries in
+one device node, only the I2C ones would be probed.
+
+This new bus multi instantiate will be used in CS35L41 HDA new
+driver.
+
+Changes since V2:
+ - Fix review comments in bus-multi-instantiate
+ - Modified spi code to export new helper to allocate spi device
+   based on ACPI
+ - Add api in spi code to count number of spi devices in ACPI
+ - Add patch to add support for HP Laptops
+ - Add patch to add support for various CS35L41 devices in
+   scan.c and bus-multi-instantiate from previous chain:
+   https://lore.kernel.org/all/20220117160830.709403-1-tanureal@opensource.cirrus.com/
+
+Lucas Tanure (5):
+  platform/x86: i2c-multi-instantiate: Move it to drivers/acpi folder
+  ACPI: i2c-multi-instantiate: Rename it for a generic bus driver name
+  ACPI: bus-multi-instantiate: Reorganize I2C functions
+  ALSA: hda/realtek: Add support for HP Laptops
+  ACPI / scan: Create platform device for CS35L41
+
+Stefan Binding (5):
+  spi: Make spi_alloc_device and spi_add_device public again
+  spi: Create helper API to lookup ACPI info for spi device
+  spi: Support selection of the index of the ACPI Spi Resource before
+    alloc
+  spi: Add API to count spi acpi resources
+  ACPI: bus-multi-instantiate: Add SPI support
+
+ MAINTAINERS                                  |   4 +-
+ drivers/acpi/Kconfig                         |  11 +
+ drivers/acpi/Makefile                        |   1 +
+ drivers/acpi/bus-multi-instantiate.c         | 369 +++++++++++++++++++
+ drivers/acpi/scan.c                          |  16 +-
+ drivers/platform/x86/Kconfig                 |  11 -
+ drivers/platform/x86/Makefile                |   1 -
+ drivers/platform/x86/i2c-multi-instantiate.c | 174 ---------
+ drivers/spi/spi.c                            | 142 ++++++-
+ include/linux/spi/spi.h                      |  32 ++
+ sound/pci/hda/patch_realtek.c                |  43 ++-
+ 11 files changed, 592 insertions(+), 212 deletions(-)
+ create mode 100644 drivers/acpi/bus-multi-instantiate.c
+ delete mode 100644 drivers/platform/x86/i2c-multi-instantiate.c
+
+-- 
+2.25.1
+
