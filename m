@@ -2,49 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C343491B4F
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 04:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BADC7491B51
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 04:06:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353890AbiARDEs (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Jan 2022 22:04:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37618 "EHLO
+        id S1353900AbiARDEt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jan 2022 22:04:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350941AbiARC6l (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jan 2022 21:58:41 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DE13C08E81D;
-        Mon, 17 Jan 2022 18:46:34 -0800 (PST)
+        with ESMTP id S1352407AbiARC74 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jan 2022 21:59:56 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D0C6C02B5F0;
+        Mon, 17 Jan 2022 18:46:42 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 134D061310;
-        Tue, 18 Jan 2022 02:46:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931EEC36AEB;
-        Tue, 18 Jan 2022 02:46:32 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 44828B81233;
+        Tue, 18 Jan 2022 02:46:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41694C36AEB;
+        Tue, 18 Jan 2022 02:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642473993;
-        bh=cnN5xt6O7qL5pb9YX1Cpeo6wCDkG1nZj0Zoq4vNviYg=;
+        s=k20201202; t=1642474000;
+        bh=pAudh+TsOSpSnD0nYfPANG+aRUPcTOqHL2dBB7d7S30=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oiekNBZdJHPsQMjU/Vut5Zp5cyGjOU44PH2KthAxUeICK/huPe7pVdYe3uL8Uos0U
-         Lxa/f29CDwme2kuQPgS40Rx652pp1Jv3n6RYbBU5sh7NZZ+qy3l6ieHgP/6jgcHYqK
-         55UoRGr2VZ+55pozABsoLWA6b1EbN6YWAxe4F0M74iZPdi+shWp8LGNA3EGP8r8Ly5
-         MbwK7gbzeWPVb1aFx9GacVqRYQ+SvPvA/P0PXD24GF23ayh9fE0TUbuG1GpcBs8T0n
-         J9ImNZuExj2l6sdiYJhGnE9UnIP92bmykAI3jrs0YwTVQCs2Tfsbnp1vrwfADCBhXs
-         GNCmSlkOdgllg==
+        b=SoC64WXmzKIMbaZRQ6H/nEvfJPb55sU3EElL62Ho19p/QFNijvGy6Re4B5JkRGhzu
+         P9WHYvnJtWRiYEaO8/OHmQZnh9hfUn8TiGiZbHgEkRl+VhF+gATArJB87fS2/1KNpZ
+         UgQ72nFi4ROMk8D5KUIJTW+NCbbOdUw5Wt3p097cxS8MyLuf8UBtgBbubRqM3kYMgw
+         Nd6/t4rdW00YsBuVcxpTN3cpbGyhWAAUO5CumQ2nN60EM7DhpFR+B8jfUqOBh9hwT3
+         PpDwHOinMZr3TCL7Occc4jm8c3yJuTw0FnIMj3zk6xUtLjM1CGITQt0QVQdqcCAUmn
+         aCoR9QoQN/b1g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sudeep Holla <sudeep.holla@arm.com>,
-        Bob Moore <robert.moore@intel.com>,
+Cc:     =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Hans de Goede <hdegoede@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH AUTOSEL 5.4 57/73] ACPICA: Fix wrong interpretation of PCC address
-Date:   Mon, 17 Jan 2022 21:44:16 -0500
-Message-Id: <20220118024432.1952028-57-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 60/73] ACPI: battery: Add the ThinkPad "Not Charging" quirk
+Date:   Mon, 17 Jan 2022 21:44:19 -0500
+Message-Id: <20220118024432.1952028-60-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220118024432.1952028-1-sashal@kernel.org>
 References: <20220118024432.1952028-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -52,83 +53,79 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 9a3b8655db1ada31c82189ae13f40eb25da48c35 ]
+[ Upstream commit e96c1197aca628f7d2480a1cc3214912b40b3414 ]
 
-ACPICA commit 41be6afacfdaec2dba3a5ed368736babc2a7aa5c
+The EC/ACPI firmware on Lenovo ThinkPads used to report a status
+of "Unknown" when the battery is between the charge start and
+charge stop thresholds. On Windows, it reports "Not Charging"
+so the quirk has been added to also report correctly.
 
-With the PCC Opregion in the firmware and we are hitting below kernel crash:
+Now the "status" attribute returns "Not Charging" when the
+battery on ThinkPads is not physicaly charging.
 
--->8
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
- Workqueue: pm pm_runtime_work
- pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __memcpy+0x54/0x260
- lr : acpi_ex_write_data_to_field+0xb8/0x194
- Call trace:
-  __memcpy+0x54/0x260
-  acpi_ex_store_object_to_node+0xa4/0x1d4
-  acpi_ex_store+0x44/0x164
-  acpi_ex_opcode_1A_1T_1R+0x25c/0x508
-  acpi_ds_exec_end_op+0x1b4/0x44c
-  acpi_ps_parse_loop+0x3a8/0x614
-  acpi_ps_parse_aml+0x90/0x2f4
-  acpi_ps_execute_method+0x11c/0x19c
-  acpi_ns_evaluate+0x1ec/0x2b0
-  acpi_evaluate_object+0x170/0x2b0
-  acpi_device_set_power+0x118/0x310
-  acpi_dev_suspend+0xd4/0x180
-  acpi_subsys_runtime_suspend+0x28/0x38
-  __rpm_callback+0x74/0x328
-  rpm_suspend+0x2d8/0x624
-  pm_runtime_work+0xa4/0xb8
-  process_one_work+0x194/0x25c
-  worker_thread+0x260/0x49c
-  kthread+0x14c/0x30c
-  ret_from_fork+0x10/0x20
- Code: f9000006 f81f80a7 d65f03c0 361000c2 (b9400026)
- ---[ end trace 24d8a032fa77b68a ]---
-
-The reason for the crash is that the PCC channel index passed via region.address
-in acpi_ex_store_object_to_node is interpreted as the channel subtype
-incorrectly.
-
-Assuming the PCC op_region support is not used by any other type, let us
-remove the subtype check as the AML has no access to the subtype information.
-Once we remove it, the kernel crash disappears and correctly complains about
-missing PCC Opregion handler.
-
-ACPI Error: No handler for Region [PFRM] ((____ptrval____)) [PCC] (20210730/evregion-130)
-ACPI Error: Region PCC (ID=10) has no handler (20210730/exfldio-261)
-ACPI Error: Aborting method \_SB.ETH0._PS3 due to previous error (AE_NOT_EXIST) (20210730/psparse-531)
-
-Link: https://github.com/acpica/acpica/commit/41be6afa
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/exfield.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/acpi/battery.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/acpi/acpica/exfield.c b/drivers/acpi/acpica/exfield.c
-index d3d2dbfba680c..cd3debefe990d 100644
---- a/drivers/acpi/acpica/exfield.c
-+++ b/drivers/acpi/acpica/exfield.c
-@@ -320,12 +320,7 @@ acpi_ex_write_data_to_field(union acpi_operand_object *source_desc,
- 		       obj_desc->field.base_byte_offset,
- 		       source_desc->buffer.pointer, data_length);
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 6e96ed68b3379..4e0aea5f008e3 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -65,6 +65,7 @@ static int battery_bix_broken_package;
+ static int battery_notification_delay_ms;
+ static int battery_ac_is_broken;
+ static int battery_check_pmic = 1;
++static int battery_quirk_notcharging;
+ static unsigned int cache_time = 1000;
+ module_param(cache_time, uint, 0644);
+ MODULE_PARM_DESC(cache_time, "cache time in milliseconds");
+@@ -233,6 +234,8 @@ static int acpi_battery_get_property(struct power_supply *psy,
+ 			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+ 		else if (acpi_battery_is_charged(battery))
+ 			val->intval = POWER_SUPPLY_STATUS_FULL;
++		else if (battery_quirk_notcharging)
++			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+ 		else
+ 			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+ 		break;
+@@ -1337,6 +1340,12 @@ battery_do_not_check_pmic_quirk(const struct dmi_system_id *d)
+ 	return 0;
+ }
  
--		if ((obj_desc->field.region_obj->region.address ==
--		     PCC_MASTER_SUBSPACE
--		     && MASTER_SUBSPACE_COMMAND(obj_desc->field.
--						base_byte_offset))
--		    || GENERIC_SUBSPACE_COMMAND(obj_desc->field.
--						base_byte_offset)) {
-+		if (MASTER_SUBSPACE_COMMAND(obj_desc->field.base_byte_offset)) {
- 
- 			/* Perform the write */
++static int __init battery_quirk_not_charging(const struct dmi_system_id *d)
++{
++	battery_quirk_notcharging = 1;
++	return 0;
++}
++
+ static const struct dmi_system_id bat_dmi_table[] __initconst = {
+ 	{
+ 		/* NEC LZ750/LS */
+@@ -1381,6 +1390,19 @@ static const struct dmi_system_id bat_dmi_table[] __initconst = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "Lenovo MIIX 320-10ICR"),
+ 		},
+ 	},
++	{
++		/*
++		 * On Lenovo ThinkPads the BIOS specification defines
++		 * a state when the bits for charging and discharging
++		 * are both set to 0. That state is "Not Charging".
++		 */
++		.callback = battery_quirk_not_charging,
++		.ident = "Lenovo ThinkPad",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad"),
++		},
++	},
+ 	{},
+ };
  
 -- 
 2.34.1
