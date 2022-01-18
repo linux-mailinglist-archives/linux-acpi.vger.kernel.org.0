@@ -2,101 +2,67 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDF61491CA1
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 04:16:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E83E49206C
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 08:41:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348083AbiARDQa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Jan 2022 22:16:30 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:32936 "EHLO
+        id S245606AbiARHlw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 18 Jan 2022 02:41:52 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:44602 "EHLO
         dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343688AbiARDJ0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jan 2022 22:09:26 -0500
+        with ESMTP id S245617AbiARHlv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 18 Jan 2022 02:41:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D7F76093C;
-        Tue, 18 Jan 2022 03:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F30C36AEF;
-        Tue, 18 Jan 2022 03:09:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95AEB61387;
+        Tue, 18 Jan 2022 07:41:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0D96BC00446;
+        Tue, 18 Jan 2022 07:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642475363;
-        bh=vunJrneXF1fxRXgDm795NYG4oDd8ZF/TtTBESpJBMoE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DDaTpAf8FO7FLXwLeNiRxvGYoN3P0xVXXA78WZpyc7WXyPAI3h0v9OUiDhnUB6pL4
-         59apAVtdWl6iSMYR1DWfdCynvaLoEmFANkxy8QoI6B74rarbEdKysWytJ7JFuTRM0R
-         PxwpL7nhGt/zkvkoY184QyfCy9UDQaoBqJmwAksdafQn9yIWGHbUdCPk1NyRn7GoZV
-         LI98FihOWg7WC6EY+UwoXTa4d0svFQ1qOcHo2OXFAJQ+nUMVf3g4cGlxdgN/M+TVOs
-         a5AeLjoKEAQIhzu1G1pVm5JrGwrY41g6DZues9j2csGaw8oTCGfhmYKRlQGLSehHoR
-         lnVVbUhHQuZXQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>,
-        Bob Moore <robert.moore@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH AUTOSEL 4.4 21/29] ACPICA: Executer: Fix the REFCLASS_REFOF case in acpi_ex_opcode_1A_0T_1R()
-Date:   Mon, 17 Jan 2022 22:08:14 -0500
-Message-Id: <20220118030822.1955469-21-sashal@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220118030822.1955469-1-sashal@kernel.org>
-References: <20220118030822.1955469-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        s=k20201202; t=1642491711;
+        bh=iNIkWQPmpKD4eh7g0YAYJGDoyZOdku7nuquEp8Xokjs=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=uPBTXW0GKAOkxKk5xfn5yBh7cxQOC33btATNa40G6GPhQ3DfIFoQnUnM+CMcupjLS
+         q01/IukspSb6c5oepbHTE3zggS0VYm5kglhZX4NoRIsVkyL1i4VkA3imRTqMzS+yqu
+         BO1Etv2dd4kakHU18G7oXLB5H4ohrs42YEcxEnrG2AQLuNz8NrSkqx6CUGJzLSywmC
+         +x5n3LK8Ktl86hxrY1zy2fDIyiUsrfab5ura/LHixu2L+9rVDcMtsFglore4pWs58X
+         DV6fOZDKNbnChxTrGnKMOlJouQFfEGIr2h7ZX/1vO6w+9t0LbCKyE2A9+T9kDyYEfN
+         OYHfa4oLazdNg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id ED7E8F60797;
+        Tue, 18 Jan 2022 07:41:50 +0000 (UTC)
+Subject: Re: [GIT PULL] More ACPI updates for v5.17-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0iD_Ar15npwR8Cp2oEKF3DgPVo2KaKqfYax5RmTBkbZmg@mail.gmail.com>
+References: <CAJZ5v0iD_Ar15npwR8Cp2oEKF3DgPVo2KaKqfYax5RmTBkbZmg@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0iD_Ar15npwR8Cp2oEKF3DgPVo2KaKqfYax5RmTBkbZmg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.17-rc1-2
+X-PR-Tracked-Commit-Id: e3daa2607b1f4bb1d09a5a8ad89ad9f7327a2e63
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6a8d7fbf1c65034b85e7676b42449a56e4206bd3
+Message-Id: <164249171096.10229.6241357949791582942.pr-tracker-bot@kernel.org>
+Date:   Tue, 18 Jan 2022 07:41:50 +0000
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+The pull request you sent on Mon, 17 Jan 2022 19:09:53 +0100:
 
-[ Upstream commit 24ea5f90ec9548044a6209685c5010edd66ffe8f ]
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.17-rc1-2
 
-ACPICA commit d984f12041392fa4156b52e2f7e5c5e7bc38ad9e
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6a8d7fbf1c65034b85e7676b42449a56e4206bd3
 
-If Operand[0] is a reference of the ACPI_REFCLASS_REFOF class,
-acpi_ex_opcode_1A_0T_1R () calls acpi_ns_get_attached_object () to
-obtain return_desc which may require additional resolution with
-the help of acpi_ex_read_data_from_field (). If the latter fails,
-the reference counter of the original return_desc is decremented
-which is incorrect, because acpi_ns_get_attached_object () does not
-increment the reference counter of the object returned by it.
+Thank you!
 
-This issue may lead to premature deletion of the attached object
-while it is still attached and a use-after-free and crash in the
-host OS.  For example, this may happen when on evaluation of ref_of()
-a local region field where there is no registered handler for the
-given Operation Region.
-
-Fix it by making acpi_ex_opcode_1A_0T_1R () return Status right away
-after a acpi_ex_read_data_from_field () failure.
-
-Link: https://github.com/acpica/acpica/commit/d984f120
-Link: https://github.com/acpica/acpica/pull/685
-Reported-by: Lenny Szubowicz <lszubowi@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/acpica/exoparg1.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/acpica/exoparg1.c b/drivers/acpi/acpica/exoparg1.c
-index 77930683ab7dd..c20b7dfec7b20 100644
---- a/drivers/acpi/acpica/exoparg1.c
-+++ b/drivers/acpi/acpica/exoparg1.c
-@@ -1016,7 +1016,8 @@ acpi_status acpi_ex_opcode_1A_0T_1R(struct acpi_walk_state *walk_state)
- 						    (walk_state, return_desc,
- 						     &temp_desc);
- 						if (ACPI_FAILURE(status)) {
--							goto cleanup;
-+							return_ACPI_STATUS
-+							    (status);
- 						}
- 
- 						return_desc = temp_desc;
 -- 
-2.34.1
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
