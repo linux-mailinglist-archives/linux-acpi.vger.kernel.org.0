@@ -2,49 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3BBE49166D
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 03:34:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A9444918CA
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 03:48:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344036AbiARCeI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Jan 2022 21:34:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58820 "EHLO
+        id S1344108AbiARCs0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jan 2022 21:48:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345519AbiARCbh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jan 2022 21:31:37 -0500
+        with ESMTP id S1345573AbiARCbn (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jan 2022 21:31:43 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B54CC035455;
-        Mon, 17 Jan 2022 18:29:30 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88089C0612E1;
+        Mon, 17 Jan 2022 18:29:44 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F085DB81244;
-        Tue, 18 Jan 2022 02:29:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B7FC36AE3;
-        Tue, 18 Jan 2022 02:29:26 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 49481B81256;
+        Tue, 18 Jan 2022 02:29:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D113C36AF2;
+        Tue, 18 Jan 2022 02:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642472967;
-        bh=8XswGL3EkarOX4C4hCvhOy/b4kDH7Y+uJGPB3muNXRI=;
+        s=k20201202; t=1642472982;
+        bh=dXBOlCuoOPukKy5ijeo0ko66jl0mtrClLVGnUYITNaU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aKvvTBOUk4FDGbMPCBflmg8OeQqxs5cZ24nSAbPXj/cXo6w53DeDJdWUuz/9hy47B
-         bJTL3BArKRL9vZ8kXJKfQ0peBv72t0oKSivNEXklYpc0o8gmIRu9ekrxqnxT+StJll
-         9C8pnrtzUoVcXfaTMn/d97oQvuwK5uRCNdc8a43jM/TYPMw2BZZ6wVr/O3sbKn2Wfh
-         5OKi4JCoCMsTMzwMA4TVXd/aPQnok+3k/TswBZp5OcoVXzbNBgG+FtTrVho/ipgrdk
-         Qa4I+pRCPc+vp8+nImndOOKpEL4SOBlhuuTKkr9Rz/mOsG/O0bYBNpquIuBxQl0i6+
-         L9BscuxjeE+oA==
+        b=t5C4EDyLNJ2N3KH98ZDb1yF2kSVdE1oW+wwhVaTvzklom4z+vbQxhYO2LLzut5r4o
+         wFe5liy2cTmZcJHFmjtOdWpVPzpVaR+M8+nM+pOjQWHdBHmFEvHJlY/I0gqvw4ew8/
+         X0qLer50uDmRvM+A6eTCZbgfKVtxjXUkQ+So4f9U2DPm19AXrZf3At0+GGS4iX/tD5
+         dSYa4iKhLDpKUVv22d+PJoF5u0IUhSxp/HFRritAoRzVxJz2vnvCAqUUhUz76Ua+8B
+         uisHpdm9/dHCWjVbRj3V/E7VzLY3kq0lXyhmyroCGn7MxL8D8owLajff2T904SS3/0
+         dJixTnVgdbrrg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+Cc:     =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Hans de Goede <hdegoede@redhat.com>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Bob Moore <robert.moore@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org
-Subject: [PATCH AUTOSEL 5.16 183/217] ACPICA: Hardware: Do not flush CPU cache when entering S4 and S5
-Date:   Mon, 17 Jan 2022 21:19:06 -0500
-Message-Id: <20220118021940.1942199-183-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.16 189/217] ACPI: battery: Add the ThinkPad "Not Charging" quirk
+Date:   Mon, 17 Jan 2022 21:19:12 -0500
+Message-Id: <20220118021940.1942199-189-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220118021940.1942199-1-sashal@kernel.org>
 References: <20220118021940.1942199-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -52,80 +53,80 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 1d4e0b3abb168b2ee1eca99c527cffa1b80b6161 ]
+[ Upstream commit e96c1197aca628f7d2480a1cc3214912b40b3414 ]
 
-ACPICA commit 3dd7e1f3996456ef81bfe14cba29860e8d42949e
+The EC/ACPI firmware on Lenovo ThinkPads used to report a status
+of "Unknown" when the battery is between the charge start and
+charge stop thresholds. On Windows, it reports "Not Charging"
+so the quirk has been added to also report correctly.
 
-According to ACPI 6.4, Section 16.2, the CPU cache flushing is
-required on entering to S1, S2, and S3, but the ACPICA code
-flushes the CPU cache regardless of the sleep state.
+Now the "status" attribute returns "Not Charging" when the
+battery on ThinkPads is not physicaly charging.
 
-Blind cache flush on entering S5 causes problems for TDX.
-
-Flushing happens with WBINVD that is not supported in the TDX
-environment.
-
-TDX only supports S5 and adjusting ACPICA code to conform to the
-spec more strictly fixes the issue.
-
-Link: https://github.com/acpica/acpica/commit/3dd7e1f3
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/hwesleep.c  | 4 +++-
- drivers/acpi/acpica/hwsleep.c   | 4 +++-
- drivers/acpi/acpica/hwxfsleep.c | 2 --
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/acpi/battery.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/acpi/acpica/hwesleep.c b/drivers/acpi/acpica/hwesleep.c
-index 808fdf54aeebf..7ee2939c08cd4 100644
---- a/drivers/acpi/acpica/hwesleep.c
-+++ b/drivers/acpi/acpica/hwesleep.c
-@@ -104,7 +104,9 @@ acpi_status acpi_hw_extended_sleep(u8 sleep_state)
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 8afa85d6eb6a7..ead0114f27c9f 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -53,6 +53,7 @@ static int battery_bix_broken_package;
+ static int battery_notification_delay_ms;
+ static int battery_ac_is_broken;
+ static int battery_check_pmic = 1;
++static int battery_quirk_notcharging;
+ static unsigned int cache_time = 1000;
+ module_param(cache_time, uint, 0644);
+ MODULE_PARM_DESC(cache_time, "cache time in milliseconds");
+@@ -217,6 +218,8 @@ static int acpi_battery_get_property(struct power_supply *psy,
+ 			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+ 		else if (acpi_battery_is_charged(battery))
+ 			val->intval = POWER_SUPPLY_STATUS_FULL;
++		else if (battery_quirk_notcharging)
++			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+ 		else
+ 			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+ 		break;
+@@ -1111,6 +1114,12 @@ battery_do_not_check_pmic_quirk(const struct dmi_system_id *d)
+ 	return 0;
+ }
  
- 	/* Flush caches, as per ACPI specification */
++static int __init battery_quirk_not_charging(const struct dmi_system_id *d)
++{
++	battery_quirk_notcharging = 1;
++	return 0;
++}
++
+ static const struct dmi_system_id bat_dmi_table[] __initconst = {
+ 	{
+ 		/* NEC LZ750/LS */
+@@ -1155,6 +1164,19 @@ static const struct dmi_system_id bat_dmi_table[] __initconst = {
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "Lenovo MIIX 320-10ICR"),
+ 		},
+ 	},
++	{
++		/*
++		 * On Lenovo ThinkPads the BIOS specification defines
++		 * a state when the bits for charging and discharging
++		 * are both set to 0. That state is "Not Charging".
++		 */
++		.callback = battery_quirk_not_charging,
++		.ident = "Lenovo ThinkPad",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad"),
++		},
++	},
+ 	{},
+ };
  
--	ACPI_FLUSH_CPU_CACHE();
-+	if (sleep_state < ACPI_STATE_S4) {
-+		ACPI_FLUSH_CPU_CACHE();
-+	}
- 
- 	status = acpi_os_enter_sleep(sleep_state, sleep_control, 0);
- 	if (status == AE_CTRL_TERMINATE) {
-diff --git a/drivers/acpi/acpica/hwsleep.c b/drivers/acpi/acpica/hwsleep.c
-index 34a3825f25d37..5efa3d8e483e0 100644
---- a/drivers/acpi/acpica/hwsleep.c
-+++ b/drivers/acpi/acpica/hwsleep.c
-@@ -110,7 +110,9 @@ acpi_status acpi_hw_legacy_sleep(u8 sleep_state)
- 
- 	/* Flush caches, as per ACPI specification */
- 
--	ACPI_FLUSH_CPU_CACHE();
-+	if (sleep_state < ACPI_STATE_S4) {
-+		ACPI_FLUSH_CPU_CACHE();
-+	}
- 
- 	status = acpi_os_enter_sleep(sleep_state, pm1a_control, pm1b_control);
- 	if (status == AE_CTRL_TERMINATE) {
-diff --git a/drivers/acpi/acpica/hwxfsleep.c b/drivers/acpi/acpica/hwxfsleep.c
-index e4cde23a29061..ba77598ee43e8 100644
---- a/drivers/acpi/acpica/hwxfsleep.c
-+++ b/drivers/acpi/acpica/hwxfsleep.c
-@@ -162,8 +162,6 @@ acpi_status acpi_enter_sleep_state_s4bios(void)
- 		return_ACPI_STATUS(status);
- 	}
- 
--	ACPI_FLUSH_CPU_CACHE();
--
- 	status = acpi_hw_write_port(acpi_gbl_FADT.smi_command,
- 				    (u32)acpi_gbl_FADT.s4_bios_request, 8);
- 	if (ACPI_FAILURE(status)) {
 -- 
 2.34.1
 
