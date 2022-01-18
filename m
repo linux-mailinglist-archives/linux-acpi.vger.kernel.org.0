@@ -2,50 +2,47 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50F9C491DE6
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 04:44:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8783E491B33
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 04:04:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348761AbiARDnc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Jan 2022 22:43:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36036 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351799AbiARCzM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jan 2022 21:55:12 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FEC5C02B85F;
-        Mon, 17 Jan 2022 18:44:03 -0800 (PST)
+        id S1353727AbiARDE2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jan 2022 22:04:28 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:37544 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348305AbiARCpK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jan 2022 21:45:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CC080B81250;
-        Tue, 18 Jan 2022 02:44:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF274C36AF5;
-        Tue, 18 Jan 2022 02:44:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DB0B6130D;
+        Tue, 18 Jan 2022 02:45:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83291C36AF2;
+        Tue, 18 Jan 2022 02:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642473841;
-        bh=pA7FEnnPlBTN/gEJTGTmLjbB1t5AvBXv4YRugod206k=;
+        s=k20201202; t=1642473909;
+        bh=m9BuTBZpIugcPF288rm1rumd82hWsPg0dVWh+nu1Mow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SZQsyKJrrO0qEHA+Jy0zHEb/zaT/qCKVmR7EG+XJBpFMdnCJ93W6cyXliVbkZWXXf
-         DmZJPig9rS5qU08nDJjsVMdTVv/7/Bk4XpzDU5hZp6S6Oq0fPw9K0HMvLekcv9aTjX
-         Hs6iYc6HKS/zu9dCnA+NeY8xujv5jGRYbF0Zaj6+t6eshFc7qwGu/dzPNJKMS7l1lt
-         t2vLjVtZYHPNuQVjmL506L8xuPWJXWFbhJRTJD6LIpJrKDc/3ra0qvWV31b2aYGeCc
-         AsOAt0pfIPO2dASlX+WzfLfLcw9yTMjq7lrqFKy5VNxmz4RyJ9L1v+C4v1bWR8fL6i
-         4uzkaeTnpmmnA==
+        b=g7fdj7IGZ4OLxJ/ZSHwvO2beFW15LHSEuIoFty3tRoRzvgKAgfFsY2MBDmYXL62dw
+         FzvoIaiNb8793SCgyvtlJe5NshNX6b2Ntj0O+cheCFc8D+aZv+DlCco1Apn0QttVVj
+         31WK01xupzLoK++RWGNoQ6oC8dJx8cjZ8GhlUy0GzYAqlomtMDGaIbq9afHi+SvV6D
+         YHsRPo2J0gFH+3QMTFXuRUcvD4GH106oaLSPwXo1WYIcmIGGGN/IK1YqyZh+ATOVD5
+         HNxjQTFQvcS4jSBt3eMsE+96qHA7ldgTUCALseBVwKZ3Q3R348XaACiPcjq47IV4Tg
+         NWv1b6dfQ08Aw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>, rafael@kernel.org,
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
+        brgl@bgdev.pl, linux-gpio@vger.kernel.org,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 098/116] ACPI: battery: Add the ThinkPad "Not Charging" quirk
-Date:   Mon, 17 Jan 2022 21:39:49 -0500
-Message-Id: <20220118024007.1950576-98-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 17/73] gpiolib: acpi: Do not set the IRQ type if the IRQ is already in use
+Date:   Mon, 17 Jan 2022 21:43:36 -0500
+Message-Id: <20220118024432.1952028-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220118024007.1950576-1-sashal@kernel.org>
-References: <20220118024007.1950576-1-sashal@kernel.org>
+In-Reply-To: <20220118024432.1952028-1-sashal@kernel.org>
+References: <20220118024432.1952028-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -53,80 +50,59 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e96c1197aca628f7d2480a1cc3214912b40b3414 ]
+[ Upstream commit bdfd6ab8fdccd8b138837efff66f4a1911496378 ]
 
-The EC/ACPI firmware on Lenovo ThinkPads used to report a status
-of "Unknown" when the battery is between the charge start and
-charge stop thresholds. On Windows, it reports "Not Charging"
-so the quirk has been added to also report correctly.
+If the IRQ is already in use, then acpi_dev_gpio_irq_get_by() really
+should not change the type underneath the current owner.
 
-Now the "status" attribute returns "Not Charging" when the
-battery on ThinkPads is not physicaly charging.
+I specifically hit an issue with this an a Chuwi Hi8 Super (CWI509) Bay
+Trail tablet, when the Boot OS selection in the BIOS is set to Android.
+In this case _STA for a MAX17047 ACPI I2C device wrongly returns 0xf and
+the _CRS resources for this device include a GpioInt pointing to a GPIO
+already in use by an _AEI handler, with a different type then specified
+in the _CRS for the MAX17047 device. Leading to the acpi_dev_gpio_irq_get()
+call done by the i2c-core-acpi.c code changing the type breaking the
+_AEI handler.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Now this clearly is a bug in the DSDT of this tablet (in Android mode),
+but in general calling irq_set_irq_type() on an IRQ which already is
+in use seems like a bad idea.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/battery.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/gpio/gpiolib-acpi.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index e04352c1dc2ce..2376f57b3617a 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -59,6 +59,7 @@ static int battery_bix_broken_package;
- static int battery_notification_delay_ms;
- static int battery_ac_is_broken;
- static int battery_check_pmic = 1;
-+static int battery_quirk_notcharging;
- static unsigned int cache_time = 1000;
- module_param(cache_time, uint, 0644);
- MODULE_PARM_DESC(cache_time, "cache time in milliseconds");
-@@ -222,6 +223,8 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 			val->intval = POWER_SUPPLY_STATUS_CHARGING;
- 		else if (acpi_battery_is_charged(battery))
- 			val->intval = POWER_SUPPLY_STATUS_FULL;
-+		else if (battery_quirk_notcharging)
-+			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
- 		else
- 			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
- 		break;
-@@ -1105,6 +1108,12 @@ battery_do_not_check_pmic_quirk(const struct dmi_system_id *d)
- 	return 0;
- }
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index e3ddc99c105d4..13c6eee481da7 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -953,10 +953,17 @@ int acpi_dev_gpio_irq_get(struct acpi_device *adev, int index)
+ 			irq_flags = acpi_dev_get_irq_type(info.triggering,
+ 							  info.polarity);
  
-+static int __init battery_quirk_not_charging(const struct dmi_system_id *d)
-+{
-+	battery_quirk_notcharging = 1;
-+	return 0;
-+}
-+
- static const struct dmi_system_id bat_dmi_table[] __initconst = {
- 	{
- 		/* NEC LZ750/LS */
-@@ -1149,6 +1158,19 @@ static const struct dmi_system_id bat_dmi_table[] __initconst = {
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "Lenovo MIIX 320-10ICR"),
- 		},
- 	},
-+	{
-+		/*
-+		 * On Lenovo ThinkPads the BIOS specification defines
-+		 * a state when the bits for charging and discharging
-+		 * are both set to 0. That state is "Not Charging".
-+		 */
-+		.callback = battery_quirk_not_charging,
-+		.ident = "Lenovo ThinkPad",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad"),
-+		},
-+	},
- 	{},
- };
+-			/* Set type if specified and different than the current one */
+-			if (irq_flags != IRQ_TYPE_NONE &&
+-			    irq_flags != irq_get_trigger_type(irq))
+-				irq_set_irq_type(irq, irq_flags);
++			/*
++			 * If the IRQ is not already in use then set type
++			 * if specified and different than the current one.
++			 */
++			if (can_request_irq(irq, irq_flags)) {
++				if (irq_flags != IRQ_TYPE_NONE &&
++				    irq_flags != irq_get_trigger_type(irq))
++					irq_set_irq_type(irq, irq_flags);
++			} else {
++				dev_dbg(&adev->dev, "IRQ %d already in use\n", irq);
++			}
  
+ 			return irq;
+ 		}
 -- 
 2.34.1
 
