@@ -2,46 +2,42 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BAFA491DC4
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 04:44:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B7A6491B3C
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jan 2022 04:04:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344647AbiARDmY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 17 Jan 2022 22:42:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37702 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353562AbiARDCE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jan 2022 22:02:04 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C291C034005;
-        Mon, 17 Jan 2022 18:47:29 -0800 (PST)
+        id S1346662AbiARDEe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 17 Jan 2022 22:04:34 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:42052 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345833AbiARCsk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 17 Jan 2022 21:48:40 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 08E3961318;
-        Tue, 18 Jan 2022 02:47:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC1FC36AE3;
-        Tue, 18 Jan 2022 02:47:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5846D61294;
+        Tue, 18 Jan 2022 02:48:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E85C36AF6;
+        Tue, 18 Jan 2022 02:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642474048;
-        bh=M4UE480JwyzeOBq6t7B72Ees1unLdZDrfoZ7S9bjVYc=;
+        s=k20201202; t=1642474118;
+        bh=FNVb3dcHIBLomxyIdcLDZf6bDvbLp1BTjjK8xjoWU5A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ahaKN5Hfp4SsjMZZ5PIboX1HD3QAh55H8a9lIJKqoes6nlcvKZK8B/iJzP+mNR411
-         3uvAfolePRmBjDuKrzh7OzlxUkWf2LnEpuRfBcbXJmnZjqMxQ70DSRk/7FRsMOOTvh
-         izbPDBG/gyrpa4KxIQep/y29UPQlFFag79OPyrYGrfjVsxP4DUx3aRffWUTy9G07Er
-         dKmfF15tzYRLfthnBU+JP6U2pxbp3/pBbZ7ttuTQHwTlgUoLKLY/I2ChrLTT9xSt/S
-         pwXmjJkm90FAA5YxURVdAq6boJmhAClH6raln0UKa0F0pTRnl8N7JCoeflteLUEM/X
-         CL7jtlBNlXOfg==
+        b=m23FwRri3RvkE986WqbOH4boIY34Pyuwn1TDkQAbf+CMHB8Jfgpig+oomcKmXO6Sa
+         e7MTtdi/9Qtas3aYix1/edgf/XoesFjBdqKDYJ6RQi1w9eh/nlb+Rf/eowxQg80/0Y
+         UxAYdthg1u8rAntZSbRkefXl0/uVr37/JmE/2g2NFN9c0DfNeAwmi2B0+AbNjMvfeT
+         GsLgwIzlB/cqP0/ahVccd2LEotupAsWmBXaJ1v+QatX80sBvchqBBiYnYPWcSfjsIC
+         dZ5iZ8c0Y7DoXycUz8KrjyaYKQwrE9ZsREFFPVD617F1sD4nxmu34kUimZx9WcGj1W
+         t53QJHTggdsWg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        mika.westerberg@linux.intel.com, linus.walleij@linaro.org,
-        brgl@bgdev.pl, linux-gpio@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 11/59] gpiolib: acpi: Do not set the IRQ type if the IRQ is already in use
-Date:   Mon, 17 Jan 2022 21:46:12 -0500
-Message-Id: <20220118024701.1952911-11-sashal@kernel.org>
+Cc:     Mark Langsdorf <mlangsdo@redhat.com>,
+        Bob Moore <robert.moore@intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
+        devel@acpica.org
+Subject: [PATCH AUTOSEL 4.19 42/59] ACPICA: actypes.h: Expand the ACPI_ACCESS_ definitions
+Date:   Mon, 17 Jan 2022 21:46:43 -0500
+Message-Id: <20220118024701.1952911-42-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220118024701.1952911-1-sashal@kernel.org>
 References: <20220118024701.1952911-1-sashal@kernel.org>
@@ -53,59 +49,54 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Mark Langsdorf <mlangsdo@redhat.com>
 
-[ Upstream commit bdfd6ab8fdccd8b138837efff66f4a1911496378 ]
+[ Upstream commit f81bdeaf816142e0729eea0cc84c395ec9673151 ]
 
-If the IRQ is already in use, then acpi_dev_gpio_irq_get_by() really
-should not change the type underneath the current owner.
+ACPICA commit bc02c76d518135531483dfc276ed28b7ee632ce1
 
-I specifically hit an issue with this an a Chuwi Hi8 Super (CWI509) Bay
-Trail tablet, when the Boot OS selection in the BIOS is set to Android.
-In this case _STA for a MAX17047 ACPI I2C device wrongly returns 0xf and
-the _CRS resources for this device include a GpioInt pointing to a GPIO
-already in use by an _AEI handler, with a different type then specified
-in the _CRS for the MAX17047 device. Leading to the acpi_dev_gpio_irq_get()
-call done by the i2c-core-acpi.c code changing the type breaking the
-_AEI handler.
+The current ACPI_ACCESS_*_WIDTH defines do not provide a way to
+test that size is small enough to not cause an overflow when
+applied to a 32-bit integer.
 
-Now this clearly is a bug in the DSDT of this tablet (in Android mode),
-but in general calling irq_set_irq_type() on an IRQ which already is
-in use seems like a bad idea.
+Rather than adding more magic numbers, add ACPI_ACCESS_*_SHIFT,
+ACPI_ACCESS_*_MAX, and ACPI_ACCESS_*_DEFAULT #defines and
+redefine ACPI_ACCESS_*_WIDTH in terms of the new #defines.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+This was inititally reported on Linux where a size of 102 in
+ACPI_ACCESS_BIT_WIDTH caused an overflow error in the SPCR
+initialization code.
+
+Link: https://github.com/acpica/acpica/commit/bc02c76d
+Signed-off-by: Mark Langsdorf <mlangsdo@redhat.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ include/acpi/actypes.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index b018909a4e46c..47cdc1f89e3fb 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -904,10 +904,17 @@ int acpi_dev_gpio_irq_get(struct acpi_device *adev, int index)
- 			irq_flags = acpi_dev_get_irq_type(info.triggering,
- 							  info.polarity);
+diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+index 2939a6cd7fecb..9fc1dfc7f4c32 100644
+--- a/include/acpi/actypes.h
++++ b/include/acpi/actypes.h
+@@ -532,8 +532,14 @@ typedef u64 acpi_integer;
+  * Can be used with access_width of struct acpi_generic_address and access_size of
+  * struct acpi_resource_generic_register.
+  */
+-#define ACPI_ACCESS_BIT_WIDTH(size)     (1 << ((size) + 2))
+-#define ACPI_ACCESS_BYTE_WIDTH(size)    (1 << ((size) - 1))
++#define ACPI_ACCESS_BIT_SHIFT		2
++#define ACPI_ACCESS_BYTE_SHIFT		-1
++#define ACPI_ACCESS_BIT_MAX		(31 - ACPI_ACCESS_BIT_SHIFT)
++#define ACPI_ACCESS_BYTE_MAX		(31 - ACPI_ACCESS_BYTE_SHIFT)
++#define ACPI_ACCESS_BIT_DEFAULT		(8 - ACPI_ACCESS_BIT_SHIFT)
++#define ACPI_ACCESS_BYTE_DEFAULT	(8 - ACPI_ACCESS_BYTE_SHIFT)
++#define ACPI_ACCESS_BIT_WIDTH(size)	(1 << ((size) + ACPI_ACCESS_BIT_SHIFT))
++#define ACPI_ACCESS_BYTE_WIDTH(size)	(1 << ((size) + ACPI_ACCESS_BYTE_SHIFT))
  
--			/* Set type if specified and different than the current one */
--			if (irq_flags != IRQ_TYPE_NONE &&
--			    irq_flags != irq_get_trigger_type(irq))
--				irq_set_irq_type(irq, irq_flags);
-+			/*
-+			 * If the IRQ is not already in use then set type
-+			 * if specified and different than the current one.
-+			 */
-+			if (can_request_irq(irq, irq_flags)) {
-+				if (irq_flags != IRQ_TYPE_NONE &&
-+				    irq_flags != irq_get_trigger_type(irq))
-+					irq_set_irq_type(irq, irq_flags);
-+			} else {
-+				dev_dbg(&adev->dev, "IRQ %d already in use\n", irq);
-+			}
- 
- 			return irq;
- 		}
+ /*******************************************************************************
+  *
 -- 
 2.34.1
 
