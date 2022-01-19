@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BF5B493A65
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 13:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FA4A493A6A
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 13:36:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354597AbiASMgM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jan 2022 07:36:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47090 "EHLO
+        id S1354539AbiASMgW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Jan 2022 07:36:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354557AbiASMfV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 07:35:21 -0500
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D61C061755
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:35:05 -0800 (PST)
-Received: by mail-pg1-x52f.google.com with SMTP id r11so2381688pgr.6
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:35:05 -0800 (PST)
+        with ESMTP id S1354492AbiASMgH (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 07:36:07 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 580F0C06175E
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:35:19 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id g9-20020a17090a67c900b001b4f1d71e4fso2508242pjm.4
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:35:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=message-id:date:mime-version:user-agent:from:subject:to:cc
          :references:in-reply-to;
-        bh=W4F2gL7CvKUkAn5oCafOodfjm4Dueji43OfeyvAy/C4=;
-        b=ODLFEe+pztXbD4lb9m2EnaZOgbE7bF07wtTQGHRPdWZHtXb6GD/XSIQv/uKON0upAK
-         s/DgrA5mfiO25Qrid3soD1ABcljSWec9M9odye0rRRngKwOka5V+N2ZuNJX07FrUnAdf
-         WSepddsvS8rKt+DzQe5PF6xqDoyLUe/FUGTWI=
+        bh=Cy3rii7MkZcDle1PsnxEUPFBajxGTSot9++RLvAnVtA=;
+        b=WvssT2Bd2hABWN7adjNs9SlgqFExfj3yyqy5rGxsIqWhTLNnYW5Uxcfps3oJiTL8KC
+         sussGyq2qiqyyRx2zm84MlkBRmSoBgaMG3x1xp3wB73Lmv5UcqkCweOvbEzlL6t6u9vW
+         5CABW0H8avy9XgxIYAiyDm7SvGvo9QeN8XUTk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:from
          :subject:to:cc:references:in-reply-to;
-        bh=W4F2gL7CvKUkAn5oCafOodfjm4Dueji43OfeyvAy/C4=;
-        b=Nm/xFvQlO5Z5ShrEyo4BBOPiUZmAMq3DtrhXdWvjnDpF7PxLgIT8Qc88xyzXqCpCxk
-         S1jBWWQoHsIvXsDKwZZJWNdj7+RU0MeVoYTaVfKyNM5S6vlzujQZcF8H/wf8VXelNAAw
-         qki/T3Ywc9orLDZefFV+tXLywqMhCklN2PwN/Gq4nqKw5dO7ss5XYJ+MebL+SVYrJq+m
-         nKplsvUYDosgigyM4MROTFRglStBy4Fe98QB+crJ/HJatYkemHexyI03fER4x1qUCsxS
-         eDt/YOCvgXoUoEhmUMH52TfIR97EBZWyJ4/UzEi3p3QCw2iH64MsLhWrkdkwQH0LJFW0
-         eh3A==
-X-Gm-Message-State: AOAM531G2Gv1YWCvBGqoK5dE3ni+34xDuKnTnc24XJTzSOYcfk8o8Uov
-        xF3gZGf5sHjgROIaSya2jyytxA==
-X-Google-Smtp-Source: ABdhPJyysHxqeu9WE7idL69Ozhb0zDdCyIBvSWe+gbpYKfLuvj8vgue3K/sJZGea7hEJ26pMqK8wMA==
-X-Received: by 2002:a63:b545:: with SMTP id u5mr27463165pgo.420.1642595704635;
-        Wed, 19 Jan 2022 04:35:04 -0800 (PST)
+        bh=Cy3rii7MkZcDle1PsnxEUPFBajxGTSot9++RLvAnVtA=;
+        b=ldFwUgfTsSzbRz/VBy6ievV1mjcX+f2c6IfFHBgEConzAVUDPDKwYrQ84sagjJQbwd
+         n4Lx7foK0WDfP/SSS2cH+Aj0SGfKJey5JDbwVHe+jtuelmnciru6V/z7RTm6DYryvfnG
+         NCk8RNZKb5PgIvJSH5Tb/itDhmxTAPFze8XCMD3c5LDK2IjPclEa2zfhiO+MEFJxQ3cm
+         jgoqJR+uo+FcwBTomTe+sJdvTAqtp1tGmzsLIqdagWBx46J1uOil5FqVth6U8nNYU4uK
+         wvmvI2ZlMWuPlLC3gTnVxTfFAYx1VqUvYbRx2aKrwYx/s9DRoWnTtrlbUueLFt8WZT1a
+         Aw2w==
+X-Gm-Message-State: AOAM532Y2B+XS7LBs4wwYwDmF+6miPsOiLht11xSy0jaH2DkpCnC4K8L
+        8uE9bGH6G33RzwIoaf0mOxwrmA==
+X-Google-Smtp-Source: ABdhPJwrusuD/qL9K231awYVAMwS+S9SGGq3c1HId/giFJdkDIykagK7NZskbGIq1LfaYpKDJtWAUQ==
+X-Received: by 2002:a17:90b:1c11:: with SMTP id oc17mr4090997pjb.128.1642595718809;
+        Wed, 19 Jan 2022 04:35:18 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id s21sm21367950pfg.75.2022.01.19.04.34.56
+        by smtp.gmail.com with ESMTPSA id q1sm7720566pgi.25.2022.01.19.04.35.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jan 2022 04:35:02 -0800 (PST)
-Message-ID: <f0303a51-b92d-1b77-e8eb-77a43c023f1e@broadcom.com>
-Date:   Wed, 19 Jan 2022 13:34:54 +0100
+        Wed, 19 Jan 2022 04:35:17 -0800 (PST)
+Message-ID: <4ecd0d0f-6b9b-16aa-e270-d6095865fbc2@broadcom.com>
+Date:   Wed, 19 Jan 2022 13:35:09 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH v3 5/9] brcmfmac: pcie: Replace brcmf_pcie_copy_mem_todev
- with memcpy_toio
+Subject: Re: [PATCH v3 7/9] brcmfmac: of: Use devm_kstrdup for board_type &
+ check for errors
 To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -80,54 +80,54 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220117142919.207370-1-marcan@marcan.st>
- <20220117142919.207370-6-marcan@marcan.st>
-In-Reply-To: <20220117142919.207370-6-marcan@marcan.st>
+ <20220117142919.207370-8-marcan@marcan.st>
+In-Reply-To: <20220117142919.207370-8-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000080733005d5ee9d4e"
+        boundary="00000000000058e84705d5ee9ecc"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---00000000000080733005d5ee9d4e
+--00000000000058e84705d5ee9ecc
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/17/2022 3:29 PM, Hector Martin wrote:
-> The alignment check was wrong (e.g. & 4 instead of & 3), and the logic
-> was also inefficient if the length was not a multiple of 4, since it
-> would needlessly fall back to copying the entire buffer bytewise.
-> 
-> We already have a perfectly good memcpy_toio function, so just call that
-> instead of rolling our own copy logic here. brcmf_pcie_init_ringbuffers
-> was already using it anyway.
-> 
-> Fixes: 9e37f045d5e7 ("brcmfmac: Adding PCIe bus layer support.")
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> This was missing a NULL check, and we can collapse the strlen/alloc/copy
+> into a devm_kstrdup().
+
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   .../broadcom/brcm80211/brcmfmac/pcie.c        | 48 ++-----------------
->   1 file changed, 4 insertions(+), 44 deletions(-)
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index b1ae6c41013f..c25f48db1f60 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> @@ -12,6 +12,7 @@
->   #include <linux/interrupt.h>
->   #include <linux/bcma/bcma.h>
->   #include <linux/sched.h>
-> +#include <linux/io.h>
-
-As brcmf_pcie_init_ringbuffers was already using it I suppose this was 
-already implicitly included. Still good to make it explicit.
-
->   #include <asm/unaligned.h>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> index 513c7e6421b2..5dc1e942e9e7 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> @@ -79,8 +79,12 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
 >   
->   #include <soc.h>
+>   		/* get rid of '/' in the compatible string to be able to find the FW */
+>   		len = strlen(tmp) + 1;
+> -		board_type = devm_kzalloc(dev, len, GFP_KERNEL);
+> -		strscpy(board_type, tmp, len);
+> +		board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
+> +		if (!board_type) {
+> +			brcmf_err("out of memory allocating board_type\n");
 
---00000000000080733005d5ee9d4e
+Drop the message. mm will blurb out with a stack trace providing all the 
+info you need.
+
+> +			of_node_put(root);
+> +			return;
+> +		}
+>   		for (i = 0; i < board_type[i]; i++) {
+>   			if (board_type[i] == '/')
+>   				board_type[i] = '-';
+
+--00000000000058e84705d5ee9ecc
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -198,14 +198,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDhnwvPT7U5fIwgufkW
-rY6BQexPwxv2ZQNBsD+Kh4RUqjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTkxMjM1MDRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCC3vRRoLPQSaMAd9aoT
+3gnTenZZwOdUZlr6OysPFdj0NjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMTkxMjM1MTlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAMoD09KCl/tI5JaluhlmUMhthtX1kyi+tLiki
-gTDzo3ooFQc9SKFgIff0O52dlXXE5R6Vi7AtXg5NDx9VPSH8jhpbW/deUaN2ywaE26+IIll77Jgo
-BZGBmlulvWiUA/jGGekJi0A1DO6EZvm9p4pCs9lzFwWwc7Lj3oVyojA/I7IV0XKiiNRz9nW5WDSr
-HFJJjg0+ckNDOOre1y5HE9xMwFFAX+JA1WH0QSCAk/AoZLHdJ3phZi5r+Xkw0g/nZiUJqJdAg5wx
-tTcIjE2VNiHaH/KMQQ1QFmzPTno/SrGnjcRpvpbQvqVGr2KQKMWvONGspnBhV4mOi92BS1vNO5Xa
-bQ==
---00000000000080733005d5ee9d4e--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAKdlKOBcvCVuM6NQ7nw3R4lhD15adPOTHADnm
+pRicEhyCWirg9q8xClsDLRE/mQcD6WencLaghsKM+q1l2xdKMt9vH5SrLSzGHVmZ2TxILCWnOm37
+h5APCQFqJA/jsmMjhUN3gnPNg/w2nrtdEclshn6wD7vYfO61c1TZTKiSnDPF5w9Z90sxqtspwr+W
+/qbWLppgSZShyQLlv+0Ok3FvQEyGns9fLGlPVFUHCPFZ5Ieu/6hKEoaoGTgozlSaf6SdF46tBsPn
+M9Y8cz7VJZQBCjm3xNp4F4MEi+xZyxkZA2TwsI+NNyEav0KlkDru/Oqsa31Iv36fqOMkaPtw8F90
+Mw==
+--00000000000058e84705d5ee9ecc--
