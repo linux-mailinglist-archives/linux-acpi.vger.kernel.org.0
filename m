@@ -2,260 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DFAB493F52
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 18:48:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C49F7493F5A
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 18:50:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356514AbiASRsZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jan 2022 12:48:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:40451 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1356502AbiASRsY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 19 Jan 2022 12:48:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642614503;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YpDeVNV5+zY/wtrGfYxy2lEajeSHJy9f5dUQzPImNNs=;
-        b=flnxuyNqoC820CGLeScUXn67qerYhTgi8KDBU3JdKt6SbvO4gv7vu9OtQQQ7MWSy4kQ/4a
-        J6JpKnr3ZBNWpVMR/Dh3aMjOCNP5gLG6w9gxZ2PgSxJJrMaYZJNDeejanea8u1ajnNjYmp
-        PbQmoJQeWBt2JNJh26asYqYPNZU8EPY=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-159-QKpL2163Od6WijZfe-omug-1; Wed, 19 Jan 2022 12:48:21 -0500
-X-MC-Unique: QKpL2163Od6WijZfe-omug-1
-Received: by mail-ed1-f72.google.com with SMTP id l14-20020aa7cace000000b003f7f8e1cbbdso3303111edt.20
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 09:48:21 -0800 (PST)
+        id S1356524AbiASRut (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Jan 2022 12:50:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35060 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344353AbiASRur (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 12:50:47 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F310CC061574;
+        Wed, 19 Jan 2022 09:50:46 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id j23so11382882edp.5;
+        Wed, 19 Jan 2022 09:50:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gYqrzHKY6NZ+smDMyNLEdjverS9Vu94GwZDjRJxBkqA=;
+        b=fiV7KO5DntXelX0OfsQwMZ+mrbf1r4MX4LvHgm8nKHMgHVomhgK2EstxRyA3k2PNMo
+         ND6qE2dpDjcyySIVQbG5BVociAX9RQp1Iw2qF9YaZ8bK+TpyP2WhWG4CjdC+phk37eWk
+         lLU4ZS/QTAU83uE54abGHGwTiTF78dMbRBXLbAHzdf2cGD3TMKnot0FBpYSy0VuXQdFJ
+         fpfwBXTYPRk+DhGZXarUHtCFXfDTBis8RDS0htGQ9pw2KI/2kW2KZyGVJx3p385LD/Zk
+         w/lT4WXLAEeeZNFZK9yR9E6LxldsRj44MO9GAv5RdQcKLN/G97hSFd1FYwOzRjwrwQ1s
+         U71g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=YpDeVNV5+zY/wtrGfYxy2lEajeSHJy9f5dUQzPImNNs=;
-        b=rv7NuhqhjSzB+oFD+OVbzm5bJt9Ru3/GKaFcyWQvUEjLSZTI87tgWYG/7Ecgc8HQiZ
-         xxa2DMTGTGQRf1WosZDJRpua7uqdwsLOXKXimuW4csZ3WYKyYw2KaXU5DGX3QhTRBR9h
-         3g7QzxmW1p7iTo8UbRVVCdKPcv35cuyRcfZ4hVcfGYYEvCmtU/TEUaa0zofXjmBglJph
-         Kzr9Fb9zfDvTL1SayCXcrcVEADZzrgNkgVpbARVoxybvFy9xkhQUl9DVbVe+PRBceh4m
-         sYLwM/2J7HGdmIlsNhfYzwZ34ItqV8cGUyelR1DRcV/AqvnDuK3oSNXb2V900OrZZJd+
-         CQRQ==
-X-Gm-Message-State: AOAM531KlvIuqb5z6VwXwQVAc9htlknG7GX0kHrY3x0CymgpQVvcEUjC
-        Nsf6vBGIIZBVChCNYRMopFNml7TWJOpFvZ6y107g9Rl0qdiKn7d2EZG99BG3EdDFvDPNCiFWkwJ
-        NK55hzTKr5n8FOa4a6dTH5g==
-X-Received: by 2002:a17:907:3e24:: with SMTP id hp36mr17603772ejc.584.1642614499589;
-        Wed, 19 Jan 2022 09:48:19 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx5iWS79JAvreWf3L6gIVZPiqWXYyiPVTLJMjomwG6E2H8+WN4B3GQwRNVgVkLtSBGLy4Uh7w==
-X-Received: by 2002:a17:907:3e24:: with SMTP id hp36mr17603759ejc.584.1642614499311;
-        Wed, 19 Jan 2022 09:48:19 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id r18sm172741edq.25.2022.01.19.09.48.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jan 2022 09:48:18 -0800 (PST)
-Message-ID: <f55ff70c-1578-afa7-999e-ba504aa325eb@redhat.com>
-Date:   Wed, 19 Jan 2022 18:48:17 +0100
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gYqrzHKY6NZ+smDMyNLEdjverS9Vu94GwZDjRJxBkqA=;
+        b=yA5cMUcT/jqBKQVsjtM0NxjNGCfFKcI5812LRLRf2ehpeGpNQO1Ddn9ekLj4QMsFr5
+         XooxUAd/naHzr5w5H6S6tsyMQtqq6MdIOvsiMqc7vzJz380gXySjHg8mk7eXLiqdrKOC
+         9DgzfjIQIIlwd2pAwd9n9tYhK8hJOPY4p4FUXY8A/JsdHVQSLlTDEbJKbcwzbRmexfDY
+         T3PatmlK2NNxJNL0zePXM4s4cORqZVY2UEHZIb/dvTf+Pf0FST4d3sz/CvtvqBMXWc7Q
+         s/IxpKnrAEMufLwWUpoRr81sjDGdZyLNXnfB6PEIyQ8b/Nrv63725INjof2z16f97jSD
+         fKWg==
+X-Gm-Message-State: AOAM533fheJ3VJiSMU5ThDVYOucUUbFX5O442wMc/VlEoOvN1G0Pgl97
+        Lu3oTt87rOILNC744AAkjLshgyt4wFbr9GYJqgo=
+X-Google-Smtp-Source: ABdhPJxpCISVyWKWKmWvQqQZxVaOGKUDCOomH8fpNTQfnCEI6mNChEe1bV6hhw1xHpAzOHlmz0/2fU+h5aQ8rZLpMeU=
+X-Received: by 2002:a05:6402:4c5:: with SMTP id n5mr31968102edw.122.1642614645556;
+ Wed, 19 Jan 2022 09:50:45 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v3 05/10] platform/x86: i2c-multi-instantiate: Move it to
- drivers/acpi folder
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Lucas tanure <tanureal@opensource.cirrus.com>
-Cc:     Stefan Binding <sbinding@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-        Mark Gross <markgross@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
-        <alsa-devel@alsa-project.org>,
+References: <20220117142919.207370-1-marcan@marcan.st> <20220117142919.207370-2-marcan@marcan.st>
+In-Reply-To: <20220117142919.207370-2-marcan@marcan.st>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 19 Jan 2022 19:49:03 +0200
+Message-ID: <CAHp75VfVuX-BG1MJcEoQrOW6jn=PSMZH0jTcwGj9PwWxocG_Gw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/9] brcmfmac: pcie: Release firmwares in the
+ brcmf_pcie_setup error path
+To:     Hector Martin <marcan@marcan.st>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        patches@opensource.cirrus.com
-References: <20220118145251.1548-1-sbinding@opensource.cirrus.com>
- <20220118145251.1548-6-sbinding@opensource.cirrus.com>
- <CAJZ5v0g0n201FPcG9LBNG3e4UdNYSWmj_1sN3MxLxmK=GoF+tA@mail.gmail.com>
- <a3522b5e-fb36-b959-d2ea-d141d3ad9999@opensource.cirrus.com>
- <CAJZ5v0h8MWb3sSuqWHUcm9TVWP0uJ+=GmzAuqVtNag2LP+0kYQ@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0h8MWb3sSuqWHUcm9TVWP0uJ+=GmzAuqVtNag2LP+0kYQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Mon, Jan 17, 2022 at 4:30 PM Hector Martin <marcan@marcan.st> wrote:
+>
+> This avoids leaking memory if brcmf_chip_get_raminfo fails. Note that
+> the CLM blob is released in the device remove path.
 
-On 1/19/22 18:44, Rafael J. Wysocki wrote:
-> On Wed, Jan 19, 2022 at 6:33 PM Lucas tanure
-> <tanureal@opensource.cirrus.com> wrote:
->>
->> On 1/19/22 16:53, Rafael J. Wysocki wrote:
->>> On Tue, Jan 18, 2022 at 3:53 PM Stefan Binding
->>> <sbinding@opensource.cirrus.com> wrote:
->>>>
->>>> From: Lucas Tanure <tanureal@opensource.cirrus.com>
->>>>
->>>> Moving I2C multi instantiate driver to drivers/acpi folder for
->>>> upcoming conversion into a generic bus multi instantiate
->>>> driver for SPI and I2C
->>>>
->>>> Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
->>>> Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
->>>
->>> Why are you moving it away from platform/x86?
->>>
->>> Adding SPI to the mix doesn't seem to be a sufficient reason.
->>>
->>> If this were going to be needed on non-x86, that would be a good
->>> reason for moving it, but is that actually the case?  If so, why isn't
->>> that mentioned in the changelog above?
->>>
->>
->> It was a request made by Andy Shevchenko:
->> https://lkml.org/lkml/2021/12/3/347
-> 
-> But he hasn't given any reasons why that'd be better.
-> 
->> There is no plan to use our CS35L41 HDA with non-x86 platforms and we
->> can't comment about i2c-multi-instantiate use.
->> For us it can stay in x86 folder until an actual request.
-> 
-> I'd prefer that if Hans agrees.
+...
 
-Ack, keeping this in drivers/platform/x86 is fine with me.
+>         if (ret) {
 
-I'll try to make some time to review this new version next week.
+>                 brcmf_err(bus, "Failed to get RAM info\n");
+> +               release_firmware(fw);
+> +               brcmf_fw_nvram_free(nvram);
 
-Looking at the subjects of the patches I see that this now
-refactors the SPI code to re-use the existing SPI ACPI resource
-parsing there, thank you for doing that!
+Can we first undo the things and only after print a message?
 
-Regards,
-
-Hans
+>                 goto fail;
+>         }
 
 
-
-
-
-> 
->>>> ---
->>>>   MAINTAINERS                                           |  2 +-
->>>>   drivers/acpi/Kconfig                                  | 11 +++++++++++
->>>>   drivers/acpi/Makefile                                 |  1 +
->>>>   .../{platform/x86 => acpi}/i2c-multi-instantiate.c    |  0
->>>>   drivers/acpi/scan.c                                   |  2 +-
->>>>   drivers/platform/x86/Kconfig                          | 11 -----------
->>>>   drivers/platform/x86/Makefile                         |  1 -
->>>>   7 files changed, 14 insertions(+), 14 deletions(-)
->>>>   rename drivers/{platform/x86 => acpi}/i2c-multi-instantiate.c (100%)
->>>>
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index 4e828542b089..546f9e149d28 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -392,7 +392,7 @@ ACPI I2C MULTI INSTANTIATE DRIVER
->>>>   M:     Hans de Goede <hdegoede@redhat.com>
->>>>   L:     platform-driver-x86@vger.kernel.org
->>>>   S:     Maintained
->>>> -F:     drivers/platform/x86/i2c-multi-instantiate.c
->>>> +F:     drivers/acpi/i2c-multi-instantiate.c
->>>>
->>>>   ACPI PCC(Platform Communication Channel) MAILBOX DRIVER
->>>>   M:     Sudeep Holla <sudeep.holla@arm.com>
->>>> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
->>>> index ba45541b1f1f..2fd78366af6f 100644
->>>> --- a/drivers/acpi/Kconfig
->>>> +++ b/drivers/acpi/Kconfig
->>>> @@ -295,6 +295,17 @@ config ACPI_PROCESSOR
->>>>            To compile this driver as a module, choose M here:
->>>>            the module will be called processor.
->>>>
->>>> +config ACPI_I2C_MULTI_INST
->>>> +       tristate "I2C multi instantiate pseudo device driver"
->>>> +       depends on I2C
->>>> +       help
->>>> +         Some ACPI-based systems list multiple i2c-devices in a single ACPI
->>>> +         firmware-node. This driver will instantiate separate i2c-clients
->>>> +         for each device in the firmware-node.
->>>> +
->>>> +         To compile this driver as a module, choose M here: the module
->>>> +         will be called i2c-multi-instantiate.
->>>> +
->>>>   config ACPI_IPMI
->>>>          tristate "IPMI"
->>>>          depends on IPMI_HANDLER
->>>> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
->>>> index bb757148e7ba..d4db7fb0baf0 100644
->>>> --- a/drivers/acpi/Makefile
->>>> +++ b/drivers/acpi/Makefile
->>>> @@ -104,6 +104,7 @@ obj-$(CONFIG_ACPI_SPCR_TABLE)       += spcr.o
->>>>   obj-$(CONFIG_ACPI_DEBUGGER_USER) += acpi_dbg.o
->>>>   obj-$(CONFIG_ACPI_PPTT)        += pptt.o
->>>>   obj-$(CONFIG_ACPI_PFRUT)       += pfr_update.o pfr_telemetry.o
->>>> +obj-$(CONFIG_ACPI_I2C_MULTI_INST)      += i2c-multi-instantiate.o
->>>>
->>>>   # processor has its own "processor." module_param namespace
->>>>   processor-y                    := processor_driver.o
->>>> diff --git a/drivers/platform/x86/i2c-multi-instantiate.c b/drivers/acpi/i2c-multi-instantiate.c
->>>> similarity index 100%
->>>> rename from drivers/platform/x86/i2c-multi-instantiate.c
->>>> rename to drivers/acpi/i2c-multi-instantiate.c
->>>> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
->>>> index 1331756d4cfc..3e85a02f6ba2 100644
->>>> --- a/drivers/acpi/scan.c
->>>> +++ b/drivers/acpi/scan.c
->>>> @@ -1738,7 +1738,7 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
->>>>           * must be instantiated for each, each with its own i2c_device_id.
->>>>           * Normally we only instantiate an i2c-client for the first resource,
->>>>           * using the ACPI HID as id. These special cases are handled by the
->>>> -        * drivers/platform/x86/i2c-multi-instantiate.c driver, which knows
->>>> +        * drivers/acpi/i2c-multi-instantiate.c driver, which knows
->>>>           * which i2c_device_id to use for each resource.
->>>>           */
->>>>                  {"BSG1160", },
->>>> diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
->>>> index 24deeeb29af2..37c1c150508d 100644
->>>> --- a/drivers/platform/x86/Kconfig
->>>> +++ b/drivers/platform/x86/Kconfig
->>>> @@ -990,17 +990,6 @@ config TOPSTAR_LAPTOP
->>>>
->>>>            If you have a Topstar laptop, say Y or M here.
->>>>
->>>> -config I2C_MULTI_INSTANTIATE
->>>> -       tristate "I2C multi instantiate pseudo device driver"
->>>> -       depends on I2C && ACPI
->>>> -       help
->>>> -         Some ACPI-based systems list multiple i2c-devices in a single ACPI
->>>> -         firmware-node. This driver will instantiate separate i2c-clients
->>>> -         for each device in the firmware-node.
->>>> -
->>>> -         To compile this driver as a module, choose M here: the module
->>>> -         will be called i2c-multi-instantiate.
->>>> -
->>>>   config MLX_PLATFORM
->>>>          tristate "Mellanox Technologies platform support"
->>>>          depends on I2C && REGMAP
->>>> diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Makefile
->>>> index c12a9b044fd8..6c7870190564 100644
->>>> --- a/drivers/platform/x86/Makefile
->>>> +++ b/drivers/platform/x86/Makefile
->>>> @@ -110,7 +110,6 @@ obj-$(CONFIG_TOPSTAR_LAPTOP)        += topstar-laptop.o
->>>>
->>>>   # Platform drivers
->>>>   obj-$(CONFIG_FW_ATTR_CLASS)            += firmware_attributes_class.o
->>>> -obj-$(CONFIG_I2C_MULTI_INSTANTIATE)    += i2c-multi-instantiate.o
->>>>   obj-$(CONFIG_MLX_PLATFORM)             += mlx-platform.o
->>>>   obj-$(CONFIG_TOUCHSCREEN_DMI)          += touchscreen_dmi.o
->>>>   obj-$(CONFIG_WIRELESS_HOTKEY)          += wireless-hotkey.o
->>>> --
->>>> 2.25.1
->>>>
->>
-> 
-
+-- 
+With Best Regards,
+Andy Shevchenko
