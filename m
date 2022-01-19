@@ -2,56 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92C2D49429A
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 22:47:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F1334942B8
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 23:02:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357418AbiASVrk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jan 2022 16:47:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60936 "EHLO
+        id S1357478AbiASWCP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Jan 2022 17:02:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343606AbiASVrk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 16:47:40 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A7DC061574;
-        Wed, 19 Jan 2022 13:47:39 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id u18so5444141edt.6;
-        Wed, 19 Jan 2022 13:47:39 -0800 (PST)
+        with ESMTP id S1343606AbiASWCO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 17:02:14 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B57BC061574;
+        Wed, 19 Jan 2022 14:02:14 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id y15so5540002lfa.9;
+        Wed, 19 Jan 2022 14:02:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pSWfoK1jnmO+T32koJ6nJsxNdVBxnqdtz0oVErlAr6A=;
-        b=PKLGbfleH5LN1drzDaSbqbsouBfvIOd5yUNFexmLU43zTI+g/ocZNTKQC7d9T6+2vO
-         B62w2pqphP+3i5XI6e28Mdc8J9sWkofstcAWt/4i1ESTYxwBf0DirC+NWw6PF8UwsGdH
-         HiqbXpnTtcI9hWh9pntLSI1GhRKxi51S/C1GjXUzVkC/5xz61b2uLJs9PNQs6xp7KOUu
-         nGBx1TUS5gpKH1Tei37toDjFiz4ICl+/IxLq79Ww/e8oekLthPtuyEiEM0DXvo5dr0gn
-         dQgR9VkT11kWZL3uLGQyoaPoDI/ik4C9SrByHXx87gVGKgUtuJfRSjVWtthG0n+DU8QA
-         d4Xw==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=InWqTkTbnVIeg3yZeoN2TSaiVZxmiWsL7/Xay8eEKBk=;
+        b=ZcngD6Ryru4yOLrl8Smj58YokDWbrp4IaIQ2lhSfd3QstRbbDbSXfjTAO0Fez5tQ+v
+         hzeMdk4KNa/CP+n6r0bCGeFT3dCUUaCNn/T5n4G8pDMVm+b6B0WlqpDWzz7EgwK0GFyK
+         U6bxs/SEG7ps7yB+O4KhbsCKYzCpUrH/L6FHK+hbj4Sgr9ZD1aarg7JuSbtBLOb8UPQt
+         Q3Tojc2pDX5f4GxLT/L0bHqzdtdqB2eHQHPKEmwwLJhdZ7EVHAc3N0PL7caeBmCvI4Hj
+         PqM9bJMIwdM/gSzBY0vIh4Qaxow0W6mkgRCj8JXgoD4HgikRm2s8SFUZ+tiqbXES9dWC
+         +jOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pSWfoK1jnmO+T32koJ6nJsxNdVBxnqdtz0oVErlAr6A=;
-        b=Ez6RAS956Yvz1Q2opnXBrj7002anh93Alc8841fmvwAI9Q1WJUl3Rwjvyvgwup71C6
-         7U0JqHyqRYuYEviLW9OfhHWRu1FPMY5KcWX5puhDsH3t//u0MzuMDMhVFf74Y0xRHaDp
-         hPbbNobAhtQJCezCc9AsMyNcFqvtAckgbxjP0V49Z35Dwbut/I7xOPay0Mglc0nB2ofn
-         G+9gc9TutzkRbF2fH1c+i6o9Qd6KAj/g7kAbcAh/ovaY+E/TH/IJ2fzhZzR2IDxBDXF+
-         VtnLXogM49gRztDkaSTrEC6Bz6soltk5fkuw1HvBchMuzy12IL5pwsS7cgCJ0fMl8n+l
-         9bFg==
-X-Gm-Message-State: AOAM531QMQosLLfA6bNVXAp7FZ68s2YeCT2uvKGbMpOPJoQ6ZL16uOFG
-        tXnsVYZU0QD1/wSbF/ap8utU6J9oLJUsQ77/3gA=
-X-Google-Smtp-Source: ABdhPJw5ae+enqKq3tZAGEBdViyh1ObmCrWMSZh4dhwe3Lb0DW+cB4ZJueiWhsgjeqrAiAIqIeXqdHPsxGLmQv86w/0=
-X-Received: by 2002:aa7:c0c9:: with SMTP id j9mr3582784edp.270.1642628857879;
- Wed, 19 Jan 2022 13:47:37 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=InWqTkTbnVIeg3yZeoN2TSaiVZxmiWsL7/Xay8eEKBk=;
+        b=2eGEWDFdIrVZPkN3vOdc6TDmcCxOoJtl73jeRvhHyK2JDduEqOcnMG9H34GM/7GGVT
+         h12PeTRw5tckimd1H6xMqpoZCjkIktdxnIfF5xkFb52EF5DvXtsrH4P0i5Lh35Bm3Puk
+         dveI3HG5BEvUkvCaItw/XVvFFe4NiXDrQUrPxix7cyom/FGPIzkFWCktpKvlAUGktOUA
+         PTk3MwfHj/JEMypavLuJ/HKlMfXfCo+/6N/mFHHyf80vd+Yfhkgd34FAXdpWzuDul2rl
+         9BSVWKpeIa6AuXqaAlFl6bNRuzVBdqXdbflSQrvBE31379u8Fq7DPxS6gsEZmXoJseV8
+         pMgg==
+X-Gm-Message-State: AOAM533oxEEBf8vmg3cMreMqqN16snqIp3v1YzjNRuDBziJu0ZDUMA6N
+        qV6QbKmVc7jITwGXITVnTKs=
+X-Google-Smtp-Source: ABdhPJyNXoA2WS6ShN1avPEC6d1v0hm8NZ5j/eKjxMJxBf16tCoJTMh+goTKLqVRbxz/R8aLjtg4vw==
+X-Received: by 2002:a05:6512:15aa:: with SMTP id bp42mr22245503lfb.217.1642629732614;
+        Wed, 19 Jan 2022 14:02:12 -0800 (PST)
+Received: from [192.168.2.145] (109-252-139-36.dynamic.spd-mgts.ru. [109.252.139.36])
+        by smtp.googlemail.com with ESMTPSA id s1sm87333lfs.215.2022.01.19.14.02.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jan 2022 14:02:12 -0800 (PST)
+Message-ID: <be66ea27-c98a-68d3-40b1-f79ab62460d5@gmail.com>
+Date:   Thu, 20 Jan 2022 01:02:11 +0300
 MIME-Version: 1.0
-References: <20220117142919.207370-1-marcan@marcan.st> <20220117142919.207370-4-marcan@marcan.st>
-In-Reply-To: <20220117142919.207370-4-marcan@marcan.st>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 19 Jan 2022 23:45:55 +0200
-Message-ID: <CAHp75VfZ+thU+AWeOQSC9Dqq3MO+GMb_8oPxqMEbaxYTH0PH5A@mail.gmail.com>
-Subject: Re: [PATCH v3 3/9] brcmfmac: firmware: Do not crash on a NULL board_type
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v3 3/9] brcmfmac: firmware: Do not crash on a NULL
+ board_type
+Content-Language: en-US
+To:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -61,9 +67,8 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
+        Wright Feng <wright.feng@infineon.com>
+Cc:     Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Mark Kettenis <kettenis@openbsd.org>,
         =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
@@ -72,56 +77,54 @@ Cc:     Kalle Valo <kvalo@codeaurora.org>,
         Hans de Goede <hdegoede@redhat.com>,
         "John W. Linville" <linville@tuxdriver.com>,
         "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
-Content-Type: text/plain; charset="UTF-8"
+References: <20220117142919.207370-1-marcan@marcan.st>
+ <20220117142919.207370-4-marcan@marcan.st>
+From:   Dmitry Osipenko <digetx@gmail.com>
+In-Reply-To: <20220117142919.207370-4-marcan@marcan.st>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 17, 2022 at 4:30 PM Hector Martin <marcan@marcan.st> wrote:
->
+17.01.2022 17:29, Hector Martin пишет:
 > This unbreaks support for USB devices, which do not have a board_type
 > to create an alt_path out of and thus were running into a NULL
 > dereference.
+> 
+> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
+> Signed-off-by: Hector Martin <marcan@marcan.st>
 
-In v5.16 we have two call sites:
+Technically, all patches that are intended to be included into next
+stable kernel update require the "Cc: stable@vger.kernel.org" tag.
 
-1.
-  if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type) {
-    ...
-    alt_path = brcm_alt_fw_path(cur->path, fwctx->req->board_type);
+In practice such patches usually auto-picked by the patch bot, so no
+need to resend.
 
-2.
-  alt_path = brcm_alt_fw_path(first->path, fwctx->req->board_type);
-  if (alt_path) {
-    ...
-
-Looking at them I would rather expect to see (as a quick fix, the
-better solution is to unify those call sites by splitting out a common
-helper):
-
-  if (fwctx->req->board_type) {
-    alt_path = brcm_alt_fw_path(first->path, fwctx->req->board_type);
-  else
-    alt_path = NULL;
-   ...
-
-
+> ---
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+> index 1001c8888bfe..63821856bbe1 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
 > @@ -599,6 +599,9 @@ static char *brcm_alt_fw_path(const char *path, const char *board_type)
->         char alt_path[BRCMF_FW_NAME_LEN];
->         char suffix[5];
->
-> +       if (!board_type)
-> +               return NULL;
+>  	char alt_path[BRCMF_FW_NAME_LEN];
+>  	char suffix[5];
+>  
+> +	if (!board_type)
+> +		return NULL;
+> +
+>  	strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
+>  	/* At least one character + suffix */
+>  	if (strlen(alt_path) < 5)
 
+Good catch!
 
--- 
-With Best Regards,
-Andy Shevchenko
+Reviewed-by: Dmitry Osipenko <digetx@gmail.com>
