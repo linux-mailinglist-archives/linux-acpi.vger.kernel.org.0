@@ -2,240 +2,191 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F9A4493A8C
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 13:37:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68E79493E96
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 17:53:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354818AbiASMhS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jan 2022 07:37:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47504 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354631AbiASMgx (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 07:36:53 -0500
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2DE2C06175E
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:36:52 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id g9-20020a17090a67c900b001b4f1d71e4fso2511537pjm.4
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:36:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=message-id:date:mime-version:user-agent:from:subject:to:cc
-         :references:in-reply-to;
-        bh=gQpO3qxbntxnv67IaelbVlwXwDcVa7c4FuTlXzudiIw=;
-        b=DYapkAVSUs1JPmROBIPFvBW/yD9nJfJAwVygsdEPDuKy7jmj5qLs8E0EegfInEZ/Am
-         MfAnzqLTgLjt4Tw2r/W7luO4dEFKgFYrMmvklAk4eZMhzSB+Tlpz9pjh+V8NOvZylEEj
-         llenlgPLtEGv88jNTAY+Vr4jqdkePj8l4gfaY=
+        id S243450AbiASQxR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Jan 2022 11:53:17 -0500
+Received: from mail-qt1-f182.google.com ([209.85.160.182]:38658 "EHLO
+        mail-qt1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237515AbiASQxQ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 11:53:16 -0500
+Received: by mail-qt1-f182.google.com with SMTP id bb9so2589637qtb.5;
+        Wed, 19 Jan 2022 08:53:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:from
-         :subject:to:cc:references:in-reply-to;
-        bh=gQpO3qxbntxnv67IaelbVlwXwDcVa7c4FuTlXzudiIw=;
-        b=esP63PfvelOxkJG5tKPv+iX3SS1B1e8SVpJ9o7U5r59n5K2JKqqEO85TuSjOp3vp0y
-         Kr2cbaBQRfVGHzU55wBC1VVxBVq1ymte8CaKHJuYlBjO8D7oOGCTF6q49GSD6Cv/1CLH
-         4PW5MODnEUpbvjaWHT/ExU1RssQHnMuEYQjMnxosRp/KvjkMdNyUhNwQJ+BMVxRyuH1k
-         oZIuGmvrS59gFN/EAdX0BRXw+hYBAPsXm+h0ZFjoPXHscFQJUbXJdLN+zE7DZv9EfcO5
-         Hr6UGthXf7yKjhHM/imigeOcrfM5ZPmnWvNB1iFImkJyv/cPmXFpwnX6TK//ugdvslSX
-         IAWg==
-X-Gm-Message-State: AOAM531VcMu0Z47R/szb54ZhecBjkAtyKFW4BP2/Xti44H2htaXR+Wve
-        9xQZrs+MVCTnDCfBQWdBBOugtA==
-X-Google-Smtp-Source: ABdhPJwlOCggScmG2My37irsesppJgch7yHsmTNhwjVujZbFbhM7eCQk7OaUSHuFhPCciCdjRohTaA==
-X-Received: by 2002:a17:902:d50a:b0:14a:f80d:288c with SMTP id b10-20020a170902d50a00b0014af80d288cmr1259094plg.0.1642595812350;
-        Wed, 19 Jan 2022 04:36:52 -0800 (PST)
-Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id rj1sm6405149pjb.41.2022.01.19.04.36.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jan 2022 04:36:51 -0800 (PST)
-Message-ID: <ed387a90-586d-5071-baa6-bc66d4e7f22f@broadcom.com>
-Date:   Wed, 19 Jan 2022 13:36:43 +0100
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rSEzk8BcF5dmOAChCxcAbNaCIVCH+wJKAituA5N0HnY=;
+        b=uSm0CheGzLFBIntxYknUew/xQTQooK0Rt7XoO0jUsqGg+rpBTYQjbCYicb1swD/KNB
+         8k03tqdpxLWtvJwlJl1kOU5IZw7+5BryeUXhYLNMW0rpdj7tSnldhgzLSN0DA95/QqtZ
+         Gp1SwmpltAKQ0r1ODmqEpNEOHb/vfRdkWTgeCWvuK5WrA8R4FozV/5kvsH06SgHClSua
+         A3Bo9NizYTQnBfEBGbJouRMwJ6H34qlzZA+SamLsspkEBaAq4cPgzNSUrXpYShVRjHOg
+         cqPmawZ2esMCeZiZTtlny+PkFqVX2iihWEl8xEs4Qsk0uMwsr1f0Z58+/vlR+wE5x+e5
+         jsMA==
+X-Gm-Message-State: AOAM5306ejJ/pmgQZbA/2vZ2TWUgoLIc9w5TmTLWl2eAFs1zJodUS6K2
+        dZxcHR1qXCCqRCe4w8OUCRxY8NQpuOTKXk3+H+mBsEmi
+X-Google-Smtp-Source: ABdhPJxL6fAiWPnaDWtmGlMi8gk6mzbi83/3qUonNzAa3s8SLHRIwSduaptcTiEeu+Awb67ILI4/Jr/XlzTEvfA7fWw=
+X-Received: by 2002:a05:622a:1881:: with SMTP id v1mr25662181qtc.327.1642611196009;
+ Wed, 19 Jan 2022 08:53:16 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH v2 22/35] brcmfmac: chip: Handle 1024-unit sizes for TCM
- blocks
-To:     Hector Martin <marcan@marcan.st>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+References: <20220118145251.1548-1-sbinding@opensource.cirrus.com> <20220118145251.1548-6-sbinding@opensource.cirrus.com>
+In-Reply-To: <20220118145251.1548-6-sbinding@opensource.cirrus.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 19 Jan 2022 17:53:05 +0100
+Message-ID: <CAJZ5v0g0n201FPcG9LBNG3e4UdNYSWmj_1sN3MxLxmK=GoF+tA@mail.gmail.com>
+Subject: Re: [PATCH v3 05/10] platform/x86: i2c-multi-instantiate: Move it to
+ drivers/acpi folder
+To:     Stefan Binding <sbinding@opensource.cirrus.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
         Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-23-marcan@marcan.st>
-In-Reply-To: <20220104072658.69756-23-marcan@marcan.st>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000ed788505d5eea302"
+        Mark Gross <markgross@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        patches@opensource.cirrus.com,
+        Lucas Tanure <tanureal@opensource.cirrus.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---000000000000ed788505d5eea302
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Tue, Jan 18, 2022 at 3:53 PM Stefan Binding
+<sbinding@opensource.cirrus.com> wrote:
+>
+> From: Lucas Tanure <tanureal@opensource.cirrus.com>
+>
+> Moving I2C multi instantiate driver to drivers/acpi folder for
+> upcoming conversion into a generic bus multi instantiate
+> driver for SPI and I2C
+>
+> Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
+> Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
 
-On 1/4/2022 8:26 AM, Hector Martin wrote:
-> BCM4387 has trailing odd-sized blocks as part of TCM which have
-> their size described as a multiple of 1024 instead of 8192. Handle this
-> so we can compute the TCM size properly.
+Why are you moving it away from platform/x86?
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Hector Martin <marcan@marcan.st>
+Adding SPI to the mix doesn't seem to be a sufficient reason.
+
+If this were going to be needed on non-x86, that would be a good
+reason for moving it, but is that actually the case?  If so, why isn't
+that mentioned in the changelog above?
+
 > ---
->   .../wireless/broadcom/brcm80211/brcmfmac/chip.c | 17 ++++++++++++-----
->   1 file changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-> index 713546cebd5a..cfa93e3ef1a1 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-> @@ -212,8 +212,8 @@ struct sbsocramregs {
->   #define	ARMCR4_TCBANB_MASK	0xf
->   #define	ARMCR4_TCBANB_SHIFT	0
->   
-> -#define	ARMCR4_BSZ_MASK		0x3f
-> -#define	ARMCR4_BSZ_MULT		8192
-> +#define	ARMCR4_BSZ_MASK		0x7f
-> +#define	ARMCR4_BLK_1K_MASK	0x200
->   
->   struct brcmf_core_priv {
->   	struct brcmf_core pub;
-> @@ -675,7 +675,8 @@ static u32 brcmf_chip_sysmem_ramsize(struct brcmf_core_priv *sysmem)
->   }
->   
->   /** Return the TCM-RAM size of the ARMCR4 core. */
-> -static u32 brcmf_chip_tcm_ramsize(struct brcmf_core_priv *cr4)
-> +static u32 brcmf_chip_tcm_ramsize(struct brcmf_chip_priv *ci,
-> +				  struct brcmf_core_priv *cr4)
-
-Not sure why you add ci parameter here. It is not used below or am I 
-overlooking something.
-
->   {
->   	u32 corecap;
->   	u32 memsize = 0;
-> @@ -683,6 +684,7 @@ static u32 brcmf_chip_tcm_ramsize(struct brcmf_core_priv *cr4)
->   	u32 nbb;
->   	u32 totb;
->   	u32 bxinfo;
-> +	u32 blksize;
->   	u32 idx;
->   
->   	corecap = brcmf_chip_core_read32(cr4, ARMCR4_CAP);
-> @@ -694,7 +696,12 @@ static u32 brcmf_chip_tcm_ramsize(struct brcmf_core_priv *cr4)
->   	for (idx = 0; idx < totb; idx++) {
->   		brcmf_chip_core_write32(cr4, ARMCR4_BANKIDX, idx);
->   		bxinfo = brcmf_chip_core_read32(cr4, ARMCR4_BANKINFO);
-> -		memsize += ((bxinfo & ARMCR4_BSZ_MASK) + 1) * ARMCR4_BSZ_MULT;
-> +		if (bxinfo & ARMCR4_BLK_1K_MASK)
-> +			blksize = 1024;
-> +		else
-> +			blksize = 8192;
+>  MAINTAINERS                                           |  2 +-
+>  drivers/acpi/Kconfig                                  | 11 +++++++++++
+>  drivers/acpi/Makefile                                 |  1 +
+>  .../{platform/x86 => acpi}/i2c-multi-instantiate.c    |  0
+>  drivers/acpi/scan.c                                   |  2 +-
+>  drivers/platform/x86/Kconfig                          | 11 -----------
+>  drivers/platform/x86/Makefile                         |  1 -
+>  7 files changed, 14 insertions(+), 14 deletions(-)
+>  rename drivers/{platform/x86 => acpi}/i2c-multi-instantiate.c (100%)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 4e828542b089..546f9e149d28 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -392,7 +392,7 @@ ACPI I2C MULTI INSTANTIATE DRIVER
+>  M:     Hans de Goede <hdegoede@redhat.com>
+>  L:     platform-driver-x86@vger.kernel.org
+>  S:     Maintained
+> -F:     drivers/platform/x86/i2c-multi-instantiate.c
+> +F:     drivers/acpi/i2c-multi-instantiate.c
+>
+>  ACPI PCC(Platform Communication Channel) MAILBOX DRIVER
+>  M:     Sudeep Holla <sudeep.holla@arm.com>
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index ba45541b1f1f..2fd78366af6f 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -295,6 +295,17 @@ config ACPI_PROCESSOR
+>           To compile this driver as a module, choose M here:
+>           the module will be called processor.
+>
+> +config ACPI_I2C_MULTI_INST
+> +       tristate "I2C multi instantiate pseudo device driver"
+> +       depends on I2C
+> +       help
+> +         Some ACPI-based systems list multiple i2c-devices in a single ACPI
+> +         firmware-node. This driver will instantiate separate i2c-clients
+> +         for each device in the firmware-node.
 > +
-> +		memsize += ((bxinfo & ARMCR4_BSZ_MASK) + 1) * blksize;
->   	}
->   
->   	return memsize;
-
---000000000000ed788505d5eea302
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-MIIQdwYJKoZIhvcNAQcCoIIQaDCCEGQCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-gg3OMIIFDTCCA/WgAwIBAgIQeEqpED+lv77edQixNJMdADANBgkqhkiG9w0BAQsFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMDA5MTYwMDAwMDBaFw0yODA5MTYwMDAwMDBaMFsxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBS
-MyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
-vbCmXCcsbZ/a0fRIQMBxp4gJnnyeneFYpEtNydrZZ+GeKSMdHiDgXD1UnRSIudKo+moQ6YlCOu4t
-rVWO/EiXfYnK7zeop26ry1RpKtogB7/O115zultAz64ydQYLe+a1e/czkALg3sgTcOOcFZTXk38e
-aqsXsipoX1vsNurqPtnC27TWsA7pk4uKXscFjkeUE8JZu9BDKaswZygxBOPBQBwrA5+20Wxlk6k1
-e6EKaaNaNZUy30q3ArEf30ZDpXyfCtiXnupjSK8WU2cK4qsEtj09JS4+mhi0CTCrCnXAzum3tgcH
-cHRg0prcSzzEUDQWoFxyuqwiwhHu3sPQNmFOMwIDAQABo4IB2jCCAdYwDgYDVR0PAQH/BAQDAgGG
-MGAGA1UdJQRZMFcGCCsGAQUFBwMCBggrBgEFBQcDBAYKKwYBBAGCNxQCAgYKKwYBBAGCNwoDBAYJ
-KwYBBAGCNxUGBgorBgEEAYI3CgMMBggrBgEFBQcDBwYIKwYBBQUHAxEwEgYDVR0TAQH/BAgwBgEB
-/wIBADAdBgNVHQ4EFgQUljPR5lgXWzR1ioFWZNW+SN6hj88wHwYDVR0jBBgwFoAUj/BLf6guRSSu
-TVD6Y5qL3uLdG7wwegYIKwYBBQUHAQEEbjBsMC0GCCsGAQUFBzABhiFodHRwOi8vb2NzcC5nbG9i
-YWxzaWduLmNvbS9yb290cjMwOwYIKwYBBQUHMAKGL2h0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5j
-b20vY2FjZXJ0L3Jvb3QtcjMuY3J0MDYGA1UdHwQvMC0wK6ApoCeGJWh0dHA6Ly9jcmwuZ2xvYmFs
-c2lnbi5jb20vcm9vdC1yMy5jcmwwWgYDVR0gBFMwUTALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgEo
-CjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAN
-BgkqhkiG9w0BAQsFAAOCAQEAdAXk/XCnDeAOd9nNEUvWPxblOQ/5o/q6OIeTYvoEvUUi2qHUOtbf
-jBGdTptFsXXe4RgjVF9b6DuizgYfy+cILmvi5hfk3Iq8MAZsgtW+A/otQsJvK2wRatLE61RbzkX8
-9/OXEZ1zT7t/q2RiJqzpvV8NChxIj+P7WTtepPm9AIj0Keue+gS2qvzAZAY34ZZeRHgA7g5O4TPJ
-/oTd+4rgiU++wLDlcZYd/slFkaT3xg4qWDepEMjT4T1qFOQIL+ijUArYS4owpPg9NISTKa1qqKWJ
-jFoyms0d0GwOniIIbBvhI2MJ7BSY9MYtWVT5jJO3tsVHwj4cp92CSFuGwunFMzCCA18wggJHoAMC
-AQICCwQAAAAAASFYUwiiMA0GCSqGSIb3DQEBCwUAMEwxIDAeBgNVBAsTF0dsb2JhbFNpZ24gUm9v
-dCBDQSAtIFIzMRMwEQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpHbG9iYWxTaWduMB4XDTA5
-MDMxODEwMDAwMFoXDTI5MDMxODEwMDAwMFowTDEgMB4GA1UECxMXR2xvYmFsU2lnbiBSb290IENB
-IC0gUjMxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMTCkdsb2JhbFNpZ24wggEiMA0GCSqG
-SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDMJXaQeQZ4Ihb1wIO2hMoonv0FdhHFrYhy/EYCQ8eyip0E
-XyTLLkvhYIJG4VKrDIFHcGzdZNHr9SyjD4I9DCuul9e2FIYQebs7E4B3jAjhSdJqYi8fXvqWaN+J
-J5U4nwbXPsnLJlkNc96wyOkmDoMVxu9bi9IEYMpJpij2aTv2y8gokeWdimFXN6x0FNx04Druci8u
-nPvQu7/1PQDhBjPogiuuU6Y6FnOM3UEOIDrAtKeh6bJPkC4yYOlXy7kEkmho5TgmYHWyn3f/kRTv
-riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
-QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
-UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
-M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
-Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
-14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
-a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
-XzCCBVYwggQ+oAMCAQICDDEp2IfSf0SOoLB27jANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
-RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
-UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMTAyMjIwNzQ0MjBaFw0yMjA5MDUwNzU0MjJaMIGV
-MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
-BgNVBAoTDUJyb2FkY29tIEluYy4xGTAXBgNVBAMTEEFyZW5kIFZhbiBTcHJpZWwxKzApBgkqhkiG
-9w0BCQEWHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IB
-DwAwggEKAoIBAQCk4MT79XIz7iNEpTGuhXGSqyRQpztUN1sWBVx/wStC1VrFGgbpD1o8BotGl4zf
-9f8V8oZn4DA0tTWOOJdhPNtxa/h3XyRV5fWCDDhHAXK4fYeh1hJZcystQwfXnjtLkQB13yCEyaNl
-7yYlPUsbagt6XI40W6K5Rc3zcTQYXq+G88K2n1C9ha7dwK04XbIbhPq8XNopPTt8IM9+BIDlfC/i
-XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
-yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
-0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
-NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
-FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
-aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
-OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
-UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBg1LzkYdjFgnElBM8Q
-O0vF8CvF1PECceAwJstHgdUuJTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTkxMjM2NTJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAE0oJ8IKnSQNJd5tmLPrMBzBk2KSRQtRM90+P
-q/rlosJSDqxjxbvGKzQs0/KKKeQLPc0EthM7hLMceWk/GfukG0oCJl13C/pstr1IfqAP3X/OisEL
-8Bdsk1iGYDstJQHsNct6iaY2Upm6Sdd9RkEeBgzLmuMk8ZatlfKhckvj54Iv2pqd5natGQ3CmiKm
-ofVATluaBf7pXfCGB7fY0KoZEmVWOgTO1zDTWMo3NYlsD8cXNKLQW8MHPVp7iIAqQwWu31pU1cWT
-QZEJadFCUacdO0W9jB4/A90gcwXSP2nHCOXNoPAjr+cSw+wv+SgxFTSDVUOYX8jBFU288Q3MQDGL
-5w==
---000000000000ed788505d5eea302--
+> +         To compile this driver as a module, choose M here: the module
+> +         will be called i2c-multi-instantiate.
+> +
+>  config ACPI_IPMI
+>         tristate "IPMI"
+>         depends on IPMI_HANDLER
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index bb757148e7ba..d4db7fb0baf0 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -104,6 +104,7 @@ obj-$(CONFIG_ACPI_SPCR_TABLE)       += spcr.o
+>  obj-$(CONFIG_ACPI_DEBUGGER_USER) += acpi_dbg.o
+>  obj-$(CONFIG_ACPI_PPTT)        += pptt.o
+>  obj-$(CONFIG_ACPI_PFRUT)       += pfr_update.o pfr_telemetry.o
+> +obj-$(CONFIG_ACPI_I2C_MULTI_INST)      += i2c-multi-instantiate.o
+>
+>  # processor has its own "processor." module_param namespace
+>  processor-y                    := processor_driver.o
+> diff --git a/drivers/platform/x86/i2c-multi-instantiate.c b/drivers/acpi/i2c-multi-instantiate.c
+> similarity index 100%
+> rename from drivers/platform/x86/i2c-multi-instantiate.c
+> rename to drivers/acpi/i2c-multi-instantiate.c
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 1331756d4cfc..3e85a02f6ba2 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -1738,7 +1738,7 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
+>          * must be instantiated for each, each with its own i2c_device_id.
+>          * Normally we only instantiate an i2c-client for the first resource,
+>          * using the ACPI HID as id. These special cases are handled by the
+> -        * drivers/platform/x86/i2c-multi-instantiate.c driver, which knows
+> +        * drivers/acpi/i2c-multi-instantiate.c driver, which knows
+>          * which i2c_device_id to use for each resource.
+>          */
+>                 {"BSG1160", },
+> diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
+> index 24deeeb29af2..37c1c150508d 100644
+> --- a/drivers/platform/x86/Kconfig
+> +++ b/drivers/platform/x86/Kconfig
+> @@ -990,17 +990,6 @@ config TOPSTAR_LAPTOP
+>
+>           If you have a Topstar laptop, say Y or M here.
+>
+> -config I2C_MULTI_INSTANTIATE
+> -       tristate "I2C multi instantiate pseudo device driver"
+> -       depends on I2C && ACPI
+> -       help
+> -         Some ACPI-based systems list multiple i2c-devices in a single ACPI
+> -         firmware-node. This driver will instantiate separate i2c-clients
+> -         for each device in the firmware-node.
+> -
+> -         To compile this driver as a module, choose M here: the module
+> -         will be called i2c-multi-instantiate.
+> -
+>  config MLX_PLATFORM
+>         tristate "Mellanox Technologies platform support"
+>         depends on I2C && REGMAP
+> diff --git a/drivers/platform/x86/Makefile b/drivers/platform/x86/Makefile
+> index c12a9b044fd8..6c7870190564 100644
+> --- a/drivers/platform/x86/Makefile
+> +++ b/drivers/platform/x86/Makefile
+> @@ -110,7 +110,6 @@ obj-$(CONFIG_TOPSTAR_LAPTOP)        += topstar-laptop.o
+>
+>  # Platform drivers
+>  obj-$(CONFIG_FW_ATTR_CLASS)            += firmware_attributes_class.o
+> -obj-$(CONFIG_I2C_MULTI_INSTANTIATE)    += i2c-multi-instantiate.o
+>  obj-$(CONFIG_MLX_PLATFORM)             += mlx-platform.o
+>  obj-$(CONFIG_TOUCHSCREEN_DMI)          += touchscreen_dmi.o
+>  obj-$(CONFIG_WIRELESS_HOTKEY)          += wireless-hotkey.o
+> --
+> 2.25.1
+>
