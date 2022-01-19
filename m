@@ -2,56 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70CA6493A5A
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 13:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEFF3493A60
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 13:36:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354516AbiASMe7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jan 2022 07:34:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46964 "EHLO
+        id S1354562AbiASMfV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Jan 2022 07:35:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354490AbiASMew (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 07:34:52 -0500
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E20E0C06173F
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:34:51 -0800 (PST)
-Received: by mail-pg1-x535.google.com with SMTP id q75so2398516pgq.5
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:34:51 -0800 (PST)
+        with ESMTP id S1354508AbiASMe6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 07:34:58 -0500
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F05EC06173F
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:34:58 -0800 (PST)
+Received: by mail-pg1-x52a.google.com with SMTP id g2so2368333pgo.9
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:34:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=message-id:date:mime-version:user-agent:from:subject:to:cc
          :references:in-reply-to;
-        bh=AW6DTBwj/UTP2f+MhVjqlatjYMO1UaupXZshQd9fD7I=;
-        b=HqzW6Yv41wDh74ZNHddIN8SOZ3QjQgKhE1kz1Z8evgPfI9uSpFtU6kjcD4ePr0FWqY
-         e7rQbHqXGG8+D8GlARQ5XwLC6sdRdSkMKkzJvAGb6Udf4tbi5dwZmHNrINscp9KU+d7N
-         9jfwRJm1h34QMceDSdy+zzsXg3vipRy206wuE=
+        bh=aM9Ee5ZLPsg0KNkxRgqbyQrFWbymuUoDwqqKRR1vMmM=;
+        b=CFDTjsEtraZMmZEl91aXvKtYOqloSo6p5jiqZMiFoysEA3sAC1BbFmULur2pagUSTP
+         FOZirlk8VnHg7lLdyXqR3Rr6wOfRDU5XRgHbyfO9vrl53Z5YNZrj6p7NKR1JmwR9GHAW
+         fWv7sHIkfDP3eZL9hVVZoOBmEyYXdE+0NE0zg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:from
          :subject:to:cc:references:in-reply-to;
-        bh=AW6DTBwj/UTP2f+MhVjqlatjYMO1UaupXZshQd9fD7I=;
-        b=1eZ/8u4b5XW9NlzQOU3v6iXOZ+lMqQC82nfDVLzacaDv10VTLKCkxQ293pNbfqd7uX
-         PkhJErN2cnGiyu2kHuPKoH/55iNK+fQj0MOOn6eGdJnWn5mm2hEh7HEkdSdkaLtuqbpS
-         LnwrZutvnpA/YuCVMss8yEeNzEWN89sCa781SI4H0Hs5qajCR5asiFVe7ruyNFKv9jgk
-         uQxzoWZUop9iroKskf94txYTh7NTei6B43Ac9LtHbjMhOnQsFKWSJGh/3YgnDwJ8I+ez
-         siyu73m0NKaGkFiCGyHoO6+hQkRE48z3QKDkRe4xSYI5WTsDVeaKxkCzZeJEjAXnoBgx
-         wAEg==
-X-Gm-Message-State: AOAM531gTkNc1zcvpiwAYIapptczS8ohcvgrwZRWzj9Ru2Gs8Ax038kK
-        ngAvO8JfGM5zl06CMaZcUI24GQ==
-X-Google-Smtp-Source: ABdhPJz8IIgazhcSiOFgxGaKYtSW6U6zkw5wz228KBNdRGIGCcFOZIgcFNClbo4rJiih3NJvSObekA==
-X-Received: by 2002:a05:6a00:1818:b0:4c1:6983:f1c9 with SMTP id y24-20020a056a00181800b004c16983f1c9mr30454210pfa.59.1642595691319;
-        Wed, 19 Jan 2022 04:34:51 -0800 (PST)
+        bh=aM9Ee5ZLPsg0KNkxRgqbyQrFWbymuUoDwqqKRR1vMmM=;
+        b=uu/t9Ow/IMeGz5Lxxfp6FOb8lsPsDHGqWSJyO4/Hr5RWRuplHigTLWXqwO1Y5Phmei
+         bOaN2DoicCSzVOuWDX8YAOteobDjOpOzrZui3UXOoCGEy17Dd8T+P94apowXTFOxQk+B
+         uWPMcOIM3c6sGQt7cMZHdGKHwKpP3jh+LXx4K/spYdPVUf5JnyWXpKZI+9WBmX4Cwp5F
+         23z2bcereiJNoPqxaaYcnC3hf1BBZBqE3UZoLvQoCaqpl/D1Et9SqCw6gXhTltk4NQJL
+         v22BYQUTQ95Op0GjH/0V/5aaqKN//y4iRNLkImlbakN6/8QdWAVWWoIXNXy5yGWwTP1v
+         owbg==
+X-Gm-Message-State: AOAM530VjNxIt8jkYQpT/3XE+cLXT7Hy4AoDR6Q/4k3grs9QxBa2xRK0
+        4NBKDScK7LujdrH6cALrxJdSDA==
+X-Google-Smtp-Source: ABdhPJyAvyYBcBpKO+/RDnrfGaWVl9KKgumoWrcF2BAnrfbanhUpC0/sxZRwhIFL7IHbez96EUvWOA==
+X-Received: by 2002:a62:7c57:0:b0:4bd:fa44:95df with SMTP id x84-20020a627c57000000b004bdfa4495dfmr30228697pfc.53.1642595697845;
+        Wed, 19 Jan 2022 04:34:57 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id c12sm13803502pfm.113.2022.01.19.04.34.43
+        by smtp.gmail.com with ESMTPSA id o11sm17374484pgk.36.2022.01.19.04.34.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jan 2022 04:34:50 -0800 (PST)
-Message-ID: <e66b5b30-1448-aee3-2813-d96b70e69ef4@broadcom.com>
-Date:   Wed, 19 Jan 2022 13:34:41 +0100
+        Wed, 19 Jan 2022 04:34:56 -0800 (PST)
+Message-ID: <0f3df1aa-9064-b294-e858-d06fd8e51412@broadcom.com>
+Date:   Wed, 19 Jan 2022 13:34:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH v3 2/9] brcmfmac: firmware: Allocate space for default
- boardrev in nvram
+Subject: Re: [PATCH v3 3/9] brcmfmac: firmware: Do not crash on a NULL
+ board_type
 To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -80,33 +80,32 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220117142919.207370-1-marcan@marcan.st>
- <20220117142919.207370-3-marcan@marcan.st>
-In-Reply-To: <20220117142919.207370-3-marcan@marcan.st>
+ <20220117142919.207370-4-marcan@marcan.st>
+In-Reply-To: <20220117142919.207370-4-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000b5b3cd05d5ee9c1e"
+        boundary="00000000000019279e05d5ee9d4f"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---000000000000b5b3cd05d5ee9c1e
+--00000000000019279e05d5ee9d4f
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 1/17/2022 3:29 PM, Hector Martin wrote:
-> If boardrev is missing from the NVRAM we add a default one, but this
-> might need more space in the output buffer than was allocated. Ensure
-> we have enough padding for this in the buffer.
+> This unbreaks support for USB devices, which do not have a board_type
+> to create an alt_path out of and thus were running into a NULL
+> dereference.
 > 
-> Fixes: 46f2b38a91b0 ("brcmfmac: insert default boardrev in nvram data if missing")
+> Fixes: 5ff013914c62 ("brcmfmac: firmware: Allow per-board firmware binaries")
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c | 2 ++
->   1 file changed, 2 insertions(+)
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c | 3 +++
+>   1 file changed, 3 insertions(+)
 
-
---000000000000b5b3cd05d5ee9c1e
+--00000000000019279e05d5ee9d4f
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -177,14 +176,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBK+Q2bWiUXziuKSl2y
-rEFuiqC7blluziKyg5XsweqCGDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTkxMjM0NTFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCD+bg8TQLy687pTaBHi
+QfCKj2GUagDjEFeKOq0Xr7XSqjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMTkxMjM0NThaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEASf4iHqASCVjdU3GRSEs4/8ozz0Nxp29XNYvs
-Y5qMvQSj76AhA25IxLRmWEixCQ6bqFia46S73cElusNaYIa7Z0C0suaReP7sIVNVWSQPy9ZLj2C+
-ib3L85yP4h+h7OmsXrv1sEonGJ+mdW5bThe8q/tbZ/b2D+SjFs594HULjHIKZA0617x2EEMhSmdt
-0I78ZVyh4z29TLofTrYL/1ulvFSElmLscw5/IZLLfhDfZUFJmWqEyvuopOUmC2ydsgMlsML4qDdC
-7/7Ot3xF5JiZEpRgAH2f/ghz45FVI9Mr1X7Ts6KpO6CNx4RIvghIKSTWTh00vXGKhDUcyB3RWTRF
-xw==
---000000000000b5b3cd05d5ee9c1e--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAEY4a/GQI2Jloui53FGf3Cx6stAgLXIM3tfLB
+I0MXRrMlw37hVyc6X37wUr8t2md9WUoXScGEFCNnGHxsrQ1LOXgeDxR2rAThO+7a7zkoBDccBjni
++PFkh5n/uWmoifFs7VdZHIuIW7dkxJYk8y+nUzdibzqm9rdzeOqgYjEfQCzAZzdWIUmRi1UYXtas
+a4FzgvteavbfzqiWdGbZpp8XGJqNg5QhBzFu+GhOPzyNvj1ymkOIo9h3He7dmiS05h2rNe4KiFjf
+FPCjIJ2BB7g6OD8LmG0qnNG/3vscloKh8KjJHsWePt32OocxOVkcbiZfIAITshcJT2cj5YXpxnaf
+AA==
+--00000000000019279e05d5ee9d4f--
