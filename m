@@ -2,204 +2,117 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 676894941F0
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 21:43:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF490494273
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 22:22:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233914AbiASUnE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jan 2022 15:43:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46558 "EHLO
+        id S1357388AbiASVWr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Jan 2022 16:22:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbiASUnE (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 15:43:04 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AABDC061574;
-        Wed, 19 Jan 2022 12:43:04 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C9A5AB81B40;
-        Wed, 19 Jan 2022 20:43:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEBAC004E1;
-        Wed, 19 Jan 2022 20:43:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642624981;
-        bh=MYdffHsoiG3EHyAMjktxM2ofz/n5wkMwONpV0Nte2Cc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=WNEtlRC2A1ACqYqANxnXl4w6LgJIsbTg1+FcDOru2xLG/04GiIHhpXHiypVxqPqoJ
-         mgcBHAhLy7od99+LxMNNv0llAle2tjK8UbIPaMXkc1j5TbFePbGhMpm6MeQKubXHqP
-         q6auDJ5MTnQPEi97UJDA6N3JyFcgWxVTcnxzoeHNEA+paE5ZT1Z1x0MIDETEHSGyDF
-         7U9Inogrtr0C5hTG1r+dD1yIN8zvQu1PONjkiNS91KFeY69YhQcCW8qJ6w/1wuESLK
-         svzdACsj7hCprWHtEZ7tr0PAICJpBvecPba5jGB6ezFwQiN1lhbVj1ti85tdDwWH7o
-         GR/6nrncDXW7A==
-Date:   Wed, 19 Jan 2022 14:42:59 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Shuai Xue <xueshuai@linux.alibaba.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, bp@alien8.de,
-        tony.luck@intel.com, james.morse@arm.com, lenb@kernel.org,
-        rjw@rjwysocki.net, bhelgaas@google.com,
-        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v5] ACPI: Move sdei_init and ghes_init ahead to handle
- platform errors earlier
-Message-ID: <20220119204259.GA962224@bhelgaas>
+        with ESMTP id S229675AbiASVWr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 16:22:47 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0F79C061574;
+        Wed, 19 Jan 2022 13:22:46 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id o15so13370277lfo.11;
+        Wed, 19 Jan 2022 13:22:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=8xNKNi1LRojJeVt1Nef5G921Lvb9Zw/m0g+80h/uJSo=;
+        b=SkamCFGOsuq/rDEk6pV84f1GSUdxKbi/UN0kRg5ytrVxjwIC4oXlo8DKtUipEQtCmf
+         as4pwgaaAHm1qbd/ypGFAx0WQb0exzSaNGUtVp5IH45Sct0tUnHMH+x6w3x7lfvpMVQG
+         AgL3OtR+fxlelKv8GwmgK6mqB5CK6DVVscl6/yy7M0qpPiotY/zc2o0bygCJmGQ8s1nC
+         +/ZbvZz6Kza/T3UxsFF9/5SYdDBgxWtM9pZ9NIxSPvK0uDEk1m1k7uYablP3L0Fc9R7Y
+         qX1JMjDCkJghd8VQC+i25BZ3B32Yxht+JP9mi2fS7A17PA+9ghFn6gCloaTWmd2bVC0t
+         /XvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=8xNKNi1LRojJeVt1Nef5G921Lvb9Zw/m0g+80h/uJSo=;
+        b=ydydbfARIBgfcs8Jh7K0qjF269g9GLaubN8UNkrI3U9nKT/1nznUDLYYj9anWzunM8
+         kNyet0FB7jCTQJ88+NeEu9H6ad+DYP41xKlOpzOzFPCSjkCHikUgFXmPNwchbGlXokVH
+         RtgaGqDPW4x37ZW04TaQ2+e1YXqD/TjyhV2O/0aAYz+MAS63BvfaO+URUj3kFcbgkW+g
+         3dkUt30mqyaP6nl88Rq5z1loypwqDRgx7JRpAH7U+9QCJ52/3Q3rBHm+Wcm6yp/i2gsP
+         ptAZC/pYP12flRtqH7Xss4epQyL7Ydt6LbZcE282eV2owTbN7fResG2CkREG0qf8yLQ0
+         9xYw==
+X-Gm-Message-State: AOAM531E/Ey+f/H0UaUYkbF9x+HuR9tAWbkzceiKP8gBbnxawNfLNtHh
+        yz1Mkm9I/k/WkYFEmW5FXn0=
+X-Google-Smtp-Source: ABdhPJweVJly6NKb6ZA2lRyT41+I8V+ACkOYJ06Lwz1sNGgqOMsF0TizWnjd5oSUTYkzqgxJHcOlGg==
+X-Received: by 2002:ac2:518c:: with SMTP id u12mr30171416lfi.299.1642627365178;
+        Wed, 19 Jan 2022 13:22:45 -0800 (PST)
+Received: from [192.168.2.145] (109-252-139-36.dynamic.spd-mgts.ru. [109.252.139.36])
+        by smtp.googlemail.com with ESMTPSA id m17sm78789lfc.130.2022.01.19.13.22.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jan 2022 13:22:44 -0800 (PST)
+Message-ID: <9a222199-6620-15b7-395f-e079b8e6e529@gmail.com>
+Date:   Thu, 20 Jan 2022 00:22:43 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v3 1/9] brcmfmac: pcie: Release firmwares in the
+ brcmf_pcie_setup error path
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hector Martin <marcan@marcan.st>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220117142919.207370-1-marcan@marcan.st>
+ <20220117142919.207370-2-marcan@marcan.st>
+ <CAHp75VfVuX-BG1MJcEoQrOW6jn=PSMZH0jTcwGj9PwWxocG_Gw@mail.gmail.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+In-Reply-To: <CAHp75VfVuX-BG1MJcEoQrOW6jn=PSMZH0jTcwGj9PwWxocG_Gw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e57cc874-dacd-912d-4282-3cb6b1b77323@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 19, 2022 at 02:40:11PM +0800, Shuai Xue wrote:
-> [+to Rafael, question about HEST/GHES/SDEI init]
+19.01.2022 20:49, Andy Shevchenko пишет:
+> On Mon, Jan 17, 2022 at 4:30 PM Hector Martin <marcan@marcan.st> wrote:
+>>
+>> This avoids leaking memory if brcmf_chip_get_raminfo fails. Note that
+>> the CLM blob is released in the device remove path.
 > 
-> Hi, Bjorn,
+> ...
 > 
-> Thank you for your comments and quick reply.
+>>         if (ret) {
 > 
-> 在 2022/1/19 AM6:49, Bjorn Helgaas 写道:
-> > On Sun, Jan 16, 2022 at 04:43:10PM +0800, Shuai Xue wrote:
-> >> On an ACPI system, ACPI is initialised very early from a
-> >> subsys_initcall(), while SDEI is not ready until a
-> >> subsys_initcall_sync(). This patch is to reduce the time before GHES
-> >> initialization.
-> >>
-> >> The SDEI driver provides functions (e.g. apei_sdei_register_ghes(),
-> >> apei_sdei_unregister_ghes()) to register or unregister event callback
-> >> for dispatcher in firmware. When the GHES driver probing, it registers
-> >> the corresponding callback according to the notification type specified
-> >> by GHES. If the GHES notification type is SDEI, the GHES driver will
-> >> call apei_sdei_register_ghes() to register event call.
-> >>
-> >> When the firmware emits an event, it migrates the handling of the event
-> >> into the kernel at the registered entry-point __sdei_asm_handler. And
-> >> finally, the kernel will call the registered event callback and return
-> >> status_code to indicate the status of event handling. SDEI_EV_FAILED
-> >> indicates that the kernel failed to handle the event.
-> >>
-> >> Consequently, when an error occurs during kernel booting, the kernel is
-> >> unable to handle and report errors until the GHES driver is initialized
-> >> by device_initcall(), in which the event callback is registered.  For
-> >> example, when the kernel booting, the console logs many times from
-> >> firmware before GHES drivers init in our platform:
-> >>
-> >> 	Trip in MM PCIe RAS handle(Intr:910)
-> >>   	Clean PE[1.1.1] ERR_STS:0x4000100 -> 0 INT_STS:F0000000
-> >> 	Find RP(98:1.0)
-> >> 	--Walk dev(98:1.0) CE:0 UCE:4000
-> >> 	...
-> >> 	ERROR:   sdei_dispatch_event(32a) ret:-1
-> >> 	--handler(910) end
-> > 
-> > If I understand correctly, the firmware noticed an error, tried to
-> > report it to the kernel, and is complaining because the kernel isn't
-> > ready to handle it yet.  And the reason for this patch is to reduce
-> > these complaints from the firmware.
+>>                 brcmf_err(bus, "Failed to get RAM info\n");
+>> +               release_firmware(fw);
+>> +               brcmf_fw_nvram_free(nvram);
 > 
-> My thoughts exactly :)
-> 
-> > That doesn't seem like a very good reason for this patch.  There is
-> > *always* a window before the kernel is ready to handle events from the
-> > firmware.
-> 
-> Yes, there is always a window. But if we could do better in kernel that
-> reduces the window by 90% (from 33 seconds to 3 second), why not?
-> 
-> > Why is the firmware noticing these errors in the first place?  If
-> > you're seeing these complaints regularly, my guess is that either you
-> > have some terrible hardware or (more likely) the firmware isn't
-> > clearing some expected error condition correctly.  For example, maybe
-> > the Unsupported Request errors that happen while enumerating PCIe
-> > devices are being reported.
-> >
-> > If you register the callback function, the kernel will now start
-> > seeing these error reports.  What happens then?  Does the kernel log
-> > the errors somewhere?  Is that better than the current situation where
-> > the firmware logs them?
-> 
-> Yep, it is a hardware issue. The firmware only logs in console
-> (ttyAMA0) and we can not see it in kernel side. After the kernel
-> starts seeing these error reports, we could see EDAC/ghes and
-> efi/cper detailed logs in dmesg. We did not notice the problem until
-> we check the console log, which inspired us to reduce the window
-> when kernel startup, so that we can see the message clearly and
-> properly. I think the intuition is to check the log of dmesg, not
-> the console.
+> Can we first undo the things and only after print a message?
 
-> > However, I DO think that:
-> > 
-> >   - Removing acpi_hest_init() from acpi_pci_root_init(), and
-> > 
-> >   - Converting ghes_init() and sdei_init() from initcalls to explicit
-> >     calls
-> > 
-> > are very good reasons to do something like this patch because HEST is
-> > not PCI-specific, and IMO, explicit calls are better than initcalls
-> > because initcall ordering is implicit and not well-defined within a
-> > level.
-> 
-> Haha, if the above reasons still don't convince you, I would like to
-> accept yours :) Should we do it in one patch or separate it into two
-> patches?
-
-IMO, this can be done in one patch, but this would probably go via
-Rafael.
-
-> >> -static int __init ghes_init(void)
-> >> +void __init ghes_init(void)
-> >>  {
-> >>  	int rc;
-> >>  
-> >>  	if (acpi_disabled)
-> >> -		return -ENODEV;
-> >> +		return;
-> >>  
-> >>  	switch (hest_disable) {
-> >>  	case HEST_NOT_FOUND:
-> >> -		return -ENODEV;
-> >> +		pr_info(GHES_PFX "HEST is not found!\n");
-> > 
-> > I don't know whether this "HEST is not found" message is
-> > worthwhile or not.  I don't think lack of an HEST is an error, and
-> > users may be alarmed.  But this is an ACPI thing, so up to you and
-> > Rafael.
-> 
-> If we explicit call ghes_init(), we can't tell if ghes is
-> initialized successfully based on the return value of initcall. So I
-> add a info message.
-
-When ghes_init() is an initcall and you return -ENODEV for the
-HEST_NOT_FOUND case, I don't think we log any message about that, do
-we?  do_one_initcall() will capture and return the -ENODEV, but the
-caller (do_initcall_level()) just ignores it.
-
-> >> @@ -1495,8 +1494,7 @@ static int __init ghes_init(void)
-> >>  	else
-> >>  		pr_info(GHES_PFX "Failed to enable APEI firmware first mode.\n");
-> >>  
-> >> -	return 0;
-> >> +	return;
-> >>  err:
-> >> -	return rc;
-> >> +	ghes_disable = 1;
-> > 
-> > Why do you set ghes_disable here?  As far as I can tell, we will never
-> > look at it again.  The places we do look at it are:
-> > 
-> >   - ghes_init(): earlier in this function, so we've already done that,
-> > 
-> >   - acpi_hest_init(): we've already called that, too, and
-> > 
-> >   - acpi_bus_osc_negotiate_platform_control(): called from
-> >     acpi_bus_init(), which we've already called.
-> 
-> I add it for future potential usage. Thank you for pointing it out.
-> If you think it is not necessary, I will delete it in next version.
-
-I think it is not necessary to save information that will never be
-used.  If you need it in the future, you can add it and the reason
-will be obvious.
-
-Bjorn
+Having message first usually is more preferred because at minimum you'll
+get the message if "undoing the things" crashes, i.e. will be more
+obvious what happened.
