@@ -2,55 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8893C493A7E
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 13:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A212493A7B
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jan 2022 13:36:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354435AbiASMgy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 19 Jan 2022 07:36:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47296 "EHLO
+        id S1354608AbiASMgm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 19 Jan 2022 07:36:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354595AbiASMgL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 07:36:11 -0500
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DCE1C061769
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:35:27 -0800 (PST)
-Received: by mail-pg1-x531.google.com with SMTP id t32so2376799pgm.7
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:35:27 -0800 (PST)
+        with ESMTP id S1354570AbiASMgW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 19 Jan 2022 07:36:22 -0500
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5A69C061772
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:35:47 -0800 (PST)
+Received: by mail-pj1-x102e.google.com with SMTP id d10-20020a17090a498a00b001b33bc40d01so2826390pjh.1
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jan 2022 04:35:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=broadcom.com; s=google;
         h=message-id:date:mime-version:user-agent:from:subject:to:cc
          :references:in-reply-to;
-        bh=pFiuvP39CRxvgk6wZOPtj24BoqbvWiCkODY2u++0C7U=;
-        b=Ohq5A+1Y53BgMdoyTp69SbviFe7l5WshAj1kH4NpzYZ/BZJWm5p94hxzn5EkBYiOOg
-         dvZMfxJv5anmtFw+V+hrZspxLZjHUqMgr661JaR+FL+MqrUNQPL6NNvrj6ChraYiJWe2
-         B4M0BQXrKzYUuYfcJOyT9S35sJobRxgXIIz/A=
+        bh=BGTPBms9cj8cnosnWmpbqUVQVHxOS9rp5aygbSd8lyU=;
+        b=PVYaLdGPkYSMaveySl9zWvDcMU7sy+M83zMfKcTksiKmm04UGvNE6qdeB4MvHLajfD
+         wNMDBhmJp0Z+mHEx5cFVQMaag/z0Q6NUrH7qvlJNoixCusChWYsFLTTFfBYVZp1GttOB
+         I5p0IEso3bW4/TwDgd8yGgFDs1UD2W1oR7Np4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:from
          :subject:to:cc:references:in-reply-to;
-        bh=pFiuvP39CRxvgk6wZOPtj24BoqbvWiCkODY2u++0C7U=;
-        b=wDMkICswa4tOwrfW2ICZZGGrKzwnD1jq9+xjuXUzCupDz0TWUrklNyAqhgfu3+G8m3
-         1Vr0Bp5y2AEEiwh8N+LMBVwQOM1x2NqJcSNf7VClx2dDxj+KXygkeoEUoeY92o7nhBFy
-         G8etXpGrDMnadn4kfL6a6zKGBwSIldrAJmsTGfi3dyBoDNvhF2C1UC3cWb4mZCPWjZZ1
-         V0TZ9E4i9749Q4yLMeDQ4Cx/qolERoWdB82l/HJhH3pbiUY3WnTMOQznVWNb57G//4ne
-         kG9JpaXwALT7xeAreQGanSUSFF4kGrLQtWhWOvsk9fR/tncFJurn3sA8q6VCDBQcJGCn
-         rkuw==
-X-Gm-Message-State: AOAM5333T/SkSUWD2zE/STKEyg6ruoAu7KBc/ku8Sz1wC0SMZdT3sy4I
-        zizTsDzpWNRBt4ssy9Z+mXXXrg==
-X-Google-Smtp-Source: ABdhPJwRhjc2a4xjJc2yhjc8Bltw57NtRDzfym03GkTwM9b2cn9RX6YWmOWjIuuilLo5YEdfM3FbwA==
-X-Received: by 2002:aa7:8c41:0:b0:4bc:2888:6951 with SMTP id e1-20020aa78c41000000b004bc28886951mr30650341pfd.16.1642595726931;
-        Wed, 19 Jan 2022 04:35:26 -0800 (PST)
+        bh=BGTPBms9cj8cnosnWmpbqUVQVHxOS9rp5aygbSd8lyU=;
+        b=1sx5PT/eU6YlM+uiIqftxIqy/DLH+dp+ItRQN2LkpDbS8+n2HiAW0IPqZueK9nB8+A
+         kCpK/LB0SWXKSApPm4ONos9qwx/ObuGfx5OgfaBeSeJT0Lb6aDi74kGVA1ZoAa9e4IvL
+         61Dz0TBvut7eUrBJ6+5Ps2EA7NtMp38h7rNQhlQ6bZpA8mdGlCCtX5jB4ZbUwogSAsuz
+         LX71bSqfe5Hl6j2oXAJVN3ky3EewuXP+uc5rSIMZAGuEwjljutT+nwlc8/LPP6bnurjW
+         mutJuo6QgnckDFR4hfdviEX1ELBWWWB1Xm7alWG/aqBx9bonqIHBFD4odoJVSh93sU7K
+         bmBw==
+X-Gm-Message-State: AOAM531JphELSwNeYtiOx5PNyQWtq/1x0706/6zhw5E4dHReFzhAVlty
+        9/JR3H13LSwg/cTP0SklPPXmMQ==
+X-Google-Smtp-Source: ABdhPJz0S8tC60efW5PKAuk1ty5hj0XS/PXOHHCqz2mIcNwiFhAcBOz1MEx3OxTO022jNwwpOu99sw==
+X-Received: by 2002:a17:902:9f97:b0:14a:b594:7913 with SMTP id g23-20020a1709029f9700b0014ab5947913mr16181921plq.111.1642595747227;
+        Wed, 19 Jan 2022 04:35:47 -0800 (PST)
 Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id d7sm14397964pfh.126.2022.01.19.04.35.19
+        by smtp.gmail.com with ESMTPSA id u4sm12963148pfg.193.2022.01.19.04.35.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jan 2022 04:35:25 -0800 (PST)
-Message-ID: <95bf2a46-8840-e09a-8723-7e590a6ae415@broadcom.com>
-Date:   Wed, 19 Jan 2022 13:35:17 +0100
+        Wed, 19 Jan 2022 04:35:46 -0800 (PST)
+Message-ID: <743a7ef4-bc3a-b6d2-2a01-fb825881d12c@broadcom.com>
+Date:   Wed, 19 Jan 2022 13:35:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
 From:   Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: Re: [PATCH v3 8/9] brcmfmac: fwil: Constify iovar name arguments
+Subject: Re: [PATCH v3 9/9] brcmfmac: pcie: Read the console on init and
+ shutdown
 To:     Hector Martin <marcan@marcan.st>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -79,33 +80,36 @@ Cc:     Sven Peter <sven@svenpeter.dev>,
         linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
         SHA-cyfmac-dev-list@infineon.com
 References: <20220117142919.207370-1-marcan@marcan.st>
- <20220117142919.207370-9-marcan@marcan.st>
-In-Reply-To: <20220117142919.207370-9-marcan@marcan.st>
+ <20220117142919.207370-10-marcan@marcan.st>
+In-Reply-To: <20220117142919.207370-10-marcan@marcan.st>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000d4aec805d5ee9e4e"
+        boundary="0000000000000a1dd905d5eea056"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---000000000000d4aec805d5ee9e4e
+--0000000000000a1dd905d5eea056
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
 On 1/17/2022 3:29 PM, Hector Martin wrote:
-> Make all the iovar name arguments const char * instead of just char *.
-> 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> This allows us to get console messages if the firmware crashed during
+> early init, or if an operation failed and we're about to shut down.
+
+We do have a module parameter that forces probing to succeed regardless 
+any failure so we can create memory dump of the wifi device, read the 
+console, etc. Still it can be useful to add these console read calls. 
+Thanks.
+
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Hector Martin <marcan@marcan.st>
 > ---
->   .../broadcom/brcm80211/brcmfmac/fwil.c        | 34 +++++++++----------
->   .../broadcom/brcm80211/brcmfmac/fwil.h        | 28 +++++++--------
->   2 files changed, 31 insertions(+), 31 deletions(-)
+>   drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 4 ++++
+>   1 file changed, 4 insertions(+)
 
---000000000000d4aec805d5ee9e4e
+--0000000000000a1dd905d5eea056
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -176,14 +180,14 @@ aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
 OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
 UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
-h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAIL/pU/vjEYYbioABH
-45oxE4eHpgBa08V+2WhMG1XTgDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMjAxMTkxMjM1MjdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDDkj2qn/f2ujhDGl4+
+/C5glrxNKax2NVE4JKCrH2cg1TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMTkxMjM1NDdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAQdOWim6jCIQXJsNlnxebRYVAZmW5I8dKEMiF
-p+8YbcjN09jR0BrCQgys0bXwR0ZkoUEzU9oZ2lnh2R6G1scO59eHi3Mpo0JIC2fERZrWQK7vk/bE
-GOd6b4cTNlGKDv0BJdqr7dPsXJNo0VLOTjOdnHglHDGAbWsJkTOe2z81ryxCTuPcORVdkDKOk9K5
-MEGCZVfyWS+rnFlOjQBO0l96lJBY8fp0ridXs6LTKEMd+fi7cCFFedPquriKcuaeiGcnf0GTDmpq
-nhxvvsqXq/qiGdgI8Q3yYOmMwtjqFsGfFErWztoLxB8mf4xXa0MrlZqpKQ/T/KVLH49TMU8wstvr
-iw==
---000000000000d4aec805d5ee9e4e--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFH7T7mAXPTnSCxUXm5OeU6MZYFarXhkUh8iD
+ZPuyG+twsiX3vQlMIbhdBWOq7MpFOyJUmIfjL/nIC0ex1xaN4aaK2kKYcyMRoPUaYnaKAfS72BnU
+i8wn6KOd2GmJM4znNhlpbp7e/VK3sf1ashTwYLWK9chbnNrC1dQUn/Q9htVVJqurzRcnX2XSZMik
+srVej+9eQ4zI0tKoq+KT8jIizWiyVsDms7yzD4ni+Ji5qURGteWowVq7CbhYolnLNmQn4M1toeHs
+Xzj6IwkmGxw6B3YPjdbU+uI6jhvx5UFKIlAI47A9arNJoqjN2yrvY0w5yaZ+sq9WK8pd8CEUayYW
+CQ==
+--0000000000000a1dd905d5eea056--
