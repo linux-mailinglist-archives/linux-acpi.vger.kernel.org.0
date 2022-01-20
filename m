@@ -2,321 +2,280 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3FB4495234
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 17:17:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 767BD495241
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 17:23:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376926AbiATQRz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 11:17:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:40943 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233059AbiATQRz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jan 2022 11:17:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642695474;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=RC733lFPIHzk3RkK9z52O+U2Hg6U4mWbFhj23dwMdo0=;
-        b=VLRgdtAKCRZ0kb/1VcKDicwUy2ziLzIAqeV/8dhtoM839xx1Lezm4864Sg5purmAL+O5Tv
-        T8L7uaQ2AhktYsIC3LcMkUDiu7t2L1nP+qyxNIB+Jv3wvkf9Tf2pFkJmUjHbUO1qZQLeAk
-        IxHwuZ7sNsVDvkfVjb1Qu7kLZBAUJn8=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-303-mXoE_wU6PhCN7SQsuSZnYQ-1; Thu, 20 Jan 2022 11:17:53 -0500
-X-MC-Unique: mXoE_wU6PhCN7SQsuSZnYQ-1
-Received: by mail-ed1-f72.google.com with SMTP id bm21-20020a0564020b1500b00402c34373f9so6390279edb.2
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 08:17:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=RC733lFPIHzk3RkK9z52O+U2Hg6U4mWbFhj23dwMdo0=;
-        b=2xmCt+lQdg3TmbCuIYXBBeDe2GcPzkI4zqDBEWuL9KZZU92Di1jyrO+saT71f97Mr3
-         JDZL180Y9RLqKJ5iFuxsUYh4dkj8R2Y8legyZNGRPdux+aVKvYc2owubcw58LSQ5Y8mQ
-         7uqCWEtYXRqvX8fuiqJyTXzF8xEFtNQQgE7u0XmORbqHGO36aXU6eB2DoufxpLJr4fIr
-         SJ2rzpLThQJDO0NPQAKAfopF/kfo7R6G1OVQU2JFGKhfZ/oTmFeOkm5RRRlBd7SIdcvx
-         f6mH27fIBX494JNDM5nW4GNybzkb3fiWX6uHHhJb6ezPIe/iuqK/xngbH9LcM4ISKXkl
-         SjQg==
-X-Gm-Message-State: AOAM533ZEgTFAvbH5Qvo0SByW04Rmkba6NegmgiFRgfWcTJe5jBouNQC
-        uRGKHvIaNPzRHQnu6e1tBXY938ycyZXk4SAQUlZb19OIAu7M+lsHQFuboFbDQ9uV/++t9Ok8QRx
-        2FpM+HTcEhx+K9bXgbJv6LQ==
-X-Received: by 2002:a17:907:1c0a:: with SMTP id nc10mr20566735ejc.308.1642695471882;
-        Thu, 20 Jan 2022 08:17:51 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyLhLVVCXZg+uHvh9G2LyVGBe1+f7RJ+iHgGbV2n/0A0kB0ocN0jP+qvMTJsudz1CMuv8VAUw==
-X-Received: by 2002:a17:907:1c0a:: with SMTP id nc10mr20566707ejc.308.1642695471591;
-        Thu, 20 Jan 2022 08:17:51 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id lf15sm1184070ejb.83.2022.01.20.08.17.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 08:17:51 -0800 (PST)
-Message-ID: <9c5ed5ee-7ca1-c1f4-5d9d-a63b4327a4af@redhat.com>
-Date:   Thu, 20 Jan 2022 17:17:50 +0100
+        id S1376959AbiATQWq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jan 2022 11:22:46 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:32950 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1376957AbiATQWp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jan 2022 11:22:45 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 66946B81DB4;
+        Thu, 20 Jan 2022 16:22:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1AFC340E0;
+        Thu, 20 Jan 2022 16:22:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642695763;
+        bh=nAL+9EUzWg/VrpxcuKiEa2MCqLsPygZexwnmRgYCpj4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=i00f7Xhs2vtYGBvTf0qEya6e2YHNqDbb4NGL5j72h9W5HNKLdKZ7eAB4OlWbqlyeS
+         SoTF197WIJJlyHSfZ8VFdC/DkqP98TfpDZNlzTWruh/5mbjaOVIhu8U8n7lvtQdPuT
+         FUGoxdXDKEmXnsYORRTTDjxV8djZwrDbrmS5il+T0UEaJ2THUUxm83JMlln/rXHL7W
+         FheRqJxYuEu5rfUR3I/5f/+0UWRqk/c/HrCDaUta4meLzGeFWkJONezRNH9T9Q27U3
+         pybMMOLnVjxe2TRD+WYdovOjmi4pzy+C4hw1BoAXcNt9bNMqUtScKadqCO5qO7ITl3
+         qk41k/gvxbjiA==
+Date:   Thu, 20 Jan 2022 10:22:41 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     rafael@kernel.org, bp@alien8.de, tony.luck@intel.com,
+        james.morse@arm.com, lenb@kernel.org, rjw@rjwysocki.net,
+        bhelgaas@google.com, zhangliguang@linux.alibaba.com,
+        zhuo.song@linux.alibaba.com, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-pci@vger.kernel.org
+Subject: Re: [PATCH v6] ACPI: explicit init HEST, SDEI and GHES in apci_init
+Message-ID: <20220120162241.GA1047212@bhelgaas>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v4 6/9] platform/x86: bus-multi-instantiate: Reorganize
- I2C functions
-Content-Language: en-US
-To:     Stefan Binding <sbinding@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
-        Lucas Tanure <tanureal@opensource.cirrus.com>
-References: <20220120134326.5295-1-sbinding@opensource.cirrus.com>
- <20220120134326.5295-7-sbinding@opensource.cirrus.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220120134326.5295-7-sbinding@opensource.cirrus.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220120050522.23689-1-xueshuai@linux.alibaba.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-Sorry some more remarks after all...
-
-On 1/20/22 14:43, Stefan Binding wrote:
-> From: Lucas Tanure <tanureal@opensource.cirrus.com>
+On Thu, Jan 20, 2022 at 01:05:22PM +0800, Shuai Xue wrote:
+> From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
+> memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
+> the estatus memory pool. On the other hand, ghes_init() relies on
+> sdei_init() to detect the SDEI version and (un)register events. The
+> dependencies are as follows:
 > 
-> Reorganize I2C functions to accommodate SPI support
-> Split the probe and factor out parts of the code
-> that will be used in the SPI support
+>     ghes_init() => acpi_hest_init() => acpi_bus_init() => acpi_init()
+>     ghes_init() => sdei_init()
 > 
-> Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
-> Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+> HEST is not PCI-specific and initcall ordering is implicit and not
+> well-defined within a level.
+> 
+> Based on above, remove acpi_hest_init() from acpi_pci_root_init() and
+> convert ghes_init() and sdei_init() from initcalls to explicit calls in the
+> following order:
+> 
+>     acpi_hest_init()
+>     sdei_init()
+>     ghes_init()
+> 
+> Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+
+I didn't suggest the approach; I just reviewed the patch and the
+commit log and proposed moving it out of acpi_pci_root_init().  That
+doesn't need to be acknowledged.
+
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+
+Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+
+Minor extra "return" below.
+
 > ---
->  drivers/platform/x86/bus-multi-instantiate.c | 150 ++++++++++++-------
->  1 file changed, 96 insertions(+), 54 deletions(-)
+>  drivers/acpi/apei/ghes.c    | 17 +++++++----------
+>  drivers/acpi/bus.c          |  4 ++++
+>  drivers/acpi/pci_root.c     |  3 ---
+>  drivers/firmware/arm_sdei.c | 13 ++-----------
+>  include/acpi/apei.h         |  4 +++-
+>  include/linux/arm_sdei.h    |  2 ++
+>  6 files changed, 18 insertions(+), 25 deletions(-)
 > 
-> diff --git a/drivers/platform/x86/bus-multi-instantiate.c b/drivers/platform/x86/bus-multi-instantiate.c
-> index 982dfecfd27c..50f1540762e9 100644
-> --- a/drivers/platform/x86/bus-multi-instantiate.c
-> +++ b/drivers/platform/x86/bus-multi-instantiate.c
-> @@ -29,85 +29,129 @@ struct bmi_instance {
->  
->  struct bmi {
->  	int i2c_num;
-> -	struct i2c_client *i2c_devs[];
-> +	struct i2c_client **i2c_devs;
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 0c5c9acc6254..bed4f10cfcb8 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -1457,33 +1457,33 @@ static struct platform_driver ghes_platform_driver = {
+>  	.remove		= ghes_remove,
 >  };
 >  
-> -static int bmi_probe(struct platform_device *pdev)
-> +static int bmi_get_irq(struct platform_device *pdev, struct acpi_device *adev,
-> +		       const struct bmi_instance *inst)
-> +{
-> +	int ret;
-> +
-> +	switch (inst->flags & IRQ_RESOURCE_TYPE) {
-> +	case IRQ_RESOURCE_GPIO:
-> +		ret = acpi_dev_gpio_irq_get(adev, inst->irq_idx);
-> +		break;
-> +	case IRQ_RESOURCE_APIC:
-> +		ret = platform_get_irq(pdev, inst->irq_idx);
-> +		break;
-> +	default:
-> +		ret = 0;
-> +		break;
-> +	}
-> +
-> +	if (ret < 0)
-> +		dev_err_probe(&pdev->dev, ret, "Error requesting irq at index %d: %d\n",
-> +			      inst->irq_idx, ret);
-> +
-> +	return ret;
-> +}
-> +
-> +static void bmi_devs_unregister(struct bmi *bmi)
-> +{
-> +	while (bmi->i2c_num > 0)
-> +		i2c_unregister_device(bmi->i2c_devs[--bmi->i2c_num]);
-> +}
-> +
-> +/**
-> + * bmi_i2c_probe - Instantiate multiple I2C devices from inst array
-> + * @pdev:	Platform device
-> + * @adev:	ACPI device
-> + * @bmi:	Internal struct for Bus multi instantiate driver
-> + * @inst:	Array of instances to probe
-> + *
-> + * Returns the number of I2C devices instantiate, Zero if none is found or a negative error code.
-> + */
-> +static int bmi_i2c_probe(struct platform_device *pdev, struct acpi_device *adev, struct bmi *bmi,
-> +			 const struct bmi_instance *inst_array)
+> -static int __init ghes_init(void)
+> +void __init ghes_init(void)
 >  {
->  	struct i2c_board_info board_info = {};
-> -	const struct bmi_instance *inst;
->  	struct device *dev = &pdev->dev;
-> -	struct acpi_device *adev;
-> -	struct bmi *bmi;
->  	char name[32];
-> -	int i, ret;
-> +	int i, ret = 0, count;
+>  	int rc;
 >  
-> -	inst = device_get_match_data(dev);
-> -	if (!inst) {
-> -		dev_err(dev, "Error ACPI match data is missing\n");
+>  	if (acpi_disabled)
 > -		return -ENODEV;
-> -	}
-> -
-> -	adev = ACPI_COMPANION(dev);
-> -
-> -	/* Count number of clients to instantiate */
->  	ret = i2c_acpi_client_count(adev);
-> -	if (ret < 0)
-> +	if (ret <= 0)
->  		return ret;
-
-Please change this to:
-
-		return ret == 0 ? -ENODEV : ret;
-
-This helps making return value handler in the caller cleaner,
-also see my upcoming review of patch 7/9.
-
-> +	count = ret;
+> +		return;
 >  
-> -	bmi = devm_kmalloc(dev, struct_size(bmi, i2c_devs, ret), GFP_KERNEL);
-> -	if (!bmi)
-> +	bmi->i2c_devs = devm_kcalloc(dev, count, sizeof(*bmi->i2c_devs), GFP_KERNEL);
-> +	if (!bmi->i2c_devs)
->  		return -ENOMEM;
->  
-> -	bmi->i2c_num = ret;
-> -
-> -	for (i = 0; i < bmi->i2c_num && inst[i].type; i++) {
-> +	for (i = 0; i < count && inst_array[i].type; i++) {
->  		memset(&board_info, 0, sizeof(board_info));
-> -		strlcpy(board_info.type, inst[i].type, I2C_NAME_SIZE);
-> -		snprintf(name, sizeof(name), "%s-%s.%d", dev_name(dev), inst[i].type, i);
-> +		strscpy(board_info.type, inst_array[i].type, I2C_NAME_SIZE);
-> +		snprintf(name, sizeof(name), "%s-%s.%d", dev_name(dev), inst_array[i].type, i);
->  		board_info.dev_name = name;
-> -		switch (inst[i].flags & IRQ_RESOURCE_TYPE) {
-> -		case IRQ_RESOURCE_GPIO:
-> -			ret = acpi_dev_gpio_irq_get(adev, inst[i].irq_idx);
-> -			if (ret < 0) {
-> -				dev_err(dev, "Error requesting irq at index %d: %d\n",
-> -						inst[i].irq_idx, ret);
-> -				goto error;
-> -			}
-> -			board_info.irq = ret;
-> -			break;
-> -		case IRQ_RESOURCE_APIC:
-> -			ret = platform_get_irq(pdev, inst[i].irq_idx);
-> -			if (ret < 0) {
-> -				dev_dbg(dev, "Error requesting irq at index %d: %d\n",
-> -					inst[i].irq_idx, ret);
-> -				goto error;
-> -			}
-> -			board_info.irq = ret;
-> -			break;
-> -		default:
-> -			board_info.irq = 0;
-> -			break;
-> -		}
-> +
-> +		ret = bmi_get_irq(pdev, adev, &inst_array[i]);
-> +		if (ret < 0)
-> +			goto error;
-> +		board_info.irq = ret;
-> +
->  		bmi->i2c_devs[i] = i2c_acpi_new_device(dev, i, &board_info);
->  		if (IS_ERR(bmi->i2c_devs[i])) {
->  			ret = dev_err_probe(dev, PTR_ERR(bmi->i2c_devs[i]),
->  					    "Error creating i2c-client, idx %d\n", i);
->  			goto error;
->  		}
-> +		bmi->i2c_num++;
->  	}
-> -	if (i < bmi->i2c_num) {
-> +	if (bmi->i2c_num < count) {
->  		dev_err(dev, "Error finding driver, idx %d\n", i);
->  		ret = -ENODEV;
->  		goto error;
+>  	switch (hest_disable) {
+>  	case HEST_NOT_FOUND:
+> -		return -ENODEV;
+> +		return;
+>  	case HEST_DISABLED:
+>  		pr_info(GHES_PFX "HEST is not enabled!\n");
+> -		return -EINVAL;
+> +		return;
+>  	default:
+>  		break;
 >  	}
 >  
-> -	platform_set_drvdata(pdev, bmi);
+>  	if (ghes_disable) {
+>  		pr_info(GHES_PFX "GHES is not enabled!\n");
+> -		return -EINVAL;
+> +		return;
+>  	}
+>  
+>  	ghes_nmi_init_cxt();
+>  
+>  	rc = platform_driver_register(&ghes_platform_driver);
+>  	if (rc)
+> -		goto err;
+> +		return;
+>  
+>  	rc = apei_osc_setup();
+>  	if (rc == 0 && osc_sb_apei_support_acked)
+> @@ -1495,8 +1495,5 @@ static int __init ghes_init(void)
+>  	else
+>  		pr_info(GHES_PFX "Failed to enable APEI firmware first mode.\n");
+>  
 > -	return 0;
-> +	dev_info(dev, "Instantiate %d I2C devices.\n", bmi->i2c_num);
->  
-> +	return bmi->i2c_num;
+> -err:
+> -	return rc;
+> +	return;
 
-And change this to return 0.
-
->  error:
-> -	while (--i >= 0)
-> -		i2c_unregister_device(bmi->i2c_devs[i]);
-> +	dev_err_probe(dev, ret, "I2C error %d\n", ret);
-> +	bmi_devs_unregister(bmi);
-> +
-> +	return ret;
-> +}
-> +
-> +static int bmi_probe(struct platform_device *pdev)
-> +{
-> +	const struct bmi_instance *inst_array;
-> +	struct device *dev = &pdev->dev;
-> +	struct acpi_device *adev;
-> +	struct bmi *bmi;
-> +	int ret;
-> +
-> +	inst_array = device_get_match_data(dev);
-> +	if (!inst_array) {
-> +		dev_err(dev, "Error ACPI match data is missing\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	adev = ACPI_COMPANION(dev);
-> +	if (!adev)
-> +		return -ENODEV;
-> +
-> +	bmi = devm_kzalloc(dev, sizeof(*bmi), GFP_KERNEL);
-> +	if (!bmi)
-> +		return -ENOMEM;
-> +
-> +	platform_set_drvdata(pdev, bmi);
-> +
-> +	ret = bmi_i2c_probe(pdev, adev, bmi, inst_array);
-> +	if (ret > 0)
-> +		return 0;
-> +	if (ret == 0)
-> +		ret = -ENODEV;
->  
->  	return ret;
-
-Then you can simplify the above to just:
-
-	return bmi_i2c_probe(pdev, adev, bmi, inst_array);
-
-:)
-
-Regards,
-
-Hans
-
-
+Unnecessary "return".
 
 >  }
-> @@ -115,10 +159,8 @@ static int bmi_probe(struct platform_device *pdev)
->  static int bmi_remove(struct platform_device *pdev)
+> -device_initcall(ghes_init);
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 07f604832fd6..1dcd71df2cd5 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -30,6 +30,7 @@
+>  #include <linux/acpi_viot.h>
+>  #include <linux/pci.h>
+>  #include <acpi/apei.h>
+> +#include <linux/arm_sdei.h>
+
+This "arm" looks a little out of place in this supposedly arch-generic
+code.  Not really a new thing with this patch, since this #include
+already appears in drivers/acpi/apei/ghes.c.  Maybe it's unavoidable.
+
+>  #include <linux/suspend.h>
+>  #include <linux/prmt.h>
+>  
+> @@ -1331,6 +1332,9 @@ static int __init acpi_init(void)
+>  
+>  	pci_mmcfg_late_init();
+>  	acpi_iort_init();
+> +	acpi_hest_init();
+> +	sdei_init();
+> +	ghes_init();
+>  	acpi_scan_init();
+>  	acpi_ec_init();
+>  	acpi_debugfs_init();
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index b76db99cced3..6f9e75d14808 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -22,8 +22,6 @@
+>  #include <linux/slab.h>
+>  #include <linux/dmi.h>
+>  #include <linux/platform_data/x86/apple.h>
+> -#include <acpi/apei.h>	/* for acpi_hest_init() */
+> -
+>  #include "internal.h"
+>  
+>  #define ACPI_PCI_ROOT_CLASS		"pci_bridge"
+> @@ -943,7 +941,6 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+>  
+>  void __init acpi_pci_root_init(void)
 >  {
->  	struct bmi *bmi = platform_get_drvdata(pdev);
-> -	int i;
+> -	acpi_hest_init();
+>  	if (acpi_pci_disabled)
+>  		return;
 >  
-> -	for (i = 0; i < bmi->i2c_num; i++)
-> -		i2c_unregister_device(bmi->i2c_devs[i]);
-> +	bmi_devs_unregister(bmi);
->  
->  	return 0;
+> diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+> index a7e762c352f9..1e1a51510e83 100644
+> --- a/drivers/firmware/arm_sdei.c
+> +++ b/drivers/firmware/arm_sdei.c
+> @@ -1059,14 +1059,14 @@ static bool __init sdei_present_acpi(void)
+>  	return true;
 >  }
+>  
+> -static int __init sdei_init(void)
+> +void __init sdei_init(void)
+>  {
+>  	struct platform_device *pdev;
+>  	int ret;
+>  
+>  	ret = platform_driver_register(&sdei_driver);
+>  	if (ret || !sdei_present_acpi())
+> -		return ret;
+> +		return;
+>  
+>  	pdev = platform_device_register_simple(sdei_driver.driver.name,
+>  					       0, NULL, 0);
+> @@ -1076,17 +1076,8 @@ static int __init sdei_init(void)
+>  		pr_info("Failed to register ACPI:SDEI platform device %d\n",
+>  			ret);
+>  	}
+> -
+> -	return ret;
+>  }
+>  
+> -/*
+> - * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
+> - * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
+> - * by device_initcall(). We want to be called in the middle.
+> - */
+> -subsys_initcall_sync(sdei_init);
+> -
+>  int sdei_event_handler(struct pt_regs *regs,
+>  		       struct sdei_registered_event *arg)
+>  {
+> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+> index ece0a8af2bae..4e60dd73c3bb 100644
+> --- a/include/acpi/apei.h
+> +++ b/include/acpi/apei.h
+> @@ -27,14 +27,16 @@ extern int hest_disable;
+>  extern int erst_disable;
+>  #ifdef CONFIG_ACPI_APEI_GHES
+>  extern bool ghes_disable;
+> +void __init ghes_init(void);
+>  #else
+>  #define ghes_disable 1
+> +static inline void ghes_init(void) { }
+>  #endif
+>  
+>  #ifdef CONFIG_ACPI_APEI
+>  void __init acpi_hest_init(void);
+>  #else
+> -static inline void acpi_hest_init(void) { return; }
+> +static inline void acpi_hest_init(void) { }
+>  #endif
+>  
+>  int erst_write(const struct cper_record_header *record);
+> diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
+> index 0a241c5c911d..14dc461b0e82 100644
+> --- a/include/linux/arm_sdei.h
+> +++ b/include/linux/arm_sdei.h
+> @@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
+>  /* For use by arch code when CPU hotplug notifiers are not appropriate. */
+>  int sdei_mask_local_cpu(void);
+>  int sdei_unmask_local_cpu(void);
+> +void __init sdei_init(void);
+>  #else
+>  static inline int sdei_mask_local_cpu(void) { return 0; }
+>  static inline int sdei_unmask_local_cpu(void) { return 0; }
+> +static inline void sdei_init(void) { }
+>  #endif /* CONFIG_ARM_SDE_INTERFACE */
+>  
+>  
+> -- 
+> 2.20.1.12.g72788fdb
 > 
-
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
