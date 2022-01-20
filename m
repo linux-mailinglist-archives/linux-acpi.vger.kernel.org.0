@@ -2,159 +2,108 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E7EF49526F
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 17:34:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2299549527C
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 17:39:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243106AbiATQee (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 11:34:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:26198 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1346858AbiATQed (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jan 2022 11:34:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642696472;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+1sc4JZ0+7MrtJWFMrOPG0iw0Wa1Lhn4BX5CbDefiMM=;
-        b=LdGD6B/dQQl4M/ZkdvFi4oa0oue1p9tPJ8RVz7C9Gz84NcJNX1tQ9n/CfS64j6KzZpU2wo
-        MURZcNWE2erDG4DUH9+Oid6nt7UkW9Kat2LvEYIrijGx8WG0ofSTdx/KC3DqOwZwO78+Ca
-        k94VCBAzy9uYJktBi178I4JYbBkVRH0=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-308-ygwu_ELBP7etmD0fPoYutw-1; Thu, 20 Jan 2022 11:34:31 -0500
-X-MC-Unique: ygwu_ELBP7etmD0fPoYutw-1
-Received: by mail-ed1-f72.google.com with SMTP id i9-20020a05640242c900b003fe97faab62so6369996edc.9
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 08:34:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=+1sc4JZ0+7MrtJWFMrOPG0iw0Wa1Lhn4BX5CbDefiMM=;
-        b=OOXZtL48bND1mkQmkkLSQRwpLYLYTJSy59q6yz5bVPoGTVAZv4IoP5YSe7UdeZ2Yut
-         kvOsaEC8ztFCfgSoAq64i/ri5+nh5XsEZc1FywxYOGGbSHS7roVBQovOkXJEAdq5vuPY
-         ZlosQaZDIjXZErEY0wUlh+h554gEqJxLZzjBzvF9l7nMULAP3ssiq/rCgeNfnVLtP8lj
-         DbXpxBOYXxwOmstItjK/h0mCgxXfFcZMTb2eXHc1T1kXk3v9g2uDm2Peee7Ql7zJKTMW
-         XoeBQen7vARKpbdTSkKYz0p464LTxvkTxogHiYvhnUjD2mshbY2a5GHTU7ASi6Q189XN
-         bM1g==
-X-Gm-Message-State: AOAM530mAue1CcOSFt9jsPfJZ6Q6W8Kv7nHs6Kqjloiv3BfoDiBsI5V9
-        RTj8Ig/0rDQFP58Ab/lGbWxnuIT9T69v3kmW7ECKSR7dsA0PJ/gfClYEpWJ770wmmlJLPnb+SF/
-        DHRpKuZm7hl9VizwzVUA4BQ==
-X-Received: by 2002:a17:907:6e0b:: with SMTP id sd11mr30574244ejc.132.1642696470219;
-        Thu, 20 Jan 2022 08:34:30 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwF9+NmsBb9KPVuUgSXvv1RUm6gGRw3HsBpgMAdYinUYF2Y/bfZO+s9YZARtMUaHR9LPOCCTg==
-X-Received: by 2002:a17:907:6e0b:: with SMTP id sd11mr30574226ejc.132.1642696470043;
-        Thu, 20 Jan 2022 08:34:30 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id dt15sm1157616ejb.190.2022.01.20.08.34.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 08:34:29 -0800 (PST)
-Message-ID: <d6958153-7747-bc4b-2de0-57aa3226d984@redhat.com>
-Date:   Thu, 20 Jan 2022 17:34:28 +0100
+        id S1377000AbiATQi2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jan 2022 11:38:28 -0500
+Received: from foss.arm.com ([217.140.110.172]:44576 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1376980AbiATQi2 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 20 Jan 2022 11:38:28 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0A7FDED1;
+        Thu, 20 Jan 2022 08:38:28 -0800 (PST)
+Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 39FC53F73D;
+        Thu, 20 Jan 2022 08:38:26 -0800 (PST)
+Date:   Thu, 20 Jan 2022 16:38:19 +0000
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Cc:     guohanjun@huawei.com, sudeep.holla@arm.com, rafael@kernel.org,
+        linux@armlinux.org.uk, lenb@kernel.org, robert.moore@intel.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, patches@amperecomputing.com,
+        scott@os.amperecomputing.com, darren@os.amperecomputing.com,
+        james.morse@arm.com
+Subject: Re: [PATCH v3 2/2] ACPI: AGDI: Add driver for Arm Generic Diagnostic
+ Dump and Reset device
+Message-ID: <20220120163819.GA8187@lpieralisi>
+References: <20211231033725.21109-1-ilkka@os.amperecomputing.com>
+ <20211231033725.21109-3-ilkka@os.amperecomputing.com>
+ <20220105104602.GA4752@lpieralisi>
+ <alpine.DEB.2.22.394.2201051530290.2489@ubuntu200401>
+ <alpine.DEB.2.22.394.2201131801380.3166@ubuntu200401>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v4 0/9] Support Spi in i2c-multi-instantiate driver
-Content-Language: en-US
-To:     Stefan Binding <sbinding@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com
-References: <20220120134326.5295-1-sbinding@opensource.cirrus.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220120134326.5295-1-sbinding@opensource.cirrus.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.22.394.2201131801380.3166@ubuntu200401>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mark,
-
-On 1/20/22 14:43, Stefan Binding wrote:
-> Add support for SPI bus in the i2c-multi-instantiate driver as
-> upcoming laptops will need to multi instantiate SPI devices from
-> a single device node, which has multiple SpiSerialBus entries at
-> the ACPI table.
+On Thu, Jan 13, 2022 at 06:17:13PM -0800, Ilkka Koskinen wrote:
 > 
-> With the new SPI support, i2c-multi-instantiate becomes
-> bus-multi-instantiate and is moved to the ACPI folder.
+> Hi Lorenzo,
 > 
-> The intention is to support the SPI bus by re-using the current
-> I2C multi instantiate, instead of creating a new SPI multi
-> instantiate, to make it possible for peripherals that can be
-> controlled by I2C or SPI to have the same HID at the ACPI table.
+> On Wed, 5 Jan 2022, Ilkka Koskinen wrote:
+> > 
+> > Hi Lorenzo,
+> > 
+> > On Wed, 5 Jan 2022, Lorenzo Pieralisi wrote:
+> > > [+James, for SDEI bits]
+> > > 
+> > > On Thu, Dec 30, 2021 at 07:37:25PM -0800, Ilkka Koskinen wrote:
+> > > > ACPI for Arm Components 1.1 Platform Design Document v1.1 [0] specifices
+> > > > Arm Generic Diagnostic Device Interface (AGDI). It allows an admin to
+> > > > issue diagnostic dump and reset via an SDEI event or an interrupt.
+> > > > This patch implements SDEI path.
+> > > > 
+> > > > [0] https://developer.arm.com/documentation/den0093/latest/
+> > > > 
+> > > > Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+> > > > ---
+> > > >  drivers/acpi/arm64/Kconfig  |   8 +++
+> > > >  drivers/acpi/arm64/Makefile |   1 +
+> > > >  drivers/acpi/arm64/agdi.c   | 125 ++++++++++++++++++++++++++++++++++++
+> > > >  3 files changed, 134 insertions(+)
+> > > >  create mode 100644 drivers/acpi/arm64/agdi.c
 > 
-> The new driver (Bus multi instantiate, bmi) checks for the
-> hard-coded bus type and returns -ENODEV in case of zero devices
-> found for that bus. In the case of automatic bus detection, 
-> the driver will give preference to I2C.
+> <snip>
 > 
-> The expectation is for a device node in the ACPI table to have
-> multiple I2cSerialBus only or multiple SpiSerialBus only, not
-> a mix of both; and for the case where there are both entries in
-> one device node, only the I2C ones would be probed.
+> > > > diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+> > > > new file mode 100644
+> > > > index 000000000000..6525ccbae5c1
+> > > > --- /dev/null
+> > > > +++ b/drivers/acpi/arm64/agdi.c
 > 
-> This new bus multi instantiate will be used in CS35L41 HDA new
-> driver.
-
-Mark, since most of my review remarks are small(ish) I expect
-the next version of this (except patch 8/9) to be ready for
-merging.
-
-I can either merge all patches on top of 5.17-rc1 once released;
-and provide an immutable-branch for you to merge for the SPI
-bits; or you can merge patches 1-4 (the SPI patches) and then
-send me a pull-req for an immutable-branch with those 4,
-so that I can merge that and then the rest on top.
-
-Mark, please let me know how you want to proceed with merging this.
-
-Regards,
-
-Hans
-
-
-
-
+> <snip>
 > 
-> Changes since V2:
->  - Moved bus-multi-instantiate back into platform/x86
+> > > > 
+> > > > +static int __init agdi_init(void)
+> > > > +{
+> > > > +	int ret;
+> > > > +	acpi_status status;
+> > > > +	struct acpi_table_agdi *agdi_table;
+> > > > +	struct agdi_data pdata;
+> > > > +	struct platform_device *pdev;
+> > > > +
+> > > > +	if (acpi_disabled)
+> > > > +		return 0;
+> > > 
+> > > Why don't we call agdi_init() from acpi_init() as we do for IORT/VIOT ?
+> > > 
+> > > I don't think it is necessary to add a device_initcall(), with related
+> > > ordering dependencies.
+> > 
+> > That's a good point. I change it.
 > 
-> Lucas Tanure (4):
->   platform/x86: i2c-multi-instantiate: Rename it for a generic bus
->     driver name
->   platform/x86: bus-multi-instantiate: Reorganize I2C functions
->   ALSA: hda/realtek: Add support for HP Laptops
->   ACPI / scan: Create platform device for CS35L41
-> 
-> Stefan Binding (5):
->   spi: Make spi_alloc_device and spi_add_device public again
->   spi: Create helper API to lookup ACPI info for spi device
->   spi: Support selection of the index of the ACPI Spi Resource before
->     alloc
->   spi: Add API to count spi acpi resources
->   platform/x86: bus-multi-instantiate: Add SPI support
-> 
->  MAINTAINERS                                  |   4 +-
->  drivers/acpi/scan.c                          |  16 +-
->  drivers/platform/x86/Kconfig                 |  14 +-
->  drivers/platform/x86/Makefile                |   2 +-
->  drivers/platform/x86/bus-multi-instantiate.c | 369 +++++++++++++++++++
->  drivers/platform/x86/i2c-multi-instantiate.c | 174 ---------
->  drivers/spi/spi.c                            | 142 ++++++-
->  include/linux/spi/spi.h                      |  32 ++
->  sound/pci/hda/patch_realtek.c                |  43 ++-
->  9 files changed, 588 insertions(+), 208 deletions(-)
->  create mode 100644 drivers/platform/x86/bus-multi-instantiate.c
->  delete mode 100644 drivers/platform/x86/i2c-multi-instantiate.c
-> 
+> Actually, I looked at this more carefully. acpi_init() is called in
+> subsys_initcall() while sdei_init() is called in subsys_initcall_sync().
+> That is, if I call this function in acpi_init(), SDEI driver won't be ready
+> and this driver fails to register the event.
 
+Maybe this will help:
+
+https://lore.kernel.org/linux-arm-kernel/20220120050522.23689-1-xueshuai@linux.alibaba.com/
