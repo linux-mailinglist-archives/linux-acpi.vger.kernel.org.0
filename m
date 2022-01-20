@@ -2,135 +2,312 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 913DE495108
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 16:08:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD53495123
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 16:13:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376406AbiATPIS (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 10:08:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232516AbiATPIS (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jan 2022 10:08:18 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F41C061574;
-        Thu, 20 Jan 2022 07:08:17 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id o7-20020a05600c510700b00347e10f66d1so7246297wms.0;
-        Thu, 20 Jan 2022 07:08:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=ddPVCxZ4dU5YjdeoeIUkKx7PGG9W/fGI0TtRqbFtTuw=;
-        b=H6c4pby5QH1o8S7IPDYhT0iMNADpq3fH9CJ1YFaBUTbth7CK+XT0K1kj/KxEW3svMz
-         qgPSkkw0v5ifu7wiTZ5ueesuwmt13mkAyXAHkbUvi5ZKfVSsMWLuc2Swh1ZByGg8Cwgs
-         JCgHJ/p6N0it6jnvmy+yz+X9GiRJHqUyok4tcJwB1VTHCQ0wnhTroDypB1uqiwBLNjKo
-         vLCmGDNpepIE/C0qTpl46MLnWh0+aWCljk+Umg70LvdYmUUHwHO/XvXINwEWnlXSlDnF
-         NHmU9EwfPYCHUxAD5LD6QBcp0IM8253CUgv7gWuYyanHdMTY0yzw9xKdC9DHUQqu2N+H
-         VsfA==
+        id S1376503AbiATPNK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jan 2022 10:13:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:46073 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1376511AbiATPNJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 20 Jan 2022 10:13:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1642691589;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Dif+C+Zl6QCjPSy2Dh/zytGlPwVdgsHB7fsGJyn6IXs=;
+        b=HWApN8rqgvuG9S/EIBSOh9YJA9Xv1oTRc8FShNscmE2m62r0uUXkTRvL+9grc+h1wpW5CG
+        MUbs9w9rDEcezHFvUoe0hFt7kJT+VLIxOKlTB7i0lCzqcM2VH1AMolTed2uwpHWwKsI8Ye
+        Qoi8m9/pM4Xt8AA93ckWs5J9HIwFRac=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-332-gdm44yJhN0G5KTRjpsyOQQ-1; Thu, 20 Jan 2022 10:13:07 -0500
+X-MC-Unique: gdm44yJhN0G5KTRjpsyOQQ-1
+Received: by mail-ed1-f72.google.com with SMTP id j10-20020a05640211ca00b003ff0e234fdfso6238397edw.0
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 07:13:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=ddPVCxZ4dU5YjdeoeIUkKx7PGG9W/fGI0TtRqbFtTuw=;
-        b=iVpLMaGJZaR7e5Oi3gDcwRTdIJLBBXWr3252t7Ynviausn5dSiOBJJPxECZLNpe4HW
-         MUwS+kaoZQgT06U+L76t76UVlYIJQutAoIsfZCxSo2eR2MCpMzBdGAwSEJBYA9dmBu8e
-         q3WVf6/Mebcgdgzfw2PvjrosS9PNh4AkT4ymdAL58WPMBE2mXZxXyz83hkVPmmhGsRPK
-         qEshXwkRqRTfuY+lPU0PtFIZMpR/2XBeQNPCLZH5KNBlr027rH6Vn784GvTboiy1O/5M
-         Qbvq91gJdPx0xC29XDHPcMIY6+Rv0ol5Egh5/25RqP5ahxqLWBoowz/gEl6EdfUXLz+l
-         dIew==
-X-Gm-Message-State: AOAM532WFhyd018Ao/IaaXdooLbBgwXXjHxhmqxq2FOVvRm1jgpuqRkY
-        vkNij/adjWODgxEAZ1Cm3Xae95Z20EpSarktVjG8Uc0CYho=
-X-Google-Smtp-Source: ABdhPJycTIloH80MYHJgoCdcMS3sJYfpzZW6RfgpOkcOdf2Mub026i47AWJ9yyadXN1Q0Bwely+PGyslLzS6SnFiRN8=
-X-Received: by 2002:a7b:c310:: with SMTP id k16mr9289871wmj.169.1642691296273;
- Thu, 20 Jan 2022 07:08:16 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=Dif+C+Zl6QCjPSy2Dh/zytGlPwVdgsHB7fsGJyn6IXs=;
+        b=DlDTtk1V3S+tNM5BYE+W58o/rzeTxZfoVjaHznHJI5PSL+m/R3WIRTylc0KnYtSBrq
+         xDtc0o5B3POo+pFWkeYmTH+CmRkrLOEEWaCOjeLWj0UWSCf9cuMK65qqCQiQ6POauJP4
+         aBtFHQj/2liYl89FjbUGiknTndmgz3h+7p7DA38MCrolhtJgIiTt9h+9PFxISq7MqEmJ
+         CHZqmnT9V9rSUjKZdTYI8smLyx2NFPu4zxx53hRm5stOUMtsMryxMadovpPxCFs784fE
+         D/1e4dQfLZnvnO08K6DBA+SWTJ6s9S1M4AY5qK88Wnld7GGdXx4U87o8m6pHOoM97G0B
+         BOYg==
+X-Gm-Message-State: AOAM533pXLaf4UBHt6iWiJ4OFAQY1tvcm0Db0Ri/hd0sPeUeYiFNJ7Gs
+        e+c4jlsLGmKJxRVlE5QD+Gjae6CWoCQVZK1Yn1WyWhbmgRAoo/LvEinxcYUgOqW3LHCq4e3/Bpr
+        Wz6//87rEYQ1iAnOteLCaPw==
+X-Received: by 2002:a17:906:7e10:: with SMTP id e16mr10110218ejr.143.1642691586629;
+        Thu, 20 Jan 2022 07:13:06 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxA9MtA8PkrxZUaZhliWBp4mWn1OrnfF9QzPn7Bnf6gLEWy17zIpjFboW+vz49FINJDp1CFLA==
+X-Received: by 2002:a17:906:7e10:: with SMTP id e16mr10110190ejr.143.1642691586364;
+        Thu, 20 Jan 2022 07:13:06 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id g24sm1122075ejx.11.2022.01.20.07.13.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jan 2022 07:13:05 -0800 (PST)
+Message-ID: <faec4efb-de43-c35c-cc68-23a226440712@redhat.com>
+Date:   Thu, 20 Jan 2022 16:13:05 +0100
 MIME-Version: 1.0
-References: <20220120000409.2706549-1-rajatja@google.com> <CAE_wzQ_XxONXx5bgDNLAWM_UbV0r8hP9fW6s5sgRYRVSHQWjLw@mail.gmail.com>
-In-Reply-To: <CAE_wzQ_XxONXx5bgDNLAWM_UbV0r8hP9fW6s5sgRYRVSHQWjLw@mail.gmail.com>
-Reply-To: rajatxjain@gmail.com
-From:   Rajat Jain <rajatxjain@gmail.com>
-Date:   Thu, 20 Jan 2022 07:08:06 -0800
-Message-ID: <CAA93t1pOi9mz9he41E+S+sb7F=0ptaWG4hmi+Nuac=7FXEBi7Q@mail.gmail.com>
-Subject: Re: [PATCH] PCI: ACPI: Allow internal devices to be marked as untrusted
-To:     Dmitry Torokhov <dtor@google.com>
-Cc:     Rajat Jain <rajatja@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jesse Barnes <jsbarnes@google.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v4 6/9] platform/x86: bus-multi-instantiate: Reorganize
+ I2C functions
+Content-Language: en-US
+To:     Stefan Binding <sbinding@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com,
+        Lucas Tanure <tanureal@opensource.cirrus.com>
+References: <20220120134326.5295-1-sbinding@opensource.cirrus.com>
+ <20220120134326.5295-7-sbinding@opensource.cirrus.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220120134326.5295-7-sbinding@opensource.cirrus.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Dmitry, Bjorn,
+Hi,
 
-Thanks for your review and comments.
+On 1/20/22 14:43, Stefan Binding wrote:
+> From: Lucas Tanure <tanureal@opensource.cirrus.com>
+> 
+> Reorganize I2C functions to accommodate SPI support
+> Split the probe and factor out parts of the code
+> that will be used in the SPI support
+> 
+> Signed-off-by: Lucas Tanure <tanureal@opensource.cirrus.com>
+> Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+> ---
+>  drivers/platform/x86/bus-multi-instantiate.c | 150 ++++++++++++-------
+>  1 file changed, 96 insertions(+), 54 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/bus-multi-instantiate.c b/drivers/platform/x86/bus-multi-instantiate.c
+> index 982dfecfd27c..50f1540762e9 100644
+> --- a/drivers/platform/x86/bus-multi-instantiate.c
+> +++ b/drivers/platform/x86/bus-multi-instantiate.c
+> @@ -29,85 +29,129 @@ struct bmi_instance {
+>  
+>  struct bmi {
+>  	int i2c_num;
+> -	struct i2c_client *i2c_devs[];
+> +	struct i2c_client **i2c_devs;
+>  };
+>  
+> -static int bmi_probe(struct platform_device *pdev)
+> +static int bmi_get_irq(struct platform_device *pdev, struct acpi_device *adev,
+> +		       const struct bmi_instance *inst)
+> +{
+> +	int ret;
+> +
+> +	switch (inst->flags & IRQ_RESOURCE_TYPE) {
+> +	case IRQ_RESOURCE_GPIO:
+> +		ret = acpi_dev_gpio_irq_get(adev, inst->irq_idx);
+> +		break;
+> +	case IRQ_RESOURCE_APIC:
+> +		ret = platform_get_irq(pdev, inst->irq_idx);
+> +		break;
+> +	default:
+> +		ret = 0;
+> +		break;
+> +	}
+> +
+> +	if (ret < 0)
+> +		dev_err_probe(&pdev->dev, ret, "Error requesting irq at index %d: %d\n",
+> +			      inst->irq_idx, ret);
+> +
+> +	return ret;
+> +}
+> +
+> +static void bmi_devs_unregister(struct bmi *bmi)
+> +{
+> +	while (bmi->i2c_num > 0)
+> +		i2c_unregister_device(bmi->i2c_devs[--bmi->i2c_num]);
+> +}
+> +
+> +/**
+> + * bmi_i2c_probe - Instantiate multiple I2C devices from inst array
+> + * @pdev:	Platform device
+> + * @adev:	ACPI device
+> + * @bmi:	Internal struct for Bus multi instantiate driver
+> + * @inst:	Array of instances to probe
+> + *
+> + * Returns the number of I2C devices instantiate, Zero if none is found or a negative error code.
+> + */
+> +static int bmi_i2c_probe(struct platform_device *pdev, struct acpi_device *adev, struct bmi *bmi,
+> +			 const struct bmi_instance *inst_array)
+>  {
+>  	struct i2c_board_info board_info = {};
+> -	const struct bmi_instance *inst;
+>  	struct device *dev = &pdev->dev;
+> -	struct acpi_device *adev;
+> -	struct bmi *bmi;
+>  	char name[32];
+> -	int i, ret;
+> +	int i, ret = 0, count;
 
-On Wed, Jan 19, 2022 at 6:25 PM Dmitry Torokhov <dtor@google.com> wrote:
->
-> Hi Rajat,
->
-> On Wed, Jan 19, 2022 at 4:04 PM Rajat Jain <rajatja@google.com> wrote:
-> >
-> > Today the pci_dev->untrusted is set for any devices sitting downstream
-> > an external facing port (determined via "ExternalFacingPort" property).
-> > This however, disallows any internal devices to be marked as untrusted.
-> >
-> > There are use-cases though, where a platform would like to treat an
-> > internal device as untrusted (perhaps because it runs untrusted
-> > firmware, or offers an attack surface by handling untrusted network
-> > data etc).
-> >
-> > This patch introduces a new "UntrustedDevice" property that can be used
-> > by the firmware to mark any device as untrusted.
-> >
-> > Signed-off-by: Rajat Jain <rajatja@google.com>
-> > ---
-> >  drivers/pci/pci-acpi.c | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> >
-> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> > index a42dbf448860..3d9e5fa49451 100644
-> > --- a/drivers/pci/pci-acpi.c
-> > +++ b/drivers/pci/pci-acpi.c
-> > @@ -1350,12 +1350,25 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
-> >                 dev->external_facing = 1;
-> >  }
-> >
-> > +static void pci_acpi_set_untrusted(struct pci_dev *dev)
-> > +{
-> > +       u8 val;
-> > +
-> > +       if (device_property_read_u8(&dev->dev, "UntrustedDevice", &val))
-> > +               return;
-> > +
-> > +       /* These PCI devices are not trustworthy */
-> > +       if (val)
-> > +               dev->untrusted = 1;
->
-> Should this all be replaced with:
->
-> dev->untrusted = device_property_read_bool(&dev->dev, "UntrustedDevice");
->
-> ?
+Nitpick no need to init ret to 0 here since you re-assing
+it immediately afterwards.
 
-Ack, yes, I will do this.
+>  
+> -	inst = device_get_match_data(dev);
+> -	if (!inst) {
+> -		dev_err(dev, "Error ACPI match data is missing\n");
+> -		return -ENODEV;
+> -	}
+> -
+> -	adev = ACPI_COMPANION(dev);
+> -
+> -	/* Count number of clients to instantiate */
+>  	ret = i2c_acpi_client_count(adev);
+> -	if (ret < 0)
+> +	if (ret <= 0)
+>  		return ret;
+> +	count = ret;
+>  
+> -	bmi = devm_kmalloc(dev, struct_size(bmi, i2c_devs, ret), GFP_KERNEL);
+> -	if (!bmi)
+> +	bmi->i2c_devs = devm_kcalloc(dev, count, sizeof(*bmi->i2c_devs), GFP_KERNEL);
+> +	if (!bmi->i2c_devs)
+>  		return -ENOMEM;
+>  
+> -	bmi->i2c_num = ret;
+> -
+> -	for (i = 0; i < bmi->i2c_num && inst[i].type; i++) {
+> +	for (i = 0; i < count && inst_array[i].type; i++) {
+>  		memset(&board_info, 0, sizeof(board_info));
+> -		strlcpy(board_info.type, inst[i].type, I2C_NAME_SIZE);
+> -		snprintf(name, sizeof(name), "%s-%s.%d", dev_name(dev), inst[i].type, i);
+> +		strscpy(board_info.type, inst_array[i].type, I2C_NAME_SIZE);
+> +		snprintf(name, sizeof(name), "%s-%s.%d", dev_name(dev), inst_array[i].type, i);
+>  		board_info.dev_name = name;
+> -		switch (inst[i].flags & IRQ_RESOURCE_TYPE) {
+> -		case IRQ_RESOURCE_GPIO:
+> -			ret = acpi_dev_gpio_irq_get(adev, inst[i].irq_idx);
+> -			if (ret < 0) {
+> -				dev_err(dev, "Error requesting irq at index %d: %d\n",
+> -						inst[i].irq_idx, ret);
+> -				goto error;
+> -			}
+> -			board_info.irq = ret;
+> -			break;
+> -		case IRQ_RESOURCE_APIC:
+> -			ret = platform_get_irq(pdev, inst[i].irq_idx);
+> -			if (ret < 0) {
+> -				dev_dbg(dev, "Error requesting irq at index %d: %d\n",
+> -					inst[i].irq_idx, ret);
+> -				goto error;
+> -			}
+> -			board_info.irq = ret;
+> -			break;
+> -		default:
+> -			board_info.irq = 0;
+> -			break;
+> -		}
+> +
+> +		ret = bmi_get_irq(pdev, adev, &inst_array[i]);
+> +		if (ret < 0)
+> +			goto error;
+> +		board_info.irq = ret;
+> +
+>  		bmi->i2c_devs[i] = i2c_acpi_new_device(dev, i, &board_info);
+>  		if (IS_ERR(bmi->i2c_devs[i])) {
+>  			ret = dev_err_probe(dev, PTR_ERR(bmi->i2c_devs[i]),
+>  					    "Error creating i2c-client, idx %d\n", i);
+>  			goto error;
+>  		}
+> +		bmi->i2c_num++;
+>  	}
+> -	if (i < bmi->i2c_num) {
+> +	if (bmi->i2c_num < count) {
+>  		dev_err(dev, "Error finding driver, idx %d\n", i);
+>  		ret = -ENODEV;
+>  		goto error;
+>  	}
+>  
+> -	platform_set_drvdata(pdev, bmi);
+> -	return 0;
+> +	dev_info(dev, "Instantiate %d I2C devices.\n", bmi->i2c_num);
+>  
+> +	return bmi->i2c_num;
+>  error:
+> -	while (--i >= 0)
+> -		i2c_unregister_device(bmi->i2c_devs[i]);
+> +	dev_err_probe(dev, ret, "I2C error %d\n", ret);
 
->
-> Also, is this ACPI-specific? Why won't we need this for DT systems (or
-> do we already have this)?.
+All the ways to get here already log a better error msg,
+please drop this.
 
-Good point. Ack, Yes, I don't mind doing this for DT systems also. I
-wanted to get some feedback and acceptance within the PCI subsystem on
-the general idea of this property though. Bjorn?
+> +	bmi_devs_unregister(bmi);
+> +
+> +	return ret;
+> +}
+> +
+> +static int bmi_probe(struct platform_device *pdev)
+> +{
+> +	const struct bmi_instance *inst_array;
+> +	struct device *dev = &pdev->dev;
+> +	struct acpi_device *adev;
+> +	struct bmi *bmi;
+> +	int ret;
+> +
+> +	inst_array = device_get_match_data(dev);
+> +	if (!inst_array) {
+> +		dev_err(dev, "Error ACPI match data is missing\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	adev = ACPI_COMPANION(dev);
+> +	if (!adev)
+> +		return -ENODEV;
+> +
+> +	bmi = devm_kzalloc(dev, sizeof(*bmi), GFP_KERNEL);
+> +	if (!bmi)
+> +		return -ENOMEM;
+> +
+> +	platform_set_drvdata(pdev, bmi);
+> +
+> +	ret = bmi_i2c_probe(pdev, adev, bmi, inst_array);
+> +	if (ret > 0)
+> +		return 0;
+> +	if (ret == 0)
+> +		ret = -ENODEV;
+>  
+>  	return ret;
+>  }
+> @@ -115,10 +159,8 @@ static int bmi_probe(struct platform_device *pdev)
+>  static int bmi_remove(struct platform_device *pdev)
+>  {
+>  	struct bmi *bmi = platform_get_drvdata(pdev);
+> -	int i;
+>  
+> -	for (i = 0; i < bmi->i2c_num; i++)
+> -		i2c_unregister_device(bmi->i2c_devs[i]);
+> +	bmi_devs_unregister(bmi);
+>  
+>  	return 0;
+>  }
+> 
 
-Thanks & Best Regards,
+Otherwise this looks good to me, with my 2 minor
+remarsk addressed:
 
-Rajat
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
->
-> Thanks,
-> Dmitry
+Regards,
+
+Hans
+
