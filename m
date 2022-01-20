@@ -2,55 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CE25494C34
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 11:54:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6C61494C4D
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 11:57:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229724AbiATKyB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 05:54:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38754 "EHLO
+        id S229981AbiATK5G (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jan 2022 05:57:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229526AbiATKyA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jan 2022 05:54:00 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D93C061574;
-        Thu, 20 Jan 2022 02:54:00 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id cx27so27081209edb.1;
-        Thu, 20 Jan 2022 02:54:00 -0800 (PST)
+        with ESMTP id S229971AbiATK5F (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jan 2022 05:57:05 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F123AC061574;
+        Thu, 20 Jan 2022 02:57:04 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id c24so24592761edy.4;
+        Thu, 20 Jan 2022 02:57:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=rueY/jFC2lLrcjtQ698sMwfakQXnY26l1d8Z0p1kGzY=;
-        b=auLHWOAe3eLtUNRB3I/GnroHB9vg/WLVbd9NGSlwq2h+rIeyZH+SKh06qHVXiFcb8f
-         uaP5tk8wF84oK+Hbfr3uMQbhw5K0PhDKKZ3EqCrsccaGA2a9DCYMfk06T+1GVwbfxisi
-         ux+RFoTRcNJYsSVpS0Dx3lDQ57yBbv+lrzCWTBGtW5a2UPrsKrMS37iIwI2CcCz9+rgS
-         rpj42xGjO8qh5hvMJt9pgXsa4TK6tgP2a4wQ8RN9hqBIP5luq1IUSZgiel0Dlt3i+vEl
-         /wcGnxCKVrwphXZ1IbGQKdPCM1yhyDSZJgcADt1jQIEygY43mxzRvVj/GHjhc87yo5CV
-         qiiA==
+        bh=VJFSujY0gawm0vuS1B+3onnPwXQ2aVqz3AH1Ci+gepI=;
+        b=H4/nz/vo+kTO/K3uRtiAAeZz3SGXVBo6YrTUQ+W7Ycvfez1rGht/zH9RmQP+HGdFVo
+         PnPybtNQi65V3jbC6OUUkg0QCQGp1ESHk1FiyBpqZnbsNCXh+d537X9sBIdC3X5SK4OP
+         aoKsZ8v/+4WDjUPIiGXHYsMqOrZHiI28+oBNcbduAjTz8iaG91Fb+v03qy7ZZIzVlLHC
+         cwjjuRyc1pANbTp2GCyJTe2zmO5dmbTDwqqLU+/pcUkp4v/9wqCyrgi3VTHQ7eF5iSxM
+         Dw63NjJxMZRWEjyGRa5kWakrI4w1Nixt3l4CGBIMqEYa8fQgncrQoeikSbKMFxufKjto
+         0boA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=rueY/jFC2lLrcjtQ698sMwfakQXnY26l1d8Z0p1kGzY=;
-        b=sF2HqiVwfIXNqqcGiuBf5nYMOwtvmBhS3b+Issex0v+uLzrEWmOvF1Bs25OWaJwBZc
-         /tU8bVfrktRP6/bByM+q+y6OW/RYZmld0vpIzRAxaG+9Y6BsGZnbfsTP2NIegqcOjNaL
-         LVXr+akzvKrBBDC9RpxiSMO6mIp8hULOPz5kOOO84RB0/iw3ErBTHlReRwoTTdX3D5vY
-         9On2EYfUFV53GUI05sHVXeecsICHXIqOUBf+cBNLhfzytcLFKm+FOuOebv19mFXY3dye
-         qzLyAHWZzO8pcRcUb6lkz+jZtcojLrcqceYbmiGsG5Et0z0dzapzqS4Rc7n7nCRzKEfG
-         udQQ==
-X-Gm-Message-State: AOAM533SwplEnSPyzdyWV5Hny0LArUATWkIHW+xV84kyK7iwOfgd3MG4
-        LlgUySgDypix9AZjx0XEDYK6oHdqBHQ8H2SFpY8=
-X-Google-Smtp-Source: ABdhPJxGiMU1xrv7ZzwueN4iKsoTSUGlAYddhd/BYPDmdrQuY89UiTfUdv/qHPTtG90np5GBNclAJjIoXTK8m1rJRVM=
-X-Received: by 2002:a17:907:968c:: with SMTP id hd12mr27927990ejc.639.1642676038694;
- Thu, 20 Jan 2022 02:53:58 -0800 (PST)
+        bh=VJFSujY0gawm0vuS1B+3onnPwXQ2aVqz3AH1Ci+gepI=;
+        b=bu3G0KOm4o0ScV1wq8T9q7rEoCc6FNxFFvoLt51PmE6pIoYeOISKSOBeC07nkskbvm
+         JzgiIoSaKAcPsNMHMqSFL2OjO+kWCG9XeKtFNk7TvfkzMh8F1bPBaIVaOHwZ2w3kZGEA
+         fGb3QuWz05xE8lrQeo9I/uhrn18Wur2cb8lKMNRyMnBTpQX8U8af9PBOnQfxw0QjGz0k
+         ZvqtDpoktEmjwVW2nR/oTXfiUdNpWvRC/HdCYDxbl2O+kSMtgpgZF4QjYWUSzn1GJmBJ
+         /jhqNPIbg9EEFEanYQBvOKKCaC+EzlSdy1b31cQUGCBBXkZpTVVMPx2EtwXsPlaf+pI5
+         C+/g==
+X-Gm-Message-State: AOAM533Qi6+i8RAx7epgByEGRqKmactAV7XiF3RBCUv/dqmvNwuWopgd
+        9t6f4bglCTTI6916KDJawwXSGTRjnn2Bs2tvCTI=
+X-Google-Smtp-Source: ABdhPJy3XM0de+IEVOkIlJ0EiHVt6il1s31sj3OZSQPpdqexZ1vW8TAK6qllKAhg9nSYkjHK1td5+VScKb3gWzGNMgM=
+X-Received: by 2002:a05:6402:35d3:: with SMTP id z19mr20345363edc.29.1642676223381;
+ Thu, 20 Jan 2022 02:57:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20220117142919.207370-1-marcan@marcan.st> <20220117142919.207370-8-marcan@marcan.st>
-In-Reply-To: <20220117142919.207370-8-marcan@marcan.st>
+References: <20220117142919.207370-1-marcan@marcan.st> <20220117142919.207370-9-marcan@marcan.st>
+In-Reply-To: <20220117142919.207370-9-marcan@marcan.st>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 20 Jan 2022 12:52:16 +0200
-Message-ID: <CAHp75Vfj-uqzmY24ByXLnhgyhEuaGpZckdczwUf=2OXL3aBuog@mail.gmail.com>
-Subject: Re: [PATCH v3 7/9] brcmfmac: of: Use devm_kstrdup for board_type &
- check for errors
+Date:   Thu, 20 Jan 2022 12:55:21 +0200
+Message-ID: <CAHp75Vd1VJhwTey=8FmmX=UaTCFnWzVjf0Y4Ctq=eLyVqi7_ig@mail.gmail.com>
+Subject: Re: [PATCH v3 8/9] brcmfmac: fwil: Constify iovar name arguments
 To:     Hector Martin <marcan@marcan.st>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
@@ -88,36 +87,221 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 On Mon, Jan 17, 2022 at 4:31 PM Hector Martin <marcan@marcan.st> wrote:
 >
-> This was missing a NULL check, and we can collapse the strlen/alloc/copy
-> into a devm_kstrdup().
+> Make all the iovar name arguments const char * instead of just char *.
 
-Nice patch. After dropping the message,
+Makes sense.
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
->                 /* get rid of '/' in the compatible string to be able to find the FW */
->                 len = strlen(tmp) + 1;
-> -               board_type = devm_kzalloc(dev, len, GFP_KERNEL);
-> -               strscpy(board_type, tmp, len);
-> +               board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
-> +               if (!board_type) {
-> +                       brcmf_err("out of memory allocating board_type\n");
-> +                       of_node_put(root);
-> +                       return;
-> +               }
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Hector Martin <marcan@marcan.st>
+> ---
+>  .../broadcom/brcm80211/brcmfmac/fwil.c        | 34 +++++++++----------
+>  .../broadcom/brcm80211/brcmfmac/fwil.h        | 28 +++++++--------
+>  2 files changed, 31 insertions(+), 31 deletions(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
+> index d5578ca681bb..72fe8bce6eaf 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
+> @@ -192,7 +192,7 @@ brcmf_fil_cmd_int_get(struct brcmf_if *ifp, u32 cmd, u32 *data)
+>  }
+>
+>  static u32
+> -brcmf_create_iovar(char *name, const char *data, u32 datalen,
+> +brcmf_create_iovar(const char *name, const char *data, u32 datalen,
+>                    char *buf, u32 buflen)
+>  {
+>         u32 len;
+> @@ -213,7 +213,7 @@ brcmf_create_iovar(char *name, const char *data, u32 datalen,
+>
+>
+>  s32
+> -brcmf_fil_iovar_data_set(struct brcmf_if *ifp, char *name, const void *data,
+> +brcmf_fil_iovar_data_set(struct brcmf_if *ifp, const char *name, const void *data,
+>                          u32 len)
+>  {
+>         struct brcmf_pub *drvr = ifp->drvr;
+> @@ -241,7 +241,7 @@ brcmf_fil_iovar_data_set(struct brcmf_if *ifp, char *name, const void *data,
+>  }
+>
+>  s32
+> -brcmf_fil_iovar_data_get(struct brcmf_if *ifp, char *name, void *data,
+> +brcmf_fil_iovar_data_get(struct brcmf_if *ifp, const char *name, void *data,
+>                          u32 len)
+>  {
+>         struct brcmf_pub *drvr = ifp->drvr;
+> @@ -272,7 +272,7 @@ brcmf_fil_iovar_data_get(struct brcmf_if *ifp, char *name, void *data,
+>  }
+>
+>  s32
+> -brcmf_fil_iovar_int_set(struct brcmf_if *ifp, char *name, u32 data)
+> +brcmf_fil_iovar_int_set(struct brcmf_if *ifp, const char *name, u32 data)
+>  {
+>         __le32 data_le = cpu_to_le32(data);
+>
+> @@ -280,7 +280,7 @@ brcmf_fil_iovar_int_set(struct brcmf_if *ifp, char *name, u32 data)
+>  }
+>
+>  s32
+> -brcmf_fil_iovar_int_get(struct brcmf_if *ifp, char *name, u32 *data)
+> +brcmf_fil_iovar_int_get(struct brcmf_if *ifp, const char *name, u32 *data)
+>  {
+>         __le32 data_le = cpu_to_le32(*data);
+>         s32 err;
+> @@ -292,7 +292,7 @@ brcmf_fil_iovar_int_get(struct brcmf_if *ifp, char *name, u32 *data)
+>  }
+>
+>  static u32
+> -brcmf_create_bsscfg(s32 bsscfgidx, char *name, char *data, u32 datalen,
+> +brcmf_create_bsscfg(s32 bsscfgidx, const char *name, char *data, u32 datalen,
+>                     char *buf, u32 buflen)
+>  {
+>         const s8 *prefix = "bsscfg:";
+> @@ -337,7 +337,7 @@ brcmf_create_bsscfg(s32 bsscfgidx, char *name, char *data, u32 datalen,
+>  }
+>
+>  s32
+> -brcmf_fil_bsscfg_data_set(struct brcmf_if *ifp, char *name,
+> +brcmf_fil_bsscfg_data_set(struct brcmf_if *ifp, const char *name,
+>                           void *data, u32 len)
+>  {
+>         struct brcmf_pub *drvr = ifp->drvr;
+> @@ -366,7 +366,7 @@ brcmf_fil_bsscfg_data_set(struct brcmf_if *ifp, char *name,
+>  }
+>
+>  s32
+> -brcmf_fil_bsscfg_data_get(struct brcmf_if *ifp, char *name,
+> +brcmf_fil_bsscfg_data_get(struct brcmf_if *ifp, const char *name,
+>                           void *data, u32 len)
+>  {
+>         struct brcmf_pub *drvr = ifp->drvr;
+> @@ -396,7 +396,7 @@ brcmf_fil_bsscfg_data_get(struct brcmf_if *ifp, char *name,
+>  }
+>
+>  s32
+> -brcmf_fil_bsscfg_int_set(struct brcmf_if *ifp, char *name, u32 data)
+> +brcmf_fil_bsscfg_int_set(struct brcmf_if *ifp, const char *name, u32 data)
+>  {
+>         __le32 data_le = cpu_to_le32(data);
+>
+> @@ -405,7 +405,7 @@ brcmf_fil_bsscfg_int_set(struct brcmf_if *ifp, char *name, u32 data)
+>  }
+>
+>  s32
+> -brcmf_fil_bsscfg_int_get(struct brcmf_if *ifp, char *name, u32 *data)
+> +brcmf_fil_bsscfg_int_get(struct brcmf_if *ifp, const char *name, u32 *data)
+>  {
+>         __le32 data_le = cpu_to_le32(*data);
+>         s32 err;
+> @@ -417,7 +417,7 @@ brcmf_fil_bsscfg_int_get(struct brcmf_if *ifp, char *name, u32 *data)
+>         return err;
+>  }
+>
+> -static u32 brcmf_create_xtlv(char *name, u16 id, char *data, u32 len,
+> +static u32 brcmf_create_xtlv(const char *name, u16 id, char *data, u32 len,
+>                              char *buf, u32 buflen)
+>  {
+>         u32 iolen;
+> @@ -438,7 +438,7 @@ static u32 brcmf_create_xtlv(char *name, u16 id, char *data, u32 len,
+>         return iolen;
+>  }
+>
+> -s32 brcmf_fil_xtlv_data_set(struct brcmf_if *ifp, char *name, u16 id,
+> +s32 brcmf_fil_xtlv_data_set(struct brcmf_if *ifp, const char *name, u16 id,
+>                             void *data, u32 len)
+>  {
+>         struct brcmf_pub *drvr = ifp->drvr;
+> @@ -466,7 +466,7 @@ s32 brcmf_fil_xtlv_data_set(struct brcmf_if *ifp, char *name, u16 id,
+>         return err;
+>  }
+>
+> -s32 brcmf_fil_xtlv_data_get(struct brcmf_if *ifp, char *name, u16 id,
+> +s32 brcmf_fil_xtlv_data_get(struct brcmf_if *ifp, const char *name, u16 id,
+>                             void *data, u32 len)
+>  {
+>         struct brcmf_pub *drvr = ifp->drvr;
+> @@ -495,7 +495,7 @@ s32 brcmf_fil_xtlv_data_get(struct brcmf_if *ifp, char *name, u16 id,
+>         return err;
+>  }
+>
+> -s32 brcmf_fil_xtlv_int_set(struct brcmf_if *ifp, char *name, u16 id, u32 data)
+> +s32 brcmf_fil_xtlv_int_set(struct brcmf_if *ifp, const char *name, u16 id, u32 data)
+>  {
+>         __le32 data_le = cpu_to_le32(data);
+>
+> @@ -503,7 +503,7 @@ s32 brcmf_fil_xtlv_int_set(struct brcmf_if *ifp, char *name, u16 id, u32 data)
+>                                          sizeof(data_le));
+>  }
+>
+> -s32 brcmf_fil_xtlv_int_get(struct brcmf_if *ifp, char *name, u16 id, u32 *data)
+> +s32 brcmf_fil_xtlv_int_get(struct brcmf_if *ifp, const char *name, u16 id, u32 *data)
+>  {
+>         __le32 data_le = cpu_to_le32(*data);
+>         s32 err;
+> @@ -514,12 +514,12 @@ s32 brcmf_fil_xtlv_int_get(struct brcmf_if *ifp, char *name, u16 id, u32 *data)
+>         return err;
+>  }
+>
+> -s32 brcmf_fil_xtlv_int8_get(struct brcmf_if *ifp, char *name, u16 id, u8 *data)
+> +s32 brcmf_fil_xtlv_int8_get(struct brcmf_if *ifp, const char *name, u16 id, u8 *data)
+>  {
+>         return brcmf_fil_xtlv_data_get(ifp, name, id, data, sizeof(*data));
+>  }
+>
+> -s32 brcmf_fil_xtlv_int16_get(struct brcmf_if *ifp, char *name, u16 id, u16 *data)
+> +s32 brcmf_fil_xtlv_int16_get(struct brcmf_if *ifp, const char *name, u16 id, u16 *data)
+>  {
+>         __le16 data_le = cpu_to_le16(*data);
+>         s32 err;
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
+> index cb26f8c59c21..bc693157c4b1 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
+> @@ -84,26 +84,26 @@ s32 brcmf_fil_cmd_data_get(struct brcmf_if *ifp, u32 cmd, void *data, u32 len);
+>  s32 brcmf_fil_cmd_int_set(struct brcmf_if *ifp, u32 cmd, u32 data);
+>  s32 brcmf_fil_cmd_int_get(struct brcmf_if *ifp, u32 cmd, u32 *data);
+>
+> -s32 brcmf_fil_iovar_data_set(struct brcmf_if *ifp, char *name, const void *data,
+> +s32 brcmf_fil_iovar_data_set(struct brcmf_if *ifp, const char *name, const void *data,
+>                              u32 len);
+> -s32 brcmf_fil_iovar_data_get(struct brcmf_if *ifp, char *name, void *data,
+> +s32 brcmf_fil_iovar_data_get(struct brcmf_if *ifp, const char *name, void *data,
+>                              u32 len);
+> -s32 brcmf_fil_iovar_int_set(struct brcmf_if *ifp, char *name, u32 data);
+> -s32 brcmf_fil_iovar_int_get(struct brcmf_if *ifp, char *name, u32 *data);
+> +s32 brcmf_fil_iovar_int_set(struct brcmf_if *ifp, const char *name, u32 data);
+> +s32 brcmf_fil_iovar_int_get(struct brcmf_if *ifp, const char *name, u32 *data);
+>
+> -s32 brcmf_fil_bsscfg_data_set(struct brcmf_if *ifp, char *name, void *data,
+> +s32 brcmf_fil_bsscfg_data_set(struct brcmf_if *ifp, const char *name, void *data,
+>                               u32 len);
+> -s32 brcmf_fil_bsscfg_data_get(struct brcmf_if *ifp, char *name, void *data,
+> +s32 brcmf_fil_bsscfg_data_get(struct brcmf_if *ifp, const char *name, void *data,
+>                               u32 len);
+> -s32 brcmf_fil_bsscfg_int_set(struct brcmf_if *ifp, char *name, u32 data);
+> -s32 brcmf_fil_bsscfg_int_get(struct brcmf_if *ifp, char *name, u32 *data);
+> -s32 brcmf_fil_xtlv_data_set(struct brcmf_if *ifp, char *name, u16 id,
+> +s32 brcmf_fil_bsscfg_int_set(struct brcmf_if *ifp, const char *name, u32 data);
+> +s32 brcmf_fil_bsscfg_int_get(struct brcmf_if *ifp, const char *name, u32 *data);
+> +s32 brcmf_fil_xtlv_data_set(struct brcmf_if *ifp, const char *name, u16 id,
+>                             void *data, u32 len);
+> -s32 brcmf_fil_xtlv_data_get(struct brcmf_if *ifp, char *name, u16 id,
+> +s32 brcmf_fil_xtlv_data_get(struct brcmf_if *ifp, const char *name, u16 id,
+>                             void *data, u32 len);
+> -s32 brcmf_fil_xtlv_int_set(struct brcmf_if *ifp, char *name, u16 id, u32 data);
+> -s32 brcmf_fil_xtlv_int_get(struct brcmf_if *ifp, char *name, u16 id, u32 *data);
+> -s32 brcmf_fil_xtlv_int8_get(struct brcmf_if *ifp, char *name, u16 id, u8 *data);
+> -s32 brcmf_fil_xtlv_int16_get(struct brcmf_if *ifp, char *name, u16 id, u16 *data);
+> +s32 brcmf_fil_xtlv_int_set(struct brcmf_if *ifp, const char *name, u16 id, u32 data);
+> +s32 brcmf_fil_xtlv_int_get(struct brcmf_if *ifp, const char *name, u16 id, u32 *data);
+> +s32 brcmf_fil_xtlv_int8_get(struct brcmf_if *ifp, const char *name, u16 id, u8 *data);
+> +s32 brcmf_fil_xtlv_int16_get(struct brcmf_if *ifp, const char *name, u16 id, u16 *data);
+>
+>  #endif /* _fwil_h_ */
+> --
+> 2.33.0
+>
 
->                 for (i = 0; i < board_type[i]; i++) {
->                         if (board_type[i] == '/')
->                                 board_type[i] = '-';
-
-Next step is to replace this with NIH strreplace()
-
-And
-  of_property_read_string_index(root, "compatible", 0, &tmp);
-with
-  of_property_read_string(root, "compatible", &tmp);
-
-And might add an error check, but I believe if there is no compatible
-property present, this can't be called.
 
 -- 
 With Best Regards,
