@@ -2,64 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04A7A495069
+	by mail.lfdr.de (Postfix) with ESMTP id BA31749506B
 	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 15:40:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242778AbiATOkH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 09:40:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:40405 "EHLO
+        id S1345798AbiATOkI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jan 2022 09:40:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:35240 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1356218AbiATOjd (ORCPT
+        by vger.kernel.org with ESMTP id S1356917AbiATOjo (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jan 2022 09:39:33 -0500
+        Thu, 20 Jan 2022 09:39:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642689572;
+        s=mimecast20190719; t=1642689583;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ZO9CxpXnVO0unS4PfDkiiWErEf+1QW6VcHAAffKfBTg=;
-        b=DDRp3YXkeBVrS0bAMMXNYfbjW6s2w8iLh0FjRf/eOXSdmOR+bv5+n1SCy84B1vGscnHdHF
-        WCnvSrRQLadiZ+J4fZjPDfQXIeNWc+pnyAPlv2i3Q7GDeJpbo4jjaTPhccEgXSLHMSwgoT
-        QsEWTnU+sGpZOc+UP457PRCJdXYyTpw=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=U6QJQxwpqs/8UeUwXAKCD+lQ9KYdKmTM83V8hAlwFAc=;
+        b=KPRFvlRlfXTBWFLm7+enlMoYRzNbjaiCcDVvOp70bqtYRlOwTiF6SzzgwBSfWfELL2EYBe
+        pipU4DDLjFvRYttZypGKeVVHQXj9dfcpqbIq9rKMlUirX4MgVRgc2pnQgPJqhwz+mRwuB9
+        lqBEREHRFT7UAZDo6G1bl+oKl8sf9jo=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-557-v_NvERdYOD-sz1ojwiSWKg-1; Thu, 20 Jan 2022 09:39:31 -0500
-X-MC-Unique: v_NvERdYOD-sz1ojwiSWKg-1
-Received: by mail-ed1-f70.google.com with SMTP id el8-20020a056402360800b00403bbdcef64so6058402edb.14
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 06:39:31 -0800 (PST)
+ us-mta-460-xQeJ2hGaOgmiVECm86bueQ-1; Thu, 20 Jan 2022 09:39:42 -0500
+X-MC-Unique: xQeJ2hGaOgmiVECm86bueQ-1
+Received: by mail-ed1-f72.google.com with SMTP id z6-20020a50eb46000000b00403a7687b5bso6066703edp.3
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 06:39:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=ZO9CxpXnVO0unS4PfDkiiWErEf+1QW6VcHAAffKfBTg=;
-        b=KuNGoZBEeYafZepTNJWBF5WwYBQzuV61Slctk8gu8PfYqfRzxgk0GRkfNykiIHP4Op
-         l0Yi1c0xVHRTysB2qDkKd5XkeWngsR8/LSoEEKfxX1Q6nEKkGAVpxxJFIqH+GvzMpMCV
-         aG9aAu3kgFfCSDHOWIrOoqJ6AdiXadfK2eMNc1ndk8ti2sl4gM8HHUx9GstXrYFIouY+
-         oO3bsS2eN2ulylPlNkgLkbxmnpAoayxsYeaaIpRKsusGP01HwAInR8YGoa5MQzS7VMpD
-         4IK7hr8nrlDWbbt0z18NXhizwprwkqWmuJZiv/EShzTYfCpmwLSA9u/6QJxUTA1lAb0R
-         UUxw==
-X-Gm-Message-State: AOAM530Mkrf9VzAoT4+mvN4Bb5kFoPmfk+NaIcQvzkjJ6GXarThi3qxH
-        9PobvHNHnfCF8CZr/BpJx4RZWDSto1tDL3/1iwGA96ezbjve0Oows7deHCK8Bdko0N2r9LPe7F8
-        I1oZl+3pdngamiW1PuIylkA==
-X-Received: by 2002:a17:906:d553:: with SMTP id cr19mr16848577ejc.2.1642689570129;
-        Thu, 20 Jan 2022 06:39:30 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxC8EiUO8zmKN0IM1R4oP/7CsqAviHdzhjNraDig7Z05SORbdwzW3MgHf7pVUwqUy+23nb9fQ==
-X-Received: by 2002:a17:906:d553:: with SMTP id cr19mr16848563ejc.2.1642689569933;
-        Thu, 20 Jan 2022 06:39:29 -0800 (PST)
+        bh=U6QJQxwpqs/8UeUwXAKCD+lQ9KYdKmTM83V8hAlwFAc=;
+        b=B8DLXU5mPtVZraNIA9Nso/1mlal8EqmPZdwwHYmje5ZtO/fpdcdhkqO6FHn3uxhVdq
+         FzjUSXWlDIgbCrGiZHztg4LTr2g4DDiw3EHw9xkWD1B29Hl0qjlT93XEXpMGVoAIgHKC
+         2ho+WSYGCholZkRw4s0CNF5myPHvRjwO/uoCsUK4fuuXJi1FELaIcTCsl+B79VbzCZ+6
+         eOrRKYr4pxiEzbQIulhh0QM3PGYLVFkBgeZGKRK3SbqdWK/NSrAuGapibAY39w0HVfNs
+         wAJEcBybf27uXQIEU4IKbTyfkVPFI9k/Pj/dCapgdZR4qUl87VGS55seC2YCjraOdnEF
+         u00Q==
+X-Gm-Message-State: AOAM530nE5MeKJS6Y97Vdavx0KdYPtMXHQSLUuwzkDf/MxhaRgUbp/mn
+        X4f3zhP3jhfVpo9cLQ/GUlSaVDMA82JRQNFTTI9AWqNbLX5GlfJmp/ONgMidhsRybo6V3hj4Txz
+        xjLTfg7oJF30fRYIgd4JDDQ==
+X-Received: by 2002:a05:6402:2d4:: with SMTP id b20mr8449557edx.98.1642689581194;
+        Thu, 20 Jan 2022 06:39:41 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJx7QsHN5sY6fK7Vbj+K5/OavxogCBIliNExc9shQzj9qCMxf2il3s8jvjaw8aZ+7DIdD8rq1w==
+X-Received: by 2002:a05:6402:2d4:: with SMTP id b20mr8449533edx.98.1642689581020;
+        Thu, 20 Jan 2022 06:39:41 -0800 (PST)
 Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id gr7sm1108869ejb.2.2022.01.20.06.39.29
+        by smtp.gmail.com with ESMTPSA id cr8sm1386979edb.47.2022.01.20.06.39.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 06:39:29 -0800 (PST)
-Message-ID: <d77c27ac-6721-1d3e-2d79-4e4dfae7cabe@redhat.com>
-Date:   Thu, 20 Jan 2022 15:39:28 +0100
+        Thu, 20 Jan 2022 06:39:40 -0800 (PST)
+Message-ID: <1ff8954c-9894-b0cd-a261-afc30ff02e6b@redhat.com>
+Date:   Thu, 20 Jan 2022 15:39:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.3.0
-Subject: Re: [PATCH v4 1/9] spi: Make spi_alloc_device and spi_add_device
- public again
+Subject: Re: [PATCH v4 4/9] spi: Add API to count spi acpi resources
 Content-Language: en-US
 To:     Stefan Binding <sbinding@opensource.cirrus.com>,
         Mark Brown <broonie@kernel.org>,
@@ -70,9 +69,9 @@ Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
         platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com
 References: <20220120134326.5295-1-sbinding@opensource.cirrus.com>
- <20220120134326.5295-2-sbinding@opensource.cirrus.com>
+ <20220120134326.5295-5-sbinding@opensource.cirrus.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220120134326.5295-2-sbinding@opensource.cirrus.com>
+In-Reply-To: <20220120134326.5295-5-sbinding@opensource.cirrus.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -82,12 +81,9 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 Hi,
 
 On 1/20/22 14:43, Stefan Binding wrote:
-> This functions were previously made private since they
-> were not used. However, these functions will be needed
-> again.
-> 
-> Partial revert of commit da21fde0fdb3
-> ("spi: Make several public functions private to spi.c")
+> Some ACPI nodes may have more than one Spi Resource.
+> To be able to handle these case, its necessary to have
+> a way of counting these resources.
 > 
 > Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
 
@@ -101,71 +97,84 @@ Hans
 
 
 > ---
->  drivers/spi/spi.c       |  6 ++++--
->  include/linux/spi/spi.h | 12 ++++++++++++
->  2 files changed, 16 insertions(+), 2 deletions(-)
+>  drivers/spi/spi.c       | 40 ++++++++++++++++++++++++++++++++++++++++
+>  include/linux/spi/spi.h |  6 ++++++
+>  2 files changed, 46 insertions(+)
 > 
 > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 4599b121d744..1eb84101c4ad 100644
+> index 898cc9931490..8c0c2e26609a 100644
 > --- a/drivers/spi/spi.c
 > +++ b/drivers/spi/spi.c
-> @@ -532,7 +532,7 @@ static DEFINE_MUTEX(board_lock);
->   *
->   * Return: a pointer to the new device, or NULL.
->   */
-> -static struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
-> +struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
->  {
->  	struct spi_device	*spi;
+> @@ -2325,6 +2325,46 @@ struct acpi_spi_lookup {
+>  	int			irq_index;
+>  };
 >  
-> @@ -557,6 +557,7 @@ static struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
->  	device_initialize(&spi->dev);
->  	return spi;
->  }
-> +EXPORT_SYMBOL_GPL(spi_alloc_device);
->  
->  static void spi_dev_set_name(struct spi_device *spi)
->  {
-> @@ -652,7 +653,7 @@ static int __spi_add_device(struct spi_device *spi)
->   *
->   * Return: 0 on success; negative errno on failure
->   */
-> -static int spi_add_device(struct spi_device *spi)
-> +int spi_add_device(struct spi_device *spi)
->  {
->  	struct spi_controller *ctlr = spi->controller;
->  	struct device *dev = ctlr->dev.parent;
-> @@ -673,6 +674,7 @@ static int spi_add_device(struct spi_device *spi)
->  	mutex_unlock(&ctlr->add_lock);
->  	return status;
->  }
-> +EXPORT_SYMBOL_GPL(spi_add_device);
->  
->  static int spi_add_device_locked(struct spi_device *spi)
+> +static int acpi_spi_count(struct acpi_resource *ares, void *data)
+> +{
+> +	struct acpi_resource_spi_serialbus *sb;
+> +	int *count = data;
+> +
+> +	if (ares->type != ACPI_RESOURCE_TYPE_SERIAL_BUS)
+> +		return 1;
+> +
+> +	sb = &ares->data.spi_serial_bus;
+> +	if (sb->type != ACPI_RESOURCE_SERIAL_TYPE_SPI)
+> +		return 1;
+> +
+> +	*count = *count + 1;
+> +
+> +	return 1;
+> +}
+> +
+> +/**
+> + * acpi_spi_count_resources - Count the number of SpiSerialBus resources
+> + * @adev:	ACPI device
+> + *
+> + * Returns the number of SpiSerialBus resources in the ACPI-device's
+> + * resource-list; or a negative error code.
+> + */
+> +int acpi_spi_count_resources(struct acpi_device *adev)
+> +{
+> +	LIST_HEAD(r);
+> +	int count = 0;
+> +	int ret;
+> +
+> +	ret = acpi_dev_get_resources(adev, &r, acpi_spi_count, &count);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	acpi_dev_free_resource_list(&r);
+> +
+> +	return count;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_spi_count_resources);
+> +
+>  static void acpi_spi_parse_apple_properties(struct acpi_device *dev,
+>  					    struct acpi_spi_lookup *lookup)
 >  {
 > diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 7ab3fed7b804..0346a3ff27fd 100644
+> index 1a34fd0f6ca2..25a82729f8da 100644
 > --- a/include/linux/spi/spi.h
 > +++ b/include/linux/spi/spi.h
-> @@ -1452,7 +1452,19 @@ spi_register_board_info(struct spi_board_info const *info, unsigned n)
->   * use spi_new_device() to describe each device.  You can also call
->   * spi_unregister_device() to start making that device vanish, but
->   * normally that would be handled by spi_unregister_controller().
-> + *
-> + * You can also use spi_alloc_device() and spi_add_device() to use a two
-> + * stage registration sequence for each spi_device. This gives the caller
-> + * some more control over the spi_device structure before it is registered,
-> + * but requires that caller to initialize fields that would otherwise
-> + * be defined using the board info.
->   */
-> +extern struct spi_device *
-> +spi_alloc_device(struct spi_controller *ctlr);
+> @@ -764,6 +764,7 @@ extern void spi_unregister_controller(struct spi_controller *ctlr);
+>  extern struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+>  						struct acpi_device *adev,
+>  						int index, int irq_index);
+> +int acpi_spi_count_resources(struct acpi_device *adev);
+>  #else
+>  static inline struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+>  						       struct acpi_device *adev,
+> @@ -771,6 +772,11 @@ static inline struct spi_device *acpi_spi_device_alloc(struct spi_controller *ct
+>  {
+>  	return ERR_PTR(-EOPNOTSUPP);
+>  }
 > +
-> +extern int
-> +spi_add_device(struct spi_device *spi);
-> +
->  extern struct spi_device *
->  spi_new_device(struct spi_controller *, struct spi_board_info *);
+> +int acpi_spi_count_resources(struct acpi_device *adev)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+>  #endif
 >  
+>  /*
 > 
 
