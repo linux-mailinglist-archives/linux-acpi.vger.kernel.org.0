@@ -2,146 +2,130 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8719494D06
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 12:31:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0B00494EB3
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 14:15:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231603AbiATLbN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 06:31:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47480 "EHLO
+        id S1346283AbiATNP1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jan 2022 08:15:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231593AbiATLbN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jan 2022 06:31:13 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF973C06173F
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 03:31:12 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nAVeb-0003Ed-UQ; Thu, 20 Jan 2022 12:30:57 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nAVeZ-00BLYg-Sj; Thu, 20 Jan 2022 12:30:55 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nAVeY-000E9C-HJ; Thu, 20 Jan 2022 12:30:54 +0100
-Date:   Thu, 20 Jan 2022 12:30:54 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Akhil R <akhilrajeev@nvidia.com>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v2 3/3] i2c: smbus: Use device_*() functions instead of
- of_*()
-Message-ID: <20220120113054.lmd5rmvmflaf7v7t@pengutronix.de>
-References: <1641996862-26960-1-git-send-email-akhilrajeev@nvidia.com>
- <1641996862-26960-4-git-send-email-akhilrajeev@nvidia.com>
- <CAHp75Vd=gxF9jFMvRw3qM9rfsxxCsO8qYXKVheuhjOV7ypU9og@mail.gmail.com>
- <DM5PR12MB18509C555A8A6F5891F0CC28C05A9@DM5PR12MB1850.namprd12.prod.outlook.com>
- <CAHp75VfVJo=8FPX_Pw15X5B3awFXpuEq+=LryxB6M4Ub-YJ7uA@mail.gmail.com>
- <DM5PR12MB185098D36F665AC5702D47DDC05A9@DM5PR12MB1850.namprd12.prod.outlook.com>
- <CAHp75VfVt0b+rBTfvTTj4-M11DrM2EGdqb4NNNTq0ApvR+gpDg@mail.gmail.com>
+        with ESMTP id S1359583AbiATNP0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jan 2022 08:15:26 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFB91C061574;
+        Thu, 20 Jan 2022 05:15:25 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id p27so21587731lfa.1;
+        Thu, 20 Jan 2022 05:15:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=Z8T4ODCid5Vg8gPhZXOgJAmkKij4UIWo8oSKzIeZ2Ac=;
+        b=YzlNFN3Tid4qpfZ4OzWnS5ZqKpoA6cMhAbaJXB9KrFeNuxk9gHzSVPsF8kOAzNU2Cd
+         ABRLnxcmKOZMNqC2D0kM8WzJZDk1rZ3OYs9TDwiR08rvBYcxKwOMuplhUmtwlavyBQU3
+         kQXSLI/CT0GYUT3tsQnhGf2+DH1otcOt55wymvj35ybfKD6IhC/oqvDfYPIdAozS0M2A
+         vdN1Mfdwz6msgIoT5O02PagbD3goD43WPQLM7bn+gkXAvfsH6M62W7OdFgd0EE0rKoPg
+         m+yS7xH9IUUerW7dlRglLzj08EZa4C68Kc6KyxTw1YcZGqvY4SnoeRjvmzCYUwtA06lc
+         hijw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=Z8T4ODCid5Vg8gPhZXOgJAmkKij4UIWo8oSKzIeZ2Ac=;
+        b=q1swfJxsyf8Lff/8KU57hRdPmZhzWp3y5Z37xlHg//qo8ZBHQmE7VmuPuD3N2yFQnI
+         G31pzBg3plY+JTyZl0GEb9vX7VWaBOG1889OxkFXWrmGhtrWcequ0KvswGw2AmMKMpsp
+         0O8VX69iKbWDJrpjM868cGtbQRy+m9t8L5wVEmDUYTcH2IKCdZRMSHvThCqCwqCHYGZs
+         fllwUT7UCVjipVy88DyO5dqYePbh9XdtmXYoAN/rKs0ewP2rJ7f4Q+rrHA3kfI+Bct/K
+         iRSZMnN+ZU6aux8PZOuGK5jlYgBfcQP/4Me61Y1WtP/MX2DwkSNlaaQYBv8/Bu4848Ga
+         gaew==
+X-Gm-Message-State: AOAM530fKS7475CS5kg5oWDGBnwGxyRx62PBJpHEcsg9yFpLyJYy6hZe
+        kfqmCSi6bRFmua8gpVG/yKU=
+X-Google-Smtp-Source: ABdhPJycfCNrik94+hanjb71FiMe5oe1rEjXxkRErg+pWgi5Cabbu2OB2VF8HCGDq4zAfVtsnoJ1iA==
+X-Received: by 2002:a05:6512:2606:: with SMTP id bt6mr32394264lfb.202.1642684524235;
+        Thu, 20 Jan 2022 05:15:24 -0800 (PST)
+Received: from [192.168.2.145] (109-252-139-36.dynamic.spd-mgts.ru. [109.252.139.36])
+        by smtp.googlemail.com with ESMTPSA id m4sm21357lfq.204.2022.01.20.05.15.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jan 2022 05:15:23 -0800 (PST)
+Message-ID: <5807426a-70e5-4513-53bf-c98e74daf42f@gmail.com>
+Date:   Thu, 20 Jan 2022 16:15:22 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cdxvf7ymm4mv6sgi"
-Content-Disposition: inline
-In-Reply-To: <CAHp75VfVt0b+rBTfvTTj4-M11DrM2EGdqb4NNNTq0ApvR+gpDg@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v3 1/9] brcmfmac: pcie: Release firmwares in the
+ brcmf_pcie_setup error path
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220117142919.207370-1-marcan@marcan.st>
+ <20220117142919.207370-2-marcan@marcan.st>
+ <CAHp75VfVuX-BG1MJcEoQrOW6jn=PSMZH0jTcwGj9PwWxocG_Gw@mail.gmail.com>
+ <9a222199-6620-15b7-395f-e079b8e6e529@gmail.com>
+ <CAHp75VdY1gNzVFNneEexEivx1RL_MiX8HxgHoFFd9TN8vXgGLQ@mail.gmail.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+In-Reply-To: <CAHp75VdY1gNzVFNneEexEivx1RL_MiX8HxgHoFFd9TN8vXgGLQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+20.01.2022 00:31, Andy Shevchenko пишет:
+> On Wed, Jan 19, 2022 at 11:22 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>>
+>> 19.01.2022 20:49, Andy Shevchenko пишет:
+>>> On Mon, Jan 17, 2022 at 4:30 PM Hector Martin <marcan@marcan.st> wrote:
+>>>>
+>>>> This avoids leaking memory if brcmf_chip_get_raminfo fails. Note that
+>>>> the CLM blob is released in the device remove path.
+>>>
+>>> ...
+>>>
+>>>>         if (ret) {
+>>>
+>>>>                 brcmf_err(bus, "Failed to get RAM info\n");
+>>>> +               release_firmware(fw);
+>>>> +               brcmf_fw_nvram_free(nvram);
+>>>
+>>> Can we first undo the things and only after print a message?
+>>
+>> Having message first usually is more preferred because at minimum you'll
+>> get the message if "undoing the things" crashes, i.e. will be more
+>> obvious what happened.
+> 
+> If "undo the things" crashes, I would rather like to see that crash
+> report, while serial UART at 9600 will continue flushing the message
+> and then hang without any pointers to what the heck happened. Not
+> here, but in general, messages are also good to be out of the locks.
 
---cdxvf7ymm4mv6sgi
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jan 20, 2022 at 12:43:02PM +0200, Andy Shevchenko wrote:
-> On Thu, Jan 20, 2022 at 12:29 PM Akhil R <akhilrajeev@nvidia.com> wrote:
-> >
-> > > ...
-> > >
-> > > > > This change reveals potential issue:
-> > > > >
-> > > > > > -               irq =3D of_irq_get_byname(adapter->dev.of_node,=
- "smbus_alert");
-> > > > > > +               irq =3D device_irq_get_byname(adapter->dev.pare=
-nt,
-> > > "smbus_alert");
-> > > > >
-> > > > > >                 if (irq <=3D 0)
-> > > > >
-> > > > > I guess this '=3D 0' part should be fixed first.
-> > > >
-> > > > '0' is a failure as per the documentation of of_irq_get_byname() as=
- well as
-> > > > of_irq_get(). The case is different for acpi_irq_get(), but it is h=
-andled in
-> > > > fwnode_irq_get(). If I understood it right, a return value of '0' s=
-hould be
-> > > > considered a failure here.
-> > >
-> > > Depends. I have no idea what the original code does here. But
-> > > returning an error or 0 from this function seems confusing to me.
-> > >
-> > The description in of_irq_get*() says -
-> > /* Return: Linux IRQ number on success, or 0 on the IRQ mapping failure=
-, or
-> >  * -EPROBE_DEFER if the IRQ domain is not yet created, or error code in=
- case
-> >  * of any other failure.
-> >  */
-> > As I see from the code of fwnode_irq_get(), which is used in this case,=
- returns
-> > either the return value of of_irq_get() or error code from acpi_irq_get=
-() when
-> > it fails, or res.start if it didn't fail. I guess, any of these would n=
-ot be 0 unless
-> > there is an error.
->=20
-> of_irq_get*() seems inconsistent...
->=20
-> Uwe, what do you think?
-
-Yeah, this is something I stumbled over during the platform_get_irq*()
-discussion. But I don't feel like investing any more energy there.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---cdxvf7ymm4mv6sgi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHpR+sACgkQwfwUeK3K
-7AlVDQf/UyEbXUuWCywlD2V5dd6jAINm1Cg0yyuFPxHty9d7WFBu0iL+OmYwdKsf
-VNESVe1lcz+AUYaov33RaM0cMCqR2tZ+i3tnoyxBH80xIRTE0ncyW1zhg0pxkQnE
-vQZRkHAjVtz1DzmOKVP1FPCRqh0H9LmZXfaSJL7lhHDLe5WgAhzXszGDVY1J9xZi
-tlR1vB91vzTk/+TLVsj3l+NU5qbrhqx6Cqwktlnn00XX9QMkH5+FApDMC8NfZ9qI
-CMAh5RjiEBoZEKQY70Ix70kyVLAblmNkVY5rvbie9YoZ+fBMMpRNdykLgPqPUaBv
-kEdOP8qlPlbAKVs7MmUfMgtl+IVocg==
-=bB3r
------END PGP SIGNATURE-----
-
---cdxvf7ymm4mv6sgi--
+The hang is actually a better example. It's the most annoying when there
+is a silent hang and no error messages.
