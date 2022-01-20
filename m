@@ -2,114 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE81494BFD
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 11:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE25494C34
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 11:54:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243620AbiATKor (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 05:44:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36568 "EHLO
+        id S229724AbiATKyB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jan 2022 05:54:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233816AbiATKoq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jan 2022 05:44:46 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8400CC061574;
-        Thu, 20 Jan 2022 02:44:46 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id m4so26689010edb.10;
-        Thu, 20 Jan 2022 02:44:46 -0800 (PST)
+        with ESMTP id S229526AbiATKyA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jan 2022 05:54:00 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D93C061574;
+        Thu, 20 Jan 2022 02:54:00 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id cx27so27081209edb.1;
+        Thu, 20 Jan 2022 02:54:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=EAldbO0fY6c4Z69F0zgy5Tqy+hJZ7FajNYzfcG8lzu8=;
-        b=lwbSqh4SLeikP8AenBAz+mJgucOMFhn6+qi40XJf/wKYVo2zz5ZAGvwqwdxvEojzAI
-         JgGkDlMK2QWP3O7fS6JLFVaM0QANG9+1PWJpwn1qDddLR6nbUUSzkVgpp54aL6uqsXgT
-         nKJiiLtDKSTFsVaTdLH4ggrsAdzlfvEMhgS+euHv6FuknqniCl9JaTPwwnHBBNVMJtzO
-         ls6mDoNdCFQefk9og1DtSfY5FF6RQaYeY4TNw1S9BeTTer6+QvdoX3qcyMziU/+zyMs9
-         03qv9y4jIaCOpa0luwW12ltRwgncoale+jJfOIgz0ePs1J86ShFDttgm7KaRLJPiH7LS
-         Dc0g==
+        bh=rueY/jFC2lLrcjtQ698sMwfakQXnY26l1d8Z0p1kGzY=;
+        b=auLHWOAe3eLtUNRB3I/GnroHB9vg/WLVbd9NGSlwq2h+rIeyZH+SKh06qHVXiFcb8f
+         uaP5tk8wF84oK+Hbfr3uMQbhw5K0PhDKKZ3EqCrsccaGA2a9DCYMfk06T+1GVwbfxisi
+         ux+RFoTRcNJYsSVpS0Dx3lDQ57yBbv+lrzCWTBGtW5a2UPrsKrMS37iIwI2CcCz9+rgS
+         rpj42xGjO8qh5hvMJt9pgXsa4TK6tgP2a4wQ8RN9hqBIP5luq1IUSZgiel0Dlt3i+vEl
+         /wcGnxCKVrwphXZ1IbGQKdPCM1yhyDSZJgcADt1jQIEygY43mxzRvVj/GHjhc87yo5CV
+         qiiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=EAldbO0fY6c4Z69F0zgy5Tqy+hJZ7FajNYzfcG8lzu8=;
-        b=W9rtgQtnXq1S6WScgFko0mwYDAUlIr1p0AITQnpZ26r78LaGAz+QV5MI/THv+e+x1t
-         9gk7CLwOc30Q+CLsJO7kLn916b6tMFgaSOUbGAOBSBmlkOZc5M2V4wQy5nC/06nnJBfd
-         30h3SmRBQZAt15zCI6zkXRxAh4muyDvQutqCmgAcTJK6nKskSDnu04Qs+N2YEIQFm7p/
-         B0gC1tewb+DOt5KE7ELw/H4DNoPA/jpvmEEWXPMeaLM5KqwQVxV9xzhIvV4J2fEj3fjY
-         I63gvIHQ78ugrvpyVRMwZ7T7GDBsMoqjiFB2H3TkNhEbsJ1yexsKp1Lu6nZeitGon8SL
-         tQBw==
-X-Gm-Message-State: AOAM531vBI/M5nL4skWWICKIJlkjmdfQDKDyLA3Y+4OeAg9TChrlK0kL
-        bH6p9bryYjCm/Jo3taJ5PAqZC6yowvjVr+/3IU0=
-X-Google-Smtp-Source: ABdhPJzI915PPwkfPJEnAuUAqB1eSmCNb6jxmD2FIagRHCy+t6lJFz807DF7d7pczoMfl+Hj+9jS8/Fr5ibapsuYB8A=
-X-Received: by 2002:a05:6402:35d3:: with SMTP id z19mr20301107edc.29.1642675485050;
- Thu, 20 Jan 2022 02:44:45 -0800 (PST)
+        bh=rueY/jFC2lLrcjtQ698sMwfakQXnY26l1d8Z0p1kGzY=;
+        b=sF2HqiVwfIXNqqcGiuBf5nYMOwtvmBhS3b+Issex0v+uLzrEWmOvF1Bs25OWaJwBZc
+         /tU8bVfrktRP6/bByM+q+y6OW/RYZmld0vpIzRAxaG+9Y6BsGZnbfsTP2NIegqcOjNaL
+         LVXr+akzvKrBBDC9RpxiSMO6mIp8hULOPz5kOOO84RB0/iw3ErBTHlReRwoTTdX3D5vY
+         9On2EYfUFV53GUI05sHVXeecsICHXIqOUBf+cBNLhfzytcLFKm+FOuOebv19mFXY3dye
+         qzLyAHWZzO8pcRcUb6lkz+jZtcojLrcqceYbmiGsG5Et0z0dzapzqS4Rc7n7nCRzKEfG
+         udQQ==
+X-Gm-Message-State: AOAM533SwplEnSPyzdyWV5Hny0LArUATWkIHW+xV84kyK7iwOfgd3MG4
+        LlgUySgDypix9AZjx0XEDYK6oHdqBHQ8H2SFpY8=
+X-Google-Smtp-Source: ABdhPJxGiMU1xrv7ZzwueN4iKsoTSUGlAYddhd/BYPDmdrQuY89UiTfUdv/qHPTtG90np5GBNclAJjIoXTK8m1rJRVM=
+X-Received: by 2002:a17:907:968c:: with SMTP id hd12mr27927990ejc.639.1642676038694;
+ Thu, 20 Jan 2022 02:53:58 -0800 (PST)
 MIME-Version: 1.0
-References: <1641996862-26960-1-git-send-email-akhilrajeev@nvidia.com>
- <1641996862-26960-4-git-send-email-akhilrajeev@nvidia.com>
- <CAHp75Vd=gxF9jFMvRw3qM9rfsxxCsO8qYXKVheuhjOV7ypU9og@mail.gmail.com>
- <DM5PR12MB18509C555A8A6F5891F0CC28C05A9@DM5PR12MB1850.namprd12.prod.outlook.com>
- <CAHp75VfVJo=8FPX_Pw15X5B3awFXpuEq+=LryxB6M4Ub-YJ7uA@mail.gmail.com> <DM5PR12MB185098D36F665AC5702D47DDC05A9@DM5PR12MB1850.namprd12.prod.outlook.com>
-In-Reply-To: <DM5PR12MB185098D36F665AC5702D47DDC05A9@DM5PR12MB1850.namprd12.prod.outlook.com>
+References: <20220117142919.207370-1-marcan@marcan.st> <20220117142919.207370-8-marcan@marcan.st>
+In-Reply-To: <20220117142919.207370-8-marcan@marcan.st>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 20 Jan 2022 12:43:02 +0200
-Message-ID: <CAHp75VfVt0b+rBTfvTTj4-M11DrM2EGdqb4NNNTq0ApvR+gpDg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] i2c: smbus: Use device_*() functions instead of of_*()
-To:     Akhil R <akhilrajeev@nvidia.com>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Christian Koenig <christian.koenig@amd.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
+Date:   Thu, 20 Jan 2022 12:52:16 +0200
+Message-ID: <CAHp75Vfj-uqzmY24ByXLnhgyhEuaGpZckdczwUf=2OXL3aBuog@mail.gmail.com>
+Subject: Re: [PATCH v3 7/9] brcmfmac: of: Use devm_kstrdup for board_type &
+ check for errors
+To:     Hector Martin <marcan@marcan.st>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 20, 2022 at 12:29 PM Akhil R <akhilrajeev@nvidia.com> wrote:
+On Mon, Jan 17, 2022 at 4:31 PM Hector Martin <marcan@marcan.st> wrote:
 >
-> > ...
-> >
-> > > > This change reveals potential issue:
-> > > >
-> > > > > -               irq = of_irq_get_byname(adapter->dev.of_node, "smbus_alert");
-> > > > > +               irq = device_irq_get_byname(adapter->dev.parent,
-> > "smbus_alert");
-> > > >
-> > > > >                 if (irq <= 0)
-> > > >
-> > > > I guess this '= 0' part should be fixed first.
-> > >
-> > > '0' is a failure as per the documentation of of_irq_get_byname() as well as
-> > > of_irq_get(). The case is different for acpi_irq_get(), but it is handled in
-> > > fwnode_irq_get(). If I understood it right, a return value of '0' should be
-> > > considered a failure here.
-> >
-> > Depends. I have no idea what the original code does here. But
-> > returning an error or 0 from this function seems confusing to me.
-> >
-> The description in of_irq_get*() says -
-> /* Return: Linux IRQ number on success, or 0 on the IRQ mapping failure, or
->  * -EPROBE_DEFER if the IRQ domain is not yet created, or error code in case
->  * of any other failure.
->  */
-> As I see from the code of fwnode_irq_get(), which is used in this case, returns
-> either the return value of of_irq_get() or error code from acpi_irq_get() when
-> it fails, or res.start if it didn't fail. I guess, any of these would not be 0 unless
-> there is an error.
+> This was missing a NULL check, and we can collapse the strlen/alloc/copy
+> into a devm_kstrdup().
 
-of_irq_get*() seems inconsistent...
+Nice patch. After dropping the message,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Uwe, what do you think?
+>                 /* get rid of '/' in the compatible string to be able to find the FW */
+>                 len = strlen(tmp) + 1;
+> -               board_type = devm_kzalloc(dev, len, GFP_KERNEL);
+> -               strscpy(board_type, tmp, len);
+> +               board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
+> +               if (!board_type) {
+> +                       brcmf_err("out of memory allocating board_type\n");
+> +                       of_node_put(root);
+> +                       return;
+> +               }
+
+>                 for (i = 0; i < board_type[i]; i++) {
+>                         if (board_type[i] == '/')
+>                                 board_type[i] = '-';
+
+Next step is to replace this with NIH strreplace()
+
+And
+  of_property_read_string_index(root, "compatible", 0, &tmp);
+with
+  of_property_read_string(root, "compatible", &tmp);
+
+And might add an error check, but I believe if there is no compatible
+property present, this can't be called.
 
 -- 
 With Best Regards,
