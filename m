@@ -2,176 +2,173 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EA174950FC
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 16:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47BA64950FF
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 16:07:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376420AbiATPGe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 10:06:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:47693 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1376417AbiATPEf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jan 2022 10:04:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642691074;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=To2wpxuY27WAnz4SIl/hJ0+xCm0ywOKL7oN+T9JQDqU=;
-        b=Ll1EFoNiEOXz0TdHrErOiX9KBKlaYP/n+xANxyjOAhnAEMg3hgUQViu+zBJjKWRiH2eOLC
-        F9IcYDLwhJB/KOYvC7UEMUUBU/no/hij6IYvJVJPzuwtkQDsPBIDT3OA+35JWZz0MIbO3c
-        USrcEj9gMy/gpjSVRSWgrufiOlt/P4A=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-433-eacDs_2rOXG1WzP7w84NVA-1; Thu, 20 Jan 2022 10:04:31 -0500
-X-MC-Unique: eacDs_2rOXG1WzP7w84NVA-1
-Received: by mail-ed1-f72.google.com with SMTP id en7-20020a056402528700b00404aba0a6ffso4995802edb.5
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 07:04:31 -0800 (PST)
+        id S1376462AbiATPHA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jan 2022 10:07:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40824 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1376424AbiATPG5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 20 Jan 2022 10:06:57 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5A5C06161C;
+        Thu, 20 Jan 2022 07:06:56 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id n10so14327212edv.2;
+        Thu, 20 Jan 2022 07:06:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=XqnbvcF63+uApi2EhOn9/7NQ0bQFc9rvPdUrWfP50Zw=;
+        b=cFCSlazVlXbqrLHOgpSmH/470GORmHhtDM7s9dozAE7T5eXQlK0EWoy/iJmzSv3Bv0
+         DgXkVpfi6+rgyqGze/10CTzRBwSvkOhCWMC51qRo5c0gtJmOHgroNZISLf5u/nF+EF2f
+         IPTRm2CNo5/CAX1aqDQVKt7OVT0NYoG7mclTL1Neg7VMztliMYXpggIHibr/+kHruoLB
+         kxT2uwgT42qs5bXHE0h131qyKV/WFlSKHMia7MsOqavgHtSlPEVS1MSutDZIXIf7EFY4
+         L4Lh0Ibf2BiJ/UvLd4xuBO55V1m3l7BLshJiceBSIqZZUxAxvFpnBvEA293LIZ8Yotm4
+         XAig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=To2wpxuY27WAnz4SIl/hJ0+xCm0ywOKL7oN+T9JQDqU=;
-        b=hLw9FN0mbkqL1HH/bQi8le1y8PjywkPbcwfgZseEERJf6E09IitQeKn4m+lB8bfv6b
-         jtLjw1muFffof/8ZDWXEebyenPZBt7KkF1clM0XjMOq0sAywcYPokREh6O6/fMM1KXIF
-         401AO07+gSqlZB0yW8qZZXFpX8jadSrHpdjHmStvy8/ZsrhP9Tzg8zJD8WB3toVeGYTh
-         Ez8sfWThasz7BpZpbGy5gQZIPwOjfSPry/cQxBlaICyfUn9n6R2/z11KSDrcLOJTegxg
-         mgWg57R6MAvhlOeCDZ4RRsq4hKrz1o6fTm7gvnnnQfcHnKMNva61uAeekcwS84lDB/8F
-         w1BA==
-X-Gm-Message-State: AOAM533nV4BYnndiePLaGwFxh59o4ROUx2tpYk7A0Wyjuv9oHn9q/8Yi
-        4EHKXyhbAJzj/9cYxj52DADATccPm3QlZ7qGfvlOUg/kUs3DQcTYfV96iecQ9n74h1kbF89SqbX
-        7eYWJ+IoK9saHcX14hL+Iog==
-X-Received: by 2002:a17:907:6da4:: with SMTP id sb36mr28535594ejc.542.1642691070457;
-        Thu, 20 Jan 2022 07:04:30 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyghiAn88f/FuP8ckekTfjsMklMLqYCh+mLdlTm7Wp0lVLOMWfL9/cqIYmnkwrbVIhfgzxPWA==
-X-Received: by 2002:a17:907:6da4:: with SMTP id sb36mr28535566ejc.542.1642691070203;
-        Thu, 20 Jan 2022 07:04:30 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id gh14sm1090985ejb.38.2022.01.20.07.04.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 07:04:29 -0800 (PST)
-Message-ID: <78979080-1338-002c-ee16-5213415095da@redhat.com>
-Date:   Thu, 20 Jan 2022 16:04:29 +0100
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XqnbvcF63+uApi2EhOn9/7NQ0bQFc9rvPdUrWfP50Zw=;
+        b=00f7MQu/Kge9Y813HYUZP+BprEwW2fhdf9YF4Fi3NNoyyrGlIgDnTKaB7T+gxk5HDw
+         eavvtV1egPS8PqJ3h+s34GvkpkgHUJM0Ye60YPUfnP9oSl6VjxWHx6X8sjWl6HJuRXQ9
+         62mxfKg9BTbv3ZsEA6zt7i8tK23hhi17uvD8XXQfOtNENEbi8ILU0GcVZ1brfDCMUm4B
+         Z1en0timt42FDz3vN6O7C8ZMWxO1zbLJR2PRwmBSyw90G78QLvVAZaghu/V/sVBkbZiz
+         ttpOV1yGit+6Zj5YFtXohqRllkeXLpmaHbMu7tJzewmpddvC+fMOOpqeHFYeZ/mKpzMG
+         6+UQ==
+X-Gm-Message-State: AOAM533KQlfxxGyGnAq3W1hU7FENqVWijrzmx/VA24pBPs9Fkw0OYKt8
+        sfDf97bjZ1ua4DWm179iNhUPz6vBMcYBhAlCYfs=
+X-Google-Smtp-Source: ABdhPJzb5cRpzEAwdTUzxGEj33YV4a0nbkAyA6u/Tf8nCrvMjsqx1WYbld1uzPAX3RZeYJfj0P4RKiEwSPaCO7ZLdvA=
+X-Received: by 2002:a05:6402:34cb:: with SMTP id w11mr35621907edc.158.1642691215196;
+ Thu, 20 Jan 2022 07:06:55 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v4 4/9] spi: Add API to count spi acpi resources
-Content-Language: en-US
-To:     Stefan Binding <sbinding@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com
-References: <20220120134326.5295-1-sbinding@opensource.cirrus.com>
- <20220120134326.5295-5-sbinding@opensource.cirrus.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220120134326.5295-5-sbinding@opensource.cirrus.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <1642686255-25951-1-git-send-email-akhilrajeev@nvidia.com> <1642686255-25951-4-git-send-email-akhilrajeev@nvidia.com>
+In-Reply-To: <1642686255-25951-4-git-send-email-akhilrajeev@nvidia.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 20 Jan 2022 17:05:13 +0200
+Message-ID: <CAHp75VcBPn=2EBNfwfs-V81PzT5vrYk5NNqpXnUeHeqcyP1sTg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] i2c: smbus: Use device_*() functions instead of of_*()
+To:     Akhil R <akhilrajeev@nvidia.com>
+Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Christian Koenig <christian.koenig@amd.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Wolfram Sang <wsa@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+On Thu, Jan 20, 2022 at 3:45 PM Akhil R <akhilrajeev@nvidia.com> wrote:
+>
+> Change of_*() functions to device_*() for firmware agnostic usage.
+> This allows to have the smbus_alert interrupt without any changes
+> in the controller drivers using the ACPI table.
 
-On 1/20/22 14:43, Stefan Binding wrote:
-> Some ACPI nodes may have more than one Spi Resource.
-> To be able to handle these case, its necessary to have
-> a way of counting these resources.
-> 
-> Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+This patch LGTM.
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+The 0 check needs a separate discussion and fixing, which is out of scope here.
+
+> Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
 > ---
->  drivers/spi/spi.c       | 40 ++++++++++++++++++++++++++++++++++++++++
->  include/linux/spi/spi.h |  6 ++++++
->  2 files changed, 46 insertions(+)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 898cc9931490..8c0c2e26609a 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -2325,6 +2325,46 @@ struct acpi_spi_lookup {
->  	int			irq_index;
->  };
->  
-> +static int acpi_spi_count(struct acpi_resource *ares, void *data)
-> +{
-> +	struct acpi_resource_spi_serialbus *sb;
-> +	int *count = data;
-> +
-> +	if (ares->type != ACPI_RESOURCE_TYPE_SERIAL_BUS)
-> +		return 1;
-> +
-> +	sb = &ares->data.spi_serial_bus;
-> +	if (sb->type != ACPI_RESOURCE_SERIAL_TYPE_SPI)
-> +		return 1;
-> +
-> +	*count = *count + 1;
-> +
-> +	return 1;
-> +}
-> +
-> +/**
-> + * acpi_spi_count_resources - Count the number of SpiSerialBus resources
-> + * @adev:	ACPI device
-> + *
-> + * Returns the number of SpiSerialBus resources in the ACPI-device's
-> + * resource-list; or a negative error code.
-> + */
-> +int acpi_spi_count_resources(struct acpi_device *adev)
-> +{
-> +	LIST_HEAD(r);
-> +	int count = 0;
-> +	int ret;
-> +
-> +	ret = acpi_dev_get_resources(adev, &r, acpi_spi_count, &count);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	acpi_dev_free_resource_list(&r);
-> +
-> +	return count;
-> +}
-> +EXPORT_SYMBOL_GPL(acpi_spi_count_resources);
-> +
->  static void acpi_spi_parse_apple_properties(struct acpi_device *dev,
->  					    struct acpi_spi_lookup *lookup)
->  {
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 1a34fd0f6ca2..25a82729f8da 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -764,6 +764,7 @@ extern void spi_unregister_controller(struct spi_controller *ctlr);
->  extern struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
->  						struct acpi_device *adev,
->  						int index, int irq_index);
-> +int acpi_spi_count_resources(struct acpi_device *adev);
->  #else
->  static inline struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
->  						       struct acpi_device *adev,
-> @@ -771,6 +772,11 @@ static inline struct spi_device *acpi_spi_device_alloc(struct spi_controller *ct
->  {
->  	return ERR_PTR(-EOPNOTSUPP);
+>  drivers/i2c/i2c-core-base.c  |  2 +-
+>  drivers/i2c/i2c-core-smbus.c | 10 +++++-----
+>  drivers/i2c/i2c-smbus.c      |  2 +-
+>  include/linux/i2c-smbus.h    |  6 +++---
+>  4 files changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> index 2c59dd7..32a4526 100644
+> --- a/drivers/i2c/i2c-core-base.c
+> +++ b/drivers/i2c/i2c-core-base.c
+> @@ -1479,7 +1479,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
+>                 goto out_list;
+>         }
+>
+> -       res = of_i2c_setup_smbus_alert(adap);
+> +       res = i2c_setup_smbus_alert(adap);
+>         if (res)
+>                 goto out_reg;
+>
+> diff --git a/drivers/i2c/i2c-core-smbus.c b/drivers/i2c/i2c-core-smbus.c
+> index e5b2d14..4c24c84 100644
+> --- a/drivers/i2c/i2c-core-smbus.c
+> +++ b/drivers/i2c/i2c-core-smbus.c
+> @@ -701,13 +701,13 @@ struct i2c_client *i2c_new_smbus_alert_device(struct i2c_adapter *adapter,
 >  }
-> +
-> +int acpi_spi_count_resources(struct acpi_device *adev)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
+>  EXPORT_SYMBOL_GPL(i2c_new_smbus_alert_device);
+>
+> -#if IS_ENABLED(CONFIG_I2C_SMBUS) && IS_ENABLED(CONFIG_OF)
+> -int of_i2c_setup_smbus_alert(struct i2c_adapter *adapter)
+> +#if IS_ENABLED(CONFIG_I2C_SMBUS)
+> +int i2c_setup_smbus_alert(struct i2c_adapter *adapter)
+>  {
+>         int irq;
+>
+> -       irq = of_property_match_string(adapter->dev.of_node, "interrupt-names",
+> -                                      "smbus_alert");
+> +       irq = device_property_match_string(adapter->dev.parent, "interrupt-names",
+> +                                          "smbus_alert");
+>         if (irq == -EINVAL || irq == -ENODATA)
+>                 return 0;
+>         else if (irq < 0)
+> @@ -715,5 +715,5 @@ int of_i2c_setup_smbus_alert(struct i2c_adapter *adapter)
+>
+>         return PTR_ERR_OR_ZERO(i2c_new_smbus_alert_device(adapter, NULL));
+>  }
+> -EXPORT_SYMBOL_GPL(of_i2c_setup_smbus_alert);
+> +EXPORT_SYMBOL_GPL(i2c_setup_smbus_alert);
 >  #endif
->  
->  /*
+> diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
+> index d3d06e3..fdd6d97 100644
+> --- a/drivers/i2c/i2c-smbus.c
+> +++ b/drivers/i2c/i2c-smbus.c
+> @@ -128,7 +128,7 @@ static int smbalert_probe(struct i2c_client *ara,
+>         if (setup) {
+>                 irq = setup->irq;
+>         } else {
+> -               irq = of_irq_get_byname(adapter->dev.of_node, "smbus_alert");
+> +               irq = device_irq_get_byname(adapter->dev.parent, "smbus_alert");
+>                 if (irq <= 0)
+>                         return irq;
+>         }
+> diff --git a/include/linux/i2c-smbus.h b/include/linux/i2c-smbus.h
+> index 1ef4218..95cf902 100644
+> --- a/include/linux/i2c-smbus.h
+> +++ b/include/linux/i2c-smbus.h
+> @@ -30,10 +30,10 @@ struct i2c_client *i2c_new_smbus_alert_device(struct i2c_adapter *adapter,
+>                                               struct i2c_smbus_alert_setup *setup);
+>  int i2c_handle_smbus_alert(struct i2c_client *ara);
+>
+> -#if IS_ENABLED(CONFIG_I2C_SMBUS) && IS_ENABLED(CONFIG_OF)
+> -int of_i2c_setup_smbus_alert(struct i2c_adapter *adap);
+> +#if IS_ENABLED(CONFIG_I2C_SMBUS)
+> +int i2c_setup_smbus_alert(struct i2c_adapter *adap);
+>  #else
+> -static inline int of_i2c_setup_smbus_alert(struct i2c_adapter *adap)
+> +static inline int i2c_setup_smbus_alert(struct i2c_adapter *adap)
+>  {
+>         return 0;
+>  }
+> --
+> 2.7.4
+>
 
-I just realized I miss this bit, like with my review of patch 2/9,
-I don't think we need stubs here.
 
-Regards,
-
-Hans
-
-
+-- 
+With Best Regards,
+Andy Shevchenko
