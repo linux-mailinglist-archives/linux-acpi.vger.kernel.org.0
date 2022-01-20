@@ -2,189 +2,232 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6372F494F7C
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 14:46:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 876EE495059
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 15:37:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242066AbiATNpk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 08:45:40 -0500
-Received: from mail-mw2nam12on2072.outbound.protection.outlook.com ([40.107.244.72]:56928
-        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1344623AbiATNpb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jan 2022 08:45:31 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jutFCYa/L3fT79UqmhEYiUpa4GjdtMEKs5WeeE9H4xVy1MV2Dmxr3s9wukPztc0MaKcrvP3b7/5MLUSdkvgTwzZNQ47g3dj43XzsGD6CIP4OY7JZOA+5+Zz2R0Bj9fIEEndNOxM5mID5bCOlDsTq3ojWUA98Kabftt0pkBoMC8JC2w18x282hPiWM4L2VGxsSOyhGJP0jO13yeUIm2yiCIlAh4fttmKFmxDd9eLlkBXpOhtlE6osdD1b7JZynRqH6aDzBFYuMv06Qe4ZI31RFNJkYxQW19fQMgMUY301PqscgVMg32k+0T3Js+QDqG7tSuCw6tnvm/xfkiucaflLKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OoI1OPC/ws7wVgztxSprWtJddK7zK4qQ4iqfztlA5pM=;
- b=Ncssv4kKnC3J54i/7PwspYzEBtSaW7cWiaxkM6Cpf2sf31DzHDWDfi4LwVMczW1mFZG+HAAlg8VirLikMx/iP+AgZY4bNFSt2Bx7CqKFTFntjiFnUJchdlaX29Pdz046qa2IKLGa5759d+EhNCaEsy5bisMAz7oiesjWVHitWPo1QOlPrrD9+bdBzZVy7DnT0OKPFtR9O87ucfEIWgUL/YY7rdRin58LfCPgWgYrtlSQ7kx31e1IpFXi8pTNlHkfY39ZQeKnUf7+efbb4GXx4MkijiN/KUl5DXFSfBsjGgTYV4AdTAaqQLz/MNoxT9AXvxY1mrj5dzuawKD3SBeVig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 12.22.5.234) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com; dmarc=pass
- (p=reject sp=reject pct=100) action=none header.from=nvidia.com; dkim=none
- (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OoI1OPC/ws7wVgztxSprWtJddK7zK4qQ4iqfztlA5pM=;
- b=bE6kDc/rB75WN+Vk/4SZJ+inLlsUmyrde4VQ9VeTdGGTHwvcE2FYn51GTdviTKEgH3H+AFm8RrpISMzmQBV1rr7m2WG0edY7v/10yE40QAIZ6Lnh3lMYLBBJLMml2gQVVuQXp+2SHWtRKmlWTziMXlwfT8nXDZnvHinwJPcMSVBSVSrMPNxdHV5xdzGQzKl6N0jC0Pk4xvZTwK4wzmkPbhiRuBJ7LoMlmhT00GkE4sA0zbKozbWypQAAGHCoDA5iRC/xwzyFrOw7uE7EXTPpKMuYuHt6cwofKdVFgeE4uxNUOR8sL9i06xFrent74yF2nKs3zeMcHAnF3ic3pUYtUg==
-Received: from DM5PR18CA0083.namprd18.prod.outlook.com (2603:10b6:3:3::21) by
- BYAPR12MB2997.namprd12.prod.outlook.com (2603:10b6:a03:db::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4909.10; Thu, 20 Jan 2022 13:45:29 +0000
-Received: from DM6NAM11FT025.eop-nam11.prod.protection.outlook.com
- (2603:10b6:3:3:cafe::e6) by DM5PR18CA0083.outlook.office365.com
- (2603:10b6:3:3::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4909.8 via Frontend
- Transport; Thu, 20 Jan 2022 13:45:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 12.22.5.234)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 12.22.5.234 as permitted sender) receiver=protection.outlook.com;
- client-ip=12.22.5.234; helo=mail.nvidia.com;
-Received: from mail.nvidia.com (12.22.5.234) by
- DM6NAM11FT025.mail.protection.outlook.com (10.13.172.197) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.4909.7 via Frontend Transport; Thu, 20 Jan 2022 13:45:28 +0000
-Received: from HQMAIL105.nvidia.com (172.20.187.12) by DRHQMAIL101.nvidia.com
- (10.27.9.10) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Thu, 20 Jan
- 2022 13:45:25 +0000
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Thu, 20 Jan
- 2022 13:45:25 +0000
-Received: from kyarlagadda-linux.nvidia.com (10.127.8.10) by mail.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server id 15.0.1497.18 via Frontend
- Transport; Thu, 20 Jan 2022 05:45:17 -0800
-From:   Akhil R <akhilrajeev@nvidia.com>
-To:     <u.kleine-koenig@pengutronix.de>, <andy.shevchenko@gmail.com>,
-        <christian.koenig@amd.com>, <digetx@gmail.com>,
-        <gregkh@linuxfoundation.org>, <jonathanh@nvidia.com>,
-        <ldewangan@nvidia.com>, <lenb@kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        <rafael@kernel.org>, <sumit.semwal@linaro.org>,
-        <thierry.reding@gmail.com>, <wsa@kernel.org>
-CC:     <akhilrajeev@nvidia.com>
-Subject: [PATCH v3 3/3] i2c: smbus: Use device_*() functions instead of of_*()
-Date:   Thu, 20 Jan 2022 19:14:15 +0530
-Message-ID: <1642686255-25951-4-git-send-email-akhilrajeev@nvidia.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1642686255-25951-1-git-send-email-akhilrajeev@nvidia.com>
-References: <1642686255-25951-1-git-send-email-akhilrajeev@nvidia.com>
-X-NVConfidentiality: public
+        id S238270AbiATOhv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jan 2022 09:37:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:36041 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1353587AbiATOhv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 20 Jan 2022 09:37:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1642689470;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dPyIPk6/0DSM39d75aqtLFcVP807/DRC2fXXT2y2VIg=;
+        b=VaoG3wOPTnYnxycMr1tHkMi/Ulmm1g5edLjUpioYoFSGqP6Jes367wzH/JcAWtwMaVwYz9
+        Fn6gCKUa2R5ymKOjkUy3I/nXAvgGSSSD316qodj8Ew/6X7RvCa2NA1kcfs/MbtHch10aSw
+        c5YmWsrel3Atl7EcnfYSXfoYReaKOO4=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-127-ww1X7LW8N0KJoOMBJcffmA-1; Thu, 20 Jan 2022 09:37:49 -0500
+X-MC-Unique: ww1X7LW8N0KJoOMBJcffmA-1
+Received: by mail-ed1-f69.google.com with SMTP id bm21-20020a0564020b1500b00402c34373f9so6107839edb.2
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 06:37:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=dPyIPk6/0DSM39d75aqtLFcVP807/DRC2fXXT2y2VIg=;
+        b=HgYCe1seZ0h+VEm0dm3G9VOC2v/YCae/jsXiMCJxCDG10xifwk4K0H5MGt3xb/5Nm6
+         qScTCjc94h53vLPpGpCq8PcsVuhfMSvhx00XZ2qhgtnu5wom6lugDHLOfmxD+3sOKTf8
+         LapuP2K7cPgFR3UH/qNO1E5of5dgamZPh5/FEHZBsa+0I8yWwpDBq3YNn8LKZM+BceHd
+         SiWIiOBICR6/2+pnM8NG2krXGr3rYJ8Xfgv64SXiBjoOQhy9V4XiYDMgqz6ZfHM/OxSn
+         98VwoobEqL3OBunfAaCQ4a67X4fp8jU0tc5yQuJv/PTQ7F3dLh8txaENDdQcL3MaZ3Uh
+         z7ow==
+X-Gm-Message-State: AOAM531NvqmBT8VB7DJOrQ9JDrwHMXlUFOHq7pn1pzuS9IS/JZ09/pFP
+        bujOIBW2tad5RNgBGnAlM1k0JWuo0tjCtupkfKx+0MOI/p9MDzB0/j2QwKFLTnIWS0C6pKhUAjG
+        0XvE6ozt28LnNTsYjhj4/WA==
+X-Received: by 2002:a05:6402:2791:: with SMTP id b17mr19574195ede.173.1642689468093;
+        Thu, 20 Jan 2022 06:37:48 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwjkrEhShTflpw7jGM6KhhUDT4r90ruG4S9WPGY374oNXbMYSf+ClZ5qzVw1EVHLqb/3Sd1Og==
+X-Received: by 2002:a05:6402:2791:: with SMTP id b17mr19574174ede.173.1642689467862;
+        Thu, 20 Jan 2022 06:37:47 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id o18sm1076152ejb.111.2022.01.20.06.37.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jan 2022 06:37:47 -0800 (PST)
+Message-ID: <f849c693-86d3-8454-eda9-96c69daaf862@redhat.com>
+Date:   Thu, 20 Jan 2022 15:37:46 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 12c72dca-212f-4fb4-26ce-08d9dc1b1eae
-X-MS-TrafficTypeDiagnostic: BYAPR12MB2997:EE_
-X-Microsoft-Antispam-PRVS: <BYAPR12MB29976C8D5FCECDA7CE79D41EC05A9@BYAPR12MB2997.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9/uW1W32WtkeAsgSJuhACedTrmNAHv3UlG1QYVtI5HyOb2HYrpNLKdDQcyoPl3vEcyXUsCLQ0lX7Zxj4tBl2gDWe6aZC4B0cY+7NQzxd9pd5uAx7zMi2A7CL87ZzxNh3mak7B026O1t5/zm8RR78RuSORscOaAwZMJCA1IT9bqBWlFXDvzD8SNEDS5S/BboLl3LDqftxLQpKYiVp20LRqAKaI56HAbLSYAa4U9ksN9GRF7fA0D/JN2ZoooxlOyUjV9n1hi2TOAmnjWcTg2b3IVLngxkZyEdaym6yWE3eB542wmvHOnqoPC+3cfHtusEqK6VsxJe1HRXgekVF/fGGTEh9p8NrFPbuXsZaHpXgf7xNu6ffEr8Ny8zfqmUjgz6Us4bWl4PGr9myvjqJkrO0mmsnqaMFLyMEDIth/Xsv5bZdG+fAyyMAG1qw5rEyRWmJPaiBQqXIKkV0KKMdZrSXsmxC0zG1Ej1Ib1SoXDsfJSQvcfmzDPicro6W6GENMS6L1596heZKA5j3C3isoXdh9p9v3v+Vanb5PXV59x2Wgx6xdgsyuSUcuR1jyw//X378yuhOYm2D2h17t5Oan+O9+SwJK9h82vV9Yj+GEuCNCwab9/K3mEn4yIrEWng0tasagkVBVgKPzcn5Cj1Tghufm03tchvVG2xFA8ms/oXx4iaGb2svdVwRz3jD0j5kOEbUCDBmJD812xSMQwf0I8gkkHh1d/516JwUbDpQErc9jKiFZA0SXjbwLKjypX035D0WwU1xl3i9pME9a2x/v0qiO7WaQXpGmc0NAqqGju1ThNX9pQfEWssKQEatQ3ivQOOq/uzWxqeZIDQJAkqOq8i/qaxPWPsrdrODcvus5FxWKDM=
-X-Forefront-Antispam-Report: CIP:12.22.5.234;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:mail.nvidia.com;PTR:InfoNoRecords;CAT:NONE;SFS:(4636009)(40470700002)(46966006)(36840700001)(7416002)(47076005)(2616005)(426003)(7696005)(356005)(107886003)(316002)(5660300002)(4326008)(110136005)(81166007)(86362001)(70206006)(70586007)(921005)(40460700001)(2906002)(508600001)(36860700001)(8936002)(36756003)(336012)(82310400004)(8676002)(26005)(186003)(83380400001)(83996005)(2101003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2022 13:45:28.5030
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12c72dca-212f-4fb4-26ce-08d9dc1b1eae
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[12.22.5.234];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT025.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB2997
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v4 2/9] spi: Create helper API to lookup ACPI info for spi
+ device
+Content-Language: en-US
+To:     Stefan Binding <sbinding@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Mark Gross <markgross@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, patches@opensource.cirrus.com
+References: <20220120134326.5295-1-sbinding@opensource.cirrus.com>
+ <20220120134326.5295-3-sbinding@opensource.cirrus.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220120134326.5295-3-sbinding@opensource.cirrus.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Change of_*() functions to device_*() for firmware agnostic usage.
-This allows to have the smbus_alert interrupt without any changes
-in the controller drivers using the ACPI table.
+Hi Stefan,
 
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
----
- drivers/i2c/i2c-core-base.c  |  2 +-
- drivers/i2c/i2c-core-smbus.c | 10 +++++-----
- drivers/i2c/i2c-smbus.c      |  2 +-
- include/linux/i2c-smbus.h    |  6 +++---
- 4 files changed, 10 insertions(+), 10 deletions(-)
+First of all thank you for doing the requested refactoring
+to reuse the existing ACPI SPI enumeration code from
+drivers/spi/spi.c .
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 2c59dd7..32a4526 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1479,7 +1479,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
- 		goto out_list;
- 	}
- 
--	res = of_i2c_setup_smbus_alert(adap);
-+	res = i2c_setup_smbus_alert(adap);
- 	if (res)
- 		goto out_reg;
- 
-diff --git a/drivers/i2c/i2c-core-smbus.c b/drivers/i2c/i2c-core-smbus.c
-index e5b2d14..4c24c84 100644
---- a/drivers/i2c/i2c-core-smbus.c
-+++ b/drivers/i2c/i2c-core-smbus.c
-@@ -701,13 +701,13 @@ struct i2c_client *i2c_new_smbus_alert_device(struct i2c_adapter *adapter,
- }
- EXPORT_SYMBOL_GPL(i2c_new_smbus_alert_device);
- 
--#if IS_ENABLED(CONFIG_I2C_SMBUS) && IS_ENABLED(CONFIG_OF)
--int of_i2c_setup_smbus_alert(struct i2c_adapter *adapter)
-+#if IS_ENABLED(CONFIG_I2C_SMBUS)
-+int i2c_setup_smbus_alert(struct i2c_adapter *adapter)
- {
- 	int irq;
- 
--	irq = of_property_match_string(adapter->dev.of_node, "interrupt-names",
--				       "smbus_alert");
-+	irq = device_property_match_string(adapter->dev.parent, "interrupt-names",
-+					   "smbus_alert");
- 	if (irq == -EINVAL || irq == -ENODATA)
- 		return 0;
- 	else if (irq < 0)
-@@ -715,5 +715,5 @@ int of_i2c_setup_smbus_alert(struct i2c_adapter *adapter)
- 
- 	return PTR_ERR_OR_ZERO(i2c_new_smbus_alert_device(adapter, NULL));
- }
--EXPORT_SYMBOL_GPL(of_i2c_setup_smbus_alert);
-+EXPORT_SYMBOL_GPL(i2c_setup_smbus_alert);
- #endif
-diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
-index d3d06e3..fdd6d97 100644
---- a/drivers/i2c/i2c-smbus.c
-+++ b/drivers/i2c/i2c-smbus.c
-@@ -128,7 +128,7 @@ static int smbalert_probe(struct i2c_client *ara,
- 	if (setup) {
- 		irq = setup->irq;
- 	} else {
--		irq = of_irq_get_byname(adapter->dev.of_node, "smbus_alert");
-+		irq = device_irq_get_byname(adapter->dev.parent, "smbus_alert");
- 		if (irq <= 0)
- 			return irq;
- 	}
-diff --git a/include/linux/i2c-smbus.h b/include/linux/i2c-smbus.h
-index 1ef4218..95cf902 100644
---- a/include/linux/i2c-smbus.h
-+++ b/include/linux/i2c-smbus.h
-@@ -30,10 +30,10 @@ struct i2c_client *i2c_new_smbus_alert_device(struct i2c_adapter *adapter,
- 					      struct i2c_smbus_alert_setup *setup);
- int i2c_handle_smbus_alert(struct i2c_client *ara);
- 
--#if IS_ENABLED(CONFIG_I2C_SMBUS) && IS_ENABLED(CONFIG_OF)
--int of_i2c_setup_smbus_alert(struct i2c_adapter *adap);
-+#if IS_ENABLED(CONFIG_I2C_SMBUS)
-+int i2c_setup_smbus_alert(struct i2c_adapter *adap);
- #else
--static inline int of_i2c_setup_smbus_alert(struct i2c_adapter *adap)
-+static inline int i2c_setup_smbus_alert(struct i2c_adapter *adap)
- {
- 	return 0;
- }
--- 
-2.7.4
+On 1/20/22 14:43, Stefan Binding wrote:
+> This can then be used to find a spi resource inside an
+> ACPI node, and allocate a spi device.
+> 
+> Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+> ---
+>  drivers/spi/spi.c       | 46 ++++++++++++++++++++++++++++++++---------
+>  include/linux/spi/spi.h | 12 +++++++++++
+>  2 files changed, 48 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 1eb84101c4ad..13f4701f0694 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -2410,8 +2410,18 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+>  	return 1;
+>  }
+>  
+> -static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+> -					    struct acpi_device *adev)
+> +/**
+> + * acpi_spi_device_alloc - Allocate a spi device, and fill it in with ACPI information
+> + * @ctlr: controller to which the spi device belongs
+> + * @adev: ACPI Device for the spi device
+> + *
+> + * This should be used to allocate a new spi device from and ACPI Node.
+> + * The caller is responsible for calling spi_add_device to register the spi device.
+> + *
+> + * Return: a pointer to the new device, or ERR_PTR on error.
+> + */
+> +struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+> +					 struct acpi_device *adev)
+>  {
+>  	acpi_handle parent_handle = NULL;
+>  	struct list_head resource_list;
+> @@ -2419,10 +2429,6 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+>  	struct spi_device *spi;
+>  	int ret;
+>  
+> -	if (acpi_bus_get_status(adev) || !adev->status.present ||
+> -	    acpi_device_enumerated(adev))
+> -		return AE_OK;
+> -
+>  	lookup.ctlr		= ctlr;
+>  	lookup.irq		= -1;
+>  
+> @@ -2433,7 +2439,7 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+>  
+>  	if (ret < 0)
+>  		/* found SPI in _CRS but it points to another controller */
+> -		return AE_OK;
+> +		return ERR_PTR(-ENODEV);
+>  
+>  	if (!lookup.max_speed_hz &&
+>  	    ACPI_SUCCESS(acpi_get_parent(adev->handle, &parent_handle)) &&
+> @@ -2443,16 +2449,15 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+>  	}
+>  
+>  	if (!lookup.max_speed_hz)
+> -		return AE_OK;
+> +		return ERR_PTR(-ENODEV);
+>  
+>  	spi = spi_alloc_device(ctlr);
+>  	if (!spi) {
+>  		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
+>  			dev_name(&adev->dev));
+> -		return AE_NO_MEMORY;
+> +		return ERR_PTR(-ENOMEM);
+>  	}
+>  
+> -
+>  	ACPI_COMPANION_SET(&spi->dev, adev);
+>  	spi->max_speed_hz	= lookup.max_speed_hz;
+>  	spi->mode		|= lookup.mode;
+> @@ -2460,6 +2465,27 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+>  	spi->bits_per_word	= lookup.bits_per_word;
+>  	spi->chip_select	= lookup.chip_select;
+>  
+> +	return spi;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_spi_device_alloc);
+> +
+> +static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+> +					    struct acpi_device *adev)
+> +{
+> +	struct spi_device *spi;
+> +
+> +	if (acpi_bus_get_status(adev) || !adev->status.present ||
+> +	    acpi_device_enumerated(adev))
+> +		return AE_OK;
+> +
+> +	spi = acpi_spi_device_alloc(ctlr, adev);
+> +	if (IS_ERR(spi)) {
+> +		if (PTR_ERR(spi) == -ENOMEM)
+> +			return AE_NO_MEMORY;
+> +		else
+> +			return AE_OK;
+> +	}
+> +
+>  	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+>  			  sizeof(spi->modalias));
+>  
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index 0346a3ff27fd..200725692b93 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -16,6 +16,7 @@
+>  #include <linux/gpio/consumer.h>
+>  
+>  #include <uapi/linux/spi/spi.h>
+> +#include <linux/acpi.h>
+>  
+>  struct dma_chan;
+>  struct software_node;
+> @@ -759,6 +760,17 @@ extern int devm_spi_register_controller(struct device *dev,
+>  					struct spi_controller *ctlr);
+>  extern void spi_unregister_controller(struct spi_controller *ctlr);
+>  
+> +#if IS_ENABLED(CONFIG_ACPI)
+> +extern struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+> +						struct acpi_device *adev);
+> +#else
+> +static inline struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+> +						       struct acpi_device *adev);
+> +{
+> +	return ERR_PTR(-EOPNOTSUPP);
+> +}
+> +#endif
+> +
+
+I don't think having a stub here is necessary ? I would expect any callers
+of this to make sure that both CONFIG_SPI and CONFIG_ACPI are set. Note that
+not having CONFIG_SPI set is not caught by your stubbing here and there are
+no stubs for any of the other spi functions.
+
+Regards,
+
+Hans
+
+
+
+>  /*
+>   * SPI resource management while processing a SPI message
+>   */
+> 
 
