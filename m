@@ -2,59 +2,59 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5FE94951F6
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 17:04:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3FB4495234
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jan 2022 17:17:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376863AbiATQEA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 11:04:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:28706 "EHLO
+        id S1376926AbiATQRz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 20 Jan 2022 11:17:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:40943 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1376854AbiATQDv (ORCPT
+        by vger.kernel.org with ESMTP id S233059AbiATQRz (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jan 2022 11:03:51 -0500
+        Thu, 20 Jan 2022 11:17:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1642694631;
+        s=mimecast20190719; t=1642695474;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lixuK47drG//j/RuSryoeq2vkz8TlRYpW2Ls5y5YAvA=;
-        b=gkCGPSKw/amZQSLX8IerbcmUfFFAvgJOyJQc+8kvpKAt3nTJhuzS6kLOTrfQnCOyi/SqO6
-        Glk/C/t3g5nO+U7hKw2P8yKEL2v3hnQvzXMG1/gjSctcOZYS3pgFHDGGi/PP+jlqcnmERl
-        zprCpTIV+jpjcwkEktQPIyQMXV81L6Y=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=RC733lFPIHzk3RkK9z52O+U2Hg6U4mWbFhj23dwMdo0=;
+        b=VLRgdtAKCRZ0kb/1VcKDicwUy2ziLzIAqeV/8dhtoM839xx1Lezm4864Sg5purmAL+O5Tv
+        T8L7uaQ2AhktYsIC3LcMkUDiu7t2L1nP+qyxNIB+Jv3wvkf9Tf2pFkJmUjHbUO1qZQLeAk
+        IxHwuZ7sNsVDvkfVjb1Qu7kLZBAUJn8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-78-E_Dq-0PkPcSmgtls_U5rBg-1; Thu, 20 Jan 2022 11:03:49 -0500
-X-MC-Unique: E_Dq-0PkPcSmgtls_U5rBg-1
-Received: by mail-ed1-f70.google.com with SMTP id z9-20020a05640240c900b003fea688a17eso6324431edb.10
-        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 08:03:49 -0800 (PST)
+ us-mta-303-mXoE_wU6PhCN7SQsuSZnYQ-1; Thu, 20 Jan 2022 11:17:53 -0500
+X-MC-Unique: mXoE_wU6PhCN7SQsuSZnYQ-1
+Received: by mail-ed1-f72.google.com with SMTP id bm21-20020a0564020b1500b00402c34373f9so6390279edb.2
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 08:17:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=lixuK47drG//j/RuSryoeq2vkz8TlRYpW2Ls5y5YAvA=;
-        b=eMKCyfr8+u5/ischb8oAr3AmuhgE/1ZGSFA6K3DOGjYegA0eOcTKS8eT9zIYdiJqDp
-         2trr3MYjyz771rx64Kpg6nST1rTDnJz1Ypv6qZFQfWLQl865kmY0NYO3FJjfCKDP2c3S
-         bjELshxAFGujt6QujtsoOufBQxT+CPQ0P60W5W+fyaktojRwzhf93W57o44zWNsows2B
-         0FuBTFdWavCEN/TFFXF9CGDrM89yT+Toa6yjQ3tfQkb+GfkpuXrmAv9QPV+oKJsssV3q
-         /jm00bP00fVq6l8uyL6ysOCHeS7vq/+D7N+omrUY6fnqjnqUkFLK1zN7/+sTRJL+FKkR
-         pmiQ==
-X-Gm-Message-State: AOAM532nfUt0Z3BtBrXivhBQWybuXeKZle/d8pmNCY12yR4KJfniO3IZ
-        uwp6KxBiZW80dIAUY0NOxd+De5gQN7SOQakQ6mttnSrR7201I2aRtQCjV+je8AG6pn+rTRW0Nrf
-        rDTA2uyrz8ki9l1T1fY6/mw==
-X-Received: by 2002:a05:6402:158:: with SMTP id s24mr38071578edu.144.1642694628582;
-        Thu, 20 Jan 2022 08:03:48 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxe3h22D7eAd0PIsS5gA0oXNxsIv3oIJVCXkBo3+FeRiUR9f98dTJPy+EdnsnTqdgaYwJqUbw==
-X-Received: by 2002:a05:6402:158:: with SMTP id s24mr38071543edu.144.1642694628273;
-        Thu, 20 Jan 2022 08:03:48 -0800 (PST)
+        bh=RC733lFPIHzk3RkK9z52O+U2Hg6U4mWbFhj23dwMdo0=;
+        b=2xmCt+lQdg3TmbCuIYXBBeDe2GcPzkI4zqDBEWuL9KZZU92Di1jyrO+saT71f97Mr3
+         JDZL180Y9RLqKJ5iFuxsUYh4dkj8R2Y8legyZNGRPdux+aVKvYc2owubcw58LSQ5Y8mQ
+         7uqCWEtYXRqvX8fuiqJyTXzF8xEFtNQQgE7u0XmORbqHGO36aXU6eB2DoufxpLJr4fIr
+         SJ2rzpLThQJDO0NPQAKAfopF/kfo7R6G1OVQU2JFGKhfZ/oTmFeOkm5RRRlBd7SIdcvx
+         f6mH27fIBX494JNDM5nW4GNybzkb3fiWX6uHHhJb6ezPIe/iuqK/xngbH9LcM4ISKXkl
+         SjQg==
+X-Gm-Message-State: AOAM533ZEgTFAvbH5Qvo0SByW04Rmkba6NegmgiFRgfWcTJe5jBouNQC
+        uRGKHvIaNPzRHQnu6e1tBXY938ycyZXk4SAQUlZb19OIAu7M+lsHQFuboFbDQ9uV/++t9Ok8QRx
+        2FpM+HTcEhx+K9bXgbJv6LQ==
+X-Received: by 2002:a17:907:1c0a:: with SMTP id nc10mr20566735ejc.308.1642695471882;
+        Thu, 20 Jan 2022 08:17:51 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyLhLVVCXZg+uHvh9G2LyVGBe1+f7RJ+iHgGbV2n/0A0kB0ocN0jP+qvMTJsudz1CMuv8VAUw==
+X-Received: by 2002:a17:907:1c0a:: with SMTP id nc10mr20566707ejc.308.1642695471591;
+        Thu, 20 Jan 2022 08:17:51 -0800 (PST)
 Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id h15sm1166290ejg.144.2022.01.20.08.03.47
+        by smtp.gmail.com with ESMTPSA id lf15sm1184070ejb.83.2022.01.20.08.17.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 08:03:47 -0800 (PST)
-Message-ID: <f345f3b0-65c7-24ec-4cd7-4e6062f01d17@redhat.com>
-Date:   Thu, 20 Jan 2022 17:03:47 +0100
+        Thu, 20 Jan 2022 08:17:51 -0800 (PST)
+Message-ID: <9c5ed5ee-7ca1-c1f4-5d9d-a63b4327a4af@redhat.com>
+Date:   Thu, 20 Jan 2022 17:17:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.3.0
@@ -81,6 +81,8 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
+
+Sorry some more remarks after all...
 
 On 1/20/22 14:43, Stefan Binding wrote:
 > From: Lucas Tanure <tanureal@opensource.cirrus.com>
@@ -172,6 +174,14 @@ On 1/20/22 14:43, Stefan Binding wrote:
 > -	if (ret < 0)
 > +	if (ret <= 0)
 >  		return ret;
+
+Please change this to:
+
+		return ret == 0 ? -ENODEV : ret;
+
+This helps making return value handler in the caller cleaner,
+also see my upcoming review of patch 7/9.
+
 > +	count = ret;
 >  
 > -	bmi = devm_kmalloc(dev, struct_size(bmi, i2c_devs, ret), GFP_KERNEL);
@@ -237,20 +247,11 @@ On 1/20/22 14:43, Stefan Binding wrote:
 > -	platform_set_drvdata(pdev, bmi);
 > -	return 0;
 > +	dev_info(dev, "Instantiate %d I2C devices.\n", bmi->i2c_num);
-
-Bonus nitpick, please change this to:
-
-	dev_info(dev, "Instantiated %d I2C devices.\n", bmi->i2c_num);
-
-IOW do s/Instantiate/Instantiated/
-
-Regards,
-
-Hans
-
-
 >  
 > +	return bmi->i2c_num;
+
+And change this to return 0.
+
 >  error:
 > -	while (--i >= 0)
 > -		i2c_unregister_device(bmi->i2c_devs[i]);
@@ -291,6 +292,19 @@ Hans
 > +		ret = -ENODEV;
 >  
 >  	return ret;
+
+Then you can simplify the above to just:
+
+	return bmi_i2c_probe(pdev, adev, bmi, inst_array);
+
+:)
+
+Regards,
+
+Hans
+
+
+
 >  }
 > @@ -115,10 +159,8 @@ static int bmi_probe(struct platform_device *pdev)
 >  static int bmi_remove(struct platform_device *pdev)
