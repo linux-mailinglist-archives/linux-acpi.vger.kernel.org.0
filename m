@@ -2,308 +2,195 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC942495898
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jan 2022 04:43:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E138495AC6
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jan 2022 08:35:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233537AbiAUDnh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 20 Jan 2022 22:43:37 -0500
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:37269 "EHLO
-        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233406AbiAUDne (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Thu, 20 Jan 2022 22:43:34 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R611e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0V2PNnnJ_1642736606;
-Received: from 30.240.124.89(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V2PNnnJ_1642736606)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Fri, 21 Jan 2022 11:43:28 +0800
-Message-ID: <4c34906a-244e-3956-0ca7-7131b268cf60@linux.alibaba.com>
-Date:   Fri, 21 Jan 2022 11:43:25 +0800
+        id S1379011AbiAUHfG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Jan 2022 02:35:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35016 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245244AbiAUHfF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jan 2022 02:35:05 -0500
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175B4C06173F
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 23:35:05 -0800 (PST)
+Received: by mail-ed1-x52c.google.com with SMTP id n10so23708921edv.2
+        for <linux-acpi@vger.kernel.org>; Thu, 20 Jan 2022 23:35:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=message-id:date:mime-version:user-agent:subject:to:cc:references
+         :from:in-reply-to;
+        bh=l3rTNujj8HmbYaXf2fElsN/ZwhbedDqYm/ZKQng8WjI=;
+        b=TkDTMUjEdg8/vPF6lhXL+KoV8mkQ3gu2VgMqpTzQ83UBzAbeyMoFeuR9yfNmxqEnYU
+         eGTH04Ag7Qo1xeJz/qMCmD2jdyvqFJHuS736GT1/FCP9pb7DglzZEoqnsr9a2nJwM2gs
+         4Ju60xZ/CmpnKtszoDHWBnWC6fBINhuKzN5d4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :to:cc:references:from:in-reply-to;
+        bh=l3rTNujj8HmbYaXf2fElsN/ZwhbedDqYm/ZKQng8WjI=;
+        b=8J1sJb4OcfnxbiF+b4NFhpjZTxknE5F/M0wwPS0Xpuochddz4teGozbfSkcknnMM7F
+         cSadkcSxdmaBxGYSHoVt5zXOtLxRFBivfI69MLvbLrlzOUvIdzCzHsobDiFd045PqS4m
+         fQTzS+dUxkUNOtHG0G735vrl10BpE3HCv2Xxd+kcS+/eK5P8OY/chzrrRbJoHe1A79Mz
+         x/ELtBxMTX25lB8X8y/yU+W5Sje+M+K4FGc7JID+EEuuMScbevfwiF6j4+ChIR80ik3G
+         KCtDF6E+tmxR8TOtptZJ5VOxLLpnholIb2sbk93+PAxKVQRWhPznEBB+nHITPDRLVPP0
+         GcHQ==
+X-Gm-Message-State: AOAM533nhP/bANjdR+fT8O/S9YI2PMK2C3gD6Fqoom7URkbH4KEQBfA8
+        ys86nXfySTB4NoNqm52EbYwwtg==
+X-Google-Smtp-Source: ABdhPJwmihtqqggX0DWStrqbxUiRP6jfee7LpxUOmAA1VVoQh4RAX+tsuXNI5CdLIjDWehgzVDJIuQ==
+X-Received: by 2002:a17:907:7b99:: with SMTP id ne25mr2374801ejc.769.1642750503523;
+        Thu, 20 Jan 2022 23:35:03 -0800 (PST)
+Received: from [192.168.178.136] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id lf16sm1735591ejc.25.2022.01.20.23.35.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jan 2022 23:35:01 -0800 (PST)
+Message-ID: <86e73289-0a38-0554-e81a-0fb223efb098@broadcom.com>
+Date:   Fri, 21 Jan 2022 08:35:00 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.5.0
-Subject: Re: [PATCH v6] ACPI: explicit init HEST, SDEI and GHES in apci_init
-Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     rafael@kernel.org, bp@alien8.de, tony.luck@intel.com,
-        james.morse@arm.com, lenb@kernel.org, rjw@rjwysocki.net,
-        bhelgaas@google.com, zhangliguang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-pci@vger.kernel.org
-References: <20220120162241.GA1047212@bhelgaas>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20220120162241.GA1047212@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v2 35/35] brcmfmac: common: Add support for external
+ calibration blobs
+To:     Hector Martin <marcan@marcan.st>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220104072658.69756-1-marcan@marcan.st>
+ <20220104072658.69756-36-marcan@marcan.st>
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+In-Reply-To: <20220104072658.69756-36-marcan@marcan.st>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="0000000000003ca08e05d612a8e4"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi, Bjorn,
+--0000000000003ca08e05d612a8e4
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your comments.
-
-在 2022/1/21 AM12:22, Bjorn Helgaas 写道:
-> On Thu, Jan 20, 2022 at 01:05:22PM +0800, Shuai Xue wrote:
->> From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
->> memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
->> the estatus memory pool. On the other hand, ghes_init() relies on
->> sdei_init() to detect the SDEI version and (un)register events. The
->> dependencies are as follows:
->>
->>     ghes_init() => acpi_hest_init() => acpi_bus_init() => acpi_init()
->>     ghes_init() => sdei_init()
->>
->> HEST is not PCI-specific and initcall ordering is implicit and not
->> well-defined within a level.
->>
->> Based on above, remove acpi_hest_init() from acpi_pci_root_init() and
->> convert ghes_init() and sdei_init() from initcalls to explicit calls in the
->> following order:
->>
->>     acpi_hest_init()
->>     sdei_init()
->>     ghes_init()
->>
->> Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+On 1/4/2022 8:26 AM, Hector Martin wrote:
+> The calibration blob for a chip is normally stored in SROM and loaded
+> internally by the firmware. However, Apple ARM64 platforms instead store
+> it as part of platform configuration data, and provide it via the Apple
+> Device Tree. We forward this into the Linux DT in the bootloader.
 > 
-> I didn't suggest the approach; I just reviewed the patch and the
-> commit log and proposed moving it out of acpi_pci_root_init().  That
-> doesn't need to be acknowledged.
-
-I will delete it in next version :)
-
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> Add support for taking this blob from the DT and loading it into the
+> dongle. The loading mechanism is the same as used for the CLM and TxCap
+> blobs.
 > 
-> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Hector Martin <marcan@marcan.st>
+> ---
+>   .../broadcom/brcm80211/brcmfmac/common.c      | 24 +++++++++++++++++++
+>   .../broadcom/brcm80211/brcmfmac/common.h      |  2 ++
+>   .../wireless/broadcom/brcm80211/brcmfmac/of.c |  8 +++++++
+>   3 files changed, 34 insertions(+)
 
-Will add this in next version.
+--0000000000003ca08e05d612a8e4
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-
-> Minor extra "return" below. 
->> ---
->>  drivers/acpi/apei/ghes.c    | 17 +++++++----------
->>  drivers/acpi/bus.c          |  4 ++++
->>  drivers/acpi/pci_root.c     |  3 ---
->>  drivers/firmware/arm_sdei.c | 13 ++-----------
->>  include/acpi/apei.h         |  4 +++-
->>  include/linux/arm_sdei.h    |  2 ++
->>  6 files changed, 18 insertions(+), 25 deletions(-)
->>
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index 0c5c9acc6254..bed4f10cfcb8 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -1457,33 +1457,33 @@ static struct platform_driver ghes_platform_driver = {
->>  	.remove		= ghes_remove,
->>  };
->>  
->> -static int __init ghes_init(void)
->> +void __init ghes_init(void)
->>  {
->>  	int rc;
->>  
->>  	if (acpi_disabled)
->> -		return -ENODEV;
->> +		return;
->>  
->>  	switch (hest_disable) {
->>  	case HEST_NOT_FOUND:
->> -		return -ENODEV;
->> +		return;
->>  	case HEST_DISABLED:
->>  		pr_info(GHES_PFX "HEST is not enabled!\n");
->> -		return -EINVAL;
->> +		return;
->>  	default:
->>  		break;
->>  	}
->>  
->>  	if (ghes_disable) {
->>  		pr_info(GHES_PFX "GHES is not enabled!\n");
->> -		return -EINVAL;
->> +		return;
->>  	}
->>  
->>  	ghes_nmi_init_cxt();
->>  
->>  	rc = platform_driver_register(&ghes_platform_driver);
->>  	if (rc)
->> -		goto err;
->> +		return;
->>  
->>  	rc = apei_osc_setup();
->>  	if (rc == 0 && osc_sb_apei_support_acked)
->> @@ -1495,8 +1495,5 @@ static int __init ghes_init(void)
->>  	else
->>  		pr_info(GHES_PFX "Failed to enable APEI firmware first mode.\n");
->>  
->> -	return 0;
->> -err:
->> -	return rc;
->> +	return;
-> 
-> Unnecessary "return".
-
-Will fix it in next version.
-
-> 
->>  }
->> -device_initcall(ghes_init);
->> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
->> index 07f604832fd6..1dcd71df2cd5 100644
->> --- a/drivers/acpi/bus.c
->> +++ b/drivers/acpi/bus.c
->> @@ -30,6 +30,7 @@
->>  #include <linux/acpi_viot.h>
->>  #include <linux/pci.h>
->>  #include <acpi/apei.h>
->> +#include <linux/arm_sdei.h>
-> 
-> This "arm" looks a little out of place in this supposedly arch-generic
-> code.  Not really a new thing with this patch, since this #include
-> already appears in drivers/acpi/apei/ghes.c.  Maybe it's unavoidable.
-
-Yep, should we move sdei_init() into the beginning of ghes_init()?
-
-> sdei_init() and ghes_init() stick out here because they're the only
-> functions without an "acpi_" prefix.  Maybe a separate patch to rename
-> them?
-
-Sorry, I forgot to send a patch to rename them. I have a question about this.
-
-> Software Delegated Exception Interface (|SDEI|) is an Arm specification for
-> Non-secure world to register handlers with firmware to receive notifications
-> about system events.
-> LINK: https://github.com/ARM-software/arm-trusted-firmware/blob/master/docs/components/sdei.rst
-
-I think SDEI is not a ACPI Specification but Arm specification so we should
-not rename sdei_init() with an "acpi_" prefix.  If we move sdei_init() into
-ghes_init(), and rename ghes_init() to acpi_ghes_init(), then all looks
-fine? What's your opinion, Bjorn?
-
-Best Regards.
-
-Shuai
-
-> 
->>  #include <linux/suspend.h>
->>  #include <linux/prmt.h>
->>  
->> @@ -1331,6 +1332,9 @@ static int __init acpi_init(void)
->>  
->>  	pci_mmcfg_late_init();
->>  	acpi_iort_init();
->> +	acpi_hest_init();
->> +	sdei_init();
->> +	ghes_init();
->>  	acpi_scan_init();
->>  	acpi_ec_init();
->>  	acpi_debugfs_init();
->> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
->> index b76db99cced3..6f9e75d14808 100644
->> --- a/drivers/acpi/pci_root.c
->> +++ b/drivers/acpi/pci_root.c
->> @@ -22,8 +22,6 @@
->>  #include <linux/slab.h>
->>  #include <linux/dmi.h>
->>  #include <linux/platform_data/x86/apple.h>
->> -#include <acpi/apei.h>	/* for acpi_hest_init() */
->> -
->>  #include "internal.h"
->>  
->>  #define ACPI_PCI_ROOT_CLASS		"pci_bridge"
->> @@ -943,7 +941,6 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
->>  
->>  void __init acpi_pci_root_init(void)
->>  {
->> -	acpi_hest_init();
->>  	if (acpi_pci_disabled)
->>  		return;
->>  
->> diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
->> index a7e762c352f9..1e1a51510e83 100644
->> --- a/drivers/firmware/arm_sdei.c
->> +++ b/drivers/firmware/arm_sdei.c
->> @@ -1059,14 +1059,14 @@ static bool __init sdei_present_acpi(void)
->>  	return true;
->>  }
->>  
->> -static int __init sdei_init(void)
->> +void __init sdei_init(void)
->>  {
->>  	struct platform_device *pdev;
->>  	int ret;
->>  
->>  	ret = platform_driver_register(&sdei_driver);
->>  	if (ret || !sdei_present_acpi())
->> -		return ret;
->> +		return;
->>  
->>  	pdev = platform_device_register_simple(sdei_driver.driver.name,
->>  					       0, NULL, 0);
->> @@ -1076,17 +1076,8 @@ static int __init sdei_init(void)
->>  		pr_info("Failed to register ACPI:SDEI platform device %d\n",
->>  			ret);
->>  	}
->> -
->> -	return ret;
->>  }
->>  
->> -/*
->> - * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
->> - * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
->> - * by device_initcall(). We want to be called in the middle.
->> - */
->> -subsys_initcall_sync(sdei_init);
->> -
->>  int sdei_event_handler(struct pt_regs *regs,
->>  		       struct sdei_registered_event *arg)
->>  {
->> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
->> index ece0a8af2bae..4e60dd73c3bb 100644
->> --- a/include/acpi/apei.h
->> +++ b/include/acpi/apei.h
->> @@ -27,14 +27,16 @@ extern int hest_disable;
->>  extern int erst_disable;
->>  #ifdef CONFIG_ACPI_APEI_GHES
->>  extern bool ghes_disable;
->> +void __init ghes_init(void);
->>  #else
->>  #define ghes_disable 1
->> +static inline void ghes_init(void) { }
->>  #endif
->>  
->>  #ifdef CONFIG_ACPI_APEI
->>  void __init acpi_hest_init(void);
->>  #else
->> -static inline void acpi_hest_init(void) { return; }
->> +static inline void acpi_hest_init(void) { }
->>  #endif
->>  
->>  int erst_write(const struct cper_record_header *record);
->> diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
->> index 0a241c5c911d..14dc461b0e82 100644
->> --- a/include/linux/arm_sdei.h
->> +++ b/include/linux/arm_sdei.h
->> @@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
->>  /* For use by arch code when CPU hotplug notifiers are not appropriate. */
->>  int sdei_mask_local_cpu(void);
->>  int sdei_unmask_local_cpu(void);
->> +void __init sdei_init(void);
->>  #else
->>  static inline int sdei_mask_local_cpu(void) { return 0; }
->>  static inline int sdei_unmask_local_cpu(void) { return 0; }
->> +static inline void sdei_init(void) { }
->>  #endif /* CONFIG_ARM_SDE_INTERFACE */
->>  
->>  
->> -- 
->> 2.20.1.12.g72788fdb
->>
->>
->> _______________________________________________
->> linux-arm-kernel mailing list
->> linux-arm-kernel@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
+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
+XSlOP9s1dqWlRRnnNxV7BVC87lkKKy0+1M2DOF6qRYQlnW4EfOyCToYLAG5zeV+AjepMoX6J9bUz
+yj4BlDtwH4HFjaRIlPPbdLshUA54/tV84x8woATuLGBq+hTZEpkZAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFKb+3b9pz8zo
+0QsCHGb/p0UrBlU+MA0GCSqGSIb3DQEBCwUAA4IBAQCHisuRNqP0NfYfG3U3XF+bocf//aGLOCGj
+NvbnSbaUDT/ZkRFb9dQfDRVnZUJ7eDZWHfC+kukEzFwiSK1irDPZQAG9diwy4p9dM0xw5RXSAC1w
+FzQ0ClJvhK8PsjXF2yzITFmZsEhYEToTn2owD613HvBNijAnDDLV8D0K5gtDnVqkVB9TUAGjHsmo
+aAwIDFKdqL0O19Kui0WI1qNsu1tE2wAZk0XE9FG0OKyY2a2oFwJ85c5IO0q53U7+YePIwv4/J5aP
+OGM6lFPJCVnfKc3H76g/FyPyaE4AL/hfdNP8ObvCB6N/BVCccjNdglRsL2ewttAG3GM06LkvrLhv
+UCvjMYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMMSnY
+h9J/RI6gsHbuMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCASBBcbPP7cvFjl+fD0
+wVU22dnS1Og8mvNJGBvbpzVpVjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMjAxMjEwNzM1MDNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYFU7kvUWtMJ/FSflnROZArfonFRYeN4C3XFy
+o6HPTHVP+PeNK47rvJxsy2thTlFobSYR7ZXrMoVvAvsyb992BqM9fsmRLUfgGGe/DvYFh0sfGILl
+y4xRi85Ya5nn4sgZmXFdh6IGFeWlEFdKB/9yexAc457WpyZOMNxJM5yPm5+0aThOtS0KbDaaafYa
+SDhLskilJeSf8JQY8MZECma1d1s1Cc14Cr+nwnmOKBKAtBMjtbdk5vxiT8zBz/i3ZG1AXmu5AvU2
+O2ZWAyWfNXN0EGhP9r5rTvCDt0PdNjjTjwA+dsqoaTQxgM8GvSNmt+Q5tSHwI3ibnxbYTGSHGKV7
+tQ==
+--0000000000003ca08e05d612a8e4--
