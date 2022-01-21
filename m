@@ -2,104 +2,107 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDEA54965D7
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jan 2022 20:46:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAF3049663C
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jan 2022 21:12:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230403AbiAUTqM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 21 Jan 2022 14:46:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60522 "EHLO
+        id S231970AbiAUUMX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 21 Jan 2022 15:12:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbiAUTqM (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jan 2022 14:46:12 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25F67C06173B;
-        Fri, 21 Jan 2022 11:46:12 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BAFB7B820D9;
-        Fri, 21 Jan 2022 19:46:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407D7C340E1;
-        Fri, 21 Jan 2022 19:46:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642794369;
-        bh=s8CFfVkEFgCYwCsZ61/HoZHTy/2PzVbQ2BSmTJdrEdI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=uHTdVgBy9ezeNTbMzWmnwiE6TI3L/I6fJoGLt3SRePP0x9NdGjgSkMNUVS+C7n8QY
-         qkWdTdB85ezcr5jWrn7/T4hj+B+dvoz+VCZC9yTXSTbKsOkQC8Z20ucKjx/Im8u6q4
-         QWwOOSkatByCFnRPQqqYJLiiUwygpgY4zl3LB/ndV8hnPtJ5use8gf3nThTNv7CCrY
-         Dq9GuN6EXV4+CgaeoZ4UqGd71T9tDIdXF9pQ/qWyWyZwCRWPjrwu6lDCBANIy8yV7B
-         Dk6r369J3f01rlNvnZINN93F5fdDna0T31skPTlNyRTaNXRoTyo1PRUkAM8/5fLwQR
-         TYAMEcskIrt3Q==
-Date:   Fri, 21 Jan 2022 13:46:07 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Shuai Xue <xueshuai@linux.alibaba.com>
-Cc:     rafael@kernel.org, bp@alien8.de, tony.luck@intel.com,
-        james.morse@arm.com, lenb@kernel.org, rjw@rjwysocki.net,
-        bhelgaas@google.com, zhangliguang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-pci@vger.kernel.org
-Subject: Re: [PATCH v6] ACPI: explicit init HEST, SDEI and GHES in apci_init
-Message-ID: <20220121194607.GA1146355@bhelgaas>
+        with ESMTP id S231717AbiAUUMW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 21 Jan 2022 15:12:22 -0500
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB374C06173B;
+        Fri, 21 Jan 2022 12:12:21 -0800 (PST)
+Received: by mail-ej1-x635.google.com with SMTP id s13so3033123ejy.3;
+        Fri, 21 Jan 2022 12:12:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TWFhQ8AyYyJtKJhYHxbzZAy/uyi61n/qj66gr+QR1JU=;
+        b=C8EOiSjCDvxrWY2Ruh48zw6GmmqDRMiC4Xh4oNcfGcsAk4QxT/4WpK9v30k7R8BJTP
+         Ox33CjNanCQL5JyR5uyLDlkgeLcOdifO5g9DsCa0rbRNbnWai+SokHAOH8jjHzhYibLU
+         +zS9PNDuW/W449Hl6zRgYlVFU1GH8q3F2fwCNvg0PKdCaFYlX1Oi9gpQMYDiEgeBBn4E
+         gepuFb5h9afDmvRCUqdyNzK+46+J1POQ0Dw50E6frm5NfGq4duBsbIy48/Su6VdUdePn
+         8FaHt4DcROcLF95bgfpKvTH6CankmVX8ujX+aQajQ6ivme+VErteaMSP9P5K3Gatceg+
+         C3/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TWFhQ8AyYyJtKJhYHxbzZAy/uyi61n/qj66gr+QR1JU=;
+        b=gWDzKTdcP9JrRU/Q4pUA6Ov+KCNcvk2raJiEhNKJS4ncMXPDZ40zkQhM5h0pxYCQ5y
+         azS8bM1Aq2qRYMkrqf8VqxDgep5vnYMApmPkAvwB1NFAqIL64Lye0w+saeyv2/PbixiC
+         CkSc6kvB7L8MY7O4Ld0i5L853tbQ/GGh8LKHd3AenCM9dsf1cV4DDOA9t/qcWVTxBang
+         i+o1z5HVkQ8X8jAGKwSd9Eke1zOzV0/lUtlC8ZPc4i5rstwWtjB876bo946gPimueacX
+         8WZFFB4ngj0T1+0dv9wuxQauIcCP/7uASO6c0THpioT9pA5vM8XYaxZtYmtTGep/MF9K
+         3B0Q==
+X-Gm-Message-State: AOAM532ZzETPGpZkaYQ6dKHa41rx4ZnupIL9IeKOlXqAodRgd+gdYzq7
+        uG5hwMos9A0fi+6I1S9E5jxTlU7R0G0VtKduQpkmNTkhLB8=
+X-Google-Smtp-Source: ABdhPJxiTTwzTmbtx9DNC7Ah5PIXbFyKWQWSb2hxPEtw2WvBrKl7feHCqB0yc+Flx4KZez6dtVy+19KCludTGmAPY9M=
+X-Received: by 2002:a17:906:3004:: with SMTP id 4mr4419944ejz.579.1642795940215;
+ Fri, 21 Jan 2022 12:12:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4c34906a-244e-3956-0ca7-7131b268cf60@linux.alibaba.com>
+References: <20220118145251.1548-1-sbinding@opensource.cirrus.com>
+ <20220118145251.1548-6-sbinding@opensource.cirrus.com> <CAJZ5v0g0n201FPcG9LBNG3e4UdNYSWmj_1sN3MxLxmK=GoF+tA@mail.gmail.com>
+ <a3522b5e-fb36-b959-d2ea-d141d3ad9999@opensource.cirrus.com> <CAJZ5v0h8MWb3sSuqWHUcm9TVWP0uJ+=GmzAuqVtNag2LP+0kYQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0h8MWb3sSuqWHUcm9TVWP0uJ+=GmzAuqVtNag2LP+0kYQ@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 21 Jan 2022 22:11:43 +0200
+Message-ID: <CAHp75VekU6j4vB_ej8k1f5JcTrAfm10aeekZo8_=jenK1KRbUA@mail.gmail.com>
+Subject: Re: [PATCH v3 05/10] platform/x86: i2c-multi-instantiate: Move it to
+ drivers/acpi folder
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Lucas tanure <tanureal@opensource.cirrus.com>,
+        Stefan Binding <sbinding@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        patches@opensource.cirrus.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 21, 2022 at 11:43:25AM +0800, Shuai Xue wrote:
-> 在 2022/1/21 AM12:22, Bjorn Helgaas 写道:
-> > On Thu, Jan 20, 2022 at 01:05:22PM +0800, Shuai Xue wrote:
-> >> From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
-> >> memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
-> >> the estatus memory pool. On the other hand, ghes_init() relies on
-> >> sdei_init() to detect the SDEI version and (un)register events. The
-> >> dependencies are as follows:
-> >>
-> >>     ghes_init() => acpi_hest_init() => acpi_bus_init() => acpi_init()
-> >>     ghes_init() => sdei_init()
-> >>
-> >> HEST is not PCI-specific and initcall ordering is implicit and not
-> >> well-defined within a level.
-> >>
-> >> Based on above, remove acpi_hest_init() from acpi_pci_root_init() and
-> >> convert ghes_init() and sdei_init() from initcalls to explicit calls in the
-> >> following order:
-> >>
-> >>     acpi_hest_init()
-> >>     sdei_init()
-> >>     ghes_init()
+On Fri, Jan 21, 2022 at 9:53 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> On Wed, Jan 19, 2022 at 6:33 PM Lucas tanure
+> <tanureal@opensource.cirrus.com> wrote:
+> > On 1/19/22 16:53, Rafael J. Wysocki wrote:
+> > > On Tue, Jan 18, 2022 at 3:53 PM Stefan Binding
+> > > <sbinding@opensource.cirrus.com> wrote:
 
-> >> --- a/drivers/acpi/bus.c
-> >> +++ b/drivers/acpi/bus.c
-> >> @@ -30,6 +30,7 @@
-> >>  #include <linux/acpi_viot.h>
-> >>  #include <linux/pci.h>
-> >>  #include <acpi/apei.h>
-> >> +#include <linux/arm_sdei.h>
-> > 
-> > This "arm" looks a little out of place in this supposedly arch-generic
-> > code.  Not really a new thing with this patch, since this #include
-> > already appears in drivers/acpi/apei/ghes.c.  Maybe it's unavoidable.
-> 
-> Yep, should we move sdei_init() into the beginning of ghes_init()?
-> ...
+...
 
-> > Software Delegated Exception Interface (|SDEI|) is an Arm specification for
-> > Non-secure world to register handlers with firmware to receive notifications
-> > about system events.
-> > LINK: https://github.com/ARM-software/arm-trusted-firmware/blob/master/docs/components/sdei.rst
-> 
-> I think SDEI is not a ACPI Specification but Arm specification so we should
-> not rename sdei_init() with an "acpi_" prefix.  If we move sdei_init() into
-> ghes_init(), and rename ghes_init() to acpi_ghes_init(), then all looks
-> fine? What's your opinion, Bjorn?
+> > > Why are you moving it away from platform/x86?
+> > >
+> > > Adding SPI to the mix doesn't seem to be a sufficient reason.
+> > >
+> > > If this were going to be needed on non-x86, that would be a good
+> > > reason for moving it, but is that actually the case?  If so, why isn't
+> > > that mentioned in the changelog above?
+> > >
+> >
+> > It was a request made by Andy Shevchenko:
+> > https://lkml.org/lkml/2021/12/3/347
+>
+> But he hasn't given any reasons why that'd be better.
 
-Makes sense to me, especially since drivers/acpi/apei/ghes.c already
-includes linux/arm_sdei.h.  This is Rafael's area.
+My thoughts were that these are related to ACPI handling the serial
+buses in one place. However, counter arguments might be that the cases
+of the resources like this are found only on x86 hardware (while ACPI
+should be agnostic to that) and that the i2c and spi already do ACPI
+stuff on their own. That said, there are pros and cons and I'm fine
+with either choice at the end of the day.
 
-Bjorn
+-- 
+With Best Regards,
+Andy Shevchenko
