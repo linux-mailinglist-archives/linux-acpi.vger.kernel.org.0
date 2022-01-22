@@ -2,90 +2,71 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86372496A51
-	for <lists+linux-acpi@lfdr.de>; Sat, 22 Jan 2022 06:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5080D496AAD
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Jan 2022 08:33:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230287AbiAVF0l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sat, 22 Jan 2022 00:26:41 -0500
-Received: from out4436.biz.mail.alibaba.com ([47.88.44.36]:50342 "EHLO
-        out4436.biz.mail.alibaba.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232255AbiAVF0i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Sat, 22 Jan 2022 00:26:38 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0V2UlMIm_1642829192;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V2UlMIm_1642829192)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Sat, 22 Jan 2022 13:26:33 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     helgaas@kernel.org, rafael@kernel.org
-Cc:     bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
-        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
-        xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-pci@vger.kernel.org
-Subject: [PATCH v7 2/2] ACPI: APEI: rename ghes_init with an "acpi_" prefix
-Date:   Sat, 22 Jan 2022 13:26:18 +0800
-Message-Id: <20220122052618.1074-2-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.30.1 (Apple Git-130)
-In-Reply-To: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
-References: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
+        id S230174AbiAVHdz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sat, 22 Jan 2022 02:33:55 -0500
+Received: from sv8281.xserver.jp ([183.181.89.122]:47148 "EHLO
+        sv8281.xserver.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230061AbiAVHdz (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 22 Jan 2022 02:33:55 -0500
+X-Greylist: delayed 436 seconds by postgrey-1.27 at vger.kernel.org; Sat, 22 Jan 2022 02:33:54 EST
+Received: from virusgw12003.xserver.jp (virusgw12003.xserver.jp [103.3.3.12])
+        by sv8281.xserver.jp (Postfix) with ESMTP id 192EF1A0558C31
+        for <linux-acpi@vger.kernel.org>; Sat, 22 Jan 2022 16:26:35 +0900 (JST)
+Received: from sv8281.xserver.jp (183.181.89.122)
+ by virusgw12003.xserver.jp (F-Secure/fsigk_smtp/521/virusgw12003.xserver.jp);
+ Sat, 22 Jan 2022 16:26:35 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw12003.xserver.jp)
+Received: by sv8281.xserver.jp (Postfix, from userid 20169)
+        id 1751C1A055783D; Sat, 22 Jan 2022 16:26:35 +0900 (JST)
+To:     linux-acpi@vger.kernel.org
+Subject: =?us-ascii?Q?=3D=3FISO-2022-JP=3FB=3FGyRCJCpMZCQkOWckbyQ7JCI?=  =?us-ascii?Q?kaiQsJEgkJiQ0JDYkJCReJDckPyEjGyhC=3F=3D?=
+Date:   Sat, 22 Jan 2022 07:26:35 +0000
+From:   =?ISO-2022-JP?B?TGlnaHRuaW5nIBskQiFfGyhCIEV4VW5pdCAbJEJGfEtcOGwlRyViGyhC?= 
+        <nosend@lightning.nagoya>
+Reply-To: nosend@lightning.nagoya
+Message-ID: <l2Ueq4knK74USd6VM2HSdj0eWpi28wbyr14oVMbNU@tech-lerning.com>
+X-Mailer: PHPMailer 6.1.6 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=ISO-2022-JP
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 2 +-
- drivers/acpi/bus.c       | 2 +-
- include/acpi/apei.h      | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+----------------------------
+お問い合わせ内容
+----------------------------
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index aadc0a972f18..d91ad378c00d 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1457,7 +1457,7 @@ static struct platform_driver ghes_platform_driver = {
- 	.remove		= ghes_remove,
- };
- 
--void __init ghes_init(void)
-+void __init acpi_ghes_init(void)
- {
- 	int rc;
- 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 3f403db20f69..cd374210fb9f 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1332,7 +1332,7 @@ static int __init acpi_init(void)
- 	pci_mmcfg_late_init();
- 	acpi_iort_init();
- 	acpi_hest_init();
--	ghes_init();
-+	acpi_ghes_init();
- 	acpi_scan_init();
- 	acpi_ec_init();
- 	acpi_debugfs_init();
-diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-index 4e60dd73c3bb..afaca3a075e8 100644
---- a/include/acpi/apei.h
-+++ b/include/acpi/apei.h
-@@ -27,10 +27,10 @@ extern int hest_disable;
- extern int erst_disable;
- #ifdef CONFIG_ACPI_APEI_GHES
- extern bool ghes_disable;
--void __init ghes_init(void);
-+void __init acpi_ghes_init(void);
- #else
- #define ghes_disable 1
--static inline void ghes_init(void) { }
-+static inline void acpi_ghes_init(void) { }
- #endif
- 
- #ifdef CONFIG_ACPI_APEI
--- 
-2.20.1.12.g72788fdb
+お名前
+?? Kristal is interested in your profile! Click Here: https://clck.ru/anQeM?iw0as ??
+
+ふりがな
+upr29z3
+
+メールアドレス
+linux-acpi@vger.kernel.org
+
+御社名
+r9ynxmux
+
+電話番号
+815621868182
+
+お問い合わせ内容
+yt7qpi2j
+
+
+--------------------------------------------------------
+
+お問い合わせありがとうございました。
+折り返し担当者よりご連絡させていただきますので、
+しばらくお待ちください。
+
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+株式会社サンプル
+TEL : 000-000-0000
+https://www.xxxxx.xxx.xxx
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
