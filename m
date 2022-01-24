@@ -2,94 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAB3A4978EA
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jan 2022 07:27:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1954649851F
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jan 2022 17:45:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241612AbiAXG1R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Jan 2022 01:27:17 -0500
-Received: from mga12.intel.com ([192.55.52.136]:43034 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241551AbiAXG1R (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 24 Jan 2022 01:27:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643005637; x=1674541637;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Gn34ABxcSee+wgnEIT0hQPLTIw0wZvixz3QrsRcRHEs=;
-  b=B4oEodK3Ck8lRt03nWPzBiCPgUYOG4fI0RCDf7j+JhLpiQfu6REiERj5
-   sHJs284gFoZawaEYudKvW/iSadpSlXThxVyApGZDswU/J4AwvK7yQ/J2O
-   jIBtWHeFrzvp0b0YZGBusN4ILfD4Y6FiSKRCyFboLvcpCTh3l/gft3/Ux
-   6fWt5esZfHHvctnDdLeJYahSX1OpjEPzjLnS/6N4vi1FqHVvk8WL7jSoc
-   d6d1Pqsft52IqloICaGU3Gt3lOZCPwsZs3vm2Z61Qt1Xg6w/HY7+Gw7mq
-   Hr60HMuUIXI3O3Z651o8jD883sfGvUQ8JfmCML5Oi5HYGZcX4VOa1gSdJ
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10236"; a="225953974"
-X-IronPort-AV: E=Sophos;i="5.88,311,1635231600"; 
-   d="scan'208";a="225953974"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2022 22:27:17 -0800
-X-IronPort-AV: E=Sophos;i="5.88,311,1635231600"; 
-   d="scan'208";a="534089171"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2022 22:27:12 -0800
-Received: by lahna (sSMTP sendmail emulation); Mon, 24 Jan 2022 08:27:09 +0200
-Date:   Mon, 24 Jan 2022 08:27:09 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Rajat Jain <rajatja@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rajatxjain@gmail.com,
-        dtor@google.com, jsbarnes@google.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Pavel Machek <pavel@denx.de>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>
-Subject: Re: [PATCH] PCI: ACPI: Allow internal devices to be marked as
- untrusted
-Message-ID: <Ye5GvQbFKo+CFtRb@lahna>
-References: <20220120000409.2706549-1-rajatja@google.com>
- <20220121214117.GA1154852@bhelgaas>
+        id S243870AbiAXQps (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Jan 2022 11:45:48 -0500
+Received: from mta-p5.oit.umn.edu ([134.84.196.205]:51750 "EHLO
+        mta-p5.oit.umn.edu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241189AbiAXQpo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Jan 2022 11:45:44 -0500
+X-Greylist: delayed 320 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Jan 2022 11:45:44 EST
+Received: from localhost (unknown [127.0.0.1])
+        by mta-p5.oit.umn.edu (Postfix) with ESMTP id 4JjG1d4jJfz9w1Rc
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Jan 2022 16:40:21 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at umn.edu
+Received: from mta-p5.oit.umn.edu ([127.0.0.1])
+        by localhost (mta-p5.oit.umn.edu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id h_bId2ary8Bv for <linux-acpi@vger.kernel.org>;
+        Mon, 24 Jan 2022 10:40:21 -0600 (CST)
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mta-p5.oit.umn.edu (Postfix) with ESMTPS id 4JjG1d300Jz9w1Rf
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Jan 2022 10:40:21 -0600 (CST)
+DMARC-Filter: OpenDMARC Filter v1.3.2 mta-p5.oit.umn.edu 4JjG1d300Jz9w1Rf
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-p5.oit.umn.edu 4JjG1d300Jz9w1Rf
+Received: by mail-pj1-f69.google.com with SMTP id mn21-20020a17090b189500b001b4fa60efcbso12167451pjb.2
+        for <linux-acpi@vger.kernel.org>; Mon, 24 Jan 2022 08:40:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umn.edu; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cxLL3kilti4ewVR3w7E45Znhv6mVTGnaO20o6vv+LVM=;
+        b=JpaXbkVPCCzYwDK587ZtC73AffzMALrsKE+nNt2D0mgffg8Gs2TwFtlI7d00fAe2TL
+         6MHNAA6ISqfAxx/VhnWjRSueDDXe5Gbh0N7mbYX6mqKu88a4cxeOjlP4tgXucRKW0uFY
+         3hF5zPCbgkNMGFj6RUEHp8zFFkOWKXFLma2CFIuwLfpM32YmO2K5oZapIAkzA3dkjaBK
+         tNQj7q/UoNKZcXKl/Jf0qCYnUuwnjkWkJ8AlGYl6iN5+hj53K0dh8LdU7rpw4+sLl1X0
+         a3yKSjCSpKM+u7mPfQkurNP/Sdh7aIcMMptvxGPzzxvwrEFqr7NW72lczyMlPWTOdM7h
+         guCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cxLL3kilti4ewVR3w7E45Znhv6mVTGnaO20o6vv+LVM=;
+        b=yhZvHDNV/gXUgqRbASBqdRb9ZKu8lhtO097G1Gf2Vgu8FqEdaEgzwrNelg4eYDoY1S
+         LQrT2VzYtaj9E9whiMopZfl2T559BisEhR85PnSrYyTGuhyr2mBVNTCmbvBn5KbMQv0l
+         W2OQ2z099Qd4AXbBX63zWrPFwxG5Uo1LgvotC5ShxnPSQAZqWTqimhyn5aZ8IuSJrhrQ
+         XKA7c4OH1lvvvukTwQICSQit2Tc45OU+xxcBj6xP4gZweQUXrwKPonGH2tdHpRVY4+wk
+         QJs08sioi3KvSxAl57BYYDR10mNuIVTt2DFEuVbs+STYdSa7HpxBNP2J1A9h4IHdKdn4
+         S/pw==
+X-Gm-Message-State: AOAM530Yz33RawOzAO5Or5CkScAeO5zvTfY7JlW93Ao3mJnRMKM2F1FY
+        /YoRjUP7e86t7cJfMgz4/Hh3nPBhCOU1ah3rMoSqBIxYpw2K/jxXEREB9+bWQ10YjVrQAnp1mvH
+        PSO3i2QXCyzaZ6Y0hAL4N0BlojQ==
+X-Received: by 2002:a17:90b:33cb:: with SMTP id lk11mr641664pjb.163.1643042420644;
+        Mon, 24 Jan 2022 08:40:20 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyKOpecXgH6OOu7Zh1Mdt8qsroSNZreBYhHQlXtTouXfATIb4NWFFgnxqg5cED3i6NAq7waBw==
+X-Received: by 2002:a17:90b:33cb:: with SMTP id lk11mr641645pjb.163.1643042420395;
+        Mon, 24 Jan 2022 08:40:20 -0800 (PST)
+Received: from zqy787-GE5S.lan ([36.4.61.248])
+        by smtp.gmail.com with ESMTPSA id bf23sm13770284pjb.52.2022.01.24.08.40.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jan 2022 08:40:20 -0800 (PST)
+From:   Zhou Qingyang <zhou1615@umn.edu>
+To:     zhou1615@umn.edu
+Cc:     kjlu@umn.edu, Robert Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, Lv Zheng <lv.zheng@intel.com>,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPICA: Linuxize: Fix a NULL pointer dereference in acpi_db_convert_to_package()
+Date:   Tue, 25 Jan 2022 00:40:14 +0800
+Message-Id: <20220124164014.51658-1-zhou1615@umn.edu>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220121214117.GA1154852@bhelgaas>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+In acpi_db_convert_to_package(), the variable elements is assigned by
+ACPI_ALLOCATE_ZEROED() and passes its address to 
+acpi_db_convert_to_object(). In that function we may have a dereference
+of elements without checks. ACPI_ALLOCATE_ZEROED() would return NULL on
+failure, which may lead to NULL pointer dereference.
 
-On Fri, Jan 21, 2022 at 03:41:17PM -0600, Bjorn Helgaas wrote:
-> [+cc Greg, Jean-Philippe, Mika, Pavel, Oliver, Joerg since they
-> commented on previous "external-facing" discussion]
-> 
-> On Wed, Jan 19, 2022 at 04:04:09PM -0800, Rajat Jain wrote:
-> > Today the pci_dev->untrusted is set for any devices sitting downstream
-> > an external facing port (determined via "ExternalFacingPort" property).
-> > This however, disallows any internal devices to be marked as untrusted.
-> 
-> This isn't stated quite accurately.  "dev->untrusted" is currently set
-> only by set_pcie_untrusted(), when "dev" has an upstream bridge that
-> is either external-facing or untrusted.
-> 
-> But that doesn't disallow or prevent internal devices from being
-> marked as untrusted; it just doesn't implement that.
-> 
-> > There are use-cases though, where a platform would like to treat an
-> > internal device as untrusted (perhaps because it runs untrusted
-> > firmware, or offers an attack surface by handling untrusted network
-> > data etc).
-> > 
-> > This patch introduces a new "UntrustedDevice" property that can be used
-> > by the firmware to mark any device as untrusted.
+Fix this bug by adding a NULL check of elements.
 
-I think this new property should be documented somewhere too (also
-explain when to use it instead of ExternalFacingPort). If not in the
-next ACPI spec or some supplemental doc then perhaps in the DT bindings
-under Documentation/devicetree/bindings.
+This bug was found by a static analyzer.
+
+Builds with 'make allyesconfig' show no new warnings,
+and our static analyzer no longer warns about this code.
+
+Fixes: 995751025572 ("ACPICA: Linuxize: Export debugger files to Linux")
+Signed-off-by: Zhou Qingyang <zhou1615@umn.edu>
+---
+The analysis employs differential checking to identify inconsistent 
+security operations (e.g., checks or kfrees) between two code paths 
+and confirms that the inconsistent operations are not recovered in the
+current function or the callers, so they constitute bugs. 
+
+Note that, as a bug found by static analysis, it can be a false
+positive or hard to trigger. Multiple researchers have cross-reviewed
+the bug.
+
+ drivers/acpi/acpica/dbconvert.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconvert.c
+index 2b84ac093698..8dbab6932049 100644
+--- a/drivers/acpi/acpica/dbconvert.c
++++ b/drivers/acpi/acpica/dbconvert.c
+@@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
+ 	elements =
+ 	    ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
+ 				 sizeof(union acpi_object));
++	if (!elements)
++		return (AE_NO_MEMORY);
+ 
+ 	this = string;
+ 	for (i = 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
+-- 
+2.25.1
+
