@@ -2,108 +2,94 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C66FB4974C0
-	for <lists+linux-acpi@lfdr.de>; Sun, 23 Jan 2022 19:43:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB3A4978EA
+	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jan 2022 07:27:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240144AbiAWSnl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 23 Jan 2022 13:43:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53882 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240176AbiAWSm0 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 23 Jan 2022 13:42:26 -0500
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB8A6C06178C;
-        Sun, 23 Jan 2022 10:42:25 -0800 (PST)
-Received: by mail-pj1-x1032.google.com with SMTP id h12so14115127pjq.3;
-        Sun, 23 Jan 2022 10:42:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=Hn/0KEFQM0VohxFbDN7o+rKVell2I9YQDMnO10ziuwg=;
-        b=RLWSVVHhK5sS0VJoSJh5qzr3kvxFKZMIuqha6nZABD5yiUFV891TsT6pr+BuRKkmau
-         Jr3NQlJfn60hdMW9oRHukDxgvDsry86rj7D7fDQ8hAMfFCHdYoGZ3xOOJS3VxiMXiCQN
-         WnJ2HgK8tLMAJO17kJRpJTZd8jvdJSm4IT9rLQFWHGLA0yOqUkzDIoW/kt5NFH+HADLb
-         2tR+oOK30YBZYNgEdS7t6hR2kTpNLr7opXgJIUR7uT0EagLXFCDKhdsJMzGULlhJQXBq
-         ZXbfYZZn9gq9VNQqPhfrLOtLeJu+QgAk81hoKa+JbgquZkSqgiXO36WP2fNwoKI4MuU2
-         KYWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Hn/0KEFQM0VohxFbDN7o+rKVell2I9YQDMnO10ziuwg=;
-        b=MSgXdiFbGidJlosx3rJr7JXboPggUaQHjtMgqcsl7i6senjOutUDPb9oBHxo+6JgIQ
-         H11FbGozgpng2VkNraxPovYXwoYvNSkW7GdB3qghaBKp+seZu2QysfrlYOsnbN5gBD+Z
-         uebO/kyX55F2cQFtAQQ/4MJgw8HjhN4DCv+DziRRfxSycp54DPOqM/a7u0bzYe2dsrsU
-         leZ5ARobQchDk8y9nSc4u5kDwr+e1LxCH9UFx9AgppBzNXAOxrxBtrytfBg0p13gE1UO
-         Fxh9EnloBvgd7BmsDqUjOZeFjXp7lj0W4OejHPyO3hmBG85JksGB/37WGlEl0Kfk1m/H
-         VEWw==
-X-Gm-Message-State: AOAM531ZkzSLhilAQgoHg8Z6fs5zCzqzqZmrxFXqvN1oZDOvTynwNqw6
-        50MnPZN3wDXZauCRO7Bi1/T6LhPNV78=
-X-Google-Smtp-Source: ABdhPJyBszq+12k1TYVOUS+HW7O6m3uyaICRkRGYjMlRMdlMz+xzwmFYZQSU4jgwO4Co8mlvCOHd+Q==
-X-Received: by 2002:a17:902:9a83:b0:14a:a893:f7ff with SMTP id w3-20020a1709029a8300b0014aa893f7ffmr11718191plp.6.1642963345210;
-        Sun, 23 Jan 2022 10:42:25 -0800 (PST)
-Received: from localhost (searspoint.nvidia.com. [216.228.112.21])
-        by smtp.gmail.com with ESMTPSA id ck21sm10634905pjb.51.2022.01.23.10.42.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jan 2022 10:42:24 -0800 (PST)
-From:   Yury Norov <yury.norov@gmail.com>
-To:     Yury Norov <yury.norov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        David Laight <David.Laight@aculab.com>,
-        Joe Perches <joe@perches.com>, Dennis Zhou <dennis@kernel.org>,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Alexey Klimov <aklimov@redhat.com>,
-        linux-kernel@vger.kernel.org,
+        id S241612AbiAXG1R (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Jan 2022 01:27:17 -0500
+Received: from mga12.intel.com ([192.55.52.136]:43034 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241551AbiAXG1R (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 24 Jan 2022 01:27:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643005637; x=1674541637;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Gn34ABxcSee+wgnEIT0hQPLTIw0wZvixz3QrsRcRHEs=;
+  b=B4oEodK3Ck8lRt03nWPzBiCPgUYOG4fI0RCDf7j+JhLpiQfu6REiERj5
+   sHJs284gFoZawaEYudKvW/iSadpSlXThxVyApGZDswU/J4AwvK7yQ/J2O
+   jIBtWHeFrzvp0b0YZGBusN4ILfD4Y6FiSKRCyFboLvcpCTh3l/gft3/Ux
+   6fWt5esZfHHvctnDdLeJYahSX1OpjEPzjLnS/6N4vi1FqHVvk8WL7jSoc
+   d6d1Pqsft52IqloICaGU3Gt3lOZCPwsZs3vm2Z61Qt1Xg6w/HY7+Gw7mq
+   Hr60HMuUIXI3O3Z651o8jD883sfGvUQ8JfmCML5Oi5HYGZcX4VOa1gSdJ
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10236"; a="225953974"
+X-IronPort-AV: E=Sophos;i="5.88,311,1635231600"; 
+   d="scan'208";a="225953974"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2022 22:27:17 -0800
+X-IronPort-AV: E=Sophos;i="5.88,311,1635231600"; 
+   d="scan'208";a="534089171"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2022 22:27:12 -0800
+Received: by lahna (sSMTP sendmail emulation); Mon, 24 Jan 2022 08:27:09 +0200
+Date:   Mon, 24 Jan 2022 08:27:09 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Rajat Jain <rajatja@google.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH 50/54] acpi: replace nodes__weight with nodes_weight_ge for numa
-Date:   Sun, 23 Jan 2022 10:39:21 -0800
-Message-Id: <20220123183925.1052919-51-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220123183925.1052919-1-yury.norov@gmail.com>
-References: <20220123183925.1052919-1-yury.norov@gmail.com>
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rajatxjain@gmail.com,
+        dtor@google.com, jsbarnes@google.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Pavel Machek <pavel@denx.de>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>
+Subject: Re: [PATCH] PCI: ACPI: Allow internal devices to be marked as
+ untrusted
+Message-ID: <Ye5GvQbFKo+CFtRb@lahna>
+References: <20220120000409.2706549-1-rajatja@google.com>
+ <20220121214117.GA1154852@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220121214117.GA1154852@bhelgaas>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-acpi_map_pxm_to_node() calls nodes_weight() to compare the weight
-of nodemask with a given number. We can do it more efficiently with
-nodes_weight_eq() because conditional nodes_weight may stop
-traversing the nodemask earlier, as soon as condition is met.
+Hi,
 
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
----
- drivers/acpi/numa/srat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, Jan 21, 2022 at 03:41:17PM -0600, Bjorn Helgaas wrote:
+> [+cc Greg, Jean-Philippe, Mika, Pavel, Oliver, Joerg since they
+> commented on previous "external-facing" discussion]
+> 
+> On Wed, Jan 19, 2022 at 04:04:09PM -0800, Rajat Jain wrote:
+> > Today the pci_dev->untrusted is set for any devices sitting downstream
+> > an external facing port (determined via "ExternalFacingPort" property).
+> > This however, disallows any internal devices to be marked as untrusted.
+> 
+> This isn't stated quite accurately.  "dev->untrusted" is currently set
+> only by set_pcie_untrusted(), when "dev" has an upstream bridge that
+> is either external-facing or untrusted.
+> 
+> But that doesn't disallow or prevent internal devices from being
+> marked as untrusted; it just doesn't implement that.
+> 
+> > There are use-cases though, where a platform would like to treat an
+> > internal device as untrusted (perhaps because it runs untrusted
+> > firmware, or offers an attack surface by handling untrusted network
+> > data etc).
+> > 
+> > This patch introduces a new "UntrustedDevice" property that can be used
+> > by the firmware to mark any device as untrusted.
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 3b818ab186be..fe7a7996f553 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -67,7 +67,7 @@ int acpi_map_pxm_to_node(int pxm)
- 	node = pxm_to_node_map[pxm];
- 
- 	if (node == NUMA_NO_NODE) {
--		if (nodes_weight(nodes_found_map) >= MAX_NUMNODES)
-+		if (nodes_weight_ge(nodes_found_map, MAX_NUMNODES))
- 			return NUMA_NO_NODE;
- 		node = first_unset_node(nodes_found_map);
- 		__acpi_map_pxm_to_node(pxm, node);
--- 
-2.30.2
-
+I think this new property should be documented somewhere too (also
+explain when to use it instead of ExternalFacingPort). If not in the
+next ACPI spec or some supplemental doc then perhaps in the DT bindings
+under Documentation/devicetree/bindings.
