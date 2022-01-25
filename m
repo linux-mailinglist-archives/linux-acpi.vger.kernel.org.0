@@ -2,125 +2,157 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B09A49BABF
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 18:58:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B95149BC20
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 20:31:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240608AbiAYR4k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Jan 2022 12:56:40 -0500
-Received: from mail-yb1-f182.google.com ([209.85.219.182]:40758 "EHLO
-        mail-yb1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357539AbiAYRzC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jan 2022 12:55:02 -0500
-Received: by mail-yb1-f182.google.com with SMTP id 23so63924631ybf.7;
-        Tue, 25 Jan 2022 09:54:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=y+R3o3okOUEIZN8/dDxsGECLwf9ITaDap15PmIOOEJw=;
-        b=tsaGoOSmVk7vaXbB33hs4k9q3BbeTHUtBXwyeQUuY62ng6sjhay1Kb4Lkgq/AUAgN+
-         6qPdLnFELJywM6E1EE3SVz6+TRd+7bnuB0tpov/WrsG3Svjy7GrVu8HZ/CbIDGP+QNJe
-         oQEbuXHgOXLaHVLD24h2Y9Y/kXEefHWPXYT5bsrULtvYDNCfjkm3GDoPUe8hDayhTVVO
-         Kz9Ms1OfHUy3KbMJp18jW8fgRMT87MzcCpM93IUAuBEeSiuySK97rE0ZoYdf+6HoURyf
-         NGnh9UrhQrCFuOxTSDngSUEDDCzYrcrpIda+jjDv+UFSx1suftZpy/p6ntJvcZR8tCCq
-         RDoQ==
-X-Gm-Message-State: AOAM530pDc2Zout0EHUtZV5IwPRSuSgNf6aZjx1i3U89GfCmC64SQrv0
-        5jnhfKkCY70mzNNEEnxmMQt4tbgQ+yC8QKXnGf0=
-X-Google-Smtp-Source: ABdhPJx+RSxvIz+QTS29NNZlNto0r/PEcq1x9Ah2IeEOnqDbQuwUZ7x2ZQ/2bvu5VBLp3XyWBQoxhvNKmB0ZgYbANKg=
-X-Received: by 2002:a25:1bd5:: with SMTP id b204mr34517304ybb.552.1643133297390;
- Tue, 25 Jan 2022 09:54:57 -0800 (PST)
+        id S230079AbiAYTbA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Jan 2022 14:31:00 -0500
+Received: from foss.arm.com ([217.140.110.172]:37282 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230108AbiAYTaw (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 25 Jan 2022 14:30:52 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 788AC1FB;
+        Tue, 25 Jan 2022 11:30:51 -0800 (PST)
+Received: from [10.57.68.26] (unknown [10.57.68.26])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4C5BD3F7D8;
+        Tue, 25 Jan 2022 11:30:49 -0800 (PST)
+Message-ID: <93374408-9522-8648-3417-0d8750d652bb@arm.com>
+Date:   Tue, 25 Jan 2022 19:30:43 +0000
 MIME-Version: 1.0
-References: <1642851166-27096-1-git-send-email-akhilrajeev@nvidia.com> <1642851166-27096-3-git-send-email-akhilrajeev@nvidia.com>
-In-Reply-To: <1642851166-27096-3-git-send-email-akhilrajeev@nvidia.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 25 Jan 2022 18:54:46 +0100
-Message-ID: <CAJZ5v0gt+aDr_Te_mco_0CyRJAWgyeDKUb+dksfZz0mj91G0hw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] docs: firmware-guide: ACPI: Add named interrupt doc
-To:     Akhil R <akhilrajeev@nvidia.com>
-Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
+Content-Language: en-GB
+To:     Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        "jon@solid-run.com" <jon@solid-run.com>,
+        Linuxarm <linuxarm@huawei.com>,
+        "steven.price@arm.com" <steven.price@arm.com>,
+        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
+        yangyicong <yangyicong@huawei.com>,
+        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        wanghuiqiang <wanghuiqiang@huawei.com>,
+        "eric.auger@redhat.com" <eric.auger@redhat.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>
+References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
+ <9da65c2504b944398188e468eac1abff@huawei.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <9da65c2504b944398188e468eac1abff@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jan 22, 2022 at 12:33 PM Akhil R <akhilrajeev@nvidia.com> wrote:
->
-> Add a detailed example of the named interrupts in the ACPI table.
->
-> Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+On 2022-01-25 13:00, Shameerali Kolothum Thodi wrote:
+> Hi Robin/Lorenzo,
+> 
+>> -----Original Message-----
+>> From: iommu [mailto:iommu-bounces@lists.linux-foundation.org] On Behalf
+>> Of Shameer Kolothum
+>> Sent: 05 August 2021 09:07
+>> To: linux-arm-kernel@lists.infradead.org; linux-acpi@vger.kernel.org;
+>> iommu@lists.linux-foundation.org
+>> Cc: robin.murphy@arm.com; jon@solid-run.com; Linuxarm
+>> <linuxarm@huawei.com>; steven.price@arm.com; Guohanjun (Hanjun Guo)
+>> <guohanjun@huawei.com>; yangyicong <yangyicong@huawei.com>;
+>> Sami.Mujawar@arm.com; will@kernel.org; wanghuiqiang
+>> <wanghuiqiang@huawei.com>
+>> Subject: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
+>>
+>> Hi,
+>>
+>> The series adds support to IORT RMR nodes specified in IORT
+>> Revision E.b -ARM DEN 0049E[0]. RMR nodes are used to describe
+>> memory ranges that are used by endpoints and require a unity
+>> mapping in SMMU.
+>>
+>> We have faced issues with 3408iMR RAID controller cards which
+>> fail to boot when SMMU is enabled. This is because these
+>> controllers make use of host memory for various caching related
+>> purposes and when SMMU is enabled the iMR firmware fails to
+>> access these memory regions as there is no mapping for them.
+>> IORT RMR provides a way for UEFI to describe and report these
+>> memory regions so that the kernel can make a unity mapping for
+>> these in SMMU.
+>>
+>> Change History:
+>>
+>> v6 --> v7
+>>
+>> The only change from v6 is the fix pointed out by Steve to
+>> the SMMUv2 SMR bypass install in patch #8.
+>>
+>> Thanks to the Tested-by tags by Laurentiu with SMMUv2 and
+>> Hanjun/Huiqiang with SMMUv3 for v6. I haven't added the tags
+>> yet as the series still needs more review[1].
+>>
+>> Feedback and tests on this series is very much appreciated.
+> 
+> Since we have an update to IORT spec(E.c) now[1] and includes additional
+> attributes/flags for the RMR node, I am planning to respin this series soon.
+> 
+> Going through the new spec, I have a few queries,
+> 
+> The memory range attributes can now be described as one of the following,
+> 
+> 0x00: Device-nGnRnE memory
+> 0x01: Device-nGnRE memory
+> 0x02: Device-nGRE memory
+> 0x03: Device-GRE memory
+> 0x04: Normal Inner Non-cacheable Outer Non-cacheable
+> 0x05: Normal Inner Write-back Outer Write-back Inner Shareable
+> 
+> I am not sure how this needs to be captured and used in the kernel. Is there
+> any intention of using these fine-grained attributes in the kernel now
+> or a generic mapping of the above to the struct iommu_rev_region prot field
+> is enough? i.e., something like,
+> 
+> {
+>      ....
+>      prot = IOMMU_READ | IOMMU_WRITE;
+> 
+>      if (rmr_attr == normal_mem) // 0x05
+>          prot |= IOMMU_CACHE;
+>      
+>      if (rmr_attr == device_mem) { //0x00 - 0x03
+>          prot |= IOMMU_MMIO;
+>          prot |= IOMMU_NOEXEC;
+>      }
+>      ....
+> }
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Yup, pretty much that, except don't bother with IOMMU_NOEXEC. We can't 
+reliably infer it - e.g. on an AXI-based interconnect AxCACHE and AxPROT 
+are entirely orthogonal, so a Device-type read with the "Instruction 
+access" hint is perfectly legal - and in the common IORT code we're not 
+in a position to second-guess what any given RMR might represent for 
+whatever agent is accessing it.
 
-> ---
->  Documentation/firmware-guide/acpi/enumeration.rst | 39 +++++++++++++++++++++++
->  1 file changed, 39 insertions(+)
->
-> diff --git a/Documentation/firmware-guide/acpi/enumeration.rst b/Documentation/firmware-guide/acpi/enumeration.rst
-> index 74b830b2..d002256 100644
-> --- a/Documentation/firmware-guide/acpi/enumeration.rst
-> +++ b/Documentation/firmware-guide/acpi/enumeration.rst
-> @@ -143,6 +143,45 @@ In robust cases the client unfortunately needs to call
->  acpi_dma_request_slave_chan_by_index() directly and therefore choose the
->  specific FixedDMA resource by its index.
->
-> +Named Interrupts
-> +================
-> +
-> +Drivers enumerated via ACPI can have names to interrupts in the ACPI table
-> +which can be used to get the IRQ number in the driver.
-> +
-> +The interrupt name can be listed in _DSD as 'interrupt-names'. The names
-> +should be listed as an array of strings which will map to the Interrupt()
-> +resource in the ACPI table corresponding to its index.
-> +
-> +The table below shows an example of its usage::
-> +
-> +    Device (DEV0) {
-> +        ...
-> +        Name (_CRS, ResourceTemplate() {
-> +            ...
-> +            Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) {
-> +                0x20,
-> +                0x24
-> +            }
-> +        })
-> +
-> +        Name (_DSD, Package () {
-> +            ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-> +            Package () {
-> +                Package () {"interrupt-names",
-> +                Package (2) {"default", "alert"}},
-> +            }
-> +        ...
-> +        })
-> +    }
-> +
-> +The interrupt name 'default' will correspond to 0x20 in Interrupt()
-> +resource and 'alert' to 0x24. Note that only the Interrupt() resource
-> +is mapped and not GpioInt() or similar.
-> +
-> +The driver can call the function - fwnode_irq_get_byname() with the fwnode
-> +and interrupt name as arguments to get the corresponding IRQ number.
-> +
->  SPI serial bus support
->  ======================
->
-> --
-> 2.7.4
->
+All we can reasonably do here is map the Device types to IOMMU_MMIO and 
+Write-back to IOMMU_CACHE, and if anyone ever does want to insist that 
+that's not sufficient, then they're welcome to send patches to make the 
+IOMMU API more expressive :)
+
+> Similarly for the 'flags' field, the new 'Access Privilege' is intended to set the
+> IOMMU_PRIV ?
+
+Yes, exactly!
+
+Cheers,
+Robin.
+
+>    
+> Please let me know.
+> 
+> Thanks,
+> Shameer
+> 
+> [1] https://developer.arm.com/documentation/den0049/ec/?lang=en
+> 
