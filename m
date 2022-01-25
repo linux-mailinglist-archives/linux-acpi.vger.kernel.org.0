@@ -2,116 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 860B749B494
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 14:04:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6BF749B59F
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 15:05:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356807AbiAYND7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Jan 2022 08:03:59 -0500
-Received: from szxga08-in.huawei.com ([45.249.212.255]:32056 "EHLO
-        szxga08-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1574897AbiAYNAh (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jan 2022 08:00:37 -0500
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Jjn140vWnz1FCtn;
-        Tue, 25 Jan 2022 20:56:40 +0800 (CST)
-Received: from dggpemm500004.china.huawei.com (7.185.36.219) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Tue, 25 Jan 2022 21:00:33 +0800
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- dggpemm500004.china.huawei.com (7.185.36.219) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Tue, 25 Jan 2022 21:00:32 +0800
-Received: from lhreml710-chm.china.huawei.com ([169.254.81.184]) by
- lhreml710-chm.china.huawei.com ([169.254.81.184]) with mapi id
- 15.01.2308.021; Tue, 25 Jan 2022 13:00:30 +0000
-From:   Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To:     "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
-CC:     "robin.murphy@arm.com" <robin.murphy@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        "jon@solid-run.com" <jon@solid-run.com>,
-        Linuxarm <linuxarm@huawei.com>,
-        "steven.price@arm.com" <steven.price@arm.com>,
-        "Guohanjun (Hanjun Guo)" <guohanjun@huawei.com>,
-        yangyicong <yangyicong@huawei.com>,
-        "Sami.Mujawar@arm.com" <Sami.Mujawar@arm.com>,
-        "will@kernel.org" <will@kernel.org>,
-        wanghuiqiang <wanghuiqiang@huawei.com>,
-        "eric.auger@redhat.com" <eric.auger@redhat.com>,
-        Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Subject: RE: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Topic: [PATCH v7 0/9] ACPI/IORT: Support for IORT RMR node
-Thread-Index: AQHXidEW6lbeFvKh4k2Spj/Qhyfs76x0tQKA
-Date:   Tue, 25 Jan 2022 13:00:30 +0000
-Message-ID: <9da65c2504b944398188e468eac1abff@huawei.com>
-References: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
-In-Reply-To: <20210805080724.480-1-shameerali.kolothum.thodi@huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.47.82.150]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S234830AbiAYOEJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Jan 2022 09:04:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59316 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239751AbiAYOAi (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jan 2022 09:00:38 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F018C061762
+        for <linux-acpi@vger.kernel.org>; Tue, 25 Jan 2022 06:00:37 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id l25so20060862wrb.13
+        for <linux-acpi@vger.kernel.org>; Tue, 25 Jan 2022 06:00:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fireburn-co-uk.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=DxC0SfD7b4QSaFUwrb5yoO+HoqsYqRFZODxnrnI3Q+8=;
+        b=U+y638/HB1Eu+c4jhV933cF5Pnnsa4RGOrIB+QuvEwIeA6HUBOIiLNsYnbHpzCLDwL
+         F8V2VSa/v6rNAxArnBwPukcwTxhj0M1Gsjca6EKTH3Tu7ysg3fdURQvMAlj4wzBQj06b
+         V++/xO4xR52shxwOmSb1DkFUAqBIrbvzBzsWFCAjnu0C6zsyXX5GcAsPmQfyXA5Jtq2n
+         9C7t0RQEse93jnisvNpVKlsvZPWc4IWS82G3t9qy/WHsOWD9dRAsGV3eQQo2rWzKbTHI
+         0nmya+vzJHPExL2h/JRtxD51z1zsUiY48fu58VU6jeT8RKZHw1GztTQ+ocWjZcuMZG/w
+         HcgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=DxC0SfD7b4QSaFUwrb5yoO+HoqsYqRFZODxnrnI3Q+8=;
+        b=CX2iZYELuMZ4LPOwJO5n15lFOpx/QUEaAnc1uAo9wS/tjo66egqKf7Bnp8zwaRQe3z
+         Z/Qq1b9aklOc1Q+kXZ3ip2vd3AWdwFoBlE3cMgGx0YWFCDRnokCBZoJqM9hlTL+VZrnW
+         jeveS7OXF4sFMVgvyvg/KN0AxltnoyAuTjIMa1LvkcUcxca13OGyV1W89xqIxCWRq0Gh
+         KDpTzx5J9A6K9exM58727aHKKBJejppZYXWLeuyGQJgINu3rLJ6rh64pRjLpo5plCfKL
+         u5gKKQ6Bh5HdRywsVfsKgaMKqmubndSHivoXw6ktAHrl6lkjMMMPBwvqH/FpKkbNYkOk
+         qwhg==
+X-Gm-Message-State: AOAM532UDvbCtACHZjvEbK81uapvQmFAOmulnweKxza6v7LhHk1d+yYd
+        4I4Ohv95ZxH0a/NpGNDutweHpw==
+X-Google-Smtp-Source: ABdhPJyltCoImzab2bUefhlJ4kWXgLYsM0Ty2HEsWNCpCOldR21d2BMUDd330pv29T7S758XIQFtgA==
+X-Received: by 2002:a5d:488c:: with SMTP id g12mr19506010wrq.96.1643119235416;
+        Tue, 25 Jan 2022 06:00:35 -0800 (PST)
+Received: from axion.fireburn.co.uk.lan ([2a01:4b00:f40e:900::64c])
+        by smtp.gmail.com with ESMTPSA id t1sm3714608wre.45.2022.01.25.06.00.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Jan 2022 06:00:34 -0800 (PST)
+From:   Mike Lothian <mike@fireburn.co.uk>
+To:     heikki.krogerus@linux.intel.com
+Cc:     andriy.shevchenko@linux.intel.com, gregkh@linuxfoundation.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, pmalani@chromium.org, rafael@kernel.org,
+        sakari.ailus@linux.intel.com
+Subject: 'Re: [PATCH v5 4/5] usb: typec: port-mapper: Convert to the component framework'
+Date:   Tue, 25 Jan 2022 14:00:33 +0000
+Message-Id: <20220125140033.1403-1-mike@fireburn.co.uk>
+X-Mailer: git-send-email 2.35.0
+In-Reply-To: <20211223082422.45637-1-heikki.krogerus@linux.intel.com>
+References: <20211223082422.45637-1-heikki.krogerus@linux.intel.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGkgUm9iaW4vTG9yZW56bywNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9t
-OiBpb21tdSBbbWFpbHRvOmlvbW11LWJvdW5jZXNAbGlzdHMubGludXgtZm91bmRhdGlvbi5vcmdd
-IE9uIEJlaGFsZg0KPiBPZiBTaGFtZWVyIEtvbG90aHVtDQo+IFNlbnQ6IDA1IEF1Z3VzdCAyMDIx
-IDA5OjA3DQo+IFRvOiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IGxpbnV4
-LWFjcGlAdmdlci5rZXJuZWwub3JnOw0KPiBpb21tdUBsaXN0cy5saW51eC1mb3VuZGF0aW9uLm9y
-Zw0KPiBDYzogcm9iaW4ubXVycGh5QGFybS5jb207IGpvbkBzb2xpZC1ydW4uY29tOyBMaW51eGFy
-bQ0KPiA8bGludXhhcm1AaHVhd2VpLmNvbT47IHN0ZXZlbi5wcmljZUBhcm0uY29tOyBHdW9oYW5q
-dW4gKEhhbmp1biBHdW8pDQo+IDxndW9oYW5qdW5AaHVhd2VpLmNvbT47IHlhbmd5aWNvbmcgPHlh
-bmd5aWNvbmdAaHVhd2VpLmNvbT47DQo+IFNhbWkuTXVqYXdhckBhcm0uY29tOyB3aWxsQGtlcm5l
-bC5vcmc7IHdhbmdodWlxaWFuZw0KPiA8d2FuZ2h1aXFpYW5nQGh1YXdlaS5jb20+DQo+IFN1Ympl
-Y3Q6IFtQQVRDSCB2NyAwLzldIEFDUEkvSU9SVDogU3VwcG9ydCBmb3IgSU9SVCBSTVIgbm9kZQ0K
-PiANCj4gSGksDQo+IA0KPiBUaGUgc2VyaWVzIGFkZHMgc3VwcG9ydCB0byBJT1JUIFJNUiBub2Rl
-cyBzcGVjaWZpZWQgaW4gSU9SVA0KPiBSZXZpc2lvbiBFLmIgLUFSTSBERU4gMDA0OUVbMF0uIFJN
-UiBub2RlcyBhcmUgdXNlZCB0byBkZXNjcmliZQ0KPiBtZW1vcnkgcmFuZ2VzIHRoYXQgYXJlIHVz
-ZWQgYnkgZW5kcG9pbnRzIGFuZCByZXF1aXJlIGEgdW5pdHkNCj4gbWFwcGluZyBpbiBTTU1VLg0K
-PiANCj4gV2UgaGF2ZSBmYWNlZCBpc3N1ZXMgd2l0aCAzNDA4aU1SIFJBSUQgY29udHJvbGxlciBj
-YXJkcyB3aGljaA0KPiBmYWlsIHRvIGJvb3Qgd2hlbiBTTU1VIGlzIGVuYWJsZWQuIFRoaXMgaXMg
-YmVjYXVzZSB0aGVzZQ0KPiBjb250cm9sbGVycyBtYWtlIHVzZSBvZiBob3N0IG1lbW9yeSBmb3Ig
-dmFyaW91cyBjYWNoaW5nIHJlbGF0ZWQNCj4gcHVycG9zZXMgYW5kIHdoZW4gU01NVSBpcyBlbmFi
-bGVkIHRoZSBpTVIgZmlybXdhcmUgZmFpbHMgdG8NCj4gYWNjZXNzIHRoZXNlIG1lbW9yeSByZWdp
-b25zIGFzIHRoZXJlIGlzIG5vIG1hcHBpbmcgZm9yIHRoZW0uDQo+IElPUlQgUk1SIHByb3ZpZGVz
-IGEgd2F5IGZvciBVRUZJIHRvIGRlc2NyaWJlIGFuZCByZXBvcnQgdGhlc2UNCj4gbWVtb3J5IHJl
-Z2lvbnMgc28gdGhhdCB0aGUga2VybmVsIGNhbiBtYWtlIGEgdW5pdHkgbWFwcGluZyBmb3INCj4g
-dGhlc2UgaW4gU01NVS4NCj4gDQo+IENoYW5nZSBIaXN0b3J5Og0KPiANCj4gdjYgLS0+IHY3DQo+
-IA0KPiBUaGUgb25seSBjaGFuZ2UgZnJvbSB2NiBpcyB0aGUgZml4IHBvaW50ZWQgb3V0IGJ5IFN0
-ZXZlIHRvDQo+IHRoZSBTTU1VdjIgU01SIGJ5cGFzcyBpbnN0YWxsIGluIHBhdGNoICM4Lg0KPiAN
-Cj4gVGhhbmtzIHRvIHRoZSBUZXN0ZWQtYnkgdGFncyBieSBMYXVyZW50aXUgd2l0aCBTTU1VdjIg
-YW5kDQo+IEhhbmp1bi9IdWlxaWFuZyB3aXRoIFNNTVV2MyBmb3IgdjYuIEkgaGF2ZW4ndCBhZGRl
-ZCB0aGUgdGFncw0KPiB5ZXQgYXMgdGhlIHNlcmllcyBzdGlsbCBuZWVkcyBtb3JlIHJldmlld1sx
-XS4NCj4gDQo+IEZlZWRiYWNrIGFuZCB0ZXN0cyBvbiB0aGlzIHNlcmllcyBpcyB2ZXJ5IG11Y2gg
-YXBwcmVjaWF0ZWQuDQoNClNpbmNlIHdlIGhhdmUgYW4gdXBkYXRlIHRvIElPUlQgc3BlYyhFLmMp
-IG5vd1sxXSBhbmQgaW5jbHVkZXMgYWRkaXRpb25hbA0KYXR0cmlidXRlcy9mbGFncyBmb3IgdGhl
-IFJNUiBub2RlLCBJIGFtIHBsYW5uaW5nIHRvIHJlc3BpbiB0aGlzIHNlcmllcyBzb29uLg0KDQpH
-b2luZyB0aHJvdWdoIHRoZSBuZXcgc3BlYywgSSBoYXZlIGEgZmV3IHF1ZXJpZXMsDQoNClRoZSBt
-ZW1vcnkgcmFuZ2UgYXR0cmlidXRlcyBjYW4gbm93IGJlIGRlc2NyaWJlZCBhcyBvbmUgb2YgdGhl
-IGZvbGxvd2luZywNCg0KMHgwMDogRGV2aWNlLW5HblJuRSBtZW1vcnkNCjB4MDE6IERldmljZS1u
-R25SRSBtZW1vcnkNCjB4MDI6IERldmljZS1uR1JFIG1lbW9yeQ0KMHgwMzogRGV2aWNlLUdSRSBt
-ZW1vcnkNCjB4MDQ6IE5vcm1hbCBJbm5lciBOb24tY2FjaGVhYmxlIE91dGVyIE5vbi1jYWNoZWFi
-bGUNCjB4MDU6IE5vcm1hbCBJbm5lciBXcml0ZS1iYWNrIE91dGVyIFdyaXRlLWJhY2sgSW5uZXIg
-U2hhcmVhYmxlDQoNCkkgYW0gbm90IHN1cmUgaG93IHRoaXMgbmVlZHMgdG8gYmUgY2FwdHVyZWQg
-YW5kIHVzZWQgaW4gdGhlIGtlcm5lbC4gSXMgdGhlcmUNCmFueSBpbnRlbnRpb24gb2YgdXNpbmcg
-dGhlc2UgZmluZS1ncmFpbmVkIGF0dHJpYnV0ZXMgaW4gdGhlIGtlcm5lbCBub3cNCm9yIGEgZ2Vu
-ZXJpYyBtYXBwaW5nIG9mIHRoZSBhYm92ZSB0byB0aGUgc3RydWN0IGlvbW11X3Jldl9yZWdpb24g
-cHJvdCBmaWVsZA0KaXMgZW5vdWdoPyBpLmUuLCBzb21ldGhpbmcgbGlrZSwNCg0Kew0KICAgIC4u
-Li4NCiAgICBwcm90ID0gSU9NTVVfUkVBRCB8IElPTU1VX1dSSVRFOw0KDQogICAgaWYgKHJtcl9h
-dHRyID09IG5vcm1hbF9tZW0pIC8vIDB4MDUNCiAgICAgICAgcHJvdCB8PSBJT01NVV9DQUNIRTsN
-CiAgICANCiAgICBpZiAocm1yX2F0dHIgPT0gZGV2aWNlX21lbSkgeyAvLzB4MDAgLSAweDAzDQog
-ICAgICAgIHByb3QgfD0gSU9NTVVfTU1JTzsNCiAgICAgICAgcHJvdCB8PSBJT01NVV9OT0VYRUM7
-DQogICAgfQ0KICAgIC4uLi4NCn0NCg0KU2ltaWxhcmx5IGZvciB0aGUgJ2ZsYWdzJyBmaWVsZCwg
-dGhlIG5ldyAnQWNjZXNzIFByaXZpbGVnZScgaXMgaW50ZW5kZWQgdG8gc2V0IHRoZQ0KSU9NTVVf
-UFJJViA/DQogIA0KUGxlYXNlIGxldCBtZSBrbm93Lg0KDQpUaGFua3MsDQpTaGFtZWVyDQoNClsx
-XSBodHRwczovL2RldmVsb3Blci5hcm0uY29tL2RvY3VtZW50YXRpb24vZGVuMDA0OS9lYy8/bGFu
-Zz1lbg0KDQo=
+Hi
+
+This patch is stopping my ASUS G513QY from booting correctly
+
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0 
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 1 PID: 116 Comm: kworker/1:1 Not tainted 5.16.0-rc6-tip+ #2991
+Hardware name: ASUSTeK COMPUTER INC. ROG Strix G513QY_G513QY/G513QY, BIOS G513QY.316 11/29/2021
+Workqueue: events_long ucsi_init_work
+RIP: 0010:component_master_add_with_match+0x11/0x190
+Code: cc cc 00 00 cc cc 00 00 cc 49 89 c9 49 89 d0 31 d2 31 c9 e9 c1 fe ff ff 00 55 41 57 41 56 41 54 53 48 89 d3 49 89 f4 49 89 ff <48> 8b 72 08 48 89 d7 e8 73 01 00 00 89 c5 85 c0 0f 85 55 01 00 00
+RSP: 0018:ffff8881029f7d48 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000001
+RDX: 0000000000000000 RSI: ffffffff83095658 RDI: ffff888117658c08
+RBP: 0000000000000000 R08: ffff88810158e258 R09: ffffea00045d9e00
+R10: 0000001000000000 R11: ffffffff81be3720 R12: ffffffff83095658
+R13: ffff888117630a68 R14: ffff888117658c08 R15: ffff888117658c08
+FS:  0000000000000000(0000) GS:ffff888fde440000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000008 CR3: 00000000ac20c000 CR4: 0000000000150ee0
+Call Trace:
+ <TASK>
+ ? typec_link_ports+0x45/0x50
+ ? typec_register_port+0x20f/0x260
+ ? ucsi_register_port+0x33c/0x700
+ ? __kmalloc+0x14e/0x2a0
+ ? ucsi_init_work+0x15a/0x330
+ ? process_one_work+0x1dd/0x380
+ ? worker_thread+0x26d/0x4a0
+ ? kthread+0x182/0x1a0
+ ? worker_clr_flags+0x40/0x40
+ ? kthread_blkcg+0x30/0x30
+ ? ret_from_fork+0x22/0x30
+ </TASK>
+Modules linked in:
+CR2: 0000000000000008
+---[ end trace 9c7dfbb7c9eaa418 ]---
+RIP: 0010:component_master_add_with_match+0x11/0x190
+Code: cc cc 00 00 cc cc 00 00 cc 49 89 c9 49 89 d0 31 d2 31 c9 e9 c1 fe ff ff 00 55 41 57 41 56 41 54 53 48 89 d3 49 89 f4 49 89 ff <48> 8b 72 08 48 89 d7 e8 73 01 00 00 89 c5 85 c0 0f 85 55 01 00 00
+RSP: 0018:ffff8881029f7d48 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000001
+RDX: 0000000000000000 RSI: ffffffff83095658 RDI: ffff888117658c08
+RBP: 0000000000000000 R08: ffff88810158e258 R09: ffffea00045d9e00
+R10: 0000001000000000 R11: ffffffff81be3720 R12: ffffffff83095658
+R13: ffff888117630a68 R14: ffff888117658c08 R15: ffff888117658c08
+FS:  0000000000000000(0000) GS:ffff888fde440000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000008 CR3: 00000000ac20c000 CR4: 0000000000150ee0
+
+Is it due to the USB-C port on the Radeon 6800M?
+
+Thanks
+
+Mike
