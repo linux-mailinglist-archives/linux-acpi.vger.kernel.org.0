@@ -2,75 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FA5B49BA8D
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 18:44:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EC4449BAA0
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 18:53:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232540AbiAYRn0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Jan 2022 12:43:26 -0500
-Received: from mail-yb1-f170.google.com ([209.85.219.170]:44599 "EHLO
-        mail-yb1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1384367AbiAYRnO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jan 2022 12:43:14 -0500
-Received: by mail-yb1-f170.google.com with SMTP id r65so60307289ybc.11;
-        Tue, 25 Jan 2022 09:43:13 -0800 (PST)
+        id S231407AbiAYRxL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Jan 2022 12:53:11 -0500
+Received: from mail-yb1-f171.google.com ([209.85.219.171]:43911 "EHLO
+        mail-yb1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243629AbiAYRwr (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jan 2022 12:52:47 -0500
+Received: by mail-yb1-f171.google.com with SMTP id g81so63955733ybg.10;
+        Tue, 25 Jan 2022 09:52:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=m5LCOpXnnaSA7LGKNVoZuc39uqR/t80O6SBc4Hc6VI4=;
-        b=ZBVOj1vRN2LhTfdcajSNacAdHB7LrAx0J4U9toowaiAaSoKUld/YXy2hgSSuYV39l4
-         eEI/8gqlJwGRzDYqdgUQ/tAKPXF/05C/bndEVEEyaYlattSMeXS+tQo/UWJG1aB7bNrB
-         588C0Gl3Vlfqj5HokLRRn7SIHHHNJv86P6EGXtaJbnyOQEmnf/GIOEsm9cTJluqufPTZ
-         gvoOmiqKie2/yAZUi4gJ50Kdx3gTRPaBRWHa5pPJ0Ams8Yp2IQTbXMYM5S1lCduPFji8
-         gB4vhOkz9OnnB+4r2H3DN1J+lCKw3F9wSEBxnvxkL15w6LHKDaznWdAWVPAj2Ja8ce/Z
-         EoKg==
-X-Gm-Message-State: AOAM533v12XHPS4Q58S/uJliQVcoOQGVyW954Lh9ZnbIb8XR96iIM/Kv
-        YDyfRgiiH06+FPRsaoxjYvuvClYyVTcpPkAycBQ=
-X-Google-Smtp-Source: ABdhPJzWrkyhNzEHHGNrGilfHeJ24YAuVmnXrkjxry4FZ7IcPsq41xXQKu3Z2Ybiq2ilCq431lsH1ZuzYa7paG6SCW4=
-X-Received: by 2002:a25:b8f:: with SMTP id 137mr19338331ybl.330.1643132593224;
- Tue, 25 Jan 2022 09:43:13 -0800 (PST)
+        bh=+j1GpCpGfNY2lH8frLrkCg4vSgaS4ibnLkUccs79nQA=;
+        b=RzcIeeIMikSwVSQ9Yza37NYqsfFrm0hOqPP/KK8YyAjiRunShioLLHtBjsimPmUmi3
+         Eopc3HhOpeMnQKM7ym9MJAt/wDGuoj3yoD/HDh4cT5oB16sis6auVObMBy8oZ1Y77B7N
+         6+Vriqme2ChbJepG2DAlOXPssIElDlFtA8pm9ea/B7qpCV9+r1vKxcewScZ4y742RbeC
+         i5UCoNv3F6jq9cZC6QSlI/fF8FWVjt6/lkdARhb54JHGhDtbfy2Hj+wes4rEw6QbCwBb
+         5NiIu98aWjOUnuO7m6gzKdqEam6ZYvdwSXoHROeg+I/fU6WYB9Is+2SeCgNayW2Xeh8a
+         qAvw==
+X-Gm-Message-State: AOAM5320hUWHXk2MI3tUMmNmGvH2JkzUnGWajZnkOnSfYnUIUp5za9s5
+        f2JofaoVdVi/RNpBUrYbK3YvQQVyphL9lKran8g=
+X-Google-Smtp-Source: ABdhPJyojknnzuIYMmZbjfeJ+s2pzRiKVKx+zefsCZtajgkwxnDKmiqfjgFEq1JOZLL4BipPUObjdUys5vQ1JNLbLZs=
+X-Received: by 2002:a25:bb93:: with SMTP id y19mr30844335ybg.466.1643133165102;
+ Tue, 25 Jan 2022 09:52:45 -0800 (PST)
 MIME-Version: 1.0
-References: <2614912.mvXUDI8C0e@kreacher> <CAK8P3a1vQj10a4ztj8KfSuxGkOfooB=6q0xj_s5pmhzoS00S1w@mail.gmail.com>
-In-Reply-To: <CAK8P3a1vQj10a4ztj8KfSuxGkOfooB=6q0xj_s5pmhzoS00S1w@mail.gmail.com>
+References: <1642851166-27096-1-git-send-email-akhilrajeev@nvidia.com> <1642851166-27096-2-git-send-email-akhilrajeev@nvidia.com>
+In-Reply-To: <1642851166-27096-2-git-send-email-akhilrajeev@nvidia.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 25 Jan 2022 18:43:02 +0100
-Message-ID: <CAJZ5v0gGd-62R0uB3z+h96RFuvmOoHFGdDSjiFcJUvRg4BT9zg@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Use uintptr_t and offsetof() in Linux kernel builds
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bob Moore <robert.moore@intel.com>
+Date:   Tue, 25 Jan 2022 18:52:34 +0100
+Message-ID: <CAJZ5v0hCREQczOczW6+UGv3UDxskYLRP06qpyQkyXEC1YA3nOw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] device property: Add fwnode_irq_get_byname
+To:     Akhil R <akhilrajeev@nvidia.com>
+Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Wolfram Sang <wsa@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Jan 12, 2022 at 9:45 AM Arnd Bergmann <arnd@kernel.org> wrote:
+On Sat, Jan 22, 2022 at 12:33 PM Akhil R <akhilrajeev@nvidia.com> wrote:
 >
-> On Tue, Jan 11, 2022 at 4:55 PM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> >
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > To avoid "performing pointer subtraction with a null pointer has
-> > undefined behavior" compiler warnings, use uintptr_t and offsetof()
-> > that are always available during Linux kernel builds to define
-> > acpi_uintptr_t and the ACPI_TO_INTEGER() and ACPI_OFFSET() macros.
-> >
-> > Based on earlier proposal from Arnd Bergmann.
-> >
-> > Link: https://lore.kernel.org/linux-acpi/20210927121338.938994-1-arnd@kernel.org
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Add fwnode_irq_get_byname() to get an interrupt by name from either
+> ACPI table or Device Tree, whichever is used for enumeration.
 >
-> Thanks for the follow-up. I can't easily test this at the moment, but
-> it looks correct to
-> me. I had a different approach that I had planned to eventually
-> submit, but yours
-> looks better anyway, so let's go with this.
+> In the ACPI case, this allow us to use 'interrupt-names' in
+> _DSD which can be mapped to Interrupt() resource by index.
+> The implementation is similar to 'interrupt-names' in the
+> Device Tree.
 >
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
 
-Thank you, I've applied this patch as 5.18 material.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-A pull request for the analogous change in the upstream code base has
-been submitted and Bob is going to take it AFAICS.
+> ---
+>  drivers/base/property.c  | 29 +++++++++++++++++++++++++++++
+>  include/linux/property.h |  1 +
+>  2 files changed, 30 insertions(+)
+>
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index e6497f6..fc59e0f 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -936,6 +936,35 @@ void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
+>  EXPORT_SYMBOL(fwnode_iomap);
+>
+>  /**
+> + * fwnode_irq_get_byname - Get IRQ from a fwnode using its name
+> + * @fwnode:    Pointer to the firmware node
+> + * @name:      IRQ name
+> + *
+> + * Description:
+> + * Find a match to the string @name in the 'interrupt-names' string array
+> + * in _DSD for ACPI, or of_node for Device Tree. Then get the Linux IRQ
+> + * number of the IRQ resource corresponding to the index of the matched
+> + * string.
+> + *
+> + * Return:
+> + * Linux IRQ number on success, or negative errno otherwise.
+> + */
+> +int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name)
+> +{
+> +       int index;
+> +
+> +       if (!name)
+> +               return -EINVAL;
+> +
+> +       index = fwnode_property_match_string(fwnode, "interrupt-names",  name);
+> +       if (index < 0)
+> +               return index;
+> +
+> +       return fwnode_irq_get(fwnode, index);
+> +}
+> +EXPORT_SYMBOL(fwnode_irq_get_byname);
+> +
+> +/**
+>   * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
+>   * @fwnode: Pointer to the parent firmware node
+>   * @prev: Previous endpoint node or %NULL to get the first
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 7399a0b..95d56a5 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -121,6 +121,7 @@ struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+>  void fwnode_handle_put(struct fwnode_handle *fwnode);
+>
+>  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+> +int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
+>
+>  void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
+>
+> --
+> 2.7.4
+>
