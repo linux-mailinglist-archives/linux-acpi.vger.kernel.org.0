@@ -2,103 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5321D49B6D8
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 15:50:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 073F149B6F1
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 15:54:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1579870AbiAYOuV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Jan 2022 09:50:21 -0500
-Received: from mail-yb1-f182.google.com ([209.85.219.182]:38739 "EHLO
-        mail-yb1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1389262AbiAYOpa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jan 2022 09:45:30 -0500
-Received: by mail-yb1-f182.google.com with SMTP id i62so16004076ybg.5;
-        Tue, 25 Jan 2022 06:45:24 -0800 (PST)
+        id S1580693AbiAYOvt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Tue, 25 Jan 2022 09:51:49 -0500
+Received: from mail-yb1-f173.google.com ([209.85.219.173]:43577 "EHLO
+        mail-yb1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1580430AbiAYOtt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jan 2022 09:49:49 -0500
+Received: by mail-yb1-f173.google.com with SMTP id g81so62397069ybg.10;
+        Tue, 25 Jan 2022 06:49:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2baAB3uSLjYkpNcq5GaJvhhWWvmQdMQHFWAgaLKDTts=;
-        b=OU7b01teOvLz6JMewIKe1XyupgILMDCitWHq0ZjsmbwwQSjobjeEtYofDCY/F4A4SX
-         vHuF4CPknMAVUq1yyM0/5W4KmwFIhJPQAfNqFYfIp4LUbeYa00xSL2Au5kF5dPj72Vmr
-         KX2kxnkLZSW4W7YnwA1r1GvN5eSEsa33s0wPep0x2Eh6W7Il10yR5bmgOd8zWBS/E3uo
-         yFS2PHvIJJwcSMSMhP9kGRqBVYHJo/e7oN+9PiHEUjmNKdN7rDANLg+0sDzITjCMDwf0
-         oTs/XcbHp22W2cjOtyS1CJ8d1caC4drReM0R5K+FyCbqslShQk6E9DKvEtgqkvpgUq7P
-         ccXA==
-X-Gm-Message-State: AOAM530e9fmZtAri3XrFpIPReg6c1XfKFIiZ4h4V4m66Rw8hNt0m+Hln
-        lWUPJwhpua4hXkRwZAju5sPZMrXGtIipdo/KNvw=
-X-Google-Smtp-Source: ABdhPJx9vrSpRJkKKf5kIzoUtq+zl70oDT8vSjH+qIonUx7kia+AgMNLIDN7W62c+iGhkScPGLk/xCU2bBrTF5JrbN0=
-X-Received: by 2002:a5b:58d:: with SMTP id l13mr30663076ybp.475.1643121916245;
- Tue, 25 Jan 2022 06:45:16 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=zgx4gBR0L+57aNQSWEp0GvsGWvVZvYtZgO+7WGNB4q0=;
+        b=LctuK5YlVHzSmsLoiR7nhhF5+3EvRQ4aiJz2pjWsBBchg0BMNhGtVupiR4L7CkN+w8
+         IuSERE6663mBZ0JAppnAOjD+J0P3PmtzXHgwvArCkMYYQhYJW5JFp2KKOp+LQNOyODKo
+         z+QmMG7EXXnks9qwQSLWWxYNNeKu7oIrQZsziVlpUURW/3XXmj7FnZJlk9fa4Vk2z3oR
+         NdOr+C4z9p6qkrh6v11fHnkZGS8ySUVpggKF15E1HoMY0IhWwaE6BMea72rCla59hggw
+         fFGSuVmRVRqq18tQvymX1ceLQT4+byIFiwlkDAmO5L7Rfr5RU8jv8A/Zl4naaAeYqkVf
+         VKlQ==
+X-Gm-Message-State: AOAM532cO2wuAY7xnx4BcJXdo4JBAkpJ3F6I0pm6brvRF/tv27HONMnZ
+        VtGe7DHWmcQsPALHrspdA303GFNI0i7SBLKuAcY=
+X-Google-Smtp-Source: ABdhPJyg9YYefj34XDUGWt3IBNgqsWQzu0auukw1l8VDw8HGwC0stDvtak/M5bHUKsDMMgYhybNNmdMJAQPhnGB7X8Y=
+X-Received: by 2002:a25:1bd5:: with SMTP id b204mr33391054ybb.552.1643122186838;
+ Tue, 25 Jan 2022 06:49:46 -0800 (PST)
 MIME-Version: 1.0
-References: <20220120000409.2706549-1-rajatja@google.com> <20220121214117.GA1154852@bhelgaas>
- <Ye5GvQbFKo+CFtRb@lahna> <Ye/X7E2dKb+zem34@lahna> <Ye/btvA1rLB2rp02@kroah.com>
- <Ye/zTHR5aCG58z87@lahna>
-In-Reply-To: <Ye/zTHR5aCG58z87@lahna>
+References: <1b871357-2231-336d-099c-cdccae03f837@boldcoder.com> <82f254a1-c765-0a87-f017-8c07c8ef07cd@boldcoder.com>
+In-Reply-To: <82f254a1-c765-0a87-f017-8c07c8ef07cd@boldcoder.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 25 Jan 2022 15:45:03 +0100
-Message-ID: <CAJZ5v0gitdeEAxcgSoB1=VHA9FnRdCtmUqA_cN_f1a2yFRDghQ@mail.gmail.com>
-Subject: Re: [PATCH] PCI: ACPI: Allow internal devices to be marked as untrusted
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Rajat Jain <rajatja@google.com>,
+Date:   Tue, 25 Jan 2022 15:49:34 +0100
+Message-ID: <CAJZ5v0hRgzGm=axigeW9aPw+ai5hMCy975=vgdY4dGYZFzzMTA@mail.gmail.com>
+Subject: Re: Patch: Make ACPI subsystem provide CEDT table
+To:     Robert Kiraly <me@boldcoder.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-cxl@vger.kernel.org, Len Brown <lenb@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Dmitry Torokhov <dtor@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Pavel Machek <pavel@denx.de>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>
+        Dan Williams <dan.j.williams@intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Jan 25, 2022 at 1:55 PM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
+On Tue, Jan 25, 2022 at 7:30 AM Robert Kiraly <me@boldcoder.com> wrote:
 >
-> On Tue, Jan 25, 2022 at 12:15:02PM +0100, Greg Kroah-Hartman wrote:
-> > On Tue, Jan 25, 2022 at 12:58:52PM +0200, Mika Westerberg wrote:
-> > > On Mon, Jan 24, 2022 at 08:27:17AM +0200, Mika Westerberg wrote:
-> > > > > > This patch introduces a new "UntrustedDevice" property that can be used
-> > > > > > by the firmware to mark any device as untrusted.
-> > > >
-> > > > I think this new property should be documented somewhere too (also
-> > > > explain when to use it instead of ExternalFacingPort). If not in the
-> > > > next ACPI spec or some supplemental doc then perhaps in the DT bindings
-> > > > under Documentation/devicetree/bindings.
-> > >
-> > > Actually Microsoft has similar already:
-> > >
-> > > https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
-> > >
-> > > I think we should use that too here.
-> >
-> > But we do not have "dma protection" for Linux, so how will that value
-> > make sense?
+> This is a simple ACPI patch. I'm submitting a revised version to
+> linux-acpi per Rafael Wysocki and linux-cxl per Dan Williams.
 >
-> Yes I think we do - IOMMU. That's the same thing what we do now for
-> "External Facing Ports". This one just is for internal ones.
+> The patch has been moved to the message body and a Signed-off-by tag has
+> been added. Thunderbird has added CRs so "patch -p1 -l" is needed. To
+> address other points:
 >
-> > And shouldn't this be an ACPI standard?
+> Q. Dan Williams said: Yes, although I don't see much incremental benefit
+> to developers publishing a root only raw table... So, not opposed to the
+> patch, but I want to direct you to the sysfs representation of the CEDT
+> and CFMWS in /sys/bus/cxl/devices... Platform firmware CXL details are
+> modeled as "CXL root" objects in the /sys/bus/cxl device model.
 >
-> Probably should or some supplemental doc but not sure how easy these
-> "properties" can be added there to be honest.
+> A. The patch is being submitted in connection with work on a CXL bridge.
+> The developers would like to express appreciation for the "sysfs" point.
+> They find it useful to be able to do initialization through the table
+> but will look at the "sysfs" approach.
 >
-> Some of these that we use in Linux too are from that same page:
+> Q. Rafael J. Wysocki said: I'm not sure why the #ifdef is needed.
 >
-> https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
->
-> Namely these: HotPlugSupportInD3, ExternalFacingPort, usb4-host-interface,
-> usb4-port-number and StorageD3Enable.
+> A. I reviewed cxl-next and decided to add the #ifdef to ensure that the
+> code would compile regardless of the direction that the codebase takes.
 
-Right.
+ACPI_SIG_CEDT is defined in 5.17-rc1 AFAICS, so the #ifdef is redundant.
 
-We are kind of on the receiving end here, because at the time we learn
-about these things the decisions to use them have been made already.
+> ==== start of patch ====
+> Subject: Make ACPI subsystem provide CEDT table
+> Signed-off-by: Robert Kiraly <me@boldcoder.com>
+>
+> This is a simple patch to the ACPI subsystem. The patch adds ACPI
+> _SIG_CEDT to table_sigs[] in  "drivers/acpi/tables.c".
+>
+> Presently,  CXL code isn't able to make use of the  CEDT table at
+> the initrd stage. Subsequent to the change, the CEDT table can be
+> used.
+>
+> If  a developer  plans to use the CEDT table to  program  the CXL
+> ports,  this change is needed.  Otherwise,  it isn't  expected to
+> make a difference.
+>
+> I certify  compliance with  Developer’s Certificate of Origin 1.1
+> as listed in:
+> https://www.kernel.org/doc/html/v4.10/process/submitting-patches.
+> html
+>
+> --- linux-5.16.old/drivers/acpi/tables.c
+> +++ linux-5.16/drivers/acpi/tables.c
+> @@ -500,6 +500,9 @@
+>         ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
+>         ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
+>         ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
+> +#ifdef ACPI_SIG_CEDT
+> +       ACPI_SIG_CEDT,
+> +#endif
+>         ACPI_SIG_NHLT };
+>
+>   #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
+> ==== end of patch ====
+>
+>
