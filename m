@@ -2,75 +2,68 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ACF949B5D1
-	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 15:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09A1749B69A
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 15:44:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1386484AbiAYOOq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 25 Jan 2022 09:14:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33360 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386368AbiAYOKa (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 25 Jan 2022 09:10:30 -0500
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2F02C06175B
-        for <linux-acpi@vger.kernel.org>; Tue, 25 Jan 2022 06:10:29 -0800 (PST)
-Received: by mail-qk1-x736.google.com with SMTP id o10so1426790qkg.0
-        for <linux-acpi@vger.kernel.org>; Tue, 25 Jan 2022 06:10:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4OpAweGT1e4F9ySXm4/zalgDaK2uMw0uXyEeHsUeLwk=;
-        b=ZtazNy6tcImVkBZqXX8Lq1agGcBdBFsPSQwWOMOTvOwBbYtjomh+AZKX0ipRFsjZew
-         PXkCAEne7pMpPw4GsvIJ7rVUefFN0eqWgEhYEEg5ucmMhSlVqLFL0weSEf3lvaHNMhWO
-         QuUyctFQSexdKok7VrhPvBkyb/133NhUvNMmnqfHj87a6+yYuo5+p+JxZ0KMvCRgHlUH
-         4nfyg/xK2O5RoGf1WuvC5C9pZWy+wQvraGadYeMizIdZy2PqZOhG7umx/A9jpO1Gc4E1
-         oVP4YfDQVYQIViLO/jtrf7nriS+9U8+KLXI6cQ1Yj2trqtTPz0oAMUixLfdPZEMc5NX9
-         GVLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4OpAweGT1e4F9ySXm4/zalgDaK2uMw0uXyEeHsUeLwk=;
-        b=iY8Dp/rY3U9X8qc/f9k/8u9PHp/vglcIi1m5tC/siIijC0oMhnYRe7iLtq5tAltLoI
-         V7bFJzuNrmUa0DzjU3M0WpSa1ImfO7+29hJw09EZ3hzyuEen5+SFl+Lqvyzj69+kziR+
-         ygEgGW9j/iyaioSzgyukWS1r9i5Jq0MgTYyixBGQOr3A5ay9ilcqhlEUAoDvV7P+aF1Y
-         QBlakuJMnN9BikiNmANhLDpLVoPQkNst9KaHziV1yU4a+0zscOoiG+nwn08FSBJwTAjv
-         Md2B0vzLT03abu8b2731yvLptClk+4P90LyHFeHDLO4+TcCq+OQXbwqNMd3IjpT/soA9
-         oiPg==
-X-Gm-Message-State: AOAM531OXBqJ+1ZIHHnBp/54kTIsokdBNYSGGFmdJcxScaH+8+le8B5p
-        OcHaxDyxn/i2JpwjaPdT+NFcLmBhGC99599qdW/vlA==
-X-Google-Smtp-Source: ABdhPJwja3bpzGz4mi2snRecqF3VQUdlkQeuOPF/0gmLP6K+MsCIu+yRLJ76ppLTr0vlvA4QbQXMyhgGFoZVhnUpMeg=
-X-Received: by 2002:a05:620a:40c1:: with SMTP id g1mr14861610qko.588.1643119828550;
- Tue, 25 Jan 2022 06:10:28 -0800 (PST)
-MIME-Version: 1.0
-References: <20211223082422.45637-1-heikki.krogerus@linux.intel.com> <20220125140033.1403-1-mike@fireburn.co.uk>
-In-Reply-To: <20220125140033.1403-1-mike@fireburn.co.uk>
-From:   Mike Lothian <mike@fireburn.co.uk>
-Date:   Tue, 25 Jan 2022 14:10:17 +0000
-Message-ID: <CAHbf0-Hzkz5Frfw43jH5ACvHAgRLZEV-yGcWQKvwKnUQGyMXfw@mail.gmail.com>
-Subject: Re: 'Re: [PATCH v5 4/5] usb: typec: port-mapper: Convert to the
- component framework'
-To:     heikki.krogerus@linux.intel.com
+        id S1388385AbiAYOkC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 25 Jan 2022 09:40:02 -0500
+Received: from mga07.intel.com ([134.134.136.100]:63378 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1578140AbiAYOfU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 25 Jan 2022 09:35:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643121319; x=1674657319;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fZpRi7/n3jktDDT1JXT1mbo2A4Bg6HzZ1mzBBxuVaL8=;
+  b=jsexsbHu6IL1WTfJqnDx3/9ynALR2FF3aU+VrPo1DL/+Sl3LLYnnjgMq
+   Mz1n++b02SYUIKUYuGGvIejoWRfPOSiB6UNGAY8NSqrXAVECM+z35hPLk
+   3QjnUF83IOayer+d0mOApwlzJJXZvb6/t3Oj7XC8/IOrwxLGDbX/ltdCE
+   pcMwzxaaTFUiUayKEhn64KFWJ4AZEEv0wLQ1L+xzql9gLS+cMgBTBOh1J
+   Aj9/UnBb9Oc1fzjSfYNBZliUutqITziVGetmj98+XBatUzVZuCIBR9beX
+   VWY3hXmskGbpwfvSXfzNQtr5etoM/Rz3IQYocyayMA2OosB1+npbOZ62A
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10237"; a="309628254"
+X-IronPort-AV: E=Sophos;i="5.88,315,1635231600"; 
+   d="scan'208";a="309628254"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2022 06:32:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,315,1635231600"; 
+   d="scan'208";a="674005266"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 25 Jan 2022 06:32:25 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 25 Jan 2022 16:32:25 +0200
+Date:   Tue, 25 Jan 2022 16:32:25 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Mike Lothian <mike@fireburn.co.uk>
 Cc:     andriy.shevchenko@linux.intel.com, gregkh@linuxfoundation.org,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-usb@vger.kernel.org, pmalani@chromium.org, rafael@kernel.org,
         sakari.ailus@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: 'Re: [PATCH v5 4/5] usb: typec: port-mapper: Convert to the
+ component framework'
+Message-ID: <YfAJ+b0G6Yvzhpxp@kuha.fi.intel.com>
+References: <20211223082422.45637-1-heikki.krogerus@linux.intel.com>
+ <20220125140033.1403-1-mike@fireburn.co.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220125140033.1403-1-mike@fireburn.co.uk>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, 25 Jan 2022 at 14:00, Mike Lothian <mike@fireburn.co.uk> wrote:
->
+On Tue, Jan 25, 2022 at 02:00:33PM +0000, Mike Lothian wrote:
 > Hi
->
+> 
 > This patch is stopping my ASUS G513QY from booting correctly
->
+> 
 > BUG: kernel NULL pointer dereference, address: 0000000000000008
 > #PF: supervisor read access in kernel mode
 > #PF: error_code(0x0000) - not-present page
-> PGD 0 P4D 0
+> PGD 0 P4D 0 
 > Oops: 0000 [#1] PREEMPT SMP NOPTI
 > CPU: 1 PID: 116 Comm: kworker/1:1 Not tainted 5.16.0-rc6-tip+ #2991
 > Hardware name: ASUSTeK COMPUTER INC. ROG Strix G513QY_G513QY/G513QY, BIOS G513QY.316 11/29/2021
@@ -114,12 +107,11 @@ On Tue, 25 Jan 2022 at 14:00, Mike Lothian <mike@fireburn.co.uk> wrote:
 > FS:  0000000000000000(0000) GS:ffff888fde440000(0000) knlGS:0000000000000000
 > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
 > CR2: 0000000000000008 CR3: 00000000ac20c000 CR4: 0000000000150ee0
->
+> 
 > Is it due to the USB-C port on the Radeon 6800M?
->
-> Thanks
->
-> Mike
 
-Reverting both 730b49aac426e1e8016d3c2dd6b407e500423821 and
-510a0bdb2bfcff8d7be822c72adc3add7a97d559 allows it to boot again
+No. There is a fix pending:
+https://lore.kernel.org/linux-usb/20220124090228.41396-3-heikki.krogerus@linux.intel.com/
+
+-- 
+heikki
