@@ -2,114 +2,163 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A694997EF
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jan 2022 22:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1470E49AB1D
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jan 2022 05:45:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351324AbiAXVRb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 24 Jan 2022 16:17:31 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:57150 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353803AbiAXVEY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 24 Jan 2022 16:04:24 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EC79AB812A7;
-        Mon, 24 Jan 2022 21:04:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E437C340E7;
-        Mon, 24 Jan 2022 21:04:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643058259;
-        bh=xrI2Yd8Z85VtM/EHXSuSj1x1uMSh4WRSVCjNSh83i40=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rt8P/37acGeRdawKBy6Kot2gVMpJ+i0SnNoPhIwd4LveC2Y1I5GK7pJURL+ksEa9a
-         1OtFYXPb+2oX2ZGxcObiOhFerPRCUaPd24D77pBN/xCm1StLFBKRKScWtv/T1Rcf27
-         acbyaIRW1hdWYlgbQfyeygahiL1S1F+ZnBBDUdYsTnfmvdPUeLKaAG+WbSchocKDg3
-         1zVtG6McE9y19BFccX/KcgMyeb0ex+0SRWPJnywmmHQCOZ2XLVSws8LEN1KNu7gcOJ
-         Yw41rGlg7gehEssffEoCyHNfum2IyBaGvur2eHV9hTCnYgTXJPJi8Z+Kdu+06zxh4u
-         NjStG0Lr9WgNg==
-Date:   Mon, 24 Jan 2022 22:04:13 +0100
-From:   Wolfram Sang <wsa@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Akhil R <akhilrajeev@nvidia.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>
-Subject: Re: [PATCH v4 0/3] Enable named interrupt smbus-alert for ACPI
-Message-ID: <Ye8UTQlHphVtAYUW@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        id S1348550AbiAYE1E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 24 Jan 2022 23:27:04 -0500
+Received: from mga02.intel.com ([134.134.136.20]:50542 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1318872AbiAYDHY (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 24 Jan 2022 22:07:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643080043; x=1674616043;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=engvKbl+jC8slbfHM9iBDpf0HIyr8rPy13E1UZzS8gc=;
+  b=LO37sapKSlZfA91fg4SGosGItOt7SoooLeIlP1PdazMMlFnYGWlfkBoL
+   /FTLhJ3WazZRmh2CVJHzWR3mvSW1fSdWShTJy7OUVzAf/144qctAE2CbA
+   I+jH4/rVJFtRf+MwQl4ZWaTc+e8MUHe3rOsICgJAlpKsSQMQkZ/Ij81aD
+   x3wFO1yEBFmh1pYVjMKnHPbDCbkWTiEabkC8ErvBuIN83BVyD9Yj+0ytA
+   33AqHtj49EUlKohv6rEYHFWq8ioR6ryrWLsYyi6FG0cgy65+tfCZ0wXPH
+   I45iuSu+dfdjpufcqS2mvNHEBGDj550a1baoyuNB7GKM6R/FKYJGVlmxj
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10237"; a="233573112"
+X-IronPort-AV: E=Sophos;i="5.88,313,1635231600"; 
+   d="scan'208";a="233573112"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2022 19:07:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,313,1635231600"; 
+   d="scan'208";a="673846638"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 24 Jan 2022 19:07:20 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nCCAy-000JGx-4b; Tue, 25 Jan 2022 03:07:20 +0000
+Date:   Tue, 25 Jan 2022 11:06:43 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Zhou Qingyang <zhou1615@umn.edu>
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org, kjlu@umn.edu,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Akhil R <akhilrajeev@nvidia.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>, Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>
-References: <1642851166-27096-1-git-send-email-akhilrajeev@nvidia.com>
- <CAHp75Ve-zYz27baJ9SV3wcyKS5iMnxFO61gGE2LXQPU_hTt+qw@mail.gmail.com>
- <CAJZ5v0guL4nk21gvvs2K9Ak6sjhDSzMvDQZJvmnq6Frsj3+7yA@mail.gmail.com>
+        Len Brown <lenb@kernel.org>, Lv Zheng <lv.zheng@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPI / tables: Fix a NULL pointer dereference in
+ acpi_table_initrd_override()
+Message-ID: <202201251123.ScbhjE9a-lkp@intel.com>
+References: <20220124164251.52466-1-zhou1615@umn.edu>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="PQ+Di6JU9ZkrkCPn"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0guL4nk21gvvs2K9Ak6sjhDSzMvDQZJvmnq6Frsj3+7yA@mail.gmail.com>
+In-Reply-To: <20220124164251.52466-1-zhou1615@umn.edu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hi Zhou,
 
---PQ+Di6JU9ZkrkCPn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for the patch! Yet something to improve:
+
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on linux/master linus/master v5.17-rc1 next-20220124]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/0day-ci/linux/commits/Zhou-Qingyang/ACPI-tables-Fix-a-NULL-pointer-dereference-in-acpi_table_initrd_override/20220125-004517
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+config: x86_64-randconfig-r011-20220124 (https://download.01.org/0day-ci/archive/20220125/202201251123.ScbhjE9a-lkp@intel.com/config)
+compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project 2e58a18910867ba6795066e044293e6daf89edf5)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/924d4e212d2041e2af120ade3599fdc00e0b12fd
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Zhou-Qingyang/ACPI-tables-Fix-a-NULL-pointer-dereference-in-acpi_table_initrd_override/20220125-004517
+        git checkout 924d4e212d2041e2af120ade3599fdc00e0b12fd
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+>> drivers/acpi/tables.c:710:4: error: void function 'acpi_table_initrd_scan' should not return a value [-Wreturn-type]
+                           return AE_NO_MEMORY;
+                           ^      ~~~~~~~~~~~~
+   1 error generated.
 
 
-> It looks good to me.
->=20
-> If no one else has concerns regarding it, I'll queue it up for 5.18.
+vim +/acpi_table_initrd_scan +710 drivers/acpi/tables.c
 
-I'd prefer this to go via I2C because it touches the I2C core. And SMBus
-alert is I2C material anyway :)
+   695	
+   696	static void __init acpi_table_initrd_scan(void)
+   697	{
+   698		int table_offset = 0;
+   699		int table_index = 0;
+   700		u32 table_length;
+   701		struct acpi_table_header *table;
+   702	
+   703		if (!acpi_tables_addr)
+   704			return;
+   705	
+   706		while (table_offset + ACPI_HEADER_SIZE <= all_tables_size) {
+   707			table = acpi_os_map_memory(acpi_tables_addr + table_offset,
+   708						   ACPI_HEADER_SIZE);
+   709			if (!table) {
+ > 710				return AE_NO_MEMORY;
+   711			}
+   712	
+   713			if (table_offset + table->length > all_tables_size) {
+   714				acpi_os_unmap_memory(table, ACPI_HEADER_SIZE);
+   715				WARN_ON(1);
+   716				return;
+   717			}
+   718	
+   719			table_length = table->length;
+   720	
+   721			/* Skip RSDT/XSDT which should only be used for override */
+   722			if (ACPI_COMPARE_NAMESEG(table->signature, ACPI_SIG_RSDT) ||
+   723			    ACPI_COMPARE_NAMESEG(table->signature, ACPI_SIG_XSDT)) {
+   724				acpi_os_unmap_memory(table, ACPI_HEADER_SIZE);
+   725				goto next_table;
+   726			}
+   727			/*
+   728			 * Mark the table to avoid being used in
+   729			 * acpi_table_initrd_override(). Though this is not possible
+   730			 * because override is disabled in acpi_install_physical_table().
+   731			 */
+   732			if (test_and_set_bit(table_index, acpi_initrd_installed)) {
+   733				acpi_os_unmap_memory(table, ACPI_HEADER_SIZE);
+   734				goto next_table;
+   735			}
+   736	
+   737			pr_info("Table Upgrade: install [%4.4s-%6.6s-%8.8s]\n",
+   738				table->signature, table->oem_id,
+   739				table->oem_table_id);
+   740			acpi_os_unmap_memory(table, ACPI_HEADER_SIZE);
+   741			acpi_install_physical_table(acpi_tables_addr + table_offset);
+   742	next_table:
+   743			table_offset += table_length;
+   744			table_index++;
+   745		}
+   746	}
+   747	#else
+   748	static acpi_status
+   749	acpi_table_initrd_override(struct acpi_table_header *existing_table,
+   750				   acpi_physical_address *address,
+   751				   u32 *table_length)
+   752	{
+   753		*table_length = 0;
+   754		*address = 0;
+   755		return AE_OK;
+   756	}
+   757	
 
-
---PQ+Di6JU9ZkrkCPn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmHvFEkACgkQFA3kzBSg
-KbYS+A/8ChbXO2Eu9RSZj1oeAp2Y5/csPWUB7EIozmvoC8o3JmK5mQPk/nu+QpPo
-txvkFIK6NJM41Fhxp+yqq1cxLotOWSoA2rdHYv08mfj5uL0lxfYa6Zn6v+DJ0A6l
-RRpSjbHq9pT/I4JLqJP+EqVq2FvJ0owmaOi28gBDiqdH/fqg5oa5cxoA9vD9Z9oK
-r3RHDPOgM+aFxY4qRYEFtEi3T4NkK9yet+zpp5G9DtPz0qhxtVi8H7boOdGtPUyB
-3gjp3KgR3sA2IQaFYbbCstYUXDsgu6/heina/rqv48M7TCC0M4lBMAzQemDSMs4t
-ZveLjhwYNXbBwWVRMfuENLWFUJvYeXEFyD5A+RYMRDrQZo9ObGXRpk6YCfYNZ6UV
-h90V+U0C67snDIcoQ31lbLyXZeAStvcIcEWPnk2RJ5dFvyDAkfz734HVD7xT2e6P
-+0M4+/M9JDXEMAzV8DNi6YSc3IHhf88MmczYNS5APIWKhXzxQ6p1jGp94xIRXIK0
-0fw18VxniVD27aWnxb4EmxwCf73NbzrwzbYY6whKQgXIgMHjlOqw/XRVbV3WyNKh
-c3py3f6aad/mipXjUdKYpDDK+V275qa9n1w2OSks+XirXnJqedYRumiUncD4af+q
-MrKRbl09XzdEkjRg6bCwQkZI9EW/bwLPskxdvHo1vC5/cWaMvkE=
-=VNXV
------END PGP SIGNATURE-----
-
---PQ+Di6JU9ZkrkCPn--
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
