@@ -2,131 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49FEA49D642
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jan 2022 00:40:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B9A949D671
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jan 2022 00:58:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232059AbiAZXkW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Jan 2022 18:40:22 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:55394 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229565AbiAZXkW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jan 2022 18:40:22 -0500
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 4.0.0)
- id ddc9921eef41d176; Thu, 27 Jan 2022 00:40:20 +0100
-Received: from kreacher.localnet (89-77-51-84.dynamic.chello.pl [89.77.51.84])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id A1FC666B35E;
-        Thu, 27 Jan 2022 00:40:19 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] PCI: ACPI: Replace acpi_bus_get_device()
-Date:   Thu, 27 Jan 2022 00:40:13 +0100
-Message-ID: <11930209.O9o76ZdvQC@kreacher>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+        id S232171AbiAZX6M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Jan 2022 18:58:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49996 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231998AbiAZX6M (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jan 2022 18:58:12 -0500
+Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DCDAC06173B
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Jan 2022 15:58:12 -0800 (PST)
+Received: by mail-pf1-x44a.google.com with SMTP id z37-20020a056a001da500b004c74e3fd644so660228pfw.1
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Jan 2022 15:58:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=okrQu2VSlzKkLZmDYcnmzL0C8aPu3r9sPHmlPe5ENII=;
+        b=Mt8LOMhIs1dO4iJ8XfSrZOam3/YWQbcEFBfKm6JvixzqsAeChMqG2N0u2zPKpVRJBB
+         DpTTta8O8spSNnZwCB+PAycUj3qpfr6xP6aoo2sHQN1g7sLocm/W6gtP8akRWCSS7NlT
+         TdsE8145oQssomt3rUzLuP4IgOxONlw/S20ksU+xHSuONEQ5z0vxzAGYK4lwfR6zCRWQ
+         7SY1qFF8Y8Dtk1Zna0ZFj7xWDx9zjqDT6ae/Tu/W785s6pif+AjFOWYVnBUdDatWAcMH
+         IJ6XixGMTMYX6PQzcMYlBhgOG0qUBXSoJMKB+s+kiiTV4so+MtmqnzDCSRqS3Q0UvKfN
+         b+ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=okrQu2VSlzKkLZmDYcnmzL0C8aPu3r9sPHmlPe5ENII=;
+        b=CFmYdrJtGa7RNgjJh0Yrqcy20Z1UR5t/kg+OuMaUT2qk735uI76764b57sh0Ik0w9f
+         TLo6jZv74paMh5VrDWMzCFm+OZSuXnygFiwFXONCuay5Q0afZkJpmyc1Rrc7p4z7j89U
+         ACFgp+kpHBLT6d7ZV7qaR9mSoUZZpqFhik1+Yu9ZkgEnI4oqLrD5DVUGrCSt6yB//ikr
+         /B8h7j1meV1VoDAK1qnRxXIdMz5O1cRh4wcZyCiDlp+QHO/W9Za6PY2NUFQF9ntU3zce
+         JhpU/uWJfNzkDwYX9H3kpjjUJfwyJjiqUmqoxWPAVThr/ZnkLJeUjWJLQC4EhloINNTv
+         Niyw==
+X-Gm-Message-State: AOAM530UTyQLGNTiVm3nQ79OhZJYhVlt399pZna2Tew7elVS2btzofjX
+        MbQuE94+CGgKEcnMphYyC8ZsN8oLPFWwog==
+X-Google-Smtp-Source: ABdhPJzUAryUJdlCf6CchFAhgLHT/3EeL7pC2SF8tvOaQvVpONSgmaVYy4N3LRnXp0to4bDTgcgXH2jCM5doLA==
+X-Received: from wonchungspecialist.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:1440])
+ (user=wonchung job=sendgmr) by 2002:a05:6a00:b82:: with SMTP id
+ g2mr1128038pfj.33.1643241491582; Wed, 26 Jan 2022 15:58:11 -0800 (PST)
+Date:   Wed, 26 Jan 2022 23:58:07 +0000
+Message-Id: <20220126235807.3164317-1-wonchung@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.35.0.rc0.227.g00780c9af4-goog
+Subject: [PATCH] ACPI: device_sysfs: Add sysfs support for _PLD
+From:   Won Chung <wonchung@google.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Won Chung <wonchung@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 89.77.51.84
-X-CLIENT-HOSTNAME: 89-77-51-84.dynamic.chello.pl
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrfedvgdduvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhephfegtdffjeehkeegleejveevtdeugfffieeijeduuddtkefgjedvheeujeejtedvnecukfhppeekledrjeejrdehuddrkeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepkeelrdejjedrhedurdekgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhk
- vghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+When ACPI table includes _PLD fields for a device, create a new file
+(pld) in sysfs to share _PLD fields.
 
-Replace acpi_bus_get_device() that is going to be dropped with
-acpi_fetch_acpi_dev().
-
-No intentional functional impact.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Won Chung <wonchung@google.com>
 ---
+ drivers/acpi/device_sysfs.c | 42 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
--> v2: Fix typo (superfluous paren) in acpiphp_ibm.c.
-
----
- drivers/pci/hotplug/acpiphp_glue.c |    7 ++++---
- drivers/pci/hotplug/acpiphp_ibm.c  |    5 +++--
- drivers/pci/pci-acpi.c             |    6 +++---
- 3 files changed, 10 insertions(+), 8 deletions(-)
-
-Index: linux-pm/drivers/pci/hotplug/acpiphp_glue.c
-===================================================================
---- linux-pm.orig/drivers/pci/hotplug/acpiphp_glue.c
-+++ linux-pm/drivers/pci/hotplug/acpiphp_glue.c
-@@ -226,9 +226,9 @@ static void acpiphp_post_dock_fixup(stru
- static acpi_status acpiphp_add_context(acpi_handle handle, u32 lvl, void *data,
- 				       void **rv)
- {
-+	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
- 	struct acpiphp_bridge *bridge = data;
- 	struct acpiphp_context *context;
--	struct acpi_device *adev;
- 	struct acpiphp_slot *slot;
- 	struct acpiphp_func *newfunc;
- 	acpi_status status = AE_OK;
-@@ -238,6 +238,9 @@ static acpi_status acpiphp_add_context(a
- 	struct pci_dev *pdev = bridge->pci_dev;
- 	u32 val;
+diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+index d5d6403ba07b..8d4df5fb1c45 100644
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -509,6 +509,40 @@ static ssize_t status_show(struct device *dev, struct device_attribute *attr,
+ }
+ static DEVICE_ATTR_RO(status);
  
-+	if (!adev)
-+		return AE_OK;
++static ssize_t pld_show(struct device *dev, struct device_attribute *attr,
++			char *buf)
++{
++	struct acpi_device *acpi_dev = to_acpi_device(dev);
++	acpi_status status;
++	struct acpi_pld_info *pld;
 +
- 	status = acpi_evaluate_integer(handle, "_ADR", NULL, &adr);
- 	if (ACPI_FAILURE(status)) {
- 		if (status != AE_NOT_FOUND)
-@@ -245,8 +248,6 @@ static acpi_status acpiphp_add_context(a
- 				"can't evaluate _ADR (%#x)\n", status);
- 		return AE_OK;
- 	}
--	if (acpi_bus_get_device(handle, &adev))
--		return AE_OK;
- 
- 	device = (adr >> 16) & 0xffff;
- 	function = adr & 0xffff;
-Index: linux-pm/drivers/pci/hotplug/acpiphp_ibm.c
-===================================================================
---- linux-pm.orig/drivers/pci/hotplug/acpiphp_ibm.c
-+++ linux-pm/drivers/pci/hotplug/acpiphp_ibm.c
-@@ -433,8 +433,9 @@ static int __init ibm_acpiphp_init(void)
- 		goto init_return;
- 	}
- 	pr_debug("%s: found IBM aPCI device\n", __func__);
--	if (acpi_bus_get_device(ibm_acpi_handle, &device)) {
--		pr_err("%s: acpi_bus_get_device failed\n", __func__);
-+	device = acpi_fetch_acpi_dev(ibm_acpi_handle);
-+	if (!device) {
-+		pr_err("%s: acpi_fetch_acpi_dev failed\n", __func__);
- 		retval = -ENODEV;
- 		goto init_return;
- 	}
-Index: linux-pm/drivers/pci/pci-acpi.c
-===================================================================
---- linux-pm.orig/drivers/pci/pci-acpi.c
-+++ linux-pm/drivers/pci/pci-acpi.c
-@@ -89,9 +89,9 @@ int acpi_get_rc_resources(struct device
- 		return -ENODEV;
- 	}
- 
--	ret = acpi_bus_get_device(handle, &adev);
--	if (ret)
--		return ret;
-+	adev = acpi_fetch_acpi_dev(handle);
-+	if (!adev)
++	status = acpi_get_physical_device_location(acpi_dev->handle, &pld);
++	if (ACPI_FAILURE(status))
 +		return -ENODEV;
++
++	return sprintf(buf, "GROUP_TOKEN=%u\n"
++		"GROUP_POSITION=%u\n"
++		"USER_VISIBLE=%u\n"
++		"DOCK=%u\n"
++		"BAY=%u\n"
++		"LID=%u\n"
++		"PANEL=%u\n"
++		"HORIZONTAL_POSITION=%u\n"
++		"VERTICAL_POSITION=%u\n"
++		"SHAPE=%u\n",
++		pld->group_token,
++		pld->group_position,
++		pld->user_visible,
++		pld->dock,
++		pld->bay,
++		pld->lid,
++		pld->panel,
++		pld->horizontal_position,
++		pld->vertical_position,
++		pld->shape);
++}
++static DEVICE_ATTR_RO(pld);
++
+ /**
+  * acpi_device_setup_files - Create sysfs attributes of an ACPI device.
+  * @dev: ACPI device object.
+@@ -595,6 +629,12 @@ int acpi_device_setup_files(struct acpi_device *dev)
+ 						    &dev_attr_real_power_state);
+ 	}
  
- 	ret = acpi_get_rc_addr(adev, res);
- 	if (ret) {
-
-
++	if (acpi_has_method(dev->handle, "_PLD")) {
++		result = device_create_file(&dev->dev, &dev_attr_pld);
++		if (result)
++			goto end;
++	}
++
+ 	acpi_expose_nondev_subnodes(&dev->dev.kobj, &dev->data);
+ 
+ end:
+@@ -645,4 +685,6 @@ void acpi_device_remove_files(struct acpi_device *dev)
+ 		device_remove_file(&dev->dev, &dev_attr_status);
+ 	if (dev->handle)
+ 		device_remove_file(&dev->dev, &dev_attr_path);
++	if (acpi_has_method(dev->handle, "_PLD"))
++		device_remove_file(&dev->dev, &dev_attr_pld);
+ }
+-- 
+2.35.0.rc0.227.g00780c9af4-goog
 
