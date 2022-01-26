@@ -2,132 +2,158 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37CF549D2FE
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jan 2022 21:03:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4438449D493
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jan 2022 22:36:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbiAZUDc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 26 Jan 2022 15:03:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52372 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbiAZUDb (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 26 Jan 2022 15:03:31 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 843DAC06161C;
-        Wed, 26 Jan 2022 12:03:31 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id n12-20020a05600c3b8c00b0034eb13edb8eso2389582wms.0;
-        Wed, 26 Jan 2022 12:03:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=mY3ysCNj443GJifLQmlNddA04KgyJaSyoL9/oKRXsTM=;
-        b=pDcaBROWSVIDle6By0jiJSiVP0Hu76DXRnUxeAG0T5nKk4QJ8IhhyUwIuEpEMvny9g
-         3DXcsm7g+qBzy4g263s0CEH5Q0buBZTaQgrFmFy40OBybi5OJ0jWuhlyjEfidxkhyPJw
-         fm08fQpPqgHgWuxiluTqkQp27i9B/6qkTfEUZ+IDc7wvuu4rY0pv0+Yw4nzYZ/pSOfRn
-         oPMR0uaXGLqOXN97wTE1d6NWh/wKy9dzqPEpWQCQWSN6zUoSoag8uS4UyTSsB7pGsljy
-         jfw8Hnq9IRW9Lad37EpCihHmwZAUzt3Tp3vWjoX9AmN7ysggXIrqTLyqSN8D3cQDzPLA
-         XLBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=mY3ysCNj443GJifLQmlNddA04KgyJaSyoL9/oKRXsTM=;
-        b=3mnHWfKBvGhRjbN0i2qQWZLCh/QJry/YAIOseykXZ9mghWSHFkDOi2rr/IyY2E+CdB
-         qKg6flBg3OrLr78XqfBn/4gBQscLIMQZaSKQbJUdZkeKRGh5Irj+b/v8/LSZp6s7YM4D
-         zu3VkQC9GhWvAMror4xnNAO+WXFjeUdWqXXg2rKa4mCQ0xerCM9PnEeeJcBnUFdyXvDy
-         1n/yqky/SydrHGfBT2BKSCTy9rX2YRDlmMvO4Jy7EggWstxwDZalZ0vFmM8B57tql9BA
-         9t8Sx7OltGe2HX0ORuC2YNHN4k5LRHC46lb2hLMc61flUMAtXIZY5TGA2DBMRHRtnpPC
-         zgxQ==
-X-Gm-Message-State: AOAM530Sicye1vdXFawMp9sDnOZgBcY2kQwnRFw0CnkRwbC+NmpL0VvV
-        90BnMWSKQhP2Pf7L9jXSYX6QxFjtkHU=
-X-Google-Smtp-Source: ABdhPJyBYVzNvDvnIEGTTcEu80/SNLaRvE97m/MIm3v/ho93Wi2e3320PFQnfJmwJQ2sU5po7phLYQ==
-X-Received: by 2002:a7b:c44e:: with SMTP id l14mr257155wmi.185.1643227409993;
-        Wed, 26 Jan 2022 12:03:29 -0800 (PST)
-Received: from [10.18.0.12] ([194.126.177.12])
-        by smtp.gmail.com with ESMTPSA id k25sm2266436wms.23.2022.01.26.12.03.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Jan 2022 12:03:29 -0800 (PST)
-Message-ID: <0e1b25f6-d64f-a391-eca8-01b686377df0@gmail.com>
-Date:   Wed, 26 Jan 2022 21:03:27 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: [PATCH] platform: surface: Replace acpi_bus_get_device()
-Content-Language: en-US
+        id S232614AbiAZVgV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 26 Jan 2022 16:36:21 -0500
+Received: from mga11.intel.com ([192.55.52.93]:11770 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229516AbiAZVgU (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 26 Jan 2022 16:36:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643232980; x=1674768980;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bqRTT9ljm8wAPAWjm/qjSQ+Xc2PXWiU5LgkFzLANjPk=;
+  b=k4hYJMXF0HsXeSgOqwJEpan2CMMXKzhl+BCosEV8Qwl4b+lVfOQcXEoE
+   6yDbAw49WisrXNvMHt1umnkibHFyJ+qUSyZ/sxJLxcTC+PqmCTPlfkbQo
+   QN1/e/Qc25DWE2Y5trc3axcpsLOxkwkeD1Za3fkwe/K3XEeZ3n017CwPF
+   IAk0CEEYkLSxad4pYdIgDs92DM/YnQclCO+3celKF6zGIJ4FewJJoRaY1
+   l+7P5hXxUWuqCrZpwTza/+tgTn8fyhuqEL99zObR+tKCV8JFcx58l6UHI
+   JoGMDtJqXSUTj9Dy2woveB+TWU/MUfTle6fvofJIb1ddVulC62bSQYNxo
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10239"; a="244256208"
+X-IronPort-AV: E=Sophos;i="5.88,319,1635231600"; 
+   d="scan'208";a="244256208"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2022 13:36:20 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,319,1635231600"; 
+   d="scan'208";a="563543478"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 26 Jan 2022 13:36:18 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nCpxh-000Lgj-Lg; Wed, 26 Jan 2022 21:36:17 +0000
+Date:   Thu, 27 Jan 2022 05:35:45 +0800
+From:   kernel test robot <lkp@intel.com>
 To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>
+Cc:     kbuild-all@lists.01.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linux PCI <linux-pci@vger.kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        platform-driver-x86@vger.kernel.org,
-        Mark Gross <markgross@kernel.org>
-References: <5805278.lOV4Wx5bFT@kreacher>
-From:   Maximilian Luz <luzmaximilian@gmail.com>
-In-Reply-To: <5805278.lOV4Wx5bFT@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] PCI: ACPI: Replace acpi_bus_get_device()
+Message-ID: <202201270503.XIRGkUJE-lkp@intel.com>
+References: <4389553.LvFx2qVVIh@kreacher>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4389553.LvFx2qVVIh@kreacher>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 1/26/22 20:41, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Replace acpi_bus_get_device() that is going to be dropped with
-> acpi_fetch_acpi_dev().
-> 
-> No intentional functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi "Rafael,
 
-Looks good to me.
+I love your patch! Yet something to improve:
 
-Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on helgaas-pci/next v5.17-rc1 next-20220125]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-> ---
->   drivers/platform/surface/surface3-wmi.c        |   12 ++++--------
->   drivers/platform/surface/surface_acpi_notify.c |    3 ++-
->   2 files changed, 6 insertions(+), 9 deletions(-)
-> 
-> Index: linux-pm/drivers/platform/surface/surface3-wmi.c
-> ===================================================================
-> --- linux-pm.orig/drivers/platform/surface/surface3-wmi.c
-> +++ linux-pm/drivers/platform/surface/surface3-wmi.c
-> @@ -116,15 +116,11 @@ static acpi_status s3_wmi_attach_spi_dev
->   					    void *data,
->   					    void **return_value)
->   {
-> -	struct acpi_device *adev, **ts_adev;
-> +	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
-> +	struct acpi_device **ts_adev = data;
->   
-> -	if (acpi_bus_get_device(handle, &adev))
-> -		return AE_OK;
-> -
-> -	ts_adev = data;
-> -
-> -	if (strncmp(acpi_device_bid(adev), SPI_TS_OBJ_NAME,
-> -	    strlen(SPI_TS_OBJ_NAME)))
-> +	if (!adev || strncmp(acpi_device_bid(adev), SPI_TS_OBJ_NAME,
-> +			     strlen(SPI_TS_OBJ_NAME)))
->   		return AE_OK;
->   
->   	if (*ts_adev) {
-> Index: linux-pm/drivers/platform/surface/surface_acpi_notify.c
-> ===================================================================
-> --- linux-pm.orig/drivers/platform/surface/surface_acpi_notify.c
-> +++ linux-pm/drivers/platform/surface/surface_acpi_notify.c
-> @@ -770,7 +770,8 @@ static acpi_status san_consumer_setup(ac
->   		return AE_OK;
->   
->   	/* Ignore ACPI devices that are not present. */
-> -	if (acpi_bus_get_device(handle, &adev) != 0)
-> +	adev = acpi_fetch_acpi_dev(handle);
-> +	if (!adev)
->   		return AE_OK;
->   
->   	san_consumer_dbg(&pdev->dev, handle, "creating device link\n");
-> 
-> 
-> 
+url:    https://github.com/0day-ci/linux/commits/Rafael-J-Wysocki/PCI-ACPI-Replace-acpi_bus_get_device/20220127-034410
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+config: ia64-allmodconfig (https://download.01.org/0day-ci/archive/20220127/202201270503.XIRGkUJE-lkp@intel.com/config)
+compiler: ia64-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/f04b15e5b428aa6258b15b7e9bd9091cbf175e2f
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Rafael-J-Wysocki/PCI-ACPI-Replace-acpi_bus_get_device/20220127-034410
+        git checkout f04b15e5b428aa6258b15b7e9bd9091cbf175e2f
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=ia64 SHELL=/bin/bash drivers/pci/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All error/warnings (new ones prefixed by >>):
+
+   drivers/pci/hotplug/acpiphp_ibm.c: In function 'ibm_acpiphp_init':
+>> drivers/pci/hotplug/acpiphp_ibm.c:437:21: error: expected statement before ')' token
+     437 |         if (!device)) {
+         |                     ^
+>> drivers/pci/hotplug/acpiphp_ibm.c:437:9: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+     437 |         if (!device)) {
+         |         ^~
+   drivers/pci/hotplug/acpiphp_ibm.c:437:23: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+     437 |         if (!device)) {
+         |                       ^
+
+
+vim +437 drivers/pci/hotplug/acpiphp_ibm.c
+
+   418	
+   419	static int __init ibm_acpiphp_init(void)
+   420	{
+   421		int retval = 0;
+   422		acpi_status status;
+   423		struct acpi_device *device;
+   424		struct kobject *sysdir = &pci_slots_kset->kobj;
+   425	
+   426		pr_debug("%s\n", __func__);
+   427	
+   428		if (acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
+   429				ACPI_UINT32_MAX, ibm_find_acpi_device, NULL,
+   430				&ibm_acpi_handle, NULL) != FOUND_APCI) {
+   431			pr_err("%s: acpi_walk_namespace failed\n", __func__);
+   432			retval = -ENODEV;
+   433			goto init_return;
+   434		}
+   435		pr_debug("%s: found IBM aPCI device\n", __func__);
+   436		device = acpi_fetch_acpi_dev(ibm_acpi_handle);
+ > 437		if (!device)) {
+   438			pr_err("%s: acpi_fetch_acpi_dev failed\n", __func__);
+   439			retval = -ENODEV;
+   440			goto init_return;
+   441		}
+   442		if (acpiphp_register_attention(&ibm_attention_info)) {
+   443			retval = -ENODEV;
+   444			goto init_return;
+   445		}
+   446	
+   447		ibm_note.device = device;
+   448		status = acpi_install_notify_handler(ibm_acpi_handle,
+   449				ACPI_DEVICE_NOTIFY, ibm_handle_events,
+   450				&ibm_note);
+   451		if (ACPI_FAILURE(status)) {
+   452			pr_err("%s: Failed to register notification handler\n",
+   453					__func__);
+   454			retval = -EBUSY;
+   455			goto init_cleanup;
+   456		}
+   457	
+   458		ibm_apci_table_attr.size = ibm_get_table_from_acpi(NULL);
+   459		retval = sysfs_create_bin_file(sysdir, &ibm_apci_table_attr);
+   460	
+   461		return retval;
+   462	
+   463	init_cleanup:
+   464		acpiphp_unregister_attention(&ibm_attention_info);
+   465	init_return:
+   466		return retval;
+   467	}
+   468	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
