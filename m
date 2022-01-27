@@ -2,111 +2,154 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3520F49EDE1
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jan 2022 22:57:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDEA249EE0B
+	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jan 2022 23:26:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239127AbiA0V5c (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Jan 2022 16:57:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42016 "EHLO
+        id S239148AbiA0W0p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Jan 2022 17:26:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231800AbiA0V5c (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jan 2022 16:57:32 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E7B9C061714;
-        Thu, 27 Jan 2022 13:57:32 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CCE31B823E7;
-        Thu, 27 Jan 2022 21:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1C7C340E4;
-        Thu, 27 Jan 2022 21:57:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643320649;
-        bh=e723i9JsXHiEBbTu8G5kP5WOqV+gYsQ7539EIk3Couk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jTLm6VUWRh0zBTpuSHzCrAH9ZIyV26PkPIl3E5mZryTpHHnmCw5XQmCP1Q17gPhvT
-         l2dES+87sD0EeITEWzUeAS15F6LbbWTqtvQPlz3WMcCdrFrMY74rlamHWx9dojqfsl
-         UZyupnZeSqb+rIM5/jQLfsC96Tza4wWnP3DBVi3jQ/x7nz3gjWwL7iopJ3va/ZJ+4H
-         XaXmh+gUP7VcWlLkcqq9nIXL0JA+gHSZwKozFhnRQH6ndK3p2cqtfp4se8tQlb+rXm
-         0f8cYxE2h8VSRsOkd7LKgkJWItbXoR2ggYWZR8KYFMblC2A6UwCQ247td45sbubrLW
-         eIOtaGZHmm0fA==
-Date:   Thu, 27 Jan 2022 22:57:25 +0100
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Akhil R <akhilrajeev@nvidia.com>
-Cc:     u.kleine-koenig@pengutronix.de, andy.shevchenko@gmail.com,
-        christian.koenig@amd.com, digetx@gmail.com,
-        gregkh@linuxfoundation.org, jonathanh@nvidia.com,
-        ldewangan@nvidia.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-tegra@vger.kernel.org, rafael@kernel.org,
-        sumit.semwal@linaro.org, thierry.reding@gmail.com
-Subject: Re: [PATCH v4 3/3] i2c: smbus: Use device_*() functions instead of
- of_*()
-Message-ID: <YfMVRasTSQrr1ob+@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Akhil R <akhilrajeev@nvidia.com>, u.kleine-koenig@pengutronix.de,
-        andy.shevchenko@gmail.com, christian.koenig@amd.com,
-        digetx@gmail.com, gregkh@linuxfoundation.org, jonathanh@nvidia.com,
-        ldewangan@nvidia.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-tegra@vger.kernel.org, rafael@kernel.org,
-        sumit.semwal@linaro.org, thierry.reding@gmail.com
-References: <1642851166-27096-1-git-send-email-akhilrajeev@nvidia.com>
- <1642851166-27096-4-git-send-email-akhilrajeev@nvidia.com>
+        with ESMTP id S235009AbiA0W0p (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jan 2022 17:26:45 -0500
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22EAEC06173B
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 14:26:45 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id o12so3986371qke.5
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 14:26:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mFJYwHho4FfiR59k7zwtTLakJoJ7lquDQcT100wA/fo=;
+        b=rpfrv8BDIFTyw0uXk3zhjbYHebBePgDawS9sfK5yt/3wAcmbth4KY/h1zZYsTsLmfN
+         fgtl4SHqwhNnU1VpfET/gxU+KeCIQuY2bY5tL049r02z/HXrI9EVe8pEkqCaOH7+l5iP
+         MYM+4Ja/dB8RlQxMxP38UuFeP/X7Crbu69hVCO8cZExf21rOYU9+cdei7iXGuvusrtum
+         629IrQY7wICIsgR94zbqAfNcOYwhKLk2SiOWNK6dOdtXsFIyz1nRbN322w3uSxtkSFsd
+         AZHE+HjNKiIvU3wrfthwQ3i2Vtr4Rt93scHtFCDroNqbQvLrAzI9XLMuhIo2xo0ZGpo6
+         DTpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mFJYwHho4FfiR59k7zwtTLakJoJ7lquDQcT100wA/fo=;
+        b=WQWkrRPVw7ESJc6kGzOwwWT2PoCohL10ci1IASxxhlsJ4PVcuXxPv27T6UHRrf71OH
+         LOe7CXI65c13Gmq2wihiunhfJiBlMavTiNC2Ttkl1ZwwOrfNpm0uA8qLuFVp7JkFDZOX
+         o5xdt4CrW9ogvR2VPYRc+fWgjHjW7suTkdhOX5knZLQ8viSaCQdz9S/UruW/8CjhwQY1
+         qhK0ZEIItJIaAWCwu0STEVes0VawgE+zDXgKnM8y816E6E9Br4U+7uMMGwaqpVqJCUla
+         ThjbZ1cm1jHbCLBZCOeE+lh83h3Fsq5d5txJf8p3Ujuwfvg7FJkpR7ssu9yJeD/72pqy
+         TSpw==
+X-Gm-Message-State: AOAM530h0OJjsgh+rcAZUskK4z3qsEXB6WNvUAdEvmGFrT2WBj5BEbQ9
+        wVFVc+SITJsRdQoTXLbbOLgota+NFy0TVUqiR//DZQ==
+X-Google-Smtp-Source: ABdhPJw5njHZn9FdtZ7mxK8u3dwjXowY9Gof5xx3mkPvo9kuP+l1BjCpbeMiOIXIS+bJzJ/qZ3NllMmkXJSqHlH+YyA=
+X-Received: by 2002:a05:620a:103c:: with SMTP id a28mr4056658qkk.413.1643322403889;
+ Thu, 27 Jan 2022 14:26:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cP1k5dLGG5uGlg4g"
-Content-Disposition: inline
-In-Reply-To: <1642851166-27096-4-git-send-email-akhilrajeev@nvidia.com>
+References: <20220120000409.2706549-1-rajatja@google.com> <20220121214117.GA1154852@bhelgaas>
+ <Ye5GvQbFKo+CFtRb@lahna> <Ye/X7E2dKb+zem34@lahna> <Ye/btvA1rLB2rp02@kroah.com>
+ <Ye/zTHR5aCG58z87@lahna> <CAJZ5v0gitdeEAxcgSoB1=VHA9FnRdCtmUqA_cN_f1a2yFRDghQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gitdeEAxcgSoB1=VHA9FnRdCtmUqA_cN_f1a2yFRDghQ@mail.gmail.com>
+From:   Rajat Jain <rajatja@google.com>
+Date:   Thu, 27 Jan 2022 14:26:07 -0800
+Message-ID: <CACK8Z6H2DLTJgxgS3pcvfOh=5S8cxEMKvwEPfB9zoVf1g2H_UQ@mail.gmail.com>
+Subject: Re: [PATCH] PCI: ACPI: Allow internal devices to be marked as untrusted
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Dmitry Torokhov <dtor@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Pavel Machek <pavel@denx.de>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Hello Rafael, Bjorn, Mika, Dmitry, Greg,
 
---cP1k5dLGG5uGlg4g
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks a lot for your comments.
 
-Hi,
+On Tue, Jan 25, 2022 at 6:45 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Tue, Jan 25, 2022 at 1:55 PM Mika Westerberg
+> <mika.westerberg@linux.intel.com> wrote:
+> >
+> > On Tue, Jan 25, 2022 at 12:15:02PM +0100, Greg Kroah-Hartman wrote:
+> > > On Tue, Jan 25, 2022 at 12:58:52PM +0200, Mika Westerberg wrote:
+> > > > On Mon, Jan 24, 2022 at 08:27:17AM +0200, Mika Westerberg wrote:
+> > > > > > > This patch introduces a new "UntrustedDevice" property that can be used
+> > > > > > > by the firmware to mark any device as untrusted.
+> > > > >
+> > > > > I think this new property should be documented somewhere too (also
+> > > > > explain when to use it instead of ExternalFacingPort). If not in the
+> > > > > next ACPI spec or some supplemental doc then perhaps in the DT bindings
+> > > > > under Documentation/devicetree/bindings.
+> > > >
+> > > > Actually Microsoft has similar already:
+> > > >
+> > > > https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
+> > > >
+> > > > I think we should use that too here.
 
-> +	irq = device_property_match_string(adapter->dev.parent, "interrupt-names",
-> +					   "smbus_alert");
+But because this property also applies to a root port (only), it only
+helps if the device is downstream a PCIe root port. In our case, we
+have an internal (wifi) device 00:14.3 (sits on the internal PCI bus
+0), so cannot use this.
 
-I think we should include "linux/property.h" for it. Interesting, the of
-header was never included.
+> > >
+> > > But we do not have "dma protection" for Linux, so how will that value
+> > > make sense?
+> >
+> > Yes I think we do - IOMMU. That's the same thing what we do now for
+> > "External Facing Ports". This one just is for internal ones.
+> >
+> > > And shouldn't this be an ACPI standard?
+> >
+> > Probably should or some supplemental doc but not sure how easy these
+> > "properties" can be added there to be honest.
 
-> -		irq = of_irq_get_byname(adapter->dev.of_node, "smbus_alert");
-> +		irq = fwnode_irq_get_byname(dev_fwnode(adapter->dev.parent),
-> +					    "smbus_alert");
+AIUI, the principal comment I have received here is that this property
+needs to be documented somewhere. I agree.
 
-Here we should replace of_irq.h with property.h.
+Rafael, do you know if this new property can be added to the ACPI
+spec, and if so, how to do so? I'm happy to initiate a process if
+someone can point me to, I just hope that publishing a new property to
+the ACPI does not have to block this patch.
 
-Rest looks good!
+The other option I was thinking of was to use the same property name
+(say "untrusted-device") for both ACPI and device tree platforms, and
+document it in Documentation/devicetree/bindings/pci/pci.txt along
+with others. Since there are other properties there that seem to be
+used similarly (Mika highlighted some below), perhaps that is an
+acceptable solution?
 
-Happy hacking,
+I had one last question on the property name itself. I was trying to
+understand why a property might have 2 names i.e. "external-facing"
+for DT and "ExternalFacingPort" in ACPI? Are there any naming
+convention requirements that require ACPI and DT property names to be
+different? Is "untrusted-device" an acceptable ACPI property name?
 
-   Wolfram
+Thanks & Best Regards,
 
+Rajat
 
---cP1k5dLGG5uGlg4g
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmHzFUUACgkQFA3kzBSg
-KbaXLg/+NbejI22/3hLSSXg4aRbnAL2/VIok3hgahxmZb3KDl0VGicsM+YLDpUT6
-gEc1ZEOvmqhPNiQim+ixd/BeIgAiOlg5Iq2EJPYHroFbWr8olecna4CK+c1Eqjtv
-Esutk0oo0kVDci5N0JTKjvYkN78DsJiPthfl84jRDzQCpIRisx+wV/eskNOAJyVD
-sUbPdR0KG5OyBbayXq5nM0sDWalGXidOXE83BBD87BmETRXQxGEefQH9Cz4JzoMr
-51JM16YkR1ePtGbsmlvzhh/0QImpEFa2iBr1hq0ka3ssM8t8As7nfx1NS+WH67iz
-eiGn51FkX0GVBrHLVNNY3KWymB/leFagHbD8HPx1ULGfxb0WzmqNtpCVq6+sxqug
-D7jcUrLaFynK5a5+grd4UAvciM8vABA69ckm6sQ7DrvvcTn4oLf2ELchKtUBTAJt
-OdGEs67m0gVvM/39kQy1QYBDN5ACj4IQgFMJ1uKzw12G+fFSLZGYGRJOdThwh9YA
-Fjz/Fc2NTft2OH6QhK60o7y4jGz33bLKlILCmTKXraTGQ98dkAO6h3D/uRgoe/7u
-3gEw7GGwyswnPNCXMC15w0HgBIzCxC346TAxu0vteT4pNEiHNlvKWSBXWh2gOPOx
-QV94/mEFUOEvWNUGZTEOF73S0WlSp/M9O3yL/EPkWsU/PwkzrMk=
-=g1E6
------END PGP SIGNATURE-----
-
---cP1k5dLGG5uGlg4g--
+> >
+> > Some of these that we use in Linux too are from that same page:
+> >
+> > https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
+> >
+> > Namely these: HotPlugSupportInD3, ExternalFacingPort, usb4-host-interface,
+> > usb4-port-number and StorageD3Enable.
+>
+> Right.
+>
+> We are kind of on the receiving end here, because at the time we learn
+> about these things the decisions to use them have been made already.
