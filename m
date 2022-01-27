@@ -2,154 +2,136 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDEA249EE0B
-	for <lists+linux-acpi@lfdr.de>; Thu, 27 Jan 2022 23:26:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0751F49EE64
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 00:02:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239148AbiA0W0p (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Jan 2022 17:26:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48562 "EHLO
+        id S240278AbiA0XC5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Jan 2022 18:02:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235009AbiA0W0p (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jan 2022 17:26:45 -0500
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22EAEC06173B
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 14:26:45 -0800 (PST)
-Received: by mail-qk1-x72a.google.com with SMTP id o12so3986371qke.5
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 14:26:45 -0800 (PST)
+        with ESMTP id S240060AbiA0XC5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jan 2022 18:02:57 -0500
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03B0CC061714
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 15:02:57 -0800 (PST)
+Received: by mail-pg1-x52e.google.com with SMTP id q75so3648992pgq.5
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 15:02:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=mFJYwHho4FfiR59k7zwtTLakJoJ7lquDQcT100wA/fo=;
-        b=rpfrv8BDIFTyw0uXk3zhjbYHebBePgDawS9sfK5yt/3wAcmbth4KY/h1zZYsTsLmfN
-         fgtl4SHqwhNnU1VpfET/gxU+KeCIQuY2bY5tL049r02z/HXrI9EVe8pEkqCaOH7+l5iP
-         MYM+4Ja/dB8RlQxMxP38UuFeP/X7Crbu69hVCO8cZExf21rOYU9+cdei7iXGuvusrtum
-         629IrQY7wICIsgR94zbqAfNcOYwhKLk2SiOWNK6dOdtXsFIyz1nRbN322w3uSxtkSFsd
-         AZHE+HjNKiIvU3wrfthwQ3i2Vtr4Rt93scHtFCDroNqbQvLrAzI9XLMuhIo2xo0ZGpo6
-         DTpw==
+        bh=o/T3d3BHyHgSEeRHYbPalrQa/ABBLLusG6xLRPMZcck=;
+        b=UgmfO85UkIvmyM+8UoKDDoHWDCmFMd4BEM5eU2Fh5alMiqP08m7IJYMcQHZJhqjr2D
+         hr7ZMrljs4GkMHwRzC6+Pyp9i99uC245oEV53tzwecOyWhE+4e1JK0gbTll3yDemwUx4
+         nk4rd7VBbADgZygkRxCIg5P57Xb75VETcaHJPX1n4VmfIYFAFiCtDD2n7/4LVAnNLUm+
+         Hk6U/ZXC1UrMWtJF+mJlgAjYrr8nN9PiJkYQc+2z5CfZK4VtzXaCgMoyHugHcN/y4xpc
+         6O8gtOsq0wRsuRzzTPsGZ00JVxW3CaIgDaqTNgC6W6WgcQbrth9mgHKzd9SkDTFXaqWW
+         IYZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=mFJYwHho4FfiR59k7zwtTLakJoJ7lquDQcT100wA/fo=;
-        b=WQWkrRPVw7ESJc6kGzOwwWT2PoCohL10ci1IASxxhlsJ4PVcuXxPv27T6UHRrf71OH
-         LOe7CXI65c13Gmq2wihiunhfJiBlMavTiNC2Ttkl1ZwwOrfNpm0uA8qLuFVp7JkFDZOX
-         o5xdt4CrW9ogvR2VPYRc+fWgjHjW7suTkdhOX5knZLQ8viSaCQdz9S/UruW/8CjhwQY1
-         qhK0ZEIItJIaAWCwu0STEVes0VawgE+zDXgKnM8y816E6E9Br4U+7uMMGwaqpVqJCUla
-         ThjbZ1cm1jHbCLBZCOeE+lh83h3Fsq5d5txJf8p3Ujuwfvg7FJkpR7ssu9yJeD/72pqy
-         TSpw==
-X-Gm-Message-State: AOAM530h0OJjsgh+rcAZUskK4z3qsEXB6WNvUAdEvmGFrT2WBj5BEbQ9
-        wVFVc+SITJsRdQoTXLbbOLgota+NFy0TVUqiR//DZQ==
-X-Google-Smtp-Source: ABdhPJw5njHZn9FdtZ7mxK8u3dwjXowY9Gof5xx3mkPvo9kuP+l1BjCpbeMiOIXIS+bJzJ/qZ3NllMmkXJSqHlH+YyA=
-X-Received: by 2002:a05:620a:103c:: with SMTP id a28mr4056658qkk.413.1643322403889;
- Thu, 27 Jan 2022 14:26:43 -0800 (PST)
+        bh=o/T3d3BHyHgSEeRHYbPalrQa/ABBLLusG6xLRPMZcck=;
+        b=LiKAltphjFNMmkss30mn3N757Lg/CjAsoF+nXaWUIGIApkgHtEc27ChXAURaZVfZ98
+         9y+XIK8PeI72NKQ2AYScyGitopbbSAECKDggC2zP/Bk6jzmSJvwCpPyNJp2gjU1UV2Wq
+         ChIIgMHC3ZrSNS+/0/Z9nH+kG7Qxkw1mTkxG4bYuoj1bLlIwSZdPeDhXT9VuU+sftv9u
+         JQvmbk7YOI+k/0GZnOcn/48S1GIrYk1bMWTNuGWOn3JzZNjSdUDc1DI6+N7VRw/JMuKS
+         dkUBI8WuCQ+z68e/pA0l2A1/Y6DJa83d/Ee6tqwG6lSvofLP0by5TrFHohf5xtiW6uNe
+         iB0A==
+X-Gm-Message-State: AOAM532J5aNN66kj7iiXG6LAxuJU/YAo5ax490o4eSMbat0hgamn8nLC
+        yaKBcv+DZqIBgnGmb+RnJ+bh0NuJbYaQVPDCDcHHgg==
+X-Google-Smtp-Source: ABdhPJwP6mBgzYcmwq8apICTnPgaiSCnMvHi48jbQpS1tgltTYSr9JFSK9z+MsyfUOfecwjpyWzWOxd5MPJUaOrSBK4=
+X-Received: by 2002:a05:6a00:d5c:: with SMTP id n28mr5360304pfv.9.1643324576267;
+ Thu, 27 Jan 2022 15:02:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20220120000409.2706549-1-rajatja@google.com> <20220121214117.GA1154852@bhelgaas>
- <Ye5GvQbFKo+CFtRb@lahna> <Ye/X7E2dKb+zem34@lahna> <Ye/btvA1rLB2rp02@kroah.com>
- <Ye/zTHR5aCG58z87@lahna> <CAJZ5v0gitdeEAxcgSoB1=VHA9FnRdCtmUqA_cN_f1a2yFRDghQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gitdeEAxcgSoB1=VHA9FnRdCtmUqA_cN_f1a2yFRDghQ@mail.gmail.com>
+References: <20220120000409.2706549-1-rajatja@google.com> <CAE_wzQ_XxONXx5bgDNLAWM_UbV0r8hP9fW6s5sgRYRVSHQWjLw@mail.gmail.com>
+In-Reply-To: <CAE_wzQ_XxONXx5bgDNLAWM_UbV0r8hP9fW6s5sgRYRVSHQWjLw@mail.gmail.com>
 From:   Rajat Jain <rajatja@google.com>
-Date:   Thu, 27 Jan 2022 14:26:07 -0800
-Message-ID: <CACK8Z6H2DLTJgxgS3pcvfOh=5S8cxEMKvwEPfB9zoVf1g2H_UQ@mail.gmail.com>
+Date:   Thu, 27 Jan 2022 15:02:20 -0800
+Message-ID: <CACK8Z6GCPU8ZYQgwCJ5jWJ5NLQM3y+g6Ry=59-oVV3CHGe_8Aw@mail.gmail.com>
 Subject: Re: [PATCH] PCI: ACPI: Allow internal devices to be marked as untrusted
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
+To:     Dmitry Torokhov <dtor@google.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Dmitry Torokhov <dtor@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Pavel Machek <pavel@denx.de>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rajatxjain@gmail.com,
+        jsbarnes@google.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hello Rafael, Bjorn, Mika, Dmitry, Greg,
+Hi Dmitry,
 
-Thanks a lot for your comments.
-
-On Tue, Jan 25, 2022 at 6:45 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Wed, Jan 19, 2022 at 6:25 PM Dmitry Torokhov <dtor@google.com> wrote:
 >
-> On Tue, Jan 25, 2022 at 1:55 PM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
+> Hi Rajat,
+>
+> On Wed, Jan 19, 2022 at 4:04 PM Rajat Jain <rajatja@google.com> wrote:
 > >
-> > On Tue, Jan 25, 2022 at 12:15:02PM +0100, Greg Kroah-Hartman wrote:
-> > > On Tue, Jan 25, 2022 at 12:58:52PM +0200, Mika Westerberg wrote:
-> > > > On Mon, Jan 24, 2022 at 08:27:17AM +0200, Mika Westerberg wrote:
-> > > > > > > This patch introduces a new "UntrustedDevice" property that can be used
-> > > > > > > by the firmware to mark any device as untrusted.
-> > > > >
-> > > > > I think this new property should be documented somewhere too (also
-> > > > > explain when to use it instead of ExternalFacingPort). If not in the
-> > > > > next ACPI spec or some supplemental doc then perhaps in the DT bindings
-> > > > > under Documentation/devicetree/bindings.
-> > > >
-> > > > Actually Microsoft has similar already:
-> > > >
-> > > > https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
-> > > >
-> > > > I think we should use that too here.
-
-But because this property also applies to a root port (only), it only
-helps if the device is downstream a PCIe root port. In our case, we
-have an internal (wifi) device 00:14.3 (sits on the internal PCI bus
-0), so cannot use this.
-
-> > >
-> > > But we do not have "dma protection" for Linux, so how will that value
-> > > make sense?
+> > Today the pci_dev->untrusted is set for any devices sitting downstream
+> > an external facing port (determined via "ExternalFacingPort" property).
+> > This however, disallows any internal devices to be marked as untrusted.
 > >
-> > Yes I think we do - IOMMU. That's the same thing what we do now for
-> > "External Facing Ports". This one just is for internal ones.
+> > There are use-cases though, where a platform would like to treat an
+> > internal device as untrusted (perhaps because it runs untrusted
+> > firmware, or offers an attack surface by handling untrusted network
+> > data etc).
 > >
-> > > And shouldn't this be an ACPI standard?
+> > This patch introduces a new "UntrustedDevice" property that can be used
+> > by the firmware to mark any device as untrusted.
 > >
-> > Probably should or some supplemental doc but not sure how easy these
-> > "properties" can be added there to be honest.
+> > Signed-off-by: Rajat Jain <rajatja@google.com>
+> > ---
+> >  drivers/pci/pci-acpi.c | 13 +++++++++++++
+> >  1 file changed, 13 insertions(+)
+> >
+> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> > index a42dbf448860..3d9e5fa49451 100644
+> > --- a/drivers/pci/pci-acpi.c
+> > +++ b/drivers/pci/pci-acpi.c
+> > @@ -1350,12 +1350,25 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
+> >                 dev->external_facing = 1;
+> >  }
+> >
+> > +static void pci_acpi_set_untrusted(struct pci_dev *dev)
+> > +{
+> > +       u8 val;
+> > +
+> > +       if (device_property_read_u8(&dev->dev, "UntrustedDevice", &val))
+> > +               return;
+> > +
+> > +       /* These PCI devices are not trustworthy */
+> > +       if (val)
+> > +               dev->untrusted = 1;
+>
+> Should this all be replaced with:
+>
+> dev->untrusted = device_property_read_bool(&dev->dev, "UntrustedDevice");
 
-AIUI, the principal comment I have received here is that this property
-needs to be documented somewhere. I agree.
+The device_property_read_bool() seems to be merely checking for
+property presence (and ignoring its value).
 
-Rafael, do you know if this new property can be added to the ACPI
-spec, and if so, how to do so? I'm happy to initiate a process if
-someone can point me to, I just hope that publishing a new property to
-the ACPI does not have to block this patch.
+I checked with our BIOS / ACPI team. Per them, the ACPI properties
+always have a value associated with them.
 
-The other option I was thinking of was to use the same property name
-(say "untrusted-device") for both ACPI and device tree platforms, and
-document it in Documentation/devicetree/bindings/pci/pci.txt along
-with others. Since there are other properties there that seem to be
-used similarly (Mika highlighted some below), perhaps that is an
-acceptable solution?
-
-I had one last question on the property name itself. I was trying to
-understand why a property might have 2 names i.e. "external-facing"
-for DT and "ExternalFacingPort" in ACPI? Are there any naming
-convention requirements that require ACPI and DT property names to be
-different? Is "untrusted-device" an acceptable ACPI property name?
+So if I switch to device_property_read_bool(),  "UntrustedDevice"
+property with a value of "0" in ACPI shall be marked as an untrusted
+device by the kernel. I understand that this may be a confusing corner
+case of bad ACPI, but I was thinking it may be better to use the ACPI
+value also in the kernel to decide. Thus I think the use of
+device_property_read_u8() (the current code) may be better. WDYT?
 
 Thanks & Best Regards,
 
 Rajat
 
-> >
-> > Some of these that we use in Linux too are from that same page:
-> >
-> > https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
-> >
-> > Namely these: HotPlugSupportInD3, ExternalFacingPort, usb4-host-interface,
-> > usb4-port-number and StorageD3Enable.
 >
-> Right.
+> ?
 >
-> We are kind of on the receiving end here, because at the time we learn
-> about these things the decisions to use them have been made already.
+> Also, is this ACPI-specific? Why won't we need this for DT systems (or
+> do we already have this)?.
+>
+> Thanks,
+> Dmitry
