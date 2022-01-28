@@ -2,130 +2,78 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C21649F6BA
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 10:55:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94C6349F6EF
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 11:15:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347769AbiA1Jz5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Jan 2022 04:55:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
+        id S245385AbiA1KPv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Jan 2022 05:15:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347762AbiA1Jz5 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jan 2022 04:55:57 -0500
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC7B8C06173B
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Jan 2022 01:55:56 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id r7so3926503wmq.5
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Jan 2022 01:55:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=9OcTQzGa35kRYA8wkuNpPKhajo2EEIRQ92GCwJmiBbs=;
-        b=OKzgZ+Qew+4rwieXFFdzliUThMTozaLlZNrIZD9v1UtC/eCM7/HIzyc97uViD69IlC
-         t7dcWSD7HDCp0rc5PduUFd0KOvlY/6SChiC4MrQrOIRYItrGh0AOD7p34Vybt+0wSzDv
-         QFVyG3cqCqVDg2vy3ApKlga0BSpY0hkGO4vd10LcGy1e2X8y/xxwpMXZGhXqWIIh483H
-         OKPnyOPtMRy0SwyMLy9NstU7w2JsHfZjsAp1KcmedjpqPCZmkakt1KhyiIyTTYhjPNt0
-         9+cIWHZRuCaOCcNie5P3vSpV+bJhReEwKtZlnq9m8dzDKWZv9HhJdQEjgFUkyG9Uw/u7
-         ayJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9OcTQzGa35kRYA8wkuNpPKhajo2EEIRQ92GCwJmiBbs=;
-        b=K8rwGc+TCE6UyqqNUUs2zTVZ7tYK1ORUD1VfG1UwYyjPOIVIfhbHdH5rmf+b6ArMXl
-         lNR+29ognsoKnHcd1NNxRTzGoBv9MEXJ3rQkyNTSNFoN6JOLzugvYxxeA6iK2d5ORIIN
-         hB5hkfX/wVNO3OESPpEqI2oA1qqPYG6l30mBVMxxBFiGa+4pQSylzwRKUblJQVsHrAIl
-         anEU52wMCTo1iO2+3zGNg1+z0DIyfBIQdSZN1R+RXz/rwCrhF2rPHw33fFMfz+1YQyGW
-         9cuG1K84lLiYRoZ2/Pt9ibBWMFu7Qt9FCleQpibAn69tTro1kCgox+V4p1H7nTYN2TFb
-         kThQ==
-X-Gm-Message-State: AOAM533Ujv3QVe4Qg+bhVDm0X/NYExyTy3EnnDyfq6z7y1qOOKMkF9Wa
-        A3V2eJ3zpQHfEHbDrBNI9UhXNA==
-X-Google-Smtp-Source: ABdhPJysznJTYs5X/q0fgqi/MbF+pd7Zm0F6oR4XCtNJ0BNgC1nwC/hhTAUF8qQs3EvmJ9WrWsrlww==
-X-Received: by 2002:a05:600c:4fd2:: with SMTP id o18mr6688322wmq.152.1643363755476;
-        Fri, 28 Jan 2022 01:55:55 -0800 (PST)
-Received: from myrica (cpc92880-cmbg19-2-0-cust679.5-4.cable.virginm.net. [82.27.106.168])
-        by smtp.gmail.com with ESMTPSA id t5sm4353423wrw.92.2022.01.28.01.55.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jan 2022 01:55:54 -0800 (PST)
-Date:   Fri, 28 Jan 2022 09:55:32 +0000
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Rajat Jain <rajatja@google.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Dmitry Torokhov <dtor@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Pavel Machek <pavel@denx.de>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>
-Subject: Re: [PATCH] PCI: ACPI: Allow internal devices to be marked as
- untrusted
-Message-ID: <YfO9lPJe0RuVyxFf@myrica>
-References: <20220120000409.2706549-1-rajatja@google.com>
- <20220121214117.GA1154852@bhelgaas>
- <Ye5GvQbFKo+CFtRb@lahna>
- <Ye/X7E2dKb+zem34@lahna>
- <Ye/btvA1rLB2rp02@kroah.com>
- <Ye/zTHR5aCG58z87@lahna>
- <CAJZ5v0gitdeEAxcgSoB1=VHA9FnRdCtmUqA_cN_f1a2yFRDghQ@mail.gmail.com>
- <CACK8Z6H2DLTJgxgS3pcvfOh=5S8cxEMKvwEPfB9zoVf1g2H_UQ@mail.gmail.com>
+        with ESMTP id S245304AbiA1KPv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jan 2022 05:15:51 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8DA3C06173B;
+        Fri, 28 Jan 2022 02:15:50 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 94186B82513;
+        Fri, 28 Jan 2022 10:15:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D49C340E0;
+        Fri, 28 Jan 2022 10:15:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1643364948;
+        bh=IqKsdmtcoXo/YK7JT1TZuG90bj1qq6VQtmMzxkz+FMI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=omBwj6mD3mH/GbRAnTQUeMsxfwAJgoUyiZZaXRFctu2JMoqe0g6qVeHoQpZzhyM1F
+         CQyzEkG9/DoO9HqB8FMCR4BqSuwU0CAP1JKXpAZGIDHliKG7VK71C6KlwBuDI48Bq9
+         m4XRvSQw6v3BvlvdUOXfh84WwMRZ/jrt5eItW+ok=
+Date:   Fri, 28 Jan 2022 11:15:45 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Zhou Qingyang <zhou1615@umn.edu>
+Cc:     kjlu@umn.edu, "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Lv Zheng <lv.zheng@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPI: OSL: Fix a NULL pointer dereference in
+ extlog_init().
+Message-ID: <YfPCURbOtpGqekyi@kroah.com>
+References: <20220124164134.52046-1-zhou1615@umn.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACK8Z6H2DLTJgxgS3pcvfOh=5S8cxEMKvwEPfB9zoVf1g2H_UQ@mail.gmail.com>
+In-Reply-To: <20220124164134.52046-1-zhou1615@umn.edu>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Jan 27, 2022 at 02:26:07PM -0800, Rajat Jain wrote:
-> > > > And shouldn't this be an ACPI standard?
-> > >
-> > > Probably should or some supplemental doc but not sure how easy these
-> > > "properties" can be added there to be honest.
+On Tue, Jan 25, 2022 at 12:41:34AM +0800, Zhou Qingyang wrote:
+> In extlog_init(), acpi_os_map_iomem() is assigned to extlog_l1_hdr and
+> there is a dereference of it through l1_head. on the failure of
+> acpi_os_map_iomem(), the return value of it could be NULL, which may
+> introduce a NULL pointer dereference.
 > 
-> AIUI, the principal comment I have received here is that this property
-> needs to be documented somewhere. I agree.
+> Fix this bug by adding a NULL check of extlog_l1_hdr.
 > 
-> Rafael, do you know if this new property can be added to the ACPI
-> spec, and if so, how to do so? I'm happy to initiate a process if
-> someone can point me to, I just hope that publishing a new property to
-> the ACPI does not have to block this patch.
+> This bug was found by a static analyzer.
 > 
-> The other option I was thinking of was to use the same property name
-> (say "untrusted-device") for both ACPI and device tree platforms, and
-> document it in Documentation/devicetree/bindings/pci/pci.txt along
-> with others. Since there are other properties there that seem to be
-> used similarly (Mika highlighted some below), perhaps that is an
-> acceptable solution?
+> Builds with 'make allyesconfig' show no new warnings,
+> and our static analyzer no longer warns about this code.
 > 
-> I had one last question on the property name itself. I was trying to
-> understand why a property might have 2 names i.e. "external-facing"
-> for DT and "ExternalFacingPort" in ACPI?
+> Fixes: a238317ce818 ("ACPI: Clean up acpi_os_map/unmap_memory() to eliminate __iomem.")
+> Signed-off-by: Zhou Qingyang <zhou1615@umn.edu>
+> ---
+> The analysis employs differential checking to identify inconsistent 
+> security operations (e.g., checks or kfrees) between two code paths 
+> and confirms that the inconsistent operations are not recovered in the
+> current function or the callers, so they constitute bugs. 
+> 
+> Note that, as a bug found by static analysis, it can be a false
+> positive or hard to trigger. Multiple researchers have cross-reviewed
+> the bug.
 
-I picked "external-facing" for DT to be consistent with other device tree
-property names. There doesn't seem to be any CamelCase in device trees
-[1], so we should probably keep that convention for new properties as
-well. The internal device_property could use the DT name and the ACPI name
-can be different. We do something similar with properties "pasid-num-bits"
-and "dma-can-stall" which are extracted from the IORT table in
-iort_named_component_init()
+Then all of their names need to be on the commit.
 
-Thanks,
-Jean
+Also, as stated before, umn.edu is still not allowed to contribute to
+the Linux kernel.  Please work with your administration to resolve this
+issue.
 
-[1] git grep "\<[A-Z][,a-zA-Z0-9]\+ =" -- '*.dts'
-
-> Are there any naming
-> convention requirements that require ACPI and DT property names to be
-> different? Is "untrusted-device" an acceptable ACPI property name?
-> 
-> Thanks & Best Regards,
-> 
-> Rajat
