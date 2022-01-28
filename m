@@ -2,99 +2,396 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DED54A0316
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 22:43:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 892EE4A04A2
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Jan 2022 00:51:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351591AbiA1Vnb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Jan 2022 16:43:31 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:38224 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351585AbiA1Vna (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jan 2022 16:43:30 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0463F61EAF;
-        Fri, 28 Jan 2022 21:43:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52D4C340E7;
-        Fri, 28 Jan 2022 21:43:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643406209;
-        bh=NsbOiPGUfmhHB0ZJ5H7auWzUVox6einPVS8ygPPXcH4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gxJ1XRfCvKgYczlOtWaCaBl9Ty3jszmxz0xWE4CNzNFxOqFhyuWKQkUXxlGzMG2V1
-         fK50t0QwryjDxf1HexL20NvHKa1a0oe3KxvKLMRZrj9jl/dH8YfZWA+XCFXuIxQXP9
-         tWZxz82fv4WQYQ2SJB/p+eLFp3Enb9FS3qQwUiWFmEoR6wdLCbKCaPfkX/v8UiioC5
-         iwLgcicwasltRlwAOG7EbInhuP6RT8qtIJVfPx8KIdSQEXDwSwgQYQ0FNo8w+osjka
-         gvxFnMbd0uinZCllNoZM1Avfrm3s0WKVwJi0U1bn3Fa8IcoiBs2qHRYTs0ySHKx8vu
-         Mcuk6sQ1Uc/Ig==
-Date:   Fri, 28 Jan 2022 22:43:26 +0100
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Akhil R <akhilrajeev@nvidia.com>
-Cc:     u.kleine-koenig@pengutronix.de, andy.shevchenko@gmail.com,
-        christian.koenig@amd.com, digetx@gmail.com,
-        gregkh@linuxfoundation.org, jonathanh@nvidia.com,
-        ldewangan@nvidia.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-tegra@vger.kernel.org, rafael@kernel.org,
-        sumit.semwal@linaro.org, thierry.reding@gmail.com
-Subject: Re: [PATCH v5 3/3] i2c: smbus: Use device_*() functions instead of
- of_*()
-Message-ID: <YfRjfvwMoYcCOHA8@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Akhil R <akhilrajeev@nvidia.com>, u.kleine-koenig@pengutronix.de,
-        andy.shevchenko@gmail.com, christian.koenig@amd.com,
-        digetx@gmail.com, gregkh@linuxfoundation.org, jonathanh@nvidia.com,
-        ldewangan@nvidia.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-tegra@vger.kernel.org, rafael@kernel.org,
-        sumit.semwal@linaro.org, thierry.reding@gmail.com
-References: <1643370267-31804-1-git-send-email-akhilrajeev@nvidia.com>
- <1643370267-31804-4-git-send-email-akhilrajeev@nvidia.com>
+        id S1351871AbiA1Xvm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Jan 2022 18:51:42 -0500
+Received: from mga11.intel.com ([192.55.52.93]:48859 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1351892AbiA1Xvi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Fri, 28 Jan 2022 18:51:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643413898; x=1674949898;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ehfsCCjOdGU+puOWYXMjVAXTnfyRC+63WeCqzDsYCo8=;
+  b=GK15YzCH/YxWEDDRmbH6hzSpPCAwT94Sgfq1W0d6WmFaITsjyBzVWRFL
+   GbfZf7WpPZid3ormcVTgt9Wepvo9FXu23td1tID7nYzSBMMKrN7GYW48i
+   i1ICIBJgusJqui76+C7CNKJa4vx37LAzFPl47TiYtAklDF9Qt1T1xpid+
+   D3h7oXbmKjjseWRbKAc9H2zbghXfXM1dCOW3BEkevtmD8Meikg7ZO5asE
+   THZK4Mu5I6xa4d7d3FeiI2vFR/3XuQRrncxPp7WAA7FEYAJheoAv4lhk0
+   pQlMhkYCj4mqL6pXZnJXo5u+ZnzxgXAzwThq24vhUWvo58YSS9kCLn7+w
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10241"; a="244818044"
+X-IronPort-AV: E=Sophos;i="5.88,325,1635231600"; 
+   d="scan'208";a="244818044"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2022 15:51:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,325,1635231600"; 
+   d="scan'208";a="564352998"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.8])
+  by orsmga001.jf.intel.com with ESMTP; 28 Jan 2022 15:51:26 -0800
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     rafael@kernel.org, lenb@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH v3] ACPI / fan: Properly handle fine grain control
+Date:   Fri, 28 Jan 2022 15:51:18 -0800
+Message-Id: <20220128235118.1693865-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qL1R9k/YUU5WV4Iv"
-Content-Disposition: inline
-In-Reply-To: <1643370267-31804-4-git-send-email-akhilrajeev@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+When _FIF object specifies support for fine grain control, then fan speed
+can be set from 0 to 100% with the recommended minimum "step size" via
+_FSL object. Here the control value doesn't need to match any value from
+_FPS object.
 
---qL1R9k/YUU5WV4Iv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Currently we have a simple solution implemented which just pick maximum
+control value from _FPS to display the actual state, but this is not
+optimal when there is a big window between two control values in
+_FPS. Also there is no way to set to any speed which doesn't match
+control values in _FPS. The system firmware can start the fan at speed
+which doesn't match any control value.
 
-On Fri, Jan 28, 2022 at 05:14:27PM +0530, Akhil R wrote:
-> Change of_*() functions to device_*() for firmware agnostic usage.
-> This allows to have the smbus_alert interrupt without any changes
-> in the controller drivers using the ACPI table.
->=20
-> Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+To support fine grain control (when supported) via thermal sysfs:
+- cooling device max state is not _FPS state count but it will be
+100 / _FIF.step_size
+- cooling device current state is 100 / _FIF.step_size
+- cooling device set state will set the control value
+curr_state * _FIF.step_size plus any adjustment for 100%.
+By the spec, when control value do not sum to 100% because of
+_FIF.step_size, OSPM may select an appropriate ending Level increment
+to reach 100%.
 
-Applied to for-next, thanks!
+In addition publish attributes, which helps in implementing
+algorithm in the user space to optimize fan control. These
+attributes are presened in the same directory as the performance
+states.
+1. Support of fine grain control
+Publish support of presence of fine grain control so that fan speed
+can be tuned correctly. This attribute is called "fine_grain_control".
+2. fan speed
+Publish the actual fan rpm in sysfs. Knowing fan rpm is helpful to
+reduce noise level and use passive control instead. Also fan performance
+may not be same over time, so the same control value may not be enough
+to run the fan at a speed. So a feedback value of speed is helpful. This
+sysfs attribute is called "fan_speed_rpm".
 
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+---
+v3
+Added fine_grain_control attribute.
+v2-update
+Change log is missed for v2.
+v2
+Fix for build issue as reported by Reported-by: kernel test robot <lkp@intel.com>
 
---qL1R9k/YUU5WV4Iv
-Content-Type: application/pgp-signature; name="signature.asc"
+ .../acpi/fan_performance_states.rst           |  29 +++-
+ drivers/acpi/fan.c                            | 164 +++++++++++++++---
+ 2 files changed, 164 insertions(+), 29 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/Documentation/admin-guide/acpi/fan_performance_states.rst b/Documentation/admin-guide/acpi/fan_performance_states.rst
+index 98fe5c333121..2aec8e89dbd9 100644
+--- a/Documentation/admin-guide/acpi/fan_performance_states.rst
++++ b/Documentation/admin-guide/acpi/fan_performance_states.rst
+@@ -58,5 +58,30 @@ For example::
+  $cat /sys/bus/acpi/devices/INT3404:00/state1
+  25:0:3200:12500:1250
+ 
+-When a given field is not populated or its value provided by the platform
+-firmware is invalid, the "not-defined" string is shown instead of the value.
++ACPI Fan Fine Grain Control
++=============================
++
++When _FIF object specifies support for fine grain control, then fan speed
++can be set from 0 to 100% with the recommended minimum "step size" via
++_FSL object. User can adjust fan speed using thermal sysfs cooling device.
++
++Here use can look at fan performance states for a reference speed (speed_rpm)
++and set it by changing cooling device cur_state. If the fine grain control
++is supported then user can also adjust to some other speeds which are
++not defined in the performance states.
++
++The support of fine grain control is presented via sysfs attribute
++"fine_grain_control". If fine grain control is present, this attribute
++will show "1" otherwise "0".
++
++This sysfs attribute is presented in the same directory as performance states.
++
++ACPI Fan Performance Feedback
++=============================
++
++The optional _FST object provides status information for the fan device.
++This includes field to provide current fan speed in revolutions per minute
++at which the fan is rotating.
++
++This speed is presented in the sysfs using the attribute "fan_speed_rpm",
++in the same directory as performance states.
+diff --git a/drivers/acpi/fan.c b/drivers/acpi/fan.c
+index 5cd0ceb50bc8..ab586be2d4fc 100644
+--- a/drivers/acpi/fan.c
++++ b/drivers/acpi/fan.c
+@@ -64,12 +64,20 @@ struct acpi_fan_fif {
+ 	u64 low_speed_notification;
+ };
+ 
++struct acpi_fan_fst {
++	u64 revision;
++	u64 control;
++	u64 speed;
++};
++
+ struct acpi_fan {
+ 	bool acpi4;
+ 	struct acpi_fan_fif fif;
+ 	struct acpi_fan_fps *fps;
+ 	int fps_count;
+ 	struct thermal_cooling_device *cdev;
++	struct device_attribute fst_speed;
++	struct device_attribute fine_grain_control;
+ };
+ 
+ static struct platform_driver acpi_fan_driver = {
+@@ -89,20 +97,23 @@ static int fan_get_max_state(struct thermal_cooling_device *cdev, unsigned long
+ 	struct acpi_device *device = cdev->devdata;
+ 	struct acpi_fan *fan = acpi_driver_data(device);
+ 
+-	if (fan->acpi4)
+-		*state = fan->fps_count - 1;
+-	else
++	if (fan->acpi4) {
++		if (fan->fif.fine_grain_ctrl)
++			*state = 100 / (int)fan->fif.step_size;
++		else
++			*state = fan->fps_count - 1;
++	} else {
+ 		*state = 1;
++	}
++
+ 	return 0;
+ }
+ 
+-static int fan_get_state_acpi4(struct acpi_device *device, unsigned long *state)
++static int fan_get_fps(struct acpi_device *device, struct acpi_fan_fst *fst)
+ {
+ 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+-	struct acpi_fan *fan = acpi_driver_data(device);
+ 	union acpi_object *obj;
+ 	acpi_status status;
+-	int control, i;
+ 
+ 	status = acpi_evaluate_object(device->handle, "_FST", NULL, &buffer);
+ 	if (ACPI_FAILURE(status)) {
+@@ -119,31 +130,51 @@ static int fan_get_state_acpi4(struct acpi_device *device, unsigned long *state)
+ 		goto err;
+ 	}
+ 
+-	control = obj->package.elements[1].integer.value;
++	fst->revision = obj->package.elements[0].integer.value;
++	fst->control = obj->package.elements[1].integer.value;
++	fst->speed = obj->package.elements[2].integer.value;
++
++	status = 0;
++err:
++	kfree(obj);
++	return status;
++}
++
++static int fan_get_state_acpi4(struct acpi_device *device, unsigned long *state)
++{
++	struct acpi_fan *fan = acpi_driver_data(device);
++	struct acpi_fan_fst fst;
++	int status;
++	int control, i;
++
++	status = fan_get_fps(device, &fst);
++	if (status)
++		return status;
++
++	control = fst.control;
++
++	if (fan->fif.fine_grain_ctrl) {
++		/* This control should be same what we set using _FSL by spec */
++		if (control > 100) {
++			dev_dbg(&device->dev, "Invalid control value returned\n");
++			return -EINVAL;
++		}
++
++		*state = control / (int)fan->fif.step_size;
++		return 0;
++	}
++
+ 	for (i = 0; i < fan->fps_count; i++) {
+-		/*
+-		 * When Fine Grain Control is set, return the state
+-		 * corresponding to maximum fan->fps[i].control
+-		 * value compared to the current speed. Here the
+-		 * fan->fps[] is sorted array with increasing speed.
+-		 */
+-		if (fan->fif.fine_grain_ctrl && control < fan->fps[i].control) {
+-			i = (i > 0) ? i - 1 : 0;
++		if (control == fan->fps[i].control)
+ 			break;
+-		} else if (control == fan->fps[i].control) {
+-			break;
+-		}
+ 	}
+ 	if (i == fan->fps_count) {
+ 		dev_dbg(&device->dev, "Invalid control value returned\n");
+-		status = -EINVAL;
+-		goto err;
++		return -EINVAL;
+ 	}
+ 
+ 	*state = i;
+ 
+-err:
+-	kfree(obj);
+ 	return status;
+ }
+ 
+@@ -187,12 +218,36 @@ static int fan_set_state_acpi4(struct acpi_device *device, unsigned long state)
+ {
+ 	struct acpi_fan *fan = acpi_driver_data(device);
+ 	acpi_status status;
++	u64 value = state;
++	int max_state;
++
++	if (fan->fif.fine_grain_ctrl)
++		max_state = 100 / (int)fan->fif.step_size;
++	else
++		max_state = fan->fps_count - 1;
+ 
+-	if (state >= fan->fps_count)
++	if (state > max_state)
+ 		return -EINVAL;
+ 
+-	status = acpi_execute_simple_method(device->handle, "_FSL",
+-					    fan->fps[state].control);
++	if (fan->fif.fine_grain_ctrl) {
++		int rem;
++
++		value *= fan->fif.step_size;
++
++		/*
++		 * In the event OSPM’s incremental selections of Level
++		 * using the StepSize field value do not sum to 100%,
++		 * OSPM may select an appropriate ending Level
++		 * increment to reach 100%.
++		 */
++		rem = 100 - value;
++		if (rem && rem < fan->fif.step_size)
++			value = 100;
++	} else {
++		value = fan->fps[state].control;
++	}
++
++	status = acpi_execute_simple_method(device->handle, "_FSL", value);
+ 	if (ACPI_FAILURE(status)) {
+ 		dev_dbg(&device->dev, "Failed to set state by _FSL\n");
+ 		return status;
+@@ -258,6 +313,12 @@ static int acpi_fan_get_fif(struct acpi_device *device)
+ 		status = -EINVAL;
+ 	}
+ 
++	/* If there is a bug in step size and set as 0, change to 1 */
++	if (!fan->fif.step_size)
++		fan->fif.step_size = 1;
++	/* If step size > 9, change to 9 (by spec valid values 1-9) */
++	if (fan->fif.step_size > 9)
++		fan->fif.step_size = 9;
+ err:
+ 	kfree(obj);
+ 	return status;
+@@ -303,6 +364,27 @@ static ssize_t show_state(struct device *dev, struct device_attribute *attr, cha
+ 	return count;
+ }
+ 
++static ssize_t show_fan_speed(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	struct acpi_device *acpi_dev = container_of(dev, struct acpi_device, dev);
++	struct acpi_fan_fst fst;
++	int status;
++
++	status = fan_get_fps(acpi_dev, &fst);
++	if (status)
++		return status;
++
++	return sprintf(buf, "%lld\n", fst.speed);
++}
++
++static ssize_t show_fine_grain_control(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	struct acpi_device *acpi_dev = container_of(dev, struct acpi_device, dev);
++	struct acpi_fan *fan = acpi_driver_data(acpi_dev);
++
++	return sprintf(buf, "%lld\n", fan->fif.fine_grain_ctrl);
++}
++
+ static int acpi_fan_get_fps(struct acpi_device *device)
+ {
+ 	struct acpi_fan *fan = acpi_driver_data(device);
+@@ -311,15 +393,35 @@ static int acpi_fan_get_fps(struct acpi_device *device)
+ 	acpi_status status;
+ 	int i;
+ 
++	sysfs_attr_init(&fan->fine_grain_control.attr);
++	fan->fine_grain_control.show = show_fine_grain_control;
++	fan->fine_grain_control.store = NULL;
++	fan->fine_grain_control.attr.name = "fine_grain_control";
++	fan->fine_grain_control.attr.mode = 0444;
++	status = sysfs_create_file(&device->dev.kobj, &fan->fine_grain_control.attr);
++	if (status)
++		return status;
++
++
++	/* _FST is present if we are here */
++	sysfs_attr_init(&fan->fst_speed.attr);
++	fan->fst_speed.show = show_fan_speed;
++	fan->fst_speed.store = NULL;
++	fan->fst_speed.attr.name = "fan_speed_rpm";
++	fan->fst_speed.attr.mode = 0444;
++	status = sysfs_create_file(&device->dev.kobj, &fan->fst_speed.attr);
++	if (status)
++		goto rem_fine_grain_attr;
++
+ 	status = acpi_evaluate_object(device->handle, "_FPS", NULL, &buffer);
+ 	if (ACPI_FAILURE(status))
+-		return status;
++		goto rem_fst_attr;
+ 
+ 	obj = buffer.pointer;
+ 	if (!obj || obj->type != ACPI_TYPE_PACKAGE || obj->package.count < 2) {
+ 		dev_err(&device->dev, "Invalid _FPS data\n");
+ 		status = -EINVAL;
+-		goto err;
++		goto rem_fst_attr;
+ 	}
+ 
+ 	fan->fps_count = obj->package.count - 1; /* minus revision field */
+@@ -368,6 +470,14 @@ static int acpi_fan_get_fps(struct acpi_device *device)
+ 
+ err:
+ 	kfree(obj);
++	if (!status)
++		return 0;
++rem_fst_attr:
++	sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
++
++rem_fine_grain_attr:
++	sysfs_remove_file(&device->dev.kobj, &fan->fine_grain_control.attr);
++
+ 	return status;
+ }
+ 
+-- 
+2.31.1
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmH0Y30ACgkQFA3kzBSg
-KbbTJw/+NVGeZckoRLVgX1UiF/eLLpRlbEVDRaLa2fu9ZEx5zxnYLIlJ+B1tXk1p
-yq0nkWm+aEx7q/gONbe8fkq6vMr7PN++hd4foXY8iEa9BVWhJZsgG/dyPpSVeZQA
-xerxXoqy47yqLT37KTFj43tBJseQ7Hqzebh/bJGGJDuZ36onFiGE0QA4R8wglRVe
-HP107SmFTBz65gcoOMtLeVF0IMrJo8FCK6UooL8XDivNrYexbr44tzgNKbkgZ63+
-PTmCTEriezU34dV8bXz83j+uaISGagLAH15FYIgwfT5Ykr66X9CTQTv+lLiHGnDN
-NIrS1Hs/iW7w17QxMcon8CxvElJvkTiniQSlrywN3u9wsQmb+COsKC0lgI4cuPvO
-W/PorJB3hkU4pPsJCu5fSQnb8C8Rr2swJ3eTcppOQ+IquqXqPRFgDz/7ikOANDnw
-2YkxGSIK8LjlkCL5wC5R9q3ZsTwM0Bc44XWJJ5I1hNXh+MLwGQiuUUGks1EzFkrB
-0c5yEji5TCsM3yBktIjbYnYPX0SASFF96nJJ15yZ1l2P86n2+kKhRkoYrjq058Cj
-4w+VrmEuA0zMBy+ZnPTDYJUUgFzGf50LfEnVw2JUinqN6ZZb0p+kTpTuRfIIRHUG
-UW2YJ1owF26BPYE57gzYtDgQ3dNwXFB8thVZyZzsSpTvFOXjoiM=
-=QrQm
------END PGP SIGNATURE-----
-
---qL1R9k/YUU5WV4Iv--
