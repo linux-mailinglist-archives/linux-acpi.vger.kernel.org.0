@@ -2,209 +2,199 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D599E49F894
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 12:45:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C6149F8DD
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 13:06:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348173AbiA1Lpc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Jan 2022 06:45:32 -0500
-Received: from mail-dm6nam10on2085.outbound.protection.outlook.com ([40.107.93.85]:64129
-        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1348163AbiA1Lpb (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 28 Jan 2022 06:45:31 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=evMm25y6gsJyu1NeBRlE4LchYq6zDUQnUS85XgGqD14Xd9iYCkGM2l6QJ7kiDNTxu0P9DgMtTDxMSgaHJBdYcT1QYuSBZM8WFN8BcoTJgU0wDIxzkelsJUwULHoarJGN8RmXB/nHE7c0tBE4f4eh2eAKzS2Wj4oHmTXM0K6IdfDc19+FIwIAeGX5NrnhO430zw8wC0pLf4pe1pPTfblbyI9brEls5p+3YM3zxZsxW98Lx8FRhP+di2zh5WLnB2IEKpJlK8aoW0fjwxsPCEvjMWbqG3JbnVrMAqo5FDK6gREhlScVIPUsAKKGIPOY7ZdD6KZLWVynxTyiqw8y4A/PLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i5vYvKR5djdhNBCA+9M2bxCJI48EQzU4z4Z4raHAYB8=;
- b=lPNwFLPyi2dkQhv66BZll9yXfdS0hLj1+RhygXiqI1AL1GFY06NyTYAHUygViRO5g/3l8Vmva7SwRvF7nkF+VPwnarU9FUneDICYT07U/the4RhIsAp+GUnMJ4CP+vKHFr0mkBYj9vAgIxyLwAv5q4pxp7FzFXXAVXjCl7MAYkZE2smkwDjUZKqiwsthGuvpcCzYRVFNN4h/mVkdGT0pRq7pJvCYBXdqGTyl+/MO0JpgiHTPEP99v8QRijQLt0NGsSayqQpwOsOmcM4UB4tryZAq78abwYeJG505LxKLeFyCwSaIpPIFXNPcSKEv58NhZDxRNITEMcv2ibUQ0lZMOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 12.22.5.234) smtp.rcpttodomain=linuxfoundation.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i5vYvKR5djdhNBCA+9M2bxCJI48EQzU4z4Z4raHAYB8=;
- b=nhYyUT5+hPppf3/a5hUW6/90YtUTEOrK2rCUmup9QXKIvO7vfft0R8Z8E/q+wYblWSZ/ks4Apnx8B9hAhKTE8lYYiaigQN2uOkUYCauFIgNklQA+scw83BJJeTopNr410urToH5h/CBkQCNdNxgPR5orGQAXkoqLKPEd/9g5gBn7G4mkXodUYcv3Rs4r1AVcfFKQrcJ7fd/JlREO1vpF9NTko5RAYdNLbDZdLy+eK+ZUL9KZzDYo12oWANmsQc48XsDgCzOoQnt2aBwhFnA+4ighz8+5PyjdjMEMirYdhNyX95fU6fUh3Agga2E7qMj/2m5fRo27cqtfUTfWBKoN/w==
-Received: from DM5PR07CA0100.namprd07.prod.outlook.com (2603:10b6:4:ae::29) by
- MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4930.17; Fri, 28 Jan 2022 11:45:29 +0000
-Received: from DM6NAM11FT024.eop-nam11.prod.protection.outlook.com
- (2603:10b6:4:ae:cafe::69) by DM5PR07CA0100.outlook.office365.com
- (2603:10b6:4:ae::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.15 via Frontend
- Transport; Fri, 28 Jan 2022 11:45:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 12.22.5.234)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 12.22.5.234 as permitted sender) receiver=protection.outlook.com;
- client-ip=12.22.5.234; helo=mail.nvidia.com;
-Received: from mail.nvidia.com (12.22.5.234) by
- DM6NAM11FT024.mail.protection.outlook.com (10.13.172.159) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.4930.15 via Frontend Transport; Fri, 28 Jan 2022 11:45:28 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- DRHQMAIL101.nvidia.com (10.27.9.10) with Microsoft SMTP Server (TLS) id
- 15.0.1497.18; Fri, 28 Jan 2022 11:45:26 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.9;
- Fri, 28 Jan 2022 03:45:26 -0800
-Received: from kyarlagadda-linux.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server id 15.2.986.9 via Frontend
- Transport; Fri, 28 Jan 2022 03:45:21 -0800
-From:   Akhil R <akhilrajeev@nvidia.com>
-To:     <u.kleine-koenig@pengutronix.de>, <andy.shevchenko@gmail.com>,
-        <christian.koenig@amd.com>, <digetx@gmail.com>,
-        <gregkh@linuxfoundation.org>, <jonathanh@nvidia.com>,
-        <ldewangan@nvidia.com>, <lenb@kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        <rafael@kernel.org>, <sumit.semwal@linaro.org>,
-        <thierry.reding@gmail.com>, <wsa@kernel.org>
-CC:     <akhilrajeev@nvidia.com>
-Subject: [PATCH v5 3/3] i2c: smbus: Use device_*() functions instead of of_*()
-Date:   Fri, 28 Jan 2022 17:14:27 +0530
-Message-ID: <1643370267-31804-4-git-send-email-akhilrajeev@nvidia.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1643370267-31804-1-git-send-email-akhilrajeev@nvidia.com>
-References: <1643370267-31804-1-git-send-email-akhilrajeev@nvidia.com>
-X-NVConfidentiality: public
+        id S1348204AbiA1MGA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Fri, 28 Jan 2022 07:06:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37172 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242285AbiA1MF7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jan 2022 07:05:59 -0500
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0FCBC061714;
+        Fri, 28 Jan 2022 04:05:58 -0800 (PST)
+Received: by mail-yb1-xb2b.google.com with SMTP id k31so17841539ybj.4;
+        Fri, 28 Jan 2022 04:05:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=TgzhZFyMml3IDw50VoDt1Rff9sLTG9oPwM7aa7E2VdM=;
+        b=d8MNPAuSJrlLFsBdLFMEfJBVNhbsNPQsWZsWw8Nh/bjN7YLUfdUL6KB2aH4F3BJ2NJ
+         pasVN/7ILW3MtY0uI30puKHv1boKuU6cpEs+nhnY5CVfd74OyGzXK8PIwUmzYpSyv1Ub
+         lW/pys8x8NJ+PvUogS4gfnXsuiw9eJZRR6WXV4hO1ZCXqLwHQIYiP8LAJdLTGrYjqfNw
+         rpG1iLBEVJRC0U2MBaapo1LzW6L/U7oUQMCL5TorZFv8TsNtwxKAs+lxcvXAbDs5OJ4i
+         wMSFqsY+CNUmh/yjcEy2fpn92q7jQmRQt7K917HrxwGbG3TcVWFYP/6EWxVc/RK1h+qF
+         K1pQ==
+X-Gm-Message-State: AOAM530AuFNyOFUmtHYad07CH8u1+IHnIwMUt21GtbEoeXzsJsFnDB9h
+        SnAUJCNgWRVD7k0QT9V/Kwc9oH0juFESlh4hsQY=
+X-Google-Smtp-Source: ABdhPJwBUV2JEFV0H3z3HF5iItbdYe5yrGWaSwdRlwzLDUwZnv24vR5E7QH2wzrY+VtqO3qg7ZIwOEaJAeeuDEIh/2U=
+X-Received: by 2002:a25:180a:: with SMTP id 10mr13500919yby.552.1643371497956;
+ Fri, 28 Jan 2022 04:04:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 29e0ee5e-1636-4340-69e2-08d9e253ae65
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_
-X-Microsoft-Antispam-PRVS: <MN2PR12MB3613D29AB5DF7A36771B254AC0229@MN2PR12MB3613.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: AkdszMIJsoo0NX+mRQtPb0XkWyJpkLXWth5dU0jAcLn+M8jpRAa35Ev/1s5IAUxnn0aYKN9dJIw30guiUYwC1vAZag1upZnnEfAnZrORPpdghEbd3zpxlLkG8X5eU9tEbAahIlu4DMmFo26kENsPOitHbwXPSVsj64vGZcS6qx7yfmYPRu72B9xM3wrb+bm6FtE4j0QZ0Is4AhdbNB0IiOrT5kSJUAbdAyiPHPjDZRy2gjb2K8kMYcOk2IHljN/mtaYPMw7iBOXoyv1ngbHEAXPxqvu0QWQudavxfLcfQAq/EutaMtNW+3zWRvXPWC25YjFycEXZ08oOt8+sDrg6JyGvaEGKnj6rBNNyjbbAA/CjNKHmNJFCBlWObVtIXr4tqsmaCgUXcTfo2mUqLzyier3Yc/FjU+a2eQ4BLO3vKg90VF7ehEST578kngfjyYJ/tirUjq7hxfZ+qAF0u53KcPKX5eYWAf6KF9fO4V0aH8w3JUPBcibZTJW9KlJHFj/6XEovNirdC67o8qi0of04PzrbHAkuaA4CCVzSpWOXcM7ji+yoYQ62tvxpkWqtPWkfzIA+rompNpSyYbCkK/J9+1mdJtlFjtv75QhTyhFrkje+ROQqwlkXLXF3NZQff5XM/92M30LVuX43TD0neEAH/yxadXj2r+ozc/RHa15gPoIERiKtHAn1xsQCBzpo/RCI3fjKaaVR4U5OltpMlaLC7l56nXxvifJW2qLhohVA287OLMi2vNSVRTS/q1UI5b7g59rSrHxZM8HgmfytdY6X9w==
-X-Forefront-Antispam-Report: CIP:12.22.5.234;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:mail.nvidia.com;PTR:InfoNoRecords;CAT:NONE;SFS:(13230001)(4636009)(46966006)(40470700004)(36840700001)(2906002)(7696005)(40460700003)(110136005)(186003)(107886003)(26005)(508600001)(36756003)(316002)(2616005)(36860700001)(86362001)(83380400001)(426003)(336012)(70206006)(70586007)(82310400004)(4326008)(8676002)(8936002)(81166007)(47076005)(921005)(7416002)(356005)(5660300002)(2101003)(83996005)(36900700001)(20210929001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2022 11:45:28.4430
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29e0ee5e-1636-4340-69e2-08d9e253ae65
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[12.22.5.234];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT024.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3613
+References: <20220127234450.2218419-1-wonchung@google.com>
+In-Reply-To: <20220127234450.2218419-1-wonchung@google.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 28 Jan 2022 13:04:45 +0100
+Message-ID: <CAJZ5v0hNd6Xjx+RNOTfzXDeXDhgvdfsesNZsgQ2eTCDh42aNmA@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: device_sysfs: Add sysfs support for _PLD
+To:     Won Chung <wonchung@google.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Change of_*() functions to device_*() for firmware agnostic usage.
-This allows to have the smbus_alert interrupt without any changes
-in the controller drivers using the ACPI table.
+On Fri, Jan 28, 2022 at 12:45 AM Won Chung <wonchung@google.com> wrote:
+>
+> When ACPI table includes _PLD fields for a device, create a new file
+> (pld) in sysfs to share _PLD fields.
+>
+> Signed-off-by: Won Chung <wonchung@google.com>
+> ---
+>  Documentation/ABI/testing/sysfs-bus-acpi | 53 ++++++++++++++++++++++++
+>  drivers/acpi/device_sysfs.c              | 42 +++++++++++++++++++
+>  2 files changed, 95 insertions(+)
+>
+> diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentation/ABI/testing/sysfs-bus-acpi
+> index 58abacf59b2a..7f4544c9d563 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-acpi
+> +++ b/Documentation/ABI/testing/sysfs-bus-acpi
+> @@ -96,3 +96,56 @@ Description:
+>                 hardware, if the _HRV control method is present.  It is mostly
+>                 useful for non-PCI devices because lspci can list the hardware
+>                 version for PCI devices.
+> +
+> +What:          /sys/bus/acpi/devices/.../pld
+> +Date:          Jan, 2022
+> +Contact:       Rafael J. Wysocki <rjw@rjwysocki.net>
 
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
----
- drivers/i2c/i2c-core-base.c  |  2 +-
- drivers/i2c/i2c-core-smbus.c | 11 ++++++-----
- drivers/i2c/i2c-smbus.c      |  5 +++--
- include/linux/i2c-smbus.h    |  6 +++---
- 4 files changed, 13 insertions(+), 11 deletions(-)
+Why do you think that it is appropriate to add contact information of
+someone to ABI documentation without asking them for their opinion?
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 2c59dd7..32a4526 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1479,7 +1479,7 @@ static int i2c_register_adapter(struct i2c_adapter *adap)
- 		goto out_list;
- 	}
- 
--	res = of_i2c_setup_smbus_alert(adap);
-+	res = i2c_setup_smbus_alert(adap);
- 	if (res)
- 		goto out_reg;
- 
-diff --git a/drivers/i2c/i2c-core-smbus.c b/drivers/i2c/i2c-core-smbus.c
-index e5b2d14..304c2c8 100644
---- a/drivers/i2c/i2c-core-smbus.c
-+++ b/drivers/i2c/i2c-core-smbus.c
-@@ -14,6 +14,7 @@
- #include <linux/err.h>
- #include <linux/i2c.h>
- #include <linux/i2c-smbus.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- 
- #include "i2c-core.h"
-@@ -701,13 +702,13 @@ struct i2c_client *i2c_new_smbus_alert_device(struct i2c_adapter *adapter,
- }
- EXPORT_SYMBOL_GPL(i2c_new_smbus_alert_device);
- 
--#if IS_ENABLED(CONFIG_I2C_SMBUS) && IS_ENABLED(CONFIG_OF)
--int of_i2c_setup_smbus_alert(struct i2c_adapter *adapter)
-+#if IS_ENABLED(CONFIG_I2C_SMBUS)
-+int i2c_setup_smbus_alert(struct i2c_adapter *adapter)
- {
- 	int irq;
- 
--	irq = of_property_match_string(adapter->dev.of_node, "interrupt-names",
--				       "smbus_alert");
-+	irq = device_property_match_string(adapter->dev.parent, "interrupt-names",
-+					   "smbus_alert");
- 	if (irq == -EINVAL || irq == -ENODATA)
- 		return 0;
- 	else if (irq < 0)
-@@ -715,5 +716,5 @@ int of_i2c_setup_smbus_alert(struct i2c_adapter *adapter)
- 
- 	return PTR_ERR_OR_ZERO(i2c_new_smbus_alert_device(adapter, NULL));
- }
--EXPORT_SYMBOL_GPL(of_i2c_setup_smbus_alert);
-+EXPORT_SYMBOL_GPL(i2c_setup_smbus_alert);
- #endif
-diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
-index d3d06e3..7753329 100644
---- a/drivers/i2c/i2c-smbus.c
-+++ b/drivers/i2c/i2c-smbus.c
-@@ -13,7 +13,7 @@
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
--#include <linux/of_irq.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/workqueue.h>
- 
-@@ -128,7 +128,8 @@ static int smbalert_probe(struct i2c_client *ara,
- 	if (setup) {
- 		irq = setup->irq;
- 	} else {
--		irq = of_irq_get_byname(adapter->dev.of_node, "smbus_alert");
-+		irq = fwnode_irq_get_byname(dev_fwnode(adapter->dev.parent),
-+					    "smbus_alert");
- 		if (irq <= 0)
- 			return irq;
- 	}
-diff --git a/include/linux/i2c-smbus.h b/include/linux/i2c-smbus.h
-index 1ef4218..95cf902 100644
---- a/include/linux/i2c-smbus.h
-+++ b/include/linux/i2c-smbus.h
-@@ -30,10 +30,10 @@ struct i2c_client *i2c_new_smbus_alert_device(struct i2c_adapter *adapter,
- 					      struct i2c_smbus_alert_setup *setup);
- int i2c_handle_smbus_alert(struct i2c_client *ara);
- 
--#if IS_ENABLED(CONFIG_I2C_SMBUS) && IS_ENABLED(CONFIG_OF)
--int of_i2c_setup_smbus_alert(struct i2c_adapter *adap);
-+#if IS_ENABLED(CONFIG_I2C_SMBUS)
-+int i2c_setup_smbus_alert(struct i2c_adapter *adap);
- #else
--static inline int of_i2c_setup_smbus_alert(struct i2c_adapter *adap)
-+static inline int i2c_setup_smbus_alert(struct i2c_adapter *adap)
- {
- 	return 0;
- }
--- 
-2.7.4
+If you don't want to be the contact yourself, you can put linux-acpi in there.
 
+> +Description:
+> +               This attribute contains the output of the device object's
+> +               _PLD control method, if present. This information provides
+> +               details on physical location of a port.
+> +
+> +               Description on each _PLD field from ACPI specification:
+> +
+> +               =============== ============================================
+> +               GROUP_TOKEN     Unique numerical value identifying a group.
+> +               GROUP_POSITION  Identifies this device connection point’s
+> +                               position in the group.
+> +               USER_VISIBLE    Set if the device connection point can be
+> +                               seen by the user without disassembly.
+> +               DOCK            Set if the device connection point resides
+> +                               in a docking station or port replicator.
+> +               BAY             Set if describing a device in a bay or if
+> +                               device connection point is a bay.
+> +               LID             Set if this device connection point resides
+> +                               on the lid of laptop system.
+> +               PANEL           Describes which panel surface of the system’s
+> +                               housing the device connection point resides on:
+> +                               0 - Top
+> +                               1 - Bottom
+> +                               2 - Left
+> +                               3 - Right
+> +                               4 - Front
+> +                               5 - Back
+> +                               6 - Unknown (Vertical Position and Horizontal
+> +                               Position will be ignored)
+> +               HORIZONTAL_     0 - Left
+> +               POSITION        1 - Center
+> +                               2 - Right
+> +               VERTICAL_       0 - Upper
+> +               POSITION        1 - Center
+> +                               2 - Lower
+> +               SHAPE           Describes the shape of the device connection
+> +                               point.
+> +                               0 - Round
+> +                               1 - Oval
+> +                               2 - Square
+> +                               3 - Vertical Rectangle
+> +                               4 - Horizontal Rectangle
+> +                               5 - Vertical Trapezoid
+> +                               6 - Horizontal Trapezoid
+> +                               7 - Unknown - Shape rendered as a Rectangle
+> +                               with dotted lines
+> +                               8 - Chamfered
+> +                               15:9 - Reserved
+> +               =============== ===============================================
+> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+> index d5d6403ba07b..8d4df5fb1c45 100644
+> --- a/drivers/acpi/device_sysfs.c
+> +++ b/drivers/acpi/device_sysfs.c
+> @@ -509,6 +509,40 @@ static ssize_t status_show(struct device *dev, struct device_attribute *attr,
+>  }
+>  static DEVICE_ATTR_RO(status);
+>
+> +static ssize_t pld_show(struct device *dev, struct device_attribute *attr,
+> +                       char *buf)
+> +{
+> +       struct acpi_device *acpi_dev = to_acpi_device(dev);
+> +       acpi_status status;
+> +       struct acpi_pld_info *pld;
+> +
+> +       status = acpi_get_physical_device_location(acpi_dev->handle, &pld);
+> +       if (ACPI_FAILURE(status))
+> +               return -ENODEV;
+> +
+> +       return sprintf(buf, "GROUP_TOKEN=%u\n"
+> +               "GROUP_POSITION=%u\n"
+> +               "USER_VISIBLE=%u\n"
+> +               "DOCK=%u\n"
+> +               "BAY=%u\n"
+> +               "LID=%u\n"
+> +               "PANEL=%u\n"
+> +               "HORIZONTAL_POSITION=%u\n"
+> +               "VERTICAL_POSITION=%u\n"
+> +               "SHAPE=%u\n",
+> +               pld->group_token,
+> +               pld->group_position,
+> +               pld->user_visible,
+> +               pld->dock,
+> +               pld->bay,
+> +               pld->lid,
+> +               pld->panel,
+> +               pld->horizontal_position,
+> +               pld->vertical_position,
+> +               pld->shape);
+> +}
+> +static DEVICE_ATTR_RO(pld);
+> +
+>  /**
+>   * acpi_device_setup_files - Create sysfs attributes of an ACPI device.
+>   * @dev: ACPI device object.
+> @@ -595,6 +629,12 @@ int acpi_device_setup_files(struct acpi_device *dev)
+>                                                     &dev_attr_real_power_state);
+>         }
+>
+> +       if (acpi_has_method(dev->handle, "_PLD")) {
+> +               result = device_create_file(&dev->dev, &dev_attr_pld);
+> +               if (result)
+> +                       goto end;
+> +       }
+> +
+>         acpi_expose_nondev_subnodes(&dev->dev.kobj, &dev->data);
+>
+>  end:
+> @@ -645,4 +685,6 @@ void acpi_device_remove_files(struct acpi_device *dev)
+>                 device_remove_file(&dev->dev, &dev_attr_status);
+>         if (dev->handle)
+>                 device_remove_file(&dev->dev, &dev_attr_path);
+> +       if (acpi_has_method(dev->handle, "_PLD"))
+> +               device_remove_file(&dev->dev, &dev_attr_pld);
+>  }
+> --
+> 2.35.0.rc0.227.g00780c9af4-goog
+>
