@@ -2,42 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 42D7149F4B7
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 08:49:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C21649F6BA
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 10:55:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231777AbiA1Hs6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Jan 2022 02:48:58 -0500
-Received: from mga04.intel.com ([192.55.52.120]:13161 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243077AbiA1Hsv (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 28 Jan 2022 02:48:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643356131; x=1674892131;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yA9I1TVBAWLRwxa+kG83/UciNiFWOt5jTTLojABMHJc=;
-  b=Hhu+Kw+mPXfXIHz19qz9thMoPF0gyxQP4SpeBcZG4THqproq5YZPF4ks
-   qDf9fhpvonXqMdct9BXAZRJQlCxIMtETgFycaEmQfnxMyfKfchyziHHWa
-   vUdF3gGylf/YZ70PPH/Omqpz4ekYVfbLyKDoIEdJUk3WT0oZkXYzhmDuN
-   N87GOhzAJBxe4ZCJe1czyrq16coK2W8iMlzVDxECKdVyRyB8URWStTE1U
-   /3p4BvzGav3Msl8RWkLBoxbavzu1cedbORNhSKzrE97IeXt4WjNlpLKti
-   h2GRuVpY36hhuZeWoInJ6kSdav+C/U8cQ4IAlEMbPA7CWWi/iuPi/kbER
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10240"; a="245912884"
-X-IronPort-AV: E=Sophos;i="5.88,322,1635231600"; 
-   d="scan'208";a="245912884"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2022 23:48:50 -0800
-X-IronPort-AV: E=Sophos;i="5.88,322,1635231600"; 
-   d="scan'208";a="581776906"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2022 23:48:43 -0800
-Received: by lahna (sSMTP sendmail emulation); Fri, 28 Jan 2022 09:48:41 +0200
-Date:   Fri, 28 Jan 2022 09:48:41 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+        id S1347769AbiA1Jz5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Jan 2022 04:55:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347762AbiA1Jz5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jan 2022 04:55:57 -0500
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC7B8C06173B
+        for <linux-acpi@vger.kernel.org>; Fri, 28 Jan 2022 01:55:56 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id r7so3926503wmq.5
+        for <linux-acpi@vger.kernel.org>; Fri, 28 Jan 2022 01:55:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=9OcTQzGa35kRYA8wkuNpPKhajo2EEIRQ92GCwJmiBbs=;
+        b=OKzgZ+Qew+4rwieXFFdzliUThMTozaLlZNrIZD9v1UtC/eCM7/HIzyc97uViD69IlC
+         t7dcWSD7HDCp0rc5PduUFd0KOvlY/6SChiC4MrQrOIRYItrGh0AOD7p34Vybt+0wSzDv
+         QFVyG3cqCqVDg2vy3ApKlga0BSpY0hkGO4vd10LcGy1e2X8y/xxwpMXZGhXqWIIh483H
+         OKPnyOPtMRy0SwyMLy9NstU7w2JsHfZjsAp1KcmedjpqPCZmkakt1KhyiIyTTYhjPNt0
+         9+cIWHZRuCaOCcNie5P3vSpV+bJhReEwKtZlnq9m8dzDKWZv9HhJdQEjgFUkyG9Uw/u7
+         ayJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=9OcTQzGa35kRYA8wkuNpPKhajo2EEIRQ92GCwJmiBbs=;
+        b=K8rwGc+TCE6UyqqNUUs2zTVZ7tYK1ORUD1VfG1UwYyjPOIVIfhbHdH5rmf+b6ArMXl
+         lNR+29ognsoKnHcd1NNxRTzGoBv9MEXJ3rQkyNTSNFoN6JOLzugvYxxeA6iK2d5ORIIN
+         hB5hkfX/wVNO3OESPpEqI2oA1qqPYG6l30mBVMxxBFiGa+4pQSylzwRKUblJQVsHrAIl
+         anEU52wMCTo1iO2+3zGNg1+z0DIyfBIQdSZN1R+RXz/rwCrhF2rPHw33fFMfz+1YQyGW
+         9cuG1K84lLiYRoZ2/Pt9ibBWMFu7Qt9FCleQpibAn69tTro1kCgox+V4p1H7nTYN2TFb
+         kThQ==
+X-Gm-Message-State: AOAM533Ujv3QVe4Qg+bhVDm0X/NYExyTy3EnnDyfq6z7y1qOOKMkF9Wa
+        A3V2eJ3zpQHfEHbDrBNI9UhXNA==
+X-Google-Smtp-Source: ABdhPJysznJTYs5X/q0fgqi/MbF+pd7Zm0F6oR4XCtNJ0BNgC1nwC/hhTAUF8qQs3EvmJ9WrWsrlww==
+X-Received: by 2002:a05:600c:4fd2:: with SMTP id o18mr6688322wmq.152.1643363755476;
+        Fri, 28 Jan 2022 01:55:55 -0800 (PST)
+Received: from myrica (cpc92880-cmbg19-2-0-cust679.5-4.cable.virginm.net. [82.27.106.168])
+        by smtp.gmail.com with ESMTPSA id t5sm4353423wrw.92.2022.01.28.01.55.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Jan 2022 01:55:54 -0800 (PST)
+Date:   Fri, 28 Jan 2022 09:55:32 +0000
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
 To:     Rajat Jain <rajatja@google.com>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Bjorn Helgaas <helgaas@kernel.org>,
         Len Brown <lenb@kernel.org>,
@@ -48,13 +62,12 @@ Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Rajat Jain <rajatxjain@gmail.com>,
         Dmitry Torokhov <dtor@google.com>,
         Jesse Barnes <jsbarnes@google.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
         Pavel Machek <pavel@denx.de>,
         Oliver O'Halloran <oohall@gmail.com>,
         Joerg Roedel <joro@8bytes.org>
 Subject: Re: [PATCH] PCI: ACPI: Allow internal devices to be marked as
  untrusted
-Message-ID: <YfOf2X7Snm7cvDRV@lahna>
+Message-ID: <YfO9lPJe0RuVyxFf@myrica>
 References: <20220120000409.2706549-1-rajatja@google.com>
  <20220121214117.GA1154852@bhelgaas>
  <Ye5GvQbFKo+CFtRb@lahna>
@@ -67,46 +80,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <CACK8Z6H2DLTJgxgS3pcvfOh=5S8cxEMKvwEPfB9zoVf1g2H_UQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
 On Thu, Jan 27, 2022 at 02:26:07PM -0800, Rajat Jain wrote:
-> Hello Rafael, Bjorn, Mika, Dmitry, Greg,
-> 
-> Thanks a lot for your comments.
-> 
-> On Tue, Jan 25, 2022 at 6:45 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Tue, Jan 25, 2022 at 1:55 PM Mika Westerberg
-> > <mika.westerberg@linux.intel.com> wrote:
+> > > > And shouldn't this be an ACPI standard?
 > > >
-> > > On Tue, Jan 25, 2022 at 12:15:02PM +0100, Greg Kroah-Hartman wrote:
-> > > > On Tue, Jan 25, 2022 at 12:58:52PM +0200, Mika Westerberg wrote:
-> > > > > On Mon, Jan 24, 2022 at 08:27:17AM +0200, Mika Westerberg wrote:
-> > > > > > > > This patch introduces a new "UntrustedDevice" property that can be used
-> > > > > > > > by the firmware to mark any device as untrusted.
-> > > > > >
-> > > > > > I think this new property should be documented somewhere too (also
-> > > > > > explain when to use it instead of ExternalFacingPort). If not in the
-> > > > > > next ACPI spec or some supplemental doc then perhaps in the DT bindings
-> > > > > > under Documentation/devicetree/bindings.
-> > > > >
-> > > > > Actually Microsoft has similar already:
-> > > > >
-> > > > > https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
-> > > > >
-> > > > > I think we should use that too here.
+> > > Probably should or some supplemental doc but not sure how easy these
+> > > "properties" can be added there to be honest.
 > 
-> But because this property also applies to a root port (only), it only
-> helps if the device is downstream a PCIe root port. In our case, we
-> have an internal (wifi) device 00:14.3 (sits on the internal PCI bus
-> 0), so cannot use this.
+> AIUI, the principal comment I have received here is that this property
+> needs to be documented somewhere. I agree.
+> 
+> Rafael, do you know if this new property can be added to the ACPI
+> spec, and if so, how to do so? I'm happy to initiate a process if
+> someone can point me to, I just hope that publishing a new property to
+> the ACPI does not have to block this patch.
+> 
+> The other option I was thinking of was to use the same property name
+> (say "untrusted-device") for both ACPI and device tree platforms, and
+> document it in Documentation/devicetree/bindings/pci/pci.txt along
+> with others. Since there are other properties there that seem to be
+> used similarly (Mika highlighted some below), perhaps that is an
+> acceptable solution?
+> 
+> I had one last question on the property name itself. I was trying to
+> understand why a property might have 2 names i.e. "external-facing"
+> for DT and "ExternalFacingPort" in ACPI?
 
-Right. I wonder if we can expand it to cover all internal devices, not
-just PCIe root ports? We anyways need to support that property so does
-not make much sense to me to invent yet another that does pretty much
-the same thing.
+I picked "external-facing" for DT to be consistent with other device tree
+property names. There doesn't seem to be any CamelCase in device trees
+[1], so we should probably keep that convention for new properties as
+well. The internal device_property could use the DT name and the ACPI name
+can be different. We do something similar with properties "pasid-num-bits"
+and "dma-can-stall" which are extracted from the IORT table in
+iort_named_component_init()
+
+Thanks,
+Jean
+
+[1] git grep "\<[A-Z][,a-zA-Z0-9]\+ =" -- '*.dts'
+
+> Are there any naming
+> convention requirements that require ACPI and DT property names to be
+> different? Is "untrusted-device" an acceptable ACPI property name?
+> 
+> Thanks & Best Regards,
+> 
+> Rajat
