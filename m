@@ -2,50 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C08BE49F0CB
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 03:04:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1C6649F11B
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 03:38:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345195AbiA1CEp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Jan 2022 21:04:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41286 "EHLO
+        id S1345446AbiA1Ch7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Jan 2022 21:37:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345187AbiA1CEp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jan 2022 21:04:45 -0500
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C3E9C061714
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 18:04:45 -0800 (PST)
-Received: by mail-pj1-x104a.google.com with SMTP id q1-20020a17090a064100b001b4d85cbaf7so5318223pje.9
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 18:04:45 -0800 (PST)
+        with ESMTP id S1345450AbiA1Ch7 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jan 2022 21:37:59 -0500
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0414EC061714
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 18:37:59 -0800 (PST)
+Received: by mail-pg1-x549.google.com with SMTP id p29-20020a634f5d000000b003624b087f05so2541600pgl.7
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 18:37:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:message-id:mime-version:subject:from:to:cc
          :content-transfer-encoding;
-        bh=FeJS7xf34VelIfEIwGcvGlgB4HQ0+TQ7oDm/G0cg3j4=;
-        b=V38I5IXvAVsd9JVD80yoRyJW6Pf10TuFm56SoAZze3hb1mvIvZfsJQGcUg4SK6TchS
-         KL8gkeAT1pgPue7tV7rqV+We0D8ZqGuwU9MfuGxLLunY8mG8pIr4MXjcIuE12SIBkay2
-         5CLoBVagvPrS7JgPNCknaZdLDu/MIXonVy6g7DbNAphd8Unlp8kekDLrv4izLdkSEGau
-         aDCQ836wGMRV7GTIx3y1TfmJSwjqkpRDmf/6UjZV7Vx/EEt/tlKFQGl/lpGNvRIDzcSd
-         F9/MPSCOySOixd1tjoOJbmtP8UtthuNdxupf1uoBCSIi5r+XoYdlnTPUmPgT56c7xVxn
-         ZW4A==
+        bh=Tx91uzRklLUZsIGK6wpPBgEZN67pGca2y2X/Cf0r4s0=;
+        b=c2Fwu+ijB/lJQVEG2CcXr/o64uO33R9F+A4ozcUrSOMK2qCTO9m7/d9t/fgFkzWOi+
+         yE7BZGkaFba8hFusCWoP5ZYtBeKUQPJrSmgWwAb0f+IB1pBhIbQ+A4aIhsSYp0BAA8+R
+         Qcl64n/iVHvA9oDtmMS9gSGiWo2dYsk7VXbJC9NoIcUbAHXEwYQgAkyNrKl1Spbg+6mr
+         bphN9mnO0wlU3mwd1f32XpIKyG5v4AlJ3beQ+gLmgn5svmvqjnmB4z5NmvjzqoMHtVg1
+         ubB74peFREjNzvvVWT0aBxhlmTHLisxms/znuRcpYlcwXU/9Tgw2nqVBaM3Q1WqDBurO
+         d1SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc
          :content-transfer-encoding;
-        bh=FeJS7xf34VelIfEIwGcvGlgB4HQ0+TQ7oDm/G0cg3j4=;
-        b=Bbgn/goIzTPQAaQfRy3mAbGGNyuWdb6xA7QNFQhQjXx+sYscGtaZIxUhAu2dHDx+3A
-         7WJRmaNyeYikZSHf9gjsn1gOjg46y7EPSkTKit7det3z3vgIue3Jd4e4ZcZQ0VCMZOMY
-         3yZkNB7jdFxybG4cz+xlTxTnN8YhzV6tRh/WH3Jg+NeOGIc7xpgDeciTZVFngKRiwU+F
-         WxPR5GM5Rz8DPuouwKllX8bRUFRExT6hIqvLyOUzFp7VdBCkzBqzTvR4tFKCLNdK2Il+
-         9eLgovLc8sJcAoGXsKKtlrlFPMmkVCewEkPE9somPSoBGfYCpqGD8Qkpv1U0xRov1IAF
-         dwag==
-X-Gm-Message-State: AOAM531ynws0BVjiOTbH2484tQ5Q+waibLDirjIjghcNTy8NI7ip8Y4p
-        PwgOf+/herFJCkbv3WoZzhWXchbXpBQO5A==
-X-Google-Smtp-Source: ABdhPJzGX6hXmrDqGw+VRA7LFG5A502XPfTa59uuk2IThV3XuJP6xGBU8E8RN/G7tSynUt3MxeiU7lcOj27UPQ==
+        bh=Tx91uzRklLUZsIGK6wpPBgEZN67pGca2y2X/Cf0r4s0=;
+        b=5Q41DgzS+LYW5LZ5ycYt5cQ3oXr0iS794AsFsU4QzYNmo+hTX3zQlU6fPEFAdcpn4K
+         S/kf5tdSa3TPGh56cu9FViDkPoAwCPNqyu1C4UAlyMlCnT+UXlio8Derp73YLyzsEKZq
+         hbiWgQgyWmQ0bf4NG2l7r7kWT1o9kz7BcyIVdj4rSKhtFTutY2k77GH5HIEoNnjyOESi
+         j8Wd3Q5tXVkEJI0QhAH+21XzoKZbTXsonlf+Ygb5CHX1Ir1jEpCyLsvZtlSwQIYU+0nh
+         GkNXdUPWMpbBeyMyvQcRGzt6CXGBNgt4zzfok32P3ExrO/AYNPqWP5rzD8LDWREC8u0h
+         sWfg==
+X-Gm-Message-State: AOAM533Mw7k2F5KMXeLnLH77ES0V4fKyn505SJJdkui7c2llwPDoEkYc
+        jLT71xCDth05EvFjj3O3B2FZznsoRtYlUw==
+X-Google-Smtp-Source: ABdhPJxjteEi7YryfGCT4sjW6oKYz1W4HfbCKEU8ZNQaI72C6U64V/sdJZ3UsCVNmr8G5kuVk03pG8stidL93w==
 X-Received: from wonchungspecialist.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:1440])
- (user=wonchung job=sendgmr) by 2002:a05:6a00:98d:: with SMTP id
- u13mr5481190pfg.83.1643335484634; Thu, 27 Jan 2022 18:04:44 -0800 (PST)
-Date:   Fri, 28 Jan 2022 02:04:39 +0000
-Message-Id: <20220128020439.2232698-1-wonchung@google.com>
+ (user=wonchung job=sendgmr) by 2002:aa7:8b13:: with SMTP id
+ f19mr6097173pfd.62.1643337478516; Thu, 27 Jan 2022 18:37:58 -0800 (PST)
+Date:   Fri, 28 Jan 2022 02:37:54 +0000
+Message-Id: <20220128023754.2235811-1-wonchung@google.com>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.35.0.rc0.227.g00780c9af4-goog
 Subject: [PATCH v2] ACPI: device_sysfs: Add sysfs support for _PLD
@@ -73,7 +73,7 @@ Signed-off-by: Won Chung <wonchung@google.com>
 
 diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentation/ABI/t=
 esting/sysfs-bus-acpi
-index 58abacf59b2a..7f4544c9d563 100644
+index 58abacf59b2a..3a9c6a4f4603 100644
 --- a/Documentation/ABI/testing/sysfs-bus-acpi
 +++ b/Documentation/ABI/testing/sysfs-bus-acpi
 @@ -96,3 +96,56 @@ Description:
@@ -83,7 +83,7 @@ index 58abacf59b2a..7f4544c9d563 100644
 +
 +What:		/sys/bus/acpi/devices/.../pld
 +Date:		Jan, 2022
-+Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
++Contact:	Won Chung <wonchung@google.com>
 +Description:
 +		This attribute contains the output of the device object's
 +		_PLD control method, if present. This information provides
