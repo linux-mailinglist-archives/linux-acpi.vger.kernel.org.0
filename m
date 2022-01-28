@@ -2,50 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F091C49EEFA
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 00:45:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C08BE49F0CB
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 03:04:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240404AbiA0XpD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 27 Jan 2022 18:45:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37972 "EHLO
+        id S1345195AbiA1CEp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 27 Jan 2022 21:04:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240092AbiA0XpD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jan 2022 18:45:03 -0500
-Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D327BC06173B
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 15:45:02 -0800 (PST)
-Received: by mail-pf1-x44a.google.com with SMTP id t69-20020a627848000000b004cb24c27d5aso2336403pfc.21
-        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 15:45:02 -0800 (PST)
+        with ESMTP id S1345187AbiA1CEp (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 27 Jan 2022 21:04:45 -0500
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C3E9C061714
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 18:04:45 -0800 (PST)
+Received: by mail-pj1-x104a.google.com with SMTP id q1-20020a17090a064100b001b4d85cbaf7so5318223pje.9
+        for <linux-acpi@vger.kernel.org>; Thu, 27 Jan 2022 18:04:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:message-id:mime-version:subject:from:to:cc
          :content-transfer-encoding;
         bh=FeJS7xf34VelIfEIwGcvGlgB4HQ0+TQ7oDm/G0cg3j4=;
-        b=ZOq4YdeHeJp+nBUwSZaiTie8j8HjrgMt7YjTbttkTx0EsBcRH05/3vSHOogqojwfNX
-         e7VyR9V8RH8HWavxyji2WfKjSXD1kHT43TTJQwKP+IPLMI5oOo89q9oN7Giy7LKU/Bwu
-         i49kkLtk+PkH7ImND9+X+pgdUVzXC7astzefA75x12SDBjVmZOUUHa+klAViaDcIdybS
-         BEMYFiC3UrEk5wgsWsycp95l+lxu1HvqqM8Vl4veG/XhxQjcmbR5s/GISp1EtGPg2nw6
-         +V+/PwNOwuMI8LvcLGyrAhcBfUQuI4lnWJjUTh61SSh2Zfn3UmFU31PnCbzHJpX+y709
-         JAaw==
+        b=V38I5IXvAVsd9JVD80yoRyJW6Pf10TuFm56SoAZze3hb1mvIvZfsJQGcUg4SK6TchS
+         KL8gkeAT1pgPue7tV7rqV+We0D8ZqGuwU9MfuGxLLunY8mG8pIr4MXjcIuE12SIBkay2
+         5CLoBVagvPrS7JgPNCknaZdLDu/MIXonVy6g7DbNAphd8Unlp8kekDLrv4izLdkSEGau
+         aDCQ836wGMRV7GTIx3y1TfmJSwjqkpRDmf/6UjZV7Vx/EEt/tlKFQGl/lpGNvRIDzcSd
+         F9/MPSCOySOixd1tjoOJbmtP8UtthuNdxupf1uoBCSIi5r+XoYdlnTPUmPgT56c7xVxn
+         ZW4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc
          :content-transfer-encoding;
         bh=FeJS7xf34VelIfEIwGcvGlgB4HQ0+TQ7oDm/G0cg3j4=;
-        b=ZmT/GSoUFNCI+BETLTZBqWxf0j04uxdUYATEpI7E+FOT3ePEgEFk/pUAKLgQJwwlNx
-         GX4/TzniXKmX2f4tU9Eb+uZyh8mLGaxaSEnC/yK9aAGzNDo3bUtx8AuN1y4mgzbXDgm6
-         YANnkMi9Nvj4MBqn+1+eVOskaT+o0nChpGPJKLvKQqJ9IHpCu1OFPSSCG2SkW/U4xmtB
-         EzJd40qGJxwNArFCzIxcaL5XKM6oDiGMc/48D0IYjING05Dr1y9AfWJo3tWotHza9GML
-         EAQmTUUsIRq693phb8a0mfyX1pM3g/+kQ+kfLEGkoJTAs4c1fbeP2aT6hS1Camd0752K
-         rIjw==
-X-Gm-Message-State: AOAM530cDtkUOxdyJP5zmgQfQvf5mdIaAVjN0xxHqWlLX/wKDJNDJdKh
-        9OhwcNeKAg49clWW+GHZAg4hKg2LcOtBww==
-X-Google-Smtp-Source: ABdhPJy0oHhxo6bK2nL/LJjHeg16TCCPU/5B3wvzJM4gADSdLyk3TCijwnkGzHKKyfPoZ5QOX8Iu4Bbs+jXZ7Q==
+        b=Bbgn/goIzTPQAaQfRy3mAbGGNyuWdb6xA7QNFQhQjXx+sYscGtaZIxUhAu2dHDx+3A
+         7WJRmaNyeYikZSHf9gjsn1gOjg46y7EPSkTKit7det3z3vgIue3Jd4e4ZcZQ0VCMZOMY
+         3yZkNB7jdFxybG4cz+xlTxTnN8YhzV6tRh/WH3Jg+NeOGIc7xpgDeciTZVFngKRiwU+F
+         WxPR5GM5Rz8DPuouwKllX8bRUFRExT6hIqvLyOUzFp7VdBCkzBqzTvR4tFKCLNdK2Il+
+         9eLgovLc8sJcAoGXsKKtlrlFPMmkVCewEkPE9somPSoBGfYCpqGD8Qkpv1U0xRov1IAF
+         dwag==
+X-Gm-Message-State: AOAM531ynws0BVjiOTbH2484tQ5Q+waibLDirjIjghcNTy8NI7ip8Y4p
+        PwgOf+/herFJCkbv3WoZzhWXchbXpBQO5A==
+X-Google-Smtp-Source: ABdhPJzGX6hXmrDqGw+VRA7LFG5A502XPfTa59uuk2IThV3XuJP6xGBU8E8RN/G7tSynUt3MxeiU7lcOj27UPQ==
 X-Received: from wonchungspecialist.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:1440])
- (user=wonchung job=sendgmr) by 2002:a17:90b:3841:: with SMTP id
- nl1mr6704792pjb.24.1643327101982; Thu, 27 Jan 2022 15:45:01 -0800 (PST)
-Date:   Thu, 27 Jan 2022 23:44:50 +0000
-Message-Id: <20220127234450.2218419-1-wonchung@google.com>
+ (user=wonchung job=sendgmr) by 2002:a05:6a00:98d:: with SMTP id
+ u13mr5481190pfg.83.1643335484634; Thu, 27 Jan 2022 18:04:44 -0800 (PST)
+Date:   Fri, 28 Jan 2022 02:04:39 +0000
+Message-Id: <20220128020439.2232698-1-wonchung@google.com>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.35.0.rc0.227.g00780c9af4-goog
 Subject: [PATCH v2] ACPI: device_sysfs: Add sysfs support for _PLD
@@ -56,7 +56,7 @@ To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Prashant Malani <pmalani@chromium.org>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Won Chung <wonchung@google.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
