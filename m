@@ -2,138 +2,122 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB0274A02E3
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 22:34:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE064A02FE
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jan 2022 22:38:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239137AbiA1Vey (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 28 Jan 2022 16:34:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56158 "EHLO
+        id S237121AbiA1ViW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 28 Jan 2022 16:38:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236333AbiA1Vex (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jan 2022 16:34:53 -0500
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B403C06173B
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Jan 2022 13:34:53 -0800 (PST)
-Received: by mail-pl1-x62b.google.com with SMTP id k17so7417210plk.0
-        for <linux-acpi@vger.kernel.org>; Fri, 28 Jan 2022 13:34:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Sy/Y8yEWHigDuQdOlOLkaoU18i+f7DaCjn+DCmpwyFI=;
-        b=hHmYyqdR9Q2JZUHGSGzbIgw7t9UNRsSBkuwDJ7oJU1ZVMuuh9q4jSdXlYRSA94DjTr
-         V7R7MKNh/igjsct2gL3Zz4mzs1JXx2SE1S34DTakruz/UO9vRM/Mq2zEY3oQOUAOs2e9
-         bRTNzUmQfMlcWPrDx+wmUaQdVwdzHb8AKtf3Na5NqORiHpssCKgffjD7uMWNsDC88jxj
-         zvYRWSooCK5VAGDOcoIwq4kDvd7skeQK9isV7CULeYCsenIm8ouoCSNj0lrxzJIIDcf4
-         XazTpdNAFlZ3tnnGjqh2ztDvByAn0dGNYTyHAaLt1VLG4+3BPhC0W2pGxqKHMEbx/SRD
-         WZqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Sy/Y8yEWHigDuQdOlOLkaoU18i+f7DaCjn+DCmpwyFI=;
-        b=y6oD44hYm1zv61m3eDGocy1ju13tMEI9TqRRyiv5esOVF8GiiqGHPvpXdq+YXKQcnQ
-         HZIp4go6oCq5SJjgBuHSTo5QP9LJL0RmxpNcFjh/7jyiF8dZJjxBAo5YMCnLtGGn6O/6
-         Pi5qP0J1X6y6dIs5z3aXhhjy2RZnZ2sS8YeX2MuJfEZwI8bnuh5gu8hOYc9xIJxrd/y3
-         c2SGtkHDGufZI72itbMEVnS2GwWkYCXGbjPOgZLptb3qRdsZKXUmffon+HSBg1jepxAk
-         CFH8JFzQwAUlq0VI2EoWByWrbYpMeuoCMJIcrAVcsZBX7scrcvet2B+vmJsAGy6MpPFk
-         vXvg==
-X-Gm-Message-State: AOAM531BlQWMvThiJpiHjwsd4LDkxrBPH+w/VIJtFDkdhyzR/aCYOjgu
-        y5Ixq8NXNsp6orhnq0r/sQIppftoV8et0/qm79VLEw==
-X-Google-Smtp-Source: ABdhPJwV3BKyuOcH+josgcsSnfOibgxLTtv/8nRGPI4s0kEVOgyMJ0vb3Sfq3qOJtImXOMdLHXVvRVouTbuj3d3aaZc=
-X-Received: by 2002:a17:90a:f485:: with SMTP id bx5mr21803979pjb.46.1643405692450;
- Fri, 28 Jan 2022 13:34:52 -0800 (PST)
+        with ESMTP id S1351565AbiA1Vhl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 28 Jan 2022 16:37:41 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7207AC061714;
+        Fri, 28 Jan 2022 13:37:36 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C07FAB826FE;
+        Fri, 28 Jan 2022 21:37:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C791BC340E7;
+        Fri, 28 Jan 2022 21:37:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643405853;
+        bh=R+Q6eh/Eo5YhcURqSA1GIHIoTBiBBkzzXbRVGgnkcds=;
+        h=Date:From:To:Cc:Subject:From;
+        b=Ko9eqru+xslWUM6l4TVKkq0H8vKPm1/TJYqFh34hvlXP1CJkLLGJ2DqiiPTbdZbhR
+         LvNfWwqcCtWyqQr4ep1RYxE0mTR8qI2Re99D9w3D5RWIIjLSkvX3RHgHCOtZomYUaM
+         thkNkCCWZ4+I806oxLwXIAL+c7OqF8TeGU3DuQRBJQ76W2gYID/Fl0Fkgvtj1F89k0
+         Z/WlXGtIfrEsXnWEUZcvlqVvLVU0ES3la/JzxAs9uYjurqvSvPoyxDs6LhPT4JCATv
+         xhpjWF6tD3jRWMgv0vjTPN3nPpEhon7P0YskGsMaAlK9AX7M1Gx4sgtJY5u15AjuP4
+         GF2XK7CNw4vxw==
+Date:   Fri, 28 Jan 2022 22:37:29 +0100
+From:   Wolfram Sang <wsa@kernel.org>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
+Subject: [PULL REQUEST] immutable branch "i2c-alert-for-acpi-20220128"
+Message-ID: <YfRiGR3AT8tzyweG@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org
 MIME-Version: 1.0
-References: <20220120000409.2706549-1-rajatja@google.com> <20220121214117.GA1154852@bhelgaas>
- <Ye5GvQbFKo+CFtRb@lahna> <Ye/X7E2dKb+zem34@lahna> <Ye/btvA1rLB2rp02@kroah.com>
- <Ye/zTHR5aCG58z87@lahna> <CAJZ5v0gitdeEAxcgSoB1=VHA9FnRdCtmUqA_cN_f1a2yFRDghQ@mail.gmail.com>
- <CACK8Z6H2DLTJgxgS3pcvfOh=5S8cxEMKvwEPfB9zoVf1g2H_UQ@mail.gmail.com> <YfOf2X7Snm7cvDRV@lahna>
-In-Reply-To: <YfOf2X7Snm7cvDRV@lahna>
-From:   Rajat Jain <rajatja@google.com>
-Date:   Fri, 28 Jan 2022 13:34:16 -0800
-Message-ID: <CACK8Z6FMgc5UQY-ZGB9sKYR5Wt6L6huTnEKZaFyVRAmDmQt9XQ@mail.gmail.com>
-Subject: Re: [PATCH] PCI: ACPI: Allow internal devices to be marked as untrusted
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Dmitry Torokhov <dtor@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Pavel Machek <pavel@denx.de>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="0CTTa1tr2HhYkIae"
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mika, All,
 
-On Thu, Jan 27, 2022 at 11:49 PM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> Hi,
->
-> On Thu, Jan 27, 2022 at 02:26:07PM -0800, Rajat Jain wrote:
-> > Hello Rafael, Bjorn, Mika, Dmitry, Greg,
-> >
-> > Thanks a lot for your comments.
-> >
-> > On Tue, Jan 25, 2022 at 6:45 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > >
-> > > On Tue, Jan 25, 2022 at 1:55 PM Mika Westerberg
-> > > <mika.westerberg@linux.intel.com> wrote:
-> > > >
-> > > > On Tue, Jan 25, 2022 at 12:15:02PM +0100, Greg Kroah-Hartman wrote:
-> > > > > On Tue, Jan 25, 2022 at 12:58:52PM +0200, Mika Westerberg wrote:
-> > > > > > On Mon, Jan 24, 2022 at 08:27:17AM +0200, Mika Westerberg wrote:
-> > > > > > > > > This patch introduces a new "UntrustedDevice" property that can be used
-> > > > > > > > > by the firmware to mark any device as untrusted.
-> > > > > > >
-> > > > > > > I think this new property should be documented somewhere too (also
-> > > > > > > explain when to use it instead of ExternalFacingPort). If not in the
-> > > > > > > next ACPI spec or some supplemental doc then perhaps in the DT bindings
-> > > > > > > under Documentation/devicetree/bindings.
-> > > > > >
-> > > > > > Actually Microsoft has similar already:
-> > > > > >
-> > > > > > https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-internal-pcie-ports-accessible-to-users-and-requiring-dma-protection
-> > > > > >
-> > > > > > I think we should use that too here.
-> >
-> > But because this property also applies to a root port (only), it only
-> > helps if the device is downstream a PCIe root port. In our case, we
-> > have an internal (wifi) device 00:14.3 (sits on the internal PCI bus
-> > 0), so cannot use this.
->
-> Right. I wonder if we can expand it to cover all internal devices, not
-> just PCIe root ports? We anyways need to support that property so does
-> not make much sense to me to invent yet another that does pretty much
-> the same thing.
+--0CTTa1tr2HhYkIae
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I'm open to doing so if the others also feel the same way. IMHO
-though, the semantics of ACPI "DmaProperty" differ from the semantics
-of the property I'm proposing here.
+Rafael,
 
-The current (documented) semantics (of "DmaProperty"): *This device
-(root port) is trusted*, but any devices downstream are not to be
-trusted.
+here is an immutable branch containing the patches to support SMBus
+Alert with ACPI. Maybe you need it.
 
-What I need and am proposing (new "UntrustedDevice"): *This device as
-well as any downstream devices* are untrusted.
+Thanks,
 
-Note that there may be firmware implementing "DmaProperty" already out
-there (for windows), and if we decide to use it for my purposes, then
-there shall be a discrepancy in how Linux uses that property vs
-Windows. Is that acceptable?
+   Wolfram
 
-Thanks & Best Regards,
 
-Rajat
+The following changes since commit e783362eb54cd99b2cac8b3a9aeac942e6f6ac07:
+
+  Linux 5.17-rc1 (2022-01-23 10:12:53 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/alert-for-acpi
+
+for you to fetch changes up to a263a84088f689bf0c1552a510b25d0bcc45fcae:
+
+  i2c: smbus: Use device_*() functions instead of of_*() (2022-01-28 21:56:34 +0100)
+
+----------------------------------------------------------------
+Akhil R (3):
+      device property: Add fwnode_irq_get_byname
+      docs: firmware-guide: ACPI: Add named interrupt doc
+      i2c: smbus: Use device_*() functions instead of of_*()
+
+
+with much appreciated quality assurance from
+----------------------------------------------------------------
+Andy Shevchenko (3):
+      (Rev.) i2c: smbus: Use device_*() functions instead of of_*()
+      (Rev.) docs: firmware-guide: ACPI: Add named interrupt doc
+      (Rev.) device property: Add fwnode_irq_get_byname
+
+ Documentation/firmware-guide/acpi/enumeration.rst | 39 +++++++++++++++++++++++
+ drivers/base/property.c                           | 29 +++++++++++++++++
+ drivers/i2c/i2c-core-base.c                       |  2 +-
+ drivers/i2c/i2c-core-smbus.c                      | 11 ++++---
+ drivers/i2c/i2c-smbus.c                           |  5 +--
+ include/linux/i2c-smbus.h                         |  6 ++--
+ include/linux/property.h                          |  1 +
+ 7 files changed, 82 insertions(+), 11 deletions(-)
+
+--0CTTa1tr2HhYkIae
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmH0YhUACgkQFA3kzBSg
+KbYw1RAAjUV+Pj4oKA2AvFU7FdD5ZjkB9+GB5uQmdHkTRGF30g43QyXyIHfmlMFS
+4KQrKya4W6JDnOIPUn70n+kMKLIX5+Sgt7D10Y2BHWTL/1czVtR0NvWCvbjH82RT
++pcJZBW031gUuBBo77QU0/Qr9lJM0rLHS1qElWPKDUN93wSbZ282OCbh+DptxpGT
+L9sDi2n6tScs42P/WG/nMYw2vy5+Tf8w2q3kW1f2J8yuk33n/o5ZRnLgwtCgLHFi
+z9E29uJdIhGU5ONKgd6/3jAMa6zmzwPvEMLL0ZZ9IuDvE0oL2KmLzC6hcpXVc3lL
+k1E4eSCMKUS4dgolQfc7VAkFnvp+M+2dX7LeO9zUii5o+R96HT/aykaOgn+sEvo6
+HSLaAueEunY62khzup5uVwD0GQjv0tSmQhhEAbVPV/GBpl/n7ehtqYlmjnzY8LNM
+p/6XzLPof1uQs8C3f8o5nnGuEl9PU/IrcGAgCnbm0Y5eWw2fqMlQPgqvr3nLdj2R
+mhuu6NDorYezgUGMqqkCbqVsqRvMjWZkhT+wOkKh/LY1048X02L9LzhtVAm/zSc/
+ZqFqnQbwFbke2TgbqozLZaIk20jLPKWwxDGMIeKx6/8Vcht+z31UnwoR3uD0cW5m
+VQ+N1CJRKdgfqgFyGGDnBFKJLXTbovbhrRA75JSJiQ0Es6mlwcY=
+=3pxa
+-----END PGP SIGNATURE-----
+
+--0CTTa1tr2HhYkIae--
