@@ -2,156 +2,194 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A97E24A37BB
-	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jan 2022 17:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE6704A390B
+	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jan 2022 21:46:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347535AbiA3Ql3 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 30 Jan 2022 11:41:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56206 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230237AbiA3Ql3 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 30 Jan 2022 11:41:29 -0500
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9CF6C061714;
-        Sun, 30 Jan 2022 08:41:28 -0800 (PST)
-Received: by mail-oi1-x234.google.com with SMTP id b186so16082508oif.1;
-        Sun, 30 Jan 2022 08:41:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=GSJQs/IyzQLIz6D/JkwR/pMK0+5qH35ZqrOipwQfRbE=;
-        b=BNEG3sMvVw+5dRyH2NUqiDzBbGLUCbz+EL0qAW1kPVqP2p+3NxMf4dV0gvxGjOG+Dw
-         viiqO1czFsd/KNQACN89OA6E9BzoE79XC+6uD5hTL9VQKetlY6i1DTc3LtQkwsXBHIOq
-         Djr60foYoV32hsZWbjmtJJMy76hS/Mxvsz/+9HAuwJ9z1zb7Vqd60qbK9ix1OBs0P/Pn
-         f0uh0VrunvIQhgR/MhbxTvojwRTsK7UGwn447LDIhfrGCq3mh9CIZ9PQErz0ndNCgt+w
-         +YkECkeZ/LN2hoICubEuk46s0fxXw+VloIjeRBCrCyHhPPT9jFlS5WRTS4131qEyGZWQ
-         hKew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=GSJQs/IyzQLIz6D/JkwR/pMK0+5qH35ZqrOipwQfRbE=;
-        b=InvS2vx7AjFB2yUAZe+Xt9S1iTzy2DFodCPNQP65iomU8h7YGYPgTe74DGnRrVI46M
-         sH+YwysHFRqBYqvv5edPTX8QYd0MqOpyLp73YLGlDd6wjU2QYIOq6NWopqaB52Pj063Z
-         UGDcggRZvoMBY7YT2Hf0PNxi9SPN3q2IpuacTeytxreY/UoNqs9YXT5pFqEVgar+V+tP
-         WxlzRpZrzfCC5b8JJsYkvoGmhCwY1dFCXpJxVbpkvQqfMESjdVb42tdFLP3PwfElSzce
-         qfTkenHrieYvxmi+dTGdrrrZ8VDzBxcjyv1MfSO9dCtQ5yMmjHAdqN6oGsNmt32TkP4P
-         MO9w==
-X-Gm-Message-State: AOAM531GiVIjy4NwpxEyebYVif2iUxum92VY+zwvQbsx6s0PyaIvxiqb
-        aJmYxrTjneqCnihY5f+A0ak=
-X-Google-Smtp-Source: ABdhPJzGBiFaEait5pJ4MfY+hwG2HCLBSiW7il/ZXS2ZQbREAEcqeU5cYnn2KTp/XzGwj8WSg7506Q==
-X-Received: by 2002:aca:ab0d:: with SMTP id u13mr16126504oie.138.1643560888155;
-        Sun, 30 Jan 2022 08:41:28 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j11sm14457177otj.30.2022.01.30.08.41.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Jan 2022 08:41:27 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sun, 30 Jan 2022 08:41:26 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/5] acpi: Store CRC-32 hash of the _PLD in struct
- acpi_device
-Message-ID: <20220130164126.GA2942650@roeck-us.net>
-References: <20211223081620.45479-1-heikki.krogerus@linux.intel.com>
- <20211223081620.45479-3-heikki.krogerus@linux.intel.com>
+        id S1356156AbiA3UqJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 30 Jan 2022 15:46:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:45467 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1356154AbiA3UqJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>);
+        Sun, 30 Jan 2022 15:46:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1643575568;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=bW8DdTVaBX9h2DB7v+Ft01LfwylVxKpkKnPwWem0oPo=;
+        b=cOHmj4pZZ5stbqnz8+9yATOnYXzETHNM8ob6CPBiJYnHv+uGn7/hyA/VKc4T9kpn7nbDc5
+        FNbklQDNMXxTXY8IIjHljarcSsQnFm/c0HkUcMguMncmYmxopDdWmFjAyLSIFA3oXQBdxG
+        N9SEIvIJ7V5Goa2/6W2Qv3PGLzYJ/yk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-607-omt38AfqMnKZU9BdfYeq2A-1; Sun, 30 Jan 2022 15:46:04 -0500
+X-MC-Unique: omt38AfqMnKZU9BdfYeq2A-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 268B31083F60;
+        Sun, 30 Jan 2022 20:46:02 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.192.60])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3048346975;
+        Sun, 30 Jan 2022 20:45:58 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mark Gross <markgross@kernel.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
+        Tsuchiya Yuto <kitakar@gmail.com>,
+        Fabio Aiuto <fabioaiuto83@gmail.com>,
+        platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
+Subject: [PATCH v4 resend 00/20] power-suppy/i2c/extcon: Fix charger setup on Xiaomi Mi Pad 2 and Lenovo Yogabook
+Date:   Sun, 30 Jan 2022 21:45:37 +0100
+Message-Id: <20220130204557.15662-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211223081620.45479-3-heikki.krogerus@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Dec 23, 2021 at 11:16:17AM +0300, Heikki Krogerus wrote:
-> Storing CRC-32 hash of the Physical Location of Device
-> object (_PLD) with devices that have it. The hash is stored
-> to a new struct acpi_device member "pld_crc".
-> 
-> The hash makes it easier to find devices that share a
-> location, as there is no need to evaluate the entire object
-> every time. Knowledge about devices that share a location
-> can be used in device drivers that need to know the
-> connections to other components inside a system. USB3 ports
-> will for example always share their location with a USB2
-> port.
-> 
-> Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Hi Sebastian,
 
-Building ia64:tinyconfig ... failed
+Here is a resend of v4 of my patch series to fix the charger setup on
+Xiaomi Mi Pad 2 and Lenovo Yogabook devices, as well as fix host/device
+mode switching.
 
-ia64-linux-ld: drivers/acpi/scan.o: in function `__acpi_device_add':
-scan.c:(.text+0x27e2): undefined reference to `crc32_le'
+I'm resending this because this has not made it into 5.17, this resend has
+been rebased on top of 5.17-rc1.
 
-ACPI now depends on CRC32.
+Since patches 14-20 rely on the power-supply changes from patch 1-13 and
+since they all touch files which generally do not see much changes, the
+intention is for this entire series to be merged through your (Sebastian's)
+linux-power-supply tree. Patches 14-20 all have ackes from the relevant
+subsystem maintainers for merging them through the linux-power-supply tree.
 
-#regzbot introduced: 882c982dada4d5
+###
 
-Guenter
+For more details on this series, here is some info from the v2
+cover-letter:
 
-> ---
->  drivers/acpi/scan.c     | 16 ++++++++++++++++
->  include/acpi/acpi_bus.h |  1 +
->  2 files changed, 17 insertions(+)
-> 
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 7ff55a197a583..113414c46b713 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -19,6 +19,7 @@
->  #include <linux/dma-map-ops.h>
->  #include <linux/platform_data/x86/apple.h>
->  #include <linux/pgtable.h>
-> +#include <linux/crc32.h>
->  
->  #include "internal.h"
->  
-> @@ -667,6 +668,19 @@ static int acpi_tie_acpi_dev(struct acpi_device *adev)
->  	return 0;
->  }
->  
-> +static void acpi_store_pld_crc(struct acpi_device *adev)
-> +{
-> +	struct acpi_pld_info *pld;
-> +	acpi_status status;
-> +
-> +	status = acpi_get_physical_device_location(adev->handle, &pld);
-> +	if (ACPI_FAILURE(status))
-> +		return;
-> +
-> +	adev->pld_crc = crc32(~0, pld, sizeof(*pld));
-> +	ACPI_FREE(pld);
-> +}
-> +
->  static int __acpi_device_add(struct acpi_device *device,
->  			     void (*release)(struct device *))
->  {
-> @@ -725,6 +739,8 @@ static int __acpi_device_add(struct acpi_device *device,
->  	if (device->wakeup.flags.valid)
->  		list_add_tail(&device->wakeup_list, &acpi_wakeup_device_list);
->  
-> +	acpi_store_pld_crc(device);
-> +
->  	mutex_unlock(&acpi_device_lock);
->  
->  	if (device->parent)
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index 8e87ead2af341..f8c945418df23 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -360,6 +360,7 @@ struct acpi_gpio_mapping;
->  
->  /* Device */
->  struct acpi_device {
-> +	u32 pld_crc;
->  	int device_type;
->  	acpi_handle handle;		/* no handle for fixed hardware */
->  	struct fwnode_handle fwnode;
+So far almost all the kernel code surrounding the Cherry Trail Whiskey Cove
+PMIC has been developed on the GPD win / pocket devices and it has various
+assumption based on that. In the mean time I've learned (and gotten access
+to) about 2 more designs and none of the 3 now known designs use a single
+standard setup for the charger, fuel-gauge and other chips surrounding the
+PMIC / charging+data USB port:
+
+1. The GPD Win and GPD Pocket mini-laptops, these are really 2 models
+but the Pocket re-uses the GPD Win's design in a different housing:
+
+The WC PMIC is connected to a TI BQ24292i charger, paired with
+a Maxim MAX17047 fuelgauge + a FUSB302 USB Type-C Controller +
+a PI3USB30532 USB switch, for a fully functional Type-C port.
+
+2. The Xiaomi Mi Pad 2:
+
+The WC PMIC is connected to a TI BQ25890 charger, paired with
+a TI BQ27520 fuelgauge, using the TI BQ25890 for BC1.2 charger type
+detection, for a USB-2 only Type-C port without PD.
+
+3. The Lenovo Yoga Book YB1-X90 / Lenovo Yoga Book YB1-X91 series:
+
+The WC PMIC is connected to a TI BQ25892 charger, paired with
+a TI BQ27542 fuelgauge, using the WC PMIC for BC1.2 charger type
+detection and using the BQ25892's Mediatek Pump Express+ (1.0)
+
+
+Unlike what is normal on X86 this diversity in designs is not handled /
+abstracted away by the ACPI tables.
+
+This series takes care of making sure that charging and device/host mode
+switching also works on the Xiaomi Mi Pad 2 and the Lenovo Yogabook.
+
+Patches  1-13: Prepare the bq25890 power_supply driver to fully support
+               the Mi Pad 2 and the Yogabook. Note this includes a new
+               version of 2 bq25890 patches send earlier by Yauhen Kharuzhy
+Patch 14:      Adds the intel_cht_wc_get_model() helper
+Patch 15:      Uses this intel_cht_wc_get_model() value to instantiate an
+               i2c-client with the right type and properties for the charger
+               IC used on the board (instead of harcoding the GPD values)
+Patches 16-20: Modify the extcon code to provide charger-detection results
+               to the charger driver and to take care of the Vbus boost
+               regulator control (for host-mode) and device/host mode
+               switching
+
+I've tried to keep the power_supply patches as generic as possible while
+focussing some of the special handling these boards need in the
+WC PMIC MFD and cell drivers, which will only get loaded on these boards.
+
+Regards,
+
+Hans
+
+p.s.
+
+Sebastian, I also have another power-supply series pending
+for merging into -next:
+https://lore.kernel.org/linux-pm/20220106110608.66231-1-hdegoede@redhat.com/
+
+
+Hans de Goede (17):
+  power: supply: core: Refactor
+    power_supply_set_input_current_limit_from_supplier()
+  power: supply: bq25890: Add a bq25890_rw_init_data() helper
+  power: supply: bq25890: Add support to skip reset at probe() /
+    remove()
+  power: supply: bq25890: Add support to read back the settings from the
+    chip
+  power: supply: bq25890: Enable charging on boards where we skip reset
+  power: supply: bq25890: Drop dev->platform_data == NULL check
+  power: supply: bq25890: Add bq25890_set_otg_cfg() helper
+  power: supply: bq25890: Add support for registering the Vbus boost
+    converter as a regulator
+  power: supply: bq25890: On the bq25892 set the IINLIM based on
+    external charger detection
+  power: supply: bq25890: Use the devm_regmap_field_bulk_alloc() helper
+  mfd: intel_soc_pmic_chtwc: Add cht_wc_model data to struct
+    intel_soc_pmic
+  i2c: cht-wc: Make charger i2c-client instantiation board/device-model
+    specific
+  extcon: intel-cht-wc: Use new cht_wc_model intel_soc_pmic field
+  extcon: intel-cht-wc: Support devs with Micro-B / USB-2 only Type-C
+    connectors
+  extcon: intel-cht-wc: Refactor cht_wc_extcon_get_charger()
+  extcon: intel-cht-wc: Add support for registering a power_supply
+    class-device
+  extcon: intel-cht-wc: Report RID_A for ACA adapters
+
+Yauhen Kharuzhy (3):
+  power: supply: bq25890: Rename IILIM field to IINLIM
+  power: supply: bq25890: Reduce reported CONSTANT_CHARGE_CURRENT_MAX
+    for low temperatures
+  power: supply: bq25890: Support higher charging voltages through Pump
+    Express+ protocol
+
+ drivers/extcon/Kconfig                   |   2 +
+ drivers/extcon/extcon-intel-cht-wc.c     | 240 ++++++++++++--
+ drivers/i2c/busses/i2c-cht-wc.c          | 120 +++++--
+ drivers/mfd/intel_soc_pmic_chtwc.c       |  40 +++
+ drivers/power/supply/bq24190_charger.c   |  10 +-
+ drivers/power/supply/bq25890_charger.c   | 396 ++++++++++++++++++-----
+ drivers/power/supply/power_supply_core.c |  57 ++--
+ include/linux/mfd/intel_soc_pmic.h       |   8 +
+ include/linux/power/bq25890_charger.h    |  15 +
+ include/linux/power_supply.h             |   5 +-
+ 10 files changed, 742 insertions(+), 151 deletions(-)
+ create mode 100644 include/linux/power/bq25890_charger.h
+
+-- 
+2.33.1
+
