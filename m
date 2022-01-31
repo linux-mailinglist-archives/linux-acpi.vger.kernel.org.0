@@ -2,177 +2,145 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2E1A4A3E3E
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 08:33:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9026A4A3E40
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 08:36:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348080AbiAaHdh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Jan 2022 02:33:37 -0500
-Received: from mga01.intel.com ([192.55.52.88]:14643 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1347972AbiAaHdd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 31 Jan 2022 02:33:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643614413; x=1675150413;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=rWUUeMylw7j7eadB8PUS30HUTqec98BR59N33yGXgSM=;
-  b=hWZIwvDkVgjy/4FHaDWlj1ybIZoikOuTf+vhib0kviuBw67QrwULNZoD
-   SFn3c2FTAIgkjbZhxk1ZHdX6p5zNQGUwaV3FLEMRp4CF/buogOxHzUQ7W
-   nAuK8vDUYVpOneBE0xImosUv3kIgJInDNT1n/H8W5LudztYg1k8SpSIor
-   C2TzuqmIqWeD5G0TyE1yrE6OSYSMDHOxgL+BX3vqSdf4ysNHAiIoaknuO
-   lYl1Du080CBzQyIhA5r8Xuh8fjvH36VkJ9O2aUB+3WEQGOijSI8ETMmNp
-   XNjOs4AB1h/wjEKReuawntqu1CSEw2I2O6ezD572EPiY4k5djX27zbPjY
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10243"; a="271881420"
-X-IronPort-AV: E=Sophos;i="5.88,330,1635231600"; 
-   d="scan'208";a="271881420"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2022 23:33:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,330,1635231600"; 
-   d="scan'208";a="675654496"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 30 Jan 2022 23:33:26 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 31 Jan 2022 09:33:25 +0200
-Date:   Mon, 31 Jan 2022 09:33:25 +0200
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Won Chung <wonchung@google.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ACPI: device_sysfs: Add sysfs support for _PLD
-Message-ID: <YfeQxYNzWltRQ7mq@kuha.fi.intel.com>
-References: <20220128180832.2329149-1-wonchung@google.com>
+        id S1348028AbiAaHgw (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Jan 2022 02:36:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53216 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347972AbiAaHgv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jan 2022 02:36:51 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6233C061714;
+        Sun, 30 Jan 2022 23:36:50 -0800 (PST)
+Received: from ip4d173d02.dynamic.kabel-deutschland.de ([77.23.61.2] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1nERF0-0003mt-Ng; Mon, 31 Jan 2022 08:36:47 +0100
+Message-ID: <95bf594b-250c-5a6d-aa3b-d428dbf9c203@leemhuis.info>
+Date:   Mon, 31 Jan 2022 08:36:46 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Content-Language: en-BS
+To:     Paul Menzel <pmenzel@molgen.mpg.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, linux-pci@vger.kernel.org,
+        regressions@lists.linux.dev
+References: <b177cb21-aa01-2408-9b26-164c028b6593@molgen.mpg.de>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: Re: 100 ms boot time increase regression in
+ acpi_init()/acpi_scan_bus()
+In-Reply-To: <b177cb21-aa01-2408-9b26-164c028b6593@molgen.mpg.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220128180832.2329149-1-wonchung@google.com>
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1643614610;7995cc82;
+X-HE-SMSGID: 1nERF0-0003mt-Ng
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Jan 28, 2022 at 06:08:32PM +0000, Won Chung wrote:
-> When ACPI table includes _PLD fields for a device, create a new file
-> (pld) in sysfs to share _PLD fields.
+Hi, this is your Linux kernel regression tracker speaking.
+
+On 10.01.22 12:29, Paul Menzel wrote:
+> #regzbot introduced: v5.13..v5.14-rc1
+> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=215419
+
+Thx for getting regzbot involved!
+
+Nothing happened since you reported the issue three weeks ago; sure,
+it's not a pressing issue, but I wonder what the status is.
+
+@pm people: isn't this at least worth a reply?
+@paul: did you perform any additional checks?
+
+Or did anything happen somewhere else and I just missed it?
+
+#regzbot poke
+
+Ciao, Thorsten (wearing his 'Linux kernel regression tracker' hat)
+
+P.S.: As a Linux kernel regression tracker I'm getting a lot of reports
+on my table. I can only look briefly into most of them. Unfortunately
+therefore I sometimes will get things wrong or miss something important.
+I hope that's not the case here; if you think it is, don't hesitate to
+tell me about it in a public reply, that's in everyone's interest.
+
+BTW, I have no personal interest in this issue, which is tracked using
+regzbot, my Linux kernel regression tracking bot
+(https://linux-regtracking.leemhuis.info/regzbot/). I'm only posting
+this mail to get things rolling again and hence don't need to be CC on
+all further activities wrt to this regression.
+
+> On the Intel T4500 laptop Acer TravelMate 5735Z with Debian
+> sid/unstable, there is a 100 ms introduced between Linux 5.10.46 and
+> 5.13.9, and is still present in Linux 5.15.5.
 > 
-> Signed-off-by: Won Chung <wonchung@google.com>
-> ---
->  Documentation/ABI/testing/sysfs-bus-acpi | 53 ++++++++++++++++++++++++
->  drivers/acpi/device_sysfs.c              | 42 +++++++++++++++++++
->  2 files changed, 95 insertions(+)
+>     [    0.000000] microcode: microcode updated early to revision 0xa0b,
+> date = 2010-09-28
+>     [    0.000000] Linux version 5.15.0-2-amd64
+> (debian-kernel@lists.debian.org) (gcc-11 (Debian 11.2.0-13) 11.2.0, GNU
+> ld (GNU Binutils for Debian) 2.37) #1 SMP Debian 5.15.5-2 (2021-12-18)
+>     [    0.000000] Command line: BOOT_IMAGE=/boot/vmlinuz-5.15.0-2-amd64
+> root=UUID=e17cec4f-d2b8-4cc3-bd39-39a10ed422f4 ro quiet noisapnp
+> cryptomgr.notests random.trust_cpu=on initcall_debug log_buf_len=4M
+>     […]
+>     [    0.262243] calling  acpi_init+0x0/0x487 @ 1
+>     […]
+>     [    0.281655] ACPI: Enabled 15 GPEs in block 00 to 3F
+>     [    0.394855] ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
+>     […]
+>     [    0.570908] initcall acpi_init+0x0/0x487 returned 0 after 300781
+> usecs
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentation/ABI/testing/sysfs-bus-acpi
-> index 58abacf59b2a..3a9c6a4f4603 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-acpi
-> +++ b/Documentation/ABI/testing/sysfs-bus-acpi
-> @@ -96,3 +96,56 @@ Description:
->  		hardware, if the _HRV control method is present.  It is mostly
->  		useful for non-PCI devices because lspci can list the hardware
->  		version for PCI devices.
-> +
-> +What:		/sys/bus/acpi/devices/.../pld
-> +Date:		Jan, 2022
-> +Contact:	Won Chung <wonchung@google.com>
-> +Description:
-> +		This attribute contains the output of the device object's
-> +		_PLD control method, if present. This information provides
-> +		details on physical location of a port.
-> +
-> +		Description on each _PLD field from ACPI specification:
-> +
-> +		===============	============================================
-> +		GROUP_TOKEN	Unique numerical value identifying a group.
-> +		GROUP_POSITION	Identifies this device connection point’s
-> +				position in the group.
-> +		USER_VISIBLE	Set if the device connection point can be
-> +				seen by the user without disassembly.
-> +		DOCK		Set if the device connection point resides
-> +				in a docking station or port replicator.
-> +		BAY		Set if describing a device in a bay or if
-> +				device connection point is a bay.
-> +		LID		Set if this device connection point resides
-> +				on the lid of laptop system.
-> +		PANEL		Describes which panel surface of the system’s
-> +				housing the device connection point resides on:
-> +				0 - Top
-> +				1 - Bottom
-> +				2 - Left
-> +				3 - Right
-> +				4 - Front
-> +				5 - Back
-> +				6 - Unknown (Vertical Position and Horizontal
-> +				Position will be ignored)
-> +		HORIZONTAL_	0 - Left
-> +		POSITION	1 - Center
-> +				2 - Right
-> +		VERTICAL_	0 - Upper
-> +		POSITION	1 - Center
-> +				2 - Lower
-> +		SHAPE		Describes the shape of the device connection
-> +				point.
-> +				0 - Round
-> +				1 - Oval
-> +				2 - Square
-> +				3 - Vertical Rectangle
-> +				4 - Horizontal Rectangle
-> +				5 - Vertical Trapezoid
-> +				6 - Horizontal Trapezoid
-> +				7 - Unknown - Shape rendered as a Rectangle
-> +				with dotted lines
-> +				8 - Chamfered
-> +				15:9 - Reserved
-> +		===============	===============================================
-> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-> index d5d6403ba07b..8d4df5fb1c45 100644
-> --- a/drivers/acpi/device_sysfs.c
-> +++ b/drivers/acpi/device_sysfs.c
-> @@ -509,6 +509,40 @@ static ssize_t status_show(struct device *dev, struct device_attribute *attr,
->  }
->  static DEVICE_ATTR_RO(status);
->  
-> +static ssize_t pld_show(struct device *dev, struct device_attribute *attr,
-> +			char *buf)
-> +{
-> +	struct acpi_device *acpi_dev = to_acpi_device(dev);
-> +	acpi_status status;
-> +	struct acpi_pld_info *pld;
-> +
-> +	status = acpi_get_physical_device_location(acpi_dev->handle, &pld);
-> +	if (ACPI_FAILURE(status))
-> +		return -ENODEV;
-> +
-> +	return sprintf(buf, "GROUP_TOKEN=%u\n"
-> +		"GROUP_POSITION=%u\n"
-> +		"USER_VISIBLE=%u\n"
-> +		"DOCK=%u\n"
-> +		"BAY=%u\n"
-> +		"LID=%u\n"
-> +		"PANEL=%u\n"
-> +		"HORIZONTAL_POSITION=%u\n"
-> +		"VERTICAL_POSITION=%u\n"
-> +		"SHAPE=%u\n",
-> +		pld->group_token,
-> +		pld->group_position,
-> +		pld->user_visible,
-> +		pld->dock,
-> +		pld->bay,
-> +		pld->lid,
-> +		pld->panel,
-> +		pld->horizontal_position,
-> +		pld->vertical_position,
-> +		pld->shape);
-> +}
-> +static DEVICE_ATTR_RO(pld);
+> I attached all the log files to the Kernel.org Bugzilla bug report
+> #215419 [1].
+> 
+> Unfortunately, I am unable to bisect the issue, as it’s not my machine,
+> and I do not have a lot of access to it.
+> 
+> Using ftrace, unfortunately, I didn’t save all of them, I think the path is
+> 
+>     acpi_init() → acpi_scan_init() → acpi_bus_scan(ACPI_ROOT_OBJECT)
+> 
+> But this path hasn’t changed as far as I can see. Anyway, from that
+> path, somehow
+> 
+>     acpi_bus_check_add_1() → acpi_bus_check_add() → … →
+> acpi_bus_check_add() → acpi_add_single_object() → acpi_bus_get_status()
+> 
+> is called, and the `acpi_bus_get_status()` call takes 100 ms on the
+> system – also the cause for bug #208705 [2] –, but that code path wasn’t
+> taken before.
+> 
+> Do you know from the top of your head, what changed? I am going to have
+> short access to the system every two weeks or so, so debugging is
+> unfortunately quite hard.
+> 
+> What is already on my to-do list:
+> 
+> 1.  Use dynamic debug `drivers/acpi/scan.c`
+> 2.  Trace older Linux kernel (5.10.46) to see the differences
+> 3.  Booting some GNU/Linux system to test 5.11 (Ubuntu 20.10) and 5.12
+> 4.  Unrelated to the regression, but trace `acpi_bus_get_status()` to
+> understand the 100 ms delay to solve bug #208705 [2]
+> 
+> 
+> Kind regards,
+> 
+> Paul
+> 
+> 
+> PS: Do you know of GNU/Linux live systems that are available for all
+> Linux kernel releases and have an initrd, that just stores/uploads the
+> output of `dmesg`?
+> 
+> 
+> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=215419
+>      "100 ms regression in boottime before `ACPI: PCI Root Bridge [PCI0]"
+> [2]: https://bugzilla.kernel.org/show_bug.cgi?id=208705
+>      "boot performance: 100 ms delay in PCI initialization - Acer
+> TravelMate 5735Z"
+> 
 
-Why not have a pld group (directory) and a separate attribute file for
-each field?
-
-
-thanks,
-
--- 
-heikki
