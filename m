@@ -2,25 +2,38 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9E6D4A4C41
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 17:37:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 801DC4A4C70
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 17:49:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380524AbiAaQhQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Jan 2022 11:37:16 -0500
-Received: from marcansoft.com ([212.63.210.85]:42382 "EHLO mail.marcansoft.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1376682AbiAaQhP (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 31 Jan 2022 11:37:15 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        id S1380454AbiAaQtd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Jan 2022 11:49:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41166 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1380616AbiAaQtX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jan 2022 11:49:23 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47B63C061714;
+        Mon, 31 Jan 2022 08:49:23 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 57D0341982;
-        Mon, 31 Jan 2022 16:37:06 +0000 (UTC)
-Subject: Re: [PATCH v2 27/35] brcmfmac: pcie: Add IDs/properties for BCM4387
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA99060B58;
+        Mon, 31 Jan 2022 16:49:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132DCC340E8;
+        Mon, 31 Jan 2022 16:49:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643647762;
+        bh=jSlR0Ku6H+5Q0glrHsE2hxMaoDdNYeF1Plc8PvJ9Jr0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=HEX1WXp8CNmeczzTfusuIZoaGOayKsUt+uKdCfEHP1G3UsjfmqaEygGMQSStRtIJ7
+         ROVShGUIrG7cx9al6RxoXKP81ryXJ0Sng7rco+WDGZNuuTrgQ4aWgkoNFaQBeOlC+L
+         gd3hy2Kw4Iq3i8dJonI0Li2bkMaBe8tsZ1jnheGDye3e3pac1Xq+sPkAgjzDgXwpxj
+         EFPX6fLd4r3nXHInuY+RqvCcrTHPF7ogPgVeIPQs420YonZGK1yPOkszzbus9inIwt
+         r2hhboInvPHCaEZs7ZbhyPiesmWBNJTHDg7MuTcYlvVOpUf0lbpvU0aeGdYDmcsI8O
+         MFTwMRgrFDTGg==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Hector Martin <marcan@marcan.st>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -29,56 +42,69 @@ To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
         Arend van Spriel <aspriel@gmail.com>,
         Franky Lin <franky.lin@broadcom.com>,
         Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
         Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Sven Peter <sven@svenpeter.dev>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Sven Peter <sven@svenpeter.dev>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
         Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Hans de Goede <hdegoede@redhat.com>,
         "John W. Linville" <linville@tuxdriver.com>,
         "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com
-References: <20220104072658.69756-1-marcan@marcan.st>
- <20220104072658.69756-28-marcan@marcan.st>
- <1f37951b-aed7-64ca-7452-7332df791931@broadcom.com>
-From:   Hector Martin <marcan@marcan.st>
-Message-ID: <dbf841a7-a848-fed0-484d-1c7c8ced94d6@marcan.st>
-Date:   Tue, 1 Feb 2022 01:37:04 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        "open list\:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list\:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        SHA-cyfmac-dev-list@infineon.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Stable <stable@vger.kernel.org>
+Subject: Re: [PATCH v4 3/9] brcmfmac: firmware: Do not crash on a NULL board_type
+References: <20220131160713.245637-1-marcan@marcan.st>
+        <20220131160713.245637-4-marcan@marcan.st>
+        <CAHp75VdgXdYXio8pTDdxsYy-iCXMvVpZM1T6gNmcxo3c1V+uJA@mail.gmail.com>
+Date:   Mon, 31 Jan 2022 18:49:13 +0200
+In-Reply-To: <CAHp75VdgXdYXio8pTDdxsYy-iCXMvVpZM1T6gNmcxo3c1V+uJA@mail.gmail.com>
+        (Andy Shevchenko's message of "Mon, 31 Jan 2022 18:28:25 +0200")
+Message-ID: <878ruvetpy.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <1f37951b-aed7-64ca-7452-7332df791931@broadcom.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: es-ES
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 21/01/2022 16.35, Arend van Spriel wrote:
-> On 1/4/2022 8:26 AM, Hector Martin wrote:
->> @@ -96,6 +97,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
->>   	BRCMF_FW_ENTRY(BRCM_CC_4371_CHIP_ID, 0xFFFFFFFF, 4371),
->>   	BRCMF_FW_ENTRY(BRCM_CC_4377_CHIP_ID, 0xFFFFFFFF, 4377B3), /* 4 */
->>   	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0xFFFFFFFF, 4378B1), /* 3 */
->> +	BRCMF_FW_ENTRY(BRCM_CC_4387_CHIP_ID, 0xFFFFFFFF, 4387C2), /* 7 */
-> 
-> Regarding the revmask in this firmware mapping table my common practice 
-> was to disable older revisions and enable for given revision and newer 
-> until proven otherwise. So for the 4387c2 that would have to following 
-> mask 0xFFFFFF80 (if rev 7 indeed matches with c2).
-> 
+Andy Shevchenko <andy.shevchenko@gmail.com> writes:
 
-Makes sense, I changed it to that for all the additions :)
+> On Mon, Jan 31, 2022 at 6:07 PM Hector Martin <marcan@marcan.st> wrote:
+>>
+>> This unbreaks support for USB devices, which do not have a board_type
+>> to create an alt_path out of and thus were running into a NULL
+>> dereference.
+>
+> ...
+>
+>> @@ -599,6 +599,9 @@ static char *brcm_alt_fw_path(const char *path,
+>> const char *board_type)
+>>         char alt_path[BRCMF_FW_NAME_LEN];
+>>         char suffix[5];
+>>
+>> +       if (!board_type)
+>> +               return NULL;
+>
+> I still think it's better to have both callers do the same thing.
+>
+> Now it will be the double check in one case,
+
+I already applied a similar patch:
+
+https://git.kernel.org/wireless/wireless/c/665408f4c3a5
 
 -- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
