@@ -2,140 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8CCF4A3F3C
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 10:29:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94F354A40EB
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 12:01:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236717AbiAaJ3M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Jan 2022 04:29:12 -0500
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:39558
-        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233106AbiAaJ3L (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 31 Jan 2022 04:29:11 -0500
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 3BB393FFFC
-        for <linux-acpi@vger.kernel.org>; Mon, 31 Jan 2022 09:29:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1643621349;
-        bh=dkzBuNd+uNU6CfCWtlWJDYP24x7ho0sbzpUOr5OCq8A=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=npnL6kukN3MGgHvQMuvDwX7ll4GcEVBGbnNeLSG8MOxDYBx8AGAWrKuIcGS0Gxhkq
-         W+QcqyIM/SOtFaV/yWWSZVN/Hjbzn1XTENWVzSbsBq1po2R1CjTqSfygYOL6rYDvkZ
-         aLsbIHRxDBKJUhuJFfxOUZezDEwM8MoKt4La4Wwra4iQtu8bnZLvSSNqyZlTmetiic
-         Fhwm8/V4G/tIUC3G+n6vmgXHQ/MaW+aCawtOPSuhoZyOZ10yyRJ8jd/gVrUHAN0rJR
-         gi8zESP4PiQF0DA1XJDqfOAMAQjVg0OCqpQ6GnM5cqf4zcc6KW1oYq0HV0pU4/1vcm
-         lunq5rksaaTMA==
-Received: by mail-wm1-f70.google.com with SMTP id s1-20020a1ca901000000b0034ece94dd8cso10085994wme.5
-        for <linux-acpi@vger.kernel.org>; Mon, 31 Jan 2022 01:29:09 -0800 (PST)
+        id S244427AbiAaLBI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Jan 2022 06:01:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42762 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1358451AbiAaLAR (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jan 2022 06:00:17 -0500
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7CB1C061770
+        for <linux-acpi@vger.kernel.org>; Mon, 31 Jan 2022 02:59:31 -0800 (PST)
+Received: by mail-io1-xd44.google.com with SMTP id n17so16345212iod.4
+        for <linux-acpi@vger.kernel.org>; Mon, 31 Jan 2022 02:59:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
+        b=Hy4QzdJnSxdg5GIgw0nCwmi0gjML3n5cny2gld+5/rI5196yLd12xvP6N7LBmx65/n
+         qILZMxYOlb+VBzjZrCg896+CVlR2SLc6f+WpN6lyRLTkfyWxlYA63cI2QUMsEgTIYq1c
+         VRL4HNNC2kIyU16xAe6VyoHlNhIHv9mczE1zssIxdDBygn6D2BPwo/XAWJNqRMASZ2Dq
+         yZxWrv8DUbv+uMJverpu1MhsgcV4b3vRNoXa2uyn5bo25Pb/5p2hQlMsoWmYebCBDCJD
+         GjDhDoBcmmXgZL74zftZAkr0Rw6FLwL0/jzp5kj/UR37sO8Js0t8mGwGyrpI2mLOPNpu
+         0GuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=dkzBuNd+uNU6CfCWtlWJDYP24x7ho0sbzpUOr5OCq8A=;
-        b=K60i7UfGkGuo1ffKKqg8gF16HayzvY0lz5NVZ1AZkDRpP3iLh6yxirYjdOq3gnJ3h+
-         BL8UpFfcfAscH4mQbXY4CUCfyVt2a6cbqbzKP3laUzHjqOeA2IoUDIx0XE/OPMzCUMhd
-         LIMQuYp0djobl8uXa/sxavnKG4YJWXsmZMRVVWpbzkuUog7Lwr+Yi6nRrXxhFucQndcQ
-         T/mqWVIZQiNl2uwuYNvirJHJhMaXPjXL4YZi8HP0FkwSXFbg9sPmOcSh9kwwWz2xTjLi
-         K/dlCo7KTuOsooniLXB5RqLb4So8m1etr6m0dvpczre0ZWww+1AM0Ujs/LfBZ6Xu4PWR
-         jWfw==
-X-Gm-Message-State: AOAM531nInOel0YQwSdr5Z2EufSyxm2BGms3A/6pBYBf+NgZeDQxcKtc
-        1i4a1JrnbNrCPdsomSuQh9xPSVIy5kSwLqq2cYk+0FtXtrRy1HPxZjEooMhTIrbOrNpXelaKowR
-        za3OkgrXoKle8FCAJt5OKc1fFWF44x2dOhaNhZ7I=
-X-Received: by 2002:a17:907:d88:: with SMTP id go8mr16082674ejc.343.1643621337687;
-        Mon, 31 Jan 2022 01:28:57 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxwUgdzk1HBzC4qCevIT6t5qYbRcRcbKgCipd7W6AaFHRRw14fKuy7dvOGc19/jX8mpPV7Ajw==
-X-Received: by 2002:a17:907:d88:: with SMTP id go8mr16082640ejc.343.1643621337451;
-        Mon, 31 Jan 2022 01:28:57 -0800 (PST)
-Received: from [192.168.0.71] (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
-        by smtp.gmail.com with ESMTPSA id z2sm2645158ejn.117.2022.01.31.01.28.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 31 Jan 2022 01:28:56 -0800 (PST)
-Message-ID: <1e22e171-9d13-5763-a9e2-a24e7d98e130@canonical.com>
-Date:   Mon, 31 Jan 2022 10:28:54 +0100
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
+        b=efLenZKRtcgySE4vAJArCqg2K3CxEvq8pCfd3i1cA7CQ9v4dYWgXSfc14zRbiRNXoF
+         vDjfaunuWskfnwfe0dsZ5SYc+7weGCwq0KuzF4r+k19eWogPLMBPneLwWKaoM1oD0rs7
+         nq93FQCPrFxaQrcSQVZbZeEiEJBZbcKypNL6Qzh6HiM6n/Q/zPDtIGBYC+rayVoDwaMK
+         0SpSoF9UhLqUoJz3b7cAGncsIa3WphvLyiLmQTrrLZsiRlz8ouYspmiF0SsWodLToL1g
+         l+kvch0BJ7RkobZzbNhS7QpCyi5kYMvBxYLoLZ7RuLv9BqhMuZF+E59zzOswL5MOv9nU
+         I/Eg==
+X-Gm-Message-State: AOAM530tzOjtqegM5ico/zZAlVNOGQGxb44QgEmjm0JTgkW3bKDceckY
+        2yfiCaCFR0BMvl3PuDGqz5wEj5hwKSTl2Ll/TEE=
+X-Google-Smtp-Source: ABdhPJyia9VIjicXafubC2VjGdU01tny+88l0Ycxe3DKaKeOyUTFlA4LLKTxDKWWNigVvRhiFi9kYx5K7cHHm0s8/hs=
+X-Received: by 2002:a02:aa09:: with SMTP id r9mr10286804jam.199.1643626771044;
+ Mon, 31 Jan 2022 02:59:31 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v6 18/21] memory: emif: Use kernel_can_power_off()
-Content-Language: en-US
-To:     Dmitry Osipenko <digetx@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
-        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
-Cc:     linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
-References: <20220130233718.21544-1-digetx@gmail.com>
- <20220130233718.21544-19-digetx@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-In-Reply-To: <20220130233718.21544-19-digetx@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Reply-To: daniellakyle60@gmail.com
+Sender: drdanielmorris11111@gmail.com
+Received: by 2002:a05:6638:1248:0:0:0:0 with HTTP; Mon, 31 Jan 2022 02:59:30
+ -0800 (PST)
+From:   Mrs daniell akyle <daniellakyle60@gmail.com>
+Date:   Mon, 31 Jan 2022 11:59:30 +0100
+X-Google-Sender-Auth: 5pmMZCS9vXWmOwBoU1Dt2uIUmsw
+Message-ID: <CAKFcj-MtTareGvTX3Yo749sS2d4H56Fxx0cF0uKGPGQc=0xqUA@mail.gmail.com>
+Subject: Ahoj
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On 31/01/2022 00:37, Dmitry Osipenko wrote:
-> Replace legacy pm_power_off with kernel_can_power_off() helper that
-> is aware about chained power-off handlers.
-> 
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-> ---
->  drivers/memory/emif.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-
-
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-
-
-Best regards,
-Krzysztof
+Pozdravy
+Jmenuji se pan=C3=AD Daniella Kyleov=C3=A1, je mi 58 let
+Filip=C3=ADny. V sou=C4=8Dasn=C3=A9 dob=C4=9B jsem hospitalizov=C3=A1n na F=
+ilip=C3=ADn=C3=A1ch, kde jsem
+podstupuje l=C3=A9=C4=8Dbu akutn=C3=ADho karcinomu j=C3=ADcnu. jsem um=C3=
+=ADraj=C3=ADc=C3=AD,
+vdova, kter=C3=A1 se rozhodla darovat =C4=8D=C3=A1st sv=C3=A9ho majetku spo=
+lehliv=C3=A9 osob=C4=9B
+kter=C3=A1 tyto pen=C3=ADze pou=C5=BEije na pomoc chud=C3=BDm a m=C3=A9n=C4=
+=9B privilegovan=C3=BDm. Chci
+poskytnout dar ve v=C3=BD=C5=A1i 3 700 000 =C2=A3 na sirotky nebo charitati=
+vn=C3=AD organizace
+ve va=C5=A1=C3=AD oblasti. Zvl=C3=A1dne=C5=A1 to? Pokud jste ochotni tuto n=
+ab=C3=ADdku p=C5=99ijmout
+a ud=C4=9Blejte p=C5=99esn=C4=9B tak, jak v=C3=A1m =C5=99=C3=ADk=C3=A1m, pa=
+k se mi vra=C5=A5te pro dal=C5=A1=C3=AD vysv=C4=9Btlen=C3=AD.
+pozdravy
+Pan=C3=AD Daniella Kyleov=C3=A1
