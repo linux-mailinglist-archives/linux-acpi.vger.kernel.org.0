@@ -2,103 +2,52 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F6E4A4B74
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 17:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F6DF4A4BDD
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 17:23:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380115AbiAaQKC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Jan 2022 11:10:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59940 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349651AbiAaQJz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jan 2022 11:09:55 -0500
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFA2BC061763;
-        Mon, 31 Jan 2022 08:08:47 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: hector@marcansoft.com)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id D0A4D41F7F;
-        Mon, 31 Jan 2022 16:08:38 +0000 (UTC)
-From:   Hector Martin <marcan@marcan.st>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>
-Cc:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com,
-        Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH v4 9/9] brcmfmac: pcie: Read the console on init and shutdown
-Date:   Tue,  1 Feb 2022 01:07:13 +0900
-Message-Id: <20220131160713.245637-10-marcan@marcan.st>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20220131160713.245637-1-marcan@marcan.st>
-References: <20220131160713.245637-1-marcan@marcan.st>
+        id S1380265AbiAaQXP convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Mon, 31 Jan 2022 11:23:15 -0500
+Received: from mail2.ecu.permkrai.ru ([178.47.130.130]:34204 "EHLO
+        ecu.permkrai.ru" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1349887AbiAaQXP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jan 2022 11:23:15 -0500
+X-Greylist: delayed 14476 seconds by postgrey-1.27 at vger.kernel.org; Mon, 31 Jan 2022 11:23:15 EST
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by ecu.permkrai.ru (Postfix) with ESMTP id BA99F9EC8C7;
+        Mon, 31 Jan 2022 21:13:59 +0500 (+05)
+Received: from ecu.permkrai.ru ([127.0.0.1])
+        by localhost (mail.ecu.local [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id kHDwt6A-zr2T; Mon, 31 Jan 2022 21:13:59 +0500 (+05)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by ecu.permkrai.ru (Postfix) with ESMTP id 8B8B39ECA57;
+        Mon, 31 Jan 2022 21:13:59 +0500 (+05)
+X-Virus-Scanned: amavisd-new at mail.ecu.local
+Received: from ecu.permkrai.ru ([127.0.0.1])
+        by localhost (mail.ecu.local [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id qGJgAo3uZ8jS; Mon, 31 Jan 2022 21:13:59 +0500 (+05)
+Received: from [172.18.13.110] (cb.5a.39a9.ip4.static.sl-reverse.com [169.57.90.203])
+        by ecu.permkrai.ru (Postfix) with ESMTPSA id DA5BE9EC8C7;
+        Mon, 31 Jan 2022 21:13:51 +0500 (+05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: brauchen sie schnell geld? 
+To:     Recipients <juan.carriel@distrito12d02.saludzona5.gob.ec>
+From:   "Obrist Nicolas" <juan.carriel@distrito12d02.saludzona5.gob.ec>
+Date:   Mon, 31 Jan 2022 17:13:43 +0100
+Reply-To: nicolashelp279@gmail.com
+Message-Id: <20220131161351.DA5BE9EC8C7@ecu.permkrai.ru>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-This allows us to get console messages if the firmware crashed during
-early init, or if an operation failed and we're about to shut down.
+Kredit? so schnell wie möglich? unkompliziert und seriös ?
+Bei uns genau richtig.
+Wir arbeiten europaweit. Wir vermitteln Kredite und Darlehen zu fairen Konditionen. Durch unsere seriöse, kompetente und ehrliche Kreditberatung haben wir über Jahre eine starke Position auf dem Markt.
+Wir gewähren Darlehen in Höhe von 10.000,00 € bis 20 Mio. € mit einem Zinssatz von 2%.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Hector Martin <marcan@marcan.st>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Die Zinsen und die Laufzeiten sind sehr attraktiv (2%) und in punkto
+Sicherheit beschränken wir uns auf das absolute Minimum. Interessiert? 
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index 3ff4997e1c97..4fe341376a16 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -744,6 +744,8 @@ static void brcmf_pcie_bus_console_read(struct brcmf_pciedev_info *devinfo,
- 		return;
- 
- 	console = &devinfo->shared.console;
-+	if (!console->base_addr)
-+		return;
- 	addr = console->base_addr + BRCMF_CONSOLE_WRITEIDX_OFFSET;
- 	newidx = brcmf_pcie_read_tcm32(devinfo, addr);
- 	while (newidx != console->read_idx) {
-@@ -1520,6 +1522,7 @@ brcmf_pcie_init_share_ram_info(struct brcmf_pciedev_info *devinfo,
- 		  shared->max_rxbufpost, shared->rx_dataoffset);
- 
- 	brcmf_pcie_bus_console_init(devinfo);
-+	brcmf_pcie_bus_console_read(devinfo, false);
- 
- 	return 0;
- }
-@@ -1959,6 +1962,7 @@ brcmf_pcie_remove(struct pci_dev *pdev)
- 		return;
- 
- 	devinfo = bus->bus_priv.pcie->devinfo;
-+	brcmf_pcie_bus_console_read(devinfo, false);
- 
- 	devinfo->state = BRCMFMAC_PCIE_STATE_DOWN;
- 	if (devinfo->ci)
--- 
-2.33.0
-
+Obrist Nicolas
