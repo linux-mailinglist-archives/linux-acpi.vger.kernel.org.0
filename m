@@ -2,122 +2,79 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78C324A4BBA
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 17:21:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1F7E4A4BBF
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 17:21:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358518AbiAaQVZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Jan 2022 11:21:25 -0500
-Received: from mga01.intel.com ([192.55.52.88]:13463 "EHLO mga01.intel.com"
+        id S1380276AbiAaQVf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Jan 2022 11:21:35 -0500
+Received: from marcansoft.com ([212.63.210.85]:38398 "EHLO mail.marcansoft.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1380116AbiAaQVW (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 31 Jan 2022 11:21:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643646082; x=1675182082;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=r4B9aWmQfZmAaLbnAQfzd6iHm0LZz0ye6Jl1awPoYCg=;
-  b=EoE5yYS+QdBksyJd8PQKO3R2+BegmG94DXYMrjmG2VYfiuu9IXrihrOZ
-   SoZORi4QrRCVl+zQ84UCq4fqXqkG34qNA3VYEKEPzA2752odt3AVxVuEp
-   CALNZFezIgCpfWL8P01Gaori3g7MyvrF1wfhP8Gp+bymD+loIyL1to79t
-   WMeHbgtW1E+j03AmmlwnBf97uM4x8zd9vJkfX103xIsYOEW1lnhyG2nRG
-   gikvS7u926HOd9AMOMUnQuRlIaDwF3d5mJ5BLWVZyuzBadYKoVN5pAifX
-   dZGOU3D6Mc8NRgiOw1zRkhDu6jGTERtF5iGhTIrEeAbsfeyWbRyEYSoeK
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10244"; a="271966417"
-X-IronPort-AV: E=Sophos;i="5.88,331,1635231600"; 
-   d="scan'208";a="271966417"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 08:20:56 -0800
-X-IronPort-AV: E=Sophos;i="5.88,331,1635231600"; 
-   d="scan'208";a="565181799"
-Received: from smile.fi.intel.com ([10.237.72.61])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 08:20:51 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1nEZPA-00Gw7r-2E;
-        Mon, 31 Jan 2022 18:19:48 +0200
-Date:   Mon, 31 Jan 2022 18:19:47 +0200
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, Yauhen Kharuzhy <jekhor@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>,
-        Fabio Aiuto <fabioaiuto83@gmail.com>,
-        platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org
-Subject: Re: [PATCH v4 12/20] power: supply: bq25890: Support higher charging
- voltages through Pump Express+ protocol
-Message-ID: <YfgMI2Qq4tMAiEn7@smile.fi.intel.com>
-References: <20220130204557.15662-1-hdegoede@redhat.com>
- <20220130204557.15662-13-hdegoede@redhat.com>
- <YffouVvL9M4fch0I@smile.fi.intel.com>
- <bc465932-b2e5-7ff4-1b9a-cf2d76079251@redhat.com>
+        id S1380259AbiAaQV3 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 31 Jan 2022 11:21:29 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: marcan@marcan.st)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id A809B419BC;
+        Mon, 31 Jan 2022 16:21:20 +0000 (UTC)
+Subject: Re: [PATCH v2 22/35] brcmfmac: chip: Handle 1024-unit sizes for TCM
+ blocks
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Dmitry Osipenko <digetx@gmail.com>
+Cc:     Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Mark Kettenis <kettenis@openbsd.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        "brian m. carlson" <sandals@crustytoothpaste.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com
+References: <20220104072658.69756-1-marcan@marcan.st>
+ <20220104072658.69756-23-marcan@marcan.st>
+ <ed387a90-586d-5071-baa6-bc66d4e7f22f@broadcom.com>
+From:   Hector Martin <marcan@marcan.st>
+Message-ID: <b150396e-83f0-6d6e-4b80-5ecfc04ec1a0@marcan.st>
+Date:   Tue, 1 Feb 2022 01:21:17 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bc465932-b2e5-7ff4-1b9a-cf2d76079251@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <ed387a90-586d-5071-baa6-bc66d4e7f22f@broadcom.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: es-ES
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 31, 2022 at 04:18:23PM +0100, Hans de Goede wrote:
-> On 1/31/22 14:48, Andy Shevchenko wrote:
-> > On Sun, Jan 30, 2022 at 09:45:49PM +0100, Hans de Goede wrote:
-
-...
-
-> >> +	for (i = 0; i < PUMP_EXPRESS_MAX_TRIES; i++) {
-> > 
-> >> +		voltage = bq25890_get_vbus_voltage(bq);
-> >> +		if (voltage < 0)
-> >> +			goto error_print;
-> > 
-> > It also can be (at least in align with the rest error paths)
-> > 
-> > 		ret = bq25890_get_vbus_voltage(bq);
-> > 		if (ret < 0)
-> > 			goto error_print;
-> > 		voltage = ret;
-> > 
-> > followed up (but not necessarily)...
+On 19/01/2022 21.36, Arend van Spriel wrote:
+>>   /** Return the TCM-RAM size of the ARMCR4 core. */
+>> -static u32 brcmf_chip_tcm_ramsize(struct brcmf_core_priv *cr4)
+>> +static u32 brcmf_chip_tcm_ramsize(struct brcmf_chip_priv *ci,
+>> +				  struct brcmf_core_priv *cr4)
 > 
-> The suggested pattern is useful when ret needs to be set on the error-exit
-> path, but we are not doing that here. So I prefer to just keep this as is.
+> Not sure why you add ci parameter here. It is not used below or am I 
+> overlooking something.
 
-Are you talking about above proposal?
-
-Still wouldn't be better to use it that if we want, for example, to print an
-error code, it can be done easily? For the sake of consistency.
-
-> >> +	}
-> >> +
-> >> +	bq25890_field_write(bq, F_PUMPX_EN, 0);
-> >> +
-> >> +	dev_info(bq->dev, "Hi-voltage charging requested, input voltage is %d mV\n",
-> >> +		 voltage);
-> > 
-> >> +	return;
-> >> +error_print:
-> > 
-> > 	if (ret < 0)
-> > 
-> > But it's up to you.
-> > 
-> >> +	dev_err(bq->dev, "Failed to request hi-voltage charging\n");
+Oops, looks like junk left behind from when I was trying to figure this
+out. Removed. Sorry about that.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Hector Martin (marcan@marcan.st)
+Public Key: https://mrcn.st/pub
