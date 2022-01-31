@@ -2,111 +2,177 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94DCC4A3DC0
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 07:42:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2E1A4A3E3E
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 08:33:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235699AbiAaGmG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Jan 2022 01:42:06 -0500
-Received: from mga03.intel.com ([134.134.136.65]:58817 "EHLO mga03.intel.com"
+        id S1348080AbiAaHdh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Jan 2022 02:33:37 -0500
+Received: from mga01.intel.com ([192.55.52.88]:14643 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232348AbiAaGmF (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Mon, 31 Jan 2022 01:42:05 -0500
+        id S1347972AbiAaHdd (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Mon, 31 Jan 2022 02:33:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643611325; x=1675147325;
+  t=1643614413; x=1675150413;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NzR5WVLsAbh7rkG2YhVbwAZdDUygwE0mUXpLIgrwZ/Q=;
-  b=d44Qgx/hidnwWkSjbQetiunam+bvaDAz6ZPJMZMMpI711tzHrImyfquC
-   l3D2N5kc6+KqA1c+BajmFiNmdHidjZIbfK2z7vV+w4nmNe1zeZT17UU9d
-   4bnFAeB2qMHzvtjkLF8yD82DJUnY6hyQhL93IEAl+HbzfsxGKw+jju1cm
-   mKzOKGQKzfUKLuDoV462AeVMJQi5GJG/QokMTM1Vy4mu2dpsvm7IOzK4S
-   J8hhypjVJUzm8H8th/vgD8EJt+AjgRq+O+V5KeZ5jxNcMd/cYww68D+4v
-   yBW22v316oHUKHHnQBsShnYoucMOaUL77ae9UeSYBVjSKdjgJ5zrSRwx2
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10243"; a="247362622"
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=rWUUeMylw7j7eadB8PUS30HUTqec98BR59N33yGXgSM=;
+  b=hWZIwvDkVgjy/4FHaDWlj1ybIZoikOuTf+vhib0kviuBw67QrwULNZoD
+   SFn3c2FTAIgkjbZhxk1ZHdX6p5zNQGUwaV3FLEMRp4CF/buogOxHzUQ7W
+   nAuK8vDUYVpOneBE0xImosUv3kIgJInDNT1n/H8W5LudztYg1k8SpSIor
+   C2TzuqmIqWeD5G0TyE1yrE6OSYSMDHOxgL+BX3vqSdf4ysNHAiIoaknuO
+   lYl1Du080CBzQyIhA5r8Xuh8fjvH36VkJ9O2aUB+3WEQGOijSI8ETMmNp
+   XNjOs4AB1h/wjEKReuawntqu1CSEw2I2O6ezD572EPiY4k5djX27zbPjY
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10243"; a="271881420"
 X-IronPort-AV: E=Sophos;i="5.88,330,1635231600"; 
-   d="scan'208";a="247362622"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2022 22:42:05 -0800
+   d="scan'208";a="271881420"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2022 23:33:29 -0800
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,330,1635231600"; 
-   d="scan'208";a="626278379"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2022 22:42:00 -0800
-Received: by lahna (sSMTP sendmail emulation); Mon, 31 Jan 2022 08:41:36 +0200
-Date:   Mon, 31 Jan 2022 08:41:36 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Rajat Jain <rajatja@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
+   d="scan'208";a="675654496"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 30 Jan 2022 23:33:26 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 31 Jan 2022 09:33:25 +0200
+Date:   Mon, 31 Jan 2022 09:33:25 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Won Chung <wonchung@google.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Dmitry Torokhov <dtor@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Pavel Machek <pavel@denx.de>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>
-Subject: Re: [PATCH] PCI: ACPI: Allow internal devices to be marked as
- untrusted
-Message-ID: <YfeEoF35RPDVMdzD@lahna>
-References: <20220121214117.GA1154852@bhelgaas>
- <Ye5GvQbFKo+CFtRb@lahna>
- <Ye/X7E2dKb+zem34@lahna>
- <Ye/btvA1rLB2rp02@kroah.com>
- <Ye/zTHR5aCG58z87@lahna>
- <CAJZ5v0gitdeEAxcgSoB1=VHA9FnRdCtmUqA_cN_f1a2yFRDghQ@mail.gmail.com>
- <CACK8Z6H2DLTJgxgS3pcvfOh=5S8cxEMKvwEPfB9zoVf1g2H_UQ@mail.gmail.com>
- <YfOf2X7Snm7cvDRV@lahna>
- <CACK8Z6FMgc5UQY-ZGB9sKYR5Wt6L6huTnEKZaFyVRAmDmQt9XQ@mail.gmail.com>
- <CAJZ5v0iuM_qjhPxvhzgvtKM-4pBB2skf9G=R=Qo6NzKnZ2LN=w@mail.gmail.com>
+        Benson Leung <bleung@chromium.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] ACPI: device_sysfs: Add sysfs support for _PLD
+Message-ID: <YfeQxYNzWltRQ7mq@kuha.fi.intel.com>
+References: <20220128180832.2329149-1-wonchung@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0iuM_qjhPxvhzgvtKM-4pBB2skf9G=R=Qo6NzKnZ2LN=w@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220128180832.2329149-1-wonchung@google.com>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
-
-On Sun, Jan 30, 2022 at 03:30:39PM +0100, Rafael J. Wysocki wrote:
-> > I'm open to doing so if the others also feel the same way. IMHO
-> > though, the semantics of ACPI "DmaProperty" differ from the semantics
-> > of the property I'm proposing here.
-> >
-> > The current (documented) semantics (of "DmaProperty"): *This device
-> > (root port) is trusted*, but any devices downstream are not to be
-> > trusted.
-> >
-> > What I need and am proposing (new "UntrustedDevice"): *This device as
-> > well as any downstream devices* are untrusted.
-> >
-> > Note that there may be firmware implementing "DmaProperty" already out
-> > there (for windows), and if we decide to use it for my purposes, then
-> > there shall be a discrepancy in how Linux uses that property vs
-> > Windows. Is that acceptable?
+On Fri, Jan 28, 2022 at 06:08:32PM +0000, Won Chung wrote:
+> When ACPI table includes _PLD fields for a device, create a new file
+> (pld) in sysfs to share _PLD fields.
 > 
-> It may be confusing, so I'd rather not do that.
+> Signed-off-by: Won Chung <wonchung@google.com>
+> ---
+>  Documentation/ABI/testing/sysfs-bus-acpi | 53 ++++++++++++++++++++++++
+>  drivers/acpi/device_sysfs.c              | 42 +++++++++++++++++++
+>  2 files changed, 95 insertions(+)
 > 
-> The platform firmware will use it with the Windows use case in mind
-> and if it has side effects in Linux, problems are likely to appear in
-> the field.
-> 
-> So the question is rather not about it being acceptable, but about
-> whether or not this is generally going to work.
+> diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentation/ABI/testing/sysfs-bus-acpi
+> index 58abacf59b2a..3a9c6a4f4603 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-acpi
+> +++ b/Documentation/ABI/testing/sysfs-bus-acpi
+> @@ -96,3 +96,56 @@ Description:
+>  		hardware, if the _HRV control method is present.  It is mostly
+>  		useful for non-PCI devices because lspci can list the hardware
+>  		version for PCI devices.
+> +
+> +What:		/sys/bus/acpi/devices/.../pld
+> +Date:		Jan, 2022
+> +Contact:	Won Chung <wonchung@google.com>
+> +Description:
+> +		This attribute contains the output of the device object's
+> +		_PLD control method, if present. This information provides
+> +		details on physical location of a port.
+> +
+> +		Description on each _PLD field from ACPI specification:
+> +
+> +		===============	============================================
+> +		GROUP_TOKEN	Unique numerical value identifying a group.
+> +		GROUP_POSITION	Identifies this device connection point’s
+> +				position in the group.
+> +		USER_VISIBLE	Set if the device connection point can be
+> +				seen by the user without disassembly.
+> +		DOCK		Set if the device connection point resides
+> +				in a docking station or port replicator.
+> +		BAY		Set if describing a device in a bay or if
+> +				device connection point is a bay.
+> +		LID		Set if this device connection point resides
+> +				on the lid of laptop system.
+> +		PANEL		Describes which panel surface of the system’s
+> +				housing the device connection point resides on:
+> +				0 - Top
+> +				1 - Bottom
+> +				2 - Left
+> +				3 - Right
+> +				4 - Front
+> +				5 - Back
+> +				6 - Unknown (Vertical Position and Horizontal
+> +				Position will be ignored)
+> +		HORIZONTAL_	0 - Left
+> +		POSITION	1 - Center
+> +				2 - Right
+> +		VERTICAL_	0 - Upper
+> +		POSITION	1 - Center
+> +				2 - Lower
+> +		SHAPE		Describes the shape of the device connection
+> +				point.
+> +				0 - Round
+> +				1 - Oval
+> +				2 - Square
+> +				3 - Vertical Rectangle
+> +				4 - Horizontal Rectangle
+> +				5 - Vertical Trapezoid
+> +				6 - Horizontal Trapezoid
+> +				7 - Unknown - Shape rendered as a Rectangle
+> +				with dotted lines
+> +				8 - Chamfered
+> +				15:9 - Reserved
+> +		===============	===============================================
+> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+> index d5d6403ba07b..8d4df5fb1c45 100644
+> --- a/drivers/acpi/device_sysfs.c
+> +++ b/drivers/acpi/device_sysfs.c
+> @@ -509,6 +509,40 @@ static ssize_t status_show(struct device *dev, struct device_attribute *attr,
+>  }
+>  static DEVICE_ATTR_RO(status);
+>  
+> +static ssize_t pld_show(struct device *dev, struct device_attribute *attr,
+> +			char *buf)
+> +{
+> +	struct acpi_device *acpi_dev = to_acpi_device(dev);
+> +	acpi_status status;
+> +	struct acpi_pld_info *pld;
+> +
+> +	status = acpi_get_physical_device_location(acpi_dev->handle, &pld);
+> +	if (ACPI_FAILURE(status))
+> +		return -ENODEV;
+> +
+> +	return sprintf(buf, "GROUP_TOKEN=%u\n"
+> +		"GROUP_POSITION=%u\n"
+> +		"USER_VISIBLE=%u\n"
+> +		"DOCK=%u\n"
+> +		"BAY=%u\n"
+> +		"LID=%u\n"
+> +		"PANEL=%u\n"
+> +		"HORIZONTAL_POSITION=%u\n"
+> +		"VERTICAL_POSITION=%u\n"
+> +		"SHAPE=%u\n",
+> +		pld->group_token,
+> +		pld->group_position,
+> +		pld->user_visible,
+> +		pld->dock,
+> +		pld->bay,
+> +		pld->lid,
+> +		pld->panel,
+> +		pld->horizontal_position,
+> +		pld->vertical_position,
+> +		pld->shape);
+> +}
+> +static DEVICE_ATTR_RO(pld);
 
-I was kind of implying that we could perhaps contact Microsoft and ask
-them if the wording could be changed to cover all the devices, not just
-PCIe root ports. I think this is something they will also need for
-things like internal WI-FI controllers.
+Why not have a pld group (directory) and a separate attribute file for
+each field?
 
-If that's not possible then no objections adding "UntrustedDevice". We
-just need to deal with the "DmaProperty" anyway and both end up setting
-pdev->untrusted in the similar manner.
+
+thanks,
+
+-- 
+heikki
