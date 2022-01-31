@@ -2,112 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0D614A4D82
-	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 18:51:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ADC0B4A4EE6
+	for <lists+linux-acpi@lfdr.de>; Mon, 31 Jan 2022 19:51:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379962AbiAaRvT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Jan 2022 12:51:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381117AbiAaRuu (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jan 2022 12:50:50 -0500
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E7FAC061758;
-        Mon, 31 Jan 2022 09:50:38 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id d10so45396765eje.10;
-        Mon, 31 Jan 2022 09:50:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8GVlcbMKWd6sknSwsJTkH3UkvUcDFFWA5/+PxWk1FBQ=;
-        b=qs/2h+iV23o0KF6R03dAhdmE/axbeR2qE3rbz2GJhNRV8SEeiSPsrQvFC/thNvlcq3
-         tTd4TlCTVFHUDFxii5lU12QyqpTgkiRelenS4rYVY0Sfee7VxRLN0+8GR9UuI7veR/iA
-         +YkLnJki9Cx2spbdIizoVgoLPnWBKCN/5S7KIOrRI64Pk7y13ep90GrkWV2rHSVtnbkB
-         vAM3w5yjo3enrcXZLSVsERNyQVsgoDnssO0Icrxlvhiof74tIw9lz6oJ2341W2TnbIJW
-         rcHcO6r177JPjXbSgyEFt59HgZcDPB3p5dXLBD+1L/F/G1qppe/y/FbWQiVi2csNbac1
-         yAbQ==
+        id S232607AbiAaSvN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Jan 2022 13:51:13 -0500
+Received: from mail-yb1-f178.google.com ([209.85.219.178]:34641 "EHLO
+        mail-yb1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234707AbiAaSvN (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jan 2022 13:51:13 -0500
+Received: by mail-yb1-f178.google.com with SMTP id v186so43553909ybg.1;
+        Mon, 31 Jan 2022 10:51:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8GVlcbMKWd6sknSwsJTkH3UkvUcDFFWA5/+PxWk1FBQ=;
-        b=FGxIua/McK9OFm9d56Ta9BY1ZCWQGA3aYXJTxf1J1djaGs8xgzc69hW75Dwm+JXpeO
-         Cc6qpdCLWuBw7g6DhSv++3ctQJPuXgpZs9A2VElDgOWkMzUs9ErRs0HRqVAERFJEouVY
-         UZT+KPlT70y6jjvDZ9sK85W8vJ9Z0DRj9dAcO2xpSbbx3SEf+vYhMlRoodePoTUvjwYI
-         Ixi7ypce8bqtXBwz5Cyier+L7SPbdaEfPaU0ztApa9ixcwprFD5qb1kkMaZo5UE5cjg5
-         IIH+gSUYAh5GPARmlgXv0hdQHHNKcvlbtCxoT11w4nR1hq/MiRAMBbPA65M4OxmTscX2
-         WXGw==
-X-Gm-Message-State: AOAM530itlxnCLONZYEVz60EjY10pZWbvIyvnMU1E1A6fi6B8CkLADoZ
-        RO44EtzH3jhtSShlxiakz3uSsfJpt/R80ocElrc=
-X-Google-Smtp-Source: ABdhPJySPMLXG826MvbuUjwZ2lW9naA71Uho8Hz9ED+TkkBh3xJuWPCfQq50w2zCupQdwrxSAXqrKp3+CE1fa/VpIeM=
-X-Received: by 2002:a17:907:2d92:: with SMTP id gt18mr17433897ejc.579.1643651436652;
- Mon, 31 Jan 2022 09:50:36 -0800 (PST)
+        bh=C9elPeCurEKfBJHZDKjGhZVFvClsJXI5gGke2sVJMJc=;
+        b=uxNs+NZyl3Xf268BX4cn2LvezomWAVlBWSrrlHOxs+cSZ9wxZEj7VjASBItnknAhGA
+         TXXsGjTUra+qVJhSkYgYgCHxpUWVa672KGGTfMLgKuRPlIsWzcMJZH0k5y410P1KyTSr
+         0+K30Jt6zHOwsrsubvq0YMKW2xKl40Wg+4rJ3/pUL5ODjd6R75YB4z5n+jybPC9ieMMz
+         I7Sa+4dso7yofQgVZZ6gGMwk3P4hMv1MdvOkxWZyT/3nwgHCaxZEOrXfvW6kySnEnFc3
+         T9UmS9cNHvMtVBUjzZdJC6ObujfEKthvZYY3m4mxhrKRmLnytHxCkMll0MtfeRT8j+uY
+         8teg==
+X-Gm-Message-State: AOAM532MYDx3J7lyyITLttJ1FIZRBXbj67yTAXkzQiJnZWhYJHRtzX9U
+        18b8oCWW4a9ntizLSAl+9NkGzP1qWrZs0ssfRowS5G6E/wI=
+X-Google-Smtp-Source: ABdhPJxJ8wSGW1W6Abc0F3zUPNSQyR+J6M9pEZwLaKO0V7/UUGGjFWaidDtzjEOhSnmVTS0yKoO/9pPaZBkCFTVbIsM=
+X-Received: by 2002:a25:c102:: with SMTP id r2mr34056787ybf.330.1643655072465;
+ Mon, 31 Jan 2022 10:51:12 -0800 (PST)
 MIME-Version: 1.0
-References: <20220131160713.245637-1-marcan@marcan.st> <20220131160713.245637-4-marcan@marcan.st>
- <CAHp75VdgXdYXio8pTDdxsYy-iCXMvVpZM1T6gNmcxo3c1V+uJA@mail.gmail.com> <878ruvetpy.fsf@kernel.org>
-In-Reply-To: <878ruvetpy.fsf@kernel.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 31 Jan 2022 19:49:00 +0200
-Message-ID: <CAHp75Vc+HS0ytF3fuyEiwaG_-tLQMQriz48HLdPVyYn==jr7aA@mail.gmail.com>
-Subject: Re: [PATCH v4 3/9] brcmfmac: firmware: Do not crash on a NULL board_type
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Hector Martin <marcan@marcan.st>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+References: <20220131133337.1556355-1-trix@redhat.com>
+In-Reply-To: <20220131133337.1556355-1-trix@redhat.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 31 Jan 2022 19:51:00 +0100
+Message-ID: <CAJZ5v0g5Xxd9kBPUdsC6D4fVHfZafKiGgkTONo2mpqvfgoFDgw@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: cleanup double word in comment
+To:     Tom Rix <trix@redhat.com>
+Cc:     Robert Moore <robert.moore@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
         Len Brown <lenb@kernel.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Mark Kettenis <kettenis@openbsd.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "John W. Linville" <linville@tuxdriver.com>,
-        "brian m. carlson" <sandals@crustytoothpaste.net>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        SHA-cyfmac-dev-list@infineon.com,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Stable <stable@vger.kernel.org>
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 31, 2022 at 6:49 PM Kalle Valo <kvalo@kernel.org> wrote:
-> Andy Shevchenko <andy.shevchenko@gmail.com> writes:
-> > On Mon, Jan 31, 2022 at 6:07 PM Hector Martin <marcan@marcan.st> wrote:
-
-...
-
-> >> +       if (!board_type)
-> >> +               return NULL;
-> >
-> > I still think it's better to have both callers do the same thing.
-> >
-> > Now it will be the double check in one case,
+On Mon, Jan 31, 2022 at 2:33 PM <trix@redhat.com> wrote:
 >
-> I already applied a similar patch:
+> From: Tom Rix <trix@redhat.com>
 >
-> https://git.kernel.org/wireless/wireless/c/665408f4c3a5
+> Remove the second 'know'.
+>
+> Signed-off-by: Tom Rix <trix@redhat.com>
 
-"Similar" means that it took into account the concern I expressed here :-)
-I would have done slightly differently, but the main idea is the same.
-Thank you!
+This is ACPICA material, so it needs to be submitted to the upstream
+project via https://github.com/acpica/acpica/
 
--- 
-With Best Regards,
-Andy Shevchenko
+Also, it would be good to combine all of the analogous changes in one patch.
+
+> ---
+>  drivers/acpi/acpica/exfldio.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/acpica/exfldio.c b/drivers/acpi/acpica/exfldio.c
+> index bdc7a30d1217c..b92605df3872c 100644
+> --- a/drivers/acpi/acpica/exfldio.c
+> +++ b/drivers/acpi/acpica/exfldio.c
+> @@ -104,7 +104,7 @@ acpi_ex_setup_region(union acpi_operand_object *obj_desc,
+>  #ifdef ACPI_UNDER_DEVELOPMENT
+>         /*
+>          * If the Field access is any_acc, we can now compute the optimal
+> -        * access (because we know know the length of the parent region)
+> +        * access (because we know the length of the parent region)
+>          */
+>         if (!(obj_desc->common.flags & AOPOBJ_DATA_VALID)) {
+>                 if (ACPI_FAILURE(status)) {
+> --
+> 2.26.3
+>
