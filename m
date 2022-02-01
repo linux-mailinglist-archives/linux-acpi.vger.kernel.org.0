@@ -2,86 +2,127 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D89464A6485
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Feb 2022 20:03:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 914A74A649F
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Feb 2022 20:08:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237984AbiBATCA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Feb 2022 14:02:00 -0500
-Received: from mail-yb1-f176.google.com ([209.85.219.176]:45828 "EHLO
-        mail-yb1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238769AbiBATB6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Feb 2022 14:01:58 -0500
-Received: by mail-yb1-f176.google.com with SMTP id w81so31576023ybg.12;
-        Tue, 01 Feb 2022 11:01:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zetz1EMRrtQpNFO0fDTM+0U4I0bqCUCVVP0e+KHk8hI=;
-        b=Qb8dH8+aQjMFf4E1QX/QpWoiUGWgaZNOFPwHLfCh3lJAhoSk2OxN9+RT/XKBANQWVv
-         0rxKD3Pp1ilFdTRfHmLCBn7aq88A5BkT+qHdoJNkdDs407G/OooKaqSFddT8txjXpgxl
-         cOwo6z1T1BjgAFxJdqHDCf5M6QbeTPEyc9iwr6zJW6H5tdcvUiJ3iZP8OgtBEYSR0LiL
-         ELRzTagHbCOZKbsg+D76uy/J5apKuRaERvI6wt3n5cb/GqhJHZltbzhbbqEJPD2oNrvj
-         zAJ5W7rFg+cO/GZylroWDa8xeqja7BsP+eckeZ2f3vMxtuQI/yLKaLkBu7fpxv3TpyjK
-         3bDQ==
-X-Gm-Message-State: AOAM532NLd5s837fP8Bx61cBLBQiY1mkEyFy7sFKlIimvSNpSYXEGW7F
-        TprnAo2QHQZrChOcfbM47BHDr8pQ9ZTFBk+ElCI=
-X-Google-Smtp-Source: ABdhPJyaXQdSdAWuhV1rlFp79N6oWZd9upRROHfEAt6roN+Zhtqn2P5Znv6SN86pFRBbzM23rHXbjKXdGd56ucOffrU=
-X-Received: by 2002:a25:cc97:: with SMTP id l145mr357412ybf.272.1643742117289;
- Tue, 01 Feb 2022 11:01:57 -0800 (PST)
-MIME-Version: 1.0
-References: <4374434.LvFx2qVVIh@kreacher> <Yfl/Sneg9/HPOjBe@smile.fi.intel.com>
-In-Reply-To: <Yfl/Sneg9/HPOjBe@smile.fi.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 1 Feb 2022 20:01:46 +0100
-Message-ID: <CAJZ5v0jFBFKMcjYieYCL1LTvRPuM7b8_5nBx0_wnPtobzg==fw@mail.gmail.com>
-Subject: Re: [PATCH] i2c: ACPI: Replace acpi_bus_get_device()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Wolfram Sang <wsa@kernel.org>,
+        id S242314AbiBATHM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Feb 2022 14:07:12 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:45970 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241933AbiBATHM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Feb 2022 14:07:12 -0500
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 4.0.0)
+ id 21f654da68e8f2ef; Tue, 1 Feb 2022 20:07:10 +0100
+Received: from kreacher.localnet (unknown [213.134.162.64])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 7735366B3BC;
+        Tue,  1 Feb 2022 20:07:09 +0100 (CET)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Sunil Goutham <sgoutham@marvell.com>,
+        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+        Andrew Lunn <andrew@lunn.ch>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Keyur Chudgar <keyur@os.amperecomputing.com>,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-i2c <linux-i2c@vger.kernel.org>
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Subject: [PATCH] drivers: net: Replace acpi_bus_get_device()
+Date:   Tue, 01 Feb 2022 20:07:08 +0100
+Message-ID: <3151721.aeNJFYEL58@kreacher>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.162.64
+X-CLIENT-HOSTNAME: 213.134.162.64
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrgeefgdduvddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepvddufedrudefgedrudeivddrieegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudeivddrieegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeduuddprhgtphhtthhopehsghhouhhthhgrmhesmhgrrhhvvghllhdrtghomhdprhgtphhtthhopehihigrphhprghnsehoshdrrghmphgvrhgvtghomhhpuhhtihhnghdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdp
+ rhgtphhtthhopehkvgihuhhrsehoshdrrghmphgvrhgvtghomhhpuhhtihhnghdrtghomhdprhgtphhtthhopehquhgrnhesohhsrdgrmhhpvghrvggtohhmphhuthhinhhgrdgtohhmpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=11 Fuz1=11 Fuz2=11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 1, 2022 at 7:44 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Tue, Feb 01, 2022 at 07:00:42PM +0100, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Replace acpi_bus_get_device() that is going to be dropped with
-> > acpi_fetch_acpi_dev().
-> >
-> > No intentional functional impact.
->
-> ...
->
-> > +     if (!adev || i2c_acpi_get_info(adev, &info, adapter, NULL))
->
-> AFAICS the !adev check is redundant since acpi_device_enumerated() does it.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-No.
+Replace acpi_bus_get_device() that is going to be dropped with
+acpi_fetch_acpi_dev().
 
-acpi_device_enumerated() returns false if adev is NULL, so without
-this extra check i2c_acpi_get_info() will end up passing NULL to
-i2c_acpi_do_lookup().
+No intentional functional impact.
 
-> >               return AE_OK;
->
-> ...
->
-> > +     struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
-> >
-> > -     if (i2c_acpi_do_lookup(adev, lookup))
-> > +     if (!adev || i2c_acpi_do_lookup(adev, lookup))
-> >               return AE_OK;
->
-> Here we need it indeed.
-> Dunno, if acpi_dev_ready_for_enumeration() can gain the check itself.
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c |    4 ++--
+ drivers/net/fjes/fjes_main.c                      |   10 +++-------
+ drivers/net/mdio/mdio-xgene.c                     |    8 +++-----
+ 3 files changed, 8 insertions(+), 14 deletions(-)
 
-Well, acpi_bus_get_status() would need it too.
+Index: linux-pm/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+===================================================================
+--- linux-pm.orig/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
++++ linux-pm/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+@@ -1407,9 +1407,9 @@ static acpi_status bgx_acpi_register_phy
+ {
+ 	struct bgx *bgx = context;
+ 	struct device *dev = &bgx->pdev->dev;
+-	struct acpi_device *adev;
++	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
+ 
+-	if (acpi_bus_get_device(handle, &adev))
++	if (!adev)
+ 		goto out;
+ 
+ 	acpi_get_mac_address(dev, adev, bgx->lmac[bgx->acpi_lmac_idx].mac);
+Index: linux-pm/drivers/net/fjes/fjes_main.c
+===================================================================
+--- linux-pm.orig/drivers/net/fjes/fjes_main.c
++++ linux-pm/drivers/net/fjes/fjes_main.c
+@@ -1512,15 +1512,11 @@ static acpi_status
+ acpi_find_extended_socket_device(acpi_handle obj_handle, u32 level,
+ 				 void *context, void **return_value)
+ {
+-	struct acpi_device *device;
++	struct acpi_device *device = acpi_fetch_acpi_dev(obj_handle);
+ 	bool *found = context;
+-	int result;
+ 
+-	result = acpi_bus_get_device(obj_handle, &device);
+-	if (result)
+-		return AE_OK;
+-
+-	if (strcmp(acpi_device_hid(device), ACPI_MOTHERBOARD_RESOURCE_HID))
++	if (!device ||
++	    strcmp(acpi_device_hid(device), ACPI_MOTHERBOARD_RESOURCE_HID))
+ 		return AE_OK;
+ 
+ 	if (!is_extended_socket_device(device))
+Index: linux-pm/drivers/net/mdio/mdio-xgene.c
+===================================================================
+--- linux-pm.orig/drivers/net/mdio/mdio-xgene.c
++++ linux-pm/drivers/net/mdio/mdio-xgene.c
+@@ -280,15 +280,13 @@ static acpi_status acpi_register_phy(acp
+ 				     void *context, void **ret)
+ {
+ 	struct mii_bus *mdio = context;
+-	struct acpi_device *adev;
++	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
+ 	struct phy_device *phy_dev;
+ 	const union acpi_object *obj;
+ 	u32 phy_addr;
+ 
+-	if (acpi_bus_get_device(handle, &adev))
+-		return AE_OK;
+-
+-	if (acpi_dev_get_property(adev, "phy-channel", ACPI_TYPE_INTEGER, &obj))
++	if (!adev ||
++	    acpi_dev_get_property(adev, "phy-channel", ACPI_TYPE_INTEGER, &obj))
+ 		return AE_OK;
+ 	phy_addr = obj->integer.value;
+ 
+
+
+
