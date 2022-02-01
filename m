@@ -2,72 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7823B4A655C
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Feb 2022 21:06:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 437FB4A658F
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Feb 2022 21:20:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236935AbiBAUGE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Feb 2022 15:06:04 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:54912 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231634AbiBAUGC (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Feb 2022 15:06:02 -0500
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 4.0.0)
- id 0f0dd5d4a55e3bee; Tue, 1 Feb 2022 21:06:01 +0100
-Received: from kreacher.localnet (unknown [213.134.162.64])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id BBC8F66B390;
-        Tue,  1 Feb 2022 21:06:00 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Subject: [PATCH] spi: Replace acpi_bus_get_device()
-Date:   Tue, 01 Feb 2022 21:05:59 +0100
-Message-ID: <2231987.ElGaqSPkdT@kreacher>
+        id S238838AbiBAUUF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Feb 2022 15:20:05 -0500
+Received: from mga18.intel.com ([134.134.136.126]:3651 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230400AbiBAUUE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 1 Feb 2022 15:20:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643746804; x=1675282804;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fiY3yiDt5X2wwa/6G2MvYGBBH/76OgCsDl6RxLQLt6s=;
+  b=BlnEVfSTJpF483lGoD0hnk9XVbiJmQhlllCCUFS0FdA0R58WBQs6VyX0
+   fiy7uaB6InK1yBaEsCIOM2JIhWdUJdUp2pW7jYJZKqWQUif4SsUF8xrIZ
+   z3iQro6BCcUpY/XjT3Es8m0gGsQnRqHLVEdEf6bXTJ+QWwpI4iA7MgLsC
+   c6o9eT/NST8LgBetpDSaOujxQtW0hwABsUGbnytHp72ccT0mmXIKojuMH
+   fRC4yPErqLkRrlydVHgbZ1GgnwQ/xTv8EWhIFaFxH3OsH6HfPNuDWHfSe
+   SlSSmZPteT8SD/Uz865JErF0YGrb920UH5Pg8+IhJcufjqzBbu4S3SsHO
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10245"; a="231350983"
+X-IronPort-AV: E=Sophos;i="5.88,334,1635231600"; 
+   d="scan'208";a="231350983"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2022 12:20:04 -0800
+X-IronPort-AV: E=Sophos;i="5.88,334,1635231600"; 
+   d="scan'208";a="534635874"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2022 12:20:02 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nEzcB-00HSOz-Vo;
+        Tue, 01 Feb 2022 22:18:59 +0200
+Date:   Tue, 1 Feb 2022 22:18:59 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Wolfram Sang <wsa@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c <linux-i2c@vger.kernel.org>
+Subject: Re: [PATCH] i2c: ACPI: Replace acpi_bus_get_device()
+Message-ID: <YfmVs3SUKpMFM/da@smile.fi.intel.com>
+References: <4374434.LvFx2qVVIh@kreacher>
+ <Yfl/Sneg9/HPOjBe@smile.fi.intel.com>
+ <CAJZ5v0jFBFKMcjYieYCL1LTvRPuM7b8_5nBx0_wnPtobzg==fw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.162.64
-X-CLIENT-HOSTNAME: 213.134.162.64
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrgeefgddufeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepvddufedrudefgedrudeivddrieegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudeivddrieegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepsghrohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqshhpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0jFBFKMcjYieYCL1LTvRPuM7b8_5nBx0_wnPtobzg==fw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Tue, Feb 01, 2022 at 08:01:46PM +0100, Rafael J. Wysocki wrote:
+> On Tue, Feb 1, 2022 at 7:44 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > On Tue, Feb 01, 2022 at 07:00:42PM +0100, Rafael J. Wysocki wrote:
+> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > >
+> > > Replace acpi_bus_get_device() that is going to be dropped with
+> > > acpi_fetch_acpi_dev().
+> > >
+> > > No intentional functional impact.
+> >
+> > ...
+> >
+> > > +     if (!adev || i2c_acpi_get_info(adev, &info, adapter, NULL))
+> >
+> > AFAICS the !adev check is redundant since acpi_device_enumerated() does it.
+> 
+> No.
+> 
+> acpi_device_enumerated() returns false if adev is NULL, so without
+> this extra check i2c_acpi_get_info() will end up passing NULL to
+> i2c_acpi_do_lookup().
 
-Replace acpi_bus_get_device() that is going to be dropped with
-acpi_fetch_acpi_dev().
+I see now.
 
-No intentional functional impact.
+The patch LGTM,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/spi/spi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> > >               return AE_OK;
+> >
+> > ...
+> >
+> > > +     struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
+> > >
+> > > -     if (i2c_acpi_do_lookup(adev, lookup))
+> > > +     if (!adev || i2c_acpi_do_lookup(adev, lookup))
+> > >               return AE_OK;
+> >
+> > Here we need it indeed.
+> > Dunno, if acpi_dev_ready_for_enumeration() can gain the check itself.
+> 
+> Well, acpi_bus_get_status() would need it too.
 
-Index: linux-pm/drivers/spi/spi.c
-===================================================================
---- linux-pm.orig/drivers/spi/spi.c
-+++ linux-pm/drivers/spi/spi.c
-@@ -2480,10 +2480,10 @@ static acpi_status acpi_register_spi_dev
- static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
- 				       void *data, void **return_value)
- {
-+	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
- 	struct spi_controller *ctlr = data;
--	struct acpi_device *adev;
- 
--	if (acpi_bus_get_device(handle, &adev))
-+	if (!adev)
- 		return AE_OK;
- 
- 	return acpi_register_spi_device(ctlr, adev);
-
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
