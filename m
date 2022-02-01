@@ -2,279 +2,217 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4ECA4A54C3
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Feb 2022 02:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3451C4A54C5
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Feb 2022 02:50:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231350AbiBABsG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 31 Jan 2022 20:48:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52130 "EHLO
+        id S231972AbiBABuk (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 31 Jan 2022 20:50:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229824AbiBABsG (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jan 2022 20:48:06 -0500
-Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4417C06173B
-        for <linux-acpi@vger.kernel.org>; Mon, 31 Jan 2022 17:48:05 -0800 (PST)
-Received: by mail-pf1-x44a.google.com with SMTP id d9-20020a62f809000000b004bb5ffee9b3so8307341pfh.15
-        for <linux-acpi@vger.kernel.org>; Mon, 31 Jan 2022 17:48:05 -0800 (PST)
+        with ESMTP id S231933AbiBABuk (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 31 Jan 2022 20:50:40 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE7CC06173B
+        for <linux-acpi@vger.kernel.org>; Mon, 31 Jan 2022 17:50:40 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id l5so30683111edv.3
+        for <linux-acpi@vger.kernel.org>; Mon, 31 Jan 2022 17:50:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=date:message-id:mime-version:subject:from:to:cc
-         :content-transfer-encoding;
-        bh=26fuvaER4d3o3+CCq4wIldSwQFOjL4djRnP08g9wyQI=;
-        b=M0xYR5mBcaBe9GXmdN9ZH3iR0ewUivVKevfQIyV1PPaGyTj6GEI+AhcyUvXffl0v2H
-         Kc1/YGobdqPtfTVdbNfbMqJXK/ha840RvVLq15j4aCpDSUjuqL7sZCR2jDzuV0TTYtb3
-         t6OTwr5T61iyvrms5s196M0fzlaNG1tT1pOPJFEhEa9KXGbcxolKytdpBCfBUV8AaUC0
-         1pIcJOUgAS4xl/sj4+ImwazbE8ju+9nf2vqAeVpfnKQvVVAnTQQykPU5BJdO4+xwT6MO
-         Hg2BPkJWC7mNRWQWVaigo6T8x5et2pZmqL+1nYs/a4HadXU6fZ4BK1sC9gv5IzPcHSXq
-         wb5A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=vX8lJ/5irFUbrQshrGKk6fkPcADVUFCEGVOJFcb+mTI=;
+        b=sYD2zyJEoz0fDTJJIZbrppOA1xMwCQB+cNxzVXb0h0dPlrFD2LpXKpDRj358NqIgs/
+         JuMsxJwMPp8B8HhxfF/8kwyUcO8RyzmLD030ShqTwwqNY0GpX8qXMgt1zCTcuTFj1ihS
+         e29TjT/vZDa4m4LeO/SMK1rf84treEcYkZfjY+OK2EA+EZkRl9oE9bySFXp9Ik0HcucE
+         kBxLN+4Kalhl61HFQDYl06QpgBYHQFvWZ7jajs0OXwgaCdQtar340Q2nx/LbsV6vX4pn
+         g0QBXumC3e0/tnYlDoOFHrraZkjq4DaoDyQ7lhEK29xJkrKTuPzk9W7k+7LkP8tPRfpe
+         V1Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc
-         :content-transfer-encoding;
-        bh=26fuvaER4d3o3+CCq4wIldSwQFOjL4djRnP08g9wyQI=;
-        b=jm80VOCVSQxZqyAFF73p9vvUZ4IjRiWLaw1wq1phw1FXxVDRsBCNGel68x+/P+baSO
-         t6FONQ+TYoW00zHSDDm8bR5ATIv7X4Bf0PF9d/+WxLl7rZ/EYAsKSr/ZH3/3xStliFnp
-         xAHFFd2+Lu70huy8F7D4rLKZP5q8IXbGPH8p0Hl7rPJF//yg/hLoei+rWleKWamN+Ej+
-         L1uVPVYUDZwq1WvywKM+DmsBOflMY7EtINSbTCX3RiBDNb9iZNmlF+YgTZ7+zLAkIa5K
-         scxxQMB3mCoXK5TX0D0C2WEto7Cen0+Ar5dJWL7GbP77QNGbQI108808SDMazzC8aJMI
-         5R9g==
-X-Gm-Message-State: AOAM531/tNsMZCLSdatmGMg/Xn35+p++hseuIcGpVR1oLwrlFVnYIEtP
-        OfZscs+uWf7WXjOTZDgGupGBaH7/7hGvGw==
-X-Google-Smtp-Source: ABdhPJzEKFV05q62Zp8BXEtvihVdNVoSYcx/3UUDUEW+oTSg0+3j78cD0SNqqSbry8QQhijv1kehd77ie8Px0Q==
-X-Received: from wonchungspecialist.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:1440])
- (user=wonchung job=sendgmr) by 2002:a62:15c3:: with SMTP id
- 186mr22623342pfv.59.1643680085154; Mon, 31 Jan 2022 17:48:05 -0800 (PST)
-Date:   Tue,  1 Feb 2022 01:48:00 +0000
-Message-Id: <20220201014800.3109059-1-wonchung@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.35.0.rc2.247.g8bbb082509-goog
-Subject: [PATCH v4] ACPI: device_sysfs: Add sysfs support for _PLD
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=vX8lJ/5irFUbrQshrGKk6fkPcADVUFCEGVOJFcb+mTI=;
+        b=fKwmOjE2OubuDdE7/C+Q5XRIyccoKFcKdS/MvgJ06uv/FZXueL7oiEr+37ipdwP5t9
+         yrN5/vL1cRebE4mXv2xt1AtUnWdhFiUDs+pKNXVjdBF/YmusSga7usZ+J3uCQfrqf8E6
+         gLadysBlxxWq6Zngsx1r6K9m8y+LYPAxgQ1RY/eGJgXkRGk35XdEvtYm/rBajKMuWDTY
+         0Yd4RrHafzQjia/deQiRmTYlwCK8iDxMmDP9NQvQrmrSPxCYKOh2PouCEqfmdjPqYWmA
+         aeqX0ji5HbdHMp0e9TXjiRVC2sDOhKLHJ6H2EoqlRVv/64VgfpMpyAiaGAFKDQvEsiio
+         3qdw==
+X-Gm-Message-State: AOAM5328zp0SV7gBnfCDPz2mnm9f6zyq+sCmSran4pEdDLbcuZgnKjE1
+        Nf0wPiAz5KZmgRq1+uaLs3f3IH4+H0wdsK70zJSNuw==
+X-Google-Smtp-Source: ABdhPJxCouayNuZTUdGVvLMO4egBm+KCI0nU5UkqGu9ZqFrhV5ilFNDk2UeMv9el1IUTl78Lhw2qeVqpRNreWTsC9Wk=
+X-Received: by 2002:aa7:c906:: with SMTP id b6mr23294970edt.8.1643680238544;
+ Mon, 31 Jan 2022 17:50:38 -0800 (PST)
+MIME-Version: 1.0
+References: <20220128180832.2329149-1-wonchung@google.com> <YfeQxYNzWltRQ7mq@kuha.fi.intel.com>
+In-Reply-To: <YfeQxYNzWltRQ7mq@kuha.fi.intel.com>
 From:   Won Chung <wonchung@google.com>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
+Date:   Mon, 31 Jan 2022 17:50:27 -0800
+Message-ID: <CAOvb9yiUUcyXx=_EgzFU6EqGHrnUWkKwRLPTEVM6SXyO0hXP6w@mail.gmail.com>
+Subject: Re: [PATCH v3] ACPI: device_sysfs: Add sysfs support for _PLD
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Benson Leung <bleung@chromium.org>,
         Prashant Malani <pmalani@chromium.org>,
         linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Won Chung <wonchung@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-When ACPI table includes _PLD fields for a device, create a new
-directory (pld) in sysfs to share _PLD fields.
+Hi Heikki,
 
-Signed-off-by: Won Chung <wonchung@google.com>
----
- Documentation/ABI/testing/sysfs-bus-acpi | 101 +++++++++++++++++++++++
- drivers/acpi/device_sysfs.c              |  55 ++++++++++++
- include/acpi/acpi_bus.h                  |   1 +
- 3 files changed, 157 insertions(+)
+Thank you for the review. It seems to be the convention to have a
+separate attribute file for each field, as you pointed out. I have
+made the change and sent v4.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentation/ABI/t=
-esting/sysfs-bus-acpi
-index 58abacf59b2a..a47fa861dec5 100644
---- a/Documentation/ABI/testing/sysfs-bus-acpi
-+++ b/Documentation/ABI/testing/sysfs-bus-acpi
-@@ -96,3 +96,104 @@ Description:
- 		hardware, if the _HRV control method is present.  It is mostly
- 		useful for non-PCI devices because lspci can list the hardware
- 		version for PCI devices.
-+
-+What:		/sys/bus/acpi/devices/.../pld/
-+Date:		Feb, 2022
-+Contact:	Won Chung <wonchung@google.com>
-+Description:
-+		This directory contains the output of the device object's _PLD
-+		control method, if present. This information provides details
-+		on physical location of a device.
-+
-+What:		/sys/bus/acpi/devices/.../pld/revision
-+Date:		Feb, 2022
-+Contact:	Won Chung <wonchung@google.com>
-+Description:
-+		The current revision is 0x2.
-+
-+What:           /sys/bus/acpi/devices/.../pld/group_token
-+Date:           Feb, 2022
-+Contact:        Won Chung <wonchung@google.com>
-+Description:
-+		Unique numerical value identifying a group.
-+
-+What:           /sys/bus/acpi/devices/.../pld/group_position
-+Date:           Feb, 2022
-+Contact:        Won Chung <wonchung@google.com>
-+Description:
-+		Identifies this device connection point=E2=80=99s position in the group.
-+
-+What:           /sys/bus/acpi/devices/.../pld/user_visible
-+Date:           Feb, 2022
-+Contact:        Won Chung <wonchung@google.com>
-+Description:
-+		Set if the device connection point can be seen by the user
-+		without disassembly.
-+
-+What:           /sys/bus/acpi/devices/.../pld/dock
-+Date:           Feb, 2022
-+Contact:        Won Chung <wonchung@google.com>
-+Description:
-+		Set if the device connection point resides in a docking station
-+		or port replicator.
-+
-+What:           /sys/bus/acpi/devices/.../pld/bay
-+Date:           Feb, 2022
-+Contact:        Won Chung <wonchung@google.com>
-+Description:
-+		Set if describing a device in a bay or if device connection
-+		point is a bay.
-+
-+What:           /sys/bus/acpi/devices/.../pld/lid
-+Date:           Feb, 2022
-+Contact:        Won Chung <wonchung@google.com>
-+Description:
-+		Set if this device connection point resides on the lid of
-+		laptop system.
-+
-+What:           /sys/bus/acpi/devices/.../pld/panel
-+Date:           Feb, 2022
-+Contact:        Won Chung <wonchung@google.com>
-+Description:
-+		Describes which panel surface of the system=E2=80=99s housing the
-+		device connection point resides on:
-+		0 - Top
-+		1 - Bottom
-+		2 - Left
-+		3 - Right
-+		4 - Front
-+		5 - Back
-+		6 - Unknown (Vertical Position and Horizontal Position will be
-+		ignored)
-+
-+What:           /sys/bus/acpi/devices/.../pld/vertical_position
-+Date:           Feb, 2022
-+Contact:        Won Chung <wonchung@google.com>
-+Description:
-+		0 - Upper
-+		1 - Center
-+		2 - Lower
-+
-+What:           /sys/bus/acpi/devices/.../pld/horizontal_position
-+Date:           Feb, 2022
-+Contact:        Won Chung <wonchung@google.com>
-+Description:
-+		0 - Leftmost
-+		Higher numbers going toward the right.
-+
-+What:           /sys/bus/acpi/devices/.../pld/shape
-+Date:           Feb, 2022
-+Contact:        Won Chung <wonchung@google.com>
-+Description:
-+		Describes the shape of the device connection point.
-+		0 - Round
-+		1 - Oval
-+		2 - Square
-+		3 - Vertical Rectangle
-+		4 - Horizontal Rectangle
-+		5 - Vertical Trapezoid
-+		6 - Horizontal Trapezoid
-+		7 - Unknown - Shape rendered as a Rectangle with dotted lines
-+		8 - Chamfered
-+		15:9 - Reserved
-+
-diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-index d5d6403ba07b..610be93635a0 100644
---- a/drivers/acpi/device_sysfs.c
-+++ b/drivers/acpi/device_sysfs.c
-@@ -509,6 +509,49 @@ static ssize_t status_show(struct device *dev, struct =
-device_attribute *attr,
- }
- static DEVICE_ATTR_RO(status);
-=20
-+#define DEV_ATTR_PLD_PROP(prop) \
-+	static ssize_t prop##_show(struct device *dev, struct device_attribute *a=
-ttr, \
-+		char *buf) \
-+{ \
-+	struct acpi_device *acpi_dev =3D to_acpi_device(dev); \
-+	if (acpi_dev->pld =3D=3D NULL) \
-+		return -EIO; \
-+	return sprintf(buf, "%u\n", acpi_dev->pld->prop); \
-+}; \
-+static DEVICE_ATTR_RO(prop)
-+
-+DEV_ATTR_PLD_PROP(revision);
-+DEV_ATTR_PLD_PROP(group_token);
-+DEV_ATTR_PLD_PROP(group_position);
-+DEV_ATTR_PLD_PROP(user_visible);
-+DEV_ATTR_PLD_PROP(dock);
-+DEV_ATTR_PLD_PROP(bay);
-+DEV_ATTR_PLD_PROP(lid);
-+DEV_ATTR_PLD_PROP(panel);
-+DEV_ATTR_PLD_PROP(vertical_position);
-+DEV_ATTR_PLD_PROP(horizontal_position);
-+DEV_ATTR_PLD_PROP(shape);
-+
-+static struct attribute *dev_attr_pld[] =3D {
-+	&dev_attr_revision.attr,
-+	&dev_attr_group_token.attr,
-+	&dev_attr_group_position.attr,
-+	&dev_attr_user_visible.attr,
-+	&dev_attr_dock.attr,
-+	&dev_attr_bay.attr,
-+	&dev_attr_lid.attr,
-+	&dev_attr_panel.attr,
-+	&dev_attr_vertical_position.attr,
-+	&dev_attr_horizontal_position.attr,
-+	&dev_attr_shape.attr,
-+	NULL,
-+};
-+
-+static struct attribute_group dev_attr_pld_group =3D {
-+	.name =3D "pld",
-+	.attrs =3D dev_attr_pld,
-+};
-+
- /**
-  * acpi_device_setup_files - Create sysfs attributes of an ACPI device.
-  * @dev: ACPI device object.
-@@ -595,6 +638,16 @@ int acpi_device_setup_files(struct acpi_device *dev)
- 						    &dev_attr_real_power_state);
- 	}
-=20
-+	if (acpi_has_method(dev->handle, "_PLD")) {
-+		status =3D acpi_get_physical_device_location(dev->handle,
-+			&dev->pld);
-+		if (ACPI_FAILURE(status))
-+			goto end;
-+		result =3D device_add_group(&dev->dev, &dev_attr_pld_group);
-+		if (result)
-+			goto end;
-+	}
-+
- 	acpi_expose_nondev_subnodes(&dev->dev.kobj, &dev->data);
-=20
- end:
-@@ -645,4 +698,6 @@ void acpi_device_remove_files(struct acpi_device *dev)
- 		device_remove_file(&dev->dev, &dev_attr_status);
- 	if (dev->handle)
- 		device_remove_file(&dev->dev, &dev_attr_path);
-+	if (acpi_has_method(dev->handle, "_PLD"))
-+		device_remove_group(&dev->dev, &dev_attr_pld_group);
- }
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index ca88c4706f2b..929e726a666b 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -381,6 +381,7 @@ struct acpi_device {
- 	struct acpi_hotplug_context *hp;
- 	struct acpi_driver *driver;
- 	const struct acpi_gpio_mapping *driver_gpios;
-+	struct acpi_pld_info *pld;
- 	void *driver_data;
- 	struct device dev;
- 	unsigned int physical_node_count;
---=20
-2.35.0.rc2.247.g8bbb082509-goog
+Thanks,
+Won
 
+
+On Sun, Jan 30, 2022 at 11:33 PM Heikki Krogerus
+<heikki.krogerus@linux.intel.com> wrote:
+>
+> On Fri, Jan 28, 2022 at 06:08:32PM +0000, Won Chung wrote:
+> > When ACPI table includes _PLD fields for a device, create a new file
+> > (pld) in sysfs to share _PLD fields.
+> >
+> > Signed-off-by: Won Chung <wonchung@google.com>
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-acpi | 53 ++++++++++++++++++++++++
+> >  drivers/acpi/device_sysfs.c              | 42 +++++++++++++++++++
+> >  2 files changed, 95 insertions(+)
+> >
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentation/A=
+BI/testing/sysfs-bus-acpi
+> > index 58abacf59b2a..3a9c6a4f4603 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-acpi
+> > +++ b/Documentation/ABI/testing/sysfs-bus-acpi
+> > @@ -96,3 +96,56 @@ Description:
+> >               hardware, if the _HRV control method is present.  It is m=
+ostly
+> >               useful for non-PCI devices because lspci can list the har=
+dware
+> >               version for PCI devices.
+> > +
+> > +What:                /sys/bus/acpi/devices/.../pld
+> > +Date:                Jan, 2022
+> > +Contact:     Won Chung <wonchung@google.com>
+> > +Description:
+> > +             This attribute contains the output of the device object's
+> > +             _PLD control method, if present. This information provide=
+s
+> > +             details on physical location of a port.
+> > +
+> > +             Description on each _PLD field from ACPI specification:
+> > +
+> > +             =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +             GROUP_TOKEN     Unique numerical value identifying a grou=
+p.
+> > +             GROUP_POSITION  Identifies this device connection point=
+=E2=80=99s
+> > +                             position in the group.
+> > +             USER_VISIBLE    Set if the device connection point can be
+> > +                             seen by the user without disassembly.
+> > +             DOCK            Set if the device connection point reside=
+s
+> > +                             in a docking station or port replicator.
+> > +             BAY             Set if describing a device in a bay or if
+> > +                             device connection point is a bay.
+> > +             LID             Set if this device connection point resid=
+es
+> > +                             on the lid of laptop system.
+> > +             PANEL           Describes which panel surface of the syst=
+em=E2=80=99s
+> > +                             housing the device connection point resid=
+es on:
+> > +                             0 - Top
+> > +                             1 - Bottom
+> > +                             2 - Left
+> > +                             3 - Right
+> > +                             4 - Front
+> > +                             5 - Back
+> > +                             6 - Unknown (Vertical Position and Horizo=
+ntal
+> > +                             Position will be ignored)
+> > +             HORIZONTAL_     0 - Left
+> > +             POSITION        1 - Center
+> > +                             2 - Right
+> > +             VERTICAL_       0 - Upper
+> > +             POSITION        1 - Center
+> > +                             2 - Lower
+> > +             SHAPE           Describes the shape of the device connect=
+ion
+> > +                             point.
+> > +                             0 - Round
+> > +                             1 - Oval
+> > +                             2 - Square
+> > +                             3 - Vertical Rectangle
+> > +                             4 - Horizontal Rectangle
+> > +                             5 - Vertical Trapezoid
+> > +                             6 - Horizontal Trapezoid
+> > +                             7 - Unknown - Shape rendered as a Rectang=
+le
+> > +                             with dotted lines
+> > +                             8 - Chamfered
+> > +                             15:9 - Reserved
+> > +             =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+> > index d5d6403ba07b..8d4df5fb1c45 100644
+> > --- a/drivers/acpi/device_sysfs.c
+> > +++ b/drivers/acpi/device_sysfs.c
+> > @@ -509,6 +509,40 @@ static ssize_t status_show(struct device *dev, str=
+uct device_attribute *attr,
+> >  }
+> >  static DEVICE_ATTR_RO(status);
+> >
+> > +static ssize_t pld_show(struct device *dev, struct device_attribute *a=
+ttr,
+> > +                     char *buf)
+> > +{
+> > +     struct acpi_device *acpi_dev =3D to_acpi_device(dev);
+> > +     acpi_status status;
+> > +     struct acpi_pld_info *pld;
+> > +
+> > +     status =3D acpi_get_physical_device_location(acpi_dev->handle, &p=
+ld);
+> > +     if (ACPI_FAILURE(status))
+> > +             return -ENODEV;
+> > +
+> > +     return sprintf(buf, "GROUP_TOKEN=3D%u\n"
+> > +             "GROUP_POSITION=3D%u\n"
+> > +             "USER_VISIBLE=3D%u\n"
+> > +             "DOCK=3D%u\n"
+> > +             "BAY=3D%u\n"
+> > +             "LID=3D%u\n"
+> > +             "PANEL=3D%u\n"
+> > +             "HORIZONTAL_POSITION=3D%u\n"
+> > +             "VERTICAL_POSITION=3D%u\n"
+> > +             "SHAPE=3D%u\n",
+> > +             pld->group_token,
+> > +             pld->group_position,
+> > +             pld->user_visible,
+> > +             pld->dock,
+> > +             pld->bay,
+> > +             pld->lid,
+> > +             pld->panel,
+> > +             pld->horizontal_position,
+> > +             pld->vertical_position,
+> > +             pld->shape);
+> > +}
+> > +static DEVICE_ATTR_RO(pld);
+>
+> Why not have a pld group (directory) and a separate attribute file for
+> each field?
+>
+>
+> thanks,
+>
+> --
+> heikki
