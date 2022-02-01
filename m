@@ -2,73 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1984B4A634C
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Feb 2022 19:13:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FFE64A6427
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Feb 2022 19:44:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241840AbiBASNn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Feb 2022 13:13:43 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:62358 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232360AbiBASLm (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Feb 2022 13:11:42 -0500
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 4.0.0)
- id 67adb7ded8a5fe1d; Tue, 1 Feb 2022 19:11:41 +0100
-Received: from kreacher.localnet (unknown [213.134.162.64])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id CD86966B390;
-        Tue,  1 Feb 2022 19:11:40 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
+        id S233399AbiBASo2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Feb 2022 13:44:28 -0500
+Received: from mga05.intel.com ([192.55.52.43]:6067 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234947AbiBASo1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Tue, 1 Feb 2022 13:44:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643741067; x=1675277067;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BSdILmVVdhlYiW3scvmJUorltIkQzLWqnyPe6L5Sra8=;
+  b=hJg+W8Nt3G3p+gyTjtY3bSAYp3yuVtSFCFAcAkS1R5mlJ+h7TMpy66nt
+   4KiVBvNk91ziTkdmqd11faTouumEgI2T3ihEsNjM5spIRpk8Ks3dL11CH
+   DRl+c+pykhBYI1n/hWDCM/7tlXkClrn4jEv6VpIIstwVZXqm8D2ESvqRo
+   vpSU9C+bPuiOm+0tnc5DlJE2bPmGdicpq5RZPTKdXM50ht/hrxVJZXo7/
+   2tAya9Wsbd2VIVsQtiTT/zYH965ubFk83alQRV6yNWouOHR6+EAV/KIhz
+   iOKeJzmuIs1WiBRRramfCntyqfp95idQW0ruARdKTy6Y0DPqWVRy9wG1E
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10245"; a="334118357"
+X-IronPort-AV: E=Sophos;i="5.88,334,1635231600"; 
+   d="scan'208";a="334118357"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2022 10:44:27 -0800
+X-IronPort-AV: E=Sophos;i="5.88,334,1635231600"; 
+   d="scan'208";a="565686935"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2022 10:44:25 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nEy7e-00HQrv-Tt;
+        Tue, 01 Feb 2022 20:43:22 +0200
+Date:   Tue, 1 Feb 2022 20:43:22 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Wolfram Sang <wsa@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
         Linux ACPI <linux-acpi@vger.kernel.org>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        iommu@lists.linux-foundation.org
-Subject: [PATCH] IOMMU: Intel: DMAR: Replace acpi_bus_get_device()
-Date:   Tue, 01 Feb 2022 19:11:40 +0100
-Message-ID: <1807113.tdWV9SEqCh@kreacher>
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-i2c@vger.kernel.org
+Subject: Re: [PATCH] i2c: ACPI: Replace acpi_bus_get_device()
+Message-ID: <Yfl/Sneg9/HPOjBe@smile.fi.intel.com>
+References: <4374434.LvFx2qVVIh@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.162.64
-X-CLIENT-HOSTNAME: 213.134.162.64
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrgeefgddutdelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepvddufedrudefgedrudeivddrieegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudeivddrieegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeejpdhrtghpthhtohepugifmhifvdesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegsrgholhhurdhluheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjohhr
- oheskegshihtvghsrdhorhhgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehiohhmmhhusehlihhsthhsrdhlihhnuhigqdhfohhunhgurghtihhonhdrohhrgh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4374434.LvFx2qVVIh@kreacher>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Tue, Feb 01, 2022 at 07:00:42PM +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Replace acpi_bus_get_device() that is going to be dropped with
+> acpi_fetch_acpi_dev().
+> 
+> No intentional functional impact.
 
-Replace acpi_bus_get_device() that is going to be dropped with
-acpi_fetch_acpi_dev().
+...
 
-No intentional functional impact.
+> +	if (!adev || i2c_acpi_get_info(adev, &info, adapter, NULL))
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/iommu/intel/dmar.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+AFAICS the !adev check is redundant since acpi_device_enumerated() does it.
 
-Index: linux-pm/drivers/iommu/intel/dmar.c
-===================================================================
---- linux-pm.orig/drivers/iommu/intel/dmar.c
-+++ linux-pm/drivers/iommu/intel/dmar.c
-@@ -789,7 +789,8 @@ static int __init dmar_acpi_dev_scope_in
- 				       andd->device_name);
- 				continue;
- 			}
--			if (acpi_bus_get_device(h, &adev)) {
-+			adev = acpi_fetch_acpi_dev(h);
-+			if (!adev) {
- 				pr_err("Failed to get device for ACPI object %s\n",
- 				       andd->device_name);
- 				continue;
+>  		return AE_OK;
 
+...
+
+> +	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
+>  
+> -	if (i2c_acpi_do_lookup(adev, lookup))
+> +	if (!adev || i2c_acpi_do_lookup(adev, lookup))
+>  		return AE_OK;
+
+Here we need it indeed.
+Dunno, if acpi_dev_ready_for_enumeration() can gain the check itself.
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
