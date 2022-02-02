@@ -2,69 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2034A71DB
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 14:46:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC1294A7255
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 14:54:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344390AbiBBNqi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Feb 2022 08:46:38 -0500
-Received: from mail-yb1-f178.google.com ([209.85.219.178]:38735 "EHLO
-        mail-yb1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236971AbiBBNqi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Feb 2022 08:46:38 -0500
-Received: by mail-yb1-f178.google.com with SMTP id i62so61086523ybg.5;
-        Wed, 02 Feb 2022 05:46:38 -0800 (PST)
+        id S1344650AbiBBNya (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Feb 2022 08:54:30 -0500
+Received: from mail-yb1-f179.google.com ([209.85.219.179]:46676 "EHLO
+        mail-yb1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344688AbiBBNyW (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Feb 2022 08:54:22 -0500
+Received: by mail-yb1-f179.google.com with SMTP id p5so61129876ybd.13;
+        Wed, 02 Feb 2022 05:54:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WMfXKNSp/PKEJRO6B8MpNpobz40F/YsHkwSpV9zn3C8=;
-        b=lDqyTDS5h04JRpKy+KaxHIxkqDVNYL2ign6cPmvv/oVsOHXWny1rk2quPCveTw/dqy
-         87MBTH9DJsImL3DoMaNFsVvFqPIsbFrCuJDC36/Apda355+2AkasQq0TWkPkJPmSMmFb
-         ntfufLgaVN3RqOysSnvu8kKei1xjEQcloqM8gpC+crsTM+ks+8Dl5Dh6iQc/WiS1mSnB
-         6i39ESgEeIBUlZu5mh3yjV/hpL+z+2RtzPY6Tt349otU7ZZUIC7uN05jwFanS88dIt+h
-         OrHvHoIBQ+ugpuvOi7dQSMcpNwhLfVrVl5QoVBpVAPWwc0/FDBwXNTGxfjpxs8ZTLp/G
-         B+xA==
-X-Gm-Message-State: AOAM5300xRBPp/fFoTuQgAvzZL6535Ump5KMG8KGsgdBH4VHCU95e/NA
-        wpSGS5TJm0qMYyfCw+4GOH3iRRes2++DVq24Nuw=
-X-Google-Smtp-Source: ABdhPJxGneqVqvLbtm22adzeDHhuQjRs9yliiA/EmP362d17O6riUVorP/6DSgn9/SzfH5eCOLT679ieDKIMN3uNb7Q=
-X-Received: by 2002:a25:cc97:: with SMTP id l145mr4526945ybf.272.1643809597658;
- Wed, 02 Feb 2022 05:46:37 -0800 (PST)
+        bh=KF5lsBDVHuWJh2maqXVzoYWsWumISdu8x7CYgh0GO0Q=;
+        b=6Ni0Lc89It5hRO69mB8xAhYoK7z6qnU61195oBLF93ae2NvjVkG2amD4k7cdFwyFFg
+         4Ezd3Kh1hm7MWmmdAfckQpuOf067rNiLndGv+eclxdT1TsABTdtukmFVvBytZ8bGiOjU
+         mZlrb8499HMqtN3GLCNrLKhHYpYrmS6ReDZYKzU1+AX4OeNrneTYDJMR3jZ3n2z+yfsM
+         uYmIhMnnJbK93Q5IY9j1BaCcFYBLjRSZmP7yMj+NK3U9GHnxzrQ+V2gPD1Xd/pvulM95
+         cEEz37hxfLX301ZJPFNVFFMc/OtxW52ESMe9F/BFnqgK4QVfW1UwzLTL+64qt8FEgPuC
+         PeCA==
+X-Gm-Message-State: AOAM530Pi9iZOFGDoTe0qKsIA2bTA0wK0vh9WKJKZz6ME9cDbxr5hqCc
+        alzrIEcmYGU38uNnw+HTXMqIj/PKJ66Oqio3h14=
+X-Google-Smtp-Source: ABdhPJwWl3u2e+Brk6HodWZLquLvBayn7SaGfS0dXze63T7PPuhBAJCBWwxxLMTEXAdOZ8xcWSNxT9/rLQoMWzEnnR0=
+X-Received: by 2002:a05:6902:1507:: with SMTP id q7mr44563918ybu.343.1643810062027;
+ Wed, 02 Feb 2022 05:54:22 -0800 (PST)
 MIME-Version: 1.0
-References: <1883502.PYKUYFuaPT@kreacher> <YfpQlQ6CH5eoRjuD@lahna>
-In-Reply-To: <YfpQlQ6CH5eoRjuD@lahna>
+References: <11918902.O9o76ZdvQC@kreacher> <20220201201418.67ae9005@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20220201201418.67ae9005@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 2 Feb 2022 14:46:26 +0100
-Message-ID: <CAJZ5v0ifQJ=XxXHUSnACzd2cTLRB+ncwEFrwLP0ybuivX2ORAg@mail.gmail.com>
-Subject: Re: [PATCH] thunderbolt: Replace acpi_bus_get_device()
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Date:   Wed, 2 Feb 2022 14:54:11 +0100
+Message-ID: <CAJZ5v0jQ3u-sbF8F1kSDOFbPoG24yOBSADWvwp0Tgmysm8CuFA@mail.gmail.com>
+Subject: Re: [PATCH v2] drivers: net: Replace acpi_bus_get_device()
+To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Keyur Chudgar <keyur@os.amperecomputing.com>,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
         LKML <linux-kernel@vger.kernel.org>,
-        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
-        <linux-usb@vger.kernel.org>
+        Linux ACPI <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 2, 2022 at 10:36 AM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
+On Wed, Feb 2, 2022 at 5:20 AM Jakub Kicinski <kuba@kernel.org> wrote:
 >
-> On Tue, Feb 01, 2022 at 08:12:30PM +0100, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Replace acpi_bus_get_device() that is going to be dropped with
-> > acpi_fetch_acpi_dev().
-> >
-> > No intentional functional impact.
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> On Tue, 01 Feb 2022 20:58:36 +0100 Rafael J. Wysocki wrote:
+> > -     struct bgx *bgx = context;
+> > +     struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
+> >       struct device *dev = &bgx->pdev->dev;
+> > -     struct acpi_device *adev;
+> > +     struct bgx *bgx = context;
 >
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
->
-> Let me know if you want me to pick this up.
+> Compiler says you can't move bgx before dev.
 
-Yes, please, if you can.
+Right, I've obviously missed that.
+
+> Venturing deeper into the bikesheeding territory but I'd leave the
+> variable declarations be and move init of adev before the check.
+> Matter of preference but calling something that needs to be error
+> checked in variable init breaks the usual
+>
+>         ret = func(some, arguments);
+>         if (ret)
+>                 goto explosions;
+>
+> flow.
+
+It doesn't for me, but let me send a v3.
+
+Thanks!
+
+> > -     if (acpi_bus_get_device(handle, &adev))
+> > +     if (!adev)
+> >               goto out;
