@@ -2,125 +2,126 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55F584A6E72
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 11:13:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FE654A6F1C
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 11:46:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245740AbiBBKNP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Feb 2022 05:13:15 -0500
-Received: from foss.arm.com ([217.140.110.172]:48784 "EHLO foss.arm.com"
+        id S232486AbiBBKq4 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Feb 2022 05:46:56 -0500
+Received: from mga02.intel.com ([134.134.136.20]:8663 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232501AbiBBKNO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Feb 2022 05:13:14 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C65551FB;
-        Wed,  2 Feb 2022 02:13:13 -0800 (PST)
-Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DFD913F40C;
-        Wed,  2 Feb 2022 02:13:12 -0800 (PST)
-Date:   Wed, 2 Feb 2022 10:13:07 +0000
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     guohanjun@huawei.com, sudeep.holla@arm.com,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Michael Petlan <mpetlan@redhat.com>
-Subject: Re: [PATCH] ACPI/IORT: Check node revision for PMCG resources
-Message-ID: <20220202101307.GA16459@lpieralisi>
-References: <a262d1122f493c83eb48fd643e1c51019ab93c67.1643641404.git.robin.murphy@arm.com>
+        id S229631AbiBBKq4 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 2 Feb 2022 05:46:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643798816; x=1675334816;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+0frq3/pxSbf/XvLi5+RhsXZXIGjY/DHMNgJEUnWoi4=;
+  b=gRmgf1IK5BVtkK15hHmJ+WR14VFeMffOQ+ETP0t6KlkMkIx4c5H3kQsp
+   aTnvjdP2T0EqT06RCHThUiRnwyEFDMmVj7BeJCSO5ZAlAji85GLl6Cicg
+   pvJy3xj+OnCsUi4cVRH5of5ui1MJgQQmKJ+Xy29iXZzOhD2q1cd2q9W0T
+   1Avufh5+1wezQhOGZcsn2M7NzPJZ4LJLdpjEjLf47kbkmpKX5UK0VuX1C
+   ruWtn4WdFbRAywyL5o73zloGMs9unD3W8tNbm8dZ0SZpCWx2+ofBRagky
+   v+ePj2L9Jn5/5HeScP8e7NbdDfVdT57M/dtNAwV5eYQ2E1hBQH73OVny9
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10245"; a="235287987"
+X-IronPort-AV: E=Sophos;i="5.88,336,1635231600"; 
+   d="scan'208";a="235287987"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 02:46:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,336,1635231600"; 
+   d="scan'208";a="771401008"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 02 Feb 2022 02:46:52 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nFDA3-000UTg-UZ; Wed, 02 Feb 2022 10:46:51 +0000
+Date:   Wed, 2 Feb 2022 18:46:44 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>, netdev@vger.kernel.org
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+        Keyur Chudgar <keyur@os.amperecomputing.com>,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v2] drivers: net: Replace acpi_bus_get_device()
+Message-ID: <202202021810.82z7OPTR-lkp@intel.com>
+References: <11918902.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a262d1122f493c83eb48fd643e1c51019ab93c67.1643641404.git.robin.murphy@arm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <11918902.O9o76ZdvQC@kreacher>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 31, 2022 at 03:03:24PM +0000, Robin Murphy wrote:
-> The original version of the IORT PMCG definition had an oversight
-> wherein there was no way to describe the second register page for an
-> implementation using the recommended RELOC_CTRS feature. Although the
-> spec was fixed, and the final patches merged to ACPICA and Linux written
-> against the new version, it seems that some old firmware based on the
-> original revision has survived and turned up in the wild.
-> 
-> Add a check for the original PMCG definition, and avoid filling in the
-> second memory resource with nonsense if so. Otherwise it is likely that
-> something horrible will happen when the PMCG driver attempts to probe.
-> 
-> Reported-by: Michael Petlan <mpetlan@redhat.com>
-> Fixes: 24e516049360 ("ACPI/IORT: Add support for PMCG")
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> ---
->  drivers/acpi/arm64/iort.c | 17 ++++++++++-------
->  1 file changed, 10 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index 3b23fb775ac4..aaa1f0411a5a 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -1344,16 +1344,17 @@ static int __init arm_smmu_v3_pmcg_count_resources(struct acpi_iort_node *node)
->  	pmcg = (struct acpi_iort_pmcg *)node->node_data;
->  
->  	/*
-> -	 * There are always 2 memory resources.
-> -	 * If the overflow_gsiv is present then add that for a total of 3.
-> +	 * There should normally be 2 memory resources, but apparently the
-> +	 * oversight from IORT rev. C managed to escape into the wild.
->  	 */
-> -	return pmcg->overflow_gsiv ? 3 : 2;
-> +	return 1 + (node->revision > 0) + (pmcg->overflow_gsiv != 0);
+Hi "Rafael,
 
-It is compact but (nit) I'd rather use a construct like:
+I love your patch! Yet something to improve:
 
-if (node->revision > 0)
-	res_cnt++;
+[auto build test ERROR on net/master]
+[also build test ERROR on net-next/master horms-ipvs/master linus/master v5.17-rc2 next-20220202]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-with a comment explaining it so that we can remember why the node
-revision implies an additional resource.
+url:    https://github.com/0day-ci/linux/commits/Rafael-J-Wysocki/drivers-net-Replace-acpi_bus_get_device/20220202-035902
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git 881cc731df6af99a21622e9be25a23b81adcd10b
+config: x86_64-allmodconfig (https://download.01.org/0day-ci/archive/20220202/202202021810.82z7OPTR-lkp@intel.com/config)
+compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project 6b1e844b69f15bb7dffaf9365cd2b355d2eb7579)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/1d2a29e30eb391a02f25f551e6f4242e32f5b01f
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Rafael-J-Wysocki/drivers-net-Replace-acpi_bus_get_device/20220202-035902
+        git checkout 1d2a29e30eb391a02f25f551e6f4242e32f5b01f
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/media/cec/platform/seco/ drivers/net/ethernet/cavium/thunder/ drivers/net/wireless/ath/
 
-Actually - I noticed that the logic in .dev_count_resources() and
-dev_init_resources() is somewhat duplicated - maybe we can add a
-resource_count param to dev_init_resources() but I am not sure
-it will improve things much.
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
->  }
->  
->  static void __init arm_smmu_v3_pmcg_init_resources(struct resource *res,
->  						   struct acpi_iort_node *node)
->  {
->  	struct acpi_iort_pmcg *pmcg;
-> +	int n = 1;
->  
->  	/* Retrieve PMCG specific data */
->  	pmcg = (struct acpi_iort_pmcg *)node->node_data;
-> @@ -1361,13 +1362,15 @@ static void __init arm_smmu_v3_pmcg_init_resources(struct resource *res,
->  	res[0].start = pmcg->page0_base_address;
->  	res[0].end = pmcg->page0_base_address + SZ_4K - 1;
->  	res[0].flags = IORESOURCE_MEM;
-> -	res[1].start = pmcg->page1_base_address;
-> -	res[1].end = pmcg->page1_base_address + SZ_4K - 1;
-> -	res[1].flags = IORESOURCE_MEM;
-> +	if (node->revision > 0) {
-> +		res[n].start = pmcg->page1_base_address;
-> +		res[n].end = pmcg->page1_base_address + SZ_4K - 1;
-> +		res[n++].flags = IORESOURCE_MEM;
-> +	}
+All errors (new ones prefixed by >>):
 
-See above. If we knew the number of resource we could avoid repeating
-node->revision > 0 check but I don't think it would improve things
-anyway (ie we know how many resources we are allocating but we still
-need to check why a resource has to be added - eg node->revision > 0).
+>> drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1409:24: error: use of undeclared identifier 'bgx'
+           struct device *dev = &bgx->pdev->dev;
+                                 ^
+   1 error generated.
 
-Thanks,
-Lorenzo
 
->  	if (pmcg->overflow_gsiv)
->  		acpi_iort_register_irq(pmcg->overflow_gsiv, "overflow",
-> -				       ACPI_EDGE_SENSITIVE, &res[2]);
-> +				       ACPI_EDGE_SENSITIVE, &res[n]);
->  }
->  
->  static struct acpi_platform_list pmcg_plat_info[] __initdata = {
-> -- 
-> 2.28.0.dirty
-> 
+vim +/bgx +1409 drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+
+46b903a01c053d0 David Daney       2015-08-10  1403  
+46b903a01c053d0 David Daney       2015-08-10  1404  /* Currently only sets the MAC address. */
+46b903a01c053d0 David Daney       2015-08-10  1405  static acpi_status bgx_acpi_register_phy(acpi_handle handle,
+46b903a01c053d0 David Daney       2015-08-10  1406  					 u32 lvl, void *context, void **rv)
+46b903a01c053d0 David Daney       2015-08-10  1407  {
+1d2a29e30eb391a Rafael J. Wysocki 2022-02-01  1408  	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
+1d82efaca87ecf5 Robert Richter    2016-02-11 @1409  	struct device *dev = &bgx->pdev->dev;
+1d2a29e30eb391a Rafael J. Wysocki 2022-02-01  1410  	struct bgx *bgx = context;
+46b903a01c053d0 David Daney       2015-08-10  1411  
+1d2a29e30eb391a Rafael J. Wysocki 2022-02-01  1412  	if (!adev)
+46b903a01c053d0 David Daney       2015-08-10  1413  		goto out;
+46b903a01c053d0 David Daney       2015-08-10  1414  
+7aa4865506a26c6 Vadim Lomovtsev   2017-01-12  1415  	acpi_get_mac_address(dev, adev, bgx->lmac[bgx->acpi_lmac_idx].mac);
+46b903a01c053d0 David Daney       2015-08-10  1416  
+7aa4865506a26c6 Vadim Lomovtsev   2017-01-12  1417  	SET_NETDEV_DEV(&bgx->lmac[bgx->acpi_lmac_idx].netdev, dev);
+46b903a01c053d0 David Daney       2015-08-10  1418  
+7aa4865506a26c6 Vadim Lomovtsev   2017-01-12  1419  	bgx->lmac[bgx->acpi_lmac_idx].lmacid = bgx->acpi_lmac_idx;
+7aa4865506a26c6 Vadim Lomovtsev   2017-01-12  1420  	bgx->acpi_lmac_idx++; /* move to next LMAC */
+46b903a01c053d0 David Daney       2015-08-10  1421  out:
+46b903a01c053d0 David Daney       2015-08-10  1422  	return AE_OK;
+46b903a01c053d0 David Daney       2015-08-10  1423  }
+46b903a01c053d0 David Daney       2015-08-10  1424  
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
