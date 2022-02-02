@@ -2,144 +2,131 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5D224A7703
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 18:44:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74A3E4A7784
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 19:07:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbiBBRm7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Feb 2022 12:42:59 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:60468 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231680AbiBBRm7 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Feb 2022 12:42:59 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EEC17B831CE;
-        Wed,  2 Feb 2022 17:42:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D35C004E1;
-        Wed,  2 Feb 2022 17:42:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643823776;
-        bh=CvG8ii+9YGkPWVWDFhYOlfrAwbJIQDmwvlL7Cx3lywg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=bPExBU/v4gXvP4NE7IFiqWBZJg9dt9hHChNbHnf92/KY+4qe1TdMyJNwC00O7JrXU
-         3X//Sy26N3xCsYRmSozlMeOx4RLP7CeLVGujFCJ38OTitlniOJGo4G4caNoB1+mo1c
-         eroTbPl1Q4exl5dIl4kerIDKXCgPo1uWLrv0wW/N9+eR7a16znlLOp+f0ENxo905LC
-         8pFFBYgsDR/ztBYZ+x8H1PJqo/HCqZ8ye+LTYSBxQvGt8Nw98TdYPVt8f1ULeKcTvq
-         TJABHCYxfAQOVEWmICHsK8ZZbM8MM97yN9aYY/tGwSY1L0PcibuATaEfrhO/ZyaeTw
-         OWp9CKaKK7t+A==
-Date:   Wed, 2 Feb 2022 11:42:55 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     pierre.gondois@arm.com
-Cc:     linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [Bug 215560] New: _PRS/_SRS methods should be optional
-Message-ID: <20220202174255.GA22220@bhelgaas>
+        id S1346530AbiBBSHY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Feb 2022 13:07:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:60008 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1346546AbiBBSHV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Feb 2022 13:07:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1643825241;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=m3aJbLwpYHN269fbcuY9B5J6QMlrbznLlNBdaK07iJY=;
+        b=Avge8yNQX/VqJIV72aQTwGABMT9uFDFakhQK8RUR/zr0OaqgDHs4dt6goGsmsepqLbtTiH
+        ut+DAMHZW+rO71w/UihESptUYp+ezIz40JzeHDVCVRwzpIenqHQuA+f6PlZnxR/hUu/ZcZ
+        0t81kZxxY7/VcXhBc+CyYVDqnJZZgq8=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-494-Sh8EnjwQPKm3zFZXpHzXhA-1; Wed, 02 Feb 2022 13:07:19 -0500
+X-MC-Unique: Sh8EnjwQPKm3zFZXpHzXhA-1
+Received: by mail-ed1-f69.google.com with SMTP id h11-20020a05640250cb00b003fa024f87c2so119690edb.4
+        for <linux-acpi@vger.kernel.org>; Wed, 02 Feb 2022 10:07:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent
+         :content-language:to:from:subject:cc:content-transfer-encoding;
+        bh=m3aJbLwpYHN269fbcuY9B5J6QMlrbznLlNBdaK07iJY=;
+        b=Sg3dou6crTG5v2UVHauqYzrTIFRKy9Lw5dBIHSnD9vjYWowly+E4wozCcLnHFlOtsX
+         HOfGwcvFbt0ogYjvpTSibDhIsEtNyTrm13/Mot1yn5P5XUJ5KH9i7IVcw3KE4AHcyyaK
+         t4WU1lX5AmojxdiyH5JYT5VU/g41RHdPGLIn+kRCAAtSbs2dvUQd4dRty0+yxNSz2BdP
+         OLcflHYRhAinLE6qZBbOcLPuRJtL8IPf4b3d+tVZRIgPjJbdOKFfd4Ua2HO8Gad3EuZF
+         lfJRL8+vx7R/VqzC4+amqc9OTbObgt3Zu3kvKzt0vTRk4LBaQvloAdvYW7kdF8K014rz
+         /+lQ==
+X-Gm-Message-State: AOAM532umovmQePpSsAG9F1tuR/thTMclwt5CakQqk+UJzguMFlUAgUf
+        4Xqfa35FGOCv4zCijifI+IekAE1YhINDtR8AA7c+ItMYdqC5RNw/J37ROB+YPE1M9Z+eSg+XQ2O
+        PmloeHGLNON3hadMvMp6PYg==
+X-Received: by 2002:aa7:cdc6:: with SMTP id h6mr31423365edw.140.1643825237845;
+        Wed, 02 Feb 2022 10:07:17 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJweD3gxij9jg7L3yrFZZFg9hltu+qep/l9q69NHRkppYMewyNPwVAu1zpXVSRoramDOs2xfJw==
+X-Received: by 2002:aa7:cdc6:: with SMTP id h6mr31423346edw.140.1643825237668;
+        Wed, 02 Feb 2022 10:07:17 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id y5sm21774349edw.45.2022.02.02.10.07.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Feb 2022 10:07:17 -0800 (PST)
+Message-ID: <2062f567-9756-1e13-bb50-89c7211955fd@redhat.com>
+Date:   Wed, 2 Feb 2022 19:07:16 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bug-215560-41252@https.bugzilla.kernel.org/>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Content-Language: en-US
+To:     Takashi Iwai <tiwai@suse.de>,
+        "Rafael J . Wysocki" <rafael@kernel.org>
+From:   Hans de Goede <hdegoede@redhat.com>
+Subject: [GIT PULL] Immutable branch with spi in i2c-multi-instantiate changes
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        linux-acpi <linux-acpi@vger.kernel.org>,
+        "platform-driver-x86@vger.kernel.org" 
+        <platform-driver-x86@vger.kernel.org>,
+        patches@opensource.cirrus.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Pierre,
+Hi Takashi, Rafael,
 
-Thanks a lot for the report!
+As discussed here is a pull-req for an immutable branch with all the changes
+from the "[PATCH v6 0/9] Support Spi in i2c-multi-instantiate driver"
+series, including one ALSA change, in case you want to merge this to
+avoid conflicts.
 
-On Wed, Feb 02, 2022 at 10:20:44AM +0000, bugzilla-daemon@kernel.org wrote:
-> https://bugzilla.kernel.org/show_bug.cgi?id=215560
-> 
->             Bug ID: 215560
->            Summary: _PRS/_SRS methods should be optional
->            Product: Drivers
->            Version: 2.5
->     Kernel Version: v5.17-rc2
->           Hardware: All
->                 OS: Linux
->               Tree: Mainline
->             Status: NEW
->           Severity: enhancement
->           Priority: P1
->          Component: PCI
->           Assignee: drivers_pci@kernel-bugs.osdl.org
->           Reporter: pierre.gondois@arm.com
->         Regression: No
-> 
-> The PCI legacy interrupts can be described with link devices, cf ACPI 6.4,
-> s6.2.13 "_PRT (PCI Routing Table)".
-> Link devices can have optional _SRS/_PRS methods to set the interrupt.
+Regards,
 
-Is this a direct quote?  I don't see text similar to this in ACPI
-v6.4.
+Hans
 
-I do see this in sec 6.2.13:
 
-  There are two ways that _PRT can be used. Typically, the interrupt
-  input that a given PCI interrupt is on is configurable.  For
-  example, a given PCI interrupt might be configured for either IRQ 10
-  or 11 on an 8259 interrupt controller. In this model, each interrupt
-  is represented in the ACPI namespace as a PCI Interrupt Link Device.
+The following changes since commit e783362eb54cd99b2cac8b3a9aeac942e6f6ac07:
 
-  These objects have _PRS, _CRS, _SRS, and _DIS control methods to
-  allocate the interrupt. Then, OSPM handles the interrupts not as
-  interrupt inputs on the interrupt controller, but as PCI interrupt
-  pins. The driver looks up the device’s pins in the _PRT to determine
-  which device objects allocate the interrupts. To move the PCI
-  interrupt to a different interrupt input on the interrupt
-  controller, OSPM uses _PRS, _CRS, _SRS, and _DIS control methods for
-  the PCI Interrupt Link Device.
+  Linux 5.17-rc1 (2022-01-23 10:12:53 +0200)
 
-  In the second model, the PCI interrupts are hardwired to specific
-  interrupt inputs on the interrupt controller and are not
-  configurable. In this case, the Source field in _PRT does not
-  reference a device, but instead contains the value zero, and the
-  Source Index field contains the global system interrupt to which the
-  PCI interrupt is hardwired.
+are available in the Git repository at:
 
-For the first model (configurable inputs), it says "These objects have
-_PRS, _CRS, _SRS, and _DIS," which could be read as requiring those
-objects.
+  git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git tags/platform-drivers-x86-serial-multi-instantiate-1
 
-For the second model (hardwired inputs), the interrupts are not
-configurable, and I don't think there would be any reason to have an
-interrupt link device at all.
+for you to fetch changes up to d9c01c530cc5e3b6d5bdfeae12c3d0f33fae7498:
 
-> In PCI Firmware Specification Revision 3.3, s4.3.2.1. "Resource Setting":
-> """
-> A non-configurable device only specifies _CRS. However, if they are
-> configurable, devices include
-> _PRS to indicate the possible resource setting and _SRS to allow OSPM to
-> specify a new resource
-> allocation for the device.
-> """
+  ACPI / scan: Create platform device for CS35L41 (2022-02-02 18:12:41 +0100)
 
-My copy of the PCI Firmware spec r3.3 (dated Jan 20, 2021), sec
-4.3.2.1 says:
+----------------------------------------------------------------
+This branch contains 5.17-rc1 + the SPI tree's spi-acpi-helpers tag +
+the other patches from the "[PATCH v6 0/9] Support Spi in
+i2c-multi-instantiate driver" series.
 
-  Host bridges resources programming is communicated to the operating
-  system using ACPI methods _CRS, _SRS, and _PRS. _CRS indicates the
-  current resource setting for the host bridge. This includes I/O
-  space, memory space, and bus range assigned to the bridge by
-  platform firmware.
+----------------------------------------------------------------
+Lucas Tanure (4):
+      platform/x86: i2c-multi-instantiate: Rename it for a generic serial driver name
+      platform/x86: serial-multi-instantiate: Reorganize I2C functions
+      ALSA: hda/realtek: Add support for HP Laptops
+      ACPI / scan: Create platform device for CS35L41
 
-  A non-configurable device only specifies _CRS. However, if they are
-  configurable, devices include _PRS to indicate the possible resource
-  setting and _SRS to allow OSPM to specify a new resource allocation
-  for the device.
+Stefan Binding (5):
+      spi: Make spi_alloc_device and spi_add_device public again
+      spi: Create helper API to lookup ACPI info for spi device
+      spi: Support selection of the index of the ACPI Spi Resource before alloc
+      spi: Add API to count spi acpi resources
+      platform/x86: serial-multi-instantiate: Add SPI support
 
-So this is specifically talking about methods of a PCI host bridge
-(PNP0A03 or PNP0A08), not about methods of an interrupt link device
-(PNP0C0F).
+ MAINTAINERS                                     |   4 +-
+ drivers/acpi/scan.c                             |  16 +-
+ drivers/platform/x86/Kconfig                    |  12 +-
+ drivers/platform/x86/Makefile                   |   2 +-
+ drivers/platform/x86/i2c-multi-instantiate.c    | 174 ------------
+ drivers/platform/x86/serial-multi-instantiate.c | 348 ++++++++++++++++++++++++
+ drivers/spi/spi.c                               | 137 ++++++++--
+ include/linux/spi/spi.h                         |  20 ++
+ sound/pci/hda/patch_realtek.c                   |  43 ++-
+ 9 files changed, 550 insertions(+), 206 deletions(-)
+ delete mode 100644 drivers/platform/x86/i2c-multi-instantiate.c
+ create mode 100644 drivers/platform/x86/serial-multi-instantiate.c
 
-> However, _PRS/_SRS methods are checked in drivers/acpi/pci_link.c, and the
-> driver aborts if they are absent.
-> E.g.: When _PRS is missing:
-> ACPI: \_SB_.PCI0.LNKA: _CRS 36 not found in _PRS
-> ACPI: \_SB_.PCI0.LNKA: No IRQ available. Try pci=noacpi or acpi=off
-
-I assume this bug report is because something isn't working.  Can you
-update the bugzilla with a note about what specifically isn't working
-and also attach a complete dmesg log and acpidump?
-
-Bjorn
