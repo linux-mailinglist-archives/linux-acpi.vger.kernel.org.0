@@ -2,68 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE5C74A6DE2
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 10:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55F584A6E72
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 11:13:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232905AbiBBJg1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Feb 2022 04:36:27 -0500
-Received: from mga02.intel.com ([134.134.136.20]:23217 "EHLO mga02.intel.com"
+        id S245740AbiBBKNP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Feb 2022 05:13:15 -0500
+Received: from foss.arm.com ([217.140.110.172]:48784 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233108AbiBBJg1 (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Feb 2022 04:36:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643794587; x=1675330587;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=aGOR40E//2wKW+FbAQsqESY03jgYlxNctka/YDN7FLE=;
-  b=EM1DF3SVoMev8MwxrfiKW/oVMBuawXrI0KBPia1CvV8scuvi+1JUipY/
-   vB4ghhKll/GxAmlP2LEX9D3xgmcERmOAD2OD3hmU4nV9M2Z88d34Ij62C
-   kRKx7YP9+6hD8YF8OP17eU7P/EVvxhbbMzq4D0F3Ur9Xc6hjnkyc0GzYc
-   1/1WyIu7Jk7RNYDKK/Uzf7Lu3zskLBIcd/gGH2R9osfMYJglSGksuTL/Y
-   DtVCs5T4yQEBaZY3OGL1zEOBwKKwFEhzXEHcpVHvKQ52YeJid2ROPg7YX
-   fFrK6XKxcyQ8I735sBV7mKanGqAeD4NBQg5pplm6furxBTx6gH/TbqqTu
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10245"; a="235277853"
-X-IronPort-AV: E=Sophos;i="5.88,336,1635231600"; 
-   d="scan'208";a="235277853"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 01:36:26 -0800
-X-IronPort-AV: E=Sophos;i="5.88,336,1635231600"; 
-   d="scan'208";a="630863516"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 01:36:23 -0800
-Received: by lahna (sSMTP sendmail emulation); Wed, 02 Feb 2022 11:36:21 +0200
-Date:   Wed, 2 Feb 2022 11:36:21 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, linux-usb@vger.kernel.org
-Subject: Re: [PATCH] thunderbolt: Replace acpi_bus_get_device()
-Message-ID: <YfpQlQ6CH5eoRjuD@lahna>
-References: <1883502.PYKUYFuaPT@kreacher>
+        id S232501AbiBBKNO (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 2 Feb 2022 05:13:14 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C65551FB;
+        Wed,  2 Feb 2022 02:13:13 -0800 (PST)
+Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DFD913F40C;
+        Wed,  2 Feb 2022 02:13:12 -0800 (PST)
+Date:   Wed, 2 Feb 2022 10:13:07 +0000
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     guohanjun@huawei.com, sudeep.holla@arm.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Michael Petlan <mpetlan@redhat.com>
+Subject: Re: [PATCH] ACPI/IORT: Check node revision for PMCG resources
+Message-ID: <20220202101307.GA16459@lpieralisi>
+References: <a262d1122f493c83eb48fd643e1c51019ab93c67.1643641404.git.robin.murphy@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1883502.PYKUYFuaPT@kreacher>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <a262d1122f493c83eb48fd643e1c51019ab93c67.1643641404.git.robin.murphy@arm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 01, 2022 at 08:12:30PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon, Jan 31, 2022 at 03:03:24PM +0000, Robin Murphy wrote:
+> The original version of the IORT PMCG definition had an oversight
+> wherein there was no way to describe the second register page for an
+> implementation using the recommended RELOC_CTRS feature. Although the
+> spec was fixed, and the final patches merged to ACPICA and Linux written
+> against the new version, it seems that some old firmware based on the
+> original revision has survived and turned up in the wild.
 > 
-> Replace acpi_bus_get_device() that is going to be dropped with
-> acpi_fetch_acpi_dev().
+> Add a check for the original PMCG definition, and avoid filling in the
+> second memory resource with nonsense if so. Otherwise it is likely that
+> something horrible will happen when the PMCG driver attempts to probe.
 > 
-> No intentional functional impact.
+> Reported-by: Michael Petlan <mpetlan@redhat.com>
+> Fixes: 24e516049360 ("ACPI/IORT: Add support for PMCG")
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+>  drivers/acpi/arm64/iort.c | 17 ++++++++++-------
+>  1 file changed, 10 insertions(+), 7 deletions(-)
 > 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 3b23fb775ac4..aaa1f0411a5a 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -1344,16 +1344,17 @@ static int __init arm_smmu_v3_pmcg_count_resources(struct acpi_iort_node *node)
+>  	pmcg = (struct acpi_iort_pmcg *)node->node_data;
+>  
+>  	/*
+> -	 * There are always 2 memory resources.
+> -	 * If the overflow_gsiv is present then add that for a total of 3.
+> +	 * There should normally be 2 memory resources, but apparently the
+> +	 * oversight from IORT rev. C managed to escape into the wild.
+>  	 */
+> -	return pmcg->overflow_gsiv ? 3 : 2;
+> +	return 1 + (node->revision > 0) + (pmcg->overflow_gsiv != 0);
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+It is compact but (nit) I'd rather use a construct like:
 
-Let me know if you want me to pick this up.
+if (node->revision > 0)
+	res_cnt++;
+
+with a comment explaining it so that we can remember why the node
+revision implies an additional resource.
+
+Actually - I noticed that the logic in .dev_count_resources() and
+dev_init_resources() is somewhat duplicated - maybe we can add a
+resource_count param to dev_init_resources() but I am not sure
+it will improve things much.
+
+>  }
+>  
+>  static void __init arm_smmu_v3_pmcg_init_resources(struct resource *res,
+>  						   struct acpi_iort_node *node)
+>  {
+>  	struct acpi_iort_pmcg *pmcg;
+> +	int n = 1;
+>  
+>  	/* Retrieve PMCG specific data */
+>  	pmcg = (struct acpi_iort_pmcg *)node->node_data;
+> @@ -1361,13 +1362,15 @@ static void __init arm_smmu_v3_pmcg_init_resources(struct resource *res,
+>  	res[0].start = pmcg->page0_base_address;
+>  	res[0].end = pmcg->page0_base_address + SZ_4K - 1;
+>  	res[0].flags = IORESOURCE_MEM;
+> -	res[1].start = pmcg->page1_base_address;
+> -	res[1].end = pmcg->page1_base_address + SZ_4K - 1;
+> -	res[1].flags = IORESOURCE_MEM;
+> +	if (node->revision > 0) {
+> +		res[n].start = pmcg->page1_base_address;
+> +		res[n].end = pmcg->page1_base_address + SZ_4K - 1;
+> +		res[n++].flags = IORESOURCE_MEM;
+> +	}
+
+See above. If we knew the number of resource we could avoid repeating
+node->revision > 0 check but I don't think it would improve things
+anyway (ie we know how many resources we are allocating but we still
+need to check why a resource has to be added - eg node->revision > 0).
+
+Thanks,
+Lorenzo
+
+>  	if (pmcg->overflow_gsiv)
+>  		acpi_iort_register_irq(pmcg->overflow_gsiv, "overflow",
+> -				       ACPI_EDGE_SENSITIVE, &res[2]);
+> +				       ACPI_EDGE_SENSITIVE, &res[n]);
+>  }
+>  
+>  static struct acpi_platform_list pmcg_plat_info[] __initdata = {
+> -- 
+> 2.28.0.dirty
+> 
