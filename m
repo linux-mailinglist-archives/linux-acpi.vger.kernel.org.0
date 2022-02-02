@@ -2,81 +2,123 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A0334A72B2
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 15:09:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DE0C4A72DC
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 15:19:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236220AbiBBOJX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Feb 2022 09:09:23 -0500
-Received: from mga01.intel.com ([192.55.52.88]:13379 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231518AbiBBOJX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Feb 2022 09:09:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643810963; x=1675346963;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RRwV3oIvnozFrFibpyO8I95VWXndE72lqKzEOL6Ppk8=;
-  b=fpCQZmpKWlC2q5VUYNUZARqQCal13FqgdWeMcWMwZe51/yYcyPaJ5IZM
-   F6zrgMbpp7GEUFGWvg+Aj+bhVjKZUeEoV3hwG21p+F9a82MUUxPIpGZ5T
-   aBMAz0reJ85lVqujvYi1SDNkyJ/WMQwI+whuqEgTWtsUDQ11WbnnTQNaz
-   ZFDCdprTlLqVZ6nfgrVVEFBXPfPilZyLSQb+GGoib1BsCauH2vUc19ooT
-   7byGBmKRQICabLuPtEx4TSy6gtcI429cuCNJ++xr/5O++fX419jb+ch72
-   jMLLPBdrZOvwE1r8AF7b4I/6hXewusAqeXIw2KKXxdwFBhnOKEH0BhYfY
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10245"; a="272406351"
-X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
-   d="scan'208";a="272406351"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 06:09:23 -0800
-X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
-   d="scan'208";a="627078979"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 06:09:19 -0800
-Received: by lahna (sSMTP sendmail emulation); Wed, 02 Feb 2022 16:09:17 +0200
-Date:   Wed, 2 Feb 2022 16:09:17 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
+        id S237951AbiBBOTY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Feb 2022 09:19:24 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:59650 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230171AbiBBOTX (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Feb 2022 09:19:23 -0500
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 4.0.0)
+ id c727b483ca273e5c; Wed, 2 Feb 2022 15:19:22 +0100
+Received: from kreacher.localnet (unknown [213.134.175.227])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id 3729B66B422;
+        Wed,  2 Feb 2022 15:19:21 +0100 (CET)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     netdev@vger.kernel.org
+Cc:     Sunil Goutham <sgoutham@marvell.com>,
+        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Keyur Chudgar <keyur@os.amperecomputing.com>,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
         LKML <linux-kernel@vger.kernel.org>,
-        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
-        <linux-usb@vger.kernel.org>
-Subject: Re: [PATCH] thunderbolt: Replace acpi_bus_get_device()
-Message-ID: <YfqQjS5HBUCW6Tfn@lahna>
-References: <1883502.PYKUYFuaPT@kreacher>
- <YfpQlQ6CH5eoRjuD@lahna>
- <CAJZ5v0ifQJ=XxXHUSnACzd2cTLRB+ncwEFrwLP0ybuivX2ORAg@mail.gmail.com>
+        Linux ACPI <linux-acpi@vger.kernel.org>
+Subject: [PATCH v3] drivers: net: Replace acpi_bus_get_device()
+Date:   Wed, 02 Feb 2022 15:19:20 +0100
+Message-ID: <11920660.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0ifQJ=XxXHUSnACzd2cTLRB+ncwEFrwLP0ybuivX2ORAg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.175.227
+X-CLIENT-HOSTNAME: 213.134.175.227
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrgeehgdeigecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhephfegtdffjeehkeegleejveevtdeugfffieeijeduuddtkefgjedvheeujeejtedvnecukfhppedvudefrddufeegrddujeehrddvvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddufedrudefgedrudejhedrvddvjedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepuddupdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhgohhuthhhrghmsehmrghrvhgvlhhlrdgtohhmpdhrtghpthhtohepihihrghpphgrnhesohhsrdgrmhhpvghrvggtohhmphhuthhinhhgrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhl
+ ohhfthdrnhgvthdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvhihurhesohhsrdgrmhhpvghrvggtohhmphhuthhinhhgrdgtohhmpdhrtghpthhtohepqhhurghnsehoshdrrghmphgvrhgvtghomhhpuhhtihhnghdrtghomhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=11 Fuz1=11 Fuz2=11
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 02, 2022 at 02:46:26PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Feb 2, 2022 at 10:36 AM Mika Westerberg
-> <mika.westerberg@linux.intel.com> wrote:
-> >
-> > On Tue, Feb 01, 2022 at 08:12:30PM +0100, Rafael J. Wysocki wrote:
-> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >
-> > > Replace acpi_bus_get_device() that is going to be dropped with
-> > > acpi_fetch_acpi_dev().
-> > >
-> > > No intentional functional impact.
-> > >
-> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> >
-> > Let me know if you want me to pick this up.
-> 
-> Yes, please, if you can.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Applied to thunderbolt.git/next, thanks!
+Replace acpi_bus_get_device() that is going to be dropped with
+acpi_fetch_acpi_dev().
+
+While at it, rearrange the local variable definitions in
+bgx_acpi_register_phy() and mdio-xgene.c:acpi_register_phy() so as
+to put them in the reverse xmas tree order.
+
+No intentional functional impact.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+
+v2 -> v3: Fix a build issue and avoid changing the lists of local
+          variables (Jakub Kicinski).
+
+-> v2: Put local variable definitions in two functions in the reverse xmas
+       tree order (Andrew Lunn).
+
+---
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c |    3 ++-
+ drivers/net/fjes/fjes_main.c                      |    5 ++---
+ drivers/net/mdio/mdio-xgene.c                     |    3 ++-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
+
+Index: linux-pm/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+===================================================================
+--- linux-pm.orig/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
++++ linux-pm/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+@@ -1409,7 +1409,8 @@ static acpi_status bgx_acpi_register_phy
+ 	struct device *dev = &bgx->pdev->dev;
+ 	struct acpi_device *adev;
+ 
+-	if (acpi_bus_get_device(handle, &adev))
++	adev = acpi_fetch_acpi_dev(handle);
++	if (!adev)
+ 		goto out;
+ 
+ 	acpi_get_mac_address(dev, adev, bgx->lmac[bgx->acpi_lmac_idx].mac);
+Index: linux-pm/drivers/net/fjes/fjes_main.c
+===================================================================
+--- linux-pm.orig/drivers/net/fjes/fjes_main.c
++++ linux-pm/drivers/net/fjes/fjes_main.c
+@@ -1514,10 +1514,9 @@ acpi_find_extended_socket_device(acpi_ha
+ {
+ 	struct acpi_device *device;
+ 	bool *found = context;
+-	int result;
+ 
+-	result = acpi_bus_get_device(obj_handle, &device);
+-	if (result)
++	device = acpi_fetch_acpi_dev(obj_handle);
++	if (!device)
+ 		return AE_OK;
+ 
+ 	if (strcmp(acpi_device_hid(device), ACPI_MOTHERBOARD_RESOURCE_HID))
+Index: linux-pm/drivers/net/mdio/mdio-xgene.c
+===================================================================
+--- linux-pm.orig/drivers/net/mdio/mdio-xgene.c
++++ linux-pm/drivers/net/mdio/mdio-xgene.c
+@@ -285,7 +285,8 @@ static acpi_status acpi_register_phy(acp
+ 	const union acpi_object *obj;
+ 	u32 phy_addr;
+ 
+-	if (acpi_bus_get_device(handle, &adev))
++	adev = acpi_fetch_acpi_dev(handle);
++	if (!adev)
+ 		return AE_OK;
+ 
+ 	if (acpi_dev_get_property(adev, "phy-channel", ACPI_TYPE_INTEGER, &obj))
+
+
+
