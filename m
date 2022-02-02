@@ -2,65 +2,110 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 204174A7383
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 15:47:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B57EB4A7626
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 17:46:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237562AbiBBOrE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Feb 2022 09:47:04 -0500
-Received: from mga07.intel.com ([134.134.136.100]:34451 "EHLO mga07.intel.com"
+        id S1345985AbiBBQqo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Feb 2022 11:46:44 -0500
+Received: from foss.arm.com ([217.140.110.172]:42290 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231812AbiBBOrE (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Wed, 2 Feb 2022 09:47:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643813224; x=1675349224;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=e9ApRorwSHDr+0KV5qWN6o3xmkRImjO3SBNQu4ZKOSc=;
-  b=Y3bkW4bPPlL6FLlOTDrPKfuT/ik8dScclo3w8mwDLIMgLKu/09BEEKWh
-   9OGDX0iingbe3PKEpGh9ci6PreJWyDoYDmw1I4r//3jYfDDaPrBx3cAT4
-   h9fR+5ISIGzpzeHYh751n0Ct9euftQq/meRxenJTGIRv7e+PHL2NYL7Ej
-   t0s2OIWe4t5G1z01ndp/HGkSRvPrBU3ySaqmiQNFnh227bh/tVS/b/nFt
-   /PrpifG26ppZQhPM/gy1VD0LpQDQmuzhLDixy8qud+Nb9c26NyHKiRcZ3
-   zc/DmFYSJHtCV1V7w+vVBHqrwmcbo+k6YZ/x/mw5MdvooWXKPv7VygAqq
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10245"; a="311236392"
-X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
-   d="scan'208";a="311236392"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 06:47:03 -0800
-X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
-   d="scan'208";a="676454265"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 06:47:00 -0800
-Received: by lahna (sSMTP sendmail emulation); Wed, 02 Feb 2022 16:46:58 +0200
-Date:   Wed, 2 Feb 2022 16:46:58 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Wolfram Sang <wsa@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-i2c@vger.kernel.org
-Subject: Re: [PATCH] i2c: ACPI: Replace acpi_bus_get_device()
-Message-ID: <YfqZYkVYrz4MEwGV@lahna>
-References: <4374434.LvFx2qVVIh@kreacher>
+        id S232448AbiBBQqi (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 2 Feb 2022 11:46:38 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39701113E;
+        Wed,  2 Feb 2022 08:46:38 -0800 (PST)
+Received: from [10.57.89.81] (unknown [10.57.89.81])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EBA8C3F40C;
+        Wed,  2 Feb 2022 08:46:36 -0800 (PST)
+Message-ID: <bb710dea-d8a8-f048-4ee4-0004a72e76ad@arm.com>
+Date:   Wed, 2 Feb 2022 16:46:35 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4374434.LvFx2qVVIh@kreacher>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.5.1
+Subject: Re: [PATCH] hwtracing: coresight: Replace acpi_bus_get_device()
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mike Leach <mike.leach@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+References: <5790600.lOV4Wx5bFT@kreacher>
+ <fca634ba-a05a-10e3-4c12-8774c49a91fe@arm.com>
+ <CAJZ5v0gKqhTD_ECRNVecmR_Lv_jRDn_LdszBRWwBwmD+75Mq4A@mail.gmail.com>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CAJZ5v0gKqhTD_ECRNVecmR_Lv_jRDn_LdszBRWwBwmD+75Mq4A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 01, 2022 at 07:00:42PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 02/02/2022 13:44, Rafael J. Wysocki wrote:
+> On Wed, Feb 2, 2022 at 12:43 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>> Hi Rafael
+>>
+>> On 01/02/2022 17:58, Rafael J. Wysocki wrote:
+>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>
+>>> Replace acpi_bus_get_device() that is going to be dropped with
+>>> acpi_fetch_acpi_dev().
+>>>
+>>> No intentional functional impact.
+>>>
+>>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>
+>>
+>>> ---
+>>>    drivers/hwtracing/coresight/coresight-platform.c |    8 ++++----
+>>>    1 file changed, 4 insertions(+), 4 deletions(-)
+>>>
+>>> Index: linux-pm/drivers/hwtracing/coresight/coresight-platform.c
+>>> ===================================================================
+>>> --- linux-pm.orig/drivers/hwtracing/coresight/coresight-platform.c
+>>> +++ linux-pm/drivers/hwtracing/coresight/coresight-platform.c
+>>> @@ -626,7 +626,7 @@ static int acpi_coresight_parse_link(str
+>>>                                     const union acpi_object *link,
+>>>                                     struct coresight_connection *conn)
+>>>    {
+>>> -     int rc, dir;
+>>> +     int dir;
+>>>        const union acpi_object *fields;
+>>>        struct acpi_device *r_adev;
+>>>        struct device *rdev;
+>>> @@ -643,9 +643,9 @@ static int acpi_coresight_parse_link(str
+>>>            fields[3].type != ACPI_TYPE_INTEGER)
+>>>                return -EINVAL;
+>>>
+>>> -     rc = acpi_bus_get_device(fields[2].reference.handle, &r_adev);
+>>> -     if (rc)
+>>> -             return rc;
+>>> +     r_adev = acpi_fetch_acpi_dev(fields[2].reference.handle);
+>>> +     if (!r_adev)
+>>> +             return -ENODEV;
+>>>
+>>
+>> Is this patch part of a series ?
 > 
-> Replace acpi_bus_get_device() that is going to be dropped with
-> acpi_fetch_acpi_dev().
+> No, it isn't.
 > 
-> No intentional functional impact.
+>> I don't see acpi_fetch_acpi_dev() in v5.17-rc1, which our tree is based on at the moment.
 > 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> acpi_fetch_acpi_dev() is there in v5.17-rc1.  Please see
+> 
+> https://elixir.bootlin.com/linux/v5.17-rc1/A/ident/acpi_fetch_acpi_dev
+> 
+>> Please could you point us to the changes ?
+>>
+>> Also do you expect to pull this via your tree ?
+> 
+> I can route it via the ACPI tree, but it may as well be routed along
+> with other coresight-platform.c changes, if any.
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Apologies, obviously, I was looking at the wrong tree. I will queue this
+
+Thanks
+Suzuki
+
