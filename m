@@ -2,131 +2,82 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74A3E4A7784
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 19:07:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A0884A77AA
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 19:17:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346530AbiBBSHY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Feb 2022 13:07:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:60008 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1346546AbiBBSHV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Feb 2022 13:07:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643825241;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=m3aJbLwpYHN269fbcuY9B5J6QMlrbznLlNBdaK07iJY=;
-        b=Avge8yNQX/VqJIV72aQTwGABMT9uFDFakhQK8RUR/zr0OaqgDHs4dt6goGsmsepqLbtTiH
-        ut+DAMHZW+rO71w/UihESptUYp+ezIz40JzeHDVCVRwzpIenqHQuA+f6PlZnxR/hUu/ZcZ
-        0t81kZxxY7/VcXhBc+CyYVDqnJZZgq8=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-494-Sh8EnjwQPKm3zFZXpHzXhA-1; Wed, 02 Feb 2022 13:07:19 -0500
-X-MC-Unique: Sh8EnjwQPKm3zFZXpHzXhA-1
-Received: by mail-ed1-f69.google.com with SMTP id h11-20020a05640250cb00b003fa024f87c2so119690edb.4
-        for <linux-acpi@vger.kernel.org>; Wed, 02 Feb 2022 10:07:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent
-         :content-language:to:from:subject:cc:content-transfer-encoding;
-        bh=m3aJbLwpYHN269fbcuY9B5J6QMlrbznLlNBdaK07iJY=;
-        b=Sg3dou6crTG5v2UVHauqYzrTIFRKy9Lw5dBIHSnD9vjYWowly+E4wozCcLnHFlOtsX
-         HOfGwcvFbt0ogYjvpTSibDhIsEtNyTrm13/Mot1yn5P5XUJ5KH9i7IVcw3KE4AHcyyaK
-         t4WU1lX5AmojxdiyH5JYT5VU/g41RHdPGLIn+kRCAAtSbs2dvUQd4dRty0+yxNSz2BdP
-         OLcflHYRhAinLE6qZBbOcLPuRJtL8IPf4b3d+tVZRIgPjJbdOKFfd4Ua2HO8Gad3EuZF
-         lfJRL8+vx7R/VqzC4+amqc9OTbObgt3Zu3kvKzt0vTRk4LBaQvloAdvYW7kdF8K014rz
-         /+lQ==
-X-Gm-Message-State: AOAM532umovmQePpSsAG9F1tuR/thTMclwt5CakQqk+UJzguMFlUAgUf
-        4Xqfa35FGOCv4zCijifI+IekAE1YhINDtR8AA7c+ItMYdqC5RNw/J37ROB+YPE1M9Z+eSg+XQ2O
-        PmloeHGLNON3hadMvMp6PYg==
-X-Received: by 2002:aa7:cdc6:: with SMTP id h6mr31423365edw.140.1643825237845;
-        Wed, 02 Feb 2022 10:07:17 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJweD3gxij9jg7L3yrFZZFg9hltu+qep/l9q69NHRkppYMewyNPwVAu1zpXVSRoramDOs2xfJw==
-X-Received: by 2002:aa7:cdc6:: with SMTP id h6mr31423346edw.140.1643825237668;
-        Wed, 02 Feb 2022 10:07:17 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id y5sm21774349edw.45.2022.02.02.10.07.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Feb 2022 10:07:17 -0800 (PST)
-Message-ID: <2062f567-9756-1e13-bb50-89c7211955fd@redhat.com>
-Date:   Wed, 2 Feb 2022 19:07:16 +0100
+        id S240699AbiBBSQm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Feb 2022 13:16:42 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:44206 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237657AbiBBSQm (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Feb 2022 13:16:42 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFA5F618BC;
+        Wed,  2 Feb 2022 18:16:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A0AC340EC;
+        Wed,  2 Feb 2022 18:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643825801;
+        bh=fh9fVTskiyEHoa27YSivtOQn6L49xcyj1O7qRCi8oYQ=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=Xo4M7HFJhcA0wZ9F1A5+6kJ/pj0KuWIWeKkIeAYemG355yz5p4+EHeasL2WyB0mTX
+         fcSLSOhvtkCZve191LpledYeTBDXQRYwOLlu94wQ4VIhgjc/KxB89fuUuce5dy+37u
+         PieGvTcFLsm1gdaggflYBB8As+WDNBUvaU9KXXHJ5bApDqrwQ2eg+NeArb69mknP6r
+         mtUmow+0M6gAUaoHH3X/BA10MHNuuPKbq8GOI+44VlOZtQzEZ2DtQi9iCY7qV3Q+BB
+         Rosakpihod8RINV+IXpyepxot8Arrv8Rf+yow2MOBBxPRDwkNQbkmghuCCRrBi4Vv5
+         Y7FGzZWwsXCiA==
+From:   Mark Brown <broonie@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     LKML <linux-kernel@vger.kernel.org>, linux-spi@vger.kernel.org,
+        Linux ACPI <linux-acpi@vger.kernel.org>
+In-Reply-To: <2231987.ElGaqSPkdT@kreacher>
+References: <2231987.ElGaqSPkdT@kreacher>
+Subject: Re: [PATCH] spi: Replace acpi_bus_get_device()
+Message-Id: <164382580003.3628373.14125155104405192519.b4-ty@kernel.org>
+Date:   Wed, 02 Feb 2022 18:16:40 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Content-Language: en-US
-To:     Takashi Iwai <tiwai@suse.de>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-Subject: [GIT PULL] Immutable branch with spi in i2c-multi-instantiate changes
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-acpi <linux-acpi@vger.kernel.org>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        patches@opensource.cirrus.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Takashi, Rafael,
+On Tue, 01 Feb 2022 21:05:59 +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Replace acpi_bus_get_device() that is going to be dropped with
+> acpi_fetch_acpi_dev().
+> 
+> No intentional functional impact.
+> 
+> [...]
 
-As discussed here is a pull-req for an immutable branch with all the changes
-from the "[PATCH v6 0/9] Support Spi in i2c-multi-instantiate driver"
-series, including one ALSA change, in case you want to merge this to
-avoid conflicts.
+Applied to
 
-Regards,
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Hans
+Thanks!
 
+[1/1] spi: Replace acpi_bus_get_device()
+      commit: 7030c428fae100c339436f5cb6f9e7c0574097ad
 
-The following changes since commit e783362eb54cd99b2cac8b3a9aeac942e6f6ac07:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-  Linux 5.17-rc1 (2022-01-23 10:12:53 +0200)
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-are available in the Git repository at:
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git tags/platform-drivers-x86-serial-multi-instantiate-1
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-for you to fetch changes up to d9c01c530cc5e3b6d5bdfeae12c3d0f33fae7498:
-
-  ACPI / scan: Create platform device for CS35L41 (2022-02-02 18:12:41 +0100)
-
-----------------------------------------------------------------
-This branch contains 5.17-rc1 + the SPI tree's spi-acpi-helpers tag +
-the other patches from the "[PATCH v6 0/9] Support Spi in
-i2c-multi-instantiate driver" series.
-
-----------------------------------------------------------------
-Lucas Tanure (4):
-      platform/x86: i2c-multi-instantiate: Rename it for a generic serial driver name
-      platform/x86: serial-multi-instantiate: Reorganize I2C functions
-      ALSA: hda/realtek: Add support for HP Laptops
-      ACPI / scan: Create platform device for CS35L41
-
-Stefan Binding (5):
-      spi: Make spi_alloc_device and spi_add_device public again
-      spi: Create helper API to lookup ACPI info for spi device
-      spi: Support selection of the index of the ACPI Spi Resource before alloc
-      spi: Add API to count spi acpi resources
-      platform/x86: serial-multi-instantiate: Add SPI support
-
- MAINTAINERS                                     |   4 +-
- drivers/acpi/scan.c                             |  16 +-
- drivers/platform/x86/Kconfig                    |  12 +-
- drivers/platform/x86/Makefile                   |   2 +-
- drivers/platform/x86/i2c-multi-instantiate.c    | 174 ------------
- drivers/platform/x86/serial-multi-instantiate.c | 348 ++++++++++++++++++++++++
- drivers/spi/spi.c                               | 137 ++++++++--
- include/linux/spi/spi.h                         |  20 ++
- sound/pci/hda/patch_realtek.c                   |  43 ++-
- 9 files changed, 550 insertions(+), 206 deletions(-)
- delete mode 100644 drivers/platform/x86/i2c-multi-instantiate.c
- create mode 100644 drivers/platform/x86/serial-multi-instantiate.c
-
+Thanks,
+Mark
