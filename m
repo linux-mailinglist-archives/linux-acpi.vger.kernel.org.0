@@ -2,85 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC1294A7255
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 14:54:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A0334A72B2
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Feb 2022 15:09:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344650AbiBBNya (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Feb 2022 08:54:30 -0500
-Received: from mail-yb1-f179.google.com ([209.85.219.179]:46676 "EHLO
-        mail-yb1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344688AbiBBNyW (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Feb 2022 08:54:22 -0500
-Received: by mail-yb1-f179.google.com with SMTP id p5so61129876ybd.13;
-        Wed, 02 Feb 2022 05:54:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KF5lsBDVHuWJh2maqXVzoYWsWumISdu8x7CYgh0GO0Q=;
-        b=6Ni0Lc89It5hRO69mB8xAhYoK7z6qnU61195oBLF93ae2NvjVkG2amD4k7cdFwyFFg
-         4Ezd3Kh1hm7MWmmdAfckQpuOf067rNiLndGv+eclxdT1TsABTdtukmFVvBytZ8bGiOjU
-         mZlrb8499HMqtN3GLCNrLKhHYpYrmS6ReDZYKzU1+AX4OeNrneTYDJMR3jZ3n2z+yfsM
-         uYmIhMnnJbK93Q5IY9j1BaCcFYBLjRSZmP7yMj+NK3U9GHnxzrQ+V2gPD1Xd/pvulM95
-         cEEz37hxfLX301ZJPFNVFFMc/OtxW52ESMe9F/BFnqgK4QVfW1UwzLTL+64qt8FEgPuC
-         PeCA==
-X-Gm-Message-State: AOAM530Pi9iZOFGDoTe0qKsIA2bTA0wK0vh9WKJKZz6ME9cDbxr5hqCc
-        alzrIEcmYGU38uNnw+HTXMqIj/PKJ66Oqio3h14=
-X-Google-Smtp-Source: ABdhPJwWl3u2e+Brk6HodWZLquLvBayn7SaGfS0dXze63T7PPuhBAJCBWwxxLMTEXAdOZ8xcWSNxT9/rLQoMWzEnnR0=
-X-Received: by 2002:a05:6902:1507:: with SMTP id q7mr44563918ybu.343.1643810062027;
- Wed, 02 Feb 2022 05:54:22 -0800 (PST)
-MIME-Version: 1.0
-References: <11918902.O9o76ZdvQC@kreacher> <20220201201418.67ae9005@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20220201201418.67ae9005@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 2 Feb 2022 14:54:11 +0100
-Message-ID: <CAJZ5v0jQ3u-sbF8F1kSDOFbPoG24yOBSADWvwp0Tgmysm8CuFA@mail.gmail.com>
-Subject: Re: [PATCH v2] drivers: net: Replace acpi_bus_get_device()
-To:     Jakub Kicinski <kuba@kernel.org>
+        id S236220AbiBBOJX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Feb 2022 09:09:23 -0500
+Received: from mga01.intel.com ([192.55.52.88]:13379 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231518AbiBBOJX (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Wed, 2 Feb 2022 09:09:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643810963; x=1675346963;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RRwV3oIvnozFrFibpyO8I95VWXndE72lqKzEOL6Ppk8=;
+  b=fpCQZmpKWlC2q5VUYNUZARqQCal13FqgdWeMcWMwZe51/yYcyPaJ5IZM
+   F6zrgMbpp7GEUFGWvg+Aj+bhVjKZUeEoV3hwG21p+F9a82MUUxPIpGZ5T
+   aBMAz0reJ85lVqujvYi1SDNkyJ/WMQwI+whuqEgTWtsUDQ11WbnnTQNaz
+   ZFDCdprTlLqVZ6nfgrVVEFBXPfPilZyLSQb+GGoib1BsCauH2vUc19ooT
+   7byGBmKRQICabLuPtEx4TSy6gtcI429cuCNJ++xr/5O++fX419jb+ch72
+   jMLLPBdrZOvwE1r8AF7b4I/6hXewusAqeXIw2KKXxdwFBhnOKEH0BhYfY
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10245"; a="272406351"
+X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
+   d="scan'208";a="272406351"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 06:09:23 -0800
+X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
+   d="scan'208";a="627078979"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 06:09:19 -0800
+Received: by lahna (sSMTP sendmail emulation); Wed, 02 Feb 2022 16:09:17 +0200
+Date:   Wed, 2 Feb 2022 16:09:17 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
 Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        netdev <netdev@vger.kernel.org>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Keyur Chudgar <keyur@os.amperecomputing.com>,
-        Quan Nguyen <quan@os.amperecomputing.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "open list:ULTRA-WIDEBAND (UWB) SUBSYSTEM:" 
+        <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH] thunderbolt: Replace acpi_bus_get_device()
+Message-ID: <YfqQjS5HBUCW6Tfn@lahna>
+References: <1883502.PYKUYFuaPT@kreacher>
+ <YfpQlQ6CH5eoRjuD@lahna>
+ <CAJZ5v0ifQJ=XxXHUSnACzd2cTLRB+ncwEFrwLP0ybuivX2ORAg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0ifQJ=XxXHUSnACzd2cTLRB+ncwEFrwLP0ybuivX2ORAg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 2, 2022 at 5:20 AM Jakub Kicinski <kuba@kernel.org> wrote:
->
-> On Tue, 01 Feb 2022 20:58:36 +0100 Rafael J. Wysocki wrote:
-> > -     struct bgx *bgx = context;
-> > +     struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
-> >       struct device *dev = &bgx->pdev->dev;
-> > -     struct acpi_device *adev;
-> > +     struct bgx *bgx = context;
->
-> Compiler says you can't move bgx before dev.
+On Wed, Feb 02, 2022 at 02:46:26PM +0100, Rafael J. Wysocki wrote:
+> On Wed, Feb 2, 2022 at 10:36 AM Mika Westerberg
+> <mika.westerberg@linux.intel.com> wrote:
+> >
+> > On Tue, Feb 01, 2022 at 08:12:30PM +0100, Rafael J. Wysocki wrote:
+> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > >
+> > > Replace acpi_bus_get_device() that is going to be dropped with
+> > > acpi_fetch_acpi_dev().
+> > >
+> > > No intentional functional impact.
+> > >
+> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> >
+> > Let me know if you want me to pick this up.
+> 
+> Yes, please, if you can.
 
-Right, I've obviously missed that.
-
-> Venturing deeper into the bikesheeding territory but I'd leave the
-> variable declarations be and move init of adev before the check.
-> Matter of preference but calling something that needs to be error
-> checked in variable init breaks the usual
->
->         ret = func(some, arguments);
->         if (ret)
->                 goto explosions;
->
-> flow.
-
-It doesn't for me, but let me send a v3.
-
-Thanks!
-
-> > -     if (acpi_bus_get_device(handle, &adev))
-> > +     if (!adev)
-> >               goto out;
+Applied to thunderbolt.git/next, thanks!
