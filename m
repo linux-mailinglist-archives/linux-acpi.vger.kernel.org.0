@@ -2,152 +2,150 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A2FC4A8286
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Feb 2022 11:41:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72C8F4A8429
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Feb 2022 13:56:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231389AbiBCKkO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Feb 2022 05:40:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:33253 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234177AbiBCKkN (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Feb 2022 05:40:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643884813;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=iF9IVWvlzL/qClpscwHGHUc/fyfoMXfsUMhqjE8f3MA=;
-        b=R1nvdHSaLvkdKaIGyX39mL56ptAEv7yPTh8q/yiMRyUch8IGUTwacEyVITBl5UTYCxgzjC
-        a0VxmHSjG9y/T9ZnoO4/TWXu/slwRMKb8smv6L5QI1L/aW7aHNTjAMszx094mYhhT1cq+b
-        gtwWP+Jgvahf1F3EelKnHRJa199XYWA=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-304-C5q3MyOONR26rXICFNN_ZQ-1; Thu, 03 Feb 2022 05:40:12 -0500
-X-MC-Unique: C5q3MyOONR26rXICFNN_ZQ-1
-Received: by mail-ed1-f70.google.com with SMTP id i22-20020a50fd16000000b00405039f2c59so1258681eds.1
-        for <linux-acpi@vger.kernel.org>; Thu, 03 Feb 2022 02:40:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=iF9IVWvlzL/qClpscwHGHUc/fyfoMXfsUMhqjE8f3MA=;
-        b=V02bV4JyO7iaUE7A/Mkx8+axYcwSAbGdmKINnJjocoStGCHmfNwP1hUAt7xc/COShV
-         I8t8nifYdXibrH/FZ+bUficXqgkWu9cbsa0Q6245pw5GIGbnXJ5FkvwMJWIwtHhHPkQ0
-         uROfcIuhs9wgrJAGpIdqsrufBHlW9jlxG1FIicQRrorWN/LFuVlP9J+CdZzR4sRpyVC1
-         JxgqP08Ow/epL9DEmu4aMegNsCFtoV6DSsib72HTlmIhjgvYES4cfD5uRRFaentYEaZI
-         XqSHZNiRKnFFtKVleAfOyNvZBHaw65YUyF+GhZrAWOrVi9GPP17P3pHwKZJ0R1fwGvTj
-         TXIQ==
-X-Gm-Message-State: AOAM533vXm4eTrIajCrvLMdw81CGk1vYmgICTC+zTgaEeyF2sWT3brGl
-        5iahe1dJ5YHv3NqFWXniV7uGdQGVE9SlRX1j1+7iyboWO4/Vn20pEeJNgsgfQUw2P70DJSYp3av
-        HlxZPFYfViWvssAglwcO0UQ==
-X-Received: by 2002:a17:907:d0d:: with SMTP id gn13mr29254568ejc.266.1643884810982;
-        Thu, 03 Feb 2022 02:40:10 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJw38e8yKQ+50WABfgP/CdNnYgCDcDWAlrfBiwh9rs0Aw8aLmugQyqOluCm0HXTr4XjDcT5YtQ==
-X-Received: by 2002:a17:907:d0d:: with SMTP id gn13mr29254556ejc.266.1643884810787;
-        Thu, 03 Feb 2022 02:40:10 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id f18sm16599860ejh.97.2022.02.03.02.40.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Feb 2022 02:40:10 -0800 (PST)
-Message-ID: <11cec5e6-e3b9-ca5b-7b21-da9eff82c24e@redhat.com>
-Date:   Thu, 3 Feb 2022 11:40:09 +0100
+        id S242054AbiBCM4H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Feb 2022 07:56:07 -0500
+Received: from mga01.intel.com ([192.55.52.88]:10602 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238237AbiBCM4G (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 3 Feb 2022 07:56:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643892966; x=1675428966;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=lUFSsWWoUW0jcKH9PYBjci9zHnRVUYMyEJB78lDXxOA=;
+  b=c2mFJZi7NLuJR/X766RIVPKwZGsoOmrGI14LPfWeuwGF7I/bMHPxLesV
+   BX52ldX5R0sk+AfDnqgS0/W4mfkdMiNhMJ/45qlea/qt9q/Zyfe2iskkr
+   6YCym2sk4FH/N4qYSA3QkwYinwunHvJCQzKAYj3aVAX+BpthSK4V/ieSz
+   liCO80sOA2anWTJhr7Lgw7u5x1vc6H1UexGhENX1pCIO0VXelP4C3S4Nq
+   tdobGEGwidaFsFImmxesKjNREyzVUDIbMHPtJA6uee1YfhEgXmjVKF+0t
+   MS2uqoTlYtSyafPFAbtf3zQreANc89SYToQqw3k9TQB7QRQB29ldggLls
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10246"; a="272632200"
+X-IronPort-AV: E=Sophos;i="5.88,339,1635231600"; 
+   d="scan'208";a="272632200"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2022 04:56:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,339,1635231600"; 
+   d="scan'208";a="535192768"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga007.fm.intel.com with ESMTP; 03 Feb 2022 04:56:03 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 263ED30A; Thu,  3 Feb 2022 14:56:17 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH v1 1/1] device property: Don't split fwnode_get_irq*() APIs in the code
+Date:   Thu,  3 Feb 2022 14:56:13 +0200
+Message-Id: <20220203125613.1166-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] platform: surface: Replace acpi_bus_get_device()
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        platform-driver-x86@vger.kernel.org,
-        Mark Gross <markgross@kernel.org>,
-        Maximilian Luz <luzmaximilian@gmail.com>
-References: <5805278.lOV4Wx5bFT@kreacher>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <5805278.lOV4Wx5bFT@kreacher>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+New fwnode_get_irq_byname() landed after an unrelated function
+by ordering. Move fwnode_iomap(), so fwnode_get_irq*() APIs will
+go together.
 
-On 1/26/22 20:41, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Replace acpi_bus_get_device() that is going to be dropped with
-> acpi_fetch_acpi_dev().
-> 
-> No intentional functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+No functional change intended.
 
-Thank you for your patch, I've applied this patch to my review-hans 
-branch:
-https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
 
-Note it will show up in my review-hans branch once I've pushed my
-local branch there, which might take a while.
+Since the original code is piped via I2C tree, this one keeps the same route.
 
-Once I've run some tests on this branch the patches there will be
-added to the platform-drivers-x86/for-next branch and eventually
-will be included in the pdx86 pull-request to Linus for the next
-merge-window.
+ drivers/base/property.c  | 32 ++++++++++++++++----------------
+ include/linux/property.h |  6 +++---
+ 2 files changed, 19 insertions(+), 19 deletions(-)
 
-Regards,
-
-Hans
-
-
-> ---
->  drivers/platform/surface/surface3-wmi.c        |   12 ++++--------
->  drivers/platform/surface/surface_acpi_notify.c |    3 ++-
->  2 files changed, 6 insertions(+), 9 deletions(-)
-> 
-> Index: linux-pm/drivers/platform/surface/surface3-wmi.c
-> ===================================================================
-> --- linux-pm.orig/drivers/platform/surface/surface3-wmi.c
-> +++ linux-pm/drivers/platform/surface/surface3-wmi.c
-> @@ -116,15 +116,11 @@ static acpi_status s3_wmi_attach_spi_dev
->  					    void *data,
->  					    void **return_value)
->  {
-> -	struct acpi_device *adev, **ts_adev;
-> +	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
-> +	struct acpi_device **ts_adev = data;
->  
-> -	if (acpi_bus_get_device(handle, &adev))
-> -		return AE_OK;
-> -
-> -	ts_adev = data;
-> -
-> -	if (strncmp(acpi_device_bid(adev), SPI_TS_OBJ_NAME,
-> -	    strlen(SPI_TS_OBJ_NAME)))
-> +	if (!adev || strncmp(acpi_device_bid(adev), SPI_TS_OBJ_NAME,
-> +			     strlen(SPI_TS_OBJ_NAME)))
->  		return AE_OK;
->  
->  	if (*ts_adev) {
-> Index: linux-pm/drivers/platform/surface/surface_acpi_notify.c
-> ===================================================================
-> --- linux-pm.orig/drivers/platform/surface/surface_acpi_notify.c
-> +++ linux-pm/drivers/platform/surface/surface_acpi_notify.c
-> @@ -770,7 +770,8 @@ static acpi_status san_consumer_setup(ac
->  		return AE_OK;
->  
->  	/* Ignore ACPI devices that are not present. */
-> -	if (acpi_bus_get_device(handle, &adev) != 0)
-> +	adev = acpi_fetch_acpi_dev(handle);
-> +	if (!adev)
->  		return AE_OK;
->  
->  	san_consumer_dbg(&pdev->dev, handle, "creating device link\n");
-> 
-> 
-> 
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index fc59e0f7f9cc..c0e94cce9c29 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -895,6 +895,22 @@ int device_get_phy_mode(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(device_get_phy_mode);
+ 
++/**
++ * fwnode_iomap - Maps the memory mapped IO for a given fwnode
++ * @fwnode:	Pointer to the firmware node
++ * @index:	Index of the IO range
++ *
++ * Returns a pointer to the mapped memory.
++ */
++void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
++{
++	if (IS_ENABLED(CONFIG_OF_ADDRESS) && is_of_node(fwnode))
++		return of_iomap(to_of_node(fwnode), index);
++
++	return NULL;
++}
++EXPORT_SYMBOL(fwnode_iomap);
++
+ /**
+  * fwnode_irq_get - Get IRQ directly from a fwnode
+  * @fwnode:	Pointer to the firmware node
+@@ -919,22 +935,6 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+ }
+ EXPORT_SYMBOL(fwnode_irq_get);
+ 
+-/**
+- * fwnode_iomap - Maps the memory mapped IO for a given fwnode
+- * @fwnode:	Pointer to the firmware node
+- * @index:	Index of the IO range
+- *
+- * Returns a pointer to the mapped memory.
+- */
+-void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
+-{
+-	if (IS_ENABLED(CONFIG_OF_ADDRESS) && is_of_node(fwnode))
+-		return of_iomap(to_of_node(fwnode), index);
+-
+-	return NULL;
+-}
+-EXPORT_SYMBOL(fwnode_iomap);
+-
+ /**
+  * fwnode_irq_get_byname - Get IRQ from a fwnode using its name
+  * @fwnode:	Pointer to the firmware node
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 95d56a562b6a..4cd4b326941f 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -123,8 +123,6 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
+ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
+ 
+-void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
+-
+ unsigned int device_get_child_node_count(struct device *dev);
+ 
+ static inline bool device_property_read_bool(struct device *dev,
+@@ -388,8 +386,10 @@ enum dev_dma_attr device_get_dma_attr(struct device *dev);
+ const void *device_get_match_data(struct device *dev);
+ 
+ int device_get_phy_mode(struct device *dev);
+-
+ int fwnode_get_phy_mode(struct fwnode_handle *fwnode);
++
++void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
++
+ struct fwnode_handle *fwnode_graph_get_next_endpoint(
+ 	const struct fwnode_handle *fwnode, struct fwnode_handle *prev);
+ struct fwnode_handle *
+-- 
+2.34.1
 
