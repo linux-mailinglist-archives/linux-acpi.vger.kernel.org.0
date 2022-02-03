@@ -2,436 +2,312 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FD6B4A8D0F
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Feb 2022 21:14:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 735DC4A9047
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Feb 2022 22:54:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353952AbiBCUNr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Thu, 3 Feb 2022 15:13:47 -0500
-Received: from mail-yb1-f177.google.com ([209.85.219.177]:43750 "EHLO
-        mail-yb1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343643AbiBCUNq (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Feb 2022 15:13:46 -0500
-Received: by mail-yb1-f177.google.com with SMTP id i10so12342192ybt.10;
-        Thu, 03 Feb 2022 12:13:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Tt2xr4pT1OBgcB02d3XXghybHd3o5ZR9mVPLxhYyZoo=;
-        b=h2Hkq0a6QJkHo5K07U6hy693rZ+/Z9QMk3retM9oebrFM/2kiMQAU9SUrFF5fTp0DP
-         ACQDUfwHO9WnykSiNN1rAz/2NHlwVnI+OUv2dobq5MHBQ4g3my4oHAl1Xd0/dUkrz9en
-         xxVplxSjv4ri9OD2c+GONaDEd0DH0uYsb66HL5ber63vSTsnMaFiFkzdgupvwil8MSnu
-         FtX4hJayBcDN4dPaTliUQnYA/MYfILRcUtkU4c1DtSQXidMUJoAEKPeQ/6twGfP9UeNF
-         v8NBe3HV7RS/ygLJL5hT/3aQqe0ZCUECWmxEYPDogUWFYIlVs8Ex1UmgM3SjpaAyLXjQ
-         GZwA==
-X-Gm-Message-State: AOAM532vIc4FIpnL3zOPQNRX3TwBNqigr3mTv4Cy32saPEvC9PTDPaCS
-        ukd7S/V8fzcqraRVQvlCDCs26sh+f9Nnb4IRbuTF3e47P9U=
-X-Google-Smtp-Source: ABdhPJxc88IyQEtmk5dFSUiIcnCrW63i+X8goEcH6eoAXPS5vUFk4Piz2ULVlgfTMqsjZ0nxDgODQ4O/CnUdvlM+Ebk=
-X-Received: by 2002:a25:180a:: with SMTP id 10mr53272615yby.552.1643919225559;
- Thu, 03 Feb 2022 12:13:45 -0800 (PST)
-MIME-Version: 1.0
-References: <20220128235118.1693865-1-srinivas.pandruvada@linux.intel.com>
-In-Reply-To: <20220128235118.1693865-1-srinivas.pandruvada@linux.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 3 Feb 2022 21:13:34 +0100
-Message-ID: <CAJZ5v0iJph04mtGabTXLY_7FqaA9tCnFwz=-+DR=n3G3GC6Szg@mail.gmail.com>
+        id S1347562AbiBCVyg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Feb 2022 16:54:36 -0500
+Received: from mga07.intel.com ([134.134.136.100]:39679 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235761AbiBCVyf (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
+        Thu, 3 Feb 2022 16:54:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643925275; x=1675461275;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=pgna3NVFEio0bi3ZznwUDIwjp8VndpgwkarUFoEI0M0=;
+  b=ErEvLVEf4rwKCLDvv8YEIMipxP8GMdX+s2zB6PptMKzjsrNVmB5ruNtK
+   qWHV5+fSu8YVLI7vMAGoEYCVs8Z+/V3kcBZdvL+F8hV0Celtxte3AKHub
+   VIHBphRsL+6vkw7Uuc3l4ViShjECsW/X/J9g/jrwX5n90JgaG6aFxqdc3
+   cg5mpbjwulyZFqPMw7F8Wo/NsC5ab8rjCbiaUxPxUTv1ihGGZwMx3nS2m
+   AnDqvIv3HBSAzzAH4P94qN8K5Kl7/43GMJmZvNbMAzEdzrhCujkDcsV0b
+   KGQgNoOFaUCoCrYCGLM0O85yRtghHSj6crf7uJQo8viwy34BmHJsna3P/
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10247"; a="311565927"
+X-IronPort-AV: E=Sophos;i="5.88,340,1635231600"; 
+   d="scan'208";a="311565927"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2022 13:54:35 -0800
+X-IronPort-AV: E=Sophos;i="5.88,340,1635231600"; 
+   d="scan'208";a="538935338"
+Received: from xiaofeiw-mobl1.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.209.83.173])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2022 13:54:35 -0800
+Message-ID: <dae13602d4b4178ae86a749a9b6473fb64b82679.camel@linux.intel.com>
 Subject: Re: [PATCH v3] ACPI / fan: Properly handle fine grain control
-To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Len Brown <lenb@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Date:   Thu, 03 Feb 2022 13:54:34 -0800
+In-Reply-To: <CAJZ5v0iJph04mtGabTXLY_7FqaA9tCnFwz=-+DR=n3G3GC6Szg@mail.gmail.com>
+References: <20220128235118.1693865-1-srinivas.pandruvada@linux.intel.com>
+         <CAJZ5v0iJph04mtGabTXLY_7FqaA9tCnFwz=-+DR=n3G3GC6Szg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.42.3 (3.42.3-1.fc35) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sat, Jan 29, 2022 at 12:51 AM Srinivas Pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
->
-> When _FIF object specifies support for fine grain control, then fan speed
-> can be set from 0 to 100% with the recommended minimum "step size" via
-> _FSL object. Here the control value doesn't need to match any value from
-> _FPS object.
->
-> Currently we have a simple solution implemented which just pick maximum
-> control value from _FPS to display the actual state, but this is not
-> optimal when there is a big window between two control values in
-> _FPS. Also there is no way to set to any speed which doesn't match
-> control values in _FPS. The system firmware can start the fan at speed
-> which doesn't match any control value.
->
-> To support fine grain control (when supported) via thermal sysfs:
-> - cooling device max state is not _FPS state count but it will be
-> 100 / _FIF.step_size
-> - cooling device current state is 100 / _FIF.step_size
+On Thu, 2022-02-03 at 21:13 +0100, Rafael J. Wysocki wrote:
+> On Sat, Jan 29, 2022 at 12:51 AM Srinivas Pandruvada
+> <srinivas.pandruvada@linux.intel.com> wrote:
+> > 
+> > 
 
-I don't quite understand this.
+[...]
 
-The max state and the current state should not always be the same, should they?
+> > To support fine grain control (when supported) via thermal sysfs:
+> > - cooling device max state is not _FPS state count but it will be
+> > 100 / _FIF.step_size
+> > - cooling device current state is 100 / _FIF.step_size
+> 
+> I don't quite understand this.
+> 
+> The max state and the current state should not always be the same,
+> should they?
 
-> - cooling device set state will set the control value
-> curr_state * _FIF.step_size plus any adjustment for 100%.
-> By the spec, when control value do not sum to 100% because of
-> _FIF.step_size, OSPM may select an appropriate ending Level increment
-> to reach 100%.
->
-> In addition publish attributes, which helps in implementing
-> algorithm in the user space to optimize fan control. These
-> attributes are presened in the same directory as the performance
-> states.
-> 1. Support of fine grain control
-> Publish support of presence of fine grain control so that fan speed
-> can be tuned correctly. This attribute is called "fine_grain_control".
-> 2. fan speed
-> Publish the actual fan rpm in sysfs. Knowing fan rpm is helpful to
-> reduce noise level and use passive control instead. Also fan performance
-> may not be same over time, so the same control value may not be enough
-> to run the fan at a speed. So a feedback value of speed is helpful. This
-> sysfs attribute is called "fan_speed_rpm".
->
-> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> ---
-> v3
-> Added fine_grain_control attribute.
-> v2-update
-> Change log is missed for v2.
-> v2
-> Fix for build issue as reported by Reported-by: kernel test robot <lkp@intel.com>
->
->  .../acpi/fan_performance_states.rst           |  29 +++-
->  drivers/acpi/fan.c                            | 164 +++++++++++++++---
->  2 files changed, 164 insertions(+), 29 deletions(-)
->
-> diff --git a/Documentation/admin-guide/acpi/fan_performance_states.rst b/Documentation/admin-guide/acpi/fan_performance_states.rst
-> index 98fe5c333121..2aec8e89dbd9 100644
-> --- a/Documentation/admin-guide/acpi/fan_performance_states.rst
-> +++ b/Documentation/admin-guide/acpi/fan_performance_states.rst
-> @@ -58,5 +58,30 @@ For example::
->   $cat /sys/bus/acpi/devices/INT3404:00/state1
->   25:0:3200:12500:1250
->
-> -When a given field is not populated or its value provided by the platform
-> -firmware is invalid, the "not-defined" string is shown instead of the value.
-> +ACPI Fan Fine Grain Control
-> +=============================
-> +
-> +When _FIF object specifies support for fine grain control, then fan speed
-> +can be set from 0 to 100% with the recommended minimum "step size" via
-> +_FSL object. User can adjust fan speed using thermal sysfs cooling device.
-> +
-> +Here use can look at fan performance states for a reference speed (speed_rpm)
-> +and set it by changing cooling device cur_state. If the fine grain control
-> +is supported then user can also adjust to some other speeds which are
-> +not defined in the performance states.
-> +
-> +The support of fine grain control is presented via sysfs attribute
-> +"fine_grain_control". If fine grain control is present, this attribute
-> +will show "1" otherwise "0".
-> +
-> +This sysfs attribute is presented in the same directory as performance states.
-> +
-> +ACPI Fan Performance Feedback
-> +=============================
-> +
-> +The optional _FST object provides status information for the fan device.
-> +This includes field to provide current fan speed in revolutions per minute
-> +at which the fan is rotating.
-> +
-> +This speed is presented in the sysfs using the attribute "fan_speed_rpm",
-> +in the same directory as performance states.
-> diff --git a/drivers/acpi/fan.c b/drivers/acpi/fan.c
-> index 5cd0ceb50bc8..ab586be2d4fc 100644
-> --- a/drivers/acpi/fan.c
-> +++ b/drivers/acpi/fan.c
-> @@ -64,12 +64,20 @@ struct acpi_fan_fif {
->         u64 low_speed_notification;
->  };
->
-> +struct acpi_fan_fst {
-> +       u64 revision;
-> +       u64 control;
-> +       u64 speed;
-> +};
-> +
->  struct acpi_fan {
->         bool acpi4;
->         struct acpi_fan_fif fif;
->         struct acpi_fan_fps *fps;
->         int fps_count;
->         struct thermal_cooling_device *cdev;
-> +       struct device_attribute fst_speed;
-> +       struct device_attribute fine_grain_control;
->  };
->
->  static struct platform_driver acpi_fan_driver = {
-> @@ -89,20 +97,23 @@ static int fan_get_max_state(struct thermal_cooling_device *cdev, unsigned long
->         struct acpi_device *device = cdev->devdata;
->         struct acpi_fan *fan = acpi_driver_data(device);
->
-> -       if (fan->acpi4)
-> -               *state = fan->fps_count - 1;
-> -       else
-> +       if (fan->acpi4) {
-> +               if (fan->fif.fine_grain_ctrl)
-> +                       *state = 100 / (int)fan->fif.step_size;
+This sentence needs correction.
+The  current_state is _FST.control/_FIF.step_size.
 
-Is it really necessary to explicitly cast fif.step_size to int?
+> 
+> > - cooling device set state will set the control value
+> > 
 
-> +               else
-> +                       *state = fan->fps_count - 1;
-> +       } else {
->                 *state = 1;
-> +       }
-> +
->         return 0;
->  }
->
-> -static int fan_get_state_acpi4(struct acpi_device *device, unsigned long *state)
-> +static int fan_get_fps(struct acpi_device *device, struct acpi_fan_fst *fst)
+[...]
 
-Why is this called fan_get_fps()?  I'd rather call it acpi_fan_get_fst().
+> > -       else
+> > +       if (fan->acpi4) {
+> > +               if (fan->fif.fine_grain_ctrl)
+> > +                       *state = 100 / (int)fan->fif.step_size;
+> 
+> Is it really necessary to explicitly cast fif.step_size to int?
+This was reported by LKP as fan->fif.step_size is 64 bit. This driver 
+doesn't restrict to 64 bit.
 
->  {
->         struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-> -       struct acpi_fan *fan = acpi_driver_data(device);
->         union acpi_object *obj;
->         acpi_status status;
-> -       int control, i;
->
->         status = acpi_evaluate_object(device->handle, "_FST", NULL, &buffer);
->         if (ACPI_FAILURE(status)) {
-> @@ -119,31 +130,51 @@ static int fan_get_state_acpi4(struct acpi_device *device, unsigned long *state)
->                 goto err;
->         }
->
-> -       control = obj->package.elements[1].integer.value;
-> +       fst->revision = obj->package.elements[0].integer.value;
-> +       fst->control = obj->package.elements[1].integer.value;
-> +       fst->speed = obj->package.elements[2].integer.value;
-> +
-> +       status = 0;
-> +err:
-> +       kfree(obj);
-> +       return status;
+"undefined reference to `__udivdi3" for i386-defconfig.
+> 
+> > +               else
+> > +                       *state = fan->fps_count - 1;
+> > 
 
-There is some confusion regarding the error return values in this
-function, would be good to fix it while doing this.
+[...]
 
-> +}
-> +
-> +static int fan_get_state_acpi4(struct acpi_device *device, unsigned long *state)
-> +{
-> +       struct acpi_fan *fan = acpi_driver_data(device);
-> +       struct acpi_fan_fst fst;
-> +       int status;
-> +       int control, i;
-> +
-> +       status = fan_get_fps(device, &fst);
-> +       if (status)
-> +               return status;
-> +
-> +       control = fst.control;
-> +
-> +       if (fan->fif.fine_grain_ctrl) {
-> +               /* This control should be same what we set using _FSL by spec */
-> +               if (control > 100) {
-> +                       dev_dbg(&device->dev, "Invalid control value returned\n");
-> +                       return -EINVAL;
+> > -static int fan_get_state_acpi4(struct acpi_device *device,
+> > unsigned long *state)
+> > +static int fan_get_fps(struct acpi_device *device, struct
+> > acpi_fan_fst *fst)
+> 
+> Why is this called fan_get_fps()?  I'd rather call it
+> acpi_fan_get_fst().
+I can change that.
 
-Why don't we fall back to the other method in this case?
+> 
+> >  {
+> >         struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+> > -       struct acpi_fan *fan = acpi_driver_data(device);
+> >         union acpi_object *obj;
+> >         acpi_status status;
+> > -       int control, i;
+> > 
+> >         status = acpi_evaluate_object(device->handle, "_FST", NULL,
+> > &buffer);
+> >         if (ACPI_FAILURE(status)) {
+> > @@ -119,31 +130,51 @@ static int fan_get_state_acpi4(struct
+> > acpi_device *device, unsigned long *state)
+> >                 goto err;
+> >         }
+> > 
+> > -       control = obj->package.elements[1].integer.value;
+> > +       fst->revision = obj->package.elements[0].integer.value;
+> > +       fst->control = obj->package.elements[1].integer.value;
+> > +       fst->speed = obj->package.elements[2].integer.value;
+> > +
+> > +       status = 0;
+> > +err:
+> > +       kfree(obj);
+> > +       return status;
+> 
+> There is some confusion regarding the error return values in this
+> function, would be good to fix it while doing this.
+> 
+Let me check that.
 
-> +               }
-> +
-> +               *state = control / (int)fan->fif.step_size;
+> > +}
+> > +
+> > +static int fan_get_state_acpi4(struct acpi_device *device,
+> > unsigned long *state)
+> > +{
+> > +       struct acpi_fan *fan = acpi_driver_data(device);
+> > +       struct acpi_fan_fst fst;
+> > +       int status;
+> > +       int control, i;
+> > +
+> > +       status = fan_get_fps(device, &fst);
+> > +       if (status)
+> > +               return status;
+> > +
+> > +       control = fst.control;
+> > +
+> > +       if (fan->fif.fine_grain_ctrl) {
+> > +               /* This control should be same what we set using
+> > _FSL by spec */
+> > +               if (control > 100) {
+> > +                       dev_dbg(&device->dev, "Invalid control
+> > value returned\n");
+> > +                       return -EINVAL;
+> 
+> Why don't we fall back to the other method in this case?
+We can.
 
-Do we care about rounding errors?
+> 
+> > +               }
+> > +
+> > +               *state = control / (int)fan->fif.step_size;
+> 
+> Do we care about rounding errors?
+> 
+> Say control is 8 and step_size is 9.  Should this count as 0 or as 1?
+> 
+We will not set control value to 8 in this case, so we shouldn't read
+8. But if firmware setup at boot then it will be 0. The compensation to
+reach 100 is at last step which is allowed.
 
-Say control is 8 and step_size is 9.  Should this count as 0 or as 1?
+If step size is 9
 
-> +               return 0;
-> +       }
-> +
->         for (i = 0; i < fan->fps_count; i++) {
-> -               /*
-> -                * When Fine Grain Control is set, return the state
-> -                * corresponding to maximum fan->fps[i].control
-> -                * value compared to the current speed. Here the
-> -                * fan->fps[] is sorted array with increasing speed.
-> -                */
-> -               if (fan->fif.fine_grain_ctrl && control < fan->fps[i].control) {
-> -                       i = (i > 0) ? i - 1 : 0;
-> +               if (control == fan->fps[i].control)
->                         break;
-> -               } else if (control == fan->fps[i].control) {
-> -                       break;
-> -               }
->         }
->         if (i == fan->fps_count) {
->                 dev_dbg(&device->dev, "Invalid control value returned\n");
-> -               status = -EINVAL;
-> -               goto err;
-> +               return -EINVAL;
->         }
->
->         *state = i;
->
-> -err:
-> -       kfree(obj);
->         return status;
->  }
->
-> @@ -187,12 +218,36 @@ static int fan_set_state_acpi4(struct acpi_device *device, unsigned long state)
->  {
->         struct acpi_fan *fan = acpi_driver_data(device);
->         acpi_status status;
-> +       u64 value = state;
-> +       int max_state;
-> +
-> +       if (fan->fif.fine_grain_ctrl)
-> +               max_state = 100 / (int)fan->fif.step_size;
-> +       else
-> +               max_state = fan->fps_count - 1;
->
-> -       if (state >= fan->fps_count)
-> +       if (state > max_state)
+thermal sysfs will display
+	max_state = 100/9 = 11
 
-Say step_size is 9, so max_state is 11.  state == 12 would still be valid, no?
+control		thermal sysfs cur_state
+0-8		0
+9-17		1
+18-26		2
+27-35		3
+36-44		4
+45-53		5
+54-62		6
+63-71		7
+72-80		8
+81-89		9
+90-98		10
+99-100		11
 
->                 return -EINVAL;
->
-> -       status = acpi_execute_simple_method(device->handle, "_FSL",
-> -                                           fan->fps[state].control);
-> +       if (fan->fif.fine_grain_ctrl) {
-> +               int rem;
-> +
-> +               value *= fan->fif.step_size;
+If step size is 10
+thermal sysfs
+	max_state = 100/10 = 10
+control		thermal sysfs cur_state
+0-9		0
+10-19		1
+20-29		2
+30-39		3
+40-49		4
+50-59		5
+60-69		6
+70-79		7
+80-89		8
+90-99		9
+100		10
 
-And you don't need the max_state computation for this, it's only
-necessary to cap value at 100.  In which case you also wouldn't need
-rem etc.
 
-> +
-> +               /*
-> +                * In the event OSPM’s incremental selections of Level
-> +                * using the StepSize field value do not sum to 100%,
-> +                * OSPM may select an appropriate ending Level
-> +                * increment to reach 100%.
-> +                */
-> +               rem = 100 - value;
-> +               if (rem && rem < fan->fif.step_size)
-> +                       value = 100;
-> +       } else {
-> +               value = fan->fps[state].control;
-> +       }
-> +
-> +       status = acpi_execute_simple_method(device->handle, "_FSL", value);
->         if (ACPI_FAILURE(status)) {
->                 dev_dbg(&device->dev, "Failed to set state by _FSL\n");
->                 return status;
-> @@ -258,6 +313,12 @@ static int acpi_fan_get_fif(struct acpi_device *device)
->                 status = -EINVAL;
->         }
->
-> +       /* If there is a bug in step size and set as 0, change to 1 */
-> +       if (!fan->fif.step_size)
-> +               fan->fif.step_size = 1;
-> +       /* If step size > 9, change to 9 (by spec valid values 1-9) */
-> +       if (fan->fif.step_size > 9)
 
-I would do "else if" here, because both the above conditions cannot
-hold at the same time.
+> > +               return 0;
+> > +       }
 
-> +               fan->fif.step_size = 9;
->  err:
->         kfree(obj);
->         return status;
-> @@ -303,6 +364,27 @@ static ssize_t show_state(struct device *dev, struct device_attribute *attr, cha
->         return count;
->  }
->
-> +static ssize_t show_fan_speed(struct device *dev, struct device_attribute *attr, char *buf)
-> +{
-> +       struct acpi_device *acpi_dev = container_of(dev, struct acpi_device, dev);
-> +       struct acpi_fan_fst fst;
-> +       int status;
-> +
-> +       status = fan_get_fps(acpi_dev, &fst);
-> +       if (status)
-> +               return status;
-> +
-> +       return sprintf(buf, "%lld\n", fst.speed);
-> +}
-> +
-> +static ssize_t show_fine_grain_control(struct device *dev, struct device_attribute *attr, char *buf)
-> +{
-> +       struct acpi_device *acpi_dev = container_of(dev, struct acpi_device, dev);
-> +       struct acpi_fan *fan = acpi_driver_data(acpi_dev);
-> +
-> +       return sprintf(buf, "%lld\n", fan->fif.fine_grain_ctrl);
-> +}
-> +
->  static int acpi_fan_get_fps(struct acpi_device *device)
->  {
->         struct acpi_fan *fan = acpi_driver_data(device);
-> @@ -311,15 +393,35 @@ static int acpi_fan_get_fps(struct acpi_device *device)
->         acpi_status status;
->         int i;
->
-> +       sysfs_attr_init(&fan->fine_grain_control.attr);
-> +       fan->fine_grain_control.show = show_fine_grain_control;
-> +       fan->fine_grain_control.store = NULL;
-> +       fan->fine_grain_control.attr.name = "fine_grain_control";
-> +       fan->fine_grain_control.attr.mode = 0444;
-> +       status = sysfs_create_file(&device->dev.kobj, &fan->fine_grain_control.attr);
+[...]
 
-I would split the creation of the new attributes into a separate file,
-for clarity (and to help the review somewhat).
+> > -       if (state >= fan->fps_count)
+> > +       if (state > max_state)
+> 
+> Say step_size is 9, so max_state is 11.  state == 12 would still be
+> valid, no?
+We are presenting thermal sysfs max_state as 11 in this case, so
+state 0-11 are valid. To reach 100, the spec allows to compensate the
+last step to reach 100%. So state 11 is 100% not 99% as in the above
+table.
 
-> +       if (status)
-> +               return status;
-> +
-> +
-> +       /* _FST is present if we are here */
-> +       sysfs_attr_init(&fan->fst_speed.attr);
-> +       fan->fst_speed.show = show_fan_speed;
-> +       fan->fst_speed.store = NULL;
-> +       fan->fst_speed.attr.name = "fan_speed_rpm";
-> +       fan->fst_speed.attr.mode = 0444;
-> +       status = sysfs_create_file(&device->dev.kobj, &fan->fst_speed.attr);
-> +       if (status)
-> +               goto rem_fine_grain_attr;
-> +
->         status = acpi_evaluate_object(device->handle, "_FPS", NULL, &buffer);
->         if (ACPI_FAILURE(status))
-> -               return status;
-> +               goto rem_fst_attr;
->
->         obj = buffer.pointer;
->         if (!obj || obj->type != ACPI_TYPE_PACKAGE || obj->package.count < 2) {
->                 dev_err(&device->dev, "Invalid _FPS data\n");
->                 status = -EINVAL;
-> -               goto err;
-> +               goto rem_fst_attr;
->         }
->
->         fan->fps_count = obj->package.count - 1; /* minus revision field */
-> @@ -368,6 +470,14 @@ static int acpi_fan_get_fps(struct acpi_device *device)
->
->  err:
->         kfree(obj);
-> +       if (!status)
-> +               return 0;
-> +rem_fst_attr:
-> +       sysfs_remove_file(&device->dev.kobj, &fan->fst_speed.attr);
-> +
-> +rem_fine_grain_attr:
-> +       sysfs_remove_file(&device->dev.kobj, &fan->fine_grain_control.attr);
-> +
->         return status;
->  }
->
-> --
-> 2.31.1
->
+If we present max_state as 12 then also user space can't choose max
+than 12, so (state > max_state) will be still an error.
+
+If we present max state as 12 then in the above table:
+control 	state
+----------------------
+90		10
+99		11
+100		12
+
+Then last state will increase control value by 1.
+
+
+> 
+> >                 return -EINVAL;
+> > 
+> > -       status = acpi_execute_simple_method(device->handle, "_FSL",
+> > -                                           fan-
+> > >fps[state].control);
+> > +       if (fan->fif.fine_grain_ctrl) {
+> > +               int rem;
+> > +
+> > +               value *= fan->fif.step_size;
+> 
+> And you don't need the max_state computation for this, it's only
+> necessary to cap value at 100.  In which case you also wouldn't need
+> rem etc.
+For above example to set the state 11 for 100 for step size 9. If
+max_state is chosen as 12 then we can just cap.
+
+> 
+> > +
+> > +               /*
+> > +                * In the event OSPM’s incremental selections of
+> > Level
+> > +                * using the StepSize field value do not sum to
+> > 100%,
+> > +                * OSPM may select an appropriate ending Level
+> > +                * increment to reach 100%.
+> > +                */
+> > +               rem = 100 - value;
+> > +               if (rem && rem < fan->fif.step_size)
+> > +                       value = 100;
+> > +       } else {
+> > +               value = fan->fps[state].control;
+> > 
+
+[...]
+
+> > +       if (!fan->fif.step_size)
+> > +               fan->fif.step_size = 1;
+> > +       /* If step size > 9, change to 9 (by spec valid values 1-9)
+> > */
+> > +       if (fan->fif.step_size > 9)
+> 
+> I would do "else if" here, because both the above conditions cannot
+> hold at the same time.
+OK
+
+> 
+> > +               fan->fif.step_size = 9;
+> >  err:
+> > 
+
+[...]
+
+> > +       sysfs_attr_init(&fan->fine_grain_control.attr);
+> > +       fan->fine_grain_control.show = show_fine_grain_control;
+> > +       fan->fine_grain_control.store = NULL;
+> > +       fan->fine_grain_control.attr.name = "fine_grain_control";
+> > +       fan->fine_grain_control.attr.mode = 0444;
+> > +       status = sysfs_create_file(&device->dev.kobj, &fan-
+> > >fine_grain_control.attr);
+> 
+> I would split the creation of the new attributes into a separate
+> file,
+> for clarity (and to help the review somewhat).
+> 
+We can move all the attributes including the current one to a new file.
+
+Thanks,
+Srinivas
+
