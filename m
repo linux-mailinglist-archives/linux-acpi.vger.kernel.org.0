@@ -2,321 +2,138 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 529B04AA2AD
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Feb 2022 22:58:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB6A4AA412
+	for <lists+linux-acpi@lfdr.de>; Sat,  5 Feb 2022 00:14:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242054AbiBDV6B (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Feb 2022 16:58:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45900 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235773AbiBDV6A (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Feb 2022 16:58:00 -0500
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 525C4C061714
-        for <linux-acpi@vger.kernel.org>; Fri,  4 Feb 2022 13:57:59 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id h7so23210240ejf.1
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Feb 2022 13:57:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=4ry+6xT/5Q2RE5BmaT6rGkA3Wtas/JKbSMIBj1k8UiY=;
-        b=CVusU5U6nDWS1JVb0PZvHpmocDCcQhArtVdyzZqA414Xb7FGrqrjH2WoXceqJvju8P
-         DbLvfLlrYLVeStDKM6EmvIYLppiIy4xIIC5aSPIOyAFbClI46pTs5NFtRrbrdcQztdOg
-         Z23r4oLHWDJZ4OZ56ZKPu82iD03qkoLF9CiCG2+mKL02p6AFz1E9JyGjczVCE4LgXZHq
-         e+WV4blAji5axR7MV3E2YpopTBy6ADV87QR16w7z0n3vcHqfr78Q0gwp8VVDrtFFd6fh
-         eiy2/XB4tiV/ZIyRHwNR5ZiSxmqR4GCOejClHPcQdETqcfNR7EQ5GdOQVAR5VhPf2pK/
-         95pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=4ry+6xT/5Q2RE5BmaT6rGkA3Wtas/JKbSMIBj1k8UiY=;
-        b=1NJoqao1abEjhkWLBOWnVbpOyaaEdIF5p2ChlFvyizecObfaas6s3jkQhPMFw+aIpp
-         6bY4YV8prEj53M+sam2JbQ6mevhHV3+6qUDLmh9yJaQMChN14wggmscZxFCqq0Vi5ZW6
-         0S5Q2I1HIly/DfUqJi4N7JC49CV4zOfBPiO8ZJq43bpNWvzhtnfJY3VuuKBl0bBsuPOi
-         uiYfjaMhyH5+I9KMBbTatuT3pW03orSu9eOrg7NZyLph0dlcexwsYRdjFsxU08sxs2+L
-         L+eW4d1MfgwZ+b0oLyqHdCRSVPbIfrmqWVNQw6RA8Cf1Mt1BY+mypGAZDZf9IurV9tEn
-         7wSA==
-X-Gm-Message-State: AOAM5332dygXeONJKKu0q9Bl5Yyy89zpdUrReOvyPEgGitIZ6VLaTng6
-        VZ1ic9b7raFVRsgubd1gemnWBZrlyTttbWwsaCNGI9hhIiN6tQ==
-X-Google-Smtp-Source: ABdhPJyjPtHXPXxgtQ0AVGPTpqG2fXVtIIZm54elBHYCRwA8XbI0pmZ+X2oyzyAMLVWlc0R3MpRSEZkwGBAoxdDOP2c=
-X-Received: by 2002:a17:907:7f1b:: with SMTP id qf27mr792124ejc.114.1644011877513;
- Fri, 04 Feb 2022 13:57:57 -0800 (PST)
+        id S1359664AbiBDXOt (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Feb 2022 18:14:49 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:55932 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1376312AbiBDXOt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Feb 2022 18:14:49 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 67DA1B83967;
+        Fri,  4 Feb 2022 23:14:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6035C004E1;
+        Fri,  4 Feb 2022 23:14:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644016487;
+        bh=MYi9IiU+yOAAJGTml3/Ykmnyb/j5FaPAwu6TFeCrUZk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=ktZ8UwMt+zeZvooJjXKnCO2gqgxOWADcs8ome7KbMkZu4Mybjenx7sWEHRUj9Ag0h
+         7hzbyt11+9DkMT/xI/jtxBszrD68q/kvf2/gl7j2ibb9n1pn87xGLvDxI6n+QiLWuD
+         FJOGGOvj6jZaubCYmgoWrBFJJ9RoP/VM72fvN+8BqWrebs6+JQql9vQpc10Xo4BoiI
+         a/qvT8H0RuKjRv+gHfXtpWigxr1kPJZUi21FYNvP5/PCUff3/JMhPx+hjqPWdkIoTZ
+         eeb0oLDXwjeD0iK18DQNll9rFUDaD0woS+PEZy3qeVWED/QzykAvMRoHgqJTd6aEUV
+         7LiXFGha71Gkg==
+Date:   Fri, 4 Feb 2022 17:14:44 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] PCI: ACPI: Replace acpi_bus_get_device()
+Message-ID: <20220204231444.GA228064@bhelgaas>
 MIME-Version: 1.0
-References: <20220201015518.3118404-1-wonchung@google.com> <Yfo+gYLLOGN69Re1@kuha.fi.intel.com>
- <CAOvb9ygyupib4cMXhcdeZmgNZmyaCmaTF98MHae+irY5ruZ1Qw@mail.gmail.com> <CAJZ5v0hGxYv1xagc+ZQFhvpLpcbs1c1szZZahR7wsDm=i5AcJg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hGxYv1xagc+ZQFhvpLpcbs1c1szZZahR7wsDm=i5AcJg@mail.gmail.com>
-From:   Won Chung <wonchung@google.com>
-Date:   Fri, 4 Feb 2022 13:57:45 -0800
-Message-ID: <CAOvb9yhMgQ_4sDwqYS6ZYhauw3BKOidkp1uMFp6yw9nUWnLjSw@mail.gmail.com>
-Subject: Re: [PATCH v4] ACPI: device_sysfs: Add sysfs support for _PLD
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-14.9 required=5.0 tests=BAYES_50,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <11930209.O9o76ZdvQC@kreacher>
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 4, 2022 at 11:18 AM Rafael J. Wysocki <rafael@kernel.org> wrote=
-:
->
-> On Wed, Feb 2, 2022 at 9:43 PM Won Chung <wonchung@google.com> wrote:
-> >
-> > Hi Heikki,
-> >
-> > Thank you for the review!
-> >
-> > On Wed, Feb 2, 2022 at 12:19 AM Heikki Krogerus
-> > <heikki.krogerus@linux.intel.com> wrote:
-> > >
-> > > Hi Won,
-> > >
-> > > On Tue, Feb 01, 2022 at 01:55:18AM +0000, Won Chung wrote:
-> > > > When ACPI table includes _PLD fields for a device, create a new
-> > > > directory (pld) in sysfs to share _PLD fields.
-> > >
-> > > I think you need to explain what needs this information in user space=
-.
-> > >
-> > > > Signed-off-by: Won Chung <wonchung@google.com>
-> > > > ---
-> > > >  Documentation/ABI/testing/sysfs-bus-acpi | 107 +++++++++++++++++++=
-++++
-> > > >  drivers/acpi/device_sysfs.c              |  55 ++++++++++++
-> > > >  include/acpi/acpi_bus.h                  |   1 +
-> > > >  3 files changed, 163 insertions(+)
-> > > >
-> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentati=
-on/ABI/testing/sysfs-bus-acpi
-> > > > index 58abacf59b2a..b8b71c8f3cfd 100644
-> > > > --- a/Documentation/ABI/testing/sysfs-bus-acpi
-> > > > +++ b/Documentation/ABI/testing/sysfs-bus-acpi
-> > > > @@ -96,3 +96,110 @@ Description:
-> > > >               hardware, if the _HRV control method is present.  It =
-is mostly
-> > > >               useful for non-PCI devices because lspci can list the=
- hardware
-> > > >               version for PCI devices.
-> > > > +
-> > > > +What:                /sys/bus/acpi/devices/.../pld/
-> > > > +Date:                Feb, 2022
-> > > > +Contact:     Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             This directory contains the output of the device obje=
-ct's _PLD
-> > > > +             control method, if present. This information provides=
- details
-> > > > +             on physical location of a device.
-> > > > +
-> > > > +What:                /sys/bus/acpi/devices/.../pld/revision
-> > > > +Date:                Feb, 2022
-> > > > +Contact:     Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             The current revision is 0x2.
-> > > > +
-> > > > +What:           /sys/bus/acpi/devices/.../pld/group_token
-> > > > +Date:           Feb, 2022
-> > > > +Contact:        Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             Unique numerical value identifying a group.
-> > > > +
-> > > > +What:           /sys/bus/acpi/devices/.../pld/group_position
-> > > > +Date:           Feb, 2022
-> > > > +Contact:        Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             Identifies this device connection point=E2=80=99s pos=
-ition in the group.
-> > > > +
-> > > > +What:           /sys/bus/acpi/devices/.../pld/user_visible
-> > > > +Date:           Feb, 2022
-> > > > +Contact:        Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             Set if the device connection point can be seen by the=
- user
-> > > > +             without disassembly.
-> > > > +
-> > > > +What:           /sys/bus/acpi/devices/.../pld/dock
-> > > > +Date:           Feb, 2022
-> > > > +Contact:        Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             Set if the device connection point resides in a docki=
-ng station
-> > > > +             or port replicator.
-> > > > +
-> > > > +What:           /sys/bus/acpi/devices/.../pld/bay
-> > > > +Date:           Feb, 2022
-> > > > +Contact:        Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             Set if describing a device in a bay or if device conn=
-ection
-> > > > +             point is a bay.
-> > > > +
-> > > > +What:           /sys/bus/acpi/devices/.../pld/lid
-> > > > +Date:           Feb, 2022
-> > > > +Contact:        Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             Set if this device connection point resides on the li=
-d of
-> > > > +             laptop system.
-> > > > +
-> > > > +What:           /sys/bus/acpi/devices/.../pld/panel
-> > > > +Date:           Feb, 2022
-> > > > +Contact:        Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             Describes which panel surface of the system=E2=80=99s=
- housing the
-> > > > +             device connection point resides on:
-> > > > +             0 - Top
-> > > > +             1 - Bottom
-> > > > +             2 - Left
-> > > > +             3 - Right
-> > > > +             4 - Front
-> > > > +             5 - Back
-> > > > +             6 - Unknown (Vertical Position and Horizontal Positio=
-n will be
-> > > > +             ignored)
-> > > > +
-> > > > +What:           /sys/bus/acpi/devices/.../pld/vertical_position
-> > > > +Date:           Feb, 2022
-> > > > +Contact:        Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             0 - Upper
-> > > > +             1 - Center
-> > > > +             2 - Lower
-> > > > +
-> > > > +What:           /sys/bus/acpi/devices/.../pld/horizontal_position
-> > > > +Date:           Feb, 2022
-> > > > +Contact:        Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             ACPI specification does not define horizontal positio=
-n field.
-> > > > +             Can be used as either
-> > > > +             0 - Left
-> > > > +             1 - Center
-> > > > +             2 - Right
-> > > > +             or
-> > > > +             0 - Leftmost
-> > > > +             and higher numbers going toward the right.
-> > > > +
-> > > > +What:           /sys/bus/acpi/devices/.../pld/shape
-> > > > +Date:           Feb, 2022
-> > > > +Contact:        Won Chung <wonchung@google.com>
-> > > > +Description:
-> > > > +             Describes the shape of the device connection point.
-> > > > +             0 - Round
-> > > > +             1 - Oval
-> > > > +             2 - Square
-> > > > +             3 - Vertical Rectangle
-> > > > +             4 - Horizontal Rectangle
-> > > > +             5 - Vertical Trapezoid
-> > > > +             6 - Horizontal Trapezoid
-> > > > +             7 - Unknown - Shape rendered as a Rectangle with dott=
-ed lines
-> > > > +             8 - Chamfered
-> > > > +             15:9 - Reserved
-> > > > +
-> > > > diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysf=
-s.c
-> > > > index d5d6403ba07b..610be93635a0 100644
-> > > > --- a/drivers/acpi/device_sysfs.c
-> > > > +++ b/drivers/acpi/device_sysfs.c
-> > > > @@ -509,6 +509,49 @@ static ssize_t status_show(struct device *dev,=
- struct device_attribute *attr,
-> > > >  }
-> > > >  static DEVICE_ATTR_RO(status);
-> > > >
-> > > > +#define DEV_ATTR_PLD_PROP(prop) \
-> > > > +     static ssize_t prop##_show(struct device *dev, struct device_=
-attribute *attr, \
-> > > > +             char *buf) \
-> > > > +{ \
-> > > > +     struct acpi_device *acpi_dev =3D to_acpi_device(dev); \
-> > > > +     if (acpi_dev->pld =3D=3D NULL) \
-> > > > +             return -EIO; \
-> > > > +     return sprintf(buf, "%u\n", acpi_dev->pld->prop); \
-> > > > +}; \
-> > >
-> > > Ah, you are storing the _PLD below. Before there were concerns about
-> > > the memory that the cached _PLD information would consume. Another wa=
-y
-> > > of doing this would be to just always evaluate the _PLD here.
-> > >
-> > > Rafael needs to comment on this. My personal opinion is that let's
-> > > just store the thing.
-> > >
-> >
-> > By "always evaluate the _PLD here", you mean something like
-> >   acpi_get_physical_device_location(dev->handle, &pld)
-> > for every _PLD field, right?
-> >
-> > I will wait for Rafael's comment on this.
->
+On Thu, Jan 27, 2022 at 12:40:13AM +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Replace acpi_bus_get_device() that is going to be dropped with
+> acpi_fetch_acpi_dev().
+> 
+> No intentional functional impact.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Hi Rafael,
+Applied with Mika's Reviewed-by to pci/acpi for v5.18, thanks!
 
-Thank you for the review.
-
-> So I would like to get back to the very beginning: Do you need full
-> _PLD output to address the issue at hand?
-
-I do not think we need full _PLD output. In fact, the fields I am
-adding are many but not all _PLD fields. To explain reasons behind
-each field added:
-*revision: current pld revision
-*group token and position: like an identifier for the device
-*panel, horizontal position, vertical position: to locate which
-physical device corresponds to this device
-*user visible, dock, bay, lid: to determine if and how the device can
-be located by the user.
-*shape: helps determine connection type
-
-So, for example, let's say there are multiple Type C connectors (C0,
-C1, and C2). We have 2 Type C ports on the left panel and 1 Type C
-port on the right panel of the laptop. We can use PLD fields: panel
-and horizontal position to determine which connector actually
-corresponds to which physical port. Having this information, we can
-determine which specific port (out of three) is doing what. (like
-charging cable connected to the port on the left side of the left
-panel)
-
-The fields that are in _PLD output but not included here are:
-ignore_color, color, width, height, ejectable, OSPM ejection required,
-cabinet_number, card_cage_number, reference, group orientation,
-rotation, order, vertical offset, horizontal offset.
-These are not included because they do not help specify the device to
-which one in specific physical location.
-
->
-> If so, do you really need it for all devices that have _PLD?
-
-Benson and Prashant, please correct me if I am wrong:
-
-I do not think we need to store PLD for all devices, I think just user
-visible devices to locate them physically. So, I think we can check if
-device_type is ACPI_BUS_TYPE_DEVICE and user_visible pld field is 1.
-Otherwise, I do not think we need to store pld information nor create
-sysfs files.
-What do you think?
-
->
-> If not, then why waste memory for all that stuff?
-
-If this sounds okay with you, I can make changes and send v6. (This
-comment is on v4 but I already sent v5)
-
-Thank you,
-Won
+> ---
+> 
+> -> v2: Fix typo (superfluous paren) in acpiphp_ibm.c.
+> 
+> ---
+>  drivers/pci/hotplug/acpiphp_glue.c |    7 ++++---
+>  drivers/pci/hotplug/acpiphp_ibm.c  |    5 +++--
+>  drivers/pci/pci-acpi.c             |    6 +++---
+>  3 files changed, 10 insertions(+), 8 deletions(-)
+> 
+> Index: linux-pm/drivers/pci/hotplug/acpiphp_glue.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/hotplug/acpiphp_glue.c
+> +++ linux-pm/drivers/pci/hotplug/acpiphp_glue.c
+> @@ -226,9 +226,9 @@ static void acpiphp_post_dock_fixup(stru
+>  static acpi_status acpiphp_add_context(acpi_handle handle, u32 lvl, void *data,
+>  				       void **rv)
+>  {
+> +	struct acpi_device *adev = acpi_fetch_acpi_dev(handle);
+>  	struct acpiphp_bridge *bridge = data;
+>  	struct acpiphp_context *context;
+> -	struct acpi_device *adev;
+>  	struct acpiphp_slot *slot;
+>  	struct acpiphp_func *newfunc;
+>  	acpi_status status = AE_OK;
+> @@ -238,6 +238,9 @@ static acpi_status acpiphp_add_context(a
+>  	struct pci_dev *pdev = bridge->pci_dev;
+>  	u32 val;
+>  
+> +	if (!adev)
+> +		return AE_OK;
+> +
+>  	status = acpi_evaluate_integer(handle, "_ADR", NULL, &adr);
+>  	if (ACPI_FAILURE(status)) {
+>  		if (status != AE_NOT_FOUND)
+> @@ -245,8 +248,6 @@ static acpi_status acpiphp_add_context(a
+>  				"can't evaluate _ADR (%#x)\n", status);
+>  		return AE_OK;
+>  	}
+> -	if (acpi_bus_get_device(handle, &adev))
+> -		return AE_OK;
+>  
+>  	device = (adr >> 16) & 0xffff;
+>  	function = adr & 0xffff;
+> Index: linux-pm/drivers/pci/hotplug/acpiphp_ibm.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/hotplug/acpiphp_ibm.c
+> +++ linux-pm/drivers/pci/hotplug/acpiphp_ibm.c
+> @@ -433,8 +433,9 @@ static int __init ibm_acpiphp_init(void)
+>  		goto init_return;
+>  	}
+>  	pr_debug("%s: found IBM aPCI device\n", __func__);
+> -	if (acpi_bus_get_device(ibm_acpi_handle, &device)) {
+> -		pr_err("%s: acpi_bus_get_device failed\n", __func__);
+> +	device = acpi_fetch_acpi_dev(ibm_acpi_handle);
+> +	if (!device) {
+> +		pr_err("%s: acpi_fetch_acpi_dev failed\n", __func__);
+>  		retval = -ENODEV;
+>  		goto init_return;
+>  	}
+> Index: linux-pm/drivers/pci/pci-acpi.c
+> ===================================================================
+> --- linux-pm.orig/drivers/pci/pci-acpi.c
+> +++ linux-pm/drivers/pci/pci-acpi.c
+> @@ -89,9 +89,9 @@ int acpi_get_rc_resources(struct device
+>  		return -ENODEV;
+>  	}
+>  
+> -	ret = acpi_bus_get_device(handle, &adev);
+> -	if (ret)
+> -		return ret;
+> +	adev = acpi_fetch_acpi_dev(handle);
+> +	if (!adev)
+> +		return -ENODEV;
+>  
+>  	ret = acpi_get_rc_addr(adev, res);
+>  	if (ret) {
+> 
+> 
+> 
