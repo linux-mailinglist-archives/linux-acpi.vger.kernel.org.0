@@ -2,80 +2,74 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 308E84A9A22
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Feb 2022 14:41:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 401C14A9D1D
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Feb 2022 17:46:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358912AbiBDNlp (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Feb 2022 08:41:45 -0500
-Received: from mga14.intel.com ([192.55.52.115]:38991 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229609AbiBDNlo (ORCPT <rfc822;linux-acpi@vger.kernel.org>);
-        Fri, 4 Feb 2022 08:41:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643982104; x=1675518104;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zCLtfGRdg2eK4tCTVwB9mnCFieiupKXpacDs0E7kFjI=;
-  b=dmTtFB0Ld+cgxGJ3Qg9rRUdq5MaAXfF7Vmzau4tVvhLl3B+FPkqSaLpF
-   xU0bgiQS9k83P2aBV/V6NsIxxGe/HOHChmBlAjbtkfYi9j3cCMjBqazLB
-   krcdYDq38iUNRDsCrfcd03u06Lk8u7VguEl2/375osNLqSXZYpBNVM/g9
-   ChU+LC+uUn/fF2syHPv4BBJ9p1YQy01MpXquz3LQVkAxWXSb+y5xWItxu
-   /Ck+f0F1EGJ0koN6/Ev97JgcanTbKIeTpsPPjjVJVEatBw/nMKkZ9Ghbk
-   b6DUHVkhWcS+nGh19R9wz6UFKNqISxEDwJpYjCJ5zikMGYznCwR6nklQW
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10247"; a="248580848"
-X-IronPort-AV: E=Sophos;i="5.88,342,1635231600"; 
-   d="scan'208";a="248580848"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2022 05:41:41 -0800
-X-IronPort-AV: E=Sophos;i="5.88,342,1635231600"; 
-   d="scan'208";a="631705313"
-Received: from smile.fi.intel.com ([10.237.72.61])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2022 05:41:38 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nFypI-000nqd-7l;
-        Fri, 04 Feb 2022 15:40:36 +0200
-Date:   Fri, 4 Feb 2022 15:40:35 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: Re: [PATCH v1 1/1] device property: Don't split fwnode_get_irq*()
- APIs in the code
-Message-ID: <Yf0s0/JjSKx/R4Ww@smile.fi.intel.com>
-References: <20220203125613.1166-1-andriy.shevchenko@linux.intel.com>
- <Yfzkm1CVNNRqHzd7@paasikivi.fi.intel.com>
- <Yfz0v7oqDkgfZyky@paasikivi.fi.intel.com>
+        id S244986AbiBDQqU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Feb 2022 11:46:20 -0500
+Received: from mail-yb1-f175.google.com ([209.85.219.175]:33480 "EHLO
+        mail-yb1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233928AbiBDQqT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Feb 2022 11:46:19 -0500
+Received: by mail-yb1-f175.google.com with SMTP id j2so20656353ybu.0;
+        Fri, 04 Feb 2022 08:46:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=BvSuNBp8dR/Kb3EjKCpYDsXctSQVZqQDAcffA+q3los=;
+        b=7D3z2vm0h1j4atOFoOENz9bLXdyzCLlLpc4+nItU5ZeuGiKPdm7eQvK4nveCccMAiU
+         LyvnrQZ5poZ9PTbMl/482N9gywqddiQeyDkLM4CAu5vrYrclL9PMftwG2srms5iEL1lv
+         Ka8f7prpywo6ueQAFPOrGTJgYJzUHmqxfPqfRBGdyaDrCnQH7I02PcZnf2TtjKXaJvGT
+         9ZtO2rKAUHwSYVVPOoHjoYLl4JSZXMuxaFDqry6cKWaAoySzfMhXHL091a5jTLfpmSol
+         +aPQexsMK2R+qzJkYRpYUVKRR9x5GLu/z95tGBzet77Ksn0wCPIiHuOAMG4o+Yskzmlj
+         vwqg==
+X-Gm-Message-State: AOAM533IDqNVjmbshorGyKWsazXW+Gu93WWsXRWbxvx2Cgjiqcc+PrPg
+        Fr+gUA8acizuJ+wJjj/CVj/sh6oQinI4NWa7G9bu1wxv7jU=
+X-Google-Smtp-Source: ABdhPJyAFVEJdp1U9YTbB71BrJTCw0XHR3u847HkemF7OS0ij0YeJcjoDQH8HyWf0BmGEBijaLROnZtx3zl9ycbUSU4=
+X-Received: by 2002:a05:690c:118:: with SMTP id bd24mr3969605ywb.515.1643993178854;
+ Fri, 04 Feb 2022 08:46:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yfz0v7oqDkgfZyky@paasikivi.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 4 Feb 2022 17:46:08 +0100
+Message-ID: <CAJZ5v0h9f770hRMXazt4jk=9E01hMjQ41pZ5+Ym-4p0dCrhwmw@mail.gmail.com>
+Subject: [GIT PULL] ACPI fix for v5.17-rc3
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 04, 2022 at 11:41:19AM +0200, Sakari Ailus wrote:
-> On Fri, Feb 04, 2022 at 10:32:27AM +0200, Sakari Ailus wrote:
-> > I'd prefer to prepend this patch to the rest of the set I have and get it
-> > all merged through linux-pm tree, on the dependent patch reaches it.
-> 
-> I rebased mine on this patch and I was quite surprised to see it doesn't
-> conflict! So either way works fine for me.
-> 
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Hi Linus,
 
-Thank you, Sakari!
+Please pull from the tag
 
--- 
-With Best Regards,
-Andy Shevchenko
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-5.17-rc3
+
+with top-most commit 04662bac0067e2fd7f243d6abaa4d779bce14114
+
+ ACPI: require CRC32 to build
+
+on top of commit 26291c54e111ff6ba87a164d85d4a4e134b7315c
+
+ Linux 5.17-rc2
+
+to receive an ACPI fix for 5.17-rc3.
+
+This fixes compilation in the case when ACPI is selected and CRC32,
+depended on by ACPI after recent changes, is not (Randy Dunlap).
+
+Thanks!
 
 
+---------------
+
+Randy Dunlap (1):
+      ACPI: require CRC32 to build
+
+---------------
+
+ drivers/acpi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
