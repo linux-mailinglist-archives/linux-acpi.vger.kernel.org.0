@@ -2,74 +2,56 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 401C14A9D1D
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Feb 2022 17:46:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BE2D4A9DAD
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Feb 2022 18:35:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244986AbiBDQqU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 4 Feb 2022 11:46:20 -0500
-Received: from mail-yb1-f175.google.com ([209.85.219.175]:33480 "EHLO
-        mail-yb1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233928AbiBDQqT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Feb 2022 11:46:19 -0500
-Received: by mail-yb1-f175.google.com with SMTP id j2so20656353ybu.0;
-        Fri, 04 Feb 2022 08:46:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=BvSuNBp8dR/Kb3EjKCpYDsXctSQVZqQDAcffA+q3los=;
-        b=7D3z2vm0h1j4atOFoOENz9bLXdyzCLlLpc4+nItU5ZeuGiKPdm7eQvK4nveCccMAiU
-         LyvnrQZ5poZ9PTbMl/482N9gywqddiQeyDkLM4CAu5vrYrclL9PMftwG2srms5iEL1lv
-         Ka8f7prpywo6ueQAFPOrGTJgYJzUHmqxfPqfRBGdyaDrCnQH7I02PcZnf2TtjKXaJvGT
-         9ZtO2rKAUHwSYVVPOoHjoYLl4JSZXMuxaFDqry6cKWaAoySzfMhXHL091a5jTLfpmSol
-         +aPQexsMK2R+qzJkYRpYUVKRR9x5GLu/z95tGBzet77Ksn0wCPIiHuOAMG4o+Yskzmlj
-         vwqg==
-X-Gm-Message-State: AOAM533IDqNVjmbshorGyKWsazXW+Gu93WWsXRWbxvx2Cgjiqcc+PrPg
-        Fr+gUA8acizuJ+wJjj/CVj/sh6oQinI4NWa7G9bu1wxv7jU=
-X-Google-Smtp-Source: ABdhPJyAFVEJdp1U9YTbB71BrJTCw0XHR3u847HkemF7OS0ij0YeJcjoDQH8HyWf0BmGEBijaLROnZtx3zl9ycbUSU4=
-X-Received: by 2002:a05:690c:118:: with SMTP id bd24mr3969605ywb.515.1643993178854;
- Fri, 04 Feb 2022 08:46:18 -0800 (PST)
+        id S1376890AbiBDRfr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 4 Feb 2022 12:35:47 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:50518 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230051AbiBDRfo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 4 Feb 2022 12:35:44 -0500
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 4.0.0)
+ id 773272b927eaaaee; Fri, 4 Feb 2022 18:35:43 +0100
+Received: from kreacher.localnet (unknown [213.134.181.137])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by v370.home.net.pl (Postfix) with ESMTPSA id C986266B456;
+        Fri,  4 Feb 2022 18:35:42 +0100 (CET)
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux ACPI <linux-acpi@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        David Box <david.e.box@linux.intel.com>
+Subject: [PATCH v1 0/2] ACPI: PM: s2idle: Two fixes for wakeup-related issues
+Date:   Fri, 04 Feb 2022 18:29:04 +0100
+Message-ID: <11925099.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 4 Feb 2022 17:46:08 +0100
-Message-ID: <CAJZ5v0h9f770hRMXazt4jk=9E01hMjQ41pZ5+Ym-4p0dCrhwmw@mail.gmail.com>
-Subject: [GIT PULL] ACPI fix for v5.17-rc3
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 213.134.181.137
+X-CLIENT-HOSTNAME: 213.134.181.137
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddrgeelgddutddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepvddufedrudefgedrudekuddrudefjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddukedurddufeejpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeehpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopegu
+ rghvihgurdgvrdgsohigsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+Hi All,
 
-Please pull from the tag
+Two problems with the handling of wakeup from suspend-to-idle on systems
+using ACPI and the EC driver (x86 PCs mostly) have been recently discovered,
+mainly by code inspection.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-5.17-rc3
-
-with top-most commit 04662bac0067e2fd7f243d6abaa4d779bce14114
-
- ACPI: require CRC32 to build
-
-on top of commit 26291c54e111ff6ba87a164d85d4a4e134b7315c
-
- Linux 5.17-rc2
-
-to receive an ACPI fix for 5.17-rc3.
-
-This fixes compilation in the case when ACPI is selected and CRC32,
-depended on by ACPI after recent changes, is not (Randy Dunlap).
+This series of two patches is intended to fix those problems.  Please refer
+to the patch changelogs for details.
 
 Thanks!
 
 
----------------
 
-Randy Dunlap (1):
-      ACPI: require CRC32 to build
-
----------------
-
- drivers/acpi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
