@@ -2,66 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 725D94AF1A9
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Feb 2022 13:31:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 649AB4AF472
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Feb 2022 15:53:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231339AbiBIMbb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Feb 2022 07:31:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57568 "EHLO
+        id S235247AbiBIOxE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Feb 2022 09:53:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229701AbiBIMba (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Feb 2022 07:31:30 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DAB8C0613CA;
-        Wed,  9 Feb 2022 04:31:33 -0800 (PST)
+        with ESMTP id S235251AbiBIOxE (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Feb 2022 09:53:04 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF8ADC061355;
+        Wed,  9 Feb 2022 06:53:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1644409893; x=1675945893;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=soo0nB22WJPviBpDRfEsLQcVnBjoM627TI0/ktDLbTA=;
-  b=DIJvvN1fahCLSOlJKbUbt7CYREFfjB8FFrh0GhrgYu3pS0H0AntDOr/n
-   UJKll2uyur+6Fp2DMwjiTCT55WJ+/Xa7Hd6W8dr7ICJLaG8A7ctGNOSg/
-   3CeHCkZd/E+d2L0VCBK9Nm96juLZvKpPIMeSw1I3g57PDAA52OO4McLpF
-   owT/Dcg353xM+perKlvEoBpGUMOp8s2+0MO+U4YT+dZAhNpNLYXAPpX7b
-   s74rukMfa+Oeq90J0v1c3UjAPBkv6qisqyn5CNXlCZg4hSv6KRpOYAcT9
-   vHFrpTgL3fEXH1OcU7CPb/4Sbzo+F5ZX9IL4OwsramGMyfAR8q/QTLiOe
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10252"; a="248026147"
-X-IronPort-AV: E=Sophos;i="5.88,355,1635231600"; 
-   d="scan'208";a="248026147"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 04:31:33 -0800
-X-IronPort-AV: E=Sophos;i="5.88,355,1635231600"; 
-   d="scan'208";a="622261908"
-Received: from smile.fi.intel.com ([10.237.72.61])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 04:31:30 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nHm7E-002bvg-8W;
-        Wed, 09 Feb 2022 14:30:32 +0200
-Date:   Wed, 9 Feb 2022 14:30:32 +0200
+  t=1644418386; x=1675954386;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=JcR2SqzgDfaiREjbB1UD/J9SsNencbetmBgZzpo5Kx4=;
+  b=cWIAAH5LlkmwRC1PIhLXnzIZgmvRSCrIr7FUJNJdX9Jec5zkiQRv8qIY
+   N99bBl9eVTvO02zjR1+N0bdydhKYSvVnCQCRYmJWgmzbw2p5Kem1JOL23
+   F4Hx2iE06fNMvlrRIJIEYX4C9FCD1G1+zajCqGLeH67VfIoYBdczHrUdh
+   l1zTlHa4VjrPzJd6uc/vrnLvN1S6fILV2pI7Ichu3zS0s3C42pGJoVlpM
+   8YpsSN9dsqE/n1iEEZkCsM6lDttjJmskTzzc97xT2vw2ACc8JvjG05wf5
+   ZcascRBbG+losQvOW/5z1U9t6g4gJVBSEDOCwI5XoD+aIvUM1x8Z7YSD7
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10252"; a="249167860"
+X-IronPort-AV: E=Sophos;i="5.88,356,1635231600"; 
+   d="scan'208";a="249167860"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 06:53:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,356,1635231600"; 
+   d="scan'208";a="629294711"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga002.fm.intel.com with ESMTP; 09 Feb 2022 06:53:04 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 7E30B50D; Wed,  9 Feb 2022 16:53:19 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v2 1/6] device property: Helper to match multiple
- connections
-Message-ID: <YgOz6K55Oi2Si4pU@smile.fi.intel.com>
-References: <20220208031944.3444-1-bjorn.andersson@linaro.org>
- <20220208031944.3444-2-bjorn.andersson@linaro.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Subject: [PATCH v1 1/1] ACPI: property: Get rid of redundant 'else'
+Date:   Wed,  9 Feb 2022 16:53:18 +0200
+Message-Id: <20220209145318.83405-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220208031944.3444-2-bjorn.andersson@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -72,118 +61,97 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 07, 2022 at 07:19:39PM -0800, Bjorn Andersson wrote:
-> In some cases multiple connections with the same connection id
-> needs to be resolved from a fwnode graph.
-> 
-> One such example is when separate hardware is used for performing muxing
-> and/or orientation switching of the SuperSpeed and SBU lines in a USB-C
+In the snippets like the following
 
-USB Type-C ?
+	if (...)
+		return / goto / break / continue ...;
+	else
+		...
 
-> connector. In this case the connector needs to belong to a graph with
-> multiple matching remote endpoints, and the TypeC controller needs to be
+the 'else' is redundant. Get rid of it.
 
-Type-C ?
+While at it, replace conditional '<= 0' for unsigned type by '== 0'
+in acpi_data_prop_read(); update comment in the
+__acpi_node_get_property_reference() on how we parse the reference.
 
-> able to resolve them both.
-> 
-> Add a new API that allows this kind of lookup.
-> 
-> Given that the match() callback returns an opaque reference to something
-> provided by the client it's not possible for the implementation to
-> release the returned object and as such it's not possible to handle
-> errors, which in turn means that it's not possible to query the number
-> of elements or dynamically grow the results array. It's however expected
-> that the number of matches will be reasonably low and that the worst
-> case is known by the caller before hand.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/property.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-...
-
-> +	fwnode_graph_for_each_endpoint(fwnode, ep) {
-> +		if (count >= matches_len) {
-> +			fwnode_handle_put(ep);
-> +			return count;
-> +		}
-> +
-> +		node = fwnode_graph_get_remote_port_parent(ep);
-> +		if (!fwnode_device_is_available(node)) {
-> +			fwnode_handle_put(node);
-> +			continue;
-> +		}
-> +
-> +		ret = match(node, con_id, data);
-> +		fwnode_handle_put(node);
-
-> +
-
-Redundant blank line (it seems the current style w/o this).
-Ditto for the below function.
-
-> +		if (ret)
-> +			matches[count++] = ret;
-> +	}
-
-...
-
-> +/**
-> + * fwnode_connection_find_matches - Find connections from a device node
-> + * @fwnode: Device node with the connection
-> + * @con_id: Identifier for the connection
-> + * @data: Data for the match function
-> + * @match: Function to check and convert the connection description
-> + * @matches: Array of pointers to fill with matches
-> + * @matches_len: Length of @matches
-> + *
-> + * Find up to @matches_len connections with unique identifier @con_id between
-> + * @fwnode and other device nodes. @match will be used to convert the
-> + * connection description to data the caller is expecting to be returned
-> + * through the @matches array.
-> + *
-> + * Return: Number of matches resolved, of negative errno.
-
-s/of/or/ ?
-
-> + */
-> +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
-> +				   const char *con_id, void *data,
-> +				   devcon_match_fn_t match,
-> +				   void **matches, unsigned int matches_len)
-> +{
-> +	unsigned int count;
-> +
-> +	if (!fwnode || !match || !matches)
-
-!matches case may be still useful to get the count and allocate memory by
-caller. Please, consider this case.
-
-> +		return -EINVAL;
-> +
-> +	count = fwnode_graph_devcon_matches(fwnode, con_id, data, match,
-> +					    matches, matches_len);
-> +
-> +	return count + fwnode_devcon_matches(fwnode, con_id, data, match,
-> +					     matches + count,
-> +					     matches_len - count);
-
-I haven't found any explanation what the difference between two counts. Also
-can you define two count variables with distinct names and do something like
-
-	count_A = ...
-
-	matches += count;
-	matches_len -= count;
-
-	count_B = ...
-
-	return count_A + count_B;
-
-?
-
-> +}
-
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 4744c191acee..928aa4f86344 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -541,7 +541,8 @@ acpi_device_data_of_node(const struct fwnode_handle *fwnode)
+ 	if (is_acpi_device_node(fwnode)) {
+ 		const struct acpi_device *adev = to_acpi_device_node(fwnode);
+ 		return &adev->data;
+-	} else if (is_acpi_data_node(fwnode)) {
++	}
++	if (is_acpi_data_node(fwnode)) {
+ 		const struct acpi_data_node *dn = to_acpi_data_node(fwnode);
+ 		return &dn->data;
+ 	}
+@@ -739,14 +740,19 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+ 					return -EINVAL;
+ 			}
+ 
+-			/* assume following integer elements are all args */
++			/*
++			 * Assume the following integer elements are all args.
++			 * Stop counting on the first reference or end of the
++			 * package arguments. In case of neither reference,
++			 * nor integer, return an error, we can't parse it.
++			 */
+ 			for (i = 0; element + i < end && i < num_args; i++) {
+ 				int type = element[i].type;
+ 
++				if (type == ACPI_TYPE_LOCAL_REFERENCE)
++					break;
+ 				if (type == ACPI_TYPE_INTEGER)
+ 					nargs++;
+-				else if (type == ACPI_TYPE_LOCAL_REFERENCE)
+-					break;
+ 				else
+ 					return -EINVAL;
+ 			}
+@@ -938,7 +944,7 @@ static int acpi_data_prop_read(const struct acpi_device_data *data,
+ 
+ 	if (proptype != DEV_PROP_STRING && nval > obj->package.count)
+ 		return -EOVERFLOW;
+-	else if (nval <= 0)
++	if (nval == 0)
+ 		return -EINVAL;
+ 
+ 	items = obj->package.elements;
+@@ -1000,14 +1006,10 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
+ 	const struct list_head *head;
+ 	struct list_head *next;
+ 
+-	if (!child || is_acpi_device_node(child)) {
++	if ((!child || is_acpi_device_node(child)) && adev) {
+ 		struct acpi_device *child_adev;
+ 
+-		if (adev)
+-			head = &adev->children;
+-		else
+-			goto nondev;
+-
++		head = &adev->children;
+ 		if (list_empty(head))
+ 			goto nondev;
+ 
+@@ -1077,7 +1079,8 @@ acpi_node_get_parent(const struct fwnode_handle *fwnode)
+ 	if (is_acpi_data_node(fwnode)) {
+ 		/* All data nodes have parent pointer so just return that */
+ 		return to_acpi_data_node(fwnode)->parent;
+-	} else if (is_acpi_device_node(fwnode)) {
++	}
++	if (is_acpi_device_node(fwnode)) {
+ 		struct device *dev = to_acpi_device_node(fwnode)->dev.parent;
+ 
+ 		if (dev)
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
