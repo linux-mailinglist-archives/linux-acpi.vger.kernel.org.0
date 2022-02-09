@@ -2,62 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 739F54AFFCB
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Feb 2022 23:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB6194AFFD9
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Feb 2022 23:04:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234763AbiBIWBv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Feb 2022 17:01:51 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:41592 "EHLO
+        id S234875AbiBIWEO (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Feb 2022 17:04:14 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:50840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbiBIWBt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Feb 2022 17:01:49 -0500
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7875ADF498A4
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Feb 2022 14:01:33 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id t14-20020a17090a3e4e00b001b8f6032d96so3663010pjm.2
-        for <linux-acpi@vger.kernel.org>; Wed, 09 Feb 2022 14:01:33 -0800 (PST)
+        with ESMTP id S234963AbiBIWEM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Feb 2022 17:04:12 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA835E010DB0
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Feb 2022 14:04:10 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id v5-20020a17090a4ec500b001b8b702df57so6592418pjl.2
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Feb 2022 14:04:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=EdT/p3ms00YUszj8A6Qs54oUZxqMu8X4vGCTCdHXPws=;
-        b=JuODR6mGTkib5Js6ouvxg0FhJ9mLHh5YueQe1fcKOIEElWFkqkdRUqCiY+p6YOdPAL
-         zVEPjwihpDaCV/Rc7ivyFwloZI3hHuKk4Jz55MelzvcavEVJgqQP5awPxDC0ZFu13xBC
-         +DpDElr+qz5mvsPo8AJjUaa1CODLCoRYH7u3PY4alJBb7j8ELiCoUJ3czb7cfkzFc6ZJ
-         ELEMRd1DARCgPRMMlIQdED4kMZMU+Exvr1cS1ZcG5JT0b1K07SKM/9jAP9Lk6V2rvCyJ
-         DhgRwpJWX3WIhzt+THh7OEwbazJ1GinwgN6ZXANaseYjj6m8UeaOcEibdz6TeK9Z3Y9C
-         lfAw==
+        bh=xNzkFtkEdwS4V5xuimABsw6tYvmcHWMu0L6uE58HPK4=;
+        b=kyxSH/1s4tYkpnIvrk1pCVVHvuka0Iv2uFFyhp9uZb0aans0RzfOy3BkDicIzvpIK2
+         JZ+AInXaf/dEUAOlK2atr40Ts389WYvQGH1Iw96AZ1SFqT1j4ADLygKvmII//Yw6WSq0
+         1ZztH/K36DxhmzhYbKgN7gkepOJvdyMan3uZz8JP3RBDwsE3mZ3ABC+VnPzYAI08zOkn
+         JX6p7qgUTG4FbF0Q/KazCCYn0vfox4zeNuxNgGWuoQJp0sXTZmeP6Wj4GZXH8yRWt5bP
+         7j8sps3kN/wCna3m6wFG2i5r2m9G2x5j8DF1WZrhxmKarKilBeUF8EVrQGaqOa90iawA
+         HXCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=EdT/p3ms00YUszj8A6Qs54oUZxqMu8X4vGCTCdHXPws=;
-        b=C36GS/TNXPoGSxtnvCZOcvdZTgUmlywSsl6FGdR3tvvAoRcFppeDye1dPTXe/bleVD
-         98lvIVFtxpOQPb9iKy8LGUvVZNLjMduy5sUIW5BmZJEXMdWnKYLKXkNhGaQn2qKrpu8e
-         IIIyQXujujMCozMevZ6r8g8Eax1MWWF+8i2w9QXGC+Gcpd9tLIVhT+KxO7z/lwOLryYj
-         oHXGUp6gULTEtkPmRWALK/R/WH+wBwlOevaFa077fXZgMcJgDhuuuiaStF50JrcfDA4O
-         diR2wDaXbRCXvINFMWu9RHmvVdS7IC5q8RQzN2dOWB6QOspTBkbhZCsY3zBdw3Q3VI83
-         I3ng==
-X-Gm-Message-State: AOAM5302d0uBGF95GMVK4gd8D1yMDX9dm7OjGJ25rPvTN0IT+NytUTqQ
-        nG3KIhkTQeZxwyNlJ1f8aItWKXlbxilXkvTsA2+hyQ==
-X-Google-Smtp-Source: ABdhPJxZo3HobFl6yJXHXiczDsC/bNG0mA+B0cwbYyblpmapXkPt65/rv20AAl3qgW+wcQwggFjEnSofy9W2aKH0PHU=
-X-Received: by 2002:a17:90a:5303:: with SMTP id x3mr5241382pjh.64.1644444090147;
- Wed, 09 Feb 2022 14:01:30 -0800 (PST)
+        bh=xNzkFtkEdwS4V5xuimABsw6tYvmcHWMu0L6uE58HPK4=;
+        b=sDUJEAWBaUlmW/pZfkGGHowd+DQf3eFHgiu8+HTsrmvgHnNq07Lz+5WHv8qniCnELZ
+         fPz9C+kyStcc4OiOIVCNKKJAawzIBqjbkNdQr7bLUEgBv6qitQIr0y3zox9jingsR+0P
+         Oj2Rln+WQxOx6aIPzJhTeFHVD90dO3bwTmbG+IfCOIdlUcUc+de7lsK9pD+j94r/TVgZ
+         DUyoAzQ4cPHGhA08r3oT3RhdvP9DHyy3l8smArjQr7PP5DwG2w8AcdfGHiXD+0dmqi/w
+         4JonZxnXk7etSLYHeV6X3eygee5Mr1l16eZ32ddUM5LkCVUYHph3OWOC/wslUdnKT4Vj
+         Wvcw==
+X-Gm-Message-State: AOAM530RiNR5kh3I4mOepupUj/iaEoDwqorJ049elanDRGAejlnMlR18
+        suCztA3Ys/svA9DS22MREH2NaE7wenUJm+h0IpHAFw==
+X-Google-Smtp-Source: ABdhPJzKcnRRg0t0lBD/tELh3a75+sefe9RuAfwBe6PnjfwaIkNK+e/1Tl5ywaXWSkPidjxFSWHXiHZ7scaZX+zDe+s=
+X-Received: by 2002:a17:90a:5303:: with SMTP id x3mr5254322pjh.64.1644444249918;
+ Wed, 09 Feb 2022 14:04:09 -0800 (PST)
 MIME-Version: 1.0
-References: <YgNVJKy0s8MGBRoa@kroah.com> <20220209183945.GA571585@bhelgaas> <CAJZ5v0hYFRe-HseDnqh4AFpBzzmAjx9nfJo2yC5o=jzbWUqqOw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hYFRe-HseDnqh4AFpBzzmAjx9nfJo2yC5o=jzbWUqqOw@mail.gmail.com>
+References: <20220202020103.2149130-1-rajatja@google.com> <CAJZ5v0gngVxoe88rNAXXK_F34rHAKuxokiuZ6kpg6FhbnyMn0Q@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gngVxoe88rNAXXK_F34rHAKuxokiuZ6kpg6FhbnyMn0Q@mail.gmail.com>
 From:   Rajat Jain <rajatja@google.com>
-Date:   Wed, 9 Feb 2022 14:00:54 -0800
-Message-ID: <CACK8Z6Erfmqv39C2a5nAtDMXz3_w1B0ibQLc3dd4HJZ_z=xg+g@mail.gmail.com>
+Date:   Wed, 9 Feb 2022 14:03:34 -0800
+Message-ID: <CACK8Z6FuOeVwxh=Psn2HnG_HemndSLV9yq4xyX=JS2HkyaQ+fA@mail.gmail.com>
 Subject: Re: [PATCH v2 1/2] PCI: Allow internal devices to be marked as untrusted
 To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>, Len Brown <lenb@kernel.org>,
+Cc:     Rob Herring <robh+dt@kernel.org>, Len Brown <lenb@kernel.org>,
         Linux PCI <linux-pci@vger.kernel.org>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -73,7 +73,7 @@ X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -82,196 +82,109 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hello,
 
-On Wed, Feb 9, 2022 at 10:49 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Wed, Feb 9, 2022 at 11:11 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> On Wed, Feb 9, 2022 at 7:39 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> On Wed, Feb 2, 2022 at 3:01 AM Rajat Jain <rajatja@google.com> wrote:
 > >
-> > On Wed, Feb 09, 2022 at 06:46:12AM +0100, Greg Kroah-Hartman wrote:
-> > > On Tue, Feb 08, 2022 at 04:23:27PM -0800, Rajat Jain wrote:
-> > > > On Tue, Feb 1, 2022 at 6:01 PM Rajat Jain <rajatja@google.com> wrote:
-> > > > >
-> > > > > Today the pci_dev->untrusted is set for any devices sitting downstream
-> > > > > an external facing port (determined via "ExternalFacingPort" or the
-> > > > > "external-facing" properties).
-> > > > >
-> > > > > However, currently there is no way for internal devices to be marked as
-> > > > > untrusted.
-> > > > >
-> > > > > There are use-cases though, where a platform would like to treat an
-> > > > > internal device as untrusted (perhaps because it runs untrusted firmware
-> > > > > or offers an attack surface by handling untrusted network data etc).
-> > > > >
-> > > > > Introduce a new "UntrustedDevice" property that can be used by the
-> > > > > firmware to mark any device as untrusted.
-> > > >
-> > > > Just to unite the threads (from
-> > > > https://www.spinics.net/lists/linux-pci/msg120221.html). I did reach
-> > > > out to Microsoft but they haven't acknowledged my email. I also pinged
-> > > > them again yesterday, but I suspect I may not be able to break the
-> > > > ice. So this patch may be ready to go in my opinion.
-> > > >
-> > > > I don't see any outstanding comments on this patch, but please let me
-> > > > know if you have any comments.
-> > > >
-> > > > > Signed-off-by: Rajat Jain <rajatja@google.com>
-> > > > > ---
-> > > > > v2: * Also use the same property for device tree based systems.
-> > > > >     * Add documentation (next patch)
-> > > > >
-> > > > >  drivers/pci/of.c       | 2 ++
-> > > > >  drivers/pci/pci-acpi.c | 1 +
-> > > > >  drivers/pci/pci.c      | 9 +++++++++
-> > > > >  drivers/pci/pci.h      | 2 ++
-> > > > >  4 files changed, 14 insertions(+)
-> > > > >
-> > > > > diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-> > > > > index cb2e8351c2cc..e8b804664b69 100644
-> > > > > --- a/drivers/pci/of.c
-> > > > > +++ b/drivers/pci/of.c
-> > > > > @@ -24,6 +24,8 @@ void pci_set_of_node(struct pci_dev *dev)
-> > > > >                                                     dev->devfn);
-> > > > >         if (dev->dev.of_node)
-> > > > >                 dev->dev.fwnode = &dev->dev.of_node->fwnode;
-> > > > > +
-> > > > > +       pci_set_untrusted(dev);
-> > > > >  }
-> > > > >
-> > > > >  void pci_release_of_node(struct pci_dev *dev)
-> > > > > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> > > > > index a42dbf448860..2bffbd5c6114 100644
-> > > > > --- a/drivers/pci/pci-acpi.c
-> > > > > +++ b/drivers/pci/pci-acpi.c
-> > > > > @@ -1356,6 +1356,7 @@ void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
-> > > > >
-> > > > >         pci_acpi_optimize_delay(pci_dev, adev->handle);
-> > > > >         pci_acpi_set_external_facing(pci_dev);
-> > > > > +       pci_set_untrusted(pci_dev);
-> > > > >         pci_acpi_add_edr_notifier(pci_dev);
-> > > > >
-> > > > >         pci_acpi_add_pm_notifier(adev, pci_dev);
-> > > > > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> > > > > index 9ecce435fb3f..41e887c27004 100644
-> > > > > --- a/drivers/pci/pci.c
-> > > > > +++ b/drivers/pci/pci.c
-> > > > > @@ -6869,3 +6869,12 @@ static int __init pci_realloc_setup_params(void)
-> > > > >         return 0;
-> > > > >  }
-> > > > >  pure_initcall(pci_realloc_setup_params);
-> > > > > +
-> > > > > +void pci_set_untrusted(struct pci_dev *pdev)
-> > > > > +{
-> > > > > +       u8 val;
-> > > > > +
-> > > > > +       if (!device_property_read_u8(&pdev->dev, "UntrustedDevice", &val)
+> > Today the pci_dev->untrusted is set for any devices sitting downstream
+> > an external facing port (determined via "ExternalFacingPort" or the
+> > "external-facing" properties).
 > >
-> > If we do this, can we combine it with set_pcie_untrusted(), where we
-> > already set pdev->untrusted?  Maybe that needs to be renamed; I don't
-> > see anything PCIe-specific there, and it looks like it works for
-> > conventional PCI as well.
-
-Yes, I agree it makes sense to combine with set_pcie_untrusted(). I
-can do that in the next iteration of my patch, that I intend to work
-on after we reach some sort of conclusion on the other major comments
-below.
-
+> > However, currently there is no way for internal devices to be marked as
+> > untrusted.
 > >
-> > > Please no, "Untrusted" does not really convey much, if anything here.
-> > > You are taking an odd in-kernel-value and making it a user api.
-> > >
-> > > Where is this "trust" defined?  Who defines it?  What policy does the
-> > > kernel impose on it?
+> > There are use-cases though, where a platform would like to treat an
+> > internal device as untrusted (perhaps because it runs untrusted firmware
+> > or offers an attack surface by handling untrusted network data etc).
 > >
-> > I'm a bit hesitant about this, too.  It really doesn't have anything
-> > in particular to do with the PCI core.  It's not part of the PCI
-> > specs, and it could apply to any kind of device, not just PCI (ACPI,
-> > platform, USB, etc).
+> > Introduce a new "UntrustedDevice" property that can be used by the
+> > firmware to mark any device as untrusted.
 > >
-> > We have:
+> > Signed-off-by: Rajat Jain <rajatja@google.com>
+> > ---
+> > v2: * Also use the same property for device tree based systems.
+> >     * Add documentation (next patch)
 > >
-> >   dev->removable                # struct device
-> >   pdev->is_thunderbolt
-> >   pdev->untrusted
-> >   pdev->external_facing
+> >  drivers/pci/of.c       | 2 ++
+> >  drivers/pci/pci-acpi.c | 1 +
+> >  drivers/pci/pci.c      | 9 +++++++++
+> >  drivers/pci/pci.h      | 2 ++
+> >  4 files changed, 14 insertions(+)
 > >
-> > and it feels a little hard to keep everything straight.  Most of them
-> > are "discovered" based on some DT or ACPI firmware property.  None of
-> > them really has anything specifically to do with *PCI*, and I don't
-> > think the PCI core depends on any of them.  I think
-> > pdev->is_thunderbolt is the only one we discover based on a PCI
-> > feature (the Thunderbolt Capability), and the things we *use* it for
-> > are actually not things specified by that capability [1].
+> > diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+> > index cb2e8351c2cc..e8b804664b69 100644
+> > --- a/drivers/pci/of.c
+> > +++ b/drivers/pci/of.c
+> > @@ -24,6 +24,8 @@ void pci_set_of_node(struct pci_dev *dev)
+> >                                                     dev->devfn);
+> >         if (dev->dev.of_node)
+> >                 dev->dev.fwnode = &dev->dev.of_node->fwnode;
+> > +
+> > +       pci_set_untrusted(dev);
+> >  }
 > >
-> > Could drivers just look for these properties directly instead of
-> > relying on the PCI core to get in the middle?  Most callers of
-> > device_property_read_*() are in drivers.  I do see that doing it in
-> > the PCI core might help enforce standard usage in DT/ACPI, but we
-> > could probably do that in other ways, too.
+> >  void pci_release_of_node(struct pci_dev *dev)
+> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> > index a42dbf448860..2bffbd5c6114 100644
+> > --- a/drivers/pci/pci-acpi.c
+> > +++ b/drivers/pci/pci-acpi.c
+> > @@ -1356,6 +1356,7 @@ void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
+> >
+> >         pci_acpi_optimize_delay(pci_dev, adev->handle);
+> >         pci_acpi_set_external_facing(pci_dev);
+> > +       pci_set_untrusted(pci_dev);
+> >         pci_acpi_add_edr_notifier(pci_dev);
+> >
+> >         pci_acpi_add_pm_notifier(adev, pci_dev);
+> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > index 9ecce435fb3f..41e887c27004 100644
+> > --- a/drivers/pci/pci.c
+> > +++ b/drivers/pci/pci.c
+> > @@ -6869,3 +6869,12 @@ static int __init pci_realloc_setup_params(void)
+> >         return 0;
+> >  }
+> >  pure_initcall(pci_realloc_setup_params);
+> > +
+> > +void pci_set_untrusted(struct pci_dev *pdev)
+> > +{
+> > +       u8 val;
+> > +
+> > +       if (!device_property_read_u8(&pdev->dev, "UntrustedDevice", &val)
+> > +           && val)
+> > +               pdev->untrusted = 1;
 >
-> FWIW, I agree that looking at these things in drivers would be better.
+> I'm not sure why you ignore val = 0.  Is it not a valid value?
 
-The pci_dev->untrusted property is currently used by:
+I'm following the other similar properties that Bjorn mentioned. The
+pdev->untrusted is already initialized to 0 so it wouldn't matter.
 
-- IOMMU drivers to determine whether bounce buffers should be used,
-and whether flush queue should be used for these devices.
-- PCI subsystem to determine ACS settings (ATS / TB etc)
+>
+> The property is not particularly well defined here.  It is not clear
+> from its name that it only applies to PCI devices and how.
+>
+> AFAICS, the "untrusted" bit affected by it is only used by the ATS
+> code and in one PCH ACS quirk, but I'm not sure if this is all you
+> have in mind.
 
-As we can see from the usage above, the current primary use of
-untrusted property in the kernel is to flag and protect against
-devices that can create a DMA attack on the host physical memory
-address space (also documented for these properties in [1][2]). IMHO,
-this property belongs to PCI devices because:
- * I do not know of any other bus (other than PCI) that can allow DMA
-access of the host memory, to a device on that bus.
- * There is some use of this property within the PCI (see above),
-although I agree it is not much.
- * The existing properties are currently documented [1][2] to be part
-of PCIe root ports / PCI-PCI bridges (only):
-
-[1] https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
-[2] Documentation/devicetree/bindings/pci/pci.txt
-
-One can possibly read the device properties in IOMMU drivers, but
-they'd need to keep it in some device structure. I understand moving
-the pci_dev->untrusted into struct device has been brought up a couple
-of times in the past, and has met with much stronger resistance. The
-discussion turned into a discussion on security, and the semantics of
-this property, and allowing userspace to change this property etc,
-requiring major changes, and thus fizzled out of motivation.
-
-I'd like to mention that I'm not proposing any changes to the way
-(already existing) pci_dev->untrusted is being used, or the semantics
-of this flag. I'm only trying to solve a corner case here i.e.
-internal devices don't have a way to specify this attribute. Thus
-requiring us (Chromeos) to carry hacks like [3]. I believe there are
-others who are also looking for this corner case. From [4]:
-
-==============================
-We have a similar trust issue with the BMC in servers even
-though they're internal devices. They're typically network accessible
-and infrequently updated so treating them as trustworthy isn't a great
-idea. We have been slowly de-privileging the BMC over the last few
-years, but the PCIe interface isn't locked down enough for my liking
-since the SoCs we use do allow software to set the VDID and perform
-arbitrary DMAs (thankfully limited to 32bit). If we're going to add in
-infrastructure for handling possibly untrustworthy PCI devices then
-I'd like to use that for BMCs too.
-=============================
-
-[3] https://chromium-review.googlesource.com/c/chromiumos/third_party/kernel/+/3171209
-[4] https://lkml.org/lkml/2020/6/9/1467
-
-So from what I see, there is a need to solve this problem for internal
-PCI devices. And presently what I have, seemed like the path of least
-resistance to me (i.e. without running into big discussions, and major
-code changes).
-
-I'd greatly appreciate if you could please consider the information I
-presented above, and suggest an approach that you think is more
-acceptable.
+I hope my other response addressed this one.
 
 Thanks & Best Regards,
 
 Rajat
 
 >
-> > [1] https://lore.kernel.org/r/20220204222956.GA220908@bhelgaas
+> > +}
+> > diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> > index 3d60cabde1a1..6c273ce5e0ba 100644
+> > --- a/drivers/pci/pci.h
+> > +++ b/drivers/pci/pci.h
+> > @@ -761,4 +761,6 @@ static inline pci_power_t mid_pci_get_power_state(struct pci_dev *pdev)
+> >  }
+> >  #endif
+> >
+> > +void pci_set_untrusted(struct pci_dev *pdev);
+> > +
+> >  #endif /* DRIVERS_PCI_H */
+> > --
+> > 2.35.0.rc2.247.g8bbb082509-goog
+> >
