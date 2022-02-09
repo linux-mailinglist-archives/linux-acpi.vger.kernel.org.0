@@ -2,50 +2,48 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 887744AFD5A
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Feb 2022 20:27:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 231004AFF98
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Feb 2022 22:57:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235203AbiBIT10 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Feb 2022 14:27:26 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:44550 "EHLO
+        id S234425AbiBIV5F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Feb 2022 16:57:05 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:55308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234196AbiBIT0r (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Feb 2022 14:26:47 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74AC9E00E167;
-        Wed,  9 Feb 2022 11:19:16 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id bt13so8964230ybb.2;
-        Wed, 09 Feb 2022 11:19:16 -0800 (PST)
+        with ESMTP id S234318AbiBIV5E (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Feb 2022 16:57:04 -0500
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13525E00E274;
+        Wed,  9 Feb 2022 13:57:06 -0800 (PST)
+Received: by mail-oo1-f52.google.com with SMTP id o128-20020a4a4486000000b003181707ed40so4057261ooa.11;
+        Wed, 09 Feb 2022 13:57:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CIBNTST+9OGrpk4nfrRm6UVggIJAfLO7vApiU2dxPNA=;
-        b=OxCzMiBP3pWGZ5ydZs++XEU1LN9GEm/NjCcYpCb5RUaK+dsayM1ywI7g9M+pFxEbcj
-         GFNogcdmCJDQFvS9X5/Os29mINWNuPOLTJZ6DRgKJdqxk683O99TFxmlvue+C1TCnXp3
-         WOdK1WANLzKgE+RdrdT7SH+NVc84hit0knwqq0pMc0ZpIIuW664T3q5sHbKnnOboEQn6
-         ehGN3HTC0xPpU+0BmLUAQBMk1TAde6vUgePS0IYfyjxpRzonhE6J1BAB/jTJ1MPB75TI
-         g5GPDznXQ2w1BRdTsfogKr9D4id1s7DteqQNAp9oR36bIrZpWSPjI8YpAGadcMYL7//h
-         yFaw==
-X-Gm-Message-State: AOAM530Fp7alx2Xi2l3EsVvQeoU5fU/ulh4my1QREKei/nGkYJl/pr3q
-        mgRLy1VVfanDb1+Tb51jEsBcogJZkFr7E3bwMSQ=
-X-Google-Smtp-Source: ABdhPJwr4jDaiwQ6MNEAj7xSNbO5pTS0y6wSQESBLrfGltspzdJ8IWOYvkkrwZrxAEr6fKJ+Bx1xInJejne+N7sxa78=
-X-Received: by 2002:a81:1f0b:: with SMTP id f11mr3157800ywf.149.1644434295470;
- Wed, 09 Feb 2022 11:18:15 -0800 (PST)
-MIME-Version: 1.0
-References: <20220202020103.2149130-1-rajatja@google.com> <CAJZ5v0gngVxoe88rNAXXK_F34rHAKuxokiuZ6kpg6FhbnyMn0Q@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gngVxoe88rNAXXK_F34rHAKuxokiuZ6kpg6FhbnyMn0Q@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 9 Feb 2022 20:18:04 +0100
-Message-ID: <CAJZ5v0hY+3gBUrSwawy1bEQP-BbjXu0186+uKTuBh9r52Xs+Xw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] PCI: Allow internal devices to be marked as untrusted
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=dtrYQmSGaEERL4OvVpMDUjn1HaXRBwdthhUoDs8eLLE=;
+        b=FvYkeTBFJ9CQpKKJXc0Wjt4ijAe+d2cWyr8AkHNmK7ZgUYtvVoRLVMh1kiKSSg+DNG
+         hraFNS2D3LYdbAsZRyR9i1l2TLYFb5BF1pZPE7rosaP88n6gAlP+7t9rWOwBfUvDhx2N
+         ocs+pylOlzGc9rg0smvSn2wLtmNKPRdxTmtX97zxpNxkrxp2c76Wq/ioBhwiO5s02xnE
+         crOBuFtqJ9BVrfAbfk7eHDatDQxgmXrH3vfiEQDvGbaV/speP8FXTko/G/m/0CZ5Lkgm
+         6wyfUhHcmvFmi5BeLxfuGrj1d9K53YQVIQUKXTw8nwXfA75Ct5QYyUxRvwlU92u4flPh
+         YGeg==
+X-Gm-Message-State: AOAM530XwlgzXwZxdvndft3Uo4VdkKJOrmZFAEBU66ZlLc3qShCa6Qf4
+        UGDvpoQjham/4xLwKtWUkA==
+X-Google-Smtp-Source: ABdhPJzFsLHKY/pkz5V1EDRdU6Nw48e/R3+K5mgE9eHbzt8VBwPY3G/K+3ifdh9pBAtLf1d0SpYHMA==
+X-Received: by 2002:a05:6870:b78c:: with SMTP id ed12mr1460893oab.250.1644443825305;
+        Wed, 09 Feb 2022 13:57:05 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id bp5sm627821oib.25.2022.02.09.13.57.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Feb 2022 13:57:04 -0800 (PST)
+Received: (nullmailer pid 997564 invoked by uid 1000);
+        Wed, 09 Feb 2022 21:57:03 -0000
+Date:   Wed, 9 Feb 2022 15:57:03 -0600
+From:   Rob Herring <robh@kernel.org>
 To:     Rajat Jain <rajatja@google.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        devicetree@vger.kernel.org,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Bjorn Helgaas <helgaas@kernel.org>,
@@ -57,12 +55,21 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         Jesse Barnes <jsbarnes@google.com>,
         Jean-Philippe Brucker <jean-philippe@linaro.org>,
         Pavel Machek <pavel@denx.de>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
+        Oliver O'Halloran <oohall@gmail.com>,
         Joerg Roedel <joro@8bytes.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Subject: Re: [PATCH v2 2/2] dt-bindings: Document "UntrustedDevice" property
+ for PCI devices
+Message-ID: <YgQ4r34842L6puV+@robh.at.kernel.org>
+References: <20220202020103.2149130-1-rajatja@google.com>
+ <20220202020103.2149130-2-rajatja@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220202020103.2149130-2-rajatja@google.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,105 +77,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 9, 2022 at 8:11 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Wed, Feb 2, 2022 at 3:01 AM Rajat Jain <rajatja@google.com> wrote:
-> >
-> > Today the pci_dev->untrusted is set for any devices sitting downstream
-> > an external facing port (determined via "ExternalFacingPort" or the
-> > "external-facing" properties).
-> >
-> > However, currently there is no way for internal devices to be marked as
-> > untrusted.
-> >
-> > There are use-cases though, where a platform would like to treat an
-> > internal device as untrusted (perhaps because it runs untrusted firmware
-> > or offers an attack surface by handling untrusted network data etc).
-> >
-> > Introduce a new "UntrustedDevice" property that can be used by the
-> > firmware to mark any device as untrusted.
-> >
-> > Signed-off-by: Rajat Jain <rajatja@google.com>
-> > ---
-> > v2: * Also use the same property for device tree based systems.
-> >     * Add documentation (next patch)
-> >
-> >  drivers/pci/of.c       | 2 ++
-> >  drivers/pci/pci-acpi.c | 1 +
-> >  drivers/pci/pci.c      | 9 +++++++++
-> >  drivers/pci/pci.h      | 2 ++
-> >  4 files changed, 14 insertions(+)
-> >
-> > diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-> > index cb2e8351c2cc..e8b804664b69 100644
-> > --- a/drivers/pci/of.c
-> > +++ b/drivers/pci/of.c
-> > @@ -24,6 +24,8 @@ void pci_set_of_node(struct pci_dev *dev)
-> >                                                     dev->devfn);
-> >         if (dev->dev.of_node)
-> >                 dev->dev.fwnode = &dev->dev.of_node->fwnode;
-> > +
-> > +       pci_set_untrusted(dev);
-> >  }
-> >
-> >  void pci_release_of_node(struct pci_dev *dev)
-> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> > index a42dbf448860..2bffbd5c6114 100644
-> > --- a/drivers/pci/pci-acpi.c
-> > +++ b/drivers/pci/pci-acpi.c
-> > @@ -1356,6 +1356,7 @@ void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
-> >
-> >         pci_acpi_optimize_delay(pci_dev, adev->handle);
-> >         pci_acpi_set_external_facing(pci_dev);
-> > +       pci_set_untrusted(pci_dev);
-> >         pci_acpi_add_edr_notifier(pci_dev);
-> >
-> >         pci_acpi_add_pm_notifier(adev, pci_dev);
-> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> > index 9ecce435fb3f..41e887c27004 100644
-> > --- a/drivers/pci/pci.c
-> > +++ b/drivers/pci/pci.c
-> > @@ -6869,3 +6869,12 @@ static int __init pci_realloc_setup_params(void)
-> >         return 0;
-> >  }
-> >  pure_initcall(pci_realloc_setup_params);
-> > +
-> > +void pci_set_untrusted(struct pci_dev *pdev)
-> > +{
-> > +       u8 val;
-> > +
-> > +       if (!device_property_read_u8(&pdev->dev, "UntrustedDevice", &val)
-> > +           && val)
-> > +               pdev->untrusted = 1;
->
-> I'm not sure why you ignore val = 0.  Is it not a valid value?
->
-> The property is not particularly well defined here.  It is not clear
-> from its name that it only applies to PCI devices and how.
->
-> AFAICS, the "untrusted" bit affected by it is only used by the ATS
-> code and in one PCH ACS quirk, but I'm not sure if this is all you
-> have in mind.
+On Tue, Feb 01, 2022 at 06:01:03PM -0800, Rajat Jain wrote:
+> Add the new "UntrustedDevice" property for PCI devices. This property
+> is optional and can be applied to any PCI device.
+> 
+> Signed-off-by: Rajat Jain <rajatja@google.com>
+> ---
+> v2: Initial version (added documentation based on comments)
+> v1: Does not exist.
+> 
+>  Documentation/devicetree/bindings/pci/pci.txt | 35 +++++++++++++++++++
+>  1 file changed, 35 insertions(+)
 
-Besides, sort of in the bikeshedding territory, its name doesn't
-follow the guidelines given in the _DSD guide:
-https://github.com/UEFI/DSD-Guide/blob/main/dsd-guide.pdf
+New properties have to be in a schema which resides here:
 
-I do realize that you want it to be valid for both ACPI and DT, but
-that doesn't preclude following the guidelines AFAICS.
+https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/pci/pci-bus.yaml
 
-> > +}
-> > diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> > index 3d60cabde1a1..6c273ce5e0ba 100644
-> > --- a/drivers/pci/pci.h
-> > +++ b/drivers/pci/pci.h
-> > @@ -761,4 +761,6 @@ static inline pci_power_t mid_pci_get_power_state(struct pci_dev *pdev)
-> >  }
-> >  #endif
-> >
-> > +void pci_set_untrusted(struct pci_dev *pdev);
-> > +
-> >  #endif /* DRIVERS_PCI_H */
-> > --
-> > 2.35.0.rc2.247.g8bbb082509-goog
-> >
+> 
+> diff --git a/Documentation/devicetree/bindings/pci/pci.txt b/Documentation/devicetree/bindings/pci/pci.txt
+> index 6a8f2874a24d..bc1ba10f51e1 100644
+> --- a/Documentation/devicetree/bindings/pci/pci.txt
+> +++ b/Documentation/devicetree/bindings/pci/pci.txt
+> @@ -82,3 +82,38 @@ pcie@10000000 {
+>  		external-facing;
+>  	};
+>  };
+> +
+> +PCI Device Properties
+> +---------------------
+> +Following optional properties may be present for any PCI device:
+> +
+> +- UntrustedDevice:
+> +   When present, this property is an indicator that this PCI device (and
+> +   any downstream devices) are to be treated as untrusted by the kernel.
+> +   The kernel can, for example, use this information to isolate such
+> +   devices using a strict DMA protection via the IOMMU.
+> +
+> +   Example device tree node:
+> +	pcie@0008 {
+> +		/* PCI device 00:01.0 is an untrusted device */
+> +		reg = <0x00000800 0 0 0 0>;
+> +		UntrustedDevice = <1>;
+> +	};
+> +
+> +   Example ACPI node:
+
+Humm, your caret case smelled like ACPI to begin with. As far as ACPI 
+bindings in Documentation/devicetree/bindings/ are concerned, NAK.
