@@ -2,131 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A03A04AF640
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Feb 2022 17:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1C434AF9E5
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Feb 2022 19:24:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233603AbiBIQOC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 9 Feb 2022 11:14:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47202 "EHLO
+        id S238440AbiBISYQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 9 Feb 2022 13:24:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236674AbiBIQN6 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Feb 2022 11:13:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2174AC0612BE
-        for <linux-acpi@vger.kernel.org>; Wed,  9 Feb 2022 08:14:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1644423241;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=pY1hMIvILcvQ4iy4cx4rzx5NtHdAQGETHaPrSiHWNSI=;
-        b=Ca7MNgkrOY6u5k36I8S/zbrLBdZdPEKmyF1RLoX1ojWi1kOQbihXaED7YPK4ZcUwlv1oUx
-        fDBVtdQd56AivZPnSpUp/EuJFUsmQdfSK4S88vRdpiEomn37s1S/VXYEt2oO50ddqTge3l
-        Sl/q17XZpbPfe4yyLesTGncZYKbHB7Y=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-438-xBvaTn-WO8CV8zoxMFJB7A-1; Wed, 09 Feb 2022 11:13:56 -0500
-X-MC-Unique: xBvaTn-WO8CV8zoxMFJB7A-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S231371AbiBISYJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 9 Feb 2022 13:24:09 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76FAAC05CB82
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Feb 2022 10:24:12 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F10961926DA9;
-        Wed,  9 Feb 2022 16:13:53 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.192.212])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5535A7B03A;
-        Wed,  9 Feb 2022 16:13:50 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        =?UTF-8?q?Benoit=20Gr=C3=A9goire?= <benoitg@coeus.ca>,
-        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        Hui Wang <hui.wang@canonical.com>
-Subject: [PATCH] x86/PCI: revert "Ignore E820 reservations for bridge windows on newer systems"
-Date:   Wed,  9 Feb 2022 17:13:42 +0100
-Message-Id: <20220209161342.91721-1-hdegoede@redhat.com>
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1E0F1B82380
+        for <linux-acpi@vger.kernel.org>; Wed,  9 Feb 2022 18:24:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B31C340E7;
+        Wed,  9 Feb 2022 18:24:07 +0000 (UTC)
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Robin Murphy <robin.murphy@arm.com>, guohanjun@huawei.com,
+        sudeep.holla@arm.com, lorenzo.pieralisi@arm.com
+Cc:     Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        Michael Petlan <mpetlan@redhat.com>
+Subject: Re: [PATCH v2] ACPI/IORT: Check node revision for PMCG resources
+Date:   Wed,  9 Feb 2022 18:24:05 +0000
+Message-Id: <164443102845.196616.8228457095383066529.b4-ty@arm.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <75628ae41c257fb73588f7bf1c4459160e04be2b.1643916258.git.robin.murphy@arm.com>
+References: <75628ae41c257fb73588f7bf1c4459160e04be2b.1643916258.git.robin.murphy@arm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Commit 7f7b4236f204 ("x86/PCI: Ignore E820 reservations for bridge windows
-on newer systems") fixes the touchpad not working on laptops like
-the Lenovo IdeaPad 3 15IIL05 and the Lenovo IdeaPad 5 14IIL05, as well as
-fixing thunderbolt hotplug issues on the Lenovo Yoga C940.
+On Thu, 3 Feb 2022 19:31:24 +0000, Robin Murphy wrote:
+> The original version of the IORT PMCG definition had an oversight
+> wherein there was no way to describe the second register page for an
+> implementation using the recommended RELOC_CTRS feature. Although the
+> spec was fixed, and the final patches merged to ACPICA and Linux written
+> against the new version, it seems that some old firmware based on the
+> original revision has survived and turned up in the wild.
+> 
+> [...]
 
-Unfortunately it turns out that this is causing issues with suspend/resume
-on Lenovo ThinkPad X1 Carbon Gen 2 laptops. So, per the no regressions
-policy, rever this. Note I'm looking into another fix for the issues this
-fixed.
+Applied to arm64 (for-next/fixes), thanks!
 
-Fixes: 7f7b4236f204 ("x86/PCI: Ignore E820 reservations for bridge windows on newer systems")
-BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=2029207
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- arch/x86/kernel/resource.c | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+[1/1] ACPI/IORT: Check node revision for PMCG resources
+      https://git.kernel.org/arm64/c/da5fb9e1ad3f
 
-diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
-index 9ae64f9af956..9b9fb7882c20 100644
---- a/arch/x86/kernel/resource.c
-+++ b/arch/x86/kernel/resource.c
-@@ -1,5 +1,4 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/dmi.h>
- #include <linux/ioport.h>
- #include <asm/e820/api.h>
- 
-@@ -24,31 +23,11 @@ static void resource_clip(struct resource *res, resource_size_t start,
- 		res->start = end + 1;
- }
- 
--/*
-- * Some BIOS-es contain a bug where they add addresses which map to
-- * system RAM in the PCI host bridge window returned by the ACPI _CRS
-- * method, see commit 4dc2287c1805 ("x86: avoid E820 regions when
-- * allocating address space"). To avoid this Linux by default excludes
-- * E820 reservations when allocating addresses since 2010.
-- * In 2019 some systems have shown-up with E820 reservations which cover
-- * the entire _CRS returned PCI host bridge window, causing all attempts
-- * to assign memory to PCI BARs to fail if Linux uses E820 reservations.
-- *
-- * Ideally Linux would fully stop using E820 reservations, but then
-- * the old systems this was added for will regress.
-- * Instead keep the old behavior for old systems, while ignoring the
-- * E820 reservations for any systems from now on.
-- */
- static void remove_e820_regions(struct resource *avail)
- {
--	int i, year = dmi_get_bios_year();
-+	int i;
- 	struct e820_entry *entry;
- 
--	if (year >= 2018)
--		return;
--
--	pr_info_once("PCI: Removing E820 reservations from host bridge windows\n");
--
- 	for (i = 0; i < e820_table->nr_entries; i++) {
- 		entry = &e820_table->entries[i];
- 
+(also added a cc stable)
+
 -- 
-2.33.1
+Catalin
 
