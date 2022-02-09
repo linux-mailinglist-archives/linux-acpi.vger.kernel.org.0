@@ -2,76 +2,180 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CC744AE03C
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Feb 2022 19:00:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8A664AE5E8
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Feb 2022 01:24:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353264AbiBHSAL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 8 Feb 2022 13:00:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44904 "EHLO
+        id S232503AbiBIAYH (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 8 Feb 2022 19:24:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234348AbiBHSAL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Feb 2022 13:00:11 -0500
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98C02C061576;
-        Tue,  8 Feb 2022 10:00:10 -0800 (PST)
-Received: by mail-yb1-f177.google.com with SMTP id bt13so28200818ybb.2;
-        Tue, 08 Feb 2022 10:00:10 -0800 (PST)
+        with ESMTP id S229766AbiBIAYG (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 8 Feb 2022 19:24:06 -0500
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AD66C06174F
+        for <linux-acpi@vger.kernel.org>; Tue,  8 Feb 2022 16:24:04 -0800 (PST)
+Received: by mail-pj1-x1030.google.com with SMTP id c5-20020a17090a1d0500b001b904a7046dso1971178pjd.1
+        for <linux-acpi@vger.kernel.org>; Tue, 08 Feb 2022 16:24:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=DYNXR2DtuxF1ISLzpPLoyEyGiOJ7sBlng/Jv7KiUcBE=;
+        b=VxlJfskh25n9CGF6UK57dB54CJXlDoep5C3N0smYrTdby67X/6qk5Sk7HFgMDS+nGY
+         AzoiVQXLD0zX8n/JzPWPnuoJP4lce+qxe7/XN61DoUql4/ek5ls0IMNRKeE94m0bm/gY
+         cfT5FrbMtbIqBaACvO397ODwQRm/U6DIWtJ6dhWxc0WDClqqFyqNLeTFfHsevZWbE5q3
+         cwzPNdId6TH00LMJppPQxBnP9hhTWODlnfeYkG/m3Ojtz4sIieW0oyczghQl9ZkyeB1T
+         cdpt7CxfDkihd9SNrVTXaJx8ESUyXBr7GN+fbte3Yb50ycgG7mu3UVHP/0wuM8FLqbbg
+         LlGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ii2RoA70hyPFpWjpQOIgYWVQ0Wgfgxw0SgqMO+aO1f0=;
-        b=uuG3OZAleDzvPcCeNVi/PAaL5gysBLxLhgWxySnchelsXxph5tki0dERPRQlIFTb5v
-         aXacVFuNFqqwaCw6Tw7R6jO2rdkEbyAlCXqbUYmSnsJ7uFz7lzpLceZ0lBtlMvnGfPC4
-         VNUz1MY5LPWBdU74soncENJ82yEe7fpRGfluysj90zg7p+nP4qHIBI7vpdBczYa1OOs6
-         DBK3Tg4H7gI0yFciM78krrnH6Nqx/wuXFZ4AAqXGPIFYYlvnbGhO81+XtWrWRzhf+CuS
-         EcqhENZM+u4H90yQ3C0X0nCs7rYezpReoYxHeAJBCIJ7Z5fzAHMwysOVU+RYsJ+jGqvt
-         aAXw==
-X-Gm-Message-State: AOAM533uuDZ6pUDHaD9JOEIEPxUkyHAhiUFqWA0z3Uhugb9zJWXSYEnz
-        EWsoTyY+i7n/pn3hLKv6RlHG7N1l3fsuATKqljw=
-X-Google-Smtp-Source: ABdhPJxCnkDYQnltfASHHSHrKRxUmAdvsZvnR3ypuO8fhN3qkWtd7TI0tmHnLmkOZf2qb+oEnqgjgxSy6dkjHXlS3/I=
-X-Received: by 2002:a05:6902:1545:: with SMTP id r5mr6035694ybu.475.1644343209557;
- Tue, 08 Feb 2022 10:00:09 -0800 (PST)
+         :message-id:subject:to;
+        bh=DYNXR2DtuxF1ISLzpPLoyEyGiOJ7sBlng/Jv7KiUcBE=;
+        b=P1+0WjtZcTPLn9Pc9xwcF/lv4eGuow4Ge6VwQNO37ArxWkbNKnRaqYL24Q3fPQphVi
+         gTyKiOKaGD/5+PupY8AMswTwmL5uMzr4YGtrw7KDotO5IoEpQDhJTc5OlMgVjX236PLo
+         wSqlTRR0aiKgTwaZMmLtqVDQ7hMgSMgOGxohpntzSNi02WqJXIFoT+qtMQAfEf9e6qYe
+         VMfGwSlRgqxDI4EiwZp4Wo+NQyUzfG68IlBRqXGthi4zJNR7Cg96ME8WQwvKponoCGi9
+         BMwbZYIcR0wVsebjyS7Cdg8kGnx+O9VR8dQ2taGOIzanUkEjWYn2KaYkSWUXaaOZZT1v
+         mB4Q==
+X-Gm-Message-State: AOAM532jS2zvL4mlhkWNEmYM0Lp0FEi6fBPFOeznU4GurRAdDcHQ0Xdw
+        TskCs7LDcCpMaU1fowvGT3sHzEWT6X8vnIRszjKgIg==
+X-Google-Smtp-Source: ABdhPJxzWI7eHHDKAtjNbbB172grlY3cvC/rvaFNoMxSL6UiTPyvmxeEjwk9Pe8+ZkIlAhoSvpkKXJCpcc8WB5HAMV0=
+X-Received: by 2002:a17:90a:5303:: with SMTP id x3mr64365pjh.64.1644366243349;
+ Tue, 08 Feb 2022 16:24:03 -0800 (PST)
 MIME-Version: 1.0
-References: <b177cb21-aa01-2408-9b26-164c028b6593@molgen.mpg.de> <31603144-edec-df2d-fb46-283692c67420@leemhuis.info>
-In-Reply-To: <31603144-edec-df2d-fb46-283692c67420@leemhuis.info>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Feb 2022 18:59:58 +0100
-Message-ID: <CAJZ5v0hyp1nR5id02abZh4cjw=sT0J_nf9spbUHfuwzjdJb5KA@mail.gmail.com>
-Subject: Re: 100 ms boot time increase regression in acpi_init()/acpi_scan_bus()
-To:     Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+References: <20220202020103.2149130-1-rajatja@google.com>
+In-Reply-To: <20220202020103.2149130-1-rajatja@google.com>
+From:   Rajat Jain <rajatja@google.com>
+Date:   Tue, 8 Feb 2022 16:23:27 -0800
+Message-ID: <CACK8Z6GmC7O3__RKwSEOQQ5Pde6h-LRz_5d+--V=CuB76cpe+w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] PCI: Allow internal devices to be marked as untrusted
+To:     Rob Herring <robh+dt@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        regressions@lists.linux.dev
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Dmitry Torokhov <dtor@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Pavel Machek <pavel@denx.de>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 8, 2022 at 1:03 PM Thorsten Leemhuis
-<regressions@leemhuis.info> wrote:
->
-> Hi, this is your Linux kernel regression tracker speaking.
->
-> Top-posting for once, to make this easy accessible to everyone.
->
-> @Rafael or any other @acpi/@pm developer: what's the status here?
-> Neither in this thread nor in the bug ticket anything happened afaics.
-> Or is a 100ms boot time increase considered "not a regression"?
+Hello Folks,
 
-It is on my list of things to look into, because it used to work
-faster, so depending on what change made it work slower, it may be
-possible to restore the previous performance without sacrificing too
-much.
 
-I honestly don't think that it is a noticeable issue for users in the
-field, though.
+On Tue, Feb 1, 2022 at 6:01 PM Rajat Jain <rajatja@google.com> wrote:
+>
+> Today the pci_dev->untrusted is set for any devices sitting downstream
+> an external facing port (determined via "ExternalFacingPort" or the
+> "external-facing" properties).
+>
+> However, currently there is no way for internal devices to be marked as
+> untrusted.
+>
+> There are use-cases though, where a platform would like to treat an
+> internal device as untrusted (perhaps because it runs untrusted firmware
+> or offers an attack surface by handling untrusted network data etc).
+>
+> Introduce a new "UntrustedDevice" property that can be used by the
+> firmware to mark any device as untrusted.
+
+Just to unite the threads (from
+https://www.spinics.net/lists/linux-pci/msg120221.html). I did reach
+out to Microsoft but they haven't acknowledged my email. I also pinged
+them again yesterday, but I suspect I may not be able to break the
+ice. So this patch may be ready to go in my opinion.
+
+I don't see any outstanding comments on this patch, but please let me
+know if you have any comments.
+
+Thanks & Best Regards,
+
+Rajat
+
+
+>
+> Signed-off-by: Rajat Jain <rajatja@google.com>
+> ---
+> v2: * Also use the same property for device tree based systems.
+>     * Add documentation (next patch)
+>
+>  drivers/pci/of.c       | 2 ++
+>  drivers/pci/pci-acpi.c | 1 +
+>  drivers/pci/pci.c      | 9 +++++++++
+>  drivers/pci/pci.h      | 2 ++
+>  4 files changed, 14 insertions(+)
+>
+> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+> index cb2e8351c2cc..e8b804664b69 100644
+> --- a/drivers/pci/of.c
+> +++ b/drivers/pci/of.c
+> @@ -24,6 +24,8 @@ void pci_set_of_node(struct pci_dev *dev)
+>                                                     dev->devfn);
+>         if (dev->dev.of_node)
+>                 dev->dev.fwnode = &dev->dev.of_node->fwnode;
+> +
+> +       pci_set_untrusted(dev);
+>  }
+>
+>  void pci_release_of_node(struct pci_dev *dev)
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index a42dbf448860..2bffbd5c6114 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -1356,6 +1356,7 @@ void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
+>
+>         pci_acpi_optimize_delay(pci_dev, adev->handle);
+>         pci_acpi_set_external_facing(pci_dev);
+> +       pci_set_untrusted(pci_dev);
+>         pci_acpi_add_edr_notifier(pci_dev);
+>
+>         pci_acpi_add_pm_notifier(adev, pci_dev);
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 9ecce435fb3f..41e887c27004 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -6869,3 +6869,12 @@ static int __init pci_realloc_setup_params(void)
+>         return 0;
+>  }
+>  pure_initcall(pci_realloc_setup_params);
+> +
+> +void pci_set_untrusted(struct pci_dev *pdev)
+> +{
+> +       u8 val;
+> +
+> +       if (!device_property_read_u8(&pdev->dev, "UntrustedDevice", &val)
+> +           && val)
+> +               pdev->untrusted = 1;
+> +}
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index 3d60cabde1a1..6c273ce5e0ba 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -761,4 +761,6 @@ static inline pci_power_t mid_pci_get_power_state(struct pci_dev *pdev)
+>  }
+>  #endif
+>
+> +void pci_set_untrusted(struct pci_dev *pdev);
+> +
+>  #endif /* DRIVERS_PCI_H */
+> --
+> 2.35.0.rc2.247.g8bbb082509-goog
+>
