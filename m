@@ -2,106 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B55664B16C2
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Feb 2022 21:12:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 986534B1A6E
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 01:31:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344148AbiBJUMR (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Feb 2022 15:12:17 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33378 "EHLO
+        id S1345029AbiBKAbT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Feb 2022 19:31:19 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238091AbiBJUMQ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Feb 2022 15:12:16 -0500
-X-Greylist: delayed 400 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 10 Feb 2022 12:12:17 PST
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F602735
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 12:12:17 -0800 (PST)
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 4.0.0)
- id b2f2cd1e5498de8e; Thu, 10 Feb 2022 21:05:35 +0100
-Received: from kreacher.localnet (unknown [213.134.175.120])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by v370.home.net.pl (Postfix) with ESMTPSA id BBC2266B514;
-        Thu, 10 Feb 2022 21:05:34 +0100 (CET)
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Linux ACPI <linux-acpi@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Dan Williams <dan.j.williams@intel.co>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH] ACPI: scan: Use ida_alloc() instead of ida_simple_get()
-Date:   Thu, 10 Feb 2022 21:05:33 +0100
-Message-ID: <2645186.mvXUDI8C0e@kreacher>
+        with ESMTP id S245157AbiBKAbT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Feb 2022 19:31:19 -0500
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FE3A559A;
+        Thu, 10 Feb 2022 16:31:19 -0800 (PST)
+Received: by mail-io1-xd2e.google.com with SMTP id n17so9561351iod.4;
+        Thu, 10 Feb 2022 16:31:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=WY+F15RwKoXSBs81n7QT8FqeoZ2/vRqemIDQ19p9hAY=;
+        b=UhDGPTTGkCv7nd2i/RxSPH4PnVPZlxYLGSFCnJ4+jnU1zbj0n8l7wVAyCdZZNe4xg1
+         RVezAL9rFr1cDpujwWZ19coQQzwOQ8jqEuPUM3RTAzcJoTLbeUwPZxQnnTk2s9EjgDdM
+         bqVuyPRCfRizMtazcb6ZHcm0of8H+1Zpq3KZTY7y9b1Vd/FvIUupHM5PwEvYk6iZsPa0
+         a48amFL3lBebCekA448n7zpKvMPr2J4GBSKGH1TkLOozoIK4f04NbEsPJFzZsffvrz5n
+         jMJwjmBLyd8kN79M7JlB19hF4boCL26IuZBs/TGBiu1lOedGjl0eKRMxhP7Dz44nOEaU
+         hgVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=WY+F15RwKoXSBs81n7QT8FqeoZ2/vRqemIDQ19p9hAY=;
+        b=7VjKq2vZENiURrW8qW0FOxjZavzg9aYsvFJg2Utla7K0OYpKwOb2HYpbM1XUbmGsSA
+         vZcDtBgeuL/d5SF/2PxrJ68rcXwUafmwPh9F+NJNtmH3hT79mw3PVqJtt8kEsACY1hvO
+         V3+tn4wswC+dRxXtxQdwIR8Wt2kZCEwHMTO9+qsigXnW724aZdcdSiuz5ShqEXkJBs0I
+         y1YU40zrG+wOK0wh1Jsn93LOb90hN8d5DWBLTqny+qAbRilUJsj0S4Qs4iEflHE+DWsi
+         lECQ+isgmgESsjeCi5oQCOILGtPkaLyHXyyNWhh3W5iKxvI8k3v5iSbWkM1trZYFe7uo
+         07RA==
+X-Gm-Message-State: AOAM533aB6ECqKOCq1/+rXkkjGRQqrG/raeFRKiKg8sqnxMDoKnXjfYS
+        t5Gr5DWTVicDwAaFjufSXbM=
+X-Google-Smtp-Source: ABdhPJyJf8DICiugARTyGxQTO41WkKOMQOz8THqG4YLlZKUdSd+jbMzkeB9uqKFDGytPzQQRKnntPQ==
+X-Received: by 2002:a05:6602:26ce:: with SMTP id g14mr5175279ioo.137.1644539478920;
+        Thu, 10 Feb 2022 16:31:18 -0800 (PST)
+Received: from localhost ([12.28.44.171])
+        by smtp.gmail.com with ESMTPSA id w19sm13031570iov.16.2022.02.10.16.31.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Feb 2022 16:31:18 -0800 (PST)
+From:   Yury Norov <yury.norov@gmail.com>
+To:     Yury Norov <yury.norov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        David Laight <David.Laight@aculab.com>,
+        Joe Perches <joe@perches.com>, Dennis Zhou <dennis@kernel.org>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Alexey Klimov <aklimov@redhat.com>,
+        linux-kernel@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        linux-acpi@vger.kernel.org
+Subject: [PATCH 45/49] ACPI: replace nodes__weight with nodes_weight_ge for numa
+Date:   Thu, 10 Feb 2022 14:49:29 -0800
+Message-Id: <20220210224933.379149-46-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220210224933.379149-1-yury.norov@gmail.com>
+References: <20220210224933.379149-1-yury.norov@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 213.134.175.120
-X-CLIENT-HOSTNAME: 213.134.175.120
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvvddriedugddufeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpefhgedtffejheekgeeljeevvedtuefgffeiieejuddutdekgfejvdehueejjeetvdenucfkphepvddufedrudefgedrudejhedruddvtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudefrddufeegrddujeehrdduvddtpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghl
- rdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+acpi_map_pxm_to_node() calls nodes_weight() to compare the weight
+of nodemask with a given number. We can do it more efficiently with
+nodes_weight_eq() because conditional nodes_weight may stop
+traversing the nodemask earlier, as soon as condition is (or is not)
+met.
 
-As recommended in include/linux/idr.h, use ida_alloc() instead of
-ida_simple_get() for creating unique device object names and for
-symmetry replace ida_simple_remove() with ida_free() (and fix up
-the related overly long code line while at it).
-
-Also drop the ACPI_MAX_DEVICE_INSTANCES limit that is not necessary
-any more and may not be sufficient for future platforms.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- drivers/acpi/internal.h |    2 --
- drivers/acpi/scan.c     |    5 +++--
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/acpi/numa/srat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: linux-pm/drivers/acpi/internal.h
-===================================================================
---- linux-pm.orig/drivers/acpi/internal.h
-+++ linux-pm/drivers/acpi/internal.h
-@@ -96,8 +96,6 @@ void acpi_scan_table_notify(void);
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index 3b818ab186be..fe7a7996f553 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -67,7 +67,7 @@ int acpi_map_pxm_to_node(int pxm)
+ 	node = pxm_to_node_map[pxm];
  
- extern struct list_head acpi_bus_id_list;
- 
--#define ACPI_MAX_DEVICE_INSTANCES	4096
--
- struct acpi_device_bus_id {
- 	const char *bus_id;
- 	struct ida instance_ida;
-Index: linux-pm/drivers/acpi/scan.c
-===================================================================
---- linux-pm.orig/drivers/acpi/scan.c
-+++ linux-pm/drivers/acpi/scan.c
-@@ -477,7 +477,8 @@ static void acpi_device_del(struct acpi_
- 	list_for_each_entry(acpi_device_bus_id, &acpi_bus_id_list, node)
- 		if (!strcmp(acpi_device_bus_id->bus_id,
- 			    acpi_device_hid(device))) {
--			ida_simple_remove(&acpi_device_bus_id->instance_ida, device->pnp.instance_no);
-+			ida_free(&acpi_device_bus_id->instance_ida,
-+				 device->pnp.instance_no);
- 			if (ida_is_empty(&acpi_device_bus_id->instance_ida)) {
- 				list_del(&acpi_device_bus_id->node);
- 				kfree_const(acpi_device_bus_id->bus_id);
-@@ -642,7 +643,7 @@ static int acpi_device_set_name(struct a
- 	struct ida *instance_ida = &acpi_device_bus_id->instance_ida;
- 	int result;
- 
--	result = ida_simple_get(instance_ida, 0, ACPI_MAX_DEVICE_INSTANCES, GFP_KERNEL);
-+	result = ida_alloc(instance_ida, GFP_KERNEL);
- 	if (result < 0)
- 		return result;
- 
-
-
+ 	if (node == NUMA_NO_NODE) {
+-		if (nodes_weight(nodes_found_map) >= MAX_NUMNODES)
++		if (nodes_weight_ge(nodes_found_map, MAX_NUMNODES))
+ 			return NUMA_NO_NODE;
+ 		node = first_unset_node(nodes_found_map);
+ 		__acpi_map_pxm_to_node(pxm, node);
+-- 
+2.32.0
 
