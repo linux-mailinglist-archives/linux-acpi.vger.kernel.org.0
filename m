@@ -2,45 +2,85 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A6D34B09B1
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Feb 2022 10:40:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B0D4B0A23
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Feb 2022 11:01:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238821AbiBJJkF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Feb 2022 04:40:05 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58742 "EHLO
+        id S239247AbiBJKA7 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Feb 2022 05:00:59 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238786AbiBJJkF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Feb 2022 04:40:05 -0500
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA2ED10B4;
-        Thu, 10 Feb 2022 01:40:04 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0V43zTg4_1644485997;
-Received: from 30.240.123.68(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V43zTg4_1644485997)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Thu, 10 Feb 2022 17:39:59 +0800
-Message-ID: <362d7c9c-4c5e-94f5-8168-39c007465771@linux.alibaba.com>
-Date:   Thu, 10 Feb 2022 17:39:56 +0800
+        with ESMTP id S239270AbiBJKA5 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Feb 2022 05:00:57 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6EB8EBF5
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 02:00:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1644487258;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=j6iG/zRSXBJr0V+KQL6qsWdT16lcc2ezAm1Oyf7IUXI=;
+        b=F1FQTSpv8TfYIcVmibJX+UszlxwUkqwnZnJBYkLxlHdocWC+UY1cebpq1+gOCjnt9xLkaN
+        FELRDC4haOiCBdukmuP/4s7c24rekpytAJmlqck9HQOWr3E808TvT+FZtA6sN7ysYvuyeD
+        nPiAmv4auYFwiZ0gfFukU2DbQlfDJmU=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-624-JKXNdPWbP1uFOtEhuLMMPg-1; Thu, 10 Feb 2022 05:00:57 -0500
+X-MC-Unique: JKXNdPWbP1uFOtEhuLMMPg-1
+Received: by mail-ed1-f72.google.com with SMTP id ed6-20020a056402294600b004090fd8a936so3028853edb.23
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 02:00:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=j6iG/zRSXBJr0V+KQL6qsWdT16lcc2ezAm1Oyf7IUXI=;
+        b=Z0DRsgmaGlJoNA36oAY5OmrZG3yxQ99Yw66D1nTajtmcUWn4J1D/Gwt2/ASHRElb5h
+         qQ1eZJPEpgYg6YRYXWHV2EfGrhZVQBGdiXlkNAUzYDRFs7eqB9IGt5TjpTW2Noi9hCGP
+         kxXncd4Opne5BsM4Wk44Y+mDOO9cMtAFKFHnwAeLo3aFaz7lIpX4X5JDkzxwWwOAHqjZ
+         7TA6HKRT1f4FMWAdot4/hZOya2RyvSEARITF+etpWSLk66lwnUDQk6nIKtuwudDhZssZ
+         ODkUiJbSmP3f8fOJtgfhWt62YOfuk/PL+CG7CzJLOe+ttnyr+ZfirFu+w844rZc4kzlO
+         uJ8A==
+X-Gm-Message-State: AOAM531Yu5CmxIXhIohU1Mr8Qn48GfSqnjnKHT7+Ap1pn5j3QhMynt3S
+        Epp+pujKcxnoOFUm+QF0IeP3B7Fqbhs9IgyYGv2u3/MPIPINxjdSEGPg5jlrRCD/3D/D1SbHD2I
+        FLoYB3dlxQkiNCEhUOtlQew==
+X-Received: by 2002:a50:ed89:: with SMTP id h9mr7693433edr.130.1644487256278;
+        Thu, 10 Feb 2022 02:00:56 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJy29EIF5dLlj4EgzKveWm+vfQmoyV88rAwDkSQcW7lKexRy8Kajda6TOEEQq/JheLqpWVvS1Q==
+X-Received: by 2002:a50:ed89:: with SMTP id h9mr7693422edr.130.1644487256142;
+        Thu, 10 Feb 2022 02:00:56 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id f28sm2053275ejl.46.2022.02.10.02.00.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Feb 2022 02:00:55 -0800 (PST)
+Message-ID: <da0f5804-559a-1efd-373f-93eb87196255@redhat.com>
+Date:   Thu, 10 Feb 2022 11:00:54 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.5.1
-Subject: Re: [PATCH v7 1/2] ACPI: APEI: explicit init HEST and GHES in
- apci_init
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v2 0/6] typec: mux: Introduce support for multiple TypeC
+ muxes
 Content-Language: en-US
-To:     helgaas@kernel.org, rafael@kernel.org
-Cc:     bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
-        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
-        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com,
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
-References: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
- <20220122052618.1074-1-xueshuai@linux.alibaba.com>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20220122052618.1074-1-xueshuai@linux.alibaba.com>
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+References: <20220208031944.3444-1-bjorn.andersson@linaro.org>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220208031944.3444-1-bjorn.andersson@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,223 +88,61 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-在 2022/1/22 PM1:26, Shuai Xue 写道:
-> From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
-> memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
-> the estatus memory pool. On the other hand, ghes_init() relies on
-> sdei_init() to detect the SDEI version and (un)register events. The
-> dependencies are as follows:
-> 
->     ghes_init() => acpi_hest_init() => acpi_bus_init() => acpi_init()
->     ghes_init() => sdei_init()
-> 
-> HEST is not PCI-specific and initcall ordering is implicit and not
-> well-defined within a level.
-> 
-> Based on above, remove acpi_hest_init() from acpi_pci_root_init() and
-> convert ghes_init() and sdei_init() from initcalls to explicit calls in the
-> following order:
-> 
->     acpi_hest_init()
->     ghes_init()
->         sdei_init()
-> 
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> ---
->  drivers/acpi/apei/ghes.c    | 19 ++++++++-----------
->  drivers/acpi/bus.c          |  2 ++
->  drivers/acpi/pci_root.c     |  3 ---
->  drivers/firmware/Kconfig    |  1 +
->  drivers/firmware/arm_sdei.c | 13 ++-----------
->  include/acpi/apei.h         |  4 +++-
->  include/linux/arm_sdei.h    |  2 ++
->  7 files changed, 18 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 0c5c9acc6254..aadc0a972f18 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -1457,33 +1457,35 @@ static struct platform_driver ghes_platform_driver = {
->  	.remove		= ghes_remove,
->  };
->  
-> -static int __init ghes_init(void)
-> +void __init ghes_init(void)
->  {
->  	int rc;
->  
-> +	sdei_init();
-> +
->  	if (acpi_disabled)
-> -		return -ENODEV;
-> +		return;
->  
->  	switch (hest_disable) {
->  	case HEST_NOT_FOUND:
-> -		return -ENODEV;
-> +		return;
->  	case HEST_DISABLED:
->  		pr_info(GHES_PFX "HEST is not enabled!\n");
-> -		return -EINVAL;
-> +		return;
->  	default:
->  		break;
->  	}
->  
->  	if (ghes_disable) {
->  		pr_info(GHES_PFX "GHES is not enabled!\n");
-> -		return -EINVAL;
-> +		return;
->  	}
->  
->  	ghes_nmi_init_cxt();
->  
->  	rc = platform_driver_register(&ghes_platform_driver);
->  	if (rc)
-> -		goto err;
-> +		return;
->  
->  	rc = apei_osc_setup();
->  	if (rc == 0 && osc_sb_apei_support_acked)
-> @@ -1494,9 +1496,4 @@ static int __init ghes_init(void)
->  		pr_info(GHES_PFX "APEI firmware first mode is enabled by APEI bit.\n");
->  	else
->  		pr_info(GHES_PFX "Failed to enable APEI firmware first mode.\n");
-> -
-> -	return 0;
-> -err:
-> -	return rc;
->  }
-> -device_initcall(ghes_init);
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index 07f604832fd6..3f403db20f69 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -1331,6 +1331,8 @@ static int __init acpi_init(void)
->  
->  	pci_mmcfg_late_init();
->  	acpi_iort_init();
-> +	acpi_hest_init();
-> +	ghes_init();
->  	acpi_scan_init();
->  	acpi_ec_init();
->  	acpi_debugfs_init();
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index b76db99cced3..6f9e75d14808 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -22,8 +22,6 @@
->  #include <linux/slab.h>
->  #include <linux/dmi.h>
->  #include <linux/platform_data/x86/apple.h>
-> -#include <acpi/apei.h>	/* for acpi_hest_init() */
-> -
->  #include "internal.h"
->  
->  #define ACPI_PCI_ROOT_CLASS		"pci_bridge"
-> @@ -943,7 +941,6 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
->  
->  void __init acpi_pci_root_init(void)
->  {
-> -	acpi_hest_init();
->  	if (acpi_pci_disabled)
->  		return;
->  
-> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-> index 75cb91055c17..ad114d9cdf8e 100644
-> --- a/drivers/firmware/Kconfig
-> +++ b/drivers/firmware/Kconfig
-> @@ -40,6 +40,7 @@ config ARM_SCPI_POWER_DOMAIN
->  config ARM_SDE_INTERFACE
->  	bool "ARM Software Delegated Exception Interface (SDEI)"
->  	depends on ARM64
-> +	select ACPI_APEI_GHES
->  	help
->  	  The Software Delegated Exception Interface (SDEI) is an ARM
->  	  standard for registering callbacks from the platform firmware
-> diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
-> index a7e762c352f9..1e1a51510e83 100644
-> --- a/drivers/firmware/arm_sdei.c
-> +++ b/drivers/firmware/arm_sdei.c
-> @@ -1059,14 +1059,14 @@ static bool __init sdei_present_acpi(void)
->  	return true;
->  }
->  
-> -static int __init sdei_init(void)
-> +void __init sdei_init(void)
->  {
->  	struct platform_device *pdev;
->  	int ret;
->  
->  	ret = platform_driver_register(&sdei_driver);
->  	if (ret || !sdei_present_acpi())
-> -		return ret;
-> +		return;
->  
->  	pdev = platform_device_register_simple(sdei_driver.driver.name,
->  					       0, NULL, 0);
-> @@ -1076,17 +1076,8 @@ static int __init sdei_init(void)
->  		pr_info("Failed to register ACPI:SDEI platform device %d\n",
->  			ret);
->  	}
-> -
-> -	return ret;
->  }
->  
-> -/*
-> - * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
-> - * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
-> - * by device_initcall(). We want to be called in the middle.
-> - */
-> -subsys_initcall_sync(sdei_init);
-> -
->  int sdei_event_handler(struct pt_regs *regs,
->  		       struct sdei_registered_event *arg)
->  {
-> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-> index ece0a8af2bae..4e60dd73c3bb 100644
-> --- a/include/acpi/apei.h
-> +++ b/include/acpi/apei.h
-> @@ -27,14 +27,16 @@ extern int hest_disable;
->  extern int erst_disable;
->  #ifdef CONFIG_ACPI_APEI_GHES
->  extern bool ghes_disable;
-> +void __init ghes_init(void);
->  #else
->  #define ghes_disable 1
-> +static inline void ghes_init(void) { }
->  #endif
->  
->  #ifdef CONFIG_ACPI_APEI
->  void __init acpi_hest_init(void);
->  #else
-> -static inline void acpi_hest_init(void) { return; }
-> +static inline void acpi_hest_init(void) { }
->  #endif
->  
->  int erst_write(const struct cper_record_header *record);
-> diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
-> index 0a241c5c911d..14dc461b0e82 100644
-> --- a/include/linux/arm_sdei.h
-> +++ b/include/linux/arm_sdei.h
-> @@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
->  /* For use by arch code when CPU hotplug notifiers are not appropriate. */
->  int sdei_mask_local_cpu(void);
->  int sdei_unmask_local_cpu(void);
-> +void __init sdei_init(void);
->  #else
->  static inline int sdei_mask_local_cpu(void) { return 0; }
->  static inline int sdei_unmask_local_cpu(void) { return 0; }
-> +static inline void sdei_init(void) { }
->  #endif /* CONFIG_ARM_SDE_INTERFACE */
->  
->  
+Hi,
 
-Hi folks,
+On 2/8/22 04:19, Bjorn Andersson wrote:
+> This series introduces a level of indirection between the controller's view of
+> a typec_mux/switch and the implementation and then expands that to support
+> multiple drivers.
+> 
+> This is needed in order to support devices such as the Qualcomm Snapdragon 888
+> HDK, which does muxing and orientation handling in the QMP (USB+DP) PHY and SBU
+> muxing in the external FSA4480 chip.
+> 
+> Included in the series is a the new FSA4480 driver. This is done to deal with
+> the renaming of the driver-side typec_mux -> typec_mux_dev.
 
-I am wondering if you have any comments on this series of patches?
+I have tested patches 1-4 on a GPD win which uses a fusb302 TCPM with a pi3usb30532
+mux and superspeed orientation switching as well as DP over Type-C still works fine
+there, so you may add my:
 
-Thank you.
+Tested-by: Hans de Goede <hdegoede@redhat.com>
 
-Best Regards,
-Shuai
+Regards,
+
+Hans
+
+
+
+
+
+> 
+> Changes since v1:
+> - Omitted QMP changes from this series, as the muxing implementation needs a
+>   little bit more debugging.
+> 
+> Bjorn Andersson (6):
+>   device property: Helper to match multiple connections
+>   device property: Use multi-connection matchers for single case
+>   typec: mux: Introduce indirection
+>   typec: mux: Allow multiple mux_devs per mux
+>   dt-bindings: usb: Add binding for fcs,fsa4480
+>   usb: typec: mux: Add On Semi fsa4480 driver
+> 
+>  .../devicetree/bindings/usb/fcs,fsa4480.yaml  |  72 +++++
+>  drivers/base/property.c                       |  85 ++++--
+>  drivers/usb/typec/bus.c                       |   2 +-
+>  drivers/usb/typec/mux.c                       | 261 +++++++++++++-----
+>  drivers/usb/typec/mux.h                       |  12 +-
+>  drivers/usb/typec/mux/Kconfig                 |   9 +
+>  drivers/usb/typec/mux/Makefile                |   1 +
+>  drivers/usb/typec/mux/fsa4480.c               | 220 +++++++++++++++
+>  drivers/usb/typec/mux/intel_pmc_mux.c         |   8 +-
+>  drivers/usb/typec/mux/pi3usb30532.c           |   8 +-
+>  include/linux/property.h                      |   5 +
+>  include/linux/usb/typec_mux.h                 |  22 +-
+>  12 files changed, 595 insertions(+), 110 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
+>  create mode 100644 drivers/usb/typec/mux/fsa4480.c
+> 
+
