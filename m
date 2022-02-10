@@ -2,115 +2,214 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 986534B1A6E
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 01:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1FFB4B19C0
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 00:47:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345029AbiBKAbT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Feb 2022 19:31:19 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58146 "EHLO
+        id S1345865AbiBJXrL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Feb 2022 18:47:11 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245157AbiBKAbT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Feb 2022 19:31:19 -0500
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FE3A559A;
-        Thu, 10 Feb 2022 16:31:19 -0800 (PST)
-Received: by mail-io1-xd2e.google.com with SMTP id n17so9561351iod.4;
-        Thu, 10 Feb 2022 16:31:19 -0800 (PST)
+        with ESMTP id S245029AbiBJXrK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Feb 2022 18:47:10 -0500
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 635395F77
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 15:47:10 -0800 (PST)
+Received: by mail-pf1-x435.google.com with SMTP id a39so12280530pfx.7
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 15:47:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=WY+F15RwKoXSBs81n7QT8FqeoZ2/vRqemIDQ19p9hAY=;
-        b=UhDGPTTGkCv7nd2i/RxSPH4PnVPZlxYLGSFCnJ4+jnU1zbj0n8l7wVAyCdZZNe4xg1
-         RVezAL9rFr1cDpujwWZ19coQQzwOQ8jqEuPUM3RTAzcJoTLbeUwPZxQnnTk2s9EjgDdM
-         bqVuyPRCfRizMtazcb6ZHcm0of8H+1Zpq3KZTY7y9b1Vd/FvIUupHM5PwEvYk6iZsPa0
-         a48amFL3lBebCekA448n7zpKvMPr2J4GBSKGH1TkLOozoIK4f04NbEsPJFzZsffvrz5n
-         jMJwjmBLyd8kN79M7JlB19hF4boCL26IuZBs/TGBiu1lOedGjl0eKRMxhP7Dz44nOEaU
-         hgVA==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=mHRsq6Kn87GMOD21+jYbugw/48vB/ViEdc86yH1U1RM=;
+        b=cE/HfRBcMAiI7aHiAvjjmt/SqsHa2f/rPVtV36FfX+RNibf+yKHCwYxGDTUtUIoQTN
+         n+ZC03sN7lJOgFIjtcfdqZc2niTOFjCQnJAiJcOp6p/xKpuK41BgjFbGKDbl7AUWmPk0
+         ur5mEAX2mLkDvRd+aBSDYM0PrWWRnuHFIpzh0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=WY+F15RwKoXSBs81n7QT8FqeoZ2/vRqemIDQ19p9hAY=;
-        b=7VjKq2vZENiURrW8qW0FOxjZavzg9aYsvFJg2Utla7K0OYpKwOb2HYpbM1XUbmGsSA
-         vZcDtBgeuL/d5SF/2PxrJ68rcXwUafmwPh9F+NJNtmH3hT79mw3PVqJtt8kEsACY1hvO
-         V3+tn4wswC+dRxXtxQdwIR8Wt2kZCEwHMTO9+qsigXnW724aZdcdSiuz5ShqEXkJBs0I
-         y1YU40zrG+wOK0wh1Jsn93LOb90hN8d5DWBLTqny+qAbRilUJsj0S4Qs4iEflHE+DWsi
-         lECQ+isgmgESsjeCi5oQCOILGtPkaLyHXyyNWhh3W5iKxvI8k3v5iSbWkM1trZYFe7uo
-         07RA==
-X-Gm-Message-State: AOAM533aB6ECqKOCq1/+rXkkjGRQqrG/raeFRKiKg8sqnxMDoKnXjfYS
-        t5Gr5DWTVicDwAaFjufSXbM=
-X-Google-Smtp-Source: ABdhPJyJf8DICiugARTyGxQTO41WkKOMQOz8THqG4YLlZKUdSd+jbMzkeB9uqKFDGytPzQQRKnntPQ==
-X-Received: by 2002:a05:6602:26ce:: with SMTP id g14mr5175279ioo.137.1644539478920;
-        Thu, 10 Feb 2022 16:31:18 -0800 (PST)
-Received: from localhost ([12.28.44.171])
-        by smtp.gmail.com with ESMTPSA id w19sm13031570iov.16.2022.02.10.16.31.18
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=mHRsq6Kn87GMOD21+jYbugw/48vB/ViEdc86yH1U1RM=;
+        b=PZtkLBVgDO+3ESkVffZN4ThmxBuWlYC4mUGPgEOdB5nAqxIds2YGe4EGK7lIk7u7Wt
+         drYi03cOqgtqZY0aLsXoIwOvq3DrzB1OzJiMFM50TYs/u/5yhR0DOUqiuNME0hO4eNXY
+         DwyDQB/h7TBW7J/ZDv2xCoDxb/rHeR2U+VOFH1q+RDKMAC9X17bb4Nxs5RTBOSpNgB6O
+         7DrCzO1CjMl5XxxJphID5Bl5WEBokgrFk6wX9c6Ol9rFKPcG8qEiX2RUxvtVp6InEaz7
+         jdDSfJ9kve+Vjg0LZqYytCHf1IoVINbuyJtiX/hBltN8QCh6sJznY3ugHklb+ysYk4ZM
+         MuCg==
+X-Gm-Message-State: AOAM530qkqvodAcshwtBcQahJAX8tr/VjupsVfasddURMybjE/IXK0UL
+        WOJh1EssPUlAV/Fq/PYRXwo2Lw==
+X-Google-Smtp-Source: ABdhPJyGc6kYqWRf+VlsVeyHDKoWC+0J4l3+nlcgViM0mwZ71ZFfynFkb2DC+466DdIh8ebqBFav6w==
+X-Received: by 2002:a63:7019:: with SMTP id l25mr1843865pgc.251.1644536829788;
+        Thu, 10 Feb 2022 15:47:09 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id 69sm17784092pgc.61.2022.02.10.15.47.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Feb 2022 16:31:18 -0800 (PST)
-From:   Yury Norov <yury.norov@gmail.com>
-To:     Yury Norov <yury.norov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        David Laight <David.Laight@aculab.com>,
-        Joe Perches <joe@perches.com>, Dennis Zhou <dennis@kernel.org>,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Alexey Klimov <aklimov@redhat.com>,
-        linux-kernel@vger.kernel.org,
+        Thu, 10 Feb 2022 15:47:09 -0800 (PST)
+Date:   Thu, 10 Feb 2022 15:47:08 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Victor Erminpour <victor.erminpour@oracle.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        linux-acpi@vger.kernel.org
-Subject: [PATCH 45/49] ACPI: replace nodes__weight with nodes_weight_ge for numa
-Date:   Thu, 10 Feb 2022 14:49:29 -0800
-Message-Id: <20220210224933.379149-46-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220210224933.379149-1-yury.norov@gmail.com>
-References: <20220210224933.379149-1-yury.norov@gmail.com>
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        trivial@kernel.org
+Subject: Re: [PATCH v2] ACPI/IORT: Fix GCC 12 warning
+Message-ID: <202202101415.43750CEE@keescook>
+References: <1644518851-16847-1-git-send-email-victor.erminpour@oracle.com>
+ <CAMj1kXEbGWs74M2CZSm6TWpD11mReFsk8z-UUqJt6b6vDCvAEQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXEbGWs74M2CZSm6TWpD11mReFsk8z-UUqJt6b6vDCvAEQ@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-acpi_map_pxm_to_node() calls nodes_weight() to compare the weight
-of nodemask with a given number. We can do it more efficiently with
-nodes_weight_eq() because conditional nodes_weight may stop
-traversing the nodemask earlier, as soon as condition is (or is not)
-met.
+On Thu, Feb 10, 2022 at 08:41:51PM +0100, Ard Biesheuvel wrote:
+> On Thu, 10 Feb 2022 at 19:48, Victor Erminpour
+> <victor.erminpour@oracle.com> wrote:
+> >
+> > When building with automatic stack variable initialization, GCC 12
+> > complains about variables defined outside of switch case statements.
+> > Move the variable into the case that uses it, which silences the warning:
+> >
+> > ./drivers/acpi/arm64/iort.c:1670:59: error: statement will never be executed [-Werror=switch-unreachable]
+> >   1670 |                         struct acpi_iort_named_component *ncomp;
+> >        |                                                           ^~~~~
+> >
+> > Signed-off-by: Victor Erminpour <victor.erminpour@oracle.com>
+> 
+> Please cc people that commented on your v1 when you send a v2.
+> 
+> Still NAK, for the same reasons.
 
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
----
- drivers/acpi/numa/srat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Let me see if I can talk you out of this. ;)
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 3b818ab186be..fe7a7996f553 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -67,7 +67,7 @@ int acpi_map_pxm_to_node(int pxm)
- 	node = pxm_to_node_map[pxm];
+So, on the face of it, I agree with you: this is a compiler bug. However,
+it's still worth fixing. Just because it's valid C isn't a good enough
+reason to leave it as-is: we continue to minimize the subset of the
+C language the kernel uses if it helps us get the most out of existing
+compiler features. We've eliminated all kinds of other "valid C" from the
+kernel because it improves robustness, security, etc. This is certainly
+nothing like removing VLAs or implicit fallthrough, but given that this
+is, I think, the only remaining case of it (I removed all the others a
+while ago when I had the same issues with the GCC plugins), I'd like to
+get it fixed.
+
+And I should point out that Clang suffers[1] from the same problem (the
+variables will be missed for auto-initialization), but actually has a
+worse behavior: it does not even warn about it.
+
+And note that the problem isn't limited to -ftrivial-auto-var-init. This
+code pattern seems to also hide the variables from similar instrumentation
+like KASan, etc. (Which is similarly silent like above.)
+
+In both compilers, it seems fixing this is not "easy", and given its
+corner-case nature and ease of being worked around in the kernel source,
+it isn't being highly prioritized. But since I both don't want these
+blinds spots with Clang (and GCC) var-init, and I don't want these
+warnings to suddenly appear once GCC 12 _does_ get released, so I'd like
+to get this case fixed as well.
+
+All that said, I think this patch could be improved.
+
+I'd recommend, instead, just simply:
+
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index f2f8f05662de..9e765d30da82 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1671,13 +1671,14 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
+ 	end = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->header.length);
  
- 	if (node == NUMA_NO_NODE) {
--		if (nodes_weight(nodes_found_map) >= MAX_NUMNODES)
-+		if (nodes_weight_ge(nodes_found_map, MAX_NUMNODES))
- 			return NUMA_NO_NODE;
- 		node = first_unset_node(nodes_found_map);
- 		__acpi_map_pxm_to_node(pxm, node);
--- 
-2.32.0
+ 	for (i = 0; i < iort->node_count; i++) {
++		struct acpi_iort_named_component *ncomp;
++		struct acpi_iort_root_complex *rc;
++		phys_addr_t local_limit;
++
+ 		if (node >= end)
+ 			break;
+ 
+ 		switch (node->type) {
+-			struct acpi_iort_named_component *ncomp;
+-			struct acpi_iort_root_complex *rc;
+-			phys_addr_t local_limit;
+ 
+ 		case ACPI_IORT_NODE_NAMED_COMPONENT:
+ 			ncomp = (struct acpi_iort_named_component *)node->node_data;
 
+This results in no change in binary instruction output (when there is no
+auto-init).
+
+-Kees
+
+[1] https://github.com/llvm/llvm-project/issues/44261
+
+> 
+> 
+> > ---
+> >  drivers/acpi/arm64/iort.c | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> > index 3b23fb775ac4..65395f0decf9 100644
+> > --- a/drivers/acpi/arm64/iort.c
+> > +++ b/drivers/acpi/arm64/iort.c
+> > @@ -1645,7 +1645,7 @@ void __init acpi_iort_init(void)
+> >   */
+> >  phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
+> >  {
+> > -       phys_addr_t limit = PHYS_ADDR_MAX;
+> > +       phys_addr_t local_limit, limit = PHYS_ADDR_MAX;
+> >         struct acpi_iort_node *node, *end;
+> >         struct acpi_table_iort *iort;
+> >         acpi_status status;
+> > @@ -1667,17 +1667,16 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
+> >                         break;
+> >
+> >                 switch (node->type) {
+> > +               case ACPI_IORT_NODE_NAMED_COMPONENT: {
+> >                         struct acpi_iort_named_component *ncomp;
+> > -                       struct acpi_iort_root_complex *rc;
+> > -                       phys_addr_t local_limit;
+> > -
+> > -               case ACPI_IORT_NODE_NAMED_COMPONENT:
+> >                         ncomp = (struct acpi_iort_named_component *)node->node_data;
+> >                         local_limit = DMA_BIT_MASK(ncomp->memory_address_limit);
+> >                         limit = min_not_zero(limit, local_limit);
+> >                         break;
+> >
+> > -               case ACPI_IORT_NODE_PCI_ROOT_COMPLEX:
+> > +               }
+> > +               case ACPI_IORT_NODE_PCI_ROOT_COMPLEX: {
+> > +                       struct acpi_iort_root_complex *rc;
+> >                         if (node->revision < 1)
+> >                                 break;
+> >
+> > @@ -1686,6 +1685,7 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
+> >                         limit = min_not_zero(limit, local_limit);
+> >                         break;
+> >                 }
+> > +               }
+> >                 node = ACPI_ADD_PTR(struct acpi_iort_node, node, node->length);
+> >         }
+> >         acpi_put_table(&iort->header);
+> >
+> > _______________________________________________
+> > linux-arm-kernel mailing list
+> > linux-arm-kernel@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+-- 
+Kees Cook
