@@ -2,158 +2,351 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A8DC4B1A84
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 01:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AD8F4B1C3C
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 03:31:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245125AbiBKAhV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Feb 2022 19:37:21 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33302 "EHLO
+        id S1347305AbiBKCaM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Feb 2022 21:30:12 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346404AbiBKAhV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Feb 2022 19:37:21 -0500
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3990D5F7E
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 16:37:20 -0800 (PST)
-Received: by mail-io1-f70.google.com with SMTP id y4-20020a056602200400b006101b618529so5192241iod.19
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 16:37:20 -0800 (PST)
+        with ESMTP id S235296AbiBKCaM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Feb 2022 21:30:12 -0500
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B6D10DF
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 18:30:11 -0800 (PST)
+Received: by mail-pj1-x104a.google.com with SMTP id n13-20020a17090a928d00b001b80df27e05so5526709pjo.8
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 18:30:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc
+         :content-transfer-encoding;
+        bh=gpfpq9IyFVXyGaNhLILmSz1fSNzB9aAjbA/VJj5uFog=;
+        b=DIWMmG+pR0jMVrLQwTrdyYEQ7LiiwPfZjBBHEcrZeR1mDV+FVVP5rSeyCYsxHfBbB7
+         YSe1euFw2H52nGF7IPuRazjPyr8r05TzB+COZasqQfcDwJTlSZ/qUxb7V8kUHUOfkvFd
+         J3YuFykSAw6j/jVaI2ZM/9EX7RzGrlj2v/xy/4tu91oS3TXZvNh//oVbEIADHHQGX0r1
+         6lAocs0MB5W6KPIdLnonP3XVzs6SlWn9cAPu0pxLhi9LVQQO9jCaUtvo9jbrITw8b+9i
+         ObgkSRxOxn3RQMv1gQHOYWVxX7Six6P2mNoNuRsh3NNJltTJH0UOAQsNunZxKFI1WRu7
+         6+Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=qKOR0YTQopKhjgaydg7pJg6t8RNb5M2L3oCxp86sxFs=;
-        b=i7lwhYXAEUGa+luJ7rhJT/eTokrtCRMYJhHUg/MKDBsgp98VDx5cRP83FbptFWxQw4
-         jgnP7sX6xybyEeC6E96sYXRHTQhs0QAB/CVc7X1gSTPOrx6SO7rOtY2XDcgvA0SdqjNJ
-         jDQ6XbsW5jzwyLZ8riUNiJh775iFGiiE4PlXe/sshqdZnABosGK7jc1RAT7UoqNEzNGk
-         9x9tnf++95sEr2Eh5ON+96o4bQQ64g+Ed9LDtUQ5WLJWChZ6eoW0QTe0nBYGjZr8A/qc
-         uckCv+1WYDPC+wqyrqt4Oedc0hZizJOn3Y5hZd5/JnykI1AyCQ4BC0Ckqz2lawpQuxbz
-         EwEQ==
-X-Gm-Message-State: AOAM531EsKAcNx041pxaFYR37n9qdo4eypqYi4ePb3Detmfu9TmemUpi
-        ZhljUpTDUG5NV6l3KxSHE/Zz8LBHdndzGoQZA+52RURK8dv1
-X-Google-Smtp-Source: ABdhPJxwlS+TIQvVCR4ovg6MqayjzHSbXF78sTlhdePS73FpubtTibEgU62JeXbKJyyBP4WsavUFURRggUkVBGZvA1ibmkjYrRzT
-MIME-Version: 1.0
-X-Received: by 2002:a92:bf01:: with SMTP id z1mr5044624ilh.18.1644539839598;
- Thu, 10 Feb 2022 16:37:19 -0800 (PST)
-Date:   Thu, 10 Feb 2022 16:37:19 -0800
-In-Reply-To: <0000000000006e988105d72fbe3f@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000f5549005d7b3440a@google.com>
-Subject: Re: [syzbot] general protection fault in i2c_setup_smbus_alert
-From:   syzbot <syzbot+0591ccf54ee05344e4eb@syzkaller.appspotmail.com>
-To:     andriy.shevchenko@linux.intel.com, djrscally@gmail.com,
-        gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com,
-        johan@kernel.org, linux-acpi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rafael@kernel.org, sakari.ailus@linux.intel.com,
-        syzkaller-bugs@googlegroups.com, wsa@kernel.org
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc
+         :content-transfer-encoding;
+        bh=gpfpq9IyFVXyGaNhLILmSz1fSNzB9aAjbA/VJj5uFog=;
+        b=HW/N4XbNHTF/8VGiUVw+Cs7reor+6Aar1kXujSB2aS8J72YJG8PobpdKOzG+3JWoq0
+         T6LJF1OeMDN0R/RF3Z131WC498JR2vAepj0ei5IAw0+vwAYF5zLwM/ucuRJkdhKwyR5u
+         tgppuV5t7xZTlHg85QJn8Au2LC07JYfsC7m1H4fX7umNz0PiA0JrMxqrnwXjfLB1BVK8
+         VGEWf6J0OupsWsv3eD5Q+ZZvQIMDXxxgfTu03aAjc9fxH5SJKmCCJAufUVbWM7P6vstR
+         EvREvCIfVMpGCqxKthTPxt1QnRBl/6cNIiWm3t7APg5r5sSx/svGbUuGUGNe36Ewnuu8
+         ikJQ==
+X-Gm-Message-State: AOAM530aEwLR5kLLco1LFlUu1L034zameFKDQUOUOkaS31d0bjEDhOvN
+        eVdHBltXb0PtyxQW3faVz7Gd5k9SqBXZng==
+X-Google-Smtp-Source: ABdhPJyyXum2JTqlievkZ2AsU1lIIYKc+AhVDFpTqsJ+zRJQ8/XMfGzKS+Ac/Sg23ZlTtu9/JOEl9eSZxx+qeg==
+X-Received: from wonchungspecialist.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:1440])
+ (user=wonchung job=sendgmr) by 2002:a17:90b:4ac4:: with SMTP id
+ mh4mr400797pjb.89.1644546611407; Thu, 10 Feb 2022 18:30:11 -0800 (PST)
+Date:   Fri, 11 Feb 2022 02:30:07 +0000
+Message-Id: <20220211023008.3197397-1-wonchung@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.35.1.265.g69c8d7142f-goog
+Subject: [PATCH v6] ACPI: device_sysfs: Add sysfs support for _PLD
+From:   Won Chung <wonchung@google.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Benson Leung <bleung@chromium.org>,
+        Prashant Malani <pmalani@chromium.org>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Won Chung <wonchung@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
+When ACPI table includes _PLD fields for a device, create a new
+directory (pld) in sysfs to share _PLD fields.
 
-HEAD commit:    ef6b35306dd8 Add linux-next specific files for 20220204
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=15e40d84700000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e0431e0b00810b4f
-dashboard link: https://syzkaller.appspot.com/bug?extid=0591ccf54ee05344e4eb
-compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1105f472700000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16492aa4700000
+Currently without PLD information, when there are multiple of same
+devices, it is hard to distinguish which device corresponds to which
+physical device in which location. For example, when there are two Type
+C connectors, it is hard to find out which connector corresponds to the
+Type C port on the left panel versus the Type C port on the right panel.
+With PLD information provided, we can determine which specific device at
+which location is doing what.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+0591ccf54ee05344e4eb@syzkaller.appspotmail.com
+Since PLD information is to be used for finding where physical device is
+located in user's perspective, pld sysfs directory will only be created
+for ACPI_BUS_TYPE_DEVICE with user_visible field set as 1.
 
-usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-usb 1-1: Product: syz
-usb 1-1: Manufacturer: syz
-usb 1-1: SerialNumber: syz
-usb 1-1: config 0 descriptor??
-general protection fault, probably for non-canonical address 0xdffffc000000008a: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000450-0x0000000000000457]
-CPU: 1 PID: 35 Comm: kworker/1:1 Not tainted 5.17.0-rc2-next-20220204-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:dev_fwnode drivers/base/property.c:22 [inline]
-RIP: 0010:device_property_match_string+0x2c/0xa0 drivers/base/property.c:224
-Code: 49 89 d5 41 54 49 89 f4 55 53 48 89 fb e8 bc 01 fa fc 48 8d bb 50 04 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 75 5a 48 8b ab 50 04 00 00 48 85 ed 74 22 e8 8d 01 fa
-RSP: 0018:ffffc900010befd8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 000000000000008a RSI: ffffffff847ea734 RDI: 0000000000000450
-RBP: ffff8880127ec038 R08: 0000000000000000 R09: ffff8880127ec1a3
-R10: ffffffff85ea3a99 R11: 0000000000000000 R12: ffffffff8a658720
-R13: ffffffff8a6586e0 R14: ffff8880127ec660 R15: ffff8880127ec664
-FS:  0000000000000000(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffd0b1f0910 CR3: 000000007f0f9000 CR4: 00000000003506e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- i2c_setup_smbus_alert+0x9c/0x1a0 drivers/i2c/i2c-core-smbus.c:710
- i2c_register_adapter+0x32f/0x1150 drivers/i2c/i2c-core-base.c:1482
- i2c_add_adapter+0x11a/0x1c0 drivers/i2c/i2c-core-base.c:1587
- osif_probe+0x2ae/0x500 drivers/i2c/busses/i2c-robotfuzz-osif.c:164
- usb_probe_interface+0x315/0x7f0 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:517 [inline]
- really_probe+0x245/0xcc0 drivers/base/dd.c:596
- __driver_probe_device+0x338/0x4d0 drivers/base/dd.c:752
- driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:782
- __device_attach_driver+0x20b/0x2f0 drivers/base/dd.c:899
- bus_for_each_drv+0x15f/0x1e0 drivers/base/bus.c:427
- __device_attach+0x228/0x4a0 drivers/base/dd.c:970
- bus_probe_device+0x1e4/0x290 drivers/base/bus.c:487
- device_add+0xc17/0x1ee0 drivers/base/core.c:3405
- usb_set_configuration+0x101e/0x1900 drivers/usb/core/message.c:2170
- usb_generic_driver_probe+0xba/0x100 drivers/usb/core/generic.c:238
- usb_probe_device+0xd9/0x2c0 drivers/usb/core/driver.c:293
- call_driver_probe drivers/base/dd.c:517 [inline]
- really_probe+0x245/0xcc0 drivers/base/dd.c:596
- __driver_probe_device+0x338/0x4d0 drivers/base/dd.c:752
- driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:782
- __device_attach_driver+0x20b/0x2f0 drivers/base/dd.c:899
- bus_for_each_drv+0x15f/0x1e0 drivers/base/bus.c:427
- __device_attach+0x228/0x4a0 drivers/base/dd.c:970
- bus_probe_device+0x1e4/0x290 drivers/base/bus.c:487
- device_add+0xc17/0x1ee0 drivers/base/core.c:3405
- usb_new_device.cold+0x63f/0x108e drivers/usb/core/hub.c:2566
- hub_port_connect drivers/usb/core/hub.c:5362 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5506 [inline]
- port_event drivers/usb/core/hub.c:5664 [inline]
- hub_event+0x25c6/0x4680 drivers/usb/core/hub.c:5746
- process_one_work+0x996/0x1610 kernel/workqueue.c:2289
- worker_thread+0x665/0x1080 kernel/workqueue.c:2436
- kthread+0x2e9/0x3a0 kernel/kthread.c:377
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
- </TASK>
-Modules linked in:
-----------------
-Code disassembly (best guess):
-   0:	49 89 d5             	mov    %rdx,%r13
-   3:	41 54                	push   %r12
-   5:	49 89 f4             	mov    %rsi,%r12
-   8:	55                   	push   %rbp
-   9:	53                   	push   %rbx
-   a:	48 89 fb             	mov    %rdi,%rbx
-   d:	e8 bc 01 fa fc       	callq  0xfcfa01ce
-  12:	48 8d bb 50 04 00 00 	lea    0x450(%rbx),%rdi
-  19:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
-  20:	fc ff df
-  23:	48 89 fa             	mov    %rdi,%rdx
-  26:	48 c1 ea 03          	shr    $0x3,%rdx
-* 2a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1) <-- trapping instruction
-  2e:	75 5a                	jne    0x8a
-  30:	48 8b ab 50 04 00 00 	mov    0x450(%rbx),%rbp
-  37:	48 85 ed             	test   %rbp,%rbp
-  3a:	74 22                	je     0x5e
-  3c:	e8                   	.byte 0xe8
-  3d:	8d 01                	lea    (%rcx),%eax
-  3f:	fa                   	cli
+Signed-off-by: Won Chung <wonchung@google.com>
+---
+Changes in v6:
+- Add pld to acpi_device only if it is a user visible device.
+
+Changes in v5:
+- Store pld to acpi_device in acpi_store_pld_crc() and rename it as
+  acpi_store_pld().
+
+Changes in v4:
+- Create seperate files for each _PLD fields instead of having a single
+  file with all fields included.
+- Create a new directory pld that contains _PLD fields
+
+ Documentation/ABI/testing/sysfs-bus-acpi | 107 +++++++++++++++++++++++
+ drivers/acpi/device_sysfs.c              |  51 +++++++++++
+ drivers/acpi/scan.c                      |  12 ++-
+ include/acpi/acpi_bus.h                  |   1 +
+ 4 files changed, 168 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-bus-acpi b/Documentation/ABI/t=
+esting/sysfs-bus-acpi
+index 58abacf59b2a..b8b71c8f3cfd 100644
+--- a/Documentation/ABI/testing/sysfs-bus-acpi
++++ b/Documentation/ABI/testing/sysfs-bus-acpi
+@@ -96,3 +96,110 @@ Description:
+ 		hardware, if the _HRV control method is present.  It is mostly
+ 		useful for non-PCI devices because lspci can list the hardware
+ 		version for PCI devices.
++
++What:		/sys/bus/acpi/devices/.../pld/
++Date:		Feb, 2022
++Contact:	Won Chung <wonchung@google.com>
++Description:
++		This directory contains the output of the device object's _PLD
++		control method, if present. This information provides details
++		on physical location of a device.
++
++What:		/sys/bus/acpi/devices/.../pld/revision
++Date:		Feb, 2022
++Contact:	Won Chung <wonchung@google.com>
++Description:
++		The current revision is 0x2.
++
++What:           /sys/bus/acpi/devices/.../pld/group_token
++Date:           Feb, 2022
++Contact:        Won Chung <wonchung@google.com>
++Description:
++		Unique numerical value identifying a group.
++
++What:           /sys/bus/acpi/devices/.../pld/group_position
++Date:           Feb, 2022
++Contact:        Won Chung <wonchung@google.com>
++Description:
++		Identifies this device connection point=E2=80=99s position in the group.
++
++What:           /sys/bus/acpi/devices/.../pld/user_visible
++Date:           Feb, 2022
++Contact:        Won Chung <wonchung@google.com>
++Description:
++		Set if the device connection point can be seen by the user
++		without disassembly.
++
++What:           /sys/bus/acpi/devices/.../pld/dock
++Date:           Feb, 2022
++Contact:        Won Chung <wonchung@google.com>
++Description:
++		Set if the device connection point resides in a docking station
++		or port replicator.
++
++What:           /sys/bus/acpi/devices/.../pld/bay
++Date:           Feb, 2022
++Contact:        Won Chung <wonchung@google.com>
++Description:
++		Set if describing a device in a bay or if device connection
++		point is a bay.
++
++What:           /sys/bus/acpi/devices/.../pld/lid
++Date:           Feb, 2022
++Contact:        Won Chung <wonchung@google.com>
++Description:
++		Set if this device connection point resides on the lid of
++		laptop system.
++
++What:           /sys/bus/acpi/devices/.../pld/panel
++Date:           Feb, 2022
++Contact:        Won Chung <wonchung@google.com>
++Description:
++		Describes which panel surface of the system=E2=80=99s housing the
++		device connection point resides on:
++		0 - Top
++		1 - Bottom
++		2 - Left
++		3 - Right
++		4 - Front
++		5 - Back
++		6 - Unknown (Vertical Position and Horizontal Position will be
++		ignored)
++
++What:           /sys/bus/acpi/devices/.../pld/vertical_position
++Date:           Feb, 2022
++Contact:        Won Chung <wonchung@google.com>
++Description:
++		0 - Upper
++		1 - Center
++		2 - Lower
++
++What:           /sys/bus/acpi/devices/.../pld/horizontal_position
++Date:           Feb, 2022
++Contact:        Won Chung <wonchung@google.com>
++Description:
++		ACPI specification does not define horizontal position field.
++		Can be used as either
++		0 - Left
++		1 - Center
++		2 - Right
++		or
++		0 - Leftmost
++		and higher numbers going toward the right.
++
++What:           /sys/bus/acpi/devices/.../pld/shape
++Date:           Feb, 2022
++Contact:        Won Chung <wonchung@google.com>
++Description:
++		Describes the shape of the device connection point.
++		0 - Round
++		1 - Oval
++		2 - Square
++		3 - Vertical Rectangle
++		4 - Horizontal Rectangle
++		5 - Vertical Trapezoid
++		6 - Horizontal Trapezoid
++		7 - Unknown - Shape rendered as a Rectangle with dotted lines
++		8 - Chamfered
++		15:9 - Reserved
++
+diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+index d5d6403ba07b..2702f78a2503 100644
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -509,6 +509,49 @@ static ssize_t status_show(struct device *dev, struct =
+device_attribute *attr,
+ }
+ static DEVICE_ATTR_RO(status);
+=20
++#define DEV_ATTR_PLD_PROP(prop) \
++	static ssize_t prop##_show(struct device *dev, struct device_attribute *a=
+ttr, \
++		char *buf) \
++{ \
++	struct acpi_device *acpi_dev =3D to_acpi_device(dev); \
++	if (acpi_dev->pld =3D=3D NULL) \
++		return -EIO; \
++	return sprintf(buf, "%u\n", acpi_dev->pld->prop); \
++}; \
++static DEVICE_ATTR_RO(prop)
++
++DEV_ATTR_PLD_PROP(revision);
++DEV_ATTR_PLD_PROP(group_token);
++DEV_ATTR_PLD_PROP(group_position);
++DEV_ATTR_PLD_PROP(user_visible);
++DEV_ATTR_PLD_PROP(dock);
++DEV_ATTR_PLD_PROP(bay);
++DEV_ATTR_PLD_PROP(lid);
++DEV_ATTR_PLD_PROP(panel);
++DEV_ATTR_PLD_PROP(vertical_position);
++DEV_ATTR_PLD_PROP(horizontal_position);
++DEV_ATTR_PLD_PROP(shape);
++
++static struct attribute *dev_attr_pld[] =3D {
++	&dev_attr_revision.attr,
++	&dev_attr_group_token.attr,
++	&dev_attr_group_position.attr,
++	&dev_attr_user_visible.attr,
++	&dev_attr_dock.attr,
++	&dev_attr_bay.attr,
++	&dev_attr_lid.attr,
++	&dev_attr_panel.attr,
++	&dev_attr_vertical_position.attr,
++	&dev_attr_horizontal_position.attr,
++	&dev_attr_shape.attr,
++	NULL,
++};
++
++static struct attribute_group dev_attr_pld_group =3D {
++	.name =3D "pld",
++	.attrs =3D dev_attr_pld,
++};
++
+ /**
+  * acpi_device_setup_files - Create sysfs attributes of an ACPI device.
+  * @dev: ACPI device object.
+@@ -595,6 +638,12 @@ int acpi_device_setup_files(struct acpi_device *dev)
+ 						    &dev_attr_real_power_state);
+ 	}
+=20
++	if (acpi_has_method(dev->handle, "_PLD") && dev->pld !=3D NULL) {
++		result =3D device_add_group(&dev->dev, &dev_attr_pld_group);
++		if (result)
++			goto end;
++	}
++
+ 	acpi_expose_nondev_subnodes(&dev->dev.kobj, &dev->data);
+=20
+ end:
+@@ -645,4 +694,6 @@ void acpi_device_remove_files(struct acpi_device *dev)
+ 		device_remove_file(&dev->dev, &dev_attr_status);
+ 	if (dev->handle)
+ 		device_remove_file(&dev->dev, &dev_attr_path);
++	if (acpi_has_method(dev->handle, "_PLD") && dev->pld !=3D NULL)
++		device_remove_group(&dev->dev, &dev_attr_pld_group);
+ }
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 1331756d4cfc..35ac7bcc05ed 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -668,7 +668,7 @@ static int acpi_tie_acpi_dev(struct acpi_device *adev)
+ 	return 0;
+ }
+=20
+-static void acpi_store_pld_crc(struct acpi_device *adev)
++static void acpi_store_pld(struct acpi_device *adev)
+ {
+ 	struct acpi_pld_info *pld;
+ 	acpi_status status;
+@@ -678,7 +678,13 @@ static void acpi_store_pld_crc(struct acpi_device *ade=
+v)
+ 		return;
+=20
+ 	adev->pld_crc =3D crc32(~0, pld, sizeof(*pld));
+-	ACPI_FREE(pld);
++
++	if (adev->device_type =3D=3D ACPI_BUS_TYPE_DEVICE && pld->user_visible) {
++		adev->pld =3D pld;
++	} else {
++		adev->pld =3D NULL;
++		ACPI_FREE(pld);
++	}
+ }
+=20
+ static int __acpi_device_add(struct acpi_device *device,
+@@ -739,7 +745,7 @@ static int __acpi_device_add(struct acpi_device *device=
+,
+ 	if (device->wakeup.flags.valid)
+ 		list_add_tail(&device->wakeup_list, &acpi_wakeup_device_list);
+=20
+-	acpi_store_pld_crc(device);
++	acpi_store_pld(device);
+=20
+ 	mutex_unlock(&acpi_device_lock);
+=20
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index ca88c4706f2b..929e726a666b 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -381,6 +381,7 @@ struct acpi_device {
+ 	struct acpi_hotplug_context *hp;
+ 	struct acpi_driver *driver;
+ 	const struct acpi_gpio_mapping *driver_gpios;
++	struct acpi_pld_info *pld;
+ 	void *driver_data;
+ 	struct device dev;
+ 	unsigned int physical_node_count;
+--=20
+2.35.1.265.g69c8d7142f-goog
 
