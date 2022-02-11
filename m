@@ -2,51 +2,63 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 331EE4B2335
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 11:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 756AD4B23E9
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 12:05:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231754AbiBKKel (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Feb 2022 05:34:41 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60778 "EHLO
+        id S1348356AbiBKLEQ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Feb 2022 06:04:16 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239367AbiBKKef (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Feb 2022 05:34:35 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 05528EA9;
-        Fri, 11 Feb 2022 02:34:34 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE83B106F;
-        Fri, 11 Feb 2022 02:34:33 -0800 (PST)
-Received: from [10.57.70.89] (unknown [10.57.70.89])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F18CB3F73B;
-        Fri, 11 Feb 2022 02:34:31 -0800 (PST)
-Message-ID: <3740c93e-9fde-f89f-9752-26ffff3ea274@arm.com>
-Date:   Fri, 11 Feb 2022 10:34:09 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: [PATCH v2] ACPI/IORT: Fix GCC 12 warning
-Content-Language: en-GB
-To:     Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>
-Cc:     Victor Erminpour <victor.erminpour@oracle.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        with ESMTP id S1349322AbiBKLEP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Feb 2022 06:04:15 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD60E11;
+        Fri, 11 Feb 2022 03:04:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1644577453; x=1676113453;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=MHKXZJmYMntwsRzbjJcY0xT/mLqEkxYkEqdYsoH05/4=;
+  b=CkUbLtyyIvZ4j8ThcIiFuAkeLfQ7xz+6Io63THIWg1aS0zN6kVyoRPUg
+   J7bCZRGCTvF8igUNOXDA3ssl4uqQG6sSu/ztbqRQ7NTKpoJlAk8Cua1lz
+   qO9l1jQr+Uio++lrh+eUfi4tSz70hwykQu1avjK+rcEaVin+pBf7Po9CA
+   EhRlMkiDIXZ8vq7O03cvLblHKP+2iMKbg3oalg3eHtNgcs9TD1IkOj9uh
+   c1K+XczskYec2uyVOP8k1BRxw6gsqXEieEBmjxpjEovQHkmSs1MIwIk2E
+   5IRUOhsUphjsMo5TmmBD2qIush5UjCYNmWLNTwAGwbZWcvWuKhthuXKXU
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10254"; a="247305355"
+X-IronPort-AV: E=Sophos;i="5.88,360,1635231600"; 
+   d="scan'208";a="247305355"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2022 03:04:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,360,1635231600"; 
+   d="scan'208";a="500749875"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga002.jf.intel.com with ESMTP; 11 Feb 2022 03:04:10 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 5A804366; Fri, 11 Feb 2022 13:04:25 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        trivial@kernel.org
-References: <1644518851-16847-1-git-send-email-victor.erminpour@oracle.com>
- <CAMj1kXEbGWs74M2CZSm6TWpD11mReFsk8z-UUqJt6b6vDCvAEQ@mail.gmail.com>
- <202202101415.43750CEE@keescook>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <202202101415.43750CEE@keescook>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH v1 1/1] ACPI: Switch to use list_entry_is_head() helper
+Date:   Fri, 11 Feb 2022 13:04:23 +0200
+Message-Id: <20220211110423.22733-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,173 +66,241 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Kees,
+Since we got list_entry_is_head() helper in the generic header,
+we may switch the ACPI modules to use it. This eliminates the
+need in additional variable. In some cases it reduces critical
+sections as well.
 
-On 2022-02-10 23:47, Kees Cook wrote:
-> On Thu, Feb 10, 2022 at 08:41:51PM +0100, Ard Biesheuvel wrote:
->> On Thu, 10 Feb 2022 at 19:48, Victor Erminpour
->> <victor.erminpour@oracle.com> wrote:
->>>
->>> When building with automatic stack variable initialization, GCC 12
->>> complains about variables defined outside of switch case statements.
->>> Move the variable into the case that uses it, which silences the warning:
->>>
->>> ./drivers/acpi/arm64/iort.c:1670:59: error: statement will never be executed [-Werror=switch-unreachable]
->>>    1670 |                         struct acpi_iort_named_component *ncomp;
->>>         |                                                           ^~~~~
->>>
->>> Signed-off-by: Victor Erminpour <victor.erminpour@oracle.com>
->>
->> Please cc people that commented on your v1 when you send a v2.
->>
->> Still NAK, for the same reasons.
-> 
-> Let me see if I can talk you out of this. ;)
-> 
-> So, on the face of it, I agree with you: this is a compiler bug. However,
-> it's still worth fixing. Just because it's valid C isn't a good enough
-> reason to leave it as-is: we continue to minimize the subset of the
-> C language the kernel uses if it helps us get the most out of existing
-> compiler features. We've eliminated all kinds of other "valid C" from the
-> kernel because it improves robustness, security, etc. This is certainly
-> nothing like removing VLAs or implicit fallthrough, but given that this
-> is, I think, the only remaining case of it (I removed all the others a
-> while ago when I had the same issues with the GCC plugins), I'd like to
-> get it fixed.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/acpi_ipmi.c | 16 ++++++----------
+ drivers/acpi/glue.c      |  8 +++-----
+ drivers/acpi/nfit/core.c | 12 +++---------
+ drivers/acpi/nfit/mce.c  |  4 +---
+ drivers/acpi/resource.c  |  9 +++------
+ drivers/acpi/utils.c     |  7 ++-----
+ 6 files changed, 18 insertions(+), 38 deletions(-)
 
-It concerns me if minimising the subset of the C language that the 
-kernel uses is achieved by converting more of the kernel to a 
-not-quite-C language that is not formally specified anywhere, by 
-prematurely adopting newly-invented compiler options that clearly don't 
-work properly (the GCC warning message quoted above may as well be 
-"error: giraffes are not purple" for all the sense it makes.)
+diff --git a/drivers/acpi/acpi_ipmi.c b/drivers/acpi/acpi_ipmi.c
+index a5fe2926bf50..f9e56138f8d1 100644
+--- a/drivers/acpi/acpi_ipmi.c
++++ b/drivers/acpi/acpi_ipmi.c
+@@ -354,27 +354,26 @@ static void ipmi_cancel_tx_msg(struct acpi_ipmi_device *ipmi,
+ 			       struct acpi_ipmi_msg *msg)
+ {
+ 	struct acpi_ipmi_msg *tx_msg, *temp;
+-	bool msg_found = false;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&ipmi->tx_msg_lock, flags);
+ 	list_for_each_entry_safe(tx_msg, temp, &ipmi->tx_msg_list, head) {
+ 		if (msg == tx_msg) {
+-			msg_found = true;
+ 			list_del(&tx_msg->head);
+ 			break;
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&ipmi->tx_msg_lock, flags);
+ 
+-	if (msg_found)
+-		acpi_ipmi_msg_put(tx_msg);
++	if (list_entry_is_head(tx_msg, &ipmi->tx_msg_list, head)
++		return;
++
++	acpi_ipmi_msg_put(tx_msg);
+ }
+ 
+ static void ipmi_msg_handler(struct ipmi_recv_msg *msg, void *user_msg_data)
+ {
+ 	struct acpi_ipmi_device *ipmi_device = user_msg_data;
+-	bool msg_found = false;
+ 	struct acpi_ipmi_msg *tx_msg, *temp;
+ 	struct device *dev = ipmi_device->dev;
+ 	unsigned long flags;
+@@ -389,14 +388,13 @@ static void ipmi_msg_handler(struct ipmi_recv_msg *msg, void *user_msg_data)
+ 	spin_lock_irqsave(&ipmi_device->tx_msg_lock, flags);
+ 	list_for_each_entry_safe(tx_msg, temp, &ipmi_device->tx_msg_list, head) {
+ 		if (msg->msgid == tx_msg->tx_msgid) {
+-			msg_found = true;
+ 			list_del(&tx_msg->head);
+ 			break;
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&ipmi_device->tx_msg_lock, flags);
+ 
+-	if (!msg_found) {
++	if (list_entry_is_head(tx_msg, &ipmi_device->tx_msg_list, head)) {
+ 		dev_warn(dev,
+ 			 "Unexpected response (msg id %ld) is returned.\n",
+ 			 msg->msgid);
+@@ -483,13 +481,11 @@ static void ipmi_register_bmc(int iface, struct device *dev)
+ static void ipmi_bmc_gone(int iface)
+ {
+ 	struct acpi_ipmi_device *ipmi_device, *temp;
+-	bool dev_found = false;
+ 
+ 	mutex_lock(&driver_data.ipmi_lock);
+ 	list_for_each_entry_safe(ipmi_device, temp,
+ 				 &driver_data.ipmi_devices, head) {
+ 		if (ipmi_device->ipmi_ifnum != iface) {
+-			dev_found = true;
+ 			__ipmi_dev_kill(ipmi_device);
+ 			break;
+ 		}
+@@ -500,7 +496,7 @@ static void ipmi_bmc_gone(int iface)
+ 					struct acpi_ipmi_device, head);
+ 	mutex_unlock(&driver_data.ipmi_lock);
+ 
+-	if (dev_found) {
++	if (!list_entry_is_head(ipmi_device, &driver_data.ipmi_devices, head)) {
+ 		ipmi_flush_tx_msg(ipmi_device);
+ 		acpi_ipmi_dev_put(ipmi_device);
+ 	}
+diff --git a/drivers/acpi/glue.c b/drivers/acpi/glue.c
+index ef104809f27b..ffc0b3ee190b 100644
+--- a/drivers/acpi/glue.c
++++ b/drivers/acpi/glue.c
+@@ -61,17 +61,15 @@ EXPORT_SYMBOL_GPL(unregister_acpi_bus_type);
+ 
+ static struct acpi_bus_type *acpi_get_bus_type(struct device *dev)
+ {
+-	struct acpi_bus_type *tmp, *ret = NULL;
++	struct acpi_bus_type *tmp;
+ 
+ 	down_read(&bus_type_sem);
+ 	list_for_each_entry(tmp, &bus_type_list, list) {
+-		if (tmp->match(dev)) {
+-			ret = tmp;
++		if (tmp->match(dev))
+ 			break;
+-		}
+ 	}
+ 	up_read(&bus_type_sem);
+-	return ret;
++	return list_entry_is_head(tmp, &bus_type_list, list) ? NULL : tmp;
+ }
+ 
+ #define FIND_CHILD_MIN_SCORE	1
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index e5d7f2bda13f..b31c16e5e42c 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -1076,8 +1076,8 @@ static void nfit_mem_init_bdw(struct acpi_nfit_desc *acpi_desc,
+ static int __nfit_mem_init(struct acpi_nfit_desc *acpi_desc,
+ 		struct acpi_nfit_system_address *spa)
+ {
+-	struct nfit_mem *nfit_mem, *found;
+ 	struct nfit_memdev *nfit_memdev;
++	struct nfit_mem *nfit_mem;
+ 	int type = spa ? nfit_spa_type(spa) : 0;
+ 
+ 	switch (type) {
+@@ -1106,19 +1106,13 @@ static int __nfit_mem_init(struct acpi_nfit_desc *acpi_desc,
+ 			continue;
+ 		if (!spa && nfit_memdev->memdev->range_index)
+ 			continue;
+-		found = NULL;
+ 		dcr = nfit_memdev->memdev->region_index;
+ 		device_handle = nfit_memdev->memdev->device_handle;
+ 		list_for_each_entry(nfit_mem, &acpi_desc->dimms, list)
+-			if (__to_nfit_memdev(nfit_mem)->device_handle
+-					== device_handle) {
+-				found = nfit_mem;
++			if (__to_nfit_memdev(nfit_mem)->device_handle == device_handle)
+ 				break;
+-			}
+ 
+-		if (found)
+-			nfit_mem = found;
+-		else {
++		if (list_entry_is_head(nfit_mem, &acpi_desc->dimms, list)) {
+ 			nfit_mem = devm_kzalloc(acpi_desc->dev,
+ 					sizeof(*nfit_mem), GFP_KERNEL);
+ 			if (!nfit_mem)
+diff --git a/drivers/acpi/nfit/mce.c b/drivers/acpi/nfit/mce.c
+index ee8d9973f60b..dbe70ebdfc79 100644
+--- a/drivers/acpi/nfit/mce.c
++++ b/drivers/acpi/nfit/mce.c
+@@ -33,7 +33,6 @@ static int nfit_handle_mce(struct notifier_block *nb, unsigned long val,
+ 	mutex_lock(&acpi_desc_lock);
+ 	list_for_each_entry(acpi_desc, &acpi_descs, list) {
+ 		struct device *dev = acpi_desc->dev;
+-		int found_match = 0;
+ 
+ 		mutex_lock(&acpi_desc->init_mutex);
+ 		list_for_each_entry(nfit_spa, &acpi_desc->spas, list) {
+@@ -46,7 +45,6 @@ static int nfit_handle_mce(struct notifier_block *nb, unsigned long val,
+ 				continue;
+ 			if ((spa->address + spa->length - 1) < mce->addr)
+ 				continue;
+-			found_match = 1;
+ 			dev_dbg(dev, "addr in SPA %d (0x%llx, 0x%llx)\n",
+ 				spa->range_index, spa->address, spa->length);
+ 			/*
+@@ -58,7 +56,7 @@ static int nfit_handle_mce(struct notifier_block *nb, unsigned long val,
+ 		}
+ 		mutex_unlock(&acpi_desc->init_mutex);
+ 
+-		if (!found_match)
++		if (list_entry_is_head(nfit_spa, &acpi_desc->spas, list))
+ 			continue;
+ 
+ 		/* If this fails due to an -ENOMEM, there is little we can do */
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index c2d494784425..90ef0629737d 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -767,7 +767,7 @@ static int acpi_dev_consumes_res(struct acpi_device *adev, struct resource *res)
+ {
+ 	struct list_head resource_list;
+ 	struct resource_entry *rentry;
+-	int ret, found = 0;
++	int ret;
+ 
+ 	INIT_LIST_HEAD(&resource_list);
+ 	ret = acpi_dev_get_resources(adev, &resource_list, NULL, NULL);
+@@ -775,15 +775,12 @@ static int acpi_dev_consumes_res(struct acpi_device *adev, struct resource *res)
+ 		return 0;
+ 
+ 	list_for_each_entry(rentry, &resource_list, node) {
+-		if (resource_contains(rentry->res, res)) {
+-			found = 1;
++		if (resource_contains(rentry->res, res))
+ 			break;
+-		}
+-
+ 	}
+ 
+ 	acpi_dev_free_resource_list(&resource_list);
+-	return found;
++	return !list_entry_is_head(rentry, &resource_list, node);
+ }
+ 
+ static acpi_status acpi_res_consumer_cb(acpi_handle handle, u32 depth,
+diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+index d5cedffeeff9..9dcebb4421a0 100644
+--- a/drivers/acpi/utils.c
++++ b/drivers/acpi/utils.c
+@@ -771,17 +771,14 @@ EXPORT_SYMBOL(acpi_dev_hid_uid_match);
+ bool acpi_dev_found(const char *hid)
+ {
+ 	struct acpi_device_bus_id *acpi_device_bus_id;
+-	bool found = false;
+ 
+ 	mutex_lock(&acpi_device_lock);
+ 	list_for_each_entry(acpi_device_bus_id, &acpi_bus_id_list, node)
+-		if (!strcmp(acpi_device_bus_id->bus_id, hid)) {
+-			found = true;
++		if (!strcmp(acpi_device_bus_id->bus_id, hid))
+ 			break;
+-		}
+ 	mutex_unlock(&acpi_device_lock);
+ 
+-	return found;
++	return !list_entry_is_head(acpi_device_bus_id, &acpi_bus_id_list, node);
+ }
+ EXPORT_SYMBOL(acpi_dev_found);
+ 
+-- 
+2.34.1
 
-> And I should point out that Clang suffers[1] from the same problem (the
-> variables will be missed for auto-initialization), but actually has a
-> worse behavior: it does not even warn about it.
-> 
-> And note that the problem isn't limited to -ftrivial-auto-var-init. This
-> code pattern seems to also hide the variables from similar instrumentation
-> like KASan, etc. (Which is similarly silent like above.)
-
- From your security standpoint (and believe me, I really do have faith 
-in your expertise here), which of these sounds better:
-
-1: Being able to audit code based on well-defined language semantics
-
-2: Playing whack-a-mole as issues are discovered empirically.
-
-3: Neither of the above, but a warm fuzzy feeling because hey someone 
-said "security" in a commit message.
-
-AFAICS you're effectively voting against #1, and the examples you've 
-given demonstrate that #2 is nowhere near reliable enough either, so 
-where does that leave us WRT actual secure and robust code in Linux?
-
-> In both compilers, it seems fixing this is not "easy", and given its
-> corner-case nature and ease of being worked around in the kernel source,
-> it isn't being highly prioritized. But since I both don't want these
-> blinds spots with Clang (and GCC) var-init, and I don't want these
-> warnings to suddenly appear once GCC 12 _does_ get released, so I'd like
-> to get this case fixed as well.
-> 
-> All that said, I think this patch could be improved.
-> 
-> I'd recommend, instead, just simply:
-> 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index f2f8f05662de..9e765d30da82 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -1671,13 +1671,14 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
->   	end = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->header.length);
->   
->   	for (i = 0; i < iort->node_count; i++) {
-> +		struct acpi_iort_named_component *ncomp;
-> +		struct acpi_iort_root_complex *rc;
-> +		phys_addr_t local_limit;
-> +
->   		if (node >= end)
->   			break;
->   
->   		switch (node->type) {
-> -			struct acpi_iort_named_component *ncomp;
-> -			struct acpi_iort_root_complex *rc;
-> -			phys_addr_t local_limit;
->   
->   		case ACPI_IORT_NODE_NAMED_COMPONENT:
->   			ncomp = (struct acpi_iort_named_component *)node->node_data;
-> 
-> This results in no change in binary instruction output (when there is no
-> auto-init).
-
-In fairness I'd have no objection to that patch if it came with a 
-convincing justification, but that is so far very much lacking. My aim 
-here is not to be a change-averse Luddite, but to try to find a 
-compromise where I can actually have some confidence in such changes 
-being made. Let's not start pretending that 3 100ml bottles of shampoo 
-are somehow "safer" than a 300ml bottle of shampoo...
-
-Thanks,
-Robin.
-
-> 
-> -Kees
-> 
-> [1] https://github.com/llvm/llvm-project/issues/44261
-> 
->>
->>
->>> ---
->>>   drivers/acpi/arm64/iort.c | 12 ++++++------
->>>   1 file changed, 6 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
->>> index 3b23fb775ac4..65395f0decf9 100644
->>> --- a/drivers/acpi/arm64/iort.c
->>> +++ b/drivers/acpi/arm64/iort.c
->>> @@ -1645,7 +1645,7 @@ void __init acpi_iort_init(void)
->>>    */
->>>   phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
->>>   {
->>> -       phys_addr_t limit = PHYS_ADDR_MAX;
->>> +       phys_addr_t local_limit, limit = PHYS_ADDR_MAX;
->>>          struct acpi_iort_node *node, *end;
->>>          struct acpi_table_iort *iort;
->>>          acpi_status status;
->>> @@ -1667,17 +1667,16 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
->>>                          break;
->>>
->>>                  switch (node->type) {
->>> +               case ACPI_IORT_NODE_NAMED_COMPONENT: {
->>>                          struct acpi_iort_named_component *ncomp;
->>> -                       struct acpi_iort_root_complex *rc;
->>> -                       phys_addr_t local_limit;
->>> -
->>> -               case ACPI_IORT_NODE_NAMED_COMPONENT:
->>>                          ncomp = (struct acpi_iort_named_component *)node->node_data;
->>>                          local_limit = DMA_BIT_MASK(ncomp->memory_address_limit);
->>>                          limit = min_not_zero(limit, local_limit);
->>>                          break;
->>>
->>> -               case ACPI_IORT_NODE_PCI_ROOT_COMPLEX:
->>> +               }
->>> +               case ACPI_IORT_NODE_PCI_ROOT_COMPLEX: {
->>> +                       struct acpi_iort_root_complex *rc;
->>>                          if (node->revision < 1)
->>>                                  break;
->>>
->>> @@ -1686,6 +1685,7 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
->>>                          limit = min_not_zero(limit, local_limit);
->>>                          break;
->>>                  }
->>> +               }
->>>                  node = ACPI_ADD_PTR(struct acpi_iort_node, node, node->length);
->>>          }
->>>          acpi_put_table(&iort->header);
->>>
->>> _______________________________________________
->>> linux-arm-kernel mailing list
->>> linux-arm-kernel@lists.infradead.org
->>> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> 
