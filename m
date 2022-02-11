@@ -2,73 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1FFB4B19C0
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 00:47:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A8DC4B1A84
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 01:38:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345865AbiBJXrL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 10 Feb 2022 18:47:11 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51140 "EHLO
+        id S245125AbiBKAhV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 10 Feb 2022 19:37:21 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245029AbiBJXrK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Feb 2022 18:47:10 -0500
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 635395F77
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 15:47:10 -0800 (PST)
-Received: by mail-pf1-x435.google.com with SMTP id a39so12280530pfx.7
-        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 15:47:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=mHRsq6Kn87GMOD21+jYbugw/48vB/ViEdc86yH1U1RM=;
-        b=cE/HfRBcMAiI7aHiAvjjmt/SqsHa2f/rPVtV36FfX+RNibf+yKHCwYxGDTUtUIoQTN
-         n+ZC03sN7lJOgFIjtcfdqZc2niTOFjCQnJAiJcOp6p/xKpuK41BgjFbGKDbl7AUWmPk0
-         ur5mEAX2mLkDvRd+aBSDYM0PrWWRnuHFIpzh0=
+        with ESMTP id S1346404AbiBKAhV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 10 Feb 2022 19:37:21 -0500
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3990D5F7E
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 16:37:20 -0800 (PST)
+Received: by mail-io1-f70.google.com with SMTP id y4-20020a056602200400b006101b618529so5192241iod.19
+        for <linux-acpi@vger.kernel.org>; Thu, 10 Feb 2022 16:37:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=mHRsq6Kn87GMOD21+jYbugw/48vB/ViEdc86yH1U1RM=;
-        b=PZtkLBVgDO+3ESkVffZN4ThmxBuWlYC4mUGPgEOdB5nAqxIds2YGe4EGK7lIk7u7Wt
-         drYi03cOqgtqZY0aLsXoIwOvq3DrzB1OzJiMFM50TYs/u/5yhR0DOUqiuNME0hO4eNXY
-         DwyDQB/h7TBW7J/ZDv2xCoDxb/rHeR2U+VOFH1q+RDKMAC9X17bb4Nxs5RTBOSpNgB6O
-         7DrCzO1CjMl5XxxJphID5Bl5WEBokgrFk6wX9c6Ol9rFKPcG8qEiX2RUxvtVp6InEaz7
-         jdDSfJ9kve+Vjg0LZqYytCHf1IoVINbuyJtiX/hBltN8QCh6sJznY3ugHklb+ysYk4ZM
-         MuCg==
-X-Gm-Message-State: AOAM530qkqvodAcshwtBcQahJAX8tr/VjupsVfasddURMybjE/IXK0UL
-        WOJh1EssPUlAV/Fq/PYRXwo2Lw==
-X-Google-Smtp-Source: ABdhPJyGc6kYqWRf+VlsVeyHDKoWC+0J4l3+nlcgViM0mwZ71ZFfynFkb2DC+466DdIh8ebqBFav6w==
-X-Received: by 2002:a63:7019:: with SMTP id l25mr1843865pgc.251.1644536829788;
-        Thu, 10 Feb 2022 15:47:09 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id 69sm17784092pgc.61.2022.02.10.15.47.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Feb 2022 15:47:09 -0800 (PST)
-Date:   Thu, 10 Feb 2022 15:47:08 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Victor Erminpour <victor.erminpour@oracle.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        trivial@kernel.org
-Subject: Re: [PATCH v2] ACPI/IORT: Fix GCC 12 warning
-Message-ID: <202202101415.43750CEE@keescook>
-References: <1644518851-16847-1-git-send-email-victor.erminpour@oracle.com>
- <CAMj1kXEbGWs74M2CZSm6TWpD11mReFsk8z-UUqJt6b6vDCvAEQ@mail.gmail.com>
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=qKOR0YTQopKhjgaydg7pJg6t8RNb5M2L3oCxp86sxFs=;
+        b=i7lwhYXAEUGa+luJ7rhJT/eTokrtCRMYJhHUg/MKDBsgp98VDx5cRP83FbptFWxQw4
+         jgnP7sX6xybyEeC6E96sYXRHTQhs0QAB/CVc7X1gSTPOrx6SO7rOtY2XDcgvA0SdqjNJ
+         jDQ6XbsW5jzwyLZ8riUNiJh775iFGiiE4PlXe/sshqdZnABosGK7jc1RAT7UoqNEzNGk
+         9x9tnf++95sEr2Eh5ON+96o4bQQ64g+Ed9LDtUQ5WLJWChZ6eoW0QTe0nBYGjZr8A/qc
+         uckCv+1WYDPC+wqyrqt4Oedc0hZizJOn3Y5hZd5/JnykI1AyCQ4BC0Ckqz2lawpQuxbz
+         EwEQ==
+X-Gm-Message-State: AOAM531EsKAcNx041pxaFYR37n9qdo4eypqYi4ePb3Detmfu9TmemUpi
+        ZhljUpTDUG5NV6l3KxSHE/Zz8LBHdndzGoQZA+52RURK8dv1
+X-Google-Smtp-Source: ABdhPJxwlS+TIQvVCR4ovg6MqayjzHSbXF78sTlhdePS73FpubtTibEgU62JeXbKJyyBP4WsavUFURRggUkVBGZvA1ibmkjYrRzT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXEbGWs74M2CZSm6TWpD11mReFsk8z-UUqJt6b6vDCvAEQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Received: by 2002:a92:bf01:: with SMTP id z1mr5044624ilh.18.1644539839598;
+ Thu, 10 Feb 2022 16:37:19 -0800 (PST)
+Date:   Thu, 10 Feb 2022 16:37:19 -0800
+In-Reply-To: <0000000000006e988105d72fbe3f@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000f5549005d7b3440a@google.com>
+Subject: Re: [syzbot] general protection fault in i2c_setup_smbus_alert
+From:   syzbot <syzbot+0591ccf54ee05344e4eb@syzkaller.appspotmail.com>
+To:     andriy.shevchenko@linux.intel.com, djrscally@gmail.com,
+        gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com,
+        johan@kernel.org, linux-acpi@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rafael@kernel.org, sakari.ailus@linux.intel.com,
+        syzkaller-bugs@googlegroups.com, wsa@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,140 +57,103 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 10, 2022 at 08:41:51PM +0100, Ard Biesheuvel wrote:
-> On Thu, 10 Feb 2022 at 19:48, Victor Erminpour
-> <victor.erminpour@oracle.com> wrote:
-> >
-> > When building with automatic stack variable initialization, GCC 12
-> > complains about variables defined outside of switch case statements.
-> > Move the variable into the case that uses it, which silences the warning:
-> >
-> > ./drivers/acpi/arm64/iort.c:1670:59: error: statement will never be executed [-Werror=switch-unreachable]
-> >   1670 |                         struct acpi_iort_named_component *ncomp;
-> >        |                                                           ^~~~~
-> >
-> > Signed-off-by: Victor Erminpour <victor.erminpour@oracle.com>
-> 
-> Please cc people that commented on your v1 when you send a v2.
-> 
-> Still NAK, for the same reasons.
+syzbot has found a reproducer for the following issue on:
 
-Let me see if I can talk you out of this. ;)
+HEAD commit:    ef6b35306dd8 Add linux-next specific files for 20220204
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=15e40d84700000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e0431e0b00810b4f
+dashboard link: https://syzkaller.appspot.com/bug?extid=0591ccf54ee05344e4eb
+compiler:       gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1105f472700000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16492aa4700000
 
-So, on the face of it, I agree with you: this is a compiler bug. However,
-it's still worth fixing. Just because it's valid C isn't a good enough
-reason to leave it as-is: we continue to minimize the subset of the
-C language the kernel uses if it helps us get the most out of existing
-compiler features. We've eliminated all kinds of other "valid C" from the
-kernel because it improves robustness, security, etc. This is certainly
-nothing like removing VLAs or implicit fallthrough, but given that this
-is, I think, the only remaining case of it (I removed all the others a
-while ago when I had the same issues with the GCC plugins), I'd like to
-get it fixed.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0591ccf54ee05344e4eb@syzkaller.appspotmail.com
 
-And I should point out that Clang suffers[1] from the same problem (the
-variables will be missed for auto-initialization), but actually has a
-worse behavior: it does not even warn about it.
+usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 1-1: Product: syz
+usb 1-1: Manufacturer: syz
+usb 1-1: SerialNumber: syz
+usb 1-1: config 0 descriptor??
+general protection fault, probably for non-canonical address 0xdffffc000000008a: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000450-0x0000000000000457]
+CPU: 1 PID: 35 Comm: kworker/1:1 Not tainted 5.17.0-rc2-next-20220204-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:dev_fwnode drivers/base/property.c:22 [inline]
+RIP: 0010:device_property_match_string+0x2c/0xa0 drivers/base/property.c:224
+Code: 49 89 d5 41 54 49 89 f4 55 53 48 89 fb e8 bc 01 fa fc 48 8d bb 50 04 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 75 5a 48 8b ab 50 04 00 00 48 85 ed 74 22 e8 8d 01 fa
+RSP: 0018:ffffc900010befd8 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 000000000000008a RSI: ffffffff847ea734 RDI: 0000000000000450
+RBP: ffff8880127ec038 R08: 0000000000000000 R09: ffff8880127ec1a3
+R10: ffffffff85ea3a99 R11: 0000000000000000 R12: ffffffff8a658720
+R13: ffffffff8a6586e0 R14: ffff8880127ec660 R15: ffff8880127ec664
+FS:  0000000000000000(0000) GS:ffff8880b9d00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffd0b1f0910 CR3: 000000007f0f9000 CR4: 00000000003506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ i2c_setup_smbus_alert+0x9c/0x1a0 drivers/i2c/i2c-core-smbus.c:710
+ i2c_register_adapter+0x32f/0x1150 drivers/i2c/i2c-core-base.c:1482
+ i2c_add_adapter+0x11a/0x1c0 drivers/i2c/i2c-core-base.c:1587
+ osif_probe+0x2ae/0x500 drivers/i2c/busses/i2c-robotfuzz-osif.c:164
+ usb_probe_interface+0x315/0x7f0 drivers/usb/core/driver.c:396
+ call_driver_probe drivers/base/dd.c:517 [inline]
+ really_probe+0x245/0xcc0 drivers/base/dd.c:596
+ __driver_probe_device+0x338/0x4d0 drivers/base/dd.c:752
+ driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:782
+ __device_attach_driver+0x20b/0x2f0 drivers/base/dd.c:899
+ bus_for_each_drv+0x15f/0x1e0 drivers/base/bus.c:427
+ __device_attach+0x228/0x4a0 drivers/base/dd.c:970
+ bus_probe_device+0x1e4/0x290 drivers/base/bus.c:487
+ device_add+0xc17/0x1ee0 drivers/base/core.c:3405
+ usb_set_configuration+0x101e/0x1900 drivers/usb/core/message.c:2170
+ usb_generic_driver_probe+0xba/0x100 drivers/usb/core/generic.c:238
+ usb_probe_device+0xd9/0x2c0 drivers/usb/core/driver.c:293
+ call_driver_probe drivers/base/dd.c:517 [inline]
+ really_probe+0x245/0xcc0 drivers/base/dd.c:596
+ __driver_probe_device+0x338/0x4d0 drivers/base/dd.c:752
+ driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:782
+ __device_attach_driver+0x20b/0x2f0 drivers/base/dd.c:899
+ bus_for_each_drv+0x15f/0x1e0 drivers/base/bus.c:427
+ __device_attach+0x228/0x4a0 drivers/base/dd.c:970
+ bus_probe_device+0x1e4/0x290 drivers/base/bus.c:487
+ device_add+0xc17/0x1ee0 drivers/base/core.c:3405
+ usb_new_device.cold+0x63f/0x108e drivers/usb/core/hub.c:2566
+ hub_port_connect drivers/usb/core/hub.c:5362 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5506 [inline]
+ port_event drivers/usb/core/hub.c:5664 [inline]
+ hub_event+0x25c6/0x4680 drivers/usb/core/hub.c:5746
+ process_one_work+0x996/0x1610 kernel/workqueue.c:2289
+ worker_thread+0x665/0x1080 kernel/workqueue.c:2436
+ kthread+0x2e9/0x3a0 kernel/kthread.c:377
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
+ </TASK>
+Modules linked in:
+----------------
+Code disassembly (best guess):
+   0:	49 89 d5             	mov    %rdx,%r13
+   3:	41 54                	push   %r12
+   5:	49 89 f4             	mov    %rsi,%r12
+   8:	55                   	push   %rbp
+   9:	53                   	push   %rbx
+   a:	48 89 fb             	mov    %rdi,%rbx
+   d:	e8 bc 01 fa fc       	callq  0xfcfa01ce
+  12:	48 8d bb 50 04 00 00 	lea    0x450(%rbx),%rdi
+  19:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  20:	fc ff df
+  23:	48 89 fa             	mov    %rdi,%rdx
+  26:	48 c1 ea 03          	shr    $0x3,%rdx
+* 2a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1) <-- trapping instruction
+  2e:	75 5a                	jne    0x8a
+  30:	48 8b ab 50 04 00 00 	mov    0x450(%rbx),%rbp
+  37:	48 85 ed             	test   %rbp,%rbp
+  3a:	74 22                	je     0x5e
+  3c:	e8                   	.byte 0xe8
+  3d:	8d 01                	lea    (%rcx),%eax
+  3f:	fa                   	cli
 
-And note that the problem isn't limited to -ftrivial-auto-var-init. This
-code pattern seems to also hide the variables from similar instrumentation
-like KASan, etc. (Which is similarly silent like above.)
-
-In both compilers, it seems fixing this is not "easy", and given its
-corner-case nature and ease of being worked around in the kernel source,
-it isn't being highly prioritized. But since I both don't want these
-blinds spots with Clang (and GCC) var-init, and I don't want these
-warnings to suddenly appear once GCC 12 _does_ get released, so I'd like
-to get this case fixed as well.
-
-All that said, I think this patch could be improved.
-
-I'd recommend, instead, just simply:
-
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index f2f8f05662de..9e765d30da82 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1671,13 +1671,14 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
- 	end = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->header.length);
- 
- 	for (i = 0; i < iort->node_count; i++) {
-+		struct acpi_iort_named_component *ncomp;
-+		struct acpi_iort_root_complex *rc;
-+		phys_addr_t local_limit;
-+
- 		if (node >= end)
- 			break;
- 
- 		switch (node->type) {
--			struct acpi_iort_named_component *ncomp;
--			struct acpi_iort_root_complex *rc;
--			phys_addr_t local_limit;
- 
- 		case ACPI_IORT_NODE_NAMED_COMPONENT:
- 			ncomp = (struct acpi_iort_named_component *)node->node_data;
-
-This results in no change in binary instruction output (when there is no
-auto-init).
-
--Kees
-
-[1] https://github.com/llvm/llvm-project/issues/44261
-
-> 
-> 
-> > ---
-> >  drivers/acpi/arm64/iort.c | 12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> > index 3b23fb775ac4..65395f0decf9 100644
-> > --- a/drivers/acpi/arm64/iort.c
-> > +++ b/drivers/acpi/arm64/iort.c
-> > @@ -1645,7 +1645,7 @@ void __init acpi_iort_init(void)
-> >   */
-> >  phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
-> >  {
-> > -       phys_addr_t limit = PHYS_ADDR_MAX;
-> > +       phys_addr_t local_limit, limit = PHYS_ADDR_MAX;
-> >         struct acpi_iort_node *node, *end;
-> >         struct acpi_table_iort *iort;
-> >         acpi_status status;
-> > @@ -1667,17 +1667,16 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
-> >                         break;
-> >
-> >                 switch (node->type) {
-> > +               case ACPI_IORT_NODE_NAMED_COMPONENT: {
-> >                         struct acpi_iort_named_component *ncomp;
-> > -                       struct acpi_iort_root_complex *rc;
-> > -                       phys_addr_t local_limit;
-> > -
-> > -               case ACPI_IORT_NODE_NAMED_COMPONENT:
-> >                         ncomp = (struct acpi_iort_named_component *)node->node_data;
-> >                         local_limit = DMA_BIT_MASK(ncomp->memory_address_limit);
-> >                         limit = min_not_zero(limit, local_limit);
-> >                         break;
-> >
-> > -               case ACPI_IORT_NODE_PCI_ROOT_COMPLEX:
-> > +               }
-> > +               case ACPI_IORT_NODE_PCI_ROOT_COMPLEX: {
-> > +                       struct acpi_iort_root_complex *rc;
-> >                         if (node->revision < 1)
-> >                                 break;
-> >
-> > @@ -1686,6 +1685,7 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
-> >                         limit = min_not_zero(limit, local_limit);
-> >                         break;
-> >                 }
-> > +               }
-> >                 node = ACPI_ADD_PTR(struct acpi_iort_node, node, node->length);
-> >         }
-> >         acpi_put_table(&iort->header);
-> >
-> > _______________________________________________
-> > linux-arm-kernel mailing list
-> > linux-arm-kernel@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
--- 
-Kees Cook
