@@ -2,175 +2,225 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34EE34B208D
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 09:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 331EE4B2335
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Feb 2022 11:36:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233650AbiBKItr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 11 Feb 2022 03:49:47 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39486 "EHLO
+        id S231754AbiBKKel (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 11 Feb 2022 05:34:41 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbiBKItr (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Feb 2022 03:49:47 -0500
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam08on2052.outbound.protection.outlook.com [40.107.101.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C5AE67;
-        Fri, 11 Feb 2022 00:49:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DlaOYhyCVxt2HilbiF+wbMi6cXqdhM8wJTQ6H4EKzCCMfyd1wUlsmqXTwv4Gb6NbZxWFf34tPs/mcPhaaQChm+lcIrknG4wcs2Mjhxt6sFf8a5wyRIurNvXa0vBVJw9QfYPlDoLxZ6/ZnssijY4ctqrNUo5rZe94MobjZDE4ZiAvnspQGNmPQHSO+qoQIOSWSiuKr96n/2wxiI2jd9ESfiEX4/3N6O+QjMdl5P7UVecFR4j0jNzmJcbxEIKMKaHVz0PaDeP4mxeyrjEkl1MeAW/hl9/nKrOXn8XZVuWCOE+HjjBdp9kEhTlXAAQphA5ocRw/G7dNGdz9lpzmfs8CAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qlGoXbpus9ZgJ23NuWtZXgHxYySRN9pLAQgvDUCx9c0=;
- b=GA5Un/gURKJAW++dDh7DL1Ia6XxVSVveu6nGeqgadBwyMaqhBssJTvWkEgiEIcxYREBavhm34Moi/S8P8oTb6nN6N22bYhKhZ3M1qSqd6GEqB87yLcmOGWzqIgJ110EnQF+TQzEMkqNEuyi+MprbBVn98ElaiR1mff+sNWHRF9+qUi8dr8tW86n7LNZAOYsqurJC9R7YJpmGidxAfnnQ2juc/hsz8htUSs/IvUgysAOnV3WCoMfrxHDSSvSYEVhi+poDQGpKO2uYkILcVLAdEOgLsKtf7EYRyh3mr5xd2HZgaUL6XiUEygWd3Pu/4ggchFqMYkxKu9M7bj3WImocwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qlGoXbpus9ZgJ23NuWtZXgHxYySRN9pLAQgvDUCx9c0=;
- b=ujl58IJhKlALuUYaG0xzlt3oxPjrlfhbOri2WDI7gDk9Ye2JSmYNgB6tt/raksjgKZRWiQdpwJ/kz/UhmKAjXeSEZusRg7UL2UFQLUpXKEuwEgMFcqjxDjuVIBhEHR4NbpPMGQkRKW88DoYEtNL5tk5MAtxxs3V7ws6+L7KeekNdro0VoGiHXl0uzd5Q6ni80/T9NTsDr615YU1dgpVn/fUnsSNMT2byFxGRS14WNN0I5Gph0idAweyozaiN6tXL8dTDuHv4H2pNOEa9lU+VwKLvK+fzx3cIiB6tF3kNh/hhLEukJjWXm+sdNf6kN/pl04b0bzk4tpM/b5mw5U9imw==
-Received: from DM5PR12MB1850.namprd12.prod.outlook.com (2603:10b6:3:108::23)
- by CY4PR1201MB2468.namprd12.prod.outlook.com (2603:10b6:903:d7::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.17; Fri, 11 Feb
- 2022 08:49:44 +0000
-Received: from DM5PR12MB1850.namprd12.prod.outlook.com
- ([fe80::94d8:5850:e33d:b133]) by DM5PR12MB1850.namprd12.prod.outlook.com
- ([fe80::94d8:5850:e33d:b133%4]) with mapi id 15.20.4951.021; Fri, 11 Feb 2022
- 08:49:44 +0000
-From:   Akhil R <akhilrajeev@nvidia.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        syzbot <syzbot+0591ccf54ee05344e4eb@syzkaller.appspotmail.com>
-CC:     "djrscally@gmail.com" <djrscally@gmail.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
-        "johan@kernel.org" <johan@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "sakari.ailus@linux.intel.com" <sakari.ailus@linux.intel.com>,
-        "syzkaller-bugs@googlegroups.com" <syzkaller-bugs@googlegroups.com>,
-        "wsa@kernel.org" <wsa@kernel.org>
-Subject: RE: [syzbot] general protection fault in i2c_setup_smbus_alert
-Thread-Topic: [syzbot] general protection fault in i2c_setup_smbus_alert
-Thread-Index: AQHYHvrABmtaYMoQ80WZ9sW9XVXmHKyOB6QAgAABooA=
-Date:   Fri, 11 Feb 2022 08:49:44 +0000
-Message-ID: <DM5PR12MB185081963130725ABE6F38F1C0309@DM5PR12MB1850.namprd12.prod.outlook.com>
-References: <0000000000006e988105d72fbe3f@google.com>
- <0000000000001a5dc005d7b5fab1@google.com>
- <YgYgnqnBqRe/pRoo@smile.fi.intel.com>
-In-Reply-To: <YgYgnqnBqRe/pRoo@smile.fi.intel.com>
-Accept-Language: en-IN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 47b3a3ae-7719-4c6c-6cec-08d9ed3b7390
-x-ms-traffictypediagnostic: CY4PR1201MB2468:EE_
-x-microsoft-antispam-prvs: <CY4PR1201MB2468BEAA72F76BA17FF2C4D9C0309@CY4PR1201MB2468.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1443;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: /MKkHR3x/dRUl2RBsowrsf4zMS7oTQnCgHWM+Me5Yzvdbj9wWtWQtYzE+SCUDlyt+5zKHEOl0C557juo/eyh0OUGSQ+DqrTk75tUC8qn94sSzxhm3/VYgPZeYT7nk9UfmSK54tySt4Xn8dsSlhLK9K4wI2eoC6iTbfQ7cTlVsCU6DCTSNtf024iEbO8VLOrVaSySSm4Lm1M/Lyfg9Pl19XKBSVpLkVuTINJWKmCGqmyeP761klTMGIBOSde38e346J7Uiyg3MrRuQTTAAgyE8DEKDXDoMU0auytpdGIThS3AyhmzM7+FD6nShLGVGFatRPFnXtGLuPGKui88XRm4K7ARJLHJJaYOrIuWQBSEinHgqkDVRBDPKZIRckKpvokbEj+/DPi3oDDeEHYZEFWoPAkZsqEshux38GFGfb3Jx29Q75RgzgjQkw63ujfe/2U12diOIqX78axGe14ODQ2ZDF6nXEFdq410vRccxEm2XsdzBAfrs+NtNYyyCfx+g19k+fK/mcd2IJ3KYU2n1D6WsrbAkmjlT+g9UHWHA0UHHwtf6keWtjTiVXHg8oOKqjQwpNjwCr4wKjPod0uGgQKMjGNDCU3mRH9rvgeRYitgCLSvLxEzcO6+wYOPgZQy228eBTUxk3IBeUayn2vWVYUI5+/i2WGcpKT8uk0COgLAgSNU+tFejUgzGjMd8oVM8IwfEI0RNHNWd9OW8Kmh9MYjAob2fEylhXpgshVdrgkGPoeCs3Ce87HiWGWhfooaFDJccCD4mvhwkGkuCMu5WlW/xNTVo3hZfQQazbUjutkHcqEzoyutygSrVd95Eys2IV5muST2UMwvTsYWAUkCWj/Vc7yJOZ70dwI3TZh4GAK63ig=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR12MB1850.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(55016003)(66946007)(33656002)(508600001)(54906003)(110136005)(66446008)(38070700005)(7696005)(6506007)(76116006)(71200400001)(8676002)(5660300002)(9686003)(64756008)(66556008)(316002)(8936002)(66476007)(86362001)(26005)(52536014)(7416002)(2906002)(38100700002)(186003)(4326008)(122000001)(966005)(99710200001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ftcOKgF4UWgc5iYU4F3AiatXTUR3moRIuw5MRCTXdSsZXcFeXNSxQ4n4It82?=
- =?us-ascii?Q?3hw3Pe+fNvEEJFAYDtNHIrhmpeS7qRfu6RN1zGvUjXJqB6v1rEP/Bd/zpIPt?=
- =?us-ascii?Q?BDAvJII68IxMMKDlovMhhoJNH3ZVnzPrDiNu3XkX8BBGUnfRjwICrGBltT/r?=
- =?us-ascii?Q?JfH3O1sKi+13vwW4D1UKDX06bx+YHHVnUzlBSvQSZ+NCnyGBMaLE05kHCaPB?=
- =?us-ascii?Q?JZPiiPWWvp3j6IMtQhlVj7fX13fSYcCZlyRMdy9EEtsKm7hGOrOx5CI96X2j?=
- =?us-ascii?Q?xfPrTO2nDjFD0ov4H3NQcyzdTMtcG4pg9qRpwrqdtranvP130sLR68cgiP7A?=
- =?us-ascii?Q?XK6DxruvvJ/+t1TtDlPco+Qhd+2Xi329SxaDHnnvgPJXoZDW/MnHayj5hF0I?=
- =?us-ascii?Q?JsjDbDrXPRUJnEtW3rtkG7ZKXk1NwIgHpsNjAWxOuGDiUXpRQhZh8KwtHIWn?=
- =?us-ascii?Q?nCqAB5K4e+oiivbtPteRmAi9dFmTMO/GXuOLd2GGX0d0xJO8LGYxky62t0hG?=
- =?us-ascii?Q?Wv5UDY/+2EqQFNDGIDbjczJ+BVetwipLkkg3hde4ME2qZz3diVgQg9xjbfvQ?=
- =?us-ascii?Q?KiHCaxsU2xdd32SC/NBIKNcQRc8bRJSLN9dq2bbATHMxQbTF8wOOJbPubeQ4?=
- =?us-ascii?Q?UKex3AeDFMvYD/kJGD88x4IHkWsMfgtg+A+2MYq9SWuuVoL0xbxwG13vgnZz?=
- =?us-ascii?Q?WVTAER91pBEEUjZ+QVVb/4nuRhaW9jLoTTSXv6tgyH7WhPnfz2t3l0npiBO4?=
- =?us-ascii?Q?u7xzQGVLtZPq5UbkNwKZ6yNCTE9eMkvwxM8bwsohZSEjjri77iRXtQsZsr9U?=
- =?us-ascii?Q?AWW+OqZZDbK7/NS4nWXMdu1mpil4mW46P48zqXv6CxmcyZjCrDqntK/Lha0x?=
- =?us-ascii?Q?O+b9do7anAoZ8RfQRjFSK2wlHxN2bAodxZWRDC9rpcCOsTZ4vymvkfMLT/G3?=
- =?us-ascii?Q?4I3+DvCbwojeI8nfcOkUw1vpBnQAZgaG/H7YVjAcBxqTLAAFMCRNsz8QGnV1?=
- =?us-ascii?Q?f02GkwiWDeqMBgSILJ12amU0YKTZSWjWFvYAedixGgBF/796RDS0bD3NschM?=
- =?us-ascii?Q?ES1krGGyHqC0Hb3ofQ2shiZkM27Iv+OUwVO5Gffh7Q8Q/dKgyGlWUkA8m2gI?=
- =?us-ascii?Q?TfXlJZNtO6HHjucxctdCNjqcxvpU2UeOFb0f5oyUuG4WOQJOcxRx9qmTzcS+?=
- =?us-ascii?Q?Bhu2xNFAn2DckXmmauWRa4RDCs2r2RjK893Ax+5JZ6Lha+pIWkFdkZF9ESGE?=
- =?us-ascii?Q?12ZVuB9Ocf4MC8lPbuVG+SoirnK0iO6Ta1pVqVkTwbk24tRWvy8gwLJMcIbW?=
- =?us-ascii?Q?DUn+PK9advR0mv+wjXISMJlv5apBRymzrIduns0/uGBZ7obqygjPzMbZu2cc?=
- =?us-ascii?Q?gM7A8b54Kdb4CvNlniqpNQSSUDZOf00ERKDxZhi1LIXCrgUV4Rn5Swh48bXa?=
- =?us-ascii?Q?j6naCcc54vK7AqA0g/XufqEnj+rvhPyI20/AbqCB0mDtq4JHgKxhRv1BkfEq?=
- =?us-ascii?Q?xfK2fBlZ6z6S6Ucfog1DEjCgpBK7XBeBp1MY6bdTXVqybL4s0I1HniUeY71b?=
- =?us-ascii?Q?tgpuF+KRnYACXpLEFzy9fbV5R6KMXJ3x23vD/qEd6dwd3ZbODTlHbM8WxvCi?=
- =?us-ascii?Q?gx+tTQcYNQgJV8AUtJH6B9M=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S239367AbiBKKef (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 11 Feb 2022 05:34:35 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 05528EA9;
+        Fri, 11 Feb 2022 02:34:34 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE83B106F;
+        Fri, 11 Feb 2022 02:34:33 -0800 (PST)
+Received: from [10.57.70.89] (unknown [10.57.70.89])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F18CB3F73B;
+        Fri, 11 Feb 2022 02:34:31 -0800 (PST)
+Message-ID: <3740c93e-9fde-f89f-9752-26ffff3ea274@arm.com>
+Date:   Fri, 11 Feb 2022 10:34:09 +0000
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR12MB1850.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47b3a3ae-7719-4c6c-6cec-08d9ed3b7390
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Feb 2022 08:49:44.6240
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WOrLI/RYEMAKM1CQGesqWw0dtQEPBm+dNO7fXDlDtHVBPOcKylajdEEsJclaStNJhq5LD9lDtp6+NxP13ZLACQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1201MB2468
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: [PATCH v2] ACPI/IORT: Fix GCC 12 warning
+Content-Language: en-GB
+To:     Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>
+Cc:     Victor Erminpour <victor.erminpour@oracle.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        trivial@kernel.org
+References: <1644518851-16847-1-git-send-email-victor.erminpour@oracle.com>
+ <CAMj1kXEbGWs74M2CZSm6TWpD11mReFsk8z-UUqJt6b6vDCvAEQ@mail.gmail.com>
+ <202202101415.43750CEE@keescook>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <202202101415.43750CEE@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> On Thu, Feb 10, 2022 at 07:51:08PM -0800, syzbot wrote:
-> > syzbot has bisected this issue to:
-> >
-> > commit a263a84088f689bf0c1552a510b25d0bcc45fcae
-> > Author: Akhil R <akhilrajeev@nvidia.com>
-> > Date:   Fri Jan 28 11:44:27 2022 +0000
-> >
-> >     i2c: smbus: Use device_*() functions instead of of_*()
-> >
-> > bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D156c8174=
-700000
-> > start commit:   ef6b35306dd8 Add linux-next specific files for 20220204
-> > git tree:       linux-next
-> > final oops:     https://syzkaller.appspot.com/x/report.txt?x=3D176c8174=
-700000
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D136c8174700=
-000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3De0431e0b008=
-10b4f
-> > dashboard link:
-> https://syzkaller.appspot.com/bug?extid=3D0591ccf54ee05344e4eb
-> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D1105f4727=
-00000
-> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D16492aa4700=
-000
-> >
-> > Reported-by: syzbot+0591ccf54ee05344e4eb@syzkaller.appspotmail.com
-> > Fixes: a263a84088f6 ("i2c: smbus: Use device_*() functions instead of o=
-f_*()")
-> >
-> > For information about bisection process see: https://goo.gl/tpsmEJ#bise=
-ction
->=20
-> I was faster :-)
->=20
-> https://lore.kernel.org/all/20220204155920.13364-1-
-> andriy.shevchenko@linux.intel.com/
->=20
-Thanks. I was looking for the details on the issue and found that you had
-submitted the fixes. :-)
-https://lore.kernel.org/lkml/20220204151726.8924-1-andriy.shevchenko@linux.=
-intel.com/T/
+Hi Kees,
+
+On 2022-02-10 23:47, Kees Cook wrote:
+> On Thu, Feb 10, 2022 at 08:41:51PM +0100, Ard Biesheuvel wrote:
+>> On Thu, 10 Feb 2022 at 19:48, Victor Erminpour
+>> <victor.erminpour@oracle.com> wrote:
+>>>
+>>> When building with automatic stack variable initialization, GCC 12
+>>> complains about variables defined outside of switch case statements.
+>>> Move the variable into the case that uses it, which silences the warning:
+>>>
+>>> ./drivers/acpi/arm64/iort.c:1670:59: error: statement will never be executed [-Werror=switch-unreachable]
+>>>    1670 |                         struct acpi_iort_named_component *ncomp;
+>>>         |                                                           ^~~~~
+>>>
+>>> Signed-off-by: Victor Erminpour <victor.erminpour@oracle.com>
+>>
+>> Please cc people that commented on your v1 when you send a v2.
+>>
+>> Still NAK, for the same reasons.
+> 
+> Let me see if I can talk you out of this. ;)
+> 
+> So, on the face of it, I agree with you: this is a compiler bug. However,
+> it's still worth fixing. Just because it's valid C isn't a good enough
+> reason to leave it as-is: we continue to minimize the subset of the
+> C language the kernel uses if it helps us get the most out of existing
+> compiler features. We've eliminated all kinds of other "valid C" from the
+> kernel because it improves robustness, security, etc. This is certainly
+> nothing like removing VLAs or implicit fallthrough, but given that this
+> is, I think, the only remaining case of it (I removed all the others a
+> while ago when I had the same issues with the GCC plugins), I'd like to
+> get it fixed.
+
+It concerns me if minimising the subset of the C language that the 
+kernel uses is achieved by converting more of the kernel to a 
+not-quite-C language that is not formally specified anywhere, by 
+prematurely adopting newly-invented compiler options that clearly don't 
+work properly (the GCC warning message quoted above may as well be 
+"error: giraffes are not purple" for all the sense it makes.)
+
+> And I should point out that Clang suffers[1] from the same problem (the
+> variables will be missed for auto-initialization), but actually has a
+> worse behavior: it does not even warn about it.
+> 
+> And note that the problem isn't limited to -ftrivial-auto-var-init. This
+> code pattern seems to also hide the variables from similar instrumentation
+> like KASan, etc. (Which is similarly silent like above.)
+
+ From your security standpoint (and believe me, I really do have faith 
+in your expertise here), which of these sounds better:
+
+1: Being able to audit code based on well-defined language semantics
+
+2: Playing whack-a-mole as issues are discovered empirically.
+
+3: Neither of the above, but a warm fuzzy feeling because hey someone 
+said "security" in a commit message.
+
+AFAICS you're effectively voting against #1, and the examples you've 
+given demonstrate that #2 is nowhere near reliable enough either, so 
+where does that leave us WRT actual secure and robust code in Linux?
+
+> In both compilers, it seems fixing this is not "easy", and given its
+> corner-case nature and ease of being worked around in the kernel source,
+> it isn't being highly prioritized. But since I both don't want these
+> blinds spots with Clang (and GCC) var-init, and I don't want these
+> warnings to suddenly appear once GCC 12 _does_ get released, so I'd like
+> to get this case fixed as well.
+> 
+> All that said, I think this patch could be improved.
+> 
+> I'd recommend, instead, just simply:
+> 
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index f2f8f05662de..9e765d30da82 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -1671,13 +1671,14 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
+>   	end = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->header.length);
+>   
+>   	for (i = 0; i < iort->node_count; i++) {
+> +		struct acpi_iort_named_component *ncomp;
+> +		struct acpi_iort_root_complex *rc;
+> +		phys_addr_t local_limit;
+> +
+>   		if (node >= end)
+>   			break;
+>   
+>   		switch (node->type) {
+> -			struct acpi_iort_named_component *ncomp;
+> -			struct acpi_iort_root_complex *rc;
+> -			phys_addr_t local_limit;
+>   
+>   		case ACPI_IORT_NODE_NAMED_COMPONENT:
+>   			ncomp = (struct acpi_iort_named_component *)node->node_data;
+> 
+> This results in no change in binary instruction output (when there is no
+> auto-init).
+
+In fairness I'd have no objection to that patch if it came with a 
+convincing justification, but that is so far very much lacking. My aim 
+here is not to be a change-averse Luddite, but to try to find a 
+compromise where I can actually have some confidence in such changes 
+being made. Let's not start pretending that 3 100ml bottles of shampoo 
+are somehow "safer" than a 300ml bottle of shampoo...
 
 Thanks,
-Akhil
+Robin.
+
+> 
+> -Kees
+> 
+> [1] https://github.com/llvm/llvm-project/issues/44261
+> 
+>>
+>>
+>>> ---
+>>>   drivers/acpi/arm64/iort.c | 12 ++++++------
+>>>   1 file changed, 6 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+>>> index 3b23fb775ac4..65395f0decf9 100644
+>>> --- a/drivers/acpi/arm64/iort.c
+>>> +++ b/drivers/acpi/arm64/iort.c
+>>> @@ -1645,7 +1645,7 @@ void __init acpi_iort_init(void)
+>>>    */
+>>>   phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
+>>>   {
+>>> -       phys_addr_t limit = PHYS_ADDR_MAX;
+>>> +       phys_addr_t local_limit, limit = PHYS_ADDR_MAX;
+>>>          struct acpi_iort_node *node, *end;
+>>>          struct acpi_table_iort *iort;
+>>>          acpi_status status;
+>>> @@ -1667,17 +1667,16 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
+>>>                          break;
+>>>
+>>>                  switch (node->type) {
+>>> +               case ACPI_IORT_NODE_NAMED_COMPONENT: {
+>>>                          struct acpi_iort_named_component *ncomp;
+>>> -                       struct acpi_iort_root_complex *rc;
+>>> -                       phys_addr_t local_limit;
+>>> -
+>>> -               case ACPI_IORT_NODE_NAMED_COMPONENT:
+>>>                          ncomp = (struct acpi_iort_named_component *)node->node_data;
+>>>                          local_limit = DMA_BIT_MASK(ncomp->memory_address_limit);
+>>>                          limit = min_not_zero(limit, local_limit);
+>>>                          break;
+>>>
+>>> -               case ACPI_IORT_NODE_PCI_ROOT_COMPLEX:
+>>> +               }
+>>> +               case ACPI_IORT_NODE_PCI_ROOT_COMPLEX: {
+>>> +                       struct acpi_iort_root_complex *rc;
+>>>                          if (node->revision < 1)
+>>>                                  break;
+>>>
+>>> @@ -1686,6 +1685,7 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
+>>>                          limit = min_not_zero(limit, local_limit);
+>>>                          break;
+>>>                  }
+>>> +               }
+>>>                  node = ACPI_ADD_PTR(struct acpi_iort_node, node, node->length);
+>>>          }
+>>>          acpi_put_table(&iort->header);
+>>>
+>>> _______________________________________________
+>>> linux-arm-kernel mailing list
+>>> linux-arm-kernel@lists.infradead.org
+>>> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> 
