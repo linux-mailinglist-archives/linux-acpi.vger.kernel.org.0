@@ -2,34 +2,34 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F5354B38EA
-	for <lists+linux-acpi@lfdr.de>; Sun, 13 Feb 2022 03:20:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79D8F4B3940
+	for <lists+linux-acpi@lfdr.de>; Sun, 13 Feb 2022 04:33:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232907AbiBMCUj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Sat, 12 Feb 2022 21:20:39 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37102 "EHLO
+        id S233183AbiBMDd4 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-acpi@lfdr.de>); Sat, 12 Feb 2022 22:33:56 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229923AbiBMCUi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sat, 12 Feb 2022 21:20:38 -0500
+        with ESMTP id S232490AbiBMDd4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sat, 12 Feb 2022 22:33:56 -0500
 Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A79E25FF27
-        for <linux-acpi@vger.kernel.org>; Sat, 12 Feb 2022 18:20:32 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 469465F273
+        for <linux-acpi@vger.kernel.org>; Sat, 12 Feb 2022 19:33:50 -0800 (PST)
 Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-73-Q-v6TvLNNIq7os3zIscGRA-1; Sun, 13 Feb 2022 02:20:29 +0000
-X-MC-Unique: Q-v6TvLNNIq7os3zIscGRA-1
+ uk-mta-59-m5e4icDAO8m0cbi-5HV2aQ-1; Sun, 13 Feb 2022 03:33:46 +0000
+X-MC-Unique: m5e4icDAO8m0cbi-5HV2aQ-1
 Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
  AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.28; Sun, 13 Feb 2022 02:20:27 +0000
+ Server (TLS) id 15.0.1497.28; Sun, 13 Feb 2022 03:33:44 +0000
 Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
  AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.028; Sun, 13 Feb 2022 02:20:27 +0000
+ 15.00.1497.028; Sun, 13 Feb 2022 03:33:44 +0000
 From:   David Laight <David.Laight@ACULAB.COM>
 To:     'Kees Cook' <keescook@chromium.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-CC:     Victor Erminpour <victor.erminpour@oracle.com>,
-        Robin Murphy <robin.murphy@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>
+CC:     Ard Biesheuvel <ardb@kernel.org>,
+        Victor Erminpour <victor.erminpour@oracle.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Hanjun Guo <guohanjun@huawei.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
@@ -41,13 +41,15 @@ CC:     Victor Erminpour <victor.erminpour@oracle.com>,
         "trivial@kernel.org" <trivial@kernel.org>
 Subject: RE: [PATCH v2] ACPI/IORT: Fix GCC 12 warning
 Thread-Topic: [PATCH v2] ACPI/IORT: Fix GCC 12 warning
-Thread-Index: AQHYHtiyz9LUyAjRSUu2IalWh5Ct1KyQwgtg
-Date:   Sun, 13 Feb 2022 02:20:27 +0000
-Message-ID: <26dee09f5fc8420782e4556d86c55a04@AcuMS.aculab.com>
+Thread-Index: AQHYH6jGUiwsSGsVWkybqVzsUhE0OqyQ00mw
+Date:   Sun, 13 Feb 2022 03:33:44 +0000
+Message-ID: <f11f91706c704a72b593a183f33ff456@AcuMS.aculab.com>
 References: <1644518851-16847-1-git-send-email-victor.erminpour@oracle.com>
  <CAMj1kXEbGWs74M2CZSm6TWpD11mReFsk8z-UUqJt6b6vDCvAEQ@mail.gmail.com>
  <202202101415.43750CEE@keescook>
-In-Reply-To: <202202101415.43750CEE@keescook>
+ <3740c93e-9fde-f89f-9752-26ffff3ea274@arm.com>
+ <202202111623.A7881CC@keescook>
+In-Reply-To: <202202111623.A7881CC@keescook>
 Accept-Language: en-GB, en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
@@ -71,27 +73,33 @@ List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
 From: Kees Cook
-> Sent: 10 February 2022 23:47
-...
-> All that said, I think this patch could be improved.
+> Sent: 12 February 2022 00:38
+....
 > 
-> I'd recommend, instead, just simply:
-> 
-> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-> index f2f8f05662de..9e765d30da82 100644
-> --- a/drivers/acpi/arm64/iort.c
-> +++ b/drivers/acpi/arm64/iort.c
-> @@ -1671,13 +1671,14 @@ phys_addr_t __init acpi_iort_dma_get_max_cpu_address(void)
->  	end = ACPI_ADD_PTR(struct acpi_iort_node, iort, iort->header.length);
-> 
->  	for (i = 0; i < iort->node_count; i++) {
-> +		struct acpi_iort_named_component *ncomp;
-> +		struct acpi_iort_root_complex *rc;
-> +		phys_addr_t local_limit;
-> +
+> Sure. I think I am trying to take a pragmatic approach here, which is
+> that gaining auto-var-init is a big deal (killing entire classes of
+> vulnerabilities), but it comes with an annoying compiler bug (that we do
+> get a warning about) for an uncommon code pattern that is easy to fix.
 
-I'd move them right to the top of the function.
-No point hiding the declarations in the middle.
+My worry about the compiler setting variables to zero is that people
+will get lazy and assume it happens.
+Then some code will get compiled without that enabled (possibly because
+it slows things down too much) and then really horrid bugs start to appear.
+
+If the intent is to detect code that is failing to initialise locals
+then setting to a non-zero value (that is likely to cause grief)
+is much better than setting to zero.
+
+I'm particularly worried if the compiler starts to zero on-stack arrays.
+There is plenty of userspace code that will use char buff[MAX_PATH]
+to build a filename or char errmsg[1024] for an error message.
+At the moment the size only needs to be 'big enough' but if the compiler
+zeros it then there are performance issues and oversize buffers make
+a difference.
+At which point you start making the arrays 'just big enough' and then
+fall foul of truncations and overruns because the calculation was wrong.
+
+Definitely double edged.
 
 	David
 
