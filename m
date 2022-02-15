@@ -2,35 +2,35 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EF334B725D
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Feb 2022 17:42:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B279E4B73A6
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Feb 2022 17:44:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239956AbiBOP2T (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Feb 2022 10:28:19 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46778 "EHLO
+        id S240134AbiBOPbe (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Feb 2022 10:31:34 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235185AbiBOP2B (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Feb 2022 10:28:01 -0500
+        with ESMTP id S240300AbiBOPa4 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Feb 2022 10:30:56 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9E79AC043;
-        Tue, 15 Feb 2022 07:27:37 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A120DC2E49;
+        Tue, 15 Feb 2022 07:29:07 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B5EB8B81AEF;
-        Tue, 15 Feb 2022 15:27:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6C3C340ED;
-        Tue, 15 Feb 2022 15:27:33 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1FF20B81AEC;
+        Tue, 15 Feb 2022 15:29:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A26BC340EB;
+        Tue, 15 Feb 2022 15:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644938854;
+        s=k20201202; t=1644938945;
         bh=YPmrjZCA/qvxTOK2iFsBy8+N9NJ3GXDz4AwzbwadkqY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CZaggYHJSS+NHaxbOmOczkL7IoACgTfBZmLAPT2OZIEbn7OJjqYK6PZ9CSqPeiwjO
-         uWodMsk2omxBKVy7ay5N3lgipXnRGg7MWtE6jRLr0MBxNdSa7ynLRg8V8OJWMPL9Jg
-         iGTv+ju1JVvwtbDfVVKVlqeoDWEIQzS5wl1lRfUgqYDfbIuvG/geDndQh7ZKDzC3DV
-         CZM7aPEcQmf8OR9cmV9J2YCZOgiL8vg+e/fc1rE7135K/8xmjgiBRPPoGw834lhl6a
-         uO3am0e2gpkcyumAnNTLv0YaIC41TwzYCdViUvqL2LtJak8V8ajEgjAFc2sRqIm+FS
-         4EsW323wnF0Xw==
+        b=C6u0y2dTZ83P/E0rG1F/5kkJ7CcXnrHYKzYdEKKgTxZJ8LMuxCziyYS78zmfx5w8h
+         /gTzDvrsPPnSgbSfTmvj0JTB8GADgQ5g4Ys2UZB8ADIlAmYAgZAQ2clX0o54VcbQmW
+         f8D7xwDLZ5J6MVaZNW6S9Ntyg1Zp/ZbFtmJEqMqWRIimCdytdaXfH6PVxcmFpo2szO
+         xhidA45bTUMvxAwfkf0Aps85yBjPJWxNXGt8Wwhu2D39Y7B3wWi4VPmmjmvGSyIHrs
+         2ghz3EB7TBDjcZcUkFfBOKx8CJ2WR2S0LIXWnWO/PppWEfPLbnKg8WCiInkKU/4+8t
+         jye89vsItJ2IA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Mario Limonciello <mario.limonciello@amd.com>,
@@ -40,12 +40,12 @@ Cc:     Mario Limonciello <mario.limonciello@amd.com>,
         Pratik.Vishwakarma@amd.com, hdegoede@redhat.com,
         alexander.deucher@amd.com, nakato@nakato.io,
         linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.16 18/34] ACPI: PM: Revert "Only mark EC GPE for wakeup on Intel systems"
-Date:   Tue, 15 Feb 2022 10:26:41 -0500
-Message-Id: <20220215152657.580200-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 18/33] ACPI: PM: Revert "Only mark EC GPE for wakeup on Intel systems"
+Date:   Tue, 15 Feb 2022 10:28:16 -0500
+Message-Id: <20220215152831.580780-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220215152657.580200-1-sashal@kernel.org>
-References: <20220215152657.580200-1-sashal@kernel.org>
+In-Reply-To: <20220215152831.580780-1-sashal@kernel.org>
+References: <20220215152831.580780-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
