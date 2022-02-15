@@ -2,249 +2,101 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 765FE4B7371
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Feb 2022 17:43:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AB3C4B73B7
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Feb 2022 17:44:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233812AbiBOQMi (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Feb 2022 11:12:38 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46098 "EHLO
+        id S241514AbiBOQWU (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Feb 2022 11:22:20 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241462AbiBOQMc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Feb 2022 11:12:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 63BA63F307
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Feb 2022 08:12:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1644941537;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=6yTu+Qfv1IpPv7AVu5hlJ/Sl4wvDv7oYgI9LSyTBR/g=;
-        b=SbAIyqFuN230IwE/22qCixAFYv0ApC+ojCd7IbMepHOIvHgT/Cq66fH0BbozKigJ/syM82
-        IYuyEpm5iR8mKerpBIWU/kiPULDQpVTC26lleXM3Cimfa8r8+4SHATGb0Gt3xLlyPWecgW
-        COknCKJIhnXdoIabWYeFW+7kySahvvA=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-326-ankAXr7oOdC7A-xEbQwvPQ-1; Tue, 15 Feb 2022 11:12:16 -0500
-X-MC-Unique: ankAXr7oOdC7A-xEbQwvPQ-1
-Received: by mail-ej1-f70.google.com with SMTP id h22-20020a1709060f5600b006b11a2d3dcfso7542522ejj.4
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Feb 2022 08:12:15 -0800 (PST)
+        with ESMTP id S239468AbiBOQWT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Feb 2022 11:22:19 -0500
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3EF2717F
+        for <linux-acpi@vger.kernel.org>; Tue, 15 Feb 2022 08:22:09 -0800 (PST)
+Received: by mail-pl1-x62a.google.com with SMTP id l9so11860476plg.0
+        for <linux-acpi@vger.kernel.org>; Tue, 15 Feb 2022 08:22:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=aL1Ai2InGicb7ahZQpdv5e9x/ONiZjtIAS2dF1D0S2o=;
+        b=vNb54qajFSiKeRJfRAser6tmq4YROi3TaW6ql4v5+lZ8250zTZTJH1ttBk7phLtJE/
+         8X1xJ+aPM3gWHECS563y21SvX9Rb3Whn9VDu4xQqfZimFge8tVLTHWpcjfudVT/+xSBt
+         8IJLGbV1EzmvVRGWG1e5Loyjws1+uPfMdm116IGe1i+zsMKsxVCWtIalTFgUB7oct0lF
+         MuOPY3rMbsSUfKYcxS+iakLKgNb9dwlSZ87PA4NY2RqCylJGKpnIAotIGx0GuS7VLpnJ
+         JQm0c9L6L1JUKc9600lOKO4VcrpWaIkoCrIbss4X4+YQQR/UpMGs55jhnNOVQDUDnF39
+         YY1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=6yTu+Qfv1IpPv7AVu5hlJ/Sl4wvDv7oYgI9LSyTBR/g=;
-        b=FIwfFvYZF1dgk72VNq4nQJXC3l/Kjm+sLeVZQmA7CDVZR/kEoAe5SHg8iRbFJtDWId
-         msVglzG0Q5n/H30/kA+YvtgvPZtuQ9CGCekMXRhaMiwJjJY5oEclbXipmqyIKW9HZdrg
-         0cXcwZRKcnfEwNS5YInWVaJLCp2oMCyTRO2a002oySLwDl6r8JMd94abG5KAw0l4HTMk
-         h8TPKjpjxKuR9nHfwelmLHbZLBFL1tizTPeYuKQud9ercpyct1DT6B4sHHZ9IinOaXKW
-         veomlpOnJ1u9UlZweO72LzGo7RWVMm6HYujNwJqBpJi6vr6LujGJhdxtKPC7vdpt/aj7
-         s87Q==
-X-Gm-Message-State: AOAM531BKwyGvlD1hHaHMRAUcRCId1oxHsbkw20WIsFf+JWgq1gzHonE
-        wtITbGnutw1LAcaoou+Xw76ZRiKhqCCLbN6gE+Wt3i7aMiv6TcggXPA3N5MuDlSuUv3VvWVYBsL
-        wcZEcjRPar0kTrYaaTNEgAg==
-X-Received: by 2002:a50:8e4b:: with SMTP id 11mr4650942edx.445.1644941533366;
-        Tue, 15 Feb 2022 08:12:13 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzftckYd5NKJC5MMKL5KSz/KVu2PoAWMB8ocFZSkMTrbX9sgdnbBvEL3rXT/dAeLNasexhiOQ==
-X-Received: by 2002:a50:8e4b:: with SMTP id 11mr4650912edx.445.1644941533147;
-        Tue, 15 Feb 2022 08:12:13 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id m28sm4256482ejn.50.2022.02.15.08.12.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Feb 2022 08:12:12 -0800 (PST)
-Message-ID: <05332ea8-2849-e567-1db3-3bdee97c2193@redhat.com>
-Date:   Tue, 15 Feb 2022 17:12:11 +0100
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aL1Ai2InGicb7ahZQpdv5e9x/ONiZjtIAS2dF1D0S2o=;
+        b=DKG4eee+9zuSj7y1s3gni4wqEU665C/zK5IKT1qcHugTgbgPocQMO14GjHpdMMY/54
+         U95oEWwO/v4RFcM8dmNgAb1nlF1bOMo4mmA9WhQXMWDP897QcMRkQPOgXJd4x1PDCZYW
+         iOkD8M3ZmJcnpMPH7+5K8Ns/d79qY98yaJkALWhD4vndDTnTmCNCEjLOggA6jrQpyrbL
+         Aamp05RhYpjWgypQK+HkuUTXAioVvxVIpzoSBiXOm3dtraDXoP7LjFpdorPShhOVDcjY
+         Vxy15UVzvr/GEqb6HHocC8h/qfu1bapbOiEpvnb8U/dHJzUvLQSdkpq3OGAfQ5Vu09uX
+         trUQ==
+X-Gm-Message-State: AOAM533rbhD3SiLmHiPDTcxa4lgkSJk8cQBjgXWrWaQS3GKsuiXf7kwc
+        K1eVs2AKqO5KqB3zYoZD5zQdeZmxY2SLgmrpL27LDh+8w8LKTw==
+X-Google-Smtp-Source: ABdhPJycTIiQcI++KSnaRXdKC1+/Za2TF78mUkZ2Pq3jl1G9S9TZeJkyWRyx3RI9dH9/htg5W9HUadriJMCICjLWGTY=
+X-Received: by 2002:a17:902:ce12:: with SMTP id k18mr4872669plg.34.1644942129125;
+ Tue, 15 Feb 2022 08:22:09 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [RFC 0/2] x86/PCI: Ignore EFI memmap MMIO entries
-Content-Language: en-US
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        =?UTF-8?Q?Benoit_Gr=c3=a9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220214151759.98267-1-hdegoede@redhat.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220214151759.98267-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <55f5c077-061c-7e53-b02d-53dde1dd654f@molgen.mpg.de>
+In-Reply-To: <55f5c077-061c-7e53-b02d-53dde1dd654f@molgen.mpg.de>
+From:   Dan Williams <dan.j.williams@intel.com>
+Date:   Tue, 15 Feb 2022 08:22:02 -0800
+Message-ID: <CAPcyv4jSP4PTehMdkcpZfpDcz1HZ0ekjx+WztOiqpwGFU-1iBg@mail.gmail.com>
+Subject: Re: New warning: ACPI: CEDT not present
+To:     Paul Menzel <pmenzel@molgen.mpg.de>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Linux ACPI <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi All,
+On Mon, Feb 14, 2022 at 11:52 PM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
+>
+> #regzbot introduced: 2d03e46a4bad20191d07b83ec1242d5f002577be
+>
+> Dear Dan,
+>
+>
+> On the Dell Latitude E7250, Linux 5.17-rc3 logs the warning below
+> (`dmesg --level=warn`):
+>
+>      ACPI: CEDT not present
+>
+> I think commit 2d03e46a4bad (ACPI: Add a context argument for table
+> parsing handlers), part of Linux since 5.17-rc1, is the reason.
+>
+> If I understand it correctly, CEDT is not to be expected on older
+> devices, so the warning is not justified. Can something be done about it?
 
-On 2/14/22 16:17, Hans de Goede wrote:
-> Hi All,
-> 
-> Here is a new attempt at fixing the issue where on some laptops
-> there are EFI memmap MMIO entries covering the entire PCI bridge
-> mem window, causing Linux to be unable to find free space to
-> assign to unassigned BARs.
-> 
-> This is marked as RFC atm because I'm waiting for feedback from
-> testers.
+Rafael,
 
-Unfortunately the troublesome 0xdfa00000-0xdfa0ffff region on
-the Lenovo X1 carbon gen 2 is marked as MMIO by the EFI memmap,
-so the approach from this series won't work.
+I'm inclined to just delete the warning altogether, but special casing
+is also an option. Any preference?
 
-Interestingly enough this RFC series does seem to help to fix
-the suspend/resume on this x1c2, since for some reason merely
-splitting the original:
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index 0741a4933f62..fb2e4a216154 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -399,7 +399,7 @@ int __init_or_acpilib acpi_table_parse_entries_array(
+                instance = acpi_apic_instance;
 
-BIOS-e820: [mem 0x00000000dceff000-0x00000000dfa0ffff] reserved
-
-range into:
-
-BIOS-e820: [mem 0x00000000dceff000-0x00000000df9fffff] reserved
-BIOS-e820: [mem 0x00000000dfa00000-0x00000000dfa0ffff] MMIO
-
-causes the PCI resource allocation code to pick slightly
-different resources avoiding the troublesome overlap, see:
-https://bugzilla.redhat.com/show_bug.cgi?id=2029207
-for logs.
-
-But I don't think we should rely in this, since from a
-arch_remove_reservations() pov the troublesome overlap area
-which is now marked as MMIO is fair game for PCI bars with
-the change to allow MMIO areas for PCI bars, so things seem
-to mostly work by sheer luck after this RFC series.
-
-So now I have yet another plan to fix this (see below) I'll get
-that tested and assuming it works post that as a proper patch.
-
-Regards,
-
-Hans
-
-
-
-diff --git a/arch/x86/include/asm/pci_x86.h b/arch/x86/include/asm/pci_x86.h
-index 490411dba438..573e1323f490 100644
---- a/arch/x86/include/asm/pci_x86.h
-+++ b/arch/x86/include/asm/pci_x86.h
-@@ -64,6 +64,8 @@ void pcibios_scan_specific_bus(int busn);
- 
- /* pci-irq.c */
- 
-+struct pci_dev;
-+
- struct irq_info {
- 	u8 bus, devfn;			/* Bus, device and function */
- 	struct {
-@@ -232,3 +234,9 @@ static inline void mmio_config_writel(void __iomem *pos, u32 val)
- # define x86_default_pci_init_irq	NULL
- # define x86_default_pci_fixup_irqs	NULL
- #endif
-+
-+#if defined CONFIG_PCI && defined CONFIG_ACPI
-+extern bool pci_use_e820;
-+#else
-+#define pci_use_e820 true
-+#endif
-diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
-index 9b9fb7882c20..e8dc9bc327bd 100644
---- a/arch/x86/kernel/resource.c
-+++ b/arch/x86/kernel/resource.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/ioport.h>
- #include <asm/e820/api.h>
-+#include <asm/pci_x86.h>
- 
- static void resource_clip(struct resource *res, resource_size_t start,
- 			  resource_size_t end)
-@@ -28,6 +29,9 @@ static void remove_e820_regions(struct resource *avail)
- 	int i;
- 	struct e820_entry *entry;
- 
-+	if (!pci_use_e820)
-+		return;
-+
- 	for (i = 0; i < e820_table->nr_entries; i++) {
- 		entry = &e820_table->entries[i];
- 
-diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
-index 052f1d78a562..7167934819b3 100644
---- a/arch/x86/pci/acpi.c
-+++ b/arch/x86/pci/acpi.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
-+#include <linux/efi.h>
- #include <linux/pci.h>
- #include <linux/acpi.h>
- #include <linux/init.h>
-@@ -21,6 +22,7 @@ struct pci_root_info {
- 
- static bool pci_use_crs = true;
- static bool pci_ignore_seg;
-+bool pci_use_e820 = true;
- 
- static int __init set_use_crs(const struct dmi_system_id *id)
- {
-@@ -291,6 +293,28 @@ static bool resource_is_pcicfg_ioport(struct resource *res)
- 		res->start == 0xCF8 && res->end == 0xCFF;
- }
- 
-+static bool resource_matches_efi_mmio_region(const struct resource *res)
-+{
-+	unsigned long long start, end;
-+	efi_memory_desc_t *md;
-+
-+	if (!efi_enabled(EFI_MEMMAP))
-+		return false;
-+
-+	for_each_efi_memory_desc(md) {
-+		if (md->type != EFI_MEMORY_MAPPED_IO)
-+			continue;
-+
-+		start = md->phys_addr;
-+		end = start + (md->num_pages << EFI_PAGE_SHIFT) - 1;
-+
-+		if (res->start >= start && res->end <= end)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
- {
- 	struct acpi_device *device = ci->bridge;
-@@ -300,9 +324,16 @@ static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
- 
- 	status = acpi_pci_probe_root_resources(ci);
- 	if (pci_use_crs) {
--		resource_list_for_each_entry_safe(entry, tmp, &ci->resources)
-+		resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
- 			if (resource_is_pcicfg_ioport(entry->res))
- 				resource_list_destroy_entry(entry);
-+			if (resource_matches_efi_mmio_region(entry->res)) {
-+				dev_info(&device->dev,
-+					"host bridge window %pR is marked by EFI as MMIO\n",
-+					entry->res);
-+				pci_use_e820 = false;
-+			}
-+		}
- 		return status;
- 	}
- 
-
+        acpi_get_table(id, instance, &table_header);
+-       if (!table_header) {
++       if (!table_header && strcmp(id, ACPI_SIG_CEDT) != 0) {
+                pr_warn("%4.4s not present\n", id);
+                return -ENODEV;
+        }
