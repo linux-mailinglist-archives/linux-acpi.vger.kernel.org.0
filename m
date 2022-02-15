@@ -2,85 +2,119 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CC854B7605
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Feb 2022 21:48:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AD8C4B75F8
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Feb 2022 21:48:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243371AbiBOTFZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Feb 2022 14:05:25 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37148 "EHLO
+        id S243586AbiBOTUB (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 15 Feb 2022 14:20:01 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243357AbiBOTFZ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Feb 2022 14:05:25 -0500
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA096F94F2
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Feb 2022 11:05:14 -0800 (PST)
-Received: by mail-yb1-f172.google.com with SMTP id c6so59166266ybk.3
-        for <linux-acpi@vger.kernel.org>; Tue, 15 Feb 2022 11:05:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=h5Gx5UNRmPnQ1up15AhhuwaryuHMTEA8mCwrwfpbeGo=;
-        b=tqq5s15DYYNkdnB0pmmxtRUMKuA2F3/HciFo5fgUTrs2aCW3AUsT5P/1qjxuncnZfE
-         XGQIGGHrOzfyoV/nJ78f6lodwllR65H0OOl1xkHF3m4Fm/CQdUhXAlDMJtp3ZtXe8ZYp
-         CBdM98Qwv7ulUlWWwvVTkRC26BG2LReiOUmT+Lgb8U7fFwMnO4KXPdvX2r3mD+Jen7Le
-         U2z9Rv58nyA8EfUuTXGMSaZdCVjLc1wgpqf2EaGCj1DX2KIbv5AM+4osJsE8p9NrgClt
-         sIDGoDkXdpH1WlIHgAFC8GLO8V32242CZRd1OFtuUmRjSBMRhAbc4jvmp339DfOYnPb9
-         N1Zw==
-X-Gm-Message-State: AOAM531Te/iqhzXNpXyzm1E4RLlncLvx3np/88ge9zZkCwyVzlsfEr5j
-        IBrCC/Dp1TgBZnGJromOHzNeTHtvqoI4npFJeVY=
-X-Google-Smtp-Source: ABdhPJzQM4o9FN2kr1DysBeKgbz92gwL+HkS8626hXbn8+ljGl9yP1APzM6xAwNGd5zERV5Xkx5siKfqvwKXFQYHh7k=
-X-Received: by 2002:a25:bd0b:: with SMTP id f11mr324938ybk.475.1644951913875;
- Tue, 15 Feb 2022 11:05:13 -0800 (PST)
+        with ESMTP id S243580AbiBOTTv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Feb 2022 14:19:51 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CA2F10DA4E;
+        Tue, 15 Feb 2022 11:19:41 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C0F461773;
+        Tue, 15 Feb 2022 19:19:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76B9C340EB;
+        Tue, 15 Feb 2022 19:19:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644952780;
+        bh=RxAYLCqbUWlxjV9GFahzPwnkRBYKU9aVJMxo+INb+K8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oa82FKq0/HZo1Hieccox0xhuEOltsBpyNCb/oKWHfz9JimsfI5qrPFHosVG+Hw9KD
+         FqjMZvJ5BquXlsEM1IUTOugfyhHJjbL+NoooCvHgJp/wzFU4N6mJ3/+qfEy0h1bhbj
+         fv9Bo5w4LHHM1g+pM9OlS1+FV6MX0/N+Aa88X5OzELy65s1Xs5Q/258d9WBNoUp0fb
+         HMGG+vm/A6PvbbvtXJ00MB45hauRqyRZCekvmCmXYRktZmaEtd9qOIjTryp50cyo1/
+         0DT+ajNam/uql+1lfstz9xW/6FSdwogqLIyHb8bwuPl3b0gveaOfCnpwJkPBK0mL1q
+         tCTR2Et3rHU/g==
+Date:   Tue, 15 Feb 2022 21:19:29 +0200
+From:   Leon Romanovsky <leon@kernel.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        GR-QLogic-Storage-Upstream@marvell.com,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linux-crypto@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+        bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, mpi3mr-linuxdrv.pdl@broadcom.com,
+        linux-staging@lists.linux.dev,
+        linux-rpi-kernel@lists.infradead.org, sparmaintainer@unisys.com,
+        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+        linux-ext4@vger.kernel.org, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        greybus-dev@lists.linaro.org, linux-i3c@lists.infradead.org,
+        linux-rdma@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] treewide: Replace zero-length arrays with
+ flexible-array members
+Message-ID: <Ygv8wY75hNqS7zO6@unreal>
+References: <20220215174743.GA878920@embeddedor>
+ <202202151016.C0471D6E@keescook>
+ <20220215192110.GA883653@embeddedor>
 MIME-Version: 1.0
-References: <55f5c077-061c-7e53-b02d-53dde1dd654f@molgen.mpg.de> <164495126389.3958890.23245745243532605.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <164495126389.3958890.23245745243532605.stgit@dwillia2-desk3.amr.corp.intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 15 Feb 2022 20:05:02 +0100
-Message-ID: <CAJZ5v0iQnZx35Exo2vO0CC_k3sk3YDipopde+Cqo9XWWdhZ+Dg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Quiet ACPI table not found warning
-To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     Rafael Wysocki <rafael.j.wysocki@intel.com>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220215192110.GA883653@embeddedor>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 15, 2022 at 7:54 PM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> Paul reports that the ACPI core complains on every boot about a missing
-> CEDT table. Unlike the standard NUMA tables (SRAT, MADT, and SLIT) that
-> are critical to NUMA init, CEDT is only expected on CXL platforms. Given
-> the notice is not actionable lower its severity to debug.
->
-> Link: https://lore.kernel.org/r/55f5c077-061c-7e53-b02d-53dde1dd654f@molgen.mpg.de
-> Fixes: fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT")
-> Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/acpi/tables.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-> index 0741a4933f62..34600b5b9d8e 100644
-> --- a/drivers/acpi/tables.c
-> +++ b/drivers/acpi/tables.c
-> @@ -400,7 +400,7 @@ int __init_or_acpilib acpi_table_parse_entries_array(
->
->         acpi_get_table(id, instance, &table_header);
->         if (!table_header) {
-> -               pr_warn("%4.4s not present\n", id);
-> +               pr_debug("%4.4s not present\n", id);
->                 return -ENODEV;
->         }
->
+On Tue, Feb 15, 2022 at 01:21:10PM -0600, Gustavo A. R. Silva wrote:
+> On Tue, Feb 15, 2022 at 10:17:40AM -0800, Kees Cook wrote:
+> > On Tue, Feb 15, 2022 at 11:47:43AM -0600, Gustavo A. R. Silva wrote:
+> > > There is a regular need in the kernel to provide a way to declare
+> > > having a dynamically sized set of trailing elements in a structure.
+> > > Kernel code should always use “flexible array members”[1] for these
+> > > cases. The older style of one-element or zero-length arrays should
+> > > no longer be used[2].
+> > > 
+> > > This code was transformed with the help of Coccinelle:
+> > > (next-20220214$ spatch --jobs $(getconf _NPROCESSORS_ONLN) --sp-file script.cocci --include-headers --dir . > output.patch)
+> > > 
+> > > @@
+> > > identifier S, member, array;
+> > > type T1, T2;
+> > > @@
+> > > 
+> > > struct S {
+> > >   ...
+> > >   T1 member;
+> > >   T2 array[
+> > > - 0
+> > >   ];
+> > > };
+> > 
+> > These all look trivially correct to me. Only two didn't have the end of
+> > the struct visible in the patch, and checking those showed them to be
+> > trailing members as well, so:
+> > 
+> > Reviewed-by: Kees Cook <keescook@chromium.org>
+> 
+> I'll add this to my -next tree.
 
-Applied as a fix for 5.17-rc5, thanks!
+I would like to ask you to send mlx5 patch separately to netdev. We are working
+to delete that file completely and prefer to avoid from unnecessary merge conflicts.
+
+Thanks
+
+> 
+> Thanks!
+> --
+> Gustavo
