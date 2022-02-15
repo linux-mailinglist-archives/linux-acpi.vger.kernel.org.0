@@ -2,67 +2,66 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B7D74B5DFD
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Feb 2022 23:59:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F4D04B5F92
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Feb 2022 01:52:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232058AbiBNW7H (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 14 Feb 2022 17:59:07 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60296 "EHLO
+        id S232900AbiBOAwr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 14 Feb 2022 19:52:47 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231912AbiBNW7H (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Feb 2022 17:59:07 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE1B1901A7
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Feb 2022 14:58:58 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id w10so10706210edd.11
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Feb 2022 14:58:58 -0800 (PST)
+        with ESMTP id S232913AbiBOAwf (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 14 Feb 2022 19:52:35 -0500
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A619666614;
+        Mon, 14 Feb 2022 16:51:26 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id n19-20020a17090ade9300b001b9892a7bf9so970044pjv.5;
+        Mon, 14 Feb 2022 16:51:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=H4CDzrFaAIRXP+JfJQjZSpyvl+auCY5ZKASrSIHcfZ4=;
-        b=g1eWBAr03pbHIGky/Et9stEsa62hM8KOUIVkJ/UAyGbCj4E+TeHxDAH3ngnjFzbGfy
-         6KPQbUeolripHdS/5FHHM9Osf86vxMO7KIsfUjlLd1M3dNyM0u8fmJH+j+mm3iJ7z63G
-         JR5bLt0DPZE2syU6n0PxTOgFYdHlbSn8G6gXjktIi3ecNeuPuQWXqQTOZ6pD2qS1EnUj
-         5CI5MEwdruQArTTBNk5mEiO2WdgEek1emiOymwL1PvsONdPEK3OOEIaEqvwcIFHKrrFr
-         4JHZGQ3/Gfz/G39IRSC2r0IejJFYpkNCwItA4+7Y1kGBMvRC/fc9ZY7Fwo/zsr8YvW0o
-         1rqg==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=InvjJCM43AyEnsSm20Btn5crA4cxrrPZH5k8jOe9Csc=;
+        b=S9iuKuifmaAllqFF17ZHDcVIbF1i1HshgJnU58QcAg3DfRnBvym3n7Yz59DL7UcUKk
+         fkXUCDxYuK4bfjAc8QfPw4m/gDtcWMtDOwEVJQaXXpMcA2m97TDEHURdWhH5WX/xi2wA
+         0AH+cEOWtCQeUg2yXjSBY4CuTbqHBg0MGjJMtuq3rRpHqePB2CkuhEDHCaJHiP3zJGyD
+         AxUdC52/6Lzb/NR5VxFOVgDc1WERbIF5OWx4M1aIU8ufinz53WOfpC1lWaMhUjVCG/0y
+         34Ni04+OzbLaKp+nebWBnmewPII32cIziyN+s65XS/Jhi7K+Ta4L5Pb7K6KVcTJNqfMA
+         7kiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=H4CDzrFaAIRXP+JfJQjZSpyvl+auCY5ZKASrSIHcfZ4=;
-        b=airJEIljeyBM2iz6xyMQ+eCQrMvDdHfQTAYMZFQaV9SHlG0SvvTobUhJhOEroZxtXK
-         p5OVZuBVfAiEl8aeOU4KOHW6d96pEFC/dsNkqR2nh8mgoJ68TTPsosMxnNvW6naAZ1vv
-         lFBzm+ylcCI/yGFWVxichCOVaNev+QwmAvqMpHG5OOTJBXHpsPJJzJIdZVsDwam3kKLG
-         mMH0c1Gvevh1uCcznoUFr1WJbfifjFcujH6vjHPcSoJXU3w6ZzRPJyTkVt9n+cbpw+dp
-         Rnam43IAol6XpT1XHJhGMVlqDG4UpzuwHLnErB31S4xwFZza2XDWnaFkqMg00TMFEczw
-         1SHA==
-X-Gm-Message-State: AOAM530esFjqy4ppL17f0BMgky1zwLf+oeTZAhZ0ihVd8Ohq94eoHfYz
-        q1BjGrJoQHbq9UygczGg1tm/3RbZqBTeq2RXl9uhTA==
-X-Google-Smtp-Source: ABdhPJwpXtBphXPJ50QihP13rNz4U0amvRgAmy4aDk1Wwxy0Bg+4yuTFVEPXPDcZi9Valn6eEkT1vrL25RQAh8jRaLY=
-X-Received: by 2002:a05:6402:50d4:: with SMTP id h20mr1175034edb.90.1644879536587;
- Mon, 14 Feb 2022 14:58:56 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=InvjJCM43AyEnsSm20Btn5crA4cxrrPZH5k8jOe9Csc=;
+        b=Xg04RdwdJ+GartqRhtbr28W+uTGJ5T2WeIjGqi93KH5GrbqjxGRZ/nL6DOH+GFrHzw
+         BWcH/COJAlmf1wR5Ag98G3jskZe2b4ykqFBZw2r3JKyBL3P+RlNn9gDSy4BvoVe5x9GB
+         mlP1F/Z3Je4xi3FVEfb+sYeA5PGr6w7NdxEliFJtpSR3OoHKJOLvrvq+On9xHvCAHEPj
+         o/Z3b+SYcjdJkTMCP25K18rTk7a+Qs8Bp99iFfrcHt11Qp3ImQneBADtdBQPpxNyipCs
+         0Pf5LWwxWE/a5x4fFtoJzfTo3O7cVEakd8WC8FWAJ1aTbIDpHDAW7+LWzi8SYoIT3TUD
+         sRcw==
+X-Gm-Message-State: AOAM5302e9v0bUSzbpqF53E7pEVNAQZjqLEXomjOX+NK3cdE+n4PDEfY
+        ZpU1b4w1QCJe1pTs8DhsSP8=
+X-Google-Smtp-Source: ABdhPJzCAqZdWoNYP8Z47oIdIif/meAF4RYMLD37/wjioo94oVL+k+6m1CqfuX99g7d5KbKpEEQjrg==
+X-Received: by 2002:a17:902:e54a:: with SMTP id n10mr1710999plf.108.1644886276776;
+        Mon, 14 Feb 2022 16:51:16 -0800 (PST)
+Received: from localhost.localdomain (192.243.120.247.16clouds.com. [192.243.120.247])
+        by smtp.gmail.com with ESMTPSA id j12sm600756pgf.63.2022.02.14.16.51.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Feb 2022 16:51:15 -0800 (PST)
+From:   davidcomponentone@gmail.com
+To:     robert.moore@intel.com
+Cc:     davidcomponentone@gmail.com, rafael.j.wysocki@intel.com,
+        lenb@kernel.org, linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-kernel@vger.kernel.org, Yang Guang <yang.guang5@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] ACPICA: use swap() to make code cleaner
+Date:   Tue, 15 Feb 2022 08:50:57 +0800
+Message-Id: <05530d163bb18634cceaf1f2b0b48409747d18d0.1644838495.git.yang.guang5@zte.com.cn>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20220211023008.3197397-1-wonchung@google.com> <CAJZ5v0gD4zs3uBAYv6M4_1gNpkZ-g9XKOywJnf5007e6GwoGVA@mail.gmail.com>
- <CAOvb9yjpruiHxkZyZ8BOT0Hi_iV7xMOnBCr59BZX3eah_Zcy_w@mail.gmail.com>
-In-Reply-To: <CAOvb9yjpruiHxkZyZ8BOT0Hi_iV7xMOnBCr59BZX3eah_Zcy_w@mail.gmail.com>
-From:   Won Chung <wonchung@google.com>
-Date:   Mon, 14 Feb 2022 14:58:44 -0800
-Message-ID: <CAOvb9yh7jo27NH32tbAOtkJrnC9LwUFgFbHRbdbArwiU+YSmdw@mail.gmail.com>
-Subject: Re: [PATCH v6] ACPI: device_sysfs: Add sysfs support for _PLD
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Len Brown <lenb@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,74 +69,41 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 14, 2022 at 12:30 PM Won Chung <wonchung@google.com> wrote:
->
-> On Mon, Feb 14, 2022 at 11:12 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Fri, Feb 11, 2022 at 3:30 AM Won Chung <wonchung@google.com> wrote:
-> > >
-> > > When ACPI table includes _PLD fields for a device, create a new
-> > > directory (pld) in sysfs to share _PLD fields.
-> >
-> > This version of the patch loos better to me, but I'm not sure if it
-> > goes into the right direction overall.
-> >
-> > > Currently without PLD information, when there are multiple of same
-> > > devices, it is hard to distinguish which device corresponds to which
-> > > physical device in which location. For example, when there are two Type
-> > > C connectors, it is hard to find out which connector corresponds to the
-> > > Type C port on the left panel versus the Type C port on the right panel.
-> >
-> > So I think that this is your primary use case and I'm wondering if
-> > this is the best way to address it.
-> >
-> > Namely, by exposing _PLD information under the ACPI device object,
-> > you'll make user space wanting to use that information depend on this
-> > interface, but the problem is not ACPI-specific (inevitably, it will
-> > appear on systems using DT, sooner or later) and making the user space
-> > interface related to it depend on ACPI doesn't look like a perfect
-> > choice.
-> >
-> > IOW, why don't you create a proper ABI for this in the Type C
-> > subsystem and expose the information needed by user space in a generic
-> > way that can be based on the _PLD information on systems with ACPI?
->
-> Hi Rafael,
->
-> Thank you for the review.
->
-> I was thinking that _PLD info is specific to ACPI since it is part of
-> the ACPI table. Could you explain a little bit more on why you think
-> exposing _PLD fields is not an ACPI-specific problem?
+From: Yang Guang <yang.guang5@zte.com.cn>
 
-Hi Rafael again,
+Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
+opencoding it.
 
-Sorry for the silly question here. I misunderstood your comment a bit,
-but I talked to Benson and Prashant for clarification. I understand
-now what you mean by it is not an ACPI-specific problem and exposing
-PLD would depend on ACPI.
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+Signed-off-by: David Yang <davidcomponentone@gmail.com>
+---
+ drivers/acpi/acpica/nsrepair2.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
->
-> I gave an example of how _PLD fields can be used for specifying Type C
-> connectors, but it is not Type C specific. For Chrome OS, we plan to
-> initially add PLD to not only Type C connectors but also USB port
-> devices (including Type C and Type A). Also, PLD can be used in the
-> future for describing other types of ports too like HDMI. (Benson and
-> Prashant, please correct or add if I am wrong or missing some
-> information) Maybe my commit message was not detailed enough..
->
-> I am also curious what Heikki thinks about this. Heikki, can you take
-> a look and share your thoughts?
+diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
+index 14b71b41e845..ac6a5397660f 100644
+--- a/drivers/acpi/acpica/nsrepair2.c
++++ b/drivers/acpi/acpica/nsrepair2.c
+@@ -875,7 +875,6 @@ acpi_ns_sort_list(union acpi_operand_object **elements,
+ {
+ 	union acpi_operand_object *obj_desc1;
+ 	union acpi_operand_object *obj_desc2;
+-	union acpi_operand_object *temp_obj;
+ 	u32 i;
+ 	u32 j;
+ 
+@@ -892,9 +891,7 @@ acpi_ns_sort_list(union acpi_operand_object **elements,
+ 			    || ((sort_direction == ACPI_SORT_DESCENDING)
+ 				&& (obj_desc1->integer.value <
+ 				    obj_desc2->integer.value))) {
+-				temp_obj = elements[j - 1];
+-				elements[j - 1] = elements[j];
+-				elements[j] = temp_obj;
++				swap(elements[j - 1], elements[j]);
+ 			}
+ 		}
+ 	}
+-- 
+2.30.2
 
-I am still curious what you and Heikki think about this since it may
-not be a Type C specific issue. We can start from adding generic
-location info to Type C subsystem first, as you suggested, then
-consider how to do the same for USB devices and Type A ports
-afterwards. I would appreciate sharing any thoughts or feedback. Thank
-you very much!
-
-Won
-
->
-> Thank you,
-> Won
