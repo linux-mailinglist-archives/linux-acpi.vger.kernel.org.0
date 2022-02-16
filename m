@@ -2,90 +2,134 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80C5E4B9280
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Feb 2022 21:36:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E4544B939D
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Feb 2022 23:05:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232424AbiBPUhA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Feb 2022 15:37:00 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57942 "EHLO
+        id S236638AbiBPWGC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Feb 2022 17:06:02 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232068AbiBPUhA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Feb 2022 15:37:00 -0500
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA00616EAA1
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Feb 2022 12:36:47 -0800 (PST)
-Received: by mail-pl1-x62e.google.com with SMTP id j4so2883073plj.8
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Feb 2022 12:36:47 -0800 (PST)
+        with ESMTP id S236808AbiBPWGB (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Feb 2022 17:06:01 -0500
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92B752AED8F
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Feb 2022 14:05:47 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id a19-20020a25ca13000000b0061db44646b3so7078677ybg.2
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Feb 2022 14:05:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=PEXMMTYC1FVGPA5+aOj0q5CSmQ9v9RUX9ecJLilAcPc=;
-        b=bGWQFfWY+GOCY9ajK+jUK4dJTPTv2kIB0Yq1hbme80ItJPDtVUuCrducyub/97EQ0a
-         GThVGEfbIU6o1qenCjxJXD50S6/ObQWidSyhO1XjNEw7iQRU3mYiOLPWLzMEtydU+TOg
-         XrEVvwY9SVG0TkiKWWRS2pgrzzhEh02Lo8/FM=
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=flQKyFZ9duOPZtd4zXwnyBqVYzgGGyydxhPq51y6plY=;
+        b=YobYbyfeweFubZAvOgK/ACXLIu9QYAmgvkFvi0nLU5nZF8FZ+fc/qzcZGODFOCc5rB
+         rGKb6RGf8Xi8UqhtFxLMQ+d8bEb6w7pe93oYN+9zbacfjyUmJ4lQfICSnt2KCwZrx3tL
+         B9/GzjbK6BdZa/kqEEzzN+TccelXGLIgu8Jut6r7Fmeq7B+97vW5QlCoaBsfeeQdyP8g
+         hovC+Qfn1fNr4RBlQQgMBq3VnH+sjDNyQpVsfD6vgQQcJoDhAtvb7GP0h3gk3GCJuslW
+         lL8XivVVzXUBdZlY87zwktTozYrzhJkhCZSxxUs1dc56gL/FJWpiy391jtAx6DloyaDr
+         6Uvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=PEXMMTYC1FVGPA5+aOj0q5CSmQ9v9RUX9ecJLilAcPc=;
-        b=XTqVpN55MAqUitBoYoE8EtShuvQXvY7B9t5Emid16pav5ePY9Db2ju8UxKm0Qu2o+6
-         clpUmmFcdLOZjm09o5HnFfr1J+n8sc8fbctuzX/u2G2n5JLWJ8tyyKuqRhJk2D7JLGFG
-         UINJyonatFBJz5EExZqWhYh3MaGjGdhYc56FImOvts8mxdsvIg+O08ryR+Q9MO3ZbxTI
-         keOPdSN5OgXVMoTG+rNnA+WQ7jkN7B/WB0UAjdR8aFfiZkeiXjO3i3bkGrGw0raYmXsn
-         NbZfs8mNpwPpDq3BwmH5lan0yKly3JoYpFH4MMc1pXaR6eQ/BI1IzE6Q1hx/UGYPlh7q
-         QF5Q==
-X-Gm-Message-State: AOAM53317E9KpyyGDAC8SkxUEO75ZnlX3B+9vMVCqt8f65PpBQnNimfi
-        B3xZK6WNjy3jAvezYTxKW6edOQ==
-X-Google-Smtp-Source: ABdhPJzJF/YEfH5OONFh8EpYA13PwFuw+6/qJPkCze+i5HDTetsTW9VKrS9AD6KT8uYwRyvr45KVbw==
-X-Received: by 2002:a17:90b:2496:b0:1b9:a6dd:ae7 with SMTP id nt22-20020a17090b249600b001b9a6dd0ae7mr3717687pjb.35.1645043807401;
-        Wed, 16 Feb 2022 12:36:47 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id lw3sm18168488pjb.24.2022.02.16.12.36.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Feb 2022 12:36:47 -0800 (PST)
-Date:   Wed, 16 Feb 2022 12:36:46 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Robert Moore <robert.moore@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] ACPICA: iASL: Replace zero-length array with
- flexible-array member
-Message-ID: <202202161236.FBD5D268@keescook>
-References: <20220216203240.GA918517@embeddedor>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220216203240.GA918517@embeddedor>
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=flQKyFZ9duOPZtd4zXwnyBqVYzgGGyydxhPq51y6plY=;
+        b=39fAwuafcX/V+A45Z3QeDtYAwYlzuC51JV0NwOqueqqEXVucVm9V1SeRViB9lO1IH2
+         6IhQEouTk+D7vO0jAoyjAMo9Hw7DS9bXWm/a8Y0PAHd7auV0N1pmg5gwsd4FJ0BZgdYu
+         LS2Nuox+jONU+ve5mv9MwMvFriU8i/Bx6NNamu1PhqLXgPO2R2p8JPGGoXn4xSgXbZTa
+         LRdS3fgRNjMdCKZrX3mFawvUSRZDSjwmqEpoYBzEdV5Fjcy2ZvjXTgFpodr7AY3h1Y1c
+         0uLaq/W0UewqBoVdaVSioU3CLRoN+SlZmYLuPwDDr+jBfcj8cc+6sVU3gPVg1e/uVIzz
+         lxyg==
+X-Gm-Message-State: AOAM533Vc89wu7JmLw/cWfKEz/UjBHWkbKN2/Yq0/M6TRF3aI44rQPZB
+        3HU4gf8OyLlP4HQVrgTuqy1iYYmQfOYV
+X-Google-Smtp-Source: ABdhPJyFAKeq/HMX/fgmE1eQw0hYq6cqNmThpbybyHXt53ADj9iBuVkiR7I7KvXxgTNs+xHjhaStLlnnKCDr
+X-Received: from rajat2.mtv.corp.google.com ([2620:15c:202:201:f786:406d:21f6:1e1b])
+ (user=rajatja job=sendgmr) by 2002:a0d:c441:0:b0:2d0:f04e:a1ee with SMTP id
+ g62-20020a0dc441000000b002d0f04ea1eemr4399572ywd.263.1645049146781; Wed, 16
+ Feb 2022 14:05:46 -0800 (PST)
+Date:   Wed, 16 Feb 2022 14:05:41 -0800
+Message-Id: <20220216220541.1635665-1-rajatja@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.35.1.265.g69c8d7142f-goog
+Subject: [PATCH v3] PCI: ACPI: Support Microsoft's "DmaProperty"
+From:   Rajat Jain <rajatja@google.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Dmitry Torokhov <dtor@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Pavel Machek <pavel@denx.de>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>
+Cc:     Rajat Jain <rajatja@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 16, 2022 at 02:32:40PM -0600, Gustavo A. R. Silva wrote:
-> There is a regular need in the kernel to provide a way to declare
-> having a dynamically sized set of trailing elements in a structure.
-> Kernel code should always use “flexible array members”[1] for these
-> cases. The older style of one-element or zero-length arrays should
-> no longer be used[2].
-> 
-> [1] https://en.wikipedia.org/wiki/Flexible_array_member
-> [2] https://www.kernel.org/doc/html/v5.16/process/deprecated.html#zero-length-and-one-element-arrays
-> 
-> Link: https://github.com/KSPP/linux/issues/78
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+The "DmaProperty" is supported and documented by Microsoft here:
+https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
+They use this property for DMA protection:
+https://docs.microsoft.com/en-us/windows/security/information-protection/kernel-dma-protection-for-thunderbolt
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+Support the "DmaProperty" with the same semantics. Windows documents the
+property to apply to PCIe root ports only. Extend it to apply to any
+PCI device. This is useful for internal PCI devices that do not hang off
+a PCIe rootport, but offer an attack surface for DMA attacks (e.g.
+internal network devices).
 
+Signed-off-by: Rajat Jain <rajatja@google.com>
+---
+v3: * Use Microsoft's documented property "DmaProperty"
+    * Resctrict to ACPI only
+
+ drivers/pci/pci-acpi.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index a42dbf448860..660baa60c040 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -1350,12 +1350,30 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
+ 		dev->external_facing = 1;
+ }
+ 
++static void pci_acpi_check_for_dma_protection(struct pci_dev *dev)
++{
++	u8 val;
++
++	/*
++	 * Microsoft Windows uses this property, and is documented here:
++	 * https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
++	 * While Microsoft documents this property as only applicable to PCIe
++	 * root ports, we expand it to be applicable to any PCI device.
++	 */
++	if (device_property_read_u8(&dev->dev, "DmaProperty", &val))
++		return;
++
++	if (val)
++		dev->untrusted = 1;
++}
++
+ void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
+ {
+ 	struct pci_dev *pci_dev = to_pci_dev(dev);
+ 
+ 	pci_acpi_optimize_delay(pci_dev, adev->handle);
+ 	pci_acpi_set_external_facing(pci_dev);
++	pci_acpi_check_for_dma_protection(pci_dev);
+ 	pci_acpi_add_edr_notifier(pci_dev);
+ 
+ 	pci_acpi_add_pm_notifier(adev, pci_dev);
 -- 
-Kees Cook
+2.35.1.265.g69c8d7142f-goog
+
