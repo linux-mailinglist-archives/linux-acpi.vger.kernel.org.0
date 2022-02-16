@@ -2,171 +2,115 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA02A4B8F28
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Feb 2022 18:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A270E4B90E7
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Feb 2022 20:06:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237100AbiBPRdT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 16 Feb 2022 12:33:19 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36282 "EHLO
+        id S237925AbiBPTGM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Feb 2022 14:06:12 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237097AbiBPRdT (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Feb 2022 12:33:19 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A6922128B6;
-        Wed, 16 Feb 2022 09:33:07 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AB4C861BC5;
-        Wed, 16 Feb 2022 17:33:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809BCC340E8;
-        Wed, 16 Feb 2022 17:33:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1645032786;
-        bh=qYYdvT6AeCXuOfXWgf9Vb2nVM8/mVSQ3AS/PSeriAhM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lQyWt24JhOIOrw2z1XZlLZ4AShWBTjF+Mw2U+/MzBIfagEq1m1oNJSnB+xFjo9wcr
-         Uq9a8jKVsSvykveWdQSApN+8pHaQI3OTX6RPAP22fW7kpYyS5JiPxHFVWTsaVpW7EQ
-         hTvzjDTJ+aftNgohE2CTeMTuDtTl8DJNCBUzfvyc=
-Date:   Wed, 16 Feb 2022 18:33:02 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Won Chung <wonchung@google.com>, Len Brown <lenb@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Prashant Malani <pmalani@chromium.org>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6] ACPI: device_sysfs: Add sysfs support for _PLD
-Message-ID: <Yg01TjB6DGYeMxjI@kroah.com>
-References: <20220211023008.3197397-1-wonchung@google.com>
- <CAJZ5v0gD4zs3uBAYv6M4_1gNpkZ-g9XKOywJnf5007e6GwoGVA@mail.gmail.com>
- <CAOvb9yjpruiHxkZyZ8BOT0Hi_iV7xMOnBCr59BZX3eah_Zcy_w@mail.gmail.com>
- <CAOvb9yh7jo27NH32tbAOtkJrnC9LwUFgFbHRbdbArwiU+YSmdw@mail.gmail.com>
- <CAJZ5v0gwMSWXMA4XmEioUr2ML3y_NPe9WYUCj2XUj++9ivSLTA@mail.gmail.com>
+        with ESMTP id S235595AbiBPTGL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Feb 2022 14:06:11 -0500
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3523C27019F;
+        Wed, 16 Feb 2022 11:05:59 -0800 (PST)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-2d641c31776so9255867b3.12;
+        Wed, 16 Feb 2022 11:05:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yLrFIsE9bo3p9BnVIL7Uc7sprqnSKm0YOW7fBIQdERM=;
+        b=RuPu7SzNkaJd1WR9+wnB7RuMLb2/6JyYiKaOmBtWGY+4dQhlRrtGvZ6OCmGpbsWMoE
+         P6HWXArbpHHQ7o31q4rHYkzBeYrTVeQSPrCkdBec5F3RuJYRVM//BwT9telG3bmZAcoB
+         FxtlU7vncA/7M5kWQwcqyBdpk27zG/p5D5rGZq0nsDf1j034j4N9NruAlDbyjIIBOzmu
+         KbHBVnw1SI5P4hqVE2AIEQGFaF2ieMYBNUQvgI02g+e1RAX1uy1xzU6XISp25w56c5dM
+         rQeGODqdry9lEgQwF/Hg6FiJO1SoO7gDJ8o3BoJD78lW8gTuVok5Fl/klWvtUyspycM7
+         AmqA==
+X-Gm-Message-State: AOAM532jcwakILeJ+RRfPI4QyknirUMpZKArmVbmtERBQUf3YEr8M+pB
+        AOGbopeO05mizhBNkS7JDbWQ5dPD2ZUb11wOmK0=
+X-Google-Smtp-Source: ABdhPJyFOmiGOmRDkw8czUhuWEAUWZI3b6hfKAcdDSxdtm3oSTgs7z2noREt7vOvPl7JarLhxJEUxltkCz2WrL99cSU=
+X-Received: by 2002:a0d:c244:0:b0:2d1:1fbb:180d with SMTP id
+ e65-20020a0dc244000000b002d11fbb180dmr3902361ywd.196.1645038358332; Wed, 16
+ Feb 2022 11:05:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0gwMSWXMA4XmEioUr2ML3y_NPe9WYUCj2XUj++9ivSLTA@mail.gmail.com>
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220215174743.GA878920@embeddedor> <202202151016.C0471D6E@keescook>
+ <20220215192110.GA883653@embeddedor> <Ygv8wY75hNqS7zO6@unreal> <20220215193221.GA884407@embeddedor>
+In-Reply-To: <20220215193221.GA884407@embeddedor>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 16 Feb 2022 20:05:47 +0100
+Message-ID: <CAJZ5v0jpAnQk+Hub6ue6t712RW+W0YBjb_gAcZZbUeuYMGv7mg@mail.gmail.com>
+Subject: Re: [PATCH][next] treewide: Replace zero-length arrays with
+ flexible-array members
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Leon Romanovsky <leon@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        GR-QLogic-Storage-Upstream@marvell.com,
+        linux-alpha@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        nouveau <nouveau@lists.freedesktop.org>,
+        coresight@lists.linaro.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        netdev <netdev@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        "open list:TARGET SUBSYSTEM" <linux-scsi@vger.kernel.org>,
+        target-devel@vger.kernel.org, mpi3mr-linuxdrv.pdl@broadcom.com,
+        linux-staging@lists.linux.dev,
+        linux-rpi-kernel@lists.infradead.org, sparmaintainer@unisys.com,
+        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        greybus-dev@lists.linaro.org, linux-i3c@lists.infradead.org,
+        linux-rdma@vger.kernel.org,
+        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-perf-users@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 15, 2022 at 03:04:54PM +0100, Rafael J. Wysocki wrote:
-> Adding Greg, who should be involved in this discussion IMO.
-> 
-> On Mon, Feb 14, 2022 at 11:59 PM Won Chung <wonchung@google.com> wrote:
+On Tue, Feb 15, 2022 at 8:24 PM Gustavo A. R. Silva
+<gustavoars@kernel.org> wrote:
+>
+> On Tue, Feb 15, 2022 at 09:19:29PM +0200, Leon Romanovsky wrote:
+> > On Tue, Feb 15, 2022 at 01:21:10PM -0600, Gustavo A. R. Silva wrote:
+> > > On Tue, Feb 15, 2022 at 10:17:40AM -0800, Kees Cook wrote:
+> > > > On Tue, Feb 15, 2022 at 11:47:43AM -0600, Gustavo A. R. Silva wrote:
+> > > >
+> > > > These all look trivially correct to me. Only two didn't have the end of
+> > > > the struct visible in the patch, and checking those showed them to be
+> > > > trailing members as well, so:
+> > > >
+> > > > Reviewed-by: Kees Cook <keescook@chromium.org>
+> > >
+> > > I'll add this to my -next tree.
 > >
-> > On Mon, Feb 14, 2022 at 12:30 PM Won Chung <wonchung@google.com> wrote:
-> > >
-> > > On Mon, Feb 14, 2022 at 11:12 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > > >
-> > > > On Fri, Feb 11, 2022 at 3:30 AM Won Chung <wonchung@google.com> wrote:
-> > > > >
-> > > > > When ACPI table includes _PLD fields for a device, create a new
-> > > > > directory (pld) in sysfs to share _PLD fields.
-> > > >
-> > > > This version of the patch loos better to me, but I'm not sure if it
-> > > > goes into the right direction overall.
-> > > >
-> > > > > Currently without PLD information, when there are multiple of same
-> > > > > devices, it is hard to distinguish which device corresponds to which
-> > > > > physical device in which location. For example, when there are two Type
-> > > > > C connectors, it is hard to find out which connector corresponds to the
-> > > > > Type C port on the left panel versus the Type C port on the right panel.
-> > > >
-> > > > So I think that this is your primary use case and I'm wondering if
-> > > > this is the best way to address it.
-> > > >
-> > > > Namely, by exposing _PLD information under the ACPI device object,
-> > > > you'll make user space wanting to use that information depend on this
-> > > > interface, but the problem is not ACPI-specific (inevitably, it will
-> > > > appear on systems using DT, sooner or later) and making the user space
-> > > > interface related to it depend on ACPI doesn't look like a perfect
-> > > > choice.
-> > > >
-> > > > IOW, why don't you create a proper ABI for this in the Type C
-> > > > subsystem and expose the information needed by user space in a generic
-> > > > way that can be based on the _PLD information on systems with ACPI?
-> > >
-> > > Hi Rafael,
-> > >
-> > > Thank you for the review.
-> > >
-> > > I was thinking that _PLD info is specific to ACPI since it is part of
-> > > the ACPI table. Could you explain a little bit more on why you think
-> > > exposing _PLD fields is not an ACPI-specific problem?
-> 
-> _PLD is an interface defined by ACPI, but its purpose is not ACPI-specific.
-> 
-> > Hi Rafael again,
-> >
-> > Sorry for the silly question here. I misunderstood your comment a bit,
-> > but I talked to Benson and Prashant for clarification. I understand
-> > now what you mean by it is not an ACPI-specific problem and exposing
-> > PLD would depend on ACPI.
-> 
-> Right.
-> 
-> > >
-> > > I gave an example of how _PLD fields can be used for specifying Type C
-> > > connectors, but it is not Type C specific. For Chrome OS, we plan to
-> > > initially add PLD to not only Type C connectors but also USB port
-> > > devices (including Type C and Type A). Also, PLD can be used in the
-> > > future for describing other types of ports too like HDMI. (Benson and
-> > > Prashant, please correct or add if I am wrong or missing some
-> > > information) Maybe my commit message was not detailed enough..
-> > >
-> > > I am also curious what Heikki thinks about this. Heikki, can you take
-> > > a look and share your thoughts?
-> >
-> > I am still curious what you and Heikki think about this since it may
-> > not be a Type C specific issue. We can start from adding generic
-> > location info to Type C subsystem first, as you suggested, then
-> > consider how to do the same for USB devices and Type A ports
-> > afterwards. I would appreciate sharing any thoughts or feedback. Thank
-> > you very much!
-> 
-> I don't really think that this is a Type C problem either.
-> 
-> It has existed for a long time in the USB world, for example, or
-> wherever there are user-accessible ports, but it looks like in the
-> Type C case it has become vitally important.
-> 
-> My point is that writing user space depending on accessing _PLD
-> information exposed under an ACPI device interface that only
-> corresponds to the device in question and in the ACPI-specific format
-> would be a mistake (Greg, please let me know if you disagree).  That's
-> because (a) it would depend on ACPI tables being present (so it
-> wouldn't work on systems without them) and (b) it would depend on the
-> format of data which covers information that isn't likely to be
-> relevant.
-> 
-> If this information is exposed by the kernel verbatim and user space
-> depending on this information is created, it will not be possible to
-> unexpose it even if it turns out that exposing it has been a mistake.
-> 
-> OTOH, if only the relevant pieces of information are exposed in a
-> generic way, it is always possible to expose more pieces of it in the
-> future as needed.
+> > I would like to ask you to send mlx5 patch separately to netdev. We are working
+> > to delete that file completely and prefer to avoid from unnecessary merge conflicts.
+>
+> Oh OK. Sure thing; I will do so.
 
-There are pending patches on the linux-usb mailing list from Heikki to
-help expand on the typec information in sysfs in a generic way.  Won,
-please work with the linux-usb developers on this change and do not do
-anything that is ACPI-specific and only.  That way will not be good for
-anyone involved.
+Can you also send the ACPI patch separately, please?
 
-Please see:
-	https://lore.kernel.org/r/20220203144657.16527-1-heikki.krogerus@linux.intel.com
-
-for the current discussion.
-
-thanks,
-
-greg k-h
+We would like to route it through the upstream ACPICA code base.
