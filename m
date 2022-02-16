@@ -2,157 +2,102 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7474B7A19
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Feb 2022 23:00:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1E3D4B809F
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Feb 2022 07:26:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239176AbiBOWA6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 15 Feb 2022 17:00:58 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56626 "EHLO
+        id S229619AbiBPG0l (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Feb 2022 01:26:41 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:50072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243036AbiBOWAs (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 15 Feb 2022 17:00:48 -0500
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E9207679;
-        Tue, 15 Feb 2022 14:00:37 -0800 (PST)
-Received: by mail-lf1-x133.google.com with SMTP id d23so156794lfv.13;
-        Tue, 15 Feb 2022 14:00:37 -0800 (PST)
+        with ESMTP id S229497AbiBPG0l (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Feb 2022 01:26:41 -0500
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 658881DA0D9;
+        Tue, 15 Feb 2022 22:26:20 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id y9so1584858pjf.1;
+        Tue, 15 Feb 2022 22:26:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language
-         :from:cc:references:to:in-reply-to:content-transfer-encoding;
-        bh=DVulEGE2JpmKCAwv+Z9nIfk2u5ZwvRtSEnvF0++tohE=;
-        b=eAbTUd8SWrkduWMDvYSL9PCIMvTyx1/PDNq+g34U5a6HTO/JfyDazuc/276Sm7ld7f
-         RQAUjz9KnJpaex/eozKDcsnVqqRwA5Fj5CSlNJHiQfzBkJVLCc7y3vw02lxihPY3TExU
-         lYcUYoYFkQWAG/XD2qnNsvTl5P4zqH6pcaasqRB1LojAt2IN4Q9BVX82FHrNStE8wYB4
-         mmhCvKeDI7YjVSy4dXfgCBsx8WWHAoaLNoouUIXdBuim6buHAqSq3/5veKqw8hxrEwEf
-         aYlaoKh86/GFDdT8ghhsvoX3tr735feUL8boUX68tZ9vbfpFMdKPrE/wFw8zC0NNEmPZ
-         ssKw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=dBNXgCdgCYaUbBErPqT71h5+5QqoItuAWvehu3xJcaw=;
+        b=LSeae50hst2QZlr14S+ETUone/JD5gLfA68GnptsxgIutLesAhfCxK81SVXKYTWy9e
+         I1Knah+bE7toxoWwtlRValeGLk4fV0CfxlFMIcRM9wMriZn0l8ugQVFLTJxaHr/rwKKi
+         lFF4W+igSt0HJXM6fQKQSSecTWRJU5ftmBj4XDzTReXJINYUQxIjMjWvgct6QlpHi19q
+         PXDJelr6TPMJaFsxKcTvBuh0PQ0Z63nXhdb2KVRUeo40zupZ2dejLRdPxglWUdBWsNws
+         2nA5uWGrP8wFcMpSAH8p/KVH1sk/KJsmI+KkXRzb8bUiD1Tj6eXNFeK7hi+PROuwDb9l
+         frFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:from:cc:references:to:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=DVulEGE2JpmKCAwv+Z9nIfk2u5ZwvRtSEnvF0++tohE=;
-        b=wTomICDpoIwEpCbz/72bMDFaEmVWU7jQc/NuRAsg5bofzOt+vrWhjPQ2iKSRqFWatq
-         2nn/6InANIri5CuyLP57qbEDM9mNc+5oZNOvgWA5aUbfkk3r9wDjbUSkFFER2DeqtH/a
-         bADUAVck22cpEUHFrfulL2xsLu64LIqrFQ+00XUn0A7FBhLtpL22/xqTllsHNe4eEPm7
-         g1Fru5sO0wB860IhOJJiDRGaDBtpzxBNQqYE73Et7s+bciz4Ih7cIC4g6X8+IJ3dqZ+K
-         17whSiQLXyb07yrqfCubnrkgnA7Ks4PppPUCaKBYPiXtyTFtzwoLKHoc68JFMAcjRFuF
-         yOWA==
-X-Gm-Message-State: AOAM531oZB9VDs53ngcnjqCct//CiNbyr8ZzJgloNmrvVFVlHGjuR1ts
-        zMznJoIsXh+/1v7IepFIBTg=
-X-Google-Smtp-Source: ABdhPJyJtWqeT1e2wzvijosINOm/qc6wwzWUL/FDa9uqhHR32CJOoO1KF1UaVLhHtHEQQhQBEaQuLQ==
-X-Received: by 2002:a05:6512:96d:: with SMTP id v13mr790998lft.343.1644962435902;
-        Tue, 15 Feb 2022 14:00:35 -0800 (PST)
-Received: from [192.168.2.145] (109-252-138-165.dynamic.spd-mgts.ru. [109.252.138.165])
-        by smtp.googlemail.com with ESMTPSA id k3sm66075lfo.10.2022.02.15.14.00.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Feb 2022 14:00:35 -0800 (PST)
-Message-ID: <635e8121-fca4-580c-6af5-d9317a2eee1b@gmail.com>
-Date:   Wed, 16 Feb 2022 01:00:33 +0300
+        bh=dBNXgCdgCYaUbBErPqT71h5+5QqoItuAWvehu3xJcaw=;
+        b=00q5IqqkYWvIWL9J7Vq9PPLY6/NEkrQ6pGYxhHQ8zPJZ2UbjfRSxTlPJBd+2xLx5/G
+         yS4ECyEV0JZHz3g3tk9b0cwrXadikIVDPmbFTW9N5sEk2Ly9CNyPKC22W7OWBPHIvXDc
+         wMW6M5EC5n01u04YUvSQ743eSPDV3RQsaYx1rBeLqtycYsD+itMNyBd0ORxXOW2Hpg/9
+         2zhKzjfxsPxbNaW9bHDu09xHjZJz3XtdcIksTBrnL/j7FneI1/hb2aazoIwDPgjA8z9m
+         +wVT//5ZRxsQMhRMIc1TwmNEhhyqAZvkFo2lA/q2zM+Famw/cN21PPgxA8trt2qiXunM
+         KXNQ==
+X-Gm-Message-State: AOAM532kBBdNhPjzLQmL7Mye72qwWB0CAllTKJW6pxd+d3fZNKfldfos
+        8jsSyksLAh8JJpN5hSyCEMw=
+X-Google-Smtp-Source: ABdhPJzvIyQ1ZKKBf53vZodnhgWF6ft6bdVdQOoopcsO/RIGfL50H98k8yCPMcS1jDNq0Q22m1+QUQ==
+X-Received: by 2002:a17:90a:d987:b0:1b8:f46d:1b83 with SMTP id d7-20020a17090ad98700b001b8f46d1b83mr69279pjv.221.1644992779671;
+        Tue, 15 Feb 2022 22:26:19 -0800 (PST)
+Received: from ubuntu-server.local ([2600:1700:3ec7:421f:fd1e:ea7b:d4f8:959b])
+        by smtp.googlemail.com with ESMTPSA id q16sm43487079pfu.194.2022.02.15.22.26.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Feb 2022 22:26:19 -0800 (PST)
+From:   Tong Zhang <ztong0001@gmail.com>
+To:     Robert Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        devel@acpica.org, linux-kernel@vger.kernel.org
+Cc:     Tong Zhang <ztong0001@gmail.com>
+Subject: [PATCH] ACPICA: proactively check null ptr to avoid API misuse
+Date:   Tue, 15 Feb 2022 22:26:15 -0800
+Message-Id: <20220216062615.779778-1-ztong0001@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v6 00/21] Introduce power-off+restart call chain API
-Content-Language: en-US
-From:   Dmitry Osipenko <digetx@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
-        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
-References: <20220130233718.21544-1-digetx@gmail.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-In-Reply-To: <20220130233718.21544-1-digetx@gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-31.01.2022 02:36, Dmitry Osipenko пишет:
-> Problem
-> -------
-> 
-> SoC devices require power-off call chaining functionality from kernel.
-> We have a widely used restart chaining provided by restart notifier API,
-> but nothing for power-off.
-> 
-> Solution
-> --------
-> 
-> Introduce new API that provides both restart and power-off call chains.
-> 
-> Why combine restart with power-off? Because drivers often do both.
-> More practical to have API that provides both under the same roof.
-> 
-> The new API is designed with simplicity and extensibility in mind.
-> It's built upon the existing restart and reboot APIs. The simplicity
-> is in new helper functions that are convenient for drivers. The
-> extensibility is in the design that doesn't hardcode callback
-> arguments, making easy to add new parameters and remove old.
-> 
-> This is a third attempt to introduce the new API. First was made by
-> Guenter Roeck back in 2014, second was made by Thierry Reding in 2017.
-> In fact the work didn't stop and recently arm_pm_restart() was removed
-> from v5.14 kernel, which was a part of preparatory work started by
-> Guenter Roeck. I took into account experience and ideas from the
-> previous attempts, extended and polished them.
+There are some cases that user use acpi_ns_walk_namespace() without
+checking acpi_disable flag. When acpi=off is provided in boot cmdline,
+acpi_gbl_root_node is NULL and calling acpi_ns_walk_namespace() will
+crash kernel. In order to avoid such misuse, we proactively check null ptr
+and return an error when we know ACPI is disabled.
 
+Signed-off-by: Tong Zhang <ztong0001@gmail.com>
+---
+ drivers/acpi/acpica/nswalk.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Rafael and all, do you see anything critical that needs to be improved
-in this v6?
+diff --git a/drivers/acpi/acpica/nswalk.c b/drivers/acpi/acpica/nswalk.c
+index 915c2433463d..9ae45db16d86 100644
+--- a/drivers/acpi/acpica/nswalk.c
++++ b/drivers/acpi/acpica/nswalk.c
+@@ -171,6 +171,13 @@ acpi_ns_walk_namespace(acpi_object_type type,
+ 		start_node = acpi_gbl_root_node;
+ 	}
+ 
++	/* acpi_gbl_root_node is NULL when acpi=off is provided.
++	 * We proactively check nulliness here and return an error if user call
++	 * this function without checking acpi_disabled
++	 */
++	if (start_node == NULL)
++		return_ACPI_STATUS(AE_ERROR);
++
+ 	/* Null child means "get first node" */
+ 
+ 	parent_node = start_node;
+-- 
+2.25.1
 
-Will be great if you could take this patchset via the power tree if it
-looks okay, or give an ack.
