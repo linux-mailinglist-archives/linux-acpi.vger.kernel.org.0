@@ -2,154 +2,112 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA2C64B878C
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Feb 2022 13:25:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B7714B8BF4
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Feb 2022 16:02:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233065AbiBPM0G convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-acpi@lfdr.de>); Wed, 16 Feb 2022 07:26:06 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48638 "EHLO
+        id S235279AbiBPPCK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 16 Feb 2022 10:02:10 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229643AbiBPM0F (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Feb 2022 07:26:05 -0500
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC0B027AA10;
-        Wed, 16 Feb 2022 04:25:53 -0800 (PST)
-Received: by mail-yb1-f173.google.com with SMTP id bt13so5538742ybb.2;
-        Wed, 16 Feb 2022 04:25:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ZzgKkF+Qi9uD0PohBja9X66WgBtIRyDp12JGMxNBcpY=;
-        b=SmFG6cMNn2WzcalJa27s9eH1YqlUBva1gEkgs99/RkIpoUz6kxJSHUIqIP7IRJx6zM
-         2cEsy4f2xS3oirL8EQeh/CI1NAiwXnbQvdfzVfu02n721tJsL2/AuNc1vM7QZ9KWhAMM
-         WVoauxya1DfWyx/5DmjnV0NDxwqzmH2YKw2Yf+t6ZUXasSFFCXZg/7BG+1ZKrGzN0umZ
-         uZiKTrlruhxGMLpVdVQZOkREYLBpFIp/tUz71rL7dD2XPupu+bXIk//dgX5JMg6Q5/VF
-         nRn8ocKmLjm8+2xI1oA4PniZi16eW6h9mhgr9cdwwmrT84vYCT32ceA88etkK8vxNX1n
-         zXpw==
-X-Gm-Message-State: AOAM531dUfwXvaobtSMX/InoOCL/yhv4RMB/74kpsaF6OhowM7VW9glf
-        GHM3ooZHTWYtAdEvXiLHWpd23aAcTie6I4M2hkA=
-X-Google-Smtp-Source: ABdhPJzgB2WXDlMNWyEW279no9A0knLc+PLldmsjtAqBW5sJWGuZ+ouM0fPGPUzKV7R9c8p8BV9gaIDPnZPFqeD/pjM=
-X-Received: by 2002:a81:f008:0:b0:2d0:cd72:74e5 with SMTP id
- p8-20020a81f008000000b002d0cd7274e5mr2135032ywm.301.1645014353165; Wed, 16
- Feb 2022 04:25:53 -0800 (PST)
-MIME-Version: 1.0
-References: <20220130233718.21544-1-digetx@gmail.com> <635e8121-fca4-580c-6af5-d9317a2eee1b@gmail.com>
-In-Reply-To: <635e8121-fca4-580c-6af5-d9317a2eee1b@gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 16 Feb 2022 13:25:39 +0100
-Message-ID: <CAJZ5v0g0MrBm2+GwctkB7kUyBEt6HTAexRCFFRmTF1UKDrVQ-g@mail.gmail.com>
-Subject: Re: [PATCH v6 00/21] Introduce power-off+restart call chain API
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
+        with ESMTP id S232406AbiBPPCI (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 16 Feb 2022 10:02:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9E39929811
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Feb 2022 07:01:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1645023714;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=+UqUVIxbZMl/kcmiE8/GxYjkclUR25EltdZ3iz7ajFc=;
+        b=T53Ooawqo75CqLL5FwRtQ99lnuPIIhTPyg3ACLf+YhjTItraU/sfdXWZV8wXvrlqkKO7dV
+        KaZukubhBCTsSxnpoOdlObLLP0wQ3GTKFEGB0dMCRsEhOwhrBPAoRLhbAy4wGrkBaUY42w
+        RLvQc3n8QTjFjH76vrwQm7OqzpRE8+M=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-205-2EqMt_uvN3mCv4_iGsuUqQ-1; Wed, 16 Feb 2022 10:01:50 -0500
+X-MC-Unique: 2EqMt_uvN3mCv4_iGsuUqQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9EA19100C612;
+        Wed, 16 Feb 2022 15:01:48 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.193.75])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4F05170D58;
+        Wed, 16 Feb 2022 15:01:27 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
-        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        "H . Peter Anvin" <hpa@zytor.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        =?UTF-8?q?Benoit=20Gr=C3=A9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/1] x86/PCI: Disable exclusion of E820 reserved addresses in some cases
+Date:   Wed, 16 Feb 2022 16:01:20 +0100
+Message-Id: <20220216150121.9400-1-hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 15, 2022 at 11:00 PM Dmitry Osipenko <digetx@gmail.com> wrote:
->
-> 31.01.2022 02:36, Dmitry Osipenko пишет:
-> > Problem
-> > -------
-> >
-> > SoC devices require power-off call chaining functionality from kernel.
-> > We have a widely used restart chaining provided by restart notifier API,
-> > but nothing for power-off.
-> >
-> > Solution
-> > --------
-> >
-> > Introduce new API that provides both restart and power-off call chains.
-> >
-> > Why combine restart with power-off? Because drivers often do both.
-> > More practical to have API that provides both under the same roof.
-> >
-> > The new API is designed with simplicity and extensibility in mind.
-> > It's built upon the existing restart and reboot APIs. The simplicity
-> > is in new helper functions that are convenient for drivers. The
-> > extensibility is in the design that doesn't hardcode callback
-> > arguments, making easy to add new parameters and remove old.
-> >
-> > This is a third attempt to introduce the new API. First was made by
-> > Guenter Roeck back in 2014, second was made by Thierry Reding in 2017.
-> > In fact the work didn't stop and recently arm_pm_restart() was removed
-> > from v5.14 kernel, which was a part of preparatory work started by
-> > Guenter Roeck. I took into account experience and ideas from the
-> > previous attempts, extended and polished them.
->
->
-> Rafael and all, do you see anything critical that needs to be improved
-> in this v6?
->
-> Will be great if you could take this patchset via the power tree if it
-> looks okay, or give an ack.
+Hi all,
 
-I need some more time for this, sorry.
+Here is a new patch to try and address the exclusion of E820 reserved
+addresses from PCI bridge windows causing issues on some systems.
 
-I'm a bit concerned about seeing no response to this set from anyone.
+Since the previous attempt at fixing this (commit 7f7b4236f204 ("x86/PCI:
+Ignore E820 reservations for bridge windows on newer systems")) we have
+learned that excluding E820 reserved addresses from PCI bridge windows
+helps to workaround issues where the ACPI _CRS advertised window for
+the bridge overlaps with some mem addresses which we should not touch,
+so just disabling it on most new systems turns out to not be a good idea.
 
-It looks like multiple platforms may be affected by it in principle,
-so doesn't anyone care?
+This new patch instead takes a very narrow approach. On all the systems
+where we end up having issues to allocate PCI BARs this is caused by there
+being a MMIO EFI memmap entry which covers the entire ACPI _CRS advertised
+window for the PCI bridge.  This new patch makes use of this by making
+pci_acpi_root_prepare_resources() check for those specific set of
+conditions and when these exact conditions are met, then disable the
+exclusion of E820 reserved addresses from PCI bridge windows, to fix
+the PCI BAR allocation failures.
+
+This has been successfully tested on one of the laptops where we were
+seeing PCI BAR allocation failures, see:
+https://bugzilla.redhat.com/show_bug.cgi?id=1868899
+
+I've also tested this on a X1C8 and the new "host bridge window %pR is
+marked by EFI as MMIO" message does not show up there as expected.
+
+Regards,
+
+Hans
+
+
+Hans de Goede (1):
+  x86/PCI: Disable exclusion of E820 reserved addressed in some cases
+
+ arch/x86/include/asm/pci_x86.h |  8 +++++
+ arch/x86/kernel/resource.c     |  4 +++
+ arch/x86/pci/acpi.c            | 65 +++++++++++++++++++++++++++++++++-
+ 3 files changed, 76 insertions(+), 1 deletion(-)
+
+-- 
+2.33.1
+
