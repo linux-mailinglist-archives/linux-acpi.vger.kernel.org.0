@@ -2,113 +2,148 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 024014B9D8C
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Feb 2022 11:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01EDB4BA836
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Feb 2022 19:28:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230104AbiBQKtJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Feb 2022 05:49:09 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42208 "EHLO
+        id S244368AbiBQS2F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Feb 2022 13:28:05 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230033AbiBQKtJ (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Feb 2022 05:49:09 -0500
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E9781ED1DB
-        for <linux-acpi@vger.kernel.org>; Thu, 17 Feb 2022 02:48:54 -0800 (PST)
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-2d6923bca1aso18165557b3.9
-        for <linux-acpi@vger.kernel.org>; Thu, 17 Feb 2022 02:48:54 -0800 (PST)
+        with ESMTP id S244467AbiBQS1o (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Feb 2022 13:27:44 -0500
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 795F824F29
+        for <linux-acpi@vger.kernel.org>; Thu, 17 Feb 2022 10:27:16 -0800 (PST)
+Received: by mail-pl1-x634.google.com with SMTP id u5so5248412ple.3
+        for <linux-acpi@vger.kernel.org>; Thu, 17 Feb 2022 10:27:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=O7XAdhfqnK4iH4EoLafYbReQ6dbwtazRaihHUR1ZOE0=;
+        b=aOQEOW87par6/hUQsWI+atBymO6HJq3KNqivVuk3LN53R/lXy0VZ1sMi9cb4Ezfu0k
+         YcuA89dLFp6bwGyZBL0DWx0DNjvezBlAXmwcfKGPnFpt4zv+aWbt6ruHafRLZERyKDdg
+         /ywSUhrnG7+TlBxdXQhUEjmKNDiJBIy4H4nAaiF2OPGqwZNNQkUMp1Yd1HVkzcfNQREr
+         dhU+0IEc9tV0eofRN/OrDTJrycEHvvTySUNYqRbsJiA6fK2xbcn4vFEzHk5G2535nsn1
+         ibXnD79AQeOqK0rNYxPUuGKn7BVsj01prmiRItpZYCW9GkCaeB5OrPA/sZrA6GFkBsMx
+         zHXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=cs9Th8M4apHjGs2KFhGILUvXDgQHRaRC8zub7Hxk0Wk=;
-        b=ybAOdoACB+zlkQKWmN4Z+b4bHLSWoND3nh6beCeFqTi0gk9b7Nmc+MKxa6dkaTB3Ca
-         RYoaeLd7GIQOqS9eRo1X+gYVXwTxaADIn/viU72pMCl5aJgEAbn8/4IcWnhX7WXDomOS
-         uk1wBA4pYCI69qWjolLKhx4p89XpFIdXk4GFFbpaGu9PLhLezK6y69UhN2cRGuZ7lQPc
-         xi20bUvhAUuiNQT+brvSQkzKEXqodlHfF2m6MH73xXtGnWqH2nPSy9TpM5YpZEDXH/1n
-         1sOAJ3bbBbFQTph6Z8MhL2Y62SW+Vy6Kkx3CSO67kmZIkHfCbl1j3Af0zcb9O4av/JPa
-         zjrg==
-X-Gm-Message-State: AOAM530aYmN3IU7+qlZrQraOwFWqkyaL3fn2rfY1A7rcQi9ZfQdz9+v3
-        NNX/UThlHppKBO5ZR5FFqCr8ge9ir7KZ4VZ3g39CYdhkJHU=
-X-Google-Smtp-Source: ABdhPJzDwtFjQuEl3Qvy2ZZiWM/e9C5GHpQpOwJDqeVb2w1hcx6XPn1/jOCKUYB1HqlaNmHMrotINCyJcTkGB56aqz0=
-X-Received: by 2002:a0d:e8d2:0:b0:2d6:1743:4023 with SMTP id
- r201-20020a0de8d2000000b002d617434023mr2001564ywe.7.1645094933233; Thu, 17
- Feb 2022 02:48:53 -0800 (PST)
+        bh=O7XAdhfqnK4iH4EoLafYbReQ6dbwtazRaihHUR1ZOE0=;
+        b=wY/JqiF/JpWCngW3Wo6mAsFytecZFs+wHUL86in+koFyYgAyJbIQBKumCNiGxrfzOz
+         MKUke08Uank5fgNrlTAM+TH9tbdvWkG+udeh80FRlkUQ8vK/67bXao6o0+hpUtTBhbFd
+         j6dwjcf1elcPwEVC2EaPe+fd5mvNcp34OBoxsPy0kPZwrna2hIMvqCxlmNrYjzAu055q
+         7pCxj+mP50AFIJQ0tnSVT+AOrZcqY2ndugjuC0DyPFvNlUPCCQB7bbMJH2/t5x7aPW3o
+         c28t6C9aQR3+8rHa1fYydmPMMvPX3ygFGFrouzvTAuYCxxGJ1Kb8aGMwgNhOUqXKthrZ
+         fUXg==
+X-Gm-Message-State: AOAM531dkWbj6tPuYaiIPyg3/cok4vKK95iVYvQre8CIPXTBp2xth3jx
+        PIQruKy5XKGlxG7MHfCqtYDoqnrBLrX21vNmtKhEjg==
+X-Google-Smtp-Source: ABdhPJzzl6/RD71m50k6jNfthMXlVrq4MNqDsnsfYDglBmZQcAKm9mTqZVD6H3aTVEzCKDs8r6vPYnr60mSzdBH2T10=
+X-Received: by 2002:a17:902:ba96:b0:14c:8407:8e4b with SMTP id
+ k22-20020a170902ba9600b0014c84078e4bmr3841382pls.135.1645122435705; Thu, 17
+ Feb 2022 10:27:15 -0800 (PST)
 MIME-Version: 1.0
-References: <BL1PR12MB5157C5EA5510F0C9D7782AE8E2369@BL1PR12MB5157.namprd12.prod.outlook.com>
-In-Reply-To: <BL1PR12MB5157C5EA5510F0C9D7782AE8E2369@BL1PR12MB5157.namprd12.prod.outlook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 17 Feb 2022 11:48:41 +0100
-Message-ID: <CAJZ5v0g81BmytcjgChXZumsHV5-byzSzDQbp2hc6CYzJ_6N=aw@mail.gmail.com>
-Subject: Re: Regression in 5.16-rc1 with suspend to idle
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
+References: <20220216220541.1635665-1-rajatja@google.com> <Yg3oNkwS3XSzmJAu@kroah.com>
+In-Reply-To: <Yg3oNkwS3XSzmJAu@kroah.com>
+From:   Rajat Jain <rajatja@google.com>
+Date:   Thu, 17 Feb 2022 10:26:39 -0800
+Message-ID: <CACK8Z6GvXw_V_R5YKyB-mLnLXG08v-HpcPbe5LxrS=Z7N+pffQ@mail.gmail.com>
+Subject: Re: [PATCH v3] PCI: ACPI: Support Microsoft's "DmaProperty"
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rajat Jain <rajatxjain@gmail.com>,
+        Dmitry Torokhov <dtor@google.com>,
+        Jesse Barnes <jsbarnes@google.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Pavel Machek <pavel@denx.de>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Joerg Roedel <joro@8bytes.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 17, 2022 at 7:15 AM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
->
-> [Public]
->
-> Hi Rafael,
->
-> I've found recently that on kernel 5.17-rc4 some OEM AMD laptops are shutting down when entering suspend to idle.
+Hello,
 
-Interesting.  Can you identify the exact point when the shutdown occurs?
-
-> I bisected this back to commit 8d89835b0467 ("PM: suspend: Do not pause cpuidle in the suspend-to-idle path")
-> which was introduced in 5.16-rc1.  As this code has changed since 5.16-rc1 (notably 23f62d7ab25), a simple revert
-> won't suffice.
+On Wed, Feb 16, 2022 at 10:16 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> # good: [8bb7eca972ad531c9b149c0a51ab43a417385813] Linux 5.15
-> git bisect good 8bb7eca972ad531c9b149c0a51ab43a417385813
-> # bad: [fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf] Linux 5.16-rc1
-> git bisect bad fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf
-> # bad: [313b6ffc8e90173f1709b2f4bf9d30c4730a1dde] Merge tag 'linux-kselftest-kunit-5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest
-> git bisect bad 313b6ffc8e90173f1709b2f4bf9d30c4730a1dde
-> # good: [84882cf72cd774cf16fd338bdbf00f69ac9f9194] Revert "net: avoid double accounting for pure zerocopy skbs"
-> git bisect good 84882cf72cd774cf16fd338bdbf00f69ac9f9194
-> # good: [79ef0c00142519bc34e1341447f3797436cc48bf] Merge tag 'trace-v5.16' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace
-> git bisect good 79ef0c00142519bc34e1341447f3797436cc48bf
-> # good: [0f3d2b680444d5697650b5529c9e749acbf7371f] drm/amdkfd: protect raven_device_info with KFD_SUPPORT_IOMMU_V2
-> git bisect good 0f3d2b680444d5697650b5529c9e749acbf7371f
-> # good: [a64a325bf6313aa5cde7ecd691927e92892d1b7f] Merge tag 'afs-next-20211102' of git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs
-> git bisect good a64a325bf6313aa5cde7ecd691927e92892d1b7f
-> # good: [d9bd054177fbd2c4762546aec40fc3071bfe4cc0] Merge tag 'amd-drm-next-5.16-2021-10-29' of https://gitlab.freedesktop.org/agd5f/linux into drm-next
-> git bisect good d9bd054177fbd2c4762546aec40fc3071bfe4cc0
-> # bad: [833db72142b93a89211c1e43ca0a1e2e16457756] Merge tag 'pm-5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-> git bisect bad 833db72142b93a89211c1e43ca0a1e2e16457756
-> # good: [33fb42636a938be01d951b4cee68127a59a1e7e4] Merge branch 'ucount-fixes-for-v5.16' of git://git.kernel.org/pub/scm/linux/kernel/git/ebiederm/user-namespace
-> git bisect good 33fb42636a938be01d951b4cee68127a59a1e7e4
-> # good: [c0d6586afa3546a3d148cf4b9d9a407b4f79d0bb] Merge tag 'acpi-5.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-> git bisect good c0d6586afa3546a3d148cf4b9d9a407b4f79d0bb
-> # bad: [b62b306469b36fae7030c0ad4ffa11de0c9b9957] Merge branch 'pm-sleep'
-> git bisect bad b62b306469b36fae7030c0ad4ffa11de0c9b9957
-> # good: [1fec16118ff9b822431d83a16430de60cf8e8769] Merge branch 'pm-pci'
-> git bisect good 1fec16118ff9b822431d83a16430de60cf8e8769
-> # good: [928265e3601cde78c7e0a3e518a93b27defed3b1] PM: sleep: Do not let "syscore" devices runtime-suspend during system transitions
-> git bisect good 928265e3601cde78c7e0a3e518a93b27defed3b1
-> # bad: [9f6abfcd67aae51374b4e8aa0b11f0ebd0d8562f] PM: suspend: Use valid_state() consistently
-> git bisect bad 9f6abfcd67aae51374b4e8aa0b11f0ebd0d8562f
-> # bad: [23f62d7ab25bd1a7dbbb89cfcd429df7735855af] PM: sleep: Pause cpuidle later and resume it earlier during system transitions
-> git bisect bad 23f62d7ab25bd1a7dbbb89cfcd429df7735855af
-> # bad: [8d89835b0467b7e618c1c93603c1aff85a0c3c66] PM: suspend: Do not pause cpuidle in the suspend-to-idle path
-> git bisect bad 8d89835b0467b7e618c1c93603c1aff85a0c3c66
-> # first bad commit: [8d89835b0467b7e618c1c93603c1aff85a0c3c66] PM: suspend: Do not pause cpuidle in the suspend-to-idle path
+> On Wed, Feb 16, 2022 at 02:05:41PM -0800, Rajat Jain wrote:
+> > The "DmaProperty" is supported and documented by Microsoft here:
+> > https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
+> > They use this property for DMA protection:
+> > https://docs.microsoft.com/en-us/windows/security/information-protection/kernel-dma-protection-for-thunderbolt
+> >
+> > Support the "DmaProperty" with the same semantics. Windows documents the
+> > property to apply to PCIe root ports only. Extend it to apply to any
+> > PCI device. This is useful for internal PCI devices that do not hang off
+> > a PCIe rootport, but offer an attack surface for DMA attacks (e.g.
+> > internal network devices).
+> >
+> > Signed-off-by: Rajat Jain <rajatja@google.com>
+> > ---
+> > v3: * Use Microsoft's documented property "DmaProperty"
+> >     * Resctrict to ACPI only
+> >
+> >  drivers/pci/pci-acpi.c | 18 ++++++++++++++++++
+> >  1 file changed, 18 insertions(+)
+> >
+> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> > index a42dbf448860..660baa60c040 100644
+> > --- a/drivers/pci/pci-acpi.c
+> > +++ b/drivers/pci/pci-acpi.c
+> > @@ -1350,12 +1350,30 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
+> >               dev->external_facing = 1;
+> >  }
+> >
+> > +static void pci_acpi_check_for_dma_protection(struct pci_dev *dev)
+> > +{
+> > +     u8 val;
+> > +
+> > +     /*
+> > +      * Microsoft Windows uses this property, and is documented here:
+> > +      * https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
+> > +      * While Microsoft documents this property as only applicable to PCIe
+> > +      * root ports, we expand it to be applicable to any PCI device.
+> > +      */
+> > +     if (device_property_read_u8(&dev->dev, "DmaProperty", &val))
+> > +             return;
 >
-> What would you suggest to be done in this case?  Revert both commits?  Or would you prefer to have a fixup on top
-> of that?
+> Why not continue to only do this for PCIe devices like it is actually
+> being used for?  Why expand it?
 
-I would prefer to fix the problem on top of the current 5.16-rc.
+Because devices hanging off of PCIe root ports are not the only ones
+that may need DMA protection. There may be internal PCI devices (that
+don't hang off a PCIe root port) that may need DMA protection.
+Examples include internal network controllers that may offer an attack
+surface by handling network data or running vendor firmware.
 
-Thanks!
+>
+> And what driver/device is going to use this?
+
+This is already used by PCI subsystem to enforce stricter ACS
+settings, and IOMMU drivers to enforce stricter IOMMU settings.
+
+Thanks & Best Regards,
+
+Rajat
+
+>
+> thanks,
+>
+> greg k-h
