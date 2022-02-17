@@ -2,118 +2,133 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 357CB4B9B67
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Feb 2022 09:47:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F6224B9C8C
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Feb 2022 10:55:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237905AbiBQIsL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Feb 2022 03:48:11 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40660 "EHLO
+        id S238898AbiBQJzu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Feb 2022 04:55:50 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235672AbiBQIsK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Feb 2022 03:48:10 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC40A2A0D7C;
-        Thu, 17 Feb 2022 00:47:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645087673; x=1676623673;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PDYw5rQvsj5va8j31Q9ml+BYtwBg3y8USkcS+rlhy/s=;
-  b=GVMw/odFrmF2FLqRqpaG8SfrK5NCs6M0LV4S77Y/z+ptKetohILkjnKT
-   inEZ8ky0YowVgLSyDRFpZaCT9QXZBMPGDNA8MNYTeqLXP/eLpbA9FyGBg
-   3UVA2nA7Fq+s+9DS9JYXPxkZPQhCiZfJpZH3ZzAFjCRsfW2Fj9QpgYYIw
-   HleKzWnZV/v0GLAQOg52Y04+hXpAIXvjFzQsfXvHVo9B8MtkdaigDxUe2
-   Pw+7iNpVnOdMHxIUTPecrOMetUbLMvMXZXc8XkDZ0A9KSbeem8JYr+vyD
-   8QI2uPeZz3+DXx+ymHVwR7ksKWvCUmSZCF/tXjgk/KjP4PI3XWKPpi7v8
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10260"; a="248424765"
-X-IronPort-AV: E=Sophos;i="5.88,375,1635231600"; 
-   d="scan'208";a="248424765"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2022 00:47:53 -0800
-X-IronPort-AV: E=Sophos;i="5.88,375,1635231600"; 
-   d="scan'208";a="634446125"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2022 00:47:48 -0800
-Received: by lahna (sSMTP sendmail emulation); Thu, 17 Feb 2022 10:47:46 +0200
-Date:   Thu, 17 Feb 2022 10:47:46 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] x86/PCI: Disable exclusion of E820 reserved
- addresses in some cases
-Message-ID: <Yg4LsrPRkLfRz7eB@lahna>
-References: <20220216150121.9400-1-hdegoede@redhat.com>
- <20220216150121.9400-2-hdegoede@redhat.com>
+        with ESMTP id S238926AbiBQJzt (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Feb 2022 04:55:49 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2C306D5544
+        for <linux-acpi@vger.kernel.org>; Thu, 17 Feb 2022 01:55:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1645091733;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=eyehDj2VTQQcbrlQrKGbSsSHxAxbSKUJikiSyHYpsMY=;
+        b=AhHUAoA0je363/cRB47LVIswX6ERYkxo5t8d/ahIWSb0ESJ2PGojRnAY7kq//h7Ih7gDxg
+        eJA2oIEb/lvqGMpW81HxoC9BQwWIoHbMjqC6NOAsIM8z68xPdn1shusN9/qdXKhTOiIkm7
+        V80dcdrAcUWa6IH2KZiGTkMzL6kq7ok=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-637-G1a9-0ZFOaCAjL2V7XBuLg-1; Thu, 17 Feb 2022 04:55:31 -0500
+X-MC-Unique: G1a9-0ZFOaCAjL2V7XBuLg-1
+Received: by mail-ed1-f71.google.com with SMTP id m4-20020a50cc04000000b0040edb9d147cso3210513edi.15
+        for <linux-acpi@vger.kernel.org>; Thu, 17 Feb 2022 01:55:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=eyehDj2VTQQcbrlQrKGbSsSHxAxbSKUJikiSyHYpsMY=;
+        b=aHfqf7zW3fLvjTJaAQaFVr/D+wB/99Du77PW13uiN7xA44b2Mq+KqlmKYADLX8i8Nw
+         lVQY09wrWddKP2ICyyIhyYJ4MN4pjjJoM3jTWkTZcg9e3i3z0T8+sdGvhGp4FYCq7aC+
+         1i4OfyfO24p54Ejyrw1nByrcodI2w0qqovRfjPedV92wWOxkI+Oa6sIOjSCV6ZTdHard
+         pSYD6EBHo/Vxxri+gxXTA2xzljfd7YEhozfH+urXJ5ZStkRsN1ToMS62133mWNye9UWC
+         TNiQF0JZQxiPIAw6xXLBXnJYTy/aFEWpo4KY+uLqHtN6OU2Rm+zk9yAYOs47QHbFb3vH
+         JSIA==
+X-Gm-Message-State: AOAM530s92Y+X+WXbNrBPzo5zCovew5dY0zrF32W7ygTKyvhozDlITha
+        JbzRBvKp+0WU3R1asIB09U1v1pgCzPkiTK2r3jB5Hu4zT41w3vgjeFqKLYjD3AsIjXo8vWY1IRy
+        +CEehCd3sn610UWpDO8OHRg==
+X-Received: by 2002:a17:906:71d7:b0:6bb:c057:3a6 with SMTP id i23-20020a17090671d700b006bbc05703a6mr1658503ejk.22.1645091730653;
+        Thu, 17 Feb 2022 01:55:30 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzDSILftK4zZpohcvCGqRpOvy2dnmE9rgV73s3LlEyfrOXVw8a8s5388bBYSA2m939HVhQSTA==
+X-Received: by 2002:a17:906:71d7:b0:6bb:c057:3a6 with SMTP id i23-20020a17090671d700b006bbc05703a6mr1658490ejk.22.1645091730425;
+        Thu, 17 Feb 2022 01:55:30 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id j6sm2970866edl.98.2022.02.17.01.55.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Feb 2022 01:55:29 -0800 (PST)
+Message-ID: <f2b58ed6-6c53-42af-6fa1-94b9fd746fc3@redhat.com>
+Date:   Thu, 17 Feb 2022 10:55:29 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220216150121.9400-2-hdegoede@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH 0/6] Add multiple-consumer support to int3472-tps68470
+ driver
+Content-Language: en-US
+To:     Daniel Scally <djrscally@gmail.com>, linux-acpi@vger.kernel.org,
+        linux-clk@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, mturquette@baylibre.com,
+        sboyd@kernel.org, markgross@kernel.org, robert.moore@intel.com
+References: <20220216225304.53911-1-djrscally@gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220216225304.53911-1-djrscally@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 16, 2022 at 04:01:21PM +0100, Hans de Goede wrote:
-> Some fw has a bug where the PCI bridge window returned by the ACPI
-> resources partly overlaps with some other address range, causing issues.
-> To workaround this Linux excludes E820 reserved addresses when allocating
-> addresses from the PCI bridge window. 2 known examples of such fw bugs are:
-> 
-> 1. The returned window contains addresses which map to system RAM,
-> see commit 4dc2287c1805 ("x86: avoid E820 regions when allocating
-> address space").
-> 
-> 2. The Lenovo X1 carbon gen 2 BIOS has an overlap between an EFI/E820
-> reserved range and the ACPI provided PCI bridge window:
->  efi: mem46: [MMIO] range=[0x00000000dfa00000-0x00000000dfa0ffff] (0MB)
->  BIOS-e820: [mem 0x00000000dceff000-0x00000000dfa0ffff] reserved
->  pci_bus 0000:00: root bus resource [mem 0xdfa00000-0xfebfffff window]
-> If Linux assigns the overlapping 0xdfa00000-0xdfa0ffff range to a PCI BAR
-> then the system fails to resume after a suspend.
-> 
-> Recently (2019) some systems have shown-up with EFI memmap MMIO entries
-> covering the entire ACPI provided PCI bridge window. These memmap entries
-> get converted into e820_table entries, causing all attempts to assign
-> memory to PCI BARs which have not been setup by the BIOS to fail.
-> For example see these dmesg snippets from a Lenovo IdeaPad 3 15IIL 81WE:
->  efi: mem63: [MMIO] range=[0x0000000065400000-0x00000000cfffffff] (1708MB)
->  BIOS-e820: [mem 0x000000004bc50000-0x00000000cfffffff] reserved
->  pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
->  pci 0000:00:15.0: BAR 0: no space for [mem size 0x00001000 64bit]
->  pci 0000:00:15.0: BAR 0: failed to assign [mem size 0x00001000 64bit]
-> 
-> To fix this, check if the ACPI provided PCI bridge window is fully
-> contained within in EFI memmap MMIO region and in that case disable
-> the "exclude E820 reserved addresses" workaround, fixing the problem
-> of not being able to find free space for unassigned BARs.
-> 
-> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
-> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
-> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
-> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=2029207
-> BugLink: https://bugs.launchpad.net/bugs/1878279
-> BugLink: https://bugs.launchpad.net/bugs/1931715
-> BugLink: https://bugs.launchpad.net/bugs/1932069
-> BugLink: https://bugs.launchpad.net/bugs/1921649
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Hi Dan,
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+On 2/16/22 23:52, Daniel Scally wrote:
+> At the moment there are a few places in the int3472-tps68470 driver that are
+> limited to just working with a single consuming device dependent on the PMIC.
+> There are systems where multiple camera sensors share a single TPS68470, so
+> we need to extend the driver to support them. This requires a couple of tweaks
+> to the ACPI functions to fetch dependent devices, which also assumes that only
+> a single dependent will be found.
+
+This sounds great, thank you for your work on this. I have a bit of a backlog wrt
+pdx86 patches to review and I try to through those in FIFO order to keep things fair,
+so it may be a while (approx. 1-2 weeks) before I get around to reviewing
+these.
+
+Regards,
+
+Hans
+
+
+> 
+> Hans - this (plus a series to media [1]) adds support for the Surface Go 2's
+> IR camera...the regulator settings for the Go1/2/3 world facing camera are the
+> same, so I'd expect them to match for the IR sensor too, which means it should
+> enable support for your Go too.
+> 
+> Thanks
+> Dan
+> 
+> 
+> [1] https://lore.kernel.org/linux-media/20220215230737.1870630-1-djrscally@gmail.com/
+> 
+> Daniel Scally (6):
+>   ACPI: scan: Add acpi_dev_get_next_consumer_dev()
+>   ACPI: bus: Add iterator for dependent devices
+>   platform/x86: int3472: Support multiple clock consumers
+>   platform/x86: int3472: Add terminator to gpiod_lookup_table
+>   platform/x86: int3472: Support multiple gpio lookups in board data
+>   platform/x86: int3472: Add board data for Surface Go2 IR camera
+> 
+>  drivers/acpi/scan.c                           | 47 +++++++++--
+>  drivers/clk/clk-tps68470.c                    | 13 +++-
+>  drivers/platform/x86/intel/int3472/tps68470.c | 77 +++++++++++++++----
+>  drivers/platform/x86/intel/int3472/tps68470.h |  3 +-
+>  .../x86/intel/int3472/tps68470_board_data.c   | 58 +++++++++++++-
+>  include/acpi/acpi_bus.h                       | 14 ++++
+>  include/linux/platform_data/tps68470.h        |  7 +-
+>  7 files changed, 188 insertions(+), 31 deletions(-)
+> 
+
