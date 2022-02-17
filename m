@@ -2,143 +2,96 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DC7C4BA879
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Feb 2022 19:38:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EBC94BAA7B
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Feb 2022 21:00:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234747AbiBQSjE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Feb 2022 13:39:04 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56408 "EHLO
+        id S241894AbiBQUAL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Feb 2022 15:00:11 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:43366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231635AbiBQSjD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Feb 2022 13:39:03 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D17DC3AA75;
-        Thu, 17 Feb 2022 10:38:48 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B5DE61B5C;
-        Thu, 17 Feb 2022 18:38:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FCFC340E8;
-        Thu, 17 Feb 2022 18:38:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1645123127;
-        bh=CyOmo73uQK0oviPrn56rJcPWcvjlQDp6bDlAYeuIiHA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TpIGusvzAbFG5IO6VvNlGUxufqMoaqQKHA6euuDe9xd3tKQVFKsb2i0DE+O1/E6lA
-         zpnhUh9+zp81qRTqnMJQC33HrvifLdLse1ls7JqDBvtxOqbPjBQQkro1dSTpMSHwP6
-         jdbQJMauLGPGrh5YTxrBWBmZubkqEbiKanBW6+QE=
-Date:   Thu, 17 Feb 2022 19:38:44 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Rajat Jain <rajatja@google.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rajat Jain <rajatxjain@gmail.com>,
-        Dmitry Torokhov <dtor@google.com>,
-        Jesse Barnes <jsbarnes@google.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Pavel Machek <pavel@denx.de>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Joerg Roedel <joro@8bytes.org>
-Subject: Re: [PATCH v3] PCI: ACPI: Support Microsoft's "DmaProperty"
-Message-ID: <Yg6WNNfnyUAOjLAP@kroah.com>
-References: <20220216220541.1635665-1-rajatja@google.com>
- <Yg3oNkwS3XSzmJAu@kroah.com>
- <CACK8Z6GvXw_V_R5YKyB-mLnLXG08v-HpcPbe5LxrS=Z7N+pffQ@mail.gmail.com>
+        with ESMTP id S242729AbiBQUAK (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Feb 2022 15:00:10 -0500
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75BBD29CBA;
+        Thu, 17 Feb 2022 11:59:55 -0800 (PST)
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-2d07ae0b1c4so44194027b3.11;
+        Thu, 17 Feb 2022 11:59:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ibo+ljOZltOHxbfiowmfbU4E0+eJxT2hqrSRwf9WFds=;
+        b=8QZY6lI3jXqcmpyxtXp6jocIXp+NaqQEOdv82LkssGAMEw33X5Xb1fBc9U7Ou9MwG5
+         L+PO0aAH9NNHqQ8igYgC+8x/sU4mVB3dwiNnptt39uQCSlqOrODomZBc61dMe2+taNa/
+         QzHmVoMu9S3EEopnFpBp9TIcNLbRcpVuN/Yoa9eV1vWCxm9fTo0S8AaURnpG6K72SFKF
+         YpxQB+s4RRI0Ae0hK8mL8/tbBmP8ZIs+j0g2WeBMJwNg49FkNcoEYr5y38PhvINNWGhH
+         qcqBGIpH042TRKsR3HFNGaL22FX3F8a/ry+xwJWFRwg5lcw5/eERA4y4z8M1cG65SbJa
+         D/xg==
+X-Gm-Message-State: AOAM530Wmm/qm4FgcZzPd6Wv0rRtwjQop4Bzh7zB2nXDqy7teYYZXKKa
+        fY98kaWUZYOnU5sf2glz4a3fjK1oJdKJ2zeI98Q=
+X-Google-Smtp-Source: ABdhPJwlk5R6MoRUjz/JC7Tw0qXkBl+ocvndg0AZSGM/zqGcn1E5R+qvJ84SwxiZUzksJsAeR9TK1MS/AgCsiy5JmKk=
+X-Received: by 2002:a81:1cd8:0:b0:2d6:b74b:5b55 with SMTP id
+ c207-20020a811cd8000000b002d6b74b5b55mr1649314ywc.149.1645127994670; Thu, 17
+ Feb 2022 11:59:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACK8Z6GvXw_V_R5YKyB-mLnLXG08v-HpcPbe5LxrS=Z7N+pffQ@mail.gmail.com>
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220215035553.102315-1-ilkka@os.amperecomputing.com> <20220215035553.102315-2-ilkka@os.amperecomputing.com>
+In-Reply-To: <20220215035553.102315-2-ilkka@os.amperecomputing.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 17 Feb 2022 20:59:43 +0100
+Message-ID: <CAJZ5v0h7hCQLQP7-uF+Zh6Yx11AxxYK3rjLS17XHfA17z8fR0Q@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] ACPI: tables: Add AGDI to the list of known table signatures
+To:     Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Hanjun Guo <guohanjun@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Len Brown <lenb@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        patches@amperecomputing.com, scott@os.amperecomputing.com,
+        darren@os.amperecomputing.com, James Morse <james.morse@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 17, 2022 at 10:26:39AM -0800, Rajat Jain wrote:
-> Hello,
-> 
-> On Wed, Feb 16, 2022 at 10:16 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Wed, Feb 16, 2022 at 02:05:41PM -0800, Rajat Jain wrote:
-> > > The "DmaProperty" is supported and documented by Microsoft here:
-> > > https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
-> > > They use this property for DMA protection:
-> > > https://docs.microsoft.com/en-us/windows/security/information-protection/kernel-dma-protection-for-thunderbolt
-> > >
-> > > Support the "DmaProperty" with the same semantics. Windows documents the
-> > > property to apply to PCIe root ports only. Extend it to apply to any
-> > > PCI device. This is useful for internal PCI devices that do not hang off
-> > > a PCIe rootport, but offer an attack surface for DMA attacks (e.g.
-> > > internal network devices).
-> > >
-> > > Signed-off-by: Rajat Jain <rajatja@google.com>
-> > > ---
-> > > v3: * Use Microsoft's documented property "DmaProperty"
-> > >     * Resctrict to ACPI only
-> > >
-> > >  drivers/pci/pci-acpi.c | 18 ++++++++++++++++++
-> > >  1 file changed, 18 insertions(+)
-> > >
-> > > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> > > index a42dbf448860..660baa60c040 100644
-> > > --- a/drivers/pci/pci-acpi.c
-> > > +++ b/drivers/pci/pci-acpi.c
-> > > @@ -1350,12 +1350,30 @@ static void pci_acpi_set_external_facing(struct pci_dev *dev)
-> > >               dev->external_facing = 1;
-> > >  }
-> > >
-> > > +static void pci_acpi_check_for_dma_protection(struct pci_dev *dev)
-> > > +{
-> > > +     u8 val;
-> > > +
-> > > +     /*
-> > > +      * Microsoft Windows uses this property, and is documented here:
-> > > +      * https://docs.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports
-> > > +      * While Microsoft documents this property as only applicable to PCIe
-> > > +      * root ports, we expand it to be applicable to any PCI device.
+On Tue, Feb 15, 2022 at 4:56 AM Ilkka Koskinen
+<ilkka@os.amperecomputing.com> wrote:
+>
+> Add AGDI to the list of known ACPI table signatures to allow the
+> kernel to recognize it when upgrading tables via initrd.
+>
+> Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+> Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-Web pages have a tendancy to die over time (will it be here in 20+
-years?)  Please describe how Windows uses this attribute and what it
-uses it for in the comment.
+This is fine with me and please route the series through arm64.  Thanks!
 
-
-> > > +      */
-> > > +     if (device_property_read_u8(&dev->dev, "DmaProperty", &val))
-> > > +             return;
-> >
-> > Why not continue to only do this for PCIe devices like it is actually
-> > being used for?  Why expand it?
-> 
-> Because devices hanging off of PCIe root ports are not the only ones
-> that may need DMA protection. There may be internal PCI devices (that
-> don't hang off a PCIe root port) that may need DMA protection.
-> Examples include internal network controllers that may offer an attack
-> surface by handling network data or running vendor firmware.
-
-And why does Microsoft not do the same for them?  What attribute do they
-use for that?
-
-And again, this is for "dma protection" not "trusted / untrusted".
-That name here is getting very confusing and as I have stated in the
-past, is probably incorrect and needs to be changed.  Also userspace
-policy decisions need to be made here which would define the
-trust/untrusted value.
-
-So how about just passing this on as what Windows does, and have a new
-attribute for the device called "platform wants to protect dma accesses
-for this device" or something like that?
-
-naming is hard,
-
-greg k-h
+> ---
+>  drivers/acpi/tables.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+> index 2d7ed7126faa..ae29b13b8774 100644
+> --- a/drivers/acpi/tables.c
+> +++ b/drivers/acpi/tables.c
+> @@ -545,7 +545,7 @@ static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst = {
+>         ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
+>         ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
+>         ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
+> -       ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT };
+> +       ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT, ACPI_SIG_AGDI };
+>
+>  #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
+>
+> --
+> 2.17.1
+>
