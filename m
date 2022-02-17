@@ -2,133 +2,193 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F6224B9C8C
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Feb 2022 10:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EF414B9CD1
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Feb 2022 11:13:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238898AbiBQJzu (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 17 Feb 2022 04:55:50 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60008 "EHLO
+        id S239044AbiBQKNP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 17 Feb 2022 05:13:15 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238926AbiBQJzt (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Feb 2022 04:55:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2C306D5544
-        for <linux-acpi@vger.kernel.org>; Thu, 17 Feb 2022 01:55:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1645091733;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=eyehDj2VTQQcbrlQrKGbSsSHxAxbSKUJikiSyHYpsMY=;
-        b=AhHUAoA0je363/cRB47LVIswX6ERYkxo5t8d/ahIWSb0ESJ2PGojRnAY7kq//h7Ih7gDxg
-        eJA2oIEb/lvqGMpW81HxoC9BQwWIoHbMjqC6NOAsIM8z68xPdn1shusN9/qdXKhTOiIkm7
-        V80dcdrAcUWa6IH2KZiGTkMzL6kq7ok=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-637-G1a9-0ZFOaCAjL2V7XBuLg-1; Thu, 17 Feb 2022 04:55:31 -0500
-X-MC-Unique: G1a9-0ZFOaCAjL2V7XBuLg-1
-Received: by mail-ed1-f71.google.com with SMTP id m4-20020a50cc04000000b0040edb9d147cso3210513edi.15
-        for <linux-acpi@vger.kernel.org>; Thu, 17 Feb 2022 01:55:31 -0800 (PST)
+        with ESMTP id S236012AbiBQKNP (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 17 Feb 2022 05:13:15 -0500
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 140AB143469;
+        Thu, 17 Feb 2022 02:13:01 -0800 (PST)
+Received: by mail-lj1-x22e.google.com with SMTP id n24so7474925ljj.10;
+        Thu, 17 Feb 2022 02:13:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=OO8O5AkWPhI/5yGYSTEQp+LjZetKZnyQ+pZ7++XrzEA=;
+        b=X8w7in6JtN9+vwIDY375tbKdJ6/kAXjQzoJEMNX/aRNZ/xldyGjWjXODYmSy5mi1RE
+         IVBvYSJ5Q0hWoh3euDgluS6hajxAwota0SjPBhdLfholDQzq33VHuJfcHHzCkXGyz8tb
+         MDBzs6ibY/EGdDqB/ff2GewtKr6TpYHNqvy5y4L9nhOeKSaVrEEfVSAdHs3oIc8/KGvy
+         BUoC/Ntz4HLIebyoKI3bup9qeurRZrprpsOzzaMBNquRHtxpasWvx6s1xD7yjJ47gW7a
+         aqMUkT2VhDOvjwLmzIlZFje3GuDLrgVXuDJcvjJJbqm/WRU77L4UMZYg+2nxY7fnS64M
+         8wzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=eyehDj2VTQQcbrlQrKGbSsSHxAxbSKUJikiSyHYpsMY=;
-        b=aHfqf7zW3fLvjTJaAQaFVr/D+wB/99Du77PW13uiN7xA44b2Mq+KqlmKYADLX8i8Nw
-         lVQY09wrWddKP2ICyyIhyYJ4MN4pjjJoM3jTWkTZcg9e3i3z0T8+sdGvhGp4FYCq7aC+
-         1i4OfyfO24p54Ejyrw1nByrcodI2w0qqovRfjPedV92wWOxkI+Oa6sIOjSCV6ZTdHard
-         pSYD6EBHo/Vxxri+gxXTA2xzljfd7YEhozfH+urXJ5ZStkRsN1ToMS62133mWNye9UWC
-         TNiQF0JZQxiPIAw6xXLBXnJYTy/aFEWpo4KY+uLqHtN6OU2Rm+zk9yAYOs47QHbFb3vH
-         JSIA==
-X-Gm-Message-State: AOAM530s92Y+X+WXbNrBPzo5zCovew5dY0zrF32W7ygTKyvhozDlITha
-        JbzRBvKp+0WU3R1asIB09U1v1pgCzPkiTK2r3jB5Hu4zT41w3vgjeFqKLYjD3AsIjXo8vWY1IRy
-        +CEehCd3sn610UWpDO8OHRg==
-X-Received: by 2002:a17:906:71d7:b0:6bb:c057:3a6 with SMTP id i23-20020a17090671d700b006bbc05703a6mr1658503ejk.22.1645091730653;
-        Thu, 17 Feb 2022 01:55:30 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzDSILftK4zZpohcvCGqRpOvy2dnmE9rgV73s3LlEyfrOXVw8a8s5388bBYSA2m939HVhQSTA==
-X-Received: by 2002:a17:906:71d7:b0:6bb:c057:3a6 with SMTP id i23-20020a17090671d700b006bbc05703a6mr1658490ejk.22.1645091730425;
-        Thu, 17 Feb 2022 01:55:30 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id j6sm2970866edl.98.2022.02.17.01.55.29
+        bh=OO8O5AkWPhI/5yGYSTEQp+LjZetKZnyQ+pZ7++XrzEA=;
+        b=7pr47jE/gdAdaDrCCfyYmBUiEIX35Jia+LTn+J6qHiHUFJ3a6Bm/wYJfBtMgD80XM7
+         08+9aZXK57FDzfN0oNQNxysoi9K3/Z9SCmgPPmMAqi5DvgiNWbWGtT1Psubir4+SXU+o
+         gRV+UCMI/bHhNXyFqqq4EYldR+1mU0vky+FWzW805Nb6ZzUABhsqUHBgWy3W64kJuagb
+         xrQofwp652Cdq7wqG1Ppo7wdJLFt4fCdhv7dcE/6F5zEC0gt38PkKdGWMDRMUqoHH14A
+         Lbe+x56E4n+G+Qrx8fdAHjTSmjCd/nzEYPt6JB/gtxXm0ufp6JJ870vKPi7kBlYpJT/q
+         PKYw==
+X-Gm-Message-State: AOAM531lg7CNRkr5GP49SV/u3DBjyETkU9AirEe1YGwbGmOKQGR7AOrk
+        mSTXBVd88G2R12+sHTThCSLVPemO/hU=
+X-Google-Smtp-Source: ABdhPJzppLbwPh7ryO4JRMtpJc/4Lz2rbVquaymBUgCgBO2OneSkA3o02raf386TVCaqFDiGA98BPg==
+X-Received: by 2002:a05:651c:1544:b0:246:1887:cf4c with SMTP id y4-20020a05651c154400b002461887cf4cmr917179ljp.118.1645092779295;
+        Thu, 17 Feb 2022 02:12:59 -0800 (PST)
+Received: from [192.168.2.145] (109-252-138-165.dynamic.spd-mgts.ru. [109.252.138.165])
+        by smtp.googlemail.com with ESMTPSA id o10sm5079173lfl.116.2022.02.17.02.12.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Feb 2022 01:55:29 -0800 (PST)
-Message-ID: <f2b58ed6-6c53-42af-6fa1-94b9fd746fc3@redhat.com>
-Date:   Thu, 17 Feb 2022 10:55:29 +0100
+        Thu, 17 Feb 2022 02:12:58 -0800 (PST)
+Message-ID: <4f0d1b50-9f55-dd81-f0c7-f5e0dfd75c2a@gmail.com>
+Date:   Thu, 17 Feb 2022 13:12:57 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH 0/6] Add multiple-consumer support to int3472-tps68470
- driver
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v6 00/21] Introduce power-off+restart call chain API
 Content-Language: en-US
-To:     Daniel Scally <djrscally@gmail.com>, linux-acpi@vger.kernel.org,
-        linux-clk@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Cc:     rafael@kernel.org, lenb@kernel.org, mturquette@baylibre.com,
-        sboyd@kernel.org, markgross@kernel.org, robert.moore@intel.com
-References: <20220216225304.53911-1-djrscally@gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220216225304.53911-1-djrscally@gmail.com>
+To:     Helge Deller <deller@gmx.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
+        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+References: <20220130233718.21544-1-digetx@gmail.com>
+ <635e8121-fca4-580c-6af5-d9317a2eee1b@gmail.com>
+ <CAJZ5v0g0MrBm2+GwctkB7kUyBEt6HTAexRCFFRmTF1UKDrVQ-g@mail.gmail.com>
+ <de2cbd2a-8d0d-8678-e514-b153d04546cc@gmx.de>
+From:   Dmitry Osipenko <digetx@gmail.com>
+In-Reply-To: <de2cbd2a-8d0d-8678-e514-b153d04546cc@gmx.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Dan,
+16.02.2022 23:30, Helge Deller пишет:
+> On 2/16/22 13:25, Rafael J. Wysocki wrote:
+>> On Tue, Feb 15, 2022 at 11:00 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>>>
+>>> 31.01.2022 02:36, Dmitry Osipenko пишет:
+>>>> Problem
+>>>> -------
+>>>>
+>>>> SoC devices require power-off call chaining functionality from kernel.
+>>>> We have a widely used restart chaining provided by restart notifier API,
+>>>> but nothing for power-off.
+>>>>
+>>>> Solution
+>>>> --------
+>>>>
+>>>> Introduce new API that provides both restart and power-off call chains.
+>>>>
+>>>> Why combine restart with power-off? Because drivers often do both.
+>>>> More practical to have API that provides both under the same roof.
+>>>>
+>>>> The new API is designed with simplicity and extensibility in mind.
+>>>> It's built upon the existing restart and reboot APIs. The simplicity
+>>>> is in new helper functions that are convenient for drivers. The
+>>>> extensibility is in the design that doesn't hardcode callback
+>>>> arguments, making easy to add new parameters and remove old.
+>>>>
+>>>> This is a third attempt to introduce the new API. First was made by
+>>>> Guenter Roeck back in 2014, second was made by Thierry Reding in 2017.
+>>>> In fact the work didn't stop and recently arm_pm_restart() was removed
+>>>> from v5.14 kernel, which was a part of preparatory work started by
+>>>> Guenter Roeck. I took into account experience and ideas from the
+>>>> previous attempts, extended and polished them.
+>>>
+>>>
+>>> Rafael and all, do you see anything critical that needs to be improved
+>>> in this v6?
+>>>
+>>> Will be great if you could take this patchset via the power tree if it
+>>> looks okay, or give an ack.
+>>
+>> I need some more time for this, sorry.
 
-On 2/16/22 23:52, Daniel Scally wrote:
-> At the moment there are a few places in the int3472-tps68470 driver that are
-> limited to just working with a single consuming device dependent on the PMIC.
-> There are systems where multiple camera sensors share a single TPS68470, so
-> we need to extend the driver to support them. This requires a couple of tweaks
-> to the ACPI functions to fetch dependent devices, which also assumes that only
-> a single dependent will be found.
+No worries, we're not in a rush.
 
-This sounds great, thank you for your work on this. I have a bit of a backlog wrt
-pdx86 patches to review and I try to through those in FIFO order to keep things fair,
-so it may be a while (approx. 1-2 weeks) before I get around to reviewing
-these.
+>> I'm a bit concerned about seeing no response to this set from anyone.
+>>
+>> It looks like multiple platforms may be affected by it in principle,
+>> so doesn't anyone care?
 
-Regards,
+The platforms that didn't provide ack so far are: SH, x86, IA64, MIPS
+and NDS32. At least x86 and MIPS are alive, not sure why maintainers
+didn't bother to answer yet.
 
-Hans
+> I did looked into the whole patch set after applying it locally.
+> 
+> While I agree a new combined API is good, and the beginning looked promising,
+> after some time I started to ask myself if the whole infrastructure might
+> be a little overdesigned.
+> 
+> Anyway, I tested it and it works for me on parisc.
+> And it's probably better than what we have today.
 
-
-> 
-> Hans - this (plus a series to media [1]) adds support for the Surface Go 2's
-> IR camera...the regulator settings for the Go1/2/3 world facing camera are the
-> same, so I'd expect them to match for the IR sensor too, which means it should
-> enable support for your Go too.
-> 
-> Thanks
-> Dan
-> 
-> 
-> [1] https://lore.kernel.org/linux-media/20220215230737.1870630-1-djrscally@gmail.com/
-> 
-> Daniel Scally (6):
->   ACPI: scan: Add acpi_dev_get_next_consumer_dev()
->   ACPI: bus: Add iterator for dependent devices
->   platform/x86: int3472: Support multiple clock consumers
->   platform/x86: int3472: Add terminator to gpiod_lookup_table
->   platform/x86: int3472: Support multiple gpio lookups in board data
->   platform/x86: int3472: Add board data for Surface Go2 IR camera
-> 
->  drivers/acpi/scan.c                           | 47 +++++++++--
->  drivers/clk/clk-tps68470.c                    | 13 +++-
->  drivers/platform/x86/intel/int3472/tps68470.c | 77 +++++++++++++++----
->  drivers/platform/x86/intel/int3472/tps68470.h |  3 +-
->  .../x86/intel/int3472/tps68470_board_data.c   | 58 +++++++++++++-
->  include/acpi/acpi_bus.h                       | 14 ++++
->  include/linux/platform_data/tps68470.h        |  7 +-
->  7 files changed, 188 insertions(+), 31 deletions(-)
-> 
-
+Thank you!
