@@ -2,59 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAECE4BBE52
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Feb 2022 18:26:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 751C64BBF5F
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Feb 2022 19:20:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236548AbiBRRZV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 18 Feb 2022 12:25:21 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49800 "EHLO
+        id S237823AbiBRSSv (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 18 Feb 2022 13:18:51 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237405AbiBRRZU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Feb 2022 12:25:20 -0500
+        with ESMTP id S236189AbiBRSSu (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 18 Feb 2022 13:18:50 -0500
 Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AC022B5BA9;
-        Fri, 18 Feb 2022 09:25:03 -0800 (PST)
-Received: by mail-yb1-f177.google.com with SMTP id g201so46784ybf.11;
-        Fri, 18 Feb 2022 09:25:03 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11C381007
+        for <linux-acpi@vger.kernel.org>; Fri, 18 Feb 2022 10:18:33 -0800 (PST)
+Received: by mail-yb1-f177.google.com with SMTP id p5so21042803ybd.13
+        for <linux-acpi@vger.kernel.org>; Fri, 18 Feb 2022 10:18:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WN51gIlGJ2qIHLCn91JCiClRbEMREVgZKWu/kVNHOFE=;
-        b=J2WdI34corE3I/m9amwpm/t+nYiFxh9VNE5zjaUrBHzvIWHh/dunyIuIHGWtfSeyAh
-         T8y808Dn77OR5ZHqXbZKMDWdxmQc0vwMql+MW/XJPlzqP1D41cFZfyPgkM30V7Yq2UkA
-         /un9qh3B5b/HeldfDs4z440v2zq9JWcoHXi3xigb79tsXz6oK2pe7n59JwtHxqH1vCO2
-         8e01Y6Wma4TvZxuZiBjrA4CavL12CoJF1VWpdOdDSm5RIGZ2UD/QkoeFGVCFSEa1Vkcv
-         2j1CPCfBnF1FgTgvyqiPQvJdv2/MGZ8dfyoP2mRV5Pa6KUANV0BPG+nINxMF44/oDKcO
-         Fyig==
-X-Gm-Message-State: AOAM531AcPsV0OpSDcQnT7Set9Z6ggy5NYJiOMnuba7MfRoQrN1tJNS2
-        arx5s757O8SNOCUckcyhSoz7Imlo5DFikGzzOOsQ0amf
-X-Google-Smtp-Source: ABdhPJwwEOpvmWALi0mxCKdlQmdYuHXmUyYR1/ohsHeI5xVVw0JmICCZOXltDp5sUr8I5zPOWSTCp7YS/Z0pIEP2wbM=
-X-Received: by 2002:a25:bbc1:0:b0:610:b4ce:31db with SMTP id
- c1-20020a25bbc1000000b00610b4ce31dbmr7994781ybk.482.1645205102639; Fri, 18
- Feb 2022 09:25:02 -0800 (PST)
+        bh=51XNuUZ/1VxzpvbDm5fgC05YqaI0Cn/y3U/YfB2cXoE=;
+        b=7cU8egOWX6aZf9AYuK/WcgzUVmnruZh87M5dKKcJVxUARp5yD2QBNbRAQxC0KtUYnI
+         IfWf0+5LPa9VmsWBmeqR90U7HHTVC4u5k0J0l4iNLXaRpjkp1u3pUNxsQP8mwf4MUxoo
+         U4ttvgzvZB0i+Z/QV7fPA59uwERORnHah0t4oTV7knczCoVtd4fEOMW393Bchu6g3rWj
+         GG2dpzbHfZwpcoZUFnxRrnBfuXFygEpgcbD0jagRX6RkUtSMra9xCxpCDxItNEhZi+Gl
+         wqoGu+FOVX0xas9jZW+0NL6BzQp2uDdiGyWn3LKobgdrnSldeGaJsZc2gOLfv8ia9KU9
+         QZng==
+X-Gm-Message-State: AOAM532wz3t3M+hasVdvVRybgIAc5olhCVqb0NZU2WH7DjiymIb4JjE/
+        p5PHj7RJ286yXOlzhCvWEROJOyZWgFoIkVMJ3Pw=
+X-Google-Smtp-Source: ABdhPJx2OZgLwBX8dvn9N4Jy1V882iyX4/AmEfW2OPtAQNtuM46o/33a2cip63jtwqLjx/TYfnJjg9sgIlgzzQHEGdk=
+X-Received: by 2002:a25:ab73:0:b0:624:3d68:5169 with SMTP id
+ u106-20020a25ab73000000b006243d685169mr6271579ybi.633.1645208312257; Fri, 18
+ Feb 2022 10:18:32 -0800 (PST)
 MIME-Version: 1.0
-References: <20220211023008.3197397-1-wonchung@google.com> <CAJZ5v0gD4zs3uBAYv6M4_1gNpkZ-g9XKOywJnf5007e6GwoGVA@mail.gmail.com>
- <CAOvb9yjpruiHxkZyZ8BOT0Hi_iV7xMOnBCr59BZX3eah_Zcy_w@mail.gmail.com>
- <CAOvb9yh7jo27NH32tbAOtkJrnC9LwUFgFbHRbdbArwiU+YSmdw@mail.gmail.com>
- <Ygt9B6+0b1hIBr5a@kuha.fi.intel.com> <CAJZ5v0hVZ1a9krnfW=ogdi+bpOpGDPvT12NxdstRRWjhNi+v3g@mail.gmail.com>
- <YgzhRgPD/eBw6UU3@kuha.fi.intel.com> <CAJZ5v0gQnbYv15EKXhicwHM5+Kp9sjv1QyscxagiC7isn-p1WA@mail.gmail.com>
- <CAOvb9yhGMtA2+jzQ5KxBRDDtASQfA3BPxnHhCrgd_8E4umtiig@mail.gmail.com>
-In-Reply-To: <CAOvb9yhGMtA2+jzQ5KxBRDDtASQfA3BPxnHhCrgd_8E4umtiig@mail.gmail.com>
+References: <BL1PR12MB5157C5EA5510F0C9D7782AE8E2369@BL1PR12MB5157.namprd12.prod.outlook.com>
+ <CAJZ5v0g81BmytcjgChXZumsHV5-byzSzDQbp2hc6CYzJ_6N=aw@mail.gmail.com>
+ <BL1PR12MB5157E2CDD68BA585C5F4CF2BE2369@BL1PR12MB5157.namprd12.prod.outlook.com>
+ <CAJZ5v0ho8PHGp0gAUp5KkUstTXLyUMsaQ7wTL=8xDJtjtXjPRw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0ho8PHGp0gAUp5KkUstTXLyUMsaQ7wTL=8xDJtjtXjPRw@mail.gmail.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 18 Feb 2022 18:24:51 +0100
-Message-ID: <CAJZ5v0img+=uZQwOgj=gCpsDfkeygPHb+vDKrxG4bO189-vR=g@mail.gmail.com>
-Subject: Re: [PATCH v6] ACPI: device_sysfs: Add sysfs support for _PLD
-To:     Won Chung <wonchung@google.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Prashant Malani <pmalani@chromium.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <greg@kroah.com>
-Content-Type: text/plain; charset="UTF-8"
+Date:   Fri, 18 Feb 2022 19:18:20 +0100
+Message-ID: <CAJZ5v0j3Ma1HuUWoTmJvZDsUtm9hi84njJxJbBZMwe76eATSYQ@mail.gmail.com>
+Subject: Re: Regression in 5.16-rc1 with suspend to idle
+To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Content-Type: multipart/mixed; boundary="00000000000008d28505d84ee9c0"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
@@ -65,219 +57,155 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 18, 2022 at 2:15 AM Won Chung <wonchung@google.com> wrote:
->
-> On Wed, Feb 16, 2022 at 8:39 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > On Wed, Feb 16, 2022 at 12:34 PM Heikki Krogerus
-> > <heikki.krogerus@linux.intel.com> wrote:
-> > >
-> > > On Tue, Feb 15, 2022 at 02:54:11PM +0100, Rafael J. Wysocki wrote:
-> > > > On Tue, Feb 15, 2022 at 11:14 AM Heikki Krogerus
-> > > > <heikki.krogerus@linux.intel.com> wrote:
-> > > > >
-> > > > > On Mon, Feb 14, 2022 at 02:58:44PM -0800, Won Chung wrote:
-> > > > > > On Mon, Feb 14, 2022 at 12:30 PM Won Chung <wonchung@google.com> wrote:
-> > > > > > >
-> > > > > > > On Mon, Feb 14, 2022 at 11:12 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> > > > > > > >
-> > > > > > > > On Fri, Feb 11, 2022 at 3:30 AM Won Chung <wonchung@google.com> wrote:
-> > > > > > > > >
-> > > > > > > > > When ACPI table includes _PLD fields for a device, create a new
-> > > > > > > > > directory (pld) in sysfs to share _PLD fields.
-> > > > > > > >
-> > > > > > > > This version of the patch loos better to me, but I'm not sure if it
-> > > > > > > > goes into the right direction overall.
-> > > > > > > >
-> > > > > > > > > Currently without PLD information, when there are multiple of same
-> > > > > > > > > devices, it is hard to distinguish which device corresponds to which
-> > > > > > > > > physical device in which location. For example, when there are two Type
-> > > > > > > > > C connectors, it is hard to find out which connector corresponds to the
-> > > > > > > > > Type C port on the left panel versus the Type C port on the right panel.
-> > > > > > > >
-> > > > > > > > So I think that this is your primary use case and I'm wondering if
-> > > > > > > > this is the best way to address it.
-> > > > > > > >
-> > > > > > > > Namely, by exposing _PLD information under the ACPI device object,
-> > > > > > > > you'll make user space wanting to use that information depend on this
-> > > > > > > > interface, but the problem is not ACPI-specific (inevitably, it will
-> > > > > > > > appear on systems using DT, sooner or later) and making the user space
-> > > > > > > > interface related to it depend on ACPI doesn't look like a perfect
-> > > > > > > > choice.
-> > > > > > > >
-> > > > > > > > IOW, why don't you create a proper ABI for this in the Type C
-> > > > > > > > subsystem and expose the information needed by user space in a generic
-> > > > > > > > way that can be based on the _PLD information on systems with ACPI?
-> > > > > > >
-> > > > > > > Hi Rafael,
-> > > > > > >
-> > > > > > > Thank you for the review.
-> > > > > > >
-> > > > > > > I was thinking that _PLD info is specific to ACPI since it is part of
-> > > > > > > the ACPI table. Could you explain a little bit more on why you think
-> > > > > > > exposing _PLD fields is not an ACPI-specific problem?
-> > > > > >
-> > > > > > Hi Rafael again,
-> > > > > >
-> > > > > > Sorry for the silly question here. I misunderstood your comment a bit,
-> > > > > > but I talked to Benson and Prashant for clarification. I understand
-> > > > > > now what you mean by it is not an ACPI-specific problem and exposing
-> > > > > > PLD would depend on ACPI.
-> > > > > >
-> > > > > > >
-> > > > > > > I gave an example of how _PLD fields can be used for specifying Type C
-> > > > > > > connectors, but it is not Type C specific. For Chrome OS, we plan to
-> > > > > > > initially add PLD to not only Type C connectors but also USB port
-> > > > > > > devices (including Type C and Type A). Also, PLD can be used in the
-> > > > > > > future for describing other types of ports too like HDMI. (Benson and
-> > > > > > > Prashant, please correct or add if I am wrong or missing some
-> > > > > > > information) Maybe my commit message was not detailed enough..
-> > > > > > >
-> > > > > > > I am also curious what Heikki thinks about this. Heikki, can you take
-> > > > > > > a look and share your thoughts?
-> > > > > >
-> > > > > > I am still curious what you and Heikki think about this since it may
-> > > > > > not be a Type C specific issue. We can start from adding generic
-> > > > > > location info to Type C subsystem first, as you suggested, then
-> > > > > > consider how to do the same for USB devices and Type A ports
-> > > > > > afterwards. I would appreciate sharing any thoughts or feedback. Thank
-> > > > > > you very much!
-> > > > >
-> > > > > Like you said, _PLD is not Type-C specific. We can't limit it to any
-> > > > > specific device class. For example, I'm pretty sure that sooner or
-> > > > > later we want to get this information in user space also with camera
-> > > > > sensors, and probable with a few other things as well.
-> > > > >
-> > > > > I think the question here is, can we create a some kind of an
-> > > > > abstraction layer for the user space that exposes the device location
-> > > > > details in generic Linux specific way - so with ACPI it would utilise
-> > > > > the _PLD, and with DT something else (today AFAIK DT does not have
-> > > > > any way to describe locations of the devices). Maybe I'm wrong?
-> > > >
-> > > > No, you aren't.
-> > > >
-> > > > > But if that is the question, then IMO the answer is: maybe one day,
-> > > > > but not today,
-> > > >
-> > > > Why not?
-> > > >
-> > > > > and even if we one day can come up with something like
-> > > > > that, we still should expose the _PLD as ACPI specific information to
-> > > > > the user space as is.
-> > > >
-> > > > Why would it need that information in this particular format?
-> > > >
-> > > > > Even if one day we have common sysfs attributes for all the devices
-> > > > > that contain the location of the device in some form, those attributes
-> > > > > will almost certainly have only a sub-set of the _PLD details, a
-> > > > > sub-set that works also with DT.
-> > > >
-> > > > That doesn't have to be the case.
-> > > >
-> > > > However, things linke cpuidle have been invented to provide user space
-> > > > interfaces for features that previously were only available on systems
-> > > > with ACPI.  Why is _PLD different?
-> > > >
-> > > > > IMO the user space should always have access to all the necessary _PLD
-> > > > > details in their raw form if needed, even if those common device
-> > > > > location attributes exist - duplicated information or not.
-> > > >
-> > > > Again, why would it need that information?
-> > >
-> > > We don't know if we'll need that in the future, and that's the point.
-> >
-> > Well, for me that would be a good enough reason for avoiding to expose it.
-> >
-> > If there is no particular reason for exposing any information to user
-> > space, I don't see why it should be exposed at all.
-> >
-> > There is some cost of exposing things to user space, so why pay it for
-> > no benefit?
-> >
-> > > > > And debugfs
-> > > > > unfortunately is also not OK for that, because the user space needs to
-> > > > > be able to also rely on access to the additional details if needed.
-> > > >
-> > > > What additional details do you mean?
-> > > >
-> > > > > We can limit the _PLD fields that we expose to the ones that we know
-> > > > > we need today (and probable should limit them to those), and we can of
-> > > > > course have a Kconfig option for the _PLD sysfs information if we want
-> > > > > to, but let's not start this by trying to figure out what kind of
-> > > > > abstraction we want for this. Right now we simply can not do that.
-> > > >
-> > > > Why can't we?
-> > >
-> > > Right now we can't say for sure if DT can even supply the details that
-> > > we need from _PLD. I don't think we can at the moment even say are the
-> > > DT guys willing to support this at all.
-> > >
-> > > To play it safe, I would just supply the needed _PLD fields as part of
-> > > the ACPI device nodes (under /sys/bus/acpi).
-> >
-> > That would be suboptimal for a few reasons:
-> >
-> > 1. The interface is potentially confusing.  User space would first
-> > need to locate the ACPI device interface corresponding to the given
-> > "real" device in order to use that information.
-> > 2. It doesn't scale beyond ACPI.
-> > 3. From the ACPI subsystem's perspective the choice of the "relevant"
-> > _PLD fields is arbitrary and exposing all of them is overkill for any
-> > use cases known to me.
-> > 4. The ACPI subsystem doesn't know the devices for which _PLD
-> > information should be exposed and there are some devices for which it
-> > is just not useful.
-> >
-> > > There we can guarantee
-> > > that we'll always be able to supply all the information in the _PDL if
-> > > needed. Since we would add these to the ACPI nodes, it would be
-> > > crystal clear to the userspace that this information is only available
-> > > on ACPI platforms.
-> >
-> > I'm not considering this as a feature.
-> >
-> > > Then if, and only if, we know that DT can supply the same information
-> > > (at least to some of it) I would start thinking about the alternative
-> > > interface to this information that we make part of the actual devices.
-> > > Since at this point we have already the primary ACPI specific
-> > > interface to this same information that guarantees that it can supply
-> > > all the details if necessary, we don't have to worry about having to
-> > > be able to do the same with this new interface. This interface can
-> > > just expose the common details that we know for sure that both ACPI
-> > > and DT can always supply.
-> >
-> > Well, there is another possible approach: Expose the information
-> > needed to address a particular use case in a way that doesn't strictly
-> > depend on ACPI and make this use ACPI as a backend.  Don't worry about
-> > the DT side of things.  If the generic interface is there and it is
-> > suitable enough, DT will be in the receiving end position with much
-> > less of a freedom to introduce a new interface for the same purpose.
-> >
-> > On the other hand, if _PLD information is exposed in an ACPI-specific
-> > way, it is almost guaranteed that there will be a DT-specific
-> > interface for the same thing and utilities wanting to be generic will
-> > need to support both of them which will be extra pain.  Some of them
-> > will choose to support the DT-specific interface only and we'll end up
-> > with utilities that can't be used on ACPI-based systems because of
-> > incompatible interfaces.  Been there already.  Thanks, but no thanks!
->
-> Hi Rafael,
->
-> Thank you for the feedback. If we add a generic location to type c
-> connector, would you suggest we do something similar to other devices
-> that would use PLD information? (like USB devices, HDMI ports, and so
-> on).
+--00000000000008d28505d84ee9c0
+Content-Type: text/plain; charset="UTF-8"
 
-If there is a specific use case for exposing that information to user
-space, then yes, but it all depends on how user space is going to use
-that information (or how you envision the usage of that information in
-user space).
+On Fri, Feb 18, 2022 at 5:15 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Thu, Feb 17, 2022 at 9:16 PM Limonciello, Mario
+> <Mario.Limonciello@amd.com> wrote:
+> >
+> > [Public]
+> >
+> > > > I've found recently that on kernel 5.17-rc4 some OEM AMD laptops are
+> > > shutting down when entering suspend to idle.
+> > >
+> > > Interesting.  Can you identify the exact point when the shutdown occurs?
+> >
+> > It looks like it's a platform firmware crash that causes the shutdown not a kernel
+> > crash.
+>
+> It looks like we'll need to quirk the system in question then.
+>
+> > > > What would you suggest to be done in this case?  Revert both commits?  Or
+> > > would you prefer to have a fixup on top
+> > > > of that?
+> > >
+> > > I would prefer to fix the problem on top of the current 5.16-rc.
+> > >
+> >
+> > Here is the minimal patch I can come up with on top of 5.17-rc4 that fixes it:
+> >
+> > diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+> > index 04ea92cbd9cf..f5bf46782043 100644
+> > --- a/drivers/base/power/main.c
+> > +++ b/drivers/base/power/main.c
+> > @@ -32,6 +32,7 @@
+> >  #include <linux/suspend.h>
+> >  #include <trace/events/power.h>
+> >  #include <linux/cpufreq.h>
+> > +#include <linux/cpuidle.h>
+> >  #include <linux/devfreq.h>
+> >  #include <linux/timer.h>
+> >
+> > @@ -1350,6 +1351,8 @@ int dpm_suspend_noirq(pm_message_t state)
+> >  {
+> >         int ret;
+> >
+> > +       cpuidle_pause();
+>
+> Can you replace this with wake_up_all_idle_cpus() and remove the
+> cpuidle_resume()/cpuidle_pause() calls from s2idle_enter() and see
+> what happens?
+>
+> > +
+> >         device_wakeup_arm_wake_irqs();
+> >         suspend_device_irqs();
+> >
+> > diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
+> > index 6fcdee7e87a5..1708a643ba5d 100644
+> > --- a/kernel/power/suspend.c
+> > +++ b/kernel/power/suspend.c
+> > @@ -97,6 +97,7 @@ static void s2idle_enter(void)
+> >         raw_spin_unlock_irq(&s2idle_lock);
+> >
+> >         cpus_read_lock();
+> > +       cpuidle_resume();
+> >
+> >         /* Push all the CPUs into the idle loop. */
+> >         wake_up_all_idle_cpus();
+> > @@ -104,6 +105,7 @@ static void s2idle_enter(void)
+> >         swait_event_exclusive(s2idle_wait_head,
+> >                     s2idle_state == S2IDLE_STATE_WAKE);
+> >
+> > +       cpuidle_pause();
+> >         cpus_read_unlock();
+> >
+> >         raw_spin_lock_irq(&s2idle_lock);
+> >
+> >
+> > * Removing the cpuidle_pause call from s2idle_enter will fix the crash,
+> >   but the system doesn't enter the deepest sleep state.
+>
+> I think you mean that removing it doesn't make a difference except
+> that it prevents the deepest state from being entered.
+>
+> Pausing cpuidle here is kind of redundant, because it just flips the
+> "initialized" flag that's going to be flipped again by
+> cpuidle_resume() in the next iteration.  [BTW, your patch is missing
+> one an additional cpuidle_resume() in the resume path to match this
+> cpuidle_pause().]  Also calling  wake_up_all_idle_cpus() is not likely
+> to make a difference, so I'm guessing that synchronize_rcu() does the
+> trick.
+>
+> > * removing the cpuidle_pause call from dpm_suspend_noirq the firmware continues to
+> >    crash.
+>
+> So the crash occurs while running dpm_suspend_noirq().
+>
+> > I also confirmed that reverting both of these commits together on top of 5.17-rc4 fixes it:
+> >
+> > 8d89835b0467 ("PM: suspend: Do not pause cpuidle in the suspend-to-idle path")
+> > 23f62d7ab25b ("PM: sleep: Pause cpuidle later and resume it earlier during system transitions")
+> >
+> > The commit messages at least make it sound like it was just a rework for unification of the codepaths,
+> > not supposed to be for anything to be actually fixed, so I would think it should be safe to revert.
+>
+> There is a deeper issue related to these commits and I'm not inclined
+> to go back to the old code if there is only one system affected by
+> this and the problem is related to the platform firmware on that
+> system.
+>
+> > So please advise which way you want to go and I'll send up a patch (or if you want to write one
+> > I'm happy to take it and test it since I can readily reproduce it).
+>
+> To start with, please test the attached debug patch on top of -rc4.
 
-> Also, I am curious what you think about how to add generic
-> locations for Type A ports which I believe do not have connectors like
-> Type C. I would appreciate it if anyone can share any ideas. Thank you
-> very much!
+Attached is another patch to try, testing the hypothesis that the
+observed crash is related to CPUs being in idle state that are too
+deep for some reason during late suspend and early resume.
 
-I'm not sure I understand the question correctly.  Can you clarify,
-please?  Or better, give an example of what exactly you are referring
-to?
+--00000000000008d28505d84ee9c0
+Content-Type: text/x-patch; charset="US-ASCII"; name="pm-suspend-cpu-latency-qos.patch"
+Content-Disposition: attachment; filename="pm-suspend-cpu-latency-qos.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_kzsqiq2j0>
+X-Attachment-Id: f_kzsqiq2j0
+
+LS0tCiBrZXJuZWwvcG93ZXIvc3VzcGVuZC5jIHwgICAxOCArKysrKysrKysrKysrKysrKysKIDEg
+ZmlsZSBjaGFuZ2VkLCAxOCBpbnNlcnRpb25zKCspCgpJbmRleDogbGludXgtcG0va2VybmVsL3Bv
+d2VyL3N1c3BlbmQuYwo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09Ci0tLSBsaW51eC1wbS5vcmlnL2tlcm5lbC9wb3dlci9z
+dXNwZW5kLmMKKysrIGxpbnV4LXBtL2tlcm5lbC9wb3dlci9zdXNwZW5kLmMKQEAgLTIzLDYgKzIz
+LDcgQEAKICNpbmNsdWRlIDxsaW51eC9tbS5oPgogI2luY2x1ZGUgPGxpbnV4L3NsYWIuaD4KICNp
+bmNsdWRlIDxsaW51eC9leHBvcnQuaD4KKyNpbmNsdWRlIDxsaW51eC9wbV9xb3MuaD4KICNpbmNs
+dWRlIDxsaW51eC9zdXNwZW5kLmg+CiAjaW5jbHVkZSA8bGludXgvc3lzY29yZV9vcHMuaD4KICNp
+bmNsdWRlIDxsaW51eC9zd2FpdC5oPgpAQCAtMzY3LDYgKzM2OCwyMCBAQCBzdGF0aWMgaW50IHN1
+c3BlbmRfcHJlcGFyZShzdXNwZW5kX3N0YXRlCiAJcmV0dXJuIGVycm9yOwogfQogCitzdGF0aWMg
+c3RydWN0IHBtX3Fvc19yZXF1ZXN0IHBtX3N1c3BlbmRfY3B1X2xhdGVuY3lfcW9zX3JlcTsKKwor
+c3RhdGljIHZvaWQgcG1fc3VzcGVuZF9jcHVfbGF0ZW5jeV9xb3Nfc2V0KHZvaWQpCit7CisJY3B1
+X2xhdGVuY3lfcW9zX2FkZF9yZXF1ZXN0KCZwbV9zdXNwZW5kX2NwdV9sYXRlbmN5X3Fvc19yZXEs
+IDMpOworCXdha2VfdXBfYWxsX2lkbGVfY3B1cygpOworfQorCitzdGF0aWMgdm9pZCBwbV9zdXNw
+ZW5kX2NwdV9sYXRlbmN5X3Fvc19jbGVhcih2b2lkKQoreworCWNwdV9sYXRlbmN5X3Fvc19yZW1v
+dmVfcmVxdWVzdCgmcG1fc3VzcGVuZF9jcHVfbGF0ZW5jeV9xb3NfcmVxKTsKKwl3YWtlX3VwX2Fs
+bF9pZGxlX2NwdXMoKTsKK30KKwogLyogZGVmYXVsdCBpbXBsZW1lbnRhdGlvbiAqLwogdm9pZCBf
+X3dlYWsgYXJjaF9zdXNwZW5kX2Rpc2FibGVfaXJxcyh2b2lkKQogewpAQCAtNDAzLDYgKzQxOCw4
+IEBAIHN0YXRpYyBpbnQgc3VzcGVuZF9lbnRlcihzdXNwZW5kX3N0YXRlX3QKIAlpZiAoZXJyb3Ip
+CiAJCWdvdG8gRGV2aWNlc19lYXJseV9yZXN1bWU7CiAKKwlwbV9zdXNwZW5kX2NwdV9sYXRlbmN5
+X3Fvc19zZXQoKTsKKwogCWVycm9yID0gZHBtX3N1c3BlbmRfbm9pcnEoUE1TR19TVVNQRU5EKTsK
+IAlpZiAoZXJyb3IpIHsKIAkJcHJfZXJyKCJub2lycSBzdXNwZW5kIG9mIGRldmljZXMgZmFpbGVk
+XG4iKTsKQEAgLTQ1Nyw2ICs0NzQsNyBAQCBzdGF0aWMgaW50IHN1c3BlbmRfZW50ZXIoc3VzcGVu
+ZF9zdGF0ZV90CiAJZHBtX3Jlc3VtZV9ub2lycShQTVNHX1JFU1VNRSk7CiAKICBQbGF0Zm9ybV9l
+YXJseV9yZXN1bWU6CisJcG1fc3VzcGVuZF9jcHVfbGF0ZW5jeV9xb3NfY2xlYXIoKTsKIAlwbGF0
+Zm9ybV9yZXN1bWVfZWFybHkoc3RhdGUpOwogCiAgRGV2aWNlc19lYXJseV9yZXN1bWU6Cg==
+--00000000000008d28505d84ee9c0--
