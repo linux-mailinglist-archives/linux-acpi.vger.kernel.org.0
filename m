@@ -2,115 +2,72 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B2724BCE20
-	for <lists+linux-acpi@lfdr.de>; Sun, 20 Feb 2022 12:26:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 518734BCF74
+	for <lists+linux-acpi@lfdr.de>; Sun, 20 Feb 2022 16:43:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231864AbiBTLSE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 20 Feb 2022 06:18:04 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57052 "EHLO
+        id S244127AbiBTPin (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 20 Feb 2022 10:38:43 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbiBTLSD (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Feb 2022 06:18:03 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E85143AFB;
-        Sun, 20 Feb 2022 03:17:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645355863; x=1676891863;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wFiGHzKu/gkWdPi94TIZ1NxsAlvi0yITyD0myZyZrQc=;
-  b=DuyfglcsIbXJoAUdkKW4gcOJXIEti9jsjsslsMnu2O5xQjq3rtaGbncv
-   m4U7b+iNLzJtWwh+lt+1p0rCuOPKjXTFUJ9yqzM+CRSZOk9rw9j5TsYhY
-   iQXBNAomp/lJI4RFKy2omkc5ok0nFDIzATZ5xolAtOuEnRFnHCbykcv79
-   4JJNq4HMIkKZsptTN2RVZSHXhED3dNSbsg6sLbcHuTqfYhlobDYskYYXQ
-   8iUGIf9ENP4/Mq3yO9lQ9xGSuqpRKhQgV5lTofDvAnoEhsTDMU4Pdv9xa
-   Y+J0dgOVpZ7iE7nw2+z+eARWRSDEldZpYERm1tYvElGVgTICJ9fbEHL+y
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10263"; a="337795825"
-X-IronPort-AV: E=Sophos;i="5.88,383,1635231600"; 
-   d="scan'208";a="337795825"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2022 03:17:42 -0800
-X-IronPort-AV: E=Sophos;i="5.88,383,1635231600"; 
-   d="scan'208";a="638243794"
-Received: from smile.fi.intel.com ([10.237.72.59])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2022 03:17:39 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nLkCs-006Uow-OJ;
-        Sun, 20 Feb 2022 13:16:46 +0200
-Date:   Sun, 20 Feb 2022 13:16:46 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v2 1/6] device property: Helper to match multiple
- connections
-Message-ID: <YhIjHjMrhUpM0ucV@smile.fi.intel.com>
-References: <20220208031944.3444-1-bjorn.andersson@linaro.org>
- <20220208031944.3444-2-bjorn.andersson@linaro.org>
- <YgOz6K55Oi2Si4pU@smile.fi.intel.com>
- <Yg/s3eKB2wLEQTgY@ripper>
+        with ESMTP id S240398AbiBTPil (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Feb 2022 10:38:41 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FE3C40E45
+        for <linux-acpi@vger.kernel.org>; Sun, 20 Feb 2022 07:38:17 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id w3so24465903edu.8
+        for <linux-acpi@vger.kernel.org>; Sun, 20 Feb 2022 07:38:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=ymEpgIXl54yuSlZg88NLeYK1RJf0YDtYgXWD/9J1GQ0=;
+        b=degv64KeFtdi2zbjsMqCg99XUBwRsWWRsat8pVSE1dsJMyLEQebzW+u8gL6CBfEQQn
+         TR573CG7WA+9vnEdvbzyisLdqVfd2L7tW255YjXAv70Nz6z7oKmPah1XlxlqBd5nDgXH
+         ePUhHpcz6Nz3MIgpiiVSbZwwadbd4mnHSGmsNzIMifS2uWsr5SlJ5m2rsNUPByoI5zhb
+         SR83azGcCTW//SbmgQ0y+vLGSla0uKvjbMIVO2C3U/MToeM9d3wUPHwP8BDBVACmWkyb
+         mbrrj1iz1ehyoQ1IJSYmVaPjfehHwDHBxgq0J/uzM167cyMcPy58BK3LuVjr98uUFJPh
+         U0VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=ymEpgIXl54yuSlZg88NLeYK1RJf0YDtYgXWD/9J1GQ0=;
+        b=mCfmXLaIAXipdBeBOffRbppfdhNgaKH57IHxxozxkT7n2EqSPVaGKs9RA1+8AZlcR/
+         B0TLbA7qzs9pc9DYJrgu71iAERbd5BxIYs2mjOfn3MlbUWxNtDoOP4I1xFZU11G3E/mo
+         1DUBFhrGpHe3xrnROjkG2+2baNsA9XtnKI6MI5oQvEnIzmunZ5EvqA5l0tqIPTKqcJni
+         G5dRrOQHbfgxsPssSpZtnbPF28ER9A0rxCYhxObNN3LfxNN/zHMFwCEGjt0H+GTx43E2
+         yUlzV5iwUaFwG9zEYvatzmfzDQtOhZpbb/SV0jvv1xCvIRDHd70RvfbljFIsKLugRSfq
+         HdlA==
+X-Gm-Message-State: AOAM532hyET9tBth+a6criP07rl4o83ivJuG9HJD21FkGGJd4FgU+yMT
+        qiVnb66xLj1kBnlZFUA3YrRqfOSyUOaEcHFVsCo=
+X-Google-Smtp-Source: ABdhPJz0AN7o9No0fhs6xZEm8hzyX6WOZhNi8B3U8PCYdBi3itNU8MBgMEdAbbMqhnsTf7H9NACa5LH5MJlqKIgsin0=
+X-Received: by 2002:aa7:ce92:0:b0:40f:b89c:18fe with SMTP id
+ y18-20020aa7ce92000000b0040fb89c18femr17517323edv.67.1645371495858; Sun, 20
+ Feb 2022 07:38:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yg/s3eKB2wLEQTgY@ripper>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:a54:38c1:0:0:0:0:0 with HTTP; Sun, 20 Feb 2022 07:38:15
+ -0800 (PST)
+Reply-To: fatibaro01@yahoo.com
+From:   Fatimah Baro <imanosose@gmail.com>
+Date:   Sun, 20 Feb 2022 16:38:15 +0100
+Message-ID: <CAFEyOE7M=ZUrSROmPGAE3yrv-g10xHU=UARo1h+trJF7vepfMA@mail.gmail.com>
+Subject: Business invitation
+To:     imanosose <imanosose@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=2.8 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 18, 2022 at 11:00:45AM -0800, Bjorn Andersson wrote:
-> On Wed 09 Feb 04:30 PST 2022, Andy Shevchenko wrote:
-> > On Mon, Feb 07, 2022 at 07:19:39PM -0800, Bjorn Andersson wrote:
-
-...
-
-> > > +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
-> > > +				   const char *con_id, void *data,
-> > > +				   devcon_match_fn_t match,
-> > > +				   void **matches, unsigned int matches_len)
-> > > +{
-> > > +	unsigned int count;
-> > > +
-> > > +	if (!fwnode || !match || !matches)
-> > 
-> > !matches case may be still useful to get the count and allocate memory by
-> > caller. Please, consider this case.
-> > 
-> 
-> As discussed in previous version, and described in the commit message,
-> the returned value of "match" is a opaque pointer to something which
-> has to be passed back to the caller in order to be cleaned up.
-> 
-> E.g. the typec mux code returns a pointer to a typec_mux/switch object
-> with a refcounted struct device within, or an ERR_PTR().
-> 
-> So unfortunately we can must gather the results into matches and pass it
-> back to the caller to take consume or clean up.
-
-
-It's fine. You have **matches, means pointer of an opaque pointer.
-What I'm talking about is memory allocation for and array of _pointers_.
-That's what caller very much aware of and can allocate on heap. So, please
-consider this case.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Greetings from Burkina Faso,
+Please pardon me if my request offend your person; I need you to stand
+as my foreign partner for investment in your country. Please reply
+immediately if you are interested, so that I can give you more
+information.
+Fatimah Baro
