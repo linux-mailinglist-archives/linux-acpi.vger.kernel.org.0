@@ -2,124 +2,160 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 671BF4BE11F
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 18:53:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 668514BDDC4
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 18:46:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378827AbiBUPIX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Feb 2022 10:08:23 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49460 "EHLO
+        id S240473AbiBUPpj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Feb 2022 10:45:39 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378841AbiBUPIU (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 10:08:20 -0500
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3813E1A390;
-        Mon, 21 Feb 2022 07:07:52 -0800 (PST)
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1nMAI2-0001zd-01; Mon, 21 Feb 2022 16:07:50 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id F02CFC25EA; Mon, 21 Feb 2022 15:42:02 +0100 (CET)
-Date:   Mon, 21 Feb 2022 15:42:02 +0100
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
-        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
-        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v6 16/21] mips: Use do_kernel_power_off()
-Message-ID: <20220221144202.GA17239@alpha.franken.de>
-References: <20220130233718.21544-1-digetx@gmail.com>
- <20220130233718.21544-17-digetx@gmail.com>
+        with ESMTP id S1351545AbiBUPpO (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 10:45:14 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C11F22BD9
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 07:44:21 -0800 (PST)
+Received: from fraeml713-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K2RRD6bNVz6895n;
+        Mon, 21 Feb 2022 23:43:36 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml713-chm.china.huawei.com (10.206.15.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Mon, 21 Feb 2022 16:44:17 +0100
+Received: from A2006125610.china.huawei.com (10.47.91.169) by
+ lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Mon, 21 Feb 2022 15:44:09 +0000
+From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+To:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
+CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
+        <joro@8bytes.org>, <robin.murphy@arm.com>, <will@kernel.org>,
+        <wanghuiqiang@huawei.com>, <guohanjun@huawei.com>,
+        <steven.price@arm.com>, <Sami.Mujawar@arm.com>,
+        <jon@solid-run.com>, <eric.auger@redhat.com>,
+        <yangyicong@huawei.com>
+Subject: [PATCH v8 00/11] ACPI/IORT: Support for IORT RMR node
+Date:   Mon, 21 Feb 2022 15:43:33 +0000
+Message-ID: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
+X-Mailer: git-send-email 2.12.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220130233718.21544-17-digetx@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_PERMERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.47.91.169]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.2 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Jan 31, 2022 at 02:37:13AM +0300, Dmitry Osipenko wrote:
-> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
-> that invokes chained power-off handlers. It also invokes legacy
-> pm_power_off() for now, which will be removed once all drivers will
-> be converted to the new power-off API.
-> 
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-> ---
->  arch/mips/kernel/reset.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/arch/mips/kernel/reset.c b/arch/mips/kernel/reset.c
-> index 6288780b779e..e7ce07b3e79b 100644
-> --- a/arch/mips/kernel/reset.c
-> +++ b/arch/mips/kernel/reset.c
-> @@ -114,8 +114,7 @@ void machine_halt(void)
->  
->  void machine_power_off(void)
->  {
-> -	if (pm_power_off)
-> -		pm_power_off();
-> +	do_kernel_power_off();
->  
->  #ifdef CONFIG_SMP
->  	preempt_disable();
-> -- 
-> 2.34.1
+Hi,
 
-Ackey-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Since we now have an updated verion[0] of IORT spec(E.d) which
+addresses the memory attributes issues discussed here [1],
+this series now make use of it.
+
+The pull request for ACPICA E.d related changes are already
+raised and can be found here,
+https://github.com/acpica/acpica/pull/752
+
+v7 --> v8
+  - Patch #1 has temp definitions for RMR related changes till
+    the ACPICA header changes are part of kernel.
+  - No early parsing of RMR node info and is only parsed at the
+    time of use.
+  - Changes to the RMR get/put API format compared to the
+    previous version.
+  - Support for RMR descriptor shared by multiple stream IDs.
+
+Please take a look and let me know your thoughts.
+
+Thanks,
+Shameer
+[0] https://developer.arm.com/documentation/den0049/ed/
+[1] https://lore.kernel.org/linux-acpi/20210805160319.GB23085@lpieralisi/
+
+From old:
+We have faced issues with 3408iMR RAID controller cards which
+fail to boot when SMMU is enabled. This is because these
+controllers make use of host memory for various caching related
+purposes and when SMMU is enabled the iMR firmware fails to
+access these memory regions as there is no mapping for them.
+IORT RMR provides a way for UEFI to describe and report these
+memory regions so that the kernel can make a unity mapping for
+these in SMMU.
+
+Change History:
+
+v6 --> v7
+ -fix pointed out by Steve to the SMMUv2 SMR bypass install in patch #8.
+
+v5 --> v6
+- Addressed comments from Robin & Lorenzo.
+  : Moved iort_parse_rmr() to acpi_iort_init() from
+    iort_init_platform_devices().
+  : Removed use of struct iort_rmr_entry during the initial
+    parse. Using struct iommu_resv_region instead.
+  : Report RMR address alignment and overlap errors, but continue.
+  : Reworked arm_smmu_init_bypass_stes() (patch # 6).
+- Updated SMMUv2 bypass SMR code. Thanks to Jon N (patch #8).
+- Set IOMMU protection flags(IOMMU_CACHE, IOMMU_MMIO) based
+  on Type of RMR region. Suggested by Jon N.
+
+v4 --> v5
+ -Added a fw_data union to struct iommu_resv_region and removed
+  struct iommu_rmr (Based on comments from Joerg/Robin).
+ -Added iommu_put_rmrs() to release mem.
+ -Thanks to Steve for verifying on SMMUv2, but not added the Tested-by
+  yet because of the above changes.
+
+v3 -->v4
+-Included the SMMUv2 SMR bypass install changes suggested by
+ Steve(patch #7)
+-As per Robin's comments, RMR reserve implementation is now
+ more generic  (patch #8) and dropped v3 patches 8 and 10.
+-Rebase to 5.13-rc1
+
+RFC v2 --> v3
+ -Dropped RFC tag as the ACPICA header changes are now ready to be
+  part of 5.13[0]. But this series still has a dependency on that patch.
+ -Added IORT E.b related changes(node flags, _DSM function 5 checks for
+  PCIe).
+ -Changed RMR to stream id mapping from M:N to M:1 as per the spec and
+  discussion here[1].
+ -Last two patches add support for SMMUv2(Thanks to Jon Nettleton!)
+
+Jon Nettleton (1):
+  iommu/arm-smmu: Get associated RMR info and install bypass SMR
+
+Shameer Kolothum (10):
+  ACPI/IORT: Add temporary RMR node flag definitions
+  iommu: Introduce a union to struct iommu_resv_region
+  ACPI/IORT: Add helper functions to parse RMR nodes
+  iommu/dma: Introduce generic helper to retrieve RMR info
+  ACPI/IORT: Add a helper to retrieve RMR memory regions
+  iommu/arm-smmu-v3: Introduce strtab init helper
+  iommu/arm-smmu-v3: Refactor arm_smmu_init_bypass_stes() to force
+    bypass
+  iommu/arm-smmu-v3: Get associated RMR info and install bypass STE
+  iommu/arm-smmu-v3: Reserve any RMR regions associated with a dev
+  iommu/arm-smmu: Reserve any RMR regions associated with a dev
+
+ drivers/acpi/arm64/iort.c                   | 305 ++++++++++++++++++++
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  91 ++++--
+ drivers/iommu/arm/arm-smmu/arm-smmu.c       |  65 ++++-
+ drivers/iommu/dma-iommu.c                   |  25 ++
+ include/linux/acpi_iort.h                   |  14 +
+ include/linux/dma-iommu.h                   |  14 +
+ include/linux/iommu.h                       |   9 +
+ 7 files changed, 504 insertions(+), 19 deletions(-)
 
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+2.25.1
+
