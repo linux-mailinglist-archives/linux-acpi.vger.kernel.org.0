@@ -2,105 +2,181 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BD4C4BEAFD
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 20:37:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 037414BEB14
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 20:37:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230331AbiBUTBD (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Feb 2022 14:01:03 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45948 "EHLO
+        id S232622AbiBUTGy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Feb 2022 14:06:54 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233096AbiBUS7Z (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 13:59:25 -0500
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2128AE4D
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 10:59:01 -0800 (PST)
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-2d625082ae2so148502927b3.1
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 10:59:01 -0800 (PST)
+        with ESMTP id S232617AbiBUTGv (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 14:06:51 -0500
+Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7182213CE4
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 11:06:27 -0800 (PST)
+Received: by mail-oo1-xc2e.google.com with SMTP id u47-20020a4a9732000000b00316d0257de0so14383759ooi.7
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 11:06:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=mKYaMuXCaSDbgjwH5cDbyrb4SD5Y9F+pgT6HwHOAhw4=;
+        b=UayZoVpBKx73lHes9iSu/MRvaEOhZYEQ0s336NxWMNl0hTE8xxqgGUfeNvZRpbJdno
+         bOXRl6PkW8QImlSkKym03EpeC3YUqykYUDzXJEAjDMnB7u6ql+oPbHK9HEsdVwtY/+C/
+         nmuUkEiG2Sl3O+QCGNRlSv3D/YOZKHwFp6gT5CNkRsSapZG88rQf7n6cwMhEw/em7yHn
+         tP6rxY2fRy05sFM6IvlXbTZRYrjvqNN6/WHXbLLxKES1yx+79e8gfw9mp/jIgZeDAFZV
+         xBs2Ud8HzCJrTLNVQ1+x/cMlh8ji2v4uhcUQHMGrv+jYpYKwGMCo4jD4zxHD8X1dwqjB
+         z7IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TRzQydVWanDQgNCCs+6E3SrrVASgrHiEyYQGSVS/q3s=;
-        b=z2gWiEay7+nj30yoJun1qSQOEnZHFhuMhejYr4+OyX8YeqkoKp3bEN7w+Xyn6shCwh
-         xgTsLO273O29STi7S4nasDoAQtsiBSbNCkGuBC7/FUfx3QT0cIN05/3ZyqtdW/Jdwp1L
-         wtX+ghQPMkAlELFUvrB9v7dXxyWwC2KKyazJFQ1wizKYVn1BJfZQpsDWqGYpE0v/2u4L
-         az0K3LFwcCO6YdjlAHvZyA6Viye/W/4jrQUWKFGoZetA7EZB3pkOPZiuKeHMH60bt4T4
-         0xNMZgfc3GsvG6Gq5C3yptwdxLiXUuC9LGazBgamVydlbKdYr1N5nbKoUtC0u4YMkM8V
-         JdYw==
-X-Gm-Message-State: AOAM531AWlFbDEVALGzp7m2JbqVhep2BniJZA7Z4IKTAOm2y+5BaoW61
-        5rzIQWBBN1vOdZgdTue/EQLxmI150m/+HAX5Q0oAE/EF
-X-Google-Smtp-Source: ABdhPJzMhP4OfdGW03htEdElXrX85bZ+B0OR55xehaWRHAl8ZmYblCelIktOdZWuf+MrJUZza4n6R1PrKrZw/e4Pxpo=
-X-Received: by 2002:a0d:e8d2:0:b0:2d6:1743:4023 with SMTP id
- r201-20020a0de8d2000000b002d617434023mr20903152ywe.7.1645469940936; Mon, 21
- Feb 2022 10:59:00 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=mKYaMuXCaSDbgjwH5cDbyrb4SD5Y9F+pgT6HwHOAhw4=;
+        b=0pWNgkENKZIoX1l2UVcZoJ0R4JFCQeINwSEkeIwLPyO6yqat3nu3azJ2Tk2heR1CM4
+         p/D/eGsXpgnKZj82qdksbxtUivb2CImOGybFWdgaAGqLDt94zC13UmiQf75H3BxRqCCx
+         BV0Q0VlYlh8469atVp6oTPGqJDLlT4TxP9e7rql80bwOJW9sYRWksj6CMJjf1GvLsJV8
+         f10W+DUw8crPz4jiAT7/BPN/tspMX4QP3xbiblRkwhsAc1pRNXEX3O7IqlEj7T3rHQku
+         IKI4U/N6pE49iQT6CZRbKl4qYpoX9GuWYS8TRLo/N404jrcrktLibaY6x5l8rqQv6Gwv
+         2djA==
+X-Gm-Message-State: AOAM532RtiTrHgikswFkNdIz5rTNGjv3QAfQZCOxDd70UukMtIzPzPT8
+        szTtGuq0h4U3+CrbmHsPT+H6sw==
+X-Google-Smtp-Source: ABdhPJxZkhpfXyfMIR6pZATfsUiV6WfNFnMWVkBrVLoHBjm225+ktGOVREx1Vzzq++JUcijZyrDVVQ==
+X-Received: by 2002:a4a:1506:0:b0:2da:ee84:9759 with SMTP id 6-20020a4a1506000000b002daee849759mr6514311oon.65.1645470386741;
+        Mon, 21 Feb 2022 11:06:26 -0800 (PST)
+Received: from ripper ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
+        by smtp.gmail.com with ESMTPSA id j32sm4357309ota.59.2022.02.21.11.06.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Feb 2022 11:06:25 -0800 (PST)
+Date:   Mon, 21 Feb 2022 11:08:28 -0800
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH v2 1/6] device property: Helper to match multiple
+ connections
+Message-ID: <YhPjLOJchd4l+095@ripper>
+References: <20220208031944.3444-1-bjorn.andersson@linaro.org>
+ <20220208031944.3444-2-bjorn.andersson@linaro.org>
+ <YgOz6K55Oi2Si4pU@smile.fi.intel.com>
+ <Yg/s3eKB2wLEQTgY@ripper>
+ <YhIjHjMrhUpM0ucV@smile.fi.intel.com>
+ <YhMbLsvF8p/ce+mg@ripper>
+ <YhPJmiFSH8s94il7@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <BL1PR12MB5157C5EA5510F0C9D7782AE8E2369@BL1PR12MB5157.namprd12.prod.outlook.com>
- <CAJZ5v0g81BmytcjgChXZumsHV5-byzSzDQbp2hc6CYzJ_6N=aw@mail.gmail.com>
- <BL1PR12MB5157E2CDD68BA585C5F4CF2BE2369@BL1PR12MB5157.namprd12.prod.outlook.com>
- <CAJZ5v0ho8PHGp0gAUp5KkUstTXLyUMsaQ7wTL=8xDJtjtXjPRw@mail.gmail.com>
- <CAJZ5v0j3Ma1HuUWoTmJvZDsUtm9hi84njJxJbBZMwe76eATSYQ@mail.gmail.com>
- <BL1PR12MB5157589AB3D9BC55C6D77EB4E2389@BL1PR12MB5157.namprd12.prod.outlook.com>
- <CAJZ5v0jmQaeSKj7wB1Jx+cxDHVxtHzbnTKZ4TcxnydHa5NOn+A@mail.gmail.com> <BL1PR12MB51570F5BD05980A0DCA1F3F4E23A9@BL1PR12MB5157.namprd12.prod.outlook.com>
-In-Reply-To: <BL1PR12MB51570F5BD05980A0DCA1F3F4E23A9@BL1PR12MB5157.namprd12.prod.outlook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 21 Feb 2022 19:58:49 +0100
-Message-ID: <CAJZ5v0iNoeUv0XjHWyazu5X8Y5=WXKabKtxB+bwHONgKab8fEA@mail.gmail.com>
-Subject: Re: Regression in 5.16-rc1 with suspend to idle
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YhPJmiFSH8s94il7@smile.fi.intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 21, 2022 at 7:42 PM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
->
-> [AMD Official Use Only]
->
-> > > > Attached is another patch to try, testing the hypothesis that the
-> > > > observed crash is related to CPUs being in idle state that are too
-> > > > deep for some reason during late suspend and early resume.
-> > >
-> > > I tried 3 test kernels:
-> > > * 5.17-rc4 + Your second debugging patch
-> > > * 5.17-rc4+ Your first debugging patch
-> > > * 5.17-rc4 + A hack I wrote that pushed amd-pmc into "later" in the
-> > suspend
-> > > using a global symbol called after LPS0 instead of letting it run in noirq stage
-> > >
-> > > It works properly on all of those, tried about 5x time in each.
-> > >
-> > > Then I confirmed I could still crash it on 5.17-rc4 with my control kernel.
-> >
-> > I would do something like the attached patch, then (provided that it works).
->
-> I got a variation of this to work.  Let me clean it up some, do some more testing and I'll send
-> it out to review.
+On Mon 21 Feb 09:19 PST 2022, Andy Shevchenko wrote:
 
-OK
+> On Sun, Feb 20, 2022 at 08:55:10PM -0800, Bjorn Andersson wrote:
+> > On Sun 20 Feb 03:16 PST 2022, Andy Shevchenko wrote:
+> > > On Fri, Feb 18, 2022 at 11:00:45AM -0800, Bjorn Andersson wrote:
+> > > > On Wed 09 Feb 04:30 PST 2022, Andy Shevchenko wrote:
+> > > > > On Mon, Feb 07, 2022 at 07:19:39PM -0800, Bjorn Andersson wrote:
+> 
+> ...
+> 
+> > > > > > +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
+> > > > > > +				   const char *con_id, void *data,
+> > > > > > +				   devcon_match_fn_t match,
+> > > > > > +				   void **matches, unsigned int matches_len)
+> > > > > > +{
+> > > > > > +	unsigned int count;
+> > > > > > +
+> > > > > > +	if (!fwnode || !match || !matches)
+> > > > > 
+> > > > > !matches case may be still useful to get the count and allocate memory by
+> > > > > caller. Please, consider this case.
+> > > > 
+> > > > As discussed in previous version, and described in the commit message,
+> > > > the returned value of "match" is a opaque pointer to something which
+> > > > has to be passed back to the caller in order to be cleaned up.
+> > > > 
+> > > > E.g. the typec mux code returns a pointer to a typec_mux/switch object
+> > > > with a refcounted struct device within, or an ERR_PTR().
+> > > > 
+> > > > So unfortunately we can must gather the results into matches and pass it
+> > > > back to the caller to take consume or clean up.
+> > > 
+> > > It's fine. You have **matches, means pointer of an opaque pointer.
+> > > What I'm talking about is memory allocation for and array of _pointers_.
+> > > That's what caller very much aware of and can allocate on heap. So, please
+> > > consider this case.
+> > 
+> > I'm sorry, but I'm not sure what you're looking for.
+> > 
+> > 
+> > I still interpret your comment as that it would be nice to be able to do
+> > something like:
+> > 
+> > count = fwnode_connection_find_matches(fwnode, "orientation-switch",
+> > 				       NULL, typec_switch_match, NULL, 0);
+> > 
+> > based on the returned value the caller could allocate an array of
+> > "count" pointers and then call the function again to actually fill out
+> > the count elements.
+> 
+> Yes, that's what I want from the generic fwnode APIs.
+> (Keyword: generic)
+> 
+> > The problem with this is that, typec_switch_match() does:
+> 
+> As you stated, the problem is in the typec_switch_match(). So, it's not related
+> to the fwnode, but how you are using it.
+> 
+> > void *typec_switch_match(fwnode, id, data) {
+> > 	struct device *dev = find_struct_device(fwnode, id);
+> > 	if (!dev)
+> > 		return NULL;
+> > 	get_device(dev);
+> > 	return container_of(dev, struct typec_switch, dev);
+> > }
+> > 
+> > So if we call the match function and if that finds a "dev" it will
+> > return a struct typec_switch with a refcounted struct device within.
+> 
+> fwnode (as being an abstraction on top of the others) has no knowledge
+> about this. And more important should not know that.
+> 
+> > We can see if that's NULL or not and will be able to return a "count",
+> > but we have no way of releasing the reference acquired - we must return
+> > the void pointer back to the client, so that it can release it.
+> 
+> The caller (if it wants to!) may create different callbacks for count and real
+> matching, no?
+> 
 
-> Long term - are you opposed to drivers/acpi/x86/s2idle.c moving to drivers/platform/x86/?
+Ahh, yeah you're right, we can shift this responsibility onto the caller
+and thereby allow them to implement the count as well. Makes sense!
 
-It is tied to the code in sleep.c, so I'd rather not move it.
+Thanks,
+Bjorn
 
-> I'd really like the stuff amd-pmc does to be a callback after lps0 (which is closer to how it works
-> on Windows - it's the very last thing).
-
-I see.
-
-A notifier-based driver interface to be invoked from s2idle.c should
-work for that.
-
-> I feel like keeping the stuff it does as noirq is generally fragile, and I want to avoid this kind
-> of breakage.
-
-Sure.
+> > My claim is that this is not a problem, because this works fine with any
+> > reasonable size of fwnode graphs we might run into - and the client will
+> > in general have a sense of the worst case number of matches (in this
+> > series its 3, as there's 3 types of lanes that can be switched/muxed
+> > coming out of a USB connector).
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
