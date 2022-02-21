@@ -2,122 +2,165 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3392A4BDDB1
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 18:45:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60DC44BE615
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 19:01:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352168AbiBUQwl (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Feb 2022 11:52:41 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40942 "EHLO
+        id S1359100AbiBURUm (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Feb 2022 12:20:42 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236687AbiBUQwk (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 11:52:40 -0500
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A9C220C7
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 08:52:16 -0800 (PST)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-2d07c4a0d06so144822837b3.13
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 08:52:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=k/HNKJ2e1zc2bePek5Whx8xUvH2ewxwDEcpS6dqGjns=;
-        b=cv1BkES8fgmphG+F6zQzlquZ/QYJS2mvoSGkukHV0GbP/gJw06Hpl/bKf6Q1chua8r
-         kcW2CIfL8jO2ths3n76Den3pYwQzgLVnox2q6fMt/+exQESeSxZHo12vo/eVdi9gLvl8
-         b9d4WuZZu8YYuRRrKcVp/nuw4/U6dek/W5U8LUVbZnu2aAxeXCG5eR51iAqRbMgcc2ZY
-         CtkebbUY/g+EuWQD7fhuQy7hSQlCTJj13SrRpU/DD8wUTBVTg245/xqgAJKySm8mHIzK
-         lgs0DKL9jetG/BifkP9jscCjfXC4WHNTDghEJclHwC4x3mp5+R+3nKhNd8Y8qVy7le+1
-         6UWw==
-X-Gm-Message-State: AOAM532NcuiGiTJPdrRsTHgDub1k0c0Vf9Bw9MmwXAiFpCIYkkyw7n75
-        YoipnkBJLyElyKOcJlP3VpCtiZDFaKp+UhNeJBZsIzl/
-X-Google-Smtp-Source: ABdhPJyr9xZXz9IJIUi4UCrJMbpTxhRcewWbtEBGjOSDoKsLpQgKujjiN8HFloR+d/Kf+AtXqnF/8MsUH6KoMUvKSvk=
-X-Received: by 2002:a81:8487:0:b0:2d6:9167:ecab with SMTP id
- u129-20020a818487000000b002d69167ecabmr19865283ywf.515.1645462335857; Mon, 21
- Feb 2022 08:52:15 -0800 (PST)
+        with ESMTP id S1381608AbiBURUl (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 12:20:41 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 206D5C5E;
+        Mon, 21 Feb 2022 09:20:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1645464018; x=1677000018;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=d5MBD6jseNDfERr7Px+b+BKh2csyDhPOjHVWEWXUWp0=;
+  b=PMNt1bh2YdTAgOcfTGN5Higc428uAc7YoEcSlhJaAsU55sUBY76cEALN
+   fo2/VUyJh3jokrQYzihp4YW7CRNx5hPC81Huv/LjDCj39F3A8asExt2B0
+   /4CkL5Oj9U/iPOUTu7pcb2GIkP33Ph6zX5nVDfPV+06s73FO6D9XOs0zD
+   CICNNTPSmktZ4vZr/50bGrCqFAMyD7TaBjyTPPdIrtJRXQxSjfgwbBgpW
+   p+krrkk2tfID6lJNqambxdWUBJwD2k0Trdu1YVeLAeU17UVkoxi9dtRl7
+   V5hRHbBakNDrQvEpxh3snDAkI79dQCLRgWt2ZRJYCXAdRfhKOdzV/6WJl
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10265"; a="251729331"
+X-IronPort-AV: E=Sophos;i="5.88,386,1635231600"; 
+   d="scan'208";a="251729331"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2022 09:20:17 -0800
+X-IronPort-AV: E=Sophos;i="5.88,386,1635231600"; 
+   d="scan'208";a="490502556"
+Received: from smile.fi.intel.com ([10.237.72.59])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2022 09:20:14 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nMCLK-006rcp-SM;
+        Mon, 21 Feb 2022 19:19:22 +0200
+Date:   Mon, 21 Feb 2022 19:19:22 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH v2 1/6] device property: Helper to match multiple
+ connections
+Message-ID: <YhPJmiFSH8s94il7@smile.fi.intel.com>
+References: <20220208031944.3444-1-bjorn.andersson@linaro.org>
+ <20220208031944.3444-2-bjorn.andersson@linaro.org>
+ <YgOz6K55Oi2Si4pU@smile.fi.intel.com>
+ <Yg/s3eKB2wLEQTgY@ripper>
+ <YhIjHjMrhUpM0ucV@smile.fi.intel.com>
+ <YhMbLsvF8p/ce+mg@ripper>
 MIME-Version: 1.0
-References: <0718fe87-230f-b293-b998-b83f3c133367@cs.wisc.edu>
-In-Reply-To: <0718fe87-230f-b293-b998-b83f3c133367@cs.wisc.edu>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 21 Feb 2022 17:52:05 +0100
-Message-ID: <CAJZ5v0j=c-ctwqmRfvVtep4DtOf=6Gf=zs+B19aPDpQ0447oRw@mail.gmail.com>
-Subject: Re: /proc/acpi/battery gone again, breaks wmpower
-To:     Carl Edquist <edquist@cs.wisc.edu>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Thomas Renninger <trenn@suse.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YhMbLsvF8p/ce+mg@ripper>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Fri, Feb 18, 2022 at 12:17 AM Carl Edquist <edquist@cs.wisc.edu> wrote:
->
-> Hello there Rafael,
->
-> (I found your contact in the MAINTAINERS file for the ACPI section.
-> Hopefully you are the right person to ask this question, but let me know
-> if there's a better place to ask!)
->
-> Slackware 15 was released this month, and after upgrading (to linux
-> 5.15.19, according to uname -r), I noticed my wmpower dockapp for the
-> WindowMaker window manager stopped working.  Apparently it relies on
-> /proc/acpi/battery, and does not know about the /sys alternatives.  Maybe
-> it was written before this acpi interface was deprecated.
->
-> Since wmpower has "just worked" for so long, it appears the only
-> maintenance it's received in a long time has been by the Slackware
-> packagers (slackbuilds.org) to fix compiler issues with more recent
-> versions of gcc.  But people like me definitely still use it! :)
->
->
-> I tried searching a bit to see what's going on, and I found an earlier
-> discussion where /proc/acpi/battery had previously been removed, circa
-> linux 3.14, and then re-added, after it was brought up that (possibly
-> among other things) a number of WindowManager dock apps still relied on
-> /proc/acpi/battery:
->
->         https://lkml.org/lkml/2014/3/17/393
->
->
-> I didn't find a more recent discussion about it getting removed again, but
-> some git-log searching brought me to this commit:
->
->
-> commit 8830280a69ddfdbba7fb24d79dce309817783c6a
-> Author: Thomas Renninger <trenn@suse.de>
-> Date:   Wed May 27 17:33:03 2020 +0200
->
->      ACPI: procfs: Remove last dirs after being marked deprecated for a decade
->
->      This code is outdated and has been deprecated for a long time, so user
->      space is not expected to rely on it any more on any systems that are
->      up to date by any reasonable measure.  Remove it.
->
->      Signed-off-by: Thomas Renninger <trenn@suse.de>
->      [ rjw: Subject / changelog ]
->      Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
->
-> Out of curiousity, I tried reverting this commit against the latest
-> master.  It does not revert cleanly, though it doesn't look like a lot to
-> clean up (conflicts in drivers/acpi/ac.c & battery.c).  Would reverting
-> this commit (assuming conflicts can be fixed) be enough for me to restore
-> the old /proc/acpi/battery interface?
+On Sun, Feb 20, 2022 at 08:55:10PM -0800, Bjorn Andersson wrote:
+> On Sun 20 Feb 03:16 PST 2022, Andy Shevchenko wrote:
+> > On Fri, Feb 18, 2022 at 11:00:45AM -0800, Bjorn Andersson wrote:
+> > > On Wed 09 Feb 04:30 PST 2022, Andy Shevchenko wrote:
+> > > > On Mon, Feb 07, 2022 at 07:19:39PM -0800, Bjorn Andersson wrote:
 
-It should be sufficient.
+...
 
-> Or are there likely to be any gotchas there?
->
->
-> And, I'm afraid to ask, but is it out of the question to wonder if this,
-> now twice removed, acpi interface may ever see its way back into mainline?
+> > > > > +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
+> > > > > +				   const char *con_id, void *data,
+> > > > > +				   devcon_match_fn_t match,
+> > > > > +				   void **matches, unsigned int matches_len)
+> > > > > +{
+> > > > > +	unsigned int count;
+> > > > > +
+> > > > > +	if (!fwnode || !match || !matches)
+> > > > 
+> > > > !matches case may be still useful to get the count and allocate memory by
+> > > > caller. Please, consider this case.
+> > > 
+> > > As discussed in previous version, and described in the commit message,
+> > > the returned value of "match" is a opaque pointer to something which
+> > > has to be passed back to the caller in order to be cleaned up.
+> > > 
+> > > E.g. the typec mux code returns a pointer to a typec_mux/switch object
+> > > with a refcounted struct device within, or an ERR_PTR().
+> > > 
+> > > So unfortunately we can must gather the results into matches and pass it
+> > > back to the caller to take consume or clean up.
+> > 
+> > It's fine. You have **matches, means pointer of an opaque pointer.
+> > What I'm talking about is memory allocation for and array of _pointers_.
+> > That's what caller very much aware of and can allocate on heap. So, please
+> > consider this case.
+> 
+> I'm sorry, but I'm not sure what you're looking for.
+> 
+> 
+> I still interpret your comment as that it would be nice to be able to do
+> something like:
+> 
+> count = fwnode_connection_find_matches(fwnode, "orientation-switch",
+> 				       NULL, typec_switch_match, NULL, 0);
+> 
+> based on the returned value the caller could allocate an array of
+> "count" pointers and then call the function again to actually fill out
+> the count elements.
 
-Because we promise that user space won't be broken by kernel changes,
-it needs to be restored to make wmpower work again.
+Yes, that's what I want from the generic fwnode APIs.
+(Keyword: generic)
 
-I'd rather not restore all of it, though, just the part relied on by wmpower.
+> The problem with this is that, typec_switch_match() does:
+
+As you stated, the problem is in the typec_switch_match(). So, it's not related
+to the fwnode, but how you are using it.
+
+> void *typec_switch_match(fwnode, id, data) {
+> 	struct device *dev = find_struct_device(fwnode, id);
+> 	if (!dev)
+> 		return NULL;
+> 	get_device(dev);
+> 	return container_of(dev, struct typec_switch, dev);
+> }
+> 
+> So if we call the match function and if that finds a "dev" it will
+> return a struct typec_switch with a refcounted struct device within.
+
+fwnode (as being an abstraction on top of the others) has no knowledge
+about this. And more important should not know that.
+
+> We can see if that's NULL or not and will be able to return a "count",
+> but we have no way of releasing the reference acquired - we must return
+> the void pointer back to the client, so that it can release it.
+
+The caller (if it wants to!) may create different callbacks for count and real
+matching, no?
+
+> My claim is that this is not a problem, because this works fine with any
+> reasonable size of fwnode graphs we might run into - and the client will
+> in general have a sense of the worst case number of matches (in this
+> series its 3, as there's 3 types of lanes that can be switched/muxed
+> coming out of a USB connector).
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
