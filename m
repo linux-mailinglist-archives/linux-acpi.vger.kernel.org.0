@@ -2,164 +2,214 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF9B84BD4E1
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 05:55:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B156E4BE2E7
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 18:56:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344060AbiBUExg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 20 Feb 2022 23:53:36 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48664 "EHLO
+        id S1354725AbiBUK3i (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Feb 2022 05:29:38 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344069AbiBUExe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Feb 2022 23:53:34 -0500
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A9CA443D4
-        for <linux-acpi@vger.kernel.org>; Sun, 20 Feb 2022 20:53:09 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id z7so6652806oid.4
-        for <linux-acpi@vger.kernel.org>; Sun, 20 Feb 2022 20:53:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=U9guWiEcPMV7PWzSzfcCTMB5YDev3KLGmnMGaqiDx+0=;
-        b=rx94dO90CjQ8ANnCwpTq4fW8qzvkh1TM5mwcJUm3S0DciuQfHg+tqccg/KMa76WVaX
-         fgcht9DjQJ6KMnTI1S9evOQih/k0sq8/dCMvFyzQS8jTZ6pEDLVOs3vcTTR2wT4vTIxT
-         X+yrVpOtyrb0TJxrYaKMLtChBmwwunPx53xjZBCfNZ2d7NR9jkRUF0tpwugsDMytNsmr
-         GxB97w2U1aXNbZGswcEm6L1Cs9eIn0oVpfydKaHVtBHdJyIgTcy2FEarX2wIfPbPl+Rq
-         JqIPq995H7n+0/IAmORhljAcPae/VaARwqRl5E0t8jmBsjtVlPHZCr4Tw0zmvb2mhVgL
-         hMQg==
+        with ESMTP id S1354839AbiBUK3Q (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 05:29:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4470966C98
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 01:51:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1645437008;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=88houUaciP/d6/AWIIRoKq1UYLz/KQk9XhKaIcWCOT0=;
+        b=W6KP7FqNEMBdsygW+aMkfnrvLTcXHMwDJeicCZUMStPcrjnB+5Pg6+f0zM6OXKHUdPMfZq
+        3WtrQVBRDETL2trK1PxOP1SHPWDaJcPhDLI51ceNkiOHDJhVY8GTggipjesbeNaxEi5sBV
+        4CeXYyhJ52S3cNZvgxp+IvHpB76ie5Y=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-642-nWcStkI9NRmACaVHppwR7Q-1; Mon, 21 Feb 2022 04:50:06 -0500
+X-MC-Unique: nWcStkI9NRmACaVHppwR7Q-1
+Received: by mail-ed1-f69.google.com with SMTP id m4-20020a50cc04000000b0040edb9d147cso9856207edi.15
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 01:50:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=U9guWiEcPMV7PWzSzfcCTMB5YDev3KLGmnMGaqiDx+0=;
-        b=Bk/rJ6GFVfH52fUySwaoAI53kBILzEahBODNqzqcW3WrMMdysNh6FbEAT8yHgpNtpH
-         VFr7He/obbfNhHjagOM1BULuL6B31W1+hnek3GRDlJ4i7p3HQhCrqSo/DfsYmmnkG+sH
-         RApPRsgOiedLHQN8XbiS+gxd2E49aXqzwTTmjNDJLif2LTliBEpVs2nibxDZds2nAncD
-         oJ8M5pJE5J8Tu1Ixd54QAVz+pxjZSTX57FXK0heWnlLOkoLBuBSerRUaemrjzgqsSq8K
-         FDv7UerEqUF+9Q+o1W0hH2qeRil0aktFogjar6fDsj8mqsOJvVvJybpbBnweNltUq0iE
-         LI2A==
-X-Gm-Message-State: AOAM530TteHVAxHoXOAY91t2pTWY9tHaA2sAe44jG47HzxARQ+sp4nyv
-        cUqa3Bg0LmDMc3EyKVG8A1Ohvw==
-X-Google-Smtp-Source: ABdhPJwLpaRqy77tse+QFPujJ1+fkFgfK7d1zSVnK9L9wQyNlSWzfzxJ4NBsuc5FdSiTPDSTr6TCCA==
-X-Received: by 2002:aca:368a:0:b0:2d3:fc60:937f with SMTP id d132-20020aca368a000000b002d3fc60937fmr9426236oia.182.1645419188539;
-        Sun, 20 Feb 2022 20:53:08 -0800 (PST)
-Received: from ripper ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
-        by smtp.gmail.com with ESMTPSA id w4sm4405549oor.30.2022.02.20.20.53.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Feb 2022 20:53:08 -0800 (PST)
-Date:   Sun, 20 Feb 2022 20:55:10 -0800
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v2 1/6] device property: Helper to match multiple
- connections
-Message-ID: <YhMbLsvF8p/ce+mg@ripper>
-References: <20220208031944.3444-1-bjorn.andersson@linaro.org>
- <20220208031944.3444-2-bjorn.andersson@linaro.org>
- <YgOz6K55Oi2Si4pU@smile.fi.intel.com>
- <Yg/s3eKB2wLEQTgY@ripper>
- <YhIjHjMrhUpM0ucV@smile.fi.intel.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=88houUaciP/d6/AWIIRoKq1UYLz/KQk9XhKaIcWCOT0=;
+        b=OTeWUGbl7u5lvaaZC1tZQgf+UQdxIKpmptijk/xmCxnWOi79RE2x0ztAxWmyjnI6uK
+         bpW4aYcEWHeLgkapv/AZZzAzc4aIxamIguK+rm2HI+P2zb9vu9NLEKDvamt0c+czFLL5
+         sjvYk6JSFM86ZiQdV+mU5cr97U0gZ0kwkXi6xbZQCurwYgUJlIQzK4hy1v9B6DdVTv0S
+         TvSd4NIvV9Bnile8luTLrHjwmYwE9ODYpw/OS5BRV1GQEj/qdARNE7ksqDv1aHVH/6FM
+         s04iFCzkZG3WMDj5NuWj0PwTLD8gzpIZXueHs3tIqITgVbsaiOA3SeSkG+7uUbXyI4T5
+         GmOg==
+X-Gm-Message-State: AOAM532ZUwyN3oMRfmPtjQMTLtA/JQPeJDJzqOHg3hXeCPbt5pokGvMx
+        VVDPkRDYkxDilIrrBwij1c40YxV2YDuElqdwJebapPXkSQbTT9qM0Y8wwPfGCLx02Z+1Lo8b2L2
+        QpObLI1CtFsQaY+Kmj7IPhA==
+X-Received: by 2002:aa7:cf06:0:b0:405:e0c8:8b5d with SMTP id a6-20020aa7cf06000000b00405e0c88b5dmr19881053edy.367.1645437005552;
+        Mon, 21 Feb 2022 01:50:05 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwe/A3CAZ8w7GD28jop57j6yBU2x42zArQ2Z28XOB6P9Y6fTKfcqvM4HoYMzXlLYWmQ9dQzxg==
+X-Received: by 2002:aa7:cf06:0:b0:405:e0c8:8b5d with SMTP id a6-20020aa7cf06000000b00405e0c88b5dmr19881029edy.367.1645437005271;
+        Mon, 21 Feb 2022 01:50:05 -0800 (PST)
+Received: from [10.40.98.142] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id x14sm8510811edd.63.2022.02.21.01.50.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Feb 2022 01:50:04 -0800 (PST)
+Message-ID: <74f89182-1699-f4a7-85e0-66976021913d@redhat.com>
+Date:   Mon, 21 Feb 2022 10:50:04 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YhIjHjMrhUpM0ucV@smile.fi.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH 1/6] ACPI: scan: Add acpi_dev_get_next_consumer_dev()
+Content-Language: en-US
+To:     Daniel Scally <djrscally@gmail.com>, linux-acpi@vger.kernel.org,
+        linux-clk@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Cc:     rafael@kernel.org, lenb@kernel.org, mturquette@baylibre.com,
+        sboyd@kernel.org, markgross@kernel.org, robert.moore@intel.com
+References: <20220216225304.53911-1-djrscally@gmail.com>
+ <20220216225304.53911-2-djrscally@gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220216225304.53911-2-djrscally@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun 20 Feb 03:16 PST 2022, Andy Shevchenko wrote:
+Hi,
 
-> On Fri, Feb 18, 2022 at 11:00:45AM -0800, Bjorn Andersson wrote:
-> > On Wed 09 Feb 04:30 PST 2022, Andy Shevchenko wrote:
-> > > On Mon, Feb 07, 2022 at 07:19:39PM -0800, Bjorn Andersson wrote:
+On 2/16/22 23:52, Daniel Scally wrote:
+> In commit b83e2b306736 ("ACPI: scan: Add function to fetch dependent of ACPI
+> device") we added a means of fetching the first device to declare itself
+> dependent on another ACPI device in the _DEP method. One assumption
+> in that patch was that there would only be a single consuming device,
+> but this has not held.
 > 
-> ...
+> Extend the functionality by adding a new function that fetches the
+> next consumer of a supplier device. We can then simplify the original
+> function by simply calling the new one.
 > 
-> > > > +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
-> > > > +				   const char *con_id, void *data,
-> > > > +				   devcon_match_fn_t match,
-> > > > +				   void **matches, unsigned int matches_len)
-> > > > +{
-> > > > +	unsigned int count;
-> > > > +
-> > > > +	if (!fwnode || !match || !matches)
-> > > 
-> > > !matches case may be still useful to get the count and allocate memory by
-> > > caller. Please, consider this case.
-> > > 
-> > 
-> > As discussed in previous version, and described in the commit message,
-> > the returned value of "match" is a opaque pointer to something which
-> > has to be passed back to the caller in order to be cleaned up.
-> > 
-> > E.g. the typec mux code returns a pointer to a typec_mux/switch object
-> > with a refcounted struct device within, or an ERR_PTR().
-> > 
-> > So unfortunately we can must gather the results into matches and pass it
-> > back to the caller to take consume or clean up.
+> Signed-off-by: Daniel Scally <djrscally@gmail.com>
+> ---
+>  drivers/acpi/scan.c     | 47 ++++++++++++++++++++++++++++++++++-------
+>  include/acpi/acpi_bus.h |  2 ++
+>  2 files changed, 41 insertions(+), 8 deletions(-)
 > 
-> 
-> It's fine. You have **matches, means pointer of an opaque pointer.
-> What I'm talking about is memory allocation for and array of _pointers_.
-> That's what caller very much aware of and can allocate on heap. So, please
-> consider this case.
-> 
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 4463c2eda61e..b3ed664ee1cb 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -2256,9 +2256,21 @@ static void acpi_bus_attach(struct acpi_device *device, bool first_pass)
+>  		device->handler->hotplug.notify_online(device);
+>  }
+>  
+> -static int acpi_dev_get_first_consumer_dev_cb(struct acpi_dep_data *dep, void *data)
+> +static int acpi_dev_get_next_consumer_dev_cb(struct acpi_dep_data *dep, void *data)
+>  {
+> -	struct acpi_device *adev;
+> +	struct acpi_device *adev = *(struct acpi_device **)data;
+> +
+> +	/*
+> +	 * If we're passed a 'previous' consumer device then we need to skip
+> +	 * any consumers until we meet the previous one, and then NULL @data
+> +	 * so the next one can be returned.
+> +	 */
+> +	if (adev) {
+> +		if (dep->consumer == adev->handle)
+> +			*(struct acpi_device **)data = NULL;
+> +
+> +		return 0;
+> +	}
+>  
+>  	adev = acpi_bus_get_acpi_device(dep->consumer);
+>  	if (adev) {
+> @@ -2389,23 +2401,42 @@ bool acpi_dev_ready_for_enumeration(const struct acpi_device *device)
+>  EXPORT_SYMBOL_GPL(acpi_dev_ready_for_enumeration);
+>  
+>  /**
+> - * acpi_dev_get_first_consumer_dev - Return ACPI device dependent on @supplier
+> + * acpi_dev_get_next_consumer_dev - Return the next adev dependent on @supplier
+>   * @supplier: Pointer to the dependee device
+> + * @start: Pointer to the current dependent device
+>   *
+> - * Returns the first &struct acpi_device which declares itself dependent on
+> + * Returns the next &struct acpi_device which declares itself dependent on
+>   * @supplier via the _DEP buffer, parsed from the acpi_dep_list.
+>   *
+>   * The caller is responsible for putting the reference to adev when it is no
+>   * longer needed.
 
-I'm sorry, but I'm not sure what you're looking for.
+This bit of the help text seems to not be entirely correct, since the reference to
+start gets consumed by this, so the caller only needs to put the device when it
+does NOT pass it as start to another acpi_dev_get_next_consumer_dev call.
 
 
-I still interpret your comment as that it would be nice to be able to do
-something like:
 
-count = fwnode_connection_find_matches(fwnode, "orientation-switch",
-				       NULL, typec_switch_match, NULL, 0);
+>   */
+> -struct acpi_device *acpi_dev_get_first_consumer_dev(struct acpi_device *supplier)
+> +struct acpi_device *acpi_dev_get_next_consumer_dev(struct acpi_device *supplier,
+> +						   struct acpi_device *start)
+>  {
+> -	struct acpi_device *adev = NULL;
+> +	struct acpi_device *adev = start;
+>  
+>  	acpi_walk_dep_device_list(supplier->handle,
+> -				  acpi_dev_get_first_consumer_dev_cb, &adev);
+> +				  acpi_dev_get_next_consumer_dev_cb, &adev);
+>  
+> -	return adev;
+> +	acpi_dev_put(start);
+> +	return adev == start ? NULL : adev;
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_dev_get_next_consumer_dev);
+> +
+> +/**
+> + * acpi_dev_get_first_consumer_dev - Return ACPI device dependent on @supplier
+> + * @supplier: Pointer to the dependee device
+> + *
+> + * Returns the first &struct acpi_device which declares itself dependent on
+> + * @supplier via the _DEP buffer, parsed from the acpi_dep_list.
+> + *
+> + * The caller is responsible for putting the reference to adev when it is no
+> + * longer needed.
+> + */
+> +struct acpi_device *acpi_dev_get_first_consumer_dev(struct acpi_device *supplier)
+> +{
+> +	return acpi_dev_get_next_consumer_dev(supplier, NULL);
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_dev_get_first_consumer_dev);
 
-based on the returned value the caller could allocate an array of
-"count" pointers and then call the function again to actually fill out
-the count elements.
+The only caller of this is skl_int3472_get_sensor_adev_and_name() IMHO it would
+be better to just move that over to acpi_dev_get_next_consumer_dev(..., NULL);
+in this same patch and just drop acpi_dev_get_first_consumer_dev() all together.
 
-
-The problem with this is that, typec_switch_match() does:
-
-void *typec_switch_match(fwnode, id, data) {
-	struct device *dev = find_struct_device(fwnode, id);
-	if (!dev)
-		return NULL;
-	get_device(dev);
-	return container_of(dev, struct typec_switch, dev);
-}
-
-So if we call the match function and if that finds a "dev" it will
-return a struct typec_switch with a refcounted struct device within.
-
-We can see if that's NULL or not and will be able to return a "count",
-but we have no way of releasing the reference acquired - we must return
-the void pointer back to the client, so that it can release it.
-
-
-My claim is that this is not a problem, because this works fine with any
-reasonable size of fwnode graphs we might run into - and the client will
-in general have a sense of the worst case number of matches (in this
-series its 3, as there's 3 types of lanes that can be switched/muxed
-coming out of a USB connector).
-
-
-But that's perhaps not what you're referring to? Or perhaps I'm missing
-something else?
+I expect this entire series to get merged through the pdx86 tree, so from
+that pov doing this should be fine..
 
 Regards,
-Bjorn
+
+Hans
+
+
+
+>  
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index ca88c4706f2b..8b06fef04722 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -720,6 +720,8 @@ bool acpi_dev_hid_uid_match(struct acpi_device *adev, const char *hid2, const ch
+>  
+>  void acpi_dev_clear_dependencies(struct acpi_device *supplier);
+>  bool acpi_dev_ready_for_enumeration(const struct acpi_device *device);
+> +struct acpi_device *acpi_dev_get_next_consumer_dev(struct acpi_device *supplier,
+> +						   struct acpi_device *start);
+>  struct acpi_device *acpi_dev_get_first_consumer_dev(struct acpi_device *supplier);
+>  struct acpi_device *
+>  acpi_dev_get_next_match_dev(struct acpi_device *adev, const char *hid, const char *uid, s64 hrv);
+
