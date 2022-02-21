@@ -2,75 +2,75 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 295EA4BDC02
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 18:41:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16FF84BDD8E
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 18:45:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355270AbiBUKp0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Feb 2022 05:45:26 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41182 "EHLO
+        id S1355280AbiBUKqV (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Feb 2022 05:46:21 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355415AbiBUKpB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 05:45:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B4AB9532C0
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 02:05:45 -0800 (PST)
+        with ESMTP id S1355438AbiBUKps (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 05:45:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F0DBA27B26
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 02:07:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1645437944;
+        s=mimecast20190719; t=1645438045;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tEs3c0lwLFu5MFr8oPqlqgpJ1951J6bY0iE9T4+v1Lg=;
-        b=hV70KaGjZUR0cm0r4/rSF23GQQl1M4ymqoeWPH59+u19QLEC3Bmo3TrYtXoDYLiepwlsTl
-        Apu8W29524J6779KiVcVmFADMNRKz10Ys3ahEdB//u/Y9UwmuBZJ92PqvG/E2r9CdCFkWD
-        9LKpNLbXm6gtziYzXrh1BND64/JOOjU=
+        bh=JKcYC1jQAnijQ05LdhY3CVZ5ZYi0oZ2fyWz8eU5HqPE=;
+        b=G89fFXXAzBL4MM/q3V0jsHa2gyGfKzTHR3teEYf+I+iaJ0QukmfqgbJuka7qp0xB6K7qKf
+        hwJjNhLpqj2OAehD2l6ZbpqR32BvrNdwpkAYlrx6jVDuyPjFbzuDXLP5k5kJ97PPxKVRP+
+        hK7ta69HF4Ebb1NalDIEtGqmWxp3DHU=
 Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
  [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-662-Alay-CySMVidoX2Rq8JwDQ-1; Mon, 21 Feb 2022 05:05:42 -0500
-X-MC-Unique: Alay-CySMVidoX2Rq8JwDQ-1
-Received: by mail-ej1-f71.google.com with SMTP id go11-20020a1709070d8b00b006cf0d933739so4483765ejc.5
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 02:05:42 -0800 (PST)
+ us-mta-359-_ISPLLXKNaCaZpDhbwJnnQ-1; Mon, 21 Feb 2022 05:07:21 -0500
+X-MC-Unique: _ISPLLXKNaCaZpDhbwJnnQ-1
+Received: by mail-ej1-f71.google.com with SMTP id m4-20020a170906160400b006be3f85906eso4447198ejd.23
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 02:07:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=tEs3c0lwLFu5MFr8oPqlqgpJ1951J6bY0iE9T4+v1Lg=;
-        b=ghcVSrGGm1/OqB/EJuFOhF5H7cuuhEtiiPxEdiemRc5AjmdRdpjGqhWA8KqwFwVt+f
-         7FB0PIRYMtHH0HgYKnnTZWZhOEsdSVZel00TGIDcYYWAVr3t8EJGztfGezpfXdLQWeSF
-         MPQ2h7t31O3l1b+eeoiQrqgi3Nr1mPTv2PotrJ39SWsFp/rz5DVKQRj8GdX9BtrxWO5J
-         YMZ2G8o40SlPHE8HBp1h46unI8xZnkVvNtaLFwXCj924I7QWVP4Cz1MIAaqp/Os9ZKDf
-         DAWqUdD2A3r5OEVksd3D7icaiCC37U0CnRQmF2lJ0njVX77Xq4wJykS2mjXmRZQLZ9Am
-         wW7Q==
-X-Gm-Message-State: AOAM533d07wcBZmtmlyCECDE29M1TklTA0wWYnZ7xXTLg+3c6RlECX0q
-        Nv6+O59yk1EYa8ZnrGvN35+O/vk3/EVy3Dtt9br3jmPdNb8NZdJ17jOasicESUoUQg6jwU1/4PS
-        xZTAmdDfDZxowdL+Tew7+9Q==
-X-Received: by 2002:a50:9e2e:0:b0:410:d1b6:4d2e with SMTP id z43-20020a509e2e000000b00410d1b64d2emr20315132ede.201.1645437941699;
-        Mon, 21 Feb 2022 02:05:41 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyOVCVc23b9yOF+lrwf8TO4v3PegH4KxxSFCMMQ5Gb72ss+1TpWKLq+7F9UVnnV5KpMFPxcMg==
-X-Received: by 2002:a50:9e2e:0:b0:410:d1b6:4d2e with SMTP id z43-20020a509e2e000000b00410d1b64d2emr20315116ede.201.1645437941501;
-        Mon, 21 Feb 2022 02:05:41 -0800 (PST)
+        bh=JKcYC1jQAnijQ05LdhY3CVZ5ZYi0oZ2fyWz8eU5HqPE=;
+        b=r55QVBE4rEPZOq7HGeJNkKRXU3bTENv8DoO7oiSoce9NDALp5f72fl0/MTgEiRuFGr
+         0ufI1vysGpFdXOThoK0w3x0eahVZhSNTPDaecOfoU9xAaU9hZHB/ZLfuRb5txpZ0Y6iX
+         cKwFf7LkW/w6f3FXTV70moZcTuRzjhgnd985T1u9PkyTsAkuGgIYfoh67l2D8xmFlmD6
+         QZpVOvCrnA1oBborH8Rj6CxvNEluStxEUu4UTLRkyDOlH1IgvSweY/16v7o3TdT7daud
+         jZOzz+z+S7FSIimfGBmZZC6dga3w+LpDLmudab60E8aKywmqqm78sBVN+GD3AcCxKj8y
+         54zg==
+X-Gm-Message-State: AOAM5331oriJpKFe3tAS2RCI6Cy6jDasswO6cPekTZahmcTwEGr9GHG1
+        jUgNt6wlxj4upKSjVdrJjuaGs5ry16GNwilxbWDbcy+2r/gjNPRtOrcK5mzdnpwL7fcLNx6VKFF
+        IcSCQFEbn2JGc7TvOl7AWHA==
+X-Received: by 2002:a05:6402:520c:b0:412:7f7d:b06b with SMTP id s12-20020a056402520c00b004127f7db06bmr21088271edd.91.1645438040210;
+        Mon, 21 Feb 2022 02:07:20 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzkY61AooWL3STz8a6Kvk0GMWUYyH4lzSYr5r0n1bCnKaka25Ycc31hfJnIxY+O5F3+pEpLUg==
+X-Received: by 2002:a05:6402:520c:b0:412:7f7d:b06b with SMTP id s12-20020a056402520c00b004127f7db06bmr21088250edd.91.1645438040053;
+        Mon, 21 Feb 2022 02:07:20 -0800 (PST)
 Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id dx7sm4271560ejb.23.2022.02.21.02.05.40
+        by smtp.gmail.com with ESMTPSA id a13sm5571821edn.25.2022.02.21.02.07.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Feb 2022 02:05:41 -0800 (PST)
-Message-ID: <9aae2f06-1f3d-2dca-95c3-77f399e7b199@redhat.com>
-Date:   Mon, 21 Feb 2022 11:05:40 +0100
+        Mon, 21 Feb 2022 02:07:19 -0800 (PST)
+Message-ID: <7f8f0c0c-cc47-f1bb-3826-6e782dac196a@redhat.com>
+Date:   Mon, 21 Feb 2022 11:07:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.0
-Subject: Re: [PATCH 6/6] platform/x86: int3472: Add board data for Surface Go2
- IR camera
+Subject: Re: [PATCH 0/6] Add multiple-consumer support to int3472-tps68470
+ driver
 Content-Language: en-US
 To:     Daniel Scally <djrscally@gmail.com>, linux-acpi@vger.kernel.org,
-        linux-clk@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Cc:     rafael@kernel.org, lenb@kernel.org, mturquette@baylibre.com,
-        sboyd@kernel.org, markgross@kernel.org, robert.moore@intel.com
+        linux-clk@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     lenb@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
+        markgross@kernel.org, robert.moore@intel.com
 References: <20220216225304.53911-1-djrscally@gmail.com>
- <20220216225304.53911-7-djrscally@gmail.com>
 From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220216225304.53911-7-djrscally@gmail.com>
+In-Reply-To: <20220216225304.53911-1-djrscally@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -85,81 +85,49 @@ X-Mailing-List: linux-acpi@vger.kernel.org
 
 Hi,
 
-On 2/16/22 23:53, Daniel Scally wrote:
-> Add the board data describing the regulators for the Microsoft
-> Surface Go line's IR camera.
+On 2/16/22 23:52, Daniel Scally wrote:
+> At the moment there are a few places in the int3472-tps68470 driver that are
+> limited to just working with a single consuming device dependent on the PMIC.
+> There are systems where multiple camera sensors share a single TPS68470, so
+> we need to extend the driver to support them. This requires a couple of tweaks
+> to the ACPI functions to fetch dependent devices, which also assumes that only
+> a single dependent will be found.
 > 
-> Signed-off-by: Daniel Scally <djrscally@gmail.com>
+> Hans - this (plus a series to media [1]) adds support for the Surface Go 2's
+> IR camera...the regulator settings for the Go1/2/3 world facing camera are the
+> same, so I'd expect them to match for the IR sensor too, which means it should
+> enable support for your Go too.
 
-Thanks, patch looks good to me:
+Thank you, this mostly looks good to me. I've added some small remarks but
+nothing big stands out.
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Rafael, I think it would be easiest for me to merge this entire series through
+pdx86/for-next. May I have your ack for patches 1+2 to merge them through
+the pdx86 tree?
 
 Regards,
 
 Hans
 
 
-> ---
->  .../x86/intel/int3472/tps68470_board_data.c   | 33 +++++++++++++++++++
->  1 file changed, 33 insertions(+)
+
+> [1] https://lore.kernel.org/linux-media/20220215230737.1870630-1-djrscally@gmail.com/
 > 
-> diff --git a/drivers/platform/x86/intel/int3472/tps68470_board_data.c b/drivers/platform/x86/intel/int3472/tps68470_board_data.c
-> index 442a8a2de224..49a3591c6d85 100644
-> --- a/drivers/platform/x86/intel/int3472/tps68470_board_data.c
-> +++ b/drivers/platform/x86/intel/int3472/tps68470_board_data.c
-> @@ -30,6 +30,15 @@ static struct regulator_consumer_supply int347a_vcm_consumer_supplies[] = {
->  static struct regulator_consumer_supply int347a_vsio_consumer_supplies[] = {
->  	REGULATOR_SUPPLY("dovdd", "i2c-INT347A:00"),
->  	REGULATOR_SUPPLY("vsio", "i2c-INT347A:00-VCM"),
-> +	REGULATOR_SUPPLY("vddd", "i2c-INT347E:00"),
-> +};
-> +
-> +static struct regulator_consumer_supply int347a_aux1_consumer_supplies[] = {
-> +	REGULATOR_SUPPLY("vdda", "i2c-INT347E:00"),
-> +};
-> +
-> +static struct regulator_consumer_supply int347a_aux2_consumer_supplies[] = {
-> +	REGULATOR_SUPPLY("vdddo", "i2c-INT347E:00"),
->  };
->  
->  static const struct regulator_init_data surface_go_tps68470_core_reg_init_data = {
-> @@ -86,6 +95,28 @@ static const struct regulator_init_data surface_go_tps68470_vsio_reg_init_data =
->  	.consumer_supplies = int347a_vsio_consumer_supplies,
->  };
->  
-> +static const struct regulator_init_data surface_go_tps68470_aux1_reg_init_data = {
-> +	.constraints = {
-> +		.min_uV = 2815200,
-> +		.max_uV = 2815200,
-> +		.apply_uV = 1,
-> +		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
-> +	},
-> +	.num_consumer_supplies = ARRAY_SIZE(int347a_aux1_consumer_supplies),
-> +	.consumer_supplies = int347a_aux1_consumer_supplies,
-> +};
-> +
-> +static const struct regulator_init_data surface_go_tps68470_aux2_reg_init_data = {
-> +	.constraints = {
-> +		.min_uV = 1800600,
-> +		.max_uV = 1800600,
-> +		.apply_uV = 1,
-> +		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
-> +	},
-> +	.num_consumer_supplies = ARRAY_SIZE(int347a_aux2_consumer_supplies),
-> +	.consumer_supplies = int347a_aux2_consumer_supplies,
-> +};
-> +
->  static const struct tps68470_regulator_platform_data surface_go_tps68470_pdata = {
->  	.reg_init_data = {
->  		[TPS68470_CORE] = &surface_go_tps68470_core_reg_init_data,
-> @@ -93,6 +124,8 @@ static const struct tps68470_regulator_platform_data surface_go_tps68470_pdata =
->  		[TPS68470_VCM]  = &surface_go_tps68470_vcm_reg_init_data,
->  		[TPS68470_VIO] = &surface_go_tps68470_vio_reg_init_data,
->  		[TPS68470_VSIO] = &surface_go_tps68470_vsio_reg_init_data,
-> +		[TPS68470_AUX1] = &surface_go_tps68470_aux1_reg_init_data,
-> +		[TPS68470_AUX2] = &surface_go_tps68470_aux2_reg_init_data,
->  	},
->  };
->  
+> Daniel Scally (6):
+>   ACPI: scan: Add acpi_dev_get_next_consumer_dev()
+>   ACPI: bus: Add iterator for dependent devices
+>   platform/x86: int3472: Support multiple clock consumers
+>   platform/x86: int3472: Add terminator to gpiod_lookup_table
+>   platform/x86: int3472: Support multiple gpio lookups in board data
+>   platform/x86: int3472: Add board data for Surface Go2 IR camera
+> 
+>  drivers/acpi/scan.c                           | 47 +++++++++--
+>  drivers/clk/clk-tps68470.c                    | 13 +++-
+>  drivers/platform/x86/intel/int3472/tps68470.c | 77 +++++++++++++++----
+>  drivers/platform/x86/intel/int3472/tps68470.h |  3 +-
+>  .../x86/intel/int3472/tps68470_board_data.c   | 58 +++++++++++++-
+>  include/acpi/acpi_bus.h                       | 14 ++++
+>  include/linux/platform_data/tps68470.h        |  7 +-
+>  7 files changed, 188 insertions(+), 31 deletions(-)
+> 
 
