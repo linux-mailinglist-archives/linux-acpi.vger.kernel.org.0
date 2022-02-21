@@ -2,129 +2,164 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBA3A4BD4D4
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 05:45:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF9B84BD4E1
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 05:55:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231644AbiBUEoo (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 20 Feb 2022 23:44:44 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58800 "EHLO
+        id S1344060AbiBUExg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 20 Feb 2022 23:53:36 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230327AbiBUEon (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Feb 2022 23:44:43 -0500
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2047.outbound.protection.outlook.com [40.107.92.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D55F517EC
-        for <linux-acpi@vger.kernel.org>; Sun, 20 Feb 2022 20:44:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iaLT4y4vk1VkCaNoa+u6yC7QU7QYg3RqYWriQblQn1HwMBvGpYLZrj4bwaE83+Z0JOLgs/cpG8rHpuxQb6EaLIQAWHkKBvSpaKh2P1WYBCv4QDZPIfRyeE7QRShreUsNrMbKYLAaX+AqaKXOMRfihg6xGpI9niEcVjEETjcmMkpOEvm4uytcQgFBtKWWxMDKGCdxkO5jTJshCHgviNz9OthFTqoKE3wpIGOhf1++i+o9D88Y5NfkqPlfcmi/2DsF+rFrHUz4s6fms0VI1tnC/9ENSQdHEIz75G7vjIMiXU6M+s0JgbA66zLzimjRqLieimNMhtrq4ulD1N50s++hWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j2A6NF1DhNKbyA1J4X8JZ0c9NwjeTUHhjRH77sSyl7M=;
- b=mKvxXj5GOksYDNWrY8250hZL7oyAfOgPAl0RHYMiCCrW+sxV+EGK+yR7EDolz3ztawvmWHvwMlb/2FdzS7cNYntskslW1Ew6xSGT1I7BI8TixNSHI05tKKSGuagXIAEnTebN3GmqMFfgopIIY7JZ97oQcMz8wZ65s/rqCAvqCy3KBVLPUUkBh9u/qEXJO06mSEdKI2lzvRvYAsEG1R2G/JmVN9n9MfKEbz8fB+EqxRr4ofg4zr8m5zri2XNR8AXDSvSKifHfLEurjcuqwz5lPoRGNDbtaaa6PSjBBQcCGJu+Rc8lHrkY0pzLm0CPgkwYKTPK7OPlQtHsmmtwRZwQbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j2A6NF1DhNKbyA1J4X8JZ0c9NwjeTUHhjRH77sSyl7M=;
- b=ZTXQaZnsWnPdh/PeySbLB44vw3ryWpbALoiDYZBMo9J7VRr4oH53xNTl3D+6VILG/+KUXl5kHob63D/H81H2SMB7lffwZ/GX7rVt0+bCQDJlgrn2n7SjFDXAWb+kcHHy/rw7uyyC/U0Cqs6qRfJ9OsdoDs2zGVipBEWYEeW7pEs=
-Received: from MWHPR22CA0061.namprd22.prod.outlook.com (2603:10b6:300:12a::23)
- by BYAPR12MB2741.namprd12.prod.outlook.com (2603:10b6:a03:62::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.16; Mon, 21 Feb
- 2022 04:44:17 +0000
-Received: from CO1NAM11FT050.eop-nam11.prod.protection.outlook.com
- (2603:10b6:300:12a:cafe::37) by MWHPR22CA0061.outlook.office365.com
- (2603:10b6:300:12a::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.27 via Frontend
- Transport; Mon, 21 Feb 2022 04:44:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT050.mail.protection.outlook.com (10.13.174.79) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4995.15 via Frontend Transport; Mon, 21 Feb 2022 04:44:17 +0000
-Received: from kali.amdval.net (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Sun, 20 Feb
- 2022 22:44:14 -0600
-From:   Vasant Hegde <vasant.hegde@amd.com>
-To:     <linux-acpi@vger.kernel.org>
-CC:     <rafael@kernel.org>, <lenb@kernel.org>,
-        Vasant Hegde <vasant.hegde@amd.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Subject: [PATCH] ACPI: Fix LAPIC_ADDR_OVR address print
-Date:   Mon, 21 Feb 2022 10:13:33 +0530
-Message-ID: <20220221044333.19149-1-vasant.hegde@amd.com>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S1344069AbiBUExe (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 20 Feb 2022 23:53:34 -0500
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A9CA443D4
+        for <linux-acpi@vger.kernel.org>; Sun, 20 Feb 2022 20:53:09 -0800 (PST)
+Received: by mail-oi1-x22b.google.com with SMTP id z7so6652806oid.4
+        for <linux-acpi@vger.kernel.org>; Sun, 20 Feb 2022 20:53:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=U9guWiEcPMV7PWzSzfcCTMB5YDev3KLGmnMGaqiDx+0=;
+        b=rx94dO90CjQ8ANnCwpTq4fW8qzvkh1TM5mwcJUm3S0DciuQfHg+tqccg/KMa76WVaX
+         fgcht9DjQJ6KMnTI1S9evOQih/k0sq8/dCMvFyzQS8jTZ6pEDLVOs3vcTTR2wT4vTIxT
+         X+yrVpOtyrb0TJxrYaKMLtChBmwwunPx53xjZBCfNZ2d7NR9jkRUF0tpwugsDMytNsmr
+         GxB97w2U1aXNbZGswcEm6L1Cs9eIn0oVpfydKaHVtBHdJyIgTcy2FEarX2wIfPbPl+Rq
+         JqIPq995H7n+0/IAmORhljAcPae/VaARwqRl5E0t8jmBsjtVlPHZCr4Tw0zmvb2mhVgL
+         hMQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=U9guWiEcPMV7PWzSzfcCTMB5YDev3KLGmnMGaqiDx+0=;
+        b=Bk/rJ6GFVfH52fUySwaoAI53kBILzEahBODNqzqcW3WrMMdysNh6FbEAT8yHgpNtpH
+         VFr7He/obbfNhHjagOM1BULuL6B31W1+hnek3GRDlJ4i7p3HQhCrqSo/DfsYmmnkG+sH
+         RApPRsgOiedLHQN8XbiS+gxd2E49aXqzwTTmjNDJLif2LTliBEpVs2nibxDZds2nAncD
+         oJ8M5pJE5J8Tu1Ixd54QAVz+pxjZSTX57FXK0heWnlLOkoLBuBSerRUaemrjzgqsSq8K
+         FDv7UerEqUF+9Q+o1W0hH2qeRil0aktFogjar6fDsj8mqsOJvVvJybpbBnweNltUq0iE
+         LI2A==
+X-Gm-Message-State: AOAM530TteHVAxHoXOAY91t2pTWY9tHaA2sAe44jG47HzxARQ+sp4nyv
+        cUqa3Bg0LmDMc3EyKVG8A1Ohvw==
+X-Google-Smtp-Source: ABdhPJwLpaRqy77tse+QFPujJ1+fkFgfK7d1zSVnK9L9wQyNlSWzfzxJ4NBsuc5FdSiTPDSTr6TCCA==
+X-Received: by 2002:aca:368a:0:b0:2d3:fc60:937f with SMTP id d132-20020aca368a000000b002d3fc60937fmr9426236oia.182.1645419188539;
+        Sun, 20 Feb 2022 20:53:08 -0800 (PST)
+Received: from ripper ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
+        by smtp.gmail.com with ESMTPSA id w4sm4405549oor.30.2022.02.20.20.53.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Feb 2022 20:53:08 -0800 (PST)
+Date:   Sun, 20 Feb 2022 20:55:10 -0800
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH v2 1/6] device property: Helper to match multiple
+ connections
+Message-ID: <YhMbLsvF8p/ce+mg@ripper>
+References: <20220208031944.3444-1-bjorn.andersson@linaro.org>
+ <20220208031944.3444-2-bjorn.andersson@linaro.org>
+ <YgOz6K55Oi2Si4pU@smile.fi.intel.com>
+ <Yg/s3eKB2wLEQTgY@ripper>
+ <YhIjHjMrhUpM0ucV@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2d8b47e2-9f56-43a5-2f45-08d9f4f4d19a
-X-MS-TrafficTypeDiagnostic: BYAPR12MB2741:EE_
-X-Microsoft-Antispam-PRVS: <BYAPR12MB2741EFB745BB68199AF06C86873A9@BYAPR12MB2741.namprd12.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ztkn7jHKCEI+LHBY0JBlgjYQ8G4JhRYEqv3xpCWc+6sylwjAUtAK3afblxOewb51jGD4spPKj5y9ug3Ja7G0pJiclWjr88xOAXclTLG8CaN5w+U2/CJxcl9CA2z8DAcLrjc5r8CgRzrE2CelTHHLIKGyE8KwkAqdltsnbh+4jCdnSNLJ1sbEWycagvlNs+fI9myJqX5vZbJrw7jA8gU67TxJjcc+bpcMtpDGmTIJYLRz1UhYqmZEMaR9o9ATNhLq7exKG3+IOqrjM5SdKLfZZjnfNHAdb+wyoX0zzq8vNLPJXrRngcEPR37r/1pbKsu4o3eARiuVlUTGhJlAQFd0/bH1ZwfWmndMz7+UZicvE/EF6LagC0Lzic4KIPmMRzR6W3edjwGkvLqYUaVH+I6sfT6E5Ulc5mXglf7v0cH78Sxb2MDZoMXtM92bOLl+iWjUtHpNZV2NIIzgeIOMssIPPKHuT856EuNExFKVXusJBxRTMn5eZ37v9ALFcIl9qw8erObZ2qdrziRfDkPcP5kN2nVo0yJBEef0zCmyc3aPOPfM+vLJ0sI72PJcUGDjiEcCEJ0qTYZdEwwHMslN5zSOxx7rtwuMWvHkYll6I1S1+U+Xrb70Ryl+65Cp4YQzL9TiWHPDfGUlS1aO6R9PccPIHKhXtXB93VefRXhYOAGnQAd1Hv8n7YPsfFPTRprFHRpNCmiD7QwVrt/qYnZFdDR1vQ==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(40460700003)(36860700001)(2906002)(86362001)(82310400004)(81166007)(356005)(6916009)(54906003)(16526019)(316002)(2616005)(1076003)(426003)(26005)(186003)(336012)(6666004)(508600001)(70206006)(5660300002)(4326008)(70586007)(8676002)(4744005)(44832011)(8936002)(47076005)(83380400001)(36756003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2022 04:44:17.3501
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d8b47e2-9f56-43a5-2f45-08d9f4f4d19a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT050.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB2741
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YhIjHjMrhUpM0ucV@smile.fi.intel.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Without fix:
-  [    0.005429] ACPI: LAPIC_ADDR_OVR (address[(____ptrval____)])
+On Sun 20 Feb 03:16 PST 2022, Andy Shevchenko wrote:
 
-With fix:
-  [    0.005429] ACPI: LAPIC_ADDR_OVR (address[0x800fee00000])
+> On Fri, Feb 18, 2022 at 11:00:45AM -0800, Bjorn Andersson wrote:
+> > On Wed 09 Feb 04:30 PST 2022, Andy Shevchenko wrote:
+> > > On Mon, Feb 07, 2022 at 07:19:39PM -0800, Bjorn Andersson wrote:
+> 
+> ...
+> 
+> > > > +int fwnode_connection_find_matches(struct fwnode_handle *fwnode,
+> > > > +				   const char *con_id, void *data,
+> > > > +				   devcon_match_fn_t match,
+> > > > +				   void **matches, unsigned int matches_len)
+> > > > +{
+> > > > +	unsigned int count;
+> > > > +
+> > > > +	if (!fwnode || !match || !matches)
+> > > 
+> > > !matches case may be still useful to get the count and allocate memory by
+> > > caller. Please, consider this case.
+> > > 
+> > 
+> > As discussed in previous version, and described in the commit message,
+> > the returned value of "match" is a opaque pointer to something which
+> > has to be passed back to the caller in order to be cleaned up.
+> > 
+> > E.g. the typec mux code returns a pointer to a typec_mux/switch object
+> > with a refcounted struct device within, or an ERR_PTR().
+> > 
+> > So unfortunately we can must gather the results into matches and pass it
+> > back to the caller to take consume or clean up.
+> 
+> 
+> It's fine. You have **matches, means pointer of an opaque pointer.
+> What I'm talking about is memory allocation for and array of _pointers_.
+> That's what caller very much aware of and can allocate on heap. So, please
+> consider this case.
+> 
 
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
----
- drivers/acpi/tables.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I'm sorry, but I'm not sure what you're looking for.
 
-diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-index 0741a4933f62..550e9512534c 100644
---- a/drivers/acpi/tables.c
-+++ b/drivers/acpi/tables.c
-@@ -151,8 +151,8 @@ void acpi_table_print_madt_entry(struct acpi_subtable_header *header)
- 		{
- 			struct acpi_madt_local_apic_override *p =
- 			    (struct acpi_madt_local_apic_override *)header;
--			pr_info("LAPIC_ADDR_OVR (address[%p])\n",
--				(void *)(unsigned long)p->address);
-+			pr_info("LAPIC_ADDR_OVR (address[0x%llx])\n",
-+				p->address);
- 		}
- 		break;
- 
--- 
-2.27.0
 
+I still interpret your comment as that it would be nice to be able to do
+something like:
+
+count = fwnode_connection_find_matches(fwnode, "orientation-switch",
+				       NULL, typec_switch_match, NULL, 0);
+
+based on the returned value the caller could allocate an array of
+"count" pointers and then call the function again to actually fill out
+the count elements.
+
+
+The problem with this is that, typec_switch_match() does:
+
+void *typec_switch_match(fwnode, id, data) {
+	struct device *dev = find_struct_device(fwnode, id);
+	if (!dev)
+		return NULL;
+	get_device(dev);
+	return container_of(dev, struct typec_switch, dev);
+}
+
+So if we call the match function and if that finds a "dev" it will
+return a struct typec_switch with a refcounted struct device within.
+
+We can see if that's NULL or not and will be able to return a "count",
+but we have no way of releasing the reference acquired - we must return
+the void pointer back to the client, so that it can release it.
+
+
+My claim is that this is not a problem, because this works fine with any
+reasonable size of fwnode graphs we might run into - and the client will
+in general have a sense of the worst case number of matches (in this
+series its 3, as there's 3 types of lanes that can be switched/muxed
+coming out of a USB connector).
+
+
+But that's perhaps not what you're referring to? Or perhaps I'm missing
+something else?
+
+Regards,
+Bjorn
