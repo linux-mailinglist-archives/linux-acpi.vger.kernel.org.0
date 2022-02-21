@@ -2,29 +2,29 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E16B34BE082
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 18:52:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0DDB4BDBE6
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 18:41:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377549AbiBUPpb (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Feb 2022 10:45:31 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37394 "EHLO
+        id S1355340AbiBUPpc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Feb 2022 10:45:32 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379579AbiBUPpW (ORCPT
+        with ESMTP id S1379583AbiBUPpW (ORCPT
         <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 10:45:22 -0500
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 104A8237CD
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 07:44:44 -0800 (PST)
-Received: from fraeml715-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K2RM41mmqz6GD3m;
-        Mon, 21 Feb 2022 23:40:00 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8334322B32
+        for <linux-acpi@vger.kernel.org>; Mon, 21 Feb 2022 07:44:53 -0800 (PST)
+Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K2RRW1J5bz6H72y;
+        Mon, 21 Feb 2022 23:43:51 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml715-chm.china.huawei.com (10.206.15.34) with Microsoft SMTP Server
+ fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Mon, 21 Feb 2022 16:44:42 +0100
+ 15.1.2308.21; Mon, 21 Feb 2022 16:44:51 +0100
 Received: from A2006125610.china.huawei.com (10.47.91.169) by
  lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Mon, 21 Feb 2022 15:44:33 +0000
+ 15.1.2308.21; Mon, 21 Feb 2022 15:44:43 +0000
 From:   Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 To:     <linux-arm-kernel@lists.infradead.org>,
         <linux-acpi@vger.kernel.org>, <iommu@lists.linux-foundation.org>
@@ -34,15 +34,14 @@ CC:     <linuxarm@huawei.com>, <lorenzo.pieralisi@arm.com>,
         <steven.price@arm.com>, <Sami.Mujawar@arm.com>,
         <jon@solid-run.com>, <eric.auger@redhat.com>,
         <yangyicong@huawei.com>
-Subject: [PATCH v8 01/11] ACPI/IORT: Add temporary RMR node flag definitions
-Date:   Mon, 21 Feb 2022 15:43:34 +0000
-Message-ID: <20220221154344.2126-2-shameerali.kolothum.thodi@huawei.com>
+Subject: [PATCH v8 02/11] iommu: Introduce a union to struct iommu_resv_region
+Date:   Mon, 21 Feb 2022 15:43:35 +0000
+Message-ID: <20220221154344.2126-3-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
 References: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.47.91.169]
 X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  lhreml710-chm.china.huawei.com (10.201.108.61)
@@ -56,57 +55,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-IORT rev E.d introduces more details into the RMR node Flags
-field. Add temporary definitions to describe and access these
-Flags field until ACPICA header is updated to support E.d.
-
-This patch can be reverted once the include/acpi/actbl2.h has
-all the relevant definitions.
+A union is introduced to struct iommu_resv_region to hold
+any firmware specific data. This is in preparation to add
+support for IORT RMR reserve regions and the union now holds
+the RMR specific information.
 
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
-Please find the ACPICA E.d related changes pull request here,
-https://github.com/acpica/acpica/pull/752
+ include/linux/iommu.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
----
- drivers/acpi/arm64/iort.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index f2f8f05662de..0730c4dbb700 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -25,6 +25,30 @@
- #define IORT_IOMMU_TYPE		((1 << ACPI_IORT_NODE_SMMU) |	\
- 				(1 << ACPI_IORT_NODE_SMMU_V3))
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index de0c57a567c8..b06952a75f95 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -126,6 +126,11 @@ enum iommu_resv_type {
+ 	IOMMU_RESV_SW_MSI,
+ };
  
-+/*
-+ * The following RMR related definitions are temporary and
-+ * can be removed once ACPICA headers support IORT rev E.d
-+ */
-+#ifndef ACPI_IORT_RMR_REMAP_PERMITTED
-+#define ACPI_IORT_RMR_REMAP_PERMITTED	(1)
-+#endif
++struct iommu_iort_rmr_data {
++	u32 *sids;	/* Stream Ids associated with IORT RMR entry */
++	u32 num_sids;
++};
 +
-+#ifndef ACPI_IORT_RMR_ACCESS_PRIVILEGE
-+#define ACPI_IORT_RMR_ACCESS_PRIVILEGE	(1 << 1)
-+#endif
-+
-+#ifndef ACPI_IORT_RMR_ACCESS_ATTRIBUTES
-+#define ACPI_IORT_RMR_ACCESS_ATTRIBUTES(flags)	(((flags) >> 2) & 0xFF)
-+#endif
-+
-+#ifndef ACPI_IORT_RMR_ATTR_DEVICE_GRE
-+#define ACPI_IORT_RMR_ATTR_DEVICE_GRE	0x03
-+#endif
-+
-+#ifndef ACPI_IORT_RMR_ATTR_NORMAL
-+#define ACPI_IORT_RMR_ATTR_NORMAL	0x05
-+#endif
-+
- struct iort_its_msi_chip {
+ /**
+  * struct iommu_resv_region - descriptor for a reserved memory region
+  * @list: Linked list pointers
+@@ -133,6 +138,7 @@ enum iommu_resv_type {
+  * @length: Length of the region in bytes
+  * @prot: IOMMU Protection flags (READ/WRITE/...)
+  * @type: Type of the reserved region
++ * @fw_data: FW specific reserved region data
+  */
+ struct iommu_resv_region {
  	struct list_head	list;
- 	struct fwnode_handle	*fw_node;
+@@ -140,6 +146,9 @@ struct iommu_resv_region {
+ 	size_t			length;
+ 	int			prot;
+ 	enum iommu_resv_type	type;
++	union {
++		struct iommu_iort_rmr_data rmr;
++	} fw_data;
+ };
+ 
+ /**
 -- 
 2.25.1
 
