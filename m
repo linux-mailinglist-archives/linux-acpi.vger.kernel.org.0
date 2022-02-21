@@ -2,51 +2,53 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC94C4BEAC0
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 20:37:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24B594BEA61
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 20:36:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232750AbiBUTLr (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Feb 2022 14:11:47 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59880 "EHLO
+        id S232861AbiBUTSx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Feb 2022 14:18:53 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232744AbiBUTLj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 14:11:39 -0500
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 866F819C23;
-        Mon, 21 Feb 2022 11:11:15 -0800 (PST)
-Received: by mail-yb1-f172.google.com with SMTP id e140so36311807ybh.9;
-        Mon, 21 Feb 2022 11:11:15 -0800 (PST)
+        with ESMTP id S232892AbiBUTSw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 14:18:52 -0500
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6698019C12;
+        Mon, 21 Feb 2022 11:18:25 -0800 (PST)
+Received: by mail-yb1-f176.google.com with SMTP id j2so36554290ybu.0;
+        Mon, 21 Feb 2022 11:18:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=S08h/88nSHlNocSoaXtYaF8UFRglbkaVDETnl7Zh9xc=;
-        b=P+9aTl5wDIbcqPe2/dl2+itkyKJ5INfIPgUSH9CiRHpcoEUHTgm6szHxPeu2cGHxWB
-         5BVxRfVml5Pg/KE07QYxjk1OhLE5LdoFKut7axh53h90uQKu3yJ3V3iG67Lx15a4nG66
-         60XPoRjaWfhJMlq3mfjO9V8kBTeFunNA/A+5hPMzRNSwURGw8O3HUqnFAtd052laYQm/
-         XZlM42H+60soy1JgdXnj4LQW6n01watv/XR7Of/MWj0QK+QNqoG1tExGj3/VJW8asYBv
-         KtsO5N5WeoGBZEFcEgQn6utGOYFpLOxnT7UkIbB5B50Z4H8kZmx1EqaREHbGhTK06Zwg
-         yyog==
-X-Gm-Message-State: AOAM531HdwQ5BuD49QygcRWpKjwXKpLPxGfBpkNW5InFPtk6yNCvJX5c
-        EMx6qGOeVde2DX8QDX8wHSzqoQMwlqn/o86kstg=
-X-Google-Smtp-Source: ABdhPJz+PEGVSIBd6WyeGJr2Fpf6ugsheIp9t7vsRMbtBYLo6USJbXteI126Nvq5C/YO7/BR5pr2IbkbFfbioUzWMKo=
-X-Received: by 2002:a25:7785:0:b0:614:c283:2a3d with SMTP id
- s127-20020a257785000000b00614c2832a3dmr20093374ybc.137.1645470674792; Mon, 21
- Feb 2022 11:11:14 -0800 (PST)
+        bh=xzgUYOPvVSFuM+OD0NIOOfArvnpqyIafZxVpUEmLbzs=;
+        b=CHgW3T2N7l5VTMXgthoNHGMThlIh4tdcMBHTLi/KR7Dph2BjFeW3GOB/e08W48YGNl
+         Q/z/jdMF8TTUkLaHKB1BoL52lkBQEpN9mj0K51KXP4S7OZmbz6qvOVm7tHhFSJSGrc/d
+         54OAikFuqMUtyrTnVtbBZarOrfsLnmCzaHf1zyw3kST8mxrYsZjoKG23avivgzPaVYZU
+         FyWU+zLTH2L7hs71bAw0bJTX/BHTkhUHB5Q1NJiwyx0V7SI79NVbECGCPmm1RXgGpRWE
+         c5rkCglOU0uiri8GT7hGRJDtU5g1hhcB7E2y4bDLHB8EbjGbMhcDJvX45u8FlBxtSqwt
+         Td6A==
+X-Gm-Message-State: AOAM533kl9Pwf2MTPVwJIafQ8nBiRRtiumECnd9xhmaRKJVDtsGtmwWw
+        MrsvIxMr2WfOnjFuskp76bHVpvQ2CD2hPvmIQ0k=
+X-Google-Smtp-Source: ABdhPJxzKeolTMRCSzF1gZvCUSgga9kC27EC4hV9wjKJdhirzXNJgRkVrqDtPDetZQZot9oR8y1pLxP5YAk9oM8NPJ0=
+X-Received: by 2002:a25:d90d:0:b0:615:e400:94c1 with SMTP id
+ q13-20020a25d90d000000b00615e40094c1mr20140995ybg.81.1645471104673; Mon, 21
+ Feb 2022 11:18:24 -0800 (PST)
 MIME-Version: 1.0
-References: <20220206145803.2011247-1-trix@redhat.com>
-In-Reply-To: <20220206145803.2011247-1-trix@redhat.com>
+References: <05530d163bb18634cceaf1f2b0b48409747d18d0.1644838495.git.yang.guang5@zte.com.cn>
+In-Reply-To: <05530d163bb18634cceaf1f2b0b48409747d18d0.1644838495.git.yang.guang5@zte.com.cn>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 21 Feb 2022 20:11:04 +0100
-Message-ID: <CAJZ5v0iw=6GN1ynxXh7tAftT03VMbrC1CdyaEDk_w0kXphRKkA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: cleanup double word in comment
-To:     Tom Rix <trix@redhat.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+Date:   Mon, 21 Feb 2022 20:18:13 +0100
+Message-ID: <CAJZ5v0iUVfc-hr_stEbNEv2Ana+g-44Qrtm1b490cLZTDe=YEQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: use swap() to make code cleaner
+To:     davidcomponentone@gmail.com
+Cc:     Robert Moore <robert.moore@intel.com>,
+        Rafael Wysocki <rafael.j.wysocki@intel.com>,
         Len Brown <lenb@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>
+        Yang Guang <yang.guang5@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -58,46 +60,45 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Sun, Feb 6, 2022 at 3:58 PM <trix@redhat.com> wrote:
+On Tue, Feb 15, 2022 at 1:52 AM <davidcomponentone@gmail.com> wrote:
 >
-> From: Tom Rix <trix@redhat.com>
+> From: Yang Guang <yang.guang5@zte.com.cn>
 >
-> Remove the second 'on' and 'those'.
+> Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
+> opencoding it.
 >
-> Signed-off-by: Tom Rix <trix@redhat.com>
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+> Signed-off-by: David Yang <davidcomponentone@gmail.com>
 > ---
->  drivers/acpi/Kconfig    | 2 +-
->  drivers/acpi/pci_link.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/acpi/acpica/nsrepair2.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 >
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index ba45541b1f1f8..9b93d8f328d4a 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -301,7 +301,7 @@ config ACPI_IPMI
->         help
->           This driver enables the ACPI to access the BMC controller. And it
->           uses the IPMI request/response message to communicate with BMC
-> -         controller, which can be found on on the server.
-> +         controller, which can be found on the server.
+> diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
+> index 14b71b41e845..ac6a5397660f 100644
+> --- a/drivers/acpi/acpica/nsrepair2.c
+> +++ b/drivers/acpi/acpica/nsrepair2.c
+> @@ -875,7 +875,6 @@ acpi_ns_sort_list(union acpi_operand_object **elements,
+>  {
+>         union acpi_operand_object *obj_desc1;
+>         union acpi_operand_object *obj_desc2;
+> -       union acpi_operand_object *temp_obj;
+>         u32 i;
+>         u32 j;
 >
->           To compile this driver as a module, choose M here:
->           the module will be called as acpi_ipmi.
-> diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-> index d54fb8e54671d..58647051c948a 100644
-> --- a/drivers/acpi/pci_link.c
-> +++ b/drivers/acpi/pci_link.c
-> @@ -185,7 +185,7 @@ static acpi_status acpi_pci_link_check_current(struct acpi_resource *resource,
->                         if (!p || !p->interrupt_count) {
->                                 /*
->                                  * IRQ descriptors may have no IRQ# bits set,
-> -                                * particularly those those w/ _STA disabled
-> +                                * particularly those w/ _STA disabled
->                                  */
->                                 pr_debug("Blank _CRS IRQ resource\n");
->                                 return AE_OK;
+> @@ -892,9 +891,7 @@ acpi_ns_sort_list(union acpi_operand_object **elements,
+>                             || ((sort_direction == ACPI_SORT_DESCENDING)
+>                                 && (obj_desc1->integer.value <
+>                                     obj_desc2->integer.value))) {
+> -                               temp_obj = elements[j - 1];
+> -                               elements[j - 1] = elements[j];
+> -                               elements[j] = temp_obj;
+> +                               swap(elements[j - 1], elements[j]);
+>                         }
+>                 }
+>         }
 > --
 
-Applied as 5.18 material under a slightly adjusted subject.
-
-Thanks!
+This is an ACPICA change that should be routed through the upstream
+project at https://github.com/acpica/acpica, but there is no
+counterpart of swap() in the upstream code base.
