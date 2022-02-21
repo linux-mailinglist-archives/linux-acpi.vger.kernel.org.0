@@ -2,415 +2,300 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40FF54BEB2E
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 20:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08A104BEA6F
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Feb 2022 20:36:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230360AbiBUSU6 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Mon, 21 Feb 2022 13:20:58 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:43942 "EHLO
+        id S230120AbiBUS13 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 21 Feb 2022 13:27:29 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232645AbiBUSSj (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 13:18:39 -0500
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DDE4E00A;
-        Mon, 21 Feb 2022 10:09:27 -0800 (PST)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-2d07ae0b1c4so147127147b3.11;
-        Mon, 21 Feb 2022 10:09:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vhaPiIJUKOUS59JcbTAaTXBvYkM/MHhBKgAIQnikuHU=;
-        b=xHsT5yw/rWLlx00fxDXmyju0fvRIY8ehLhNjQSPEzTX1W/o6g9VWeEhjpNc8awPfgn
-         bpQRKeNFSVcvpW7XXksPwI5D5DUuZGiTGDbFr/gjic/83gXFCWT6C6vHbmXKzv58NZPC
-         U2AVDf/6l0dNulNG+nebMS6cPhHdAfuFkln0a+wA3BhFM7MHBcHx5wU3S/f1dspXgmKj
-         xTPapJajjqDxejXUuQbjh25ehpLkPz5VPRFhlwpbZzaNEcBSUlhxwuHFBjMt/oV5n5MK
-         Es7bXtdPIQriIORKB42xmJUROtlqZI+fOBM/CVd9o9mI+NKTCtZ9nlHeqlrSJvKib9wB
-         FB9A==
-X-Gm-Message-State: AOAM531zU+zmRedo1Ubvlm41ZLJtSlSJg3R+nSrRPJI3db0hPIth0Ley
-        OHLa2CGHFmg7rsVAi5mmC01zwWTq+yxNVVUrnMg=
-X-Google-Smtp-Source: ABdhPJyvADWC2nTkmYW4O1tCncyPDaZBwWiKoC2fIBl7Il5OF7pYtZCexrQwrWnJ5YFQHEJCV1ZWTBcplcOypgbzSQU=
-X-Received: by 2002:a81:f008:0:b0:2d0:cd72:74e5 with SMTP id
- p8-20020a81f008000000b002d0cd7274e5mr20505126ywm.301.1645466966756; Mon, 21
- Feb 2022 10:09:26 -0800 (PST)
+        with ESMTP id S232480AbiBUSYg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 21 Feb 2022 13:24:36 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2EC3BC16;
+        Mon, 21 Feb 2022 10:18:15 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5B9BBB816FE;
+        Mon, 21 Feb 2022 18:18:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E65AC340F3;
+        Mon, 21 Feb 2022 18:18:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645467493;
+        bh=S1vGtwS4KykF+yhuJ99zcf6yhoG3r8pnEHQDaWwXoEM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iv92DACRUb9jOK97wiMS5YG7jJJF3+v9mqjsuKQnQeeReq0Uk3tV1wH+AF5O/d5OA
+         z5ZDHpRgco6/OTXPllyZCP4QV1utNCL/9psS6ET40UPq051mCv89a1Id4smsHlAMma
+         xgLoU7aPCdRISP6k/tsbN7TwV++22kDMP3Thu+Ylz4DkahAJZAnzVy2pHoLE+unAj1
+         rw5xqJtmfEvzTLXXmuZydoPkSujMsK9Q4TTqDT3z9XHu1hWQNBvu9nSnm7aOd5zRci
+         2uGtxTrfBZl8At1dJUTHyNwpfx8NYOQLfwfYeHizK0XQ5tE/le2OegTdec7JNBhHWC
+         N4EXMMt3f+WKA==
+Date:   Mon, 21 Feb 2022 11:18:07 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     helgaas@kernel.org, rafael@kernel.org, bp@alien8.de,
+        tony.luck@intel.com, james.morse@arm.com, lenb@kernel.org,
+        rjw@rjwysocki.net, bhelgaas@google.com,
+        zhangliguang@linux.alibaba.com, zhuo.song@linux.alibaba.com,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v7 1/2] ACPI: APEI: explicit init HEST and GHES in
+ apci_init
+Message-ID: <YhPXX+CSoK++9MP6@dev-arch.archlinux-ax161>
+References: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
+ <20220122052618.1074-1-xueshuai@linux.alibaba.com>
 MIME-Version: 1.0
-References: <0718fe87-230f-b293-b998-b83f3c133367@cs.wisc.edu> <CAJZ5v0j=c-ctwqmRfvVtep4DtOf=6Gf=zs+B19aPDpQ0447oRw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0j=c-ctwqmRfvVtep4DtOf=6Gf=zs+B19aPDpQ0447oRw@mail.gmail.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 21 Feb 2022 19:09:15 +0100
-Message-ID: <CAJZ5v0h5D=1UWqmC=foAK3-p1LLV=KG8dRM-kPYxJc7GEKdZbQ@mail.gmail.com>
-Subject: Re: /proc/acpi/battery gone again, breaks wmpower
-To:     Carl Edquist <edquist@cs.wisc.edu>
-Cc:     Thomas Renninger <trenn@suse.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Content-Type: multipart/mixed; boundary="0000000000000b51d105d88b22ea"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220122052618.1074-1-xueshuai@linux.alibaba.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
---0000000000000b51d105d88b22ea
-Content-Type: text/plain; charset="UTF-8"
+Hi Shuai,
 
-On Mon, Feb 21, 2022 at 5:52 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->
-> On Fri, Feb 18, 2022 at 12:17 AM Carl Edquist <edquist@cs.wisc.edu> wrote:
-> >
-> > Hello there Rafael,
-> >
-> > (I found your contact in the MAINTAINERS file for the ACPI section.
-> > Hopefully you are the right person to ask this question, but let me know
-> > if there's a better place to ask!)
-> >
-> > Slackware 15 was released this month, and after upgrading (to linux
-> > 5.15.19, according to uname -r), I noticed my wmpower dockapp for the
-> > WindowMaker window manager stopped working.  Apparently it relies on
-> > /proc/acpi/battery, and does not know about the /sys alternatives.  Maybe
-> > it was written before this acpi interface was deprecated.
-> >
-> > Since wmpower has "just worked" for so long, it appears the only
-> > maintenance it's received in a long time has been by the Slackware
-> > packagers (slackbuilds.org) to fix compiler issues with more recent
-> > versions of gcc.  But people like me definitely still use it! :)
-> >
-> >
-> > I tried searching a bit to see what's going on, and I found an earlier
-> > discussion where /proc/acpi/battery had previously been removed, circa
-> > linux 3.14, and then re-added, after it was brought up that (possibly
-> > among other things) a number of WindowManager dock apps still relied on
-> > /proc/acpi/battery:
-> >
-> >         https://lkml.org/lkml/2014/3/17/393
-> >
-> >
-> > I didn't find a more recent discussion about it getting removed again, but
-> > some git-log searching brought me to this commit:
-> >
-> >
-> > commit 8830280a69ddfdbba7fb24d79dce309817783c6a
-> > Author: Thomas Renninger <trenn@suse.de>
-> > Date:   Wed May 27 17:33:03 2020 +0200
-> >
-> >      ACPI: procfs: Remove last dirs after being marked deprecated for a decade
-> >
-> >      This code is outdated and has been deprecated for a long time, so user
-> >      space is not expected to rely on it any more on any systems that are
-> >      up to date by any reasonable measure.  Remove it.
-> >
-> >      Signed-off-by: Thomas Renninger <trenn@suse.de>
-> >      [ rjw: Subject / changelog ]
-> >      Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> >
-> > Out of curiousity, I tried reverting this commit against the latest
-> > master.  It does not revert cleanly, though it doesn't look like a lot to
-> > clean up (conflicts in drivers/acpi/ac.c & battery.c).  Would reverting
-> > this commit (assuming conflicts can be fixed) be enough for me to restore
-> > the old /proc/acpi/battery interface?
->
-> It should be sufficient.
->
-> > Or are there likely to be any gotchas there?
-> >
-> >
-> > And, I'm afraid to ask, but is it out of the question to wonder if this,
-> > now twice removed, acpi interface may ever see its way back into mainline?
->
-> Because we promise that user space won't be broken by kernel changes,
-> it needs to be restored to make wmpower work again.
->
-> I'd rather not restore all of it, though, just the part relied on by wmpower.
+On Sat, Jan 22, 2022 at 01:26:17PM +0800, Shuai Xue wrote:
+> From commit e147133a42cb ("ACPI / APEI: Make hest.c manage the estatus
+> memory pool") was merged, ghes_init() relies on acpi_hest_init() to manage
+> the estatus memory pool. On the other hand, ghes_init() relies on
+> sdei_init() to detect the SDEI version and (un)register events. The
+> dependencies are as follows:
+> 
+>     ghes_init() => acpi_hest_init() => acpi_bus_init() => acpi_init()
+>     ghes_init() => sdei_init()
+> 
+> HEST is not PCI-specific and initcall ordering is implicit and not
+> well-defined within a level.
+> 
+> Based on above, remove acpi_hest_init() from acpi_pci_root_init() and
+> convert ghes_init() and sdei_init() from initcalls to explicit calls in the
+> following order:
+> 
+>     acpi_hest_init()
+>     ghes_init()
+>         sdei_init()
+> 
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> ---
+>  drivers/acpi/apei/ghes.c    | 19 ++++++++-----------
+>  drivers/acpi/bus.c          |  2 ++
+>  drivers/acpi/pci_root.c     |  3 ---
+>  drivers/firmware/Kconfig    |  1 +
+>  drivers/firmware/arm_sdei.c | 13 ++-----------
+>  include/acpi/apei.h         |  4 +++-
+>  include/linux/arm_sdei.h    |  2 ++
+>  7 files changed, 18 insertions(+), 26 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 0c5c9acc6254..aadc0a972f18 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -1457,33 +1457,35 @@ static struct platform_driver ghes_platform_driver = {
+>  	.remove		= ghes_remove,
+>  };
+>  
+> -static int __init ghes_init(void)
+> +void __init ghes_init(void)
+>  {
+>  	int rc;
+>  
+> +	sdei_init();
+> +
+>  	if (acpi_disabled)
+> -		return -ENODEV;
+> +		return;
+>  
+>  	switch (hest_disable) {
+>  	case HEST_NOT_FOUND:
+> -		return -ENODEV;
+> +		return;
+>  	case HEST_DISABLED:
+>  		pr_info(GHES_PFX "HEST is not enabled!\n");
+> -		return -EINVAL;
+> +		return;
+>  	default:
+>  		break;
+>  	}
+>  
+>  	if (ghes_disable) {
+>  		pr_info(GHES_PFX "GHES is not enabled!\n");
+> -		return -EINVAL;
+> +		return;
+>  	}
+>  
+>  	ghes_nmi_init_cxt();
+>  
+>  	rc = platform_driver_register(&ghes_platform_driver);
+>  	if (rc)
+> -		goto err;
+> +		return;
+>  
+>  	rc = apei_osc_setup();
+>  	if (rc == 0 && osc_sb_apei_support_acked)
+> @@ -1494,9 +1496,4 @@ static int __init ghes_init(void)
+>  		pr_info(GHES_PFX "APEI firmware first mode is enabled by APEI bit.\n");
+>  	else
+>  		pr_info(GHES_PFX "Failed to enable APEI firmware first mode.\n");
+> -
+> -	return 0;
+> -err:
+> -	return rc;
+>  }
+> -device_initcall(ghes_init);
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 07f604832fd6..3f403db20f69 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -1331,6 +1331,8 @@ static int __init acpi_init(void)
+>  
+>  	pci_mmcfg_late_init();
+>  	acpi_iort_init();
+> +	acpi_hest_init();
+> +	ghes_init();
+>  	acpi_scan_init();
+>  	acpi_ec_init();
+>  	acpi_debugfs_init();
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index b76db99cced3..6f9e75d14808 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -22,8 +22,6 @@
+>  #include <linux/slab.h>
+>  #include <linux/dmi.h>
+>  #include <linux/platform_data/x86/apple.h>
+> -#include <acpi/apei.h>	/* for acpi_hest_init() */
+> -
+>  #include "internal.h"
+>  
+>  #define ACPI_PCI_ROOT_CLASS		"pci_bridge"
+> @@ -943,7 +941,6 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+>  
+>  void __init acpi_pci_root_init(void)
+>  {
+> -	acpi_hest_init();
+>  	if (acpi_pci_disabled)
+>  		return;
+>  
+> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> index 75cb91055c17..ad114d9cdf8e 100644
+> --- a/drivers/firmware/Kconfig
+> +++ b/drivers/firmware/Kconfig
+> @@ -40,6 +40,7 @@ config ARM_SCPI_POWER_DOMAIN
+>  config ARM_SDE_INTERFACE
+>  	bool "ARM Software Delegated Exception Interface (SDEI)"
+>  	depends on ARM64
+> +	select ACPI_APEI_GHES
 
-Please check if the attached patch (on top of 5.17-rc5) is sufficient
-to restore the wmpower functionality.
+As the kernel test robot pointed out [1], you cannot do this.
+CONFIG_ACPI_APEI_GHES is a user selectable symbol that has dependencies,
+which 'select' completely overrides, resulting in build failures when
+CONFIG_ACPI_APEI is not enabled.
 
---0000000000000b51d105d88b22ea
-Content-Type: text/x-patch; charset="US-ASCII"; name="acpi-proc-restore.patch"
-Content-Disposition: attachment; filename="acpi-proc-restore.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_kzx0hqwn0>
-X-Attachment-Id: f_kzx0hqwn0
+If CONFIG_ARM_SDE_INTERFACE truly requires CONFIG_ACPI_APEI_GHES, you
+should have "depends on ACPI_APEI_GHES".
 
-RnJvbTogUmFmYWVsIEouIFd5c29ja2kgPHJhZmFlbC5qLnd5c29ja2lAaW50ZWwuY29tPgpTdWJq
-ZWN0OiBbUEFUQ0hdIEFDUEk6IGJhdHRlcnkgLyBBQzogUmVzdG9yZSB0aGUgb2xkIHByb2MgaW50
-ZXJmYWNlCgpSZXN0b3JlIHRoZSBvbGQgcHJvYyBpbnRlcmZhY2UgZm9yIHRoZSBBQ1BJIGJhdHRl
-cnkgYW5kIEFDIGRyaXZlcnMsCnJlbW92ZWQgYnkgY29tbWl0IDg4MzAyODBhNjlkZCAoIkFDUEk6
-IHByb2NmczogUmVtb3ZlIGxhc3QgZGlycyBhZnRlcgpiZWluZyBtYXJrZWQgZGVwcmVjYXRlZCBm
-b3IgYSBkZWNhZGUiKSBvbiB0aGUgcHJlbWlzZSB0aGF0IGl0IHNob3VsZApub3QgYmUgdXNlZCBh
-bnkgbW9yZSwgYnV0IGluIGZhY3QgaXQgaXMgdXNlZCBieSB0aGUgd21wb3dlciB1dGlsaXR5CnN0
-aWxsIHNoaXBwZWQgaW4gU2xhY2t3YXJlIDE1IHJlbGVhc2VkIHRoaXMgbW9udGguCgpGaXhlczog
-ODgzMDI4MGE2OWRkICgiQUNQSTogcHJvY2ZzOiBSZW1vdmUgbGFzdCBkaXJzIGFmdGVyIGJlaW5n
-IG1hcmtlZCBkZXByZWNhdGVkIGZvciBhIGRlY2FkZSIpClJlcG9ydGVkLWJ5OiBDYXJsIEVkcXVp
-c3QgPGVkcXVpc3RAY3Mud2lzYy5lZHU+ClNpZ25lZC1vZmYtYnk6IFJhZmFlbCBKLiBXeXNvY2tp
-IDxyYWZhZWwuai53eXNvY2tpQGludGVsLmNvbT4KLS0tCiBkcml2ZXJzL2FjcGkvS2NvbmZpZyAg
-IHwgICAxNyArKysKIGRyaXZlcnMvYWNwaS9hYy5jICAgICAgfCAgMTA4ICsrKysrKysrKysrKysr
-KysrKysrLQogZHJpdmVycy9hY3BpL2JhdHRlcnkuYyB8ICAyNTIgKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogMyBmaWxlcyBjaGFuZ2VkLCAzNzUgaW5z
-ZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCkluZGV4OiBsaW51eC1wbS9kcml2ZXJzL2FjcGkv
-S2NvbmZpZwo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09Ci0tLSBsaW51eC1wbS5vcmlnL2RyaXZlcnMvYWNwaS9LY29uZmln
-CisrKyBsaW51eC1wbS9kcml2ZXJzL2FjcGkvS2NvbmZpZwpAQCAtMTEwLDYgKzExMCwyMyBAQCBj
-b25maWcgQUNQSV9TTEVFUAogCWRlcGVuZHMgb24gQUNQSV9TWVNURU1fUE9XRVJfU1RBVEVTX1NV
-UFBPUlQKIAlkZWZhdWx0IHkKIAorY29uZmlnIEFDUElfUFJPQ0ZTX1BPV0VSCisJYm9vbCAiRGVw
-cmVjYXRlZCBwb3dlciAvcHJvYy9hY3BpIGRpcmVjdG9yaWVzIgorCWRlcGVuZHMgb24gWDg2ICYm
-IFBST0NfRlMKKwloZWxwCisJICBGb3IgYmFja3dhcmRzIGNvbXBhdGliaWxpdHksIHRoaXMgb3B0
-aW9uIGFsbG93cworCSAgZGVwcmVjYXRlZCBwb3dlciAvcHJvYy9hY3BpLyBkaXJlY3RvcmllcyB0
-byBleGlzdCwgZXZlbiB3aGVuCisJICB0aGV5IGhhdmUgYmVlbiByZXBsYWNlZCBieSBmdW5jdGlv
-bnMgaW4gL3N5cy4KKwkgIFRoZSBkZXByZWNhdGVkIGRpcmVjdG9yaWVzIChhbmQgdGhlaXIgcmVw
-bGFjZW1lbnRzKSBpbmNsdWRlOgorCSAgL3Byb2MvYWNwaS9iYXR0ZXJ5LyogKC9zeXMvY2xhc3Mv
-cG93ZXJfc3VwcGx5LyopIGFuZAorCSAgL3Byb2MvYWNwaS9hY19hZGFwdGVyLyogKHN5cy9jbGFz
-cy9wb3dlcl9zdXBwbHkvKikuCisJICBUaGlzIG9wdGlvbiBoYXMgbm8gZWZmZWN0IG9uIC9wcm9j
-L2FjcGkvIGRpcmVjdG9yaWVzCisJICBhbmQgZnVuY3Rpb25zIHdoaWNoIGRvIG5vdCB5ZXQgZXhp
-c3QgaW4gL3N5cy4KKwkgIFRoaXMgb3B0aW9uLCB0b2dldGhlciB3aXRoIHRoZSBwcm9jIGRpcmVj
-dG9yaWVzLCB3aWxsIGJlCisJICBkZWxldGVkIGluIHRoZSBmdXR1cmUuCisKKwkgIFNheSBOIHRv
-IGRlbGV0ZSBwb3dlciAvcHJvYy9hY3BpLyBkaXJlY3RvcmllcyB0aGF0IGhhdmUgbW92ZWQgdG8g
-L3N5cy4KKwogY29uZmlnIEFDUElfUkVWX09WRVJSSURFX1BPU1NJQkxFCiAJYm9vbCAiQWxsb3cg
-c3VwcG9ydGVkIEFDUEkgcmV2aXNpb24gdG8gYmUgb3ZlcnJpZGRlbiIKIAlkZXBlbmRzIG9uIFg4
-NgpJbmRleDogbGludXgtcG0vZHJpdmVycy9hY3BpL2FjLmMKPT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQotLS0gbGludXgt
-cG0ub3JpZy9kcml2ZXJzL2FjcGkvYWMuYworKysgbGludXgtcG0vZHJpdmVycy9hY3BpL2FjLmMK
-QEAgLTE1LDYgKzE1LDEwIEBACiAjaW5jbHVkZSA8bGludXgvdHlwZXMuaD4KICNpbmNsdWRlIDxs
-aW51eC9kbWkuaD4KICNpbmNsdWRlIDxsaW51eC9kZWxheS5oPgorI2lmZGVmIENPTkZJR19BQ1BJ
-X1BST0NGU19QT1dFUgorI2luY2x1ZGUgPGxpbnV4L3Byb2NfZnMuaD4KKyNpbmNsdWRlIDxsaW51
-eC9zZXFfZmlsZS5oPgorI2VuZGlmCiAjaW5jbHVkZSA8bGludXgvcGxhdGZvcm1fZGV2aWNlLmg+
-CiAjaW5jbHVkZSA8bGludXgvcG93ZXJfc3VwcGx5Lmg+CiAjaW5jbHVkZSA8bGludXgvYWNwaS5o
-PgpAQCAtNTMsNiArNTcsMTIgQEAgc3RhdGljIGludCBhY3BpX2FjX3Jlc3VtZShzdHJ1Y3QgZGV2
-aWNlCiAjZW5kaWYKIHN0YXRpYyBTSU1QTEVfREVWX1BNX09QUyhhY3BpX2FjX3BtLCBOVUxMLCBh
-Y3BpX2FjX3Jlc3VtZSk7CiAKKyNpZmRlZiBDT05GSUdfQUNQSV9QUk9DRlNfUE9XRVIKK2V4dGVy
-biBzdHJ1Y3QgcHJvY19kaXJfZW50cnkgKmFjcGlfbG9ja19hY19kaXIodm9pZCk7CitleHRlcm4g
-dm9pZCAqYWNwaV91bmxvY2tfYWNfZGlyKHN0cnVjdCBwcm9jX2Rpcl9lbnRyeSAqYWNwaV9hY19k
-aXIpOworI2VuZGlmCisKKwogc3RhdGljIGludCBhY19zbGVlcF9iZWZvcmVfZ2V0X3N0YXRlX21z
-Owogc3RhdGljIGludCBhY19vbmx5OwogCkBAIC0xMzIsNiArMTQyLDc0IEBAIHN0YXRpYyBlbnVt
-IHBvd2VyX3N1cHBseV9wcm9wZXJ0eSBhY19wcm8KIAlQT1dFUl9TVVBQTFlfUFJPUF9PTkxJTkUs
-CiB9OwogCisjaWZkZWYgQ09ORklHX0FDUElfUFJPQ0ZTX1BPV0VSCisvKiBwcm9jIEkvRiAqLwor
-c3RhdGljIHN0cnVjdCBwcm9jX2Rpcl9lbnRyeSAqYWNwaV9hY19kaXI7CisKK3N0YXRpYyBpbnQg
-YWNwaV9hY19zZXFfc2hvdyhzdHJ1Y3Qgc2VxX2ZpbGUgKnNlcSwgdm9pZCAqb2Zmc2V0KQorewor
-CXN0cnVjdCBhY3BpX2FjICphYyA9IHNlcS0+cHJpdmF0ZTsKKworCisJaWYgKCFhYykKKwkJcmV0
-dXJuIDA7CisKKwlpZiAoYWNwaV9hY19nZXRfc3RhdGUoYWMpKSB7CisJCXNlcV9wdXRzKHNlcSwg
-IkVSUk9SOiBVbmFibGUgdG8gcmVhZCBBQyBBZGFwdGVyIHN0YXRlXG4iKTsKKwkJcmV0dXJuIDA7
-CisJfQorCisJc2VxX3B1dHMoc2VxLCAic3RhdGU6ICAgICAgICAgICAgICAgICAgICIpOworCXN3
-aXRjaCAoYWMtPnN0YXRlKSB7CisJY2FzZSBBQ1BJX0FDX1NUQVRVU19PRkZMSU5FOgorCQlzZXFf
-cHV0cyhzZXEsICJvZmYtbGluZVxuIik7CisJCWJyZWFrOworCWNhc2UgQUNQSV9BQ19TVEFUVVNf
-T05MSU5FOgorCQlzZXFfcHV0cyhzZXEsICJvbi1saW5lXG4iKTsKKwkJYnJlYWs7CisJZGVmYXVs
-dDoKKwkJc2VxX3B1dHMoc2VxLCAidW5rbm93blxuIik7CisJCWJyZWFrOworCX0KKworCXJldHVy
-biAwOworfQorCitzdGF0aWMgaW50IGFjcGlfYWNfYWRkX2ZzKHN0cnVjdCBhY3BpX2FjICphYykK
-K3sKKwlzdHJ1Y3QgcHJvY19kaXJfZW50cnkgKmVudHJ5ID0gTlVMTDsKKworCXByaW50ayhLRVJO
-X1dBUk5JTkcgUFJFRklYICJEZXByZWNhdGVkIHByb2NmcyBJL0YgZm9yIEFDIGlzIGxvYWRlZCwi
-CisJCQkiIHBsZWFzZSByZXRyeSB3aXRoIENPTkZJR19BQ1BJX1BST0NGU19QT1dFUiBjbGVhcmVk
-XG4iKTsKKwlpZiAoIWFjcGlfZGV2aWNlX2RpcihhYy0+ZGV2aWNlKSkgeworCQlhY3BpX2Rldmlj
-ZV9kaXIoYWMtPmRldmljZSkgPQorCQkJcHJvY19ta2RpcihhY3BpX2RldmljZV9iaWQoYWMtPmRl
-dmljZSksIGFjcGlfYWNfZGlyKTsKKwkJaWYgKCFhY3BpX2RldmljZV9kaXIoYWMtPmRldmljZSkp
-CisJCQlyZXR1cm4gLUVOT0RFVjsKKwl9CisKKwkvKiAnc3RhdGUnIFtSXSAqLworCWVudHJ5ID0g
-cHJvY19jcmVhdGVfc2luZ2xlX2RhdGEoQUNQSV9BQ19GSUxFX1NUQVRFLCBTX0lSVUdPLAorCQkJ
-YWNwaV9kZXZpY2VfZGlyKGFjLT5kZXZpY2UpLCBhY3BpX2FjX3NlcV9zaG93LCBhYyk7CisJaWYg
-KCFlbnRyeSkKKwkJcmV0dXJuIC1FTk9ERVY7CisJcmV0dXJuIDA7Cit9CisKK3N0YXRpYyBpbnQg
-YWNwaV9hY19yZW1vdmVfZnMoc3RydWN0IGFjcGlfYWMgKmFjKQoreworCisJaWYgKGFjcGlfZGV2
-aWNlX2RpcihhYy0+ZGV2aWNlKSkgeworCQlyZW1vdmVfcHJvY19lbnRyeShBQ1BJX0FDX0ZJTEVf
-U1RBVEUsCisJCQkJICBhY3BpX2RldmljZV9kaXIoYWMtPmRldmljZSkpOworCQlyZW1vdmVfcHJv
-Y19lbnRyeShhY3BpX2RldmljZV9iaWQoYWMtPmRldmljZSksIGFjcGlfYWNfZGlyKTsKKwkJYWNw
-aV9kZXZpY2VfZGlyKGFjLT5kZXZpY2UpID0gTlVMTDsKKwl9CisKKwlyZXR1cm4gMDsKK30KKyNl
-bmRpZgorCiAvKiBEcml2ZXIgTW9kZWwgKi8KIHN0YXRpYyB2b2lkIGFjcGlfYWNfbm90aWZ5KHN0
-cnVjdCBhY3BpX2RldmljZSAqZGV2aWNlLCB1MzIgZXZlbnQpCiB7CkBAIC0yNDUsNiArMzIzLDEx
-IEBAIHN0YXRpYyBpbnQgYWNwaV9hY19hZGQoc3RydWN0IGFjcGlfZGV2aWMKIAlwc3lfY2ZnLmRy
-dl9kYXRhID0gYWM7CiAKIAlhYy0+Y2hhcmdlcl9kZXNjLm5hbWUgPSBhY3BpX2RldmljZV9iaWQo
-ZGV2aWNlKTsKKyNpZmRlZiBDT05GSUdfQUNQSV9QUk9DRlNfUE9XRVIKKwlyZXN1bHQgPSBhY3Bp
-X2FjX2FkZF9mcyhhYyk7CisJaWYgKHJlc3VsdCkKKwkJZ290byBlbmQ7CisjZW5kaWYKIAlhYy0+
-Y2hhcmdlcl9kZXNjLnR5cGUgPSBQT1dFUl9TVVBQTFlfVFlQRV9NQUlOUzsKIAlhYy0+Y2hhcmdl
-cl9kZXNjLnByb3BlcnRpZXMgPSBhY19wcm9wczsKIAlhYy0+Y2hhcmdlcl9kZXNjLm51bV9wcm9w
-ZXJ0aWVzID0gQVJSQVlfU0laRShhY19wcm9wcyk7CkBAIC0yNjIsOCArMzQ1LDEyIEBAIHN0YXRp
-YyBpbnQgYWNwaV9hY19hZGQoc3RydWN0IGFjcGlfZGV2aWMKIAlhYy0+YmF0dGVyeV9uYi5ub3Rp
-Zmllcl9jYWxsID0gYWNwaV9hY19iYXR0ZXJ5X25vdGlmeTsKIAlyZWdpc3Rlcl9hY3BpX25vdGlm
-aWVyKCZhYy0+YmF0dGVyeV9uYik7CiBlbmQ6Ci0JaWYgKHJlc3VsdCkKKwlpZiAocmVzdWx0KSB7
-CisjaWZkZWYgQ09ORklHX0FDUElfUFJPQ0ZTX1BPV0VSCisJCWFjcGlfYWNfcmVtb3ZlX2ZzKGFj
-KTsKKyNlbmRpZgogCQlrZnJlZShhYyk7CisJfQogCiAJcmV0dXJuIHJlc3VsdDsKIH0KQEAgLTMw
-NSw2ICszOTIsMTAgQEAgc3RhdGljIGludCBhY3BpX2FjX3JlbW92ZShzdHJ1Y3QgYWNwaV9kZQog
-CXBvd2VyX3N1cHBseV91bnJlZ2lzdGVyKGFjLT5jaGFyZ2VyKTsKIAl1bnJlZ2lzdGVyX2FjcGlf
-bm90aWZpZXIoJmFjLT5iYXR0ZXJ5X25iKTsKIAorI2lmZGVmIENPTkZJR19BQ1BJX1BST0NGU19Q
-T1dFUgorCWFjcGlfYWNfcmVtb3ZlX2ZzKGFjKTsKKyNlbmRpZgorCiAJa2ZyZWUoYWMpOwogCiAJ
-cmV0dXJuIDA7CkBAIC0zMjIsOSArNDEzLDE5IEBAIHN0YXRpYyBpbnQgX19pbml0IGFjcGlfYWNf
-aW5pdCh2b2lkKQogCiAJZG1pX2NoZWNrX3N5c3RlbShhY19kbWlfdGFibGUpOwogCisjaWZkZWYg
-Q09ORklHX0FDUElfUFJPQ0ZTX1BPV0VSCisJYWNwaV9hY19kaXIgPSBhY3BpX2xvY2tfYWNfZGly
-KCk7CisJaWYgKCFhY3BpX2FjX2RpcikKKwkJcmV0dXJuIC1FTk9ERVY7CisjZW5kaWYKKwogCXJl
-c3VsdCA9IGFjcGlfYnVzX3JlZ2lzdGVyX2RyaXZlcigmYWNwaV9hY19kcml2ZXIpOwotCWlmIChy
-ZXN1bHQgPCAwKQorCWlmIChyZXN1bHQgPCAwKSB7CisjaWZkZWYgQ09ORklHX0FDUElfUFJPQ0ZT
-X1BPV0VSCisJCWFjcGlfdW5sb2NrX2FjX2RpcihhY3BpX2FjX2Rpcik7CisjZW5kaWYKIAkJcmV0
-dXJuIC1FTk9ERVY7CisJfQogCiAJcmV0dXJuIDA7CiB9CkBAIC0zMzIsNiArNDMzLDkgQEAgc3Rh
-dGljIGludCBfX2luaXQgYWNwaV9hY19pbml0KHZvaWQpCiBzdGF0aWMgdm9pZCBfX2V4aXQgYWNw
-aV9hY19leGl0KHZvaWQpCiB7CiAJYWNwaV9idXNfdW5yZWdpc3Rlcl9kcml2ZXIoJmFjcGlfYWNf
-ZHJpdmVyKTsKKyNpZmRlZiBDT05GSUdfQUNQSV9QUk9DRlNfUE9XRVIKKwlhY3BpX3VubG9ja19h
-Y19kaXIoYWNwaV9hY19kaXIpOworI2VuZGlmCiB9CiBtb2R1bGVfaW5pdChhY3BpX2FjX2luaXQp
-OwogbW9kdWxlX2V4aXQoYWNwaV9hY19leGl0KTsKSW5kZXg6IGxpbnV4LXBtL2RyaXZlcnMvYWNw
-aS9iYXR0ZXJ5LmMKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PQotLS0gbGludXgtcG0ub3JpZy9kcml2ZXJzL2FjcGkvYmF0
-dGVyeS5jCisrKyBsaW51eC1wbS9kcml2ZXJzL2FjcGkvYmF0dGVyeS5jCkBAIC0yNCw2ICsyNCwx
-MiBAQAogCiAjaW5jbHVkZSA8YXNtL3VuYWxpZ25lZC5oPgogCisjaWZkZWYgQ09ORklHX0FDUElf
-UFJPQ0ZTX1BPV0VSCisjaW5jbHVkZSA8bGludXgvcHJvY19mcy5oPgorI2luY2x1ZGUgPGxpbnV4
-L3NlcV9maWxlLmg+CisjaW5jbHVkZSA8bGludXgvdWFjY2Vzcy5oPgorI2VuZGlmCisKICNpbmNs
-dWRlIDxsaW51eC9hY3BpLmg+CiAjaW5jbHVkZSA8bGludXgvcG93ZXJfc3VwcGx5Lmg+CiAKQEAg
-LTU3LDYgKzYzLDExIEBAIHN0YXRpYyB1bnNpZ25lZCBpbnQgY2FjaGVfdGltZSA9IDEwMDA7CiBt
-b2R1bGVfcGFyYW0oY2FjaGVfdGltZSwgdWludCwgMDY0NCk7CiBNT0RVTEVfUEFSTV9ERVNDKGNh
-Y2hlX3RpbWUsICJjYWNoZSB0aW1lIGluIG1pbGxpc2Vjb25kcyIpOwogCisjaWZkZWYgQ09ORklH
-X0FDUElfUFJPQ0ZTX1BPV0VSCitleHRlcm4gc3RydWN0IHByb2NfZGlyX2VudHJ5ICphY3BpX2xv
-Y2tfYmF0dGVyeV9kaXIodm9pZCk7CitleHRlcm4gdm9pZCAqYWNwaV91bmxvY2tfYmF0dGVyeV9k
-aXIoc3RydWN0IHByb2NfZGlyX2VudHJ5ICphY3BpX2JhdHRlcnlfZGlyKTsKKyNlbmRpZgorCiBz
-dGF0aWMgY29uc3Qgc3RydWN0IGFjcGlfZGV2aWNlX2lkIGJhdHRlcnlfZGV2aWNlX2lkc1tdID0g
-ewogCXsiUE5QMEMwQSIsIDB9LAogCXsiIiwgMH0sCkBAIC0xMDE4LDYgKzEwMjksMjIzIEBAIHN0
-YXRpYyB2b2lkIGFjcGlfYmF0dGVyeV9yZWZyZXNoKHN0cnVjdAogCXN5c2ZzX2FkZF9iYXR0ZXJ5
-KGJhdHRlcnkpOwogfQogCisjaWZkZWYgQ09ORklHX0FDUElfUFJPQ0ZTX1BPV0VSCisvKiBwcm9j
-IEkvRiAqLworc3RhdGljIHN0cnVjdCBwcm9jX2Rpcl9lbnRyeSAqYWNwaV9iYXR0ZXJ5X2RpcjsK
-Kworc3RhdGljIGNvbnN0IGNoYXIgKmFjcGlfYmF0dGVyeV91bml0cyhjb25zdCBzdHJ1Y3QgYWNw
-aV9iYXR0ZXJ5ICpiYXR0ZXJ5KQoreworCXJldHVybiAoYmF0dGVyeS0+cG93ZXJfdW5pdCA9PSBB
-Q1BJX0JBVFRFUllfUE9XRVJfVU5JVF9NQSkgPworCQkibUEiIDogIm1XIjsKK30KKworc3RhdGlj
-IGludCBhY3BpX2JhdHRlcnlfaW5mb19wcm9jX3Nob3coc3RydWN0IHNlcV9maWxlICpzZXEsIHZv
-aWQgKm9mZnNldCkKK3sKKwlzdHJ1Y3QgYWNwaV9iYXR0ZXJ5ICpiYXR0ZXJ5ID0gc2VxLT5wcml2
-YXRlOworCWludCByZXN1bHQgPSBhY3BpX2JhdHRlcnlfdXBkYXRlKGJhdHRlcnksIGZhbHNlKTsK
-KworCWlmIChyZXN1bHQpCisJCWdvdG8gZW5kOworCisJc2VxX3ByaW50ZihzZXEsICJwcmVzZW50
-OiAgICAgICAgICAgICAgICAgJXNcbiIsCisJCSAgIGFjcGlfYmF0dGVyeV9wcmVzZW50KGJhdHRl
-cnkpID8gInllcyIgOiAibm8iKTsKKwlpZiAoIWFjcGlfYmF0dGVyeV9wcmVzZW50KGJhdHRlcnkp
-KQorCQlnb3RvIGVuZDsKKwlpZiAoYmF0dGVyeS0+ZGVzaWduX2NhcGFjaXR5ID09IEFDUElfQkFU
-VEVSWV9WQUxVRV9VTktOT1dOKQorCQlzZXFfcHJpbnRmKHNlcSwgImRlc2lnbiBjYXBhY2l0eTog
-ICAgICAgICB1bmtub3duXG4iKTsKKwllbHNlCisJCXNlcV9wcmludGYoc2VxLCAiZGVzaWduIGNh
-cGFjaXR5OiAgICAgICAgICVkICVzaFxuIiwKKwkJCSAgIGJhdHRlcnktPmRlc2lnbl9jYXBhY2l0
-eSwKKwkJCSAgIGFjcGlfYmF0dGVyeV91bml0cyhiYXR0ZXJ5KSk7CisKKwlpZiAoYmF0dGVyeS0+
-ZnVsbF9jaGFyZ2VfY2FwYWNpdHkgPT0gQUNQSV9CQVRURVJZX1ZBTFVFX1VOS05PV04pCisJCXNl
-cV9wcmludGYoc2VxLCAibGFzdCBmdWxsIGNhcGFjaXR5OiAgICAgIHVua25vd25cbiIpOworCWVs
-c2UKKwkJc2VxX3ByaW50ZihzZXEsICJsYXN0IGZ1bGwgY2FwYWNpdHk6ICAgICAgJWQgJXNoXG4i
-LAorCQkJICAgYmF0dGVyeS0+ZnVsbF9jaGFyZ2VfY2FwYWNpdHksCisJCQkgICBhY3BpX2JhdHRl
-cnlfdW5pdHMoYmF0dGVyeSkpOworCisJc2VxX3ByaW50ZihzZXEsICJiYXR0ZXJ5IHRlY2hub2xv
-Z3k6ICAgICAgJXNyZWNoYXJnZWFibGVcbiIsCisJCSAgIGJhdHRlcnktPnRlY2hub2xvZ3kgPyAi
-IiA6ICJub24tIik7CisKKwlpZiAoYmF0dGVyeS0+ZGVzaWduX3ZvbHRhZ2UgPT0gQUNQSV9CQVRU
-RVJZX1ZBTFVFX1VOS05PV04pCisJCXNlcV9wcmludGYoc2VxLCAiZGVzaWduIHZvbHRhZ2U6ICAg
-ICAgICAgIHVua25vd25cbiIpOworCWVsc2UKKwkJc2VxX3ByaW50ZihzZXEsICJkZXNpZ24gdm9s
-dGFnZTogICAgICAgICAgJWQgbVZcbiIsCisJCQkgICBiYXR0ZXJ5LT5kZXNpZ25fdm9sdGFnZSk7
-CisJc2VxX3ByaW50ZihzZXEsICJkZXNpZ24gY2FwYWNpdHkgd2FybmluZzogJWQgJXNoXG4iLAor
-CQkgICBiYXR0ZXJ5LT5kZXNpZ25fY2FwYWNpdHlfd2FybmluZywKKwkJICAgYWNwaV9iYXR0ZXJ5
-X3VuaXRzKGJhdHRlcnkpKTsKKwlzZXFfcHJpbnRmKHNlcSwgImRlc2lnbiBjYXBhY2l0eSBsb3c6
-ICAgICAlZCAlc2hcbiIsCisJCSAgIGJhdHRlcnktPmRlc2lnbl9jYXBhY2l0eV9sb3csCisJCSAg
-IGFjcGlfYmF0dGVyeV91bml0cyhiYXR0ZXJ5KSk7CisJc2VxX3ByaW50ZihzZXEsICJjeWNsZSBj
-b3VudDoJCSAgJWlcbiIsIGJhdHRlcnktPmN5Y2xlX2NvdW50KTsKKwlzZXFfcHJpbnRmKHNlcSwg
-ImNhcGFjaXR5IGdyYW51bGFyaXR5IDE6ICAlZCAlc2hcbiIsCisJCSAgIGJhdHRlcnktPmNhcGFj
-aXR5X2dyYW51bGFyaXR5XzEsCisJCSAgIGFjcGlfYmF0dGVyeV91bml0cyhiYXR0ZXJ5KSk7CisJ
-c2VxX3ByaW50ZihzZXEsICJjYXBhY2l0eSBncmFudWxhcml0eSAyOiAgJWQgJXNoXG4iLAorCQkg
-ICBiYXR0ZXJ5LT5jYXBhY2l0eV9ncmFudWxhcml0eV8yLAorCQkgICBhY3BpX2JhdHRlcnlfdW5p
-dHMoYmF0dGVyeSkpOworCXNlcV9wcmludGYoc2VxLCAibW9kZWwgbnVtYmVyOiAgICAgICAgICAg
-ICVzXG4iLCBiYXR0ZXJ5LT5tb2RlbF9udW1iZXIpOworCXNlcV9wcmludGYoc2VxLCAic2VyaWFs
-IG51bWJlcjogICAgICAgICAgICVzXG4iLCBiYXR0ZXJ5LT5zZXJpYWxfbnVtYmVyKTsKKwlzZXFf
-cHJpbnRmKHNlcSwgImJhdHRlcnkgdHlwZTogICAgICAgICAgICAlc1xuIiwgYmF0dGVyeS0+dHlw
-ZSk7CisJc2VxX3ByaW50ZihzZXEsICJPRU0gaW5mbzogICAgICAgICAgICAgICAgJXNcbiIsIGJh
-dHRlcnktPm9lbV9pbmZvKTsKKyAgICAgIGVuZDoKKwlpZiAocmVzdWx0KQorCQlzZXFfcHJpbnRm
-KHNlcSwgIkVSUk9SOiBVbmFibGUgdG8gcmVhZCBiYXR0ZXJ5IGluZm9cbiIpOworCXJldHVybiBy
-ZXN1bHQ7Cit9CisKK3N0YXRpYyBpbnQgYWNwaV9iYXR0ZXJ5X3N0YXRlX3Byb2Nfc2hvdyhzdHJ1
-Y3Qgc2VxX2ZpbGUgKnNlcSwgdm9pZCAqb2Zmc2V0KQoreworCXN0cnVjdCBhY3BpX2JhdHRlcnkg
-KmJhdHRlcnkgPSBzZXEtPnByaXZhdGU7CisJaW50IHJlc3VsdCA9IGFjcGlfYmF0dGVyeV91cGRh
-dGUoYmF0dGVyeSwgZmFsc2UpOworCisJaWYgKHJlc3VsdCkKKwkJZ290byBlbmQ7CisKKwlzZXFf
-cHJpbnRmKHNlcSwgInByZXNlbnQ6ICAgICAgICAgICAgICAgICAlc1xuIiwKKwkJICAgYWNwaV9i
-YXR0ZXJ5X3ByZXNlbnQoYmF0dGVyeSkgPyAieWVzIiA6ICJubyIpOworCWlmICghYWNwaV9iYXR0
-ZXJ5X3ByZXNlbnQoYmF0dGVyeSkpCisJCWdvdG8gZW5kOworCisJc2VxX3ByaW50ZihzZXEsICJj
-YXBhY2l0eSBzdGF0ZTogICAgICAgICAgJXNcbiIsCisJCQkoYmF0dGVyeS0+c3RhdGUgJiAweDA0
-KSA/ICJjcml0aWNhbCIgOiAib2siKTsKKwlpZiAoKGJhdHRlcnktPnN0YXRlICYgMHgwMSkgJiYg
-KGJhdHRlcnktPnN0YXRlICYgMHgwMikpCisJCXNlcV9wcmludGYoc2VxLAorCQkJICAgImNoYXJn
-aW5nIHN0YXRlOiAgICAgICAgICBjaGFyZ2luZy9kaXNjaGFyZ2luZ1xuIik7CisJZWxzZSBpZiAo
-YmF0dGVyeS0+c3RhdGUgJiAweDAxKQorCQlzZXFfcHJpbnRmKHNlcSwgImNoYXJnaW5nIHN0YXRl
-OiAgICAgICAgICBkaXNjaGFyZ2luZ1xuIik7CisJZWxzZSBpZiAoYmF0dGVyeS0+c3RhdGUgJiAw
-eDAyKQorCQlzZXFfcHJpbnRmKHNlcSwgImNoYXJnaW5nIHN0YXRlOiAgICAgICAgICBjaGFyZ2lu
-Z1xuIik7CisJZWxzZQorCQlzZXFfcHJpbnRmKHNlcSwgImNoYXJnaW5nIHN0YXRlOiAgICAgICAg
-ICBjaGFyZ2VkXG4iKTsKKworCWlmIChiYXR0ZXJ5LT5yYXRlX25vdyA9PSBBQ1BJX0JBVFRFUllf
-VkFMVUVfVU5LTk9XTikKKwkJc2VxX3ByaW50ZihzZXEsICJwcmVzZW50IHJhdGU6ICAgICAgICAg
-ICAgdW5rbm93blxuIik7CisJZWxzZQorCQlzZXFfcHJpbnRmKHNlcSwgInByZXNlbnQgcmF0ZTog
-ICAgICAgICAgICAlZCAlc1xuIiwKKwkJCSAgIGJhdHRlcnktPnJhdGVfbm93LCBhY3BpX2JhdHRl
-cnlfdW5pdHMoYmF0dGVyeSkpOworCisJaWYgKGJhdHRlcnktPmNhcGFjaXR5X25vdyA9PSBBQ1BJ
-X0JBVFRFUllfVkFMVUVfVU5LTk9XTikKKwkJc2VxX3ByaW50ZihzZXEsICJyZW1haW5pbmcgY2Fw
-YWNpdHk6ICAgICAgdW5rbm93blxuIik7CisJZWxzZQorCQlzZXFfcHJpbnRmKHNlcSwgInJlbWFp
-bmluZyBjYXBhY2l0eTogICAgICAlZCAlc2hcbiIsCisJCQkgICBiYXR0ZXJ5LT5jYXBhY2l0eV9u
-b3csIGFjcGlfYmF0dGVyeV91bml0cyhiYXR0ZXJ5KSk7CisJaWYgKGJhdHRlcnktPnZvbHRhZ2Vf
-bm93ID09IEFDUElfQkFUVEVSWV9WQUxVRV9VTktOT1dOKQorCQlzZXFfcHJpbnRmKHNlcSwgInBy
-ZXNlbnQgdm9sdGFnZTogICAgICAgICB1bmtub3duXG4iKTsKKwllbHNlCisJCXNlcV9wcmludGYo
-c2VxLCAicHJlc2VudCB2b2x0YWdlOiAgICAgICAgICVkIG1WXG4iLAorCQkJICAgYmF0dGVyeS0+
-dm9sdGFnZV9ub3cpOworICAgICAgZW5kOgorCWlmIChyZXN1bHQpCisJCXNlcV9wcmludGYoc2Vx
-LCAiRVJST1I6IFVuYWJsZSB0byByZWFkIGJhdHRlcnkgc3RhdGVcbiIpOworCisJcmV0dXJuIHJl
-c3VsdDsKK30KKworc3RhdGljIGludCBhY3BpX2JhdHRlcnlfYWxhcm1fcHJvY19zaG93KHN0cnVj
-dCBzZXFfZmlsZSAqc2VxLCB2b2lkICpvZmZzZXQpCit7CisJc3RydWN0IGFjcGlfYmF0dGVyeSAq
-YmF0dGVyeSA9IHNlcS0+cHJpdmF0ZTsKKwlpbnQgcmVzdWx0ID0gYWNwaV9iYXR0ZXJ5X3VwZGF0
-ZShiYXR0ZXJ5LCBmYWxzZSk7CisKKwlpZiAocmVzdWx0KQorCQlnb3RvIGVuZDsKKworCWlmICgh
-YWNwaV9iYXR0ZXJ5X3ByZXNlbnQoYmF0dGVyeSkpIHsKKwkJc2VxX3ByaW50ZihzZXEsICJwcmVz
-ZW50OiAgICAgICAgICAgICAgICAgbm9cbiIpOworCQlnb3RvIGVuZDsKKwl9CisJc2VxX3ByaW50
-ZihzZXEsICJhbGFybTogICAgICAgICAgICAgICAgICAgIik7CisJaWYgKGJhdHRlcnktPmFsYXJt
-KSB7CisJCXNlcV9wcmludGYoc2VxLCAiJXUgJXNoXG4iLCBiYXR0ZXJ5LT5hbGFybSwKKwkJCQlh
-Y3BpX2JhdHRlcnlfdW5pdHMoYmF0dGVyeSkpOworCX0gZWxzZSB7CisJCXNlcV9wcmludGYoc2Vx
-LCAidW5zdXBwb3J0ZWRcbiIpOworCX0KKyAgICAgIGVuZDoKKwlpZiAocmVzdWx0KQorCQlzZXFf
-cHJpbnRmKHNlcSwgIkVSUk9SOiBVbmFibGUgdG8gcmVhZCBiYXR0ZXJ5IGFsYXJtXG4iKTsKKwly
-ZXR1cm4gcmVzdWx0OworfQorCitzdGF0aWMgc3NpemVfdCBhY3BpX2JhdHRlcnlfd3JpdGVfYWxh
-cm0oc3RydWN0IGZpbGUgKmZpbGUsCisJCQkJCWNvbnN0IGNoYXIgX191c2VyICogYnVmZmVyLAor
-CQkJCQlzaXplX3QgY291bnQsIGxvZmZfdCAqIHBwb3MpCit7CisJaW50IHJlc3VsdCA9IDA7CisJ
-Y2hhciBhbGFybV9zdHJpbmdbMTJdID0geyAnXDAnIH07CisJc3RydWN0IHNlcV9maWxlICptID0g
-ZmlsZS0+cHJpdmF0ZV9kYXRhOworCXN0cnVjdCBhY3BpX2JhdHRlcnkgKmJhdHRlcnkgPSBtLT5w
-cml2YXRlOworCisJaWYgKCFiYXR0ZXJ5IHx8IChjb3VudCA+IHNpemVvZihhbGFybV9zdHJpbmcp
-IC0gMSkpCisJCXJldHVybiAtRUlOVkFMOworCWlmICghYWNwaV9iYXR0ZXJ5X3ByZXNlbnQoYmF0
-dGVyeSkpIHsKKwkJcmVzdWx0ID0gLUVOT0RFVjsKKwkJZ290byBlbmQ7CisJfQorCWlmIChjb3B5
-X2Zyb21fdXNlcihhbGFybV9zdHJpbmcsIGJ1ZmZlciwgY291bnQpKSB7CisJCXJlc3VsdCA9IC1F
-RkFVTFQ7CisJCWdvdG8gZW5kOworCX0KKwlhbGFybV9zdHJpbmdbY291bnRdID0gJ1wwJzsKKwlp
-ZiAoa3N0cnRvaW50KGFsYXJtX3N0cmluZywgMCwgJmJhdHRlcnktPmFsYXJtKSkgeworCQlyZXN1
-bHQgPSAtRUlOVkFMOworCQlnb3RvIGVuZDsKKwl9CisJcmVzdWx0ID0gYWNwaV9iYXR0ZXJ5X3Nl
-dF9hbGFybShiYXR0ZXJ5KTsKKyAgICAgIGVuZDoKKwlpZiAocmVzdWx0KQorCQlyZXR1cm4gcmVz
-dWx0OworCXJldHVybiBjb3VudDsKK30KKworc3RhdGljIGludCBhY3BpX2JhdHRlcnlfYWxhcm1f
-cHJvY19vcGVuKHN0cnVjdCBpbm9kZSAqaW5vZGUsIHN0cnVjdCBmaWxlICpmaWxlKQoreworCXJl
-dHVybiBzaW5nbGVfb3BlbihmaWxlLCBhY3BpX2JhdHRlcnlfYWxhcm1fcHJvY19zaG93LCBQREVf
-REFUQShpbm9kZSkpOworfQorCitzdGF0aWMgY29uc3Qgc3RydWN0IHByb2Nfb3BzIGFjcGlfYmF0
-dGVyeV9hbGFybV9wcm9jX29wcyA9IHsKKwkucHJvY19vcGVuCT0gYWNwaV9iYXR0ZXJ5X2FsYXJt
-X3Byb2Nfb3BlbiwKKwkucHJvY19yZWFkCT0gc2VxX3JlYWQsCisJLnByb2Nfd3JpdGUJPSBhY3Bp
-X2JhdHRlcnlfd3JpdGVfYWxhcm0sCisJLnByb2NfbHNlZWsJPSBzZXFfbHNlZWssCisJLnByb2Nf
-cmVsZWFzZQk9IHNpbmdsZV9yZWxlYXNlLAorfTsKKworc3RhdGljIGludCBhY3BpX2JhdHRlcnlf
-YWRkX2ZzKHN0cnVjdCBhY3BpX2RldmljZSAqZGV2aWNlKQoreworCXByX3dhcm4oUFJFRklYICJE
-ZXByZWNhdGVkIHByb2NmcyBJL0YgZm9yIGJhdHRlcnkgaXMgbG9hZGVkLCBwbGVhc2UgcmV0cnkg
-d2l0aCBDT05GSUdfQUNQSV9QUk9DRlNfUE9XRVIgY2xlYXJlZFxuIik7CisJaWYgKCFhY3BpX2Rl
-dmljZV9kaXIoZGV2aWNlKSkgeworCQlhY3BpX2RldmljZV9kaXIoZGV2aWNlKSA9IHByb2NfbWtk
-aXIoYWNwaV9kZXZpY2VfYmlkKGRldmljZSksCisJCQkJCQkgICAgIGFjcGlfYmF0dGVyeV9kaXIp
-OworCQlpZiAoIWFjcGlfZGV2aWNlX2RpcihkZXZpY2UpKQorCQkJcmV0dXJuIC1FTk9ERVY7CisJ
-fQorCisJaWYgKCFwcm9jX2NyZWF0ZV9zaW5nbGVfZGF0YSgiaW5mbyIsIFNfSVJVR08sIGFjcGlf
-ZGV2aWNlX2RpcihkZXZpY2UpLAorCQkJYWNwaV9iYXR0ZXJ5X2luZm9fcHJvY19zaG93LCBhY3Bp
-X2RyaXZlcl9kYXRhKGRldmljZSkpKQorCQlyZXR1cm4gLUVOT0RFVjsKKwlpZiAoIXByb2NfY3Jl
-YXRlX3NpbmdsZV9kYXRhKCJzdGF0ZSIsIFNfSVJVR08sIGFjcGlfZGV2aWNlX2RpcihkZXZpY2Up
-LAorCQkJYWNwaV9iYXR0ZXJ5X3N0YXRlX3Byb2Nfc2hvdywgYWNwaV9kcml2ZXJfZGF0YShkZXZp
-Y2UpKSkKKwkJcmV0dXJuIC1FTk9ERVY7CisJaWYgKCFwcm9jX2NyZWF0ZV9kYXRhKCJhbGFybSIs
-IFNfSUZSRUcgfCBTX0lSVUdPIHwgU19JV1VTUiwKKwkJCWFjcGlfZGV2aWNlX2RpcihkZXZpY2Up
-LCAmYWNwaV9iYXR0ZXJ5X2FsYXJtX3Byb2Nfb3BzLAorCQkJYWNwaV9kcml2ZXJfZGF0YShkZXZp
-Y2UpKSkKKwkJcmV0dXJuIC1FTk9ERVY7CisJcmV0dXJuIDA7Cit9CisKK3N0YXRpYyB2b2lkIGFj
-cGlfYmF0dGVyeV9yZW1vdmVfZnMoc3RydWN0IGFjcGlfZGV2aWNlICpkZXZpY2UpCit7CisJaWYg
-KCFhY3BpX2RldmljZV9kaXIoZGV2aWNlKSkKKwkJcmV0dXJuOworCXJlbW92ZV9wcm9jX3N1YnRy
-ZWUoYWNwaV9kZXZpY2VfYmlkKGRldmljZSksIGFjcGlfYmF0dGVyeV9kaXIpOworCWFjcGlfZGV2
-aWNlX2RpcihkZXZpY2UpID0gTlVMTDsKK30KKworI2VuZGlmCisKIC8qIERyaXZlciBJbnRlcmZh
-Y2UgKi8KIHN0YXRpYyB2b2lkIGFjcGlfYmF0dGVyeV9ub3RpZnkoc3RydWN0IGFjcGlfZGV2aWNl
-ICpkZXZpY2UsIHUzMiBldmVudCkKIHsKQEAgLTEyMDAsNiArMTQyOCwxNCBAQCBzdGF0aWMgaW50
-IGFjcGlfYmF0dGVyeV9hZGQoc3RydWN0IGFjcGlfCiAJaWYgKHJlc3VsdCkKIAkJZ290byBmYWls
-OwogCisjaWZkZWYgQ09ORklHX0FDUElfUFJPQ0ZTX1BPV0VSCisJcmVzdWx0ID0gYWNwaV9iYXR0
-ZXJ5X2FkZF9mcyhkZXZpY2UpOworCWlmIChyZXN1bHQpIHsKKwkJYWNwaV9iYXR0ZXJ5X3JlbW92
-ZV9mcyhkZXZpY2UpOworCQlnb3RvIGZhaWw7CisJfQorI2VuZGlmCisKIAlwcl9pbmZvKCJTbG90
-IFslc10gKGJhdHRlcnkgJXMpXG4iLCBhY3BpX2RldmljZV9iaWQoZGV2aWNlKSwKIAkJZGV2aWNl
-LT5zdGF0dXMuYmF0dGVyeV9wcmVzZW50ID8gInByZXNlbnQiIDogImFic2VudCIpOwogCkBAIC0x
-MjI3LDYgKzE0NjMsOSBAQCBzdGF0aWMgaW50IGFjcGlfYmF0dGVyeV9yZW1vdmUoc3RydWN0IGFj
-CiAJZGV2aWNlX2luaXRfd2FrZXVwKCZkZXZpY2UtPmRldiwgMCk7CiAJYmF0dGVyeSA9IGFjcGlf
-ZHJpdmVyX2RhdGEoZGV2aWNlKTsKIAl1bnJlZ2lzdGVyX3BtX25vdGlmaWVyKCZiYXR0ZXJ5LT5w
-bV9uYik7CisjaWZkZWYgQ09ORklHX0FDUElfUFJPQ0ZTX1BPV0VSCisJYWNwaV9iYXR0ZXJ5X3Jl
-bW92ZV9mcyhkZXZpY2UpOworI2VuZGlmCiAJc3lzZnNfcmVtb3ZlX2JhdHRlcnkoYmF0dGVyeSk7
-CiAJbXV0ZXhfZGVzdHJveSgmYmF0dGVyeS0+bG9jayk7CiAJbXV0ZXhfZGVzdHJveSgmYmF0dGVy
-eS0+c3lzZnNfbG9jayk7CkBAIC0xMjc5LDcgKzE1MTgsMTYgQEAgc3RhdGljIHZvaWQgX19pbml0
-IGFjcGlfYmF0dGVyeV9pbml0X2FzeQogCiAJZG1pX2NoZWNrX3N5c3RlbShiYXRfZG1pX3RhYmxl
-KTsKIAorI2lmZGVmIENPTkZJR19BQ1BJX1BST0NGU19QT1dFUgorCWFjcGlfYmF0dGVyeV9kaXIg
-PSBhY3BpX2xvY2tfYmF0dGVyeV9kaXIoKTsKKwlpZiAoIWFjcGlfYmF0dGVyeV9kaXIpCisJCXJl
-dHVybjsKKyNlbmRpZgogCXJlc3VsdCA9IGFjcGlfYnVzX3JlZ2lzdGVyX2RyaXZlcigmYWNwaV9i
-YXR0ZXJ5X2RyaXZlcik7CisjaWZkZWYgQ09ORklHX0FDUElfUFJPQ0ZTX1BPV0VSCisJaWYgKHJl
-c3VsdCA8IDApCisJCWFjcGlfdW5sb2NrX2JhdHRlcnlfZGlyKGFjcGlfYmF0dGVyeV9kaXIpOwor
-I2VuZGlmCiAJYmF0dGVyeV9kcml2ZXJfcmVnaXN0ZXJlZCA9IChyZXN1bHQgPT0gMCk7CiB9CiAK
-QEAgLTEyOTksNiArMTU0NywxMCBAQCBzdGF0aWMgdm9pZCBfX2V4aXQgYWNwaV9iYXR0ZXJ5X2V4
-aXQodm9pCiAJCWFjcGlfYnVzX3VucmVnaXN0ZXJfZHJpdmVyKCZhY3BpX2JhdHRlcnlfZHJpdmVy
-KTsKIAkJYmF0dGVyeV9ob29rX2V4aXQoKTsKIAl9CisjaWZkZWYgQ09ORklHX0FDUElfUFJPQ0ZT
-X1BPV0VSCisJaWYgKGFjcGlfYmF0dGVyeV9kaXIpCisJCWFjcGlfdW5sb2NrX2JhdHRlcnlfZGly
-KGFjcGlfYmF0dGVyeV9kaXIpOworI2VuZGlmCiB9CiAKIG1vZHVsZV9pbml0KGFjcGlfYmF0dGVy
-eV9pbml0KTsK
---0000000000000b51d105d88b22ea--
+If CONFIG_ARM_SDE_INTERFACE soft depends on CONFIG_ACPI_APEI_GHES for
+functionality but can work without it, you could use
+"imply ACPI_APEI_GHES", which will enable CONFIG_ACPI_APEI_GHES if its
+dependencies are met.
+
+I noticed the same error with Alpine Linux's aarch64 configuration [2]
+if you wanted a quick configuration to test with.
+
+[1]: https://lore.kernel.org/r/202202151504.jWpZGPaH-lkp@intel.com/
+[2]: https://git.alpinelinux.org/aports/plain/community/linux-edge/config-edge.aarch64
+
+Cheers,
+Nathan
+
+>  	help
+>  	  The Software Delegated Exception Interface (SDEI) is an ARM
+>  	  standard for registering callbacks from the platform firmware
+> diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+> index a7e762c352f9..1e1a51510e83 100644
+> --- a/drivers/firmware/arm_sdei.c
+> +++ b/drivers/firmware/arm_sdei.c
+> @@ -1059,14 +1059,14 @@ static bool __init sdei_present_acpi(void)
+>  	return true;
+>  }
+>  
+> -static int __init sdei_init(void)
+> +void __init sdei_init(void)
+>  {
+>  	struct platform_device *pdev;
+>  	int ret;
+>  
+>  	ret = platform_driver_register(&sdei_driver);
+>  	if (ret || !sdei_present_acpi())
+> -		return ret;
+> +		return;
+>  
+>  	pdev = platform_device_register_simple(sdei_driver.driver.name,
+>  					       0, NULL, 0);
+> @@ -1076,17 +1076,8 @@ static int __init sdei_init(void)
+>  		pr_info("Failed to register ACPI:SDEI platform device %d\n",
+>  			ret);
+>  	}
+> -
+> -	return ret;
+>  }
+>  
+> -/*
+> - * On an ACPI system SDEI needs to be ready before HEST:GHES tries to register
+> - * its events. ACPI is initialised from a subsys_initcall(), GHES is initialised
+> - * by device_initcall(). We want to be called in the middle.
+> - */
+> -subsys_initcall_sync(sdei_init);
+> -
+>  int sdei_event_handler(struct pt_regs *regs,
+>  		       struct sdei_registered_event *arg)
+>  {
+> diff --git a/include/acpi/apei.h b/include/acpi/apei.h
+> index ece0a8af2bae..4e60dd73c3bb 100644
+> --- a/include/acpi/apei.h
+> +++ b/include/acpi/apei.h
+> @@ -27,14 +27,16 @@ extern int hest_disable;
+>  extern int erst_disable;
+>  #ifdef CONFIG_ACPI_APEI_GHES
+>  extern bool ghes_disable;
+> +void __init ghes_init(void);
+>  #else
+>  #define ghes_disable 1
+> +static inline void ghes_init(void) { }
+>  #endif
+>  
+>  #ifdef CONFIG_ACPI_APEI
+>  void __init acpi_hest_init(void);
+>  #else
+> -static inline void acpi_hest_init(void) { return; }
+> +static inline void acpi_hest_init(void) { }
+>  #endif
+>  
+>  int erst_write(const struct cper_record_header *record);
+> diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
+> index 0a241c5c911d..14dc461b0e82 100644
+> --- a/include/linux/arm_sdei.h
+> +++ b/include/linux/arm_sdei.h
+> @@ -46,9 +46,11 @@ int sdei_unregister_ghes(struct ghes *ghes);
+>  /* For use by arch code when CPU hotplug notifiers are not appropriate. */
+>  int sdei_mask_local_cpu(void);
+>  int sdei_unmask_local_cpu(void);
+> +void __init sdei_init(void);
+>  #else
+>  static inline int sdei_mask_local_cpu(void) { return 0; }
+>  static inline int sdei_unmask_local_cpu(void) { return 0; }
+> +static inline void sdei_init(void) { }
+>  #endif /* CONFIG_ARM_SDE_INTERFACE */
+>  
+>  
+> -- 
+> 2.20.1.12.g72788fdb
+> 
+> 
