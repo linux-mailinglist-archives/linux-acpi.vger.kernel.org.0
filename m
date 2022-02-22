@@ -2,96 +2,92 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2567C4BF857
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Feb 2022 13:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 014B34BF932
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Feb 2022 14:26:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229893AbiBVMuP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Feb 2022 07:50:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52412 "EHLO
+        id S230431AbiBVN1C (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Feb 2022 08:27:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbiBVMuO (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Feb 2022 07:50:14 -0500
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC1F128658
-        for <linux-acpi@vger.kernel.org>; Tue, 22 Feb 2022 04:49:49 -0800 (PST)
-Received: by mail-yb1-f181.google.com with SMTP id y189so19232864ybe.4
-        for <linux-acpi@vger.kernel.org>; Tue, 22 Feb 2022 04:49:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wIovHm0TBH/skoMTuPHUa2kU5sd+QmaGYcINmbWWwuU=;
-        b=4U1rVih9NgAvpyltTSiw7DfYZCTqe8gvEhXbNnar7XH7gy+QEE+7MXEVQ1XM4M7U6Z
-         CiBfWcDfLGx9kROZbFXMz7Ygix8JZJJ76JqGsnKxMJFW1JOBj4qTl5IX/s/UO8XNN3m+
-         CiMFSUbnSG2+rBUCxQm3ETMQyOW6/ACn86tuvjF0Cyb6HLmn8iP1P0ZuD1+x22Qfoy4/
-         lpjss6ZcLRf38n91I4NAI/0LHZfgoHu+jSP21Lh+bRWhGkzr7dYFjLyLLMG/nFJWhu2E
-         SmoGPtiPGKdxGUdd3fEerkuI7ytoroO8iGrwJP6mWczK07eGzaGDyMNLGPzx02v/LIUq
-         8g7A==
-X-Gm-Message-State: AOAM530vEuZeUrOFRwnYkLm9jsV0m0oRA9nXD+GsHdb5KEst+HPh05fd
-        gByLitRLOJG+S0yl9FyAky9IJEbi+Xj4d5MvVolDMjuuRbU=
-X-Google-Smtp-Source: ABdhPJz2Gj0kb/t6aRjHUaCjQJX9I0uCYMbjS14UXRSsr51a4kW6tPSyibVJi9zCMXUuZ0u3/QevaaFWhiaFXxMQCP8=
-X-Received: by 2002:a25:bbc1:0:b0:610:b4ce:31db with SMTP id
- c1-20020a25bbc1000000b00610b4ce31dbmr22220020ybk.482.1645534188986; Tue, 22
- Feb 2022 04:49:48 -0800 (PST)
+        with ESMTP id S229766AbiBVN1C (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Feb 2022 08:27:02 -0500
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C56F13DD3;
+        Tue, 22 Feb 2022 05:26:35 -0800 (PST)
+Received: (Authenticated sender: clement.leger@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 2E0F62000C;
+        Tue, 22 Feb 2022 13:26:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1645536393;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+IeCrIvtHEXj+/TrckXq5Glou6qAet2MevCs2vi9JaY=;
+        b=I8E4xgDu9bdg2csxyff9myhmdP9T8H3rRW7JiKdPYxnMHQuPETlACfrGDksH3L4Clzyki6
+        OvL3hPaJIH8Mafgst2chAKdQ8DXNoOqfSrZoCotmQST48nAphr1z3mRqbUyp2pflX/p+Fh
+        NR3iw/S2RJkcieGSrJvV6KKN1wV8/DdKQe+3WM1A0F6fMZesKf9e+UrHNWRGqmRXXTRZAG
+        YSQKEU0RaA20Ys88kbiomOEhwnSOr3v8v+PUykfxCxDRKf42mzpkHGsxiPp3fGXJ5aLVvc
+        c0P7IoCsDjQxoBHIjmwXDadzIcgPIxTudOGChfxezymkbnylZoxt4bOF/W6UCQ==
+Date:   Tue, 22 Feb 2022 14:25:13 +0100
+From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
+        netdev@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: Re: [RFC 10/10] net: sfp: add support for fwnode
+Message-ID: <20220222142513.026ad98c@fixe.home>
+In-Reply-To: <YhPSkz8+BIcdb72R@smile.fi.intel.com>
+References: <20220221162652.103834-1-clement.leger@bootlin.com>
+        <20220221162652.103834-11-clement.leger@bootlin.com>
+        <YhPSkz8+BIcdb72R@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <BL1PR12MB5157C5EA5510F0C9D7782AE8E2369@BL1PR12MB5157.namprd12.prod.outlook.com>
- <CAJZ5v0g81BmytcjgChXZumsHV5-byzSzDQbp2hc6CYzJ_6N=aw@mail.gmail.com>
- <BL1PR12MB5157E2CDD68BA585C5F4CF2BE2369@BL1PR12MB5157.namprd12.prod.outlook.com>
- <CAJZ5v0ho8PHGp0gAUp5KkUstTXLyUMsaQ7wTL=8xDJtjtXjPRw@mail.gmail.com>
- <CAJZ5v0j3Ma1HuUWoTmJvZDsUtm9hi84njJxJbBZMwe76eATSYQ@mail.gmail.com>
- <BL1PR12MB5157589AB3D9BC55C6D77EB4E2389@BL1PR12MB5157.namprd12.prod.outlook.com>
- <CAJZ5v0jmQaeSKj7wB1Jx+cxDHVxtHzbnTKZ4TcxnydHa5NOn+A@mail.gmail.com>
- <BL1PR12MB51570F5BD05980A0DCA1F3F4E23A9@BL1PR12MB5157.namprd12.prod.outlook.com>
- <CAJZ5v0iNoeUv0XjHWyazu5X8Y5=WXKabKtxB+bwHONgKab8fEA@mail.gmail.com> <BL1PR12MB515755CA3C1649F83ED3DF9BE23A9@BL1PR12MB5157.namprd12.prod.outlook.com>
-In-Reply-To: <BL1PR12MB515755CA3C1649F83ED3DF9BE23A9@BL1PR12MB5157.namprd12.prod.outlook.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 22 Feb 2022 13:49:37 +0100
-Message-ID: <CAJZ5v0gCb9=W7tCtrk4gZJ+p8K7XvEaeUPZUD1c9Kgnn-u2yRg@mail.gmail.com>
-Subject: Re: Regression in 5.16-rc1 with suspend to idle
-To:     "Limonciello, Mario" <Mario.Limonciello@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 21, 2022 at 9:14 PM Limonciello, Mario
-<Mario.Limonciello@amd.com> wrote:
->
-> [AMD Official Use Only]
->
-> >
-> > OK
->
-> https://lore.kernel.org/platform-driver-x86/20220221200728.2323469-1-mario.limonciello@amd.com/T/#u
+Le Mon, 21 Feb 2022 19:57:39 +0200,
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> a =C3=A9crit :
 
-The comment in amd_pmc_resume() doesn't match the code, because the
-QoS request is updated to "don't care" in there.  Also, I'd move that
-update to the end of the function in case what happens in
-amd_pmc_resume() interferes with idle states.
+> On Mon, Feb 21, 2022 at 05:26:52PM +0100, Cl=C3=A9ment L=C3=A9ger wrote:
+> > Add support to retrieve a i2c bus in sfp with a fwnode. This support
+> > is using the fwnode API which also works with device-tree and ACPI.
+> > For this purpose, the device-tree and ACPI code handling the i2c
+> > adapter retrieval was factorized with the new code. This also allows
+> > i2c devices using a software_node description to be used by sfp code. =
+=20
+>=20
+> If I'm not mistaken this patch can even go separately right now, since al=
+l used
+> APIs are already available.
+>=20
 
-Moreover, since the "no idle states" period covers the entire suspend
-time now AFAICS, I would use a small int (eg. 3) instead of 0 in the
-cpu_latency_qos_update_request() call in amd_pmc_verify_czn_rtc() to
-allow C1 to be entered via cpuidle during that period (which shouldn't
-really hurt).  And the comment would need to be updated accordingly.
+This patches uses fwnode_find_i2c_adapter_by_node() which is introduced
+by "i2c: fwnode: add fwnode_find_i2c_adapter_by_node()" but they can
+probably be contributed both in a separate series.
 
-> >
-> > > Long term - are you opposed to drivers/acpi/x86/s2idle.c moving to
-> > drivers/platform/x86/?
-> >
-> > It is tied to the code in sleep.c, so I'd rather not move it.
->
-> OK if we're keeping it there, would you be open to a patch exporting a symbol to
-> let other drivers register another callback after LPS0?  It's somewhat similar to what my
-> test hack did and might be a better long term solution if so.
-
-Well, please send the patch and I will tell you if it looks good to me.
+--=20
+Cl=C3=A9ment L=C3=A9ger,
+Embedded Linux and Kernel engineer at Bootlin
+https://bootlin.com
