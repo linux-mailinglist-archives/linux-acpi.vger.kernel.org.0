@@ -2,126 +2,179 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A274BFC40
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Feb 2022 16:18:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8E14BFE9F
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Feb 2022 17:31:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231940AbiBVPSn (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 22 Feb 2022 10:18:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46126 "EHLO
+        id S232694AbiBVQcM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 22 Feb 2022 11:32:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232357AbiBVPSl (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Feb 2022 10:18:41 -0500
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E81149B86;
-        Tue, 22 Feb 2022 07:18:13 -0800 (PST)
+        with ESMTP id S233875AbiBVQcJ (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 22 Feb 2022 11:32:09 -0500
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E1FA6E54E;
+        Tue, 22 Feb 2022 08:31:41 -0800 (PST)
 Received: (Authenticated sender: clement.leger@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id F2B0C60010;
-        Tue, 22 Feb 2022 15:18:08 +0000 (UTC)
+        by mail.gandi.net (Postfix) with ESMTPSA id 2F93420003;
+        Tue, 22 Feb 2022 16:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1645543091;
+        t=1645547500;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=sUKjasZW1jCb/3Z0/TiPJo6cUX+jFii8PUJTFIJ++ec=;
-        b=Cym6tuLgJkn0JINb6E0P3BCm5JYJO5LcLnW+87X5TlDByLTSsQrOya1GLhsi3ErKO2e/JR
-        SL/+16MGtqhjBdecsOzndAcOxz8HS7wbpX957VuwnLtSxw+BIP60R9VkO08nGyiBOz1AFS
-        9u3Z0DkjapXMLphV9k/Pbq82411V/84MqVMBWRNh8CqSRWnecTpPu1thW6TSW3Bxp6W12p
-        dx89ZCTS9IXKpdfdxrgbifOA6udZMZmfIUYXb35eXea9TBxbyL1VbUN7yzPYGzjBMVWW0S
-        Nqqyamnh+OsGqlKUA0Eh6wYiWsl3yHZCE2ACWyImcd521AYUazzgxeAtEypSjQ==
-Date:   Tue, 22 Feb 2022 16:16:50 +0100
+        bh=DX9NhASmajHZnyC217wOwL7ov42sa2Tz6XVPF8ddW48=;
+        b=fxrNoOOksIBC1l5jidCWAAr+FXTdxwIp8gWk4WyB7gClWMLtgcsXyc3A5AR4kvQb8TldMv
+        2BWw2VfmwDCecO2uE9h3yultbIRm+SfRJUFKnKcB4r0GOXZ7j9uIrvktXSkufIhm0Fax9S
+        FGMZt6csFKJ5F1Yw0euMmULxpV+Y6eI50ruJqz3N69qRQq6EEXqP1pZ+nGrNtFo61aKHQE
+        Fue4GuJVvnmemlvUWJ6gT56QOxQ43FonwjGxNUzB4BoEWAfgMREaLy30XEWDrxH/daz3k9
+        4ieES7Wfi6/8u47FTCyuIT1BfnD1MxOao7CzI/KejjawmbhpvBZ7rx5w1czB+g==
+Date:   Tue, 22 Feb 2022 17:30:19 +0100
 From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
         Russell King <linux@armlinux.org.uk>,
         Andrew Lunn <andrew@lunn.ch>,
         Heiner Kallweit <hkallweit1@gmail.com>,
         "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
+        netdev@vger.kernel.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [RFC 02/10] property: add fwnode_get_match_data()
-Message-ID: <20220222161650.1b75825b@fixe.home>
-In-Reply-To: <YhS5BnvofimMReDE@kroah.com>
+Subject: Re: [RFC 00/10] add support for fwnode in i2c mux system and sfp
+Message-ID: <20220222173019.2380dcaf@fixe.home>
+In-Reply-To: <YhPOxL++yhNHh+xH@smile.fi.intel.com>
 References: <20220221162652.103834-1-clement.leger@bootlin.com>
-        <20220221162652.103834-3-clement.leger@bootlin.com>
-        <YhPP5GWt7XEv5xx8@smile.fi.intel.com>
-        <20220222091902.198ce809@fixe.home>
-        <CAHp75VdwfhGKOiGhJ1JsiG+R2ZdHa3N4hz6tyy5BmyFLripV5A@mail.gmail.com>
-        <20220222094623.1f7166c3@fixe.home>
-        <CAHp75VfduXwRvxkNg=At5jaN-tcP3=utiukEDL35PEv_grK4Pw@mail.gmail.com>
-        <20220222104705.54a73165@fixe.home>
-        <YhS5BnvofimMReDE@kroah.com>
+        <YhPOxL++yhNHh+xH@smile.fi.intel.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Le Tue, 22 Feb 2022 11:20:54 +0100,
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> a =C3=A9crit :
+Le Mon, 21 Feb 2022 19:41:24 +0200,
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> a =C3=A9crit :
 
 > >=20
-> > The problem that I see is not only duplication but also that the PCIe
-> > card won't work out of the box and will need a specific SSDT overlays
-> > each time it is used. According to your document about SSDT overlays,
-> > there is no way to load this from the driver. This means that the user
-> > will have to compile a platform specific .aml file to match its
-> > platform configuration. If the user wants to change the PCIe port, than
-> > I guess it will have to load another .aml file. I do not think a user
-> > expect to do so when plugging a PCIe card.
-> >=20
-> > Moreover, the APCI documentation [1] says the following:
-> >=20
-> > "PCI devices, which are below the host bridge, generally do not need to
-> > be described via ACPI. The OS can discover them via the standard PCI
-> > enumeration mechanism, using config accesses to discover and identify
-> > devices and read and size their BARs. However, ACPI may describe PCI
-> > devices if it provides power management or hotplug functionality for
-> > them or if the device has INTx interrupts connected by platform
-> > interrupt controllers and a _PRT is needed to describe those
-> > connections."
-> >=20
-> > The device I want to use (a PCIe switch) does not fall into these
-> > categories so there should be no need to describe it using ACPI. =20
+> > We thought about adding CONFIG_OF to x86 and potentially describe this
+> > card using device-tree overlays but it introduce other problems that
+> > also seems difficult to solve (overlay loading without base
+> > device-tree, fixup of IRQs, adresses, and so on) and CONFIG_OF is not
+> > often enabled on x86 to say the least. =20
 >=20
-> There should not be any need to describe it in any way, the device
-> should provide all of the needed information.  PCIe devices do not need
-> a DT entry, as that does not make sense.
+> Why it can't be described by SSDT overlay (if the x86 platform in questio=
+n is
+> ACPI based)?
+
+This devices uses a SoC for which drivers are already available but are
+meant to be used by a device-tree description. These drivers uses the
+following subsystems:
+- reset (no ACPI support ?)
+- clk (no ACPI support ?)
+- pinctrl (no ACPI support ?)
+- syscon (no ACPI support ?)
+- gpio
+- phy
+- mdio
+
+Converting existing OF support to fwnode support and thus allowing
+drivers and subsystems to be compatible with software nodes seemed like
+the easiest way to do what I needed by keeping all existing drivers.
+With this support, the driver is completely self-contained and does
+allow the card to be plugged on whatever platform the user may have.
+
+Again, the PCI card is independent of the platform, I do not really see
+why it should be described using platform description language.
+
+> >=20
+> > This series introduce a number of changes in multiple subsystems to
+> > allow registering and using devices that are described with a
+> > software_node description attached to a mfd_cell, making them usable
+> > with the fwnode API. It was needed to modify many subsystem where
+> > CONFIG_OF was tightly integrated through the use of of_xlate()
+> > functions and other of_* calls. New calls have been added to use fwnode
+> > API and thus be usable with a wider range of nodes. Functions that are
+> > used to get the devices (pinctrl_get, clk_get and so on) also needed
+> > to be changed to use the fwnode API internally.
+> >=20
+> > For instance, the clk framework has been modified to add a
+> > fwnode_xlate() callback and a new named fwnode_clk_add_hw_provider()
+> > has been added. This function will register a clock using
+> > fwnode_xlate() callback. Note that since the fwnode API is compatible
+> > with devices that have a of_node member set, it will still be possible
+> > to use the driver and get the clocks with CONFIG_OF enabled
+> > configurations. =20
 >=20
-> thanks,
+> How does this all is compatible with ACPI approaches?
+> I mean we usually do not reintroduce 1:1 DT schemas in ACPI.
+
+For the moment, I only added fwnode API support as an alternative to
+support both OF and software nodes. ACPI is not meant to be handled by
+this code "as-is". There is for sure some modifications to be made and
+I do not know how clocks are handled when using ACPI. Based on some
+thread dating back to 2018 [1], it seem it was even not supported at
+all.
+
+To be clear, I added the equivalent of the OF support but using
+fwnode API because I was interested primarly in using it with software
+nodes and still wanted OF support to work. I did not planned it to be
+"ACPI compliant" right now since I do not have any knowledge in that
+field.
+
 >=20
-> greg k-h
+> I think the CCF should be converted to use fwnode APIs and meanwhile
+> we may discuss how to deal with clocks on ACPI platforms, because
+> it may be a part of the power management methods.
 
-In my opinion, yes, there should be no need for an "external"
-description. Loading any kind of description (either with ACPI or DT)
-defeat the purpose of the PCI since the card won't be able to be
-plug-and-play anymore on multiple platform.
+Ok, before going down that way, should the fwnode support be the "only"
+one, ie remove of_clk_register and others and convert them to
+fwnode_clk_register for instance or should it be left to avoid
+modifying all clock drivers ?
 
-The driver however should be self-contained and contain its own
-"description" of the hardware, no matter the platform on which the card
-is plugged. The PCIe card is independent of the platform, I do not
-think describing it with a platform specific description language is
-maintainable nor user acceptable for the user.
+>=20
+> > In some subsystems, it was possible to keep OF related function by
+> > wrapping the fwnode ones. It is not yet sure if both support
+> > (device-tree and fwnode) should still continue to coexists. For instance
+> > if fwnode_xlate() and of_xlate() should remain since the fwnode version
+> > also supports device-tree. Removing of_xlate() would of course require
+> > to modify all drivers that uses it.
+> >=20
+> > Here is an excerpt of the lan966x description when used as a PCIe card.
+> > The complete description is visible at [2]. This part only describe the
+> > flexcom controller and the fixed-clock that is used as an input clock.
+> >=20
+> > static const struct property_entry ddr_clk_props[] =3D {
+> >         PROPERTY_ENTRY_U32("clock-frequency", 30000000), =20
+>=20
+> >         PROPERTY_ENTRY_U32("#clock-cells", 0), =20
+>=20
+> Why this is used?
+>=20
 
+These props actually describes a fixed-clock properties. When adding
+fwnode support to clk framework, it was needed to add the
+equivalent of of_xlate() for fwnode (fwnode_xlate()). The number of
+cells used to describe a reference is still needed to do the
+translation using fwnode_property_get_reference_args() and give the
+correct arguments to fwnode_xlate().
+
+[1]
+https://lore.kernel.org/lkml/914341e7-ca94-054d-6127-522b745006b4@arm.com/T/
 --=20
 Cl=C3=A9ment L=C3=A9ger,
 Embedded Linux and Kernel engineer at Bootlin
