@@ -2,68 +2,109 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE34B4C0CCF
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 07:53:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BD4A4C112F
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 12:23:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238425AbiBWGyY (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Feb 2022 01:54:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50150 "EHLO
+        id S235799AbiBWLYG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Feb 2022 06:24:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236710AbiBWGyY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 01:54:24 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFE0A6E4DE;
-        Tue, 22 Feb 2022 22:53:57 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AFDC614A1;
-        Wed, 23 Feb 2022 06:53:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB85C340E7;
-        Wed, 23 Feb 2022 06:53:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1645599236;
-        bh=CC5KnLvYTDWcou/flBRkpm74kh6sin3lWzN3f4vNh0Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Ni0uF5R9i52mHG8G36cXjuU2W3LNpT1OdXi3tD3lffJSk3IScFS6t+UiinH02/a5D
-         hTdObu6TTksvfrXTAYQiO8WdmFBNDuYVpss3+Z4x20FyxNXqXnDjbwBgzxU9EL2l+P
-         brpJN0R9k9RqLe/T4VibAuTcwT4S5n8MtVuBE5fg=
-Date:   Wed, 23 Feb 2022 07:53:53 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        with ESMTP id S234705AbiBWLYF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 06:24:05 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BCDE8AE55;
+        Wed, 23 Feb 2022 03:23:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1645615418; x=1677151418;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=FWh5Gytqdi+aFrZmALBpSFgdHMcuZf1UxHQVAqFhB5s=;
+  b=Lfd/d5VFioq8U76Z6qj/v1k5QV/dLpXva1E7xYTPBUEOhjljVCAdKtU9
+   rug7bkovoW5kFYvhrGaV8P352YAjlvcMndxqY3VMr2lH+7M6e/3FVnMCV
+   wZF/biA+fdrZW2K4l4fKYsUln/EHReoBoODToZ6Ach85JCDRTiRra8R2k
+   9YbF+4DuXp/B+GbMVFmy+/sbLO2NgHlKoi6QOcrtTf86VlB0jkUNexFXd
+   UE4W+nNx+HZWVn1rN91SPV6V0BWF5TcsGibInGGHCfhv+4jPUN+QAucom
+   nab+qoJRG+g2njtIYLon/Tl1ApU/awm1p6SjZgwu/aTBIKEZfc7pjMVOR
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10266"; a="231915372"
+X-IronPort-AV: E=Sophos;i="5.88,390,1635231600"; 
+   d="scan'208";a="231915372"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 03:23:37 -0800
+X-IronPort-AV: E=Sophos;i="5.88,390,1635231600"; 
+   d="scan'208";a="532642764"
+Received: from smile.fi.intel.com ([10.237.72.59])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 03:23:33 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nMpjF-007OHE-SU;
+        Wed, 23 Feb 2022 13:22:41 +0200
+Date:   Wed, 23 Feb 2022 13:22:41 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-usb@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1] ACPI: bus: Introduce acpi_bus_for_each_dev()
-Message-ID: <YhXaAbgtF7OQ0bbs@kroah.com>
-References: <11943345.O9o76ZdvQC@kreacher>
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
+        Russell King <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
+        netdev@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: Re: [RFC 10/10] net: sfp: add support for fwnode
+Message-ID: <YhYZAc5+Q1rN3vhk@smile.fi.intel.com>
+References: <20220221162652.103834-1-clement.leger@bootlin.com>
+ <20220221162652.103834-11-clement.leger@bootlin.com>
+ <YhPSkz8+BIcdb72R@smile.fi.intel.com>
+ <20220222142513.026ad98c@fixe.home>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <11943345.O9o76ZdvQC@kreacher>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220222142513.026ad98c@fixe.home>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Feb 22, 2022 at 08:51:42PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Tue, Feb 22, 2022 at 02:25:13PM +0100, Clément Léger wrote:
+> Le Mon, 21 Feb 2022 19:57:39 +0200,
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> a écrit :
 > 
-> In order to avoid exposing acpi_bus_type to modules, introduce an
-> acpi_bus_for_each_dev() helper for iterating over all ACPI device
-> objects and make typec_link_ports() use it instead of the raw
-> bus_for_each_dev() along with acpi_bus_type.
+> > On Mon, Feb 21, 2022 at 05:26:52PM +0100, Clément Léger wrote:
+> > > Add support to retrieve a i2c bus in sfp with a fwnode. This support
+> > > is using the fwnode API which also works with device-tree and ACPI.
+> > > For this purpose, the device-tree and ACPI code handling the i2c
+> > > adapter retrieval was factorized with the new code. This also allows
+> > > i2c devices using a software_node description to be used by sfp code.  
+> > 
+> > If I'm not mistaken this patch can even go separately right now, since all used
+> > APIs are already available.
 > 
-> Having done that, drop the acpi_bus_type export.
-> 
-> No intentional functional impact.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> This patches uses fwnode_find_i2c_adapter_by_node() which is introduced
+> by "i2c: fwnode: add fwnode_find_i2c_adapter_by_node()" but they can
+> probably be contributed both in a separate series.
+
+I summon Hans into the discussion since I remember he recently refactored
+a bit I2C (ACPI/fwnode) APIs. Also he might have an idea about entire big
+picture approach with this series based on his ACPI experience.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
