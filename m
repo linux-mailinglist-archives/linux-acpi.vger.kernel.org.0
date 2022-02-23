@@ -2,43 +2,69 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D0F64C12F6
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 13:42:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A61244C145A
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 14:39:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240486AbiBWMmf (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Feb 2022 07:42:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55030 "EHLO
+        id S240980AbiBWNkC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Feb 2022 08:40:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbiBWMmf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 07:42:35 -0500
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E423835DD8;
-        Wed, 23 Feb 2022 04:42:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=PhH4z0amrVzLHzPRh3MJiOYM1tdzQ0RpCDO/c4DMPjk=; b=pkZ6mQBPITRDkl5DVto72y8Qk3
-        Frf2TMEDCwEOluMzypzpQl+YS/4IRQ3RfR3vILlc09rwaZexZ4Eo4ms3TG8zsTSRAax4GKBsaOr3K
-        8QOWKnRUFEnt2fAZ/NUi54TWqkR+zf/sERYlvLaOqBfq9ikJRdzo3BUnJ76s9/evuVsDESKdNNAM/
-        cgailj2ExUAd5U2omlbkW2Wu7AvOZPLY6UBssdITFRyrgL9fcB0iSdT8Ua7c8pxQ7GzDkqG+MXoIb
-        liYOg77L8R1ckasb+jcht+9+yNbjq2LildYEaj940oPbNFW3gsLxm7pTi+3q86GRAfRR0YzUjw3qU
-        kccOhonQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57438)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1nMqxq-0002ph-BR; Wed, 23 Feb 2022 12:41:50 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1nMqxn-000106-41; Wed, 23 Feb 2022 12:41:47 +0000
-Date:   Wed, 23 Feb 2022 12:41:47 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Hans de Goede <hdegoede@redhat.com>
+        with ESMTP id S240977AbiBWNkA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 08:40:00 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 31001AC049
+        for <linux-acpi@vger.kernel.org>; Wed, 23 Feb 2022 05:39:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1645623571;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=9ZjjBLEVy1E0rixG8g+5okuLN72qxgLAUeebM7Ze/UU=;
+        b=JQeDFBnLrQAkE0Jx+F1WAFd5dFBUR9jHZclXi65uIst1Lhj6ILDdv6OfUcwKVE/lzwOIZc
+        0vnD7+pxw6CzQmOotG7mVh/yQsjBHTP2daOWbnCb2lzvrKz5ft+GkDBUmO7h57wK/by05w
+        lcU57iT16sx/XZ0z0sNAwATmp0qYFIo=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-32-TjOdCfFKNI-TcQyStVg-PQ-1; Wed, 23 Feb 2022 08:39:30 -0500
+X-MC-Unique: TjOdCfFKNI-TcQyStVg-PQ-1
+Received: by mail-ej1-f69.google.com with SMTP id k16-20020a17090632d000b006ae1cdb0f07so7101843ejk.16
+        for <linux-acpi@vger.kernel.org>; Wed, 23 Feb 2022 05:39:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=9ZjjBLEVy1E0rixG8g+5okuLN72qxgLAUeebM7Ze/UU=;
+        b=xn/z69aVyLknfeAhbAfvcqpAzl8K/HwqVjdw/Q+6l+nvjTuyezSLQkO5VRTpPhD3jz
+         dFRxOxrTHdJoeJiEeLwRguesUvl244WxyyQiJfsR8cys/o0YfLJN3UEmKJH54FD9AioJ
+         pT0UkeBQYRG5iLqg2hjxwbDhRiai38sM9MvXkazoG6PxbGTIfQMWHmKyIl0Xa6g0FCx2
+         M12xCFQvjvmmvCGF3zn2GocFbOI1wAMiLcXzPxc4v/R0JIGZJUyOOYHUUh3w5hXz7EP/
+         gFejuNfwFHLU0V0WZRk7JSaE7O3IYdEWzN8IuZaJaWrqkvQJ0CCqVPzYhWMDvlitMkJw
+         /bxg==
+X-Gm-Message-State: AOAM533uyx0Zgz9LV4IWC9R9ugfN2ktHve6ehUqHzCsaoBz45sAn+J7C
+        uU66gI29aaZMZLUE5sinn9MtvvMAQaSXMgEKuozqcCYJhrPQEKG+pl6wO2qTrTw+R/ouPSB9sUE
+        oiBMffxqYQVyWy7nE36WhwA==
+X-Received: by 2002:a17:906:2ec6:b0:69f:286a:66ab with SMTP id s6-20020a1709062ec600b0069f286a66abmr23540578eji.684.1645623568935;
+        Wed, 23 Feb 2022 05:39:28 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzv4Ge2wJLmCbyT5FqSu5aHs9KNkldmFXzly5bPRTsLBfjQrPx6LpsM4oEgZIy3mytLBsRKzw==
+X-Received: by 2002:a17:906:2ec6:b0:69f:286a:66ab with SMTP id s6-20020a1709062ec600b0069f286a66abmr23540565eji.684.1645623568621;
+        Wed, 23 Feb 2022 05:39:28 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id z22sm12238431edd.45.2022.02.23.05.39.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Feb 2022 05:39:28 -0800 (PST)
+Message-ID: <4d611fe8-b82a-1709-507a-56be94263688@redhat.com>
+Date:   Wed, 23 Feb 2022 14:39:27 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [RFC 10/10] net: sfp: add support for fwnode
+Content-Language: en-US
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
+        =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
@@ -53,102 +79,130 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         netdev@vger.kernel.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [RFC 10/10] net: sfp: add support for fwnode
-Message-ID: <YhYriwvHJKjrDQRf@shell.armlinux.org.uk>
 References: <20220221162652.103834-1-clement.leger@bootlin.com>
  <20220221162652.103834-11-clement.leger@bootlin.com>
- <YhPSkz8+BIcdb72R@smile.fi.intel.com>
- <20220222142513.026ad98c@fixe.home>
+ <YhPSkz8+BIcdb72R@smile.fi.intel.com> <20220222142513.026ad98c@fixe.home>
  <YhYZAc5+Q1rN3vhk@smile.fi.intel.com>
  <888f9f1a-ca5a-1250-1423-6c012ec773e2@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ <YhYriwvHJKjrDQRf@shell.armlinux.org.uk>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <YhYriwvHJKjrDQRf@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <888f9f1a-ca5a-1250-1423-6c012ec773e2@redhat.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 23, 2022 at 01:02:23PM +0100, Hans de Goede wrote:
-> Hi,
+Hi,
+
+On 2/23/22 13:41, Russell King (Oracle) wrote:
+> On Wed, Feb 23, 2022 at 01:02:23PM +0100, Hans de Goede wrote:
+>> Hi,
+>>
+>> On 2/23/22 12:22, Andy Shevchenko wrote:
+>>> On Tue, Feb 22, 2022 at 02:25:13PM +0100, ClÃ©ment LÃ©ger wrote:
+>>>> Le Mon, 21 Feb 2022 19:57:39 +0200,
+>>>> Andy Shevchenko <andriy.shevchenko@linux.intel.com> a Ã©crit :
+>>>>
+>>>>> On Mon, Feb 21, 2022 at 05:26:52PM +0100, ClÃ©ment LÃ©ger wrote:
+>>>>>> Add support to retrieve a i2c bus in sfp with a fwnode. This support
+>>>>>> is using the fwnode API which also works with device-tree and ACPI.
+>>>>>> For this purpose, the device-tree and ACPI code handling the i2c
+>>>>>> adapter retrieval was factorized with the new code. This also allows
+>>>>>> i2c devices using a software_node description to be used by sfp code.  
+>>>>>
+>>>>> If I'm not mistaken this patch can even go separately right now, since all used
+>>>>> APIs are already available.
+>>>>
+>>>> This patches uses fwnode_find_i2c_adapter_by_node() which is introduced
+>>>> by "i2c: fwnode: add fwnode_find_i2c_adapter_by_node()" but they can
+>>>> probably be contributed both in a separate series.
+>>>
+>>> I summon Hans into the discussion since I remember he recently refactored
+>>> a bit I2C (ACPI/fwnode) APIs. Also he might have an idea about entire big
+>>> picture approach with this series based on his ACPI experience.
+>>
+>> If I understand this series correctly then this is about a PCI-E card
+>> which has an I2C controller on the card and behind that I2C-controller
+>> there are a couple if I2C muxes + I2C clients.
 > 
-> On 2/23/22 12:22, Andy Shevchenko wrote:
-> > On Tue, Feb 22, 2022 at 02:25:13PM +0100, Clément Léger wrote:
-> >> Le Mon, 21 Feb 2022 19:57:39 +0200,
-> >> Andy Shevchenko <andriy.shevchenko@linux.intel.com> a écrit :
-> >>
-> >>> On Mon, Feb 21, 2022 at 05:26:52PM +0100, Clément Léger wrote:
-> >>>> Add support to retrieve a i2c bus in sfp with a fwnode. This support
-> >>>> is using the fwnode API which also works with device-tree and ACPI.
-> >>>> For this purpose, the device-tree and ACPI code handling the i2c
-> >>>> adapter retrieval was factorized with the new code. This also allows
-> >>>> i2c devices using a software_node description to be used by sfp code.  
-> >>>
-> >>> If I'm not mistaken this patch can even go separately right now, since all used
-> >>> APIs are already available.
-> >>
-> >> This patches uses fwnode_find_i2c_adapter_by_node() which is introduced
-> >> by "i2c: fwnode: add fwnode_find_i2c_adapter_by_node()" but they can
-> >> probably be contributed both in a separate series.
-> > 
-> > I summon Hans into the discussion since I remember he recently refactored
-> > a bit I2C (ACPI/fwnode) APIs. Also he might have an idea about entire big
-> > picture approach with this series based on his ACPI experience.
+> That is what I gathered as well.
 > 
-> If I understand this series correctly then this is about a PCI-E card
-> which has an I2C controller on the card and behind that I2C-controller
-> there are a couple if I2C muxes + I2C clients.
+>> Assuming I did understand the above correctly. One alternative would be
+>> to simply manually instantiate the I2C muxes + clients using
+>> i2c_new_client_device(). But I'm not sure if i2c_new_client_device()
+>> will work for the muxes without adding some software_nodes which
+>> brings us back to something like this patch-set.
+> 
+> That assumes that an I2C device is always present, which is not always
+> the case - there are hot-pluggable devices on I2C buses.
+> 
+> Specifically, this series includes pluggable SFP modules, which fall
+> into this category of "hot-pluggable I2C devices" - spanning several
+> bus addresses (0x50, 0x51, 0x56). 0x50 is EEPROM like, but not quite
+> as the top 128 bytes is paged and sometimes buggy in terms of access
+> behaviour. 0x51 contains a bunch of monitoring and other controls
+> for the module which again can be paged. At 0x56, there may possibly
+> be some kind of device that translates I2C accesses to MDIO accesses
+> to access a PHY onboard.
+> 
+> Consequently, the SFP driver and MDIO translation layer wants access to
+> the I2C bus, rather than a device.
+> 
+> Now, before ARM was converted to DT, we had ways to cope with
+> non-firmware described setups like this by using platform devices and
+> platform data. Much of that ended up deprecated, because - hey - DT
+> is great and more modern and the old way is disgusting and we want to
+> get rid of it.
+> 
+> However, that approach locks us into describing stuff in firmware,
+> which is unsuitable when something like this comes along.
+> 
+> I think what we need is both approaches. We need a way for the SFP
+> driver (which is a platform_driver) to be used _without_ needing
+> descriptions in firmware. I think we have that for GPIOs, but for an
+> I2C bus, We have i2c_get_adapter() for I2C buses, but that needs the
+> bus number - we could either pass the i2c_adapter or the adapter
+> number through platform data to the SFP driver.
+> 
+> Or is there another solution to being able to reuse multi-driver
+> based infrastructure that we have developed based on DT descriptions
+> in situations such as an add-in PCI card?
 
-That is what I gathered as well.
+The use of software fwnode-s as proposed in this patch-set is another
+way to deal with this. There has been work to abstract ACPI vs
+of/dt firmware-nodes into a generic fwnode concept and software-nodes
+are a third way to define fwnode-s for "struct device" devices.
 
-> Assuming I did understand the above correctly. One alternative would be
-> to simply manually instantiate the I2C muxes + clients using
-> i2c_new_client_device(). But I'm not sure if i2c_new_client_device()
-> will work for the muxes without adding some software_nodes which
-> brings us back to something like this patch-set.
+Software nodes currently are mainly used as so called secondary
+fwnodes which means they can e.g. add extra properties to cover
+for the firmware description missing some info (which at least
+on ACPI happens more often then we would like).
 
-That assumes that an I2C device is always present, which is not always
-the case - there are hot-pluggable devices on I2C buses.
+But a software-node can also be used as the primary fwnode for
+a device. So what this patch-set does is move the i2c of/dt
+enumeration code over to the fwnode abstraction (1). This allows
+the driver for the SPF card to attach a software fwnode to the
+device for the i2c-controller which describes the hotplug pins +
+any other always present hw in the same way as it would be done
+in a devicetree fwnode and then the existing of/dt based SPF
+code can be re-used as is.
 
-Specifically, this series includes pluggable SFP modules, which fall
-into this category of "hot-pluggable I2C devices" - spanning several
-bus addresses (0x50, 0x51, 0x56). 0x50 is EEPROM like, but not quite
-as the top 128 bytes is paged and sometimes buggy in terms of access
-behaviour. 0x51 contains a bunch of monitoring and other controls
-for the module which again can be paged. At 0x56, there may possibly
-be some kind of device that translates I2C accesses to MDIO accesses
-to access a PHY onboard.
+At least that is my understanding of this patch-set.
 
-Consequently, the SFP driver and MDIO translation layer wants access to
-the I2C bus, rather than a device.
+Regards,
 
-Now, before ARM was converted to DT, we had ways to cope with
-non-firmware described setups like this by using platform devices and
-platform data. Much of that ended up deprecated, because - hey - DT
-is great and more modern and the old way is disgusting and we want to
-get rid of it.
+Hans
 
-However, that approach locks us into describing stuff in firmware,
-which is unsuitable when something like this comes along.
 
-I think what we need is both approaches. We need a way for the SFP
-driver (which is a platform_driver) to be used _without_ needing
-descriptions in firmware. I think we have that for GPIOs, but for an
-I2C bus, We have i2c_get_adapter() for I2C buses, but that needs the
-bus number - we could either pass the i2c_adapter or the adapter
-number through platform data to the SFP driver.
 
-Or is there another solution to being able to reuse multi-driver
-based infrastructure that we have developed based on DT descriptions
-in situations such as an add-in PCI card?
+1) This should result in no functional changes for existing
+devicetree use cases.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
