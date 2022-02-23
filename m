@@ -2,164 +2,200 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABB644C1A8A
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 19:02:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5275F4C1A9C
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 19:06:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243723AbiBWSBg (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Feb 2022 13:01:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58020 "EHLO
+        id S236935AbiBWSG2 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Feb 2022 13:06:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241790AbiBWSBe (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 13:01:34 -0500
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 057DB3E0DB;
-        Wed, 23 Feb 2022 10:00:55 -0800 (PST)
-Received: (Authenticated sender: clement.leger@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 6D5F5C0004;
-        Wed, 23 Feb 2022 18:00:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1645639254;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kY1Ql5jNd8+akOYr5MJM/nVmbSk1hVMt1XjyszBBYhg=;
-        b=cxfiBDzVbh20mJFblTgbgSuxY4x1UQqa55dIjZA3KwnE3ugwHGCGW5i7Z7Ta3Cq93by9HE
-        fxlU0Ng8WdMipwMjR5WjIXDUv17//5FECXpN8jH5TfPhCSrSoBEgpKfwRj2t9LVyLmuDvu
-        kDAB8XZzuEZ25ksvEgj9oeomavBtwq4crhCfDGAkQ0wfR52RV7TF+PFpYJr2+h2uOEDa3i
-        Kl8+OEgNIOQLmniGi/oUkjUYQ+cjf1ZZGURQEMvdhLux0Ny/NDS5RBJbwrcgDHBCIcTR1a
-        k1PsYUP9FYxVeXkn+TuG7OpYUlCioSUWQxFQdp8tcgo9Y7PfrhKCgWqyOEc3xA==
-Date:   Wed, 23 Feb 2022 18:59:27 +0100
-From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Enrico Weigelt <info@metux.net>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        netdev@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [RFC 00/10] add support for fwnode in i2c mux system and sfp
-Message-ID: <20220223185927.2d272e3a@fixe.home>
-In-Reply-To: <YhZxyluc7gYhmAuh@sirena.org.uk>
-References: <20220221162652.103834-1-clement.leger@bootlin.com>
-        <YhPOxL++yhNHh+xH@smile.fi.intel.com>
-        <20220222173019.2380dcaf@fixe.home>
-        <YhZI1XImMNJgzORb@smile.fi.intel.com>
-        <20220223161150.664aa5e6@fixe.home>
-        <YhZRtads7MGzPEEL@smile.fi.intel.com>
-        <YhZxyluc7gYhmAuh@sirena.org.uk>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        with ESMTP id S243566AbiBWSG1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 13:06:27 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 28A9A44779
+        for <linux-acpi@vger.kernel.org>; Wed, 23 Feb 2022 10:05:59 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC370D6E;
+        Wed, 23 Feb 2022 10:05:58 -0800 (PST)
+Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E10623F70D;
+        Wed, 23 Feb 2022 10:05:56 -0800 (PST)
+Date:   Wed, 23 Feb 2022 18:05:50 +0000
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linuxarm@huawei.com,
+        joro@8bytes.org, robin.murphy@arm.com, will@kernel.org,
+        wanghuiqiang@huawei.com, guohanjun@huawei.com,
+        steven.price@arm.com, Sami.Mujawar@arm.com, jon@solid-run.com,
+        eric.auger@redhat.com, yangyicong@huawei.com
+Subject: Re: [PATCH v8 05/11] ACPI/IORT: Add a helper to retrieve RMR memory
+ regions
+Message-ID: <20220223180549.GA29800@lpieralisi>
+References: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
+ <20220221154344.2126-6-shameerali.kolothum.thodi@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220221154344.2126-6-shameerali.kolothum.thodi@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Le Wed, 23 Feb 2022 17:41:30 +0000,
-Mark Brown <broonie@kernel.org> a =C3=A9crit :
+On Mon, Feb 21, 2022 at 03:43:38PM +0000, Shameer Kolothum wrote:
+> Add helper functions (iort_iommu_get/put_rmrs()) that
+> retrieves/releases RMR memory descriptors associated
+> with a given IOMMU. This will be used by IOMMU drivers
+> to set up necessary mappings.
+> 
+> Invoke it from the generic iommu helper functions.
+> 
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> ---
+>  drivers/acpi/arm64/iort.c | 56 +++++++++++++++++++++++++++++++++++++++
+>  drivers/iommu/dma-iommu.c |  4 +++
+>  include/linux/acpi_iort.h | 14 ++++++++++
+>  3 files changed, 74 insertions(+)
 
-> On Wed, Feb 23, 2022 at 05:24:37PM +0200, Andy Shevchenko wrote:
-> > On Wed, Feb 23, 2022 at 04:11:50PM +0100, Cl=C3=A9ment L=C3=A9ger wrote=
-: =20
-> > > Le Wed, 23 Feb 2022 16:46:45 +0200,
-> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> a =C3=A9crit : =20
->=20
-> > > > And here is the problem. We have a few different resource providers
-> > > > (a.k.a. firmware interfaces) which we need to cope with. =20
->=20
-> > > Understood that but does adding fwnode support means it should work
-> > > as-is with both DT and ACPI ? ACPI code is still in place and only the
-> > > of part was converted. But maybe you expect the fwnode prot to be
-> > > conformant with ACPI. =20
->=20
-> > Not only me, I believe Mark also was against using pure DT approach on
-> > ACPI enabled platforms. =20
->=20
-> I'm not 100% clear on the context here (I did dig about a bit in the
-> thread on lore but it looks like there's some extra context here) but in
-> general I don't think there's any enthusiasm for trying to mix different
-> firmware interfaces on a single system.  Certainly in the case of ACPI
-> and DT they have substantial differences in system model and trying to
-> paper over those cracks and integrate the two is a route to trouble.
-> This doesn't look like it's trying to use a DT on an ACPI system though?
+I would squash this patch with the previous one - at least the
+iommu_dma_get/put_rmrs() are actually used in the patch that is
+adding them.
 
-Ideally no, but it is a possibility mentionned by Andrew, use DT
-overlays on an ACPI system. This series did not took this way (yet).
-Andrew mentionned that it could potentially be done but judging by your
-comment, i'm not sure you agree with that.
+Lorenzo
 
->=20
-> There's been some discussion on how to handle loadable descriptions for
-> things like FPGA but I don't recall it ever having got anywhere concrete
-> - I could have missed something.  Those are dynamic cases which are more
-> trouble though.  For something that's a PCI card it's not clear that we
-> can't just statically instanitate the devices from kernel code, that was
-> how the MFD subsystem started off although it's now primarily applied to
-> other applications.  That looks to be what's going on here?
-
-Yes, in this series, I used the MFD susbsytems with mfd_cells. These
-cells are attached with a swnode. Then, needed subsystems are
-modified to use the fwnode API to be able to use them with
-devices that have a swnode as a primary node.
-
->=20
-> There were separately some issues with people trying to create
-> completely swnode based enumeration mechanisms for things that required
-> totally independent code for handling swnodes which seemed very
-> concerning but it's not clear to me if that's what's going on here.
-
-The card is described entirely using swnode that in a MFD PCI
-driver, everything is described statically. The "enumeration" is static
-since all the devices are described in the driver and registered using
-mfd_add_device() at probe time. Thus, I don't think it adds an
-enumeration mechanism like you mention but I may be wrong.
-
->=20
-> > > As I said in the cover-letter, this approach is the only one that I d=
-id
-> > > found acceptable without being tied to some firmware description. If =
-you
-> > > have another more portable approach, I'm ok with that. But this
-> > > solution should ideally work with pinctrl, gpio, clk, reset, phy, i2c,
-> > > i2c-mux without rewriting half of the code. And also allows to easily
-> > > swap the PCIe card to other slots/computer without having to modify t=
-he
-> > > description. =20
->=20
-> > My proposal is to use overlays that card provides with itself.
-> > These are supported mechanisms by Linux kernel. =20
->=20
-> We have code for DT overlays in the kernel but it's not generically
-> available.  There's issues with binding onto the platform device tree,
-> though they're less of a problem with something like this where it seems
-> to be a separate card with no cross links.
-
-Indeed, the card does not have crosslinks with other devices and thus
-it might be a solution to use a device-tree overlay (loaded from the
-filesystem). But  I'm not sure if it's a good idea to do that on
-a ACPI enabled platform.
-
---=20
-Cl=C3=A9ment L=C3=A9ger,
-Embedded Linux and Kernel engineer at Bootlin
-https://bootlin.com
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 05da9ebff50a..b2c959c72fb2 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -1055,6 +1055,57 @@ static void iort_find_rmrs(struct acpi_iort_node *iommu, struct device *dev,
+>  	}
+>  }
+>  
+> +/**
+> + * iort_iommu_dma_put_rmrs - Free any memory associated with RMRs.
+> + * @iommu_fwnode: fwnode associated with IOMMU
+> + * @head: Resereved region list
+> + *
+> + * This function go through the provided reserved region list and
+> + * free up memory associated with RMR entries and delete them from
+> + * the list.
+> + */
+> +void iort_iommu_put_rmrs(struct fwnode_handle *iommu_fwnode,
+> +			 struct list_head *head)
+> +{
+> +	struct iommu_resv_region *e, *tmp;
+> +
+> +	/*
+> +	 * RMR entries will have mem allocated for fw_data.rmr.sids.
+> +	 * Free the mem and delete the node.
+> +	 */
+> +	list_for_each_entry_safe(e, tmp, head, list) {
+> +		if (e->fw_data.rmr.sids) {
+> +			kfree(e->fw_data.rmr.sids);
+> +			list_del(&e->list);
+> +			kfree(e);
+> +		}
+> +	}
+> +}
+> +
+> +/**
+> + *
+> + * iort_iommu_dma_get_rmrs - Retrieve Reserved Memory Regions(RMRs) associated
+> + *                      with a given IOMMU and dev.
+> + * @iommu_fwnode: fwnode associated with IOMMU
+> + * @dev: Device associated with RMR(Optional)
+> + * @list: RMR list to be populated
+> + *
+> + * This function populates the RMR list associated with a given IOMMU and
+> + * dev(if provided). If dev is NULL, the function populates all the RMRs
+> + * associated with the given IOMMU.
+> + */
+> +void iort_iommu_get_rmrs(struct fwnode_handle *iommu_fwnode, struct device *dev,
+> +			 struct list_head *head)
+> +{
+> +	struct acpi_iort_node *iommu;
+> +
+> +	iommu = iort_get_iort_node(iommu_fwnode);
+> +	if (!iommu)
+> +		return;
+> +
+> +	iort_find_rmrs(iommu, dev, head);
+> +}
+> +
+>  /**
+>   * iort_iommu_msi_get_resv_regions - Reserved region driver helper
+>   * @dev: Device from iommu_get_resv_regions()
+> @@ -1287,6 +1338,11 @@ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
+>  { return 0; }
+>  int iort_iommu_configure_id(struct device *dev, const u32 *input_id)
+>  { return -ENODEV; }
+> +void iort_iommu_get_rmrs(struct fwnode_handle *fwnode, struct device *dev,
+> +			 struct list_head *head)
+> +{ }
+> +void iort_iommu_put_rmrs(struct fwnode_handle *fwnode, struct list_head *head)
+> +{ }
+>  #endif
+>  
+>  static int nc_dma_get_range(struct device *dev, u64 *size)
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 65ab01d5128b..b33e4df85de1 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+> @@ -382,12 +382,16 @@ void iommu_put_dma_cookie(struct iommu_domain *domain)
+>  void iommu_dma_get_rmrs(struct fwnode_handle *iommu_fwnode, struct device *dev,
+>  			struct list_head *list)
+>  {
+> +	if (!is_of_node(iommu_fwnode))
+> +		iort_iommu_get_rmrs(iommu_fwnode, dev, list);
+>  }
+>  EXPORT_SYMBOL(iommu_dma_get_rmrs);
+>  
+>  void iommu_dma_put_rmrs(struct fwnode_handle *iommu_fwnode,
+>  			struct list_head *list)
+>  {
+> +	if (!is_of_node(iommu_fwnode))
+> +		iort_iommu_put_rmrs(iommu_fwnode, list);
+>  }
+>  EXPORT_SYMBOL(iommu_dma_put_rmrs);
+>  
+> diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
+> index f1f0842a2cb2..212f7f178ec3 100644
+> --- a/include/linux/acpi_iort.h
+> +++ b/include/linux/acpi_iort.h
+> @@ -38,6 +38,10 @@ int iort_dma_get_ranges(struct device *dev, u64 *size);
+>  int iort_iommu_configure_id(struct device *dev, const u32 *id_in);
+>  int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head);
+>  phys_addr_t acpi_iort_dma_get_max_cpu_address(void);
+> +void iort_iommu_get_rmrs(struct fwnode_handle *iommu_fwnode, struct device *dev,
+> +			 struct list_head *list);
+> +void iort_iommu_put_rmrs(struct fwnode_handle *iommu_fwnode,
+> +			 struct list_head *list);
+>  #else
+>  static inline void acpi_iort_init(void) { }
+>  static inline u32 iort_msi_map_id(struct device *dev, u32 id)
+> @@ -57,6 +61,16 @@ int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
+>  
+>  static inline phys_addr_t acpi_iort_dma_get_max_cpu_address(void)
+>  { return PHYS_ADDR_MAX; }
+> +
+> +static inline
+> +void iort_iommu_get_rmrs(struct fwnode_handle *iommu_fwnode, struct device *dev,
+> +			 struct list_head *list)
+> +{  }
+> +void iort_iommu_put_rmrs(struct fwnode_handle *iommu_fwnode,
+> +			 struct list_head *list)
+> +{ }
+> +
+> +{ }
+>  #endif
+>  
+>  #endif /* __ACPI_IORT_H__ */
+> -- 
+> 2.25.1
+> 
