@@ -2,78 +2,55 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EA174C1AD0
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 19:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E19C84C204B
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Feb 2022 00:56:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243443AbiBWSVC (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Feb 2022 13:21:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51440 "EHLO
+        id S245087AbiBWX4j (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Feb 2022 18:56:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241030AbiBWSVB (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 13:21:01 -0500
+        with ESMTP id S233982AbiBWX4j (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 18:56:39 -0500
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FAD149FB8;
-        Wed, 23 Feb 2022 10:20:34 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 024FB5D657;
+        Wed, 23 Feb 2022 15:56:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645640434; x=1677176434;
-  h=date:from:to:subject:message-id:references:mime-version:
-   in-reply-to;
-  bh=rzWuqP3ripaxaKT5al8d/OWqGFWPXcQTpyLBZCqsFqE=;
-  b=aE7fMxpLR9cxMhAsHhdWfgjjsOnjnsUTa6gQg9JjA0UJfa6nzUytNqQm
-   zub/mdHiKB8FAHQFrXRvvVdf7Wseyf2IU2JRyx2nOTkzN/fycJY51WD2K
-   VAmRMPyCp4NRKeP1Y7xJO1tpwjKQcayt/Lrxof5qmnqoY8laPyOJPsdc/
-   IXGYlO1okwN6aU5bNnpqXA5U+ooFO/57w9sb9Pr1pl/kj3QWFMfZkj+AJ
-   3cr2pTd3gBM73s9UA9y/hM3H41OU81LanqIahiagi4OiJgcxs6ypJMGU8
-   FhAcXhAqi7mXdhMMCEg5LFweS4IJ8Oj9qFBMkyzKlX4Wfk2NaDm7sPT6W
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10267"; a="250876053"
-X-IronPort-AV: E=Sophos;i="5.88,391,1635231600"; 
-   d="scan'208";a="250876053"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 10:20:33 -0800
-X-IronPort-AV: E=Sophos;i="5.88,391,1635231600"; 
-   d="scan'208";a="506020647"
-Received: from smile.fi.intel.com ([10.237.72.59])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 10:20:28 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nMwEi-007WTl-Ku;
-        Wed, 23 Feb 2022 20:19:36 +0200
-Date:   Wed, 23 Feb 2022 20:19:36 +0200
+  t=1645660571; x=1677196571;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=K28DReeIhznAH38GKKop75KLShcLLga3wrGWpjXOAd0=;
+  b=ESzwuFyxMffP8l0jLXDx3ruwn19yZZLvliqKhwLFYUNYMbHnkI3heFJ6
+   O+vm4sB5Vkn7RLvvzoAcQz9d6SHlrVIv42j5qWJrUxcBlJz5cLBhK0r5c
+   6kvbRLdbd88xlaDa33Jm/9HD53s2GIo+YM/b3QLIzNG2VM9KG2w6tQUR/
+   UAr8uYEVMGVV+0P5W545mTZMbf1NJcE0g5/Xg7st5L3RfWdTdFDzQ73CP
+   wjWaIKnU5rsNMS/SawYvgx0XuWbK/ins7SF2rovPDtrD/x7qeidyaOlIV
+   etYCpEHpn3Wt6XzJuFjiFVtAWuzNCFZUJD++EVeJS+pf6t9EHzo6bS2Jw
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10267"; a="250938106"
+X-IronPort-AV: E=Sophos;i="5.88,392,1635231600"; 
+   d="scan'208";a="250938106"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 15:56:10 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,392,1635231600"; 
+   d="scan'208";a="776865742"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga006.fm.intel.com with ESMTP; 23 Feb 2022 15:56:09 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id D409C94; Thu, 24 Feb 2022 01:56:25 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Enrico Weigelt <info@metux.net>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        netdev@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [RFC 00/10] add support for fwnode in i2c mux system and sfp
-Message-ID: <YhZ6uAmGcVjvNZy6@smile.fi.intel.com>
-References: <20220221162652.103834-1-clement.leger@bootlin.com>
- <YhPOxL++yhNHh+xH@smile.fi.intel.com>
- <20220222173019.2380dcaf@fixe.home>
- <YhZI1XImMNJgzORb@smile.fi.intel.com>
- <20220223161150.664aa5e6@fixe.home>
- <YhZRtads7MGzPEEL@smile.fi.intel.com>
- <YhZxyluc7gYhmAuh@sirena.org.uk>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Subject: [PATCH v1 1/3] ACPI: platform: Constify properties parameter in acpi_create_platform_device()
+Date:   Thu, 24 Feb 2022 01:56:20 +0200
+Message-Id: <20220223235622.19555-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YhZxyluc7gYhmAuh@sirena.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -84,20 +61,50 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Feb 23, 2022 at 05:41:30PM +0000, Mark Brown wrote:
-> On Wed, Feb 23, 2022 at 05:24:37PM +0200, Andy Shevchenko wrote:
+Properties are not and should not be changed in the callee, hence constify
+properties parameter in acpi_create_platform_device().
 
-...
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/acpi_platform.c | 2 +-
+ include/linux/acpi.h         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-> There were separately some issues with people trying to create
-> completely swnode based enumeration mechanisms for things that required
-> totally independent code for handling swnodes which seemed very
-> concerning but it's not clear to me if that's what's going on here.
-
-This is the case IIUC.
-
+diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+index 78d621290a35..de3cbf152dee 100644
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -95,7 +95,7 @@ static void acpi_platform_fill_resource(struct acpi_device *adev,
+  * Name of the platform device will be the same as @adev's.
+  */
+ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+-					struct property_entry *properties)
++						    const struct property_entry *properties)
+ {
+ 	struct platform_device *pdev = NULL;
+ 	struct platform_device_info pdevinfo;
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 6274758648e3..9ac545379447 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -691,7 +691,7 @@ int acpi_device_uevent_modalias(struct device *, struct kobj_uevent_env *);
+ int acpi_device_modalias(struct device *, char *, int);
+ 
+ struct platform_device *acpi_create_platform_device(struct acpi_device *,
+-						    struct property_entry *);
++						    const struct property_entry *);
+ #define ACPI_PTR(_ptr)	(_ptr)
+ 
+ static inline void acpi_device_set_enumerated(struct acpi_device *adev)
+@@ -930,7 +930,7 @@ static inline int acpi_device_modalias(struct device *dev,
+ 
+ static inline struct platform_device *
+ acpi_create_platform_device(struct acpi_device *adev,
+-			    struct property_entry *properties)
++			    const struct property_entry *properties)
+ {
+ 	return NULL;
+ }
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
