@@ -2,38 +2,49 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FA504C1533
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 15:16:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55BA04C1585
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 15:38:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241433AbiBWOQd (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Feb 2022 09:16:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35632 "EHLO
+        id S236629AbiBWOia (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Feb 2022 09:38:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239991AbiBWOQc (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 09:16:32 -0500
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D437BB0EB4;
-        Wed, 23 Feb 2022 06:15:59 -0800 (PST)
-Received: (Authenticated sender: clement.leger@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id F08CF2000A;
-        Wed, 23 Feb 2022 14:15:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1645625758;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=K0LLpFNSYlgLgGZDQ4Kn9BMjM80jq/ZjR7pVaVA3M80=;
-        b=YOpttUoec2Q3yrM5nfTur2T10hkCCSSXULyFzPRxf4cCqscNd16U5/XUnqd5T6fJCjX9pr
-        mGlW2a6e4Lnhb86fGPQXBRzTN6zMOf3hj4N8RXQcStBRlmuN5qT0l6GnGIsSIsZeaGBr0t
-        PyFhrKFWTOXvnywkyVR1ahHohjkWbth8+QUMqxrG4BMb2l01EvGZlhYN1NDS/AzaveoX8T
-        WE2EMfyuWDl3r0nZ1vvqW935wFEW8bgmQMpSPg252Fi+M/caHt7uYGI57r+6oCyrKYcN4f
-        aX+dGpL2vEqLLmuntM2WhdbEM5qDvh0KvnnH2zgFYtYGAE+klAdFk6+9ZvZZuw==
-Date:   Wed, 23 Feb 2022 15:14:36 +0100
-From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        with ESMTP id S235883AbiBWOia (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 09:38:30 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21F2A4BFC9;
+        Wed, 23 Feb 2022 06:38:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1645627082; x=1677163082;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ZrtkatlHEX8TrOAncGqCt3HfwjC0OWdY0TpW7ZrDiNo=;
+  b=lKD3blN6P7WQQoRVM53f/E+cDOFfaNxBEz8sMtTon+HsoeQRo5WB+k72
+   uoP8/G/i1yzHK7aV7/QyutIEZVjQAmP5vyeS8TBI43X+br9fPY5NyU51b
+   Y6rT4b5cFQZP7tdxw9bcyp8qxxzKqgWSAyhDKzymzpCLlY9j/FoVwHKbR
+   brqcAm3Exc7t6q52oXbIrlQ+x1D339uKDChjoOpRzNXSxKn0Q6G61LS9/
+   iAn6jl84nvVN+J/bDulgNkEjh6jeH2Nt7ezL6MCxs3kdaM1EsKz2dj523
+   Rn1etJ1UNMHqpwQwzsCob/3dsKtei202SI1dRveCXa+Zy0nqpYVo+yhq2
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10266"; a="235484596"
+X-IronPort-AV: E=Sophos;i="5.88,391,1635231600"; 
+   d="scan'208";a="235484596"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 06:38:01 -0800
+X-IronPort-AV: E=Sophos;i="5.88,391,1635231600"; 
+   d="scan'208";a="639327488"
+Received: from smile.fi.intel.com ([10.237.72.59])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 06:37:57 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nMslN-007SYd-JO;
+        Wed, 23 Feb 2022 16:37:05 +0200
+Date:   Wed, 23 Feb 2022 16:37:05 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
         Daniel Scally <djrscally@gmail.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
@@ -49,123 +60,109 @@ Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
 Subject: Re: [RFC 10/10] net: sfp: add support for fwnode
-Message-ID: <20220223151436.4798e5ad@fixe.home>
-In-Reply-To: <4d611fe8-b82a-1709-507a-56be94263688@redhat.com>
+Message-ID: <YhZGkZNAaXNPBRbf@smile.fi.intel.com>
 References: <20220221162652.103834-1-clement.leger@bootlin.com>
-        <20220221162652.103834-11-clement.leger@bootlin.com>
-        <YhPSkz8+BIcdb72R@smile.fi.intel.com>
-        <20220222142513.026ad98c@fixe.home>
-        <YhYZAc5+Q1rN3vhk@smile.fi.intel.com>
-        <888f9f1a-ca5a-1250-1423-6c012ec773e2@redhat.com>
-        <YhYriwvHJKjrDQRf@shell.armlinux.org.uk>
-        <4d611fe8-b82a-1709-507a-56be94263688@redhat.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+ <20220221162652.103834-11-clement.leger@bootlin.com>
+ <YhPSkz8+BIcdb72R@smile.fi.intel.com>
+ <20220222142513.026ad98c@fixe.home>
+ <YhYZAc5+Q1rN3vhk@smile.fi.intel.com>
+ <888f9f1a-ca5a-1250-1423-6c012ec773e2@redhat.com>
+ <YhYriwvHJKjrDQRf@shell.armlinux.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YhYriwvHJKjrDQRf@shell.armlinux.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Le Wed, 23 Feb 2022 14:39:27 +0100,
-Hans de Goede <hdegoede@redhat.com> a =C3=A9crit :
+On Wed, Feb 23, 2022 at 12:41:47PM +0000, Russell King (Oracle) wrote:
+> On Wed, Feb 23, 2022 at 01:02:23PM +0100, Hans de Goede wrote:
+> > On 2/23/22 12:22, Andy Shevchenko wrote:
+> > > On Tue, Feb 22, 2022 at 02:25:13PM +0100, Clément Léger wrote:
+> > >> Le Mon, 21 Feb 2022 19:57:39 +0200,
+> > >> Andy Shevchenko <andriy.shevchenko@linux.intel.com> a écrit :
+> > >>> On Mon, Feb 21, 2022 at 05:26:52PM +0100, Clément Léger wrote:
+> > >>>> Add support to retrieve a i2c bus in sfp with a fwnode. This support
+> > >>>> is using the fwnode API which also works with device-tree and ACPI.
+> > >>>> For this purpose, the device-tree and ACPI code handling the i2c
+> > >>>> adapter retrieval was factorized with the new code. This also allows
+> > >>>> i2c devices using a software_node description to be used by sfp code.  
+> > >>>
+> > >>> If I'm not mistaken this patch can even go separately right now, since all used
+> > >>> APIs are already available.
+> > >>
+> > >> This patches uses fwnode_find_i2c_adapter_by_node() which is introduced
+> > >> by "i2c: fwnode: add fwnode_find_i2c_adapter_by_node()" but they can
+> > >> probably be contributed both in a separate series.
+> > > 
+> > > I summon Hans into the discussion since I remember he recently refactored
+> > > a bit I2C (ACPI/fwnode) APIs. Also he might have an idea about entire big
+> > > picture approach with this series based on his ACPI experience.
+> > 
+> > If I understand this series correctly then this is about a PCI-E card
+> > which has an I2C controller on the card and behind that I2C-controller
+> > there are a couple if I2C muxes + I2C clients.
+> 
+> That is what I gathered as well.
+> 
+> > Assuming I did understand the above correctly. One alternative would be
+> > to simply manually instantiate the I2C muxes + clients using
+> > i2c_new_client_device(). But I'm not sure if i2c_new_client_device()
+> > will work for the muxes without adding some software_nodes which
+> > brings us back to something like this patch-set.
+> 
+> That assumes that an I2C device is always present, which is not always
+> the case - there are hot-pluggable devices on I2C buses.
+> 
+> Specifically, this series includes pluggable SFP modules, which fall
+> into this category of "hot-pluggable I2C devices" - spanning several
+> bus addresses (0x50, 0x51, 0x56). 0x50 is EEPROM like, but not quite
+> as the top 128 bytes is paged and sometimes buggy in terms of access
+> behaviour. 0x51 contains a bunch of monitoring and other controls
+> for the module which again can be paged. At 0x56, there may possibly
+> be some kind of device that translates I2C accesses to MDIO accesses
+> to access a PHY onboard.
+> 
+> Consequently, the SFP driver and MDIO translation layer wants access to
+> the I2C bus, rather than a device.
+> 
+> Now, before ARM was converted to DT, we had ways to cope with
+> non-firmware described setups like this by using platform devices and
+> platform data. Much of that ended up deprecated, because - hey - DT
+> is great and more modern and the old way is disgusting and we want to
+> get rid of it.
+> 
+> However, that approach locks us into describing stuff in firmware,
+> which is unsuitable when something like this comes along.
 
-> > I think what we need is both approaches. We need a way for the SFP
-> > driver (which is a platform_driver) to be used _without_ needing
-> > descriptions in firmware. I think we have that for GPIOs, but for an
-> > I2C bus, We have i2c_get_adapter() for I2C buses, but that needs the
-> > bus number - we could either pass the i2c_adapter or the adapter
-> > number through platform data to the SFP driver.
-> >=20
-> > Or is there another solution to being able to reuse multi-driver
-> > based infrastructure that we have developed based on DT descriptions
-> > in situations such as an add-in PCI card? =20
->=20
-> The use of software fwnode-s as proposed in this patch-set is another
-> way to deal with this. There has been work to abstract ACPI vs
-> of/dt firmware-nodes into a generic fwnode concept and software-nodes
-> are a third way to define fwnode-s for "struct device" devices.
->=20
-> Software nodes currently are mainly used as so called secondary
-> fwnodes which means they can e.g. add extra properties to cover
-> for the firmware description missing some info (which at least
-> on ACPI happens more often then we would like).
->=20
-> But a software-node can also be used as the primary fwnode for
-> a device. So what this patch-set does is move the i2c of/dt
-> enumeration code over to the fwnode abstraction (1). This allows
-> the driver for the SPF card to attach a software fwnode to the
-> device for the i2c-controller which describes the hotplug pins +
-> any other always present hw in the same way as it would be done
-> in a devicetree fwnode and then the existing of/dt based SPF
-> code can be re-used as is.
->=20
-> At least that is my understanding of this patch-set.
->=20
-> Regards,
->=20
-> Hans
+Looks like this is a way to reinvent what FPGA should cope with already.
+And if I remember correctly the discussions about PCIe FPGAs (from 2016,
+though) the idea is that FPGA should have provided a firmware description
+with itself. I.o.w. If we are talking about "run-time configurable"
+devices they should provide a way to bring their description to the
+system.
 
-Hello Hans, your understanding is totally correct.
+The currently available way to do it is to get this from EEPROM / ROM
+specified on the hardware side in form of DT and ACPI blobs (representing
+overlays). Then the only part that is missed (at least for ACPI case) is
+to dynamically insert that based on the PCI BDF of the corresponding
+PCI bridge.
 
-This PCIe device actually embeds much more than just a I2C controller.
-I should have made that clearer in the cover letter, sorry for the
-confusion. The PCIe card is actually using a lan9662x SoC which is
-meant to be used as an ethernet switch with 4 ports (2 RJ45 and two
-SFPS). In order to use this switch, the following drivers can be reused:
- - lan966x-switch
- - reset-microchip-sparx5
- - lan966x_serdes
- - reset-microchip-lan966x-phy
- - mdio-mscc-miim
- - pinctrl-lan966x
- - atmel-flexcom
- - i2c-at91
- - i2c-mux
- - i2c-mux-pinctrl
- - sfp
- - clk-lan966x
- - lan966x-pci-mfd
+TL;DR: In my opinion such hardware must bring the description with itself
+in case it uses non-enumerable busses, such as SPI, I²C.
 
-All theses drivers are using of_* API and as such only works with a DT
-description. One solution that did seems acceptable to me (although
-not great)was to use mfd_cells and software_node description
-as primary node.
+I dunno what was the last development in this area for FPGAs cases.
 
-Since I wanted to convert these to be software_node compatible, I had
-to modify many subsystems (pinctrl, gpio, i2c, clocks, reset, etc).
-This is why I stated in the cover letter that "This series is part of a
-larger changeset that touches multiple subsystems". But clearly, it
-lacks more context and namely the list of subsystems that needed to be
-modify as well as the PCIe card type. I will modify this cover-letter to
-add more informations.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-So indeed, this series is targetting at using devices which uses a
-software_node as a primary node and modifying subsystems to use the
-fwnode API in order to make that compatible with these software nodes.
-As you said, in order to avoid redefining the match tables and allow
-device_get_match_data to work with software_node, the trick was to
-reuse the of_table_id
 
-However, I'm not totally happy with that as it seems we are doing what
-was done with the "old" platform_data (a bit cleaner maybe since it
-allows to reuse the driver with the fwnode API).
-
-As Russell asked, I'm also really interested if someone has a solution
-to reuse device-tree description (overlays ?) to describe such
-hardware. However, the fact that CONFIG_OF isn't enabled on x86 config
-seems a bit complicated on this side. This also requires to load a
-device-tree overlay from the filesystem to describe the card, but that
-might be something that could be made generic to allow other uses-cases.
-
---=20
-Cl=C3=A9ment L=C3=A9ger,
-Embedded Linux and Kernel engineer at Bootlin
-https://bootlin.com
