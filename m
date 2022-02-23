@@ -2,72 +2,81 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 257414C1724
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 16:40:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE5ED4C184E
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Feb 2022 17:16:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242223AbiBWPki (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Feb 2022 10:40:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50426 "EHLO
+        id S236764AbiBWQQ1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 23 Feb 2022 11:16:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242225AbiBWPkf (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 10:40:35 -0500
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4DCCBD896;
-        Wed, 23 Feb 2022 07:40:04 -0800 (PST)
-Received: (Authenticated sender: clement.leger@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 89B7AC000D;
-        Wed, 23 Feb 2022 15:39:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1645630803;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=SIImQW6Wz47dS7gZcpaHZzfA86jdmHRDoD5Bd/gJF4A=;
-        b=gIZpZpEmH+0XGOppwuovDbnnlfAWy1UVi32GSrfrYn2T5xalCQSYQpt2C/uYQndCGPW1tJ
-        Ey5mcCnRKG2xmE+pWETCoASGM5HM4b+qHYOoJsB+tTwUR2Me2c4X1pr+yppYT3fKQxbQZG
-        pPsuhvBc265xwJAsP67JAxzPCL2KPQM888flzeJVgcFUUro8RvceNHNN3QF+INkrKoMG4n
-        /0Ig84edaifDW0zLIzhZvQkAslUVbaXM4QjvMXftQWUb5Mkh8qfiajkjoeLUrmTLM8xbc2
-        1FzHNY997E409FvkDhcovNNg9Te5W7HpxPmquj2xe59uR75XSV5mt0QkTCVOoQ==
-Date:   Wed, 23 Feb 2022 16:38:40 +0100
-From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-To:     Andrew Lunn <andrew@lunn.ch>
+        with ESMTP id S236228AbiBWQQ1 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 11:16:27 -0500
+X-Greylist: delayed 522 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 23 Feb 2022 08:15:58 PST
+Received: from wnew2-smtp.messagingengine.com (wnew2-smtp.messagingengine.com [64.147.123.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E5FC4E12;
+        Wed, 23 Feb 2022 08:15:58 -0800 (PST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailnew.west.internal (Postfix) with ESMTP id 70C702B0014E;
+        Wed, 23 Feb 2022 11:07:15 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Wed, 23 Feb 2022 11:07:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yotsuba.nl; h=cc
+        :cc:content-transfer-encoding:date:date:from:from:in-reply-to
+        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
+         s=fm2; bh=6WaAJK5lyFLmcmFKJl+0M+d6NIX9M8qY6UrRrz5b9zI=; b=eEh3k
+        eL6El0y2BpWdZVivRqzzJikfGRKEww/41gQZgykXPMQv/2oIPH4jh/m+SdBtTLtI
+        20cI43uQwFWMG1lPao0tT9IaZhDgZzO006IgK0JadDHIDwrbpN1qvkysLlEq5KvW
+        jw9kOEekgM6R0MDKNgRFUmcwmZDwbyLGlMhxurpBdrmhFVeh/NWqEEpKjQJljr6i
+        qsayVve8o/OXRFwFwYfFeb3Yky2TRss3QVCWfF4Dn+WIJqUOqMGjw1Ux6oU1V34+
+        0SO9WeQ4pVBtN2yDF8Fol7Gy7hjN6v1ISces9Oin0WJSwfCtg0DZnTdBA+Y5JXT0
+        m3OHSW5j1JwtuC8uw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+        :from:from:in-reply-to:message-id:mime-version:reply-to:sender
+        :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+        :x-me-sender:x-sasl-enc; s=fm2; bh=6WaAJK5lyFLmcmFKJl+0M+d6NIX9M
+        8qY6UrRrz5b9zI=; b=HaRTHEgCGe+caz2sQsKoHHme3UB6NQ8YbcSovGCrxHKjP
+        otSNGsM1gqQjhEUwIhsTaW2JZGiGGAD/EQ2DyBM5VRgLeJyennBIReyJ8PFmEMz+
+        5LmtqrXgPXYI2qt9YNXFAqT4fTTLWgsvDvlL5lc7X/oJAq2YXMfmCBuN6q2urLPr
+        Bo35z3leobrdjuvCkLKZM/6UUfaiGfqEnR+pZl9LNdCxiOsvyPPmDDuSuXEYK4y+
+        splUPU5JIH0Fktta/JahNbcRtogxuEaglJNkId7ld/0BxJwKXOuoJHcOoYPLp+ol
+        kFkcTgIhTQGPeWSPoTSsZx8U14CdkfN/3eC6F+cdg==
+X-ME-Sender: <xms:slsWYqoNzUbmSnbWW7HIlb2tFL6XSTWqfv65Cwl0GecxMi_v-hd4kg>
+    <xme:slsWYoqpQ6zRqqoWOY8UcZQ_N-wmlPrBO0AYYrmm82V-NLhRS0nC120D8_asCvAZT
+    n4mcyX2QpN_clVeGu8>
+X-ME-Received: <xmr:slsWYvODuRF8D_NadyrzUYhSy1ILTh4crYtOv-3CFF51J3QrE2GNsJOSZJHISosO9AXBvA51uE_B6h0o0ElVy1mCrjcVEGauS1uUMYbsyjH7gjY8s88KxR06nQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrledtgdekfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomhepofgrrhhkucevihhl
+    ihhsshgvnhcuoehmrghrkheshihothhsuhgsrgdrnhhlqeenucggtffrrghtthgvrhhnpe
+    ehudevhedtleefkefgjeduvefhgffhhedvteffhefgleetleehleegffdtffduheenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrghrkheshi
+    hothhsuhgsrgdrnhhl
+X-ME-Proxy: <xmx:slsWYp7scNv8-zCXV2_wfWEtpBe4EREL41uJKSxlz_WF53wEm71ZHw>
+    <xmx:slsWYp53lkUiJ3SJyTslX0hhOWwBL3TqGnAVs9GqQjUahn7ApZHQRQ>
+    <xmx:slsWYph-F5uFCM5U8OXixZfnx5dqcJhJoarPmW3ENc-3VsXQ5JGUhQ>
+    <xmx:s1sWYmwtItwewWO-_NDnIP7WYAHxiVs5MzRLDAyijwIWBwlfOrXm6nH2lic>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 23 Feb 2022 11:07:12 -0500 (EST)
+From:   Mark Cilissen <mark@yotsuba.nl>
+To:     linux-acpi@vger.kernel.org, x86@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Russell King (Oracle)" <linux@armlinux.org.uk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        netdev@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [RFC 10/10] net: sfp: add support for fwnode
-Message-ID: <20220223163840.444f84fd@fixe.home>
-In-Reply-To: <YhZRgnPG5Yd8mvc/@lunn.ch>
-References: <20220221162652.103834-1-clement.leger@bootlin.com>
-        <20220221162652.103834-11-clement.leger@bootlin.com>
-        <YhPSkz8+BIcdb72R@smile.fi.intel.com>
-        <20220222142513.026ad98c@fixe.home>
-        <YhYZAc5+Q1rN3vhk@smile.fi.intel.com>
-        <888f9f1a-ca5a-1250-1423-6c012ec773e2@redhat.com>
-        <YhYriwvHJKjrDQRf@shell.armlinux.org.uk>
-        <4d611fe8-b82a-1709-507a-56be94263688@redhat.com>
-        <20220223151436.4798e5ad@fixe.home>
-        <YhZRgnPG5Yd8mvc/@lunn.ch>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <len.brown@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Mark Cilissen <mark@yotsuba.nl>
+Subject: [PATCH] x86/acpi: Work around broken XSDT on SEGA AALE board
+Date:   Wed, 23 Feb 2022 17:07:08 +0100
+Message-Id: <20220223160708.88100-1-mark@yotsuba.nl>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -76,54 +85,74 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Le Wed, 23 Feb 2022 16:23:46 +0100,
-Andrew Lunn <andrew@lunn.ch> a =C3=A9crit :
+On this board the ACPI RSDP structure points to both a RSDT and an XSDT,
+but the XSDT points to a truncated FADT. This causes all sorts of trouble
+and usually a complete failure to boot after the following error occurs:
 
-> > As Russell asked, I'm also really interested if someone has a solution
-> > to reuse device-tree description (overlays ?) to describe such
-> > hardware. However, the fact that CONFIG_OF isn't enabled on x86 config
-> > seems a bit complicated on this side. =20
->=20
-> It does work, intel even used it for one of there tiny x86 SoCs. Maybe
-> it was Newton? If you search around you can find maybe a Linux
-> Plumbers presentation about DT and x86.
+  ACPI Error: Unsupported address space: 0x20 (*/hwregs-*)
+  ACPI Error: AE_SUPPORT, Unable to initialize fixed events (*/evevent-*)
+  ACPI: Unable to start ACPI Interpreter
 
-Oh yes, I know it works and I tried loading an overlay using CONFIG_OF
-on a x86. Currently it does not works and generate a oops due to the
-fact that the lack of "/" node is not handled and that the error path
-has probably not been thoroughly tested. Adress remapping for PCI and
-lack of PCI bus description might also be a bit cumbersome but maybe
-this is the way to go.
+This leaves the ACPI implementation in such a broken state that subsequent
+kernel subsystem initialisations go wrong, resulting in among others
+mismapped PCI memory, SATA and USB enumeration failures, and freezes.
 
-I was saying a "bit complicated" as it is not often used and it would
-require enabling CONFIG_OF to support this feature as well as allowing
-loading overlays without any root node. But this is probably something
-that is also achievable.
+As this is an older embedded platform that will likely never see any BIOS
+updates to address this issue and its default shipping OS only complies to
+ACPI 1.0, work around this by forcing `acpi=rsdt`. This patch, applied on
+top of Linux 5.10.102, was confirmed on real hardware to fix the issue.
 
->=20
-> You can probably use a udev rule, triggered by the PCIe device ID to
-> load the DT overlay.
+Signed-off-by: Mark Cilissen <mark@yotsuba.nl>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/kernel/acpi/boot.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-Or maybe load the overlay from the PCIe driver ? This would also allow
-to introduce some remapping of addresses (see below) inside the driver
-maybe.
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 5b6d1a95776f..7caf4da075cd 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -1328,6 +1328,17 @@ static int __init disable_acpi_pci(const struct dmi_system_id *d)
+ 	return 0;
+ }
+ 
++static int __init disable_acpi_xsdt(const struct dmi_system_id *d)
++{
++	if (!acpi_force) {
++		pr_notice("%s detected: force use of acpi=rsdt\n", d->ident);
++		acpi_gbl_do_not_use_xsdt = TRUE;
++	} else {
++		pr_notice("Warning: DMI blacklist says broken, but acpi XSDT forced\n");
++	}
++	return 0;
++}
++
+ static int __init dmi_disable_acpi(const struct dmi_system_id *d)
+ {
+ 	if (!acpi_force) {
+@@ -1451,6 +1462,20 @@ static const struct dmi_system_id acpi_dmi_table[] __initconst = {
+ 		     DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate 360"),
+ 		     },
+ 	 },
++	/*
++	 * Boxes that need ACPI XSDT use disabled due to corrupted tables
++	 */
++	{
++	 .callback = disable_acpi_xsdt,
++	 .ident = "SEGA AALE",
++	 .matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "NEC"),
++		     DMI_MATCH(DMI_PRODUCT_NAME, "Bearlake CRB Board"),
++		     DMI_MATCH(DMI_BIOS_VENDOR, "Phoenix Technologies LTD"),
++		     DMI_MATCH(DMI_BIOS_VERSION, "V1.12"),
++		     DMI_MATCH(DMI_BIOS_DATE, "02/01/2011"),
++		     },
++	},
+ 	{}
+ };
+ 
 
->=20
-> Do you actually need anything from the host other than PCIe? It sounds
-> like this card is pretty self contained, so you won't need phandles
-> pointing to the host i2c bus, or the hosts GPIOs? You only need
-> phandles to your own i2c bus, your own GPIOs? That will make the
-> overlay much simpler.
+base-commit: cfb92440ee71adcc2105b0890bb01ac3cddb8507
+-- 
+2.28.0
 
-Yes, the device is almost self contained, only the IRQ needs to be
-chained with the MSI.
-
->=20
-> 	Andrew
-
-
-
---=20
-Cl=C3=A9ment L=C3=A9ger,
-Embedded Linux and Kernel engineer at Bootlin
-https://bootlin.com
