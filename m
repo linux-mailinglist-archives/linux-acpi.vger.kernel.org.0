@@ -2,53 +2,54 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69D404C37E0
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Feb 2022 22:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 773DE4C39A7
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Feb 2022 00:25:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232861AbiBXVeJ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Feb 2022 16:34:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42158 "EHLO
+        id S233389AbiBXX0M (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Feb 2022 18:26:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234641AbiBXVeI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Feb 2022 16:34:08 -0500
+        with ESMTP id S233258AbiBXX0K (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Feb 2022 18:26:10 -0500
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D60B1B1DE3;
-        Thu, 24 Feb 2022 13:33:37 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8580627579D;
+        Thu, 24 Feb 2022 15:25:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645738417; x=1677274417;
+  t=1645745139; x=1677281139;
   h=date:from:to:cc:subject:message-id:mime-version;
-  bh=wS6f9QL9K9zzrsjMtdj+3Akg42ceTvzowR30yf8RUX4=;
-  b=KLqzoaVeglzX5KM2cRR+UdUBBSHPOwGarHa5HIP2CuY/+YycRK76D5CT
-   //lLIHAErnGaKO4cvXbOFOMZA9dCHcOdZwA4kp2GP0/vHC43bT3sbbc04
-   qQxWq5cqfAHe4N56ETyn5IKcdehdYy4kVBKVlXavItMyAq4imH7B32der
-   rafyjlGCRWloNSyfb7yFZi688dSrhuW5JNGMvBImnQRnVptl81V9cFxwv
-   gWX6qmnEl/+yz2iitG77OqlgNiHjyyK7K317oCAAoX96lmogw1D8+Ys7B
-   Aff8XDkqso+88s32rJYyPwQAxX0B/C9Iiql6Jh7I9CDdvJo3qzN0OtafP
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10268"; a="239757770"
+  bh=IJ/rCmtcTnzEA6jA9Lx50cczK4xgpmPdTO7K/Z2aUcI=;
+  b=YMACHFREyiMdBih/1IF/nuVnH/pz/HpNPhy1h9sLbwnOottyP0szCX+0
+   6yf2WJHRabiBFggZrHWtjU8zIwovzyt5Iq/HKKT/aZhw+xS7NBvAuqk/B
+   1ntMCQiyJeBiq6cIVGwP2jp8+7XtTuYYkyL5MS0zmvx2wmsg6sp2AdJsV
+   SU6iHivB5DdC00lc7J4quhxMWOOdiN6fanM8Ljwt2XlyDJK8kXUefe1Qy
+   pQ4gTuuGzRYy92jL146XydjsllZCTjLuaJ0n0kXZHIZlYUqywcj5va92U
+   1alaseoSyR2ktMadZNS+csE563zALdTsswDrKacWDervd/92EuScErMsg
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10268"; a="239774855"
 X-IronPort-AV: E=Sophos;i="5.90,134,1643702400"; 
-   d="scan'208";a="239757770"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2022 13:33:36 -0800
+   d="scan'208";a="239774855"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2022 15:25:39 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,134,1643702400"; 
-   d="scan'208";a="788282915"
+   d="scan'208";a="684461079"
 Received: from lkp-server01.sh.intel.com (HELO 788b1cd46f0d) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 24 Feb 2022 13:33:34 -0800
+  by fmsmga001.fm.intel.com with ESMTP; 24 Feb 2022 15:25:36 -0800
 Received: from kbuild by 788b1cd46f0d with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1nNLjx-0003U1-ID; Thu, 24 Feb 2022 21:33:33 +0000
-Date:   Fri, 25 Feb 2022 05:32:51 +0800
+        id 1nNNUO-0003Z5-47; Thu, 24 Feb 2022 23:25:36 +0000
+Date:   Fri, 25 Feb 2022 07:24:49 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     kbuild-all@lists.01.org, linux-acpi@vger.kernel.org,
-        devel@acpica.org, linux-pm@vger.kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        linux-acpi@vger.kernel.org, devel@acpica.org,
+        linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [rafael-pm:testing 54/57] arch/x86/include/asm/pci_x86.h:97:8:
- error: unknown type name 'raw_spinlock_t'
-Message-ID: <202202250514.JzetOofA-lkp@intel.com>
+Subject: [rafael-pm:bleeding-edge 59/73]
+ arch/x86/include/asm/pci_x86.h:133:19: error: expected ';' after top level
+ declarator
+Message-ID: <202202250758.oDiHyXAy-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -63,19 +64,21 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git testing
-head:   fc4232749306d2fb9341c4c6d17c489ab657a67e
-commit: 62fabd56faafe033eb0be3ba24000b8db13d4c17 [54/57] x86/PCI: Disable exclusion of E820 reserved addresses in some cases
-config: i386-tinyconfig (https://download.01.org/0day-ci/archive/20220225/202202250514.JzetOofA-lkp@intel.com/config)
-compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   8276cbee5a52543c614a1e1bc2624188d5970848
+commit: 62fabd56faafe033eb0be3ba24000b8db13d4c17 [59/73] x86/PCI: Disable exclusion of E820 reserved addresses in some cases
+config: x86_64-randconfig-a012 (https://download.01.org/0day-ci/archive/20220225/202202250758.oDiHyXAy-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project d271fc04d5b97b12e6b797c6067d3c96a8d7470e)
 reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
         # https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=62fabd56faafe033eb0be3ba24000b8db13d4c17
         git remote add rafael-pm https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
-        git fetch --no-tags rafael-pm testing
+        git fetch --no-tags rafael-pm bleeding-edge
         git checkout 62fabd56faafe033eb0be3ba24000b8db13d4c17
         # save the config file to linux build tree
         mkdir build_dir
-        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash arch/x86/kernel/
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash
 
 If you fix the issue, kindly add following tag as appropriate
 Reported-by: kernel test robot <lkp@intel.com>
@@ -83,36 +86,69 @@ Reported-by: kernel test robot <lkp@intel.com>
 All errors (new ones prefixed by >>):
 
    In file included from arch/x86/kernel/resource.c:4:
->> arch/x86/include/asm/pci_x86.h:97:8: error: unknown type name 'raw_spinlock_t'
-      97 | extern raw_spinlock_t pci_config_lock;
-         |        ^~~~~~~~~~~~~~
->> arch/x86/include/asm/pci_x86.h:133:20: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'dmi_check_pciprobe'
-     133 | extern void __init dmi_check_pciprobe(void);
-         |                    ^~~~~~~~~~~~~~~~~~
->> arch/x86/include/asm/pci_x86.h:134:20: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'dmi_check_skip_isa_align'
-     134 | extern void __init dmi_check_skip_isa_align(void);
-         |                    ^~~~~~~~~~~~~~~~~~~~~~~~
->> arch/x86/include/asm/pci_x86.h:140:27: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'pci_acpi_init'
-     140 | static inline int  __init pci_acpi_init(void)
-         |                           ^~~~~~~~~~~~~
->> arch/x86/include/asm/pci_x86.h:145:20: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'pcibios_irq_init'
-     145 | extern void __init pcibios_irq_init(void);
-         |                    ^~~~~~~~~~~~~~~~
->> arch/x86/include/asm/pci_x86.h:146:19: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'pcibios_init'
-     146 | extern int __init pcibios_init(void);
-         |                   ^~~~~~~~~~~~
->> arch/x86/include/asm/pci_x86.h:166:19: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'pci_mmcfg_arch_init'
-     166 | extern int __init pci_mmcfg_arch_init(void);
-         |                   ^~~~~~~~~~~~~~~~~~~
->> arch/x86/include/asm/pci_x86.h:167:20: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'pci_mmcfg_arch_free'
-     167 | extern void __init pci_mmcfg_arch_free(void);
-         |                    ^~~~~~~~~~~~~~~~~~~
->> arch/x86/include/asm/pci_x86.h:174:40: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'pci_mmconfig_add'
-     174 | extern struct pci_mmcfg_region *__init pci_mmconfig_add(int segment, int start,
-         |                                        ^~~~~~~~~~~~~~~~
+   arch/x86/include/asm/pci_x86.h:97:8: error: unknown type name 'raw_spinlock_t'
+   extern raw_spinlock_t pci_config_lock;
+          ^
+>> arch/x86/include/asm/pci_x86.h:133:19: error: expected ';' after top level declarator
+   extern void __init dmi_check_pciprobe(void);
+                     ^
+                     ;
+   arch/x86/include/asm/pci_x86.h:134:19: error: expected ';' after top level declarator
+   extern void __init dmi_check_skip_isa_align(void);
+                     ^
+                     ;
+>> arch/x86/include/asm/pci_x86.h:138:12: error: redeclaration of '__init' with a different type: 'int' vs 'void'
+   extern int __init pci_acpi_init(void);
+              ^
+   arch/x86/include/asm/pci_x86.h:134:13: note: previous declaration is here
+   extern void __init dmi_check_skip_isa_align(void);
+               ^
+   arch/x86/include/asm/pci_x86.h:138:18: error: expected ';' after top level declarator
+   extern int __init pci_acpi_init(void);
+                    ^
+                    ;
+   arch/x86/include/asm/pci_x86.h:145:19: error: expected ';' after top level declarator
+   extern void __init pcibios_irq_init(void);
+                     ^
+                     ;
+   arch/x86/include/asm/pci_x86.h:146:12: error: redeclaration of '__init' with a different type: 'int' vs 'void'
+   extern int __init pcibios_init(void);
+              ^
+   arch/x86/include/asm/pci_x86.h:145:13: note: previous declaration is here
+   extern void __init pcibios_irq_init(void);
+               ^
+   arch/x86/include/asm/pci_x86.h:146:18: error: expected ';' after top level declarator
+   extern int __init pcibios_init(void);
+                    ^
+                    ;
+   arch/x86/include/asm/pci_x86.h:166:12: error: redeclaration of '__init' with a different type: 'int' vs 'void'
+   extern int __init pci_mmcfg_arch_init(void);
+              ^
+   arch/x86/include/asm/pci_x86.h:145:13: note: previous declaration is here
+   extern void __init pcibios_irq_init(void);
+               ^
+   arch/x86/include/asm/pci_x86.h:166:18: error: expected ';' after top level declarator
+   extern int __init pci_mmcfg_arch_init(void);
+                    ^
+                    ;
+   arch/x86/include/asm/pci_x86.h:167:19: error: expected ';' after top level declarator
+   extern void __init pci_mmcfg_arch_free(void);
+                     ^
+                     ;
+>> arch/x86/include/asm/pci_x86.h:174:33: error: redeclaration of '__init' with a different type: 'struct pci_mmcfg_region *' vs 'void'
+   extern struct pci_mmcfg_region *__init pci_mmconfig_add(int segment, int start,
+                                   ^
+   arch/x86/include/asm/pci_x86.h:167:13: note: previous declaration is here
+   extern void __init pci_mmcfg_arch_free(void);
+               ^
+   arch/x86/include/asm/pci_x86.h:174:39: error: expected ';' after top level declarator
+   extern struct pci_mmcfg_region *__init pci_mmconfig_add(int segment, int start,
+                                         ^
+                                         ;
+   13 errors generated.
 
 
-vim +/raw_spinlock_t +97 arch/x86/include/asm/pci_x86.h
+vim +133 arch/x86/include/asm/pci_x86.h
 
 ^1da177e4c3f41 arch/i386/pci/pci.h            Linus Torvalds     2005-04-16   96  
 d19f61f098ae93 arch/x86/include/asm/pci_x86.h Thomas Gleixner    2010-02-17  @97  extern raw_spinlock_t pci_config_lock;
@@ -152,19 +188,19 @@ c0fa40784cce9c arch/x86/include/asm/pci_x86.h Jiang Liu          2012-06-22  114
 445d3595ab290b arch/x86/include/asm/pci_x86.h Thomas Gleixner    2020-08-26  131  #endif
 445d3595ab290b arch/x86/include/asm/pci_x86.h Thomas Gleixner    2020-08-26  132  
 8dd779b19ce597 arch/x86/pci/pci.h             Robert Richter     2008-07-02 @133  extern void __init dmi_check_pciprobe(void);
-8dd779b19ce597 arch/x86/pci/pci.h             Robert Richter     2008-07-02 @134  extern void __init dmi_check_skip_isa_align(void);
+8dd779b19ce597 arch/x86/pci/pci.h             Robert Richter     2008-07-02  134  extern void __init dmi_check_skip_isa_align(void);
 8dd779b19ce597 arch/x86/pci/pci.h             Robert Richter     2008-07-02  135  
 8dd779b19ce597 arch/x86/pci/pci.h             Robert Richter     2008-07-02  136  /* some common used subsys_initcalls */
 5d32a66541c468 arch/x86/include/asm/pci_x86.h Sinan Kaya         2018-12-19  137  #ifdef CONFIG_PCI
-8dd779b19ce597 arch/x86/pci/pci.h             Robert Richter     2008-07-02  138  extern int __init pci_acpi_init(void);
+8dd779b19ce597 arch/x86/pci/pci.h             Robert Richter     2008-07-02 @138  extern int __init pci_acpi_init(void);
 5d32a66541c468 arch/x86/include/asm/pci_x86.h Sinan Kaya         2018-12-19  139  #else
-5d32a66541c468 arch/x86/include/asm/pci_x86.h Sinan Kaya         2018-12-19 @140  static inline int  __init pci_acpi_init(void)
+5d32a66541c468 arch/x86/include/asm/pci_x86.h Sinan Kaya         2018-12-19  140  static inline int  __init pci_acpi_init(void)
 5d32a66541c468 arch/x86/include/asm/pci_x86.h Sinan Kaya         2018-12-19  141  {
 5d32a66541c468 arch/x86/include/asm/pci_x86.h Sinan Kaya         2018-12-19  142  	return -EINVAL;
 5d32a66541c468 arch/x86/include/asm/pci_x86.h Sinan Kaya         2018-12-19  143  }
 5d32a66541c468 arch/x86/include/asm/pci_x86.h Sinan Kaya         2018-12-19  144  #endif
-ab3b37937e8f4f arch/x86/include/asm/pci_x86.h Thomas Gleixner    2009-08-29 @145  extern void __init pcibios_irq_init(void);
-8dd779b19ce597 arch/x86/pci/pci.h             Robert Richter     2008-07-02 @146  extern int __init pcibios_init(void);
+ab3b37937e8f4f arch/x86/include/asm/pci_x86.h Thomas Gleixner    2009-08-29  145  extern void __init pcibios_irq_init(void);
+8dd779b19ce597 arch/x86/pci/pci.h             Robert Richter     2008-07-02  146  extern int __init pcibios_init(void);
 b72d0db9dd41da arch/x86/include/asm/pci_x86.h Thomas Gleixner    2009-08-29  147  extern int pci_legacy_init(void);
 9325a28ce2fa7c arch/x86/include/asm/pci_x86.h Thomas Gleixner    2009-08-29  148  extern void pcibios_fixup_irqs(void);
 5e544d618f0fb2 arch/i386/pci/pci.h            Andi Kleen         2006-09-26  149  
@@ -185,7 +221,7 @@ d7e6b66fe87c9f arch/x86/include/asm/pci_x86.h Bjorn Helgaas      2009-11-13  162
 d215a9c8b46e55 arch/x86/include/asm/pci_x86.h Bjorn Helgaas      2009-11-13  164  };
 d215a9c8b46e55 arch/x86/include/asm/pci_x86.h Bjorn Helgaas      2009-11-13  165  
 429d512e532ec9 arch/i386/pci/pci.h            OGAWA Hirofumi     2007-02-13 @166  extern int __init pci_mmcfg_arch_init(void);
-0b64ad7123eb01 arch/x86/pci/pci.h             Yinghai Lu         2008-02-15 @167  extern void __init pci_mmcfg_arch_free(void);
+0b64ad7123eb01 arch/x86/pci/pci.h             Yinghai Lu         2008-02-15  167  extern void __init pci_mmcfg_arch_free(void);
 a18e3690a52790 arch/x86/include/asm/pci_x86.h Greg Kroah-Hartman 2012-12-21  168  extern int pci_mmcfg_arch_map(struct pci_mmcfg_region *cfg);
 9cf0105da5a315 arch/x86/include/asm/pci_x86.h Jiang Liu          2012-06-22  169  extern void pci_mmcfg_arch_unmap(struct pci_mmcfg_region *cfg);
 a18e3690a52790 arch/x86/include/asm/pci_x86.h Greg Kroah-Hartman 2012-12-21  170  extern int pci_mmconfig_insert(struct device *dev, u16 seg, u8 start, u8 end,
@@ -196,11 +232,11 @@ f6e1d8cc38b377 arch/x86/include/asm/pci_x86.h Bjorn Helgaas      2009-11-13  173
 6fa4a94e150be2 arch/x86/include/asm/pci_x86.h Otavio Pontes      2018-03-07  175  							int end, u64 addr);
 3320ad994afb2c arch/i386/pci/pci.h            dean gaudet        2007-08-10  176  
 
-:::::: The code at line 97 was first introduced by commit
-:::::: d19f61f098ae9315b76a97962007f687683916d4 x86/PCI: Convert pci_config_lock to raw_spinlock
+:::::: The code at line 133 was first introduced by commit
+:::::: 8dd779b19ce5972072ad2372a86c8acbae4da768 x86/pci: removing subsys_initcall ordering dependencies
 
-:::::: TO: Thomas Gleixner <tglx@linutronix.de>
-:::::: CC: Jesse Barnes <jbarnes@virtuousgeek.org>
+:::::: TO: Robert Richter <robert.richter@amd.com>
+:::::: CC: Ingo Molnar <mingo@elte.hu>
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
