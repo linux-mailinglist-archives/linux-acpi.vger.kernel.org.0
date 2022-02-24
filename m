@@ -2,60 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 406374C204C
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Feb 2022 00:56:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 518184C2667
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Feb 2022 09:42:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245091AbiBWX4k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 23 Feb 2022 18:56:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46644 "EHLO
+        id S232011AbiBXImW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Feb 2022 03:42:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245053AbiBWX4j (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 23 Feb 2022 18:56:39 -0500
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 402EF5DE4B;
-        Wed, 23 Feb 2022 15:56:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645660571; x=1677196571;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=F89N5cDix69I9AbMbC/5C8QfuzPxnaxankQDwbVbuXQ=;
-  b=J6QUS17JLQJAnKXJEsWqkFRbsST78XpYZX1mR+vD+StNY1Fl9A1oT7WI
-   tiCl8WqUAl/Y5FlXSAexDClAEtuhOW38rzuCILxcmqwOEjSBdX7wNaMI7
-   BHksvCs5vn21cUwsVPNe9YJx6/UhR3H3R6pT6n+9BgPGs1a1qZ82aEbBZ
-   klaFthi2l3jM4pgQ0DsghYA/MPS/vczIKPWhky8/O1/tIUUGDw7O/SD/n
-   00Q1/ebozkVw5DVxzCHtqTk+P2KpPldZIOcvsHISZsZ8iJB9xo5cstGzt
-   tZD+NxnMNLItn5OJCNR2fJTGlyK6JvUxiRfB8lFeoITh65Ciw/pJ1EO0Q
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10267"; a="315335962"
-X-IronPort-AV: E=Sophos;i="5.88,392,1635231600"; 
-   d="scan'208";a="315335962"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 15:56:10 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,392,1635231600"; 
-   d="scan'208";a="574018500"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 23 Feb 2022 15:56:09 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id E9F4F3F9; Thu, 24 Feb 2022 01:56:25 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Subject: [PATCH v1 3/3] ACPI: lpss: Provide an SSP type to the driver
-Date:   Thu, 24 Feb 2022 01:56:22 +0200
-Message-Id: <20220223235622.19555-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220223235622.19555-1-andriy.shevchenko@linux.intel.com>
-References: <20220223235622.19555-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S231854AbiBXImV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Feb 2022 03:42:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A101C3669C
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Feb 2022 00:41:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1645692109;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7rzV6PMlfh0kMehM1//3l3REbruRJHskxAdx2VyLiJ4=;
+        b=FRFiFeT/I39O5GotJDfgaqBu6YBMmFk9hpuzWtAkAOB05I7g3k9JkCwEkDJaixTiX/9mzm
+        SHTNm0ow5U2THsT+ksQWEHmVmBAZqYG95kOggDW1xdznE88qdOJyXknTtTAXNYj6dB3cNd
+        bxWFEPkz2EGXyaZtINFczuv0yWElUKM=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-302-zmFbtHVSMIiKMQE0j2Ybjg-1; Thu, 24 Feb 2022 03:41:48 -0500
+X-MC-Unique: zmFbtHVSMIiKMQE0j2Ybjg-1
+Received: by mail-ed1-f70.google.com with SMTP id y13-20020aa7c24d000000b00411925b7829so398771edo.22
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Feb 2022 00:41:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=7rzV6PMlfh0kMehM1//3l3REbruRJHskxAdx2VyLiJ4=;
+        b=UudJcH3RHlazd4qs//Fd5cwjPt6PMl2scYvSFipi2FWazxI3RN1oWhrrSrvxsTLZTW
+         kI3L+Elz7dPyRLhD8BLqqih9OQXMe2T6OBdPpzHKRJhtSGbcpLLsBNk0AMSLefNI+8fN
+         6OveRsjt2YvPJoAyTFQqyrMo3gtNDa60Edhs0hn1RhbQcZ90SUtnYJdpn1f/nzLuNymF
+         /YreH147AkG3zSyLXHsaNroEP9d+UKqr+NJf42tCCwDVxiU5tPEU6JoSsdSQZ3en7q5A
+         hubSgJossO9QHrbCFpgo5f6BcZVc8FZPjxL9f0t0mn3yNup+QIoXL3qqM+fx/83NdTGk
+         w5Wg==
+X-Gm-Message-State: AOAM533cPvZpSfH7UOeTF5U1ONidH7eZwL+sCSeZPEp3A+cu1T3ezisL
+        YZSx41aWhoGiOrWGqjl2Lo58ksm4tvQc4THMgygLxD84f3veSEGTEG4ptPMOsxVnlvx/2U3TuIv
+        IOeikNM/7J3h7+KdpSWE2Cw==
+X-Received: by 2002:a05:6402:2709:b0:413:1871:3bc7 with SMTP id y9-20020a056402270900b0041318713bc7mr1273935edd.71.1645692107308;
+        Thu, 24 Feb 2022 00:41:47 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJx2ZnEJ7WLgoVt692c1UYQI/8lrGcjAT66YxdAlZI5uwMqd9g0R+sHv+Ya1lMpUKZsLcmGnIA==
+X-Received: by 2002:a05:6402:2709:b0:413:1871:3bc7 with SMTP id y9-20020a056402270900b0041318713bc7mr1273924edd.71.1645692107101;
+        Thu, 24 Feb 2022 00:41:47 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id j20sm934530edt.67.2022.02.24.00.41.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Feb 2022 00:41:46 -0800 (PST)
+Message-ID: <303dc74a-4d63-70a2-9891-af3e3d8baf26@redhat.com>
+Date:   Thu, 24 Feb 2022 09:41:45 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH] x86/acpi: Work around broken XSDT on SEGA AALE board
+Content-Language: en-US
+To:     Mark Cilissen <mark@yotsuba.nl>, linux-acpi@vger.kernel.org,
+        x86@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <len.brown@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>
+References: <20220223160708.88100-1-mark@yotsuba.nl>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220223160708.88100-1-mark@yotsuba.nl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,109 +86,90 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-The SPI driver wants to know the exact type of the controller. Provide this
-information to it, hence allow to fix Intel Wildcat Point case in the future.
+Hi Mark,
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/acpi_lpss.c | 31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
+On 2/23/22 17:07, Mark Cilissen wrote:
+> On this board the ACPI RSDP structure points to both a RSDT and an XSDT,
+> but the XSDT points to a truncated FADT. This causes all sorts of trouble
+> and usually a complete failure to boot after the following error occurs:
+> 
+>   ACPI Error: Unsupported address space: 0x20 (*/hwregs-*)
+>   ACPI Error: AE_SUPPORT, Unable to initialize fixed events (*/evevent-*)
+>   ACPI: Unable to start ACPI Interpreter
+> 
+> This leaves the ACPI implementation in such a broken state that subsequent
+> kernel subsystem initialisations go wrong, resulting in among others
+> mismapped PCI memory, SATA and USB enumeration failures, and freezes.
+> 
+> As this is an older embedded platform that will likely never see any BIOS
+> updates to address this issue and its default shipping OS only complies to
+> ACPI 1.0, work around this by forcing `acpi=rsdt`. This patch, applied on
+> top of Linux 5.10.102, was confirmed on real hardware to fix the issue.
+> 
+> Signed-off-by: Mark Cilissen <mark@yotsuba.nl>
+> Cc: stable@vger.kernel.org
 
-diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index c28954411af9..fbe0756259c5 100644
---- a/drivers/acpi/acpi_lpss.c
-+++ b/drivers/acpi/acpi_lpss.c
-@@ -21,6 +21,7 @@
- #include <linux/pm_domain.h>
- #include <linux/pm_runtime.h>
- #include <linux/pwm.h>
-+#include <linux/pxa2xx_ssp.h>
- #include <linux/suspend.h>
- #include <linux/delay.h>
- 
-@@ -219,10 +220,16 @@ static void bsw_pwm_setup(struct lpss_private_data *pdata)
- 	pwm_add_table(bsw_pwm_lookup, ARRAY_SIZE(bsw_pwm_lookup));
- }
- 
--static const struct lpss_device_desc lpt_dev_desc = {
-+static const struct property_entry lpt_spi_properties[] = {
-+	PROPERTY_ENTRY_U32("intel,spi-pxa2xx-type", LPSS_LPT_SSP),
-+	{ }
-+};
-+
-+static const struct lpss_device_desc lpt_spi_dev_desc = {
- 	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_LTR
- 			| LPSS_SAVE_CTX,
- 	.prv_offset = 0x800,
-+	.properties = lpt_spi_properties,
- };
- 
- static const struct lpss_device_desc lpt_i2c_dev_desc = {
-@@ -282,9 +289,15 @@ static const struct lpss_device_desc bsw_uart_dev_desc = {
- 	.properties = uart_properties,
- };
- 
-+static const struct property_entry byt_spi_properties[] = {
-+	PROPERTY_ENTRY_U32("intel,spi-pxa2xx-type", LPSS_BYT_SSP),
-+	{ }
-+};
-+
- static const struct lpss_device_desc byt_spi_dev_desc = {
- 	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_SAVE_CTX,
- 	.prv_offset = 0x400,
-+	.properties = byt_spi_properties,
- };
- 
- static const struct lpss_device_desc byt_sdio_dev_desc = {
-@@ -305,11 +318,17 @@ static const struct lpss_device_desc bsw_i2c_dev_desc = {
- 	.resume_from_noirq = true,
- };
- 
-+static const struct property_entry bsw_spi_properties[] = {
-+	PROPERTY_ENTRY_U32("intel,spi-pxa2xx-type", LPSS_BSW_SSP),
-+	{ }
-+};
-+
- static const struct lpss_device_desc bsw_spi_dev_desc = {
- 	.flags = LPSS_CLK | LPSS_CLK_GATE | LPSS_CLK_DIVIDER | LPSS_SAVE_CTX
- 			| LPSS_NO_D3_DELAY,
- 	.prv_offset = 0x400,
- 	.setup = lpss_deassert_reset,
-+	.properties = bsw_spi_properties,
- };
- 
- static const struct x86_cpu_id lpss_cpu_ids[] = {
-@@ -329,8 +348,8 @@ static const struct acpi_device_id acpi_lpss_device_ids[] = {
- 	{ "INTL9C60", LPSS_ADDR(lpss_dma_desc) },
- 
- 	/* Lynxpoint LPSS devices */
--	{ "INT33C0", LPSS_ADDR(lpt_dev_desc) },
--	{ "INT33C1", LPSS_ADDR(lpt_dev_desc) },
-+	{ "INT33C0", LPSS_ADDR(lpt_spi_dev_desc) },
-+	{ "INT33C1", LPSS_ADDR(lpt_spi_dev_desc) },
- 	{ "INT33C2", LPSS_ADDR(lpt_i2c_dev_desc) },
- 	{ "INT33C3", LPSS_ADDR(lpt_i2c_dev_desc) },
- 	{ "INT33C4", LPSS_ADDR(lpt_uart_dev_desc) },
-@@ -356,8 +375,8 @@ static const struct acpi_device_id acpi_lpss_device_ids[] = {
- 	{ "808622C1", LPSS_ADDR(bsw_i2c_dev_desc) },
- 
- 	/* Broadwell LPSS devices */
--	{ "INT3430", LPSS_ADDR(lpt_dev_desc) },
--	{ "INT3431", LPSS_ADDR(lpt_dev_desc) },
-+	{ "INT3430", LPSS_ADDR(lpt_spi_dev_desc) },
-+	{ "INT3431", LPSS_ADDR(lpt_spi_dev_desc) },
- 	{ "INT3432", LPSS_ADDR(lpt_i2c_dev_desc) },
- 	{ "INT3433", LPSS_ADDR(lpt_i2c_dev_desc) },
- 	{ "INT3434", LPSS_ADDR(lpt_uart_dev_desc) },
-@@ -366,7 +385,7 @@ static const struct acpi_device_id acpi_lpss_device_ids[] = {
- 	{ "INT3437", },
- 
- 	/* Wildcat Point LPSS devices */
--	{ "INT3438", LPSS_ADDR(lpt_dev_desc) },
-+	{ "INT3438", LPSS_ADDR(lpt_spi_dev_desc) },
- 
- 	{ }
- };
--- 
-2.34.1
+Wow, you got it working, cool!
+
+The patch looks good to me:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
+
+
+
+> ---
+>  arch/x86/kernel/acpi/boot.c | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+> 
+> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+> index 5b6d1a95776f..7caf4da075cd 100644
+> --- a/arch/x86/kernel/acpi/boot.c
+> +++ b/arch/x86/kernel/acpi/boot.c
+> @@ -1328,6 +1328,17 @@ static int __init disable_acpi_pci(const struct dmi_system_id *d)
+>  	return 0;
+>  }
+>  
+> +static int __init disable_acpi_xsdt(const struct dmi_system_id *d)
+> +{
+> +	if (!acpi_force) {
+> +		pr_notice("%s detected: force use of acpi=rsdt\n", d->ident);
+> +		acpi_gbl_do_not_use_xsdt = TRUE;
+> +	} else {
+> +		pr_notice("Warning: DMI blacklist says broken, but acpi XSDT forced\n");
+> +	}
+> +	return 0;
+> +}
+> +
+>  static int __init dmi_disable_acpi(const struct dmi_system_id *d)
+>  {
+>  	if (!acpi_force) {
+> @@ -1451,6 +1462,20 @@ static const struct dmi_system_id acpi_dmi_table[] __initconst = {
+>  		     DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate 360"),
+>  		     },
+>  	 },
+> +	/*
+> +	 * Boxes that need ACPI XSDT use disabled due to corrupted tables
+> +	 */
+> +	{
+> +	 .callback = disable_acpi_xsdt,
+> +	 .ident = "SEGA AALE",
+> +	 .matches = {
+> +		     DMI_MATCH(DMI_SYS_VENDOR, "NEC"),
+> +		     DMI_MATCH(DMI_PRODUCT_NAME, "Bearlake CRB Board"),
+> +		     DMI_MATCH(DMI_BIOS_VENDOR, "Phoenix Technologies LTD"),
+> +		     DMI_MATCH(DMI_BIOS_VERSION, "V1.12"),
+> +		     DMI_MATCH(DMI_BIOS_DATE, "02/01/2011"),
+> +		     },
+> +	},
+>  	{}
+>  };
+>  
+> 
+> base-commit: cfb92440ee71adcc2105b0890bb01ac3cddb8507
 
