@@ -2,174 +2,326 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 518184C2667
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Feb 2022 09:42:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B80914C2901
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Feb 2022 11:14:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232011AbiBXImW (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 24 Feb 2022 03:42:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53284 "EHLO
+        id S231250AbiBXKOP (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 24 Feb 2022 05:14:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231854AbiBXImV (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Feb 2022 03:42:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A101C3669C
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Feb 2022 00:41:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1645692109;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7rzV6PMlfh0kMehM1//3l3REbruRJHskxAdx2VyLiJ4=;
-        b=FRFiFeT/I39O5GotJDfgaqBu6YBMmFk9hpuzWtAkAOB05I7g3k9JkCwEkDJaixTiX/9mzm
-        SHTNm0ow5U2THsT+ksQWEHmVmBAZqYG95kOggDW1xdznE88qdOJyXknTtTAXNYj6dB3cNd
-        bxWFEPkz2EGXyaZtINFczuv0yWElUKM=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-302-zmFbtHVSMIiKMQE0j2Ybjg-1; Thu, 24 Feb 2022 03:41:48 -0500
-X-MC-Unique: zmFbtHVSMIiKMQE0j2Ybjg-1
-Received: by mail-ed1-f70.google.com with SMTP id y13-20020aa7c24d000000b00411925b7829so398771edo.22
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Feb 2022 00:41:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=7rzV6PMlfh0kMehM1//3l3REbruRJHskxAdx2VyLiJ4=;
-        b=UudJcH3RHlazd4qs//Fd5cwjPt6PMl2scYvSFipi2FWazxI3RN1oWhrrSrvxsTLZTW
-         kI3L+Elz7dPyRLhD8BLqqih9OQXMe2T6OBdPpzHKRJhtSGbcpLLsBNk0AMSLefNI+8fN
-         6OveRsjt2YvPJoAyTFQqyrMo3gtNDa60Edhs0hn1RhbQcZ90SUtnYJdpn1f/nzLuNymF
-         /YreH147AkG3zSyLXHsaNroEP9d+UKqr+NJf42tCCwDVxiU5tPEU6JoSsdSQZ3en7q5A
-         hubSgJossO9QHrbCFpgo5f6BcZVc8FZPjxL9f0t0mn3yNup+QIoXL3qqM+fx/83NdTGk
-         w5Wg==
-X-Gm-Message-State: AOAM533cPvZpSfH7UOeTF5U1ONidH7eZwL+sCSeZPEp3A+cu1T3ezisL
-        YZSx41aWhoGiOrWGqjl2Lo58ksm4tvQc4THMgygLxD84f3veSEGTEG4ptPMOsxVnlvx/2U3TuIv
-        IOeikNM/7J3h7+KdpSWE2Cw==
-X-Received: by 2002:a05:6402:2709:b0:413:1871:3bc7 with SMTP id y9-20020a056402270900b0041318713bc7mr1273935edd.71.1645692107308;
-        Thu, 24 Feb 2022 00:41:47 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx2ZnEJ7WLgoVt692c1UYQI/8lrGcjAT66YxdAlZI5uwMqd9g0R+sHv+Ya1lMpUKZsLcmGnIA==
-X-Received: by 2002:a05:6402:2709:b0:413:1871:3bc7 with SMTP id y9-20020a056402270900b0041318713bc7mr1273924edd.71.1645692107101;
-        Thu, 24 Feb 2022 00:41:47 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id j20sm934530edt.67.2022.02.24.00.41.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Feb 2022 00:41:46 -0800 (PST)
-Message-ID: <303dc74a-4d63-70a2-9891-af3e3d8baf26@redhat.com>
-Date:   Thu, 24 Feb 2022 09:41:45 +0100
+        with ESMTP id S229813AbiBXKOL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 24 Feb 2022 05:14:11 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3AC0C1A2758
+        for <linux-acpi@vger.kernel.org>; Thu, 24 Feb 2022 02:13:41 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 02E93ED1;
+        Thu, 24 Feb 2022 02:13:41 -0800 (PST)
+Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1E56B3F70D;
+        Thu, 24 Feb 2022 02:13:39 -0800 (PST)
+Date:   Thu, 24 Feb 2022 10:13:33 +0000
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linuxarm@huawei.com,
+        joro@8bytes.org, robin.murphy@arm.com, will@kernel.org,
+        wanghuiqiang@huawei.com, guohanjun@huawei.com,
+        steven.price@arm.com, Sami.Mujawar@arm.com, jon@solid-run.com,
+        eric.auger@redhat.com, yangyicong@huawei.com
+Subject: Re: [PATCH v8 03/11] ACPI/IORT: Add helper functions to parse RMR
+ nodes
+Message-ID: <20220224101333.GA3178@lpieralisi>
+References: <20220221154344.2126-1-shameerali.kolothum.thodi@huawei.com>
+ <20220221154344.2126-4-shameerali.kolothum.thodi@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH] x86/acpi: Work around broken XSDT on SEGA AALE board
-Content-Language: en-US
-To:     Mark Cilissen <mark@yotsuba.nl>, linux-acpi@vger.kernel.org,
-        x86@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>
-References: <20220223160708.88100-1-mark@yotsuba.nl>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220223160708.88100-1-mark@yotsuba.nl>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220221154344.2126-4-shameerali.kolothum.thodi@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Mark,
-
-On 2/23/22 17:07, Mark Cilissen wrote:
-> On this board the ACPI RSDP structure points to both a RSDT and an XSDT,
-> but the XSDT points to a truncated FADT. This causes all sorts of trouble
-> and usually a complete failure to boot after the following error occurs:
+On Mon, Feb 21, 2022 at 03:43:36PM +0000, Shameer Kolothum wrote:
+> The helper functions here parse through the IORT RMR nodes and
+> populate a reserved region list  corresponding to a given iommu
+> and device(optional). These also go through the ID mappings of
+> the RMR node and retrieves all the SIDs associated with a RMR
+> descriptor.
 > 
->   ACPI Error: Unsupported address space: 0x20 (*/hwregs-*)
->   ACPI Error: AE_SUPPORT, Unable to initialize fixed events (*/evevent-*)
->   ACPI: Unable to start ACPI Interpreter
-> 
-> This leaves the ACPI implementation in such a broken state that subsequent
-> kernel subsystem initialisations go wrong, resulting in among others
-> mismapped PCI memory, SATA and USB enumeration failures, and freezes.
-> 
-> As this is an older embedded platform that will likely never see any BIOS
-> updates to address this issue and its default shipping OS only complies to
-> ACPI 1.0, work around this by forcing `acpi=rsdt`. This patch, applied on
-> top of Linux 5.10.102, was confirmed on real hardware to fix the issue.
-> 
-> Signed-off-by: Mark Cilissen <mark@yotsuba.nl>
-> Cc: stable@vger.kernel.org
-
-Wow, you got it working, cool!
-
-The patch looks good to me:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-
-
-
-
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 > ---
->  arch/x86/kernel/acpi/boot.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-> index 5b6d1a95776f..7caf4da075cd 100644
-> --- a/arch/x86/kernel/acpi/boot.c
-> +++ b/arch/x86/kernel/acpi/boot.c
-> @@ -1328,6 +1328,17 @@ static int __init disable_acpi_pci(const struct dmi_system_id *d)
->  	return 0;
+>  drivers/acpi/arm64/iort.c | 225 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 225 insertions(+)
+
+I have very minor comments - I would ask Robin to ack the updated
+flags management.
+
+Functions should be introduced where they are used, this patch
+is not bisectable:
+
+drivers/acpi/arm64/iort.c:1028:13: warning: ‘iort_find_rmrs’ defined but not used [-Wunused-function]
+ 1028 | static void iort_find_rmrs(struct acpi_iort_node *iommu, struct device *dev,
+
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index 0730c4dbb700..05da9ebff50a 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -830,6 +830,231 @@ static struct acpi_iort_node *iort_get_msi_resv_iommu(struct device *dev)
+>  	return NULL;
 >  }
 >  
-> +static int __init disable_acpi_xsdt(const struct dmi_system_id *d)
+> +static void iort_rmr_desc_check_overlap(struct acpi_iort_rmr_desc *desc, u32 count)
 > +{
-> +	if (!acpi_force) {
-> +		pr_notice("%s detected: force use of acpi=rsdt\n", d->ident);
-> +		acpi_gbl_do_not_use_xsdt = TRUE;
-> +	} else {
-> +		pr_notice("Warning: DMI blacklist says broken, but acpi XSDT forced\n");
+> +	int i, j;
+> +
+> +	for (i = 0; i < count; i++) {
+> +		u64 end, start = desc[i].base_address, length = desc[i].length;
+> +
+> +		end = start + length - 1;
+
+We could probably check for length != 0, the kernel is not there to
+validate firmware but this would not hurt either.
+
+> +
+> +		/* Check for address overlap */
+> +		for (j = i + 1; j < count; j++) {
+> +			u64 e_start = desc[j].base_address;
+> +			u64 e_end = e_start + desc[j].length - 1;
+> +
+> +			if (start <= e_end && end >= e_start)
+> +				pr_err(FW_BUG "RMR descriptor[0x%llx - 0x%llx] overlaps, continue anyway\n",
+> +				       start, end);
+> +		}
 > +	}
-> +	return 0;
 > +}
 > +
->  static int __init dmi_disable_acpi(const struct dmi_system_id *d)
->  {
->  	if (!acpi_force) {
-> @@ -1451,6 +1462,20 @@ static const struct dmi_system_id acpi_dmi_table[] __initconst = {
->  		     DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate 360"),
->  		     },
->  	 },
-> +	/*
-> +	 * Boxes that need ACPI XSDT use disabled due to corrupted tables
-> +	 */
-> +	{
-> +	 .callback = disable_acpi_xsdt,
-> +	 .ident = "SEGA AALE",
-> +	 .matches = {
-> +		     DMI_MATCH(DMI_SYS_VENDOR, "NEC"),
-> +		     DMI_MATCH(DMI_PRODUCT_NAME, "Bearlake CRB Board"),
-> +		     DMI_MATCH(DMI_BIOS_VENDOR, "Phoenix Technologies LTD"),
-> +		     DMI_MATCH(DMI_BIOS_VERSION, "V1.12"),
-> +		     DMI_MATCH(DMI_BIOS_DATE, "02/01/2011"),
-> +		     },
-> +	},
->  	{}
->  };
->  
-> 
-> base-commit: cfb92440ee71adcc2105b0890bb01ac3cddb8507
+> +/*
+> + * Please note, we will keep the already allocated RMR reserve
+> + * regions in case of a memory allocation failure.
+> + */
+> +static void iort_rmr_get_resv_regions(struct acpi_iort_node *node,
+> +				      struct acpi_iort_node *smmu,
+> +				      u32 *sids, u32 num_sids,
+> +				      struct list_head *head)
+> +{
+> +	struct acpi_iort_rmr *rmr = (struct acpi_iort_rmr *)node->node_data;
+> +	struct acpi_iort_rmr_desc *rmr_desc;
+> +	int i;
+> +
+> +	rmr_desc = ACPI_ADD_PTR(struct acpi_iort_rmr_desc, node,
+> +				rmr->rmr_offset);
+> +
+> +	iort_rmr_desc_check_overlap(rmr_desc, rmr->rmr_count);
+> +
+> +	for (i = 0; i < rmr->rmr_count; i++, rmr_desc++) {
+> +		struct iommu_resv_region *region;
+> +		enum iommu_resv_type type;
+> +		u32  *sids_copy;
+> +		int prot = IOMMU_READ | IOMMU_WRITE;
+> +		u64 addr = rmr_desc->base_address, size = rmr_desc->length;
+> +
+> +		if (!IS_ALIGNED(addr, SZ_64K) || !IS_ALIGNED(size, SZ_64K)) {
+> +			/* PAGE align base addr and size */
+> +			addr &= PAGE_MASK;
+> +			size = PAGE_ALIGN(size + offset_in_page(rmr_desc->base_address));
+> +
+> +			pr_err(FW_BUG "RMR descriptor[0x%llx - 0x%llx] not aligned to 64K, continue with [0x%llx - 0x%llx]\n",
+> +			       rmr_desc->base_address,
+> +			       rmr_desc->base_address + rmr_desc->length - 1,
+> +			       addr, addr + size - 1);
+> +		}
+> +
+> +		if (rmr->flags & ACPI_IORT_RMR_REMAP_PERMITTED)
+> +			type = IOMMU_RESV_DIRECT_RELAXABLE;
+> +		else
+> +			type = IOMMU_RESV_DIRECT;
+> +
+> +		if (rmr->flags & ACPI_IORT_RMR_ACCESS_PRIVILEGE)
+> +			prot |= IOMMU_PRIV;
+> +
+> +		/* Attributes 0x00 - 0x03 represents device memory */
+> +		if (ACPI_IORT_RMR_ACCESS_ATTRIBUTES(rmr->flags) <=
+> +				ACPI_IORT_RMR_ATTR_DEVICE_GRE)
+> +			prot |= IOMMU_MMIO;
+> +		else if (ACPI_IORT_RMR_ACCESS_ATTRIBUTES(rmr->flags) ==
+> +				ACPI_IORT_RMR_ATTR_NORMAL)
+> +			prot |= IOMMU_CACHE;
+> +
+> +		/* Create a copy of sids array to associate with this resv region */
+> +		sids_copy = kmemdup(sids, num_sids * sizeof(*sids), GFP_KERNEL);
+> +		if (!sids_copy)
+> +			return;
+> +
+> +		region = iommu_alloc_resv_region(addr, size, prot, type);
+> +		if (!region) {
+> +			kfree(sids_copy);
+> +			return;
+> +		}
+> +
+> +		region->fw_data.rmr.sids = sids_copy;
+> +		region->fw_data.rmr.num_sids = num_sids;
+> +		list_add_tail(&region->list, head);
+> +	}
+> +}
+> +
+> +static u32 *iort_rmr_alloc_sids(u32 *sids, u32 count, u32 id_start,
+> +				u32 new_count)
+> +{
+> +	u32 *new_sids;
+> +	u32 total_count = count + new_count;
+> +	int i;
+> +
+> +	new_sids = krealloc_array(sids, count + new_count,
+> +				  sizeof(*new_sids), GFP_KERNEL);
+> +	if (!new_sids)
+> +		return NULL;
+> +
+> +	/*Update new ones */
 
+/* Update new ones */
+
+I'd remove the comment, or improve it, as it stands it does not
+help much - we can read the code.
+
+> +	for (i = count; i < total_count; i++)
+> +		new_sids[i] = id_start++;
+> +
+> +	return new_sids;
+> +}
+> +
+> +static bool iort_rmr_has_dev(struct device *dev, u32 id_start,
+> +			     u32 id_count)
+> +{
+> +	int i;
+> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+> +
+> +	if (dev_is_pci(dev)) {
+> +		struct pci_dev *pdev = to_pci_dev(dev);
+> +		struct pci_host_bridge *host = pci_find_host_bridge(pdev->bus);
+> +
+> +		if (!host->preserve_config)
+
+Please add a comment here - it helps explain the logic behind it.
+
+Thanks,
+Lorenzo
+
+> +			return false;
+> +	}
+> +
+> +	for (i = 0; i < fwspec->num_ids; i++) {
+> +		if (fwspec->ids[i] >= id_start &&
+> +		    fwspec->ids[i] <= id_start + id_count)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +static void iort_node_get_rmr_info(struct acpi_iort_node *node,
+> +				   struct acpi_iort_node *iommu,
+> +				   struct device *dev, struct list_head *head)
+> +{
+> +	struct acpi_iort_node *smmu = NULL;
+> +	struct acpi_iort_rmr *rmr;
+> +	struct acpi_iort_id_mapping *map;
+> +	u32 *sids = NULL;
+> +	u32 num_sids = 0;
+> +	int i;
+> +
+> +	if (!node->mapping_offset || !node->mapping_count) {
+> +		pr_err(FW_BUG "Invalid ID mapping, skipping RMR node %p\n",
+> +		       node);
+> +		return;
+> +	}
+> +
+> +	rmr = (struct acpi_iort_rmr *)node->node_data;
+> +	if (!rmr->rmr_offset || !rmr->rmr_count)
+> +		return;
+> +
+> +	map = ACPI_ADD_PTR(struct acpi_iort_id_mapping, node,
+> +			   node->mapping_offset);
+> +
+> +	/*
+> +	 * Go through the ID mappings and see if we have a match
+> +	 * for smmu and dev(if !NULL). If found, get the sids
+> +	 * for the Node.
+> +	 * Please note, id_count is equal to the number of IDs
+> +	 * in the range minus one.
+> +	 */
+> +	for (i = 0; i < node->mapping_count; i++, map++) {
+> +		struct acpi_iort_node *parent;
+> +
+> +		if (!map->id_count)
+> +			continue;
+> +
+> +		parent = ACPI_ADD_PTR(struct acpi_iort_node, iort_table,
+> +				      map->output_reference);
+> +		if (parent != iommu)
+> +			continue;
+> +
+> +		/* If dev is valid, check RMR node corresponds to the dev sid */
+> +		if (dev && !iort_rmr_has_dev(dev, map->output_base,
+> +					     map->id_count))
+> +			continue;
+> +
+> +		/* Retrieve sids associated with the Node. */
+> +		sids = iort_rmr_alloc_sids(sids, num_sids, map->output_base,
+> +					   map->id_count + 1);
+> +		if (!sids)
+> +			return;
+> +
+> +		num_sids += map->id_count + 1;
+> +	}
+> +
+> +	if (!sids)
+> +		return;
+> +
+> +	iort_rmr_get_resv_regions(node, smmu, sids, num_sids, head);
+> +	kfree(sids);
+> +}
+> +
+> +static void iort_find_rmrs(struct acpi_iort_node *iommu, struct device *dev,
+> +			   struct list_head *head)
+> +{
+> +	struct acpi_table_iort *iort;
+> +	struct acpi_iort_node *iort_node, *iort_end;
+> +	int i;
+> +
+> +	if (iort_table->revision < 5)
+> +		return;
+> +
+> +	iort = (struct acpi_table_iort *)iort_table;
+> +
+> +	iort_node = ACPI_ADD_PTR(struct acpi_iort_node, iort,
+> +				 iort->node_offset);
+> +	iort_end = ACPI_ADD_PTR(struct acpi_iort_node, iort,
+> +				iort_table->length);
+> +
+> +	for (i = 0; i < iort->node_count; i++) {
+> +		if (WARN_TAINT(iort_node >= iort_end, TAINT_FIRMWARE_WORKAROUND,
+> +			       "IORT node pointer overflows, bad table!\n"))
+> +			return;
+> +
+> +		if (iort_node->type == ACPI_IORT_NODE_RMR)
+> +			iort_node_get_rmr_info(iort_node, iommu, dev, head);
+> +
+> +		iort_node = ACPI_ADD_PTR(struct acpi_iort_node, iort_node,
+> +					 iort_node->length);
+> +	}
+> +}
+> +
+>  /**
+>   * iort_iommu_msi_get_resv_regions - Reserved region driver helper
+>   * @dev: Device from iommu_get_resv_regions()
+> -- 
+> 2.25.1
+> 
