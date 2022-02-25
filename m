@@ -2,65 +2,62 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CDE84C4BAA
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Feb 2022 18:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9845E4C4BBD
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Feb 2022 18:14:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243498AbiBYRKy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Feb 2022 12:10:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48380 "EHLO
+        id S243526AbiBYRO0 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Feb 2022 12:14:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243497AbiBYRKy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Feb 2022 12:10:54 -0500
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C15261FED96;
-        Fri, 25 Feb 2022 09:10:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1645809023; x=1677345023;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dRL0/jPg1fxrA+PWLdwiEJHSkoRCHV/X2J+x9Q0h534=;
-  b=o3vUQ/2ueirHoHx53QxyBUf+EZadZtsYFKfxH35+XEtsJaqDoeorA2/B
-   V1fsYObeE0LEUBPptz1E9pbMV5TQpFECpVdpscPVemxxwIAUVNHltlz7+
-   v/AC7i1dy4TuntubkVdZfv84Ngiv9zd3ekssNgfaT2ASh/JC9hdj4U5NY
-   o=;
-X-IronPort-AV: E=Sophos;i="5.90,136,1643673600"; 
-   d="scan'208";a="179912807"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-54c9d11f.us-east-1.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP; 25 Feb 2022 17:10:11 +0000
-Received: from EX13MTAUWC002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-        by email-inbound-relay-iad-1e-54c9d11f.us-east-1.amazon.com (Postfix) with ESMTPS id 1515FC0292;
-        Fri, 25 Feb 2022 17:10:08 +0000 (UTC)
-Received: from EX13D20UWC001.ant.amazon.com (10.43.162.244) by
- EX13MTAUWC002.ant.amazon.com (10.43.162.240) with Microsoft SMTP Server (TLS)
- id 15.0.1497.28; Fri, 25 Feb 2022 17:10:03 +0000
-Received: from [0.0.0.0] (10.43.161.89) by EX13D20UWC001.ant.amazon.com
- (10.43.162.244) with Microsoft SMTP Server (TLS) id 15.0.1497.28; Fri, 25 Feb
- 2022 17:10:01 +0000
-Message-ID: <7a98e9c5-e0e5-9bf9-71b5-f75b9ddcdc4b@amazon.com>
-Date:   Fri, 25 Feb 2022 18:09:59 +0100
+        with ESMTP id S240804AbiBYRO0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Feb 2022 12:14:26 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 790A51AA48A;
+        Fri, 25 Feb 2022 09:13:53 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3DF93B832D2;
+        Fri, 25 Feb 2022 17:13:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8885C340F5;
+        Fri, 25 Feb 2022 17:13:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645809230;
+        bh=PAzgk9fc8UNeS61XwY8qL+LCQ/UWWXGsmNJHOaD8Wqs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=BF55rSVh3MUsVAQ0EqnmhHfNI2U7oWOru1e8h8lpAeL5NJ6tNtpiGD72MF+sCSmd2
+         1ey99dvbhkignhEj/6Uxio6AG+j9bncI+eNP/KUOex4n+TKOJklcXaSrbNMmRhEa2w
+         tpqt9AcYflWIhXJK8KhyYt0n32cW9m0K5q/P66YWnAhLRId8RCk6chcW7I55+bRn7x
+         KyY+UILiydfOsY0T64fU78XytNuDVGvF8OOZ6bHml6V6nTeieg8SWKjNLapaqU4rlT
+         Lz4MzY1eVgp1XOL/GFihSu5UvLcfbkIlh6WI1Xw8vqbwqlVG0rQQYFM9/QOf0LjXli
+         cqCk99aoJHC7w==
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-2d641c31776so40429027b3.12;
+        Fri, 25 Feb 2022 09:13:50 -0800 (PST)
+X-Gm-Message-State: AOAM533YdlGrpykHomY/nZMwrKk7d4MkhSohVPRYnSfq4uHakjiepwwk
+        BCfZdEhHu1Xp+YYo8BIAATObk8SkK0h4amIfgKk=
+X-Google-Smtp-Source: ABdhPJzbDDNFMjY/4QToEsZKcKs4D81AkaPkx0SNKdQc5rVFGCht3B168yIkyvgYZHUd2tphyeeTM+xp5HP7aDeyf2g=
+X-Received: by 2002:a0d:d482:0:b0:2d8:1555:e21d with SMTP id
+ w124-20020a0dd482000000b002d81555e21dmr6750504ywd.272.1645809229658; Fri, 25
+ Feb 2022 09:13:49 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.6.1
+References: <20220225155552.30636-1-graf@amazon.com>
+In-Reply-To: <20220225155552.30636-1-graf@amazon.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 25 Feb 2022 18:13:38 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGtANm3SMoREymDSyx+wpn3L=Ex5q5mpgQigOwmEp33Lg@mail.gmail.com>
+Message-ID: <CAMj1kXGtANm3SMoREymDSyx+wpn3L=Ex5q5mpgQigOwmEp33Lg@mail.gmail.com>
 Subject: Re: [PATCH] ACPI: bus: Match first 9 bytes of device IDs
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+To:     Alexander Graf <graf@amazon.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Len Brown <lenb@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>, <ardb@kernel.org>,
-        <dwmw@amazon.co.uk>
-References: <20220225155552.30636-1-graf@amazon.com>
- <YhkKc2fa8dSTA9pc@zx2c4.com>
-From:   Alexander Graf <graf@amazon.com>
-In-Reply-To: <YhkKc2fa8dSTA9pc@zx2c4.com>
-X-Originating-IP: [10.43.161.89]
-X-ClientProxiedBy: EX13D02UWB004.ant.amazon.com (10.43.161.11) To
- EX13D20UWC001.ant.amazon.com (10.43.162.244)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        "Woodhouse, David" <dwmw@amazon.co.uk>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,46 +66,100 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-SGV5IEphc29uLAoKT24gMjUuMDIuMjIgMTc6NTcsIEphc29uIEEuIERvbmVuZmVsZCB3cm90ZToK
-PiBIaSBBbGV4LAo+Cj4gVGhhbmtzIGZvciB0aGlzLgo+Cj4gSSB0ZXN0ZWQgdGhpcyBvdXQgd2l0
-aCB0aGUgdm1nZW5pZCBkcml2ZXIsIGFuZCBJIGZvdW5kIGEgYnVnIGluIHRoaXMgdjE6Cj4KPiBP
-biBGcmksIEZlYiAyNSwgMjAyMiBhdCAwNDo1NTo1MlBNICswMTAwLCBBbGV4YW5kZXIgR3JhZiB3
-cm90ZToKPj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGlkLT5pZFswXSAmJiAh
-c3RyY21wKChjaGFyICopaWQtPmlkLCBod2lkLT5pZCkpCj4+ICsgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIGlmIChpZC0+aWRbMF0gJiYgIXN0cm5jbXAoKGNoYXIgKilpZC0+aWQsIGh3aWQt
-PmlkLCBBQ1BJX0lEX0xFTikpCj4gVGhpcyBvbmx5IHdvcmtlZCBvbmNlIEkgbWFkZSB0aGF0IGBB
-Q1BJX0lEX0xFTiAtIDFgLCBiZWNhdXNlIHRoYXQgbGVuZ3RoCj4gaW5jbHVkZXMgdGhlIG51bGwg
-dGVybWluYXRvci4gVGhlIGJlbG93IHBhdGNoIHdvcmtzIGZpbmUuIElmIHlvdSBhZGp1c3QKPiB0
-aGF0IGFuZCBzZW5kIGEgcXVpY2sgdjIgZm9sbG93LXVwLCBJJ20gaGFwcHkgdG8gYWNrIGl0Lgo+
-Cj4gUmVnYXJkcywKPiBKYXNvbgo+Cj4gLS0tLS0tLS04PC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL2J1cy5jIGIvZHJpdmVycy9hY3BpL2J1
-cy5jCj4gaW5kZXggMDdmNjA0ODMyZmQ2Li5mMTc5ZWJmMTZmMjEgMTAwNjQ0Cj4gLS0tIGEvZHJp
-dmVycy9hY3BpL2J1cy5jCj4gKysrIGIvZHJpdmVycy9hY3BpL2J1cy5jCj4gQEAgLTgyOSw3ICs4
-MjksNyBAQCBzdGF0aWMgYm9vbCBfX2FjcGlfbWF0Y2hfZGV2aWNlKHN0cnVjdCBhY3BpX2Rldmlj
-ZSAqZGV2aWNlLAo+ICAgICAgICAgICAgICAgICAgLyogRmlyc3QsIGNoZWNrIHRoZSBBQ1BJL1BO
-UCBJRHMgcHJvdmlkZWQgYnkgdGhlIGNhbGxlci4gKi8KPiAgICAgICAgICAgICAgICAgIGlmIChh
-Y3BpX2lkcykgewo+ICAgICAgICAgICAgICAgICAgICAgICAgICBmb3IgKGlkID0gYWNwaV9pZHM7
-IGlkLT5pZFswXSB8fCBpZC0+Y2xzOyBpZCsrKSB7Cj4gLSAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBpZiAoaWQtPmlkWzBdICYmICFzdHJjbXAoKGNoYXIgKilpZC0+aWQsIGh3aWQtPmlk
-KSkKPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmIChpZC0+aWRbMF0gJiYgIXN0
-cm5jbXAoKGNoYXIgKilpZC0+aWQsIGh3aWQtPmlkLCBBQ1BJX0lEX0xFTiAtIDEpKQo+ICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ290byBvdXRfYWNwaV9tYXRjaDsK
-PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZiAoaWQtPmNscyAmJiBfX2FjcGlf
-bWF0Y2hfZGV2aWNlX2NscyhpZCwgaHdpZCkpCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBnb3RvIG91dF9hY3BpX21hdGNoOwo+IGRpZmYgLS1naXQgYS9kcml2ZXJz
-L3ZpcnQvdm1nZW5pZC5jIGIvZHJpdmVycy92aXJ0L3ZtZ2VuaWQuYwo+IGluZGV4IGI1MDNjMjEw
-YzJkNy4uMDQ3NTFmYzFkMzY1IDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvdmlydC92bWdlbmlkLmMK
-PiArKysgYi9kcml2ZXJzL3ZpcnQvdm1nZW5pZC5jCj4gQEAgLTc4LDggKzc4LDcgQEAgc3RhdGlj
-IHZvaWQgdm1nZW5pZF9hY3BpX25vdGlmeShzdHJ1Y3QgYWNwaV9kZXZpY2UgKmRldmljZSwgdTMy
-IGV2ZW50KQo+ICAgfQo+Cj4gICBzdGF0aWMgY29uc3Qgc3RydWN0IGFjcGlfZGV2aWNlX2lkIHZt
-Z2VuaWRfaWRzW10gPSB7Cj4gLSAgICAgICB7ICJRRU1VVkdJRCIsIDAgfSwgICAgICAvKiBRRU1V
-ICovCj4gLSAgICAgICB7ICJWTUdFTklEIiwgMCB9LCAgICAgICAvKiBGaXJlY3JhY2tlciAqLwo+
-ICsgICAgICAgeyAiVk1fR0VOX0MiLCAwIH0sIC8qIFRydW5jYXRlZCAiVk1fR2VuX0NvdW50ZXIi
-ICovCgoKWW91IGhhdmUgdG8gbWFrZSB0aGlzICJWTV9HRU5fQ08iLiBJIG5vdyBtYXRjaCB0aGUg
-ZnVsbCA5IGJ5dGVzIC0gdW5saWtlIAp0aGUgcHJldmlvdXMgcGF0Y2ggSSBzZW50IDopCgoKQWxl
-eAoKCgoKCkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIu
-IDM4CjEwMTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIs
-IEpvbmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJn
-IHVudGVyIEhSQiAxNDkxNzMgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAyODkgMjM3IDg3OQoK
-Cg==
+On Fri, 25 Feb 2022 at 16:56, Alexander Graf <graf@amazon.com> wrote:
+>
+> We create a list of ACPI "PNP" IDs which contains _HID, _CID and CLS
+> entries of the respective devices. However, we squeeze them into
+> struct acpi_device_id which only has 9 bytes space to store the identifier
+> based on the ACPI spec:
+>
+> """
+> A _HID object evaluates to either a numeric 32-bit compressed EISA
+> type ID or a string. If a string, the format must be an alphanumeric
+> PNP or ACPI ID with no asterisk or other leading characters.
+> A valid PNP ID must be of the form "AAA####" where A is an uppercase
+> letter and # is a hex digit.
+> A valid ACPI ID must be of the form "NNNN####" where N is an uppercase
+> letter or a digit ('0'-'9') and # is a hex digit. This specification
+> reserves the string "ACPI" for use only with devices defined herein.
+> It further reserves all strings representing 4 HEX digits for
+> exclusive use with PCI-assigned Vendor IDs.
+> """
+>
+> While most people adhere to the ACPI specs, Microsoft decided that its
+> VM Generation Counter device [1] should only be identifiable by _CID with
+> an value of "VM_Gen_Counter" - longer than 9 characters.
+>
+> To still allow device drivers to match identifiers that exceed the 9 byte
+> limit, without wasting memory for the unlikely case that you have long
+> identifiers, let's match only the first 9 characters of the identifier.
+>
+> This patch is a prerequisite to add support for VMGenID in Linux [2].
+>
+> [1] https://download.microsoft.com/download/3/1/C/31CFC307-98CA-4CA5-914C-D9772691E214/VirtualMachineGenerationID.docx
+> [2] https://lore.kernel.org/lkml/20220225124848.909093-1-Jason@zx2c4.com/
+>
+> Signed-off-by: Alexander Graf <graf@amazon.com>
+>
+> ---
+>
+> Alternatives to the approach above would be:
+>
+>   1) Always set id[8] = '\0' in acpi_add_id()
+>   2) Allocate the id in struct acpi_device_id dynamically
+>
+> I'm happy to explore option 1 instead if people believe it's cleaner.
+> Option 2 on the other hand seems overkill for the issue at hand. We don't
+> have a lot of devices that exceed the 8 character threshold, so chance of
+> collision is quite small. On the other hand, the extra overhead of
+> maintaining the string allocation dynamically will quickly become a
+> headache.
+>
 
+I don't like this hack. If we are going to accept the fact that CIDs
+could be arbitrary length strings, we should handle them properly.
+
+The device subsystem side of things already deals with this properly:
+the modalias of the QEMU vmgenid device comes up as
+'acpi:QEMUVGID:VM_GEN_COUNTER', which means it already captures the
+entire string, and exposes it in the correct way (modulo the all caps)
+
+So what we need is a way for a module to describe its compatibility
+with such a _CID, which shouldn't be that complicated.
+
+I'll try to cook something up.
+
+
+> ---
+>  drivers/acpi/bus.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 07f604832fd6..aba93171739f 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -829,7 +829,7 @@ static bool __acpi_match_device(struct acpi_device *device,
+>                 /* First, check the ACPI/PNP IDs provided by the caller. */
+>                 if (acpi_ids) {
+>                         for (id = acpi_ids; id->id[0] || id->cls; id++) {
+> -                               if (id->id[0] && !strcmp((char *)id->id, hwid->id))
+> +                               if (id->id[0] && !strncmp((char *)id->id, hwid->id, ACPI_ID_LEN))
+>                                         goto out_acpi_match;
+>                                 if (id->cls && __acpi_match_device_cls(id, hwid))
+>                                         goto out_acpi_match;
+> --
+> 2.16.4
+>
+>
+>
+>
+> Amazon Development Center Germany GmbH
+> Krausenstr. 38
+> 10117 Berlin
+> Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+> Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+> Sitz: Berlin
+> Ust-ID: DE 289 237 879
+>
+>
+>
