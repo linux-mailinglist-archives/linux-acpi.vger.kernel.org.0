@@ -2,54 +2,73 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E90F4C4E49
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Feb 2022 20:05:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90ACE4C4E4A
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Feb 2022 20:06:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234132AbiBYTGF (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Feb 2022 14:06:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51280 "EHLO
+        id S233574AbiBYTHa (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Feb 2022 14:07:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233574AbiBYTGA (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Feb 2022 14:06:00 -0500
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 991C81BAF23;
-        Fri, 25 Feb 2022 11:05:27 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: sre)
-        with ESMTPSA id 5AC901F46678
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1645815926;
-        bh=j7Rs/2nX9khQjgsPMQj22DMvM8jq4/YkmhOJrRks6X8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dn6fmsTljjuk1WXUGzVYnT7CkOMRl2hSZQrzzQTUfnNPGHA/iy3CZuO70o4E5vk8i
-         exoic4KSIxTQYFAShvuFpYJW6/3zELrjV4x+gJ0Y29SeZ9ya4yix2OjtGO3wFOjMhS
-         +ysVh0BKspJeNB5TbWhrcJERPFk4sbq9vlbo8Kc5OultRq+7evKGT9jKiD9QDkG8HA
-         RtbiAQtp1xsllk6HZd2+3BZnjWn/7DOAvxE/wuBLFQlKO2hytTvLzV179/J529fuR6
-         I6tFl9kt4OjHuNIIkf+BC+FWxDQDYD44xbHPjRWaoI9fuMfegB+CaNrgWkXK0FewYY
-         SpgfhCCaraBpQ==
-Received: by mercury (Postfix, from userid 1000)
-        id 1B36E106049B; Fri, 25 Feb 2022 20:05:22 +0100 (CET)
-Date:   Fri, 25 Feb 2022 20:05:22 +0100
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Carl Edquist <edquist@cs.wisc.edu>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Thomas Renninger <trenn@suse.de>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: /proc/acpi/battery gone again, breaks wmpower
-Message-ID: <20220225190522.cbqoxpsucvniep55@mercury.elektranox.org>
-References: <0718fe87-230f-b293-b998-b83f3c133367@cs.wisc.edu>
- <CAJZ5v0j=c-ctwqmRfvVtep4DtOf=6Gf=zs+B19aPDpQ0447oRw@mail.gmail.com>
- <CAJZ5v0h5D=1UWqmC=foAK3-p1LLV=KG8dRM-kPYxJc7GEKdZbQ@mail.gmail.com>
- <448277be-d848-d4dd-2d92-1b4e6ea69243@cs.wisc.edu>
+        with ESMTP id S231332AbiBYTH3 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Feb 2022 14:07:29 -0500
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E001F9825;
+        Fri, 25 Feb 2022 11:06:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1645816018; x=1677352018;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=0pdcYTBpWu4B8LEQgqpWgPSfSuvuJAm1Gf5oxdVgDRI=;
+  b=KOpJJhjQfdupW2jsd85vyDKNNACTLZKXg8GTKUYVeR8j0UZ8A8mddBeC
+   8fX4z79EmoWYB2ZCEZeVc592iHSQmDaDZf8xbpYhaRcseJgpJ2ScwV8oQ
+   qMeuumoFqXAdrc3Y0QA5BUh/1ngK+bLZWRoBV/If6OpgpsnnlSZQ5B63u
+   8=;
+X-IronPort-AV: E=Sophos;i="5.90,137,1643673600"; 
+   d="scan'208";a="179943799"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2b-28a78e3f.us-west-2.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP; 25 Feb 2022 19:06:46 +0000
+Received: from EX13MTAUWC002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-pdx-2b-28a78e3f.us-west-2.amazon.com (Postfix) with ESMTPS id DF538A0D30;
+        Fri, 25 Feb 2022 19:06:43 +0000 (UTC)
+Received: from EX13D20UWC001.ant.amazon.com (10.43.162.244) by
+ EX13MTAUWC002.ant.amazon.com (10.43.162.240) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.28; Fri, 25 Feb 2022 19:06:43 +0000
+Received: from [0.0.0.0] (10.43.160.203) by EX13D20UWC001.ant.amazon.com
+ (10.43.162.244) with Microsoft SMTP Server (TLS) id 15.0.1497.28; Fri, 25 Feb
+ 2022 19:06:41 +0000
+Message-ID: <a71a855f-9f3b-c99d-d4f9-c1ceb13c690d@amazon.com>
+Date:   Fri, 25 Feb 2022 20:06:39 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="kfzai5ypy2tmllxf"
-Content-Disposition: inline
-In-Reply-To: <448277be-d848-d4dd-2d92-1b4e6ea69243@cs.wisc.edu>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.6.1
+Subject: Re: [PATCH] ACPI: bus: Match first 9 bytes of device IDs
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+CC:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        "Woodhouse, David" <dwmw@amazon.co.uk>
+References: <20220225155552.30636-1-graf@amazon.com>
+ <CAMj1kXGtANm3SMoREymDSyx+wpn3L=Ex5q5mpgQigOwmEp33Lg@mail.gmail.com>
+ <YhkQKfE8ErtFBmSB@zx2c4.com>
+ <CAMj1kXEtUUod8Hp6VhS6k7iDKYkFj_t_J=qS2XF1p2X_SFdTvg@mail.gmail.com>
+ <CAHmME9oJpL_y4bDaLwrZZZ54p5_C0YF9=vW7Zz1iUhpBHx2TvA@mail.gmail.com>
+ <YhkaAUQ/5ChlKlXt@zx2c4.com>
+ <CAHmME9rzS5rAKoAfv7+N_R71pWduV=a=gJJoKPoLtYx7m7CFEg@mail.gmail.com>
+From:   Alexander Graf <graf@amazon.com>
+In-Reply-To: <CAHmME9rzS5rAKoAfv7+N_R71pWduV=a=gJJoKPoLtYx7m7CFEg@mail.gmail.com>
+X-Originating-IP: [10.43.160.203]
+X-ClientProxiedBy: EX13D10UWB002.ant.amazon.com (10.43.161.130) To
+ EX13D20UWC001.ant.amazon.com (10.43.162.244)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,186 +76,18 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
+Ck9uIDI1LjAyLjIyIDE5OjM5LCBKYXNvbiBBLiBEb25lbmZlbGQgd3JvdGU6Cj4gT2theSwgdGhl
+IGZpbmFsIHBpZWNlLCB1c2Vyc3BhY2U6Cj4KPiAvc3lzL2J1cy9hY3BpL2RldmljZXMvUUVNVVZH
+SUQ6MDAvbW9kYWxpYXMgZ2l2ZXM6Cj4gICAgICBhY3BpOlFFTVVWR0lEOlZNX0dFTl9DT1VOVEVS
+Ogo+Cj4gbW9kaW5mbyAtRiBhbGlhcyB2bWdlbmlkLmtvIGdpdmVzOgo+ICAgICAgYWNwaSo6Vk1f
+R0VOX0NPVU5URVI6Kgo+Cj4gdWRldiBzcmMgdXNlcyBmbm1hdGNoLgo+Cj4gQmFzaCBjb25maXJt
+cyBhIG1hdGNoOgo+Cj4gJCBbWyAiYWNwaTpRRU1VVkdJRDpWTV9HRU5fQ09VTlRFUjoiID09IGFj
+cGkqOlZNX0dFTl9DT1VOVEVSOiogXV0gJiYKPiBlY2hvIG1hdGNoZXMKPiBtYXRjaGVzCj4KPiBT
+byBJIHRoaW5rIHdpdGggQUNQSV9JRF9MRU4gLS0+IDE2IHdlIGFyZSBnb29kIHRvIGdvLgoKCklz
+IHRoZSBzaXplIGluY3JlYXNlIChtb3N0bHkgcm9kYXRhIEkgc3VwcG9zZT8gQW55d2hlcmUgZWxz
+ZT8pIG1lYXN1cmFibGU/CgoKQWxleAoKCgoKQW1hem9uIERldmVsb3BtZW50IENlbnRlciBHZXJt
+YW55IEdtYkgKS3JhdXNlbnN0ci4gMzgKMTAxMTcgQmVybGluCkdlc2NoYWVmdHNmdWVocnVuZzog
+Q2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRoYW4gV2Vpc3MKRWluZ2V0cmFnZW4gYW0gQW10c2dl
+cmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIgSFJCIDE0OTE3MyBCClNpdHo6IEJlcmxpbgpVc3Qt
+SUQ6IERFIDI4OSAyMzcgODc5CgoK
 
---kfzai5ypy2tmllxf
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-(I will leave the ACPI related questions for Rafael, but
-can try to help with some of the questions)
-
-On Thu, Feb 24, 2022 at 10:53:32AM -0600, Carl Edquist wrote:
-> My thoughts about this though -
->=20
-> I did not really expect to get this interface back after I read the commit
-> message for its removal. I admire your fidelity to the linux user promise,
-> but I don't want to create trouble for you guys either.
->=20
-> I am happy to put in the legwork to get wmpower working using whatever the
-> blessed replacement is for the acpi procfs power stuff.  Maybe you can he=
-lp
-> shed some light on the sysfs interface for me.
-
-FWIW the power-supply sysfs API exists since quite some time now
-(4a11b59d8283 from 2007), so it's not particularly new ;)
-
-> I started exploring a bit under /sys/class/power_supply, looking for
-> replacements for the "present rate" and "last full/remaining capacity" it=
-ems
-> under /proc/acpi/battery.  Curiously I have two lenovo ThinkPads, a T510 =
-and
-> a T540p, and one of them has current_now & charge_full/_now, and the other
-> has power_now & energy_full/_now.  Are these the only two possibilities f=
-or
-> rate & capacity?  Or are there other potentially others?
-
-That is because the power-supply subsystem passes through
-the data provided by the hardware without unit conversion.
-So one of the battery fuel gauges in your laptops provides
-its numbers in Wh and one provides it in Ah. In (non ACPI)
-embedded systems you might also get neither of them.
-
-The units for the sysfs files are fixed, so a system reporting
-Ah provides current_now/charge_now files and Wh based systems
-provide power_now/energy_now files.
-
-> I guess the convenient thing about the /proc/acpi/battery interfaces is t=
-hat
-> it automatically presents the right info for rate & capacity.
->=20
-> (I felt like I was losing my mind for a bit when I saw the units presented
-> as "mAh" in one after I was sure I had read "mWh" before... But reading y=
-our
-> patch helped give me a better clue about what was going on there.)
-
-The files in /sys/class/power_supply always report almost all values
-in =B5 units (i.e. =B5A, =B5V, =B5Ah, =B5W, ...), one value per file and wi=
-th
-fixed units. Documentation can be found here:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Doc=
-umentation/ABI/testing/sysfs-class-power
-
-> I'm also curious, is the "BAT[0-*]" pattern for battery names consistent,=
- or
-> are there other possibilities?  I had suspected "AC" was the standard
-> power_supply name for the main AC power, but that turned out not to be the
-> case on another (HP) laptop that I took a look at.  Which leads me to
-> suspect that "BATX" is not necessarily standard either.
-
-The subsystem does not have any name constraints. But you can find
-the device type via the 'type' file and non-system level devices
-(e.g. battery of a game controller) set the 'scope' property to
-"Device".
-
-> I'm also thinking to enumerate batteries & AC power supplies via
-> /sys/bus/acpi/drivers/{ac,battery} rather than /sys/class/power_supply, as
-> surprisingly even a USB-C stick can show up under power_supply, and it's =
-not
-> obvious if there's a clean way to sort out what's what then.
-
-USB-C is kind of tricky with the option to reverse power-flow in
-many cases (e.g. laptop can charge a power bank or power bank can
-charge a laptop using the same connector). In general you definetly
-can get non-ACPI power-supply devices, e.g. batteries from wireless
-keyboards.
-
-Also some devices have broken ACPI battery handling, so the ACPI
-driver is blacklisted and native hardware drivers are used
-instead. In that case you will not find anything power related
-in /sys/bus/acpi.
-
--- Sebastian
-
-> I say all this of course as a laptop end-user, and even with the kernel
-> source docs in front of me I seem to be feeling my way around in the dark=
-=2E I
-> don't know much about the linux acpi internals, and I did not learn about
-> the acpi procfs power interface being deprecated until after wmpower stop=
-ped
-> working for me this month :)
->=20
-> It seems like part of the difficulty is that there is not much of a feedb=
-ack
-> loop for end users to realize that they are using deprecated procfs
-> interfaces, whether directly in custom battery scripts that scrape
-> /proc/acpi/battery, or unwittingly through other programs they happen to =
-use
-> (in this case wmpower).  There are no warnings until it's too late.
->=20
-> And even taking a look at what happened the first time it was removed [1],
-> it seems the conclusion was "some people are still using programs that re=
-ly
-> on the interface, so we'll add it back" ... But it's not obvious if any
-> effort was made to contact maintainers with a little nudge, to let them k=
-now
-> that it's (still) deprecated and what the replacement interface is.
->=20
-> Not sure what the general solution is there, but in any case I'll cheerfu=
-lly
-> fix up wmpower.
->=20
->=20
-> Thanks again and sorry for the long mail :)
->=20
-> Carl
->=20
->=20
-> [1] https://lkml.org/lkml/2014/4/21/152
-
->   CC [M]  drivers/acpi/ac.o
-> In file included from ./include/linux/kernel.h:29,
->                  from drivers/acpi/ac.c:11:
-> drivers/acpi/ac.c: In function 'acpi_ac_add_fs':
-> drivers/acpi/ac.c:182:29: error: expected ')' before 'PREFIX'
->   182 |         printk(KERN_WARNING PREFIX "Deprecated procfs I/F for AC =
-is loaded,"
->       |                             ^~~~~~
-> ./include/linux/printk.h:418:25: note: in definition of macro 'printk_ind=
-ex_wra'
->   418 |                 _p_func(_fmt, ##__VA_ARGS__);                    =
-       \
->       |                         ^~~~
-> drivers/acpi/ac.c:182:9: note: in expansion of macro 'printk'
->   182 |         printk(KERN_WARNING PREFIX "Deprecated procfs I/F for AC =
-is loaded,"
->       |         ^~~~~~
-> ./include/linux/printk.h:418:24: note: to match this '('
->   418 |                 _p_func(_fmt, ##__VA_ARGS__);                    =
-       \
->       |                        ^
-> ./include/linux/printk.h:446:26: note: in expansion of macro 'printk_inde=
-x_wrap'
->   446 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_A=
-RGS__)
->       |                          ^~~~~~~~~~~~~~~~~
-> drivers/acpi/ac.c:182:9: note: in expansion of macro 'printk'
->   182 |         printk(KERN_WARNING PREFIX "Deprecated procfs I/F for AC =
-is loaded,"
->       |         ^~~~~~
-
-
---kfzai5ypy2tmllxf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmIZKGsACgkQ2O7X88g7
-+po3HhAAmVBYC/youNeitvXCCP8tqCGqGCIdEPd8C9aKazidv2xPqr9zNxysNhcP
-lfUJxZZ1RXmOYUNSFiCAzcZj6V0m4qa5uRg0p/kRPbOSTQezocyfWlSlWbSLjjpM
-311bOT+/NDjRemNKu1vQZoVoS1Rr+pgjIgy5JLkXxMifAtqbR9iC/edRSVc68GST
-cyPAecTrfqe3TildG198jxUczVuPxGux23wi8huM2cqVRYbn70QoeFBfW30r8tcA
-5y+I6BPlc4N40rwykllzO3XiVDkf46r3U/Ct7qSCzw8fAJqOBMGdjqtPml9+ZHkI
-VU+kfRzCxzKj84JqFXFdDtxw2f9xkZMlb9D8u44YKQFSBpnTPn6VKyAhRmFOzTLF
-YADhWg3M4qOn00gwzas7+kKk8JZBVGyCw1ESsQRaPQiVO2L6qG2IBCx/KcMmsqGJ
-XDO6l58orxY+llKaovS2uQEEr99mvM44EZu3EyoHahoPUDG8e5zj2OxNApA9ULdF
-aBLqQubp/FpNgzePX7OJ/rk3xeO1qigvUJNwoKbchHCIKomGS2wEnyPmvMKS+ERm
-qPpW4ZDp3qdok/Zd61kjXqWKJz6EoD0KILSE8hXqzRo8ZyyqRO7gg0EiTvup/VXG
-f8FS3k1lxl6D10qO6TMLAJv320+Rvb9P/44Fp2n8wNT4BKV+luk=
-=+ddv
------END PGP SIGNATURE-----
-
---kfzai5ypy2tmllxf--
