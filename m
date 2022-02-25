@@ -2,105 +2,113 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 482104C4B84
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Feb 2022 17:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CDE84C4BAA
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Feb 2022 18:11:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243292AbiBYQ6F (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Feb 2022 11:58:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49162 "EHLO
+        id S243498AbiBYRKy (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Feb 2022 12:10:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239850AbiBYQ6F (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Feb 2022 11:58:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA4D05BD26;
-        Fri, 25 Feb 2022 08:57:32 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 454BC61CF5;
-        Fri, 25 Feb 2022 16:57:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEACBC340E7;
-        Fri, 25 Feb 2022 16:57:30 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="TDxbmhnd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1645808249;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Oko4i9ycomsYP38wIRGd+bBjhb7N3Fz+ZbyUitFcD8A=;
-        b=TDxbmhndZjIrUUsXHOnhjPRFR5G9gl/zqx7Y50i1YTdSz/jOqQPEdwI5b0wOhAeQ4B4yh6
-        LB7xD4sZkNj4K9P1b9V3yjLOcpJfXy6cWMK4FAh1HFfgaahkAW0yEWMa+2xrpT//4NZtEq
-        zSBteWtG1sBoEE7b1/A2US6AP8hw8Bs=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id ecbf4e30 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Fri, 25 Feb 2022 16:57:28 +0000 (UTC)
-Date:   Fri, 25 Feb 2022 17:57:23 +0100
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-To:     Alexander Graf <graf@amazon.com>
-Cc:     linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S243497AbiBYRKy (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Feb 2022 12:10:54 -0500
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C15261FED96;
+        Fri, 25 Feb 2022 09:10:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1645809023; x=1677345023;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=dRL0/jPg1fxrA+PWLdwiEJHSkoRCHV/X2J+x9Q0h534=;
+  b=o3vUQ/2ueirHoHx53QxyBUf+EZadZtsYFKfxH35+XEtsJaqDoeorA2/B
+   V1fsYObeE0LEUBPptz1E9pbMV5TQpFECpVdpscPVemxxwIAUVNHltlz7+
+   v/AC7i1dy4TuntubkVdZfv84Ngiv9zd3ekssNgfaT2ASh/JC9hdj4U5NY
+   o=;
+X-IronPort-AV: E=Sophos;i="5.90,136,1643673600"; 
+   d="scan'208";a="179912807"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-54c9d11f.us-east-1.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP; 25 Feb 2022 17:10:11 +0000
+Received: from EX13MTAUWC002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+        by email-inbound-relay-iad-1e-54c9d11f.us-east-1.amazon.com (Postfix) with ESMTPS id 1515FC0292;
+        Fri, 25 Feb 2022 17:10:08 +0000 (UTC)
+Received: from EX13D20UWC001.ant.amazon.com (10.43.162.244) by
+ EX13MTAUWC002.ant.amazon.com (10.43.162.240) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.28; Fri, 25 Feb 2022 17:10:03 +0000
+Received: from [0.0.0.0] (10.43.161.89) by EX13D20UWC001.ant.amazon.com
+ (10.43.162.244) with Microsoft SMTP Server (TLS) id 15.0.1497.28; Fri, 25 Feb
+ 2022 17:10:01 +0000
+Message-ID: <7a98e9c5-e0e5-9bf9-71b5-f75b9ddcdc4b@amazon.com>
+Date:   Fri, 25 Feb 2022 18:09:59 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.6.1
+Subject: Re: [PATCH] ACPI: bus: Match first 9 bytes of device IDs
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+CC:     <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Len Brown <lenb@kernel.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>, ardb@kernel.org,
-        dwmw@amazon.co.uk
-Subject: Re: [PATCH] ACPI: bus: Match first 9 bytes of device IDs
-Message-ID: <YhkKc2fa8dSTA9pc@zx2c4.com>
+        Greg KH <gregkh@linuxfoundation.org>, <ardb@kernel.org>,
+        <dwmw@amazon.co.uk>
 References: <20220225155552.30636-1-graf@amazon.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220225155552.30636-1-graf@amazon.com>
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+ <YhkKc2fa8dSTA9pc@zx2c4.com>
+From:   Alexander Graf <graf@amazon.com>
+In-Reply-To: <YhkKc2fa8dSTA9pc@zx2c4.com>
+X-Originating-IP: [10.43.161.89]
+X-ClientProxiedBy: EX13D02UWB004.ant.amazon.com (10.43.161.11) To
+ EX13D20UWC001.ant.amazon.com (10.43.162.244)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Alex,
+SGV5IEphc29uLAoKT24gMjUuMDIuMjIgMTc6NTcsIEphc29uIEEuIERvbmVuZmVsZCB3cm90ZToK
+PiBIaSBBbGV4LAo+Cj4gVGhhbmtzIGZvciB0aGlzLgo+Cj4gSSB0ZXN0ZWQgdGhpcyBvdXQgd2l0
+aCB0aGUgdm1nZW5pZCBkcml2ZXIsIGFuZCBJIGZvdW5kIGEgYnVnIGluIHRoaXMgdjE6Cj4KPiBP
+biBGcmksIEZlYiAyNSwgMjAyMiBhdCAwNDo1NTo1MlBNICswMTAwLCBBbGV4YW5kZXIgR3JhZiB3
+cm90ZToKPj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGlkLT5pZFswXSAmJiAh
+c3RyY21wKChjaGFyICopaWQtPmlkLCBod2lkLT5pZCkpCj4+ICsgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIGlmIChpZC0+aWRbMF0gJiYgIXN0cm5jbXAoKGNoYXIgKilpZC0+aWQsIGh3aWQt
+PmlkLCBBQ1BJX0lEX0xFTikpCj4gVGhpcyBvbmx5IHdvcmtlZCBvbmNlIEkgbWFkZSB0aGF0IGBB
+Q1BJX0lEX0xFTiAtIDFgLCBiZWNhdXNlIHRoYXQgbGVuZ3RoCj4gaW5jbHVkZXMgdGhlIG51bGwg
+dGVybWluYXRvci4gVGhlIGJlbG93IHBhdGNoIHdvcmtzIGZpbmUuIElmIHlvdSBhZGp1c3QKPiB0
+aGF0IGFuZCBzZW5kIGEgcXVpY2sgdjIgZm9sbG93LXVwLCBJJ20gaGFwcHkgdG8gYWNrIGl0Lgo+
+Cj4gUmVnYXJkcywKPiBKYXNvbgo+Cj4gLS0tLS0tLS04PC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL2J1cy5jIGIvZHJpdmVycy9hY3BpL2J1
+cy5jCj4gaW5kZXggMDdmNjA0ODMyZmQ2Li5mMTc5ZWJmMTZmMjEgMTAwNjQ0Cj4gLS0tIGEvZHJp
+dmVycy9hY3BpL2J1cy5jCj4gKysrIGIvZHJpdmVycy9hY3BpL2J1cy5jCj4gQEAgLTgyOSw3ICs4
+MjksNyBAQCBzdGF0aWMgYm9vbCBfX2FjcGlfbWF0Y2hfZGV2aWNlKHN0cnVjdCBhY3BpX2Rldmlj
+ZSAqZGV2aWNlLAo+ICAgICAgICAgICAgICAgICAgLyogRmlyc3QsIGNoZWNrIHRoZSBBQ1BJL1BO
+UCBJRHMgcHJvdmlkZWQgYnkgdGhlIGNhbGxlci4gKi8KPiAgICAgICAgICAgICAgICAgIGlmIChh
+Y3BpX2lkcykgewo+ICAgICAgICAgICAgICAgICAgICAgICAgICBmb3IgKGlkID0gYWNwaV9pZHM7
+IGlkLT5pZFswXSB8fCBpZC0+Y2xzOyBpZCsrKSB7Cj4gLSAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBpZiAoaWQtPmlkWzBdICYmICFzdHJjbXAoKGNoYXIgKilpZC0+aWQsIGh3aWQtPmlk
+KSkKPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmIChpZC0+aWRbMF0gJiYgIXN0
+cm5jbXAoKGNoYXIgKilpZC0+aWQsIGh3aWQtPmlkLCBBQ1BJX0lEX0xFTiAtIDEpKQo+ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ290byBvdXRfYWNwaV9tYXRjaDsK
+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZiAoaWQtPmNscyAmJiBfX2FjcGlf
+bWF0Y2hfZGV2aWNlX2NscyhpZCwgaHdpZCkpCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBnb3RvIG91dF9hY3BpX21hdGNoOwo+IGRpZmYgLS1naXQgYS9kcml2ZXJz
+L3ZpcnQvdm1nZW5pZC5jIGIvZHJpdmVycy92aXJ0L3ZtZ2VuaWQuYwo+IGluZGV4IGI1MDNjMjEw
+YzJkNy4uMDQ3NTFmYzFkMzY1IDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvdmlydC92bWdlbmlkLmMK
+PiArKysgYi9kcml2ZXJzL3ZpcnQvdm1nZW5pZC5jCj4gQEAgLTc4LDggKzc4LDcgQEAgc3RhdGlj
+IHZvaWQgdm1nZW5pZF9hY3BpX25vdGlmeShzdHJ1Y3QgYWNwaV9kZXZpY2UgKmRldmljZSwgdTMy
+IGV2ZW50KQo+ICAgfQo+Cj4gICBzdGF0aWMgY29uc3Qgc3RydWN0IGFjcGlfZGV2aWNlX2lkIHZt
+Z2VuaWRfaWRzW10gPSB7Cj4gLSAgICAgICB7ICJRRU1VVkdJRCIsIDAgfSwgICAgICAvKiBRRU1V
+ICovCj4gLSAgICAgICB7ICJWTUdFTklEIiwgMCB9LCAgICAgICAvKiBGaXJlY3JhY2tlciAqLwo+
+ICsgICAgICAgeyAiVk1fR0VOX0MiLCAwIH0sIC8qIFRydW5jYXRlZCAiVk1fR2VuX0NvdW50ZXIi
+ICovCgoKWW91IGhhdmUgdG8gbWFrZSB0aGlzICJWTV9HRU5fQ08iLiBJIG5vdyBtYXRjaCB0aGUg
+ZnVsbCA5IGJ5dGVzIC0gdW5saWtlIAp0aGUgcHJldmlvdXMgcGF0Y2ggSSBzZW50IDopCgoKQWxl
+eAoKCgoKCkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIu
+IDM4CjEwMTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIs
+IEpvbmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJn
+IHVudGVyIEhSQiAxNDkxNzMgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAyODkgMjM3IDg3OQoK
+Cg==
 
-Thanks for this.
-
-I tested this out with the vmgenid driver, and I found a bug in this v1:
-
-On Fri, Feb 25, 2022 at 04:55:52PM +0100, Alexander Graf wrote:
-> -				if (id->id[0] && !strcmp((char *)id->id, hwid->id))
-> +				if (id->id[0] && !strncmp((char *)id->id, hwid->id, ACPI_ID_LEN))
-
-This only worked once I made that `ACPI_ID_LEN - 1`, because that length
-includes the null terminator. The below patch works fine. If you adjust
-that and send a quick v2 follow-up, I'm happy to ack it.
-
-Regards,
-Jason
-
---------8<--------------------------
-
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 07f604832fd6..f179ebf16f21 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -829,7 +829,7 @@ static bool __acpi_match_device(struct acpi_device *device,
- 		/* First, check the ACPI/PNP IDs provided by the caller. */
- 		if (acpi_ids) {
- 			for (id = acpi_ids; id->id[0] || id->cls; id++) {
--				if (id->id[0] && !strcmp((char *)id->id, hwid->id))
-+				if (id->id[0] && !strncmp((char *)id->id, hwid->id, ACPI_ID_LEN - 1))
- 					goto out_acpi_match;
- 				if (id->cls && __acpi_match_device_cls(id, hwid))
- 					goto out_acpi_match;
-diff --git a/drivers/virt/vmgenid.c b/drivers/virt/vmgenid.c
-index b503c210c2d7..04751fc1d365 100644
---- a/drivers/virt/vmgenid.c
-+++ b/drivers/virt/vmgenid.c
-@@ -78,8 +78,7 @@ static void vmgenid_acpi_notify(struct acpi_device *device, u32 event)
- }
-
- static const struct acpi_device_id vmgenid_ids[] = {
--	{ "QEMUVGID", 0 },	/* QEMU */
--	{ "VMGENID", 0 },	/* Firecracker */
-+	{ "VM_GEN_C", 0 }, /* Truncated "VM_Gen_Counter" */
- 	{ },
- };
