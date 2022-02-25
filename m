@@ -2,44 +2,50 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFB04C490B
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Feb 2022 16:33:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 104B04C494D
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Feb 2022 16:40:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242132AbiBYPdx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Fri, 25 Feb 2022 10:33:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42248 "EHLO
+        id S237945AbiBYPkX (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Fri, 25 Feb 2022 10:40:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242145AbiBYPdw (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Feb 2022 10:33:52 -0500
+        with ESMTP id S240358AbiBYPkV (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Fri, 25 Feb 2022 10:40:21 -0500
 Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE194181E77;
-        Fri, 25 Feb 2022 07:33:19 -0800 (PST)
-Received: by mail-yb1-f182.google.com with SMTP id u3so6590446ybh.5;
-        Fri, 25 Feb 2022 07:33:19 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A66C227597;
+        Fri, 25 Feb 2022 07:39:49 -0800 (PST)
+Received: by mail-yb1-f182.google.com with SMTP id j12so6616620ybh.8;
+        Fri, 25 Feb 2022 07:39:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=eABu8QHBsdfkHA3w12JWmBEc2OZCUV76ZExfQivismc=;
-        b=ouie04PEWm6L1v9RlxcJAHW2NzEliePn7ocN1YUHFrRzlyNdcJpmX0BD/yOn8y3Mbh
-         sk8XVGjlAP5+TrK88b2K8zMt0+bTOW0jP5g0AZGwkl7WpjY1kQ5mGdeEStHGYR71MFqY
-         puWslGh60nf5r+rMUfmFF4V1HRhiAdmkb+5nZV/1bwc+WNI0fE7nhKJldcmBEOFgL6Jw
-         W/F86lrKbzNeUTMNKVR7zzzKXTgYPgy6VXAEXURGN8JRmpcUvQ+psk8Tv37sOzoIJLsx
-         qYRkHj7gWW0luaisppWwo1nkPranaisZSmZ4uo1FNE0gNoyYalHqYpublUqApoxBhdMN
-         1A2Q==
-X-Gm-Message-State: AOAM532yQ/dhkUf1NMMkcuNB/kSsM8w+NYcEgFCmWDrMm7Zms9VvW/0R
-        7J/wY4Rud1lQjRInoFC9p9HPfALc4wCcnorsW3SAWXmb/b4=
-X-Google-Smtp-Source: ABdhPJxsDqyFM8lHB1ww0LkZcf1spz1fbcJhFO7+5DEGzYZRLP8MjQ2NSomKv4l9/DlSpZ0uBgm2k0FloTFi7cxK+xM=
-X-Received: by 2002:a25:7785:0:b0:614:c283:2a3d with SMTP id
- s127-20020a257785000000b00614c2832a3dmr7913179ybc.137.1645803199100; Fri, 25
- Feb 2022 07:33:19 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GR/V12DMRnmBhcnV69/MsoszncUmgemPWBCEqb7uAFo=;
+        b=m10JZXzVRLIm4AZivXGdL5Y1yCdyaWQIHbLPypVEA93zDPifkLOZ+Rhaj7wuQ6+8K+
+         qp5mW82ynzQWliptYAN5ghn56vFcafHZh7NEBzPwhrMXyR9KoUDJevx4r66bLWgaPJMA
+         B+SZPaWA5iIUPoL4ymXbIRmYBEl0ZlV9si5Fzte4Mqj0yhtWqeSXspIkdZ4aYBtj1R0y
+         AgkipalUVWD+RkXe1DEhSBoxvFpb8uagIRbp4itrRzAnG6qSUJSyavJia1rerkkovhnB
+         XunqU9udnzKx8kuB3KfiJM4nXSxiqFvZ2rB7BWJrnw8zs7R8ZvVznL6FJDaGkEJUtKVm
+         AhHg==
+X-Gm-Message-State: AOAM530P7rgUjpfYkOxoCFSfCGYpmRy8S9hBfYN9zvikNpIQKB/yK/RX
+        Sd+ZO626Pr6CNmD/jr30YD04lwJ8JWxkp7GvL7E=
+X-Google-Smtp-Source: ABdhPJzrx7n2dUleHMsZHJQcp+57rEJCDv9wJM6JngPqQvdEjC+z5wBhZrLOBtGS3O9r22saq3TEeeT6l0ZYLqQQJhw=
+X-Received: by 2002:a25:bbc1:0:b0:610:b4ce:31db with SMTP id
+ c1-20020a25bbc1000000b00610b4ce31dbmr7698406ybk.482.1645803588829; Fri, 25
+ Feb 2022 07:39:48 -0800 (PST)
 MIME-Version: 1.0
+References: <20220224113807.91771-1-pmenzel@molgen.mpg.de> <20220224113807.91771-3-pmenzel@molgen.mpg.de>
+In-Reply-To: <20220224113807.91771-3-pmenzel@molgen.mpg.de>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Fri, 25 Feb 2022 16:33:08 +0100
-Message-ID: <CAJZ5v0hhiuXu=rKp8=gfMh6Xm5cT4-EK2QduofM2bUgY7jMqCw@mail.gmail.com>
-Subject: [GIT PULL] Thermal control fix for v5.17-rc6
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Linux PM <linux-pm@vger.kernel.org>,
+Date:   Fri, 25 Feb 2022 16:39:38 +0100
+Message-ID: <CAJZ5v0gLn=EEsLLZBtFUKA9SkK88S1HQxj_Z11sPgnRE9T_RmQ@mail.gmail.com>
+Subject: Re: [PATCH 3/4] acpi: exsystem: Warn about sleeps greater than 50 ms
+To:     Paul Menzel <pmenzel@molgen.mpg.de>
+Cc:     Robert Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -52,35 +58,47 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Linus,
+On Thu, Feb 24, 2022 at 12:38 PM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
+>
+> Quick boottime is important, so warn about sleeps greater than 50 ms in
+> ACPI.
+>
+> 50 ms is still long compared to distribution Linux kernels reaching initrd
+> in 350 ms, so should probably changed to 10 ms, so people are aware
+> about this.
+>
+> Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
 
-Please pull from the tag
+First off, as ACPICA material, this should be submitted to the
+upstream project via https://github.com/acpica/acpica/.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-5.17-rc6
+> ---
+>  drivers/acpi/acpica/exsystem.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/drivers/acpi/acpica/exsystem.c b/drivers/acpi/acpica/exsystem.c
+> index 00f66af31ffa..bdffb8aac05c 100644
+> --- a/drivers/acpi/acpica/exsystem.c
+> +++ b/drivers/acpi/acpica/exsystem.c
+> @@ -167,6 +167,11 @@ acpi_status acpi_ex_system_do_sleep(u64 how_long_ms)
+>
+>         acpi_ex_exit_interpreter();
+>
+> +       if (how_long_ms > 50) {
+> +               ACPI_WARNING((AE_INFO,
 
-with top-most commit 3abea10e6a8f0e7804ed4c124bea2d15aca977c8
+Second, the log level is somewhat high for something like this.
 
- thermal: int340x: fix memory leak in int3400_notify()
+> +                   "Time parameter %llu > 50 ms. Please contact firmware vendor for more responsive system.", how_long_ms));
 
-on top of commit cfb92440ee71adcc2105b0890bb01ac3cddb8507
+Also, I would rephrase the warning message to something like "Firmware
+issue: Excessive delay (%llu ms) in ACPI Control Method".
 
- Linux 5.17-rc5
-
-to receive a thermal control fix for 5.17-rc6.
-
-This fixes a memory leak in the int340x thermal driver's ACPI notify
-handler (Chuansheng Liu).
-
-Thanks!
-
-
----------------
-
-Chuansheng Liu (1):
-      thermal: int340x: fix memory leak in int3400_notify()
-
----------------
-
- drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> +       }
+> +
+>         /*
+>          * For compatibility with other ACPI implementations and to prevent
+>          * accidental deep sleeps, limit the sleep time to something reasonable.
+> --
+> 2.35.1
+>
