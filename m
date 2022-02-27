@@ -2,104 +2,83 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1397F4C5B0A
-	for <lists+linux-acpi@lfdr.de>; Sun, 27 Feb 2022 13:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56B294C5B24
+	for <lists+linux-acpi@lfdr.de>; Sun, 27 Feb 2022 13:43:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230421AbiB0M0e (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 27 Feb 2022 07:26:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36236 "EHLO
+        id S230487AbiB0Moc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Sun, 27 Feb 2022 07:44:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230390AbiB0M0d (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 27 Feb 2022 07:26:33 -0500
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37A765C878;
-        Sun, 27 Feb 2022 04:25:56 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04395;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0V5b5SAC_1645964751;
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0V5b5SAC_1645964751)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Sun, 27 Feb 2022 20:25:52 +0800
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-To:     helgaas@kernel.org, rafael@kernel.org, nathan@kernel.org
-Cc:     bp@alien8.de, tony.luck@intel.com, james.morse@arm.com,
-        lenb@kernel.org, rjw@rjwysocki.net, bhelgaas@google.com,
-        xueshuai@linux.alibaba.com, zhangliguang@linux.alibaba.com,
-        zhuo.song@linux.alibaba.com, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-pci@vger.kernel.org
-Subject: [PATCH v8 2/2] ACPI: APEI: rename ghes_init with an "acpi_" prefix
-Date:   Sun, 27 Feb 2022 20:25:46 +0800
-Message-Id: <20220227122546.43307-2-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.30.1 (Apple Git-130)
-In-Reply-To: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
-References: <20211126070422.73234-1-xueshuai@linux.alibaba.com>
+        with ESMTP id S229643AbiB0Moc (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Sun, 27 Feb 2022 07:44:32 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE8BB1DA5C;
+        Sun, 27 Feb 2022 04:43:55 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B38C7B80B55;
+        Sun, 27 Feb 2022 12:43:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F06C340E9;
+        Sun, 27 Feb 2022 12:43:52 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="O2DCIvAg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1645965830;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=PqCJu412vVgY6KdZye7rbvTRG5crZEcN/Zp/j8PEIrM=;
+        b=O2DCIvAgqHg2U/BLw8plURVMHyuTZeqpXXzJ4I10r5yIkd8oFSPYgZJ9KqQstEQ13sLiT8
+        eqSZbX70558sCwVw2hIGhwmAPJ/rEgQ9HSCCP/8nozAez/E/9t/P4T8WpoNCNboHVGFho4
+        LaV9Fgc7cBB17Wj7jdCpZVOgpWUMaAY=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id cc56f42f (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Sun, 27 Feb 2022 12:43:50 +0000 (UTC)
+Date:   Sun, 27 Feb 2022 13:43:48 +0100
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     Alexander Graf <graf@amazon.com>
+Cc:     Len Brown <lenb@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-crypto@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v5 2/3] ACPI: allow longer device IDs
+Message-ID: <YhtyBHUyFysmZ9bC@zx2c4.com>
+References: <20220226220639.1173594-1-Jason@zx2c4.com>
+ <20220226220639.1173594-3-Jason@zx2c4.com>
+ <0c73d29e-e558-efb9-d0d7-c612b2bb7e90@amazon.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-10.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <0c73d29e-e558-efb9-d0d7-c612b2bb7e90@amazon.com>
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-ghes_init() sticks out in acpi_init() because it is the only functions
-without an "acpi_" prefix.
+Hi Alex,
 
-Rename ghes_init with an "acpi_" prefix, then all looks fine.
+On Sun, Feb 27, 2022 at 12:42:03PM +0100, Alexander Graf wrote:
+> > To allow device drivers to match identifiers that exceed the 9 byte
+> > limit, this simply ups the length to 16, just like it was before the
+> > aforementioned commit. Empirical testing indicates that this
+> 
+> 
+> This is only true for 64bit systems where padding automatically bloated 
+> to 9 byte array to 16. I still believe the patch is fine as it is, but 
+> there will be minor .rodata overhead on 32bit targets which you may want 
+> to quantify in the patch description.
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 2 +-
- drivers/acpi/bus.c       | 2 +-
- include/acpi/apei.h      | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+Good point. So I just tried this out with a 32-bit i686 kernel and the
+results are the same again for the size of vmlinux. I then ran `objdump
+--headers` and looked at the size of the .rodata section, where it's
+also the same. I'm not quite sure what to make of this, as it's not what
+I was expecting, but I think I tested it right. So maybe we're lucky
+here?
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index aadc0a972f18..d91ad378c00d 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1457,7 +1457,7 @@ static struct platform_driver ghes_platform_driver = {
- 	.remove		= ghes_remove,
- };
- 
--void __init ghes_init(void)
-+void __init acpi_ghes_init(void)
- {
- 	int rc;
- 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 3f403db20f69..cd374210fb9f 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1332,7 +1332,7 @@ static int __init acpi_init(void)
- 	pci_mmcfg_late_init();
- 	acpi_iort_init();
- 	acpi_hest_init();
--	ghes_init();
-+	acpi_ghes_init();
- 	acpi_scan_init();
- 	acpi_ec_init();
- 	acpi_debugfs_init();
-diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-index 4e60dd73c3bb..afaca3a075e8 100644
---- a/include/acpi/apei.h
-+++ b/include/acpi/apei.h
-@@ -27,10 +27,10 @@ extern int hest_disable;
- extern int erst_disable;
- #ifdef CONFIG_ACPI_APEI_GHES
- extern bool ghes_disable;
--void __init ghes_init(void);
-+void __init acpi_ghes_init(void);
- #else
- #define ghes_disable 1
--static inline void ghes_init(void) { }
-+static inline void acpi_ghes_init(void) { }
- #endif
- 
- #ifdef CONFIG_ACPI_APEI
--- 
-2.20.1.12.g72788fdb
-
+Jason
