@@ -2,109 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10E094C5FE8
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Feb 2022 00:27:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 078A74C68FC
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Feb 2022 11:55:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229970AbiB0X2E (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Sun, 27 Feb 2022 18:28:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34628 "EHLO
+        id S234360AbiB1K4K (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Mon, 28 Feb 2022 05:56:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbiB0X2D (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Sun, 27 Feb 2022 18:28:03 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 618F8638C;
-        Sun, 27 Feb 2022 15:27:25 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F39C4611CF;
-        Sun, 27 Feb 2022 23:27:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0601C340E9;
-        Sun, 27 Feb 2022 23:27:23 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="goL89XZS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1646004441;
+        with ESMTP id S235316AbiB1Ky6 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Mon, 28 Feb 2022 05:54:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B1F83193F2
+        for <linux-acpi@vger.kernel.org>; Mon, 28 Feb 2022 02:53:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1646045597;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=cPJiLooKbNUohnU6yXN63L1h4yYqJ923mGb0t2sRAmM=;
-        b=goL89XZSsZPfaum9fcpaXArg1yGEVHqkD3gJbN6h+aFDXgFSk3FtmNY1XHGFlU+zie+ebw
-        fT4UAbs+ItDDw0QJuyMeed/Dghxx9UVojWm5f0rRImhNElq0sVfCIbyDdQBVbN+4oUuSwm
-        /NzJUKJdUYotOeOWxmz+2GkyXgatyeI=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 011a27c7 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Sun, 27 Feb 2022 23:27:21 +0000 (UTC)
-Received: by mail-yb1-f171.google.com with SMTP id j12so17085495ybh.8;
-        Sun, 27 Feb 2022 15:27:21 -0800 (PST)
-X-Gm-Message-State: AOAM530u4qG1qaPgTNsEI8zmuELPSv8QaLeYFk3RqBgIWDTztXJuXTg7
-        eoLNjFbuBcp3KqBgpVWc01lH4257yLyiL3NoqvA=
-X-Google-Smtp-Source: ABdhPJzTL5Q+trTKPAkI1w13K2/b9LgEC7uevfTmCAsJfxl8vfz0K4RBpfa5PKF+e8kAToiRjhCjUiBMURVep4tNPNM=
-X-Received: by 2002:a25:238d:0:b0:619:3e19:b06b with SMTP id
- j135-20020a25238d000000b006193e19b06bmr16106668ybj.382.1646004440064; Sun, 27
- Feb 2022 15:27:20 -0800 (PST)
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=4T8Uvp57TFU5Petlm3lZYbx4MZCWOM5rrxCxQpNIp9Y=;
+        b=hrKuSolpZ3zT8uPOcbaUnnHb9TdWuhCIzxR+qEKZ4PFKthill8+6pjPb6vpUNDwO7DtDfU
+        4HGzQcijz8RXOlOXhJJiqWrvpsRixX/uxryAT3enBTuFRCPq8ikeU71JI+de2KAedSG6kk
+        vM19gh4AA9prZBUSLttE5JvtU1uK1Dc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-170-i5atVmE0PVmVTs2N7rir6Q-1; Mon, 28 Feb 2022 05:53:14 -0500
+X-MC-Unique: i5atVmE0PVmVTs2N7rir6Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 66E2F8031E1;
+        Mon, 28 Feb 2022 10:53:12 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.193.120])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3D8506C92C;
+        Mon, 28 Feb 2022 10:53:07 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Myron Stowe <myron.stowe@redhat.com>,
+        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+        =?UTF-8?q?Benoit=20Gr=C3=A9goire?= <benoitg@coeus.ca>,
+        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
+        linux-pci@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/1] x86/PCI: Disable exclusion of E820 reserved addressed in some cases
+Date:   Mon, 28 Feb 2022 11:52:58 +0100
+Message-Id: <20220228105259.230903-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-References: <20220226220639.1173594-1-Jason@zx2c4.com> <20220226220639.1173594-3-Jason@zx2c4.com>
- <0c73d29e-e558-efb9-d0d7-c612b2bb7e90@amazon.com> <YhtyBHUyFysmZ9bC@zx2c4.com>
-In-Reply-To: <YhtyBHUyFysmZ9bC@zx2c4.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Mon, 28 Feb 2022 00:27:09 +0100
-X-Gmail-Original-Message-ID: <CAHmME9pocD1CoZbnF7p4k0ws7-R0Vc9H4i5TRJ_MCX-d3AZhFw@mail.gmail.com>
-Message-ID: <CAHmME9pocD1CoZbnF7p4k0ws7-R0Vc9H4i5TRJ_MCX-d3AZhFw@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] ACPI: allow longer device IDs
-To:     Alexander Graf <graf@amazon.com>
-Cc:     Len Brown <lenb@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hey again,
+Hi All,
 
-On Sun, Feb 27, 2022 at 1:43 PM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
->
-> Hi Alex,
->
-> On Sun, Feb 27, 2022 at 12:42:03PM +0100, Alexander Graf wrote:
-> > > To allow device drivers to match identifiers that exceed the 9 byte
-> > > limit, this simply ups the length to 16, just like it was before the
-> > > aforementioned commit. Empirical testing indicates that this
-> >
-> >
-> > This is only true for 64bit systems where padding automatically bloated
-> > to 9 byte array to 16. I still believe the patch is fine as it is, but
-> > there will be minor .rodata overhead on 32bit targets which you may want
-> > to quantify in the patch description.
->
-> Good point. So I just tried this out with a 32-bit i686 kernel and the
-> results are the same again for the size of vmlinux. I then ran `objdump
-> --headers` and looked at the size of the .rodata section, where it's
-> also the same. I'm not quite sure what to make of this, as it's not what
-> I was expecting, but I think I tested it right. So maybe we're lucky
-> here?
+Here is v2 of my patch to address the exclusion of E820 reserved
+addresses from PCI bridge windows causing issues on some systems.
 
-I tried a little harder to get _some_ difference on 32-bit, and
-managed to get one by doing i386_defconfig and then switching off
-modules to make all M into Y, and then compared sizes:
+This fixes a couple of issues found by the kernel test robot:
 
-vmlinux: 25590780 -> 25598972, so a 0.032% increase.
-bzImage: 8698944 -> 8699424, so a 0.0055% increase.
+- Add a couple of missing includes to arch/x86/include/asm/pci_x86.h
+  to fix i386 build errors Reported-by: kernel test robot <lkp@intel.com>
+- Do not call resource_is_efi_mmio_region() on resource-list entries which
+  have just been destroyed because they match resource_is_pcicfg_ioport()
+  Reported-by: kernel test robot <oliver.sang@intel.com>
+- Add (res->flags & IORESOURCE_MEM) check to resource_is_efi_mmio_region()
 
-So it does increase, ever so slightly, but a) on 32-bit, and b) a
-super, super tiny amount.
+Sorry about not catching these during my own testing.
 
-In other words, I still think this patch is very much a-okay. But very
-eager to hear from Rafael on the approach.
+For reference here is the v1 cover-letter:
 
-Jason
+Since the previous attempt at fixing this (commit 7f7b4236f204 ("x86/PCI:
+Ignore E820 reservations for bridge windows on newer systems")) we have
+learned that excluding E820 reserved addresses from PCI bridge windows
+helps to workaround issues where the ACPI _CRS advertised window for
+the bridge overlaps with some mem addresses which we should not touch,
+so just disabling it on most new systems turns out to not be a good idea.
+
+This new patch instead takes a very narrow approach. On all the systems
+where we end up having issues to allocate PCI BARs this is caused by there
+being a MMIO EFI memmap entry which covers the entire ACPI _CRS advertised
+window for the PCI bridge.  This new patch makes use of this by making
+pci_acpi_root_prepare_resources() check for those specific set of
+conditions and when these exact conditions are met, then disable the
+exclusion of E820 reserved addresses from PCI bridge windows, to fix
+the PCI BAR allocation failures.
+
+This has been successfully tested on one of the laptops where we were
+seeing PCI BAR allocation failures, see:
+https://bugzilla.redhat.com/show_bug.cgi?id=1868899
+
+I've also tested this on a X1C8 and the new "host bridge window %pR is
+marked by EFI as MMIO" message does not show up there as expected.
+
+Regards,
+
+Hans
+
+
+Hans de Goede (1):
+  x86/PCI: Disable exclusion of E820 reserved addressed in some cases
+
+ arch/x86/include/asm/pci_x86.h | 10 +++++
+ arch/x86/kernel/resource.c     |  4 ++
+ arch/x86/pci/acpi.c            | 68 +++++++++++++++++++++++++++++++++-
+ 3 files changed, 81 insertions(+), 1 deletion(-)
+
+-- 
+2.35.1
+
