@@ -2,86 +2,196 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9F694C8E2E
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Mar 2022 15:48:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D79C44C8F89
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Mar 2022 17:01:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233717AbiCAOtL (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Mar 2022 09:49:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34532 "EHLO
+        id S233265AbiCAQBx (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Mar 2022 11:01:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233634AbiCAOtK (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Mar 2022 09:49:10 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D859026117;
-        Tue,  1 Mar 2022 06:48:29 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0ECE5615F6;
-        Tue,  1 Mar 2022 14:48:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020FCC340F5;
-        Tue,  1 Mar 2022 14:48:27 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="MIKfIgKS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-        t=1646146104;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=sTjicXiZ2l1Y9kAoFdOBsAXD0LvL/+rvWOIagMywydg=;
-        b=MIKfIgKSvJBVSfT2kZ9ovWudUuDVXItuuKFjN7sZsnJHvdO1msqOUOxqPR7W/pSWYRaYNB
-        GLW718QygSith3HD5YrXZkGz8+SDx9Tkr9BGFapqfrlULtumzRYI0xEJah4UOS0g4TVzQh
-        Cx4pkNCvnjaLnstW5EsXWU6NM9msu38=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 014099f1 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Tue, 1 Mar 2022 14:48:24 +0000 (UTC)
-Received: by mail-yb1-f179.google.com with SMTP id w16so1722370ybi.12;
-        Tue, 01 Mar 2022 06:48:24 -0800 (PST)
-X-Gm-Message-State: AOAM531W+8mS4zfOTv0cqz+XpD7PNUrdXgTRBN6y00hQQxVOb75UfRrc
-        HHhq4l1dxu11NvrcsHKxF+CYVHDGjHbjekKekDc=
-X-Google-Smtp-Source: ABdhPJzZ269VLh5r9kyKWgSwmAVQqfXHExVe0/9lCmEs/JzghS/gQ2GJ4ety+JFuYmObjnNAFzdP4Sx92Pz/R9yImsc=
-X-Received: by 2002:a25:238d:0:b0:619:3e19:b06b with SMTP id
- j135-20020a25238d000000b006193e19b06bmr23509931ybj.382.1646146102986; Tue, 01
- Mar 2022 06:48:22 -0800 (PST)
-MIME-Version: 1.0
-References: <CAHmME9qHnvwrxEue4Pdm_E1qZQGXFuR9orJSKCWj8fH5TSh6fA@mail.gmail.com>
- <20220228183355.9090-1-Jason@zx2c4.com> <e9bfc654-5504-29ff-5a5a-b73f24691600@redhat.com>
- <Yh4sz8tpNxUecRQw@smile.fi.intel.com>
-In-Reply-To: <Yh4sz8tpNxUecRQw@smile.fi.intel.com>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Tue, 1 Mar 2022 15:48:12 +0100
-X-Gmail-Original-Message-ID: <CAHmME9o5RnN5a7KVHndtYHMzcNzYcw-0Q8CcnkMtYWguz6dnmA@mail.gmail.com>
-Message-ID: <CAHmME9o5RnN5a7KVHndtYHMzcNzYcw-0Q8CcnkMtYWguz6dnmA@mail.gmail.com>
-Subject: Re: [PATCH 2/3 v6] ACPI: allow longer device IDs
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Alexander Graf <graf@amazon.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        with ESMTP id S230345AbiCAQBx (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Mar 2022 11:01:53 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 93FD99D4CC;
+        Tue,  1 Mar 2022 08:01:11 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5BA2F1042;
+        Tue,  1 Mar 2022 08:01:11 -0800 (PST)
+Received: from lpieralisi (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE2B73F70D;
+        Tue,  1 Mar 2022 08:01:09 -0800 (PST)
+Date:   Tue, 1 Mar 2022 16:00:59 +0000
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Henry Willard <henry.willard@oracle.com>
+Cc:     James Morse <James.Morse@arm.com>,
+        Mark Rutland <Mark.Rutland@arm.com>,
+        Colin King <colin.king@canonical.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
         Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH][V2] ACPI: sysfs: copy ACPI data using io memory copying
+Message-ID: <Yh5DOz/u2hf3Eu5Z@lpieralisi>
+References: <20200317165409.469013-1-colin.king@canonical.com>
+ <20200320131951.GA6555@lakrids.cambridge.arm.com>
+ <698da6fc-3334-5420-5c97-4406914e4599@arm.com>
+ <88DFC1B9-D444-4D44-963F-34D0F5B9EC01@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <88DFC1B9-D444-4D44-963F-34D0F5B9EC01@oracle.com>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 1, 2022 at 3:26 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Tue, Mar 01, 2022 at 11:35:12AM +0100, Hans de Goede wrote:
-> > On 2/28/22 19:33, Jason A. Donenfeld wrote:
->
-> > > Co-authored-by: Jason A. Donenfeld <Jason@zx2c4.com>
->
-> Official tag is Co-developed-by
+On Mon, Feb 28, 2022 at 11:51:23PM +0000, Henry Willard wrote:
+> 
+> 
+> > On Apr 1, 2020, at 5:44 AM, James Morse <james.morse@arm.com> wrote:
+> > 
+> > Hello!
+> > 
+> > On 3/20/20 1:19 PM, Mark Rutland wrote:
+> >> [adding James and Lorenzo]
+> > 
+> > (but not actually...)
+> > 
+> > 
+> >> On Tue, Mar 17, 2020 at 04:54:09PM +0000, Colin King wrote:
+> >>> From: Colin Ian King <colin.king@canonical.com>
+> >>> 
+> >>> Reading ACPI data on ARM64 at a non-aligned offset from
+> >>> /sys/firmware/acpi/tables/data/BERT will cause a splat because
+> >>> the data is I/O memory mapped
+> > 
+> > On your platform, on someone else's it may be in memory.
+> > 
+> > Which platform is this on?
+> > (I've never seen one generate a BERT!)
+> 
+> I have seen this on several platforms. The latest is an Altra based machine. It shows up in the Linux Test Project: ltp test "read_all -d /sys -q -r 10”. 
+> > 
+> > 
+> >>> and being read with just a memcpy.
+> >>> Fix this by introducing an I/O variant of memory_read_from_buffer
+> >>> and using I/O memory mapped copies instead.
+> > 
+> >> Just to check, is that correct is it correct to map those tables with
+> >> Device attributes in the first place, or should we be mapping the tables
+> >> with Normal Cacheable attributes with memremap()?
+> >> 
+> >> If the FW placed those into memory using cacheavble attributes, reading
+> >> them using Device attributes could result in stale values, which could
+> >> be garbage.
+> > 
+> > Yes. The BERT code should be using arch_apei_get_mem_attribute() to use the
+> > correct attributes. See ghes_map() for an example. bert_init() will need to use
+> > a version of ioremap() that takes the pgprot_t.
+> > 
+> > Always using ioremap_cache() means you get a cacheable mapping, regardless of
+> > how firmware described this region in the UEFI memory map. This doesn't explain
+> > why you got an alignment fault.
+> 
+> The BERT error region doesn’t appear in the UEFI memory map on any of the systems I have looked at. This means that acpi_os_map_memory() will always map the area  as PROT_DEVICE_nGnRnE, which results in an alignment fault on an unaligned access. For some reason this does not fail on some implementations.
+> 
+> It isn’t clear to me from the ACPI spec whether this can be in anything other than normal memory as bert_init() seems to assume it is.
+> 
+> We have used this patch to resolve this problem on the assumption it
+> will eventually make it into the mainline kernel. Is there any chance
+> this will happen? 
 
-Thanks, will adjust.
+Yes this should be fixed. I put together a patch that I needed to post,
+below.
+
+-- >8 --
+Subject: [PATCH] ACPI: osl: Fix BERT error region memory mapping
+
+Currently the sysfs interface maps the BERT error region as "memory"
+(through acpi_os_map_memory()) in order to copy the error records into
+memory buffers through memory operations (eg memory_read_from_buffer()).
+
+The OS system cannot detect whether the BERT error region is part of
+system RAM or it is "device memory" (eg BMC memory) and therefore it
+cannot detect which memory attributes the bus to memory support (and
+corresponding kernel mapping, unless firmware provides the required
+information).
+
+The acpi_os_map_memory() arch backend implementation determines the
+mapping attributes. On arm64, if the BERT error region is not present in
+the EFI memory map, the error region is mapped as device-nGnRnE; this
+triggers alignment faults since memcpy unaligned accesses are not
+allowed in device-nGnRnE regions.
+
+The ACPI sysfs code cannot therefore map by default the BERT error
+region with memory semantics but should use a safer default.
+
+Change the sysfs code to map the BERT error region as MMIO (through
+acpi_os_map_iomem()) and use the memcpy_fromio() interface to read the
+error region into the kernel buffer.
+
+Link: https://lore.kernel.org/linux-arm-kernel/31ffe8fc-f5ee-2858-26c5-0fd8bdd68702@arm.com
+Link: https://lore.kernel.org/linux-acpi/CAJZ5v0g+OVbhuUUDrLUCfX_mVqY_e8ubgLTU98=jfjTeb4t+Pw@mail.gmail.com
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Hanjun Guo <guohanjun@huawei.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+---
+ drivers/acpi/sysfs.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
+index a4b638bea6f1..cc2fe0618178 100644
+--- a/drivers/acpi/sysfs.c
++++ b/drivers/acpi/sysfs.c
+@@ -415,19 +415,30 @@ static ssize_t acpi_data_show(struct file *filp, struct kobject *kobj,
+ 			      loff_t offset, size_t count)
+ {
+ 	struct acpi_data_attr *data_attr;
+-	void *base;
+-	ssize_t rc;
++	void __iomem *base;
++	ssize_t size;
+ 
+ 	data_attr = container_of(bin_attr, struct acpi_data_attr, attr);
++	size = data_attr->attr.size;
++
++	if (offset < 0)
++		return -EINVAL;
++
++	if (offset >= size)
++		return 0;
+ 
+-	base = acpi_os_map_memory(data_attr->addr, data_attr->attr.size);
++	if (count > size - offset)
++		count = size - offset;
++
++	base = acpi_os_map_iomem(data_attr->addr, size);
+ 	if (!base)
+ 		return -ENOMEM;
+-	rc = memory_read_from_buffer(buf, count, &offset, base,
+-				     data_attr->attr.size);
+-	acpi_os_unmap_memory(base, data_attr->attr.size);
+ 
+-	return rc;
++	memcpy_fromio(buf, base + offset, count);
++
++	acpi_os_unmap_iomem(base, size);
++
++	return count;
+ }
+ 
+ static int acpi_bert_data_init(void *th, struct acpi_data_attr *data_attr)
+-- 
+2.31.0
