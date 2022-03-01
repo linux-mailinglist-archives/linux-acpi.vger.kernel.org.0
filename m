@@ -2,239 +2,162 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB41B4C8862
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Mar 2022 10:44:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B2764C8954
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Mar 2022 11:32:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234018AbiCAJpI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Mar 2022 04:45:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56894 "EHLO
+        id S233620AbiCAKci (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Mar 2022 05:32:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233989AbiCAJpF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Mar 2022 04:45:05 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC0CE5749B;
-        Tue,  1 Mar 2022 01:44:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646127858; x=1677663858;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=kXru06/IOIGyvmWQpJlCO6LXdwoif1r6qFgNVJS0Gu4=;
-  b=BVXMgiDom6D7i4rdRdO+zkes3yoLQjB0Ljq46ulxYZZSjUR8TrMe4IPV
-   u8uUHxTqCYMxmaUwrwUxvg5pmbz3QnBBsyAc/sWspHAYOZ8tIWswG24s6
-   QaBJBwi05kb+fuzkiBJUb0umLXpOQZBQrrpztyLuIR7uQLVUtN3T5/luL
-   Ee8Yxe9Ctgq4WoafhzN9LgPNuuefw18eCSjCu63L7WB1OAQGeHo/iCY88
-   fmoGvCNSGoduarcTMqFOuKeAXNBhLji536efqy2lD9kPI/2k2NuZ7kAaC
-   c8D+d4Fh72Sas0AISNbhSgrEaWjei0pLJjBPXKNXNkyxcMxYrsbO4g1vT
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10272"; a="250681266"
-X-IronPort-AV: E=Sophos;i="5.90,145,1643702400"; 
-   d="scan'208";a="250681266"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2022 01:44:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,145,1643702400"; 
-   d="scan'208";a="507743365"
-Received: from lkp-server01.sh.intel.com (HELO 2146afe809fb) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 01 Mar 2022 01:44:14 -0800
-Received: from kbuild by 2146afe809fb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nOz3F-0000Fk-EQ; Tue, 01 Mar 2022 09:44:13 +0000
-Date:   Tue, 01 Mar 2022 17:43:34 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- ac62facbd440da5ba31f5b4b137c234815b6c2d2
-Message-ID: <621deac6.naqZhUKaeXm2KwZO%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S231517AbiCAKch (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Mar 2022 05:32:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B89256583D
+        for <linux-acpi@vger.kernel.org>; Tue,  1 Mar 2022 02:31:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1646130714;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XvmhzYzIN6YyKOjgRyfse+7E0We+oPI7HyRw5pHUOdE=;
+        b=U9O3l9Hj5BkeF4qr11uBzORUyZZ6rsnL4EGQIsbhVdhSWoQStEC9ZnuPFuzFYEDl+tKWrH
+        izCqxLPEXsO3qjf8k9JBz4vUFIgFudE08/N5tdwNqtdIPxGonLsZC41vfqHWIEZrp+F0Wg
+        52F0xT9NthT21RK9CmbqDb/JfMdAlWg=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-390-sxhJ4rLpPmKGHjQg-h887w-1; Tue, 01 Mar 2022 05:31:53 -0500
+X-MC-Unique: sxhJ4rLpPmKGHjQg-h887w-1
+Received: by mail-ed1-f69.google.com with SMTP id f9-20020a0564021e8900b00412d0a6ef0dso7548151edf.11
+        for <linux-acpi@vger.kernel.org>; Tue, 01 Mar 2022 02:31:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=XvmhzYzIN6YyKOjgRyfse+7E0We+oPI7HyRw5pHUOdE=;
+        b=dsmFlsSF9BTnRToE1TPKfW13FXN9w3g/0CqBP9Ua2NFxFFvgIdVkxBeJfxEF1TY0ka
+         aHoQTSxePmSoUb78OztIOVXHhynwmReQU1JDtV7C95rJoNO2uPAsMV9F1VsFYMsxrzMJ
+         6HBI2vT6wBhQh3epaOIFuVTPsqdb2w2l8YstzrknlHMCuRUdg2qAhwKjhRoivljEdfDt
+         7lj5HMOSEhe8dRp8FY6YjS7frfJVn+uSWviIZurAOrAOigIcaG8cT50BUFR9iKlI82tT
+         d1pGGvtZbc8hLq3zXpwZFfeUoxOVRQJuDSpMeJ5mscd/rKSy0pfwu2e4vlKlnzbpS2qn
+         9w1A==
+X-Gm-Message-State: AOAM5323VBpTmykRE6LexBqDjXTvI6s8gcbRzZJok5kZ63RPFhq/tBld
+        fFmrzkud0bYlGGFLi06cSfAisBtfpUaBbSTA5aFw3JsG+kcVDpIEIStiqYj56GmrLQfvMeeGecH
+        8AXMQK+VnMuHo+T5WPX+TJA==
+X-Received: by 2002:a50:ee90:0:b0:40f:349f:7368 with SMTP id f16-20020a50ee90000000b0040f349f7368mr23358812edr.236.1646130712555;
+        Tue, 01 Mar 2022 02:31:52 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJz6xIoJMlO1A7ETr4+7k5TUVrUrwV9lNvsl4ikoWZTb0pGV5rskpq4uwCuMs4LHvn+CPJfl5A==
+X-Received: by 2002:a50:ee90:0:b0:40f:349f:7368 with SMTP id f16-20020a50ee90000000b0040f349f7368mr23358795edr.236.1646130712357;
+        Tue, 01 Mar 2022 02:31:52 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id b16-20020a170906195000b006cf3810dc99sm5147018eje.208.2022.03.01.02.31.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Mar 2022 02:31:51 -0800 (PST)
+Message-ID: <7769e728-5864-115d-c3b8-8f52faa40f1a@redhat.com>
+Date:   Tue, 1 Mar 2022 11:31:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v5 2/3] ACPI: allow longer device IDs
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     Alexander Graf <graf@amazon.com>, Len Brown <lenb@kernel.org>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+References: <20220226220639.1173594-1-Jason@zx2c4.com>
+ <20220226220639.1173594-3-Jason@zx2c4.com>
+ <0c73d29e-e558-efb9-d0d7-c612b2bb7e90@amazon.com>
+ <YhtyBHUyFysmZ9bC@zx2c4.com>
+ <CAHmME9pocD1CoZbnF7p4k0ws7-R0Vc9H4i5TRJ_MCX-d3AZhFw@mail.gmail.com>
+ <CAJZ5v0h_Z9XS9ZgSF4CWrZ4RU7=Oa02MY3_g0Y_rcgRNzsizfQ@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAJZ5v0h_Z9XS9ZgSF4CWrZ4RU7=Oa02MY3_g0Y_rcgRNzsizfQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_HI,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: ac62facbd440da5ba31f5b4b137c234815b6c2d2  Merge branch 'acpi-fan' into linux-next
+Hi,
 
-elapsed time: 739m
+On 2/28/22 19:19, Rafael J. Wysocki wrote:
+> +Mika, Andy and Hans in case they have something to add
 
-configs tested: 157
-configs skipped: 3
+Thanks, I don't really have anything to add to the discussion
+on v6 of this patch.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Regards,
 
-gcc tested configs:
-arm                                 defconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm64                               defconfig
-arm64                            allyesconfig
-i386                          randconfig-c001
-arc                        vdk_hs38_defconfig
-powerpc                      pasemi_defconfig
-m68k                       m5249evb_defconfig
-parisc                              defconfig
-arc                 nsimosci_hs_smp_defconfig
-mips                             allyesconfig
-h8300                       h8s-sim_defconfig
-nios2                         10m50_defconfig
-mips                           jazz_defconfig
-sh                ecovec24-romimage_defconfig
-m68k                            mac_defconfig
-mips                         db1xxx_defconfig
-sh                     sh7710voipgw_defconfig
-powerpc                      bamboo_defconfig
-arc                        nsim_700_defconfig
-arm                        keystone_defconfig
-mips                            gpr_defconfig
-arm                       omap2plus_defconfig
-arm                        cerfcube_defconfig
-powerpc                     tqm8555_defconfig
-mips                         mpc30x_defconfig
-mips                       bmips_be_defconfig
-sh                          landisk_defconfig
-sh                          r7785rp_defconfig
-arc                            hsdk_defconfig
-sh                               alldefconfig
-powerpc                   motionpro_defconfig
-powerpc                      ppc6xx_defconfig
-arc                          axs103_defconfig
-arm                        realview_defconfig
-arm                          iop32x_defconfig
-powerpc                         ps3_defconfig
-arm                  randconfig-c002-20220228
-arm                  randconfig-c002-20220227
-arm                  randconfig-c002-20220301
-ia64                                defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                   debian-10.3-kselftests
-i386                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a015
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64               randconfig-a011-20220228
-x86_64               randconfig-a015-20220228
-x86_64               randconfig-a014-20220228
-x86_64               randconfig-a013-20220228
-x86_64               randconfig-a016-20220228
-x86_64               randconfig-a012-20220228
-i386                 randconfig-a016-20220228
-i386                 randconfig-a012-20220228
-i386                 randconfig-a015-20220228
-i386                 randconfig-a011-20220228
-i386                 randconfig-a013-20220228
-i386                 randconfig-a014-20220228
-arc                  randconfig-r043-20220228
-riscv                randconfig-r042-20220228
-s390                 randconfig-r044-20220228
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-x86_64                         rhel-8.3-kunit
+Hans
 
-clang tested configs:
-mips                 randconfig-c004-20220301
-powerpc              randconfig-c003-20220301
-arm                  randconfig-c002-20220301
-s390                 randconfig-c005-20220301
-riscv                randconfig-c006-20220301
-arm                  colibri_pxa300_defconfig
-powerpc                     powernv_defconfig
-mips                           rs90_defconfig
-arm                         orion5x_defconfig
-mips                           mtx1_defconfig
-powerpc                     pseries_defconfig
-powerpc                     tqm8560_defconfig
-mips                           ip28_defconfig
-arm                        mvebu_v5_defconfig
-arm                          imote2_defconfig
-powerpc                   lite5200b_defconfig
-mips                           ip22_defconfig
-arm                       versatile_defconfig
-arm                        vexpress_defconfig
-mips                          malta_defconfig
-arm                         hackkit_defconfig
-x86_64               randconfig-a001-20220228
-x86_64               randconfig-a004-20220228
-x86_64               randconfig-a003-20220228
-x86_64               randconfig-a005-20220228
-x86_64               randconfig-a002-20220228
-x86_64               randconfig-a006-20220228
-i386                 randconfig-a002-20220228
-i386                 randconfig-a001-20220228
-i386                 randconfig-a005-20220228
-i386                 randconfig-a003-20220228
-i386                 randconfig-a006-20220228
-i386                 randconfig-a004-20220228
-x86_64                        randconfig-a012
-x86_64                        randconfig-a016
-x86_64                        randconfig-a014
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-hexagon              randconfig-r045-20220301
-hexagon              randconfig-r041-20220301
-riscv                randconfig-r042-20220301
-hexagon              randconfig-r041-20220228
-hexagon              randconfig-r045-20220228
-hexagon              randconfig-r045-20220227
-hexagon              randconfig-r041-20220227
-riscv                randconfig-r042-20220227
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+
+> 
+> On Mon, Feb 28, 2022 at 12:27 AM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>>
+>> Hey again,
+>>
+>> On Sun, Feb 27, 2022 at 1:43 PM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>>>
+>>> Hi Alex,
+>>>
+>>> On Sun, Feb 27, 2022 at 12:42:03PM +0100, Alexander Graf wrote:
+>>>>> To allow device drivers to match identifiers that exceed the 9 byte
+>>>>> limit, this simply ups the length to 16, just like it was before the
+>>>>> aforementioned commit. Empirical testing indicates that this
+>>>>
+>>>>
+>>>> This is only true for 64bit systems where padding automatically bloated
+>>>> to 9 byte array to 16. I still believe the patch is fine as it is, but
+>>>> there will be minor .rodata overhead on 32bit targets which you may want
+>>>> to quantify in the patch description.
+>>>
+>>> Good point. So I just tried this out with a 32-bit i686 kernel and the
+>>> results are the same again for the size of vmlinux. I then ran `objdump
+>>> --headers` and looked at the size of the .rodata section, where it's
+>>> also the same. I'm not quite sure what to make of this, as it's not what
+>>> I was expecting, but I think I tested it right. So maybe we're lucky
+>>> here?
+>>
+>> I tried a little harder to get _some_ difference on 32-bit, and
+>> managed to get one by doing i386_defconfig and then switching off
+>> modules to make all M into Y, and then compared sizes:
+>>
+>> vmlinux: 25590780 -> 25598972, so a 0.032% increase.
+>> bzImage: 8698944 -> 8699424, so a 0.0055% increase.
+>>
+>> So it does increase, ever so slightly, but a) on 32-bit, and b) a
+>> super, super tiny amount.
+>>
+>> In other words, I still think this patch is very much a-okay. But very
+>> eager to hear from Rafael on the approach.
+> 
+> Increasing the ACPI_ID_LEN value is fine with me, but the patch
+> changelog is not entirely accurate.
+> 
+> The ACPI subsystem uses struct acpi_device_id mostly (if not only) for
+> device ID matching and it is generally used for creating lists of ACPI
+> device IDs in drivers (and allow/deny lists etc).  The device IDs
+> extracted from the ACPI tables can be longer than ACPI_ID_LEN.
+> 
+> This means that drivers cannot match device IDs longer than 8
+> characters (excluding the terminating 0), because the IDs in the lists
+> used by them for ID matching cannot be longer than this and not
+> because the ACPI subsystem is limited by that value.
+> 
+
