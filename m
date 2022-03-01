@@ -2,50 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCF404C9471
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Mar 2022 20:38:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 822D04C9485
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Mar 2022 20:40:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236575AbiCATjG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Mar 2022 14:39:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32784 "EHLO
+        id S236875AbiCATlT (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Mar 2022 14:41:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236369AbiCATjF (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Mar 2022 14:39:05 -0500
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4505B6548D;
-        Tue,  1 Mar 2022 11:38:24 -0800 (PST)
-Received: by mail-yb1-f177.google.com with SMTP id g26so3735059ybj.10;
-        Tue, 01 Mar 2022 11:38:24 -0800 (PST)
+        with ESMTP id S235982AbiCATlT (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Mar 2022 14:41:19 -0500
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 318A765494;
+        Tue,  1 Mar 2022 11:40:38 -0800 (PST)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-2d07c4a0d06so156071267b3.13;
+        Tue, 01 Mar 2022 11:40:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8XLnRNdyIsE8yFuV9Cgib+atj8FIPHE8oQWPtzrWfik=;
-        b=6jlMSTxhnDjPn7t/G/0AF5VB92uVzC50TidK7rToYL/Z+PFXqDInE7+/DPEp62AAGz
-         7nST6Fza52anpE3AV51//7GKY1w6iYPGpyuP8wIl6fmp7ZzbvgBaudcR1QGcEh7K5Kzo
-         0TB/xwDMixYfDrCX1PmSEl07Tv6CtK5QxTXCEIGKzMdthQLAhWkMN2f5WL1ufEzJF5DR
-         lnnkAJwoshV8nE/LbKeFJKQ9au07gY0m1sUxJbTBWpgpq612iga0DgleIRNlubzQ20G4
-         lcOSFeOw4D+IhIlDAackVB/ycPaZ7MrA0uv8Emd5v31SRMeEWBsSYW6f0akkF4oNe8JH
-         aPtw==
-X-Gm-Message-State: AOAM530WG7dvMGfAEqjezqq4XlKN7F0Ssgyxi1sIPcuEBMiJe6etd/ln
-        KF64invH27US/WsYiAZr/8vlh/aA3IKHkIPpSfA=
-X-Google-Smtp-Source: ABdhPJz2P4XHgc0TDTm4PKodKuz7b0slJMS4ntym0YEaNTEwQOvQwSM3tnj33CMlRDUua4Oslq9CAgUgak0ZqRvPt5I=
-X-Received: by 2002:a25:f306:0:b0:628:9a03:9ab8 with SMTP id
- c6-20020a25f306000000b006289a039ab8mr176020ybs.622.1646163503512; Tue, 01 Mar
- 2022 11:38:23 -0800 (PST)
+        bh=rC4BvLXBCXqc68pcQ7m+8z/EJtaEH/MsSh5u4qPMaYc=;
+        b=8EHGEbua/oGeSyQUtI/MrV2CcYEyH/d49+zMmDMvo8umN+6wx3t5kciPpKlA6rS225
+         G3jIUyIJNnFeaLorxKJaJQSRR8mDXcDNnxcLcKeB9dOGzexMychR3xow0PoTzl+oDIdf
+         YMNK7OeP3C5qC0sboLEk+LV1hQ0JeQz8+WjtC9jywXhRl/7U5SKKhkEu+guB6DOaZE+t
+         IbvgNvDSzhZzS4YsUkrezFfAQFlxTIGHacdc4pd/OLOonFjW6cKGMaA3euswl10djTxn
+         mU0Fi3TWf+wyhAzdqThTrcSzSwieOukwUERwQqwWYWLmloxMACCnYpYOVWosU0bsq29z
+         Jo1Q==
+X-Gm-Message-State: AOAM531ztxFb6jy4TYyI6dkfum8eUPuWyQaUPmoJaHt0FK0QCCvOgJLL
+        kDahWjtc/3K7QhTWe8wjW5sDUqtrKm6bVhmwxwM=
+X-Google-Smtp-Source: ABdhPJzqz8NvN2OYlSJ4r049oH9twxzobfp3rZ5a9AqKOhlvAWL0GuQURf4suVyw4zXef72pObOLA5ljD92LHelrPUU=
+X-Received: by 2002:a81:1611:0:b0:2d6:3290:9bd3 with SMTP id
+ 17-20020a811611000000b002d632909bd3mr26858713yww.19.1646163637141; Tue, 01
+ Mar 2022 11:40:37 -0800 (PST)
 MIME-Version: 1.0
-References: <20220223235622.19555-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20220223235622.19555-1-andriy.shevchenko@linux.intel.com>
+References: <20220224113807.91771-1-pmenzel@molgen.mpg.de>
+In-Reply-To: <20220224113807.91771-1-pmenzel@molgen.mpg.de>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 1 Mar 2022 20:38:12 +0100
-Message-ID: <CAJZ5v0h-vk66jvh_WSir9-UtmNO6uwL_0V8cYjeGkoXHKsN1_g@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] ACPI: platform: Constify properties parameter in acpi_create_platform_device()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+Date:   Tue, 1 Mar 2022 20:40:26 +0100
+Message-ID: <CAJZ5v0iCwJ10gM0+LsOMU9X3X4ToN_OHBW=9vVsfEP3+cRpudQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] acpi: exsystem: Add units to time variable names
+To:     Paul Menzel <pmenzel@molgen.mpg.de>
+Cc:     Robert Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>,
         ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -57,53 +58,97 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Feb 24, 2022 at 12:56 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Thu, Feb 24, 2022 at 12:38 PM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
 >
-> Properties are not and should not be changed in the callee, hence constify
-> properties parameter in acpi_create_platform_device().
+> `how_long` uses different units in both functions, so make it more
+> clear, what unit they expect.
 >
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
 > ---
->  drivers/acpi/acpi_platform.c | 2 +-
->  include/linux/acpi.h         | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-> index 78d621290a35..de3cbf152dee 100644
-> --- a/drivers/acpi/acpi_platform.c
-> +++ b/drivers/acpi/acpi_platform.c
-> @@ -95,7 +95,7 @@ static void acpi_platform_fill_resource(struct acpi_device *adev,
->   * Name of the platform device will be the same as @adev's.
->   */
->  struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
-> -                                       struct property_entry *properties)
-> +                                                   const struct property_entry *properties)
->  {
->         struct platform_device *pdev = NULL;
->         struct platform_device_info pdevinfo;
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 6274758648e3..9ac545379447 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -691,7 +691,7 @@ int acpi_device_uevent_modalias(struct device *, struct kobj_uevent_env *);
->  int acpi_device_modalias(struct device *, char *, int);
->
->  struct platform_device *acpi_create_platform_device(struct acpi_device *,
-> -                                                   struct property_entry *);
-> +                                                   const struct property_entry *);
->  #define ACPI_PTR(_ptr) (_ptr)
->
->  static inline void acpi_device_set_enumerated(struct acpi_device *adev)
-> @@ -930,7 +930,7 @@ static inline int acpi_device_modalias(struct device *dev,
->
->  static inline struct platform_device *
->  acpi_create_platform_device(struct acpi_device *adev,
-> -                           struct property_entry *properties)
-> +                           const struct property_entry *properties)
->  {
->         return NULL;
->  }
-> --
+>  drivers/acpi/acpica/exsystem.c | 20 ++++++++++----------
 
-Applied as 5.18 material along with the rest of the series, thanks!
+As ACPICA material, this should be submitted to the upstream project
+via https://github.com/acpica/acpica/.
+
+This applies to the other patches in the series too.
+
+>  1 file changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/acpi/acpica/exsystem.c b/drivers/acpi/acpica/exsystem.c
+> index 1281c07112de..6bc5b46e6927 100644
+> --- a/drivers/acpi/acpica/exsystem.c
+> +++ b/drivers/acpi/acpica/exsystem.c
+> @@ -107,7 +107,7 @@ acpi_status acpi_ex_system_wait_mutex(acpi_mutex mutex, u16 timeout)
+>   *
+>   * FUNCTION:    acpi_ex_system_do_stall
+>   *
+> - * PARAMETERS:  how_long        - The amount of time to stall,
+> + * PARAMETERS:  how_long_us     - The amount of time to stall,
+>   *                                in microseconds
+>   *
+>   * RETURN:      Status
+> @@ -120,13 +120,13 @@ acpi_status acpi_ex_system_wait_mutex(acpi_mutex mutex, u16 timeout)
+>   *
+>   ******************************************************************************/
+>
+> -acpi_status acpi_ex_system_do_stall(u32 how_long)
+> +acpi_status acpi_ex_system_do_stall(u32 how_long_us)
+>  {
+>         acpi_status status = AE_OK;
+>
+>         ACPI_FUNCTION_ENTRY();
+>
+> -       if (how_long > 255) {   /* 255 microseconds */
+> +       if (how_long_us > 255) {        /* 255 microseconds */
+>                 /*
+>                  * Longer than 255 usec, this is an error
+>                  *
+> @@ -134,10 +134,10 @@ acpi_status acpi_ex_system_do_stall(u32 how_long)
+>                  * order to support existing BIOSs)
+>                  */
+>                 ACPI_ERROR((AE_INFO,
+> -                           "Time parameter is too large (%u)", how_long));
+> +                           "Time parameter is too large (%u)", how_long_us));
+>                 status = AE_AML_OPERAND_VALUE;
+>         } else {
+> -               acpi_os_stall(how_long);
+> +               acpi_os_stall(how_long_us);
+>         }
+>
+>         return (status);
+> @@ -147,7 +147,7 @@ acpi_status acpi_ex_system_do_stall(u32 how_long)
+>   *
+>   * FUNCTION:    acpi_ex_system_do_sleep
+>   *
+> - * PARAMETERS:  how_long        - The amount of time to sleep,
+> + * PARAMETERS:  how_long_ms     - The amount of time to sleep,
+>   *                                in milliseconds
+>   *
+>   * RETURN:      None
+> @@ -156,7 +156,7 @@ acpi_status acpi_ex_system_do_stall(u32 how_long)
+>   *
+>   ******************************************************************************/
+>
+> -acpi_status acpi_ex_system_do_sleep(u64 how_long)
+> +acpi_status acpi_ex_system_do_sleep(u64 how_long_ms)
+>  {
+>         ACPI_FUNCTION_ENTRY();
+>
+> @@ -168,11 +168,11 @@ acpi_status acpi_ex_system_do_sleep(u64 how_long)
+>          * For compatibility with other ACPI implementations and to prevent
+>          * accidental deep sleeps, limit the sleep time to something reasonable.
+>          */
+> -       if (how_long > ACPI_MAX_SLEEP) {
+> -               how_long = ACPI_MAX_SLEEP;
+> +       if (how_long_ms > ACPI_MAX_SLEEP) {
+> +               how_long_ms = ACPI_MAX_SLEEP;
+>         }
+>
+> -       acpi_os_sleep(how_long);
+> +       acpi_os_sleep(how_long_ms);
+>
+>         /* And now we must get the interpreter again */
+>
+> --
+> 2.35.1
+>
