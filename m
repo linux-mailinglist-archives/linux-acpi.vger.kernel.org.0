@@ -2,152 +2,155 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B44E24C8A13
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Mar 2022 11:56:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EFBB4C8B95
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Mar 2022 13:29:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234352AbiCAK4y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Mar 2022 05:56:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46698 "EHLO
+        id S234760AbiCAMaG (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Mar 2022 07:30:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234302AbiCAK4y (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Mar 2022 05:56:54 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 60F4D8BF14;
-        Tue,  1 Mar 2022 02:56:13 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F7FBED1;
-        Tue,  1 Mar 2022 02:56:13 -0800 (PST)
-Received: from [10.57.39.47] (unknown [10.57.39.47])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 701873F73D;
-        Tue,  1 Mar 2022 02:56:10 -0800 (PST)
-Message-ID: <4e4bb61a-377e-1ec9-5998-214055ef0a78@arm.com>
-Date:   Tue, 1 Mar 2022 10:56:05 +0000
+        with ESMTP id S234754AbiCAMaF (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Mar 2022 07:30:05 -0500
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D6357C7BD;
+        Tue,  1 Mar 2022 04:29:23 -0800 (PST)
+Received: by mail-yb1-f172.google.com with SMTP id e186so2749680ybc.7;
+        Tue, 01 Mar 2022 04:29:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2Qb+h6pvmrYcsYdF4fmRmPW5GvZZaWDE9Xx5LWTWH34=;
+        b=PlOHSc6xG0KtIUuc39L0z+7afFzJoKqA99WLj4+afh1W1YEujhBofgcdTWsy+oBkiU
+         ISJ4VVRNfqlpyUMg8MyjN76lLHzgtATNK95tGlfeQkb9IBDX6Cw6bnauPSOXU+9DFNBX
+         XR9wtWRh5fy1kLsA+b9ejl8I3RucVM8nN2BGmfjNCfye1fLiaZo4OahE3bepaLzA4yj7
+         AsGUN0lIvNBqFXxP6LRXnIqBxPEDHnKLOgbDFUSxDhmBrX0lmPlfwzfianfo6rf56Ao9
+         FMAziQt+psIkhiwmEzwQ8J6hRHdl9mnG2oF7uCFaljDpMqgxciPGsaHlp36WftJbJRvC
+         uwnA==
+X-Gm-Message-State: AOAM5308V5UEcODpw0YX0nAtxiUFyNB3dCcmlk1lv3y/zBAKeOh9MWRI
+        A/hfL2qRZJHWwWC+4WHC1Yvhwmj1TWuPXonK3cA=
+X-Google-Smtp-Source: ABdhPJx83Dm3C89wEnZvq5L0H/uXdIUCUF+VaaSrxtZgFnG2zvKEmtY6mGRdRaGSYA7F8csBBVvhQVCoy7FuKYkg+vc=
+X-Received: by 2002:a25:d90d:0:b0:615:e400:94c1 with SMTP id
+ q13-20020a25d90d000000b00615e40094c1mr23374790ybg.81.1646137762438; Tue, 01
+ Mar 2022 04:29:22 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH v7 0/7] arm64: Default to 32-bit wide ZONE_DMA
-Content-Language: en-GB
-To:     Matt Flax <flatmax@gmail.com>, nsaenzjulienne@suse.de
-Cc:     ardb@kernel.org, catalin.marinas@arm.com,
-        devicetree@vger.kernel.org, guohanjun@huawei.com, hch@lst.de,
-        iommu@lists.linux-foundation.org, jeremy.linton@arm.com,
-        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-riscv@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, lorenzo.pieralisi@arm.com,
-        robh+dt@kernel.org, will@kernel.org,
-        Matt Flax <flatmax@flatmax.com>
-References: <20201119175400.9995-1-nsaenzjulienne@suse.de>
- <20220301030031.4025282-1-flatmax@flatmax.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <20220301030031.4025282-1-flatmax@flatmax.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <CAHmME9qHnvwrxEue4Pdm_E1qZQGXFuR9orJSKCWj8fH5TSh6fA@mail.gmail.com>
+ <20220228183355.9090-1-Jason@zx2c4.com>
+In-Reply-To: <20220228183355.9090-1-Jason@zx2c4.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 1 Mar 2022 13:29:11 +0100
+Message-ID: <CAJZ5v0jPP5UJevOFQprxvv+9-HRZHH22Ms7AmG04=BpoeXF-uA@mail.gmail.com>
+Subject: Re: [PATCH 2/3 v6] ACPI: allow longer device IDs
+To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Alexander Graf <graf@amazon.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi Matt,
+On Mon, Feb 28, 2022 at 7:34 PM Jason A. Donenfeld <Jason@zx2c4.com> wrote:
+>
+> From: Alexander Graf <graf@amazon.com>
+>
+> We create a list of ACPI "PNP" IDs which contains _HID, _CID, and CLS
+> entries of the respective devices. However, when making structs for
+> matching, we squeeze those IDs into acpi_device_id, which only has 9
+> bytes space to store the identifier. The subsystem actually captures the
+> full length of the IDs, and the modalias has the full length, but this
+> struct we use for matching is limited. It originally had 16 bytes, but
+> was changed to only have 9 in 6543becf26ff ("mod/file2alias: make
+> modalias generation safe for cross compiling"), presumably on the theory
+> that it would match the ACPI spec so it didn't matter.
+>
+> Unfortunately, while most people adhere to the ACPI specs, Microsoft
+> decided that its VM Generation Counter device [1] should only be
+> identifiable by _CID with a value of "VM_Gen_Counter", which is longer
+> than 9 characters.
+>
+> To allow device drivers to match identifiers that exceed the 9 byte
+> limit, this simply ups the length to 16, just like it was before the
+> aforementioned commit. Empirical testing indicates that this
+> doesn't actually increase vmlinux size on 64-bit, because the ulong in
+> the same struct caused there to be 7 bytes of padding anyway, and when
+> doing a s/M/Y/g i386_defconfig build, the bzImage only increased by
+> 0.0055%, so negligible.
+>
+> This patch is a prerequisite to add support for VMGenID in Linux, the
+> subsequent patch in this series. It has been confirmed to also work on
+> the udev/modalias side in userspace.
+>
+> [1] https://download.microsoft.com/download/3/1/C/31CFC307-98CA-4CA5-914C-D9772691E214/VirtualMachineGenerationID.docx
+>
+> Signed-off-by: Alexander Graf <graf@amazon.com>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Cc: Hans de Goede <hdegoede@redhat.com>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Co-authored-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> [Jason: reworked commit message a bit, went with len=16 approach.]
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+> ---
+> Hi Rafael,
+>
+> This patch is directed toward you specifically. The first and last patch
+> of the series this is part of have been through the ringer of review a
+> bit already and do not specifically require your attention, but we wound
+> up getting hung up on an ACPI ID matching API limitation. This patch
+> fixes that limitation with this patch that you see here, with a trivial
+> one line fix, which does require your attention.
+>
+> The other patches will go through my random.git tree naturally, but
+> because those patches depend on this one here, in order to compile
+> without warnings (and be functional at all), it would be nice if you
+> would provide an "Acked-by" on it and permit me to /also/ take it
+> through my random.git tree (if it looks like a correct patch to you, of
+> course). This would make the merge logistics a lot easier. Plus it's a
+> small +1/-1 line change.
+>
+> This v6 updates the commit message.
 
-On 2022-03-01 03:00, Matt Flax wrote:
-> Hi All,
-> 
-> It seems that the ZONE_DMA changes have broken the operation of Rochip rk3399 chipsets from v5.10.22 onwards.
-> 
-> It isn't clear what needs to be changed to get any of these boards up and running again. Any pointers on how/what to change ?
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Your firmware/bootloader setup is mismatched. If you're using the 
-downstream Rockchip blob for BL31, you need to reserve or remove the 
-memory range 0x8400000-0x9600000 to match the behaviour of the original 
-Android BSP U-Boot. The downstream firmware firewalls this memory off 
-for the Secure world such that any attempt to touch it from Linux 
-results in a fatal SError fault as below. Any apparent correlation with 
-the ZONE_DMA changes will simply be because they've affected the 
-behaviour of the page allocator, such that it's more likely to reach 
-into the affected range of memory.
-
-Cheers,
-Robin.
-
-> An easy test for debugging is to run stress :
-> 
-> stress --cpu 4 --io 4 --vm 2 --vm-bytes 128M
-> 
-> stress: info: [255] dispatching hogs: 4 cpu, 4 io, 2 vm, 0 hdd
-> [    8.070280] SError Interrupt on CPU4, code 0xbf000000 -- SError
-> [    8.070286] CPU: 4 PID: 261 Comm: stress Not tainted 5.10.21 #1
-> [    8.070289] Hardware name: FriendlyElec NanoPi M4 (DT)
-> [    8.070293] pstate: 00000005 (nzcv daif -PAN -UAO -TCO BTYPE=--)
-> [    8.070296] pc : clear_page+0x14/0x28
-> [    8.070298] lr : clear_subpage+0x50/0x90
-> [    8.070302] sp : ffff800012abbc40
-> [    8.070305] x29: ffff800012abbc40 x28: ffff000000f68000
-> [    8.070313] x27: 0000000000000000 x26: ffff000001f38e40
-> [    8.070320] x25: ffff8000114fd000 x24: 0000000000000000
-> [    8.070326] x23: 0000000000000000 x22: 0000000000001000
-> [    8.070334] x21: 0000ffffa7e00000 x20: fffffe0000010000
-> [    8.070341] x19: ffff000000f68000 x18: 0000000000000000
-> [    8.070348] x17: 0000000000000000 x16: 0000000000000000
-> [    8.070354] x15: 0000000000000002 x14: 0000000000000001
-> [    8.070361] x13: 0000000000075879 x12: 00000000000000c0
-> [    8.070368] x11: ffff80006c46a000 x10: 0000000000000200
-> [    8.070374] x9 : 0000000000000000 x8 : 0000000000000010
-> [    8.070381] x7 : ffff00007db800a0 x6 : ffff800011b899c0
-> [    8.070387] x5 : 0000000000000000 x4 : ffff00007db800f7
-> [    8.070394] x3 : 0000020000200000 x2 : 0000000000000004
-> [    8.070401] x1 : 0000000000000040 x0 : ffff0000085ff4c0
-> [    8.070409] Kernel panic - not syncing: Asynchronous SError Interrupt
-> [    8.070412] CPU: 4 PID: 261 Comm: stress Not tainted 5.10.21 #1
-> [    8.070415] Hardware name: FriendlyElec NanoPi M4 (DT)
-> [    8.070418] Call trace:
-> [    8.070420]  dump_backtrace+0x0/0x1b0
-> [    8.070423]  show_stack+0x18/0x70
-> [    8.070425]  dump_stack+0xd0/0x12c
-> [    8.070428]  panic+0x16c/0x334
-> [    8.070430]  nmi_panic+0x8c/0x90
-> [    8.070433]  arm64_serror_panic+0x78/0x84
-> [    8.070435]  do_serror+0x64/0x70
-> [    8.070437]  el1_error+0x88/0x108
-> [    8.070440]  clear_page+0x14/0x28
-> [    8.070443]  clear_huge_page+0x74/0x210
-> [    8.070445]  do_huge_pmd_anonymous_page+0x1b0/0x7c0
-> [    8.070448]  handle_mm_fault+0xdac/0x1290
-> [    8.070451]  do_page_fault+0x130/0x3a0
-> [    8.070453]  do_translation_fault+0xb0/0xc0
-> [    8.070456]  do_mem_abort+0x44/0xb0
-> [    8.070458]  el0_da+0x28/0x40
-> [    8.070461]  el0_sync_handler+0x168/0x1b0
-> [    8.070464]  el0_sync+0x174/0x180
-> [    8.070508] SError Interrupt on CPU0, code 0xbf000000 -- SError
-> [    8.070511] CPU: 0 PID: 258 Comm: stress Not tainted 5.10.21 #1
-> [    8.070515] Hardware name: FriendlyElec NanoPi M4 (DT)
-> [    8.070518] pstate: 80000000 (Nzcv daif -PAN -UAO -TCO BTYPE=--)
-> [    8.070520] pc : 0000aaaacec22e98
-> [    8.070523] lr : 0000aaaacec22d84
-> [    8.070525] sp : 0000ffffe67a8620
-> [    8.070528] x29: 0000ffffe67a8620 x28: 0000000000000003
-> [    8.070534] x27: 0000aaaacec34000 x26: 0000ffffaeb42610
-> [    8.070541] x25: 0000ffffa69af010 x24: 0000aaaacec23a98
-> [    8.070547] x23: 0000aaaacec35010 x22: 0000aaaacec35000
-> [    8.070554] x21: 0000000000001000 x20: ffffffffffffffff
-> [    8.070560] x19: 0000000008000000 x18: 0000000000000000
-> [    8.070567] x17: 0000000000000000 x16: 0000000000000000
-> [    8.070573] x15: 0000000000000000 x14: 0000000000000000
-> [    8.070580] x13: 0000000000008000 x12: 0000000000000000
-> [    8.070587] x11: 0000000000000020 x10: 0000000000000030
-> [    8.070593] x9 : 000000000000000a x8 : 00000000000000de
-> [    8.070599] x7 : 0000000000200000 x6 : 000000000000021b
-> [    8.070606] x5 : 0000000000000000 x4 : ffffffffffffffff
-> [    8.070613] x3 : 0000000000000000 x2 : 0000ffffaeb47000
-> [    8.070619] x1 : 000000000000005a x0 : 0000000000a58000
-> [    8.070629] SMP: stopping secondary CPUs
-> [    8.070632] Kernel Offset: disabled
-> [    8.070634] CPU features: 0x0240022,6100600c
-> [    8.070637] Memory Limit: none
-> 
-> 
+> Please have a look and let me know what you think.
+>
+> Thanks,
+> Jason
+>
+>  include/linux/mod_devicetable.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
+> index 4bb71979a8fd..5da5d990ff58 100644
+> --- a/include/linux/mod_devicetable.h
+> +++ b/include/linux/mod_devicetable.h
+> @@ -211,7 +211,7 @@ struct css_device_id {
+>         kernel_ulong_t driver_data;
+>  };
+>
+> -#define ACPI_ID_LEN    9
+> +#define ACPI_ID_LEN    16
+>
+>  struct acpi_device_id {
+>         __u8 id[ACPI_ID_LEN];
+> --
+> 2.35.1
+>
