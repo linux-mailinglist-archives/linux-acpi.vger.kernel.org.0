@@ -2,117 +2,152 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F29F4C89A2
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Mar 2022 11:49:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B44E24C8A13
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Mar 2022 11:56:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234376AbiCAKtq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Tue, 1 Mar 2022 05:49:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56202 "EHLO
+        id S234352AbiCAK4y (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Tue, 1 Mar 2022 05:56:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232994AbiCAKtp (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Mar 2022 05:49:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 681C617053
-        for <linux-acpi@vger.kernel.org>; Tue,  1 Mar 2022 02:49:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1646131744;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3CH13mEtx+s7zAd9pvAc4Ds+9mZl1I9pkrvG59eNagk=;
-        b=O9u40rl4NOurFbK7TZfxUsf7kDED+GFii2NR7xawEhUwalIA7ffdeYuRsbnbsmJOoMfMl/
-        BoctC0i50Babt6HOwrHdu2uJP1aN45A3w2iQbtQIRLpburZ0DRXH1Rtjy+i8fJtx1F4UdA
-        vIifcoEcOV5ETmOaUT905njOixrUetg=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-539-pH8obaQUMmehH5D-5VTZ2Q-1; Tue, 01 Mar 2022 05:49:03 -0500
-X-MC-Unique: pH8obaQUMmehH5D-5VTZ2Q-1
-Received: by mail-ed1-f69.google.com with SMTP id b13-20020a056402278d00b0041311e02a9bso7495573ede.13
-        for <linux-acpi@vger.kernel.org>; Tue, 01 Mar 2022 02:49:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=3CH13mEtx+s7zAd9pvAc4Ds+9mZl1I9pkrvG59eNagk=;
-        b=Qlr2HjsZH58eGBHc4eV4NlfPJQj2yBYh2CVh/UpZu0NmgE5ZDpf9mOUbIAuVRALmXW
-         apkHfWxn1zxoVpEcwsNslrOWev06TsnXpd7BRC1iqgTU5nMBCihc4k9926C1IsEkUlMl
-         jL3GI4c3KN0qFcI5/V9RzgbGlIF/I2X9nCZQc/z8+sw5wmWp4i+LN1KWkXmVLqrVGW6r
-         Rzh/alEtkPkkg6KHvwV0JhwLODI/Be99jACoUEbV2K/FPOUzWNFznHcd2QcRKwuWe4VG
-         DdcgJtWLTRiC9CBFCrCV1suRV8PqYJ1HjZ6cAqRR4hO/WmK7Mpw/pPYcKq9RJNXYnqVq
-         7sJQ==
-X-Gm-Message-State: AOAM532n7ohF4LNv2BcX8MOFZjgcfL4+1rMyMncUjD4fXOYHwyWsGZlW
-        VoAR4ye2LWW8QbMCw9qdPMyh5n1/WbP3ME36sZnOzFe5YNLcjaYRa+Xc3mToQ0ZypKO8jIkbCnl
-        PMRFZLtDVpnECUcit6YyrGA==
-X-Received: by 2002:a05:6402:d51:b0:415:527d:efbd with SMTP id ec17-20020a0564020d5100b00415527defbdmr1546327edb.47.1646131742076;
-        Tue, 01 Mar 2022 02:49:02 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJz+DbqfYyrIqIrT07aUu8KS4lAvUflv4og7L/arcDucj61lms2SYxNAFpuQcFAvrsfd0ZEYDA==
-X-Received: by 2002:a05:6402:d51:b0:415:527d:efbd with SMTP id ec17-20020a0564020d5100b00415527defbdmr1546315edb.47.1646131741927;
-        Tue, 01 Mar 2022 02:49:01 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id u10-20020a50d94a000000b004131aa2525esm7183510edj.49.2022.03.01.02.49.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Mar 2022 02:49:01 -0800 (PST)
-Message-ID: <63303f21-1f8c-396e-7e67-28e477d30244@redhat.com>
-Date:   Tue, 1 Mar 2022 11:49:00 +0100
+        with ESMTP id S234302AbiCAK4y (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Tue, 1 Mar 2022 05:56:54 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 60F4D8BF14;
+        Tue,  1 Mar 2022 02:56:13 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F7FBED1;
+        Tue,  1 Mar 2022 02:56:13 -0800 (PST)
+Received: from [10.57.39.47] (unknown [10.57.39.47])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 701873F73D;
+        Tue,  1 Mar 2022 02:56:10 -0800 (PST)
+Message-ID: <4e4bb61a-377e-1ec9-5998-214055ef0a78@arm.com>
+Date:   Tue, 1 Mar 2022 10:56:05 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH 2/3 v6] ACPI: allow longer device IDs
-Content-Language: en-US
-To:     "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Alexander Graf <graf@amazon.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-References: <CAHmME9qHnvwrxEue4Pdm_E1qZQGXFuR9orJSKCWj8fH5TSh6fA@mail.gmail.com>
- <20220228183355.9090-1-Jason@zx2c4.com>
- <e9bfc654-5504-29ff-5a5a-b73f24691600@redhat.com>
- <CAHmME9oa4VQm7M0xsqCcy_0zaruhZarwodTyJEw0rtJnBskM=Q@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAHmME9oa4VQm7M0xsqCcy_0zaruhZarwodTyJEw0rtJnBskM=Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH v7 0/7] arm64: Default to 32-bit wide ZONE_DMA
+Content-Language: en-GB
+To:     Matt Flax <flatmax@gmail.com>, nsaenzjulienne@suse.de
+Cc:     ardb@kernel.org, catalin.marinas@arm.com,
+        devicetree@vger.kernel.org, guohanjun@huawei.com, hch@lst.de,
+        iommu@lists.linux-foundation.org, jeremy.linton@arm.com,
+        linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-riscv@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, lorenzo.pieralisi@arm.com,
+        robh+dt@kernel.org, will@kernel.org,
+        Matt Flax <flatmax@flatmax.com>
+References: <20201119175400.9995-1-nsaenzjulienne@suse.de>
+ <20220301030031.4025282-1-flatmax@flatmax.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20220301030031.4025282-1-flatmax@flatmax.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Hi,
+Hi Matt,
 
-On 3/1/22 11:38, Jason A. Donenfeld wrote:
-> Hi Hans,
+On 2022-03-01 03:00, Matt Flax wrote:
+> Hi All,
 > 
-> On Tue, Mar 1, 2022 at 11:35 AM Hans de Goede <hdegoede@redhat.com> wrote:
->> Acked-by: Hans de Goede <hdegoede@redhat.com>
+> It seems that the ZONE_DMA changes have broken the operation of Rochip rk3399 chipsets from v5.10.22 onwards.
 > 
-> Thanks for the Ack. I still need Rafael's Ack to take this through my
-> random.git tree, right?
+> It isn't clear what needs to be changed to get any of these boards up and running again. Any pointers on how/what to change ?
 
-Right.
+Your firmware/bootloader setup is mismatched. If you're using the 
+downstream Rockchip blob for BL31, you need to reserve or remove the 
+memory range 0x8400000-0x9600000 to match the behaviour of the original 
+Android BSP U-Boot. The downstream firmware firewalls this memory off 
+for the Secure world such that any attempt to touch it from Linux 
+results in a fatal SError fault as below. Any apparent correlation with 
+the ZONE_DMA changes will simply be because they've affected the 
+behaviour of the page allocator, such that it's more likely to reach 
+into the affected range of memory.
 
-> Or are you two one in the same when it comes
-> to that? Trying not to step on toes if possible.
+Cheers,
+Robin.
 
-No, I'm the drivers/platform/x86 subsys maintainer and as such do a lot
-with ACPI too, but Rafael is the ACPI subsys maintainer.
-
-Regards,
-
-Hans
-
-
+> An easy test for debugging is to run stress :
+> 
+> stress --cpu 4 --io 4 --vm 2 --vm-bytes 128M
+> 
+> stress: info: [255] dispatching hogs: 4 cpu, 4 io, 2 vm, 0 hdd
+> [    8.070280] SError Interrupt on CPU4, code 0xbf000000 -- SError
+> [    8.070286] CPU: 4 PID: 261 Comm: stress Not tainted 5.10.21 #1
+> [    8.070289] Hardware name: FriendlyElec NanoPi M4 (DT)
+> [    8.070293] pstate: 00000005 (nzcv daif -PAN -UAO -TCO BTYPE=--)
+> [    8.070296] pc : clear_page+0x14/0x28
+> [    8.070298] lr : clear_subpage+0x50/0x90
+> [    8.070302] sp : ffff800012abbc40
+> [    8.070305] x29: ffff800012abbc40 x28: ffff000000f68000
+> [    8.070313] x27: 0000000000000000 x26: ffff000001f38e40
+> [    8.070320] x25: ffff8000114fd000 x24: 0000000000000000
+> [    8.070326] x23: 0000000000000000 x22: 0000000000001000
+> [    8.070334] x21: 0000ffffa7e00000 x20: fffffe0000010000
+> [    8.070341] x19: ffff000000f68000 x18: 0000000000000000
+> [    8.070348] x17: 0000000000000000 x16: 0000000000000000
+> [    8.070354] x15: 0000000000000002 x14: 0000000000000001
+> [    8.070361] x13: 0000000000075879 x12: 00000000000000c0
+> [    8.070368] x11: ffff80006c46a000 x10: 0000000000000200
+> [    8.070374] x9 : 0000000000000000 x8 : 0000000000000010
+> [    8.070381] x7 : ffff00007db800a0 x6 : ffff800011b899c0
+> [    8.070387] x5 : 0000000000000000 x4 : ffff00007db800f7
+> [    8.070394] x3 : 0000020000200000 x2 : 0000000000000004
+> [    8.070401] x1 : 0000000000000040 x0 : ffff0000085ff4c0
+> [    8.070409] Kernel panic - not syncing: Asynchronous SError Interrupt
+> [    8.070412] CPU: 4 PID: 261 Comm: stress Not tainted 5.10.21 #1
+> [    8.070415] Hardware name: FriendlyElec NanoPi M4 (DT)
+> [    8.070418] Call trace:
+> [    8.070420]  dump_backtrace+0x0/0x1b0
+> [    8.070423]  show_stack+0x18/0x70
+> [    8.070425]  dump_stack+0xd0/0x12c
+> [    8.070428]  panic+0x16c/0x334
+> [    8.070430]  nmi_panic+0x8c/0x90
+> [    8.070433]  arm64_serror_panic+0x78/0x84
+> [    8.070435]  do_serror+0x64/0x70
+> [    8.070437]  el1_error+0x88/0x108
+> [    8.070440]  clear_page+0x14/0x28
+> [    8.070443]  clear_huge_page+0x74/0x210
+> [    8.070445]  do_huge_pmd_anonymous_page+0x1b0/0x7c0
+> [    8.070448]  handle_mm_fault+0xdac/0x1290
+> [    8.070451]  do_page_fault+0x130/0x3a0
+> [    8.070453]  do_translation_fault+0xb0/0xc0
+> [    8.070456]  do_mem_abort+0x44/0xb0
+> [    8.070458]  el0_da+0x28/0x40
+> [    8.070461]  el0_sync_handler+0x168/0x1b0
+> [    8.070464]  el0_sync+0x174/0x180
+> [    8.070508] SError Interrupt on CPU0, code 0xbf000000 -- SError
+> [    8.070511] CPU: 0 PID: 258 Comm: stress Not tainted 5.10.21 #1
+> [    8.070515] Hardware name: FriendlyElec NanoPi M4 (DT)
+> [    8.070518] pstate: 80000000 (Nzcv daif -PAN -UAO -TCO BTYPE=--)
+> [    8.070520] pc : 0000aaaacec22e98
+> [    8.070523] lr : 0000aaaacec22d84
+> [    8.070525] sp : 0000ffffe67a8620
+> [    8.070528] x29: 0000ffffe67a8620 x28: 0000000000000003
+> [    8.070534] x27: 0000aaaacec34000 x26: 0000ffffaeb42610
+> [    8.070541] x25: 0000ffffa69af010 x24: 0000aaaacec23a98
+> [    8.070547] x23: 0000aaaacec35010 x22: 0000aaaacec35000
+> [    8.070554] x21: 0000000000001000 x20: ffffffffffffffff
+> [    8.070560] x19: 0000000008000000 x18: 0000000000000000
+> [    8.070567] x17: 0000000000000000 x16: 0000000000000000
+> [    8.070573] x15: 0000000000000000 x14: 0000000000000000
+> [    8.070580] x13: 0000000000008000 x12: 0000000000000000
+> [    8.070587] x11: 0000000000000020 x10: 0000000000000030
+> [    8.070593] x9 : 000000000000000a x8 : 00000000000000de
+> [    8.070599] x7 : 0000000000200000 x6 : 000000000000021b
+> [    8.070606] x5 : 0000000000000000 x4 : ffffffffffffffff
+> [    8.070613] x3 : 0000000000000000 x2 : 0000ffffaeb47000
+> [    8.070619] x1 : 000000000000005a x0 : 0000000000a58000
+> [    8.070629] SMP: stopping secondary CPUs
+> [    8.070632] Kernel Offset: disabled
+> [    8.070634] CPU features: 0x0240022,6100600c
+> [    8.070637] Memory Limit: none
+> 
+> 
