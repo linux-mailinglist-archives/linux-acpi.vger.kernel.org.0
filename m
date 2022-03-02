@@ -2,166 +2,86 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D041E4CA88E
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Mar 2022 15:52:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE8C84CA9A3
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Mar 2022 16:51:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243264AbiCBOxj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Mar 2022 09:53:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50212 "EHLO
+        id S235292AbiCBPvz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Mar 2022 10:51:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235638AbiCBOxi (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 09:53:38 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38ABA24F05;
-        Wed,  2 Mar 2022 06:52:55 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC25261631;
-        Wed,  2 Mar 2022 14:52:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1043C004E1;
-        Wed,  2 Mar 2022 14:52:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1646232774;
-        bh=AaVZTbcwsLoEN6dmpELG2w6iDesUHs9sUP4+Omqezc0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kmJqzFyFBVEXdMwB0eYXxslBglK/+MZ5AFOPSiGR8t3try2vJjoWiGy8wnz2URrGw
-         hA8GFBMn5xOuRu5LtAgT8WkMLUhPG0jHyNhC76m4laj5WdP4reH84Q7cTJKuIdpfXD
-         xphCFdJ9efrMR7DaHcdLNG/zDWLE9Dc5KhkjfPRc=
-Date:   Wed, 2 Mar 2022 15:52:51 +0100
-From:   'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>
-To:     =?utf-8?B?77+95b+177+977+9L1RWIFMvVyBMYWIoVkQpL1N0YWZmIEVuZ2luZWVyLw==?=
-         =?utf-8?B?77+977y677+977+977+977+9?= <yj84.jang@samsung.com>
-Cc:     "'Rafael J. Wysocki'" <rafael@kernel.org>,
-        'Pavel Machek' <pavel@ucw.cz>,
-        'Len Brown' <len.brown@intel.com>,
-        'Bjorn Helgaas' <bhelgaas@google.com>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-usb@vger.kernel.org, js07.lee@samsung.com
-Subject: Re: [PATCH] PM: Add device name to suspend_report_result()
-Message-ID: <Yh+Ew8nd2C44ShHw@kroah.com>
-References: <CGME20220302064921epcas1p19fbe8c017d776657caa696a3cef10093@epcas1p1.samsung.com>
- <20220302064917.64073-1-yj84.jang@samsung.com>
- <Yh8jb/X5ZNFvVQlf@kroah.com>
- <03e001d82e24$b1b0e450$1512acf0$@samsung.com>
+        with ESMTP id S236478AbiCBPvw (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 10:51:52 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BB78CCC54;
+        Wed,  2 Mar 2022 07:50:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646236252; x=1677772252;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=D1uiCJhxBtjA4oR6+KrFSQrnollkmcJKddeu5cuEKpA=;
+  b=fo+AMXorGWqlxpuUdk7argusDkRoI7GN9g0+Wye9eLm/VgpLaVn3dG0S
+   xd4BAkLamXwv93XdKXTQ3G8yoBP5aOhZyzLmlBh/s6AK1eFp/4rlWWoUS
+   ey6UMe5FuyXDy4WnIk7fCPNhly9hZqWQ4F6dVRn6kJy/eJagrNjgpnY+q
+   NxitRwwLAUmk8rkcOskpTKAy0UY1ls+R5scJz1R9TsWTM5IvzJ8uqZDXp
+   1goMlZM3oaRK3Dmr4qKdEpo3Dz/LRlSJCnT21Uh7BQk8RDEwbO97R5BMm
+   ydhcDalPOiBON853oOmHHj/AqAGccD0k5K3tj6Sb+62lzDjFTN7BVRaFr
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10274"; a="234048577"
+X-IronPort-AV: E=Sophos;i="5.90,149,1643702400"; 
+   d="scan'208";a="234048577"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2022 07:50:40 -0800
+X-IronPort-AV: E=Sophos;i="5.90,149,1643702400"; 
+   d="scan'208";a="709553789"
+Received: from smile.fi.intel.com ([10.237.72.59])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2022 07:50:37 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nPREc-00AMq2-Dc;
+        Wed, 02 Mar 2022 17:49:50 +0200
+Date:   Wed, 2 Mar 2022 17:49:50 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [PATCH v1 1/1] ACPI: Switch to use list_entry_is_head() helper
+Message-ID: <Yh+SHs4CEWkiLxAe@smile.fi.intel.com>
+References: <20220211110423.22733-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <03e001d82e24$b1b0e450$1512acf0$@samsung.com>
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220211110423.22733-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 02, 2022 at 08:00:14PM +0900, �念��/TV S/W Lab(VD)/Staff Engineer/�Ｚ���� wrote:
-> > -----Original Message-----
-> > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Sent: Wednesday, March 2, 2022 4:58 PM
-> > To: Youngjin Jang <yj84.jang@samsung.com>
-> > Cc: Rafael J. Wysocki <rafael@kernel.org>; Pavel Machek <pavel@ucw.cz>;
-> > Len Brown <len.brown@intel.com>; Bjorn Helgaas <bhelgaas@google.com>;
-> > linux-pm@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
-> > pci@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
-> usb@vger.kernel.org;
-> > js07.lee@samsung.com
-> > Subject: Re: [PATCH] PM: Add device name to suspend_report_result()
-> > 
-> > On Wed, Mar 02, 2022 at 03:49:17PM +0900, Youngjin Jang wrote:
-> > > From: "yj84.jang" <yj84.jang@samsung.com>
-> > >
-> > > currently, suspend_report_result() prints only function information.
-> > > If any driver uses common pm function, nobody knows who called failed
-> > > function exactly.
-> > >
-> > > So, device information is needed to recognize specific wrong driver.
-> > >
-> > > e.g.)
-> > > PM: dpm_run_callback(): pm_generic_suspend+0x0/0x48 returns 0
-> > > PM: dpm_run_callback(): platform_pm_suspend+0x0/0x68 returns 0 after
-> > > patch,
-> > > PM: dpm_run_callback(): pm_generic_suspend+0x0/0x48 (amba) returns 0
-> > > PM: dpm_run_callback(): platform_pm_suspend+0x0/0x68 (armv7-pmu)
-> > > returns 0
-> > >
-> > > Signed-off-by: yj84.jang <yj84.jang@samsung.com>
-> > > ---
-> > >  drivers/base/power/main.c  | 10 +++++-----
-> > >  drivers/pci/pci-driver.c   | 14 +++++++-------
-> > >  drivers/pnp/driver.c       |  2 +-
-> > >  drivers/usb/core/hcd-pci.c |  4 ++--
-> > >  include/linux/pm.h         |  8 ++++----
-> > >  5 files changed, 19 insertions(+), 19 deletions(-)
-> > >
-> > > diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-> > > index 04ea92c..a762fe8 100644
-> > > --- a/drivers/base/power/main.c
-> > > +++ b/drivers/base/power/main.c
-> > > @@ -485,7 +485,7 @@ static int dpm_run_callback(pm_callback_t cb, struct
-> > device *dev,
-> > >  	trace_device_pm_callback_start(dev, info, state.event);
-> > >  	error = cb(dev);
-> > >  	trace_device_pm_callback_end(dev, error);
-> > > -	suspend_report_result(cb, error);
-> > > +	suspend_report_result(dev, cb, error);
-> > >
-> > >  	initcall_debug_report(dev, calltime, cb, error);
-> > >
-> > > @@ -1568,7 +1568,7 @@ static int legacy_suspend(struct device *dev,
-> > pm_message_t state,
-> > >  	trace_device_pm_callback_start(dev, info, state.event);
-> > >  	error = cb(dev, state);
-> > >  	trace_device_pm_callback_end(dev, error);
-> > > -	suspend_report_result(cb, error);
-> > > +	suspend_report_result(dev, cb, error);
-> > >
-> > >  	initcall_debug_report(dev, calltime, cb, error);
-> > >
-> > > @@ -1855,7 +1855,7 @@ static int device_prepare(struct device *dev,
-> > pm_message_t state)
-> > >  	device_unlock(dev);
-> > >
-> > >  	if (ret < 0) {
-> > > -		suspend_report_result(callback, ret);
-> > > +		suspend_report_result(dev, callback, ret);
-> > >  		pm_runtime_put(dev);
-> > >  		return ret;
-> > >  	}
-> > > @@ -1960,10 +1960,10 @@ int dpm_suspend_start(pm_message_t state)  }
-> > > EXPORT_SYMBOL_GPL(dpm_suspend_start);
-> > >
-> > > -void __suspend_report_result(const char *function, void *fn, int ret)
-> > > +void __suspend_report_result(const char *function, struct device
-> > > +*dev, void *fn, int ret)
-> > >  {
-> > >  	if (ret)
-> > > -		pr_err("%s(): %pS returns %d\n", function, fn, ret);
-> > > +		pr_err("%s(): %pS (%s) returns %d\n", function, fn,
-> > > +dev_driver_string(dev), ret);
-> > 
-> > If you have a struct device, please use dev_err().
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> Hello,
-> Thanks for your review.
-> 
-> I think dev_err() is nice option, but we can see a minor issue.
-> Prefix log "PM: " would be lost, If I use dev_err() in this context.
-> As you know, all logs in power management include "PM :" prefix.
+On Fri, Feb 11, 2022 at 01:04:23PM +0200, Andy Shevchenko wrote:
+> Since we got list_entry_is_head() helper in the generic header,
+> we may switch the ACPI modules to use it. This eliminates the
+> need in additional variable. In some cases it reduces critical
+> sections as well.
 
-Why does that matter?  Fix them all to use the struct device pointer and
-then they will be properly unified with the rest of the kernel log
-infrastructure.
+Besides the work required in a couple of cases (LKP) there is an
+ongoing discussion about list loops (and this particular API).
 
-thanks,
+Rafael, what do you think is the best course of action here?
 
-greg k-h
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
