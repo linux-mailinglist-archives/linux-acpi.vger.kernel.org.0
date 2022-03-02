@@ -2,121 +2,58 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE61A4CA29F
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Mar 2022 12:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA6CB4CA37C
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Mar 2022 12:21:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239875AbiCBLBK (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Mar 2022 06:01:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47830 "EHLO
+        id S233778AbiCBLWh (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Mar 2022 06:22:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238795AbiCBLBI (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 06:01:08 -0500
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4FF36E4FF
-        for <linux-acpi@vger.kernel.org>; Wed,  2 Mar 2022 03:00:21 -0800 (PST)
-Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
-        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20220302110016epoutp044d7d59290ff8ad1f4332532e58f2b3e6~Yi0qhkFQ22626326263epoutp044
-        for <linux-acpi@vger.kernel.org>; Wed,  2 Mar 2022 11:00:16 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20220302110016epoutp044d7d59290ff8ad1f4332532e58f2b3e6~Yi0qhkFQ22626326263epoutp044
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1646218816;
-        bh=kq8MQbVRkc+bOUL5EisgTWGyifp1Wf2QScEObld1uDc=;
-        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-        b=VBiAPt2ZvaQ40xwTA8+UZ8RzRuOIDVE9uv49XxDqKoVuisSMBghbFybAjH7/9Iwru
-         TMNjOQnksf8x/hQ2B2Yy/KLdmU4zQ/C+QSDhP1DvjRKI7NYAEDACoW9CB2yCOo0wyN
-         x7oUTRy6L+AcVZll59VcXkiPT92+vyLyc4V8fRWc=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-        epcas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20220302110015epcas1p11e00fb34377d4913a5204264f2a86106~Yi0qGCeoa0938509385epcas1p1j;
-        Wed,  2 Mar 2022 11:00:15 +0000 (GMT)
-Received: from epsmges1p3.samsung.com (unknown [182.195.38.241]) by
-        epsnrtp1.localdomain (Postfix) with ESMTP id 4K7rk64VW2z4x9Ps; Wed,  2 Mar
-        2022 11:00:14 +0000 (GMT)
-Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
-        epsmges1p3.samsung.com (Symantec Messaging Gateway) with SMTP id
-        7F.25.09592.E3E4F126; Wed,  2 Mar 2022 20:00:14 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas1p4.samsung.com (KnoxPortal) with ESMTPA id
-        20220302110014epcas1p48988c9d9e7f43f5ca002f718baa7ae53~Yi0odL9Xt1455414554epcas1p4C;
-        Wed,  2 Mar 2022 11:00:14 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20220302110014epsmtrp120570eea30bcef7d260dbef848ee1bda~Yi0ocaG5d0587005870epsmtrp1Q;
-        Wed,  2 Mar 2022 11:00:14 +0000 (GMT)
-X-AuditID: b6c32a37-28fff70000002578-9c-621f4e3e3792
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        E7.59.29871.E3E4F126; Wed,  2 Mar 2022 20:00:14 +0900 (KST)
-Received: from yj84jang02 (unknown [10.88.97.211]) by epsmtip2.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20220302110013epsmtip2d98d3399c45cf71f6484d5611b47ffdc~Yi0oO1qT42184721847epsmtip2H;
-        Wed,  2 Mar 2022 11:00:13 +0000 (GMT)
-From:   =?ks_c_5601-1987?B?wOW/tcH4L1RWIFMvVyBMYWIoVkQpL1N0YWZmIEVuZ2luZWVyL7vv?=
-         =?ks_c_5601-1987?B?vLrA/MDa?= <yj84.jang@samsung.com>
-To:     "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>
-Cc:     "'Rafael J. Wysocki'" <rafael@kernel.org>,
-        "'Pavel Machek'" <pavel@ucw.cz>,
-        "'Len Brown'" <len.brown@intel.com>,
-        "'Bjorn Helgaas'" <bhelgaas@google.com>,
-        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>, <js07.lee@samsung.com>
-In-Reply-To: <Yh8jb/X5ZNFvVQlf@kroah.com>
-Subject: RE: [PATCH] PM: Add device name to suspend_report_result()
-Date:   Wed, 2 Mar 2022 20:00:14 +0900
-Message-ID: <03e001d82e24$b1b0e450$1512acf0$@samsung.com>
+        with ESMTP id S229579AbiCBLWg (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 06:22:36 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C079555B9;
+        Wed,  2 Mar 2022 03:21:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646220113; x=1677756113;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1Htwp0cn4iD5IqoVEZ/IBuMOc0hHGYYNClu//F4PQ/o=;
+  b=ZJFwG1MvaxZmk7M7JlkSt07QQ1VQ3/aXV3+HL5yrc2G1Pq7o43H694uP
+   JdZtO1+0ivbWaKKEPfI8mMZl4Q7HxWe3CtsBAkvK+gry4pEJTJHS2fEke
+   TRTlxc/trSYz4D5PZZLU+mtP6RpeCqLVmWFHnVhZRRrpxoLubydWBpIko
+   3v3gB8+habxpeZvzFaHTLs6spLakHBwr2CMkXKM35663eAMCtTAvuiui8
+   NYOSQxbo67fq1oxJIbO52c7a+jBRuxi3XXd6wO9bbqrb4ASb+OuEO9VLg
+   +TFbjTXoTVILHqev0wVl51Y+hFrQYOK49T6aI0F2HU/yE9pTyY++9eia6
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10273"; a="240790596"
+X-IronPort-AV: E=Sophos;i="5.90,148,1643702400"; 
+   d="scan'208";a="240790596"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2022 03:21:53 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,148,1643702400"; 
+   d="scan'208";a="686106327"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 02 Mar 2022 03:21:50 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 02 Mar 2022 13:21:49 +0200
+Date:   Wed, 2 Mar 2022 13:21:49 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc:     Linux ACPI <linux-acpi@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1] ACPI: bus: Introduce acpi_bus_for_each_dev()
+Message-ID: <Yh9TTb6rBeTAw0iB@kuha.fi.intel.com>
+References: <11943345.O9o76ZdvQC@kreacher>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ks_c_5601-1987"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQGYo0TT2vM3t6OMkLszEBoeXVnaDgIOdYpqAcZRUMetDFa0cA==
-Content-Language: ko
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrOJsWRmVeSWpSXmKPExsWy7bCmrq6dn3ySwbk/ihZLmjIsmhevZ7N4
-        dPM3q8WsKXuZLJbv62e0uLxrDpvF2XnH2Sw+9x5htFi0rJXZ4u6po2wWc79MZXbg9liwqdRj
-        8Z6XTB6bVnWyeeyfu4bdo2/LKkaPFau/s3t83iQXwB6VbZORmpiSWqSQmpecn5KZl26r5B0c
-        7xxvamZgqGtoaWGupJCXmJtqq+TiE6DrlpkDdKKSQlliTilQKCCxuFhJ386mKL+0JFUhI7+4
-        xFYptSAlp8CsQK84Mbe4NC9dLy+1xMrQwMDIFKgwITtj5aeFLAUz5Cre/V/I0sB4W6KLkYND
-        QsBEYsaetC5GLg4hgR2MEnPmH2SCcD4xSrzavIwFwvnGKHGrZSGQwwnWce7zD3aIxF5Gia3H
-        Z0G1PGeU2HPqJFiGTaCdUWLnqtXsIC0iAuYScx8eB0swC1xikrh+aQsjSIJTQFNi5cc7rCC2
-        sICzxN59R8B2sAioSGw8e4sNxOYVsJT4v+IPE4QtKHFy5hOwGmYBI4klq+czQdjyEtvfzmGG
-        uE9B4ufTZawQi50kXl09wQpRIyIxu7ONGeQICYEDHBJbd05ghWhwkejr+cUOYQtLvDq+BcqW
-        knjZ3wZlp0tMfPwWyi6Q+Pt4CdQyY4l3b9dC2YoSO3/PZYRYxifx7msPKySIeSU62oQgSpQl
-        Hp9fzQZhS0qs/72faQKj0iwkr81C8tosJK/NQvLCAkaWVYxiqQXFuempxYYFxvAIT87P3cQI
-        TsFa5jsYp739oHeIkYmD8RCjBAezkgivuLV8khBvSmJlVWpRfnxRaU5q8SFGU2BoT2SWEk3O
-        B2aBvJJ4QxNLAxMzIxMLY0tjMyVx3lXTTicKCaQnlqRmp6YWpBbB9DFxcEo1MFkt29pZp93S
-        l9jl1F4RbTPj9c3Jel/Z620CNjyz67F33fvw3vWPU7beCUlWuqEgf8Yn6dWiu79nmjJsW7WC
-        f/VL8bwNyzaytV8W2av3o3vrmg/rMgJLVjX7uZi7TemzizA5pWtnU143+8058bfKsqdOLLCu
-        3VF/t3fxkqWtj1Z/Oc/VxPAy9lU6w+2FB5NSzrRJnk57I/n2wKviWOmauW9iGc6//NnPl9bE
-        mW5wqoJhsljcu+BPkkmCm5uZuLfde2+cyqEXM0mhq6LuwSk/iR2vJz61eRQ5zah48WXP8qn2
-        fceb368T+tUsclsteVlM+PX3tyS+ODzclRSQp3oqmjd3n9ilM5kikm7ZpZM3/1ZiKc5INNRi
-        LipOBABfkH8OSgQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrAIsWRmVeSWpSXmKPExsWy7bCSvK6dn3ySwZrr7BZLmjIsmhevZ7N4
-        dPM3q8WsKXuZLJbv62e0uLxrDpvF2XnH2Sw+9x5htFi0rJXZ4u6po2wWc79MZXbg9liwqdRj
-        8Z6XTB6bVnWyeeyfu4bdo2/LKkaPFau/s3t83iQXwB7FZZOSmpNZllqkb5fAlbHy00KWghly
-        Fe/+L2RpYLwt0cXIySEhYCJx7vMP9i5GLg4hgd2MEg+X/mSCSEhKfP30ma2LkQPIFpY4fLgY
-        ouYpo0Tv100sIA6bQDujxM5Vq9lBGkQEzCXmPjwOZjML3GKS+HvIGaJjJaPEteOtYAlOAU2J
-        lR/vsILYwgLOEnv3HWEBsVkEVCQ2nr3FBmLzClhK/F/xhwnCFpQ4OfMJC8RQE4nGw91QtrzE
-        9rdzmCEuVZD4+XQZK8QRThKvrp5ghagRkZjd2cY8gVF4FpJRs5CMmoVk1CwkLQsYWVYxSqYW
-        FOem5xYbFhjmpZbrFSfmFpfmpesl5+duYgRHopbmDsbtqz7oHWJk4mA8xCjBwawkwituLZ8k
-        xJuSWFmVWpQfX1Sak1p8iFGag0VJnPdC18l4IYH0xJLU7NTUgtQimCwTB6dUA9Nkq2vyFpMF
-        7k2ZyLl56a/r5x/XHqyaWXFWROdL6qxQQUOVtkqLuefu6N/xE1jZ+Pp8fmed/sp4lvnGQi4n
-        Z28vZ+/5U8rZb2av4Kt0Ma/48UbWGy/a448VKMtszNvM/in7S7TTioMxK/crq1QJfjrLfr3F
-        Ymt29Y54V//zMfofTRd4pK+N2rmLUeW628H+zqYin3v/rYqMJKdE2xtw7WG4cPq0kPujMF11
-        Xe2OPc2BFl6b2AMaJ6zX//H3Pk/8H5F38ml+muv8Fx01NJLbb7m74f1f7q4r2QWOzusZj2ax
-        R+442jFJKjjwy/bKB0wup10b/eQCZZQXK/HwvW/tPX51ZUXS8leJxZ9U9VeEKrEUZyQaajEX
-        FScCAG+lEs8zAwAA
-X-CMS-MailID: 20220302110014epcas1p48988c9d9e7f43f5ca002f718baa7ae53
-X-Msg-Generator: CA
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20220302064921epcas1p19fbe8c017d776657caa696a3cef10093
-References: <CGME20220302064921epcas1p19fbe8c017d776657caa696a3cef10093@epcas1p1.samsung.com>
-        <20220302064917.64073-1-yj84.jang@samsung.com> <Yh8jb/X5ZNFvVQlf@kroah.com>
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <11943345.O9o76ZdvQC@kreacher>
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -124,105 +61,76 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-> -----Original Message-----
-> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Sent: Wednesday, March 2, 2022 4:58 PM
-> To: Youngjin Jang <yj84.jang@samsung.com>
-> Cc: Rafael J. Wysocki <rafael@kernel.org>; Pavel Machek <pavel@ucw.cz>;
-> Len Brown <len.brown@intel.com>; Bjorn Helgaas <bhelgaas@google.com>;
-> linux-pm@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
-> pci@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
-usb@vger.kernel.org;
-> js07.lee@samsung.com
-> Subject: Re: [PATCH] PM: Add device name to suspend_report_result()
+On Tue, Feb 22, 2022 at 08:51:42PM +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> On Wed, Mar 02, 2022 at 03:49:17PM +0900, Youngjin Jang wrote:
-> > From: "yj84.jang" <yj84.jang@samsung.com>
-> >
-> > currently, suspend_report_result() prints only function information.
-> > If any driver uses common pm function, nobody knows who called failed
-> > function exactly.
-> >
-> > So, device information is needed to recognize specific wrong driver.
-> >
-> > e.g.)
-> > PM: dpm_run_callback(): pm_generic_suspend+0x0/0x48 returns 0
-> > PM: dpm_run_callback(): platform_pm_suspend+0x0/0x68 returns 0 after
-> > patch,
-> > PM: dpm_run_callback(): pm_generic_suspend+0x0/0x48 (amba) returns 0
-> > PM: dpm_run_callback(): platform_pm_suspend+0x0/0x68 (armv7-pmu)
-> > returns 0
-> >
-> > Signed-off-by: yj84.jang <yj84.jang@samsung.com>
-> > ---
-> >  drivers/base/power/main.c  | 10 +++++-----
-> >  drivers/pci/pci-driver.c   | 14 +++++++-------
-> >  drivers/pnp/driver.c       |  2 +-
-> >  drivers/usb/core/hcd-pci.c |  4 ++--
-> >  include/linux/pm.h         |  8 ++++----
-> >  5 files changed, 19 insertions(+), 19 deletions(-)
-> >
-> > diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-> > index 04ea92c..a762fe8 100644
-> > --- a/drivers/base/power/main.c
-> > +++ b/drivers/base/power/main.c
-> > @@ -485,7 +485,7 @@ static int dpm_run_callback(pm_callback_t cb, struct
-> device *dev,
-> >  	trace_device_pm_callback_start(dev, info, state.event);
-> >  	error = cb(dev);
-> >  	trace_device_pm_callback_end(dev, error);
-> > -	suspend_report_result(cb, error);
-> > +	suspend_report_result(dev, cb, error);
-> >
-> >  	initcall_debug_report(dev, calltime, cb, error);
-> >
-> > @@ -1568,7 +1568,7 @@ static int legacy_suspend(struct device *dev,
-> pm_message_t state,
-> >  	trace_device_pm_callback_start(dev, info, state.event);
-> >  	error = cb(dev, state);
-> >  	trace_device_pm_callback_end(dev, error);
-> > -	suspend_report_result(cb, error);
-> > +	suspend_report_result(dev, cb, error);
-> >
-> >  	initcall_debug_report(dev, calltime, cb, error);
-> >
-> > @@ -1855,7 +1855,7 @@ static int device_prepare(struct device *dev,
-> pm_message_t state)
-> >  	device_unlock(dev);
-> >
-> >  	if (ret < 0) {
-> > -		suspend_report_result(callback, ret);
-> > +		suspend_report_result(dev, callback, ret);
-> >  		pm_runtime_put(dev);
-> >  		return ret;
-> >  	}
-> > @@ -1960,10 +1960,10 @@ int dpm_suspend_start(pm_message_t state)  }
-> > EXPORT_SYMBOL_GPL(dpm_suspend_start);
-> >
-> > -void __suspend_report_result(const char *function, void *fn, int ret)
-> > +void __suspend_report_result(const char *function, struct device
-> > +*dev, void *fn, int ret)
-> >  {
-> >  	if (ret)
-> > -		pr_err("%s(): %pS returns %d\n", function, fn, ret);
-> > +		pr_err("%s(): %pS (%s) returns %d\n", function, fn,
-> > +dev_driver_string(dev), ret);
+> In order to avoid exposing acpi_bus_type to modules, introduce an
+> acpi_bus_for_each_dev() helper for iterating over all ACPI device
+> objects and make typec_link_ports() use it instead of the raw
+> bus_for_each_dev() along with acpi_bus_type.
 > 
-> If you have a struct device, please use dev_err().
+> Having done that, drop the acpi_bus_type export.
 > 
-> thanks,
+> No intentional functional impact.
 > 
-> greg k-h
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Hello,
-Thanks for your review.
+FWIW:
 
-I think dev_err() is nice option, but we can see a minor issue.
-Prefix log "PM: " would be lost, If I use dev_err() in this context.
-As you know, all logs in power management include "PM :" prefix.
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-So, I think pr_err() with detail information would be better than dev_err().
-- PM: amba 1740000.etm: dpm_run_callback(): pm_generic_resume+0x0/0x48
-returns 0
+> ---
+>  drivers/acpi/bus.c              |    7 ++++++-
+>  drivers/usb/typec/port-mapper.c |    2 +-
+>  include/acpi/acpi_bus.h         |    2 ++
+>  3 files changed, 9 insertions(+), 2 deletions(-)
+> 
+> Index: linux-pm/drivers/acpi/bus.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/bus.c
+> +++ linux-pm/drivers/acpi/bus.c
+> @@ -1043,7 +1043,12 @@ struct bus_type acpi_bus_type = {
+>  	.remove		= acpi_device_remove,
+>  	.uevent		= acpi_device_uevent,
+>  };
+> -EXPORT_SYMBOL_GPL(acpi_bus_type);
+> +
+> +int acpi_bus_for_each_dev(int (*fn)(struct device *, void *), void *data)
+> +{
+> +	return bus_for_each_dev(&acpi_bus_type, NULL, data, fn);
+> +}
+> +EXPORT_SYMBOL_GPL(acpi_bus_for_each_dev);
+>  
+>  /* --------------------------------------------------------------------------
+>                               Initialization/Cleanup
+> Index: linux-pm/include/acpi/acpi_bus.h
+> ===================================================================
+> --- linux-pm.orig/include/acpi/acpi_bus.h
+> +++ linux-pm/include/acpi/acpi_bus.h
+> @@ -480,6 +480,8 @@ void acpi_initialize_hp_context(struct a
+>  /* acpi_device.dev.bus == &acpi_bus_type */
+>  extern struct bus_type acpi_bus_type;
+>  
+> +int acpi_bus_for_each_dev(int (*fn)(struct device *, void *), void *data);
+> +
+>  /*
+>   * Events
+>   * ------
+> Index: linux-pm/drivers/usb/typec/port-mapper.c
+> ===================================================================
+> --- linux-pm.orig/drivers/usb/typec/port-mapper.c
+> +++ linux-pm/drivers/usb/typec/port-mapper.c
+> @@ -59,7 +59,7 @@ int typec_link_ports(struct typec_port *
+>  	if (!has_acpi_companion(&con->dev))
+>  		return 0;
+>  
+> -	bus_for_each_dev(&acpi_bus_type, NULL, &arg, typec_port_match);
+> +	acpi_bus_for_each_dev(typec_port_match, &arg);
+>  	if (!arg.match)
+>  		return 0;
+>  
+> 
+> 
 
-
+-- 
+heikki
