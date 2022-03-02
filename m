@@ -2,98 +2,121 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D2CE4CAB2B
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Mar 2022 18:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CB614CACFD
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Mar 2022 19:09:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237377AbiCBRKZ (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Mar 2022 12:10:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52406 "EHLO
+        id S235956AbiCBSKc (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Mar 2022 13:10:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231790AbiCBRKY (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 12:10:24 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78D7E6342;
-        Wed,  2 Mar 2022 09:09:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646240981; x=1677776981;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ARu95SNjYvUW6s+dQ5hSBTaIXLn2LgPc0xfUHeJLPZ8=;
-  b=Kcnwq8R/yC952bKJDjGmx4d8EwmscA4Ac5uEyQ0MaKD4CW7TZOtsVBXh
-   7u0iB61y0FvWqXn3Onu7RSiRWof4mPOucmAqP7j2bEnA71q4QZPER2UOb
-   cDhlV1CPYWAGXN06fYLCFruln7j2y61Au1JfDF+B9V/WYRG4eggm3aV8c
-   +aVRORwTVqAm7hk/HigDBFK9hitQaVgBIPXJJsjcLCNPWnXk6ZtciWKqn
-   bGklHoGHpPSGZcBNfmHvcW0jkFvMW2LVVsC3DVkl9u8zRuSycefSka/H7
-   3ZeK7HCQTZpZ2inApn2OqZAG0Fa6P06bM9n+kzPk1KYR1IWroNUbLZCIr
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10274"; a="251027450"
-X-IronPort-AV: E=Sophos;i="5.90,149,1643702400"; 
-   d="scan'208";a="251027450"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2022 09:09:15 -0800
-X-IronPort-AV: E=Sophos;i="5.90,149,1643702400"; 
-   d="scan'208";a="511078765"
-Received: from smile.fi.intel.com ([10.237.72.59])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2022 09:09:12 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nPSSf-00APUi-LB;
-        Wed, 02 Mar 2022 19:08:25 +0200
-Date:   Wed, 2 Mar 2022 19:08:25 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hui Wang <hui.wang@canonical.com>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        nvdimm@lists.linux.dev, Len Brown <lenb@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH v1 1/1] ACPI: Switch to use list_entry_is_head() helper
-Message-ID: <Yh+kiSMZPleBcOXh@smile.fi.intel.com>
-References: <20220211110423.22733-1-andriy.shevchenko@linux.intel.com>
- <Yh+SHs4CEWkiLxAe@smile.fi.intel.com>
- <CAJZ5v0g_3a7A5aFab6ZsM8nPDmivoTeNgdSG17Lt71mFKmNxmg@mail.gmail.com>
+        with ESMTP id S244029AbiCBSKb (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 13:10:31 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7980D7090E;
+        Wed,  2 Mar 2022 10:09:48 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 40621139F;
+        Wed,  2 Mar 2022 10:09:48 -0800 (PST)
+Received: from e108754-lin.cambridge.arm.com (unknown [10.1.195.34])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 71FB53F73D;
+        Wed,  2 Mar 2022 10:09:46 -0800 (PST)
+From:   Ionela Voinescu <ionela.voinescu@arm.com>
+To:     Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Giovanni Gherdovich <ggherdovich@suse.cz>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Sean Kelley <skelley@nvidia.com>
+Cc:     Pierre Gondois <pierre.gondois@arm.com>,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3 0/3] arch_topology, ACPI: populate cpu capacity from CPPC
+Date:   Wed,  2 Mar 2022 18:09:10 +0000
+Message-Id: <20220302180913.13229-1-ionela.voinescu@arm.com>
+X-Mailer: git-send-email 2.29.2.dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0g_3a7A5aFab6ZsM8nPDmivoTeNgdSG17Lt71mFKmNxmg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Wed, Mar 02, 2022 at 05:36:20PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Mar 2, 2022 at 4:50 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Fri, Feb 11, 2022 at 01:04:23PM +0200, Andy Shevchenko wrote:
-> > > Since we got list_entry_is_head() helper in the generic header,
-> > > we may switch the ACPI modules to use it. This eliminates the
-> > > need in additional variable. In some cases it reduces critical
-> > > sections as well.
-> >
-> > Besides the work required in a couple of cases (LKP) there is an
-> > ongoing discussion about list loops (and this particular API).
-> >
-> > Rafael, what do you think is the best course of action here?
-> 
-> I think the current approach is to do the opposite of what this patch
-> is attempting to do: avoid using the list iterator outside of the
-> loop.
+Hi all,
 
-OK, let's drop this change.
+v2->v3:
+ - v2 can be found at [2]
+ - Added sanity checking on perf_caps.highest_perf
+
+v1->v2:
+ - v1 can be found at [1]
+ - Changed debug prints to the format used on the DT path
+ - s/init_cpu_capacity_cppc/topology_init_cpu_capacity_cppc
+
+Patches are based on v5.17-rc6.
+
+The patches have been build tested on x86 and more thoroughly tested on
+Juno R2 (arm64), which uses the new functionality, with the following
+results:
+
+root@buildroot:~# dmesg | grep cpu_capacity
+[    2.191152] cpu_capacity: CPU0 cpu_capacity=38300 (raw).
+[    2.196482] cpu_capacity: CPU1 cpu_capacity=38300 (raw).
+[    2.201809] cpu_capacity: CPU2 cpu_capacity=38300 (raw).
+[    2.207136] cpu_capacity: CPU3 cpu_capacity=38300 (raw).
+[    2.212463] cpu_capacity: CPU4 cpu_capacity=102400 (raw).
+[    2.217877] cpu_capacity: CPU5 cpu_capacity=102400 (raw).
+[    2.223291] cpu_capacity: capacity_scale=102400
+[    2.227834] cpu_capacity: CPU0 cpu_capacity=383
+[    2.232376] cpu_capacity: CPU1 cpu_capacity=383
+[    2.236919] cpu_capacity: CPU2 cpu_capacity=383
+[    2.241462] cpu_capacity: CPU3 cpu_capacity=383
+[    2.246004] cpu_capacity: CPU4 cpu_capacity=1024
+[    2.250634] cpu_capacity: CPU5 cpu_capacity=1024
+[    2.255321] cpu_capacity: cpu_capacity initialization done
+
+root@buildroot:~# tail -n +1 /sys/devices/system/cpu/cpu*/cpu_capacity
+==> /sys/devices/system/cpu/cpu0/cpu_capacity <==
+383
+==> /sys/devices/system/cpu/cpu1/cpu_capacity <==
+383
+==> /sys/devices/system/cpu/cpu2/cpu_capacity <==
+383
+==> /sys/devices/system/cpu/cpu3/cpu_capacity <==
+383
+==> /sys/devices/system/cpu/cpu4/cpu_capacity <==
+1024
+==> /sys/devices/system/cpu/cpu5/cpu_capacity <==
+1024
+
+[1]
+https://lore.kernel.org/lkml/20210514095339.12979-1-ionela.voinescu@arm.com/
+[2]
+https://lore.kernel.org/lkml/20210824105651.28660-1-ionela.voinescu@arm.com/
+
+Thanks,
+Ionela.
+
+Ionela Voinescu (3):
+  x86, ACPI: rename init_freq_invariance_cppc to
+    arch_init_invariance_cppc
+  arch_topology: obtain cpu capacity using information from CPPC
+  arm64, topology: enable use of init_cpu_capacity_cppc()
+
+ arch/arm64/include/asm/topology.h |  4 ++++
+ arch/x86/include/asm/topology.h   |  2 +-
+ drivers/acpi/cppc_acpi.c          |  6 ++---
+ drivers/base/arch_topology.c      | 40 +++++++++++++++++++++++++++++++
+ include/linux/arch_topology.h     |  4 ++++
+ 5 files changed, 52 insertions(+), 4 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.25.1
 
