@@ -2,56 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B5B64CAEEF
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Mar 2022 20:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 478324CAF72
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Mar 2022 21:09:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242112AbiCBToM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Mar 2022 14:44:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50690 "EHLO
+        id S233583AbiCBUKj (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Mar 2022 15:10:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242082AbiCBToL (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 14:44:11 -0500
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5CC7CA0DF;
-        Wed,  2 Mar 2022 11:43:24 -0800 (PST)
-Received: by mail-yb1-f179.google.com with SMTP id g26so5538209ybj.10;
-        Wed, 02 Mar 2022 11:43:24 -0800 (PST)
+        with ESMTP id S229603AbiCBUKj (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 15:10:39 -0500
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0C68BF67
+        for <linux-acpi@vger.kernel.org>; Wed,  2 Mar 2022 12:09:55 -0800 (PST)
+Received: by mail-yb1-f170.google.com with SMTP id b35so5656674ybi.13
+        for <linux-acpi@vger.kernel.org>; Wed, 02 Mar 2022 12:09:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=5wvrt4mN5pwwCtlrrq6xd2uRhH3ZrSedQGiLgTtwogM=;
-        b=YaQNHym3tiesS2Tc0ukoLuesX5mNmGnN8db2GEaB6Mja/8MGC9lSzokzxV0LZO9Lpi
-         JHPavshPjZfEgURxMABWNe0ONl3YyBzz1+wMRVK3mCKqy+U6O7N0ze9KXx/6TBO5cH/6
-         1KxRMlDExARJXst6BDx15X2QUr+v00YXEJhWzYbEqXqgYW2cIOmBJVF+LTQcO6Ye19Lp
-         TXbBfz/H8YS/EMyHjeFb2jubDgdU4zO3yfWLMQagCOfTtVpxZxB/JLtB+EHwT6KVDM3w
-         aInFhBfZ0ywbW72p+vyUq4dKoTnRy5RYTBIkkH/6IvGA/Txpof/R6TCQ9jSyn7U3amCR
-         HD8Q==
-X-Gm-Message-State: AOAM532P+730t04OrkYYKPp35F8HhY4XXvo+i5kmORKQIMdnMtN1noPz
-        7fb3uTGpDpYjFW0dL20r37u+hvtwud3ZQAG7sdc=
-X-Google-Smtp-Source: ABdhPJylJxJ02SR2t3nFiQMP5hcdt++ycrqhmtMvNSGMlP5wyagWCqyYKwxGDNnqZY9IO3rDIcfxNVBvZtwv768sIPA=
-X-Received: by 2002:a25:bbc1:0:b0:610:b4ce:31db with SMTP id
- c1-20020a25bbc1000000b00610b4ce31dbmr30378943ybk.482.1646250173910; Wed, 02
- Mar 2022 11:42:53 -0800 (PST)
+        bh=unEvXXtUmbqdzvkggwB1rsZWpxRmnKxPkPCLVNXM7Bk=;
+        b=r/j0wMcrmb1ZXtGZpdabIZ4bPIu/JnjWraR1u5j38RQoCB01qhD8Zv5p6BjE+36gkQ
+         0U8Cu5tvtQH581Z4hF5fA3G1zqAkdIKEitPbeDzwJfFWh6zC9mAOJev5Ep6PDiufcoQ4
+         HNuGSc5ib/JlUPHdwLmk6Kh4Oh1ouyvxOYk90qTVVXBxf3tdIBQTeAh77ZZMA3K+L053
+         Z7su9Mm3aGKoWLGo8ZNVeb1PGXUqWrXRjIxi1szXDr9exuSEOSson79+QGiGb7OEGa4F
+         Kd+e0URBP6FXs9pkbzXngZiqzYHXuaQHoV4lZZfYF2H81Bao5Yk/5mBA4ZBWhQ21tLPz
+         iYdA==
+X-Gm-Message-State: AOAM532tu0Ec/TgFMdT6Ycnf5cBuAkAXdiZzfEIQ2ZVweLp7sLzfvKW+
+        /sWCqSucbIgVktU6GMUfo+blAXaUUK11+S47hi91+QVS
+X-Google-Smtp-Source: ABdhPJxa3nSv20zswC0tUEcuPSizku31in6LEfK22wnEFeZgoN4nYF027fgQgFsPK66J1wBFNlyCWJ7dUW95TpagI/w=
+X-Received: by 2002:a25:f306:0:b0:628:9a03:9ab8 with SMTP id
+ c6-20020a25f306000000b006289a039ab8mr5074520ybs.622.1646251795141; Wed, 02
+ Mar 2022 12:09:55 -0800 (PST)
 MIME-Version: 1.0
-References: <20220223160708.88100-1-mark@yotsuba.nl> <303dc74a-4d63-70a2-9891-af3e3d8baf26@redhat.com>
- <CAJZ5v0gVN_nsB5eqfWzyG3+LyvAmOJKsVbA4_sOiAV+RnjG64w@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gVN_nsB5eqfWzyG3+LyvAmOJKsVbA4_sOiAV+RnjG64w@mail.gmail.com>
+References: <20220301124908.1931221-1-mario.limonciello@amd.com>
+In-Reply-To: <20220301124908.1931221-1-mario.limonciello@amd.com>
 From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 2 Mar 2022 20:42:43 +0100
-Message-ID: <CAJZ5v0gPxZ_m=7bqgo54kb1Kx5ut_KZ2iOeWo2ak0AFJq7rpjw@mail.gmail.com>
-Subject: Re: [PATCH] x86/acpi: Work around broken XSDT on SEGA AALE board
-To:     Mark Cilissen <mark@yotsuba.nl>,
+Date:   Wed, 2 Mar 2022 21:09:44 +0100
+Message-ID: <CAJZ5v0iK2CAqossLs+sm+wuxi44xq1vbbNwr+pmOraEt+a=_nw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] ACPI: APEI: Adjust for acpi_run_osc logic changes
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Xiaomeng.Hou@amd.com, Aaron.Liu@amd.com,
+        Huang Rui <Ray.Huang@amd.com>,
         Hans de Goede <hdegoede@redhat.com>
-Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <len.brown@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -63,42 +58,54 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Tue, Mar 1, 2022 at 8:34 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Tue, Mar 1, 2022 at 1:52 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
 >
-> On Thu, Feb 24, 2022 at 9:41 AM Hans de Goede <hdegoede@redhat.com> wrote:
-> >
-> > Hi Mark,
-> >
-> > On 2/23/22 17:07, Mark Cilissen wrote:
-> > > On this board the ACPI RSDP structure points to both a RSDT and an XSDT,
-> > > but the XSDT points to a truncated FADT. This causes all sorts of trouble
-> > > and usually a complete failure to boot after the following error occurs:
-> > >
-> > >   ACPI Error: Unsupported address space: 0x20 (*/hwregs-*)
-> > >   ACPI Error: AE_SUPPORT, Unable to initialize fixed events (*/evevent-*)
-> > >   ACPI: Unable to start ACPI Interpreter
-> > >
-> > > This leaves the ACPI implementation in such a broken state that subsequent
-> > > kernel subsystem initialisations go wrong, resulting in among others
-> > > mismapped PCI memory, SATA and USB enumeration failures, and freezes.
-> > >
-> > > As this is an older embedded platform that will likely never see any BIOS
-> > > updates to address this issue and its default shipping OS only complies to
-> > > ACPI 1.0, work around this by forcing `acpi=rsdt`. This patch, applied on
-> > > top of Linux 5.10.102, was confirmed on real hardware to fix the issue.
-> > >
-> > > Signed-off-by: Mark Cilissen <mark@yotsuba.nl>
-> > > Cc: stable@vger.kernel.org
-> >
-> > Wow, you got it working, cool!
-> >
-> > The patch looks good to me:
-> >
-> > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> As this function calls the OSC with the OSC_QUERY_ENABLE set in
+> OSC_QUERY_DWORD, ensure that it continues to operate the same if
+> the function has returned AE_SUPPORT.
 >
-> Applied as 5.18 material, thanks!
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v3->v4:
+> * No changes
+>  drivers/acpi/apei/apei-base.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/acpi/apei/apei-base.c b/drivers/acpi/apei/apei-base.c
+> index c7fdb12c3310..f7d1aa687fd9 100644
+> --- a/drivers/acpi/apei/apei-base.c
+> +++ b/drivers/acpi/apei/apei-base.c
+> @@ -780,6 +780,7 @@ int apei_osc_setup(void)
+>  {
+>         static u8 whea_uuid_str[] = "ed855e0c-6c90-47bf-a62a-26de0fc5ad5c";
+>         acpi_handle handle;
+> +       acpi_status status;
+>         u32 capbuf[3];
+>         struct acpi_osc_context context = {
+>                 .uuid_str       = whea_uuid_str,
+> @@ -792,12 +793,12 @@ int apei_osc_setup(void)
+>         capbuf[OSC_SUPPORT_DWORD] = 1;
+>         capbuf[OSC_CONTROL_DWORD] = 0;
+>
+> -       if (ACPI_FAILURE(acpi_get_handle(NULL, "\\_SB", &handle))
+> -           || ACPI_FAILURE(acpi_run_osc(handle, &context)))
+> +       if (ACPI_FAILURE(acpi_get_handle(NULL, "\\_SB", &handle)))
+>                 return -EIO;
+> -       else {
+> -               kfree(context.ret.pointer);
+> -               return 0;
+> -       }
+> +       status = acpi_run_osc(handle, &context);
+> +       if (status != AE_SUPPORT && status != AE_OK)
+> +               return -EIO;
+> +       kfree(context.ret.pointer);
+> +       return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(apei_osc_setup);
+> --
 
-And dropped due to a problem introduced by it.
+Applied as 5.18 material along with the rest of the series.
 
-Also please note that the x86 mailing list address originally used in
-the CC list was incorrect.
+Thanks!
