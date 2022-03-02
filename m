@@ -2,83 +2,103 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8581D4CAD03
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Mar 2022 19:10:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B5B64CAEEF
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Mar 2022 20:43:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244436AbiCBSKz (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Mar 2022 13:10:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59052 "EHLO
+        id S242112AbiCBToM (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Mar 2022 14:44:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244444AbiCBSKy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 13:10:54 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6F8EB90CDC;
-        Wed,  2 Mar 2022 10:10:10 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F6AE139F;
-        Wed,  2 Mar 2022 10:10:10 -0800 (PST)
-Received: from e108754-lin.cambridge.arm.com (unknown [10.1.195.34])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6990B3F73D;
-        Wed,  2 Mar 2022 10:10:08 -0800 (PST)
-From:   Ionela Voinescu <ionela.voinescu@arm.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Giovanni Gherdovich <ggherdovich@suse.cz>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Sean Kelley <skelley@nvidia.com>
-Cc:     Pierre Gondois <pierre.gondois@arm.com>,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 3/3] arm64, topology: enable use of init_cpu_capacity_cppc()
-Date:   Wed,  2 Mar 2022 18:09:13 +0000
-Message-Id: <20220302180913.13229-4-ionela.voinescu@arm.com>
-X-Mailer: git-send-email 2.29.2.dirty
-In-Reply-To: <20220302180913.13229-1-ionela.voinescu@arm.com>
-References: <20220302180913.13229-1-ionela.voinescu@arm.com>
+        with ESMTP id S242082AbiCBToL (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 14:44:11 -0500
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5CC7CA0DF;
+        Wed,  2 Mar 2022 11:43:24 -0800 (PST)
+Received: by mail-yb1-f179.google.com with SMTP id g26so5538209ybj.10;
+        Wed, 02 Mar 2022 11:43:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5wvrt4mN5pwwCtlrrq6xd2uRhH3ZrSedQGiLgTtwogM=;
+        b=YaQNHym3tiesS2Tc0ukoLuesX5mNmGnN8db2GEaB6Mja/8MGC9lSzokzxV0LZO9Lpi
+         JHPavshPjZfEgURxMABWNe0ONl3YyBzz1+wMRVK3mCKqy+U6O7N0ze9KXx/6TBO5cH/6
+         1KxRMlDExARJXst6BDx15X2QUr+v00YXEJhWzYbEqXqgYW2cIOmBJVF+LTQcO6Ye19Lp
+         TXbBfz/H8YS/EMyHjeFb2jubDgdU4zO3yfWLMQagCOfTtVpxZxB/JLtB+EHwT6KVDM3w
+         aInFhBfZ0ywbW72p+vyUq4dKoTnRy5RYTBIkkH/6IvGA/Txpof/R6TCQ9jSyn7U3amCR
+         HD8Q==
+X-Gm-Message-State: AOAM532P+730t04OrkYYKPp35F8HhY4XXvo+i5kmORKQIMdnMtN1noPz
+        7fb3uTGpDpYjFW0dL20r37u+hvtwud3ZQAG7sdc=
+X-Google-Smtp-Source: ABdhPJylJxJ02SR2t3nFiQMP5hcdt++ycrqhmtMvNSGMlP5wyagWCqyYKwxGDNnqZY9IO3rDIcfxNVBvZtwv768sIPA=
+X-Received: by 2002:a25:bbc1:0:b0:610:b4ce:31db with SMTP id
+ c1-20020a25bbc1000000b00610b4ce31dbmr30378943ybk.482.1646250173910; Wed, 02
+ Mar 2022 11:42:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220223160708.88100-1-mark@yotsuba.nl> <303dc74a-4d63-70a2-9891-af3e3d8baf26@redhat.com>
+ <CAJZ5v0gVN_nsB5eqfWzyG3+LyvAmOJKsVbA4_sOiAV+RnjG64w@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gVN_nsB5eqfWzyG3+LyvAmOJKsVbA4_sOiAV+RnjG64w@mail.gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 2 Mar 2022 20:42:43 +0100
+Message-ID: <CAJZ5v0gPxZ_m=7bqgo54kb1Kx5ut_KZ2iOeWo2ak0AFJq7rpjw@mail.gmail.com>
+Subject: Re: [PATCH] x86/acpi: Work around broken XSDT on SEGA AALE board
+To:     Mark Cilissen <mark@yotsuba.nl>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <len.brown@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Now that the arch topology driver provides a method of setting CPU
-capacity values based on information on highest performance from CPPC,
-use this functionality on arm64 platforms.
+On Tue, Mar 1, 2022 at 8:34 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Thu, Feb 24, 2022 at 9:41 AM Hans de Goede <hdegoede@redhat.com> wrote:
+> >
+> > Hi Mark,
+> >
+> > On 2/23/22 17:07, Mark Cilissen wrote:
+> > > On this board the ACPI RSDP structure points to both a RSDT and an XSDT,
+> > > but the XSDT points to a truncated FADT. This causes all sorts of trouble
+> > > and usually a complete failure to boot after the following error occurs:
+> > >
+> > >   ACPI Error: Unsupported address space: 0x20 (*/hwregs-*)
+> > >   ACPI Error: AE_SUPPORT, Unable to initialize fixed events (*/evevent-*)
+> > >   ACPI: Unable to start ACPI Interpreter
+> > >
+> > > This leaves the ACPI implementation in such a broken state that subsequent
+> > > kernel subsystem initialisations go wrong, resulting in among others
+> > > mismapped PCI memory, SATA and USB enumeration failures, and freezes.
+> > >
+> > > As this is an older embedded platform that will likely never see any BIOS
+> > > updates to address this issue and its default shipping OS only complies to
+> > > ACPI 1.0, work around this by forcing `acpi=rsdt`. This patch, applied on
+> > > top of Linux 5.10.102, was confirmed on real hardware to fix the issue.
+> > >
+> > > Signed-off-by: Mark Cilissen <mark@yotsuba.nl>
+> > > Cc: stable@vger.kernel.org
+> >
+> > Wow, you got it working, cool!
+> >
+> > The patch looks good to me:
+> >
+> > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+>
+> Applied as 5.18 material, thanks!
 
-Signed-off-by: Ionela Voinescu <ionela.voinescu@arm.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Tested-by: Valentin Schneider <valentin.schneider@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
----
- arch/arm64/include/asm/topology.h | 4 ++++
- 1 file changed, 4 insertions(+)
+And dropped due to a problem introduced by it.
 
-diff --git a/arch/arm64/include/asm/topology.h b/arch/arm64/include/asm/topology.h
-index f386b90a79c8..9fab663dd2de 100644
---- a/arch/arm64/include/asm/topology.h
-+++ b/arch/arm64/include/asm/topology.h
-@@ -24,6 +24,10 @@ void update_freq_counters_refs(void);
- #define arch_scale_freq_capacity topology_get_freq_scale
- #define arch_scale_freq_invariant topology_scale_freq_invariant
- 
-+#ifdef CONFIG_ACPI_CPPC_LIB
-+#define arch_init_invariance_cppc topology_init_cpu_capacity_cppc
-+#endif
-+
- /* Replace task scheduler's default cpu-invariant accounting */
- #define arch_scale_cpu_capacity topology_get_cpu_scale
- 
--- 
-2.25.1
-
+Also please note that the x86 mailing list address originally used in
+the CC list was incorrect.
