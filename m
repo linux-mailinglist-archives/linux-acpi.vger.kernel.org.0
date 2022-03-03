@@ -2,187 +2,125 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 912824CBBF8
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 11:58:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00EEC4CBC31
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 12:08:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230351AbiCCK7k (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Mar 2022 05:59:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59252 "EHLO
+        id S232346AbiCCLIq (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Mar 2022 06:08:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231529AbiCCK7i (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Mar 2022 05:59:38 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F340A148906;
-        Thu,  3 Mar 2022 02:58:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646305132; x=1677841132;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Nkd29L+j7Fp94sLtS2XD9ueDv63jvM6HfvXNxG4Edqg=;
-  b=Z3S/ydXrfVZtab+dLLKeGDLqJ7jJSBGvGHnTSBX8zul1vHoQalUnfl5W
-   U3XH1h10VkozFeWuTk7TQELneOtyeLwzHwNlBGcA+CWJ4CdmQy11SyjRv
-   xVhl+5saAZpjMJippU1WGRe81N4ygDhcs8O7oIdGIs5E7VG0HCRcYz9Zf
-   WwG6RO8qtdFFTwFlNYZZSDQMV6KFqGkHN2D6JXgyOXkuer+bxQZyh2TzK
-   4+NspttCL93VJONZchqRdoH8sPoymClsdMuYw3juu78K5SIaXervVGml+
-   j6fUmX8IyYYj0ZF9aVLe5M/hm+/zgMxXM0439bbAKY2AXo3M42rIBpA9S
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10274"; a="340074927"
-X-IronPort-AV: E=Sophos;i="5.90,151,1643702400"; 
-   d="scan'208";a="340074927"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2022 02:58:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,151,1643702400"; 
-   d="scan'208";a="642075248"
-Received: from lkp-server01.sh.intel.com (HELO ccb16ba0ecc3) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 03 Mar 2022 02:58:50 -0800
-Received: from kbuild by ccb16ba0ecc3 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nPjAY-0000P0-84; Thu, 03 Mar 2022 10:58:50 +0000
-Date:   Thu, 03 Mar 2022 18:58:36 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc:     linux-pm@vger.kernel.org, devel@acpica.org,
-        linux-acpi@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 18e73a320f9bcc743a83d419c49f66c4e4e057d8
-Message-ID: <62209f5c.6l3RKYqOdNdQyzWY%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        with ESMTP id S232658AbiCCLIo (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Mar 2022 06:08:44 -0500
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2053.outbound.protection.outlook.com [40.107.92.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8293745AC9;
+        Thu,  3 Mar 2022 03:07:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KvHB0aQiGpRa7Vzxqidat6/yYSp0N3dbyoPuFV027o1PoBAq61lN1MIMFeUVZbkZ4jdm2kwiH84E09HaPBmWnONeZc6CmT6YHQQMrW6PTqHK7k4W6BxEa93sQ3oBdbOEdBDir9OzWvPDzeJb2tXuoG+AnxQSv7vX2Jf/FJVhvhC77cMKV+Eh/XWyKYTDlnufia8KuY8avpaFOZ7/3NCep+/ht9jibmbQ9fNrD7OjqE3aj56vyMXziQRih1Q2zszURbwmrOrS55QT1QPGRnOfYh0dMN2IlKW6du9sZz5nUU5+Yu6C4Qywo+RwqPH0Irtq92GQFqVzpE4D9h/lk0KF1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RfLpFcR/pOAJf5te7rxDHn5jQuygScoizxUfT/aKgO4=;
+ b=MmYQUipCyhh7/hJ0S+fOfiIdAJRcoFVCQTR1ycD3yDDfhyHCi6ztjHA0EBh9vWQOikXaUn/4eyJM/YXWs56NSX+lUf8kLRjr0TqNwbaaFTTyqTQiTj0WFKwyQA4S667ThUsBxjs6vbAp7ZTpaHLh1Eamlks8Ptziv7qiMOE8ipGVOjG+h3o4OybdMnj35X4PSNf/NiULBdtxqCWoHjCj4d5pRBmN/lQFbGOE1mHoywLZtr+VK0kRHZzQi7PRlDwa4B0rrBQ3ued74ItbqKXoWvsPWcXQz6FX4mlHgLbDsU9aeU3C+7HZ6UbjwFZalNEin/bQFryUZ0GkNA8GAINu5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
+ dkim=pass header.d=xilinx.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RfLpFcR/pOAJf5te7rxDHn5jQuygScoizxUfT/aKgO4=;
+ b=G0/gujuqZLAfkarLpZxsD8g8y2RJjXspMhjB4WD9Ms2EckIwscYn7b3LPjTch0xpQGWtCLWk6oeeL/X/BKK21eQC4RwRGwtinVKHHPyNPrWcTJshRbRXyr7shRWoAWg+8nrxyf+0jDbgGR/pqjm2hA9PeUnbyucCSGtlXDO+NFg=
+Received: from BY5PR02MB6947.namprd02.prod.outlook.com (2603:10b6:a03:23e::12)
+ by PH0PR02MB7431.namprd02.prod.outlook.com (2603:10b6:510:1b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Thu, 3 Mar
+ 2022 11:07:54 +0000
+Received: from BY5PR02MB6947.namprd02.prod.outlook.com
+ ([fe80::5898:b7fa:9930:10a0]) by BY5PR02MB6947.namprd02.prod.outlook.com
+ ([fe80::5898:b7fa:9930:10a0%7]) with mapi id 15.20.5038.014; Thu, 3 Mar 2022
+ 11:07:54 +0000
+From:   Bharat Kumar Gogada <bharatku@xilinx.com>
+To:     "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: ACPI flow for reserved memory
+Thread-Topic: ACPI flow for reserved memory
+Thread-Index: Adgu7qDYr4zWEDY/QFyl4NmYFWdP8w==
+Date:   Thu, 3 Mar 2022 11:07:54 +0000
+Message-ID: <BY5PR02MB6947E939600E244DDDCFF341A5049@BY5PR02MB6947.namprd02.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=xilinx.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: df0c4067-9766-4cd3-63c1-08d9fd06110f
+x-ms-traffictypediagnostic: PH0PR02MB7431:EE_
+x-microsoft-antispam-prvs: <PH0PR02MB74315C9C5F1E5303180E5936A5049@PH0PR02MB7431.namprd02.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: R8cvvyS6QxP6fyci/1xEcTT0yorN8h7ZohtvHUZz7eoq1HJ2ABldlD5IHiLQEJkHsDh9KN0hxph9FLEzwjqZSVPx8JUDzOry4VLYJ9c/kz21ojxz8zMx4Sz+MxRTcbQHzkg5XxQX/yF09E26rFcMousjKLU2GPjj3nMVkuW9eJKTle6Pxsp3kAuK8xe8P8wDiTQo8L1yorGmYkIesTCgWsD19nUIAo/3Xsrrkrp+7Sw9Sm9AFG0MGYIWGnSijNfbhkHnaixakOzh2SLS9S16PBUe4y3D/5Zyw5LwB1fcljEvsYoZgl8CLh7hUXe9gdD0Ekp5K4Xj0PL293peuem88s3Xu+oo/N+ufIYfLF6L6oXeyuZgxmf425Q4Gb7qQ67PrCY4CniXQeZeCbvkoLG65iTJ6AaW2iIWDKkHv9UnvOhVMMwjQfOLXXYrE7Oy5vQe/KD17Bp6xw+YmrpfiT8RdVJt5KKvnCUe+Qg3mbHnIP5ptSSdNCjcF6EeSYtvWD9/+G82u/M6UTn6YOjGEDUXys43eXDuWs7uMrFp7LgN1tEoiCPxGBvEJBTFEQxE2fFF0fx731+9aowjH9avnXFjkdblQA0ono4bZBU0NuRsjc8Au+X7R4naXIZelVe5rnicMr4OvTIQXTUUIG5fs1kZe+g13w7phV2syA6OCSXZpLYpxZTeZePaJ25sF20M9hfR+Lg8nvgi+fVDLd70MoUO5zamk2KQ857JspvaqR7xX4A4Tv6GxeLn3wjvHcU83KMbnAkSYBD/cZOlYqhB3Lj7lvUUSu+gzFhmCKRFszJuubc=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6947.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(508600001)(316002)(33656002)(558084003)(6916009)(71200400001)(66446008)(64756008)(66556008)(8676002)(66476007)(76116006)(450100002)(66946007)(86362001)(4326008)(186003)(9686003)(26005)(122000001)(38100700002)(55016003)(2906002)(7696005)(6506007)(52536014)(38070700005)(8936002)(5660300002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?7xfH7qTQIWdYze5H0nVF5QWYE3/ol/sLCmy0FYIFnQITM58/swL/fjgmOjqN?=
+ =?us-ascii?Q?xus3hywVeGG2cxtaDGkdr5qIZZ84/n7SeLIDQm84lPD4102Ql3VqAgsR/y5e?=
+ =?us-ascii?Q?jC6id9cD0L7P5e13+bWqqcTcWnxJPjTDT4RRlRcu20X9cdPl+3xGVJK9c+Vg?=
+ =?us-ascii?Q?RqCTAjEMHYCpif6r5JNsyWJESk7ddBK42AVlniuoqS22+nZmntqL0/wPyERD?=
+ =?us-ascii?Q?mOVEKivjVemicvfgBfLSFypicwhQzGNnmIEhsDoJ/7R71nDJTWgH2ghUQS9c?=
+ =?us-ascii?Q?0lskedgT4e4Ehk7i3eS35Wixi7m7FmWCYo3/WIREkv1yKASScwqtAUgRjNCs?=
+ =?us-ascii?Q?+o6cPRcWn1i5STG34yfnjTd4mNFPPHnhVTVNUe+hm9t8qSEwe+KhvbQk6lRN?=
+ =?us-ascii?Q?dajMQzHrbN0ZX014gtdKWb/qiiSVQ/FX0WZ1hEHmbV+YDIHkZ55lY5Bo1Le7?=
+ =?us-ascii?Q?zQE8FdacdGT3Y58jSIGb0dATmNFH243U1T4JDpqlyOw8Qzvwx3efFQwo7sxm?=
+ =?us-ascii?Q?S118wlVfK4+hLwW5jKO7X38OwrifCoTkMrKwGA/S8CEfslxtHdkfsBQWR3ZB?=
+ =?us-ascii?Q?oqkNjNvdfEoxFT2dD3glJSof8CCTPGQU/POwQi2TecCsfhfBhJ+OWEDZ+IZR?=
+ =?us-ascii?Q?NoybQ8Q6Q9lH3mGRcI6q70VIBxZdF+EUanUKh+Sr4IhOgidiyEh9YQ9IBp12?=
+ =?us-ascii?Q?6sEU9L7DaKdQtBf5Cm5SudcZ63nac6YUc+QHyl2WzbaGhQSJOilgp96HUVVC?=
+ =?us-ascii?Q?ymhh79e0AJX6qXOsXtFofXPpXJJbcJDclFrEeVRhrwbTFA2N7QjYjOWQ4eW/?=
+ =?us-ascii?Q?3Lu3yP4MFwDyBPSYubMj6M5TTCDeYQiDLRrk7PcUix2ZL51h/2Ll1mmsDmlY?=
+ =?us-ascii?Q?2S/eFlBd3+Pq4dU1ygymDoEtHM9IOxxLZ0Yz14dAZdYDxzogDyCqHt9z9YCa?=
+ =?us-ascii?Q?DpmJGSWZEUq776YcbEKI71FlkadFfHo+EWCklLpVJsyJXOW2aHJZsVCO6LVu?=
+ =?us-ascii?Q?3ewdV+8rCYIKEB9q1wxMjtd5yL6nNg0UfemPRiuDPWYrbgas9d5fwQyZJikA?=
+ =?us-ascii?Q?rOpWA3NZ6NIo7aDgp63dZ0IF26V1qUyrw6lE+UdO82/0O6JnKz3NOfowx8qI?=
+ =?us-ascii?Q?U5WS8pjN/9ezN6ecmoeb19rqsEVbtyeLZicNU9H7O4zTXOJtHkQeGN/8ro+H?=
+ =?us-ascii?Q?/c5kWZwis3Rg1frgILquKNMopbwatsEvI0CSuwkfpXR4OdKh3TMSkLYIKy+9?=
+ =?us-ascii?Q?xZNUGKzTH6xIgofEwkBqedE4s5EeSLR+fARKZyOwvAoSlD/BYMM9/M6nKrt5?=
+ =?us-ascii?Q?IRlggXFW6d99J7NpgkeAaBBM3hrtUCvJJL9FtWVrN+Ert3gmUjAdtm1XwRn0?=
+ =?us-ascii?Q?rInAlTsotEOh82oYGvqRmBB7HTksduW7WziW7YzQ2mZcYJcO2tXe7cvy2vte?=
+ =?us-ascii?Q?+IlTIkbr8eK4/IzjgIHHzk5/YEc1yhjK3WQsPUJXyLYj9DMKuNFxqcTN6SJK?=
+ =?us-ascii?Q?y1LsLlh/YzHBJTrTGAqSrzEGeEPkJqQKCCChchFe65nl6Lxee4RHH01bFNOw?=
+ =?us-ascii?Q?5ef78KCh6fYnSh6HFjKD4XxBmZjn8xunQXY8Hn0iqKBZoBsjSvT214yYq0WW?=
+ =?us-ascii?Q?Wm/wxiLS+jDuoKN3Fxg7cEc=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6947.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: df0c4067-9766-4cd3-63c1-08d9fd06110f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Mar 2022 11:07:54.6394
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8JvdxxwOrDpfjZBq/j9F/zD1mhDkg2mmnvxlKH8EML1vda+oFxt7l2Rdoc8OX5MPEmGiUGjU8wcDFbivB2u+7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB7431
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 18e73a320f9bcc743a83d419c49f66c4e4e057d8  Merge branch 'acpi-bus' into bleeding-edge
+Hi All,
 
-elapsed time: 740m
+In device tree we have several ways to=20
+reserve memory (https://github.com/Xilinx/linux-xlnx/blob/master/Documentat=
+ion/devicetree/bindings/reserved-memory/reserved-memory.txt).  =20
 
-configs tested: 106
-configs skipped: 3
+Can anyone please help equivalent flow for ACPI.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm64                               defconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm64                            allyesconfig
-i386                          randconfig-c001
-arm                       omap2plus_defconfig
-arm                          badge4_defconfig
-microblaze                          defconfig
-m68k                       m5249evb_defconfig
-arc                            hsdk_defconfig
-arm                         assabet_defconfig
-m68k                        m5272c3_defconfig
-sh                ecovec24-romimage_defconfig
-sh                            titan_defconfig
-mips                     loongson1b_defconfig
-m68k                             alldefconfig
-mips                           ci20_defconfig
-powerpc                     taishan_defconfig
-arc                        nsim_700_defconfig
-sh                          sdk7780_defconfig
-arm                  randconfig-c002-20220302
-ia64                                defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nds32                             allnoconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-alpha                               defconfig
-nds32                               defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-parisc                              defconfig
-parisc64                            defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                   debian-10.3-kselftests
-i386                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-i386                          randconfig-a003
-i386                          randconfig-a001
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-x86_64                        randconfig-a002
-x86_64                        randconfig-a004
-x86_64                        randconfig-a006
-riscv                randconfig-r042-20220302
-arc                  randconfig-r043-20220302
-s390                 randconfig-r044-20220302
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-riscv                    nommu_virt_defconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-
-clang tested configs:
-arm                      tct_hammer_defconfig
-arm                         mv78xx0_defconfig
-arm                         lpc32xx_defconfig
-powerpc                      pmac32_defconfig
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-hexagon              randconfig-r045-20220302
-hexagon              randconfig-r041-20220302
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Regards,
+Bharat
