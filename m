@@ -2,69 +2,114 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC6074CB992
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 09:50:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 333904CBA8E
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 10:43:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231676AbiCCIu5 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Mar 2022 03:50:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35826 "EHLO
+        id S232087AbiCCJo1 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Mar 2022 04:44:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231686AbiCCIuz (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Mar 2022 03:50:55 -0500
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEAEF175866;
-        Thu,  3 Mar 2022 00:50:08 -0800 (PST)
-Received: (Authenticated sender: clement.leger@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id A7171FF808;
-        Thu,  3 Mar 2022 08:50:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1646297407;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=5UW3cjbm8xQStGhB2RvIfU4jnFusyu8R3w5M3pRZH24=;
-        b=dANPvPfz8FfZs3WYqIq9bl4LlaLJLTAlJ5KjEa5/oSz4t4sxrd/UksWc73/lSCGG+nrHCd
-        mQIxG3Ur43o8TMewlH30a6KsQHToz3ai9gTjVkLYOfs1J0ysL1HCB5xUmtUX3PGTynenxc
-        C9JR86pqix6ZdzHmr4NC1Xi/zegZdOfIZIewOvdoXVb8ro7spl0+Vg6PcWaqO+k2QU+Zyr
-        IZ/nAzMfgna+2fCIn63SCZP9bEOTTG/pLhMuc694mgQVT8ubQa8/cmDsgN7/OandstlQoA
-        RwRHGSWNGI6ycsn7veJsYuVOW0Xp94gZ89qONjeyTS3SL9/Y9UjVGSN76TCcQA==
-Date:   Thu, 3 Mar 2022 09:48:40 +0100
-From:   =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        with ESMTP id S232079AbiCCJo0 (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Mar 2022 04:44:26 -0500
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67799172E51
+        for <linux-acpi@vger.kernel.org>; Thu,  3 Mar 2022 01:43:39 -0800 (PST)
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20220303094336epoutp02fff88c321ece744cc651f616f1b425f7~Y1bAiO8DA2436224362epoutp02i
+        for <linux-acpi@vger.kernel.org>; Thu,  3 Mar 2022 09:43:36 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20220303094336epoutp02fff88c321ece744cc651f616f1b425f7~Y1bAiO8DA2436224362epoutp02i
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1646300616;
+        bh=JGt2SUFXN47lwLD6/OHx/URaET0Jb/5ljVf5ZET/LrU=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=awxpXq59SJiHvSLQdwKJ1TPT1BuLWGyVp+GRhxCkctHzWUKZpyezBX8hHN22q8rTv
+         OpZteJesIaym3T5WOdADApJX4b7iuHP7FjLhOhuAYOBq22FMQEgunAclp7pB815Ouv
+         J/RoD7a3i3ZcrOAzLfE44MViBph4f9blFyIc15l0=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+        epcas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20220303094335epcas1p2305ca1dc3507e47c1035e838144dc1b1~Y1bAFFo3q2074320743epcas1p2B;
+        Thu,  3 Mar 2022 09:43:35 +0000 (GMT)
+Received: from epsmges1p1.samsung.com (unknown [182.195.36.224]) by
+        epsnrtp1.localdomain (Postfix) with ESMTP id 4K8QzB3GqZz4x9Q5; Thu,  3 Mar
+        2022 09:43:34 +0000 (GMT)
+Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
+        epsmges1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+        61.3A.64085.6CD80226; Thu,  3 Mar 2022 18:43:34 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20220303094334epcas1p256f56793abe1984803caf11ef76bfc0f~Y1a_cf1e81681416814epcas1p2J;
+        Thu,  3 Mar 2022 09:43:34 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20220303094334epsmtrp23ace0099c009a1b00d372eee173dce0f~Y1a_bhwdQ1563115631epsmtrp2_;
+        Thu,  3 Mar 2022 09:43:34 +0000 (GMT)
+X-AuditID: b6c32a35-9c3ff7000000fa55-e3-62208dc63715
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        29.C3.29871.5CD80226; Thu,  3 Mar 2022 18:43:33 +0900 (KST)
+Received: from localhost.localdomain (unknown [10.88.97.211]) by
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20220303094333epsmtip253dde6a648aadc01426a5f5bdf5d9f17~Y1a_QUQHN0753207532epsmtip2Y;
+        Thu,  3 Mar 2022 09:43:33 +0000 (GMT)
+From:   Youngjin Jang <yj84.jang@samsung.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
-        Russell King <linux@armlinux.org.uk>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        netdev@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [RFC 00/10] add support for fwnode in i2c mux system and sfp
-Message-ID: <20220303094840.3b75c4c9@fixe.home>
-In-Reply-To: <Yhe/qhFNNiGVHSW1@sirena.org.uk>
-References: <20220221162652.103834-1-clement.leger@bootlin.com>
-        <20220224154040.2633a4e4@fixe.home>
-        <2d3278ef-0126-7b93-319b-543b17bccdc2@redhat.com>
-        <20220224174205.43814f3f@fixe.home>
-        <Yhe/qhFNNiGVHSW1@sirena.org.uk>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org
+Cc:     "Youngjin Jang" <yj84.jang@samsung.com>, js07.lee@samsung.com
+Subject: [PATCH v2] PM: Add device name to suspend_report_result()
+Date:   Thu,  3 Mar 2022 18:39:07 +0900
+Message-Id: <20220303093907.515129-1-yj84.jang@samsung.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrAJsWRmVeSWpSXmKPExsWy7bCmge6xXoUkg90LRCyWNGVYNC9ez2bx
+        6OZvVotZU/YyWSzf189ocXnXHDaLs/OOs1l87j3CaLFoWSuzxd1TR9ks5n6ZymzRdWgxqwOP
+        x4JNpR6L97xk8ti0qpPNY//cNewefVtWMXqsWP2d3ePzJrkA9qhsm4zUxJTUIoXUvOT8lMy8
+        dFsl7+B453hTMwNDXUNLC3MlhbzE3FRbJRefAF23zBygO5UUyhJzSoFCAYnFxUr6djZF+aUl
+        qQoZ+cUltkqpBSk5BWYFesWJucWleel6eaklVoYGBkamQIUJ2Rk39l9hKnhjUdG4TbWBcbF+
+        FyMnh4SAicTXI4eYQGwhgR2MEldvS3UxcgHZnxglNp/Zww7hfGOU+L6qnx2m49vHp1CJvYwS
+        azbfYYFr2bf1MNgsNgFtiVVb5oFViQhcZpJ4+30CM0iCWcBR4sPBPawgtrCAk8T0vdvBxrII
+        qEr0vDoCFucVsJY4sf8bE8Q6eYmZl76zQ8QFJU7OfMICMUdeonnrbGaQBRICrRwSl7duhbrP
+        RWL57kWsELawxKvjW6DiUhKf3+1lg7DTJSY+fgsVL5D4+3gJM4RtLPHu7VogmwNogabE+l3Q
+        QFKU2Pl7LiPEXj6Jd197WEFKJAR4JTrahCBKlCUen18NNV1SYv3v/VDne0hsW7KLGRK+sRIX
+        fjUxTmCUn4Xkm1lIvpmFsHgBI/MqRrHUguLc9NRiwwJDeKQm5+duYgQnVS3THYwT337QO8TI
+        xMF4iFGCg1lJhNdSUyFJiDclsbIqtSg/vqg0J7X4EKMpMHwnMkuJJucD03peSbyhiaWBiZmR
+        iYWxpbGZkjjvqmmnE4UE0hNLUrNTUwtSi2D6mDg4pRqYDlzL3OO89Lri/Kt8gjzbpZp8p/Oc
+        LT/6f3K1x+/+5N5LqnXPNdwdv+69uiUsWKdbequrak7qox1FJq0TZhsYzLj374JMzt3w6ZX8
+        Nnv7QxauWd5856CTIbfvL5X4iY+T+yvPzg0+yv3jXM22n0o/I2w+efd03Eif+fCwQ1G3l7JO
+        79dkl50X9wv9nVdk56cqpW++Sk3ykt6ML0ny/N2t0y79iRTJ/t58wJHzZHLg50VmTlP/rJfd
+        U8ZX5Hs+3WLxq5W8ytEHl3O/DpzS9oZ11pS4yw0Nz67c4mv7dPaGdtwc3VT+0wevFq69VcSw
+        rig9sOjRZ7tdm7xfl8yqU/3x3Kvz+I/nGSlfVKWmFvruVmIpzkg01GIuKk4EAA4AizQzBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrPLMWRmVeSWpSXmKPExsWy7bCSvO7RXoUkg8PbLC2WNGVYNC9ez2bx
+        6OZvVotZU/YyWSzf189ocXnXHDaLs/OOs1l87j3CaLFoWSuzxd1TR9ks5n6ZymzRdWgxqwOP
+        x4JNpR6L97xk8ti0qpPNY//cNewefVtWMXqsWP2d3ePzJrkA9igum5TUnMyy1CJ9uwSujBv7
+        rzAVvLGoaNym2sC4WL+LkZNDQsBE4tvHp+xdjFwcQgK7GSWmzvrBCJGQlPj66TNbFyMHkC0s
+        cfhwMUTNB0aJh9s+sIDUsAloS6zaMg+sWUTgNpNEz4NvTCAJZgFniXU7FoEVCQs4SUzfu50d
+        xGYRUJXoeXWEFcTmFbCWOLEfol5CQF5i5qXv7BBxQYmTM5+wQMyRl2jeOpt5AiPfLCSpWUhS
+        CxiZVjFKphYU56bnFhsWGOallusVJ+YWl+al6yXn525iBIe5luYOxu2rPugdYmTiYDzEKMHB
+        rCTCa6mpkCTEm5JYWZValB9fVJqTWnyIUZqDRUmc90LXyXghgfTEktTs1NSC1CKYLBMHp1QD
+        09WDYWrHVoZuNd2/43vN66++PHsea+wX+MyUEnRd6uPK4uOsl38+fqXV1z1/vuy7ksh7lVWd
+        y2ZWpoR9mmnhFBc/OenAoxkyJqxaF64HPe1aYZdkyct6qfJg6bTIPf9rfz42WffxqKpK/Foe
+        BTFNs/syWy+d2Xzu2AvDa9m/tlwO+8pxaf7x5m7W3km7DsfrvCjrXnVtYemlE02iXO9LJIOv
+        fJ23SCv55Ibaex7SikmRRp4Xo1J1quUPRMr3MDxbPK9xS4HHfOYVM1aH5fgZbNh2X0NW/d1n
+        Lyelv5M7My4efvl+Rl2V946pV+btfjA3bxu7u1ZE997qzVydDw2TZV7E6t/hSazJ8baf+9dy
+        Wr4SS3FGoqEWc1FxIgBM58VS4gIAAA==
+X-CMS-MailID: 20220303094334epcas1p256f56793abe1984803caf11ef76bfc0f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20220303094334epcas1p256f56793abe1984803caf11ef76bfc0f
+References: <CGME20220303094334epcas1p256f56793abe1984803caf11ef76bfc0f@epcas1p2.samsung.com>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,68 +117,210 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-Le Thu, 24 Feb 2022 17:26:02 +0000,
-Mark Brown <broonie@kernel.org> a =C3=A9crit :
+From: "Youngjin Jang" <yj84.jang@samsung.com>
 
-> On Thu, Feb 24, 2022 at 05:42:05PM +0100, Cl=C3=A9ment L=C3=A9ger wrote:
-> > Hans de Goede <hdegoede@redhat.com> a =C3=A9crit : =20
->=20
-> > > As Mark already mentioned the regulator subsystem has shown to
-> > > be a bit problematic here, but you don't seem to need that? =20
->=20
-> > Indeed, I don't need this subsystem. However, I'm still not clear why
-> > this subsystem in particular is problematic. Just so that I can
-> > recognize the other subsystems with the same pattern, could you explain
-> > me why it is problematic ?  =20
->=20
-> ACPI has a strong concept of how power supply (and general critical
-> resources) for devices should be described by firmware which is very
-> different to that which DT as it is used in Linux has, confusing that
-> model would make it much harder for generic OSs to work with generic
-> ACPI systems, and makes it much easier to create unfortunate interactions
-> between bits of software expecting ACPI models and bits of software
-> expecting DT models for dealing with a device.  Potentially we could
-> even run into issues with new versions of Linux if there's timing or
-> other changes.  If Linux starts parsing the core DT bindings for
-> regulators on ACPI systems then that makes it more likely that system
-> integrators who are primarily interested in Linux will produce firmwares
-> that run into these issues, perhaps unintentionally through a "this just
-> happens to work" process.
+currently, suspend_report_result() prints only function information.
+If any driver uses common pm function, nobody knows who called
+failed function exactly.
 
-Ok that's way more clear.
+So, device is needed to recognize specific wrong driver.
 
->=20
-> As a result of this we very much do not want to have the regulator code
-> parsing DT bindings using the fwnode APIs since that makes it much
-> easier for us to end up with a situation where we are interpreting _DSD
-> versions of regulator bindings and ending up with people making systems
-> that rely on that.  Instead the regulator API is intentional about which
-> platform description interfaces it is using.  We could potentially have
-> something that is specific to swnode and won't work with general fwnode
-> but it's hard to see any advantages for this over the board file based
-> mechanism we have already, swnode offers less error detection (typoing
-> field names is harder to spot) and the data marshalling takes more code.
+e.g.)
+PM: dpm_run_callback(): pm_generic_suspend+0x0/0x48 returns 0
+PM: dpm_run_callback(): platform_pm_suspend+0x0/0x68 returns 0
+after patch,
+amba 1740000.etm: dpm_run_callback(): pm_generic_suspend+0x0/0x48
+returns 0
+armv7-pmu soc:pmu: dpm_run_callback(): platform_pm_suspend+0x0/0x68
+returns 0
 
-Instead of making it specific for swnode, could we make it instead non
-working for acpi nodes ? Thus, the parsing would work only for swnode
-and device_node, not allowing to use the fwnode support with acpi for
-such subsystems (not talking about regulators here).
+Signed-off-by: Youngjin Jang <yj84.jang@samsung.com>
+---
+Changes since v1:
+ - Use dev_err() to print out device name
+ - Use real name on email sender
+ 
+ drivers/base/power/main.c  | 10 +++++-----
+ drivers/pci/pci-driver.c   | 14 +++++++-------
+ drivers/pnp/driver.c       |  2 +-
+ drivers/usb/core/hcd-pci.c |  4 ++--
+ include/linux/pm.h         |  8 ++++----
+ 5 files changed, 19 insertions(+), 19 deletions(-)
 
-If switching to board file based mechanism, this means that all drivers
-that are used by the PCIe card will have to be modified to support this
-mechanism.
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index 04ea92cbd9cf..41e17b8c2c20 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -485,7 +485,7 @@ static int dpm_run_callback(pm_callback_t cb, struct device *dev,
+ 	trace_device_pm_callback_start(dev, info, state.event);
+ 	error = cb(dev);
+ 	trace_device_pm_callback_end(dev, error);
+-	suspend_report_result(cb, error);
++	suspend_report_result(dev, cb, error);
+ 
+ 	initcall_debug_report(dev, calltime, cb, error);
+ 
+@@ -1568,7 +1568,7 @@ static int legacy_suspend(struct device *dev, pm_message_t state,
+ 	trace_device_pm_callback_start(dev, info, state.event);
+ 	error = cb(dev, state);
+ 	trace_device_pm_callback_end(dev, error);
+-	suspend_report_result(cb, error);
++	suspend_report_result(dev, cb, error);
+ 
+ 	initcall_debug_report(dev, calltime, cb, error);
+ 
+@@ -1855,7 +1855,7 @@ static int device_prepare(struct device *dev, pm_message_t state)
+ 	device_unlock(dev);
+ 
+ 	if (ret < 0) {
+-		suspend_report_result(callback, ret);
++		suspend_report_result(dev, callback, ret);
+ 		pm_runtime_put(dev);
+ 		return ret;
+ 	}
+@@ -1960,10 +1960,10 @@ int dpm_suspend_start(pm_message_t state)
+ }
+ EXPORT_SYMBOL_GPL(dpm_suspend_start);
+ 
+-void __suspend_report_result(const char *function, void *fn, int ret)
++void __suspend_report_result(const char *function, struct device *dev, void *fn, int ret)
+ {
+ 	if (ret)
+-		pr_err("%s(): %pS returns %d\n", function, fn, ret);
++		dev_err(dev, "%s(): %pS returns %d\n", function, fn, ret);
+ }
+ EXPORT_SYMBOL_GPL(__suspend_report_result);
+ 
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 588588cfda48..415f7664b010 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -596,7 +596,7 @@ static int pci_legacy_suspend(struct device *dev, pm_message_t state)
+ 		int error;
+ 
+ 		error = drv->suspend(pci_dev, state);
+-		suspend_report_result(drv->suspend, error);
++		suspend_report_result(dev, drv->suspend, error);
+ 		if (error)
+ 			return error;
+ 
+@@ -775,7 +775,7 @@ static int pci_pm_suspend(struct device *dev)
+ 		int error;
+ 
+ 		error = pm->suspend(dev);
+-		suspend_report_result(pm->suspend, error);
++		suspend_report_result(dev, pm->suspend, error);
+ 		if (error)
+ 			return error;
+ 
+@@ -821,7 +821,7 @@ static int pci_pm_suspend_noirq(struct device *dev)
+ 		int error;
+ 
+ 		error = pm->suspend_noirq(dev);
+-		suspend_report_result(pm->suspend_noirq, error);
++		suspend_report_result(dev, pm->suspend_noirq, error);
+ 		if (error)
+ 			return error;
+ 
+@@ -1010,7 +1010,7 @@ static int pci_pm_freeze(struct device *dev)
+ 		int error;
+ 
+ 		error = pm->freeze(dev);
+-		suspend_report_result(pm->freeze, error);
++		suspend_report_result(dev, pm->freeze, error);
+ 		if (error)
+ 			return error;
+ 	}
+@@ -1030,7 +1030,7 @@ static int pci_pm_freeze_noirq(struct device *dev)
+ 		int error;
+ 
+ 		error = pm->freeze_noirq(dev);
+-		suspend_report_result(pm->freeze_noirq, error);
++		suspend_report_result(dev, pm->freeze_noirq, error);
+ 		if (error)
+ 			return error;
+ 	}
+@@ -1116,7 +1116,7 @@ static int pci_pm_poweroff(struct device *dev)
+ 		int error;
+ 
+ 		error = pm->poweroff(dev);
+-		suspend_report_result(pm->poweroff, error);
++		suspend_report_result(dev, pm->poweroff, error);
+ 		if (error)
+ 			return error;
+ 	}
+@@ -1154,7 +1154,7 @@ static int pci_pm_poweroff_noirq(struct device *dev)
+ 		int error;
+ 
+ 		error = pm->poweroff_noirq(dev);
+-		suspend_report_result(pm->poweroff_noirq, error);
++		suspend_report_result(dev, pm->poweroff_noirq, error);
+ 		if (error)
+ 			return error;
+ 	}
+diff --git a/drivers/pnp/driver.c b/drivers/pnp/driver.c
+index cc6757dfa3f1..c02e7bf643a6 100644
+--- a/drivers/pnp/driver.c
++++ b/drivers/pnp/driver.c
+@@ -171,7 +171,7 @@ static int __pnp_bus_suspend(struct device *dev, pm_message_t state)
+ 
+ 	if (pnp_drv->driver.pm && pnp_drv->driver.pm->suspend) {
+ 		error = pnp_drv->driver.pm->suspend(dev);
+-		suspend_report_result(pnp_drv->driver.pm->suspend, error);
++		suspend_report_result(dev, pnp_drv->driver.pm->suspend, error);
+ 		if (error)
+ 			return error;
+ 	}
+diff --git a/drivers/usb/core/hcd-pci.c b/drivers/usb/core/hcd-pci.c
+index d630cccd2e6e..dd44e37a454a 100644
+--- a/drivers/usb/core/hcd-pci.c
++++ b/drivers/usb/core/hcd-pci.c
+@@ -446,7 +446,7 @@ static int suspend_common(struct device *dev, bool do_wakeup)
+ 				HCD_WAKEUP_PENDING(hcd->shared_hcd))
+ 			return -EBUSY;
+ 		retval = hcd->driver->pci_suspend(hcd, do_wakeup);
+-		suspend_report_result(hcd->driver->pci_suspend, retval);
++		suspend_report_result(dev, hcd->driver->pci_suspend, retval);
+ 
+ 		/* Check again in case wakeup raced with pci_suspend */
+ 		if ((retval == 0 && do_wakeup && HCD_WAKEUP_PENDING(hcd)) ||
+@@ -556,7 +556,7 @@ static int hcd_pci_suspend_noirq(struct device *dev)
+ 		dev_dbg(dev, "--> PCI %s\n",
+ 				pci_power_name(pci_dev->current_state));
+ 	} else {
+-		suspend_report_result(pci_prepare_to_sleep, retval);
++		suspend_report_result(dev, pci_prepare_to_sleep, retval);
+ 		return retval;
+ 	}
+ 
+diff --git a/include/linux/pm.h b/include/linux/pm.h
+index e1e9402180b9..cdccbb9cef2c 100644
+--- a/include/linux/pm.h
++++ b/include/linux/pm.h
+@@ -745,11 +745,11 @@ extern int dpm_suspend_late(pm_message_t state);
+ extern int dpm_suspend(pm_message_t state);
+ extern int dpm_prepare(pm_message_t state);
+ 
+-extern void __suspend_report_result(const char *function, void *fn, int ret);
++extern void __suspend_report_result(const char *function, struct device *dev, void *fn, int ret);
+ 
+-#define suspend_report_result(fn, ret)					\
++#define suspend_report_result(dev, fn, ret)				\
+ 	do {								\
+-		__suspend_report_result(__func__, fn, ret);		\
++		__suspend_report_result(__func__, dev, fn, ret);	\
+ 	} while (0)
+ 
+ extern int device_pm_wait_for_dev(struct device *sub, struct device *dev);
+@@ -789,7 +789,7 @@ static inline int dpm_suspend_start(pm_message_t state)
+ 	return 0;
+ }
+ 
+-#define suspend_report_result(fn, ret)		do {} while (0)
++#define suspend_report_result(dev, fn, ret)	do {} while (0)
+ 
+ static inline int device_pm_wait_for_dev(struct device *a, struct device *b)
+ {
+-- 
+2.25.1
 
->=20
-> fwnode is great for things like properties for leaf devices since those
-> are basically a free for all on ACPI systems, it allows us to quickly
-> and simply apply the work done defining bindings for DT to ACPI systems
-> in a way that's compatible with how APCI wants to work.  It's also good
-> for cross device bindings that are considered out of scope for ACPI,
-> though a bit of caution is needed determining when that's the case.
-
-Ok got it, thanks for the in-depth explanations.
-
---=20
-Cl=C3=A9ment L=C3=A9ger,
-Embedded Linux and Kernel engineer at Bootlin
-https://bootlin.com
