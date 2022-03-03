@@ -2,51 +2,51 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC9684CC8FB
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 23:32:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D0D4CC907
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 23:32:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236964AbiCCWdA (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Mar 2022 17:33:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53802 "EHLO
+        id S236989AbiCCWdE (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Mar 2022 17:33:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236932AbiCCWcy (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Mar 2022 17:32:54 -0500
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A97B14FFF0
-        for <linux-acpi@vger.kernel.org>; Thu,  3 Mar 2022 14:32:07 -0800 (PST)
-Received: by mail-oi1-x22f.google.com with SMTP id l25so6159662oic.13
-        for <linux-acpi@vger.kernel.org>; Thu, 03 Mar 2022 14:32:07 -0800 (PST)
+        with ESMTP id S236952AbiCCWdA (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Mar 2022 17:33:00 -0500
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95E46169203
+        for <linux-acpi@vger.kernel.org>; Thu,  3 Mar 2022 14:32:08 -0800 (PST)
+Received: by mail-oi1-x234.google.com with SMTP id x193so6222024oix.0
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Mar 2022 14:32:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=1EyMZD3c/zIXsNVVHj1OKSD/HT/7oGKTphYrrLv5168=;
-        b=oKc4oqU8nDy2TFCgnyBWJMqCo1SsOqWK9WQ8aBRmjcKdWhGfm9zGlPdtca5IuKxTqj
-         fJ8YoWzd4HO7UiPynPE0Rxdg6xhLuniDS2TJc4YAVfcpysIK1xAHmR9ewzWHHLIUraOQ
-         N66QQbnAbBn9s/qLP2/tj+X9y2iXLvogDwzt5Olxs/x3rGc/00ubnxc28WU8O8jCY+Rv
-         mJgVk3Ocs0nHxxRxPN8WMgyrYEmJL3YkPmLL34Nu0a481HfTstLAfKdSlke2p6U/krGn
-         KXNGmqFhpML53uMyFtM+pPpTu8fp2HvJwFiAjUP2KKH2l5zQ3DX8ktih+vI6AHVqcyhw
-         +2xA==
+        bh=ASiZOAYz5KFcP3A9IjHRNygM9ZeiNc0Yjtm5LFE6Rdc=;
+        b=ae3+M6IkfZ5jIJWwSuAWT+APA3geWlw1DsEAgf4oY1C9rMvnx9bK68l4Zv+1+d21JF
+         H43hFi1TMM69h7jkLG8okLLEx7uXxHJdI2TgdG4ioF5OcavJWIcKrbCBM8a2ze9hj0Wb
+         vw+2AHq3ru1fv0yg+3ybHn+fzAFilDUx7F5N4gv2GPwIB1z7eg4A73mPWetezFqe+Dca
+         AcqNmM9be1MyP0wLK+bq+gbR2AoTuzbzFBBNHr7g1Qpd/6fV56gpEFyzncZk7OgnmRUK
+         zsETF1Ke4Mafo0nHUmGb3d8oqz/uB1CpsS2xxajo8Vlm10aoQU+rXrGGRJJ4EUeXFOHL
+         iQMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=1EyMZD3c/zIXsNVVHj1OKSD/HT/7oGKTphYrrLv5168=;
-        b=S6JvI5bWHGkCOsI4TqxC82m7qWOEnMG1cSrwsgWutFHrmTDKuz8iQBDgtwT3/2y24d
-         Ya8k+182My3ZJSPT/3rgparccyt1V2/Qpi/9b0WGnXSZLI7Z5cYmzFxISrpv01zl18Qv
-         HN2KgPpHAwrvP0HYBxtxqa8ulV8CTOUuIr6q/a0Tb/tPaL/45SaniIBknHC4FHZi65M8
-         Wh3dzhtKtJL9HZnZHxzRtPuxpwC4TElLQnNkHRKMEA/NvSiUHBy54u8zyWGzPnJYHVQM
-         fobldRCNhpKx/5P2xUHRdvdpjt7NGFVYR/USj7OgWKvGrnpvqFiDyiPbaV18VveMaDWt
-         UnOA==
-X-Gm-Message-State: AOAM532Ct9RkK7LC0mTwqk2O/cB+6kEvjroyoMOe9mQhsyPWsclViKsA
-        U9jKucoMjCFHZpxmk4+4tRy3rLX9RJX2Xw==
-X-Google-Smtp-Source: ABdhPJwiGWJlSF9hF/8/sULjrKbSMeUf1/DIOzRH1uxY8zKGPp2SKf1nmJKlAhhfKzPMbXrYflMjMQ==
-X-Received: by 2002:a05:6808:1599:b0:2d4:6846:f0ad with SMTP id t25-20020a056808159900b002d46846f0admr6719328oiw.72.1646346726911;
-        Thu, 03 Mar 2022 14:32:06 -0800 (PST)
+        bh=ASiZOAYz5KFcP3A9IjHRNygM9ZeiNc0Yjtm5LFE6Rdc=;
+        b=ZC5PinBuyAcIdE0Usp/rNzuiJ6iiq1Gz8AvggXC50tVjeZZBpXrWQULv6ToSU4xqhT
+         WzFguZLVBTuYws8NiiDyQFTL+YTvFGZEV1PXnwB+RY2RpT4BKG96dQdJgNJFKoFbWNuW
+         CcNcCrNe7DwVROTFOUx6FlmYjsCefQS84uBGcQ/9DTFXfIdNZxxBbdOu123Cpp+cZYdG
+         luNYgX5MGqLE3z4DQyJSWgrbOPlB0KQkm/gsMnHyseJBEay/5WwdjdxEbOt1G1GxMYgh
+         zPBL1/FFmBdlqyUJhM06a/Y5unlS4O+IwVsyFBSzHp3+g6nuDniaDHCUU6mldhIvpHpY
+         1k1Q==
+X-Gm-Message-State: AOAM532bnv16ThsJs5Mx63TWKtjxybZmNse1tY+sCd2Zg+1rZQOLIyjC
+        tHOO5O9wF6Ii4eeU2pOn+KV+kw==
+X-Google-Smtp-Source: ABdhPJwZTpBb0lAcz7RJZp79KrGZH2AYZv5mXWcLJKlyRZFmJ6c0paiUJ4LUztTfkTxB/BrAkOdzBA==
+X-Received: by 2002:a05:6808:1402:b0:2d3:4a20:3dfa with SMTP id w2-20020a056808140200b002d34a203dfamr6624463oiv.143.1646346727905;
+        Thu, 03 Mar 2022 14:32:07 -0800 (PST)
 Received: from ripper.. ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
-        by smtp.gmail.com with ESMTPSA id fq14-20020a0568710b0e00b000d4492531a2sm1764777oab.17.2022.03.03.14.32.05
+        by smtp.gmail.com with ESMTPSA id fq14-20020a0568710b0e00b000d4492531a2sm1764777oab.17.2022.03.03.14.32.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Mar 2022 14:32:06 -0800 (PST)
+        Thu, 03 Mar 2022 14:32:07 -0800 (PST)
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -57,10 +57,11 @@ To:     Rob Herring <robh+dt@kernel.org>,
         Hans de Goede <hdegoede@redhat.com>
 Cc:     linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH v3 4/6] typec: mux: Allow multiple mux_devs per mux
-Date:   Thu,  3 Mar 2022 14:33:49 -0800
-Message-Id: <20220303223351.141238-4-bjorn.andersson@linaro.org>
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v3 5/6] dt-bindings: usb: Add binding for fcs,fsa4480
+Date:   Thu,  3 Mar 2022 14:33:50 -0800
+Message-Id: <20220303223351.141238-5-bjorn.andersson@linaro.org>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20220303223351.141238-1-bjorn.andersson@linaro.org>
 References: <20220303223351.141238-1-bjorn.andersson@linaro.org>
@@ -68,7 +69,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,266 +77,105 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-In the Qualcomm platforms the USB/DP PHY handles muxing and orientation
-switching of the SuperSpeed lines, but the SBU lines needs to be
-connected and switched by external (to the SoC) hardware.
+The Fairchild/ON Semiconductor FSA4480 Analog Audio switch is used in
+USB Type-C configurations for muxing analog audio onto the USB
+connector, and as such used to control the SBU signals for altmodes such
+as DisplayPort.
 
-It's therefor necessary to be able to have the TypeC controller operate
-multiple TypeC muxes and switches. Use the newly introduced indirection
-object to handle this, to avoid having to taint the TypeC controllers
-with knowledge about the downstream hardware configuration.
+Add a binding for this hardware block.
 
-The max number of devs per indirection is set to 3, which account for
-being able to mux/switch the USB HS, SS and SBU lines, as per defined
-defined in the usb-c-connector binding. This number could be grown if
-need arrises at a later point in time.
-
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 ---
 
 Changes since v2:
-- Picked up Heikki's ack.
+- Picked up Rob's reviewed-by
 
 Changes since v1:
-- Improved the motivation for the 3 in the commit message.
-- kfree sw and mux in error paths
+- None
 
- drivers/usb/typec/mux.c | 128 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 102 insertions(+), 26 deletions(-)
+ .../devicetree/bindings/usb/fcs,fsa4480.yaml  | 72 +++++++++++++++++++
+ 1 file changed, 72 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
 
-diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
-index d0b42c297aca..cf2347dd1663 100644
---- a/drivers/usb/typec/mux.c
-+++ b/drivers/usb/typec/mux.c
-@@ -17,8 +17,11 @@
- #include "class.h"
- #include "mux.h"
- 
-+#define TYPEC_MUX_MAX_DEVS	3
+diff --git a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
+new file mode 100644
+index 000000000000..9473f26b0621
+--- /dev/null
++++ b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
+@@ -0,0 +1,72 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/usb/fcs,fsa4480.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
 +
- struct typec_switch {
--	struct typec_switch_dev *sw_dev;
-+	struct typec_switch_dev *sw_devs[TYPEC_MUX_MAX_DEVS];
-+	unsigned int num_sw_devs;
- };
- 
- static int switch_fwnode_match(struct device *dev, const void *fwnode)
-@@ -67,25 +70,50 @@ static void *typec_switch_match(struct fwnode_handle *fwnode, const char *id,
-  */
- struct typec_switch *fwnode_typec_switch_get(struct fwnode_handle *fwnode)
- {
--	struct typec_switch_dev *sw_dev;
-+	struct typec_switch_dev *sw_devs[TYPEC_MUX_MAX_DEVS];
- 	struct typec_switch *sw;
-+	int count;
-+	int err;
-+	int i;
- 
- 	sw = kzalloc(sizeof(*sw), GFP_KERNEL);
- 	if (!sw)
- 		return ERR_PTR(-ENOMEM);
- 
--	sw_dev = fwnode_connection_find_match(fwnode, "orientation-switch", NULL,
--					      typec_switch_match);
--	if (IS_ERR_OR_NULL(sw_dev)) {
-+	count = fwnode_connection_find_matches(fwnode, "orientation-switch", NULL,
-+					       typec_switch_match,
-+					       (void **)sw_devs,
-+					       ARRAY_SIZE(sw_devs));
-+	if (count <= 0) {
- 		kfree(sw);
--		return ERR_CAST(sw_dev);
-+		return NULL;
- 	}
- 
--	WARN_ON(!try_module_get(sw_dev->dev.parent->driver->owner));
-+	for (i = 0; i < count; i++) {
-+		if (IS_ERR(sw_devs[i])) {
-+			err = PTR_ERR(sw_devs[i]);
-+			goto put_sw_devs;
-+		}
-+	}
- 
--	sw->sw_dev = sw_dev;
-+	for (i = 0; i < count; i++) {
-+		WARN_ON(!try_module_get(sw_devs[i]->dev.parent->driver->owner));
-+		sw->sw_devs[i] = sw_devs[i];
-+	}
++title: ON Semiconductor Analog Audio Switch
 +
-+	sw->num_sw_devs = count;
- 
- 	return sw;
++maintainers:
++  - Bjorn Andersson <bjorn.andersson@linaro.org>
 +
-+put_sw_devs:
-+	for (i = 0; i < count; i++) {
-+		if (!IS_ERR(sw_devs[i]))
-+			put_device(&sw_devs[i]->dev);
-+	}
++properties:
++  compatible:
++    enum:
++      - fcs,fsa4480
 +
-+	kfree(sw);
++  reg:
++    maxItems: 1
 +
-+	return ERR_PTR(err);
- }
- EXPORT_SYMBOL_GPL(fwnode_typec_switch_get);
- 
-@@ -98,14 +126,17 @@ EXPORT_SYMBOL_GPL(fwnode_typec_switch_get);
- void typec_switch_put(struct typec_switch *sw)
- {
- 	struct typec_switch_dev *sw_dev;
-+	unsigned int i;
- 
- 	if (IS_ERR_OR_NULL(sw))
- 		return;
- 
--	sw_dev = sw->sw_dev;
-+	for (i = 0; i < sw->num_sw_devs; i++) {
-+		sw_dev = sw->sw_devs[i];
- 
--	module_put(sw_dev->dev.parent->driver->owner);
--	put_device(&sw_dev->dev);
-+		module_put(sw_dev->dev.parent->driver->owner);
-+		put_device(&sw_dev->dev);
-+	}
- 	kfree(sw);
- }
- EXPORT_SYMBOL_GPL(typec_switch_put);
-@@ -170,13 +201,21 @@ int typec_switch_set(struct typec_switch *sw,
- 		     enum typec_orientation orientation)
- {
- 	struct typec_switch_dev *sw_dev;
-+	unsigned int i;
-+	int ret;
- 
- 	if (IS_ERR_OR_NULL(sw))
- 		return 0;
- 
--	sw_dev = sw->sw_dev;
-+	for (i = 0; i < sw->num_sw_devs; i++) {
-+		sw_dev = sw->sw_devs[i];
++  interrupts:
++    maxItems: 1
 +
-+		ret = sw_dev->set(sw_dev, orientation);
-+		if (ret)
-+			return ret;
-+	}
- 
--	return sw_dev->set(sw_dev, orientation);
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(typec_switch_set);
- 
-@@ -208,7 +247,8 @@ EXPORT_SYMBOL_GPL(typec_switch_get_drvdata);
- /* ------------------------------------------------------------------------- */
- 
- struct typec_mux {
--	struct typec_mux_dev *mux_dev;
-+	struct typec_mux_dev *mux_devs[TYPEC_MUX_MAX_DEVS];
-+	unsigned int num_mux_devs;
- };
- 
- static int mux_fwnode_match(struct device *dev, const void *fwnode)
-@@ -291,25 +331,50 @@ static void *typec_mux_match(struct fwnode_handle *fwnode, const char *id,
- struct typec_mux *fwnode_typec_mux_get(struct fwnode_handle *fwnode,
- 				       const struct typec_altmode_desc *desc)
- {
--	struct typec_mux_dev *mux_dev;
-+	struct typec_mux_dev *mux_devs[TYPEC_MUX_MAX_DEVS];
- 	struct typec_mux *mux;
-+	int count;
-+	int err;
-+	int i;
- 
- 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
- 	if (!mux)
- 		return ERR_PTR(-ENOMEM);
- 
--	mux_dev = fwnode_connection_find_match(fwnode, "mode-switch", (void *)desc,
--					       typec_mux_match);
--	if (IS_ERR_OR_NULL(mux_dev)) {
-+	count = fwnode_connection_find_matches(fwnode, "mode-switch",
-+					       (void *)desc, typec_mux_match,
-+					       (void **)mux_devs,
-+					       ARRAY_SIZE(mux_devs));
-+	if (count <= 0) {
- 		kfree(mux);
--		return ERR_CAST(mux_dev);
-+		return NULL;
- 	}
- 
--	WARN_ON(!try_module_get(mux_dev->dev.parent->driver->owner));
-+	for (i = 0; i < count; i++) {
-+		if (IS_ERR(mux_devs[i])) {
-+			err = PTR_ERR(mux_devs[i]);
-+			goto put_mux_devs;
-+		}
-+	}
++  vcc-supply:
++    description: power supply (2.7V-5.5V)
 +
-+	for (i = 0; i < count; i++) {
-+		WARN_ON(!try_module_get(mux_devs[i]->dev.parent->driver->owner));
-+		mux->mux_devs[i] = mux_devs[i];
-+	}
- 
--	mux->mux_dev = mux_dev;
-+	mux->num_mux_devs = count;
- 
- 	return mux;
++  mode-switch:
++    description: Flag the port as possible handle of altmode switching
++    type: boolean
 +
-+put_mux_devs:
-+	for (i = 0; i < count; i++) {
-+		if (!IS_ERR(mux_devs[i]))
-+			put_device(&mux_devs[i]->dev);
-+	}
++  orientation-switch:
++    description: Flag the port as possible handler of orientation switching
++    type: boolean
 +
-+	kfree(mux);
++  port:
++    $ref: /schemas/graph.yaml#/properties/port
++    description:
++      A port node to link the FSA4480 to a TypeC controller for the purpose of
++      handling altmode muxing and orientation switching.
 +
-+	return ERR_PTR(err);
- }
- EXPORT_SYMBOL_GPL(fwnode_typec_mux_get);
- 
-@@ -322,13 +387,16 @@ EXPORT_SYMBOL_GPL(fwnode_typec_mux_get);
- void typec_mux_put(struct typec_mux *mux)
- {
- 	struct typec_mux_dev *mux_dev;
-+	unsigned int i;
- 
- 	if (IS_ERR_OR_NULL(mux))
- 		return;
- 
--	mux_dev = mux->mux_dev;
--	module_put(mux_dev->dev.parent->driver->owner);
--	put_device(&mux_dev->dev);
-+	for (i = 0; i < mux->num_mux_devs; i++) {
-+		mux_dev = mux->mux_devs[i];
-+		module_put(mux_dev->dev.parent->driver->owner);
-+		put_device(&mux_dev->dev);
-+	}
- 	kfree(mux);
- }
- EXPORT_SYMBOL_GPL(typec_mux_put);
-@@ -336,13 +404,21 @@ EXPORT_SYMBOL_GPL(typec_mux_put);
- int typec_mux_set(struct typec_mux *mux, struct typec_mux_state *state)
- {
- 	struct typec_mux_dev *mux_dev;
-+	unsigned int i;
-+	int ret;
- 
- 	if (IS_ERR_OR_NULL(mux))
- 		return 0;
- 
--	mux_dev = mux->mux_dev;
-+	for (i = 0; i < mux->num_mux_devs; i++) {
-+		mux_dev = mux->mux_devs[i];
++required:
++  - compatible
++  - reg
++  - port
 +
-+		ret = mux_dev->set(mux_dev, state);
-+		if (ret)
-+			return ret;
-+	}
- 
--	return mux_dev->set(mux_dev, state);
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(typec_mux_set);
- 
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c13 {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        fsa4480@42 {
++          compatible = "fcs,fsa4480";
++          reg = <0x42>;
++
++          interrupts-extended = <&tlmm 2 IRQ_TYPE_LEVEL_LOW>;
++
++          vcc-supply = <&vreg_bob>;
++
++          mode-switch;
++          orientation-switch;
++
++          port {
++            fsa4480_ept: endpoint {
++              remote-endpoint = <&typec_controller>;
++            };
++          };
++        };
++    };
++...
 -- 
 2.33.1
 
