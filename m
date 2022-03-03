@@ -2,120 +2,90 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33CB44CC472
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 18:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21F514CC5F3
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 20:22:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233213AbiCCR63 (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Thu, 3 Mar 2022 12:58:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33888 "EHLO
+        id S233195AbiCCTXI (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Thu, 3 Mar 2022 14:23:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229662AbiCCR63 (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Mar 2022 12:58:29 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB686710D7;
-        Thu,  3 Mar 2022 09:57:42 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A6D9FB81DB8;
-        Thu,  3 Mar 2022 17:57:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E72C340F0;
-        Thu,  3 Mar 2022 17:57:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646330260;
-        bh=hY8rAyb1zsetbVzg5OgbfUyuPVMG9GYiD0/OIrED5wE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=MYtflfLlh9TiDIXibSAM3pECoM8IbJp/05QsspbsKvZKkl5j4EUgMmodgp2cjdhMF
-         JTZmmwKMzxtj93Qne9s/wvdqDNlzdXG3hCnWhvtR6nVLTrQPaNra7nV1f90JR7QWSu
-         7T1Zy72GRHqDvy5VKoVwueQpSXaAWRhn4Ua/a6QC0Xc6n1npHP9CFEe8JCH2CCH+2K
-         5KLkN1opATv48ZWhgJx4cK5ypHTH6OP8R8nuErFkIY8gi+mEPrre+XgjPXlFqBzCXx
-         CMelsAhubwzk4WOjMRd+12xrL1f5UMJWpla+zs15nXAbU5nLoizleMGTIYg+AqpWIs
-         4/20pPLfFu4yg==
-Date:   Thu, 3 Mar 2022 11:57:38 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     =?utf-8?B?7J6l7JiB7KeEL1RWIFMvVyBMYWIoVkQpL1N0YWZmIEVuZ2luZWVyL+yCvA==?=
-         =?utf-8?B?7ISx7KCE7J6Q?= <yj84.jang@samsung.com>
-Cc:     'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
-        "'Rafael J. Wysocki'" <rafael@kernel.org>,
-        'Pavel Machek' <pavel@ucw.cz>,
-        'Len Brown' <len.brown@intel.com>,
-        'Bjorn Helgaas' <bhelgaas@google.com>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-usb@vger.kernel.org, js07.lee@samsung.com
-Subject: Re: [PATCH] PM: Add device name to suspend_report_result()
-Message-ID: <20220303175738.GA818511@bhelgaas>
+        with ESMTP id S235373AbiCCTWs (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Thu, 3 Mar 2022 14:22:48 -0500
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48EEF19DE90
+        for <linux-acpi@vger.kernel.org>; Thu,  3 Mar 2022 11:22:01 -0800 (PST)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-2dc585dbb02so3673857b3.13
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Mar 2022 11:22:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=270cAaBxZU0tbjWjOsQfCYofcKwdXKDpek+iMrJUfDE=;
+        b=N9DsSvMiJwwjRg4w6oehvMScY9JUGeZ/396VZ5oKOUFv7dDeVY+1RQAK6haM1Dmkl2
+         YkpJoZWsMZcjmqyc8HSdej6aMw1lf2+bdXy9Jp+l7eY5qU7dM9lQyNRJxvgk/t67vnqy
+         6jhQKiKKXrj/U5esSptyQOwJuyZFwz4WoQ/yPDuSDxz6BQCYehMO65okNGI0E1KxrVdO
+         cS1zUSw6Um5sGLGAiJjyXqPoyee5OWnNPMNTBIu6TUsRcMUS1hz4F8+pkcjyf3YSTuQy
+         egOWXmOVTS8N490XQ5ERIuFd2qR2aWjQyiOx+UpegHY2t+0NURLEQ1O5EROk/EVTorps
+         dL/A==
+X-Gm-Message-State: AOAM530w5X1W9oLCxOaM6kVPZXpjiTPrlgDVP3GCb0KTpCRSAhPNTC23
+        l3lqDfVTdiH32KO3lIxqoVvHrYBS17zifDTF8W0=
+X-Google-Smtp-Source: ABdhPJwaKLDQEN2VlPLqqhMtBqYcDtTiM72wDSon70ag8Fd4dbmFBmX1H8OyOTAkmUrxACFSl6nX0s4vJwyqJAuZaeI=
+X-Received: by 2002:a81:1cd8:0:b0:2d6:b74b:5b55 with SMTP id
+ c207-20020a811cd8000000b002d6b74b5b55mr36591811ywc.149.1646335320497; Thu, 03
+ Mar 2022 11:22:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <044701d82e88$c5edb6f0$51c924d0$@samsung.com>
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220225190646.1045695-1-mario.limonciello@amd.com>
+In-Reply-To: <20220225190646.1045695-1-mario.limonciello@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 3 Mar 2022 20:21:49 +0100
+Message-ID: <CAJZ5v0jE33-kKp_jRO5s4WO_H23Pwhpu6E=1fw0Ud5UL3_OaQw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Avoid enabling LPI on non-ARM
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Thu, Mar 03, 2022 at 07:56:37AM +0900, 장영진/TV S/W Lab(VD)/Staff Engineer/삼성전자 wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> > Sent: Thursday, March 3, 2022 5:16 AM
-> > To: 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>
-> > Cc: �念��/TV S/W Lab(VD)/Staff Engineer/�Ｚ���� <yj84.jang@samsung.com>;
-> > 'Rafael J. Wysocki' <rafael@kernel.org>; 'Pavel Machek' <pavel@ucw.cz>;
-> > 'Len Brown' <len.brown@intel.com>; 'Bjorn Helgaas' <bhelgaas@google.com>;
-> > linux-pm@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
-> > pci@vger.kernel.org; linux-acpi@vger.kernel.org; linux-usb@vger.kernel.org;
-> > js07.lee@samsung.com
-> > Subject: Re: [PATCH] PM: Add device name to suspend_report_result()
-> > 
-> > On Wed, Mar 02, 2022 at 03:52:51PM +0100, 'Greg Kroah-Hartman' wrote:
-> > > On Wed, Mar 02, 2022 at 08:00:14PM +0900,  念  /TV S/W Lab(VD)/Staff
-> > Engineer/ Ｚ     wrote:
-> > > > > -----Original Message-----
-> > > > > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > > Sent: Wednesday, March 2, 2022 4:58 PM
-> > > > > To: Youngjin Jang <yj84.jang@samsung.com>
-> > > > > Cc: Rafael J. Wysocki <rafael@kernel.org>; Pavel Machek
-> > > > > <pavel@ucw.cz>; Len Brown <len.brown@intel.com>; Bjorn Helgaas
-> > > > > <bhelgaas@google.com>; linux-pm@vger.kernel.org;
-> > > > > linux-kernel@vger.kernel.org; linux- pci@vger.kernel.org;
-> > > > > linux-acpi@vger.kernel.org; linux-
-> > > > usb@vger.kernel.org;
-> > > > > js07.lee@samsung.com
-> > > > > Subject: Re: [PATCH] PM: Add device name to
-> > > > > suspend_report_result()
-> > > > >
-> > > > > On Wed, Mar 02, 2022 at 03:49:17PM +0900, Youngjin Jang wrote:
-> > > > > > From: "yj84.jang" <yj84.jang@samsung.com>
+On Fri, Feb 25, 2022 at 8:11 PM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> On some AMD platforms the platform _OSC negotiation will lead to
+> `osc_pc_lpi_support_confirmed` being set and because the ACPI tables are
+> populated with `_LPI` entries the kernel will attempt to enable LPI.
+>
+> On non-ARM kernels LPI is not supported and both
+> `acpi_processor_ffh_lpi_probe` and
+> `acpi_processor_ffh_lpi_enter` will return error codes.
+>
+> When this happens there is no recourse though; the cpuidle code does
+> not switch to `_CST` mode, but rather it will continue to behave as though
+> LPI has been enabled and the CPU will remain in a high power state.
+>
+> This patch series shifts the checks around while enabling LPI to detect
+> this situation and let the system continue to set up in _CST mode.
+>
+> Link to v1: https://lore.kernel.org/linux-acpi/20220225031255.3647599-1-mario.limonciello@amd.com/T/#m90282a6e29c334d14b2854a27d7225fc57a22aa6
+>
+> Mario Limonciello (2):
+>   PSCI: cpuidle: Move the `has_lpi` check to the beginning of the
+>     function
+>   ACPI: processor idle: Check for architectural support for LPI
+>
+>  arch/arm64/kernel/cpuidle.c   |  6 +++---
+>  drivers/acpi/processor_idle.c | 15 ++++++++++-----
+>  2 files changed, 13 insertions(+), 8 deletions(-)
+>
+> --
 
-> > > > > > -		pr_err("%s(): %pS returns %d\n", function, fn, ret);
-> > > > > > +		pr_err("%s(): %pS (%s) returns %d\n", function, fn,
-> > > > > > +dev_driver_string(dev), ret);
-> > > > >
-> > > > > If you have a struct device, please use dev_err().
-> > > >
-> > > > I think dev_err() is nice option, but we can see a minor issue.
-> > > > Prefix log "PM: " would be lost, If I use dev_err() in this context.
-> > > > As you know, all logs in power management include "PM :" prefix.
-> > >
-> > > Why does that matter?  Fix them all to use the struct device pointer
-> > > and then they will be properly unified with the rest of the kernel log
-> > > infrastructure.
-> > 
-> > You can #define dev_fmt if you need a prefix.
-> 
-> I tested dev_fmt before, but I feel that not a good solution.
-> Because the readability is not so great than I expected.
-> I didn't want to break the PM logging rules.
-
-I didn't catch your meaning here.  Some examples would probably help.
-
-The patch above is from __suspend_report_result() in
-drivers/base/power/main.c.  That file already defines both pr_fmt and
-dev_fmt to be "PM: ", so I would expect dev_err() output to already
-include "PM: ".
+Both patches in the series applied as 5.18 material, thanks!
