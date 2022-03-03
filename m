@@ -2,60 +2,124 @@ Return-Path: <linux-acpi-owner@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B255A4CB40E
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 02:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 949504CB529
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Mar 2022 03:58:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230444AbiCCAls (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
-        Wed, 2 Mar 2022 19:41:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
+        id S231856AbiCCCyN (ORCPT <rfc822;lists+linux-acpi@lfdr.de>);
+        Wed, 2 Mar 2022 21:54:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230422AbiCCAls (ORCPT
-        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 19:41:48 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4DE26245;
-        Wed,  2 Mar 2022 16:41:02 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 666C9B822BC;
-        Thu,  3 Mar 2022 00:41:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA44FC004E1;
-        Thu,  3 Mar 2022 00:40:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646268060;
-        bh=f1wXkjavZEegdLfZM4+Xjf3Xoe2Bhm05K6wqA9b6Vaw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=S1RT3v0UaUujRv1Yo/V8f5WAS0Kh0QTn9tTmTUPlRA02l0jwYc/IduShkADWXalHZ
-         Imj2Zt7tmM3JtwzJt11cqBUXHg0xwJK+y84qMXFj/OfPTuKumw/npEGT+/zJ26FHVu
-         MdA+KT0rtCa9mzXU4m0s6P+iRcq5DQIxSr5k+AOTXIAojv57AgUNSZWCWp0ROl2B/v
-         2RpMjghGwLJstsG/VLhsUvsxYzIWhYoHzg3Fz/j16PUppFhMFh6X+ipogI5b29EbCb
-         x+uAM8usATGHUZWqynyqIHwGhCBmFUYoLWggtURsJcZFk5Rtuf6DPxHQHZmzGjwSII
-         5Kxvac1ktatww==
-Date:   Wed, 2 Mar 2022 18:40:58 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Myron Stowe <myron.stowe@redhat.com>,
-        Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-        Benoit =?iso-8859-1?Q?Gr=E9goire?= <benoitg@coeus.ca>,
-        Hui Wang <hui.wang@canonical.com>, linux-acpi@vger.kernel.org,
-        linux-pci@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] x86/PCI: Disable exclusion of E820 reserved addressed
- in some cases
-Message-ID: <20220303004058.GA610543@bhelgaas>
+        with ESMTP id S231834AbiCCCyM (ORCPT
+        <rfc822;linux-acpi@vger.kernel.org>); Wed, 2 Mar 2022 21:54:12 -0500
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2074.outbound.protection.outlook.com [40.107.223.74])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B52292C105;
+        Wed,  2 Mar 2022 18:53:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Er9sDj5mnBBlnNgA1X4AOMwu+XmGgSPhsUIMGbHLKd1DfGL+B3jjcFme4IiWmIBqRLjAwIGV9/1sXvvoDwNMpK98gymSoUnjVzfqEfK2YPhpLKVZQMS+38OnlzUKFCVp5gxg/FhITpLvH0w2ueozHXxFchERgsJ1uOYgE3qc971OI4SeMS6Gze/b9iR86FxxklmooIU1p79Usm/gokSYgHH5tPuUzjMWzuToZWZbMsudj/2smzYzMPYH/PMYszS4KrP6gy1/6/l8SYfJ1ix4eZpCx5g6FeLi+0Ll31DEtf9574Qksp3SJ38lU+Q5wX9gx3UD4fYnNWit6oYMd0bfNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SArLsEojJ1J+coAh9qiAg74gXFPOYL5wZGAMc20Wcks=;
+ b=VnoxasYRTbqwSfdmQe9lYUCcBZfPW1U2RnW2LxIwhzcM9S9JjS2NRZjPpnb6TneaKuotjQhdbmNHSjNuBRZfx7eOck6kh4qJp66ehaHMjAiiUQwFxov7Swr5O5u+PZZgABa/scZz96Xje9nCqyvkqoUSrgZ23bbrZWn33fH+2329wU3nbUif/l7nifpmGm7QipaoiobthLLuuxpqu/d4+4Gy9o55GOAew3KIt5PRuemuVARoEDXgKYItA0lcayGJf0opt8sDFMotaX4uLWuhEloCrJMBt7zG6sgauotdepoRh5bcz8/ewCEFF7P9xLUfe1LEZY5IZCaSj3E+iDvC0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SArLsEojJ1J+coAh9qiAg74gXFPOYL5wZGAMc20Wcks=;
+ b=vo2I99jO64UIySH3lHEVeCGzm4oIO6UY71/ZGL7ELlk3sPuzzPQaHFyxrvgTZvR3emCh02mRCdNlx0oLoLw2DEtiKeXUixj0Y5RUjFkwJExUSmiURI1i7KDOLNqB44PUd3NUPXBi9RLZQQRKoyh+6kPUgy4MzrwsJ9O7EWClreE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5157.namprd12.prod.outlook.com (2603:10b6:208:308::15)
+ by MWHPR12MB1295.namprd12.prod.outlook.com (2603:10b6:300:11::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Thu, 3 Mar
+ 2022 02:53:24 +0000
+Received: from BL1PR12MB5157.namprd12.prod.outlook.com
+ ([fe80::692d:9532:906b:2b08]) by BL1PR12MB5157.namprd12.prod.outlook.com
+ ([fe80::692d:9532:906b:2b08%5]) with mapi id 15.20.5038.014; Thu, 3 Mar 2022
+ 02:53:24 +0000
+Message-ID: <e6a3380d-dcc4-8e61-cba0-813d2404ee1e@amd.com>
+Date:   Wed, 2 Mar 2022 20:53:13 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [RFC] ACPI: platform-profile: support for AC vs DC modes
+Content-Language: en-US
+To:     Mark Pearson <markpearson@lenovo.com>
+Cc:     rafael@kernel.org, hdegoede@redhat.com, linux-acpi@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+References: <markpearson@lenovo.com>
+ <20220301201554.4417-1-markpearson@lenovo.com>
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <20220301201554.4417-1-markpearson@lenovo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN4PR0701CA0030.namprd07.prod.outlook.com
+ (2603:10b6:803:2d::23) To BL1PR12MB5157.namprd12.prod.outlook.com
+ (2603:10b6:208:308::15)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220228105259.230903-2-hdegoede@redhat.com>
-X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: d6b0a637-8f08-43e6-2875-08d9fcc0fbfe
+X-MS-TrafficTypeDiagnostic: MWHPR12MB1295:EE_
+X-Microsoft-Antispam-PRVS: <MWHPR12MB1295834FFB94E4A50951683CE2049@MWHPR12MB1295.namprd12.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 9N0ZTb0pBiMaIZXM2mA9dApUEmxl7OMZQIrlhG8im4GnmJZLP5ChOu+0cZSql9Dfe1kbADpYbVmqm//itSQn8V/yQilFCtML9LWuk/thziaAot/3mPAOpQ0/R7McU8hFpqG3Z6H8V1x2F3GjMepjJdVcY/0fH1pgHSSwwly+jscsEJ5BJRU3v2xCylP2bM0mU1qIt40VBoxZSOtiyaHNp3MgtxNF6rI0UDCQQTWvaA9VneKc+ooE30q2tTZjxQvbvTT8QCFMVFe+bMFQ3u/IUEOe7esSJypSROYJsDMQkYX5UF4no142U4eUD0L1Vo1/xxM3vrVger173n9XODg3aG4EGbUlJlR+V1/uH1u8F2XQIuhqo/d0H73uOFpZkinwo+2NPuBHIFOC0glj31CSMSPOFmTi9yi9nQQAB35+L8Lqb9aUeLrkwgfkp5Y+IAdNETRptn44cRS5S83qFVRHNMNT42pbk7b3I0AK8chwd8sWpLHeLaKIFx+5hwBT0fN25nS6ytxk/CC1Yk083aHFeKBSdtNHxQ/Z7XEJ2m1aKB3T42KmqVKw5CkkNuY86X4tflcq9LT6P4i1tGx2xYUA1dvOwHOzPSkLKbmXH6TTVgiJKeVeigfxUKFhQzQjwdNOC8rLLhz2Kvmstl17Wt3Y33Pq+Fy4Q7yjesZkkVrurqkS/u7A8smtgfeNFnMp472bzUhOFyrD7bmUrT+C5hgCzrnmTNBDRphHQDB4i6VTnM/UsyVN5edHiGMyH0vH84+c
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5157.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(31696002)(86362001)(6916009)(6486002)(316002)(6506007)(53546011)(6666004)(83380400001)(6512007)(508600001)(2616005)(44832011)(8936002)(5660300002)(2906002)(66476007)(66556008)(66946007)(186003)(38100700002)(31686004)(36756003)(8676002)(4326008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Ty9yOHNoM01IMVlJK25KSCtNaWFtczhRc0huRytxMlhVVmsxRUExSERJZk5Q?=
+ =?utf-8?B?SlhiUDFnT204RFc1cnJtQ09XOHVwc0FRK1NQZjNHNWRhNVRVb3MyejFuL0tJ?=
+ =?utf-8?B?TGd5UTlZVlc2Vy8zV20xRnRJeWFBeWRMLzlodmljaVZsclQ1eHo0VUM5NFA3?=
+ =?utf-8?B?VlZ2RWdDVGRTZFNwN2NDcjVyYU9aMDJFa0hQRzBJMkZ0RFBERllRMFMvTEJY?=
+ =?utf-8?B?ak1WK3hUTWdlRG8wTFFFeFhaQ1JvdUNySUtYUW81STRMREF6OHkyK0gyY05R?=
+ =?utf-8?B?SThxbWtLUnRsU1JuNmlNQmZMa291YkRua01hYUdhQ2hYamtWUWRoMFBwNjFG?=
+ =?utf-8?B?WEVuSEtTdjFKOFFlNW9xYldrcGdVTXNXUm1PUVdYUVVSL2hWNjdvN1RXdmZZ?=
+ =?utf-8?B?UmtLMVVpK0dLcTA4UThoZ2JlcFVvR2JGYmpLME9lUUFhK3FLb3l2c01nV3Yw?=
+ =?utf-8?B?ZnhoZFBjdFk5QlRrSHRHRGRsWWI5aFZ2eEZ4eHhhTU5NNFRxU2xZRmlqZzNT?=
+ =?utf-8?B?c2Jadnd3aUVHOHF4UE5HMCtXMmh3T0oyV0g5aFoxci8vMCtiREFsdkJNZ2xx?=
+ =?utf-8?B?YUpSY3dpU05sMDl1OTdXODdLL3JVbldaVXVadjhYVTRyczJuSzdSb2dmRGh2?=
+ =?utf-8?B?R2FDUWNuaFdzdlZ3KzB2anRqWXRBZURBU1pRdU4wWUorVHk1djRvWWxWdGN3?=
+ =?utf-8?B?SWRZZUtvZmJHaTU2Q3lPNVVsT3F1eURsd2p5Mk5YL2pzMW1ha2YxemFYb0tl?=
+ =?utf-8?B?eFRnTlM4ZmRSeE1IZWluR0hOaGRZL1RPaGYyYUxpYmJFYWptYm1SUUZrN2Ew?=
+ =?utf-8?B?VDRhOW9QbUhUN201UVlEd25uRzVRL2RaS2NwV3dBVjZCbUVYV2RXTmVtd1Zu?=
+ =?utf-8?B?aGY5ZU13MnNoQm9vME8rZ0xMTDZpU2NQNko0endGQm1HYTlySHdrRDdoVmc3?=
+ =?utf-8?B?K2MyeHNPa1p3LzRESjR2bDRtK1UyYm1HdU13c0FHa1RaWFgraFVUZ1BjenlY?=
+ =?utf-8?B?R3FTYnc0ek80ZkxaM09kRGtQWlI0cWMxeEFRYU5OeExRNDY4UjRaL1cyZTU5?=
+ =?utf-8?B?bDh2WGp5WFFCZWhIUC9ZclpkeFp3Nk9EMUhMQWhxam56YUwvNks1OWdvUDVu?=
+ =?utf-8?B?akYvdDAzT1FPb3dKOEg1Vzl1R041d2FydVIrYVNidFNJMUhJekpmR0J1ckF4?=
+ =?utf-8?B?ZGcyazl2cHJkUGRoTDZzR29GSjJleStIT0hKa1Y3K2NWdVNFOHFYdG4zSSti?=
+ =?utf-8?B?RExRNU5PZVRHNXdITEltdHJLZlFRaW9GWnRHcnY2aW9Qai9MeDJnRVY1bFNX?=
+ =?utf-8?B?VDdURTMyOXlwNUd3Q0k5WWEzTUVZc2RoR2ZIeEVrK2R0UlpqaVJWeksxdHMv?=
+ =?utf-8?B?cFNzSVRRYkgraXhOcnBpb3Y2SjJvK2cxRlo3bmxqb1RqQ1dHamhFWXFwOHJj?=
+ =?utf-8?B?RVFMdk5qanJ5SkJPSlEzS0o3MVBNR2hQMFpieVkzTXFpalg3aUxEQm94QXNa?=
+ =?utf-8?B?bUJsS1Z5djVpTEpBUFJlRVlhTis1T1BrYkd0WW9tdnVzZHkvVGp2Uko1Yi8z?=
+ =?utf-8?B?d0cyVkk4NXlYSXljNFNiZzE1TDE0amF0M2RSOFBmUkhaTnF3WlAyQ0xGQ005?=
+ =?utf-8?B?RmNBbFVPS1ZUUXovU3BGUTYrU3FHaUp6amUvdVlOSWpJV2NTMWpheVdIeDhT?=
+ =?utf-8?B?bWdqQ04yd0RCMEsrWko4Wm1YM3V4L20zUkpnRDZ4aG1qMWxicFY4OXVuZVAw?=
+ =?utf-8?B?NG9CdmhOM0FpdnlPajVLTkZYRG9qTFBJM2VBc09NK0lXY0NTdFJVcHRYMjFh?=
+ =?utf-8?B?VFl0TzREdGgzSDZTRG8zT2dNT1lRRzQ1cFhKSHZWRVhCTkZtdEpwazd3ZDJr?=
+ =?utf-8?B?WFpmQkNSS2IyK09GTFFsK3l5L0t4V2dQN2xOU0xwSjlleUVVUFkzUE5LT3J1?=
+ =?utf-8?B?NVNZR0ZrRmNKcUZTSlR3Q3FmcmFMV3p3LzN6STR4YVRmUDN5ZEwweTlWK254?=
+ =?utf-8?B?eDFLNkF6SnRBNk02TEVyYllEbml0S0RkY0NSdmx0bkRkei9rNnpHVWoxaUNQ?=
+ =?utf-8?B?aHVlT1Y3YmxLUEU4d3hjMDNYenhiQk9NdzQ0dEt3LzEvZ3l1Smk0TUNNd2wz?=
+ =?utf-8?B?S2dFU1djK1VXcHpEM05senEvbXNKbHpjblV2MUlyQ2NoalNCc3h3cjVhOVd3?=
+ =?utf-8?B?WXMreHlDcnlYTnBaYWFlRjNiai9ONkx3ajhMNmNIMVlWRDR5YlpGaUZ3OTdX?=
+ =?utf-8?Q?CXIV0REN98uPQivYpk+VRE2MWwh1wqYAJja/uQqPS0=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6b0a637-8f08-43e6-2875-08d9fcc0fbfe
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5157.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2022 02:53:24.3180
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6D1qYjRy42ObETNLILy+gQPNTOBc4w0z/FNypoyaI0qCJRxVojLNRH8EaQUht7+GCd/RhTRORwll601Zd8OfyA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR12MB1295
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,333 +127,296 @@ Precedence: bulk
 List-ID: <linux-acpi.vger.kernel.org>
 X-Mailing-List: linux-acpi@vger.kernel.org
 
-On Mon, Feb 28, 2022 at 11:52:59AM +0100, Hans de Goede wrote:
-
-I know Rafael has already applied this, but I'm still trying to
-understand this because it looks like a very complicated maintenance
-problem.
-
-> Some fw has a bug where the PCI bridge window returned by the ACPI
-> resources partly overlaps with some other address range, causing issues.
-> To workaround this Linux excludes E820 reserved addresses when allocating
-> addresses from the PCI bridge window. 2 known examples of such fw bugs are:
->
-> 1. The returned window contains addresses which map to system RAM,
-> see commit 4dc2287c1805 ("x86: avoid E820 regions when allocating
-> address space").
-
-Bug report is https://bugzilla.kernel.org/show_bug.cgi?id=16228
-First dmesg log https://bugzilla.kernel.org/attachment.cgi?id=26811
-shows:
-
-  BIOS-e820: 00000000bfe4dc00 - 00000000c0000000 (reserved)
-  pci_root PNP0A03:00: host bridge window [mem 0xbff00000-0xdfffffff]
-  pci 0000:00:1f.2: no compatible bridge window for [mem 0xff970000-0xff9707ff]
-  pci 0000:00:1f.2: BAR 5: assigned [mem 0xbff00000-0xbff007ff]
-  ahci 0000:00:1f.2: controller reset failed (0xffffffff)
-  ahci 0000:00:1f.2: failed to stop engine (-5)
-
-The problem is that _CRS advertises [mem 0xbff00000-0xdfffffff], and
-we assigned [mem 0xbff00000-0xbff007ff] to 00:1f.2, but
-0xbff00000-0xbfffffff is not usable for PCI devices.  My guess is that
-it contains host bridge registers, but all we really know is that it
-doesn't work.
-
-I think the _CRS that includes non-usable space is clearly a BIOS
-defect.
-
-The fix from 4dc2287c1805 was to avoid that region based on the
-0xbfe4dc00-0xc0000000 E820 entry, and the result is in
-https://bugzilla.kernel.org/attachment.cgi?id=30662:
-
-  BIOS-e820: 00000000bfe4dc00 - 00000000c0000000 (reserved)
-  pci_root PNP0A03:00: host bridge window [mem 0xbff00000-0xf7ffffff]
-  pci_root PNP0A03:00: host bridge window [mem 0xff980000-0xff980fff]
-  pci 0000:00:1f.2: reg 24: [mem 0xff970000-0xff9707ff]   # BAR 5
-  pci 0000:00:1f.2: no compatible bridge window for [mem 0xff970000-0xff9707ff]
-  pci 0000:00:1f.2: BAR 5: assigned [mem 0xff980800-0xff980fff]
-
-The patch below doesn't affect this workaround.
-
-> 2. The Lenovo X1 carbon gen 2 BIOS has an overlap between an EFI/E820
-> reserved range and the ACPI provided PCI bridge window:
->  efi: mem46: [MMIO] range=              [0x00000000dfa00000-0x00000000dfa0ffff] (0MB)
->  BIOS-e820:                         [mem 0x00000000dceff000-0x00000000dfa0ffff] reserved
->  pci_bus 0000:00: root bus resource [mem         0xdfa00000-        0xfebfffff window]
-> If Linux assigns the overlapping 0xdfa00000-0xdfa0ffff range to a PCI BAR
-> then the system fails to resume after a suspend.
-
-I think this is from https://bugzilla.redhat.com/show_bug.cgi?id=2029207
-
-If I understand correctly, the log in comment 23 from Ivan
-(https://bugzilla.redhat.com/attachment.cgi?id=1859801) is a
-case where resume doesn't work:
-
-  BIOS-e820: [mem 0x00000000dceff000-0x00000000dfa0ffff] reserved
-  pci_bus 0000:00: root bus resource [mem 0xdfa00000-0xfebfffff window]
-  pci 0000:00:1c.0: BAR 14: assigned [mem 0xdfa00000-0xdfbfffff]
-
-And the log in comment 38, also from Ivan,
-(https://bugzilla.redhat.com/attachment.cgi?id=1861539) is a case
-where resume *does* work:
-
-  BIOS-e820: [mem 0x00000000dcf00000-0x00000000dfa0ffff] reserved
-  efi: mem46: [MMIO        |RUN|  |  |  |  |  |  |  |  |   |  |  |  |  ] range=[0x00000000dfa00000-0x00000000dfa0ffff] (0MB)
-  pci_bus 0000:00: root bus resource [mem 0xdfa00000-0xfebfffff window]
-  pci 0000:00:1c.0: BAR 14: assigned [mem 0xdfb00000-0xdfcfffff]
-
-_CRS advertises [mem 0xdfa00000-0xfebfffff], but when we assign the
-0xdfa00000-0xdfafffff region to the 00:1c.0 MMIO window, resume fails.
-
-I don't see a theory about what the root cause is.  It's possible this
-is similar to case 1 above, where _CRS is defective.  But here we're
-only assigning the 00:1c.0 MMIO window, and 00:1c.0 is a bridge to
-[bus 02], and there are no devices on bus 02.  There should be no
-transactions that use that MMIO window, so it's not clear why this
-should matter.
-
-If this is a _CRS defect similar to case 1, it's possible there are
-host bridge registers in 0xdfa00000-0xdfafffff, and BIOS might use
-those during resume, and assigning that area to the 00:1c.0 MMIO
-window might interfere with that.  But that's a lot of speculation.
-
-If you have a good Lenovo contact, they might be able to confirm or
-deny this.
-
-I'm missing some things here that should be obvious; can you help me
-out?
-
-  - Why did the 4dc2287c1805 workaround not apply here?  The E820
-    region overlaps the _CRS window just like in case 1, so why did we
-    assign 0xdfa00000?
-
-  - How does this patch work around the problem?  This patch checks if
-    a host bridge window is completely contained in an EFI MMIO
-    region, but I don't see such an EFI region here.
-
-It might be interesting to poke around in the 0xdfa00000-0xdfafffff
-range.  For example, if Ivan tried things like this, it's possible
-we'd find something we could identify as registers:
-
-  # ./rdwrmem -b 4 -m -s 0xdfa00000 -l 256
-  # ./rdwrmem -b 4 -m -s 0xdfa40000 -l 256
-  # ./rdwrmem -b 4 -m -s 0xdfa80000 -l 256
-  # ./rdwrmem -b 4 -m -s 0xdfac0000 -l 256
-
-This tool is from https://cmp.felk.cvut.cz/~pisa/linux/rdwrmem.c
-
-> Recently (2019) some systems have shown-up with EFI memmap MMIO entries
-> covering the entire ACPI provided PCI bridge window. These memmap entries
-> get converted into e820_table entries, causing all attempts to assign
-> memory to PCI BARs which have not been setup by the BIOS to fail.
-> For example see these dmesg snippets from a Lenovo IdeaPad 3 15IIL 81WE:
->  efi: mem63: [MMIO] range=              [0x0000000065400000-0x00000000cfffffff] (1708MB)
->  BIOS-e820:                         [mem 0x000000004bc50000-0x00000000cfffffff] reserved
->  pci_bus 0000:00: root bus resource [mem         0x65400000-        0xbfffffff window]
->  pci 0000:00:15.0: BAR 0: no space for [mem size 0x00001000 64bit]
->  pci 0000:00:15.0: BAR 0: failed to assign [mem size 0x00001000 64bit]
+On 3/1/22 14:15, Mark Pearson wrote:
+> Looking for feedback on this feature. Whether it is worth
+> pursuing and any concerns with the general implementation.
 > 
-> To fix this, check if the ACPI provided PCI bridge window is fully
-> contained within in EFI memmap MMIO region and in that case disable
-> the "exclude E820 reserved addresses" workaround, fixing the problem
-> of not being able to find free space for unassigned BARs.
+> I've recently been working on PSC platform profile mode support
+> for Lenovo AMD platforms (patch proposed upstream last week).
+> One of the interesting pieces with the Lenovo PSC implementation
+> is it supports different profiles for AC (plugged in) vs DC
+> (running from battery).
 > 
-> BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=206459
-> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1868899
-> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=1871793
-> BugLink: https://bugzilla.redhat.com/show_bug.cgi?id=2029207
-> BugLink: https://bugs.launchpad.net/bugs/1878279
-> BugLink: https://bugs.launchpad.net/bugs/1931715
-> BugLink: https://bugs.launchpad.net/bugs/1932069
-> BugLink: https://bugs.launchpad.net/bugs/1921649
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> I was thinking of adding this support in the thinkpad_acpi driver,
+> but it seems it would be nicer to make this generally available for
+> all platforms that offer profile support.
+> 
+> This implementation allows the user to set one profile for when a
+> system is plugged in, and a different profile for when they are
+> unplugged. I imagine this would be used so that performance mode
+> is used when plugged in and low-power used when unplugged (as an
+> example). The user could configure it to match their preference.
+> 
+> If the user doesn't configure a DC profile it behaves the same as
+> previously and any ACPI power events will be ignored. If the user
+> configures a DC profile then when a system is unplugged it will
+> automatically configure this setting.
+> 
+> I've added platform_profile_ac and platform_profile_dc sysfs nodes.
+> The platform_profile and platform_profile_ac nodes will behave the
+> same when setting a profile to maintain backwards compatibility.
+
+To make it more deterministic I would say configure it like this:
+1) If you write a profile to `platform_profile` and the backend supports 
+both DC and AC profiles make it the default profile for both.  This is 
+more like "backwards compatibility" mode
+2) If you write a profile to `platform_profile_dc` and the backend 
+supports both then don't do anything in `platform_profile_ac` and vice 
+versa.  Require a user to write both of them explicitly.
+
+That means you have a new state of "unset" for the profiles, but if you 
+don't include the state then I think it can lead to confusing behaviors 
+if userspace writes one vs the other first.
+
+> 
+> If you read the platform_profile it will return the currently
+> active profile.
+> If you read the platform_profile_ac or platform_profile_dc node it
+> will return the configured profile. This is something missing from
+> the current implementation that I think is a nice bonus.
+
+Yeah nice bonus.  Some inline comments on this.
+
+> 
+> User space implementation could potentially be used to do the same
+> idea, but having this available allows users to configure from
+> cmdline or use scripts seemed valuable.
+> 
+> Note - I'm aware that I still need to:
+>   1) Update the API documentation file
+>   2) Implement a disable/unconfigure on the profile_dc setting
+> But I figured this was far enough along that it would be good to get
+> comments.
+
+If backend doesn't support AC/DC I think you should return an error for 
+one of them rather than trying to hide the difference.  Think about 
+userspace - it might want to have say two sliders and hide one if one of 
+them isn't supported.
+
+> 
+> Thanks in advance for any feedback.
+> 
+> Signed-off-by: Mark Pearson <markpearson@lenovo.com>
 > ---
-> Changes in v2:
-> - Add a couple of missing includes to arch/x86/include/asm/pci_x86.h
->   to fix i386 build errors Reported-by: kernel test robot <lkp@intel.com>
-> - Do not call resource_is_efi_mmio_region() on resource-list entries which
->   have just been destroyed because they match resource_is_pcicfg_ioport()
->   Reported-by: kernel test robot <oliver.sang@intel.com>
-> - Add (res->flags & IORESOURCE_MEM) check to resource_is_efi_mmio_region()
-> ---
->  arch/x86/include/asm/pci_x86.h | 10 +++++
->  arch/x86/kernel/resource.c     |  4 ++
->  arch/x86/pci/acpi.c            | 68 +++++++++++++++++++++++++++++++++-
->  3 files changed, 81 insertions(+), 1 deletion(-)
+>   drivers/acpi/platform_profile.c  | 130 +++++++++++++++++++++++++++++--
+>   include/linux/platform_profile.h |   1 +
+>   2 files changed, 125 insertions(+), 6 deletions(-)
 > 
-> diff --git a/arch/x86/include/asm/pci_x86.h b/arch/x86/include/asm/pci_x86.h
-> index 490411dba438..4ce61ab01a4f 100644
-> --- a/arch/x86/include/asm/pci_x86.h
-> +++ b/arch/x86/include/asm/pci_x86.h
-> @@ -5,7 +5,9 @@
->   *	(c) 1999 Martin Mares <mj@ucw.cz>
->   */
->  
-> +#include <linux/init.h>
->  #include <linux/ioport.h>
-> +#include <linux/spinlock.h>
->  
->  #undef DEBUG
->  
-> @@ -64,6 +66,8 @@ void pcibios_scan_specific_bus(int busn);
->  
->  /* pci-irq.c */
->  
-> +struct pci_dev;
-
-Both the above look like fixes to an unrelated asm/pci_x86.h
-problem that happened to be exposed by including it in
-arch/x86/kernel/resource.c.  Most users of asm/pci_x86.h
-include linux/pci.h first, which covers up the problem.
-
->  struct irq_info {
->  	u8 bus, devfn;			/* Bus, device and function */
->  	struct {
-> @@ -232,3 +236,9 @@ static inline void mmio_config_writel(void __iomem *pos, u32 val)
->  # define x86_default_pci_init_irq	NULL
->  # define x86_default_pci_fixup_irqs	NULL
->  #endif
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+> index d418462ab791..e4246e6632cf 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -7,6 +7,7 @@
+>   #include <linux/init.h>
+>   #include <linux/mutex.h>
+>   #include <linux/platform_profile.h>
+> +#include <linux/power_supply.h>
+>   #include <linux/sysfs.h>
+>   
+>   static struct platform_profile_handler *cur_profile;
+> @@ -22,6 +23,51 @@ static const char * const profile_names[] = {
+>   };
+>   static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
+>   
+> +static struct notifier_block ac_nb;
+> +static int cur_profile_ac;
+> +static int cur_profile_dc;
 > +
-> +#if defined CONFIG_PCI && defined CONFIG_ACPI
-> +extern bool pci_use_e820;
-> +#else
-> +#define pci_use_e820 true
-> +#endif
-> diff --git a/arch/x86/kernel/resource.c b/arch/x86/kernel/resource.c
-> index 9b9fb7882c20..e8dc9bc327bd 100644
-> --- a/arch/x86/kernel/resource.c
-> +++ b/arch/x86/kernel/resource.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  #include <linux/ioport.h>
->  #include <asm/e820/api.h>
-> +#include <asm/pci_x86.h>
->  
->  static void resource_clip(struct resource *res, resource_size_t start,
->  			  resource_size_t end)
-> @@ -28,6 +29,9 @@ static void remove_e820_regions(struct resource *avail)
->  	int i;
->  	struct e820_entry *entry;
->  
-> +	if (!pci_use_e820)
-> +		return;
-> +
->  	for (i = 0; i < e820_table->nr_entries; i++) {
->  		entry = &e820_table->entries[i];
->  
-> diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
-> index 052f1d78a562..fce05e03ba9e 100644
-> --- a/arch/x86/pci/acpi.c
-> +++ b/arch/x86/pci/acpi.c
-> @@ -1,4 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0
-> +#include <linux/efi.h>
->  #include <linux/pci.h>
->  #include <linux/acpi.h>
->  #include <linux/init.h>
-> @@ -21,6 +22,7 @@ struct pci_root_info {
->  
->  static bool pci_use_crs = true;
->  static bool pci_ignore_seg;
-> +bool pci_use_e820 = true;
->  
->  static int __init set_use_crs(const struct dmi_system_id *id)
->  {
-> @@ -291,6 +293,63 @@ static bool resource_is_pcicfg_ioport(struct resource *res)
->  		res->start == 0xCF8 && res->end == 0xCFF;
->  }
->  
-> +/*
-> + * Some fw has a bug where the PCI bridge window returned by the ACPI resources
-> + * partly overlaps with some other address range, causing issues. To workaround
-> + * this Linux excludes E820 reserved addresses when allocating addresses from
-> + * the PCI bridge window. 2 known examples of such firmware bugs are:
-> + *
-> + * 1. The returned window contains addresses which map to system RAM, see
-> + * commit 4dc2287c1805 ("x86: avoid E820 regions when allocating address space").
-> + *
-> + * 2. The Lenovo X1 carbon gen 2 BIOS has an overlap between an EFI/E820
-> + * reserved range and the ACPI provided PCI bridge window:
-> + *  efi: mem46: [MMIO] range=[0x00000000dfa00000-0x00000000dfa0ffff] (0MB)
-> + *  BIOS-e820: [mem 0x00000000dceff000-0x00000000dfa0ffff] reserved
-> + *  pci_bus 0000:00: root bus resource [mem 0xdfa00000-0xfebfffff window]
-> + * If Linux assigns the overlapping 0xdfa00000-0xdfa0ffff range to a PCI BAR
-> + * then the system fails to resume after a suspend.
-> + *
-> + * Recently (2019) some systems have shown-up with EFI memmap MMIO entries
-> + * covering the entire ACPI provided PCI bridge window. These memmap entries
-> + * get converted into e820_table entries, causing all attempts to assign
-> + * memory to PCI BARs which have not been setup by the BIOS to fail.
-> + * For example see these dmesg snippets from a Lenovo IdeaPad 3 15IIL 81WE:
-> + *  efi: mem63: [MMIO] range=[0x0000000065400000-0x00000000cfffffff] (1708MB)
-> + *  BIOS-e820: [mem 0x000000004bc50000-0x00000000cfffffff] reserved
-> + *  pci_bus 0000:00: root bus resource [mem 0x65400000-0xbfffffff window]
-> + *  pci 0000:00:15.0: BAR 0: no space for [mem size 0x00001000 64bit]
-> + *  pci 0000:00:15.0: BAR 0: failed to assign [mem size 0x00001000 64bit]
-> + *
-> + * To code below checks if the ACPI provided PCI bridge window is fully
-> + * contained within in EFI memmap MMIO region and in that case disables
-> + * the "exclude E820 reserved addresses" workaround to avoid this issue.
-> + */
-> +static bool resource_is_efi_mmio_region(const struct resource *res)
+> +static int platform_profile_set(void)
 > +{
-> +	unsigned long long start, end;
-> +	efi_memory_desc_t *md;
+> +	int profile, err;
 > +
-> +	if (!(res->flags & IORESOURCE_MEM))
-> +		return false;
-> +
-> +	if (!efi_enabled(EFI_MEMMAP))
-> +		return false;
-> +
-> +	for_each_efi_memory_desc(md) {
-> +		if (md->type != EFI_MEMORY_MAPPED_IO)
-> +			continue;
-> +
-> +		start = md->phys_addr;
-> +		end = start + (md->num_pages << EFI_PAGE_SHIFT) - 1;
-> +
-> +		if (res->start >= start && res->end <= end)
-> +			return true;
+> +	if (cur_profile_dc == PLATFORM_PROFILE_UNCONFIGURED)
+> +		profile = cur_profile_ac;
+> +	else {
+> +		if (power_supply_is_system_supplied() > 0)
+> +			profile = cur_profile_ac;
+> +		else
+> +			profile = cur_profile_dc;
 > +	}
 > +
-> +	return false;
+> +	err = mutex_lock_interruptible(&profile_lock);
+> +	if (err)
+> +		return err;
+> +
+> +	err = cur_profile->profile_set(cur_profile, profile);
+> +	if (err)
+> +		return err;
+> +
+> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+> +	mutex_unlock(&profile_lock);
+> +	return 0;
 > +}
 > +
->  static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
->  {
->  	struct acpi_device *device = ci->bridge;
-> @@ -300,9 +359,16 @@ static int pci_acpi_root_prepare_resources(struct acpi_pci_root_info *ci)
->  
->  	status = acpi_pci_probe_root_resources(ci);
->  	if (pci_use_crs) {
-> -		resource_list_for_each_entry_safe(entry, tmp, &ci->resources)
-> +		resource_list_for_each_entry_safe(entry, tmp, &ci->resources) {
->  			if (resource_is_pcicfg_ioport(entry->res))
->  				resource_list_destroy_entry(entry);
-> +			else if (resource_is_efi_mmio_region(entry->res)) {
-> +				dev_info(&device->dev,
-> +					"host bridge window %pR is marked by EFI as MMIO\n",
-> +					entry->res);
-> +				pci_use_e820 = false;
+> +static int platform_profile_acpi_event(struct notifier_block *nb,
+> +					unsigned long val,
+> +					void *data)
+> +{
+> +	struct acpi_bus_event *entry = (struct acpi_bus_event *)data;
+> +
+> +	WARN_ON(cur_profile_dc == PLATFORM_PROFILE_UNCONFIGURED);
+> +
+> +	/* if power supply changed, then update profile */
+> +	if (strcmp(entry->device_class, "ac_adapter") == 0)
+> +		return platform_profile_set();
+> +
+> +	return 0;
+> +}
+> +
+>   static ssize_t platform_profile_choices_show(struct device *dev,
+>   					struct device_attribute *attr,
+>   					char *buf)
+> @@ -77,9 +123,34 @@ static ssize_t platform_profile_show(struct device *dev,
+>   	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+>   }
+>   
+> -static ssize_t platform_profile_store(struct device *dev,
+> +static ssize_t configured_profile_show(struct device *dev,
+>   			    struct device_attribute *attr,
+> -			    const char *buf, size_t count)
+> +			    char *buf, int profile)
+> +{
+> +	if (profile == PLATFORM_PROFILE_UNCONFIGURED)
+> +		return sysfs_emit(buf, "Not-configured\n");
+> +
+> +	/* Check that profile is valid index */
+> +	if (WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
+> +		return -EIO;
+> +	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+> +}
+> +
+> +static ssize_t platform_profile_ac_show(struct device *dev,
+> +					struct device_attribute *attr,
+> +					char *buf)
+> +{
+> +	return configured_profile_show(dev, attr, buf, cur_profile_ac);
+> +}
+> +
+> +static ssize_t platform_profile_dc_show(struct device *dev,
+> +					struct device_attribute *attr,
+> +					char *buf)
+> +{
+> +	return configured_profile_show(dev, attr, buf, cur_profile_dc);
+> +}
+> +
+> +static int profile_select(const char *buf)
+>   {
+>   	int err, i;
+>   
+> @@ -105,11 +176,50 @@ static ssize_t platform_profile_store(struct device *dev,
+>   		return -EOPNOTSUPP;
+>   	}
+>   
+> -	err = cur_profile->profile_set(cur_profile, i);
+> -	if (!err)
+> -		sysfs_notify(acpi_kobj, NULL, "platform_profile");
+> -
+>   	mutex_unlock(&profile_lock);
+> +	return i;
+> +}
+> +
+> +static ssize_t platform_profile_store(struct device *dev,
+> +			    struct device_attribute *attr,
+> +			    const char *buf, size_t count)
+> +{
+> +	int profile, err;
+> +
+> +	profile	= profile_select(buf);
+> +	if (profile < 0)
+> +		return profile;
+> +
+> +	cur_profile_ac = profile;
+> +	err = platform_profile_set();
+> +	if (err)
+> +		return err;
+> +	return count;
+> +}
+> +
+> +static ssize_t platform_profile_ac_store(struct device *dev,
+> +			    struct device_attribute *attr,
+> +			    const char *buf, size_t count)
+> +{
+> +	return platform_profile_store(dev, attr, buf, count);
+> +}
+> +
+> +static ssize_t platform_profile_dc_store(struct device *dev,
+> +			    struct device_attribute *attr,
+> +			    const char *buf, size_t count)
+> +{
+> +	int profile, err;
+> +
+> +	profile = profile_select(buf);
+> +	if (profile < 0)
+> +		return profile;
+> +
+> +	/* We need to register for ACPI events now */
+> +	if (cur_profile_dc == PLATFORM_PROFILE_UNCONFIGURED)
+> +		register_acpi_notifier(&ac_nb);
+> +
+> +	cur_profile_dc = profile;
+> +	err = platform_profile_set();
+>   	if (err)
+>   		return err;
+>   	return count;
+> @@ -117,10 +227,14 @@ static ssize_t platform_profile_store(struct device *dev,
+>   
+>   static DEVICE_ATTR_RO(platform_profile_choices);
+>   static DEVICE_ATTR_RW(platform_profile);
+> +static DEVICE_ATTR_RW(platform_profile_ac);
+> +static DEVICE_ATTR_RW(platform_profile_dc);
 
-This message suggests that marking the host bridge window as MMIO in
-EFI is a defect, or at least something unusual and worthy of being
-flagged.  But I think it's perfectly legal.
+My opinion here is that if you are keeping the existing one in place to 
+show "current" active profile and make the new ones to show you 
+"selected" profile they should have a different naming convention.
 
-UEFI v2.8, sec 7.2, says EfiMemoryMappedIO means:
+Some ideas:
+- selected_*_profile
+- platform_profile_policy_*
+- *_policy
 
-  Used by system firmware to request that a memory-mapped IO region be
-  mapped by the OS to a virtual address so it can be accessed by EFI
-  runtime services.
+Something else that comes to mind is you can rename "platform_profile" 
+as "active_profile" (but create a compatibility symlink back to 
+platform_profile), but I don't know that's really needed as long as it's 
+all well documented.
 
+>   
+>   static struct attribute *platform_profile_attrs[] = {
+>   	&dev_attr_platform_profile_choices.attr,
+>   	&dev_attr_platform_profile.attr,
+> +	&dev_attr_platform_profile_ac.attr,
+> +	&dev_attr_platform_profile_dc.attr,
+>   	NULL
+>   };
+>   
+> @@ -161,7 +275,9 @@ int platform_profile_register(struct platform_profile_handler *pprof)
+>   	}
+>   
+>   	cur_profile = pprof;
+> +	cur_profile_ac = cur_profile_dc = PLATFORM_PROFILE_UNCONFIGURED;
+>   	mutex_unlock(&profile_lock);
+> +	ac_nb.notifier_call = platform_profile_acpi_event;
+>   	return 0;
+>   }
+>   EXPORT_SYMBOL_GPL(platform_profile_register);
+> @@ -169,6 +285,8 @@ EXPORT_SYMBOL_GPL(platform_profile_register);
+>   int platform_profile_remove(void)
+>   {
+>   	sysfs_remove_group(acpi_kobj, &platform_profile_group);
+> +	if (cur_profile_dc != PLATFORM_PROFILE_UNCONFIGURED)
+> +		unregister_acpi_notifier(&ac_nb);
+>   
+>   	mutex_lock(&profile_lock);
+>   	cur_profile = NULL;
+> diff --git a/include/linux/platform_profile.h b/include/linux/platform_profile.h
+> index e5cbb6841f3a..34566256bb60 100644
+> --- a/include/linux/platform_profile.h
+> +++ b/include/linux/platform_profile.h
+> @@ -15,6 +15,7 @@
+>    * If more options are added please update profile_names array in
+>    * platform_profile.c and sysfs-platform_profile documentation.
+>    */
+> +#define PLATFORM_PROFILE_UNCONFIGURED -1
+>   
+>   enum platform_profile_option {
+>   	PLATFORM_PROFILE_LOW_POWER,
 
-> +			}
-> +		}
->  		return status;
->  	}
->  
-> -- 
-> 2.35.1
-> 
